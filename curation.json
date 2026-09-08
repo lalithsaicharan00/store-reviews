@@ -1,0 +1,764 @@
+{
+ "method": "Curated by reading each app's App Store description. Included only if the app's primary loop is marking recurring user-defined habits or routines as done over time. Excluded: task managers, calendars, day planners, workout logs, mood journals, focus timers and single-purpose counters, even when they rank for these keywords.",
+ "categories": {
+  "habit_tracker": "Habit tracker - core purpose is tracking recurring habits",
+  "routine_tracker": "Routine tracker/planner - organised around daily routines",
+  "gamified_habit": "Gamified habit tracker - habit loop wrapped in a reward system",
+  "habit_breaking": "Habit breaking - streak counters for quitting habits"
+ },
+ "include": [
+  {
+   "app_id": "1438388363",
+   "name": "Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Daily habit scheduling and streak tracking is the whole app"
+  },
+  {
+   "app_id": "1133119692",
+   "name": "Daily Habits - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Create, maintain and track good habits; drop bad ones"
+  },
+  {
+   "app_id": "1596403446",
+   "name": "Me+ Lifestyle Routine",
+   "category": "routine_tracker",
+   "why": "Daily habits and healthy routines are the core product"
+  },
+  {
+   "app_id": "1450486923",
+   "name": "Routine Planner, Habit Tracker",
+   "category": "routine_tracker",
+   "why": "Routinery - guided routines you run step by step"
+  },
+  {
+   "app_id": "6749051240",
+   "name": "Streak Tracker - StreakUp",
+   "category": "gamified_habit",
+   "why": "Gamified daily streaks for habits"
+  },
+  {
+   "app_id": "6443918070",
+   "name": "Habit Tracker - HabitKit",
+   "category": "habit_tracker",
+   "why": "Tile-grid habit tracker; form or break habits"
+  },
+  {
+   "app_id": "1547137474",
+   "name": "Onrise: Habit Tracker & Focus",
+   "category": "habit_tracker",
+   "why": "Habit building is primary; Pomodoro is secondary"
+  },
+  {
+   "app_id": "6475956795",
+   "name": "Dear Me: Daily Routine Tracker",
+   "category": "routine_tracker",
+   "why": "Tracks daily routines, habits and rituals"
+  },
+  {
+   "app_id": "1528595748",
+   "name": "Finch: Self-Care Pet",
+   "category": "gamified_habit",
+   "why": "Self-care pet whose core loop is completing daily goals"
+  },
+  {
+   "app_id": "1523643868",
+   "name": "Daily Habits: Streak Tracker",
+   "category": "habit_tracker",
+   "why": "Habit tracker with streaks and AI habit generation"
+  },
+  {
+   "app_id": "1597753705",
+   "name": "That Girl: Routine Planner",
+   "category": "routine_tracker",
+   "why": "Daily routine planner for building habits"
+  },
+  {
+   "app_id": "983826477",
+   "name": "Productive - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Long-standing habit tracker; goals and progress"
+  },
+  {
+   "app_id": "814998643",
+   "name": "My Habits: Daily Habit Builder",
+   "category": "habit_tracker",
+   "why": "Builds good habits and breaks bad ones"
+  },
+  {
+   "app_id": "1614197639",
+   "name": "Habit Builder",
+   "category": "habit_tracker",
+   "why": "Create habits and track consistency"
+  },
+  {
+   "app_id": "6474421906",
+   "name": "Atoms - from Atomic Habits",
+   "category": "habit_tracker",
+   "why": "Official Atomic Habits app; habit formation"
+  },
+  {
+   "app_id": "1580007457",
+   "name": "Daily Routine",
+   "category": "routine_tracker",
+   "why": "Build a routine and stick to it"
+  },
+  {
+   "app_id": "1518956326",
+   "name": "MyRoutine: Organize your day",
+   "category": "routine_tracker",
+   "why": "Sustainable routine system"
+  },
+  {
+   "app_id": "6742659386",
+   "name": "Wisey: Habit Builder",
+   "category": "habit_tracker",
+   "why": "Habit builder with preset habits"
+  },
+  {
+   "app_id": "1445651730",
+   "name": "Habit — Daily Tracker",
+   "category": "habit_tracker",
+   "why": "Minimal daily habit tracker"
+  },
+  {
+   "app_id": "1660929974",
+   "name": "DailyHabits: Build Good Habits",
+   "category": "habit_tracker",
+   "why": "Monthly-goal habit tracker"
+  },
+  {
+   "app_id": "1260902519",
+   "name": "Habit Builder: Don't Break The Chain",
+   "category": "habit_tracker",
+   "why": "Don't Break The Chain habit method"
+  },
+  {
+   "app_id": "963034692",
+   "name": "Streaks",
+   "category": "habit_tracker",
+   "why": "Apple Design Award habit streak tracker"
+  },
+  {
+   "app_id": "1203637303",
+   "name": "Fabulous: Daily Habit Tracker",
+   "category": "routine_tracker",
+   "why": "Habit and routine coaching; began as a habit tracker"
+  },
+  {
+   "app_id": "6446997766",
+   "name": "Grit: Daily Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habit tracker with Health integration"
+  },
+  {
+   "app_id": "1589243137",
+   "name": "Eden: Daily Routine Planner",
+   "category": "routine_tracker",
+   "why": "Gentle habit tracker for daily routines"
+  },
+  {
+   "app_id": "1630626343",
+   "name": "Goal Streak: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Free habit tracker with streaks"
+  },
+  {
+   "app_id": "1522121879",
+   "name": "Habit Rabbit: Habit Tracker",
+   "category": "gamified_habit",
+   "why": "Habit tracker with a pet reward loop"
+  },
+  {
+   "app_id": "6480042457",
+   "name": "Habit Tracker - Daily Goals",
+   "category": "habit_tracker",
+   "why": "Habit tracker, no ads or subscription"
+  },
+  {
+   "app_id": "6745508692",
+   "name": "Habit Tracker: Simple&Powerful",
+   "category": "habit_tracker",
+   "why": "Minimalist habit tracker"
+  },
+  {
+   "app_id": "1103961876",
+   "name": "Do Habits: Get It Done",
+   "category": "habit_tracker",
+   "why": "Goal-based habit tracking"
+  },
+  {
+   "app_id": "6742739243",
+   "name": "Simple Streak: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Minimal habit tracker; make or break habits"
+  },
+  {
+   "app_id": "1111447047",
+   "name": "Habitify: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Established habit tracker, 3M+ users"
+  },
+  {
+   "app_id": "1403517519",
+   "name": "Habit Tracker - Evoday",
+   "category": "habit_tracker",
+   "why": "Visual grid habit tracker"
+  },
+  {
+   "app_id": "6789635670",
+   "name": "Habit Builder: Track & Streak",
+   "category": "habit_tracker",
+   "why": "Habit tracker with streaks and stats"
+  },
+  {
+   "app_id": "1593891243",
+   "name": "(Not Boring) Habits",
+   "category": "habit_tracker",
+   "why": "Apple Design Award winner; habit building"
+  },
+  {
+   "app_id": "1523273937",
+   "name": "Habit: Streak Tracker & Goals",
+   "category": "habit_tracker",
+   "why": "Free habit streak tracker"
+  },
+  {
+   "app_id": "6740321886",
+   "name": "Daily Routine Planner - DayMap",
+   "category": "routine_tracker",
+   "why": "DayMap - routine and task planning"
+  },
+  {
+   "app_id": "6757651086",
+   "name": "Routine Tracker: Consistency",
+   "category": "routine_tracker",
+   "why": "Routine tracker built on consistency"
+  },
+  {
+   "app_id": "6478388488",
+   "name": "Habit Tracker: Loop",
+   "category": "habit_tracker",
+   "why": "Loop habit tracker; healthy routines"
+  },
+  {
+   "app_id": "1514915737",
+   "name": "Awesome Habits: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habit-first, explicitly not goal-setting"
+  },
+  {
+   "app_id": "1477345602",
+   "name": "Daily Habit & Routine Tracker",
+   "category": "habit_tracker",
+   "why": "Habit and routine tracker"
+  },
+  {
+   "app_id": "1149192857",
+   "name": "Habit Hub: Routine Tracker",
+   "category": "routine_tracker",
+   "why": "Habit tracker plus routine timer"
+  },
+  {
+   "app_id": "1566698810",
+   "name": "Daily Routine - Plan Your Life",
+   "category": "routine_tracker",
+   "why": "Routine of life-changing habits"
+  },
+  {
+   "app_id": "6758340216",
+   "name": "Routine Tracker App",
+   "category": "routine_tracker",
+   "why": "Routine tracker with daily routines and reminders"
+  },
+  {
+   "app_id": "1394150432",
+   "name": "everyday - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Simple daily habit tracker"
+  },
+  {
+   "app_id": "1439938837",
+   "name": "Habit Streak Tracker: DotHabit",
+   "category": "habit_tracker",
+   "why": "DotHabit habit streak tracker"
+  },
+  {
+   "app_id": "672401817",
+   "name": "Strides: Habit Tracker + Goals",
+   "category": "habit_tracker",
+   "why": "Strides - habits, routines and goals"
+  },
+  {
+   "app_id": "6478942469",
+   "name": "Life Reset: 66 Day Habit",
+   "category": "gamified_habit",
+   "why": "66-day habit challenge with XP and streaks"
+  },
+  {
+   "app_id": "6476824223",
+   "name": "HelloHabit - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habit building alongside task lists"
+  },
+  {
+   "app_id": "6475047132",
+   "name": "Habit Builder - Brick by Brick",
+   "category": "habit_tracker",
+   "why": "Brick-by-brick habit building"
+  },
+  {
+   "app_id": "1263789061",
+   "name": "ShineDay: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Micro-habit tracker with streaks"
+  },
+  {
+   "app_id": "1253577148",
+   "name": "HabitMinder • Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Turns goals into daily routines with streaks"
+  },
+  {
+   "app_id": "1479581895",
+   "name": "Avocation - Habit Tracker",
+   "category": "gamified_habit",
+   "why": "Gamified habit forming and breaking"
+  },
+  {
+   "app_id": "1041482672",
+   "name": "Habit-Bull: Daily Goal Planner",
+   "category": "habit_tracker",
+   "why": "HabitBull - habits, routines, repeated to-dos"
+  },
+  {
+   "app_id": "6758730376",
+   "name": "Dots: Habit Tracker Widget",
+   "category": "habit_tracker",
+   "why": "Habit tracker and routine planner widget"
+  },
+  {
+   "app_id": "1456241316",
+   "name": "Habit Tracker - DayStamp",
+   "category": "habit_tracker",
+   "why": "DayStamp one-tap daily habit check-in"
+  },
+  {
+   "app_id": "6770147415",
+   "name": "Blossom Habit Tracker (Fern)",
+   "category": "habit_tracker",
+   "why": "Minimal habit tracker"
+  },
+  {
+   "app_id": "1385049326",
+   "name": "Tappsk: ToDo & Habit Tracker",
+   "category": "habit_tracker",
+   "why": "To-do and habit tracker combined"
+  },
+  {
+   "app_id": "6502995200",
+   "name": "Mindway: Daily Routine Planner",
+   "category": "routine_tracker",
+   "why": "Personalised routine and wellness planner"
+  },
+  {
+   "app_id": "6523413981",
+   "name": "Daily Routines & Planner App",
+   "category": "routine_tracker",
+   "why": "Create and manage personalised routines"
+  },
+  {
+   "app_id": "6448960901",
+   "name": "Streaks – Daily Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Daily habit tracker for consistency"
+  },
+  {
+   "app_id": "1550003470",
+   "name": "Daily Habits: Lifetime Premium",
+   "category": "habit_tracker",
+   "why": "Daily Habits, one-time purchase edition"
+  },
+  {
+   "app_id": "6743095634",
+   "name": "Critique AI: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habit and goal consistency tracker"
+  },
+  {
+   "app_id": "1512605216",
+   "name": "Rabit - Daily Routine Planner",
+   "category": "routine_tracker",
+   "why": "Routine focus and healthy habits"
+  },
+  {
+   "app_id": "6754244909",
+   "name": "Loop Habit Tracker - Streaks",
+   "category": "habit_tracker",
+   "why": "Healthy habits tracker for daily routine"
+  },
+  {
+   "app_id": "1517360968",
+   "name": "Habio - Daily Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habio habit formation"
+  },
+  {
+   "app_id": "1476563238",
+   "name": "Ultiself | Self-Improvement",
+   "category": "habit_tracker",
+   "why": "Track habits and build a routine"
+  },
+  {
+   "app_id": "1671322093",
+   "name": "Habit Tracker: TheFor",
+   "category": "habit_tracker",
+   "why": "Habit tracking app"
+  },
+  {
+   "app_id": "1120239484",
+   "name": "Habit: Daily routine tracker",
+   "category": "routine_tracker",
+   "why": "Daily routine tracker for goal follow-through"
+  },
+  {
+   "app_id": "1519067736",
+   "name": "MyStreaks - Streak Tracker",
+   "category": "gamified_habit",
+   "why": "Gamified streak tracking for consistency"
+  },
+  {
+   "app_id": "6737323367",
+   "name": "Habit Hearts - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Simple daily habit tracking"
+  },
+  {
+   "app_id": "6692634213",
+   "name": "Streak: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Minimalist free habit tracker"
+  },
+  {
+   "app_id": "1629764198",
+   "name": "Habit Check Calendar",
+   "category": "habit_tracker",
+   "why": "Weekly calendar habit check-off"
+  },
+  {
+   "app_id": "6504493690",
+   "name": "Habit Streak | Daily Tracker",
+   "category": "habit_tracker",
+   "why": "Habit coach; positive routines, break bad ones"
+  },
+  {
+   "app_id": "393159800",
+   "name": "Way of Life - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Way of Life - long-running habit tracker"
+  },
+  {
+   "app_id": "6737206675",
+   "name": "Habit Tracker: Streak-Free",
+   "category": "habit_tracker",
+   "why": "Habit tracker built without streaks"
+  },
+  {
+   "app_id": "6760905736",
+   "name": "Streak Tracker: Habitug",
+   "category": "habit_tracker",
+   "why": "Tracks habits to build and to break"
+  },
+  {
+   "app_id": "6502667826",
+   "name": "Habit Tracker - Ripples",
+   "category": "habit_tracker",
+   "why": "Ripples habit consistency tracker"
+  },
+  {
+   "app_id": "6443798772",
+   "name": "Habit Builder・Atomic Habits AI",
+   "category": "habit_tracker",
+   "why": "Habster - form good habits, replace bad"
+  },
+  {
+   "app_id": "6471958524",
+   "name": "Yomento Habit Builder",
+   "category": "habit_tracker",
+   "why": "Habit builder for workplace behaviours"
+  },
+  {
+   "app_id": "6456888481",
+   "name": "Lasting Change: Habit Builder",
+   "category": "habit_tracker",
+   "why": "Habit-building and mental wellness"
+  },
+  {
+   "app_id": "1527382961",
+   "name": "Roubit : Fun Routine Planner",
+   "category": "routine_tracker",
+   "why": "Roubit - fun routine planner, App of the Day"
+  },
+  {
+   "app_id": "6746483721",
+   "name": "Habit Tracker - HabitGrid",
+   "category": "habit_tracker",
+   "why": "HabitGrid - form or break habits"
+  },
+  {
+   "app_id": "1445348921",
+   "name": "Days Since: Quit Habit Tracker",
+   "category": "habit_breaking",
+   "why": "Days Since - generic bad-habit quit counter"
+  },
+  {
+   "app_id": "1055295863",
+   "name": null,
+   "category": "habit_tracker",
+   "why": "Free habit tracker; build habits and quit bad ones"
+  },
+  {
+   "app_id": "1541469491",
+   "name": null,
+   "category": "habit_tracker",
+   "why": "GetHabit - create and track habits"
+  },
+  {
+   "app_id": "994882113",
+   "name": null,
+   "category": "gamified_habit",
+   "why": "Habitica - RPG-gamified habit building"
+  },
+  {
+   "app_id": "6480409654",
+   "name": null,
+   "category": "habit_tracker",
+   "why": "Habit/goal tracker with tick-off success rate"
+  },
+  {
+   "app_id": "1563837295",
+   "name": null,
+   "category": "habit_tracker",
+   "why": "Check Calendar - mark habits off on a calendar"
+  },
+  {
+   "app_id": "1658588991",
+   "name": null,
+   "category": "habit_breaking",
+   "why": "Bad Habit Break - quitting bad habits and addictions"
+  }
+ ],
+ "exclude": [
+  {
+   "app_id": "1499198946",
+   "name": "Structured: Daily Planner Todo",
+   "why": "Daily planner and calendar, not habit tracking"
+  },
+  {
+   "app_id": "672904239",
+   "name": "I Am Sober",
+   "why": "Sobriety counter and recovery community, not general habit tracking"
+  },
+  {
+   "app_id": "1632352471",
+   "name": "Digital Planner – Task Journal",
+   "why": "Digital planner and journal; habit grid is one feature"
+  },
+  {
+   "app_id": "1669790177",
+   "name": "Daily Planner: Routine & Tasks",
+   "why": "Daily schedule planner first"
+  },
+  {
+   "app_id": "1144352844",
+   "name": "Counter Tally Count",
+   "why": "Generic tally counter utility"
+  },
+  {
+   "app_id": "939999066",
+   "name": "Baby Panda's Daily Habits",
+   "why": "Children's educational game"
+  },
+  {
+   "app_id": "6741144083",
+   "name": "Daily Planner - Habit Builder",
+   "why": "Daily planner first, habits secondary"
+  },
+  {
+   "app_id": "1633964681",
+   "name": "Daily habits - Habit Tracker.",
+   "why": "Scrapbook/journal app despite the name"
+  },
+  {
+   "app_id": "6472804752",
+   "name": "Daily Planner, To-Do List",
+   "why": "Daily planner and to-do list"
+  },
+  {
+   "app_id": "993066159",
+   "name": "To Do List MinimaList & Widget",
+   "why": "To-do list app"
+  },
+  {
+   "app_id": "608834326",
+   "name": "Calendars: Schedule Planner",
+   "why": "Calendar app (Readdle)"
+  },
+  {
+   "app_id": "1480220328",
+   "name": "Tiimo: To-Do List Planner",
+   "why": "AI day planner for neurodivergent users"
+  },
+  {
+   "app_id": "6738038765",
+   "name": "Daily Routine - Planner & Mood",
+   "why": "Planner plus mood tracking"
+  },
+  {
+   "app_id": "1121088244",
+   "name": "DayCount",
+   "why": "Countdown / day-counter utility"
+  },
+  {
+   "app_id": "6753191177",
+   "name": "Milestone: Streak Tracker",
+   "why": "Days since/until counter"
+  },
+  {
+   "app_id": "1067240813",
+   "name": "My Daily Tasks Manager",
+   "why": "Task manager"
+  },
+  {
+   "app_id": "1476033780",
+   "name": "TimeBloc - Daily Planner",
+   "why": "Time-blocking planner"
+  },
+  {
+   "app_id": "626144601",
+   "name": "TickTick:To-Do List & Calendar",
+   "why": "To-do and task manager"
+  },
+  {
+   "app_id": "1458862350",
+   "name": "Hevy - Workout Tracker Gym Log",
+   "why": "Gym workout tracker"
+  },
+  {
+   "app_id": "1576857102",
+   "name": "Gentler Streak Workout Tracker",
+   "why": "Fitness activity tracker"
+  },
+  {
+   "app_id": "6504358342",
+   "name": "Hour: Daily Routine Planner",
+   "why": "Aesthetic day planner"
+  },
+  {
+   "app_id": "1540983473",
+   "name": "2026 Planner & Agenda - Floret",
+   "why": "Planner and journal"
+  },
+  {
+   "app_id": "1194023242",
+   "name": "Daylio Journal - Mood Tracker",
+   "why": "Mood journal"
+  },
+  {
+   "app_id": "6443740936",
+   "name": "Lyfta: Gym Workout Tracker Log",
+   "why": "Gym workout tracker"
+  },
+  {
+   "app_id": "1312926037",
+   "name": "stoic. journal & mental health",
+   "why": "Mental-health journal"
+  },
+  {
+   "app_id": "670870972",
+   "name": "Productivity - Daily Planner",
+   "why": "GTD day planner"
+  },
+  {
+   "app_id": "1553223828",
+   "name": "DailyBean - simplest journal",
+   "why": "Mood journal"
+  },
+  {
+   "app_id": "1409190654",
+   "name": "Gym Day: Workout Routine & Log",
+   "why": "Gym workout tracker"
+  },
+  {
+   "app_id": "1212616790",
+   "name": "Microsoft To Do",
+   "why": "To-do list (Microsoft)"
+  },
+  {
+   "app_id": "464254577",
+   "name": "Strong Workout Tracker Gym Log",
+   "why": "Gym workout tracker"
+  },
+  {
+   "app_id": "497328576",
+   "name": "Any.do: To do list & Planner",
+   "why": "To-do list and planner"
+  },
+  {
+   "app_id": "866450515",
+   "name": "Forest: Focus for Productivity",
+   "why": "Focus timer"
+  },
+  {
+   "app_id": "1090990601",
+   "name": "Tally: The Anything Tracker",
+   "why": "Generic anything-tracker"
+  },
+  {
+   "app_id": "1519999420",
+   "name": "Daily Planner, Schedule: Brite",
+   "why": "Daily planner"
+  },
+  {
+   "app_id": "874656917",
+   "name": "I am - Daily Affirmations",
+   "why": "Daily affirmations"
+  },
+  {
+   "app_id": "6771028828",
+   "name": "Time Blocking: Day Planner",
+   "why": "Time-blocking planner"
+  },
+  {
+   "app_id": "1585939051",
+   "name": "Cute Calendar - Daily Planner",
+   "why": "Calendar planner"
+  },
+  {
+   "app_id": "1398002552",
+   "name": "Habit Burger Grill",
+   "why": "Restaurant chain app - matched the word 'habit'"
+  },
+  {
+   "app_id": "1505220130",
+   "name": null,
+   "why": "Korean to-do app; routines are a secondary feature"
+  },
+  {
+   "app_id": "1534196157",
+   "name": null,
+   "why": "Wellness and mood companion first, habits secondary"
+  },
+  {
+   "app_id": "6462640915",
+   "name": null,
+   "why": "A game, not a tracker (Games category)"
+  },
+  {
+   "app_id": "1098944000",
+   "name": null,
+   "why": "BetterMe - wellness coaching, not habit tracking"
+  }
+ ],
+ "audit": "After curating, every one of the 1,067 apps below the ranking-strength prefilter was re-checked by audience size, ignoring its name. Only six genuine habit/routine trackers with real audiences had been missed; they are included above. The rest were incidental keyword matches -- TikTok, Messenger, Snapchat, Gmail and similar all rank for 'habit' somewhere."
+}

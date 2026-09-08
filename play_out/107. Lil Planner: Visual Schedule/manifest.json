@@ -1,0 +1,28 @@
+{
+  "store": "Google Play",
+  "package": "app.littleplanner",
+  "app_name": "Lil Planner: Visual Schedule",
+  "extracted_at": "2026-09-08T13:01:46Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 94,
+  "languages_with_reviews": 8,
+  "reviews_per_language": {
+    "en": 80,
+    "es": 7,
+    "fr": 2,
+    "ar": 1,
+    "de": 1,
+    "sr": 1,
+    "sv": 1,
+    "tr": 1
+  },
+  "rating_distribution": {
+    "5": 70,
+    "4": 13,
+    "3": 3,
+    "2": 1,
+    "1": 7
+  },
+  "mean_rating": 4.468,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

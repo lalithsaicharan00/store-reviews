@@ -1,0 +1,30 @@
+{
+  "app_id": "6692634213",
+  "app_name": "Streak: Habit Tracker",
+  "developer": "Ilya Golubev",
+  "bundle_id": "com.streakapp.Streakapp",
+  "extracted_at": "2026-09-08T12:00:32Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 7,
+  "storefronts_with_reviews": 6,
+  "reviews_per_country": {
+    "nl": 2,
+    "br": 1,
+    "cn": 1,
+    "gb": 1,
+    "in": 1,
+    "us": 1
+  },
+  "rating_distribution": {
+    "5": 4,
+    "4": 2,
+    "3": 0,
+    "2": 0,
+    "1": 1
+  },
+  "mean_rating": 4.143,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

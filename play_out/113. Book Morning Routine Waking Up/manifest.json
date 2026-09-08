@@ -1,0 +1,39 @@
+{
+  "store": "Google Play",
+  "package": "com.fourdesire.bedtime",
+  "app_name": "Book Morning Routine Waking Up",
+  "extracted_at": "2026-09-08T13:04:40Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 217,
+  "languages_with_reviews": 19,
+  "reviews_per_language": {
+    "zh-TW": 113,
+    "en": 62,
+    "es": 6,
+    "pt": 6,
+    "ar": 5,
+    "ru": 4,
+    "zh-CN": 4,
+    "vi": 3,
+    "fr": 2,
+    "ja": 2,
+    "pl": 2,
+    "el": 1,
+    "fa": 1,
+    "he": 1,
+    "it": 1,
+    "ko": 1,
+    "th": 1,
+    "tr": 1,
+    "uk": 1
+  },
+  "rating_distribution": {
+    "5": 98,
+    "4": 43,
+    "3": 31,
+    "2": 15,
+    "1": 30
+  },
+  "mean_rating": 3.756,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

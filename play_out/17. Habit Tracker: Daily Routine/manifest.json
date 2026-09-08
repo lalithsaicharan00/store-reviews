@@ -1,0 +1,28 @@
+{
+  "store": "Google Play",
+  "package": "com.ksp.habittracker",
+  "app_name": "Habit Tracker: Daily Routine",
+  "extracted_at": "2026-09-08T12:38:57Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 22,
+  "languages_with_reviews": 8,
+  "reviews_per_language": {
+    "en": 6,
+    "es": 4,
+    "ru": 3,
+    "tr": 3,
+    "fr": 2,
+    "pt": 2,
+    "id": 1,
+    "zh-TW": 1
+  },
+  "rating_distribution": {
+    "5": 13,
+    "4": 5,
+    "3": 0,
+    "2": 0,
+    "1": 4
+  },
+  "mean_rating": 4.045,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

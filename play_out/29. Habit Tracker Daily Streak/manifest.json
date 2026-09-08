@@ -1,0 +1,19 @@
+{
+  "store": "Google Play",
+  "package": "com.smarttoolsdev.habittracker",
+  "app_name": "Habit Tracker Daily Streak",
+  "extracted_at": "2026-09-08T12:42:27Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 0,
+  "languages_with_reviews": 0,
+  "reviews_per_language": {},
+  "rating_distribution": {
+    "5": 0,
+    "4": 0,
+    "3": 0,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": null,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

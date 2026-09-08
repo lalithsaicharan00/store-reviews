@@ -1,0 +1,21 @@
+{
+  "store": "Google Play",
+  "package": "com.ttet.mysb",
+  "app_name": "MyStreakBook - Habit tracker",
+  "extracted_at": "2026-09-08T13:05:40Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 8,
+  "languages_with_reviews": 1,
+  "reviews_per_language": {
+    "en": 8
+  },
+  "rating_distribution": {
+    "5": 7,
+    "4": 0,
+    "3": 0,
+    "2": 0,
+    "1": 1
+  },
+  "mean_rating": 4.5,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

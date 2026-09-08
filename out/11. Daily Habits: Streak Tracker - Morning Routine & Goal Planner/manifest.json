@@ -1,0 +1,42 @@
+{
+  "app_id": "1523643868",
+  "app_name": "Daily Habits: Streak Tracker",
+  "developer": "Sergey Belychev",
+  "bundle_id": "com.free-simple-apps.habits",
+  "extracted_at": "2026-09-08T11:41:40Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 33,
+  "storefronts_with_reviews": 18,
+  "reviews_per_country": {
+    "ru": 9,
+    "br": 3,
+    "cl": 3,
+    "ar": 2,
+    "co": 2,
+    "gb": 2,
+    "ca": 1,
+    "cz": 1,
+    "dk": 1,
+    "es": 1,
+    "ie": 1,
+    "it": 1,
+    "mx": 1,
+    "pk": 1,
+    "sa": 1,
+    "se": 1,
+    "sn": 1,
+    "us": 1
+  },
+  "rating_distribution": {
+    "5": 27,
+    "4": 3,
+    "3": 0,
+    "2": 1,
+    "1": 2
+  },
+  "mean_rating": 4.576,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

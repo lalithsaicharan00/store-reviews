@@ -1,0 +1,32 @@
+{
+  "store": "Google Play",
+  "package": "com.kompanion.glowin.android",
+  "app_name": "Glowin - Lifestyle Routines",
+  "extracted_at": "2026-09-08T13:00:00Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 337,
+  "languages_with_reviews": 12,
+  "reviews_per_language": {
+    "en": 204,
+    "pt": 67,
+    "es": 23,
+    "fr": 14,
+    "ar": 11,
+    "de": 7,
+    "fa": 5,
+    "ru": 2,
+    "hi": 1,
+    "id": 1,
+    "tr": 1,
+    "vi": 1
+  },
+  "rating_distribution": {
+    "5": 252,
+    "4": 21,
+    "3": 12,
+    "2": 7,
+    "1": 45
+  },
+  "mean_rating": 4.27,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

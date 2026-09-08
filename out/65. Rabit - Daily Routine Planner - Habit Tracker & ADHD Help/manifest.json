@@ -1,0 +1,52 @@
+{
+  "app_id": "1512605216",
+  "app_name": "Rabit - Daily Routine Planner",
+  "developer": "GARJ APLICATIVOS LTDA",
+  "bundle_id": "com.bluebookapple.rabit",
+  "extracted_at": "2026-09-08T11:58:37Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 498,
+  "storefronts_with_reviews": 28,
+  "reviews_per_country": {
+    "br": 375,
+    "us": 27,
+    "mx": 14,
+    "ca": 8,
+    "es": 8,
+    "cl": 7,
+    "pt": 6,
+    "tr": 6,
+    "au": 5,
+    "co": 5,
+    "vn": 4,
+    "de": 3,
+    "ec": 3,
+    "id": 3,
+    "nz": 3,
+    "pe": 3,
+    "pl": 3,
+    "ru": 3,
+    "fr": 2,
+    "gb": 2,
+    "am": 1,
+    "ar": 1,
+    "be": 1,
+    "eg": 1,
+    "in": 1,
+    "no": 1,
+    "se": 1,
+    "ua": 1
+  },
+  "rating_distribution": {
+    "5": 243,
+    "4": 76,
+    "3": 45,
+    "2": 43,
+    "1": 91
+  },
+  "mean_rating": 3.677,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

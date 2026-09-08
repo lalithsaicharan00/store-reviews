@@ -1,0 +1,46 @@
+{
+  "app_id": "6448960901",
+  "app_name": "Streaks – Daily Habit Tracker",
+  "developer": "yusuf kildan",
+  "bundle_id": "com.yusufkildan.habitTrackerApp",
+  "extracted_at": "2026-09-08T11:57:52Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 45,
+  "storefronts_with_reviews": 22,
+  "reviews_per_country": {
+    "in": 8,
+    "tr": 8,
+    "sa": 3,
+    "ar": 2,
+    "es": 2,
+    "pl": 2,
+    "py": 2,
+    "ua": 2,
+    "us": 2,
+    "uz": 2,
+    "br": 1,
+    "ca": 1,
+    "dk": 1,
+    "ec": 1,
+    "ie": 1,
+    "it": 1,
+    "kz": 1,
+    "mn": 1,
+    "pe": 1,
+    "tj": 1,
+    "vn": 1,
+    "za": 1
+  },
+  "rating_distribution": {
+    "5": 17,
+    "4": 6,
+    "3": 2,
+    "2": 5,
+    "1": 15
+  },
+  "mean_rating": 3.111,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

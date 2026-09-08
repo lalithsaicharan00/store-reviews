@@ -1,0 +1,27 @@
+{
+  "store": "Google Play",
+  "package": "space.habitgrind",
+  "app_name": "Habit Tracker: Simple Streaks",
+  "extracted_at": "2026-09-08T12:40:30Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 33,
+  "languages_with_reviews": 7,
+  "reviews_per_language": {
+    "en": 26,
+    "es": 2,
+    "de": 1,
+    "fr": 1,
+    "ja": 1,
+    "pt": 1,
+    "zh-CN": 1
+  },
+  "rating_distribution": {
+    "5": 28,
+    "4": 3,
+    "3": 0,
+    "2": 0,
+    "1": 2
+  },
+  "mean_rating": 4.667,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

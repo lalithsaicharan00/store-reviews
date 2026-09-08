@@ -1,0 +1,37 @@
+{
+  "store": "Google Play",
+  "package": "cc.underthehood.lutin.app",
+  "app_name": "Routineday Daily Habit Tracker",
+  "extracted_at": "2026-09-08T12:44:49Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 458,
+  "languages_with_reviews": 17,
+  "reviews_per_language": {
+    "ko": 290,
+    "en": 97,
+    "es": 16,
+    "tr": 11,
+    "vi": 8,
+    "id": 7,
+    "pt": 5,
+    "th": 5,
+    "pl": 4,
+    "de": 3,
+    "fr": 3,
+    "ru": 3,
+    "zh-TW": 2,
+    "it": 1,
+    "ja": 1,
+    "uk": 1,
+    "uz": 1
+  },
+  "rating_distribution": {
+    "5": 375,
+    "4": 46,
+    "3": 12,
+    "2": 9,
+    "1": 16
+  },
+  "mean_rating": 4.648,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

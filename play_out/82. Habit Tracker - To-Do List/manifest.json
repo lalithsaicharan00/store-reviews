@@ -1,0 +1,32 @@
+{
+  "store": "Google Play",
+  "package": "com.rohansaxena.habit_tracker_app",
+  "app_name": "Habit Tracker - To-Do List",
+  "extracted_at": "2026-09-08T12:54:21Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 109,
+  "languages_with_reviews": 12,
+  "reviews_per_language": {
+    "en": 84,
+    "es": 5,
+    "fr": 4,
+    "ar": 3,
+    "id": 3,
+    "de": 2,
+    "nl": 2,
+    "zh-CN": 2,
+    "he": 1,
+    "it": 1,
+    "pt": 1,
+    "vi": 1
+  },
+  "rating_distribution": {
+    "5": 85,
+    "4": 11,
+    "3": 8,
+    "2": 3,
+    "1": 2
+  },
+  "mean_rating": 4.596,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

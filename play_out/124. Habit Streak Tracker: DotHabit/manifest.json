@@ -1,0 +1,43 @@
+{
+  "store": "Google Play",
+  "package": "com.supernora.DotHabit",
+  "app_name": "Habit Streak Tracker: DotHabit",
+  "extracted_at": "2026-09-08T13:08:24Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 1877,
+  "languages_with_reviews": 23,
+  "reviews_per_language": {
+    "ja": 547,
+    "zh-TW": 389,
+    "ko": 321,
+    "es": 184,
+    "en": 142,
+    "pt": 136,
+    "ar": 34,
+    "fr": 29,
+    "it": 22,
+    "ru": 17,
+    "zh-CN": 16,
+    "de": 11,
+    "th": 6,
+    "fa": 5,
+    "tr": 5,
+    "pl": 3,
+    "hu": 2,
+    "id": 2,
+    "vi": 2,
+    "cs": 1,
+    "lt": 1,
+    "sk": 1,
+    "sv": 1
+  },
+  "rating_distribution": {
+    "5": 1146,
+    "4": 457,
+    "3": 147,
+    "2": 64,
+    "1": 63
+  },
+  "mean_rating": 4.363,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

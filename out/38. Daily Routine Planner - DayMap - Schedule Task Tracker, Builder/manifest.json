@@ -1,0 +1,36 @@
+{
+  "app_id": "6740321886",
+  "app_name": "Daily Routine Planner - DayMap",
+  "developer": "Jayeshbhai Kavathiya",
+  "bundle_id": "com.daily.planner.task.habit.checklist.maker",
+  "extracted_at": "2026-09-08T11:50:05Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 34,
+  "storefronts_with_reviews": 12,
+  "reviews_per_country": {
+    "us": 17,
+    "gb": 5,
+    "mx": 2,
+    "tw": 2,
+    "au": 1,
+    "cn": 1,
+    "de": 1,
+    "eg": 1,
+    "fr": 1,
+    "hr": 1,
+    "kw": 1,
+    "pk": 1
+  },
+  "rating_distribution": {
+    "5": 3,
+    "4": 3,
+    "3": 7,
+    "2": 4,
+    "1": 17
+  },
+  "mean_rating": 2.147,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

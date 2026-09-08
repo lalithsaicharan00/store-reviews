@@ -1,0 +1,24 @@
+{
+  "store": "Google Play",
+  "package": "in.garoono.habitide",
+  "app_name": "Habitide: Habit Streak Tracker",
+  "extracted_at": "2026-09-08T12:48:42Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 18,
+  "languages_with_reviews": 4,
+  "reviews_per_language": {
+    "en": 15,
+    "de": 1,
+    "el": 1,
+    "uk": 1
+  },
+  "rating_distribution": {
+    "5": 12,
+    "4": 2,
+    "3": 2,
+    "2": 0,
+    "1": 2
+  },
+  "mean_rating": 4.222,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

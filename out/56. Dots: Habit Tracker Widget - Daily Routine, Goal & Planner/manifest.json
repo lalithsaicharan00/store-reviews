@@ -1,0 +1,43 @@
+{
+  "app_id": "6758730376",
+  "app_name": "Dots: Habit Tracker Widget",
+  "developer": "Juyong Bak",
+  "bundle_id": "net.sundragon.dotsapp",
+  "extracted_at": "2026-09-08T11:56:07Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 67,
+  "storefronts_with_reviews": 19,
+  "reviews_per_country": {
+    "us": 24,
+    "gb": 8,
+    "ar": 5,
+    "de": 5,
+    "kr": 5,
+    "ph": 3,
+    "br": 2,
+    "ca": 2,
+    "es": 2,
+    "in": 2,
+    "au": 1,
+    "be": 1,
+    "hu": 1,
+    "kz": 1,
+    "nl": 1,
+    "ru": 1,
+    "sg": 1,
+    "tw": 1,
+    "za": 1
+  },
+  "rating_distribution": {
+    "5": 62,
+    "4": 4,
+    "3": 1,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 4.91,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "store": "Google Play",
+  "package": "com.focusstreak.app",
+  "app_name": "Focus Streak - Habit Tracker",
+  "extracted_at": "2026-09-08T12:38:46Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 26,
+  "languages_with_reviews": 7,
+  "reviews_per_language": {
+    "en": 18,
+    "es": 2,
+    "vi": 2,
+    "ar": 1,
+    "fr": 1,
+    "it": 1,
+    "pt": 1
+  },
+  "rating_distribution": {
+    "5": 15,
+    "4": 5,
+    "3": 5,
+    "2": 0,
+    "1": 1
+  },
+  "mean_rating": 4.269,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

@@ -1,0 +1,31 @@
+{
+  "app_id": "1523273937",
+  "app_name": "Habit: Streak Tracker & Goals",
+  "developer": "Thanh Ha",
+  "bundle_id": "com.teaxapp.HabitTracker",
+  "extracted_at": "2026-09-08T11:49:53Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 8,
+  "storefronts_with_reviews": 7,
+  "reviews_per_country": {
+    "us": 2,
+    "br": 1,
+    "cl": 1,
+    "co": 1,
+    "es": 1,
+    "jp": 1,
+    "kz": 1
+  },
+  "rating_distribution": {
+    "5": 5,
+    "4": 2,
+    "3": 1,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 4.5,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

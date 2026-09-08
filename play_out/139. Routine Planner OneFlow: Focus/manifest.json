@@ -1,0 +1,23 @@
+{
+  "store": "Google Play",
+  "package": "app.oneflow",
+  "app_name": "Routine Planner OneFlow: Focus",
+  "extracted_at": "2026-09-08T13:22:14Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 4,
+  "languages_with_reviews": 3,
+  "reviews_per_language": {
+    "en": 2,
+    "ja": 1,
+    "ko": 1
+  },
+  "rating_distribution": {
+    "5": 2,
+    "4": 2,
+    "3": 0,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 4.5,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

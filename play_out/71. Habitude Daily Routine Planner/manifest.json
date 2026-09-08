@@ -1,0 +1,39 @@
+{
+  "store": "Google Play",
+  "package": "com.savemytime",
+  "app_name": "Habitude Daily Routine Planner",
+  "extracted_at": "2026-09-08T12:52:23Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 863,
+  "languages_with_reviews": 19,
+  "reviews_per_language": {
+    "pt": 704,
+    "en": 98,
+    "es": 18,
+    "fr": 9,
+    "id": 9,
+    "it": 4,
+    "ru": 4,
+    "ar": 3,
+    "de": 2,
+    "ko": 2,
+    "pl": 2,
+    "cs": 1,
+    "fa": 1,
+    "ja": 1,
+    "nl": 1,
+    "ro": 1,
+    "sv": 1,
+    "tr": 1,
+    "zh-CN": 1
+  },
+  "rating_distribution": {
+    "5": 508,
+    "4": 154,
+    "3": 86,
+    "2": 40,
+    "1": 75
+  },
+  "mean_rating": 4.136,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

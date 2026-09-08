@@ -1,0 +1,23 @@
+{
+  "app_id": "6760905736",
+  "app_name": "Streak Tracker: Habitug",
+  "developer": "Fline LLC",
+  "bundle_id": "com.fline.habitug",
+  "extracted_at": "2026-09-08T12:01:51Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 0,
+  "storefronts_with_reviews": 0,
+  "reviews_per_country": {},
+  "rating_distribution": {
+    "5": 0,
+    "4": 0,
+    "3": 0,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": null,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

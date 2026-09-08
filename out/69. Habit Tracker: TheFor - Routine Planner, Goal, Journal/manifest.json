@@ -1,0 +1,47 @@
+{
+  "app_id": "1671322093",
+  "app_name": "Habit Tracker: TheFor",
+  "developer": "Siraj Hasanov",
+  "bundle_id": "xyz.thefor.habits.habits",
+  "extracted_at": "2026-09-08T11:59:53Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 80,
+  "storefronts_with_reviews": 23,
+  "reviews_per_country": {
+    "us": 14,
+    "nl": 10,
+    "in": 7,
+    "gb": 5,
+    "mx": 5,
+    "at": 4,
+    "br": 4,
+    "th": 4,
+    "de": 3,
+    "pt": 3,
+    "ru": 3,
+    "eg": 2,
+    "es": 2,
+    "rs": 2,
+    "tr": 2,
+    "vn": 2,
+    "za": 2,
+    "ca": 1,
+    "fr": 1,
+    "ng": 1,
+    "ph": 1,
+    "py": 1,
+    "ua": 1
+  },
+  "rating_distribution": {
+    "5": 57,
+    "4": 16,
+    "3": 2,
+    "2": 2,
+    "1": 3
+  },
+  "mean_rating": 4.525,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

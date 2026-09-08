@@ -1,0 +1,40 @@
+{
+  "store": "Google Play",
+  "package": "com.appscapes.todolist",
+  "app_name": "To Do List: Daily Task Planner",
+  "extracted_at": "2026-09-08T13:00:13Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 190,
+  "languages_with_reviews": 20,
+  "reviews_per_language": {
+    "en": 124,
+    "es": 11,
+    "de": 9,
+    "ru": 7,
+    "ar": 6,
+    "fr": 6,
+    "pt": 5,
+    "id": 4,
+    "ko": 3,
+    "uk": 3,
+    "it": 2,
+    "uz": 2,
+    "fa": 1,
+    "lv": 1,
+    "sk": 1,
+    "sr": 1,
+    "th": 1,
+    "tr": 1,
+    "zh-CN": 1,
+    "zh-TW": 1
+  },
+  "rating_distribution": {
+    "5": 138,
+    "4": 22,
+    "3": 10,
+    "2": 7,
+    "1": 13
+  },
+  "mean_rating": 4.395,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

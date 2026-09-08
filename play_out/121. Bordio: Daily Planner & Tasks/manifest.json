@@ -1,0 +1,33 @@
+{
+  "store": "Google Play",
+  "package": "com.bordio.bordio",
+  "app_name": "Bordio: Daily Planner & Tasks",
+  "extracted_at": "2026-09-08T13:06:00Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 169,
+  "languages_with_reviews": 13,
+  "reviews_per_language": {
+    "en": 137,
+    "pt": 7,
+    "ru": 7,
+    "es": 6,
+    "id": 3,
+    "tr": 2,
+    "ar": 1,
+    "de": 1,
+    "fr": 1,
+    "it": 1,
+    "pl": 1,
+    "sl": 1,
+    "uk": 1
+  },
+  "rating_distribution": {
+    "5": 114,
+    "4": 13,
+    "3": 15,
+    "2": 3,
+    "1": 24
+  },
+  "mean_rating": 4.124,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

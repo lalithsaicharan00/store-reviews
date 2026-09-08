@@ -1,0 +1,23 @@
+{
+  "store": "Google Play",
+  "package": "com.dovud.habitz",
+  "app_name": "Habitz – Daily Habit Tracker",
+  "extracted_at": "2026-09-08T13:21:51Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 4,
+  "languages_with_reviews": 3,
+  "reviews_per_language": {
+    "uz": 2,
+    "en": 1,
+    "ru": 1
+  },
+  "rating_distribution": {
+    "5": 4,
+    "4": 0,
+    "3": 0,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 5.0,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

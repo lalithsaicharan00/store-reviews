@@ -1,0 +1,29 @@
+{
+  "store": "Google Play",
+  "package": "com.itdeveapps.habitrix.tracker",
+  "app_name": "Habit Share - HabitRix",
+  "extracted_at": "2026-09-08T13:22:49Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 48,
+  "languages_with_reviews": 9,
+  "reviews_per_language": {
+    "en": 37,
+    "de": 3,
+    "es": 2,
+    "it": 1,
+    "tr": 1,
+    "uz": 1,
+    "vi": 1,
+    "zh-CN": 1,
+    "zh-TW": 1
+  },
+  "rating_distribution": {
+    "5": 25,
+    "4": 8,
+    "3": 5,
+    "2": 1,
+    "1": 9
+  },
+  "mean_rating": 3.812,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

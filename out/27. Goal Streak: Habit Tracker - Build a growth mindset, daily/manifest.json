@@ -1,0 +1,47 @@
+{
+  "app_id": "1630626343",
+  "app_name": "Goal Streak: Habit Tracker",
+  "developer": "Swifty Bits LLC",
+  "bundle_id": "com.emilycheroske.goalStreakCalendar.Goal-Streak-Calendar",
+  "extracted_at": "2026-09-08T11:47:00Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 138,
+  "storefronts_with_reviews": 23,
+  "reviews_per_country": {
+    "us": 43,
+    "in": 19,
+    "ca": 15,
+    "au": 11,
+    "cn": 7,
+    "gb": 7,
+    "de": 6,
+    "ph": 4,
+    "se": 4,
+    "mx": 3,
+    "ae": 2,
+    "cz": 2,
+    "jp": 2,
+    "ng": 2,
+    "no": 2,
+    "ru": 2,
+    "br": 1,
+    "fr": 1,
+    "hk": 1,
+    "nl": 1,
+    "pk": 1,
+    "th": 1,
+    "zm": 1
+  },
+  "rating_distribution": {
+    "5": 109,
+    "4": 18,
+    "3": 6,
+    "2": 1,
+    "1": 4
+  },
+  "mean_rating": 4.645,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

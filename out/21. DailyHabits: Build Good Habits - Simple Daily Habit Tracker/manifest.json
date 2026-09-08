@@ -1,0 +1,29 @@
+{
+  "app_id": "1660929974",
+  "app_name": "DailyHabits: Build Good Habits",
+  "developer": "Capable Koala LLC",
+  "bundle_id": "xyz.dailyhabits",
+  "extracted_at": "2026-09-08T11:44:26Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 12,
+  "storefronts_with_reviews": 5,
+  "reviews_per_country": {
+    "in": 4,
+    "us": 4,
+    "de": 2,
+    "fr": 1,
+    "ph": 1
+  },
+  "rating_distribution": {
+    "5": 6,
+    "4": 0,
+    "3": 0,
+    "2": 0,
+    "1": 6
+  },
+  "mean_rating": 3.0,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

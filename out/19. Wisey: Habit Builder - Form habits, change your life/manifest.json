@@ -1,0 +1,38 @@
+{
+  "app_id": "6742659386",
+  "app_name": "Wisey: Habit Builder",
+  "developer": "KOFLIMIN LIMITED",
+  "bundle_id": "com.koflimin.limited.wisey.habitbuilder",
+  "extracted_at": "2026-09-08T11:43:55Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 105,
+  "storefronts_with_reviews": 14,
+  "reviews_per_country": {
+    "us": 72,
+    "ca": 11,
+    "de": 4,
+    "gb": 4,
+    "au": 3,
+    "mx": 2,
+    "nz": 2,
+    "ch": 1,
+    "cl": 1,
+    "fr": 1,
+    "it": 1,
+    "ph": 1,
+    "se": 1,
+    "tr": 1
+  },
+  "rating_distribution": {
+    "5": 8,
+    "4": 0,
+    "3": 1,
+    "2": 0,
+    "1": 96
+  },
+  "mean_rating": 1.324,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "app_id": "6456888481",
+  "app_name": "Lasting Change: Habit Builder",
+  "developer": "MEDICAL SCORE UAB",
+  "bundle_id": "com.thelastingchange.app",
+  "extracted_at": "2026-09-08T12:02:34Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 175,
+  "storefronts_with_reviews": 26,
+  "reviews_per_country": {
+    "us": 75,
+    "gb": 23,
+    "au": 14,
+    "ca": 13,
+    "es": 9,
+    "de": 6,
+    "ch": 4,
+    "ae": 3,
+    "it": 3,
+    "lt": 3,
+    "pl": 3,
+    "be": 2,
+    "gr": 2,
+    "ng": 2,
+    "nl": 2,
+    "at": 1,
+    "co": 1,
+    "do": 1,
+    "fi": 1,
+    "fr": 1,
+    "hu": 1,
+    "kz": 1,
+    "my": 1,
+    "no": 1,
+    "sg": 1,
+    "tr": 1
+  },
+  "rating_distribution": {
+    "5": 29,
+    "4": 6,
+    "3": 6,
+    "2": 8,
+    "1": 126
+  },
+  "mean_rating": 1.88,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

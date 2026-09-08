@@ -1,0 +1,23 @@
+{
+  "app_id": "6757651086",
+  "app_name": "Routine Tracker: Consistency",
+  "developer": "Matheus fernandes",
+  "bundle_id": "com.mathef.Consistency",
+  "extracted_at": "2026-09-08T11:50:10Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 0,
+  "storefronts_with_reviews": 0,
+  "reviews_per_country": {},
+  "rating_distribution": {
+    "5": 0,
+    "4": 0,
+    "3": 0,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": null,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

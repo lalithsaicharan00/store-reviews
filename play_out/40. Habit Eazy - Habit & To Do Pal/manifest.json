@@ -1,0 +1,34 @@
+{
+  "store": "Google Play",
+  "package": "com.progresspal",
+  "app_name": "Habit Eazy - Habit & To Do Pal",
+  "extracted_at": "2026-09-08T12:44:40Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 298,
+  "languages_with_reviews": 14,
+  "reviews_per_language": {
+    "en": 145,
+    "es": 75,
+    "id": 32,
+    "pt": 28,
+    "fr": 4,
+    "ru": 3,
+    "ar": 2,
+    "de": 2,
+    "vi": 2,
+    "gu": 1,
+    "ko": 1,
+    "nl": 1,
+    "pl": 1,
+    "sv": 1
+  },
+  "rating_distribution": {
+    "5": 169,
+    "4": 42,
+    "3": 23,
+    "2": 10,
+    "1": 54
+  },
+  "mean_rating": 3.879,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

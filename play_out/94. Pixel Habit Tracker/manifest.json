@@ -1,0 +1,30 @@
+{
+  "store": "Google Play",
+  "package": "com.pixel.al.pixelhabittracker",
+  "app_name": "Pixel Habit Tracker",
+  "extracted_at": "2026-09-08T12:58:29Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 61,
+  "languages_with_reviews": 10,
+  "reviews_per_language": {
+    "en": 47,
+    "es": 4,
+    "fr": 2,
+    "pl": 2,
+    "de": 1,
+    "pt": 1,
+    "sv": 1,
+    "uk": 1,
+    "zh-CN": 1,
+    "zh-TW": 1
+  },
+  "rating_distribution": {
+    "5": 50,
+    "4": 8,
+    "3": 2,
+    "2": 0,
+    "1": 1
+  },
+  "mean_rating": 4.738,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

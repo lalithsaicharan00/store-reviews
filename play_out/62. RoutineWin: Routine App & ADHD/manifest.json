@@ -1,0 +1,31 @@
+{
+  "store": "Google Play",
+  "package": "app.kiteki",
+  "app_name": "RoutineWin: Routine App & ADHD",
+  "extracted_at": "2026-09-08T12:49:33Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 64,
+  "languages_with_reviews": 11,
+  "reviews_per_language": {
+    "en": 34,
+    "es": 12,
+    "pt": 7,
+    "fr": 4,
+    "ar": 1,
+    "ca": 1,
+    "de": 1,
+    "it": 1,
+    "nl": 1,
+    "ru": 1,
+    "tr": 1
+  },
+  "rating_distribution": {
+    "5": 36,
+    "4": 13,
+    "3": 8,
+    "2": 1,
+    "1": 6
+  },
+  "mean_rating": 4.125,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

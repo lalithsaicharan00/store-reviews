@@ -1,0 +1,43 @@
+{
+  "store": "Google Play",
+  "package": "com.habitpixel.app",
+  "app_name": "Habit Pixel: Streak Tracker",
+  "extracted_at": "2026-09-08T12:38:23Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 605,
+  "languages_with_reviews": 23,
+  "reviews_per_language": {
+    "en": 453,
+    "de": 34,
+    "fr": 32,
+    "es": 18,
+    "it": 8,
+    "ru": 7,
+    "zh-CN": 7,
+    "ko": 6,
+    "pl": 6,
+    "pt": 6,
+    "tr": 6,
+    "zh-TW": 4,
+    "ja": 3,
+    "nl": 3,
+    "sv": 3,
+    "ar": 2,
+    "da": 1,
+    "id": 1,
+    "no": 1,
+    "sk": 1,
+    "th": 1,
+    "uk": 1,
+    "vi": 1
+  },
+  "rating_distribution": {
+    "5": 512,
+    "4": 41,
+    "3": 10,
+    "2": 13,
+    "1": 29
+  },
+  "mean_rating": 4.643,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

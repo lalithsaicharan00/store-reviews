@@ -1,0 +1,35 @@
+{
+  "store": "Google Play",
+  "package": "com.skillfoxapps.qhabit",
+  "app_name": "Qhabit: Daily habit tracker",
+  "extracted_at": "2026-09-08T12:58:07Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 119,
+  "languages_with_reviews": 15,
+  "reviews_per_language": {
+    "en": 79,
+    "es": 14,
+    "fr": 4,
+    "de": 3,
+    "id": 3,
+    "pt": 3,
+    "ar": 2,
+    "it": 2,
+    "pl": 2,
+    "ru": 2,
+    "ko": 1,
+    "no": 1,
+    "tr": 1,
+    "vi": 1,
+    "zh-CN": 1
+  },
+  "rating_distribution": {
+    "5": 72,
+    "4": 23,
+    "3": 13,
+    "2": 3,
+    "1": 8
+  },
+  "mean_rating": 4.244,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

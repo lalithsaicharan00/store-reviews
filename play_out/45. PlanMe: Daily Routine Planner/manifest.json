@@ -1,0 +1,36 @@
+{
+  "store": "Google Play",
+  "package": "com.planmecorp.planme",
+  "app_name": "PlanMe: Daily Routine Planner",
+  "extracted_at": "2026-09-08T12:45:32Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 226,
+  "languages_with_reviews": 16,
+  "reviews_per_language": {
+    "en": 142,
+    "ko": 23,
+    "es": 17,
+    "pt": 11,
+    "fr": 7,
+    "de": 6,
+    "pl": 5,
+    "it": 3,
+    "nl": 3,
+    "ru": 3,
+    "da": 1,
+    "fa": 1,
+    "hu": 1,
+    "id": 1,
+    "ja": 1,
+    "tr": 1
+  },
+  "rating_distribution": {
+    "5": 123,
+    "4": 33,
+    "3": 26,
+    "2": 12,
+    "1": 32
+  },
+  "mean_rating": 3.898,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

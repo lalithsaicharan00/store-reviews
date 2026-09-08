@@ -1,0 +1,32 @@
+{
+  "store": "Google Play",
+  "package": "com.cosdensolutions.habitquest",
+  "app_name": "Habit Slayer: Habit Tracker",
+  "extracted_at": "2026-09-08T12:51:22Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 52,
+  "languages_with_reviews": 12,
+  "reviews_per_language": {
+    "en": 26,
+    "de": 5,
+    "es": 3,
+    "pt": 3,
+    "ru": 3,
+    "tr": 3,
+    "fr": 2,
+    "id": 2,
+    "uk": 2,
+    "cs": 1,
+    "it": 1,
+    "ja": 1
+  },
+  "rating_distribution": {
+    "5": 37,
+    "4": 12,
+    "3": 2,
+    "2": 0,
+    "1": 1
+  },
+  "mean_rating": 4.615,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

@@ -1,0 +1,23 @@
+{
+  "store": "Google Play",
+  "package": "com.daily.activity.habittracker.app",
+  "app_name": "Habit Tracker: Streaks & Goals",
+  "extracted_at": "2026-09-08T12:44:58Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 6,
+  "languages_with_reviews": 3,
+  "reviews_per_language": {
+    "en": 4,
+    "es": 1,
+    "ru": 1
+  },
+  "rating_distribution": {
+    "5": 0,
+    "4": 3,
+    "3": 2,
+    "2": 0,
+    "1": 1
+  },
+  "mean_rating": 3.167,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

@@ -1,0 +1,53 @@
+{
+  "app_id": "1456241316",
+  "app_name": "Habit Tracker - DayStamp",
+  "developer": "동현 hwang",
+  "bundle_id": "com.hbull.daystamp",
+  "extracted_at": "2026-09-08T11:56:21Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 779,
+  "storefronts_with_reviews": 29,
+  "reviews_per_country": {
+    "kr": 605,
+    "us": 66,
+    "jp": 26,
+    "ca": 12,
+    "gb": 10,
+    "mx": 7,
+    "de": 6,
+    "cn": 5,
+    "br": 4,
+    "au": 3,
+    "hk": 3,
+    "in": 3,
+    "pl": 3,
+    "ru": 3,
+    "sa": 3,
+    "cz": 2,
+    "es": 2,
+    "hu": 2,
+    "my": 2,
+    "sg": 2,
+    "vn": 2,
+    "at": 1,
+    "dz": 1,
+    "it": 1,
+    "nz": 1,
+    "pe": 1,
+    "ph": 1,
+    "pk": 1,
+    "ua": 1
+  },
+  "rating_distribution": {
+    "5": 450,
+    "4": 156,
+    "3": 72,
+    "2": 29,
+    "1": 72
+  },
+  "mean_rating": 4.134,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

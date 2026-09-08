@@ -1,0 +1,21 @@
+{
+  "store": "Google Play",
+  "package": "com.karma.streak",
+  "app_name": "Habit Tracker: Streak Master",
+  "extracted_at": "2026-09-08T12:42:18Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 2,
+  "languages_with_reviews": 1,
+  "reviews_per_language": {
+    "en": 2
+  },
+  "rating_distribution": {
+    "5": 1,
+    "4": 0,
+    "3": 0,
+    "2": 0,
+    "1": 1
+  },
+  "mean_rating": 3.0,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

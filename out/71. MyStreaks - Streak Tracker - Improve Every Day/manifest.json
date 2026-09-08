@@ -1,0 +1,29 @@
+{
+  "app_id": "1519067736",
+  "app_name": "MyStreaks - Streak Tracker",
+  "developer": "Streaking LLC",
+  "bundle_id": "com.streaking.Streaker",
+  "extracted_at": "2026-09-08T12:00:10Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 32,
+  "storefronts_with_reviews": 5,
+  "reviews_per_country": {
+    "us": 28,
+    "br": 1,
+    "it": 1,
+    "nz": 1,
+    "za": 1
+  },
+  "rating_distribution": {
+    "5": 26,
+    "4": 4,
+    "3": 0,
+    "2": 0,
+    "1": 2
+  },
+  "mean_rating": 4.625,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

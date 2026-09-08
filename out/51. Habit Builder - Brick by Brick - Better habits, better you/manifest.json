@@ -1,0 +1,25 @@
+{
+  "app_id": "6475047132",
+  "app_name": "Habit Builder - Brick by Brick",
+  "developer": "Adam Feher",
+  "bundle_id": "com.afeher.Habit-Builder",
+  "extracted_at": "2026-09-08T11:54:11Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 1,
+  "storefronts_with_reviews": 1,
+  "reviews_per_country": {
+    "kr": 1
+  },
+  "rating_distribution": {
+    "5": 1,
+    "4": 0,
+    "3": 0,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 5.0,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

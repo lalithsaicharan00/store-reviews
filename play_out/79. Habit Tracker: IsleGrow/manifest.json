@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.stonecutters.islegrow",
+  "app_name": "Habit Tracker: IsleGrow",
+  "extracted_at": "2026-09-08T12:53:48Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 59,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "cs": 37,
+    "en": 16,
+    "ru": 2,
+    "sk": 2,
+    "fr": 1,
+    "pl": 1
+  },
+  "rating_distribution": {
+    "5": 35,
+    "4": 9,
+    "3": 9,
+    "2": 2,
+    "1": 4
+  },
+  "mean_rating": 4.169,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

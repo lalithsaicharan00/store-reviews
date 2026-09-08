@@ -1,0 +1,45 @@
+{
+  "app_id": "6745508692",
+  "app_name": "Habit Tracker: Simple&Powerful",
+  "developer": "GAL APP LTD",
+  "bundle_id": "app.hbt.tem",
+  "extracted_at": "2026-09-08T11:47:51Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 166,
+  "storefronts_with_reviews": 21,
+  "reviews_per_country": {
+    "ru": 56,
+    "us": 31,
+    "gb": 19,
+    "es": 13,
+    "cl": 11,
+    "ar": 4,
+    "br": 4,
+    "fr": 4,
+    "kz": 4,
+    "nl": 3,
+    "sa": 3,
+    "ua": 3,
+    "de": 2,
+    "tr": 2,
+    "am": 1,
+    "il": 1,
+    "it": 1,
+    "jp": 1,
+    "kr": 1,
+    "mx": 1,
+    "uy": 1
+  },
+  "rating_distribution": {
+    "5": 133,
+    "4": 7,
+    "3": 4,
+    "2": 3,
+    "1": 19
+  },
+  "mean_rating": 4.398,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

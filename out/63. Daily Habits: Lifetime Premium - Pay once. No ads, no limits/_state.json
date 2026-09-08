@@ -1,0 +1,18 @@
+{
+ "app_id": "1550003470",
+ "countries": {
+  "us": {
+   "complete": true,
+   "collected": 0,
+   "total": 0,
+   "updated": "2026-09-08T11:57:57Z"
+  },
+  "ru": {
+   "cursor": 1,
+   "collected": 1,
+   "total": 1,
+   "complete": true,
+   "updated": "2026-09-08T11:57:58Z"
+  }
+ }
+}

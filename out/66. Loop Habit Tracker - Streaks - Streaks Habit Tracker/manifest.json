@@ -1,0 +1,26 @@
+{
+  "app_id": "6754244909",
+  "app_name": "Loop Habit Tracker - Streaks",
+  "developer": "Tech Atlas LLC",
+  "bundle_id": "com.techatlassystems.HabitTracker",
+  "extracted_at": "2026-09-08T11:58:44Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 5,
+  "storefronts_with_reviews": 2,
+  "reviews_per_country": {
+    "us": 4,
+    "id": 1
+  },
+  "rating_distribution": {
+    "5": 4,
+    "4": 1,
+    "3": 0,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 4.8,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

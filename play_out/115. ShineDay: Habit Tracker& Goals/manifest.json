@@ -1,0 +1,32 @@
+{
+  "store": "Google Play",
+  "package": "com.dandelion.international.shineday",
+  "app_name": "ShineDay: Habit Tracker& Goals",
+  "extracted_at": "2026-09-08T13:05:02Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 57,
+  "languages_with_reviews": 12,
+  "reviews_per_language": {
+    "en": 16,
+    "zh-TW": 16,
+    "zh-CN": 8,
+    "es": 6,
+    "ru": 4,
+    "ar": 1,
+    "de": 1,
+    "fa": 1,
+    "id": 1,
+    "th": 1,
+    "tr": 1,
+    "uk": 1
+  },
+  "rating_distribution": {
+    "5": 31,
+    "4": 10,
+    "3": 6,
+    "2": 3,
+    "1": 7
+  },
+  "mean_rating": 3.965,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

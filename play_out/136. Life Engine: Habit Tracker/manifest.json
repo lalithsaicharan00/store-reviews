@@ -1,0 +1,23 @@
+{
+  "store": "Google Play",
+  "package": "app.lifeengine.habits",
+  "app_name": "Life Engine: Habit Tracker",
+  "extracted_at": "2026-09-08T13:21:40Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 24,
+  "languages_with_reviews": 3,
+  "reviews_per_language": {
+    "en": 21,
+    "es": 2,
+    "pt": 1
+  },
+  "rating_distribution": {
+    "5": 11,
+    "4": 2,
+    "3": 6,
+    "2": 0,
+    "1": 5
+  },
+  "mean_rating": 3.583,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

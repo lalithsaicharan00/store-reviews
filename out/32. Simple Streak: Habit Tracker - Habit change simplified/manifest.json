@@ -1,0 +1,31 @@
+{
+  "app_id": "6742739243",
+  "app_name": "Simple Streak: Habit Tracker",
+  "developer": "Kim Walker",
+  "bundle_id": "com.Simple-Streak",
+  "extracted_at": "2026-09-08T11:48:24Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 20,
+  "storefronts_with_reviews": 7,
+  "reviews_per_country": {
+    "us": 11,
+    "gb": 4,
+    "at": 1,
+    "ca": 1,
+    "hu": 1,
+    "in": 1,
+    "nz": 1
+  },
+  "rating_distribution": {
+    "5": 15,
+    "4": 4,
+    "3": 1,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 4.7,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

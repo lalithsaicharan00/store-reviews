@@ -1,0 +1,38 @@
+{
+  "app_id": "814998643",
+  "app_name": "My Habits: Daily Habit Builder",
+  "developer": "Siarhei Marozau",
+  "bundle_id": "savefon.mobi.Hab-It-",
+  "extracted_at": "2026-09-08T11:42:46Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 70,
+  "storefronts_with_reviews": 14,
+  "reviews_per_country": {
+    "us": 20,
+    "kr": 12,
+    "ru": 11,
+    "gb": 6,
+    "jp": 4,
+    "au": 3,
+    "by": 3,
+    "mx": 3,
+    "br": 2,
+    "cn": 2,
+    "de": 1,
+    "in": 1,
+    "mo": 1,
+    "ua": 1
+  },
+  "rating_distribution": {
+    "5": 34,
+    "4": 16,
+    "3": 5,
+    "2": 6,
+    "1": 9
+  },
+  "mean_rating": 3.857,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

@@ -1,0 +1,1064 @@
+{
+ "store": "Google Play",
+ "method": "Curated by reading each app's Play listing. Included only if the app's primary loop is tracking recurring habits or routines. Excluded: to-do apps, calendars, planners, focus timers, screen-time blockers, note apps, kids apps, vertical trackers and incidental keyword matches.",
+ "include": [
+  {
+   "package": "app.avocation.avocation",
+   "title": "Avocation Goal & Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Your daily routine planner, habit tracker, goal tracker & agenda for self growth"
+  },
+  {
+   "package": "app.disciplined.productive.structured.habit.tracker",
+   "title": "Disciplined - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Daily habit tracker for streaks, routines & consistency. Trusted by 1M+ people."
+  },
+  {
+   "package": "app.gainaura.habits",
+   "title": "Aura: Habit Tracker & Streaks",
+   "category": "habit_tracker",
+   "why": "Habit tracker with a grid for every habit. Build streaks, count days, hit goals."
+  },
+  {
+   "package": "app.kiteki",
+   "title": "RoutineWin: Routine App & ADHD",
+   "category": "routine_tracker",
+   "why": "Master your focus and complete your routine in record time (ideal for ADHD)"
+  },
+  {
+   "package": "app.lifeengine.habits",
+   "title": "Life Engine: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habit tracker & routine planner: build streaks with daily routine templates."
+  },
+  {
+   "package": "app.littleplanner",
+   "title": "Lil Planner: Visual Schedule",
+   "category": "habit_tracker",
+   "why": "Daily Routine & Timer for kids, ADHD, & Autism"
+  },
+  {
+   "package": "app.oneflow",
+   "title": "Routine Planner OneFlow: Focus",
+   "category": "routine_tracker",
+   "why": "ADHD routine planner & focus timer. Stop procrastination, boost dopamine."
+  },
+  {
+   "package": "app.routineflow.routineflow",
+   "title": "RoutineFlow: Routine for ADHD",
+   "category": "routine_tracker",
+   "why": "Make your daily routine easy with a science-based ADHD Planner & Organizer/Timer"
+  },
+  {
+   "package": "app.vinztech.tickit",
+   "title": "Habit Tracker - TickOff",
+   "category": "habit_tracker",
+   "why": "A daily habit tracker app with journal feature, log your entry and build habit"
+  },
+  {
+   "package": "app.vinztech.trackit",
+   "title": "TrackIt - Goal & Time Tracker",
+   "category": "habit_tracker",
+   "why": "A progress tracker app with pomodoro timer, timetable, flashcard and note-taking"
+  },
+  {
+   "package": "cc.underthehood.lutin.app",
+   "title": "Routineday Daily Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habit Tracker That Works at Your Pace - Daily Routine · Todo · Goal Planner"
+  },
+  {
+   "package": "co.au.goalhero",
+   "title": "Habit Hunter: Gamified Routine",
+   "category": "gamified_habit",
+   "why": "Gamify your daily routine! Level up life in this epic RPG habit tracker."
+  },
+  {
+   "package": "co.thefabulous.app",
+   "title": "Fabulous Daily Routine Planner",
+   "category": "routine_tracker",
+   "why": "Self-care routine for lifestyle change, setting life goals & personal growth"
+  },
+  {
+   "package": "co.unstatic.habitify",
+   "title": "Habitify: Habit Tracker",
+   "category": "habit_breaking",
+   "why": "Build good habits, break bad ones, and become 1% better every day."
+  },
+  {
+   "package": "com.SerhiiHryn.HabitTracker",
+   "title": "Habitee: Daily Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habit tracker for daily routines with reminders, streaks & a clean calendar."
+  },
+  {
+   "package": "com.adrienblc.habitstracker",
+   "title": "Habit Tracker - Habit Streak",
+   "category": "habit_tracker",
+   "why": "Transform your life with the ultimate Habit Tracker & Daily Planner"
+  },
+  {
+   "package": "com.agily.happeet",
+   "title": "Happeet - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Track and Improve Your Habits with our Minimalistic Habit Tracker App!"
+  },
+  {
+   "package": "com.alt.goodmorning",
+   "title": "Routine Planner, Habit Tracker",
+   "category": "routine_tracker",
+   "why": "Daily Habit Tracker & Structured Routine Planner — ADHD Reminder & To Do List"
+  },
+  {
+   "package": "com.appscapes.todolist",
+   "title": "To Do List: Daily Task Planner",
+   "category": "habit_tracker",
+   "why": "Master your daily routine. A simple task manager and calendar for a focused life"
+  },
+  {
+   "package": "com.arihant.streaks",
+   "title": "Streaks",
+   "category": "habit_tracker",
+   "why": "A minimal and delightful habit tracker built with care."
+  },
+  {
+   "package": "com.aura.streaktracker",
+   "title": "Streak Tracker - StreakUp",
+   "category": "gamified_habit",
+   "why": "Turn habits into daily streaks. Discipline that truly sticks."
+  },
+  {
+   "package": "com.apalon.to.do.list",
+   "title": "Productive - Habit tracker",
+   "category": "habit_tracker",
+   "why": "Create habit list and build good habits easily with Productive tasks tracker."
+  },
+  {
+   "package": "com.aweydev.ezhabit",
+   "title": "EZ Habit: simple habit tracker",
+   "category": "habit_tracker",
+   "why": "Simple Habit tracker, Task Reminder (To do List), Habit Journal"
+  },
+  {
+   "package": "com.baransel.dev.dayswithout.habit.tracker",
+   "title": "Days Without: Habit Tracker",
+   "category": "habit_breaking",
+   "why": "Quit smoking, drinking & bad habits. Streak counter, urge help, money saved."
+  },
+  {
+   "package": "com.beamaze.habitude",
+   "title": "Habitude - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Build habits that actually stick, with streaks, reminders, and clean stats."
+  },
+  {
+   "package": "com.blu.rabito",
+   "title": "Rabit: Habit Tracker & Planner",
+   "category": "habit_tracker",
+   "why": "Plan your Daily Routine & Plant your Goals"
+  },
+  {
+   "package": "com.bordio.bordio",
+   "title": "Bordio: Daily Planner & Tasks",
+   "category": "habit_tracker",
+   "why": "Daily Routine Planner, To-Do List, Calendar, Schedule Planner, Weekly Organizer"
+  },
+  {
+   "package": "com.bytes.habittrackerpro",
+   "title": "Daily habit tracker",
+   "category": "habit_tracker",
+   "why": "Daily habit tracker to tracker your daily habits as a daily tracker"
+  },
+  {
+   "package": "com.codiceapps.dailyhabits",
+   "title": "Daily Habits",
+   "category": "habit_tracker",
+   "why": "Track habits, set goals, get reminders and build daily routines"
+  },
+  {
+   "package": "com.cosdensolutions.habitquest",
+   "title": "Habit Slayer: Habit Tracker",
+   "category": "gamified_habit",
+   "why": "Build habits. Fight monsters. Earn loot. Level up. Can you defeat the dragon?"
+  },
+  {
+   "package": "com.daily.activity.habittracker.app",
+   "title": "Habit Tracker: Streaks & Goals",
+   "category": "habit_tracker",
+   "why": "Build daily habits, keep your streak alive & reach your goals. Free tracker."
+  },
+  {
+   "package": "com.dandelion.international.shineday",
+   "title": "ShineDay: Habit Tracker& Goals",
+   "category": "habit_tracker",
+   "why": "Build daily habits & streaks.To-do list, goal tracker & self-discipline planner."
+  },
+  {
+   "package": "com.dovud.habitz",
+   "title": "Habitz – Daily Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Goal Planner & Progress"
+  },
+  {
+   "package": "com.eShahid.habit_tracker.daily_habit.habits_daily_routine.daily_palnner",
+   "title": "Habit Tracker: Streaks & Goals",
+   "category": "habit_tracker",
+   "why": "Build better habits, track streaks, reach goals, and stay motivated daily"
+  },
+  {
+   "package": "com.darktech.habit_streak",
+   "title": "Habit Streak - Tracker & Duels",
+   "category": "habit_tracker",
+   "why": "Track habits. Challenge friends. Win streaks."
+  },
+  {
+   "package": "com.ehmtech.habit",
+   "title": "Habit Tracker & Streaks: Goal4",
+   "category": "habit_tracker",
+   "why": "Transform your life one day at a time with reminders & progress widgets"
+  },
+  {
+   "package": "com.eoussema.snakestreak",
+   "title": "SnakeStreak: Habit Tracker",
+   "category": "gamified_habit",
+   "why": "Build habits. Miss a day — your snake dies. Gamified habit tracker."
+  },
+  {
+   "package": "com.dison.HabitDone",
+   "title": "Habit Tracker Kit - HabitDone",
+   "category": "habit_tracker",
+   "why": "HabitDone is a grid-based habit tracking application inspired by GitHub!"
+  },
+  {
+   "package": "com.everest.habittracker",
+   "title": "Habit Tracker: Daily Routine",
+   "category": "habit_tracker",
+   "why": "Daily habit tracker & routine planner. Track streaks, goals with smart reminders"
+  },
+  {
+   "package": "com.everydaycheckmobile",
+   "title": "everyday Habit Tracker",
+   "category": "habit_tracker",
+   "why": "A simple & beautiful daily checklist with reminders for your routines and goals"
+  },
+  {
+   "package": "com.extendztech.streaks",
+   "title": "Streaks 2026 - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Build strong habits and daily streaks with simple tracking and clear progress up"
+  },
+  {
+   "package": "com.executionhelper.habittick",
+   "title": "HabitTick-Habit Tracker & Todo",
+   "category": "habit_tracker",
+   "why": "Habit tracker, daily planner & todo list. Build streaks, routines & goals."
+  },
+  {
+   "package": "com.feelinmyskin.app",
+   "title": "Skincare Routine: FeelinMySkin",
+   "category": "routine_tracker",
+   "why": "Cosmetics Scanner • Skin Care Routines Planner • Acne Safe • Journal & Community"
+  },
+  {
+   "package": "com.fitmind.habits",
+   "title": "Haizen - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Daily habit tracker & mood journal. Build routines, keep streaks, see stats."
+  },
+  {
+   "package": "com.focusstreak.app",
+   "title": "Focus Streak - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habit tracker with streaks, reminders & widgets. Build Now. No account needed."
+  },
+  {
+   "package": "com.fourdesire.bedtime",
+   "title": "Book Morning Routine Waking Up",
+   "category": "routine_tracker",
+   "why": "Set a morning routine and form a habit of waking up on time by reading stories!"
+  },
+  {
+   "package": "com.free_simple_apps.habits",
+   "title": "Daily Habits: AI Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Build healthy routines with AI. Set goals, get reminders & track wellness."
+  },
+  {
+   "package": "com.geekydevs.streak_hero",
+   "title": "Streak Hero: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Build lasting habits, track daily streaks, and visualize progress with heatmaps."
+  },
+  {
+   "package": "com.genazemildo.my_habit_streak",
+   "title": "My Habit Streak",
+   "category": "habit_tracker",
+   "why": "Build healthy habits with adorable friends to keep you motivated!"
+  },
+  {
+   "package": "com.gethabitbook.app",
+   "title": "Habit Tracker - Habit Book",
+   "category": "habit_tracker",
+   "why": "Build routines, track goals & mood. The ultimate daily habit tracker & journal."
+  },
+  {
+   "package": "com.gethabithero.app",
+   "title": "Habit Hero: Kids Routine App",
+   "category": "gamified_habit",
+   "why": "Gamified family chores and reward charts for kids to build healthy daily habits"
+  },
+  {
+   "package": "com.glgjing.meow.habit.goal",
+   "title": "Meow Habits - Habit tracker",
+   "category": "habit_tracker",
+   "why": "Meow Habits - habit tracker for seamless habit tracking"
+  },
+  {
+   "package": "com.gohary.habitradar",
+   "title": "Habit Tracker - Habit Radar",
+   "category": "habit_tracker",
+   "why": "Daily Routine Planner , Track habits, Reach goals and Transform your life."
+  },
+  {
+   "package": "com.growyhabitmap",
+   "title": "Habit Tracker & Streaks: Growy",
+   "category": "habit_tracker",
+   "why": "Habit tracker: build daily routines, track streaks & reach your goals"
+  },
+  {
+   "package": "com.habit.application",
+   "title": "Habit - habit tracker and goal",
+   "category": "habit_tracker",
+   "why": "\"Habit tracker\" using the \"21 day\" method. Set goals and achieve them."
+  },
+  {
+   "package": "com.habit.habstick",
+   "title": "Habit Tracker - Habstick",
+   "category": "habit_tracker",
+   "why": "Build habits and routines, track streaks. No account. No ads. Offline."
+  },
+  {
+   "package": "com.habitgenius.habit.tracker",
+   "title": "Habit Tracker - HabitGenius",
+   "category": "habit_tracker",
+   "why": "Build habits. Master money. Understand emotions. Capture memories. All-in-one."
+  },
+  {
+   "package": "com.habitive",
+   "title": "Habitive - Your Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habitive will help you stay motivated to build all the habits you always wanted."
+  },
+  {
+   "package": "com.habitnow",
+   "title": "HabitNow Daily Routine Planner",
+   "category": "routine_tracker",
+   "why": "To-do list, Habit Tracker, Routine Planner and Reminders. All in just one app!"
+  },
+  {
+   "package": "com.habitpixel.app",
+   "title": "Habit Pixel: Streak Tracker",
+   "category": "habit_tracker",
+   "why": "Daily habit tracker with pixel heatmaps, streak goals, widgets & mood journal"
+  },
+  {
+   "package": "com.habitrpg.android.habitica",
+   "title": "Habitica: Gamify Your Tasks",
+   "category": "gamified_habit",
+   "why": "Treat your life like a game to stay motivated and organized!"
+  },
+  {
+   "package": "com.habits.todolist.plan.wish",
+   "title": "Fun Habit - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habit tracker and routine planner for goals, rewards and progress"
+  },
+  {
+   "package": "com.habitstreaktracker.app",
+   "title": "Habit Streak Tracker",
+   "category": "habit_tracker",
+   "why": "Build habits, track streaks, and stay consistent every day—fully offline."
+  },
+  {
+   "package": "com.habittracker.routine.habits.dailyplanner",
+   "title": "Rise: Habit List",
+   "category": "habit_tracker",
+   "why": "Habit Builder app with Goal Tracker & Streaks"
+  },
+  {
+   "package": "com.habityou.planner.goals.journal.habittracker",
+   "title": "Habit Tracker n Pets: HabitYou",
+   "category": "habit_tracker",
+   "why": "Track Habits with Self Care Pet to Improve Productivity and fix Loneliness"
+  },
+  {
+   "package": "com.happyverse.todolist",
+   "title": "To Do List: Daily Planner",
+   "category": "habit_tracker",
+   "why": "Plan tasks, set reminders, build streaks. Aesthetic daily planner & widgets."
+  },
+  {
+   "package": "com.hclhealthcare.habithealth",
+   "title": "Habit Health",
+   "category": "habit_tracker",
+   "why": "Habit Health is a holistic health and wellness application for corporate India."
+  },
+  {
+   "package": "com.heinrichhermann.routinecanvas",
+   "title": "Habit Tracker - RoutineCanvas",
+   "category": "habit_tracker",
+   "why": "Beautiful heatmaps, streaks & flexible tracking. Privacy-first."
+  },
+  {
+   "package": "com.hevy",
+   "title": "Hevy - Gym Log Workout Tracker",
+   "category": "habit_tracker",
+   "why": "Gym Log & Workout Tracker | Fitness Journal, Training & Weight Lifting Planner"
+  },
+  {
+   "package": "com.hintapp.habitswipe",
+   "title": "Habit Tracker - HabitSwipe",
+   "category": "habit_tracker",
+   "why": "Habit Tracker to Unlock your full potential - Track Habits & Build a Routine"
+  },
+  {
+   "package": "com.honghp.streakly",
+   "title": "Streakly: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habit tracker & daily streak counter. 100% offline — no account, no ads."
+  },
+  {
+   "package": "com.hugocodes.strik",
+   "title": "Habit Tracker - Strik",
+   "category": "habit_tracker",
+   "why": "Habit tracker built on streaks. Stay consistent, never break the chain."
+  },
+  {
+   "package": "com.ianskaitis.HabitFlow",
+   "title": "HabitFlow: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habit tracker & routine planner: streaks, widgets, stats & reminders."
+  },
+  {
+   "package": "com.infielight.microhabits",
+   "title": "Micro Habits: Self-Improvement",
+   "category": "habit_tracker",
+   "why": "self-improvement, Habit, Routine, Mood tracker with accountability partner."
+  },
+  {
+   "package": "com.intelligenthabits",
+   "title": "Intelligent Change Habits",
+   "category": "habit_tracker",
+   "why": "Smart Habits Builder & Tracker"
+  },
+  {
+   "package": "com.itdeveapps.habitrix.tracker",
+   "title": "Habit Share - HabitRix",
+   "category": "habit_tracker",
+   "why": "Social Habit tracking streaks, and achieve your goals by tracking your progress."
+  },
+  {
+   "package": "com.jlabs.habittracker",
+   "title": "Simple Habit Tracker - Habits",
+   "category": "habit_breaking",
+   "why": "Build good or quit bad habits with easy habit tracker with checklist & reminders"
+  },
+  {
+   "package": "com.junhwank.habitjar",
+   "title": "Habit Tracker & ToDo: HabitJar",
+   "category": "habit_tracker",
+   "why": "Visual habit tracker with jars, reminders, progress views, and a to-do list."
+  },
+  {
+   "package": "com.kappa.teddybear.android",
+   "title": "TeddyCare: Daily Routine Plan",
+   "category": "routine_tracker",
+   "why": "Plan the perfect daily routine for you, care for your self. Track your habits"
+  },
+  {
+   "package": "com.karma.streak",
+   "title": "Habit Tracker: Streak Master",
+   "category": "habit_tracker",
+   "why": "Track habits, build streaks & achieve goals daily. Stay consistent & productive."
+  },
+  {
+   "package": "com.kompanion.glowin.android",
+   "title": "Glowin - Lifestyle Routines",
+   "category": "routine_tracker",
+   "why": "Schedule Your Day with Glowin Daily Schedule Planner & To-Do List"
+  },
+  {
+   "package": "com.kompanion.habit.android",
+   "title": "Dear Me: Daily Routine Tracker",
+   "category": "routine_tracker",
+   "why": "Create the perfect daily habit routine with Dear Me and plan your days"
+  },
+  {
+   "package": "com.ksp.habittracker",
+   "title": "Habit Tracker: Daily Routine",
+   "category": "habit_tracker",
+   "why": "Track habits, build routines & stay consistent to achieve your goals"
+  },
+  {
+   "package": "com.ktxandroid.habitstreaks",
+   "title": "Habit Streaks: Daily Tracker",
+   "category": "habit_tracker",
+   "why": "Track daily habits and build streaks. No account, no ads, works offline."
+  },
+  {
+   "package": "com.lifeborne.app",
+   "title": "Levla: Habit Tracker RPG",
+   "category": "gamified_habit",
+   "why": "Build real habits, level up a real RPG character. Your life is the game."
+  },
+  {
+   "package": "com.limatech.dayschallenge.dayschallenge",
+   "title": "21 Days Challenge",
+   "category": "habit_tracker",
+   "why": "21 days to introduce life changing habits in your life."
+  },
+  {
+   "package": "com.maapps.habittracker",
+   "title": "Habit Tracker: Routine & Goals",
+   "category": "habit_tracker",
+   "why": "Habit360: Habit tracker, to-do list, pomodoro, mood tracker & daily planner"
+  },
+  {
+   "package": "com.metaserve.habithook",
+   "title": "Habit Tracker App - HabitHook",
+   "category": "habit_tracker",
+   "why": "A habit tracker app built for friends. Streaks, challenges, accountability"
+  },
+  {
+   "package": "com.middark.habit_tracker",
+   "title": "Habit Streak: Simple Tracker",
+   "category": "habit_tracker",
+   "why": "Build habits with one tap a day. Streaks, badges & calendar. Zero permissions."
+  },
+  {
+   "package": "com.minding.myroutine",
+   "title": "MyRoutine: Routine Habit Goal",
+   "category": "routine_tracker",
+   "why": "Organize, Track, Focus with ease & Reach your goals!"
+  },
+  {
+   "package": "com.motivated.app",
+   "title": "Motivated: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Habit Tracker & Day Planner"
+  },
+  {
+   "package": "com.nek12.respawn",
+   "title": "Respawn - Routines & Habits",
+   "category": "habit_tracker",
+   "why": "An app that turns healthy habits into a video game"
+  },
+  {
+   "package": "com.nelu.habitly",
+   "title": "Habit Tracker & Daily Routine",
+   "category": "habit_tracker",
+   "why": "Daily habit tracker & routine planner. Build streaks, hit goals, stay on track."
+  },
+  {
+   "package": "com.novabit.HabitTracker",
+   "title": "Habit Tracker Sprout: Streaks",
+   "category": "habit_tracker",
+   "why": "Daily habit tracker & routine planner. Build habits, keep streaks — no guilt"
+  },
+  {
+   "package": "com.ofalvai.habittracker",
+   "title": "Habit Builder",
+   "category": "habit_tracker",
+   "why": "Simple habit tracker with insights"
+  },
+  {
+   "package": "com.oristats.habitbull",
+   "title": "Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Organize Your life, Track Daily Goals, Build Powerful Habits! Download now!"
+  },
+  {
+   "package": "com.panagola.app.tictactoecalendar",
+   "title": "Habit Tracker Unlimited",
+   "category": "habit_tracker",
+   "why": "Habit Calendar: Track unlimited habits & habit streaks. No subscription costs!"
+  },
+  {
+   "package": "com.pixel.al.pixelhabittracker",
+   "title": "Pixel Habit Tracker",
+   "category": "habit_tracker",
+   "why": "A beautiful habit tracker. No ads, no account, no subscription, fully offline."
+  },
+  {
+   "package": "com.pixelbrewstudio.cozyhabittracker",
+   "title": "Cozy - Cute Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Build daily habits with adorable stickers, streaks & reminders. Simple & cozy!"
+  },
+  {
+   "package": "com.planmecorp.planme",
+   "title": "PlanMe: Daily Routine Planner",
+   "category": "routine_tracker",
+   "why": "Let's create an environment for planning and implementation together"
+  },
+  {
+   "package": "com.por7al.habitme",
+   "title": "Habit Me: Daily Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Build healthy habits, track daily goals, and organize your routine with ease."
+  },
+  {
+   "package": "com.progresspal",
+   "title": "Habit Eazy - Habit & To Do Pal",
+   "category": "habit_tracker",
+   "why": "Habit tracking, To do, Goal Planner and Routine Builder with wear OS and widgets"
+  },
+  {
+   "package": "com.roehl.habitkit",
+   "title": "Habit Tracker - HabitKit",
+   "category": "habit_tracker",
+   "why": "Build habits and achieve your goals by tracking your progress."
+  },
+  {
+   "package": "com.rohansaxena.habit_tracker_app",
+   "title": "Habit Tracker - To-Do List",
+   "category": "habit_tracker",
+   "why": "Daily habit tracker, to-do list, planner, reminders, notes and workouts."
+  },
+  {
+   "package": "com.roubit",
+   "title": "Roubit:Daily Life Routine Care",
+   "category": "routine_tracker",
+   "why": "Cute Routine Planner, To do list, Self Care, ADHD Habit Tracker & Journal"
+  },
+  {
+   "package": "com.savemytime",
+   "title": "Habitude Daily Routine Planner",
+   "category": "habit_tracker",
+   "why": "Habit tracker & goal organizer. Build streaks, stay focused & manage ADHD fast."
+  },
+  {
+   "package": "com.shellz.habitt",
+   "title": "Habitt: Private Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Build habits, track streaks & reach goals. No account - encrypted backup & sync."
+  },
+  {
+   "package": "com.skillfoxapps.qhabit",
+   "title": "Qhabit: Daily habit tracker",
+   "category": "habit_tracker",
+   "why": "Habit tracker with unlimited number of habits!"
+  },
+  {
+   "package": "com.smarttoolsdev.habittracker",
+   "title": "Habit Tracker Daily Streak",
+   "category": "habit_tracker",
+   "why": "Track habits & build streaks — offline, no account, no subscription."
+  },
+  {
+   "package": "com.splendapps.splendo",
+   "title": "To Do List",
+   "category": "habit_tracker",
+   "why": "Easy to use To-Do List. Remember everything and get things done!"
+  },
+  {
+   "package": "com.starttech.habitosmatinais",
+   "title": "Morning Habits - Daily Routine",
+   "category": "habit_tracker",
+   "why": "Develop healthy habits and be more productive with a personalized daily routine!"
+  },
+  {
+   "package": "com.stonecutters.islegrow",
+   "title": "Habit Tracker: IsleGrow",
+   "category": "habit_tracker",
+   "why": "Visualize habits! Complete your daily routine, build a house, grow your island."
+  },
+  {
+   "package": "com.streakapp.habits",
+   "title": "Use Streak - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Build habits, track streaks, and achieve your goals daily"
+  },
+  {
+   "package": "com.streakly.streakly",
+   "title": "Streakly: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Daily habit tracker: build streaks, set reminders, track progress. Offline."
+  },
+  {
+   "package": "com.studio.hellohabit",
+   "title": "HelloHabit - Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Manage tasks and to do lists. Build habits, routines & streaks with a planner."
+  },
+  {
+   "package": "com.superbyte.habitrabbit",
+   "title": "Habit Rabbit: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Your motivation pet to achieve your goals"
+  },
+  {
+   "package": "com.supernora.DotHabit",
+   "title": "Habit Streak Tracker: DotHabit",
+   "category": "habit_tracker",
+   "why": "Habit streak tracker. Build chain & discipline, mood log, goals, journal & focus"
+  },
+  {
+   "package": "com.tasks.android",
+   "title": "Tasks: To Do List & Reminders",
+   "category": "habit_tracker",
+   "why": "Simple to do list, reminders and task manager app to increase your productivity"
+  },
+  {
+   "package": "com.teadoku.hs",
+   "title": "Goal Tracker: Routine Planner",
+   "category": "routine_tracker",
+   "why": "Turn goals into real rewards—routines, points & daily wins. Start today!"
+  },
+  {
+   "package": "com.tessari.app",
+   "title": "Tessari: Habit Streak Tracker",
+   "category": "habit_tracker",
+   "why": "Build habits that stick. Streaks, heatmaps & daily routines — works offline"
+  },
+  {
+   "package": "com.tiimo.androidappreactnative",
+   "title": "Tiimo: Daily To Do List",
+   "category": "habit_tracker",
+   "why": "Organize Daily & Monthly Tasks with Structured Checklists & Schedule Reminders"
+  },
+  {
+   "package": "com.ttet.mysb",
+   "title": "MyStreakBook - Habit tracker",
+   "category": "gamified_habit",
+   "why": "Gamified habit tracker to stay consistent with your daily routine."
+  },
+  {
+   "package": "com.uifusion.streakup",
+   "title": "StreakUp – Habit Tracker RPG",
+   "category": "gamified_habit",
+   "why": "Gamified habit tracker to build daily streaks, earn XP, and stay productive."
+  },
+  {
+   "package": "com.vgw.habit",
+   "title": "Habit — Online Video Calls",
+   "category": "habit_tracker",
+   "why": "In Habit, every time you talk, someone will respond sincerely."
+  },
+  {
+   "package": "com.virblue.mystudylife",
+   "title": "My Study Life - School Planner",
+   "category": "habit_tracker",
+   "why": "Get better grades with MyStudyLife's student calendar, homework and study tools."
+  },
+  {
+   "package": "com.wayoflife.app",
+   "title": "Way of Life: habit tracker",
+   "category": "habit_tracker",
+   "why": "Build a better, stronger you"
+  },
+  {
+   "package": "com.weeklychecklist",
+   "title": "Habit Check Calendar",
+   "category": "habit_tracker",
+   "why": "An app to record habits by checking off the weekly calendar. Never forget."
+  },
+  {
+   "package": "daily.planner.routine.habits",
+   "title": "Me+ Lifestyle Routine",
+   "category": "routine_tracker",
+   "why": "Live healthy with daily life coaching for the perfect routine."
+  },
+  {
+   "package": "de.app4life.htracker",
+   "title": "My Habit Tracker & Planner",
+   "category": "habit_tracker",
+   "why": "Habit tracker & routine planner with timed checklists, reminders, streak stats"
+  },
+  {
+   "package": "dev.voksu.hizo",
+   "title": "Hizo: Habit Tracker & Todo",
+   "category": "habit_tracker",
+   "why": "Make habits quickly and effortlessly and track them in an easy-to-use interface."
+  },
+  {
+   "package": "edvarderos.habitgrid",
+   "title": "Habit Tracker - HabitGrid",
+   "category": "habit_tracker",
+   "why": "Daily Habits & Goal Tracker"
+  },
+  {
+   "package": "habittracker.todolist.tickit.daily.planner",
+   "title": "Habit Tracker - Habit Diary",
+   "category": "habit_tracker",
+   "why": "Create a habit list to build good habits & healthy lifestyle with Habit tracker"
+  },
+  {
+   "package": "in.garoono.habitide",
+   "title": "Habitide: Habit Streak Tracker",
+   "category": "habit_tracker",
+   "why": "Daily routine & goal planner with radar chart, reminders, progress & analytics"
+  },
+  {
+   "package": "in.habit",
+   "title": "Habit: 10-Min Food Delivery",
+   "category": "habit_tracker",
+   "why": "Fresh food in 10 minutes. Now serving Kondapur & Gachibowli, Hyderabad."
+  },
+  {
+   "package": "info.intrasoft.habitgoaltracker",
+   "title": "Goal & Habit Tracker Calendar",
+   "category": "habit_tracker",
+   "why": "Change your habits, achieve your goals, track your progress for better life."
+  },
+  {
+   "package": "io.github.friesi23.mhabit",
+   "title": "Table Habit",
+   "category": "habit_tracker",
+   "why": "Boost your own habit growth with charts."
+  },
+  {
+   "package": "io.habitforge.habitforge",
+   "title": "HabitForge: Habit Tracker RPG",
+   "category": "gamified_habit",
+   "why": "HabitForge: gamified RPG habit tracker. Daily quest system, XP. Solo Leveling"
+  },
+  {
+   "package": "org.isoron.uhabits",
+   "title": "Loop Habit Tracker",
+   "category": "habit_tracker",
+   "why": "Create good habits and track their progress over time"
+  },
+  {
+   "package": "org.miracle.morning",
+   "title": "Miracle Morning Routine",
+   "category": "routine_tracker",
+   "why": "The ultimate morning routine (practiced by 3+ million people globally)"
+  },
+  {
+   "package": "planner.task.todolist.habit",
+   "title": "iTask - To Do List & Planner",
+   "category": "habit_tracker",
+   "why": "All-in-One Task Manager & Habit Tracker: Set Goals, Plan, and Get Reminders!"
+  },
+  {
+   "package": "pro.habitfantasy.app",
+   "title": "Habit Fantasy: ToDo&Habit RPG",
+   "category": "gamified_habit",
+   "why": "Manage your habits and to-dos like a game!"
+  },
+  {
+   "package": "ro.thinkoutside.habitit",
+   "title": "Habit Tracker: Habit It",
+   "category": "habit_tracker",
+   "why": "Daily habit tracker: streaks, unlimited habits, reminders, and a simple journal"
+  },
+  {
+   "package": "space.habitgrind",
+   "title": "Habit Tracker: Simple Streaks",
+   "category": "habit_tracker",
+   "why": "Build better habits with a simple habit tracker for routines, goals & streaks."
+  },
+  {
+   "package": "studio.fountainhead.habicat",
+   "title": "Habicat: RPG Habit Tracker",
+   "category": "gamified_habit",
+   "why": "Gamified RPG habit tracker & routine planner. Beat procrastination with widgets!"
+  },
+  {
+   "package": "todo.list.tasks.planner.calendar.reminder",
+   "title": "To-do list - tasks planner",
+   "category": "habit_tracker",
+   "why": "Planner that can be used as a to-do list of tasks and calendar with reminders"
+  },
+  {
+   "package": "xyz.thefor.habits.habits",
+   "title": "TheFor: Habit Tracker",
+   "category": "habit_tracker",
+   "why": "habit/routine tracking"
+  }
+ ],
+ "exclude": [
+  {
+   "package": "ai.regainapp",
+   "title": "Regain: Study Timer for Focus",
+   "why": "Study timer / phone blocker"
+  },
+  {
+   "package": "app.dailychecklist",
+   "title": "Daily Checklist - Today's Task",
+   "why": "Task manager and checklist"
+  },
+  {
+   "package": "calendar.agenda.calendarplanner.agendaplanner",
+   "title": "CalendPal: Calendar Planner",
+   "why": "Calendar planner"
+  },
+  {
+   "package": "cc.forestapp",
+   "title": "Forest: Focus for Productivity",
+   "why": "Pomodoro focus timer"
+  },
+  {
+   "package": "com.ahmaddioxide.salah_streak",
+   "title": "Salah Streak: Prayer Tracker",
+   "why": "Prayer-specific vertical tracker"
+  },
+  {
+   "package": "com.albul.timeplanner",
+   "title": "Time Planner: Schedule & Tasks",
+   "why": "Schedule and task planner"
+  },
+  {
+   "package": "com.anydo",
+   "title": "Any.do - To do list & Calendar",
+   "why": "To-do list and calendar"
+  },
+  {
+   "package": "com.burockgames.timeclocker",
+   "title": "StayFree - Screen Time",
+   "why": "Screen-time tracker"
+  },
+  {
+   "package": "com.calendar.cute",
+   "title": "Cute Calendar Schedule Planner",
+   "why": "Calendar planner"
+  },
+  {
+   "package": "com.eriwandi.eschedulle",
+   "title": "Daily Routine Countdown Alarm",
+   "why": "Countdown alarm and schedule tool"
+  },
+  {
+   "package": "com.free_simple_apps.daytodo",
+   "title": "1 Day TODO: Daily Task Manager",
+   "why": "Task manager"
+  },
+  {
+   "package": "com.gmail.jmartindev.timetune",
+   "title": "TimeTune - Schedule Planner",
+   "why": "Schedule planner"
+  },
+  {
+   "package": "com.google.android.apps.tasks",
+   "title": "Google Tasks",
+   "why": "To-do list"
+  },
+  {
+   "package": "com.google.android.apps.wellbeing",
+   "title": "Digital Wellbeing",
+   "why": "Google system screen-time tool"
+  },
+  {
+   "package": "com.google.android.calendar",
+   "title": "Google Calendar",
+   "why": "Calendar"
+  },
+  {
+   "package": "com.habit.mobile",
+   "title": "Habit Burger & Grill",
+   "why": "Restaurant chain - matched the word 'habit'"
+  },
+  {
+   "package": "com.jonasbernardo.developer.planejamento_semanal",
+   "title": "Weekly Planner - Agenda",
+   "why": "Schedule planner"
+  },
+  {
+   "package": "com.komorebi.SimpleCalendar",
+   "title": "Simple Calendar - easy planner",
+   "why": "Calendar and schedule planner"
+  },
+  {
+   "package": "com.microsoft.todos",
+   "title": "Microsoft To Do: Lists & Tasks",
+   "why": "To-do list"
+  },
+  {
+   "package": "com.planner.journal",
+   "title": "Daily Planner, To Do List",
+   "why": "Daily planner and journal"
+  },
+  {
+   "package": "com.sinyee.babybus.selfcare",
+   "title": "Baby Panda's Daily Habits",
+   "why": "Children's app (ages 3-8)"
+  },
+  {
+   "package": "com.superelement.pomodoro",
+   "title": "Focus To-Do: Pomodoro & Tasks",
+   "why": "Pomodoro timer and task organizer"
+  },
+  {
+   "package": "com.thehungrywasp.iamsober",
+   "title": "I Am Sober",
+   "why": "Sobriety recovery community, not general habit tracking"
+  },
+  {
+   "package": "com.thexpertz.cyclestreak",
+   "title": "Cycle Streak: Tracker & Events",
+   "why": "Cycling app - matched 'streak'"
+  },
+  {
+   "package": "com.ticktick.task",
+   "title": "TickTick:To Do List & Calendar",
+   "why": "To-do list and calendar"
+  },
+  {
+   "package": "com.to_do_list_studio.uptodo",
+   "title": "To-Do List & Daily Planner",
+   "why": "To-do list and planner"
+  },
+  {
+   "package": "com.todoist",
+   "title": "Todoist: To Do List & Calendar",
+   "why": "To-do list"
+  },
+  {
+   "package": "com.trello",
+   "title": "Trello: Personal Planner App",
+   "why": "Task boards"
+  },
+  {
+   "package": "cz.mobilesoft.appblock",
+   "title": "AppBlock - Block Apps & Sites",
+   "why": "App/website blocker"
+  },
+  {
+   "package": "io.konveier.timo",
+   "title": "Daily Planner Organizer: Brite",
+   "why": "All-in-one daily planner"
+  },
+  {
+   "package": "io.unorderly.structured",
+   "title": "Structured - Daily Planner",
+   "why": "Daily planner"
+  },
+  {
+   "package": "journal.notes.planner.starnest",
+   "title": "Journal: Notes, Planner, PDFs",
+   "why": "Notes and journal"
+  },
+  {
+   "package": "notion.id",
+   "title": "Notion: Notes, Tasks, AI",
+   "why": "Notes and projects"
+  },
+  {
+   "package": "super.planner.todolist.task.reminder",
+   "title": "Super Planner: ADHD Routine AI",
+   "why": "Task/plan helper, not habit tracking"
+  },
+  {
+   "package": "todolist.scheduleplanner.dailyplanner.todo.reminders",
+   "title": "Todoery: To Do List & Planner",
+   "why": "To-do list and planner"
+  },
+  {
+   "package": "works.jubilee.timetree",
+   "title": "TimeTree - Shared Calendar",
+   "why": "Shared calendar"
+  }
+ ]
+}

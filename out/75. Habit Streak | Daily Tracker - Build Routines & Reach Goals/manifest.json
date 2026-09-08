@@ -1,0 +1,42 @@
+{
+  "app_id": "6504493690",
+  "app_name": "Habit Streak | Daily Tracker",
+  "developer": "Adrien Blanc",
+  "bundle_id": "com.adrienblc.habitstracker",
+  "extracted_at": "2026-09-08T12:01:03Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 41,
+  "storefronts_with_reviews": 18,
+  "reviews_per_country": {
+    "de": 10,
+    "fr": 10,
+    "us": 5,
+    "mx": 2,
+    "ar": 1,
+    "au": 1,
+    "ca": 1,
+    "cd": 1,
+    "cl": 1,
+    "co": 1,
+    "dk": 1,
+    "hu": 1,
+    "in": 1,
+    "it": 1,
+    "pe": 1,
+    "ph": 1,
+    "st": 1,
+    "vn": 1
+  },
+  "rating_distribution": {
+    "5": 25,
+    "4": 5,
+    "3": 2,
+    "2": 4,
+    "1": 5
+  },
+  "mean_rating": 4.0,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

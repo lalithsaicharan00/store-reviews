@@ -1,0 +1,29 @@
+{
+  "app_id": "1614197639",
+  "app_name": "Habit Builder",
+  "developer": "Alexander Thompson",
+  "bundle_id": "com.AlexThompson.Habit-Builder",
+  "extracted_at": "2026-09-08T11:42:54Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 9,
+  "storefronts_with_reviews": 5,
+  "reviews_per_country": {
+    "us": 4,
+    "au": 2,
+    "ar": 1,
+    "in": 1,
+    "nz": 1
+  },
+  "rating_distribution": {
+    "5": 8,
+    "4": 0,
+    "3": 1,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 4.778,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

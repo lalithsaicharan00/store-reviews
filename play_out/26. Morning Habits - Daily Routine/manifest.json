@@ -1,0 +1,39 @@
+{
+  "store": "Google Play",
+  "package": "com.starttech.habitosmatinais",
+  "app_name": "Morning Habits - Daily Routine",
+  "extracted_at": "2026-09-08T12:41:58Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 1096,
+  "languages_with_reviews": 19,
+  "reviews_per_language": {
+    "es": 538,
+    "pt": 395,
+    "en": 106,
+    "fa": 15,
+    "fr": 15,
+    "ru": 5,
+    "tr": 4,
+    "ar": 3,
+    "uz": 3,
+    "it": 2,
+    "no": 2,
+    "cs": 1,
+    "de": 1,
+    "el": 1,
+    "hi": 1,
+    "id": 1,
+    "pl": 1,
+    "ro": 1,
+    "sl": 1
+  },
+  "rating_distribution": {
+    "5": 752,
+    "4": 138,
+    "3": 75,
+    "2": 27,
+    "1": 104
+  },
+  "mean_rating": 4.284,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

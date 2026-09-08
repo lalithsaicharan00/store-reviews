@@ -1,0 +1,256 @@
+app_id,name,developer,genre,price,bundle_id,storefronts,reach_pct,median_rank,best_rank,top10_storefronts,ratings_total,ratings_max,score
+1438388363,Habit Tracker,Inner Grow Limited,Productivity,0.0,com.davetech.habit,52,98.1,2.0,1,52,500561,146477,74.5
+1445348921,Days Since: Quit Habit Tracker,A Couple of Friends OOD,Health & Fitness,0.0,npetrova.DaysSince,52,98.1,2.0,1,52,35794,19073,59.85
+6749051240,Streak Tracker - StreakUp,Explora SAS,Productivity,0.0,com.aura.streaktracker,52,98.1,3.0,1,52,402,188,51.9
+672904239,I Am Sober,I Am Sober LLC,Lifestyle,0.0,com.thehungrywasp.iamsober,50,94.3,4.0,1,49,374278,186328,25.91
+6443918070,Habit Tracker - HabitKit,Sebastian Roehl,Productivity,0.0,com.roehl.habitkit,52,98.1,5.0,3,51,8668,2405,19.84
+963034692,Streaks,Crunchy Bagel Pty Ltd,Health & Fitness,5.99,com.streaksapp.streak,52,98.1,6.0,3,50,66198,27351,17.58
+1630626343,Goal Streak: Habit Tracker,Swifty Bits LLC,Productivity,0.0,com.emilycheroske.goalStreakCalendar.Goal-Streak-Calendar,52,98.1,7.0,3,50,811,320,15.18
+1144352844,Counter Tally Count,Tevfik Yucek,Utilities,0.0,mikrasya.CounterSwift,52,98.1,8.0,5,46,27348,13645,11.93
+6742739243,Simple Streak: Habit Tracker,Kim Walker,Productivity,0.0,com.Simple-Streak,52,98.1,9.0,4,39,95,45,10.09
+1111447047,Habitify: Habit Tracker,Unstatic Ltd Co,Health & Fitness,0.0,co.vuvo.habitify,52,98.1,12.0,4,13,66555,14695,5.69
+1121088244,DayCount,Zaminiti Pty Ltd,Productivity,0.0,com.khoury.daycount,52,98.1,11.0,8,15,40409,26259,5.6
+6753191177,Milestone: Streak Tracker,Justin Michael Willemsen,Lifestyle,0.0,com.jstnwll.quitclock,50,94.3,13.0,4,18,9,3,5.49
+1523273937,Habit: Streak Tracker & Goals,Thanh Ha,Productivity,0.0,com.teaxapp.HabitTracker,50,94.3,13.0,6,9,30,8,4.7
+1403517519,Habit Tracker - Evoday,Cosmic Taps SL,Productivity,0.0,com.kevinquisquater.Habits,52,98.1,14.0,9,4,3927,1364,4.03
+6446997766,Grit: Daily Habit Tracker,GrittyApps,Productivity,0.0,stoope.Grit,52,98.1,15.0,10,5,77888,19658,3.95
+672401817,Strides: Habit Tracker + Goals,Goals LLC,Productivity,0.0,com.puresignal.strides,52,98.1,18.5,10,3,35663,19150,3.25
+1439938837,Habit Streak Tracker: DotHabit,Mono Incorporated,Health & Fitness,0.0,com.supernora.DotHabit,48,90.6,18.5,5,4,21158,16598,3.08
+1576857102,Gentler Streak Workout Tracker,Gentler Stories d.o.o.,Health & Fitness,0.0,app.gentler.activity,51,96.2,19,11,0,27115,8807,2.65
+983826477,Productive - Habit Tracker,Mosaic S.r.l.,Productivity,0.0,com.beHappy.Productive,52,98.1,19.0,14,0,263180,91084,2.65
+1445651730,Habit — Daily Tracker,"Kodeon, Inc.",Productivity,0.0,com.habit.habytracker.iosappplication,52,98.1,22.0,12,0,10807,2682,2.46
+1103961876,Do Habits: Get It Done,"Kodeon, Inc.",Productivity,0.0,com.tbd.Done,52,98.1,23.0,12,0,29845,16841,2.36
+6448960901,Streaks – Daily Habit Tracker,yusuf kildan,Productivity,0.0,com.yusufkildan.habitTrackerApp,47,88.7,24,10,1,314,64,2.28
+1522121879,Habit Rabbit: Habit Tracker,Justin Patrick Silang,Productivity,0.0,com.superbyte.habitrabbit,49,92.5,29,17,0,19278,8668,1.76
+1394150432,everyday - Habit Tracker,Everyday Growth S.L.,Productivity,0.0,app.everyday,49,92.5,30,16,0,15239,4517,1.72
+6692634213,Streak: Habit Tracker,Ilya Golubev,Productivity,0.0,com.streakapp.Streakapp,32,60.4,20.0,12,0,9,3,1.68
+6760905736,習慣トラッカー: Habitug,Fline LLC,Productivity,0.0,com.fline.habitug,35,66.0,29,9,2,0,0,1.63
+1519067736,MyStreaks - Streak Tracker,Streaking LLC,Productivity,0.0,com.streaking.Streaker,37,69.8,27,11,0,75,60,1.59
+1090990601,Tally: The Anything Tracker,"Kodeon, Inc.",Productivity,0.0,com.tbd.Tally,45,84.9,30,17,0,5952,4098,1.53
+6504493690,Habit Streak | Daily Tracker,Adrien Blanc,Productivity,0.0,com.adrienblc.habitstracker,48,90.6,36.0,15,0,529,147,1.52
+1523643868,Daily Habits: Streak Tracker,Sergey Belychev,Lifestyle,0.0,com.free-simple-apps.habits,39,73.6,27,13,0,682,170,1.46
+6737206675,Habit Tracker: Streak-Free,Beaucode Ventures UG (haftungsbeschraenkt),Productivity,0.0,Beaucode.Momentumly,43,81.1,32,23,0,321,67,1.35
+6596806184,Fito: フィットネスと運動連勝記録、AIカロリー写真計算,"Verse Technology Co., Ltd",Health & Fitness,0.0,com.getfitoapp.fito,36,67.9,29.0,19,0,5182,2945,1.27
+1458862350,Hevy - Gym & Trainingstagebuch,Hevy Studios S.L.,Health & Fitness,0.0,com.hevyapp.hevy,37,69.8,31,15,0,141208,19782,1.22
+1041482672,Habit-Bull: Daily Goal Planner,AppForge Inc.,Productivity,0.0,oristats.HabitBull,38,71.7,38.5,18,0,17797,8140,1.06
+1514915737,Awesome Habits: 習慣トラッカー,Michal Tuma,Productivity,0.0,com.dreamer.Habits,29,54.7,31,14,0,1711,444,1.03
+6756615584,Habit Streak Tracker: Nitya,Dharmeshkumar Pumbhadiya,Productivity,0.0,com.routinebuilder.habits,18,34.0,20.5,9,1,5,3,0.97
+1456241316,習慣化アプリ - デイスタンプ,동현 hwang,Productivity,0.0,com.hbull.daystamp,32,60.4,36.0,16,0,5808,5183,0.95
+1637037683,Streakly: Simple Habit Tracker,Unstatic Ltd Co,Productivity,0.0,co.unstatic.disciplina,35,66.0,41,25,0,237,58,0.89
+6761116529,習慣打卡 - HabitSet,Nikita Shestak,Productivity,60.0,app.hv.habit,28,52.8,31.0,23,0,0,0,0.87
+6763559650,Habits: Streak & Habit Tracker,SERICOLA THOMAS GIANCARLO GIOVANNI,Productivity,0.0,app.trackware.habits,25,47.2,33,13,0,38,10,0.83
+6474854656,Disciplined: Habit Tracker,Tip Tap Apps,Productivity,0.0,app.disciplined.productive.structured.habit.tracker,27,50.9,37,18,0,842,103,0.81
+6478199608,Goal Tracker - Rise,Ankit Kumar,Productivity,0.0,com.rise.habit-tracker.Rise-Habit-Tracker,32,60.4,42.0,33,0,41,7,0.79
+6759090035,Grid - Habit Tracker,Wes Thomson,Productivity,0.0,com.grid.habittracker,24,45.3,32.5,23,0,7,4,0.76
+6476824223,HelloHabit - 習慣トラッカー,"RightLife, Inc.",Productivity,0.0,com.studio.hellohabit,17,32.1,24,18,0,583,112,0.68
+6480166269,HabitYear - Simple Tracker,Nguyen Hong Phuc,Productivity,0.0,best.habittracker.basic,19,35.8,31,21,0,24,6,0.63
+1037595083,StepsApp Schrittzähler,StepsApp GmbH,Health & Fitness,0.0,com.gunthermarktl.stepapp,22,41.5,38.0,24,0,653583,124086,0.63
+501852506,Goal Streaks,Peer Assembly Ltd,Productivity,0.0,com.peerassembly.GoalStreaks,20,37.7,32.5,23,0,35,7,0.6
+6739545352,Streak Counter,Havard Tryman,Productivity,0.0,com.vandele.DayCounter,22,41.5,41.0,35,0,44,9,0.53
+6792360710,習慣トラッカー・継続記録とウィジェット,Ben Basha,Health & Fitness,0.0,com.benbasha.hergelim,12,22.6,30.0,19,0,0,0,0.44
+6761067791,STRIK - Streak Tracker,Frederic Leplus,Productivity,0.0,com.hugocodes.strik,10,18.9,40.5,7,1,0,0,0.43
+6754244909,Loop Habit Tracker - Streaks,Tech Atlas LLC,Health & Fitness,0.0,com.techatlassystems.HabitTracker,14,26.4,40.0,19,0,10,3,0.42
+1661833753,ゴーラ - 目標 追跡,Modum B.V.,Productivity,0.0,com.modumhq.Hazi,17,32.1,45,36,0,100,29,0.38
+6444543340,soberTracker,Christian Pressler,Health & Fitness,0.0,com.soheme.sober,12,22.6,34.5,23,0,10,6,0.36
+1537897066,HarmLess: Self Harm Tracker,Wired Betterment,Health & Fitness,0.0,com.wiredbetterment.HarmLess,12,22.6,35.0,25,0,1616,328,0.34
+6758521131,Streakio:Habit & StreakTracker,ERX CONNECT,Health & Fitness,0.0,erx.streakio,3,5.7,12,9,1,0,0,0.31
+6760469944,ADHD Planner Organizer: Doubly,Amit Rabani,Productivity,0.0,com.doubly.app,10,18.9,34.5,23,0,18,7,0.31
+6479698819,Reboot: デトックス連続記録カウンター,Sho Fujimoto,Health & Fitness,0.0,com.fjsh.onakinapp,12,22.6,42.0,32,0,38,28,0.29
+6502667826,Habit Tracker - Ripples,Mykola Harmash,Productivity,0.0,harmash.Waffles,11,20.8,43,23,0,207,57,0.29
+6788780028,Loop: Gewohnheiten Tracker,Abduazim Islomjonov,Productivity,0.0,loop.habittracker.app,8,15.1,33.5,14,0,6,6,0.28
+6758523144,Aura: Habit Tracker & Streaks,Must Have Apps SIA,Productivity,0.0,app.gainaura.habits,9,17.0,36,24,0,48,36,0.26
+1472298590,Bear Good Habits - Tracker,EUIHYUNG JUNG,Lifestyle,30.0,io.ideamp.BGH,10,18.9,37.5,33,0,22,5,0.26
+6752606716,75 Hard: Challenge Tracker,Shay alon Vash,Health & Fitness,0.0,com.kovets.hard75,10,18.9,42.0,27,0,18,13,0.25
+1663708723,Git Streak Tracker,CK Collab LLC,Developer Tools,0.0,com.ckcollab.Git-Streak-Tracker,6,11.3,32.5,12,0,4,4,0.24
+1227407668,阅读记录-统计你的每一次读书和笔记,祥全 夏,Book,0.0,com.BFReadNote-statistics,6,11.3,29.5,15,0,12188,12043,0.24
+6759969192,Habit Pixel: 習慣管理,"LEAN ASIA CO., LTD",Productivity,0.0,com.lean.habitpixel,6,11.3,27.5,23,0,0,0,0.22
+6774956996,Habits Logger: Daily Goals,ANDREI RUSTI,Productivity,0.0,AndreiR.Habits-logger,9,17.0,42,34,0,5,2,0.22
+6760436464,Daily Habit Streak Tracker,JANAKKUMAR KANAIYALAL PATEL,Health & Fitness,0.0,app.replit.dailyhabittracker,4,7.5,43.0,10,1,0,0,0.21
+6764353447,PepMod: Peptide Tracker,GymStreak Ltd,Health & Fitness,0.0,com.gymstreaklabs.peptideOs,8,15.1,37.5,30,0,30,9,0.21
+6480372571,Habit Tracker - Habit Radar,Mohamed Elgohary,Productivity,0.0,com.gohary.habitradar,7,13.2,39,18,0,276,239,0.2
+6657948371,Streak Tracker,Roman Petrichenko,Productivity,0.0,pr.habits,1,1.9,10,10,1,0,0,0.2
+6738692375,Habit Tracker: Habitsy,Adam Kovacs,Productivity,0.0,com.kpatlanticllc.Habits-21,7,13.2,43,24,0,7,3,0.19
+6762257623,Fitleo : Carnet Muscu & Gym,Alexandre Henrotte,Health & Fitness,0.0,com.fitleo.app,6,11.3,31.0,27,0,69,25,0.18
+447188370,Snapchat: Chat with friends,"Snap, Inc.",Photo & Video,0.0,com.toyopagroup.picaboo,6,11.3,37.5,22,0,1119691,292798,0.18
+6759220059,66-Day Habit & Streak Tracker,BURAK SAHIN,Health & Fitness,0.0,com.buraksh.sixtysixstreaks,5,9.4,28,25,0,10,10,0.17
+1575230351,New Year's Resolution Tracker,Rafael Mirza,Productivity,0.0,raff.RSLTN,8,15.1,47.5,42,0,3,1,0.17
+6751973572,Habit Streak Tracker: Routines,Mohamed Elatabany,Productivity,0.0,com.atabany.CheckeRix,4,7.5,25.5,18,0,10,6,0.16
+6758956867,Gymie：健身日記·重訓課表·訓練紀錄,Pung Yip,Health & Fitness,0.0,com.coinmaster852.fitnesstracker,4,7.5,24.5,19,0,77,54,0.16
+6778815802,カフェインやめる — 継続記録,lapnito.cz s.r.o.,Health & Fitness,0.0,cz.lapnito.quitcaffeine,5,9.4,33,25,0,0,0,0.16
+6743095634,Critique AI: Habit Tracker,With Bytes LLC,Lifestyle,0.0,com.withbytes.critique-ai,7,13.2,45,38,0,1953,1421,0.16
+6479176533,Habit Tracker - HabitStack,Flavio Aliu,Productivity,0.0,com.habitsstack.app,6,11.3,42.0,30,0,125,58,0.16
+6467469174,90Days: PornFree Streak,Charlton Davis,Lifestyle,0.0,com.wiztek.ninetydays,6,11.3,39.5,31,0,0,0,0.16
+1533076568,Quitzilla: 禁欲カウンター,Andrii Hula,Lifestyle,0.0,com.despdevs.quitzilla,6,11.3,41.0,33,0,5167,2133,0.15
+6761470365,Pixelio - Habit tracker RPG,Lux Studio,Lifestyle,0.0,com.luxstudio.pixelioapp,4,7.5,28.0,17,0,632,581,0.15
+6759385724,Daily Pact - Habit Tracker,Guttae AB,Health & Fitness,0.0,com.challengerapp.app,6,11.3,44.5,38,0,6,4,0.14
+835599320,"TikTok - Videos, Music & LIVE",TIKTOK PTE. LTD.,Entertainment,0.0,com.zhiliaoapp.musically,6,11.3,43.5,35,0,1689248,544761,0.14
+1120239484,継続する技術｜ダイエットも筋トレも記録・習慣化で目標達成,bondavi Inc.,Health & Fitness,0.0,info.todice.habit,3,5.7,25,19,0,53057,53054,0.13
+6758965230,Cozy - かわいい習慣トラッカー,Pixelbrew Studio LLC,Lifestyle,0.0,com.pixelbrewstudio.cozyhabittracker,5,9.4,41,33,0,1,1,0.13
+6742389774,StudyLog – Lerntracker,"BYNET CO., LTD.",Education,0.0,com.tacar.studylog,4,7.5,39.5,23,0,2,1,0.12
+6749530918,Kubbo: Objectif & Habitude,SPLURB,Productivity,0.0,io.apparence.dailywin,4,7.5,33.5,25,0,691,680,0.12
+6762066764,Quit Alcohol: Streak Tracker,Hakan Korhasan,Health & Fitness,0.0,com.hakankorhasan.quitalcohol,3,5.7,27,18,0,0,0,0.12
+6756763855,습관 트래커&연속 기록: Goal4,EHM TECH LLC,Health & Fitness,0.0,com.ehmtech.habit,3,5.7,23,23,0,0,0,0.11
+6757249354,Habit Tracker - HabitBox,荣九 蔡,Productivity,0.0,com.justtoday.habit.justHabit,5,9.4,45,42,0,0,0,0.11
+6448081563,Liftoff: Stronger Workout Log,GymBros Inc.,Health & Fitness,0.0,com.gymbros.app,4,7.5,37.0,35,0,7513,5244,0.11
+6759825355,Трекер Воздержания: Серия,Ramkumar Vellaisamy,Health & Fitness,0.0,com.reku.celibacy-tracker,3,5.7,28,20,0,5,5,0.11
+6769251517,Days Since Tracker - TimeSince,Mar San Agustin,Productivity,0.0,com.msanagustin.kailan,3,5.7,35,21,0,3,3,0.1
+1055295863,Today Habit tracker,Neybox Digital Ltd.,Health & Fitness,0.0,com.neybox.Today,4,7.5,45.0,27,0,6197,3550,0.1
+6740426283,Streaks 2026 - Habit Tracker,Rehmat Khan,Productivity,0.0,com.umair.streaks,4,7.5,38.5,35,0,0,0,0.1
+1556645052,Simple Habit / Streaks Tracker,Florian Schweizer,Lifestyle,0.0,fschweizer.Habits,4,7.5,41.0,32,0,6,4,0.1
+1133119692,Daily Habits - Habit Tracker,Olha Ievenko,Productivity,0.0,com.xwavesoft.habits,4,7.5,46.0,31,0,275,115,0.1
+1389900237,Habit Tracker - Productify,"DEDUCTIFY, LLC",Productivity,0.0,deductify-org.Productify,4,7.5,40.5,37,0,189,128,0.1
+6759113750,Stark: Stegräknare,Ralph Olazo,Health & Fitness,0.0,ralpholazo.stark,4,7.5,43.0,35,0,0,0,0.1
+6758879885,Apex: Fitness Streak Tracker,Shaurya Sharma,Health & Fitness,0.0,com.szaurya.apex,2,3.8,23.0,23,0,4,3,0.09
+1509780452,Habit Tracker - Hapit,Tenect Sweden AB,Productivity,0.0,se.angeria.Hapit,3,5.7,41,22,0,81,64,0.09
+6772208507,Mood Tracker: Colour Diary,Phuc Pham,Lifestyle,0.0,com.levi.colormood,3,5.7,32,31,0,0,0,0.09
+6759270733,No Days Off - Streak Tracker,Praxis Method LLC,Health & Fitness,0.0,com.praxismethod.nodaysoff,1,1.9,11,11,0,0,0,0.09
+6755534735,Ultimative Streak,Stronger Mobile Apps Ltd,Health & Fitness,0.0,com.strongermobileapps.ultimatestreak,3,5.7,39,33,0,0,0,0.08
+6775304313,Tillow: Habit & Streak Tracker,Mohamed Ali,Productivity,0.0,com.mhosam.streakly,1,1.9,13,13,0,0,0,0.08
+6752872980,Streak – Simple Habit Tracker,Mykola Popov,Productivity,0.0,com.mykolapopov.streak,3,5.7,45,31,0,0,0,0.08
+6759209322,Consistly Habit Streak Tracker,Mustapha BOUKALI,Productivity,0.0,com.codmaker.habittracker,2,3.8,26.5,24,0,3,3,0.08
+6511250768,Simple Habit Tracker - Kabit,Rahul Rao,Productivity,0.0,alpha1.Kabit,3,5.7,36,33,0,619,332,0.08
+6786222302,Habit AI: Habit Streak Tracker,Ayush Mishra,Health & Fitness,0.0,com.cognitain.habitaiapp,2,3.8,27.0,21,0,2,2,0.08
+6787023926,Time Since: Streak Tracker,Lior Zukman,Health & Fitness,0.0,com.zuki.apps.timesince,2,3.8,29.0,24,0,0,0,0.07
+1506373127,Leap Habits - Habit Tracker,Benedict Bartsch,Productivity,0.0,com.startpunkt.leaphabits,3,5.7,47,31,0,29,28,0.07
+6759697431,My Habits: Streak Tracker,Blas Prieto,Productivity,0.0,com.calculators.habittracker,2,3.8,27.5,26,0,1,1,0.07
+6769443048,StreakTap: Daily Habit Tracker,Habibullah Yousofi,Productivity,0.0,com.alisinayousofi.habittap,3,5.7,45,43,0,1,1,0.07
+6759789674,Leero: Book & Reading Tracker,Vladimir Sevastianov,Book,0.0,dev.voksu.leero,3,5.7,44,34,0,2,1,0.07
+6504728893,"습관 트래커: 목표, 연속","SHPAVDA, TOO",Productivity,0.0,com.shpavda.habit-rise,2,3.8,32.0,25,0,35,35,0.07
+6760886214,Divine Office Tracker,Timothy Myers,Lifestyle,0.0,com.denvercoder.Divine-Office-Tracker,3,5.7,44,36,0,0,0,0.07
+6746671178,Habit Tracker - Habitao,IVELIN YURIEV IVANOV,Productivity,0.0,com.ivotech.perfectday,3,5.7,42,38,0,0,0,0.07
+6471903354,Трекер привычек - Ritunary,Robin Guido Schmidt,Productivity,0.0,com.coderob.habitMood,2,3.8,29.0,27,0,23,19,0.07
+6762237188,LockAway: Detox Digital,Nayel Ketfi,Productivity,0.0,com.nayel.Lockaway,2,3.8,29.5,27,0,0,0,0.07
+6762192200,習慣トラッカー - 継続記録,Yusuke Takeuchi,Productivity,0.0,xyz.owlsoft.habittracker,2,3.8,34.0,34,0,1,1,0.06
+1263789061,小日常 - 习惯养成打卡 & 番茄钟时间管理与学习计划,"Guangzhou Xiaorichang Technology Co., Ltd.",Productivity,0.0,com.dandelion.Routine,2,3.8,34.5,34,0,552414,550321,0.06
+6467129951,Habit Tracker - Mainspring,Eyal Naamat,Productivity,0.0,com.naamapps.mainspring,3,5.7,47,43,0,21,21,0.06
+6766063893,Freaks: Consistency & Habits,Aarya Rokade,Productivity,0.0,com.aarya.freaks,1,1.9,17,17,0,0,0,0.06
+1633296501,"Macadam: Schrittzähler, Geld",PRODUKT BCN INTERACTIVE SL,Health & Fitness,0.0,com.macadam.app,2,3.8,35.5,35,0,32213,26005,0.06
+6752352900,Ember: 습관 트래커,"Pielbusch, Edgar",Productivity,0.0,com.Edgar.HabitGlass,2,3.8,34.5,29,0,1,1,0.06
+6472646551,Habit Tracker - Motivated,Hazel Apps SIA,Productivity,0.0,com.motivated.app,3,5.7,50,48,0,331,181,0.06
+6760623176,Habit & Streak Tracker - Neomi,STNG Studios ApS,Health & Fitness,0.0,dk.stng-studios.Neomi,1,1.9,18,18,0,2,2,0.06
+6781011150,Habit Tracker - Sequência,Randy Delgado,Productivity,0.0,com.randydelgado.HabitTracker,2,3.8,36.0,28,0,1,1,0.06
+6749515833,Habit Tracker - Dayrise,Dmitrii Groshev,Productivity,0.0,dimagroshev.Habit-Tracker,2,3.8,35.5,31,0,2,2,0.06
+1482514822,HabitX – Habit & Goal Tracker,Sarosh Mirza,Productivity,0.0,com.saroshmirza.habitx,2,3.8,33.0,32,0,30,27,0.06
+6743342451,Go Streak: трекер привычек,Anton Zavalishin,Productivity,0.0,com.example.gostreak,1,1.9,18,18,0,8,8,0.06
+988402523,"LifeWheel цели,трекер привычек",Oleksandr Stepanov,Productivity,0.0,net.lifewheel.lifewheel,2,3.8,32.5,31,0,5111,4300,0.06
+6798732659,Cycle Streak: Tracker & Events,Shuja Ahmed,Lifestyle,0.0,com.thexpertz.cyclestreak,1,1.9,17,17,0,2,2,0.06
+6759842051,Ayuno Intermitente — Tracker,Eduard Bulava,Health & Fitness,0.0,com.bebra.fastbreak,2,3.8,34.5,27,0,0,0,0.06
+6756961710,Habit Flame: Streak Tracker,Vishut Dhar,Health & Fitness,0.0,com.vishutdhar.habitflame,2,3.8,39.5,33,0,1,1,0.05
+6751603977,Streaks Mate - Habit Tracker,Najib Abdi,Productivity,0.0,com.najibabdi.streaksmate,2,3.8,38.5,34,0,3,3,0.05
+1071663315,Focus Habits - Daily Streaks,Armin Kroll,Productivity,0.0,com.akda.HabitTracker,2,3.8,42.5,37,0,113,60,0.05
+6746059329,Zenstart: Habit Streak Tracker,Aristotle Explorations Inc.,Productivity,0.0,com.standardinput.habits,1,1.9,22,22,0,0,0,0.05
+6744642284,습관 추적기 - 습관 Bot,Abhimanyu Singh Chaudhary,Productivity,0.0,kaplanapps.habitbot,2,3.8,43.0,42,0,45,26,0.05
+6466580414,Habit Tracker: 習慣追蹤,Simone Montalto,Productivity,0.0,com.simonemontalto.habittracker,2,3.8,41.5,33,0,30,24,0.05
+422689480,Gmail - Email by Google,Google LLC,Productivity,0.0,com.google.Gmail,2,3.8,41.5,41,0,69253,42527,0.05
+6752633940,No Contact Tracker - Ick,Exploring Studios LLC,Lifestyle,0.0,com.ickapp.ickapp,2,3.8,43.0,40,0,1,1,0.05
+6470763573,Habit Tracker - Spark,Francisco Sainz,Health & Fitness,0.0,lifeos.HabitLoop,2,3.8,43.5,43,0,10,9,0.05
+1039656691,Lotus Flow - Yoga & Workout,HUBX YAZILIM HIZMETLERI ANONIM SIRKETI,Health & Fitness,0.0,com.labmobil.yogalab,2,3.8,41.5,38,0,344,324,0.05
+6795014621,Streak Трекер привычек,LIZAVETA UN,Lifestyle,0.0,com.streakhabit.app,1,1.9,22,22,0,0,0,0.05
+6737323367,Habit Hearts - Трекер Привычек,Akash Jain,Productivity,0.0,com.habithearts,2,3.8,41.5,38,0,214,117,0.05
+6746483721,Трекер привычек - HabitGrid,Edvard Adam Eros,Productivity,0.0,com.edvarderos.habitGrid,2,3.8,40.5,35,0,148,135,0.05
+6759926682,Creatinely - Creatine Tracker,Gabriel Sanchez Palma,Health & Fitness,0.0,com.gabrisp.Creatinely,2,3.8,41.0,41,0,0,0,0.05
+6444766871,像素習慣 - RPG遊戲化打卡,今朝 王,Health & Fitness,0.0,cc.paisley.PixHero,1,1.9,27,27,0,18,18,0.04
+6742369592,Atomic Streak: Habit Tracker,WINKAI STUDIO (OPC) PRIVATE LIMITED,Productivity,0.0,com.appfactory.habits,2,3.8,45.5,42,0,1,1,0.04
+6797224668,Daily – Habit Tracker,Sultan Naif,Health & Fitness,0.0,com.sultan.habittracker,1,1.9,24,24,0,1,1,0.04
+6760764570,Streaky - Hábitos & Streaks,Ranju Jha,Health & Fitness,0.0,heywrist.streaky,1,1.9,26,26,0,0,0,0.04
+6760100505,Habit Tracker - Habstick,MOHAMMED RIYAS,Productivity,0.0,com.habit.habstick,1,1.9,23,23,0,0,0,0.04
+6761932965,Quit Smoking: Streak Tracker,Hakan Korhasan,Health & Fitness,0.0,com.hakankorhasan.quitsmoke,1,1.9,23,23,0,0,0,0.04
+6759608902,Трекер привычек: рутина,Aleksei Shmyrov,Productivity,0.0,app.daysnap.Daysnap,1,1.9,26,26,0,3,3,0.04
+6791228271,HabitStreak: Habit Tracker,Masato Oda,Lifestyle,0.0,com.odamasato.habitstreak,1,1.9,26,26,0,0,0,0.04
+1478096728,StudyStreaks,Gavin Douch,Education,0.0,com.gavindouch.StudyStreaks,2,3.8,45.0,45,0,0,0,0.04
+1463321963,Routick - 習慣化ToDo・ルーティン管理,Yoshinobu Kanetaka,Productivity,0.0,jp.nobusin.Jupiter,1,1.9,40,40,0,1075,1075,0.03
+6769570576,Go Streak,Julius Petrik,Health & Fitness,0.0,com.streak.app.dev,1,1.9,40,40,0,0,0,0.03
+863872931,Sober: Recovery Tracker,Red Penguin LLC,Lifestyle,0.0,com.osu.cleanandsober,1,1.9,32,32,0,849,849,0.03
+306026134,Daily Tracker Journal & Diary,Lumen Spark LLC,Health & Fitness,0.0,com.cvz.dailytracker.premium,1,1.9,37,37,0,278,278,0.03
+1227402276,Actions: 提醒 Habit Tracker,Bonobo Pte Ltd,Productivity,0.0,com.moleskine.actions,1,1.9,39,39,0,140,140,0.03
+6504735851,MoveStreak,Andreas Selin,Health & Fitness,0.0,com.yourname.runstreakapp,1,1.9,31,31,0,6,6,0.03
+6765884155,Habit Tracker & Streak: Gabby,Mustafa BILGIC,Health & Fitness,0.0,com.cinderspire.habits,1,1.9,35,35,0,0,0,0.03
+6800543046,Saturate: Creatine Tracker,Hareesh Yerragudi,Health & Fitness,0.0,com.akshajyerragudi.CreatineTracker,1,1.9,37,37,0,0,0,0.03
+6774199817,Deficit Streak: Tracker Dieta,Ferran Espuna,Health & Fitness,0.0,espunya.corporation.deficitStreak,1,1.9,31,31,0,0,0,0.03
+6767014813,BookStreak: Reading Tracker,Kien Nguyen,Book,0.0,quest.bookstreak.app,1,1.9,29,29,0,0,0,0.03
+6755145702,Kontaktsperre - Rerise,John Kevin Basco,Lifestyle,0.0,dev.johnkevinmbasco.nocontacttracker,1,1.9,37,37,0,1,1,0.03
+950247830,Habit Tracker von Goalify,onebytezero GmbH,Productivity,0.0,com.onebytezero.Goalify,1,1.9,39,39,0,759,759,0.03
+6759009013,PushUp Tracker,Dmitry Gorbunow,Health & Fitness,0.0,none.PushUpCounter,1,1.9,40,40,0,0,0,0.03
+6796841463,Momentum: Habit Tracker,Jamie Hardie,Productivity,0.0,com.jamiehardie.momentum,1,1.9,40,40,0,0,0,0.03
+6480042457,Routine Planner & Daily Habits,Uniqo Lab FZC,Productivity,0.0,uniqo.habit,1,1.9,35,35,0,15,15,0.03
+6759507988,WaterStreak: Water Tracker,Albert Alfaro,Health & Fitness,0.0,com.idreamstudios.waterstreak,1,1.9,30,30,0,0,0,0.03
+6502226958,"Habit Tracker, Streaks: uHabit",Steward Technologies Ltd,Productivity,0.0,com.stewardtech.uhabit,1,1.9,38,38,0,1,1,0.03
+6768727080,Streak Money,Quang Hoang Minh,Lifestyle,0.0,com.tenora.streakmoney,1,1.9,38,38,0,6,6,0.03
+6758278276,Pick Up: Book Tracker,Fortune Nweke-Maraizu,Book,0.0,com.fortune.pickup,1,1.9,40,40,0,0,0,0.03
+1507681077,Forte - Habit Tracker,Cortilab LLC,Productivity,0.0,com.cortilab.forte,1,1.9,35,35,0,21,21,0.03
+6775784291,Habit.on - Habit Tracker,Dmytro Honcharuk,Health & Fitness,0.0,com.dimahoncharuk.focusflow,1,1.9,38,38,0,0,0,0.03
+6770529797,Habit Chain: Streak Tracker,Enes Yurtsever,Productivity,0.0,com.happy-apps.habit-chain,1,1.9,34,34,0,1,1,0.03
+6753877367,Трекер привычек - AI HabitMind,Yuliia Kulakova,Lifestyle,0.0,com.kulakovaapps.AI-HabitMind,1,1.9,30,30,0,0,0,0.03
+6761647390,DuaStreak: трекер намаза,Innovius UG (haftungsbeschrankt),Lifestyle,0.0,app.duastreak.DuaStreakApp,1,1.9,33,33,0,0,0,0.03
+6759709906,Трекер Целей,Smash Game Studios LLP,Health & Fitness,0.0,com.smashgamestudios.streakmanager,1,1.9,36,36,0,0,0,0.03
+6799605348,Трекер привычек: серии,ZeroPlay Ltd.,Lifestyle,0.0,io.zeroplay.habittracker,1,1.9,37,37,0,0,0,0.03
+6759078386,Walking Tracker Free Step AI,"INTEGRATE AI, LLC",Health & Fitness,0.0,com.integrateai.Step-AI,1,1.9,33,33,0,0,0,0.03
+6753697575,Taiba: Prayer Tracker,Abbas Hussain,Productivity,0.0,com.taiba.taiba-tracker,1,1.9,34,34,0,0,0,0.03
+6757218118,Daily Streak - One Habit,Volodymyr Hryhoriev,Productivity,0.0,ua.vhryhoriev.Daily-Streak,1,1.9,36,36,0,0,0,0.03
+6738211763,Habit Tracker & Goal Planner,Iaroslav Morgunov,Productivity,0.0,app.habitloop.habitloop,1,1.9,39,39,0,1,1,0.03
+6469007119,Patterns: Habit Tracker,Andrew Tanchuk,Productivity,0.0,com.andrewtanchuk.Patterns,1,1.9,39,39,0,3,3,0.03
+6754304606,1% Mejor - Seguidor de Hábitos,Anna Kulina,Productivity,0.0,com.onepercentbetter.habits,1,1.9,39,39,0,0,0,0.03
+6755332652,Pawmi: Dog Walk & Step Tracker,Leonid Kaliuzhnyi,Lifestyle,0.0,app.pawmi,1,1.9,37,37,0,5,5,0.03
+1541190629,Habit Tracker by Habit Mate,Zipo Apps Ltd.,Productivity,0.0,mh.habit.ios,1,1.9,38,38,0,974,974,0.03
+1658588991,Quit Bad Habits & Addiction,"SHPAVDA, TOO",Lifestyle,0.0,com.shpavda.bad-habit-break,1,1.9,40,40,0,2288,2288,0.03
+6781625086,Cairn: Sober Streak Tracker,Huy Nguyen,Health & Fitness,0.0,com.sober.cairn,1,1.9,29,29,0,0,0,0.03
+6772685979,Amplify: Habit Streak Tracker,Camron Thomas,Health & Fitness,0.0,com.cam.amplify,1,1.9,32,32,0,0,0,0.03
+6759332691,Sleep Log AI: Coach & Tracker,GymStreak Ltd,Health & Fitness,0.0,com.gymstreaklabs.SleepLog,1,1.9,40,40,0,0,0,0.03
+6748345644,FitGrid: Activity Tracker,VICTORIA PETROVA PETROVA,Health & Fitness,0.0,com.vickipetrova.fitgrid,1,1.9,37,37,0,0,0,0.03
+594982044,RepCount - Gym Workout Tracker,Siper Apps AB,Health & Fitness,0.0,com.simonpersson.repsapp,1,1.9,45,45,0,13154,13154,0.02
+6761450314,Habit Tracker — 每日打卡,Moruk LLC,Health & Fitness,0.0,com.morukhq.habit-tracker,1,1.9,41,41,0,0,0,0.02
+6759211087,喝酒的日子 - 饮酒打卡日历,pilyeong heo,Health & Fitness,0.0,com.pilyeooong.drinkdays,1,1.9,43,43,0,0,0,0.02
+6742162476,Habit Tracker - Goals OnTrack,"Pixolini, Inc.",Productivity,0.0,com.pixolini.ontrack,1,1.9,47,47,0,1,1,0.02
+6770412114,习惯日记 - 每日打卡追踪,晓 郭,Productivity,0.0,com.aiteam.habittrackerdaily,1,1.9,49,49,0,0,0,0.02
+6743663885,Afternoon: Habit Tracker,Odd Omens LLC,Productivity,0.0,OddOmens.Afternoon,1,1.9,47,47,0,2,2,0.02
+1203637303,Fabulous: Routines & Habitudes,Fabulous,Health & Fitness,0.0,co.thefabulous.app,1,1.9,42,42,0,10759,10759,0.02
+6752416887,CountTogether: Shared Counters,Manuel Mayer,Productivity,0.0,app.counttogether,1,1.9,44,44,0,1,1,0.02
+6754897547,EVOLVE: Transform Your Life,Matthew Castriotta,Health & Fitness,0.0,com.vortexlabs.evolve,1,1.9,45,45,0,280,280,0.02
+6757488753,AI Habit & Goal Tracker,CONVOSOFT LTD,Productivity,0.0,com.convosoft.habittrackerr,1,1.9,44,44,0,0,0,0.02
+1371187280,GymStreak AI Personal Trainer,GymStreak Ltd,Health & Fitness,0.0,com.gymstreak.GymStreakAI,1,1.9,46,46,0,1627,1627,0.02
+1156046798,"습관 + 목표 달성, 해빗트래커, 생활습관, 매일습관",Aly Bairamov,Productivity,0.0,com.stas.tomych.HabitsTracker,1,1.9,43,43,0,5,5,0.02
+1528151332,PokeT-Walk | Sync your Steps,Grima Hdez,Health & Fitness,0.0,com.mls.poketwalk,1,1.9,50,50,0,1153,1153,0.02
+6760896911,QuietOne: Gentle Habit Tracker,Alex Naumov,Health & Fitness,0.0,com.dplusa.quietone,1,1.9,44,44,0,0,0,0.02
+6762054435,PrayerStreak: Prayer Tracker,Kuen Lee,Lifestyle,0.0,com.prayerstreakapp.ios,1,1.9,45,45,0,1,1,0.02
+6737978299,Mindle：習慣追蹤與成長,Bilol Mamadjanov,Health & Fitness,0.0,com.kegva.habittracker,1,1.9,47,47,0,1,1,0.02
+6466629328,DayMark-Habit Tracker Counter,滚宁 林,Health & Fitness,0.0,com.kenny.OneMark,1,1.9,49,49,0,4,4,0.02
+456207840,DrinkControl: Alcohol Tracker,E-protect,Health & Fitness,0.0,lv.happymoments.drinkcontrolAds,1,1.9,42,42,0,26,26,0.02
+6759450144,SinceWhen: Days Since Tracker,Basharath Shaik,Productivity,0.0,com.devapt.app.SinceWhen,1,1.9,48,48,0,1,1,0.02
+6473677740,FitStreak - Exercise Tracker,T Krobot,Health & Fitness,0.0,sg.tk.2023.fitstreak,1,1.9,50,50,0,5,5,0.02
+1484629691,Obedience: BDSM Habit Tracker,Obedience B.V.,Lifestyle,0.0,com.obedience,1,1.9,42,42,0,51,51,0.02
+6741011041,Nuchter: Stoppen met Drinken,Ivan Terekhin,Lifestyle,0.0,com.trifoiltrailblazer.soberTracker,1,1.9,46,46,0,6,6,0.02
+6754315626,90 Day Challenge Habit Tracker,Mehroz Sheikh,Productivity,0.0,com.techroz.habittracker,1,1.9,45,45,0,0,0,0.02
+1531606188,Streaks_Timer,Seung-Un Ham,Productivity,0.0,com.braintools.StreaksPlusTimer,1,1.9,46,46,0,0,0,0.02
+6790005526,Habiter: Hábitos diarios,FARUK MERT KAPAR,Productivity,0.0,com.farukmertkapar.habiter,1,1.9,44,44,0,1,1,0.02
+6758527369,Coupl: Love Tracker & Widgets,Xerobytes LTD,Lifestyle,0.0,com.xerobytes.coupl,1,1.9,46,46,0,0,0,0.02
+6744525032,75 Day Challenge: Soft Tracker,John Kevin Basco,Health & Fitness,0.0,dev.johnkevinmbasco.75softchallenge,1,1.9,41,41,0,2,2,0.02
+6777470225,Habit Tracker: Habit Strength,Aneesh Koppolu,Productivity,0.0,com.aneesh.HabitForecaster,1,1.9,43,43,0,0,0,0.02
+1454778585,Water tracker Waterllama,Llama Luna Apps Inc,Health & Fitness,0.0,com.vitalii.water,1,1.9,44,44,0,893,893,0.02
+6759486184,Ajr+ Muslim Daily Tracker,Masoud Khalel,Lifestyle,0.0,com.findme.ramadanstreaks,1,1.9,45,45,0,4,4,0.02
+6761487561,Bookmarkk - Reading Tracker,Noah Martins,Book,0.0,ai.bookmarkk.app,1,1.9,41,41,0,50,50,0.02
+6774281994,Habit Tracker - Habitdot,Minsik Chae,Productivity,0.0,com.sikgates.habitdotapp,1,1.9,50,50,0,0,0,0.02
+6781785566,Habit Tracker - Habinote,Aqib Rasheed,Health & Fitness,0.0,com.habit.habitnote.habitTracker,1,1.9,45,45,0,0,0,0.02
+1048454034,Gymverse: Gym Workout Planner,FITNESS22 LTD,Health & Fitness,0.0,com.heavydutyapps.gymWorkout,1,1.9,44,44,0,2947,2947,0.02
+6749272240,Habit Tracker - Streakly,BITART PRIVATE LIMITED,Productivity,0.0,in.bitart.Streakly,1,1.9,49,49,0,0,0,0.02
+6773933611,Koru: Habit Tracker,serhan oztuna,Productivity,0.0,com.serhan26.koru,1,1.9,42,42,0,9,9,0.02
+6478146486,Chain: Habit Tracker & Streak,Muhammed Talha POLAT,Productivity,0.0,ilk-uygulamam.Chain,1,1.9,44,44,0,70,70,0.02
+6757589084,GainHabits: Habit Tracker,FATIH SULTAN KILIC,Health & Fitness,0.0,com.fatihkilic.gainhabits,1,1.9,47,47,0,18,18,0.02
+6760458261,HabitFlow: Трекер Привычек Pro,HIDAYET POSCU,Health & Fitness,0.0,eslimasoftware.profesyonelaliskanlik,1,1.9,44,44,0,2,2,0.02
+1474006757,22 дня: Трекер привычек,Vladislav Kovalyov,Productivity,0.0,com.woopss.ttdays,1,1.9,48,48,0,22,22,0.02
+6746414171,Cency: Habit Tracker & Journal,Supreme Creations INC.,Productivity,0.0,com.supremecreations.cency,1,1.9,50,50,0,1,1,0.02
+6670476556,Atomic Habits:Progress Tracker,Yakup Arslan,Productivity,0.0,com.retrocker.mobile,1,1.9,48,48,0,0,0,0.02
+6759625103,SalahTrackr: Namaz Tracker,Never Iffy Ltd,Lifestyle,0.0,com.neveriffy.salahtrackr,1,1.9,49,49,0,1,1,0.02
+6795603427,Habit Tracker - Habit Home,Amir Alagic,Productivity,0.0,se.mobix.habitbox.HabitBox,1,1.9,45,45,0,0,0,0.02
+6790673432,Quit Sugar: Sin Azúcar,SEONYONG LEE,Health & Fitness,0.0,com.hedvion.quitsugar,1,1.9,44,44,0,0,0,0.02
+6757937579,Días Sin – Dejar Hábito,ZENBYTE DIJITAL TEKNOLOJILER LIMITED SIRKETI,Health & Fitness,0.0,com.sfmob.quithabittracker,1,1.9,48,48,0,0,0,0.02
+6758582606,Duro: Homescreen Habit Tracker,Sanghoon Im,Productivity,0.0,com.duro.habits,1,1.9,46,46,0,0,0,0.02
+6752837361,HabTap - Habit Tracker,False Peak,Productivity,0.0,com.falsepeak.habitap,1,1.9,47,47,0,0,0,0.02
+6749651286,Routine Tracker : Habit OS,Marcelo Nardone,Productivity,0.0,ar.marcn.habitOSMini,1,1.9,48,48,0,0,0,0.02
+6756549510,Mooly - Book Tracker & TBR,Dawid Szewczyk,Book,0.0,meld.odity.prod,1,1.9,42,42,0,6,6,0.02
+6744272260,HabitLink: Habits with Friends,Andrei Mikheev,Productivity,0.0,com.habitflowteam.habitflowow,1,1.9,49,49,0,275,275,0.02
+6755107453,Steply: GPS Walking Tracker,Taohidul Islam,Health & Fitness,0.0,com.steplyapp.SteplyApp,1,1.9,46,46,0,1,1,0.02
+6787226434,DailyStreak: Hábitos e Rotinas,Jose Pedro Da Costa Xavier De Carvalho Ferreira,Productivity,0.0,com.lifeflowapps.dailystreak,1,1.9,49,49,0,0,0,0.02
+6765990179,Reading Habit Tracker: Streaks,yahya belhaddad,Book,0.0,com.yabelsoftware.readinghabittracker,1,1.9,44,44,0,0,0,0.02
+6758996039,ColdStreak: Shower Tracker,Jagrat Sharma,Health & Fitness,0.0,com.app.coldstreak,1,1.9,47,47,0,0,0,0.02
+6800478472,snusQuit: Quit Snus & Nicotine,Alexander Bosacki,Health & Fitness,0.0,com.snusquit.app,1,1.9,49,49,0,0,0,0.02
+6738355522,Habit Tracker - StressKit,CAN DELIL BOZKURT,Productivity,0.0,com.candelilbozkurt.FruityHabits,1,1.9,50,50,0,2,2,0.02

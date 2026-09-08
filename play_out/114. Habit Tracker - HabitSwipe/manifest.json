@@ -1,0 +1,25 @@
+{
+  "store": "Google Play",
+  "package": "com.hintapp.habitswipe",
+  "app_name": "Habit Tracker - HabitSwipe",
+  "extracted_at": "2026-09-08T13:04:49Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 54,
+  "languages_with_reviews": 5,
+  "reviews_per_language": {
+    "en": 42,
+    "es": 6,
+    "de": 3,
+    "pt": 2,
+    "pl": 1
+  },
+  "rating_distribution": {
+    "5": 40,
+    "4": 6,
+    "3": 2,
+    "2": 2,
+    "1": 4
+  },
+  "mean_rating": 4.407,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

@@ -1,0 +1,21 @@
+{
+  "store": "Google Play",
+  "package": "com.streakapp.habits",
+  "app_name": "Use Streak - Habit Tracker",
+  "extracted_at": "2026-09-08T13:21:29Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 5,
+  "languages_with_reviews": 1,
+  "reviews_per_language": {
+    "en": 5
+  },
+  "rating_distribution": {
+    "5": 4,
+    "4": 0,
+    "3": 1,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 4.6,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

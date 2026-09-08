@@ -1,0 +1,215 @@
+
+Duolingo: Language Lessons  (id 570060128)  by Duolingo, Inc
+Probing 176 storefronts for review counts...
+  probed 25/176
+  probed 50/176
+  probed 75/176
+  probed 100/176
+  probed 125/176
+  probed 150/176
+  probed 175/176
+  probed 176/176
+
+1,252,708 reviews across 171 storefronts
+   store                 reviews   share
+   United States         391,203    31.2%
+   United Kingdom         75,128     6.0%
+   China mainland         56,218     4.5%
+   Brazil                 56,079     4.5%
+   Russia                 49,192     3.9%
+   Mexico                 47,138     3.8%
+   Canada                 47,032     3.8%
+   France                 40,693     3.2%
+   Germany                39,398     3.1%
+   Vietnam                36,563     2.9%
+   Turkey                 31,603     2.5%
+   Australia              28,974     2.3%
+   Japan                  28,644     2.3%
+   Spain                  23,439     1.9%
+   South Korea            19,661     1.6%
+   Italy                  18,529     1.5%
+   Netherlands            16,283     1.3%
+   Colombia               13,727     1.1%
+   Poland                 12,934     1.0%
+   Sweden                 12,812     1.0%
+   ...and 151 more storefronts (207,458 reviews)
+
+Estimated requests: ~2,616
+
+Extracting into out/570060128/ ...
+  [gb] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [cn] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [us] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [  4/171] fr France            40,693/40,693 (100.0%)  +40,693 new
+  [br] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [  6/171] jp Japan             28,644/28,644 (100.0%)  +0 new
+  [  7/171] mx Mexico            47,138/47,138 (100.0%)  +47,138 new
+  [  8/171] kr South Korea       19,661/19,661 (100.0%)  +0 new
+  [  9/171] ca Canada            47,032/47,032 (100.0%)  +47,032 new
+  [ 10/171] ru Russia            49,192/49,192 (100.0%)  +49,192 new
+  [es] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [au] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [co] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [it] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [ 15/171] nl Netherlands       16,283/16,283 (100.0%)  +16,283 new
+  [ 16/171] pl Poland            12,934/12,934 (100.0%)  +12,934 new
+  [ 17/171] in India              8,985/8,985 (100.0%)  +0 new
+  [ 18/171] se Sweden            12,812/12,812 (100.0%)  +12,812 new
+  [ 19/171] cl Chile             10,234/10,234 (100.0%)  +10,234 new
+  [ 20/171] vn Vietnam           36,563/36,563 (100.0%)  +36,563 new
+  [ 21/171] tw Taiwan             9,766/9,766 (100.0%)  +9,766 new
+  [th] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [ 23/171] ar Argentina          8,623/8,623 (100.0%)  +8,623 new
+  [ 24/171] tr Turkey            31,603/31,603 (100.0%)  +31,603 new
+  [ 25/171] de Germany           39,398/39,398 (100.0%)  +39,398 new
+  [ 26/171] ch Switzerland        7,171/7,171 (100.0%)  +7,171 new
+  [cz] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [ 28/171] ua Ukraine            9,013/9,013 (100.0%)  +9,013 new
+  [ 29/171] no Norway             7,020/7,020 (100.0%)  +7,020 new
+  [ae] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [fi] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [ 32/171] be Belgium            6,534/6,534 (100.0%)  +6,534 new
+  [ 33/171] sa Saudi Arabia       6,106/6,106 (100.0%)  +6,106 new
+  [ 34/171] pe Peru               4,297/4,297 (100.0%)  +4,297 new
+  [ 35/171] ie Ireland            4,414/4,414 (100.0%)  +4,414 new
+  [ 36/171] id Indonesia          5,249/5,249 (100.0%)  +5,249 new
+  [ 37/171] dk Denmark            5,520/5,520 (100.0%)  +5,520 new
+  [ 38/171] ro Romania            4,200/4,200 (100.0%)  +4,200 new
+  [hu] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [kz] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [ 41/171] pt Portugal           3,627/3,627 (100.0%)  +3,627 new
+  [ 42/171] at Austria            3,700/3,700 (100.0%)  +3,700 new
+  [ 43/171] ph Philippines        3,308/3,308 (100.0%)  +3,308 new
+  [ 44/171] sg Singapore          3,360/3,360 (100.0%)  +3,360 new
+  [ 45/171] do                    3,551/3,551 (100.0%)  +3,551 new
+  [ 46/171] nz New Zealand        3,457/3,457 (100.0%)  +3,457 new
+  [ve] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [ 48/171] gt                    3,139/3,139 (100.0%)  +3,139 new
+  [ 49/171] hk Hong Kong          3,271/3,271 (100.0%)  +3,271 new
+  [ 50/171] cr                    1,999/1,999 (100.0%)  +1,999 new
+  [ 51/171] za South Africa       3,088/3,088 (100.0%)  +3,088 new
+  [ 52/171] ec                    2,807/2,807 (100.0%)  +2,807 new
+  [ 53/171] my Malaysia           2,882/2,882 (100.0%)  +2,882 new
+  [ 54/171] eg Egypt              1,823/1,823 (100.0%)  +1,823 new
+  [ 55/171] il Israel             2,919/2,919 (100.0%)  +2,919 new
+  [ 56/171] ng Nigeria            1,869/1,869 (100.0%)  +1,869 new
+  [ 57/171] hr                      982/982 (100.0%)  +982 new
+  [ 58/171] sk                    1,601/1,601 (100.0%)  +1,601 new
+  [ 59/171] gr Greece             1,514/1,514 (100.0%)  +1,514 new
+  [ 60/171] hn                    1,135/1,135 (100.0%)  +1,135 new
+  [ 61/171] lt                      948/948 (100.0%)  +948 new
+  [ 62/171] pk Pakistan           1,083/1,083 (100.0%)  +1,083 new
+  [ 63/171] by                    1,085/1,085 (100.0%)  +1,085 new
+  [ 64/171] pa                    1,022/1,022 (100.0%)  +1,022 new
+  [ 65/171] uy                      907/907 (100.0%)  +907 new
+  [ 66/171] bg                      897/897 (100.0%)  +897 new
+  [ 67/171] az                      928/928 (100.0%)  +928 new
+  [ 68/171] lv                      817/817 (100.0%)  +817 new
+  [ 69/171] kw                      755/755 (100.0%)  +755 new
+  [ 70/171] sv                      809/809 (100.0%)  +809 new
+  [ 71/171] ee                      751/751 (100.0%)  +751 new
+  [ 72/171] gh                      732/732 (100.0%)  +732 new
+  [ 73/171] mn                      675/675 (100.0%)  +675 new
+  [ 74/171] ge                      697/697 (100.0%)  +697 new
+  [ 75/171] py                      609/609 (100.0%)  +609 new
+  [ 76/171] rs                      566/566 (100.0%)  +566 new
+  [ 77/171] lb                      566/566 (100.0%)  +566 new
+  [ 78/171] uz                      624/624 (100.0%)  +624 new
+  [ 79/171] qa                      609/609 (100.0%)  +609 new
+  [ 80/171] jo                      514/514 (100.0%)  +514 new
+  [ 81/171] ni                      459/459 (100.0%)  +459 new
+  [ 82/171] ma                      572/572 (100.0%)  +572 new
+  [ 83/171] lk                      457/457 (100.0%)  +457 new
+  [ 84/171] kg                      457/457 (100.0%)  +457 new
+  [ 85/171] si                      433/433 (100.0%)  +433 new
+  [ 86/171] am                      422/422 (100.0%)  +422 new
+  [ 87/171] cy                      422/422 (100.0%)  +422 new
+  [ 88/171] al                      428/428 (100.0%)  +428 new
+  [ 89/171] md                      404/404 (100.0%)  +404 new
+  [ 90/171] bo                      525/525 (100.0%)  +525 new
+  [ 91/171] dz                      390/390 (100.0%)  +390 new
+  [ 92/171] ci                      395/395 (100.0%)  +395 new
+  [ 93/171] ke                      378/378 (100.0%)  +378 new
+  [ 94/171] ao                      379/379 (100.0%)  +379 new
+  [ 95/171] om                      364/364 (100.0%)  +364 new
+  [ 96/171] kh                      310/310 (100.0%)  +310 new
+  [ 97/171] is                      319/319 (100.0%)  +319 new
+  [ 98/171] sn                      355/355 (100.0%)  +355 new
+  [ 99/171] cd                      277/277 (100.0%)  +277 new
+  [100/171] cm                      298/298 (100.0%)  +298 new
+  [101/171] lu                      414/414 (100.0%)  +414 new
+  [102/171] ug                      270/270 (100.0%)  +270 new
+  [103/171] jm                      222/222 (100.0%)  +222 new
+  [104/171] tt                      214/214 (100.0%)  +214 new
+  [105/171] np                      264/264 (100.0%)  +264 new
+  [106/171] mt                      220/220 (100.0%)  +220 new
+  [107/171] mk                      162/162 (100.0%)  +162 new
+  [108/171] bh                      276/276 (100.0%)  +276 new
+  [109/171] tn                      160/160 (100.0%)  +160 new
+  [110/171] mo                      144/144 (100.0%)  +144 new
+  [111/171] mz                      129/129 (100.0%)  +129 new
+  [112/171] ml                      128/128 (100.0%)  +128 new
+  [113/171] tz                      190/190 (100.0%)  +190 new
+  [114/171] zw                      111/111 (100.0%)  +111 new
+  [115/171] cg                      130/130 (100.0%)  +130 new
+  [116/171] ba                      100/100 (100.0%)  +100 new
+  [117/171] xk                      105/105 (100.0%)  +105 new
+  [118/171] bj                      104/104 (100.0%)  +104 new
+  [119/171] ly                       91/91 (100.0%)  +91 new
+  [120/171] na                       86/86 (100.0%)  +86 new
+  [121/171] zm                       82/82 (100.0%)  +82 new
+  [122/171] mm                       75/75 (100.0%)  +75 new
+  [123/171] ye                       98/98 (100.0%)  +98 new
+  [124/171] bf                       79/79 (100.0%)  +79 new
+  [125/171] mu                       74/74 (100.0%)  +74 new
+  [126/171] la                       66/66 (100.0%)  +66 new
+  [127/171] me                       96/96 (100.0%)  +96 new
+  [128/171] bs                       65/65 (100.0%)  +65 new
+  [129/171] mr                       65/65 (100.0%)  +65 new
+  [130/171] tj                       62/62 (100.0%)  +62 new
+  [131/171] tm                       61/61 (100.0%)  +61 new
+  [132/171] mg                       57/57 (100.0%)  +57 new
+  [133/171] gm                       48/48 (100.0%)  +48 new
+  [134/171] bw                       50/50 (100.0%)  +50 new
+  [135/171] ga                       55/55 (100.0%)  +55 new
+  [136/171] bb                       39/39 (100.0%)  +39 new
+  [137/171] gy                       47/47 (100.0%)  +47 new
+  [138/171] mv                       31/31 (100.0%)  +31 new
+  [139/171] bn                       26/26 (100.0%)  +26 new
+  [140/171] sl                       27/27 (100.0%)  +27 new
+  [141/171] tc                       27/27 (100.0%)  +27 new
+  [142/171] td                       25/25 (100.0%)  +25 new
+  [143/171] lc                       29/29 (100.0%)  +29 new
+  [144/171] ai                       24/24 (100.0%)  +24 new
+  [145/171] sr                       24/24 (100.0%)  +24 new
+  [146/171] rw                       29/29 (100.0%)  +29 new
+  [147/171] bm                       23/23 (100.0%)  +23 new
+  [148/171] dm                       23/23 (100.0%)  +23 new
+  [149/171] mw                       23/23 (100.0%)  +23 new
+  [150/171] ky                       19/19 (100.0%)  +19 new
+  [151/171] fj                       15/15 (100.0%)  +15 new
+  [152/171] lr                       17/17 (100.0%)  +17 new
+  [153/171] bz                       21/21 (100.0%)  +21 new
+  [154/171] ag                       13/13 (100.0%)  +13 new
+  [155/171] ne                       13/13 (100.0%)  +13 new
+  [156/171] vg                       13/13 (100.0%)  +13 new
+  [157/171] sc                       13/13 (100.0%)  +13 new
+  [158/171] cv                       12/12 (100.0%)  +12 new
+  [159/171] pg                       11/11 (100.0%)  +11 new
+  [160/171] bt                       10/10 (100.0%)  +10 new
+  [161/171] sz                       10/10 (100.0%)  +10 new
+  [162/171] gw                        9/9 (100.0%)  +9 new
+  [163/171] kn                        7/7 (100.0%)  +7 new
+  [164/171] gd                        7/7 (100.0%)  +7 new
+  [vc] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [166/171] fm                        1/1 (100.0%)  +1 new
+  [pw] error: [Errno 2] No such file or directory: 'out/570060128/_state.json.tmp' -> 'out/570060128/_state.json'
+  [168/171] ms                        1/1 (100.0%)  +1 new
+  [169/171] sb                        1/1 (100.0%)  +1 new
+  [170/171] st                        1/1 (100.0%)  +1 new
+  [171/171] vu                        1/1 (100.0%)  +1 new
+
+Done in 7.2 min -- 500,610 new reviews this run
+  out/570060128/reviews.jsonl  (1,133,168 reviews)
+  out/570060128/manifest.json
+  mean rating 4.021  across 171 storefronts

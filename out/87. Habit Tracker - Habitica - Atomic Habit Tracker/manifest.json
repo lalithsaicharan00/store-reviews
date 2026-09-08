@@ -1,0 +1,32 @@
+{
+  "app_id": "6480409654",
+  "app_name": "Habit Tracker - Habitica",
+  "developer": "Anton Churakov",
+  "bundle_id": "com.AntonChurakov.HabitTracker",
+  "extracted_at": "2026-09-08T12:04:01Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 17,
+  "storefronts_with_reviews": 8,
+  "reviews_per_country": {
+    "us": 7,
+    "ru": 3,
+    "ae": 2,
+    "au": 1,
+    "bh": 1,
+    "br": 1,
+    "fr": 1,
+    "si": 1
+  },
+  "rating_distribution": {
+    "5": 11,
+    "4": 2,
+    "3": 1,
+    "2": 1,
+    "1": 2
+  },
+  "mean_rating": 4.118,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

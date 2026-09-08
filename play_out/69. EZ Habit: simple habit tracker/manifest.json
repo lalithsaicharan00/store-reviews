@@ -1,0 +1,43 @@
+{
+  "store": "Google Play",
+  "package": "com.aweydev.ezhabit",
+  "app_name": "EZ Habit: simple habit tracker",
+  "extracted_at": "2026-09-08T12:51:57Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 578,
+  "languages_with_reviews": 23,
+  "reviews_per_language": {
+    "en": 370,
+    "es": 40,
+    "id": 35,
+    "pt": 20,
+    "vi": 16,
+    "de": 15,
+    "ru": 14,
+    "ar": 13,
+    "fr": 12,
+    "ko": 8,
+    "tr": 6,
+    "uk": 5,
+    "zh-TW": 5,
+    "it": 4,
+    "zh-CN": 3,
+    "fa": 2,
+    "hu": 2,
+    "pl": 2,
+    "th": 2,
+    "bg": 1,
+    "cs": 1,
+    "ja": 1,
+    "sr": 1
+  },
+  "rating_distribution": {
+    "5": 397,
+    "4": 109,
+    "3": 31,
+    "2": 7,
+    "1": 34
+  },
+  "mean_rating": 4.433,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

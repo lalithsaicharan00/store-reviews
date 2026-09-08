@@ -1,0 +1,42 @@
+{
+  "app_id": "1439938837",
+  "app_name": "Habit Streak Tracker: DotHabit",
+  "developer": "Mono Incorporated",
+  "bundle_id": "com.supernora.DotHabit",
+  "extracted_at": "2026-09-08T11:52:57Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 589,
+  "storefronts_with_reviews": 18,
+  "reviews_per_country": {
+    "jp": 369,
+    "kr": 92,
+    "cn": 32,
+    "br": 24,
+    "tw": 24,
+    "es": 10,
+    "fr": 9,
+    "us": 7,
+    "ar": 6,
+    "it": 4,
+    "mx": 4,
+    "au": 2,
+    "co": 1,
+    "de": 1,
+    "my": 1,
+    "pa": 1,
+    "sa": 1,
+    "sg": 1
+  },
+  "rating_distribution": {
+    "5": 277,
+    "4": 131,
+    "3": 58,
+    "2": 43,
+    "1": 80
+  },
+  "mean_rating": 3.818,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "store": "Google Play",
+  "package": "com.shellz.habitt",
+  "app_name": "Habitt: Private Habit Tracker",
+  "extracted_at": "2026-09-08T13:23:41Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 3,
+  "languages_with_reviews": 2,
+  "reviews_per_language": {
+    "en": 2,
+    "bs": 1
+  },
+  "rating_distribution": {
+    "5": 3,
+    "4": 0,
+    "3": 0,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 5.0,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

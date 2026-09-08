@@ -1,0 +1,52 @@
+{
+  "app_id": "6737206675",
+  "app_name": "Habit Tracker: Streak-Free",
+  "developer": "Beaucode Ventures UG (haftungsbeschraenkt)",
+  "bundle_id": "Beaucode.Momentumly",
+  "extracted_at": "2026-09-08T12:01:45Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 71,
+  "storefronts_with_reviews": 28,
+  "reviews_per_country": {
+    "de": 17,
+    "in": 10,
+    "us": 10,
+    "nl": 4,
+    "be": 2,
+    "cn": 2,
+    "es": 2,
+    "fr": 2,
+    "mx": 2,
+    "pe": 2,
+    "ar": 1,
+    "bg": 1,
+    "br": 1,
+    "ca": 1,
+    "cz": 1,
+    "dk": 1,
+    "ec": 1,
+    "eg": 1,
+    "gb": 1,
+    "hn": 1,
+    "id": 1,
+    "kr": 1,
+    "ph": 1,
+    "pk": 1,
+    "pl": 1,
+    "pt": 1,
+    "ro": 1,
+    "se": 1
+  },
+  "rating_distribution": {
+    "5": 50,
+    "4": 8,
+    "3": 4,
+    "2": 3,
+    "1": 6
+  },
+  "mean_rating": 4.31,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

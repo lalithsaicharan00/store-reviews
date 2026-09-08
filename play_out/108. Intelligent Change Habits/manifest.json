@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.intelligenthabits",
+  "app_name": "Intelligent Change Habits",
+  "extracted_at": "2026-09-08T13:01:59Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 19,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 13,
+    "es": 2,
+    "de": 1,
+    "it": 1,
+    "pl": 1,
+    "vi": 1
+  },
+  "rating_distribution": {
+    "5": 4,
+    "4": 0,
+    "3": 3,
+    "2": 4,
+    "1": 8
+  },
+  "mean_rating": 2.368,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

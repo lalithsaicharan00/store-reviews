@@ -1,0 +1,24 @@
+{
+  "store": "Google Play",
+  "package": "com.vgw.habit",
+  "app_name": "Habit — Online Video Calls",
+  "extracted_at": "2026-09-08T13:19:59Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 45,
+  "languages_with_reviews": 4,
+  "reviews_per_language": {
+    "en": 40,
+    "ar": 2,
+    "hi": 2,
+    "bn": 1
+  },
+  "rating_distribution": {
+    "5": 27,
+    "4": 5,
+    "3": 3,
+    "2": 2,
+    "1": 8
+  },
+  "mean_rating": 3.911,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

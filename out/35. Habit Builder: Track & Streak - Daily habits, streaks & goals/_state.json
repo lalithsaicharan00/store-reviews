@@ -1,0 +1,17 @@
+{
+ "app_id": "6789635670",
+ "countries": {
+  "au": {
+   "complete": true,
+   "collected": 0,
+   "total": 0,
+   "updated": "2026-09-08T11:49:22Z"
+  },
+  "in": {
+   "complete": true,
+   "collected": 0,
+   "total": 0,
+   "updated": "2026-09-08T11:49:22Z"
+  }
+ }
+}

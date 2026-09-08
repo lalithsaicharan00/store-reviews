@@ -1,0 +1,23 @@
+{
+  "store": "Google Play",
+  "package": "com.bytes.habittrackerpro",
+  "app_name": "Daily habit tracker",
+  "extracted_at": "2026-09-08T12:53:38Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 6,
+  "languages_with_reviews": 3,
+  "reviews_per_language": {
+    "en": 4,
+    "cs": 1,
+    "zh-TW": 1
+  },
+  "rating_distribution": {
+    "5": 2,
+    "4": 0,
+    "3": 2,
+    "2": 1,
+    "1": 1
+  },
+  "mean_rating": 3.167,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

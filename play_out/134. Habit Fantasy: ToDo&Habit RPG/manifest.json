@@ -1,0 +1,24 @@
+{
+  "store": "Google Play",
+  "package": "pro.habitfantasy.app",
+  "app_name": "Habit Fantasy: ToDo&Habit RPG",
+  "extracted_at": "2026-09-08T13:21:17Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 62,
+  "languages_with_reviews": 4,
+  "reviews_per_language": {
+    "ko": 33,
+    "pt": 24,
+    "en": 4,
+    "vi": 1
+  },
+  "rating_distribution": {
+    "5": 50,
+    "4": 9,
+    "3": 2,
+    "2": 0,
+    "1": 1
+  },
+  "mean_rating": 4.726,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

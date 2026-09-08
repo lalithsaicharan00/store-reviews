@@ -1,0 +1,43 @@
+{
+  "store": "Google Play",
+  "package": "planner.task.todolist.habit",
+  "app_name": "iTask - To Do List & Planner",
+  "extracted_at": "2026-09-08T12:58:40Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 641,
+  "languages_with_reviews": 23,
+  "reviews_per_language": {
+    "pt": 122,
+    "es": 105,
+    "en": 87,
+    "ar": 66,
+    "ru": 65,
+    "tr": 56,
+    "id": 34,
+    "vi": 29,
+    "fr": 22,
+    "fa": 15,
+    "zh-TW": 9,
+    "it": 6,
+    "uz": 4,
+    "zh-CN": 4,
+    "de": 3,
+    "ja": 3,
+    "ko": 3,
+    "uk": 3,
+    "az": 1,
+    "bn": 1,
+    "cs": 1,
+    "nl": 1,
+    "th": 1
+  },
+  "rating_distribution": {
+    "5": 578,
+    "4": 41,
+    "3": 10,
+    "2": 4,
+    "1": 8
+  },
+  "mean_rating": 4.836,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

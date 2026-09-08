@@ -1,0 +1,21 @@
+{
+  "store": "Google Play",
+  "package": "com.SerhiiHryn.HabitTracker",
+  "app_name": "Habitee: Daily Habit Tracker",
+  "extracted_at": "2026-09-08T13:23:00Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 1,
+  "languages_with_reviews": 1,
+  "reviews_per_language": {
+    "en": 1
+  },
+  "rating_distribution": {
+    "5": 0,
+    "4": 1,
+    "3": 0,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 4.0,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

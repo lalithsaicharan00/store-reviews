@@ -1,0 +1,29 @@
+{
+  "store": "Google Play",
+  "package": "app.gainaura.habits",
+  "app_name": "Aura: Habit Tracker & Streaks",
+  "extracted_at": "2026-09-08T12:38:07Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 58,
+  "languages_with_reviews": 9,
+  "reviews_per_language": {
+    "en": 21,
+    "es": 19,
+    "vi": 6,
+    "pt": 4,
+    "de": 3,
+    "pl": 2,
+    "ko": 1,
+    "lv": 1,
+    "th": 1
+  },
+  "rating_distribution": {
+    "5": 38,
+    "4": 5,
+    "3": 5,
+    "2": 3,
+    "1": 7
+  },
+  "mean_rating": 4.103,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

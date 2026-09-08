@@ -1,0 +1,24 @@
+{
+  "store": "Google Play",
+  "package": "io.habitforge.habitforge",
+  "app_name": "HabitForge: Habit Tracker RPG",
+  "extracted_at": "2026-09-08T13:05:11Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 6,
+  "languages_with_reviews": 4,
+  "reviews_per_language": {
+    "en": 3,
+    "de": 1,
+    "ru": 1,
+    "uz": 1
+  },
+  "rating_distribution": {
+    "5": 3,
+    "4": 1,
+    "3": 2,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 4.167,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

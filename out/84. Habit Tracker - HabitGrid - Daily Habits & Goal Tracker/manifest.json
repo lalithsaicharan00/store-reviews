@@ -1,0 +1,52 @@
+{
+  "app_id": "6746483721",
+  "app_name": "Habit Tracker - HabitGrid",
+  "developer": "Edvard Adam Eros",
+  "bundle_id": "com.edvarderos.habitGrid",
+  "extracted_at": "2026-09-08T12:03:04Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 86,
+  "storefronts_with_reviews": 28,
+  "reviews_per_country": {
+    "ru": 37,
+    "us": 8,
+    "fr": 5,
+    "ro": 4,
+    "es": 3,
+    "co": 2,
+    "gb": 2,
+    "hu": 2,
+    "kg": 2,
+    "ph": 2,
+    "ua": 2,
+    "be": 1,
+    "br": 1,
+    "ca": 1,
+    "ch": 1,
+    "cn": 1,
+    "cz": 1,
+    "de": 1,
+    "do": 1,
+    "fi": 1,
+    "my": 1,
+    "ng": 1,
+    "nl": 1,
+    "no": 1,
+    "pe": 1,
+    "sa": 1,
+    "tr": 1,
+    "vn": 1
+  },
+  "rating_distribution": {
+    "5": 81,
+    "4": 4,
+    "3": 1,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 4.93,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

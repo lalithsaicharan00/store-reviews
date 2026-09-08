@@ -1,0 +1,35 @@
+{
+  "store": "Google Play",
+  "package": "com.aura.streaktracker",
+  "app_name": "Streak Tracker - StreakUp",
+  "extracted_at": "2026-09-08T12:26:58Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 185,
+  "languages_with_reviews": 15,
+  "reviews_per_language": {
+    "en": 143,
+    "es": 10,
+    "fr": 7,
+    "ru": 5,
+    "de": 3,
+    "id": 3,
+    "vi": 3,
+    "ro": 2,
+    "sv": 2,
+    "tr": 2,
+    "ar": 1,
+    "pl": 1,
+    "pt": 1,
+    "th": 1,
+    "uz": 1
+  },
+  "rating_distribution": {
+    "5": 110,
+    "4": 24,
+    "3": 12,
+    "2": 8,
+    "1": 31
+  },
+  "mean_rating": 3.941,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

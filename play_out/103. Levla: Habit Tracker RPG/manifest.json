@@ -1,0 +1,29 @@
+{
+  "store": "Google Play",
+  "package": "com.lifeborne.app",
+  "app_name": "Levla: Habit Tracker RPG",
+  "extracted_at": "2026-09-08T13:00:46Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 97,
+  "languages_with_reviews": 9,
+  "reviews_per_language": {
+    "en": 79,
+    "pt": 6,
+    "es": 3,
+    "fr": 3,
+    "ru": 2,
+    "de": 1,
+    "et": 1,
+    "lv": 1,
+    "nl": 1
+  },
+  "rating_distribution": {
+    "5": 76,
+    "4": 8,
+    "3": 3,
+    "2": 2,
+    "1": 8
+  },
+  "mean_rating": 4.464,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

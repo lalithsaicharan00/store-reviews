@@ -1,0 +1,42 @@
+{
+  "store": "Google Play",
+  "package": "com.habityou.planner.goals.journal.habittracker",
+  "app_name": "Habit Tracker n Pets: HabitYou",
+  "extracted_at": "2026-09-08T13:01:31Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 987,
+  "languages_with_reviews": 22,
+  "reviews_per_language": {
+    "en": 715,
+    "es": 65,
+    "fr": 33,
+    "id": 30,
+    "pt": 27,
+    "de": 26,
+    "it": 20,
+    "pl": 17,
+    "ru": 13,
+    "cs": 7,
+    "tr": 7,
+    "nl": 6,
+    "vi": 6,
+    "ro": 3,
+    "ar": 2,
+    "ca": 2,
+    "fa": 2,
+    "ko": 2,
+    "da": 1,
+    "el": 1,
+    "hu": 1,
+    "zh-CN": 1
+  },
+  "rating_distribution": {
+    "5": 710,
+    "4": 111,
+    "3": 56,
+    "2": 47,
+    "1": 63
+  },
+  "mean_rating": 4.376,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

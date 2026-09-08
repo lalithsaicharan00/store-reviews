@@ -1,0 +1,36 @@
+{
+  "store": "Google Play",
+  "package": "com.tiimo.androidappreactnative",
+  "app_name": "Tiimo: Daily To Do List",
+  "extracted_at": "2026-09-08T13:05:21Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 223,
+  "languages_with_reviews": 16,
+  "reviews_per_language": {
+    "en": 136,
+    "pt": 26,
+    "es": 20,
+    "fr": 10,
+    "fa": 7,
+    "id": 6,
+    "nl": 4,
+    "de": 3,
+    "pl": 3,
+    "da": 2,
+    "it": 1,
+    "ru": 1,
+    "sv": 1,
+    "th": 1,
+    "vi": 1,
+    "zh-CN": 1
+  },
+  "rating_distribution": {
+    "5": 114,
+    "4": 23,
+    "3": 29,
+    "2": 17,
+    "1": 40
+  },
+  "mean_rating": 3.691,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

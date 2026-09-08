@@ -1,0 +1,53 @@
+{
+  "app_id": "1518956326",
+  "app_name": "MyRoutine: Organize your day",
+  "developer": "Minding. co., Ltd.",
+  "bundle_id": "com.minding.myroutine",
+  "extracted_at": "2026-09-08T11:43:46Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 2048,
+  "storefronts_with_reviews": 29,
+  "reviews_per_country": {
+    "kr": 1599,
+    "jp": 223,
+    "us": 84,
+    "tw": 35,
+    "gb": 23,
+    "au": 17,
+    "ca": 15,
+    "hk": 7,
+    "vn": 7,
+    "fr": 6,
+    "nl": 5,
+    "id": 3,
+    "th": 3,
+    "de": 2,
+    "it": 2,
+    "ph": 2,
+    "ru": 2,
+    "sg": 2,
+    "be": 1,
+    "br": 1,
+    "ch": 1,
+    "co": 1,
+    "ie": 1,
+    "kz": 1,
+    "lt": 1,
+    "no": 1,
+    "nz": 1,
+    "pl": 1,
+    "tr": 1
+  },
+  "rating_distribution": {
+    "5": 1069,
+    "4": 322,
+    "3": 216,
+    "2": 109,
+    "1": 332
+  },
+  "mean_rating": 3.824,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

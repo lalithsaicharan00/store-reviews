@@ -1,0 +1,30 @@
+{
+  "store": "Google Play",
+  "package": "com.nek12.respawn",
+  "app_name": "Respawn - Routines & Habits",
+  "extracted_at": "2026-09-08T13:21:07Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 94,
+  "languages_with_reviews": 10,
+  "reviews_per_language": {
+    "en": 67,
+    "es": 8,
+    "ru": 6,
+    "fr": 3,
+    "pl": 3,
+    "pt": 3,
+    "de": 1,
+    "id": 1,
+    "it": 1,
+    "uk": 1
+  },
+  "rating_distribution": {
+    "5": 48,
+    "4": 18,
+    "3": 13,
+    "2": 2,
+    "1": 13
+  },
+  "mean_rating": 3.915,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

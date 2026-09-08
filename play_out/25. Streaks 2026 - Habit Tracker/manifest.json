@@ -1,0 +1,22 @@
+{
+  "store": "Google Play",
+  "package": "com.extendztech.streaks",
+  "app_name": "Streaks 2026 - Habit Tracker",
+  "extracted_at": "2026-09-08T12:41:49Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 12,
+  "languages_with_reviews": 2,
+  "reviews_per_language": {
+    "en": 11,
+    "de": 1
+  },
+  "rating_distribution": {
+    "5": 6,
+    "4": 2,
+    "3": 1,
+    "2": 1,
+    "1": 2
+  },
+  "mean_rating": 3.75,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

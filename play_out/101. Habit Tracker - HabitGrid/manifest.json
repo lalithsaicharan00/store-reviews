@@ -1,0 +1,37 @@
+{
+  "store": "Google Play",
+  "package": "edvarderos.habitgrid",
+  "app_name": "Habit Tracker - HabitGrid",
+  "extracted_at": "2026-09-08T13:00:24Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 153,
+  "languages_with_reviews": 17,
+  "reviews_per_language": {
+    "en": 65,
+    "ru": 49,
+    "ar": 9,
+    "es": 7,
+    "pt": 5,
+    "uk": 4,
+    "id": 2,
+    "ko": 2,
+    "pl": 2,
+    "de": 1,
+    "el": 1,
+    "fr": 1,
+    "hu": 1,
+    "kk": 1,
+    "tr": 1,
+    "vi": 1,
+    "zh-CN": 1
+  },
+  "rating_distribution": {
+    "5": 134,
+    "4": 14,
+    "3": 2,
+    "2": 1,
+    "1": 2
+  },
+  "mean_rating": 4.81,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

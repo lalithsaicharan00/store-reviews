@@ -1,0 +1,35 @@
+{
+  "app_id": "1120239484",
+  "app_name": "Habit: Daily routine tracker",
+  "developer": "bondavi Inc.",
+  "bundle_id": "info.todice.habit",
+  "extracted_at": "2026-09-08T12:00:03Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 2290,
+  "storefronts_with_reviews": 11,
+  "reviews_per_country": {
+    "jp": 2259,
+    "cn": 11,
+    "tw": 7,
+    "us": 6,
+    "au": 1,
+    "be": 1,
+    "ca": 1,
+    "ch": 1,
+    "de": 1,
+    "hk": 1,
+    "my": 1
+  },
+  "rating_distribution": {
+    "5": 1948,
+    "4": 202,
+    "3": 64,
+    "2": 26,
+    "1": 50
+  },
+  "mean_rating": 4.734,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

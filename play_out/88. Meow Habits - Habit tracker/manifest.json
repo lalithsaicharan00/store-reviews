@@ -1,0 +1,28 @@
+{
+  "store": "Google Play",
+  "package": "com.glgjing.meow.habit.goal",
+  "app_name": "Meow Habits - Habit tracker",
+  "extracted_at": "2026-09-08T12:57:27Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 16,
+  "languages_with_reviews": 8,
+  "reviews_per_language": {
+    "en": 8,
+    "ru": 2,
+    "ar": 1,
+    "es": 1,
+    "fa": 1,
+    "it": 1,
+    "pl": 1,
+    "zh-TW": 1
+  },
+  "rating_distribution": {
+    "5": 10,
+    "4": 3,
+    "3": 2,
+    "2": 0,
+    "1": 1
+  },
+  "mean_rating": 4.312,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

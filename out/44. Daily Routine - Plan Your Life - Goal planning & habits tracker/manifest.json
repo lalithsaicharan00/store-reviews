@@ -1,0 +1,32 @@
+{
+  "app_id": "1566698810",
+  "app_name": "Daily Routine - Plan Your Life",
+  "developer": "Le Nhung",
+  "bundle_id": "com.redstar.WeekPlan2",
+  "extracted_at": "2026-09-08T11:51:30Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 33,
+  "storefronts_with_reviews": 8,
+  "reviews_per_country": {
+    "us": 26,
+    "br": 1,
+    "ca": 1,
+    "in": 1,
+    "ph": 1,
+    "pt": 1,
+    "rw": 1,
+    "vn": 1
+  },
+  "rating_distribution": {
+    "5": 25,
+    "4": 2,
+    "3": 0,
+    "2": 1,
+    "1": 5
+  },
+  "mean_rating": 4.242,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

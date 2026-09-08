@@ -1,0 +1,50 @@
+{
+  "app_id": "1477345602",
+  "app_name": "Daily Habit & Routine Tracker",
+  "developer": "CREATIVE TECHNOLOGIES LLC",
+  "bundle_id": "net.habittracker",
+  "extracted_at": "2026-09-08T11:51:00Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 206,
+  "storefronts_with_reviews": 26,
+  "reviews_per_country": {
+    "br": 55,
+    "us": 46,
+    "ru": 36,
+    "vn": 14,
+    "ca": 12,
+    "tr": 11,
+    "ua": 8,
+    "ar": 2,
+    "by": 2,
+    "jp": 2,
+    "pl": 2,
+    "th": 2,
+    "am": 1,
+    "bo": 1,
+    "ch": 1,
+    "co": 1,
+    "cz": 1,
+    "do": 1,
+    "es": 1,
+    "fr": 1,
+    "gb": 1,
+    "il": 1,
+    "kr": 1,
+    "lv": 1,
+    "no": 1,
+    "nz": 1
+  },
+  "rating_distribution": {
+    "5": 83,
+    "4": 12,
+    "3": 28,
+    "2": 16,
+    "1": 67
+  },
+  "mean_rating": 3.136,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

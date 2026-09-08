@@ -1,0 +1,52 @@
+{
+  "app_id": "6476824223",
+  "app_name": "HelloHabit - Habit Tracker",
+  "developer": "RightLife, Inc.",
+  "bundle_id": "com.studio.hellohabit",
+  "extracted_at": "2026-09-08T11:54:06Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 205,
+  "storefronts_with_reviews": 28,
+  "reviews_per_country": {
+    "us": 111,
+    "ca": 16,
+    "gb": 16,
+    "au": 12,
+    "in": 6,
+    "es": 5,
+    "mx": 5,
+    "kr": 4,
+    "ua": 4,
+    "de": 3,
+    "ae": 2,
+    "cn": 2,
+    "fr": 2,
+    "it": 2,
+    "ph": 2,
+    "ar": 1,
+    "at": 1,
+    "ch": 1,
+    "cz": 1,
+    "eg": 1,
+    "kz": 1,
+    "ng": 1,
+    "pl": 1,
+    "ro": 1,
+    "ru": 1,
+    "sa": 1,
+    "tr": 1,
+    "ug": 1
+  },
+  "rating_distribution": {
+    "5": 142,
+    "4": 20,
+    "3": 18,
+    "2": 5,
+    "1": 20
+  },
+  "mean_rating": 4.263,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

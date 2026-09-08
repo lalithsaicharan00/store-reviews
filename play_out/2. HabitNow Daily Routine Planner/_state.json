@@ -1,0 +1,461 @@
+{
+ "package": "com.habitnow",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 82,
+   "collected": 12263,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 50,
+   "collected": 7356,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 36,
+   "collected": 5307,
+   "complete": true
+  },
+  "ru": {
+   "token": null,
+   "pages": 2,
+   "collected": 226,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 5,
+   "collected": 660,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 6,
+   "collected": 843,
+   "complete": true
+  },
+  "it": {
+   "token": null,
+   "pages": 4,
+   "collected": 477,
+   "complete": true
+  },
+  "id": {
+   "token": null,
+   "pages": 2,
+   "collected": 222,
+   "complete": true
+  },
+  "tr": {
+   "token": null,
+   "pages": 1,
+   "collected": 121,
+   "complete": true
+  },
+  "ja": {
+   "token": null,
+   "pages": 1,
+   "collected": 107,
+   "complete": true
+  },
+  "ko": {
+   "token": null,
+   "pages": 2,
+   "collected": 226,
+   "complete": true
+  },
+  "zh-CN": {
+   "token": null,
+   "pages": 1,
+   "collected": 23,
+   "complete": true
+  },
+  "zh-TW": {
+   "token": null,
+   "pages": 1,
+   "collected": 32,
+   "complete": true
+  },
+  "pl": {
+   "token": null,
+   "pages": 2,
+   "collected": 214,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 126,
+   "complete": true
+  },
+  "vi": {
+   "token": null,
+   "pages": 1,
+   "collected": 62,
+   "complete": true
+  },
+  "th": {
+   "token": null,
+   "pages": 1,
+   "collected": 14,
+   "complete": true
+  },
+  "ar": {
+   "token": null,
+   "pages": 1,
+   "collected": 122,
+   "complete": true
+  },
+  "hi": {
+   "token": null,
+   "pages": 1,
+   "collected": 2,
+   "complete": true
+  },
+  "uk": {
+   "token": null,
+   "pages": 1,
+   "collected": 47,
+   "complete": true
+  },
+  "fa": {
+   "token": null,
+   "pages": 1,
+   "collected": 59,
+   "complete": true
+  },
+  "he": {
+   "token": null,
+   "pages": 1,
+   "collected": 34,
+   "complete": true
+  },
+  "bn": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "ta": {
+   "token": null,
+   "pages": 1,
+   "collected": 2,
+   "complete": true
+  },
+  "te": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "ml": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "kn": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "mr": {
+   "token": null,
+   "pages": 1,
+   "collected": 1,
+   "complete": true
+  },
+  "gu": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "pa": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "ur": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "ne": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "si": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "ms": {
+   "token": null,
+   "pages": 1,
+   "collected": 6,
+   "complete": true
+  },
+  "my": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "km": {
+   "token": null,
+   "pages": 1,
+   "collected": 1,
+   "complete": true
+  },
+  "lo": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "tl": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "cs": {
+   "token": null,
+   "pages": 1,
+   "collected": 68,
+   "complete": true
+  },
+  "sk": {
+   "token": null,
+   "pages": 1,
+   "collected": 18,
+   "complete": true
+  },
+  "sl": {
+   "token": null,
+   "pages": 1,
+   "collected": 8,
+   "complete": true
+  },
+  "hr": {
+   "token": null,
+   "pages": 1,
+   "collected": 17,
+   "complete": true
+  },
+  "sr": {
+   "token": null,
+   "pages": 1,
+   "collected": 21,
+   "complete": true
+  },
+  "bs": {
+   "token": null,
+   "pages": 1,
+   "collected": 1,
+   "complete": true
+  },
+  "mk": {
+   "token": null,
+   "pages": 1,
+   "collected": 2,
+   "complete": true
+  },
+  "bg": {
+   "token": null,
+   "pages": 1,
+   "collected": 14,
+   "complete": true
+  },
+  "ro": {
+   "token": null,
+   "pages": 1,
+   "collected": 49,
+   "complete": true
+  },
+  "hu": {
+   "token": null,
+   "pages": 1,
+   "collected": 36,
+   "complete": true
+  },
+  "el": {
+   "token": null,
+   "pages": 1,
+   "collected": 43,
+   "complete": true
+  },
+  "sq": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "sv": {
+   "token": null,
+   "pages": 1,
+   "collected": 57,
+   "complete": true
+  },
+  "no": {
+   "token": null,
+   "pages": 1,
+   "collected": 15,
+   "complete": true
+  },
+  "da": {
+   "token": null,
+   "pages": 1,
+   "collected": 13,
+   "complete": true
+  },
+  "fi": {
+   "token": null,
+   "pages": 1,
+   "collected": 16,
+   "complete": true
+  },
+  "is": {
+   "token": null,
+   "pages": 1,
+   "collected": 2,
+   "complete": true
+  },
+  "et": {
+   "token": null,
+   "pages": 1,
+   "collected": 2,
+   "complete": true
+  },
+  "lv": {
+   "token": null,
+   "pages": 1,
+   "collected": 10,
+   "complete": true
+  },
+  "lt": {
+   "token": null,
+   "pages": 1,
+   "collected": 10,
+   "complete": true
+  },
+  "af": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "sw": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "am": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "zu": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "yo": {
+   "token": null,
+   "pages": 82,
+   "collected": 12263,
+   "complete": true
+  },
+  "ha": {
+   "token": null,
+   "pages": 82,
+   "collected": 12263,
+   "complete": true
+  },
+  "ig": {
+   "token": null,
+   "pages": 82,
+   "collected": 12263,
+   "complete": true
+  },
+  "az": {
+   "token": null,
+   "pages": 1,
+   "collected": 6,
+   "complete": true
+  },
+  "kk": {
+   "token": null,
+   "pages": 1,
+   "collected": 3,
+   "complete": true
+  },
+  "ky": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "uz": {
+   "token": null,
+   "pages": 1,
+   "collected": 38,
+   "complete": true
+  },
+  "mn": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "ka": {
+   "token": null,
+   "pages": 1,
+   "collected": 1,
+   "complete": true
+  },
+  "hy": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "be": {
+   "token": null,
+   "pages": 1,
+   "collected": 1,
+   "complete": true
+  },
+  "ca": {
+   "token": null,
+   "pages": 1,
+   "collected": 17,
+   "complete": true
+  },
+  "eu": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "gl": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  }
+ }
+}

@@ -1,0 +1,47 @@
+{
+  "app_id": "1629764198",
+  "app_name": "Habit Check Calendar",
+  "developer": "Naoki Otsu",
+  "bundle_id": "com.weeklychecklist",
+  "extracted_at": "2026-09-08T12:00:48Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 151,
+  "storefronts_with_reviews": 23,
+  "reviews_per_country": {
+    "jp": 103,
+    "us": 12,
+    "ca": 5,
+    "cn": 5,
+    "br": 4,
+    "ru": 3,
+    "kr": 2,
+    "vn": 2,
+    "au": 1,
+    "cz": 1,
+    "eg": 1,
+    "es": 1,
+    "fr": 1,
+    "gb": 1,
+    "in": 1,
+    "it": 1,
+    "mx": 1,
+    "ph": 1,
+    "se": 1,
+    "th": 1,
+    "tr": 1,
+    "ua": 1,
+    "uz": 1
+  },
+  "rating_distribution": {
+    "5": 79,
+    "4": 21,
+    "3": 15,
+    "2": 6,
+    "1": 30
+  },
+  "mean_rating": 3.748,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

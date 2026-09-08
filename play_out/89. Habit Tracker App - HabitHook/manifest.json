@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.metaserve.habithook",
+  "app_name": "Habit Tracker App - HabitHook",
+  "extracted_at": "2026-09-08T12:57:36Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 53,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 47,
+    "ru": 2,
+    "de": 1,
+    "es": 1,
+    "hi": 1,
+    "pt": 1
+  },
+  "rating_distribution": {
+    "5": 46,
+    "4": 2,
+    "3": 2,
+    "2": 1,
+    "1": 2
+  },
+  "mean_rating": 4.679,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

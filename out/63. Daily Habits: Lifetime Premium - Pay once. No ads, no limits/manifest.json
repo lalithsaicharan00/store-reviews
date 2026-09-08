@@ -1,0 +1,25 @@
+{
+  "app_id": "1550003470",
+  "app_name": "Daily Habits: Lifetime Premium",
+  "developer": "Sergey Belychev",
+  "bundle_id": "com.free-simple-apps.habits.paid",
+  "extracted_at": "2026-09-08T11:57:58Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 1,
+  "storefronts_with_reviews": 1,
+  "reviews_per_country": {
+    "ru": 1
+  },
+  "rating_distribution": {
+    "5": 1,
+    "4": 0,
+    "3": 0,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 5.0,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}
