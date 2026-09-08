@@ -184,8 +184,8 @@ def app_titles(app_id, meta, cc="us"):
 
 
 def safe_dirname(text):
-    """Filesystem-safe folder segment; '/' is the only character macOS forbids."""
-    text = re.sub(r"[/\\\x00-\x1f]", "-", text)
+    """Return a folder segment valid on both macOS and Windows."""
+    text = re.sub(r'[<>:"/\\|?*\x00-\x1f]', "-", text)
     text = re.sub(r"\s+", " ", text).strip(" .")
     return text[:120]
 

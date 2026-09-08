@@ -61,12 +61,12 @@ If the first line isn't the app you meant, rerun with the numeric ID.
 
 ## What it creates
 
-Each app gets its **own numbered folder**, named exactly as the App Store displays it —
-the app title, then its subtitle:
+Each app gets its **own numbered folder**, based on the app title and subtitle. Characters
+that Windows does not permit in folder names are replaced with hyphens:
 
 ```
 out/
-  1. Duolingo: Language Lessons - Languages, Math, Music & Chess/
+  1. Duolingo - Language Lessons - Languages, Math, Music & Chess/
        reviews.jsonl          <- every review, all countries, one file
        by_country/
          us.jsonl             <- same reviews, split per storefront

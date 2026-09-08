@@ -290,7 +290,7 @@ def harvest(pkg, app_name, hl, store, page_size, max_pages):
 
 
 def safe_dirname(t):
-    t = re.sub(r"[/\\\x00-\x1f]", "-", t or "")
+    t = re.sub(r'[<>:"/\\|?*\x00-\x1f]', "-", t or "")
     return re.sub(r"\s+", " ", t).strip(" .")[:120]
 
 
