@@ -1,0 +1,11 @@
+# ---------------------------------------------------------------
+# Working scratch directory for Claude Code / agent sessions.
+# Contents are intentionally UNTRACKED — they are intermediate
+# analysis artifacts, not deliverables.
+# The README is tracked so the convention survives a fresh clone.
+# ---------------------------------------------------------------
+temp/*
+!temp/README.md
+
+# macOS
+.DS_Store
