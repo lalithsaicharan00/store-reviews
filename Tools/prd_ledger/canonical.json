@@ -70,7 +70,10 @@
    "R06-005",
    "R06-048",
    "R06-050",
-   "R06-068"
+   "R06-068",
+   "R07-003",
+   "R07-005",
+   "R07-074"
   ],
   "reports": [
    1,
@@ -78,7 +81,8 @@
    3,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -114,7 +118,12 @@
    "R06-041",
    "R06-076",
    "R06-087",
-   "R06-104"
+   "R06-104",
+   "R07-036",
+   "R07-047",
+   "R07-050",
+   "R07-127",
+   "R07-145"
   ],
   "reports": [
    1,
@@ -122,7 +131,8 @@
    3,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -138,13 +148,15 @@
    "R01-168",
    "R02-011",
    "R03-027",
-   "R05-025"
+   "R05-025",
+   "R07-062"
   ],
   "reports": [
    1,
    2,
    3,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -165,14 +177,18 @@
    "R04-072",
    "R06-015",
    "R06-025",
-   "R06-098"
+   "R06-098",
+   "R07-022",
+   "R07-043",
+   "R07-068"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -200,7 +216,12 @@
    "R04-063",
    "R05-038",
    "R05-039",
-   "R06-052"
+   "R06-052",
+   "R07-021",
+   "R07-022",
+   "R07-031",
+   "R07-118",
+   "R07-119"
   ],
   "reports": [
    1,
@@ -208,14 +229,15 @@
    3,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
  {
   "id": "C007",
   "title": "Generous fixed habit cap (or unlimited) — never change it",
-  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not. Report 6: raising a 1-streak cap to 2 did not reduce complaints — the ask was unlimited — though the tone moved from 'scam' to 'love it, want more'.",
+  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not. Report 6: raising a 1-streak cap to 2 did not reduce complaints — the ask was unlimited — though the tone moved from 'scam' to 'love it, want more'. Report 7: a 4-habit cap held unchanged for 3½ years was still the top 2★ theme (0 of 27 complainers paid) while 11 users said 4 was plenty — stable is not enough if the level binds the 5–8-habit user.",
   "section": "free",
   "cards": [
    "R01-008",
@@ -274,7 +296,18 @@
    "R06-086",
    "R06-095",
    "R06-101",
-   "R06-103"
+   "R06-103",
+   "R07-006",
+   "R07-007",
+   "R07-008",
+   "R07-039",
+   "R07-041",
+   "R07-058",
+   "R07-112",
+   "R07-113",
+   "R07-125",
+   "R07-141",
+   "R07-142"
   ],
   "reports": [
    1,
@@ -282,7 +315,8 @@
    3,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -299,21 +333,23 @@
    "R03-018",
    "R03-061",
    "R04-020",
-   "R06-030"
+   "R06-030",
+   "R07-031"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
  {
   "id": "C009",
   "title": "Basic widgets, icons and colours are free",
-  "statement": "Loved, drives 5★, and re-paywalling widgets backfired.",
+  "statement": "Loved, drives 5★, and re-paywalling widgets backfired. Report 7: with every widget Pro, the widget paywall was the only theme with zero 5★ reviews, while widgets were the best-loved feature; users proposed one free widget, more with Pro.",
   "section": "free",
   "cards": [
    "R01-011",
@@ -337,7 +373,13 @@
    "R05-015",
    "R05-050",
    "R05-100",
-   "R06-018"
+   "R06-018",
+   "R07-009",
+   "R07-010",
+   "R07-011",
+   "R07-037",
+   "R07-038",
+   "R07-126"
   ],
   "reports": [
    1,
@@ -345,7 +387,8 @@
    3,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -383,13 +426,15 @@
    "R02-110",
    "R03-063",
    "R03-112",
-   "R05-016"
+   "R05-016",
+   "R07-028"
   ],
   "reports": [
    1,
    2,
    3,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -399,17 +444,22 @@
   "statement": "'Filling the squares' is the retention mechanic and emotional payoff.",
   "section": "must-have",
   "cards": [
-   "R01-086"
+   "R01-086",
+   "R07-021",
+   "R07-063",
+   "R07-098",
+   "R07-099"
   ],
   "reports": [
-   1
+   1,
+   7
   ],
   "merged_from": []
  },
  {
   "id": "C013",
   "title": "Cloud sync / multi-device as the paid differentiator",
-  "statement": "Strongest true differentiator among buyers (lift ×9.8).",
+  "statement": "Strongest true differentiator among buyers (lift ×9.8). Report 7: absent for 3+ years, sync was the #1 3★/4★ theme with named willingness to pay; ship it opt-in and end-to-end (CloudKit private database) to keep a no-account privacy promise.",
   "section": "paid",
   "cards": [
    "R01-015",
@@ -418,12 +468,17 @@
    "R02-013",
    "R02-021",
    "R03-076",
-   "R03-124"
+   "R03-124",
+   "R07-016",
+   "R07-056",
+   "R07-072",
+   "R07-131"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   7
   ],
   "merged_from": []
  },
@@ -436,11 +491,13 @@
    "R01-016",
    "R01-052",
    "R03-018",
-   "R03-061"
+   "R03-061",
+   "R07-030"
   ],
   "reports": [
    1,
-   3
+   3,
+   7
   ],
   "merged_from": []
  },
@@ -454,12 +511,14 @@
    "R01-091",
    "R02-018",
    "R02-081",
-   "R03-069"
+   "R03-069",
+   "R07-083"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   7
   ],
   "merged_from": []
  },
@@ -474,12 +533,15 @@
    "R03-051",
    "R03-074",
    "R03-109",
-   "R06-033"
+   "R06-033",
+   "R07-090",
+   "R07-135"
   ],
   "reports": [
    1,
    3,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -534,13 +596,15 @@
    "R02-018",
    "R03-082",
    "R06-020",
-   "R06-061"
+   "R06-061",
+   "R07-101"
   ],
   "reports": [
    1,
    2,
    3,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -553,11 +617,13 @@
    "R01-022",
    "R01-101",
    "R03-020",
-   "R03-068"
+   "R03-068",
+   "R07-029"
   ],
   "reports": [
    1,
-   3
+   3,
+   7
   ],
   "merged_from": []
  },
@@ -571,10 +637,12 @@
    "R01-076",
    "R01-114",
    "R01-155",
-   "R01-177"
+   "R01-177",
+   "R07-082"
   ],
   "reports": [
-   1
+   1,
+   7
   ],
   "merged_from": []
  },
@@ -598,14 +666,16 @@
    "R04-103",
    "R05-011",
    "R05-024",
-   "R05-080"
+   "R05-080",
+   "R07-078"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -621,13 +691,15 @@
    "R03-075",
    "R04-102",
    "R05-050",
-   "R05-100"
+   "R05-100",
+   "R07-116"
   ],
   "reports": [
    1,
    3,
    4,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -711,7 +783,10 @@
    "R05-074",
    "R05-075",
    "R05-102",
-   "R06-071"
+   "R06-071",
+   "R07-048",
+   "R07-084",
+   "R07-138"
   ],
   "reports": [
    1,
@@ -719,7 +794,8 @@
    3,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -732,11 +808,13 @@
    "R01-115",
    "R01-130",
    "R05-065",
-   "R05-103"
+   "R05-103",
+   "R07-102"
   ],
   "reports": [
    1,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -766,7 +844,8 @@
    "R06-081",
    "R06-082",
    "R06-096",
-   "R06-104"
+   "R06-104",
+   "R07-095"
   ],
   "reports": [
    1,
@@ -774,7 +853,8 @@
    3,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -820,14 +900,17 @@
    "R03-100",
    "R04-066",
    "R05-010",
-   "R05-047"
+   "R05-047",
+   "R07-070",
+   "R07-079"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -858,11 +941,17 @@
    "R03-030",
    "R03-031",
    "R03-039",
-   "R03-104"
+   "R03-104",
+   "R07-012",
+   "R07-014",
+   "R07-095",
+   "R07-121",
+   "R07-144"
   ],
   "reports": [
    1,
-   3
+   3,
+   7
   ],
   "merged_from": []
  },
@@ -893,7 +982,8 @@
    "R05-058",
    "R05-074",
    "R05-088",
-   "R06-059"
+   "R06-059",
+   "R07-018"
   ],
   "reports": [
    1,
@@ -901,7 +991,8 @@
    3,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -919,12 +1010,14 @@
    "R04-058",
    "R04-094",
    "R05-058",
-   "R05-088"
+   "R05-088",
+   "R07-072"
   ],
   "reports": [
    1,
    4,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -946,14 +1039,17 @@
    "R05-090",
    "R05-106",
    "R06-012",
-   "R06-084"
+   "R06-084",
+   "R07-020",
+   "R07-122"
   ],
   "reports": [
    1,
    2,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -968,11 +1064,13 @@
    "R01-134",
    "R01-171",
    "R05-067",
-   "R05-093"
+   "R05-093",
+   "R07-049"
   ],
   "reports": [
    1,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -993,13 +1091,18 @@
    "R05-063",
    "R05-089",
    "R06-021",
-   "R06-022"
+   "R06-022",
+   "R07-089",
+   "R07-091",
+   "R07-124",
+   "R07-135"
   ],
   "reports": [
    1,
    2,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -1021,14 +1124,16 @@
    "R05-010",
    "R05-056",
    "R05-084",
-   "R06-030"
+   "R06-030",
+   "R07-092"
   ],
   "reports": [
    1,
    2,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -1086,14 +1191,17 @@
    "R05-003",
    "R05-008",
    "R05-039",
-   "R05-066"
+   "R05-066",
+   "R07-065",
+   "R07-136"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -1114,14 +1222,18 @@
    "R05-069",
    "R05-099",
    "R06-057",
-   "R06-092"
+   "R06-092",
+   "R07-088",
+   "R07-090",
+   "R07-132"
   ],
   "reports": [
    1,
    2,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -1136,12 +1248,14 @@
    "R01-108",
    "R01-178",
    "R03-066",
-   "R05-070"
+   "R05-070",
+   "R07-077"
   ],
   "reports": [
    1,
    3,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -1157,12 +1271,15 @@
    "R03-064",
    "R03-114",
    "R05-069",
-   "R05-099"
+   "R05-099",
+   "R07-087",
+   "R07-100"
   ],
   "reports": [
    1,
    3,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -1177,12 +1294,14 @@
    "R01-179",
    "R03-021",
    "R05-052",
-   "R05-101"
+   "R05-101",
+   "R07-069"
   ],
   "reports": [
    1,
    3,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -1226,13 +1345,15 @@
    "R02-071",
    "R03-078",
    "R03-111",
-   "R05-017"
+   "R05-017",
+   "R07-086"
   ],
   "reports": [
    1,
    2,
    3,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -1331,12 +1452,14 @@
    "R01-161",
    "R01-184",
    "R02-097",
-   "R05-082"
+   "R05-082",
+   "R07-094"
   ],
   "reports": [
    1,
    2,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -1368,11 +1491,13 @@
    "R01-121",
    "R01-141",
    "R01-143",
-   "R04-109"
+   "R04-109",
+   "R07-139"
   ],
   "reports": [
    1,
-   4
+   4,
+   7
   ],
   "merged_from": []
  },
@@ -1391,13 +1516,17 @@
    "R03-057",
    "R05-011",
    "R05-044",
-   "R05-106"
+   "R05-106",
+   "R07-017",
+   "R07-019",
+   "R07-116"
   ],
   "reports": [
    1,
    2,
    3,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -1428,13 +1557,17 @@
    "R04-025",
    "R05-022",
    "R05-026",
-   "R05-043"
+   "R05-043",
+   "R07-040",
+   "R07-041",
+   "R07-062"
   ],
   "reports": [
    1,
    3,
    4,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -1457,12 +1590,14 @@
    "R03-084",
    "R03-085",
    "R03-086",
-   "R03-089"
+   "R03-089",
+   "R07-107"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   7
   ],
   "merged_from": []
  },
@@ -1472,10 +1607,13 @@
   "statement": "Weak but present complaint.",
   "section": "research",
   "cards": [
-   "R01-144"
+   "R01-144",
+   "R07-046",
+   "R07-129"
   ],
   "reports": [
-   1
+   1,
+   7
   ],
   "merged_from": []
  },
@@ -1498,14 +1636,21 @@
    "R04-078",
    "R05-021",
    "R06-015",
-   "R06-043"
+   "R06-043",
+   "R07-026",
+   "R07-042",
+   "R07-043",
+   "R07-044",
+   "R07-045",
+   "R07-108"
   ],
   "reports": [
    1,
    3,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -1539,7 +1684,11 @@
    "R04-031",
    "R05-005",
    "R05-027",
-   "R06-037"
+   "R06-037",
+   "R07-012",
+   "R07-033",
+   "R07-035",
+   "R07-079"
   ],
   "reports": [
    1,
@@ -1547,7 +1696,8 @@
    3,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -1703,12 +1853,14 @@
    "R02-112",
    "R04-063",
    "R06-024",
-   "R06-091"
+   "R06-091",
+   "R07-080"
   ],
   "reports": [
    2,
    4,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -1737,11 +1889,14 @@
    "R02-106",
    "R06-016",
    "R06-037",
-   "R06-083"
+   "R06-083",
+   "R07-047",
+   "R07-127"
   ],
   "reports": [
    2,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -1787,12 +1942,15 @@
    "R02-072",
    "R03-023",
    "R03-065",
-   "R05-071"
+   "R05-071",
+   "R07-061",
+   "R07-134"
   ],
   "reports": [
    2,
    3,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -1922,13 +2080,17 @@
    "R03-106",
    "R04-099",
    "R05-032",
-   "R06-068"
+   "R06-068",
+   "R07-110",
+   "R07-112",
+   "R07-128"
   ],
   "reports": [
    3,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -1946,13 +2108,16 @@
    "R04-035",
    "R04-088",
    "R05-082",
-   "R06-042"
+   "R06-042",
+   "R07-051",
+   "R07-130"
   ],
   "reports": [
    3,
    4,
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -1983,11 +2148,14 @@
    "R03-056",
    "R03-119",
    "R06-062",
-   "R06-094"
+   "R06-094",
+   "R07-064",
+   "R07-136"
   ],
   "reports": [
    3,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -2000,10 +2168,14 @@
    "R03-023",
    "R03-055",
    "R03-117",
-   "R03-118"
+   "R03-118",
+   "R07-071",
+   "R07-072",
+   "R07-131"
   ],
   "reports": [
-   3
+   3,
+   7
   ],
   "merged_from": []
  },
@@ -2143,10 +2315,16 @@
   "section": "paid",
   "cards": [
    "R03-025",
-   "R03-101"
+   "R03-101",
+   "R07-011",
+   "R07-037",
+   "R07-038",
+   "R07-104",
+   "R07-126"
   ],
   "reports": [
-   3
+   3,
+   7
   ],
   "merged_from": []
  },
@@ -2276,10 +2454,14 @@
   "section": "dont",
   "cards": [
    "R04-064",
-   "R04-109"
+   "R04-109",
+   "R07-015",
+   "R07-029",
+   "R07-139"
   ],
   "reports": [
-   4
+   4,
+   7
   ],
   "merged_from": []
  },
@@ -2335,11 +2517,15 @@
   "section": "must-never-break",
   "cards": [
    "R04-059",
-   "R05-081"
+   "R05-081",
+   "R07-024",
+   "R07-109",
+   "R07-123"
   ],
   "reports": [
    4,
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -2399,10 +2585,12 @@
   "cards": [
    "R05-057",
    "R05-085",
-   "R05-109"
+   "R05-109",
+   "R07-093"
   ],
   "reports": [
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -2456,10 +2644,12 @@
   "cards": [
    "R05-054",
    "R05-077",
-   "R05-105"
+   "R05-105",
+   "R07-048"
   ],
   "reports": [
-   5
+   5,
+   7
   ],
   "merged_from": []
  },
@@ -2480,11 +2670,17 @@
    "R06-086",
    "R06-090",
    "R06-095",
-   "R06-101"
+   "R06-101",
+   "R07-006",
+   "R07-007",
+   "R07-100",
+   "R07-125",
+   "R07-142"
   ],
   "reports": [
    5,
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -2496,10 +2692,13 @@
   "cards": [
    "R06-019",
    "R06-021",
-   "R06-093"
+   "R06-093",
+   "R07-136",
+   "R07-137"
   ],
   "reports": [
-   6
+   6,
+   7
   ],
   "merged_from": []
  },
@@ -2560,6 +2759,64 @@
   ],
   "reports": [
    6
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C139",
+  "title": "Cache entitlements locally — never block a paid surface on a live server check",
+  "statement": "Report 7: widgets that re-checked Pro against a network service showed 'Upgrade' to paying users for 15 months (100% payers, mean 2.25), 4× more often in markets with VPN/DNS filtering; render from the last-known-good receipt.",
+  "section": "must-never-break",
+  "cards": [
+   "R07-014",
+   "R07-121"
+  ],
+  "reports": [
+   7
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C140",
+  "title": "Market the generic-tracker use case",
+  "statement": "Report 7: users track medication, migraines, supplements for a pet, art-project days — any yes/no daily thing — at mean 4.91, while the listing only says 'build habits'.",
+  "section": "do",
+  "cards": [
+   "R07-066",
+   "R07-137"
+  ],
+  "reports": [
+   7
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C141",
+  "title": "Native iPad layout",
+  "statement": "A stretched phone UI on iPad does more rating damage than a missing Watch app and is cheaper to fix — a layout, not a new product (report 7).",
+  "section": "must-have",
+  "cards": [
+   "R07-076",
+   "R07-133"
+  ],
+  "reports": [
+   7
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C142",
+  "title": "Surface existing features where users look",
+  "statement": "Features hidden behind 'Advanced Options' or unexplained modes are rated as missing — including by payers who bought and then believed the feature absent; report 7's weekly goals, multi-habit widget and notifications.",
+  "section": "must-have",
+  "cards": [
+   "R07-088",
+   "R07-092",
+   "R07-104",
+   "R07-132"
+  ],
+  "reports": [
+   7
   ],
   "merged_from": []
  }
