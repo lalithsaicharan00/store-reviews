@@ -2,7 +2,7 @@
  {
   "id": "C001",
   "title": "Never move a free feature behind the paywall",
-  "statement": "Every paywall regression produced a lasting rating drop; pick the free tier once and hold it. Report 8: a competitor adding a paywall sent its users to a free rival, and free users explicitly warn against gating what is free.",
+  "statement": "Every paywall regression produced a lasting rating drop; pick the free tier once and hold it. Report 8: a competitor adding a paywall sent its users to a free rival, and free users explicitly warn against gating what is free. Report 10: soundscapes, longer timers, the event micropet and the anxiety breathing exercise all moved from free to paid; paywall-creep is the largest monetization theme (715).",
   "section": "product-rule",
   "cards": [
    "R01-051",
@@ -42,14 +42,19 @@
    "R08-028",
    "R08-106",
    "R08-123",
-   "R08-125"
+   "R08-125",
+   "R10-021",
+   "R10-023",
+   "R10-024",
+   "R10-139"
   ],
   "reports": [
    1,
    3,
    4,
    5,
-   8
+   8,
+   10
   ],
   "merged_from": []
  },
@@ -85,7 +90,9 @@
    "R08-006",
    "R09-004",
    "R09-008",
-   "R09-083"
+   "R09-083",
+   "R10-004",
+   "R10-099"
   ],
   "reports": [
    1,
@@ -96,7 +103,8 @@
    6,
    7,
    8,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -140,7 +148,8 @@
    "R07-145",
    "R08-021",
    "R08-024",
-   "R08-123"
+   "R08-123",
+   "R10-168"
   ],
   "reports": [
    1,
@@ -150,7 +159,8 @@
    5,
    6,
    7,
-   8
+   8,
+   10
   ],
   "merged_from": []
  },
@@ -249,7 +259,11 @@
    "R08-026",
    "R08-041",
    "R08-072",
-   "R08-090"
+   "R08-090",
+   "R10-008",
+   "R10-039",
+   "R10-064",
+   "R10-148"
   ],
   "reports": [
    1,
@@ -259,7 +273,8 @@
    5,
    6,
    7,
-   8
+   8,
+   10
   ],
   "merged_from": []
  },
@@ -525,13 +540,16 @@
    "R07-016",
    "R07-056",
    "R07-072",
-   "R07-131"
+   "R07-131",
+   "R10-079",
+   "R10-162"
   ],
   "reports": [
    1,
    2,
    3,
-   7
+   7,
+   10
   ],
   "merged_from": []
  },
@@ -566,14 +584,16 @@
    "R02-081",
    "R03-069",
    "R07-083",
-   "R08-079"
+   "R08-079",
+   "R10-036"
   ],
   "reports": [
    1,
    2,
    3,
    7,
-   8
+   8,
+   10
   ],
   "merged_from": []
  },
@@ -592,7 +612,8 @@
    "R07-090",
    "R07-135",
    "R08-081",
-   "R09-050"
+   "R09-050",
+   "R10-020"
   ],
   "reports": [
    1,
@@ -600,7 +621,8 @@
    6,
    7,
    8,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -658,14 +680,16 @@
    "R03-082",
    "R06-020",
    "R06-061",
-   "R07-101"
+   "R07-101",
+   "R10-042"
   ],
   "reports": [
    1,
    2,
    3,
    6,
-   7
+   7,
+   10
   ],
   "merged_from": []
  },
@@ -706,12 +730,18 @@
    "R01-155",
    "R01-177",
    "R07-082",
-   "R08-084"
+   "R08-084",
+   "R10-014",
+   "R10-070",
+   "R10-072",
+   "R10-096",
+   "R10-162"
   ],
   "reports": [
    1,
    7,
-   8
+   8,
+   10
   ],
   "merged_from": []
  },
@@ -740,7 +770,12 @@
    "R08-076",
    "R08-124",
    "R09-039",
-   "R09-135"
+   "R09-135",
+   "R10-014",
+   "R10-070",
+   "R10-073",
+   "R10-096",
+   "R10-162"
   ],
   "reports": [
    1,
@@ -750,7 +785,8 @@
    5,
    7,
    8,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -781,35 +817,43 @@
  {
   "id": "C024",
   "title": "Streaks / gamification",
-  "statement": "High-priority praise, moderate purchase factor.",
+  "statement": "High-priority praise, moderate purchase factor. Report 10 (contested): streaks added to a non-punitive pet app generated their own defect stream (171, growing 74×) and pressure stream (96) — net-negative in the written record for an ADHD audience.",
   "section": "undecided",
   "cards": [
    "R01-027",
    "R01-081",
    "R04-050",
    "R05-042",
-   "R06-032"
+   "R06-032",
+   "R10-013",
+   "R10-065",
+   "R10-142"
   ],
   "reports": [
    1,
    4,
    5,
-   6
+   6,
+   10
   ],
   "merged_from": []
  },
  {
   "id": "C025",
   "title": "Scholarship / hardship / discount program",
-  "statement": "The cleanest 5★ generator in report 1 (91 of 101 mentions 5★); also works around broken payment rails; never switch it off.",
+  "statement": "The cleanest 5★ generator in report 1 (91 of 101 mentions 5★); also works around broken payment rails; never switch it off. Report 10: a 'Guardian' pay-it-forward sponsorship programme is one of the only monetisation themes with a positive mean (4.76 across 708 mentions); its one complaint is that there is no visible way to apply.",
   "section": "do",
   "cards": [
    "R01-035",
    "R01-062",
-   "R01-169"
+   "R01-169",
+   "R10-108",
+   "R10-113",
+   "R10-170"
   ],
   "reports": [
-   1
+   1,
+   10
   ],
   "merged_from": []
  },
@@ -833,7 +877,7 @@
  {
   "id": "C027",
   "title": "Localise early — it unlocks revenue",
-  "statement": "Missing localisation is the biggest market-specific complaint and a stated purchase blocker; shipping a language visibly converts (Japan).",
+  "statement": "Missing localisation is the biggest market-specific complaint and a stated purchase blocker; shipping a language visibly converts (Japan). Report 10: localisation is HIGH-PRIORITY at country level in eight storefronts at once (cn 26%, ru 18%, tr 19%, br 13%, es 12%); reviewers say they will not pay in English.",
   "section": "do",
   "cards": [
    "R01-037",
@@ -872,7 +916,16 @@
    "R09-067",
    "R09-068",
    "R09-134",
-   "R09-136"
+   "R09-136",
+   "R10-014",
+   "R10-030",
+   "R10-070",
+   "R10-076",
+   "R10-126",
+   "R10-127",
+   "R10-128",
+   "R10-164",
+   "R10-176"
   ],
   "reports": [
    1,
@@ -883,7 +936,8 @@
    6,
    7,
    8,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -934,7 +988,15 @@
    "R06-096",
    "R06-104",
    "R07-095",
-   "R09-015"
+   "R09-015",
+   "R10-044",
+   "R10-046",
+   "R10-050",
+   "R10-051",
+   "R10-106",
+   "R10-115",
+   "R10-130",
+   "R10-149"
   ],
   "reports": [
    1,
@@ -944,7 +1006,8 @@
    5,
    6,
    7,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -961,12 +1024,14 @@
    "R01-164",
    "R02-013",
    "R02-021",
-   "R05-049"
+   "R05-049",
+   "R10-140"
   ],
   "reports": [
    1,
    2,
-   5
+   5,
+   10
   ],
   "merged_from": []
  },
@@ -1000,7 +1065,14 @@
    "R09-031",
    "R09-033",
    "R09-108",
-   "R09-115"
+   "R09-115",
+   "R10-007",
+   "R10-011",
+   "R10-053",
+   "R10-097",
+   "R10-134",
+   "R10-135",
+   "R10-136"
   ],
   "reports": [
    1,
@@ -1010,24 +1082,42 @@
    5,
    7,
    8,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
  {
   "id": "C032",
-  "title": "Year-end / peak-season robustness",
-  "statement": "The year-end report crashed five New Years in six; never ship risk or lock features in late December.",
+  "title": "New Year peak-season robustness — year-end report and January onboarding",
+  "statement": "The year-end report crashed five New Years in six; never ship risk or lock features in late December. The New Year cohort is the largest of the year and judges onboarding, not retention — every create-flow or first-day defect is amplified ~2× in January (reports 8, 9). The New Year cohort is the largest of the year and judges onboarding, not retention — every create-flow or first-day defect is amplified ~2× in January (reports 8, 9).",
   "section": "must-never-break",
   "cards": [
    "R01-057",
    "R01-095",
-   "R01-165"
+   "R01-165",
+   "R08-109",
+   "R08-110",
+   "R09-112"
   ],
   "reports": [
-   1
+   1,
+   8,
+   9
   ],
-  "merged_from": []
+  "merged_from": [
+   {
+    "from": "C146",
+    "title": "Harden onboarding before January",
+    "cards": [
+     "R08-109",
+     "R08-110",
+     "R09-112"
+    ],
+    "when": "consolidation after report 10",
+    "note": "C146 (harden onboarding before January) is the same rule as C032 (never ship risk into late December) on a different surface"
+   }
+  ]
  },
  {
   "id": "C033",
@@ -1060,7 +1150,7 @@
  {
   "id": "C034",
   "title": "Data must never be lost on update, reinstall or phone change",
-  "statement": "Data loss is ×10.6 over-represented among buyers; local-only storage is the cause.",
+  "statement": "Data loss is ×10.6 over-represented among buyers; local-only storage is the cause. Report 10: from 2025 the dominant story became app-initiated — 'it told me my pet data got corrupted' — with no automatic backup to fall back on.",
   "section": "must-never-break",
   "cards": [
    "R01-045",
@@ -1090,7 +1180,15 @@
    "R08-060",
    "R08-061",
    "R08-120",
-   "R09-033"
+   "R09-033",
+   "R10-006",
+   "R10-054",
+   "R10-056",
+   "R10-057",
+   "R10-097",
+   "R10-115",
+   "R10-130",
+   "R10-137"
   ],
   "reports": [
    1,
@@ -1101,7 +1199,8 @@
    6,
    7,
    8,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -1120,20 +1219,24 @@
    "R04-094",
    "R05-058",
    "R05-088",
-   "R07-072"
+   "R07-072",
+   "R10-054",
+   "R10-140",
+   "R10-153"
   ],
   "reports": [
    1,
    4,
    5,
-   7
+   7,
+   10
   ],
   "merged_from": []
  },
  {
   "id": "C036",
   "title": "A support channel that exists, is reachable outside the app, and answers",
-  "statement": "'No support channel' is ×34.7 over-represented among buyers and the second-worst-rated complaint. Report 5: the only support link was inside an app that would not launch; email went unanswered while public review replies were same-day.",
+  "statement": "'No support channel' is ×34.7 over-represented among buyers and the second-worst-rated complaint. Report 5: the only support link was inside an app that would not launch; email went unanswered while public review replies were same-day. Report 10: AI and canned support replies; paying users 13× over-represented among support complaints.",
   "section": "must-have",
   "cards": [
    "R01-046",
@@ -1156,7 +1259,10 @@
    "R09-011",
    "R09-016",
    "R09-087",
-   "R09-117"
+   "R09-117",
+   "R10-058",
+   "R10-107",
+   "R10-156"
   ],
   "reports": [
    1,
@@ -1166,7 +1272,8 @@
    6,
    7,
    8,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -1182,12 +1289,15 @@
    "R01-171",
    "R05-067",
    "R05-093",
-   "R07-049"
+   "R07-049",
+   "R10-080",
+   "R10-162"
   ],
   "reports": [
    1,
    5,
-   7
+   7,
+   10
   ],
   "merged_from": []
  },
@@ -1218,17 +1328,45 @@
    "R08-087",
    "R08-110",
    "R08-111",
-   "R08-131"
+   "R08-131",
+   "R10-066"
   ],
   "reports": [
    1,
    2,
+   3,
    5,
    6,
    7,
-   8
+   8,
+   10
   ],
-  "merged_from": []
+  "merged_from": [
+   {
+    "fixed_reports": {
+     "from": [
+      1,
+      2,
+      5,
+      6,
+      7,
+      8,
+      10
+     ],
+     "to": [
+      1,
+      2,
+      3,
+      5,
+      6,
+      7,
+      8,
+      10
+     ]
+    },
+    "when": "consolidation after report 10"
+   }
+  ]
  },
  {
   "id": "C039",
@@ -1254,7 +1392,8 @@
    "R08-071",
    "R08-113",
    "R08-114",
-   "R09-061"
+   "R09-061",
+   "R10-060"
   ],
   "reports": [
    1,
@@ -1264,14 +1403,15 @@
    6,
    7,
    8,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
  {
   "id": "C040",
   "title": "Widgets must not go blank, stale or disagree with the app",
-  "statement": "Broken widget is ×7.8 on 2★.",
+  "statement": "Broken widget is ×7.8 on 2★. Report 10: the widget rendered as a grey box for five years (117 reviews) — reported mostly by fans, so it never generated pressure.",
   "section": "must-never-break",
   "cards": [
    "R01-068",
@@ -1280,12 +1420,15 @@
    "R06-085",
    "R08-068",
    "R08-112",
-   "R08-133"
+   "R08-133",
+   "R10-059",
+   "R10-155"
   ],
   "reports": [
    1,
    6,
-   8
+   8,
+   10
   ],
   "merged_from": []
  },
@@ -1309,7 +1452,7 @@
  {
   "id": "C042",
   "title": "Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers",
-  "statement": "Highest-fit, highest-satisfaction audiences (ADHD 7% of US at 4.79; students 4.87).",
+  "statement": "Highest-fit, highest-satisfaction audiences (ADHD 7% of US at 4.79; students 4.87). Report 10: 7.36% of 70,041 reviewers self-identify as ADHD/autistic/ND; Australia's base is 11.4%.",
   "section": "do",
   "cards": [
    "R01-061",
@@ -1336,7 +1479,10 @@
    "R08-051",
    "R09-019",
    "R09-020",
-   "R09-094"
+   "R09-094",
+   "R10-034",
+   "R10-048",
+   "R10-122"
   ],
   "reports": [
    1,
@@ -1346,7 +1492,8 @@
    5,
    7,
    8,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -1401,21 +1548,23 @@
    "R03-066",
    "R05-070",
    "R07-077",
-   "R08-077"
+   "R08-077",
+   "R10-081"
   ],
   "reports": [
    1,
    3,
    5,
    7,
-   8
+   8,
+   10
   ],
   "merged_from": []
  },
  {
   "id": "C045",
-  "title": "Grouping / folders / tags / multiple profiles",
-  "statement": "#2 feature request: me, kids, pet, work.",
+  "title": "Grouping / folders / categories / tags",
+  "statement": "#2 feature request in report 1; the highest-mean request in report 3 (zero 1–2★, power users tracking 20–100 counters); named in report 8's only subscription-price statement.",
   "section": "undecided",
   "cards": [
    "R01-074",
@@ -1423,8 +1572,6 @@
    "R01-174",
    "R03-064",
    "R03-114",
-   "R05-069",
-   "R05-099",
    "R07-087",
    "R07-100",
    "R08-078",
@@ -1434,12 +1581,25 @@
   "reports": [
    1,
    3,
-   5,
    7,
    8,
    9
   ],
-  "merged_from": []
+  "merged_from": [
+   {
+    "split_to": "C173",
+    "cards": [
+     "R05-069",
+     "R05-099"
+    ],
+    "when": "consolidation after report 10"
+   },
+   {
+    "split_to": "C174",
+    "cards": [],
+    "when": "consolidation after report 10"
+   }
+  ]
  },
  {
   "id": "C046",
@@ -1471,10 +1631,13 @@
   "cards": [
    "R01-110",
    "R01-113",
-   "R01-175"
+   "R01-175",
+   "R10-143",
+   "R10-158"
   ],
   "reports": [
-   1
+   1,
+   10
   ],
   "merged_from": []
  },
@@ -1497,32 +1660,37 @@
  },
  {
   "id": "C049",
-  "title": "Mood tracker / journal / habit notes",
-  "statement": "Meaningful praise where shipped; mentions rose after launch.",
+  "title": "Mood tracker",
+  "statement": "Meaningful praise where shipped; mentions rose after launch (report 1); asked for only by 5★ users (report 8); an automatic mood prompt is a memory aid and moving it behind a button destroyed users' mood datasets (report 10).",
   "section": "research",
   "cards": [
    "R01-055",
    "R01-085",
    "R01-155",
-   "R02-071",
-   "R03-078",
-   "R03-111",
-   "R05-017",
-   "R07-086",
-   "R08-027",
    "R08-085",
-   "R09-036"
+   "R09-036",
+   "R10-144"
   ],
   "reports": [
    1,
-   2,
-   3,
-   5,
-   7,
    8,
-   9
+   9,
+   10
   ],
-  "merged_from": []
+  "merged_from": [
+   {
+    "split_to": "C172",
+    "cards": [
+     "R02-071",
+     "R03-078",
+     "R03-111",
+     "R05-017",
+     "R07-086",
+     "R08-027"
+    ],
+    "when": "consolidation after report 10"
+   }
+  ]
  },
  {
   "id": "C050",
@@ -1647,20 +1815,22 @@
    "R02-063",
    "R04-049",
    "R04-110",
-   "R09-063"
+   "R09-063",
+   "R10-179"
   ],
   "reports": [
    1,
    2,
    4,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
  {
   "id": "C058",
   "title": "Discovery runs through social video, Reddit, therapists (US) and Xiaohongshu / Bilibili (CN)",
-  "statement": "Plan marketing around where users say they found the app.",
+  "statement": "Plan marketing around where users say they found the app. Report 10: 381 reviews involve a clinician recommending the app; two clinicians publicly withdrew the recommendation over data loss.",
   "section": "do",
   "cards": [
    "R01-121",
@@ -1668,13 +1838,15 @@
    "R01-143",
    "R04-109",
    "R07-139",
-   "R08-052"
+   "R08-052",
+   "R10-041"
   ],
   "reports": [
    1,
    4,
    7,
-   8
+   8,
+   10
   ],
   "merged_from": []
  },
@@ -1701,7 +1873,9 @@
    "R08-049",
    "R08-105",
    "R08-128",
-   "R09-088"
+   "R09-088",
+   "R10-038",
+   "R10-107"
   ],
   "reports": [
    1,
@@ -1710,7 +1884,8 @@
    5,
    7,
    8,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -1745,7 +1920,10 @@
    "R07-040",
    "R07-041",
    "R07-062",
-   "R09-046"
+   "R09-046",
+   "R10-009",
+   "R10-039",
+   "R10-112"
   ],
   "reports": [
    1,
@@ -1753,7 +1931,8 @@
    4,
    5,
    7,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -1777,13 +1956,17 @@
    "R03-085",
    "R03-086",
    "R03-089",
-   "R07-107"
+   "R07-107",
+   "R10-119",
+   "R10-121",
+   "R10-123"
   ],
   "reports": [
    1,
    2,
    3,
-   7
+   7,
+   10
   ],
   "merged_from": []
  },
@@ -1799,12 +1982,14 @@
    "R09-009",
    "R09-101",
    "R09-123",
-   "R09-137"
+   "R09-137",
+   "R10-109"
   ],
   "reports": [
    1,
    7,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -1833,7 +2018,11 @@
    "R07-043",
    "R07-044",
    "R07-045",
-   "R07-108"
+   "R07-108",
+   "R10-027",
+   "R10-149",
+   "R10-171",
+   "R10-180"
   ],
   "reports": [
    1,
@@ -1841,14 +2030,15 @@
    4,
    5,
    6,
-   7
+   7,
+   10
   ],
   "merged_from": []
  },
  {
   "id": "C065",
   "title": "Paying customers are the highest 1★ risk — every paid feature must work",
-  "statement": "Paid cohort rates a full point lower; 28% of payers leave 1–2★; confirmed buyers ×6.7 on 1★.",
+  "statement": "Paid cohort rates a full point lower; 28% of payers leave 1–2★; confirmed buyers ×6.7 on 1★. Report 10: paid-cohort mean fell 4.40 → 2.96 across 2022–2026 while the corpus mean barely moved; the five highest paid lifts are all billing mechanics, not price.",
   "section": "must-never-break",
   "cards": [
    "R01-038",
@@ -1884,7 +2074,17 @@
    "R09-079",
    "R09-081",
    "R09-084",
-   "R09-144"
+   "R09-144",
+   "R10-004",
+   "R10-010",
+   "R10-044",
+   "R10-056",
+   "R10-098",
+   "R10-099",
+   "R10-102",
+   "R10-103",
+   "R10-104",
+   "R10-106"
   ],
   "reports": [
    1,
@@ -1894,7 +2094,8 @@
    5,
    6,
    7,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -2157,7 +2358,7 @@
  {
   "id": "C080",
   "title": "Colour themes / dark mode",
-  "statement": "'Only green' draws requests; cheap.",
+  "statement": "'Only green' draws requests; cheap. Report 10: dark mode requested since 2022 as an accessibility need (migraine, light sensitivity).",
   "section": "free",
   "cards": [
    "R02-072",
@@ -2167,14 +2368,19 @@
    "R07-061",
    "R07-134",
    "R09-054",
-   "R09-132"
+   "R09-132",
+   "R10-070",
+   "R10-074",
+   "R10-096",
+   "R10-163"
   ],
   "reports": [
    2,
    3,
    5,
    7,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -2208,12 +2414,14 @@
    "R02-086",
    "R02-099",
    "R05-051",
-   "R08-088"
+   "R08-088",
+   "R10-060"
   ],
   "reports": [
    2,
    5,
-   8
+   8,
+   10
   ],
   "merged_from": []
  },
@@ -2225,11 +2433,13 @@
   "cards": [
    "R02-080",
    "R08-037",
-   "R08-127"
+   "R08-127",
+   "R10-088"
   ],
   "reports": [
    2,
-   8
+   8,
+   10
   ],
   "merged_from": []
  },
@@ -2253,16 +2463,15 @@
   "title": "No rating-prompt or cross-promo spam, especially to payers",
   "statement": "Small but consistent complaint.",
   "section": "dont",
-  "cards": [
-   "R02-065",
-   "R02-116",
-   "R03-036"
+  "cards": [],
+  "reports": [],
+  "merged_from": [
+   {
+    "into": "C094",
+    "when": "consolidation after report 10"
+   }
   ],
-  "reports": [
-   2,
-   3
-  ],
-  "merged_from": []
+  "merged_into": "C094"
  },
  {
   "id": "C089",
@@ -2316,14 +2525,16 @@
    "R06-068",
    "R07-110",
    "R07-112",
-   "R07-128"
+   "R07-128",
+   "R10-131"
   ],
   "reports": [
    3,
    4,
    5,
    6,
-   7
+   7,
+   10
   ],
   "merged_from": []
  },
@@ -2351,7 +2562,8 @@
    "R09-044",
    "R09-110",
    "R09-124",
-   "R09-138"
+   "R09-138",
+   "R10-069"
   ],
   "reports": [
    3,
@@ -2360,14 +2572,15 @@
    6,
    7,
    8,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
  {
   "id": "C094",
   "title": "Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire",
-  "statement": "A charming review request produced dozens of reviews; frequent prompts that ignore the iOS opt-out, especially to payers, read as 'scammy'.",
+  "statement": "A charming review request produced dozens of reviews; frequent prompts that ignore the iOS opt-out, especially to payers, read as 'scammy'. Cross-promoting the developer's other apps inside the product draws the same complaint (report 2). Cross-promoting the developer's other apps inside the product draws the same complaint (report 2).",
   "section": "do",
   "cards": [
    "R03-036",
@@ -2376,15 +2589,30 @@
    "R05-034",
    "R05-097",
    "R08-128",
-   "R09-070"
+   "R09-070",
+   "R02-065",
+   "R02-116"
   ],
   "reports": [
+   2,
    3,
    5,
    8,
    9
   ],
-  "merged_from": []
+  "merged_from": [
+   {
+    "from": "C088",
+    "title": "No rating-prompt or cross-promo spam, especially to payers",
+    "cards": [
+     "R02-065",
+     "R02-116",
+     "R03-036"
+    ],
+    "when": "consolidation after report 10",
+    "note": "rating-prompt spam to payers was already the negative half of C094; cross-promo spam folded in"
+   }
+  ]
  },
  {
   "id": "C095",
@@ -2400,13 +2628,16 @@
    "R07-136",
    "R09-019",
    "R09-062",
-   "R09-136"
+   "R09-136",
+   "R10-009",
+   "R10-040"
   ],
   "reports": [
    3,
    6,
    7,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -2545,14 +2776,17 @@
    "R09-062",
    "R09-111",
    "R09-119",
-   "R09-146"
+   "R09-146",
+   "R10-083",
+   "R10-086"
   ],
   "reports": [
    3,
    4,
    5,
    6,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -2611,7 +2845,7 @@
  {
   "id": "C109",
   "title": "A free trial must be a real trial",
-  "statement": "It must apply to whichever plan the user picks, and the confirmation must show the exact charge date and amount; a trial that bills at once produced 789 reviews at mean 1.35 in report 4 and must be verified per storefront (Brazil ran 7–11× the global rate).",
+  "statement": "It must apply to whichever plan the user picks, and the confirmation must show the exact charge date and amount; a trial that bills at once produced 789 reviews at mean 1.35 in report 4 and must be verified per storefront (Brazil ran 7–11× the global rate). Report 10: 149 users believe they were charged at trial START (mean 1.79) and trial length varied between 2 and 7 days across users.",
   "section": "must-never-break",
   "cards": [
    "R04-005",
@@ -2628,12 +2862,17 @@
    "R05-095",
    "R09-042",
    "R09-043",
-   "R09-123"
+   "R09-123",
+   "R10-005",
+   "R10-025",
+   "R10-047",
+   "R10-049"
   ],
   "reports": [
    4,
    5,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -2653,12 +2892,14 @@
    "R09-046",
    "R09-075",
    "R09-125",
-   "R09-136"
+   "R09-136",
+   "R10-100"
   ],
   "reports": [
    4,
    5,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -2700,20 +2941,23 @@
    "R09-014",
    "R09-087",
    "R09-091",
-   "R09-117"
+   "R09-117",
+   "R10-051",
+   "R10-152"
   ],
   "reports": [
    4,
    5,
    6,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
  {
   "id": "C113",
   "title": "One stable, disclosed price — no discount wheels",
-  "statement": "Users in the same market reported $19.99–$59.99 for the same thing; that inconsistency is what 'scam' language attaches to; a rigged or broken gimmick makes it worse.",
+  "statement": "Users in the same market reported $19.99–$59.99 for the same thing; that inconsistency is what 'scam' language attaches to; a rigged or broken gimmick makes it worse. Report 10: household members quoted $34.99 vs $41.99 on the same day, support could not explain a $19.99–$99.99 range — perceived as discriminatory pricing inside families.",
   "section": "must-never-break",
   "cards": [
    "R04-013",
@@ -2729,12 +2973,17 @@
    "R09-041",
    "R09-044",
    "R09-096",
-   "R09-120"
+   "R09-120",
+   "R10-026",
+   "R10-028",
+   "R10-116",
+   "R10-169"
   ],
   "reports": [
    4,
    6,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -2771,26 +3020,38 @@
    "R04-028",
    "R04-051",
    "R04-072",
-   "R04-105"
+   "R04-105",
+   "R10-019",
+   "R10-024",
+   "R10-035"
   ],
   "reports": [
-   4
+   4,
+   10
   ],
   "merged_from": []
  },
  {
   "id": "C117",
   "title": "Mascot / companion character",
-  "statement": "Small, pure praise in report 4; category norm in pet-style apps.",
+  "statement": "Small, pure praise in report 4; category norm in pet-style apps. Report 10: the pet is the causal story users tell — 'I will do for the bird what I will not do for myself' — at 70,041-review scale (companion 1,309, cute design 10,074); the same attachment makes data loss feel like bereavement.",
   "section": "research",
   "cards": [
    "R04-053",
    "R09-038",
-   "R09-064"
+   "R09-064",
+   "R10-009",
+   "R10-017",
+   "R10-032",
+   "R10-033",
+   "R10-037",
+   "R10-057",
+   "R10-071"
   ],
   "reports": [
    4,
-   9
+   9,
+   10
   ],
   "merged_from": []
  },
@@ -2815,27 +3076,36 @@
  },
  {
   "id": "C119",
-  "title": "Updates must not regress layout or lose progress",
-  "statement": "'Everything I dreamt of… then Boom… updated! Now the interface is simply ugly, the progress is gone'; layout regressions hit neurodivergent users hardest.",
+  "title": "Redesigns must not regress layout — ship a density / text-size option or an opt-out",
+  "statement": "A compact-list redesign produced a dated backlash (report 7) while a Liquid Glass refresh drew none (report 8); layout regressions hit neurodivergent users hardest (report 4); a Feb 2024 redesign and continuous UI churn drew a backlash cluster (report 10).",
   "section": "must-never-break",
   "cards": [
    "R04-059",
-   "R05-081",
    "R07-024",
    "R07-109",
    "R07-123",
-   "R08-009",
    "R08-108",
-   "R09-109"
+   "R10-061",
+   "R10-141"
   ],
   "reports": [
    4,
-   5,
    7,
    8,
-   9
+   10
   ],
-  "merged_from": []
+  "merged_from": [
+   {
+    "split_to": "C175",
+    "cards": [
+     "R05-081",
+     "R08-009",
+     "R09-109",
+     "R10-090"
+    ],
+    "when": "consolidation after report 10"
+   }
+  ]
  },
  {
   "id": "C120",
@@ -2905,15 +3175,20 @@
  {
   "id": "C127",
   "title": "Never show ads to paying subscribers",
-  "statement": "Including reward-gated features like streak savers; a 30-second unskippable ad to a payer is the most reliable way to turn an advocate into a 1★.",
+  "statement": "Including reward-gated features like streak savers; a 30-second unskippable ad to a payer is the most reliable way to turn an advocate into a 1★. Report 10: a sponsored movie tie-in as the monthly event drew 'I am paying to be advertised to' from multi-year subscribers (mean 3.09, 8× over-represented among payers) after 857 reviews had praised the app for being ad-free.",
   "section": "product-rule",
   "cards": [
    "R05-019",
    "R05-028",
-   "R05-094"
+   "R05-094",
+   "R10-008",
+   "R10-115",
+   "R10-148",
+   "R10-166"
   ],
   "reports": [
-   5
+   5,
+   10
   ],
   "merged_from": []
  },
@@ -2990,12 +3265,14 @@
    "R07-007",
    "R07-100",
    "R07-125",
-   "R07-142"
+   "R07-142",
+   "R10-022"
   ],
   "reports": [
    5,
    6,
-   7
+   7,
+   10
   ],
   "merged_from": []
  },
@@ -3059,10 +3336,12 @@
   "section": "do",
   "cards": [
    "R06-042",
-   "R06-089"
+   "R06-089",
+   "R10-026"
   ],
   "reports": [
-   6
+   6,
+   10
   ],
   "merged_from": []
  },
@@ -3201,16 +3480,15 @@
   "title": "Harden onboarding before January",
   "statement": "The New Year cohort is the largest of the year, writes reviews in its first days, and judges onboarding, not retention — every create-flow or first-day logging defect is amplified about 2× in January (report 8).",
   "section": "do",
-  "cards": [
-   "R08-109",
-   "R08-110",
-   "R09-112"
+  "cards": [],
+  "reports": [],
+  "merged_from": [
+   {
+    "into": "C032",
+    "when": "consolidation after report 10"
+   }
   ],
-  "reports": [
-   8,
-   9
-  ],
-  "merged_from": []
+  "merged_into": "C032"
  },
  {
   "id": "C147",
@@ -3295,5 +3573,441 @@
    9
   ],
   "merged_from": []
+ },
+ {
+  "id": "C152",
+  "title": "A promised pre-charge trial reminder must actually arrive — in-app, with amount and date",
+  "statement": "Report 10: 'you promised to remind me before charging' is the highest-intensity complaint in a 70,041-review corpus (billing-dispute family mean 1.97, 60% one-star, 17% of all payers); the reminder must be a blocking in-app card on next open, not only a push, and the exact amount and charge date must sit on the trial screen and permanently in Settings. For an ADHD audience the reminder is the feature, not a courtesy.",
+  "section": "must-never-break",
+  "cards": [
+   "R10-005",
+   "R10-016",
+   "R10-047",
+   "R10-048",
+   "R10-152",
+   "R10-172"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C153",
+  "title": "Automatic cloud backup on by default — never manual opt-in",
+  "statement": "Report 10: progress stored on-device with a manual opt-in backup produced 551 data-loss reviews (9% of all 1★), a family rate that quadrupled in four years, and clinicians publicly withdrawing recommendations; 37 users did not know a backup was required until after the loss. Warn before any destructive path (delete for storage, phone change).",
+  "section": "must-have",
+  "cards": [
+   "R10-006",
+   "R10-016",
+   "R10-054",
+   "R10-137",
+   "R10-153",
+   "R10-174",
+   "R03-076",
+   "R03-102",
+   "R04-032",
+   "R04-058",
+   "R04-094",
+   "R05-088",
+   "R08-059",
+   "R08-120"
+  ],
+  "reports": [
+   3,
+   4,
+   5,
+   8,
+   10
+  ],
+  "merged_from": [
+   {
+    "attached": [
+     "R03-076",
+     "R03-102",
+     "R04-032",
+     "R04-058",
+     "R04-094",
+     "R05-088",
+     "R08-059",
+     "R08-120"
+    ],
+    "when": "consolidation after report 10",
+    "note": "existing cards re-attached during consolidation"
+   }
+  ]
+ },
+ {
+  "id": "C154",
+  "title": "Compensation for lost data must match the loss — never a flat token",
+  "statement": "Report 10: a flat 5,000-stone remedy offered to users who lost 20,000–200,000 stones, multi-year streaks and unrepeatable items was described as insulting and in bereavement language; restore inventory or history, not a token.",
+  "section": "dont",
+  "cards": [
+   "R10-055",
+   "R10-153"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C155",
+  "title": "Never remove a feature people bought the app for — add alongside, do not replace",
+  "statement": "Report 10: every major removal (Journeys → streak-based Self-Care Areas, automatic mood check-ins, exact-time goals, milestones, colour palettes) produced a dated backlash, explicit paid cancellations, and none were reversed; generic 'you removed a feature I used' grew 16× in four years.",
+  "section": "product-rule",
+  "cards": [
+   "R10-012",
+   "R10-016",
+   "R10-061",
+   "R10-062",
+   "R10-115",
+   "R10-130",
+   "R10-138",
+   "R10-143",
+   "R10-144",
+   "R10-145",
+   "R10-146"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C156",
+  "title": "Content and event releases need a crash gate across device generations",
+  "statement": "Report 10: a monthly event's 'grow potion' animation crashed the app on load for a large cohort (120 crash reviews in Feb 2026, 4–6× baseline), destroying 600-day streaks and locking paid users out for weeks; reviewers blame the event cadence for shipping untested code.",
+  "section": "must-never-break",
+  "cards": [
+   "R10-007",
+   "R10-011",
+   "R10-016",
+   "R10-135",
+   "R10-136",
+   "R10-154"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C157",
+  "title": "Every guilt mechanic must be optional — streaks, repair prompts, countdowns",
+  "statement": "Report 10: the app was praised specifically for not guilting users (476 reviews, mean 4.87); after streaks shipped mid-2024, 96 reviews say it now punishes the missed day the audience was promised it wouldn't, and repairing a streak costs currency. A single 'gentle mode' toggle is the corpus's own proposal.",
+  "section": "product-rule",
+  "cards": [
+   "R10-013",
+   "R10-040",
+   "R10-065",
+   "R10-135",
+   "R10-142",
+   "R10-159",
+   "R10-173"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C158",
+  "title": "Credit for non-consecutive, cumulative progress alongside streaks",
+  "statement": "Report 10: replacing cumulative Journeys with consecutive-streak Self-Care Areas was the lowest-rated change in the corpus (mean 2.76, 21 of 49 one-star); chronic-illness and ADHD users say a streak-only model is structurally incompatible with their lives. Ship cumulative credit next to streaks, not instead of them.",
+  "section": "must-have",
+  "cards": [
+   "R10-143",
+   "R10-158"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C159",
+  "title": "Launch-to-core-action path with no interstitials",
+  "statement": "Report 10: 'overwhelm' is the largest UX complaint (1,046 reviews) — an app sold to people with executive-function difficulty accumulated six sequential screens (quote, mood prompt, event cutscene, visitor, chest, claim-confirm-claim) before the checklist.",
+  "section": "must-have",
+  "cards": [
+   "R10-064",
+   "R10-160"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C160",
+  "title": "Honour what onboarding asks — a declared limitation must change the suggestions",
+  "statement": "Report 10: the onboarding asks about disability and then ignores the answer ('I have mobility issues, so I clicked that… ever since, the app has been suggesting that I do things that I've told it I can't do'); 597 accessibility reviews at mean 4.56.",
+  "section": "must-have",
+  "cards": [
+   "R10-129",
+   "R10-163"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C161",
+  "title": "Values and identity screens are optional in both directions",
+  "statement": "Report 10: 54 users deleted at a mandatory pet-pronoun step, 109 objected to Pride content, and 111 loyal users (mean 4.57) complained representation was missing; the only intervention the corpus supports is a skip option and a show/hide filter for themed cosmetics — optionality, not editorial change.",
+  "section": "product-rule",
+  "cards": [
+   "R10-015",
+   "R10-084",
+   "R10-085",
+   "R10-165"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C162",
+  "title": "Automated suggestions from user text must be safety-filtered; notifications must be crisis-aware",
+  "statement": "Report 10: the goal-suggestion system parsed a journal entry about suicidal ideation into a goal to 'schedule time for suicide'; diagnosis quizzes returned severe results to children in a 4+ app; a 'you can do this' push arrived right after a text about suicide.",
+  "section": "must-never-break",
+  "cards": [
+   "R10-086"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C163",
+  "title": "Visible monthly plan — annual-default trials drive billing disputes",
+  "statement": "Report 10: the 7-day trial defaults to an annual charge; 23 reviews ask for a monthly plan and several say they would have paid monthly; the annual default is the mechanism behind most of the 404 billing disputes.",
+  "section": "research",
+  "cards": [
+   "R10-167"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C164",
+  "title": "A random-rotation shop with paid re-rolls and unpurchasable catalogue items is a friction generator",
+  "statement": "Report 10: goals yield 3–12 stones while items cost 500–900, the shop rotates randomly, and the item you want never appears — 196 complaints from engaged, currency-rich users, the ones most likely to subscribe. Let users buy what they can see.",
+  "section": "dont",
+  "cards": [
+   "R10-067",
+   "R10-161",
+   "R10-177"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C165",
+  "title": "Official community channels must tolerate criticism",
+  "statement": "Report 10: the Facebook group, Discord and subreddit are described as heavily moderated and hostile to criticism across five years (211 reviews), with paying users 7× over-represented; suppression of criticism resurfaces in every later controversy.",
+  "section": "dont",
+  "cards": [
+   "R10-087"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C166",
+  "title": "Keep the therapeutic core in front of the game layer",
+  "statement": "Report 10: as breathing, first aid and soundscapes moved behind menus and paywalls, tool mentions fell 15.6% → 2.7% and the core-benefit family 30% → 23%, while reviewers called the product 'a pay-to-play loot box checklist simulator'; the game is why people call it cute and motivating, but it must not be paid for by burying the layer people came for.",
+  "section": "product-rule",
+  "cards": [
+   "R10-016",
+   "R10-150",
+   "R10-157",
+   "R10-175"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C167",
+  "title": "Cosmetic and colour variety as the paid layer",
+  "statement": "Report 10: buyers name extra colour options, seasonal items and a larger shop as the specific hook ('I started getting finch plus solely because I found the extra color options… very motivating'); restricting palettes later (Aug–Sep 2026) drew a backlash.",
+  "section": "paid",
+  "cards": [
+   "R10-110"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C168",
+  "title": "Monthly seasonal event with a paid reward track",
+  "statement": "Report 10: event completion is a stated purchase trigger, but events are also the named cause of the 2026 crash and data-loss clusters, FOMO complaints, and the sponsored-IP values breach.",
+  "section": "undecided",
+  "cards": [
+   "R10-029",
+   "R10-069",
+   "R10-111"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C169",
+  "title": "Completion verification / anti-cheat",
+  "statement": "Report 10: 158 users volunteer that they check boxes without doing the task and ask to be held accountable (mean 4.59); its sibling 'it's just a checklist' (111) is the churn thesis.",
+  "section": "research",
+  "cards": [
+   "R10-068",
+   "R10-077"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C170",
+  "title": "Configurable day boundary and hemisphere seasons",
+  "statement": "Report 10: 146 reviews say the app assumes a conventional daytime schedule and northern-hemisphere seasons; night-shift workers and southern-hemisphere users ask for a movable day boundary.",
+  "section": "research",
+  "cards": [
+   "R10-078"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C171",
+  "title": "Accessibility stack: VoiceOver, motion, sound and light sensitivity, text size",
+  "statement": "Report 10: 597 accessibility reviews (0.85%, mean 4.56) from blind, mobility-limited, chronically ill, motion-, sound- and light-sensitive users; dark mode is argued as an accessibility need, not a preference ('Cute clothes for the bird were apparently shippable').",
+  "section": "must-have",
+  "cards": [
+   "R10-014",
+   "R10-074",
+   "R10-075",
+   "R10-129",
+   "R10-163"
+  ],
+  "reports": [
+   10
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C172",
+  "title": "Per-day / per-habit notes and journal text",
+  "statement": "A note field on each check-in is pure upside and requested by happy users (reports 2, 3, 7); a single cramped line is the common complaint; charging for journal text while mood is free drew complaints (report 9).",
+  "section": "free",
+  "cards": [
+   "R02-071",
+   "R03-078",
+   "R03-111",
+   "R05-017",
+   "R07-086",
+   "R08-027",
+   "R09-036"
+  ],
+  "reports": [
+   2,
+   3,
+   5,
+   7,
+   8,
+   9
+  ],
+  "merged_from": [
+   {
+    "split_from": "C049",
+    "when": "consolidation after report 10"
+   }
+  ]
+ },
+ {
+  "id": "C173",
+  "title": "Sub-tasks / sub-routines nested inside a habit or routine",
+  "statement": "'Shower routine' reused inside 'morning routine'; sub-habits are what heavy users ask for after categories (reports 1, 5, 7).",
+  "section": "undecided",
+  "cards": [
+   "R05-069",
+   "R05-099",
+   "R01-074",
+   "R01-102",
+   "R07-087"
+  ],
+  "reports": [
+   1,
+   5,
+   7
+  ],
+  "merged_from": [
+   {
+    "split_from": "C045",
+    "when": "consolidation after report 10"
+   }
+  ]
+ },
+ {
+  "id": "C174",
+  "title": "Multiple profiles (me, kids, pet, work)",
+  "statement": "Requested alongside folders in report 1 — separate people or contexts inside one app.",
+  "section": "research",
+  "cards": [
+   "R01-074",
+   "R01-102",
+   "R01-174"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": [
+   {
+    "split_from": "C045",
+    "when": "consolidation after report 10"
+   }
+  ]
+ },
+ {
+  "id": "C175",
+  "title": "Updates must not break function or wipe progress",
+  "statement": "'Then Boom… updated! Now… the progress is gone' (report 4); a nine-week window of hard functional failures (report 8); an update broke chronological sorting across four countries in one week (report 9); near-daily forced updates are themselves a complaint (report 10).",
+  "section": "must-never-break",
+  "cards": [
+   "R05-081",
+   "R08-009",
+   "R09-109",
+   "R10-090",
+   "R04-059"
+  ],
+  "reports": [
+   4,
+   5,
+   8,
+   9,
+   10
+  ],
+  "merged_from": [
+   {
+    "split_from": "C119",
+    "when": "consolidation after report 10"
+   }
+  ]
  }
 ]

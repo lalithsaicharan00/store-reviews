@@ -76,7 +76,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** 1 (1★, EG, Oct 2025; asked Mar 2025)
 - **Direction for us:** must-have · **Report confidence:** promoted despite n = 1 · **Generalisable:** yes
 - **Review IDs:** `13311871983`
-- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C020 Data export / backup / CSV
+- **Canonical:** C020 Data export / backup / CSV; C036 A support channel that exists, is reachable outside the app, and answers
 
 ### R08-059 — Backup and device migration, not multi-device convenience, is the need: 'I recently reset my iPhone. Now after installing the app, there is no login option. All my habit records are gone'; 'If the app is uninstalled all the user data will be lost'; 'I just wish it has icloud saving but I realize if something is free like this, the devs cant afford such' — a local encrypted backup file plus iCloud Drive document sync answers it without a server, an account or a revenue model
 
@@ -87,7 +87,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Direction for us:** must-have · **Report confidence:** very strong · **Generalisable:** yes
 - **Conditions:** free, no-account app — the fix must not need a server
 - **Review IDs:** `10544874717`, `12874016631`, `13668962217`, `11943323917`
-- **Canonical:** C034 Data must never be lost on update, reinstall or phone change
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C153 Automatic cloud backup on by default — never manual opt-in
 
 ### R08-070 — Custom habits existed but a prominent preset picker hid the free-text path for three years — 'Wieso kann ich keine eigene Gewohnheit abtippen?… Daher nur 1 Stern, weil unbrauchbar' (the only 1★ of 2023); 'i just wish i could write in my own habit… learning a language isn't an option' — cost at least one 1★, one 2★ and eleven withheld stars for a feature that already existed
 
@@ -118,7 +118,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Direction for us:** must-have · **Report confidence:** immediate · **Generalisable:** yes
 - **Conditions:** evidence: R08-034
 - **Review IDs:** `13311871983`
-- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C020 Data export / backup / CSV
+- **Canonical:** C020 Data export / backup / CSV; C036 A support channel that exists, is reachable outside the app, and answers
 
 ## Must never break
 
@@ -130,7 +130,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** 2025Q3 n=49, mean 4.184, 12.2% 1–2★; 5 of its 6 1–2★ are hard functional failures (6 Aug – 10 Sep 2025); bug_white_screen 4 (0.47%), 2.25; bug_cannot_create 4 (0.47%), 2.00
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `12982290428`, `13032792258`, `13089378849`, `13098030502`, `13120591145`, `12002553577`, `13343619642`
-- **Canonical:** C031 Crashes / launch failures; C119 Updates must not regress layout or lose progress
+- **Canonical:** C031 Crashes / launch failures; C175 Updates must not break function or wipe progress
 
 ### R08-019 — Users cannot mark a habit complete on the day they did it — 'I can only select tomorrow'; 'couldn't mark my gym task as completed because it was after the reminder'; 'If I do something on Monday it'll show that I did it on Tuesday' — a timezone / day-boundary defect or reminder-gated logging window that breaks the product's only core action, still reported Apr 2026 after the fix wave; the highest-severity open item
 
@@ -221,7 +221,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Direction for us:** must-never-break · **Report confidence:** immediate · **Generalisable:** yes
 - **Conditions:** evidence: R08-019
 - **Review IDs:** `13990708296`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C146 Harden onboarding before January
+- **Canonical:** C032 New Year peak-season robustness — year-end report and January onboarding; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
 
 ### R08-111 — Fix the monthly-summary off-by-one — the last day of the month is excluded; almost certainly a one-line date-range bug
 
@@ -307,7 +307,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** journal 65 (7.65%), mean 4.68, 0.0% 1–2★; focus/Pomodoro 61 (7.18%), 4.67, 0.0% 1–2★; all-in-one 58 (6.82%), 4.72, 0.0% 1–2★; high-spend journal 9.60%, all-in-one 8.40%
 - **Direction for us:** undecided · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `10115617410`, `14051428806`, `11590224125`
-- **Canonical:** C144 Habits, focus timer and journal in one simple app; C066 Focus timer; C049 Mood tracker / journal / habit notes
+- **Canonical:** C066 Focus timer; C144 Habits, focus timer and journal in one simple app; C172 Per-day / per-habit notes and journal text
 
 ### R08-031 — Unlimited habits free, confirmed continuously 2021 → 2026, praised explicitly with zero 1–2★ — users arrive expecting the category's 3–5-habit cap and are surprised it never appears
 
@@ -417,7 +417,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** want_ipad_mac 11 (1.29%, MEANINGFUL), mean 4.45, 0.0% 1–2★; DE 6 (5.26%, HIGH)
 - **Direction for us:** undecided · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `12082430684`, `13676828438`
-- **Canonical:** C141 Native iPad layout; C044 Mac / desktop / web app
+- **Canonical:** C044 Mac / desktop / web app; C141 Native iPad layout
 
 ### R08-078 — Folders / routines / lists for sorting habits — named in the corpus's only subscription-price statement ($4.99/month for folders and daily journal prompts)
 
@@ -427,7 +427,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** want_folders_groups 9 (1.06%, MEANINGFUL), mean 4.22, 0.0% 1–2★; penalty −0.31
 - **Direction for us:** build-paid · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `14359179692`
-- **Canonical:** C045 Grouping / folders / tags / multiple profiles
+- **Canonical:** C045 Grouping / folders / categories / tags
 
 ### R08-079 — Shared habits / accountability buddy: a 'Habit Buddy' invite exists but does not report back, so users still ask for it
 
@@ -494,7 +494,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **User reaction:** praise
 - **Magnitude:** want_mood_tracker 3 (0.35%, Weak), mean 5.00, 100% 5★; penalty +0.47
 - **Direction for us:** research · **Report confidence:** weak · **Generalisable:** yes
-- **Canonical:** C049 Mood tracker / journal / habit notes
+- **Canonical:** C049 Mood tracker
 
 ### R08-086 — Face ID / passcode lock is a tiny request
 
@@ -558,7 +558,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Direction for us:** must-have · **Report confidence:** recommendation · **Generalisable:** yes
 - **Conditions:** evidence: R08-059, R08-060
 - **Review IDs:** `9853721563`, `10309724588`, `11943323917`
-- **Canonical:** C034 Data must never be lost on update, reinstall or phone change
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C153 Automatic cloud backup on by default — never manual opt-in
 
 ### R08-121 — Let users change a habit's colour after creation — today recolouring means deleting the habit and losing all history
 
@@ -654,7 +654,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** 17 functional-failure reports in 2025; store aggregate 4.83 on 7,184 ratings across 13 storefronts
 - **Direction for us:** do · **Report confidence:** recommendation · **Generalisable:** yes
 - **Conditions:** evidence: R08-010, R08-104
-- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C059 Be visibly responsive; fixes bring reviewers back
+- **Canonical:** C059 Be visibly responsive; fixes bring reviewers back; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire
 
 ## Insights (the why)
 
@@ -686,7 +686,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Direction for us:** do · **Report confidence:** emerging · **Generalisable:** yes
 - **Side effects:** a tip jar both answers the users who want to pay and signals the product is sustained
 - **Review IDs:** `11504152895`, `12936436921`
-- **Canonical:** C097 A tip / donate option; C071 Never ship and walk away
+- **Canonical:** C071 Never ship and walk away; C097 A tip / donate option
 
 ### R08-041 — The 5★ formula is exact: the app is simple, it looks good, it costs nothing, it never nags, and it does habits + focus + journal 'without asking me to be anyone' — 'a testament of the less is more philosophy… It's not littered with ads or stripped down to encourage a premium purchase'
 
@@ -755,7 +755,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** 0 price, 0 ads, 0 AI; gamification wish 1
 - **Direction for us:** dont · **Report confidence:** absence · **Generalisable:** yes
 - **Review IDs:** `11824366215`, `11590224125`, `10121460935`
-- **Canonical:** C056 Don't build AI features on demand grounds; C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal and ad-free; C056 Don't build AI features on demand grounds
 
 ### R08-092 — Power users are missing: almost no demand for tags, dependencies, habit stacking (1), Shortcuts/automation (2) or Health integration (5) — Onrise's users are not the users who would pay for the kind of Pro tier competitors sell
 
@@ -1013,7 +1013,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** January reviews 2021: 7 · 2022: 1 · 2023: 20 · 2024: 21 · 2025: 49 · 2026: 31; Jan 2025 = 20.7% of 2025; can't-log-today 3 of 11 in a 14-day Jan 2025 window
 - **Direction for us:** do · **Report confidence:** observed · **Generalisable:** yes
 - **Review IDs:** `13581401872`, `12138019597`
-- **Canonical:** C146 Harden onboarding before January
+- **Canonical:** C032 New Year peak-season robustness — year-end report and January onboarding
 
 ## Positioning
 
@@ -1087,7 +1087,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** bug_widget_popup 4 (0.47%, Weak), mean 3.75, 25.0% 1–2★; Apr 2023 → Nov 2024
 - **Direction for us:** dont · **Report confidence:** weak, blocking · **Generalisable:** yes
 - **Review IDs:** `9874416341`, `11040279138`, `11904827409`, `9667803845`
-- **Canonical:** C145 Every promotional or onboarding modal must be dismissible on the smallest screen; C093 No upsell nagging without a 'never ask again' option
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C145 Every promotional or onboarding modal must be dismissible on the smallest screen
 
 ## Things not to do
 
@@ -1155,7 +1155,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** 0 redesign complaints
 - **Direction for us:** none · **Report confidence:** absence · **Generalisable:** yes
 - **Conditions:** a platform-native refresh that keeps layout and density differs from a redesign that changes text size, density and labels (report 7)
-- **Canonical:** C119 Updates must not regress layout or lose progress
+- **Canonical:** C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
 
 ## Data caveats and method
 

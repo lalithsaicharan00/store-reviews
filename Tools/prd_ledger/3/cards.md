@@ -42,7 +42,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Magnitude:** 26% of 1★; a full quarter's rating
 - **Direction for us:** build-free · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** evidence: R03-008, R03-016; the 'monetise variants' rule reconciles with report 1 where widget customisation is a purchase driver
-- **Canonical:** C009 Basic widgets, icons and colours are free; C107 Widget variants and customisation as the paid layer; C001 Never move a free feature behind the paywall
+- **Canonical:** C001 Never move a free feature behind the paywall; C009 Basic widgets, icons and colours are free; C107 Widget variants and customisation as the paid layer
 
 ### R03-105 — Offer a cheap one-time purchase — 18 explicit requests, ~12 unsolicited offers to donate with no mechanism, and the most-quoted objection is subscription-as-principle, not amount: 'subscription fatigue is real'
 
@@ -87,7 +87,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Direction for us:** build-free · **Report confidence:** high-priority (severity) · **Generalisable:** yes
 - **Conditions:** evidence: R03-076
 - **Review IDs:** `13629061971`
-- **Canonical:** C034 Data must never be lost on update, reinstall or phone change
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C153 Automatic cloud backup on by default — never manual opt-in
 
 ### R03-118 — Protect the privacy stack as a headline feature — Face ID, no account, neutral name, alternate icons; 145 reviews, mean 4.90, zero negative; it is what makes the app usable by a 13-year-old tracking self-harm on a family phone
 
@@ -150,7 +150,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Side effects:** destructive actions on an interactive widget need confirmation or undo; a reset button on the Home Screen is 'a visual cue to break the streak'
 - **Conditions:** interactive widget check-off (report 1, lift ×5.2) and this are the same surface — make the destructive action hard, the constructive one easy
 - **Review IDs:** `11969610649`, `14087849144`, `10624806513`, `11108689966`, `12399679376`, `11767328058`, `14292313517`, `11588058672`, `11989500206`, `11086772681`, `11188497308`, `13246151828`, `14005562428`, `14014676976`, `11768313172`, `10519275774`
-- **Canonical:** C090 Destructive actions on widgets and quick surfaces need confirmation or undo; C023 Interactive widget check-off
+- **Canonical:** C023 Interactive widget check-off; C090 Destructive actions on widgets, quick surfaces and running routines need confirmation or undo
 
 ### R03-076 — iCloud sync / backup (44, mean 3.91): losing years of sobriety data on a phone upgrade is the highest-severity failure mode — 'I have quit smoking for two years… they deleted the whole lot'; 'Back up is literally PREMIUM?'; nine outright data-loss reports promoted under the safety exception to the 0.1% rule
 
@@ -162,7 +162,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Side effects:** charging for backup in a recovery app reads as holding sobriety history hostage
 - **Conditions:** the report promotes this above its count deliberately — severity overrides the band
 - **Review IDs:** `13629061971`, `11299477588`, `12548572664`, `12166645069`, `13465985854`, `13055204197`, `9112628469`, `12094477051`, `13021750903`, `11497487916`, `10551769710`
-- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C013 Cloud sync / multi-device as the paid differentiator
+- **Canonical:** C013 Cloud sync / multi-device as the paid differentiator; C034 Data must never be lost on update, reinstall or phone change; C153 Automatic cloud backup on by default — never manual opt-in
 
 ### R03-100 — Widget technical breakage clustered in 2021–24 (17 reviews) and is near-zero in 2025–26; crashes total 12 in 10,621 (0.11%) — by category standards the engineering is excellent
 
@@ -182,7 +182,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Magnitude:** 33 reviews, several payers
 - **Direction for us:** must-never-break · **Report confidence:** meaningful (safety) · **Generalisable:** yes
 - **Conditions:** evidence: R03-075
-- **Canonical:** C090 Destructive actions on widgets and quick surfaces need confirmation or undo
+- **Canonical:** C090 Destructive actions on widgets, quick surfaces and running routines need confirmation or undo
 
 ### R03-104 — Honour entitlements the moment they're purchased — Lifetime buyers being asked to subscribe is the most damaging bug class in the corpus
 
@@ -215,7 +215,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Magnitude:** 120 (1.13%), mean 2.53, 59.2% 1–2★
 - **Direction for us:** build-free · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** a feature that has been free for years, and that is the primary surface, cannot be paywalled
-- **Canonical:** C009 Basic widgets, icons and colours are free; C001 Never move a free feature behind the paywall
+- **Canonical:** C001 Never move a free feature behind the paywall; C009 Basic widgets, icons and colours are free
 
 ### R03-017 — Goals behind the paywall is tolerated (mean 4.05, 14.3% 1–2★) and is the #2 purchase trigger
 
@@ -335,7 +335,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Side effects:** in a recovery/sobriety category the app's NAME is a privacy feature
 - **Conditions:** category-critical for quit-habit; passcode lock is free here
 - **Review IDs:** `9562673641`, `8103285120`, `8670863468`, `14479485824`, `14069349379`, `14215526815`, `13121449322`, `12123965670`, `13879035654`
-- **Canonical:** C096 Privacy and discretion stack; C017 Passcode lock
+- **Canonical:** C017 Passcode lock; C096 Privacy and discretion stack
 
 ### R03-056 — The reset mechanic — reset history, longest streak, average streak — is praised by 116 (1.09%), and 14 explicitly praise the ABSENCE of shame: 'relapse is part of recovery'; 'When you reset there's not a popup telling you to stay strong'
 
@@ -391,7 +391,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **User reaction:** complaint
 - **Magnitude:** 43 (0.40%), mean 4.67
 - **Direction for us:** undecided · **Report confidence:** weak · **Generalisable:** yes
-- **Canonical:** C045 Grouping / folders / tags / multiple profiles
+- **Canonical:** C045 Grouping / folders / categories / tags
 
 ### R03-065 — More / custom colours and photo backgrounds requested by 33 (0.31%, mean 4.48)
 
@@ -485,7 +485,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **User reaction:** complaint
 - **Magnitude:** 39 in the 3–4★ band
 - **Direction for us:** research · **Report confidence:** meaningful (band) · **Generalisable:** yes
-- **Canonical:** C049 Mood tracker / journal / habit notes
+- **Canonical:** C172 Per-day / per-habit notes and journal text
 
 ### R03-109 — Pause / stop / archive a counter — 44 requests, mean 4.02, several explicit 'this is the only thing keeping it at 4 stars'
 
@@ -516,7 +516,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Direction for us:** research · **Report confidence:** meaningful · **Generalisable:** yes
 - **Conditions:** evidence: R03-078
 - **Review IDs:** `12151285522`, `14270251700`, `9673744206`, `12251429856`, `12662372114`, `10483620131`
-- **Canonical:** C049 Mood tracker / journal / habit notes
+- **Canonical:** C172 Per-day / per-habit notes and journal text
 
 ### R03-112 — Graphs and trend analytics — streak length over time, resets per month, average-streak trend; two users describe the exact chart they want
 
@@ -547,7 +547,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Magnitude:** 43 (0.40%), mean 4.67, 0 1–2★
 - **Direction for us:** undecided · **Report confidence:** weak · **Generalisable:** yes
 - **Conditions:** evidence: R03-064
-- **Canonical:** C045 Grouping / folders / tags / multiple profiles
+- **Canonical:** C045 Grouping / folders / categories / tags
 
 ### R03-115 — A 'good habit' inverse mode — the chore/ADHD cohort is 4.17% and growing and deserves a first-class mode rather than a workaround
 
@@ -588,7 +588,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Magnitude:** IAP list from the store page (2026-09-09)
 - **Direction for us:** research · **Report confidence:** external source · **Generalisable:** yes
 - **Conditions:** a rebrand of the paid tier left two SKU families visible on the store page
-- **Canonical:** C064 Price level — where 'fair' turns into 'too expensive'; C003 Lead with a one-time lifetime purchase
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C064 Price level — where 'fair' turns into 'too expensive'
 
 ### R03-014 — Reviewers name a wide spread of prices — $17.99–18/yr, $50 lifetime, $30/yr, $22/yr, €7/mo, £6/mo, €60 lifetime, ₹5,000/yr, $12/yr legacy — so the pricing surface is inconsistent; one buyer 'can't find the count up club' they paid for
 
@@ -599,7 +599,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Direction for us:** must-never-break · **Report confidence:** meaningful · **Generalisable:** yes
 - **Side effects:** two SKU families + a rebrand = buyers who cannot find what they bought (R03-024)
 - **Review IDs:** `9642317256`, `12870203346`, `13478631404`, `13571382100`, `12872057253`, `13723431455`, `13223954026`, `12942245612`, `11602241705`, `13471712113`, `13490897194`, `9468239921`, `10584415042`, `13409969245`, `11367914478`, `14107888082`, `10103510351`, `13189265606`, `10468707953`, `14364118481`, `9912775984`
-- **Canonical:** C064 Price level — where 'fair' turns into 'too expensive'; C033 Restore purchase and entitlements must work immediately
+- **Canonical:** C033 Restore purchase and entitlements must work immediately; C064 Price level — where 'fair' turns into 'too expensive'
 
 ### R03-015 — Features named as paywalled with count, %, mean and 1–2★ — full table
 
@@ -716,7 +716,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Side effects:** 'Recent update disabled widgets I've been using for 4 years'; 'This app does not have unique qualities to make widgets a premium feature'
 - **Conditions:** for a day-counter the widget is the primary surface — the app itself is rarely opened
 - **Review IDs:** `12866203144`, `12870567769`, `12926945945`, `12862828885`, `12856046988`, `12877198255`, `13876121897`, `12990450515`
-- **Canonical:** C009 Basic widgets, icons and colours are free; C001 Never move a free feature behind the paywall
+- **Canonical:** C001 Never move a free feature behind the paywall; C009 Basic widgets, icons and colours are free
 
 ### R03-009 — 18 reviews (0.17%) explicitly state they deleted or switched apps over the paywall, mean 1.78
 
@@ -758,7 +758,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Direction for us:** do · **Report confidence:** qualitative · **Generalisable:** yes
 - **Side effects:** paying can itself be a commitment device for a recovery tool
 - **Review IDs:** `14364118481`, `12130917231`, `11602241705`, `12795625876`
-- **Canonical:** C061 'Support the devs' goodwill converts; C004 Price low and fair, anchored against subscription competitors; C059 Be visibly responsive; fixes bring reviewers back
+- **Canonical:** C004 Price low and fair, anchored against subscription competitors; C059 Be visibly responsive; fixes bring reviewers back; C061 Goodwill conversion — a generous free tier and 'support the devs'
 
 ### R03-028 — Paying costs the app roughly nine-tenths of a star and multiplies the 1–2★ rate by eight: payers 3.91 vs 4.77, 24.4% 1–2★ vs 3.11%
 
@@ -777,7 +777,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Magnitude:** pre n=24 mean 3.92; post n=21 mean 3.90
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** two distinct failure modes: re-paywalling hurts free users, entitlement/billing failures hurt payers
-- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C001 Never move a free feature behind the paywall
+- **Canonical:** C001 Never move a free feature behind the paywall; C065 Paying customers are the highest 1★ risk — every paid feature must work
 
 ### R03-044 — What produces 5★ (n=9,250): simple 3,369 (36.4%), widget 678 (7.3%), free 407 (4.4%), unlimited counters 215 (2.3%), no ads 195 (2.1%), time-unit flexibility 117 (1.3%), privacy 131 (1.4%), reset history 97 (1.0%)
 
@@ -830,7 +830,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Side effects:** users of a quit-habit app include people tracking self-harm, suicidality and addiction; paywall moves read as predatory there in a way they do not in productivity apps
 - **Conditions:** see Research Reports/Quit Habit Decision.md
 - **Review IDs:** `12931476120`, `13452216936`, `13502020915`, `12942245612`, `13723431455`, `13876121897`, `13950998269`, `13172803401`, `12972611936`, `8410535615`, `8206594435`
-- **Canonical:** C103 Recovery and harm-reduction users are a vulnerable surface
+- **Canonical:** C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface
 
 ### R03-079 — Recovery and harm-reduction use cases with count, %, mean — full table (alcohol 7.09%, nicotine 3.82%, food/EDs 2.32%, self-harm 1.14%, hard drugs 1.03%, cannabis 0.96%, social media 0.69%, BFRBs 0.40%, porn/NoFap 0.38%, no-contact 0.31% at mean 4.97, shopping 0.24%, gambling 0.06%)
 
@@ -840,7 +840,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Magnitude:** Use case | Reviews | % | Mean ; Alcohol / sobriety | 753 | 7.09% | 4.86 ; Nicotine (smoking / vaping / snus) | 406 | 3.82% | 4.88 ; Food, sugar, caffeine, binge eating, EDs | 246 | 2.32% | 4.77 ; Self-harm / suicidality | 121 | 1.14% | 4.77 ; Hard drugs / NA / relapse language | 109 | 1.03% | 4.77 ; Cannabis | 102 | 0.96% | 4.82 ; Social media / doomscrolling | 73 | 0.69% | 4.81 ; BFRBs (nail biting, trichotillomania, skin picking) | 42 | 0.40% | 4.93 ; Porn / NoFap / PMO / celibacy | 40 | 0.38% | 4.75 ; No-contact after a breakup or abuse | 33 | 0.31% | 4.97 ; Shopping / spending | 26 | 0.24% | 4.88 ; Gambling | 6 | 0.06% | 4.83
 - **Direction for us:** do · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** quit-habit audience; means are all 4.75–4.97 — every recovery use case is a happy one
-- **Canonical:** C103 Recovery and harm-reduction users are a vulnerable surface
+- **Canonical:** C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface
 
 ### R03-080 — The self-harm / suicidality cohort (121 reviews, mean 4.77) matters disproportionately: multiple reviewers are minors (11, 12, 13 years old), and three complain that a 17+ age rating blocked them via family filters — the age rating is load-bearing for a real segment
 
@@ -851,7 +851,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Direction for us:** do · **Report confidence:** meaningful · **Generalisable:** yes
 - **Side effects:** content/age rating is a product decision with a user segment attached; monetisation moves land on this cohort as 'preying on the vulnerable' (R03-011)
 - **Review IDs:** `8235797720`, `11811900918`, `9168912965`, `13649780407`, `8444639701`, `9082663804`, `9142597312`, `12044926784`
-- **Canonical:** C103 Recovery and harm-reduction users are a vulnerable surface
+- **Canonical:** C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface
 
 ### R03-081 — The accidental second product: 443 reviews (4.17%) use the app for chores, ADHD time-blindness or household maintenance, and 77 (0.72%) for medical tracking (seizure logs, medication refills, cancer prognosis, pet symptoms) — a very strong signal the developer did not design for and reviewers apologise for
 
@@ -954,7 +954,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Direction for us:** dont · **Report confidence:** limited evidence · **Generalisable:** yes
 - **Side effects:** an undisclosed change in release notes is itself a complaint
 - **Review IDs:** `12882383970`, `12990450515`, `12853744436`, `12944067790`, `13631461492`, `11887508168`
-- **Canonical:** C104 Never ship a paywall or feature-removal change silently; C001 Never move a free feature behind the paywall
+- **Canonical:** C001 Never move a free feature behind the paywall; C104 Never ship a paywall or feature-removal change silently
 
 ### R03-089 — High-review-volume markets US, GB, CA, AU, IN, DE = 8,401 reviews (79.1%) — volume used strictly as a disclosed engagement proxy
 
@@ -1047,7 +1047,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** six of eleven are billing or entitlement failures, not product complaints
 - **Review IDs:** `9912775984`, `10263513150`, `10570659048`, `10764707061`, `11148249366`, `13115850782`, `13704550155`, `13843033653`, `13964501187`, `14060380344`, `14144614865`
-- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C033 Restore purchase and entitlements must work immediately; C029 Billing must be exactly right
+- **Canonical:** C029 Billing must be exactly right; C033 Restore purchase and entitlements must work immediately; C065 Paying customers are the highest 1★ risk — every paid feature must work
 
 ### R03-093 — Reviews per year: 7 / 151 / 1,281 / 2,275 / 1,314 / 2,163 / 2,269 / 1,161 (2019–2026 partial) — a growing, actively developed app; v4.1.0 shipped six days before the last review
 
@@ -1139,7 +1139,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Magnitude:** 215 of 5★ (2.3%); 244 corpus-wide (2.3%); 30 direct I Am Sober comparisons at mean 4.47
 - **Direction for us:** build-free · **Report confidence:** meaningful · **Generalisable:** yes
 - **Side effects:** a competitor's quantity cap is a stated acquisition channel
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C005 Know which competitors buyers compare against
+- **Canonical:** C005 Know which competitors buyers compare against; C007 Generous fixed habit cap (or unlimited) — never change it
 
 ### R03-049 — 'Too basic / glorified stopwatch' is 5.8% of 1★ — the flip side of radical simplicity
 
@@ -1160,7 +1160,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Direction for us:** build-free · **Report confidence:** very strong · **Generalisable:** yes
 - **Side effects:** the competitive risk made explicit: the gating that won users from a competitor can send them back
 - **Review IDs:** `8132517827`, `8256187600`, `9356129632`, `12268649843`, `10931567211`, `9276814946`, `13185972322`, `10733606008`, `12102036646`, `11100020455`, `13471712113`, `13960930426`
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C005 Know which competitors buyers compare against
+- **Canonical:** C005 Know which competitors buyers compare against; C007 Generous fixed habit cap (or unlimited) — never change it
 
 ## Anti-patterns
 
@@ -1196,7 +1196,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Magnitude:** 11 reviews, 3 from payers
 - **Direction for us:** dont · **Report confidence:** weak · **Generalisable:** yes
 - **Review IDs:** `12282678957`, `10818110589`, `11519112210`, `13083333768`, `10094842714`, `12520439155`, `12029565290`, `11640646593`, `13352415665`, `14339177491`, `14248121134`
-- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C088 No rating-prompt or cross-promo spam, especially to payers
+- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire
 
 ## Things not to do
 
@@ -1239,7 +1239,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Magnitude:** 11 accusations
 - **Direction for us:** dont · **Report confidence:** weak count, reputational · **Generalisable:** yes
 - **Conditions:** evidence: R03-011, R03-080
-- **Canonical:** C103 Recovery and harm-reduction users are a vulnerable surface
+- **Canonical:** C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface
 
 ### R03-122 — Do not ship a paywall change silently — 'No warning, no version update info about it'; if the July 2025 lock-out really was a bug, the absence of a release note is why nobody believed it
 
@@ -1262,7 +1262,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Magnitude:** 30 I Am Sober comparisons, mean 4.47
 - **Direction for us:** do · **Report confidence:** very strong · **Generalisable:** yes
 - **Conditions:** evidence: R03-045, R03-054, R03-055
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C096 Privacy and discretion stack; C005 Know which competitors buyers compare against
+- **Canonical:** C005 Know which competitors buyers compare against; C007 Generous fixed habit cap (or unlimited) — never change it; C096 Privacy and discretion stack
 
 ## Contradictions
 
@@ -1275,7 +1275,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Direction for us:** research · **Report confidence:** clear mechanism · **Generalisable:** yes
 - **Conditions:** a 'good habit / invert' mode reconciles them; the reset affordance must differ per mode
 - **Review IDs:** `12014211393`, `8197401481`, `9503479974`, `9917027140`, `11689561035`, `8690192526`, `9766598371`, `8168145206`, `8298887438`, `11810992187`
-- **Canonical:** C102 Inverse / 'good habit' mode for a counter; C019 Quit-habit / bad-habit mode
+- **Canonical:** C019 Quit-habit / bad-habit mode; C102 Inverse / 'good habit' mode for a counter
 
 ### R03-124 — Report 3 says backup / iCloud sync must be free (losing sobriety history is an unrecoverable brand event); report 1 found iCloud sync the strongest paid differentiator (lift ×9.8) — the resolution the reports imply is: backup/restore of the user's own data free, multi-device live sync can be paid
 

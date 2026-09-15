@@ -32,7 +32,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** 57 reviews; mean fell 4.29 → 3.61 that quarter
 - **Direction for us:** product-rule · **Report confidence:** high-priority (timing) · **Generalisable:** yes
 - **Conditions:** evidence: R04-008
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C001 Never move a free feature behind the paywall
+- **Canonical:** C001 Never move a free feature behind the paywall; C007 Generous fixed habit cap (or unlimited) — never change it
 
 ### R04-096 — Reconsider the free daily-task cap, or raise it well above 6 — it reversed a two-year rating recovery and produced the 'got greedy' vocabulary now in 286 reviews
 
@@ -42,7 +42,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** 286 (1.40%) 'used to be better'
 - **Direction for us:** build-free · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** evidence: R04-008, R04-085
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C001 Never move a free feature behind the paywall
+- **Canonical:** C001 Never move a free feature behind the paywall; C007 Generous fixed habit cap (or unlimited) — never change it
 
 ## Must-haves
 
@@ -54,7 +54,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** 6 IDs, all payers
 - **Direction for us:** must-have · **Report confidence:** weak, all payers · **Generalisable:** yes
 - **Review IDs:** `10951060325`, `11052130385`, `10343032731`, `10850211623`, `13249657539`, `10786069222`
-- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C035 Account system from day one
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C035 Account system from day one; C153 Automatic cloud backup on by default — never manual opt-in
 
 ### R04-033 — Cancellation and support are the compounding failure: 169 (0.83%) cannot cancel (mean 1.22); 48 (0.23%, mean 1.29) say support never replied — 'there is literally NO WAY to cancel'; 'emailed you three times over a month'; 'I am engaging a lawyer'
 
@@ -65,7 +65,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Direction for us:** must-have · **Report confidence:** emerging · **Generalisable:** yes
 - **Side effects:** 'cancel anytime' promised, cancel-by-email delivered, no reply — the worst experiences in the corpus
 - **Review IDs:** `11171231611`, `8951936828`, `10121356710`, `10859158478`, `10455594542`, `9504313939`, `9954546989`, `11181234690`, `9982043369`, `11052130385`
-- **Canonical:** C112 In-app cancellation; C036 A support channel that exists and answers
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C112 In-app cancellation
 
 ### R04-040 — Cancellation and support are dead ends, converting recoverable disputes into permanent 1★ and legal threats
 
@@ -75,7 +75,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** 169 + 48
 - **Direction for us:** must-have · **Report confidence:** emerging · **Generalisable:** yes
 - **Conditions:** evidence: R04-033
-- **Canonical:** C112 In-app cancellation; C036 A support channel that exists and answers
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C112 In-app cancellation
 
 ### R04-058 — Account portability and data safety — 154 sync/login (0.75%) + 115 backup (0.56%) + 55 data loss (0.27%): 'everything was gone GONE'; 'the Data Recovery they added doesn't recover anything'; 'There's no cloud backup'; a 200+ day streak lost — small individually, catastrophic per user, hits payers hardest
 
@@ -85,7 +85,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** 154 + 115 + 55
 - **Direction for us:** must-have · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `10992217262`, `9795027359`, `9796249391`, `9790985374`, `9731639217`, `13965631601`, `10285166374`, `10996599524`, `10951060325`, `11052130385`, `10850211623`, `13249657539`
-- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C035 Account system from day one
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C035 Account system from day one; C153 Automatic cloud backup on by default — never manual opt-in
 
 ### R04-090 — Make the paywall's dismiss control unmissable — a full-width 'Continue with the free version' button, not a corner X
 
@@ -105,7 +105,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** 169 + 48
 - **Direction for us:** must-have · **Report confidence:** emerging · **Generalisable:** yes
 - **Conditions:** evidence: R04-033, R04-034
-- **Canonical:** C112 In-app cancellation; C036 A support channel that exists and answers
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C112 In-app cancellation
 
 ### R04-094 — Ship iCloud backup / account restore on new device — disproportionately hits payers
 
@@ -115,7 +115,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** 154 + 115 + 55
 - **Direction for us:** must-have · **Report confidence:** emerging · **Generalisable:** yes
 - **Conditions:** evidence: R04-032, R04-058
-- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C035 Account system from day one
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C035 Account system from day one; C153 Automatic cloud backup on by default — never manual opt-in
 
 ## Must never break
 
@@ -128,7 +128,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** consistent across five years and dozens of countries: user selects a plan expecting to be billed after seven days and is billed within minutes
 - **Review IDs:** `10885363042`, `10930935136`, `11235083153`, `11419095674`, `11021690984`, `10848781536`, `11064050589`, `10845950237`, `12294261448`, `11757840008`, `13687854445`, `9913482153`
-- **Canonical:** C109 A free trial must be a real trial; C029 Billing must be exactly right
+- **Canonical:** C029 Billing must be exactly right; C109 A free trial must be a real trial
 
 ### R04-027 — Accidental purchases — a trial they did not intend: 'Comprei sem querer', 'Accidentally subscribed for a year', 'Accidental purchase too easy'
 
@@ -138,7 +138,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** 6 IDs, mostly 1★
 - **Direction for us:** must-never-break · **Report confidence:** weak · **Generalisable:** yes
 - **Review IDs:** `11452497897`, `9915339274`, `11095996568`, `10972171193`, `10373609190`, `9891617898`
-- **Canonical:** C109 A free trial must be a real trial; C029 Billing must be exactly right
+- **Canonical:** C029 Billing must be exactly right; C109 A free trial must be a real trial
 
 ### R04-034 — Several reviewers report Apple refunds being DENIED — which turns a billing dispute into a permanent 1★
 
@@ -180,7 +180,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** 286 (1.40%), mean 3.01; 42 (0.21%)
 - **Direction for us:** must-never-break · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `10800043782`, `10905831477`, `10760745572`, `10936736844`, `13748454414`, `10763028336`, `13705509114`
-- **Canonical:** C119 Updates must not regress layout or lose progress
+- **Canonical:** C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out; C175 Updates must not break function or wipe progress
 
 ### R04-066 — Bugs / crashes / not working — 444 (2.17%), mean 2.66
 
@@ -382,7 +382,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **User reaction:** complaint
 - **Magnitude:** 275 (1.34%), mean 2.73
 - **Direction for us:** must-have · **Report confidence:** meaningful · **Generalisable:** yes
-- **Canonical:** C075 Skippable, replayable onboarding tour; C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal and ad-free; C075 Skippable, replayable onboarding tour
 
 ### R04-100 — Full task editing: rename, reorder, drag, duplicate — 399 reviews (1.95%) and the top complaint among PAYING users
 
@@ -412,7 +412,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** 151 (0.74%), mean 3.79
 - **Direction for us:** build-free · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `10220454829`, `12010228356`
-- **Canonical:** C023 Interactive widget check-off; C009 Basic widgets, icons and colours are free
+- **Canonical:** C009 Basic widgets, icons and colours are free; C023 Interactive widget check-off
 
 ### R04-103 — Apple Watch — 34 reviews (0.17%, weak) but mean 3.68 and asked for by payers
 
@@ -514,7 +514,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** present 2022–2026
 - **Direction for us:** dont · **Report confidence:** stated · **Generalisable:** yes
 - **Conditions:** the wheel is named in 26 reviews and reported rigged or broken by several (§1.6)
-- **Canonical:** C113 One stable, disclosed price — no discount wheels; C109 A free trial must be a real trial
+- **Canonical:** C109 A free trial must be a real trial; C113 One stable, disclosed price — no discount wheels
 
 ### R04-024 — Purchase trigger: a discount / sale converted them — 'I bought the yearly subscription when it was on sale'
 
@@ -546,7 +546,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** 'Unlike countless other planner apps out there you don't have to pay to actually be able to use the app' — the review that carried the app is three years old
 - **Review IDs:** `10234553092`, `9856023384`
-- **Canonical:** C002 Ratings follow the offer, not the feature set; C001 Never move a free feature behind the paywall
+- **Canonical:** C001 Never move a free feature behind the paywall; C002 Ratings follow the offer, not the feature set
 
 ### R04-021 — 413 reviews (2.02%) 'praise' the free tier at a mean of only 3.43 because the same vocabulary is used by people saying 'it's free' and people saying 'it says free but isn't' — the clearest evidence that the free/paid boundary is not legible to users
 
@@ -587,7 +587,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Direction for us:** product-rule · **Report confidence:** weak · **Generalisable:** yes
 - **Side effects:** generosity converts through goodwill — the same mechanism as report 2's 'support the developer'
 - **Review IDs:** `11104177160`, `11808709309`
-- **Canonical:** C061 'Support the devs' goodwill converts; C007 Generous fixed habit cap (or unlimited) — never change it
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C061 Goodwill conversion — a generous free tier and 'support the devs'
 
 ### R04-029 — Confirmed payers (n=319) vs corpus: mean 1.87 vs 3.93; 1★ 60.8% vs 16.80%; refund demanded 23.5%; trial-deception 19.7%; scam 13.5%; cancellation difficulty 9.7%; unexpected charge 8.5%; bugs 6.6%; strong endorsement 2.8%
 
@@ -816,7 +816,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Direction for us:** do · **Report confidence:** meaningful (in-market) · **Generalisable:** yes
 - **Side effects:** show the price up front — a 5★ user's own recommendation
 - **Review IDs:** `12725840440`, `10825116155`, `11981627164`, `13752329188`, `12051819932`
-- **Canonical:** C111 No long quiz before the price; show the price up front; C064 Price level — where 'fair' turns into 'too expensive'
+- **Canonical:** C064 Price level — where 'fair' turns into 'too expensive'; C111 No long quiz before the price; show the price up front
 
 ### R04-079 — Localisation is a solved problem in five languages and an open one in six: shipping ES/PT/FR/DE eliminated the complaint in those markets within one year (France 26.4% → 1.9%, Spanish 31.5% → 0.0%, German 15.6% → 0.0%) — the single cleanest cause-and-effect in the dataset; unserved markets are loud: Russian is 51.9% of all Russian reviews and the two most-voted reviews in the entire corpus (180 and 98 votes) are Russian language requests; Turkish 27.8% (2025), Polish 20%, Vietnamese 14.1%, Dutch 11.4%, Arabic 16.0%, plus Japanese, Korean, Indonesian
 
@@ -851,7 +851,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Side effects:** the cap converted a 'free app with paid extras' into a 'trial app'; carried disproportionately by long-tenure users so it reads as betrayal, not a price objection
 - **Conditions:** one paying user lost the capability too
 - **Review IDs:** `13492344866`, `13684033797`, `13323699685`, `14279264893`, `14251626693`, `14426594797`, `13028782607`, `14518936346`, `13037009395`, `13595977240`, `13877919125`, `14496354181`, `13249657539`, `12837015409`
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C001 Never move a free feature behind the paywall
+- **Canonical:** C001 Never move a free feature behind the paywall; C007 Generous fixed habit cap (or unlimited) — never change it
 
 ### R04-065 — 'It used to be better / used to be free' — 286 (1.40%), mean 3.01
 
@@ -899,7 +899,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** billing regressions are shippable bugs — monitor the trial→charge path per release
 - **Review IDs:** `10930935136`, `10933044729`, `10983020319`, `11005436107`, `10941969952`, `10941523544`, `10915214872`, `10869856053`, `10863840021`, `10885363042`, `10802505019`
-- **Canonical:** C109 A free trial must be a real trial; C029 Billing must be exactly right
+- **Canonical:** C029 Billing must be exactly right; C109 A free trial must be a real trial
 
 ### R04-085 — Event C — the mid-2025 free-tier tightening: mean 4.29 → 3.61 in one quarter; paywall-block 6.8% → 15.4%; free task cap 0.5% → 2.0% of reviews and above 1% since; fourteen months later the mean has recovered only to 4.12, still below the 4.38 peak
 
@@ -908,7 +908,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **User reaction:** 1★-burst
 - **Magnitude:** 4.29 → 3.61; not recovered to peak after 14 months
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C001 Never move a free feature behind the paywall
+- **Canonical:** C001 Never move a free feature behind the paywall; C007 Generous fixed habit cap (or unlimited) — never change it
 
 ### R04-086 — Improved: billing cluster 13.0% (2023 Q2) → 3.8% (2026 Q3) with the 2024 Q1 relapse; localisation eliminated in ES/PT/FR/DE; 'can't edit future days' 1.35% → 0.22%; scheduling flexibility 2.49% → 0.67%; quiz complaints 4.8% → 0.3%
 
@@ -937,7 +937,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** three chronic themes
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** chronic reliability themes at ~1% per year are a permanent rating tax
-- **Canonical:** C039 Reminders fire reliably, once; C034 Data must never be lost on update, reinstall or phone change; C093 No upsell nagging without a 'never ask again' option
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C039 Reminders fire reliably, once; C093 No upsell nagging without a 'never ask again' option
 
 ## Positioning
 
@@ -1095,7 +1095,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Direction for us:** do · **Report confidence:** meaningful · **Generalisable:** yes
 - **Conditions:** evidence: R04-064, R04-069
 - **Review IDs:** `9761650498`
-- **Canonical:** C114 Ads must match the app; C058 Discovery runs through social video, Reddit, therapists (US) and Xiaohongshu / Bilibili (CN); C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
+- **Canonical:** C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers; C058 Discovery runs through social video, Reddit, therapists (US) and Xiaohongshu / Bilibili (CN); C114 Ads must match the app
 
 ## Contradictions
 

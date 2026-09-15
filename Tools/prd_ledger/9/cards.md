@@ -32,7 +32,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** M-price 123 (9.60%), mean 2.70 (highest money mean), 31 are 5★; M-wall 75 (5.85%), 1.69; M-latereveal 18 (1.41%), 1.39
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `11285454916`, `11946302259`, `12294156269`, `12305015226`
-- **Canonical:** C147 Let people use the product before they pay; C002 Ratings follow the offer, not the feature set
+- **Canonical:** C002 Ratings follow the offer, not the feature set; C147 Let people use the product before they pay
 
 ### R09-122 — Let people see the product before they pay — the claim with more evidence than anything else in the corpus: deduplicated, 159 reviews say 'let me look before you charge me' at mean 1.79 while 28 say the free tier is already usable; it may not raise revenue per install but should cut the scam, regret and refund reviews and convert the 55-review 'I'd pay if I could look first' cohort that currently converts at zero
 
@@ -52,7 +52,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Direction for us:** product-rule · **Report confidence:** recommendation · **Generalisable:** yes
 - **Conditions:** evidence: R09-018, R09-019, R09-046, R09-068
 - **Review IDs:** `13860369435`, `11647652906`
-- **Canonical:** C095 Neutral, non-judgemental tone on failure; C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible; C027 Localise early — it unlocks revenue
+- **Canonical:** C027 Localise early — it unlocks revenue; C095 Neutral, non-judgemental tone on failure; C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible
 
 ## Must-haves
 
@@ -84,7 +84,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** 21 of 25 X-support are payers; ~100 public refund complaints
 - **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `11567513705`, `13065540266`, `12571528769`
-- **Canonical:** C112 In-app cancellation; C036 A support channel that exists, is reachable outside the app, and answers
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C112 In-app cancellation
 
 ### R09-117 — Build a real in-app support and refund path — converts ~100 public refund complaints into private tickets
 
@@ -117,7 +117,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** M-refund 102 (7.96%, HIGH-PRIORITY), mean 1.73; 99 of 226 paid (43.8% segment rate); TR 59 of 102 (57.8%, 12.53% of TR); 9.70% (2024) → 7.80% → 3.98% (2026)
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `11567513705`, `11480287005`, `11912344269`, `13065540266`
-- **Canonical:** C112 In-app cancellation; C036 A support channel that exists, is reachable outside the app, and answers
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C112 In-app cancellation
 
 ### R09-015 — Billing does not match what was shown: annual shown as ₺199.99 and more taken; 'subscribed at 49, they took 114'; 'supposed to pay 39.99 but it charged me 56'; double-charged on a plan switch; charges after deletion; a discount pop-up that completed an Apple Pay annual purchase while the user was trying to dismiss it; a €20 annual subscription that appeared without bank details ever being entered
 
@@ -138,7 +138,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** app-specific
 - **Conditions:** a regional infrastructure failure hidden by a single global star rating
 - **Review IDs:** `12574094311`, `13189159142`, `13684764082`, `13936354959`, `14274931059`, `14413735582`, `14137219709`
-- **Canonical:** C132 Do not sell in a storefront where the app cannot function; C031 Crashes / launch failures
+- **Canonical:** C031 Crashes / launch failures; C132 Do not sell in a storefront where the app cannot function
 
 ### R09-033 — The rest of the defect load: new habits won't save, users logged out and cannot sign back in, completed tasks un-complete themselves, routines and history disappear, text truncated, widgets blank (RU), iPad layout unusable, planning requires a network connection, Hebrew renders reversed, wrong weekday, signature field rejects input, Discover tab errors (Jan 2026)
 
@@ -207,7 +207,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** 52 of 113 RU minute-long loads; 6 VPN-only; 36 RU paid; RU written 2.38
 - **Direction for us:** must-never-break · **Report confidence:** immediate · **Generalisable:** app-specific
 - **Conditions:** evidence: R09-030, R09-092
-- **Canonical:** C132 Do not sell in a storefront where the app cannot function; C031 Crashes / launch failures
+- **Canonical:** C031 Crashes / launch failures; C132 Do not sell in a storefront where the app cannot function
 
 ### R09-118 — Rate-limit nothing in the AI coach's crisis path, and add a handoff — non-negotiable in a 4+ ADHD/self-care app
 
@@ -271,7 +271,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** G-notes 9 (0.70%, EMERGING), mean 3.11
 - **Direction for us:** research · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `13021325704`, `12209118679`
-- **Canonical:** C049 Mood tracker / journal / habit notes
+- **Canonical:** C049 Mood tracker; C172 Per-day / per-habit notes and journal text
 
 ### R09-037 — Widgets are paid in some storefronts (SA, ID) and reported free in the US — inconsistent — and a Saudi 1★ argues charging for widgets specifically is unfair
 
@@ -311,7 +311,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** G-freq 22 (1.72%, MEANINGFUL), mean 3.14; 3★ band 7; 4★ band 4; FR 3
 - **Direction for us:** must-have · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `11686508200`, `11668735422`, `12183108635`, `12695260948`, `12017205465`
-- **Canonical:** C043 Flexible / custom frequency; C143 Intra-day completion: tap N times to fill N/N; C016 Skip / holiday / pause mode (pause a habit or counter without losing history)
+- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C043 Flexible / custom frequency; C143 Intra-day completion: tap N times to fill N/N
 
 ### R09-051 — Preset habits cannot be renamed or edited and habits/routines cannot be deleted — and the store listing claims you can
 
@@ -341,7 +341,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** G-group 13 (1.01%), 2.69; G-order 8 (0.62%), 2.38; G-dup 8 (0.62%), 2.25
 - **Direction for us:** must-have · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `13099009549`, `12464161947`, `11491997138`, `12272862926`
-- **Canonical:** C045 Grouping / folders / tags / multiple profiles; C073 Manual reordering, renaming and editing of habits/tasks — free
+- **Canonical:** C045 Grouping / folders / categories / tags; C073 Manual reordering, renaming and editing of habits/tasks — free
 
 ### R09-054 — More icons, emoji and colours — 'only 6 colours', 'only 60 emoji' — cheap and asked by engaged users
 
@@ -420,7 +420,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** X-ai 5 (0.39% globally, 2.84% of P3), all 2026; 2 say Mimi is valuable; 1 cut off mid-crisis
 - **Direction for us:** must-never-break · **Report confidence:** safety · **Generalisable:** yes
 - **Review IDs:** `14302044695`, `13810246956`, `13860369435`, `14084062489`, `14507626498`
-- **Canonical:** C151 Never cap or paywall a support conversation mid-crisis; C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface
+- **Canonical:** C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface; C151 Never cap or paywall a support conversation mid-crisis
 
 ### R09-121 — Add an audible completion/alarm option — fixes a whole market's (SA) core complaint
 
@@ -453,7 +453,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Direction for us:** must-have · **Report confidence:** recommendation · **Generalisable:** yes
 - **Conditions:** evidence: R09-052
 - **Review IDs:** `12357846588`, `12710666495`
-- **Canonical:** C148 The paid product must deliver what the ads and onboarding demonstrate; C118 Preset routines / templates / programs
+- **Canonical:** C118 Preset routines / templates / programs; C148 The paid product must deliver what the ads and onboarding demonstrate
 
 ### R09-129 — Ship the frequency model reviewers describe — N× per day, any N days per week, explicit weekdays, skip/holiday
 
@@ -486,7 +486,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Direction for us:** must-have · **Report confidence:** recommendation · **Generalisable:** yes
 - **Conditions:** evidence: R09-053
 - **Review IDs:** `13099009549`, `12464161947`, `11491997138`
-- **Canonical:** C045 Grouping / folders / tags / multiple profiles
+- **Canonical:** C045 Grouping / folders / categories / tags
 
 ### R09-132 — Expand icons, emoji and colours — low cost, all from engaged users
 
@@ -519,7 +519,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Direction for us:** undecided · **Report confidence:** recommendation · **Generalisable:** yes
 - **Conditions:** evidence: R09-037, R09-039
 - **Review IDs:** `12451223326`
-- **Canonical:** C009 Basic widgets, icons and colours are free; C141 Native iPad layout; C022 Apple Watch app (done properly: timer, two-way sync)
+- **Canonical:** C009 Basic widgets, icons and colours are free; C022 Apple Watch app (done properly: timer, two-way sync); C141 Native iPad layout
 
 ## Monetization
 
@@ -954,7 +954,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** B-onboard 21 (1.64%), mean 1.52; 10 in Nov 2024 alone (DE 4, FR 4, also CH, IT, BR, TR); 9 in 2025, 1 in 2026; 2.37% → 1.40% → 0.57%
 - **Direction for us:** must-never-break · **Report confidence:** observed · **Generalisable:** yes
 - **Review IDs:** `11953340146`, `11987084380`, `11982010915`, `11965618346`, `11986632519`, `11989133850`
-- **Canonical:** C145 Every promotional or onboarding modal must be dismissible on the smallest screen; C031 Crashes / launch failures
+- **Canonical:** C031 Crashes / launch failures; C145 Every promotional or onboarding modal must be dismissible on the smallest screen
 
 ### R09-107 — Theme rates by period and by half-year: defects doubled, loading rose 24×, money flat, refunds / guarantee / trial trap / thin product / onboarding freeze improved
 
@@ -982,7 +982,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** B-order 5 (0.39%), mean 2.00; 4 in Apr 2025 (IN, DE, TR, MX); 1 in Apr 2026
 - **Direction for us:** must-never-break · **Report confidence:** weak, dated · **Generalisable:** yes
 - **Review IDs:** `12548475613`, `12571528769`, `12571797731`, `12577110521`, `13915239677`
-- **Canonical:** C119 Updates must not regress layout or lose progress
+- **Canonical:** C175 Updates must not break function or wipe progress
 
 ### R09-112 — New-Year seasonality is large but it is volume, not sentiment — measure any funnel change against a January baseline, and treat a January release as the highest-exposure moment of the year
 
@@ -991,7 +991,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **User reaction:** mixed
 - **Magnitude:** Jan–Feb 2025 = 239 reviews (18.7% of corpus in two months); peak Feb 2025 131; Jan 2026 47 vs ~20/month; 2025 Q1 mean 3.59 vs corpus 3.51
 - **Direction for us:** do · **Report confidence:** observed · **Generalisable:** yes
-- **Canonical:** C146 Harden onboarding before January
+- **Canonical:** C032 New Year peak-season robustness — year-end report and January onboarding
 
 ## Positioning
 
@@ -1012,7 +1012,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** P-free 28 (2.19%, MEANINGFUL), mean 4.39 vs M-wall 75 (5.85%), 1.69
 - **Direction for us:** do · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `12174607035`, `13326456954`, `12294500887`, `11525075222`, `11372377257`, `11487094036`, `12044126085`, `12548474349`, `13611780246`, `13839168780`, `13951718803`, `14103224443`
-- **Canonical:** C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible; C061 Goodwill conversion — a generous free tier and 'support the devs'
+- **Canonical:** C061 Goodwill conversion — a generous free tier and 'support the devs'; C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible
 
 ### R09-066 — The churn thesis is a comparison to a free tool the reviewer already owns — iPhone Notes / Reminders, paper, a whiteboard, a spreadsheet, Trello, Google Calendar, ChatGPT: 'I would get a better personalized routine using ChatGPT for free. Just a pretty app with basic content' (bought on an ad promising MBTI-personalised routines that do not exist)
 
@@ -1064,7 +1064,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** G-thin 99 (7.73%, HIGH-PRIORITY), mean 1.45 (lowest with n>20), 74 are 1★; 47 paid (20.8% of paid cohort); 1★ band 74 (22.0%), 2★ band 15 (17.0%); TR 7.9%, US 13.6%, BR 6.7%, RU 7.1%, MX 6.8%, FR 8.0%; high-spend 9.6%; 8.84% (2024) → 8.27% → 2.84% (2026)
 - **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `12209118679`, `11552361877`, `12400544803`
-- **Canonical:** C148 The paid product must deliver what the ads and onboarding demonstrate; C114 Ads must match the app
+- **Canonical:** C114 Ads must match the app; C148 The paid product must deliver what the ads and onboarding demonstrate
 
 ### R09-023 — Advertised features are not in the app: the acquisition creative and onboarding demo promise an interactive coach and the product delivers a checklist — the gap is the churn
 
@@ -1084,7 +1084,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** O-notpersonal 11 (0.86%, EMERGING), mean 1.55
 - **Direction for us:** dont · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `11472460295`, `11717508221`, `13521538789`, `12587805273`
-- **Canonical:** C148 The paid product must deliver what the ads and onboarding demonstrate; C111 No long quiz before the price; show the price up front
+- **Canonical:** C111 No long quiz before the price; show the price up front; C148 The paid product must deliver what the ads and onboarding demonstrate
 
 ### R09-110 — The funnel is being tuned harder while the product improves — upsell complaints quintupled, onboarding-length and ad-mismatch complaints rose, while refunds and 'just a checklist' fell — so upsell pressure is now the fastest-growing source of one-star reviews: 'an excellent example of how to show tons of different paywall pages to users and don't let them use the app'
 
@@ -1126,7 +1126,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** 59 M-nag reviews; 3 named discount-timer purchases
 - **Direction for us:** dont · **Report confidence:** very strong · **Generalisable:** yes
 - **Review IDs:** `12360368631`, `12755295856`, `12966178467`, `12650182347`, `11777093103`
-- **Canonical:** C113 One stable, disclosed price — no discount wheels; C093 No upsell nagging without a 'never ask again' option
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C113 One stable, disclosed price — no discount wheels
 
 ### R09-070 — Asked to rate the app before using it, as a step inside sign-up — 'I'm having to write a review before actually using app??'; 'first they ask you for 5 stars, then for money, and only then do you get to see the app'; 'mid-onboarding the devs beg for a review of an app I haven't even seen. Incidentally Apple forbids this' — an App Store guideline exposure that inflates the public rating
 
@@ -1136,7 +1136,7 @@ Source: `App Store Reports/9. Dear Me - Daily Routine Tracker - Self Care & ADHD
 - **Magnitude:** O-forcedrate 13 (1.01%, MEANINGFUL), mean 2.54; public/written gap +1.35
 - **Direction for us:** dont · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `11894722198`, `12278140415`, `12137044359`, `13021325704`, `13441600880`, `14276958495`, `11549287863`, `11936103176`, `12009795310`, `12018437724`, `12783290291`, `13175470414`, `13604430494`
-- **Canonical:** C150 Never ask for a rating before the user has used the app; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire
+- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C150 Never ask for a rating before the user has used the app
 
 ### R09-116 — Remove the rating prompt from the sign-up flow — removes an App Store Review Guideline exposure and restores the rating as a usable metric
 

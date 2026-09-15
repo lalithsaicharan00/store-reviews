@@ -85,7 +85,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Magnitude:** Wants weekly / flexible / skip-day goals 17 (1.93%, MEANINGFUL), mean 4.12, 5.9% 1–2★; 8.4% of 4★; span 3y (10266075296 16 Aug 2023 → 14489689059 30 Aug 2026)
 - **Direction for us:** must-have · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `10266075296`, `11800436326`, `13187090517`, `14489689059`, `13736974190`
-- **Canonical:** C142 Surface existing features where users look; C043 Flexible / custom frequency
+- **Canonical:** C043 Flexible / custom frequency; C142 Surface existing features where users look
 
 ### R07-122 — Put a support address in the app, visibly — the two reviewers who could not reach the developer produced two 1★s; discoverability, not staffing
 
@@ -107,7 +107,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Direction for us:** must-have · **Report confidence:** recommendation · **Generalisable:** yes
 - **Conditions:** evidence: R07-088
 - **Review IDs:** `10266075296`, `11800436326`
-- **Canonical:** C142 Surface existing features where users look; C043 Flexible / custom frequency
+- **Canonical:** C043 Flexible / custom frequency; C142 Surface existing features where users look
 
 ## Must never break
 
@@ -149,7 +149,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Direction for us:** must-never-break · **Report confidence:** limited evidence, documented · **Generalisable:** yes
 - **Conditions:** contrast report 6, where the lifetime purchase did not cancel the running subscription and double-billed
 - **Review IDs:** `14288167581`, `14289596763`
-- **Canonical:** C077 Purchase and signup flow must not leak buyers; C003 Lead with a one-time lifetime purchase
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C077 Purchase and signup flow must not leak buyers
 
 ### R07-079 — Bugs are reported rarely but at a steep rating cost, and payers are the ones who hit and report them; bug reports are 2.5× more common outside high-spend markets
 
@@ -158,7 +158,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **User reaction:** 1★-burst
 - **Magnitude:** 16 (1.81%, MEANINGFUL), mean 2.75, 50.0% 1–2★; 7 of 16 payers (43.8%); high-spend 1.1% vs rest 2.8%
 - **Direction for us:** must-never-break · **Report confidence:** meaningful · **Generalisable:** yes
-- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C031 Crashes / launch failures
+- **Canonical:** C031 Crashes / launch failures; C065 Paying customers are the highest 1★ risk — every paid feature must work
 
 ### R07-089 — Streak maths for non-daily goals is not trusted: 'I'm on a 12 week streak for a habit I started 8 weeks ago'; 'The numeric streak count for weekly goals is strange, so I don't use it'; 'The streak is not a true streak'; one resolved only because the developer explained it personally — a wrong number in a trust-based app is worse than no number; audit it
 
@@ -200,7 +200,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Direction for us:** must-never-break · **Report confidence:** immediate · **Generalisable:** yes
 - **Conditions:** evidence: R07-024
 - **Review IDs:** `14452046441`, `14447636722`
-- **Canonical:** C119 Updates must not regress layout or lose progress
+- **Canonical:** C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
 
 ### R07-124 — Audit the streak count for 'X per week/month' habits — a wrong number in a trust-based app is worse than no number
 
@@ -275,7 +275,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Magnitude:** No ads 7 (0.79%), mean 5.00, 100% 5★
 - **Direction for us:** build-free · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `13188634050`, `13680396177`, `12336116396`
-- **Canonical:** C008 Daily check-in and one basic reminder per habit are free; C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal and ad-free; C008 Daily check-in and one basic reminder per habit are free
 
 ### R07-037 — Widgets are a real purchase trigger for some: 'Probably upgrading to paid soon for widget feature'; 'the widgets alone are worth the money'
 
@@ -394,7 +394,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Magnitude:** 16 (1.81%, MEANINGFUL), mean 4.81, not one below 4★; requests Nov 2023 → Aug 2026
 - **Direction for us:** undecided · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `13824458972`, `13036578153`, `12607872016`, `14466920687`
-- **Canonical:** C049 Mood tracker / journal / habit notes
+- **Canonical:** C172 Per-day / per-habit notes and journal text
 
 ### R07-087 — Sub-habits / folders / pages are the natural next product after categories and what heavy users (10+ habits, the paying segment) ask for: 'label the habit morning routine, click it to open, add a sub-habit like make bed, brush teeth, do skin care, and once you check off all three it will complete that habit'; pages to separate his tracking from his dog's; career vs health folders
 
@@ -405,7 +405,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Direction for us:** build-paid · **Report confidence:** meaningful · **Generalisable:** yes
 - **Conditions:** ship opt-in, invisible by default (Part 9 #16)
 - **Review IDs:** `11526306665`, `13692456434`, `13149743389`, `12727692876`, `11650437167`, `11081763094`
-- **Canonical:** C045 Grouping / folders / tags / multiple profiles
+- **Canonical:** C045 Grouping / folders / categories / tags; C173 Sub-tasks / sub-routines nested inside a habit or routine
 
 ### R07-090 — Genuinely missing: skip / rest days that don't break the chain (public holidays shouldn't break a work habit) and every-other-day intervals — 'leider keine Gewohnheiten, die alle zwei Tage anstehen… Sonst hätte ich es mit der App versucht', a stated non-adoption
 
@@ -724,7 +724,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Magnitude:** 5 quoted buyers with stated delays
 - **Direction for us:** build-free · **Report confidence:** quoted · **Generalisable:** yes
 - **Review IDs:** `12159772330`, `12934931415`, `13596249635`, `14469978356`, `13603385121`
-- **Canonical:** C061 Goodwill conversion — a generous free tier and 'support the devs'; C007 Generous fixed habit cap (or unlimited) — never change it
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C061 Goodwill conversion — a generous free tier and 'support the devs'
 
 ### R07-050 — Subscription aversion is loud but mostly non-fatal: the theme is bimodal (32 of 55 are 5★ praising that a subscription is NOT required) and 22 of 55 are confirmed payers who subscribed while complaining — the lesson is not 'drop subscriptions' but that the lifetime SKU is doing enormous defensive work and must stay visible and purchasable
 
@@ -861,7 +861,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Magnitude:** 4 named reviews
 - **Direction for us:** build-paid · **Report confidence:** segment · **Generalisable:** yes
 - **Review IDs:** `13621381288`, `14089093879`, `12958968819`, `13422297301`
-- **Canonical:** C045 Grouping / folders / tags / multiple profiles; C133 Gate on capability, not on quantity
+- **Canonical:** C045 Grouping / folders / categories / tags; C133 Gate on capability, not on quantity
 
 ### R07-102 — Religious practice is a use case — daily Bible reading, and a request for location-based Islamic prayer times ('potenziell 2 Milliarden Kunden')
 
@@ -940,7 +940,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Magnitude:** GB 89: 80.9% 5★, cap 0.0%, sync 3.4%, life change 7.9%, design 46.1%
 - **Direction for us:** none · **Report confidence:** standalone (n ≥ 50) · **Generalisable:** app-specific
 - **Review IDs:** `14447636722`, `14452015607`
-- **Canonical:** C119 Updates must not regress layout or lose progress
+- **Canonical:** C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
 
 ### R07-110 — Canada is the problem market — lowest mean, highest 1–2★, cap, paywall, price-objection and churn rates — while having the highest developer-praise rate and a high payer rate: Canadians love the maker and resent the price; CA$40 for a US$30 SKU is a ~33% premium, and CA is the only eligible market where price complaints outnumber sync complaints — a CA-specific pricing review is warranted
 
@@ -970,7 +970,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Magnitude:** cap complaints rest-of-world 4.2% vs high-spend 2.3%; 1–2★ 9.8% vs 4.8%
 - **Direction for us:** do · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `12090297861`
-- **Canonical:** C092 Regional pricing; C007 Generous fixed habit cap (or unlimited) — never change it
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C092 Regional pricing
 
 ### R07-113 — The long tail is not a rounding error: the 60 small storefronts are 30% of the corpus, rate ~0.13 stars lower and complain about the cap almost twice as often — the majority of the cap problem (review volume is a disclosed proxy, not downloads or revenue)
 
@@ -1031,7 +1031,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Direction for us:** must-never-break · **Report confidence:** emerging · **Generalisable:** yes
 - **Side effects:** repro: iPhone 14 with display zoom + large text; fix with a text-size / density option or an opt-out
 - **Review IDs:** `14447636722`, `14452015607`, `14452046441`, `14462152671`, `14488967268`, `14467718205`
-- **Canonical:** C119 Updates must not regress layout or lose progress
+- **Canonical:** C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
 
 ### R07-025 — Prices reviewers actually report: monthly ≈ $2 / £1.99, yearly ≈ $12–13, lifetime ≈ $30 / €35 / £29.99; the lifetime price roughly doubled between Dec 2022 ($15) and late 2024 (€35)
 
@@ -1144,7 +1144,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Direction for us:** must-never-break · **Report confidence:** highest severity · **Generalisable:** yes
 - **Side effects:** a serviceability bug with a geographic distribution
 - **Review IDs:** `13430341774`, `13105035694`, `12836329335`, `13693601586`, `14351190258`
-- **Canonical:** C139 Cache entitlements locally — never block a paid surface on a live server check; C033 Restore purchase and entitlements must work immediately
+- **Canonical:** C033 Restore purchase and entitlements must work immediately; C139 Cache entitlements locally — never block a paid surface on a live server check
 
 ### R07-015 — Creator content is driving purchases against features the app does not have: a user bought an annual plan to get a lock-screen widget seen on YouTube — it does not exist
 
@@ -1209,7 +1209,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Magnitude:** 11 reviews, mean 4.91
 - **Direction for us:** do · **Report confidence:** recommendation · **Generalisable:** yes
 - **Conditions:** evidence: R07-066
-- **Canonical:** C140 Market the generic-tracker use case; C134 Lead the store listing with what users actually love
+- **Canonical:** C134 Lead the store listing with what users actually love; C140 Market the generic-tracker use case
 
 ### R07-139 — Lean into the YouTube / Threads discovery channel with a creator brief — discovery is named via YouTube (incl. 'The Studio' channel, also cited on the marketing site), Threads, Twitter, LinkedIn and Product Hunt, and one video drove an annual purchase for a lock-screen widget that does not exist
 
@@ -1254,7 +1254,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Direction for us:** build-paid · **Report confidence:** resolved by recommendation · **Generalisable:** yes
 - **Conditions:** contradicts 'account system from day one' (report 1) as the only fix: iCloud-based sync can deliver continuity without an account
 - **Review IDs:** `11241317063`, `13499288017`
-- **Canonical:** C035 Account system from day one; C013 Cloud sync / multi-device as the paid differentiator; C096 Privacy and discretion stack
+- **Canonical:** C013 Cloud sync / multi-device as the paid differentiator; C035 Account system from day one; C096 Privacy and discretion stack
 
 ### R07-095 — Unlike apps 3, 5 and 6 in this set, nobody claims they were charged an amount they did not agree to — HabitKit's paid failures are the opposite problem: charged correctly, not delivered
 

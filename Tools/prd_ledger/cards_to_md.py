@@ -24,6 +24,12 @@ def main(n):
     cards = [json.loads(l) for l in open(os.path.join(folder, "cards.jsonl")) if l.strip()]
     report = os.path.basename(glob.glob(os.path.join(ROOT, "App Store Reports", f"{n}. *.md"))[0])
     canon = {c["id"]: c for c in json.load(open(os.path.join(ROOT, "Tools", "prd_ledger", "canonical.json")))}
+    # canonical.json is the source of truth for card -> point (consolidation may merge or split points after a
+    # report's cards were committed); fall back to the card's own field only if the ledger has nothing for it
+    rev = {}
+    for cid, x in canon.items():
+        if x.get("merged_into"): continue
+        for k in x["cards"]: rev.setdefault(k, []).append(cid)
 
     groups = OrderedDict((k, []) for k in KIND_ORDER)
     for c in cards: groups.setdefault(c["kind"], []).append(c)
@@ -49,8 +55,9 @@ def main(n):
             if c.get("side_effects"): out.append(f"- **Side effects:** {c['side_effects']}")
             if c.get("conditions"): out.append(f"- **Conditions:** {c['conditions']}")
             if c.get("review_ids"): out.append(f"- **Review IDs:** " + ", ".join(f"`{r}`" for r in c["review_ids"]))
-            if c.get("canonical"):
-                out.append("- **Canonical:** " + "; ".join(f"{cid} {canon[cid]['title']}" for cid in c["canonical"]))
+            links = rev.get(c["id"]) or c.get("canonical") or []
+            if links:
+                out.append("- **Canonical:** " + "; ".join(f"{cid} {canon[cid]['title']}" for cid in links))
             else:
                 out.append("- **Canonical:** — (nuance register)")
             out.append("")

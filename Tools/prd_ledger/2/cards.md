@@ -64,7 +64,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** 6 positive support IDs (2016–18) vs 3 unanswered later; 'no support reply' inside the 1★ payer list
 - **Direction for us:** must-have · **Report confidence:** clear mechanism · **Generalisable:** yes
 - **Review IDs:** `1520975020`, `6682336849`, `6467272815`, `5403701988`
-- **Canonical:** C036 A support channel that exists and answers
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers
 
 ## Must never break
 
@@ -323,7 +323,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** list from listing + reviews; no counts
 - **Direction for us:** build-free · **Report confidence:** stated · **Generalisable:** yes
 - **Conditions:** this is an unusually rich free tier: Watch app, bad-habit mode, photos as icons and sharing are paid elsewhere
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C008 Daily check-in and one basic reminder per habit are free; C009 Icons, colours and basic widgets are free; C019 Quit-habit / bad-habit mode; C022 Apple Watch app (done properly: timer, two-way sync); C015 Shared / group habits; C079 Personal photos as habit icons
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C008 Daily check-in and one basic reminder per habit are free; C009 Basic widgets, icons and colours are free; C015 Shared / group habits; C019 Quit-habit / bad-habit mode; C022 Apple Watch app (done properly: timer, two-way sync); C079 Personal photos as habit icons
 
 ### R02-021 — Cross-device sync is the #2 stated reason to pay (6 buyers) — and it is the Pro feature that breaks
 
@@ -370,7 +370,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **User reaction:** praise
 - **Magnitude:** 34 (6.58%), mean 4.35
 - **Direction for us:** build-free · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C009 Icons, colours and basic widgets are free
+- **Canonical:** C009 Basic widgets, icons and colours are free
 
 ### R02-050 — Personal photos on habits is a small but distinctive delight that no competitor mentioned in this corpus offers
 
@@ -390,7 +390,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** 17 (3.29%), mean 4.00
 - **Direction for us:** build-free · **Report confidence:** very strong · **Generalisable:** yes
 - **Conditions:** modern iOS 14+ widget requested (Part 5) — the old widget aged with the app
-- **Canonical:** C009 Icons, colours and basic widgets are free
+- **Canonical:** C009 Basic widgets, icons and colours are free
 
 ### R02-052 — Calendar integration is praised when it works (0.97%) — and damages calendars when it doesn't
 
@@ -467,7 +467,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** 9 (1.74%), mean 4.33
 - **Direction for us:** build-free · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `1534483238`, `1488986466`, `1700631660`, `4874970421`, `11247319482`, `7897418954`, `4025884406`, `4204815325`, `3537709874`
-- **Canonical:** C073 Manual habit reordering
+- **Canonical:** C073 Manual reordering, renaming and editing of habits/tasks — free
 
 ### R02-071 — Journal / notes improvements: comments vanish, note field too small, no search
 
@@ -476,7 +476,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **User reaction:** complaint
 - **Magnitude:** 8 (1.55%), mean 3.62
 - **Direction for us:** undecided · **Report confidence:** meaningful · **Generalisable:** yes
-- **Canonical:** C049 Mood tracker / journal / habit notes
+- **Canonical:** C172 Per-day / per-habit notes and journal text
 
 ### R02-072 — Colour themes / dark mode — 'is only green, more colors needed'
 
@@ -503,7 +503,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **User reaction:** complaint
 - **Magnitude:** 5 (0.97%), mean 3.00
 - **Direction for us:** build-free · **Report confidence:** emerging · **Generalisable:** yes
-- **Canonical:** C009 Icons, colours and basic widgets are free; C071 Never ship and walk away
+- **Canonical:** C009 Basic widgets, icons and colours are free; C071 Never ship and walk away
 
 ### R02-077 — Onboarding is a US-specific weakness (6.12%) not seen elsewhere: 'very complicated interface', 'too many steps compared to its competition', 'the UI is pretty inscrutable at first', asks for tutorials and a replayable intro
 
@@ -565,7 +565,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** 1.74%, mean 4.33
 - **Direction for us:** build-free · **Report confidence:** meaningful · **Generalisable:** yes
 - **Conditions:** evidence: R02-070
-- **Canonical:** C073 Manual habit reordering
+- **Canonical:** C073 Manual reordering, renaming and editing of habits/tasks — free
 
 ### R02-109 — Customisable, louder reminder sounds — the cheapest 5★ upgrade available
 
@@ -661,7 +661,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Side effects:** from the user's seat Pro reads as an ad-removal fee because its three real features don't work
 - **Conditions:** locking per-habit stats in the free tier draws 3★ from otherwise-positive users
 - **Review IDs:** `4064205077`, `5378260946`, `8194482136`, `5548521598`, `1534636069`, `4025884406`
-- **Canonical:** C011 Weekly / monthly / yearly reports; C007 Generous fixed habit cap (or unlimited) — never change it
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C011 Weekly / monthly / yearly reports
 
 ### R02-033 — The free tier is too good relative to a broken Pro — unlimited habits free is the top praise theme (5.80%) and Pro adds nothing that reliably works
 
@@ -671,7 +671,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** 5.80% praise for unlimited habits
 - **Direction for us:** research · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** the report's framing is that Pro must offer something that works, not that the free tier should shrink
-- **Canonical:** C078 Ship the paid feature working before you sell it; C007 Generous fixed habit cap (or unlimited) — never change it
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C078 Ship the paid feature working before you sell it
 
 ### R02-037 — Unlimited habits / a generous free tier is the single biggest 5★ engine
 
@@ -702,7 +702,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** 6 (1.16%), mean 3.67
 - **Direction for us:** research · **Report confidence:** meaningful · **Generalisable:** yes
 - **Conditions:** report 1's 'no ads' was the best-rated topic — ads are a mild negative here, not a 1★ driver
-- **Canonical:** C082 Ads in the free tier; C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal and ad-free; C082 Ads in the free tier
 
 ## Tactics the app used
 
@@ -726,7 +726,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Direction for us:** must-have · **Report confidence:** clear mechanism · **Generalisable:** yes
 - **Side effects:** a 48-hour response promise, kept, earns rating upgrades; an App Support link that does nothing is noticed
 - **Review IDs:** `1490152355`, `1490259621`, `1488986466`, `1520975020`, `3504776374`, `6682336849`, `1650678342`, `5403701988`, `6467272815`
-- **Canonical:** C036 A support channel that exists and answers; C059 Be visibly responsive; fixes bring reviewers back
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C059 Be visibly responsive; fixes bring reviewers back
 
 ### R02-122 — A free-Pro giveaway ran at launch (Nov 2016); it inflated early sentiment, and for at least three users the promo failed to apply — one paid the $3.99 anyway
 
@@ -737,7 +737,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Direction for us:** research · **Report confidence:** weak count · **Generalisable:** yes
 - **Side effects:** a promo that does not apply reliably produces 2–3★ from people who wanted the product
 - **Review IDs:** `1483240079`, `1482736956`, `1484186051`, `1483218187`
-- **Canonical:** C089 Launch promos / free-Pro giveaways
+- **Canonical:** C089 Promos, giveaways and gift codes must work exactly as advertised
 
 ## Insights (the why)
 
@@ -768,7 +768,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** 35 reviews (6.77%), mean 2.83
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** paid features carry a higher reliability bar than free ones
-- **Canonical:** C078 Ship the paid feature working before you sell it; C065 Paying customers are the highest 1★ risk — every paid feature must work
+- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C078 Ship the paid feature working before you sell it
 
 ### R02-019 — 30 reviews (5.80%, HIGH-PRIORITY) confirm a purchase
 
@@ -853,7 +853,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** US confirmed purchase 7.14% vs 5.80% global; US mean 3.80 vs 4.15
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** the market most willing to pay is the one most hurt by broken paid features
-- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C062 Weight English-speaking rich markets; volume ≠ revenue
+- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue; C065 Paying customers are the highest 1★ risk — every paid feature must work
 
 ### R02-080 — One unrebutted privacy objection: 'That's a whole lotta tracking going on by the developer… not to have my data sold'
 
@@ -969,7 +969,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Direction for us:** do · **Report confidence:** limited evidence · **Generalisable:** yes
 - **Side effects:** tap latency that grows with habit count is a performance bug that hits the most engaged users hardest
 - **Review IDs:** `1479044283`, `1480026316`, `1597898439`, `4115836897`, `1639153995`, `1664490322`, `3488095225`, `1543097703`, `1560960588`, `4089300870`, `1489024032`, `6376581104`, `9966969216`, `3562883708`, `3825826319`, `10424885681`
-- **Canonical:** C027 Localise early — it unlocks revenue; C083 Performance must not degrade with habit count; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C034 Data must never be lost on update, reinstall or phone change
+- **Canonical:** C027 Localise early — it unlocks revenue; C034 Data must never be lost on update, reinstall or phone change; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C083 Performance must not degrade with habit count
 
 ### R02-087 — No spend or revenue data was available, so the high-ARPU market group is a qualitative grouping only — it holds 53.4% of reviews at mean 3.99 vs 4.33 for the rest; the people most able to pay are the least satisfied
 
@@ -1012,7 +1012,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** this list IS the churn analysis; the common thread is data loss after paying
 - **Review IDs:** `1816542296`, `1777981808`, `1639153995`, `1695627701`, `2109039905`, `4402829597`, `5403701988`, `6379792275`, `7232398007`, `8106352419`
-- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C034 Data must never be lost on update, reinstall or phone change
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C065 Paying customers are the highest 1★ risk — every paid feature must work
 
 ### R02-090 — Four eras: A 2016–17 launch n=164 mean 3.97 19.5% 1–2★; B 2018–19 maturity 161/4.19/13.0%; C 2020–21 final updates 107/4.21/14.0%; D 2022–26 post-abandonment 85/4.31/11.8%
 
@@ -1131,7 +1131,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **User reaction:** complaint
 - **Magnitude:** 4 (0.77%), mean 3.00
 - **Direction for us:** dont · **Report confidence:** emerging · **Generalisable:** yes
-- **Canonical:** C088 No rating-prompt or cross-promo spam, especially to payers
+- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire
 
 ## Things not to do
 
@@ -1155,7 +1155,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Direction for us:** dont · **Report confidence:** emerging · **Generalisable:** yes
 - **Conditions:** evidence: R02-065
 - **Review IDs:** `1484050413`, `3342902073`, `7598926605`
-- **Canonical:** C088 No rating-prompt or cross-promo spam, especially to payers
+- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire
 
 ### R02-117 — Do not seed launch reviews — two users spotted it in week one and said so publicly, and it permanently contaminates your own analytics baseline
 
@@ -1189,7 +1189,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Direction for us:** do · **Report confidence:** weak count, clear mechanism · **Generalisable:** yes
 - **Conditions:** evidence: R02-035, R02-073
 - **Review IDs:** `2109039905`, `7232398007`
-- **Canonical:** C087 Never imply cross-app integration you don't have; C060 Cross-sell an app family on brand trust
+- **Canonical:** C060 Cross-sell an app family on brand trust; C087 Never imply cross-app integration you don't have
 
 ## Contradictions
 

@@ -213,6 +213,12 @@ These came from gaps found when a fresh context re-read a report. Each one is no
   (Report 1: the no-account card.)
 - **The report's own method notes** (signal bands, denominators, skipped storefronts, regex
   corrections) go on a single `data-caveat` method card, not only in coverage.json.
+- **A theme that exists only as a row in a per-country or per-segment comparison table gets its
+  own card** (kind by content), not only the verbatim-table card — e.g. "tone reads as childish
+  to adults" or "self-care should be free" that never get a paragraph of their own. (Report 10.)
+- **A per-year or per-half series stated in a trend section carries every value on the card**,
+  not first → last only; the shape of the curve (trough, peak, step) is what later reports are
+  compared against. (Report 10: the companion-theme series.)
 
 ### Magnitude is mandatory
 

@@ -65,7 +65,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Magnitude:** Refund requested in public: 2 (4.55%), mean 2.00
 - **Direction for us:** must-have · **Report confidence:** meaningful (n = 2) · **Generalisable:** yes
 - **Review IDs:** `13771926913`, `13939159292`, `13390634274`
-- **Canonical:** C112 In-app cancellation; C036 A support channel that exists, is reachable outside the app, and answers
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C112 In-app cancellation
 
 ### R06-024 — Make the Tracker-vs-Counter mode choice explicit at streak creation with one line explaining each: both modes ship ('An automatic tracker and manual tracker both are good') but onboarding does not make users choose, so a subset lands in the wrong mode and rates 1★ — and 2 of the 5 feature requests ask for a mode that already exists, a discovery failure not a feature gap
 
@@ -76,7 +76,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Direction for us:** must-have · **Report confidence:** meaningful · **Generalisable:** yes
 - **Conditions:** any app with more than one tracking model per item
 - **Review IDs:** `14292633754`, `13085620460`, `13628759209`, `13994050917`
-- **Canonical:** C136 When an item can be tracked more than one way, make the user choose the mode at creation; C075 Skippable, replayable onboarding tour
+- **Canonical:** C075 Skippable, replayable onboarding tour; C136 When an item can be tracked more than one way, make the user choose the mode at creation
 
 ### R06-084 — Add a visible in-app 'Manage / cancel / request refund' link to Apple's subscription management — both billing complaints were filed as public 1★/3★ reviews because there was no other route
 
@@ -87,7 +87,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Direction for us:** must-have · **Report confidence:** immediate · **Generalisable:** yes
 - **Conditions:** evidence: R06-012
 - **Review IDs:** `13771926913`, `13939159292`, `13390634274`
-- **Canonical:** C112 In-app cancellation; C036 A support channel that exists, is reachable outside the app, and answers
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C112 In-app cancellation
 
 ### R06-091 — Make the Tracker-vs-Counter mode choice explicit at streak creation, with one line explaining each — two 1★s are people in the wrong mode; two more asked for a mode that already ships
 
@@ -98,7 +98,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Direction for us:** must-have · **Report confidence:** recommendation · **Generalisable:** yes
 - **Conditions:** evidence: R06-023, R06-024
 - **Review IDs:** `13628759209`, `13994050917`, `13085620460`, `14292633754`
-- **Canonical:** C136 When an item can be tracked more than one way, make the user choose the mode at creation; C075 Skippable, replayable onboarding tour
+- **Canonical:** C075 Skippable, replayable onboarding tour; C136 When an item can be tracked more than one way, make the user choose the mode at creation
 
 ## Must never break
 
@@ -153,7 +153,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Direction for us:** must-never-break · **Report confidence:** unambiguous qualitatively · **Generalisable:** yes
 - **Conditions:** appendix: emphatically not a claim that 100% of purchases fail; no conversion rate is claimed
 - **Review IDs:** `13390634274`, `13771926913`, `13939159292`, `14203637124`
-- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C077 Purchase and signup flow must not leak buyers; C029 Billing must be exactly right
+- **Canonical:** C029 Billing must be exactly right; C065 Paying customers are the highest 1★ risk — every paid feature must work; C077 Purchase and signup flow must not leak buyers
 
 ### R06-055 — Investigate 'can't add widget': the widget is the most-loved feature, so it failing to install is disproportionately costly — reported inside a 5★ review
 
@@ -228,7 +228,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Magnitude:** 2 mentions (4.55%), mean 5.00 ('structurally important')
 - **Direction for us:** build-free · **Report confidence:** very strong band, n = 2 · **Generalisable:** yes
 - **Review IDs:** `13085620460`, `13767758923`
-- **Canonical:** C135 Offer both check-in tracking and auto-counting (no daily check-in) per item; C019 Quit-habit / bad-habit mode
+- **Canonical:** C019 Quit-habit / bad-habit mode; C135 Offer both check-in tracking and auto-counting (no daily check-in) per item
 
 ### R06-022 — The user defines when their day ends — a BR reviewer switched from competitors specifically because of the midnight-boundary problem: 'Every app is locked to clock hours and I like to count my day based on when I wake up and when I go to sleep… Traditional apps make me lose my goal when I actually didn't lose it! Here I can log the truth of what I live'
 
@@ -609,7 +609,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Magnitude:** 1 (2.27%), 5★, US; recorded not as a trend
 - **Direction for us:** do · **Report confidence:** safety-adjacent · **Generalisable:** yes
 - **Review IDs:** `14349062008`, `13837160367`, `14311507310`
-- **Canonical:** C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface; C095 Neutral, non-judgemental tone on failure
+- **Canonical:** C095 Neutral, non-judgemental tone on failure; C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface
 
 ## Markets and languages
 
@@ -767,7 +767,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Magnitude:** report gives none (2 + 1 reviews)
 - **Direction for us:** do · **Report confidence:** interpretation · **Generalisable:** yes
 - **Review IDs:** `13085620460`, `13672386764`
-- **Canonical:** C135 Offer both check-in tracking and auto-counting (no daily check-in) per item; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C134 Lead the store listing with what users actually love
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C134 Lead the store listing with what users actually love; C135 Offer both check-in tracking and auto-counting (no daily check-in) per item
 
 ### R06-025 — Two reviewers call it a clone and both are 1★: 'Terrible app a clone of streaks' (Streaks by Crunchy Bagel) and 'literally a copy of the app Days Since but it's both more expensive and has less features, let alone the horrible UI and lack of customizability' — Days Since is report 3 in this set, so users compare these products directly, and StreakUp loses on customization and price, not core function
 
@@ -813,7 +813,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Direction for us:** dont · **Report confidence:** weak alone; aligned with the angriest cluster · **Generalisable:** yes
 - **Side effects:** cap-complainers already like the app, so a need-time paywall reaches people with intent
 - **Review IDs:** `13185604622`, `14205874183`, `14491149862`
-- **Canonical:** C137 Show the paywall at the moment of need, not on app open; C093 No upsell nagging without a 'never ask again' option
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C137 Show the paywall at the moment of need, not on app open
 
 ### R06-063 — Do not build for the NoFap / semen-retention communities that already use the app — they come with their own community norms
 
@@ -868,7 +868,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Direction for us:** do · **Report confidence:** recommendation · **Generalisable:** yes
 - **Conditions:** evidence: R06-062
 - **Review IDs:** `14349062008`, `13837160367`, `14311507310`
-- **Canonical:** C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface; C095 Neutral, non-judgemental tone on failure
+- **Canonical:** C095 Neutral, non-judgemental tone on failure; C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface
 
 ## Contradictions
 
@@ -880,7 +880,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Magnitude:** 0 of 44 mention cosmetics; #6 vs #10
 - **Direction for us:** research · **Report confidence:** internal tension · **Generalisable:** yes
 - **Conditions:** resolve before copying the 'unlimited free, cosmetics paid' model; report 3 found widget customisation sells, report 6 finds themes/icons don't register
-- **Canonical:** C133 Gate on capability, not on quantity; C018 App-icon themes
+- **Canonical:** C018 App-icon themes; C133 Gate on capability, not on quantity
 
 ### R06-045 — The same free tier reads as generous to some and as a trap to others, and the difference appears to be how many habits the user is tracking — 'completely free' 5★s track one or two things, cap complainers track more
 
@@ -891,7 +891,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Direction for us:** research · **Report confidence:** inference · **Generalisable:** yes
 - **Conditions:** a quantity cap is judged by each user against their own count — it cannot be generous and tight at once; supports gating on capability rather than quantity
 - **Review IDs:** `13767758923`, `14093501015`, `14271116952`, `14477924333`, `14214912053`
-- **Canonical:** C133 Gate on capability, not on quantity; C007 Generous fixed habit cap (or unlimited) — never change it
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C133 Gate on capability, not on quantity
 
 ### R06-059 — Local-only storage produced zero data-loss and zero sync complaints in report 6 — against report 1, where local-only storage was the root cause of data loss (×10.6 among buyers)
 
@@ -911,7 +911,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Magnitude:** 35 reviews across US/GB/CA/AU/FR (79.5% high-spend); zero JP or DE
 - **Direction for us:** product-rule · **Report confidence:** limited evidence · **Generalisable:** yes
 - **Conditions:** contrast reports 3–5, where price complaints came from IN/TR/UA/BR/MX/SA and regional pricing was the fix; no spend or download data — storefront review volume is a disclosed engagement proxy, never downloads
-- **Canonical:** C092 Regional pricing; C002 Ratings follow the offer, not the feature set
+- **Canonical:** C002 Ratings follow the offer, not the feature set; C092 Regional pricing
 
 ## Data caveats and method
 

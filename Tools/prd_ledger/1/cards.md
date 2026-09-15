@@ -75,7 +75,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** 11 angry payers (3.1%) but ×34.7 lift among buyers vs corpus-wide
 - **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `12940542679`, `12008055880`, `11941969340`, `11309506354`, `9283876341`, `12394406411`, `11804171737`, `11374078493`
-- **Canonical:** C036 A support channel that exists and answers
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers
 
 ### R01-048 — No account system is the root cause of lost purchases, lost data and failed sync — a new phone means a lost purchase and lost data
 
@@ -95,7 +95,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **User reaction:** 1★-burst
 - **Magnitude:** 28 global, 8 US, mean 2.04
 - **Direction for us:** must-have · **Report confidence:** weak count, very low mean · **Generalisable:** yes
-- **Canonical:** C036 A support channel that exists and answers
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers
 
 ### R01-140 — China-specific complaint cluster: no account login → membership and data lost on reinstall or new phone; iPhone↔iPad not syncing on the same Apple ID; persistent Android requests (one payer switched to Android and lost everything)
 
@@ -106,7 +106,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Direction for us:** must-have · **Report confidence:** moderate · **Generalisable:** yes
 - **Conditions:** the no-account problem is global; Android is a cross-platform continuity ask
 - **Review IDs:** `8217401004`, `12122244165`, `9615294074`, `12453093486`, `13691170318`, `14213711567`, `9208648018`, `9223945846`, `12107547777`, `8470619548`, `9023942437`, `10025596797`, `7970081682`, `13349826027`
-- **Canonical:** C035 Account system from day one; C034 Data must never be lost on update, reinstall or phone change; C051 Android version
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C035 Account system from day one; C051 Android version
 
 ### R01-163 — Ship an account system from day one — no-account is the root cause of lost purchases, lost data and failed multi-device sync, the top three complaints from people who paid
 
@@ -150,7 +150,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** root cause is the missing account system (R01-047)
 - **Review IDs:** `11941969340`, `9283876341`, `8535955220`, `7699737797`, `6751638144`, `6424767276`, `5640209527`, `5250831446`, `12858504950`, `12166995821`
-- **Canonical:** C033 Restore purchase must work
+- **Canonical:** C033 Restore purchase and entitlements must work immediately
 
 ### R01-045 — Data loss hits paying users and is ×10.6 over-represented among buyers
 
@@ -299,7 +299,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** five incidents in six years
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** evidence: R01-095
-- **Canonical:** C032 Year-end / peak-season robustness
+- **Canonical:** C032 New Year peak-season robustness — year-end report and January onboarding
 
 ### R01-176 — Editing a habit must never wipe its history
 
@@ -361,7 +361,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** reaction: 'loved, drives 5★'; customisation 7.5% of buyers (lift ×2.7), widget 7.1% (lift ×3.1) in §1.3
 - **Direction for us:** build-free · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** some widgets are free here whereas other apps lock all widgets behind paywall — the free basic widget is what earns the 5★
-- **Canonical:** C009 Icons, colours and basic widgets are free
+- **Canonical:** C009 Basic widgets, icons and colours are free
 
 ### R01-012 — Backfilling missed days is free up to 7 days back and paid beyond that; users accept the split
 
@@ -372,7 +372,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Direction for us:** build-free · **Report confidence:** stated without count · **Generalisable:** yes
 - **Conditions:** a 7-day free window is the tolerated boundary
 - **Review IDs:** `11578392138`, `12625167724`
-- **Canonical:** C010 Backfill missed days — a free window (7 days) with paid beyond
+- **Canonical:** C010 Backfill missed days / edit start date
 
 ### R01-013 — Weekly / monthly / yearly reports are paid and are the #1 stated reason people pay
 
@@ -435,7 +435,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** reaction: 'minor' (grouped with passcode and icon themes)
 - **Direction for us:** undecided · **Report confidence:** minor · **Generalisable:** yes
 - **Conditions:** moved behind paywall Jan 2022 with reports, multi-reminder and sync (§1.6)
-- **Canonical:** C016 Skip / holiday mode
+- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history)
 
 ### R01-019 — Passcode lock is paid and a minor purchase factor
 
@@ -544,7 +544,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** 2★ lift ×2.7, 4★ ×2.3
 - **Direction for us:** undecided · **Report confidence:** moderate · **Generalisable:** yes
 - **Conditions:** Part 8 #13: 'me, my kids, work, pet'
-- **Canonical:** C045 Grouping / folders / tags / multiple profiles
+- **Canonical:** C045 Grouping / folders / categories / tags; C173 Sub-tasks / sub-routines nested inside a habit or routine; C174 Multiple profiles (me, kids, pet, work)
 
 ### R01-075 — Shortcuts / Siri / URL-scheme automation is asked for by power users who evangelise
 
@@ -572,7 +572,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **User reaction:** praise
 - **Magnitude:** 1,550 global (2.7%); 255 US (4.7%), VERY STRONG, mean 4.70
 - **Direction for us:** build-free · **Report confidence:** very strong · **Generalisable:** yes
-- **Canonical:** C009 Icons, colours and basic widgets are free
+- **Canonical:** C009 Basic widgets, icons and colours are free
 
 ### R01-080 — Widgets are a high-priority praise item in the US
 
@@ -582,7 +582,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** 1,297 global (2.3%); 373 US (6.9%), HIGH-PRIORITY, mean 4.45
 - **Direction for us:** build-free · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** mean 4.45 is the lowest among praise items — widgets also break (R01-068)
-- **Canonical:** C009 Icons, colours and basic widgets are free
+- **Canonical:** C009 Basic widgets, icons and colours are free
 
 ### R01-081 — Streaks / progress feedback is a high-priority praise item
 
@@ -628,7 +628,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **User reaction:** praise
 - **Magnitude:** 316 global (0.6%); 71 US (1.3%), MEANINGFUL, mean 4.66
 - **Direction for us:** research · **Report confidence:** meaningful (US) · **Generalisable:** yes
-- **Canonical:** C049 Mood tracker / journal / habit notes
+- **Canonical:** C049 Mood tracker
 
 ### R01-087 — The check-off sound and haptic are named as a reason to keep coming back
 
@@ -681,7 +681,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Direction for us:** undecided · **Report confidence:** meaningful (US) · **Generalisable:** yes
 - **Side effects:** one user wants Apple-Watch-style closing rings; one wants nested items
 - **Review IDs:** `13747367536`, `7634754264`, `13682524933`, `9764200754`, `8348985579`
-- **Canonical:** C045 Grouping / folders / tags / multiple profiles; C068 Parents tracking kids
+- **Canonical:** C045 Grouping / folders / categories / tags; C068 Parents tracking kids; C173 Sub-tasks / sub-routines nested inside a habit or routine; C174 Multiple profiles (me, kids, pet, work)
 
 ### R01-103 — One-off to-dos alongside habits is an emerging request
 
@@ -857,7 +857,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** #2 feature request (R01-102)
 - **Direction for us:** undecided · **Report confidence:** meaningful · **Generalisable:** yes
 - **Conditions:** evidence: R01-074, R01-102
-- **Canonical:** C045 Grouping / folders / tags / multiple profiles
+- **Canonical:** C045 Grouping / folders / categories / tags; C174 Multiple profiles (me, kids, pet, work)
 
 ### R01-175 — Cumulative totals ('47 hours read this year'), not just streaks — and offer total days instead of consecutive days to reduce streak anxiety
 
@@ -1165,7 +1165,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Direction for us:** do · **Report confidence:** weak signal · **Generalisable:** yes
 - **Side effects:** goodwill toward an indie developer converts to purchases
 - **Review IDs:** `10317808778`, `11670063988`, `8183543609`, `13769603363`, `13078191322`, `9610116256`, `3712021994`
-- **Canonical:** C061 'Support the devs' goodwill converts
+- **Canonical:** C061 Goodwill conversion — a generous free tier and 'support the devs'
 
 ### R01-037 — 74 happy users say they WOULD pay but are held back by one missing thing — most often that the app is not in their language
 
@@ -1204,7 +1204,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **User reaction:** churn
 - **Magnitude:** lift among confirmed buyers: no support channel ×34.7, account/login missing ×15.8, sync failure ×12.8, data loss ×10.6, streak/stat miscount ×10.2, crashes ×7.1
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C030 Sync must work — and prove it
+- **Canonical:** C030 Sync must work — and prove it; C065 Paying customers are the highest 1★ risk — every paid feature must work
 
 ### R01-060 — 'No ads' is the highest-rated topic in the corpus — 181 of 182 mentions are positive
 
@@ -1223,7 +1223,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **User reaction:** 5★-burst
 - **Magnitude:** synthesis of the 5★ lift table
 - **Direction for us:** do · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free; C003 Lead with a one-time lifetime purchase; C025 Scholarship / hardship / discount program; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C006 Stay minimal and ad-free; C025 Scholarship / hardship / discount program; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
 
 ### R01-064 — Charging for something and then not delivering it is the second-fastest route to 1★ — restore purchase, family plan and broken sync all sit above ×9
 
@@ -1232,7 +1232,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **User reaction:** 1★-burst
 - **Magnitude:** restore purchase ×13.9 on 1★ (49, mean 2.51); family plan ×12.7 (73, mean 2.55); sync failure ×7.6 / ×10.0 on 2★ (134, mean 2.93); shared-habit failure ×11.7 / ×11.2 (66, mean 2.33)
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C033 Restore purchase must work; C037 Family plan; C030 Sync must work — and prove it; C065 Paying customers are the highest 1★ risk — every paid feature must work
+- **Canonical:** C030 Sync must work — and prove it; C033 Restore purchase and entitlements must work immediately; C037 Family plan; C065 Paying customers are the highest 1★ risk — every paid feature must work
 
 ### R01-067 — Simply having paid is a 1★ risk factor: confirmed buyers are ×6.7 over-represented in 1★
 
@@ -1250,7 +1250,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **User reaction:** blocked-conversion
 - **Magnitude:** localisation 3★ ×5.5; iCloud sync 3★ ×5.0 / 2★ ×6.4; Apple Watch 3★ ×4.7 / 2★ ×5.7; Apple Health 4★ ×2.8
 - **Direction for us:** do · **Report confidence:** strong · **Generalisable:** yes
-- **Canonical:** C027 Localise early — it unlocks revenue; C021 Apple Health integration; C022 Apple Watch app (done properly: timer, two-way sync); C030 Sync must work — and prove it
+- **Canonical:** C021 Apple Health integration; C022 Apple Watch app (done properly: timer, two-way sync); C027 Localise early — it unlocks revenue; C030 Sync must work — and prove it
 
 ### R01-077 — Simple / clean / beautiful UI is the dominant praise: 21.1% of all reviews, 32.2% of US
 
@@ -1470,7 +1470,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **User reaction:** mixed
 - **Magnitude:** US 4.27 / UK 4.30 / CA 4.29 / AU 4.29 / NZ 4.76 / IE 4.54; top signals ADHD, widget, crashes, price-fair, bought
 - **Direction for us:** do · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
+- **Canonical:** C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers; C062 Weight English-speaking rich markets; volume ≠ revenue
 
 ### R01-126 — New Zealand is the best-rated rich market (4.76, 1.1% 1★) with the highest price-fair and purchase signals
 
@@ -1651,7 +1651,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** non-CN volume spikes to 429/month
 - **Direction for us:** dont · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `7242990766`, `7482039026`
-- **Canonical:** C001 Never move a free feature behind the paywall; C011 Weekly / monthly / yearly reports; C013 Cloud sync / multi-device as the paid differentiator; C014 Multiple reminders per habit; C016 Skip / holiday mode
+- **Canonical:** C001 Never move a free feature behind the paywall; C011 Weekly / monthly / yearly reports; C013 Cloud sync / multi-device as the paid differentiator; C014 Multiple reminders per habit; C016 Skip / holiday / pause mode (pause a habit or counter without losing history)
 
 ### R01-053 — Paywall regression #2 (Feb–Mar 2023): free habit cap introduced at 5, with some users seeing 3 or 6 (an A/B test)
 
@@ -1681,7 +1681,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** dated event; §3: mood/journal 316 (0.6%) global, 71 US (1.3%), mean 4.66
 - **Direction for us:** research · **Report confidence:** meaningful (US) · **Generalisable:** yes
 - **Review IDs:** `11907169613`, `12461799977`
-- **Canonical:** C049 Mood tracker / journal / habit notes
+- **Canonical:** C049 Mood tracker
 
 ### R01-056 — Paywall regression #3 (Apr 2024): report/calendar widget moved behind Premium AND a crash-on-launch regression on Apr 27–29 → 94 crash reviews in 3 days; the rating never fully recovered
 
@@ -1692,7 +1692,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Direction for us:** dont · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** two failures landing together compound; the report treats Apr 2024 as the turning point
 - **Review IDs:** `11214694671`, `11209749389`, `11208599895`, `11208339326`, `11207697641`, `11212491544`
-- **Canonical:** C001 Never move a free feature behind the paywall; C009 Icons, colours and basic widgets are free; C031 Crashes / launch failures
+- **Canonical:** C001 Never move a free feature behind the paywall; C009 Basic widgets, icons and colours are free; C031 Crashes / launch failures
 
 ### R01-057 — Paywall regression #4 (Dec 2024): yearly stats locked days before year-end, plus a 'minutes became hours' bug (goal values ×60) landing in New Year resolution season → worst month on record (mean 3.14)
 
@@ -1703,7 +1703,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Direction for us:** dont · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** timing: the year-end report is the app's best emotional moment (Part 8 #4) — locking it or breaking it at year-end is maximally costly
 - **Review IDs:** `12123611133`, `12133136766`, `12210864361`, `12144843194`, `12128653261`, `12127927438`, `12122368495`
-- **Canonical:** C001 Never move a free feature behind the paywall; C032 Year-end / peak-season robustness
+- **Canonical:** C001 Never move a free feature behind the paywall; C032 New Year peak-season robustness — year-end report and January onboarding
 
 ### R01-058 — 2025–2026: the free cap was loosened back to 6 and non-members can check in freely; sentiment partially recovered
 
@@ -1725,7 +1725,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** the year-end report is both the biggest emotional payoff and the most reliable crash; 'fixing New Year robustness is worth more than any new feature' (Part 8 #4)
 - **Conditions:** load-test the year-end path before every December
-- **Canonical:** C032 Year-end / peak-season robustness
+- **Canonical:** C032 New Year peak-season robustness — year-end report and January onboarding
 
 ### R01-096 — The Apr 27–29 2024 launch-crash regression is the biggest single incident in the corpus (94 reviews in 3 days) even though it was fixed in ~2 days
 
@@ -1781,7 +1781,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **User reaction:** praise
 - **Magnitude:** mood/journal 0 → 2.13% (2025); Apple Health 0.9% → 2.13% (2025)
 - **Direction for us:** research · **Report confidence:** moderate · **Generalisable:** yes
-- **Canonical:** C049 Mood tracker / journal / habit notes; C021 Apple Health integration
+- **Canonical:** C021 Apple Health integration; C049 Mood tracker
 
 ### R01-156 — Widget mentions held at 5–6.5% of non-CN reviews every year 2020–2025, then dipped to 4.21% in 2026
 
@@ -1791,7 +1791,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** 5.40 / 6.28 / 6.00 / 6.50 / 6.31 / 6.06 / 4.21 (2020–2026)
 - **Direction for us:** build-free · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** the 2026 dip follows the Apr 2024 widget paywall and widget-reliability bugs
-- **Canonical:** C009 Icons, colours and basic widgets are free
+- **Canonical:** C009 Basic widgets, icons and colours are free
 
 ### R01-157 — Account/login requests are rising (0 → 0.32% in 2026) as more users change phones
 
@@ -1819,7 +1819,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **User reaction:** praise
 - **Magnitude:** localisation 8.06% → 3.02%; mid-2026 monthly means 4.0–4.16
 - **Direction for us:** do · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C027 Localise early — it unlocks revenue; C007 Generous fixed habit cap (or unlimited) — never change it; C059 Be visibly responsive; fixes bring reviewers back
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C027 Localise early — it unlocks revenue; C059 Be visibly responsive; fixes bring reviewers back
 
 ### R01-191 — Share of non-China reviews mentioning each theme, by year 2019–2026 — full table
 
@@ -1862,7 +1862,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Direction for us:** do · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** named: Streaks, Habitica, HabitBull, Habitify, Way of Life, Productive, Fabulous, Done, Loop, Finch, me+, Structured, Tally, HabitNow, TickTick, Todoist, Notion, Forest, Atoms, Strides, HabitShare; CN: 小日常, iBetter, 番茄ToDo, 滴答清单, 指尖时光, 目标地图, FastLog, 人升
 - **Review IDs:** `10947705264`, `11520612891`, `8157182844`, `10633728275`, `10850980761`, `13825611867`, `10793490908`
-- **Canonical:** C005 Know which competitors buyers compare against; C004 Price low and fair, anchored against subscription competitors
+- **Canonical:** C004 Price low and fair, anchored against subscription competitors; C005 Know which competitors buyers compare against
 
 ### R01-116 — 'Too feminine / childish' design is a real, repeated critique from men and from users wanting a premium look
 

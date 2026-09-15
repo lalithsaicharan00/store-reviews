@@ -92,7 +92,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Direction for us:** must-have · **Report confidence:** meaningful · **Generalisable:** yes
 - **Conditions:** evidence: R05-058
 - **Review IDs:** `8120137325`
-- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C035 Account system from day one
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C035 Account system from day one; C153 Automatic cloud backup on by default — never manual opt-in
 
 ### R05-090 — Put an in-app, localised support and cancellation path one tap from the home screen — and make it reachable when the app fails to launch (a web fallback); this alone would materially clean up Korea's review page
 
@@ -116,7 +116,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Side effects:** trial/billing reviews average 1.55 stars — the single most reliable generator of 1★ in the corpus; some describe cancelling and still being charged (defect), others misreading the plan screen
 - **Conditions:** same shape as report 4 at a fifth of the rate
 - **Review IDs:** `11422332321`, `11674221985`, `13666735555`, `12852521520`, `11919502264`, `12403701027`, `12379919405`, `13878515388`, `14509669820`, `12213361997`, `12448354189`, `12477311939`, `12394473219`
-- **Canonical:** C109 A free trial must be a real trial; C029 Billing must be exactly right
+- **Canonical:** C029 Billing must be exactly right; C109 A free trial must be a real trial
 
 ### R05-047 — Crash / won't open / infinite loading — 135 (4.04%), mean 2.91, 43.7% 1–2★
 
@@ -271,7 +271,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Magnitude:** 3 IDs
 - **Direction for us:** build-free · **Report confidence:** stated · **Generalisable:** yes
 - **Review IDs:** `13503431066`, `12470101467`, `11640510418`
-- **Canonical:** C120 Sequential routine timer with spoken next step and live finish-time estimate; C007 Generous fixed habit cap (or unlimited) — never change it
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C120 Sequential routine timer with spoken next step and live finish-time estimate
 
 ### R05-015 — The full icon/emoji library is partly paywalled — 17 reviews (0.51%): 'one of them were freaking ICONS'
 
@@ -302,7 +302,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Magnitude:** 1 ID
 - **Direction for us:** undecided · **Report confidence:** single review · **Generalisable:** yes
 - **Review IDs:** `11486140970`
-- **Canonical:** C074 Customisable, louder reminder sounds; C049 Mood tracker / journal / habit notes
+- **Canonical:** C074 Customisable, louder reminder sounds; C172 Per-day / per-habit notes and journal text
 
 ### R05-041 — Timer, countdown and live ETA — 277 (8.29%), mean 4.16 — the lower mean is because the theme also appears in complaints about the timer being MANDATORY (§4.6)
 
@@ -403,7 +403,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Direction for us:** must-have · **Report confidence:** meaningful, highest-rating askers · **Generalisable:** yes
 - **Side effects:** a structural feature that relieves the monetisation wall at the same time
 - **Review IDs:** `9017685503`, `13624660676`, `13942902589`, `14182637597`, `12613639721`, `9392564396`, `8795874884`, `10093805316`, `9262998416`, `12911127629`, `7734088825`, `13257733003`, `12116433368`
-- **Canonical:** C043 Flexible / custom frequency; C045 Grouping / folders / tags / multiple profiles
+- **Canonical:** C043 Flexible / custom frequency; C173 Sub-tasks / sub-routines nested inside a habit or routine
 
 ### R05-070 — Smaller asks with clear jobs: anytime/unscheduled routines for shift workers, nurses, flight attendants (15, 4.27); more icons / icon search because icon-hunting blocks routine creation (27, 4.41); calendar integration to merge fixed appointments with flexible routines (9, 4.44); Mac/web to build on a big screen (15); Android for cross-platform households (6)
 
@@ -432,7 +432,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Magnitude:** 48 combined
 - **Direction for us:** must-have · **Report confidence:** meaningful · **Generalisable:** yes
 - **Conditions:** evidence: R05-069
-- **Canonical:** C043 Flexible / custom frequency; C045 Grouping / folders / tags / multiple profiles
+- **Canonical:** C043 Flexible / custom frequency; C173 Sub-tasks / sub-routines nested inside a habit or routine
 
 ### R05-100 — Deliver the widget / Lock Screen / Live Activity story properly — 92 reviews and the largest over-index in the 3–4★ band; users want to run the routine without opening the app; today the widget frequently renders blank or fails to advance
 
@@ -517,7 +517,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **User reaction:** complaint
 - **Magnitude:** 130 (3.89%)
 - **Direction for us:** research · **Report confidence:** very strong · **Generalisable:** yes
-- **Canonical:** C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible; C007 Generous fixed habit cap (or unlimited) — never change it
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible
 
 ### R05-091 — Stop gating on routine count; gate on capability — the cap is named by 168 reviewers of whom 116 rate 4–5★: visible, accepted, and NOT converting because morning+night satisfies the core job; move the wall to analytics/history, cross-device sync, Apple Watch, widgets, icon library, family sharing; raise the free cap to 3–4 and take the goodwill
 
@@ -528,7 +528,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Direction for us:** build-paid · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** 'repackage, don't reprice' — the report's clearest monetisation directive; matches Research Reports/Feature Gating vs Quantity.md
 - **Conditions:** evidence: R05-009, R05-023
-- **Canonical:** C133 Gate on capability, not on quantity; C007 Generous fixed habit cap (or unlimited) — never change it
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C133 Gate on capability, not on quantity
 
 ### R05-093 — Ship a family plan — five reviews, every one an explicitly blocked purchase, plus a parent segment rating 4.40; lowest-volume / highest-intent request in the corpus
 
@@ -561,7 +561,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Direction for us:** do · **Report confidence:** meaningful · **Generalisable:** yes
 - **Conditions:** evidence: R05-044, R05-059
 - **Review IDs:** `13769267096`
-- **Canonical:** C059 Be visibly responsive; fixes bring reviewers back; C036 A support channel that exists, is reachable outside the app, and answers
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C059 Be visibly responsive; fixes bring reviewers back
 
 ## Insights (the why)
 
@@ -572,7 +572,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **User reaction:** praise
 - **Magnitude:** ADHD 12.90% at 4.47; reliability in 50.3% of 2★
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C120 Sequential routine timer with spoken next step and live finish-time estimate; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
+- **Canonical:** C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers; C120 Sequential routine timer with spoken next step and live finish-time estimate
 
 ### R05-005 — Reliability, not money, produces 2★ and 3★: any-reliability theme in 9.4% of 5★ → 50.3% of 2★ (peaks at 2★, not 1★ — the signature of users who like the product and are frustrated); 609 reviews (18.22%) report a defect at mean 3.36; monetization 585 (17.50%) at 3.50 peaks at 1★ (37.9%) — money produces the loudest 1★s, engineering produces the volume of 2–3★s
 
@@ -605,7 +605,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Side effects:** conversion here is earned over years of free use, not forced at onboarding — the opposite of report 4
 - **Conditions:** do not read a conversion rate from this: 3.59% is reviewers who mention paying
 - **Review IDs:** `13093885049`, `8448464887`, `12444613825`, `13891754512`, `13595999311`, `12900411902`
-- **Canonical:** C061 Goodwill conversion — a generous free tier and 'support the devs'; C007 Generous fixed habit cap (or unlimited) — never change it
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C061 Goodwill conversion — a generous free tier and 'support the devs'
 
 ### R05-023 — Purchase path #2: needing more than two routines — the cap converts when the user has genuinely outgrown morning+night: 'the subscription has no restrictions on the quantity of routines (I have tons now)'
 
@@ -705,7 +705,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** for ADHD users the product is a decision-remover, not a motivator — motivational copy and streak pressure are the wrong lever
 - **Review IDs:** `12118266764`, `14371526010`
-- **Canonical:** C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers; C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal and ad-free; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
 
 ### R05-040 — Life change / strong endorsement — 305 (9.13%), mean 4.82 — '人生変わった' (my life changed)
 
@@ -727,7 +727,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Side effects:** a behaviour some users depend on cannot be changed without a setting; another instance of removing something users had
 - **Conditions:** pairs with the notification loop (R05-010): both extremes of the same ladder
 - **Review IDs:** `13667837214`, `13166666978`, `14371016110`, `14447685280`, `14499455292`
-- **Canonical:** C123 Notification escalation must be user-configurable, never silently retuned; C001 Never move a free feature behind the paywall
+- **Canonical:** C001 Never move a free feature behind the paywall; C123 Notification escalation must be user-configurable, never silently retuned
 
 ### R05-082 — The AI objection is new (9 reviews, 0.27%, all 2025–26) and specific: not anti-AI in general but about AI features added to a product chosen for its RESTRAINT — 'Recent AI features are disappointing, wish I could turn them off'; 'a horoscope in a routine app? terrible… looks like it's to boost engagement'; the horoscope feature launched two unskippable 30-second ads for a lifetime-premium holder
 
@@ -765,7 +765,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Side effects:** a social feed in a routine app is unwanted by a vocal minority and a child-safety liability; one subscriber just wants a hide option
 - **Conditions:** if there is a feed it must be opt-in and age-gated; the team shipped another share option instead of fixing a known widget bug — noticed
 - **Review IDs:** `13030062439`, `13866789200`, `12171510092`, `10184385950`, `12619331115`, `12922302831`, `9337913065`, `13860429738`, `12740246107`, `12476018972`, `14079774351`, `11717198512`, `13364876886`, `13373809432`, `12811011494`
-- **Canonical:** C131 No default-on social feed in a personal tool; C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface
+- **Canonical:** C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface; C131 No default-on social feed in a personal tool
 
 ### R05-066 — Audiences: ADHD 431 (12.90%, 4.47, 70.5% 5★); students 226 (6.76%, 4.43, heavy KR + US teens); mental-health 95 (2.84%, 4.52 — highest); parents 30 (0.90%, 4.40); autism 14 (0.42%, 4.64, zero 1–2★)
 
@@ -958,7 +958,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Magnitude:** Theme | Peak | Now (2026) | Read ; Apple Watch defects | 8.8% (2021) | 0.2% | Solved ; Crash / won't open | 7.9% (2021), 7.2% (2023) | 2.0% | Largely solved ; Subscription objection | 12.5% (2020) | 5.9% | Halved — free tier is doing its job ; Free-cap complaints | 7.3% (2021) | 4.1% | Softened ; Refund requests | 3.4% (2024) | 0.6% | Sharply down ; Dark mode requests | 2.2% (2022) | 0.2% | Shipped Jan 2025 ; Bad translation | 2.0% (2023) | 0.2% | Improved, not fixed
 - **Direction for us:** none · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** a generous free tier halves subscription objections over time
-- **Canonical:** C022 Apple Watch app (done properly: timer, two-way sync); C007 Generous fixed habit cap (or unlimited) — never change it
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C022 Apple Watch app (done properly: timer, two-way sync)
 
 ### R05-081 — Themes that worsened or emerged: notification loop ~0% → 3.7% (new regression, currently the top defect); widget gaps 2.4% → 3.9% (shipped but under-deliver); ads 0.6% → 1.6% (peak 2.6% 2025); AI-features objection 0% → 1.0% (new); social tab objection new; battery fixed once, regressed twice
 
@@ -967,7 +967,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **User reaction:** complaint
 - **Magnitude:** Theme | Then | 2026 | Read ; Notification loop / spam | ~0% pre-2025 | 3.7% | New regression, currently the top defect ; Widget gaps | 2.4% (2022) | 3.9% | Growing — widgets shipped but under-deliver ; Ads | 0.6% (2022) | 1.6% (peaked 2.6% in 2025 Q2/Q3) | Introduced and escalating ; AI features objection | 0% pre-2025 | 1.0% | New ; Social tab objection | 0% pre-2023 | 0.2% | New, low volume, safety-adjacent ; Battery drain | 1.1% (2021) | 1.0% (peaked 4.4% in 2023) | Fixed once, regressed twice
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C119 Updates must not regress layout or lose progress
+- **Canonical:** C175 Updates must not break function or wipe progress
 
 ### R05-083 — The persistent five, unfixed across the life of the app: no undo / accidental done (Jan 2020 → Feb 2026); icon skin-tone diversity (Jun 2020 → Jun 2026); 24-hour clock / week-start / date format (Dec 2020 → Feb 2026); untimed checklist mode (Nov 2020 → Jan 2026); routine start-order / reordering bugs (Jan 2020 → Nov 2025)
 
@@ -1013,7 +1013,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Magnitude:** 1 ID (2★)
 - **Direction for us:** dont · **Report confidence:** single review, severe · **Generalisable:** yes
 - **Review IDs:** `13099883499`
-- **Canonical:** C127 Never show ads to paying subscribers; C001 Never move a free feature behind the paywall
+- **Canonical:** C001 Never move a free feature behind the paywall; C127 Never show ads to paying subscribers
 
 ### R05-028 — A subscriber who is shown an ad churns loudly: 'multiple back-to-back, full-screen unskippable, LONG brainrot ads before you can proceed. Even as a paying subscriber'; 'even on the premium version I am bombarded with ads'; a lifetime buyer still got banner ads (later fixed); an annual subscriber gets a full-screen 'change plan' pop-up on every open because prices went up
 
@@ -1091,7 +1091,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Magnitude:** 2 reports + ≥9 self-identified minors
 - **Direction for us:** dont · **Report confidence:** child-safety · **Generalisable:** yes
 - **Conditions:** evidence: R05-064
-- **Canonical:** C131 No default-on social feed in a personal tool; C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface
+- **Canonical:** C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface; C131 No default-on social feed in a personal tool
 
 ## Things to do
 
@@ -1137,7 +1137,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Direction for us:** must-have · **Report confidence:** clear mechanism · **Generalisable:** yes
 - **Conditions:** a neurodivergent audience is heterogeneous — options beat retuning
 - **Review IDs:** `13667837214`, `14371016110`, `13073278557`, `10507135013`
-- **Canonical:** C123 Notification escalation must be user-configurable, never silently retuned; C121 Untimed / checklist mode as a per-routine toggle
+- **Canonical:** C121 Untimed / checklist mode as a per-routine toggle; C123 Notification escalation must be user-configurable, never silently retuned
 
 ### R05-110 — A quantity cap of 2 routines here draws polite wishes (mean 3.92, 70 of 168 at 5★) while report 4's task cap of 4–7 reversed a two-year recovery and report 1's 3-habit cap was the #1 complaint — the difference is whether the cap sits ABOVE the point of core value (morning + night is enough here) and whether it was there from the start or imposed on tenured users
 
