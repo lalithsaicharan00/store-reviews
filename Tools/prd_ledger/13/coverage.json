@@ -1,0 +1,167 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "table_row": "IDs in `by_country` not in main file",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "table_row": "IDs in main file not in `by_country",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` `total_reviews",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "table_row": "Records excluded from analysis",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "count, percentage, denominator, scope, period, signal label, and review IDs",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "Facts",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "Theme rates are not equally comparable across languages.",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "Fields deliberately not used:",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "19,850 (100.00%)",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "Parse",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "Taxonomy construction.",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "Validation.",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "Segmentation.",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "Regex classification has recall gaps that vary by language.",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "Recency is thin.",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "No conversion, retention, revenue or download data exists in this corpus.",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "Reviews with net community upvotes:",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "bold": "Method note (important).",
+  "cards": [
+   "R13-002"
+  ]
+ },
+ {
+  "table_row": "8",
+  "cards": [
+   "R13-082",
+   "R13-015"
+  ]
+ },
+ {
+  "bold": "Fact:",
+  "cards": [
+   "R13-018"
+  ]
+ },
+ {
+  "bold": "The most important observation in this section:",
+  "cards": [
+   "R13-040"
+  ]
+ },
+ {
+  "bold": "The evidence supports a specific repricing thesis:",
+  "cards": [
+   "R13-084",
+   "R13-085",
+   "R13-086",
+   "R13-087",
+   "R13-088"
+  ]
+ },
+ {
+  "kind": "tactic",
+  "none_in_report": "the only growth tactic described is the 2019–20 Douyin paid-acquisition campaign, carded as market/dont R13-058 because its outcome was a billing-dispute corpus; no positive tactic in the report"
+ }
+]

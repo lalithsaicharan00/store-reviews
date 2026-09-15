@@ -109,7 +109,12 @@
    "R12-010",
    "R12-037",
    "R12-052",
-   "R12-061"
+   "R12-061",
+   "R13-028",
+   "R13-040",
+   "R13-044",
+   "R13-057",
+   "R13-065"
   ],
   "reports": [
    1,
@@ -123,14 +128,15 @@
    9,
    10,
    11,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
  {
   "id": "C003",
   "title": "Lead with a one-time lifetime purchase",
-  "statement": "People buy because it is not a subscription; lifetime is the strongest pricing signal.",
+  "statement": "People buy because it is not a subscription; lifetime is the strongest pricing signal. Report 13: 239 reviews across every year 2017–2026, including 5★ ones ('It would be better to charge only once. It would attract more users, trust me'), asked for the one-time purchase back after it was withdrawn.",
   "section": "product-rule",
   "cards": [
    "R01-006",
@@ -168,7 +174,17 @@
    "R08-021",
    "R08-024",
    "R08-123",
-   "R10-168"
+   "R10-168",
+   "R13-004",
+   "R13-017",
+   "R13-019",
+   "R13-023",
+   "R13-040",
+   "R13-044",
+   "R13-051",
+   "R13-065",
+   "R13-084",
+   "R13-089"
   ],
   "reports": [
    1,
@@ -179,7 +195,8 @@
    6,
    7,
    8,
-   10
+   10,
+   13
   ],
   "merged_from": []
  },
@@ -196,14 +213,18 @@
    "R02-011",
    "R03-027",
    "R05-025",
-   "R07-062"
+   "R07-062",
+   "R13-006",
+   "R13-017",
+   "R13-048"
   ],
   "reports": [
    1,
    2,
    3,
    5,
-   7
+   7,
+   13
   ],
   "merged_from": []
  },
@@ -289,7 +310,11 @@
    "R10-148",
    "R11-010",
    "R11-022",
-   "R11-067"
+   "R11-067",
+   "R13-009",
+   "R13-025",
+   "R13-030",
+   "R13-069"
   ],
   "reports": [
    1,
@@ -301,14 +326,15 @@
    7,
    8,
    10,
-   11
+   11,
+   13
   ],
   "merged_from": []
  },
  {
   "id": "C007",
   "title": "Generous fixed habit cap (or unlimited) — never change it",
-  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not. Report 6: raising a 1-streak cap to 2 did not reduce complaints — the ask was unlimited — though the tone moved from 'scam' to 'love it, want more'. Report 7: a 4-habit cap held unchanged for 3½ years was still the top 2★ theme (0 of 27 complainers paid) while 11 users said 4 was plenty — stable is not enough if the level binds the 5–8-habit user. Report 11: 'First app that has more than 3 habits' was a reviewer's entire body — no cap was the acquisition wedge against the category, and whether it survived the paywall retrofit is unknown.",
+  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not. Report 6: raising a 1-streak cap to 2 did not reduce complaints — the ask was unlimited — though the tone moved from 'scam' to 'love it, want more'. Report 7: a 4-habit cap held unchanged for 3½ years was still the top 2★ theme (0 of 27 complainers paid) while 11 users said 4 was plenty — stable is not enough if the level binds the 5–8-habit user. Report 11: 'First app that has more than 3 habits' was a reviewer's entire body — no cap was the acquisition wedge against the category, and whether it survived the paywall retrofit is unknown. Report 13: the free cap was cut from 5 to 3 in 2018 (the worst year, mean 2.85) and restored in 2020 without recovering the rating; 'hitting the cap while already engaged' is the one purchase trigger buyers name.",
   "section": "free",
   "cards": [
    "R01-008",
@@ -382,7 +408,14 @@
    "R08-031",
    "R09-047",
    "R11-012",
-   "R11-065"
+   "R11-065",
+   "R13-018",
+   "R13-041",
+   "R13-043",
+   "R13-049",
+   "R13-051",
+   "R13-071",
+   "R13-085"
   ],
   "reports": [
    1,
@@ -394,14 +427,15 @@
    7,
    8,
    9,
-   11
+   11,
+   13
   ],
   "merged_from": []
  },
  {
   "id": "C008",
   "title": "Daily check-in and one basic reminder per habit are free",
-  "statement": "Core loop must be free; it draws no complaints when it is.",
+  "statement": "Core loop must be free; it draws no complaints when it is. Report 13: exact-clock reminder times behind the paywall was the single most resented gate in an eleven-year corpus (227 requests); free users got only Morning/Afternoon/Evening buckets.",
   "section": "free",
   "cards": [
    "R01-010",
@@ -413,7 +447,12 @@
    "R04-020",
    "R06-030",
    "R07-031",
-   "R11-017"
+   "R11-017",
+   "R13-012",
+   "R13-032",
+   "R13-039",
+   "R13-071",
+   "R13-088"
   ],
   "reports": [
    1,
@@ -422,7 +461,8 @@
    4,
    6,
    7,
-   11
+   11,
+   13
   ],
   "merged_from": []
  },
@@ -469,7 +509,9 @@
    "R12-015",
    "R12-064",
    "R12-074",
-   "R12-083"
+   "R12-083",
+   "R13-032",
+   "R13-041"
   ],
   "reports": [
    1,
@@ -481,7 +523,8 @@
    7,
    8,
    9,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -499,14 +542,17 @@
    "R08-055",
    "R08-118",
    "R09-057",
-   "R09-133"
+   "R09-133",
+   "R13-032",
+   "R13-082"
   ],
   "reports": [
    1,
    3,
    6,
    8,
-   9
+   9,
+   13
   ],
   "merged_from": []
  },
@@ -531,7 +577,8 @@
    "R08-015",
    "R08-056",
    "R09-058",
-   "R11-014"
+   "R11-014",
+   "R13-025"
   ],
   "reports": [
    1,
@@ -541,7 +588,8 @@
    7,
    8,
    9,
-   11
+   11,
+   13
   ],
   "merged_from": []
  },
@@ -591,7 +639,9 @@
    "R10-079",
    "R10-162",
    "R11-062",
-   "R11-066"
+   "R11-066",
+   "R13-010",
+   "R13-068"
   ],
   "reports": [
    1,
@@ -599,7 +649,8 @@
    3,
    7,
    10,
-   11
+   11,
+   13
   ],
   "merged_from": []
  },
@@ -665,7 +716,8 @@
    "R07-135",
    "R08-081",
    "R09-050",
-   "R10-020"
+   "R10-020",
+   "R13-026"
   ],
   "reports": [
    1,
@@ -674,7 +726,8 @@
    7,
    8,
    9,
-   10
+   10,
+   13
   ],
   "merged_from": []
  },
@@ -688,13 +741,15 @@
    "R02-016",
    "R03-023",
    "R03-055",
-   "R08-086"
+   "R08-086",
+   "R13-026"
   ],
   "reports": [
    1,
    2,
    3,
-   8
+   8,
+   13
   ],
   "merged_from": []
  },
@@ -733,7 +788,9 @@
    "R06-020",
    "R06-061",
    "R07-101",
-   "R10-042"
+   "R10-042",
+   "R13-026",
+   "R13-032"
   ],
   "reports": [
    1,
@@ -741,7 +798,8 @@
    3,
    6,
    7,
-   10
+   10,
+   13
   ],
   "merged_from": []
  },
@@ -761,7 +819,11 @@
    "R08-115",
    "R09-040",
    "R11-007",
-   "R11-062"
+   "R11-062",
+   "R13-015",
+   "R13-032",
+   "R13-071",
+   "R13-082"
   ],
   "reports": [
    1,
@@ -769,7 +831,8 @@
    7,
    8,
    9,
-   11
+   11,
+   13
   ],
   "merged_from": []
  },
@@ -790,13 +853,15 @@
    "R10-070",
    "R10-072",
    "R10-096",
-   "R10-162"
+   "R10-162",
+   "R13-032"
   ],
   "reports": [
    1,
    7,
    8,
-   10
+   10,
+   13
   ],
   "merged_from": []
  },
@@ -835,7 +900,9 @@
    "R12-038",
    "R12-044",
    "R12-045",
-   "R12-083"
+   "R12-083",
+   "R13-027",
+   "R13-045"
   ],
   "reports": [
    1,
@@ -847,7 +914,8 @@
    8,
    9,
    10,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -888,14 +956,17 @@
    "R06-032",
    "R10-013",
    "R10-065",
-   "R10-142"
+   "R10-142",
+   "R13-039",
+   "R13-045"
   ],
   "reports": [
    1,
    4,
    5,
    6,
-   10
+   10,
+   13
   ],
   "merged_from": []
  },
@@ -928,19 +999,21 @@
   "cards": [
    "R01-036",
    "R08-091",
-   "R09-093"
+   "R09-093",
+   "R13-080"
   ],
   "reports": [
    1,
    8,
-   9
+   9,
+   13
   ],
   "merged_from": []
  },
  {
   "id": "C027",
   "title": "Localise early — it unlocks revenue",
-  "statement": "Missing localisation is the biggest market-specific complaint and a stated purchase blocker; shipping a language visibly converts (Japan). Report 10: localisation is HIGH-PRIORITY at country level in eight storefronts at once (cn 26%, ru 18%, tr 19%, br 13%, es 12%); reviewers say they will not pay in English.",
+  "statement": "Missing localisation is the biggest market-specific complaint and a stated purchase blocker; shipping a language visibly converts (Japan). Report 10: localisation is HIGH-PRIORITY at country level in eight storefronts at once (cn 26%, ru 18%, tr 19%, br 13%, es 12%); reviewers say they will not pay in English. Report 13: Arabic is the largest unserved language (20.5% of Saudi reviews); users were also served the wrong language ('I am from Turkey but this app language is Korean', 41 votes) and shown store screenshots in languages the app does not have.",
   "section": "do",
   "cards": [
    "R01-037",
@@ -992,7 +1065,17 @@
    "R11-041",
    "R12-028",
    "R12-053",
-   "R12-080"
+   "R12-080",
+   "R13-010",
+   "R13-016",
+   "R13-032",
+   "R13-060",
+   "R13-061",
+   "R13-062",
+   "R13-063",
+   "R13-071",
+   "R13-082",
+   "R13-089"
   ],
   "reports": [
    1,
@@ -1006,7 +1089,8 @@
    9,
    10,
    11,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -1070,7 +1154,12 @@
    "R11-032",
    "R11-054",
    "R12-008",
-   "R12-009"
+   "R12-009",
+   "R13-005",
+   "R13-021",
+   "R13-029",
+   "R13-050",
+   "R13-062"
   ],
   "reports": [
    1,
@@ -1083,14 +1172,15 @@
    9,
    10,
    11,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
  {
   "id": "C030",
   "title": "Sync must work — and prove it",
-  "statement": "The paid feature that breaks most; sync failure is ×12.8 over-represented among buyers.",
+  "statement": "The paid feature that breaks most; sync failure is ×12.8 over-represented among buyers. Report 13: iCloud sync complaints rose 10× from 2015 to 2021 and ran at 8.9% of 3★ reviews — the fastest-worsening dimension and the defect most likely costing renewals.",
   "section": "must-never-break",
   "cards": [
    "R01-015",
@@ -1104,14 +1194,23 @@
    "R10-140",
    "R12-014",
    "R12-062",
-   "R12-075"
+   "R12-075",
+   "R13-036",
+   "R13-041",
+   "R13-042",
+   "R13-053",
+   "R13-068",
+   "R13-071",
+   "R13-082",
+   "R13-083"
   ],
   "reports": [
    1,
    2,
    5,
    10,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -1153,7 +1252,10 @@
    "R10-134",
    "R10-135",
    "R10-136",
-   "R12-014"
+   "R12-014",
+   "R13-008",
+   "R13-036",
+   "R13-067"
   ],
   "reports": [
    1,
@@ -1165,7 +1267,8 @@
    8,
    9,
    10,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -1238,7 +1341,9 @@
    "R12-059",
    "R12-067",
    "R12-069",
-   "R12-085"
+   "R12-085",
+   "R13-053",
+   "R13-054"
   ],
   "reports": [
    1,
@@ -1246,7 +1351,8 @@
    7,
    9,
    11,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -1292,7 +1398,10 @@
    "R10-115",
    "R10-130",
    "R10-137",
-   "R12-014"
+   "R12-014",
+   "R13-036",
+   "R13-067",
+   "R13-081"
   ],
   "reports": [
    1,
@@ -1305,7 +1414,8 @@
    8,
    9,
    10,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -1377,7 +1487,10 @@
    "R12-047",
    "R12-051",
    "R12-068",
-   "R12-085"
+   "R12-085",
+   "R13-029",
+   "R13-046",
+   "R13-079"
   ],
   "reports": [
    1,
@@ -1390,7 +1503,8 @@
    9,
    10,
    11,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -1449,7 +1563,8 @@
    "R10-066",
    "R12-014",
    "R12-062",
-   "R12-075"
+   "R12-075",
+   "R13-027"
   ],
   "reports": [
    1,
@@ -1460,7 +1575,8 @@
    7,
    8,
    10,
-   12
+   12,
+   13
   ],
   "merged_from": [
    {
@@ -1516,7 +1632,9 @@
    "R09-061",
    "R10-060",
    "R12-028",
-   "R12-066"
+   "R12-066",
+   "R13-036",
+   "R13-071"
   ],
   "reports": [
    1,
@@ -1528,7 +1646,8 @@
    8,
    9,
    10,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -1546,13 +1665,15 @@
    "R08-112",
    "R08-133",
    "R10-059",
-   "R10-155"
+   "R10-155",
+   "R13-027"
   ],
   "reports": [
    1,
    6,
    8,
-   10
+   10,
+   13
   ],
   "merged_from": []
  },
@@ -1608,7 +1729,10 @@
    "R10-048",
    "R10-122",
    "R12-016",
-   "R12-032"
+   "R12-032",
+   "R13-030",
+   "R13-031",
+   "R13-089"
   ],
   "reports": [
    1,
@@ -1620,7 +1744,8 @@
    8,
    9,
    10,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -1652,7 +1777,12 @@
    "R12-014",
    "R12-066",
    "R12-075",
-   "R12-083"
+   "R12-083",
+   "R13-010",
+   "R13-032",
+   "R13-034",
+   "R13-041",
+   "R13-082"
   ],
   "reports": [
    1,
@@ -1663,7 +1793,8 @@
    7,
    8,
    9,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -1681,7 +1812,9 @@
    "R05-070",
    "R07-077",
    "R08-077",
-   "R10-081"
+   "R10-081",
+   "R13-032",
+   "R13-071"
   ],
   "reports": [
    1,
@@ -1689,7 +1822,8 @@
    5,
    7,
    8,
-   10
+   10,
+   13
   ],
   "merged_from": []
  },
@@ -1708,14 +1842,16 @@
    "R07-100",
    "R08-078",
    "R09-053",
-   "R09-131"
+   "R09-131",
+   "R13-032"
   ],
   "reports": [
    1,
    3,
    7,
    8,
-   9
+   9,
+   13
   ],
   "merged_from": [
    {
@@ -1783,13 +1919,17 @@
    "R08-017",
    "R09-055",
    "R12-022",
-   "R12-076"
+   "R12-076",
+   "R13-032",
+   "R13-033",
+   "R13-082"
   ],
   "reports": [
    1,
    8,
    9,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -1835,12 +1975,15 @@
   "cards": [
    "R01-103",
    "R08-080",
-   "R09-059"
+   "R09-059",
+   "R13-026",
+   "R13-032"
   ],
   "reports": [
    1,
    8,
-   9
+   9,
+   13
   ],
   "merged_from": []
  },
@@ -1879,10 +2022,12 @@
   "statement": "Beyond morning/afternoon/evening — shift workers.",
   "section": "undecided",
   "cards": [
-   "R01-112"
+   "R01-112",
+   "R13-014"
   ],
   "reports": [
-   1
+   1,
+   13
   ],
   "merged_from": []
  },
@@ -2073,7 +2218,8 @@
    "R10-039",
    "R10-112",
    "R11-021",
-   "R11-049"
+   "R11-049",
+   "R13-048"
   ],
   "reports": [
    1,
@@ -2083,7 +2229,8 @@
    7,
    9,
    10,
-   11
+   11,
+   13
   ],
   "merged_from": []
  },
@@ -2115,7 +2262,8 @@
    "R11-042",
    "R12-050",
    "R12-051",
-   "R12-052"
+   "R12-052",
+   "R13-056"
   ],
   "reports": [
    1,
@@ -2124,7 +2272,8 @@
    7,
    10,
    11,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -2187,7 +2336,13 @@
    "R10-180",
    "R11-032",
    "R12-027",
-   "R12-044"
+   "R12-044",
+   "R13-006",
+   "R13-017",
+   "R13-044",
+   "R13-051",
+   "R13-066",
+   "R13-086"
   ],
   "reports": [
    1,
@@ -2198,7 +2353,8 @@
    7,
    10,
    11,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -2259,7 +2415,10 @@
    "R12-008",
    "R12-035",
    "R12-043",
-   "R12-047"
+   "R12-047",
+   "R13-028",
+   "R13-048",
+   "R13-053"
   ],
   "reports": [
    1,
@@ -2272,7 +2431,8 @@
    9,
    10,
    11,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -2286,11 +2446,13 @@
    "R01-148",
    "R08-027",
    "R08-051",
-   "R08-065"
+   "R08-065",
+   "R13-013"
   ],
   "reports": [
    1,
-   8
+   8,
+   13
   ],
   "merged_from": []
  },
@@ -2411,14 +2573,20 @@
    "R09-130",
    "R11-013",
    "R11-052",
-   "R11-063"
+   "R11-063",
+   "R13-010",
+   "R13-036",
+   "R13-037",
+   "R13-041",
+   "R13-082"
   ],
   "reports": [
    2,
    4,
    8,
    9,
-   11
+   11,
+   13
   ],
   "merged_from": []
  },
@@ -2462,7 +2630,8 @@
    "R12-038",
    "R12-042",
    "R12-060",
-   "R12-083"
+   "R12-083",
+   "R13-025"
   ],
   "reports": [
    2,
@@ -2470,7 +2639,8 @@
    6,
    7,
    8,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -2564,7 +2734,8 @@
    "R10-096",
    "R10-163",
    "R11-014",
-   "R11-024"
+   "R11-024",
+   "R13-026"
   ],
   "reports": [
    2,
@@ -2573,7 +2744,8 @@
    7,
    9,
    10,
-   11
+   11,
+   13
   ],
   "merged_from": []
  },
@@ -2611,20 +2783,22 @@
    "R02-099",
    "R05-051",
    "R08-088",
-   "R10-060"
+   "R10-060",
+   "R13-027"
   ],
   "reports": [
    2,
    5,
    8,
-   10
+   10,
+   13
   ],
   "merged_from": []
  },
  {
   "id": "C085",
   "title": "Address tracking / privacy visibly",
-  "statement": "One unrebutted 1★: 'a whole lotta tracking going on by the developer'.",
+  "statement": "One unrebutted 1★: 'a whole lotta tracking going on by the developer'. Report 13: a 2017 privacy-policy revision drew 11 reviews in a month; location prompts with no stated purpose ('No, you don't need it') and disclosure-to-law-enforcement language made long-time users delete.",
   "section": "do",
   "cards": [
    "R02-080",
@@ -2633,13 +2807,15 @@
    "R10-088",
    "R12-031",
    "R12-055",
-   "R12-070"
+   "R12-070",
+   "R13-070"
   ],
   "reports": [
    2,
    8,
    10,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -2734,7 +2910,10 @@
    "R11-015",
    "R11-042",
    "R11-068",
-   "R12-020"
+   "R12-020",
+   "R13-007",
+   "R13-058",
+   "R13-087"
   ],
   "reports": [
    3,
@@ -2744,7 +2923,8 @@
    7,
    10,
    11,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -2775,7 +2955,11 @@
    "R09-138",
    "R10-069",
    "R11-010",
-   "R11-067"
+   "R11-067",
+   "R13-024",
+   "R13-051",
+   "R13-052",
+   "R13-071"
   ],
   "reports": [
    3,
@@ -2786,7 +2970,8 @@
    8,
    9,
    10,
-   11
+   11,
+   13
   ],
   "merged_from": []
  },
@@ -2805,7 +2990,8 @@
    "R09-070",
    "R02-065",
    "R02-116",
-   "R12-072"
+   "R12-072",
+   "R13-024"
   ],
   "reports": [
    2,
@@ -2813,7 +2999,8 @@
    5,
    8,
    9,
-   12
+   12,
+   13
   ],
   "merged_from": [
    {
@@ -2871,11 +3058,13 @@
    "R03-118",
    "R07-071",
    "R07-072",
-   "R07-131"
+   "R07-131",
+   "R13-070"
   ],
   "reports": [
    3,
-   7
+   7,
+   13
   ],
   "merged_from": []
  },
@@ -2999,7 +3188,8 @@
    "R09-146",
    "R10-083",
    "R10-086",
-   "R12-046"
+   "R12-046",
+   "R13-031"
   ],
   "reports": [
    3,
@@ -3008,7 +3198,8 @@
    6,
    9,
    10,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -3023,11 +3214,14 @@
    "R03-122",
    "R11-006",
    "R11-037",
-   "R11-060"
+   "R11-060",
+   "R13-004",
+   "R13-065"
   ],
   "reports": [
    3,
-   11
+   11,
+   13
   ],
   "merged_from": []
  },
@@ -3071,7 +3265,7 @@
  {
   "id": "C109",
   "title": "A free trial must be a real trial",
-  "statement": "It must apply to whichever plan the user picks, and the confirmation must show the exact charge date and amount; a trial that bills at once produced 789 reviews at mean 1.35 in report 4 and must be verified per storefront (Brazil ran 7–11× the global rate). Report 10: 149 users believe they were charged at trial START (mean 1.79) and trial length varied between 2 and 7 days across users. Report 12: a 3-day trial introduced around 2024 shows as subscribed but 'doesn't move past the subscription screen' — the complaint changed shape from 'there is no trial' to 'the trial doesn't work'.",
+  "statement": "It must apply to whichever plan the user picks, and the confirmation must show the exact charge date and amount; a trial that bills at once produced 789 reviews at mean 1.35 in report 4 and must be verified per storefront (Brazil ran 7–11× the global rate). Report 10: 149 users believe they were charged at trial START (mean 1.79) and trial length varied between 2 and 7 days across users. Report 12: a 3-day trial introduced around 2024 shows as subscribed but 'doesn't move past the subscription screen' — the complaint changed shape from 'there is no trial' to 'the trial doesn't work'. Report 13: a trial that cannot start without first authorising a subscription, defaulting to the most expensive annual tier, produced 1,102 auto-charge reviews at mean 1.20 (999 one-star) — the single most damaging mechanic in a 19,850-review corpus; involuntary-charge reviews equalled voluntary-purchase reviews 1:1.",
   "section": "must-never-break",
   "cards": [
    "R04-005",
@@ -3093,14 +3287,23 @@
    "R10-025",
    "R10-047",
    "R10-049",
-   "R12-058"
+   "R12-058",
+   "R13-005",
+   "R13-019",
+   "R13-020",
+   "R13-029",
+   "R13-044",
+   "R13-050",
+   "R13-073",
+   "R13-076"
   ],
   "reports": [
    4,
    5,
    9,
    10,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -3125,7 +3328,10 @@
    "R11-008",
    "R11-036",
    "R11-059",
-   "R12-006"
+   "R12-006",
+   "R13-020",
+   "R13-077",
+   "R13-089"
   ],
   "reports": [
    4,
@@ -3133,7 +3339,8 @@
    9,
    10,
    11,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -3161,7 +3368,7 @@
  {
   "id": "C112",
   "title": "In-app cancellation",
-  "statement": "Cancel-by-email with no reply converts recoverable disputes into permanent 1★, legal threats and denied refunds.",
+  "statement": "Cancel-by-email with no reply converts recoverable disputes into permanent 1★, legal threats and denied refunds. Report 13: in Korea 24.7% of reviews say they cannot cancel and two reviewers published how-to-cancel guides for other users; an in-app 'Manage subscription' link would address a quarter of that storefront's reviews.",
   "section": "must-have",
   "cards": [
    "R04-033",
@@ -3177,14 +3384,21 @@
    "R09-091",
    "R09-117",
    "R10-051",
-   "R10-152"
+   "R10-152",
+   "R13-007",
+   "R13-020",
+   "R13-021",
+   "R13-050",
+   "R13-059",
+   "R13-075"
   ],
   "reports": [
    4,
    5,
    6,
    9,
-   10
+   10,
+   13
   ],
   "merged_from": []
  },
@@ -3215,7 +3429,9 @@
    "R11-008",
    "R11-036",
    "R12-019",
-   "R12-020"
+   "R12-020",
+   "R13-020",
+   "R13-076"
   ],
   "reports": [
    4,
@@ -3223,7 +3439,8 @@
    9,
    10,
    11,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -3241,19 +3458,24 @@
    "R09-021",
    "R09-023",
    "R09-051",
-   "R09-065"
+   "R09-065",
+   "R13-016",
+   "R13-024",
+   "R13-058",
+   "R13-061"
   ],
   "reports": [
    4,
    7,
-   9
+   9,
+   13
   ],
   "merged_from": []
  },
  {
   "id": "C116",
   "title": "Content library (workouts, meditation, sleep, journal) as the paid layer",
-  "statement": "Gives a routine app something to sell beyond the core loop and separates it from 'a fancy Reminders list'.",
+  "statement": "Gives a routine app something to sell beyond the core loop and separates it from 'a fancy Reminders list'. Report 13 (contested): Challenges/Explore content tabs added in 2020 drew 'please let me hide them… I will not pay for an app that is 50% useless content'; nobody in 19,850 reviews asked for content, coaching or AI.",
   "section": "paid",
   "cards": [
    "R04-017",
@@ -3263,11 +3485,16 @@
    "R04-105",
    "R10-019",
    "R10-024",
-   "R10-035"
+   "R10-035",
+   "R13-009",
+   "R13-045",
+   "R13-069",
+   "R13-082"
   ],
   "reports": [
    4,
-   10
+   10,
+   13
   ],
   "merged_from": []
  },
@@ -3511,14 +3738,17 @@
    "R07-125",
    "R07-142",
    "R10-022",
-   "R11-066"
+   "R11-066",
+   "R13-012",
+   "R13-043"
   ],
   "reports": [
    5,
    6,
    7,
    10,
-   11
+   11,
+   13
   ],
   "merged_from": []
  },
@@ -3535,13 +3765,15 @@
    "R07-137",
    "R08-007",
    "R08-126",
-   "R11-046"
+   "R11-046",
+   "R13-030"
   ],
   "reports": [
    6,
    7,
    8,
-   11
+   11,
+   13
   ],
   "merged_from": []
  },
@@ -3580,16 +3812,20 @@
  {
   "id": "C137",
   "title": "Show the paywall at the moment of need, not on app open",
-  "statement": "Surface the upgrade when the user tries the gated action (the third streak, a freeze); an upsell on every launch reads as 'begs me for money' and feeds the greed cluster.",
+  "statement": "Surface the upgrade when the user tries the gated action (the third streak, a freeze); an upsell on every launch reads as 'begs me for money' and feeds the greed cluster. Report 13: the paywall fired 3–15 times in the first three minutes while the real purchase trigger was hitting the cap after engagement; the report's experiment: delay the first interstitial until habits are completed on three separate days.",
   "section": "do",
   "cards": [
    "R06-042",
    "R06-089",
-   "R10-026"
+   "R10-026",
+   "R13-049",
+   "R13-052",
+   "R13-085"
   ],
   "reports": [
    6,
-   10
+   10,
+   13
   ],
   "merged_from": []
  },
@@ -3614,10 +3850,13 @@
   "section": "must-never-break",
   "cards": [
    "R07-014",
-   "R07-121"
+   "R07-121",
+   "R13-008",
+   "R13-081"
   ],
   "reports": [
-   7
+   7,
+   13
   ],
   "merged_from": []
  },
@@ -3653,13 +3892,16 @@
    "R12-044",
    "R12-045",
    "R12-077",
-   "R12-083"
+   "R12-083",
+   "R13-027",
+   "R13-042"
   ],
   "reports": [
    7,
    8,
    9,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -3695,11 +3937,13 @@
    "R08-116",
    "R09-050",
    "R09-055",
-   "R09-129"
+   "R09-129",
+   "R13-026"
   ],
   "reports": [
    8,
-   9
+   9,
+   13
   ],
   "merged_from": []
  },
@@ -3766,11 +4010,17 @@
    "R12-044",
    "R12-057",
    "R12-078",
-   "R12-082"
+   "R12-082",
+   "R13-023",
+   "R13-044",
+   "R13-051",
+   "R13-052",
+   "R13-071"
   ],
   "reports": [
    9,
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -3858,10 +4108,15 @@
    "R10-047",
    "R10-048",
    "R10-152",
-   "R10-172"
+   "R10-172",
+   "R13-005",
+   "R13-050",
+   "R13-059",
+   "R13-074"
   ],
   "reports": [
-   10
+   10,
+   13
   ],
   "merged_from": []
  },
@@ -4113,10 +4368,13 @@
    "R10-016",
    "R10-150",
    "R10-157",
-   "R10-175"
+   "R10-175",
+   "R13-009",
+   "R13-069"
   ],
   "reports": [
-   10
+   10,
+   13
   ],
   "merged_from": []
  },
@@ -4204,7 +4462,11 @@
    "R05-017",
    "R07-086",
    "R08-027",
-   "R09-036"
+   "R09-036",
+   "R13-032",
+   "R13-035",
+   "R13-041",
+   "R13-082"
   ],
   "reports": [
    2,
@@ -4212,7 +4474,8 @@
    5,
    7,
    8,
-   9
+   9,
+   13
   ],
   "merged_from": [
    {
@@ -4276,7 +4539,8 @@
    "R09-109",
    "R10-090",
    "R04-059",
-   "R12-062"
+   "R12-062",
+   "R13-027"
   ],
   "reports": [
    4,
@@ -4284,7 +4548,8 @@
    8,
    9,
    10,
-   12
+   12,
+   13
   ],
   "merged_from": [
    {
@@ -4358,17 +4623,20 @@
  {
   "id": "C180",
   "title": "No 'wait, don't go' exit discounts or countdown timers on the paywall",
-  "statement": "Report 12: a lifetime offer at 17.99 that drops to 5.99 when the user tries to close, a '90% off' timer that still grants no access, and a 10× regional price jump were described as 'gross' and 'another major red flag'; 42 reviewers used the word 'scam'. The ladder is also visible to every prospect as ten SKUs on the store page.",
+  "statement": "Report 12: a lifetime offer at 17.99 that drops to 5.99 when the user tries to close, a '90% off' timer that still grants no access, and a 10× regional price jump were described as 'gross' and 'another major red flag'; 42 reviewers used the word 'scam'. The ladder is also visible to every prospect as ten SKUs on the store page. Report 13: 'Here's one star for you. You can buy the rest at a 49% discount' — the exit-intent discount tells every full-price buyer they overpaid.",
   "section": "dont",
   "cards": [
    "R12-019",
    "R12-020",
    "R12-041",
    "R12-073",
-   "R12-085"
+   "R12-085",
+   "R13-020",
+   "R13-078"
   ],
   "reports": [
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -4379,10 +4647,13 @@
   "section": "do",
   "cards": [
    "R12-006",
-   "R12-071"
+   "R12-071",
+   "R13-010",
+   "R13-077"
   ],
   "reports": [
-   12
+   12,
+   13
   ],
   "merged_from": []
  },
@@ -4452,6 +4723,85 @@
   ],
   "reports": [
    12
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C186",
+  "title": "Never revoke what earlier buyers paid for when the model changes",
+  "statement": "Report 13: in Aug 2017 a $3.99 one-time purchase became a subscription, unannounced in the release notes, and prior buyers were downgraded to free ('my purchase was worthless'); the mean fell 1.79 stars in nine months and no month since has been above 4.0. Subscriptions later silently expired after updates. Grandfather, always.",
+  "section": "product-rule",
+  "cards": [
+   "R13-004",
+   "R13-054",
+   "R13-065"
+  ],
+  "reports": [
+   13
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C187",
+  "title": "No paid acquisition into an auto-converting trial in frictionless-payment markets",
+  "statement": "Report 13: a Douyin campaign drove Chinese installs into a 7-day trial that opened a ¥208/yr subscription with password-free payment and no authentication step; China became 73% one-star and 51% of all involuntary-charge reviews. Where the payment rail has no friction, the app must add an explicit confirmation step.",
+  "section": "dont",
+  "cards": [
+   "R13-007",
+   "R13-050",
+   "R13-057",
+   "R13-058",
+   "R13-080"
+  ],
+  "reports": [
+   13
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C188",
+  "title": "The app must open offline — never block launch on a network call",
+  "statement": "Report 13: a blocking in-app 'update in progress' migration bricked the app on launch in three waves (Nov 2019, Oct 2020 at 5.9% of that month's reviews, Sep 2025 → Aug 2026), destroyed data on reinstall ('lost almost 3 years of habit tracking') and locked out paying subscribers; 'Will not launch without internet'.",
+  "section": "must-never-break",
+  "cards": [
+   "R13-008",
+   "R13-036",
+   "R13-067",
+   "R13-081"
+  ],
+  "reports": [
+   13
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C189",
+  "title": "Never post canned public replies — answer the specific complaint or don't reply",
+  "statement": "Report 13: copy-paste replies restating Apple's cancellation instructions under reviews had a mean of 1.40 with zero 5★, and multiple reviewers edited their rating downward afterwards ('If you're just going to copy-paste an answer again, don't leave one at all').",
+  "section": "dont",
+  "cards": [
+   "R13-029",
+   "R13-046",
+   "R13-079"
+  ],
+  "reports": [
+   13
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C190",
+  "title": "No weekly billing tier",
+  "statement": "Report 13: weekly billing introduced in 2024 ($3.99, €6, R$29.90, ₽499 per week) drew the corpus's most hostile pricing language — 'insane', 'immoral', 'Per week! I didn't even test it' — and price complaints rose to 26.7% of 2025 reviews.",
+  "section": "dont",
+  "cards": [
+   "R13-006",
+   "R13-017",
+   "R13-066",
+   "R13-086"
+  ],
+  "reports": [
+   13
   ],
   "merged_from": []
  }
