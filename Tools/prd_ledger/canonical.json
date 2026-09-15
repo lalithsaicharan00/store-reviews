@@ -124,7 +124,10 @@
    "R16-041",
    "R16-042",
    "R16-050",
-   "R16-059"
+   "R16-059",
+   "R17-004",
+   "R17-029",
+   "R17-037"
   ],
   "reports": [
    1,
@@ -141,14 +144,15 @@
    12,
    13,
    14,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
  {
   "id": "C003",
   "title": "Lead with a one-time lifetime purchase",
-  "statement": "People buy because it is not a subscription; lifetime is the strongest pricing signal. Report 13: 239 reviews across every year 2017–2026, including 5★ ones ('It would be better to charge only once. It would attract more users, trust me'), asked for the one-time purchase back after it was withdrawn. Report 14: a $1.99–$3 one-time unlock produced zero refund, unexpected-charge or restore complaints in 70 reviews — a materially cleaner record than the subscription apps in the set. Report 16: the price fell ~67% ($119.99 → $40/yr) and the objection rate did not move (31% → 30%); 37 reviews asked for a one-time SKU and Streaks was named eight times, every time for its one-time price — 'I will not rent a checklist'.",
+  "statement": "People buy because it is not a subscription; lifetime is the strongest pricing signal. Report 13: 239 reviews across every year 2017–2026, including 5★ ones ('It would be better to charge only once. It would attract more users, trust me'), asked for the one-time purchase back after it was withdrawn. Report 14: a $1.99–$3 one-time unlock produced zero refund, unexpected-charge or restore complaints in 70 reviews — a materially cleaner record than the subscription apps in the set. Report 16: the price fell ~67% ($119.99 → $40/yr) and the objection rate did not move (31% → 30%); 37 reviews asked for a one-time SKU and Streaks was named eight times, every time for its one-time price — 'I will not rent a checklist'. Report 17 (contested): a $64.99 lifetime beside a $19.99 annual — 3.25 years of payback demanded up front from a developer with an abandonment history — drew 'three times the price of a premium word processor'; the lifetime option must be credible, not just present.",
   "section": "product-rule",
   "cards": [
    "R01-006",
@@ -210,7 +214,12 @@
    "R16-047",
    "R16-054",
    "R16-062",
-   "R16-071"
+   "R16-071",
+   "R17-006",
+   "R17-007",
+   "R17-018",
+   "R17-033",
+   "R17-051"
   ],
   "reports": [
    1,
@@ -224,7 +233,8 @@
    10,
    13,
    14,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -246,7 +256,8 @@
    "R13-017",
    "R13-048",
    "R16-010",
-   "R16-046"
+   "R16-046",
+   "R17-006"
   ],
   "reports": [
    1,
@@ -255,7 +266,8 @@
    5,
    7,
    13,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -288,7 +300,9 @@
    "R12-013",
    "R14-003",
    "R14-023",
-   "R16-039"
+   "R16-039",
+   "R17-009",
+   "R17-024"
   ],
   "reports": [
    1,
@@ -302,7 +316,8 @@
    11,
    12,
    14,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -723,7 +738,9 @@
    "R11-062",
    "R11-066",
    "R13-010",
-   "R13-068"
+   "R13-068",
+   "R17-022",
+   "R17-047"
   ],
   "reports": [
    1,
@@ -732,7 +749,8 @@
    7,
    10,
    11,
-   13
+   13,
+   17
   ],
   "merged_from": []
  },
@@ -997,7 +1015,9 @@
    "R12-083",
    "R13-027",
    "R13-045",
-   "R16-038"
+   "R16-038",
+   "R17-022",
+   "R17-047"
   ],
   "reports": [
    1,
@@ -1011,7 +1031,8 @@
    10,
    12,
    13,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -1196,7 +1217,9 @@
    "R16-057",
    "R16-058",
    "R16-065",
-   "R16-081"
+   "R16-081",
+   "R17-013",
+   "R17-035"
   ],
   "reports": [
    1,
@@ -1213,7 +1236,8 @@
    12,
    13,
    14,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -1289,7 +1313,8 @@
    "R16-009",
    "R16-044",
    "R16-049",
-   "R16-070"
+   "R16-070",
+   "R17-034"
   ],
   "reports": [
    1,
@@ -1305,7 +1330,8 @@
    12,
    13,
    14,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -1395,7 +1421,10 @@
    "R14-043",
    "R16-017",
    "R16-060",
-   "R16-068"
+   "R16-068",
+   "R17-020",
+   "R17-030",
+   "R17-040"
   ],
   "reports": [
    1,
@@ -1410,7 +1439,8 @@
    12,
    13,
    14,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -1652,7 +1682,9 @@
    "R16-009",
    "R16-033",
    "R16-049",
-   "R16-070"
+   "R16-070",
+   "R17-054",
+   "R17-058"
   ],
   "reports": [
    1,
@@ -1668,7 +1700,8 @@
    12,
    13,
    14,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -1801,7 +1834,8 @@
    "R12-066",
    "R13-036",
    "R13-071",
-   "R16-033"
+   "R16-033",
+   "R17-020"
   ],
   "reports": [
    1,
@@ -1815,7 +1849,8 @@
    10,
    12,
    13,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -1905,7 +1940,9 @@
    "R13-030",
    "R13-031",
    "R13-089",
-   "R16-036"
+   "R16-036",
+   "R17-011",
+   "R17-050"
   ],
   "reports": [
    1,
@@ -1919,7 +1956,8 @@
    10,
    12,
    13,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -1998,7 +2036,10 @@
    "R08-077",
    "R10-081",
    "R13-032",
-   "R13-071"
+   "R13-071",
+   "R17-022",
+   "R17-026",
+   "R17-047"
   ],
   "reports": [
    1,
@@ -2007,7 +2048,8 @@
    7,
    8,
    10,
-   13
+   13,
+   17
   ],
   "merged_from": []
  },
@@ -2361,7 +2403,13 @@
    "R14-024",
    "R14-039",
    "R14-056",
-   "R16-049"
+   "R16-049",
+   "R17-011",
+   "R17-021",
+   "R17-034",
+   "R17-041",
+   "R17-054",
+   "R17-058"
   ],
   "reports": [
    1,
@@ -2375,7 +2423,8 @@
    11,
    12,
    14,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -2421,7 +2470,11 @@
    "R11-049",
    "R13-048",
    "R14-008",
-   "R14-031"
+   "R14-031",
+   "R17-003",
+   "R17-025",
+   "R17-030",
+   "R17-032"
   ],
   "reports": [
    1,
@@ -2433,7 +2486,8 @@
    10,
    11,
    13,
-   14
+   14,
+   17
   ],
   "merged_from": []
  },
@@ -2756,7 +2810,7 @@
  {
   "id": "C071",
   "title": "Never ship and walk away",
-  "statement": "Abandonment is visible to users within a year; the app becomes an OS-release liability for paying users with no recourse, while the store rating quietly rises on survivorship. Report 8: a ~18-month pause let iOS updates break the create flow, widget and launch, and users publicly asked whether the app was abandoned ('Wrapped 2022' still in settings in 2025). Report 14: a solo-developer app broke at each major iOS transition ('Same thing happened with iOS 13 and it took them a while to fix it'), went five years without an update, and the last thing the corpus records is the product and its checkout failing at once.",
+  "statement": "Abandonment is visible to users within a year; the app becomes an OS-release liability for paying users with no recourse, while the store rating quietly rises on survivorship. Report 8: a ~18-month pause let iOS updates break the create flow, widget and launch, and users publicly asked whether the app was abandoned ('Wrapped 2022' still in settings in 2025). Report 14: a solo-developer app broke at each major iOS transition ('Same thing happened with iOS 13 and it took them a while to fix it'), went five years without an update, and the last thing the corpus records is the product and its checkout failing at once. Report 17: a developer who in early 2022 emailed users personally when their feature shipped had gone silent by 2023 — not an absence of ability but its exhaustion; bug reports at each iOS transition then had nobody to fix them.",
   "section": "dont",
   "cards": [
    "R02-004",
@@ -2775,12 +2829,19 @@
    "R14-039",
    "R14-040",
    "R14-041",
-   "R14-050"
+   "R14-050",
+   "R17-008",
+   "R17-038",
+   "R17-040",
+   "R17-041",
+   "R17-046",
+   "R17-057"
   ],
   "reports": [
    2,
    8,
-   14
+   14,
+   17
   ],
   "merged_from": []
  },
@@ -2861,7 +2922,7 @@
  {
   "id": "C075",
   "title": "Skippable, replayable onboarding tour",
-  "statement": "Hidden gestures (swipe-to-complete, mode toggles) confuse new users; a US-specific 6% complaint in report 2. Report 12: an unskippable narrated intro drew 21 complaints peaking at 16% of 2024 reviews, then fell to one review after a skip control landed — the corpus's clearest fix — while the same intro is praised as a conversion asset.",
+  "statement": "Hidden gestures (swipe-to-complete, mode toggles) confuse new users; a US-specific 6% complaint in report 2. Report 12: an unskippable narrated intro drew 21 complaints peaking at 16% of 2024 reviews, then fell to one review after a skip control landed — the corpus's clearest fix — while the same intro is praised as a conversion asset. Report 17: a product with its own vocabulary ('what is a sequence? What is a block? What is an activity?') asked for 'a day of experimenting'; users who got through the first day gave 5★, those who didn't quit at 30 minutes — while the paywall demanded payment before that day.",
   "section": "must-have",
   "cards": [
    "R02-061",
@@ -2883,7 +2944,13 @@
    "R14-021",
    "R16-017",
    "R16-060",
-   "R16-068"
+   "R16-068",
+   "R17-012",
+   "R17-022",
+   "R17-026",
+   "R17-028",
+   "R17-030",
+   "R17-044"
   ],
   "reports": [
    2,
@@ -2894,7 +2961,8 @@
    12,
    13,
    14,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -3641,7 +3709,9 @@
    "R13-077",
    "R13-089",
    "R16-025",
-   "R16-082"
+   "R16-082",
+   "R17-005",
+   "R17-043"
   ],
   "reports": [
    4,
@@ -3651,7 +3721,8 @@
    11,
    12,
    13,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -3701,7 +3772,8 @@
    "R13-021",
    "R13-050",
    "R13-059",
-   "R13-075"
+   "R13-075",
+   "R17-043"
   ],
   "reports": [
    4,
@@ -3709,7 +3781,8 @@
    6,
    9,
    10,
-   13
+   13,
+   17
   ],
   "merged_from": []
  },
@@ -3898,7 +3971,7 @@
  {
   "id": "C120",
   "title": "Sequential routine timer with spoken next step and live finish-time estimate",
-  "statement": "Report 5's product thesis: removes the need to hold a schedule in working memory and says continuously whether you are still on time; 162 reviewers report they stopped being late. The voice needs an off switch.",
+  "statement": "Report 5's product thesis: removes the need to hold a schedule in working memory and says continuously whether you are still on time; 162 reviewers report they stopped being late. The voice needs an off switch. Report 17: a timeline-first day scheduler that 'queues up duties as the time approaches' was called irreplaceable by nearly a quarter of its reviewers and helped one with time blindness; a paying user proposed backward scheduling from a fixed anchor (work out the latest start for a pre-sleep sequence).",
   "section": "must-have",
   "cards": [
    "R05-003",
@@ -3906,10 +3979,18 @@
    "R05-007",
    "R05-014",
    "R05-041",
-   "R05-053"
+   "R05-053",
+   "R17-009",
+   "R17-020",
+   "R17-022",
+   "R17-023",
+   "R17-025",
+   "R17-042",
+   "R17-050"
   ],
   "reports": [
-   5
+   5,
+   17
   ],
   "merged_from": []
  },
@@ -4088,7 +4169,8 @@
    "R08-126",
    "R11-046",
    "R13-030",
-   "R14-049"
+   "R14-049",
+   "R17-049"
   ],
   "reports": [
    6,
@@ -4096,7 +4178,8 @@
    8,
    11,
    13,
-   14
+   14,
+   17
   ],
   "merged_from": []
  },
@@ -4223,7 +4306,11 @@
    "R13-042",
    "R14-021",
    "R14-052",
-   "R16-038"
+   "R16-038",
+   "R17-022",
+   "R17-026",
+   "R17-042",
+   "R17-047"
   ],
   "reports": [
    7,
@@ -4232,7 +4319,8 @@
    12,
    13,
    14,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -4332,7 +4420,7 @@
  {
   "id": "C147",
   "title": "Let people use the product before they pay",
-  "statement": "Users forgive a price; they do not forgive paying blind. Report 9's hard paywall before any experience produced 159 'let me look before you charge me' reviews at mean 1.79, and buyers who paid before seeing the product became the angriest cohort (mean 1.94). Report 12: a hard paywall with nothing evaluable produced a paywall corpus — 46.5% of 404 reviews complain about the gate, 172 reviewers left without ever seeing the product, and the theme never dropped below a third of reviews in any year.",
+  "statement": "Users forgive a price; they do not forgive paying blind. Report 9's hard paywall before any experience produced 159 'let me look before you charge me' reviews at mean 1.79, and buyers who paid before seeing the product became the angriest cohort (mean 1.94). Report 12: a hard paywall with nothing evaluable produced a paywall corpus — 46.5% of 404 reviews complain about the gate, 172 reviewers left without ever seeing the product, and the theme never dropped below a third of reviews in any year. Report 17: seven reviewers rated an app they never saw ('Can't even look at the settings or examine how the app will handle cancelation'); confirmed payers averaged 3.63 against 1.14 for those blocked at the paywall — the strongest argument in a 38-review corpus for letting people in.",
   "section": "product-rule",
   "cards": [
    "R09-003",
@@ -4356,13 +4444,24 @@
    "R13-071",
    "R16-004",
    "R16-007",
-   "R16-037"
+   "R16-037",
+   "R17-004",
+   "R17-005",
+   "R17-012",
+   "R17-018",
+   "R17-029",
+   "R17-031",
+   "R17-033",
+   "R17-037",
+   "R17-039",
+   "R17-043"
   ],
   "reports": [
    9,
    12,
    13,
-   16
+   16,
+   17
   ],
   "merged_from": []
  },
@@ -5032,10 +5131,13 @@
    "R12-066",
    "R12-079",
    "R12-082",
-   "R12-085"
+   "R12-085",
+   "R17-005",
+   "R17-031"
   ],
   "reports": [
-   12
+   12,
+   17
   ],
   "merged_from": []
  },
@@ -5047,10 +5149,12 @@
   "cards": [
    "R12-016",
    "R12-032",
-   "R12-083"
+   "R12-083",
+   "R17-011"
   ],
   "reports": [
-   12
+   12,
+   17
   ],
   "merged_from": []
  },
@@ -5094,15 +5198,23 @@
  {
   "id": "C186",
   "title": "Never revoke what earlier buyers paid for when the model changes",
-  "statement": "Report 13: in Aug 2017 a $3.99 one-time purchase became a subscription, unannounced in the release notes, and prior buyers were downgraded to free ('my purchase was worthless'); the mean fell 1.79 stars in nine months and no month since has been above 4.0. Subscriptions later silently expired after updates. Grandfather, always.",
+  "statement": "Report 13: in Aug 2017 a $3.99 one-time purchase became a subscription, unannounced in the release notes, and prior buyers were downgraded to free ('my purchase was worthless'); the mean fell 1.79 stars in nine months and no month since has been above 4.0. Subscriptions later silently expired after updates. Grandfather, always. Report 17: an abandoned one-time-purchase app relaunched as a subscription with no grandfathering, no discount and the old app left broken split one loyal base into delighted returners (4.46) and betrayed buyers (1.17); the reviewer listed the three remedies himself — grandfather, discount, or leave the old app working — none was done.",
   "section": "product-rule",
   "cards": [
    "R13-004",
    "R13-054",
-   "R13-065"
+   "R13-065",
+   "R17-003",
+   "R17-007",
+   "R17-018",
+   "R17-029",
+   "R17-033",
+   "R17-052",
+   "R17-056"
   ],
   "reports": [
-   13
+   13,
+   17
   ],
   "merged_from": []
  },
@@ -5258,6 +5370,78 @@
   ],
   "reports": [
    16
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C196",
+  "title": "A subscription is a promise of continued delivery — back it with a visible cadence",
+  "statement": "Report 17: an app relaunched on a subscription went 3.5 years without a release while still charging; four of its last six reviews were about abandonment and the one paying 3★ stated the deal plainly — 'If we can get iPad and watch apps along with more regular debugging, I will keep paying. Otherwise, I am switching to Blocos.' Subscribers believe they are funding development; when it stops, the subscription has no story, and a 'lifetime' tier sold against a dormant build compounds the grievance.",
+  "section": "product-rule",
+  "cards": [
+   "R17-006",
+   "R17-008",
+   "R17-027",
+   "R17-028",
+   "R17-032",
+   "R17-034",
+   "R17-038",
+   "R17-046",
+   "R17-053",
+   "R17-057"
+  ],
+  "reports": [
+   17
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C197",
+  "title": "Shift the whole day's schedule at once (global schedule shift)",
+  "statement": "Report 17: 'there is no other app that allows you to easily globally shift a schedule, rather than moving all tasks individually… invaluable for my erratic work and sleep schedule… jet lag' — named as the one capability no competitor matches, and absent from the store listing. Single source, high value.",
+  "section": "undecided",
+  "cards": [
+   "R17-010",
+   "R17-024",
+   "R17-049"
+  ],
+  "reports": [
+   17
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C198",
+  "title": "Edit one instance of a repeating block without changing the series; a slipped block pushes the ones after it",
+  "statement": "Report 17: two independent 4★ users — 'I can only change ALL workout blocks in the sequence for today and everyday going forward'; adding ten minutes to a block made the next one overlap 'rather than being pushed to 7:16am'. A time-blocking app whose blocks cannot absorb a real day's slippage fails when most needed; 'If these two features are added it is definitely 5⭐️.'",
+  "section": "must-have",
+  "cards": [
+   "R17-017",
+   "R17-022",
+   "R17-026",
+   "R17-045"
+  ],
+  "reports": [
+   17
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C199",
+  "title": "System calendar integration — see appointments inside the plan",
+  "statement": "Report 17: calendar integration existed in the predecessor, was removed at relaunch ('I loved seeing my appointments, too'), and four years later is the single feature keeping the most recent payer from switching to a competitor. Reports 12 and 13 also carry calendar-integration requests.",
+  "section": "research",
+  "cards": [
+   "R17-016",
+   "R17-022",
+   "R17-024",
+   "R17-026",
+   "R17-027",
+   "R17-042",
+   "R17-048"
+  ],
+  "reports": [
+   17
   ],
   "merged_from": []
  }

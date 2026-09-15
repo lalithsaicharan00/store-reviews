@@ -1,0 +1,207 @@
+[
+ {
+  "table_row": "< 0.1%",
+  "no_new_insight": "signal-band definition (method); see R17-002"
+ },
+ {
+  "table_row": "0.1 – <0.5%",
+  "no_new_insight": "signal-band definition (method); see R17-002"
+ },
+ {
+  "table_row": "0.5 – <1%",
+  "no_new_insight": "signal-band definition (method); see R17-002"
+ },
+ {
+  "table_row": "1 – <3%",
+  "no_new_insight": "signal-band definition (method); see R17-002"
+ },
+ {
+  "table_row": "3 – 5%",
+  "no_new_insight": "signal-band definition (method); see R17-002"
+ },
+ {
+  "table_row": "> 5%",
+  "no_new_insight": "signal-band definition (method); see R17-002"
+ },
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "table_row": "Records in `reviews.jsonl",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id` values",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "table_row": "Sum of `by_country/*.jsonl` lines",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "table_row": "Per-country ID sets vs merged file",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "table_row": "Records dropped or deduplicated",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "table_row": "Uncoded reviews after classification",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "table_row": "4",
+  "cards": [
+   "R17-014"
+  ]
+ },
+ {
+  "table_row": "3",
+  "cards": [
+   "R17-014"
+  ]
+ },
+ {
+  "table_row": "2",
+  "cards": [
+   "R17-014"
+  ]
+ },
+ {
+  "table_row": "Any use of the app",
+  "cards": [
+   "R17-018",
+   "R17-005"
+  ]
+ },
+ {
+  "bold": "Target folder:",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "count / percentage / denominator / time window / signal label / review IDs",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "346",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "This corpus is thin in count but rich in content",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "3. No country qualifies for individual analysis, and none is attempted.",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "Fields with limited signal:",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "38 (100%)",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "Classification error risk:",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "Sample size is the dominant limitation.",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "No country analysis is possible or attempted",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "Severe selection bias, and it runs in a specific direction here.",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "The two populations barely overlap.",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "Nothing here supports a causal claim",
+  "cards": [
+   "R17-002"
+  ]
+ },
+ {
+  "bold": "Interpretation, labelled as such:",
+  "cards": [
+   "R17-004"
+  ]
+ },
+ {
+  "bold": "This listing corroborates the corpus on three independent points:",
+  "cards": [
+   "R17-001"
+  ]
+ },
+ {
+  "bold": "No country analysis is performed",
+  "cards": [
+   "R17-035"
+  ]
+ }
+]
