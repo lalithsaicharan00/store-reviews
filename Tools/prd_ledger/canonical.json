@@ -114,7 +114,9 @@
    "R13-040",
    "R13-044",
    "R13-057",
-   "R13-065"
+   "R13-065",
+   "R14-003",
+   "R14-005"
   ],
   "reports": [
    1,
@@ -129,14 +131,15 @@
    10,
    11,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
  {
   "id": "C003",
   "title": "Lead with a one-time lifetime purchase",
-  "statement": "People buy because it is not a subscription; lifetime is the strongest pricing signal. Report 13: 239 reviews across every year 2017–2026, including 5★ ones ('It would be better to charge only once. It would attract more users, trust me'), asked for the one-time purchase back after it was withdrawn.",
+  "statement": "People buy because it is not a subscription; lifetime is the strongest pricing signal. Report 13: 239 reviews across every year 2017–2026, including 5★ ones ('It would be better to charge only once. It would attract more users, trust me'), asked for the one-time purchase back after it was withdrawn. Report 14: a $1.99–$3 one-time unlock produced zero refund, unexpected-charge or restore complaints in 70 reviews — a materially cleaner record than the subscription apps in the set.",
   "section": "product-rule",
   "cards": [
    "R01-006",
@@ -184,7 +187,11 @@
    "R13-051",
    "R13-065",
    "R13-084",
-   "R13-089"
+   "R13-089",
+   "R14-008",
+   "R14-016",
+   "R14-033",
+   "R14-053"
   ],
   "reports": [
    1,
@@ -196,7 +203,8 @@
    7,
    8,
    10,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -254,7 +262,9 @@
    "R09-066",
    "R09-095",
    "R11-011",
-   "R12-013"
+   "R12-013",
+   "R14-003",
+   "R14-023"
   ],
   "reports": [
    1,
@@ -266,7 +276,8 @@
    8,
    9,
    11,
-   12
+   12,
+   14
   ],
   "merged_from": []
  },
@@ -314,7 +325,10 @@
    "R13-009",
    "R13-025",
    "R13-030",
-   "R13-069"
+   "R13-069",
+   "R14-003",
+   "R14-023",
+   "R14-041"
   ],
   "reports": [
    1,
@@ -327,14 +341,15 @@
    8,
    10,
    11,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
  {
   "id": "C007",
   "title": "Generous fixed habit cap (or unlimited) — never change it",
-  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not. Report 6: raising a 1-streak cap to 2 did not reduce complaints — the ask was unlimited — though the tone moved from 'scam' to 'love it, want more'. Report 7: a 4-habit cap held unchanged for 3½ years was still the top 2★ theme (0 of 27 complainers paid) while 11 users said 4 was plenty — stable is not enough if the level binds the 5–8-habit user. Report 11: 'First app that has more than 3 habits' was a reviewer's entire body — no cap was the acquisition wedge against the category, and whether it survived the paywall retrofit is unknown. Report 13: the free cap was cut from 5 to 3 in 2018 (the worst year, mean 2.85) and restored in 2020 without recovering the rating; 'hitting the cap while already engaged' is the one purchase trigger buyers name.",
+  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not. Report 6: raising a 1-streak cap to 2 did not reduce complaints — the ask was unlimited — though the tone moved from 'scam' to 'love it, want more'. Report 7: a 4-habit cap held unchanged for 3½ years was still the top 2★ theme (0 of 27 complainers paid) while 11 users said 4 was plenty — stable is not enough if the level binds the 5–8-habit user. Report 11: 'First app that has more than 3 habits' was a reviewer's entire body — no cap was the acquisition wedge against the category, and whether it survived the paywall retrofit is unknown. Report 13: the free cap was cut from 5 to 3 in 2018 (the worst year, mean 2.85) and restored in 2020 without recovering the rating; 'hitting the cap while already engaged' is the one purchase trigger buyers name. Report 14: a 3-habit free cap drew its only 1★ free-tier complaint; the report's reading is that the cap must be generous enough to create the streak that creates the desire to pay.",
   "section": "free",
   "cards": [
    "R01-008",
@@ -415,7 +430,13 @@
    "R13-049",
    "R13-051",
    "R13-071",
-   "R13-085"
+   "R13-085",
+   "R14-008",
+   "R14-016",
+   "R14-019",
+   "R14-029",
+   "R14-031",
+   "R14-054"
   ],
   "reports": [
    1,
@@ -428,7 +449,8 @@
    8,
    9,
    11,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -452,7 +474,8 @@
    "R13-032",
    "R13-039",
    "R13-071",
-   "R13-088"
+   "R13-088",
+   "R14-018"
   ],
   "reports": [
    1,
@@ -462,7 +485,8 @@
    6,
    7,
    11,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -511,7 +535,9 @@
    "R12-074",
    "R12-083",
    "R13-032",
-   "R13-041"
+   "R13-041",
+   "R14-021",
+   "R14-052"
   ],
   "reports": [
    1,
@@ -524,7 +550,8 @@
    8,
    9,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -544,7 +571,10 @@
    "R09-057",
    "R09-133",
    "R13-032",
-   "R13-082"
+   "R13-082",
+   "R14-018",
+   "R14-023",
+   "R14-049"
   ],
   "reports": [
    1,
@@ -552,7 +582,8 @@
    6,
    8,
    9,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -578,7 +609,11 @@
    "R08-056",
    "R09-058",
    "R11-014",
-   "R13-025"
+   "R13-025",
+   "R14-018",
+   "R14-021",
+   "R14-032",
+   "R14-048"
   ],
   "reports": [
    1,
@@ -589,7 +624,8 @@
    8,
    9,
    11,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -609,13 +645,15 @@
    "R11-017",
    "R11-024",
    "R11-052",
-   "R12-028"
+   "R12-028",
+   "R14-048"
   ],
   "reports": [
    1,
    7,
    11,
-   12
+   12,
+   14
   ],
   "merged_from": []
  },
@@ -664,12 +702,15 @@
    "R01-052",
    "R03-018",
    "R03-061",
-   "R07-030"
+   "R07-030",
+   "R14-022",
+   "R14-047"
   ],
   "reports": [
    1,
    3,
-   7
+   7,
+   14
   ],
   "merged_from": []
  },
@@ -790,7 +831,8 @@
    "R07-101",
    "R10-042",
    "R13-026",
-   "R13-032"
+   "R13-032",
+   "R14-015"
   ],
   "reports": [
    1,
@@ -799,7 +841,8 @@
    6,
    7,
    10,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -958,7 +1001,8 @@
    "R10-065",
    "R10-142",
    "R13-039",
-   "R13-045"
+   "R13-045",
+   "R14-018"
   ],
   "reports": [
    1,
@@ -966,7 +1010,8 @@
    5,
    6,
    10,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -1075,7 +1120,12 @@
    "R13-063",
    "R13-071",
    "R13-082",
-   "R13-089"
+   "R13-089",
+   "R14-011",
+   "R14-021",
+   "R14-026",
+   "R14-034",
+   "R14-051"
   ],
   "reports": [
    1,
@@ -1090,7 +1140,8 @@
    10,
    11,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -1159,7 +1210,8 @@
    "R13-021",
    "R13-029",
    "R13-050",
-   "R13-062"
+   "R13-062",
+   "R14-033"
   ],
   "reports": [
    1,
@@ -1173,7 +1225,8 @@
    10,
    11,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -1255,7 +1308,12 @@
    "R12-014",
    "R13-008",
    "R13-036",
-   "R13-067"
+   "R13-067",
+   "R14-007",
+   "R14-028",
+   "R14-037",
+   "R14-039",
+   "R14-043"
   ],
   "reports": [
    1,
@@ -1268,7 +1326,8 @@
    9,
    10,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -1359,7 +1418,7 @@
  {
   "id": "C034",
   "title": "Data must never be lost on update, reinstall or phone change",
-  "statement": "Data loss is ×10.6 over-represented among buyers; local-only storage is the cause. Report 10: from 2025 the dominant story became app-initiated — 'it told me my pet data got corrupted' — with no automatic backup to fall back on.",
+  "statement": "Data loss is ×10.6 over-represented among buyers; local-only storage is the cause. Report 10: from 2025 the dominant story became app-initiated — 'it told me my pet data got corrupted' — with no automatic backup to fall back on. Report 14: data lost on update was the only theme with a perfect 1★ record and the corpus's only 'stay away' review; it recurred 5.5 years later ('backdate all my progress by memory (again)').",
   "section": "must-never-break",
   "cards": [
    "R01-045",
@@ -1401,7 +1460,11 @@
    "R12-014",
    "R13-036",
    "R13-067",
-   "R13-081"
+   "R13-081",
+   "R14-006",
+   "R14-028",
+   "R14-037",
+   "R14-042"
   ],
   "reports": [
    1,
@@ -1415,7 +1478,8 @@
    9,
    10,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -1490,7 +1554,9 @@
    "R12-085",
    "R13-029",
    "R13-046",
-   "R13-079"
+   "R13-079",
+   "R14-009",
+   "R14-056"
   ],
   "reports": [
    1,
@@ -1504,7 +1570,8 @@
    10,
    11,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -1564,7 +1631,8 @@
    "R12-014",
    "R12-062",
    "R12-075",
-   "R13-027"
+   "R13-027",
+   "R14-046"
   ],
   "reports": [
    1,
@@ -1576,7 +1644,8 @@
    8,
    10,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": [
    {
@@ -1782,7 +1851,10 @@
    "R13-032",
    "R13-034",
    "R13-041",
-   "R13-082"
+   "R13-082",
+   "R14-021",
+   "R14-022",
+   "R14-047"
   ],
   "reports": [
    1,
@@ -1794,7 +1866,8 @@
    8,
    9,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -2166,7 +2239,13 @@
    "R12-012",
    "R12-028",
    "R12-060",
-   "R12-063"
+   "R12-063",
+   "R14-009",
+   "R14-018",
+   "R14-020",
+   "R14-024",
+   "R14-039",
+   "R14-056"
   ],
   "reports": [
    1,
@@ -2178,7 +2257,8 @@
    9,
    10,
    11,
-   12
+   12,
+   14
   ],
   "merged_from": []
  },
@@ -2219,7 +2299,9 @@
    "R10-112",
    "R11-021",
    "R11-049",
-   "R13-048"
+   "R13-048",
+   "R14-008",
+   "R14-031"
   ],
   "reports": [
    1,
@@ -2230,7 +2312,8 @@
    9,
    10,
    11,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -2263,7 +2346,8 @@
    "R12-050",
    "R12-051",
    "R12-052",
-   "R13-056"
+   "R13-056",
+   "R14-034"
   ],
   "reports": [
    1,
@@ -2273,7 +2357,8 @@
    10,
    11,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -2293,14 +2378,17 @@
    "R10-109",
    "R12-026",
    "R12-058",
-   "R12-078"
+   "R12-078",
+   "R14-031",
+   "R14-053"
   ],
   "reports": [
    1,
    7,
    9,
    10,
-   12
+   12,
+   14
   ],
   "merged_from": []
  },
@@ -2517,7 +2605,7 @@
  {
   "id": "C071",
   "title": "Never ship and walk away",
-  "statement": "Abandonment is visible to users within a year; the app becomes an OS-release liability for paying users with no recourse, while the store rating quietly rises on survivorship. Report 8: a ~18-month pause let iOS updates break the create flow, widget and launch, and users publicly asked whether the app was abandoned ('Wrapped 2022' still in settings in 2025).",
+  "statement": "Abandonment is visible to users within a year; the app becomes an OS-release liability for paying users with no recourse, while the store rating quietly rises on survivorship. Report 8: a ~18-month pause let iOS updates break the create flow, widget and launch, and users publicly asked whether the app was abandoned ('Wrapped 2022' still in settings in 2025). Report 14: a solo-developer app broke at each major iOS transition ('Same thing happened with iOS 13 and it took them a while to fix it'), went five years without an update, and the last thing the corpus records is the product and its checkout failing at once.",
   "section": "dont",
   "cards": [
    "R02-004",
@@ -2529,11 +2617,19 @@
    "R08-012",
    "R08-038",
    "R08-104",
-   "R08-134"
+   "R08-134",
+   "R14-007",
+   "R14-019",
+   "R14-029",
+   "R14-039",
+   "R14-040",
+   "R14-041",
+   "R14-050"
   ],
   "reports": [
    2,
-   8
+   8,
+   14
   ],
   "merged_from": []
  },
@@ -2631,7 +2727,9 @@
    "R12-042",
    "R12-060",
    "R12-083",
-   "R13-025"
+   "R13-025",
+   "R14-019",
+   "R14-021"
   ],
   "reports": [
    2,
@@ -2640,7 +2738,8 @@
    7,
    8,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -2661,7 +2760,7 @@
  {
   "id": "C077",
   "title": "Purchase and signup flow must not leak buyers",
-  "statement": "People who try to pay and cannot (errors, rejected emails, promos that fail to apply) leave 2–4★ and money on the table.",
+  "statement": "People who try to pay and cannot (errors, rejected emails, promos that fail to apply) leave 2–4★ and money on the table. Report 14: two willing buyers in 2020 could not complete the purchase ('When I click upgrade button, it only appears an orange screen and then disappears') — the checkout broke in the app's final months.",
   "section": "must-never-break",
   "cards": [
    "R02-028",
@@ -2672,13 +2771,19 @@
    "R06-083",
    "R07-047",
    "R07-127",
-   "R09-082"
+   "R09-082",
+   "R14-008",
+   "R14-025",
+   "R14-032",
+   "R14-040",
+   "R14-045"
   ],
   "reports": [
    2,
    6,
    7,
-   9
+   9,
+   14
   ],
   "merged_from": []
  },
@@ -2735,7 +2840,9 @@
    "R10-163",
    "R11-014",
    "R11-024",
-   "R13-026"
+   "R13-026",
+   "R14-021",
+   "R14-052"
   ],
   "reports": [
    2,
@@ -2745,7 +2852,8 @@
    9,
    10,
    11,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -2863,13 +2971,15 @@
    "R09-145",
    "R12-029",
    "R12-041",
-   "R12-065"
+   "R12-065",
+   "R14-009"
   ],
   "reports": [
    2,
    5,
    9,
-   12
+   12,
+   14
   ],
   "merged_from": []
  },
@@ -2931,7 +3041,7 @@
  {
   "id": "C093",
   "title": "No upsell nagging without a 'never ask again' option",
-  "statement": "Full-screen interstitials, permanent banners and upsells before first value draw complaints even from 5★ users; a subscription launch with nagging cost ~3 points of 1–2★. Report 9: upsell-pressure complaints quintupled (2.16% → 4.84% → 10.23%) as the funnel was tuned harder, becoming the fastest-growing 1★ source.",
+  "statement": "Full-screen interstitials, permanent banners and upsells before first value draw complaints even from 5★ users; a subscription launch with nagging cost ~3 points of 1–2★. Report 9: upsell-pressure complaints quintupled (2.16% → 4.84% → 10.23%) as the funnel was tuned harder, becoming the fastest-growing 1★ source. Report 14: the cleanest before/after in the set — rating-and-upsell pop-ups on every launch drew six star-docking reviews in nine weeks ('I docked one star for this'; 'Deleted'), and removing them produced unsolicited 5★ praise ('They removed the pop ups. Nice!!') and a named edge over a rival still 'begging for an upgrade within the first minute'.",
   "section": "dont",
   "cards": [
    "R03-035",
@@ -2959,7 +3069,17 @@
    "R13-024",
    "R13-051",
    "R13-052",
-   "R13-071"
+   "R13-071",
+   "R14-004",
+   "R14-005",
+   "R14-025",
+   "R14-027",
+   "R14-029",
+   "R14-032",
+   "R14-038",
+   "R14-044",
+   "R14-055",
+   "R14-058"
   ],
   "reports": [
    3,
@@ -2971,14 +3091,15 @@
    9,
    10,
    11,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
  {
   "id": "C094",
   "title": "Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire",
-  "statement": "A charming review request produced dozens of reviews; frequent prompts that ignore the iOS opt-out, especially to payers, read as 'scammy'. Cross-promoting the developer's other apps inside the product draws the same complaint (report 2). Cross-promoting the developer's other apps inside the product draws the same complaint (report 2).",
+  "statement": "A charming review request produced dozens of reviews; frequent prompts that ignore the iOS opt-out, especially to payers, read as 'scammy'. Cross-promoting the developer's other apps inside the product draws the same complaint (report 2). Cross-promoting the developer's other apps inside the product draws the same complaint (report 2). Report 14: at least three reviews existed only because the app demanded one ('Happy now??'; a body reading 'Review'), polluting the ratings data.",
   "section": "do",
   "cards": [
    "R03-036",
@@ -2991,7 +3112,13 @@
    "R02-065",
    "R02-116",
    "R12-072",
-   "R13-024"
+   "R13-024",
+   "R14-004",
+   "R14-005",
+   "R14-027",
+   "R14-038",
+   "R14-044",
+   "R14-058"
   ],
   "reports": [
    2,
@@ -3000,7 +3127,8 @@
    8,
    9,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": [
    {
@@ -3216,12 +3344,15 @@
    "R11-037",
    "R11-060",
    "R13-004",
-   "R13-065"
+   "R13-065",
+   "R14-016",
+   "R14-032"
   ],
   "reports": [
    3,
    11,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -3766,14 +3897,16 @@
    "R08-007",
    "R08-126",
    "R11-046",
-   "R13-030"
+   "R13-030",
+   "R14-049"
   ],
   "reports": [
    6,
    7,
    8,
    11,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -3820,12 +3953,15 @@
    "R10-026",
    "R13-049",
    "R13-052",
-   "R13-085"
+   "R13-085",
+   "R14-031",
+   "R14-055"
   ],
   "reports": [
    6,
    10,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -3894,14 +4030,17 @@
    "R12-077",
    "R12-083",
    "R13-027",
-   "R13-042"
+   "R13-042",
+   "R14-021",
+   "R14-052"
   ],
   "reports": [
    7,
    8,
    9,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -3938,12 +4077,16 @@
    "R09-050",
    "R09-055",
    "R09-129",
-   "R13-026"
+   "R13-026",
+   "R14-015",
+   "R14-021",
+   "R14-052"
   ],
   "reports": [
    8,
    9,
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
@@ -4144,7 +4287,8 @@
    "R11-014",
    "R11-034",
    "R11-052",
-   "R11-062"
+   "R11-062",
+   "R14-042"
   ],
   "reports": [
    3,
@@ -4152,7 +4296,8 @@
    5,
    8,
    10,
-   11
+   11,
+   14
   ],
   "merged_from": [
    {
@@ -4443,10 +4588,12 @@
    "R10-074",
    "R10-075",
    "R10-129",
-   "R10-163"
+   "R10-163",
+   "R14-052"
   ],
   "reports": [
-   10
+   10,
+   14
   ],
   "merged_from": []
  },
@@ -4540,7 +4687,11 @@
    "R10-090",
    "R04-059",
    "R12-062",
-   "R13-027"
+   "R13-027",
+   "R14-006",
+   "R14-007",
+   "R14-042",
+   "R14-043"
   ],
   "reports": [
    4,
@@ -4549,7 +4700,8 @@
    9,
    10,
    12,
-   13
+   13,
+   14
   ],
   "merged_from": [
    {
@@ -4761,16 +4913,20 @@
  {
   "id": "C188",
   "title": "The app must open offline — never block launch on a network call",
-  "statement": "Report 13: a blocking in-app 'update in progress' migration bricked the app on launch in three waves (Nov 2019, Oct 2020 at 5.9% of that month's reviews, Sep 2025 → Aug 2026), destroyed data on reinstall ('lost almost 3 years of habit tracking') and locked out paying subscribers; 'Will not launch without internet'.",
+  "statement": "Report 13: a blocking in-app 'update in progress' migration bricked the app on launch in three waves (Nov 2019, Oct 2020 at 5.9% of that month's reviews, Sep 2025 → Aug 2026), destroyed data on reinstall ('lost almost 3 years of habit tracking') and locked out paying subscribers; 'Will not launch without internet'. Report 14: 'works fully offline' was one of two named reasons a reviewer chose this app over rivals already tried.",
   "section": "must-never-break",
   "cards": [
    "R13-008",
    "R13-036",
    "R13-067",
-   "R13-081"
+   "R13-081",
+   "R14-015",
+   "R14-023",
+   "R14-049"
   ],
   "reports": [
-   13
+   13,
+   14
   ],
   "merged_from": []
  },
