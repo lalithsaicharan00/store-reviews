@@ -70,7 +70,7 @@ def main(n):
     # --- analytical body: stop at Part 9 / Appendix ---
     end = len(report)
     for i, l in enumerate(report):
-        if re.match(r"^#{1,2} .*(PART 9|Appendix|APPENDIX)", l):
+        if re.match(r"^#{1,2} .*(EVIDENCE APPENDIX|Appendix —|APPENDIX)", l):
             end = i; break
     body = report[:end]
 
@@ -156,17 +156,18 @@ def main(n):
             if not ok and not excused("bold", b):
                 problems.append(f"BOLD not covered (line {i+1}): {b[:90]}")
 
-    # 4. Part 8 numbered items
-    in8 = False
+    # 4. numbered items in the recommendations part (WHAT TO BUILD / PRODUCT IMPLICATIONS), whatever its number
+    inrec, recno = False, None
     for i, l in enumerate(body):
-        if re.match(r"^# PART 8", l): in8 = True; continue
-        if in8 and re.match(r"^# PART", l): in8 = False
-        if in8:
+        m0 = re.match(r"^# PART (\d+) .*(WHAT TO BUILD|PRODUCT IMPLICATIONS)", l)
+        if m0: inrec, recno = True, m0.group(1); continue
+        if inrec and re.match(r"^# PART", l): inrec = False
+        if inrec:
             m = re.match(r"^(\d+)\. ", l)
             if m:
-                k = f"part 8 #{m.group(1)}"
+                k = f"part {recno} #{m.group(1)}"
                 if not any(k in c["where"].lower() for c in cards):
-                    problems.append(f"PART 8 item #{m.group(1)} has no card (line {i+1})")
+                    problems.append(f"PART {recno} item #{m.group(1)} has no card (line {i+1})")
 
     # 5. review IDs
     valid = set()

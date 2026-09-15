@@ -31,12 +31,17 @@
    "R04-065",
    "R04-085",
    "R04-087",
-   "R04-096"
+   "R04-096",
+   "R05-018",
+   "R05-019",
+   "R05-033",
+   "R05-057"
   ],
   "reports": [
    1,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -56,13 +61,17 @@
    "R04-004",
    "R04-010",
    "R04-044",
-   "R04-046"
+   "R04-046",
+   "R05-004",
+   "R05-005",
+   "R05-083"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -90,13 +99,17 @@
    "R03-105",
    "R04-011",
    "R04-042",
-   "R04-098"
+   "R04-098",
+   "R05-020",
+   "R05-031",
+   "R05-092"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -111,12 +124,14 @@
    "R01-089",
    "R01-168",
    "R02-011",
-   "R03-027"
+   "R03-027",
+   "R05-025"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   5
   ],
   "merged_from": []
  },
@@ -165,13 +180,16 @@
    "R03-098",
    "R04-012",
    "R04-052",
-   "R04-063"
+   "R04-063",
+   "R05-038",
+   "R05-039"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -217,13 +235,24 @@
    "R04-061",
    "R04-085",
    "R04-096",
-   "R04-111"
+   "R04-111",
+   "R05-009",
+   "R05-013",
+   "R05-014",
+   "R05-022",
+   "R05-023",
+   "R05-043",
+   "R05-048",
+   "R05-080",
+   "R05-091",
+   "R05-110"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -272,13 +301,17 @@
    "R03-038",
    "R03-053",
    "R03-101",
-   "R04-102"
+   "R04-102",
+   "R05-015",
+   "R05-050",
+   "R05-100"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -313,12 +346,14 @@
    "R02-067",
    "R02-110",
    "R03-063",
-   "R03-112"
+   "R03-112",
+   "R05-016"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   5
   ],
   "merged_from": []
  },
@@ -515,13 +550,17 @@
    "R02-120",
    "R03-022",
    "R03-062",
-   "R04-103"
+   "R04-103",
+   "R05-011",
+   "R05-024",
+   "R05-080"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -535,12 +574,15 @@
    "R01-104",
    "R01-173",
    "R03-075",
-   "R04-102"
+   "R04-102",
+   "R05-050",
+   "R05-100"
   ],
   "reports": [
    1,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -552,11 +594,13 @@
   "cards": [
    "R01-027",
    "R01-081",
-   "R04-050"
+   "R04-050",
+   "R05-042"
   ],
   "reports": [
    1,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -615,13 +659,18 @@
    "R03-091",
    "R04-079",
    "R04-086",
-   "R04-087"
+   "R04-087",
+   "R05-060",
+   "R05-074",
+   "R05-075",
+   "R05-102"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -632,10 +681,13 @@
   "section": "do",
   "cards": [
    "R01-115",
-   "R01-130"
+   "R01-130",
+   "R05-065",
+   "R05-103"
   ],
   "reports": [
-   1
+   1,
+   5
   ],
   "merged_from": []
  },
@@ -657,13 +709,15 @@
    "R04-005",
    "R04-027",
    "R04-034",
-   "R04-084"
+   "R04-084",
+   "R05-029"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -679,11 +733,13 @@
    "R01-076",
    "R01-164",
    "R02-013",
-   "R02-021"
+   "R02-021",
+   "R05-049"
   ],
   "reports": [
    1,
-   2
+   2,
+   5
   ],
   "merged_from": []
  },
@@ -705,13 +761,16 @@
    "R02-099",
    "R03-070",
    "R03-100",
-   "R04-066"
+   "R04-066",
+   "R05-010",
+   "R05-047"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -773,13 +832,17 @@
    "R04-032",
    "R04-058",
    "R04-088",
-   "R04-094"
+   "R04-094",
+   "R05-058",
+   "R05-074",
+   "R05-088"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -795,18 +858,21 @@
    "R01-163",
    "R04-032",
    "R04-058",
-   "R04-094"
+   "R04-094",
+   "R05-058",
+   "R05-088"
   ],
   "reports": [
    1,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
  {
   "id": "C036",
-  "title": "A support channel that exists and answers",
-  "statement": "'No support channel' is ×34.7 over-represented among buyers and the second-worst-rated complaint.",
+  "title": "A support channel that exists, is reachable outside the app, and answers",
+  "statement": "'No support channel' is ×34.7 over-represented among buyers and the second-worst-rated complaint. Report 5: the only support link was inside an app that would not launch; email went unanswered while public review replies were same-day.",
   "section": "must-have",
   "cards": [
    "R01-046",
@@ -815,12 +881,17 @@
    "R02-119",
    "R04-033",
    "R04-040",
-   "R04-092"
+   "R04-092",
+   "R05-059",
+   "R05-073",
+   "R05-090",
+   "R05-106"
   ],
   "reports": [
    1,
    2,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -833,17 +904,20 @@
    "R01-043",
    "R01-064",
    "R01-134",
-   "R01-171"
+   "R01-171",
+   "R05-067",
+   "R05-093"
   ],
   "reports": [
-   1
+   1,
+   5
   ],
   "merged_from": []
  },
  {
   "id": "C038",
   "title": "Dates, streaks and statistics correct on every surface (incl. DST / timezone)",
-  "statement": "Miscounts are ×10.2 over-represented among buyers. Off-by-one dates across app/widget/Watch were report 2's longest-lived bug.",
+  "statement": "Miscounts are ×10.2 over-represented among buyers. Off-by-one dates across app/widget/Watch were report 2's longest-lived bug. Night routines that cross midnight must log to the day they started, honouring a user 'day ends at' setting.",
   "section": "must-never-break",
   "cards": [
    "R01-049",
@@ -853,11 +927,14 @@
    "R02-086",
    "R02-092",
    "R02-100",
-   "R03-125"
+   "R03-125",
+   "R05-063",
+   "R05-089"
   ],
   "reports": [
    1,
-   2
+   2,
+   5
   ],
   "merged_from": []
  },
@@ -875,12 +952,16 @@
    "R02-084",
    "R04-055",
    "R04-088",
-   "R04-093"
+   "R04-093",
+   "R05-010",
+   "R05-056",
+   "R05-084"
   ],
   "reports": [
    1,
    2,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -931,13 +1012,18 @@
    "R04-048",
    "R04-069",
    "R04-104",
-   "R04-109"
+   "R04-109",
+   "R05-003",
+   "R05-008",
+   "R05-039",
+   "R05-066"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -954,12 +1040,15 @@
    "R02-107",
    "R04-056",
    "R04-086",
-   "R04-101"
+   "R04-101",
+   "R05-069",
+   "R05-099"
   ],
   "reports": [
    1,
    2,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -973,11 +1062,13 @@
    "R01-099",
    "R01-108",
    "R01-178",
-   "R03-066"
+   "R03-066",
+   "R05-070"
   ],
   "reports": [
    1,
-   3
+   3,
+   5
   ],
   "merged_from": []
  },
@@ -991,11 +1082,14 @@
    "R01-102",
    "R01-174",
    "R03-064",
-   "R03-114"
+   "R03-114",
+   "R05-069",
+   "R05-099"
   ],
   "reports": [
    1,
-   3
+   3,
+   5
   ],
   "merged_from": []
  },
@@ -1008,11 +1102,14 @@
    "R01-075",
    "R01-107",
    "R01-179",
-   "R03-021"
+   "R03-021",
+   "R05-052",
+   "R05-101"
   ],
   "reports": [
    1,
-   3
+   3,
+   5
   ],
   "merged_from": []
  },
@@ -1055,12 +1152,14 @@
    "R01-155",
    "R02-071",
    "R03-078",
-   "R03-111"
+   "R03-111",
+   "R05-017"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   5
   ],
   "merged_from": []
  },
@@ -1084,10 +1183,12 @@
   "section": "research",
   "cards": [
    "R01-106",
-   "R01-140"
+   "R01-140",
+   "R05-070"
   ],
   "reports": [
-   1
+   1,
+   5
   ],
   "merged_from": []
  },
@@ -1156,11 +1257,13 @@
   "cards": [
    "R01-161",
    "R01-184",
-   "R02-097"
+   "R02-097",
+   "R05-082"
   ],
   "reports": [
    1,
-   2
+   2,
+   5
   ],
   "merged_from": []
  },
@@ -1212,12 +1315,16 @@
    "R02-092",
    "R02-096",
    "R03-027",
-   "R03-057"
+   "R03-057",
+   "R05-011",
+   "R05-044",
+   "R05-106"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   5
   ],
   "merged_from": []
  },
@@ -1239,18 +1346,22 @@
  },
  {
   "id": "C061",
-  "title": "'Support the devs' goodwill converts",
-  "statement": "Small, pure-margin, mean 4.69.",
+  "title": "Goodwill conversion — a generous free tier and 'support the devs'",
+  "statement": "Small, pure-margin, mean 4.69. Report 5: the dominant purchase path was years of free use followed by upgrading to scale it or to say thanks.",
   "section": "do",
   "cards": [
    "R01-034",
    "R03-027",
-   "R04-025"
+   "R04-025",
+   "R05-022",
+   "R05-026",
+   "R05-043"
   ],
   "reports": [
    1,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -1311,12 +1422,14 @@
    "R03-060",
    "R03-087",
    "R04-062",
-   "R04-078"
+   "R04-078",
+   "R05-021"
   ],
   "reports": [
    1,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -1347,13 +1460,16 @@
    "R04-022",
    "R04-029",
    "R04-030",
-   "R04-031"
+   "R04-031",
+   "R05-005",
+   "R05-027"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -1393,11 +1509,13 @@
   "cards": [
    "R01-102",
    "R01-145",
-   "R04-071"
+   "R04-071",
+   "R05-067"
   ],
   "reports": [
    1,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -1487,10 +1605,12 @@
    "R02-044",
    "R02-069",
    "R02-085",
-   "R02-109"
+   "R02-109",
+   "R05-017"
   ],
   "reports": [
-   2
+   2,
+   5
   ],
   "merged_from": []
  },
@@ -1581,11 +1701,13 @@
   "cards": [
    "R02-072",
    "R03-023",
-   "R03-065"
+   "R03-065",
+   "R05-071"
   ],
   "reports": [
    2,
-   3
+   3,
+   5
   ],
   "merged_from": []
  },
@@ -1598,12 +1720,14 @@
    "R02-023",
    "R02-064",
    "R03-012",
-   "R04-012"
+   "R04-012",
+   "R05-033"
   ],
   "reports": [
    2,
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -1615,10 +1739,12 @@
   "cards": [
    "R02-062",
    "R02-086",
-   "R02-099"
+   "R02-099",
+   "R05-051"
   ],
   "reports": [
-   2
+   2,
+   5
   ],
   "merged_from": []
  },
@@ -1668,28 +1794,34 @@
  },
  {
   "id": "C089",
-  "title": "Launch promos / free-Pro giveaways",
-  "statement": "Inflate early sentiment; when the promo fails to apply it produces 2–3★ from would-be buyers.",
+  "title": "Promos, giveaways and gift codes must work exactly as advertised",
+  "statement": "Inflate early sentiment; when the promo fails to apply it produces 2–3★ from would-be buyers. Report 5's '1+1' gift code could not be used by the buyer and expired in three months — six years of disputes.",
   "section": "research",
   "cards": [
-   "R02-122"
+   "R02-122",
+   "R05-030",
+   "R05-096"
   ],
   "reports": [
-   2
+   2,
+   5
   ],
   "merged_from": []
  },
  {
   "id": "C090",
-  "title": "Destructive actions on widgets and quick surfaces need confirmation or undo",
+  "title": "Destructive actions on widgets, quick surfaces and running routines need confirmation or undo",
   "statement": "An un-undoable reset button on a Home Screen widget destroyed streaks by mis-tap and read as 'a visual cue to break the streak' — a safety issue in a recovery app.",
   "section": "must-never-break",
   "cards": [
    "R03-075",
-   "R03-103"
+   "R03-103",
+   "R05-062",
+   "R05-087"
   ],
   "reports": [
-   3
+   3,
+   5
   ],
   "merged_from": []
  },
@@ -1703,11 +1835,13 @@
    "R03-043",
    "R03-090",
    "R03-106",
-   "R04-099"
+   "R04-099",
+   "R05-032"
   ],
   "reports": [
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -1723,11 +1857,13 @@
    "R03-097",
    "R03-107",
    "R04-035",
-   "R04-088"
+   "R04-088",
+   "R05-082"
   ],
   "reports": [
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -1739,10 +1875,13 @@
   "cards": [
    "R03-036",
    "R03-037",
-   "R03-108"
+   "R03-108",
+   "R05-034",
+   "R05-097"
   ],
   "reports": [
-   3
+   3,
+   5
   ],
   "merged_from": []
  },
@@ -1873,11 +2012,14 @@
    "R04-067",
    "R04-068",
    "R04-070",
-   "R04-106"
+   "R04-106",
+   "R05-064",
+   "R05-104"
   ],
   "reports": [
    3,
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -1939,10 +2081,13 @@
    "R04-076",
    "R04-084",
    "R04-089",
-   "R04-091"
+   "R04-091",
+   "R05-029",
+   "R05-095"
   ],
   "reports": [
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -1956,10 +2101,12 @@
    "R04-021",
    "R04-038",
    "R04-077",
-   "R04-090"
+   "R04-090",
+   "R05-048"
   ],
   "reports": [
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -1988,10 +2135,13 @@
   "cards": [
    "R04-033",
    "R04-040",
-   "R04-092"
+   "R04-092",
+   "R05-073",
+   "R05-090"
   ],
   "reports": [
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -2063,10 +2213,12 @@
   "statement": "Paywalled in report 4 with little complaint.",
   "section": "paid",
   "cards": [
-   "R04-016"
+   "R04-016",
+   "R05-045"
   ],
   "reports": [
-   4
+   4,
+   5
   ],
   "merged_from": []
  },
@@ -2076,10 +2228,147 @@
   "statement": "'Everything I dreamt of… then Boom… updated! Now the interface is simply ugly, the progress is gone'; layout regressions hit neurodivergent users hardest.",
   "section": "must-never-break",
   "cards": [
-   "R04-059"
+   "R04-059",
+   "R05-081"
   ],
   "reports": [
-   4
+   4,
+   5
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C120",
+  "title": "Sequential routine timer with spoken next step and live finish-time estimate",
+  "statement": "Report 5's product thesis: removes the need to hold a schedule in working memory and says continuously whether you are still on time; 162 reviewers report they stopped being late. The voice needs an off switch.",
+  "section": "must-have",
+  "cards": [
+   "R05-003",
+   "R05-006",
+   "R05-007",
+   "R05-014",
+   "R05-041",
+   "R05-053"
+  ],
+  "reports": [
+   5
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C121",
+  "title": "Untimed / checklist mode as a per-routine toggle",
+  "statement": "A real minority of the ADHD audience finds a mandatory timer anxiety-inducing; the fix is an option per routine, not a separate object.",
+  "section": "must-have",
+  "cards": [
+   "R05-041",
+   "R05-061",
+   "R05-098",
+   "R05-109"
+  ],
+  "reports": [
+   5
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C122",
+  "title": "Background battery and thermals",
+  "statement": "A background timer that drains 30–90% of daily battery and heats the device is report 5's worst non-billing theme (mean 2.94) and loses subscribers who otherwise love the app.",
+  "section": "must-never-break",
+  "cards": [
+   "R05-055",
+   "R05-086"
+  ],
+  "reports": [
+   5
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C123",
+  "title": "Notification escalation must be user-configurable, never silently retuned",
+  "statement": "Some users depend on an un-dismissable alarm, others are driven out by it; a global default serves both badly; removing it broke wake-ups for loyal subscribers.",
+  "section": "must-have",
+  "cards": [
+   "R05-057",
+   "R05-085",
+   "R05-109"
+  ],
+  "reports": [
+   5
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C127",
+  "title": "Never show ads to paying subscribers",
+  "statement": "Including reward-gated features like streak savers; a 30-second unskippable ad to a payer is the most reliable way to turn an advocate into a 1★.",
+  "section": "product-rule",
+  "cards": [
+   "R05-019",
+   "R05-028",
+   "R05-094"
+  ],
+  "reports": [
+   5
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C130",
+  "title": "Use the lead-user market as the beta cohort",
+  "statement": "Report 5's home market (Korea) carries the deepest engineering feedback and most detailed feature specs — and uses the review page as a support desk.",
+  "section": "do",
+  "cards": [
+   "R05-073"
+  ],
+  "reports": [
+   5
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C131",
+  "title": "No default-on social feed in a personal tool",
+  "statement": "Unwanted by a vocal minority, and a child-safety liability when minors and adults share a feed on a 17+ app.",
+  "section": "dont",
+  "cards": [
+   "R05-064",
+   "R05-104"
+  ],
+  "reports": [
+   5
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C132",
+  "title": "Do not sell in a storefront where the app cannot function",
+  "statement": "Seven years of 'will not open' from mainland China, with users charged for an app that shows 'no network'.",
+  "section": "dont",
+  "cards": [
+   "R05-054",
+   "R05-077",
+   "R05-105"
+  ],
+  "reports": [
+   5
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C133",
+  "title": "Gate on capability, not on quantity",
+  "statement": "A quantity cap set above the point of core value is noticed, tolerated and does not convert; move the wall to analytics, sync, Watch, widgets, icons, family sharing. See Research Reports/Feature Gating vs Quantity.md.",
+  "section": "product-rule",
+  "cards": [
+   "R05-009",
+   "R05-091",
+   "R05-110"
+  ],
+  "reports": [
+   5
   ],
   "merged_from": []
  }
