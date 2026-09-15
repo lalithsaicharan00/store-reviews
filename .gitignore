@@ -4,9 +4,8 @@
 # analysis artifacts, not deliverables.
 # The README is tracked so the convention survives a fresh clone.
 # ---------------------------------------------------------------
-temp/*
-!temp/README.md
+Temp/*
+!Temp/README.md
 
 # macOS
 .DS_Store
-/temp
