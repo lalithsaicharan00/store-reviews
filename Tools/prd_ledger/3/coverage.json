@@ -1,0 +1,72 @@
+[
+ {
+  "heading": "The four that deserve engineering attention now",
+  "cards": [
+   "R03-074",
+   "R03-075",
+   "R03-076",
+   "R03-077"
+  ]
+ },
+ {
+  "heading": "Non-negotiable — these determine whether you have a product at all",
+  "cards": [
+   "R03-101",
+   "R03-102",
+   "R03-103",
+   "R03-104"
+  ]
+ },
+ {
+  "heading": "Do not do",
+  "cards": [
+   "R03-120",
+   "R03-121",
+   "R03-122"
+  ]
+ },
+ {
+  "table_row": "< 0.1%",
+  "no_new_insight": "signal-band definition (method); see R03-002"
+ },
+ {
+  "table_row": "0.1 – 0.5%",
+  "no_new_insight": "signal-band definition (method)"
+ },
+ {
+  "table_row": "0.5 – 1%",
+  "no_new_insight": "signal-band definition (method)"
+ },
+ {
+  "table_row": "1 – 3%",
+  "no_new_insight": "signal-band definition (method)"
+ },
+ {
+  "table_row": "3 – 5%",
+  "no_new_insight": "signal-band definition (method)"
+ },
+ {
+  "table_row": "> 5%",
+  "no_new_insight": "signal-band definition (method)"
+ },
+ {
+  "table_row": "Era",
+  "no_new_insight": "table header row; table carded verbatim as R03-007"
+ },
+ {
+  "table_row": "cc",
+  "no_new_insight": "table header row; table carded verbatim as R03-083"
+ },
+ {
+  "bold": "Interpretation (labelled as inference):",
+  "cards": [
+   "R03-010"
+  ]
+ },
+ {
+  "bold": "Counterpoint worth noting:",
+  "cards": [
+   "R03-037"
+  ]
+ }
+]

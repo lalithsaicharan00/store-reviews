@@ -12,10 +12,23 @@
    "R01-057",
    "R01-059",
    "R01-166",
-   "R01-201"
+   "R01-201",
+   "R03-003",
+   "R03-006",
+   "R03-008",
+   "R03-009",
+   "R03-016",
+   "R03-029",
+   "R03-038",
+   "R03-088",
+   "R03-096",
+   "R03-097",
+   "R03-101",
+   "R03-120"
   ],
   "reports": [
-   1
+   1,
+   3
   ],
   "merged_from": []
  },
@@ -29,11 +42,13 @@
    "R01-158",
    "R01-160",
    "R02-003",
-   "R02-009"
+   "R02-009",
+   "R03-048"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -53,11 +68,17 @@
    "R02-020",
    "R02-094",
    "R02-103",
-   "R02-113"
+   "R02-113",
+   "R03-013",
+   "R03-033",
+   "R03-042",
+   "R03-095",
+   "R03-105"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -71,11 +92,13 @@
    "R01-032",
    "R01-089",
    "R01-168",
-   "R02-011"
+   "R02-011",
+   "R03-027"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -89,11 +112,15 @@
    "R01-089",
    "R02-038",
    "R02-053",
-   "R02-082"
+   "R02-082",
+   "R03-045",
+   "R03-054",
+   "R03-117"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -110,11 +137,17 @@
    "R01-181",
    "R01-196",
    "R02-046",
-   "R02-064"
+   "R02-064",
+   "R03-004",
+   "R03-012",
+   "R03-049",
+   "R03-052",
+   "R03-098"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -144,11 +177,18 @@
    "R02-094",
    "R02-104",
    "R02-113",
-   "R02-121"
+   "R02-121",
+   "R03-004",
+   "R03-023",
+   "R03-045",
+   "R03-054",
+   "R03-098",
+   "R03-117"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -161,17 +201,20 @@
    "R01-010",
    "R02-018",
    "R02-048",
-   "R02-123"
+   "R02-123",
+   "R03-018",
+   "R03-061"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
  {
   "id": "C009",
-  "title": "Icons, colours and basic widgets are free",
+  "title": "Basic widgets, icons and colours are free",
   "statement": "Loved, drives 5★, and re-paywalling widgets backfired.",
   "section": "free",
   "cards": [
@@ -183,24 +226,36 @@
    "R02-018",
    "R02-049",
    "R02-051",
-   "R02-074"
+   "R02-074",
+   "R03-004",
+   "R03-008",
+   "R03-016",
+   "R03-019",
+   "R03-023",
+   "R03-038",
+   "R03-053",
+   "R03-101"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
  {
   "id": "C010",
-  "title": "Backfill missed days — a free window (7 days) with paid beyond",
+  "title": "Backfill missed days / edit start date",
   "statement": "Users accept a bounded free backfill window.",
   "section": "free",
   "cards": [
-   "R01-012"
+   "R01-012",
+   "R03-071",
+   "R03-099"
   ],
   "reports": [
-   1
+   1,
+   3
   ],
   "merged_from": []
  },
@@ -217,11 +272,14 @@
    "R02-015",
    "R02-030",
    "R02-067",
-   "R02-110"
+   "R02-110",
+   "R03-063",
+   "R03-112"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -248,11 +306,14 @@
    "R01-025",
    "R01-052",
    "R02-013",
-   "R02-021"
+   "R02-021",
+   "R03-076",
+   "R03-124"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -263,10 +324,13 @@
   "section": "paid",
   "cards": [
    "R01-016",
-   "R01-052"
+   "R01-052",
+   "R03-018",
+   "R03-061"
   ],
   "reports": [
-   1
+   1,
+   3
   ],
   "merged_from": []
  },
@@ -279,25 +343,31 @@
    "R01-017",
    "R01-091",
    "R02-018",
-   "R02-081"
+   "R02-081",
+   "R03-069"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
  {
   "id": "C016",
-  "title": "Skip / holiday mode",
-  "statement": "Minor purchase factor; free or paid open.",
+  "title": "Skip / holiday / pause mode (pause a habit or counter without losing history)",
+  "statement": "Minor purchase factor; free or paid open. In report 3, pause/stop/archive is the highest-leverage missing feature (44 requests at mean 4.02, 'the only thing between me and 5★').",
   "section": "undecided",
   "cards": [
    "R01-018",
-   "R01-052"
+   "R01-052",
+   "R03-051",
+   "R03-074",
+   "R03-109"
   ],
   "reports": [
-   1
+   1,
+   3
   ],
   "merged_from": []
  },
@@ -308,11 +378,14 @@
   "section": "research",
   "cards": [
    "R01-019",
-   "R02-016"
+   "R02-016",
+   "R03-023",
+   "R03-055"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -322,10 +395,12 @@
   "statement": "Minor purchase factor.",
   "section": "undecided",
   "cards": [
-   "R01-020"
+   "R01-020",
+   "R03-019"
   ],
   "reports": [
-   1
+   1,
+   3
   ],
   "merged_from": []
  },
@@ -338,11 +413,13 @@
    "R01-021",
    "R01-054",
    "R01-084",
-   "R02-018"
+   "R02-018",
+   "R03-082"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -353,10 +430,13 @@
   "section": "free",
   "cards": [
    "R01-022",
-   "R01-101"
+   "R01-101",
+   "R03-020",
+   "R03-068"
   ],
   "reports": [
-   1
+   1,
+   3
   ],
   "merged_from": []
  },
@@ -391,11 +471,14 @@
    "R02-042",
    "R02-058",
    "R02-101",
-   "R02-120"
+   "R02-120",
+   "R03-022",
+   "R03-062"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -407,10 +490,12 @@
   "cards": [
    "R01-030",
    "R01-104",
-   "R01-173"
+   "R01-173",
+   "R03-075"
   ],
   "reports": [
-   1
+   1,
+   3
   ],
   "merged_from": []
  },
@@ -478,11 +563,14 @@
    "R02-079",
    "R02-085",
    "R02-086",
-   "R02-088"
+   "R02-088",
+   "R03-073",
+   "R03-091"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -511,11 +599,15 @@
    "R01-133",
    "R01-152",
    "R01-162",
-   "R02-027"
+   "R02-027",
+   "R03-026",
+   "R03-030",
+   "R03-040"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -554,11 +646,14 @@
    "R02-040",
    "R02-055",
    "R02-093",
-   "R02-099"
+   "R02-099",
+   "R03-070",
+   "R03-100"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -579,15 +674,21 @@
  },
  {
   "id": "C033",
-  "title": "Restore purchase must work",
-  "statement": "Charging and not delivering is the second-fastest route to 1★ (×13.9).",
+  "title": "Restore purchase and entitlements must work immediately",
+  "statement": "Charging and not delivering is the second-fastest route to 1★ (×13.9). Lifetime buyers told to subscribe, subscribers who cannot find their tier, premium members still upsold.",
   "section": "must-never-break",
   "cards": [
    "R01-044",
-   "R01-064"
+   "R01-064",
+   "R03-014",
+   "R03-030",
+   "R03-031",
+   "R03-039",
+   "R03-104"
   ],
   "reports": [
-   1
+   1,
+   3
   ],
   "merged_from": []
  },
@@ -606,11 +707,16 @@
    "R02-056",
    "R02-086",
    "R02-093",
-   "R02-098"
+   "R02-098",
+   "R03-020",
+   "R03-076",
+   "R03-102",
+   "R03-124"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -675,7 +781,8 @@
    "R02-057",
    "R02-086",
    "R02-092",
-   "R02-100"
+   "R02-100",
+   "R03-125"
   ],
   "reports": [
    1,
@@ -743,11 +850,13 @@
    "R01-146",
    "R01-154",
    "R01-180",
-   "R02-078"
+   "R02-078",
+   "R03-081"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -778,10 +887,12 @@
    "R01-073",
    "R01-099",
    "R01-108",
-   "R01-178"
+   "R01-178",
+   "R03-066"
   ],
   "reports": [
-   1
+   1,
+   3
   ],
   "merged_from": []
  },
@@ -793,10 +904,13 @@
   "cards": [
    "R01-074",
    "R01-102",
-   "R01-174"
+   "R01-174",
+   "R03-064",
+   "R03-114"
   ],
   "reports": [
-   1
+   1,
+   3
   ],
   "merged_from": []
  },
@@ -808,10 +922,12 @@
   "cards": [
    "R01-075",
    "R01-107",
-   "R01-179"
+   "R01-179",
+   "R03-021"
   ],
   "reports": [
-   1
+   1,
+   3
   ],
   "merged_from": []
  },
@@ -852,11 +968,14 @@
    "R01-055",
    "R01-085",
    "R01-155",
-   "R02-071"
+   "R02-071",
+   "R03-078",
+   "R03-111"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -1001,11 +1120,14 @@
    "R01-142",
    "R01-159",
    "R02-092",
-   "R02-096"
+   "R02-096",
+   "R03-027",
+   "R03-057"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -1031,10 +1153,12 @@
   "statement": "Small, pure-margin, mean 4.69.",
   "section": "do",
   "cards": [
-   "R01-034"
+   "R01-034",
+   "R03-027"
   ],
   "reports": [
-   1
+   1,
+   3
   ],
   "merged_from": []
  },
@@ -1053,11 +1177,16 @@
    "R01-136",
    "R02-006",
    "R02-076",
-   "R02-087"
+   "R02-087",
+   "R03-084",
+   "R03-085",
+   "R03-086",
+   "R03-089"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -1083,10 +1212,16 @@
    "R01-007",
    "R01-071",
    "R01-151",
-   "R01-198"
+   "R01-198",
+   "R03-013",
+   "R03-014",
+   "R03-059",
+   "R03-060",
+   "R03-087"
   ],
   "reports": [
-   1
+   1,
+   3
   ],
   "merged_from": []
  },
@@ -1108,11 +1243,16 @@
    "R02-027",
    "R02-032",
    "R02-076",
-   "R02-087"
+   "R02-087",
+   "R03-024",
+   "R03-028",
+   "R03-029",
+   "R03-030"
   ],
   "reports": [
    1,
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -1314,10 +1454,12 @@
   "cards": [
    "R02-018",
    "R02-050",
-   "R02-111"
+   "R02-111",
+   "R03-065"
   ],
   "reports": [
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -1327,10 +1469,13 @@
   "statement": "'Only green' draws requests; cheap.",
   "section": "free",
   "cards": [
-   "R02-072"
+   "R02-072",
+   "R03-023",
+   "R03-065"
   ],
   "reports": [
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -1341,10 +1486,12 @@
   "section": "research",
   "cards": [
    "R02-023",
-   "R02-064"
+   "R02-064",
+   "R03-012"
   ],
   "reports": [
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -1398,10 +1545,12 @@
   "section": "dont",
   "cards": [
    "R02-065",
-   "R02-116"
+   "R02-116",
+   "R03-036"
   ],
   "reports": [
-   2
+   2,
+   3
   ],
   "merged_from": []
  },
@@ -1415,6 +1564,241 @@
   ],
   "reports": [
    2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C090",
+  "title": "Destructive actions on widgets and quick surfaces need confirmation or undo",
+  "statement": "An un-undoable reset button on a Home Screen widget destroyed streaks by mis-tap and read as 'a visual cue to break the streak' — a safety issue in a recovery app.",
+  "section": "must-never-break",
+  "cards": [
+   "R03-075",
+   "R03-103"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C092",
+  "title": "Regional pricing",
+  "statement": "IN, TR, UA, BR, MX, SA reviewers name price as the only blocker; India likes the product and has not yet been asked a price it can accept.",
+  "section": "do",
+  "cards": [
+   "R03-034",
+   "R03-043",
+   "R03-090",
+   "R03-106"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C093",
+  "title": "No upsell nagging without a 'never ask again' option",
+  "statement": "Full-screen interstitials, permanent banners and upsells before first value draw complaints even from 5★ users; a subscription launch with nagging cost ~3 points of 1–2★.",
+  "section": "dont",
+  "cards": [
+   "R03-035",
+   "R03-041",
+   "R03-095",
+   "R03-097",
+   "R03-107"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C094",
+  "title": "Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire",
+  "statement": "A charming review request produced dozens of reviews; frequent prompts that ignore the iOS opt-out, especially to payers, read as 'scammy'.",
+  "section": "do",
+  "cards": [
+   "R03-036",
+   "R03-037",
+   "R03-108"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C095",
+  "title": "Neutral, non-judgemental tone on failure",
+  "statement": "Reset without shame, no motivational pop-ups, keep history — the differentiation against apps that 'talk'.",
+  "section": "must-have",
+  "cards": [
+   "R03-056",
+   "R03-119"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C096",
+  "title": "Privacy and discretion stack",
+  "statement": "Face ID / passcode lock, no account, discreet app name, alternate icons — zero negative reviews in report 3 and category-critical for recovery users on family phones.",
+  "section": "must-have",
+  "cards": [
+   "R03-023",
+   "R03-055",
+   "R03-117",
+   "R03-118"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C097",
+  "title": "A tip / donate option",
+  "statement": "People asking to give money with no mechanism to do so.",
+  "section": "do",
+  "cards": [
+   "R03-032",
+   "R03-042",
+   "R03-105"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C098",
+  "title": "Time-unit flexibility for counters (hours → years)",
+  "statement": "What makes day 1 survivable for a quit-habit user; zero 1–2★.",
+  "section": "free",
+  "cards": [
+   "R03-046"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C099",
+  "title": "Countdown / 'days until' mode",
+  "statement": "Users want one app for count-up and count-down.",
+  "section": "research",
+  "cards": [
+   "R03-067",
+   "R03-113"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C100",
+  "title": "Money-saved counter",
+  "statement": "Standard in quit-smoking apps; named as the one thing missing.",
+  "section": "research",
+  "cards": [
+   "R03-072",
+   "R03-116"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C101",
+  "title": "Milestones, achievements, celebration",
+  "statement": "The largest positive-intent request in report 3 (2.21%, six years); shipped Aug 2026.",
+  "section": "research",
+  "cards": [
+   "R03-077",
+   "R03-110"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C102",
+  "title": "Inverse / 'good habit' mode for a counter",
+  "statement": "Recovery users want the number up; chore/ADHD users want it low — one counter, two mental models.",
+  "section": "research",
+  "cards": [
+   "R03-082",
+   "R03-115"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C103",
+  "title": "Recovery and harm-reduction users are a vulnerable surface",
+  "statement": "Alcohol, nicotine, self-harm (incl. minors), drugs, EDs, no-contact; monetisation moves land as 'preying on the vulnerable'; age rating is load-bearing.",
+  "section": "do",
+  "cards": [
+   "R03-011",
+   "R03-079",
+   "R03-080",
+   "R03-121"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C104",
+  "title": "Never ship a paywall or feature-removal change silently",
+  "statement": "Undisclosed changes and 'it was a bug' replies that don't match what users see destroy trust for a year.",
+  "section": "dont",
+  "cards": [
+   "R03-010",
+   "R03-088",
+   "R03-122"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C107",
+  "title": "Widget variants and customisation as the paid layer",
+  "statement": "Base single-counter widget free forever; multi-counter widgets, custom art, progress rings, reset-from-widget can be paid — and were report 3's #1 purchase trigger.",
+  "section": "paid",
+  "cards": [
+   "R03-025",
+   "R03-101"
+  ],
+  "reports": [
+   3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C108",
+  "title": "Goals / targets",
+  "statement": "Tolerated behind the paywall (mean 4.05) and a stated purchase reason.",
+  "section": "paid",
+  "cards": [
+   "R03-017",
+   "R03-025"
+  ],
+  "reports": [
+   3
   ],
   "merged_from": []
  }
