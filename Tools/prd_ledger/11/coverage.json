@@ -1,0 +1,105 @@
+[
+ {
+  "table_row": "< 0.1%",
+  "no_new_insight": "signal-band definition (method); see R11-002"
+ },
+ {
+  "table_row": "0.1 – 0.5%",
+  "no_new_insight": "signal-band definition (method); see R11-002"
+ },
+ {
+  "table_row": "0.5 – 1%",
+  "no_new_insight": "signal-band definition (method); see R11-002"
+ },
+ {
+  "table_row": "1 – 3%",
+  "no_new_insight": "signal-band definition (method); see R11-002"
+ },
+ {
+  "table_row": "3 – 5%",
+  "no_new_insight": "signal-band definition (method); see R11-002"
+ },
+ {
+  "table_row": "> 5%",
+  "no_new_insight": "signal-band definition (method); see R11-002"
+ },
+ {
+  "table_row": "$1.99",
+  "cards": [
+   "R11-008"
+  ]
+ },
+ {
+  "table_row": "$6.99",
+  "cards": [
+   "R11-008"
+  ]
+ },
+ {
+  "table_row": "$8.99",
+  "cards": [
+   "R11-008"
+  ]
+ },
+ {
+  "table_row": "$14.99",
+  "cards": [
+   "R11-008"
+  ]
+ },
+ {
+  "table_row": "Gap",
+  "cards": [
+   "R11-015"
+  ]
+ },
+ {
+  "table_row": "Ads",
+  "cards": [
+   "R11-009",
+   "R11-016"
+  ]
+ },
+ {
+  "table_row": "10",
+  "cards": [
+   "R11-063"
+  ]
+ },
+ {
+  "bold": "One structural warning specific to this corpus.",
+  "cards": [
+   "R11-002"
+  ]
+ },
+ {
+  "bold": "safety, legal, security, or severe data-loss concerns",
+  "cards": [
+   "R11-005"
+  ]
+ },
+ {
+  "bold": "Why this matters more than a normal pricing change:",
+  "cards": [
+   "R11-006"
+  ]
+ },
+ {
+  "bold": "\"I'd like items to be reorderable by dragging. As it is, you write a new item, want to move it to the top of the list, and it only moves up one position at a time.\"",
+  "cards": [
+   "R11-013"
+  ]
+ },
+ {
+  "bold": "The more important number is where the ratings are.",
+  "cards": [
+   "R11-015"
+  ]
+ },
+ {
+  "bold": "No spend or download data was available. Rating volume is used only as a disclosed engagement proxy and is never called downloads.",
+  "cards": [
+   "R11-042"
+  ]
+ }
+]

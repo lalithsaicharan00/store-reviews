@@ -2,7 +2,7 @@
  {
   "id": "C001",
   "title": "Never move a free feature behind the paywall",
-  "statement": "Every paywall regression produced a lasting rating drop; pick the free tier once and hold it. Report 8: a competitor adding a paywall sent its users to a free rival, and free users explicitly warn against gating what is free. Report 10: soundscapes, longer timers, the event micropet and the anxiety breathing exercise all moved from free to paid; paywall-creep is the largest monetization theme (715).",
+  "statement": "Every paywall regression produced a lasting rating drop; pick the free tier once and hold it. Report 8: a competitor adding a paywall sent its users to a free rival, and free users explicitly warn against gating what is free. Report 10: soundscapes, longer timers, the event micropet and the anxiety breathing exercise all moved from free to paid; paywall-creep is the largest monetization theme (715). Report 11: an app whose third-largest praise theme was 'it's free' ('all functions are free', Dec 2025) retrofitted a paywall by Apr 2026 with no disclosure; five years without a sub-4★ review ended in three 1–2★ reviews in nine days.",
   "section": "product-rule",
   "cards": [
    "R01-051",
@@ -46,7 +46,15 @@
    "R10-021",
    "R10-023",
    "R10-024",
-   "R10-139"
+   "R10-139",
+   "R11-003",
+   "R11-004",
+   "R11-006",
+   "R11-012",
+   "R11-037",
+   "R11-048",
+   "R11-049",
+   "R11-060"
   ],
   "reports": [
    1,
@@ -54,7 +62,8 @@
    4,
    5,
    8,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -92,7 +101,8 @@
    "R09-008",
    "R09-083",
    "R10-004",
-   "R10-099"
+   "R10-099",
+   "R11-004"
   ],
   "reports": [
    1,
@@ -104,7 +114,8 @@
    7,
    8,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -212,7 +223,8 @@
    "R08-028",
    "R08-029",
    "R09-066",
-   "R09-095"
+   "R09-095",
+   "R11-011"
   ],
   "reports": [
    1,
@@ -222,7 +234,8 @@
    6,
    7,
    8,
-   9
+   9,
+   11
   ],
   "merged_from": []
  },
@@ -263,7 +276,10 @@
    "R10-008",
    "R10-039",
    "R10-064",
-   "R10-148"
+   "R10-148",
+   "R11-010",
+   "R11-022",
+   "R11-067"
   ],
   "reports": [
    1,
@@ -274,14 +290,15 @@
    6,
    7,
    8,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
  {
   "id": "C007",
   "title": "Generous fixed habit cap (or unlimited) — never change it",
-  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not. Report 6: raising a 1-streak cap to 2 did not reduce complaints — the ask was unlimited — though the tone moved from 'scam' to 'love it, want more'. Report 7: a 4-habit cap held unchanged for 3½ years was still the top 2★ theme (0 of 27 complainers paid) while 11 users said 4 was plenty — stable is not enough if the level binds the 5–8-habit user.",
+  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not. Report 6: raising a 1-streak cap to 2 did not reduce complaints — the ask was unlimited — though the tone moved from 'scam' to 'love it, want more'. Report 7: a 4-habit cap held unchanged for 3½ years was still the top 2★ theme (0 of 27 complainers paid) while 11 users said 4 was plenty — stable is not enough if the level binds the 5–8-habit user. Report 11: 'First app that has more than 3 habits' was a reviewer's entire body — no cap was the acquisition wedge against the category, and whether it survived the paywall retrofit is unknown.",
   "section": "free",
   "cards": [
    "R01-008",
@@ -353,7 +370,9 @@
    "R07-141",
    "R07-142",
    "R08-031",
-   "R09-047"
+   "R09-047",
+   "R11-012",
+   "R11-065"
   ],
   "reports": [
    1,
@@ -364,7 +383,8 @@
    6,
    7,
    8,
-   9
+   9,
+   11
   ],
   "merged_from": []
  },
@@ -382,7 +402,8 @@
    "R03-061",
    "R04-020",
    "R06-030",
-   "R07-031"
+   "R07-031",
+   "R11-017"
   ],
   "reports": [
    1,
@@ -390,7 +411,8 @@
    3,
    4,
    6,
-   7
+   7,
+   11
   ],
   "merged_from": []
  },
@@ -493,7 +515,8 @@
    "R07-028",
    "R08-015",
    "R08-056",
-   "R09-058"
+   "R09-058",
+   "R11-014"
   ],
   "reports": [
    1,
@@ -502,7 +525,8 @@
    5,
    7,
    8,
-   9
+   9,
+   11
   ],
   "merged_from": []
  },
@@ -516,11 +540,17 @@
    "R07-021",
    "R07-063",
    "R07-098",
-   "R07-099"
+   "R07-099",
+   "R11-013",
+   "R11-014",
+   "R11-017",
+   "R11-024",
+   "R11-052"
   ],
   "reports": [
    1,
-   7
+   7,
+   11
   ],
   "merged_from": []
  },
@@ -542,14 +572,17 @@
    "R07-072",
    "R07-131",
    "R10-079",
-   "R10-162"
+   "R10-162",
+   "R11-062",
+   "R11-066"
   ],
   "reports": [
    1,
    2,
    3,
    7,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -707,14 +740,17 @@
    "R08-033",
    "R08-034",
    "R08-115",
-   "R09-040"
+   "R09-040",
+   "R11-007",
+   "R11-062"
   ],
   "reports": [
    1,
    3,
    7,
    8,
-   9
+   9,
+   11
   ],
   "merged_from": []
  },
@@ -925,7 +961,8 @@
    "R10-127",
    "R10-128",
    "R10-164",
-   "R10-176"
+   "R10-176",
+   "R11-041"
   ],
   "reports": [
    1,
@@ -937,7 +974,8 @@
    7,
    8,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -996,7 +1034,10 @@
    "R10-106",
    "R10-115",
    "R10-130",
-   "R10-149"
+   "R10-149",
+   "R11-005",
+   "R11-032",
+   "R11-054"
   ],
   "reports": [
    1,
@@ -1007,7 +1048,8 @@
    6,
    7,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -1122,7 +1164,7 @@
  {
   "id": "C033",
   "title": "Restore purchase and entitlements must work immediately",
-  "statement": "Charging and not delivering is the second-fastest route to 1★ (×13.9). Lifetime buyers told to subscribe, subscribers who cannot find their tier, premium members still upsold.",
+  "statement": "Charging and not delivering is the second-fastest route to 1★ (×13.9). Lifetime buyers told to subscribe, subscribers who cannot find their tier, premium members still upsold. Report 11: 3 of 3 paid reviewers lost purchased access — a lifetime non-consumable expired, a subscription re-locked after a week and reinstall did not restore, an active annual term was re-charged — and two titled their reviews 'scam' and 'Purchase fraud'.",
   "section": "must-never-break",
   "cards": [
    "R01-044",
@@ -1137,13 +1179,24 @@
    "R07-095",
    "R07-121",
    "R07-144",
-   "R09-082"
+   "R09-082",
+   "R11-003",
+   "R11-004",
+   "R11-005",
+   "R11-020",
+   "R11-026",
+   "R11-035",
+   "R11-036",
+   "R11-048",
+   "R11-054",
+   "R11-055"
   ],
   "reports": [
    1,
    3,
    7,
-   9
+   9,
+   11
   ],
   "merged_from": []
  },
@@ -1236,7 +1289,7 @@
  {
   "id": "C036",
   "title": "A support channel that exists, is reachable outside the app, and answers",
-  "statement": "'No support channel' is ×34.7 over-represented among buyers and the second-worst-rated complaint. Report 5: the only support link was inside an app that would not launch; email went unanswered while public review replies were same-day. Report 10: AI and canned support replies; paying users 13× over-represented among support complaints.",
+  "statement": "'No support channel' is ×34.7 over-represented among buyers and the second-worst-rated complaint. Report 5: the only support link was inside an app that would not launch; email went unanswered while public review replies were same-day. Report 10: AI and canned support replies; paying users 13× over-represented among support complaints. Report 11: 'there is no way in app to talk with developer or team' — with no support queue, billing bugs were filed as public 1★ fraud accusations instead.",
   "section": "must-have",
   "cards": [
    "R01-046",
@@ -1262,7 +1315,11 @@
    "R09-117",
    "R10-058",
    "R10-107",
-   "R10-156"
+   "R10-156",
+   "R11-005",
+   "R11-036",
+   "R11-038",
+   "R11-056"
   ],
   "reports": [
    1,
@@ -1273,7 +1330,8 @@
    7,
    8,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -1793,14 +1851,17 @@
    "R02-097",
    "R05-082",
    "R07-094",
-   "R08-072"
+   "R08-072",
+   "R11-018",
+   "R11-069"
   ],
   "reports": [
    1,
    2,
    5,
    7,
-   8
+   8,
+   11
   ],
   "merged_from": []
  },
@@ -1816,14 +1877,16 @@
    "R04-049",
    "R04-110",
    "R09-063",
-   "R10-179"
+   "R10-179",
+   "R11-031"
   ],
   "reports": [
    1,
    2,
    4,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -1875,7 +1938,9 @@
    "R08-128",
    "R09-088",
    "R10-038",
-   "R10-107"
+   "R10-107",
+   "R11-050",
+   "R11-058"
   ],
   "reports": [
    1,
@@ -1885,7 +1950,8 @@
    7,
    8,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -1923,7 +1989,9 @@
    "R09-046",
    "R10-009",
    "R10-039",
-   "R10-112"
+   "R10-112",
+   "R11-021",
+   "R11-049"
   ],
   "reports": [
    1,
@@ -1932,7 +2000,8 @@
    5,
    7,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -1959,14 +2028,17 @@
    "R07-107",
    "R10-119",
    "R10-121",
-   "R10-123"
+   "R10-123",
+   "R11-015",
+   "R11-042"
   ],
   "reports": [
    1,
    2,
    3,
    7,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -2022,7 +2094,8 @@
    "R10-027",
    "R10-149",
    "R10-171",
-   "R10-180"
+   "R10-180",
+   "R11-032"
   ],
   "reports": [
    1,
@@ -2031,7 +2104,8 @@
    5,
    6,
    7,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -2084,7 +2158,10 @@
    "R10-102",
    "R10-103",
    "R10-104",
-   "R10-106"
+   "R10-106",
+   "R11-003",
+   "R11-020",
+   "R11-026"
   ],
   "reports": [
    1,
@@ -2095,7 +2172,8 @@
    6,
    7,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -2229,13 +2307,17 @@
    "R08-082",
    "R09-051",
    "R09-053",
-   "R09-130"
+   "R09-130",
+   "R11-013",
+   "R11-052",
+   "R11-063"
   ],
   "reports": [
    2,
    4,
    8,
-   9
+   9,
+   11
   ],
   "merged_from": []
  },
@@ -2372,7 +2454,9 @@
    "R10-070",
    "R10-074",
    "R10-096",
-   "R10-163"
+   "R10-163",
+   "R11-014",
+   "R11-024"
   ],
   "reports": [
    2,
@@ -2380,7 +2464,8 @@
    5,
    7,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -2394,13 +2479,16 @@
    "R02-064",
    "R03-012",
    "R04-012",
-   "R05-033"
+   "R05-033",
+   "R11-009",
+   "R11-067"
   ],
   "reports": [
    2,
    3,
    4,
-   5
+   5,
+   11
   ],
   "merged_from": []
  },
@@ -2526,7 +2614,10 @@
    "R07-110",
    "R07-112",
    "R07-128",
-   "R10-131"
+   "R10-131",
+   "R11-015",
+   "R11-042",
+   "R11-068"
   ],
   "reports": [
    3,
@@ -2534,7 +2625,8 @@
    5,
    6,
    7,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -2563,7 +2655,9 @@
    "R09-110",
    "R09-124",
    "R09-138",
-   "R10-069"
+   "R10-069",
+   "R11-010",
+   "R11-067"
   ],
   "reports": [
    3,
@@ -2573,7 +2667,8 @@
    7,
    8,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -2630,14 +2725,17 @@
    "R09-062",
    "R09-136",
    "R10-009",
-   "R10-040"
+   "R10-040",
+   "R11-010",
+   "R11-022"
   ],
   "reports": [
    3,
    6,
    7,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -2731,11 +2829,13 @@
   "cards": [
    "R03-077",
    "R03-110",
-   "R06-032"
+   "R06-032",
+   "R11-017"
   ],
   "reports": [
    3,
-   6
+   6,
+   11
   ],
   "merged_from": []
  },
@@ -2793,15 +2893,19 @@
  {
   "id": "C104",
   "title": "Never ship a paywall or feature-removal change silently",
-  "statement": "Undisclosed changes and 'it was a bug' replies that don't match what users see destroy trust for a year.",
+  "statement": "Undisclosed changes and 'it was a bug' replies that don't match what users see destroy trust for a year. Report 11: the store description still discloses no paywall at all (0 mentions of premium/subscription/free/unlock) after the retrofit; a grandfathering rule for pre-2026 users is the recommended fix.",
   "section": "dont",
   "cards": [
    "R03-010",
    "R03-088",
-   "R03-122"
+   "R03-122",
+   "R11-006",
+   "R11-037",
+   "R11-060"
   ],
   "reports": [
-   3
+   3,
+   11
   ],
   "merged_from": []
  },
@@ -2893,13 +2997,17 @@
    "R09-075",
    "R09-125",
    "R09-136",
-   "R10-100"
+   "R10-100",
+   "R11-008",
+   "R11-036",
+   "R11-059"
   ],
   "reports": [
    4,
    5,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -2977,13 +3085,16 @@
    "R10-026",
    "R10-028",
    "R10-116",
-   "R10-169"
+   "R10-169",
+   "R11-008",
+   "R11-036"
   ],
   "reports": [
    4,
    6,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -3046,12 +3157,14 @@
    "R10-033",
    "R10-037",
    "R10-057",
-   "R10-071"
+   "R10-071",
+   "R11-011"
   ],
   "reports": [
    4,
    9,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -3266,13 +3379,15 @@
    "R07-100",
    "R07-125",
    "R07-142",
-   "R10-022"
+   "R10-022",
+   "R11-066"
   ],
   "reports": [
    5,
    6,
    7,
-   10
+   10,
+   11
   ],
   "merged_from": []
  },
@@ -3288,12 +3403,14 @@
    "R07-136",
    "R07-137",
    "R08-007",
-   "R08-126"
+   "R08-126",
+   "R11-046"
   ],
   "reports": [
    6,
    7,
-   8
+   8,
+   11
   ],
   "merged_from": []
  },
@@ -3380,10 +3497,12 @@
   "section": "do",
   "cards": [
    "R07-066",
-   "R07-137"
+   "R07-137",
+   "R11-029"
   ],
   "reports": [
-   7
+   7,
+   11
   ],
   "merged_from": []
  },
@@ -3611,14 +3730,20 @@
    "R04-094",
    "R05-088",
    "R08-059",
-   "R08-120"
+   "R08-120",
+   "R11-007",
+   "R11-014",
+   "R11-034",
+   "R11-052",
+   "R11-062"
   ],
   "reports": [
    3,
    4,
    5,
    8,
-   10
+   10,
+   11
   ],
   "merged_from": [
    {
@@ -4009,5 +4134,64 @@
     "when": "consolidation after report 10"
    }
   ]
+ },
+ {
+  "id": "C176",
+  "title": "Never let fear of losing history be the reason people pay",
+  "statement": "Report 11: the only stated purchase motive was 'I had 3 years worth of history I didn't want to lose' on an app with no export or backup; when the entitlement then failed, the loyal long-tenure user became the 1★ 'scam' review. Sell durability (backup, export, long-history analytics) as a gain, never gate access to what the user already built.",
+  "section": "product-rule",
+  "cards": [
+   "R11-007",
+   "R11-035",
+   "R11-066"
+  ],
+  "reports": [
+   11
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C177",
+  "title": "Every IAP SKU has a distinct name that states its period or 'one time'",
+  "statement": "Report 11: three SKUs shared the identical display name 'Habits PRO Functions' at $1.99 / $6.99 / $8.99 and none named a period, while reviewers described 'annual', 'VIP' and 'lifetime' purchases — neither the user nor support could tell what had been bought.",
+  "section": "must-have",
+  "cards": [
+   "R11-008",
+   "R11-057"
+  ],
+  "reports": [
+   11
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C178",
+  "title": "A quiet, adult, non-gamified tracker is a positioning some users actively seek",
+  "statement": "Report 11: 'Functional, no frills and no infantilization. I tested half a dozen similar apps before finding this one'; 'I hate apps that demand set times'; 'without any imposed junk' — four of 33 reviewers chose the app for what it refuses to do, and three switched from gamified competitors. A live tension with the pet/mascot category norm.",
+  "section": "do",
+  "cards": [
+   "R11-011",
+   "R11-029",
+   "R11-034",
+   "R11-069"
+  ],
+  "reports": [
+   11
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C179",
+  "title": "Do not run a paid twin app beside the free app",
+  "statement": "Report 11: a separate 'Lifetime Premium' binary collected one rating in six years, ran a version behind, undercut the in-app lifetime SKU by $5 and created a second entitlement surface that plausibly fed the 'lifetime subscription… suddenly cancelled' confusion.",
+  "section": "dont",
+  "cards": [
+   "R11-019",
+   "R11-061"
+  ],
+  "reports": [
+   11
+  ],
+  "merged_from": []
  }
 ]
