@@ -4,8 +4,9 @@
 
 | Path | Contents |
 |---|---|
-| `PRD for App Store.md` | What we will build, do, and avoid — distilled from the reports. See its section 0 for writing rules. |
+| `PRD for App Store.md` | What we will build, do, and avoid — distilled from the reports. Decisions only; its writing rules are Stage 6 of `Report Synthesis Prompt.md`. |
 | `Store Review Analysis Prompt.md` | The analysis spec every report must follow |
+| `Report Synthesis Prompt.md` | How to combine all reports into one feature ledger (cards → coverage check → merge → confidence → final report) |
 | `App Store Reviews/<N>. <app name>/` | Source data per app: `reviews.jsonl`, `by_country/*.jsonl`, `manifest.json`, `_state.json`. **Read-only — do not add files here.** |
 | `App Store Reports/` | Deliverables: `<N>. <app name> (REPORT).md`, one per app |
 | `Play Store Reviews/` | Play Store corpora (same shape) |
@@ -18,7 +19,7 @@
 - **Folders and documents:** Title Case with spaces — `App Store Reports/`, `Research Reports/`, `PRD for App Store.md`.
 - **Code and machine-read files (inside `Tools/`):** `snake_case` — `extract_reviews.py`, `habit_apps_ranked.json`, `keyword_scans/`.
 - **Per-app folders and reports:** `<N>. <App Store name>` and `<N>. <App Store name> (REPORT).md`. The number is the app's rank and must match between `App Store Reviews/` and `App Store Reports/`.
-- **Root folder holds only:** the PRD, the analysis prompt, `README.md`, `CLAUDE.md`, and the folders above. Everything else goes in a folder.
+- **Root folder holds only:** the PRD, the analysis prompt, the synthesis prompt, `README.md`, `CLAUDE.md`, and the folders above. Everything else goes in a folder.
 
 ## Scratch files: use `Temp/`, never `/tmp`
 
@@ -61,9 +62,10 @@ Non-negotiables, because they are what makes a report auditable:
 ## PRD for App Store
 
 `PRD for App Store.md` in the repo root collects what we will build, do, and avoid,
-distilled from the reports. **Section 0 of that file holds the writing rules** (plain
-English, 2–3 lines per bullet, no statistics, every bullet ends with a "Repeated in:"
-list of linked report numbers that only the owner extends). Read section 0 before
+distilled from the reports. It is a clean product requirements document: **decisions only,
+no rules section, no method notes, no statistics.** The writing rules (plain English, one
+point per bullet in 2–3 lines, every bullet ends with a "Repeated in:" list of linked
+report numbers) live in **Stage 6 of `Report Synthesis Prompt.md`**. Read that before
 adding anything, and use the bullet template there.
 
 ## Git
