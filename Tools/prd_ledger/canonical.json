@@ -70,7 +70,7 @@
  {
   "id": "C002",
   "title": "Ratings follow the offer, not the feature set",
-  "statement": "Trust (pricing, billing, support, delivering what was paid for) moves ratings more than features do.",
+  "statement": "Trust (pricing, billing, support, delivering what was paid for) moves ratings more than features do. Report 16: the public 4.81 sat 1.21 stars above the written 3.60 — the largest gap in the set — with only 5.6% of raters writing, two-to-one about money.",
   "section": "product-rule",
   "cards": [
    "R01-004",
@@ -116,7 +116,15 @@
    "R13-057",
    "R13-065",
    "R14-003",
-   "R14-005"
+   "R14-005",
+   "R16-003",
+   "R16-012",
+   "R16-035",
+   "R16-037",
+   "R16-041",
+   "R16-042",
+   "R16-050",
+   "R16-059"
   ],
   "reports": [
    1,
@@ -132,14 +140,15 @@
    11,
    12,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
  {
   "id": "C003",
   "title": "Lead with a one-time lifetime purchase",
-  "statement": "People buy because it is not a subscription; lifetime is the strongest pricing signal. Report 13: 239 reviews across every year 2017–2026, including 5★ ones ('It would be better to charge only once. It would attract more users, trust me'), asked for the one-time purchase back after it was withdrawn. Report 14: a $1.99–$3 one-time unlock produced zero refund, unexpected-charge or restore complaints in 70 reviews — a materially cleaner record than the subscription apps in the set.",
+  "statement": "People buy because it is not a subscription; lifetime is the strongest pricing signal. Report 13: 239 reviews across every year 2017–2026, including 5★ ones ('It would be better to charge only once. It would attract more users, trust me'), asked for the one-time purchase back after it was withdrawn. Report 14: a $1.99–$3 one-time unlock produced zero refund, unexpected-charge or restore complaints in 70 reviews — a materially cleaner record than the subscription apps in the set. Report 16: the price fell ~67% ($119.99 → $40/yr) and the objection rate did not move (31% → 30%); 37 reviews asked for a one-time SKU and Streaks was named eight times, every time for its one-time price — 'I will not rent a checklist'.",
   "section": "product-rule",
   "cards": [
    "R01-006",
@@ -191,7 +200,17 @@
    "R14-008",
    "R14-016",
    "R14-033",
-   "R14-053"
+   "R14-053",
+   "R16-010",
+   "R16-011",
+   "R16-029",
+   "R16-038",
+   "R16-039",
+   "R16-046",
+   "R16-047",
+   "R16-054",
+   "R16-062",
+   "R16-071"
   ],
   "reports": [
    1,
@@ -204,7 +223,8 @@
    8,
    10,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -224,7 +244,9 @@
    "R07-062",
    "R13-006",
    "R13-017",
-   "R13-048"
+   "R13-048",
+   "R16-010",
+   "R16-046"
   ],
   "reports": [
    1,
@@ -232,7 +254,8 @@
    3,
    5,
    7,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -264,7 +287,8 @@
    "R11-011",
    "R12-013",
    "R14-003",
-   "R14-023"
+   "R14-023",
+   "R16-039"
   ],
   "reports": [
    1,
@@ -277,7 +301,8 @@
    9,
    11,
    12,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -328,7 +353,9 @@
    "R13-069",
    "R14-003",
    "R14-023",
-   "R14-041"
+   "R14-041",
+   "R16-013",
+   "R16-031"
   ],
   "reports": [
    1,
@@ -342,14 +369,15 @@
    10,
    11,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
  {
   "id": "C007",
   "title": "Generous fixed habit cap (or unlimited) — never change it",
-  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not. Report 6: raising a 1-streak cap to 2 did not reduce complaints — the ask was unlimited — though the tone moved from 'scam' to 'love it, want more'. Report 7: a 4-habit cap held unchanged for 3½ years was still the top 2★ theme (0 of 27 complainers paid) while 11 users said 4 was plenty — stable is not enough if the level binds the 5–8-habit user. Report 11: 'First app that has more than 3 habits' was a reviewer's entire body — no cap was the acquisition wedge against the category, and whether it survived the paywall retrofit is unknown. Report 13: the free cap was cut from 5 to 3 in 2018 (the worst year, mean 2.85) and restored in 2020 without recovering the rating; 'hitting the cap while already engaged' is the one purchase trigger buyers name. Report 14: a 3-habit free cap drew its only 1★ free-tier complaint; the report's reading is that the cap must be generous enough to create the streak that creates the desire to pay.",
+  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not. Report 6: raising a 1-streak cap to 2 did not reduce complaints — the ask was unlimited — though the tone moved from 'scam' to 'love it, want more'. Report 7: a 4-habit cap held unchanged for 3½ years was still the top 2★ theme (0 of 27 complainers paid) while 11 users said 4 was plenty — stable is not enough if the level binds the 5–8-habit user. Report 11: 'First app that has more than 3 habits' was a reviewer's entire body — no cap was the acquisition wedge against the category, and whether it survived the paywall retrofit is unknown. Report 13: the free cap was cut from 5 to 3 in 2018 (the worst year, mean 2.85) and restored in 2020 without recovering the rating; 'hitting the cap while already engaged' is the one purchase trigger buyers name. Report 14: a 3-habit free cap drew its only 1★ free-tier complaint; the report's reading is that the cap must be generous enough to create the streak that creates the desire to pay. Report 16: a free tier of ONE habit drew 76 complaints at mean 2.22 ('a habit tracker that tracks one habit is not a habit tracker') and could not do trial work; 20 reviewers defended the earn-a-slot constraint at 3–6 habits (mean 4.60) — loved at 3–6, hated at 1.",
   "section": "free",
   "cards": [
    "R01-008",
@@ -436,7 +464,15 @@
    "R14-019",
    "R14-029",
    "R14-031",
-   "R14-054"
+   "R14-054",
+   "R16-004",
+   "R16-005",
+   "R16-006",
+   "R16-038",
+   "R16-043",
+   "R16-045",
+   "R16-065",
+   "R16-066"
   ],
   "reports": [
    1,
@@ -450,7 +486,8 @@
    9,
    11,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -558,7 +595,7 @@
  {
   "id": "C010",
   "title": "Backfill missed days / edit start date",
-  "statement": "Users accept a bounded free backfill window. Report 8 contests it: a ~7-day backfill window in a free app with weak history views was the worst-rated request (mean 3.52).",
+  "statement": "Users accept a bounded free backfill window. Report 8 contests it: a ~7-day backfill window in a free app with weak history views was the worst-rated request (mean 3.52). Report 16: logging only today and yesterday cost earned streaks ('I forgot to log 2 days ago… my streak is permanently reset'); 33 requests from mostly 3–4★ users, unshipped for 31 months.",
   "section": "free",
   "cards": [
    "R01-012",
@@ -574,7 +611,11 @@
    "R13-082",
    "R14-018",
    "R14-023",
-   "R14-049"
+   "R14-049",
+   "R16-018",
+   "R16-038",
+   "R16-065",
+   "R16-076"
   ],
   "reports": [
    1,
@@ -583,7 +624,8 @@
    8,
    9,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -646,14 +688,16 @@
    "R11-024",
    "R11-052",
    "R12-028",
-   "R14-048"
+   "R14-048",
+   "R16-031"
   ],
   "reports": [
    1,
    7,
    11,
    12,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -728,7 +772,9 @@
    "R07-083",
    "R08-079",
    "R10-036",
-   "R12-034"
+   "R12-034",
+   "R16-023",
+   "R16-032"
   ],
   "reports": [
    1,
@@ -737,7 +783,8 @@
    7,
    8,
    10,
-   12
+   12,
+   16
   ],
   "merged_from": []
  },
@@ -832,7 +879,8 @@
    "R10-042",
    "R13-026",
    "R13-032",
-   "R14-015"
+   "R14-015",
+   "R16-030"
   ],
   "reports": [
    1,
@@ -842,7 +890,8 @@
    7,
    10,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -897,14 +946,16 @@
    "R10-072",
    "R10-096",
    "R10-162",
-   "R13-032"
+   "R13-032",
+   "R16-038"
   ],
   "reports": [
    1,
    7,
    8,
    10,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -945,7 +996,8 @@
    "R12-045",
    "R12-083",
    "R13-027",
-   "R13-045"
+   "R13-045",
+   "R16-038"
   ],
   "reports": [
    1,
@@ -958,7 +1010,8 @@
    9,
    10,
    12,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -1002,7 +1055,8 @@
    "R10-142",
    "R13-039",
    "R13-045",
-   "R14-018"
+   "R14-018",
+   "R16-006"
   ],
   "reports": [
    1,
@@ -1011,7 +1065,8 @@
    6,
    10,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -1027,12 +1082,19 @@
    "R10-108",
    "R10-113",
    "R10-170",
-   "R12-046"
+   "R12-046",
+   "R16-011",
+   "R16-016",
+   "R16-034",
+   "R16-048",
+   "R16-073",
+   "R16-074"
   ],
   "reports": [
    1,
    10,
-   12
+   12,
+   16
   ],
   "merged_from": []
  },
@@ -1045,13 +1107,16 @@
    "R01-036",
    "R08-091",
    "R09-093",
-   "R13-080"
+   "R13-080",
+   "R16-048",
+   "R16-058"
   ],
   "reports": [
    1,
    8,
    9,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -1125,7 +1190,13 @@
    "R14-021",
    "R14-026",
    "R14-034",
-   "R14-051"
+   "R14-051",
+   "R16-038",
+   "R16-056",
+   "R16-057",
+   "R16-058",
+   "R16-065",
+   "R16-081"
   ],
   "reports": [
    1,
@@ -1141,7 +1212,8 @@
    11,
    12,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -1155,12 +1227,14 @@
    "R01-130",
    "R05-065",
    "R05-103",
-   "R07-102"
+   "R07-102",
+   "R16-033"
   ],
   "reports": [
    1,
    5,
-   7
+   7,
+   16
   ],
   "merged_from": []
  },
@@ -1211,7 +1285,11 @@
    "R13-029",
    "R13-050",
    "R13-062",
-   "R14-033"
+   "R14-033",
+   "R16-009",
+   "R16-044",
+   "R16-049",
+   "R16-070"
   ],
   "reports": [
    1,
@@ -1226,7 +1304,8 @@
    11,
    12,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -1313,7 +1392,10 @@
    "R14-028",
    "R14-037",
    "R14-039",
-   "R14-043"
+   "R14-043",
+   "R16-017",
+   "R16-060",
+   "R16-068"
   ],
   "reports": [
    1,
@@ -1327,7 +1409,8 @@
    10,
    12,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -1402,7 +1485,9 @@
    "R12-069",
    "R12-085",
    "R13-053",
-   "R13-054"
+   "R13-054",
+   "R16-009",
+   "R16-044"
   ],
   "reports": [
    1,
@@ -1411,7 +1496,8 @@
    9,
    11,
    12,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -1464,7 +1550,8 @@
    "R14-006",
    "R14-028",
    "R14-037",
-   "R14-042"
+   "R14-042",
+   "R16-017"
   ],
   "reports": [
    1,
@@ -1479,7 +1566,8 @@
    10,
    12,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -1501,14 +1589,18 @@
    "R07-072",
    "R10-054",
    "R10-140",
-   "R10-153"
+   "R10-153",
+   "R16-017",
+   "R16-033",
+   "R16-058"
   ],
   "reports": [
    1,
    4,
    5,
    7,
-   10
+   10,
+   16
   ],
   "merged_from": []
  },
@@ -1556,7 +1648,11 @@
    "R13-046",
    "R13-079",
    "R14-009",
-   "R14-056"
+   "R14-056",
+   "R16-009",
+   "R16-033",
+   "R16-049",
+   "R16-070"
   ],
   "reports": [
    1,
@@ -1571,7 +1667,8 @@
    11,
    12,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -1703,7 +1800,8 @@
    "R12-028",
    "R12-066",
    "R13-036",
-   "R13-071"
+   "R13-071",
+   "R16-033"
   ],
   "reports": [
    1,
@@ -1716,7 +1814,8 @@
    9,
    10,
    12,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -1735,14 +1834,16 @@
    "R08-133",
    "R10-059",
    "R10-155",
-   "R13-027"
+   "R13-027",
+   "R16-033"
   ],
   "reports": [
    1,
    6,
    8,
    10,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -1755,11 +1856,13 @@
    "R01-092",
    "R01-176",
    "R08-075",
-   "R08-121"
+   "R08-121",
+   "R16-023"
   ],
   "reports": [
    1,
-   8
+   8,
+   16
   ],
   "merged_from": []
  },
@@ -1801,7 +1904,8 @@
    "R12-032",
    "R13-030",
    "R13-031",
-   "R13-089"
+   "R13-089",
+   "R16-036"
   ],
   "reports": [
    1,
@@ -1814,7 +1918,8 @@
    9,
    10,
    12,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -1854,7 +1959,12 @@
    "R13-082",
    "R14-021",
    "R14-022",
-   "R14-047"
+   "R14-047",
+   "R16-030",
+   "R16-038",
+   "R16-061",
+   "R16-065",
+   "R16-079"
   ],
   "reports": [
    1,
@@ -1867,7 +1977,8 @@
    9,
    12,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -2114,10 +2225,12 @@
    "R01-136",
    "R01-137",
    "R01-139",
-   "R01-185"
+   "R01-185",
+   "R16-020"
   ],
   "reports": [
-   1
+   1,
+   16
   ],
   "merged_from": []
  },
@@ -2173,7 +2286,8 @@
    "R04-110",
    "R09-063",
    "R10-179",
-   "R11-031"
+   "R11-031",
+   "R16-031"
   ],
   "reports": [
    1,
@@ -2181,7 +2295,8 @@
    4,
    9,
    10,
-   11
+   11,
+   16
   ],
   "merged_from": []
  },
@@ -2245,7 +2360,8 @@
    "R14-020",
    "R14-024",
    "R14-039",
-   "R14-056"
+   "R14-056",
+   "R16-049"
   ],
   "reports": [
    1,
@@ -2258,7 +2374,8 @@
    10,
    11,
    12,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -2270,11 +2387,14 @@
   "cards": [
    "R01-088",
    "R02-022",
-   "R02-114"
+   "R02-114",
+   "R16-045",
+   "R16-073"
   ],
   "reports": [
    1,
-   2
+   2,
+   16
   ],
   "merged_from": []
  },
@@ -2320,7 +2440,7 @@
  {
   "id": "C062",
   "title": "Weight English-speaking rich markets; volume ≠ revenue",
-  "statement": "Purchase-signal density is 8.5× higher in the US than China; BR/MX/ES/FR volume is localisation-blocked.",
+  "statement": "Purchase-signal density is 8.5× higher in the US than China; BR/MX/ES/FR volume is localisation-blocked. Report 16 (contested): the price backlash was STRONGER in high-spend markets — a value-comparison effect ('not worth it at any price', measured against Streaks, Notion, Procreate) — while the rest of the world's complaint was language.",
   "section": "do",
   "cards": [
    "R01-023",
@@ -2347,7 +2467,12 @@
    "R12-051",
    "R12-052",
    "R13-056",
-   "R14-034"
+   "R14-034",
+   "R16-052",
+   "R16-053",
+   "R16-054",
+   "R16-055",
+   "R16-056"
   ],
   "reports": [
    1,
@@ -2358,7 +2483,8 @@
    11,
    12,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -2380,7 +2506,8 @@
    "R12-058",
    "R12-078",
    "R14-031",
-   "R14-053"
+   "R14-053",
+   "R16-024"
   ],
   "reports": [
    1,
@@ -2388,7 +2515,8 @@
    9,
    10,
    12,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -2430,7 +2558,17 @@
    "R13-044",
    "R13-051",
    "R13-066",
-   "R13-086"
+   "R13-086",
+   "R16-003",
+   "R16-010",
+   "R16-011",
+   "R16-026",
+   "R16-042",
+   "R16-046",
+   "R16-047",
+   "R16-053",
+   "R16-056",
+   "R16-062"
   ],
   "reports": [
    1,
@@ -2442,14 +2580,15 @@
    10,
    11,
    12,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
  {
   "id": "C065",
   "title": "Paying customers are the highest 1★ risk — every paid feature must work",
-  "statement": "Paid cohort rates a full point lower; 28% of payers leave 1–2★; confirmed buyers ×6.7 on 1★. Report 10: paid-cohort mean fell 4.40 → 2.96 across 2022–2026 while the corpus mean barely moved; the five highest paid lifts are all billing mechanics, not price.",
+  "statement": "Paid cohort rates a full point lower; 28% of payers leave 1–2★; confirmed buyers ×6.7 on 1★. Report 10: paid-cohort mean fell 4.40 → 2.96 across 2022–2026 while the corpus mean barely moved; the five highest paid lifts are all billing mechanics, not price. Report 16: 17 confirmed payers rated 1.21 stars below everyone else; five of the seven billing complaints in the corpus came from them.",
   "section": "must-never-break",
   "cards": [
    "R01-038",
@@ -2506,7 +2645,11 @@
    "R12-047",
    "R13-028",
    "R13-048",
-   "R13-053"
+   "R13-053",
+   "R16-003",
+   "R16-009",
+   "R16-029",
+   "R16-044"
   ],
   "reports": [
    1,
@@ -2520,7 +2663,8 @@
    10,
    11,
    12,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -2579,13 +2723,17 @@
  {
   "id": "C069",
   "title": "Check-off sound and haptic",
-  "statement": "Named as a reason to keep coming back.",
+  "statement": "Named as a reason to keep coming back. Report 16: the press-and-hold fill with a haptic reward was the product's most-praised craft ('Pavlovian in a good way'; 'I'm beginning to crave that feeling') — praise fell three-quarters after a redesign replaced the circles with a list.",
   "section": "free",
   "cards": [
-   "R01-087"
+   "R01-087",
+   "R16-015",
+   "R16-063",
+   "R16-080"
   ],
   "reports": [
-   1
+   1,
+   16
   ],
   "merged_from": []
  },
@@ -2595,10 +2743,13 @@
   "statement": "Framing seen in US reviews.",
   "section": "do",
   "cards": [
-   "R01-122"
+   "R01-122",
+   "R16-013",
+   "R16-041"
   ],
   "reports": [
-   1
+   1,
+   16
   ],
   "merged_from": []
  },
@@ -2729,7 +2880,10 @@
    "R12-083",
    "R13-025",
    "R14-019",
-   "R14-021"
+   "R14-021",
+   "R16-017",
+   "R16-060",
+   "R16-068"
   ],
   "reports": [
    2,
@@ -2739,21 +2893,25 @@
    8,
    12,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
  {
   "id": "C076",
   "title": "Never seed launch reviews",
-  "statement": "Users spot it in week one and say so; it contaminates the analytics baseline permanently.",
+  "statement": "Users spot it in week one and say so; it contaminates the analytics baseline permanently. Report 16: a reviewer alleged the beta list was asked to 'overcome outdated reviews'; 23 self-identified beta testers were strongly bimodal and the launch rating was spent within six weeks.",
   "section": "dont",
   "cards": [
    "R02-008",
-   "R02-117"
+   "R02-117",
+   "R16-020",
+   "R16-059"
   ],
   "reports": [
-   2
+   2,
+   16
   ],
   "merged_from": []
  },
@@ -2776,14 +2934,16 @@
    "R14-025",
    "R14-032",
    "R14-040",
-   "R14-045"
+   "R14-045",
+   "R16-033"
   ],
   "reports": [
    2,
    6,
    7,
    9,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -2842,7 +3002,12 @@
    "R11-024",
    "R13-026",
    "R14-021",
-   "R14-052"
+   "R14-052",
+   "R16-018",
+   "R16-038",
+   "R16-064",
+   "R16-065",
+   "R16-077"
   ],
   "reports": [
    2,
@@ -2853,7 +3018,8 @@
    10,
    11,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -2916,14 +3082,16 @@
    "R12-031",
    "R12-055",
    "R12-070",
-   "R13-070"
+   "R13-070",
+   "R16-033"
   ],
   "reports": [
    2,
    8,
    10,
    12,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -3023,7 +3191,11 @@
    "R12-020",
    "R13-007",
    "R13-058",
-   "R13-087"
+   "R13-087",
+   "R16-034",
+   "R16-048",
+   "R16-058",
+   "R16-074"
   ],
   "reports": [
    3,
@@ -3034,7 +3206,8 @@
    10,
    11,
    12,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -3079,7 +3252,8 @@
    "R14-038",
    "R14-044",
    "R14-055",
-   "R14-058"
+   "R14-058",
+   "R16-024"
   ],
   "reports": [
    3,
@@ -3092,7 +3266,8 @@
    10,
    11,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -3426,7 +3601,8 @@
    "R13-044",
    "R13-050",
    "R13-073",
-   "R13-076"
+   "R13-076",
+   "R16-007"
   ],
   "reports": [
    4,
@@ -3434,7 +3610,8 @@
    9,
    10,
    12,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -3462,7 +3639,9 @@
    "R12-006",
    "R13-020",
    "R13-077",
-   "R13-089"
+   "R13-089",
+   "R16-025",
+   "R16-082"
   ],
   "reports": [
    4,
@@ -3471,7 +3650,8 @@
    10,
    11,
    12,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -3620,12 +3800,14 @@
    "R13-009",
    "R13-045",
    "R13-069",
-   "R13-082"
+   "R13-082",
+   "R16-013"
   ],
   "reports": [
    4,
    10,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -3688,13 +3870,17 @@
    "R07-123",
    "R08-108",
    "R10-061",
-   "R10-141"
+   "R10-141",
+   "R16-015",
+   "R16-063",
+   "R16-080"
   ],
   "reports": [
    4,
    7,
    8,
-   10
+   10,
+   16
   ],
   "merged_from": [
    {
@@ -3871,7 +4057,10 @@
    "R10-022",
    "R11-066",
    "R13-012",
-   "R13-043"
+   "R13-043",
+   "R16-004",
+   "R16-027",
+   "R16-066"
   ],
   "reports": [
    5,
@@ -3879,7 +4068,8 @@
    7,
    10,
    11,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -4032,7 +4222,8 @@
    "R13-027",
    "R13-042",
    "R14-021",
-   "R14-052"
+   "R14-052",
+   "R16-038"
   ],
   "reports": [
    7,
@@ -4040,7 +4231,8 @@
    9,
    12,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -4080,13 +4272,16 @@
    "R13-026",
    "R14-015",
    "R14-021",
-   "R14-052"
+   "R14-052",
+   "R16-030",
+   "R16-079"
   ],
   "reports": [
    8,
    9,
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -4158,12 +4353,16 @@
    "R13-044",
    "R13-051",
    "R13-052",
-   "R13-071"
+   "R13-071",
+   "R16-004",
+   "R16-007",
+   "R16-037"
   ],
   "reports": [
    9,
    12,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -4255,11 +4454,13 @@
    "R13-005",
    "R13-050",
    "R13-059",
-   "R13-074"
+   "R13-074",
+   "R16-009"
   ],
   "reports": [
    10,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -4589,11 +4790,13 @@
    "R10-075",
    "R10-129",
    "R10-163",
-   "R14-052"
+   "R14-052",
+   "R16-018"
   ],
   "reports": [
    10,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -4641,12 +4844,15 @@
    "R05-099",
    "R01-074",
    "R01-102",
-   "R07-087"
+   "R07-087",
+   "R16-030",
+   "R16-079"
   ],
   "reports": [
    1,
    5,
-   7
+   7,
+   16
   ],
   "merged_from": [
    {
@@ -4718,10 +4924,12 @@
   "cards": [
    "R11-007",
    "R11-035",
-   "R11-066"
+   "R11-066",
+   "R16-008"
   ],
   "reports": [
-   11
+   11,
+   16
   ],
   "merged_from": []
  },
@@ -4801,11 +5009,13 @@
    "R12-006",
    "R12-071",
    "R13-010",
-   "R13-077"
+   "R13-077",
+   "R16-082"
   ],
   "reports": [
    12,
-   13
+   13,
+   16
   ],
   "merged_from": []
  },
@@ -4871,10 +5081,13 @@
    "R12-040",
    "R12-041",
    "R12-042",
-   "R12-082"
+   "R12-082",
+   "R16-014",
+   "R16-043"
   ],
   "reports": [
-   12
+   12,
+   16
   ],
   "merged_from": []
  },
@@ -4913,7 +5126,7 @@
  {
   "id": "C188",
   "title": "The app must open offline — never block launch on a network call",
-  "statement": "Report 13: a blocking in-app 'update in progress' migration bricked the app on launch in three waves (Nov 2019, Oct 2020 at 5.9% of that month's reviews, Sep 2025 → Aug 2026), destroyed data on reinstall ('lost almost 3 years of habit tracking') and locked out paying subscribers; 'Will not launch without internet'. Report 14: 'works fully offline' was one of two named reasons a reviewer chose this app over rivals already tried.",
+  "statement": "Report 13: a blocking in-app 'update in progress' migration bricked the app on launch in three waves (Nov 2019, Oct 2020 at 5.9% of that month's reviews, Sep 2025 → Aug 2026), destroyed data on reinstall ('lost almost 3 years of habit tracking') and locked out paying subscribers; 'Will not launch without internet'. Report 14: 'works fully offline' was one of two named reasons a reviewer chose this app over rivals already tried. Report 16: 'why in the world does ticking a box require connectivity!' — 9 reviews, zero 5★; a remote worker without internet for days could not use the app.",
   "section": "must-never-break",
   "cards": [
    "R13-008",
@@ -4922,11 +5135,16 @@
    "R13-081",
    "R14-015",
    "R14-023",
-   "R14-049"
+   "R14-049",
+   "R16-017",
+   "R16-038",
+   "R16-065",
+   "R16-078"
   ],
   "reports": [
    13,
-   14
+   14,
+   16
   ],
   "merged_from": []
  },
@@ -4958,6 +5176,88 @@
   ],
   "reports": [
    13
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C191",
+  "title": "Never cap the tier someone has already paid for",
+  "statement": "Report 16: Pro was capped at 3 habits, then 6, for 29 months; a cap on the paid tier has no monetisation function (there is no higher tier to drive to) and two of three buyers who paid specifically to escape the free cap hit the next one and rated 3★ — 'A paid user pays $40/year just to create only 6 habits simultaneously?'",
+  "section": "product-rule",
+  "cards": [
+   "R16-005",
+   "R16-038",
+   "R16-045",
+   "R16-062",
+   "R16-065",
+   "R16-067"
+  ],
+  "reports": [
+   16
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C192",
+  "title": "A trial must end in a usable free tier, not a cliff",
+  "statement": "Report 16: a well-liked no-card 28-day trial that dropped to a one-habit tier read as a bait-and-switch — 'it encourages people to start habits and continue them for three weeks and then hits you with a steep bill' — and was the fastest-growing negative (2.4% → 7.2%). Taper, warn earlier and in-app, or keep the streak read-only.",
+  "section": "product-rule",
+  "cards": [
+   "R16-007",
+   "R16-025",
+   "R16-045",
+   "R16-061",
+   "R16-075"
+  ],
+  "reports": [
+   16
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C193",
+  "title": "Lapsed subscribers keep a usable free tier and read-only history",
+  "statement": "Report 16: a cancelled payer could not edit, view or even complete the one habit the free tier allows — 'It's my habit for walking my dog, who is recently deceased… I guess the app is bricked for me now.' A lapsed subscriber with read-only history is a resubscription candidate; one whose data is hostage is a permanent loss.",
+  "section": "must-never-break",
+  "cards": [
+   "R16-008",
+   "R16-044",
+   "R16-049",
+   "R16-069"
+  ],
+  "reports": [
+   16
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C194",
+  "title": "Do not paywall content the user already bought elsewhere",
+  "statement": "Report 16: the daily lessons and articles restate the Atomic Habits book; paywalling them was the packaging decision reviewers found hardest to forgive ('I already read the book which only cost me $15 one time') and praise for the content fell 6.8% → 1.2% once it went behind the wall. Content free, slots paid was the corpus's proposal.",
+  "section": "dont",
+  "cards": [
+   "R16-027",
+   "R16-043",
+   "R16-063",
+   "R16-072"
+  ],
+  "reports": [
+   16
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C195",
+  "title": "Premium pricing on a trust-based personal brand spends the brand",
+  "statement": "Report 16: $120/yr on the official Atomic Habits app produced the lowest-rated theme in the corpus — personal attacks on James Clear ('How to ruin your brand overnight'; 'changed my view of James') — plus 69 'cash grab / greedy / predatory' reviews with zero 5★; the only negative theme still growing in 2026.",
+  "section": "dont",
+  "cards": [
+   "R16-016",
+   "R16-055",
+   "R16-061"
+  ],
+  "reports": [
+   16
   ],
   "merged_from": []
  }
