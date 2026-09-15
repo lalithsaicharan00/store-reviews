@@ -1,0 +1,77 @@
+[
+ {
+  "table_row": "< 0.1%",
+  "no_new_insight": "signal-band definition (method); see R12-002"
+ },
+ {
+  "table_row": "0.1 – <0.5%",
+  "no_new_insight": "signal-band definition (method); see R12-002"
+ },
+ {
+  "table_row": "0.5 – <1%",
+  "no_new_insight": "signal-band definition (method); see R12-002"
+ },
+ {
+  "table_row": "1 – <3%",
+  "no_new_insight": "signal-band definition (method); see R12-002"
+ },
+ {
+  "table_row": "3 – 5%",
+  "no_new_insight": "signal-band definition (method); see R12-002"
+ },
+ {
+  "table_row": "> 5%",
+  "no_new_insight": "signal-band definition (method); see R12-002"
+ },
+ {
+  "heading": "Monetization — repackage around what the corpus actually values",
+  "cards": [
+   "R12-078",
+   "R12-079",
+   "R12-080",
+   "R12-081"
+  ]
+ },
+ {
+  "table_row": "10",
+  "cards": [
+   "R12-075"
+  ]
+ },
+ {
+  "table_row": "17",
+  "cards": [
+   "R12-081"
+  ]
+ },
+ {
+  "bold": "Target folder:",
+  "cards": [
+   "R12-001"
+  ]
+ },
+ {
+  "bold": "This does not prove a guideline violation from review text alone.",
+  "cards": [
+   "R12-010"
+  ]
+ },
+ {
+  "bold": "Definition (disclosed proxy):",
+  "cards": [
+   "R12-051"
+  ]
+ },
+ {
+  "bold": "Definition (external, disclosed):",
+  "cards": [
+   "R12-052"
+  ]
+ },
+ {
+  "bold": "No standalone claim is made for any of them.",
+  "cards": [
+   "R12-055"
+  ]
+ }
+]

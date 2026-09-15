@@ -102,7 +102,14 @@
    "R09-083",
    "R10-004",
    "R10-099",
-   "R11-004"
+   "R11-004",
+   "R12-003",
+   "R12-004",
+   "R12-007",
+   "R12-010",
+   "R12-037",
+   "R12-052",
+   "R12-061"
   ],
   "reports": [
    1,
@@ -115,7 +122,8 @@
    8,
    9,
    10,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -224,7 +232,8 @@
    "R08-029",
    "R09-066",
    "R09-095",
-   "R11-011"
+   "R11-011",
+   "R12-013"
   ],
   "reports": [
    1,
@@ -235,7 +244,8 @@
    7,
    8,
    9,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -419,7 +429,7 @@
  {
   "id": "C009",
   "title": "Basic widgets, icons and colours are free",
-  "statement": "Loved, drives 5★, and re-paywalling widgets backfired. Report 7: with every widget Pro, the widget paywall was the only theme with zero 5★ reviews, while widgets were the best-loved feature; users proposed one free widget, more with Pro.",
+  "statement": "Loved, drives 5★, and re-paywalling widgets backfired. Report 7: with every widget Pro, the widget paywall was the only theme with zero 5★ reviews, while widgets were the best-loved feature; users proposed one free widget, more with Pro. Report 12: widget requests appeared only from Nov 2024 and came from retained payers ('I forget all the time to use this app cause I don't have a widget') — the highest-mean complaint theme.",
   "section": "free",
   "cards": [
    "R01-011",
@@ -455,7 +465,11 @@
    "R08-119",
    "R08-125",
    "R09-037",
-   "R09-135"
+   "R09-135",
+   "R12-015",
+   "R12-064",
+   "R12-074",
+   "R12-083"
   ],
   "reports": [
    1,
@@ -466,7 +480,8 @@
    6,
    7,
    8,
-   9
+   9,
+   12
   ],
   "merged_from": []
  },
@@ -545,12 +560,14 @@
    "R11-014",
    "R11-017",
    "R11-024",
-   "R11-052"
+   "R11-052",
+   "R12-028"
   ],
   "reports": [
    1,
    7,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -618,7 +635,8 @@
    "R03-069",
    "R07-083",
    "R08-079",
-   "R10-036"
+   "R10-036",
+   "R12-034"
   ],
   "reports": [
    1,
@@ -626,7 +644,8 @@
    3,
    7,
    8,
-   10
+   10,
+   12
   ],
   "merged_from": []
  },
@@ -811,7 +830,12 @@
    "R10-070",
    "R10-073",
    "R10-096",
-   "R10-162"
+   "R10-162",
+   "R12-023",
+   "R12-038",
+   "R12-044",
+   "R12-045",
+   "R12-083"
   ],
   "reports": [
    1,
@@ -822,7 +846,8 @@
    7,
    8,
    9,
-   10
+   10,
+   12
   ],
   "merged_from": []
  },
@@ -885,11 +910,13 @@
    "R01-169",
    "R10-108",
    "R10-113",
-   "R10-170"
+   "R10-170",
+   "R12-046"
   ],
   "reports": [
    1,
-   10
+   10,
+   12
   ],
   "merged_from": []
  },
@@ -962,7 +989,10 @@
    "R10-128",
    "R10-164",
    "R10-176",
-   "R11-041"
+   "R11-041",
+   "R12-028",
+   "R12-053",
+   "R12-080"
   ],
   "reports": [
    1,
@@ -975,7 +1005,8 @@
    8,
    9,
    10,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -1037,7 +1068,9 @@
    "R10-149",
    "R11-005",
    "R11-032",
-   "R11-054"
+   "R11-054",
+   "R12-008",
+   "R12-009"
   ],
   "reports": [
    1,
@@ -1049,7 +1082,8 @@
    7,
    9,
    10,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -1067,13 +1101,17 @@
    "R02-013",
    "R02-021",
    "R05-049",
-   "R10-140"
+   "R10-140",
+   "R12-014",
+   "R12-062",
+   "R12-075"
   ],
   "reports": [
    1,
    2,
    5,
-   10
+   10,
+   12
   ],
   "merged_from": []
  },
@@ -1114,7 +1152,8 @@
    "R10-097",
    "R10-134",
    "R10-135",
-   "R10-136"
+   "R10-136",
+   "R12-014"
   ],
   "reports": [
    1,
@@ -1125,7 +1164,8 @@
    7,
    8,
    9,
-   10
+   10,
+   12
   ],
   "merged_from": []
  },
@@ -1164,7 +1204,7 @@
  {
   "id": "C033",
   "title": "Restore purchase and entitlements must work immediately",
-  "statement": "Charging and not delivering is the second-fastest route to 1★ (×13.9). Lifetime buyers told to subscribe, subscribers who cannot find their tier, premium members still upsold. Report 11: 3 of 3 paid reviewers lost purchased access — a lifetime non-consumable expired, a subscription re-locked after a week and reinstall did not restore, an active annual term was re-charged — and two titled their reviews 'scam' and 'Purchase fraud'.",
+  "statement": "Charging and not delivering is the second-fastest route to 1★ (×13.9). Lifetime buyers told to subscribe, subscribers who cannot find their tier, premium members still upsold. Report 11: 3 of 3 paid reviewers lost purchased access — a lifetime non-consumable expired, a subscription re-locked after a week and reinstall did not restore, an active annual term was re-charged — and two titled their reviews 'scam' and 'Purchase fraud'. Report 12: 40% of self-identified payers reported that payment did not grant access (paywall re-appears, 'no subscription found', Restore Purchase redirecting to the privacy policy, HTTP 400 at login, re-purchase demanded on a new device) — rising to 12.6% of all 2025 reviews.",
   "section": "must-never-break",
   "cards": [
    "R01-044",
@@ -1189,14 +1229,24 @@
    "R11-036",
    "R11-048",
    "R11-054",
-   "R11-055"
+   "R11-055",
+   "R12-008",
+   "R12-009",
+   "R12-043",
+   "R12-047",
+   "R12-055",
+   "R12-059",
+   "R12-067",
+   "R12-069",
+   "R12-085"
   ],
   "reports": [
    1,
    3,
    7,
    9,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -1241,7 +1291,8 @@
    "R10-097",
    "R10-115",
    "R10-130",
-   "R10-137"
+   "R10-137",
+   "R12-014"
   ],
   "reports": [
    1,
@@ -1253,7 +1304,8 @@
    7,
    8,
    9,
-   10
+   10,
+   12
   ],
   "merged_from": []
  },
@@ -1289,7 +1341,7 @@
  {
   "id": "C036",
   "title": "A support channel that exists, is reachable outside the app, and answers",
-  "statement": "'No support channel' is ×34.7 over-represented among buyers and the second-worst-rated complaint. Report 5: the only support link was inside an app that would not launch; email went unanswered while public review replies were same-day. Report 10: AI and canned support replies; paying users 13× over-represented among support complaints. Report 11: 'there is no way in app to talk with developer or team' — with no support queue, billing bugs were filed as public 1★ fraud accusations instead.",
+  "statement": "'No support channel' is ×34.7 over-represented among buyers and the second-worst-rated complaint. Report 5: the only support link was inside an app that would not launch; email went unanswered while public review replies were same-day. Report 10: AI and canned support replies; paying users 13× over-represented among support complaints. Report 11: 'there is no way in app to talk with developer or team' — with no support queue, billing bugs were filed as public 1★ fraud accusations instead. Report 12: five reviewers said the listed support email does not exist; refund and support failures were twice as prevalent in small storefronts, where users are charged and stranded.",
   "section": "must-have",
   "cards": [
    "R01-046",
@@ -1319,7 +1371,13 @@
    "R11-005",
    "R11-036",
    "R11-038",
-   "R11-056"
+   "R11-056",
+   "R12-009",
+   "R12-039",
+   "R12-047",
+   "R12-051",
+   "R12-068",
+   "R12-085"
   ],
   "reports": [
    1,
@@ -1331,7 +1389,8 @@
    8,
    9,
    10,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -1387,7 +1446,10 @@
    "R08-110",
    "R08-111",
    "R08-131",
-   "R10-066"
+   "R10-066",
+   "R12-014",
+   "R12-062",
+   "R12-075"
   ],
   "reports": [
    1,
@@ -1397,7 +1459,8 @@
    6,
    7,
    8,
-   10
+   10,
+   12
   ],
   "merged_from": [
    {
@@ -1451,7 +1514,9 @@
    "R08-113",
    "R08-114",
    "R09-061",
-   "R10-060"
+   "R10-060",
+   "R12-028",
+   "R12-066"
   ],
   "reports": [
    1,
@@ -1462,7 +1527,8 @@
    7,
    8,
    9,
-   10
+   10,
+   12
   ],
   "merged_from": []
  },
@@ -1540,7 +1606,9 @@
    "R09-094",
    "R10-034",
    "R10-048",
-   "R10-122"
+   "R10-122",
+   "R12-016",
+   "R12-032"
   ],
   "reports": [
    1,
@@ -1551,14 +1619,15 @@
    7,
    8,
    9,
-   10
+   10,
+   12
   ],
   "merged_from": []
  },
  {
   "id": "C043",
   "title": "Flexible / custom frequency",
-  "statement": "Every X days, specific weekdays, bi-weekly, quarterly, yearly, total-over-a-window — the #1 unmet functional need and highest 4★ lift.",
+  "statement": "Every X days, specific weekdays, bi-weekly, quarterly, yearly, total-over-a-window — the #1 unmet functional need and highest 4★ lift. Report 12: weekday-only repeats were asked for in Jul 2022 and still missing in May 2026 — three years and ten months.",
   "section": "must-have",
   "cards": [
    "R01-072",
@@ -1579,7 +1648,11 @@
    "R08-063",
    "R08-117",
    "R09-050",
-   "R09-129"
+   "R09-129",
+   "R12-014",
+   "R12-066",
+   "R12-075",
+   "R12-083"
   ],
   "reports": [
    1,
@@ -1589,7 +1662,8 @@
    6,
    7,
    8,
-   9
+   9,
+   12
   ],
   "merged_from": []
  },
@@ -1707,12 +1781,15 @@
   "cards": [
    "R01-083",
    "R08-017",
-   "R09-055"
+   "R09-055",
+   "R12-022",
+   "R12-076"
   ],
   "reports": [
    1,
    8,
-   9
+   9,
+   12
   ],
   "merged_from": []
  },
@@ -1940,7 +2017,11 @@
    "R10-038",
    "R10-107",
    "R11-050",
-   "R11-058"
+   "R11-058",
+   "R12-012",
+   "R12-028",
+   "R12-060",
+   "R12-063"
   ],
   "reports": [
    1,
@@ -1951,7 +2032,8 @@
    8,
    9,
    10,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -2030,7 +2112,10 @@
    "R10-121",
    "R10-123",
    "R11-015",
-   "R11-042"
+   "R11-042",
+   "R12-050",
+   "R12-051",
+   "R12-052"
   ],
   "reports": [
    1,
@@ -2038,7 +2123,8 @@
    3,
    7,
    10,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -2055,13 +2141,17 @@
    "R09-101",
    "R09-123",
    "R09-137",
-   "R10-109"
+   "R10-109",
+   "R12-026",
+   "R12-058",
+   "R12-078"
   ],
   "reports": [
    1,
    7,
    9,
-   10
+   10,
+   12
   ],
   "merged_from": []
  },
@@ -2095,7 +2185,9 @@
    "R10-149",
    "R10-171",
    "R10-180",
-   "R11-032"
+   "R11-032",
+   "R12-027",
+   "R12-044"
   ],
   "reports": [
    1,
@@ -2105,7 +2197,8 @@
    6,
    7,
    10,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -2161,7 +2254,12 @@
    "R10-106",
    "R11-003",
    "R11-020",
-   "R11-026"
+   "R11-026",
+   "R12-007",
+   "R12-008",
+   "R12-035",
+   "R12-043",
+   "R12-047"
   ],
   "reports": [
    1,
@@ -2173,7 +2271,8 @@
    7,
    9,
    10,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -2285,10 +2384,12 @@
    "R02-014",
    "R02-052",
    "R02-059",
-   "R02-102"
+   "R02-102",
+   "R12-075"
   ],
   "reports": [
-   2
+   2,
+   12
   ],
   "merged_from": []
  },
@@ -2345,7 +2446,7 @@
  {
   "id": "C075",
   "title": "Skippable, replayable onboarding tour",
-  "statement": "Hidden gestures (swipe-to-complete, mode toggles) confuse new users; a US-specific 6% complaint in report 2.",
+  "statement": "Hidden gestures (swipe-to-complete, mode toggles) confuse new users; a US-specific 6% complaint in report 2. Report 12: an unskippable narrated intro drew 21 complaints peaking at 16% of 2024 reviews, then fell to one review after a skip control landed — the corpus's clearest fix — while the same intro is praised as a conversion asset.",
   "section": "must-have",
   "cards": [
    "R02-061",
@@ -2355,14 +2456,21 @@
    "R06-024",
    "R06-091",
    "R07-080",
-   "R08-074"
+   "R08-074",
+   "R12-011",
+   "R12-012",
+   "R12-038",
+   "R12-042",
+   "R12-060",
+   "R12-083"
   ],
   "reports": [
    2,
    4,
    6,
    7,
-   8
+   8,
+   12
   ],
   "merged_from": []
  },
@@ -2522,12 +2630,16 @@
    "R02-080",
    "R08-037",
    "R08-127",
-   "R10-088"
+   "R10-088",
+   "R12-031",
+   "R12-055",
+   "R12-070"
   ],
   "reports": [
    2,
    8,
-   10
+   10,
+   12
   ],
   "merged_from": []
  },
@@ -2572,12 +2684,16 @@
    "R05-096",
    "R09-012",
    "R09-013",
-   "R09-145"
+   "R09-145",
+   "R12-029",
+   "R12-041",
+   "R12-065"
   ],
   "reports": [
    2,
    5,
-   9
+   9,
+   12
   ],
   "merged_from": []
  },
@@ -2617,7 +2733,8 @@
    "R10-131",
    "R11-015",
    "R11-042",
-   "R11-068"
+   "R11-068",
+   "R12-020"
   ],
   "reports": [
    3,
@@ -2626,7 +2743,8 @@
    6,
    7,
    10,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -2686,14 +2804,16 @@
    "R08-128",
    "R09-070",
    "R02-065",
-   "R02-116"
+   "R02-116",
+   "R12-072"
   ],
   "reports": [
    2,
    3,
    5,
    8,
-   9
+   9,
+   12
   ],
   "merged_from": [
    {
@@ -2878,7 +2998,8 @@
    "R09-119",
    "R09-146",
    "R10-083",
-   "R10-086"
+   "R10-086",
+   "R12-046"
   ],
   "reports": [
    3,
@@ -2886,7 +3007,8 @@
    5,
    6,
    9,
-   10
+   10,
+   12
   ],
   "merged_from": []
  },
@@ -2949,7 +3071,7 @@
  {
   "id": "C109",
   "title": "A free trial must be a real trial",
-  "statement": "It must apply to whichever plan the user picks, and the confirmation must show the exact charge date and amount; a trial that bills at once produced 789 reviews at mean 1.35 in report 4 and must be verified per storefront (Brazil ran 7–11× the global rate). Report 10: 149 users believe they were charged at trial START (mean 1.79) and trial length varied between 2 and 7 days across users.",
+  "statement": "It must apply to whichever plan the user picks, and the confirmation must show the exact charge date and amount; a trial that bills at once produced 789 reviews at mean 1.35 in report 4 and must be verified per storefront (Brazil ran 7–11× the global rate). Report 10: 149 users believe they were charged at trial START (mean 1.79) and trial length varied between 2 and 7 days across users. Report 12: a 3-day trial introduced around 2024 shows as subscribed but 'doesn't move past the subscription screen' — the complaint changed shape from 'there is no trial' to 'the trial doesn't work'.",
   "section": "must-never-break",
   "cards": [
    "R04-005",
@@ -2970,13 +3092,15 @@
    "R10-005",
    "R10-025",
    "R10-047",
-   "R10-049"
+   "R10-049",
+   "R12-058"
   ],
   "reports": [
    4,
    5,
    9,
-   10
+   10,
+   12
   ],
   "merged_from": []
  },
@@ -3000,14 +3124,16 @@
    "R10-100",
    "R11-008",
    "R11-036",
-   "R11-059"
+   "R11-059",
+   "R12-006"
   ],
   "reports": [
    4,
    5,
    9,
    10,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -3087,14 +3213,17 @@
    "R10-116",
    "R10-169",
    "R11-008",
-   "R11-036"
+   "R11-036",
+   "R12-019",
+   "R12-020"
   ],
   "reports": [
    4,
    6,
    9,
    10,
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -3178,12 +3307,14 @@
    "R05-045",
    "R09-035",
    "R09-052",
-   "R09-128"
+   "R09-128",
+   "R12-076"
   ],
   "reports": [
    4,
    5,
-   9
+   9,
+   12
   ],
   "merged_from": []
  },
@@ -3516,12 +3647,19 @@
    "R07-133",
    "R08-077",
    "R09-039",
-   "R09-135"
+   "R09-135",
+   "R12-023",
+   "R12-038",
+   "R12-044",
+   "R12-045",
+   "R12-077",
+   "R12-083"
   ],
   "reports": [
    7,
    8,
-   9
+   9,
+   12
   ],
   "merged_from": []
  },
@@ -3612,7 +3750,7 @@
  {
   "id": "C147",
   "title": "Let people use the product before they pay",
-  "statement": "Users forgive a price; they do not forgive paying blind. Report 9's hard paywall before any experience produced 159 'let me look before you charge me' reviews at mean 1.79, and buyers who paid before seeing the product became the angriest cohort (mean 1.94).",
+  "statement": "Users forgive a price; they do not forgive paying blind. Report 9's hard paywall before any experience produced 159 'let me look before you charge me' reviews at mean 1.79, and buyers who paid before seeing the product became the angriest cohort (mean 1.94). Report 12: a hard paywall with nothing evaluable produced a paywall corpus — 46.5% of 404 reviews complain about the gate, 172 reviewers left without ever seeing the product, and the theme never dropped below a third of reviews in any year.",
   "section": "product-rule",
   "cards": [
    "R09-003",
@@ -3620,10 +3758,19 @@
    "R09-009",
    "R09-085",
    "R09-101",
-   "R09-122"
+   "R09-122",
+   "R12-005",
+   "R12-021",
+   "R12-026",
+   "R12-035",
+   "R12-044",
+   "R12-057",
+   "R12-078",
+   "R12-082"
   ],
   "reports": [
-   9
+   9,
+   12
   ],
   "merged_from": []
  },
@@ -3667,15 +3814,22 @@
  {
   "id": "C150",
   "title": "Never ask for a rating before the user has used the app",
-  "statement": "Report 9 put the rating prompt inside sign-up: users were asked for 5★ before seeing the app, the public rating ran 1.35 stars above written reviews, and Apple's guidelines forbid it.",
+  "statement": "Report 9 put the rating prompt inside sign-up: users were asked for 5★ before seeing the app, the public rating ran 1.35 stars above written reviews, and Apple's guidelines forbid it. Report 12: an in-app instruction to rate 5★ during onboarding — 'It said I had to give them 5 starts so here I am' — was called out by 23 reviewers, two of whom named the exact 4.8 store aggregate; 14 of 77 five-star reviews contradict their own rating.",
   "section": "dont",
   "cards": [
    "R09-070",
    "R09-116",
-   "R09-147"
+   "R09-147",
+   "R12-003",
+   "R12-010",
+   "R12-037",
+   "R12-061",
+   "R12-072",
+   "R12-085"
   ],
   "reports": [
-   9
+   9,
+   12
   ],
   "merged_from": []
  },
@@ -3792,10 +3946,12 @@
    "R10-143",
    "R10-144",
    "R10-145",
-   "R10-146"
+   "R10-146",
+   "R12-024"
   ],
   "reports": [
-   10
+   10,
+   12
   ],
   "merged_from": []
  },
@@ -4119,14 +4275,16 @@
    "R08-009",
    "R09-109",
    "R10-090",
-   "R04-059"
+   "R04-059",
+   "R12-062"
   ],
   "reports": [
    4,
    5,
    8,
    9,
-   10
+   10,
+   12
   ],
   "merged_from": [
    {
@@ -4153,14 +4311,17 @@
  {
   "id": "C177",
   "title": "Every IAP SKU has a distinct name that states its period or 'one time'",
-  "statement": "Report 11: three SKUs shared the identical display name 'Habits PRO Functions' at $1.99 / $6.99 / $8.99 and none named a period, while reviewers described 'annual', 'VIP' and 'lifetime' purchases — neither the user nor support could tell what had been bought.",
+  "statement": "Report 11: three SKUs shared the identical display name 'Habits PRO Functions' at $1.99 / $6.99 / $8.99 and none named a period, while reviewers described 'annual', 'VIP' and 'lifetime' purchases — neither the user nor support could tell what had been bought. Report 12: ten SKUs including three 'Weekly Subscription' and two 'One-Time Payment' entries at different prices, visible on the store page.",
   "section": "must-have",
   "cards": [
    "R11-008",
-   "R11-057"
+   "R11-057",
+   "R12-019",
+   "R12-073"
   ],
   "reports": [
-   11
+   11,
+   12
   ],
   "merged_from": []
  },
@@ -4191,6 +4352,106 @@
   ],
   "reports": [
    11
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C180",
+  "title": "No 'wait, don't go' exit discounts or countdown timers on the paywall",
+  "statement": "Report 12: a lifetime offer at 17.99 that drops to 5.99 when the user tries to close, a '90% off' timer that still grants no access, and a 10× regional price jump were described as 'gross' and 'another major red flag'; 42 reviewers used the word 'scam'. The ladder is also visible to every prospect as ten SKUs on the store page.",
+  "section": "dont",
+  "cards": [
+   "R12-019",
+   "R12-020",
+   "R12-041",
+   "R12-073",
+   "R12-085"
+  ],
+  "reports": [
+   12
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C181",
+  "title": "If the app is paid-only, say so in the subtitle and first screenshot",
+  "statement": "Report 12: the description already said 'purchase is required to access any content' but the price label read Free — 162 reviewers (40%) wrote a 1★ review having never seen the product. A discovery and framing failure fixable at the top of the funnel.",
+  "section": "do",
+  "cards": [
+   "R12-006",
+   "R12-071"
+  ],
+  "reports": [
+   12
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C182",
+  "title": "A pre-use hard paywall makes every purchase non-evidence-based and non-durable",
+  "statement": "Report 12: no reviewer in 404 said they paid because of a feature they had seen working; purchases were made to evaluate, under an exit discount, or on the strength of the intro — and 0 of 80 self-identified payers rated 5★. What the gate protects must be able to survive inspection: 13 buyers said it was a worse version of Apple Calendar.",
+  "section": "product-rule",
+  "cards": [
+   "R12-005",
+   "R12-007",
+   "R12-013",
+   "R12-041",
+   "R12-066",
+   "R12-079",
+   "R12-082",
+   "R12-085"
+  ],
+  "reports": [
+   12
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C183",
+  "title": "A pre-planned, structured day is the outcome ADHD and autistic users praise",
+  "statement": "Report 12: 'I lose track of time, forget to do things, and never have a plan, but that girl made sure I DID have a plan' — the one narrow, consistent praised outcome (22 reviews, mean 4.95) is being told what the day looks like.",
+  "section": "must-have",
+  "cards": [
+   "R12-016",
+   "R12-032",
+   "R12-083"
+  ],
+  "reports": [
+   12
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C184",
+  "title": "Gendered branding narrows the audience; a neutral name is already tested",
+  "statement": "Report 12: four reviewers objected to a girls-only brand ('I don't think a todo app should be targeted at one certain gender'); the developer ships a gender-neutral name in es/mx, the two highest-rated storefronts in the sample — an existing A/B result to measure.",
+  "section": "research",
+  "cards": [
+   "R12-030",
+   "R12-038",
+   "R12-054",
+   "R12-081"
+  ],
+  "reports": [
+   12
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C185",
+  "title": "Aesthetic and a polished onboarding convert; they do not retain",
+  "statement": "Report 12: 17 reviewers praised the design and 11 of them rated 1–2★; nine 5★ reviews praised the narrated intro before using the product; 'The intro before you purchase seems to have more thought put into it than the actual app itself.' See also report 9's warm shell over a thin product.",
+  "section": "insight",
+  "cards": [
+   "R12-011",
+   "R12-017",
+   "R12-040",
+   "R12-041",
+   "R12-042",
+   "R12-082"
+  ],
+  "reports": [
+   12
   ],
   "merged_from": []
  }
