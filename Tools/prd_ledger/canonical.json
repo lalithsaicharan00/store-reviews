@@ -82,7 +82,10 @@
    "R07-003",
    "R07-005",
    "R07-074",
-   "R08-006"
+   "R08-006",
+   "R09-004",
+   "R09-008",
+   "R09-083"
   ],
   "reports": [
    1,
@@ -92,7 +95,8 @@
    5,
    6,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -196,7 +200,9 @@
    "R07-043",
    "R07-068",
    "R08-028",
-   "R08-029"
+   "R08-029",
+   "R09-066",
+   "R09-095"
   ],
   "reports": [
    1,
@@ -205,7 +211,8 @@
    4,
    6,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -330,7 +337,8 @@
    "R07-125",
    "R07-141",
    "R07-142",
-   "R08-031"
+   "R08-031",
+   "R09-047"
   ],
   "reports": [
    1,
@@ -340,7 +348,8 @@
    5,
    6,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -407,7 +416,9 @@
    "R08-032",
    "R08-067",
    "R08-119",
-   "R08-125"
+   "R08-125",
+   "R09-037",
+   "R09-135"
   ],
   "reports": [
    1,
@@ -417,7 +428,8 @@
    5,
    6,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -433,13 +445,16 @@
    "R06-031",
    "R08-054",
    "R08-055",
-   "R08-118"
+   "R08-118",
+   "R09-057",
+   "R09-133"
   ],
   "reports": [
    1,
    3,
    6,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -462,7 +477,8 @@
    "R05-016",
    "R07-028",
    "R08-015",
-   "R08-056"
+   "R08-056",
+   "R09-058"
   ],
   "reports": [
    1,
@@ -470,7 +486,8 @@
    3,
    5,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -574,14 +591,16 @@
    "R06-033",
    "R07-090",
    "R07-135",
-   "R08-081"
+   "R08-081",
+   "R09-050"
   ],
   "reports": [
    1,
    3,
    6,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -663,13 +682,15 @@
    "R07-029",
    "R08-033",
    "R08-034",
-   "R08-115"
+   "R08-115",
+   "R09-040"
   ],
   "reports": [
    1,
    3,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -717,7 +738,9 @@
    "R05-080",
    "R07-078",
    "R08-076",
-   "R08-124"
+   "R08-124",
+   "R09-039",
+   "R09-135"
   ],
   "reports": [
    1,
@@ -726,7 +749,8 @@
    4,
    5,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -796,11 +820,13 @@
   "section": "do",
   "cards": [
    "R01-036",
-   "R08-091"
+   "R08-091",
+   "R09-093"
   ],
   "reports": [
    1,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -841,7 +867,12 @@
    "R07-084",
    "R07-138",
    "R08-073",
-   "R08-102"
+   "R08-102",
+   "R09-032",
+   "R09-067",
+   "R09-068",
+   "R09-134",
+   "R09-136"
   ],
   "reports": [
    1,
@@ -851,7 +882,8 @@
    5,
    6,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -901,7 +933,8 @@
    "R06-082",
    "R06-096",
    "R06-104",
-   "R07-095"
+   "R07-095",
+   "R09-015"
   ],
   "reports": [
    1,
@@ -910,7 +943,8 @@
    4,
    5,
    6,
-   7
+   7,
+   9
   ],
   "merged_from": []
  },
@@ -961,7 +995,12 @@
    "R07-079",
    "R08-009",
    "R08-010",
-   "R08-088"
+   "R08-088",
+   "R09-030",
+   "R09-031",
+   "R09-033",
+   "R09-108",
+   "R09-115"
   ],
   "reports": [
    1,
@@ -970,7 +1009,8 @@
    4,
    5,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -1006,12 +1046,14 @@
    "R07-014",
    "R07-095",
    "R07-121",
-   "R07-144"
+   "R07-144",
+   "R09-082"
   ],
   "reports": [
    1,
    3,
-   7
+   7,
+   9
   ],
   "merged_from": []
  },
@@ -1047,7 +1089,8 @@
    "R08-059",
    "R08-060",
    "R08-061",
-   "R08-120"
+   "R08-120",
+   "R09-033"
   ],
   "reports": [
    1,
@@ -1057,7 +1100,8 @@
    5,
    6,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -1108,7 +1152,11 @@
    "R07-020",
    "R07-122",
    "R08-034",
-   "R08-115"
+   "R08-115",
+   "R09-011",
+   "R09-016",
+   "R09-087",
+   "R09-117"
   ],
   "reports": [
    1,
@@ -1117,7 +1165,8 @@
    5,
    6,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -1204,7 +1253,8 @@
    "R08-066",
    "R08-071",
    "R08-113",
-   "R08-114"
+   "R08-114",
+   "R09-061"
   ],
   "reports": [
    1,
@@ -1213,7 +1263,8 @@
    5,
    6,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -1282,7 +1333,10 @@
    "R07-065",
    "R07-136",
    "R08-050",
-   "R08-051"
+   "R08-051",
+   "R09-019",
+   "R09-020",
+   "R09-094"
   ],
   "reports": [
    1,
@@ -1291,7 +1345,8 @@
    4,
    5,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -1317,7 +1372,9 @@
    "R07-090",
    "R07-132",
    "R08-063",
-   "R08-117"
+   "R08-117",
+   "R09-050",
+   "R09-129"
   ],
   "reports": [
    1,
@@ -1326,7 +1383,8 @@
    5,
    6,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -1369,14 +1427,17 @@
    "R05-099",
    "R07-087",
    "R07-100",
-   "R08-078"
+   "R08-078",
+   "R09-053",
+   "R09-131"
   ],
   "reports": [
    1,
    3,
    5,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -1424,11 +1485,13 @@
   "section": "undecided",
   "cards": [
    "R01-083",
-   "R08-017"
+   "R08-017",
+   "R09-055"
   ],
   "reports": [
    1,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -1447,7 +1510,8 @@
    "R05-017",
    "R07-086",
    "R08-027",
-   "R08-085"
+   "R08-085",
+   "R09-036"
   ],
   "reports": [
    1,
@@ -1455,7 +1519,8 @@
    3,
    5,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -1466,11 +1531,13 @@
   "section": "research",
   "cards": [
    "R01-103",
-   "R08-080"
+   "R08-080",
+   "R09-059"
   ],
   "reports": [
    1,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -1579,12 +1646,14 @@
    "R01-182",
    "R02-063",
    "R04-049",
-   "R04-110"
+   "R04-110",
+   "R09-063"
   ],
   "reports": [
    1,
    2,
-   4
+   4,
+   9
   ],
   "merged_from": []
  },
@@ -1631,7 +1700,8 @@
    "R08-014",
    "R08-049",
    "R08-105",
-   "R08-128"
+   "R08-128",
+   "R09-088"
   ],
   "reports": [
    1,
@@ -1639,7 +1709,8 @@
    3,
    5,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -1673,14 +1744,16 @@
    "R05-043",
    "R07-040",
    "R07-041",
-   "R07-062"
+   "R07-062",
+   "R09-046"
   ],
   "reports": [
    1,
    3,
    4,
    5,
-   7
+   7,
+   9
   ],
   "merged_from": []
  },
@@ -1717,16 +1790,21 @@
  {
   "id": "C063",
   "title": "Free trial before purchase",
-  "statement": "Weak but present complaint.",
+  "statement": "Weak but present complaint. Report 9: no trial in most storefronts drew 52 explicit requests, several saying they would have bought — and a trial offered in the US but not Saudi Arabia was compared in public.",
   "section": "research",
   "cards": [
    "R01-144",
    "R07-046",
-   "R07-129"
+   "R07-129",
+   "R09-009",
+   "R09-101",
+   "R09-123",
+   "R09-137"
   ],
   "reports": [
    1,
-   7
+   7,
+   9
   ],
   "merged_from": []
  },
@@ -1801,7 +1879,12 @@
    "R07-012",
    "R07-033",
    "R07-035",
-   "R07-079"
+   "R07-079",
+   "R09-078",
+   "R09-079",
+   "R09-081",
+   "R09-084",
+   "R09-144"
   ],
   "reports": [
    1,
@@ -1810,7 +1893,8 @@
    4,
    5,
    6,
-   7
+   7,
+   9
   ],
   "merged_from": []
  },
@@ -1941,12 +2025,16 @@
    "R04-057",
    "R04-060",
    "R04-100",
-   "R08-082"
+   "R08-082",
+   "R09-051",
+   "R09-053",
+   "R09-130"
   ],
   "reports": [
    2,
    4,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -1960,11 +2048,14 @@
    "R02-069",
    "R02-085",
    "R02-109",
-   "R05-017"
+   "R05-017",
+   "R09-056",
+   "R09-121"
   ],
   "reports": [
    2,
-   5
+   5,
+   9
   ],
   "merged_from": []
  },
@@ -2019,12 +2110,14 @@
    "R06-037",
    "R06-083",
    "R07-047",
-   "R07-127"
+   "R07-127",
+   "R09-082"
   ],
   "reports": [
    2,
    6,
-   7
+   7,
+   9
   ],
   "merged_from": []
  },
@@ -2072,13 +2165,16 @@
    "R03-065",
    "R05-071",
    "R07-061",
-   "R07-134"
+   "R07-134",
+   "R09-054",
+   "R09-132"
   ],
   "reports": [
    2,
    3,
    5,
-   7
+   7,
+   9
   ],
   "merged_from": []
  },
@@ -2171,16 +2267,20 @@
  {
   "id": "C089",
   "title": "Promos, giveaways and gift codes must work exactly as advertised",
-  "statement": "Inflate early sentiment; when the promo fails to apply it produces 2–3★ from would-be buyers. Report 5's '1+1' gift code could not be used by the buyer and expired in three months — six years of disputes.",
+  "statement": "Inflate early sentiment; when the promo fails to apply it produces 2–3★ from would-be buyers. Report 5's '1+1' gift code could not be used by the buyer and expired in three months — six years of disputes. Report 9: an advertised 3-month money-back guarantee was not honoured (17 reviews); withdrawing the claim zeroed those complaints and halved refund complaints.",
   "section": "research",
   "cards": [
    "R02-122",
    "R05-030",
-   "R05-096"
+   "R05-096",
+   "R09-012",
+   "R09-013",
+   "R09-145"
   ],
   "reports": [
    2,
-   5
+   5,
+   9
   ],
   "merged_from": []
  },
@@ -2230,7 +2330,7 @@
  {
   "id": "C093",
   "title": "No upsell nagging without a 'never ask again' option",
-  "statement": "Full-screen interstitials, permanent banners and upsells before first value draw complaints even from 5★ users; a subscription launch with nagging cost ~3 points of 1–2★.",
+  "statement": "Full-screen interstitials, permanent banners and upsells before first value draw complaints even from 5★ users; a subscription launch with nagging cost ~3 points of 1–2★. Report 9: upsell-pressure complaints quintupled (2.16% → 4.84% → 10.23%) as the funnel was tuned harder, becoming the fastest-growing 1★ source.",
   "section": "dont",
   "cards": [
    "R03-035",
@@ -2245,7 +2345,13 @@
    "R07-051",
    "R07-130",
    "R08-039",
-   "R08-069"
+   "R08-069",
+   "R09-010",
+   "R09-020",
+   "R09-044",
+   "R09-110",
+   "R09-124",
+   "R09-138"
   ],
   "reports": [
    3,
@@ -2253,7 +2359,8 @@
    5,
    6,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -2268,12 +2375,14 @@
    "R03-108",
    "R05-034",
    "R05-097",
-   "R08-128"
+   "R08-128",
+   "R09-070"
   ],
   "reports": [
    3,
    5,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -2288,12 +2397,16 @@
    "R06-062",
    "R06-094",
    "R07-064",
-   "R07-136"
+   "R07-136",
+   "R09-019",
+   "R09-062",
+   "R09-136"
   ],
   "reports": [
    3,
    6,
-   7
+   7,
+   9
   ],
   "merged_from": []
  },
@@ -2427,13 +2540,19 @@
    "R05-104",
    "R06-062",
    "R06-063",
-   "R06-094"
+   "R06-094",
+   "R09-027",
+   "R09-062",
+   "R09-111",
+   "R09-119",
+   "R09-146"
   ],
   "reports": [
    3,
    4,
    5,
-   6
+   6,
+   9
   ],
   "merged_from": []
  },
@@ -2506,11 +2625,15 @@
    "R04-089",
    "R04-091",
    "R05-029",
-   "R05-095"
+   "R05-095",
+   "R09-042",
+   "R09-043",
+   "R09-123"
   ],
   "reports": [
    4,
-   5
+   5,
+   9
   ],
   "merged_from": []
  },
@@ -2525,11 +2648,17 @@
    "R04-038",
    "R04-077",
    "R04-090",
-   "R05-048"
+   "R05-048",
+   "R09-045",
+   "R09-046",
+   "R09-075",
+   "R09-125",
+   "R09-136"
   ],
   "reports": [
    4,
-   5
+   5,
+   9
   ],
   "merged_from": []
  },
@@ -2543,10 +2672,14 @@
    "R04-041",
    "R04-078",
    "R04-086",
-   "R04-095"
+   "R04-095",
+   "R09-025",
+   "R09-026",
+   "R09-139"
   ],
   "reports": [
-   4
+   4,
+   9
   ],
   "merged_from": []
  },
@@ -2562,12 +2695,18 @@
    "R05-073",
    "R05-090",
    "R06-012",
-   "R06-084"
+   "R06-084",
+   "R09-011",
+   "R09-014",
+   "R09-087",
+   "R09-091",
+   "R09-117"
   ],
   "reports": [
    4,
    5,
-   6
+   6,
+   9
   ],
   "merged_from": []
  },
@@ -2586,11 +2725,16 @@
    "R06-013",
    "R06-014",
    "R06-088",
-   "R06-102"
+   "R06-102",
+   "R09-041",
+   "R09-044",
+   "R09-096",
+   "R09-120"
   ],
   "reports": [
    4,
-   6
+   6,
+   9
   ],
   "merged_from": []
  },
@@ -2604,11 +2748,16 @@
    "R04-109",
    "R07-015",
    "R07-029",
-   "R07-139"
+   "R07-139",
+   "R09-021",
+   "R09-023",
+   "R09-051",
+   "R09-065"
   ],
   "reports": [
    4,
-   7
+   7,
+   9
   ],
   "merged_from": []
  },
@@ -2635,10 +2784,13 @@
   "statement": "Small, pure praise in report 4; category norm in pet-style apps.",
   "section": "research",
   "cards": [
-   "R04-053"
+   "R04-053",
+   "R09-038",
+   "R09-064"
   ],
   "reports": [
-   4
+   4,
+   9
   ],
   "merged_from": []
  },
@@ -2649,11 +2801,15 @@
   "section": "paid",
   "cards": [
    "R04-016",
-   "R05-045"
+   "R05-045",
+   "R09-035",
+   "R09-052",
+   "R09-128"
   ],
   "reports": [
    4,
-   5
+   5,
+   9
   ],
   "merged_from": []
  },
@@ -2669,13 +2825,15 @@
    "R07-109",
    "R07-123",
    "R08-009",
-   "R08-108"
+   "R08-108",
+   "R09-109"
   ],
   "reports": [
    4,
    5,
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -2789,17 +2947,24 @@
  {
   "id": "C132",
   "title": "Do not sell in a storefront where the app cannot function",
-  "statement": "Seven years of 'will not open' from mainland China, with users charged for an app that shows 'no network'.",
+  "statement": "Seven years of 'will not open' from mainland China, with users charged for an app that shows 'no network'. Report 9: in Russia 46% of reviews say the app loads for minutes or only works over a VPN, while 32% of Russian reviewers had paid.",
   "section": "dont",
   "cards": [
    "R05-054",
    "R05-077",
    "R05-105",
-   "R07-048"
+   "R07-048",
+   "R09-030",
+   "R09-092",
+   "R09-093",
+   "R09-108",
+   "R09-115",
+   "R09-143"
   ],
   "reports": [
    5,
-   7
+   7,
+   9
   ],
   "merged_from": []
  },
@@ -2951,11 +3116,14 @@
   "cards": [
    "R07-076",
    "R07-133",
-   "R08-077"
+   "R08-077",
+   "R09-039",
+   "R09-135"
   ],
   "reports": [
    7,
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -2988,10 +3156,14 @@
   "cards": [
    "R08-016",
    "R08-098",
-   "R08-116"
+   "R08-116",
+   "R09-050",
+   "R09-055",
+   "R09-129"
   ],
   "reports": [
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -3014,10 +3186,13 @@
   "statement": "Report 8's full-screen 'add a widget' prompt had an unreachable close button on small iPhones and blocked the app for 20 months.",
   "section": "dont",
   "cards": [
-   "R08-069"
+   "R08-069",
+   "R09-031",
+   "R09-099"
   ],
   "reports": [
-   8
+   8,
+   9
   ],
   "merged_from": []
  },
@@ -3028,10 +3203,96 @@
   "section": "do",
   "cards": [
    "R08-109",
-   "R08-110"
+   "R08-110",
+   "R09-112"
   ],
   "reports": [
-   8
+   8,
+   9
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C147",
+  "title": "Let people use the product before they pay",
+  "statement": "Users forgive a price; they do not forgive paying blind. Report 9's hard paywall before any experience produced 159 'let me look before you charge me' reviews at mean 1.79, and buyers who paid before seeing the product became the angriest cohort (mean 1.94).",
+  "section": "product-rule",
+  "cards": [
+   "R09-003",
+   "R09-008",
+   "R09-009",
+   "R09-085",
+   "R09-101",
+   "R09-122"
+  ],
+  "reports": [
+   9
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C148",
+  "title": "The paid product must deliver what the ads and onboarding demonstrate",
+  "statement": "Report 9 showed an interactive guided-breathing coach in its ads and onboarding, then never offered it again — 'it's just a checklist' became the worst-rated major theme (99 reviews, mean 1.45), half of them from payers.",
+  "section": "must-have",
+  "cards": [
+   "R09-021",
+   "R09-022",
+   "R09-023",
+   "R09-026",
+   "R09-052",
+   "R09-066",
+   "R09-076",
+   "R09-086",
+   "R09-127",
+   "R09-128",
+   "R09-140",
+   "R09-141"
+  ],
+  "reports": [
+   9
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C149",
+  "title": "Respect Reduce Motion — no rapid flashing animation",
+  "statement": "A self-care app's fast animation was reported as a seizure/vertigo risk (report 9, promoted as a safety finding despite one review).",
+  "section": "must-never-break",
+  "cards": [
+   "R09-060"
+  ],
+  "reports": [
+   9
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C150",
+  "title": "Never ask for a rating before the user has used the app",
+  "statement": "Report 9 put the rating prompt inside sign-up: users were asked for 5★ before seeing the app, the public rating ran 1.35 stars above written reviews, and Apple's guidelines forbid it.",
+  "section": "dont",
+  "cards": [
+   "R09-070",
+   "R09-116",
+   "R09-147"
+  ],
+  "reports": [
+   9
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C151",
+  "title": "Never cap or paywall a support conversation mid-crisis",
+  "statement": "Report 9's AI coach hit its free message cap while a user was 'almost having a collapse'; an emotional-support chat needs an uncapped crisis path and a handoff to real help.",
+  "section": "must-never-break",
+  "cards": [
+   "R09-111",
+   "R09-118"
+  ],
+  "reports": [
+   9
   ],
   "merged_from": []
  }

@@ -1,0 +1,64 @@
+[
+ {
+  "table_row": "<0.1%",
+  "no_new_insight": "signal-band definition (method); see R09-002"
+ },
+ {
+  "table_row": "0.1–0.5%",
+  "no_new_insight": "signal-band definition (method); see R09-002"
+ },
+ {
+  "table_row": "0.5–1%",
+  "no_new_insight": "signal-band definition (method); see R09-002"
+ },
+ {
+  "table_row": "1–3%",
+  "no_new_insight": "signal-band definition (method); see R09-002"
+ },
+ {
+  "table_row": "3–5%",
+  "no_new_insight": "signal-band definition (method); see R09-002"
+ },
+ {
+  "table_row": ">5%",
+  "no_new_insight": "signal-band definition (method); see R09-002"
+ },
+ {
+  "table_row": "M-nag",
+  "cards": [
+   "R09-074",
+   "R09-010"
+  ]
+ },
+ {
+  "table_row": "4",
+  "cards": [
+   "R09-114",
+   "R09-118"
+  ]
+ },
+ {
+  "bold": "Coverage:",
+  "cards": [
+   "R09-002"
+  ]
+ },
+ {
+  "bold": "Seven findings that should change decisions:",
+  "cards": [
+   "R09-004"
+  ]
+ },
+ {
+  "bold": "Portuguese",
+  "cards": [
+   "R09-067"
+  ]
+ },
+ {
+  "bold": "it is the theme that is currently eroding sentiment fastest.",
+  "cards": [
+   "R09-110"
+  ]
+ }
+]
