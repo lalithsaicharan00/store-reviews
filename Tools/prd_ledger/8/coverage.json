@@ -1,0 +1,66 @@
+[
+ {
+  "table_row": "<0.1%",
+  "no_new_insight": "signal-band definition (method); see R08-002"
+ },
+ {
+  "table_row": "0.1–0.5%",
+  "no_new_insight": "signal-band definition (method); see R08-002"
+ },
+ {
+  "table_row": "0.5–1%",
+  "no_new_insight": "signal-band definition (method); see R08-002"
+ },
+ {
+  "table_row": "1–3%",
+  "no_new_insight": "signal-band definition (method); see R08-002"
+ },
+ {
+  "table_row": "3–5%",
+  "no_new_insight": "signal-band definition (method); see R08-002"
+ },
+ {
+  "table_row": ">5%",
+  "no_new_insight": "signal-band definition (method); see R08-002"
+ },
+ {
+  "bold": "Coverage:",
+  "cards": [
+   "R08-002"
+  ]
+ },
+ {
+  "bold": "Simplicity / minimalism / no clutter",
+  "cards": [
+   "R08-026"
+  ]
+ },
+ {
+  "bold": "geographic skew",
+  "cards": [
+   "R08-058",
+   "R08-060"
+  ]
+ },
+ {
+  "bold": "Reading:",
+  "cards": [
+   "R08-070"
+  ]
+ },
+ {
+  "bold": "Four country-level findings that survive scrutiny:",
+  "cards": [
+   "R08-060",
+   "R08-095",
+   "R08-097",
+   "R08-098"
+  ]
+ },
+ {
+  "bold": "The commercially relevant fact:",
+  "cards": [
+   "R08-099"
+  ]
+ }
+]

@@ -2,7 +2,7 @@
  {
   "id": "C001",
   "title": "Never move a free feature behind the paywall",
-  "statement": "Every paywall regression produced a lasting rating drop; pick the free tier once and hold it.",
+  "statement": "Every paywall regression produced a lasting rating drop; pick the free tier once and hold it. Report 8: a competitor adding a paywall sent its users to a free rival, and free users explicitly warn against gating what is free.",
   "section": "product-rule",
   "cards": [
    "R01-051",
@@ -35,13 +35,21 @@
    "R05-018",
    "R05-019",
    "R05-033",
-   "R05-057"
+   "R05-057",
+   "R08-004",
+   "R08-023",
+   "R08-024",
+   "R08-028",
+   "R08-106",
+   "R08-123",
+   "R08-125"
   ],
   "reports": [
    1,
    3,
    4,
-   5
+   5,
+   8
   ],
   "merged_from": []
  },
@@ -73,7 +81,8 @@
    "R06-068",
    "R07-003",
    "R07-005",
-   "R07-074"
+   "R07-074",
+   "R08-006"
   ],
   "reports": [
    1,
@@ -82,7 +91,8 @@
    4,
    5,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -123,7 +133,10 @@
    "R07-047",
    "R07-050",
    "R07-127",
-   "R07-145"
+   "R07-145",
+   "R08-021",
+   "R08-024",
+   "R08-123"
   ],
   "reports": [
    1,
@@ -132,7 +145,8 @@
    4,
    5,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -180,7 +194,9 @@
    "R06-098",
    "R07-022",
    "R07-043",
-   "R07-068"
+   "R07-068",
+   "R08-028",
+   "R08-029"
   ],
   "reports": [
    1,
@@ -188,7 +204,8 @@
    3,
    4,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -221,7 +238,11 @@
    "R07-022",
    "R07-031",
    "R07-118",
-   "R07-119"
+   "R07-119",
+   "R08-026",
+   "R08-041",
+   "R08-072",
+   "R08-090"
   ],
   "reports": [
    1,
@@ -230,7 +251,8 @@
    4,
    5,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -307,7 +329,8 @@
    "R07-113",
    "R07-125",
    "R07-141",
-   "R07-142"
+   "R07-142",
+   "R08-031"
   ],
   "reports": [
    1,
@@ -316,7 +339,8 @@
    4,
    5,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -379,7 +403,11 @@
    "R07-011",
    "R07-037",
    "R07-038",
-   "R07-126"
+   "R07-126",
+   "R08-032",
+   "R08-067",
+   "R08-119",
+   "R08-125"
   ],
   "reports": [
    1,
@@ -388,25 +416,30 @@
    4,
    5,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
  {
   "id": "C010",
   "title": "Backfill missed days / edit start date",
-  "statement": "Users accept a bounded free backfill window.",
+  "statement": "Users accept a bounded free backfill window. Report 8 contests it: a ~7-day backfill window in a free app with weak history views was the worst-rated request (mean 3.52).",
   "section": "free",
   "cards": [
    "R01-012",
    "R03-071",
    "R03-099",
-   "R06-031"
+   "R06-031",
+   "R08-054",
+   "R08-055",
+   "R08-118"
   ],
   "reports": [
    1,
    3,
-   6
+   6,
+   8
   ],
   "merged_from": []
  },
@@ -427,14 +460,17 @@
    "R03-063",
    "R03-112",
    "R05-016",
-   "R07-028"
+   "R07-028",
+   "R08-015",
+   "R08-056"
   ],
   "reports": [
    1,
    2,
    3,
    5,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -512,13 +548,15 @@
    "R02-018",
    "R02-081",
    "R03-069",
-   "R07-083"
+   "R07-083",
+   "R08-079"
   ],
   "reports": [
    1,
    2,
    3,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -535,13 +573,15 @@
    "R03-109",
    "R06-033",
    "R07-090",
-   "R07-135"
+   "R07-135",
+   "R08-081"
   ],
   "reports": [
    1,
    3,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -554,12 +594,14 @@
    "R01-019",
    "R02-016",
    "R03-023",
-   "R03-055"
+   "R03-055",
+   "R08-086"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   8
   ],
   "merged_from": []
  },
@@ -618,12 +660,16 @@
    "R01-101",
    "R03-020",
    "R03-068",
-   "R07-029"
+   "R07-029",
+   "R08-033",
+   "R08-034",
+   "R08-115"
   ],
   "reports": [
    1,
    3,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -638,11 +684,13 @@
    "R01-114",
    "R01-155",
    "R01-177",
-   "R07-082"
+   "R07-082",
+   "R08-084"
   ],
   "reports": [
    1,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -667,7 +715,9 @@
    "R05-011",
    "R05-024",
    "R05-080",
-   "R07-078"
+   "R07-078",
+   "R08-076",
+   "R08-124"
   ],
   "reports": [
    1,
@@ -675,7 +725,8 @@
    3,
    4,
    5,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -744,10 +795,12 @@
   "statement": "Users who want to pay cannot; a discount/hardship path doubles as the workaround.",
   "section": "do",
   "cards": [
-   "R01-036"
+   "R01-036",
+   "R08-091"
   ],
   "reports": [
-   1
+   1,
+   8
   ],
   "merged_from": []
  },
@@ -786,7 +839,9 @@
    "R06-071",
    "R07-048",
    "R07-084",
-   "R07-138"
+   "R07-138",
+   "R08-073",
+   "R08-102"
   ],
   "reports": [
    1,
@@ -795,7 +850,8 @@
    4,
    5,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -902,7 +958,10 @@
    "R05-010",
    "R05-047",
    "R07-070",
-   "R07-079"
+   "R07-079",
+   "R08-009",
+   "R08-010",
+   "R08-088"
   ],
   "reports": [
    1,
@@ -910,7 +969,8 @@
    3,
    4,
    5,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -983,7 +1043,11 @@
    "R05-074",
    "R05-088",
    "R06-059",
-   "R07-018"
+   "R07-018",
+   "R08-059",
+   "R08-060",
+   "R08-061",
+   "R08-120"
   ],
   "reports": [
    1,
@@ -992,7 +1056,8 @@
    4,
    5,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -1041,7 +1106,9 @@
    "R06-012",
    "R06-084",
    "R07-020",
-   "R07-122"
+   "R07-122",
+   "R08-034",
+   "R08-115"
   ],
   "reports": [
    1,
@@ -1049,7 +1116,8 @@
    4,
    5,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -1095,14 +1163,21 @@
    "R07-089",
    "R07-091",
    "R07-124",
-   "R07-135"
+   "R07-135",
+   "R08-019",
+   "R08-057",
+   "R08-087",
+   "R08-110",
+   "R08-111",
+   "R08-131"
   ],
   "reports": [
    1,
    2,
    5,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -1125,7 +1200,11 @@
    "R05-056",
    "R05-084",
    "R06-030",
-   "R07-092"
+   "R07-092",
+   "R08-066",
+   "R08-071",
+   "R08-113",
+   "R08-114"
   ],
   "reports": [
    1,
@@ -1133,7 +1212,8 @@
    4,
    5,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -1146,11 +1226,15 @@
    "R01-068",
    "R01-097",
    "R06-055",
-   "R06-085"
+   "R06-085",
+   "R08-068",
+   "R08-112",
+   "R08-133"
   ],
   "reports": [
    1,
-   6
+   6,
+   8
   ],
   "merged_from": []
  },
@@ -1161,10 +1245,13 @@
   "section": "must-never-break",
   "cards": [
    "R01-092",
-   "R01-176"
+   "R01-176",
+   "R08-075",
+   "R08-121"
   ],
   "reports": [
-   1
+   1,
+   8
   ],
   "merged_from": []
  },
@@ -1193,7 +1280,9 @@
    "R05-039",
    "R05-066",
    "R07-065",
-   "R07-136"
+   "R07-136",
+   "R08-050",
+   "R08-051"
   ],
   "reports": [
    1,
@@ -1201,7 +1290,8 @@
    3,
    4,
    5,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -1225,7 +1315,9 @@
    "R06-092",
    "R07-088",
    "R07-090",
-   "R07-132"
+   "R07-132",
+   "R08-063",
+   "R08-117"
   ],
   "reports": [
    1,
@@ -1233,7 +1325,8 @@
    4,
    5,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -1249,13 +1342,15 @@
    "R01-178",
    "R03-066",
    "R05-070",
-   "R07-077"
+   "R07-077",
+   "R08-077"
   ],
   "reports": [
    1,
    3,
    5,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -1273,13 +1368,15 @@
    "R05-069",
    "R05-099",
    "R07-087",
-   "R07-100"
+   "R07-100",
+   "R08-078"
   ],
   "reports": [
    1,
    3,
    5,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -1326,10 +1423,12 @@
   "statement": "Drag to 60% instead of a binary tick — a named reason for choosing over competitors.",
   "section": "undecided",
   "cards": [
-   "R01-083"
+   "R01-083",
+   "R08-017"
   ],
   "reports": [
-   1
+   1,
+   8
   ],
   "merged_from": []
  },
@@ -1346,14 +1445,17 @@
    "R03-078",
    "R03-111",
    "R05-017",
-   "R07-086"
+   "R07-086",
+   "R08-027",
+   "R08-085"
   ],
   "reports": [
    1,
    2,
    3,
    5,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -1363,10 +1465,12 @@
   "statement": "Emerging request.",
   "section": "research",
   "cards": [
-   "R01-103"
+   "R01-103",
+   "R08-080"
   ],
   "reports": [
-   1
+   1,
+   8
   ],
   "merged_from": []
  },
@@ -1453,13 +1557,15 @@
    "R01-184",
    "R02-097",
    "R05-082",
-   "R07-094"
+   "R07-094",
+   "R08-072"
   ],
   "reports": [
    1,
    2,
    5,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -1492,12 +1598,14 @@
    "R01-141",
    "R01-143",
    "R04-109",
-   "R07-139"
+   "R07-139",
+   "R08-052"
   ],
   "reports": [
    1,
    4,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -1519,14 +1627,19 @@
    "R05-106",
    "R07-017",
    "R07-019",
-   "R07-116"
+   "R07-116",
+   "R08-014",
+   "R08-049",
+   "R08-105",
+   "R08-128"
   ],
   "reports": [
    1,
    2,
    3,
    5,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -1708,10 +1821,14 @@
   "section": "undecided",
   "cards": [
    "R01-119",
-   "R01-148"
+   "R01-148",
+   "R08-027",
+   "R08-051",
+   "R08-065"
   ],
   "reports": [
-   1
+   1,
+   8
   ],
   "merged_from": []
  },
@@ -1776,16 +1893,23 @@
  {
   "id": "C071",
   "title": "Never ship and walk away",
-  "statement": "Abandonment is visible to users within a year; the app becomes an OS-release liability for paying users with no recourse, while the store rating quietly rises on survivorship.",
+  "statement": "Abandonment is visible to users within a year; the app becomes an OS-release liability for paying users with no recourse, while the store rating quietly rises on survivorship. Report 8: a ~18-month pause let iOS updates break the create flow, widget and launch, and users publicly asked whether the app was abandoned ('Wrapped 2022' still in settings in 2025).",
   "section": "dont",
   "cards": [
    "R02-004",
    "R02-074",
    "R02-093",
-   "R02-115"
+   "R02-115",
+   "R08-010",
+   "R08-011",
+   "R08-012",
+   "R08-038",
+   "R08-104",
+   "R08-134"
   ],
   "reports": [
-   2
+   2,
+   8
   ],
   "merged_from": []
  },
@@ -1816,11 +1940,13 @@
    "R04-019",
    "R04-057",
    "R04-060",
-   "R04-100"
+   "R04-100",
+   "R08-082"
   ],
   "reports": [
    2,
-   4
+   4,
+   8
   ],
   "merged_from": []
  },
@@ -1854,13 +1980,15 @@
    "R04-063",
    "R06-024",
    "R06-091",
-   "R07-080"
+   "R07-080",
+   "R08-074"
   ],
   "reports": [
    2,
    4,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -1983,11 +2111,13 @@
    "R02-062",
    "R02-086",
    "R02-099",
-   "R05-051"
+   "R05-051",
+   "R08-088"
   ],
   "reports": [
    2,
-   5
+   5,
+   8
   ],
   "merged_from": []
  },
@@ -1997,10 +2127,13 @@
   "statement": "One unrebutted 1★: 'a whole lotta tracking going on by the developer'.",
   "section": "do",
   "cards": [
-   "R02-080"
+   "R02-080",
+   "R08-037",
+   "R08-127"
   ],
   "reports": [
-   2
+   2,
+   8
   ],
   "merged_from": []
  },
@@ -2110,14 +2243,17 @@
    "R05-082",
    "R06-042",
    "R07-051",
-   "R07-130"
+   "R07-130",
+   "R08-039",
+   "R08-069"
   ],
   "reports": [
    3,
    4,
    5,
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -2131,11 +2267,13 @@
    "R03-037",
    "R03-108",
    "R05-034",
-   "R05-097"
+   "R05-097",
+   "R08-128"
   ],
   "reports": [
    3,
-   5
+   5,
+   8
   ],
   "merged_from": []
  },
@@ -2182,15 +2320,21 @@
  {
   "id": "C097",
   "title": "A tip / donate option",
-  "statement": "People asking to give money with no mechanism to do so.",
+  "statement": "People asking to give money with no mechanism to do so. Report 8: in a completely free app, 7 users asked unprompted for a tip jar (all 5★) and 13 more volunteered to pay — mostly one-time, not subscription.",
   "section": "do",
   "cards": [
    "R03-032",
    "R03-042",
-   "R03-105"
+   "R03-105",
+   "R08-022",
+   "R08-038",
+   "R08-097",
+   "R08-122",
+   "R08-130"
   ],
   "reports": [
-   3
+   3,
+   8
   ],
   "merged_from": []
  },
@@ -2320,11 +2464,14 @@
    "R07-037",
    "R07-038",
    "R07-104",
-   "R07-126"
+   "R07-126",
+   "R08-067",
+   "R08-119"
   ],
   "reports": [
    3,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -2520,12 +2667,15 @@
    "R05-081",
    "R07-024",
    "R07-109",
-   "R07-123"
+   "R07-123",
+   "R08-009",
+   "R08-108"
   ],
   "reports": [
    4,
    5,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -2694,11 +2844,14 @@
    "R06-021",
    "R06-093",
    "R07-136",
-   "R07-137"
+   "R07-137",
+   "R08-007",
+   "R08-126"
   ],
   "reports": [
    6,
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -2797,10 +2950,12 @@
   "section": "must-have",
   "cards": [
    "R07-076",
-   "R07-133"
+   "R07-133",
+   "R08-077"
   ],
   "reports": [
-   7
+   7,
+   8
   ],
   "merged_from": []
  },
@@ -2813,10 +2968,70 @@
    "R07-088",
    "R07-092",
    "R07-104",
-   "R07-132"
+   "R07-132",
+   "R08-063",
+   "R08-070",
+   "R08-117",
+   "R08-132"
   ],
   "reports": [
-   7
+   7,
+   8
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C143",
+  "title": "Intra-day completion: tap N times to fill N/N",
+  "statement": "When a habit's target is more than once a day, each tap should count toward it; one binary tick per day is report 8's #1 unmet need, the only complaint theme still rising, and a stated uninstall.",
+  "section": "must-have",
+  "cards": [
+   "R08-016",
+   "R08-098",
+   "R08-116"
+  ],
+  "reports": [
+   8
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C144",
+  "title": "Habits, focus timer and journal in one simple app",
+  "statement": "Report 8's 3-in-1 bundle is load-bearing: none of the three parts draws a 1–2★, and users value not switching between three apps — as long as each part stays minimal.",
+  "section": "undecided",
+  "cards": [
+   "R08-027"
+  ],
+  "reports": [
+   8
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C145",
+  "title": "Every promotional or onboarding modal must be dismissible on the smallest screen",
+  "statement": "Report 8's full-screen 'add a widget' prompt had an unreachable close button on small iPhones and blocked the app for 20 months.",
+  "section": "dont",
+  "cards": [
+   "R08-069"
+  ],
+  "reports": [
+   8
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C146",
+  "title": "Harden onboarding before January",
+  "statement": "The New Year cohort is the largest of the year, writes reviews in its first days, and judges onboarding, not retention — every create-flow or first-day logging defect is amplified about 2× in January (report 8).",
+  "section": "do",
+  "cards": [
+   "R08-109",
+   "R08-110"
+  ],
+  "reports": [
+   8
   ],
   "merged_from": []
  }
