@@ -24,11 +24,19 @@
    "R03-096",
    "R03-097",
    "R03-101",
-   "R03-120"
+   "R03-120",
+   "R04-008",
+   "R04-010",
+   "R04-039",
+   "R04-065",
+   "R04-085",
+   "R04-087",
+   "R04-096"
   ],
   "reports": [
    1,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -43,12 +51,18 @@
    "R01-160",
    "R02-003",
    "R02-009",
-   "R03-048"
+   "R03-048",
+   "R04-003",
+   "R04-004",
+   "R04-010",
+   "R04-044",
+   "R04-046"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -73,12 +87,16 @@
    "R03-033",
    "R03-042",
    "R03-095",
-   "R03-105"
+   "R03-105",
+   "R04-011",
+   "R04-042",
+   "R04-098"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -115,12 +133,14 @@
    "R02-082",
    "R03-045",
    "R03-054",
-   "R03-117"
+   "R03-117",
+   "R04-072"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -142,12 +162,16 @@
    "R03-012",
    "R03-049",
    "R03-052",
-   "R03-098"
+   "R03-098",
+   "R04-012",
+   "R04-052",
+   "R04-063"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -183,12 +207,23 @@
    "R03-045",
    "R03-054",
    "R03-098",
-   "R03-117"
+   "R03-117",
+   "R04-008",
+   "R04-015",
+   "R04-020",
+   "R04-023",
+   "R04-025",
+   "R04-039",
+   "R04-061",
+   "R04-085",
+   "R04-096",
+   "R04-111"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -203,12 +238,14 @@
    "R02-048",
    "R02-123",
    "R03-018",
-   "R03-061"
+   "R03-061",
+   "R04-020"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -234,12 +271,14 @@
    "R03-023",
    "R03-038",
    "R03-053",
-   "R03-101"
+   "R03-101",
+   "R04-102"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -396,11 +435,13 @@
   "section": "undecided",
   "cards": [
    "R01-020",
-   "R03-019"
+   "R03-019",
+   "R04-018"
   ],
   "reports": [
    1,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -473,12 +514,14 @@
    "R02-101",
    "R02-120",
    "R03-022",
-   "R03-062"
+   "R03-062",
+   "R04-103"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -491,11 +534,13 @@
    "R01-030",
    "R01-104",
    "R01-173",
-   "R03-075"
+   "R03-075",
+   "R04-102"
   ],
   "reports": [
    1,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -506,10 +551,12 @@
   "section": "undecided",
   "cards": [
    "R01-027",
-   "R01-081"
+   "R01-081",
+   "R04-050"
   ],
   "reports": [
-   1
+   1,
+   4
   ],
   "merged_from": []
  },
@@ -565,12 +612,16 @@
    "R02-086",
    "R02-088",
    "R03-073",
-   "R03-091"
+   "R03-091",
+   "R04-079",
+   "R04-086",
+   "R04-087"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -602,12 +653,17 @@
    "R02-027",
    "R03-026",
    "R03-030",
-   "R03-040"
+   "R03-040",
+   "R04-005",
+   "R04-027",
+   "R04-034",
+   "R04-084"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -648,12 +704,14 @@
    "R02-093",
    "R02-099",
    "R03-070",
-   "R03-100"
+   "R03-100",
+   "R04-066"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -711,12 +769,17 @@
    "R03-020",
    "R03-076",
    "R03-102",
-   "R03-124"
+   "R03-124",
+   "R04-032",
+   "R04-058",
+   "R04-088",
+   "R04-094"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -729,10 +792,14 @@
    "R01-048",
    "R01-140",
    "R01-157",
-   "R01-163"
+   "R01-163",
+   "R04-032",
+   "R04-058",
+   "R04-094"
   ],
   "reports": [
-   1
+   1,
+   4
   ],
   "merged_from": []
  },
@@ -745,11 +812,15 @@
    "R01-046",
    "R01-094",
    "R02-096",
-   "R02-119"
+   "R02-119",
+   "R04-033",
+   "R04-040",
+   "R04-092"
   ],
   "reports": [
    1,
-   2
+   2,
+   4
   ],
   "merged_from": []
  },
@@ -801,11 +872,15 @@
    "R01-100",
    "R02-048",
    "R02-060",
-   "R02-084"
+   "R02-084",
+   "R04-055",
+   "R04-088",
+   "R04-093"
   ],
   "reports": [
    1,
-   2
+   2,
+   4
   ],
   "merged_from": []
  },
@@ -851,12 +926,18 @@
    "R01-154",
    "R01-180",
    "R02-078",
-   "R03-081"
+   "R03-081",
+   "R04-026",
+   "R04-048",
+   "R04-069",
+   "R04-104",
+   "R04-109"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -870,11 +951,15 @@
    "R01-105",
    "R01-172",
    "R02-068",
-   "R02-107"
+   "R02-107",
+   "R04-056",
+   "R04-086",
+   "R04-101"
   ],
   "reports": [
    1,
-   2
+   2,
+   4
   ],
   "merged_from": []
  },
@@ -1087,11 +1172,14 @@
   "cards": [
    "R01-116",
    "R01-182",
-   "R02-063"
+   "R02-063",
+   "R04-049",
+   "R04-110"
   ],
   "reports": [
    1,
-   2
+   2,
+   4
   ],
   "merged_from": []
  },
@@ -1103,10 +1191,12 @@
   "cards": [
    "R01-121",
    "R01-141",
-   "R01-143"
+   "R01-143",
+   "R04-109"
   ],
   "reports": [
-   1
+   1,
+   4
   ],
   "merged_from": []
  },
@@ -1154,11 +1244,13 @@
   "section": "do",
   "cards": [
    "R01-034",
-   "R03-027"
+   "R03-027",
+   "R04-025"
   ],
   "reports": [
    1,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -1217,11 +1309,14 @@
    "R03-014",
    "R03-059",
    "R03-060",
-   "R03-087"
+   "R03-087",
+   "R04-062",
+   "R04-078"
   ],
   "reports": [
    1,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -1247,12 +1342,18 @@
    "R03-024",
    "R03-028",
    "R03-029",
-   "R03-030"
+   "R03-030",
+   "R04-004",
+   "R04-022",
+   "R04-029",
+   "R04-030",
+   "R04-031"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -1291,10 +1392,12 @@
   "section": "research",
   "cards": [
    "R01-102",
-   "R01-145"
+   "R01-145",
+   "R04-071"
   ],
   "reports": [
-   1
+   1,
+   4
   ],
   "merged_from": []
  },
@@ -1358,15 +1461,20 @@
  },
  {
   "id": "C073",
-  "title": "Manual habit reordering",
-  "statement": "Trivial, requested for years by 5★ users; best effort-to-goodwill ratio.",
+  "title": "Manual reordering, renaming and editing of habits/tasks — free",
+  "statement": "Trivial, requested for years by 5★ users; best effort-to-goodwill ratio. In report 4 rename/reorder was gated and it was the top complaint among paying users.",
   "section": "free",
   "cards": [
    "R02-070",
-   "R02-108"
+   "R02-108",
+   "R04-019",
+   "R04-057",
+   "R04-060",
+   "R04-100"
   ],
   "reports": [
-   2
+   2,
+   4
   ],
   "merged_from": []
  },
@@ -1394,10 +1502,12 @@
   "cards": [
    "R02-061",
    "R02-077",
-   "R02-112"
+   "R02-112",
+   "R04-063"
   ],
   "reports": [
-   2
+   2,
+   4
   ],
   "merged_from": []
  },
@@ -1487,11 +1597,13 @@
   "cards": [
    "R02-023",
    "R02-064",
-   "R03-012"
+   "R03-012",
+   "R04-012"
   ],
   "reports": [
    2,
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -1590,10 +1702,12 @@
    "R03-034",
    "R03-043",
    "R03-090",
-   "R03-106"
+   "R03-106",
+   "R04-099"
   ],
   "reports": [
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -1607,10 +1721,13 @@
    "R03-041",
    "R03-095",
    "R03-097",
-   "R03-107"
+   "R03-107",
+   "R04-035",
+   "R04-088"
   ],
   "reports": [
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -1745,17 +1862,22 @@
  },
  {
   "id": "C103",
-  "title": "Recovery and harm-reduction users are a vulnerable surface",
-  "statement": "Alcohol, nicotine, self-harm (incl. minors), drugs, EDs, no-contact; monetisation moves land as 'preying on the vulnerable'; age rating is load-bearing.",
+  "title": "Vulnerable users — recovery, mental-health and minors — are a sensitive surface",
+  "statement": "Alcohol, nicotine, self-harm (incl. minors), drugs, EDs, no-contact; monetisation moves land as 'preying on the vulnerable'; age rating is load-bearing. In report 4: 455 kid/teen reviews who cannot pay, and 89 shame / diet-framing reviews in a 4+ app.",
   "section": "do",
   "cards": [
    "R03-011",
    "R03-079",
    "R03-080",
-   "R03-121"
+   "R03-121",
+   "R04-067",
+   "R04-068",
+   "R04-070",
+   "R04-106"
   ],
   "reports": [
-   3
+   3,
+   4
   ],
   "merged_from": []
  },
@@ -1799,6 +1921,165 @@
   ],
   "reports": [
    3
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C109",
+  "title": "A free trial must be a real trial",
+  "statement": "It must apply to whichever plan the user picks, and the confirmation must show the exact charge date and amount; a trial that bills at once produced 789 reviews at mean 1.35 in report 4 and must be verified per storefront (Brazil ran 7–11× the global rate).",
+  "section": "must-never-break",
+  "cards": [
+   "R04-005",
+   "R04-006",
+   "R04-013",
+   "R04-027",
+   "R04-037",
+   "R04-075",
+   "R04-076",
+   "R04-084",
+   "R04-089",
+   "R04-091"
+  ],
+  "reports": [
+   4
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C110",
+  "title": "An obvious 'continue free' path on the paywall — the free/paid boundary must be legible",
+  "statement": "Users wrote 75 reviews teaching each other where the hidden X was while 1,903 said the app was paid-only; legibility of what is free is a rating decision.",
+  "section": "must-have",
+  "cards": [
+   "R04-007",
+   "R04-021",
+   "R04-038",
+   "R04-077",
+   "R04-090"
+  ],
+  "reports": [
+   4
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C111",
+  "title": "No long quiz before the price; show the price up front",
+  "statement": "A 10–20 minute quiz followed by a paywall turns a price objection into anger (mean 1.98, 71.9% 1–2★); 'lower the yearly price a bit and show it at the very beginning'.",
+  "section": "dont",
+  "cards": [
+   "R04-009",
+   "R04-041",
+   "R04-078",
+   "R04-086",
+   "R04-095"
+  ],
+  "reports": [
+   4
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C112",
+  "title": "In-app cancellation",
+  "statement": "Cancel-by-email with no reply converts recoverable disputes into permanent 1★, legal threats and denied refunds.",
+  "section": "must-have",
+  "cards": [
+   "R04-033",
+   "R04-040",
+   "R04-092"
+  ],
+  "reports": [
+   4
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C113",
+  "title": "One stable, disclosed price — no discount wheels",
+  "statement": "Users in the same market reported $19.99–$59.99 for the same thing; that inconsistency is what 'scam' language attaches to; a rigged or broken gimmick makes it worse.",
+  "section": "must-never-break",
+  "cards": [
+   "R04-013",
+   "R04-014",
+   "R04-024",
+   "R04-036",
+   "R04-041",
+   "R04-097"
+  ],
+  "reports": [
+   4
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C114",
+  "title": "Ads must match the app",
+  "statement": "Advertised features that are absent create a 'scam' cohort before first open (0.62%, mean 2.42).",
+  "section": "dont",
+  "cards": [
+   "R04-064",
+   "R04-109"
+  ],
+  "reports": [
+   4
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C116",
+  "title": "Content library (workouts, meditation, sleep, journal) as the paid layer",
+  "statement": "Gives a routine app something to sell beyond the core loop and separates it from 'a fancy Reminders list'.",
+  "section": "paid",
+  "cards": [
+   "R04-017",
+   "R04-028",
+   "R04-051",
+   "R04-072",
+   "R04-105"
+  ],
+  "reports": [
+   4
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C117",
+  "title": "Mascot / companion character",
+  "statement": "Small, pure praise in report 4; category norm in pet-style apps.",
+  "section": "research",
+  "cards": [
+   "R04-053"
+  ],
+  "reports": [
+   4
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C118",
+  "title": "Preset routines / templates / programs",
+  "statement": "Paywalled in report 4 with little complaint.",
+  "section": "paid",
+  "cards": [
+   "R04-016"
+  ],
+  "reports": [
+   4
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C119",
+  "title": "Updates must not regress layout or lose progress",
+  "statement": "'Everything I dreamt of… then Boom… updated! Now the interface is simply ugly, the progress is gone'; layout regressions hit neurodivergent users hardest.",
+  "section": "must-never-break",
+  "cards": [
+   "R04-059"
+  ],
+  "reports": [
+   4
   ],
   "merged_from": []
  }
