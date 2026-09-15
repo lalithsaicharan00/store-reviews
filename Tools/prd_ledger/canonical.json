@@ -1,0 +1,1421 @@
+[
+ {
+  "id": "C001",
+  "title": "Never move a free feature behind the paywall",
+  "statement": "Every paywall regression produced a lasting rating drop; pick the free tier once and hold it.",
+  "section": "product-rule",
+  "cards": [
+   "R01-051",
+   "R01-052",
+   "R01-053",
+   "R01-056",
+   "R01-057",
+   "R01-059",
+   "R01-166",
+   "R01-201"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C002",
+  "title": "Ratings follow the offer, not the feature set",
+  "statement": "Trust (pricing, billing, support, delivering what was paid for) moves ratings more than features do.",
+  "section": "product-rule",
+  "cards": [
+   "R01-004",
+   "R01-158",
+   "R01-160",
+   "R02-003",
+   "R02-009"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C003",
+  "title": "Lead with a one-time lifetime purchase",
+  "statement": "People buy because it is not a subscription; lifetime is the strongest pricing signal.",
+  "section": "product-rule",
+  "cards": [
+   "R01-006",
+   "R01-031",
+   "R01-062",
+   "R01-123",
+   "R01-150",
+   "R01-167",
+   "R02-011",
+   "R02-020",
+   "R02-094",
+   "R02-103",
+   "R02-113"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C004",
+  "title": "Price low and fair, anchored against subscription competitors",
+  "statement": "'Cheaper than a coffee' framing produces near-perfect ratings; know the price anchors users cite.",
+  "section": "product-rule",
+  "cards": [
+   "R01-007",
+   "R01-032",
+   "R01-089",
+   "R01-168",
+   "R02-011"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C005",
+  "title": "Know which competitors buyers compare against",
+  "statement": "Buyers shop around before paying; competitor names and price anchors appear in reviews.",
+  "section": "do",
+  "cards": [
+   "R01-026",
+   "R01-089",
+   "R02-038",
+   "R02-053",
+   "R02-082"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C006",
+  "title": "Stay minimal and ad-free",
+  "statement": "Simple/clean is table stakes and the most praised trait; 'no ads' is the best-rated topic; every feature request comes with 'don't make it complicated'.",
+  "section": "product-rule",
+  "cards": [
+   "R01-024",
+   "R01-060",
+   "R01-062",
+   "R01-077",
+   "R01-181",
+   "R01-196",
+   "R02-046",
+   "R02-064"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C007",
+  "title": "Generous fixed habit cap (or unlimited) — never change it",
+  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not.",
+  "section": "free",
+  "cards": [
+   "R01-008",
+   "R01-009",
+   "R01-014",
+   "R01-053",
+   "R01-058",
+   "R01-070",
+   "R01-138",
+   "R01-159",
+   "R01-170",
+   "R01-197",
+   "R01-201",
+   "R02-010",
+   "R02-018",
+   "R02-030",
+   "R02-033",
+   "R02-037",
+   "R02-047",
+   "R02-094",
+   "R02-104",
+   "R02-113",
+   "R02-121"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C008",
+  "title": "Daily check-in and one basic reminder per habit are free",
+  "statement": "Core loop must be free; it draws no complaints when it is.",
+  "section": "free",
+  "cards": [
+   "R01-010",
+   "R02-018",
+   "R02-048",
+   "R02-123"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C009",
+  "title": "Icons, colours and basic widgets are free",
+  "statement": "Loved, drives 5★, and re-paywalling widgets backfired.",
+  "section": "free",
+  "cards": [
+   "R01-011",
+   "R01-056",
+   "R01-079",
+   "R01-080",
+   "R01-156",
+   "R02-018",
+   "R02-049",
+   "R02-051",
+   "R02-074"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C010",
+  "title": "Backfill missed days — a free window (7 days) with paid beyond",
+  "statement": "Users accept a bounded free backfill window.",
+  "section": "free",
+  "cards": [
+   "R01-012"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C011",
+  "title": "Weekly / monthly / yearly reports",
+  "statement": "The #1 stated reason people pay; under-counted by keywords, dominant in the qualitative read.",
+  "section": "paid",
+  "cards": [
+   "R01-013",
+   "R01-033",
+   "R01-052",
+   "R01-082",
+   "R02-015",
+   "R02-030",
+   "R02-067",
+   "R02-110"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C012",
+  "title": "Week / month / year grid views",
+  "statement": "'Filling the squares' is the retention mechanic and emotional payoff.",
+  "section": "must-have",
+  "cards": [
+   "R01-086"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C013",
+  "title": "Cloud sync / multi-device as the paid differentiator",
+  "statement": "Strongest true differentiator among buyers (lift ×9.8).",
+  "section": "paid",
+  "cards": [
+   "R01-015",
+   "R01-025",
+   "R01-052",
+   "R02-013",
+   "R02-021"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C014",
+  "title": "Multiple reminders per habit",
+  "statement": "Moderate purchase reason; first reminder stays free.",
+  "section": "paid",
+  "cards": [
+   "R01-016",
+   "R01-052"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C015",
+  "title": "Shared / group habits",
+  "statement": "Strong purchase driver where it exists, but the worst-executed feature — demand is proven, execution is the risk.",
+  "section": "research",
+  "cards": [
+   "R01-017",
+   "R01-091",
+   "R02-018",
+   "R02-081"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C016",
+  "title": "Skip / holiday mode",
+  "statement": "Minor purchase factor; free or paid open.",
+  "section": "undecided",
+  "cards": [
+   "R01-018",
+   "R01-052"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C017",
+  "title": "Passcode lock",
+  "statement": "Minor; decide whether needed at all.",
+  "section": "research",
+  "cards": [
+   "R01-019",
+   "R02-016"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C018",
+  "title": "App-icon themes",
+  "statement": "Minor purchase factor.",
+  "section": "undecided",
+  "cards": [
+   "R01-020"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C019",
+  "title": "Quit-habit / bad-habit mode",
+  "statement": "Well received where shipped; see Quit Habit Decision research doc.",
+  "section": "research",
+  "cards": [
+   "R01-021",
+   "R01-054",
+   "R01-084",
+   "R02-018"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C020",
+  "title": "Data export / backup / CSV",
+  "statement": "Requested a lot from happy users, rarely a purchase trigger — charging for it generates requests, not revenue.",
+  "section": "free",
+  "cards": [
+   "R01-022",
+   "R01-101"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C021",
+  "title": "Apple Health integration",
+  "statement": "Small volume, very high purchase intent.",
+  "section": "paid",
+  "cards": [
+   "R01-028",
+   "R01-076",
+   "R01-114",
+   "R01-155",
+   "R01-177"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C022",
+  "title": "Apple Watch app (done properly: timer, two-way sync)",
+  "statement": "Small volume, very high purchase intent; a half-built Watch app draws 2–3★.",
+  "section": "paid",
+  "cards": [
+   "R01-029",
+   "R01-076",
+   "R01-098",
+   "R01-177",
+   "R02-018",
+   "R02-042",
+   "R02-058",
+   "R02-101",
+   "R02-120"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C023",
+  "title": "Interactive widget check-off",
+  "statement": "Mark done without opening the app; small volume, very high intent.",
+  "section": "undecided",
+  "cards": [
+   "R01-030",
+   "R01-104",
+   "R01-173"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C024",
+  "title": "Streaks / gamification",
+  "statement": "High-priority praise, moderate purchase factor.",
+  "section": "undecided",
+  "cards": [
+   "R01-027",
+   "R01-081"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C025",
+  "title": "Scholarship / hardship / discount program",
+  "statement": "The cleanest 5★ generator in report 1 (91 of 101 mentions 5★); also works around broken payment rails; never switch it off.",
+  "section": "do",
+  "cards": [
+   "R01-035",
+   "R01-062",
+   "R01-169"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C026",
+  "title": "Handle markets where card payment fails (RU, AR, TR, DZ, PK)",
+  "statement": "Users who want to pay cannot; a discount/hardship path doubles as the workaround.",
+  "section": "do",
+  "cards": [
+   "R01-036"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C027",
+  "title": "Localise early — it unlocks revenue",
+  "statement": "Missing localisation is the biggest market-specific complaint and a stated purchase blocker; shipping a language visibly converts (Japan).",
+  "section": "do",
+  "cards": [
+   "R01-037",
+   "R01-069",
+   "R01-076",
+   "R01-124",
+   "R01-127",
+   "R01-128",
+   "R01-129",
+   "R01-130",
+   "R01-132",
+   "R01-159",
+   "R01-183",
+   "R01-200",
+   "R02-029",
+   "R02-079",
+   "R02-085",
+   "R02-086",
+   "R02-088"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C028",
+  "title": "Culturally complete icon set and calendars",
+  "statement": "Islamic icons, disability icons, Hijri and lunar calendars, bigger fonts — cheap, and in markets already blocked by localisation.",
+  "section": "do",
+  "cards": [
+   "R01-115",
+   "R01-130"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C029",
+  "title": "Billing must be exactly right",
+  "statement": "Wrong amount, double charge, surprise renewal are the fastest route to 1★ (×21 lift); single price shown, no trial-to-charge traps, refunds honoured, receipts clear.",
+  "section": "must-never-break",
+  "cards": [
+   "R01-041",
+   "R01-063",
+   "R01-133",
+   "R01-152",
+   "R01-162",
+   "R02-027"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C030",
+  "title": "Sync must work — and prove it",
+  "statement": "The paid feature that breaks most; sync failure is ×12.8 over-represented among buyers.",
+  "section": "must-never-break",
+  "cards": [
+   "R01-015",
+   "R01-047",
+   "R01-064",
+   "R01-076",
+   "R01-164",
+   "R02-013",
+   "R02-021"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C031",
+  "title": "Crashes / launch failures",
+  "statement": "Largest complaint by volume; a two-day launch crash produced more 1★ than years of minor bugs.",
+  "section": "must-never-break",
+  "cards": [
+   "R01-042",
+   "R01-056",
+   "R01-065",
+   "R01-090",
+   "R01-096",
+   "R01-153",
+   "R02-040",
+   "R02-055",
+   "R02-093",
+   "R02-099"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C032",
+  "title": "Year-end / peak-season robustness",
+  "statement": "The year-end report crashed five New Years in six; never ship risk or lock features in late December.",
+  "section": "must-never-break",
+  "cards": [
+   "R01-057",
+   "R01-095",
+   "R01-165"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C033",
+  "title": "Restore purchase must work",
+  "statement": "Charging and not delivering is the second-fastest route to 1★ (×13.9).",
+  "section": "must-never-break",
+  "cards": [
+   "R01-044",
+   "R01-064"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C034",
+  "title": "Data must never be lost on update, reinstall or phone change",
+  "statement": "Data loss is ×10.6 over-represented among buyers; local-only storage is the cause.",
+  "section": "must-never-break",
+  "cards": [
+   "R01-045",
+   "R01-140",
+   "R01-193",
+   "R02-026",
+   "R02-041",
+   "R02-055",
+   "R02-056",
+   "R02-086",
+   "R02-093",
+   "R02-098"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C035",
+  "title": "Account system from day one",
+  "statement": "Root cause of lost purchases, lost data and failed sync; requests rise as users change phones.",
+  "section": "must-have",
+  "cards": [
+   "R01-048",
+   "R01-140",
+   "R01-157",
+   "R01-163"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C036",
+  "title": "A support channel that exists and answers",
+  "statement": "'No support channel' is ×34.7 over-represented among buyers and the second-worst-rated complaint.",
+  "section": "must-have",
+  "cards": [
+   "R01-046",
+   "R01-094",
+   "R02-096",
+   "R02-119"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C037",
+  "title": "Family plan",
+  "statement": "Demand exists (people bought it); report 1's failed only through discoverability (Apple Family Sharing with no in-app affordance).",
+  "section": "research",
+  "cards": [
+   "R01-043",
+   "R01-064",
+   "R01-134",
+   "R01-171"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C038",
+  "title": "Dates, streaks and statistics correct on every surface (incl. DST / timezone)",
+  "statement": "Miscounts are ×10.2 over-represented among buyers. Off-by-one dates across app/widget/Watch were report 2's longest-lived bug.",
+  "section": "must-never-break",
+  "cards": [
+   "R01-049",
+   "R01-093",
+   "R01-194",
+   "R02-057",
+   "R02-086",
+   "R02-092",
+   "R02-100"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C039",
+  "title": "Reminders fire reliably, once",
+  "statement": "Reminders that work are a top praise item; not firing or spamming is a 1★ driver.",
+  "section": "must-never-break",
+  "cards": [
+   "R01-066",
+   "R01-078",
+   "R01-100",
+   "R02-048",
+   "R02-060",
+   "R02-084"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C040",
+  "title": "Widgets must not go blank, stale or disagree with the app",
+  "statement": "Broken widget is ×7.8 on 2★.",
+  "section": "must-never-break",
+  "cards": [
+   "R01-068",
+   "R01-097"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C041",
+  "title": "Editing a habit never wipes its history",
+  "statement": "Multi-year bug; fixing it brought reviewers back to raise their rating.",
+  "section": "must-never-break",
+  "cards": [
+   "R01-092",
+   "R01-176"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C042",
+  "title": "Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers",
+  "statement": "Highest-fit, highest-satisfaction audiences (ADHD 7% of US at 4.79; students 4.87).",
+  "section": "do",
+  "cards": [
+   "R01-061",
+   "R01-062",
+   "R01-120",
+   "R01-125",
+   "R01-146",
+   "R01-154",
+   "R01-180",
+   "R02-078"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C043",
+  "title": "Flexible / custom frequency",
+  "statement": "Every X days, specific weekdays, bi-weekly, quarterly, yearly, total-over-a-window — the #1 unmet functional need and highest 4★ lift.",
+  "section": "must-have",
+  "cards": [
+   "R01-072",
+   "R01-105",
+   "R01-172",
+   "R02-068",
+   "R02-107"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C044",
+  "title": "Mac / desktop / web app",
+  "statement": "Strongest 3★ driver; users volunteer to pay extra for it.",
+  "section": "paid",
+  "cards": [
+   "R01-073",
+   "R01-099",
+   "R01-108",
+   "R01-178"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C045",
+  "title": "Grouping / folders / tags / multiple profiles",
+  "statement": "#2 feature request: me, kids, pet, work.",
+  "section": "undecided",
+  "cards": [
+   "R01-074",
+   "R01-102",
+   "R01-174"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C046",
+  "title": "Shortcuts / Siri / URL scheme / API",
+  "statement": "Power users who evangelise.",
+  "section": "undecided",
+  "cards": [
+   "R01-075",
+   "R01-107",
+   "R01-179"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C047",
+  "title": "Cumulative totals and total-days counter",
+  "statement": "'47 hours read this year'; total days instead of consecutive to reduce streak anxiety.",
+  "section": "undecided",
+  "cards": [
+   "R01-110",
+   "R01-113",
+   "R01-175"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C048",
+  "title": "Flexible units / partial progress",
+  "statement": "Drag to 60% instead of a binary tick — a named reason for choosing over competitors.",
+  "section": "undecided",
+  "cards": [
+   "R01-083"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C049",
+  "title": "Mood tracker / journal / habit notes",
+  "statement": "Meaningful praise where shipped; mentions rose after launch.",
+  "section": "research",
+  "cards": [
+   "R01-055",
+   "R01-085",
+   "R01-155",
+   "R02-071"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C050",
+  "title": "One-off to-dos alongside habits",
+  "statement": "Emerging request.",
+  "section": "research",
+  "cards": [
+   "R01-103"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C051",
+  "title": "Android version",
+  "statement": "Requested; cross-platform continuity matters to switchers.",
+  "section": "research",
+  "cards": [
+   "R01-106",
+   "R01-140"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C052",
+  "title": "Points / rewards / wish list",
+  "statement": "Weak request; one proposes a cash-stake mode.",
+  "section": "research",
+  "cards": [
+   "R01-111"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C053",
+  "title": "Custom time-of-day segments",
+  "statement": "Beyond morning/afternoon/evening — shift workers.",
+  "section": "undecided",
+  "cards": [
+   "R01-112"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C054",
+  "title": "Never run incentivised / review-for-premium campaigns",
+  "statement": "Bought rank and a fake average, 0.86% purchase signal, reputational backlash, unreadable data.",
+  "section": "dont",
+  "cards": [
+   "R01-002",
+   "R01-136",
+   "R01-137",
+   "R01-139",
+   "R01-185"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C055",
+  "title": "Never gate or delete reviews",
+  "statement": "Users catch it and call it a ToS violation.",
+  "section": "dont",
+  "cards": [
+   "R01-005",
+   "R01-186"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C056",
+  "title": "Don't build AI features on demand grounds",
+  "statement": "0.011% demand; users ask for the opposite.",
+  "section": "dont",
+  "cards": [
+   "R01-161",
+   "R01-184",
+   "R02-097"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C057",
+  "title": "Offer a non-pastel / premium design option",
+  "statement": "Recurring critique from men and users wanting a premium look.",
+  "section": "do",
+  "cards": [
+   "R01-116",
+   "R01-182",
+   "R02-063"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C058",
+  "title": "Discovery runs through social video, Reddit, therapists (US) and Xiaohongshu / Bilibili (CN)",
+  "statement": "Plan marketing around where users say they found the app.",
+  "section": "do",
+  "cards": [
+   "R01-121",
+   "R01-141",
+   "R01-143"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C059",
+  "title": "Be visibly responsive; fixes bring reviewers back",
+  "statement": "Users who see their bug fixed return to raise their rating.",
+  "section": "do",
+  "cards": [
+   "R01-092",
+   "R01-142",
+   "R01-159",
+   "R02-092",
+   "R02-096"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C060",
+  "title": "Cross-sell an app family on brand trust",
+  "statement": "Under-used monetization asset.",
+  "section": "do",
+  "cards": [
+   "R01-088",
+   "R02-022",
+   "R02-114"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C061",
+  "title": "'Support the devs' goodwill converts",
+  "statement": "Small, pure-margin, mean 4.69.",
+  "section": "do",
+  "cards": [
+   "R01-034"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C062",
+  "title": "Weight English-speaking rich markets; volume ≠ revenue",
+  "statement": "Purchase-signal density is 8.5× higher in the US than China; BR/MX/ES/FR volume is localisation-blocked.",
+  "section": "do",
+  "cards": [
+   "R01-023",
+   "R01-039",
+   "R01-117",
+   "R01-125",
+   "R01-126",
+   "R01-135",
+   "R01-136",
+   "R02-006",
+   "R02-076",
+   "R02-087"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C063",
+  "title": "Free trial before purchase",
+  "statement": "Weak but present complaint.",
+  "section": "research",
+  "cards": [
+   "R01-144"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C064",
+  "title": "Price level — where 'fair' turns into 'too expensive'",
+  "statement": "Both coexist for one price; split follows market, payment rails and year.",
+  "section": "research",
+  "cards": [
+   "R01-007",
+   "R01-071",
+   "R01-151",
+   "R01-198"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C065",
+  "title": "Paying customers are the highest 1★ risk — every paid feature must work",
+  "statement": "Paid cohort rates a full point lower; 28% of payers leave 1–2★; confirmed buyers ×6.7 on 1★.",
+  "section": "must-never-break",
+  "cards": [
+   "R01-038",
+   "R01-040",
+   "R01-047",
+   "R01-064",
+   "R01-067",
+   "R02-017",
+   "R02-024",
+   "R02-025",
+   "R02-026",
+   "R02-027",
+   "R02-032",
+   "R02-076",
+   "R02-087"
+  ],
+  "reports": [
+   1,
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C066",
+  "title": "Focus timer",
+  "statement": "Meaningful in the US, emerging globally.",
+  "section": "undecided",
+  "cards": [
+   "R01-119",
+   "R01-148"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C067",
+  "title": "Fitness / health tracking use case",
+  "statement": "Very strong US use case.",
+  "section": "do",
+  "cards": [
+   "R01-118",
+   "R01-147"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C068",
+  "title": "Parents tracking kids",
+  "statement": "Distinct use case; ties to profiles.",
+  "section": "research",
+  "cards": [
+   "R01-102",
+   "R01-145"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C069",
+  "title": "Check-off sound and haptic",
+  "statement": "Named as a reason to keep coming back.",
+  "section": "free",
+  "cards": [
+   "R01-087"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C070",
+  "title": "Use the language users use: Atomic Habits, 75 Hard",
+  "statement": "Framing seen in US reviews.",
+  "section": "do",
+  "cards": [
+   "R01-122"
+  ],
+  "reports": [
+   1
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C071",
+  "title": "Never ship and walk away",
+  "statement": "Abandonment is visible to users within a year; the app becomes an OS-release liability for paying users with no recourse, while the store rating quietly rises on survivorship.",
+  "section": "dont",
+  "cards": [
+   "R02-004",
+   "R02-074",
+   "R02-093",
+   "R02-115"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C072",
+  "title": "Writes to shared system stores (calendar, health) must be exact and reversible",
+  "statement": "A paid calendar sync that corrupts the user's calendar is the most severe complaint class in report 2.",
+  "section": "must-never-break",
+  "cards": [
+   "R02-014",
+   "R02-052",
+   "R02-059",
+   "R02-102"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C073",
+  "title": "Manual habit reordering",
+  "statement": "Trivial, requested for years by 5★ users; best effort-to-goodwill ratio.",
+  "section": "free",
+  "cards": [
+   "R02-070",
+   "R02-108"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C074",
+  "title": "Customisable, louder reminder sounds",
+  "statement": "Asked by happy users; the cheapest 5★ upgrade.",
+  "section": "free",
+  "cards": [
+   "R02-044",
+   "R02-069",
+   "R02-085",
+   "R02-109"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C075",
+  "title": "Skippable, replayable onboarding tour",
+  "statement": "Hidden gestures (swipe-to-complete, mode toggles) confuse new users; a US-specific 6% complaint in report 2.",
+  "section": "must-have",
+  "cards": [
+   "R02-061",
+   "R02-077",
+   "R02-112"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C076",
+  "title": "Never seed launch reviews",
+  "statement": "Users spot it in week one and say so; it contaminates the analytics baseline permanently.",
+  "section": "dont",
+  "cards": [
+   "R02-008",
+   "R02-117"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C077",
+  "title": "Purchase and signup flow must not leak buyers",
+  "statement": "People who try to pay and cannot (errors, rejected emails, promos that fail to apply) leave 2–4★ and money on the table.",
+  "section": "must-never-break",
+  "cards": [
+   "R02-028",
+   "R02-034",
+   "R02-106"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C078",
+  "title": "Ship the paid feature working before you sell it",
+  "statement": "Paid features carry a higher reliability bar; selling broken sync/calendar/stats put payers a full star below free users.",
+  "section": "product-rule",
+  "cards": [
+   "R02-017",
+   "R02-031",
+   "R02-033",
+   "R02-105"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C079",
+  "title": "Personal photos as habit icons",
+  "statement": "Rare, loved, and no competitor in report 2's corpus offers it.",
+  "section": "undecided",
+  "cards": [
+   "R02-018",
+   "R02-050",
+   "R02-111"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C080",
+  "title": "Colour themes / dark mode",
+  "statement": "'Only green' draws requests; cheap.",
+  "section": "free",
+  "cards": [
+   "R02-072"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C082",
+  "title": "Ads in the free tier",
+  "statement": "A mild negative and a minor purchase reason in report 2; 'no ads' is the best-rated topic in report 1.",
+  "section": "research",
+  "cards": [
+   "R02-023",
+   "R02-064"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C083",
+  "title": "Performance must not degrade with habit count",
+  "statement": "5+ second taps for the most engaged (paying) users; lag is a churn cause on its own.",
+  "section": "must-never-break",
+  "cards": [
+   "R02-062",
+   "R02-086",
+   "R02-099"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C085",
+  "title": "Address tracking / privacy visibly",
+  "statement": "One unrebutted 1★: 'a whole lotta tracking going on by the developer'.",
+  "section": "do",
+  "cards": [
+   "R02-080"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C087",
+  "title": "Never imply cross-app integration you don't have",
+  "statement": "Sibling apps raised expectations of integration; the purchases it drove ended in 1★.",
+  "section": "dont",
+  "cards": [
+   "R02-035",
+   "R02-073",
+   "R02-114"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C088",
+  "title": "No rating-prompt or cross-promo spam, especially to payers",
+  "statement": "Small but consistent complaint.",
+  "section": "dont",
+  "cards": [
+   "R02-065",
+   "R02-116"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C089",
+  "title": "Launch promos / free-Pro giveaways",
+  "statement": "Inflate early sentiment; when the promo fails to apply it produces 2–3★ from would-be buyers.",
+  "section": "research",
+  "cards": [
+   "R02-122"
+  ],
+  "reports": [
+   2
+  ],
+  "merged_from": []
+ }
+]
