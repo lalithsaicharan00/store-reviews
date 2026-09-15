@@ -1,0 +1,60 @@
+[
+ {
+  "heading": "Two multi-year unfixed bugs",
+  "cards": [
+   "R02-057",
+   "R02-058"
+  ]
+ },
+ {
+  "heading": "Non-negotiable — these determine whether you have a product at all",
+  "cards": [
+   "R02-098",
+   "R02-099",
+   "R02-100",
+   "R02-101",
+   "R02-102"
+  ]
+ },
+ {
+  "heading": "Pricing — this is what makes money here",
+  "cards": [
+   "R02-103",
+   "R02-104",
+   "R02-105",
+   "R02-106"
+  ]
+ },
+ {
+  "heading": "Do not do",
+  "cards": [
+   "R02-115",
+   "R02-116",
+   "R02-117"
+  ]
+ },
+ {
+  "table_row": "< 0.1%",
+  "no_new_insight": "signal-band definition (method); see R02-002"
+ },
+ {
+  "table_row": "0.5 – 1%",
+  "no_new_insight": "signal-band definition (method)"
+ },
+ {
+  "table_row": "1 – 3%",
+  "no_new_insight": "signal-band definition (method)"
+ },
+ {
+  "table_row": "3 – 5%",
+  "no_new_insight": "signal-band definition (method)"
+ },
+ {
+  "table_row": "> 5%",
+  "no_new_insight": "signal-band definition (method)"
+ },
+ {
+  "table_row": "Era",
+  "no_new_insight": "table header row (contains a digit so the validator did not skip it); table carded as R02-090"
+ }
+]
