@@ -64,14 +64,21 @@
    "R04-046",
    "R05-004",
    "R05-005",
-   "R05-083"
+   "R05-083",
+   "R06-003",
+   "R06-004",
+   "R06-005",
+   "R06-048",
+   "R06-050",
+   "R06-068"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -102,14 +109,20 @@
    "R04-098",
    "R05-020",
    "R05-031",
-   "R05-092"
+   "R05-092",
+   "R06-040",
+   "R06-041",
+   "R06-076",
+   "R06-087",
+   "R06-104"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -149,13 +162,17 @@
    "R03-045",
    "R03-054",
    "R03-117",
-   "R04-072"
+   "R04-072",
+   "R06-015",
+   "R06-025",
+   "R06-098"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   6
   ],
   "merged_from": []
  },
@@ -182,21 +199,23 @@
    "R04-052",
    "R04-063",
    "R05-038",
-   "R05-039"
+   "R05-039",
+   "R06-052"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
  {
   "id": "C007",
   "title": "Generous fixed habit cap (or unlimited) — never change it",
-  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not.",
+  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not. Report 6: raising a 1-streak cap to 2 did not reduce complaints — the ask was unlimited — though the tone moved from 'scam' to 'love it, want more'.",
   "section": "free",
   "cards": [
    "R01-008",
@@ -245,14 +264,25 @@
    "R05-048",
    "R05-080",
    "R05-091",
-   "R05-110"
+   "R05-110",
+   "R06-007",
+   "R06-008",
+   "R06-009",
+   "R06-039",
+   "R06-045",
+   "R06-075",
+   "R06-086",
+   "R06-095",
+   "R06-101",
+   "R06-103"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -268,13 +298,15 @@
    "R02-123",
    "R03-018",
    "R03-061",
-   "R04-020"
+   "R04-020",
+   "R06-030"
   ],
   "reports": [
    1,
    2,
    3,
-   4
+   4,
+   6
   ],
   "merged_from": []
  },
@@ -304,14 +336,16 @@
    "R04-102",
    "R05-015",
    "R05-050",
-   "R05-100"
+   "R05-100",
+   "R06-018"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -323,11 +357,13 @@
   "cards": [
    "R01-012",
    "R03-071",
-   "R03-099"
+   "R03-099",
+   "R06-031"
   ],
   "reports": [
    1,
-   3
+   3,
+   6
   ],
   "merged_from": []
  },
@@ -437,11 +473,13 @@
    "R01-052",
    "R03-051",
    "R03-074",
-   "R03-109"
+   "R03-109",
+   "R06-033"
   ],
   "reports": [
    1,
-   3
+   3,
+   6
   ],
   "merged_from": []
  },
@@ -471,12 +509,16 @@
   "cards": [
    "R01-020",
    "R03-019",
-   "R04-018"
+   "R04-018",
+   "R06-034",
+   "R06-035",
+   "R06-090"
   ],
   "reports": [
    1,
    3,
-   4
+   4,
+   6
   ],
   "merged_from": []
  },
@@ -490,12 +532,15 @@
    "R01-054",
    "R01-084",
    "R02-018",
-   "R03-082"
+   "R03-082",
+   "R06-020",
+   "R06-061"
   ],
   "reports": [
    1,
    2,
-   3
+   3,
+   6
   ],
   "merged_from": []
  },
@@ -595,12 +640,14 @@
    "R01-027",
    "R01-081",
    "R04-050",
-   "R05-042"
+   "R05-042",
+   "R06-032"
   ],
   "reports": [
    1,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -663,14 +710,16 @@
    "R05-060",
    "R05-074",
    "R05-075",
-   "R05-102"
+   "R05-102",
+   "R06-071"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -710,14 +759,22 @@
    "R04-027",
    "R04-034",
    "R04-084",
-   "R05-029"
+   "R05-029",
+   "R06-010",
+   "R06-011",
+   "R06-037",
+   "R06-081",
+   "R06-082",
+   "R06-096",
+   "R06-104"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -835,14 +892,16 @@
    "R04-094",
    "R05-058",
    "R05-074",
-   "R05-088"
+   "R05-088",
+   "R06-059"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -885,13 +944,16 @@
    "R05-059",
    "R05-073",
    "R05-090",
-   "R05-106"
+   "R05-106",
+   "R06-012",
+   "R06-084"
   ],
   "reports": [
    1,
    2,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -929,12 +991,15 @@
    "R02-100",
    "R03-125",
    "R05-063",
-   "R05-089"
+   "R05-089",
+   "R06-021",
+   "R06-022"
   ],
   "reports": [
    1,
    2,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -955,13 +1020,15 @@
    "R04-093",
    "R05-010",
    "R05-056",
-   "R05-084"
+   "R05-084",
+   "R06-030"
   ],
   "reports": [
    1,
    2,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -972,10 +1039,13 @@
   "section": "must-never-break",
   "cards": [
    "R01-068",
-   "R01-097"
+   "R01-097",
+   "R06-055",
+   "R06-085"
   ],
   "reports": [
-   1
+   1,
+   6
   ],
   "merged_from": []
  },
@@ -1042,13 +1112,16 @@
    "R04-086",
    "R04-101",
    "R05-069",
-   "R05-099"
+   "R05-099",
+   "R06-057",
+   "R06-092"
   ],
   "reports": [
    1,
    2,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -1423,13 +1496,16 @@
    "R03-087",
    "R04-062",
    "R04-078",
-   "R05-021"
+   "R05-021",
+   "R06-015",
+   "R06-043"
   ],
   "reports": [
    1,
    3,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -1462,14 +1538,16 @@
    "R04-030",
    "R04-031",
    "R05-005",
-   "R05-027"
+   "R05-027",
+   "R06-037"
   ],
   "reports": [
    1,
    2,
    3,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -1623,11 +1701,14 @@
    "R02-061",
    "R02-077",
    "R02-112",
-   "R04-063"
+   "R04-063",
+   "R06-024",
+   "R06-091"
   ],
   "reports": [
    2,
-   4
+   4,
+   6
   ],
   "merged_from": []
  },
@@ -1653,10 +1734,14 @@
   "cards": [
    "R02-028",
    "R02-034",
-   "R02-106"
+   "R02-106",
+   "R06-016",
+   "R06-037",
+   "R06-083"
   ],
   "reports": [
-   2
+   2,
+   6
   ],
   "merged_from": []
  },
@@ -1836,12 +1921,14 @@
    "R03-090",
    "R03-106",
    "R04-099",
-   "R05-032"
+   "R05-032",
+   "R06-068"
   ],
   "reports": [
    3,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -1858,12 +1945,14 @@
    "R03-107",
    "R04-035",
    "R04-088",
-   "R05-082"
+   "R05-082",
+   "R06-042"
   ],
   "reports": [
    3,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -1892,10 +1981,13 @@
   "section": "must-have",
   "cards": [
    "R03-056",
-   "R03-119"
+   "R03-119",
+   "R06-062",
+   "R06-094"
   ],
   "reports": [
-   3
+   3,
+   6
   ],
   "merged_from": []
  },
@@ -1978,10 +2070,12 @@
   "section": "research",
   "cards": [
    "R03-077",
-   "R03-110"
+   "R03-110",
+   "R06-032"
   ],
   "reports": [
-   3
+   3,
+   6
   ],
   "merged_from": []
  },
@@ -2014,12 +2108,16 @@
    "R04-070",
    "R04-106",
    "R05-064",
-   "R05-104"
+   "R05-104",
+   "R06-062",
+   "R06-063",
+   "R06-094"
   ],
   "reports": [
    3,
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -2137,11 +2235,14 @@
    "R04-040",
    "R04-092",
    "R05-073",
-   "R05-090"
+   "R05-090",
+   "R06-012",
+   "R06-084"
   ],
   "reports": [
    4,
-   5
+   5,
+   6
   ],
   "merged_from": []
  },
@@ -2156,10 +2257,15 @@
    "R04-024",
    "R04-036",
    "R04-041",
-   "R04-097"
+   "R04-097",
+   "R06-013",
+   "R06-014",
+   "R06-088",
+   "R06-102"
   ],
   "reports": [
-   4
+   4,
+   6
   ],
   "merged_from": []
  },
@@ -2360,15 +2466,100 @@
  {
   "id": "C133",
   "title": "Gate on capability, not on quantity",
-  "statement": "A quantity cap set above the point of core value is noticed, tolerated and does not convert; move the wall to analytics, sync, Watch, widgets, icons, family sharing. See Research Reports/Feature Gating vs Quantity.md.",
+  "statement": "A quantity cap set above the point of core value is noticed, tolerated and does not convert; move the wall to analytics, sync, Watch, widgets, icons, family sharing. See Research Reports/Feature Gating vs Quantity.md. Report 6 contests the 'icons' part: the listing sold Premium on themes and icons and zero of 44 reviewers mentioned them.",
   "section": "product-rule",
   "cards": [
    "R05-009",
    "R05-091",
-   "R05-110"
+   "R05-110",
+   "R06-007",
+   "R06-008",
+   "R06-034",
+   "R06-035",
+   "R06-045",
+   "R06-086",
+   "R06-090",
+   "R06-095",
+   "R06-101"
   ],
   "reports": [
-   5
+   5,
+   6
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C134",
+  "title": "Lead the store listing with what users actually love",
+  "statement": "Report 6's most-loved feature (the free widget) was one bullet at the bottom of the description and its differentiators (no daily check-in, user-defined day boundary) were not marketed at all — yet they are why people switched.",
+  "section": "do",
+  "cards": [
+   "R06-019",
+   "R06-021",
+   "R06-093"
+  ],
+  "reports": [
+   6
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C135",
+  "title": "Offer both check-in tracking and auto-counting (no daily check-in) per item",
+  "statement": "A counter that runs on its own until you declare a break is report 6's differentiator against every check-off tracker, and fits abstinence streaks best.",
+  "section": "free",
+  "cards": [
+   "R06-020",
+   "R06-021",
+   "R06-029",
+   "R06-065"
+  ],
+  "reports": [
+   6
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C136",
+  "title": "When an item can be tracked more than one way, make the user choose the mode at creation",
+  "statement": "Report 6: users who landed in the auto-count mode by default read it as the app fabricating progress (1★), and users asked for a mode that already shipped.",
+  "section": "must-have",
+  "cards": [
+   "R06-023",
+   "R06-024",
+   "R06-065",
+   "R06-091"
+  ],
+  "reports": [
+   6
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C137",
+  "title": "Show the paywall at the moment of need, not on app open",
+  "statement": "Surface the upgrade when the user tries the gated action (the third streak, a freeze); an upsell on every launch reads as 'begs me for money' and feeds the greed cluster.",
+  "section": "do",
+  "cards": [
+   "R06-042",
+   "R06-089"
+  ],
+  "reports": [
+   6
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C138",
+  "title": "Never let the paywall imply a capability the product lacks",
+  "statement": "A buyer who paid for a feature that isn't there cancels and says 'there are free ones'; it turns a feature request into a refund cause.",
+  "section": "dont",
+  "cards": [
+   "R06-038",
+   "R06-100"
+  ],
+  "reports": [
+   6
   ],
   "merged_from": []
  }

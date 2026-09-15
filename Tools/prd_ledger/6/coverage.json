@@ -1,0 +1,53 @@
+[
+ {
+  "heading": "6. What people actually love: the widget, the flexibility, and the fact that it does almost nothing",
+  "cards": [
+   "R06-017",
+   "R06-018",
+   "R06-020",
+   "R06-022"
+  ]
+ },
+ {
+  "table_row": "< 0.1%",
+  "no_new_insight": "signal-band definition (method); see R06-002"
+ },
+ {
+  "table_row": "0.1 – 0.5%",
+  "no_new_insight": "signal-band definition (method); see R06-002"
+ },
+ {
+  "table_row": "0.5 – 1%",
+  "no_new_insight": "signal-band definition (method); see R06-002"
+ },
+ {
+  "table_row": "1 – 3%",
+  "no_new_insight": "signal-band definition (method); see R06-002"
+ },
+ {
+  "table_row": "3 – 5%",
+  "no_new_insight": "signal-band definition (method); see R06-002"
+ },
+ {
+  "table_row": "> 5%",
+  "no_new_insight": "signal-band definition (method); see R06-002"
+ },
+ {
+  "bold": "who is complaining",
+  "cards": [
+   "R06-007"
+  ]
+ },
+ {
+  "bold": "This is a five-star review from a customer with wallet in hand who was blocked by a broken IAP flow.",
+  "cards": [
+   "R06-016"
+  ]
+ },
+ {
+  "bold": "Two cautions before reading this as \"the product got better.\"",
+  "cards": [
+   "R06-074"
+  ]
+ }
+]
