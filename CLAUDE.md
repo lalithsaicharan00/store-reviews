@@ -62,8 +62,9 @@ Non-negotiables, because they are what makes a report auditable:
 
 `PRD for App Store.md` in the repo root collects what we will build, do, and avoid,
 distilled from the reports. **Section 0 of that file holds the writing rules** (plain
-English, short, every bullet has a count and an inline link back to the report).
-Read section 0 before adding anything, and use the bullet template there.
+English, 2–3 lines per bullet, no statistics, every bullet ends with a "Repeated in:"
+list of linked report numbers that only the owner extends). Read section 0 before
+adding anything, and use the bullet template there.
 
 ## Git
 
