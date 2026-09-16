@@ -1,0 +1,85 @@
+[
+ {
+  "table_row": "cc",
+  "no_new_insight": "table header row (§6.1 country table); carded verbatim as R26-092"
+ },
+ {
+  "table_row": "Era",
+  "no_new_insight": "table header row (§8.1 era table); carded verbatim as R26-100"
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R26-002"
+  ]
+ },
+ {
+  "bold": "Theme rates are not equally comparable across languages.",
+  "cards": [
+   "R26-002"
+  ]
+ },
+ {
+  "bold": "Country comparisons below lead with rating distributions, which are language-neutral.",
+  "cards": [
+   "R26-002"
+  ]
+ },
+ {
+  "bold": "~2–3 missed true mentions (~7%)",
+  "cards": [
+   "R26-002",
+   "R26-017"
+  ]
+ },
+ {
+  "bold": "Known error risk:",
+  "cards": [
+   "R26-002"
+  ]
+ },
+ {
+  "bold": "Per the signal-threshold rule, sub-0.1%-class findings are promoted only for safety, legal, security or severe-data-loss reasons; accessibility exclusion is promoted here on legal/inclusion grounds and because the single report is specific enough to act on directly.",
+  "cards": [
+   "R26-076"
+  ]
+ },
+ {
+  "bold": "Rating columns are language-neutral and should carry the most weight; theme columns are subject to the language-coverage caveat in Warning 4.",
+  "cards": [
+   "R26-092",
+   "R26-002"
+  ]
+ },
+ {
+  "bold": "Definition and disclosure:",
+  "cards": [
+   "R26-093",
+   "R26-094"
+  ]
+ },
+ {
+  "bold": "review volume only, as a disclosed proxy. It is not a downloads ranking and must not be reported as one.",
+  "cards": [
+   "R26-093"
+  ]
+ },
+ {
+  "bold": "This is the most decision-relevant split in Part 6.",
+  "cards": [
+   "R26-094"
+  ]
+ },
+ {
+  "bold": "trinker",
+  "cards": [
+   "R26-095"
+  ]
+ },
+ {
+  "bold": "Interpretation (flagged as interpretation, weak evidence):",
+  "cards": [
+   "R26-099"
+  ]
+ }
+]
