@@ -1,0 +1,98 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R27-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R27-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R27-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R27-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` `total_reviews",
+  "cards": [
+   "R27-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` `storefronts_with_reviews",
+  "cards": [
+   "R27-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "no_new_insight": "table header row (§3.1 theme table); carded verbatim as R27-027"
+ },
+ {
+  "table_row": "Era",
+  "no_new_insight": "table header row (§7.1 era table); carded verbatim as R27-057"
+ },
+ {
+  "bold": "count, percentage, denominator, scope, period, signal label, and review IDs",
+  "cards": [
+   "R27-002"
+  ]
+ },
+ {
+  "bold": "Facts",
+  "cards": [
+   "R27-002"
+  ]
+ },
+ {
+  "bold": "Interpretation",
+  "cards": [
+   "R27-002"
+  ]
+ },
+ {
+  "bold": "Throughout this report the raw count is printed first and is the number you should reason with.",
+  "cards": [
+   "R27-002"
+  ]
+ },
+ {
+  "bold": "No `version` field exists in this corpus.",
+  "cards": [
+   "R27-002"
+  ]
+ },
+ {
+  "bold": "Identical",
+  "cards": [
+   "R27-002"
+  ]
+ },
+ {
+  "bold": "Version attribution is inferential.",
+  "cards": [
+   "R27-002"
+  ]
+ },
+ {
+  "bold": "Interpretation (clearly labelled as interpretation, not fact):",
+  "cards": [
+   "R27-049"
+  ]
+ },
+ {
+  "kind": "audience",
+  "none_in_report": "the report identifies no user segment (no ADHD, student, clinical or age group is named anywhere in 138 reviews); the only segment-like observation is the China power-user hypothesis, carded as market R27-055"
+ }
+]
