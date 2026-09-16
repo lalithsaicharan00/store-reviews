@@ -1,0 +1,94 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R24-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R24-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R24-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id` values",
+  "cards": [
+   "R24-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` → `total_reviews",
+  "cards": [
+   "R24-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` → `reviews_per_country` (146 entries)",
+  "cards": [
+   "R24-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` → `mean_rating` 3.751",
+  "cards": [
+   "R24-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "no_new_insight": "table header rows (§3.1 master theme table and §8.2 country table); carded verbatim as R24-040 and R24-146"
+ },
+ {
+  "table_row": "—",
+  "no_new_insight": "visual separator row in the §6.5 table; carded verbatim as R24-132"
+ },
+ {
+  "bold": "count, percentage, denominator, scope, period, signal label, and review IDs",
+  "cards": [
+   "R24-002"
+  ]
+ },
+ {
+  "bold": "exactly",
+  "cards": [
+   "R24-002"
+  ]
+ },
+ {
+  "bold": "Regex classification has error in both directions.",
+  "cards": [
+   "R24-002"
+  ]
+ },
+ {
+  "bold": "Rating is not a feature preference.",
+  "cards": [
+   "R24-002"
+  ]
+ },
+ {
+  "bold": "Eras used throughout this report",
+  "cards": [
+   "R24-019"
+  ]
+ },
+ {
+  "bold": "Note:",
+  "cards": [
+   "R24-020"
+  ]
+ },
+ {
+  "bold": "Interpretation, labelled as such.",
+  "cards": [
+   "R24-129"
+  ]
+ }
+]
