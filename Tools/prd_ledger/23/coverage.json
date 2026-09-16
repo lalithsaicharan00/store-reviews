@@ -1,0 +1,116 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R23-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R23-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R23-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id` values",
+  "cards": [
+   "R23-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` → `total_reviews",
+  "cards": [
+   "R23-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` → `reviews_per_country` (93 entries)",
+  "cards": [
+   "R23-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` → `rating_distribution",
+  "cards": [
+   "R23-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "no_new_insight": "table header row (§3.1 master theme table); carded verbatim as R23-054"
+ },
+ {
+  "table_row": "cc",
+  "no_new_insight": "table header row (§8.2 country table); carded verbatim as R23-174"
+ },
+ {
+  "bold": "count, percentage, denominator, scope, period, signal label, and review IDs",
+  "cards": [
+   "R23-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R23-002"
+  ]
+ },
+ {
+  "bold": "Facts",
+  "cards": [
+   "R23-002"
+  ]
+ },
+ {
+  "bold": "Theme rates are not equally comparable across languages.",
+  "cards": [
+   "R23-002"
+  ]
+ },
+ {
+  "bold": "Regex classification has error in both directions.",
+  "cards": [
+   "R23-002"
+  ]
+ },
+ {
+  "bold": "Review-selection bias.",
+  "cards": [
+   "R23-002"
+  ]
+ },
+ {
+  "bold": "The \"no value\" argument deserves separate attention.",
+  "cards": [
+   "R23-141"
+  ]
+ },
+ {
+  "bold": "And a third, distinct complaint about tone.",
+  "cards": [
+   "R23-156"
+  ]
+ },
+ {
+  "bold": "The Apple-editorial finding is worth pausing on.",
+  "cards": [
+   "R23-163",
+   "R23-238"
+  ]
+ },
+ {
+  "heading": "11.5 Experiments worth running",
+  "cards": [
+   "R23-231",
+   "R23-232",
+   "R23-233",
+   "R23-234"
+  ]
+ }
+]
