@@ -1,0 +1,101 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R25-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R25-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R25-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id` values",
+  "cards": [
+   "R25-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` → `total_reviews",
+  "cards": [
+   "R25-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` → `reviews_per_country` (91 entries)",
+  "cards": [
+   "R25-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` → `mean_rating` 3.671",
+  "cards": [
+   "R25-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "no_new_insight": "table header row (§3.1 master theme table); carded verbatim as R25-042"
+ },
+ {
+  "table_row": "cc",
+  "no_new_insight": "table header row (§8.2 country table); carded verbatim as R25-137"
+ },
+ {
+  "bold": "count, percentage, denominator, scope, period, signal label, and review IDs",
+  "cards": [
+   "R25-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R25-002"
+  ]
+ },
+ {
+  "bold": "Validated and corrected.",
+  "cards": [
+   "R25-002"
+  ]
+ },
+ {
+  "bold": "Regex classification has error in both directions.",
+  "cards": [
+   "R25-002"
+  ]
+ },
+ {
+  "bold": "No download, revenue, retention, churn or refund-outcome data exists in this corpus.",
+  "cards": [
+   "R25-002"
+  ]
+ },
+ {
+  "bold": "Eras used throughout",
+  "cards": [
+   "R25-021"
+  ]
+ },
+ {
+  "bold": "Review volume is used only as a disclosed proxy for market presence. It is not a download or install figure and must not be read as one.",
+  "cards": [
+   "R25-146"
+  ]
+ },
+ {
+  "table_row": "Pop-ups",
+  "cards": [
+   "R25-123",
+   "R25-112"
+  ]
+ }
+]
