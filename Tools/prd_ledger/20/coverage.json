@@ -1,0 +1,197 @@
+[
+ {
+  "table_row": "<0.1%",
+  "no_new_insight": "signal-band definition (method); see R20-002"
+ },
+ {
+  "table_row": "0.1–<0.5%",
+  "no_new_insight": "signal-band definition (method); see R20-002"
+ },
+ {
+  "table_row": "0.5–<1%",
+  "no_new_insight": "signal-band definition (method); see R20-002"
+ },
+ {
+  "table_row": "1–<3%",
+  "no_new_insight": "signal-band definition (method); see R20-002"
+ },
+ {
+  "table_row": "3–5%",
+  "no_new_insight": "signal-band definition (method); see R20-002"
+ },
+ {
+  "table_row": ">5%",
+  "no_new_insight": "signal-band definition (method); see R20-002"
+ },
+ {
+  "table_row": "reviews.jsonl",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "Lines in `reviews.jsonl",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "Records parsed",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "Sum of `by_country/*.jsonl",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "Country files",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "manifest.reviews_per_country` vs recount",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "Exact duplicate title+body pairs",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "Empty bodies",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "manifest.rating_distribution` vs recount",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "manifest.mean_rating` 3.144 vs recount",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "Date range",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "Distinct months",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "is_edited = true",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "table_row": "Era",
+  "no_new_insight": "table header row (§1.6 era table); carded verbatim as R20-013"
+ },
+ {
+  "table_row": "cc",
+  "no_new_insight": "table header row (§6.2 country table); carded verbatim as R20-070"
+ },
+ {
+  "bold": "The transferable lesson:",
+  "cards": [
+   "R20-004",
+   "R20-001"
+  ]
+ },
+ {
+  "bold": "doesn't",
+  "cards": [
+   "R20-002"
+  ]
+ },
+ {
+  "bold": "€43.99/44/45",
+  "cards": [
+   "R20-021"
+  ]
+ },
+ {
+  "bold": "Two caveats.",
+  "cards": [
+   "R20-053"
+  ]
+ },
+ {
+  "bold": "Definition:",
+  "cards": [
+   "R20-071"
+  ]
+ },
+ {
+  "bold": "Definition and its limits.",
+  "cards": [
+   "R20-072"
+  ]
+ },
+ {
+  "bold": "This membership is an analyst assumption, not a fact established by this corpus or by a source I verified during this analysis.",
+  "cards": [
+   "R20-072"
+  ]
+ },
+ {
+  "bold": "Timing.",
+  "cards": [
+   "R20-073"
+  ]
+ },
+ {
+  "bold": "Price framing differs.",
+  "cards": [
+   "R20-073"
+  ]
+ },
+ {
+  "bold": "Clarification found in the corpus",
+  "cards": [
+   "R20-083"
+  ]
+ }
+]

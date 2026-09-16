@@ -92,7 +92,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **Magnitude:** 4 named IDs
 - **Direction for us:** product-rule · **Report confidence:** recommendation (immediate) · **Generalisable:** yes
 - **Review IDs:** `12433476315`, `12536725596`, `12350930181`, `13894400612`
-- **Canonical:** C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible; C204 Never destroy user work at the paywall; label paid features before they are used
+- **Canonical:** C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible; C204 Never destroy user work at the paywall
 
 ### R18-144 — Move to an 'unlimited free core, paid depth' model — monetise new capability, not existing capability; the corpus already names what people will pay for: export, statistics with trend, routine modes, timer with time tracking, Apple Watch parity, themes, web/Mac — every one additive
 
@@ -112,7 +112,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **Magnitude:** 3 conversion IDs vs 11 charged-before-evaluation IDs
 - **Direction for us:** product-rule · **Report confidence:** recommendation · **Generalisable:** yes
 - **Review IDs:** `8363704388`, `8961449067`, `10995640730`
-- **Canonical:** C147 Let people use the product before they pay; C181 If the app is paid-only, say so in the subtitle and first screenshot; C192 A trial must end in a usable free tier, not a cliff
+- **Canonical:** C147 Let people use the product before they pay; C181 If the app is paid-only, say so in the subtitle and first screenshot; C193 When a trial or subscription ends, the user lands on a usable free tier with read-only history — never a cliff
 
 ### R18-147 — Stop marketing to people who have already paid — remove the promo bar, the Dynamic Island countdown and the annual-upsell nag for anyone with an active plan; 'a pro member should be a pro member regardless of whether they are paying monthly or yearly'
 
@@ -793,7 +793,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **Magnitude:** 5 named IDs
 - **Direction for us:** must-never-break · **Report confidence:** recommendation · **Generalisable:** yes
 - **Review IDs:** `13685716991`, `13812236928`, `13795524849`, `14108692347`, `13556531783`
-- **Canonical:** C078 Ship the paid feature working before you sell it; C206 Swappable day templates / routine modes for irregular schedules
+- **Canonical:** C078 Ship the paid feature working before you sell it — the purchase trigger must never be the broken feature; C206 Swappable day templates / routine modes for irregular schedules
 
 ### R18-156 — Apple Watch and widget parity with the timer — Japan and the US both rate the timer as a high-priority strength and both ask for it on the watch and in the widget
 
@@ -1008,7 +1008,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **Magnitude:** Reported as free | Reported as Pro | Unclear / changed over time ; Habit creation (to the cap), traffic light, badges, social/follow/copy, reminders, rest/skip, completion animation | To-do list, statistics/monthly report, tracking habits, note, to-do calendar, highlighter (beyond 1 colour), routine bundles + timer, routine modes, intensity levels, unlimited habits, unlimited completions | Widget, diary, day-of-week repeat, condition check — all reported as free by some users and paid by others in overlapping periods ; 7 named IDs
 - **Direction for us:** must-have · **Report confidence:** close reading · **Generalisable:** yes
 - **Review IDs:** `12350930181`, `13894400612`, `13534993454`, `14288774795`, `13496310680`, `12433476315`, `14331337303`
-- **Canonical:** C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible; C204 Never destroy user work at the paywall; label paid features before they are used
+- **Canonical:** C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible; C204 Never destroy user work at the paywall
 
 ### R18-066 — Positive themes: design/cute/clean/intuitive 164 (8.01%, 4.46★, HIGH); habit formed/life changed 131 (6.40%, 4.54★, HIGH); traffic light/streak/badge 92 (4.49%, 4.24★); social layer 66 (3.22%, 4.45★); Apple Watch 48 (2.34%, 4.46★, mostly positive, asks for parity); routine timer 46 (2.25%, 4.37★); ADHD/neurodivergent/low-mood fit 36 (1.76%, 4.53★); explicit praise for partial-completion design 10 (0.49%, 4.80★ — conservative classifier, qualitatively much larger)
 
@@ -1126,7 +1126,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **Magnitude:** 3 named IDs
 - **Direction for us:** must-never-break · **Report confidence:** ranked #4 · **Generalisable:** yes
 - **Review IDs:** `13926457593`, `13487846506`, `12024690867`
-- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C078 Ship the paid feature working before you sell it
+- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C078 Ship the paid feature working before you sell it — the purchase trigger must never be the broken feature
 
 ### R18-106 — 'Not so much amazing paid service as feeling forced to pay because the basics were cut'; 'even paid, there's nothing to use beyond the to-do list' — the paid tier only removes limits
 

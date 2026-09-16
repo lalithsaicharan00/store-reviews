@@ -219,6 +219,14 @@ These came from gaps found when a fresh context re-read a report. Each one is no
 - **A per-year or per-half series stated in a trend section carries every value on the card**,
   not first → last only; the shape of the curve (trough, peak, step) is what later reports are
   compared against. (Report 10: the companion-theme series.)
+- **Every row of a feature-inventory table that names a gate (free / paid / capped) or a defect
+  state (buggy, broken, never shipped) gets its own `feature` card**, not only the verbatim table
+  card — merge attaches per feature, and a gate that lives only inside a table row never reaches
+  its canonical point. (Report 20: extended notifications, per-habit colours, drag-to-reorder.)
+- **Every theme in the master theme table at Emerging or above gets its own card**, even when the
+  report gives it no paragraph — a sync-request count or a crash count with no prose is still a
+  number later reports are compared against. (Report 20: `N-sync-backup`, `N-crash`,
+  `N-checks-disappear`.)
 
 ### Magnitude is mandatory
 

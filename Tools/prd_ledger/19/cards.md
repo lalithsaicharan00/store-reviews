@@ -133,7 +133,7 @@ Source: `App Store Reports/19. Wisey - Habit Builder - Form habits, change your 
 - **Magnitude:** 4 of 105 (3.81%, Very strong)
 - **Direction for us:** must-have · **Report confidence:** very strong · **Generalisable:** yes
 - **Review IDs:** `13150104593`, `13366105778`, `13417665753`, `14087411464`
-- **Canonical:** C177 Every IAP SKU has a distinct name that states its period or 'one time'; C210 Bill App Store users through the App Store — never route them to an off-store subscription the app cannot show or cancel
+- **Canonical:** C210 Bill App Store users through the App Store — never route them to an off-store subscription the app cannot show or cancel; C221 A receipt with a working product link after every charge, and a renewal reminder before it
 
 ### R19-076 — One-tap cancellation, symmetric buttons, one confirmation step — hours of work, and the direct source of the ADHD-exploitation accusation
 
@@ -153,7 +153,7 @@ Source: `App Store Reports/19. Wisey - Habit Builder - Form habits, change your 
 - **Magnitude:** §7.3 (4) · RENEWAL_SURPRISE (3)
 - **Direction for us:** must-have · **Report confidence:** recommendation (immediate) · **Generalisable:** yes
 - **Review IDs:** `14087411464`, `13417665753`
-- **Canonical:** C152 A promised pre-charge trial reminder must actually arrive — in-app, with amount and date; C177 Every IAP SKU has a distinct name that states its period or 'one time'
+- **Canonical:** C152 A promised pre-charge trial reminder must actually arrive — in-app, with amount and date; C221 A receipt with a working product link after every charge, and a renewal reminder before it
 
 ## Must never break
 
@@ -195,7 +195,7 @@ Source: `App Store Reports/19. Wisey - Habit Builder - Form habits, change your 
 - **Magnitude:** 10 + 5 + 3 + 3 + 3 + 4
 - **Direction for us:** must-never-break · **Report confidence:** high-priority / very strong / meaningful · **Generalisable:** yes
 - **Review IDs:** `12985541561`, `13311158289`, `13742636617`, `13716802092`, `13803171356`, `13921976046`, `12742285860`, `13248498967`
-- **Canonical:** C109 A free trial must be a real trial; C113 One stable, disclosed price — no discount wheels; C177 Every IAP SKU has a distinct name that states its period or 'one time'
+- **Canonical:** C109 A free trial must be a real trial; C113 One stable, disclosed price — no discount wheels; C177 Every IAP SKU has a distinct name that states its period or 'one time'; C221 A receipt with a working product link after every charge, and a renewal reminder before it
 
 ### R19-058 — Paid and could not use what they paid for — 'I can log in on my laptop but no apps'; 'App doesn't work, was not able to use the service and was still charged $49.99'; login error 300 on iPhone (iPad fine) with no error message; 'once you've started the cancellation process, you can no longer log onto the app' — buried inside billing complaints; the error-300 review is the only pure bug report in the corpus and the cheapest actionable item
 
@@ -740,7 +740,7 @@ Source: `App Store Reports/19. Wisey - Habit Builder - Form habits, change your 
 - **Magnitude:** 5 of 105 (4.76%, Very strong); 0 of 72 US
 - **Direction for us:** dont · **Report confidence:** very strong · **Generalisable:** yes
 - **Review IDs:** `12748055966`, `12778540152`, `13194035072`, `13785381809`, `14107869084`
-- **Canonical:** C138 Never let the paywall imply a capability the product lacks; C148 The paid product must deliver what the ads and onboarding demonstrate
+- **Canonical:** C148 The paid product must deliver what the ads and onboarding demonstrate; C218 Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate
 
 ## Things not to do
 
@@ -782,7 +782,7 @@ Source: `App Store Reports/19. Wisey - Habit Builder - Form habits, change your 
 - **Magnitude:** n=1
 - **Direction for us:** dont · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `12933789910`
-- **Canonical:** C193 Lapsed subscribers keep a usable free tier and read-only history
+- **Canonical:** C193 When a trial or subscription ends, the user lands on a usable free tier with read-only history — never a cliff
 
 ### R19-075 — Collapse the e-book plan into the main subscription or delete it — the corpus's most specific and most repeated mechanism
 
@@ -812,7 +812,7 @@ Source: `App Store Reports/19. Wisey - Habit Builder - Form habits, change your 
 - **Magnitude:** 5 + 1 + several
 - **Direction for us:** dont · **Report confidence:** transferable · **Generalisable:** yes
 - **Review IDs:** `12748055966`, `13710711149`, `13785381809`
-- **Canonical:** C138 Never let the paywall imply a capability the product lacks; C148 The paid product must deliver what the ads and onboarding demonstrate
+- **Canonical:** C148 The paid product must deliver what the ads and onboarding demonstrate; C218 Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate
 
 ## Things to do
 
