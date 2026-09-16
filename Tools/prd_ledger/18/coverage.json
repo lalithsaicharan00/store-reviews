@@ -1,0 +1,174 @@
+[
+ {
+  "table_row": "< 0.1%",
+  "no_new_insight": "signal-band definition (method); see R18-002"
+ },
+ {
+  "table_row": "0.1 – <0.5%",
+  "no_new_insight": "signal-band definition (method); see R18-002"
+ },
+ {
+  "table_row": "0.5 – <1%",
+  "no_new_insight": "signal-band definition (method); see R18-002"
+ },
+ {
+  "table_row": "1 – <3%",
+  "no_new_insight": "signal-band definition (method); see R18-002"
+ },
+ {
+  "table_row": "3 – 5%",
+  "no_new_insight": "signal-band definition (method); see R18-002"
+ },
+ {
+  "table_row": "> 5%",
+  "no_new_insight": "signal-band definition (method); see R18-002"
+ },
+ {
+  "table_row": "reviews.jsonl",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "Lines in `reviews.jsonl",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "Sum of `by_country/*.jsonl` ids",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "Per-country ID sets, main file vs `by_country",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` `total_reviews",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` `reviews_per_country",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` `rating_distribution` (5:1069, 4:322, 3:216, 2:109, 1:332)",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` `mean_rating` 3.824",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "Records with empty `body",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "Date range",
+  "cards": [
+   "R18-002"
+  ]
+ },
+ {
+  "table_row": "5",
+  "cards": [
+   "R18-006",
+   "R18-099"
+  ]
+ },
+ {
+  "table_row": "de",
+  "cards": [
+   "R18-120",
+   "R18-124"
+  ]
+ },
+ {
+  "bold": "Target folder:",
+  "cards": [
+   "R18-002",
+   "R18-037"
+  ]
+ },
+ {
+  "bold": "no deduplication rule was applied or needed",
+  "cards": [
+   "R18-002",
+   "R18-037"
+  ]
+ },
+ {
+  "bold": "Parse & reconcile",
+  "cards": [
+   "R18-002",
+   "R18-037"
+  ]
+ },
+ {
+  "bold": "Multilingual regex classifier",
+  "cards": [
+   "R18-002",
+   "R18-037"
+  ]
+ },
+ {
+  "bold": "Selection bias is severe and asymmetric.",
+  "cards": [
+   "R18-002",
+   "R18-037"
+  ]
+ },
+ {
+  "bold": "No causal claims.",
+  "cards": [
+   "R18-002",
+   "R18-037"
+  ]
+ },
+ {
+  "table_row": "#",
+  "no_new_insight": "table header row (§3.1 negative themes); table carded verbatim as R18-053"
+ },
+ {
+  "table_row": "Era",
+  "no_new_insight": "table header row (§8.1 era table); carded verbatim as R18-128"
+ }
+]
