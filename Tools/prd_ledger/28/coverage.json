@@ -1,0 +1,97 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R28-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R28-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R28-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R28-002"
+  ]
+ },
+ {
+  "table_row": "Exact duplicate (title, body) pairs",
+  "cards": [
+   "R28-002"
+  ]
+ },
+ {
+  "table_row": "IDs in country files not in main file",
+  "cards": [
+   "R28-002"
+  ]
+ },
+ {
+  "table_row": "IDs in main file not in country files",
+  "cards": [
+   "R28-002"
+  ]
+ },
+ {
+  "table_row": "Records where `country` ≠ country filename",
+  "cards": [
+   "R28-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "no_new_insight": "table header row (§3.1 master table); carded verbatim as R28-024"
+ },
+ {
+  "table_row": "Set",
+  "no_new_insight": "table header row (§4.1 counting rules); carded verbatim as R28-093"
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R28-002"
+  ]
+ },
+ {
+  "bold": "Classification was hand-audited, not blind-automated.",
+  "cards": [
+   "R28-002"
+  ]
+ },
+ {
+  "bold": "A review-solicitation prompt is visible in the data and is getting worse.",
+  "cards": [
+   "R28-002",
+   "R28-089"
+  ]
+ },
+ {
+  "bold": "Note: this is the broadest theme in the report and is included as context. Its regex (helps/motivat/productiv/accountab/procrastinat/changed my life) is deliberately inclusive; it should not be used as a precise metric.",
+  "cards": [
+   "R28-077"
+  ]
+ },
+ {
+  "bold": "Group definition and its limits.",
+  "cards": [
+   "R28-117"
+  ]
+ },
+ {
+  "table_row": "Bug",
+  "cards": [
+   "R28-102",
+   "R28-103",
+   "R28-083"
+  ]
+ }
+]
