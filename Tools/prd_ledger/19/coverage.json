@@ -1,0 +1,222 @@
+[
+ {
+  "table_row": "< 0.1%",
+  "no_new_insight": "signal-band definition (method); see R19-002"
+ },
+ {
+  "table_row": "0.1 – <0.5%",
+  "no_new_insight": "signal-band definition (method); see R19-002"
+ },
+ {
+  "table_row": "0.5 – <1%",
+  "no_new_insight": "signal-band definition (method); see R19-002"
+ },
+ {
+  "table_row": "1 – <3%",
+  "no_new_insight": "signal-band definition (method); see R19-002"
+ },
+ {
+  "table_row": "3 – 5%",
+  "no_new_insight": "signal-band definition (method); see R19-002"
+ },
+ {
+  "table_row": "> 5%",
+  "no_new_insight": "signal-band definition (method); see R19-002"
+ },
+ {
+  "table_row": "reviews.jsonl",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "by_country/*.jsonl` (14 files)",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "Lines in `reviews.jsonl",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "Records parsed without error",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id` values",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "Duplicate `(title, body)` pairs",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "Duplicate `author` values",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "Records in `by_country/*.jsonl",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "IDs in merged but not in country files",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "IDs in country files but not in merged",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "Records read in full, original language",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "Records hand-coded",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "Records discarded for any reason",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "table_row": "manifest.json` totals vs computed",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "bold": "Third-party corroboration (external):",
+  "cards": [
+   "R19-005"
+  ]
+ },
+ {
+  "bold": "Field absent that matters:",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "bold": "no duplicates, so no deduplication rule was applied",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "bold": "Build the taxonomy from the reading",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "bold": "Assert coverage programmatically.",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "bold": "Aggregate.",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "bold": "External checks last",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "bold": "Selection bias is extreme and visible.",
+  "cards": [
+   "R19-002",
+   "R19-021"
+  ]
+ },
+ {
+  "bold": "Review-derived, then externally checked. The two do not match, and the mismatch is the finding.",
+  "cards": [
+   "R19-028"
+  ]
+ },
+ {
+  "bold": "A finding that matters for interpretation:",
+  "cards": [
+   "R19-046"
+  ]
+ },
+ {
+  "bold": "Definition used, disclosed:",
+  "cards": [
+   "R19-065",
+   "R19-066"
+  ]
+ },
+ {
+  "bold": "This is a definition adopted for this report, not a measurement made from data in this folder.",
+  "cards": [
+   "R19-065"
+  ]
+ },
+ {
+  "kind": "contradiction",
+  "none_in_report": "the report contains no disagreement with a common assumption or another report — its findings on off-store billing, dark-pattern cancellation and guarantee breaches all reinforce reports 9, 12, 13 and 16; the only near-contradiction (a majority-payer 1★ corpus rather than a paywall-bounce corpus) is carded as R19-054 insight"
+ }
+]

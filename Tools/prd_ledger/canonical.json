@@ -142,7 +142,13 @@
    "R18-072",
    "R18-086",
    "R18-089",
-   "R18-090"
+   "R18-090",
+   "R19-003",
+   "R19-023",
+   "R19-032",
+   "R19-034",
+   "R19-045",
+   "R19-046"
   ],
   "reports": [
    1,
@@ -161,7 +167,8 @@
    14,
    16,
    17,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -296,7 +303,7 @@
  {
   "id": "C005",
   "title": "Know which competitors buyers compare against",
-  "statement": "Buyers shop around before paying; competitor names and price anchors appear in reviews.",
+  "statement": "Buyers shop around before paying; competitor names and price anchors appear in reviews. Report 19: departing payers named Fabulous and Triimo — the latter because 'customer service aren't trying to rob you'; trust is a feature people comparison-shop on.",
   "section": "do",
   "cards": [
    "R01-026",
@@ -325,7 +332,9 @@
    "R16-039",
    "R17-009",
    "R17-024",
-   "R18-085"
+   "R18-085",
+   "R19-044",
+   "R19-082"
   ],
   "reports": [
    1,
@@ -341,7 +350,8 @@
    14,
    16,
    17,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -646,7 +656,7 @@
  {
   "id": "C010",
   "title": "Backfill missed days / edit start date",
-  "statement": "Users accept a bounded free backfill window. Report 8 contests it: a ~7-day backfill window in a free app with weak history views was the worst-rated request (mean 3.52). Report 16: logging only today and yesterday cost earned streaks ('I forgot to log 2 days ago… my streak is permanently reset'); 33 requests from mostly 3–4★ users, unshipped for 31 months.",
+  "statement": "Users accept a bounded free backfill window. Report 8 contests it: a ~7-day backfill window in a free app with weak history views was the worst-rated request (mean 3.52). Report 16: logging only today and yesterday cost earned streaks ('I forgot to log 2 days ago… my streak is permanently reset'); 33 requests from mostly 3–4★ users, unshipped for 31 months. Report 19: 'I did the habit so why can't I go back and track it?' — back-dating a completed habit was broken or absent.",
   "section": "free",
   "cards": [
    "R01-012",
@@ -668,7 +678,10 @@
    "R16-065",
    "R16-076",
    "R18-055",
-   "R18-150"
+   "R18-150",
+   "R19-025",
+   "R19-040",
+   "R19-079"
   ],
   "reports": [
    1,
@@ -679,7 +692,8 @@
    13,
    14,
    16,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -1217,7 +1231,7 @@
  {
   "id": "C027",
   "title": "Localise early — it unlocks revenue",
-  "statement": "Missing localisation is the biggest market-specific complaint and a stated purchase blocker; shipping a language visibly converts (Japan). Report 10: localisation is HIGH-PRIORITY at country level in eight storefronts at once (cn 26%, ru 18%, tr 19%, br 13%, es 12%); reviewers say they will not pay in English. Report 13: Arabic is the largest unserved language (20.5% of Saudi reviews); users were also served the wrong language ('I am from Turkey but this app language is Korean', 41 votes) and shown store screenshots in languages the app does not have. Report 18: Japanese Instagram ads led to an app that opened in Korean with a KakaoTalk login; Korean push notifications persisted a year after the UI was fixed, the terms page stayed English-only (one reviewer refused to trial for that reason), Traditional Chinese was largely Simplified wording, and a Dutch translation was unintelligible.",
+  "statement": "Missing localisation is the biggest market-specific complaint and a stated purchase blocker; shipping a language visibly converts (Japan). Report 10: localisation is HIGH-PRIORITY at country level in eight storefronts at once (cn 26%, ru 18%, tr 19%, br 13%, es 12%); reviewers say they will not pay in English. Report 13: Arabic is the largest unserved language (20.5% of Saudi reviews); users were also served the wrong language ('I am from Turkey but this app language is Korean', 41 votes) and shown store screenshots in languages the app does not have. Report 18: Japanese Instagram ads led to an app that opened in Korean with a KakaoTalk login; Korean push notifications persisted a year after the UI was fixed, the terms page stayed English-only (one reviewer refused to trial for that reason), Traditional Chinese was largely Simplified wording, and a Dutch translation was unintelligible. Report 19: an Instagram ad ran in Spanish for an English-only app — 'tell me if there's a Spanish version and if not, refund the money'.",
   "section": "do",
   "cards": [
    "R01-037",
@@ -1297,7 +1311,9 @@
    "R18-108",
    "R18-116",
    "R18-121",
-   "R18-142"
+   "R18-142",
+   "R19-041",
+   "R19-067"
   ],
   "reports": [
    1,
@@ -1316,7 +1332,8 @@
    14,
    16,
    17,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -1344,7 +1361,7 @@
  {
   "id": "C029",
   "title": "Billing must be exactly right",
-  "statement": "Wrong amount, double charge, surprise renewal are the fastest route to 1★ (×21 lift); single price shown, no trial-to-charge traps, refunds honoured, receipts clear.",
+  "statement": "Wrong amount, double charge, surprise renewal are the fastest route to 1★ (×21 lift); single price shown, no trial-to-charge traps, refunds honoured, receipts clear. Report 19: a 105-review corpus that was 91% one-star and 71% about money — charged after cancelling (19), charged with no recognised subscription (19), double-billed (16), charged ≠ agreed ($29.99 annual agreed, $59.99/month billed), and terms permitting weekly renewal made 'again and again every week' structurally possible.",
   "section": "must-never-break",
   "cards": [
    "R01-041",
@@ -1395,7 +1412,14 @@
    "R16-070",
    "R17-034",
    "R18-006",
-   "R18-007"
+   "R18-007",
+   "R19-004",
+   "R19-005",
+   "R19-006",
+   "R19-007",
+   "R19-009",
+   "R19-053",
+   "R19-069"
   ],
   "reports": [
    1,
@@ -1413,7 +1437,8 @@
    14,
    16,
    17,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -1512,7 +1537,9 @@
    "R17-040",
    "R18-057",
    "R18-118",
-   "R18-130"
+   "R18-130",
+   "R19-060",
+   "R19-079"
   ],
   "reports": [
    1,
@@ -1529,7 +1556,8 @@
    14,
    16,
    17,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -1568,7 +1596,7 @@
  {
   "id": "C033",
   "title": "Restore purchase and entitlements must work immediately",
-  "statement": "Charging and not delivering is the second-fastest route to 1★ (×13.9). Lifetime buyers told to subscribe, subscribers who cannot find their tier, premium members still upsold. Report 11: 3 of 3 paid reviewers lost purchased access — a lifetime non-consumable expired, a subscription re-locked after a week and reinstall did not restore, an active annual term was re-charged — and two titled their reviews 'scam' and 'Purchase fraud'. Report 12: 40% of self-identified payers reported that payment did not grant access (paywall re-appears, 'no subscription found', Restore Purchase redirecting to the privacy policy, HTTP 400 at login, re-purchase demanded on a new device) — rising to 12.6% of all 2025 reviews. Report 18: 25 entitlement failures (mean 2.44★; 9.94% of confirmed payers; every Japanese instance 1★) — lifetime buyers denied Pro, a PayPay lifetime never applied, a subscription active in iOS settings with premium unusable, and a lifetime holder whose entitlement was deleted when they cancelled an accidental annual plan. The worst case: a power cut reset a lifetime buyer to onboarding, wiped every routine, then demanded a subscription.",
+  "statement": "Charging and not delivering is the second-fastest route to 1★ (×13.9). Lifetime buyers told to subscribe, subscribers who cannot find their tier, premium members still upsold. Report 11: 3 of 3 paid reviewers lost purchased access — a lifetime non-consumable expired, a subscription re-locked after a week and reinstall did not restore, an active annual term was re-charged — and two titled their reviews 'scam' and 'Purchase fraud'. Report 12: 40% of self-identified payers reported that payment did not grant access (paywall re-appears, 'no subscription found', Restore Purchase redirecting to the privacy policy, HTTP 400 at login, re-purchase demanded on a new device) — rising to 12.6% of all 2025 reviews. Report 18: 25 entitlement failures (mean 2.44★; 9.94% of confirmed payers; every Japanese instance 1★) — lifetime buyers denied Pro, a PayPay lifetime never applied, a subscription active in iOS settings with premium unusable, and a lifetime holder whose entitlement was deleted when they cancelled an accidental annual plan. The worst case: a power cut reset a lifetime buyer to onboarding, wiped every routine, then demanded a subscription. Report 19: 5 of 105 paid and could not use the product — 'I can log in on my laptop but no apps'; iPhone login error 300 with no message while iPad worked; account access lost once cancellation was started.",
   "section": "must-never-break",
   "cards": [
    "R01-044",
@@ -1613,7 +1641,10 @@
    "R18-116",
    "R18-129",
    "R18-140",
-   "R18-148"
+   "R18-148",
+   "R19-058",
+   "R19-060",
+   "R19-079"
   ],
   "reports": [
    1,
@@ -1624,7 +1655,8 @@
    12,
    13,
    16,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -1797,7 +1829,9 @@
    "R18-115",
    "R18-116",
    "R18-126",
-   "R18-142"
+   "R18-142",
+   "R19-012",
+   "R19-056"
   ],
   "reports": [
    1,
@@ -1815,7 +1849,8 @@
    14,
    16,
    17,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -2079,7 +2114,9 @@
    "R18-118",
    "R18-127",
    "R18-132",
-   "R18-160"
+   "R18-160",
+   "R19-017",
+   "R19-083"
   ],
   "reports": [
    1,
@@ -2095,7 +2132,8 @@
    13,
    16,
    17,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -2492,7 +2530,7 @@
  {
   "id": "C058",
   "title": "Discovery runs through social video, Reddit, therapists (US) and Xiaohongshu / Bilibili (CN)",
-  "statement": "Plan marketing around where users say they found the app. Report 10: 381 reviews involve a clinician recommending the app; two clinicians publicly withdrew the recommendation over data loss.",
+  "statement": "Plan marketing around where users say they found the app. Report 10: 381 reviews involve a clinician recommending the app; two clinicians publicly withdrew the recommendation over data loss. Report 19 (negative case): paid Instagram/YouTube ads → web quiz → web checkout → a checklist; six reviewers named the channel and the funnel, not the software, generated the corpus.",
   "section": "do",
   "cards": [
    "R01-121",
@@ -2502,7 +2540,9 @@
    "R07-139",
    "R08-052",
    "R10-041",
-   "R18-097"
+   "R18-097",
+   "R19-018",
+   "R19-051"
   ],
   "reports": [
    1,
@@ -2510,7 +2550,8 @@
    7,
    8,
    10,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -2683,7 +2724,8 @@
    "R16-054",
    "R16-055",
    "R16-056",
-   "R18-120"
+   "R18-120",
+   "R19-065"
   ],
   "reports": [
    1,
@@ -2696,7 +2738,8 @@
    13,
    14,
    16,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -2719,7 +2762,8 @@
    "R12-078",
    "R14-031",
    "R14-053",
-   "R16-024"
+   "R16-024",
+   "R19-030"
   ],
   "reports": [
    1,
@@ -2728,7 +2772,8 @@
    10,
    12,
    14,
-   16
+   16,
+   19
   ],
   "merged_from": []
  },
@@ -2783,7 +2828,10 @@
    "R16-062",
    "R18-050",
    "R18-060",
-   "R18-099"
+   "R18-099",
+   "R19-035",
+   "R19-070",
+   "R19-084"
   ],
   "reports": [
    1,
@@ -2797,14 +2845,15 @@
    12,
    13,
    16,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
  {
   "id": "C065",
   "title": "Paying customers are the highest 1★ risk — every paid feature must work",
-  "statement": "Paid cohort rates a full point lower; 28% of payers leave 1–2★; confirmed buyers ×6.7 on 1★. Report 10: paid-cohort mean fell 4.40 → 2.96 across 2022–2026 while the corpus mean barely moved; the five highest paid lifts are all billing mechanics, not price. Report 16: 17 confirmed payers rated 1.21 stars below everyone else; five of the seven billing complaints in the corpus came from them. Report 18: 161 confirmed payers rated 0.30 below the corpus with 21.7% at 1★; their rates of entitlement failure (9.94% vs 1.22%), data loss (12.42% vs 6.01%) and billing dispute (14.29% vs 7.03%) were roughly double the global rates, and by the last era 4.36% of all reviews came from someone who had paid and could not use what they bought.",
+  "statement": "Paid cohort rates a full point lower; 28% of payers leave 1–2★; confirmed buyers ×6.7 on 1★. Report 10: paid-cohort mean fell 4.40 → 2.96 across 2022–2026 while the corpus mean barely moved; the five highest paid lifts are all billing mechanics, not price. Report 16: 17 confirmed payers rated 1.21 stars below everyone else; five of the seven billing complaints in the corpus came from them. Report 18: 161 confirmed payers rated 0.30 below the corpus with 21.7% at 1★; their rates of entitlement failure (9.94% vs 1.22%), data loss (12.42% vs 6.01%) and billing dispute (14.29% vs 7.03%) were roughly double the global rates, and by the last era 4.36% of all reviews came from someone who had paid and could not use what they bought. Report 19: 64 of 105 reviewers were confirmed payers and 63 of them left 1★; one third said they could not get their money back and just under one third that they could not stop paying.",
   "section": "must-never-break",
   "cards": [
    "R01-038",
@@ -2872,7 +2921,11 @@
    "R18-091",
    "R18-092",
    "R18-101",
-   "R18-129"
+   "R18-129",
+   "R19-046",
+   "R19-050",
+   "R19-053",
+   "R19-058"
   ],
   "reports": [
    1,
@@ -2888,7 +2941,8 @@
    12,
    13,
    16,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -3006,14 +3060,16 @@
    "R17-041",
    "R17-046",
    "R17-057",
-   "R18-135"
+   "R18-135",
+   "R19-069"
   ],
   "reports": [
    2,
    8,
    14,
    17,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -3130,7 +3186,8 @@
    "R17-044",
    "R18-023",
    "R18-134",
-   "R18-141"
+   "R18-141",
+   "R19-042"
   ],
   "reports": [
    2,
@@ -3143,26 +3200,30 @@
    14,
    16,
    17,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
  {
   "id": "C076",
   "title": "Never seed launch reviews",
-  "statement": "Users spot it in week one and say so; it contaminates the analytics baseline permanently. Report 16: a reviewer alleged the beta list was asked to 'overcome outdated reviews'; 23 self-identified beta testers were strongly bimodal and the launch rating was spent within six weeks.",
+  "statement": "Users spot it in week one and say so; it contaminates the analytics baseline permanently. Report 16: a reviewer alleged the beta list was asked to 'overcome outdated reviews'; 23 self-identified beta testers were strongly bimodal and the launch rating was spent within six weeks. Report 19: all eight 5★ reviews in a 441-day corpus landed in one nine-day December window, all US, 44–74 characters, morning-UTC, generic register, one containing a homoglyph ('recọmmend') — the report treats them as unable to bear analytical weight and states every positive figure with and without them.",
   "section": "dont",
   "cards": [
    "R02-008",
    "R02-117",
    "R16-020",
    "R16-059",
-   "R18-039"
+   "R18-039",
+   "R19-048",
+   "R19-049"
   ],
   "reports": [
    2,
    16,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -3857,7 +3918,7 @@
  {
   "id": "C109",
   "title": "A free trial must be a real trial",
-  "statement": "It must apply to whichever plan the user picks, and the confirmation must show the exact charge date and amount; a trial that bills at once produced 789 reviews at mean 1.35 in report 4 and must be verified per storefront (Brazil ran 7–11× the global rate). Report 10: 149 users believe they were charged at trial START (mean 1.79) and trial length varied between 2 and 7 days across users. Report 12: a 3-day trial introduced around 2024 shows as subscribed but 'doesn't move past the subscription screen' — the complaint changed shape from 'there is no trial' to 'the trial doesn't work'. Report 13: a trial that cannot start without first authorising a subscription, defaulting to the most expensive annual tier, produced 1,102 auto-charge reviews at mean 1.20 (999 one-star) — the single most damaging mechanic in a 19,850-review corpus; involuntary-charge reviews equalled voluntary-purchase reviews 1:1. Report 18: trials that converted immediately ('in my case there was no free period'; asked for monthly, charged annual; frozen since minute 10, charged a full year) in KR, JP, TW, ID, BR and DE; trial length shrank from 3 weeks to 7 days to 2–3-day variants.",
+  "statement": "It must apply to whichever plan the user picks, and the confirmation must show the exact charge date and amount; a trial that bills at once produced 789 reviews at mean 1.35 in report 4 and must be verified per storefront (Brazil ran 7–11× the global rate). Report 10: 149 users believe they were charged at trial START (mean 1.79) and trial length varied between 2 and 7 days across users. Report 12: a 3-day trial introduced around 2024 shows as subscribed but 'doesn't move past the subscription screen' — the complaint changed shape from 'there is no trial' to 'the trial doesn't work'. Report 13: a trial that cannot start without first authorising a subscription, defaulting to the most expensive annual tier, produced 1,102 auto-charge reviews at mean 1.20 (999 one-star) — the single most damaging mechanic in a 19,850-review corpus; involuntary-charge reviews equalled voluntary-purchase reviews 1:1. Report 18: trials that converted immediately ('in my case there was no free period'; asked for monthly, charged annual; frozen since minute 10, charged a full year) in KR, JP, TW, ID, BR and DE; trial length shrank from 3 weeks to 7 days to 2–3-day variants. Report 19: a 'free trial' that charged (10 of 105) — '$45 for the initial trial', 'free 7 days charged trial' — with the price hidden at decision time and no renewal warning; four non-payers refused precisely because there was no way to try first.",
   "section": "must-never-break",
   "cards": [
    "R04-005",
@@ -3890,7 +3951,9 @@
    "R13-076",
    "R16-007",
    "R18-007",
-   "R18-048"
+   "R18-048",
+   "R19-036",
+   "R19-051"
   ],
   "reports": [
    4,
@@ -3900,7 +3963,8 @@
    12,
    13,
    16,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -3977,7 +4041,7 @@
  {
   "id": "C112",
   "title": "In-app cancellation",
-  "statement": "Cancel-by-email with no reply converts recoverable disputes into permanent 1★, legal threats and denied refunds. Report 13: in Korea 24.7% of reviews say they cannot cancel and two reviewers published how-to-cancel guides for other users; an in-app 'Manage subscription' link would address a quarter of that storefront's reviews.",
+  "statement": "Cancel-by-email with no reply converts recoverable disputes into permanent 1★, legal threats and denied refunds. Report 13: in Korea 24.7% of reviews say they cannot cancel and two reviewers published how-to-cancel guides for other users; an in-app 'Manage subscription' link would address a quarter of that storefront's reviews. Report 19: cancellation required email rather than a button, used bold 'stay' and small 'cancel' buttons, ~10 confirmation steps, was split across two subscriptions, and locked the user out of the account mid-flow; 24 of 105 (22.86%) described it and three asked simply for a cancel button inside the app.",
   "section": "must-have",
   "cards": [
    "R04-033",
@@ -4003,7 +4067,16 @@
    "R17-043",
    "R18-121",
    "R18-139",
-   "R18-142"
+   "R18-142",
+   "R19-006",
+   "R19-014",
+   "R19-031",
+   "R19-040",
+   "R19-043",
+   "R19-055",
+   "R19-057",
+   "R19-076",
+   "R19-082"
   ],
   "reports": [
    4,
@@ -4013,7 +4086,8 @@
    10,
    13,
    17,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -4051,7 +4125,9 @@
    "R18-121",
    "R18-124",
    "R18-125",
-   "R18-139"
+   "R18-139",
+   "R19-028",
+   "R19-036"
   ],
   "reports": [
    4,
@@ -4061,7 +4137,8 @@
    11,
    12,
    13,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -4426,7 +4503,8 @@
    "R13-030",
    "R14-049",
    "R17-049",
-   "R18-026"
+   "R18-026",
+   "R19-027"
   ],
   "reports": [
    6,
@@ -4436,7 +4514,8 @@
    13,
    14,
    17,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -4504,10 +4583,13 @@
   "section": "dont",
   "cards": [
    "R06-038",
-   "R06-100"
+   "R06-100",
+   "R19-016",
+   "R19-086"
   ],
   "reports": [
-   6
+   6,
+   19
   ],
   "merged_from": []
  },
@@ -4590,7 +4672,7 @@
  {
   "id": "C142",
   "title": "Surface existing features where users look",
-  "statement": "Features hidden behind 'Advanced Options' or unexplained modes are rated as missing — including by payers who bought and then believed the feature absent; report 7's weekly goals, multi-habit widget and notifications.",
+  "statement": "Features hidden behind 'Advanced Options' or unexplained modes are rated as missing — including by payers who bought and then believed the feature absent; report 7's weekly goals, multi-habit widget and notifications. Report 19: the only constructive reviewer found the product's real asset — a web course library — by accident, because the app never linked to it; the thirteen who called the product 'just a checklist' may have been describing the 10% they were shown.",
   "section": "must-have",
   "cards": [
    "R07-088",
@@ -4601,12 +4683,19 @@
    "R08-070",
    "R08-117",
    "R08-132",
-   "R18-054"
+   "R18-054",
+   "R19-020",
+   "R19-026",
+   "R19-040",
+   "R19-047",
+   "R19-087",
+   "R19-088"
   ],
   "reports": [
    7,
    8,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -4685,7 +4774,7 @@
  {
   "id": "C147",
   "title": "Let people use the product before they pay",
-  "statement": "Users forgive a price; they do not forgive paying blind. Report 9's hard paywall before any experience produced 159 'let me look before you charge me' reviews at mean 1.79, and buyers who paid before seeing the product became the angriest cohort (mean 1.94). Report 12: a hard paywall with nothing evaluable produced a paywall corpus — 46.5% of 404 reviews complain about the gate, 172 reviewers left without ever seeing the product, and the theme never dropped below a third of reviews in any year. Report 17: seven reviewers rated an app they never saw ('Can't even look at the settings or examine how the app will handle cancelation'); confirmed payers averaged 3.63 against 1.14 for those blocked at the paywall — the strongest argument in a 38-review corpus for letting people in. Report 18: the reviews that converted best came from people who used the app free for a week or a month first; the reviews that generated refund demands came from people charged before they could evaluate.",
+  "statement": "Users forgive a price; they do not forgive paying blind. Report 9's hard paywall before any experience produced 159 'let me look before you charge me' reviews at mean 1.79, and buyers who paid before seeing the product became the angriest cohort (mean 1.94). Report 12: a hard paywall with nothing evaluable produced a paywall corpus — 46.5% of 404 reviews complain about the gate, 172 reviewers left without ever seeing the product, and the theme never dropped below a third of reviews in any year. Report 17: seven reviewers rated an app they never saw ('Can't even look at the settings or examine how the app will handle cancelation'); confirmed payers averaged 3.63 against 1.14 for those blocked at the paywall — the strongest argument in a 38-review corpus for letting people in. Report 18: the reviews that converted best came from people who used the app free for a week or a month first; the reviews that generated refund demands came from people charged before they could evaluate. Report 19: only four non-payers appear in the corpus and all four refused for the same reason — no way to evaluate first; everyone else went through the paywall and then tried to reverse the transaction.",
   "section": "product-rule",
   "cards": [
    "R09-003",
@@ -4724,7 +4813,13 @@
    "R18-090",
    "R18-096",
    "R18-099",
-   "R18-145"
+   "R18-145",
+   "R19-029",
+   "R19-030",
+   "R19-040",
+   "R19-054",
+   "R19-067",
+   "R19-088"
   ],
   "reports": [
    9,
@@ -4732,14 +4827,15 @@
    13,
    16,
    17,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
  {
   "id": "C148",
   "title": "The paid product must deliver what the ads and onboarding demonstrate",
-  "statement": "Report 9 showed an interactive guided-breathing coach in its ads and onboarding, then never offered it again — 'it's just a checklist' became the worst-rated major theme (99 reviews, mean 1.45), half of them from payers.",
+  "statement": "Report 9 showed an interactive guided-breathing coach in its ads and onboarding, then never offered it again — 'it's just a checklist' became the worst-rated major theme (99 reviews, mean 1.45), half of them from payers. Report 19: five reviewers paid for a personalised plan promised by a quiz and received a blank tracker plus four thin sister apps ('some useless little apps'); a Spanish-language Instagram ad delivered an English-only app; 'not as advertised' ran at 18.10%.",
   "section": "must-have",
   "cards": [
    "R09-021",
@@ -4753,10 +4849,19 @@
    "R09-127",
    "R09-128",
    "R09-140",
-   "R09-141"
+   "R09-141",
+   "R19-016",
+   "R19-018",
+   "R19-035",
+   "R19-041",
+   "R19-063",
+   "R19-064",
+   "R19-067",
+   "R19-086"
   ],
   "reports": [
-   9
+   9,
+   19
   ],
   "merged_from": []
  },
@@ -4825,12 +4930,14 @@
    "R13-050",
    "R13-059",
    "R13-074",
-   "R16-009"
+   "R16-009",
+   "R19-078"
   ],
   "reports": [
    10,
    13,
-   16
+   16,
+   19
   ],
   "merged_from": []
  },
@@ -5337,17 +5444,21 @@
  {
   "id": "C177",
   "title": "Every IAP SKU has a distinct name that states its period or 'one time'",
-  "statement": "Report 11: three SKUs shared the identical display name 'Habits PRO Functions' at $1.99 / $6.99 / $8.99 and none named a period, while reviewers described 'annual', 'VIP' and 'lifetime' purchases — neither the user nor support could tell what had been bought. Report 12: ten SKUs including three 'Weekly Subscription' and two 'One-Time Payment' entries at different prices, visible on the store page.",
+  "statement": "Report 11: three SKUs shared the identical display name 'Habits PRO Functions' at $1.99 / $6.99 / $8.99 and none named a period, while reviewers described 'annual', 'VIP' and 'lifetime' purchases — neither the user nor support could tell what had been bought. Report 12: ten SKUs including three 'Weekly Subscription' and two 'One-Time Payment' entries at different prices, visible on the store page. Report 19: reviewers could find no record of what they bought — 'no confirmation email anywhere'; support's answer 'we sent you an EMAIL notification' conceded that one e-mail with the fine print in a footer link was the whole safeguard. A renewal reminder before every charge and a receipt with a working product link after it.",
   "section": "must-have",
   "cards": [
    "R11-008",
    "R11-057",
    "R12-019",
-   "R12-073"
+   "R12-073",
+   "R19-036",
+   "R19-059",
+   "R19-078"
   ],
   "reports": [
    11,
-   12
+   12,
+   19
   ],
   "merged_from": []
  },
@@ -5384,7 +5495,7 @@
  {
   "id": "C180",
   "title": "No 'wait, don't go' exit discounts or countdown timers on the paywall",
-  "statement": "Report 12: a lifetime offer at 17.99 that drops to 5.99 when the user tries to close, a '90% off' timer that still grants no access, and a 10× regional price jump were described as 'gross' and 'another major red flag'; 42 reviewers used the word 'scam'. The ladder is also visible to every prospect as ten SKUs on the store page. Report 13: 'Here's one star for you. You can buy the rest at a 49% discount' — the exit-intent discount tells every full-price buyer they overpaid.",
+  "statement": "Report 12: a lifetime offer at 17.99 that drops to 5.99 when the user tries to close, a '90% off' timer that still grants no access, and a 10× regional price jump were described as 'gross' and 'another major red flag'; 42 reviewers used the word 'scam'. The ladder is also visible to every prospect as ten SKUs on the store page. Report 13: 'Here's one star for you. You can buy the rest at a 49% discount' — the exit-intent discount tells every full-price buyer they overpaid. Report 19: customers charged $98.50/month and $99 were offered $5 and $49 lifetime plans on cancelling; all three left 1★ and one wrote 'That is probably the real value of the service' — a save-offer at 5% of the charged price converts a pricing objection into a fraud belief.",
   "section": "dont",
   "cards": [
    "R12-019",
@@ -5395,12 +5506,16 @@
    "R13-020",
    "R13-078",
    "R18-006",
-   "R18-051"
+   "R18-051",
+   "R19-013",
+   "R19-071",
+   "R19-081"
   ],
   "reports": [
    12,
    13,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -5415,13 +5530,15 @@
    "R13-010",
    "R13-077",
    "R16-082",
-   "R18-145"
+   "R18-145",
+   "R19-082"
   ],
   "reports": [
    12,
    13,
    16,
-   18
+   18,
+   19
   ],
   "merged_from": []
  },
@@ -5440,11 +5557,14 @@
    "R12-082",
    "R12-085",
    "R17-005",
-   "R17-031"
+   "R17-031",
+   "R19-029",
+   "R19-054"
   ],
   "reports": [
    12,
-   17
+   17,
+   19
   ],
   "merged_from": []
  },
@@ -5595,10 +5715,12 @@
    "R13-006",
    "R13-017",
    "R13-066",
-   "R13-086"
+   "R13-086",
+   "R19-031"
   ],
   "reports": [
-   13
+   13,
+   19
   ],
   "merged_from": []
  },
@@ -5648,10 +5770,12 @@
    "R16-008",
    "R16-044",
    "R16-049",
-   "R16-069"
+   "R16-069",
+   "R19-038"
   ],
   "reports": [
-   16
+   16,
+   19
   ],
   "merged_from": []
  },
@@ -5916,6 +6040,115 @@
   ],
   "reports": [
    18
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C210",
+  "title": "Bill App Store users through the App Store — never route them to an off-store subscription the app cannot show or cancel",
+  "statement": "Report 19: the app was the front door to a web-billed subscription that did not appear in Apple's subscription list, carried non-refundable website terms, and could be cancelled only by email; 18 of 105 reviewers (17.14%) described the consequence, 19 were charged after cancelling, 19 were charged with no subscription they recognised, and 60 distinct reviews flowed from a customer who could not see or stop their own plan. If a web funnel must exist, the app shows the active plan, price, next charge date and a working cancel button.",
+  "section": "product-rule",
+  "cards": [
+   "R19-003",
+   "R19-004",
+   "R19-006",
+   "R19-007",
+   "R19-028",
+   "R19-031",
+   "R19-032",
+   "R19-059",
+   "R19-074",
+   "R19-088"
+  ],
+  "reports": [
+   19
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C211",
+  "title": "No second, separately-cancelled add-on subscription",
+  "statement": "Report 19: an e-book/PDF plan at $17–$45/month was enrolled on top of the programme subscription with its own cancellation path; 11 of 105 (10.48%) across five storefronts described it, and two reviewers on two continents reported the same asymmetry — the main plan cancels, the add-on does not. Collapse add-ons into the main plan or delete them.",
+  "section": "dont",
+  "cards": [
+   "R19-005",
+   "R19-072",
+   "R19-075"
+  ],
+  "reports": [
+   19
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C212",
+  "title": "No conditional refunds — no proof-of-use requirement, and an advertised guarantee is honoured on request",
+  "statement": "Report 19: refunds were refused for 25 of 105 (23.81%); a 'prove 14 consecutive days of use' condition (6), a 30-day money-back guarantee that was advertised and then denied (3 — all three bought because of it), and retention bots answering refund requests (5) turned refusal into fraud allegations, chargebacks and an FTC report. A guarantee you will not honour is a fraud allegation you have pre-purchased; the refund is cheaper than the dispute.",
+  "section": "dont",
+  "cards": [
+   "R19-009",
+   "R19-010",
+   "R19-011",
+   "R19-012",
+   "R19-013",
+   "R19-019",
+   "R19-051",
+   "R19-052",
+   "R19-055",
+   "R19-071",
+   "R19-077",
+   "R19-085",
+   "R19-088"
+  ],
+  "reports": [
+   19
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C213",
+  "title": "If you position on ADHD or executive-function help, cancellation must be the easiest flow in the product",
+  "statement": "Report 19: 13 of 105 (12.38%) accused the product of targeting people with ADHD because they will forget to cancel — 'preying on ADHDers they know may not remember to cancel'; friction a neurotypical user calls annoying this audience calls predatory, because the marketing itself asserts they cannot complete multi-step tasks. The ADHD positioning and a retention funnel are incompatible; six reviewers escalated to banks, card networks and the FTC.",
+  "section": "product-rule",
+  "cards": [
+   "R19-014",
+   "R19-017",
+   "R19-019",
+   "R19-062",
+   "R19-083"
+  ],
+  "reports": [
+   19
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C214",
+  "title": "A bare checklist cannot carry a premium price — it has a free substitute pre-installed on every phone",
+  "statement": "Report 19: 13 of 105 (12.38%) said the phone's alarm, Notes, calendar, paper or Excel did the same job for free ('If you can set an alarm on your phone you don't need this app'); at $45–$99 that ceiling read as theft rather than expense and produced 96 one-star reviews. A product charging above a few dollars must deliver what a checklist structurally cannot — real personalisation, coaching content, human accountability, or data the user could not assemble.",
+  "section": "product-rule",
+  "cards": [
+   "R19-015",
+   "R19-035",
+   "R19-084"
+  ],
+  "reports": [
+   19
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C215",
+  "title": "Support reply time must be shorter than any cancellation deadline it serves",
+  "statement": "Report 19: a 24-hour pre-renewal cancellation cut-off was served by a support queue that replied in 48 hours — 'They said cancel within 24 hours before and they take more than 48 hrs to get back to you' — an unsatisfiable deadline by construction; support otherwise ran silent, circular, or hostile ('a rude lecture via email about how I signed up on purpose') for 17 of 105.",
+  "section": "must-have",
+  "cards": [
+   "R19-056",
+   "R19-057",
+   "R19-080"
+  ],
+  "reports": [
+   19
   ],
   "merged_from": []
  }

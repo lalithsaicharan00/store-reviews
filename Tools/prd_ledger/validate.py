@@ -70,7 +70,7 @@ def main(n):
     # --- analytical body: stop at Part 9 / Appendix ---
     end = len(report)
     for i, l in enumerate(report):
-        if re.match(r"^#{1,2} .*(EVIDENCE APPENDIX|Appendix —|APPENDIX)", l):
+        if re.match(r"^#{1,2} .*(EVIDENCE APPENDIX|Appendix —|APPENDIX|PER-REVIEW INDEX)", l):  # per-review index is a lookup table, not findings
             end = i; break
     body = report[:end]
 
