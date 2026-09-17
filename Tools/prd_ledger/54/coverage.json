@@ -1,0 +1,315 @@
+[
+ {
+  "heading": "1.2 Schema",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "heading": "1.3 Coverage and reconciliation",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "table_row": ".../_state.json",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "table_row": "Temp/54-review-classification.py",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "table_row": "review_id",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "table_row": "app_name",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "table_row": "country",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "table_row": "country",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "table_row": "rating",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "table_row": "Distinct `review_id",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "table_row": "IDs in country files but not in merged file",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "table_row": "IDs in merged file but not in country files",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "table_row": "Per-country counts, merged vs manifest",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "table_row": "Per-country counts, merged vs country files",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "table_row": "Ads",
+  "cards": [
+   "R54-028"
+  ]
+ },
+ {
+  "bold": "count, percentage, denominator, scope, period, signal label, and review IDs",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "bold": "Interpretation",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "bold": "Falling review volume is itself ambiguous and is not treated as a finding about product quality.",
+  "cards": [
+   "R54-004"
+  ]
+ },
+ {
+  "bold": "the `is_edited` field is unreliable and is not used for any finding.",
+  "cards": [
+   "R54-005"
+  ]
+ },
+ {
+  "bold": "Primary key throughout this report",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "bold": "match",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "bold": "The absence of a Japanese, Hong Kong, Irish or Swiss storefront here is an absence of written reviews, not an absence of the app.",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "bold": "This is an organic distribution — no burst, no cluster, no solicited-review pattern (warning 4).",
+  "cards": [
+   "R54-005"
+  ]
+ },
+ {
+  "bold": "Validate programmatically.",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "bold": "No external ground truth.",
+  "cards": [
+   "R54-007"
+  ]
+ },
+ {
+  "bold": "The field is not used for any finding.",
+  "cards": [
+   "R54-005"
+  ]
+ },
+ {
+  "bold": "mutually incompatible numbers",
+  "cards": [
+   "R54-030"
+  ]
+ },
+ {
+  "bold": "Consequence:",
+  "cards": [
+   "R54-007"
+  ]
+ },
+ {
+  "bold": "No finding in Parts 3–8 rests on an external source, because there are none.",
+  "cards": [
+   "R54-007"
+  ]
+ },
+ {
+  "bold": "Interpretation",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "bold": "Two structural observations about this table.",
+  "cards": [
+   "R54-043",
+   "R54-044"
+  ]
+ },
+ {
+  "bold": "Interpretation",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "bold": "The four-star bucket is the \"one thing away\" bucket, and the missing thing is nearly always nameable.",
+  "cards": [
+   "R54-066"
+  ]
+ },
+ {
+  "bold": "Interpretation",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "bold": "Interpretation",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "bold": "Only the United States is analysed standalone. Everything in §6.3–§6.9 is explicitly limited evidence and is presented to show shape, not to support a conclusion.",
+  "cards": [
+   "R54-082"
+  ]
+ },
+ {
+  "bold": "Interpretation",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "bold": "This is a definitional proxy, not a measurement",
+  "cards": [
+   "R54-096"
+  ]
+ },
+ {
+  "bold": "3.685 (n = 108, 29.27%)",
+  "cards": [
+   "R54-096"
+  ]
+ },
+ {
+  "bold": "Review volume is used here as a disclosed proxy for user-base size and is explicitly not downloads or installs.",
+  "cards": [
+   "R54-097"
+  ]
+ },
+ {
+  "bold": "Not uniform, and the differences are the actionable part:",
+  "cards": [
+   "R54-098"
+  ]
+ },
+ {
+  "bold": "Every trend below is labelled with a confidence level, and the low-confidence ones are reported rather than relied on.",
+  "cards": [
+   "R54-099"
+  ]
+ },
+ {
+  "bold": "Two mechanics, both small:",
+  "cards": [
+   "R54-118"
+  ]
+ },
+ {
+  "bold": "Interpretation",
+  "cards": [
+   "R54-002"
+  ]
+ },
+ {
+  "bold": "Interpretation:",
+  "cards": [
+   "R54-034"
+  ]
+ },
+ {
+  "bold": "Interpretation: the five-star bucket is not free of demand. A tenth of the people who love this product are telling you, at maximum goodwill, that a widget is missing.",
+  "cards": [
+   "R54-065"
+  ]
+ },
+ {
+  "bold": "Interpretation: the product's failure modes are almost exclusively experienced by people who have already paid.",
+  "cards": [
+   "R54-078"
+  ]
+ },
+ {
+  "bold": "Interpretation: post-purchase churn in this corpus is caused by entitlement and reliability failures, not by the product being wrong.",
+  "cards": [
+   "R54-081"
+  ]
+ },
+ {
+  "bold": "Interpretation: the post-purchase catastrophes documented in §5.5 are overwhelmingly non-US — 10 of the 12 one-star payer reviews come from outside the United States.",
+  "cards": [
+   "R54-086"
+  ]
+ },
+ {
+  "bold": "Interpretation: the product's most defensible differentiator is a design philosophy that the corpus articulates better than any marketing copy could.",
+  "cards": [
+   "R54-119"
+  ]
+ },
+ {
+  "table_row": "country_name",
+  "cards": [
+   "R54-002"
+  ]
+ }
+]
