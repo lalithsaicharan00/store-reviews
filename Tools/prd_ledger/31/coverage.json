@@ -1,0 +1,18 @@
+[
+ {"table_row": "by_country/*.jsonl", "cards": ["R31-002"]},
+ {"table_row": "manifest.json", "cards": ["R31-002"]},
+ {"table_row": "_state.json", "no_new_insight": "§1.1 files-used row: extraction state file, not used for analysis; method carded as R31-002"},
+ {"table_row": "Unique `review_id` values", "cards": ["R31-002"]},
+ {"table_row": "manifest.json` → `total_reviews", "cards": ["R31-002"]},
+ {"table_row": "manifest.json` → `reviews_per_country` (80 entries)", "cards": ["R31-002"]},
+ {"table_row": "manifest.json` → `mean_rating` 2.355", "cards": ["R31-002"]},
+ {"table_row": "Empty `body` / empty `title", "cards": ["R31-002"]},
+ {"table_row": "Era", "no_new_insight": "table header row (§1.6 eras table); carded verbatim as R31-016"},
+ {"table_row": "#", "no_new_insight": "table header row (§3.1 master table); carded verbatim as R31-032"},
+ {"table_row": "cc", "no_new_insight": "table header row (§7.2 storefront table); carded verbatim as R31-133"},
+ {"bold": "non-exclusive", "cards": ["R31-002"]},
+ {"bold": "Theme rates are not equally comparable across languages.", "cards": ["R31-002", "R31-132"]},
+ {"bold": "Classify.", "cards": ["R31-002"]},
+ {"bold": "Regex classification has error in both directions.", "cards": ["R31-002"]},
+ {"bold": "No download, revenue, retention, churn or refund-outcome data exists in this corpus.", "cards": ["R31-002", "R31-124"]}
+]
