@@ -1,0 +1,98 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "table_row": "review_id",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "table_row": "country`, `country_name",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "table_row": "title`, `body",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "table_row": "vote_count`, `vote_sum",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "table_row": "is_edited",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "table_row": "< 0.1%",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "table_row": "0.5% – < 1%",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "table_row": "1% – < 3%",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "table_row": "3% – 5%",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "table_row": "> 5%",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "table_row": "Era",
+  "cards": [
+   "R76-097"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R76-002"
+  ]
+ },
+ {
+  "bold": "Selection.",
+  "cards": [
+   "R76-002"
+  ]
+ }
+]
