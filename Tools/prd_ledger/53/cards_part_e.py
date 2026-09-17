@@ -1,0 +1,4 @@
+import sys; sys.path.insert(0, "Tools/prd_ledger/53")
+from _lib import c, table, save
+c(186, "§3.5 PAY_CAP3 row; §9.2 M3; §7.7 Taiwan", "contradiction", "Two findings that cut against common assumptions: (1) a tight 3-habit free cap is not uniformly resented — 35 of 89 cap reviewers are content at 4–5★ ('three is enough for me', 20 at 5★), so the report refuses to recommend a bigger free tier and asks for a retention test instead; (2) Taiwan is the best-ranked storefront publicly (search rank 2, public 4.78) yet the most reliability-heavy in writing (reliability union 37.5%, BUG_CRASH 17.86%) — search rank and written complaints move independently", "3-habit cap", "mixed", "PAY_CAP3 35 of 89 at 4–5★; tw rank 2 / 4.78 vs reliability 37.5%", "research", "high-priority (theme)", "generalisable", ["3896230010","3078624683","4295573094"])
+save("a")

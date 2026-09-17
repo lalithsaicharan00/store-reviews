@@ -1,0 +1,142 @@
+[
+ {
+  "heading": "1.2 Schema actually present",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "heading": "1.3 Coverage and reconciliation",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "heading": "1.4 Deduplication rule",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "heading": "1.5 Processing method",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "table_row": "< 0.1%",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "table_row": "0.5 – 1%",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "table_row": "1 – 3%",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "table_row": "3 – 5%",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "table_row": "> 5%",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "table_row": "IDs in country files but not in `reviews.jsonl` / vice versa",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "table_row": "Classified IDs not present in the corpus",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "no_new_insight": "header row of the §3.1 master theme table; carded verbatim as R53-049"
+ },
+ {
+  "table_row": "Era",
+  "no_new_insight": "header row of the §8.2 era table; carded verbatim as R53-157"
+ },
+ {
+  "bold": "Appendix C lists every review ID behind every theme.",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "bold": "Parse",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "bold": "Resolve index → review_id",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "bold": "Validate programmatically",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "bold": "Aggregate",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "bold": "Re-read high-impact clusters before writing:",
+  "cards": [
+   "R53-002"
+  ]
+ },
+ {
+  "bold": "Store-level context:",
+  "cards": [
+   "R53-001"
+  ]
+ },
+ {
+  "bold": "Selection bias is large.",
+  "cards": [
+   "R53-003"
+  ]
+ },
+ {
+  "bold": "Language groups (for comparison; composite, not markets):",
+  "cards": [
+   "R53-135"
+  ]
+ }
+]
