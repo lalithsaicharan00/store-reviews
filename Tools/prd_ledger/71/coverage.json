@@ -1,0 +1,212 @@
+[
+ {
+  "heading": "1.8 Post-write verification",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "heading": "4.4 Three stars (n = 0) and two stars (n = 0)",
+  "cards": [
+   "R71-004"
+  ]
+ },
+ {
+  "table_row": "< 0.1%",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "table_row": "0.5 – 1%",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "table_row": "1 – 3%",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "table_row": "3 – 5%",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "table_row": "> 5%",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "table_row": "3",
+  "cards": [
+   "R71-025"
+  ]
+ },
+ {
+  "table_row": "5",
+  "cards": [
+   "R71-025"
+  ]
+ },
+ {
+  "table_row": "Era",
+  "cards": [
+   "R71-018"
+  ]
+ },
+ {
+  "table_row": "4",
+  "cards": [
+   "R71-010"
+  ]
+ },
+ {
+  "table_row": "#",
+  "cards": [
+   "R71-009"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "bold": "Consequences, stated as limits rather than findings:",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "bold": "Fields that do not exist and are therefore never used:",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "bold": "No deduplication was performed, and none was needed.",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "bold": "Dump",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "bold": "Classify by hand",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "bold": "Taxonomy",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "bold": "Resolve",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "bold": "Validate",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "bold": "Aggregate",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "bold": "Selection bias runs positive and is partly documented.",
+  "cards": [
+   "R71-002"
+  ]
+ },
+ {
+  "bold": "Timing clusters.",
+  "cards": [
+   "R71-004"
+  ]
+ },
+ {
+  "bold": "What is *not* wrong.",
+  "cards": [
+   "R71-004"
+  ]
+ },
+ {
+  "bold": "Two the external data does not settle.",
+  "cards": [
+   "R71-001"
+  ]
+ },
+ {
+  "bold": "Scope:",
+  "cards": [
+   "R71-005"
+  ]
+ },
+ {
+  "bold": "Period:",
+  "cards": [
+   "R71-005"
+  ]
+ },
+ {
+  "bold": "only negative theme that recurs across more than one year",
+  "cards": [
+   "R71-005"
+  ]
+ },
+ {
+  "bold": "The missing middle is the headline.",
+  "cards": [
+   "R71-004"
+  ]
+ },
+ {
+  "bold": "Two people out of thirty-two is a small number and it is also the complete explanation of this app's 1★ population.",
+  "cards": [
+   "R71-005"
+  ]
+ },
+ {
+  "bold": "The pattern across all three is the same and it is not \"the price is too high\".",
+  "cards": [
+   "R71-005"
+  ]
+ },
+ {
+  "bold": "No reviewer anywhere in the corpus mentions translation quality, a missing language, or a localisation problem",
+  "cards": [
+   "R71-024"
+  ]
+ },
+ {
+  "bold": "hypotheses worth testing",
+  "cards": [
+   "R71-025"
+  ]
+ },
+ {
+  "bold": "The recommendation follows from the misalignment, not from the counts:",
+  "cards": [
+   "R71-007"
+  ]
+ }
+]
