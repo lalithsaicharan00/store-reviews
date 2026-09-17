@@ -1,0 +1,102 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R29-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R29-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R29-002"
+  ]
+ },
+ {
+  "table_row": "Exact duplicate (title, body) pairs",
+  "cards": [
+   "R29-002"
+  ]
+ },
+ {
+  "table_row": "IDs in country files not in main file",
+  "cards": [
+   "R29-002"
+  ]
+ },
+ {
+  "table_row": "IDs in main file not in country files",
+  "cards": [
+   "R29-002"
+  ]
+ },
+ {
+  "table_row": "Records where `country` ≠ country filename",
+  "cards": [
+   "R29-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "no_new_insight": "table header row (§3.1 master table); carded verbatim as R29-024"
+ },
+ {
+  "bold": "count, percentage, denominator, scope, period, signal label, and review IDs",
+  "cards": [
+   "R29-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R29-002"
+  ]
+ },
+ {
+  "bold": "Interpretation",
+  "cards": [
+   "R29-002"
+  ]
+ },
+ {
+  "bold": "Short corpus history.",
+  "cards": [
+   "R29-002"
+  ]
+ },
+ {
+  "bold": "Correlation, not causation.",
+  "cards": [
+   "R29-002"
+  ]
+ },
+ {
+  "bold": "but inconsistent with one reviewer's belief.",
+  "cards": [
+   "R29-022"
+  ]
+ },
+ {
+  "bold": "Interpretation: this is a brand promise, not a feature list. Part 6 examines what happens when it is tested.",
+  "cards": [
+   "R29-062"
+  ]
+ },
+ {
+  "bold": "Note: this theme's pattern (motivat/helps me/accountab/consisten/discipline/on track) is deliberately inclusive and should be used for magnitude, not as a precise outcome metric.",
+  "cards": [
+   "R29-064"
+  ]
+ },
+ {
+  "bold": "316 of 366 (86.3%)",
+  "cards": [
+   "R29-094"
+  ]
+ }
+]

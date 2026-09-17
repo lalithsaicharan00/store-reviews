@@ -2,7 +2,7 @@
  {
   "id": "C001",
   "title": "Never move a free feature behind the paywall",
-  "statement": "Every paywall regression produced a lasting rating drop; pick the free tier once and hold it. Report 8: a competitor adding a paywall sent its users to a free rival, and free users explicitly warn against gating what is free. Report 10: soundscapes, longer timers, the event micropet and the anxiety breathing exercise all moved from free to paid; paywall-creep is the largest monetization theme (715). Report 11: an app whose third-largest praise theme was 'it's free' ('all functions are free', Dec 2025) retrofitted a paywall by Apr 2026 with no disclosure; five years without a sub-4★ review ended in three 1–2★ reviews in nine days. Report 18: five years of moving existing capability behind Pro — highlighter (May 2023), to-do list (Nov 2023), trackers and statistics (2024–25), free routines 15→8 and short memos →5/week (Dec 2023–Jan 2024), earned friend-invite routines revoked — each produced a rating trough, and dozens of reviewers in three languages stated the rule themselves: 'take back what you gave and people resent it… it may work short-term but long-term I doubt it.' Report 27 (an entirely free app): 'free with no in-app purchases' is the largest theme (47, 34.06%, mean 4.89) and the stated reason users arrived — 13 fled competitors' paywalls, 4 plead 'keep it free', 3 praise unlimited habits, and one is watching ('No ads (yet, but I don't think there are any)'); the report ranks a retroactive gate on existing functionality as the highest-risk action available, and says any future paid capability must attach only to something that does not exist today.",
+  "statement": "Every paywall regression produced a lasting rating drop; pick the free tier once and hold it. Report 8: a competitor adding a paywall sent its users to a free rival, and free users explicitly warn against gating what is free. Report 10: soundscapes, longer timers, the event micropet and the anxiety breathing exercise all moved from free to paid; paywall-creep is the largest monetization theme (715). Report 11: an app whose third-largest praise theme was 'it's free' ('all functions are free', Dec 2025) retrofitted a paywall by Apr 2026 with no disclosure; five years without a sub-4★ review ended in three 1–2★ reviews in nine days. Report 18: five years of moving existing capability behind Pro — highlighter (May 2023), to-do list (Nov 2023), trackers and statistics (2024–25), free routines 15→8 and short memos →5/week (Dec 2023–Jan 2024), earned friend-invite routines revoked — each produced a rating trough, and dozens of reviewers in three languages stated the rule themselves: 'take back what you gave and people resent it… it may work short-term but long-term I doubt it.' Report 27 (an entirely free app): 'free with no in-app purchases' is the largest theme (47, 34.06%, mean 4.89) and the stated reason users arrived — 13 fled competitors' paywalls, 4 plead 'keep it free', 3 praise unlimited habits, and one is watching ('No ads (yet, but I don't think there are any)'); the report ranks a retroactive gate on existing functionality as the highest-risk action available, and says any future paid capability must attach only to something that does not exist today. Report 29 (free limiting case, second corpus): 'it is actually free' is 46.99% of reviews (mean 4.83 vs 4.31), consistent at 42–69% across every top-five market and every income band; 'no subscription' is the highest-rated sub-theme in the report (44, mean 4.98); four 5★ reviewers publicly condition their loyalty on staying free ('as long as this continues I'm gonna use this app every day'; 'never change'); the report ranks never capping habit count and never adding a subscription among what not to change.",
   "section": "product-rule",
   "cards": [
    "R01-051",
@@ -71,7 +71,23 @@
    "R27-049",
    "R27-050",
    "R27-081",
-   "R27-082"
+   "R27-082",
+   "R29-003",
+   "R29-011",
+   "R29-021",
+   "R29-025",
+   "R29-026",
+   "R29-028",
+   "R29-033",
+   "R29-050",
+   "R29-062",
+   "R29-085",
+   "R29-088",
+   "R29-093",
+   "R29-094",
+   "R29-103",
+   "R29-106",
+   "R29-123"
   ],
   "reports": [
    1,
@@ -83,14 +99,15 @@
    11,
    18,
    20,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
  {
   "id": "C002",
   "title": "Ratings follow the offer, not the feature set",
-  "statement": "Trust (pricing, billing, support, delivering what was paid for) moves ratings more than features do. Report 16: the public 4.81 sat 1.21 stars above the written 3.60 — the largest gap in the set — with only 5.6% of raters writing, two-to-one about money. Report 18: the KR listing showed 4.8★ from ~25,000 ratings against a written mean of 3.824 (gap 0.98); praise for the product and condemnation of the paywall were frequently the same reviews, and more than a third of 1★ reviews (122/332) were about money rather than features. Report 20: the trust family (revoked purchase, restore failure, cancel/refund, billing mismatch, false advertising, silent support) was 810 reviews at mean 1.39 against every feature-gap theme combined at 513 reviews at mean 3.57 — trust complaints outnumbered feature complaints 1.58× and carried 2.2 stars less; the five lowest-mean themes were all integrity failures needing no new product surface. Report 23 (a one-time paid app with no offer change in eleven years): the rating decline 4.56 → 4.08 → 3.83 tracks reliability — sync 7.1×, data loss 14×, widget bugs 52× — while price objection stayed flat; when the offer is stable, ratings follow reliability. Report 24: the cleanest statement of the rule in the set — 43,469 reviews where those that mention money average 2.006 and those that do not average 4.356 (a 2.35-star gap); the 1★ and 5★ populations are talking about different things (billing vs product); the annual mean fell 2.09 stars below its 2021 peak while product-praise themes barely moved, and an earlier 2018–19 billing crisis was fixed in one month and the mean snapped back for four years. Report 25: a bimodal corpus (55% 5★, 23% 1★) where the 1★ band is 56% money and 11% the app not starting, and the 5★ band is converted power users plus prompt-driven one-liners — two populations reviewing two products. Report 26: engineering fixes moved the corpus mean 4.34 → 4.68 while payer satisfaction stayed flat at ~3.5 for five years — the paid experience is set by entitlement and trial mechanics, not by product quality. Report 27 (the free limiting case): with no offer at all, the app has no structural sources of 1★ — every 1★ ever is a reliability failure in one five-week window, and the 4★ band is a fully specified backlog from people who like the app (17 of 18 would plausibly become 5★ on one shipped item); 5★ here means 'I am grateful', not 'I have no needs'. Report 28: the offer here is an ad load — its half-year complaint rate (3.5% → 39.6% → 16.7%) and the corpus mean (4.729 → 3.810 → 4.048) move together; 2021 had zero 1★ and the launch honeymoon never returned.",
+  "statement": "Trust (pricing, billing, support, delivering what was paid for) moves ratings more than features do. Report 16: the public 4.81 sat 1.21 stars above the written 3.60 — the largest gap in the set — with only 5.6% of raters writing, two-to-one about money. Report 18: the KR listing showed 4.8★ from ~25,000 ratings against a written mean of 3.824 (gap 0.98); praise for the product and condemnation of the paywall were frequently the same reviews, and more than a third of 1★ reviews (122/332) were about money rather than features. Report 20: the trust family (revoked purchase, restore failure, cancel/refund, billing mismatch, false advertising, silent support) was 810 reviews at mean 1.39 against every feature-gap theme combined at 513 reviews at mean 3.57 — trust complaints outnumbered feature complaints 1.58× and carried 2.2 stars less; the five lowest-mean themes were all integrity failures needing no new product surface. Report 23 (a one-time paid app with no offer change in eleven years): the rating decline 4.56 → 4.08 → 3.83 tracks reliability — sync 7.1×, data loss 14×, widget bugs 52× — while price objection stayed flat; when the offer is stable, ratings follow reliability. Report 24: the cleanest statement of the rule in the set — 43,469 reviews where those that mention money average 2.006 and those that do not average 4.356 (a 2.35-star gap); the 1★ and 5★ populations are talking about different things (billing vs product); the annual mean fell 2.09 stars below its 2021 peak while product-praise themes barely moved, and an earlier 2018–19 billing crisis was fixed in one month and the mean snapped back for four years. Report 25: a bimodal corpus (55% 5★, 23% 1★) where the 1★ band is 56% money and 11% the app not starting, and the 5★ band is converted power users plus prompt-driven one-liners — two populations reviewing two products. Report 26: engineering fixes moved the corpus mean 4.34 → 4.68 while payer satisfaction stayed flat at ~3.5 for five years — the paid experience is set by entitlement and trial mechanics, not by product quality. Report 27 (the free limiting case): with no offer at all, the app has no structural sources of 1★ — every 1★ ever is a reliability failure in one five-week window, and the 4★ band is a fully specified backlog from people who like the app (17 of 18 would plausibly become 5★ on one shipped item); 5★ here means 'I am grateful', not 'I have no needs'. Report 28: the offer here is an ad load — its half-year complaint rate (3.5% → 39.6% → 16.7%) and the corpus mean (4.729 → 3.810 → 4.048) move together; 2021 had zero 1★ and the launch honeymoon never returned. Report 29: the 1★ band changed composition completely — all 11 one-stars in 2024–25 were functional; 3 of 5 in 2026 were the new monetisation prompt; 'the app fixed its way out of one 1★ driver and introduced another'.",
   "section": "product-rule",
   "cards": [
    "R01-004",
@@ -204,7 +221,8 @@
    "R28-094",
    "R28-098",
    "R28-121",
-   "R28-123"
+   "R28-123",
+   "R29-082"
   ],
   "reports": [
    1,
@@ -231,14 +249,15 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
  {
   "id": "C003",
   "title": "Lead with a one-time lifetime purchase",
-  "statement": "People buy because it is not a subscription; lifetime is the strongest pricing signal. Report 13: 239 reviews across every year 2017–2026, including 5★ ones ('It would be better to charge only once. It would attract more users, trust me'), asked for the one-time purchase back after it was withdrawn. Report 14: a $1.99–$3 one-time unlock produced zero refund, unexpected-charge or restore complaints in 70 reviews — a materially cleaner record than the subscription apps in the set. Report 16: the price fell ~67% ($119.99 → $40/yr) and the objection rate did not move (31% → 30%); 37 reviews asked for a one-time SKU and Streaks was named eight times, every time for its one-time price — 'I will not rent a checklist'. Report 17 (contested): a $64.99 lifetime beside a $19.99 annual — 3.25 years of payback demanded up front from a developer with an abandonment history — drew 'three times the price of a premium word processor'; the lifetime option must be credible, not just present. Report 18: 34 lifetime buyers averaged 4.12★ against 3.53 for all payers; nine reviewers rejected the subscription outright and asked for a one-time purchase; the report's recommendation is to keep the lifetime tier and protect its entitlement absolutely. Report 20: 35 reviews praised a pay-what-you-want one-time model at mean 4.83 ('£4.99 to say thank you, £6.98 for liking the app and £14.99 for loving it'); after the subscription switch 26 reviewers walked to Streaks explicitly because it is a one-time purchase ('even though I like this app better'); stated willingness clustered at $5–15 one-time, and the report's recommendation is a $15–25 lifetime unlock with legacy buyers grandfathered free. Report 23: a paid-up-front one-time tracker where 'no subscription' praise (398, 5.47%, mean 4.43) rose 3.61% → 5.55% → 8.00% across eras as the category subscription-ised — the one competitive position that strengthened; 'worth it' outnumbered 'not worth it' 3.2:1, and an entire cohort arrived after a competitor revoked already-purchased premium features. Report 25: the lifetime option is a stated purchase driver (44 mentions, 3.36%, mean 3.95; 8 name it as the deciding factor — 'you dont have to do subscription stuff thank you'); subscription fatigue is explicit in German ('One-time payment €50 or subscription. No, on principle'), French and US reviews; one Brazilian buyer could not find the lifetime option and thought only monthly existed. Report 26: one-time pricing is a repeatedly praised differentiator in a calm-aesthetic tracker — 57 (mean 4.18) defend the price, most because it is not a subscription, and 11 name it as the purchase trigger; the lifetime option survived the 2022 restructure ($25) but rose to €40 by 2026. Report 27 (the limiting case): a tracker with no price at all — 47 reviews (34.06%) name 'free / no IAP / no subscription' in a register of relief and disbelief ('How is this free?'; 'In a world where literally every service is locked behind a pay wall, this is like a breath of fresh air'); the free position is the acquisition channel, and the only monetisation the corpus endorses is a voluntary tip jar.",
+  "statement": "People buy because it is not a subscription; lifetime is the strongest pricing signal. Report 13: 239 reviews across every year 2017–2026, including 5★ ones ('It would be better to charge only once. It would attract more users, trust me'), asked for the one-time purchase back after it was withdrawn. Report 14: a $1.99–$3 one-time unlock produced zero refund, unexpected-charge or restore complaints in 70 reviews — a materially cleaner record than the subscription apps in the set. Report 16: the price fell ~67% ($119.99 → $40/yr) and the objection rate did not move (31% → 30%); 37 reviews asked for a one-time SKU and Streaks was named eight times, every time for its one-time price — 'I will not rent a checklist'. Report 17 (contested): a $64.99 lifetime beside a $19.99 annual — 3.25 years of payback demanded up front from a developer with an abandonment history — drew 'three times the price of a premium word processor'; the lifetime option must be credible, not just present. Report 18: 34 lifetime buyers averaged 4.12★ against 3.53 for all payers; nine reviewers rejected the subscription outright and asked for a one-time purchase; the report's recommendation is to keep the lifetime tier and protect its entitlement absolutely. Report 20: 35 reviews praised a pay-what-you-want one-time model at mean 4.83 ('£4.99 to say thank you, £6.98 for liking the app and £14.99 for loving it'); after the subscription switch 26 reviewers walked to Streaks explicitly because it is a one-time purchase ('even though I like this app better'); stated willingness clustered at $5–15 one-time, and the report's recommendation is a $15–25 lifetime unlock with legacy buyers grandfathered free. Report 23: a paid-up-front one-time tracker where 'no subscription' praise (398, 5.47%, mean 4.43) rose 3.61% → 5.55% → 8.00% across eras as the category subscription-ised — the one competitive position that strengthened; 'worth it' outnumbered 'not worth it' 3.2:1, and an entire cohort arrived after a competitor revoked already-purchased premium features. Report 25: the lifetime option is a stated purchase driver (44 mentions, 3.36%, mean 3.95; 8 name it as the deciding factor — 'you dont have to do subscription stuff thank you'); subscription fatigue is explicit in German ('One-time payment €50 or subscription. No, on principle'), French and US reviews; one Brazilian buyer could not find the lifetime option and thought only monthly existed. Report 26: one-time pricing is a repeatedly praised differentiator in a calm-aesthetic tracker — 57 (mean 4.18) defend the price, most because it is not a subscription, and 11 name it as the purchase trigger; the lifetime option survived the 2022 restructure ($25) but rose to €40 by 2026. Report 27 (the limiting case): a tracker with no price at all — 47 reviews (34.06%) name 'free / no IAP / no subscription' in a register of relief and disbelief ('How is this free?'; 'In a world where literally every service is locked behind a pay wall, this is like a breath of fresh air'); the free position is the acquisition channel, and the only monetisation the corpus endorses is a voluntary tip jar. Report 29: the one explicit payment offer in a free app is 'please add widget support happy to pay for a lifetime subscription' — lifetime, attached to a new capability; the report's proposed test is a one-time Pro unlock for widget + dark mode + flexible frequency that touches nothing existing users have.",
   "section": "product-rule",
   "cards": [
    "R01-006",
@@ -342,7 +361,12 @@
    "R27-025",
    "R27-026",
    "R27-031",
-   "R27-047"
+   "R27-047",
+   "R29-003",
+   "R29-033",
+   "R29-084",
+   "R29-089",
+   "R29-117"
   ],
   "reports": [
    1,
@@ -363,7 +387,8 @@
    23,
    25,
    26,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
@@ -417,7 +442,7 @@
  {
   "id": "C005",
   "title": "Know which competitors buyers compare against",
-  "statement": "Buyers shop around before paying; competitor names and price anchors appear in reviews. Report 19: departing payers named Fabulous and Triimo — the latter because 'customer service aren't trying to rob you'; trust is a feature people comparison-shop on. Report 20: 145 reviews (3.58%) named an alternative — Streaks 26 times, and one churning customer wrote the complete gap analysis: 'it adds things to apple health and has custom icons and you can set multiple reminders. apple watch support and an updated ios14 widget.' Report 23: Momentum 14 (4.64, 'switched from'), Strides 13 (both directions — some leave over the cap), Productive 6 ('Streaks is simpler / not a subscription'), Habitify 5 (year calendar view), Habitica 3 (reward economy), Apple Reminders 9 (mean 3.67, 'does this free'); the frame is Reminders below and subscription rivals above. Report 24: competitors are named rarely (102, 0.23%) and almost always as a switching destination in anger — Finch 19 (mean 1.579) for business-model trust ('Finch is much less greedy'), Noom and Duolingo as comparisons of mechanic (click-through lessons; streak freezes), Notion 13, Stoic 11, Way of Life 6, Habitica 4. Report 25: 37 (2.83%, mean 4.16) arrive after abandoning a named competitor — Streaks 6 (outgrew it), Habitify 4 (cluttered, no widget completion), Habitica 3 (became work), Strides 3 (dull colours, weak sound), Done 2 (buggy), HabitKit/Ripples 2 (better heat-map widget), Me+, Tiimo (calendar import) — 'I have tried them all and this is the one'; among gated users the frame is Apple Reminders and paper. Report 26: reviewers compare against 'too busy', 'too technical', 'aggressively productive' trackers and choose calm; Chinese users compare to the discontinued 种子习惯. Report 27: 13 (9.42%, mean 4.85) arrived from other trackers ('I have tried like 20+ apps including notion, atoms'; 'replaced Streaks'; 'I've tried dozens upon dozens of apps and this is literally unmatched'), and 13 name the competitive paywall — a net receiver of category churn whose position is defined by rivals' monetisation, not its own features. Report 28: 13 (1.58%, mean 4.15) arrive from other trackers — 'a more affordable and functional alternative to another well known self care pet' (Finch), 'Not overloaded with features and tabs (like Finch)', 'didn't need a subscription to add more than three habits'; the losing comparison is a full teardown against Finch where multi-device sync wins and no trial plus ad load lose.",
+  "statement": "Buyers shop around before paying; competitor names and price anchors appear in reviews. Report 19: departing payers named Fabulous and Triimo — the latter because 'customer service aren't trying to rob you'; trust is a feature people comparison-shop on. Report 20: 145 reviews (3.58%) named an alternative — Streaks 26 times, and one churning customer wrote the complete gap analysis: 'it adds things to apple health and has custom icons and you can set multiple reminders. apple watch support and an updated ios14 widget.' Report 23: Momentum 14 (4.64, 'switched from'), Strides 13 (both directions — some leave over the cap), Productive 6 ('Streaks is simpler / not a subscription'), Habitify 5 (year calendar view), Habitica 3 (reward economy), Apple Reminders 9 (mean 3.67, 'does this free'); the frame is Reminders below and subscription rivals above. Report 24: competitors are named rarely (102, 0.23%) and almost always as a switching destination in anger — Finch 19 (mean 1.579) for business-model trust ('Finch is much less greedy'), Noom and Duolingo as comparisons of mechanic (click-through lessons; streak freezes), Notion 13, Stoic 11, Way of Life 6, Habitica 4. Report 25: 37 (2.83%, mean 4.16) arrive after abandoning a named competitor — Streaks 6 (outgrew it), Habitify 4 (cluttered, no widget completion), Habitica 3 (became work), Strides 3 (dull colours, weak sound), Done 2 (buggy), HabitKit/Ripples 2 (better heat-map widget), Me+, Tiimo (calendar import) — 'I have tried them all and this is the one'; among gated users the frame is Apple Reminders and paper. Report 26: reviewers compare against 'too busy', 'too technical', 'aggressively productive' trackers and choose calm; Chinese users compare to the discontinued 种子习惯. Report 27: 13 (9.42%, mean 4.85) arrived from other trackers ('I have tried like 20+ apps including notion, atoms'; 'replaced Streaks'; 'I've tried dozens upon dozens of apps and this is literally unmatched'), and 13 name the competitive paywall — a net receiver of category churn whose position is defined by rivals' monetisation, not its own features. Report 28: 13 (1.58%, mean 4.15) arrive from other trackers — 'a more affordable and functional alternative to another well known self care pet' (Finch), 'Not overloaded with features and tabs (like Finch)', 'didn't need a subscription to add more than three habits'; the losing comparison is a full teardown against Finch where multi-device sync wins and no trial plus ad load lose. Report 29: 52 (14.21%, mean 4.83) tried or rejected other trackers — 65% of them name price or habit caps; one 2★ uses 'Check Me' instead because it has a widget and is waiting to switch.",
   "section": "do",
   "cards": [
    "R01-026",
@@ -463,7 +488,9 @@
    "R27-004",
    "R27-063",
    "R28-051",
-   "R28-112"
+   "R28-112",
+   "R29-004",
+   "R29-071"
   ],
   "reports": [
    1,
@@ -487,14 +514,15 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
  {
   "id": "C006",
   "title": "Stay minimal and ad-free",
-  "statement": "Simple/clean is table stakes and the most praised trait; 'no ads' is the best-rated topic; every feature request comes with 'don't make it complicated'. Report 20: minimalism was the most-praised attribute by a wide margin (1,111 reviews, 27.45%; 42.8% of the pre-conversion era, mean 4.25), framed against 5–20 cluttered or gamified competitors; 'no ads' ran at mean 4.86; 131 one-star reviews still praised the simplicity in the same breath as condemning the company. Report 23: simplicity is the moat — 1,780 reviews (24.48%, mean 4.58) praise it, and it measurably degrades as features are added: simplicity praise fell 32.30% → 20.80% → 18.36% of each era while UI-confusion complaints rose 0.69% → 4.93% → 5.33%; reviewers date the loss to the July 2017 expansion ('like they dipped a pickle in chocolate'). Every addition to a minimal product must be opt-in or off by default. Report 25 (both sides): 126 praise simplicity and 27 call it confusing; 65 praise configurability and others say 'so many options and no guidance that you get lost in configuration' — complexity is both the top praise and a top complaint; any simplification must be opt-in. Report 26: an aesthetics-and-calm product whose four largest themes are design (27.83%, mean 4.64), music/ambience (14.57%), simplicity (10.71%) and the garden metaphor (5.97%), stable across five years — 'A lot of apps in this area are too busy… This app is like a warm hug'; ADHD users say every other routine app 'has been deleted within a day because it's too complicated'; keep new configuration behind an advanced toggle. Report 27: simplicity is the largest theme (52, 37.68%, mean 4.90; 'cuts straight to the point, no fluff'; 'No other shinannigans'), 12 praise the absence of ads (8.70%), and the report's 'what not to do' list is: no gamification, no ads (even one interstitial), no required account, no feature removals without an opt-out, no over-building — 'does everything you need it to do with very little drama' is the product spec; one thing to watch: as refugees from feature-rich paid apps arrive, 'pleasantly minimal' starts shading into 'missing things'. Report 28 (the other side): a gamified pet-and-rooms tracker whose ad load — not its game — is 52% of the worst outcome the store measures; 'do not simplify away the gamification' is the report's first 'what not to change'.",
+  "statement": "Simple/clean is table stakes and the most praised trait; 'no ads' is the best-rated topic; every feature request comes with 'don't make it complicated'. Report 20: minimalism was the most-praised attribute by a wide margin (1,111 reviews, 27.45%; 42.8% of the pre-conversion era, mean 4.25), framed against 5–20 cluttered or gamified competitors; 'no ads' ran at mean 4.86; 131 one-star reviews still praised the simplicity in the same breath as condemning the company. Report 23: simplicity is the moat — 1,780 reviews (24.48%, mean 4.58) praise it, and it measurably degrades as features are added: simplicity praise fell 32.30% → 20.80% → 18.36% of each era while UI-confusion complaints rose 0.69% → 4.93% → 5.33%; reviewers date the loss to the July 2017 expansion ('like they dipped a pickle in chocolate'). Every addition to a minimal product must be opt-in or off by default. Report 25 (both sides): 126 praise simplicity and 27 call it confusing; 65 praise configurability and others say 'so many options and no guidance that you get lost in configuration' — complexity is both the top praise and a top complaint; any simplification must be opt-in. Report 26: an aesthetics-and-calm product whose four largest themes are design (27.83%, mean 4.64), music/ambience (14.57%), simplicity (10.71%) and the garden metaphor (5.97%), stable across five years — 'A lot of apps in this area are too busy… This app is like a warm hug'; ADHD users say every other routine app 'has been deleted within a day because it's too complicated'; keep new configuration behind an advanced toggle. Report 27: simplicity is the largest theme (52, 37.68%, mean 4.90; 'cuts straight to the point, no fluff'; 'No other shinannigans'), 12 praise the absence of ads (8.70%), and the report's 'what not to do' list is: no gamification, no ads (even one interstitial), no required account, no feature removals without an opt-out, no over-building — 'does everything you need it to do with very little drama' is the product spec; one thing to watch: as refugees from feature-rich paid apps arrive, 'pleasantly minimal' starts shading into 'missing things'. Report 28 (the other side): a gamified pet-and-rooms tracker whose ad load — not its game — is 52% of the worst outcome the store measures; 'do not simplify away the gamification' is the report's first 'what not to change'. Report 29: simplicity (119, 32.51%) is framed as the absence of quizzes, upsells and bloat ('doesn't bombard you with stupid questions and a billion pop ups') and outnumbers 'too basic' 40:1 — 'the clearest do-not-fix signal'; simplicity and zero cost are the same story: 'this app is not trying to extract something from me'.",
   "section": "product-rule",
   "cards": [
    "R01-024",
@@ -570,7 +598,12 @@
    "R27-044",
    "R27-045",
    "R27-066",
-   "R27-084"
+   "R27-084",
+   "R29-027",
+   "R29-055",
+   "R29-063",
+   "R29-069",
+   "R29-123"
   ],
   "reports": [
    1,
@@ -591,14 +624,15 @@
    23,
    25,
    26,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
  {
   "id": "C007",
   "title": "Generous fixed habit cap (or unlimited) — never change it",
-  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not. Report 6: raising a 1-streak cap to 2 did not reduce complaints — the ask was unlimited — though the tone moved from 'scam' to 'love it, want more'. Report 7: a 4-habit cap held unchanged for 3½ years was still the top 2★ theme (0 of 27 complainers paid) while 11 users said 4 was plenty — stable is not enough if the level binds the 5–8-habit user. Report 11: 'First app that has more than 3 habits' was a reviewer's entire body — no cap was the acquisition wedge against the category, and whether it survived the paywall retrofit is unknown. Report 13: the free cap was cut from 5 to 3 in 2018 (the worst year, mean 2.85) and restored in 2020 without recovering the rating; 'hitting the cap while already engaged' is the one purchase trigger buyers name. Report 14: a 3-habit free cap drew its only 1★ free-tier complaint; the report's reading is that the cap must be generous enough to create the streak that creates the desire to pay. Report 16: a free tier of ONE habit drew 76 complaints at mean 2.22 ('a habit tracker that tracks one habit is not a habit tracker') and could not do trial work; 20 reviewers defended the earn-a-slot constraint at 3–6 habits (mean 4.60) — loved at 3–6, hated at 1. Report 20: 'unlimited habits, free' was the highest-mean theme in a 4,048-review corpus (54 explicit, mean 4.94) and the product's entire market position; capping it at 3 deleted the reason to exist — 63 reviews say exactly this, 99 complain about the cap, and 3 is below the threshold of usefulness (the report's defensible line is 7–10 free with paid depth elsewhere). Report 23 (a paid app, cap as design not paywall): raising the cap 6 → 12 → 24 cut complaints roughly in half each time and bought about three years; the request re-anchors on the new number and never falls below ~6%. Report 24 (counter-evidence): a coaching app's highest-rated property is that it refuses to let users add more habits — 'anyone shipping a habit tracker with unlimited habits is competing against the wrong thing'; the generous-cap rule is about paywalls, not about pacing. Report 25: a 3-habit free cap on a product titled 'Routines & Goals Planner' is the single largest fact in a 1,309-review corpus — 138 complaints (10.54%, mean 2.13) and 298 (22.77%) of all monetisation friction, 56% of every 1★; the cap prevents a purchase decision, not just usage ('how do you expect me to subscribe without trying anything??'), and reviewers name their own acceptable number — median 8–10; 19 defend the cap and 64 call the price fair, so the level is not the problem, the gate placement is. Cap complaints fall (17.4% → 6.7%) only because reviewers increasingly describe the whole app as locked. Report 26: a free cap of 3→5→6 habits plus a garden that stops growing at 17% — monetisation gating is 11.36% of reviews (57.8% of all 1★, 21.2% of substantive reviews) while price objection is only 0.76%; 57 defend the price and 45 call the free tier generous; the cap is the single most common reason for withholding the fifth star (47 of 535 4★: 'amazing app, but you can only add 5'); ADHD users who praise the simplicity say five slots cannot hold a morning routine. Report 27: unlimited habits on a free app is praised by name ('unlimited habit tracking without ads'; 'has no limitations'; 'i didn't need to pay to use a certain amount of habits') and 13 reviewers arrived after fleeing competitors' caps — a habit cap on the free tier 'directly attacks the stated reason users are here'. Report 28: a habit-count cap of ~8 (17, 2.07%) plus a priority-slot cap of 1 red / 2 orange (15, 1.83%) and paid moods (10); 'Had trouble finding a habit tracker that didn't need a subscription to add more than three habits' and 'free tier usage incredibly wide compared to other trackers' are stated reasons for choosing it; cap complaints fell 8.5% → 3.8% mainly because the ad load crowded them out.",
+  "statement": "A low or drifting free cap is the #1 monetization complaint; 'unlimited' also sells, so the level is a decision but the stability is not. Report 6: raising a 1-streak cap to 2 did not reduce complaints — the ask was unlimited — though the tone moved from 'scam' to 'love it, want more'. Report 7: a 4-habit cap held unchanged for 3½ years was still the top 2★ theme (0 of 27 complainers paid) while 11 users said 4 was plenty — stable is not enough if the level binds the 5–8-habit user. Report 11: 'First app that has more than 3 habits' was a reviewer's entire body — no cap was the acquisition wedge against the category, and whether it survived the paywall retrofit is unknown. Report 13: the free cap was cut from 5 to 3 in 2018 (the worst year, mean 2.85) and restored in 2020 without recovering the rating; 'hitting the cap while already engaged' is the one purchase trigger buyers name. Report 14: a 3-habit free cap drew its only 1★ free-tier complaint; the report's reading is that the cap must be generous enough to create the streak that creates the desire to pay. Report 16: a free tier of ONE habit drew 76 complaints at mean 2.22 ('a habit tracker that tracks one habit is not a habit tracker') and could not do trial work; 20 reviewers defended the earn-a-slot constraint at 3–6 habits (mean 4.60) — loved at 3–6, hated at 1. Report 20: 'unlimited habits, free' was the highest-mean theme in a 4,048-review corpus (54 explicit, mean 4.94) and the product's entire market position; capping it at 3 deleted the reason to exist — 63 reviews say exactly this, 99 complain about the cap, and 3 is below the threshold of usefulness (the report's defensible line is 7–10 free with paid depth elsewhere). Report 23 (a paid app, cap as design not paywall): raising the cap 6 → 12 → 24 cut complaints roughly in half each time and bought about three years; the request re-anchors on the new number and never falls below ~6%. Report 24 (counter-evidence): a coaching app's highest-rated property is that it refuses to let users add more habits — 'anyone shipping a habit tracker with unlimited habits is competing against the wrong thing'; the generous-cap rule is about paywalls, not about pacing. Report 25: a 3-habit free cap on a product titled 'Routines & Goals Planner' is the single largest fact in a 1,309-review corpus — 138 complaints (10.54%, mean 2.13) and 298 (22.77%) of all monetisation friction, 56% of every 1★; the cap prevents a purchase decision, not just usage ('how do you expect me to subscribe without trying anything??'), and reviewers name their own acceptable number — median 8–10; 19 defend the cap and 64 call the price fair, so the level is not the problem, the gate placement is. Cap complaints fall (17.4% → 6.7%) only because reviewers increasingly describe the whole app as locked. Report 26: a free cap of 3→5→6 habits plus a garden that stops growing at 17% — monetisation gating is 11.36% of reviews (57.8% of all 1★, 21.2% of substantive reviews) while price objection is only 0.76%; 57 defend the price and 45 call the free tier generous; the cap is the single most common reason for withholding the fifth star (47 of 535 4★: 'amazing app, but you can only add 5'); ADHD users who praise the simplicity say five slots cannot hold a morning routine. Report 27: unlimited habits on a free app is praised by name ('unlimited habit tracking without ads'; 'has no limitations'; 'i didn't need to pay to use a certain amount of habits') and 13 reviewers arrived after fleeing competitors' caps — a habit cap on the free tier 'directly attacks the stated reason users are here'. Report 28: a habit-count cap of ~8 (17, 2.07%) plus a priority-slot cap of 1 red / 2 orange (15, 1.83%) and paid moods (10); 'Had trouble finding a habit tracker that didn't need a subscription to add more than three habits' and 'free tier usage incredibly wide compared to other trackers' are stated reasons for choosing it; cap complaints fell 8.5% → 3.8% mainly because the ad load crowded them out. Report 29: 12 reviews (mean 4.92) praise the absence of a habit cap by naming competitors' caps — 'they all made me pay for more than 3 habits'; 'lets you have more than 6 habits'; 'up to 15 to 20 habits without getting charged' — the specific mechanism by which a free app wins comparison shoppers; 'do not cap habit count' is 'the single most protected property in the corpus'.",
   "section": "free",
   "cards": [
    "R01-008",
@@ -749,7 +783,12 @@
    "R28-021",
    "R28-032",
    "R28-041",
-   "R28-127"
+   "R28-127",
+   "R29-011",
+   "R29-040",
+   "R29-088",
+   "R29-089",
+   "R29-123"
   ],
   "reports": [
    1,
@@ -772,7 +811,8 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -829,7 +869,7 @@
  {
   "id": "C009",
   "title": "Basic widgets, icons and colours are free",
-  "statement": "Loved, drives 5★, and re-paywalling widgets backfired. Report 7: with every widget Pro, the widget paywall was the only theme with zero 5★ reviews, while widgets were the best-loved feature; users proposed one free widget, more with Pro. Report 12: widget requests appeared only from Nov 2024 and came from retained payers ('I forget all the time to use this app cause I don't have a widget') — the highest-mean complaint theme. Report 23: custom app icons and theme colours (324, 4.46%, mean 4.51) are 'a small feature with an outsized delight response'; 54 more ask for more/custom icons. Report 25: widgets (Home, Lock Screen, Control Center) are almost purely positive (30, mean 4.43, 0 1★); custom icons and colours with hex input; one lifetime buyer asks for a minimal heat-map widget like HabitKit/Ripples. Report 26: a garden-view home-screen widget, reminders, a timer and day-of-week scheduling are free (21 widget mentions, mean 4.14).",
+  "statement": "Loved, drives 5★, and re-paywalling widgets backfired. Report 7: with every widget Pro, the widget paywall was the only theme with zero 5★ reviews, while widgets were the best-loved feature; users proposed one free widget, more with Pro. Report 12: widget requests appeared only from Nov 2024 and came from retained payers ('I forget all the time to use this app cause I don't have a widget') — the highest-mean complaint theme. Report 23: custom app icons and theme colours (324, 4.46%, mean 4.51) are 'a small feature with an outsized delight response'; 54 more ask for more/custom icons. Report 25: widgets (Home, Lock Screen, Control Center) are almost purely positive (30, mean 4.43, 0 1★); custom icons and colours with hex input; one lifetime buyer asks for a minimal heat-map widget like HabitKit/Ripples. Report 26: a garden-view home-screen widget, reminders, a timer and day-of-week scheduling are free (21 widget mentions, mean 4.14). Report 29: colour coding per habit is free; 4 ask for a wider palette and custom colours.",
   "section": "free",
   "cards": [
    "R01-011",
@@ -890,7 +930,9 @@
    "R26-053",
    "R27-017",
    "R27-028",
-   "R27-071"
+   "R27-071",
+   "R29-019",
+   "R29-047"
   ],
   "reports": [
    1,
@@ -909,7 +951,8 @@
    23,
    25,
    26,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
@@ -1028,7 +1071,7 @@
  {
   "id": "C012",
   "title": "Week / month / year grid views",
-  "statement": "'Filling the squares' is the retention mechanic and emotional payoff. Report 23: statistics limited to the current and previous month (46 requests); the most-requested visualisation is a year heat-map / GitHub contribution grid, the single most-named competitor gap (Habitify). Report 25: statistics weak/unreadable (8) — rework the screen around 'why did I miss it'; a heat-map widget like HabitKit/Ripples requested. Report 26: statistics/history/calendar per habit was the top unmet need (40, 1.04% — 'this is a cosmetic habit tracker, it does not offer really understanding of progress'), something shipped ~late 2024, and the rate returned to 4.26% of substantive 2026 reviews because it is hard to find and stats cannot be reset. Report 27: daily, weekly and yearly views exist and a monthly view is the missing rung — requested five times over four years, the only feature request that repeatedly costs stars (2 of 6 3★); the year grid is the app's signature and its de-emphasis was noticed.",
+  "statement": "'Filling the squares' is the retention mechanic and emotional payoff. Report 23: statistics limited to the current and previous month (46 requests); the most-requested visualisation is a year heat-map / GitHub contribution grid, the single most-named competitor gap (Habitify). Report 25: statistics weak/unreadable (8) — rework the screen around 'why did I miss it'; a heat-map widget like HabitKit/Ripples requested. Report 26: statistics/history/calendar per habit was the top unmet need (40, 1.04% — 'this is a cosmetic habit tracker, it does not offer really understanding of progress'), something shipped ~late 2024, and the rate returned to 4.26% of substantive 2026 reviews because it is hard to find and stats cannot be reset. Report 27: daily, weekly and yearly views exist and a monthly view is the missing rung — requested five times over four years, the only feature request that repeatedly costs stars (2 of 6 3★); the year grid is the app's signature and its de-emphasis was noticed. Report 29: statistics (bar, pie, weekly analytics, completion rings) is the one advanced surface praised unprompted (10, mean 4.60) and asked to be extended — all-time records, a monthly/yearly grid, export — the safest place to add depth without violating simplicity.",
   "section": "must-have",
   "cards": [
    "R01-086",
@@ -1074,7 +1117,12 @@
    "R27-062",
    "R27-065",
    "R27-073",
-   "R27-075"
+   "R27-075",
+   "R29-019",
+   "R29-041",
+   "R29-057",
+   "R29-065",
+   "R29-120"
   ],
   "reports": [
    1,
@@ -1088,7 +1136,8 @@
    23,
    25,
    26,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
@@ -1212,7 +1261,7 @@
  {
   "id": "C016",
   "title": "Skip / holiday / pause mode (pause a habit or counter without losing history)",
-  "statement": "Minor purchase factor; free or paid open. In report 3, pause/stop/archive is the highest-leverage missing feature (44 requests at mean 4.02, 'the only thing between me and 5★'). Report 23: pausing a task and un-pausing it marked the paused days as missed and destroyed the streak — the defect defeats the feature's entire purpose; reported 2023–24 with no visible fix (57 archive/pause mentions). Report 25: vacation/pause, skip-a-day ('Jump'), mark-not-done ('Cancel') and archive all exist and are praised. Report 26: a vacation/pause mode is requested with flexible recurrence (12). Report 27: a goal end date so a completed goal stops repeating but stays visible, and habit archiving, were asked for by a 3★ reviewer — both appear on the listing and were not findable. Report 28: 'the only way to remove a habit from view is to delete it, but that results in losing all its data'; one wants to mark a routine as 'established' and retire it.",
+  "statement": "Minor purchase factor; free or paid open. In report 3, pause/stop/archive is the highest-leverage missing feature (44 requests at mean 4.02, 'the only thing between me and 5★'). Report 23: pausing a task and un-pausing it marked the paused days as missed and destroyed the streak — the defect defeats the feature's entire purpose; reported 2023–24 with no visible fix (57 archive/pause mentions). Report 25: vacation/pause, skip-a-day ('Jump'), mark-not-done ('Cancel') and archive all exist and are praised. Report 26: a vacation/pause mode is requested with flexible recurrence (12). Report 27: a goal end date so a completed goal stops repeating but stays visible, and habit archiving, were asked for by a 3★ reviewer — both appear on the listing and were not findable. Report 28: 'the only way to remove a habit from view is to delete it, but that results in losing all its data'; one wants to mark a routine as 'established' and retire it. Report 29: an end-date / no-end-date control requested (4) — set a habit with no end and change it later.",
   "section": "undecided",
   "cards": [
    "R01-018",
@@ -1241,7 +1290,9 @@
    "R27-023",
    "R27-038",
    "R28-090",
-   "R28-092"
+   "R28-092",
+   "R29-019",
+   "R29-049"
   ],
   "reports": [
    1,
@@ -1258,7 +1309,8 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -1353,7 +1405,7 @@
  {
   "id": "C020",
   "title": "Data export / backup / CSV",
-  "statement": "Requested a lot from happy users, rarely a purchase trigger — charging for it generates requests, not revenue. Report 18: export was asked for from the app's fifth month to its last, named as a purchase condition twice ('add export and I'll subscribe for life'), and is the honest answer to five years of unresolved data-loss reports — it lets users protect themselves. Report 20: export never shipped (9 requests, mean 4.44). Report 23: CSV export is included in the one-time price. Report 25: CSV export exists but is described as weak (3). Report 27: data export is praised ('export data for nerdy kind') and the one-tap note export was removed in 2025, producing the only 2★. Report 28: no export mentioned; cloud sync paid.",
+  "statement": "Requested a lot from happy users, rarely a purchase trigger — charging for it generates requests, not revenue. Report 18: export was asked for from the app's fifth month to its last, named as a purchase condition twice ('add export and I'll subscribe for life'), and is the honest answer to five years of unresolved data-loss reports — it lets users protect themselves. Report 20: export never shipped (9 requests, mean 4.44). Report 23: CSV export is included in the one-time price. Report 25: CSV export exists but is described as weak (3). Report 27: data export is praised ('export data for nerdy kind') and the one-tap note export was removed in 2025, producing the only 2★. Report 28: no export mentioned; cloud sync paid. Report 29: add a local CSV/JSON export to Files, account-free, so a date bug can never again mean total loss — three independent export/backup requests.",
   "section": "free",
   "cards": [
    "R01-022",
@@ -1380,7 +1432,13 @@
    "R25-032",
    "R27-020",
    "R27-041",
-   "R27-074"
+   "R27-074",
+   "R29-008",
+   "R29-015",
+   "R29-020",
+   "R29-075",
+   "R29-111",
+   "R29-125"
   ],
   "reports": [
    1,
@@ -1394,7 +1452,8 @@
    20,
    23,
    25,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
@@ -1543,7 +1602,7 @@
  {
   "id": "C023",
   "title": "Interactive widget check-off",
-  "statement": "Mark done without opening the app; small volume, very high intent. Report 18: 'let me check off without launching the app' was the single most-repeated widget request across five years and every language; some builds fixed it (Jul 2025) and then it regressed. Report 23: an interactive Today-view widget shipped Jan 2017 to enthusiasm, was lost at iOS 14 (Sept 2020) and asked for back continuously for five years (36 named requests) — one of the top three reasons for a downgrade from a previously-happy user; restore it via App Intents. Report 26: an interactive widget to tick from the home screen requested (~5); the garden-view widget is free. Report 27: reviewers wrote the widget spec — 'a small widget that just showed the current streak count for a single goal'; 'a streak counter on the widget like duolingo'; 'a grayed out version if it's still to do and a coloured version if it's done'; tappable to check off — requested in 2022, 2023, 2024, 2025 and 2026; in a streak app the widget is the retention surface. Report 28: an interactive check-off widget requested continuously for four and a half years by satisfied users (mean 4.64, zero negatives).",
+  "statement": "Mark done without opening the app; small volume, very high intent. Report 18: 'let me check off without launching the app' was the single most-repeated widget request across five years and every language; some builds fixed it (Jul 2025) and then it regressed. Report 23: an interactive Today-view widget shipped Jan 2017 to enthusiasm, was lost at iOS 14 (Sept 2020) and asked for back continuously for five years (36 named requests) — one of the top three reasons for a downgrade from a previously-happy user; restore it via App Intents. Report 26: an interactive widget to tick from the home screen requested (~5); the garden-view widget is free. Report 27: reviewers wrote the widget spec — 'a small widget that just showed the current streak count for a single goal'; 'a streak counter on the widget like duolingo'; 'a grayed out version if it's still to do and a coloured version if it's done'; tappable to check off — requested in 2022, 2023, 2024, 2025 and 2026; in a streak app the widget is the retention surface. Report 28: an interactive check-off widget requested continuously for four and a half years by satisfied users (mean 4.64, zero negatives). Report 29: a Home Screen widget showing today's list requested by 16 across 26 months, 7 of them in 2026.",
   "section": "undecided",
   "cards": [
    "R01-030",
@@ -1572,7 +1631,10 @@
    "R27-067",
    "R28-049",
    "R28-091",
-   "R28-134"
+   "R28-134",
+   "R29-009",
+   "R29-037",
+   "R29-108"
   ],
   "reports": [
    1,
@@ -1585,7 +1647,8 @@
    23,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -1714,7 +1777,7 @@
  {
   "id": "C027",
   "title": "Localise early — it unlocks revenue",
-  "statement": "Missing localisation is the biggest market-specific complaint and a stated purchase blocker; shipping a language visibly converts (Japan). Report 10: localisation is HIGH-PRIORITY at country level in eight storefronts at once (cn 26%, ru 18%, tr 19%, br 13%, es 12%); reviewers say they will not pay in English. Report 13: Arabic is the largest unserved language (20.5% of Saudi reviews); users were also served the wrong language ('I am from Turkey but this app language is Korean', 41 votes) and shown store screenshots in languages the app does not have. Report 18: Japanese Instagram ads led to an app that opened in Korean with a KakaoTalk login; Korean push notifications persisted a year after the UI was fixed, the terms page stayed English-only (one reviewer refused to trial for that reason), Traditional Chinese was largely Simplified wording, and a Dutch translation was unintelligible. Report 19: an Instagram ad ran in Spanish for an English-only app — 'tell me if there's a Spanish version and if not, refund the money'. Report 20: Russian-first UI leaked to Chinese, French and Swiss users, Chinese localisation existed and was later removed ('there was Chinese a few years ago'), and Ukrainian was requested and never added. Report 23: bad German localisation ('Die Übersetzung ins Deutsche ist total fehlgeschlagen') undercut the premium price in the corpus's worst large market (mean 3.62); machine-translated Chinese help text drew 52 upvotes and was still cited seven years later; localisation-quality complaints span de, ru, se, kr, cn, tw, jp and es (mixed EN/ES notifications, English-only icon search); a Hangul IME bug went unfixed five years. Report 24: the praise vocabulary (small steps, coaching, art, 'life-changing') appears in every language and the forced-water complaint in six; language requests concentrate in Vietnam, Uzbekistan, Russia, Brazil and Italy; Germany praises the app's craft at 19.61% (3× the corpus); China (1,250 reviews, mean 3.431, 28.6% 1★) is unreadable by an English-anchored classifier. Report 25: localisation demand is new and growing (0% → 1.0% → 2.7%; Turkish 9, Korean 3, Italian 3, Russian/Ukrainian 3, Chinese 2, Japanese 1); Korea and China are 100% 5★ and 75%/50% localisation requests ('If there is Chinese, it will definitely be loved by the Chinese market') — reached only by users tolerant of an English UI; Turkish shipped Jul 2026 and the review stream responded. Report 26: localisation requests in Arabic, Thai and Spanish; Russian localisation quality criticised in 2023 ('hire a competent localiser') and praised by 2025; the German store listing carried a typo ('Gewohnheitstrinker' — habit drinker); Chinese reviewers ask for the community features of a discontinued app ('种子习惯'); the cn aesthetic rate of 3.12% is a classifier artefact. Report 27: localisation is not an issue — zero complaints across seven non-English reviews; the two Monday-week-start requests (DE, AU) are the only regional-convention issue. Report 28: 21 localisation requests/defects (2.56%) — Spanish 5, Turkish 3, Chinese 3, Japanese 2, Russian 2, French, Thai, Arabic, Portuguese; two are defects on an existing localisation (Japanese glyphs rendered for Chinese, habit names truncated; untranslated English with Chinese selected) and a 2022 localisation update rendered every 'r' as a black square; rest-of-world markets rate higher (4.181 vs 3.956) and are 5× more blocked by language (5.56% vs 1.09%) — 'the cheapest lever in the highest-satisfaction segment'; two name language as why they leave.",
+  "statement": "Missing localisation is the biggest market-specific complaint and a stated purchase blocker; shipping a language visibly converts (Japan). Report 10: localisation is HIGH-PRIORITY at country level in eight storefronts at once (cn 26%, ru 18%, tr 19%, br 13%, es 12%); reviewers say they will not pay in English. Report 13: Arabic is the largest unserved language (20.5% of Saudi reviews); users were also served the wrong language ('I am from Turkey but this app language is Korean', 41 votes) and shown store screenshots in languages the app does not have. Report 18: Japanese Instagram ads led to an app that opened in Korean with a KakaoTalk login; Korean push notifications persisted a year after the UI was fixed, the terms page stayed English-only (one reviewer refused to trial for that reason), Traditional Chinese was largely Simplified wording, and a Dutch translation was unintelligible. Report 19: an Instagram ad ran in Spanish for an English-only app — 'tell me if there's a Spanish version and if not, refund the money'. Report 20: Russian-first UI leaked to Chinese, French and Swiss users, Chinese localisation existed and was later removed ('there was Chinese a few years ago'), and Ukrainian was requested and never added. Report 23: bad German localisation ('Die Übersetzung ins Deutsche ist total fehlgeschlagen') undercut the premium price in the corpus's worst large market (mean 3.62); machine-translated Chinese help text drew 52 upvotes and was still cited seven years later; localisation-quality complaints span de, ru, se, kr, cn, tw, jp and es (mixed EN/ES notifications, English-only icon search); a Hangul IME bug went unfixed five years. Report 24: the praise vocabulary (small steps, coaching, art, 'life-changing') appears in every language and the forced-water complaint in six; language requests concentrate in Vietnam, Uzbekistan, Russia, Brazil and Italy; Germany praises the app's craft at 19.61% (3× the corpus); China (1,250 reviews, mean 3.431, 28.6% 1★) is unreadable by an English-anchored classifier. Report 25: localisation demand is new and growing (0% → 1.0% → 2.7%; Turkish 9, Korean 3, Italian 3, Russian/Ukrainian 3, Chinese 2, Japanese 1); Korea and China are 100% 5★ and 75%/50% localisation requests ('If there is Chinese, it will definitely be loved by the Chinese market') — reached only by users tolerant of an English UI; Turkish shipped Jul 2026 and the review stream responded. Report 26: localisation requests in Arabic, Thai and Spanish; Russian localisation quality criticised in 2023 ('hire a competent localiser') and praised by 2025; the German store listing carried a typo ('Gewohnheitstrinker' — habit drinker); Chinese reviewers ask for the community features of a discontinued app ('种子习惯'); the cn aesthetic rate of 3.12% is a classifier artefact. Report 27: localisation is not an issue — zero complaints across seven non-English reviews; the two Monday-week-start requests (DE, AU) are the only regional-convention issue. Report 28: 21 localisation requests/defects (2.56%) — Spanish 5, Turkish 3, Chinese 3, Japanese 2, Russian 2, French, Thai, Arabic, Portuguese; two are defects on an existing localisation (Japanese glyphs rendered for Chinese, habit names truncated; untranslated English with Chinese selected) and a 2022 localisation update rendered every 'r' as a black square; rest-of-world markets rate higher (4.181 vs 3.956) and are 5× more blocked by language (5.56% vs 1.09%) — 'the cheapest lever in the highest-satisfaction segment'; two name language as why they leave. Report 29: the listing supports 8 languages and not Spanish or Russian, yet 8 Spanish-language reviews arrive from UZ/CL/MX/AR/ES/US and one is blocked ('No puedo cambiar la lengua, ayuden me por favor') — Spanish first is the cheapest defensible localisation case.",
   "section": "do",
   "cards": [
    "R01-037",
@@ -1828,7 +1891,10 @@
    "R28-116",
    "R28-117",
    "R28-137",
-   "R28-143"
+   "R28-143",
+   "R29-022",
+   "R29-096",
+   "R29-119"
   ],
   "reports": [
    1,
@@ -1855,7 +1921,8 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -2031,7 +2098,9 @@
    "R25-072",
    "R25-101",
    "R27-011",
-   "R27-076"
+   "R27-076",
+   "R29-020",
+   "R29-056"
   ],
   "reports": [
    1,
@@ -2044,14 +2113,15 @@
    20,
    23,
    25,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
  {
   "id": "C031",
   "title": "Crashes / launch failures",
-  "statement": "Largest complaint by volume; a two-day launch crash produced more 1★ than years of minor bugs. Report 23: crashes 46 (0.63%, mean 2.80, 34.8% 1★) on three dated bugs — iPhone X freeze-on-close 2017–18, an iOS 14-era freeze, a stuck splash screen 2023–26 — plus Watch-app crashes on each watchOS generation. Report 24: crash / freeze / won't load 944 (2.17%, mean 2.367) — the recurring shape is freezing on the 'first mountain' / Journeys screen on day one. Report 25: a post-onboarding freeze — the main screen stops responding to touch — is the fastest-rising negative theme (51, 3.90%, mean 1.63; 1.3% → 2.9% → 5.8%; 27 of 34 E3 reports in May–Jul 2026; Colombia 18%, Germany 7.8%, GB 0%); iPhone 11 and iOS 26.x named, reinstalling does not fix it, one reviewer says it survived two updates; every one of these users got zero value. Report 26: crash/launch failure fell 3.37% (2021–22) → 0.13% (2024) after a visible engineering turnaround, then a 2026 cluster (n=4, three Russian, two paying — a premium subscriber crashing on the onboarding screen after reinstall) flagged for telemetry. Report 27: a September–November 2025 update-and-iOS-26 launch crash ('Ever since I updated to iOS 26 the app immediately crashes when I try to open') accounts for almost every bad rating the app ever received — all 4 1★, the only 2★ and 4 of 6 3★ fall in a five-week window (window mean 4.162 vs 4.822 elsewhere); fixed by Feb 2026 (mean 4.829, zero 1★); a solo-developer app with no support channel pays for an OS-transition break entirely in public rating. Report 28: launch failure / crash 15 (1.83%, mean 2.40) concentrated in 2022 (orange-screen failure), then a 2026 uptick ('freezing every time I open the app, I think it needs an update to keep up with ios') consistent with OS drift on a build last updated Nov 2025.",
+  "statement": "Largest complaint by volume; a two-day launch crash produced more 1★ than years of minor bugs. Report 23: crashes 46 (0.63%, mean 2.80, 34.8% 1★) on three dated bugs — iPhone X freeze-on-close 2017–18, an iOS 14-era freeze, a stuck splash screen 2023–26 — plus Watch-app crashes on each watchOS generation. Report 24: crash / freeze / won't load 944 (2.17%, mean 2.367) — the recurring shape is freezing on the 'first mountain' / Journeys screen on day one. Report 25: a post-onboarding freeze — the main screen stops responding to touch — is the fastest-rising negative theme (51, 3.90%, mean 1.63; 1.3% → 2.9% → 5.8%; 27 of 34 E3 reports in May–Jul 2026; Colombia 18%, Germany 7.8%, GB 0%); iPhone 11 and iOS 26.x named, reinstalling does not fix it, one reviewer says it survived two updates; every one of these users got zero value. Report 26: crash/launch failure fell 3.37% (2021–22) → 0.13% (2024) after a visible engineering turnaround, then a 2026 cluster (n=4, three Russian, two paying — a premium subscriber crashing on the onboarding screen after reinstall) flagged for telemetry. Report 27: a September–November 2025 update-and-iOS-26 launch crash ('Ever since I updated to iOS 26 the app immediately crashes when I try to open') accounts for almost every bad rating the app ever received — all 4 1★, the only 2★ and 4 of 6 3★ fall in a five-week window (window mean 4.162 vs 4.822 elsewhere); fixed by Feb 2026 (mean 4.829, zero 1★); a solo-developer app with no support channel pays for an OS-transition break entirely in public rating. Report 28: launch failure / crash 15 (1.83%, mean 2.40) concentrated in 2022 (orange-screen failure), then a 2026 uptick ('freezing every time I open the app, I think it needs an update to keep up with ios') consistent with OS drift on a build last updated Nov 2025. Report 29: one 2026 launch failure ('Lässt sich nichtmal öffnen'); overall bug reporting fell by two-thirds (22.3% → 6.5%).",
   "section": "must-never-break",
   "cards": [
    "R01-042",
@@ -2140,7 +2210,8 @@
    "R28-083",
    "R28-104",
    "R28-125",
-   "R28-136"
+   "R28-136",
+   "R29-100"
   ],
   "reports": [
    1,
@@ -2165,7 +2236,8 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -2299,7 +2371,7 @@
  {
   "id": "C034",
   "title": "Data must never be lost on update, reinstall or phone change",
-  "statement": "Data loss is ×10.6 over-represented among buyers; local-only storage is the cause. Report 10: from 2025 the dominant story became app-initiated — 'it told me my pet data got corrupted' — with no automatic backup to fall back on. Report 14: data lost on update was the only theme with a perfect 1★ record and the corpus's only 'stay away' review; it recurred 5.5 years later ('backdate all my progress by memory (again)'). Report 18: data loss sat between 6% and 8% in every era after the first, five years running — the single most durable defect in a 2,048-review corpus — and hit 12.42% of confirmed payers; 'if I'd known records could all disappear I wouldn't have paid.' Report 20: update 1.41.0 (13 Mar 2025) erased habit histories globally — 126 of 161 reviews in the following seven weeks (78.3%) reported losing 2–5 years; the advertised fix did not work, a second bug wiped prior progress on the next check-off, iCloud backup was itself a paid, manual feature ('Why should a premium subscriber even have to think about whether a backup was created?'), and there was no communication. The same migration-bug class had fired in Jan 2021. Report 23: data loss 81 (1.11%, mean 2.17, 45.7% 1★), 60 of them after the 2022 sync rewrite (3.38% of post-2022 reviews, mean 2.03; 2024 peak 22) — the only theme that destroys a long-tenure customer outright ('my 3+ years record to null'; 'It's like I'm a brand new user'); an in-app backup existed and was discovered by support, not the user. Report 24: progress lost on device change with no restore (257, mean 2.693) is the most-cited reason a multi-year user stops. Report 25: data loss / reset to zero 12 (0.92%), flat ~1%; archive/delete destroys history (4) — 'archive losing history defeats the point of archiving'. Report 26: with no account or sync, a support-recommended reinstall deleted 'all the lovely growth you have achieved' along with the purchase. Report 27: the one observed churn — 'It doesnt open with the update, ive lost all my progress, guess its time for a new app' — is reliability plus data loss, not price. Report 28: 12 data/progress-loss reports (1.46%, mean 2.42) entangled with the game's intentional decay — 'on challenge mode… run out of health it resets ALL of your progress… level 278… resets you to level 1'; 'My Account is gone, I was at a high Level'; an intentional decay mechanic and an unintentional data-loss bug are indistinguishable to the user.",
+  "statement": "Data loss is ×10.6 over-represented among buyers; local-only storage is the cause. Report 10: from 2025 the dominant story became app-initiated — 'it told me my pet data got corrupted' — with no automatic backup to fall back on. Report 14: data lost on update was the only theme with a perfect 1★ record and the corpus's only 'stay away' review; it recurred 5.5 years later ('backdate all my progress by memory (again)'). Report 18: data loss sat between 6% and 8% in every era after the first, five years running — the single most durable defect in a 2,048-review corpus — and hit 12.42% of confirmed payers; 'if I'd known records could all disappear I wouldn't have paid.' Report 20: update 1.41.0 (13 Mar 2025) erased habit histories globally — 126 of 161 reviews in the following seven weeks (78.3%) reported losing 2–5 years; the advertised fix did not work, a second bug wiped prior progress on the next check-off, iCloud backup was itself a paid, manual feature ('Why should a premium subscriber even have to think about whether a backup was created?'), and there was no communication. The same migration-bug class had fired in Jan 2021. Report 23: data loss 81 (1.11%, mean 2.17, 45.7% 1★), 60 of them after the 2022 sync rewrite (3.38% of post-2022 reviews, mean 2.03; 2024 peak 22) — the only theme that destroys a long-tenure customer outright ('my 3+ years record to null'; 'It's like I'm a brand new user'); an in-app backup existed and was discovered by support, not the user. Report 24: progress lost on device change with no restore (257, mean 2.693) is the most-cited reason a multi-year user stops. Report 25: data loss / reset to zero 12 (0.92%), flat ~1%; archive/delete destroys history (4) — 'archive losing history defeats the point of archiving'. Report 26: with no account or sync, a support-recommended reinstall deleted 'all the lovely growth you have achieved' along with the purchase. Report 27: the one observed churn — 'It doesnt open with the update, ive lost all my progress, guess its time for a new app' — is reliability plus data loss, not price. Report 28: 12 data/progress-loss reports (1.46%, mean 2.42) entangled with the game's intentional decay — 'on challenge mode… run out of health it resets ALL of your progress… level 278… resets you to level 1'; 'My Account is gone, I was at a high Level'; an intentional decay mechanic and an unintentional data-loss bug are indistinguishable to the user. Report 29: 9 data-loss reports (mean 2.11, the lowest-rated theme) came from the calendar bug plus a workaround users taught each other — reinstall — which wiped local-only history ('just sad I lost my data from uninstalling it'); 'the bug fix alone does not close this loop — an export or backup path does'.",
   "section": "must-never-break",
   "cards": [
    "R01-045",
@@ -2377,7 +2449,12 @@
    "R28-015",
    "R28-054",
    "R28-104",
-   "R28-144"
+   "R28-144",
+   "R29-008",
+   "R29-042",
+   "R29-075",
+   "R29-080",
+   "R29-125"
   ],
   "reports": [
    1,
@@ -2401,14 +2478,15 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
  {
   "id": "C035",
   "title": "Account system from day one",
-  "statement": "Root cause of lost purchases, lost data and failed sync; requests rise as users change phones. Report 20: 'no account, no signup' was praised — and was the root cause of the 2025 data loss; the account/backup layer must exist even if signup stays optional. Report 26: no account system anywhere in the corpus — a device change, a reinstall, or support's own advice to reinstall destroys both progress and entitlement ('It also deletes the purchase price of the app if you bought it as there is no account to sign into'); absent accounts every other entitlement bug is unrecoverable — the root cause behind the top paid-user complaint. Report 27 (counter-evidence on the signup side, not the durability side): no account is praised — but iCloud sync exists and is invisible, so three reviewers fear data loss and one churned after an update lost progress; the account layer's job here is legible backup, not signup. Report 28: an account with e-mail verification exists (29 mentions, mean 3.66, mixed); a verification reset by support turned a 1★ into a 5★.",
+  "statement": "Root cause of lost purchases, lost data and failed sync; requests rise as users change phones. Report 20: 'no account, no signup' was praised — and was the root cause of the 2025 data loss; the account/backup layer must exist even if signup stays optional. Report 26: no account system anywhere in the corpus — a device change, a reinstall, or support's own advice to reinstall destroys both progress and entitlement ('It also deletes the purchase price of the app if you bought it as there is no account to sign into'); absent accounts every other entitlement bug is unrecoverable — the root cause behind the top paid-user complaint. Report 27 (counter-evidence on the signup side, not the durability side): no account is praised — but iCloud sync exists and is invisible, so three reviewers fear data loss and one churned after an update lost progress; the account layer's job here is legible backup, not signup. Report 28: an account with e-mail verification exists (29 mentions, mean 3.66, mixed); a verification reset by support turned a 1★ into a 5★. Report 29 (counter-evidence): no account, no email, no login is named as the reason to choose the app; the report's rule is backup yes, account no — local-first.",
   "section": "must-have",
   "cards": [
    "R01-048",
@@ -2436,7 +2514,8 @@
    "R26-110",
    "R27-011",
    "R28-020",
-   "R28-038"
+   "R28-038",
+   "R29-118"
   ],
   "reports": [
    1,
@@ -2450,14 +2529,15 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
  {
   "id": "C036",
   "title": "A support channel that exists, is reachable outside the app, and answers",
-  "statement": "'No support channel' is ×34.7 over-represented among buyers and the second-worst-rated complaint. Report 5: the only support link was inside an app that would not launch; email went unanswered while public review replies were same-day. Report 10: AI and canned support replies; paying users 13× over-represented among support complaints. Report 11: 'there is no way in app to talk with developer or team' — with no support queue, billing bugs were filed as public 1★ fraud accusations instead. Report 12: five reviewers said the listed support email does not exist; refund and support failures were twice as prevalent in small storefronts, where users are charged and stranded. Report 18: support silence (32, mean 2.72★) landed hardest on payers — a week of silence on a lifetime account with purchase screenshots; the Japanese in-app feedback form rejected every valid e-mail and its text was invisible in dark mode, so Japanese users could only file bugs through the App Store; KakaoTalk was the only Korean channel and closed at weekends; a Canadian found the in-app support link resolved to an ad. Report 20: support went from answering reviews and fixing bugs same-day in 2019–2020 to a dead 'Contact Us' e-mail with an autoresponder and a dormant Instagram account (0.05% → 13.0% of reviews by era); among 148 support-silence reviews the mean was 1.33 versus 3.63 for the 30 who were restored or fixed — the same defect produced either rating depending only on whether anyone answered, worth ~+2.3 stars per recoverable incident. Report 23: support praised (49, 0.67%) with fixes bringing edited upgrades, but genuine silences recur and one reviewer says support implied they don't own an Apple Watch for testing. Report 24: 947 (2.18%, mean 1.528) automated-only support; the refund path works when reached — several 1★ → 4★ edits after a refund — so the failure is reaching it. Report 25: a solo developer answering within a day ('feature requests implemented in less than 24hrs'; 'I can't believe one developer made this') is a purchase trigger — 'After testing the app and interacting with the developer… I've decided to pay without any hesitation' — but support praise thinned 3.0% → 1.6% → 0.9% and one 1★ says the developer 'preferred to argue about what I could see on my end'. Report 26: support unreachable 13 (mean 2.77), support praised 10 (all 5★); support's own advice to reinstall destroyed a paying user's progress and purchase; a premium subscriber's crash went unanswered for months. Report 27: not one review in four years mentions contacting support or a developer reply; the website link in Settings leads to an inactive domain, so the support path is broken — and a solo-developer app with no support channel absorbs an OS-transition break entirely through its public rating. Report 28: 'There is no Support button in the app. Nor on developer's website'; 'no matter how many emails you send, they don't reply'; yet the four who reached the developer got excellent service — a 1★ converted to 5★ after a verification reset 'within an hour… on a Sunday, on a 3 day holiday weekend'; support quality is not the problem, discoverability is — an in-app 'Contact support' and 'Restore purchases' entry point is the cheapest rating intervention available.",
+  "statement": "'No support channel' is ×34.7 over-represented among buyers and the second-worst-rated complaint. Report 5: the only support link was inside an app that would not launch; email went unanswered while public review replies were same-day. Report 10: AI and canned support replies; paying users 13× over-represented among support complaints. Report 11: 'there is no way in app to talk with developer or team' — with no support queue, billing bugs were filed as public 1★ fraud accusations instead. Report 12: five reviewers said the listed support email does not exist; refund and support failures were twice as prevalent in small storefronts, where users are charged and stranded. Report 18: support silence (32, mean 2.72★) landed hardest on payers — a week of silence on a lifetime account with purchase screenshots; the Japanese in-app feedback form rejected every valid e-mail and its text was invisible in dark mode, so Japanese users could only file bugs through the App Store; KakaoTalk was the only Korean channel and closed at weekends; a Canadian found the in-app support link resolved to an ad. Report 20: support went from answering reviews and fixing bugs same-day in 2019–2020 to a dead 'Contact Us' e-mail with an autoresponder and a dormant Instagram account (0.05% → 13.0% of reviews by era); among 148 support-silence reviews the mean was 1.33 versus 3.63 for the 30 who were restored or fixed — the same defect produced either rating depending only on whether anyone answered, worth ~+2.3 stars per recoverable incident. Report 23: support praised (49, 0.67%) with fixes bringing edited upgrades, but genuine silences recur and one reviewer says support implied they don't own an Apple Watch for testing. Report 24: 947 (2.18%, mean 1.528) automated-only support; the refund path works when reached — several 1★ → 4★ edits after a refund — so the failure is reaching it. Report 25: a solo developer answering within a day ('feature requests implemented in less than 24hrs'; 'I can't believe one developer made this') is a purchase trigger — 'After testing the app and interacting with the developer… I've decided to pay without any hesitation' — but support praise thinned 3.0% → 1.6% → 0.9% and one 1★ says the developer 'preferred to argue about what I could see on my end'. Report 26: support unreachable 13 (mean 2.77), support praised 10 (all 5★); support's own advice to reinstall destroyed a paying user's progress and purchase; a premium subscriber's crash went unanswered for months. Report 27: not one review in four years mentions contacting support or a developer reply; the website link in Settings leads to an inactive domain, so the support path is broken — and a solo-developer app with no support channel absorbs an OS-transition break entirely through its public rating. Report 28: 'There is no Support button in the app. Nor on developer's website'; 'no matter how many emails you send, they don't reply'; yet the four who reached the developer got excellent service — a 1★ converted to 5★ after a verification reset 'within an hour… on a Sunday, on a 3 day holiday weekend'; support quality is not the problem, discoverability is — an in-app 'Contact support' and 'Restore purchases' entry point is the cheapest rating intervention available. Report 29: support effectively unreachable — 'I contacted the dev twice but got no response'; a support link that 'takes you to a super-sketch website, circumventing Apple's privacy settings'; with no account and no backup the review page is the only support channel, which is why bugs arrive as public 1★.",
   "section": "must-have",
   "cards": [
    "R01-046",
@@ -2539,7 +2619,12 @@
    "R28-015",
    "R28-068",
    "R28-110",
-   "R28-132"
+   "R28-132",
+   "R29-012",
+   "R29-015",
+   "R29-044",
+   "R29-088",
+   "R29-116"
   ],
   "reports": [
    1,
@@ -2565,7 +2650,8 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -2690,7 +2776,7 @@
  {
   "id": "C039",
   "title": "Reminders fire reliably, once",
-  "statement": "Reminders that work are a top praise item; not firing or spamming is a 1★ driver. Report 23: 97 (1.33%, mean 3.48, 18.6% 1★) — reminders that don't fire (Thailand 4 of 22, 18.2%, limited evidence), fire for already-completed tasks, fire all at once at night, ignore Do Not Disturb, or interrupt a meditation to say meditate; the 'smart' auto-timing algorithm is widely disliked. Report 24: notification volume/control 744 (1.71%, mean 2.437) — users turn all notifications off, which disables the product; give per-notification-type control. Report 27: the reminder fires for a goal already marked complete today — 'a notification that contradicts app state actively trains users to ignore notifications'. Report 28: notification annoyance 5 (0.61%, mean 2.80) — decay-guilt pushes ('YOUR BUNNY'S LOSING HEALTH').",
+  "statement": "Reminders that work are a top praise item; not firing or spamming is a 1★ driver. Report 23: 97 (1.33%, mean 3.48, 18.6% 1★) — reminders that don't fire (Thailand 4 of 22, 18.2%, limited evidence), fire for already-completed tasks, fire all at once at night, ignore Do Not Disturb, or interrupt a meditation to say meditate; the 'smart' auto-timing algorithm is widely disliked. Report 24: notification volume/control 744 (1.71%, mean 2.437) — users turn all notifications off, which disables the product; give per-notification-type control. Report 27: the reminder fires for a goal already marked complete today — 'a notification that contradicts app state actively trains users to ignore notifications'. Report 28: notification annoyance 5 (0.61%, mean 2.80) — decay-guilt pushes ('YOUR BUNNY'S LOSING HEALTH'). Report 29: reminders that never fire, deleted reminders that keep firing (surviving delete-and-reinstall), and changed times that don't take (6, mean 3.17) — one problem: the notification schedule is written once and never reconciled against the habit's state; cancel scheduled notifications on delete and stop the day's reminders on check-off.",
   "section": "must-never-break",
   "cards": [
    "R01-066",
@@ -2732,7 +2818,12 @@
    "R27-014",
    "R27-022",
    "R27-070",
-   "R28-074"
+   "R28-074",
+   "R29-015",
+   "R29-043",
+   "R29-052",
+   "R29-066",
+   "R29-113"
   ],
   "reports": [
    1,
@@ -2753,14 +2844,15 @@
    23,
    24,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
  {
   "id": "C040",
   "title": "Widgets must not go blank, stale or disagree with the app",
-  "statement": "Broken widget is ×7.8 on 2★. Report 10: the widget rendered as a grey box for five years (117 reviews) — reported mostly by fans, so it never generated pressure. Report 18: the widget went from the top request (31 reviews at 4.77★ before launch) to the top defect surface (214 mentions, 10.45%) — blank, missing from the picker, wrong weekday, false 'all done', check-off opening the app, routine widget rendering to-dos. Report 20: the widget was the top defect surface for five years and the 2★ band's peak theme (13.0%). Report 23: widgets rendering blank or losing configuration (57 explicit widget-bug reviews, mean 3.16; 20 blank/config reports) alongside the interactive-widget regression. Report 25: widget stopped working / not interactive / font fixed (6, 0.46%). Report 27: the widget is the most consistently under-delivering surface and the only one to produce a 1★ on its own ('Widget does and shows absolutely nothing… Just says 0% ALL the time'); 9 gap/defect reviews (6.52%, high-priority) across every one of five years vs 5 praising it. Report 28: no widget at all — 14 requests (1.71%), mean 4.64, zero negative ratings, continuous April 2022 → September 2026, 'i want to be able to click on the widget and shortcut to check a habit as done'; the clearest uncontested gap in the corpus.",
+  "statement": "Broken widget is ×7.8 on 2★. Report 10: the widget rendered as a grey box for five years (117 reviews) — reported mostly by fans, so it never generated pressure. Report 18: the widget went from the top request (31 reviews at 4.77★ before launch) to the top defect surface (214 mentions, 10.45%) — blank, missing from the picker, wrong weekday, false 'all done', check-off opening the app, routine widget rendering to-dos. Report 20: the widget was the top defect surface for five years and the 2★ band's peak theme (13.0%). Report 23: widgets rendering blank or losing configuration (57 explicit widget-bug reviews, mean 3.16; 20 blank/config reports) alongside the interactive-widget regression. Report 25: widget stopped working / not interactive / font fixed (6, 0.46%). Report 27: the widget is the most consistently under-delivering surface and the only one to produce a 1★ on its own ('Widget does and shows absolutely nothing… Just says 0% ALL the time'); 9 gap/defect reviews (6.52%, high-priority) across every one of five years vs 5 praising it. Report 28: no widget at all — 14 requests (1.71%), mean 4.64, zero negative ratings, continuous April 2022 → September 2026, 'i want to be able to click on the widget and shortcut to check a habit as done'; the clearest uncontested gap in the corpus. Report 29: no widget at all — 16 requests (4.37%), the only absent feature with demonstrated substitution (a user on 'Check Me' because it has one) and the one explicit payment offer ('add widget support happy to pay for a lifetime'); three withhold a star for it.",
   "section": "must-never-break",
   "cards": [
    "R01-068",
@@ -2793,7 +2885,17 @@
    "R28-090",
    "R28-091",
    "R28-129",
-   "R28-134"
+   "R28-134",
+   "R29-009",
+   "R29-015",
+   "R29-020",
+   "R29-037",
+   "R29-071",
+   "R29-079",
+   "R29-081",
+   "R29-104",
+   "R29-106",
+   "R29-108"
   ],
   "reports": [
    1,
@@ -2807,7 +2909,8 @@
    23,
    25,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -2918,7 +3021,8 @@
    "R28-033",
    "R28-048",
    "R28-058",
-   "R28-081"
+   "R28-081",
+   "R29-059"
   ],
   "reports": [
    1,
@@ -2941,14 +3045,15 @@
    24,
    25,
    26,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
  {
   "id": "C043",
   "title": "Flexible / custom frequency",
-  "statement": "Every X days, specific weekdays, bi-weekly, quarterly, yearly, total-over-a-window — the #1 unmet functional need and highest 4★ lift. Report 12: weekday-only repeats were asked for in Jul 2022 and still missing in May 2026 — three years and ten months. Report 20: frequency was 'N times in M days' only — specific weekdays ('Gym Mon/Wed/Fri') were never expressible in seven years (22 requests) and drove a share of the notification complaints. Report 23: times-per-week, per-day, per-month and every-N-days shipped incrementally; still absent after eleven years — yearly goals, arbitrary intervals (every 6 weeks, quarterly, a shift worker's 4–5-day rotation) and specific dates of the month (101 requests, 1.39%); a non-daily habit also consumes a daily slot under the cap. Report 24: per-weekday / shift-work scheduling requested by 31, 51.6% of them 4–5★. Report 25: flexible scheduling primitives are a stated reason to choose the app — an every-N-days reminder ('the ONLY APP I've found'), N×/week, skip, vacation mode, a custom day-start for shift workers (capped at 11:45); a weekly habit cannot be pinned to a chosen day. Report 26: flexible recurrence ('3× per week') and a vacation/pause mode ('exception periods' while travelling) requested by 12 (0.31%); only per-habit day-of-week scheduling exists. Report 27: flexible weekly frequency shipped ~2025 and is praised ('tasks that can be completed a few times a week rather than everyday'); per-weekday scheduling ('run 1 mile per day during the week, and skip Saturday + Sunday') remains a request; a Monday week-start setting was asked twice in early 2024 and never again. Report 28: a weekly-target-only model — monthly, every-other-week, multiple-times-per-day and specific-weekday scheduling requested by 15 (1.83%), one explicitly blocking a purchase: 'I can't see myself purchasing without being able to make these distinctions'.",
+  "statement": "Every X days, specific weekdays, bi-weekly, quarterly, yearly, total-over-a-window — the #1 unmet functional need and highest 4★ lift. Report 12: weekday-only repeats were asked for in Jul 2022 and still missing in May 2026 — three years and ten months. Report 20: frequency was 'N times in M days' only — specific weekdays ('Gym Mon/Wed/Fri') were never expressible in seven years (22 requests) and drove a share of the notification complaints. Report 23: times-per-week, per-day, per-month and every-N-days shipped incrementally; still absent after eleven years — yearly goals, arbitrary intervals (every 6 weeks, quarterly, a shift worker's 4–5-day rotation) and specific dates of the month (101 requests, 1.39%); a non-daily habit also consumes a daily slot under the cap. Report 24: per-weekday / shift-work scheduling requested by 31, 51.6% of them 4–5★. Report 25: flexible scheduling primitives are a stated reason to choose the app — an every-N-days reminder ('the ONLY APP I've found'), N×/week, skip, vacation mode, a custom day-start for shift workers (capped at 11:45); a weekly habit cannot be pinned to a chosen day. Report 26: flexible recurrence ('3× per week') and a vacation/pause mode ('exception periods' while travelling) requested by 12 (0.31%); only per-habit day-of-week scheduling exists. Report 27: flexible weekly frequency shipped ~2025 and is praised ('tasks that can be completed a few times a week rather than everyday'); per-weekday scheduling ('run 1 mile per day during the week, and skip Saturday + Sunday') remains a request; a Monday week-start setting was asked twice in early 2024 and never again. Report 28: a weekly-target-only model — monthly, every-other-week, multiple-times-per-day and specific-weekday scheduling requested by 15 (1.83%), one explicitly blocking a purchase: 'I can't see myself purchasing without being able to make these distinctions'. Report 29: weekday checkboxes only — x times per week without naming days ('practice golf 3 times a week but it doesn't matter on which days'), every other week ('My off days Fri, Sat, Sun every other week… its frustrating' — the only feature-driven 1★), monthly and custom intervals (14, 3.83%) — the one structural gap persisting across all five half-years.",
   "section": "must-have",
   "cards": [
    "R01-072",
@@ -3017,7 +3122,14 @@
    "R28-018",
    "R28-046",
    "R28-090",
-   "R28-142"
+   "R28-142",
+   "R29-010",
+   "R29-015",
+   "R29-039",
+   "R29-079",
+   "R29-104",
+   "R29-106",
+   "R29-110"
   ],
   "reports": [
    1,
@@ -3038,7 +3150,8 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -3199,7 +3312,7 @@
  {
   "id": "C048",
   "title": "Flexible units / partial progress",
-  "statement": "Drag to 60% instead of a binary tick — a named reason for choosing over competitors. Report 23: 77 reviews (1.06%) in seven languages ask to record effort beyond the goal or short of it — over-achievement is discarded ('goal 30 minutes, read 90, it stops at 30') and partial progress renders as failure ('6 of 8 glasses shows an ✗'); the two most-upvoted reviews in the 7,270-review corpus (313 and 126 votes) are this request; 'do 30 push-ups' breaks on a 25 day where 'push-ups per day' would record 25 and preserve momentum. Ship floor-without-ceiling goals and a partial-progress calendar state without changing the streak rule. Report 25: measurement units — count, minutes, distance, custom steps — and track-only habits with no goal number.",
+  "statement": "Drag to 60% instead of a binary tick — a named reason for choosing over competitors. Report 23: 77 reviews (1.06%) in seven languages ask to record effort beyond the goal or short of it — over-achievement is discarded ('goal 30 minutes, read 90, it stops at 30') and partial progress renders as failure ('6 of 8 glasses shows an ✗'); the two most-upvoted reviews in the 7,270-review corpus (313 and 126 votes) are this request; 'do 30 push-ups' breaks on a 25 day where 'push-ups per day' would record 25 and preserve momentum. Ship floor-without-ceiling goals and a partial-progress calendar state without changing the streak rule. Report 25: measurement units — count, minutes, distance, custom steps — and track-only habits with no goal number. Report 29: quantity/unit tracking (steps, litres, reps; one proposes a slider) requested by 4 — only as an optional habit type outside the default flow.",
   "section": "undecided",
   "cards": [
    "R01-083",
@@ -3221,7 +3334,10 @@
    "R23-180",
    "R23-204",
    "R23-220",
-   "R25-026"
+   "R25-026",
+   "R29-020",
+   "R29-048",
+   "R29-121"
   ],
   "reports": [
    1,
@@ -3230,7 +3346,8 @@
    12,
    13,
    23,
-   25
+   25,
+   29
   ],
   "merged_from": []
  },
@@ -3437,7 +3554,7 @@
  {
   "id": "C057",
   "title": "Offer a non-pastel / premium design option",
-  "statement": "Recurring critique from men and users wanting a premium look. Report 25: native Apple design language reads as premium — ''Apple' design all over it'. Report 26: reviewers convert on beauty within minutes of install ('I bought premium within the first couple minutes of downloading'; 'as soon as I saw the visuals and music I bought premium') — aesthetic is the mechanism, not decoration, and 'It's not just an app it's a piece of art'.",
+  "statement": "Recurring critique from men and users wanting a premium look. Report 25: native Apple design language reads as premium — ''Apple' design all over it'. Report 26: reviewers convert on beauty within minutes of install ('I bought premium within the first couple minutes of downloading'; 'as soon as I saw the visuals and music I bought premium') — aesthetic is the mechanism, not decoration, and 'It's not just an app it's a piece of art'. Report 29: UI/visual design praised by 45 (12.30%, mean 4.64); a font complaint (1); more colours / custom colours requested (4).",
   "section": "do",
   "cards": [
    "R01-116",
@@ -3455,7 +3572,8 @@
    "R26-030",
    "R26-067",
    "R26-088",
-   "R27-028"
+   "R27-028",
+   "R29-032"
   ],
   "reports": [
    1,
@@ -3467,7 +3585,8 @@
    16,
    25,
    26,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
@@ -3519,7 +3638,7 @@
  {
   "id": "C059",
   "title": "Be visibly responsive; fixes bring reviewers back",
-  "statement": "Users who see their bug fixed return to raise their rating. Report 18: the developer shipped what users asked for — widget, Watch, dark mode, bundles, timer, routine modes — roughly 18–36 months after the request, often breaking something else in the same release; six reviewers raised their rating after a developer reply, and one returning churned subscriber wrote '神✨'. Report 20: users restored in Feb 2021 came back and raised their ratings (23 five-star reviews carry the revocation theme as amended reviews); a 20 Oct 2020 launch failure fixed next day drew praise for the speed. Report 23: 12 edited reviews, several visible upgrades after a developer fix; sync-migration recoveries within weeks; reviewers upgraded on learning a backup path existed. Report 24: a 2018–19 billing crisis was fixed in one month and the mean snapped back from 2.884 to 4.206 for four years; refunds that land turn 1★ into 4★ edits. Report 25: a Turkish localisation request made eight times in Jan–Jun 2026 was answered on 27 Jul 2026 ('Türkçe dil desteği sonundaaa! 🌟') — the clearest shipped-fix-visible-in-reviews event in the corpus. Report 26: a visible 2024 engineering turnaround — crashes 3.37% → 0.13%, the 'music can't be turned off' bug 2.88% → 0.00%, mean 4.339 → 4.675 — with the substantive-only mean rising too; a reviewer thanked the team for adding a calendar; Russian localisation criticised in 2023 was praised by 2025. Report 27: requested features ship on a 6–18 month lag — per-weekday flexibility (Jul 2025 → Mar 2026), reordering (Sept 2024 → Aug 2025), goal end date and archiving (Dec 2025 → on the listing by Sep 2026); the crash was fixed within about four months and the mean recovered to 4.829. Report 28: a 1★ upgraded to 5★ after one support e-mail ('The devs pay attention. 5 stars now'); bugs collapsed from 11.3% (2023) to 0.7% (2025) after a genuine stabilisation.",
+  "statement": "Users who see their bug fixed return to raise their rating. Report 18: the developer shipped what users asked for — widget, Watch, dark mode, bundles, timer, routine modes — roughly 18–36 months after the request, often breaking something else in the same release; six reviewers raised their rating after a developer reply, and one returning churned subscriber wrote '神✨'. Report 20: users restored in Feb 2021 came back and raised their ratings (23 five-star reviews carry the revocation theme as amended reviews); a 20 Oct 2020 launch failure fixed next day drew praise for the speed. Report 23: 12 edited reviews, several visible upgrades after a developer fix; sync-migration recoveries within weeks; reviewers upgraded on learning a backup path existed. Report 24: a 2018–19 billing crisis was fixed in one month and the mean snapped back from 2.884 to 4.206 for four years; refunds that land turn 1★ into 4★ edits. Report 25: a Turkish localisation request made eight times in Jan–Jun 2026 was answered on 27 Jul 2026 ('Türkçe dil desteği sonundaaa! 🌟') — the clearest shipped-fix-visible-in-reviews event in the corpus. Report 26: a visible 2024 engineering turnaround — crashes 3.37% → 0.13%, the 'music can't be turned off' bug 2.88% → 0.00%, mean 4.339 → 4.675 — with the substantive-only mean rising too; a reviewer thanked the team for adding a calendar; Russian localisation criticised in 2023 was praised by 2025. Report 27: requested features ship on a 6–18 month lag — per-weekday flexibility (Jul 2025 → Mar 2026), reordering (Sept 2024 → Aug 2025), goal end date and archiving (Dec 2025 → on the listing by Sep 2026); the crash was fixed within about four months and the mean recovered to 4.829. Report 28: a 1★ upgraded to 5★ after one support e-mail ('The devs pay attention. 5 stars now'); bugs collapsed from 11.3% (2023) to 0.7% (2025) after a genuine stabilisation. Report 29: the calendar bug fell ~8× between 2025H2 and 2026H1 and the mean rose 4.39 → 4.66; habit editing missing in 2024 was added by May 2025 — but 'a fix ships, and the reviews it caused remain on the store page forever'.",
   "section": "do",
   "cards": [
    "R01-092",
@@ -3585,7 +3704,14 @@
    "R27-007",
    "R27-061",
    "R28-110",
-   "R28-125"
+   "R28-125",
+   "R29-017",
+   "R29-045",
+   "R29-067",
+   "R29-076",
+   "R29-099",
+   "R29-100",
+   "R29-101"
   ],
   "reports": [
    1,
@@ -3608,7 +3734,8 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -3705,7 +3832,7 @@
  {
   "id": "C062",
   "title": "Weight English-speaking rich markets; volume ≠ revenue",
-  "statement": "Purchase-signal density is 8.5× higher in the US than China; BR/MX/ES/FR volume is localisation-blocked. Report 16 (contested): the price backlash was STRONGER in high-spend markets — a value-comparison effect ('not worth it at any price', measured against Streaks, Notion, Procreate) — while the rest of the world's complaint was language. Report 20: revocation and delivery grievances were concentrated in the high-spend storefronts (us, gb, de, ca, au, fr: revocation 19.3% vs 8.1% in ru/ua; widget 7×) — the damage landed on the revenue-generating cohort; Russia's higher mean reflected when its users arrived and what they bought, not a better product. Report 23 (counter-evidence): in a paid-up-front app the high-spend and high-volume storefront groups are statistically indistinguishable (4.22 vs 4.22) and only marginally better than the rest of the world (4.12) — what varies by country is which complaint dominates, not how much. Report 24 (counter-evidence): the rich English-language storefronts were the worst — US/UK/CA/AU/NZ/IE (62.87% of the corpus) all above the corpus billing rate and all collapsing to 2.1–2.6 in 2024–26, while Latin America and the Gulf held 4.12–4.59; what varies by country is the funnel, not the product. Report 25 (third corpus in a row): high-spend and high-volume storefront groups are indistinguishable (3.74 vs 3.73) and only marginally above the tail (3.62); monetisation friction is identical (22.5% vs 23.0%) — the paywall objection is global, not a low-income-market phenomenon; what differs is the mix (rich markets praise the price and buy lifetime; the rest hit the launch blocker and billing). Report 26 (the reverse pattern): the high-spend markets (us, gb, de, fr, ca, au = 40.84%) rate lowest (4.489 vs 4.626) and complain most about the paywall (15.3% vs 8.7%; cap 6.2% vs 2.2%) — the free-tier design is costing most where the money is; Russia (19.18%, mean 4.697, 85.3% 5★) and Brazil (4.663) are the happiest markets. Report 27: high-spend markets (92, mean 4.641) and the rest (46, 4.652) are indistinguishable; free-praise appears in 12 of 23 storefronts with no income split — the anti-paywall stance is category-wide. Report 28: the high-spend group (us, cn, jp, gb, de, fr, kr, ca, au, tw = 67.1%) rates lower (3.956 vs 4.181) with ad complaints 5.5pp higher and paywall friction 2.5× higher; GB complains about ads more than the US yet rates higher ('I love this, please fix the ads'); the US carries 71% of payers and the most precise criticism.",
+  "statement": "Purchase-signal density is 8.5× higher in the US than China; BR/MX/ES/FR volume is localisation-blocked. Report 16 (contested): the price backlash was STRONGER in high-spend markets — a value-comparison effect ('not worth it at any price', measured against Streaks, Notion, Procreate) — while the rest of the world's complaint was language. Report 20: revocation and delivery grievances were concentrated in the high-spend storefronts (us, gb, de, ca, au, fr: revocation 19.3% vs 8.1% in ru/ua; widget 7×) — the damage landed on the revenue-generating cohort; Russia's higher mean reflected when its users arrived and what they bought, not a better product. Report 23 (counter-evidence): in a paid-up-front app the high-spend and high-volume storefront groups are statistically indistinguishable (4.22 vs 4.22) and only marginally better than the rest of the world (4.12) — what varies by country is which complaint dominates, not how much. Report 24 (counter-evidence): the rich English-language storefronts were the worst — US/UK/CA/AU/NZ/IE (62.87% of the corpus) all above the corpus billing rate and all collapsing to 2.1–2.6 in 2024–26, while Latin America and the Gulf held 4.12–4.59; what varies by country is the funnel, not the product. Report 25 (third corpus in a row): high-spend and high-volume storefront groups are indistinguishable (3.74 vs 3.73) and only marginally above the tail (3.62); monetisation friction is identical (22.5% vs 23.0%) — the paywall objection is global, not a low-income-market phenomenon; what differs is the mix (rich markets praise the price and buy lifetime; the rest hit the launch blocker and billing). Report 26 (the reverse pattern): the high-spend markets (us, gb, de, fr, ca, au = 40.84%) rate lowest (4.489 vs 4.626) and complain most about the paywall (15.3% vs 8.7%; cap 6.2% vs 2.2%) — the free-tier design is costing most where the money is; Russia (19.18%, mean 4.697, 85.3% 5★) and Brazil (4.663) are the happiest markets. Report 27: high-spend markets (92, mean 4.641) and the rest (46, 4.652) are indistinguishable; free-praise appears in 12 of 23 storefronts with no income split — the anti-paywall stance is category-wide. Report 28: the high-spend group (us, cn, jp, gb, de, fr, kr, ca, au, tw = 67.1%) rates lower (3.956 vs 4.181) with ad complaints 5.5pp higher and paywall friction 2.5× higher; GB complains about ads more than the US yet rates higher ('I love this, please fix the ads'); the US carries 71% of payers and the most precise criticism. Report 29 (fourth corpus): high-spend markets rate 0.27 lower and report bugs 3.5× more while praising zero cost at the same rate (48.0% vs 44.0%) — the appeal of free is uniform across income bands; India (mean 4.895, zero bug reports) is not comparable as satisfaction because its reviews are shorter and post-fix, but its dark-mode rate is the strongest country-level feature signal.",
   "section": "do",
   "cards": [
    "R01-023",
@@ -3759,7 +3886,10 @@
    "R27-056",
    "R28-114",
    "R28-115",
-   "R28-117"
+   "R28-117",
+   "R29-014",
+   "R29-092",
+   "R29-093"
   ],
   "reports": [
    1,
@@ -3780,7 +3910,8 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -4253,7 +4384,7 @@
  {
   "id": "C073",
   "title": "Manual reordering, renaming and editing of habits/tasks — free",
-  "statement": "Trivial, requested for years by 5★ users; best effort-to-goodwill ratio. In report 4 rename/reorder was gated and it was the top complaint among paying users. Report 25: habit/group order resets itself (11, 0.84%) — two long-term users left over it; make reordering a drag gesture. Report 26: reorder habits / per-habit gardens / categories requested by 18 (0.47%). Report 27: habit reordering shipped (between Sept 2024 and Aug 2025) and the order does not stick ('they keep getting jumbled up and going back to the wrong spots'); one user avoids reordering for fear of data loss; another wants grouping by the time a habit is set for.",
+  "statement": "Trivial, requested for years by 5★ users; best effort-to-goodwill ratio. In report 4 rename/reorder was gated and it was the top complaint among paying users. Report 25: habit/group order resets itself (11, 0.84%) — two long-term users left over it; make reordering a drag gesture. Report 26: reorder habits / per-habit gardens / categories requested by 18 (0.47%). Report 27: habit reordering shipped (between Sept 2024 and Aug 2025) and the order does not stick ('they keep getting jumbled up and going back to the wrong spots'); one user avoids reordering for fear of data loss; another wants grouping by the time a habit is set for. Report 29: 'This could be my perfect habit tracker if I could only reorder the list of tasks… Without it the app is virtually useless' (2★); two of four ask to sort by reminder time, which needs no new data model.",
   "section": "free",
   "cards": [
    "R02-070",
@@ -4288,7 +4419,16 @@
    "R27-014",
    "R27-022",
    "R27-033",
-   "R27-068"
+   "R27-068",
+   "R29-015",
+   "R29-020",
+   "R29-045",
+   "R29-046",
+   "R29-067",
+   "R29-068",
+   "R29-081",
+   "R29-101",
+   "R29-115"
   ],
   "reports": [
    2,
@@ -4301,7 +4441,8 @@
    20,
    25,
    26,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
@@ -4525,7 +4666,7 @@
  {
   "id": "C080",
   "title": "Colour themes / dark mode",
-  "statement": "'Only green' draws requests; cheap. Report 10: dark mode requested since 2022 as an accessibility need (migraine, light sensitivity). Report 20: dark mode moved from free-ish to paid in the 2021 conversion (89 reviews, mean 2.69) and was a named purchase trigger. Report 24: dark mode requested by 43, 58.1% of them 4–5★ — cheap and asked for by advocates.",
+  "statement": "'Only green' draws requests; cheap. Report 10: dark mode requested since 2022 as an accessibility need (migraine, light sensitivity). Report 20: dark mode moved from free-ish to paid in the 2021 conversion (89 reviews, mean 2.69) and was a named purchase trigger. Report 24: dark mode requested by 43, 58.1% of them 4–5★ — cheap and asked for by advocates. Report 29: dark mode absent — 15 requests (4.10%, mean 4.67, the highest-satisfaction request group), India 8.77% (2.9× global), 'it's what's missing for 5 stars'.",
   "section": "free",
   "cards": [
    "R02-072",
@@ -4557,7 +4698,17 @@
    "R24-099",
    "R24-101",
    "R24-168",
-   "R24-184"
+   "R24-184",
+   "R29-009",
+   "R29-014",
+   "R29-015",
+   "R29-020",
+   "R29-038",
+   "R29-079",
+   "R29-092",
+   "R29-104",
+   "R29-106",
+   "R29-109"
   ],
   "reports": [
    2,
@@ -4572,7 +4723,8 @@
    16,
    18,
    20,
-   24
+   24,
+   29
   ],
   "merged_from": []
  },
@@ -4617,7 +4769,8 @@
    "R28-098",
    "R28-120",
    "R28-122",
-   "R28-131"
+   "R28-131",
+   "R29-028"
   ],
   "reports": [
    2,
@@ -4630,7 +4783,8 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -4665,7 +4819,7 @@
  {
   "id": "C085",
   "title": "Address tracking / privacy visibly",
-  "statement": "One unrebutted 1★: 'a whole lotta tracking going on by the developer'. Report 13: a 2017 privacy-policy revision drew 11 reviews in a month; location prompts with no stated purpose ('No, you don't need it') and disclosure-to-law-enforcement language made long-time users delete. Report 24: privacy / personal data complaints 138 (mean 1.225, 87.7% 1★) — a long questionnaire and web billing that collects card data before install. Report 27: a no-data-collection privacy label and no account are praised as features (4, mean 5.00); data monetisation is contradicted by the evidence and the listing.",
+  "statement": "One unrebutted 1★: 'a whole lotta tracking going on by the developer'. Report 13: a 2017 privacy-policy revision drew 11 reviews in a month; location prompts with no stated purpose ('No, you don't need it') and disclosure-to-law-enforcement language made long-time users delete. Report 24: privacy / personal data complaints 138 (mean 1.225, 87.7% 1★) — a long questionnaire and web billing that collects card data before install. Report 27: a no-data-collection privacy label and no account are praised as features (4, mean 5.00); data monetisation is contradicted by the evidence and the listing. Report 29: 'I also appreciate that there's no subscription fees or ads. Am I trading off data privacy for this?' — users of free apps look for the hidden price; the listing's privacy label did not obviously cover the bandwidth-sharing prompt that followed.",
   "section": "do",
   "cards": [
    "R02-080",
@@ -4679,7 +4833,8 @@
    "R16-033",
    "R20-032",
    "R24-074",
-   "R27-024"
+   "R27-024",
+   "R29-005"
   ],
   "reports": [
    2,
@@ -4690,7 +4845,8 @@
    16,
    20,
    24,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
@@ -4906,7 +5062,7 @@
  {
   "id": "C094",
   "title": "Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire",
-  "statement": "A charming review request produced dozens of reviews; frequent prompts that ignore the iOS opt-out, especially to payers, read as 'scammy'. Cross-promoting the developer's other apps inside the product draws the same complaint (report 2). Cross-promoting the developer's other apps inside the product draws the same complaint (report 2). Report 14: at least three reviews existed only because the app demanded one ('Happy now??'; a body reading 'Review'), polluting the ratings data. Report 20: a review prompt whose decline button read 'let the developers be sad' — 26 reviewers say it is why they wrote (inflating 2019's 5★ count) and two docked stars for the manipulation. Report 23: review-prompt nagging 25 (0.34%, mean 2.72, 40% 1★). Report 24: an in-app review prompt on day 1–3 makes the 5★ band (57.89%, median 105 characters) a first-impression measure — 'they asked me to review it now which I find kind of ridiculous'; the highest-voted reviews are all pre-2024 5★s. Report 25: an onboarding review prompt — 'Why won't it progress without me writing a review?'; 'in the middle of the onboarding questions the app interrupts me to ask me to rate' — pushed ≤25-character reviews from 7.2% to 33.4% of the corpus (150 of 196 5★ in 2026) and median body length from 156 to 53 characters; the all-records mean falls 0.27 while the substantive mean falls 0.73, and 1★ share (16.1% → 26.6%) is the only trustworthy trend line; 43 reviews (mean 4.21) are from people who say they have not used the app yet. A prompt at first launch buys a store rating and costs your own telemetry. Report 26: the app rewards a review with a cosmetic unlock and 13 reviewers say so ('I'm just doing this to get the backgrounds 😋 I haven't even used the app at all'; '(I'm NOT a bot btw)'); ≤25-character reviews rose from 16.5% to 35.0% of the corpus, 83–91% of them 5★; true inflation is unmeasurable and there is App Store policy exposure. Report 27: exactly one reviewer discloses a prompt ('Saw the message and had to rate'), no reward-for-review, and only 12 of 138 reviews are ≤25 characters — the substantive mean (4.594) equals the headline (4.645); a corpus of people who wrote something. Report 28: a rating prompt on open and on check-off shipped in 2026 (5 of 7 complaints are 2026) and already produced a 1★ 'until the rate me notification spam gets fixed'; 134 contentless 5★ records (median 38 chars) suggest the 2026 rating recovery is partly solicited; 'prompting into an ad-frustrated session is actively harvesting negative ratings'.",
+  "statement": "A charming review request produced dozens of reviews; frequent prompts that ignore the iOS opt-out, especially to payers, read as 'scammy'. Cross-promoting the developer's other apps inside the product draws the same complaint (report 2). Cross-promoting the developer's other apps inside the product draws the same complaint (report 2). Report 14: at least three reviews existed only because the app demanded one ('Happy now??'; a body reading 'Review'), polluting the ratings data. Report 20: a review prompt whose decline button read 'let the developers be sad' — 26 reviewers say it is why they wrote (inflating 2019's 5★ count) and two docked stars for the manipulation. Report 23: review-prompt nagging 25 (0.34%, mean 2.72, 40% 1★). Report 24: an in-app review prompt on day 1–3 makes the 5★ band (57.89%, median 105 characters) a first-impression measure — 'they asked me to review it now which I find kind of ridiculous'; the highest-voted reviews are all pre-2024 5★s. Report 25: an onboarding review prompt — 'Why won't it progress without me writing a review?'; 'in the middle of the onboarding questions the app interrupts me to ask me to rate' — pushed ≤25-character reviews from 7.2% to 33.4% of the corpus (150 of 196 5★ in 2026) and median body length from 156 to 53 characters; the all-records mean falls 0.27 while the substantive mean falls 0.73, and 1★ share (16.1% → 26.6%) is the only trustworthy trend line; 43 reviews (mean 4.21) are from people who say they have not used the app yet. A prompt at first launch buys a store rating and costs your own telemetry. Report 26: the app rewards a review with a cosmetic unlock and 13 reviewers say so ('I'm just doing this to get the backgrounds 😋 I haven't even used the app at all'; '(I'm NOT a bot btw)'); ≤25-character reviews rose from 16.5% to 35.0% of the corpus, 83–91% of them 5★; true inflation is unmeasurable and there is App Store policy exposure. Report 27: exactly one reviewer discloses a prompt ('Saw the message and had to rate'), no reward-for-review, and only 12 of 138 reviews are ≤25 characters — the substantive mean (4.594) equals the headline (4.645); a corpus of people who wrote something. Report 28: a rating prompt on open and on check-off shipped in 2026 (5 of 7 complaints are 2026) and already produced a 1★ 'until the rate me notification spam gets fixed'; 134 contentless 5★ records (median 38 chars) suggest the 2026 rating recovery is partly solicited; 'prompting into an ad-frustrated session is actively harvesting negative ratings'. Report 29: a rating prompt fired on the first check-off ('Used the app for 2 minutes then a reminder popped up for me to rate the app. -1 star'; 'so here I am, on day 1') — 39 contentless reviews, all 5★, median 27 characters; the 4.552 mean is partly a prompt-timing artefact that also starves the developer of diagnostic feedback; delay it to day 7 or ~10 completions.",
   "section": "do",
   "cards": [
    "R03-036",
@@ -4956,7 +5112,13 @@
    "R28-089",
    "R28-100",
    "R28-128",
-   "R28-138"
+   "R28-138",
+   "R29-013",
+   "R29-015",
+   "R29-053",
+   "R29-078",
+   "R29-105",
+   "R29-114"
   ],
   "reports": [
    2,
@@ -4974,7 +5136,8 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": [
    {
@@ -5061,7 +5224,7 @@
  {
   "id": "C097",
   "title": "A tip / donate option",
-  "statement": "People asking to give money with no mechanism to do so. Report 8: in a completely free app, 7 users asked unprompted for a tip jar (all 5★) and 13 more volunteered to pay — mostly one-time, not subscription. Report 27: exactly two reviewers volunteer money unprompted — 'Keep the free app, consider adding a tip jar for users who are thankful'; 'it would be nice to donate to the dev since it's a free app' — both 5★, both framing payment as gratitude, both pairing it with staying free; with 10 developer-gratitude reviews (all 5★) a tip jar is the only monetisation the corpus positively endorses, and Canada is where the evidence says to start.",
+  "statement": "People asking to give money with no mechanism to do so. Report 8: in a completely free app, 7 users asked unprompted for a tip jar (all 5★) and 13 more volunteered to pay — mostly one-time, not subscription. Report 27: exactly two reviewers volunteer money unprompted — 'Keep the free app, consider adding a tip jar for users who are thankful'; 'it would be nice to donate to the dev since it's a free app' — both 5★, both framing payment as gratitude, both pairing it with staying free; with 10 developer-gratitude reviews (all 5★) a tip jar is the only monetisation the corpus positively endorses, and Canada is where the evidence says to start. Report 29: 'love to be able to contribute to use it' — a contribution offered in a free app, alongside a lifetime-purchase offer tied to a widget.",
   "section": "do",
   "cards": [
    "R03-032",
@@ -5077,12 +5240,15 @@
    "R27-026",
    "R27-048",
    "R27-050",
-   "R27-080"
+   "R27-080",
+   "R29-060",
+   "R29-084"
   ],
   "reports": [
    3,
    8,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
@@ -5172,7 +5338,7 @@
  {
   "id": "C103",
   "title": "Vulnerable users — recovery, mental-health and minors — are a sensitive surface",
-  "statement": "Alcohol, nicotine, self-harm (incl. minors), drugs, EDs, no-contact; monetisation moves land as 'preying on the vulnerable'; age rating is load-bearing. In report 4: 455 kid/teen reviews who cannot pay, and 89 shame / diet-framing reviews in a 4+ app. Report 24: a product marketed to people with executive dysfunction and low income priced as a premium wellness subscription; diet-culture / eating-disorder trigger complaints (61, mean 2.918); depression/anxiety users are 2.89% of the corpus. Report 26: users describing severe depression, being bedbound, three years clean and wartime anxiety ('This app helped me return to life') — the gentle, non-punitive frame is what serves them; children as young as 10 review the app. Report 28: an app rated 4+ with 40 reviews (4.87%) from or about children — 'I'm ten'; 'im nine'; 'I am a 8 years old' — serves untargeted network ads (AI homework-cheating apps, Temu wigs) and a 'watch an ad to double carrots' prompt; a brand and compliance exposure independent of the rating damage.",
+  "statement": "Alcohol, nicotine, self-harm (incl. minors), drugs, EDs, no-contact; monetisation moves land as 'preying on the vulnerable'; age rating is load-bearing. In report 4: 455 kid/teen reviews who cannot pay, and 89 shame / diet-framing reviews in a 4+ app. Report 24: a product marketed to people with executive dysfunction and low income priced as a premium wellness subscription; diet-culture / eating-disorder trigger complaints (61, mean 2.918); depression/anxiety users are 2.89% of the corpus. Report 26: users describing severe depression, being bedbound, three years clean and wartime anxiety ('This app helped me return to life') — the gentle, non-punitive frame is what serves them; children as young as 10 review the app. Report 28: an app rated 4+ with 40 reviews (4.87%) from or about children — 'I'm ten'; 'im nine'; 'I am a 8 years old' — serves untargeted network ads (AI homework-cheating apps, Temu wigs) and a 'watch an ad to double carrots' prompt; a brand and compliance exposure independent of the rating damage. Report 29: 'You're doing a great service to students who cannot afford to spend on applications' — free access matters to students; 4 student/budget reviews at mean 5.00.",
   "section": "do",
   "cards": [
    "R03-011",
@@ -5205,7 +5371,9 @@
    "R26-098",
    "R28-033",
    "R28-058",
-   "R28-097"
+   "R28-097",
+   "R29-051",
+   "R29-058"
   ],
   "reports": [
    3,
@@ -5219,14 +5387,15 @@
    18,
    24,
    26,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
  {
   "id": "C104",
   "title": "Never ship a paywall or feature-removal change silently",
-  "statement": "Undisclosed changes and 'it was a bug' replies that don't match what users see destroy trust for a year. Report 11: the store description still discloses no paywall at all (0 mentions of premium/subscription/free/unlock) after the retrofit; a grandfathering rule for pre-2026 users is the recommended fix. Report 20: the Feb 2021 restoration was never announced — '4 stars after premium was restored, but not 5 because the devs ignored us for so long and have not acknowledged the issue' — and the March 2025 wipe drew 'no communication whatever about this disaster.'",
+  "statement": "Undisclosed changes and 'it was a bug' replies that don't match what users see destroy trust for a year. Report 11: the store description still discloses no paywall at all (0 mentions of premium/subscription/free/unlock) after the retrofit; a grandfathering rule for pre-2026 users is the recommended fix. Report 20: the Feb 2021 restoration was never announced — '4 stars after premium was restored, but not 5 because the devs ignored us for so long and have not acknowledged the issue' — and the March 2025 wipe drew 'no communication whatever about this disaster.' Report 29: the bandwidth-sharing prompt arrived with no announcement; the report's first fix is 'decide and publicly disclose the web-indexing policy'.",
   "section": "dont",
   "cards": [
    "R03-010",
@@ -5243,7 +5412,8 @@
    "R18-017",
    "R20-006",
    "R20-068",
-   "R20-085"
+   "R20-085",
+   "R29-107"
   ],
   "reports": [
    3,
@@ -5251,7 +5421,8 @@
    13,
    14,
    18,
-   20
+   20,
+   29
   ],
   "merged_from": []
  },
@@ -6311,7 +6482,7 @@
  {
   "id": "C143",
   "title": "Intra-day completion: tap N times to fill N/N",
-  "statement": "When a habit's target is more than once a day, each tap should count toward it; one binary tick per day is report 8's #1 unmet need, the only complaint theme still rising, and a stated uninstall. Report 20: multiple check-ins per day (water, medication, teeth) was requested 54 times (mean 3.87) and named as table stakes against Streaks and Productive; never shipped. Report 23: multiple-per-day / partial increments (111, 1.53%) largely shipped in 2016; residual complaints are about partial-progress display. Report 26: multi-count per day (5 glasses of water, 10 pages) requested by 7. Report 27: multiple completions per day shipped ~Aug 2025 and is praised ('the multiple check-ins per day feature is very handy').",
+  "statement": "When a habit's target is more than once a day, each tap should count toward it; one binary tick per day is report 8's #1 unmet need, the only complaint theme still rising, and a stated uninstall. Report 20: multiple check-ins per day (water, medication, teeth) was requested 54 times (mean 3.87) and named as table stakes against Streaks and Productive; never shipped. Report 23: multiple-per-day / partial increments (111, 1.53%) largely shipped in 2016; residual complaints are about partial-progress display. Report 26: multi-count per day (5 glasses of water, 10 pages) requested by 7. Report 27: multiple completions per day shipped ~Aug 2025 and is praised ('the multiple check-ins per day feature is very handy'). Report 29: 'As someone who takes medication twice a day it would be incredibly helpful to mark the same habit done twice a day'.",
   "section": "must-have",
   "cards": [
    "R08-016",
@@ -6335,7 +6506,8 @@
    "R26-064",
    "R26-074",
    "R27-019",
-   "R27-060"
+   "R27-060",
+   "R29-010"
   ],
   "reports": [
    8,
@@ -6346,7 +6518,8 @@
    20,
    23,
    26,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
@@ -6528,7 +6701,7 @@
  {
   "id": "C150",
   "title": "Never ask for a rating before the user has used the app",
-  "statement": "Report 9 put the rating prompt inside sign-up: users were asked for 5★ before seeing the app, the public rating ran 1.35 stars above written reviews, and Apple's guidelines forbid it. Report 12: an in-app instruction to rate 5★ during onboarding — 'It said I had to give them 5 starts so here I am' — was called out by 23 reviewers, two of whom named the exact 4.8 store aggregate; 14 of 77 five-star reviews contradict their own rating. Report 25: eight reviewers say the app asked for a review before they had used it, and one says it would not proceed without a review — if that gate existed, the 5★ share is not a satisfaction measurement for that period. Report 28: 'Every time I checked something off it would ask me to rate it' (5★, asking it to stop) — a prompt fired on the completion tap.",
+  "statement": "Report 9 put the rating prompt inside sign-up: users were asked for 5★ before seeing the app, the public rating ran 1.35 stars above written reviews, and Apple's guidelines forbid it. Report 12: an in-app instruction to rate 5★ during onboarding — 'It said I had to give them 5 starts so here I am' — was called out by 23 reviewers, two of whom named the exact 4.8 store aggregate; 14 of 77 five-star reviews contradict their own rating. Report 25: eight reviewers say the app asked for a review before they had used it, and one says it would not proceed without a review — if that gate existed, the 5★ share is not a satisfaction measurement for that period. Report 28: 'Every time I checked something off it would ask me to rate it' (5★, asking it to stop) — a prompt fired on the completion tap. Report 29: 'It asks for you to review it the moment you check one thing off' — ratings from people who have not yet used the app.",
   "section": "dont",
   "cards": [
    "R09-070",
@@ -6545,13 +6718,15 @@
    "R25-081",
    "R25-135",
    "R28-065",
-   "R28-089"
+   "R28-089",
+   "R29-013"
   ],
   "reports": [
    9,
    12,
    25,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -6599,7 +6774,7 @@
  {
   "id": "C153",
   "title": "Automatic cloud backup on by default — never manual opt-in",
-  "statement": "Report 10: progress stored on-device with a manual opt-in backup produced 551 data-loss reviews (9% of all 1★), a family rate that quadrupled in four years, and clinicians publicly withdrawing recommendations; 37 users did not know a backup was required until after the loss. Warn before any destructive path (delete for storage, phone change). Report 20: recovery from a developer-caused wipe was paywalled behind a manual premium iCloud backup; the recommendation is automatic daily local + iCloud snapshots with restore available to free users, and regression tests on the migration path. Report 23: Settings > Manage Data > Backups existed but was repeatedly discovered via support e-mail; several reviewers upgraded their rating on learning it existed — surface backups in the first-run tutorial, not a support reply. Report 27: iCloud sync exists ('seamless iCloud syncing'; the listing confirms) but is not legible — 'if my device gets reset all the data will be gone or I can recover it?'; a user will not reorder habits for fear of losing data; one churned after an update lost all progress; fix: a Settings line 'Backed up to iCloud · last synced <time>' plus an explicit restore path — a communication fix, not an engineering one.",
+  "statement": "Report 10: progress stored on-device with a manual opt-in backup produced 551 data-loss reviews (9% of all 1★), a family rate that quadrupled in four years, and clinicians publicly withdrawing recommendations; 37 users did not know a backup was required until after the loss. Warn before any destructive path (delete for storage, phone change). Report 20: recovery from a developer-caused wipe was paywalled behind a manual premium iCloud backup; the recommendation is automatic daily local + iCloud snapshots with restore available to free users, and regression tests on the migration path. Report 23: Settings > Manage Data > Backups existed but was repeatedly discovered via support e-mail; several reviewers upgraded their rating on learning it existed — surface backups in the first-run tutorial, not a support reply. Report 27: iCloud sync exists ('seamless iCloud syncing'; the listing confirms) but is not legible — 'if my device gets reset all the data will be gone or I can recover it?'; a user will not reorder habits for fear of losing data; one churned after an update lost all progress; fix: a Settings line 'Backed up to iCloud · last synced <time>' plus an explicit restore path — a communication fix, not an engineering one. Report 29: optional iCloud backup, off by default and account-free, proposed against 9 data-loss reports and 3 sync requests — while one reviewer names 'I didn't even have to list my email' as the deciding factor.",
   "section": "must-have",
   "cards": [
    "R10-006",
@@ -6632,7 +6807,12 @@
    "R27-011",
    "R27-014",
    "R27-023",
-   "R27-076"
+   "R27-076",
+   "R29-008",
+   "R29-056",
+   "R29-075",
+   "R29-111",
+   "R29-118"
   ],
   "reports": [
    3,
@@ -6644,7 +6824,8 @@
    14,
    20,
    23,
-   27
+   27,
+   29
   ],
   "merged_from": [
    {
@@ -7095,7 +7276,9 @@
    "R27-021",
    "R27-045",
    "R28-020",
-   "R28-036"
+   "R28-036",
+   "R29-020",
+   "R29-060"
   ],
   "reports": [
    2,
@@ -7111,7 +7294,8 @@
    25,
    26,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": [
    {
@@ -7274,7 +7458,7 @@
  {
   "id": "C178",
   "title": "A quiet, adult, non-gamified tracker is a positioning some users actively seek",
-  "statement": "Report 11: 'Functional, no frills and no infantilization. I tested half a dozen similar apps before finding this one'; 'I hate apps that demand set times'; 'without any imposed junk' — four of 33 reviewers chose the app for what it refuses to do, and three switched from gamified competitors. A live tension with the pet/mascot category norm. Report 27: two reviewers name the absence of gamification as the reason they chose the app — 'There's not pets to take care of, there's no flashy graphics or anything, and that is just perfect for me'; 'it removes a direct emphasis on urgency and/or self-competition' — and 52 praise minimalism; in a category converging on pets, gardens and streak anxiety, deliberate plainness is a defensible position that any future monetisation must not contradict. Report 28 (counter-evidence): the gamified pet loop is what works here — 'especially having adhd, this gamification works so well for my brain'; one reviewer chose it because it is less feature-heavy than Finch; the plain/gamified split is a positioning choice, not a rule.",
+  "statement": "Report 11: 'Functional, no frills and no infantilization. I tested half a dozen similar apps before finding this one'; 'I hate apps that demand set times'; 'without any imposed junk' — four of 33 reviewers chose the app for what it refuses to do, and three switched from gamified competitors. A live tension with the pet/mascot category norm. Report 27: two reviewers name the absence of gamification as the reason they chose the app — 'There's not pets to take care of, there's no flashy graphics or anything, and that is just perfect for me'; 'it removes a direct emphasis on urgency and/or self-competition' — and 52 praise minimalism; in a category converging on pets, gardens and streak anxiety, deliberate plainness is a defensible position that any future monetisation must not contradict. Report 28 (counter-evidence): the gamified pet loop is what works here — 'especially having adhd, this gamification works so well for my brain'; one reviewer chose it because it is less feature-heavy than Finch; the plain/gamified split is a positioning choice, not a rule. Report 29: 'Everything that you need, nothing that you don't' — 119 praise simplicity against 3 wanting rewards or more features; do not add features to the main flow.",
   "section": "do",
   "cards": [
    "R11-011",
@@ -7284,12 +7468,16 @@
    "R27-005",
    "R27-084",
    "R28-147",
-   "R28-148"
+   "R28-148",
+   "R29-055",
+   "R29-063",
+   "R29-069"
   ],
   "reports": [
    11,
    27,
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -7970,7 +8158,7 @@
  {
   "id": "C209",
   "title": "No sign-up wall before first use",
-  "statement": "Report 18: 'sign-up / login required or broken' was a very strong signal (70, 3.42%, mean 3.13★); a sign-up wall before any trial was a ranked purchase barrier, and Japan's form demanded e-mail, phone and real name before the product was visible. Distinct from having an account system: the account should be offered when there is something to protect. Report 27: 'no account required' is praised as a feature (4, mean 5.00 — 'so many habit apps are expensive and require an account'; 'All this without asking for my personal details') and the listing's no-data-collection label is part of the positioning; a required account 'rules out ad-funded or data-funded models'.",
+  "statement": "Report 18: 'sign-up / login required or broken' was a very strong signal (70, 3.42%, mean 3.13★); a sign-up wall before any trial was a ranked purchase barrier, and Japan's form demanded e-mail, phone and real name before the product was visible. Distinct from having an account system: the account should be offered when there is something to protect. Report 27: 'no account required' is praised as a feature (4, mean 5.00 — 'so many habit apps are expensive and require an account'; 'All this without asking for my personal details') and the listing's no-data-collection label is part of the positioning; a required account 'rules out ad-funded or data-funded models'. Report 29: 'the fact I didn't even have to list my email sold me' — do not require an account; adding one for billing has its own cost.",
   "section": "dont",
   "cards": [
    "R18-059",
@@ -7980,11 +8168,16 @@
    "R27-026",
    "R27-049",
    "R27-081",
-   "R27-084"
+   "R27-084",
+   "R29-019",
+   "R29-088",
+   "R29-111",
+   "R29-123"
   ],
   "reports": [
    18,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
@@ -8120,7 +8313,7 @@
  {
   "id": "C214",
   "title": "A bare checklist cannot carry a premium price — it has a free substitute pre-installed on every phone",
-  "statement": "Report 19: 13 of 105 (12.38%) said the phone's alarm, Notes, calendar, paper or Excel did the same job for free ('If you can set an alarm on your phone you don't need this app'); at $45–$99 that ceiling read as theft rather than expense and produced 96 one-star reviews. A product charging above a few dollars must deliver what a checklist structurally cannot — real personalisation, coaching content, human accountability, or data the user could not assemble. Report 23: 68 one-star reviews (0.94%) make the coherent case 'this is a checklist, iOS Reminders does it free, and it cost me money' — a positioning failure: the listing sold a to-do list rather than streak psychology plus HealthKit automation; Apple Reminders is the low-end competitor (9 mentions, mean 3.67). Report 25: among people who hit the paywall the comparison set is Apple Reminders, Health, Notes and a paper notebook (nine reviews explicitly) — a free tier must beat Reminders, not beat Streaks; ~7 reviewers would rather the app were honestly paid up front than 'fake-free'. Report 27 (the other side): a free, minimal, account-less tracker wins the category comparison outright — 13 reviewers explicitly rejected rivals over price ('Don't get streaks for $6. 👎 Get this!'; 'way better than those paid apps'), and switched-from-competitor rose 0% → 16.7% across eras without the app changing; as the category monetises harder, the free position sharpens by market drift.",
+  "statement": "Report 19: 13 of 105 (12.38%) said the phone's alarm, Notes, calendar, paper or Excel did the same job for free ('If you can set an alarm on your phone you don't need this app'); at $45–$99 that ceiling read as theft rather than expense and produced 96 one-star reviews. A product charging above a few dollars must deliver what a checklist structurally cannot — real personalisation, coaching content, human accountability, or data the user could not assemble. Report 23: 68 one-star reviews (0.94%) make the coherent case 'this is a checklist, iOS Reminders does it free, and it cost me money' — a positioning failure: the listing sold a to-do list rather than streak psychology plus HealthKit automation; Apple Reminders is the low-end competitor (9 mentions, mean 3.67). Report 25: among people who hit the paywall the comparison set is Apple Reminders, Health, Notes and a paper notebook (nine reviews explicitly) — a free tier must beat Reminders, not beat Streaks; ~7 reviewers would rather the app were honestly paid up front than 'fake-free'. Report 27 (the other side): a free, minimal, account-less tracker wins the category comparison outright — 13 reviewers explicitly rejected rivals over price ('Don't get streaks for $6. 👎 Get this!'; 'way better than those paid apps'), and switched-from-competitor rose 0% → 16.7% across eras without the app changing; as the category monetises harder, the free position sharpens by market drift. Report 29: 52 comparison shoppers (14.21%) arrived after rejecting paywalled trackers ('downloaded 20 habit tracking apps and none was satisfactory'; 'premium this, subscription that… here it's just free, like properly FREE') — the app 'wins a bake-off it never enters', so competitors' pricing drives its installs.",
   "section": "product-rule",
   "cards": [
    "R19-015",
@@ -8135,13 +8328,16 @@
    "R25-166",
    "R27-003",
    "R27-004",
-   "R27-063"
+   "R27-063",
+   "R29-004",
+   "R29-030"
   ],
   "reports": [
    19,
    23,
    25,
-   27
+   27,
+   29
   ],
   "merged_from": []
  },
@@ -8226,7 +8422,7 @@
  {
   "id": "C218",
   "title": "Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate",
-  "statement": "Report 20: the listing said 'Unlimited amount of habits. You don't need to pay a penny' for at least two years after the free tier was capped at 3; 24 reviews (mean 1.21 — the lowest of any theme) called it false advertising by name. Zero engineering cost, unmade for over two years. Report 18's screenshots advertised a timer a buyer could not find. Report 6 / 19: a buyer who paid for a feature that isn't there cancels and says 'there are free ones' — it turns a feature request into a refund cause. Report 2: sibling apps implied an integration that did not exist; the purchases it drove ended in 1★. Report 25: the App Store listing showed Apple Watch support that could not be installed. Report 26: the German store listing carried a typo — 'Eden-Gewohnheitstrinker' (habit drinker) for 'Gewohnheitstracker'. Report 28: a listing that says 'habit tracker' for a product that is a pet game produces 'it's not what it says it is' 2★ reviews.",
+  "statement": "Report 20: the listing said 'Unlimited amount of habits. You don't need to pay a penny' for at least two years after the free tier was capped at 3; 24 reviews (mean 1.21 — the lowest of any theme) called it false advertising by name. Zero engineering cost, unmade for over two years. Report 18's screenshots advertised a timer a buyer could not find. Report 6 / 19: a buyer who paid for a feature that isn't there cancels and says 'there are free ones' — it turns a feature request into a refund cause. Report 2: sibling apps implied an integration that did not exist; the purchases it drove ended in 1★. Report 25: the App Store listing showed Apple Watch support that could not be installed. Report 26: the German store listing carried a typo — 'Eden-Gewohnheitstrinker' (habit drinker) for 'Gewohnheitstracker'. Report 28: a listing that says 'habit tracker' for a product that is a pet game produces 'it's not what it says it is' 2★ reviews. Report 29: a privacy label saying 'analytics and diagnostics' while the app asks to route third-party traffic through the user's IP — the store disclosure must cover what the app actually does.",
   "section": "product-rule",
   "cards": [
    "R20-006",
@@ -8242,7 +8438,9 @@
    "R25-103",
    "R26-095",
    "R28-062",
-   "R28-087"
+   "R28-087",
+   "R29-022",
+   "R29-107"
   ],
   "reports": [
    2,
@@ -8252,7 +8450,8 @@
    24,
    25,
    26,
-   28
+   28,
+   29
   ],
   "merged_from": [
    {
@@ -8659,7 +8858,7 @@
  {
   "id": "C240",
   "title": "Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap",
-  "statement": "Report 28: a forced full-screen interstitial fired on every habit check-off is the single largest fact in an 821-review corpus — 164 complaints (19.98%, mean 2.73 vs 4.35 for every other review; 52.4% of all 1★), 33 naming the per-tap mechanic as a punishment ('it feels like a punishment for doing what you were meant to do'; 'replacing the feel-good with this uncanny worry'), 30 calling the app unusable, 19 five-star reviewers still complaining, and the users most helped by the reward loop (ADHD) the most damaged by breaking it. Users are not asking for zero ads; they propose batching ('let me tick them all off and then show me an ad') or a cap per session. Report 24: checking off one habit takes 3–5 screens of celebration; report 25: upsell sheets on every action; a 2026 rating prompt fired on check-off produced a 1★ purely about the prompt.",
+  "statement": "Report 28: a forced full-screen interstitial fired on every habit check-off is the single largest fact in an 821-review corpus — 164 complaints (19.98%, mean 2.73 vs 4.35 for every other review; 52.4% of all 1★), 33 naming the per-tap mechanic as a punishment ('it feels like a punishment for doing what you were meant to do'; 'replacing the feel-good with this uncanny worry'), 30 calling the app unusable, 19 five-star reviewers still complaining, and the users most helped by the reward loop (ADHD) the most damaged by breaking it. Users are not asking for zero ads; they propose batching ('let me tick them all off and then show me an ad') or a cap per session. Report 24: checking off one habit takes 3–5 screens of celebration; report 25: upsell sheets on every action; a 2026 rating prompt fired on check-off produced a 1★ purely about the prompt. Report 29: the rating prompt fires on the first habit check-off.",
   "section": "product-rule",
   "cards": [
    "R28-003",
@@ -8672,10 +8871,12 @@
    "R28-095",
    "R28-101",
    "R28-102",
-   "R28-130"
+   "R28-130",
+   "R29-013"
   ],
   "reports": [
-   28
+   28,
+   29
   ],
   "merged_from": []
  },
@@ -8699,6 +8900,56 @@
   ],
   "reports": [
    28
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C242",
+  "title": "Never monetise by routing the user's device or bandwidth for third parties — and never gate first launch behind any such opt-in",
+  "statement": "Report 29: a free tracker whose whole reputation was 'actually free' (46.99% of reviews) added a launch-screen prompt in May 2026 asking users to enable 'web indexing' — letting third parties use the phone's IP to download web data — in exchange for an ad-free experience. Every reviewer who described it gave 1★ ('This app now interrupts use unless you agree to run a malware proxy downloader'; 'Didn't get past the opening screen… No thanks'; 'You PAID for this free app'); two of three quit before using the product; a reviewer had already asked 'Am I trading off data privacy for this?'; the listing's privacy label ('analytics and diagnostics') does not obviously cover it. It turned the 1★ band from bugs into privacy in one half-year. If any consent-based monetisation is used, ask after first value, in plain language, reversible, never as a gate.",
+  "section": "dont",
+  "cards": [
+   "R29-005",
+   "R29-006",
+   "R29-015",
+   "R29-021",
+   "R29-022",
+   "R29-054",
+   "R29-082",
+   "R29-086",
+   "R29-087",
+   "R29-089",
+   "R29-102",
+   "R29-107",
+   "R29-124"
+  ],
+  "reports": [
+   29
+  ],
+  "merged_from": []
+ },
+ {
+  "id": "C243",
+  "title": "Date arithmetic must survive month boundaries and week-start conventions",
+  "statement": "Report 29: a month-rollover / weekday-offset bug was the dominant defect — 37 reviews (10.11%, mean 2.95 vs 4.73), 78.4% of them filed on days 28–3 against a 27.6% baseline ('On the last day of every month, the app has no idea what day it is… April 30 defaulted to Feb 28'; 'the 31st listed twice'; 'went backwards into April instead of forwards into July'; 'Monday thru Sunday… but the dates go Sunday thru Saturday'); it was 62.5% of all 3★ and 66.7% of 2★, peaked at 20.2% of 2025H1 and fell ~8× by 2026H1 with a residual weekday-offset tail; users taught each other to reinstall, which destroyed their local-only data. Test every date surface at month end, leap day and both week starts.",
+  "section": "must-never-break",
+  "cards": [
+   "R29-007",
+   "R29-015",
+   "R29-017",
+   "R29-031",
+   "R29-035",
+   "R29-073",
+   "R29-074",
+   "R29-076",
+   "R29-080",
+   "R29-081",
+   "R29-091",
+   "R29-099",
+   "R29-112"
+  ],
+  "reports": [
+   29
   ],
   "merged_from": []
  }
