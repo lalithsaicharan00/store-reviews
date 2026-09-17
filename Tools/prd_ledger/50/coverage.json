@@ -1,0 +1,185 @@
+[
+ {
+  "heading": "1.2 Schema",
+  "cards": [
+   "R50-002"
+  ]
+ },
+ {
+  "heading": "1.3 Coverage and reconciliation",
+  "cards": [
+   "R50-002"
+  ]
+ },
+ {
+  "heading": "1.5 Processing method",
+  "cards": [
+   "R50-002"
+  ]
+ },
+ {
+  "table_row": "Duplicate IDs within any single theme",
+  "cards": [
+   "R50-002"
+  ]
+ },
+ {
+  "table_row": "Group",
+  "no_new_insight": "table header rows (§3.3.1 cap groups R50-030; §6.9 market groups R50-070)"
+ },
+ {
+  "table_row": "Need",
+  "no_new_insight": "table header row (§3.5); carded as R50-041"
+ },
+ {
+  "table_row": "Decimal-value tracking · badges/achievements · vision board · time-of-day graph · richer report presentation · countdown seconds · iBooks/GitHub sync · skipped-day colour · check-off friction on duration goals · data export on downgrade",
+  "cards": [
+   "R50-041"
+  ]
+ },
+ {
+  "table_row": "Segment",
+  "no_new_insight": "table header row (§5.1); carded as R50-052"
+ },
+ {
+  "table_row": "Barrier",
+  "no_new_insight": "table header row (§5.5); carded as R50-057"
+ },
+ {
+  "table_row": "Measure",
+  "no_new_insight": "table header row (§6.6); carded as R50-067"
+ },
+ {
+  "bold": "The consequence is that negative themes here have small absolute counts",
+  "cards": [
+   "R50-003"
+  ]
+ },
+ {
+  "bold": "Reviews are actively solicited inside the app, and two reviewers documented the mechanism.",
+  "cards": [
+   "R50-004"
+  ]
+ },
+ {
+  "bold": "No review burst or coordinated cluster was found, and none is alleged.",
+  "cards": [
+   "R50-005"
+  ]
+ },
+ {
+  "bold": "Seasonality is extreme and must not be read as a trend.",
+  "cards": [
+   "R50-005"
+  ]
+ },
+ {
+  "bold": "Interpretation: the integration is a proven delight when it works and a specific, named disappointment where it stops. This is extension work on a shipped feature, not new development.",
+  "cards": [
+   "R50-015"
+  ]
+ },
+ {
+  "bold": "Fields inspected and set aside:",
+  "cards": [
+   "R50-002"
+  ]
+ },
+ {
+  "bold": "Independent recomputation from the raw records reproduces all of these exactly",
+  "cards": [
+   "R50-002"
+  ]
+ },
+ {
+  "bold": "Full-text dump.",
+  "cards": [
+   "R50-002"
+  ]
+ },
+ {
+  "bold": "Programmatic validation",
+  "cards": [
+   "R50-002"
+  ]
+ },
+ {
+  "bold": "Aggregation.",
+  "cards": [
+   "R50-002"
+  ]
+ },
+ {
+  "bold": "Read this table carefully, because it is the shape of the whole product.",
+  "cards": [
+   "R50-026"
+  ]
+ },
+ {
+  "bold": "The decisive sub-finding is the cap's numeric value over time.",
+  "cards": [
+   "R50-030"
+  ]
+ },
+ {
+  "bold": "Interpretation: this converts people with no product opinion into 1★ reviewers, and it contaminates the positive tail of this corpus (Warning 4). Both costs are avoidable by moving the prompt behind a usage milestone.",
+  "cards": [
+   "R50-016",
+   "R50-036"
+  ]
+ },
+ {
+  "bold": "Onboarding is confusing for some and excellent for others.",
+  "cards": [
+   "R50-036"
+  ]
+ },
+ {
+  "bold": "Interpretation: bimodal, not broken.",
+  "cards": [
+   "R50-036"
+  ]
+ },
+ {
+  "bold": "Mexico is the lowest-rated storefront in the corpus and gets a callout despite n=5",
+  "cards": [
+   "R50-068"
+  ]
+ },
+ {
+  "bold": "This is five reviews. No claim about the Mexican market is made.",
+  "cards": [
+   "R50-068"
+  ]
+ },
+ {
+  "bold": "Definition (external, labelled):",
+  "cards": [
+   "R50-070"
+  ]
+ },
+ {
+  "bold": "Definition (corpus-internal, disclosed proxy):",
+  "cards": [
+   "R50-070"
+  ]
+ },
+ {
+  "bold": "praise_comparison` is stable across the entire period",
+  "cards": [
+   "R50-080"
+  ]
+ },
+ {
+  "bold": "Second benefit: it would stop inflating the corpus that this analysis depends on (Warning 4).",
+  "cards": [
+   "R50-083"
+  ]
+ },
+ {
+  "bold": "The direction is well-evidenced across four storefronts and three languages; the size of the effect is not yet measurable and should be monitored in the next extraction, not assumed.",
+  "cards": [
+   "R50-088"
+  ]
+ }
+]

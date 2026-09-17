@@ -231,6 +231,10 @@ These came from gaps found when a fresh context re-read a report. Each one is no
   timing) and any dated developer response to a complaint (e.g. raising a cap by one) each get a `tactic`
   card that states the outcome**, not only a `data-caveat` or `timeline` card — otherwise "what worked for
   whom" in the final report cannot list them. (Report 30: phrase-bank campaigns; the 2 → 3 cap raise.)
+- **A section that opens with an inline "Top themes: a n (x%) · b n (y%) …" list** (rating bands,
+  storefronts, segments) gets that list carded verbatim with every share, even when the section's
+  narrative is also carded. The validator only checks tables, headings and bold phrases, so inline
+  lists slip past it. (Report 50: the 5★, 4★, 3★ and 1★ band lists.)
 
 ### Magnitude is mandatory
 
