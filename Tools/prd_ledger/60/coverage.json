@@ -1,0 +1,74 @@
+[
+ {
+  "bold": "Storefronts polled but empty \u2014 a coverage fact worth stating.",
+  "cards": [
+   "R60-002"
+  ]
+ },
+ {
+  "bold": "Burst / solicitation check \u2014 disclosed as required, and it is material.",
+  "cards": [
+   "R60-004"
+  ]
+ },
+ {
+  "bold": "No automated classifier, clustering, keyword rule or LLM-batch labelling was used",
+  "cards": [
+   "R60-002"
+  ]
+ },
+ {
+  "bold": "Final verification",
+  "cards": [
+   "R60-002"
+  ]
+ },
+ {
+  "bold": "Recency is thin, not absent.",
+  "cards": [
+   "R60-004"
+  ]
+ },
+ {
+  "bold": "Survivorship and prompt bias.",
+  "cards": [
+   "R60-005"
+  ]
+ },
+ {
+  "bold": "blocked by this environment's network egress proxy",
+  "cards": [
+   "R60-024"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R60-007"
+  ]
+ },
+ {
+  "bold": "\u00a79.5",
+  "cards": [
+   "R60-007"
+  ]
+ },
+ {
+  "bold": "Supplemental rate, labelled as such:",
+  "cards": [
+   "R60-003"
+  ]
+ },
+ {
+  "bold": "Definition and its weakness.",
+  "cards": [
+   "R60-040"
+  ]
+ },
+ {
+  "bold": "The finding, stated with its caveats:",
+  "cards": [
+   "R60-040"
+  ]
+ }
+]

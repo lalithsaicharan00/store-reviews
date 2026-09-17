@@ -1,0 +1,549 @@
+# Cards — report 60
+
+Source: `App Store Reports/60. Mindway - Daily Routine Planner - Self Care & ADHD Habit Tracker (REPORT).md`  
+50 cards. Generated from `cards.jsonl` by `cards_to_md.py` — edit the JSONL, not this file.
+
+## Contents
+
+- [Product rules](#product-rules) — 2
+- [Must-haves](#must-haves) — 3
+- [Must never break](#must-never-break) — 3
+- [Features](#features) — 3
+- [Monetization](#monetization) — 5
+- [Tactics the app used](#tactics-the-app-used) — 1
+- [Insights (the why)](#insights-the-why) — 10
+- [Audiences](#audiences) — 2
+- [Markets and languages](#markets-and-languages) — 4
+- [Dated events and trends](#dated-events-and-trends) — 3
+- [Positioning](#positioning) — 1
+- [Anti-patterns](#anti-patterns) — 3
+- [Things not to do](#things-not-to-do) — 2
+- [Things to do](#things-to-do) — 1
+- [Contradictions](#contradictions) — 2
+- [Data caveats and method](#data-caveats-and-method) — 5
+
+## Product rules
+
+### R60-044 — D1 — move the paywall behind first value, not in front of it: 'the decision the corpus forces' — 19 blocked at a 1–3 task cap (1.63★), 13 rejecting the price (1.69★), 31 of 38 1★ carrying a monetization complaint, the theme at 28.57% of the 2026 tail; the value users report — structure (15), habit outcomes (12), wellbeing (9) — takes days to appear and the current design charges before any of it can happen; what the corpus supports: let a user build and run a complete day for long enough to experience one outcome, and gate on depth (multiple routines, history, advanced recurrence, the guided content) rather than on count; the three who met the cost as optional averaged 4.33★, the thirteen who met it as a wall 1.69★; E1: raise the free cap to a full day's routine (8–10 tasks) for a randomized cohort (metrics: 1★ rate, trial starts, D7 retention); E2: replace the count-based paywall with a time-based one — full app, 7 days, no card (metrics: trial→paid conversion, refund rate)
+
+- **Where:** §8.2 D1; §8.3 E1, E2
+- **This app does:** count-based paywall before first value
+- **User reaction:** 1★-burst
+- **Magnitude:** 19 + 13 + 31 of 38 1★
+- **Direction for us:** product-rule · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Review IDs:** `11995687857`, `11839657635`, `12741993650`
+- **Canonical:** C133 Gate on capability, not on quantity; C147 Let people use the product before they pay; C182 A pre-use hard paywall makes every purchase non-evidence-based and non-durable
+
+### R60-048 — The one decision the corpus forces: Mindway is monetizing before it has demonstrated value, and its billing generates trust failures at a rate (5.09%) that ordinarily attracts store-level scrutiny; the corpus contains no evidence that the price is the problem in itself — it contains evidence that a 1–3 task cap plus an immediate paywall plus a hard-to-exit subscription converts interested users into 1★ reviewers; every one of the 13 confirmed payers wrote a negative review; fixing the order of the funnel — let users build and run a real plan first, charge second, make cancellation trivial — is the highest-value change available, and it is not a feature change
+
+- **Where:** Executive summary closing; §8.2 D1
+- **This app does:** monetize before value
+- **User reaction:** 1★-burst
+- **Magnitude:** billing 5.09%; 13 of 13 payers negative
+- **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `12040812221`, `11862274231`, `13815532923`
+- **Canonical:** C029 Billing must be exactly right; C065 Paying customers are the highest 1★ risk — every paid feature must work; C147 Let people use the product before they pay
+
+## Must-haves
+
+### R60-015 — The paid product is judged under-built by the people who bought it: M_VALUE_NOT_WORTH 10 (4.63%, very strong), mean 1.50, 5 of the 10 confirmed payers — the most credible negative theme; 'Nothing more than preloaded to-do lists with very little flexibility or encouragement'; 'This app is nothing more than a list of to do items. There is literally nothing helpful about it' (payer); 'It's just a suggestion list' (payer); 'basically just a load of lists and reminders' (payer, 3★); 'thought this would give more feedback on completion percentage - tracking consistency. It's just a basic to do list… Idea is good but needs more development'; 'I cannot believe I spent $40 to use this app for one day' (payer); the gap is specific and repeated — users expect a tracker and receive a list; no reviewer anywhere describes a streak, chart, score or progress view; D3: build the tracking layer — completion history and consistency stats are exactly the capability that justifies a subscription and cannot be replicated in Notes (E4: ship a minimal consistency view — completion %, current streak, 30-day grid; metric: review mentions of tracking, payer rating)
+
+- **Where:** Executive summary 9; §3.3.5; §5.5; §8.2 D3; §8.3 E4
+- **This app does:** no progress view, streak, chart or score
+- **User reaction:** downgrade
+- **Magnitude:** 10 (4.63%) at 1.50★; 5 payers
+- **Direction for us:** must-have · **Report confidence:** very strong · **Generalisable:** generalisable
+- **Review IDs:** `12410685351`, `12274815966`, `11939232936`, `12149341496`, `12364644988`, `11973575224`, `11484507989`
+- **Canonical:** C012 Week / month / year grid views; C024 Streaks / gamification; C214 A bare checklist cannot carry a premium price — it has a free substitute pre-installed on every phone; C217 An unexplained metric reads as broken — explain the score on-screen; C234 Statistics stay readable on the free tier — gating the progress view removes the motivation loop the category sells
+
+### R60-022 — Defects, friction and the support gap — 16 (7.41%), mean 1.81; 'the product is barely reported as broken' (verbatim): Theme | n | % of 216 | Signal | Tier | Mean ★ | Detail ; F_REVIEW_AS_SUPPORT | 7 | 3.24% | very strong | pattern | 1.43 | Users filing support tickets in the store: 11548752988, 11583074924, 11645468255, 11770422740, 12046853210, 12149341496, 13251351092 ; F_PAYWALL_INTERRUPT | 3 | 1.39% | meaningful | corroborated | 1.33 | §3.3.6 ; B_CRASH | 2 | 0.93% | emerging | corroborated | 1.00 | 11789667295 *"it has a problem and closes by itself"*; 11802262343 *"It keeps glitching out on me every time I try to open it"* — both 2024-10, both 1★, never reported again ; F_SETUP_OVERWHELM | 1 | 0.46% | weak | single | 5.00 | 11971799940 *"It is overwhelming to set up tasks in the beginning"* ; F_PACK_DELETION | 1 | 0.46% | weak | single | 3.00 | 12149341496 *"otherwise you would spend all day deleting tasks"* ; F_ONBOARD_QUIZ | 1 | 0.46% | weak | single | 1.00 | 11839657635 *"it was really strange like answering a questionnaire. Then it asked for money right away"* ; F_FORCED_RATING | 1 | 0.46% | weak | single | 5.00 | 11910326853 *"Good but forcing me to rate"* ; F_TONE_CUTE | 1 | 0.46% | weak | single | 2.00 | 11774398931 *"too bubbly/cute which is annoying… better off to be more neutral and simple"* ; F_SUPPORT_UNRESPONSIVE | 1 | 0.46% | weak | single | 1.00 | 11583074924 *"I am getting no help"* ; F_UNINSTALL_CONFUSION | 1 | 0.46% | weak | single | 1.00 | 11548752988 *"How do I get rid of the app?"* — read the support theme, not the crash theme: two crash reports in 750 days (both 2024-10, within five days, never again — most consistent with one bad build) is a low defect rate; seven reviewers using a 1★ public review as a help desk is the absence of a visible support path, six of the seven about money; the one who tried the proper route ('asked this question of the developer and awaiting the reply') sits at 3★, the other six went straight to 1★; F3: put an in-app support route in front of the review prompt, and answer it — seven support tickets became permanent public 1★ reviews
+
+- **Where:** §3.5 table (verbatim); §5.5; §8.1 F3
+- **This app does:** no visible support route; review prompt reached first
+- **User reaction:** 1★-burst
+- **Magnitude:** review-as-support 7 (3.24%) at 1.43★; crash 2 (0.93%)
+- **Direction for us:** must-have · **Report confidence:** very strong · **Generalisable:** generalisable
+- **Review IDs:** `11548752988`, `11583074924`, `11645468255`, `11770422740`, `12046853210`, `12149341496`, `13251351092`, `11789667295`, `11802262343`, `11971799940`, `11839657635`, `11910326853`, `11774398931`
+- **Canonical:** C031 Crashes / launch failures; C036 A support channel that exists, is reachable outside the app, and answers; C215 Support reply time must be shorter than any cancellation deadline it serves
+
+### R60-027 — Time entry on a 24-hour clock only, no AM/PM, confuses a user ('There is only a 24 hrs clock option & no am/pm. This confuses me a lot'; also 'no folder system. I can't categorize my reminders'); F6: add AM/PM time entry — one review, one line of work, the only reported input-level usability defect
+
+- **Where:** §3.7; §8.1 F6
+- **This app does:** 24-hour clock only
+- **User reaction:** complaint
+- **Magnitude:** 1 (0.46%)
+- **Direction for us:** must-have · **Report confidence:** single review · **Generalisable:** generalisable
+- **Review IDs:** `11735164096`
+- **Canonical:** C171 Accessibility stack: VoiceOver, motion, sound and light sensitivity, text size
+
+## Must never break
+
+### R60-012 — Billing and subscription operations are failing — a store-risk problem, not a pricing problem: 11 of 216 (5.09%, high-priority), mean 1.27, 10 of 11 US. Sub-themes (verbatim): Sub-theme | n | % of 216 | Signal | Mean ★ | IDs ; M_CANCEL_DIFFICULTY | 4 | 1.85% | meaningful | 1.00 | 11583074924, 11645468255, 11770422740, 13251351092 ; M_UNAUTHORIZED_CHARGE | 4 | 1.85% | meaningful | 1.75 | 11604816252, 11862274231, 12026744201, 12040812221 ; M_REFUND_REQUEST | 4 | 1.85% | meaningful | 1.00 | 11862274231, 11939232936, 12040812221, 12274815966 ; M_TRIAL_PROBLEM | 3 | 1.39% | meaningful | 2.00 | 11604816252, 11862274231, 11995687857 ; M_BILLING_MISLEAD | 1 | 0.46% | weak | 1.00 | 11939232936 — 'I got this app and it charged me for a year and i did NOT subscribe to it! this needs to be reported'; 'CHARGED EVEN THOUGH IT WAS CANCELLED. Took pics of inactive status'; 'I spent $0.99 for free trial and a few hours later I was billed $39.99 with NO EXCEPTIONS OF A REFUND'; 'the 3 day free trial isn't truly free. I cancelled on day two and still got charged for a week' (4★); 'When purchasing, it implies the option of monthly billing, but auto drafts the whole year'; three bare cancellation pleas, the last in 2025-10 — the problem outlives the 2024 cluster; the corpus cannot establish the charges were unauthorized, but eleven users could not tell what they had agreed to or how to get out, and seven used a public review as their support channel; F1: cancellation one tap from the main screen, confirmed in writing (the cheapest star recovery available); F2: audit the trial-to-charge flow end to end — the $0.99 paid trial converting to $39.99 within hours, the '3-day free trial' that billed a week, the monthly-vs-annual selection screen, and no trial offered at all before purchase ('I wish it would of let me try it out first') — three distinct failure descriptions is a flow problem, not three user errors
+
+- **Where:** Executive summary 3; §3.3.3 table (verbatim); §5.5; §8.1 F1, F2
+- **This app does:** hard-to-exit subscription; paid trial converting within hours; annual charged when monthly expected
+- **User reaction:** 1★-burst
+- **Magnitude:** 11 (5.09%) at 1.27★; 10 of 11 US
+- **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `11583074924`, `11645468255`, `11770422740`, `13251351092`, `11604816252`, `11862274231`, `12026744201`, `12040812221`, `11939232936`, `12274815966`, `11995687857`
+- **Canonical:** C029 Billing must be exactly right; C109 A free trial must be a real trial; C112 In-app cancellation; C177 One clear SKU shelf — every plan distinctly named, stating its period, and delivering exactly what its label says; C212 No conditional refunds — no proof-of-use requirement, and an advertised guarantee is honoured on request
+
+### R60-013 — 13 reviewers (6.02%) state they paid; their mean is 1.38, 11 of 13 rated 1★, zero rated 5★ — 'not one paying reviewer describes getting value for the money… the most consequential single number in the report'. Payer table (verbatim): ID | CC | ★ | Date | Direct purchase evidence | Outcome ; 11583074924 | us | 1 | 2024-08-07 | Holds a subscription, trying to stop it | Cannot cancel; no support response ; 11604816252 | us | 4 | 2024-08-13 | Paid trial, charged for a week after cancelling on day 2 | Keeps liking the app, docks one star ; 11645468255 | us | 1 | 2024-08-24 | Holds a subscription | *"There is no way to cancel"* ; 11770422740 | us | 1 | 2024-09-27 | Holds a subscription | *"Please help me unsubscribe"* ; 11862274231 | us | 1 | 2024-10-22 | $0.99 trial → $39.99 charge | Refused refund; uninstalled ; 11939232936 | us | 1 | 2024-11-11 | Charged a full year after expecting monthly | No refund route found; *"seems scammy"* ; 11973575224 | us | 1 | 2024-11-21 | $40 spent | Used it one day ; 11995687857 | us | 1 | 2024-11-26 | Paid without a trial being offered | *"I'm just out the money now"* ; 12026744201 | us | 1 | 2024-12-05 | Charged after cancelling, with screenshots | — ; 12040812221 | us | 1 | 2024-12-08 | Charged for a year, denies subscribing | Demands refund; threatens to report ; 12149341496 | gb | 3 | 2025-01-05 | Bought the yearly subscription | Finds it usable but overpriced; asked the developer for help ; 12274815966 | us | 1 | 2025-02-05 | Paid the $40 annual to avoid $7/week | *"literally nothing helpful about it"* ; 13251351092 | au | 1 | 2025-10-11 | Holds a subscription | *"Want to cancel"* || Payer theme profile (verbatim): Theme | n / 13 | Segment rate | Global n ; Product judged under-built | 5 | 38.46% | 10 ; Used the review as a support ticket | 5 | 38.46% | 7 ; Wanted a refund | 4 | 30.77% | 4 ; Could not cancel | 4 | 30.77% | 4 ; Charged unexpectedly | 4 | 30.77% | 4 ; Trial problem | 3 | 23.08% | 3 ; Price too high | 3 | 23.08% | 13 — every refund request, cancellation failure and unexpected-charge report in the corpus comes from this 13-person segment; 'the corpus contains no post-purchase success story at all'; the responsible reading: (a) the only payer voices the store shows prospective buyers are 1★, (b) the failure modes — cancel, refund, surprise charge — are operational and fixable, (c) nobody in 216 reviews describes a feature that was worth the money; refund requests 4 (all 1★, all US, all after an annual charge): refused, no route found, 'this needs to be reported', 'I wish I could get my money back'; the one payer who found a support route rated two stars higher than those who didn't
+
+- **Where:** Executive summary 4; §5.1 table (verbatim); §5.1 segment table (verbatim); §5.4
+- **This app does:** n/a
+- **User reaction:** refund
+- **Magnitude:** 13 payers at 1.38★; 11 at 1★
+- **Direction for us:** must-never-break · **Report confidence:** high-priority (n=13) · **Generalisable:** generalisable
+- **Review IDs:** `11583074924`, `11604816252`, `11645468255`, `11770422740`, `11862274231`, `11939232936`, `11973575224`, `11995687857`, `12026744201`, `12040812221`, `12149341496`, `12274815966`, `13251351092`
+- **Canonical:** C029 Billing must be exactly right; C036 A support channel that exists, is reachable outside the app, and answers; C065 Paying customers are the highest 1★ risk — every paid feature must work; C212 No conditional refunds — no proof-of-use requirement, and an advertised guarantee is honoured on request
+
+### R60-036 — Issues that specifically affect paid users, ranked: (1) cancellation — four could not find or complete it, a fifth cancelled and was charged anyway — the highest-severity item in the report; (2) trial mechanics — three separate patterns: a $0.99 paid trial converting to $39.99 within hours, a '3 day free trial' that billed a week, and no trial offered before purchase ('I'm just out the money now'); (3) plan clarity at purchase — believed monthly, charged annually ('It seems scammy'); understood the choice and still regretted it; (4) support — five of thirteen payers used a 1★ review as their support channel; the one who found a route rated two stars higher; (5) post-purchase value — five of thirteen say it is a list, not a tracker; one used it for one day; one names the exact missing capability (repeat intervals beyond daily/weekly/monthly)
+
+- **Where:** §5.5
+- **This app does:** n/a
+- **User reaction:** refund
+- **Magnitude:** 5 issue classes across 13 payers
+- **Direction for us:** must-never-break · **Report confidence:** high-priority (n=13) · **Generalisable:** generalisable
+- **Review IDs:** `11583074924`, `11645468255`, `11770422740`, `13251351092`, `12026744201`, `11862274231`, `11604816252`, `11995687857`, `11939232936`, `12274815966`, `12149341496`, `11973575224`
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C109 A free trial must be a real trial; C112 In-app cancellation; C177 One clear SKU shelf — every plan distinctly named, stating its period, and delivering exactly what its label says; C214 A bare checklist cannot carry a premium price — it has a free substitute pre-installed on every phone
+
+## Features
+
+### R60-023 — Feature inventory derived from reviews (verbatim): Capability | Evidence it exists | Representative IDs | Reviewer verdict ; Daily routine / day planner built from tasks | Core of nearly every substantive review | 11804101180, 12481147571, 12972889389, 12503377637 | Positive where reachable ; Preset routine categories / "packs" (self-care, hair care, exercise, chores, hydration) | 11790768706 lists them; 11855509579 "the categories presented"; 12149341496 "remove packs" | 11790768706, 11855509579, 12375650296, 12525175194 | Positive as a starting point, negative as a clean-up burden ; Custom task creation | Reported as limited or gated | 11590430878, 11774398931, 11855509579, 12410685351 | Negative — the most-requested capability ; Repeat / recurrence rules (daily, weekly, monthly) | 12274815966 and 12410685351 both enumerate exactly these three | 11971799940, 12274815966, 12410685351 | Negative — three intervals is too coarse ; Reminders / notifications | 11484507989 "Its reminder and habit specification features very good"; 12149341496 "lists and reminders" | 11484507989, 11735164096, 12149341496 | Mixed — works, but 24-hour clock only ; Time entry on a 24-hour clock, no AM/PM | 11735164096 states it explicitly | 11735164096 | Negative — one detailed report ; Onboarding questionnaire / goal screens | 11839657635 "answering a questionnaire"; 11971799940 "the first few screens" | 11839657635, 11971799940, 11892038325 | Negative when it precedes the paywall ; Self-care guidance / "guide" content | 12375650296 "having a guide to which to refer"; 12494629303 "rehberle çok yardım ettiler" ("the guide helped a lot") | 12375650296, 12494629303, 11837616297 | Positive ; Mascot / character | 11484507989 "LOVED THE SLIMY MASCOT" | 11484507989 | Positive (n=1) ; Visual design / cute styling | 12594894710 "sehr schön gemacht und gestaltet"; 14373191293 "well designed"; 12469906657 "Cute🎀" | 12469906657, 12594894710, 14373191293 | Positive, with one dissent (11774398931 "too bubbly/cute") ; Subscription ("Mindway Pro" / "VIP") with weekly and annual plans, plus a paid trial | 13815532923 names "Mindway Pro"; 12502986885 names "free trial vip"; 12274815966 names both $7/week and the $40 annual | 11602546791, 12274815966, 12480621877, 13815532923 | Negative — see Part 5 ; Progress tracking / completion percentage | Absent. 12364644988 expected it and did not find it | 12364644988, 12410685351 | Negative — an expectation gap ; Folders / categorisation of reminders | Absent. 11735164096 | 11735164096 | Negative (n=1) — what the corpus does not show: no reviewer mentions widgets, an Apple Watch app, iCloud sync, data export, dark mode, streaks or social features, positively or as a request — either they do not exist or nobody cares enough to mention them
+
+- **Where:** §2.1 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** inventory table
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `11790768706`, `11855509579`, `12149341496`, `12274815966`, `12410685351`, `11735164096`, `11839657635`, `11971799940`, `12375650296`, `12494629303`, `11484507989`, `12594894710`, `14373191293`, `12469906657`, `11774398931`, `13815532923`, `12502986885`, `12364644988`
+- **Canonical:** C043 Flexible / custom frequency; C118 Preset routines / templates / programs; C171 Accessibility stack: VoiceOver, motion, sound and light sensitivity, text size
+
+### R60-026 — The feature backlog is tiny — 10 of 216 (4.63%) make any request; listed exhaustively (verbatim): Request | n | % of 216 | Signal | Mean ★ | IDs | What they asked for ; R_CUSTOM_TASKS | 4 | 1.85% | meaningful | 2.00 | 11590430878, 11774398931, 11855509579, 12410685351 | Create your own tasks and categories instead of only picking presets. 11855509579: *"I wish there was a way to personalize or make my own."* ; R_REPEAT_OPTIONS | 3 | 1.39% | meaningful | 2.33 | 11971799940, 12274815966, 12410685351 | More than daily/weekly/monthly. 12410685351: *"I don't need to flip my mattress every month, but that's the only option I'm given."* 11971799940 wants hourly and every-N-weeks. ; R_FOLDERS | 1 | 0.46% | weak | 3.00 | 11735164096 | *"There is no folder system. I can't categorize my reminders."* ; R_TIME_FORMAT | 1 | 0.46% | weak | 3.00 | 11735164096 | *"There is only a 24 hrs clock option & no am/pm. This confuses me a lot."* ; R_ONBOARD_TEMPLATES | 1 | 0.46% | weak | 5.00 | 11971799940 | *"Based on my goals… it would be great to see 3 complete day schedules. Then adding and subtracting would not be so overwhelming."* ; R_HOWTO | 1 | 0.46% | weak | 3.00 | 12149341496 | In-app guidance for bulk-removing unwanted preset tasks ; R_PROGRESS_TRACKING | 1 | 0.46% | weak | 2.00 | 12364644988 | Completion percentage and consistency tracking ; R_ENCOURAGEMENT | 1 | 0.46% | weak | 1.00 | 12410685351 | Motivational feedback — *"very little flexibility or encouragement"* ; R_SCHEDULE_CONTROL | 1 | 0.46% | weak | 4.00 | 13901287389 | Control over programme pacing — *"neden tüm planları kendimiz hemen o gün yapamıyoruz… 28 gün sonra bir şey 38 gün sonra bir şey oluyor"* ("why can't we do all the plans ourselves that same day — something comes after 28 days, something after 38") — the optimistic reading ('users are satisfied with the feature set') is not supported: 42.59% wrote nothing substantive and only three long-term users exist; the safe reading is that most users never get far enough into the product to develop a feature opinion; the requests that exist converge on flexibility — custom tasks, custom intervals, custom pacing, folders (four of ten); D5: fix the recurrence model before adding anything else — daily / weekly / monthly only ('I don't need to flip my mattress every month, but that's the only option I'm given'; hourly hydration, every-N-weeks, every 6 months, haircuts) and fixed 28/38-day programme pacing ('neden tüm planları kendimiz hemen o gün yapamıyoruz'); requests are spread 5 / 4 / 1 across periods with no theme above three people in 750 days; §8.5: do not chase the backlog ahead of D1–D3 — ten requesters do not outrank 49 monetization complainers
+
+- **Where:** Executive summary 8; §3.7 table (verbatim); §7.7; §8.2 D5; §8.5
+- **This app does:** daily/weekly/monthly recurrence only; preset packs; fixed programme pacing
+- **User reaction:** request
+- **Magnitude:** 10 (4.63%); repeat 3; custom tasks 4
+- **Direction for us:** feature · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Review IDs:** `11590430878`, `11774398931`, `11855509579`, `12410685351`, `11971799940`, `12274815966`, `11735164096`, `12149341496`, `12364644988`, `13901287389`
+- **Canonical:** C043 Flexible / custom frequency; C045 Grouping / folders / categories / tags; C118 Preset routines / templates / programs; C203 Onboarding lets the user author their own routine first — suggested plans, surveys and pledges are optional
+
+### R60-028 — Preset packs are an entry point and a clean-up burden: P_CONTENT_PACKS 5 (2.31%, 4.80★) — 'having a guide to which to refer'; but 'otherwise you would spend all day deleting tasks' (F_PACK_DELETION, a payer) and 'It is overwhelming to set up tasks in the beginning… it would be great to see 3 complete day schedules. Then adding and subtracting would not be so overwhelming'; 'Stop playing games and get to plan'; E6: a bulk-remove-pack control and a first-run 'pick one of three ready-made days' (metric: time-to-first-completed-routine)
+
+- **Where:** §3.7; §8.3 E6
+- **This app does:** preset routine packs loaded by default
+- **User reaction:** mixed
+- **Magnitude:** packs praised 5; deletion burden 1; overwhelm 1
+- **Direction for us:** do · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Review IDs:** `12375650296`, `12494629303`, `12149341496`, `11971799940`, `11892038325`
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C118 Preset routines / templates / programs; C203 Onboarding lets the user author their own routine first — suggested plans, surveys and pledges are optional
+
+## Monetization
+
+### R60-006 — Monetization complaints are the single largest substantive theme: 49 of 216 (22.69%, high-priority) complain about price, gating, billing or trust, mean 1.67; no other negative family exceeds 7.41%; monetization complaints (49) outnumber substantive praise (55) almost one for one (1.67★ vs 4.64★); the trust-accusation group (13) has a mean of exactly 1.00; the request backlog (10) is smaller than the billing-failure group (11) — 'users are not asking Mindway for more features; they are asking to be able to use and leave the one they have'; 40 of the 52 reviews rated 1–2★ (76.92%) carry a monetization complaint. Summary table (verbatim): # | Finding | Evidence ; 1 | Monetization complaints are the single largest substantive theme in the corpus. 49 / 216 reviewers (22.69%, high-priority) complain about price, gating, billing or trust. Their mean rating is 1.67. No other negative theme family exceeds 7.41%. | MONETIZATION_NEG union ; 2 | The free tier is capped at roughly 1–3 tasks, and that cap is the #1 named cause of a bad review. 19 / 216 (8.80%, high-priority) say they could not build a plan without paying; mean rating 1.63, 13 of the 19 are 1★. Reviewers name the cap as one task (12945940456), two (12097024072, 12214985598, 12480621877) and three (11602546791, 12741993650). | M_PAYWALL_BLOCK ; 3 | Billing operations are failing, and that is a store-risk problem, not a pricing problem. 11 / 216 (5.09%, high-priority) report they could not cancel, were charged after cancelling, were charged without subscribing, or were charged during a "free" trial. Mean rating 1.27. 10 of the 11 are US. | M_CANCEL_DIFFICULTY, M_UNAUTHORIZED_CHARGE, M_TRIAL_PROBLEM, M_BILLING_MISLEAD, M_REFUND_REQUEST ; 4 | 13 reviewers (6.02%) state they paid. Their mean rating is 1.38 and 11 of 13 rated 1★. Not one paying reviewer describes getting value for the money. This is the most consequential single number in the report. | M_PAID_CONFIRMED ; 5 | Five reviewers call the app a scam or a rip-off outright, and five more tell other users not to download it. Both groups are 100% 1★. 12040812221: *"charged me for a year and i did NOT subscribe… this needs to be reported"*. | M_SCAM_ACCUSATION n=5, M_ANTI_RECOMMEND n=5 ; 6 | The product itself is liked. 43 / 216 (19.91%, high-priority) describe a concrete benefit — organisation, productivity, motivation, a specific habit, or wellbeing — with mean ★ 4.79. Behaviour-change claims are specific and repeated: water, workouts, tidying, stretching, getting out of bed. | P_ORGANIZED/P_PRODUCTIVITY/P_MOTIVATION/P_HABIT_OUTCOME/P_WELLBEING union ; 7 | The ADHD positioning is landing, on a small base. 4 / 216 (1.85%, meaningful) mention ADHD; 3 of those praise the fit (11484507989, 12191302986, 12523724002 *"Parfait pour un TDAH"*), mean ★ 5.00. No ADHD-related complaint appears anywhere. | S_ADHD, P_ADHD_FIT ; 8 | The feature backlog is tiny and cheap. Only 10 / 216 (4.63%) make any request at all. The largest is scheduling flexibility — richer repeat intervals (3) and custom tasks (4). No request exceeds 1.85%. | R_* union ; 9 | The paid product is described as under-built by the people who bought it. 10 / 216 (4.63%) say it is "just a to-do list" / "just a suggestion list" with no tracking or encouragement; 5 of those 10 are confirmed payers. | M_VALUE_NOT_WORTH ; 10 | Acquisition and reviews both collapsed after April 2025. 202 reviews in the first 291 days, 14 in the following 459. Whatever drove the 2025-03/04 burst stopped, and nothing replaced it. | §1.4, §7.2
+
+- **Where:** Executive summary table (verbatim) 1, 3, 4, 5; §3.1
+- **This app does:** count-capped paywall, weekly subscription, failing billing
+- **User reaction:** 1★-burst
+- **Magnitude:** 49 (22.69%) at 1.67★
+- **Direction for us:** none · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `12040812221`
+- **Canonical:** C029 Billing must be exactly right; C065 Paying customers are the highest 1★ risk — every paid feature must work
+
+### R60-024 — Free / paid / trial classification (verbatim): Capability | Status per reviews | Evidence ; Download and install | Free | No reviewer reports paying to install ; Onboarding questionnaire | Free (and mandatory) | 11839657635, 11971799940 ; Preset routine packs — viewing | Free | 11855509579 sees the categories before deciding ; Adding tasks to a day | Capped in free tier at roughly 1–3 | 12945940456 (1), 12097024072/12214985598/12480621877 (2), 11602546791/12741993650 (3) ; Any meaningful plan, repeat rules, full pack use | Paid — "Mindway Pro" / "VIP" | 12480621877 *"Only good if you have pro"*; 13815532923; 12502986885 ; Trial | Paid trial, or a trial that bills | 11862274231 *"$0.99 for free trial and a few hours later I was billed $39.99"*; 11604816252 *"the 3 day free trial isn't truly free"* ; Price points named by reviewers | $7/week · $39.99–$40/year · "$60 a year" · €8/week · $0.99 trial | 12274815966, 11862274231, 11973575224, 12486773078, 12486115698 ; Cancellation | Unclear to users — reported as hard or ineffective | 11583074924, 11645468255, 11770422740, 12026744201, 13251351092 || External sources (search snippets, lower-confidence, egress-blocked; no finding depends on them) (verbatim): External claim | Corpus agreement ; Free to download, with in-app purchases | Agrees (§2.2) ; A subscription priced around $7 per week, and an annual plan in the $30–40 range | Agrees exactly — 12274815966 names *"$7 a week"* and *"the annual $40 fee"*; 11862274231 names *$39.99*; 12486115698 names *€8/Woche* ; Feature framing: customizable daily planner, habit tracker, personalized reminders, expert-curated self-care library | Agrees with §2.1; the "self-care library" corresponds to the "guide" praised in 12375650296 and 12494629303 ; Developer listed variously as DEEP FLOW SOFTWARE SERVICES - FZCO (manifest) and Codespace Dijital Hizmetler A.Ş. (store snippet); bundle ID com.codespaceapps.routineplanner | Consistent; not load-bearing for any finding — price points named: $7/week, $39.99–40/year, '$60 a year', €8/week, $0.99 trial; the annual is chosen to escape the weekly
+
+- **Where:** §2.2 table (verbatim); §2.4 table (verbatim)
+- **This app does:** weekly ~$7 / €8; annual $40; $0.99 paid trial
+- **User reaction:** mixed
+- **Magnitude:** classification table
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `12945940456`, `12097024072`, `12214985598`, `12480621877`, `11602546791`, `12741993650`, `13815532923`, `12502986885`, `11862274231`, `11604816252`, `12274815966`, `11973575224`, `12486773078`, `12486115698`, `11583074924`, `11645468255`, `11770422740`, `12026744201`, `13251351092`
+- **Canonical:** C064 Price level — where 'fair' turns into 'too expensive'; C109 A free trial must be a real trial; C190 No weekly billing tier
+
+### R60-031 — The one-star band is a monetization band (segment rates, denominator 38) (verbatim): Driver | n within 1★ | % of 38 ; Any monetization complaint | 31 | 81.58% ; Paywall cap blocks use | 13 | 34.21% ; Confirmed payer | 11 | 28.95% ; Price too high | 7 | 18.42% ; Product judged under-built | 6 | 15.79% ; Used the review as a support ticket | 5 | 13.16% ; Warned others off | 5 | 13.16% ; Scam / rip-off accusation | 5 | 13.16% ; Misleading advertising | 5 | 13.16% ; Could not cancel | 4 | 10.53% ; Wanted a refund | 4 | 10.53% — only seven of 38 (18.42%) are about anything else: two crashes, one custom-task limitation, one uninstall question, three with no stated reason; 'every serious operational failure in this report lives in this band, and it is 17.59% of the corpus. Fix the money flow and the majority of Mindway's one-star reviews have no cause left'
+
+- **Where:** §4.5 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** 1★-burst
+- **Magnitude:** 31 of 38 1★ (81.58%) monetization
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** generalisable
+- **Review IDs:** `11789667295`, `11802262343`, `11590430878`, `11548752988`, `12006568991`, `12212460715`, `12524443211`
+- **Canonical:** C029 Billing must be exactly right; C065 Paying customers are the highest 1★ risk — every paid feature must work
+
+### R60-033 — Purchase triggers: direct evidence — capacity, in every case ('I want to create as many tasks as I want without having to pay'; the third task; more than one activity; the fourth task) — 'the paid trigger Mindway has actually built is you have run out of room'; only one reviewer describes a positive pull toward the paid tier and no reviewer names a Pro feature they wanted. Inferred triggers, labelled as inference (verbatim): Inferred trigger | Supporting evidence | Strength ; Getting the day structured, reliably | P_ORGANIZED 15 (6.94%), mean 4.80 | Strongest — largest positive theme ; Visible behaviour change in one named habit | P_HABIT_OUTCOME 12 (5.56%), mean 4.75 | Strong, and marketable verbatim ; Feeling better / calmer / more energetic | P_WELLBEING 9 (4.17%), mean 5.00 | Strong, zero dissent ; Guided content — the preset routines and self-care guide | P_CONTENT_PACKS 5 (2.31%), mean 4.80 | Moderate; this is the only *content* asset reviewers praise ; ADHD-specific support | P_ADHD_FIT 3 (1.39%), mean 5.00 | Weak base, unanimous, and differentiated — none of these is what the paywall currently sells: the paywall sells task slots, the value users report is outcomes, structure and guidance — 'that mismatch is the core monetization finding of the report'; D2: sell the outcome, not the task slots
+
+- **Where:** §5.2 table (verbatim); §8.2 D2
+- **This app does:** count-based paywall
+- **User reaction:** purchase-driver
+- **Magnitude:** 0 name a Pro feature; 43 name outcomes
+- **Direction for us:** product-rule · **Report confidence:** table · **Generalisable:** generalisable
+- **Review IDs:** `13815532923`, `12741993650`, `12945940456`, `11602546791`, `11796162718`
+- **Canonical:** C133 Gate on capability, not on quantity; C147 Let people use the product before they pay; C277 Price the paid tier against what the phone already gives away — a paywall that sells task slots, reminders or a checklist is compared to Apple Reminders, Notes and paper, and loses
+
+### R60-034 — Upgrade barriers (verbatim): Barrier | Evidence | n | % of 216 ; The user is asked to pay before the product has demonstrated anything | 11839657635 *"asked for money right away"*; 12502986885 cannot make a plan without the VIP screen; 11892038325 *"Stop playing games and get to plan"* | 19 blocked + 3 interrupted | 8.80% + 1.39% ; Price is anchored against free tools the user already owns | Reminders, Notes, Calendar, paper planner, "other apps" | 6 | 2.78% ; The price is not visible before download | 11839657635: *"Put the price next to your product in the App Store. Its the only correct way to go about selling a product above board."* | 5 (M_MISLEADING_ADVERT) | 2.31% ; Weekly pricing reads as expensive | €8/week, $7/week both cited with outrage; the annual is chosen *to escape* the weekly (12274815966) | 3 named price points | — ; Public reviews warn buyers off at the point of decision | 5 explicit warn-offs, all 1★, all still visible on the listing | 5 | 2.31% ; Trust damage from billing failures | §3.3.3 | 11 | 5.09% — asked to pay before the product has demonstrated anything (19 blocked + 3 interrupted: 'asked for money right away'; 'Stop playing games and get to plan'); price anchored against free tools already owned (6); price not visible before download (5); weekly pricing reads as expensive (€8/week, $7/week cited with outrage; the annual chosen to escape the weekly); five public warn-offs visible at the point of decision; trust damage from billing failures (11)
+
+- **Where:** §5.3 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** downgrade
+- **Magnitude:** barrier table
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** generalisable
+- **Review IDs:** `11839657635`, `12502986885`, `11892038325`, `12274815966`
+- **Canonical:** C029 Billing must be exactly right; C182 A pre-use hard paywall makes every purchase non-evidence-based and non-durable; C189 Public review replies answer the specific complaint — never canned, never argue price, never press a reviewer to change the rating; C190 No weekly billing tier; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate; C277 Price the paid tier against what the phone already gives away — a paywall that sells task slots, reminders or a checklist is compared to Apple Reminders, Notes and paper, and loses
+
+## Tactics the app used
+
+### R60-045 — Experiments worth running (verbatim): # | Experiment | Hypothesis from the corpus | Primary metric ; E1 | Raise the free cap to a full day's routine (8–10 tasks) for a randomized cohort | If §3.3.1 is right, 1★ rate falls sharply and trial starts rise, because users reach the value in §5.2 before the ask | 1★ review rate; trial start rate; D7 retention ; E2 | Replace the count-based paywall with a time-based one (full app, 7 days, no card) | Tests D1 without giving away capacity permanently; addresses 11995687857 (*"I wish it would of let me try it out first"*) | Trial→paid conversion; refund rate ; E3 | Offer a cheap one-time purchase or a low monthly tier alongside the weekly | 6 reviewers name a free substitute and 3 name the weekly price with outrage; nobody objects to paying *something* (M_COST_NOTED, n=3) | ARPU; price-objection review rate ; E4 | Ship a minimal consistency view (completion %, current streak, 30-day grid) | D3 — closes the "just a to-do list" gap for the exact users who paid | Review mentions of tracking; payer rating ; E5 | Delay the rating prompt to after five completed days | D6 — the burst reviews carry no information and decay | Share of reviews with substantive text; rating stability ; E6 | Add a "bulk remove pack" control and a first-run "pick one of three ready-made days" | 12149341496 (*"spend all day deleting tasks"*), 11971799940 (*"3 complete day schedules"*), 11892038325 | Time-to-first-completed-routine — E3: a cheap one-time purchase or a low monthly tier alongside the weekly — six reviewers name a free substitute and three name the weekly price with outrage; nobody objects to paying something (M_COST_NOTED 3) (metrics: ARPU, price-objection review rate)
+
+- **Where:** §8.3 table (verbatim)
+- **This app does:** weekly-only pricing
+- **User reaction:** downgrade
+- **Magnitude:** six experiments
+- **Direction for us:** tactic · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Review IDs:** `11995687857`, `12149341496`, `11971799940`, `11892038325`, `12364644988`, `12410685351`
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C118 Preset routines / templates / programs; C150 Never ask for a rating before the user has used the app; C190 No weekly billing tier; C234 Statistics stay readable on the free tier — gating the progress view removes the motivation loop the category sells
+
+## Insights (the why)
+
+### R60-007 — Theme-family aggregates deduplicated to unique reviewers (verbatim): Family | Unique reviewers | % of 216 | Signal label | Tier | Mean ★ | Window ; Any monetization complaint | 49 | 22.69% | high-priority | dominant | 1.67 | 2024-07-29 → 2026-08-01 ; Any praise of any kind | 122 | 56.48% | high-priority | dominant | 4.72 | 2024-07-12 → 2026-08-01 ; — of which substantive praise (a reason is given) | 55 | 25.46% | high-priority | dominant | 4.64 | 2024-07-12 → 2026-08-01 ; Outcome / benefit praise (organised, productive, motivated, habit, wellbeing) | 43 | 19.91% | high-priority | dominant | 4.79 | 2024-07-12 → 2026-05-17 ; Low-information reviews (no product signal at all) | 92 | 42.59% | high-priority | dominant | 4.52 | 2024-08-01 → 2025-10-20 ; Non-English bodies | 59 | 27.31% | high-priority | dominant | 4.12 | 2024-07-14 → 2026-03-29 ; First-session / not-yet-used reviews | 28 | 12.96% | high-priority | dominant | 4.43 | 2024-08-01 → 2025-10-10 ; Paywall cap / gating | 19 | 8.80% | high-priority | dominant | 1.63 | 2024-08-12 → 2026-03-05 ; Any defect or friction | 16 | 7.41% | high-priority | dominant | 1.81 | 2024-07-29 → 2025-10-11 ; Price objection (too expensive ∪ wish it were free) | 16 | 7.41% | high-priority | dominant | 2.06 | 2024-07-29 → 2026-08-01 ; Trust / integrity accusation (scam ∪ misleading ad ∪ warns others off) | 13 | 6.02% | high-priority | dominant | 1.00 | 2024-07-29 → 2025-07-28 ; Explicit payers | 13 | 6.02% | high-priority | dominant | 1.38 | 2024-08-07 → 2025-10-11 ; Billing & subscription-operations failure | 11 | 5.09% | high-priority | dominant | 1.27 | 2024-08-07 → 2025-10-11 ; Any feature request | 10 | 4.63% | very strong | dominant | 2.60 | 2024-08-09 → 2026-03-29
+
+- **Where:** §3.1 table (verbatim); §3.2
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** family table
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work
+
+### R60-010 — Price is judged too high relative to free tools the user already owns, not absolutely: M_PRICE_TOO_HIGH 13 (6.02%), mean 1.69, seven 1★ — no 4★ or 5★ reviewer calls the price too high; '8€/WOCHE für einen Tagesplaner, den man sich auch selbst im Kalender bauen kann. Frech.' (€8 a WEEK for a day planner you could build yourself in your calendar. Cheeky.); 'einfach zu teuer dafür dass ich das auch gratis in meinen Notizen machen kann'; 'paper planner is cheaper than this LOL'; 'Just use your remind app it's the same thing'; six (2.78%, M_COMPETITOR_SUBSTITUTE) name Apple Reminders, Notes, Calendar or a paper planner — 'the competitive set Mindway is being priced against is not other habit apps — it is the free tools already on the phone'; a count-based paywall ('you have used your 2 free tasks') invites exactly that comparison because task slots are what those free tools give away, while guided routines, progress history and a self-care library are not comparable to Reminders — 'the corpus shows Mindway losing a fight it chose'; 'It would be better not to pay / You would get 5 stars' (GB, 2★)
+
+- **Where:** §3.3.2; §5.3; §8.2 D2
+- **This app does:** task-slot paywall priced against free tools
+- **User reaction:** downgrade
+- **Magnitude:** 13 (6.02%); 6 name a free substitute
+- **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `12486115698`, `12594894710`, `11602546791`, `11601729790`, `12149341496`, `12499969141`
+- **Canonical:** C005 Know which competitors buyers compare against; C064 Price level — where 'fair' turns into 'too expensive'; C214 A bare checklist cannot carry a premium price — it has a free substitute pre-installed on every phone; C277 Price the paid tier against what the phone already gives away — a paywall that sells task slots, reminders or a checklist is compared to Apple Reminders, Notes and paper, and loses
+
+### R60-011 — How the cost is encountered, not the cost itself, determines the rating: three reviewers (M_COST_NOTED, mean 4.33) register the cost as an optional add-on and are fine with it — 'Det koste penger men jeg anbefaler det' (it costs money but I recommend it, NO 4★); 'det er noen ting du kan kjøpe men du må ikke så det er bra' (there are things you can buy but you don't have to, so that's good); 'I am going to enjoy the free parts and move forward' (US 5★) — while the thirteen who met it as a wall averaged 1.69; 'price tolerance exists. It exists among users who were not blocked'
+
+- **Where:** §3.3.2; §4.7; §8.2 D1
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** cost-noted 3 at 4.33★ vs price-rejecters 13 at 1.69★
+- **Direction for us:** product-rule · **Report confidence:** very small n · **Generalisable:** generalisable
+- **Review IDs:** `11491451108`, `12464351073`, `11796162718`
+- **Canonical:** C147 Let people use the product before they pay; C277 Price the paid tier against what the phone already gives away — a paywall that sells task slots, reminders or a checklist is compared to Apple Reminders, Notes and paper, and loses
+
+### R60-017 — The product itself is liked: 122 (56.48%) say something positive, 55 (25.46%) give a reason; 43 of 216 (19.91%, high-priority) describe a concrete benefit with mean 4.79. Organisation and structure is the most-cited benefit — P_ORGANIZED 15 (6.94%), mean 4.80, 13 of 15 at 5★, none below 3★ — described in the same terms across storefronts: 'אני פעם הייתי מבולגנת היום אני מסודרת' (I used to be a mess, today I'm organised, IL); 'it helps me have a better and ontime life' (CA); 'Artık düzenli bir planım var' (Now I have a regular plan, TR); 'organizing all disorganized. You plan what you're gonna do at the next day' (US); 'då vet man om man ska göra' (SE); §8.5: do not touch the core routine-planning model — 43 reviewers in ten languages report it working and not one says the concept is wrong
+
+- **Where:** Executive summary 6; §3.4; §3.4.1; §8.5
+- **This app does:** preset-pack daily routine planner
+- **User reaction:** praise
+- **Magnitude:** 43 (19.91%) at 4.79★; organised 15 at 4.80★
+- **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `12501705991`, `12477160608`, `12503377637`, `12972889389`, `12526880615`, `11484507989`, `11790768706`, `11804101180`, `12063935303`, `12139011574`, `12473384015`, `12481147571`, `12484606713`, `12525175194`, `12499773145`
+- **Canonical:** C134 Lead the store listing with what users actually love; C183 A pre-planned, structured day is the outcome ADHD and autistic users praise
+
+### R60-019 — Motivation and wellbeing: P_MOTIVATION 11 (5.09%, 4.64★) and P_WELLBEING 9 (4.17%) — the only theme of any size with a perfect 5.00 mean and zero dissent: 'It made me calm'; 'THIS APP MAKES ME FEEL SO MUCH BETTER'; 'it's like a bsf i never had'; 'I use it every morning and I feel energized'; 'har gett mig mycket mer motivation'; 'Improves discipline' (NG); P_WELLBEING, P_PRODUCTIVITY and P_GRATITUDE are the only sizeable themes unanimously 5★ — also the themes with the least commercial exposure: 'nobody who feels calmer is arguing about the subscription'
+
+- **Where:** §3.4.3; §4.7
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** wellbeing 9 at 5.00★; motivation 11 at 4.64★
+- **Direction for us:** none · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `12523287589`, `12507208537`, `11908897446`, `12482410746`, `12507661622`, `12521207584`, `12335010867`
+- **Canonical:** C134 Lead the store listing with what users actually love
+
+### R60-021 — Smaller positives (verbatim): Theme | n | % | Signal | Mean ★ | Note ; P_GRATITUDE | 7 | 3.24% | very strong | 5.00 | Unprompted thanks to the maker — 12139011574 *"thank you for picking me up"* ; P_RECOMMEND | 7 | 3.24% | very strong | 4.71 | Explicit advocacy, including one who notes the cost first (11491451108) ; P_PRODUCTIVITY | 7 | 3.24% | very strong | 5.00 | Spans the full corpus life, 2024-07-12 → 2026-05-17 — the only positive theme still present in 2026 ; P_CONTENT_PACKS | 5 | 2.31% | meaningful | 4.80 | The preset routines/guide work as an entry point — 12494629303, 12375650296 ; P_EASE | 3 | 1.39% | meaningful | 4.00 | 11604816252 *"easier to use than others"* ; P_DESIGN | 3 | 1.39% | meaningful | 3.00 | Note the mean: two of the three praise the design *while* objecting to the price ; P_REMINDERS | 1 | 0.46% | weak | 5.00 | 11484507989 ; P_MASCOT | 1 | 0.46% | weak | 5.00 | 11484507989 *"LOVED THE SLIMY MASCOT"* — gratitude to the maker unprompted ('thank you for picking me up'); P_PRODUCTIVITY the only positive theme still present in 2026; the preset routines / guide work as an entry point ('rehberle çok yardım ettiler' — the guide helped a lot); P_DESIGN mean 3.00 because two of three praise the design while attacking the price; 'LOVED THE SLIMY MASCOT'
+
+- **Where:** §3.4.5 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** small positives table
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `12139011574`, `11491451108`, `12494629303`, `12375650296`, `11604816252`, `11484507989`
+- **Canonical:** C117 Mascot / companion character; C118 Preset routines / templates / programs
+
+### R60-029 — Rating distribution (verbatim): Rating | n | % of 216 | Cumulative ; 5★ | 128 | 59.26% | 59.26% ; 4★ | 19 | 8.80% | 68.06% ; 3★ | 17 | 7.87% | 75.93% ; 2★ | 14 | 6.48% | 82.41% ; 1★ | 38 | 17.59% | 100% — bimodal: 59.26% at the top, 17.59% at the bottom, 22.15% in the middle three bands — 'the app produces two distinct experiences, not one mediocre one', and the fork is the paywall. Five-star drivers (segment rates, denominator 128) (verbatim): Driver | n within 5★ | % of 128 ; Low-information body (no product statement) | 71 | 55.47% ; Praise with no reason given | 56 | 43.75% ; Non-English body | 35 | 27.34% ; First session / "just started" — has not used it yet | 20 | 15.62% ; Organisation / structure | 13 | 10.16% ; A specific habit outcome | 10 | 7.81% ; Wellbeing | 9 | 7.03% ; Motivation | 8 | 6.25% ; Productivity | 7 | 5.47% ; Gratitude to the developer | 7 | 5.47% — the modal 5★ review is nine characters long and says 'Love it'; only 37 of 128 (28.91%) state a reason connected to using the product — those 37 are the real positive evidence
+
+- **Where:** §Part 4 table (verbatim); §4.1 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 5★ 59.26%; 1★ 17.59%; 37 substantive 5★
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** generalisable
+- **Review IDs:** `11557625143`, `12223735550`, `11966357701`, `13246223133`, `12525758438`, `11796162718`
+- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C150 Never ask for a rating before the user has used the app
+
+### R60-030 — Four stars (19): the least informative band; only four explain the missing star and three name money or scope (verbatim): ID | Storefront | Date | Why not 5★ ; 11604816252 | US | 2024-08-13 | The trial billed anyway: *"This is a fun app and easier to use than others, but the 3 day free trial isn't truly free."* The only 4★ from a confirmed payer. ; 12405257911 | DK | 2025-03-10 | *"It's good but I wish it was free"* ; 11855509579 | US | 2024-10-20 | Cannot personalise: *"I'll give 4 stars for now til I have used it more… I wish there was a way to personalize or make my own."* ; 13901287389 | TR | 2026-03-29 | Programme pacing is fixed rather than user-controlled — two further 4★ register the cost and accept it, the only place a price mention sits above 3★ without a complaint. Three stars (17): the genuinely mixed band — price/gating with the product liked ('Great for using for daily chores. not great because you have to pay monthly'; 'Seems like a good program but dang! It costs too much. So I deleted it.'), scope gaps, and four contradictions. Two stars (14): where design praise and price rejection coexist — 'Es ist eigentlich sehr schön gemacht und gestaltet aber einfach zu teuer'; 'It is a good app well designed but cost abit of money' (the most recent review in the corpus, 2026-08-01)
+
+- **Where:** §4.2 table (verbatim); §4.3; §4.4
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 4★ 19; 3★ 17; 2★ 14
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** generalisable
+- **Review IDs:** `11604816252`, `12405257911`, `11855509579`, `13901287389`, `11491451108`, `12464351073`, `12097024072`, `11920445220`, `12214985598`, `12480621877`, `11735164096`, `12149341496`, `12594894710`, `14373191293`, `11601729790`, `12364644988`
+- **Canonical:** C109 A free trial must be a real trial; C185 Aesthetic and a polished onboarding convert; they do not retain
+
+### R60-035 — Churn drivers: 4 (1.85%, M_CHURN_DELETE) say they deleted or are deleting — 'How do I get rid of the app?'; uninstalled after the $39.99 charge; 'It costs too much. So I deleted it.'; 'I'm not paying for it. So I'll just delete.. so lame' — two churned over price before paying, one immediately after paying; 'the only churn driver visible in this corpus is money. Not one reviewer says they stopped using Mindway because it was buggy, boring, or ineffective'
+
+- **Where:** §5.4
+- **This app does:** n/a
+- **User reaction:** churn
+- **Magnitude:** 4 (1.85%), all money
+- **Direction for us:** none · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Review IDs:** `11548752988`, `11862274231`, `11920445220`, `12009909717`
+- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C193 When a trial or subscription ends, the user lands on a usable free tier with read-only history — never a cliff
+
+### R60-049 — Visual identity: 'sehr schön gemacht und gestaltet'; 'well designed'; 'Cute🎀'; one dissent — 'too bubbly/cute which is annoying… better off to be more neutral and simple' (F_TONE_CUTE, 2★); a mascot loved by one ('LOVED THE SLIMY MASCOT'); design praise sits beside price rejection in the same sentences
+
+- **Where:** §2.1; §3.5; §8.5
+- **This app does:** cute styling with a mascot
+- **User reaction:** mixed
+- **Magnitude:** praise 3 (mean 3.00) vs dissent 1
+- **Direction for us:** none · **Report confidence:** small n · **Generalisable:** generalisable
+- **Review IDs:** `12594894710`, `14373191293`, `12469906657`, `11774398931`, `11484507989`
+- **Canonical:** C117 Mascot / companion character; C185 Aesthetic and a polished onboarding convert; they do not retain
+
+## Audiences
+
+### R60-018 — Specific habit outcomes — P_HABIT_OUTCOME 12 (5.56%), mean 4.75 — unusually concrete and 'the best raw material the app has for marketing' (verbatim): ID | Storefront | Outcome named ; 12071482446 | GB | *"makes me drink more water"* ; 12184908309 | CA | *"We will drink 4 glasses of water each day"* ; 12480817888 | AU | *"Makes me hydrated makes me work out in a lot"* ; 12350039022 | CA | *"work out, drink more water, make my bed, do good in school, and tidy up my room"* ; 12502661598 | DE | *"hat mir sogar jetzt geholfen mich mal zu dehnen"* — "even got me to stretch" ; 12147822802 | AU | *"an amazing feeling when your room is clean… makes you more active"* ; 11952509585 | US | *"This actually helps me with my chores, even though I'm seven"* ; 12506513925 | IT | *"abituarmi in attività quotidiane che mi fanno bene, come andare a correre"* — "get used to daily activities that are good for me, like going running" ; 11790768706 | US | *"hair care, self-care, exercise, doing chores, and getting organized"* ; 12482410746, 12490144150, 12097024072 | US/FR/US | health routine, changed routine, daily chores — water, workouts, tidying, stretching, getting out of bed, chores ('This actually helps me with my chores, even though I'm seven'); an inferred purchase trigger: visible behaviour change in one named habit
+
+- **Where:** §3.4.2 table (verbatim); §5.2
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** 12 (5.56%) at 4.75★
+- **Direction for us:** none · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `12071482446`, `12184908309`, `12480817888`, `12350039022`, `12502661598`, `12147822802`, `11952509585`, `12506513925`, `11790768706`, `12482410746`, `12490144150`, `12097024072`
+- **Canonical:** C067 Fitness / health tracking use case; C134 Lead the store listing with what users actually love; C140 Market the generic-tracker use case
+
+### R60-020 — The ADHD positioning is landing on a small base: 4 (1.85%) mention ADHD, 3 praise the fit, mean 5.00, zero ADHD-related complaints, across US, TR and CH — 'This app helps me a lot since I was suffering from ADHD from my childhood. It helps me organize my day' (TR, the earliest review, 2024-07-12); 'As someone with ADHD. This helps me stay on task instead of getting distracted' (US); 'Parfait pour un TDAH' (CH); and 'I don't think I have ADHD but it really helps' (US 4★) — the positioning reaching beyond its target rather than narrowing the market; D4: commit to the ADHD positioning and say so in the listing — the only differentiated claim the corpus supports, it costs nothing to state, and Reminders / Notes / Calendar offer nothing comparable (Q6: is the segment commercially material — onboarding self-identification, retention and ARPU by segment)
+
+- **Where:** Executive summary 7; §3.4.4; §6.8; §8.2 D4; §8.4 Q6
+- **This app does:** ADHD in the app name; not in the listing claims
+- **User reaction:** praise
+- **Magnitude:** 4 (1.85%), 3 praise at 5.00★
+- **Direction for us:** do · **Report confidence:** weak base, unanimous · **Generalisable:** generalisable
+- **Review IDs:** `11484507989`, `12191302986`, `12523724002`, `11988875832`
+- **Canonical:** C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers; C183 A pre-planned, structured day is the outcome ADHD and autistic users praise; C213 If you position on ADHD or executive-function help, cancellation must be the easiest flow in the product
+
+## Markets and languages
+
+### R60-037 — The 50-review threshold — one storefront qualifies (verbatim): Storefront | n | % of 216 | Mean ★ | Eligible for standalone claims? ; United States | 101 | 46.76% | 3.56 | ✅ Yes ; Norway | 15 | 6.94% | 4.13 | ⚠️ No — 35 below threshold ; Türkiye | 14 | 6.48% | 4.29 | ⚠️ No ; Australia | 11 | 5.09% | 3.91 | ⚠️ No ; United Kingdom | 9 | 4.17% | 3.67 | ⚠️ No ; Canada | 8 | 3.70% | 3.88 | ⚠️ No ; Sweden | 7 | 3.24% | 4.71 | ⚠️ No ; Mexico | 6 | 2.78% | 4.33 | ⚠️ No ; Germany | 4 | 1.85% | 3.00 | ⚠️ No ; Denmark | 4 | 1.85% | 3.25 | ⚠️ No ; France, Nigeria, Netherlands | 3 each | 1.39% | 4.33 / 5.00 / 5.00 | ⚠️ No ; Czechia, Estonia, Finland, Ireland, Italy, Ukraine | 2 each | 0.93% | 5.00 / 5.00 / 3.00 / 5.00 / 2.50 / 4.50 | ⚠️ No ; AT, AZ, BE, BR, CH, CO, EC, HK, IL, MD, NZ, PL, RO, SA, SK, TH | 1 each | 0.46% | — | ⚠️ No — all 216 included in every global calculation
+
+- **Where:** §6.1 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** US 101 eligible; 34 others below
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue
+
+### R60-038 — United States — n = 101 (46.76%), mean 3.56 — simultaneously the biggest market, the only paying market in evidence, and the angriest (verbatim): Metric | US (n=101) | Non-US (n=115) | Global (n=216) ; Mean ★ | 3.56 | 4.11 | 3.86 ; 5★ | 55 (54.46%) | 73 (63.48%) | 128 (59.26%) ; 1★ | 26 (25.74%) | 12 (10.43%) | 38 (17.59%) ; Any monetization complaint | 25 (24.75%) | 24 (20.87%) | 49 (22.69%) ; Confirmed payers | 11 (10.89%) | 2 (1.74%) | 13 (6.02%) ; Billing-operations failures | 10 (9.90%) | 1 (0.87%) | 11 (5.09%) ; Paywall cap complaints | 6 (5.94%) | 13 (11.30%) | 19 (8.80%) ; Product judged under-built | 8 (7.92%) | 2 (1.74%) | 10 (4.63%) ; First-session / not-yet-used | 23 (22.77%) | 5 (4.35%) | 28 (12.96%) ; Low-information | 40 (39.60%) | 52 (45.22%) | 92 (42.59%) — 68.42% of all 1★ (26 of 38) are American against a 46.76% share (25.74% of US reviews are 1★, high-priority); the US owns the billing crisis almost exclusively (10 of 11); Americans complain about value ('just a to-do list' 7.92% vs 1.74%) and payment failures; everyone else complains about access (paywall cap 11.30% vs 5.94%) — 'the US market has bought and been disappointed; the rest of the world has been stopped at the door'; US reviews are the least mature (22.77% written before use vs 4.35%); US positives are the global positives, thinner. Global comparison (verbatim): Dimension | US | Rest of world ; Complaint type | Paid and disappointed; billing failures | Blocked before paying ; Mean rating | 3.56 | 4.11 ; Payers in evidence | 11 | 2 ; Review substance | 22.77% written before use | 45.22% low-information ; Price framing | Dollar amounts, refunds, subscriptions | "it's not free", "it costs money" — uniform everywhere: the paywall complaint (13 storefronts, 6 languages, same structure — 'I tried to build my routine and was stopped'), the benefit claims in near-identical words ('Mindway's value proposition translates'), the absence of defect reports; the rest-of-world 4.11 mean is not a healthier market — 'users who never got far enough in to be disappointed expensively'
+
+- **Where:** §6.2 table (verbatim); §6.11 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** US 3.56★, 1★ 25.74%, 10 of 11 billing failures
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** generalisable
+- **Review IDs:** `13251351092`, `11484507989`, `12191302986`, `11988875832`
+- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue; C231 Audit the sales funnel per market — the same product can rate 4.3 in one storefront and 2.1 in another on billing alone
+
+### R60-039 — Limited-evidence storefronts (all below 50, observations only): Norway 15 (4.13★) — 12 arrived in the burst, 9 of 15 low-information ('SLAY', 'COOL'), the clearest illustration of the burst's composition; Türkiye 14 (4.29★) — 12 Turkish-language, 9 in the burst, holds the only reviewer who calls the app free and the earliest ADHD endorsement, two price complaints; Australia 11 (3.91★) — supplies the two most recent reviews ('This app is keeping me so focused', 5★ 2026-05; 'good app well designed but cost abit of money', 2★ 2026-08) and the only non-US cancellation failure — 'the product works, the price does not'; United Kingdom 9 (3.67★) — the only considered payer review, the forced-rating disclosure, a paywall block, a paywall interruption and 'You would get 5 stars' if free. 4–8 review storefronts (verbatim): Storefront | n | Mean ★ | What is there ; Canada | 8 | 3.88 | Split: two habit-outcome 5★ (12184908309, 12350039022) against a paywall 1★ (12945940456) and an unexplained 1★ (12524443211) ; Sweden | 7 | 4.71 | Entirely 2025-04, none below 4★, 4 of 7 low-information ; Mexico | 6 | 4.33 | All Spanish; 5 positive, one paywall 2★ (12532852430) ; Germany | 4 | 3.00 | The lowest mean of any storefront with 4+ reviews. Two of the four are price attacks (12486115698 *"Abzocke"*, 12594894710 *"zu teuer"*), both naming a free substitute. German-language reviewers are the most explicitly price-analytical in the corpus. ; Denmark | 4 | 3.25 | Three low-information, one M_WISH_FREE (12405257911) — Germany 3.00 the lowest of any storefront with 4+, two price attacks ('Abzocke', 'zu teuer') both naming a free substitute: German-language reviewers are the most explicitly price-analytical. 1–3 review callouts: CH 'Parfait pour un TDAH'; CO, NZ, PL single 1★ reviews all for the paywall; Italy 2.50 on two — one blocked, one who got through and reported running
+
+- **Where:** §6.3; §6.4; §6.5; §6.6; §6.7 table (verbatim); §6.8
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** NO 15; TR 14; AU 11; GB 9; DE 4 at 3.00★
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `12487058725`, `12499419764`, `11491451108`, `12464351073`, `12483425744`, `12494629303`, `12499773145`, `11973014397`, `12643837955`, `14073659974`, `14373191293`, `13251351092`, `12149341496`, `11910326853`, `12502986885`, `12136204580`, `12499969141`, `12184908309`, `12350039022`, `12945940456`, `12524443211`, `12532852430`, `12486115698`, `12594894710`, `12405257911`, `12523724002`, `12479919873`, `12513475180`, `12741993650`, `12502761489`, `12506513925`
+- **Canonical:** C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers; C062 Weight English-speaking rich markets; volume ≠ revenue; C277 Price the paid tier against what the phone already gives away — a paywall that sells task slots, reminders or a checklist is compared to Apple Reminders, Notes and paper, and loses
+
+### R60-040 — High-spend group (a priori definitional proxy — US, CA, GB, DE, FR, IT, ES, NL, BE, CH, AT, IE, Nordics, AU, NZ, JP, KR, HK, IL, SA, CN — not a measurement, not downloads) (verbatim): Group | n | % of 216 | Mean ★ | Monetization complaints | Payers ; High-spend storefronts | 178 | 82.41% | 3.75 | 43 (24.16% of 178) | 13 (7.30% of 178) ; All other storefronts | 38 | 17.59% | 4.37 | 6 (15.79% of 38) | 0 — high-spend storefronts rate 0.62 stars lower, complain about money about half again as often, and hold every confirmed payer; the obvious explanation (the app's real prices apply there) is plausible but unproven because the group is 82% of the corpus and all of the US — a corroboration of §6.2, not an independent finding. High-review-volume group (verbatim): Storefront | n | Mean ★ | Dominant theme ; US | 101 | 3.56 | Payment failure and value disappointment ; NO | 15 | 4.13 | Low-information burst reviews ; TR | 14 | 4.29 | Positive, price-sensitive ; AU | 11 | 3.91 | Split; supplies the newest reviews ; GB | 9 | 3.67 | Paywall friction, one considered payer — review volume is a distribution artefact as much as a market signal: Norway and Türkiye rank second and third almost entirely because of the burst; 'do not use this ranking as a proxy for market size, revenue or installs'
+
+- **Where:** §6.9 table (verbatim); §6.10 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** high-spend 178 at 3.75★ vs other 38 at 4.37★; payers 13 vs 0
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** generalisable
+- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue
+
+## Dated events and trends
+
+### R60-041 — Three periods cut at natural breaks (verbatim): Period | Window | n | % of 216 | Mean ★ | 5★ | 4★ | 3★ | 2★ | 1★ | US share ; P1 — launch half-year | 2024-07-12 → 2024-12-23 | 75 | 34.72% | 3.51 | 39 | 6 | 5 | 4 | 21 | 85.3% ; P2 — international burst | 2025-01-02 → 2025-04-28 | 127 | 58.80% | 4.13 | 83 | 12 | 11 | 8 | 13 | 26.8% ; P3 — long tail | 2025-05-08 → 2026-08-01 | 14 | 6.48% | 3.21 | 6 | 1 | 1 | 2 | 4 | 21.4% — P3 is 14 reviews; no P3 claim above low confidence. Substance by period (verbatim): Measure | P1 (n=75) | P2 (n=127) | P3 (n=14) ; Low-information reviews | 20 (26.67%) | 67 (52.76%) | 5 (35.71%) ; Praise with no reason | 17 (22.67%) | 47 (37.01%) | 3 (21.43%) ; Non-English bodies | 3 (4.00%) | 51 (40.16%) | 5 (35.71%) ; First-session reviews | 15 (20.00%) | 12 (9.45%) | 1 (7.14%) ; Mean ★ | 3.51 | 4.13 | 3.21 — P2 added 52 non-English and 47 reason-free praise reviews and the mean rose 0.62; when the burst stopped the mean fell to 3.21, below launch level
+
+- **Where:** §7.1 table (verbatim); §7.3 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** P1 75 at 3.51★; P2 127 at 4.13★; P3 14 at 3.21★
+- **Direction for us:** none · **Report confidence:** high confidence · **Generalisable:** app-specific
+- **Canonical:** C076 Never seed the launch rating — templated or bought reviews decay and leave the markets they cover unmeasurable; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire
+
+### R60-042 — Trend 3 — the paywall complaint is the one theme that grows across all three periods (verbatim): Period | M_PAYWALL_BLOCK | % of period ; P1 | 4 / 75 | 5.33% ; P2 | 11 / 127 | 8.66% ; P3 | 4 / 14 | 28.57% — four P3 reviews across four storefronts and 10 months describing the same block; price complaints 6.67% → 4.72% → 14.29% and the last review in the corpus is a price complaint. Trend 4 — billing failures cluster in P1 then thin (verbatim): Theme | P1 | P2 | P3 ; M_PAID_CONFIRMED | 10 (13.33%) | 2 (1.57%) | 1 (7.14%) ; M_UNAUTHORIZED_CHARGE | 4 (5.33%) | 0 | 0 ; M_CANCEL_DIFFICULTY | 3 (4.00%) | 0 | 1 (7.14%) ; M_TRIAL_PROBLEM | 3 (4.00%) | 0 | 0 ; M_REFUND_REQUEST | 3 (4.00%) | 1 (0.79%) | 0 ; M_SCAM_ACCUSATION | 4 (5.33%) | 1 (0.79%) | 0 ; M_MISLEADING_ADVERT | 4 (5.33%) | 1 (0.79%) | 0 — two readings the corpus cannot separate: improvement, or composition (P1 85.3% US, P2 26.8% US, billing 10-of-11 US); an AU reviewer still asking how to cancel in 2025-10, 14 months after the first report; safe statement: the billing complaint rate among US reviewers did not visibly improve, the US share fell — treat as open (Q3). Trend 5 — benefit claims peak in P2 and vanish in P3 (habit outcome 4 → 8 → 0; motivation 3 → 8 → 0; wellbeing 2 → 7 → 0) while paywall complaints rose to 28.57% — 'the corpus's least comfortable pattern'; P_PRODUCTIVITY has the one genuine 2026 positive. Trend 7 — both crashes within five days in 2024-10, never again (a bad build, inferred). §7.9: nothing after 2026-08-01; nothing tied to a release; whether the cap changed unknown; whether anything was fixed unknown — no reviewer reports a problem resolved and is_edited is false everywhere
+
+- **Where:** §7.4 table (verbatim); §7.5 table (verbatim); §7.6; §7.8; §7.9
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** paywall 5.33% → 8.66% → 28.57%
+- **Direction for us:** none · **Report confidence:** medium-high confidence · **Generalisable:** generalisable
+- **Review IDs:** `12741993650`, `12945940456`, `12643837955`, `13815532923`, `11602546791`, `14373191293`, `13251351092`, `14073659974`, `11789667295`, `11802262343`
+- **Canonical:** C031 Crashes / launch failures; C071 Never ship and walk away; C133 Gate on capability, not on quantity; C196 A subscription is a promise of continued delivery — back it with a visible cadence; C231 Audit the sales funnel per market — the same product can rate 4.3 in one storefront and 2.1 in another on billing alone
+
+### R60-050 — Acquisition and reviews both collapsed after April 2025: monthly volume 5 → 11 → 11 → 18 → 19 → 11 → 20 → 9 → 39 → 59 → 2 → 1 → 1 → 2 → 1 → 3 → 0 → 0 → 0 → 0 → 2 → 0 → 1 → 0 → 0 → 1; the drop is not gradual — April 59, May 2; a habit app with a healthy active base normally produces a continuing review trickle and Mindway produces roughly one a month across 2025-05 → 2026-08 including two four-month silences; review volume is not installs (Q4)
+
+- **Where:** §1.4; §7.2; §8.4 Q4
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 202 in 291 days; 14 in 459
+- **Direction for us:** none · **Report confidence:** high confidence · **Generalisable:** generalisable
+- **Canonical:** C071 Never ship and walk away; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire
+
+## Positioning
+
+### R60-001 — Mindway: Daily Routine Planner (App Store ID 6502995200) by DEEP FLOW SOFTWARE SERVICES - FZCO (bundle com.codespaceapps.routineplanner; store snippet names Codespace Dijital Hizmetler A.Ş.) — a daily routine planner built from preset self-care / chores / hydration task packs, positioned on ADHD; 216 reviews, 35 storefronts, 2024-07-12 → 2026-08-01 (750 days), mean 3.856; extracted 2026-09-08, analysed 2026-09-12; subscription 'Mindway Pro' / 'VIP' at ~$7 / €8 per week or $39.99–40 per year with a $0.99 paid trial and a free tier capped at roughly 1–3 tasks
+
+- **Where:** header lines 1-6
+- **This app does:** routine packs; weekly/annual subscription; 1–3 task free cap
+- **User reaction:** mixed
+- **Magnitude:** 216 reviews; mean 3.856
+- **Direction for us:** none · **Report confidence:** corpus-level fact · **Generalisable:** app-specific
+- **Review IDs:** `11804101180`
+- **Canonical:** C214 A bare checklist cannot carry a premium price — it has a free substitute pre-installed on every phone
+
+## Anti-patterns
+
+### R60-005 — A coerced rating prompt fired before use: 'Good but forcing me to rate😅🙄 / ITS FORCING MEE' (GB, 5★); 28 reviews (12.96%) explicitly say the reviewer has only just started and not yet used the app (20 of the 128 5★, 15.62%: 'I'm ready / I'm excited'; 'Lo voy descargando y ya me esta gustando'); two 1★ reviews with neutral text ('To soon to say'; 'Not sure about app yet') look like users rating the experience of being asked to rate; the burst bought a rating, not a reputation, and it decayed the moment it stopped; D6: stop harvesting ratings from users who have not used the app — a prompt after a routine completed on the fifth consecutive day would produce fewer, better, more durable reviews (E5: delay the prompt to after five completed days; metric: share of reviews with substantive text, rating stability)
+
+- **Where:** Eight warnings 8; §3.5; §4.6; §8.2 D6; §8.3 E5
+- **This app does:** rating prompt on first session
+- **User reaction:** mixed
+- **Magnitude:** 28 (12.96%) rate before use; 1 coerced
+- **Direction for us:** dont · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Review IDs:** `11910326853`, `11557625143`, `12223735550`, `11966357701`, `13246223133`, `12006568991`, `12212460715`
+- **Canonical:** C076 Never seed the launch rating — templated or bought reviews decay and leave the markets they cover unmeasurable; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C150 Never ask for a rating before the user has used the app
+
+### R60-008 — The free tier is capped at roughly 1–3 tasks and that cap is the #1 named cause of a bad review: M_PAYWALL_BLOCK 19 of 216 (8.80%, high-priority), mean 1.63, 13 of 19 are 1★; reviewers name the cap as one task, two and three, in six languages — 'I wanted to add third task to do and I can't do it without paying' (PL); 'it wouldn't let me add more than one actives' (CA); 'Only good if you have pro otherwise you can only have two steps' (AU); 'si on ne paie pas leur truc on a accès à presque rien. Ça se limite à deux tâches par jour' (FR); 'you need to pay money to just write some freaking habits' (NO); 'Sarebbe un app bellissima se non fosse tutto da pagare' (IT); 'quería organizar mi día y no puedo ya que solo por hacer algo me pide pagar' (CO); 'I want to create as many tasks as I want without having to pay' (US, 2026-03); it is a product finding, not a pricing finding — every one of these users had already decided to build a routine and was stopped mid-task; the cap is set below the app's own minimum viable use ('a daily routine of two tasks is not a routine, so the free tier cannot demonstrate the thing the paid tier sells'); it spans the whole corpus life and is the only major theme still present in the 2026 tail — 4 of the 14 post-April-2025 reviews (28.57%), growing 5.33% (P1) → 8.66% (P2) → 28.57% (P3); twenty months after the first report the cap was still stopping users, and nothing suggests it changed except possibly downward
+
+- **Where:** Executive summary 2; §2.2; §3.3.1; §7.4; §8.2 D1
+- **This app does:** free tier caps tasks at 1–3
+- **User reaction:** 1★-burst
+- **Magnitude:** 19 (8.80%) at 1.63★; 13 of 38 1★ (34.21%)
+- **Direction for us:** dont · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `12741993650`, `12945940456`, `12480621877`, `12214985598`, `12483425744`, `12502761489`, `12479919873`, `13815532923`, `12097024072`, `11602546791`, `12532852430`, `12643837955`
+- **Canonical:** C133 Gate on capability, not on quantity; C147 Let people use the product before they pay; C182 A pre-use hard paywall makes every purchase non-evidence-based and non-durable
+
+### R60-014 — Trust: scam accusations and warn-offs — 13 (6.02%), every one 1★: M_SCAM_ACCUSATION 5 ('I am not buying something sneaky'; 'It seems scammy'; 'it's a scam😡'; 'SCAM'; 'Abzocke'); M_MISLEADING_ADVERT 5 ('Click bait / Too expensive'; 'Not set up as advertised'; 'is it free? No. So Change to paid.' (TR); 'Don't wanna be that person but it said it was free' (NZ); 'The ads made it look fun and helpful… Put the price next to your product in the App Store. Its the only correct way to go about selling a product above board'); M_ANTI_RECOMMEND 5 ('Seriously don't waste your time or money'; 'Don't waste your money'; 'Don't ever download this app'; 'Don't download if you need for a routine') — five warn-offs still visible on the listing at the point of decision; two reviewers (S_AD_ACQUISITION) say an advertisement brought them in and both rated 1★ — the complaint is the gap between what the ad promised and what the first session delivered: ad → questionnaire → immediate request for money; F4: state the subscription price and the free-tier limit in the App Store listing and in the first ad frame — removes the 'click bait' / 'it said it was free' class of review entirely
+
+- **Where:** Executive summary 5; §3.3.4; §5.3; §8.1 F4
+- **This app does:** ads promise a free planner; price hidden until after onboarding
+- **User reaction:** 1★-burst
+- **Magnitude:** 13 (6.02%) at 1.00★; 2 ad-sourced both 1★
+- **Direction for us:** dont · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `11839657635`, `11939232936`, `12011759865`, `12040812221`, `12486115698`, `11549240926`, `11701229304`, `11973014397`, `12513475180`, `12274815966`, `12410685351`, `12591053183`, `12945940456`, `11802262343`
+- **Canonical:** C111 No long quiz before the price; show the price up front; C181 If the app is paid-only, say so in the subtitle and first screenshot; C189 Public review replies answer the specific complaint — never canned, never argue price, never press a reviewer to change the rating; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
+
+## Things not to do
+
+### R60-016 — Paywall interruption during use — 3 (1.39%, meaningful, corroborated), mean 1.33: 'every 5 seconds it keeps brining up these Hey pay me now Pop Ups… let me do my activities and move on with my life'; 'It keeps saying do you want a free trial for something'; 'it won't allow me make a plan without showing free trial vip' — an upsell that fires inside the task the user came to do, not at a boundary; F5: stop firing the upsell inside an in-progress task — 'a description of a broken interaction, not of a pricing disagreement'
+
+- **Where:** §3.3.6; §3.5; §8.1 F5
+- **This app does:** upsell modal inside task flow
+- **User reaction:** complaint
+- **Magnitude:** 3 (1.39%) at 1.33★
+- **Direction for us:** dont · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Review IDs:** `12011759865`, `12136204580`, `12502986885`
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C137 Show the paywall at the moment of need, not on app open; C240 Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap
+
+### R60-047 — What not to change: do not touch the core routine-planning model (43 reviewers, 4.79★, ten languages, nobody says the concept is wrong); do not redesign the visual identity on one 'too bubbly/cute' complaint when three praise the design (two while complaining about price); do not chase the feature backlog ahead of D1–D3; do not read the 3.86 star average as the health measure — it is 42.59% content-free reviews and a two-month burst; the substantive corpus averages 3.36 and the payer segment 1.38
+
+- **Where:** §8.5
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** keep list
+- **Direction for us:** dont · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Review IDs:** `11774398931`, `12469906657`, `12594894710`, `14373191293`
+- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C183 A pre-planned, structured day is the outcome ADHD and autistic users praise; C185 Aesthetic and a polished onboarding convert; they do not retain
+
+## Things to do
+
+### R60-043 — Immediate fixes — the evidence is unambiguous (verbatim): # | Fix | Findings | Why now ; F1 | Make cancellation one tap from the main screen and confirm it in writing. | §3.3.3, §5.5.1 — 4 reviewers could not cancel, 1 cancelled and was charged anyway; mean ★ 1.00 | Every one of these became a public 1★ review. This is the cheapest star recovery available and it removes the most serious store risk in the report. ; F2 | Audit the trial-to-charge flow end to end, specifically: the $0.99 paid trial, the "3-day free trial" that billed a week, and the monthly-vs-annual selection screen. | §3.3.3, §5.5.2–3 — 11862274231, 11604816252, 11939232936 | Three distinct failure descriptions from three users is a flow problem, not three user errors. ; F3 | Put an in-app support route in front of the review prompt, and answer it. | §3.5 — 7 reviewers (3.24%) used a 1★ review as a help desk; the one who reached the developer rated 3★ instead of 1★ | Seven support tickets became permanent public 1★ reviews. ; F4 | State the subscription price and the free-tier limit in the App Store listing and in the first ad frame. | §3.3.4 — 5 misleading-advert reports, 2 ad-sourced reviewers both 1★; 11839657635 asks for exactly this | Removes the "click bait" / "it said it was free" class of review entirely. ; F5 | Stop firing the upsell inside an in-progress task. | §3.3.6 — 12011759865, 12136204580, 12502986885 | *"let me do my activities and move on with my life"* is a description of a broken interaction, not of a pricing disagreement. ; F6 | Add AM/PM time entry. | §3.7 — 11735164096 | One review, one line of work, and it is the only reported input-level usability defect in the corpus. — F1 cancellation one tap from the main screen, confirmed in writing (removes the most serious store risk); F2 audit the trial-to-charge flow end to end; F3 an in-app support route in front of the review prompt, answered; F4 state the subscription price and the free-tier limit in the listing and the first ad frame; F5 stop firing the upsell inside an in-progress task; F6 add AM/PM time entry
+
+- **Where:** §8.1 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** complaint
+- **Magnitude:** six fixes
+- **Direction for us:** do · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Review IDs:** `11862274231`, `11604816252`, `11939232936`, `11839657635`, `12011759865`, `12136204580`, `12502986885`, `11735164096`
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C093 No upsell nagging without a 'never ask again' option; C109 A free trial must be a real trial; C112 In-app cancellation; C171 Accessibility stack: VoiceOver, motion, sound and light sensitivity, text size; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
+
+## Contradictions
+
+### R60-025 — Two apparent contradictions resolved: 'it's free' (one Turkish 5★: 'bide ücretsiz') vs 'you have to pay for everything' (nineteen) are compatible — a user who needs one or two tracked habits never hits the cap ('The only thing I don't like is that you have to pay for the pro status. I am going to enjoy the free parts and move forward'); the free tier is usable, it is not usable as a daily routine planner; 5★ reviews that contain complaints ('C'est bien mais il y'a plein de truc payant') are counted in both places, not dropped
+
+- **Where:** §2.3
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 1 'free' vs 19 blocked
+- **Direction for us:** none · **Report confidence:** anecdotal · **Generalisable:** generalisable
+- **Review IDs:** `12494629303`, `11796162718`, `12525758438`
+- **Canonical:** C133 Gate on capability, not on quantity
+
+### R60-032 — Rating / text contradictions — 8 (3.70%), disclosed not dropped (verbatim): ID | Rating | Contradiction ; 12228795122 | 3★ | *"This app has motivated me so much this month and i love this soo much❤️❤️✨"* — unqualified praise at 3★ ; 12471944850 | 3★ | Title *"Fantastisk"*, body *"Elsker det"* ("Love it") — at 3★ ; 12508081500 | 3★ | *"Baya iyi bayıldım yani"* ("Really good, I loved it") — at 3★ ; 12972889389 | 3★ | *"It's a very good app… organizing all disorganized"* — at 3★ ; 11590430878 | 1★ | *"I love it but I won't let me write down like watch tv or stretch"* — praise plus one limitation, rated 1★ ; 12006568991 | 1★ | *"To soon to say"* — neutral text, 1★ ; 12212460715 | 1★ | *"Not sure about app yet"* — neutral text, 1★ ; 12525758438 | 5★ | *"C'est bien mais il y'a plein de truc payant"* — a paywall complaint, rated 5★ — they run in both directions and roughly cancel but are not symmetrical in kind: the four 3★ praise cases are short non-English or casual reviews where the star looks careless; the two 1★ neutral cases look like users rating the experience of being asked to rate; 'a star rating in this corpus is a weaker signal than usual; the theme counts are the reliable layer'. §4.7: no theme is purely one band — M_PAYWALL_BLOCK is 13×1★, 2×2★, 3×3★, 1×5★; M_PRICE_TOO_HIGH 0×5★ and 0×4★ but M_COST_NOTED 1×5★ 2×4★; M_PAID_CONFIRMED 11 of 13 at 1★ but one 4★ and one 3★; P_DESIGN mean 3.00
+
+- **Where:** §4.6 table (verbatim); §4.7
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 8 (3.70%)
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** generalisable
+- **Review IDs:** `12228795122`, `12471944850`, `12508081500`, `12972889389`, `11590430878`, `12006568991`, `12212460715`, `12525758438`
+- **Canonical:** C150 Never ask for a rating before the user has used the app
+
+## Data caveats and method
+
+### R60-002 — Method: every number carries count, percentage, denominator, scope, window, signal label and IDs; §9.6 theme → IDs and §9.7 all 216 → themes. Files (verbatim): File | Role | Records ; App Store Reviews/60. Mindway - Daily Routine Planner - Self Care & ADHD Habit Tracker/reviews.jsonl | Primary corpus — every finding derives from this | 216 ; .../by_country/*.jsonl | 35 per-storefront files, used only for reconciliation | 216 (union) ; .../manifest.json | App identity, extraction timestamp, declared counts | — ; .../_state.json | Per-storefront crawl completion state | 125 storefronts polled ; Temp/60-all-reviews.txt | Full text dump, date-ordered, used for the manual read | 216 ; Temp/60-review-classification.py | Hand-curated review → theme map | 62 themes ; Temp/60-validate.py, Temp/60-aggregate.py, Temp/60-periods.py, Temp/60-segments.py, Temp/60-gen-appendix.py | Validation, aggregation, segmentation, appendix generation | — || Schema (verbatim): Field | Type | Used for | Notes ; review_id | string | Audit key for every claim | 216 unique, no collisions ; app_id | string | Identity check | 6502995200 on all 216 ; app_name | string | Identity check | constant ; country | string | Storefront analysis (Part 6) | 35 distinct ; country_name | string | Display | — ; rating | int 1–5 | Part 4 | full 1–5 range present ; title | string | Read and classified | never empty ; body | string | Primary evidence; read in full, in original language | median 36.5 chars, mean 65.2, range 1–507 ; author | string | Burst / sockpuppet check | 216 distinct authors ; date | ISO-8601 UTC | Part 7 | 2024-07-12 → 2026-08-01 ; vote_count / vote_sum | int | Community corroboration | only 17 reviews (7.87%) carry any vote ; is_edited | bool | Revision detection | 0 true — no review in the corpus is marked edited || Reconciliation (verbatim): Check | Result ; Records in reviews.jsonl | 216 ; Records read individually, in full, in original language | 216 (100%) ; Unique review_id values | 216 — no duplicates ; Unique authors | 216 — no repeated author ; Exact duplicate title+body pairs | 0 ; Duplicate / near-duplicate reviews removed | 0 — no deduplication was applied or needed ; Union of the 35 by_country/*.jsonl files | 216 ; In merged corpus but missing from country files | 0 ; In country files but missing from merged corpus | 0 ; manifest.json declared total_reviews | 216 — matches ; manifest.json declared per-country counts | match observed counts on all 35 storefronts ; manifest.json declared rating distribution | {5:128, 4:19, 3:17, 2:14, 1:38} — matches ; manifest.json declared mean_rating | 3.856 vs computed 3.8565 — matches ; Reviews assigned to ≥1 theme | 216 / 216 (100%) ; Reviews assigned to 0 themes | 0 ; Unknown review IDs referenced by the theme map | 0 ; Intra-theme duplicate IDs | 0 ; Review IDs cited in this report but absent from reviews.jsonl | 0 (verified — §9.4) — no version, device, subscription-state or purchase field; is_edited false on all 216 so no change of mind is traceable; 81 bodies (37.50%) ≤20 characters, 116 (53.70%) ≤40; five bodies carried raw HTML entities, decoded; 125 storefronts polled, all complete, 90 returned zero reviews (Japan, Korea, Spain, India, Russia, Indonesia, Philippines all zero) — absence of reviews, not of collection. Processing: schema inspection, reconciliation before reading, full manual read in original language (Turkish 12, Norwegian 8, Spanish 6, Swedish 5, German 4, French 3, Danish 3, Ukrainian 2, Italian 2, Dutch 2 and singles), 62 hand themes recorded per review so the theme → ID map is derived, Temp/60-validate.py PASS, aggregation by script, external corroboration from search snippets only (apps.apple.com egress-blocked), every cited ID re-checked; the report sits in App Store Reports/ because CLAUDE.md makes the data folders read-only
+
+- **Where:** §How to read this; §1.1 table (verbatim); §1.2 table (verbatim); §1.3 table (verbatim); §1.5
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** 216/216 read (100%)
+- **Direction for us:** none · **Report confidence:** method statement · **Generalisable:** app-specific
+- **Review IDs:** `11735164096`, `11743103424`, `11789667295`, `11790768706`, `12046853210`
+- **Canonical:** C027 Localise early — it unlocks revenue
+
+### R60-003 — Warnings: nearly half the corpus says nothing about the product — 92 of 216 (42.59%) carry no product information (a first name, 'Hej', 'SLAY'), mean 4.52 vs corpus 3.86, so the star average is built substantially on reviews that contain no evidence; remove them and the remaining 124 average 3.36 — use theme counts, not the star average; against the 124-review substantive denominator monetization complaints are 48 (38.71%) and substantive praise 55 (44.35%); only 13 reviewers (6.02%) give direct evidence of paying (mean 1.38) and the segment is almost certainly biased toward the dissatisfied — 'do not read payers are unhappy as all payers are unhappy'; only the US clears the 50-review threshold (101); storefront ≠ nationality ≠ language (59 bodies, 27.31%, non-English across 22 storefronts); no version field so no release attribution; single-analyst classification with boundary rules published; external facts second-hand
+
+- **Where:** Eight warnings 1, 5, 6, 7; §1.6; §3.6
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** 92 low-info (42.59%); substantive corpus 124 at 3.36★
+- **Direction for us:** none · **Report confidence:** method statement · **Generalisable:** generalisable
+- **Review IDs:** `12484500703`, `12526421035`, `12487058725`, `12471622906`
+- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire
+
+### R60-004 — The corpus has a 4-month burst that changes its composition: 98 of 216 (45.37%) fall in 2025-03 and 2025-04 alone, mean 4.12, 63 of them 5★, from 32 storefronts (US only 15; Norway 12, Turkey 9, Sweden 7, Australia 6, Canada 5); busiest days 2025-04-04 (13 reviews, 11 storefronts), 2025-03-27 (9), 2025-04-05 (9), 2025-04-10 (9) vs a pre-burst daily max of 3; all 216 authors distinct, no two bodies identical; burst reviews are markedly less informative (52.76% low-information in P2 vs 26.67% in P1); the inference (stated as inference): a paid user-acquisition push into non-US markets plus an in-app rating prompt, not a review farm. Then the corpus effectively stops: after 2025-04-28 only 14 reviews (6.48%) in 459 days with a 136-day gap; 202 of 216 in the first 291 days — 'whatever produced the burst was switched off, and no organic review flow replaced it'; the P2 rating rise (+0.62) and the substance collapse are the same event and the mean fell back to 3.21 afterwards, below launch level — a rating history that treats the burst as product improvement is reading a marketing artefact. Month table (verbatim): Month | Reviews | % of 216 | Mean ★ ; 2024-07 | 5 | 2.31% | 3.20 ; 2024-08 | 11 | 5.09% | 3.18 ; 2024-09 | 11 | 5.09% | 3.64 ; 2024-10 | 18 | 8.33% | 3.78 ; 2024-11 | 19 | 8.80% | 3.53 ; 2024-12 | 11 | 5.09% | 3.36 ; 2025-01 | 20 | 9.26% | 4.15 ; 2025-02 | 9 | 4.17% | 4.22 ; 2025-03 | 39 | 18.06% | 4.13 ; 2025-04 | 59 | 27.31% | 4.12 ; 2025-05 | 2 | 0.93% | 3.50 ; 2025-06 | 1 | 0.46% | 1.00 ; 2025-07 | 1 | 0.46% | 1.00 ; 2025-08 | 2 | 0.93% | 4.00 ; 2025-09 | 1 | 0.46% | 5.00 ; 2025-10 | 3 | 1.39% | 3.67 ; 2026-03 | 2 | 0.93% | 2.50 ; 2026-05 | 1 | 0.46% | 5.00 ; 2026-08 | 1 | 0.46% | 2.00
+
+- **Where:** Eight warnings 2, 3; §1.4 table (verbatim); §7.2; §7.3
+- **This app does:** acquisition burst + rating prompt
+- **User reaction:** 5★-burst
+- **Magnitude:** 98 of 216 (45.37%) in two months; 14 after
+- **Direction for us:** none · **Report confidence:** high confidence · **Generalisable:** generalisable
+- **Review IDs:** `11910326853`
+- **Canonical:** C076 Never seed the launch rating — templated or bought reviews decay and leave the markets they cover unmeasurable; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire
+
+### R60-009 — The cap number is inconsistent across reviewers and the inconsistency matters: three tasks in 2024-08 and 2025-06, two in 2024-12 → 2025-03, one in 2025-04 and 2025-07 — non-monotonic, so it cannot be read as a single change; three readings: the cap changed, it is per-routine not per-day, or reviewers count differently; unresolved (Q1: config history, per-build paywall audit); at every reported value the free tier is too small to build a real daily routine
+
+- **Where:** §2.2; §7.9; §8.4 Q1
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** 1 / 2 / 3 tasks reported
+- **Direction for us:** none · **Report confidence:** research question · **Generalisable:** app-specific
+- **Review IDs:** `11602546791`, `12741993650`, `12945940456`, `12532852430`
+- **Canonical:** C133 Gate on capability, not on quantity
+
+### R60-046 — Research questions the corpus cannot answer (verbatim): # | Question | Why the corpus cannot answer it | How to answer it ; Q1 | What is the free-tier cap, and has it changed? | Reviewers report 1, 2 and 3 tasks in a non-monotonic sequence (§2.2) | Config history; per-build paywall audit ; Q2 | Are the unauthorized-charge reports real, or are they mis-cancellations? | Reviews cannot distinguish them (§3.3.3) | Billing logs against cancellation events; Apple refund-request data ; Q3 | Did the billing complaint rate actually improve after 2024, or did the US audience share just fall? | P1 was 85.3% US, P2 26.8% (§7.5) | Complaint rate per paying US user per month ; Q4 | What happened to installs after April 2025? | Review volume is not installs (§7.2) | App Store Connect acquisition data ; Q5 | Do free-tier users who stay ever convert? | Zero conversion evidence exists in review text; §5.1 is 13 self-declared payers, all but two negative | Cohort conversion by day-since-install ; Q6 | Is the ADHD segment commercially material? | n=4 (§3.4.4) | Onboarding self-identification; retention and ARPU by segment ; Q7 | Why do 90 of 125 polled storefronts return zero reviews — no installs, or installs without reviews? | _state.json confirms collection, not distribution (§1.3) | Install data by storefront — Q1 what the free cap is and whether it changed; Q2 whether unauthorized-charge reports are real or mis-cancellations (billing logs vs cancellation events, Apple refund data); Q3 whether the billing complaint rate improved or the US share fell; Q4 what happened to installs after April 2025; Q5 whether free-tier users who stay ever convert (zero conversion evidence in text); Q6 whether the ADHD segment is commercially material; Q7 why 90 of 125 polled storefronts return zero reviews
+
+- **Where:** §8.4 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** seven open questions
+- **Direction for us:** none · **Report confidence:** research question · **Generalisable:** generalisable
+- **Canonical:** C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers; C231 Audit the sales funnel per market — the same product can rate 4.3 in one storefront and 2.1 in another on billing alone
