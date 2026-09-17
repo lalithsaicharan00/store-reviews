@@ -14657,8 +14657,8 @@
  },
  {
   "id": "C214",
-  "title": "A bare checklist cannot carry a premium price — it has a free substitute pre-installed on every phone",
-  "statement": "Report 19: 13 of 105 (12.38%) said the phone's alarm, Notes, calendar, paper or Excel did the same job for free ('If you can set an alarm on your phone you don't need this app'); at $45–$99 that ceiling read as theft rather than expense and produced 96 one-star reviews. A product charging above a few dollars must deliver what a checklist structurally cannot — real personalisation, coaching content, human accountability, or data the user could not assemble. Report 23: 68 one-star reviews (0.94%) make the coherent case 'this is a checklist, iOS Reminders does it free, and it cost me money' — a positioning failure: the listing sold a to-do list rather than streak psychology plus HealthKit automation; Apple Reminders is the low-end competitor (9 mentions, mean 3.67). Report 25: among people who hit the paywall the comparison set is Apple Reminders, Health, Notes and a paper notebook (nine reviews explicitly) — a free tier must beat Reminders, not beat Streaks; ~7 reviewers would rather the app were honestly paid up front than 'fake-free'. Report 27 (the other side): a free, minimal, account-less tracker wins the category comparison outright — 13 reviewers explicitly rejected rivals over price ('Don't get streaks for $6. 👎 Get this!'; 'way better than those paid apps'), and switched-from-competitor rose 0% → 16.7% across eras without the app changing; as the category monetises harder, the free position sharpens by market drift. Report 29: 52 comparison shoppers (14.21%) arrived after rejecting paywalled trackers ('downloaded 20 habit tracking apps and none was satisfactory'; 'premium this, subscription that… here it's just free, like properly FREE') — the app 'wins a bake-off it never enters', so competitors' pricing drives its installs. Report 30: every reviewer calling the app 'too basic' also objects to paying — 'a value complaint wearing a feature costume'; do not add features in response. Report 31: 'How is this app worth $499.99?'; '$90/pY for what?' — simplicity is quoted both as the reason to use the app and the reason a subscription is unjustified. Report 60 (Mindway): the same verdict from buyers — 10 (4.63%, mean 1.50), five of them confirmed payers, say the paid product is 'nothing more than preloaded to-do lists'; 'just a suggestion list'; 'basically just a load of lists and reminders'; 'I cannot believe I spent $40 to use this app for one day' — and six non-buyers price it against Reminders, Notes, Calendar and paper ([[C277]]).",
+  "title": "A bare checklist or task-slot paywall cannot carry a premium price — it is compared to Reminders, Notes, alarms and paper, free on every phone, and loses",
+  "statement": "Report 19: 13 of 105 (12.38%) said the phone's alarm, Notes, calendar, paper or Excel did the same job for free ('If you can set an alarm on your phone you don't need this app'); at $45–$99 that ceiling read as theft rather than expense and produced 96 one-star reviews. A product charging above a few dollars must deliver what a checklist structurally cannot — real personalisation, coaching content, human accountability, or data the user could not assemble. Report 23: 68 one-star reviews (0.94%) make the coherent case 'this is a checklist, iOS Reminders does it free, and it cost me money' — a positioning failure: the listing sold a to-do list rather than streak psychology plus HealthKit automation; Apple Reminders is the low-end competitor (9 mentions, mean 3.67). Report 25: among people who hit the paywall the comparison set is Apple Reminders, Health, Notes and a paper notebook (nine reviews explicitly) — a free tier must beat Reminders, not beat Streaks; ~7 reviewers would rather the app were honestly paid up front than 'fake-free'. Report 27 (the other side): a free, minimal, account-less tracker wins the category comparison outright — 13 reviewers explicitly rejected rivals over price ('Don't get streaks for $6. 👎 Get this!'; 'way better than those paid apps'), and switched-from-competitor rose 0% → 16.7% across eras without the app changing; as the category monetises harder, the free position sharpens by market drift. Report 29: 52 comparison shoppers (14.21%) arrived after rejecting paywalled trackers ('downloaded 20 habit tracking apps and none was satisfactory'; 'premium this, subscription that… here it's just free, like properly FREE') — the app 'wins a bake-off it never enters', so competitors' pricing drives its installs. Report 30: every reviewer calling the app 'too basic' also objects to paying — 'a value complaint wearing a feature costume'; do not add features in response. Report 31: 'How is this app worth $499.99?'; '$90/pY for what?' — simplicity is quoted both as the reason to use the app and the reason a subscription is unjustified. Report 60 (Mindway): the same verdict from buyers — 10 (4.63%, mean 1.50), five of them confirmed payers, say the paid product is 'nothing more than preloaded to-do lists'; 'just a suggestion list'; 'basically just a load of lists and reminders'; 'I cannot believe I spent $40 to use this app for one day' — and six non-buyers price it against Reminders, Notes, Calendar and paper ([[C277]]). (Consolidation after report 60: C277 was created by the report 60 merge and folded in here the same pass — the report's D2 'sell the outcome, not the task slots' is the constructive half of this rule.) [Merged from C277: Report 60 (Mindway, 216 reviews): price objections are relative, not absolute — 13 reviewers (6.02%, mean 1.69, no 4★ or 5★ among them) reject the price by comparing it to a substitute they already own, and 6 (2.78%) name it: Apple Reminders, Notes, Calendar, a paper planner — '8€/WOCHE für einen Tagesplaner, den man sich auch selbst im Kalender bauen kann. Frech.' (€8 a week for a day planner you could build in your calendar. Cheeky.); 'einfach zu teuer dafür dass ich das auch gratis in meinen Notizen machen kann'; 'paper planner is cheaper than this LOL'; 'Just use your remind app it's the same thing'. The report's reading: 'the competitive set Mindway is being priced against is not other habit apps — it is the free tools already on the phone', and a count-based paywall ('you have used your 2 free tasks') invites exactly that comparison because task slots are what those tools give away, whereas guided routines, progress history and a self-care library are not comparable to Reminders — 'the corpus shows Mindway losing a fight it chose' (D2: sell the outcome, not the task slots). Related: [[C214]] (a bare checklist cannot carry a premium price), [[C133]] (gate on capability, not quantity), [[C004]] (price against subscription competitors).]",
   "section": "product-rule",
   "cards": [
    "R19-015",
@@ -14691,7 +14691,11 @@
    "R60-001",
    "R60-010",
    "R60-015",
-   "R60-036"
+   "R60-036",
+   "R60-011",
+   "R60-033",
+   "R60-034",
+   "R60-039"
   ],
   "reports": [
    19,
@@ -14706,7 +14710,22 @@
    46,
    60
   ],
-  "merged_from": []
+  "merged_from": [
+   {
+    "from": "C277",
+    "title": "Price the paid tier against what the phone already gives away — a paywall that sells task slots, reminders or a checklist is compared to Apple Reminders, Notes and paper, and loses",
+    "section": "product-rule",
+    "cards": [
+     "R60-010",
+     "R60-011",
+     "R60-033",
+     "R60-034",
+     "R60-039"
+    ],
+    "when": "consolidation after report 60",
+    "note": "C277 (report 60: price objections are relative — 13 reviewers compare a $7/week task-slot paywall to Reminders, Notes, Calendar and paper; 'the competitive set is the free tools already on the phone') restates C214 (reports 19, 23, 25, 27, 29, 30, 31, 34, 42, 46: the phone's alarm, Notes, calendar, paper or Excel do the same job free, so a checklist priced above them reads as theft); one pricing rule, so the newer point is folded in and the title widened to name the paywall shape that triggers the comparison"
+   }
+  ]
  },
  {
   "id": "C215",
@@ -16492,16 +16511,14 @@
   "title": "Price the paid tier against what the phone already gives away — a paywall that sells task slots, reminders or a checklist is compared to Apple Reminders, Notes and paper, and loses",
   "statement": "Report 60 (Mindway, 216 reviews): price objections are relative, not absolute — 13 reviewers (6.02%, mean 1.69, no 4★ or 5★ among them) reject the price by comparing it to a substitute they already own, and 6 (2.78%) name it: Apple Reminders, Notes, Calendar, a paper planner — '8€/WOCHE für einen Tagesplaner, den man sich auch selbst im Kalender bauen kann. Frech.' (€8 a week for a day planner you could build in your calendar. Cheeky.); 'einfach zu teuer dafür dass ich das auch gratis in meinen Notizen machen kann'; 'paper planner is cheaper than this LOL'; 'Just use your remind app it's the same thing'. The report's reading: 'the competitive set Mindway is being priced against is not other habit apps — it is the free tools already on the phone', and a count-based paywall ('you have used your 2 free tasks') invites exactly that comparison because task slots are what those tools give away, whereas guided routines, progress history and a self-care library are not comparable to Reminders — 'the corpus shows Mindway losing a fight it chose' (D2: sell the outcome, not the task slots). Related: [[C214]] (a bare checklist cannot carry a premium price), [[C133]] (gate on capability, not quantity), [[C004]] (price against subscription competitors).",
   "section": "product-rule",
-  "cards": [
-   "R60-010",
-   "R60-011",
-   "R60-033",
-   "R60-034",
-   "R60-039"
+  "cards": [],
+  "reports": [],
+  "merged_from": [
+   {
+    "into": "C214",
+    "when": "consolidation after report 60"
+   }
   ],
-  "reports": [
-   60
-  ],
-  "merged_from": []
+  "merged_into": "C214"
  }
 ]
