@@ -1,0 +1,87 @@
+[
+ {
+  "table_row": "< 0.1%",
+  "cards": [
+   "R62-002"
+  ]
+ },
+ {
+  "table_row": "0.5 \u2013 1%",
+  "cards": [
+   "R62-002"
+  ]
+ },
+ {
+  "table_row": "1 \u2013 3%",
+  "cards": [
+   "R62-002"
+  ]
+ },
+ {
+  "table_row": "3 \u2013 5%",
+  "cards": [
+   "R62-002"
+  ]
+ },
+ {
+  "table_row": "> 5%",
+  "cards": [
+   "R62-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "cards": [
+   "R62-017"
+  ]
+ },
+ {
+  "bold": "blocked by this environment's network egress proxy",
+  "cards": [
+   "R62-001",
+   "R62-002"
+  ]
+ },
+ {
+  "bold": "Read the last one carefully.",
+  "cards": [
+   "R62-005"
+  ]
+ },
+ {
+  "bold": "Known error risk:",
+  "cards": [
+   "R62-002"
+  ]
+ },
+ {
+  "bold": "not asserted",
+  "cards": [
+   "R62-015"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R62-017"
+  ]
+ },
+ {
+  "bold": "Cautious reading, explicitly labelled as such:",
+  "cards": [
+   "R62-029"
+  ]
+ },
+ {
+  "bold": "Confidence warning applied to every trend below:",
+  "cards": [
+   "R62-031"
+  ]
+ },
+ {
+  "bold": "Interpretation is split between two causes that this corpus cannot separate:",
+  "cards": [
+   "R62-031"
+  ]
+ }
+]
