@@ -1,0 +1,126 @@
+[
+ {
+  "heading": "1.2 Schema actually present",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "heading": "1.3 Coverage and reconciliation",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "heading": "1.4 Deduplication rule",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "heading": "1.5 Processing method",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "table_row": "< 0.1%",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "table_row": "0.5 – 1%",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "table_row": "1 – 3%",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "table_row": "3 – 5%",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "table_row": "> 5%",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "table_row": "IDs in country files but not in `reviews.jsonl` / vice versa",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "table_row": "Per-country count mismatches vs manifest",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "table_row": "Classified IDs not present in the corpus",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "no_new_insight": "header row of the §3.1 master theme table; table carded verbatim as R52-061"
+ },
+ {
+  "bold": "Store-level context:",
+  "cards": [
+   "R52-001"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "bold": "Parse",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "bold": "Resolve index → review_id",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "bold": "Validate programmatically",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "bold": "Aggregate",
+  "cards": [
+   "R52-002"
+  ]
+ },
+ {
+  "bold": "Monthly and incident analysis:",
+  "cards": [
+   "R52-175"
+  ]
+ }
+]
