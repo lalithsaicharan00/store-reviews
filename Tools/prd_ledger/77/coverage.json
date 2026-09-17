@@ -1,0 +1,238 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "review_id",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "app_name",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "vote_count`, `vote_sum",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "1",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "2",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "3",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "5–6",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "7",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "8",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "9–10",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "11",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "13",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "15",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "22",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "table_row": "Era",
+  "cards": [
+   "R77-062"
+  ]
+ },
+ {
+  "bold": "External data accessed:",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "bold": "Implication:",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "bold": ". This is disclosed rather than dropped, per the spec:",
+  "cards": [
+   "R77-010"
+  ]
+ },
+ {
+  "bold": "0 mismatches",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "bold": "No deduplication was applied, because none was warranted.",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "bold": "Dump",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "bold": "Reconcile",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "bold": "Validate",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "bold": "Aggregate",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "bold": "Taxonomy:",
+  "cards": [
+   "R77-002"
+  ]
+ },
+ {
+  "bold": "Kept separate from review-derived evidence throughout.",
+  "cards": [
+   "R77-001"
+  ]
+ },
+ {
+  "bold": "Meaningful signal — and deliberately separated from N1.",
+  "cards": [
+   "R77-031"
+  ]
+ },
+ {
+  "bold": "Interpretation, offered as a hypothesis and not a finding:",
+  "cards": [
+   "R77-060"
+  ]
+ },
+ {
+  "bold": "Confidence: the pattern is real; the cause is not established.",
+  "cards": [
+   "R77-009"
+  ]
+ },
+ {
+  "bold": "Direction: improving. Confidence: good by the standards of this corpus.",
+  "cards": [
+   "R77-065"
+  ]
+ },
+ {
+  "bold": "Direction: emerging. Confidence: weak, and the ambiguity is important.",
+  "cards": [
+   "R77-033"
+  ]
+ },
+ {
+  "bold": "No claim that the cap changed is made anywhere in this report.",
+  "cards": [
+   "R77-033"
+  ]
+ },
+ {
+  "bold": "Direction: worsening. Confidence: weak — n=3.",
+  "cards": [
+   "R77-030"
+  ]
+ },
+ {
+  "bold": "Praise density stays high but is not flat.",
+  "cards": [
+   "R77-068"
+  ]
+ },
+ {
+  "kind": "tactic",
+  "none_in_report": "Report 77 names no growth, ranking, conversion or retention tactic with an outcome; the three shipped requests are carded as `do` (R77-041) and the paid Habit Forest as monetization (R77-022)."
+ },
+ {
+  "kind": "audience",
+  "none_in_report": "Report 77 identifies no user group with distinct behaviour or satisfaction; 71 reviews, no ADHD / student / medication / sobriety cohort is named."
+ }
+]
