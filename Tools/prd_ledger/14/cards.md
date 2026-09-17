@@ -105,7 +105,7 @@ Source: `App Store Reports/14. My Habits - Daily Habit Builder - Tracker for Goa
 - **Magnitude:** n=1 (jp, 2★)
 - **Direction for us:** must-never-break · **Report confidence:** recommendation (immediate) · **Generalisable:** yes
 - **Review IDs:** `1077393973`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ## Features
 
@@ -282,7 +282,7 @@ Source: `App Store Reports/14. My Habits - Daily Habit Builder - Tracker for Goa
 - **Magnitude:** outcome 14 (20.00%) mean 4.93 (13 of 14 5★); simplicity 10 (14.29%) mean 5.00; chose over competitors 5 (7.14%) mean 5.00
 - **Direction for us:** product-rule · **Report confidence:** high-priority (counts) · **Generalisable:** yes
 - **Review IDs:** `1076855737`
-- **Canonical:** C002 Ratings follow the offer, not the feature set; C005 Know which competitors buyers compare against; C006 Stay minimal and ad-free
+- **Canonical:** C002 Ratings follow the offer, not the feature set; C005 Know which competitors buyers compare against; C006 Stay minimal — every addition is opt-in or off by default
 
 ### R14-020 — The corpus splits into pure praise (mean 4.79) and reviews carrying a criticism or request (mean 2.75) — a 2.04-star gap; 13 of the 50 four- and five-star reviews still carry a criticism or request: satisfied users telling the developer what to do next, the highest-value records in the corpus
 
@@ -352,7 +352,7 @@ Source: `App Store Reports/14. My Habits - Daily Habit Builder - Tracker for Goa
 - **Magnitude:** simplicity praised 2014–2021; 5 named requests unmet
 - **Direction for us:** product-rule · **Report confidence:** persistent · **Generalisable:** yes
 - **Review IDs:** `961128068`, `1076855737`, `1195988013`, `1222427563`, `7929736347`
-- **Canonical:** C006 Stay minimal and ad-free; C071 Never ship and walk away
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C071 Never ship and walk away
 
 ## Markets and languages
 
@@ -467,7 +467,7 @@ Source: `App Store Reports/14. My Habits - Daily Habit Builder - Tracker for Goa
 - **Magnitude:** 8 (11.43%) compare against rivals, mean 4.75, 5 rank it first
 - **Direction for us:** product-rule · **Report confidence:** high-priority (counts) · **Generalisable:** yes
 - **Review IDs:** `978448437`, `1099557740`, `1222427563`, `1195988013`, `1208386132`, `1056568978`, `1184550500`, `1262227277`
-- **Canonical:** C005 Know which competitors buyers compare against; C006 Stay minimal and ad-free; C010 Backfill missed days / edit start date; C188 The app must open offline — never block launch on a network call
+- **Canonical:** C005 Know which competitors buyers compare against; C006 Stay minimal — every addition is opt-in or off by default; C010 Backfill missed days / edit start date; C188 The app must open offline — never block launch on a network call
 
 ## Anti-patterns
 

@@ -111,7 +111,7 @@ Source: `App Store Reports/13. Productive - Habit Tracker - Daily Routine & Goal
 - **User reaction:** complaint
 - **Magnitude:** D-ipad 277 (1.40%) mean 2.88; D-watch 210 (1.06%) 3.55; D-widget 186 (0.94%) 3.58; D-update-regression 87 (0.44%) 2.39; D-perf 56; D-notif-spam 33; D-wrongday 27 mean 2.63; D-auth-prompt 7; D-add-broken 6; D-cannot-edit-delete 16; D-premium-not-applied 2; M-purchase-fail 19
 - **Direction for us:** must-never-break · **Report confidence:** weak–meaningful · **Generalisable:** yes
-- **Canonical:** C022 Apple Watch app (done properly: timer, two-way sync); C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C040 Widgets must not go blank, stale or disagree with the app; C083 Performance must not degrade with habit count; C141 Native iPad layout; C175 Updates must not break function or wipe progress
+- **Canonical:** C022 Apple Watch app (done properly: timer, two-way sync); C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C040 Widgets must not go blank, stale or disagree with the app; C083 Performance must not degrade with habit count; C141 Native iPad layout; C175 Updates must not break function or wipe progress
 
 ### R13-029 — The five lowest-mean themes reliably produce a 1★: fake-review allegations, trial auto-charge (the single most damaging mechanic — 5.55% of every review ever written about this app, 999 of 1,102 one-star), support failure, canned replies, refund friction (a distinct, separate injury)
 
@@ -278,7 +278,7 @@ Source: `App Store Reports/13. Productive - Habit Tracker - Daily Routine & Goal
 - **User reaction:** mixed
 - **Magnitude:** U-confusing 558 (2.81%) mean 2.62; U-clutter 202 (1.02%) mean 4.21; U-onboarding 80 (0.40%) mean 2.75; U-icons 308 (1.55%) mean 4.16; U-stats 365 (1.84%) mean 3.76
 - **Direction for us:** research · **Report confidence:** meaningful · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free; C011 Weekly / monthly / yearly reports; C075 Skippable, replayable onboarding tour
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C011 Weekly / monthly / yearly reports; C075 Skippable, replayable onboarding tour
 
 ### R13-026 — Smaller requests: flexibility praised where present, skip flexibility, multiple-times-daily, week-start setting, swipe-back gesture, upcoming-days overview, sort order, Touch ID / app lock, dark mode, calendar integration, one-off tasks, bad-habit mode, more free habits, and objections to required sign-in
 
@@ -428,7 +428,7 @@ Source: `App Store Reports/13. Productive - Habit Tracker - Daily Routine & Goal
 - **User reaction:** purchase-driver
 - **Magnitude:** P-utility 44.3% of voluntary-buyer reviews; P-worth-paying 25.5%
 - **Direction for us:** product-rule · **Report confidence:** high-priority (segment) · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free; C116 Content library (workouts, meditation, sleep, journal) as the paid layer; C166 Keep the therapeutic core in front of the game layer
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C116 Content library (workouts, meditation, sleep, journal) as the paid layer; C166 Keep the therapeutic core in front of the game layer
 
 ### R13-028 — The monetisation family dominates everything else: a third of the corpus raises a monetisation issue at the lowest ratings in the corpus, ~3.7× more discussed than reliability — any roadmap that starts with features is mis-prioritised against this evidence
 
@@ -447,7 +447,7 @@ Source: `App Store Reports/13. Productive - Habit Tracker - Daily Routine & Goal
 - **Magnitude:** Strength | n | % | Mean★ | What reviewers actually say ; It works — keeps me on track | 5,565 | 28.04% | 4.29 | Reminders + checklist produce follow-through (`6929025111`, `1537523702`, `4250072408`, `5875165421`) ; Simplicity | 3,284 | 16.54% | 4.39 | Chosen *over* more powerful tools precisely because it is small (`1417054726`, `3026852113`) ; Visual design | 1,411 | 7.11% | 4.12 | "Beautiful", "elegant", "sleek" — named even inside 1★ reviews ; Motivation / accountability | 1,339 | 6.75% | 4.61 | Highest mean of any theme in the corpus ; Habit actually formed | 902 | 4.54% | 4.44 | Concrete outcome claims, not vague praise (`7806022477`, `3573097080`) ; Life change | 381 | 1.92% | 4.31 | Strong transformation claims (`4949195093`, `1339259899`, `4371666634`) ; Serves ADHD / neurodivergent users | 463 | 2.33% | 3.68 | A named, self-identifying segment (`9550964281`, `3026852113`, `4725668608`) ; Serves mental-health contexts | 100 | 0.50% | 4.34 | Including the corpus's 3rd most-upvoted review, from a reviewer with paranoid schizophrenia (`2622642664`, 53 net votes) ; top upvoted 144 / 112 / 53 votes
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `6929025111`, `1537523702`, `4250072408`, `5875165421`, `1417054726`, `3026852113`, `7806022477`, `3573097080`, `4949195093`, `1339259899`, `4371666634`, `9550964281`, `4725668608`, `2622642664`, `2284758864`
-- **Canonical:** C006 Stay minimal and ad-free; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers; C134 Lead the store listing with what users actually love
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers; C134 Lead the store listing with what users actually love
 
 ### R13-039 — 'Do X, get 5 stars': ship a reminder that fires, a list that is quick to tick, and a visible streak — that is the whole formula; 39.93% of five-star reviewers describe utility, only 8.84% mention design
 
@@ -721,7 +721,7 @@ Source: `App Store Reports/13. Productive - Habit Tracker - Daily Routine & Goal
 - **Magnitude:** U-challenges 6 (2019) → 45 (2020) → 29 → 21 → 11 → 3 → 0; means 2020 3.16, 2021 2.91, 2022 2.74
 - **Direction for us:** dont · **Report confidence:** emerging, then fading · **Generalisable:** yes
 - **Review IDs:** `9948539388`, `8091736452`, `6536839803`, `8536372117`, `8035852270`, `10245447172`
-- **Canonical:** C006 Stay minimal and ad-free; C116 Content library (workouts, meditation, sleep, journal) as the paid layer; C166 Keep the therapeutic core in front of the game layer
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C116 Content library (workouts, meditation, sleep, journal) as the paid layer; C166 Keep the therapeutic core in front of the game layer
 
 ## Things not to do
 

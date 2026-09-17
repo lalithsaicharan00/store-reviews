@@ -195,7 +195,7 @@ Source: `App Store Reports/19. Wisey - Habit Builder - Form habits, change your 
 - **Magnitude:** 10 + 5 + 3 + 3 + 3 + 4
 - **Direction for us:** must-never-break · **Report confidence:** high-priority / very strong / meaningful · **Generalisable:** yes
 - **Review IDs:** `12985541561`, `13311158289`, `13742636617`, `13716802092`, `13803171356`, `13921976046`, `12742285860`, `13248498967`
-- **Canonical:** C109 A free trial must be a real trial; C113 One stable, disclosed price — no discount wheels; C177 Every IAP SKU has a distinct name that states its period or 'one time'; C221 A receipt with a working product link after every charge, and a renewal reminder before it
+- **Canonical:** C109 A free trial must be a real trial; C113 One stable, disclosed price — no discount wheels; C177 One clear SKU shelf — every plan distinctly named, stating its period, and delivering exactly what its label says; C221 A receipt with a working product link after every charge, and a renewal reminder before it
 
 ### R19-058 — Paid and could not use what they paid for — 'I can log in on my laptop but no apps'; 'App doesn't work, was not able to use the service and was still charged $49.99'; login error 300 on iPhone (iPad fine) with no error message; 'once you've started the cancellation process, you can no longer log onto the app' — buried inside billing complaints; the error-300 review is the only pure bug report in the corpus and the cheapest actionable item
 
@@ -740,7 +740,7 @@ Source: `App Store Reports/19. Wisey - Habit Builder - Form habits, change your 
 - **Magnitude:** 5 of 105 (4.76%, Very strong); 0 of 72 US
 - **Direction for us:** dont · **Report confidence:** very strong · **Generalisable:** yes
 - **Review IDs:** `12748055966`, `12778540152`, `13194035072`, `13785381809`, `14107869084`
-- **Canonical:** C148 The paid product must deliver what the ads and onboarding demonstrate; C218 Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate
+- **Canonical:** C148 The paid product must deliver what the ads and onboarding demonstrate; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ## Things not to do
 
@@ -812,7 +812,7 @@ Source: `App Store Reports/19. Wisey - Habit Builder - Form habits, change your 
 - **Magnitude:** 5 + 1 + several
 - **Direction for us:** dont · **Report confidence:** transferable · **Generalisable:** yes
 - **Review IDs:** `12748055966`, `13710711149`, `13785381809`
-- **Canonical:** C148 The paid product must deliver what the ads and onboarding demonstrate; C218 Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate
+- **Canonical:** C148 The paid product must deliver what the ads and onboarding demonstrate; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ## Things to do
 
@@ -903,7 +903,7 @@ Source: `App Store Reports/19. Wisey - Habit Builder - Form habits, change your 
 - **Magnitude:** ID | Date | Title | Body ; 13545315131 | 23 Dec 2025 | Cool | "Didn't expect much at first, but it's grown on me over time." ; 13549237052 | 24 Dec 2025 | Awesome app | "I've tried a lot of habit apps, and this one feels more human." ; 13552347079 | 25 Dec 2025 | Great app | "Simple; calm, and consistent. That's what keeps me using it." ; 13568090356 | 29 Dec 2025 | love app | "Love this app! Helps me stay consistent with my daily habits and reminders" ; 13568431568 | 29 Dec 2025 | Easy | "This app really helped me form good routines" ; 13571866718 | 30 Dec 2025 | So good | "Widgets on the home screen make logging habits so quick" ; 13572140998 | 30 Dec 2025 | ok | "Simple and effective habit builder—highly recọmmend" ; 13576146958 | 31 Dec 2025 | Great app | "Perfect tool for building positive habits over time"
 - **Direction for us:** none · **Report confidence:** rating band · **Generalisable:** app-specific
 - **Review IDs:** `13545315131`, `13549237052`, `13552347079`, `13568090356`, `13568431568`, `13571866718`, `13572140998`, `13576146958`
-- **Canonical:** C076 Never seed launch reviews
+- **Canonical:** C076 Never seed the launch rating — templated or bought reviews decay and leave the markets they cover unmeasurable
 
 ### R19-049 — The 5★ band: all 8 in 23–31 Dec 2025 (9 days of 441), the only 5★ in 16 months, all US, 44–74 chars vs 1★ mean 284, all posted 07:01–13:00 UTC, generic register with 5 of 8 lacking terminal punctuation, Firstname-Lastname handles with no repeats, and one homoglyph ('recọmmend', U+1ECD — the only non-Latin-1 character in any English review; a documented duplicate-detection evasion technique); two 1★ fall in the same window so the store was accepting negatives; organic vs inorganic — the pattern fits inorganic substantially better but the report does not assert inauthenticity; what would settle it: Apple's integrity signals, same handles on other Koflimin apps, dated clusters on the sister apps; every positive finding is stated with and without the burst — excluding it the corpus is 97 reviews at mean 1.021 with three positive statements
 
@@ -913,7 +913,7 @@ Source: `App Store Reports/19. Wisey - Habit Builder - Form habits, change your 
 - **Magnitude:** Observation | Detail ; Time window | All 8 fall between 23 and 31 December 2025 — a 9-day span inside a 441-day corpus ; Exclusivity | These are the only 5★ reviews in 16 months; there is no other 5★ before or after ; Storefront | 8 of 8 are US ; Length | 44–74 characters (mean 57.1) vs a 1★ mean of 284.2 and median of 197 ; Posting hour (UTC) | 6 of 8 fall in a 07:01–11:18 band; the other two at 08:47 and 09:08 — all 8 within 07:01–13:00 ; Register | Generic category praise ("Great app", "So good", "ok"); 5 of 8 end without terminal punctuation ; Author handles | Firstname-Lastname / Lastname_Firstname forms with no repeats: "Zhang Tran", "Jaramillo Rex", "Mercier Tyra", "OlsonSharane", "hinson jeanmarie", "Krystina Fitzpatrick", "marybelle_bordersm", "Cabral_Geniaf" ; Character anomaly | 13572140998 spells "recommend" as "recọmmend" using U+1ECD, Latin small letter o with dot below. It is the only non-Latin-1 character in any English-language review in the corpus. Homoglyph substitution of this kind is a documented technique for evading duplicate-text detection. ; Context | The same 9-day window also contains two 1★ reviews (13546645984, 13564772884), so the window is not a period when the store was only accepting positive reviews ; excluding burst: 97 reviews, mean 1.021
 - **Direction for us:** dont · **Report confidence:** unresolved provenance · **Generalisable:** yes
 - **Review IDs:** `13572140998`, `13546645984`, `13564772884`
-- **Canonical:** C076 Never seed launch reviews
+- **Canonical:** C076 Never seed the launch rating — templated or bought reviews decay and leave the markets they cover unmeasurable
 
 ### R19-089 — Research questions: (1) are the eight December 5★ organic — every positive finding is contingent; (2) the actual refund rate; (3) do App Store IAP buyers ($6.99/$29.99) complain at all — not one of 105 clearly identifies as Apple-billed, and if the IAP cohort is quiet that alone settles recommendation 1; (4) did the price rise or the plan mix shift; (5) why review volume collapsed in 2026 H1; (6) does the ad creative differ by market
 

@@ -1,0 +1,54 @@
+[
+ {
+  "table_row": "#",
+  "no_new_insight": "table header row (§3.1 master table); carded verbatim as R30-023"
+ },
+ {
+  "bold": "count, percentage, denominator, scope, period, signal label, and review IDs",
+  "cards": [
+   "R30-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R30-002"
+  ]
+ },
+ {
+  "bold": "nearly one in three people with something specific to say came to complain about the cap.",
+  "cards": [
+   "R30-003"
+  ]
+ },
+ {
+  "bold": "Known error risk:",
+  "cards": [
+   "R30-002"
+  ]
+ },
+ {
+  "bold": "Contamination (primary limitation).",
+  "cards": [
+   "R30-002",
+   "R30-019"
+  ]
+ },
+ {
+  "bold": "Single eligible country.",
+  "cards": [
+   "R30-002",
+   "R30-063"
+  ]
+ },
+ {
+  "bold": "Interpretation (and the honest caveat):",
+  "cards": [
+   "R30-058"
+  ]
+ },
+ {
+  "kind": "audience",
+  "none_in_report": "the report names no user segment (no ADHD, student, clinical, age or life-stage group); market groupings are carded as market cards R30-063..R30-069"
+ }
+]

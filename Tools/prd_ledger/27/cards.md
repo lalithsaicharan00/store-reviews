@@ -452,7 +452,7 @@ Source: `App Store Reports/27. Goal Streak - Habit Tracker - Build a growth mind
 - **Magnitude:** 52 (37.68%, high-priority), mean 4.90; 33.3% → 44.8% → 41.8% → 28.6%
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `11868354054`, `12180873299`, `12146188261`, `13305332766`, `13114310284`, `12173158756`, `12406443450`, `13463476864`, `13590630295`, `13609880038`, `13807267873`, `13933124385`
-- **Canonical:** C006 Stay minimal and ad-free; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek
 
 ### R27-028 — Positive themes beyond the pillars: design/aesthetic 19 (13.77%, mean 4.89 — about restraint, not decoration: 'Lovely clean UI, not cluttered with loads of bells and whistles. From one developer to another — nice piece of work'; 'plain… beautifully designed… focuses on the streaks, without unnecessary extras'); generic-only praise 12; customisation 10 (7.25%, 4.80); behaviour-change outcomes 10 (7.25%, 4.70); long-range view 4; unlimited habits 3; stats/export 3; reminders 2
 
@@ -462,7 +462,7 @@ Source: `App Store Reports/27. Goal Streak - Habit Tracker - Build a growth mind
 - **Magnitude:** 19 / 12 / 10 / 10 / 4 / 3 / 3 / 2
 - **Direction for us:** do · **Report confidence:** high-priority to [THIN] · **Generalisable:** yes
 - **Review IDs:** `12173158756`, `10780603796`, `9631112670`, `12101720347`, `13903934801`, `14001830867`, `12132900869`, `12973708986`, `13233606022`, `13919778285`
-- **Canonical:** C006 Stay minimal and ad-free; C009 Basic widgets, icons and colours are free; C057 Offer a non-pastel / premium design option
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C009 Basic widgets, icons and colours are free; C057 Offer a non-pastel / premium design option
 
 ### R27-030 — Real outcomes claimed (10, 7.25%, mean 4.70): 'I've been using Goal Streak for about two years now and I grown into a much much much better person'; 'my house is much cleaner'; 'I'm on a 9 day vacuuming streak!'; 'i'm convinced this is the only way i can actually be consistent doing things'; daily piano, daily workouts, Bible reading with activity rings, stopping bad habits, exercise and water intake — the product working, not just pleasing
 
@@ -522,7 +522,7 @@ Source: `App Store Reports/27. Goal Streak - Habit Tracker - Build a growth mind
 - **Magnitude:** Reason | n | % of 109 (segment rate) | % of 138 (global) ; Simplicity / minimalism | 47 | 43.1% | 34.06% ; Free / no IAP | 42 | 38.5% | 30.43% ; Design / aesthetics | 17 | 15.6% | 12.32% ; Came from a worse/paid competitor | 11 | 10.1% | 7.97% ; No ads | 10 | 9.2% | 7.25% ; Developer gratitude | 10 | 9.2% | 7.25% ; Stated behavioural outcome | 8 | 7.3% | 5.80% ; Generic praise only ("nice", "great app", "🤗") | 12 | 11.0% | 8.70%
 - **Direction for us:** do · **Report confidence:** corpus-level fact · **Generalisable:** yes
 - **Review IDs:** `12944050597`, `13111651177`, `13463476864`, `13481955817`, `13491588986`, `11393669723`, `11937614517`, `13215630472`, `12023192028`
-- **Canonical:** C002 Ratings follow the offer, not the feature set; C006 Stay minimal and ad-free
+- **Canonical:** C002 Ratings follow the offer, not the feature set; C006 Stay minimal — every addition is opt-in or off by default
 
 ### R27-049 — The indirect evidence against a gate is much larger than the evidence for a purchase: 47 chose the app because it is free (the acquisition reason, not a perk); 13 explicitly rejected a competitor over its paywall (already refused to pay in this category); 4 asked the developer to keep it free (anticipatory anxiety); 3 praised unlimited habits by name (the specific gate they fled); 4 praised no-account/no-data (rules out ad- or data-funded models); 12 praised no ads (rules out an ad tier); the most explicit refusals — 'Don't get streaks for $6. Get this! No ads (yet, but I don't think there are any)' (this user is watching for monetisation); 'no BS subscriptions'; 'without asking for my personal details and trying to get me to buy stuff'; 'doesn't pressure you to go premium' — a self-selected anti-paywall cohort; the users who chose to write about Goal Streak chose it specifically to escape paying, and a retroactive gate on existing free functionality would land on precisely this population
 
@@ -582,7 +582,7 @@ Source: `App Store Reports/27. Goal Streak - Habit Tracker - Build a growth mind
 - **Magnitude:** 41.8% → 28.6%; 5.5% → 16.7%
 - **Direction for us:** research · **Report confidence:** hypothesis · **Generalisable:** yes
 - **Review IDs:** `13784793079`, `13642789952`
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ## Markets and languages
 
@@ -654,7 +654,7 @@ Source: `App Store Reports/27. Goal Streak - Habit Tracker - Build a growth mind
 - **Magnitude:** 25.0% → 51.7% → 21.8% → 40.5%
 - **Direction for us:** none · **Report confidence:** corpus-level fact · **Generalisable:** app-specific
 - **Review IDs:** `14153452499`, `14211137939`, `13784793079`, `13481955817`
-- **Canonical:** C003 Lead with a one-time lifetime purchase; C006 Stay minimal and ad-free
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C006 Stay minimal — every addition is opt-in or off by default
 
 ### R27-057 — Eras by calendar year (2022 and 2023 merged): 2022–23 n=12 (8.70%), mean 4.750, 5★ 75.0%; 2024 n=29, 4.828, 82.8%; 2025 n=55, 4.436, 74.5% with all four 1★; 2026 (to 25 Aug) n=42, 4.762, 83.3%; review volume roughly doubles each year — 5 (2022) → 7 (2023) → 29 (2024) → 55 (2025) → 42 in eight months of 2026 (≈63 annualised) — the app is growing and the growth is accelerating in 2026 despite the 2025 quality dip
 
@@ -767,7 +767,7 @@ Source: `App Store Reports/27. Goal Streak - Habit Tracker - Build a growth mind
 - **Magnitude:** 52 + 12 + 4; 1 2★ + 1 5★ regression
 - **Direction for us:** dont · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `13807267873`, `13933124385`, `13215630472`
-- **Canonical:** C006 Stay minimal and ad-free; C082 Ads in the free tier; C155 Never remove a feature people bought the app for — add alongside, do not replace; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek; C209 No sign-up wall before first use
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C082 Ads in the free tier; C155 Never remove a feature people bought the app for — add alongside, do not replace; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek; C209 No sign-up wall before first use
 
 ## Things to do
 
@@ -790,7 +790,7 @@ Source: `App Store Reports/27. Goal Streak - Habit Tracker - Build a growth mind
 - **Magnitude:** Theme | Positive side | Negative side ; Widget | 5 reviews praise it (8819961417, 10765907509, 11088501172, 13919778285, 14179666010) | 9 reviews find it missing, static, blank or uninformative ; Simplicity | 52 reviews praise it | 13784793079 ("still a bit simple"), 13642789952 (3★, "Limited featuees"), 13761980153 ("the note taking doesn't really have a point") ; Notes / journal | 12136156984 ("simply yet engaging daily memo questions") | 13761980153 (pointless), 13178799590 (export removed), 12473008094 (wants more) ; The 2025 update | 13077199701 ("最近的更新很酷" — "the recent update is cool", multi-check-in praised) | The same review, plus 13215630472, 13178799590, and the crash cluster ; Ease of use | 52 simplicity reviews | 5 onboarding-confusion reviews (10477776521, 12128390503, 12146867601, 13220635530, 13414248154)
 - **Direction for us:** product-rule · **Report confidence:** corpus-level fact · **Generalisable:** yes
 - **Review IDs:** `13784793079`, `13642789952`, `13761980153`, `12136156984`, `13077199701`, `13215630472`, `13178799590`
-- **Canonical:** C006 Stay minimal and ad-free; C040 Widgets must not go blank, stale or disagree with the app; C172 Per-day / per-habit notes and journal text
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C040 Widgets must not go blank, stale or disagree with the app; C172 Per-day / per-habit notes and journal text
 
 ## Data caveats and method
 

@@ -140,7 +140,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** 11 (1.29%, MEANINGFUL), mean 2.73, 45.5% 1–2★ (second-worst rating profile); 6 of 11 dated Jan 2025 – Apr 2026; 3 of 11 in a 14-day Jan 2025 window; 1★ band 3 of 22 (13.6%)
 - **Direction for us:** must-never-break · **Report confidence:** highest severity · **Generalisable:** yes
 - **Review IDs:** `12164874968`, `12189113218`, `12214950748`, `12219310786`, `13990708296`, `12919299992`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R08-057 — The flagship 2026 feature shipped with an off-by-one: the monthly summary never includes the last day of the month — 'I completed all my habits for January, but according to this new feature I completed only 30 of 31 days… Maybe you just missed a line in the code?' (1★); 'even if you do the habit all 30 days… it always says 29/30 or 97%' — almost certainly a one-line date-range bug that turned the flagship feature into a 1★
 
@@ -150,7 +150,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** 2 independent reports 3 months apart (Feb 2026 1★, May 2026 4★); bug_monthly_summary 2 (0.24%), mean 2.50
 - **Direction for us:** must-never-break · **Report confidence:** weak, trust-critical · **Generalisable:** yes
 - **Review IDs:** `13742512516`, `14018076544`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R08-061 — Data loss is the worst-rated reliability theme — 'it does not save the marks. The next day all boxes are empty'; a 1★ who lost data twice
 
@@ -200,7 +200,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** streak_bug_confusion 7 (0.82%, EMERGING), mean 3.71, 14.3% 1–2★; praise_streak 36 (4.24%), mean 4.36
 - **Direction for us:** must-never-break · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `8922203790`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R08-088 — Lag and crashes are the single worst-rated theme — every reviewer carrying it gives 1–2★ — and three of the four are Canadian
 
@@ -221,7 +221,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Direction for us:** must-never-break · **Report confidence:** immediate · **Generalisable:** yes
 - **Conditions:** evidence: R08-019
 - **Review IDs:** `13990708296`
-- **Canonical:** C032 New Year peak-season robustness — year-end report and January onboarding; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C032 New Year peak-season robustness — year-end report and January onboarding; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R08-111 — Fix the monthly-summary off-by-one — the last day of the month is excluded; almost certainly a one-line date-range bug
 
@@ -232,7 +232,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Direction for us:** must-never-break · **Report confidence:** immediate · **Generalisable:** yes
 - **Conditions:** evidence: R08-057
 - **Review IDs:** `13742512516`, `14018076544`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R08-112 — Fix the widget placeholder-string leak ('no data / mo datos / keine daten') — reported as recently as Jan 2026
 
@@ -675,7 +675,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **User reaction:** praise
 - **Magnitude:** simplicity 363 (42.71%), mean 4.70, 77.7% 5★; free 285 (33.53%), 4.81; design 229 (26.94%), 4.64; no ads 88 (10.35%), 4.78, 84.1% 5★; developer 67 (7.88%), 4.79; all-in-one 58 (6.82%), 4.72, zero 1–2★
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ### R08-038 — A free app with no visible revenue creates abandonment anxiety: users correctly infer there is no business model sustaining it, and the abandonment-concern reviews are its direct product
 
@@ -696,7 +696,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** 5★ n = 601 (70.71%)
 - **Direction for us:** product-rule · **Report confidence:** observed · **Generalisable:** yes
 - **Review IDs:** `12159330464`
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ### R08-042 — Everyone describing a concrete life outcome gives 5★ — title 'Depression Buster'; 'far more successful in stopping bad habits (alcohol and flower)'; 'I'm a Stroke and Aphasia survivor… this definitely helps me be a better version of myself'
 
@@ -755,7 +755,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** 0 price, 0 ads, 0 AI; gamification wish 1
 - **Direction for us:** dont · **Report confidence:** absence · **Generalisable:** yes
 - **Review IDs:** `11824366215`, `11590224125`, `10121460935`
-- **Canonical:** C006 Stay minimal and ad-free; C056 Don't build AI features on demand grounds
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C056 Don't build AI features on demand grounds; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ### R08-092 — Power users are missing: almost no demand for tags, dependencies, habit stacking (1), Shortcuts/automation (2) or Health integration (5) — Onrise's users are not the users who would pay for the kind of Pro tier competitors sell
 
@@ -808,7 +808,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **Magnitude:** praise_simplicity 363 (42.71%)
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `11926768986`
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R08-091 — The cost-constrained cannot pay at all — 'thank you for making the app accessible and free for those who… cannot afford to pay a monthly fee'; 'In my country I can't use credit cards and almost every habit tracker on the App Store requires a premium account' — for them free is access, not value-for-money
 
@@ -1355,7 +1355,7 @@ Source: `App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, foc
 - **User reaction:** none
 - **Magnitude:** 7 storefronts
 - **Direction for us:** research · **Report confidence:** open · **Generalisable:** yes
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R08-132 — Research: how many users hit the preset-habit picker and left without reviewing? 13 wrote about it; the silent cohort is unmeasurable here
 

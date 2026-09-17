@@ -102,7 +102,7 @@ Source: `App Store Reports/16. Atoms - from Atomic Habits - The official Atomic 
 - **Magnitude:** bait-and-switch tripled to 7.23%
 - **Direction for us:** product-rule · **Report confidence:** recommendation · **Generalisable:** yes
 - **Review IDs:** `13616010098`, `14046766451`
-- **Canonical:** C192 A trial must end in a usable free tier, not a cliff
+- **Canonical:** C193 When a trial or subscription ends, the user lands on a usable free tier with read-only history — never a cliff
 
 ## Must-haves
 
@@ -126,7 +126,7 @@ Source: `App Store Reports/16. Atoms - from Atomic Habits - The official Atomic 
 - **Magnitude:** 2 cited (one confirmed former payer)
 - **Direction for us:** must-never-break · **Report confidence:** qualitative · **Generalisable:** yes
 - **Review IDs:** `13573892543`, `11150554851`
-- **Canonical:** C176 Never let fear of losing history be the reason people pay; C193 Lapsed subscribers keep a usable free tier and read-only history
+- **Canonical:** C176 Never let fear of losing history be the reason people pay; C193 When a trial or subscription ends, the user lands on a usable free tier with read-only history — never a cliff
 
 ### R16-009 — Confirmed payers are the angriest group: they rate 1.21 stars below everyone else and are twice as likely to leave 1–2★ — every buyer already got past the price objection and a majority still wrote a negative review; five of the seven billing complaints in the whole corpus come from the seventeen who paid — 'I have now subscribed three separate times ($360 in total)… every day it says I do not have a paid account'; 'auto-charged for an annual renewal with no reminder and no warning… told it was my fault'; 'It looks like you are signing up for a free subscription of 28 days but they actually charge you right away'
 
@@ -166,7 +166,7 @@ Source: `App Store Reports/16. Atoms - from Atomic Habits - The official Atomic 
 - **Magnitude:** 7 of 17 (41.2% segment; 0.60% corpus); Failure | Payers | IDs ; Entitlement not applied after payment | 1 | `11015185142` (paid 3×, $360) ; Charged unexpectedly / refund refused | 3 | `11990095414` `12165173158` `12988241997` ; Data or history wiped while subscribed | 2 | `11858415210` `13837724169` ; Locked out of the free tier after cancelling | 1 | `13573892543` ; Price halved shortly after paying full price | 1 | `11846275530` ; support unreachable 7 (0.60%) mean 2.14; churn 55 (4.71%) mean 2.00, 10 name the alternative
 - **Direction for us:** must-have · **Report confidence:** segment · **Generalisable:** yes
 - **Review IDs:** `11015185142`, `11990095414`, `12165173158`, `12988241997`, `11858415210`, `13837724169`, `13573892543`, `11846275530`, `11011057187`
-- **Canonical:** C029 Billing must be exactly right; C036 A support channel that exists, is reachable outside the app, and answers; C059 Be visibly responsive; fixes bring reviewers back; C193 Lapsed subscribers keep a usable free tier and read-only history
+- **Canonical:** C029 Billing must be exactly right; C036 A support channel that exists, is reachable outside the app, and answers; C059 Be visibly responsive; fixes bring reviewers back; C193 When a trial or subscription ends, the user lands on a usable free tier with read-only history — never a cliff
 
 ### R16-068 — Fix the freeze-on-first-habit-creation bug — ten dated instances describe the identical screen; it kills users at the moment of first value, before they have anything to lose, which is why it produces no partial credit
 
@@ -185,7 +185,7 @@ Source: `App Store Reports/16. Atoms - from Atomic Habits - The official Atomic 
 - **Magnitude:** n=1 (whole case)
 - **Direction for us:** must-never-break · **Report confidence:** recommendation (immediate) · **Generalisable:** yes
 - **Review IDs:** `13573892543`
-- **Canonical:** C193 Lapsed subscribers keep a usable free tier and read-only history
+- **Canonical:** C193 When a trial or subscription ends, the user lands on a usable free tier with read-only history — never a cliff
 
 ### R16-078 — Make logging work offline — a habit tracker that cannot tick a box on a plane, on a hike, or on patchy service is failing at its only job
 
@@ -256,7 +256,7 @@ Source: `App Store Reports/16. Atoms - from Atomic Habits - The official Atomic 
 - **Magnitude:** confusing 35 (3.00%) mean 2.80; visualisation 15 (1.28%) mean 2.67; customisation 14 (1.20%) mean 3.64; animation friction 7 (0.60%) mean 2.57
 - **Direction for us:** build-free · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `11052153505`, `11007997431`, `13681275543`
-- **Canonical:** C006 Stay minimal and ad-free; C012 Week / month / year grid views; C057 Offer a non-pastel / premium design option
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C012 Week / month / year grid views; C057 Offer a non-pastel / premium design option
 
 ### R16-032 — The accountability partner (invite a friend, Pro) is praised and its limits complained about — multiple partners, seeing a partner's recent progress, random matching
 
@@ -366,7 +366,7 @@ Source: `App Store Reports/16. Atoms - from Atomic Habits - The official Atomic 
 - **Magnitude:** 17 (1.46%) mean 2.41; 5★ 3 · 4★ 1 · 3★ 3 · 2★ 3 · 1★ 7 (41.2%); by period 0.44% → 2.76% → 3.16% → 2.41%; US 11, GB 2, DE 1, IN 1, JP 1, MX 1; high-spend 1.80% vs 0.60%; ID | Country | ★ | Date | What they said ; `10983459334` | US | 5 | 2024-02-27 | *"I've already signed up for PRO version because I know this will get daily use"* ; `11001807368` | US | 5 | 2024-03-03 | *"I didn't need to wait to upgrade to the Pro, where I can add & track 2 more habits"* ; `11015185142` | US | 1 | 2024-03-06 | Paid three times ($360), entitlement never applied, could not reach anyone ; `11335015431` | US | 3 | 2024-06-02 | *"So I signed up for premium… I tried to add more habits after that. I couldn't."* ; `11440730982` | GB | 2 | 2024-06-30 | *"I actually did pay for a while but… I ended up cancelling my monthly subscription"* ; `11846275530` | JP | 1 | 2024-10-18 | Paid ¥18,000/yr at launch; price halved to ¥10,000; *"the only benefit I received was three extra months"* ; `11858415210` | GB | 5 | 2024-10-21 | Bought yearly within weeks of launch; app then wiped a week of history across all 6 habits ; `11990095414` | US | 1 | 2024-11-25 | Charged immediately, refused refund ; `12102686500` | IN | 2 | 2024-12-25 | Bought at ~$75/yr, cancelled, saw renewal offered at half price, did not renew ; `12165173158` | US | 1 | 2025-01-10 | *"I asked for a refund and was denied"* ; `12555745003` | US | 1 | 2025-04-18 | *"I paid the outrageous premium price… It's also extremely buggy"* ; `12859435506` | MX | 3 | 2025-07-06 | Paid a few months, stopped: *"it's too expensive to keep paying"* ; `12988241997` | US | 1 | 2025-08-07 | Auto-renewed a year later with no warning, refund refused, disputing the charge ; `13573785597` | US | 3 | 2025-12-30 | Bought premium specifically for more habits, hit the 6 cap ; `13573892543` | US | 2 | 2025-12-30 | Cancelled, then locked out of the free tier entirely — *"the app is bricked for me now"* ; `13837724169` | US | 1 | 2026-03-11 | *"Randomly stopped updating when I tracked my habits. I pay for this app"* ; `14201996700` | DE | 4 | 2026-06-19 | Paying monthly; the app works; *"The Ugly: I'm paying… so I'm expecting some content other than the content of the book"*
 - **Direction for us:** must-never-break · **Report confidence:** segment · **Generalisable:** yes
 - **Review IDs:** `10983459334`, `11001807368`, `11015185142`, `11335015431`, `11440730982`, `11846275530`, `11858415210`, `11990095414`, `12102686500`, `12165173158`, `12555745003`, `12859435506`, `12988241997`, `13573785597`, `13573892543`, `13837724169`, `14201996700`
-- **Canonical:** C029 Billing must be exactly right; C033 Restore purchase and entitlements must work immediately; C065 Paying customers are the highest 1★ risk — every paid feature must work; C193 Lapsed subscribers keep a usable free tier and read-only history
+- **Canonical:** C029 Billing must be exactly right; C033 Restore purchase and entitlements must work immediately; C065 Paying customers are the highest 1★ risk — every paid feature must work; C193 When a trial or subscription ends, the user lands on a usable free tier with read-only history — never a cliff
 
 ### R16-046 — Reviewers' own reservation prices cluster far below every price Atoms has charged: $8–$30 one-time, $2–$5 a month, $15–$60 a year — the modal counter-offer is a one-time purchase between $10 and $30, which Atoms has never offered
 
@@ -408,7 +408,7 @@ Source: `App Store Reports/16. Atoms - from Atomic Habits - The official Atomic 
 - **User reaction:** praise
 - **Magnitude:** simplicity 183 (15.67%) mean 4.73, 82.0% 5★, zero 1–2★; design 179 (15.33%) mean 3.49; brand references 435 (37.24%), halo 268 (22.95%) mean 4.90, 90.3% 5★; Mindset 59 (5.05%) mean 4.07; haptics 45 (3.85%) 4.02; identity 35 (3.00%) 4.43; life change 72 (6.16%) 4.49
 - **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** app-specific
-- **Canonical:** C006 Stay minimal and ad-free; C070 Use the language users use: Atomic Habits, 75 Hard; C116 Content library (workouts, meditation, sleep, journal) as the paid layer
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C070 Use the language users use: Atomic Habits, 75 Hard; C116 Content library (workouts, meditation, sleep, journal) as the paid layer
 
 ### R16-014 — Design praise is the most rating-agnostic theme: 31% of design-praise reviews are 1–2★ — people complimenting the craft on the way out the door ('It's a beautifully designed app with some lovely haptic elements. However it's light on substance, especially for the price')
 
@@ -427,7 +427,7 @@ Source: `App Store Reports/16. Atoms - from Atomic Habits - The official Atomic 
 - **User reaction:** 1★-burst
 - **Magnitude:** bait-and-switch 41 (3.51%)
 - **Direction for us:** product-rule · **Report confidence:** very strong · **Generalisable:** yes
-- **Canonical:** C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible; C192 A trial must end in a usable free tier, not a cliff
+- **Canonical:** C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible; C193 When a trial or subscription ends, the user lands on a usable free tier with read-only history — never a cliff
 
 ### R16-037 — The corpus is bimodal and the middle is hollow: half the corpus is a five and 30% is a one-or-two; the 4★ band is the smallest — the signature of a product where the decision is binary (accept the model and love it, or hit the wall and reject it); Atoms has 3.8× HabitKit's one-star rate on a product reviewers describe as better-designed
 
@@ -466,7 +466,7 @@ Source: `App Store Reports/16. Atoms - from Atomic Habits - The official Atomic 
 - **Magnitude:** 17 payers; 2 brand 5★; 2 cap-escape 3★; 1 price-drop
 - **Direction for us:** product-rule · **Report confidence:** segment · **Generalisable:** yes
 - **Review IDs:** `10983459334`, `11858415210`, `13573785597`, `11335015431`, `12482534390`, `13616010098`, `11980741663`
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C060 Cross-sell an app family on brand trust; C191 Never cap the tier someone has already paid for; C192 A trial must end in a usable free tier, not a cliff
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C060 Cross-sell an app family on brand trust; C191 Never cap the tier someone has already paid for; C193 When a trial or subscription ends, the user lands on a usable free tier with read-only history — never a cliff
 
 ### R16-047 — Subscription aversion is a category position, not generic grumbling: reviewers argue a habit app specifically should not be a subscription because it has no running cost — 'Subscriptions make sense if there is running cost associated with an application but this isn't the case here'; 'the app is built once and from then only needs basic maintenance'; 'The irony in that the book encourages you to cancel subscriptions yet pushes its own'
 
@@ -617,7 +617,7 @@ Source: `App Store Reports/16. Atoms - from Atomic Habits - The official Atomic 
 - **Magnitude:** Period | n | Mean | 5★ | 1★ ; P1 launch | 678 | 3.88 | 59.7% | 14.7% ; P2 rest of 2024 | 217 | 3.00 | 28.6% | 24.9% ; P3 2025 | 190 | 3.38 | 41.6% | 20.0% ; P4 2026 | 83 | 3.42 | 42.2% | 19.3% ; P1 678 / P2 217 / P3 190 / P4 83
 - **Direction for us:** product-rule · **Report confidence:** trend · **Generalisable:** yes
 - **Review IDs:** `10976398063`, `10979802836`
-- **Canonical:** C002 Ratings follow the offer, not the feature set; C076 Never seed launch reviews
+- **Canonical:** C002 Ratings follow the offer, not the feature set; C076 Never seed the launch rating — templated or bought reviews decay and leave the markets they cover unmeasurable
 
 ### R16-060 — Reliability is worsening and unresolved — more than doubled; the launch bugs were fixed, the 2025 bugs were not; the freeze-on-habit-creation cluster is documented at ten dates between Apr 2025 and Feb 2026 and still producing 1★ eight weeks before the corpus ends — the only story unambiguously getting worse
 
@@ -636,7 +636,7 @@ Source: `App Store Reports/16. Atoms - from Atomic Habits - The official Atomic 
 - **Magnitude:** Theme | P1 | P2 | P3 | P4 ; Brand betrayal | 0.88% | 1.84% | 1.58% | 3.61% ; Bait-and-switch framing | 2.36% | 5.07% | 4.21% | 7.23% ; Rigid habit model | 2.51% | 4.61% | 3.16% | 7.23%
 - **Direction for us:** dont · **Report confidence:** trend · **Generalisable:** yes
 - **Review IDs:** `14302077000`, `13613868361`
-- **Canonical:** C043 Flexible / custom frequency; C192 A trial must end in a usable free tier, not a cliff; C195 Premium pricing on a trust-based personal brand spends the brand
+- **Canonical:** C043 Flexible / custom frequency; C193 When a trial or subscription ends, the user lands on a usable free tier with read-only history — never a cliff; C195 Premium pricing on a trust-based personal brand spends the brand
 
 ### R16-062 — Price and cap complaints improved only relatively: P2 (Apr–Dec 2024) is the trough — half of everything written was a price objection, in the period containing the June 2024 cut; price objection is still 30.12% in 2026, essentially the launch rate, at roughly one-third of the launch price; the Pro-cap complaint has not moved in 30 months
 
@@ -719,7 +719,7 @@ Source: `App Store Reports/16. Atoms - from Atomic Habits - The official Atomic 
 - **Magnitude:** 41 (3.51%, VERY STRONG) mean 2.44, 58.5% 1–2★; 2.36% (P1) → 5.07% (P2) → 4.21% (P3) → 7.23% (P4)
 - **Direction for us:** dont · **Report confidence:** very strong, rising · **Generalisable:** yes
 - **Review IDs:** `12482534390`, `13613868361`, `12600470632`, `14302077000`, `13882025149`
-- **Canonical:** C109 A free trial must be a real trial; C147 Let people use the product before they pay; C192 A trial must end in a usable free tier, not a cliff
+- **Canonical:** C109 A free trial must be a real trial; C147 Let people use the product before they pay; C193 When a trial or subscription ends, the user lands on a usable free tier with read-only history — never a cliff
 
 ## Things to do
 
@@ -813,7 +813,7 @@ Source: `App Store Reports/16. Atoms - from Atomic Habits - The official Atomic 
 - **Magnitude:** 678 of 1,168 (58.05%) launch; beta testers 23 (1.97%), 47.8% 5★ / 47.8% 1–2★; regex praise themes ±3–5%
 - **Direction for us:** none · **Report confidence:** method · **Generalisable:** yes
 - **Review IDs:** `10977084069`
-- **Canonical:** C054 Never run incentivised / review-for-premium campaigns; C076 Never seed launch reviews
+- **Canonical:** C054 Never run incentivised / review-for-premium campaigns; C076 Never seed the launch rating — templated or bought reviews decay and leave the markets they cover unmeasurable
 
 ### R16-028 — All 57 themes ranked: 37 negative, 12 positive, 5 cross-cutting
 

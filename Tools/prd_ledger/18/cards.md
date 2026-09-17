@@ -193,7 +193,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **Magnitude:** complexity 149 (7.28%); KR 6.75 / JP 10.76 / US 8.33%
 - **Direction for us:** must-have · **Report confidence:** recommendation · **Generalisable:** yes
 - **Review IDs:** `13842532454`, `11064706172`
-- **Canonical:** C006 Stay minimal and ad-free; C207 Let users hide surfaces they don't use — tabs, social, recommendations, streaks
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C207 Let users hide surfaces they don't use — tabs, social, recommendations, streaks
 
 ## Must never break
 
@@ -293,7 +293,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **Magnitude:** n=1 stated + 11 theme
 - **Direction for us:** must-never-break · **Report confidence:** single · **Generalisable:** yes
 - **Review IDs:** `8592955634`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R18-119 — Korean-diaspora users in the US/CA hit a timezone bug — the day rolls on Korean time; US daylight saving is unhandled; one asks for a refund; span 2021-08 → 2024-11
 
@@ -303,7 +303,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **Magnitude:** 6 IDs; theme 11 (0.54%)
 - **Direction for us:** must-never-break · **Report confidence:** close reading · **Generalisable:** yes
 - **Review IDs:** `7667185054`, `8850150608`, `10288775267`, `8288427147`, `8592955634`, `11951042522`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R18-140 — Fix entitlement propagation and instrument it — a lifetime purchase that stops working is not a bug, it is the end of the customer relationship; add a purchase-state self-check on launch and an in-app restore that actually restores without dumping the user into onboarding
 
@@ -525,7 +525,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **Magnitude:** 149 (7.28%, HIGH, mean 3.65★, 24 1★); 4★ band 30 (9.3%), 3★ band 24 (11.1%)
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `9514694714`, `10851299280`, `9744682977`
-- **Canonical:** C006 Stay minimal and ad-free; C142 Surface existing features where users look; C207 Let users hide surfaces they don't use — tabs, social, recommendations, streaks
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C142 Surface existing features where users look; C207 Let users hide surfaces they don't use — tabs, social, recommendations, streaks
 
 ### R18-055 — Order/reorder/future-date edit restriction is the #1 unmet need — free reordering / drag-and-drop and editing future dates; 73 five-star reviews describe this friction; a JP ADHD user docked a star purely for reorder discoverability
 
@@ -554,7 +554,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **User reaction:** praise
 - **Magnitude:** 164 (8.01%, HIGH, mean 4.46★)
 - **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R18-069 — Apple Watch is mostly positive but asks for parity — timer, bundles, standalone use
 
@@ -663,7 +663,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **Magnitude:** ~15 (reading; kr, jp, us)
 - **Direction for us:** must-have · **Report confidence:** reading · **Generalisable:** yes
 - **Review IDs:** `11911176952`, `13531683889`, `13705144684`, `11617268315`, `12403094681`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C170 Configurable day boundary and hemisphere seasons
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C170 Configurable day boundary and hemisphere seasons
 
 ### R18-082 — Widget requests — check off without opening the app, choose which routine shows, 2-column layout, calendar widget; the widget has 214 mentions and is simultaneously the most-loved and most-broken surface; one user runs both MyRoutine and Routinery solely for Routinery's timer widget
 
@@ -1228,7 +1228,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **User reaction:** complaint
 - **Magnitude:** 19 (0.93%) + 11 (0.54%)
 - **Direction for us:** must-never-break · **Report confidence:** emerging · **Generalisable:** yes
-- **Canonical:** C027 Localise early — it unlocks revenue; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C027 Localise early — it unlocks revenue; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R18-114 — KR / JP / US own-denominator rates: free-tier restriction 6.38% / 8.07% / 8.33% (all HIGH); trial/billing 7.07% / 5.38% / 2.38%; entitlement failure 1.19% / 2.24% (mean 1.00★) / 0; data loss 6.32% / 6.28% / 2.38%; crash 5.69% / 3.14% / 10.71%; widget 11.57% / 7.62% / 11.90%; order/edit 7.44% / 2.69% / 4.76%; complexity 6.75% / 10.76% / 8.33%; localisation 0.31% / 3.14% / 0; timer 1.31% / 6.28% / 8.33%; ADHD 1.44% / 3.14% / 5.95%; social 3.69% / 0.90% / 3.57%; merged view 2.75% / 0.45% / 1.19%; confirmed payer 8.94% / 6.28% / 3.57%; design praise 7.44% / 12.11% / 11.90%; life change 6.13% / 9.87% / 5.95%
 
@@ -1267,7 +1267,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **Magnitude:** n=84 (4.10%), mean 3.82; ADHD 5 (5.95%); timer 7 (8.33%); crash 9 (10.71%)
 - **Direction for us:** research · **Report confidence:** ≥50 storefront · **Generalisable:** app-specific
 - **Review IDs:** `7667185054`, `8850150608`, `10288775267`, `8288427147`, `8592955634`, `11951042522`, `11067291310`, `11993264527`, `12292226361`, `12234125678`, `12244913951`, `11432555244`, `11538265895`, `12230682122`, `13866825904`
-- **Canonical:** C031 Crashes / launch failures; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
+- **Canonical:** C031 Crashes / launch failures; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
 
 ### R18-120 — High-spend group present (US, JP, KR, GB, DE, CA, AU, FR, TW) = 1,996 of 2,048 (97.46%); review volume is not used as a download or revenue proxy; per storefront: kr 1,599 (3.95) paywall history/reliability/reorder; jp 223 (3.37) localisation/entitlement/support; us 84 (3.82) crashes/sign-in/onboarding, ADHD strength; tw 35 (2.60) billing/refund; gb 23 (3.48) paywall/onboarding/sign-in; au 17 (3.71) onboarding excludes shift workers, 'predatory' paywall; ca 15 (3.20) onboarding length + paywall, timezone; fr 6 (2.83) localisation, complexity; de 2 (1.00) billing
 
@@ -1422,7 +1422,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **Magnitude:** Theme | Span | Latest evidence ; Reorder friction / can't edit future dates | 2020-12 → 2026-09 | 6813254462 (2020) → 13853005780 (Mar 2026) ; Data loss | 2020-12 → 2026-09 | 6755246776 → 14496075544 (1 Sep 2026) ; Widget check opens the app | 2021-12 → 2026 | 8173262340 → 14128340502 ; Diary/memo aggregation missing | 2022-01 → 2026-02 | 8278766556 → 13700701827 ; No export | 2020-11 → 2026-03 | 6164039764 (asked for Excel export in the app's 5th month) → 13843048940 ; Statistics without charts or trend | 2022 → 2026 | 10444375042 → 14184795326 ; Timezone wrong for overseas users | 2021-08 → 2024-11 | 7667185054 → 11951042522 ; UI vocabulary confusion (습관 vs 루틴 vs 모드) | 2022 → 2026 | 12272956378, 13439818706, 14232607477 ; A typo in a daily popup | ≥2025 → Aug 2026 | 14462318051: *"오늘도 수고 많았아요"* still unfixed after a year
 - **Direction for us:** must-never-break · **Report confidence:** era series · **Generalisable:** yes
 - **Review IDs:** `6813254462`, `13853005780`, `6755246776`, `14496075544`, `8173262340`, `14128340502`, `8278766556`, `13700701827`, `6164039764`, `13843048940`, `10444375042`, `14184795326`, `7667185054`, `11951042522`, `12272956378`, `13439818706`, `14232607477`, `14462318051`
-- **Canonical:** C020 Data export / backup / CSV; C034 Data must never be lost on update, reinstall or phone change; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C073 Manual reordering, renaming and editing of habits/tasks — free
+- **Canonical:** C020 Data export / backup / CSV; C034 Data must never be lost on update, reinstall or phone change; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C073 Manual reordering, renaming and editing of habits/tasks — free
 
 ## Positioning
 
@@ -1610,7 +1610,7 @@ Source: `App Store Reports/18. MyRoutine - Organize your day - Built around your
 - **Magnitude:** 6 reviews in 20 days; 2 independent allegations
 - **Direction for us:** dont · **Report confidence:** limited evidence · **Generalisable:** app-specific
 - **Review IDs:** `12757322029`, `12767129702`, `12778751472`, `12831425768`, `12756530951`, `12790218793`, `13997904350`, `12543396557`
-- **Canonical:** C076 Never seed launch reviews
+- **Canonical:** C076 Never seed the launch rating — templated or bought reviews decay and leave the markets they cover unmeasurable
 
 ### R18-053 — Negative/mixed themes ranked (denominator 2,048): free-tier restriction 139 (6.79%, 2.32★, 65 1★); trial/billing/refund 144 (7.03%, 2.90★); UI complexity/can't find things 149 (7.28%, 3.65★); order/reorder/future-date edit restriction 130 (6.35%, 4.07★); data loss 123 (6.01%, 3.27★); crash 111 (5.42%, 3.15★); lag/slow 76 (3.71%); sign-up/login required or broken 70 (3.42%, 3.13★); price objection 56 (2.73%, 3.30★); cross-device/web/Mac sync 55 (2.69%); ads 46 (2.25%, 2.70★); upgrade-nag/promo bar/countdown 40 (1.95%, 2.40★); onboarding 34 (1.66%, 2.03★); support unreachable 32 (1.56%, 2.72★); entitlement failure 25 (1.22%, 2.44★); notification not firing/can't silence 21 (1.03%); localisation defects 19 (0.93%); timezone/overseas date wrong 11 (0.54%)
 

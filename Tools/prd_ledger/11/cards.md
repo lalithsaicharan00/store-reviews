@@ -145,7 +145,7 @@ Source: `App Store Reports/11. Daily Habits - Streak Tracker - Morning Routine &
 - **User reaction:** complaint
 - **Magnitude:** listing check
 - **Direction for us:** must-never-break · **Report confidence:** recommendation (immediate) · **Generalisable:** yes
-- **Canonical:** C177 Every IAP SKU has a distinct name that states its period or 'one time'
+- **Canonical:** C177 One clear SKU shelf — every plan distinctly named, stating its period, and delivering exactly what its label says
 
 ## Features
 
@@ -239,7 +239,7 @@ Source: `App Store Reports/11. Daily Habits - Streak Tracker - Morning Routine &
 - **Magnitude:** Price | SKU name as listed | Evidence ; $1.99 | "Habits PRO Functions" | store page ; $6.99 | "Habits PRO Functions" | store page ; $8.99 | "Habits PRO Functions" | store page ; $14.99 | "Daily Habits All Features Pack" | store page ; $9.99 | *separate app* "Daily Habits: Lifetime Premium" (ID 1550003470) | store listing ; "annual fee" | — | `14438257886` ; "VIP" | — | `14446220984` ; "lifetime subscription" | — | `14472099021`
 - **Direction for us:** dont · **Report confidence:** listing check · **Generalisable:** yes
 - **Review IDs:** `14438257886`, `14446220984`, `14472099021`
-- **Canonical:** C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible; C113 One stable, disclosed price — no discount wheels; C177 Every IAP SKU has a distinct name that states its period or 'one time'
+- **Canonical:** C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible; C113 One stable, disclosed price — no discount wheels; C177 One clear SKU shelf — every plan distinctly named, stating its period, and delivering exactly what its label says
 
 ### R11-020 — 3 of 3 direct paid reviewers report losing purchased access; no conversion rate is claimed or claimable
 
@@ -330,7 +330,7 @@ Source: `App Store Reports/11. Daily Habits - Streak Tracker - Morning Routine &
 - **Magnitude:** 19 of 33 (57.58%, mean 4.95) praise simplicity; 4 of 33 (12.12%, mean 5.00) praise absence of things
 - **Direction for us:** product-rule · **Report confidence:** dominant theme · **Generalisable:** yes
 - **Review IDs:** `8756804446`, `8800831234`, `9327859322`, `9332848196`, `9758570716`, `9809639708`, `10285428672`, `10315480705`, `10796416820`, `10874846443`, `11375045777`, `11468101739`, `12113191512`, `12221849177`, `12269558510`, `12285262144`, `13469176367`, `13476851347`, `13685904641`
-- **Canonical:** C006 Stay minimal and ad-free; C093 No upsell nagging without a 'never ask again' option; C095 Neutral, non-judgemental tone on failure
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C093 No upsell nagging without a 'never ask again' option; C095 Neutral, non-judgemental tone on failure
 
 ### R11-021 — The only evidence a purchasable option existed before 2026 is a satisfied 5★ user who declined to buy — 'I like that it's free (sorry that I didn't buy)' — coded purchase_declined and excluded from paid evidence
 
@@ -350,7 +350,7 @@ Source: `App Store Reports/11. Daily Habits - Streak Tracker - Morning Routine &
 - **Magnitude:** 5★ n=27 (81.82%); simplicity 17; free 6 of 7; no-pressure 4; outcome 4; switched 3; low-info 10
 - **Direction for us:** product-rule · **Report confidence:** band analysis · **Generalisable:** yes
 - **Review IDs:** `9592340459`, `12076364194`, `12119209447`, `13952453631`, `14462951464`
-- **Canonical:** C006 Stay minimal and ad-free; C095 Neutral, non-judgemental tone on failure
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C095 Neutral, non-judgemental tone on failure
 
 ### R11-023 — Four 5★ reviews carry an unmet feature request in the same body (cloud backup, statistics, reordering ×2): these users are not withholding stars over missing features, they are volunteering a roadmap — a high-trust audience
 
@@ -594,7 +594,7 @@ Source: `App Store Reports/11. Daily Habits - Streak Tracker - Morning Routine &
 - **Magnitude:** 4 of 33 chose it for quiet
 - **Direction for us:** dont · **Report confidence:** recommendation · **Generalisable:** yes
 - **Review IDs:** `8756804446`, `11375045777`, `12221849177`, `13685904641`
-- **Canonical:** C006 Stay minimal and ad-free; C082 Ads in the free tier; C093 No upsell nagging without a 'never ask again' option
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C082 Ads in the free tier; C093 No upsell nagging without a 'never ask again' option; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ## Things to do
 

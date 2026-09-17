@@ -121,7 +121,7 @@ Source: `App Store Reports/12. That Girl - Routine Planner - Cute Daily Calendar
 - **Magnitude:** 52 (12.87%, HIGH-PRIORITY); 11.4% (2022) → 3.8% (2023) → 9.0% (2024) → 16.5% (2025) → 17.5% (2026); Defect | n | % of 404 | Label | IDs ; Edits/tasks not saved; data lost | 11 | 2.72% | Meaningful | `8980705761`, `14029446237`, `9070379702`, `12261239323`, `12722697888`, `8965419740`, `12334061531`, `12015877548`, `12236526000`, `13746755144`, `14146221545` ; Setting/editing a task time crashes or rewrites the other time; no AM/PM, military-time only | 8 | 1.98% | Meaningful | `12111794304`, `14056969118`, `12215752061`, `11943045550`, `12251347318`, `12765812399`, `14082922244`, `14329102917` ; Recurring/repeat tasks broken or absent | 8 | 1.98% | Meaningful | `12111794304`, `12334061531`, `13194937352`, `8913316700`, `8927844988`, `8983147178`, `9110981116`, `14082922244` ; Calendar sync (Google/Apple/Family Sharing) does not work | 8 | 1.98% | Meaningful | `12178849529`, `12383283769`, `14151717931`, `12021381513`, `13812177642`, `12137887256`, `12247978715`, `12276664447` ; App closes/restarts at the end of the intro | 4 | 0.99% | Emerging | `8608302704`, `8638483109`, `8606816193`, `8614602501`
 - **Direction for us:** must-never-break · **Report confidence:** high-priority, rising · **Generalisable:** yes
 - **Review IDs:** `8980705761`, `14029446237`, `12111794304`, `14056969118`, `8913316700`, `12178849529`, `8608302704`
-- **Canonical:** C030 Sync must work — and prove it; C031 Crashes / launch failures; C034 Data must never be lost on update, reinstall or phone change; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C043 Flexible / custom frequency
+- **Canonical:** C030 Sync must work — and prove it; C031 Crashes / launch failures; C034 Data must never be lost on update, reinstall or phone change; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C043 Flexible / custom frequency
 
 ### R12-029 — A promotional 'free lifetime' giveaway was not honoured — a bounded, closed incident (Jul 2024 – May 2025)
 
@@ -179,7 +179,7 @@ Source: `App Store Reports/12. That Girl - Routine Planner - Cute Daily Calendar
 - **Magnitude:** time 8 (repro still open 2026); recurring 8 over 3y10m; sync 8
 - **Direction for us:** must-never-break · **Report confidence:** recommendation (near-term) · **Generalisable:** yes
 - **Review IDs:** `14056969118`, `12021381513`
-- **Canonical:** C030 Sync must work — and prove it; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C043 Flexible / custom frequency; C072 Writes to shared system stores (calendar, health) must be exact and reversible
+- **Canonical:** C030 Sync must work — and prove it; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C043 Flexible / custom frequency; C072 Writes to shared system stores (calendar, health) must be exact and reversible
 
 ## Features
 
@@ -270,7 +270,7 @@ Source: `App Store Reports/12. That Girl - Routine Planner - Cute Daily Calendar
 - **User reaction:** 1★-burst
 - **Magnitude:** SKU name | Price ; Weekly Subscription | $7.00 ; Weekly Subscription | $6.99 ; Weekly Subscription | $2.99 ; Monthly Subscription | $8.00 ; 12 Weeks Subscription | $29.99 ; Yearly app access | $24.00 ; 1 Year Plan | $5.99 ; Yearly app access for sale | $4.00 ; One-Time Payment | $9.00 ; One-Time Payment | $4.99
 - **Direction for us:** dont · **Report confidence:** external + 8 reviews · **Generalisable:** yes
-- **Canonical:** C113 One stable, disclosed price — no discount wheels; C177 Every IAP SKU has a distinct name that states its period or 'one time'; C180 No 'wait, don't go' exit discounts or countdown timers on the paywall
+- **Canonical:** C113 One stable, disclosed price — no discount wheels; C177 One clear SKU shelf — every plan distinctly named, stating its period, and delivering exactly what its label says; C180 No 'wait, don't go' exit discounts or countdown timers on the paywall
 
 ### R12-026 — No free trial / can't test first is the fourth-largest theme
 
@@ -637,7 +637,7 @@ Source: `App Store Reports/12. That Girl - Routine Planner - Cute Daily Calendar
 - **Magnitude:** bugs 11.4% → 3.8% → 9.0% → 16.5% → 17.5%; sync first 2024-12 latest 2026-06; time bug first 2024-12 latest 2026-07
 - **Direction for us:** must-never-break · **Report confidence:** trend · **Generalisable:** yes
 - **Review IDs:** `12021381513`, `13812177642`, `14329102917`
-- **Canonical:** C030 Sync must work — and prove it; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C175 Updates must not break function or wipe progress
+- **Canonical:** C030 Sync must work — and prove it; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C175 Updates must not break function or wipe progress
 
 ### R12-063 — The typo problem ('everywhere it is meant to say lunch, it instead says launch'; 'gonna gonna gonna I can't take it serious') was fixed and has not returned — a genuine completed remediation that took roughly 13 months and cost 12 reviews at mean 1.58
 
@@ -758,7 +758,7 @@ Source: `App Store Reports/12. That Girl - Routine Planner - Cute Daily Calendar
 - **User reaction:** 1★-burst
 - **Magnitude:** 8 describe exit-offer; 42 use 'scam'
 - **Direction for us:** dont · **Report confidence:** recommendation (immediate) · **Generalisable:** yes
-- **Canonical:** C177 Every IAP SKU has a distinct name that states its period or 'one time'; C180 No 'wait, don't go' exit discounts or countdown timers on the paywall
+- **Canonical:** C177 One clear SKU shelf — every plan distinctly named, stating its period, and delivering exactly what its label says; C180 No 'wait, don't go' exit discounts or countdown timers on the paywall
 
 ## Things to do
 

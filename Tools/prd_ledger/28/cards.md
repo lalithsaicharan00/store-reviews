@@ -1267,7 +1267,7 @@ Source: `App Store Reports/28. Habit Rabbit - Habit Tracker - Your productivity 
 - **User reaction:** complaint
 - **Magnitude:** 10 (1.22%, meaningful), mean 2.40
 - **Direction for us:** do · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C134 Lead the store listing with what users actually love; C218 Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate
+- **Canonical:** C134 Lead the store listing with what users actually love; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ### R28-087 — 'It's a game, not a tracker' (10, 1.22%, mean 2.40) is an expectation mismatch that produces low ratings without any defect — 'It looks really cute, but not at all what I was expecting. It's a game.' (2★); 'This application is not for somebody who wants a simple Habit tracker' (3★); 'it's not what it says it is… the only thing I'm tracking is the amount of adds' (GB, 2★); 'more of a game than forming healthy habits' (1★); 'I didn't got what it was told to me that it will manage ur mood and it is just a game' (IN, 2★); one 5★ makes the same observation positively ('Don't need the theme or the gamification, but love the otherwise clean design'); a store-listing and first-run expectation-setting problem, not a product problem — cheap to address and currently costing 2★ reviews
 
@@ -1277,7 +1277,7 @@ Source: `App Store Reports/28. Habit Rabbit - Habit Tracker - Your productivity 
 - **Magnitude:** 10 (1.22%), mean 2.40
 - **Direction for us:** do · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `14295979330`, `11486094153`, `12361908246`, `12137237315`, `13711883140`, `8310029347`, `11095027413`, `12401826074`, `13859274524`, `14076653573`
-- **Canonical:** C024 Streaks / gamification; C134 Lead the store listing with what users actually love; C218 Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate
+- **Canonical:** C024 Streaks / gamification; C134 Lead the store listing with what users actually love; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ### R28-112 — 13 reviews (1.58%, mean 4.15) describe arriving from another tracker, and the winning pitch is affordability plus charm — 'I needed a more affordable and functional alternative to another well known self care pet. Habit Rabbit is easy to use, cute, motivating and well priced' (GB, 5★ — an unmistakable Finch comparison); 'Perfect for me! Not overloaded with features and tabs (like Finch)' (RU, 5★); 'Had trouble finding a habit tracker that didn't need a subscription to add more than three habits'; 'I find its free tier usage incredibly wide compared to other trackers'; the losing comparison is also explicit: a full competitive teardown against Finch — multi-device sync is Habit Rabbit's advantage, no trial and the ad load its disadvantages, and the reviewer chose Finch; the positioning 'cheaper, simpler, syncs to more devices' is coherent and defensible, and the ad load is what converts it from 'cheaper' to 'you get what you pay for'
 

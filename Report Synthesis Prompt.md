@@ -227,6 +227,10 @@ These came from gaps found when a fresh context re-read a report. Each one is no
   report gives it no paragraph — a sync-request count or a crash count with no prose is still a
   number later reports are compared against. (Report 20: `N-sync-backup`, `N-crash`,
   `N-checks-disappear`.)
+- **A detected review-manipulation pattern (seeded or templated reviews, reward-for-review, rating-prompt
+  timing) and any dated developer response to a complaint (e.g. raising a cap by one) each get a `tactic`
+  card that states the outcome**, not only a `data-caveat` or `timeline` card — otherwise "what worked for
+  whom" in the final report cannot list them. (Report 30: phrase-bank campaigns; the 2 → 3 cap raise.)
 
 ### Magnitude is mandatory
 

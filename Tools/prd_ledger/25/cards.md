@@ -230,7 +230,7 @@ Source: `App Store Reports/25. Grit - Daily Habit Tracker - Routines & Goals ADH
 - **User reaction:** mixed
 - **Magnitude:** 7 (0.53%, emerging), mean 3.29
 - **Direction for us:** must-never-break · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C019 Quit-habit / bad-habit mode; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C019 Quit-habit / bad-habit mode; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R25-101 — Broken existing capabilities: cross-device sync not updating (14, 1.07%); data loss / reset to zero (12); habit/group order resets itself (5); Apple Health values wrong — steps off by 568, weight read as an entry-count, running only in minutes (9); widget stopped working / not interactive / font fixed (6); archive/delete destroys history (4); over-achievement carries into the next day or rewards a bad habit at 200% (7); Watch app removed / limited / date lags / advertised on the listing but not installable (5); notifications wrong or silent (3); Vision Pro support withdrawn (1)
 
@@ -240,7 +240,7 @@ Source: `App Store Reports/25. Grit - Daily Habit Tracker - Routines & Goals ADH
 - **Magnitude:** Problem | n | % | Signal | Evidence ; Launch / interaction blocker | 51 | 3.90% | very strong | Part 4.1 ; Cross-device sync not updating | 14 | 1.07% | meaningful | 10774713901, 11451647276, 12127905359, 13766076691, 14443285061, 14051521559 ; Data loss / reset to zero | 12 | 0.92% | emerging | 11792724852, 12184884069, 12611547585, 13602107796, 13605590169, 13957262391, 14283671611, 14422160795 ; Habit/group order resets itself | 5 | 0.38% | weak | 12657367016, 12658607281, 12762998535, 13346806948 ; Apple Health values wrong (steps off by 568; weight read as entry-count; running only in minutes) | 9 | 0.69% | emerging | 11278083369, 13502878041, 12918071192, 12158005240, 13925995344, 11154294245 ; Widget stopped working / not interactive / font fixed | 6 | 0.46% | weak | 11845505516, 11841522005, 11504006411, 13410996727, 12377678039, 12030551048 ; Archive/delete destroys history | 4 | 0.31% | weak | 10971903648, 12201042880, 12697696657 ; Over-achievement carries into the next day / rewards a bad habit at 200% | 7 | 0.53% | emerging | 14074498392, 12778092747, 14277782327, 13195716771, 11066420925 ; Apple Watch app removed / limited / date lags | 5 | 0.38% | weak | 13316944137, 12013649134, 12659238964, 14051521559, 12865760230 (Watch advertised on the listing but not installable) ; Notifications wrong or silent | 3 | 0.23% | weak | 12575813099, 12580317312, 12720268465 ; Vision Pro support withdrawn | 1 | 0.08% | ignore | 13531929434
 - **Direction for us:** must-never-break · **Report confidence:** corpus-level fact · **Generalisable:** yes
 - **Review IDs:** `10774713901`, `11451647276`, `12127905359`, `13766076691`, `14443285061`, `14051521559`, `11792724852`, `12184884069`, `12611547585`, `13602107796`, `13605590169`, `13957262391`, `14283671611`, `14422160795`, `12657367016`, `12658607281`, `12762998535`, `13346806948`, `11278083369`, `13502878041`, `12918071192`, `12158005240`, `13925995344`, `11154294245`, `11845505516`, `11841522005`, `11504006411`, `13410996727`, `12377678039`, `12030551048`, `10971903648`, `12201042880`, `12697696657`, `14074498392`, `12778092747`, `14277782327`, `13195716771`, `11066420925`, `13316944137`, `12013649134`, `12659238964`, `14051521559`, `12865760230`, `12575813099`, `12580317312`, `12720268465`, `13531929434`
-- **Canonical:** C021 Apple Health integration; C022 Apple Watch app (done properly: timer, two-way sync); C030 Sync must work — and prove it; C034 Data must never be lost on update, reinstall or phone change; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C040 Widgets must not go blank, stale or disagree with the app; C041 Editing a habit never wipes its history; C073 Manual reordering, renaming and editing of habits/tasks — free
+- **Canonical:** C021 Apple Health integration; C022 Apple Watch app (done properly: timer, two-way sync); C030 Sync must work — and prove it; C034 Data must never be lost on update, reinstall or phone change; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C040 Widgets must not go blank, stale or disagree with the app; C041 Editing a habit never wipes its history; C073 Manual reordering, renaming and editing of habits/tasks — free
 
 ### R25-102 — Over-achievement carries into the next day, and logging a bad habit at 200% is rewarded as success — the carry-over and bad-habit arithmetic are wrong
 
@@ -250,7 +250,7 @@ Source: `App Store Reports/25. Grit - Daily Habit Tracker - Routines & Goals ADH
 - **Magnitude:** 7 (0.53%, emerging), mean 3.29
 - **Direction for us:** must-never-break · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `14074498392`, `12778092747`, `14277782327`, `13195716771`, `11066420925`
-- **Canonical:** C019 Quit-habit / bad-habit mode; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C019 Quit-habit / bad-habit mode; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R25-103 — The Watch app was reported removed or limited, advertised on the listing but not installable, and Vision Pro support was withdrawn
 
@@ -260,7 +260,7 @@ Source: `App Store Reports/25. Grit - Daily Habit Tracker - Routines & Goals ADH
 - **Magnitude:** 5 (0.38%) + 1
 - **Direction for us:** must-never-break · **Report confidence:** weak · **Generalisable:** yes
 - **Review IDs:** `13316944137`, `12013649134`, `12659238964`, `14051521559`, `12865760230`, `13531929434`
-- **Canonical:** C155 Never remove a feature people bought the app for — add alongside, do not replace; C218 Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate
+- **Canonical:** C155 Never remove a feature people bought the app for — add alongside, do not replace; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ### R25-107 — The launch blocker is specifically post-onboarding: the user completes the questionnaire, reaches the main screen, and it does not respond to touch ('the Let's go button is unresponsive'; 'Sofort nach dem set up ist sie komplett eingefroren… Zwei mal gelöscht und neu installiert. Nichts geht.'); four say reinstalling does not fix it and one names iCloud sync as the stuck state — pointing at a first-run data/iCloud path rather than rendering; the only negative theme whose rate more than quadruples, it lands on brand-new users, and it survived two release cycles
 
@@ -409,7 +409,7 @@ Source: `App Store Reports/25. Grit - Daily Habit Tracker - Routines & Goals ADH
 - **Magnitude:** 7 (0.53%)
 - **Direction for us:** must-never-break · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `14074498392`, `12778092747`
-- **Canonical:** C019 Quit-habit / bad-habit mode; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C019 Quit-habit / bad-habit mode; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ## Features
 
@@ -968,7 +968,7 @@ Source: `App Store Reports/25. Grit - Daily Habit Tracker - Routines & Goals ADH
 - **User reaction:** praise
 - **Magnitude:** 126 (9.63%, high-priority), mean 4.20, 5★ 89
 - **Direction for us:** product-rule · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R25-047 — Motivation / streaks / accountability works
 
@@ -1093,7 +1093,7 @@ Source: `App Store Reports/25. Grit - Daily Habit Tracker - Routines & Goals ADH
 - **Magnitude:** 13 representative reviews
 - **Direction for us:** build-paid · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `11694650718`, `12404912935`, `13601387355`, `12184038268`, `12592966841`, `12889328356`, `12199187753`, `13197146903`, `12299954486`, `14117808358`, `13963611699`, `14198639512`
-- **Canonical:** C006 Stay minimal and ad-free; C045 Grouping / folders / categories / tags; C066 Focus timer
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C045 Grouping / folders / categories / tags; C066 Focus timer
 
 ### R25-136 — Consequences: use the substantive series (3.83 → 3.51 → 3.10, a 0.73-point fall, not 0.27); the 1★ series is comparatively uncontaminated — almost no one writes a one-word 1★ under a prompt they resent — so 1★ share rising 16.1% → 22.2% → 26.6% is the most trustworthy single trend line; a store rating propped up by prompt-driven 5★ reviews while substantive sentiment falls is a fragile asset that inflates install volume into a product currently failing a measurable share of new users at launch
 
@@ -1735,7 +1735,7 @@ Source: `App Store Reports/25. Grit - Daily Habit Tracker - Routines & Goals ADH
 - **Magnitude:** Theme | 5★+4★ | 3★ | 2★+1★ | Reading ; Free cap | 27 | 16 | 95 | Mostly hostile, but a fifth of it comes from people who like the app ; Lifetime purchase | 32 | 3 | 9 | Net positive — but the 9 are purchase-recognition failures ; Apple Health | 24 | 2 | 6 | Net positive; the 6 are data-accuracy bugs ; Widgets | 24 | 5 | 1 | Almost purely positive ; Confusing UX | 10 | 4 | 13 | Genuinely mixed — same complexity that power users praise ; Bug (generic) | 15 | 4 | 14 | Mixed: 5★ reviewers report bugs in apps they love ; Support / developer | 16 | 0 | 4 | Strongly positive with a small, sharp negative tail
 - **Direction for us:** product-rule · **Report confidence:** corpus-level fact · **Generalisable:** yes
 - **Review IDs:** `12993093192`, `13596855184`
-- **Canonical:** C006 Stay minimal and ad-free; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
 
 ## Data caveats and method
 

@@ -52,7 +52,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** payers 3.10 vs 4.15
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** evidence: R02-017, R02-024, R02-031
-- **Canonical:** C078 Ship the paid feature working before you sell it
+- **Canonical:** C078 Ship the paid feature working before you sell it — the purchase trigger must never be the broken feature
 
 ## Must-haves
 
@@ -98,7 +98,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** 6.77%
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** evidence: R02-013..017
-- **Canonical:** C078 Ship the paid feature working before you sell it
+- **Canonical:** C078 Ship the paid feature working before you sell it — the purchase trigger must never be the broken feature
 
 ### R02-034 — The purchase and signup flow itself leaks buyers (1.55%), including a user who says outright he wants to pay
 
@@ -184,7 +184,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Direction for us:** must-never-break · **Report confidence:** meaningful · **Generalisable:** yes
 - **Side effects:** a fast fix earns upgraded ratings; a regression of the same bug earns years of complaints
 - **Review IDs:** `1479044283`, `1480026316`, `1483978534`, `1484186051`, `1775022964`, `1581035694`, `3496905165`, `4115836897`, `1490259621`, `1490152355`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R02-059 — Calendar sync is the most severe individual complaint class: blank undeletable events, ~20 copies of each item, infinite duplicates, a phantom 2001 event, every habit written as a one-hour block — one user spent hours with Apple support restoring their phone
 
@@ -245,7 +245,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** 2.71%
 - **Direction for us:** must-never-break · **Report confidence:** meaningful · **Generalisable:** yes
 - **Conditions:** evidence: R02-057, R02-092
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R02-102 — Never write to the user's calendar without exact, reversible, correctly-sized events — one user needed Apple support to repair their phone
 
@@ -494,7 +494,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **User reaction:** complaint
 - **Magnitude:** 10 (1.93%), mean 3.10
 - **Direction for us:** research · **Report confidence:** meaningful · **Generalisable:** app-specific
-- **Canonical:** C087 Never imply cross-app integration you don't have
+- **Canonical:** C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ### R02-074 — A modern iOS 14+ widget is requested — ties directly to abandonment
 
@@ -671,7 +671,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** 5.80% praise for unlimited habits
 - **Direction for us:** research · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** the report's framing is that Pro must offer something that works, not that the free tier should shrink
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C078 Ship the paid feature working before you sell it
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C078 Ship the paid feature working before you sell it — the purchase trigger must never be the broken feature
 
 ### R02-037 — Unlimited habits / a generous free tier is the single biggest 5★ engine
 
@@ -702,7 +702,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** 6 (1.16%), mean 3.67
 - **Direction for us:** research · **Report confidence:** meaningful · **Generalisable:** yes
 - **Conditions:** report 1's 'no ads' was the best-rated topic — ads are a mild negative here, not a 1★ driver
-- **Canonical:** C006 Stay minimal and ad-free; C082 Ads in the free tier
+- **Canonical:** C082 Ads in the free tier; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ## Tactics the app used
 
@@ -768,7 +768,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Magnitude:** 35 reviews (6.77%), mean 2.83
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** paid features carry a higher reliability bar than free ones
-- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C078 Ship the paid feature working before you sell it
+- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C078 Ship the paid feature working before you sell it — the purchase trigger must never be the broken feature
 
 ### R02-019 — 30 reviews (5.80%, HIGH-PRIORITY) confirm a purchase
 
@@ -843,7 +843,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **User reaction:** praise
 - **Magnitude:** 140 (27.08%), mean 4.56
 - **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R02-076 — The US buys at double the global rate (7.14% vs 5.80%) and rates lowest (3.80) — the commercially damaging combination
 
@@ -969,7 +969,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Direction for us:** do · **Report confidence:** limited evidence · **Generalisable:** yes
 - **Side effects:** tap latency that grows with habit count is a performance bug that hits the most engaged users hardest
 - **Review IDs:** `1479044283`, `1480026316`, `1597898439`, `4115836897`, `1639153995`, `1664490322`, `3488095225`, `1543097703`, `1560960588`, `4089300870`, `1489024032`, `6376581104`, `9966969216`, `3562883708`, `3825826319`, `10424885681`
-- **Canonical:** C027 Localise early — it unlocks revenue; C034 Data must never be lost on update, reinstall or phone change; C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C083 Performance must not degrade with habit count
+- **Canonical:** C027 Localise early — it unlocks revenue; C034 Data must never be lost on update, reinstall or phone change; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C083 Performance must not degrade with habit count
 
 ### R02-087 — No spend or revenue data was available, so the high-ARPU market group is a qualitative grouping only — it holds 53.4% of reviews at mean 3.99 vs 4.33 for the rest; the people most able to pay are the least satisfied
 
@@ -1039,7 +1039,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **User reaction:** praise
 - **Magnitude:** 6.7% (A) → 1.9% (B) → 0.0% (C, D)
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C059 Be visibly responsive; fixes bring reviewers back
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C059 Be visibly responsive; fixes bring reviewers back
 
 ### R02-093 — Crashes (6.7% → 3.7% → 8.4%) and data loss (6.1% → 1.9% → 7.5%) spiked in 2020–21 with iOS 14 / 14.5; the drop to ~2% afterwards is not a fix — it is the sound of users having left
 
@@ -1122,7 +1122,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Direction for us:** dont · **Report confidence:** weak count, clear mechanism · **Generalisable:** yes
 - **Side effects:** an app family raises expectations of integration; either deliver it or say plainly it does not exist
 - **Review IDs:** `2109039905`, `7232398007`, `8731669029`, `6467272815`, `9974150902`
-- **Canonical:** C087 Never imply cross-app integration you don't have
+- **Canonical:** C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ### R02-065 — Rating-prompt and cross-promo spam (promoting the developer's other apps) draws 4 complaints
 
@@ -1166,7 +1166,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Direction for us:** dont · **Report confidence:** inference · **Generalisable:** yes
 - **Conditions:** evidence: R02-008
 - **Review IDs:** `1479044283`, `1484864417`
-- **Canonical:** C076 Never seed launch reviews
+- **Canonical:** C076 Never seed the launch rating — templated or bought reviews decay and leave the markets they cover unmeasurable
 
 ## Things to do
 
@@ -1189,7 +1189,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Direction for us:** do · **Report confidence:** weak count, clear mechanism · **Generalisable:** yes
 - **Conditions:** evidence: R02-035, R02-073
 - **Review IDs:** `2109039905`, `7232398007`
-- **Canonical:** C060 Cross-sell an app family on brand trust; C087 Never imply cross-app integration you don't have
+- **Canonical:** C060 Cross-sell an app family on brand trust; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ## Contradictions
 
@@ -1256,7 +1256,7 @@ Source: `App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Rout
 - **Side effects:** 'the obviously machine-translated 5-star reviews actually make a bad impression' (JP); 'the positive reviews are LIES' (RU) — seeded reviews are noticed and cost trust
 - **Conditions:** discount the first two months rather than treating them as baseline
 - **Review IDs:** `1478551952`, `1478933026`, `1485661227`, `1478389236`, `1478560873`, `1479031508`, `1478508225`, `1478967168`, `1478263216`, `1479044283`, `1484864417`, `1483240079`, `1482736956`, `1484186051`
-- **Canonical:** C076 Never seed launch reviews
+- **Canonical:** C076 Never seed the launch rating — templated or bought reviews decay and leave the markets they cover unmeasurable
 
 ### R02-012 — One reviewer calls it a subscription; isolated and contradicted by the listing and by 18 other reviewers praising the one-time fee — treat as reviewer error
 

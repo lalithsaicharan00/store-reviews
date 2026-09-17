@@ -382,7 +382,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **User reaction:** complaint
 - **Magnitude:** 275 (1.34%), mean 2.73
 - **Direction for us:** must-have · **Report confidence:** meaningful · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free; C075 Skippable, replayable onboarding tour
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C075 Skippable, replayable onboarding tour
 
 ### R04-100 — Full task editing: rename, reorder, drag, duplicate — 399 reviews (1.95%) and the top complaint among PAYING users
 
@@ -453,7 +453,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** 55 (0.27%) complaints; 67 (0.33%) praise at 4.45
 - **Direction for us:** product-rule · **Report confidence:** weak · **Generalisable:** yes
 - **Review IDs:** `10558237535`, `10144485344`, `11808709309`
-- **Canonical:** C006 Stay minimal and ad-free; C082 Ads in the free tier
+- **Canonical:** C082 Ads in the free tier; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ### R04-014 — The price spread is the finding: users in the same market and period report $19.99, $29.99, $30, $39.99, $44 and $59.99; combined with the discount wheel nobody can tell another user what the app costs — exactly the condition under which 'scam' language spreads; 'I selected 1 month at 69.90 and 89.90 was debited'
 
@@ -665,7 +665,7 @@ Source: `App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Trac
 - **Magnitude:** 479 (2.34%); 67 (0.33%)
 - **Direction for us:** must-have · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `11808709309`, `10938043754`, `10558237535`
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ## Audiences
 

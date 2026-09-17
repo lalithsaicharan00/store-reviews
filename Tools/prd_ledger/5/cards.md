@@ -186,7 +186,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Direction for us:** must-never-break · **Report confidence:** weak · **Generalisable:** yes
 - **Conditions:** a configurable day-end (e.g. 5am) is required for night routines and shift workers
 - **Review IDs:** `13490673673`, `13283851839`, `13317314197`, `13057963564`, `12949429540`, `13175278334`, `14367123124`, `13715558049`, `13203062194`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R05-084 — Kill the notification loop — 33 lifetime reports, 12 in May 2026, mean 3.00; punishes the exact trait the product sells to; the biggest rating delta for the least work
 
@@ -226,7 +226,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Magnitude:** 14 (0.42%)
 - **Direction for us:** must-never-break · **Report confidence:** weak · **Generalisable:** yes
 - **Conditions:** evidence: R05-063
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R05-095 — Fix the trial→charge flow — make the trial state explicit, send a pre-charge reminder email (none is sent), never bill on login to a pre-existing account
 
@@ -694,7 +694,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** 'not overwhelming' is the design requirement for a neurodivergent audience
 - **Review IDs:** `8357131715`, `7929555373`, `5703729632`, `7776908865`, `9080607016`, `7512377032`, `12689118359`, `12710625570`, `13116003380`
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R05-039 — The ADHD mechanism reviewers name is always the same: removal of decision load, not motivation — 'This app doesn't orient itself around should but is'; 'I just need to decide to start the routine, the rest is decided'
 
@@ -705,7 +705,7 @@ Source: `App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Manage
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** for ADHD users the product is a decision-remover, not a motivator — motivational copy and streak pressure are the wrong lever
 - **Review IDs:** `12118266764`, `14371526010`
-- **Canonical:** C006 Stay minimal and ad-free; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
 
 ### R05-040 — Life change / strong endorsement — 305 (9.13%), mean 4.82 — '人生変わった' (my life changed)
 

@@ -267,7 +267,7 @@ Source: `App Store Reports/10. Finch - Self-Care Pet - Daily Journal & Habit Tra
 - **Magnitude:** D-streak-bug 171 (0.244%) mean 3.26, 45 one-star; 0.01% of 2023 → 0.74% of 2026 (74×)
 - **Direction for us:** must-never-break · **Report confidence:** weak, rising fast · **Generalisable:** yes
 - **Review IDs:** `14155454118`, `14156037444`, `14156043295`, `14158910349`, `14158945706`, `14160185561`, `14161950158`, `14184548492`, `14190841447`, `14258840772`, `13645979333`, `14020891685`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R10-086 — Safety-sensitive content produced at least one severe incident class: in 2022 the goal-suggestion system parsed a journal entry about suicidal ideation and generated a goal to 'schedule time for suicide'; in-app depression/anxiety/ADHD quizzes returned severe results to children in a 4+ app; a 'you can do this' notification arrived immediately after a text about suicide — reported regardless of volume under the safety carve-out
 
@@ -502,7 +502,7 @@ Source: `App Store Reports/10. Finch - Self-Care Pet - Daily Journal & Habit Tra
 - **User reaction:** churn
 - **Magnitude:** U-journeys-removed mean 2.76, lowest-rated change
 - **Direction for us:** must-have · **Report confidence:** recommendation · **Generalisable:** yes
-- **Canonical:** C047 Cumulative totals and total-days counter; C158 Credit for non-consecutive, cumulative progress alongside streaks
+- **Canonical:** C047 Cumulative totals and total-days counter; C216 A forgiving long-run measure — cumulative or decaying credit that a missed day does not zero — alongside streaks
 
 ### R10-161 — P4: let users buy what they can see — the catalogue shows items that cannot be purchased, the shop rotates randomly, the re-roll costs currency; this frustrates engaged, currency-rich users, the ones most likely to subscribe
 
@@ -812,7 +812,7 @@ Source: `App Store Reports/10. Finch - Self-Care Pet - Daily Journal & Habit Tra
 - **Magnitude:** P-free-generous 857 (1.22%, MEANINGFUL) mean 4.92
 - **Direction for us:** product-rule · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `8797139022`, `8619792409`, `8343850932`, `8345380038`, `14135326556`, `10246078752`, `13212308967`, `11984368192`, `12099230305`, `13918020477`
-- **Canonical:** C006 Stay minimal and ad-free; C061 Goodwill conversion — a generous free tier and 'support the devs'
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C061 Goodwill conversion — a generous free tier and 'support the devs'; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ### R10-044 — Ordering by volume and ordering by damage are almost inverted: the billing-dispute family is the smallest complaint family and by far the most destructive
 
@@ -1272,7 +1272,7 @@ Source: `App Store Reports/10. Finch - Self-Care Pet - Daily Journal & Habit Tra
 - **Magnitude:** content/values family 0.69% (2022H1) → 1.42% (2025H1) → 1.89% (2026H1) → 2.93% (2026H2); C-brand-collab 2/5/3/10/107 by year, mean 3.09; 80 name Supergirl, 68 in June 2026, mean 2.99; June 2026: 14 event-bug, 42 data-loss, 104 one-star reviews; 8.0× over-represented among payers
 - **Direction for us:** dont · **Report confidence:** trend · **Generalisable:** yes
 - **Review IDs:** `14136600404`, `14117246332`, `14134408387`, `14154691963`, `14131417726`, `14259430571`, `14261659918`, `14497986029`, `14507114042`
-- **Canonical:** C006 Stay minimal and ad-free; C127 Never show ads to paying subscribers
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C127 Never show ads to paying subscribers
 
 ### R10-149 — Monetisation complaints are flat-to-down while billing complaints rise 4–7×: users have largely stopped arguing about the price and started arguing about the transaction — a solvable problem, and a different problem from the one a pricing change would address
 
@@ -1342,7 +1342,7 @@ Source: `App Store Reports/10. Finch - Self-Care Pet - Daily Journal & Habit Tra
 - **Magnitude:** U-overwhelm 1,046 (1.493%, MEANINGFUL) mean 4.50; U-too-many-clicks 84 (0.120%) mean 3.49
 - **Direction for us:** dont · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `12951667597`, `12095378263`, `12823843140`, `13661516668`, `14168702702`, `12658682757`, `11766242787`, `9330701695`, `10529428569`, `13237881486`
-- **Canonical:** C006 Stay minimal and ad-free; C159 Launch-to-core-action path with no interstitials
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C159 Launch-to-core-action path with no interstitials
 
 ### R10-065 — Streaks are a net-negative mechanic in the written record — design harm: the streak reintroduces exactly the guilt the app was praised for removing, and repairing it costs 1,000 gems ('I dread going into finch because of this new feature')
 
@@ -1431,7 +1431,7 @@ Source: `App Store Reports/10. Finch - Self-Care Pet - Daily Journal & Habit Tra
 - **Magnitude:** U-journeys-removed 49 total, 36 in 2025, mean 2.76 (lowest product-change theme), 21 of 49 one-star; Journeys 1,006 vocabulary mentions
 - **Direction for us:** product-rule · **Report confidence:** dated, sharp · **Generalisable:** yes
 - **Review IDs:** `12557701970`, `12674347241`, `12682396517`, `12778041860`, `12655037808`, `14299934656`, `12596071096`, `12559327482`, `12547227541`, `13365769674`, `13420079481`
-- **Canonical:** C047 Cumulative totals and total-days counter; C155 Never remove a feature people bought the app for — add alongside, do not replace; C158 Credit for non-consecutive, cumulative progress alongside streaks
+- **Canonical:** C047 Cumulative totals and total-days counter; C155 Never remove a feature people bought the app for — add alongside, do not replace; C216 A forgiving long-run measure — cumulative or decaying credit that a missed day does not zero — alongside streaks
 
 ### R10-144 — The automatic mood check-in removal (Oct–Nov 2025) is the second sharpest, and its argument is about accessibility rather than reward: an automatic prompt is a memory aid, and moving it behind a button destroys the dataset for exactly the users who need it — 'my mood data is now almost empty for the last three months even though I do the emotion exercise multiple times a day'
 
@@ -1452,7 +1452,7 @@ Source: `App Store Reports/10. Finch - Self-Care Pet - Daily Journal & Habit Tra
 - **User reaction:** complaint
 - **Magnitude:** C-brand-collab 127 reviews mean 3.09; 107 (84%) in 2026, 68 in June 2026 alone; 2 in 2022, 5 in 2023, 3 in 2024; 8.0× over-represented among paid-evidence reviewers; ad-free praise 857 (1.22%)
 - **Direction for us:** dont · **Report confidence:** high-priority (headline) · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free; C127 Never show ads to paying subscribers
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C127 Never show ads to paying subscribers
 
 ### R10-026 — A 'one-time offer' discount screen is presented during onboarding, before the app has been used, stating the discount is lost forever if dismissed — small by volume but qualitatively vivid
 

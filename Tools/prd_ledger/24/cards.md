@@ -104,7 +104,7 @@ Source: `App Store Reports/24. Fabulous - Daily Habit Tracker - Morning Routines
 - **User reaction:** churn
 - **Magnitude:** 6.01% of E4; 2.747
 - **Direction for us:** product-rule · **Report confidence:** very strong · **Generalisable:** yes
-- **Canonical:** C213 If you position on ADHD or executive-function help, cancellation must be the easiest flow in the product; C218 Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate
+- **Canonical:** C213 If you position on ADHD or executive-function help, cancellation must be the easiest flow in the product; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ## Must-haves
 

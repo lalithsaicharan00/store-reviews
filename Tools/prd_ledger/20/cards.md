@@ -263,7 +263,7 @@ Source: `App Store Reports/20. Habit — Daily Tracker - Crush your goals like a
 - **Magnitude:** 1,111 (27.45%), 42.8% of E1, mean 4.25
 - **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `3601977788`, `4423183878`, `4633148866`, `4836612463`, `5097711923`, `5946775063`, `6496027991`
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R20-036 — Colour-filling bubbles that grow with habit strength, repeatedly described as the reason they open the app
 
@@ -273,7 +273,7 @@ Source: `App Store Reports/20. Habit — Daily Tracker - Crush your goals like a
 - **Magnitude:** 537 (13.27%), 20.8% of E1, mean 4.16
 - **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `3940095679`, `4121063134`, `4497709123`, `4723686998`, `5202604486`, `5603920265`, `6430207073`
-- **Canonical:** C006 Stay minimal and ad-free; C012 Week / month / year grid views
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C012 Week / month / year grid views
 
 ### R20-037 — Unlimited habits free is the highest-mean theme in the entire corpus
 
@@ -293,7 +293,7 @@ Source: `App Store Reports/20. Habit — Daily Tracker - Crush your goals like a
 - **Magnitude:** 49 (1.21%), mean 4.86
 - **Direction for us:** free · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `3601977788`, `3904267605`, `3980990590`, `4120408877`, `4321444813`, `4994394779`, `5272119146`, `5953213628`
-- **Canonical:** C006 Stay minimal and ad-free; C082 Ads in the free tier
+- **Canonical:** C082 Ads in the free tier; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ### R20-039 — A non-streak habit-strength percentage that decays instead of resetting — missing a day reduces the score instead of zeroing a streak, which prevents the 'what the hell' abandonment spiral: 'most focus too much on streaks… missing one day and breaking my streak tends to send me into a spiral where I give up'; a DE user explains it as logarithmic rather than linear and 'much closer to psychological reality'; the decay behaviour broke in the 2021 rewrite and was never restored
 
@@ -590,7 +590,7 @@ Source: `App Store Reports/20. Habit — Daily Tracker - Crush your goals like a
 - **User reaction:** praise
 - **Magnitude:** minimal 27.45%; beautiful 13.27%; strength-decay praise 0.94%
 - **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free; C007 Generous fixed habit cap (or unlimited) — never change it; C216 A forgiving long-run measure — cumulative or decaying credit that a missed day does not zero — alongside streaks
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C007 Generous fixed habit cap (or unlimited) — never change it; C216 A forgiving long-run measure — cumulative or decaying credit that a missed day does not zero — alongside streaks; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ### R20-033 — Union of revoked-purchase, restore-fail, cancel-refund, billing-mismatch, false-advertising and support-silent = 810 reviews (20.01%, mean 1.39) versus the union of every feature-gap theme = 513 (12.67%, mean 3.57); trust complaints outnumber feature complaints by 1.58× and carry 2.2 stars less — this app did not fail on features, it failed on keeping promises
 
@@ -676,7 +676,7 @@ Source: `App Store Reports/20. Habit — Daily Tracker - Crush your goals like a
 - **Magnitude:** Theme | n | % of band ; N-subscription-model | 636 | 43.6% ; N-revoked-purchase | 515 | 35.3% ; M-onetime-model | 200 | 13.7% ; N-data-loss | 183 | 12.6% ; N-price-too-high | 181 | 12.4% ; N-aggressive-popup | 134 | 9.2% ; P-simple | 131 | 9.0% ; N-support-silent | 124 | 8.5% ; N-cancel-refund | 106 | 7.3% ; N-widget-broken | 99 | 6.8% ; N-restore-fail | 70 | 4.8%
 - **Direction for us:** product-rule · **Report confidence:** rating band · **Generalisable:** yes
 - **Review IDs:** `6927013041`
-- **Canonical:** C006 Stay minimal and ad-free; C186 Never revoke what earlier buyers paid for when the model changes
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C186 Never revoke what earlier buyers paid for when the model changes
 
 ### R20-058 — Among 148 support-silence reviews the mean is 1.33; among the 30 Feb–Dec 2021 reviews that record being restored or fixed the mean is 3.63 (10 5★, 11 4★) — the same defect produces 1.33 or 3.63 depending entirely on whether anyone answered; a support function would have been worth roughly +2.3 stars on every recoverable incident
 
@@ -983,7 +983,7 @@ Source: `App Store Reports/20. Habit — Daily Tracker - Crush your goals like a
 - **User reaction:** 1★-burst
 - **Magnitude:** 24 reviews (0.59%, emerging) call it false advertising by name; Jan 2021 → Sep 2023
 - **Direction for us:** dont · **Report confidence:** emerging · **Generalisable:** yes
-- **Canonical:** C104 Never ship a paywall or feature-removal change silently; C218 Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate
+- **Canonical:** C104 Never ship a paywall or feature-removal change silently; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ### R20-015 — Across 92 months the corpus records no significant new capability shipping — the only material product changes are the paywall (2021), a widget that never worked and two data-destroying updates; 'This app provides ZERO updates, content, features… NOTHING that justifies a yearly subscription fee'
 
@@ -1055,7 +1055,7 @@ Source: `App Store Reports/20. Habit — Daily Tracker - Crush your goals like a
 - **User reaction:** 1★-burst
 - **Magnitude:** 24 reviews, mean 1.21
 - **Direction for us:** dont · **Report confidence:** recommendation (immediate) · **Generalisable:** yes
-- **Canonical:** C218 Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate
+- **Canonical:** C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ## Contradictions
 

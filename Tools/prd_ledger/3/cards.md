@@ -203,7 +203,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Direction for us:** must-never-break · **Report confidence:** weak · **Generalisable:** yes
 - **Conditions:** for a day counter the number IS the product; drift of even a day is a 1★
 - **Review IDs:** `13843033653`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ## Features
 
@@ -578,7 +578,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **User reaction:** praise
 - **Magnitude:** 206 (1.94%), mean 4.94, 0 1–2★
 - **Direction for us:** product-rule · **Report confidence:** meaningful · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free; C082 Ads in the free tier
+- **Canonical:** C082 Ads in the free tier; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ### R03-013 — Subscription-first, branded 'Count Up Club' (earlier 'Premium'): yearly $17.99, monthly $5.99 / $2.99, lifetime $49.99, discounted $11.99; legacy Premium $29.99/yr, $9.99/mo
 
@@ -704,7 +704,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** 'The most Apple looking non-Apple app ever' — native-feel design is a praise driver in itself
 - **Review IDs:** `10404638991`, `13283082126`, `9406490807`, `12367096941`, `8478010591`
-- **Canonical:** C006 Stay minimal and ad-free; C007 Generous fixed habit cap (or unlimited) — never change it; C009 Basic widgets, icons and colours are free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C007 Generous fixed habit cap (or unlimited) — never change it; C009 Basic widgets, icons and colours are free
 
 ### R03-008 — The widget is not a nice-to-have, it is the product: 38.2% of 1★ reviews mention it (86 of 225) — the highest concentration of any theme in any star band; users say the widget WAS their reason for keeping the app
 
@@ -816,7 +816,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** in the quit-habit category, journaling prompts, motivational quotes and 'Sobriety Plus' upsells are named as reasons to leave competitors
 - **Review IDs:** `11351620542`, `9725862564`, `11549990017`, `8911015925`, `12948824437`, `9900639372`
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ## Audiences
 
@@ -1106,7 +1106,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Direction for us:** none · **Report confidence:** high-priority · **Generalisable:** yes
 - **Side effects:** a paywall fight produces defensive 5★ reviews from the unaffected as well as 1★ from the affected
 - **Review IDs:** `14456318136`, `14211548185`, `13053535012`, `12957382577`, `14364118481`
-- **Canonical:** C006 Stay minimal and ad-free; C007 Generous fixed habit cap (or unlimited) — never change it
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C007 Generous fixed habit cap (or unlimited) — never change it
 
 ### R03-099 — Fixed: 'can't backdate / edit start date' was an early 1★ defect ('Can't set date — worthless app', Dec 2019) that largely disappears after 2022 and is now praised as a differentiator — evidence of a real fix
 
@@ -1149,7 +1149,7 @@ Source: `App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day
 - **Magnitude:** 13 of 225 1★, 4 of 106 2★
 - **Direction for us:** none · **Report confidence:** weak · **Generalisable:** yes
 - **Conditions:** simplicity is the core engine (36.4% of 5★); the 'too basic' minority is the price of it
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R03-054 — 'Actually free' (495, 4.66%) and the reviews name the competitor: 30 compare directly to I Am Sober, almost all citing its 2-counter cap as the reason they left — and two now recommend I Am Sober BECAUSE of this app's widget paywall
 

@@ -42,7 +42,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** 3 (100% 1★) + 1
 - **Direction for us:** product-rule · **Report confidence:** emerging — severity · **Generalisable:** yes
 - **Review IDs:** `14092044479`, `14103247613`, `14391211979`, `13506372310`
-- **Canonical:** C104 Never ship a paywall or feature-removal change silently; C218 Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate; C242 Never monetise by routing the user's device or bandwidth for third parties — and never gate first launch behind any such opt-in
+- **Canonical:** C104 Never ship a paywall or feature-removal change silently; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate; C242 Never monetise by routing the user's device or bandwidth for third parties — and never gate first launch behind any such opt-in
 
 ## Must-haves
 
@@ -154,7 +154,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** 37 (10.11%, high-priority), mean 2.95 vs 4.73; 78.4% at month boundary vs 27.6%; 9.1% → 17.7% → 2.6%
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `11676955165`, `11782200229`, `12127449842`, `12130015583`, `12252902482`, `12253630488`, `12254692368`, `12286885201`, `12299968183`, `12602757554`, `12603431541`, `12715196508`, `12835530003`, `12961148231`, `13084927585`, `13261739634`, `13337918653`, `13460543209`, `13577309961`, `13579197540`, `13594048622`, `14195919004`, `14332675510`
-- **Canonical:** C243 Date arithmetic must survive month boundaries and week-start conventions
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R29-008 — Data loss is the part of the calendar bug that has not been forgiven: 9 reviews (2.46%, meaningful, mean 2.11 — the lowest-rated theme of any size) report habits or history erased — 'It deleted my habits twice' (1★); 'all my habits populated and data dissapeared' (1★); 'zerou meu histórico, perdi tudo' (BR, 1★); 'it updated yesterday and lost ALL my Habits' (3★); 'The month ended and the habits aren't there any more, I'll have to create everything again' (BR, 1★); there is no account, no cloud backup and no export, so when the local store breaks the user's entire history is unrecoverable — three of the nine describe re-entering everything by hand; the absence of a backup path converts a bug into a total loss
 
@@ -173,7 +173,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **User reaction:** complaint
 - **Magnitude:** 46 (12.57%, HIGH), mean 2.89
 - **Direction for us:** must-never-break · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C243 Date arithmetic must survive month boundaries and week-start conventions
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R29-035 — Calendar / date engine defect
 
@@ -182,7 +182,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **User reaction:** 1★-burst
 - **Magnitude:** 37 (10.11%, HIGH), mean 2.95
 - **Direction for us:** must-never-break · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C243 Date arithmetic must survive month boundaries and week-start conventions
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R29-042 — Data / history loss — the lowest-rated theme of any size
 
@@ -248,7 +248,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** Day of month the review was filed | Calendar-bug reports | All reviews ; 30, 31, 1, 2, 3 (and 28–29) | 29 (78.4%) | 101 (27.6%) ; All other days | 8 (21.6%) | 265 (72.4%)
 - **Direction for us:** must-never-break · **Report confidence:** high · **Generalisable:** yes
 - **Review IDs:** `13460543209`, `12603431541`, `12299968183`, `12715196508`, `12835530003`, `14332675510`
-- **Canonical:** C243 Date arithmetic must survive month boundaries and week-start conventions
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R29-086 — The actual monetisation and the reaction: a launch-screen prompt asking users to enable 'web indexing' — routing third-party web requests through their device and IP — for an ad-free experience; GB, 22 May 2026, an existing user now blocked ('now interrupts use unless you agree'); US, 25 May 2026, never got past the opening screen; US, 5 Aug 2026, never got past the opening screen ('You PAID for this free app'); three things make it larger than 0.82% — it is the only theme with a 100% 1★ rate (nothing else, not data loss at 2.11 nor the calendar bug at 2.95, produces uniform bottom-rating); two of three churned before first use, and a review corpus cannot see the silent version of that cohort; and it inverts the app's entire public value proposition ('You PAID for this free app' is the opposite of the 172 zero-cost reviews; 'No thanks.')
 
@@ -268,7 +268,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** 4 in 2026
 - **Direction for us:** must-never-break · **Report confidence:** high · **Generalisable:** yes
 - **Review IDs:** `13579197540`, `13594048622`, `14195919004`, `14332675510`
-- **Canonical:** C243 Date arithmetic must survive month boundaries and week-start conventions
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R29-113 — Fix #7: fix notification lifecycle — cancel scheduled notifications when a habit is deleted or its reminder removed; honour reminder-time changes; stop the day's remaining reminders once a habit is checked off; 6 bugs (mean 3.17) + 3 requests, and two of the six faults survive delete-and-reinstall, costing ratings from users who tried to fix it themselves
 
@@ -622,7 +622,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **User reaction:** praise
 - **Magnitude:** 119 (32.51%, HIGH), mean 4.80
 - **Direction for us:** product-rule · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R29-034 — Concrete behaviour change reported
 
@@ -669,7 +669,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** 119 (32.51%), mean 4.80
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `13246295251`, `13627010760`, `13631120155`, `13390452161`, `11624371093`, `11922911236`, `11581883661`, `12337158790`, `12856070826`, `12930469783`, `12972332540`, `13236988214`, `13513275431`, `13595335326`, `13877425702`, `14181244719`
-- **Canonical:** C006 Stay minimal and ad-free; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek
 
 ### R29-064 — Behaviour change (38, 10.38%, mean 4.87): checkable outcomes rather than generic satisfaction — 'Kept me motivated and in only 3 months I had a great basketball body… I never forget anymore'; 'It has truly changed my life. I remember scrambling day to day, unfocused, & ungrounded'; 'helped me rebuild my good habits while breaking my bad ones'; 'I actually stick to my routines more, which is a miracle tbh'; 'Without this game I was always late to work'; 'It's been less than a week and I see a change forming'; the pattern is deliberately inclusive, for magnitude not precision
 
@@ -689,7 +689,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** Rating | Calendar-bug reports | % of that rating band ; 1★ | 7 | 43.8% of all 1★ (n = 16) ; 2★ | 6 | 66.7% of all 2★ (n = 9) ; 3★ | 10 | 62.5% of all 3★ (n = 16) ; 4★ | 10 | 24.4% of all 4★ (n = 41) ; 5★ | 4 | 1.4% of all 5★ (n = 284)
 - **Direction for us:** must-never-break · **Report confidence:** high · **Generalisable:** yes
 - **Review IDs:** `12255251536`, `12257572119`, `13459746040`, `14332675510`
-- **Canonical:** C243 Date arithmetic must survive month boundaries and week-start conventions
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R29-078 — 5★ (n=284): 153 (53.9%) praise zero cost, 105 (37.0%) simplicity, 48 (16.9%) arrived from another tracker, 36 (12.7%) the design; only 4 (1.4%) report any bug; the band has a quality problem — 39 of 284 (13.7%) carry no theme (median 27 characters: 'Amazing', 'Wow / And wow', 'Good app', 'It good trust') and a further group state they have barely used the app ('Only used for 2 minutes'; 'So far so good, but first day using it'; 'One day in'; 'I've just downloaded it and already love it'); 34 of the 284 (12.0%) still ask for something, most often dark mode (10) or a widget (7) — delighted users naming the exact next thing, the highest-value reviews in the corpus; an anomaly the other way: a 1★ whose entire text is 'Best :: simple and free' is almost certainly a mis-tap, the clearest reason not to read the 1★ band (n=16) as 16 dissatisfied users
 
@@ -719,7 +719,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** 13/16 bugs; 10/16 calendar
 - **Direction for us:** must-never-break · **Report confidence:** corpus-level fact · **Generalisable:** yes
 - **Review IDs:** `13261739634`, `12959121316`, `13579197540`, `12252902482`, `13628525201`, `13848623635`, `14163084101`
-- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C243 Date arithmetic must survive month boundaries and week-start conventions
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R29-081 — 2★ (n=9): six are the calendar bug; the other three are a missing widget with a named competitor ('Check Me'), missing editing plus missing rewards, and missing reordering ('Without it the app is virtually useless'); 3 of the 9 still praise zero cost in the same review, and one adds the support-path complaint
 
@@ -729,7 +729,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** 6/9 calendar; 3/9 still praise free
 - **Direction for us:** must-never-break · **Report confidence:** corpus-level fact · **Generalisable:** yes
 - **Review IDs:** `11676955165`, `12604107314`, `12835530003`, `12837138619`, `13084927585`, `13577309961`, `12043735920`, `11490852349`, `14052990828`
-- **Canonical:** C040 Widgets must not go blank, stale or disagree with the app; C073 Manual reordering, renaming and editing of habits/tasks — free; C243 Date arithmetic must survive month boundaries and week-start conventions
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C040 Widgets must not go blank, stale or disagree with the app; C073 Manual reordering, renaming and editing of habits/tasks — free
 
 ### R29-085 — Four reviews (1.09%, meaningful, mean 5.00) pre-emptively warn against monetising, unprompted, while giving 5★ — 'I will continue to use this app as long as it doesn't try to mark up the price from free' (US); 'I hope that it will last free of ads and subscriptions ☀️' (FR); 'I haven't been forced into a subscription to use it and as long as this continues I'm gonna use this app every day' (US); 'Only app to have no ads or subscriptions!! Love the work never change' (AU) — the clearest statement of the commercial trap: the most enthusiastic users have publicly conditioned their loyalty on the absence of monetisation, a strong asset and a hard ceiling at the same time
 
@@ -818,7 +818,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** Theme | n | % of 201 | vs global ; Zero-cost praise | 97 | 48.26% | ≈ global (46.99%) ; Simplicity praise | 68 | 33.83% | ≈ global ; Comparison shopping | 35 | 17.41% | above global (14.21%) ; Any bug | 35 | 17.41% | above global (12.57%) ; Calendar bug | 29 | 14.43% | above global (10.11%) ; Behaviour change | 27 | 13.43% | above global ; UI praise | 26 | 12.94% | ≈ global ; Any request | 27 | 13.43% | below global (16.39%) ; Widget | 9 | 4.48% | ≈ global ; Habit-cap praise | 9 | 4.48% | above global (3.28%) ; Data loss | 5 | 2.49% | ≈ global ; Dark mode | 6 | 2.99% | below global (4.10%)
 - **Direction for us:** none · **Report confidence:** very strong · **Generalisable:** app-specific
 - **Review IDs:** `12225388457`, `12493412514`, `13337918653`, `13594048622`
-- **Canonical:** C243 Date arithmetic must survive month boundaries and week-start conventions
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R29-092 — India (n=57, 15.6%, mean 4.895, 89.5% 5★ vs 73.6% US; median body 71 vs 123 characters; 53 of 57 post-2024): zero-cost praise 47.37%, simplicity 29.82%, requests 21.05% (above 16.39%), UI praise 15.79%, dark mode 8.77% (2.9× global), flexible frequency 7.02% (1.8×), comparison shopping 5.26% (below), stats praise 5.26%, any bug 0.00%, calendar bug 0.00%; the voice is gratitude framed around access ('Thank you for making it free! You're doing a great service to students who cannot afford to spend on applications'; 'this good deed of urs for humanity is outstanding'; 'Salute to the developer'; 'thank you to developers for creating this masterpiece'); the single most detailed feature request in the corpus is Indian — dark mode/themes, stats export to PNG/PDF/Sheets, sort-by, and social sign-in; India's zero bug reports should not be read as India experiencing no bugs (shorter, post-fix-era reviews; no mechanism by which date arithmetic spares one storefront), so 4.895 is not comparable to the US 4.443 as satisfaction — but India is comparable as a demand signal, and its dark-mode rate is the single strongest country-level feature signal in the report
 
@@ -916,7 +916,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **User reaction:** mixed
 - **Magnitude:** 2024H1 | 2 | 5.00 | 100.0 | 0.0 | 0.0 | 100.0 | 0.0 ; 2024H2 | 53 | 4.45 | 75.5 | 9.4 | 11.3 | 47.2 | 26.4 ; 2025H1 | 94 | 4.39 | 70.2 | 20.2 | 22.3 | 44.7 | 14.9 ; 2025H2 | 64 | 4.62 | 82.8 | 14.1 | 14.1 | 42.2 | 14.1 ; 2026H1 | 122 | 4.66 | 80.3 | 2.5 | 6.6 | 46.7 | 13.1 ; 2026H2 | 31 | 4.61 | 80.6 | 3.2 | 6.5 | 61.3 | 22.6
 - **Direction for us:** none · **Report confidence:** corpus-level fact · **Generalisable:** app-specific
-- **Canonical:** C059 Be visibly responsive; fixes bring reviewers back; C243 Date arithmetic must survive month boundaries and week-start conventions
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C059 Be visibly responsive; fixes bring reviewers back
 
 ### R29-076 — Calendar-bug time trend: by year 2024 5/55 (9.1%) → 2025 28/158 (17.7%) → 2026 4/153 (2.6%); by half-year 2024H2 9.4% → 2025H1 20.2% → 2025H2 14.1% → 2026H1 2.5% → 2026H2 3.2%; the corpus mean tracks the fix — 4.473 → 4.487 → 4.647; the rollover fault appears substantially fixed between 2025H2 and 2026H1 (~8× reduction), but the weekday-offset face is not fully fixed — 2026 survivors on 1 Jan, 4 Jan (CL, 'está desfasado' / 'it's offset'), 18 Jun (AU, 'the dates/days in the calendar don't line up') and 22 Jul (US, 'the last day of each month'); high confidence on the trend, medium on attributing it to a specific release (no version field)
 
@@ -926,7 +926,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** Period | Calendar-bug reports | n | Rate ; 2024 (from 20 Jun) | 5 | 55 | 9.1% ; 2025 | 28 | 158 | 17.7% ; 2026 (to 2 Sep) | 4 | 153 | 2.6% ; 2024H2 | 9.4% ; 2025H1 | 20.2% ; 2025H2 | 14.1% ; 2026H1 | 2.5% ; 2026H2 | 3.2%
 - **Direction for us:** must-never-break · **Report confidence:** high (trend) / medium (cause) · **Generalisable:** yes
 - **Review IDs:** `13579197540`, `13594048622`, `14195919004`, `14332675510`
-- **Canonical:** C059 Be visibly responsive; fixes bring reviewers back; C243 Date arithmetic must survive month boundaries and week-start conventions
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C059 Be visibly responsive; fixes bring reviewers back
 
 ### R29-082 — 1★ (n=16): calendar bug 7; data loss 4 (overlapping); 'web indexing' privacy prompt 3; cannot edit habit 2; notifications never fire 1; missing frequency option 1; app will not launch 1 ('Lässt sich nichtmal öffnen' / 'It won't even open', DE); apparent mis-rating with positive text 1; two structural observations — not one 1★ in 366 records is about price (there is no price to object to), and the composition changed completely between eras: all 11 one-star reviews from 2024–2025 are functional (9 bugs, 2 missing capabilities), while of the 5 one-star reviews in 2026, 3 are the privacy prompt, 1 a launch failure and 1 the apparent mis-tap — the app fixed its way out of one 1★ driver and introduced another
 
@@ -955,7 +955,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** 20.2% → 2.5%
 - **Direction for us:** must-never-break · **Report confidence:** high · **Generalisable:** app-specific
 - **Review IDs:** `14195919004`, `14332675510`
-- **Canonical:** C059 Be visibly responsive; fixes bring reviewers back; C243 Date arithmetic must survive month boundaries and week-start conventions
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C059 Be visibly responsive; fixes bring reviewers back
 
 ### R29-100 — Trend 2 (improving, high confidence): any-bug rate 11.3% (2024H2) → 22.3% (2025H1) → 14.1% → 6.6% → 6.5%; the 1★ share fell from 5.5% (2024) and 5.7% (2025) to 2.6% (2026)
 
@@ -1094,7 +1094,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** 12 / 52 / 119 vs 3 / 44 at 4.98 / 4
 - **Direction for us:** dont · **Report confidence:** very strong · **Generalisable:** yes
 - **Review IDs:** `13625278409`
-- **Canonical:** C001 Never move a free feature behind the paywall; C006 Stay minimal and ad-free; C007 Generous fixed habit cap (or unlimited) — never change it; C209 No sign-up wall before first use
+- **Canonical:** C001 Never move a free feature behind the paywall; C006 Stay minimal — every addition is opt-in or off by default; C007 Generous fixed habit cap (or unlimited) — never change it; C209 No sign-up wall before first use
 
 ## Things to do
 
@@ -1105,7 +1105,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **User reaction:** complaint
 - **Magnitude:** report gives none (ranked list)
 - **Direction for us:** do · **Report confidence:** summary ranking · **Generalisable:** yes
-- **Canonical:** C020 Data export / backup / CSV; C036 A support channel that exists, is reachable outside the app, and answers; C039 Reminders fire reliably, once; C040 Widgets must not go blank, stale or disagree with the app; C043 Flexible / custom frequency; C073 Manual reordering, renaming and editing of habits/tasks — free; C080 Colour themes / dark mode; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C242 Never monetise by routing the user's device or bandwidth for third parties — and never gate first launch behind any such opt-in; C243 Date arithmetic must survive month boundaries and week-start conventions
+- **Canonical:** C020 Data export / backup / CSV; C036 A support channel that exists, is reachable outside the app, and answers; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C039 Reminders fire reliably, once; C040 Widgets must not go blank, stale or disagree with the app; C043 Flexible / custom frequency; C073 Manual reordering, renaming and editing of habits/tasks — free; C080 Colour themes / dark mode; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C242 Never monetise by routing the user's device or bandwidth for third parties — and never gate first launch behind any such opt-in
 
 ## Contradictions
 
@@ -1116,7 +1116,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **User reaction:** complaint
 - **Magnitude:** 3 (0.82%, emerging), mean 3.00
 - **Direction for us:** none · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek
 
 ### R29-069 — 'Too basic vs competitors' (3, 0.82%, mean 3.00): 'the app needs more features that other trackers have such as the ability to get rewards' (2★); 'It's VERY basic' (4★); 'It's built like a check list so you can't make a multi part task' (3★); a fourth frames it as a caveat while giving 5★ ('the simpleness of the app could be a turn off for people who want something more, but for me it's perfect'); the smallest negative theme in the corpus and the direct mirror image of the largest positive one — three people want more; 119 are here because there is less; the clearest 'do not fix' signal in the report
 
@@ -1126,7 +1126,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** 3 (mean 3.00) vs 119 (mean 4.80)
 - **Direction for us:** product-rule · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `11490852349`, `11922911236`, `13848623635`, `13513275431`
-- **Canonical:** C006 Stay minimal and ad-free; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek
 
 ## Data caveats and method
 
@@ -1157,7 +1157,7 @@ Source: `App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accoun
 - **Magnitude:** 1 + 1 + 3 reviews
 - **Direction for us:** must-never-break · **Report confidence:** interpretation · **Generalisable:** yes
 - **Review IDs:** `13625278409`, `14030455237`, `14103247613`, `14391211979`
-- **Canonical:** C027 Localise early — it unlocks revenue; C218 Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate; C242 Never monetise by routing the user's device or bandwidth for third parties — and never gate first launch behind any such opt-in
+- **Canonical:** C027 Localise early — it unlocks revenue; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate; C242 Never monetise by routing the user's device or bandwidth for third parties — and never gate first launch behind any such opt-in
 
 ### R29-023 — External context, clearly separated from review evidence: the mechanic the three reviewers describe — an ad-free experience in exchange for sharing idle bandwidth and IP address with third-party clients — is an established category of app monetisation known as an 'internet sharing SDK' (Proxyway, accessed 11 Sep 2026); the source describes the category only, does not name this app, and nothing in it identifies which vendor, if any, this app uses
 

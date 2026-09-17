@@ -312,7 +312,7 @@ Source: `App Store Reports/23. Streaks - The habit-forming to-do list (REPORT).m
 - **Magnitude:** 57 (0.78%) mention archive/pause; 5 named defect reviews
 - **Direction for us:** must-never-break · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `10656649260`, `10772984090`, `10709012497`, `11138802961`, `11219449203`
-- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R23-171 — A small cluster says the price shown and the amount debited differed (au, ru, tr, mx) — most likely tax/VAT or currency conversion, not developer behaviour, but a recurring, avoidable trust event
 
@@ -1241,7 +1241,7 @@ Source: `App Store Reports/23. Streaks - The habit-forming to-do list (REPORT).m
 - **Magnitude:** 8 representative reviews within 79
 - **Direction for us:** do · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `9540311476`, `10238906445`, `11450516665`, `11474891367`, `11478493003`, `12595616102`, `12277830068`, `12729571609`
-- **Canonical:** C063 Free trial before purchase; C224 Disclose product limits in the listing — an undisclosed cap or scope becomes a refund request
+- **Canonical:** C063 Free trial before purchase; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ### R23-197 — 'No subscription' praise rose 3.61% → 5.55% → 8.00% across eras — as the category subscription-ised, an eleven-year-old one-time purchase became the reason to choose it; the one competitive position that strengthened
 
@@ -1294,7 +1294,7 @@ Source: `App Store Reports/23. Streaks - The habit-forming to-do list (REPORT).m
 - **Magnitude:** 1,780 reviews (24.48%, high-priority) praise simplicity, mean 4.58, 76.9% 5★
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** capacity beyond the default must be opt-in, default untouched
-- **Canonical:** C006 Stay minimal and ad-free; C222 A hard habit cap is a defensible design position only with an opt-in pressure valve — the default never changes
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C222 A hard habit cap is a defensible design position only with an opt-in pressure valve — the default never changes
 
 ### R23-014 — Several of the 12 edited reviews are visible rating upgrades after a developer fix — fixes bring reviewers back
 
@@ -1313,7 +1313,7 @@ Source: `App Store Reports/23. Streaks - The habit-forming to-do list (REPORT).m
 - **User reaction:** praise
 - **Magnitude:** 1,780 (24.48%, high-priority), mean 4.58, 1★ 3.1%, 5★ 76.9%
 - **Direction for us:** product-rule · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R23-057 — Streak psychology works — the highest-satisfaction theme; reviewers describe getting out of bed to preserve a streak
 
@@ -1460,7 +1460,7 @@ Source: `App Store Reports/23. Streaks - The habit-forming to-do list (REPORT).m
 - **Magnitude:** all 123 read
 - **Direction for us:** do · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `1213415787`, `1273715314`, `1398416447`, `1400446995`, `2074625050`, `3606167716`, `5190340051`, `6598286675`, `9484848485`, `12456594252`, `12687610729`
-- **Canonical:** C064 Price level — where 'fair' turns into 'too expensive'; C224 Disclose product limits in the listing — an undisclosed cap or scope becomes a refund request
+- **Canonical:** C064 Price level — where 'fair' turns into 'too expensive'; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ### R23-185 — There is no high-spend/low-spend product split in this corpus: the two defined groups are indistinguishable from each other (4.22) and only marginally better than the rest of the world (4.12) — what varies by country is which complaint dominates, not how much people complain
 
@@ -1753,7 +1753,7 @@ Source: `App Store Reports/23. Streaks - The habit-forming to-do list (REPORT).m
 - **User reaction:** churn
 - **Magnitude:** simplicity 32.30% → 20.80% → 18.36%; UI confusion 0.69% → 4.93% → 5.33%
 - **Direction for us:** product-rule · **Report confidence:** very strong · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
 
 ### R23-126 — The v3.0 update (late Jul 2017: negative tasks, second page, sounds, themes, statistics) split reviewers the same week — delighted vs alarmed ('The new UI is confusing, annoying, inefficient… all in the service of aesthetics'; 'The great thing used to be having to pare down'; 'like they dipped a pickle in chocolate'); later waves repeat it in 2022 ('Feature overload ruined core functionality'), 2023 ('adding complexity for the sake of complexity') and 2025
 
@@ -1763,7 +1763,7 @@ Source: `App Store Reports/23. Streaks - The habit-forming to-do list (REPORT).m
 - **Magnitude:** 6 delighted, 6 alarmed cited at v3.0; 5 later-wave reviews 2022–2025
 - **Direction for us:** product-rule · **Report confidence:** very strong · **Generalisable:** yes
 - **Review IDs:** `1698329281`, `1700895077`, `1702216092`, `1708201423`, `1723164061`, `1762432110`, `1699860194`, `1704290647`, `1706842643`, `1708307755`, `1244333793`, `3554375156`, `8872999798`, `9132739356`, `9522443552`, `9974958402`, `12133468213`
-- **Canonical:** C006 Stay minimal and ad-free; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
 
 ### R23-146 — The developer communicated a migration to direct iCloud sync (including Watch) in Mar 2022; the complaint spike is the same quarter, with visible recoveries within weeks (several edited reviews upgraded after a fix) — a migration with a long, damaging tail, not a permanent break
 
@@ -1830,7 +1830,7 @@ Source: `App Store Reports/23. Streaks - The habit-forming to-do list (REPORT).m
 - **User reaction:** churn
 - **Magnitude:** 32.30 → 20.80 → 18.36%; UI confusion ~8×
 - **Direction for us:** product-rule · **Report confidence:** very strong · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R23-199 — Monthly volume 2024–2026 fell 59 (Jan 24) → 25 (Dec 24) → 34 (Jan 25) → 12 (Dec 25) → 26 (Jan 26) → 6 (Sep 26, partial); the trailing twelve months supply 156 reviews (2.15%); 2026 is the worst year on record — mean 3.29, 24.6% 1★, 36.4% 5★ (n=118, meaningful but small)
 
@@ -1871,7 +1871,7 @@ Source: `App Store Reports/23. Streaks - The habit-forming to-do list (REPORT).m
 - **Magnitude:** 1,780 (24.48%), mean 4.58
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `1223740791`, `1298650488`, `1421300604`, `1509068759`, `1512340737`, `1853756058`, `6819955202`, `9491330601`, `11820002198`
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R23-115 — Competitors named: Momentum 14 (4.64, 'switched from'); Strides 13 (3.38, both directions — some leave to Strides over the cap); Productive 6 (4.67, 'Streaks is simpler / not a subscription'); Habitify 5 (4.20, year calendar view Streaks lacks); Habitica 3 (4.67, reward economy Streaks lacks); Apple Reminders 9 (3.67, 'Reminders does this free'); Way of Life / HabitBull / Coach.me / Lift / Done / Balanced / Haby / BlockyTime / Force of Habit ≤2 each
 
@@ -1901,7 +1901,7 @@ Source: `App Store Reports/23. Streaks - The habit-forming to-do list (REPORT).m
 - **Magnitude:** 68 of 650 1★ (10.5%; 0.94% of corpus, emerging)
 - **Direction for us:** do · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `1358168074`, `3606167716`, `5393057080`, `8489597297`, `11243132812`, `12687610729`, `10919386441`, `11277169610`, `12133468213`
-- **Canonical:** C134 Lead the store listing with what users actually love; C214 A bare checklist cannot carry a premium price — it has a free substitute pre-installed on every phone; C224 Disclose product limits in the listing — an undisclosed cap or scope becomes a refund request
+- **Canonical:** C134 Lead the store listing with what users actually love; C214 A bare checklist cannot carry a premium price — it has a free substitute pre-installed on every phone; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ## Anti-patterns
 
@@ -2030,7 +2030,7 @@ Source: `App Store Reports/23. Streaks - The habit-forming to-do list (REPORT).m
 - **Magnitude:** 4 reviews cited
 - **Direction for us:** do · **Report confidence:** limited evidence · **Generalisable:** yes
 - **Review IDs:** `9540311476`, `5996825854`, `12880039039`, `2277807179`
-- **Canonical:** C224 Disclose product limits in the listing — an undisclosed cap or scope becomes a refund request
+- **Canonical:** C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ### R23-227 — S2: lead the listing with the streak mechanism and HealthKit automation, not 'to-do list' — the 68 'no value / just a checklist' 1★ reviews are an expectation failure, not a product failure
 
@@ -2136,7 +2136,7 @@ Source: `App Store Reports/23. Streaks - The habit-forming to-do list (REPORT).m
 - **Magnitude:** 1,780 (24.48%), mean 4.58; 32.30% → 20.80% → 18.36%
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** holds for a paid-up-front app whose listing sells constraint; the loss appears when features are added to answer a minority
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ## Data caveats and method
 

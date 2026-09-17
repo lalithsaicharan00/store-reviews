@@ -53,7 +53,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Direction for us:** product-rule · **Report confidence:** recommendation · **Generalisable:** yes
 - **Conditions:** evidence: R07-118
 - **Review IDs:** `13860278748`
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ## Must-haves
 
@@ -168,7 +168,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Magnitude:** Streak maths confusing 4 (0.45%, Weak), mean 4.00
 - **Direction for us:** must-never-break · **Report confidence:** weak, trust-critical · **Generalisable:** yes
 - **Review IDs:** `13578452293`, `13856682531`, `12189061392`, `11317982485`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R07-092 — Notifications are a small, sharp problem with opposite failures: reminders silently went quiet ([external] changelog 1.16.1: 'reminders could go quiet for the rest of the week, depending on the day you last opened the app'), fired at the wrong time — and one 1★ says 'This app doesn't have notifications' when it does, a discovery failure inside onboarding
 
@@ -211,7 +211,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Direction for us:** must-never-break · **Report confidence:** immediate · **Generalisable:** yes
 - **Conditions:** evidence: R07-089
 - **Review IDs:** `13578452293`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ## Features
 
@@ -275,7 +275,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Magnitude:** No ads 7 (0.79%), mean 5.00, 100% 5★
 - **Direction for us:** build-free · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `13188634050`, `13680396177`, `12336116396`
-- **Canonical:** C006 Stay minimal and ad-free; C008 Daily check-in and one basic reminder per habit are free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C008 Daily check-in and one basic reminder per habit are free; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ### R07-037 — Widgets are a real purchase trigger for some: 'Probably upgrading to paid soon for widget feature'; 'the widgets alone are worth the money'
 
@@ -425,7 +425,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Magnitude:** 3 (0.34%, Weak), mean 5.00
 - **Direction for us:** must-have · **Report confidence:** weak, cheap · **Generalisable:** yes
 - **Review IDs:** `12632001002`, `13776739735`, `11670099719`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R07-093 — Notification interactions users want: mark 'complete' from a held notification without opening the app ('Not possible to hold notification and choose complete'), more attention-grabbing reminders, and a sticky reminder that can't be dismissed until the habit is done
 
@@ -487,7 +487,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Direction for us:** must-have · **Report confidence:** recommendation · **Generalisable:** yes
 - **Conditions:** evidence: R07-090, R07-091
 - **Review IDs:** `13604363091`, `12632001002`, `13776739735`, `11670099719`
-- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ## Monetization
 
@@ -683,7 +683,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **User reaction:** praise
 - **Magnitude:** simplicity 336 (38.10%), mean 4.86, 89.9% 5★; design 305 (34.58%), mean 4.78; grid 73 (8.28%), mean 4.73
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free; C012 Week / month / year grid views
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C012 Week / month / year grid views
 
 ### R07-035 — Free-tier grievances and buyer grievances are two disjoint populations: payers never appear in cap complaints (0 of 27), widget-paywall objections (0 of 13) or upsell nagging (0 of 8) — free-tier complaints tell you why people don't buy; paid complaints (bugs, broken entitlement, subscription objection, redesign) tell you why buyers churn
 
@@ -1080,7 +1080,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Magnitude:** simplicity praise 41.55% → 41.45% → 39.61% → 29.29% (−12 points); design praise 47.89% → 30.77% → 34.09% → 30.30%
 - **Direction for us:** product-rule · **Report confidence:** high-priority theme in decline · **Generalisable:** yes
 - **Review IDs:** `13860278748`, `14193781102`, `10915115990`, `12166781464`
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R07-120 — The persistent four — no sync (3y 4m, 54), 4-habit cap (3y 7m, 27), widgets behind paywall (2y 5m, 13), weekly-goal discoverability (3y, 17) — all still producing reviews in the last 60 days of the corpus
 
@@ -1111,7 +1111,7 @@ Source: `App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountabilit
 - **Magnitude:** 126 (14.29%), mean 4.96, 96.0% 5★, zero 1–2★; US 19.4%
 - **Direction for us:** do · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `12134207623`
-- **Canonical:** C005 Know which competitors buyers compare against; C006 Stay minimal and ad-free
+- **Canonical:** C005 Know which competitors buyers compare against; C006 Stay minimal — every addition is opt-in or off by default
 
 ### R07-043 — An explicit competitive churn at a stated price point: '35€ for lifetime access for (essentially) an automated excel sheet was just too much… I found a great habit tracker app for 6.99€ (lifetime)' — a simple utility is benchmarked against cheap lifetime competitors
 

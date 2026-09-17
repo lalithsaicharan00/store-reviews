@@ -63,7 +63,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** 32.2% of US; no-ads mean 4.91
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** evidence: R01-060, R01-077
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ## Must-haves
 
@@ -170,7 +170,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** ×10.2 lift among buyers; no raw count in this section
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** Part 4 'persistent multi-year unfixed bugs' has the detail
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R01-063 — Taking money incorrectly is the fastest route to 1★ — billing errors are ×21.3 over-represented in 1★ and 100% of US billing complaints are 1–3★
 
@@ -249,7 +249,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **User reaction:** complaint
 - **Magnitude:** 28 global, 15 US (0.28%), mean 3.50
 - **Direction for us:** must-never-break · **Report confidence:** weak count · **Generalisable:** yes
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R01-097 — Widgets go blank, stop updating, disappear after updates, or show different numbers from the app
 
@@ -330,7 +330,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** 44 global (0.08%); 17 US (0.31%); mean 2.89; ×8.5 1★, ×7.6 2★; ×10.2 among buyers
 - **Direction for us:** must-never-break · **Report confidence:** moderate · **Generalisable:** yes
 - **Conditions:** DST/timezone (R01-093) is one cause
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ## Features
 
@@ -1102,7 +1102,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** 29.2% of buyers, lift ×1.4 — 'table stakes, gets them in the door'
 - **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** see R01-095 (Part 8 #20): 32.2% of US reviews mention simple/clean
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R01-025 — iCloud sync / multi-device is the strongest true differentiator among buyers
 
@@ -1214,7 +1214,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** 5★ lift ×1.12; 1 low rating out of 182; mean 4.91
 - **Direction for us:** must-have · **Report confidence:** weak count, best mean · **Generalisable:** yes
 - **Conditions:** Part 8 #20: stay minimal and ad-free
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ### R01-062 — The 5★ recipe: clean, ad-free tracker, aimed at ADHD/students, priced as a cheap one-time buy, given away to people who can't afford it
 
@@ -1223,7 +1223,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **User reaction:** 5★-burst
 - **Magnitude:** synthesis of the 5★ lift table
 - **Direction for us:** do · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C003 Lead with a one-time lifetime purchase; C006 Stay minimal and ad-free; C025 Scholarship / hardship / discount program; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C006 Stay minimal — every addition is opt-in or off by default; C025 Scholarship / hardship / discount program; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
 
 ### R01-064 — Charging for something and then not delivering it is the second-fastest route to 1★ — restore purchase, family plan and broken sync all sit above ×9
 
@@ -1260,7 +1260,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** 11,969 global (21.1%); 1,750 US (32.2%), HIGH-PRIORITY, mean 4.74
 - **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** yes
 - **Conditions:** Part 8 #20: every request for more features is paired with 'but don't make it complicated'
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R01-086 — Week / month / year grid views are the emotional payoff — 'filling the squares' is the retention mechanic
 
@@ -1339,7 +1339,7 @@ Source: `App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPOR
 - **Magnitude:** simple/clean UI ×1.02 (21.1% of all reviews); streaks ×1.03; cheap/fair ×1.03
 - **Direction for us:** none · **Report confidence:** stated · **Generalisable:** yes
 - **Conditions:** low lift ≠ unimportant: these are baseline expectations, not differentiators
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ## Audiences
 

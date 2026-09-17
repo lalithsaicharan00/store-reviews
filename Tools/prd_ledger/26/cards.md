@@ -349,7 +349,7 @@ Source: `App Store Reports/26. Eden - Daily Routine Planner - Self care habit tr
 - **User reaction:** praise
 - **Magnitude:** 1,068 (27.83%, high-priority), mean 4.64; 1★ 10 · 5★ 812
 - **Direction for us:** do · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free; C057 Offer a non-pastel / premium design option
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C057 Offer a non-pastel / premium design option
 
 ### R26-031 — Music / calm / ambience praised
 
@@ -691,7 +691,7 @@ Source: `App Store Reports/26. Eden - Daily Routine Planner - Self care habit tr
 - **User reaction:** praise
 - **Magnitude:** 411 (10.71%, high-priority), mean 4.70; 5★ 334
 - **Direction for us:** product-rule · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R26-035 — Garden-growth metaphor as motivation
 
@@ -719,7 +719,7 @@ Source: `App Store Reports/26. Eden - Daily Routine Planner - Self care habit tr
 - **Magnitude:** aesthetic 1,068; 14 representative reviews
 - **Direction for us:** do · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `8809983265`, `13024796099`, `12393951903`, `9280888384`, `8788448563`, `9062177143`, `9945145056`, `10084378650`, `10023340564`, `11064426818`, `12157437413`, `13291395738`, `13781551382`, `14068662243`
-- **Canonical:** C006 Stay minimal and ad-free; C057 Offer a non-pastel / premium design option
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C057 Offer a non-pastel / premium design option
 
 ### R26-068 — Gentleness specifically, as against streaks: 'it doesn't work on building a streak because then when you break a streak you feel dispirited and give up'; 'because you don't have a streak it is purely for your own benefit'; 'accountability and motivation without the shame' — Eden's defensible position is calm, non-punitive, beautiful, and every recommendation is filtered through whether it protects that
 
@@ -847,7 +847,7 @@ Source: `App Store Reports/26. Eden - Daily Routine Planner - Self care habit tr
 - **Magnitude:** 81 (2.11%), mean 3.84 vs 4.570; us 48 / gb 12 / ca 9 / au 5
 - **Direction for us:** product-rule · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `11104027675`, `11031909897`, `11060956986`, `8204423986`, `10242008479`, `11099108717`, `11190072439`, `11244034733`, `11620390853`, `13178231487`, `13198235435`, `9861016027`
-- **Canonical:** C006 Stay minimal and ad-free; C007 Generous fixed habit cap (or unlimited) — never change it; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C007 Generous fixed habit cap (or unlimited) — never change it; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
 
 ### R26-098 — Mental-health context (32, 0.83%, mean 4.66) holds the highest-affect reviews in the corpus — 'Summed up, this app helped me fix my severe depression'; a detailed account of three years clean; 'I'm very unwell and almost entirely bedbound'; 'it got me out of a depression pit'; 'Because of the situation in the world I had terrible anxiety… This app helped me return to life' — the segment validates the gentle, non-punitive positioning more strongly than any other evidence and is the clearest argument against making the all-or-nothing rule any harsher
 
@@ -929,7 +929,7 @@ Source: `App Store Reports/26. Eden - Daily Routine Planner - Self care habit tr
 - **Magnitude:** limited evidence, single-digit
 - **Direction for us:** do · **Report confidence:** limited evidence · **Generalisable:** yes
 - **Review IDs:** `9318303655`, `12573706028`, `8528954369`, `10342152227`, `9729004144`, `12432281757`, `13903218376`, `12947041033`, `11704807174`, `9834028008`, `12588547810`, `12198340554`
-- **Canonical:** C027 Localise early — it unlocks revenue; C051 Android version; C218 Store listing and paywall copy stay true — never advertise a feature you removed, lack, or don't integrate
+- **Canonical:** C027 Localise early — it unlocks revenue; C051 Android version; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ### R26-096 — Eight Chinese-language reviews believe Eden is or resembles a discontinued Android app, '种子习惯' (Seed Habit), and ask for its community features back; one asks specifically for iCloud sync, weekly/monthly check-ins and lock-screen shortcuts — limited evidence but a coherent, unusually specific feature brief from one market
 
@@ -1057,7 +1057,7 @@ Source: `App Store Reports/26. Eden - Daily Routine Planner - Self care habit tr
 - **Magnitude:** aesthetic 1,068 (27.83%, high-priority, 4.64); music 559 (14.57%, 4.68); simplicity 411 (10.71%, 4.70); garden metaphor 229 (5.97%, 4.68)
 - **Direction for us:** do · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `8788448563`, `9062177143`, `9945145056`, `10023340564`, `11064426818`, `12157437413`, `13024796099`, `13291395738`, `14068662243`
-- **Canonical:** C006 Stay minimal and ad-free; C057 Offer a non-pastel / premium design option; C095 Neutral, non-judgemental tone on failure
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C057 Offer a non-pastel / premium design option; C095 Neutral, non-judgemental tone on failure
 
 ## Anti-patterns
 

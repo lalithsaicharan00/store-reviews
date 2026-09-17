@@ -32,7 +32,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Magnitude:** 1 paid churn (2.27%), 4★; 'there are free ones with basic'
 - **Direction for us:** product-rule · **Report confidence:** weight raised by a paid churn · **Generalisable:** yes
 - **Review IDs:** `13390634274`
-- **Canonical:** C138 Never let the paywall imply a capability the product lacks
+- **Canonical:** C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ### R06-101 — A free quantity cap must sit above the number of things a normal user tracks: a cap below that (gym + water + no doomscrolling is already three) cannot demonstrate value and generates public complaint; raising 1 → 2 did not fix it and the ask is for unlimited or near-unlimited
 
@@ -239,7 +239,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Direction for us:** must-have · **Report confidence:** meaningful (n = 1) · **Generalisable:** yes
 - **Side effects:** the midnight boundary is 'a known killer in this category'
 - **Review IDs:** `13672386764`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone)
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
 
 ### R06-029 — Streak Tracker mode (manual daily check-in) is free and ships alongside the counter; the one reviewer who names both modes rates 5★
 
@@ -555,7 +555,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Magnitude:** Simplicity / ease 7 (15.91%), mean 4.57
 - **Direction for us:** product-rule · **Report confidence:** high band (n = 7) · **Generalisable:** yes
 - **Review IDs:** `13390634274`, `13466777630`, `13767758923`, `13795256017`, `14146487084`, `14271116952`, `14346310474`
-- **Canonical:** C006 Stay minimal and ad-free
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
 
 ### R06-053 — Explicit recommendations come from outcome and widget reviewers — the same people who report behaviour change
 
@@ -767,7 +767,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Magnitude:** report gives none (2 + 1 reviews)
 - **Direction for us:** do · **Report confidence:** interpretation · **Generalisable:** yes
 - **Review IDs:** `13085620460`, `13672386764`
-- **Canonical:** C038 Dates, streaks and statistics correct on every surface (incl. DST / timezone); C134 Lead the store listing with what users actually love; C135 Offer both check-in tracking and auto-counting (no daily check-in) per item
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C134 Lead the store listing with what users actually love; C135 Offer both check-in tracking and auto-counting (no daily check-in) per item
 
 ### R06-025 — Two reviewers call it a clone and both are 1★: 'Terrible app a clone of streaks' (Streaks by Crunchy Bagel) and 'literally a copy of the app Days Since but it's both more expensive and has less features, let alone the horrible UI and lack of customizability' — Days Since is report 3 in this set, so users compare these products directly, and StreakUp loses on customization and price, not core function
 
@@ -800,7 +800,7 @@ Source: `App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breake
 - **Magnitude:** 1 (2.27%), 4★, CA; Cancelled subscription 1 (2.27%), mean 4.00
 - **Direction for us:** dont · **Report confidence:** weight raised: a paying customer who churned · **Generalisable:** yes
 - **Review IDs:** `13390634274`
-- **Canonical:** C138 Never let the paywall imply a capability the product lacks
+- **Canonical:** C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ## Things not to do
 
