@@ -1,0 +1,74 @@
+# -*- coding: utf-8 -*-
+"""Stage 3 merge for report 72 (Habit Hearts, Akash Jain)."""
+import json
+C = {x["id"]: x for x in json.load(open("Tools/prd_ledger/canonical.json"))}
+def ext(cid, text):
+    if text not in C[cid]["statement"]: C[cid]["statement"] += text
+def add(cid, section, title, statement):
+    if cid in C: return
+    C[cid] = dict(id=cid, title=title, statement=statement, section=section, cards=[], reports=[], merged_from=[])
+
+add("C292", "must-never-break", "A preset or template must never write data on selection — choosing 'water' is not drinking 15 litres, and anything a preset writes can be rolled back",
+    "Report 72 (Habit Hearts, 250 reviews): selecting the advertised 'water' preset immediately recorded 15 litres as drunk 'которая не откатывается' ('which can't be rolled back'), in the same 5★ review that reports evening habits sorting above morning ones and a habit added to all three time slots landing only on evening — 'a preset from the advertised library writes wrong data the user cannot undo'; it rhymes with UX_UNDO (3 reviews from three directions: 'eu cliquei numa tarefa errado e contou mas como eu desfaço isso???????'; a slow undo; the unrollbackable preset) — 'Undo is under-built across this product'; §8.2 #7: fix the preset and make preset values reversible. Related: [[C223]] (undo is a visible button), [[C262]] (never gate a recovery action), [[C038]] (correct on every surface).")
+
+ext("C007", " Report 72 (Habit Hearts): the cleanest dated natural experiment on a cap in the ledger — reviewers name the free allowance as 3 (to 22 Dec 2024), then 1 (13 reviewers on six storefronts between 23 Dec 2024 and 3 Jan 2025, nobody before or after in 22 months), then 3 again; mean 4.848 → 4.293 → 4.725 and 1–2★ share 0.0% → 17.3% → 4.9%; version 1.0.8 (shipped 2024-12-18) covers 35 reviews at 3.80, the only release window below 4.0; the cap is 11 of 13 1★ and 5 of 7 2★ — 'This app is free but I literally can only make one habit before it corners me into paying'; 'Why download a habit tracker app for the purpose of tracking a single habit?'; 'Three is survivable; it is not comfortable' (8 complaints at 3; 'a limit of 6 habits would have been fine and would retain far more users'); §8.1 #1 'Set and hold the free habit cap at 3 or more. Never 1'; §8.7 'treat that number as a rating-sensitive setting, not a growth lever'.")
+ext("C191", " Report 72 (Habit Hearts): cutting the free allowance from 3 to 1 over Christmas 2024 produced 13 of the app's 20 lifetime 1–2★ reviews in six weeks, then was quietly reverted; two reviewers independently concluded 'it should just be a paid app'.")
+ext("C104", " Report 72 (Habit Hearts): all 21 release notes are the identical string 'Bug fixes and performance improvements' — nothing records when the free cap moved from 3 to 1 and back, so users discovered it at the paywall and the only record is the reviews; research: check remote-config history against 2024-12-18 and 2025-02.")
+ext("C133", " Report 72 (Habit Hearts): 'The free tier is an acquisition instrument, and it is currently priced as a monetization instrument' — 24 cap complaints and zero reviewers who say the cap made them buy; eight of nine price objections also carry the cap — 'The price is not the problem; the ratio of what is free to what is charged for is'.")
+ext("C182", " Report 72 (Habit Hearts): stated purchase triggers are trust from another app in the family, buying on sight from the design, a sale price, and wanting to support — never hitting the cap; 'Nobody who bought it thinks it was expensive'.")
+ext("C025", " Report 72 (Habit Hearts): an informal hardship programme — 11 reviewers say the developer gave them premium free after they asked (six cite hardship, student status or being between jobs: 'I reached out to them about not being able to pay right now due to being in between jobs and they offered a free premium!'), all 11 are 5★, 10 of 11 US; grant union 15 (6.00%), all 5★; but it is invisible — others ask for a discount in public, and a 2★ ('I'm to tight for money') and a 1★ price objection are exactly its population; Russia (payment impossible) produced 1 grant and 4 unhappy reviews; §8.1 #4 / E3: surface the route inside the paywall in every shipped language — 'the cheapest available experiment in this whole report'; the cohort shifts the corpus mean 4.612 → 4.587 and must be disclosed as a selection effect.")
+ext("C026", " Report 72 (Habit Hearts): Apple payment methods blocked from Russia and operator billing stopping in March 2026 made the app unpurchasable there — 'Не показывает цену, выдает ошибку'; 800 ₽ then 1,490 ₽ quoted on two cards, both declined; 'интерфейс красивый, но приложение абсолютно бессмысленно без платной версии'; 5 ru reviews, four in 2026, on the third-largest storefront (any_negative 27.59% vs 14.80%); support granted access case by case; §8.1 #5: fix purchase on ru or route those users to the grant path automatically.")
+ext("C113", " Report 72 (Habit Hearts): two different 'Lifetime' SKUs ($9.99 and $15.99) and two prices quoted to one Russian reviewer in one session; reviewers report €10, €9.99, €25, £10, $10–16, R$124.75, 129 kr and 899 ₽ — one checks the 'no further cost' claim with scepticism ('så är jag skeptisk').")
+ext("C003", " Report 72 (Habit Hearts): the listing sells Monthly $3.99 and Yearly $14.99 beside Lifetime, but buyers describe and repeat the one-time unlock — 'Not subscription based. But once keep forever.'; 'бонусом подписка за 899₽ навсегда'; 'Pour 9,99€ à vie, franchement j'aime beaucoup' (PAY_ONETIME 7, 4.71) — and nobody describes a renewal or cancellation.")
+ext("C093", " Report 72 (Habit Hearts): 'if you don't pay at least $10, most of your screen is taken up by a huge ad encouraging you to upgrade the app, and nearly every feature you click brings you back to this ad'; 'I just wish we didn't get an ad to buy premium every time we enter the app' (5★) — in an ad-free app 'the paywall is being experienced as the advertising'; §8.1 #2 take the full-screen upgrade prompt off every app entry.")
+ext("C008", " Report 72 (Habit Hearts): 'you're only allowed to set 3 habits and you can't even get notifications for them' (Nov 2024) — 'a habit tracker whose free tier cannot remind you is not a smaller product, it is a different one'; §8.1 #3 verify and ungate.")
+ext("C147", " Report 72 (Habit Hearts): no trial exists anywhere in the corpus and a one-habit free tier cannot demonstrate the product — 'перевірити додаток без покупки було не можливо' ('it was impossible to check the app without buying'); that reviewer bought blind, disliked it, was refused a refund and left 2★; E2: a time-limited full-feature trial measured on refund rate and D7 retention.")
+ext("C212", " Report 72 (Habit Hearts): a buyer who trusted the sister apps, disliked this one and was refused a refund (2★); an accidental purchase from a sale pop-up — 'If there's a way to get my money back please let me know😭. I'm to tight for money'.")
+ext("C033", " Report 72 (Habit Hearts): an accidental sale-pop-up purchase not recognised after delete-and-reinstall — 'still asking me to purchase the thing I already accidentally purchased' — §8.1 #6 restore after reinstall, findable.")
+ext("C034", " Report 72 (Habit Hearts): 'Всё сбросилось в бесплатной версии спустя месяц. Подскажите, так и должно быть?' — a month of free-tier tracking gone and the user cannot tell bug from policy; §8.2 #10 'Either answer is a product decision; silence is the only wrong one'.")
+ext("C193", " Report 72 (Habit Hearts): a free-tier data reset after a month, unexplained — if free data expires, it must say so.")
+ext("C223", " Report 72 (Habit Hearts): 'eu cliquei numa tarefa errado e contou mas como eu desfaço isso???????' (4★); a slow undo, wants swipe-to-undo (4★); §8.2 #9 a fast, obvious undo.")
+ext("C053", " Report 72 (Habit Hearts): morning / afternoon / evening grouping — evening habits render above morning ones despite the configured order, and a habit added to all three slots lands only on evening (§8.2 #8).")
+ext("C039", " Report 72 (Habit Hearts): 'приходят не все уведомления о привычках' (3★ — the only rating reduction from a plain defect); a 5★ titled 'Notification bug' resolved individually by support — handled per-user rather than systemically (§8.2 #11).")
+ext("C060", " Report 72 (Habit Hearts): 'From the makers of Fleur!' — the app family (Fleur, Floret, Nost) appears in 26 reviews (10.40%, 4.88), rising to 14.00% in 2026; 8 came because of a sister app and 3 of 12 payers bought on that trust ('Yo la compré sin apenas usar la versión gratuita… ya que uso desde hace tiempo Floret… y Fleur'); two ask for the next app (a notes app, a book tracker) — 'this audience asks for more products'; the same trust also produced the only refund request.")
+ext("C134", " Report 72 (Habit Hearts): design praise 152 (60.80%, 4.75), flat across eras — 'the design is not a differentiator to be protected alongside features — it is the feature'; the listing omits the 50+ widgets; E5: lead the listing with the aesthetic and icon library.")
+ext("C185", " Report 72 (Habit Hearts, counter-evidence): here the aesthetic is stated as the retention mechanic — 'I am someone who needs things to be pleasing to keep doing it, and this gives me that'; 'When i usually use a routine app, i give up after a few uses as it feels like a chore. But this app … has a gorgeous layout'; OUT_MOTIV 48 (19.20%) framed as a consequence of the design; outcomes 106 (42.40%, 4.97) — the design retains when the product behind it works and the free tier lets people use it.")
+ext("C184", " Report 72 (Habit Hearts, counter-evidence): 12 reviews (4.80%, all 5★) praise an explicitly 'girly' aesthetic ('idealna dla dziewczyn'; 'all girls should have this beautiful habit tracker'), rising 2.38% → 8.11% — a gendered look that attracts its audience rather than narrowing it, on an app with a neutral name.")
+ext("C059", " Report 72 (Habit Hearts): support praise 50 (20.00%, 4.96) — 'a rate this analyst has not seen in any other app in this series'; requests ship ('Atienden tus recomendaciones con actualizaciones (en mi caso poder reordenar los hábitos)'; 'a big thank you for adding a feature I requested—I really feel seen and appreciated!'); a 'Notification bug' review arrives as 5★ because 'they were incredibly kind and patient'.")
+ext("C036", " Report 72 (Habit Hearts): 5 reviewers used the public review as a support ticket (mean 3.00) though the developer answers email fast — E4: an in-app 'suggest a feature' route.")
+ext("C042", " Report 72 (Habit Hearts): 5 name ADHD, ADD or hypersensitivity as why the visual approach works where others failed — 'Ich (ADHS) habe schon so viel ausprobiert… Nichts hat funktioniert. Diese App macht mich froh.'; mental health / anxiety 7 ('a space where you want to be yourself and grow without pressure or shame').")
+ext("C027", " Report 72 (Habit Hearts): 27 languages including Japanese, Korean, Chinese, Thai and Vietnamese, yet zero written reviews in Japan, Korea, China, India or Turkey — 'the largest gap between what the app is localised for and where it is used'; no localisation complaint across 138 non-English reviews.")
+ext("C062", " Report 72 (Habit Hearts): high-spend markets are more critical (cap complaints 12.1% vs 6.4%, mean 4.589 vs 4.642) and hold the developer relationship (support praise 27.0% vs 11.0%); the UK (cap 26.67%, price 20.00%) and Canada (3.64, public 4.32) are the worst cap markets; France (4.94) and Germany (4.93) the happiest.")
+ext("C231", " Report 72 (Habit Hearts): 85.20% 5★, 27.20% low-information reviews rising to 36.00% in 2026 ('the informative corpus is closer to 180 reviews than 250'), zero feature requests in 2026, a grant cohort of 15 all 5★, 21.5% of public ratings written; the Christmas cluster contains six 1★, so it is seasonal, not solicited.")
+ext("C143", " Report 72 (Habit Hearts): duration targets with partial completion — 'if your goal is 120 min, you can tick 20 min of it' — praised.")
+ext("C172", " Report 72 (Habit Hearts): a free-text note / link on a habit (3 — one to attach a yoga video link), the largest request.")
+ext("C043", " Report 72 (Habit Hearts): more repeat intervals — 'cada 15 días … o una vez al mes'; 'add monthly as a repeat option' (2).")
+ext("C080", " Report 72 (Habit Hearts): dark mode (2, both 2024–25; nobody since — verify whether it shipped).")
+ext("C107", " Report 72 (Habit Hearts): 'более 50 виджетов на выбор' ('more than 50 widgets to choose from'); WID_GOOD 9 at 5.00 rising 2.38% → 6.00% — and the listing does not mention widgets.")
+ext("C030", " Report 72 (Habit Hearts): iCloud sync with no sign-in — only 3 mention sync, none negatively; 'nobody is fighting with it'.")
+
+M = {
+ "R72-001":["C134","C143","C107","C030"], "R72-002":["C231"], "R72-003":["C231","C036"], "R72-004":["C007","C191","C104"], "R72-005":["C007","C222","C133"],
+ "R72-006":["C134","C185","C006"], "R72-007":["C059","C036"], "R72-008":["C025","C231"], "R72-009":["C026","C025","C113"], "R72-010":["C030","C246","C056"],
+ "R72-011":["C172","C043","C080","C010","C173","C060"], "R72-012":["C292","C223","C053","C034","C039"], "R72-013":["C093","C240"], "R72-014":["C008","C147"], "R72-015":["C231"],
+ "R72-016":["C231"], "R72-017":["C033","C212","C180"], "R72-018":["C133","C064"], "R72-019":["C005","C113"], "R72-020":["C042","C184","C103"],
+ "R72-021":["C060","C182"], "R72-022":["C005","C231"], "R72-023":["C003","C113"], "R72-024":["C007","C002"], "R72-025":["C133","C182"],
+ "R72-026":["C147","C212"], "R72-027":["C231"], "R72-028":["C025","C059","C062"], "R72-029":["C062","C027"], "R72-030":["C007","C231"],
+ "R72-031":["C007","C093","C025"], "R72-032":["C107","C231"], "R72-033":["C223","C034","C193"], "R72-034":["C134","C003","C107"],
+}
+cards = [json.loads(l) for l in open("Tools/prd_ledger/72/cards.jsonl") if l.strip()]
+ids = {c["id"] for c in cards}
+for k, v in M.items():
+    assert k in ids, k
+    for cid in v: assert cid in C and not C[cid].get("merged_into"), (k, cid)
+for c in cards:
+    c["canonical"] = M.get(c["id"], [])
+    for cid in c["canonical"]:
+        if c["id"] not in C[cid]["cards"]: C[cid]["cards"].append(c["id"])
+        if c["report"] not in C[cid]["reports"]: C[cid]["reports"].append(c["report"])
+with open("Tools/prd_ledger/72/cards.jsonl", "w") as f:
+    for c in cards: f.write(json.dumps(c, ensure_ascii=False) + "\n")
+json.dump(list(C.values()), open("Tools/prd_ledger/canonical.json", "w"), indent=1, ensure_ascii=False)
+null = [c["id"] for c in cards if not c["canonical"]]
+print(f"{len(C)} canonical; {len(cards)-len(null)} attached; {len(null)} unattached: {null}")
+print("unbacked:", [x["id"] for x in C.values() if "Report 72" in x["statement"] and not any(k.startswith("R72-") for k in x["cards"])])

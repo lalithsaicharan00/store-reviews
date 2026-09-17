@@ -1,0 +1,7 @@
+# -*- coding: utf-8 -*-
+import sys; sys.path.insert(0, "Tools/prd_ledger/72")
+from _lib import c, table, save
+
+c(33, "§8.2 #9, #10; §3.3 N5", "must-have", "A fast, obvious undo and a stated data-retention rule: three reviewers found undo missing from three directions — a mis-tapped completion with no visible way back ('como eu desfaço isso???????', 4★), an undo so slow the reviewer asks for swipe-to-undo (4★), a preset value that cannot be rolled back (5★); and a free-tier user whose month of data reset could not tell if it was a bug or policy — §8.2 #9 build a fast, obvious undo; #10 if free-tier data expires, say so, and if not, fix it", "no visible undo; unclear data retention", "complaint", "UX_UNDO 3 (1.20%) 4.33; BUG_DATA_RESET 1", "must-have", "meaningful / lead", "generalisable", ["13321107548","12143331423","13903773093","13707083167"])
+c(34, "§8.5 E5; §8.4; §0.2", "do", "Lead the store listing with what reviewers love and repeat: the aesthetic, the icon library and the one-time lifetime unlock — design praise is 60.80% of reviews and stable in every era, DES_ICONS 24 at 4.92, 'girly' framing rising, and 'Not subscription based. But once keep forever.' is what buyers repeat — while the listing never mentions its 50+ widgets and sells monthly and yearly plans first; E5 measures store conversion", "listing omits widgets; leads with subscriptions", "praise", "design 152 (60.80%); ICONS 24; ONETIME 7", "do", "meaningful", "generalisable", ["11990190046","13474125877","12739995324"])
+save("a")

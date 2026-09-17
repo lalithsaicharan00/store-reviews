@@ -1,0 +1,152 @@
+[
+ {
+  "heading": "P7 — The paid model, when people like it — `U:pay_positive` = 12 (4.80%), mean 4.83★",
+  "cards": [
+   "R72-023"
+  ]
+ },
+ {
+  "heading": "T5 — Ease of use overtook raw design praise as the second thing people mention — **rising**",
+  "cards": [
+   "R72-022"
+  ]
+ },
+ {
+  "table_row": "< 0.1%",
+  "cards": [
+   "R72-002"
+  ]
+ },
+ {
+  "table_row": "0.5 – 1%",
+  "cards": [
+   "R72-002"
+  ]
+ },
+ {
+  "table_row": "1 – 3%",
+  "cards": [
+   "R72-002"
+  ]
+ },
+ {
+  "table_row": "3 – 5%",
+  "cards": [
+   "R72-002"
+  ]
+ },
+ {
+  "table_row": "> 5%",
+  "cards": [
+   "R72-002"
+  ]
+ },
+ {
+  "table_row": "Era",
+  "cards": [
+   "R72-030"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R72-002"
+  ]
+ },
+ {
+  "bold": "Executive summary in one line:",
+  "cards": [
+   "R72-004"
+  ]
+ },
+ {
+  "bold": "zero empty titles, bodies, authors or country names",
+  "cards": [
+   "R72-002"
+  ]
+ },
+ {
+  "bold": "zero exact `(title, body)` duplicate pairs",
+  "cards": [
+   "R72-002"
+  ]
+ },
+ {
+  "bold": "No finding in this report depends on counting that pair twice",
+  "cards": [
+   "R72-002"
+  ]
+ },
+ {
+  "bold": "The grant cohort is the integrity issue that matters.",
+  "cards": [
+   "R72-008"
+  ]
+ },
+ {
+  "bold": "Usability",
+  "cards": [
+   "R72-015"
+  ]
+ },
+ {
+  "bold": "Meta",
+  "cards": [
+   "R72-015"
+  ]
+ },
+ {
+  "bold": "rose",
+  "cards": [
+   "R72-022"
+  ]
+ },
+ {
+  "bold": "The `PRAISE_GEN` + `META_LOWINFO` mass is the corpus's biggest analytical limitation.",
+  "cards": [
+   "R72-003"
+  ]
+ },
+ {
+  "bold": "The three US-specific findings, all supported at n ≥ 5:",
+  "cards": [
+   "R72-028"
+  ]
+ },
+ {
+  "bold": "One caveat that applies to all three.",
+  "cards": [
+   "R72-028"
+  ]
+ },
+ {
+  "bold": "a proxy for review volume only, not for downloads or revenue",
+  "cards": [
+   "R72-029"
+  ]
+ },
+ {
+  "bold": "No cultural generalisation.",
+  "cards": [
+   "R72-029"
+  ]
+ },
+ {
+  "bold": "Month-level trend statements are not attempted.",
+  "cards": [
+   "R72-030"
+  ]
+ },
+ {
+  "bold": "A competing explanation, and why it is weaker.",
+  "cards": [
+   "R72-004"
+  ]
+ },
+ {
+  "bold": "The ecosystem is the strongest asset that is not the design.",
+  "cards": [
+   "R72-021"
+  ]
+ }
+]
