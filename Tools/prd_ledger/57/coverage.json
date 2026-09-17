@@ -1,0 +1,284 @@
+[
+ {
+  "heading": "1.3 Coverage and reconciliation",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "table_row": "Records with empty `title",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "table_row": "Records missing any schema field",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "table_row": "IDs in country files not present in main file",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "table_row": "IDs in main file not present in any country file",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "table_row": "Records where `country` field ≠ country filename",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "table_row": "Themes declared in metadata but never used",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "cards": [
+   "R57-035"
+  ]
+ },
+ {
+  "bold": "count, percentage, denominator, scope, period, signal label, and review IDs",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "Facts",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "Interpretation",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "Interpretation: each tightening was applied silently to existing users. The corpus contains no example of a change being announced, and several reviewers explicitly say they only discovered it when something they relied on stopped working.",
+  "cards": [
+   "R57-017"
+  ]
+ },
+ {
+  "bold": "Fields used in this analysis:",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "Fields inspected and set aside:",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "Fields inspected and used only as integrity checks:",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "Short reviews are not concentrated in any rating band.",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "Independent recomputation from the raw records reproduces all of these exactly",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "Deduplication: none performed, and none was needed.",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "Their absence is a real observation about this app's distribution, not a gap in extraction",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "Interpretation of the shape:",
+  "cards": [
+   "R57-004"
+  ]
+ },
+ {
+  "bold": "Parse and reconcile.",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "Programmatic validation",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "Aggregation.",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "Known error risk.",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "no finding in Parts 3–8 rests on an external source",
+  "cards": [
+   "R57-002"
+  ]
+ },
+ {
+  "bold": "No finding in Parts 3–8 rests on an external source.",
+  "cards": [
+   "R57-033"
+  ]
+ },
+ {
+  "bold": "The single most consequential negative finding in this report.",
+  "cards": [
+   "R57-036"
+  ]
+ },
+ {
+  "bold": "Both sides are real and they are separated in time.",
+  "cards": [
+   "R57-048"
+  ]
+ },
+ {
+  "bold": "A third of the corpus asks for something, and they overwhelmingly ask nicely",
+  "cards": [
+   "R57-052"
+  ]
+ },
+ {
+  "bold": "Three requests deserve special treatment because they are about capabilities that partly exist:",
+  "cards": [
+   "R57-053"
+  ]
+ },
+ {
+  "bold": "Interpretation: this is a small feature with unusually consistent wording across six years and three languages — the sign of a real gap rather than a stray idea.",
+  "cards": [
+   "R57-054"
+  ]
+ },
+ {
+  "bold": "a five-star rating frequently means \"I like this app\" and the body means \"and here is what is broken\".",
+  "cards": [
+   "R57-007"
+  ]
+ },
+ {
+  "bold": "Interpretation: in this corpus the star rating measures loyalty and the body measures product state. They should be read as two different instruments, and Part 3 is built on the body.",
+  "cards": [
+   "R57-068"
+  ]
+ },
+ {
+  "bold": "The US corpus is bimodal and the split is clean.",
+  "cards": [
+   "R57-086"
+  ]
+ },
+ {
+  "bold": "Reported because it is the most monetization-dense storefront in the corpus, and flagged as limited evidence every time it is used.",
+  "cards": [
+   "R57-087"
+  ]
+ },
+ {
+  "bold": "Definition and disclosure:",
+  "cards": [
+   "R57-089"
+  ]
+ },
+ {
+  "bold": "Defined from this corpus only, as a disclosed proxy. This is review volume, not downloads, and must not be described as downloads.",
+  "cards": [
+   "R57-090"
+  ]
+ },
+ {
+  "bold": "Risk: quiet attrition, visible as a falling mean rather than as angry reviews.",
+  "cards": [
+   "R57-090"
+  ]
+ },
+ {
+  "bold": "Not uniform — and the divergences are large:",
+  "cards": [
+   "R57-091"
+  ]
+ },
+ {
+  "bold": "Three distinct phases, each visible in the text:",
+  "cards": [
+   "R57-094"
+  ]
+ },
+ {
+  "bold": "Confidence: high for the trend; the phase boundaries are dated from reviewer text and are approximate.",
+  "cards": [
+   "R57-094"
+  ]
+ },
+ {
+  "bold": "A partial counter-reading, stated honestly:",
+  "cards": [
+   "R57-096"
+  ]
+ },
+ {
+  "bold": "Confidence: high for the magnitude of the `comparative_best` and `outcome_behavior_change` declines; medium for the interpretation.",
+  "cards": [
+   "R57-096"
+  ]
+ },
+ {
+  "bold": "Confidence: medium — the underlying share of payers among *users* is unknowable from this corpus.",
+  "cards": [
+   "R57-099"
+  ]
+ },
+ {
+  "bold": "The corpus contains the design answer as well as the problem.",
+  "cards": [
+   "R57-106"
+  ]
+ }
+]
