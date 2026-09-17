@@ -1,0 +1,11 @@
+[
+ {"table_row": "_state.json", "no_new_insight": "§1.1 files-used row: crawl state file, not used for analysis; method carded as R34-002"},
+ {"table_row": "manifest.json` → `reviews_per_country` (76 entries)", "cards": ["R34-002"]},
+ {"table_row": "Empty `body` / empty `title", "cards": ["R34-002"]},
+ {"table_row": "Era", "no_new_insight": "table header row (§1.6 eras table); carded verbatim as R34-038"},
+ {"table_row": "#", "no_new_insight": "table header row (§3.1 master table); carded verbatim as R34-081"},
+ {"table_row": "Cap", "cards": ["R34-154", "R34-155", "R34-156"]},
+ {"bold": "Part 11.6 lists every review ID behind every theme; Part 11.7 lists every one of the 743 reviews with the codes it received.", "no_new_insight": "pointer to the evidence appendix (lookup tables, skipped by rule); method carded as R34-002"},
+ {"bold": "The signal thresholds are easy to clear at this size.", "cards": ["R34-002"]},
+ {"bold": "Aggregate.", "cards": ["R34-002"]}
+]
