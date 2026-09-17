@@ -1,0 +1,214 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "table_row": "Records with empty `title",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "table_row": "Exact duplicate (title, body) pairs",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "no_new_insight": "table header row (§3.1 master table); carded verbatim as R43-033"
+ },
+ {
+  "bold": "count, percentage, denominator, scope, period, signal label, and review IDs",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Facts",
+  "no_new_insight": "how-to-read convention; method R43-002"
+ },
+ {
+  "bold": "3.994 (n=625)",
+  "cards": [
+   "R43-004"
+  ]
+ },
+ {
+  "bold": "4.45 (n=40)",
+  "cards": [
+   "R43-004",
+   "R43-022"
+  ]
+ },
+ {
+  "bold": "Classification was hand-curated, not blind-automated.",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Interpretation: the nag loop is the product's moat. It is also the mechanism most exposed to the notification bugs in finding 7 — when notifications break, the differentiator breaks.",
+  "cards": [
+   "R43-011",
+   "R43-013"
+  ]
+ },
+ {
+  "bold": "9. Reviewers are asking for scheduling shapes the product does not support — and, in several cases, for shapes it already supports but they could not find.",
+  "cards": [
+   "R43-015"
+  ]
+ },
+ {
+  "bold": "Interpretation: this product is repeatedly described as both powerful and opaque. An in-app help screen is cheaper than any feature in this report and would recover part of finding 9 as well.",
+  "cards": [
+   "R43-016",
+   "R43-122"
+  ]
+ },
+ {
+  "bold": "Fields inspected and set aside:",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Fields inspected and used only as an integrity check:",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Independent recomputation from the raw records reproduces all of these exactly.",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Deduplication: none performed, and none was needed.",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Finland, Israel, Kazakhstan, Latvia, Lithuania, Norway, Peru, Portugal, Serbia, Slovakia, Slovenia, Sweden, Uruguay",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Parse.",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Reconcile.",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Classify.",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Validate.",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Verify.",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Selection bias toward writers.",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Feature-presence claims are review-derived unless labelled.",
+  "cards": [
+   "R43-002",
+   "R43-015"
+  ]
+ },
+ {
+  "bold": "No externally sourced claim is mixed into a review-derived count anywhere in this report.",
+  "cards": [
+   "R43-002"
+  ]
+ },
+ {
+  "bold": "Two structural facts follow from this table.",
+  "cards": [
+   "R43-055"
+  ]
+ },
+ {
+  "bold": "Three themes are genuinely non-exclusive across the rating range and should not be read as one-directional:",
+  "cards": [
+   "R43-082"
+  ]
+ },
+ {
+  "bold": "No standalone conclusion is drawn about any storefront other than the United States.",
+  "cards": [
+   "R43-095",
+   "R43-005"
+  ]
+ },
+ {
+  "bold": "Two non-US findings are material enough to state, both with limited-evidence caveats.",
+  "cards": [
+   "R43-097",
+   "R43-098"
+  ]
+ },
+ {
+  "bold": "Definition (external, labelled):",
+  "cards": [
+   "R43-101"
+  ]
+ },
+ {
+  "bold": "Definition (disclosed proxy):",
+  "cards": [
+   "R43-102"
+  ]
+ },
+ {
+  "bold": "This is review volume, not downloads, and it must not be called downloads.",
+  "cards": [
+   "R43-102"
+  ]
+ },
+ {
+  "bold": "Medium confidence: n=7.",
+  "cards": [
+   "R43-111"
+  ]
+ }
+]
