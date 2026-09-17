@@ -1,0 +1,200 @@
+[
+ {
+  "table_row": "review_id",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "app_id` / `app_name",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "country` / `country_name",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "title",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "body",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "date",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "vote_count` / `vote_sum",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "is_edited",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "Country records not identical, field by field, to the main-file record",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` total / per-country counts / storefront count / rating distribution",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "_state.json` collected counts vs main file",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "Exact title+body duplicates / exact body duplicates",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "<0.1%",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "0.5–<1%",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "1–<3%",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": "3–5%",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "table_row": ">5%",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "bold": "count, a percentage, the denominator, the market scope, the time window, a signal label and exact review IDs",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "bold": "What follows from this:",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "bold": "all match exactly",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "bold": "0 differences",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "bold": "No deduplication was necessary or performed.",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "bold": "mechanically",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "bold": "Bursts.",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "bold": "Purchases, prices and support contacts are self-reported.",
+  "cards": [
+   "R83-002"
+  ]
+ },
+ {
+  "bold": "statistics and weekly reports",
+  "cards": [
+   "R83-001"
+  ]
+ },
+ {
+  "bold": "One reviewer objects to tracking",
+  "cards": [
+   "R83-012"
+  ]
+ },
+ {
+  "bold": "What is distinctive about the US (with counts):",
+  "cards": [
+   "R83-034"
+  ]
+ },
+ {
+  "bold": "What is distinctive about Japan (with counts):",
+  "cards": [
+   "R83-035"
+  ]
+ },
+ {
+  "bold": "Reading:",
+  "cards": [
+   "R83-036"
+  ]
+ },
+ {
+  "bold": "English-speaking discovery came first, localisation later.",
+  "cards": [
+   "R83-040"
+  ]
+ },
+ {
+  "bold": "Recommendation:",
+  "cards": [
+   "R83-005"
+  ]
+ }
+]
