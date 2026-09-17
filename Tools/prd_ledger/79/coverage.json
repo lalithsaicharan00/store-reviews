@@ -1,0 +1,206 @@
+[
+ {
+  "table_row": "Era",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "table_row": "…/by_country/*.jsonl",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "table_row": "…/_state.json",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "table_row": "Country-file records absent from the main file",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "table_row": "_state.json` collected-vs-actual, per storefront",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "table_row": "Exact `(country, rating, title, body)` duplicates",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "table_row": "Era",
+  "cards": [
+   "R79-054"
+  ]
+ },
+ {
+  "bold": "count, a percentage, the denominator, the market scope, the time window, a signal label and the exact review IDs",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "Part 7 therefore makes no standalone country claim.",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "The paid tier changed shape and price during the window, and the corpus is the only record of it.",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "app_id",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "app_name",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "all match",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "0 differences",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "No review was sampled, filtered, truncated or dropped.",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "Dump",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "Validate",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "Aggregate",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "Generate and verify",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "The classification is entirely human judgement.",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "Part 7 makes no standalone country claim.",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "Mexican",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "Segment rates are labelled as such and never substituted for the global band.",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "There is no evidence of a coordinated or purchased review campaign.",
+  "cards": [
+   "R79-018"
+  ]
+ },
+ {
+  "bold": "Classification integrity (`79-validate.py`): 37 checks, all passing.",
+  "cards": [
+   "R79-002"
+  ]
+ },
+ {
+  "bold": "Interpretation:",
+  "cards": [
+   "R79-004"
+  ]
+ },
+ {
+  "bold": "Geography:",
+  "cards": [
+   "R79-043"
+  ]
+ },
+ {
+  "bold": "Tolerated:",
+  "cards": [
+   "R79-044"
+  ]
+ },
+ {
+  "bold": "The two groups are nearly indistinguishable from each other and from the global picture.",
+  "cards": [
+   "R79-051"
+  ]
+ },
+ {
+  "bold": "Any claim that a specific market should be prioritised or deprioritised.",
+  "cards": [
+   "R79-051"
+  ]
+ },
+ {
+  "bold": "Any claim about localization ROI.",
+  "cards": [
+   "R79-051"
+  ]
+ },
+ {
+  "bold": "Any downloads or install statement.",
+  "cards": [
+   "R79-051"
+  ]
+ }
+]

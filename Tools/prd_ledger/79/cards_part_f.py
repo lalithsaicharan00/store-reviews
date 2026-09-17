@@ -1,0 +1,9 @@
+# -*- coding: utf-8 -*-
+import sys; sys.path.insert(0, "Tools/prd_ledger/79")
+from _lib import c, table, save
+
+c(74, "§0.4; §5.5; §8.4.1; §7.5", "anti-pattern", "Removing the most-loved free component to push a cap that was already converting: the widget (27 praise at 5.00★, zero negative, the daily home-screen impression) went behind the wall in a 101-day window (Jul–Oct 2025) while the 3-board cap stayed — the cap's valence flipped from 'without huge limitations' (5★) to 'totaal niks' (3★), paywall_shape complaints went from 0/110 to ~10% of reviews, and the one explicit upgrade in the corpus was for more boards, not widgets; 'The cap is not the lever that broke; the bundle around it is.'", "widget gated ~Oct 2025", "1★-burst", "paywall_shape 0 → 6; WIDGET_GATED 2; PRAISE_WIDGET 27 / 5.00★", "dont", "Very strong", "generalisable", ["13311025859", "14373214557", "13681657252", "12899474787"], "", "")
+
+c(75, "§0.2; §0.8; §2.4; §8.4.2", "anti-pattern", "Adding a subscription beside a one-time tier without a word of disclosure, after a year of selling 'no subscription' as the differentiator: 12 reviews chose the app because it was a one-time $10 purchase; the price then rose to €23 and monthly/yearly SKUs appeared with no billing period shown and no monetization text in the description — cost: money_negative 2.7% → 17.1%, 'bait and switch' in a 1★ title, 'Nutteloos zonder subscriptie', and the corpus's only 'used to be great' review listing the lost promise; money-positive reviews did not vanish (four still call the price fair after the rise) — the damage is in the surprise, not the amount.", "one-time → one-time + subscription, undisclosed", "churn", "money_negative 2.7% → 17.1%; UNEXPECTED 2 / 2.00★; BAIT_SWITCH 1", "dont", "High-priority", "generalisable", ["13836767975", "13681657252", "14422900213", "14483046633", "13854797898"], "", "")
+
+save("a")
