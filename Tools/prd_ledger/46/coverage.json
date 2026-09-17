@@ -1,0 +1,170 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "no_new_insight": "table header row (§3.1 master table); carded verbatim as R46-035"
+ },
+ {
+  "table_row": "Cut",
+  "no_new_insight": "table header row (§7.2 cut table); carded verbatim as R46-130"
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "Interpretation",
+  "no_new_insight": "how-to-read convention; method R46-002"
+ },
+ {
+  "bold": "A solicited-review burst is present and is disclosed rather than dropped.",
+  "cards": [
+   "R46-004"
+  ]
+ },
+ {
+  "bold": "4.251 (n=1,734)",
+  "cards": [
+   "R46-004"
+  ]
+ },
+ {
+  "bold": "Classification was hand-curated, not blind-automated.",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "Interpretation: these reviewers are 4★–5★ users hitting a model limit, and one names the free alternative they left for.",
+  "cards": [
+   "R46-018"
+  ]
+ },
+ {
+  "bold": "Fields inspected and set aside:",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "Fields inspected and used only as an integrity check:",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "Independent recomputation from the raw records reproduces all of these exactly",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "Deduplication: none performed.",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "Note on the shape of this curve.",
+  "cards": [
+   "R46-022"
+  ]
+ },
+ {
+  "bold": "Parse.",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "Reconcile.",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "Classify.",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "Validate.",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "Verify.",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "Selection bias toward writers.",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "Price and entitlement boundaries are review-derived.",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "No externally sourced claim is mixed into a review-derived count anywhere in this report.",
+  "cards": [
+   "R46-002"
+  ]
+ },
+ {
+  "bold": "Three structural facts follow from this table.",
+  "cards": [
+   "R46-066"
+  ]
+ },
+ {
+  "bold": "The tension with finding 2 in the summary is direct.",
+  "cards": [
+   "R46-067"
+  ]
+ },
+ {
+  "bold": "Four themes are genuinely non-exclusive across the rating range and should not be read as one-directional:",
+  "cards": [
+   "R46-100"
+  ]
+ },
+ {
+  "bold": "Definition (external, labelled):",
+  "cards": [
+   "R46-123"
+  ]
+ },
+ {
+  "bold": "Definition (disclosed proxy):",
+  "cards": [
+   "R46-124"
+  ]
+ },
+ {
+  "bold": "Both cuts show a halving; the counts show why.",
+  "cards": [
+   "R46-130"
+  ]
+ }
+]
