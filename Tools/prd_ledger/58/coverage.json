@@ -1,0 +1,420 @@
+[
+ {
+  "heading": "1.2 Schema",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "heading": "1.3 Coverage and reconciliation",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "heading": "1.5 Processing method",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "table_row": "Records parsed successfully",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "table_row": "Records with empty `title",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "table_row": "Records missing any schema field",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "table_row": "Records summed across `by_country/*.jsonl",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "table_row": "IDs in country files not present in main file",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "table_row": "IDs in main file not present in any country file",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "table_row": "Records where `country` field ≠ country filename",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "table_row": "Denominator used for every global percentage",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "table_row": "No ads",
+  "cards": [
+   "R58-006"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Facts",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Interpretation",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Interpretation: the corpus is organically distributed. The positivity is not manufactured — but see warning 3 for why it is also not durable evidence.",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "External verification is weak and is used only where labelled.",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "No finding in Parts 3–8 rests on an external source.",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Interpretation: praise from a first-time tracker user is weak evidence. Praise from someone who has churned through the category is strong evidence, and a quarter of this corpus is the latter.",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Interpretation: the corpus contains complete evidence of product-market fit and zero evidence of revenue. The evidence that the model works as acquisition is overwhelming; the evidence that it can be converted is absent. This is the single most important gap in the dataset, not a finding that revenue is impossible.",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Interpretation: this is a roadmap, not a bug list. The fact that a full-corpus defect sweep returns one rendering bug is itself the most positive reliability signal available — and also a direct consequence of warning 3.",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Interpretation: the corpus's entire downside consists of two people asking for more product. Note that SA's mean (4.200, n=5) is the only storefront below 5.000, and that this is 2 reviews — it is a coincidence of a tiny sample, not a market finding (§6.8).",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Fields inspected and set aside:",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Fields inspected and used only as integrity checks:",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Independent recomputation from the raw records reproduces all of these exactly",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Deduplication: none performed, and none was needed.",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Parse and reconcile.",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Full-text dump.",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Programmatic validation",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Aggregation.",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Known error risk.",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Vote and edit fields are uniformly empty",
+  "cards": [
+   "R58-002"
+  ]
+ },
+ {
+  "bold": "Note on app-ID ambiguity.",
+  "cards": [
+   "R58-006"
+  ]
+ },
+ {
+  "bold": "Every one of the 52 themes in this report is therefore labelled \"meaningful\" or higher, and that label carries much less information than it would at n = 1,000.",
+  "cards": [
+   "R58-006"
+  ]
+ },
+ {
+  "bold": "Fact:",
+  "cards": [
+   "R58-020"
+  ]
+ },
+ {
+  "bold": "Interpretation:",
+  "cards": [
+   "R58-020"
+  ]
+ },
+ {
+  "bold": "§9.2",
+  "cards": [
+   "R58-021"
+  ]
+ },
+ {
+  "bold": "§9.3",
+  "cards": [
+   "R58-021"
+  ]
+ },
+ {
+  "bold": "This is the corpus's strongest quality evidence, because every review in it is a comparison rather than an absolute judgement.",
+  "cards": [
+   "R58-009"
+  ]
+ },
+ {
+  "bold": "That tension is real and it is the most interesting design question in the corpus",
+  "cards": [
+   "R58-013"
+  ]
+ },
+ {
+  "bold": "Interpretation of the whole section:",
+  "cards": [
+   "R58-014"
+  ]
+ },
+ {
+  "bold": "This report therefore does not present one",
+  "cards": [
+   "R58-029"
+  ]
+ },
+ {
+  "bold": "The important row is the sixth.",
+  "cards": [
+   "R58-030"
+  ]
+ },
+ {
+  "bold": "The three `low_info` records",
+  "cards": [
+   "R58-030"
+  ]
+ },
+ {
+  "bold": "two people asking for more product",
+  "cards": [
+   "R58-015"
+  ]
+ },
+ {
+  "bold": "This is a fact about the product, not a gap in the data.",
+  "cards": [
+   "R58-010"
+  ]
+ },
+ {
+  "bold": "The single most informative review in this Part is `14410658467` (PH, 5★, 10 Aug), because it holds both positions at once:",
+  "cards": [
+   "R58-011"
+  ]
+ },
+ {
+  "bold": "Interpretation (this is the report's central monetization reading):",
+  "cards": [
+   "R58-011"
+  ]
+ },
+ {
+  "bold": "Uncertainty, stated plainly:",
+  "cards": [
+   "R58-034"
+  ]
+ },
+ {
+  "bold": "Nothing here supports a price point, a conversion estimate, or a revenue projection, and none is offered.",
+  "cards": [
+   "R58-034"
+  ]
+ },
+ {
+  "bold": "Every subsection below is limited evidence.",
+  "cards": [
+   "R58-035"
+  ]
+ },
+ {
+  "bold": "Geographic reach is the notable fact, not any one market.",
+  "cards": [
+   "R58-035"
+  ]
+ },
+ {
+  "bold": "This is the largest composition difference in the corpus and it is directionally consistent across two independent themes",
+  "cards": [
+   "R58-036"
+  ]
+ },
+ {
+  "bold": "Interpretation (weak): the largest storefront generates proportionally more specific feedback, which is the ordinary pattern.",
+  "cards": [
+   "R58-036"
+  ]
+ },
+ {
+  "bold": "Eight reviews cannot establish a market characteristic.",
+  "cards": [
+   "R58-037"
+  ]
+ },
+ {
+  "bold": "No Canada-specific pattern is claimed.",
+  "cards": [
+   "R58-038"
+  ]
+ },
+ {
+  "bold": "No GB-specific pattern is claimed; the two reviews matter on their content, not their storefront.",
+  "cards": [
+   "R58-038"
+  ]
+ },
+ {
+  "bold": "No DE-specific pattern is claimed.",
+  "cards": [
+   "R58-038"
+  ]
+ },
+ {
+  "bold": "This is a coincidence of a five-record sample, not a market signal, and it must not be reported as \"Saudi users rate the app lower\".",
+  "cards": [
+   "R58-038"
+  ]
+ },
+ {
+  "bold": "No standalone conclusion is drawn from any of them",
+  "cards": [
+   "R58-038"
+  ]
+ },
+ {
+  "bold": "Definition (external, labelled).",
+  "cards": [
+   "R58-040"
+  ]
+ },
+ {
+  "bold": "This is a spend proxy from an external source, not a measurement of this app's revenue",
+  "cards": [
+   "R58-040"
+  ]
+ },
+ {
+  "bold": "Facts:",
+  "cards": [
+   "R58-040"
+  ]
+ },
+ {
+  "bold": "Definition (disclosed proxy).",
+  "cards": [
+   "R58-041"
+  ]
+ },
+ {
+  "bold": "Review volume is used here purely as a proxy for where written engagement is concentrated. It is not a download or install measure and must not be reported as one.",
+  "cards": [
+   "R58-041"
+  ]
+ },
+ {
+  "bold": "neither is treated as a trend on its own",
+  "cards": [
+   "R58-043"
+  ]
+ },
+ {
+  "bold": "Two readings are equally consistent with 8 records:",
+  "cards": [
+   "R58-047"
+  ]
+ },
+ {
+  "bold": "What the evidence permits, with care:",
+  "cards": [
+   "R58-005"
+  ]
+ },
+ {
+  "bold": "Do not resolve this by argument — make it optional and measure it.",
+  "cards": [
+   "R58-053"
+  ]
+ },
+ {
+  "kind": "anti-pattern",
+  "none_in_report": "the app has no paywall, ads, account or billing and no dated mistake appears in 87 days of reviews; the prospective habit-cap warning is carded as a dont (R58-060)"
+ }
+]
