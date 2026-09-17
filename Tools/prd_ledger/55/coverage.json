@@ -1,0 +1,176 @@
+[
+ {
+  "heading": "1.2 Schema actually present",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "heading": "1.3 Coverage and reconciliation",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "heading": "1.4 Deduplication rule",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "heading": "1.5 Processing method",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "table_row": "< 0.1%",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "table_row": "0.5 – 1%",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "table_row": "1 – 3%",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "table_row": "3 – 5%",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "table_row": "> 5%",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "cards": [
+   "R55-020"
+  ]
+ },
+ {
+  "table_row": "4",
+  "cards": [
+   "R55-017"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "table_row": "IDs in country files but not in `reviews.jsonl` / vice versa",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "table_row": "Classified IDs not present in the corpus",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "table_row": "Corpus records with no theme assigned",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "cards": [
+   "R55-032"
+  ]
+ },
+ {
+  "table_row": "Era",
+  "cards": [
+   "R55-080"
+  ]
+ },
+ {
+  "table_row": "Era",
+  "cards": [
+   "R55-105"
+  ]
+ },
+ {
+  "bold": "Store-level context:",
+  "cards": [
+   "R55-001"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "bold": "Executive summary in one line:",
+  "cards": [
+   "R55-001"
+  ]
+ },
+ {
+  "bold": "Parse",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "bold": "Resolve index → review_id",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "bold": "Validate programmatically",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "bold": "Aggregate",
+  "cards": [
+   "R55-002"
+  ]
+ },
+ {
+  "bold": "Selection bias.",
+  "cards": [
+   "R55-003"
+  ]
+ },
+ {
+  "bold": "Small late samples.",
+  "cards": [
+   "R55-004"
+  ]
+ },
+ {
+  "bold": "Implication:",
+  "cards": [
+   "R55-078"
+  ]
+ },
+ {
+  "bold": "Unit:",
+  "cards": [
+   "R55-105"
+  ]
+ }
+]

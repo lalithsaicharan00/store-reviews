@@ -1,0 +1,1361 @@
+# Cards — report 55
+
+Source: `App Store Reports/55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker (REPORT).md`  
+135 cards. Generated from `cards.jsonl` by `cards_to_md.py` — edit the JSONL, not this file.
+
+## Contents
+
+- [Product rules](#product-rules) — 3
+- [Must-haves](#must-haves) — 4
+- [Must never break](#must-never-break) — 14
+- [Features](#features) — 19
+- [Monetization](#monetization) — 12
+- [Tactics the app used](#tactics-the-app-used) — 2
+- [Insights (the why)](#insights-the-why) — 14
+- [Audiences](#audiences) — 3
+- [Markets and languages](#markets-and-languages) — 12
+- [Dated events and trends](#dated-events-and-trends) — 16
+- [Positioning](#positioning) — 3
+- [Anti-patterns](#anti-patterns) — 5
+- [Things not to do](#things-not-to-do) — 4
+- [Things to do](#things-to-do) — 4
+- [Contradictions](#contradictions) — 1
+- [Data caveats and method](#data-caveats-and-method) — 19
+
+## Product rules
+
+### R55-012 — Earlier buyers asked to pay again: PAY_REGRESS 9 (0.44%, weak, mean 1.33), Dec 2019 → Jan 2025 — 'I bought HabitBull for a fixed price before they moved to a subscription model. I tried contacting them several times to ask them to honor my membership. Absolutely no reply, not one' (us, 1★, May 2020)
+
+- **Where:** §0.2 earlier buyers
+- **This app does:** one-time buyers not grandfathered
+- **User reaction:** 1★-burst
+- **Magnitude:** 9 (0.44%, 1.33)
+- **Direction for us:** product-rule · **Report confidence:** weak · **Generalisable:** generalisable
+- **Review IDs:** `5900039933`
+- **Canonical:** C186 Never revoke what earlier buyers paid for when the model changes
+
+### R55-091 — Legacy buyers PAY_REGRESS 9 (0.44%, 1.33), Dec 2019 → Jan 2025, 7 of 9 at 1★: 'they offered life time subscription for a certain amount. I bought it. But now… the people who bought the lifetime pass are no more able to use it the way they had expected' (in, 3★); 'I specifically paid for the app because it was a one-off rather than subscription, so I actually feel I should now get my money back' (gb, 1★); 'I bought it years ago, and now that they've switched to monthly payment they expect me to pay monthly, forgetting that I had already supported them' (es, 1★, 2025)
+
+- **Where:** §6.4 legacy buyers
+- **This app does:** lifetime / one-time buyers not honoured
+- **User reaction:** 1★-burst
+- **Magnitude:** 9 (1.33); 7 at 1★
+- **Direction for us:** product-rule · **Report confidence:** weak · **Generalisable:** generalisable
+- **Review IDs:** `5303991126`, `6217285649`, `12241472265`, `5900039933`, `6164110713`, `6300876929`, `6440814309`, `7199060689`, `9315773124`
+- **Canonical:** C186 Never revoke what earlier buyers paid for when the model changes
+
+### R55-126 — M3: price the subscription only on features that work and show them working in the paywall — sequence after fixing sync
+
+- **Where:** §9.2 M3
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** report gives none
+- **Direction for us:** product-rule · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** C078 Ship the paid feature working before you sell it — the purchase trigger must never be the broken feature; C196 A subscription is a promise of continued delivery — back it with a visible cadence
+
+## Must-haves
+
+### R55-038 — Support silence N3 SUP_BAD 83 (4.10%, 1.45) from Jan 2016 to Apr 2026, share rising 1.1% of E1 to 10.1% of E4 — a developer site returning errors, a contact form that won't send, ticket numbers with no reply, canned answers, a 'crude response' that closed a suggestion
+
+- **Where:** §3.3 N3
+- **This app does:** support channels broken
+- **User reaction:** churn
+- **Magnitude:** 83 (1.45); E1 1.1% → E4 10.1%
+- **Direction for us:** must-have · **Report confidence:** very strong · **Generalisable:** generalisable
+- **Review IDs:** `1318911848`, `13975567006`, `1700889647`, `3794237455`, `6247799179`, `4606789753`, `6706410264`, `7059744677`, `6360079136`
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers
+
+### R55-120 — F5: answer support and show it — a working in-app contact route, visible status notes during incidents, meaningful release notes; success SUP_BAD share under 1%
+
+- **Where:** §9.1 F5; part 9 #3
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** SUP_BAD 83 (1.45), half from payers
+- **Direction for us:** must-have · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Review IDs:** `2640020936`, `6247799179`
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C104 Never ship a paywall or feature-removal change silently
+
+### R55-121 — F6: registration optional and robust — accept valid e-mails, time out gracefully, never block first use
+
+- **Where:** §9.1 F6
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** ACCT_BUG 57 (2.82%)
+- **Direction for us:** must-have · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** C035 Account system from day one; C209 No sign-up wall before first use
+
+### R55-127 — M4: disclose clearly — cap, trial length, annual price, and how to cancel inside the app
+
+- **Where:** §9.2 M4
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** PAY_CONFUSE 6; PAY_CHARGE 7; PAY_TRIAL 8 at 2.12
+- **Direction for us:** must-have · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** C112 In-app cancellation; C177 One clear SKU shelf — every plan distinctly named, stating its period, and delivering exactly what its label says
+
+## Must never break
+
+### R55-035 — Billing & entitlement failures 71 (3.51%, very strong, mean 1.56): can't buy (PAY_IAP_FAIL 14), lost purchase (PAY_RESTORE 18), unexpected charge (PAY_CHARGE 7, 2.00), legacy (PAY_REGRESS 9), refund (PAY_REFUND 19, 1.11), regret (PAY_REGRET 13, 1.38)
+
+- **Where:** §3.2 billing & entitlement union
+- **This app does:** n/a
+- **User reaction:** 1★-burst
+- **Magnitude:** 71 (3.51%, 1.56)
+- **Direction for us:** must-never-break · **Report confidence:** very strong · **Generalisable:** generalisable
+- **Review IDs:** `1706395578`, `6217285649`
+- **Canonical:** C029 Billing must be exactly right; C033 Restore purchase and entitlements must work immediately
+
+### R55-036 — Crashes N1 BUG_CRASH 197 (9.73%, 2.04; 107 at 1★): four dated waves, mostly 'closes on launch' after an app or iOS update, plus crashes on specific actions — tapping a month view, a particular date, adding a seventh habit, buying premium; reinstalling to escape a crash often wiped data
+
+- **Where:** §3.3 N1
+- **This app does:** crashes on launch and on specific actions; reinstall wipes data
+- **User reaction:** 1★-burst
+- **Magnitude:** 197 (2.04); 107 1★
+- **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `1587511101`, `3384597538`, `3097937918`, `3627820544`, `3325234881`, `1689434162`, `1853242496`, `4491691781`, `1306549310`, `5852404059`, `14165307603`
+- **Canonical:** C031 Crashes / launch failures; C034 Data must never be lost on update, reinstall or phone change
+
+### R55-037 — Data & account continuity N2 143 (7.07%, 1.71): SYNC_BUG 62 (3.06%, 1.90) — partial, silent or 'only half' the data, a buried manual sync button, later 'servers are dead'; ACCT_BUG 57 (2.82%, 1.68) — 'email invalid', endless spinner, reset e-mails that never arrive; BUG_DATA 35 (1.73%, mean 1.31) — 'now I lost my account including years worth of data' (us, 1★, Jun 2018); PAY_RESTORE 18 (0.89%, 1.11) — premium gone after a new phone or reinstall
+
+- **Where:** §3.3 N2
+- **This app does:** sync, account and restore broken
+- **User reaction:** 1★-burst
+- **Magnitude:** 143 (1.71); SYNC_BUG 62; ACCT_BUG 57; BUG_DATA 35 (1.31); PAY_RESTORE 18 (1.11)
+- **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `1677887879`, `3207863959`, `1349318323`, `2224962843`, `4871183371`, `1454040306`, `1900017707`, `2062646143`, `5291016068`, `2220539344`, `2565543536`, `5872007760`, `2695796731`, `2168102167`, `3751363151`, `6503407436`
+- **Canonical:** C030 Sync must work — and prove it; C033 Restore purchase and entitlements must work immediately; C034 Data must never be lost on update, reinstall or phone change; C035 Account system from day one
+
+### R55-041 — Can't buy, can't register (early 2018) N6: all 14 PAY_IAP_FAIL date Oct 2016 → Jan 2018, 10 in January 2018 — lost sales in reviewers' words: 'I want to give you money! I want more habits! But you're app crashes whenever I try to upgrade'; 'I want to pay you guys money but I just can't!!!'
+
+- **Where:** §3.3 N6
+- **This app does:** purchase flow crashes
+- **User reaction:** blocked-conversion
+- **Magnitude:** 14 (0.69%, 2.57); 10 in Jan 2018
+- **Direction for us:** must-never-break · **Report confidence:** emerging · **Generalisable:** generalisable
+- **Review IDs:** `2006764168`, `1923709095`
+- **Canonical:** C077 Purchase and signup flow must not leak buyers
+
+### R55-042 — Wrong numbers in the tracker N7: streaks reset at the year change in 2018 and 2020 (BUG_STREAK 11); 'not more than' goals saved as 'at least' — for quit-smoking and drinking goals this inverts success ('Smoke not more than 10 cigarettes. But when you go into track progress… they actually show as requiring you to do the task at least that many times', au, 3★, 2022); editing a frequency rewrites history; since 2026 habits cannot be deleted or deactivated — small counts that break the core promise of accurate tracking
+
+- **Where:** §3.3 N7
+- **This app does:** goal-direction inversion; year-change streak reset; edit rewrites history
+- **User reaction:** complaint
+- **Magnitude:** BUG_STREAK 11 (0.54%); CORE_EDIT 7 (0.35%)
+- **Direction for us:** must-never-break · **Report confidence:** emerging · **Generalisable:** generalisable
+- **Review IDs:** `2045909509`, `2070476668`, `5368275407`, `5468748878`, `7768440038`, `8557099798`, `5913550190`, `13899897825`, `14081068315`, `14101520315`
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C073 Manual reordering, renaming and editing of habits/tasks — free
+
+### R55-044 — Dark mode unreadable N9 BUG_DARK 10 (0.49%, weak, 1.90), all 29 Jun → 7 Aug 2020 — 'black writing on the black background'
+
+- **Where:** §3.3 N9
+- **This app does:** dark mode shipped with unreadable text
+- **User reaction:** 1★-burst
+- **Magnitude:** 10 (1.90)
+- **Direction for us:** must-never-break · **Report confidence:** weak · **Generalisable:** generalisable
+- **Review IDs:** `6209826711`, `6134366309`, `6271175390`
+- **Canonical:** C080 Colour themes / dark mode
+
+### R55-068 — A traveller's completions shift to other days when changing time zone
+
+- **Where:** §4.6 time zones
+- **This app does:** time-zone shift
+- **User reaction:** complaint
+- **Magnitude:** n=1
+- **Direction for us:** must-never-break · **Report confidence:** ignore · **Generalisable:** generalisable
+- **Review IDs:** `6580945974`
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
+
+### R55-090 — Post-purchase problems among the 96 payers at 1–2★: BUG_CRASH 39, SUP_BAD 38, SYNC_BUG 29, ACCT_BUG 18, BUG_DATA 18, PAY_REFUND 17, PAY_RESTORE 15, PAY_REGRET 11, USER_CHURN 10, DEV_ABANDON 9, PAY_REGRESS 8 — a continuity chain: a crash or new phone → reinstall → login or reset fails → data and premium gone → e-mail support → no reply → refund request and 1★; one reviewer walks every step (crash, reinstall, a password that 'is wrong', a reset e-mail that never comes, re-registration that 'said I don't have the premium function', 'I paid 7.99 dollars for this so I want the problem addressed ASAP, otherwise, I have to report problem to Apple App Store and refund')
+
+- **Where:** §6.4
+- **This app does:** continuity chain breaks at every link
+- **User reaction:** 1★-burst
+- **Magnitude:** 96 payers at 1–2★
+- **Direction for us:** must-never-break · **Report confidence:** segment · **Generalisable:** generalisable
+- **Review IDs:** `2220539344`
+- **Canonical:** C033 Restore purchase and entitlements must work immediately; C065 Paying customers are the highest 1★ risk — every paid feature must work
+
+### R55-092 — Refunds, charges and regret: PAY_REFUND 19 (0.94%, 1.11), Jan 2018 → Jun 2024, 17 of 19 from payers; PAY_CHARGE 7 — no way to cancel ('BEEN TRYING FOR MONTHS TO CANCEL MY SUBSCRIPTION'), charged after a trial, a trial that can't be cancelled, auto-renewal on an account the user can't log in to; PAY_REGRET 13 (0.64%, 1.38) — 'scam', 'fraud', 'ripoff'
+
+- **Where:** §6.5
+- **This app does:** cancellation and trial problems
+- **User reaction:** 1★-burst
+- **Magnitude:** PAY_REFUND 19 (1.11); PAY_CHARGE 7; PAY_REGRET 13 (1.38)
+- **Direction for us:** must-never-break · **Report confidence:** emerging · **Generalisable:** generalisable
+- **Review IDs:** `2105087839`, `11359320730`, `3056682470`, `3628144343`, `3999715752`, `3446626954`, `9994781256`, `4606789753`, `4871183371`, `5063663266`, `5872007760`
+- **Canonical:** C029 Billing must be exactly right; C109 A free trial must be a real trial; C112 In-app cancellation; C212 No conditional refunds — no proof-of-use requirement, and an advertised guarantee is honoured on request
+
+### R55-113 — July 2020 update: taps mark the wrong day (alongside the pop-up and unreadable dark mode)
+
+- **Where:** §8.4 I7 wrong day
+- **This app does:** check-in registered on wrong date
+- **User reaction:** 1★-burst
+- **Magnitude:** within 68 reviews at 2.09
+- **Direction for us:** must-never-break · **Report confidence:** incident window · **Generalisable:** generalisable
+- **Review IDs:** `6188273678`, `6189489425`
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
+
+### R55-116 — F1: make sync, restore and login work and let users recover without support — automatic cross-device sync; restore-purchase tied to Apple ID, not an e-mail account; working password reset; data import from CSV; success: fewer SYNC_BUG/ACCT_BUG reviews and a paid-reviewer mean above 3; first priority with F6 ('the largest paid-segment failure and a prerequisite for M3')
+
+- **Where:** §9.1 F1; part 9 #1
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** data & account 143; payers 69 of 165; BUG_DATA 35 at 1.31
+- **Direction for us:** must-never-break · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** C030 Sync must work — and prove it; C033 Restore purchase and entitlements must work immediately; C035 Account system from day one
+
+### R55-118 — F3: fix tracking correctness — 'not more than' goals saved as 'at least', year-boundary streak resets, edits rewriting history, delete/deactivate habits — with regression tests on goal direction and week/year boundaries; quit-goal users depend on it
+
+- **Where:** §9.1 F3; part 9 #5
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** BUG_STREAK 11; CORE_EDIT 7; USE_QUIT 46
+- **Direction for us:** must-never-break · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
+
+### R55-119 — F4: release safety net — test every build against current and previous iOS versions and screen sizes; staged rollout; halt on crash spike; success no month with >10 crash reviews
+
+- **Where:** §9.1 F4; part 9 #3
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** BUG_CRASH 197; BUG_UPDATE 43; four waves
+- **Direction for us:** must-never-break · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** C156 Content and event releases need a crash gate across device generations; C175 Updates must not break function or wipe progress
+
+### R55-122 — F7: finish dark mode and modern layouts and keep them current each iOS cycle
+
+- **Where:** §9.1 F7
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** BUG_DARK 10; BUG_COMPAT 53
+- **Direction for us:** must-never-break · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** C080 Colour themes / dark mode; C175 Updates must not break function or wipe progress
+
+## Features
+
+### R55-018 — The app never reached the rest of the Apple ecosystem — device reach gaps 113 (5.58%, high-priority, mean 3.15): no iPad layout (IPAD 30, 1.48%), no Apple Watch, Mac or web app (PLATFORM_WANT 24, 1.19%), no widget (WIDGET_WANT 16, 0.79%), and the late new-screen layout; some reviewers left for this reason
+
+- **Where:** §0.7
+- **This app does:** iPhone app stretched on iPad; no Watch, Mac, web, widget
+- **User reaction:** churn
+- **Magnitude:** 113 (5.58%, 3.15)
+- **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `2013414846`, `3257491999`
+- **Canonical:** C022 Apple Watch app (done properly: timer, two-way sync); C023 Interactive widget check-off; C044 Mac / desktop / web app; C141 Native iPad layout
+
+### R55-021 — What the product is, per reviewers (verbatim): yes/no or numeric habits (minutes, pages, glasses, cigarettes); success rules 'at least', 'exactly' or 'not more than'; daily, specific weekdays, N days per week (weekly the only period for N-per-period); a target number of days (66 mentioned) with a required end date; daily / weekly / monthly / yearly tabs with a flip transition, calendar chains; success %, streaks, charts, totals; a note on any day; log earlier days including before install; timed reminders per habit, several a day later on, humorous wording, badge countdown; quirky messages, quotes, posters, milestone cheers; a discussion forum per habit type; colour coding, categories, inactive habits; passcode lock (Touch ID requested); optional account (email, Facebook; later Apple, Google), cloud sync, manual sync button; CSV / Excel export; iPhone plus Android, iPad runs the stretched phone app, no Watch/Mac/web; launch-screen photo, flip animations, dark mode added mid-2020 with unreadable text
+
+- **Where:** §2.1 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Capability | How reviewers describe it | Representative IDs ; Habit types | Yes/no habits or numeric habits (minutes, pages, glasses, cigarettes) | 1286107824 1325376912 1813721000 ; Success rules | "At least", "exactly" or "not more than" a target | 1325376912 2487407176 5412230040 ; Frequencies | Daily, specific weekdays, N days per week; weekly is the only period option for "N days per period" | 1327696946 1358157955 10780904796 ; Goal length | A target number of days (reviewers mention 66); an end date is required | 1367368690 2734060777 5556749525 ; Views | Daily, weekly, monthly and yearly tabs with a flip transition; calendar chains | 1361211433 1302591393 5503142349 ; Stats | Success percentage, streaks, charts, totals | 1327346587 1938145606 4877365239 ; Notes | A note on any day's entry | 1328953983 1598952847 4498607051 ; Past entries | Log earlier days, including before install | 1538068134 1837322644 5426305783 ; Reminders | Timed reminders per habit, several a day later on; humorous wording; badge countdown | 5251051111 2210985599 6314169224 ; Motivation | Quirky messages, motivational quotes and posters, milestone cheers | 1345453065 5836293884 8992568406 ; Community | A discussion forum per habit type | 1434336181 1514813712 12098769011 ; Customisation | Colour coding, categories, inactive habits | 1342058264 2372700165 8992568406 ; Security | Passcode lock; Touch ID requested | 1326179122 1463966723 1675008191 ; Account & sync | Optional account (email, Facebook; later Apple, Google); cloud sync; manual sync button | 1349318323 2056774463 13273003532 ; Export | CSV / Excel export | 1728971383 2573453386 7224132499 ; Platforms | iPhone app plus an Android version; iPad runs the stretched phone app; no Watch, Mac or web app | 1925943692 6218849398 10825023143 ; Appearance | Launch-screen photo, flip animations, dark mode added mid-2020 with unreadable text | 5870204615 6209826711 7975946217
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `1286107824`, `1325376912`, `1327696946`, `1367368690`, `1361211433`, `1327346587`, `1328953983`, `1538068134`, `5251051111`, `1345453065`, `1434336181`, `1342058264`, `1326179122`, `1349318323`, `1728971383`, `1925943692`, `5870204615`
+- **Canonical:** — (nuance register)
+
+### R55-022 — Success rules per habit — 'at least', 'exactly' or 'not more than' a target — let one tracker handle build and quit habits
+
+- **Where:** §2.1 success rules row
+- **This app does:** free: success-rule types
+- **User reaction:** praise
+- **Magnitude:** report gives none
+- **Direction for us:** build-free · **Report confidence:** report gives none · **Generalisable:** generalisable
+- **Review IDs:** `1325376912`, `2487407176`, `5412230040`
+- **Canonical:** C019 Quit-habit / bad-habit mode; C048 Flexible units / partial progress
+
+### R55-023 — Goal length: a target number of days (reviewers mention 66) with an end date required
+
+- **Where:** §2.1 goal length row
+- **This app does:** required end date
+- **User reaction:** mixed
+- **Magnitude:** report gives none
+- **Direction for us:** undecided · **Report confidence:** report gives none · **Generalisable:** generalisable
+- **Review IDs:** `1367368690`, `2734060777`, `5556749525`
+- **Canonical:** C043 Flexible / custom frequency
+
+### R55-024 — A discussion forum per habit type — COMM_GOOD 31 (1.53%, meaningful, mean 4.90)
+
+- **Where:** §2.1 community row; §3.4 P8
+- **This app does:** free: per-habit forum
+- **User reaction:** praise
+- **Magnitude:** 31 (1.53%, 4.90)
+- **Direction for us:** research · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Review IDs:** `1434336181`, `1514813712`, `12098769011`
+- **Canonical:** C131 No default-on social feed in a personal tool; C202 A light social layer that is explicitly not a social network
+
+### R55-028 — CSV / Excel export is paid; EXPORT 15 (0.74%), 5 of them failures
+
+- **Where:** §2.3 export row; §2.4
+- **This app does:** paid: CSV export, sometimes broken
+- **User reaction:** mixed
+- **Magnitude:** 15 (0.74%); 5 failures
+- **Direction for us:** build-free · **Report confidence:** emerging · **Generalisable:** generalisable
+- **Review IDs:** `1330390028`, `2573453386`, `4962257674`
+- **Canonical:** C020 Data export / backup / CSV
+
+### R55-047 — Motivation that is felt P2: MOT_GOOD 227 (11.22%, 4.90), MOT_MSG 64 (3.16%, 4.81), CORE_STREAK 75 (3.71%, 4.81); motivation union 362 (17.89%, 4.86) — the quirky message voice is liked by most ('I love the quirky messages when the reminders pop up'; 'I loved being called a tiger'); streak aversion is the named mechanism: 'I completed a task because I didn't want to break my streak'
+
+- **Where:** §3.4 P2
+- **This app does:** free: quirky reminder messages, streaks
+- **User reaction:** praise
+- **Magnitude:** MOT_GOOD 227; MOT_MSG 64; CORE_STREAK 75
+- **Direction for us:** build-free · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `1339211456`, `1364975878`, `1474061609`
+- **Canonical:** C024 Streaks / gamification; C095 Neutral, non-judgemental tone on failure
+
+### R55-048 — Flexible goals and good stats — the differentiator named when comparing apps: CORE_FLEX 148 (7.31%, 4.82), STAT_GOOD 187 (9.24%, 4.82); numeric and negative goals, 'N times a week' without fixed days, percentages by day/week/month; 'not done' distinct from 'not logged'; back-dating; 'I could have a mix of habits that were weekly and daily. Some that I could only track M-F for work. Some that tracked negative habits like no more than 1 drink on a work night. And counting habits like 8 glasses of water a day' (us, 5★, 2018); gaps at the edges: weekly totals, monthly periods, custom week starts, habits without an end date
+
+- **Where:** §3.4 P3; §4.1
+- **This app does:** free: numeric/negative goals, N-per-week, back-dating, stats
+- **User reaction:** praise
+- **Magnitude:** tracking union 346 (17.09%, 4.80)
+- **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `1325376912`, `4829199138`, `1333273469`, `1358157955`, `5501033289`, `4182020657`, `4533279715`, `2487407176`, `2212210617`, `10780904796`, `5523298620`, `5556749525`
+- **Canonical:** C010 Backfill missed days / edit start date; C043 Flexible / custom frequency; C048 Flexible units / partial progress
+
+### R55-055 — The badge countdown motivates some and can't be removed for others (REM_ANNOY 7)
+
+- **Where:** §3.5 badge row
+- **This app does:** non-removable badge
+- **User reaction:** mixed
+- **Magnitude:** report gives none
+- **Direction for us:** must-have · **Report confidence:** weak · **Generalisable:** generalisable
+- **Review IDs:** `2210985599`, `2284145638`
+- **Canonical:** C226 App-icon badge count of outstanding habits, with an active-hours window
+
+### R55-056 — Unmet needs — any feature request 144 (7.11%, 3.98) (verbatim): Apple Watch, Mac or web app PLATFORM_WANT 24 (1.19%); more colours, icons, dark mode, themes, categories DES_WANT 19 (0.94%); yearly view, period counts, averages, all-habit calendar STAT_WANT 19 (0.94%); widget / home-screen or notification check-off WIDGET_WANT 16 (0.79%); reminder control — several a day, labels, only-if-undone REM_CONTROL 16 (0.79%); weekly totals, monthly periods, custom week start CORE_FREQ 10 (0.49%); reorder / group by time of day CORE_ORDER 9; rewards, trophies, commitment devices MOT_WANT 8; 'due today' view CORE_GLANCE 7; Touch ID / passcode LOCK 6; skip / sick day that keeps the streak CORE_SKIP 5; same habit several times a day CORE_MULTI 5; built-in timer CORE_TIMER 3; colour-blind / font size DES_A11Y 2 (recorded under accessibility); other (IFTTT import, landscape, keypad, streak badge) REQ_OTHER 14; plus iPad IPAD 30 and translation DES_LOC 21 (pt-BR 8 of 21)
+
+- **Where:** §3.6 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Need | Code | n | % | Signal | IDs ; Apple Watch, Mac or web app | PLATFORM_WANT | 24 | 1.19% | Meaningful | 1925943692 3257491999 4576517227 13316286694 ; More colours, icons, dark mode, themes, categories | DES_WANT | 19 | 0.94% | Emerging | 1322205409 3733050172 6122141094 10308627893 ; Yearly view, period counts, averages, all-habit calendar | STAT_WANT | 19 | 0.94% | Emerging | 1925943692 3661092892 9205205216 11948053563 ; Widget / home-screen or notification check-off | WIDGET_WANT | 16 | 0.79% | Emerging | 1314774160 2013414846 11998099475 12574094084 ; Reminder control: several a day, labels, only-if-undone | REM_CONTROL | 16 | 0.79% | Emerging | 1362692159 1719930448 3608468583 10135846337 ; Weekly totals, monthly periods, custom week start | CORE_FREQ | 10 | 0.49% | Weak | 2212210617 5523298620 10780904796 ; Reorder / group habits by time of day | CORE_ORDER | 9 | 0.44% | Weak | 1547179265 1647738964 5480825948 ; Rewards, trophies, commitment devices | MOT_WANT | 8 | 0.40% | Weak | 1444396300 1539540172 2626247512 ; "Due today" view | CORE_GLANCE | 7 | 0.35% | Weak | 1430390196 2413516172 5861611445 ; Touch ID / passcode | LOCK | 6 | 0.30% | Weak | 1463966723 1936459904 ; Skip / sick day that keeps the streak | CORE_SKIP | 5 | 0.25% | Weak | 3365707164 3937400627 5351389328 ; Same habit several times a day | CORE_MULTI | 5 | 0.25% | Weak | 2050863827 5631585733 ; Built-in timer | CORE_TIMER | 3 | 0.15% | Weak | 2032651244 2358755174 12045845669 ; Colour-blind / font size | DES_A11Y | 2 | 0.10% | Ignore by default (accessibility — recorded) | 4109413334 9485526401 ; Other (IFTTT import, landscape, keypad, streak badge…) | REQ_OTHER | 14 | 0.69% | Emerging | 3768856745 6352272742 6623536840
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-057 — Widget or notification check-off requested (WIDGET_WANT 16, 0.79%, 4.00)
+
+- **Where:** §3.6 widget / notification check-off
+- **This app does:** absent: widget
+- **User reaction:** complaint
+- **Magnitude:** 16
+- **Direction for us:** build-free · **Report confidence:** emerging · **Generalisable:** generalisable
+- **Review IDs:** `1314774160`, `2013414846`, `11998099475`, `12574094084`
+- **Canonical:** C023 Interactive widget check-off; C252 Complete a habit from the notification — an actionable reminder is part of the one-tap loop
+
+### R55-058 — A 'due today' view (CORE_GLANCE 7) and a skip / sick day that keeps the streak (CORE_SKIP 5)
+
+- **Where:** §3.6 CORE_GLANCE and CORE_SKIP
+- **This app does:** absent
+- **User reaction:** complaint
+- **Magnitude:** 7 + 5
+- **Direction for us:** research · **Report confidence:** weak · **Generalisable:** generalisable
+- **Review IDs:** `1430390196`, `2413516172`, `5861611445`, `3365707164`, `3937400627`, `5351389328`
+- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history)
+
+### R55-059 — Rewards, trophies and commitment devices requested (MOT_WANT 8, 4.75)
+
+- **Where:** §3.6 MOT_WANT
+- **This app does:** absent
+- **User reaction:** complaint
+- **Magnitude:** 8 (4.75)
+- **Direction for us:** research · **Report confidence:** weak · **Generalisable:** generalisable
+- **Review IDs:** `1444396300`, `1539540172`, `2626247512`
+- **Canonical:** C052 Points / rewards / wish list; C101 Milestones, achievements, celebration
+
+### R55-060 — Touch ID / passcode requested (LOCK 6); colour-blind and font-size accessibility (DES_A11Y 2)
+
+- **Where:** §3.6 LOCK; DES_A11Y
+- **This app does:** passcode exists; no Touch ID
+- **User reaction:** complaint
+- **Magnitude:** 6 + 2
+- **Direction for us:** research · **Report confidence:** weak · **Generalisable:** generalisable
+- **Review IDs:** `1463966723`, `1936459904`, `4109413334`, `9485526401`
+- **Canonical:** C017 Passcode lock; C171 Accessibility stack: VoiceOver, motion, sound and light sensitivity, text size
+
+### R55-063 — Reminders: loved early, controllable late, then silent in the data — REM_GOOD 97, REM_CONTROL 16, REM_FAIL 12, REM_ANNOY 7; early iOS builds allowed one reminder per day while Android allowed several ('right now all I can set is one reminder per day'); later several per habit; persistent asks: no reminder for a habit already done, badges that appear without opening the app, push instead of sound-only in silent mode
+
+- **Where:** §4.2
+- **This app does:** one reminder per day on iOS early; later several
+- **User reaction:** complaint
+- **Magnitude:** REM_GOOD 97; REM_CONTROL 16; REM_FAIL 12; REM_ANNOY 7
+- **Direction for us:** must-have · **Report confidence:** emerging · **Generalisable:** generalisable
+- **Review IDs:** `1719930448`, `5251051111`, `6314169224`, `1411304893`, `1485411857`, `4957470618`, `3394315727`, `10135846337`
+- **Canonical:** C014 Multiple reminders per habit; C039 Reminders fire reliably, once; C123 Notifications are few and finely user-controllable — per-type settings, escalation opt-in, never spammy and never silently retuned
+
+### R55-067 — Small segments: launch photo DES_SPLASH 20 (2016–2022; some ask only to turn it off); icon DES_ICON 6 (the switch from the purple icon in 2017; a clock icon in 2023); registration demanded first; time zones — a traveller's completions shift days
+
+- **Where:** §4.6
+- **This app does:** splash photo not optional; icon changed
+- **User reaction:** complaint
+- **Magnitude:** 20 / 6
+- **Direction for us:** dont · **Report confidence:** weak · **Generalisable:** generalisable
+- **Review IDs:** `1541942639`, `4271501119`, `1717390815`, `1719063078`, `9898118556`, `5400671798`, `3659840945`, `6580945974`
+- **Canonical:** C184 Gendered branding narrows the audience; a neutral name is already tested
+
+### R55-128 — Product and retention work (verbatim): R1 protect and extend the tracking model — weekly/monthly totals, custom week start, sick/skip days that keep streaks, multiple check-ins per day, optional end dates; R2 reach the rest of the Apple ecosystem — widget with one-tap check-off, Apple Watch app, real iPad layout, then web; R3 close Android–iOS parity gaps in reminders and sync; R4 smarter reminders — only for undone habits, several per habit, push in silent mode, badge without opening; R5 retire brand irritants — launch photo optional or removed, a neutral message tone; R6 localise pt-BR first, then Russian; R7 forum hygiene — topic filters and blocking of shaming replies; R8 throttle the rating prompt
+
+- **Where:** §9.3 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** # | Work | Why (findings) ; R1 | Protect and extend the tracking model: weekly/monthly totals, custom week start, sick/skip days that keep streaks, multiple check-ins per day, optional end dates. | CORE_FLEX 148 is the differentiator; gaps CORE_FREQ 10, CORE_SKIP 5, CORE_MULTI 5, CORE_ENDDATE 2 (§3.6, §4.1) ; R2 | Reach the rest of the Apple ecosystem: widget with one-tap check-off, Apple Watch app, real iPad layout, then web. | Device reach union [U:device_reach] 113 (5.58%); churn statements tied to it (2013414846, 3257491999) ; R3 | Close Android–iOS parity gaps in reminders and sync. | USER_ANDROID 16 (§4.4) ; R4 | Smarter reminders: only for undone habits, several per habit, push in silent mode, badge without opening. | REM_CONTROL 16, REM_ANNOY 7, REM_FAIL 12; reminder praise disappeared (§4.2, §8.6) ; R5 | Retire brand irritants: make the launch photo optional or remove it; offer a neutral message tone. | Brand irritants [U:brand_irritants] 30 (1.48%) (§0.8) ; R6 | Localise Portuguese (pt-BR) first, then Russian. | DES_LOC 21; br 8 (7.7% of br) (§7.6, §7.10) ; R7 | Forum hygiene: topic filters and blocking of shaming replies. | COMM_NEG 8 vs COMM_GOOD 31 (§3.5) ; R8 | Throttle the rating prompt. | META_PROMPT 9 (§1.7) — weak signal, included on review-integrity grounds
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `2013414846`, `3257491999`
+- **Canonical:** — (nuance register)
+
+### R55-129 — R1: protect and extend the tracking model — weekly/monthly totals, custom week start, sick/skip days that keep streaks, multiple check-ins per day, optional end dates (CORE_ENDDATE 2 at 1.50)
+
+- **Where:** §9.3 R1; part 9 #6
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** CORE_FLEX 148; CORE_FREQ 10; CORE_SKIP 5; CORE_MULTI 5; CORE_ENDDATE 2
+- **Direction for us:** must-have · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C043 Flexible / custom frequency; C143 Intra-day completion: tap N times to fill N/N
+
+### R55-130 — R2: reach the rest of the Apple ecosystem — widget with one-tap check-off, Apple Watch app, real iPad layout, then web
+
+- **Where:** §9.3 R2; part 9 #6
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** device reach 113 (5.58%)
+- **Direction for us:** build-paid · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** C022 Apple Watch app (done properly: timer, two-way sync); C023 Interactive widget check-off; C044 Mac / desktop / web app; C141 Native iPad layout
+
+## Monetization
+
+### R55-017 — The five-habit free tier is a differentiator and the upgrade trigger: PAY_FREE_OK 96 (4.74%, very strong, 4.86) — reviewers compare it favourably with three-habit tiers elsewhere; PAY_CAP 87 (4.30%, very strong, 3.98) — one of the two reasons payers most name for upgrading (with sync) and for others the reason not to; 'No annoying restrictions or constant pressure to upgrade. The makers take the free user seriously too' (nl, 5★, Jan 2018) — 'the product the July 2020 pop-up replaced'; decision: keep the five-habit free tier
+
+- **Where:** §0.6; §0.9 #4
+- **This app does:** free: 5 habits
+- **User reaction:** praise
+- **Magnitude:** PAY_FREE_OK 96 (4.86) vs PAY_CAP 87 (3.98)
+- **Direction for us:** build-free · **Report confidence:** very strong · **Generalisable:** generalisable
+- **Review IDs:** `3363102377`, `3728440907`, `1308688562`, `1335999992`, `1339211456`, `2193551017`, `14276683948`, `2090700914`
+- **Canonical:** C001 Never move a free feature behind the paywall; C007 Generous fixed habit cap (or unlimited) — never change it
+
+### R55-026 — Free / paid / trial / unclear (verbatim): up to 5 habits, all habit types, views, stats, reminders, notes on free habits — free; more than 5 habits — paid (one-time until Jun 2018, then subscription); cross-device cloud sync — paid ('paid for sync'); CSV export — paid; no full-screen upsell / no ads — paid (ads from Jun 2018, every-launch pop-up from Jul 2020); trial 7 days (2018–2020), 10 days (2023); notes on free tier unclear (one free user's notes disappeared); additional themes asked for as a premium add-on; access to data without paying Jul 2020 – Jan 2021 unclear — 20 say the app demanded payment to open, others dismissed and continued
+
+- **Where:** §2.3 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Capability | Status | Basis ; Up to 5 habits, all habit types, views, stats, reminders, notes on free habits | Free | 1314254670 1519990236 1545235290 2147288846 ; More than 5 habits | Paid (one-time until Jun 2018, then subscription) | 1308688562 4755264918 14276683948 ; Cross-device cloud sync | Paid (reviewers call it "paid for sync") | 1677887879 1815881524 4871183371 ; CSV export | Paid | 1330390028 2573453386 4962257674 ; No full-screen upsell / no ads | Paid (from Jun 2018 ads; from Jul 2020 every-launch pop-up) | 2644893532 6866823641 12045845669 ; Trial | Trial-gated 7 days (2018–2020), 10 days (2023) | 3591335378 6478833374 9994781256 ; Notes on free tier | Unclear — one free user's notes disappeared | 3632717994 ; Additional themes | Unclear — asked for as a premium add-on | 2644893532 ; Access to data without paying (Jul 2020 – Jan 2021) | Unclear — 20 reviewers say the app demanded payment to open; others dismissed the pop-up and continued | 6189130796 6189489425 6212428142
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `1314254670`, `1308688562`, `1677887879`, `1330390028`, `2644893532`, `3591335378`, `3632717994`, `6189130796`, `6189489425`, `6212428142`
+- **Canonical:** — (nuance register)
+
+### R55-027 — From June 2018 the free tier became 'ad supported' and removing ads / the upsell became part of premium
+
+- **Where:** §2.3 ads row
+- **This app does:** ads in free tier from Jun 2018
+- **User reaction:** complaint
+- **Magnitude:** report gives none
+- **Direction for us:** dont · **Report confidence:** report gives none · **Generalisable:** generalisable
+- **Review IDs:** `2644893532`, `6866823641`, `12045845669`
+- **Canonical:** C082 Ads in the free tier; C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps
+
+### R55-039 — Subscription backlash N4 components: PAY_NAG 44 (2.17%), PAY_FORCED 20 (0.99%), PAY_SUB_NEG 19 (0.94%, 2.47), PAY_REGRESS 9 (0.44%), PAY_PRICE_RISE 6 (0.30%); PAY_PRICE_HIGH 42 (2.08%, 2.71) kept outside the union because some price complaints predate the subscription
+
+- **Where:** §3.3 N4
+- **This app does:** n/a
+- **User reaction:** 1★-burst
+- **Magnitude:** 82 (1.91)
+- **Direction for us:** none · **Report confidence:** very strong · **Generalisable:** generalisable
+- **Canonical:** — (nuance register)
+
+### R55-050 — Generous free tier P5 PAY_FREE_OK 96 (4.74%, 4.86); free tier discussed 148 (7.31%) — 'some apps make the free version so debilitating you have no choice but to delete or buy. But this app has a great free version' (au, 5★, 2016)
+
+- **Where:** §3.4 P5
+- **This app does:** free: 5 habits
+- **User reaction:** praise
+- **Magnitude:** 96 (4.86)
+- **Direction for us:** build-free · **Report confidence:** very strong · **Generalisable:** generalisable
+- **Review IDs:** `1418004252`
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it
+
+### R55-052 — Premium worth it — while it was one-time: PAY_WORTH 27 (1.33%, 4.70), 22 of 27 predate June 2018; post-switch exceptions 'Great value to subscribe' (2025)
+
+- **Where:** §3.4 P7
+- **This app does:** one-time premium valued
+- **User reaction:** purchase-driver
+- **Magnitude:** 27 (4.70); 22 pre-Jun 2018
+- **Direction for us:** build-paid · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Review IDs:** `4050502959`, `5913550190`, `12749684903`
+- **Canonical:** C003 Lead with a one-time lifetime purchase
+
+### R55-083 — What triggers a purchase (verbatim): needing more than five habits — 14 of 165 payers (text sub-cut), the leading reason among satisfied payers ('upgraded to premium to be able to have more than five habits'); a low one-time price ('I got Premium, was worth $4'); cross-device sync — 19 of 165, the most often named reason overall and mostly in 1–2★ because it failed ('If you are about to buy it for the sync option. I suggest you keep your money'); CSV export; supporting the developer ('I moved to paying users right now because I want to appreciate those months it worked great for me'); a trial that worked; accidental purchase via the pop-up or a mistaken upgrade; what 4–5★ payers (n=58) value — PAY_WORTH 23, USER_SWITCH 18, DES_CLEAN 16, CORE_FLEX 12, PAY_CAP 10, STAT_GOOD 10, OUT_LIFE 9: 'capacity on a tool they already trust, not new features'
+
+- **Where:** §6.2 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** purchase-driver
+- **Magnitude:** Trigger | Evidence | IDs ; Needing more than five habits | 14 of 165 payers mention wanting more habits (text sub-cut inside PAY_BOUGHT), from the first week to 2020 — the leading reason among *satisfied* payers | 1308688562 *"upgraded to premium to be able to have more than five habits"* · 1335999992 · 1339211456 · 1601365268 · 2217520711 · 4050502959 ; A low one-time price | "$4", "worth every penny", "not even very much" | 1313500633 *"I got Premium, was worth $4"* · 1322205409 · 1337793614 · 2078145265 · 2573453386 ; Cross-device sync | 19 of 165 payers tie their purchase to sync (text sub-cut inside PAY_BOUGHT) — the most often named reason overall, and mostly in 1–2★ reviews because it failed | 1677887879 *"If you are about to buy it for the sync option. I suggest you keep your money."* · 2105087839 · 4823714493 · 5396158601 ; CSV export | Bought to download data | 2573453386 · 4962257674 ; Supporting the developer | Paying out of goodwill | 1290658855 *"happy to provide my support"* · 1401096756 · 7088475896 *"I moved to paying users right now because I want to appreciate those months it worked great for me"* ; A trial that worked | Converted after the trial | 3394315727 ; Accidental purchase | Via the pop-up or a mistaken upgrade | 6217825775 (risk described) · 11359320730 *"after mistakenly "upgrading""*
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `1308688562`, `1335999992`, `1313500633`, `1322205409`, `1677887879`, `2105087839`, `2573453386`, `1290658855`, `7088475896`, `3394315727`, `6217825775`, `11359320730`
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C013 Cloud sync / multi-device as the paid differentiator
+
+### R55-084 — Payers satisfied with premium are paying for capacity on a tool they already trust — more than five habits is the leading reason among satisfied payers (14 of 165)
+
+- **Where:** §6.2 more habits
+- **This app does:** paid: unlimited habits
+- **User reaction:** purchase-driver
+- **Magnitude:** 14 of 165
+- **Direction for us:** build-paid · **Report confidence:** report's reading · **Generalisable:** generalisable
+- **Review IDs:** `1308688562`, `1335999992`, `1339211456`, `1601365268`, `2217520711`, `4050502959`
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it
+
+### R55-087 — Upgrade barriers (verbatim): subscription price too high PAY_PRICE_HIGH 42 (2.71); objection to subscriptions as such PAY_SUB_NEG 19 (2.47); cap not disclosed / price unclear PAY_CONFUSE 6 (2.50); the purchase itself fails PAY_IAP_FAIL 14 (2.57); other payers' experiences ('Two online reviews that premium customers had posted convinced me not to'); signs of abandonment DEV_ABANDON 42 (2.07)
+
+- **Where:** §6.3 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** blocked-conversion
+- **Magnitude:** Barrier | Code | n (global) | Mean ★ | IDs ; Subscription price too high | PAY_PRICE_HIGH | 42 | 2.71 | 3713152341 5394674917 5544529848 6857027287 ; Objection to subscriptions as such | PAY_SUB_NEG | 19 | 2.47 | 3092190054 3114611925 3544107778 5598492550 ; Cap not disclosed / price unclear | PAY_CONFUSE | 6 | 2.50 | 2320648884 3591335378 6478833374 ; The purchase itself fails | PAY_IAP_FAIL | 14 | 2.57 | 1923709095 2047546299 2073281420 ; Other payers' experiences | (text) | — | — | 6954572953 *"Two online reviews that premium customers had posted convinced me not to."* ; Signs of abandonment | DEV_ABANDON | 42 | 2.07 | 4916663104 5512997233
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `3713152341`, `5394674917`, `3092190054`, `2320648884`, `1923709095`, `6954572953`, `4916663104`
+- **Canonical:** — (nuance register)
+
+### R55-088 — Willingness-to-pay statements (text sub-cut inside PAY_PRICE_HIGH / PAY_SUB_NEG): reviewers repeatedly name $5–$10 one-time — 'Would I pay a one-time fee of $5, absolutely, but a yearly fee, nope!'; '$5 to $10 as a one-time fee would be reasonable'; 'I wish it was like $5-10'; two suggest a $2.99 download price instead of the nag — stated preferences, not demand curves
+
+- **Where:** §6.3 willingness to pay
+- **This app does:** $19.99/yr subscription
+- **User reaction:** blocked-conversion
+- **Magnitude:** $5–$10 one-time; $2.99 paid download
+- **Direction for us:** research · **Report confidence:** text sub-cut · **Generalisable:** generalisable
+- **Review IDs:** `3713152341`, `5394674917`, `5544529848`, `6436887916`, `6555232508`
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C064 Price level — where 'fair' turns into 'too expensive'
+
+### R55-123 — Monetisation changes to test (verbatim): M1 offer a one-time / lifetime premium beside the subscription and grant premium to verifiable pre-2018 buyers (guardrail: paid-review mean and refund mentions); M2 keep the five-habit free tier, do not shrink it, test an upsell shown at the moment a sixth habit is added (watch PAY_CAP negatives, not just conversions); M3 price the subscription only on features that work — sync, export, iPad/Watch — and show them working in the paywall (after F1); M4 disclose cap, trial length, annual price and how to cancel inside the app (PAY_CHARGE to 0); M5 one upsell, not every launch — frequency-capped and dismissible (retention of free users; the nag still reported in E5)
+
+- **Where:** §9.2 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** # | Test | Why (findings) | Guardrail ; M1 | Offer a one-time / lifetime premium beside the subscription, and grant premium to verifiable pre-2018 buyers. | PAY_REGRESS 9 at mean 1.33; PAY_SUB_NEG 19; PAY_PRICE_HIGH 42; repeated $5–$10 one-time willingness (§6.3, §6.4) | Compare paid-review mean and refund mentions before/after ; M2 | Keep the five-habit free tier; do not shrink it. Test an upsell shown *at the moment a sixth habit is added*. | PAY_FREE_OK 96 (4.74%) praised against 3-habit competitors; more habits is the leading reason among satisfied payers (§0.6, §6.2) | Watch PAY_CAP negatives, not just conversions ; M3 | Price the subscription only on features that work — sync, export, iPad/Watch — and show them working in the paywall. | Premium bundle = capacity + sync + export; sync and export are the broken parts (§2.4) | Sequence after F1 ; M4 | Disclose clearly: cap, trial length, annual price, how to cancel (inside the app). | PAY_CONFUSE 6, PAY_CHARGE 7, PAY_TRIAL 8 at mean 2.12 (§6.5) | PAY_CHARGE reviews to 0 ; M5 | One upsell, not every launch — frequency-capped and dismissible. | 7053961857 "Just ask once"; E5 still reports the nag (8292350972, 9327031706) | Retention of free users
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `7053961857`, `8292350972`, `9327031706`
+- **Canonical:** — (nuance register)
+
+### R55-124 — M1: a lifetime option beside the subscription and honouring legacy buyers — repeated $5–$10 one-time willingness
+
+- **Where:** §9.2 M1; part 9 #4
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** PAY_REGRESS 9 (1.33); PAY_SUB_NEG 19; PAY_PRICE_HIGH 42
+- **Direction for us:** build-paid · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C186 Never revoke what earlier buyers paid for when the model changes
+
+## Tactics the app used
+
+### R55-005 — Launch and press bursts: 38 reviews in launch week and 21 on 10 Nov 2015 (day two) citing a Reddit launch post and a developer who spoke with them there — organic but motivated early adopters (137 reviews in 2015 at 4.71); January 2016 holds 105 reviews (4.77) citing BuzzFeed and a TV review; Oct 2019 and Oct 2020 three Korean reviews say a rapper recommended the app; a 2016 reviewer received the full version free (developer promotion)
+
+- **Where:** §Eight warnings 6; §1.7
+- **This app does:** Reddit launch post with developer present; press coverage
+- **User reaction:** 5★-burst
+- **Magnitude:** 21 on 10 Nov 2015; 105 in Jan 2016 at 4.77; 137 in 2015 at 4.71
+- **Direction for us:** do · **Report confidence:** burst · **Generalisable:** generalisable
+- **Review IDs:** `1284433048`, `1308758985`, `1317049655`, `1317786863`, `1322958708`, `1327696946`, `4905479317`, `4912823642`, `6520274563`, `1322768678`
+- **Canonical:** C058 Discovery runs through social video, Reddit, therapists (US) and Xiaohongshu / Bilibili (CN)
+
+### R55-125 — M2: show the upsell at the moment a sixth habit is added, not on launch — contextual paywall at the capacity boundary
+
+- **Where:** §9.2 M2
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** PAY_FREE_OK 96
+- **Direction for us:** do · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** C137 Show the paywall at the moment of need, not on app open
+
+## Insights (the why)
+
+### R55-008 — The people who paid are the people who were let down: PAY_BOUGHT 165 (8.15%, high-priority, mean 2.56), 96 of them (58.2%) at 1–2★ — the unhappiest group; paid mean fell every era 4.24 (E1, 38 payers) → 2.78 (E2, 37) → 1.91 (E3, 56) → 1.41 (E4, 27); within payers (segment rates of 165): data & account continuity failure 69 (41.8%, 48.3% of that theme from payers); crashes 44 (26.7%); support does not reply 42 (25.5%, 50.6% of theme); sync between devices fails 36 (21.8%, 58.1%); asks for refund 17 (10.3%, 89.5%); purchase lost on reinstall / new phone 15 (9.1%, 83.3%)
+
+- **Where:** Part 0 summary; §0.1 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** 1★-burst
+- **Magnitude:** What payers report | n among paid | Segment rate | Global n | Share of that theme's reviews that come from payers ; Data & account continuity failure (sync, login, lost data, lost purchase) | 69 | 41.8% | 143 | 48.3% ; Crashes | 44 | 26.7% | 197 | 22.3% ; Support does not reply | 42 | 25.5% | 83 | 50.6% ; Sync between devices fails | 36 | 21.8% | 62 | 58.1% ; Asks for a refund | 17 | 10.3% | 19 | 89.5% ; Purchase lost on reinstall / new phone | 15 | 9.1% | 18 | 83.3%
+- **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Canonical:** C030 Sync must work — and prove it; C033 Restore purchase and entitlements must work immediately; C036 A support channel that exists, is reachable outside the app, and answers; C065 Paying customers are the highest 1★ risk — every paid feature must work
+
+### R55-016 — What works — a flexible tracker that changes behaviour: DES_CLEAN 475 (23.47%, high-priority, 4.89); CORE_FLEX 148 (7.31%, high-priority, 4.82) — 'You set your own standards (every day, certain days a week, or a number of days in a week/month)… it doesn't disqualify you if you don't do each habit every single day'; STAT_GOOD 187 (9.24%); CORE_STREAK 75 (3.71%); OUT_LIFE 151 (7.46%, 4.89) — 'a nail biter for 26 years but getting to tap yes! everyday is exactly what I needed to finally stop'; 'over 10K pushups… because I don't want to disappoint the app'; motivation union 362 (17.89%); design praise union 568 (28.06%); tracking-model union 346 (17.09%)
+
+- **Where:** §0.5
+- **This app does:** flexible frequency, numeric habits, stats
+- **User reaction:** praise
+- **Magnitude:** DES_CLEAN 475; CORE_FLEX 148 (4.82); STAT_GOOD 187; OUT_LIFE 151
+- **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `1327696946`, `5361919157`, `4608093672`
+- **Canonical:** C002 Ratings follow the offer, not the feature set; C006 Stay minimal — every addition is opt-in or off by default; C043 Flexible / custom frequency; C048 Flexible units / partial progress
+
+### R55-020 — The five decisions (verbatim): 1 make what people paid for work — sync, restore and login — before any new paid feature (payer data & account failure 69 of 165; union 143, 7.07%); 2 remove the every-launch upsell and any close control that can start a purchase (PAY_NAG 44, PAY_FORCED 20; E4 2.72); 3 offer a one-time or lifetime option and honour earlier one-time buyers (PAY_REGRESS 9 at 1.33; PAY_SUB_NEG 19; PAY_PRICE_HIGH 42); 4 keep the five-habit free tier — praised more often than resented (PAY_FREE_OK 96 vs PAY_CAP); 5 a release process that stops launch crashes and a support channel that answers (BUG_CRASH 197; SUP_BAD 83; four dated waves)
+
+- **Where:** §0.9 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** # | Decision | Evidence | Part 9 ; 1 | Make what people paid for work — sync, restore and login — before any new paid feature | Paid segment: data & account failure 69 of 165; data & account union 143 (7.07%) | F1, F6 ; 2 | Remove the every-launch upsell and any close control that can start a purchase | PAY_NAG 44, PAY_FORCED 20; E4 mean 2.72 | F2, M5 ; 3 | Offer a one-time or lifetime option and honour earlier one-time buyers | PAY_REGRESS 9 at mean 1.33; PAY_SUB_NEG 19; PAY_PRICE_HIGH 42 | M1 ; 4 | Keep the five-habit free tier — it is praised more often than it is resented | PAY_FREE_OK 96 vs negative PAY_CAP mentions | M2 ; 5 | Ship a release process that stops launch crashes and a support channel that answers | BUG_CRASH 197; SUP_BAD 83; four dated waves | F4, F5
+- **Direction for us:** product-rule · **Report confidence:** table · **Generalisable:** generalisable
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C007 Generous fixed habit cap (or unlimited) — never change it; C031 Crashes / launch failures; C036 A support channel that exists, is reachable outside the app, and answers; C065 Paying customers are the highest 1★ risk — every paid feature must work; C093 No upsell nagging without a 'never ask again' option; C186 Never revoke what earlier buyers paid for when the model changes; C274 A close or dismiss control must never start a purchase — no fake X, no dismissal that lands on the payment sheet
+
+### R55-029 — The premium bundle has always been 'more habits + sync + export': more habits costs the developer nothing; sync and export depend on servers and upkeep — and those are the two paid features reviewers most often report broken (SYNC_BUG 62, 3.06%; EXPORT 15, 5 failures); moving to a subscription in 2018 changed what payers expect — an annual fee reads as a promise of ongoing development, and reviewers then measured the app by its update log: 'It's not like a yoga or meditation app, which is constantly adding new videos/content, so why a yearly fee?!?' (us, 3★, 2019)
+
+- **Where:** §2.4
+- **This app does:** subscription without visible development
+- **User reaction:** complaint
+- **Magnitude:** SYNC_BUG 62; EXPORT 15
+- **Direction for us:** product-rule · **Report confidence:** structural reading · **Generalisable:** generalisable
+- **Review IDs:** `4306446749`, `5512997233`, `12574094084`, `3713152341`
+- **Canonical:** C078 Ship the paid feature working before you sell it — the purchase trigger must never be the broken feature; C196 A subscription is a promise of continued delivery — back it with a visible cadence
+
+### R55-046 — Simple, quick, clean P1 DES_CLEAN 475 (23.47%, 4.89) — the single largest theme in every era and all six eligible storefronts; share 31.3% of E1 → 10.1% of E4 → 20.9% of E5
+
+- **Where:** §3.4 P1
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** 475; E1 31.3% → E4 10.1% → E5 20.9%
+- **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `1284379859`, `1308793506`, `5938450480`, `13462495015`
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
+
+### R55-049 — Reported outcomes P4 OUT_LIFE 151 (7.46%, 4.89): quit smoking, sobriety, 26 years of nail-biting, a year of yoga, 10K push-ups, a four-month streak on a years-old habit; quit-habit use USE_QUIT 46 (2.27%, 4.83); fitness USE_FIT 49 (2.42%, 4.86); mindfulness USE_MIND 17 (5.00); learning USE_LEARN 16 (4.81)
+
+- **Where:** §3.4 P4
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** OUT_LIFE 151 (4.89); USE_QUIT 46; USE_FIT 49
+- **Direction for us:** none · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `5836293884`, `9334297173`, `1556719109`, `3746772221`, `8850605245`, `5974956266`, `1367237664`
+- **Canonical:** C019 Quit-habit / bad-habit mode
+
+### R55-074 — 5★ (n=1,291, 63.78%) driven by simplicity (33.2%), felt motivation (15.9%), stats (12.9%), comparison with other apps (12.7%), outcomes (10.6%), flexible goals (9.8%); 18.4% carry no product detail; only 47 (3.6%) mention paying; five-stars concentrate in E1 — 581 of 709 (81.9%) vs 57 of 189 in E4 (30.2%)
+
+- **Where:** §5.1
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** E1 81.9% 5★ vs E4 30.2%
+- **Direction for us:** none · **Report confidence:** band summary · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-075 — 4★ (n=227, 11.22%) are 'love it, but' — dated UI (DES_UX_NEG 21, 9.3%), the five-habit cap (PAY_CAP 19, 8.4%), new-screen layout (BUG_COMPAT 17, 7.5%), crashes (16, 7.0%), platform requests (PLATFORM_WANT 11, 4.8%) — the most actionable band, most items fixable without changing the core
+
+- **Where:** §5.2
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 227 (11.22%)
+- **Direction for us:** none · **Report confidence:** band summary · **Generalisable:** app-specific
+- **Review IDs:** `3311384193`, `3681275569`, `7212980991`
+- **Canonical:** — (nuance register)
+
+### R55-076 — 3★ (n=122): crashes 28.7%, price 9.8%, cap 9.0%, layout 9.0% — three-star reviewers usually still like the app; 2★ (n=81): crashes 28.4%, payers 17.3%, churn statements and abandonment 11.1% each — two-star reviews often mourn a formerly good app ('Used to be good')
+
+- **Where:** §5.3–§5.4
+- **This app does:** n/a
+- **User reaction:** complaint
+- **Magnitude:** 3★ 122; 2★ 81
+- **Direction for us:** none · **Report confidence:** band summary · **Generalisable:** app-specific
+- **Review IDs:** `3713152341`, `3968794293`, `6696594352`, `5512997233`, `6177722875`
+- **Canonical:** — (nuance register)
+
+### R55-077 — 1★ (n=303, 14.97%): crashes 35.3%, payers 27.1%, support silence 21.8%, account failures 13.2%, sync 11.9%, churn 10.6%, data loss 9.6%, the pop-up 8.3%, 'forced to pay' 5.9%, refund requests 5.6% — overwhelmingly about reliability, continuity and money, not the tracking model; 23 (7.6%) come from long-term users — a loss of formerly loyal users
+
+- **Where:** §5.5
+- **This app does:** n/a
+- **User reaction:** churn
+- **Magnitude:** 303; crashes 35.3%; payers 27.1%; long-term 23
+- **Direction for us:** must-never-break · **Report confidence:** band summary · **Generalisable:** generalisable
+- **Review IDs:** `6189130796`, `6948589393`, `9898118556`
+- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work
+
+### R55-085 — Cross-device sync is the most often named purchase reason overall (19 of 165 payers) and mostly appears in 1–2★ reviews because it failed — the purchase trigger was the broken feature
+
+- **Where:** §6.2 sync trigger
+- **This app does:** paid sync
+- **User reaction:** 1★-burst
+- **Magnitude:** 19 of 165
+- **Direction for us:** product-rule · **Report confidence:** report's reading · **Generalisable:** generalisable
+- **Review IDs:** `1677887879`, `2105087839`, `4823714493`, `5396158601`
+- **Canonical:** C013 Cloud sync / multi-device as the paid differentiator; C078 Ship the paid feature working before you sell it — the purchase trigger must never be the broken feature
+
+### R55-089 — Other premium customers' public reviews deter purchase — 'Two online reviews that premium customers had posted convinced me not to'
+
+- **Where:** §6.3 other payers' reviews
+- **This app does:** n/a
+- **User reaction:** blocked-conversion
+- **Magnitude:** n=1
+- **Direction for us:** must-never-break · **Report confidence:** report gives none · **Generalisable:** generalisable
+- **Review IDs:** `6954572953`
+- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work
+
+### R55-093 — Signals that would change a paying user's mind (reviewers' own conditions): a fix that sticks (a reviewer raised their rating when 1.4.11 worked and would give 5★ if 'the repetitive splash-ad is removed'); sync that works; a reply ('will update my review based upon their response'); honouring the old purchase; one ask, not every launch — 'Just ask once and don't make it pop up every time I launch the free app and it gets 5'
+
+- **Where:** §6.6
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** report gives none
+- **Direction for us:** product-rule · **Report confidence:** report's reading · **Generalisable:** generalisable
+- **Review IDs:** `7097957463`, `7876961629`, `4174090943`, `2216664966`, `4617772381`, `5900039933`, `6440814309`, `7053961857`
+- **Canonical:** C059 Be visibly responsive; fixes bring reviewers back; C093 No upsell nagging without a 'never ask again' option; C186 Never revoke what earlier buyers paid for when the model changes
+
+### R55-133 — Research questions (verbatim): Q1 how many one-time buyers were affected by the 2018 switch and how many still use the app (sizes M1); Q2 did the July 2020 pop-up raise paid conversions enough to offset churn and rating loss (reviews show only the cost side); Q3 is the sync backend healthy today ('servers are dead' in 2019); Q4 are the UK (2017, 2020) and Brazil (2018) crash waves device-, OS- or build-specific; Q5 how much short 5★ volume comes from the in-app prompt
+
+- **Where:** §9.4 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** # | Question | Why it matters ; Q1 | How many one-time buyers were affected by the 2018 switch, and how many still use the app? | Sizes the cost of M1 ; Q2 | Did the July 2020 pop-up raise paid conversions enough to offset churn and rating loss? | Reviews show only the cost side ; Q3 | Is the sync backend healthy today? Reviewers claimed "servers are dead" in 2019 | F1 scope ; Q4 | Are the UK (2017, 2020) and Brazil (2018) crash waves device-, OS- or build-specific? | F4 test matrix ; Q5 | How much of the short 5★ volume comes from the in-app prompt? | Interpreting the public 4.65
+- **Direction for us:** research · **Report confidence:** table · **Generalisable:** generalisable
+- **Canonical:** — (nuance register)
+
+## Audiences
+
+### R55-031 — Therapists and a clinical psychologist recommend the app to clients — a professional referral channel
+
+- **Where:** §2.5 therapists
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** report gives none
+- **Direction for us:** do · **Report confidence:** report gives none · **Generalisable:** generalisable
+- **Review IDs:** `1508953907`, `2054775005`, `8292350972`
+- **Canonical:** C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers; C058 Discovery runs through social video, Reddit, therapists (US) and Xiaohongshu / Bilibili (CN)
+
+### R55-066 — Specialist and sensitive uses — USE_QUIT 46 (2.27%), USE_MED 6 (0.30%), USE_ADHD 3 (0.15%), USER_COACH 7 (0.35%) — rely on accuracy and privacy most: the 'not more than' inversion, medication reminders that fail, and the launch photo in a NoFap context; 'As someone with executive functioning deficits, I appreciate that this app was designed with care' (us, 5★, 2021)
+
+- **Where:** §4.5
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** USE_QUIT 46; USE_MED 6; USE_ADHD 3; USER_COACH 7
+- **Direction for us:** do · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Review IDs:** `2210985599`, `6119183057`, `6087663524`, `6961786354`
+- **Canonical:** C019 Quit-habit / bad-habit mode; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers
+
+### R55-082 — Themes over-represented among payers (verbatim): PAY_REGRESS lift 12.27 (9, 1.33); PAY_REGRET 11.32 (12, 1.42); PAY_REFUND 10.98 (17, 1.06); PAY_WORTH 10.90 (24, 4.83); PAY_RESTORE 10.22 (15, 1.13); PAY_ONETIME 7.36 (6, 4.17); SYNC_BUG 7.12 (36, 1.64); BUG_DATA 6.31 (18, 1.06); SUP_BAD 6.21 (42, 1.26); ACCT_BUG 4.52 (21, 1.48); PAY_PRICE_OK 4.38; USER_ANDROID 3.83; DEV_ABANDON 3.50; IPAD 2.86; BUG_CRASH 2.74 (44, 1.48); USER_CHURN 2.50; DES_CLEAN 0.41; MOT_GOOD 0.43
+
+- **Where:** §6.1 lift table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Theme | Direction | n among paid | Segment rate (of 165) | Global n | Global % | Lift | Mean ★ within paid ; BUG_CRASH | negative | 44 | 26.7% | 197 | 9.73% | 2.74 | 1.48 ; SUP_BAD | negative | 42 | 25.5% | 83 | 4.10% | 6.21 | 1.26 ; SYNC_BUG | negative | 36 | 21.8% | 62 | 3.06% | 7.12 | 1.64 ; PAY_WORTH | positive | 24 | 14.5% | 27 | 1.33% | 10.90 | 4.83 ; USER_SWITCH | context | 21 | 12.7% | 194 | 9.58% | 1.33 | 4.38 ; ACCT_BUG | negative | 21 | 12.7% | 57 | 2.82% | 4.52 | 1.48 ; BUG_DATA | negative | 18 | 10.9% | 35 | 1.73% | 6.31 | 1.06 ; PAY_REFUND | negative | 17 | 10.3% | 19 | 0.94% | 10.98 | 1.06 ; DES_CLEAN | positive | 16 | 9.7% | 475 | 23.47% | 0.41 | 4.94 ; PAY_RESTORE | negative | 15 | 9.1% | 18 | 0.89% | 10.22 | 1.13 ; CORE_FLEX | positive | 13 | 7.9% | 148 | 7.31% | 1.08 | 4.77 ; STAT_GOOD | positive | 13 | 7.9% | 187 | 9.24% | 0.85 | 4.08 ; DEV_ABANDON | negative | 12 | 7.3% | 42 | 2.08% | 3.50 | 1.67 ; PAY_REGRET | negative | 12 | 7.3% | 13 | 0.64% | 11.32 | 1.42 ; PAY_CAP | mixed | 10 | 6.1% | 87 | 4.30% | 1.41 | 4.70 ; USER_CHURN | context | 10 | 6.1% | 49 | 2.42% | 2.50 | 1.40 ; USER_LONGTERM | context | 10 | 6.1% | 63 | 3.11% | 1.95 | 1.40 ; OUT_LIFE | positive | 9 | 5.5% | 151 | 7.46% | 0.73 | 5.00 ; PAY_REGRESS | negative | 9 | 5.5% | 9 | 0.44% | 12.27 | 1.33 ; MOT_GOOD | positive | 8 | 4.8% | 227 | 11.22% | 0.43 | 4.88 ; DES_PRETTY | positive | 7 | 4.2% | 129 | 6.37% | 0.67 | 4.14 ; CORE_STREAK | positive | 7 | 4.2% | 75 | 3.71% | 1.14 | 4.43 ; IPAD | negative | 7 | 4.2% | 30 | 1.48% | 2.86 | 2.43 ; BUG_UPDATE | negative | 7 | 4.2% | 43 | 2.12% | 2.00 | 1.00 ; PAY_ONETIME | positive | 6 | 3.6% | 10 | 0.49% | 7.36 | 4.17 ; DES_CUSTOM | positive | 5 | 3.0% | 44 | 2.17% | 1.39 | 4.20 ; PAY_PRICE_OK | positive | 5 | 3.0% | 14 | 0.69% | 4.38 | 5.00 ; REM_GOOD | positive | 5 | 3.0% | 97 | 4.79% | 0.63 | 4.60 ; BUG_OTHER | negative | 5 | 3.0% | 50 | 2.47% | 1.23 | 1.60 ; USER_ANDROID | context | 5 | 3.0% | 16 | 0.79% | 3.83 | 1.40
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+## Markets and languages
+
+### R55-061 — Translation complaints DES_LOC 21 (1.04%, 3.81), pt-BR 8 of 21; the 13 non-Brazil reviews spread over 9 storefronts, none clears a country threshold
+
+- **Where:** §3.6 DES_LOC
+- **This app does:** partial translations
+- **User reaction:** complaint
+- **Magnitude:** 21; pt-BR 8
+- **Direction for us:** do · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Canonical:** C027 Localise early — it unlocks revenue
+
+### R55-065 — Android parity: USER_ANDROID 16 (0.79%, emerging, 2.81) — the Android version is described as more capable and reliable (reminders with sound control, one-tap sync, fewer crashes, no flip animations); 'I recently switched my Android for an iPhone and unfortunately it doesn't work well' (gb, 3★, Aug 2026, Spanish)
+
+- **Where:** §4.4
+- **This app does:** iOS behind Android
+- **User reaction:** complaint
+- **Magnitude:** 16 (2.81)
+- **Direction for us:** product-rule · **Report confidence:** emerging · **Generalisable:** generalisable
+- **Review IDs:** `1937297334`, `1349318323`, `2224962843`, `7975946217`, `14394403203`
+- **Canonical:** C251 If cross-platform is what people buy, ship every platform in parity — same release, same entitlement, or a visible 'coming' state
+
+### R55-094 — Storefront eligibility, 82 storefronts (verbatim): six clear 50 — us 881 · gb 201 · ca 142 · br 104 · de 74 · au 67 = 1,469 (72.58%); other 76 hold 555, limited evidence; near-misses India 41, Russia 36, Netherlands 31; one review moves de by 1.35 points and au by 1.49
+
+- **Where:** §7.1 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** CC | Storefront | Written reviews | % of corpus | Written mean ★ | 1/2/3/4/5 | Public ratings (snapshot) | Public avg | Search rank | Market tier | Standalone analysis ; us | United States | 881 | 43.53% | 4.14 | 112/44/44/89/592 | 8140 | 4.67 | 23 | rich | ✅ eligible (≥50) ; gb | United Kingdom | 201 | 9.93% | 3.37 | 67/6/13/16/99 | 1289 | 4.44 | 16 | rich | ✅ eligible (≥50) ; ca | Canada | 142 | 7.02% | 4.32 | 14/6/6/11/105 | 1373 | 4.62 | 19 | rich | ✅ eligible (≥50) ; br | Brazil | 104 | 5.14% | 3.46 | 29/5/7/15/48 | 986 | 4.64 | 25 | volume | ✅ eligible (≥50) ; de | Germany | 74 | 3.66% | 3.91 | 13/3/6/8/44 | 610 | 4.57 | 25 | rich | ✅ eligible (≥50) ; au | Australia | 67 | 3.31% | 4.42 | 4/0/7/9/47 | 725 | 4.56 | 26 | rich | ✅ eligible (≥50) ; in | India | 41 | 2.03% | 3.66 | 10/0/4/7/20 | 665 | 4.59 | 31 | volume | [limited evidence] ; ru | Russia | 36 | 1.78% | 4.19 | 4/0/2/9/21 | 281 | 4.77 | 25 | volume | [limited evidence] ; nl | Netherlands | 31 | 1.53% | 4.35 | 1/1/3/7/19 | 240 | 4.54 | 33 | rich | [limited evidence] ; mx | Mexico | 26 | 1.28% | 4.54 | 1/1/0/5/19 | 217 | 4.81 | 35 | volume | [limited evidence] ; cn | China mainland | 24 | 1.19% | 4.62 | 0/0/2/5/17 | 150 | 4.89 | 21 | rich | [limited evidence] ; vn | Vietnam | 23 | 1.14% | 4.57 | 0/1/2/3/17 | 773 | 4.84 | 16 | volume | [limited evidence] ; fr | France | 21 | 1.04% | 4.00 | 2/2/3/1/13 | 275 | 4.77 | 32 | rich | [limited evidence] ; ph | Philippines | 17 | 0.84% | 4.29 | 2/1/0/1/13 | 120 | 4.68 | 18 | volume | [limited evidence] ; za | South Africa | 17 | 0.84% | 4.29 | 2/0/0/4/11 | 173 | 4.54 | 18 | volume | [limited evidence] ; sa | Saudi Arabia | 16 | 0.79% | 4.62 | 0/0/2/2/12 | 165 | 4.69 | 29 | rich | [limited evidence] ; pl | Poland | 16 | 0.79% | 4.00 | 3/0/2/0/11 | 561 | 4.8 | 26 | volume | [limited evidence] ; se | Sweden | 14 | 0.69% | 4.00 | 1/2/1/2/8 | 203 | 4.45 | 7 | rich | [limited evidence] ; es | Spain | 13 | 0.64% | 3.77 | 1/3/1/1/7 | 169 | 4.62 | 37 | rich | [limited evidence] ; sg | Singapore | 11 | 0.54% | 4.82 | 0/0/0/2/9 | 99 | 4.72 | 17 | rich | [limited evidence] ; kr | South Korea | 11 | 0.54% | 4.45 | 1/0/1/0/9 | 198 | 4.75 | 21 | rich | [limited evidence] ; nz | New Zealand | 10 | 0.49% | 4.40 | 1/0/0/2/7 | 108 | 4.56 | 16 | rich | [limited evidence] ; ua | Ukraine | 10 | 0.49% | 3.80 | 3/0/0/0/7 | 104 | 4.72 | 33 | volume | [limited evidence] ; cz | Czechia | 10 | 0.49% | 4.40 | 0/1/1/1/7 | 117 | 4.69 | 25 | volume | [limited evidence] ; il | Israel | 9 | 0.44% | 3.89 | 2/0/0/2/5 | 56 | 4.66 | 18 | rich | [limited evidence] ; ie | Ireland | 9 | 0.44% | 4.00 | 2/0/0/1/6 | 98 | 4.65 | 18 | rich | [limited evidence] ; cl | Chile | 9 | 0.44% | 3.33 | 2/1/1/2/3 | 51 | 4.31 | 19 | volume | [limited evidence] ; dk | Denmark | 9 | 0.44% | 4.22 | 1/0/1/1/6 | 78 | 4.54 | 18 | rich | [limited evidence] ; jp | Japan | 9 | 0.44% | 3.56 | 2/0/2/1/4 | 148 | 4.3 | 7 | rich | [limited evidence] ; tr | Turkey | 8 | 0.40% | 3.88 | 2/0/0/1/5 | 109 | 4.81 | 30 | volume | [limited evidence] ; id | Indonesia | 8 | 0.40% | 3.88 | 1/1/1/0/5 | 46 | 4.72 | 31 | volume | [limited evidence] ; th | Thailand | 8 | 0.40% | 3.00 | 3/0/1/2/2 | 27 | 4.44 | 24 | volume | [limited evidence] ; tw | Taiwan | 7 | 0.35% | 4.43 | 1/0/0/0/6 | 68 | 4.78 | 24 | rich | [limited evidence] ; ch | Switzerland | 7 | 0.35% | 3.29 | 2/0/1/2/2 | 107 | 4.58 | 24 | rich | [limited evidence] ; eg | Egypt | 7 | 0.35% | 5.00 | 0/0/0/0/7 | 129 | 4.71 | 6 | volume | [limited evidence] ; it | Italy | 7 | 0.35% | 4.00 | 0/2/0/1/4 | 174 | 4.59 | 23 | rich | [limited evidence] ; hu | Hungary | 6 | 0.30% | 4.83 | 0/0/0/1/5 | 81 | 4.68 | 20 | volume | [limited evidence] ; no | Norway | 6 | 0.30% | 4.17 | 0/0/2/1/3 | 148 | 4.53 | 23 | rich | [limited evidence] ; ae | UAE | 6 | 0.30% | 4.33 | 1/0/0/0/5 | 76 | 4.5 | 22 | rich | [limited evidence] ; pt | Portugal | 5 | 0.25% | 4.20 | 1/0/0/0/4 | 83 | 4.75 | 20 | volume | [limited evidence] ; be | Belgium | 5 | 0.25% | 3.80 | 1/0/1/0/3 | 145 | 4.48 | 20 | rich | [limited evidence] ; ar | Argentina | 5 | 0.25% | 4.00 | 1/0/0/1/3 | 72 | 4.6 | 20 | volume | [limited evidence] ; ro | Romania | 5 | 0.25% | 4.60 | 0/0/1/0/4 | 121 | 4.83 | 23 | volume | [limited evidence] ; kz | KZ | 5 | 0.25% | 3.80 | 1/0/0/2/2 | — | — | — | not ranked | [limited evidence] ; my | Malaysia | 4 | 0.20% | 4.75 | 0/0/0/1/3 | 72 | 4.75 | 30 | volume | [limited evidence] ; co | Colombia | 4 | 0.20% | 4.75 | 0/0/0/1/3 | 73 | 4.84 | 19 | volume | [limited evidence] ; bg | BG | 4 | 0.20% | 2.75 | 2/0/0/1/1 | — | — | — | not ranked | [limited evidence] ; lk | LK | 4 | 0.20% | 5.00 | 0/0/0/0/4 | — | — | — | not ranked | [limited evidence] ; pk | Pakistan | 4 | 0.20% | 5.00 | 0/0/0/0/4 | 42 | 4.71 | 20 | volume | [limited evidence] ; kw | KW | 3 | 0.15% | 5.00 | 0/0/0/0/3 | — | — | — | not ranked | [limited evidence] ; ee | EE | 3 | 0.15% | 3.00 | 1/0/1/0/1 | — | — | — | not ranked | [limited evidence] ; at | Austria | 3 | 0.15% | 3.67 | 1/0/0/0/2 | 85 | 4.73 | 19 | rich | [limited evidence] ; hk | Hong Kong | 3 | 0.15% | 4.67 | 0/0/0/1/2 | 48 | 4.58 | 19 | rich | [limited evidence] ; lt | LT | 3 | 0.15% | 3.67 | 1/0/0/0/2 | — | — | — | not ranked | [limited evidence] ; uy | UY | 2 | 0.10% | 4.00 | 0/0/1/0/1 | — | — | — | not ranked | [limited evidence] ; om | OM | 2 | 0.10% | 4.50 | 0/0/0/1/1 | — | — | — | not ranked | [limited evidence] ; fi | Finland | 2 | 0.10% | 4.00 | 0/0/0/2/0 | 48 | 4.25 | 16 | rich | [limited evidence] ; gt | GT | 2 | 0.10% | 3.00 | 1/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; ec | EC | 2 | 0.10% | 5.00 | 0/0/0/0/2 | — | — | — | not ranked | [limited evidence] ; bs | BS | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; lv | LV | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; lb | LB | 1 | 0.05% | 3.00 | 0/0/1/0/0 | — | — | — | not ranked | [limited evidence] ; py | PY | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; bh | BH | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; kh | KH | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; si | SI | 1 | 0.05% | 1.00 | 1/0/0/0/0 | — | — | — | not ranked | [limited evidence] ; bb | BB | 1 | 0.05% | 4.00 | 0/0/0/1/0 | — | — | — | not ranked | [limited evidence] ; az | AZ | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; sv | SV | 1 | 0.05% | 1.00 | 1/0/0/0/0 | — | — | — | not ranked | [limited evidence] ; cr | CR | 1 | 0.05% | 2.00 | 0/1/0/0/0 | — | — | — | not ranked | [limited evidence] ; lu | LU | 1 | 0.05% | 3.00 | 0/0/1/0/0 | — | — | — | not ranked | [limited evidence] ; ve | VE | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; sk | SK | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; gr | Greece | 1 | 0.05% | 5.00 | 0/0/0/0/1 | 29 | 4.72 | 23 | volume | [limited evidence] ; tz | TZ | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; pe | Peru | 1 | 0.05% | 4.00 | 0/0/0/1/0 | 49 | 4.59 | 19 | volume | [limited evidence] ; dz | DZ | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; is | IS | 1 | 0.05% | 1.00 | 1/0/0/0/0 | — | — | — | not ranked | [limited evidence] ; mm | MM | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; ma | MA | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; ke | KE | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence] ; mv | MV | 1 | 0.05% | 5.00 | 0/0/0/0/1 | — | — | — | not ranked | [limited evidence]
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-095 — Market groups (verbatim): global 2,024 at 4.05, 45.2% written Jun 2018+ at 3.59; high-spend (rich, 27 storefronts) 1,598 (78.95%) at 4.07, design praise 30.2%; high-spend excl. us 717 at 3.98, reliability 23.6% (the UK drives it); high-review-volume (≥50) 1,469 at 4.00, mean Jun 2018+ 3.40; snapshot volume tier 24 / 375 at 3.97 writes later (63.7% Jun 2018+), crashes more (BUG_CRASH 15.5%, Brazil) and reports almost no subscription backlash (1.9%) or pop-up (PAY_NAG 0.5%) — fits price-sensitive users staying inside the free tier (interpretation); public-rating volume us 8,140 · ca 1,373 · gb 1,289 · br 986 · vn 773 · au 725 · in 665 · de 610 · pl 561 — Vietnam, India, Poland high public volume but limited written evidence; Portuguese/Spanish storefronts (177) reliability 31.1%, DES_LOC 5.1%; German-speaking (de, at, ch; 84) PAY_NAG 10.7% — the pop-up landed hardest there
+
+- **Where:** §7.2 definitions and table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Group | Storefronts | Reviews | Mean ★ | Share written Jun 2018+ | Mean ★ Jun 2018+ | PAY_BOUGHT | Monetization friction | Subscription backlash | Reliability | Data & account | Neglect | Design praise ; Global | 82 | 2,024 | 4.05 | 45.2% | 3.59 | 8.2% | 8.4% | 4.1% | 21.4% | 7.1% | 7.7% | 28.1% ; High-spend (rich) | 27 | 1,598 | 4.07 | 40.3% | 3.52 | 8.4% | 8.9% | 4.4% | 20.2% | 6.9% | 8.1% | 30.2% ; High-spend excl. us | 26 | 717 | 3.98 | 44.9% | 3.51 | 8.5% | 8.1% | 4.6% | 23.6% | 6.1% | 9.5% | 28.6% ; High-review-volume (≥50 written) | 6 | 1,469 | 4.00 | 41.7% | 3.40 | 9.0% | 9.5% | 4.7% | 21.8% | 7.1% | 7.8% | 30.0% ; Snapshot volume tier | 24 | 375 | 3.97 | 63.7% | 3.75 | 7.2% | 6.1% | 1.9% | 26.4% | 7.7% | 6.4% | 20.3% ; Not ranked in snapshot | 31 | 51 | 3.98 | 62.7% | 3.88 | 5.9% | 11.8% | 7.8% | 25.5% | 5.9% | 5.9% | 17.6% ; Sub-50 storefronts combined [limited evidence] | 76 | 555 | 4.16 | 54.6% | 3.97 | 5.9% | 5.8% | 2.3% | 20.5% | 7.0% | 7.6% | 23.1%
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-096 — United States us n=881 (43.53%), mean 4.14, public 8,140 @ 4.67, rank 23 (verbatim table): where the product is loved most in absolute terms — DES_CLEAN 228 (25.9%), OUT_LIFE 88 (10.0%), CORE_FLEX 85 (9.6%); holds most account failures — 34 of 57 ACCT_BUG (59.6%), mainly the January 2018 registration spinner; monetisation friction 84 (9.5%) and backlash 38 (4.3%) near global; 322 reviews (36.5%) from June 2018 at mean 3.52; gap 0.53★
+
+- **Where:** §7.3 table (verbatim) and bullets
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** Theme | Direction | n | % of 881 (us) | Band (us denominator) | Mean ★ | Global % | Representative IDs ; DES_CLEAN | positive | 228 | 25.88% | High-priority | 4.90 | 23.47% | 3619521404 12045845669 1317049655 5251051111 ; MOT_GOOD | positive | 114 | 12.94% | High-priority | 4.94 | 11.22% | 1327696946 1317049655 2487407176 8393211103 ; USER_SWITCH | context | 113 | 12.83% | High-priority | 4.68 | 9.58% | 5501033289 1493013989 1327696946 5251051111 ; STAT_GOOD | positive | 100 | 11.35% | High-priority | 4.84 | 9.24% | 1925943692 5501033289 4877365239 1327696946 ; META_LOWINFO | context | 91 | 10.33% | High-priority | 4.93 | 12.90% | 1352787473 1313835610 1284393551 3449006142 ; OUT_LIFE | positive | 88 | 9.99% | High-priority | 4.85 | 7.46% | 3619521404 1647738964 4050502959 2070476668 ; CORE_FLEX | positive | 85 | 9.65% | High-priority | 4.86 | 7.31% | 1925943692 6218849398 5501033289 1327696946 ; PAY_BOUGHT | context | 74 | 8.40% | High-priority | 3.09 | 8.15% | 1645212180 1706395578 2224962843 1308688562 ; DES_PRETTY | positive | 69 | 7.83% | High-priority | 4.71 | 6.37% | 6218849398 1493013989 1308688562 1313247094 ; REM_GOOD | positive | 63 | 7.15% | High-priority | 4.92 | 4.79% | 1925943692 5251051111 1842199555 2210985599 ; BUG_CRASH | negative | 46 | 5.22% | High-priority | 2.33 | 9.73% | 1645212180 2224962843 2173925090 5876056241 ; PAY_FREE_OK | positive | 45 | 5.11% | High-priority | 4.82 | 4.74% | 3619521404 4877365239 1327696946 5251051111 ; PAY_CAP | mixed | 43 | 4.88% | Very strong | 4.28 | 4.30% | 3619521404 4877365239 5251051111 3165310363 ; CORE_STREAK | positive | 42 | 4.77% | Very strong | 4.76 | 3.71% | 3165310363 1308688562 8393211103 5361919157 ; USE_FIT | context | 35 | 3.97% | Very strong | 4.80 | 2.42% | 3619521404 4877365239 2487407176 5361919157 ; USER_LONGTERM | context | 35 | 3.97% | Very strong | 3.31 | 3.11% | 6194515737 3619521404 4877365239 3021046308
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `2054990423`, `2062646143`, `2064190276`, `2487407176`, `4050502959`, `5361919157`, `6194515737`, `14101520315`
+- **Canonical:** — (nuance register)
+
+### R55-097 — United Kingdom gb n=201 (9.93%), mean 3.37, public 1,289 @ 4.44, rank 16 (verbatim table): the reliability outlier — BUG_CRASH 52 (25.9%, 1.62) and reliability failure 82 (40.8%); two waves almost entirely British — all 12 crash reviews of July 2017 and 26 of 30 crash reviews Oct 2020 – Feb 2021 (device mix, release timing or regional build — unknown); payers 32 (15.9%, mean 1.81), PAY_REFUND 9 (4.5%) — 9 of 19 refund requests; SUP_BAD 24 (11.9%); mean after June 2018 2.52, the lowest eligible; gap 1.07★
+
+- **Where:** §7.4 table (verbatim) and bullets
+- **This app does:** n/a
+- **User reaction:** 1★-burst
+- **Magnitude:** Theme | Direction | n | % of 201 (gb) | Band (gb denominator) | Mean ★ | Global % | Representative IDs ; BUG_CRASH | negative | 52 | 25.87% | High-priority | 1.62 | 9.73% | 7097957463 6948589393 1697255416 2187307751 ; DES_CLEAN | positive | 45 | 22.39% | High-priority | 4.76 | 23.47% | 1524885355 3663633916 6586264782 14394403203 ; PAY_BOUGHT | context | 32 | 15.92% | High-priority | 1.81 | 8.15% | 1430631367 2078145265 6217285649 6948589393 ; SUP_BAD | negative | 24 | 11.94% | High-priority | 1.38 | 4.10% | 7097957463 1430631367 6948589393 1697255416 ; BUG_UPDATE | negative | 24 | 11.94% | High-priority | 1.92 | 2.12% | 6217285649 1697255416 1700889647 6201351057 ; MOT_GOOD | positive | 19 | 9.45% | High-priority | 4.95 | 11.22% | 2241541655 5274804245 1475750210 1968466325 ; USER_SWITCH | context | 17 | 8.46% | High-priority | 4.53 | 9.58% | 2078145265 6839286805 1524885355 2458999867 ; STAT_GOOD | positive | 15 | 7.46% | High-priority | 4.93 | 9.24% | 3663633916 1434336181 1284379859 1589270993 ; OUT_LIFE | positive | 15 | 7.46% | High-priority | 4.93 | 7.46% | 2078145265 1524885355 1589270993 5375108069 ; BUG_OTHER | negative | 15 | 7.46% | High-priority | 1.93 | 2.47% | 6217285649 14394403203 6239654039 6580945974 ; DES_PRETTY | positive | 13 | 6.47% | High-priority | 4.62 | 6.37% | 6696594352 1434336181 1452067906 2376387205 ; CORE_FLEX | positive | 13 | 6.47% | High-priority | 4.69 | 7.31% | 2078145265 6696594352 1524885355 1434336181 ; USER_LONGTERM | context | 13 | 6.47% | High-priority | 1.77 | 3.11% | 6217285649 6948589393 6839286805 14394403203 ; USER_CHURN | context | 11 | 5.47% | High-priority | 1.45 | 2.42% | 6948589393 1697255416 6839286805 1688819756 ; REM_GOOD | positive | 10 | 4.98% | Very strong | 4.70 | 4.79% | 6696594352 1328164450 1326662851 1308751413 ; CORE_STREAK | positive | 9 | 4.48% | Very strong | 5.00 | 3.71% | 2078145265 1524885355 5274804245 5375108069
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `1693303166`, `1700324336`, `1700889647`, `6583825142`, `6706410264`, `6948589393`
+- **Canonical:** C031 Crashes / launch failures; C212 No conditional refunds — no proof-of-use requirement, and an advertised guarantee is honoured on request
+
+### R55-098 — Canada ca n=142 (7.02%), mean 4.32, public 1,373 @ 4.62, rank 19 (verbatim table): the most satisfied large storefront — design praise 45 (31.7%), motivation 35 (24.6%), reliability failure only 18 (12.7%); BUG_CRASH 10 (7.0%) including the 2018 purchase crash; mean after June 2018 stays 4.12; gap 0.30★
+
+- **Where:** §7.5 table (verbatim) and bullets
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** Theme | Direction | n | % of 142 (ca) | Band (ca denominator) | Mean ★ | Global % | Representative IDs ; DES_CLEAN | positive | 41 | 28.87% | High-priority | 5.00 | 23.47% | 3394315727 1485411857 2547182550 1516921310 ; MOT_GOOD | positive | 21 | 14.79% | High-priority | 5.00 | 11.22% | 9497256031 1597106167 4222984368 1548767334 ; STAT_GOOD | positive | 14 | 9.86% | High-priority | 4.71 | 9.24% | 3394315727 1318911848 4507852447 5364659909 ; CORE_FLEX | positive | 12 | 8.45% | High-priority | 4.67 | 7.31% | 5364659909 5357485025 1287182326 1339059613 ; META_LOWINFO | context | 11 | 7.75% | High-priority | 5.00 | 12.90% | 1312991202 2296294652 1325174511 3649153983 ; OUT_LIFE | positive | 10 | 7.04% | High-priority | 5.00 | 7.46% | 1500390385 1295044914 4216477677 1916899200 ; CORE_STREAK | positive | 10 | 7.04% | High-priority | 4.90 | 3.71% | 5364659909 1312791627 1597106167 1500390385 ; BUG_CRASH | negative | 10 | 7.04% | High-priority | 1.50 | 9.73% | 1318911848 6541520487 3794237455 2073281420 ; USER_SWITCH | context | 9 | 6.34% | High-priority | 4.44 | 9.58% | 1318911848 5364659909 1322768678 1429720658 ; REM_GOOD | positive | 8 | 5.63% | High-priority | 5.00 | 4.79% | 1339211456 1510777381 1295139032 1342623510 ; PAY_CAP | mixed | 7 | 4.93% | Very strong | 2.71 | 4.30% | 1339211456 1516921310 2073281420 13594157765 ; PAY_FREE_OK | positive | 7 | 4.93% | Very strong | 4.86 | 4.74% | 4507852447 1516921310 1510777381 4069049315 ; PAY_BOUGHT | context | 6 | 4.23% | Very strong | 2.67 | 8.15% | 3394315727 1318911848 6300876929 1339211456 ; DES_PRETTY | positive | 6 | 4.23% | Very strong | 4.83 | 6.37% | 1322768678 1916899200 1518983667 4471463452 ; MOT_MSG | positive | 6 | 4.23% | Very strong | 4.50 | 3.16% | 6541520487 1339211456 2547182550 4216477677 ; USE_QUIT | context | 6 | 4.23% | Very strong | 5.00 | 2.27% | 4507852447 1494749969 4216477677 2203924575
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `2070142190`, `2073281420`
+- **Canonical:** — (nuance register)
+
+### R55-099 — Brazil br n=104 (5.14%), mean 3.46, public 986 @ 4.64, rank 25 (verbatim table): November 2018 is Brazil's story — 23 of 34 crash reviews (67.6%) that month (iOS 12, 'abre e fecha'), BUG_CRASH 32.7% of br, the highest; 'I'm a premium user and have already lost all my data twice'; localisation is a Brazilian signal — DES_LOC 8 (7.7%, 8 of 21 global), several give 4★ 'only because' there is no Portuguese; META_LOWINFO 23 (22.1%), META_CONTRA 5 (4.8%) — five 5★ crash reports; 72 of 104 from June 2018 yet PAY_NAG 0 and backlash 3 (2.9%); gap 1.18★, the largest
+
+- **Where:** §7.6 table (verbatim) and bullets
+- **This app does:** n/a
+- **User reaction:** complaint
+- **Magnitude:** Theme | Direction | n | % of 104 (br) | Band (br denominator) | Mean ★ | Global % | Representative IDs ; BUG_CRASH | negative | 34 | 32.69% | High-priority | 2.00 | 9.73% | 1853242496 2047546299 3398953265 3385514055 ; META_LOWINFO | context | 23 | 22.12% | High-priority | 4.83 | 12.90% | 3737533333 7657919426 10871952486 1597697236 ; PAY_BOUGHT | context | 11 | 10.58% | High-priority | 1.73 | 8.15% | 1326707609 1517199932 6503407436 1328097934 ; DES_LOC | negative | 8 | 7.69% | High-priority | 3.25 | 1.04% | 2413516172 4269003998 4332329392 4422484528 ; USER_SWITCH | context | 7 | 6.73% | High-priority | 4.86 | 9.58% | 3532206841 6001742201 1326707609 1398861610 ; STAT_GOOD | positive | 7 | 6.73% | High-priority | 4.86 | 9.24% | 3532206841 6001742201 1326707609 3710103841 ; DES_CLEAN | positive | 7 | 6.73% | High-priority | 5.00 | 23.47% | 3532206841 4269003998 6223770046 1651700618 ; BUG_DATA | negative | 6 | 5.77% | High-priority | 1.17 | 1.73% | 6503407436 1853242496 3385514055 6432656761 ; META_CONTRA | context | 5 | 4.81% | Very strong | 5.00 | 1.19% | 1857386298 6043777098 4989431292 3380205850 ; DES_PRETTY | positive | 5 | 4.81% | Very strong | 5.00 | 6.37% | 3532206841 6001742201 3710103841 3435977361 ; BUG_UPDATE | negative | 5 | 4.81% | Very strong | 2.00 | 2.12% | 3385514055 6115425955 3389236529 3398035911 ; PAY_CAP | mixed | 4 | 3.85% | Very strong | 3.00 | 4.30% | 1328097934 2047546299 4332329392 2583098372 ; MOT_GOOD | positive | 4 | 3.85% | Very strong | 4.50 | 11.22% | 2413516172 1328097934 1651700618 3285809247 ; DES_UX_NEG | negative | 4 | 3.85% | Very strong | 3.50 | 3.31% | 9520283018 1573221137 3579599305 4585764855 ; CORE_FLEX | positive | 3 | 2.88% | Meaningful | 4.67 | 7.31% | 3532206841 6001742201 1326707609 ; STAT_WANT | request / unmet need | 3 | 2.88% | Meaningful | 4.33 | 0.94% | 1326707609 3710103841 3626585446
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `3389517105`, `1760716102`, `2413516172`, `4422484528`, `1857386298`, `3380205850`, `6043777098`
+- **Canonical:** C027 Localise early — it unlocks revenue; C031 Crashes / launch failures
+
+### R55-100 — Brazil: several reviewers give 4★ 'only because' there is no Portuguese — DES_LOC 8 (7.7% of br); localise pt-BR first (R6)
+
+- **Where:** §7.6 localisation
+- **This app does:** no Portuguese localisation
+- **User reaction:** blocked-conversion
+- **Magnitude:** 8 (7.7% of br)
+- **Direction for us:** do · **Report confidence:** high-priority (br) · **Generalisable:** generalisable
+- **Review IDs:** `1760716102`, `2413516172`, `4422484528`
+- **Canonical:** C027 Localise early — it unlocks revenue
+
+### R55-101 — Germany de n=74 (3.66%), mean 3.91, public 610 @ 4.57, rank 25 (verbatim table): the pop-up market — PAY_NAG 8 (10.8%, high-priority; 8 of 44 global), all from July 2020; subscription backlash 8 (10.8%); BUG_COMPAT 4, BUG_DARK 2 (single-digit, caution); Touch ID requests LOCK 2; gap 0.66★
+
+- **Where:** §7.7 table (verbatim) and bullets
+- **This app does:** n/a
+- **User reaction:** complaint
+- **Magnitude:** Theme | Direction | n | % of 74 (de) | Band (de denominator) | Mean ★ | Global % | Representative IDs ; DES_CLEAN | positive | 19 | 25.68% | High-priority | 5.00 | 23.47% | 1672384383 3818179183 1565681373 6369400116 ; META_LOWINFO | context | 11 | 14.86% | High-priority | 4.91 | 12.90% | 2863728366 11651956299 1483802876 2258625010 ; MOT_GOOD | positive | 9 | 12.16% | High-priority | 5.00 | 11.22% | 1565681373 1518457306 1463966723 1544708826 ; PAY_NAG | negative | 8 | 10.81% | High-priority | 2.25 | 2.17% | 6170938294 6182419167 6159632589 7305967703 ; USER_SWITCH | context | 6 | 8.11% | High-priority | 4.50 | 9.58% | 1672384383 1565681373 6369400116 1940335172 ; PAY_BOUGHT | context | 5 | 6.76% | High-priority | 3.20 | 8.15% | 1672384383 6206056175 6440814309 3987689726 ; BUG_CRASH | negative | 5 | 6.76% | High-priority | 2.00 | 9.73% | 3818179183 4001484108 3027356528 3063818610 ; CORE_FLEX | positive | 4 | 5.41% | High-priority | 5.00 | 7.31% | 1672384383 6369400116 2221100117 1326750046 ; BUG_COMPAT | negative | 4 | 5.41% | High-priority | 2.25 | 2.62% | 3953087862 3376380118 6157403261 1683236770 ; DES_UX_NEG | negative | 4 | 5.41% | High-priority | 3.75 | 3.31% | 5870204615 3733050172 2836942295 3987689726 ; DES_PRETTY | positive | 3 | 4.05% | Very strong | 5.00 | 6.37% | 2221100117 1544708826 1430390196 ; STAT_GOOD | positive | 3 | 4.05% | Very strong | 5.00 | 9.24% | 1565681373 2221100117 4468554848 ; SYNC_BUG | negative | 3 | 4.05% | Very strong | 2.33 | 3.06% | 3987689726 3081760654 8196540108 ; BUG_OTHER | negative | 3 | 4.05% | Very strong | 2.33 | 2.47% | 11630973154 6216108901 5245977504 ; LOCK | request / unmet need | 2 | 2.70% | Meaningful | 4.50 | 0.30% | 1901252511 1463966723 ; USE_QUIT | context | 2 | 2.70% | Meaningful | 3.00 | 2.27% | 6206056175 1518457306
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `6159632589`, `6182419167`, `6215045178`, `1463966723`, `1901252511`
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C274 A close or dismiss control must never start a purchase — no fake X, no dismissal that lands on the payment sheet
+
+### R55-102 — Australia au n=67 (3.31%), mean 4.42, public 725 @ 4.56, rank 26 (verbatim table): the most praise-heavy storefront — DES_CLEAN 25 (37.3%), design praise 29 (43.3%), reliability failure 9 (13.4%); REM_CONTROL 3 (4.5%, limited evidence); gap 0.14★, the smallest
+
+- **Where:** §7.8 table (verbatim) and bullets
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** Theme | Direction | n | % of 67 (au) | Band (au denominator) | Mean ★ | Global % | Representative IDs ; DES_CLEAN | positive | 25 | 37.31% | High-priority | 4.76 | 23.47% | 1325376912 1444396300 1723593375 12098769011 ; MOT_GOOD | positive | 8 | 11.94% | High-priority | 4.88 | 11.22% | 2382881693 1584566282 1284949418 4162109795 ; STAT_GOOD | positive | 8 | 11.94% | High-priority | 4.88 | 9.24% | 1598952847 2382881693 3636707541 1564510993 ; META_LOWINFO | context | 8 | 11.94% | High-priority | 5.00 | 12.90% | 1358863315 1535600956 1484861130 1543862248 ; USER_SWITCH | context | 6 | 8.96% | High-priority | 4.67 | 9.58% | 1325376912 1444396300 12098769011 5375330851 ; CORE_FLEX | positive | 6 | 8.96% | High-priority | 5.00 | 7.31% | 1325376912 1723593375 3636707541 2121054790 ; DES_PRETTY | positive | 5 | 7.46% | High-priority | 5.00 | 6.37% | 1801458543 1584566282 4162109795 1315529332 ; PAY_BOUGHT | context | 4 | 5.97% | High-priority | 3.50 | 8.15% | 2220539344 1902629615 1315529332 1601365268 ; COMM_GOOD | positive | 4 | 5.97% | High-priority | 5.00 | 1.53% | 1325376912 12098769011 1801458543 2382881693 ; PAY_CAP | mixed | 4 | 5.97% | High-priority | 4.50 | 4.30% | 5375330851 2097315464 3965893283 1601365268 ; REM_GOOD | positive | 4 | 5.97% | High-priority | 4.75 | 4.79% | 1723593375 4416741540 3090163910 3089646322 ; OUT_LIFE | positive | 3 | 4.48% | Very strong | 5.00 | 7.46% | 1440600817 3090163910 1303687540 ; PAY_FREE_OK | positive | 3 | 4.48% | Very strong | 4.67 | 4.74% | 1418004252 2121054790 2097315464 ; BUG_CRASH | negative | 3 | 4.48% | Very strong | 2.67 | 9.73% | 2220539344 2671237746 1424742582 ; REM_CONTROL | request / unmet need | 3 | 4.48% | Very strong | 4.33 | 0.79% | 1902629615 3875354143 1450609492 ; CORE_BAD | mixed | 2 | 2.99% | Meaningful | 4.00 | 0.89% | 1325376912 8557099798
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `1450609492`, `1902629615`, `3875354143`
+- **Canonical:** — (nuance register)
+
+### R55-104 — Localisation DES_LOC 21 (1.04%, 3.81): br 8, ru 3, jp 2, fr 2, one each tw, ch, de, cn, vn, ar; one says Spanish was available before and then removed ('Antes estaba en español y ahora no'); a Chinese reviewer prefers English as study practice; only Brazil clears a country signal; not supported: standalone conclusions under 50; 'UK and Brazil are more critical' (gaps coincide with crash waves); spend inference; East-Asian analysis (China 24, Korea 11, Japan 9)
+
+- **Where:** §7.10–§7.11
+- **This app does:** Spanish localisation removed
+- **User reaction:** complaint
+- **Magnitude:** 21; br 8
+- **Direction for us:** do · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Review IDs:** `10228598462`, `3707859371`
+- **Canonical:** C027 Localise early — it unlocks revenue; C155 Never remove a feature people bought the app for — add alongside, do not replace
+
+## Dated events and trends
+
+### R55-010 — Subscription-model backlash [U:sub_backlash] 82 (4.05%, very strong, mean 1.91) by era (verbatim): E1 Nov 2015–Jun 2017 709 reviews — friction 7 (1.0%), backlash 0, reliability 46 (6.5%), mean 4.67; E2 Jul 2017–May 2018 400 — 28 (7.0%), 0, 105 (26.2%), 3.99; E3 Jun 2018–Jun 2020 597 — 57 (9.5%), 18 (3.0%), 179 (30.0%), 3.84; E4 Jul 2020–Jun 2021 189 — 67 (35.4%), 55 (29.1%), 79 (41.8%), 2.72; E5 Jul 2021–Aug 2026 129 — 12 (9.3%), 9 (7.0%), 25 (19.4%), 3.72
+
+- **Where:** §0.2 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** 1★-burst
+- **Magnitude:** Era (Part 8) | Reviews | Monetization friction | Subscription backlash | Reliability failure | Mean ★ ; E1 · Nov 2015–Jun 2017 | 709 | 7 (1.0%) | 0 (0.0%) | 46 (6.5%) | 4.67 ; E2 · Jul 2017–May 2018 | 400 | 28 (7.0%) | 0 (0.0%) | 105 (26.2%) | 3.99 ; E3 · Jun 2018–Jun 2020 | 597 | 57 (9.5%) | 18 (3.0%) | 179 (30.0%) | 3.84 ; E4 · Jul 2020–Jun 2021 | 189 | 67 (35.4%) | 55 (29.1%) | 79 (41.8%) | 2.72 ; E5 · Jul 2021–Aug 2026 | 129 | 12 (9.3%) | 9 (7.0%) | 25 (19.4%) | 3.72
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-011 — June 2018 — one-time fee became an annual subscription: 'It was 4.99$ to unlock the premium features, now it's 19$ a year! From a license model to a subscription model, and about 400% increase in price, and all you get while updating? Changes' (us, 1★, 4 Jun 2018); PAY_PRICE_HIGH 42 (2.08%, meaningful, mean 2.71), 40 of 42 from June 2018 on
+
+- **Where:** §0.2 June 2018
+- **This app does:** one-time $4.99 → $19.99/yr
+- **User reaction:** 1★-burst
+- **Magnitude:** PAY_PRICE_HIGH 42 (2.71), 40 from Jun 2018
+- **Direction for us:** product-rule · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Review IDs:** `2640020936`, `2644893532`
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C004 Price low and fair, anchored against subscription competitors; C186 Never revoke what earlier buyers paid for when the model changes
+
+### R55-014 — Four crash waves, each tied to an update: BUG_CRASH 197 (9.73%, high-priority, mean 2.04); reliability union 434 (21.44%, 2.19) — Jul 2017 update crashes on launch (12 of 47, all 12 UK storefront); Jan 2018 registration hangs, 'buy premium' crashes (9 + 14 ACCT_BUG + 10 PAY_IAP_FAIL, us 33 of 62); Nov 2018 iOS 12 app closes on open (24 of 45, 23 in Brazil); Oct 2020 – Feb 2021 launch crash after the 2020 updates (30 of 70, 26 UK); BUG_UPDATE 43 (2.12%, 1.91); fixes reported twice, the second after 'nearly nine months of complaints' — each wave concentrated in one storefront
+
+- **Where:** §0.3 table (verbatim)
+- **This app does:** update-triggered crash waves
+- **User reaction:** 1★-burst
+- **Magnitude:** Window | Reviews that month | Crash reviews | Concentration | Representative IDs ; Jul 2017 — update crashes on launch | 47 | 12 | all 12 in the UK storefront | 1673186816 1693303166 1700889647 ; Jan 2018 — registration hangs, "buy premium" crashes | 62 | 9 (+14 ACCT_BUG, 10 PAY_IAP_FAIL) | us 33 of 62 | 2061252128 2062646143 2073281420 ; Nov 2018 — iOS 12, app closes on open | 45 | 24 | 23 of the 24 in Brazil | 3385514055 3392621280 3398953265 ; Oct 2020 – Feb 2021 — launch crash after the 2020 updates | 70 | 30 | 26 of the 30 in the UK | 6706410264 6948589393 7097957463
+- **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `1673186816`, `2061252128`, `3385514055`, `6706410264`, `1707578570`, `7097957463`
+- **Canonical:** C031 Crashes / launch failures; C175 Updates must not break function or wipe progress
+
+### R55-015 — Support silence and visible neglect: SUP_BAD 83 (4.10%, very strong, mean 1.45; 66 at 1★); neglect union 156 (7.71%, high-priority, 1.95) — DEV_ABANDON 42 (2.08%), BUG_COMPAT 53 (2.62%): no iPhone X layout from Nov 2017 until a Dec 2020 update; 'It's been out for over a year. Fix it' (2018); 'The last update was 9 months ago, this is unacceptable for a subscription based product' (us, 2★, Apr 2025)
+
+- **Where:** §0.4
+- **This app does:** no new-screen support for three years; support silent
+- **User reaction:** churn
+- **Magnitude:** SUP_BAD 83 (1.45); neglect 156 (1.95); iPhone X layout Nov 2017 → Dec 2020
+- **Direction for us:** must-have · **Report confidence:** very strong · **Generalisable:** generalisable
+- **Review IDs:** `1923610880`, `6718923959`, `3535806272`, `12574094084`
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C071 Never ship and walk away
+
+### R55-025 — Ten-year price history (verbatim): Nov 2015 – mid 2016 free 5 habits, premium one-time $3.99–$4; mid 2016 – May 2018 free 5, one-time $4.99 (£4.99; CA$6.99; '7.99 dollars' AU; DKK 45) for 'up to 100' habits, sync, CSV export; Jun 2018 on free 5 'ad supported', annual subscription ~$19.99 (£17.49–£18, €20, ~R$70+) with a 7-day trial; Jul 2020 on free 5 plus a full-screen premium pop-up on every launch, ~$30 AUD and 30€; 2023–2025 a 10-day trial, one reviewer says monthly billing; text sub-cut inside PAY_*: 16 name $3.99–$4.99 (Jan 2016 → Feb 2020), 30 name $19.99–$30 / £17–18 / €20–30 annual (Jun 2018 → Mar 2022)
+
+- **Where:** §2.2 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Period | Free tier | Premium | Evidence ; Nov 2015 – mid 2016 | 5 habits | One-time $3.99–$4 | 1287413103 1313500633 1314774160 1322205409 ; mid 2016 – May 2018 | 5 habits | One-time $4.99 (£4.99; CA$6.99; "7.99 dollars" in Australia; DKK 45); "up to 100" habits, sync, CSV export | 1401096756 1702393299 2070142190 2078145265 2220539344 2399403744 ; Jun 2018 on | 5 habits, "ad supported" | Annual subscription ~$19.99 (£17.49–£18, €20, ~R$70+) with a 7-day trial | 2640020936 2644893532 3591335378 3723488309 4332329392 5384533156 ; Jul 2020 on | 5 habits; full-screen premium pop-up on every launch | Same subscription; reviewers report ~$30 AUD and 30€ | 6177064571 6180444776 6850581887 7305967703 ; 2023 – 2025 | 5 habits | 10-day trial reported; one reviewer says monthly billing | 9994781256 12241472265
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `1287413103`, `1401096756`, `2640020936`, `6177064571`, `9994781256`, `12241472265`
+- **Canonical:** — (nuance register)
+
+### R55-040 — Neglect N5: noticed as early as June 2016 ('No updates have been issued in over half a year and the developers are no longer answering emails or responding to questions in the HabitBull forums'); the dominant frame in 2019 ('Has this been abandoned?'); BUG_COMPAT 53 runs 8 Jul 2017 → 13 Aug 2020, mostly the iPhone X+ layout, 17 of 53 at 4★ — a ratings drag rather than a churn driver
+
+- **Where:** §3.3 N5
+- **This app does:** no updates; no new-screen layout for three years
+- **User reaction:** complaint
+- **Magnitude:** DEV_ABANDON 42 (2.07); BUG_COMPAT 53 (2.72), 17 at 4★
+- **Direction for us:** dont · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Review IDs:** `1400301314`, `4497695218`, `4925876017`, `4956440235`, `3311384193`, `3714499359`, `3953087862`
+- **Canonical:** C071 Never ship and walk away
+
+### R55-051 — Reminders that help P6 REM_GOOD 97 (4.79%, 4.90): strong until 2018 and gone after November 2020 (E5 0 of 129); the badge countdown is itself a motivator for some
+
+- **Where:** §3.4 P6
+- **This app does:** badge countdown
+- **User reaction:** praise
+- **Magnitude:** 97 (4.90); 0 of 129 in E5
+- **Direction for us:** build-free · **Report confidence:** very strong · **Generalisable:** generalisable
+- **Review IDs:** `6696594352`, `1435323205`, `2210985599`, `3979432395`
+- **Canonical:** C226 App-icon badge count of outstanding habits, with an active-hours window
+
+### R55-080 — Paying reviewers by era (verbatim): PAY_BOUGHT 165 (8.15%, 2.56; 1/2/3/4/5 = 82/14/11/11/47; us 74, gb 32, br 11, ca 6, in 6, de 5, ru 5) — E1 38 (5.4%, 4.24; 1–2★ 5, 4–5★ 31; data & account 2; support 3); E2 37 (9.2%, 2.78; 20/14; 18; 8); E3 56 (9.4%, 1.91; 42/11; 36; 20); E4 27 (14.3%, 1.41; 24/1; 9; 8); E5 7 (5.4%, 1.86; 5/1; 4; 3)
+
+- **Where:** §6.1 era table (verbatim)
+- **This app does:** n/a
+- **User reaction:** 1★-burst
+- **Magnitude:** Era | Paid reviewers | Share of era | Mean ★ (paid) | 1–2★ | 4–5★ | Data & account among paid | Support silence among paid ; E1 | 38 | 5.4% | 4.24 | 5 | 31 | 2 | 3 ; E2 | 37 | 9.2% | 2.78 | 20 | 14 | 18 | 8 ; E3 | 56 | 9.4% | 1.91 | 42 | 11 | 36 | 20 ; E4 | 27 | 14.3% | 1.41 | 24 | 1 | 9 | 8 ; E5 | 7 | 5.4% | 1.86 | 5 | 1 | 4 | 3
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-105 — Eras drawn at dated changes (verbatim): E1 Nov 2015–Jun 2017 launch, one-time premium (~$4), 5 free habits — 709 at 4.67, 1★ 3.2%; E2 Jul 2017–May 2018 update crash wave, registration and purchase failures, iPhone X gap — 400 at 3.99, 15.8%; E3 Jun 2018–Jun 2020 ~$19.99/yr subscription, sync and support decay — 597 at 3.84, 18.1%; E4 Jul 2020–Jun 2021 premium pop-up on every launch, dark-mode and crash regressions — 189 at 2.72, 41.8%; E5 Jul 2021–Aug 2026 long tail, nag persists, sporadic bugs — 129 at 3.72, 23.3%; boundaries: July 2017 crash wave; first subscription review 4 Jun 2018; pop-up first seen 5 Jul 2020
+
+- **Where:** §8.1 era table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Era | Window | Reviews | Mean ★ | 1/2/3/4/5 | 1★ share ; E1 | Nov 2015–Jun 2017 · launch, one-time premium (~$4), 5 free habits | 709 | 4.67 | 23/9/17/79/581 | 3.2% ; E2 | Jul 2017–May 2018 · update crash wave, registration & purchase failures, iPhone X gap | 400 | 3.99 | 63/14/29/51/243 | 15.8% ; E3 | Jun 2018–Jun 2020 · switch to ~$19.99/yr subscription, sync & support decay | 597 | 3.84 | 108/30/49/75/335 | 18.1% ; E4 | Jul 2020–Jun 2021 · premium pop-up on every launch, dark-mode & crash regressions | 189 | 2.72 | 79/22/18/13/57 | 41.8% ; E5 | Jul 2021–Aug 2026 · long tail, nag persists, sporadic bugs | 129 | 3.72 | 30/6/9/9/75 | 23.3%
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `2640020936`, `6159632589`
+- **Canonical:** — (nuance register)
+
+### R55-106 — Volume and rating by year (verbatim): 2015 137 at 4.71 (1★ 1.5%); 2016 399 at 4.71 (3.0%); 2017 377 at 4.35 (9.0%); 2018 366 at 3.71 (21.6%, reliability 32.5%); 2019 290 at 3.92 (16.2%); 2020 288 at 3.25 (30.2%, friction 20.1%, reliability 38.9%); 2021 60 at 3.52 (friction 30.0%); 2022 37 at 3.92; 2023 16 at 3.62; 2024 23 at 3.83; 2025 15 at 3.47; 2026 16 at 2.94 (43.8%) — volume peaked at launch and fell below 100 a year from 2021; mean 4.71 (2015–16) → 3.25 (2020); 1★ 1.5% → 30.2%
+
+- **Where:** §8.2 year table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Year | Reviews | % of corpus | Mean ★ | 1/2/3/4/5 | 1★ share | PAY_BOUGHT | Monetization friction | Reliability ; 2015 (from 9 Nov) | 137 | 6.77% | 4.71 | 2/3/5/13/114 | 1.5% | 6 (4.4%) | 1 (0.7%) | 11 (8.0%) ; 2016 | 399 | 19.71% | 4.71 | 12/4/7/43/333 | 3.0% | 20 (5.0%) | 4 (1.0%) | 21 (5.3%) ; 2017 | 377 | 18.63% | 4.35 | 34/8/20/44/271 | 9.0% | 27 (7.2%) | 9 (2.4%) | 61 (16.2%) ; 2018 | 366 | 18.08% | 3.71 | 79/15/32/47/193 | 21.6% | 34 (9.3%) | 42 (11.5%) | 119 (32.5%) ; 2019 | 290 | 14.33% | 3.92 | 47/14/23/38/168 | 16.2% | 30 (10.3%) | 28 (9.7%) | 76 (26.2%) ; 2020 | 288 | 14.23% | 3.25 | 87/29/21/28/123 | 30.2% | 34 (11.8%) | 58 (20.1%) | 112 (38.9%) ; 2021 | 60 | 2.96% | 3.52 | 15/2/8/7/28 | 25.0% | 8 (13.3%) | 18 (30.0%) | 12 (20.0%) ; 2022 | 37 | 1.83% | 3.92 | 7/1/3/3/23 | 18.9% | 1 (2.7%) | 5 (13.5%) | 6 (16.2%) ; 2023 | 16 | 0.79% | 3.62 | 5/0/0/2/9 | 31.2% | 0 (0.0%) | 1 (6.2%) | 2 (12.5%) ; 2024 | 23 | 1.14% | 3.83 | 5/1/1/2/14 | 21.7% | 2 (8.7%) | 3 (13.0%) | 5 (21.7%) ; 2025 | 15 | 0.74% | 3.47 | 3/3/1/0/8 | 20.0% | 2 (13.3%) | 2 (13.3%) | 2 (13.3%) ; 2026 (to 6 Aug) | 16 | 0.79% | 2.94 | 7/1/1/0/7 | 43.8% | 1 (6.2%) | 0 (0.0%) | 7 (43.8%)
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-107 — Composite unions by era (verbatim): monetisation friction 1.0% → 7.0% → 9.5% → 35.4% → 9.3%; backlash 0 → 0 → 3.0% → 29.1% → 7.0%; billing & entitlement 0.4% → 6.5% → 4.4% → 6.3% → 3.1%; reliability 6.5% → 26.2% → 30.0% → 41.8% → 19.4%; data & account 2.3% → 11.0% → 10.4% → 7.4% → 5.4%; neglect 1.3% → 6.2% → 14.1% → 14.3% → 8.5%; design praise 38.6% → 26.0% → 23.3% → 12.2% → 21.7%; tracking praise 22.3% → 16.5% → 14.9% → 10.6% → 10.1%; motivation 24.4% → 20.2% → 13.9% → 5.8% → 10.9%; free tier discussed 6.3% → 9.0% → 8.7% → 3.2% → 7.0%; device reach 1.7% → 6.0% → 9.7% → 6.9% → 4.7%; feature requests 5.8% → 8.5% → 7.9% → 4.8% → 10.1%
+
+- **Where:** §8.3 unions by era (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Union | E1 (n=709) | E2 (n=400) | E3 (n=597) | E4 (n=189) | E5 (n=129) ; Monetization friction (any negative PAY code) | 1.0% (7) | 7.0% (28) | 9.5% (57) | 35.4% (67) | 9.3% (12) ; Subscription-model backlash (price rise, sub objection, legacy buyers, nag, forced) | 0.0% (0) | 0.0% (0) | 3.0% (18) | 29.1% (55) | 7.0% (9) ; Billing & entitlement failures (can't buy, lost purchase, charge, legacy, refund, regret) | 0.4% (3) | 6.5% (26) | 4.4% (26) | 6.3% (12) | 3.1% (4) ; Reliability failure (any bug, sync, account, reminder failure) | 6.5% (46) | 26.2% (105) | 30.0% (179) | 41.8% (79) | 19.4% (25) ; Data & account continuity (sync, login, data loss, lost purchase) | 2.3% (16) | 11.0% (44) | 10.4% (62) | 7.4% (14) | 5.4% (7) ; Neglect signals (abandoned, support silent, no new-screen support) | 1.3% (9) | 6.2% (25) | 14.1% (84) | 14.3% (27) | 8.5% (11) ; Design praise (clean, pretty, customisable) | 38.6% (274) | 26.0% (104) | 23.3% (139) | 12.2% (23) | 21.7% (28) ; Tracking model praise (flexible goals, streaks, stats) | 22.3% (158) | 16.5% (66) | 14.9% (89) | 10.6% (20) | 10.1% (13) ; Motivation layer (felt motivation, messages, streaks, community) | 24.4% (173) | 20.2% (81) | 13.9% (83) | 5.8% (11) | 10.9% (14) ; Free tier discussed (generous or capped) | 6.3% (45) | 9.0% (36) | 8.7% (52) | 3.2% (6) | 7.0% (9) ; Device reach gaps (iPad, widget, Watch/Mac/web, new screens) | 1.7% (12) | 6.0% (24) | 9.7% (58) | 6.9% (13) | 4.7% (6) ; Brand irritants (splash photo, icon, message wording) | 0.6% (4) | 2.2% (9) | 1.8% (11) | 1.6% (3) | 2.3% (3) ; Any feature request | 5.8% (41) | 8.5% (34) | 7.9% (47) | 4.8% (9) | 10.1% (13) ; No product experience (LOWINFO or PREUSE) | 21.2% (150) | 13.5% (54) | 11.1% (66) | 5.3% (10) | 10.1% (13) ; Support mentioned (good or bad) | 2.1% (15) | 3.5% (14) | 6.0% (36) | 10.1% (19) | 4.7% (6)
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-108 — Selected codes by era (verbatim)
+
+- **Where:** §8.3 codes by era (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Theme | E1 (n=709) | E2 (n=400) | E3 (n=597) | E4 (n=189) | E5 (n=129) ; DES_CLEAN | 31.3% (222) | 22.2% (89) | 19.8% (118) | 10.1% (19) | 20.9% (27) ; MOT_GOOD | 14.5% (103) | 13.5% (54) | 9.2% (55) | 3.2% (6) | 7.0% (9) ; STAT_GOOD | 12.0% (85) | 8.0% (32) | 9.0% (54) | 5.8% (11) | 3.9% (5) ; CORE_FLEX | 9.9% (70) | 6.2% (25) | 5.9% (35) | 4.8% (9) | 7.0% (9) ; OUT_LIFE | 10.7% (76) | 6.0% (24) | 6.5% (39) | 2.1% (4) | 6.2% (8) ; REM_GOOD | 7.6% (54) | 5.5% (22) | 3.2% (19) | 1.1% (2) | 0.0% (0) ; MOT_MSG | 4.4% (31) | 3.8% (15) | 2.3% (14) | 1.1% (2) | 1.6% (2) ; PAY_FREE_OK | 3.8% (27) | 5.5% (22) | 6.2% (37) | 2.1% (4) | 4.7% (6) ; PAY_CAP | 4.1% (29) | 4.8% (19) | 5.4% (32) | 1.1% (2) | 3.9% (5) ; PAY_BOUGHT | 5.4% (38) | 9.2% (37) | 9.4% (56) | 14.3% (27) | 5.4% (7) ; PAY_WORTH | 2.0% (14) | 2.0% (8) | 0.7% (4) | 0.0% (0) | 0.8% (1) ; BUG_CRASH | 3.7% (26) | 12.8% (51) | 13.1% (78) | 19.6% (37) | 3.9% (5) ; BUG_UPDATE | 0.4% (3) | 3.2% (13) | 1.5% (9) | 9.5% (18) | 0.0% (0) ; BUG_COMPAT | 0.0% (0) | 2.2% (9) | 6.0% (36) | 4.2% (8) | 0.0% (0) ; ACCT_BUG | 0.8% (6) | 6.5% (26) | 3.2% (19) | 1.6% (3) | 2.3% (3) ; PAY_IAP_FAIL | 0.1% (1) | 3.2% (13) | 0.0% (0) | 0.0% (0) | 0.0% (0) ; SYNC_BUG | 1.3% (9) | 3.0% (12) | 6.0% (36) | 0.5% (1) | 3.1% (4) ; BUG_DATA | 0.1% (1) | 2.2% (9) | 2.7% (16) | 4.8% (9) | 0.0% (0) ; SUP_BAD | 1.1% (8) | 3.5% (14) | 6.0% (36) | 10.1% (19) | 4.7% (6) ; DEV_ABANDON | 0.4% (3) | 0.8% (3) | 4.9% (29) | 1.1% (2) | 3.9% (5) ; PAY_PRICE_HIGH | 0.3% (2) | 0.0% (0) | 3.4% (20) | 9.5% (18) | 1.6% (2) ; PAY_SUB_NEG | 0.0% (0) | 0.0% (0) | 2.5% (15) | 1.6% (3) | 0.8% (1) ; PAY_NAG | 0.0% (0) | 0.0% (0) | 0.0% (0) | 20.1% (38) | 4.7% (6) ; PAY_FORCED | 0.0% (0) | 0.0% (0) | 0.0% (0) | 10.6% (20) | 0.0% (0) ; BUG_DARK | 0.0% (0) | 0.0% (0) | 0.2% (1) | 4.8% (9) | 0.0% (0) ; IPAD | 0.8% (6) | 2.0% (8) | 1.8% (11) | 1.6% (3) | 1.6% (2) ; PLATFORM_WANT | 0.0% (0) | 1.2% (5) | 2.3% (14) | 1.6% (3) | 1.6% (2) ; USER_CHURN | 0.3% (2) | 2.5% (10) | 2.7% (16) | 10.1% (19) | 1.6% (2) ; META_LOWINFO | 18.5% (131) | 12.2% (49) | 10.2% (61) | 4.8% (9) | 8.5% (11)
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-109 — Selected codes by year (verbatim)
+
+- **Where:** §8.3 codes by year (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Theme | 2015 | 2016 | 2017 | 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 ; DES_CLEAN | 35.8 | 29.6 | 27.9 | 18.3 | 21.7 | 14.6 | 15.0 | 16.2 | 18.8 | 21.7 | 20.0 | 31.2 ; MOT_GOOD | 10.9 | 14.8 | 15.1 | 12.6 | 8.6 | 5.2 | 5.0 | 8.1 | 6.2 | 4.3 | 13.3 | 0.0 ; STAT_GOOD | 9.5 | 13.8 | 9.0 | 8.2 | 9.7 | 6.9 | 5.0 | 5.4 | 6.2 | 4.3 | 0.0 | 0.0 ; CORE_FLEX | 10.9 | 10.5 | 6.9 | 5.5 | 5.5 | 6.2 | 5.0 | 10.8 | 18.8 | 4.3 | 0.0 | 0.0 ; OUT_LIFE | 9.5 | 9.5 | 9.8 | 5.7 | 6.9 | 4.2 | 5.0 | 10.8 | 6.2 | 8.7 | 0.0 | 0.0 ; REM_GOOD | 8.8 | 8.0 | 6.1 | 3.3 | 4.1 | 2.1 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 ; MOT_MSG | 3.6 | 6.3 | 2.1 | 3.0 | 2.8 | 1.7 | 0.0 | 5.4 | 0.0 | 0.0 | 0.0 | 0.0 ; PAY_FREE_OK | 0.0 | 5.0 | 4.8 | 4.6 | 8.6 | 2.8 | 6.7 | 8.1 | 0.0 | 4.3 | 0.0 | 0.0 ; PAY_CAP | 1.5 | 4.5 | 3.7 | 5.7 | 6.9 | 2.1 | 3.3 | 2.7 | 0.0 | 4.3 | 0.0 | 12.5 ; PAY_BOUGHT | 4.4 | 5.0 | 7.2 | 9.3 | 10.3 | 11.8 | 13.3 | 2.7 | 0.0 | 8.7 | 13.3 | 6.2 ; PAY_WORTH | 2.9 | 2.0 | 1.6 | 1.4 | 0.7 | 0.3 | 0.0 | 0.0 | 0.0 | 0.0 | 6.7 | 0.0 ; BUG_CRASH | 4.4 | 2.5 | 9.8 | 18.0 | 8.3 | 14.6 | 11.7 | 5.4 | 6.2 | 4.3 | 0.0 | 6.2 ; BUG_UPDATE | 1.5 | 0.3 | 3.2 | 1.1 | 0.7 | 6.9 | 3.3 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 ; BUG_COMPAT | 0.0 | 0.0 | 1.3 | 3.8 | 5.9 | 5.9 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 ; ACCT_BUG | 0.0 | 1.0 | 1.6 | 7.4 | 3.1 | 2.8 | 0.0 | 2.7 | 0.0 | 0.0 | 6.7 | 6.2 ; PAY_IAP_FAIL | 0.0 | 0.3 | 0.8 | 2.7 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 ; SYNC_BUG | 1.5 | 1.0 | 1.6 | 3.3 | 7.9 | 3.8 | 3.3 | 5.4 | 0.0 | 0.0 | 0.0 | 0.0 ; BUG_DATA | 0.0 | 0.3 | 1.1 | 3.0 | 2.8 | 2.1 | 8.3 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 ; SUP_BAD | 0.0 | 1.3 | 2.1 | 4.9 | 5.9 | 8.3 | 10.0 | 5.4 | 6.2 | 4.3 | 0.0 | 6.2 ; DEV_ABANDON | 0.0 | 0.8 | 0.0 | 1.1 | 7.2 | 3.1 | 0.0 | 2.7 | 0.0 | 4.3 | 6.7 | 12.5 ; PAY_PRICE_HIGH | 0.0 | 0.5 | 0.0 | 2.5 | 3.1 | 4.2 | 13.3 | 2.7 | 0.0 | 4.3 | 0.0 | 0.0 ; PAY_SUB_NEG | 0.0 | 0.0 | 0.0 | 2.2 | 1.4 | 1.4 | 3.3 | 0.0 | 0.0 | 0.0 | 6.7 | 0.0 ; PAY_NAG | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 10.1 | 16.7 | 10.8 | 0.0 | 4.3 | 0.0 | 0.0 ; PAY_FORCED | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 6.6 | 1.7 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 ; BUG_DARK | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 3.5 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 ; IPAD | 0.7 | 0.8 | 1.3 | 2.2 | 2.1 | 1.7 | 0.0 | 2.7 | 0.0 | 4.3 | 0.0 | 0.0 ; PLATFORM_WANT | 0.0 | 0.0 | 0.5 | 2.2 | 2.8 | 0.7 | 3.3 | 0.0 | 0.0 | 4.3 | 6.7 | 0.0 ; USER_CHURN | 0.0 | 0.0 | 2.1 | 2.7 | 2.1 | 6.6 | 8.3 | 0.0 | 0.0 | 0.0 | 0.0 | 6.2 ; META_LOWINFO | 16.1 | 18.8 | 15.4 | 12.0 | 9.3 | 7.3 | 11.7 | 2.7 | 0.0 | 13.0 | 20.0 | 0.0
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-110 — Monthly detail for the incident windows (verbatim): 2017-07 47 reviews at 3.38 (gb×16; BUG_CRASH 12, BUG_UPDATE 10); 2018-01 62 at 3.50 (ACCT_BUG 14, PAY_IAP_FAIL 10, BUG_CRASH 9); 2018-11 45 at 2.62 (br×25; BUG_CRASH 24); 2020-07 68 at 2.09, 39×1★ (PAY_NAG 24, PAY_FORCED 15, BUG_UPDATE 11, BUG_DARK 7); 2020-10 25 at 2.76 (gb×9; BUG_CRASH 12); 2021-02 10 at 2.80
+
+- **Where:** §8.4 monthly table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Month | Reviews | Mean ★ | 1★ | Top storefronts | BUG_CRASH | BUG_UPDATE | BUG_COMPAT | ACCT_BUG | PAY_IAP_FAIL | SYNC_BUG | SUP_BAD | PAY_PRICE_RISE | PAY_NAG | PAY_FORCED | BUG_DARK | BUG_DATA ; 2017-05 | 28 | 4.11 | 5 | us×17, ca×3, mx×2 | 1 | 0 | 0 | 1 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 ; 2017-06 | 18 | 4.61 | 1 | us×10, gb×2, th×1 | 2 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 ; 2017-07 | 47 | 3.38 | 17 | gb×16, us×14, ca×3 | 12 | 10 | 2 | 1 | 0 | 2 | 3 | 0 | 0 | 0 | 0 | 2 ; 2017-08 | 40 | 4.70 | 0 | us×18, br×4, gb×3 | 2 | 1 | 0 | 1 | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 ; 2017-09 | 38 | 4.66 | 2 | us×16, ca×3, au×3 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 ; 2017-10 | 23 | 4.04 | 4 | us×7, br×5, gb×2 | 5 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 2 ; 2017-11 | 38 | 4.03 | 2 | us×12, gb×4, cn×3 | 5 | 1 | 1 | 2 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 ; 2017-12 | 18 | 4.50 | 0 | us×13, gb×2, ca×2 | 2 | 0 | 2 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 ; 2018-01 | 62 | 3.50 | 16 | us×33, gb×8, au×4 | 9 | 0 | 3 | 14 | 10 | 1 | 3 | 0 | 0 | 0 | 0 | 0 ; 2018-02 | 41 | 3.73 | 10 | us×18, gb×5, de×4 | 7 | 0 | 0 | 3 | 0 | 4 | 4 | 0 | 0 | 0 | 0 | 2 ; 2018-05 | 27 | 3.74 | 5 | us×13, gb×3, de×2 | 2 | 0 | 1 | 2 | 0 | 2 | 1 | 0 | 0 | 0 | 0 | 1 ; 2018-06 | 21 | 3.52 | 6 | us×14, ca×1, au×1 | 1 | 0 | 1 | 2 | 0 | 0 | 2 | 2 | 0 | 0 | 0 | 2 ; 2018-07 | 16 | 4.50 | 0 | gb×3, us×2, de×2 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 ; 2018-08 | 27 | 3.74 | 5 | us×8, de×3, cl×3 | 8 | 0 | 0 | 1 | 0 | 2 | 1 | 1 | 0 | 0 | 0 | 0 ; 2018-09 | 9 | 4.33 | 1 | us×5, gb×1, pt×1 | 1 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 ; 2018-10 | 31 | 4.16 | 3 | us×15, br×4, in×3 | 3 | 0 | 2 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 ; 2018-11 | 45 | 2.62 | 22 | br×25, us×7, mx×3 | 24 | 3 | 5 | 0 | 0 | 0 | 6 | 0 | 0 | 0 | 0 | 3 ; 2018-12 | 21 | 3.76 | 4 | us×6, br×2, cn×2 | 4 | 0 | 2 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 1 ; 2020-05 | 24 | 4.12 | 4 | us×9, br×4, vn×3 | 3 | 0 | 2 | 2 | 0 | 1 | 2 | 0 | 0 | 0 | 0 | 1 ; 2020-06 | 20 | 3.90 | 3 | us×7, gb×5, br×2 | 3 | 3 | 1 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 1 | 0 ; 2020-07 | 68 | 2.09 | 39 | us×22, gb×14, de×8 | 4 | 11 | 6 | 1 | 0 | 0 | 3 | 0 | 24 | 15 | 7 | 0 ; 2020-08 | 22 | 3.36 | 5 | us×10, gb×2, ca×2 | 2 | 1 | 2 | 1 | 0 | 0 | 2 | 0 | 0 | 0 | 2 | 0 ; 2020-09 | 11 | 3.00 | 5 | us×4, gb×2, nl×1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 3 | 4 | 0 | 1 ; 2020-10 | 25 | 2.76 | 8 | gb×9, us×6, ca×2 | 12 | 1 | 0 | 1 | 0 | 1 | 4 | 0 | 1 | 0 | 0 | 3 ; 2020-11 | 15 | 3.00 | 6 | gb×8, us×4, in×1 | 8 | 1 | 0 | 0 | 0 | 0 | 3 | 0 | 0 | 0 | 0 | 0 ; 2020-12 | 10 | 3.00 | 4 | gb×4, us×3, ch×1 | 4 | 2 | 0 | 0 | 0 | 0 | 2 | 0 | 1 | 0 | 0 | 0 ; 2021-01 | 10 | 3.10 | 4 | gb×3, pk×1, ph×1 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | 0 | 2 | 1 | 0 | 1 ; 2021-02 | 10 | 2.80 | 4 | gb×5, us×2, ru×2 | 5 | 0 | 0 | 0 | 0 | 0 | 2 | 0 | 0 | 0 | 0 | 2 ; 2021-03 | 6 | 3.83 | 1 | us×4, gb×1, ph×1 | 1 | 1 | 0 | 0 | 0 | 0 | 2 | 0 | 2 | 0 | 0 | 2 ; 2021-04 | 5 | 4.00 | 1 | us×4, se×1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 ; 2021-05 | 7 | 2.71 | 2 | us×3, de×1, in×1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 4 | 0 | 0 | 0
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-111 — Incident windows (verbatim): I1 Jul 2017 update crash on launch (mostly UK), an iPhone 5 build drops support — fixed by early August, August mean 4.70; I2 Nov 2017 → Aug 2020 no iPhone X / notch layout (BUG_COMPAT 53) — fixed Dec 2020; I3 Jan 2018 registration spinner, 'email invalid', purchase button crashes — 22 of 62 reviews (35.5%), PAY_IAP_FAIL never recurs; I4 Jun 2018 one-time premium replaced by ~$19.99/yr, release note says only 'Changes' — PAY_PRICE_HIGH 20 in E3 vs 0 in E2, persistent to 2024; I5 Nov 2018 iOS 12 opens and closes (Brazil) — 45 at 2.62, 24 crash (23 br), drops to 2 in Dec; I6 2019 sync dead, support gone, 'abandoned' — updates resume 2020, sync complaints recur to 2022; I7 Jul 2020 full-screen pop-up on every launch, X triggers purchase, free users feel locked out, dark mode unreadable, taps mark the wrong day — 68 at 2.09, 51.5% carry NAG or FORCED, 11 on 12 Jul — PAY_FORCED ends Jan 2021, PAY_NAG persists to Dec 2024; I8 Oct 2020 → Feb 2021 start-up crash after 2020 updates, data lost on reinstall, tickets unanswered — 30 crash (26 gb), 1.4.11 fixed it for one reviewer in Mar 2021; I9 2026 habits can't be deleted or deactivated, login fails after a phone transfer — open at corpus end (4 reviews)
+
+- **Where:** §8.4 incident table (verbatim)
+- **This app does:** n/a
+- **User reaction:** 1★-burst
+- **Magnitude:** # | Window | What reviewers say | Evidence | Resolution in the data ; I1 | Jul 2017 | An update makes the app crash on launch (mostly UK); an iPhone 5 build drops support | 47 reviews, mean 3.38, 17×1★; BUG_CRASH 12, BUG_UPDATE 10, BUG_COMPAT 2 · 1673060449 1683236770 1700889647 | Fixed by early August (1707578570, 1708245143); August mean 4.70 ; I2 | Nov 2017 → Aug 2020 | No iPhone X / notch layout | BUG_COMPAT 53 total, first 1923610880, peak E3 (36) · 3535806272 4498607051 | Fixed in a December 2020 update (6718923959) ; I3 | Jan 2018 | Registration spinner, "email invalid", purchase button crashes | 62 reviews, mean 3.50; ACCT_BUG 14, PAY_IAP_FAIL 10, BUG_CRASH 9; 22 of 62 reviews (35.5%) carry ACCT_BUG or PAY_IAP_FAIL · 2059981427 2061252128 2072252724 | PAY_IAP_FAIL never recurs after Jan 2018; ACCT_BUG continues at a lower level ; I4 | Jun 2018 | One-time premium replaced by a ~$19.99/yr subscription; release note says only "Changes" | PAY_PRICE_RISE first 2640020936, 2644893532; PAY_PRICE_HIGH 20 in E3 vs 0 in E2 | Persistent: price complaints continue to 2024 ; I5 | Nov 2018 | iOS 12 — app opens and closes (Brazil) | 45 reviews, mean 2.62, 22×1★; BUG_CRASH 24, 23 of them in br · 3385427817 3389236529 3407975558 | Not stated; Brazil's crash reviews drop to 2 in Dec 2018 ; I6 | 2019 | Sync dead, support gone, "abandoned" | E3 SYNC_BUG 36, DEV_ABANDON 29, SUP_BAD 36 · 4497695218 4830530932 4871183371 | Updates resume in 2020 (6718923959), but sync complaints recur to 2022 (8196540108) ; I7 | Jul 2020 | Full-screen premium pop-up on every launch; X triggers purchase; free users feel locked out; dark mode unreadable; taps mark the wrong day | 68 reviews, mean 2.09, 39×1★; PAY_NAG 24, PAY_FORCED 15, BUG_UPDATE 11, BUG_DARK 7; 35 of 68 reviews (51.5%) carry PAY_NAG or PAY_FORCED; 11 reviews on 12 Jul · 6188273678 6189489425 6217825775 | PAY_FORCED ends Jan 2021; PAY_NAG persists (E5 6, last Dec 2024) ; I8 | Oct 2020 → Feb 2021 | App crashes on start-up after the 2020 updates; data lost on reinstall; support ticket unanswered | 70 reviews Oct–Feb; BUG_CRASH 30, 26 in gb · 6589055391 6706410264 6947911333 | Version 1.4.11 fixed it for one reviewer in March 2021 (7097957463) ; I9 | 2026 | Habits can't be deleted or deactivated; login fails after a phone transfer | 13742195758 13899897825 14081068315 14101520315 | Open at corpus end (6 Aug 2026) — 4 reviews, weak
+- **Direction for us:** must-never-break · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `1673060449`, `1683236770`, `1707578570`, `1708245143`, `1923610880`, `6718923959`, `2059981427`, `2072252724`, `3385427817`, `3389236529`, `3407975558`, `4830530932`, `8196540108`, `6188273678`, `6189489425`, `6589055391`, `6947911333`, `13742195758`
+- **Canonical:** C031 Crashes / launch failures; C104 Never ship a paywall or feature-removal change silently; C175 Updates must not break function or wipe progress; C274 A close or dismiss control must never start a purchase — no fake X, no dismissal that lands on the payment sheet
+
+### R55-115 — Persistent, improving and disappearing themes (verbatim): DES_CLEAN persistent 31.3% → 22.2% → 19.8% → 10.1% → 20.9%; CORE_FLEX persistent 9.9% → 6.2% → 5.9% → 4.8% → 7.0%; REM_GOOD disappearing 7.6% → 5.5% → 3.2% → 1.1% → 0.0%; PAY_WORTH disappears after subscription 2.0% → 2.0% → 0.7% → 0 → 0.8%; BUG_CRASH 3.7% → 12.8% → 13.1% → 19.6% → 3.9% (improving in E5, cautious); SUP_BAD 1.1% → 3.5% → 6.0% → 10.1% → 4.7% persistent; DEV_ABANDON recurs whenever updates stall 0.4% → 0.8% → 4.9% → 1.1% → 3.9%; SYNC_BUG peak E3 6.0% recurring; PAY_PRICE_HIGH emerged 2018, peak E4 9.5%; PAY_NAG emerged 2020 20.1% → 4.7% persistent; PAY_FORCED E4 only 10.6% — resolved; BUG_COMPAT resolved Dec 2020; USER_CHURN peak E4 10.1%; PAY_BOUGHT share rises to E4 14.3% — payers write more when things break
+
+- **Where:** §8.6 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Theme | Trajectory | Evidence (era shares) | Label ; Simplicity praise (DES_CLEAN) | Persistent, dips in the incident era | 31.3% → 22.2% → 19.8% → 10.1% → 20.9% | Persistent ; Flexible goals (CORE_FLEX) | Persistent | 9.9% → 6.2% → 5.9% → 4.8% → 7.0% | Persistent ; Reminder praise (REM_GOOD) | Disappears | 7.6% → 5.5% → 3.2% → 1.1% → 0.0% | Disappearing ; Premium worth it (PAY_WORTH) | Disappears after subscription | 2.0% → 2.0% → 0.7% → 0.0% → 0.8% | Disappearing ; Crashes (BUG_CRASH) | Worsening to E4, then low | 3.7% → 12.8% → 13.1% → 19.6% → 3.9% | Improving in E5 (n = 129; cautious) ; Support silence (SUP_BAD) | Worsening, then persistent | 1.1% → 3.5% → 6.0% → 10.1% → 4.7% | Persistent ; Abandonment (DEV_ABANDON) | Recurs whenever updates stall | 0.4% → 0.8% → 4.9% → 1.1% → 3.9% | Persistent ; Sync failure (SYNC_BUG) | Peak E3 | 1.3% → 3.0% → 6.0% → 0.5% → 3.1% | Persistent (recurring) ; Subscription price (PAY_PRICE_HIGH) | New in E3, peak E4 | 0.3% → 0.0% → 3.4% → 9.5% → 1.6% | Emerged 2018; improving ; Pop-up nag (PAY_NAG) | New in E4 | 0 → 0 → 0 → 20.1% → 4.7% | Emerged 2020; persistent at a lower level ; Forced payment (PAY_FORCED) | E4 only | 0 → 0 → 0 → 10.6% → 0 | Resolved ; iPhone X layout (BUG_COMPAT) | E2–E4 | 0.0% → 2.2% → 6.0% → 4.2% → 0.0% | Resolved (Dec 2020) ; Churn statements (USER_CHURN) | Peak E4 | 0.3% → 2.5% → 2.7% → 10.1% → 1.6% | Worsening to E4 ; Paid-reviewer share (PAY_BOUGHT) | Rises to E4 | 5.4% → 9.2% → 9.4% → 14.3% → 5.4% | Payers write more when things break
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C036 A support channel that exists, is reachable outside the app, and answers; C071 Never ship and walk away
+
+## Positioning
+
+### R55-001 — Habit-Bull / HabitBull (App Store ID 1041482672; subtitle 'Daily Goal Planner · Best To Do List · Streak Tracker') by AppForge Inc. (bundle oristats.HabitBull; also an Android version) — 2,024 written reviews, 82 storefronts, 9 Nov 2015 → 6 Aug 2026 (130 months), extracted 8 Sep 2026; written mean 4.05 (1,291×5★, 227×4★, 122×3★, 81×2★, 303×1★); snapshot 20,955 public ratings at 4.65, ranked in 52 storefronts, best search rank 6, median 21.5, audience 'moderate'; praised for a decade as a simple, flexible tracker (yes/no or numeric habits, 'N times a week', streak calendars, a generous five-habit free tier) whose complaints come from what happened around the core — crash waves, a paid sync that doesn't work, a 2018 one-time → subscription switch, a July 2020 every-launch upsell whose close button started a purchase, and silent support
+
+- **Where:** header lines 1-7
+- **This app does:** free 5 habits; one-time premium $3.99–$4.99 until Jun 2018, then ~$19.99/yr subscription
+- **User reaction:** mixed
+- **Magnitude:** 2,024 reviews; 20,955 ratings at 4.65
+- **Direction for us:** none · **Report confidence:** corpus-level fact · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-030 — Positioning: reviewers came from paper, spreadsheets and competitors — Strides, Way of Life, Productive, coach.me, Streaks, Todoist, Habit List (USER_SWITCH 194, 9.58%, 4.68); they accept its looks for its function ('I'll take function over form any day'); against 3-habit free tiers it wins on generosity; against subscription competitors the one-time price was the pitch until 2018; therapists and a clinical psychologist recommend it to clients; quit-habit trackers use it for smoking, alcohol, nail-biting and NoFap
+
+- **Where:** §2.5
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** USER_SWITCH 194 (9.58%, 4.68)
+- **Direction for us:** none · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Review IDs:** `1337205851`, `1344986445`, `1369720640`, `3622687510`, `2590464683`, `1313140033`, `7873992832`, `2458999867`, `1429720658`, `1969268466`, `1508953907`, `2054775005`, `8292350972`, `5236944006`, `6087663524`
+- **Canonical:** C005 Know which competitors buyers compare against
+
+### R55-043 — Dated, non-iOS-like UI N8 DES_UX_NEG 67 (3.31%, very strong, 3.45) — mixed in practice, 41 of 67 at 4–5★: flip transitions, 'looks like an app you'd find on the iPhone 3G', small toggles, numeric entry; many accept it — 'Functional but ugly'
+
+- **Where:** §3.3 N8
+- **This app does:** dated UI
+- **User reaction:** mixed
+- **Magnitude:** 67 (3.45); 41 at 4–5★
+- **Direction for us:** none · **Report confidence:** very strong · **Generalisable:** generalisable
+- **Review IDs:** `3833781377`, `5503142349`, `5870204615`, `2836942295`, `4503187234`, `4182020657`, `12926808321`, `7873992832`
+- **Canonical:** C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
+
+## Anti-patterns
+
+### R55-006 — The in-app rating prompt: META_PROMPT 9 (0.44%, weak, mean 2.44) — 'You have asked me 4 time within 1 minute to rate your app'; a lock screen and rating dialog that trapped a user; 'Stop asking for a review'; one Brazilian found it cute; the prompt plausibly inflates short 5★ (LOWINFO reviews average 4.89) — a hypothesis, not a measured effect
+
+- **Where:** §1.7 rating prompt
+- **This app does:** repeated rating prompts, one trapping a user behind the passcode lock
+- **User reaction:** complaint
+- **Magnitude:** 9 (0.44%, 2.44)
+- **Direction for us:** dont · **Report confidence:** weak · **Generalisable:** generalisable
+- **Review IDs:** `1956880711`, `1675008191`, `7738946654`, `1378213453`
+- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire
+
+### R55-009 — The headline paid feature was cross-device sync and reviewers say it did not work: 'I bought the premium because I wanted to sync. Can't sync anywhere and app says no signal' (us, 3★, 2019); 'Paid £17.49 to sync phone/iPad/watch and it doesn't work. No response from app developer and Apple won't help' (gb, 1★, 2020); 'if you subscribe you wont be able to sync across your devices!!! … if you change phone or reset your device YOU WILL NOT GET BACK YOUR DATA' (us, 1★, 2019); SYNC_BUG 62 (3.06%)
+
+- **Where:** §0.1 sync quotes; §2.4
+- **This app does:** paid sync broken
+- **User reaction:** 1★-burst
+- **Magnitude:** SYNC_BUG 62 (3.06%); 36 payers (21.8%)
+- **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** generalisable
+- **Review IDs:** `4823714493`, `5384533156`, `4956440235`
+- **Canonical:** C013 Cloud sync / multi-device as the paid differentiator; C030 Sync must work — and prove it; C078 Ship the paid feature working before you sell it — the purchase trigger must never be the broken feature
+
+### R55-013 — July 2020 — the pop-up that bought for you: PAY_NAG 44 (2.17%, meaningful, mean 2.02), first 5 Jul 2020, still reported Dec 2024; PAY_FORCED 20 (0.99%, emerging, mean 1.25), all 10 Jul 2020 → 3 Jan 2021; in July 2020 alone 35 of 68 reviews (51.5%) carry one or both — 'I clicked on the x at the top, but instead of giving me the data screen, it acted like I'd tried to make a purchase' (us, 4★); 'The pop up has a fake X in the top corner to close the message, which if you press, causes your account to agree to the premium subscription' (gb, 1★); decision: remove the every-launch upsell and any close control that can start a purchase (E4 mean 2.72)
+
+- **Where:** §0.2 July 2020 pop-up; §0.9 #2
+- **This app does:** every-launch full-screen upsell; close control starts purchase
+- **User reaction:** 1★-burst
+- **Magnitude:** PAY_NAG 44 (2.02); PAY_FORCED 20 (1.25); Jul 2020 35 of 68 (51.5%)
+- **Direction for us:** dont · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Review IDs:** `6194515737`, `6217825775`
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C145 Every promotional or onboarding modal must be dismissible on the smallest screen; C274 A close or dismiss control must never start a purchase — no fake X, no dismissal that lands on the payment sheet
+
+### R55-054 — The per-habit forum splits reviewers: support network for most (COMM_GOOD 31) but clutter, a one-topic feed and anonymous shaming for others (COMM_NEG 8, 3.25)
+
+- **Where:** §3.5 forum row
+- **This app does:** open forum per habit
+- **User reaction:** mixed
+- **Magnitude:** 31 vs 8
+- **Direction for us:** research · **Report confidence:** weak · **Generalisable:** generalisable
+- **Review IDs:** `3359687522`, `5058377031`, `11630973154`
+- **Canonical:** C131 No default-on social feed in a personal tool
+
+### R55-064 — Sync, accounts and the iPad — multi-device reviewers describe the same sequence: pay for sync, open the iPad, find a stretched phone app, and see partial or no data — 'Therefore habitbull is a one device app only. And i have paid for pro. Unacceptable' (fr, 1★, updated through May 2019)
+
+- **Where:** §4.3
+- **This app does:** paid sync with no iPad layout
+- **User reaction:** 1★-burst
+- **Magnitude:** IPAD 30 (3.07)
+- **Direction for us:** must-never-break · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Review IDs:** `1645212180`, `2224962843`, `4174090943`, `4658666246`
+- **Canonical:** C030 Sync must work — and prove it; C141 Native iPad layout
+
+## Things not to do
+
+### R55-019 — Small brand irritants that cost ratings — 30 (1.48%, meaningful, mean 3.03): the launch-screen photo of a woman hiker (DES_SPLASH 20, 0.99%, 2016–2022), the app icon (DES_ICON 6), pet-name messages (MOT_MSG_NEG 4) — 'I purchased premium. I am uninstalling due to lack of dev response to the main photo of the girl' (us, 1★, 2017); 'Deleted when the reminder called me cutie' (us, 2★, 2020)
+
+- **Where:** §0.8
+- **This app does:** gendered splash photo; pet-name reminder copy
+- **User reaction:** churn
+- **Magnitude:** 30 (1.48%, 3.03); DES_SPLASH 20
+- **Direction for us:** dont · **Report confidence:** meaningful · **Generalisable:** generalisable
+- **Review IDs:** `1604334907`, `5378082186`
+- **Canonical:** C095 Neutral, non-judgemental tone on failure; C184 Gendered branding narrows the audience; a neutral name is already tested
+
+### R55-086 — Accidental purchases via the pop-up or a mistaken upgrade ('after mistakenly upgrading')
+
+- **Where:** §6.2 accidental purchase
+- **This app does:** close control starts purchase
+- **User reaction:** 1★-burst
+- **Magnitude:** report gives none
+- **Direction for us:** dont · **Report confidence:** report gives none · **Generalisable:** generalisable
+- **Review IDs:** `6217825775`, `11359320730`
+- **Canonical:** C274 A close or dismiss control must never start a purchase — no fake X, no dismissal that lands on the payment sheet
+
+### R55-112 — The June 2018 switch to a ~$19.99/yr subscription shipped with a release note that said only 'Changes' — reviewers read the silence as part of the betrayal ('all you get while updating? Changes')
+
+- **Where:** §8.4 I4 release notes
+- **This app does:** undisclosed pricing change in release notes
+- **User reaction:** 1★-burst
+- **Magnitude:** PAY_PRICE_HIGH 0 in E2 → 20 in E3
+- **Direction for us:** dont · **Report confidence:** incident window · **Generalisable:** generalisable
+- **Review IDs:** `2640020936`, `2644893532`
+- **Canonical:** C104 Never ship a paywall or feature-removal change silently
+
+### R55-117 — F2: remove the every-launch full-screen upsell and make close controls unambiguous so no dismissal can start a purchase — 'the cheapest change with the clearest rating effect in the data'; success PAY_NAG returns to 0
+
+- **Where:** §9.1 F2; part 9 #2
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** PAY_NAG 44; PAY_FORCED 20 at 1.25; Jul 2020 mean 2.09
+- **Direction for us:** dont · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Review IDs:** `6217825775`, `11359320730`
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C274 A close or dismiss control must never start a purchase — no fake X, no dismissal that lands on the payment sheet
+
+## Things to do
+
+### R55-045 — Privacy and account pressure N10 PRIV 9 (0.44%, weak, mixed): premium requires an e-mail account or the purchase is lost; cloud storage of goal data; a registration screen first; 'categories … important to Big Brother'; praise for no login needed
+
+- **Where:** §3.3 N10
+- **This app does:** optional account; premium tied to e-mail account
+- **User reaction:** mixed
+- **Magnitude:** 9 (3.00)
+- **Direction for us:** do · **Report confidence:** weak · **Generalisable:** generalisable
+- **Review IDs:** `2064388428`, `1602965339`, `5400671798`, `12577935798`, `4109413334`, `5099378918`, `8755695551`
+- **Canonical:** C035 Account system from day one; C085 Address tracking / privacy visibly
+
+### R55-131 — R5: make the launch photo optional or remove it and offer a neutral message tone
+
+- **Where:** §9.3 R5
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** brand irritants 30
+- **Direction for us:** do · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** C095 Neutral, non-judgemental tone on failure; C184 Gendered branding narrows the audience; a neutral name is already tested
+
+### R55-132 — R7: forum hygiene — topic filters and blocking of shaming replies
+
+- **Where:** §9.3 R7
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** COMM_NEG 8 vs COMM_GOOD 31
+- **Direction for us:** do · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** C131 No default-on social feed in a personal tool
+
+### R55-134 — What to do first: 1 F1 + F6 continuity for paying users; 2 F2 + M5 remove the every-launch upsell; 3 F4 + F5 release process and support channel; 4 M1 lifetime option and honouring legacy buyers; 5 F3 correctness of goals; 6 R1, R2 extend the model onto the devices users own
+
+- **Where:** §9.5 part 9 #1–#6
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** report gives none
+- **Direction for us:** do · **Report confidence:** report recommendation · **Generalisable:** generalisable
+- **Canonical:** — (nuance register)
+
+## Contradictions
+
+### R55-135 — Against the common reading that a habit cap is resented: here the five-habit free tier is praised more often than it is resented (PAY_FREE_OK 96 at 4.86 vs PAY_CAP 87 at 3.98, 44 of the 87 at 5★ stating the limit neutrally) and reviewers contrast it favourably with 3-habit competitors — the report says keep it and never shrink it; and the long-term user is both the best advocate and the most betrayed (USER_LONGTERM 23×1★ / 26×5★)
+
+- **Where:** §0.6; §0.9 #4; §5.7; §9.2 M2
+- **This app does:** free: 5 habits
+- **User reaction:** mixed
+- **Magnitude:** PAY_FREE_OK 96 vs PAY_CAP 87 (44 at 5★); USER_LONGTERM 23 / 26
+- **Direction for us:** build-free · **Report confidence:** very strong · **Generalisable:** generalisable
+- **Review IDs:** `3363102377`, `3728440907`, `2458999867`
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it
+
+## Data caveats and method
+
+### R55-002 — Method: all 2,024 reviews read individually in original language (English, Portuguese, Spanish, Catalan, German, French, Dutch, Danish, Swedish, Polish, Czech, Italian, Turkish, Vietnamese, Russian, Ukrainian, Chinese, Japanese, Korean, Arabic, Malayalam) in chronological order, 17 chunks of up to 125; hand-assigned from a 103-code, 12-family inductive taxonomy with a running codebook, earlier chunks revisited when later codes applied (USER_COACH, PAY_REGRET, MOT_WANT); 4,216 assignments (2.08 per review, median 2); validated 0 unknown IDs, 0 unassigned, 0 duplicate keys, 0 intra-review duplicates, 0 undefined codes, 0 of 103 unused; text cross-check after classification found two real misses, fixed; reconciliation exact against 82 by_country files, manifest (5:1,291 · 4:227 · 3:122 · 2:81 · 1:303; mean 4.0484) and _state.json (134 polled, 82 with reviews, all complete); one repeated title+body ('Good :: Good', MX 2017 and VN 2020) kept; denominator 2,024; signal bands <0.1% ignore · 0.1–0.5% weak · 0.5–1% emerging · 1–3% meaningful · 3–5% very strong · >5% high-priority; composite unions count each review once; text sub-cuts only inside hand-coded themes; no automated classifier; 13 fields, author/app_id/app_name/country_name unused; is_edited true for 4; vote_count>0 on 121 (5.98%), max 6, never weights; body median 111, mean 164.0
+
+- **Where:** §How to read this; §1.1–1.5
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** 2,024 (100%)
+- **Direction for us:** none · **Report confidence:** method statement · **Generalisable:** app-specific
+- **Review IDs:** `1615596534`, `5989825005`, `2070350968`, `11359320730`, `5501033289`
+- **Canonical:** — (nuance register)
+
+### R55-003 — Written corpus more negative than the public rating and unevenly: written = 9.66% of public ratings (2,024 of 20,955), mean 4.05 sits 0.60★ below 4.65; gap 0.14★ in Australia but 1.07★ in the UK and 1.18★ in Brazil — written reviews over-represent moments when something broke; incidents produce bursts of 1★ writers who would otherwise never review
+
+- **Where:** §Eight warnings 1; §1.6 #3
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** 9.66%; −0.60★; au −0.14, gb −1.07, br −1.18
+- **Direction for us:** none · **Report confidence:** corpus-level fact · **Generalisable:** generalisable
+- **Canonical:** — (nuance register)
+
+### R55-004 — Caveats: volume collapsed after 2020 (399 in 2016, 288 in 2020, 60 in 2021, 16 in 2026; eras 709 / 400 / 597 / 189 / 129, one review = 0.78 points of E5); English-dominant (US 43.53%, six English-primary storefronts 1,310 = 64.72%, 67 non-Latin-script reviews = 3.31%; six storefronts clear 50); no version field (two reviewers quote 1.4.7 and 1.4.11); 14.48% carry no product experience (LOWINFO 261 + PREUSE 32 = 293, mean 4.89); prices reviewer-reported (two say '$20 a month' where everyone else says a year); no live store data and one external source (habit_apps_ranked.json); no developer responses in the data though reviewers mention canned replies; storefront ≠ language; 'paid' means the reviewer says they paid — one-time buyers, subscribers and trial converts, no conversion rate
+
+- **Where:** §Eight warnings 2–5; §1.6 #1, #2, #4–#7
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** as listed
+- **Direction for us:** none · **Report confidence:** method statement · **Generalisable:** app-specific
+- **Review IDs:** `6706410264`, `7097957463`, `3278313008`, `5544529848`, `6360079136`, `7059744677`, `14394403203`
+- **Canonical:** — (nuance register)
+
+### R55-007 — Integrity: 12 Jul 2020 holds 11 reviews, all during the pop-up backlash; one unverified 2024 allegation that positive reviews are bought; one advert for a coaching service and one joke review kept and coded; 24 reviews (1.19%, meaningful) contradict their rating, 19 of them 5★ describing a failure
+
+- **Where:** §Eight warnings 6–7; §1.7
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** 11 on 12 Jul 2020; 24 contradictions
+- **Direction for us:** none · **Report confidence:** method statement · **Generalisable:** app-specific
+- **Review IDs:** `11359320730`, `1528497631`, `1758524697`
+- **Canonical:** — (nuance register)
+
+### R55-032 — Complete global theme table — all 103 codes (verbatim)
+
+- **Where:** §3.1 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** # | Theme | Family | Direction | n | % of 2,024 | Band | Mean ★ | 1/2/3/4/5 | Storefronts | First → last ; 1 | DES_CLEAN | DES | positive | 475 | 23.47% | High-priority | 4.89 | 0/1/3/42/429 | 47 | 2015-11-09 → 2026-08-06 ; 2 | META_LOWINFO | META | context | 261 | 12.90% | High-priority | 4.89 | 1/0/2/21/237 | 51 | 2015-11-09 → 2025-12-10 ; 3 | MOT_GOOD | MOT | positive | 227 | 11.22% | High-priority | 4.90 | 0/0/1/21/205 | 40 | 2015-11-10 → 2025-01-14 ; 4 | BUG_CRASH | BUG | negative | 197 | 9.73% | High-priority | 2.04 | 107/23/35/16/16 | 29 | 2015-11-29 → 2026-06-10 ; 5 | USER_SWITCH | USER | context | 194 | 9.58% | High-priority | 4.68 | 8/3/3/16/164 | 26 | 2015-11-10 → 2025-12-01 ; 6 | STAT_GOOD | STAT | positive | 187 | 9.24% | High-priority | 4.82 | 3/1/2/15/166 | 30 | 2015-11-09 → 2024-11-14 ; 7 | PAY_BOUGHT | PAY | context | 165 | 8.15% | High-priority | 2.56 | 82/14/11/11/47 | 26 | 2015-11-23 → 2026-02-12 ; 8 | OUT_LIFE | USE | positive | 151 | 7.46% | High-priority | 4.89 | 0/1/1/12/137 | 26 | 2015-11-11 → 2024-12-21 ; 9 | CORE_FLEX | CORE | positive | 148 | 7.31% | High-priority | 4.82 | 0/0/5/17/126 | 24 | 2015-11-13 → 2024-09-24 ; 10 | DES_PRETTY | DES | positive | 129 | 6.37% | High-priority | 4.75 | 2/1/5/11/110 | 26 | 2015-11-09 → 2024-11-14 ; 11 | REM_GOOD | REM | positive | 97 | 4.79% | Very strong | 4.90 | 0/0/1/8/88 | 13 | 2015-11-09 → 2020-11-28 ; 12 | PAY_FREE_OK | PAY | positive | 96 | 4.74% | Very strong | 4.86 | 1/0/0/9/86 | 25 | 2016-01-09 → 2024-11-14 ; 13 | PAY_CAP | PAY | mixed | 87 | 4.30% | Very strong | 3.98 | 9/4/11/19/44 | 20 | 2015-11-16 → 2026-07-08 ; 14 | SUP_BAD | SUP | negative | 83 | 4.10% | Very strong | 1.45 | 66/4/8/3/2 | 20 | 2016-01-19 → 2026-04-19 ; 15 | CORE_STREAK | CORE | positive | 75 | 3.71% | Very strong | 4.81 | 0/1/1/9/64 | 16 | 2015-11-10 → 2022-12-31 ; 16 | DES_UX_NEG | DES | negative | 67 | 3.31% | Very strong | 3.45 | 13/5/8/21/20 | 20 | 2015-11-09 → 2025-07-23 ; 17 | MOT_MSG | MOT | positive | 64 | 3.16% | Very strong | 4.81 | 0/2/1/4/57 | 19 | 2015-11-09 → 2022-08-18 ; 18 | USER_LONGTERM | USER | context | 63 | 3.11% | Very strong | 3.13 | 23/4/4/6/26 | 15 | 2016-04-22 → 2026-08-06 ; 19 | SYNC_BUG | PLAT | negative | 62 | 3.06% | Very strong | 1.90 | 36/8/9/6/3 | 20 | 2015-11-30 → 2022-11-22 ; 20 | ACCT_BUG | PLAT | negative | 57 | 2.82% | Meaningful | 1.68 | 40/4/6/5/2 | 15 | 2016-09-22 → 2026-02-12 ; 21 | BUG_COMPAT | BUG | negative | 53 | 2.62% | Meaningful | 2.72 | 16/6/11/17/3 | 20 | 2017-07-08 → 2020-08-13 ; 22 | BUG_OTHER | BUG | negative | 50 | 2.47% | Meaningful | 2.28 | 26/7/4/3/10 | 16 | 2016-07-14 → 2026-08-06 ; 23 | USER_CHURN | USER | context | 49 | 2.42% | Meaningful | 1.57 | 32/9/5/3/0 | 9 | 2017-05-03 → 2026-04-19 ; 24 | USE_FIT | USE | context | 49 | 2.42% | Meaningful | 4.86 | 0/1/1/2/45 | 12 | 2015-11-11 → 2026-02-04 ; 25 | USE_QUIT | USE | context | 46 | 2.27% | Meaningful | 4.83 | 1/0/1/2/42 | 13 | 2015-11-11 → 2022-12-31 ; 26 | DES_CUSTOM | DES | positive | 44 | 2.17% | Meaningful | 4.77 | 0/1/1/5/37 | 12 | 2015-11-10 → 2024-07-10 ; 27 | PAY_NAG | PAY | negative | 44 | 2.17% | Meaningful | 2.02 | 25/5/5/6/3 | 10 | 2020-07-05 → 2024-12-10 ; 28 | BUG_UPDATE | BUG | negative | 43 | 2.12% | Meaningful | 1.91 | 26/7/4/0/6 | 7 | 2015-12-16 → 2021-03-03 ; 29 | DEV_ABANDON | SUP | negative | 42 | 2.08% | Meaningful | 2.07 | 20/9/6/4/3 | 15 | 2016-02-22 → 2026-05-24 ; 30 | PAY_PRICE_HIGH | PAY | negative | 42 | 2.08% | Meaningful | 2.71 | 12/5/12/9/4 | 13 | 2016-09-26 → 2024-01-07 ; 31 | BUG_DATA | BUG | negative | 35 | 1.73% | Meaningful | 1.31 | 29/3/2/0/1 | 10 | 2016-06-13 → 2021-03-13 ; 32 | META_PREUSE | META | context | 32 | 1.58% | Meaningful | 4.94 | 0/0/0/2/30 | 7 | 2015-11-09 → 2023-02-27 ; 33 | COMM_GOOD | MOT | positive | 31 | 1.53% | Meaningful | 4.90 | 0/0/0/3/28 | 13 | 2015-11-09 → 2024-12-24 ; 34 | IPAD | PLAT | negative | 30 | 1.48% | Meaningful | 3.07 | 6/5/7/5/7 | 9 | 2015-11-24 → 2024-01-15 ; 35 | PAY_WORTH | PAY | positive | 27 | 1.33% | Meaningful | 4.70 | 1/0/1/2/23 | 6 | 2015-11-23 → 2025-06-08 ; 36 | META_SOURCE | META | context | 26 | 1.28% | Meaningful | 4.38 | 3/1/0/1/21 | 9 | 2015-11-10 → 2020-10-10 ; 37 | META_CONTRA | META | context | 24 | 1.19% | Meaningful | 4.29 | 3/1/1/0/19 | 12 | 2015-11-09 → 2021-09-04 ; 38 | PLATFORM_WANT | PLAT | request / unmet need | 24 | 1.19% | Meaningful | 3.58 | 4/1/2/11/6 | 7 | 2017-11-16 → 2025-10-26 ; 39 | DES_LOC | DES | negative | 21 | 1.04% | Meaningful | 3.81 | 3/2/0/7/9 | 10 | 2016-03-25 → 2023-08-07 ; 40 | DES_SPLASH | DES | negative | 20 | 0.99% | Emerging | 3.30 | 4/3/2/5/6 | 7 | 2016-12-30 → 2022-10-20 ; 41 | PAY_FORCED | PAY | negative | 20 | 0.99% | Emerging | 1.25 | 18/1/0/0/1 | 8 | 2020-07-10 → 2021-01-03 ; 42 | DES_WANT | DES | request / unmet need | 19 | 0.94% | Emerging | 4.11 | 2/0/2/5/10 | 7 | 2015-11-29 → 2024-12-10 ; 43 | PAY_INTENT | PAY | context | 19 | 0.94% | Emerging | 4.26 | 2/0/2/2/13 | 11 | 2016-01-09 → 2024-07-26 ; 44 | PAY_REFUND | PAY | negative | 19 | 0.94% | Emerging | 1.11 | 17/2/0/0/0 | 7 | 2018-01-19 → 2024-06-08 ; 45 | PAY_SUB_NEG | PAY | negative | 19 | 0.94% | Emerging | 2.47 | 6/3/6/3/1 | 6 | 2018-06-04 → 2025-04-22 ; 46 | STAT_WANT | STAT | request / unmet need | 19 | 0.94% | Emerging | 4.32 | 0/0/2/9/8 | 10 | 2015-12-06 → 2024-11-14 ; 47 | CORE_BAD | CORE | mixed | 18 | 0.89% | Emerging | 4.00 | 2/0/4/2/10 | 10 | 2016-01-31 → 2022-04-11 ; 48 | PAY_RESTORE | PAY | negative | 18 | 0.89% | Emerging | 1.11 | 16/2/0/0/0 | 11 | 2017-05-02 → 2024-06-08 ; 49 | USE_MIND | USE | context | 17 | 0.84% | Emerging | 5.00 | 0/0/0/0/17 | 4 | 2016-01-25 → 2021-07-17 ; 50 | BUG_LAG | BUG | negative | 16 | 0.79% | Emerging | 2.94 | 6/1/1/4/4 | 10 | 2015-12-24 → 2022-09-14 ; 51 | REM_CONTROL | REM | request / unmet need | 16 | 0.79% | Emerging | 3.88 | 0/2/3/6/5 | 7 | 2015-11-09 → 2023-07-13 ; 52 | USER_ANDROID | USER | context | 16 | 0.79% | Emerging | 2.81 | 4/5/1/2/4 | 4 | 2015-12-09 → 2026-08-06 ; 53 | USE_LEARN | USE | context | 16 | 0.79% | Emerging | 4.81 | 0/1/0/0/15 | 5 | 2016-01-18 → 2022-03-16 ; 54 | WIDGET_WANT | PLAT | request / unmet need | 16 | 0.79% | Emerging | 4.00 | 1/2/0/6/7 | 9 | 2016-01-08 → 2025-04-22 ; 55 | EXPORT | PLAT | mixed | 15 | 0.74% | Emerging | 3.27 | 5/1/1/1/7 | 6 | 2016-02-09 → 2024-07-06 ; 56 | PAY_IAP_FAIL | PAY | negative | 14 | 0.69% | Emerging | 2.57 | 4/1/6/3/0 | 4 | 2016-10-24 → 2018-01-09 ; 57 | PAY_PRICE_OK | PAY | positive | 14 | 0.69% | Emerging | 4.57 | 1/0/0/2/11 | 5 | 2016-01-09 → 2020-01-19 ; 58 | REQ_OTHER | META | request / unmet need | 14 | 0.69% | Emerging | 3.71 | 2/0/3/4/5 | 7 | 2015-12-24 → 2020-11-08 ; 59 | PAY_REGRET | PAY | negative | 13 | 0.64% | Emerging | 1.38 | 9/3/1/0/0 | 5 | 2017-05-03 → 2020-04-27 ; 60 | CORE_NOTES | CORE | mixed | 12 | 0.59% | Emerging | 4.92 | 0/0/0/1/11 | 4 | 2016-01-31 → 2020-01-05 ; 61 | REM_FAIL | REM | negative | 12 | 0.59% | Emerging | 3.67 | 0/3/3/1/5 | 6 | 2015-12-02 → 2020-11-15 ; 62 | ADS | PAY | mixed | 11 | 0.54% | Emerging | 3.09 | 3/1/2/2/3 | 8 | 2018-06-05 → 2026-01-29 ; 63 | BUG_STREAK | BUG | negative | 11 | 0.54% | Emerging | 3.00 | 1/3/4/1/2 | 6 | 2018-01-01 → 2025-02-10 ; 64 | USE_TODO | USE | context | 11 | 0.54% | Emerging | 4.91 | 0/0/0/1/10 | 6 | 2015-11-10 → 2020-01-04 ; 65 | BUG_DARK | BUG | negative | 10 | 0.49% | Weak | 1.90 | 5/2/2/1/0 | 4 | 2020-06-29 → 2020-08-07 ; 66 | CORE_FREQ | CORE | request / unmet need | 10 | 0.49% | Weak | 3.10 | 1/1/5/2/1 | 4 | 2016-02-09 → 2024-01-04 ; 67 | PAY_ONETIME | PAY | positive | 10 | 0.49% | Weak | 4.40 | 0/1/1/1/7 | 3 | 2016-01-25 → 2019-10-14 ; 68 | CORE_ORDER | CORE | request / unmet need | 9 | 0.44% | Weak | 3.78 | 1/0/1/5/2 | 6 | 2015-12-24 → 2020-07-10 ; 69 | CORE_RETRO | CORE | mixed | 9 | 0.44% | Weak | 4.67 | 0/0/0/3/6 | 3 | 2015-12-30 → 2020-07-13 ; 70 | META_PROMPT | META | negative | 9 | 0.44% | Weak | 2.44 | 3/1/4/0/1 | 6 | 2016-05-14 → 2021-08-27 ; 71 | PAY_REGRESS | PAY | negative | 9 | 0.44% | Weak | 1.33 | 7/1/1/0/0 | 7 | 2019-12-22 → 2025-01-28 ; 72 | PRIV | PLAT | mixed | 9 | 0.44% | Weak | 3.00 | 4/0/0/2/3 | 6 | 2017-05-02 → 2025-04-23 ; 73 | COMM_NEG | MOT | negative | 8 | 0.40% | Weak | 3.25 | 1/1/2/3/1 | 4 | 2016-09-19 → 2024-08-20 ; 74 | MOT_WANT | MOT | request / unmet need | 8 | 0.40% | Weak | 4.75 | 0/0/0/2/6 | 5 | 2015-11-19 → 2021-03-10 ; 75 | PAY_TRIAL | PAY | context | 8 | 0.40% | Weak | 2.12 | 5/0/1/1/1 | 3 | 2018-11-08 → 2024-12-10 ; 76 | SYNC_WANT | PLAT | request / unmet need | 8 | 0.40% | Weak | 3.62 | 0/0/4/3/1 | 4 | 2015-11-28 → 2017-01-07 ; 77 | CORE_EDIT | CORE | mixed | 7 | 0.35% | Weak | 2.86 | 2/1/1/2/1 | 4 | 2016-01-08 → 2026-05-24 ; 78 | CORE_GLANCE | CORE | request / unmet need | 7 | 0.35% | Weak | 3.86 | 0/0/3/2/2 | 6 | 2015-12-30 → 2020-04-25 ; 79 | PAY_CHARGE | PAY | negative | 7 | 0.35% | Weak | 2.00 | 5/0/0/1/1 | 3 | 2018-08-13 → 2024-06-08 ; 80 | REM_ANNOY | REM | negative | 7 | 0.35% | Weak | 3.86 | 0/1/1/3/2 | 4 | 2016-01-08 → 2019-10-16 ; 81 | SUP_GOOD | SUP | positive | 7 | 0.35% | Weak | 5.00 | 0/0/0/0/7 | 4 | 2015-11-09 → 2016-01-08 ; 82 | USER_COACH | USER | context | 7 | 0.35% | Weak | 4.71 | 0/0/0/2/5 | 3 | 2016-01-18 → 2022-01-28 ; 83 | DES_ICON | DES | negative | 6 | 0.30% | Weak | 2.83 | 2/0/2/1/1 | 1 | 2017-07-29 → 2023-05-06 ; 84 | LOCK | PLAT | request / unmet need | 6 | 0.30% | Weak | 3.83 | 0/0/3/1/2 | 5 | 2015-11-28 → 2017-11-21 ; 85 | PAY_CONFUSE | PAY | negative | 6 | 0.30% | Weak | 2.50 | 3/0/1/1/1 | 3 | 2018-03-18 → 2020-09-28 ; 86 | PAY_PRICE_RISE | PAY | negative | 6 | 0.30% | Weak | 2.33 | 2/1/2/1/0 | 2 | 2018-06-04 → 2019-10-15 ; 87 | USE_MED | USE | context | 6 | 0.30% | Weak | 4.17 | 1/0/0/1/4 | 4 | 2018-02-15 → 2023-01-12 ; 88 | BUG_FIXED | BUG | positive | 5 | 0.25% | Weak | 4.40 | 0/0/1/1/3 | 2 | 2017-08-01 → 2021-03-13 ; 89 | CORE_MULTI | CORE | request / unmet need | 5 | 0.25% | Weak | 4.60 | 0/0/0/2/3 | 2 | 2018-01-02 → 2020-03-08 ; 90 | CORE_SKIP | CORE | request / unmet need | 5 | 0.25% | Weak | 4.80 | 0/0/0/1/4 | 3 | 2017-08-17 → 2020-01-02 ; 91 | BUG_LAYOUT | BUG | negative | 4 | 0.20% | Weak | 2.25 | 1/1/2/0/0 | 3 | 2015-11-09 → 2020-07-05 ; 92 | MOT_MSG_NEG | MOT | negative | 4 | 0.20% | Weak | 2.00 | 0/4/0/0/0 | 1 | 2017-11-18 → 2020-11-20 ; 93 | PAY_WALL | PAY | negative | 4 | 0.20% | Weak | 2.75 | 1/0/2/1/0 | 3 | 2015-12-17 → 2018-12-27 ; 94 | CORE_TIMER | CORE | request / unmet need | 3 | 0.15% | Weak | 4.67 | 0/0/0/1/2 | 3 | 2017-12-27 → 2024-12-10 ; 95 | DEV_GOOD | SUP | positive | 3 | 0.15% | Weak | 5.00 | 0/0/0/0/3 | 2 | 2017-08-27 → 2020-12-05 ; 96 | USE_ADHD | USE | context | 3 | 0.15% | Weak | 4.00 | 0/1/0/0/2 | 2 | 2015-11-26 → 2021-02-06 ; 97 | CORE_ENDDATE | CORE | negative | 2 | 0.10% | Ignore | 1.50 | 1/1/0/0/0 | 2 | 2019-12-29 → 2020-02-20 ; 98 | DES_A11Y | DES | request / unmet need | 2 | 0.10% | Ignore | 5.00 | 0/0/0/0/2 | 2 | 2019-05-06 → 2023-01-08 ; 99 | DES_INCLUSIVE | DES | positive | 1 | 0.05% | Ignore | 5.00 | 0/0/0/0/1 | 1 | 2016-01-09 → 2016-01-09 ; 100 | META_JOKE | META | context | 1 | 0.05% | Ignore | 5.00 | 0/0/0/0/1 | 1 | 2017-08-29 → 2017-08-29 ; 101 | META_SPAM | META | context | 1 | 0.05% | Ignore | 5.00 | 0/0/0/0/1 | 1 | 2017-01-23 → 2017-01-23 ; 102 | PAY_GIFT | PAY | positive | 1 | 0.05% | Ignore | 5.00 | 0/0/0/0/1 | 1 | 2016-01-26 → 2016-01-26 ; 103 | USE_KIDS | USE | context | 1 | 0.05% | Ignore | 5.00 | 0/0/0/0/1 | 1 | 2016-01-03 → 2016-01-03
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-033 — Family roll-up (verbatim): DES 676 (33.40%, 4.62); CORE 270 (13.34%, 4.58); STAT 197 (9.73%, 4.78); REM 129 (6.37%, 4.63); MOT 327 (16.16%, 4.80); PLAT devices/sync/accounts/data 201 (9.93%, 2.63); BUG 355 (17.54%, 2.24); SUP 125 (6.18%, 1.90); PAY 426 (21.05%, 3.13); USE outcomes and use cases 237 (11.71%, 4.85); USER context 310 (15.32%, 3.93); META 365 (18.03%, 4.73)
+
+- **Where:** §3.1 family table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Family | Name | Codes | Reviews with ≥1 code | % of 2,024 | Band | Mean ★ | 1/2/3/4/5 ; DES | Design, usability and localisation | 10 | 676 | 33.40% | High-priority | 4.62 | 23/13/22/81/537 ; CORE | Core habit mechanics | 13 | 270 | 13.34% | High-priority | 4.58 | 7/4/15/44/200 ; STAT | Statistics and views | 2 | 197 | 9.73% | High-priority | 4.78 | 3/1/4/21/168 ; REM | Reminders and notifications | 4 | 129 | 6.37% | High-priority | 4.63 | 0/5/8/17/99 ; MOT | Motivation, tone and community | 6 | 327 | 16.16% | High-priority | 4.80 | 1/7/4/32/283 ; PLAT | Devices, sync, accounts and data | 9 | 201 | 9.93% | High-priority | 2.63 | 82/20/27/35/37 ; BUG | Reliability | 10 | 355 | 17.54% | High-priority | 2.24 | 171/45/60/42/37 ; SUP | Support and development | 4 | 125 | 6.18% | High-priority | 1.90 | 80/12/13/5/15 ; PAY | Monetization | 23 | 426 | 21.05% | High-priority | 3.13 | 144/30/40/50/162 ; USE | Outcomes and use cases | 9 | 237 | 11.71% | High-priority | 4.85 | 2/2/3/16/214 ; USER | Reviewer context | 5 | 310 | 15.32% | High-priority | 3.93 | 58/17/11/28/196 ; META | Review integrity and low-information | 8 | 365 | 18.03% | High-priority | 4.73 | 12/2/9/28/314
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-034 — Composite unions (verbatim): monetisation friction 171 (8.45%, 2.02); subscription backlash 82 (4.05%, 1.91); billing & entitlement failures 71 (3.51%, 1.56); reliability failure 434 (21.44%, 2.19); data & account continuity 143 (7.07%, 1.71); neglect signals 156 (7.71%, 1.95); design praise 568 (28.06%, 4.85); tracking model praise 346 (17.09%, 4.80); motivation layer 362 (17.89%, 4.86); free tier discussed 148 (7.31%, 4.36); device reach gaps 113 (5.58%, 3.15); brand irritants 30 (1.48%, 3.03); any feature request 144 (7.11%, 3.98); no product experience 293 (14.48%, 4.89); support mentioned 90 (4.45%, 1.72)
+
+- **Where:** §3.2 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Union | Codes | Reviews (each once) | % of 2,024 | Band | Mean ★ | 1/2/3/4/5 | Representative IDs ; Monetization friction (any negative PAY code) | PAY_PRICE_HIGH PAY_SUB_NEG PAY_PRICE_RISE PAY_REGRESS PAY_NAG PAY_FORCED PAY_WALL PAY_IAP_FAIL PAY_RESTORE PAY_CHARGE PAY_CONFUSE PAY_REGRET PAY_REFUND | 171 | 8.45% | High-priority | 2.02 | 95/19/26/21/10 | 7097957463 2220539344 4174090943 6194515737 ; Subscription-model backlash (price rise, sub objection, legacy buyers, nag, forced) | PAY_SUB_NEG PAY_PRICE_RISE PAY_REGRESS PAY_NAG PAY_FORCED | 82 | 4.05% | Very strong | 1.91 | 48/10/11/9/4 | 7097957463 6194515737 3619521404 12045845669 ; Billing & entitlement failures (can't buy, lost purchase, charge, legacy, refund, regret) | PAY_IAP_FAIL PAY_RESTORE PAY_CHARGE PAY_REGRESS PAY_REFUND PAY_REGRET | 71 | 3.51% | Very strong | 1.56 | 50/8/8/4/1 | 2220539344 4174090943 1706395578 6217285649 ; Reliability failure (any bug, sync, account, reminder failure) | BUG_CRASH BUG_UPDATE BUG_COMPAT BUG_DATA BUG_STREAK BUG_DARK BUG_LAG BUG_LAYOUT BUG_OTHER SYNC_BUG ACCT_BUG REM_FAIL | 434 | 21.44% | High-priority | 2.19 | 219/52/68/53/42 | 7097957463 2220539344 4174090943 1645212180 ; Data & account continuity (sync, login, data loss, lost purchase) | SYNC_BUG ACCT_BUG BUG_DATA PAY_RESTORE | 143 | 7.07% | High-priority | 1.71 | 95/15/17/11/5 | 7097957463 2220539344 4174090943 1645212180 ; Neglect signals (abandoned, support silent, no new-screen support) | DEV_ABANDON SUP_BAD BUG_COMPAT | 156 | 7.71% | High-priority | 1.95 | 92/14/23/20/7 | 7097957463 2220539344 1430631367 4174090943 ; Design praise (clean, pretty, customisable) | DES_CLEAN DES_PRETTY DES_CUSTOM | 568 | 28.06% | High-priority | 4.85 | 2/3/9/51/503 | 1325376912 6218849398 3619521404 12045845669 ; Tracking model praise (flexible goals, streaks, stats) | CORE_FLEX CORE_STREAK STAT_GOOD | 346 | 17.09% | High-priority | 4.80 | 3/1/8/38/296 | 1325376912 4174090943 1925943692 6218849398 ; Motivation layer (felt motivation, messages, streaks, community) | MOT_GOOD MOT_MSG CORE_STREAK COMM_GOOD | 362 | 17.89% | High-priority | 4.86 | 0/3/2/36/321 | 1325376912 3619521404 1327696946 1317049655 ; Free tier discussed (generous or capped) | PAY_FREE_OK PAY_CAP | 148 | 7.31% | High-priority | 4.36 | 9/4/11/25/99 | 1545235290 3619521404 4877365239 1327696946 ; Device reach gaps (iPad, widget, Watch/Mac/web, new screens) | IPAD WIDGET_WANT PLATFORM_WANT BUG_COMPAT | 113 | 5.58% | High-priority | 3.15 | 25/13/18/34/23 | 4174090943 1925943692 6218849398 1645212180 ; Brand irritants (splash photo, icon, message wording) | DES_SPLASH DES_ICON MOT_MSG_NEG | 30 | 1.48% | Meaningful | 3.03 | 6/7/4/6/7 | 6370566280 2644893532 5870204615 6667631143 ; Any feature request | CORE_FREQ CORE_GLANCE CORE_MULTI CORE_ORDER CORE_SKIP CORE_TIMER DES_A11Y DES_WANT LOCK MOT_WANT PLATFORM_WANT REM_CONTROL REQ_OTHER STAT_WANT SYNC_WANT WIDGET_WANT | 144 | 7.11% | High-priority | 3.98 | 8/6/22/53/55 | 1325376912 1430631367 1925943692 6218849398 ; No product experience (LOWINFO or PREUSE) | META_LOWINFO META_PREUSE | 293 | 14.48% | High-priority | 4.89 | 1/0/2/23/267 | 1317049655 1434336181 1352787473 9662258709 ; Support mentioned (good or bad) | SUP_GOOD SUP_BAD | 90 | 4.45% | Very strong | 1.72 | 66/4/8/3/9 | 7097957463 2220539344 1430631367 8557099798
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `7097957463`, `2220539344`, `4174090943`, `6194515737`, `1645212180`, `1325376912`, `6218849398`, `1317049655`
+- **Canonical:** — (nuance register)
+
+### R55-053 — Mixed themes (verbatim): PAY_CAP 87 (3.98) — upgrade reason (5★) vs 'too stingy' (1★); forum COMM_GOOD 31 vs COMM_NEG 8 — support network vs clutter, one-topic feed, anonymous shaming; message voice MOT_MSG 64 vs MOT_MSG_NEG 4 — 'humorous reminders' vs 'cutie', 'sweetie'; ADS 11 (3.09) — ad each launch vs 'no ads' praise; EXPORT 15 (3.27) — praised CSV vs broken; CORE_BAD 18 (4.00) — works for quitting vs 'not more than' bug; PRIV 9 — no login needed vs forced e-mail; badge — countdown motivates vs can't be removed
+
+- **Where:** §3.5 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** Theme | n | % | Mean ★ | What splits it | IDs ; PAY_CAP — five-habit limit | 87 | 4.30% | 3.98 | Upgrade reason (5★) vs "too stingy" (1★) | 1335999992 2193551017 4755264918 5251051111 ; Forum (COMM_GOOD 31 vs COMM_NEG 8) | 39 | — | — | Support network vs clutter, one-topic feed (3359687522), anonymous shaming (5058377031) | 2241541655 3359687522 5058377031 11630973154 ; Message voice (MOT_MSG 64 vs MOT_MSG_NEG 4) | 68 | — | — | "Humorous reminders" vs "cutie", "sweetie" | 1455602386 2746150969 5378082186 6667631143 ; ADS | 11 | 0.54% | 3.09 | Ad each launch vs "no ads" praise | 6850581887 7373949034 7525594303 13687380187 ; EXPORT | 15 | 0.74% | 3.27 | Praised CSV vs broken export | 7224132499 4962257674 11461296984 ; CORE_BAD — limits / negative habits | 18 | 0.89% | 4.00 | Works for quitting vs "not more than" bug | 2487407176 5491781963 8557099798 ; PRIV | 9 | 0.44% | 3.00 | No login needed vs forced email | 4109413334 2064388428 ; Badge (REM_GOOD badge vs REM_ANNOY) | — | — | — | Countdown motivates vs can't be removed | 2210985599 2284145638
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `1335999992`, `2193551017`, `2241541655`, `3359687522`, `5058377031`, `1455602386`, `6667631143`, `6850581887`, `7373949034`, `7224132499`, `2487407176`, `2284145638`
+- **Canonical:** — (nuance register)
+
+### R55-062 — What is not a finding: 'too many features' (a handful want less); price complaints before June 2018 (only 2 of 42); security incidents (none; PRIV is data practice and account pressure); safety (no harm reported; the inverted 'not more than' goal is a tracking error); localisation outside Brazil
+
+- **Where:** §3.7
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** 2 pre-2018 price complaints
+- **Direction for us:** none · **Report confidence:** method statement · **Generalisable:** app-specific
+- **Review IDs:** `2458999867`, `12577935798`, `1455910300`, `1470143806`
+- **Canonical:** — (nuance register)
+
+### R55-069 — Rating band 5★ n=1,291 (63.78%) theme table (verbatim)
+
+- **Where:** Part 5 5★ table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Theme | Direction | n in band | Segment rate (of this band) | Global n | Share of theme's reviews in this band ; DES_CLEAN | positive | 429 | 33.2% | 475 | 90.3% ; META_LOWINFO | context | 237 | 18.4% | 261 | 90.8% ; MOT_GOOD | positive | 205 | 15.9% | 227 | 90.3% ; STAT_GOOD | positive | 166 | 12.9% | 187 | 88.8% ; USER_SWITCH | context | 164 | 12.7% | 194 | 84.5% ; OUT_LIFE | positive | 137 | 10.6% | 151 | 90.7% ; CORE_FLEX | positive | 126 | 9.8% | 148 | 85.1% ; DES_PRETTY | positive | 110 | 8.5% | 129 | 85.3% ; REM_GOOD | positive | 88 | 6.8% | 97 | 90.7% ; PAY_FREE_OK | positive | 86 | 6.7% | 96 | 89.6% ; CORE_STREAK | positive | 64 | 5.0% | 75 | 85.3% ; MOT_MSG | positive | 57 | 4.4% | 64 | 89.1% ; PAY_BOUGHT | context | 47 | 3.6% | 165 | 28.5% ; USE_FIT | context | 45 | 3.5% | 49 | 91.8% ; PAY_CAP | mixed | 44 | 3.4% | 87 | 50.6%
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-070 — Rating band 4★ n=227 (11.22%) theme table (verbatim)
+
+- **Where:** Part 5 4★ table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Theme | Direction | n in band | Segment rate (of this band) | Global n | Share of theme's reviews in this band ; DES_CLEAN | positive | 42 | 18.5% | 475 | 8.8% ; DES_UX_NEG | negative | 21 | 9.3% | 67 | 31.3% ; MOT_GOOD | positive | 21 | 9.3% | 227 | 9.3% ; META_LOWINFO | context | 21 | 9.3% | 261 | 8.0% ; PAY_CAP | mixed | 19 | 8.4% | 87 | 21.8% ; CORE_FLEX | positive | 17 | 7.5% | 148 | 11.5% ; BUG_COMPAT | negative | 17 | 7.5% | 53 | 32.1% ; USER_SWITCH | context | 16 | 7.0% | 194 | 8.2% ; BUG_CRASH | negative | 16 | 7.0% | 197 | 8.1% ; STAT_GOOD | positive | 15 | 6.6% | 187 | 8.0% ; OUT_LIFE | positive | 12 | 5.3% | 151 | 7.9% ; DES_PRETTY | positive | 11 | 4.8% | 129 | 8.5% ; PAY_BOUGHT | context | 11 | 4.8% | 165 | 6.7% ; PLATFORM_WANT | request / unmet need | 11 | 4.8% | 24 | 45.8% ; CORE_STREAK | positive | 9 | 4.0% | 75 | 12.0%
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-071 — Rating band 3★ n=122 (6.03%) theme table (verbatim)
+
+- **Where:** Part 5 3★ table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Theme | Direction | n in band | Segment rate (of this band) | Global n | Share of theme's reviews in this band ; BUG_CRASH | negative | 35 | 28.7% | 197 | 17.8% ; PAY_PRICE_HIGH | negative | 12 | 9.8% | 42 | 28.6% ; PAY_CAP | mixed | 11 | 9.0% | 87 | 12.6% ; PAY_BOUGHT | context | 11 | 9.0% | 165 | 6.7% ; BUG_COMPAT | negative | 11 | 9.0% | 53 | 20.8% ; SYNC_BUG | negative | 9 | 7.4% | 62 | 14.5% ; DES_UX_NEG | negative | 8 | 6.6% | 67 | 11.9% ; SUP_BAD | negative | 8 | 6.6% | 83 | 9.6% ; IPAD | negative | 7 | 5.7% | 30 | 23.3% ; DEV_ABANDON | negative | 6 | 4.9% | 42 | 14.3% ; PAY_IAP_FAIL | negative | 6 | 4.9% | 14 | 42.9% ; ACCT_BUG | negative | 6 | 4.9% | 57 | 10.5% ; PAY_SUB_NEG | negative | 6 | 4.9% | 19 | 31.6% ; CORE_FLEX | positive | 5 | 4.1% | 148 | 3.4% ; CORE_FREQ | request / unmet need | 5 | 4.1% | 10 | 50.0%
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-072 — Rating band 2★ n=81 (4.00%) theme table (verbatim)
+
+- **Where:** Part 5 2★ table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Theme | Direction | n in band | Segment rate (of this band) | Global n | Share of theme's reviews in this band ; BUG_CRASH | negative | 23 | 28.4% | 197 | 11.7% ; PAY_BOUGHT | context | 14 | 17.3% | 165 | 8.5% ; USER_CHURN | context | 9 | 11.1% | 49 | 18.4% ; DEV_ABANDON | negative | 9 | 11.1% | 42 | 21.4% ; SYNC_BUG | negative | 8 | 9.9% | 62 | 12.9% ; BUG_UPDATE | negative | 7 | 8.6% | 43 | 16.3% ; BUG_OTHER | negative | 7 | 8.6% | 50 | 14.0% ; BUG_COMPAT | negative | 6 | 7.4% | 53 | 11.3% ; DES_UX_NEG | negative | 5 | 6.2% | 67 | 7.5% ; IPAD | negative | 5 | 6.2% | 30 | 16.7% ; USER_ANDROID | context | 5 | 6.2% | 16 | 31.2% ; PAY_PRICE_HIGH | negative | 5 | 6.2% | 42 | 11.9% ; PAY_NAG | negative | 5 | 6.2% | 44 | 11.4% ; USER_LONGTERM | context | 4 | 4.9% | 63 | 6.3% ; MOT_MSG_NEG | negative | 4 | 4.9% | 4 | 100.0%
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-073 — Rating band 1★ n=303 (14.97%) theme table (verbatim)
+
+- **Where:** Part 5 1★ table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** Theme | Direction | n in band | Segment rate (of this band) | Global n | Share of theme's reviews in this band ; BUG_CRASH | negative | 107 | 35.3% | 197 | 54.3% ; PAY_BOUGHT | context | 82 | 27.1% | 165 | 49.7% ; SUP_BAD | negative | 66 | 21.8% | 83 | 79.5% ; ACCT_BUG | negative | 40 | 13.2% | 57 | 70.2% ; SYNC_BUG | negative | 36 | 11.9% | 62 | 58.1% ; USER_CHURN | context | 32 | 10.6% | 49 | 65.3% ; BUG_DATA | negative | 29 | 9.6% | 35 | 82.9% ; BUG_UPDATE | negative | 26 | 8.6% | 43 | 60.5% ; BUG_OTHER | negative | 26 | 8.6% | 50 | 52.0% ; PAY_NAG | negative | 25 | 8.3% | 44 | 56.8% ; USER_LONGTERM | context | 23 | 7.6% | 63 | 36.5% ; DEV_ABANDON | negative | 20 | 6.6% | 42 | 47.6% ; PAY_FORCED | negative | 18 | 5.9% | 20 | 90.0% ; PAY_REFUND | negative | 17 | 5.6% | 19 | 89.5% ; PAY_RESTORE | negative | 16 | 5.3% | 18 | 88.9%
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R55-078 — Rating contradictions META_CONTRA 24 (1.19%, meaningful): 19 are 5★ describing a failure (crashes, sync, login, the pop-up, the goal-inversion bug); 3 are 1★ with only praise; one 2★ calls the app an ADHD 'godsend'; one 3★ 'Great!!!'; Brazil holds 5 of 24 — Portuguese speakers may use stars differently or mis-tap (untestable); in Brazil 5 of 104 (4.8%) are 5★ complaints — star averages understate the failure rate
+
+- **Where:** §5.6
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 24; 19 5★ failures; BR 5 of 104
+- **Direction for us:** none · **Report confidence:** meaningful · **Generalisable:** app-specific
+- **Review IDs:** `1857386298`, `3380205850`, `6782765545`, `4999821942`, `4606789753`, `4989431292`, `6196323907`, `6215045178`, `7768440038`, `1284895942`, `1401096756`, `1531443175`, `2944590281`, `1284270584`
+- **Canonical:** — (nuance register)
+
+### R55-079 — Direction not fixed by rating: PAY_BOUGHT 82×1★ to 47×5★; BUG_COMPAT 17 at 4★ (people tolerate a letterboxed app they like); DES_UX_NEG 41 of 67 at 4–5★; PAY_CAP 44 at 5★ (stated neutrally); USER_LONGTERM splits 23×1★ / 26×5★ — 'the long-term user is both the best advocate and the most betrayed'
+
+- **Where:** §5.7
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** USER_LONGTERM 23×1★ / 26×5★
+- **Direction for us:** none · **Report confidence:** method statement · **Generalisable:** generalisable
+- **Canonical:** — (nuance register)
+
+### R55-081 — Paid evidence tiers: direct purchase statements (165: 'I bought premium', 'paid for the year', 'premium member', 'I purchased a lifetime pass'); trial mentions PAY_TRIAL 8 (0.40%) — 5 are 1★, mostly charged or cancelling, one converted after a two-week trial; stated intent PAY_INTENT 19 (0.94%, 4.26) kept out — several intents blocked by crashes on purchase or hesitation over abandonment ('makes me hesitate a little bit before signing up to be billed'); no conversion rate claimed
+
+- **Where:** §6.1 evidence tiers
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** 165 / 8 / 19
+- **Direction for us:** none · **Report confidence:** method statement · **Generalisable:** app-specific
+- **Review IDs:** `3446626954`, `9994781256`, `3394315727`, `1923709095`, `2061252128`, `4916663104`
+- **Canonical:** — (nuance register)
+
+### R55-103 — Public ratings versus written reviews (verbatim): us gap 0.53 (written 10.8% of public); gb 1.07 (15.6%); ca 0.30 (10.3%); br 1.18 (10.5%); de 0.66 (12.1%); au 0.14 (9.2%); global 0.60 (9.66%) — the gap tracks each storefront's incident exposure: storefronts with concentrated crash waves (gb, br) exceed 1★, those without (ca, au) stay below 0.35★
+
+- **Where:** §7.9 table (verbatim)
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** CC | Written reviews | Written mean | Public ratings | Public avg | Written as % of public | Gap ; us | 881 | 4.14 | 8,140 | 4.67 | 10.8% | 0.53 ; gb | 201 | 3.37 | 1,289 | 4.44 | 15.6% | 1.07 ; ca | 142 | 4.32 | 1,373 | 4.62 | 10.3% | 0.30 ; br | 104 | 3.46 | 986 | 4.64 | 10.5% | 1.18 ; de | 74 | 3.91 | 610 | 4.57 | 12.1% | 0.66 ; au | 67 | 4.42 | 725 | 4.56 | 9.2% | 0.14 ; Global | 2,024 | 4.05 | 20,955 | 4.65 | 9.66% | 0.60
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** generalisable
+- **Canonical:** C031 Crashes / launch failures
+
+### R55-114 — What trend data does not support: no causal claim that the subscription or pop-up reduced installs or revenue (volume already falling before June 2018); no 2023–2026 rate comparisons (70 reviews); no claim that Brazil or the UK are harsher markets (negative months align with incidents); no Android conclusion beyond reviewer comparisons
+
+- **Where:** §8.5
+- **This app does:** n/a
+- **User reaction:** n/a
+- **Magnitude:** 2023–26 70 reviews
+- **Direction for us:** none · **Report confidence:** method statement · **Generalisable:** generalisable
+- **Canonical:** — (nuance register)
