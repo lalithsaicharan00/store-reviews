@@ -1,0 +1,122 @@
+[
+ {
+  "table_row": "< 0.1%",
+  "cards": [
+   "R64-002"
+  ]
+ },
+ {
+  "table_row": "0.5 – 1%",
+  "cards": [
+   "R64-002"
+  ]
+ },
+ {
+  "table_row": "1 – 3%",
+  "cards": [
+   "R64-002"
+  ]
+ },
+ {
+  "table_row": "3 – 5%",
+  "cards": [
+   "R64-002"
+  ]
+ },
+ {
+  "table_row": "> 5%",
+  "cards": [
+   "R64-002"
+  ]
+ },
+ {
+  "bold": "blocked by this environment's network egress proxy",
+  "cards": [
+   "R64-002"
+  ]
+ },
+ {
+  "bold": "The commercial implication is concrete:",
+  "cards": [
+   "R64-011"
+  ]
+ },
+ {
+  "bold": "Parse",
+  "cards": [
+   "R64-002"
+  ]
+ },
+ {
+  "bold": "Validate programmatically",
+  "cards": [
+   "R64-002"
+  ]
+ },
+ {
+  "bold": "Aggregate",
+  "cards": [
+   "R64-002"
+  ]
+ },
+ {
+  "bold": "Re-read borderline and high-impact clusters manually",
+  "cards": [
+   "R64-002"
+  ]
+ },
+ {
+  "bold": "Selection bias is extreme and one-directional.",
+  "cards": [
+   "R64-002"
+  ]
+ },
+ {
+  "bold": "The single most important line in this table is the fifth.",
+  "cards": [
+   "R64-009"
+  ]
+ },
+ {
+  "bold": "The pattern is specific and damaging:",
+  "cards": [
+   "R64-028"
+  ]
+ },
+ {
+  "bold": "Read the ranking carefully.",
+  "cards": [
+   "R64-018"
+  ]
+ },
+ {
+  "bold": "Comparison to a human alternative:",
+  "cards": [
+   "R64-039"
+  ]
+ },
+ {
+  "bold": "Comparison to rivals:",
+  "cards": [
+   "R64-039"
+  ]
+ },
+ {
+  "bold": "calendar quarters of roughly equal review volume",
+  "cards": [
+   "R64-045"
+  ]
+ },
+ {
+  "bold": "No burst distorts any period.",
+  "cards": [
+   "R64-045"
+  ]
+ },
+ {
+  "bold": "Ship the small asks:",
+  "cards": [
+   "R64-040"
+  ]
+ }
+]
