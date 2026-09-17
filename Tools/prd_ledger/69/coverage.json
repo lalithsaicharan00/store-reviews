@@ -1,0 +1,260 @@
+[
+ {
+  "heading": "N9 — Smaller defects, each worth a sprint line",
+  "cards": [
+   "R69-009"
+  ]
+ },
+ {
+  "table_row": "< 0.1%",
+  "cards": [
+   "R69-002"
+  ]
+ },
+ {
+  "table_row": "0.5 – 1%",
+  "cards": [
+   "R69-002"
+  ]
+ },
+ {
+  "table_row": "1 – 3%",
+  "cards": [
+   "R69-002"
+  ]
+ },
+ {
+  "table_row": "3 – 5%",
+  "cards": [
+   "R69-002"
+  ]
+ },
+ {
+  "table_row": "> 5%",
+  "cards": [
+   "R69-002"
+  ]
+ },
+ {
+  "table_row": "in",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "gb",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "mx",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "at",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "th",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "br",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "de",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "pt",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "ru",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "za",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "eg",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "es",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "vn",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "tr",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "rs",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "fr",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "ca",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "ng",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "ph",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "ua",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "mx (5)",
+  "cards": [
+   "R69-025"
+  ]
+ },
+ {
+  "table_row": "Era",
+  "cards": [
+   "R69-027"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R69-002"
+  ]
+ },
+ {
+  "bold": "Every country in Part 6 is reported as [limited evidence] and carries no standalone conclusion.",
+  "cards": [
+   "R69-002"
+  ]
+ },
+ {
+  "bold": "Executive summary in one line:",
+  "cards": [
+   "R69-004"
+  ]
+ },
+ {
+  "bold": "Both stay above the 3% \"Very strong\" line, so no finding in this report depends on counting that pair twice.",
+  "cards": [
+   "R69-002"
+  ]
+ },
+ {
+  "bold": "Size.",
+  "cards": [
+   "R69-002"
+  ]
+ },
+ {
+  "bold": "Selection.",
+  "cards": [
+   "R69-002"
+  ]
+ },
+ {
+  "bold": "No claim in this report depends on the skew resolving one way.",
+  "cards": [
+   "R69-002"
+  ]
+ },
+ {
+  "bold": "It is classified as a billing complaint with a trust accusation attached, and no inference is drawn about what actually happened.",
+  "cards": [
+   "R69-015"
+  ]
+ },
+ {
+  "bold": "No trial experience is described.",
+  "cards": [
+   "R69-017"
+  ]
+ },
+ {
+  "bold": "The strategic problem this poses:",
+  "cards": [
+   "R69-023"
+  ]
+ },
+ {
+  "bold": "What survives at this sample size:",
+  "cards": [
+   "R69-026"
+  ]
+ },
+ {
+  "bold": "predictable",
+  "cards": [
+   "R69-016"
+  ]
+ },
+ {
+  "bold": "This is a documented method with a documented weakness:",
+  "cards": [
+   "R69-027"
+  ]
+ },
+ {
+  "bold": "the category tightened its free caps around it",
+  "cards": [
+   "R69-004"
+  ]
+ },
+ {
+  "bold": "The constraint:",
+  "cards": [
+   "R69-031"
+  ]
+ }
+]
