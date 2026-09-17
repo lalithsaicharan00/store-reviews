@@ -1,0 +1,11 @@
+# -*- coding: utf-8 -*-
+import sys; sys.path.insert(0, "Tools/prd_ledger/82")
+from _lib import c, table, save
+
+c(54, "§0.4 (working address); §3.3 (exceptions); §8.1", "do", "Where the routing works, cancellation works in minutes: the one unambiguously satisfied paying customer emailed the working address and 'got a friendly reply, confirming the cancellation within a quarter of an hour' (5★); another 'fortunately they did this without hassle' — 'the failure is discoverability and routing, not staffing'; publish the address that works and the route that works.", "email cancellation via the correct address", "praise", "CANCEL_OK 3; SUP_GOOD 2; 15-minute confirmation", "do", "Meaningful", "generalisable", ["11605113507", "13630518203", "11025658129"], "", "")
+
+c(55, "§4.5 (Lithuania); §6.7 (lt); §1.6", "contradiction", "The seller's home market is the only storefront perfect on both measures: Lithuania shows 5 public ratings at 5.00★ and 3 text reviews, all 5★, all in September 2023 (the first ten weeks after release), one praising 'macro options' and 'lost 15 lbs in my first month' — capabilities the listing does not sell and no other review mentions; recorded, flagged and counted without a conclusion — 'three reviews cannot establish anything, and the ordinary explanation — a local launch audience — fits the facts equally well'.", "n/a", "mixed", "lt 3/3 5★ text; 5/5.00 public; first 16 reviews 3.19★ vs rest 1.75★", "none", "limited evidence", "app-specific", ["10387071772", "10404854347", "10405685383"], "", "")
+
+c(56, "§5.5 (accessibility); §3.8; §2.1", "audience", "The only clean pricing signal comes from a 4★ user who likes the product and cannot afford it — 'The only drawback is the price, especially for retirees or disabled people. It is just too steep. But, as the app goes, it is a wonderful app… As a developer, the ability to add my own customized trackers is wonderful'; the mental-wellness framing (mood, stress, meditations, 'Contains Health or Wellness Topics') draws OUT_WELLBEING 7 (4.71★) and one sobriety outcome ('haven't had alcohol for over 60 days').", "n/a", "mixed", "PRICE_ACCESSIBILITY 1 (4★); OUT_WELLBEING 7 / 4.71★", "none", "Very strong", "generalisable", ["13722784232", "10481123302", "13208306937"], "", "")
+
+save("a")

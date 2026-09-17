@@ -1,0 +1,278 @@
+[
+ {
+  "table_row": "review_id",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "app_name",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "country` / `country_name",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "title",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "vote_count` / `vote_sum",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "is_edited",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "Country records missing from the main file",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "Per-country count mismatches",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` total / storefronts / rating distribution",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "_state.json` collected counts vs main file",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "Exact title+body duplicates",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "Exact body-only duplicates",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "<0.1%",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "0.5–<1%",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "1–<3%",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "3–5%",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": ">5%",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "cards": [
+   "R82-029"
+  ]
+ },
+ {
+  "table_row": "Era",
+  "cards": [
+   "R82-041"
+  ]
+ },
+ {
+  "bold": "count, a percentage, the denominator, the market scope, the time window, a signal label and exact review IDs",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "bold": "no finding anywhere in this report is attributed to a release",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "bold": "The central subject of this corpus is not the app.",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "bold": "does not occur anywhere in the rendered listing HTML",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "bold": "Everything in Part 3 follows from this one structural fact.",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "bold": "no rename occurred during the window",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "bold": "Field-by-field diffs, main vs country files",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "bold": "0 diffs",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "bold": "0 incomplete",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "bold": "No deduplication was necessary or performed.",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "bold": "asserts it field-by-field against `82-index.tsv` (175 rows × 7 fields)",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "bold": "mechanically",
+  "cards": [
+   "R82-002"
+  ]
+ },
+ {
+  "bold": "Mindway",
+  "cards": [
+   "R82-013"
+  ]
+ },
+ {
+  "bold": "Brainway",
+  "cards": [
+   "R82-013"
+  ]
+ },
+ {
+  "bold": "Raising Dog",
+  "cards": [
+   "R82-013"
+  ]
+ },
+ {
+  "bold": "Welcome Baby",
+  "cards": [
+   "R82-013"
+  ]
+ },
+ {
+  "bold": "this is a reconciliation failure, not merely a branding quirk",
+  "cards": [
+   "R82-013"
+  ]
+ },
+ {
+  "bold": "Not what the marketing showed.",
+  "cards": [
+   "R82-009"
+  ]
+ },
+ {
+  "bold": "as explained & in timeframe stated",
+  "cards": [
+   "R82-023"
+  ]
+ },
+ {
+  "bold": "ACQ_QUIZ_FUNNEL` = 2",
+  "cards": [
+   "R82-025"
+  ]
+ },
+ {
+  "bold": "ACQ_INFLUENCER` = 1",
+  "cards": [
+   "R82-025"
+  ]
+ },
+ {
+  "bold": "ist der Name, der auf dem Titelblatt steht",
+  "cards": [
+   "R82-025"
+  ]
+ },
+ {
+  "bold": "costly",
+  "cards": [
+   "R82-030"
+  ]
+ },
+ {
+  "bold": "Interpretation.",
+  "cards": [
+   "R82-036"
+  ]
+ },
+ {
+  "bold": "Recommendation:",
+  "cards": [
+   "R82-046"
+  ]
+ }
+]
