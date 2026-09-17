@@ -1,0 +1,19 @@
+[
+ {"table_row": "by_country/*.jsonl", "cards": ["R33-002"]},
+ {"table_row": "manifest.json", "cards": ["R33-002"]},
+ {"table_row": "_state.json", "no_new_insight": "§1.1 files-used row: crawl state file, not used for analysis; method carded as R33-002"},
+ {"table_row": "manifest.json` → `total_reviews", "cards": ["R33-002"]},
+ {"table_row": "manifest.json` → `reviews_per_country` (99 entries)", "cards": ["R33-002"]},
+ {"table_row": "manifest.json` → `mean_rating` 3.742", "cards": ["R33-002"]},
+ {"table_row": "Empty `body` / empty `title", "cards": ["R33-002"]},
+ {"table_row": "Era", "no_new_insight": "table header row (§1.6 eras table); carded verbatim as R33-018"},
+ {"table_row": "#", "no_new_insight": "table header row (§3.1 master table); carded verbatim as R33-034"},
+ {"table_row": "—", "cards": ["R33-122", "R33-123"]},
+ {"table_row": "cc", "no_new_insight": "table header row (§7.2 storefront table); carded verbatim as R33-168"},
+ {"bold": "count, percentage, denominator, scope, period, signal label and review IDs", "cards": ["R33-002"]},
+ {"bold": "Short reviews inflate the positive side.", "cards": ["R33-002"]},
+ {"bold": "Votes are too sparse to weight.", "cards": ["R33-002"]},
+ {"bold": "Aggregate.", "cards": ["R33-002"]},
+ {"bold": "Eras used throughout.", "cards": ["R33-018"]},
+ {"bold": "Review volume is used only as a disclosed proxy for market presence; it is not a download or install figure.", "cards": ["R33-177"]}
+]
