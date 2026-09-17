@@ -235,6 +235,12 @@ These came from gaps found when a fresh context re-read a report. Each one is no
   storefronts, segments) gets that list carded verbatim with every share, even when the section's
   narrative is also carded. The validator only checks tables, headings and bold phrases, so inline
   lists slip past it. (Report 50: the 5★, 4★, 3★ and 1★ band lists.)
+- **A capability or feature-inventory table that lists positive and friction counts side by side gets a
+  feature card for every row with its own counts**, not only the rows that name a gate or defect state — a
+  praised mechanic (a 3 a.m. grace window, a History screen) that lives only in the verbatim table never
+  reaches its canonical point. **The extreme value of a series table (lowest / highest year or era) gets a
+  timeline card when the narrative does not name it.** (Report 70: `PR_GRACE` 41, `PR_HISTORY` 31; 2023 as
+  the lowest year.)
 
 ### Magnitude is mandatory
 
