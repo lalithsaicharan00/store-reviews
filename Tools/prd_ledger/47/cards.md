@@ -1,0 +1,1459 @@
+# Cards — report 47
+
+Source: `App Store Reports/47. Habit Streak Tracker - DotHabit - Daily Routine, Goals & Planner (REPORT).md`  
+146 cards. Generated from `cards.jsonl` by `cards_to_md.py` — edit the JSONL, not this file.
+
+## Contents
+
+- [Product rules](#product-rules) — 8
+- [Must-haves](#must-haves) — 12
+- [Must never break](#must-never-break) — 18
+- [Features](#features) — 24
+- [Monetization](#monetization) — 14
+- [Tactics the app used](#tactics-the-app-used) — 2
+- [Insights (the why)](#insights-the-why) — 15
+- [Audiences](#audiences) — 2
+- [Markets and languages](#markets-and-languages) — 10
+- [Dated events and trends](#dated-events-and-trends) — 13
+- [Positioning](#positioning) — 3
+- [Anti-patterns](#anti-patterns) — 1
+- [Things not to do](#things-not-to-do) — 2
+- [Things to do](#things-to-do) — 1
+- [Contradictions](#contradictions) — 2
+- [Data caveats and method](#data-caveats-and-method) — 19
+
+## Product rules
+
+### R47-008 — Back-dating a missed day is a trust feature — it makes the streak honest — and charging for it reads as charging to undo the app's own penalty: the backfill-demand union is 52 reviews (8.83%) — check off a past day 22 (3.74%), record days before the habit was created 21 (3.57%), the 2024 gate 9 — with the motive stated as protecting the streak ('偶然拖到12点后记录，会断了之前的连续的数字，很焦躁', 2019); the very first review in the corpus (Feb 2019) names it; back-dating shipped by 29 March 2020 ('日付を遡ってチェックインできるようになってました！！！', the most-voted review, 23 votes) and the request fell from 7.1% of E1 to 0.7% of E4; in May 2024 it was put behind a video ad ('前日の記録を入力すると言うマイナスをゼロに戻す作業に動画視聴を強要される'; '動画視聴が必須になったら使いません', both 1★); the pre-creation start date is still requested in July 2026, and one user found it exists but hidden ('選択肢が空欄になっているので制限がかかっていると思っていました', 3★)
+
+- **Where:** Executive summary #2 — logging a missed day is the oldest unmet need and gating it the most resented decision: backfill-demand union 52 (8.83%, high-priority) — past days 22 (3.74%), start date before install 21 (3.57%), backfill paywalled 9; motive is protecting the streak ('if I happen to log after midnight it breaks my streak count — very frustrating', 2019); shipped by 29 Mar 2020 (the most-voted review, 23 votes: 'You can now check in for past dates!!!'), after which the request fell 7.1% (E1) → 0.7% (E4); May 2024 put it behind a video ad ('forced to watch a video just to log yesterday — work that only takes a minus back to zero'; 'If watching a video becomes mandatory I won't use it'); the pre-creation start date still requested Jul 2026; one found it exists but hidden ('the options were blank, so I assumed it was restricted')
+- **This app does:** backfill free (2020) → behind a video ad (2024)
+- **User reaction:** 1★-burst
+- **Magnitude:** union 52 (8.83%); gate 9 (1.67); request 7.1% → 0.7%
+- **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
+- **Review IDs:** `3824767302`, `5731143749`, `11237013288`, `11231655490`, `14279904612`, `14081256602`, `3729892474`
+- **Canonical:** C010 Backfill missed days / edit start date; C262 Never gate a recovery action — back-dating a missed day, undoing a wrong entry and restoring history stay free forever
+
+### R47-127 — Keep the check-in path clean: no video or interstitial ad, upsell screen or rating prompt between 'tap' and 'done'; monetise elsewhere (settings, weekly summary, the AI reply) — videos on the check-in gave mean 2.38 with 38.1% ad complaints and 31.7% churn statements; banners only gave 0.0% ad complaints and 4.02; banner-only complaints averaged 3.55 vs 1.46 for video
+
+- **Where:** §8.2 S1
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** E3 2.38 vs E4 4.02; upsell nag 4 (1.25); prompt 3
+- **Direction for us:** product-rule · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `14056892397`
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C240 Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap
+
+### R47-128 — Never gate a recovery action — back-dating a missed day, deleting a wrong entry and restoring history stay free forever, and the app says so ('work that takes a minus back to zero')
+
+- **Where:** §8.2 S2
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** backfill gated 9 (1.67); demand 52 (8.83%)
+- **Direction for us:** product-rule · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `11237013288`
+- **Canonical:** C010 Backfill missed days / edit start date; C204 Never destroy user work at the paywall; C262 Never gate a recovery action — back-dating a missed day, undoing a wrong entry and restoring history stay free forever
+
+### R47-129 — Grow premium only through additive value reviewers already name — a richer AI coach, multiple widgets, iPad and Mac layouts, time and totals statistics, extra habit slots; removing what was free produced the corpus's worst era
+
+- **Where:** §8.2 S3
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** every stated trigger additive
+- **Direction for us:** build-paid · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `13780402439`, `5713517806`, `12638208399`, `13953380897`, `13875654371`
+- **Canonical:** C133 Gate on capability, not on quantity; C263 An AI encouragement reply on each check-in as the premium hook — the first paid feature reviewers praise unprompted; its state must be visible
+
+### R47-132 — Do not change the filling grid and its colours — the mechanic behind the behaviour-change stories (67, mean 4.70, rising to 17.1% of E4)
+
+- **Where:** §8.3 #1
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** grid 67 (4.70)
+- **Direction for us:** product-rule · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Canonical:** C012 Week / month / year grid views
+
+### R47-133 — Do not enlarge the feature surface — reviewers explicitly trade features for simplicity; every new capability (flexible frequency, timers, sub-goals) should be opt-in and off the default path
+
+- **Where:** §8.3 #2
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** simplicity 126 (21.39%)
+- **Direction for us:** product-rule · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `11047099153`
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
+
+### R47-134 — Keep the memo-and-photo record on check-in — the differentiator Korean and Japanese reviewers name
+
+- **Where:** §8.3 #3
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** notes/photos 32 (4.75)
+- **Direction for us:** product-rule · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `5881887587`, `11428921232`
+- **Canonical:** C172 Per-day / per-habit notes and journal text; C208 Photo / media / URL attached to a habit, memo or diary entry
+
+### R47-135 — Keep the non-punitive framing — filled colour stays when a streak breaks; any 'missed-day' marker should be optional
+
+- **Where:** §8.3 #4
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** non-punitive 4 (5.00); show missed 2
+- **Direction for us:** product-rule · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `11046304560`, `14354028854`
+- **Canonical:** C095 Neutral, non-judgemental tone on failure; C157 Every guilt mechanic must be optional — streaks, repair prompts, countdowns
+
+## Must-haves
+
+### R47-030 — Account deletion must exist in-app: the account is optional (backup / sync only) but there is no way to delete it or the e-mail — 5 reviews (0.85%, mean 1.60): '退会したいと何度かメッセージ送ってますがもちろん反応はないです' (1★)
+
+- **Where:** §2.2 Account optional, required only for backup and sync; no in-app way to delete the account or e-mail (3) — 'I've messaged several times asking to delete my account; of course, no response'
+- **This app does:** no account deletion
+- **User reaction:** complaint
+- **Magnitude:** 5 (0.85%), 1.60
+- **Direction for us:** must-have · **Report confidence:** emerging · **Generalisable:** yes
+- **Review IDs:** `7435689853`, `10396494379`, `12487255668`
+- **Canonical:** C249 Account deletion completes in one step, in-app and on the web, and is confirmed — never a spinner or a silent chatbot
+
+### R47-052 — Onboarding confusion 9 (1.53%, 2.44); today's done / not-done status unclear 5 (4.20)
+
+- **Where:** §3.1 master table #46 ux_onboarding_confusion / #63 ux_today_status_unclear
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 9 + 5
+- **Direction for us:** must-have · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C075 Skippable, replayable onboarding tour; C254 An all-habits overview with one-tap check-off — never force one-habit-at-a-time navigation
+
+### R47-059 — Translation quality 5 (0.85%, 4.20), 0 JP — machine-translated UI in other languages
+
+- **Where:** §3.1 master table #64 ux_translation_quality
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 5 (0.85%), 4.20
+- **Direction for us:** must-have · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C027 Localise early — it unlocks revenue; C255 An in-app language selector that respects the user's choice — shipping a localisation must never trap someone in a language
+
+### R47-083 — UX friction 58 (9.85%, mean 3.07): too many taps to check off 14 (2.38%, 2.86 — '気軽にチェック入れたいのに何タップもアクションが多くて億劫になる', 1★ 2020; a reviewer counts four taps '記録したい項目を選択→＋→完了→＜'; another says long-press → done is two; '機能をつけまくった結果UXがボロボロです', 'they bolted on so many features that the UX is in tatters', 1★ 2024, quit); onboarding confusion 9 (2.44) — two could not find back-dating after reading it existed in the update notes, a third the hidden start-date options; iPad not supported 11 (3.64 — 'iPadサイズに対応しておらず、画面が小さくて見づらい'); translation quality 5 — '적절한 한글화가 절실' (KR), automatic / manual rendered as '「汽車」和「手冊」' ('car' and 'handbook', TW), 'une traduction française faite de façon automatique et de très mauvaise qualité' (installed and deleted at once), mainland-Chinese terms in Taiwan (2025); account deletion / privacy 5 (1.60 — 'アプリから退会できない'; a throwaway e-mail because deletion is impossible; '個人情報が送信されてるので注意')
+
+- **Where:** §3.4.3 UX friction 58 (9.85%, 3.07) — too many taps 14 (2.38%, 2.86: 'I want to tick casually, but it takes so many taps it becomes a chore', 1★ 2020; one counts four — 'select the item → + → done → back'; another says long-press → done is two; 'they bolted on so many features that the UX is in tatters', 1★ 2024, quit); onboarding confusion 9 (2.44) — two are misunderstandings of a shipped feature (read in the update notes that back-dating existed but could not find it) and a third the hidden start-date options; iPad not supported 11 (3.64: 'not iPad-sized; the screen is small and hard to read'); translation quality 5 — 'proper Korean localisation badly needed'; Traditional Chinese rendered automatic / manual as 'car' and 'handbook'; 'a machine-made, very poor French translation', installed and deleted at once; mainland terms in Taiwan (2025); account deletion / privacy 5 (1.60: 'can't delete my account from the app'; a throwaway e-mail because deletion is impossible; 'warning: personal information is being sent')
+- **This app does:** n/a
+- **User reaction:** complaint
+- **Magnitude:** 58 (9.85%), 3.07; taps 14 (2.86); iPad 11; translation 5; deletion 5 (1.60)
+- **Direction for us:** must-have · **Report confidence:** high-priority (union) · **Generalisable:** yes
+- **Review IDs:** `5641107814`, `8635458217`, `8668120956`, `11693605369`, `6004075173`, `6325922441`, `14081256602`, `13483861247`, `4600148613`, `5194584617`, `5749548524`, `12686652131`, `7435689853`, `9962305243`, `10396494379`, `11552037482`, `12487255668`
+- **Canonical:** C075 Skippable, replayable onboarding tour; C141 Native iPad layout; C142 Surface existing features where users look; C159 Launch-to-core-action path with no interstitials
+
+### R47-084 — Machine-translated UI costs installs in every non-Japanese market: '적절한 한글화가 절실' ('proper Korean localisation badly needed'); notification options automatic / manual rendered as '汽車' and '手冊' ('car' and 'handbook', Traditional Chinese); 'une traduction française faite de façon automatique et de très mauvaise qualité' — installed and deleted immediately; mainland-Chinese terms shown to Taiwan (2025) — 5 reviews (0.85%), none Japanese
+
+- **Where:** §3.4.3 Translation quality — machine translation in Korean, Traditional Chinese ('car' and 'handbook' for automatic / manual), French ('installed and deleted at once'), and mainland terms in Taiwan — 0 JP of 5
+- **This app does:** machine-translated UI
+- **User reaction:** churn
+- **Magnitude:** 5 (0.85%), 4.20; 0 JP
+- **Direction for us:** must-have · **Report confidence:** emerging · **Generalisable:** yes
+- **Review IDs:** `4600148613`, `5194584617`, `5749548524`, `12686652131`
+- **Canonical:** C027 Localise early — it unlocks revenue; C255 An in-app language selector that respects the user's choice — shipping a localisation must never trap someone in a language
+
+### R47-085 — No findable support route: unresponsive 7 (1.19%, mean 2.57) — '問い合わせ先もわからない' ('I can't even find where to contact'); 'サポートサイトにも窓口がない' ('no contact point on the support site'); a feedback form that crashes; '何度伝えても改善してくれない' ('not fixed however many times I tell them'); account-deletion messages and a widget question unanswered — against 12 fix-acknowledged reviews (mean 4.42)
+
+- **Where:** §3.4.4 Support 19 (3.23%) — unresponsive 7 (1.19%, 2.57): no contact route ('I can't even find where to contact'; 'no contact point on the support site'); a feedback form that crashes; 'not fixed however many times I tell them'; account-deletion messages unanswered; a widget question unanswered; fix acknowledged 12 (4.42)
+- **This app does:** no visible support contact
+- **User reaction:** complaint
+- **Magnitude:** unresponsive 7 (2.57); fix acknowledged 12 (4.42)
+- **Direction for us:** must-have · **Report confidence:** meaningful · **Generalisable:** yes
+- **Review IDs:** `6693763704`, `9680879792`, `7716330699`, `10284668507`, `10396494379`, `12708077534`
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers
+
+### R47-099 — Say it is a paid app up front and make the trial's end visible: no refund requests, but one user cancelled after discovering a half-year plan they did not remember agreeing to ('契約した覚えがないので、もしかしたら無料期間を忘れたのかもしれない。気をつけた方がいいです', 1★, Jan 2026), and two say the paid nature was not disclosed ('試用期間5日、最初から有償アプリと書け、時間を無駄にした'; '有料で使えない')
+
+- **Where:** §5.4 Refunds, cancellations and billing — no refund requests; one cancels after discovering a half-year plan ('I don't remember subscribing — maybe I forgot the free period. Be careful', 1★ Jan 2026); two say the paid nature was not disclosed ('a 5-day trial — say it's a paid app from the start; you wasted my time'; 'it's paid, can't use it')
+- **This app does:** trial auto-converts; paid nature undisclosed
+- **User reaction:** 1★-burst
+- **Magnitude:** 1 + 2 (all 1★)
+- **Direction for us:** must-have · **Report confidence:** weak · **Generalisable:** yes
+- **Review IDs:** `13604118005`, `13378374029`, `12402168490`
+- **Canonical:** C063 Free trial before purchase; C109 A free trial must be a real trial; C181 If the app is paid-only, say so in the subtitle and first screenshot
+
+### R47-124 — Make the AI coach's state visible — if comments stop (trial end, paywall, a bug) say so in the app; fix the on / off toggle — silent stops read as bugs to payers and non-payers alike
+
+- **Where:** §8.1 F4
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** AI stops 5; paywalled 1
+- **Direction for us:** must-have · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `14205265209`, `13061680779`, `13151339965`
+- **Canonical:** C236 A free-tier limit must announce itself — never silently stop a visible progress signal; C263 An AI encouragement reply on each check-in as the premium hook — the first paid feature reviewers praise unprompted; its state must be visible
+
+### R47-125 — Add in-app account and e-mail deletion and a visible support contact — Apple's App Review Guideline 5.1.1(v) has required in-app account deletion for apps that support account creation since 30 June 2022 (external, labelled)
+
+- **Where:** §8.1 F5
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** deletion 5 (1.60); unresponsive 7
+- **Direction for us:** must-have · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `10396494379`, `9962305243`, `9680879792`
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C249 Account deletion completes in one step, in-app and on the web, and is confirmed — never a spinner or a silent chatbot
+
+### R47-126 — Show past dates in the start-date picker instead of blank options — a discoverability fix for the second-largest request in the corpus
+
+- **Where:** §8.1 F6
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** start date 21
+- **Direction for us:** must-have · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `14081256602`
+- **Canonical:** C010 Backfill missed days / edit start date; C142 Surface existing features where users look
+
+### R47-130 — Make the free tier legible and consistent — state the habit cap and trial length on the listing and at the paywall; reconcile the listing's 'unlimited' claim with the in-app cap of 6 ('say it's paid from the start')
+
+- **Where:** §8.2 S4
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** cap 6 reported vs listing
+- **Direction for us:** must-have · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `12037246791`, `12264984107`, `13831267826`, `13378374029`
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C110 An obvious 'continue free' path on the paywall — the free/paid boundary must be legible; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
+
+### R47-139 — Experiment: an optional one-tap check-in mode (memo screen skipped unless long-pressed) — 14 too-many-taps reviews (2.86); measure check-in frequency and memo usage among users who keep the default
+
+- **Where:** §8.4 X4
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** taps 14 (2.86)
+- **Direction for us:** must-have · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `8635458217`, `9203298957`
+- **Canonical:** C159 Launch-to-core-action path with no interstitials
+
+## Must never break
+
+### R47-010 — Reliability arrives as dated incidents rather than a steady drip, and it carries half the bad reviews: the reliability family is 172 reviews (29.20%) with 63 of the 123 one- and two-stars (51.2%); crash / cannot-open union 64 (10.87%, mean 2.84) — December 2019 sync hanging at 0% (7 reviews in 9 days); January 2021 attaching a photo crashes the app which then will not reopen (10 photo-crash reviews 9–24 Jan, 19 crash reviews in the window, 8 of them still 5★); October 2020 → January 2024 a white screen when typing a custom habit name (13, all Japanese, mean 1.54, 9 one-stars — the longest-running defect in the corpus, over three years: '自分で入力しようとするとホワイトアウトしてしまい、アプリ自体全く使えない'); 2019 → April 2021 calendar weekdays off by one day (14, 13 of them outside Japan and Korea); February 2024 → May 2025 a crash loop after logging in to the free backup (6; logging out is the workaround); 1–8 January 2026 the app will not open (4)
+
+- **Where:** Executive summary #4 — reliability is the largest negative family (172, 29.20%; 63 of 123 1–2★, 51.2%) arriving as dated incidents: crash / cannot-open union 64 (10.87%, 2.84) — Dec 2019 sync hangs at 0% (7 in 9 days); Jan 2021 photo-attach crash then won't reopen (10 photo-crash, 19 crash reviews in the window, 8 still 5★); Oct 2020 → Jan 2024 a white screen when typing a custom habit (13, all JP, mean 1.54, 9 1★ — the longest-running defect, over three years); 2019 → Apr 2021 calendar weekdays off by one (14, 13 outside JP/KR); Feb 2024 → May 2025 a crash loop after logging in to the free backup (6; log out is the workaround); 1–8 Jan 2026 the app will not open (4)
+- **This app does:** incident clusters
+- **User reaction:** 1★-burst
+- **Magnitude:** 172 (29.20%); 51.2% of 1–2★; crash union 64 (10.87%), 2.84
+- **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
+- **Review IDs:** `5256548642`, `5285259667`, `7891739461`, `11237073921`, `12050119923`, `13584085462`, `13591584382`, `13599911832`, `13608086322`
+- **Canonical:** C030 Sync must work — and prove it; C031 Crashes / launch failures; C034 Data must never be lost on update, reinstall or phone change
+
+### R47-011 — An update that silently overwrites years of history is the worst possible failure for a product whose output is an unbroken visual record: data loss 16 (2.72%, mean 1.94), all Japanese, 10 in E4 and 8 in 3–20 August 2026 after an update — '7年間使った結果がこれ… アプリ更新したら勝手にデータ上書きされて今までの記録消えた' ('Seven years of use, and this: I updated and it overwrote my data; all my records are gone'); '登録していたメアドに復旧のための確認メールは来ない' ('no recovery email ever arrives at my registered address'); '2022年から毎日つけていたトピックが消えていました' ('habits I'd logged every day since 2022 were gone'); '内容が消えるとダメージが大きくなるので… メモや感想を記入することはやめています' ('since losing entries hurts more the more I write, I've stopped writing notes', two years of use); two of the August reports say it was fixed within days; the data-integrity union (loss, wrong counts, scrambled order, stale widget) rises from 1.1% of E1 to 13.0% of E4 — treat August 2026 as a live incident
+
+- **Where:** Executive summary #5 — data loss is the most severe live defect: 16 (2.72%, mean 1.94), all Japanese, 10 in E4, 8 in 3–20 Aug 2026 after an update — 'Seven years of use, and this: I updated and it overwrote my data; all my records are gone'; 'no recovery email ever arrives at my registered address'; 'habits I'd logged every day since 2022 were gone'; 'since losing entries hurts more the more I write, I've stopped writing notes' (two years); two say it was fixed within days; the data-integrity union rises from 1.1% of E1 to 13.0% of E4
+- **This app does:** update overwrote data (Aug 2026); recovery e-mail never arrives
+- **User reaction:** churn
+- **Magnitude:** 16 (2.72%), 1.94, all JP; 8 in 18 days; integrity 1.1% → 13.0%
+- **Direction for us:** must-never-break · **Report confidence:** meaningful; highest severity · **Generalisable:** yes
+- **Review IDs:** `14381253074`, `14382871183`, `14450610442`, `14432502077`, `14438246592`, `14397446556`
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C153 Automatic cloud backup on by default — never manual opt-in; C175 Updates must not break function or wipe progress
+
+### R47-013 — The few identifiable payers mostly report the purchase going wrong: 13 payers (2.21%) average 3.23 vs 3.83, 9 of them with a billing, entitlement or reliability problem; 8 billing failures (1.36%) — premium status reverting to free with ads back (three in January 2021); '400円を2回も騙し取られた' ('I got cheated out of ¥400 twice'); an unintended half-year subscription cancelled in a panic; the app crashing the moment a trial payment went through (a six-year user); 'アプリを開くと毎回「購入に失敗しました。」' ('Every time I open the app it says purchase failed', Jul 2026); price itself is rarely the objection (4 subscription, 1 lifetime — '高過ぎてワロタ', 'so expensive it's funny'); willingness to pay is real but old — 14 (2.38%) volunteer to pay, 9 before 2022, mostly for ad removal ('有料で良いので広告なし設定付けてください', 10, all 2019–2023)
+
+- **Where:** Executive summary #7 — payers are few, rate lower and mostly report something going wrong: 13 (2.21%), mean 3.23 vs 3.83; 9 report a billing, entitlement or reliability problem; 8 billing failures (1.36%): premium reverting to free with ads back (three in Jan 2021); 'I got cheated out of ¥400 twice'; an unintended half-year subscription cancelled in a panic; the app crashing the moment a trial payment went through (six years of use); 'Every time I open the app it says purchase failed' (Jul 2026); price is rarely the objection (4 subscription, 1 lifetime — 'so expensive it's funny'); 14 volunteer to pay, 9 before 2022, mostly for ad removal ('please add an ad-free setting, even a paid one', 10 all 2019–23)
+- **This app does:** premium reverts; purchase-failed loop; trial charge crash
+- **User reaction:** churn
+- **Magnitude:** payers 13 (3.23 vs 3.83); billing 8 (1.36%); willing to pay 14
+- **Direction for us:** must-never-break · **Report confidence:** meaningful · **Generalisable:** yes
+- **Review IDs:** `6828403002`, `6847937115`, `6879483949`, `11476471502`, `13604118005`, `12633545732`, `14340739070`, `14475596320`, `7109536051`
+- **Canonical:** C029 Billing must be exactly right; C033 Restore purchase and entitlements must work immediately; C065 Paying customers are the highest 1★ risk — every paid feature must work
+
+### R47-024 — Dark mode must keep every control legible: time-picker digits were unreadable in dark mode (2 reviews)
+
+- **Where:** §2.1 Dark mode — time-picker digits unreadable in dark mode (2)
+- **This app does:** dark-mode contrast bug
+- **User reaction:** complaint
+- **Magnitude:** 2
+- **Direction for us:** must-never-break · **Report confidence:** weak · **Generalisable:** yes
+- **Review IDs:** `5887365593`, `6160689803`
+- **Canonical:** C080 Colour themes / dark mode; C171 Accessibility stack: VoiceOver, motion, sound and light sensitivity, text size
+
+### R47-031 — A trial must be disclosed and must not charge or crash on start: 5-day and one-week trials are reported; 'trial not disclosed' 2 (both 1★); one six-year user's app crashed the moment the trial payment went through (3★)
+
+- **Where:** §2.2 Trial — 5-day and 1-week trials reported; trial not disclosed 2 (1.00); the app crashed the moment a trial payment went through
+- **This app does:** 5-day / 1-week trial
+- **User reaction:** complaint
+- **Magnitude:** 2 (1.00) + 1
+- **Direction for us:** must-never-break · **Report confidence:** weak · **Generalisable:** yes
+- **Review IDs:** `13378374029`, `12633545732`
+- **Canonical:** C063 Free trial before purchase; C109 A free trial must be a real trial
+
+### R47-036 — UI / input bugs 31 (5.26%, mean 3.74), 26 JP
+
+- **Where:** §3.1 master table #9 rel_ui_input_bug
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 31 (5.26%), 3.74
+- **Direction for us:** must-never-break · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C031 Crashes / launch failures; C171 Accessibility stack: VoiceOver, motion, sound and light sensitivity, text size
+
+### R47-042 — Sync / backup failures 16 (2.72%, 2.25; Dec 2019 sync hanging at 0%); backup / sync requested 10 (4.60); sync praised 7 (4.29)
+
+- **Where:** §3.1 master table #23 rel_sync_backup_fail / #40 fr_backup_sync / #51 cp_sync_backup
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 16 + 10 + 7
+- **Direction for us:** must-never-break · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C013 Cloud sync / multi-device as the paid differentiator; C030 Sync must work — and prove it
+
+### R47-044 — Calendar weekdays off by one day 14 (2.38%, 3.29), 2019 – Apr 2021, 13 of 14 outside JP / KR (CN, IT, FR, ES, AU)
+
+- **Where:** §3.1 master table #25 rel_calendar_weekday_bug
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 14 (2.38%), 3.29
+- **Direction for us:** must-never-break · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
+
+### R47-048 — Notification bugs 11 (1.87%, 3.55) — reminder time-setting buggy Jan–Feb 2021; non-scheduled days notified
+
+- **Where:** §3.1 master table #36 rel_notification_bug
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 11 (1.87%), 3.55
+- **Direction for us:** must-never-break · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C039 Reminders fire reliably, once
+
+### R47-054 — Registration / login failures 8 (1.36%, 3.62); a crash loop after logging in to the free backup 6 (Feb 2024 – May 2025; log out is the workaround)
+
+- **Where:** §3.1 master table #49 rel_register_login_fail / #57 rel_crash_after_account_sync
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 8 + 6
+- **Direction for us:** must-never-break · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Review IDs:** `11237073921`, `12050119923`
+- **Canonical:** C030 Sync must work — and prove it; C132 Do not sell in a storefront where the app cannot function; C188 The app must open offline — never block launch on a network call
+
+### R47-058 — Counts displayed wrong 5 (2.80, 2025–26); habit order scrambles 5 (3.20, 2022)
+
+- **Where:** §3.1 master table #59 rel_counts_display_wrong / #60 rel_order_scrambles
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 5 + 5
+- **Direction for us:** must-never-break · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C040 Widgets must not go blank, stale or disagree with the app; C073 Manual reordering, renaming and editing of habits/tasks — free
+
+### R47-065 — Slow / freeze 4; ad display bug 3 (1.67, 2023–24)
+
+- **Where:** §3.1 master table #73 rel_slow_freeze / #82 rel_ad_display_bug
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 4 + 3
+- **Direction for us:** must-never-break · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C031 Crashes / launch failures; C082 Ads in the free tier
+
+### R47-080 — Sixteen reliability sub-themes, mostly dated clusters, with forgiving raters: crash / won't open 51 (8.66%, mean 3.18; 19 in January 2021, 4 in January 2026; 13 of the 51 still 5★); UI / input bugs 31 (5.26%, 3.74; the back button vanished Nov 2020; the skip key hidden by the keyboard Jul 2025); data loss 16 (2.72%, 1.94; 8 in 3–20 Aug 2026, all Japanese, 4 of 16 long-term users); sync / backup failures 16 (2.72%, 2.25; 7 in 10–18 Dec 2019 — '同期中ですとの表示が一向におわらず', 'syncing never finishes'); calendar weekdays off by one 14 (2.38%, 3.29; '4 enero de 2021 es lunes y pone que es martes'; 13 of 14 outside Japan and Korea); a white screen when typing a custom habit 13 (2.21%, 1.54; all Japanese, Oct 2020 – Jan 2024; sample habits work); photo-attach crash 12 (2.04%, 3.42; Jan 2021 – Feb 2022 — '放圖片之後很容易閃退'); notification bugs 11 (reminder time would not save, Jan–Feb 2021); register / login failure 8 (6 of 8 Chinese — '好像需要vpn'); a crash loop after account sync 6 (Feb 2024 – May 2025, logging out stops it); AI comments stop 5; counts displayed wrong 5 ('8マス埋まっていて「2」と表示されてる'); habit order scrambles 5 (2022); widget not updating 5 (2025–26); slow / freeze 4; ad display bug 3 ('La croix « fermer » ne marche pas', 1★)
+
+- **Where:** §3.4.2 Reliability (verbatim sub-theme table) — crash / won't open 51 (8.66%, 3.18; 19 in Jan 2021, 4 in Jan 2026); UI / input bugs 31 (5.26%, 3.74; back button vanished Nov 2020; the skip key hidden by the keyboard Jul 2025); data loss 16 (1.94; 8 in 3–20 Aug 2026, all JP); sync / backup fail 16 (2.25; 7 in 10–18 Dec 2019 'syncing never finishes'); calendar weekday off by one 14 (3.29; '4 January 2021 is a Monday and it says Tuesday', 13 of 14 outside JP/KR); white screen on a custom habit 13 (1.54, all JP, Oct 2020 – Jan 2024); photo-attach crash 12 (3.42, Jan 2021 – Feb 2022); notification bug 11 (reminder time would not save Jan–Feb 2021); register / login fail 8 (6 of 8 Chinese 'seems to need a VPN'); crash after account sync 6 (Feb 2024 – May 2025); AI comments stop 5; counts wrong 5 ('8 squares filled but it shows 2'); order scrambles 5 (2022); widget not updating 5; slow / freeze 4; ad display bug 3 ('the close X doesn't work'); reliability reviews are unusually forgiving — 13 of 51 crash reviews are 5★; data loss reaches long-standing users (4 of 16 long-term)
+- **This app does:** n/a
+- **User reaction:** complaint
+- **Magnitude:** Sub-theme | n | % | Mean ★ | Period | Notes / IDs ; rel_crash_wont_open | 51 | 8.66% | 3.18 | 2019–2026 | 19 in the January 2021 window; 4 in January 2026 ; rel_ui_input_bug | 31 | 5.26% | 3.74 | 2020–2026 | Back button vanished November 2020 (6685438263, 6685630099, 6687354970, 6693773673); skip key "ー" hidden by the keyboard July 2025 (12928407084, 12934547684) ; rel_data_loss | 16 | 2.72% | 1.94 | 2020–2026 | 8 in 3–20 August 2026; all JP ; rel_sync_backup_fail | 16 | 2.72% | 2.25 | 2019–2026 | 7 in 10–18 December 2019 (*"同期中ですとの表示が一向におわらず"* / "'syncing' never finishes", 5285259667) ; rel_calendar_weekday_bug | 14 | 2.38% | 3.29 | 2019–Apr 2021 | *"4 enero de 2021 es lunes y pone que es martes"* / "4 January 2021 is a Monday and it says Tuesday" (6830615601, ES); 13 of 14 outside JP/KR ; rel_white_screen_new_habit | 13 | 2.21% | 1.54 | Oct 2020–Jan 2024 | All JP; typing a custom habit whites out the screen; sample habits work (7716330699, 9433317667) ; rel_crash_photo_attach | 12 | 2.04% | 3.42 | Jan 2021–Feb 2022 | *"放圖片之後很容易閃退"* / "crashes easily after adding a picture" (6850173519, TW) ; rel_notification_bug | 11 | 1.87% | 3.55 | 2019–2026 | Reminder time would not save (6908214903, 6921216311, 6948185702, 6966050768, January–February 2021) ; rel_register_login_fail | 8 | 1.36% | 3.62 | 2020–2026 | 6 of 8 Chinese: *"好像需要vpn"* / "seems to need a VPN" (5718580406) ; rel_crash_after_account_sync | 6 | 1.02% | 3.00 | Feb 2024–May 2025 | Logging out stops the crash (11237073921, 12050119923) ; rel_ai_comment_stops | 5 | 0.85% | 4.00 | 2025–2026 | 12941226028 13061680779 13833749330 14023783372 14205265209 ; rel_counts_display_wrong | 5 | 0.85% | 2.80 | 2025–2026 | *"8マス埋まっていて「2」と表示されてる"* / "8 squares filled but it shows '2'" (13970362995) ; rel_order_scrambles | 5 | 0.85% | 3.20 | 2022 only | 8365726460 8442857369 8699252537 8734988810 9192665077 ; rel_widget_not_updating | 5 | 0.85% | 2.80 | 2025–2026 | 12708077534 13228032904 13550561159 13695033844 14450743015 ; rel_slow_freeze | 4 | 0.68% | 2.75 | 2020–2026 | 14354431948 (*"写真選択でフリーズ"* / "freezes when selecting photos") ; rel_ad_display_bug | 3 | 0.51% | 1.67 | 2023–2024 | *"La croix « fermer » ne marche pas"* / "the 'close' X doesn't work" (9488841849, FR, 1★)
+- **Direction for us:** must-never-break · **Report confidence:** high-priority (union) · **Generalisable:** yes
+- **Review IDs:** `6685438263`, `6685630099`, `6687354970`, `6693773673`, `12928407084`, `12934547684`, `5285259667`, `6830615601`, `7716330699`, `9433317667`, `6850173519`, `6908214903`, `6921216311`, `6948185702`, `6966050768`, `5718580406`, `12941226028`, `13061680779`, `13833749330`, `14023783372`, `14205265209`, `13970362995`, `8365726460`, `8442857369`, `8699252537`, `8734988810`, `9192665077`, `12708077534`, `13228032904`, `13550561159`, `13695033844`, `14450743015`, `14354431948`, `9488841849`
+- **Canonical:** C030 Sync must work — and prove it; C031 Crashes / launch failures; C034 Data must never be lost on update, reinstall or phone change; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C040 Widgets must not go blank, stale or disagree with the app
+
+### R47-098 — Nine of thirteen payers report a billing, entitlement or reliability problem: premium status reverted to free with ads reappearing (3, January 2021); charged twice; a crash immediately after paying for the trial; an unintended half-year subscription; the month view showing only a week and the settings button hidden by long tab names (2 payers); the AI-comment toggle that will not turn back on; and, as UX, the rating prompt shown even to payers
+
+- **Where:** §5.3 Post-purchase failures (verbatim table) — 9 of 13 payers: premium reverted to free with ads back (3, Jan 2021); charged twice; crash immediately after paying for the trial; unintended half-year subscription; month view showing one week and the settings button hidden by long tab names (2); the AI-comment toggle will not turn back on; the rating prompt shown to payers; all billing-failure IDs
+- **This app does:** entitlement reverts; double charge; trial crash
+- **User reaction:** churn
+- **Magnitude:** Failure | Payers | IDs ; Premium status reverted to free, ads reappeared (January 2021) | 3 | 6828403002 6847937115 6879483949 ; Charged twice | 1 | 11476471502 ; Crash immediately after paying for the trial | 1 | 12633545732 ; Unintended half-year subscription | 1 | 13604118005 ; Month view shows one week; settings button hidden by long tab names | 2 | 12173403973 12629744866 ; AI-comment toggle will not turn back on | 1 | 13061680779 ; *(UX, not counted above)* Rating prompt shown even to payers | 1 | 14056892397
+- **Direction for us:** must-never-break · **Report confidence:** segment · **Generalisable:** yes
+- **Review IDs:** `6828403002`, `6847937115`, `6879483949`, `11476471502`, `12633545732`, `13604118005`, `12173403973`, `12629744866`, `13061680779`, `14056892397`, `13230847362`, `14340739070`
+- **Canonical:** C029 Billing must be exactly right; C033 Restore purchase and entitlements must work immediately; C065 Paying customers are the highest 1★ risk — every paid feature must work; C248 Never show an upsell to anyone holding an active or historical entitlement
+
+### R47-109 — Date calculations must respect the user's time zone and locale: calendar weekdays were off by one day for reviewers outside the Japan / Korea time zone — 14 reports (2.38%, mean 3.29), 13 of them from China, Italy, France, Spain and Australia, 2019 → April 2021 — '4 January 2021 is a Monday and it says Tuesday'; 'the calendar is wrong, it lost 29 February'; 'I don't know if it's because I'm in Western Australia'; not reported since April 2021
+
+- **Where:** §6.7 Calendar weekdays off by one — 14 reports, 13 from outside the Japan / Korea time zone (CN, IT, FR, ES, AU), 2019 → Apr 2021, including a lost 29 February — a time-zone or locale date-calculation defect
+- **This app does:** time-zone date bug
+- **User reaction:** complaint
+- **Magnitude:** 14 (2.38%), 3.29; 13/14 non-JP/KR
+- **Direction for us:** must-never-break · **Report confidence:** meaningful (dated, fixed) · **Generalisable:** yes
+- **Review IDs:** `6830615601`, `5661653784`, `6752025691`
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones
+
+### R47-121 — Run the August 2026 data loss as an incident: restore pre-update history server-side where it exists; add a guard so sync never overwrites a longer history with a shorter one; show a 'last backed up' time; fix the account-recovery e-mail — the highest-severity failure for a record-keeping product, live, rising (1.1% → 13.0%) and landing on the most loyal users
+
+- **Where:** §8.1 F1
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** data loss 16 (1.94), 8 in 18 days
+- **Direction for us:** must-never-break · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `14381253074`, `14382871183`, `14450610442`, `14432502077`
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C153 Automatic cloud backup on by default — never manual opt-in; C230 Sync merges an append-only, timestamped event log — never last-writer-wins state replacement
+
+### R47-122 — Fix the widget stuck at 0 or blank and wrong counts in the month view — the widget is the most-requested capability (20) and a widget showing 0 undoes the reason it was asked for
+
+- **Where:** §8.1 F2
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** widget not updating 5; counts wrong 5
+- **Direction for us:** must-never-break · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `13695033844`, `13550561159`, `13970362995`, `13177567992`
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C040 Widgets must not go blank, stale or disagree with the app
+
+### R47-123 — Fix entitlement recognition and the 'purchase failed' loop; send a clear notice before a trial converts — 9 of 13 payers report a problem and payers already rate 0.60 lower
+
+- **Where:** §8.1 F3
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** billing 8; trial not disclosed 2
+- **Direction for us:** must-never-break · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `14340739070`, `11476471502`, `13604118005`, `12633545732`
+- **Canonical:** C029 Billing must be exactly right; C033 Restore purchase and entitlements must work immediately; C109 A free trial must be a real trial; C152 A promised pre-charge trial reminder must actually arrive — in-app, with amount and date
+
+## Features
+
+### R47-012 — An AI coach that replies to each check-in is the first premium feature reviewers praise unprompted — it monetises by adding value, which the 2024 changes did not: AI encouragement praised by 13 (2.21%, mean 4.69), all from September 2025, an AI-coach union of 18 (12.3% of E4) — 'そんなわけないだろ、AIだろ、って感じると思うけど意外に嬉しい' ('You'd think come on, it's just AI — but it's surprisingly nice'); 'AIに褒められてる感じがしなくて、承認欲求も満たされて' ('It doesn't feel like being praised by an AI; it satisfies the need for approval'); the friction is small and specific — comments stop without explanation (5: '1週間くらいでAIのコメントが来なくなっちゃった'), comments feel patronising (3: '1個記録つける度にAIがすごいすごい言ってくる。赤ちゃんか' — 'Am I a baby?', 1★), and a free user lost it ('AIコメント機能が有料会員でないと使えなくなってしまいました… 褒めてくれるAIのコメントのおかげで、楽しく続けられていた', 4★, Sep 2025)
+
+- **Where:** Executive summary #6 — the AI coach is the new differentiator and paywall lever: AI encouragement praised 13 (2.21%, mean 4.69), all from Sep 2025 on; AI-coach union 18 — 12.3% of E4; 'You'd think come on, it's just AI — but it's surprisingly nice'; 'It doesn't feel like being praised by an AI; it satisfies the need for approval'; friction: comments stop without explanation (5: 'after about a week the AI comments stopped coming'); patronising (3: 'every time I log something the AI says amazing, amazing. Am I a baby?'); a free user lost it ('the AI comments now need a paid membership… their praise is what kept me going', 4★) — the first premium feature reviewers praise unprompted; it monetises by adding value, which the 2024 changes did not
+- **This app does:** DotBuddy AI coach, premium from Sep 2025
+- **User reaction:** purchase-driver
+- **Magnitude:** praise 13 (4.69); union 18 (12.3% of E4); stops 5; unwanted 3; gated 1
+- **Direction for us:** build-paid · **Report confidence:** emerging (meaningful) · **Generalisable:** yes
+- **Review IDs:** `14326467058`, `13833749330`, `14205265209`, `12894467546`, `13151339965`
+- **Canonical:** C056 Don't build AI features on demand grounds; C263 An AI encouragement reply on each check-in as the premium hook — the first paid feature reviewers praise unprompted; its state must be visible
+
+### R47-016 — Platform gaps that stayed open for seven years: a widget requested by 20 (3.40%) in every era 2019–2026 — since 2025 one exists but gets stuck at 0 or goes blank (5, all 2025–26: 'ある日突然ウィジェットがずっと0表示になってしまいました'); iPad not supported — the app runs at phone size (11, 1.87%); Apple Watch requested by 6 (all 2020–22) and the listing shows iPhone, Mac and Vision only
+
+- **Where:** Executive summary #10 — the platform gaps are old and open: widget requests 20 (3.40%, very strong) every era 2019–2026; since 2025 a widget exists but gets stuck at 0 or goes blank (5, all 2025–26: 'one day the widget got stuck showing 0'); iPad not supported 11 (1.87%) — runs at phone size; Apple Watch 6 (all 2020–22); the listing shows iPhone, Mac and Vision only
+- **This app does:** widget (2025, buggy); no iPad layout; no Watch
+- **User reaction:** complaint
+- **Magnitude:** widget 20 (3.40%) + broken 5; iPad 11 (1.87%); Watch 6
+- **Direction for us:** must-have · **Report confidence:** very strong / meaningful · **Generalisable:** yes
+- **Review IDs:** `13695033844`
+- **Canonical:** C009 Basic widgets, icons and colours are free; C022 Apple Watch app (done properly: timer, two-way sync); C040 Widgets must not go blank, stale or disagree with the app; C141 Native iPad layout
+
+### R47-021 — Check-in takes 2–4 taps (long-press → a record screen → done) and one-tap logging has been requested since 2019 — too many taps 14 (2.38%, mean 2.86)
+
+- **Where:** §2.1 Habit list; long-press a habit → 'done' via a '+' record screen — reviewers count 2–4 taps per check-in; one-tap logging requested since 2019
+- **This app does:** multi-tap check-in
+- **User reaction:** complaint
+- **Magnitude:** too many taps 14 (2.86)
+- **Direction for us:** must-have · **Report confidence:** inventory · **Generalisable:** yes
+- **Review IDs:** `8668120956`, `9203298957`, `12487255668`
+- **Canonical:** C159 Launch-to-core-action path with no interstitials; C229 A deliberate completion gesture — press-and-hold with haptic and sound, not a bare tap
+
+### R47-022 — A per-day memo and photo attached to each check-in is the diary feature Korean and Japanese reviewers name as the differentiator (32, 5.43%, mean 4.75); the streak resets to zero on a miss and a cumulative total was added by 2025 after 2020–21 requests
+
+- **Where:** §2.1 Streak resets to zero on a missed day; a cumulative total also shown by 2025 (requested 2020–21); per-day memo and photo attached to each check-in — the feature Korean and Japanese reviewers name as the differentiator
+- **This app does:** memo + photo per check-in, free
+- **User reaction:** praise
+- **Magnitude:** notes/photos 32 (4.75); totals requested 11
+- **Direction for us:** build-free · **Report confidence:** inventory · **Generalisable:** yes
+- **Review IDs:** `5501337301`, `5881887587`, `6271390705`, `11428921232`, `12240995283`, `6355419734`, `7087108346`, `12226979658`
+- **Canonical:** C024 Streaks / gamification; C047 Cumulative totals and total-days counter; C172 Per-day / per-habit notes and journal text; C208 Photo / media / URL attached to a habit, memo or diary entry
+
+### R47-025 — Account-based e-mail backup and sync (beta in 2020, a free backup in 'version 2.0', Feb 2024) spans iPhone, Android and iPad ('애플이랑 삼성 연동' — Apple and Samsung sync); an Android version exists and cross-platform sync was unreliable in 2022
+
+- **Where:** §2.1 Account, e-mail backup and sync (beta 2020, free backup 'v2.0' Feb 2024); cross-device iPhone / Android / iPad ('Apple and Samsung sync'); an Android version exists — sync between them unreliable in 2022
+- **This app does:** account sync, free from 2024
+- **User reaction:** mixed
+- **Magnitude:** sync/backup fail 16 (2.25)
+- **Direction for us:** must-have · **Report confidence:** inventory · **Generalisable:** yes
+- **Review IDs:** `5666148773`, `10978216170`, `11067014011`, `13745035928`, `5713517806`, `7714674828`, `8456104790`
+- **Canonical:** C013 Cloud sync / multi-device as the paid differentiator; C030 Sync must work — and prove it; C051 Android version
+
+### R47-026 — Small shipped fixes and remaining gaps: non-scheduled weekdays still notified until fixed by June 2026; a Sunday week start added in 2026 with Monday still requested; photo multi-select shipped within a week of the request (Dec 2024); the in-app feedback form itself crashed in 2019 and 2021
+
+- **Where:** §2.1 Scheduled weekdays per habit — non-scheduled days still notified; fixed by June 2026; week start setting (Sunday, 2026), Monday still requested; photo multi-select (Dec 2024) shipped within a week; in-app feedback form crashed in 2019 and 2021
+- **This app does:** mixed
+- **User reaction:** mixed
+- **Magnitude:** inventory
+- **Direction for us:** do · **Report confidence:** inventory · **Generalisable:** yes
+- **Review IDs:** `13120746600`, `14174277268`, `13699643234`, `13924626648`, `12050119923`, `5143066754`, `7716330699`
+- **Canonical:** C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C039 Reminders fire reliably, once; C059 Be visibly responsive; fixes bring reviewers back
+
+### R47-027 — Absent per reviewers: an iPad-optimised layout (11, 2019–2026); an Apple Watch app; X-per-week and monthly habits and multiple completions per day; a note on a missed day that does not count as 'done'; a combined all-habit calendar; a 'today / not yet done' list; timers and time totals; CSV export; sharing and accountability; a passcode; search; sub-goals
+
+- **Where:** §2.1 Capabilities asked for with no evidence — an iPad layout (11, 2019–26); Apple Watch; X-per-week and monthly habits and multiple completions per day; a note on a missed day that does not count as done; a combined all-habit calendar; a 'today / not yet done' list; timers and time totals; CSV export; sharing and accountability; a passcode; search; sub-goals
+- **This app does:** absent
+- **User reaction:** complaint
+- **Magnitude:** see §3.5
+- **Direction for us:** research · **Report confidence:** inventory · **Generalisable:** yes
+- **Review IDs:** `5083335863`, `5536474488`, `11530762385`, `13483861247`, `5857698307`, `6685962313`, `8404314148`, `6888291481`, `7372355459`, `10935824997`, `5095780321`, `6766372754`, `13798127926`, `5117087988`, `10373785885`, `6430056475`, `11715444265`, `12153518574`, `8990348087`, `13875654371`, `3874974698`, `5800518796`, `8828985668`, `11791260894`
+- **Canonical:** C022 Apple Watch app (done properly: timer, two-way sync); C043 Flexible / custom frequency; C044 Mac / desktop / web app; C141 Native iPad layout
+
+### R47-041 — Tracking multiple goals praised 17 (2.89%, 4.76)
+
+- **Where:** §3.1 master table #20 cp_multiple_goals
+- **This app does:** see §3.1
+- **User reaction:** praise
+- **Magnitude:** 17 (2.89%), 4.76
+- **Direction for us:** build-free · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it
+
+### R47-046 — Totals and statistics requested 11 (1.87%, 4.55) — cumulative total shipped by 2025
+
+- **Where:** §3.1 master table #34 fr_totals_stats
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 11 (1.87%), 4.55
+- **Direction for us:** build-free · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Review IDs:** `6355419734`, `7087108346`
+- **Canonical:** C047 Cumulative totals and total-days counter
+
+### R47-049 — Reminders praised 10 (1.70%, all 5★) — multiple times per habit, editable text; notification options requested 3
+
+- **Where:** §3.1 master table #38 cp_reminders / #78 fr_notification_options
+- **This app does:** see §3.1
+- **User reaction:** praise
+- **Magnitude:** 10 (5.00) + 3
+- **Direction for us:** build-free · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C008 Daily check-in and one basic reminder per habit are free; C014 Multiple reminders per habit
+
+### R47-050 — Miscellaneous requests 10 (1.70%, 3.90)
+
+- **Where:** §3.1 master table #41 fr_misc_other
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 10 (1.70%), 3.90
+- **Direction for us:** research · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
+
+### R47-051 — Calendar / month view praised 9 (1.53%, 4.33); a combined all-habit overview calendar requested 6 (4.50); the month view showing only a week (2025)
+
+- **Where:** §3.1 master table #42 cp_calendar_view / #55 fr_overview_calendar
+- **This app does:** see §3.1
+- **User reaction:** mixed
+- **Magnitude:** 9 + 6
+- **Direction for us:** build-free · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Review IDs:** `13177567992`
+- **Canonical:** C012 Week / month / year grid views; C254 An all-habits overview with one-tap check-off — never force one-habit-at-a-time navigation
+
+### R47-053 — X-per-week and monthly habits requested 8 (1.36%, 4.12)
+
+- **Where:** §3.1 master table #47 fr_flexible_frequency
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 8 (1.36%), 4.12
+- **Direction for us:** build-free · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Review IDs:** `6888291481`, `7372355459`, `10935824997`
+- **Canonical:** C043 Flexible / custom frequency
+
+### R47-055 — Back-dating praised as available 7 (1.19%, 4.00), all JP
+
+- **Where:** §3.1 master table #50 cp_backfill_available
+- **This app does:** see §3.1
+- **User reaction:** praise
+- **Magnitude:** 7 (1.19%), 4.00
+- **Direction for us:** build-free · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C010 Backfill missed days / edit start date
+
+### R47-056 — Apple Watch requested 6 (1.02%, 4.17), all 2020–22
+
+- **Where:** §3.1 master table #54 fr_apple_watch
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 6 (1.02%), 4.17
+- **Direction for us:** research · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Review IDs:** `5857698307`, `6685962313`, `8404314148`
+- **Canonical:** C022 Apple Watch app (done properly: timer, two-way sync)
+
+### R47-057 — Reorder / sort habits requested 6 (1.02%, 4.33), all JP
+
+- **Where:** §3.1 master table #56 fr_reorder_sort
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 6 (1.02%), 4.33
+- **Direction for us:** build-free · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C073 Manual reordering, renaming and editing of habits/tasks — free
+
+### R47-061 — Widget praised 4 (2025–26, 4.25); widget stuck at 0 or blank 5 (2.80)
+
+- **Where:** §3.1 master table #66 cp_widget / #61 rel_widget_not_updating
+- **This app does:** see §3.1
+- **User reaction:** mixed
+- **Magnitude:** 4 + 5
+- **Direction for us:** must-never-break · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C009 Basic widgets, icons and colours are free; C040 Widgets must not go blank, stale or disagree with the app
+
+### R47-062 — Bulk entry requested 4; photo features 4 (multi-select shipped); a note length limit 3
+
+- **Where:** §3.1 master table #67 fr_bulk_entry / #69 fr_photo_features / #85 ux_note_length_limit
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 4 + 4 + 3
+- **Direction for us:** build-free · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C172 Per-day / per-habit notes and journal text; C208 Photo / media / URL attached to a habit, memo or diary entry
+
+### R47-063 — A note on a missed day that does not count as done 4 (4.50; 3 KR); show missed days 2
+
+- **Where:** §3.1 master table #68 fr_note_on_missed_day / #87 fr_show_missed_days
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 4 + 2
+- **Direction for us:** undecided · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Review IDs:** `5095780321`, `6766372754`, `13798127926`
+- **Canonical:** C256 Skip, miss and not-yet-logged are visibly distinct states, and the stats explain which is which
+
+### R47-066 — A 'today / not yet done' list 3 (4.67); a default view setting 3; more colours 3 (2019–20); sharing / export 3; timers / time tracking 3
+
+- **Where:** §3.1 master table #75 fr_daily_todo_view / #76 fr_default_view / #77 fr_more_colours / #79 fr_share_social_export / #80 fr_timer_time_tracking
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 3 each
+- **Direction for us:** research · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Review IDs:** `6430056475`, `11715444265`, `12153518574`
+- **Canonical:** C020 Data export / backup / CSV; C066 Focus timer; C254 An all-habits overview with one-tap check-off — never force one-habit-at-a-time navigation; C261 A colour palette users can extend — more defaults, a hex picker, softer sets — because colour is the reward surface
+
+### R47-072 — A dot grid that fills — and keeps what was filled — is the retention mechanic: 67 reviews (11.38%, mean 4.70), rising to 17.1% of E4 — '穴を開けたくなくて筋トレ１ヶ月以上続いてる' ('I don't want a hole in it, so I've kept up strength training for over a month'); 'Dá gosto ir pintando o calendário e sentir um hábito ser construído de forma visual'; 'Githubで「草を生やす」ように' ('grow grass the way you do on GitHub'); a non-punitive subset (4, mean 5.00) values that gaps do not erase what was filled — '連日の記録が途切れても、埋めた色は残っているから達成感ある'; '完璧じゃないくらいの習慣化の方が、本当の習慣って気がする' ('an imperfect habit feels more like a real one'); against it '空枠が増えてモチベ下がる' ('the empty squares keep growing and my motivation drops', 3★) — the same grid motivates most users and fails a few
+
+- **Where:** §3.3.2 The filling grid 67 (11.38%, 4.70), rising 10.0% → 12.6% → 1.6% → 17.1%: 'I don't want a hole in it, so I've kept up strength training for over a month'; 'it's satisfying to paint the calendar and feel a habit being built visually'; 'I wanted to grow grass for my habits the way you do on GitHub'; non-punitive 4 (5.00): 'even if the streak breaks, the colours I filled stay, so I still feel I achieved something'; 'an imperfect habit feels more like a real one'; against: 'the empty squares keep growing and my motivation drops' — the same grid motivates most and fails a few
+- **This app does:** dot grid, free
+- **User reaction:** praise
+- **Magnitude:** 67 (11.38%), 4.70; non-punitive 4 (5.00); demotivated 1
+- **Direction for us:** build-free · **Report confidence:** high-priority · **Generalisable:** yes
+- **Review IDs:** `6049067960`, `7119586754`, `7744252519`, `11046304560`, `14354028854`, `11675941548`, `12683907851`, `10623893523`, `12487255668`
+- **Canonical:** C012 Week / month / year grid views
+
+### R47-075 — A memo-and-photo prompt at the moment of completion is the named differentiator in Korea and Japan, and its praise is migrating to the AI reply that reads it: 32 reviews (5.43%, mean 4.75), fading 5.6% → 10.8% → 3.2% → 2.1% by era — '다른 어플과의 차별성은 습관 완료하면 바로 메모창, 인증샷창이 뜨는 것' ('what sets it apart is that the memo and proof-photo screen pops up the moment you complete a habit'); '日記も一目で見られるようになってるアプリは数少ない'; in E4 '感想を書くとその感想に触れつつ応援メッセージをくれる' ('when I write my thoughts it replies with encouragement that picks up on them')
+
+- **Where:** §3.3.5 The memo-and-photo diary 32 (5.43%, 4.75), fading 5.6% → 10.8% → 3.2% → 2.1%: 'what sets it apart from other apps is that the memo and proof-photo screen pops up the moment you complete a habit' (KR); 'few apps let you see your diary at a glance too' (JP); in E4 the AI coach replies to the memo ('when I write my thoughts it replies with encouragement that picks up on them') — praise may be moving from the memo to the reply
+- **This app does:** memo + proof photo per check-in
+- **User reaction:** praise
+- **Magnitude:** 32 (5.43%), 4.75; 10.8% → 2.1%
+- **Direction for us:** build-free · **Report confidence:** high-priority · **Generalisable:** yes
+- **Review IDs:** `5881887587`, `11428921232`, `5650452836`, `6271390705`, `9680879792`, `12240995283`, `14326467058`
+- **Canonical:** C172 Per-day / per-habit notes and journal text; C208 Photo / media / URL attached to a habit, memo or diary entry
+
+### R47-087 — Unmet needs separated by type: log a missed day 22 (shipped March 2020; video-gated in 2024 as a pricing objection); a start date before the habit was created 21 (exists but hidden — discoverability, last asked July 2026); a home-screen widget 20 (shipped 2025, now stuck-at-0 for some, improvement requests continue — 'please make a widget that makes me want to continue', with Duolingo as the benchmark); an iPad layout 11 (open 2019–2026); totals, best streak, % or graphs 11 (partly shipped — streak plus cumulative; time totals still asked by a payer); backup / sync 10 (shipped, then broken); ad removal for a fee 10 (a premium tier by 2021, none after 2023); weekday / X-per-week / monthly 8 (weekday shipped, X-per-week open; one reviewer argues against it); reorder 6 (then the order scrambled itself in 2022); Apple Watch 6 (none after 2022); an all-habit overview calendar 6; a note on a missed day that does not count as done 4 (3 Korean — '메모하면 바로 성공한것처럼 되어버려요', 'if I write a memo it counts as a success'); bulk check-in 4; photo improvements 4 (multi-select shipped Dec 2024); a daily 'not done yet' list 3 (one a payer); a default screen 3; timer / time totals 3; notification badge / fixed time 3; export / sharing 3; more colours 3 (monetised via rewarded video 2022, none after 2020); week start 2 (Sunday shipped 2026, Monday asked); show missed days 2; pause / archive without losing notes 1; passcode, icon, search, sub-goals, font size, editing the 'aspiration' text, layout density 10
+
+- **Where:** §3.5 Unmet needs (verbatim table) — requests, broken features, misunderstandings and price objections kept apart: log a missed day 22 (shipped Mar 2020; video-gated 2024 — a pricing objection); start date before creation 21 (exists but hidden — discoverability); widget 20 (shipped 2025, now broken for some; improvement requests continue); iPad 11 (open 2019–26); totals / stats 11 (partly shipped; time totals still asked by a payer); backup / sync 10 (shipped, then broken); ad removal 10 (premium by 2021, none after 2023); flexible frequency 8 (weekday shipped, X-per-week open; one argues against it); reorder 6 (then scrambled itself in 2022); Apple Watch 6 (none after 2022); overview calendar 6; note on a missed day 4 ('if I write a memo it counts as a success', KR); bulk check-in 4; photo features 4 (multi-select shipped Dec 2024); daily 'not done yet' list 3 (a payer); default screen 3; timer 3; notification options 3; export / sharing 3; more colours 3 (rewarded video, 2022); week start 2 (Sunday shipped 2026, Monday asked); show missed days 2; pause / archive 1; misc 10
+- **This app does:** n/a
+- **User reaction:** complaint
+- **Magnitude:** Need | Theme | n | % | Type | Status in corpus ; Log yesterday / a missed day | fr_backfill_past_days | 22 | 3.74% | New capability → shipped March 2020 | 19 of 22 in E1; video-gated in 2024 (mf_backfill_paywalled, a pricing objection, 9) ; Record days before the habit was created | fr_start_date_before_install | 21 | 3.57% | Capability exists but is hidden (14081256602) → misunderstanding / discoverability | Requested every era except E3; last July 2026 ; Home-screen widget | fr_widget | 20 | 3.40% | New capability → shipped 2025, now broken for some (rel_widget_not_updating, 5) | Requests continue after the launch, for widget improvements (13583266410) ; iPad layout | ux_ipad_not_supported | 11 | 1.87% | Missing capability | Open, 2019–2026 ; Totals, best streak, % or graphs | fr_totals_stats | 11 | 1.87% | New capability → partly shipped (streak plus cumulative, 12226979658) | Time totals still asked (13875654371, a payer) ; Backup / sync | fr_backup_sync | 10 | 1.70% | Shipped (beta 2020, free backup v2.0 2024) | Then broken (rel_sync_backup_fail, rel_crash_after_account_sync) ; Ad removal for a fee | fr_ad_removal_option | 10 | 1.70% | Pricing request → a premium tier existed by 2021 | None after 2023 ; Weekday / X-per-week / monthly | fr_flexible_frequency | 8 | 1.36% | Weekday scheduling shipped (9126481477, 13120746600); X-per-week open | 11047099153 argues against it ; Reorder habits | fr_reorder_sort | 6 | 1.02% | New capability | Order then scrambled itself in 2022 (rel_order_scrambles, 5) ; Apple Watch | fr_apple_watch | 6 | 1.02% | Missing capability | None after 2022 ; All-habit calendar / overview | fr_overview_calendar | 6 | 1.02% | New capability | Open ; Note on a missed day that does not count as "done" | fr_note_on_missed_day | 4 | 0.68% | New capability | 3 of 4 Korean; *"메모하면 바로 성공한것처럼 되어버려요"* / "if I write a memo it counts as a success" (13798127926) ; Bulk check-in | fr_bulk_entry | 4 | 0.68% | New capability | Open ; Photo improvements | fr_photo_features | 4 | 0.68% | New capability | Multi-select shipped December 2024 (12050119923) ; Daily "not done yet" list | fr_daily_todo_view | 3 | 0.51% | New capability | Open; one requester is a payer (11715444265) ; Default screen | fr_default_view | 3 | 0.51% | New capability | Open ; Timer / time totals | fr_timer_time_tracking | 3 | 0.51% | New capability | Open ; Notification badge / fixed time | fr_notification_options | 3 | 0.51% | New capability | Open ; Export / sharing | fr_share_social_export | 3 | 0.51% | New capability | Open ; More colours | fr_more_colours | 3 | 0.51% | Monetized via rewarded video (2022, 8913596918) | None after 2020 ; Week start | fr_week_start_monday | 2 | 0.34% | Sunday start shipped 2026 (13699643234); Monday still asked (13924626648) | Partly open ; Show missed days explicitly | fr_show_missed_days | 2 | 0.34% | New capability | Open ; Pause / archive without losing notes | fr_pause_archive_habit | 1 | 0.17% | New capability | Open ; Other single requests | fr_misc_other | 10 | 1.70% | Passcode, icon, search, sub-goals, font size, editing the "aspiration" text, layout density | Open
+- **Direction for us:** do · **Report confidence:** corpus-level fact · **Generalisable:** yes
+- **Review IDs:** `13583266410`, `13875654371`, `11715444265`, `13798127926`, `11047099153`, `9126481477`, `13120746600`, `12226979658`, `8913596918`, `13699643234`, `13924626648`, `12050119923`
+- **Canonical:** C009 Basic widgets, icons and colours are free; C010 Backfill missed days / edit start date; C043 Flexible / custom frequency; C047 Cumulative totals and total-days counter; C141 Native iPad layout; C142 Surface existing features where users look
+
+### R47-131 — Ship an iPad layout — requested in every era 2019–2026
+
+- **Where:** §8.2 S5
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** iPad 11 (1.87%)
+- **Direction for us:** build-free · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Canonical:** C141 Native iPad layout
+
+## Monetization
+
+### R47-028 — Free / paid as reviewers describe it: the grid, memo, photo, reminders and calendar free throughout ('完全無料!!… タスクの登録数が無制限', 2020; '無料版でも何不自由なく利用できます', 2026); banner ads in the free app 2019–2024; ad removal requested 2019–2023 and a premium tier existing by January 2021; video ads on each check-in May → about December 2024, then banners; back-dated logging free 2020 → April 2024 ('¥200 a month to log past days is too much', Apr 2024), video-gated May–June 2024, no gate reported after; habit count unlimited until 2024 then capped at 6 for free users (Dec 2024, Feb 2025, '6 habitudes gratuites' Mar 2026); AI coach comments free at launch (mid-2025), premium-only for some from September 2025 while others still receive replies free in 2026; a basic widget free and multi-habit widgets premium; 5-day and one-week trials; monthly (¥200, ¥320), annual, half-year and one-time options; an account optional and required only for backup and sync, with no in-app way to delete it
+
+- **Where:** §2.2 Free / paid classification (verbatim table) — grid, memo, photo, reminders, calendar free throughout ('completely free!!… unlimited number of tasks', 2020; 'the free version works without any inconvenience', 2026); banner ads 2019–24; ad removal requested 2019–23, premium by Jan 2021; video ads on each check-in May → ~Dec 2024 then banners; back-dated logging free 2020 → Apr 2024, video-gated May–Jun 2024, no gate after; habits unlimited until 2024 then capped at 6 (Dec 2024, Feb 2025, Mar 2026 FR); AI comments free at launch, premium-only for some from Sep 2025 (others still receive them free in 2026); basic widget free, multi-habit widgets premium; 5-day and 1-week trials; monthly, annual, half-year and one-time options; account optional (backup / sync), no in-app deletion
+- **This app does:** free core; ads; 6-habit cap; AI + widgets premium
+- **User reaction:** mixed
+- **Magnitude:** Capability | Status | Basis ; App download | Free | Store listing + all reviews ; Grid, memo, photo, reminders, calendar | Free throughout | 5731143749 (2020, *"完全無料!!"* … *"タスクの登録数が無制限"* / "completely free!!" … "unlimited number of tasks"), 14146436938 (2026, *"無料版でも何不自由なく利用できます"* / "the free version works without any inconvenience") ; Banner ads | Present in the free app 2019–2024 | 4572715164 (2019), 5205377513 (US 2019), 6940528003 (2021, top and bottom), 9479232467 (2023) ; Ad removal | Requested 2019–2023; a premium tier existed by January 2021 | 10 fr_ad_removal_option; 6828403002 (premium reverting to free and ads returning, January 2021) ; Video ads on each check-in | May → about December 2024, then replaced by banners | 24 mf_ad_overload_2024 from 11236236662 (5 May 2024) to 12115951907 (28 December 2024); 12062387349 (14 December 2024) reports the switch back ; Back-dated logging | Free 2020 → April 2024; video-gated May–June 2024; no gate reported after | 5731143749; 9 mf_backfill_paywalled (11111270021, April 2024, *"前日以前の入力に月200円は高い"* / "¥200 a month to log past days is too much"); none after June 2024 ; Number of habits | Unlimited until 2024; then capped for free users | 11258017172, 11259471478 (May 2024, cannot add new habits free); 12037246791 (December 2024, *"上限が6"* / "cap of 6"), 12264984107 (February 2025, 6), 13831267826 (FR, March 2026, *"6 habitudes gratuites"* / "6 free habits") ; AI coach comments | Free at launch (mid-2025); premium-only for some users from September 2025 | 13151339965; 14146436938 and 14195810303 (2026) still receive replies on free ; Widgets | Basic widget free; multiple-habit widgets premium (listing) | 12555252618, 14139548553 (free users with a widget) ; Trial | 5-day and 1-week trials reported | 13378374029 (*"試用期間5日"* / "5-day trial"), 12633545732 (*"1週間の有料版お試し"* / "one-week paid trial") ; Subscription | Monthly, annual, half-year and one-time options reported | 11111270021 (¥200/month), 11258017172 (¥320/month), 13604118005 (half-year), 14475596320 (one-time "買い切り", too expensive) ; Account | Optional; required only for backup and sync | 12487255668; no in-app way to delete the account or email (7435689853, 10396494379, 12487255668)
+- **Direction for us:** product-rule · **Report confidence:** inventory · **Generalisable:** yes
+- **Review IDs:** `5731143749`, `14146436938`, `4572715164`, `5205377513`, `6940528003`, `9479232467`, `6828403002`, `11236236662`, `12115951907`, `12062387349`, `11111270021`, `11258017172`, `11259471478`, `12037246791`, `12264984107`, `13831267826`, `13151339965`, `14195810303`, `12555252618`, `14139548553`, `13378374029`, `12633545732`, `11476471502`, `13604118005`, `14475596320`, `12487255668`, `7435689853`, `10396494379`
+- **Canonical:** C001 Never move a free feature behind the paywall; C007 Generous fixed habit cap (or unlimited) — never change it; C082 Ads in the free tier; C262 Never gate a recovery action — back-dating a missed day, undoing a wrong entry and restoring history stay free forever
+
+### R47-029 — A free habit cap introduced onto a previously unlimited free tier: in May 2024 free users could not add new habits, and from December 2024 the cap is reported as 6 ('上限が6'; '6 habitudes gratuites', Mar 2026) — free habit cap 7 (1.19%, mean 2.29)
+
+- **Where:** §2.2 Number of habits — unlimited until 2024, then capped at 6 for free users (Dec 2024 'cap of 6'; Feb 2025; Mar 2026 FR) — free habit cap 7 (1.19%, mean 2.29); May 2024 free users could not add new habits
+- **This app does:** unlimited → 6 (2024)
+- **User reaction:** complaint
+- **Magnitude:** 7 (1.19%), 2.29
+- **Direction for us:** product-rule · **Report confidence:** meaningful · **Generalisable:** yes
+- **Review IDs:** `11258017172`, `11259471478`, `12037246791`, `12264984107`, `13831267826`
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C104 Never ship a paywall or feature-removal change silently
+
+### R47-032 — Prices as reviewers report them: 2020 — a Korean reviewer would pay about ₩9,000 once for stats, sync and iPad; April 2024 — ¥200/month to log past days; May 2024 — ¥320/month; July 2024 — ¥400 charged twice; 2025–26 — a half-year plan, a 5-day trial, a one-time price 'too high'; the listing's seven items (¥600 → ¥14,800, annual ¥1,990) are consistent but cannot be mapped item by item
+
+- **Where:** §2.2 Price as reviewers report it (verbatim table) — 2020 a Korean reviewer would pay ~₩9,000 once for stats, sync and iPad; Apr 2024 ¥200/month (past days); May 2024 ¥320/month; Jul 2024 ¥400 charged twice; 2025–26 half-year plan, 5-day trial, one-time 'too high'; the listing's seven items (¥600 → ¥14,800; annual ¥1,990) cannot be mapped item by item
+- **This app does:** ¥200–320/mo; ¥1,990/yr; one-time
+- **User reaction:** mixed
+- **Magnitude:** Period | Price named | Review IDs ; 2020 | A Korean reviewer would pay about ₩9,000 once for stats, sync and iPad | 5713517806 ; April 2024 | ¥200/month (to log past days) | 11111270021 ; May 2024 | ¥320/month | 11258017172 ; July 2024 | ¥400 (charged twice) | 11476471502 ; 2025–2026 | Half-year plan; 5-day trial; one-time price "too high" | 13604118005, 13378374029, 14475596320
+- **Direction for us:** research · **Report confidence:** corpus-level fact · **Generalisable:** app-specific
+- **Review IDs:** `5713517806`, `11111270021`, `11258017172`, `11476471502`, `13604118005`, `13378374029`, `14475596320`
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C004 Price low and fair, anchored against subscription competitors
+
+### R47-038 — Gratitude that the app is free 25 (4.24%, 4.68); ads absent or mild 9 (1.53%, 4.56)
+
+- **Where:** §3.1 master table #11 mp_free_gratitude / #44 mp_ads_absent_or_mild
+- **This app does:** see §3.1
+- **User reaction:** praise
+- **Magnitude:** 25 + 9
+- **Direction for us:** none · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C061 Goodwill conversion — a generous free tier and 'support the devs'; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
+
+### R47-043 — Willing to pay 14 (2.38%, 4.57), 9 before 2022, mostly for ad removal
+
+- **Where:** §3.1 master table #24 mp_willing_to_pay
+- **This app does:** see §3.1
+- **User reaction:** purchase-driver
+- **Magnitude:** 14 (2.38%), 4.57
+- **Direction for us:** build-paid · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C061 Goodwill conversion — a generous free tier and 'support the devs'
+
+### R47-047 — Banner ads annoying 11 (1.87%, 3.55), 2019–2024 — top and bottom banners
+
+- **Where:** §3.1 master table #35 mf_banner_ads_annoying
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 11 (1.87%), 3.55
+- **Direction for us:** research · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Review IDs:** `6940528003`
+- **Canonical:** C082 Ads in the free tier; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
+
+### R47-064 — One-time purchase wanted 4 (3.50, 2022–25); lifetime price too high 1 (2026: 'so expensive it's funny'); subscription price too high 4 (3.00)
+
+- **Where:** §3.1 master table #72 mf_want_one_time_purchase / #95 mf_lifetime_price_too_high / #70 mf_price_too_high
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 4 + 1 + 4
+- **Direction for us:** research · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Review IDs:** `14475596320`
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C004 Price low and fair, anchored against subscription competitors
+
+### R47-077 — A free, unlimited tracker with unobtrusive banners earns gratitude: free gratitude 25 (4.24%, mean 4.68 — 'この手のアプリはタスク増やすと課金が必要だけど、これは無料。良心的', 2020, still present in 2026); ads absent or mild 9 (1.53% — '広告が邪魔じゃない', 'the ads don't get in the way'); willing to pay 14 (2.38%)
+
+- **Where:** §3.3.7 Monetisation praise 42 (7.13%) — free gratitude 25 (4.24%, 4.68: 'apps like this usually charge for more tasks; this one is free — decent of them', 2020; still present 2026); ads absent or mild 9 (1.53%: 'the ads don't get in the way'); willing to pay 14 (2.38%)
+- **This app does:** free + mild banners
+- **User reaction:** praise
+- **Magnitude:** gratitude 25 (4.68); mild ads 9 (4.56); willing 14
+- **Direction for us:** build-free · **Report confidence:** very strong · **Generalisable:** yes
+- **Review IDs:** `5501337301`, `14146436938`, `14354028854`, `8397002602`, `12240995283`
+- **Canonical:** C061 Goodwill conversion — a generous free tier and 'support the devs'; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
+
+### R47-096 — Every purchase trigger reviewers name is additive — none asks to pay to restore something that used to be free: payers cite accumulated value ('プレミアに入ったくらい重宝してます'), study logging (a payer wants average and total study time), motivation photos ('各習慣に毎日「モチベーション画像」を貼っている'), and the AI coach; non-payers state conditions — ad removal (10, 2019–2023: '一度払い切りで広告を消すことができたら嬉しい', a one-time payment to remove ads), a platform bundle ('Macのリリース、ウィジェット導入、iPadとの同期を求めます。そしたら課金します', 2026; 'add simple stats, sync iOS and Android, support iPad, and I'd honestly pay about ₩9,000', 2020), habit slots sold individually ('タブ数だけ買わせてください', 'let me buy just the number of tabs I need'), and supporting the developer ('조금이나마 도움되고 싶음', 'I want to help a little')
+
+- **Where:** §5.2 What triggers a purchase — payers: accumulated value ('it's so useful I joined premium'); study logging (a payer asks for average and total study time); motivation photos ('I attach a motivation picture to each habit every day'); the AI coach (a premium user debugging the AI toggle; a non-payer asks whether premium AI comments are higher quality); conditional intent: ad removal (10, 2019–23: 'I'd love a one-time payment to remove ads'); a platform bundle ('release a Mac app, add widgets, sync with iPad — then I'll pay', 2026; 'add simple stats, sync iOS and Android, support iPad, and I'd honestly pay about ₩9,000', 2020); habit slots sold individually ('let me buy just the number of tabs I need'); supporting the developer ('I want to help a little') — every trigger named is additive; none asks to pay to restore something that used to be free
+- **This app does:** additive premium
+- **User reaction:** purchase-driver
+- **Magnitude:** willing 14 (4.57); ad removal 10
+- **Direction for us:** build-paid · **Report confidence:** segment · **Generalisable:** yes
+- **Review IDs:** `11715444265`, `13875654371`, `10149919312`, `13061680779`, `13953380897`, `8974995265`, `13780402439`, `5713517806`, `12638208399`, `5881887587`, `5729176001`, `8721860038`
+- **Canonical:** C013 Cloud sync / multi-device as the paid differentiator; C133 Gate on capability, not on quantity; C263 An AI encouragement reply on each check-in as the premium hook — the first paid feature reviewers praise unprompted; its state must be visible
+
+### R47-097 — A per-slot purchase is proposed by a user: 'タブ数だけ買わせてください' ('let me buy just the number of tabs I need', 4★, 2025) — an à-la-carte alternative to a subscription for the habit cap
+
+- **Where:** §5.2 'let me buy just the number of tabs I need' — habit slots sold individually (4★, 2025)
+- **This app does:** 6-habit cap
+- **User reaction:** purchase-driver
+- **Magnitude:** n=1
+- **Direction for us:** research · **Report confidence:** anecdotal · **Generalisable:** yes
+- **Review IDs:** `12638208399`
+- **Canonical:** C222 A hard habit cap is a defensible design position only with an opt-in pressure valve — the default never changes
+
+### R47-100 — Interruptive monetisation pushed would-be payers away rather than converting them: '広告がうっとおしく課金する気にも慣れない' ('the ads are so annoying I can't even bring myself to pay'); 'このシンプルなアプリに月額320円は高い' ('¥320 a month is too much for an app this simple'); '買い切り版が出たら検討しますが、とりあえず乗り換えます' ('I'd consider a one-time version, but for now I'm switching') — the shock era has 20 churn statements and 2 identifiable payers; the shape objection (one-time wanted 4: 'opção de comprar vitalícia, sem ser por assinatura', BR; 'Preferiría que la aplicación sea de un solo pago', MX) outweighs price as such (4, 0.68%)
+
+- **Where:** §5.5 Barriers to upgrading — the 2024 changes pushed would-be payers away rather than converting them ('the ads are so annoying I can't even bring myself to pay'; '¥320 a month is too much for an app this simple'; 'I'd consider a one-time version, but for now I'm switching'; E3 has 20 churn statements and 2 identifiable payers); subscription shape rather than price (one-time wanted 4: 'an option to buy lifetime, not a subscription', BR; 'I'd prefer a single payment', MX); price as such 4 (0.68%)
+- **This app does:** subscription ¥320/mo; one-time 'too high'
+- **User reaction:** blocked-conversion
+- **Magnitude:** E3 churn 20 vs payers 2; one-time 4; price 4
+- **Direction for us:** build-paid · **Report confidence:** segment · **Generalisable:** yes
+- **Review IDs:** `11255434607`, `11258017172`, `11600850587`, `8974995265`, `9263067781`, `12426374461`, `14475596320`, `11111270021`, `12037246791`
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C004 Price low and fair, anchored against subscription competitors; C240 Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap
+
+### R47-136 — Experiment: a one-time ad-free / lifetime option in Japan priced against the annual plan — 10 ad-removal requests, 4 one-time requests, 'I'd consider a one-time version'; the one lifetime-price review says too high; measure paywall share choosing one-time vs annual and the refund rate
+
+- **Where:** §8.4 X1
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** ad removal 10; one-time 4; lifetime too high 1
+- **Direction for us:** research · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `11600850587`, `14475596320`
+- **Canonical:** C003 Lead with a one-time lifetime purchase
+
+### R47-137 — Experiment: per-slot habit purchase for free users at the cap ('let me buy just the tabs I need') — conversion at the cap without a rise in churn statements
+
+- **Where:** §8.4 X2
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** cap 7; slot request 1
+- **Direction for us:** research · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Review IDs:** `12638208399`
+- **Canonical:** C222 A hard habit cap is a defensible design position only with an opt-in pressure valve — the default never changes
+
+### R47-138 — Experiment: the AI coach as the premium hook with a clearly labelled free taste — 13 praise (4.69) against 5 silent stops and 1 surprise paywall; retention of trial users who received AI replies vs those who didn't
+
+- **Where:** §8.4 X3
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** AI 13 (4.69)
+- **Direction for us:** build-paid · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Canonical:** C263 An AI encouragement reply on each check-in as the premium hook — the first paid feature reviewers praise unprompted; its state must be visible
+
+## Tactics the app used
+
+### R47-017 — Outcome of shipping requested fixes fast: 12 reviews (2.04%, mean 4.42), 10 of them 2024 or later, acknowledge a fix — photo multi-select within a week of the request; late-night check-ins no longer leaving a gap ('まさか本当に意見を取り入れてくださるとは' — 'I never thought they'd actually take my feedback'); a Sunday week start; hiding non-scheduled weekdays — while 7 (1.19%) cannot reach support or get no reply and 5 (0.85%) cannot delete their account or e-mail ('退会したいと何度かメッセージ送ってますがもちろん反応はないです', 1★); the gap is the support channel, not responsiveness
+
+- **Where:** Executive summary #11 — the developer ships what users ask: fix acknowledged 12 (2.04%, mean 4.42), 10 of them 2024 or later — photo multi-select within a week of the request; late-night check-ins no longer leaving a gap ('I never thought they'd actually take my feedback'); a Sunday week start; hiding non-scheduled weekdays; against that, 7 (1.19%) cannot reach support or get no reply and 5 (0.85%) cannot delete their account or e-mail ('I've messaged several times asking to delete my account; of course, no response') — the gap is the support channel, not responsiveness
+- **This app does:** ships requests; no support channel; no account deletion
+- **User reaction:** mixed
+- **Magnitude:** fix acknowledged 12 (4.42); unreachable 7; cannot delete 5
+- **Direction for us:** do · **Report confidence:** meaningful · **Generalisable:** yes
+- **Review IDs:** `12050119923`, `13652093408`, `13699643234`, `14174277268`, `10396494379`
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C059 Be visibly responsive; fixes bring reviewers back; C249 Account deletion completes in one step, in-app and on the web, and is confirmed — never a spinner or a silent chatbot
+
+### R47-023 — Rewarded video for cosmetics was accepted where rewarded video for logging was not: 'more colours unlocked by watching a video' (2022) is reported neutrally in a 14-vote 5★ ('動画を見れば使える色が増えます'), while a video to log yesterday produced 1★
+
+- **Where:** §2.1 Colour choice with more colours unlocked by watching a video (2022) — 'watch a video and you unlock more colours' (14 votes)
+- **This app does:** rewarded video for colours
+- **User reaction:** praise
+- **Magnitude:** 1 review, 14 votes
+- **Direction for us:** research · **Report confidence:** anecdotal · **Generalisable:** yes
+- **Review IDs:** `8913596918`, `8378672807`
+- **Canonical:** C082 Ads in the free tier; C167 Cosmetic and colour variety as the paid layer; C238 A rewarded-ad unlock path for users who cannot pay (teens, students)
+
+## Insights (the why)
+
+### R47-009 — Simplicity is the product, so anything that adds taps to the check-in path attacks the moat: simplicity 126 (21.39%, mean 4.61), the filling dot grid 67 (11.38%, 4.70), design 54 (9.17%), behaviour change 44 (7.47%, 4.75), 'best of the many I tried' 33 (5.60%, 4.88) — 'シンプルイズベストを地で行くようなアプリ… マスが埋まっていくのを見るのが、地味に達成感を感じてとても良い' ('watching the squares fill gives a quiet sense of achievement'); 'やったところが色が塗られるので加点方式な感じがして好き' ('what you did gets coloured in, so it feels like scoring points, not losing them'); 'このアプリのおかげでピアノ練習100日目到達'; a 5★ who wanted weekly habits concluded '多機能を追加すると、今のシンプルさは壊れてしまう。ので、結論は今のままでいい' ('adding features would break the simplicity, so leave it as it is'); a 2★ says the video ads destroyed 'サッと入力出来るシンプルな手軽さ' ('the simple ease of logging in a second')
+
+- **Where:** Executive summary #3 — the value is simplicity plus a dot grid that fills in: simplicity 126 (21.39%, 4.61), visual progress 67 (11.38%, 4.70), design 54 (9.17%), behaviour change 44 (7.47%, 4.75), best of many 33 (5.60%, 4.88); 'It lives simple is best… watching the squares fill gives a quiet sense of achievement'; 'What you did gets coloured in, so it feels like scoring points, not losing them'; 'Thanks to this app I reached day 100 of piano practice'; two state the constraint — 'adding features would break the simplicity, so leave it as it is'; video ads destroyed 'the simple ease of logging in a second' — anything that adds taps to the check-in attacks the moat
+- **This app does:** one-tap dot grid
+- **User reaction:** praise
+- **Magnitude:** simplicity 126 (4.61); grid 67 (4.70); best of many 33 (4.88)
+- **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
+- **Review IDs:** `5501337301`, `11675941548`, `13527160252`, `11047099153`, `11262616384`
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C012 Week / month / year grid views; C159 Launch-to-core-action path with no interstitials
+
+### R47-037 — Stated churn — deleting or switching — 27 (4.58%, mean 1.48), 24 JP, 20 of them in the eight months after May 2024
+
+- **Where:** §3.1 master table #10 neg_stated_churn
+- **This app does:** see §3.1
+- **User reaction:** churn
+- **Magnitude:** 27 (4.58%), 1.48
+- **Direction for us:** none · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C001 Never move a free feature behind the paywall; C002 Ratings follow the offer, not the feature set
+
+### R47-040 — Self-described users of two years or more 23 (3.90%, mean 2.26), 11 of them writing in the eight months after May 2024 — long-term users became the critics
+
+- **Where:** §3.1 master table #15 seg_long_term_user
+- **This app does:** see §3.1
+- **User reaction:** churn
+- **Magnitude:** 23 (3.90%), 2.26
+- **Direction for us:** none · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C001 Never move a free feature behind the paywall; C002 Ratings follow the offer, not the feature set
+
+### R47-067 — Stagnant development 3 (3.00); a competitor is better 2 (2.00, 2025–26); weak motivation 2
+
+- **Where:** §3.1 master table #81 neg_stagnant_development / #90 neg_competitor_better / #91 neg_weak_motivation
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 3 + 2 + 2
+- **Direction for us:** none · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C005 Know which competitors buyers compare against; C071 Never ship and walk away
+
+### R47-070 — Family aggregates: core praise 288 (48.90%, mean 4.60; only 7 of 123 1–2★); reliability 172 (29.20%, 3.04; 63 = 51.2% of 1–2★); feature gaps 142 (24.11%, 4.19; 7 — they come from satisfied users, not people leaving); monetisation friction 67 (11.38%, 2.31; 42 = 34.1%); segments 66 (11.21%, 3.41); UX friction 58 (9.85%, 3.07; 21 = 17.1%); meta 47; monetisation praise 42 (7.13%, 4.64; 2); product-value criticism 32 (5.43%, 1.69; 25 = 20.3%); support 19 (3.23%, 3.74); purchase evidence 13 (2.21%, 3.23); any praise 306 (51.95%, 4.58) — praise and complaint barely overlap: reliability and monetisation friction together account for almost all low ratings
+
+- **Where:** §3.2 Theme-family aggregates (verbatim table) — core praise 288 (48.90%, 4.60) → 7 of 123 1–2★; reliability 172 (29.20%, 3.04) → 63 (51.2%); feature gaps 142 (24.11%, 4.19) → 7; monetisation friction 67 (11.38%, 2.31) → 42 (34.1%); segments 66; UX friction 58 (9.85%, 3.07) → 21; meta 47; monetisation praise 42 (7.13%, 4.64) → 2; product-value criticism 32 (5.43%, 1.69) → 25 (20.3%); support 19; purchase evidence 13; any praise 306 (51.95%) — praise and complaint barely overlap; requests come from satisfied users
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** Family | Themes | Reviews (union) | % of 589 | Mean ★ | Share of the 123 1–2★ reviews | Signal ; Core praise | 16 | 288 | 48.90% | 4.60 | 7/123 (5.7%) | high-priority ; Reliability | 16 | 172 | 29.20% | 3.04 | 63/123 (51.2%) | high-priority ; Feature gaps & requests | 23 | 142 | 24.11% | 4.19 | 7/123 (5.7%) | high-priority ; Monetization friction | 12 | 67 | 11.38% | 2.31 | 42/123 (34.1%) | high-priority ; Segments | 6 | 66 | 11.21% | 3.41 | 22/123 (17.9%) | high-priority ; UX friction | 10 | 58 | 9.85% | 3.07 | 21/123 (17.1%) | high-priority ; Meta | 3 | 47 | 7.98% | 4.62 | 2/123 (1.6%) | high-priority ; Monetization praise | 3 | 42 | 7.13% | 4.64 | 2/123 (1.6%) | high-priority ; Product-value criticism | 4 | 32 | 5.43% | 1.69 | 25/123 (20.3%) | high-priority ; Support | 2 | 19 | 3.23% | 3.74 | 5/123 (4.1%) | very strong ; Purchase evidence | 1 | 13 | 2.21% | 3.23 | 3/123 (2.4%) | meaningful ; Any praise (core + monetization praise + fix acknowledged) | — | 306 | 51.95% | 4.58 | 9/123 (7.3%) | high-priority
+- **Direction for us:** must-never-break · **Report confidence:** corpus-level fact · **Generalisable:** yes
+- **Canonical:** C002 Ratings follow the offer, not the feature set
+
+### R47-071 — Simplicity is the frame reviewers judge every change by: 126 reviews (21.39%, mean 4.61), the largest theme, by era 24.5% → 28.8% → 4.8% (the shock) → 17.1% — '打卡习惯类app没有什么高深技术含量，唯有逻辑和UI的精简再精简' ('habit apps have no deep tech; all that matters is paring logic and UI down again and again'); '다른앱들처럼 기능이 이리저리많고 복잡한거보다 좋아요 다른거 다삭제하고' ('better than apps crammed with features; I deleted all the others'); 'チュートリアルも要らず、感覚的に使えてストレスがない'; 'Todos os outros que eu testei eram cheio de funções que acabam atrapalhando'
+
+- **Where:** §3.3.1 Simplicity 126 (21.39%, mean 4.61), the largest theme, by era 24.5% → 28.8% → 4.8% → 17.1%; 'habit apps have no deep tech; all that matters is paring logic and UI down again and again'; 'better than apps crammed with features; I deleted all the others'; 'no tutorial needed, intuitive, stress-free'; 'every other one I tried was full of features that get in the way' — the frame reviewers use to judge change
+- **This app does:** few features, no tutorial, fast
+- **User reaction:** praise
+- **Magnitude:** 126 (21.39%), 4.61
+- **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
+- **Review IDs:** `3801386782`, `6271390705`, `10373785885`, `11761509950`, `7547973874`, `11075683835`, `13598329974`, `14426685768`
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default
+
+### R47-073 — Japanese reviewers describe outcomes in the language of 三日坊主 — 'a three-day monk' — that they no longer are: behaviour change 44 (7.47%, mean 4.75), 40 Japanese (10.84% of JP), rising to 13.7% of E4 — '習慣ついて3キロも痩せた。（約1ヶ月半）' ('built the habit and lost 3 kg in about six weeks'); piano day 100; a household ledger that had never lasted three days; a high-schooler's exam preparation; coffee withdrawal (KR); '人生が変わりました' ('it changed my life')
+
+- **Where:** §3.3.3 Behaviour change 44 (7.47%, 4.75), 40 Japanese (10.84% of JP), rising 4.5% → 9.0% → 3.2% → 13.7%; the recurring phrase is 三日坊主 ('a three-day monk') used by reviewers who no longer are one; outcomes: 'built the habit and lost 3 kg in about six weeks'; piano day 100; a household ledger that had never lasted three days; exam preparation; coffee withdrawal (KR); 'it changed my life'
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** 44 (7.47%), 4.75; 40 JP
+- **Direction for us:** none · **Report confidence:** high-priority · **Generalisable:** yes
+- **Review IDs:** `5721447088`, `8488810539`, `12371621175`, `14348553695`, `12220083987`, `13527160252`, `5650452836`, `12240995283`, `6015631103`, `13513088428`
+- **Canonical:** C070 Use the language users use: Atomic Habits, 75 Hard; C134 Lead the store listing with what users actually love
+
+### R47-074 — Design praise ('cute' かわいい, 'clean' 깔끔) 54 (9.17%, mean 4.50) fell to 0 of 63 reviews during the 2024 shock and recovered only to 6.8% of E4 — reviewers stop praising what the app looks like when they are writing about the paywall
+
+- **Where:** §3.3.4 Design 54 (9.17%, 4.50) — 'cute' (かわいい) and 'clean' (깔끔) dominate; design praise falls to 0 of 63 in E3 and recovers only to 6.8% in E4
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** 54 (9.17%), 4.50; E3 0/63
+- **Direction for us:** none · **Report confidence:** high-priority · **Generalisable:** yes
+- **Review IDs:** `6259277232`, `6437791439`, `9484645530`, `12445591171`, `14437991293`
+- **Canonical:** C185 Aesthetic and a polished onboarding convert; they do not retain
+
+### R47-079 — The corpus contains its own before-and-after on ad format: banners that cost nothing in time were a mild theme (11, 1.87%, mean 3.55, 2019 – April 2024) whose reviewers mostly asked to pay to remove them, while videos on the check-in path averaged 1.46 and generated exits — ad placement on the completion action, not ads as such, is what reviewers punish
+
+- **Where:** §3.4.1 Pre-2024 banner ads were a milder theme — 11 (1.87%, mean 3.55), 2019–Apr 2024, and reviewers mostly asked to pay to remove them; the corpus contains its own before-and-after: banners that cost nothing in time averaged 3.55 and generated purchase intent; videos on the check-in path averaged 1.46 and generated exits
+- **This app does:** banners vs interstitials
+- **User reaction:** mixed
+- **Magnitude:** banners 11 (3.55) vs videos 24 (1.46)
+- **Direction for us:** product-rule · **Report confidence:** interpretation · **Generalisable:** yes
+- **Review IDs:** `4572715164`, `5205377513`, `7771647822`, `10259404952`
+- **Canonical:** C082 Ads in the free tier; C240 Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
+
+### R47-086 — Before 2024 churn was a reaction to one defect; in 2024 it was a reaction to the business model: stated churn 27 (4.58%, mean 1.48), 20 of them May–December 2024; stagnant development 3 ('作者好像不更新了', 2020; '評価が高いアプリなのに1年以上更新がないのも残念', 2023); a competitor better 2 (Dots — 'そちらの方が操作性が良い'; 'その辺のシンプルな野良アプリ', 'any random simple app'); weak motivation 2
+
+- **Where:** §3.4.5 Product-value criticism 32 (5.43%, 1.69) — stated churn 27 (4.58%, 1.48), 20 in May–Dec 2024: before 2024 churn reacted to one defect (translation, crash, confusion), in 2024 to the business model; stagnant development 3 ('the author seems to have stopped updating', 2020; 'highly rated, yet no update in over a year', 2023); competitor better 2 (Dots — 'better to operate'; 'any random simple app'); weak motivation 2
+- **This app does:** n/a
+- **User reaction:** churn
+- **Magnitude:** churn 27 (1.48), 20 in E3
+- **Direction for us:** none · **Report confidence:** high-priority (union) · **Generalisable:** yes
+- **Review IDs:** `6672676640`, `9962305243`, `12487255668`, `13584261185`, `13436865578`, `4238555703`
+- **Canonical:** C002 Ratings follow the offer, not the feature set; C005 Know which competitors buyers compare against; C071 Never ship and walk away
+
+### R47-089 — Why people give 5★: simplicity 31.8% of the band, the filling grid 18.4%, behaviour change 13.7%, design 12.6%, best of many 10.5%, the memo-and-photo diary 9.0%; the band also carries 13 crash reports and all 16 rating-text contradictions (5.8% of 5★) — reviewers who love the app and are telling the developer it is broken; all 10 reminder-praise reviews are 5★
+
+- **Where:** §4.1 Five stars — simplicity 88 (31.8%), grid 51 (18.4%), behaviour change 38 (13.7%), design 35 (12.6%), best-of-many 29 (10.5%), notes / photos 25 (9.0%); the 5★ band also carries 13 crash reports and all 16 rating-text contradictions (5.8%) — reviewers who love the app telling the developer it is broken; all 10 reminder-praise reviews are 5★
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** 277 5★; 16 contradictions
+- **Direction for us:** none · **Report confidence:** segment · **Generalisable:** yes
+- **Review IDs:** `6842690777`, `13591584382`, `13599911832`
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C012 Week / month / year grid views; C134 Lead the store listing with what users actually love
+
+### R47-090 — 4★ means 'one fix from five' and holds most of the payers: 131 reviews — simplicity 28 (21.4%), crash 13 (9.9%), UI bug 13 (9.9%), start date before creation 9 (6.9%), backfill 7, widget 7, Apple Watch 5 of 6 — '翌日でもチェックつけられるようになれば☆5です' ('if I could check off the next day, it'd be ★5'); '唯一これが星5にしなかった理由です' ('that's the only reason it isn't ★5'); '反応が良くなれば星5です' ('if the back button responded better, ★5'); 6 of the 13 identifiable payers are in this band
+
+- **Where:** §4.2 Four stars — 'one fix from five': simplicity 28 (21.4%), crash 13 (9.9%), UI bug 13 (9.9%), start date 9 (6.9%), backfill 7, widget 7, Watch 5 of 6; 'if I could check off the next day, it'd be ★5'; 'that's the only reason it isn't ★5'; 'if the back button responded better, ★5'; 6 of the 13 payers are in this band
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 131 4★; payers 6/13
+- **Direction for us:** research · **Report confidence:** segment · **Generalisable:** yes
+- **Review IDs:** `5664681988`, `6185838179`, `11709476393`
+- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work
+
+### R47-091 — 3★ is unfulfilled requests and early defects: start date before creation 7 (12.1%), backfill 7 (12.1%), crash 7, the calendar-weekday bug 6 (10.3%, its modal rating), order scrambles 3, widget not updating 3 — simplicity still appears in 9 (15.5%)
+
+- **Where:** §4.3 Three stars — unfulfilled requests and early defects: start date 7 (12.1%), backfill 7 (12.1%), crash 7, calendar weekday bug 6 (10.3% — its modal rating), order scrambles 3, widget not updating 3; simplicity still in 9 (15.5%)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 58 3★
+- **Direction for us:** none · **Report confidence:** segment · **Generalisable:** yes
+- **Canonical:** C010 Backfill missed days / edit start date; C142 Surface existing features where users look
+
+### R47-092 — 2★ is the 2024 changes plus persistent crashes: free-to-paid backlash 7 (16.3%), ad overload 7 (16.3%), stated churn 7 (16.3%), crash 6 (14.0%), too many taps 3
+
+- **Where:** §4.4 Two stars — the 2024 changes and persistent crashes: free-to-paid backlash 7 (16.3%), ad overload 7, churn 7, crash 6 (14.0%), too many taps 3
+- **This app does:** n/a
+- **User reaction:** complaint
+- **Magnitude:** 43 2★
+- **Direction for us:** none · **Report confidence:** segment · **Generalisable:** yes
+- **Canonical:** C001 Never move a free feature behind the paywall; C031 Crashes / launch failures
+
+### R47-119 — Loyal users surface in reviews when something they depend on is taken away or destroyed: self-described users of two years or more 0% → 2.7% → 17.5% (the 2024 shock) → 6.2% (the 2026 data loss), mean 2.26, 12 of 23 at 1★
+
+- **Where:** §7.10 Trend 9 — long-term users became the critics: two-or-more-year users 0% → 2.7% → 17.5% → 6.2%, mean 2.26, 12 of 23 at 1★ — loyal users show up mainly when something they depend on is taken away (2024) or destroyed (Aug 2026)
+- **This app does:** n/a
+- **User reaction:** churn
+- **Magnitude:** 23 (3.90%), 2.26; 12 at 1★
+- **Direction for us:** product-rule · **Report confidence:** medium confidence · **Generalisable:** yes
+- **Canonical:** C001 Never move a free feature behind the paywall; C002 Ratings follow the offer, not the feature set; C034 Data must never be lost on update, reinstall or phone change
+
+## Audiences
+
+### R47-039 — Fitness / diet users 24 (4.07%, 4.08; a high-schooler's diet log with 14 votes); study / learning 9 (1.53%, 4.78; piano day 100); health / medication 3
+
+- **Where:** §3.1 master table #13 seg_fitness_diet / #45 seg_study_learning / #83 seg_health_medication
+- **This app does:** see §3.1
+- **User reaction:** praise
+- **Magnitude:** 24 + 9 + 3
+- **Direction for us:** none · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Review IDs:** `8913596918`, `13527160252`
+- **Canonical:** C042 Aim at ADHD / neurodivergent users, students, medication & chronic-illness trackers; C067 Fitness / health tracking use case
+
+### R47-045 — Multi-device users (iPhone + Android / iPad) 12 (2.04%, 3.42)
+
+- **Where:** §3.1 master table #32 seg_multi_device
+- **This app does:** see §3.1
+- **User reaction:** mixed
+- **Magnitude:** 12 (2.04%), 3.42
+- **Direction for us:** research · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C013 Cloud sync / multi-device as the paid differentiator; C051 Android version
+
+## Markets and languages
+
+### R47-015 — Japan and Korea are two different stories: Japan (n = 369, mean 3.54, the lowest eligible) carries almost all the monetisation shock and data-integrity evidence — 20 of 24 ad-overload reviews, all 16 data losses, all 13 white-screen reviews, 12 of 13 payers; Korea (n = 92, mean 4.33, the highest) is an early-era market — 65 of its 92 reviews date from 2019–2021 and only one from 2025 — over-indexing on requests rather than complaints: back-dating 10 (10.87%), widgets 9 (9.78%), 'best of the many I tried' 12 (13.04%); the corpus cannot say whether Korean users left or stopped reviewing
+
+- **Where:** Executive summary #9 — Japan and Korea are two different stories: Japan (369, 3.54) carries the monetisation shock and data integrity (20 of 24 ad-overload, all 16 data loss, all 13 white-screen, 12 of 13 payers); Korea (92, 4.33) is an early-era market — 65 of 92 from 2019–21, one from 2025 — over-indexing on requests (back-dating 10.87%, widgets 9.78%, best-of-many 13.04%); KR reviewers largely stopped writing after 2021
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** JP 369 (3.54); KR 92 (4.33), 65 of 92 in 2019–21
+- **Direction for us:** research · **Report confidence:** two standalone markets · **Generalisable:** app-specific
+- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue; C231 Audit the sales funnel per market — the same product can rate 4.3 in one storefront and 2.1 in another on billing alone
+
+### R47-081 — Registration and login fail from mainland China: 6 of 8 register / login failures are Chinese — '好像需要vpn' ('seems to need a VPN')
+
+- **Where:** §3.4.2 Register / login failures 8 (1.36%, 3.62) — 6 of 8 Chinese: 'seems to need a VPN'
+- **This app does:** account backend unreachable from CN
+- **User reaction:** complaint
+- **Magnitude:** 8 (1.36%), 3.62; 6 CN
+- **Direction for us:** must-never-break · **Report confidence:** meaningful (limited per storefront) · **Generalisable:** yes
+- **Review IDs:** `5718580406`
+- **Canonical:** C132 Do not sell in a storefront where the app cannot function; C188 The app must open offline — never block launch on a network call
+
+### R47-102 — Storefront distribution: Japan 369 (62.65%, mean 3.54) and Korea 92 (15.62%, 4.33) eligible; China 32 (4.28), Brazil 24 (4.54), Taiwan 24 (4.25), Spain 10 (4.50), France 9 (3.78), US 7 (4.00), Argentina 6 (4.83), Italy 4 (3.00, all Feb–Mar 2020), Mexico 4, Australia 2, Colombia / Germany / Malaysia / Panama / Saudi Arabia / Singapore 1 each; 44 further queried storefronts — including the UK, Canada, Hong Kong, Russia and India — returned zero written reviews
+
+- **Where:** §6.1 Distribution (verbatim table) — JP 369 (3.54) and KR 92 (4.33) eligible; CN 32 (4.28), BR 24 (4.54), TW 24 (4.25), ES 10, FR 9 (3.78), US 7 (4.00), AR 6, IT 4 (3.00, all Feb–Mar 2020), MX 4, AU 2, CO / DE / MY / PA / SA / SG 1 each; 44 further storefronts (incl. UK, Canada, Hong Kong, Russia, India) returned zero
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** Storefront | n | % of 589 | Mean ★ | 5/4/3/2/1 | First–last review | Status ; Japan (jp) | 369 | 62.65% | 3.54 | 142/85/39/37/66 | 2019-02 – 2026-08 | eligible (≥50) ; South Korea (kr) | 92 | 15.62% | 4.33 | 59/19/5/3/6 | 2019-05 – 2026-08 | eligible (≥50) ; China mainland (cn) | 32 | 5.43% | 4.28 | 18/9/3/0/2 | 2019-02 – 2026-01 | limited evidence ; Brazil (br) | 24 | 4.07% | 4.54 | 19/3/0/0/2 | 2020-05 – 2026-06 | limited evidence ; Taiwan (tw) | 24 | 4.07% | 4.25 | 13/6/4/0/1 | 2019-08 – 2025-05 | limited evidence ; Spain (es) | 10 | 1.70% | 4.50 | 6/3/1/0/0 | 2019-10 – 2026-05 | limited evidence ; France (fr) | 9 | 1.53% | 3.78 | 5/0/2/1/1 | 2020-01 – 2026-03 | limited evidence ; United States (us) | 7 | 1.19% | 4.00 | 5/0/0/1/1 | 2019-11 – 2024-09 | limited evidence ; Argentina (ar) | 6 | 1.02% | 4.83 | 5/1/0/0/0 | 2022-01 – 2025-07 | limited evidence ; Italy (it) | 4 | 0.68% | 3.00 | 0/1/2/1/0 | 2020-02 – 2020-03 | limited evidence ; Mexico (mx) | 4 | 0.68% | 4.50 | 3/0/1/0/0 | 2023-09 – 2026-03 | limited evidence ; Australia (au) | 2 | 0.34% | 3.50 | 0/1/1/0/0 | 2020-12 – 2024-02 | limited evidence ; Colombia (co) | 1 | 0.17% | 4.00 | 0/1/0/0/0 | 2019-06 – 2019-06 | limited evidence ; Germany (de) | 1 | 0.17% | 1.00 | 0/0/0/0/1 | 2024-05 – 2024-05 | limited evidence ; Malaysia (my) | 1 | 0.17% | 4.00 | 0/1/0/0/0 | 2022-02 – 2022-02 | limited evidence ; PA (pa) | 1 | 0.17% | 5.00 | 1/0/0/0/0 | 2020-08 – 2020-08 | limited evidence ; Saudi Arabia (sa) | 1 | 0.17% | 5.00 | 1/0/0/0/0 | 2021-10 – 2021-10 | limited evidence ; Singapore (sg) | 1 | 0.17% | 4.00 | 0/1/0/0/0 | 2020-08 – 2020-08 | limited evidence
+- **Direction for us:** none · **Report confidence:** eligibility · **Generalisable:** app-specific
+- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue
+
+### R47-103 — Japan (n = 369, mean 3.54) is where the product's full arc plays out — praise for simplicity and outcomes, the 2024 shock, the payers, the AI coach and the August 2026 data loss: simplicity 21.41%, grid 13.28%, behaviour change 10.84% (+3.4 pp over global), design 8.94%, crash 8.40%, UI / input bug 7.05%, stated churn 6.50%, notes / photos 5.96%, fitness / diet 5.69% (21 of the corpus's 24 — 筋トレ strength training, ダイエット dieting), ad overload 5.42%, free-to-paid backlash 5.42%, free gratitude 4.61%, data loss 4.34% (all 16), start date 4.07%, long-term users 4.07%, white screen 3.52% (all 13, unreported as fixed for three years), too many taps 3.52%, payers 3.25% (12 of 13), AI encouragement 2.98%, backfill gated 2.44%; era means 3.74 → 3.66 → 2.25 → 3.83, 52 of the 63 shock-era reviews Japanese
+
+- **Where:** §6.2 Japan — n = 369, mean 3.54, the lowest eligible (verbatim table): simplicity 21.41%, grid 13.28%, behaviour change 10.84% (+3.4 pp), design 8.94%, crash 8.40%, UI bug 7.05%, churn 6.50%, notes / photos 5.96%, fitness / diet 5.69% (21 of 24), ad overload 5.42%, backlash 5.42%, free gratitude 4.61%, data loss 4.34% (all 16), start date 4.07%, long-term 4.07%, white screen 3.52% (all 13), taps 3.52%, payer 3.25% (12 of 13), AI 2.98%, backfill gated 2.44%; era means 3.74 → 3.66 → 2.25 → 3.83; 52 of 63 E3 reviews Japanese — where the product's full arc plays out; the fitness and diet market (筋トレ, ダイエット); the white-screen defect ran three years with no reported fix
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** Theme | JP n | JP % | Signal (JP) | Global % ; cp_simplicity | 79 | 21.41% | high-priority | 21.39% ; cp_visual_progress | 49 | 13.28% | high-priority | 11.38% ; cp_behaviour_change | 40 | 10.84% | high-priority | 7.47% ; cp_design_aesthetic | 33 | 8.94% | high-priority | 9.17% ; rel_crash_wont_open | 31 | 8.40% | high-priority | 8.66% ; rel_ui_input_bug | 26 | 7.05% | high-priority | 5.26% ; neg_stated_churn | 24 | 6.50% | high-priority | 4.58% ; cp_notes_photos_journal | 22 | 5.96% | high-priority | 5.43% ; seg_fitness_diet | 21 | 5.69% | high-priority | 4.07% ; mf_ad_overload_2024 | 20 | 5.42% | high-priority | 4.07% ; mf_free_to_paid_backlash | 20 | 5.42% | high-priority | 3.90% ; mp_free_gratitude | 17 | 4.61% | very strong | 4.24% ; rel_data_loss | 16 | 4.34% | very strong | 2.72% ; fr_start_date_before_install | 15 | 4.07% | very strong | 3.57% ; seg_long_term_user | 15 | 4.07% | very strong | 3.90% ; rel_white_screen_new_habit | 13 | 3.52% | very strong | 2.21% ; ux_too_many_taps | 13 | 3.52% | very strong | 2.38% ; mp_paid_premium | 12 | 3.25% | very strong | 2.21% ; cp_ai_encouragement | 11 | 2.98% | meaningful | 2.21% ; mf_backfill_paywalled | 9 | 2.44% | meaningful | 1.53%
+- **Direction for us:** research · **Report confidence:** JP standalone · **Generalisable:** app-specific
+- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue; C231 Audit the sales funnel per market — the same product can rate 4.3 in one storefront and 2.1 in another on billing alone
+
+### R47-104 — Korea (n = 92, mean 4.33, the highest eligible) is a requesting market, not a complaining one: crash 14.13% (6 of 13 still rated 5★), 'best of the many I tried' 13.04%, back-dating 10.87% (driven by late sleepers and midnight — '늦게 자는 사람이어서 새벽 시간에 운동을 하곤 하는데 그럼 다음 날로 기록이 되어서 불편하네요'), simplicity 10.87%, design 10.87%, widget 9.78%, grid 8.70%, start date before creation 6.52%, rating mismatch 6.52%, willing to pay 5.43% (the highest), photo crash 4.35%, a note on a missed day 3.26%, ad overload 2.17%, translation 2.17%; by era 65 (4.29) → 11 (4.55) → 5 (3.00) → 11 (4.91); a 2020 reviewer believes the app is Korean-made ('한국인이 만든 앱이라서 그런지 더욱 뿌듯합니다', unverified); the 2024 shock reached Korea only twice; Korean review volume fell from 32 (2020) to 1 (2025) — post-2021 conclusions rest on 27 reviews
+
+- **Where:** §6.3 Korea — n = 92, mean 4.33, the highest eligible (verbatim table): E1 65 (4.29), E2 11 (4.55), E3 5 (3.00), E4 11 (4.91); crash 14.13% (6 of 13 still 5★), best of many 13.04%, backfill 10.87% (late sleepers and midnight: 'I sleep late and exercise after midnight, so it records on the next day'), simplicity 10.87%, design 10.87%, widget 9.78%, grid 8.70%, start date 6.52%, mismatch 6.52%, willing to pay 5.43% (the highest), photo crash 4.35%, note on a missed day 3.26%, ad overload 2.17%, translation 2.17%; a requesting market, not a complaining one; a 2020 reviewer believes the app is Korean-made (unverified); the shock reached Korea only twice; KR volume fell from 32 (2020) to 1 (2025)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** Theme | KR n | KR % | Signal (KR) | Global % ; rel_crash_wont_open | 13 | 14.13% | high-priority | 8.66% ; cp_best_of_many | 12 | 13.04% | high-priority | 5.60% ; fr_backfill_past_days | 10 | 10.87% | high-priority | 3.74% ; cp_simplicity | 10 | 10.87% | high-priority | 21.39% ; cp_design_aesthetic | 10 | 10.87% | high-priority | 9.17% ; fr_widget | 9 | 9.78% | high-priority | 3.40% ; cp_visual_progress | 8 | 8.70% | high-priority | 11.38% ; fr_start_date_before_install | 6 | 6.52% | high-priority | 3.57% ; meta_rating_text_mismatch | 6 | 6.52% | high-priority | 2.72% ; mp_willing_to_pay | 5 | 5.43% | high-priority | 2.38% ; rel_crash_photo_attach | 4 | 4.35% | very strong | 2.04% ; fr_note_on_missed_day | 3 | 3.26% | very strong | 0.68% ; mf_ad_overload_2024 | 2 | 2.17% | meaningful | 4.07% ; ux_translation_quality | 2 | 2.17% | meaningful | 0.85%
+- **Direction for us:** research · **Report confidence:** KR standalone (post-2021 limited) · **Generalisable:** yes
+- **Review IDs:** `4109795492`, `5729176001`, `11400675631`, `11558223609`
+- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue; C231 Audit the sales funnel per market — the same product can rate 4.3 in one storefront and 2.1 in another on billing alone
+
+### R47-105 — The high-spend group (JP, KR, CN, FR, US, AU, DE; 512 reviews, 86.93%, mean 3.73 vs 4.38 for the other 77) is effectively Japan plus Korea (461 of 512) and holds every identifiable payer (13), every ad-overload review (24), 22 of 23 backlash reviews, all 16 data losses and all 21 start-date requests, while the weekday bug sits outside it (1.76% vs 6.49%) and simplicity praise is higher outside (28.57% vs 20.31%) — it says little about spend behaviour beyond Japan
+
+- **Where:** §6.4 High-spend market group (verbatim table) — JP, KR, CN, FR, US, AU, DE = 512 (86.93%), mean 3.73 vs 4.38; holds every payer (13) and every ad-overload review (24), 22 of 23 backlash, all 16 data losses, all 21 start-date requests; weekday bug 1.76% vs 6.49%; simplicity 20.31% vs 28.57% — effectively Japan plus Korea (461 of 512), says little about spend beyond Japan
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** Theme | High-spend (n=512) | Rest (n=77) ; mp_paid_premium | 13 (2.54%) | 0 ; mf_ad_overload_2024 | 24 (4.69%) | 0 ; mf_free_to_paid_backlash | 22 (4.30%) | 1 (1.30%) ; rel_data_loss | 16 (3.12%) | 0 ; fr_start_date_before_install | 21 (4.10%) | 0 ; rel_calendar_weekday_bug | 9 (1.76%) | 5 (6.49%) ; cp_simplicity | 104 (20.31%) | 22 (28.57%)
+- **Direction for us:** none · **Report confidence:** group (external definition; mostly JP) · **Generalisable:** app-specific
+- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue
+
+### R47-106 — Japan + Korea (461, 78.27%, mean 3.70) vs the other 128 storefront reviews (4.25): crash 9.54% vs 5.47%; ad overload 4.77% vs 1.56%; banner ads annoying 1.08% vs 4.69%; the calendar-weekday bug 0.22% vs 10.16%; simplicity 19.31% vs 28.91%; AI encouragement 2.60% vs 0.78% (review-volume proxy, not downloads)
+
+- **Where:** §6.5 High-review-volume market group (verbatim table) — JP + KR 461 (78.27%), mean 3.70 vs 4.25 for 128 others; crash 9.54% vs 5.47%; ad overload 4.77% vs 1.56%; banner ads annoying 1.08% vs 4.69%; weekday bug 0.22% vs 10.16%; simplicity 19.31% vs 28.91%; AI encouragement 2.60% vs 0.78%
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** Theme | JP+KR (n=461) | Rest (n=128) ; rel_crash_wont_open | 44 (9.54%) | 7 (5.47%) ; mf_ad_overload_2024 | 22 (4.77%) | 2 (1.56%) ; mf_banner_ads_annoying | 5 (1.08%) | 6 (4.69%) ; rel_calendar_weekday_bug | 1 (0.22%) | 13 (10.16%) ; cp_simplicity | 89 (19.31%) | 37 (28.91%) ; cp_ai_encouragement | 12 (2.60%) | 1 (0.78%)
+- **Direction for us:** none · **Report confidence:** group · **Generalisable:** app-specific
+- **Canonical:** C231 Audit the sales funnel per market — the same product can rate 4.3 in one storefront and 2.1 in another on billing alone
+
+### R47-107 — Global vs Japan vs Korea vs rest: simplicity 21.39% / 21.41% / 10.87% / 28.91%; grid 11.38 / 13.28 / 8.70 / 7.81; behaviour change 7.47 / 10.84 / 2.17 / 1.56; crash 8.66 / 8.40 / 14.13 / 5.47; backfill 3.74 / 1.63 / 10.87 / 4.69; start date 3.57 / 4.07 / 6.52 / 0.00; widget 3.40 / 2.44 / 9.78 / 1.56; ad overload 4.07 / 5.42 / 2.17 / 1.56; data loss 2.72 / 4.34 / 0 / 0; weekday bug 2.38 / 0.27 / 0 / 10.16; payers 2.21 / 3.25 / 1.09 / 0; AI encouragement 2.21 / 2.98 / 1.09 / 0.78 — translation complaints come from Korea, Taiwan and France (all but one before 2021); no storefront shows a distinct price sensitivity beyond Japan's 2024 reaction
+
+- **Where:** §6.6 Global vs country comparison (verbatim table) — simplicity 21.39 / 21.41 / 10.87 / 28.91; grid 11.38 / 13.28 / 8.70 / 7.81; behaviour change 7.47 / 10.84 / 2.17 / 1.56; crash 8.66 / 8.40 / 14.13 / 5.47; backfill 3.74 / 1.63 / 10.87 / 4.69; start date 3.57 / 4.07 / 6.52 / 0.00; widget 3.40 / 2.44 / 9.78 / 1.56; ad overload 4.07 / 5.42 / 2.17 / 1.56; data loss 2.72 / 4.34 / 0 / 0; weekday bug 2.38 / 0.27 / 0 / 10.16; payer 2.21 / 3.25 / 1.09 / 0; AI 2.21 / 2.98 / 1.09 / 0.78; translation complaints from Korea, Taiwan and France, all but one before 2021; no storefront shows distinct price sensitivity beyond Japan's 2024 reaction
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** Theme | Global (589) | Japan (369) | Korea (92) | Rest (128) ; cp_simplicity | 21.39% | 21.41% | 10.87% | 28.91% ; cp_visual_progress | 11.38% | 13.28% | 8.70% | 7.81% ; cp_behaviour_change | 7.47% | 10.84% | 2.17% | 1.56% ; rel_crash_wont_open | 8.66% | 8.40% | 14.13% | 5.47% ; fr_backfill_past_days | 3.74% | 1.63% | 10.87% | 4.69% ; fr_start_date_before_install | 3.57% | 4.07% | 6.52% | 0.00% ; fr_widget | 3.40% | 2.44% | 9.78% | 1.56% ; mf_ad_overload_2024 | 4.07% | 5.42% | 2.17% | 1.56% ; rel_data_loss | 2.72% | 4.34% | 0.00% | 0.00% ; rel_calendar_weekday_bug | 2.38% | 0.27% | 0.00% | 10.16% ; mp_paid_premium | 2.21% | 3.25% | 1.09% | 0.00% ; cp_ai_encouragement | 2.21% | 2.98% | 1.09% | 0.78%
+- **Direction for us:** research · **Report confidence:** comparison · **Generalisable:** yes
+- **Canonical:** C231 Audit the sales funnel per market — the same product can rate 4.3 in one storefront and 2.1 in another on billing alone
+
+### R47-108 — Sub-50 observations (limited evidence): China 32 (4.28) — 6 of the corpus's 8 registration / login failures ('好像需要vpn', consistent with the account backend being unreachable from the mainland), 6 backup requests and 5 weekday-bug reports, all 2019–2021; Taiwan 24 (4.25) — 3 of the 10 January 2021 photo-crash reports and 2 translation complaints; Brazil 24 (4.54) — simplicity, 'the best free one', one 2024 backlash; Spain, France, Italy and Australia together — 8 of the 14 weekday-bug reports from 25 reviews ('il calendario è sbagliato, si è perso il 29 di febbraio'; 'I don't know if it's because I'm in Western Australia'), 13 of 14 outside the Japan / Korea time zone, consistent with a time-zone or locale date defect not reported since April 2021; US 7 — ads and one 'doesn't work at all'; a Saudi reviewer's title asks 'اتمنى انكم ماتحطون التطبيق هذا بفلوس' ('I hope you don't make this app paid', 2021)
+
+- **Where:** §6.7 Sub-50 storefronts — China 32 (4.28): 6 of 8 registration / login failures, 6 backup requests, 5 weekday-bug reports, all 2019–21 — 'needs a VPN' consistent with the account backend unreachable from the mainland; Taiwan 24: 3 of 10 photo-crash reports, 2 translation complaints; Brazil 24 (4.54): 'the best free one', one 2024 backlash; Spain, France, Italy, Australia: 8 of 14 weekday-bug reports from 25 reviews ('the calendar is wrong, it lost 29 February'; 'I don't know if it's because I'm in Western Australia') — 13 of 14 outside the JP/KR time zone, a time-zone / locale date defect not reported since Apr 2021; US 7: ads and one 'doesn't work at all'; a Saudi reviewer's title 'I hope you don't make this app paid' (2021)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** CN 32; TW 24; BR 24; ES/FR/IT/AU 25
+- **Direction for us:** must-never-break · **Report confidence:** limited evidence · **Generalisable:** yes
+- **Review IDs:** `5569237394`, `5718580406`, `5888660424`, `5935072378`, `7784618035`, `13230847362`, `6978539781`, `11455716256`, `5661653784`, `6752025691`, `5205377513`, `7771647822`, `11739877339`, `6703862221`, `7882948737`
+- **Canonical:** C027 Localise early — it unlocks revenue; C132 Do not sell in a storefront where the app cannot function
+
+### R47-140 — Experiment: Korea re-engagement around the widget and back-dating — KR over-indexes on both (9.78%, 10.87%) and its reviews fell to 1 in 2025
+
+- **Where:** §8.4 X5
+- **This app does:** report recommendation
+- **User reaction:** none
+- **Magnitude:** KR widget 9.78%; backfill 10.87%
+- **Direction for us:** research · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue; C231 Audit the sales funnel per market — the same product can rate 4.3 in one storefront and 2.1 in another on billing alone
+
+## Dated events and trends
+
+### R47-006 — Adding video ads to the check-in and gating a free capability cost eight months of one-star reviews and hit the longest-standing users hardest: era means 3.99 (2019–21) and 3.95 (2022–Apr 2024), then May–Dec 2024 (n = 63) 2.38 with 61.9% at 1–2★; four themes exist only after the update — ad overload 24 (4.07%, mean 1.46), free-to-paid backlash 23 (3.90%, 1.39), backfill paywalled 9 (1.67), free habit cap 7 — a monetisation-shock union of 41 (6.96%, mean 1.68), 33 of them in E3 where they are 52.4% of all reviews; 20 reviewers say they are deleting or switching (31.7% of E3) and 11 of the corpus's 23 self-described users of two years or more wrote in these eight months — '改悪前は☆4-5くらいの日常使いでしたが、改悪後は☆1です' ('Before it got worse it was a ★4–5 daily app; after, it's ★1', two years of use); '元々入力するのに1分もかからないのに広告も1分じゃ' ('Logging takes under a minute, and then the ad is a minute too'); '4年くらい使ってましたが、製作者の方が金儲け主義に走り' ('I used it for about four years, but the maker went money-first and added ads, so I stopped'); 'ERA DE GRAÇA AGORA É PAGO' (BR)
+
+- **Where:** Executive summary #1 — the May 2024 monetisation update is the defining event: era means 3.99 (2019–21), 3.95 (2022–Apr 2024), then E3 May–Dec 2024 (n=63) 2.38 with 61.9% 1–2★; four themes appear only after it — ad overload 24 (4.07%, 1.46), free-to-paid backlash 23 (3.90%, 1.39), backfill paywalled 9 (1.67), free habit cap 7; monetisation-shock union 41 (6.96%, 1.68), 33 in E3 (52.4% of E3); 20 say they are deleting or switching (31.7% of E3); 11 of the corpus's 23 users of two years or more wrote in these eight months; 'Before it got worse it was a ★4–5 daily app; after, it's ★1'; 'Logging takes under a minute, and then the ad is a minute too'; 'used it for about four years, but the maker went money-first and added ads'; 'IT WAS FREE, NOW IT'S PAID'
+- **This app does:** video ads on check-in; backfill gated; new-habit cap (May 2024)
+- **User reaction:** 1★-burst
+- **Magnitude:** E3 2.38, 61.9% 1–2★; shock union 41 (6.96%), 1.68; churn 20 (31.7% of E3)
+- **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
+- **Review IDs:** `11265960114`, `11279074981`, `11568978748`, `11455716256`
+- **Canonical:** C001 Never move a free feature behind the paywall; C007 Generous fixed habit cap (or unlimited) — never change it; C104 Never ship a paywall or feature-removal change silently; C240 Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap
+
+### R47-007 — Rolling the video ads back to banners ended the complaint completely: by 14 December 2024 '現在は動画広告はなくなりバナー広告に変更されているので問題なく使用できるようになった' ('the video ads are gone, replaced by a banner, so it's usable again', 5★, 7 votes), ad complaints fell to 0 of 146 reviews from January 2025 to August 2026, and the E4 mean returned to 4.02 — reviewers did not object to paying; they objected to losing the uninterrupted check-in and the ability to fix a missed day; the word they use is 改悪 ('made worse')
+
+- **Where:** Executive summary #1 — the partial rollback worked: by 14 Dec 2024 'the video ads are gone, replaced by a banner, so it's usable again' (5★); ad complaints then 0 of 146 reviews Jan 2025 – Aug 2026; E4 mean back to 4.02 — reviewers did not object to paying, they objected to losing things they already had; the word is 改悪 ('made worse')
+- **This app does:** video ads → banners (Dec 2024)
+- **User reaction:** praise
+- **Magnitude:** ads 24 in E3 → 0 of 146 in E4; E4 mean 4.02
+- **Direction for us:** product-rule · **Report confidence:** high confidence · **Generalisable:** yes
+- **Review IDs:** `12062387349`
+- **Canonical:** C001 Never move a free feature behind the paywall; C082 Ads in the free tier; C240 Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
+
+### R47-019 — A V with a single sharp trough: yearly means 2019 4.00 (58; JP 23, KR 11) · 2020 4.08 (127; JP 59, KR 32) · 2021 3.86 (84; KR 22) · 2022 3.91 (46) · 2023 3.64 (33) · 2024 3.03 (95, 30 one-stars — entirely from May–December, 63 at 2.38, while January–April's 32 are ordinary) · 2025 3.96 (68; KR 1) · 2026 4.08 (78); the Korean share collapses after 2021 (22 → 5 → 4 → 7 → 1), so from 2022 the corpus is Japanese even more than 62.65% suggests; the first review (Feb 2019) already asks to select past dates, the last (Aug 2026) calls the one-time price 'so expensive it's funny'
+
+- **Where:** §1.4 Date range and shape (verbatim year table) — first review 3 Feb 2019 'simple and easy to read, but you can't select past dates'; last 26 Aug 2026 title 'one-time purchase' body 'so expensive it's funny'; 2019 58 (4.00) · 2020 127 (4.08) · 2021 84 (3.86) · 2022 46 (3.91) · 2023 33 (3.64) · 2024 95 (3.03; 1★ 30) · 2025 68 (3.96) · 2026 78 (4.08); a V with a single sharp trough from May–Dec 2024 (Jan–Apr 2024 32 reviews; May–Dec 63 at 2.38); the Korean share collapses after 2021 (22 → 5 → 4 → 7 → 1)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** Year | n | % of corpus | Mean ★ | 5★ | 4★ | 3★ | 2★ | 1★ | JP | KR ; 2019 (from 3 Feb) | 58 | 9.8% | 4.00 | 29 | 15 | 6 | 1 | 7 | 23 | 11 ; 2020 | 127 | 21.6% | 4.08 | 58 | 42 | 13 | 7 | 7 | 59 | 32 ; 2021 | 84 | 14.3% | 3.86 | 40 | 17 | 9 | 11 | 7 | 42 | 22 ; 2022 | 46 | 7.8% | 3.91 | 21 | 13 | 5 | 1 | 6 | 33 | 5 ; 2023 | 33 | 5.6% | 3.64 | 14 | 7 | 4 | 2 | 6 | 23 | 4 ; 2024 | 95 | 16.1% | 3.03 | 31 | 13 | 9 | 12 | 30 | 73 | 7 ; 2025 | 68 | 11.5% | 3.96 | 34 | 16 | 6 | 5 | 7 | 55 | 1 ; 2026 (to 26 Aug) | 78 | 13.2% | 4.08 | 50 | 8 | 6 | 4 | 10 | 61 | 10
+- **Direction for us:** none · **Report confidence:** corpus-level fact · **Generalisable:** app-specific
+- **Review IDs:** `3729892474`, `14475596320`
+- **Canonical:** C002 Ratings follow the offer, not the feature set
+
+### R47-093 — The app's low ratings are a sequence of distinct causes — crashes, then monetisation, then data loss — not a slow decline: 1★ composition churn 17 (21.2%), ad overload 15 (18.8%), free-to-paid backlash 15 (18.8%), crash 12 (15.0%), long-term user 12 (15.0% — 12 of the 23 users of two years or more gave 1★), data loss 10 (12.5%), sync fail 9, white screen 9, backfill paywalled 6; by era among 1–2★ — E1 (40) 26 reliability and 0 monetisation shock; E2 (18) 14 reliability; E3 (39) 29 monetisation shock; E4 (26) 15 reliability of which 9 data integrity
+
+- **Where:** §4.5 One star — churn 17 (21.2%), ad overload 15 (18.8%), backlash 15 (18.8%), crash 12 (15.0%), long-term user 12 (15.0%), data loss 10 (12.5%), sync fail 9, white screen 9, backfill paywalled 6; 12 of the 23 users of two years or more gave 1★; low ratings by era — E1 (40 low) 26 reliability, 0 shock; E2 (18) 14 reliability; E3 (39) 29 shock; E4 (26) 15 reliability of which 9 data integrity — a sequence of distinct causes (crashes, then monetisation, then data loss), not a slow decline
+- **This app does:** n/a
+- **User reaction:** 1★-burst
+- **Magnitude:** 80 1★; E3 29/39 shock; E4 9/26 data integrity
+- **Direction for us:** must-never-break · **Report confidence:** segment · **Generalisable:** yes
+- **Canonical:** C002 Ratings follow the offer, not the feature set; C034 Data must never be lost on update, reinstall or phone change
+
+### R47-111 — A monetisation shock and its rollback in four numbers: the shock union 0.0% (E1) → 0.9% → 52.4% (E3) → 4.8% (E4); any ad complaint 2.6% → 3.6% → 38.1% → 0.0%; stated churn 0.7% → 2.7% → 31.7% → 1.4%; 1–2★ share 14.9% → 16.2% → 61.9% → 17.8%; mean 3.99 → 3.95 → 2.38 → 4.02; May 2024 alone has 19 reviews at mean 1.89; the recovery is corroborated in text; what persisted into E4 — the free habit cap (2), the backlash (1, April 2025 — 'もう使ってません', 'I no longer use it'), and a new upsell-screen friction (4)
+
+- **Where:** §7.2 Trend 1 — the monetisation shock and a partial rollback (verbatim table): shock union 0.0% → 0.9% → 52.4% → 4.8%; any ad complaint 2.6% → 3.6% → 38.1% → 0.0%; churn 0.7% → 2.7% → 31.7% → 1.4%; 1–2★ 14.9% → 16.2% → 61.9% → 17.8%; mean 3.99 → 3.95 → 2.38 → 4.02; May 2024 alone 19 reviews at 1.89; what persisted into E4 — the free habit cap (2), the backlash (1, Apr 2025), a new upsell-screen friction (4)
+- **This app does:** video ads May–Dec 2024 → banners
+- **User reaction:** 1★-burst
+- **Magnitude:** Measure | E1 | E2 | E3 | E4 ; Monetization-shock union | 0.0% | 0.9% | 52.4% | 4.8% ; Any ad complaint (banner or overload) | 2.6% | 3.6% | 38.1% | 0.0% ; neg_stated_churn | 0.7% | 2.7% | 31.7% | 1.4% ; 1–2★ share | 14.9% | 16.2% | 61.9% | 17.8% ; Mean ★ | 3.99 | 3.95 | 2.38 | 4.02
+- **Direction for us:** product-rule · **Report confidence:** high confidence · **Generalisable:** yes
+- **Review IDs:** `12062387349`, `12487255668`
+- **Canonical:** C001 Never move a free feature behind the paywall; C240 Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap
+
+### R47-112 — Back-dating: requested (16% of 2019 reviews), shipped (29 March 2020 — the request fell to 4% in 2020 and 0–1% from 2023), gated behind a video ad (9 complaints April–June 2024) and then quiet (none after; the corpus cannot show whether the gate was lifted or users stopped mentioning it); the pre-creation start date never went away (11 → 7 → 0 → 3 by era)
+
+- **Where:** §7.3 Trend 2 — back-dating: requested, shipped, gated, then quiet: by year 2019 16% → 2020 4% → 2021 6% → 2022 2% → 2023–26 0–1%; by era 7.1% → 1.8% → 0.0% → 0.7%; shipped 29 Mar 2020; the 2024 gate generated 9 complaints Apr–Jun 2024 and none after — cannot show whether the gate was lifted or users stopped mentioning it; the pre-creation start date never went away (11 → 7 → 0 → 3)
+- **This app does:** backfill
+- **User reaction:** mixed
+- **Magnitude:** 7.1% → 1.8% → 0.0% → 0.7%; gate 9 then 0
+- **Direction for us:** product-rule · **Report confidence:** high on shipping; medium on the gate's removal · **Generalisable:** yes
+- **Review IDs:** `5731143749`
+- **Canonical:** C010 Backfill missed days / edit start date; C262 Never gate a recovery action — back-dating a missed day, undoing a wrong entry and restoring history stay free forever
+
+### R47-113 — The app became more stable to open and less trustworthy to rely on: crash / cannot-open 13.8% (E1) → 13.5% → 7.9% → 4.8% (E4), while the data-integrity union (loss, wrong counts, scrambled order, stale widget) rose 1.1% → 6.3% (the 2022 order scramble) → 1.6% → 13.0%, and data loss 1.1% → 1.8% → 1.6% → 6.8% — 0–2 reports every year until 2026, when 9 of 78 (12%) report it, 8 of them in 3–20 August after an update
+
+- **Where:** §7.4 Trend 3 — crashes fell, data integrity got worse (verbatim table): crash / cannot-open 13.8% → 13.5% → 7.9% → 4.8%; data-integrity union 1.1% → 6.3% → 1.6% → 13.0%; data loss 1.1% → 1.8% → 1.6% → 6.8%; by year data loss 0–2 every year until 2026: 9 of 78 (12%), 8 in 3–20 Aug 2026; the E2 bump is the 2022 order scramble
+- **This app does:** data integrity
+- **User reaction:** churn
+- **Magnitude:** Measure | E1 | E2 | E3 | E4 ; Crash / cannot-open union | 13.8% | 13.5% | 7.9% | 4.8% ; Data-integrity union (loss, wrong counts, order, widget) | 1.1% | 6.3% | 1.6% | 13.0% ; rel_data_loss | 1.1% | 1.8% | 1.6% | 6.8%
+- **Direction for us:** must-never-break · **Report confidence:** worsening in severity, medium-high · **Generalisable:** yes
+- **Review IDs:** `5495081574`, `6890146013`, `7146687965`, `9664001357`, `10021150221`, `11679988856`, `12845447364`, `13970362995`, `14389357043`, `14424797013`
+- **Canonical:** C031 Crashes / launch failures; C034 Data must never be lost on update, reinstall or phone change
+
+### R47-114 — The AI coach arrived and is net positive so far: the AI-coach union 0% → 0% → 0% → 12.3% of E4 (18 of 146; 7 of 68 in 2025, 11 of 78 in 2026), praise 13 outnumbering friction 9 (5 silent stops, 3 unwanted, 1 surprise paywall) — high confidence it exists, medium on net effect
+
+- **Where:** §7.5 Trend 4 — the AI coach arrived: union 0% → 0% → 0% → 12.3% (18 of 146); praise 13 vs friction 9 (5 stopped, 3 unwanted, 1 paywalled); 7 of 68 (2025), 11 of 78 (2026)
+- **This app does:** AI coach from mid-2025
+- **User reaction:** mixed
+- **Magnitude:** 18 of 146 (12.3%); 13 praise vs 9 friction
+- **Direction for us:** research · **Report confidence:** emerging · **Generalisable:** yes
+- **Review IDs:** `13464326858`, `13570505282`, `13907129421`, `13956383383`, `14001836582`, `14146436938`, `14195810303`
+- **Canonical:** C056 Don't build AI features on demand grounds; C263 An AI encouragement reply on each check-in as the premium hook — the first paid feature reviewers praise unprompted; its state must be visible
+
+### R47-115 — After the shock, praise recovered and shifted toward outcomes: behaviour change 4.5% → 9.0% → 3.2% → 13.7%; the grid 10.0% → 12.6% → 1.6% → 17.1%; simplicity 24.5% → 28.8% → 4.8% → 17.1% (not back to its pre-2024 level); design 11.2% → 12.6% → 0.0% → 6.8%; notes / photos 5.6% → 10.8% → 3.2% → 2.1% — E4 reviewers talk less about how the app looks and more about what it did for them (composition effects possible)
+
+- **Where:** §7.6 Trend 5 — praise recovered and shifted toward outcomes (verbatim table): behaviour change 4.5 → 9.0 → 3.2 → 13.7%; grid 10.0 → 12.6 → 1.6 → 17.1%; simplicity 24.5 → 28.8 → 4.8 → 17.1%; design 11.2 → 12.6 → 0.0 → 6.8%; notes / photos 5.6 → 10.8 → 3.2 → 2.1%; E4 reviewers talk less about how it looks and more about what it did; simplicity has not returned to its pre-2024 level
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** Theme | E1 | E2 | E3 | E4 ; cp_behaviour_change | 4.5% | 9.0% | 3.2% | 13.7% ; cp_visual_progress | 10.0% | 12.6% | 1.6% | 17.1% ; cp_simplicity | 24.5% | 28.8% | 4.8% | 17.1% ; cp_design_aesthetic | 11.2% | 12.6% | 0.0% | 6.8% ; cp_notes_photos_journal | 5.6% | 10.8% | 3.2% | 2.1%
+- **Direction for us:** none · **Report confidence:** medium confidence · **Generalisable:** yes
+- **Canonical:** C012 Week / month / year grid views; C134 Lead the store listing with what users actually love
+
+### R47-116 — The 'I'd pay to remove ads' user of 2019–2023 became either a subscriber or a leaver: ad-removal requests 2.6% → 2.7% → 0.0% → 0.0%; willing to pay 3.3% → 2.7% → 0.0% → 1.4%; identifiable payers 1.1% → 0.9% → 3.2% → 4.8% — the corpus cannot say in what proportion
+
+- **Where:** §7.7 Trend 6 — intent to pay for ad removal disappeared as actual payment appeared: ad-removal requests 2.6 → 2.7 → 0.0 → 0.0%; willing to pay 3.3 → 2.7 → 0.0 → 1.4%; paid premium 1.1 → 0.9 → 3.2 → 4.8% — the 'I'd pay to remove ads' user of 2019–23 became either a subscriber or a leaver, in unknown proportion
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** willing 3.3 → 1.4%; paid 1.1 → 4.8%
+- **Direction for us:** research · **Report confidence:** medium confidence · **Generalisable:** yes
+- **Canonical:** C061 Goodwill conversion — a generous free tier and 'support the devs'; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
+
+### R47-117 — Early defects were fixed, some slowly: the calendar-weekday bug last reported April 2021 (14, all E1); the photo-attach crash February 2022; the order scramble October 2022; the white screen on a custom habit January 2024 — after 13 reports over 39 months; the December 2019 sync hang never recurred at cluster scale; the January 2026 cannot-open event (4 reports in a week) was fixed within weeks ('解決しました！ご対応ありがとうございました')
+
+- **Where:** §7.8 Trend 7 — the early defects were fixed: weekday bug last Apr 2021; photo-attach crash Feb 2022; order scramble Oct 2022; white screen Jan 2024 (13 reports over 39 months); the Dec 2019 sync hang did not recur; the Jan 2026 cannot-open event (4 in a week) fixed within weeks ('resolved! thank you for handling it')
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** 5 defects closed
+- **Direction for us:** none · **Report confidence:** improving, high confidence · **Generalisable:** yes
+- **Review IDs:** `13811260970`
+- **Canonical:** C031 Crashes / launch failures; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C059 Be visibly responsive; fixes bring reviewers back
+
+### R47-118 — Korean reviews fell from 32 (2020) and 22 (2021) to 5, 4, 7, 1 (2025) and 10 (2026 to August) — Korea's share of the corpus dropping from 24.2% in E1 to 7.5% in E4; the fact is certain, the cause (lower usage, lower prompting, storefront mix) unknown
+
+- **Where:** §7.9 Trend 8 — Korea's voice faded: 11 (2019), 32 (2020), 22 (2021), 5, 4, 7, 1 (2025), 10 (2026 to Aug); share 24.2% (E1) → 7.5% (E4); cause unknown
+- **This app does:** n/a
+- **User reaction:** none
+- **Magnitude:** KR 32 → 1 → 10
+- **Direction for us:** research · **Report confidence:** fact high; cause unknown · **Generalisable:** app-specific
+- **Canonical:** C027 Localise early — it unlocks revenue; C062 Weight English-speaking rich markets; volume ≠ revenue
+
+### R47-120 — What held across seven years: simplicity is the top praise theme in every era, even the shock (3 of 63, tied with best-of-many); the pre-creation start-date request spans February 2019 to July 2026; iPad support is requested in every era (6 / 1 / 1 / 3); widget demand runs at 2.7–4.8% of every era, before and after the widget shipped; support-reachability complaints spread across 2020–2025 (7)
+
+- **Where:** §7.11 What did not change — simplicity the top praise theme in every era (even E3, 3 of 63); the start-date request Feb 2019 → Jul 2026; iPad requested every era (6 / 1 / 1 / 3); widget demand 2.7–4.8% every era before and after it shipped; support reachability complaints spread 2020–25
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** seven years
+- **Direction for us:** product-rule · **Report confidence:** persistent · **Generalisable:** yes
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C012 Week / month / year grid views
+
+## Positioning
+
+### R47-001 — Habit Streak Tracker: DotHabit (App Store ID 1439938837; Japanese title 習慣記録で継続 DotHabit 運動・勉強・目標達成アプリ) by Mono Incorporated (bundle com.supernora.DotHabit) — a Japan-first dot-grid habit tracker: 2019 – early 2024 a free app with banner ads (a premium tier existed by Jan 2021); May 2024 an update added video ads on ordinary check-ins, put back-dated logging behind a video ad and limited new habits for free users; by 14 Dec 2024 the video ads were replaced by banners; from 2025 a subscription with a trial, a free tier capped at 6 habits and an 'AI coach' (DotBuddy) that replies to check-ins; the Japanese listing (12 Sep 2026) lists seven IAPs from ¥600 to ¥14,800 incl. DotHabit プレミアム 年額 ¥1,990, premium = multiple-habit widgets plus the AI coach; listing 4.7★ from ~17,000 JP ratings; iPhone, Mac, Vision
+
+- **Where:** header lines 1-8
+- **This app does:** developer Mono Incorporated; bundle com.supernora.DotHabit; extracted 8 Sep 2026; analysed 12 Sep 2026; store rank 47
+- **User reaction:** mixed
+- **Magnitude:** 589 written reviews · 18 storefronts · 3 Feb 2019 → 26 Aug 2026; mean 3.818; 5:277 / 4:131 / 3:58 / 2:43 / 1:80
+- **Direction for us:** none · **Report confidence:** corpus-level fact · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R47-076 — 'Best of the many I tried' 33 (5.60%, mean 4.88), strongest in Korea (12, 13.04% of KR) — '진심 다 써봤는데 이게 제일 좋음' ('I honestly tried them all; this is the best'); '비슷한 어플 모조리 다운 받아봤지만 결국 이걸로 돌아왔습니다' ('I downloaded every similar app and came back to this one') — the comparison point is 'other trackers', rarely a named competitor
+
+- **Where:** §3.3.6 'Best of the many I tried' 33 (5.60%, 4.88), strongest in Korea (12, 13.04%): 'I honestly tried them all; this is the best'; 'I downloaded every similar app and came back to this one'; the comparison point is 'other trackers', rarely a named competitor
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** 33 (5.60%), 4.88; KR 12 (13.04%)
+- **Direction for us:** none · **Report confidence:** high-priority · **Generalisable:** yes
+- **Review IDs:** `5881887587`, `6451072707`
+- **Canonical:** C005 Know which competitors buyers compare against
+
+### R47-101 — Competitors are rarely named: Dots ('そちらの方が操作性が良い', better to operate), RecStyle as the model for CSV export, Duolingo as the widget benchmark ('Duolingoとは違う強みがあるので、是非とも続けたいと思うWidgetを用意して欲しい'), Nike Run Club for activity totals, GitHub's contribution graph as the mental model — the dominant claim is generic superiority (33) and the dominant exit an unnamed 'another app' (27 churn statements)
+
+- **Where:** §5.6 Competitive position — reviewers rarely name competitors: Dots ('better to operate'); RecStyle as the model for CSV export; Duolingo as the widget benchmark ('it has strengths Duolingo doesn't; please make a widget that makes me want to continue'); Nike Run Club for activity totals; GitHub's contribution graph as the mental model; the dominant claim is generic superiority (33), the dominant exit an unnamed 'another app' (27)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** best of many 33; churn 27
+- **Direction for us:** none · **Report confidence:** high-priority · **Generalisable:** yes
+- **Review IDs:** `13584261185`, `8668120956`, `13583266410`, `8990348087`, `7744252519`, `11675941548`
+- **Canonical:** C005 Know which competitors buyers compare against
+
+## Anti-patterns
+
+### R47-078 — The 2024 monetisation shock, component by component: video / interstitial ads per action 24 (mean 1.46, 5 May → 28 Dec 2024 — '1アクションに1回結構な長さのゲーム広告'; '入力２日分ごとに5秒の広告が2本'; '爆音の広告'; 'an ad after every single entry is excessive… the ads make it a worse option than the notes app', US 2★); 改悪 / free became paid 23 (1.39, 3 May 2024 → 31 Mar 2025); back-dating behind a video ad 9 (1.67, 1 Apr → 7 Jun 2024); new habits blocked or capped 7 (2.29 — 'Agora eu não posso mexer nos meus hábitos se não irei perder todos', 'now I can't touch my habits or I'll lose them all', BR 1★; '이제 습관 두개만 표시해도 더 표시 못하고 팝업 광고를 봐야 하네요', KR 1★; '無料だと6項目までしか登録出来ないようなので… ☆4にしました'); a premium screen after each task 4 (1.25, Jul → Nov 2025); plus videos that would not play, so the gated action could not be completed even by watching (2)
+
+- **Where:** §3.4.1 The 2024 monetisation shock (verbatim component table) — ad overload 24 (1.46, 5 May → 28 Dec 2024); free-to-paid backlash 23 (1.39, 3 May 2024 → 31 Mar 2025); backfill paywalled 9 (1.67, 1 Apr → 7 Jun 2024); free habit cap 7 (2.29, 12 May 2024 → 9 May 2025); upsell nag 4 (1.25, Jul → Nov 2025); 'a fairly long game ad for every single action'; 'two 5-second ads for every two days logged'; 'blaring ads'; 'an ad after every single entry is excessive… makes it a worse option than the notes app' (US); videos that would not play so the gated action could not be completed even by watching; the cap as a hostage ('now I can't touch my habits or I'll lose them all', BR; 'after just two habits I can't show more and have to watch a pop-up ad', KR); the cap as a 4★ cost ('free allows only 6 items, so I have to choose carefully — hence ★4')
+- **This app does:** video ads per action; gated backfill; cap
+- **User reaction:** 1★-burst
+- **Magnitude:** Component | n | % of 589 | Mean ★ | Window | Representative IDs ; mf_ad_overload_2024 — video / interstitial ads per action | 24 | 4.07% | 1.46 | 5 May → 28 Dec 2024 | 11262616384 11453576115 11480859902 11498541647 11600850587 11739877339 ; mf_free_to_paid_backlash — "改悪", free became paid | 23 | 3.90% | 1.39 | 3 May 2024 → 31 Mar 2025 | 11225798741 11265960114 11385858285 11568978748 11839930792 ; mf_backfill_paywalled — back-dating behind a video ad | 9 | 1.53% | 1.67 | 1 Apr → 7 Jun 2024 | 11111270021 11225576710 11237013288 11280533064 11353956301 ; mf_free_habit_cap — new habits blocked or capped | 7 | 1.19% | 2.29 | 12 May 2024 → 9 May 2025 | 11259471478 11400675631 11455716256 12037246791 12264984107 ; mf_upsell_nag — premium screen after completing a task | 4 | 0.68% | 1.25 | Jul → Nov 2025 | 12878957344 12894467546 13147772741 13436865578
+- **Direction for us:** dont · **Report confidence:** high-priority · **Generalisable:** yes
+- **Review IDs:** `11453576115`, `11498541647`, `11600850587`, `11739877339`, `11225576710`, `11231655490`, `11455716256`, `11400675631`, `12264984107`, `11262616384`, `11480859902`, `11225798741`, `11385858285`, `11839930792`, `11280533064`, `11353956301`, `13436865578`
+- **Canonical:** C001 Never move a free feature behind the paywall; C007 Generous fixed habit cap (or unlimited) — never change it; C104 Never ship a paywall or feature-removal change silently; C240 Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap; C262 Never gate a recovery action — back-dating a missed day, undoing a wrong entry and restoring history stay free forever
+
+## Things not to do
+
+### R47-014 — The 2024 lesson — don't interrupt the check-in — did not carry over to 2025's upsell screens: upsell nag 4 (0.68%, mean 1.25), all July–November 2025 — 'タスクを完了するたびに毎回有料版の導入を進めるページに移るのがうっとうしいから消した' ('every time I complete a task it jumps to a page pushing the paid version — annoying, so I deleted it', 1★); '無料版で使わせる前提ではないのかもしれません' ('maybe the free version isn't meant to be used', 2★); a paying user asks the rating prompt to stop 'せめて課金してる人に対してくらいは' ('at least for people who pay', 3★, May 2026)
+
+- **Where:** Executive summary #8 — in 2025 the friction moved from ads to upsell screens on the check-in path: upsell nag 4 (0.68%, mean 1.25), all Jul–Nov 2025 — 'every time I complete a task it jumps to a page pushing the paid version — annoying, so I deleted it'; 'maybe the free version isn't meant to be used'; a paying user asks the rating prompt to stop 'at least for people who pay' (May 2026) — the 2024 lesson has not fully carried over
+- **This app does:** upsell after each check-in (2025)
+- **User reaction:** churn
+- **Magnitude:** 4 (0.68%), 1.25
+- **Direction for us:** dont · **Report confidence:** emerging · **Generalisable:** yes
+- **Review IDs:** `12878957344`, `13147772741`, `14056892397`
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C240 Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap; C248 Never show an upsell to anyone holding an active or historical entitlement
+
+### R47-068 — Rating prompt nag 3 (0.51%, 2.33), 2023–26 — a paying user asks it to stop 'at least for people who pay'
+
+- **Where:** §3.1 master table #86 ux_review_prompt_nag
+- **This app does:** see §3.1
+- **User reaction:** complaint
+- **Magnitude:** 3 (0.51%), 2.33
+- **Direction for us:** dont · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Review IDs:** `14056892397`
+- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C248 Never show an upsell to anyone holding an active or historical entitlement
+
+## Things to do
+
+### R47-018 — Cheapest high-value moves in evidence order: treat the August 2026 data loss as an incident and ship a visible restore path (16, 8 in 18 days, users of two to seven years) → commit publicly that logging a missed day will never be gated (52 backfill-demand reviews; the 2024 gate produced 9 at mean 1.67) → keep ads and upsell screens off the check-in path (the rollback took ad complaints from 24 to 0; upsell prompts have since produced 4 more 1–2★) → fix entitlement recognition and the 'purchase failed' loop (8 billing failures against 13 payers) → fix the stuck widget and AI comments that silently stop (5 + 5, all in the last 16 months) → add an in-app account-deletion path and a visible support contact (5 + 7) → only then grow premium through additive features reviewers name: the AI coach, multiple widgets, iPad and Mac layouts, totals and stats
+
+- **Where:** Executive summary #12 — the cheapest high-value moves, in evidence order
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** as stated
+- **Direction for us:** do · **Report confidence:** report recommendation · **Generalisable:** yes
+- **Canonical:** C033 Restore purchase and entitlements must work immediately; C034 Data must never be lost on update, reinstall or phone change; C040 Widgets must not go blank, stale or disagree with the app; C142 Surface existing features where users look; C249 Account deletion completes in one step, in-app and on the web, and is confirmed — never a spinner or a silent chatbot
+
+## Contradictions
+
+### R47-033 — The listing and the reviewers disagree about the free tier: the Japanese listing (as fetched, 12 Sep 2026) describes the free version as offering 'unlimited task registration', while reviewers from December 2024 to March 2026 report a free cap of 6 habits — the corpus cannot resolve which is current
+
+- **Where:** §2.3 External sources — the JP listing (version 6.2.3; 4.7 from ~17,000; 15 languages; iPhone iOS 16.4+, Mac, Vision; Health & Fitness; premium = multi-habit widgets + DotBuddy); a discrepancy: the listing describes the free version as 'unlimited task registration' while reviewers Dec 2024 – Mar 2026 report a cap of 6 — unresolved
+- **This app does:** listing vs reviews on the cap
+- **User reaction:** mixed
+- **Magnitude:** listing text vs 3 reviews
+- **Direction for us:** research · **Report confidence:** unresolved · **Generalisable:** yes
+- **Review IDs:** `12037246791`, `12264984107`, `13831267826`
+- **Canonical:** C104 Never ship a paywall or feature-removal change silently; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
+
+### R47-060 — Non-punitive praised 4 (5.00; 'scoring points, not losing them') and a streak reset that motivates 3 (5.00) vs empty squares demotivating 1 — the same grid reads as gentle or harsh
+
+- **Where:** §3.1 master table #65 cp_non_punitive / #74 cp_streak_reset_motivates / #96 ux_empty_squares_demotivate
+- **This app does:** see §3.1
+- **User reaction:** mixed
+- **Magnitude:** 4 + 3 vs 1
+- **Direction for us:** undecided · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** C024 Streaks / gamification; C095 Neutral, non-judgemental tone on failure; C157 Every guilt mechanic must be optional — streaks, repair prompts, countdowns
+
+## Data caveats and method
+
+### R47-002 — Method: all 589 records read individually in full in date order in the original language (Japanese, Korean, Simplified and Traditional Chinese, Portuguese, Spanish, French, Italian, English, Arabic, Vietnamese); 96 hand-assigned themes across 11 families, 1,231 assignments (2.09 per review), as an explicit review_id → themes map (Temp/47-review-classification.py) with per-entry index and storefront comments; programmatic validation (zero unknown IDs, duplicate keys, unassigned records, duplicated or orphan themes); tables generated from the map, every cited ID verified, every §3.1 count recomputed; bands <0.1 ignore · 0.1–0.5 weak · 0.5–1 emerging · 1–3 meaningful · 3–5 very strong · >5 high-priority — in counts 1–2 weak, 3–5 emerging, 6–17 meaningful, 18–29 very strong, 30+ high-priority; denominators 589, Japan 369, Korea 92; reconciliation exact (589 = parsed = unique = 18 country files; manifest 589 / 18 / 3.818 / 5:277 4:131 3:58 2:43 1:80 reproduced; per-country counts match _state.json collected); 0 duplicates; 44 of 62 queried storefronts returned zero; the store aggregate 4.7 (~17,000 JP ratings) sits 0.88 above the 3.818 written mean (written ≈ 2% of ratings); no solicited burst — only 3 rating-prompt complaints, no duplicates; volume spikes are dated incident clusters; votes 85.06% zero, top a 23-vote 'back-dating has shipped' review, a 14-vote high-schooler's diet log ('watch a video and you unlock more colours'), an 11-vote 2★ downgrade (the longest review), a 7-vote 'video ads replaced by banners'; is_edited 12 (2.04%), verdict changes noted; body median 63 chars, min '神', max 1,834; titles often carry the verdict ('if it supported Apple Watch it would be the best' / body 'it is') so title and body were read together; 21 records (3.57%) contentless; no version field; storefront ≠ language (English on KR / JP / AR, Vietnamese on JP); 39 of 96 themes below 1% never promoted; 13 payers (2.21%) — a qualitative segment, no conversion claim; external sources — the Japanese listing and public consumer-spend rankings, labelled
+
+- **Where:** How to read this; Eight warnings #2 #4 #6 #7 #8; §1.1 Files used; §1.2 Schema; §1.3 Coverage and reconciliation; §1.5 Processing method; §1.6 Limitations
+- **This app does:** n/a
+- **User reaction:** none
+- **Magnitude:** 589/589; 96 themes / 11 families; 1,231 assignments
+- **Direction for us:** none · **Report confidence:** method · **Generalisable:** yes
+- **Review IDs:** `5731143749`, `8913596918`, `12487255668`, `12062387349`, `11955271097`, `14438246592`, `5516408123`, `6685962313`, `10978216170`, `5763529321`, `8181440831`, `8401212873`, `9167457657`, `11242485127`, `13254924240`, `12865194480`, `6686145926`, `5270999481`
+- **Canonical:** — (nuance register)
+
+### R47-003 — A Japan corpus: 369 of 589 reviews (62.65%) are from the Japanese storefront and 92 (15.62%) from Korea — the only two above 50; the US contributes 7; 76.6% (245 of 320) of records from 2022 onward are Japanese, so global themes are Japanese themes unless Part 6 says otherwise
+
+- **Where:** Eight warnings #1 — a Japan corpus: 369 of 589 (62.65%) Japanese, 92 (15.62%) Korean; only Japan and Korea clear 50; the US contributes 7; 76.6% of records from 2022 on are Japanese
+- **This app does:** n/a
+- **User reaction:** none
+- **Magnitude:** JP 369 (62.65%); KR 92 (15.62%); US 7
+- **Direction for us:** none · **Report confidence:** eligibility · **Generalisable:** app-specific
+- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue
+
+### R47-004 — Eight months after a monetisation update hold a third of all bad reviews: 63 reviews (10.70%) posted 2 May → 28 Dec 2024 average 2.38, with 39 of 63 at 1–2★ (61.9%) against 14.9–17.8% in every other era — 39 of the corpus's 123 one- and two-stars (31.7%); every record kept; without the window the mean is 3.990 (n = 526)
+
+- **Where:** Eight warnings #3 — eight months of 2024 dominate the negative evidence: 63 reviews (10.70%) 2 May → 28 Dec 2024, mean 2.38, 39 of 63 at 1–2★ (61.9%) vs 14.9–17.8% every other era; those eight months hold 39 of the corpus's 123 1–2★ (31.7%); without the window the mean is 3.990 (n=526)
+- **This app does:** May 2024 monetisation update
+- **User reaction:** 1★-burst
+- **Magnitude:** 63 (10.70%), 2.38; 39/123 1–2★
+- **Direction for us:** none · **Report confidence:** disclosed · **Generalisable:** yes
+- **Canonical:** C001 Never move a free feature behind the paywall; C002 Ratings follow the offer, not the feature set
+
+### R47-005 — Rating vs text contradictions: 16 (2.72%), all 5★ reviews reporting an unusable app — e.g. '但今天在習慣中加入照片後持續閃退 完全無法使用' (TW, 5★) — eight of them in the January 2021 crash window; star-only analysis understates this app's defect load
+
+- **Where:** Eight warnings #5 — 16 records (2.72%) with a star rating contradicting the text, all 5★ reviews reporting an app that cannot be used ('after adding a photo to a habit, it keeps crashing — completely unusable'), eight in the Jan 2021 crash window — star-only analysis understates the defect load
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 16 (2.72%), all 5★
+- **Direction for us:** none · **Report confidence:** corpus-level fact · **Generalisable:** yes
+- **Review IDs:** `6859903726`
+- **Canonical:** C031 Crashes / launch failures
+
+### R47-020 — Feature inventory with representative IDs and notes
+
+- **Where:** §2.1 Feature inventory derived from reviews (verbatim table)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** Capability | Evidence (review IDs) | Notes ; Habit list; long-press a habit → "done" (a "+" record screen) | 8668120956 9203298957 12487255668 | Reviewers count 2–4 taps per check-in (§3.4.3); one-tap logging requested since 2019 ; Dot / square grid that fills with colour on each completion; streak counter | 6259277232 7744252519 8913596918 11675941548 13680600241 | The signature mechanic; compared to GitHub's contribution graph (7744252519, 11675941548) ; Streak resets to zero on a missed day; cumulative total also shown (by 2025) | 6355419734 8303242006 12226979658 | Totals were requested in 2020–2021 (6355419734, 7087108346) ; Per-day memo and photo attached to each check-in (diary) | 5501337301 5881887587 6271390705 11428921232 12240995283 | The feature Korean and Japanese reviewers name as the differentiator ; Month / calendar view of dots | 6077203651 8913596918 9126481477 11362925158 | 13177567992 (2025) reports the month view showing only a week ; Back-dated check-in (from March 2020) | 5731143749 8397002602 8913596918 | Gated behind a video ad in May 2024 (§3.4.1); no gate reported after 2024 ; Start date before habit creation | 14081256602 | Exists but its past options appear blank; 21 reviews ask for it ; Per-habit reminders, multiple times, editable text | 5731143749 8397002602 8913596918 12487255668 | Setting the time was buggy in January–February 2021 (§3.4.2) ; Scheduled weekdays per habit | 9126481477 13120746600 14174277268 | Non-scheduled days still notified (13120746600); fixed by June 2026 (14174277268) ; Colour choice; more colours unlocked by watching a video (2022) | 8378672807 8913596918 | *"動画を見れば使える色が増えます"* / "watching a video adds more colours" (8913596918) ; Dark mode | 5731143749 8974995265 | Time-picker digits unreadable in dark mode (5887365593, 6160689803) ; Account, email backup and sync (beta in 2020, free backup "v2.0" in 2024) | 5666148773 10978216170 11067014011 13745035928 | Cross-device iPhone / Android / iPad sync (13745035928, *"애플이랑 삼성 연동"* / "Apple and Samsung sync") ; Android version | 5713517806 7714674828 8456104790 13745035928 | Reviewers use both; sync between them was unreliable in 2022 (8456104790) ; Home-screen widget (from 2025) | 12555252618 13583266410 14139548553 | Stuck-at-0 / blank widget reports (§3.4.2) ; AI coach "DotBuddy" replying to check-ins (from mid-2025) | 13659193260 13953380897 14195810303 14326467058 | Paywalled for some free users in September 2025 (13151339965) ; Week start setting (Sunday start, 2026) | 13699643234 | Monday start still requested (13924626648) ; Photo multi-select (December 2024) | 12050119923 | Shipped within a week of the request ; In-app feedback form; in-app rating prompt | 5143066754 7716330699 14056892397 | Form crashed in 2019 and 2021
+- **Direction for us:** none · **Report confidence:** inventory · **Generalisable:** app-specific
+- **Review IDs:** `8668120956`, `9203298957`, `12487255668`, `6259277232`, `7744252519`, `8913596918`, `11675941548`, `13680600241`, `6355419734`, `8303242006`, `12226979658`, `7087108346`, `5501337301`, `5881887587`, `6271390705`, `11428921232`, `12240995283`, `6077203651`, `9126481477`, `11362925158`, `13177567992`, `5731143749`, `8397002602`, `14081256602`, `13120746600`, `14174277268`, `8378672807`, `8974995265`, `5887365593`, `6160689803`, `5666148773`, `10978216170`, `11067014011`, `13745035928`, `5713517806`, `7714674828`, `8456104790`, `12555252618`, `13583266410`, `14139548553`, `13659193260`, `13953380897`, `14195810303`, `14326467058`, `13151339965`, `13699643234`, `13924626648`, `12050119923`, `5143066754`, `7716330699`, `14056892397`
+- **Canonical:** — (nuance register)
+
+### R47-034 — Master theme table, denominator 589, with JP n, KR n and period
+
+- **Where:** §3.1 Master table — all 96 themes (verbatim)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** # | Theme | Family | Dir | n | % of 589 | Mean ★ | JP n | KR n | Period | Signal ; 1 | cp_simplicity | Core praise | pos | 126 | 21.39% | 4.61 | 79 | 10 | 2019–2026 | high-priority ; 2 | cp_visual_progress | Core praise | pos | 67 | 11.38% | 4.70 | 49 | 8 | 2019–2026 | high-priority ; 3 | cp_design_aesthetic | Core praise | pos | 54 | 9.17% | 4.50 | 33 | 10 | 2019–2026 | high-priority ; 4 | rel_crash_wont_open | Reliability | neg | 51 | 8.66% | 3.18 | 31 | 13 | 2019–2026 | high-priority ; 5 | cp_behaviour_change | Core praise | pos | 44 | 7.47% | 4.75 | 40 | 2 | 2020–2026 | high-priority ; 6 | cp_generic_positive | Core praise | pos | 38 | 6.45% | 4.84 | 13 | 9 | 2019–2026 | high-priority ; 7 | cp_best_of_many | Core praise | pos | 33 | 5.60% | 4.88 | 14 | 12 | 2019–2026 | high-priority ; 8 | cp_notes_photos_journal | Core praise | pos | 32 | 5.43% | 4.75 | 22 | 4 | 2019–2026 | high-priority ; 9 | rel_ui_input_bug | Reliability | neg | 31 | 5.26% | 3.74 | 26 | 2 | 2020–2026 | high-priority ; 10 | neg_stated_churn | Product-value criticism | neg | 27 | 4.58% | 1.48 | 24 | 2 | 2019–2025 | very strong ; 11 | mp_free_gratitude | Monetization praise | pos | 25 | 4.24% | 4.68 | 17 | 2 | 2019–2026 | very strong ; 12 | mf_ad_overload_2024 | Monetization friction | neg | 24 | 4.07% | 1.46 | 20 | 2 | 2024 | very strong ; 13 | seg_fitness_diet | Segments | — | 24 | 4.07% | 4.08 | 21 | 2 | 2020–2026 | very strong ; 14 | mf_free_to_paid_backlash | Monetization friction | neg | 23 | 3.90% | 1.39 | 20 | 1 | 2024–2025 | very strong ; 15 | seg_long_term_user | Segments | — | 23 | 3.90% | 2.26 | 15 | 2 | 2022–2026 | very strong ; 16 | fr_backfill_past_days | Feature gaps & requests | req | 22 | 3.74% | 3.64 | 6 | 10 | 2019–2026 | very strong ; 17 | fr_start_date_before_install | Feature gaps & requests | req | 21 | 3.57% | 3.76 | 15 | 6 | 2019–2026 | very strong ; 18 | meta_low_information | Meta | — | 21 | 3.57% | 4.48 | 6 | 5 | 2020–2026 | very strong ; 19 | fr_widget | Feature gaps & requests | req | 20 | 3.40% | 4.50 | 9 | 9 | 2019–2026 | very strong ; 20 | cp_multiple_goals | Core praise | pos | 17 | 2.89% | 4.76 | 14 | 2 | 2020–2026 | meaningful ; 21 | meta_rating_text_mismatch | Meta | — | 16 | 2.72% | 5.00 | 7 | 6 | 2019–2026 | meaningful ; 22 | rel_data_loss | Reliability | neg | 16 | 2.72% | 1.94 | 16 | 0 | 2020–2026 | meaningful ; 23 | rel_sync_backup_fail | Reliability | neg | 16 | 2.72% | 2.25 | 11 | 3 | 2019–2026 | meaningful ; 24 | mp_willing_to_pay | Monetization praise | pos | 14 | 2.38% | 4.57 | 6 | 5 | 2019–2026 | meaningful ; 25 | rel_calendar_weekday_bug | Reliability | neg | 14 | 2.38% | 3.29 | 1 | 0 | 2019–2021 | meaningful ; 26 | ux_too_many_taps | UX friction | neg | 14 | 2.38% | 2.86 | 13 | 0 | 2019–2026 | meaningful ; 27 | cp_ai_encouragement | Core praise | pos | 13 | 2.21% | 4.69 | 11 | 1 | 2025–2026 | meaningful ; 28 | mp_paid_premium | Purchase evidence | — | 13 | 2.21% | 3.23 | 12 | 1 | 2021–2026 | meaningful ; 29 | rel_white_screen_new_habit | Reliability | neg | 13 | 2.21% | 1.54 | 13 | 0 | 2020–2024 | meaningful ; 30 | meta_recent_install | Meta | — | 12 | 2.04% | 4.42 | 8 | 1 | 2019–2026 | meaningful ; 31 | rel_crash_photo_attach | Reliability | neg | 12 | 2.04% | 3.42 | 5 | 4 | 2021–2022 | meaningful ; 32 | seg_multi_device | Segments | — | 12 | 2.04% | 3.42 | 9 | 2 | 2020–2026 | meaningful ; 33 | sup_fix_acknowledged | Support | pos | 12 | 2.04% | 4.42 | 11 | 0 | 2020–2026 | meaningful ; 34 | fr_totals_stats | Feature gaps & requests | req | 11 | 1.87% | 4.55 | 5 | 2 | 2019–2026 | meaningful ; 35 | mf_banner_ads_annoying | Monetization friction | neg | 11 | 1.87% | 3.55 | 4 | 1 | 2019–2024 | meaningful ; 36 | rel_notification_bug | Reliability | neg | 11 | 1.87% | 3.55 | 10 | 1 | 2019–2026 | meaningful ; 37 | ux_ipad_not_supported | UX friction | neg | 11 | 1.87% | 3.64 | 8 | 2 | 2019–2026 | meaningful ; 38 | cp_reminders | Core praise | pos | 10 | 1.70% | 5.00 | 8 | 0 | 2019–2026 | meaningful ; 39 | fr_ad_removal_option | Feature gaps & requests | req | 10 | 1.70% | 4.50 | 4 | 2 | 2019–2023 | meaningful ; 40 | fr_backup_sync | Feature gaps & requests | req | 10 | 1.70% | 4.60 | 1 | 1 | 2019–2026 | meaningful ; 41 | fr_misc_other | Feature gaps & requests | req | 10 | 1.70% | 3.90 | 5 | 3 | 2020–2025 | meaningful ; 42 | cp_calendar_view | Core praise | pos | 9 | 1.53% | 4.33 | 6 | 3 | 2020–2025 | meaningful ; 43 | mf_backfill_paywalled | Monetization friction | neg | 9 | 1.53% | 1.67 | 9 | 0 | 2024 | meaningful ; 44 | mp_ads_absent_or_mild | Monetization praise | pos | 9 | 1.53% | 4.56 | 7 | 0 | 2020–2026 | meaningful ; 45 | seg_study_learning | Segments | — | 9 | 1.53% | 4.78 | 9 | 0 | 2020–2026 | meaningful ; 46 | ux_onboarding_confusion | UX friction | neg | 9 | 1.53% | 2.44 | 8 | 0 | 2019–2026 | meaningful ; 47 | fr_flexible_frequency | Feature gaps & requests | req | 8 | 1.36% | 4.12 | 6 | 1 | 2019–2025 | meaningful ; 48 | mf_billing_problem | Monetization friction | neg | 8 | 1.36% | 3.25 | 6 | 1 | 2021–2026 | meaningful ; 49 | rel_register_login_fail | Reliability | neg | 8 | 1.36% | 3.62 | 2 | 0 | 2020–2026 | meaningful ; 50 | cp_backfill_available | Core praise | pos | 7 | 1.19% | 4.00 | 7 | 0 | 2019–2025 | meaningful ; 51 | cp_sync_backup | Core praise | pos | 7 | 1.19% | 4.29 | 5 | 1 | 2020–2026 | meaningful ; 52 | mf_free_habit_cap | Monetization friction | neg | 7 | 1.19% | 2.29 | 5 | 1 | 2024–2025 | meaningful ; 53 | sup_unresponsive | Support | neg | 7 | 1.19% | 2.57 | 7 | 0 | 2020–2025 | meaningful ; 54 | fr_apple_watch | Feature gaps & requests | req | 6 | 1.02% | 4.17 | 3 | 2 | 2020–2022 | meaningful ; 55 | fr_overview_calendar | Feature gaps & requests | req | 6 | 1.02% | 4.50 | 3 | 0 | 2019–2023 | meaningful ; 56 | fr_reorder_sort | Feature gaps & requests | req | 6 | 1.02% | 4.33 | 6 | 0 | 2019–2025 | meaningful ; 57 | rel_crash_after_account_sync | Reliability | neg | 6 | 1.02% | 3.00 | 5 | 1 | 2024–2025 | meaningful ; 58 | rel_ai_comment_stops | Reliability | neg | 5 | 0.85% | 4.00 | 5 | 0 | 2025–2026 | emerging ; 59 | rel_counts_display_wrong | Reliability | neg | 5 | 0.85% | 2.80 | 5 | 0 | 2025–2026 | emerging ; 60 | rel_order_scrambles | Reliability | neg | 5 | 0.85% | 3.20 | 5 | 0 | 2022 | emerging ; 61 | rel_widget_not_updating | Reliability | neg | 5 | 0.85% | 2.80 | 5 | 0 | 2025–2026 | emerging ; 62 | ux_account_deletion_privacy | UX friction | neg | 5 | 0.85% | 1.60 | 5 | 0 | 2021–2025 | emerging ; 63 | ux_today_status_unclear | UX friction | neg | 5 | 0.85% | 4.20 | 5 | 0 | 2019–2024 | emerging ; 64 | ux_translation_quality | UX friction | neg | 5 | 0.85% | 4.20 | 0 | 2 | 2019–2025 | emerging ; 65 | cp_non_punitive | Core praise | pos | 4 | 0.68% | 5.00 | 4 | 0 | 2024–2026 | emerging ; 66 | cp_widget | Core praise | pos | 4 | 0.68% | 4.25 | 4 | 0 | 2025–2026 | emerging ; 67 | fr_bulk_entry | Feature gaps & requests | req | 4 | 0.68% | 3.75 | 3 | 0 | 2022–2024 | emerging ; 68 | fr_note_on_missed_day | Feature gaps & requests | req | 4 | 0.68% | 4.50 | 0 | 3 | 2019–2026 | emerging ; 69 | fr_photo_features | Feature gaps & requests | req | 4 | 0.68% | 4.25 | 3 | 1 | 2022–2024 | emerging ; 70 | mf_price_too_high | Monetization friction | neg | 4 | 0.68% | 3.00 | 3 | 0 | 2024–2025 | emerging ; 71 | mf_upsell_nag | Monetization friction | neg | 4 | 0.68% | 1.25 | 4 | 0 | 2025 | emerging ; 72 | mf_want_one_time_purchase | Monetization friction | neg | 4 | 0.68% | 3.50 | 2 | 0 | 2022–2025 | emerging ; 73 | rel_slow_freeze | Reliability | neg | 4 | 0.68% | 2.75 | 3 | 0 | 2020–2026 | emerging ; 74 | cp_streak_reset_motivates | Core praise | pos | 3 | 0.51% | 5.00 | 3 | 0 | 2020–2025 | emerging ; 75 | fr_daily_todo_view | Feature gaps & requests | req | 3 | 0.51% | 4.67 | 3 | 0 | 2020–2025 | emerging ; 76 | fr_default_view | Feature gaps & requests | req | 3 | 0.51% | 3.33 | 3 | 0 | 2022–2025 | emerging ; 77 | fr_more_colours | Feature gaps & requests | req | 3 | 0.51% | 4.67 | 1 | 1 | 2019–2020 | emerging ; 78 | fr_notification_options | Feature gaps & requests | req | 3 | 0.51% | 3.00 | 3 | 0 | 2020–2025 | emerging ; 79 | fr_share_social_export | Feature gaps & requests | req | 3 | 0.51% | 4.67 | 2 | 0 | 2019–2026 | emerging ; 80 | fr_timer_time_tracking | Feature gaps & requests | req | 3 | 0.51% | 4.33 | 2 | 1 | 2021–2026 | emerging ; 81 | neg_stagnant_development | Product-value criticism | neg | 3 | 0.51% | 3.00 | 2 | 0 | 2020–2025 | emerging ; 82 | rel_ad_display_bug | Reliability | neg | 3 | 0.51% | 1.67 | 2 | 0 | 2023–2024 | emerging ; 83 | seg_health_medication | Segments | — | 3 | 0.51% | 3.00 | 3 | 0 | 2020–2025 | emerging ; 84 | ux_ai_comment_unwanted | UX friction | neg | 3 | 0.51% | 2.33 | 2 | 1 | 2025 | emerging ; 85 | ux_note_length_limit | UX friction | neg | 3 | 0.51% | 3.67 | 2 | 1 | 2020–2026 | emerging ; 86 | ux_review_prompt_nag | UX friction | neg | 3 | 0.51% | 2.33 | 3 | 0 | 2023–2026 | emerging ; 87 | fr_show_missed_days | Feature gaps & requests | req | 2 | 0.34% | 4.50 | 0 | 1 | 2023 | weak ; 88 | fr_week_start_monday | Feature gaps & requests | req | 2 | 0.34% | 3.50 | 1 | 1 | 2025–2026 | weak ; 89 | mf_trial_not_disclosed | Monetization friction | neg | 2 | 0.34% | 1.00 | 2 | 0 | 2025 | weak ; 90 | neg_competitor_better | Product-value criticism | neg | 2 | 0.34% | 2.00 | 2 | 0 | 2025–2026 | weak ; 91 | neg_weak_motivation | Product-value criticism | neg | 2 | 0.34% | 2.50 | 2 | 0 | 2019–2025 | weak ; 92 | seg_neuro_focus | Segments | — | 2 | 0.34% | 3.00 | 1 | 0 | 2020–2024 | weak ; 93 | fr_pause_archive_habit | Feature gaps & requests | req | 1 | 0.17% | 4.00 | 1 | 0 | 2020 | weak ; 94 | mf_ai_feature_paywalled | Monetization friction | neg | 1 | 0.17% | 4.00 | 1 | 0 | 2025 | weak ; 95 | mf_lifetime_price_too_high | Monetization friction | neg | 1 | 0.17% | 2.00 | 1 | 0 | 2026 | weak ; 96 | ux_empty_squares_demotivate | UX friction | neg | 1 | 0.17% | 3.00 | 1 | 0 | 2023 | weak
+- **Direction for us:** none · **Report confidence:** corpus-level fact · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R47-035 — Generic positive 38 (6.45%, 4.84); low-information 21 (3.57%, 4.48); recent install 12 (2.04%, 4.42)
+
+- **Where:** §3.1 master table #6 cp_generic_positive / #18 meta_low_information / #30 meta_recent_install
+- **This app does:** see §3.1
+- **User reaction:** praise
+- **Magnitude:** 38 + 21 + 12
+- **Direction for us:** none · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** — (nuance register)
+
+### R47-069 — Weak rows (n ≤ 2): week start Monday 2; trial not disclosed 2 (1.00); competitor better 2; weak motivation 2; neuro / focus 2; pause / archive 1; AI feature paywalled 1; lifetime price 1; empty squares demotivate 1
+
+- **Where:** §3.1 master table #88–#96 weak rows
+- **This app does:** see §3.1
+- **User reaction:** mixed
+- **Magnitude:** ≤2 each
+- **Direction for us:** none · **Report confidence:** theme-table signal · **Generalisable:** yes
+- **Canonical:** — (nuance register)
+
+### R47-082 — Crash reviews are unusually forgiving here — the crash theme averages 3.18 and 13 of its 51 reviews are 5★, Korean and Taiwanese reviewers especially reporting crashes while rating five stars — whereas data loss (mean 1.94) is not forgiven and reaches long-standing users (4 of 16 long-term)
+
+- **Where:** §3.4.2 (a) reliability reviews are unusually forgiving — crash theme mean 3.18, 13 of 51 at 5★; Korean and Taiwanese reviewers report crashes while rating 5★; (b) data loss has one of the lowest means (1.94) and reaches long-standing users
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** crash 3.18 (13/51 5★); data loss 1.94
+- **Direction for us:** none · **Report confidence:** corpus-level fact · **Generalisable:** yes
+- **Canonical:** — (nuance register)
+
+### R47-088 — Distribution: 5★ 277 (47.03%) · 4★ 131 (22.24%) · 3★ 58 (9.85%) · 2★ 43 (7.30%) · 1★ 80 (13.58%); mean 3.818
+
+- **Where:** Part 4 distribution — 5★ 277 (47.03%) · 4★ 131 (22.24%) · 3★ 58 (9.85%) · 2★ 43 (7.30%) · 1★ 80 (13.58%)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** as stated
+- **Direction for us:** none · **Report confidence:** corpus-level fact · **Generalisable:** app-specific
+- **Canonical:** — (nuance register)
+
+### R47-094 — Cross-tab (top 24): simplicity 88/28/9/1/0; grid 51/13/2/1/0; design 35/13/4/2/0; crash 13/13/7/6/12; behaviour change 38/4/0/1/1; generic 32/6/0/0/0; best of many 29/4/0/0/0; notes / photos 25/6/1/0/0; UI bug 9/13/3/4/2; churn 0/0/3/7/17; free gratitude 19/5/0/1/0; ad overload 0/0/2/7/15; fitness / diet 12/7/1/3/1; backlash 0/0/1/7/15; long-term user 4/2/2/3/12; backfill 5/7/7/3/0; start date 4/9/7/1/0; widget 12/7/0/1/0; multiple goals 15/1/0/1/0; data loss 2/1/1/2/10; sync fail 2/2/3/0/9; willing to pay 10/3/0/1/0; weekday bug 1/5/6/1/1; too many taps 1/5/2/3/3
+
+- **Where:** §4.6 Theme × rating cross-tabulation (verbatim table, top 24)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** Theme | n | 5★ | 4★ | 3★ | 2★ | 1★ | Mean ; cp_simplicity | 126 | 88 | 28 | 9 | 1 | 0 | 4.61 ; cp_visual_progress | 67 | 51 | 13 | 2 | 1 | 0 | 4.70 ; cp_design_aesthetic | 54 | 35 | 13 | 4 | 2 | 0 | 4.50 ; rel_crash_wont_open | 51 | 13 | 13 | 7 | 6 | 12 | 3.18 ; cp_behaviour_change | 44 | 38 | 4 | 0 | 1 | 1 | 4.75 ; cp_generic_positive | 38 | 32 | 6 | 0 | 0 | 0 | 4.84 ; cp_best_of_many | 33 | 29 | 4 | 0 | 0 | 0 | 4.88 ; cp_notes_photos_journal | 32 | 25 | 6 | 1 | 0 | 0 | 4.75 ; rel_ui_input_bug | 31 | 9 | 13 | 3 | 4 | 2 | 3.74 ; neg_stated_churn | 27 | 0 | 0 | 3 | 7 | 17 | 1.48 ; mp_free_gratitude | 25 | 19 | 5 | 0 | 1 | 0 | 4.68 ; mf_ad_overload_2024 | 24 | 0 | 0 | 2 | 7 | 15 | 1.46 ; seg_fitness_diet | 24 | 12 | 7 | 1 | 3 | 1 | 4.08 ; mf_free_to_paid_backlash | 23 | 0 | 0 | 1 | 7 | 15 | 1.39 ; seg_long_term_user | 23 | 4 | 2 | 2 | 3 | 12 | 2.26 ; fr_backfill_past_days | 22 | 5 | 7 | 7 | 3 | 0 | 3.64 ; fr_start_date_before_install | 21 | 4 | 9 | 7 | 1 | 0 | 3.76 ; fr_widget | 20 | 12 | 7 | 0 | 1 | 0 | 4.50 ; cp_multiple_goals | 17 | 15 | 1 | 0 | 1 | 0 | 4.76 ; rel_data_loss | 16 | 2 | 1 | 1 | 2 | 10 | 1.94 ; rel_sync_backup_fail | 16 | 2 | 2 | 3 | 0 | 9 | 2.25 ; mp_willing_to_pay | 14 | 10 | 3 | 0 | 1 | 0 | 4.57 ; rel_calendar_weekday_bug | 14 | 1 | 5 | 6 | 1 | 1 | 3.29 ; ux_too_many_taps | 14 | 1 | 5 | 2 | 3 | 3 | 2.86
+- **Direction for us:** none · **Report confidence:** corpus-level fact · **Generalisable:** yes
+- **Canonical:** — (nuance register)
+
+### R47-095 — Payers: 13 (2.21%) — 12 Japanese, 1 Korean — rating 1 / 6 / 3 / 1 / 2 by star, mean 3.23 vs 3.83 for the other 576; 7 of 13 date from 2025–26 as the subscription became the primary model; 5 further reviews show purchase attempts or entitlement problems without first-person proof of payment ('purchase failed' on every launch; a Chinese user who cannot subscribe; a trial and paywall discovered; the unlock priced at ¥200/month)
+
+- **Where:** §5.1 Who is identifiable as a payer — 13 (2.21%): 12 JP, 1 KR; 5★ 1 / 4★ 6 / 3★ 3 / 2★ 1 / 1★ 2, mean 3.23 vs 3.83; 7 of 13 from 2025–26 as the subscription became primary; 5 more show purchase attempts or entitlement problems without proof of payment ('purchase failed' on every launch; CN cannot subscribe; trial and paywall discovered; priced the unlock at ¥200/month)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 13 (2.21%), 3.23 vs 3.83
+- **Direction for us:** none · **Report confidence:** segment (qualitative) · **Generalisable:** app-specific
+- **Review IDs:** `6828403002`, `6847937115`, `6879483949`, `10149919312`, `11476471502`, `11715444265`, `12173403973`, `12629744866`, `12633545732`, `13061680779`, `13604118005`, `13875654371`, `14056892397`, `14340739070`, `13230847362`, `13378374029`, `12402168490`, `11111270021`
+- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work
+
+### R47-110 — Trend method: four eras bounded by product events reviewers report — E1 Feb 2019 – Dec 2021 (free with banner ads; n 269, mean 3.99, 1–2★ 14.9%; ends with the Jan 2021 crash wave and the last weekday-bug report), E2 Jan 2022 – Apr 2024 (quiet years; 111, 3.95, 16.2%; '1年以上更新がない', no update for over a year, May 2023; ends with the free backup v2.0 and its crash loop), E3 May – Dec 2024 (monetisation shock; 63, 2.38, 61.9%; begins with the first video-gated back-dating report), E4 Jan 2025 – Aug 2026 (subscription + AI coach; 146, 4.02, 17.8%; begins after the December 2024 switch back to banners); halves split at May 2022 (H1 294 at 3.99, H2 295 at 3.65); E3 rates move 1.6 points per review; confidence labels reflect size and textual corroboration
+
+- **Where:** §7.1 Method — four eras bounded by reviewer-reported product events (verbatim table): E1 Feb 2019 – Dec 2021 free with banners (269, 3.99, 1–2★ 14.9%); E2 Jan 2022 – Apr 2024 quiet years (111, 3.95, 16.2%; 'no update for over a year', May 2023); E3 May – Dec 2024 monetisation shock (63, 2.38, 61.9%); E4 Jan 2025 – Aug 2026 subscription + AI coach (146, 4.02, 17.8%); halves at May 2022 (294 at 3.99; 295 at 3.65); E3 rates move 1.6 points per review
+- **This app does:** n/a
+- **User reaction:** none
+- **Magnitude:** Era | Window | n | Mean ★ | 1–2★ share ; E1 | Feb 2019–Dec 2021 (free, banner ads) | 269 | 3.99 | 40 (14.9%) ; E2 | Jan 2022–Apr 2024 (quiet years) | 111 | 3.95 | 18 (16.2%) ; E3 | May–Dec 2024 (monetization shock) | 63 | 2.38 | 39 (61.9%) ; E4 | Jan 2025–Aug 2026 (subscription + AI coach) | 146 | 4.02 | 26 (17.8%)
+- **Direction for us:** none · **Report confidence:** method · **Generalisable:** app-specific
+- **Review IDs:** `9962305243`, `11225576710`, `11111270021`
+- **Canonical:** — (nuance register)
+
+### R47-141 — Research question: What caused the August 2026 data loss — which sync path, versions and users — and how many lost history without writing a review?
+
+- **Where:** Part 8 #1 (§8.5 research question 1)
+- **This app does:** unknown
+- **User reaction:** none
+- **Magnitude:** unanswerable from reviews
+- **Direction for us:** research · **Report confidence:** research question · **Generalisable:** yes
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change
+
+### R47-142 — Research question: Was the back-dating gate removed after June 2024, or did users stop mentioning it?
+
+- **Where:** Part 8 #2 (§8.5 research question 2)
+- **This app does:** unknown
+- **User reaction:** none
+- **Magnitude:** unanswerable from reviews
+- **Direction for us:** research · **Report confidence:** research question · **Generalisable:** yes
+- **Canonical:** C262 Never gate a recovery action — back-dating a missed day, undoing a wrong entry and restoring history stay free forever
+
+### R47-143 — Research question: What share of the users who left during May–December 2024 came back after the rollback? One reviewer did not ('I no longer use it', April 2025)
+
+- **Where:** Part 8 #3 (§8.5 research question 3)
+- **This app does:** unknown
+- **User reaction:** none
+- **Magnitude:** unanswerable from reviews
+- **Direction for us:** research · **Report confidence:** research question · **Generalisable:** yes
+- **Review IDs:** `12487255668`
+- **Canonical:** C001 Never move a free feature behind the paywall
+
+### R47-144 — Research question: Why did Korean reviews stop after 2021 — lower usage, lower review prompting, or a different storefront mix?
+
+- **Where:** Part 8 #4 (§8.5 research question 4)
+- **This app does:** unknown
+- **User reaction:** none
+- **Magnitude:** unanswerable from reviews
+- **Direction for us:** research · **Report confidence:** research question · **Generalisable:** yes
+- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue
+
+### R47-145 — Research question: Is the current free cap 6 habits (reviewers) or unlimited (the listing, as fetched)?
+
+- **Where:** Part 8 #5 (§8.5 research question 5)
+- **This app does:** unknown
+- **User reaction:** none
+- **Magnitude:** unanswerable from reviews
+- **Direction for us:** research · **Report confidence:** research question · **Generalisable:** yes
+- **Canonical:** C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
+
+### R47-146 — Research question: Do AI comments stop by design after a period, or is that the defect reviewers think it is?
+
+- **Where:** Part 8 #6 (§8.5 research question 6)
+- **This app does:** unknown
+- **User reaction:** none
+- **Magnitude:** unanswerable from reviews
+- **Direction for us:** research · **Report confidence:** research question · **Generalisable:** yes
+- **Canonical:** C263 An AI encouragement reply on each check-in as the premium hook — the first paid feature reviewers praise unprompted; its state must be visible

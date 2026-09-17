@@ -1,0 +1,147 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "table_row": "#",
+  "no_new_insight": "table header row (§3.1 master table); carded verbatim as R47-034"
+ },
+ {
+  "table_row": "Era",
+  "no_new_insight": "table header row (§7.1 era table); carded verbatim as R47-110"
+ },
+ {
+  "bold": "count, percentage, denominator, scope, period, signal label and review IDs",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "Interpretation",
+  "no_new_insight": "how-to-read convention; method R47-002"
+ },
+ {
+  "bold": "Classification was hand-curated, not blind-automated.",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "No conversion rate is inferred or claimed.",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "Several product facts are dated by reviewer wording, not release notes.",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "Interpretation:",
+  "cards": [
+   "R47-007"
+  ]
+ },
+ {
+  "bold": "Fields inspected and set aside:",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "Fields inspected and used only as an integrity check:",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "589 (100%)",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "Independent recomputation from the raw records reproduces all of these exactly",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "Deduplication: none performed.",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "Note on the shape of this curve.",
+  "cards": [
+   "R47-019"
+  ]
+ },
+ {
+  "bold": "Parse.",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "Classify.",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "Validate.",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "Verify.",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "Selection bias toward writers.",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "Price and entitlement boundaries are review-derived.",
+  "cards": [
+   "R47-002"
+  ]
+ },
+ {
+  "bold": "No externally sourced claim is mixed into a review-derived count anywhere in this report.",
+  "cards": [
+   "R47-002",
+   "R47-033"
+  ]
+ },
+ {
+  "bold": "Definition:",
+  "cards": [
+   "R47-105"
+  ]
+ },
+ {
+  "bold": "Singletons and near-singletons",
+  "cards": [
+   "R47-108"
+  ]
+ }
+]
