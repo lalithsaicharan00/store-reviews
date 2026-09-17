@@ -1,0 +1,57 @@
+[
+ {
+  "table_row": "< 0.1%",
+  "cards": [
+   "R59-024"
+  ]
+ },
+ {
+  "table_row": "0.5% \u2013 < 1%",
+  "cards": [
+   "R59-024"
+  ]
+ },
+ {
+  "table_row": "1% \u2013 < 3%",
+  "cards": [
+   "R59-024"
+  ]
+ },
+ {
+  "table_row": "3% \u2013 5%",
+  "cards": [
+   "R59-024"
+  ]
+ },
+ {
+  "table_row": "> 5%",
+  "cards": [
+   "R59-024"
+  ]
+ },
+ {
+  "table_row": "Ads",
+  "cards": [
+   "R59-027",
+   "R59-029"
+  ]
+ },
+ {
+  "table_row": "Era",
+  "cards": [
+   "R59-095"
+  ]
+ },
+ {
+  "bold": "Reading.",
+  "cards": [
+   "R59-060"
+  ]
+ },
+ {
+  "bold": "Reading:",
+  "cards": [
+   "R59-073"
+  ]
+ }
+]
