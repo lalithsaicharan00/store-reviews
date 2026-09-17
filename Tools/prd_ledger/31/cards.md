@@ -359,7 +359,7 @@ Source: `App Store Reports/31. Do Habits - Get It Done - Daily Routine & Goal Pl
 - **Magnitude:** Problem | n (within 625 payers) | % of payers | Mean | Evidence ; Purchase not granted / not honoured | 304 | 48.6% | 1.21 | Part 4.3 ; …2023+ offer never applied | 190 | 30.4% | 1.12 | 10324957727, 10639028732, 11689173519 ; …legacy purchase revoked | 125 | 20.0% | 1.34 | 9835947274, 10489995181, 11505353898 ; Support unresponsive | 214 | 34.2% | 1.25 | 10430541861, 10623891834 ; Still shown upsells after paying | 197 | 31.5% | 1.51 | 8558704853, 8860030136, 10009036826 ; Billing-dispute language | 161 | 25.8% | 1.18 | 9124637338, 10902742038 ; Freeze / lag after paying | 83 | 13.3% | 1.33 | 10052371902, 10226692268, 11602382893 ($79.99, freezes on the third habit) ; Feature removed after paying | 21 | 3.4% | 2.19 | 9579733483 ("That is one of the biggest reasons I paid"), 9680451415 ; Explicit praise of the paid app | 61 simplicity / 58 design | ~9–10% | 2.5–2.7 | even payer praise is now mixed
 - **Direction for us:** must-never-break · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `10324957727`, `10639028732`, `11689173519`, `9835947274`, `10489995181`, `11505353898`, `10430541861`, `10623891834`, `8558704853`, `8860030136`, `10009036826`, `9124637338`, `10902742038`, `10052371902`, `10226692268`, `11602382893`, `9579733483`, `9680451415`
-- **Canonical:** C033 Restore purchase and entitlements must work immediately; C036 A support channel that exists, is reachable outside the app, and answers; C065 Paying customers are the highest 1★ risk — every paid feature must work; C248 Never show an upsell to anyone holding an active or historical entitlement
+- **Canonical:** C033 Restore purchase and entitlements must work immediately; C036 A support channel that exists, is reachable outside the app, and answers; C065 Paying customers are the highest 1★ risk — every paid feature must work; C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps
 
 ### R31-150 — Support went from a strength to a vacuum: support unresponsive 0.6% (E1) → 5.1% → 3.1% → 20.3% (E4) → 20.8% (E5), by year 1 · 0 · 0 · 3 · 12 · 20 · 56 · 191 · 141 · 29 · 7; support praised (18 reviews): 11 in E1, 2 in E2, 4 in E4, 1 in E5 — an unresponsive support channel converts every other defect into a public 1★
 
@@ -895,7 +895,7 @@ Source: `App Store Reports/31. Do Habits - Get It Done - Daily Routine & Goal Pl
 - **Magnitude:** 6 named; payer E4 mean 1.35
 - **Direction for us:** dont · **Report confidence:** high-priority (warning sign) · **Generalisable:** yes
 - **Review IDs:** `8346060268`, `9328333005`, `10305533738`, `10935395497`, `11374154452`, `11315009912`
-- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C248 Never show an upsell to anyone holding an active or historical entitlement
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps
 
 ### R31-190 — Experiments: (31) upsell frequency — every launch vs weekly vs never-for-past-payers — measuring conversion, D30 retention and 1★ rate; (32) lifetime vs annual vs monthly price architecture; (33) free cap 3 vs 6 vs a trial; (34) streak-on-list toggle default on vs off, measuring logging frequency
 
@@ -904,7 +904,7 @@ Source: `App Store Reports/31. Do Habits - Get It Done - Daily Routine & Goal Pl
 - **User reaction:** mixed
 - **Magnitude:** 4 experiments
 - **Direction for us:** research · **Report confidence:** experiment proposals · **Generalisable:** yes
-- **Canonical:** C003 Lead with a one-time lifetime purchase; C007 Generous fixed habit cap (or unlimited) — never change it; C024 Streaks / gamification; C248 Never show an upsell to anyone holding an active or historical entitlement
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C007 Generous fixed habit cap (or unlimited) — never change it; C024 Streaks / gamification; C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps
 
 ### R31-191 — Public developer replies started only in 2024, three years into the entitlement failures, and their outcome was split: some restored Premium within days (or 11 days after re-sending proof of purchase, or via a named support agent), others asked for a single e-mail address, promised a refund that never came, or edited the reply afterwards ('they sneakily changed their developer response'); an earlier support reply 'full of emojis' offered a free trial instead of honouring a legacy purchase — late replies without follow-through did not reverse the 1★ trend (support unresponsive 20.3% E4 → 20.8% E5); no review-prompt manipulation was found (20 prompt complaints; short reviews ≤7.7% of every era)
 
@@ -914,7 +914,7 @@ Source: `App Store Reports/31. Do Habits - Get It Done - Daily Routine & Goal Pl
 - **Magnitude:** 4 resolved vs 5 unresolved; 20.3% → 20.8%
 - **Direction for us:** do · **Report confidence:** limited evidence · **Generalisable:** yes
 - **Review IDs:** `11834026398`, `12495653099`, `10286924890`, `9476288002`, `11743876580`, `12473833371`, `13602037395`, `14196021819`, `9869035157`
-- **Canonical:** C059 Be visibly responsive; fixes bring reviewers back; C189 Never post canned public replies — answer the specific complaint or don't reply
+- **Canonical:** C059 Be visibly responsive; fixes bring reviewers back; C189 Public review replies answer the specific complaint — never canned, never argue price, never press a reviewer to change the rating
 
 ## Insights (the why)
 
@@ -955,7 +955,7 @@ Source: `App Store Reports/31. Do Habits - Get It Done - Daily Routine & Goal Pl
 - **Magnitude:** 4 resolved vs 5 unresolved named
 - **Direction for us:** do · **Report confidence:** limited evidence · **Generalisable:** yes
 - **Review IDs:** `11834026398`, `12495653099`, `10286924890`, `9476288002`, `11743876580`, `12473833371`, `13602037395`, `14196021819`, `13660661446`
-- **Canonical:** C059 Be visibly responsive; fixes bring reviewers back; C189 Never post canned public replies — answer the specific complaint or don't reply
+- **Canonical:** C059 Be visibly responsive; fixes bring reviewers back; C189 Public review replies answer the specific complaint — never canned, never argue price, never press a reviewer to change the rating
 
 ### R31-036 — Simplicity / ease — any mention (104 of them 1★)
 
@@ -1062,7 +1062,7 @@ Source: `App Store Reports/31. Do Habits - Get It Done - Daily Routine & Goal Pl
 - **Magnitude:** Theme | n | % of 3★ ; Monetisation friction | 256 | 44.1% ; Free cap | 131 | 22.5% ; Reliability | 129 | 22.2% ; Upsell nag | 91 | 15.7% ; Simplicity | 84 | 14.5% ; Upsell to payers | 44 | 7.6% ; Feature removal | 40 | 6.9%
 - **Direction for us:** product-rule · **Report confidence:** corpus-level fact · **Generalisable:** yes
 - **Review IDs:** `1885852147`, `3252526505`, `5754625203`, `9467534091`, `9557519480`, `9562255131`, `9621516200`, `8836702535`, `8853131560`, `10236336525`
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C155 Never remove a feature people bought the app for — add alongside, do not replace; C248 Never show an upsell to anyone holding an active or historical entitlement
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps; C155 Never remove a feature people bought the app for — add alongside, do not replace
 
 ### R31-119 — 2★ (n = 606, 11.69%): half is money — monetisation friction 303 (50.0%); reliability 178 (29.4%); free cap 133 (21.9%); upsell nag 118 (19.5%); price objection 85 (14.0%); launch failure 75 (12.4%); billing integrity 66 (10.9%); support unresponsive 55 (9.1%); upsell to payers 51 (8.4%); entitlement failure 45 (7.4%) — and it holds the most detailed 'I used to love this' long-tenure reviews ('Notice that all of the rave reviews are from 1-4 years ago')
 
@@ -1457,7 +1457,7 @@ Source: `App Store Reports/31. Do Habits - Get It Done - Daily Routine & Goal Pl
 - **User reaction:** complaint
 - **Magnitude:** Theme | E1 | E2 | E3 | E4 | E5 ; Upsell nag | 1.9% | 14.9% | 9.9% | 22.6% | 11.6% ; Upsell shown to payers | 0.3% | 4.2% | 4.2% | 12.1% | 6.4% ; Fake countdown | 1.1% | 2.6% | 1.0% | 4.0% | 1.7% ; Double pop-up | — | — | — | 1.1% | 0.6%
 - **Direction for us:** dont · **Report confidence:** high-priority · **Generalisable:** yes
-- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C180 No 'wait, don't go' exit discounts or countdown timers on the paywall; C248 Never show an upsell to anyone holding an active or historical entitlement
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps; C180 No 'wait, don't go' exit discounts or countdown timers on the paywall
 
 ### R31-149 — Purchase integrity went from background noise to a third of all reviews: billing & entitlement integrity 1.6% (E1) → 8.4% → 5.2% → 34.5% (E4) → 25.4%; entitlement failure 0.7% → 3.9% → 0.5% → 24.5% → 16.8% (legacy 0.7% → 3.9% → 0.5% → 8.4% → 7.5%; 2023+ offer 17.1% in E4, 9.3% in E5); discount at full price 0.4% (E2) → 1.6% → 2.3%; billing-dispute language 0.9% → 5.4% → 3.9% → 16.4% → 13.9%; cannot cancel 0.1% → 0.4% → 0.9% → 2.6% → 2.3%; the E1 baseline — 7 entitlement reports in 4.3 years — shows this is not a constant background rate, and the E4 step aligns with the dated legacy revocation (Apr 2023) and offer launch (Aug 2023)
 
@@ -1565,7 +1565,7 @@ Source: `App Store Reports/31. Do Habits - Get It Done - Daily Routine & Goal Pl
 - **Magnitude:** 676 (13.04%); 1.9% → 14.9% → 22.6%; paid-user upsell 314 (6.05%); fake countdown 111 (2.14%); double pop-up 19
 - **Direction for us:** dont · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `6837024394`, `7710455837`, `10817420229`, `11443853483`, `9819638240`, `9839487554`, `10001218229`, `6751801484`, `6753490588`, `9942976990`
-- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C180 No 'wait, don't go' exit discounts or countdown timers on the paywall; C248 Never show an upsell to anyone holding an active or historical entitlement
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps; C180 No 'wait, don't go' exit discounts or countdown timers on the paywall
 
 ### R31-098 — Upsell escalation as an anti-pattern — share rose 1.9% (E1) → 14.9% (E2) → 9.9% (E3) → 22.6% (E4) through six mechanisms: (1) a banner that hides a habit (Dec 2020); (2) a full-screen offer on every launch (2021 →); (3) a countdown that resets, 111 reviews ('72 hour countdown and reset back to 72 hrs'; 'like the DFS adverts, constantly on sale'; 'ran for months'); (4) a permanent 'Just for you' list cell (Apr 2023) that reviewers say slows scrolling and tapping; (5) two pop-ups per launch (Jan 2024 →), 19 reviews ('I'm pretty sure this type of fake sale is actually illegal'); (6) upsell shown to paying users, 314 reviews ('It's not encouraging customer loyalty!!'; mood-disorder tracking interrupted)
 
@@ -1575,7 +1575,7 @@ Source: `App Store Reports/31. Do Habits - Get It Done - Daily Routine & Goal Pl
 - **Magnitude:** 1.9% → 14.9% → 9.9% → 22.6%; countdown 111; double pop-up 19; payers 314
 - **Direction for us:** dont · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `6751801484`, `6753490588`, `6758584064`, `6760348196`, `6876625802`, `6945830732`, `7007819440`, `7124882010`, `8722563354`, `9942976990`, `6837024394`, `6953163730`, `7710455837`, `10817420229`, `11443853483`, `9819638240`, `9837113919`, `9837641197`, `9839487554`, `10001218229`, `10880872919`, `10912142470`, `10917111173`, `11002029170`, `11014993576`, `6759066974`, `8558704853`, `8753896563`, `8860030136`, `9338298616`, `9372242891`, `10009036826`, `11434900723`
-- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C145 Every promotional or onboarding modal must be dismissible on the smallest screen; C180 No 'wait, don't go' exit discounts or countdown timers on the paywall; C248 Never show an upsell to anyone holding an active or historical entitlement
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps; C145 Every promotional or onboarding modal must be dismissible on the smallest screen; C180 No 'wait, don't go' exit discounts or countdown timers on the paywall
 
 ### R31-159 — Fake urgency backfires in a self-improvement category: 111 countdown complaints, a 'Groundhog Day' reference, and 'the only habit I'm developing is closing the upsell pop up'
 
@@ -1615,7 +1615,7 @@ Source: `App Store Reports/31. Do Habits - Get It Done - Daily Routine & Goal Pl
 - **User reaction:** complaint
 - **Magnitude:** 314 (1.57)
 - **Direction for us:** dont · **Report confidence:** recommendation · **Generalisable:** yes
-- **Canonical:** C248 Never show an upsell to anyone holding an active or historical entitlement
+- **Canonical:** C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps
 
 ### R31-171 — Remove fake countdowns and the double pop-up; cap offers at one dismissible surface per week — 111 + 19 reviews; a resetting 'limited-time' timer is a dark pattern that several jurisdictions' consumer-protection regimes scrutinise (an external consideration, not a corpus finding)
 
@@ -1645,7 +1645,7 @@ Source: `App Store Reports/31. Do Habits - Get It Done - Daily Routine & Goal Pl
 - **User reaction:** complaint
 - **Magnitude:** report gives none (ranked list)
 - **Direction for us:** do · **Report confidence:** summary ranking · **Generalisable:** yes
-- **Canonical:** C033 Restore purchase and entitlements must work immediately; C036 A support channel that exists, is reachable outside the app, and answers; C155 Never remove a feature people bought the app for — add alongside, do not replace; C186 Never revoke what earlier buyers paid for when the model changes; C248 Never show an upsell to anyone holding an active or historical entitlement
+- **Canonical:** C033 Restore purchase and entitlements must work immediately; C036 A support channel that exists, is reachable outside the app, and answers; C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps; C155 Never remove a feature people bought the app for — add alongside, do not replace; C186 Never revoke what earlier buyers paid for when the model changes
 
 ### R31-029 — The original solo developer was visibly responsive: a feature shipped two days after a reviewer wished for it; a real person replied to a crash e-mail and shipped a fix 'ASAP'; a purchase-restore request was answered 'within minutes'; a suggested unit-count feature shipped 'almost immediately'; 'devs listen to issues and suggestions'
 

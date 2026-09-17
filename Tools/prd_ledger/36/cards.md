@@ -32,7 +32,7 @@ Source: `App Store Reports/36. (Not Boring) Habits - Science-backed habit tracke
 - **Magnitude:** no-shame 11 (2.04%); restraint 12 (2.22%); 20 votes
 - **Direction for us:** product-rule · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `9122428340`, `13967987039`
-- **Canonical:** C095 Neutral, non-judgemental tone on failure; C157 Every guilt mechanic must be optional — streaks, repair prompts, countdowns; C253 Notification restraint — few, finely controllable notifications keep the users that spammy rivals lose
+- **Canonical:** C095 Neutral, non-judgemental tone on failure; C123 Notifications are few and finely user-controllable — per-type settings, escalation opt-in, never spammy and never silently retuned; C157 Every guilt mechanic must be optional — streaks, repair prompts, countdowns
 
 ### R36-012 — A capability taken away from the free tier reads as a withdrawal, not a price: REGRESS 19 reviews (3.52%, mean 1.95, zero 5★, nine 1★) — 'Never expect rewards for loyalty … I've been using the app for 3 years and all my history is on there'; 'Bait and switch'; 'Redução das features do plano free'
 
@@ -212,7 +212,7 @@ Source: `App Store Reports/36. (Not Boring) Habits - Science-backed habit tracke
 - **Magnitude:** 16 (2.96%), mean 1.81
 - **Direction for us:** must-have · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `8777347712`, `8252766990`, `8606455193`, `8676576820`, `9724439104`
-- **Canonical:** C075 Skippable, replayable onboarding tour
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in
 
 ### R36-125 — A gesture-driven one-habit screen breaks down exactly for power users: habit navigation (27 distinct, 5.00%, mean 3.56, mostly 4–5★) asked for continuously from Dec 2021 to Apr 2026 (one review 45 votes; one entire body '.'); the centre check button swallows horizontal swipes ('most anywhere on the screen that we touch presses the center checkmark button'); names sit in a small strip at the top ('quite a reach to get to the top of the phone'); and it gets worse with more habits — i.e. for the paying user ('I have to swipe through 16 habits. That alone is enough for me to not want to use this app anymore'; 'switching between habits and having a lot of them is painful')
 
@@ -553,7 +553,7 @@ Source: `App Store Reports/36. (Not Boring) Habits - Science-backed habit tracke
 - **Magnitude:** R_NOTIF 7, 3.86; NOTIF- 2
 - **Direction for us:** build-free · **Report confidence:** request signal · **Generalisable:** yes
 - **Review IDs:** `9091830635`, `10358584157`, `12102232868`, `12759861353`, `13279758046`, `13348454083`, `13401743740`, `8845345016`, `12392171682`
-- **Canonical:** C039 Reminders fire reliably, once; C253 Notification restraint — few, finely controllable notifications keep the users that spammy rivals lose
+- **Canonical:** C039 Reminders fire reliably, once; C123 Notifications are few and finely user-controllable — per-type settings, escalation opt-in, never spammy and never silently retuned
 
 ### R36-094 — Widget improvements — titles, colours, streak display — 6 (1.11%, mean 3.67)
 
@@ -781,7 +781,7 @@ Source: `App Store Reports/36. (Not Boring) Habits - Science-backed habit tracke
 - **User reaction:** none
 - **Magnitude:** R_NOTIF 7, clustered in E4
 - **Direction for us:** build-free · **Report confidence:** report recommendation · **Generalisable:** yes
-- **Canonical:** C039 Reminders fire reliably, once; C253 Notification restraint — few, finely controllable notifications keep the users that spammy rivals lose
+- **Canonical:** C039 Reminders fire reliably, once; C123 Notifications are few and finely user-controllable — per-type settings, escalation opt-in, never spammy and never silently retuned
 
 ### R36-219 — Apple Health integration — a 10,000-step habit that auto-completes
 
@@ -1477,7 +1477,7 @@ Source: `App Store Reports/36. (Not Boring) Habits - Science-backed habit tracke
 - **User reaction:** complaint
 - **Magnitude:** ONBOARD- 4.76 vs 1.39; UX- 8.73 vs 4.17
 - **Direction for us:** must-have · **Report confidence:** US very strong · **Generalisable:** yes
-- **Canonical:** C075 Skippable, replayable onboarding tour
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in
 
 ### R36-161 — Sync demand is 4× higher outside the US (9.72% vs 2.38%), the largest US/non-US divergence — more likely what each market writes about than a real preference; do not read it as 'US users don't want sync'
 
@@ -1513,7 +1513,7 @@ Source: `App Store Reports/36. (Not Boring) Habits - Science-backed habit tracke
 - **User reaction:** praise
 - **Magnitude:** 3.97 vs 0.69; 3.17 vs 1.74
 - **Direction for us:** none · **Report confidence:** US very strong · **Generalisable:** yes
-- **Canonical:** C253 Notification restraint — few, finely controllable notifications keep the users that spammy rivals lose
+- **Canonical:** C123 Notifications are few and finely user-controllable — per-type settings, escalation opt-in, never spammy and never silently retuned
 
 ### R36-165 — US vs non-US: outcome 15.08 vs 6.94% (US writes results, others impressions); sync 2.38 vs 9.72%; onboarding 4.76 vs 1.39%; UX- 8.73 vs 4.17%; unmet requests 11.90 vs 25.69% (non-US reviews are feature-request-shaped); notification praise 3.97 vs 0.69%; design 25.40 vs 30.21%; misrate 0.79 vs 2.43%; 'repetitive' 0.40 vs 2.43% (mostly non-US); cap · paywall · price 5.56 · 5.95 · 6.75% vs 5.56 · 5.56 · 6.60% — essentially identical: the monetisation problem is global
 
@@ -1613,7 +1613,7 @@ Source: `App Store Reports/36. (Not Boring) Habits - Science-backed habit tracke
 - **Magnitude:** 68 (12.59%), 2.96; 21.9 → 6.5%
 - **Direction for us:** must-have · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `8182905997`, `8777347712`
-- **Canonical:** C075 Skippable, replayable onboarding tour
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in
 
 ### R36-031 — Per-year n, mean and 1–2★ share: 2021 8 (4.000, 25.0%) · 2022 122 (3.959, 20.5%) · 2023 78 (3.936, 17.9%) · 2024 141 (4.312, 9.9%) · 2025 92 (4.250, 14.1%) · 2026 99 (3.636, 27.3%)
 
@@ -1690,7 +1690,7 @@ Source: `App Store Reports/36. (Not Boring) Habits - Science-backed habit tracke
 - **Magnitude:** Theme | n in band | % of 66 ; U_MON_FRICTION | 41 | 62.1% ; U_USABILITY | 17 | 25.8% ; UX- | 14 | 21.2% ; CAP / PRICE- / SUB- | 12 each | 18.2% each ; CHURN | 11 | 16.7% ; ONBOARD- | 9 | 13.6% ; REGRESS | 9 | 13.6% ; U_RELIABILITY | 8 | 12.1% ; POPUP | 8 | 12.1% ; Core praise (still present) | 8 | 12.1% ; GRAPHICS- | 5 | 7.6% ; DISCLOSE | 4 | 6.1%
 - **Direction for us:** product-rule · **Report confidence:** segment · **Generalisable:** yes
 - **Review IDs:** `8252766990`, `8676576820`, `8777347712`, `8779668476`, `8617674000`
-- **Canonical:** C001 Never move a free feature behind the paywall; C075 Skippable, replayable onboarding tour
+- **Canonical:** C001 Never move a free feature behind the paywall; C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in
 
 ### R36-175 — The product did not get worse; the offer did: E3 → E4 → E5 mean 4.162 → 4.205 → 3.722; 1–2★ 13.2 → 15.7 → 25.0%; monetisation friction 21.0 → 16.9 → 37.0% (more than doubles); CAP 0.0 → 1.2 → 26.9%; REGRESS 3.6 → 2.4 → 10.2%; core praise 60.5 → 69.9 → 49.1%; design praise 31.1 → 32.5 → 13.9%; usability complaints 12.0 → 12.0 → 6.5% (halve) — design praise collapsing is the symptom to watch: reviewers stopped writing about what the app is best at because they were writing about the paywall
 
@@ -1719,7 +1719,7 @@ Source: `App Store Reports/36. (Not Boring) Habits - Science-backed habit tracke
 - **Magnitude:** | E1 | E2 | E3 | E4 | E5 ; U_USABILITY | 21.9% | 8.8% | 12.0% | 12.0% | 6.5% ; UX- | 14.9% | 1.5% | 4.8% | 6.0% | 2.8% ; ONBOARD- | 7.9% | 1.5% | 1.2% | 2.4% | 1.9% ; DELETE- | 3.5% | 0.0% | 3.0% | 1.2% | 0.0% ; R_LANDSCAPE + R_IPAD | 6.1% | 0.0% | 1.8% | 3.6% | 1.9%
 - **Direction for us:** must-have · **Report confidence:** very strong, improving · **Generalisable:** yes
 - **Review IDs:** `13701793930`
-- **Canonical:** C075 Skippable, replayable onboarding tour; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
 
 ### R36-178 — A launch upsell never spikes and never stops: POPUP by era 2.6 → 2.9 → 4.8 → 6.0 → 5.6%, peaking at 15.0% of 2026 H2 and 9.5% of 2025 H2 (mean 2.67), spanning 2022 to 2026; it is the only negative theme regularly in 5★ reviews (4 of 24) — people who like the app and are worn down: 5★ titled 'Unusable'; 'no problems except for the constant upgrade adds'; 'For an app that prides itself on design quality, this is really jarring and irritating' — a frequency cap is the lowest-cost, lowest-risk intervention in the report
 
@@ -1925,7 +1925,7 @@ Source: `App Store Reports/36. (Not Boring) Habits - Science-backed habit tracke
 - **Magnitude:** 12 (2.22%), mean 4.67
 - **Direction for us:** do · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `13967987039`
-- **Canonical:** C253 Notification restraint — few, finely controllable notifications keep the users that spammy rivals lose
+- **Canonical:** C123 Notifications are few and finely user-controllable — per-type settings, escalation opt-in, never spammy and never silently retuned
 
 ### R36-103 — Screenshots set feature expectations: a reviewer expected a built-in timer because a store screenshot showed a habit named 'Run 15 minutes' — a store-listing clarity problem, not a missing feature
 
@@ -1945,7 +1945,7 @@ Source: `App Store Reports/36. (Not Boring) Habits - Science-backed habit tracke
 - **Magnitude:** competitor lesson (see body)
 - **Direction for us:** do · **Report confidence:** competitor lesson · **Generalisable:** yes
 - **Review IDs:** `13967987039`
-- **Canonical:** C253 Notification restraint — few, finely controllable notifications keep the users that spammy rivals lose
+- **Canonical:** C123 Notifications are few and finely user-controllable — per-type settings, escalation opt-in, never spammy and never silently retuned
 
 ### R36-195 — State the free-tier limit on the store page and in the first run — converts day-one 1★ protests into informed non-installs
 

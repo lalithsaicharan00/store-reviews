@@ -122,7 +122,7 @@ Source: `App Store Reports/47. Habit Streak Tracker - DotHabit - Daily Routine, 
 - **User reaction:** complaint
 - **Magnitude:** 9 + 5
 - **Direction for us:** must-have · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C075 Skippable, replayable onboarding tour; C254 An all-habits overview with one-tap check-off — never force one-habit-at-a-time navigation
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C254 An all-habits overview with one-tap check-off — never force one-habit-at-a-time navigation
 
 ### R47-059 — Translation quality 5 (0.85%, 4.20), 0 JP — machine-translated UI in other languages
 
@@ -141,7 +141,7 @@ Source: `App Store Reports/47. Habit Streak Tracker - DotHabit - Daily Routine, 
 - **Magnitude:** 58 (9.85%), 3.07; taps 14 (2.86); iPad 11; translation 5; deletion 5 (1.60)
 - **Direction for us:** must-have · **Report confidence:** high-priority (union) · **Generalisable:** yes
 - **Review IDs:** `5641107814`, `8635458217`, `8668120956`, `11693605369`, `6004075173`, `6325922441`, `14081256602`, `13483861247`, `4600148613`, `5194584617`, `5749548524`, `12686652131`, `7435689853`, `9962305243`, `10396494379`, `11552037482`, `12487255668`
-- **Canonical:** C075 Skippable, replayable onboarding tour; C141 Native iPad layout; C142 Surface existing features where users look; C159 Launch-to-core-action path with no interstitials
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C141 Native iPad layout; C142 Surface existing features where users look; C159 Launch-to-core-action path with no interstitials
 
 ### R47-084 — Machine-translated UI costs installs in every non-Japanese market: '적절한 한글화가 절실' ('proper Korean localisation badly needed'); notification options automatic / manual rendered as '汽車' and '手冊' ('car' and 'handbook', Traditional Chinese); 'une traduction française faite de façon automatique et de très mauvaise qualité' — installed and deleted immediately; mainland-Chinese terms shown to Taiwan (2025) — 5 reviews (0.85%), none Japanese
 
@@ -357,7 +357,7 @@ Source: `App Store Reports/47. Habit Streak Tracker - DotHabit - Daily Routine, 
 - **Magnitude:** Failure | Payers | IDs ; Premium status reverted to free, ads reappeared (January 2021) | 3 | 6828403002 6847937115 6879483949 ; Charged twice | 1 | 11476471502 ; Crash immediately after paying for the trial | 1 | 12633545732 ; Unintended half-year subscription | 1 | 13604118005 ; Month view shows one week; settings button hidden by long tab names | 2 | 12173403973 12629744866 ; AI-comment toggle will not turn back on | 1 | 13061680779 ; *(UX, not counted above)* Rating prompt shown even to payers | 1 | 14056892397
 - **Direction for us:** must-never-break · **Report confidence:** segment · **Generalisable:** yes
 - **Review IDs:** `6828403002`, `6847937115`, `6879483949`, `11476471502`, `12633545732`, `13604118005`, `12173403973`, `12629744866`, `13061680779`, `14056892397`, `13230847362`, `14340739070`
-- **Canonical:** C029 Billing must be exactly right; C033 Restore purchase and entitlements must work immediately; C065 Paying customers are the highest 1★ risk — every paid feature must work; C248 Never show an upsell to anyone holding an active or historical entitlement
+- **Canonical:** C029 Billing must be exactly right; C033 Restore purchase and entitlements must work immediately; C065 Paying customers are the highest 1★ risk — every paid feature must work; C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps
 
 ### R47-109 — Date calculations must respect the user's time zone and locale: calendar weekdays were off by one day for reviewers outside the Japan / Korea time zone — 14 reports (2.38%, mean 3.29), 13 of them from China, Italy, France, Spain and Australia, 2019 → April 2021 — '4 January 2021 is a Monday and it says Tuesday'; 'the calendar is wrong, it lost 29 February'; 'I don't know if it's because I'm in Western Australia'; not reported since April 2021
 
@@ -497,7 +497,7 @@ Source: `App Store Reports/47. Habit Streak Tracker - DotHabit - Daily Routine, 
 - **User reaction:** praise
 - **Magnitude:** 10 (5.00) + 3
 - **Direction for us:** build-free · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C008 Daily check-in and one basic reminder per habit are free; C014 Multiple reminders per habit
+- **Canonical:** C008 Daily check-in and reminders are free — never paywall the reminder; C014 Multiple reminders per habit
 
 ### R47-050 — Miscellaneous requests 10 (1.70%, 3.90)
 
@@ -1235,7 +1235,7 @@ Source: `App Store Reports/47. Habit Streak Tracker - DotHabit - Daily Routine, 
 - **Magnitude:** 4 (0.68%), 1.25
 - **Direction for us:** dont · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `12878957344`, `13147772741`, `14056892397`
-- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C240 Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap; C248 Never show an upsell to anyone holding an active or historical entitlement
+- **Canonical:** C093 No upsell nagging without a 'never ask again' option; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps; C240 Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap
 
 ### R47-068 — Rating prompt nag 3 (0.51%, 2.33), 2023–26 — a paying user asks it to stop 'at least for people who pay'
 
@@ -1245,7 +1245,7 @@ Source: `App Store Reports/47. Habit Streak Tracker - DotHabit - Daily Routine, 
 - **Magnitude:** 3 (0.51%), 2.33
 - **Direction for us:** dont · **Report confidence:** theme-table signal · **Generalisable:** yes
 - **Review IDs:** `14056892397`
-- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C248 Never show an upsell to anyone holding an active or historical entitlement
+- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps
 
 ## Things to do
 

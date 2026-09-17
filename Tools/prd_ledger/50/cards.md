@@ -41,7 +41,7 @@ Source: `App Store Reports/50. HelloHabit - Habit Tracker - Tasks, Routines, & S
 - **Magnitude:** 12 free-tier praise at 4.92
 - **Direction for us:** mixed · **Report confidence:** medium-high · **Generalisable:** general
 - **Review IDs:** `13677250370`, `12150735964`, `12224150168`, `14455227817`, `14344428965`, `14464763405`
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C191 Never cap the tier someone has already paid for
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C191 Never shrink a tier someone already holds — a paid tier's limits, or free capacity a user has already filled
 
 ### R50-055 — The documented purchase path runs through free use first: three of four intent-to-pay reviewers use the free tier and then decide (a month of free use; waiting until employed; waiting until the habits are internalised), the fourth accepts sight-unseen; two actual payers state the sequence (six months, then pro; a couple of months, then trial); one upgraded almost immediately — 'This is precisely the mechanism that a cap cut from 5 to 3 interferes with', and the clearest pay-after-proof statement was written about the 5-habit cap on 26 January 2026, less than four months before the first 3-habit report
 
@@ -61,7 +61,7 @@ Source: `App Store Reports/50. HelloHabit - Habit Tracker - Tasks, Routines, & S
 - **Magnitude:** 9 at 3.78 vs 5 at 2.20
 - **Direction for us:** negative · **Report confidence:** high · **Generalisable:** general
 - **Review IDs:** `13677250370`, `14455227817`, `14074582574`, `14464763405`
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C104 Never ship a paywall or feature-removal change silently; C191 Never cap the tier someone has already paid for; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C104 Never ship a paywall or feature-removal change silently; C191 Never shrink a tier someone already holds — a paid tier's limits, or free capacity a user has already filled; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
 
 ### R50-097 — What not to change: do not add features to raise the rating (40 feature-gap reviewers average 4.38 and supply 2 of 25 bad reviews — the rating lever is monetisation and billing); do not sacrifice simplicity for depth (simplicity 20 and flexibility 14 held simultaneously — 'Nothing comes close to the ease in navigation, creativity, options, and customizability'); do not redesign the UI again without a migration path ('counter intuitive to create an app about routine and habits and make your users keep adjusting to new layouts and programming'); do not treat support as a cost centre (17 praise, one negative, one recovered sale); do not paywall anything currently free — more reviewers praise the monetisation than complain (31 vs 26) and nothing individually gated: 'That clean one-gate model is worth protecting — and §7.2 shows what happens when the one gate moves'
 
@@ -83,7 +83,7 @@ Source: `App Store Reports/50. HelloHabit - Habit Tracker - Tasks, Routines, & S
 - **Magnitude:** 18
 - **Direction for us:** mixed · **Report confidence:** high · **Generalisable:** general
 - **Review IDs:** `13528988161`, `14237389387`, `12167788858`, `12244698035`, `12326982290`, `11028018606`, `11505876342`, `11573749562`, `14178676113`, `11599845195`, `13231582387`, `13835821016`
-- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C075 Skippable, replayable onboarding tour; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
 
 ### R50-037 — The journal prompt after every task cannot be switched off — 2 reviews (0.98%, emerging, both 5★): 'I dont like that it tries to make me do a journal after every task'; 'I don't use the journaling feature and wish there were a way to turn off the prompt which is a little annoying if you don't use it' — a settings toggle neutralises both: 'Cheapest fix in the report'
 
@@ -308,7 +308,7 @@ Source: `App Store Reports/50. HelloHabit - Habit Tracker - Tasks, Routines, & S
 - **Magnitude:** 14 cap statements
 - **Direction for us:** mixed · **Report confidence:** high · **Generalisable:** general
 - **Review IDs:** `12150735964`, `11104064094`, `13677250370`, `13617932313`, `12224150168`, `11614737639`, `13590957194`, `13675051713`, `13623760288`, `14074582574`, `14344428965`, `14441435311`, `14455227817`, `14464763405`, `13616341190`, `11673631454`, `14310174846`, `13617480117`, `14451148045`, `14464639355`, `12250094565`, `12403255909`, `13653714543`, `11057451287`, `13058573989`, `13446856492`, `14032245863`, `11969620942`, `13775983529`, `13909144503`, `11844795366`, `12197163858`, `12151265942`
-- **Canonical:** C003 Lead with a one-time lifetime purchase; C004 Price low and fair, anchored against subscription competitors; C007 Generous fixed habit cap (or unlimited) — never change it; C061 Goodwill conversion — a generous free tier and 'support the devs'; C063 Free trial before purchase; C127 Never show ads to paying subscribers; C133 Gate on capability, not on quantity
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C004 Price low and fair, anchored against subscription competitors; C007 Generous fixed habit cap (or unlimited) — never change it; C061 Goodwill conversion — a generous free tier and 'support the devs'; C063 Free trial before purchase; C127 Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps; C133 Gate on capability, not on quantity
 
 ### R50-030 — Cap groups: states the free cap is 5 — 9 (4.39%, very strong, mean 3.78), 30 Mar 2024 → 26 Jan 2026; states 3 — 5 (2.44%, meaningful, 2.20), 17 May 2026 → 24 Aug 2026; paywall cap overall 14 (6.83%, 2.43, rating split 0/3/5/1/5 — no 5★ carries it); free cap reduced 2 (0.98%) — 'La versión gratuita redujo de 5 hábitos a 3, lo cual es una basura para planear días o en general para mí que tengo tdh y tengo que poner todas mis tareas domésticas. Lo recomiendo 0' (MX, 1★, ADHD) and 'I liked that I could add an unlimited number of habits. But then I realised it was only unlimited for the first few days. Then a screen appeared saying I had to buy a subscription or keep only three habits' (TR storefront in Russian, 4★)
 
@@ -410,7 +410,7 @@ Source: `App Store Reports/50. HelloHabit - Habit Tracker - Tasks, Routines, & S
 - **Magnitude:** six experiments
 - **Direction for us:** none · **Report confidence:** medium · **Generalisable:** general
 - **Review IDs:** `13623760288`, `14455227817`, `14074582574`
-- **Canonical:** C003 Lead with a one-time lifetime purchase; C007 Generous fixed habit cap (or unlimited) — never change it; C027 Localise early — it unlocks revenue; C029 Billing must be exactly right; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C191 Never cap the tier someone has already paid for
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C007 Generous fixed habit cap (or unlimited) — never change it; C027 Localise early — it unlocks revenue; C029 Billing must be exactly right; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C191 Never shrink a tier someone already holds — a paid tier's limits, or free capacity a user has already filled
 
 ## Insights (the why)
 
@@ -689,7 +689,7 @@ Source: `App Store Reports/50. HelloHabit - Habit Tracker - Tasks, Routines, & S
 - **Magnitude:** 9 say 5 (3.78) vs 5 say 3 (2.20)
 - **Direction for us:** negative · **Report confidence:** high · **Generalisable:** general
 - **Review IDs:** `13677250370`, `14074582574`, `14455227817`
-- **Canonical:** C001 Never move a free feature behind the paywall; C007 Generous fixed habit cap (or unlimited) — never change it; C104 Never ship a paywall or feature-removal change silently; C191 Never cap the tier someone has already paid for; C219 A free cap must be concurrent, never lifetime — deleting a habit frees a slot
+- **Canonical:** C001 Never move a free feature behind the paywall; C007 Generous fixed habit cap (or unlimited) — never change it; C104 Never ship a paywall or feature-removal change silently; C191 Never shrink a tier someone already holds — a paid tier's limits, or free capacity a user has already filled; C219 A free cap must be concurrent, never lifetime — deleting a habit frees a slot
 
 ### R50-007 — The consequences concentrate in August 2026 — the worst month by a wide margin: 9 reviews at mean 2.89 (5 of 9 at 1–2★) against a corpus mean of 4.263; monetisation-friction reviews rise from 3.1% of 2024 H1 to 35.3% of 2026 H2 (6 of 17) — an eleven-fold rise, monotonic in four of five steps (3.1% → 9.4% → 6.1% → 13.6% → 18.9% → 35.3%) — 'recent, accelerating, and specific to monetization. It is not a general decline in product quality'
 

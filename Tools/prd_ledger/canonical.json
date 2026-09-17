@@ -1527,8 +1527,8 @@
  },
  {
   "id": "C008",
-  "title": "Daily check-in and one basic reminder per habit are free",
-  "statement": "Core loop must be free; it draws no complaints when it is. Report 13: exact-clock reminder times behind the paywall was the single most resented gate in an eleven-year corpus (227 requests); free users got only Morning/Afternoon/Evening buckets. Report 25: a specific clock time per habit with a notification at that time — not a generic reminder — was absent and is the top request from satisfied users (29; 4★ band 9.0%). Report 47: reminders free throughout and praised by 10 (all 5★ — multiple times per habit, editable text). Report 48: unlimited custom reminders per tracker with the user's own message text are free and praised by 224 (5.09%, 4.87) — reminders faulted by 78 at a stable ratio.",
+  "title": "Daily check-in and reminders are free — never paywall the reminder",
+  "statement": "Core loop must be free; it draws no complaints when it is. Report 13: exact-clock reminder times behind the paywall was the single most resented gate in an eleven-year corpus (227 requests); free users got only Morning/Afternoon/Evening buckets. Report 25: a specific clock time per habit with a notification at that time — not a generic reminder — was absent and is the top request from satisfied users (29; 4★ band 9.0%). Report 47: reminders free throughout and praised by 10 (all 5★ — multiple times per habit, editable text). Report 48: unlimited custom reminders per tracker with the user's own message text are free and praised by 224 (5.09%, 4.87) — reminders faulted by 78 at a stable ratio. [Merged from C257: Report 42: reminders sit behind the paywall and are the feature most often named as the thing behind the wall (5 reviews, mean 2.60 — 'I just wanted to use the habit reminder feature and that would cost me 40 a year? Come on. That's insane!'), while working reminders are praised at mean 5.00 (6); three reviewers independently conclude the phone's own tools substitute — 'better to use the native Lista app on iPhone… doesn't freeze and is free'; 'the paid version adds a reminder — you can set that in the calendar too'; 'Your alarm or reminder on your phone can do everything this app does. Wasted $20!' The report calls un-paywalling reminders 'the most defensible single paywall change'. Report 43 (counter-case): reminders, including the nag, are free and the app's reason to exist; only the habit count was ever gated. Report 46 (contrast): reminders are free; the paid gates are habit count, dark mode, offline use and sync.]",
   "section": "free",
   "cards": [
    "R01-010",
@@ -1562,7 +1562,13 @@
    "R43-011",
    "R46-048",
    "R47-049",
-   "R48-019"
+   "R48-019",
+   "R42-022",
+   "R42-048",
+   "R42-052",
+   "R42-066",
+   "R42-079",
+   "R42-112"
   ],
   "reports": [
    1,
@@ -1585,7 +1591,24 @@
    47,
    48
   ],
-  "merged_from": []
+  "merged_from": [
+   {
+    "from": "C257",
+    "title": "Never paywall reminders — it moves the comparison from 'which habit tracker' to 'why pay for an alarm'",
+    "section": "product-rule",
+    "cards": [
+     "R42-022",
+     "R42-025",
+     "R42-048",
+     "R42-052",
+     "R42-066",
+     "R42-079",
+     "R42-112"
+    ],
+    "when": "consolidation after report 50",
+    "note": "C257 (report 42: reminders behind the paywall were the gate most often named, and the phone's own alarm substitutes) is the rule form of C008's free-tier line; reports 13 and 25 on C008 already showed exact-time reminders were the most resented gate"
+   }
+  ]
  },
  {
   "id": "C009",
@@ -7270,8 +7293,8 @@
  },
  {
   "id": "C075",
-  "title": "Skippable, replayable onboarding tour",
-  "statement": "Hidden gestures (swipe-to-complete, mode toggles) confuse new users; a US-specific 6% complaint in report 2. Report 12: an unskippable narrated intro drew 21 complaints peaking at 16% of 2024 reviews, then fell to one review after a skip control landed — the corpus's clearest fix — while the same intro is praised as a conversion asset. Report 17: a product with its own vocabulary ('what is a sequence? What is a block? What is an activity?') asked for 'a day of experimenting'; users who got through the first day gave 5★, those who didn't quit at 30 minutes — while the paywall demanded payment before that day. Report 18: a five-year vocabulary muddle (습관 vs 루틴 vs 모드) and an onboarding that re-ran on existing and paying accounts with no skip button — a restore-purchase loop returned users to the questionnaire. Report 23: an icon-only first run left new users unable to delete, edit or undo — 63 of 650 1★ reviews; a 66-upvote review asks for plain-language in-app instructions; replace it with a short text-labelled walkthrough covering add / complete / edit / delete / undo / pages. Report 25: confusing/no-guidance 27 (2.06%, mean 2.70); two Brazilian reviewers ask for a tutorial video; comprehension failures worth designing against — how to structure a bad habit ('smoked' or 'didn't smoke'), pinning a weekly habit to a day, stopping a repeat, whether the app is iOS-only. Report 27: a real first-run comprehension cost — four of five confused reviewers got past it and stayed ('a lil hard to figure out at first but now super easy'), the fifth gave 1★; a 30-second skippable explainer is a low-risk fix that does not compromise minimalism. Report 28: 38 onboarding complaints (4.63%, mean 3.24) with one unchanged content for four and a half years — the tutorial teaches the fiction (bunny, mess, carrots) but not how to add, edit or delete a habit ('The tutorial is pointless as they don't show you how to create a task'; 'a steep learning curve with all the unlabeled icons'); 11 more report the add/edit controls genuinely broken and the app cannot tell which it is receiving; the fix is a labelled, skippable tutorial that demonstrates habit CRUD. Report 36: onboarding complaints 16 (mean 1.81, 12 of 16 1–2★), 7.9% of E1 → 1.9% of E5 — 'Is there no manual? Or user guide? I see no way to add new items like a + sign'; 'Is it a game or some kind of something else?' Report 41: onboarding 8 (mean 2.88, lowest non-monetisation) — 'How to use this app🤡 :: Is there a tutorial?'; could not find how to edit a habit; a paying user never started because the skip / miss / stats model was opaque; the report proposes a one-screen 'how this app models habits' card. Report 42: 'Endless screens asking unnecessary questions with no option to skip. I deleted the app after about 15 non-shippable screens, never got to use it'; '~30 questions before I gave up' (both 1★). Report 43: 20 reviews over nine years say there is no tutorial, FAQ or help (see C259). Report 46: onboarding confusion 19 (mean 3.95); the skip-symbol legend is missed at first run and cannot be found again ('I missed the intro and can't find it again'). Report 47: onboarding confusion 9 (mean 2.44) — two could not find back-dating after reading it existed in the update notes, a third the hidden start-date options; today's done / not-done status unclear 5. Report 48: confusing setup 118 (2.68%, 3.11) has sat at 2–3% in E1, E3, E4 and E5 — 'a decade of onboarding friction that no redesign has removed', concentrated on choosing between Habit / Target / Average / Project and on where deletion lives; the existing goal-setting course (credited by 27) could be surfaced at first run. Report 49: onboarding too long 29 (1.55), rising every era to 4.1% — some abandon during the questionnaire before any price is shown. Report 50: onboarding bimodal — confusion 4 (2.75) vs 'The onboarding and habit creation are straight to the point' 3 (5.00).",
+  "title": "Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in",
+  "statement": "Hidden gestures (swipe-to-complete, mode toggles) confuse new users; a US-specific 6% complaint in report 2. Report 12: an unskippable narrated intro drew 21 complaints peaking at 16% of 2024 reviews, then fell to one review after a skip control landed — the corpus's clearest fix — while the same intro is praised as a conversion asset. Report 17: a product with its own vocabulary ('what is a sequence? What is a block? What is an activity?') asked for 'a day of experimenting'; users who got through the first day gave 5★, those who didn't quit at 30 minutes — while the paywall demanded payment before that day. Report 18: a five-year vocabulary muddle (습관 vs 루틴 vs 모드) and an onboarding that re-ran on existing and paying accounts with no skip button — a restore-purchase loop returned users to the questionnaire. Report 23: an icon-only first run left new users unable to delete, edit or undo — 63 of 650 1★ reviews; a 66-upvote review asks for plain-language in-app instructions; replace it with a short text-labelled walkthrough covering add / complete / edit / delete / undo / pages. Report 25: confusing/no-guidance 27 (2.06%, mean 2.70); two Brazilian reviewers ask for a tutorial video; comprehension failures worth designing against — how to structure a bad habit ('smoked' or 'didn't smoke'), pinning a weekly habit to a day, stopping a repeat, whether the app is iOS-only. Report 27: a real first-run comprehension cost — four of five confused reviewers got past it and stayed ('a lil hard to figure out at first but now super easy'), the fifth gave 1★; a 30-second skippable explainer is a low-risk fix that does not compromise minimalism. Report 28: 38 onboarding complaints (4.63%, mean 3.24) with one unchanged content for four and a half years — the tutorial teaches the fiction (bunny, mess, carrots) but not how to add, edit or delete a habit ('The tutorial is pointless as they don't show you how to create a task'; 'a steep learning curve with all the unlabeled icons'); 11 more report the add/edit controls genuinely broken and the app cannot tell which it is receiving; the fix is a labelled, skippable tutorial that demonstrates habit CRUD. Report 36: onboarding complaints 16 (mean 1.81, 12 of 16 1–2★), 7.9% of E1 → 1.9% of E5 — 'Is there no manual? Or user guide? I see no way to add new items like a + sign'; 'Is it a game or some kind of something else?' Report 41: onboarding 8 (mean 2.88, lowest non-monetisation) — 'How to use this app🤡 :: Is there a tutorial?'; could not find how to edit a habit; a paying user never started because the skip / miss / stats model was opaque; the report proposes a one-screen 'how this app models habits' card. Report 42: 'Endless screens asking unnecessary questions with no option to skip. I deleted the app after about 15 non-shippable screens, never got to use it'; '~30 questions before I gave up' (both 1★). Report 43: 20 reviews over nine years say there is no tutorial, FAQ or help (see C259). Report 46: onboarding confusion 19 (mean 3.95); the skip-symbol legend is missed at first run and cannot be found again ('I missed the intro and can't find it again'). Report 47: onboarding confusion 9 (mean 2.44) — two could not find back-dating after reading it existed in the update notes, a third the hidden start-date options; today's done / not-done status unclear 5. Report 48: confusing setup 118 (2.68%, 3.11) has sat at 2–3% in E1, E3, E4 and E5 — 'a decade of onboarding friction that no redesign has removed', concentrated on choosing between Habit / Target / Average / Project and on where deletion lives; the existing goal-setting course (credited by 27) could be surfaced at first run. Report 49: onboarding too long 29 (1.55), rising every era to 4.1% — some abandon during the questionnaire before any price is shown. Report 50: onboarding bimodal — confusion 4 (2.75) vs 'The onboarding and habit creation are straight to the point' 3 (5.00). [Merged from C259: Report 43: no guide / tutorial / FAQ / help (9, mean 2.78) plus a learning curve (14, 3.36) — 20 reviews (3.13%) requested continuously from Feb 2017 ('There must be some tips or suggestions in start') to Aug 2026 ('I don't understand nothing') and never addressed: 'There is no help option in settings which makes at least one action I want to take impossible… I can't find instructions for this in the app, on YouTube, or through a Google search'; 'I have had to contact support twice on things that could have explained up front'; 'it took me an hour or so to figure out how to make it work… I'd pay for this if it had some adjustments in usability'. Roughly a tenth of the 29 scheduling-gap reviews ask for capabilities the app already has (custom days, timers, untimed tasks) and land as 1★ / 2★. The same product draws 123 'simple' reviews — daily use is simple, setup is not — so a help screen targets a different surface from the praised simplicity.]",
   "section": "must-have",
   "cards": [
    "R02-061",
@@ -7344,7 +7367,11 @@
    "R48-086",
    "R48-101",
    "R49-031",
-   "R50-036"
+   "R50-036",
+   "R43-021",
+   "R43-056",
+   "R43-114",
+   "R43-122"
   ],
   "reports": [
    2,
@@ -7373,7 +7400,22 @@
    49,
    50
   ],
-  "merged_from": []
+  "merged_from": [
+   {
+    "from": "C259",
+    "title": "An in-app help screen — first-run tour, searchable FAQ, per-setting explanations — for any product whose setup is richer than its daily use",
+    "section": "must-have",
+    "cards": [
+     "R43-016",
+     "R43-021",
+     "R43-056",
+     "R43-114",
+     "R43-122"
+    ],
+    "when": "consolidation after report 50",
+    "note": "C259 (report 43: no guide, tutorial or FAQ for eleven years) is the help-screen half of the same need C075 covers (hidden gestures and product vocabulary that new users cannot decode); one learnability requirement"
+   }
+  ]
  },
  {
   "id": "C076",
@@ -9446,8 +9488,8 @@
  },
  {
   "id": "C123",
-  "title": "Notification escalation must be user-configurable, never silently retuned",
-  "statement": "Some users depend on an un-dismissable alarm, others are driven out by it; a global default serves both badly; removing it broke wake-ups for loyal subscribers. Report 24: all-or-nothing notification settings make users disable everything (744, 1.71%); per-type control is the fix.",
+  "title": "Notifications are few and finely user-controllable — per-type settings, escalation opt-in, never spammy and never silently retuned",
+  "statement": "Some users depend on an un-dismissable alarm, others are driven out by it; a global default serves both badly; removing it broke wake-ups for loyal subscribers. Report 24: all-or-nothing notification settings make users disable everything (744, 1.71%); per-type control is the fix. [Merged from C253: Report 36: notification restraint is praised by 12 (2.22%, mean 4.67) and framed as the reason people switched — 'fine-tuned control over the notifications you receive — probably the #1 reason I've deleted other habit apps was that they spammed me with a billion distracting notifications' (13967987039); a US talking point (3.97% vs 0.69% non-US). More / snoozable reminders are also requested (7) — make any escalation opt-in so the restraint is not lost. Report 43 (counter-case): the nag loop is the differentiator — user-controlled frequency ('as often as you want') is what makes heavy notification acceptable; one review in 638 finds it excessive. Report 46: a daily e-mail at exactly 12 with a new sender address each time (3, mean 1.67, 2020–23) was made switchable ('You can turn them off if you don't like it'). Report 48: notification overload 12 (2.33) against 224 reminder praise — custom text and per-tracker control keep the ratio stable. Report 50: per-habit reminders praised by 10 (4.90); notifications broken on the new Watch app (1).]",
   "section": "must-have",
   "cards": [
    "R05-057",
@@ -9456,19 +9498,45 @@
    "R07-093",
    "R24-058",
    "R24-097",
-   "R24-180"
+   "R24-180",
+   "R36-009",
+   "R36-085",
+   "R36-092",
+   "R36-164",
+   "R36-186",
+   "R36-218",
+   "R48-031"
   ],
   "reports": [
    5,
    7,
-   24
+   24,
+   36,
+   48
   ],
-  "merged_from": []
+  "merged_from": [
+   {
+    "from": "C253",
+    "title": "Notification restraint — few, finely controllable notifications keep the users that spammy rivals lose",
+    "section": "do",
+    "cards": [
+     "R36-009",
+     "R36-085",
+     "R36-092",
+     "R36-164",
+     "R36-186",
+     "R36-218",
+     "R48-031"
+    ],
+    "when": "consolidation after report 50",
+    "note": "C253 (reports 36, 43, 46, 48: restraint and fine control are why users switched; heavy nagging is accepted only when the user sets the frequency) is the same decision as C123 (reports 5, 7, 24: escalation must be user-configurable; all-or-nothing settings make users disable everything)"
+   }
+  ]
  },
  {
   "id": "C127",
-  "title": "Never show ads to paying subscribers",
-  "statement": "Including reward-gated features like streak savers; a 30-second unskippable ad to a payer is the most reliable way to turn an advocate into a 1★. Report 10: a sponsored movie tie-in as the monthly event drew 'I am paying to be advertised to' from multi-year subscribers (mean 3.09, 8× over-represented among payers) after 857 reviews had praised the app for being ad-free. Report 18: 'A pro member should be a pro member regardless of whether they are paying monthly or yearly' — monthly subscribers nagged daily to go annual, and a 'buy the next term' screen that blocked the app entirely. Report 24: in-app advertising of the developer's own sister apps inside paid accounts — 308 reviews, mean 1.932, only 14.6% 4–5★, the lowest satisfied-share of any UX theme ('I'm on the purchased version… I don't want to see adds'); rose 0.11% → 2.03% across eras. Report 28: 'I paid 10$ to remove ads but I still get ads'; a 5★ 'purchased the full version and I am still getting ads' — and even after buying no-ads there is still a prompt to double carrots by watching an ad after every level. Report 31: the promotional banner hid a habit even for paid users (Dec 2020). Report 50: no ads at any tier (5 confirm).",
+  "title": "Never show ads or upsells to anyone holding an active or historical entitlement — including cross-promotion of sibling apps",
+  "statement": "Including reward-gated features like streak savers; a 30-second unskippable ad to a payer is the most reliable way to turn an advocate into a 1★. Report 10: a sponsored movie tie-in as the monthly event drew 'I am paying to be advertised to' from multi-year subscribers (mean 3.09, 8× over-represented among payers) after 857 reviews had praised the app for being ad-free. Report 18: 'A pro member should be a pro member regardless of whether they are paying monthly or yearly' — monthly subscribers nagged daily to go annual, and a 'buy the next term' screen that blocked the app entirely. Report 24: in-app advertising of the developer's own sister apps inside paid accounts — 308 reviews, mean 1.932, only 14.6% 4–5★, the lowest satisfied-share of any UX theme ('I'm on the purchased version… I don't want to see adds'); rose 0.11% → 2.03% across eras. Report 28: 'I paid 10$ to remove ads but I still get ads'; a 5★ 'purchased the full version and I am still getting ads' — and even after buying no-ads there is still a prompt to double carrots by watching an ad after every level. Report 31: the promotional banner hid a habit even for paid users (Dec 2020). Report 50: no ads at any tier (5 confirm). [Merged from C248: Report 31: 314 reviews (6.05%, mean 1.57) were upsold after paying — 197 of 625 explicit payers (31.5%) — rising 0.3% (E1) → 12.1% (E4): 'It's not encouraging customer loyalty!!'; mood-disorder tracking interrupted by the offer; a banner in Dec 2020 hid the bottom habit even for paid users. The report's first upsell rule: suppress every offer for any past or present entitlement, and test every-launch vs weekly vs never-for-past-payers on conversion, D30 retention and 1★ rate. Report 33: cross-promotion ads for the developer's other apps (Nirow, Poly) shown to lifetime payers — 'False advertisement – Still get ads with lifetime premium'; a premium user shown notices: 'No. deal with it'; 'I wish the upgrade button would disappear when you buy premium' — 14 + 12 reviews.]",
   "section": "product-rule",
   "cards": [
    "R05-019",
@@ -9490,7 +9558,24 @@
    "R24-167",
    "R24-178",
    "R28-108",
-   "R50-023"
+   "R50-023",
+   "R31-007",
+   "R31-012",
+   "R31-098",
+   "R31-118",
+   "R31-127",
+   "R31-129",
+   "R31-148",
+   "R31-170",
+   "R31-190",
+   "R33-033",
+   "R33-136",
+   "R33-140",
+   "R33-163",
+   "R33-209",
+   "R47-014",
+   "R47-068",
+   "R47-098"
   ],
   "reports": [
    5,
@@ -9498,9 +9583,39 @@
    18,
    24,
    28,
+   31,
+   33,
+   47,
    50
   ],
-  "merged_from": []
+  "merged_from": [
+   {
+    "from": "C248",
+    "title": "Never show an upsell to anyone holding an active or historical entitlement",
+    "section": "product-rule",
+    "cards": [
+     "R31-007",
+     "R31-012",
+     "R31-098",
+     "R31-118",
+     "R31-127",
+     "R31-129",
+     "R31-148",
+     "R31-170",
+     "R31-190",
+     "R33-033",
+     "R33-136",
+     "R33-140",
+     "R33-163",
+     "R33-209",
+     "R47-014",
+     "R47-068",
+     "R47-098"
+    ],
+    "when": "consolidation after report 50",
+    "note": "C248 (reports 31, 33, 47: upsells and cross-promotion shown to payers and lifetime buyers; a rating prompt shown to payers) and C127 (reports 5, 10, 18, 24, 28, 50: ads, sponsored events and renewal nags shown to subscribers) are one rule: a paying user sees no monetisation interruption"
+   }
+  ]
  },
  {
   "id": "C130",
@@ -11970,8 +12085,8 @@
  },
  {
   "id": "C189",
-  "title": "Never post canned public replies — answer the specific complaint or don't reply",
-  "statement": "Report 13: copy-paste replies restating Apple's cancellation instructions under reviews had a mean of 1.40 with zero 5★, and multiple reviewers edited their rating downward afterwards ('If you're just going to copy-paste an answer again, don't leave one at all'). Report 25: 'the developer preferred to argue about what I could see on my end' — an argumentative support reply ended a trial. Report 31: a support reply 'full of emojis' offered a free trial instead of honouring a purchase; a public developer response was edited after the fact.",
+  "title": "Public review replies answer the specific complaint — never canned, never argue price, never press a reviewer to change the rating",
+  "statement": "Report 13: copy-paste replies restating Apple's cancellation instructions under reviews had a mean of 1.40 with zero 5★, and multiple reviewers edited their rating downward afterwards ('If you're just going to copy-paste an answer again, don't leave one at all'). Report 25: 'the developer preferred to argue about what I could see on my end' — an argumentative support reply ended a trial. Report 31: a support reply 'full of emojis' offered a free trial instead of honouring a purchase; a public developer response was edited after the fact. [Merged from C260: Report 46: 6 reviews (0.28%, mean 1.33, all 2021 or later, five in 2024–26) say a public developer reply was rude or defensive — 'snarky remarks about working for free and making an overpriced app isn't the way to do it'; 'developer takes any criticism with such a nasty attitude'; 'After reading developer's response I am degrading rating to 1 star from 2… 5/5 rating for app but 0/5 for your behaviour' (13298363427) — and 2 say the developer pressed them to change their review ('the developer keeps contacting me to pressure me into changing my review', 11709301622). Every one of these reviews went from 'too expensive' to 'and the developer is hostile', a reputational cost no pricing change recovers, while 53 reviews (mean 4.94) praise the same developer's private support. The report's zero-cost fix: thank, state the free tier and lifetime option factually, never argue value, never ask for a rating change.]",
   "section": "dont",
   "cards": [
    "R13-029",
@@ -11980,15 +12095,38 @@
    "R25-041",
    "R31-031",
    "R31-191",
-   "R43-051"
+   "R43-051",
+   "R46-016",
+   "R46-021",
+   "R46-064",
+   "R46-089",
+   "R46-138",
+   "R46-143"
   ],
   "reports": [
    13,
    25,
    31,
-   43
+   43,
+   46
   ],
-  "merged_from": []
+  "merged_from": [
+   {
+    "from": "C260",
+    "title": "Never argue price in a public review reply, and never ask a reviewer to change their rating",
+    "section": "dont",
+    "cards": [
+     "R46-016",
+     "R46-021",
+     "R46-064",
+     "R46-089",
+     "R46-138",
+     "R46-143"
+    ],
+    "when": "consolidation after report 50",
+    "note": "C260 (report 46: rude or price-defending public replies and pressure to change a rating) and C189 (reports 13, 25, 31, 43: copy-paste and argumentative replies) are one rule about how a developer responds in public; both lower ratings after the reply"
+   }
+  ]
  },
  {
   "id": "C190",
@@ -12010,8 +12148,8 @@
  },
  {
   "id": "C191",
-  "title": "Never cap the tier someone has already paid for",
-  "statement": "Report 16: Pro was capped at 3 habits, then 6, for 29 months; a cap on the paid tier has no monetisation function (there is no higher tier to drive to) and two of three buyers who paid specifically to escape the free cap hit the next one and rated 3★ — 'A paid user pays $40/year just to create only 6 habits simultaneously?' Report 48: 23 users who built history on 10 or 7 free trackers found the cap shrunk under them (mean 2.22) — retroactive reduction lands on the longest-tenured users; fix #2: never reduce existing users' free capacity. Report 50: grandfather existing free users at 5 — the two cap-cut reviews describe loss, not a low starting cap; experiment: grandfather-vs-migrate.",
+  "title": "Never shrink a tier someone already holds — a paid tier's limits, or free capacity a user has already filled",
+  "statement": "Report 16: Pro was capped at 3 habits, then 6, for 29 months; a cap on the paid tier has no monetisation function (there is no higher tier to drive to) and two of three buyers who paid specifically to escape the free cap hit the next one and rated 3★ — 'A paid user pays $40/year just to create only 6 habits simultaneously?' Report 48: 23 users who built history on 10 or 7 free trackers found the cap shrunk under them (mean 2.22) — retroactive reduction lands on the longest-tenured users; fix #2: never reduce existing users' free capacity. Report 50: grandfather existing free users at 5 — the two cap-cut reviews describe loss, not a low starting cap; experiment: grandfather-vs-migrate. (Consolidation after report 50: the title was widened from 'Never cap the tier someone has already paid for' because the Report 48 and Report 50 evidence is free users losing capacity they had already filled — grandfathering is the fix in both.)",
   "section": "product-rule",
   "cards": [
    "R16-005",
@@ -12035,7 +12173,13 @@
    48,
    50
   ],
-  "merged_from": []
+  "merged_from": [
+   {
+    "narrowed": "consolidation after report 50",
+    "old_title": "Never cap the tier someone has already paid for",
+    "note": "reports 48 and 50 attached retroactive free-cap reductions (10 → 7 → 3; 5 → 3) to this point; the evidence is about taking back capacity already in use, paid or free — cap size itself stays in C007, slot reuse in C219"
+   }
+  ]
  },
  {
   "id": "C192",
@@ -13730,31 +13874,15 @@
   "title": "Never show an upsell to anyone holding an active or historical entitlement",
   "statement": "Report 31: 314 reviews (6.05%, mean 1.57) were upsold after paying — 197 of 625 explicit payers (31.5%) — rising 0.3% (E1) → 12.1% (E4): 'It's not encouraging customer loyalty!!'; mood-disorder tracking interrupted by the offer; a banner in Dec 2020 hid the bottom habit even for paid users. The report's first upsell rule: suppress every offer for any past or present entitlement, and test every-launch vs weekly vs never-for-past-payers on conversion, D30 retention and 1★ rate. Report 33: cross-promotion ads for the developer's other apps (Nirow, Poly) shown to lifetime payers — 'False advertisement – Still get ads with lifetime premium'; a premium user shown notices: 'No. deal with it'; 'I wish the upgrade button would disappear when you buy premium' — 14 + 12 reviews.",
   "section": "product-rule",
-  "cards": [
-   "R31-007",
-   "R31-012",
-   "R31-098",
-   "R31-118",
-   "R31-127",
-   "R31-129",
-   "R31-148",
-   "R31-170",
-   "R31-190",
-   "R33-033",
-   "R33-136",
-   "R33-140",
-   "R33-163",
-   "R33-209",
-   "R47-014",
-   "R47-068",
-   "R47-098"
+  "cards": [],
+  "reports": [],
+  "merged_from": [
+   {
+    "into": "C127",
+    "when": "consolidation after report 50"
+   }
   ],
-  "reports": [
-   31,
-   33,
-   47
-  ],
-  "merged_from": []
+  "merged_into": "C127"
  },
  {
   "id": "C249",
@@ -13861,20 +13989,15 @@
   "title": "Notification restraint — few, finely controllable notifications keep the users that spammy rivals lose",
   "statement": "Report 36: notification restraint is praised by 12 (2.22%, mean 4.67) and framed as the reason people switched — 'fine-tuned control over the notifications you receive — probably the #1 reason I've deleted other habit apps was that they spammed me with a billion distracting notifications' (13967987039); a US talking point (3.97% vs 0.69% non-US). More / snoozable reminders are also requested (7) — make any escalation opt-in so the restraint is not lost. Report 43 (counter-case): the nag loop is the differentiator — user-controlled frequency ('as often as you want') is what makes heavy notification acceptable; one review in 638 finds it excessive. Report 46: a daily e-mail at exactly 12 with a new sender address each time (3, mean 1.67, 2020–23) was made switchable ('You can turn them off if you don't like it'). Report 48: notification overload 12 (2.33) against 224 reminder praise — custom text and per-tracker control keep the ratio stable. Report 50: per-habit reminders praised by 10 (4.90); notifications broken on the new Watch app (1).",
   "section": "do",
-  "cards": [
-   "R36-009",
-   "R36-085",
-   "R36-092",
-   "R36-164",
-   "R36-186",
-   "R36-218",
-   "R48-031"
+  "cards": [],
+  "reports": [],
+  "merged_from": [
+   {
+    "into": "C123",
+    "when": "consolidation after report 50"
+   }
   ],
-  "reports": [
-   36,
-   48
-  ],
-  "merged_from": []
+  "merged_into": "C123"
  },
  {
   "id": "C254",
@@ -13958,19 +14081,15 @@
   "title": "Never paywall reminders — it moves the comparison from 'which habit tracker' to 'why pay for an alarm'",
   "statement": "Report 42: reminders sit behind the paywall and are the feature most often named as the thing behind the wall (5 reviews, mean 2.60 — 'I just wanted to use the habit reminder feature and that would cost me 40 a year? Come on. That's insane!'), while working reminders are praised at mean 5.00 (6); three reviewers independently conclude the phone's own tools substitute — 'better to use the native Lista app on iPhone… doesn't freeze and is free'; 'the paid version adds a reminder — you can set that in the calendar too'; 'Your alarm or reminder on your phone can do everything this app does. Wasted $20!' The report calls un-paywalling reminders 'the most defensible single paywall change'. Report 43 (counter-case): reminders, including the nag, are free and the app's reason to exist; only the habit count was ever gated. Report 46 (contrast): reminders are free; the paid gates are habit count, dark mode, offline use and sync.",
   "section": "product-rule",
-  "cards": [
-   "R42-022",
-   "R42-025",
-   "R42-048",
-   "R42-052",
-   "R42-066",
-   "R42-079",
-   "R42-112"
+  "cards": [],
+  "reports": [],
+  "merged_from": [
+   {
+    "into": "C008",
+    "when": "consolidation after report 50"
+   }
   ],
-  "reports": [
-   42
-  ],
-  "merged_from": []
+  "merged_into": "C008"
  },
  {
   "id": "C258",
@@ -13993,35 +14112,30 @@
   "title": "An in-app help screen — first-run tour, searchable FAQ, per-setting explanations — for any product whose setup is richer than its daily use",
   "statement": "Report 43: no guide / tutorial / FAQ / help (9, mean 2.78) plus a learning curve (14, 3.36) — 20 reviews (3.13%) requested continuously from Feb 2017 ('There must be some tips or suggestions in start') to Aug 2026 ('I don't understand nothing') and never addressed: 'There is no help option in settings which makes at least one action I want to take impossible… I can't find instructions for this in the app, on YouTube, or through a Google search'; 'I have had to contact support twice on things that could have explained up front'; 'it took me an hour or so to figure out how to make it work… I'd pay for this if it had some adjustments in usability'. Roughly a tenth of the 29 scheduling-gap reviews ask for capabilities the app already has (custom days, timers, untimed tasks) and land as 1★ / 2★. The same product draws 123 'simple' reviews — daily use is simple, setup is not — so a help screen targets a different surface from the praised simplicity.",
   "section": "must-have",
-  "cards": [
-   "R43-016",
-   "R43-021",
-   "R43-056",
-   "R43-114",
-   "R43-122"
+  "cards": [],
+  "reports": [],
+  "merged_from": [
+   {
+    "into": "C075",
+    "when": "consolidation after report 50"
+   }
   ],
-  "reports": [
-   43
-  ],
-  "merged_from": []
+  "merged_into": "C075"
  },
  {
   "id": "C260",
   "title": "Never argue price in a public review reply, and never ask a reviewer to change their rating",
   "statement": "Report 46: 6 reviews (0.28%, mean 1.33, all 2021 or later, five in 2024–26) say a public developer reply was rude or defensive — 'snarky remarks about working for free and making an overpriced app isn't the way to do it'; 'developer takes any criticism with such a nasty attitude'; 'After reading developer's response I am degrading rating to 1 star from 2… 5/5 rating for app but 0/5 for your behaviour' (13298363427) — and 2 say the developer pressed them to change their review ('the developer keeps contacting me to pressure me into changing my review', 11709301622). Every one of these reviews went from 'too expensive' to 'and the developer is hostile', a reputational cost no pricing change recovers, while 53 reviews (mean 4.94) praise the same developer's private support. The report's zero-cost fix: thank, state the free tier and lifetime option factually, never argue value, never ask for a rating change.",
   "section": "dont",
-  "cards": [
-   "R46-016",
-   "R46-021",
-   "R46-064",
-   "R46-089",
-   "R46-138",
-   "R46-143"
+  "cards": [],
+  "reports": [],
+  "merged_from": [
+   {
+    "into": "C189",
+    "when": "consolidation after report 50"
+   }
   ],
-  "reports": [
-   46
-  ],
-  "merged_from": []
+  "merged_into": "C189"
  },
  {
   "id": "C261",

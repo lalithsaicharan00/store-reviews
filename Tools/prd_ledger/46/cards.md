@@ -150,7 +150,7 @@ Source: `App Store Reports/46. everyday - Habit Tracker - Daily Routine Checklis
 - **User reaction:** complaint
 - **Magnitude:** 19 (0.87%), 3.95
 - **Direction for us:** must-have · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C075 Skippable, replayable onboarding tour
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in
 
 ### R46-062 — Locked out after the trial 4 (0.18%, 3.75) — free users unable to archive or delete after a trial
 
@@ -170,7 +170,7 @@ Source: `App Store Reports/46. everyday - Habit Tracker - Daily Routine Checklis
 - **Magnitude:** 3 + 2 + 2
 - **Direction for us:** must-have · **Report confidence:** theme-table signal · **Generalisable:** yes
 - **Review IDs:** `5869846139`, `6518400889`, `6643634090`
-- **Canonical:** C037 Family plan; C249 Account deletion completes in one step, in-app and on the web, and is confirmed — never a spinner or a silent chatbot; C260 Never argue price in a public review reply, and never ask a reviewer to change their rating
+- **Canonical:** C037 Family plan; C189 Public review replies answer the specific complaint — never canned, never argue price, never press a reviewer to change the rating; C249 Account deletion completes in one step, in-app and on the web, and is confirmed — never a spinner or a silent chatbot
 
 ### R46-086 — Explain the marks with a legend the user can find again: the half-square and triangle skip marks confuse a minority for seven years — '颜色只有半格是什么意思啊？' ('What does a half-filled square mean?', 2019); '半个格到底是什么意思啊，没看见介绍再也找不着了' ('I missed the intro and can't find it again'); 'What does the triangle and squares mean?????' (1★); 'Why would they make me have to put a half triangle for a habit that is only supposed to be done weekly? So demoralizing… I signed up for the yearly but will cancel until this is fixed' (subscriber, 2★); 'Nu prea înțeleg rostul acelor triunghiuri' (Feb 2026) — a one-screen legend fixes it (19, 0.87%, mean 3.79)
 
@@ -180,7 +180,7 @@ Source: `App Store Reports/46. everyday - Habit Tracker - Daily Routine Checklis
 - **Magnitude:** 19 (0.87%), 3.79
 - **Direction for us:** must-have · **Report confidence:** emerging · **Generalisable:** yes
 - **Review IDs:** `4850070969`, `4869150597`, `7384017889`, `10257601209`, `13762762742`
-- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C075 Skippable, replayable onboarding tour; C256 Skip, miss and not-yet-logged are visibly distinct states, and the stats explain which is which
+- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C256 Skip, miss and not-yet-logged are visibly distinct states, and the stats explain which is which
 
 ### R46-087 — A shared web-view UI reads as non-native on every platform, and an unrequested completion animation cost a subscriber: design dated / clunky 34 (1.56%, mean 3.56) — 'It really looks like they have tried to shoehorn the webview into a smaller screen' (2019); 'the desktop UI is too heavily shaped by the mobile UI' (KR); 'no sigue ningún patrón de diseño esperado en iOS' (MX); the December 2022 completion animation — 'please remove the new animation whenever u log a day it's so annoying'; 'Special FX update unnecessary… I'll not renew' (2★, subscriber)
 
@@ -200,7 +200,7 @@ Source: `App Store Reports/46. everyday - Habit Tracker - Daily Routine Checklis
 - **Magnitude:** Sub-theme | n | % | Mean ★ | Signal | Period ; sup_responsive_praise | 53 | 2.43% | 4.94 | meaningful | 2019–2026 ; sup_unresponsive | 7 | 0.32% | 1.57 | weak | 2022–2026 ; sup_dev_reply_hostile | 6 | 0.28% | 1.33 | weak | 2021–2026 ; sup_review_pressure | 2 | 0.09% | 2.50 | ignore by count; stated because it concerns review integrity | 2023–2024
 - **Direction for us:** must-have · **Report confidence:** very strong (union) · **Generalisable:** yes
 - **Review IDs:** `8285529014`, `8409233319`, `9525145329`, `11089487551`, `13298363427`, `13765557194`, `14423487007`
-- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C260 Never argue price in a public review reply, and never ask a reviewer to change their rating
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C189 Public review replies answer the specific complaint — never canned, never argue price, never press a reviewer to change the rating
 
 ### R46-095 — When a trial ends, the user must be able to delete or archive the habits above the free cap: 'after the trial I can't delete the extra habits — they're locked' (DE, 4★); free users report being unable to archive or delete after a trial (locked out after trial 4)
 
@@ -220,7 +220,7 @@ Source: `App Store Reports/46. everyday - Habit Tracker - Daily Routine Checklis
 - **Magnitude:** symbols confusing 19
 - **Direction for us:** must-have · **Report confidence:** report recommendation · **Generalisable:** yes
 - **Review IDs:** `4850070969`, `13762762742`, `10257601209`
-- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C075 Skippable, replayable onboarding tour
+- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in
 
 ### R46-147 — After a trial ends, let the user choose which 3 habits stay active and archive — not lock — the rest ('I can't delete them… it falsifies the statistics'; 'a bunch of habits on my screen now that I can't get rid of') — the post-trial first impression for every non-converter
 
@@ -478,7 +478,7 @@ Source: `App Store Reports/46. everyday - Habit Tracker - Daily Routine Checklis
 - **User reaction:** praise
 - **Magnitude:** 24 (4.92); request 9
 - **Direction for us:** build-free · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C008 Daily check-in and one basic reminder per habit are free; C039 Reminders fire reliably, once
+- **Canonical:** C008 Daily check-in and reminders are free — never paywall the reminder; C039 Reminders fire reliably, once
 
 ### R46-054 — Journal / notes praised 12 (0.55%, 4.67) since v3 (Dec 2023)
 
@@ -1346,7 +1346,7 @@ Source: `App Store Reports/46. everyday - Habit Tracker - Daily Routine Checklis
 - **User reaction:** complaint
 - **Magnitude:** hostile 0/1/0/5; unresponsive 0/3/0/4
 - **Direction for us:** dont · **Report confidence:** worsening, low-medium · **Generalisable:** yes
-- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C260 Never argue price in a public review reply, and never ask a reviewer to change their rating
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C189 Public review replies answer the specific complaint — never canned, never argue price, never press a reviewer to change the rating
 
 ### R46-139 — What held for eight years: the free tier at 3 habits (Jan 2019 → the listing in Sep 2026); simplicity the top theme in every era and rising (16.40% → 21.59%); the colour grid praised at a near-constant rate (9.68% → 10.22% → 11.62% → 10.23%); behaviour change reported at a near-constant rate (11.56% → 13.97% → 14.10% → 12.50%, mean 4.93); more colours requested every era since 2020 (1.61% → 3.74% → 3.43% → 2.27%); flexible scheduling requested every era (1.08% → 2.00% → 1.71% → 1.48%; Sep 2019 → Jul 2026); the skip-symbol confusion seven years old (Sep 2019 → Feb 2026)
 
@@ -1439,7 +1439,7 @@ Source: `App Store Reports/46. everyday - Habit Tracker - Daily Routine Checklis
 - **Magnitude:** hostile 6 (1.33) + pressured 2 + unanswered 7 (1.57) vs praise 53 (4.94)
 - **Direction for us:** dont · **Report confidence:** weak count; reputational · **Generalisable:** yes
 - **Review IDs:** `7232471445`, `12948882804`, `5385110766`, `5972193537`, `9360709496`, `9667767203`, `10074816469`, `12349381251`, `14054333465`, `11034917382`, `11113145328`, `13298363427`, `11709301622`
-- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C059 Be visibly responsive; fixes bring reviewers back; C260 Never argue price in a public review reply, and never ask a reviewer to change their rating
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C059 Be visibly responsive; fixes bring reviewers back; C189 Public review replies answer the specific complaint — never canned, never argue price, never press a reviewer to change the rating
 
 ### R46-031 — A paywall on first open: 'Meteen abonnement nemen of het beginscherm bekijken. Meer is er niet' ('Take a subscription straight away or look at the start screen. That's all', NL); 'You are immediately prompted with a paywall when opening' (US)
 
@@ -1489,7 +1489,7 @@ Source: `App Store Reports/46. everyday - Habit Tracker - Daily Routine Checklis
 - **Magnitude:** hostile 6 (1.33); pressure 2
 - **Direction for us:** dont · **Report confidence:** report recommendation · **Generalisable:** yes
 - **Review IDs:** `13298363427`, `11709301622`
-- **Canonical:** C260 Never argue price in a public review reply, and never ask a reviewer to change their rating
+- **Canonical:** C189 Public review replies answer the specific complaint — never canned, never argue price, never press a reviewer to change the rating
 
 ## Things to do
 
@@ -1501,7 +1501,7 @@ Source: `App Store Reports/46. everyday - Habit Tracker - Daily Routine Checklis
 - **Magnitude:** as stated
 - **Direction for us:** do · **Report confidence:** report recommendation · **Generalisable:** yes
 - **Review IDs:** `9997347192`, `12334331759`
-- **Canonical:** C003 Lead with a one-time lifetime purchase; C007 Generous fixed habit cap (or unlimited) — never change it; C029 Billing must be exactly right; C034 Data must never be lost on update, reinstall or phone change; C043 Flexible / custom frequency; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C260 Never argue price in a public review reply, and never ask a reviewer to change their rating; C261 A colour palette users can extend — more defaults, a hex picker, softer sets — because colour is the reward surface
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C007 Generous fixed habit cap (or unlimited) — never change it; C029 Billing must be exactly right; C034 Data must never be lost on update, reinstall or phone change; C043 Flexible / custom frequency; C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C189 Public review replies answer the specific complaint — never canned, never argue price, never press a reviewer to change the rating; C261 A colour palette users can extend — more defaults, a hex picker, softer sets — because colour is the reward surface
 
 ### R46-164 — Experiment: resurface the Learn tab after the first 14 days of use, not only at onboarding — praise fell 11.02% → 3.30% while its per-mention mean stayed 4.82; measure Learn-tab opens after day 14 and day-60 retention
 

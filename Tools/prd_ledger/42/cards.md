@@ -42,7 +42,7 @@ Source: `App Store Reports/42. Daily Habit & Routine Tracker - Goals planner. Pr
 - **Magnitude:** competitor_native 3 (1.46%), 2.33
 - **Direction for us:** product-rule · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `11540202999`, `6313215651`, `10305077033`
-- **Canonical:** C257 Never paywall reminders — it moves the comparison from 'which habit tracker' to 'why pay for an alarm'
+- **Canonical:** C008 Daily check-in and reminders are free — never paywall the reminder
 
 ### R42-111 — Raise the free-habit cap and move the wall off the thing the product is named after — cap history depth, statistics depth or reminder count rather than habit count; magnitude uncertain (the one clean conversion paid on design, not on hitting a wall)
 
@@ -62,7 +62,7 @@ Source: `App Store Reports/42. Daily Habit & Routine Tracker - Goals planner. Pr
 - **Magnitude:** reminders_paywalled 5 vs praise_reminders 6 (5.00); competitor_native 3
 - **Direction for us:** build-free · **Report confidence:** report recommendation · **Generalisable:** yes
 - **Review IDs:** `5990760352`, `7588653687`, `7762886727`, `6026946756`, `9671666294`, `7968248707`, `10305077033`, `6313215651`, `11540202999`
-- **Canonical:** C257 Never paywall reminders — it moves the comparison from 'which habit tracker' to 'why pay for an alarm'
+- **Canonical:** C008 Daily check-in and reminders are free — never paywall the reminder
 
 ## Must-haves
 
@@ -344,7 +344,7 @@ Source: `App Store Reports/42. Daily Habit & Routine Tracker - Goals planner. Pr
 - **Magnitude:** paywalled 5 (2.60); praised 6 (5.00)
 - **Direction for us:** build-free · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `6704352732`, `10901396387`, `9730373479`, `6881986270`, `6313215651`, `5990760352`, `7588653687`, `7762886727`
-- **Canonical:** C008 Daily check-in and one basic reminder per habit are free; C257 Never paywall reminders — it moves the comparison from 'which habit tracker' to 'why pay for an alarm'
+- **Canonical:** C008 Daily check-in and reminders are free — never paywall the reminder
 
 ### R42-026 — Scheduling basics — time of day, date, which days, weekly / monthly / yearly repetition — are Premium: 'タスクの繰り返しが有料プランのみ' ('task repetition is paid-plan only'); 'only the title is free, because the time is paid, the date'
 
@@ -392,7 +392,7 @@ Source: `App Store Reports/42. Daily Habit & Routine Tracker - Goals planner. Pr
 - **Magnitude:** 55; 16/26 storefronts; 28/9/13/2/3
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `7987636680`, `8102592409`, `7968248707`, `10918059435`, `8757084304`, `9976210363`, `10754787779`, `12133174175`, `11364850554`, `10194166127`, `12008088495`, `11120549627`, `10086792760`, `13256129945`, `11316242500`, `11051247830`, `9775946178`, `11319751646`, `6704352732`, `10901396387`, `9730373479`, `6881986270`, `6313215651`, `12798927312`, `12388272937`, `8559036422`, `11948614593`, `8778350918`, `11447879577`
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C043 Flexible / custom frequency; C257 Never paywall reminders — it moves the comparison from 'which habit tracker' to 'why pay for an alarm'
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C008 Daily check-in and reminders are free — never paywall the reminder; C043 Flexible / custom frequency
 
 ### R42-054 — Price objection is about price vs delivered substance and tracks local price: 18 reviews (8.74%, mean 1.67, zero at 4–5★) quote $39.99/yr ('I just wanted to use the habit reminder feature and that would cost me 40 a year? Come on. That's insane!'), $20, R$79.90 for 12 weeks ('Loved it… but it's very expensive'), ¥6,900/yr, 'shocked when i saw that you pay that much for barely any technology'; the one positive price signal ('costs 500₽ a year, that's nothing') comes from the market with the lowest local price — consistent with the price being mis-set for high-income markets relative to the feature set
 
@@ -629,7 +629,7 @@ Source: `App Store Reports/42. Daily Habit & Routine Tracker - Goals planner. Pr
 - **Magnitude:** 3★ 28; cap 46.4%; BR 57.1%
 - **Direction for us:** product-rule · **Report confidence:** segment · **Generalisable:** yes
 - **Review IDs:** `10754787779`, `10901396387`, `12486211287`
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C257 Never paywall reminders — it moves the comparison from 'which habit tracker' to 'why pay for an alarm'
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C008 Daily check-in and reminders are free — never paywall the reminder
 
 ### R42-067 — 2★ is the 3★ band plus performance problems: free cap 9 of 16 (56.3%), lag 4 (25.0%), subscription objection 2, price 2, payer 2, no trial 2, competitor 2; eight of 16 Brazilian; four pair the paywall or a purchase with freezing — including a two-year payer: 'I have the paid version, for the second year! To the administrators, if you could take a look, I'd appreciate it! I wouldn't want to migrate to another app'
 
@@ -972,7 +972,7 @@ Source: `App Store Reports/42. Daily Habit & Routine Tracker - Goals planner. Pr
 - **User reaction:** churn
 - **Magnitude:** 3 (1.46%), 2.33
 - **Direction for us:** none · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C214 A bare checklist cannot carry a premium price — it has a free substitute pre-installed on every phone; C257 Never paywall reminders — it moves the comparison from 'which habit tracker' to 'why pay for an alarm'
+- **Canonical:** C008 Daily check-in and reminders are free — never paywall the reminder; C214 A bare checklist cannot carry a premium price — it has a free substitute pre-installed on every phone
 
 ### R42-078 — Competitive frame: 13 references (6.31%, mean 2.54) — an active HabitBull migrant; 'they copied the program from habit tracker (which has no Russian)' identifies Russian-language support as the original wedge in Russia; generic free competitors ('there are loads like this and free'; 'there are free apps out there that let you track so much more'); only 2 chose it after testing others ('I tried maybe a dozen different apps and settled on this one', one inside the Canadian burst)
 
@@ -1034,7 +1034,7 @@ Source: `App Store Reports/42. Daily Habit & Routine Tracker - Goals planner. Pr
 - **Magnitude:** onboarding_long 3 (1.00)
 - **Direction for us:** dont · **Report confidence:** meaningful · **Generalisable:** yes
 - **Review IDs:** `11484449412`, `8559036422`, `12193961715`
-- **Canonical:** C075 Skippable, replayable onboarding tour; C111 No long quiz before the price; show the price up front
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C111 No long quiz before the price; show the price up front
 
 ### R42-060 — A rating prompt before use manufactures 1★ reviews: 'I'm still answering the questions and a window pop up asking if I'm enjoying the app? Really?' (US, 1★); 'Asking for a rating the first time I log in? How could I possibly know. But, since I'm being asked I must give it a one star.' (US, 1★) — the clearest causal chain in the corpus
 
@@ -1106,7 +1106,7 @@ Source: `App Store Reports/42. Daily Habit & Routine Tracker - Goals planner. Pr
 - **Magnitude:** as stated
 - **Direction for us:** do · **Report confidence:** report recommendation · **Generalisable:** yes
 - **Review IDs:** `11826835199`
-- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C031 Crashes / launch failures; C036 A support channel that exists, is reachable outside the app, and answers; C063 Free trial before purchase; C143 Intra-day completion: tap N times to fill N/N; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate; C240 Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap; C257 Never paywall reminders — it moves the comparison from 'which habit tracker' to 'why pay for an alarm'
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C008 Daily check-in and reminders are free — never paywall the reminder; C031 Crashes / launch failures; C036 A support channel that exists, is reachable outside the app, and answers; C063 Free trial before purchase; C143 Intra-day completion: tap N times to fill N/N; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate; C240 Never interrupt the completion moment — no ad, upsell or rating prompt on the check-off tap
 
 ## Contradictions
 

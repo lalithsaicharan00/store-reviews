@@ -113,7 +113,7 @@ Source: `App Store Reports/43. Habit Hub - Routine Tracker - Daily Todo, Goals &
 - **Magnitude:** 20 (3.13%); 9 (2.78) + 14 (3.36)
 - **Direction for us:** must-have · **Report confidence:** very strong · **Generalisable:** yes
 - **Review IDs:** `1553177362`, `14407854273`, `6810959323`, `8251773389`, `13416844344`
-- **Canonical:** C075 Skippable, replayable onboarding tour; C259 An in-app help screen — first-run tour, searchable FAQ, per-setting explanations — for any product whose setup is richer than its daily use
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in
 
 ### R43-017 — Support that fixes things within hours is bimodal when the intake channel is broken: praised by name in 24 (3.76%, mean 4.67) — 'the support team contacted me and helped me fix the minor issue'; 'I recently requested a small new feature, got a response, and it was added a few days later' (Jan 2026); a 2★ upgraded to 5★ after the requested fix shipped — vs 7 (1.10%, mean 1.29, the lowest theme) who got no response and 4 who report the in-app feedback path itself broken ('Feedback email can not send'; 'They have a report bug feature, but that also doesn't work'; 'I wasn't able to email due to the configuration') — fixing the feedback path is a support-capacity fix disguised as a bug fix
 
@@ -142,7 +142,7 @@ Source: `App Store Reports/43. Habit Hub - Routine Tracker - Daily Todo, Goals &
 - **User reaction:** complaint
 - **Magnitude:** 9 + 9
 - **Direction for us:** must-have · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C075 Skippable, replayable onboarding tour; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out
 
 ### R43-048 — Price confusion 5 (0.78%, mean 4.20) — could not tell one-time from monthly
 
@@ -160,7 +160,7 @@ Source: `App Store Reports/43. Habit Hub - Routine Tracker - Daily Todo, Goals &
 - **User reaction:** complaint
 - **Magnitude:** 4 + 1
 - **Direction for us:** must-have · **Report confidence:** theme-table signal · **Generalisable:** yes
-- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C189 Never post canned public replies — answer the specific complaint or don't reply
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C189 Public review replies answer the specific complaint — never canned, never argue price, never press a reviewer to change the rating
 
 ### R43-071 — The most common action needs a large, unambiguous tap target: for four years the Done and Info buttons sat adjacent and swipes were mis-read — 'the item disappears before I can choose my swiped option… the Done button… is so close to the Info button that I end up opening Info… as many times as I mark one Done' (2017); 'Done and i button too close together' (2018); 'Tap targets for your most common actions — marking a habit done or viewing statistics — are tiny' (2★); 'I was constantly marking things as done when I really wanted to mark them as skipped… I'm sick of trying to swipe exactly right so I deleted it' (2★, churned)
 
@@ -210,7 +210,7 @@ Source: `App Store Reports/43. Habit Hub - Routine Tracker - Daily Todo, Goals &
 - **Magnitude:** onboarding + learning curve 20 (3.13%)
 - **Direction for us:** must-have · **Report confidence:** report recommendation · **Generalisable:** yes
 - **Review IDs:** `1553177362`, `14407854273`, `6810959323`, `8251773389`, `5432803445`, `6246525358`, `9662306542`
-- **Canonical:** C259 An in-app help screen — first-run tour, searchable FAQ, per-setting explanations — for any product whose setup is richer than its daily use
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in
 
 ## Must never break
 
@@ -400,7 +400,7 @@ Source: `App Store Reports/43. Habit Hub - Routine Tracker - Daily Todo, Goals &
 - **Magnitude:** nag 22 (3.45%), 4.86; reminders 54 (8.46%), 4.76
 - **Direction for us:** build-free · **Report confidence:** very strong · **Generalisable:** yes
 - **Review IDs:** `6222322942`, `2510076061`, `5232097891`, `11268226195`, `1486308038`, `8921933482`
-- **Canonical:** C008 Daily check-in and one basic reminder per habit are free; C258 A 'nag until done' repeating reminder — the one reminder shape reviewers say no other app offers
+- **Canonical:** C008 Daily check-in and reminders are free — never paywall the reminder; C258 A 'nag until done' repeating reminder — the one reminder shape reviewers say no other app offers
 
 ### R43-015 — Scheduling shapes users ask for: intervals longer than one month ('There are no options for tasks that occur beyond every 1 month… Wish I'd known that before I paid for it', payer 2★), Nth weekday of month ('1st Tuesday of each month'), 'X times per week' without fixing days, every other week, a due date that rolls from last completion — 29 reviews (4.55%, mean 3.38); roughly a tenth ask for shapes the app already supports (custom days 'Monday and Wednesday's', timed tasks, untimed tasks) and land as 1★ / 2★ — a discoverability problem
 
@@ -801,7 +801,7 @@ Source: `App Store Reports/43. Habit Hub - Routine Tracker - Daily Todo, Goals &
 - **Magnitude:** 123 (19.28%), 4.86 vs learning curve 20
 - **Direction for us:** product-rule · **Report confidence:** high-priority · **Generalisable:** yes
 - **Review IDs:** `1464655793`, `1534641505`, `8251773389`, `8770293457`, `10280711337`, `3849179643`, `7673068249`
-- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek; C259 An in-app help screen — first-run tour, searchable FAQ, per-setting explanations — for any product whose setup is richer than its daily use
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek
 
 ### R43-057 — The core loop works — 61 first-person outcome accounts (9.56%) at a 4.95 mean, the highest of any theme: 'I used to stress about remembering to take my meds, remembering to floss… Now I don't'; 'I started with a simple task of drinking 8 cups of water. For the first time in my entire life, I actually did'; 'I have depression and sometimes find it hard to do even the simplest things - like taking a shower… I put easy things on my routine list'; 'my life has completely changed in the past two weeks… I have done all 13 daily habits almost every day since I got it' (the most-upvoted review); 'this app has literally cured my anxiety' — every recommendation is about protecting this, not changing it
 
@@ -1136,7 +1136,7 @@ Source: `App Store Reports/43. Habit Hub - Routine Tracker - Daily Todo, Goals &
 - **Magnitude:** nine to ten years
 - **Direction for us:** product-rule · **Report confidence:** persistent · **Generalisable:** yes
 - **Review IDs:** `1486308038`, `13284708645`, `4277971819`, `1522226211`, `12187998188`, `1553177362`, `14407854273`
-- **Canonical:** C003 Lead with a one-time lifetime purchase; C006 Stay minimal — every addition is opt-in or off by default; C043 Flexible / custom frequency; C258 A 'nag until done' repeating reminder — the one reminder shape reviewers say no other app offers; C259 An in-app help screen — first-run tour, searchable FAQ, per-setting explanations — for any product whose setup is richer than its daily use
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C006 Stay minimal — every addition is opt-in or off by default; C043 Flexible / custom frequency; C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C258 A 'nag until done' repeating reminder — the one reminder shape reviewers say no other app offers
 
 ## Positioning
 
@@ -1221,7 +1221,7 @@ Source: `App Store Reports/43. Habit Hub - Routine Tracker - Daily Todo, Goals &
 - **User reaction:** mixed
 - **Magnitude:** as stated
 - **Direction for us:** do · **Report confidence:** report recommendation · **Generalisable:** yes
-- **Canonical:** C003 Lead with a one-time lifetime purchase; C027 Localise early — it unlocks revenue; C036 A support channel that exists, is reachable outside the app, and answers; C039 Reminders fire reliably, once; C043 Flexible / custom frequency; C153 Automatic cloud backup on by default — never manual opt-in; C207 Let users hide surfaces they don't use — tabs, social, recommendations, streaks; C259 An in-app help screen — first-run tour, searchable FAQ, per-setting explanations — for any product whose setup is richer than its daily use
+- **Canonical:** C003 Lead with a one-time lifetime purchase; C027 Localise early — it unlocks revenue; C036 A support channel that exists, is reachable outside the app, and answers; C039 Reminders fire reliably, once; C043 Flexible / custom frequency; C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C153 Automatic cloud backup on by default — never manual opt-in; C207 Let users hide surfaces they don't use — tabs, social, recommendations, streaks
 
 ### R43-133 — Experiment: a visual refresh behind a theme switch with the current look as default — dated-UI complaints (16, mostly non-US) vs design praise 34 and simplicity 123; a forced redesign risks the larger constituency; measure adoption and non-US mean
 
