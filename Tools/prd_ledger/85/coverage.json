@@ -1,0 +1,134 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "table_row": "review_id",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "table_row": "country`, `country_name",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "table_row": "title`, `body",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "table_row": "vote_count`, `vote_sum",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "table_row": "is_edited",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "table_row": "< 0.1%",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "table_row": "0.5% – < 1%",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "table_row": "1% – < 3%",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "table_row": "3% – 5%",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "table_row": "> 5%",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "table_row": "hk",
+  "cards": [
+   "R85-009"
+  ]
+ },
+ {
+  "table_row": "Era",
+  "cards": [
+   "R85-040"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "bold": "Purchase evidence is thin.",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "bold": "Not present, and therefore never claimed:",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "bold": "Classification is hand judgement, not an algorithm.",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "bold": "Selection.",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "bold": "Thin late eras.",
+  "cards": [
+   "R85-002"
+  ]
+ },
+ {
+  "bold": "No consumer-spend dataset was fetched in this session",
+  "cards": [
+   "R85-038"
+  ]
+ }
+]
