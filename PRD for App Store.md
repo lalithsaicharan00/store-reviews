@@ -1,0 +1,67 @@
+# PRD for App Store
+
+What we will build, what we will do, and what we will avoid. Decisions only.
+
+Every bullet is distilled from the review analysis of 70 apps. The evidence, the counts and the
+conditions behind each one live in [Feature Ledger.md](<Research Reports/Feature Ledger.md>);
+"Repeated in" lists the reports that point the same way.
+
+> **Status: in progress.** Section 1 has its first entry. The remaining sections are still to be
+> written from the ledger.
+
+---
+
+## 1. Product rules
+
+Rules that hold across everything else. Break one and the rest stops working.
+
+- **Stay minimal, and make every addition opt-in.** Keep the first screen and the logging path as small as they are today; anything new ships switched off and lives inside a screen we already have, so the product can be as deep as we like provided the depth is not on show. Being uncluttered is the most praised thing in this whole category, and the apps that let it slip watched that praise turn into complaints about being confusing. Repeated in: [1](<App Store Reports/1. Habit Tracker - Goal Tracker & ADHD Planner (REPORT).md>), [2](<App Store Reports/2. Daily Habits - Habit Tracker - Habit List and Routine Tracker (REPORT).md>), [3](<App Store Reports/3. Days Since - Quit Habit Tracker - Sober Streak Day Counter (REPORT).md>), [4](<App Store Reports/4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker (REPORT).md>), [5](<App Store Reports/5. Routine Planner, Habit Tracker - Daily Time Management for ADHD (REPORT).md>), [6](<App Store Reports/6. Streak Tracker - StreakUp - Habit Builder & Breaker (REPORT).md>), [7](<App Store Reports/7. Habit Tracker - HabitKit - Streaks & Accountability (REPORT).md>), [8](<App Store Reports/8. Onrise - Habit Tracker & Focus - Build habits, focus & journal (REPORT).md>), [10](<App Store Reports/10. Finch - Self-Care Pet - Daily Journal & Habit Tracker (REPORT).md>), [11](<App Store Reports/11. Daily Habits - Streak Tracker - Morning Routine & Goal Planner (REPORT).md>), [13](<App Store Reports/13. Productive - Habit Tracker - Daily Routine & Goals Planner (REPORT).md>), [14](<App Store Reports/14. My Habits - Daily Habit Builder - Tracker for Goals & Routine (REPORT).md>), [16](<App Store Reports/16. Atoms - from Atomic Habits - The official Atomic Habits app (REPORT).md>), [18](<App Store Reports/18. MyRoutine - Organize your day - Built around your real life (REPORT).md>), [20](<App Store Reports/20. Habit — Daily Tracker - Crush your goals like a boss (REPORT).md>), [23](<App Store Reports/23. Streaks - The habit-forming to-do list (REPORT).md>), [25](<App Store Reports/25. Grit - Daily Habit Tracker - Routines & Goals ADHD Planner (REPORT).md>), [26](<App Store Reports/26. Eden - Daily Routine Planner - Self care habit tracker, to do (REPORT).md>), [27](<App Store Reports/27. Goal Streak - Habit Tracker - Build a growth mindset, daily (REPORT).md>), [29](<App Store Reports/29. Habit Tracker - Daily Goals - Motivation & Accountability (REPORT).md>), [30](<App Store Reports/30. Habit Tracker - Simple&Powerful - Goal,task & Routine Planner (REPORT).md>), [31](<App Store Reports/31. Do Habits - Get It Done - Daily Routine & Goal Planner (REPORT).md>), [33](<App Store Reports/33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks (REPORT).md>), [34](<App Store Reports/34. Habit Tracker - Evoday - Daily Streaks Calendar & Goals (REPORT).md>), [36](<App Store Reports/36. (Not Boring) Habits - Science-backed habit tracker (REPORT).md>), [41](<App Store Reports/41. Awesome Habits - Habit Tracker - Streaks, days since & goals (REPORT).md>), [42](<App Store Reports/42. Daily Habit & Routine Tracker - Goals planner. Productive days (REPORT).md>), [43](<App Store Reports/43. Habit Hub - Routine Tracker - Daily Todo, Goals & Schedule (REPORT).md>), [46](<App Store Reports/46. everyday - Habit Tracker - Daily Routine Checklist (REPORT).md>), [47](<App Store Reports/47. Habit Streak Tracker - DotHabit - Daily Routine, Goals & Planner (REPORT).md>), [48](<App Store Reports/48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist (REPORT).md>), [49](<App Store Reports/49. Life Reset - 66 Day Habit - Gamified Habit Tracker (REPORT).md>), [50](<App Store Reports/50. HelloHabit - Habit Tracker - Tasks, Routines, & Streaks (REPORT).md>), [52](<App Store Reports/52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus (REPORT).md>), [53](<App Store Reports/53. HabitMinder • Habit Tracker - Daily Reminders & Routines (REPORT).md>), [54](<App Store Reports/54. Avocation - Habit Tracker - Daily planner & ADHD organizer (REPORT).md>), [55](<App Store Reports/55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker (REPORT).md>), [56](<App Store Reports/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner (REPORT).md>), [57](<App Store Reports/57. Habit Tracker - DayStamp - Daily Routine, Streak & Widget (REPORT).md>), [58](<App Store Reports/58. Blossom Habit Tracker (Fern) - Build habits. Grow every day (REPORT).md>), [59](<App Store Reports/59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule (REPORT).md>), [62](<App Store Reports/62. Streaks – Daily Habit Tracker - Atomic Goals & Accountability (REPORT).md>), [69](<App Store Reports/69. Habit Tracker - TheFor - Routine Planner, Goal, Journal (REPORT).md>), [70](<App Store Reports/70. Habit - Daily routine tracker - Goal planner & Streaks (REPORT).md>), [72](<App Store Reports/72. Habit Hearts - Habit Tracker - Daily Goal & Routine Planner (REPORT).md>), [74](<App Store Reports/74. Habit Check Calendar - Track habits with a calendar! (REPORT).md>), [75](<App Store Reports/75. Habit Streak - Daily Tracker - Build Routines & Reach Goals (REPORT).md>), [76](<App Store Reports/76. Way of Life - Habit Tracker - Build a better, stronger you (REPORT).md>), [77](<App Store Reports/77. Habit Tracker - Streak-Free - Streaks & Habits (REPORT).md>), [79](<App Store Reports/79. Habit Tracker - Ripples - Routines, streaks, reminders (REPORT).md>), [82](<App Store Reports/82. Lasting Change - Habit Builder - Daily Habits & Mental Wellness (REPORT).md>), [84](<App Store Reports/84. Habit Tracker - HabitGrid - Daily Habits & Goal Tracker (REPORT).md>), [86](<App Store Reports/86. Today Habit tracker - For to-dos, routines & goals (REPORT).md>), [89](<App Store Reports/89. Check Calendar - Habit Tracker - Check your habit calendar! (REPORT).md>), [90](<App Store Reports/90. Quit Bad Habits & Addiction - Sobriety Counter & Tracker (REPORT).md>).
+
+## 2. Features — Free
+
+What every user gets without paying.
+
+_To be written from the ledger._
+
+## 3. Features — Paid
+
+What we charge for.
+
+_To be written from the ledger._
+
+## 4. Features — Not decided yet
+
+Real options where the evidence does not yet point one way.
+
+_To be written from the ledger._
+
+## 5. Features to research
+
+Things worth a deliberate look before we commit either way.
+
+_To be written from the ledger._
+
+## 6. Must-haves
+
+Needed regardless of how we split free and paid.
+
+_To be written from the ledger._
+
+## 7. Must never break
+
+The things that produce one-star reviews when they fail.
+
+_To be written from the ledger._
+
+## 8. Things we should do
+
+Around the product: listing, pricing presentation, launch, support, markets.
+
+_To be written from the ledger._
+
+## 9. Things we should NOT do
+
+Tactics that backfired for other people in this category.
+
+_To be written from the ledger._
+
