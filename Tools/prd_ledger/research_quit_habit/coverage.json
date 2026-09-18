@@ -1,0 +1,11 @@
+{
+ "doc": "Research Reports/Quit Habit Decision.md",
+ "cards": 16,
+ "headings_cited": 8,
+ "headings_total": 9,
+ "tables": 3,
+ "verbatim_table_cards": 4,
+ "no_new_insight": [
+  "H1 title 'Should quit-habits be a feature or a separate app?' is carried by the header card RQH-001 (where='header; intro lines 1-8') together with the recommendation line; no separate card needed."
+ ]
+}

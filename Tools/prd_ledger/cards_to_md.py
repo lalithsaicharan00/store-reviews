@@ -2,6 +2,7 @@
 """Render one report's cards.jsonl as a readable Markdown file next to it (cards.md).
 
     python3 Tools/prd_ledger/cards_to_md.py <N>
+    python3 Tools/prd_ledger/cards_to_md.py research_quit_habit   (research-document folders)
 
 cards.jsonl stays the source of truth; cards.md is a view and is regenerated on demand.
 """
@@ -18,11 +19,19 @@ KIND_LABEL = {
  "positioning":"Positioning","anti-pattern":"Anti-patterns","dont":"Things not to do","do":"Things to do",
  "contradiction":"Contradictions","data-caveat":"Data caveats and method"}
 
+RESEARCH = {"research_quit_habit": "Quit Habit Decision.md",
+            "research_feature_gating": "Feature Gating vs Quantity.md"}
+
 def main(n):
-    n = int(n)
     folder = os.path.join(ROOT, "Tools", "prd_ledger", str(n))
     cards = [json.loads(l) for l in open(os.path.join(folder, "cards.jsonl")) if l.strip()]
-    report = os.path.basename(glob.glob(os.path.join(ROOT, "App Store Reports", f"{n}. *.md"))[0])
+    if str(n) in RESEARCH:
+        source = "Research Reports/" + RESEARCH[str(n)]
+        heading = "Cards — research document: " + RESEARCH[str(n)][:-3]
+    else:
+        n = int(n)
+        source = "App Store Reports/" + os.path.basename(glob.glob(os.path.join(ROOT, "App Store Reports", f"{n}. *.md"))[0])
+        heading = f"Cards — report {n}"
     canon = {c["id"]: c for c in json.load(open(os.path.join(ROOT, "Tools", "prd_ledger", "canonical.json")))}
     # canonical.json is the source of truth for card -> point (consolidation may merge or split points after a
     # report's cards were committed); fall back to the card's own field only if the ledger has nothing for it
@@ -34,7 +43,7 @@ def main(n):
     groups = OrderedDict((k, []) for k in KIND_ORDER)
     for c in cards: groups.setdefault(c["kind"], []).append(c)
 
-    out = [f"# Cards — report {n}", "", f"Source: `App Store Reports/{report}`  ", 
+    out = [f"# {heading}", "", f"Source: `{source}`  ", 
            f"{len(cards)} cards. Generated from `cards.jsonl` by `cards_to_md.py` — edit the JSONL, not this file.", "",
            "## Contents", ""]
     for k, v in groups.items():

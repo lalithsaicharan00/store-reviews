@@ -1,0 +1,11 @@
+{
+ "doc": "Research Reports/Feature Gating vs Quantity.md",
+ "cards": 17,
+ "headings_cited": 4,
+ "headings_total": 5,
+ "tables": 0,
+ "verbatim_table_cards": 1,
+ "no_new_insight": [
+  "H1 title 'Freemium Gating: Volume (Quantity) vs Capability' is carried by the header card RFG-001; the doc has no markdown tables - its two model definitions are blockquotes, carded verbatim as RFG-004."
+ ]
+}
