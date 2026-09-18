@@ -1,0 +1,170 @@
+[
+ {
+  "table_row": "review_id",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "table_row": "title",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "table_row": "body",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "table_row": "vote_count` / `vote_sum",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "table_row": "Country records not identical, field by field, to the main-file record",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` total / per-country counts / storefront count / rating distribution",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "table_row": "_state.json` collected counts vs main file",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "table_row": "Exact title+body duplicates / exact body duplicates",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "table_row": "<0.1%",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "table_row": "0.5–<1%",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "table_row": "1–<3%",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "table_row": "3–5%",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "table_row": ">5%",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "bold": "count, a percentage, the denominator, the market scope, the time window, a signal label and exact review IDs",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "bold": "timing, not proven cause",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "bold": "0 differences",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "bold": "No deduplication was necessary or performed.",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "bold": "This is the expensive artefact.",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "bold": "mechanically",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "bold": "The app was not tested",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "bold": "Translations are the analyst's own.",
+  "cards": [
+   "R88-002"
+  ]
+ },
+ {
+  "bold": "When the app was renamed",
+  "cards": [
+   "R88-001"
+  ]
+ },
+ {
+  "bold": "What is distinctive about the US (with counts):",
+  "cards": [
+   "R88-033"
+  ]
+ },
+ {
+  "bold": "What is distinctive about the UK (with counts):",
+  "cards": [
+   "R88-034"
+  ]
+ },
+ {
+  "bold": "Reading, with the US dominating both groups:",
+  "cards": [
+   "R88-035"
+  ]
+ },
+ {
+  "bold": "Recommendation:",
+  "cards": [
+   "R88-005"
+  ]
+ }
+]
