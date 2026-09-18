@@ -9,3 +9,6 @@ Temp/*
 
 # macOS
 .DS_Store
+
+# Claude Code session lock (pid/session id, not a project artifact)
+.claude/scheduled_tasks.lock
