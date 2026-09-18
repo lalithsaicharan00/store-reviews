@@ -397,9 +397,36 @@ The only writing rules, and they live in this prompt, not in the PRD:
    decided yet · 5 Features to research · 6 Must-haves · 7 Must never break ·
    8 Things we should do · 9 Things we should NOT do.
 6. Bullet template:
-   `- **Short title.** The point, then one or two lines of plain reasoning. Repeated in: [N](<link>), [M](<link>).`
+   `- **Short title.** The point, then one or two lines of plain reasoning. [Explainer card in FigJam](<url>). Repeated in: [N](<link>), [M](<link>).`
 7. Nuances go in too. A single-source finding with strong magnitude gets its own bullet in
    the relevant section, written the same way; its "Repeated in:" simply lists one report.
+8. **A point with an explainer card links to it**, immediately before "Repeated in:" so the link
+   is not buried under the report list. The cards live on the FigJam board and carry what the PRD
+   bullet deliberately leaves out: the plain-English definition, the numbers, the counter-evidence,
+   the conditions under which the point does not hold, and a ship checklist for designers and
+   developers. The bullet stays a decision; the card is where someone goes to understand it. Link
+   a specific node (`?node-id=<n>-<n>`), never the bare board URL.
+
+### The explainer cards
+
+One card per canonical point, on the team's FigJam board, built to the same shape so they can be
+read side by side:
+
+| Block | What it holds |
+|---|---|
+| Title + subtitle | The point in one line of plain English |
+| Meta strip | Ledger point id, confidence, apps out of 70, card count |
+| What it actually means | The definition, and explicitly what it is *not* |
+| The distinctions | The separate things reviewers mean by one word, and which of them actually constrains the build |
+| What it means in practice | Concrete rules, quoted from the reports where possible |
+| The evidence | The numbers, per report, including any measured trend |
+| Where the limit is / when it fails | The honest cost, the counter-evidence, and any trap the point sets |
+| When it does NOT apply | The positioning or conditions that switch the point off |
+| Ship checklist | Split by discipline: design, engineering, product, support |
+| Footer | Where the evidence came from, and that nothing on the card is opinion |
+
+Every claim on a card carries its report number. Cards are written from the ledger, never from
+memory, and a card is not a summary of the bullet: the bullet is the decision, the card is the case.
 
 
 ---
