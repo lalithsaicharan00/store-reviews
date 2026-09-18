@@ -211,6 +211,11 @@ These came from gaps found when a fresh context re-read a report. Each one is no
 - **When a theme appears in several tables (Part 2 lifts, Part 4 counts, Part 5 requests,
   Part 7 series), its card carries all of those numbers**, not only the first table read.
   (Report 1: the no-account card.)
+- **Part 9's own re-runs get their own `data-caveat` cards**, separate from the method card:
+  the sensitivity table (§9.D), the absence-test result table (§9.F) and the stated residual
+  error risk (§9.C). The method card records how the corpus was built; these record what the
+  re-runs showed and what the checks cannot catch — in report 90, dropping one storefront
+  removed two of the four headline findings. (Report 90.)
 - **The report's own method notes** (signal bands, denominators, skipped storefronts, regex
   corrections) go on a single `data-caveat` method card, not only in coverage.json.
 - **A theme that exists only as a row in a per-country or per-segment comparison table gets its

@@ -1,0 +1,170 @@
+[
+ {
+  "table_row": "review_id",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "app_id` / `app_name",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "country` / `country_name",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "title",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "body",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "vote_count` / `vote_sum",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "is_edited",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "Country records not identical, field by field, to the main-file record",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` total / per-country counts / storefront count / rating distribution",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "_state.json` collected counts vs main file",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "Exact title+body duplicates",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "<0.1%",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "0.5–<1%",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "1–<3%",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": "3–5%",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "table_row": ">5%",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "bold": "count, a percentage, the denominator, the market scope, the time window, a signal label and exact review IDs",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "bold": "0 differences",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "bold": "No deduplication was necessary or performed.",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "bold": "This is the expensive artefact.",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "bold": "mechanically",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "bold": "Translations are the analyst's own.",
+  "cards": [
+   "R90-002"
+  ]
+ },
+ {
+  "bold": "Substances.",
+  "cards": [
+   "R90-016"
+  ]
+ },
+ {
+  "bold": "What is distinctive about Russia (with counts):",
+  "cards": [
+   "R90-031"
+  ]
+ },
+ {
+  "bold": "Reading:",
+  "cards": [
+   "R90-033"
+  ]
+ },
+ {
+  "bold": "Recommendation:",
+  "cards": [
+   "R90-038"
+  ]
+ }
+]
