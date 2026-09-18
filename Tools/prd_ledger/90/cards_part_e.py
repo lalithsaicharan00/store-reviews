@@ -1,0 +1,7 @@
+# -*- coding: utf-8 -*-
+import sys; sys.path.insert(0, "Tools/prd_ledger/90")
+from _lib import c, table, save
+
+c(50, "§9.E table (verbatim); §9.E; §2.5", "data-caveat", "External sources, all accessed 13 September 2026 (verbatim): " + table("## 9.E External sources", 0) + " — the iTunes Lookup API supplied the per-storefront public ratings (14,806 across 37 storefronts, 4.913★ weighted) and the US and RU web listings supplied the histograms, the two ad-removal prices, the 'Contains Advertising' flag, the 'Data Used to Track You' privacy label, the Russian store name and chart position, and the full version history whose four quoted release notes date every era boundary in Part 7. Not available: downloads, revenue, conversion or refund rates; ad networks and categories (so the gambling-ad reports cannot be checked against what was actually served); developer responses, none found in the captured pages — and the Wayback Machine was not queried, so this report has no archived listing history at all. That last gap is why 'when ads were introduced or changed' stays unestablished (§2.5) while report 89, which did use archived listings, could date a price change to within a year.", "n/a", "mixed", "37 storefront lookups; 14,806 ratings; 2 web listings; 4 release notes quoted; no Wayback capture", "none", "method", "generalisable", ["9742639169", "14314195428"], "", "without an archived listing history, every 'when did this change' question in the corpus stays open")
+
+save("a")

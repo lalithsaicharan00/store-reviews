@@ -19342,7 +19342,8 @@
    "R90-034",
    "R90-035",
    "R90-047",
-   "R90-049"
+   "R90-049",
+   "R90-050"
   ],
   "reports": [
    24,
@@ -21176,7 +21177,7 @@
  {
   "id": "C294",
   "title": "When the pricing model changes, the historical review corpus keeps advertising the old one — state the current model on the listing and paywall, and honour every old receipt automatically",
-  "statement": "Report 76 (Way of Life, 7,764 reviews over 16 years): premium was a $4.99 one-time unlock from 2010 and became a subscription in 2023; in the subscription era (E6, 906 reviews) MON_SUBSCRIPTION is 40 reviews at mean 2.70★ (4.42% of the era, 15 of the corpus's 181 1★) and splits three ways — lifetime buyers told to subscribe again ('Ich hab mir die App 2015 oder so als voll Version gekauft', 1★; '之前永久内购没了？重新订阅？', 1★), new users who arrived expecting the one-time price because 'reviews said it was a one time payment' (3★), and prices differing week to week ('last week the price was $29, this week is $99', 4★); some veterans were grandfathered ('grandfathered into the new system', 5★), so the path existed but was not reliable; restore failures rose 0.91% → 1.55% and support silence peaked (SUP_NONE 9 of 20 in E6). A decade of 5★ reviews praising 'a one time charge' keeps recruiting users who then feel misled; §8.1 restore premium for any old receipt on any device without a subscription prompt, and show one stable price per region stating monthly / annual / lifetime. Related: [[C186]] (never revoke what earlier buyers paid for), [[C218]] (listing copy stays true), [[C113]] (one stable disclosed price), [[C003]] (lead with lifetime). Report 79 (Ripples / Checker): year-one reviews sold the app as 'no subscriptions… one time payment of $10'; when the model changed the description still said nothing about money at all and the only 'used to be great' review (1★) lists 'the lack of a subscription' among what it lost — 'a market that was sold a specific promise — one payment, no subscription — encountering a different one, with no listing text to mediate the change'. Report 86 (Today): 'I paid for this app and reviewed it years ago (when it was under a different pricing model)… for the $300 you're asking for now' (5★) — a decade of one-time-price reviews now sits beside a $299.99 SKU. Report 89 (Check Calendar): reviewers keep quoting 600円 through 2026-03 and $3.99 while the listing shows ¥780 / $4.99 — 'Prices quoted by reviewers are what they saw at the time, in their currency'; a 2026-05 reviewer records the change ('it used to be 600 yen, now 800').",
+  "statement": "Report 76 (Way of Life, 7,764 reviews over 16 years): premium was a $4.99 one-time unlock from 2010 and became a subscription in 2023; in the subscription era (E6, 906 reviews) MON_SUBSCRIPTION is 40 reviews at mean 2.70★ (4.42% of the era, 15 of the corpus's 181 1★) and splits three ways — lifetime buyers told to subscribe again ('Ich hab mir die App 2015 oder so als voll Version gekauft', 1★; '之前永久内购没了？重新订阅？', 1★), new users who arrived expecting the one-time price because 'reviews said it was a one time payment' (3★), and prices differing week to week ('last week the price was $29, this week is $99', 4★); some veterans were grandfathered ('grandfathered into the new system', 5★), so the path existed but was not reliable; restore failures rose 0.91% → 1.55% and support silence peaked (SUP_NONE 9 of 20 in E6). A decade of 5★ reviews praising 'a one time charge' keeps recruiting users who then feel misled; §8.1 restore premium for any old receipt on any device without a subscription prompt, and show one stable price per region stating monthly / annual / lifetime. Related: [[C186]] (never revoke what earlier buyers paid for), [[C218]] (listing copy stays true), [[C113]] (one stable disclosed price), [[C003]] (lead with lifetime). Report 79 (Ripples / Checker): year-one reviews sold the app as 'no subscriptions… one time payment of $10'; when the model changed the description still said nothing about money at all and the only 'used to be great' review (1★) lists 'the lack of a subscription' among what it lost — 'a market that was sold a specific promise — one payment, no subscription — encountering a different one, with no listing text to mediate the change'. Report 86 (Today): 'I paid for this app and reviewed it years ago (when it was under a different pricing model)… for the $300 you're asking for now' (5★) — a decade of one-time-price reviews now sits beside a $299.99 SKU. Report 89 (Check Calendar): reviewers keep quoting 600円 through 2026-03 and $3.99 while the listing shows ¥780 / $4.99 — 'Prices quoted by reviewers are what they saw at the time, in their currency'; a 2026-05 reviewer records the change ('it used to be 600 yen, now 800'). Report 90 (Quit Bad Habits & Addiction): the opposite constraint — with no archived listing history (the Wayback Machine was not queried, §9.E) the corpus is the only record of the app's past pricing and ad behaviour, and it disagrees with itself: one 2023 review already says 'only ads' while ad complaints as a pattern start in June 2024 and two 2026 reviewers describe ads as newly added. When the reviews are the only history, 'when did this change' cannot be answered at all.",
   "section": "do",
   "cards": [
    "R76-009",
@@ -21192,13 +21193,15 @@
    "R79-075",
    "R86-010",
    "R89-011",
-   "R89-036"
+   "R89-036",
+   "R90-050"
   ],
   "reports": [
    76,
    79,
    86,
-   89
+   89,
+   90
   ],
   "merged_from": []
  },

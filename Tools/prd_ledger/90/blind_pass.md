@@ -1,6 +1,6 @@
 # Blind pass — report 90
 
-The blind list was written by a fresh context that did not see `cards.jsonl`: `Temp/90-blind-list.md` (218 items, kept in Temp as in earlier batches). It was diffed item by item against the 46 cards written in-section.
+The blind list was written by a fresh context that did not see `cards.jsonl`: `Temp/90-blind-list.md`. It was written twice — a first pass of 218 items, then a finer-grained rewrite of 386 items (one line per code, quote and table row) after the first agent hit a session limit. Both were diffed item by item against the 46 cards written in-section; the finer list found one gap the coarser one had folded into a neighbouring item. The 386-item version is what `Temp/90-blind-list.md` now holds.
 
 ## Covered
 
@@ -13,8 +13,9 @@ Items 1–210 and 214–218 map to existing cards (header R90-001; method R90-00
 | 212 | §9.D sensitivity: the four re-runs (without the crash week 4.650★ and crash 10.6% → 0.2%; without Russia the widget 14.0% → 8.7% and tree growth 4.6% → 0.5%; without short reviews specific praise 46.4% → 53.5%) existed only as a pointer on the method card. Two of the four headline findings turn out to be Russian-storefront artefacts — a ledger-level fact with no card. | R90-047 (data-caveat) |
 | 211 | §9.C known residual error risk ("Помогает" alone coded as an outcome; drug mentions that may be jokes or slang; `SEG_TRIED_OTHERS` comparative wording) — the method card carried the check counts but not what the checks cannot catch. | R90-047 (data-caveat) |
 | 213 | §9.F absence tests: the pattern-by-pattern result table (Apple Watch 1, iPad 1, passcode 1, AI/chat 1, community 2, competitor named 2, "Краш" as *crush* excluded) sat outside the §0.8 absence card, which carried only the headline absences. | R90-048 (data-caveat) |
+| 359, 360 (386-item pass) | §9.E external sources: what was captured (37 storefront lookups, two web listings, the four release notes that date every era boundary) and what was not — no ad-network or category data, no developer responses, and **the Wayback Machine was not queried**, so this report has no archived listing history. That is why "when ads were introduced" stays unestablished here while report 89, which used archived listings, could date a price change. | R90-050 (data-caveat) |
 | 184 | §7.1 month table: the weakest non-crash months (2025-08 at 3.77★, 2023-07 at 2.00★) and the strongest volume months (2025-11, 2026-02) are only inside the verbatim table; the narrative names neither. This is the report-70 rule ("a series table's extreme value gets a timeline card when the narrative does not name it") recurring at month rather than year granularity. | R90-049 (timeline) |
 
 ## Rule added to Report Synthesis Prompt.md
 
-Part 9's own re-runs get their own `data-caveat` cards, separate from the method card: the sensitivity table (§9.D), the absence-test result table (§9.F) and the stated residual error risk (§9.C). The method card records how the corpus was built; these record what the re-runs showed and what the checks cannot catch — including, here, that dropping one storefront removes two of the four headline findings.
+Part 9's own re-runs and sources get their own `data-caveat` cards, separate from the method card: the sensitivity table (§9.D), the absence-test result table (§9.F), the stated residual error risk (§9.C) and the external-source table (§9.E), including what the external capture could **not** supply. The method card records how the corpus was built; these record what the re-runs showed and what the checks cannot catch — including, here, that dropping one storefront removes two of the four headline findings.

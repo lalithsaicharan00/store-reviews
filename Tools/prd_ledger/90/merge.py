@@ -57,6 +57,7 @@ ext("C240", " Report 90 (Quit Bad Habits & Addiction): ADS_TOO_MANY 18 (2.93%, m
 ext("C134", " Report 90 (Quit Bad Habits & Addiction): what the listing sells (smoking, alcohol, gambling, nail-biting) is narrower than what reviewers use it for — self-harm 13, drugs 8, phone addiction, face picking, swearing, a habit that caused stuttering — and the most-praised quality, a non-triggering minimal counter, is not what the description leads with.")
 ext("C214", " Report 90 (Quit Bad Habits & Addiction): FEATURE_THIN 12 (1.95%, mean 3.33★) — 'just a timer: start, stop'; 'no more complex than a timer' — the same comparison-to-a-free-primitive objection, here aimed at a free app, which is why it costs three stars instead of a refund.")
 ext("C016", " Report 90 (Quit Bad Habits & Addiction): REQ_RELAPSE_OPTIONS 4 — 'you can't pause and keep your progress'; users instead log a slip as a note to avoid zeroing two weeks ([[C308]]).")
+ext("C294", " Report 90 (Quit Bad Habits & Addiction): the opposite constraint — with no archived listing history (the Wayback Machine was not queried, §9.E) the corpus is the only record of the app's past pricing and ad behaviour, and it disagrees with itself: one 2023 review already says 'only ads' while ad complaints as a pattern start in June 2024 and two 2026 reviewers describe ads as newly added. When the reviews are the only history, 'when did this change' cannot be answered at all.")
 ext("C261", " Report 90 (Quit Bad Habits & Addiction): REQ_COLOURS_THEMES 7 (1.14%) — a colour per habit exists and reviewers want a different palette ('the colours are too toxic'), plus a dark theme that is already praised.")
 ext("C060", " Report 90 (Quit Bad Habits & Addiction): DEV_OTHER_APPS 5 (0.81%) — one buyer downloaded 'all your apps', another wants widgets 'across the whole trilogy'; the same July 2026 ad crash hit the developer's good-habits app, so the family shares its defects as well as its goodwill.")
 ext("C102", " Report 90 (Quit Bad Habits & Addiction): the pure abstinence direction — the number counts up from the last relapse and a relapse zeroes it; REQ_POSITIVE_HABITS 3 ask for the same product in positive wording ('the words refusal, bad habits, relapse are so-so'), which is the same counter with the sign flipped.")
@@ -75,7 +76,7 @@ M = {
  "R90-031":["C231","C130","C110"], "R90-032":["C231","C306","C062"], "R90-033":["C231","C062"], "R90-034":["C027","C231"], "R90-035":["C231","C246"],
  "R90-036":["C009","C246","C019","C103"], "R90-037":["C306","C031","C156","C094"], "R90-038":["C306","C031","C188"], "R90-039":["C307","C103","C114"], "R90-040":["C009","C107","C023"],
  "R90-041":["C273","C101","C308","C123"], "R90-042":["C217","C108"], "R90-043":["C003","C110","C218"], "R90-044":["C103","C162","C308","C085","C034"], "R90-045":["C019","C006","C307","C306","C009","C217"],
- "R90-046":["C036","C130"], "R90-047":["C231","C300"], "R90-048":["C085","C034","C094","C023"], "R90-049":["C231","C246"],
+ "R90-046":["C036","C130"], "R90-047":["C231","C300"], "R90-048":["C085","C034","C094","C023"], "R90-049":["C231","C246"], "R90-050":["C231","C294"],
 }
 cards = [json.loads(l) for l in open("Tools/prd_ledger/90/cards.jsonl") if l.strip()]
 ids = {c["id"] for c in cards}
