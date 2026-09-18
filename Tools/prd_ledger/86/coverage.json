@@ -1,0 +1,320 @@
+[
+ {
+  "table_row": "by_country/*.jsonl",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "_state.json",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "review_id",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "country`, `country_name",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "title`, `body",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "date",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "vote_count`, `vote_sum",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "is_edited",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "Distinct `review_id",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "Identical `(country, author, title, body)` tuples",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "Per-record byte equality, country file vs main",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "manifest.total_reviews",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "manifest.storefronts_with_reviews",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "manifest.reviews_per_country",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "manifest.rating_distribution",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "manifest.mean_rating` (3.971)",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "_state.json` `sum(collected)",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "_state.json` incomplete storefronts",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "< 0.1%",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "0.5% – < 1%",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "1% – < 3%",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "3% – 5%",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "table_row": "> 5%",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "bold": "This is the central product tension.",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "bold": "die Speicherung muss ineffizient programmiert sein",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "bold": "The size of the effect, stated carefully.",
+  "cards": [
+   "R86-009"
+  ]
+ },
+ {
+  "bold": "The app is now being updated again",
+  "cards": [
+   "R86-011"
+  ]
+ },
+ {
+  "bold": "Not present, and therefore never claimed:",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "bold": "refuses to write if any placeholder is left unresolved",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "bold": "Classification is hand judgement, not an algorithm.",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "bold": "Late eras are thin.",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "bold": "Accessibility evidence is absent.",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "bold": "Survivorship.",
+  "cards": [
+   "R86-002"
+  ]
+ },
+ {
+  "bold": "No social, sharing, community or competition features",
+  "cards": [
+   "R86-001"
+  ]
+ },
+ {
+  "bold": "Lark",
+  "cards": [
+   "R86-004"
+  ]
+ },
+ {
+  "bold": "Rauchentwöhnung",
+  "cards": [
+   "R86-004"
+  ]
+ },
+ {
+  "bold": "Depressiven Phasen",
+  "cards": [
+   "R86-004"
+  ]
+ },
+ {
+  "bold": "En quoi cette application s'intéressent à nos mauvaises habitudes?",
+  "cards": [
+   "R86-026"
+  ]
+ },
+ {
+  "bold": "更准确的认识自己",
+  "cards": [
+   "R86-026"
+  ]
+ },
+ {
+  "bold": "几天就把问题修正了",
+  "cards": [
+   "R86-031"
+  ]
+ },
+ {
+  "bold": "U:paywall_complaint` is concentrated at the bottom",
+  "cards": [
+   "R86-033"
+  ]
+ },
+ {
+  "bold": "Consequence for anyone reading the public rating:",
+  "cards": [
+   "R86-035"
+  ]
+ },
+ {
+  "bold": "该项目不再提供",
+  "cards": [
+   "R86-038"
+  ]
+ },
+ {
+  "bold": "No revenue, ARPU or LTV.",
+  "cards": [
+   "R86-036"
+  ]
+ },
+ {
+  "bold": "Distinctively American:",
+  "cards": [
+   "R86-041"
+  ]
+ },
+ {
+  "bold": "开发app难道不是为了能让更多的人用么？",
+  "cards": [
+   "R86-042"
+  ]
+ },
+ {
+  "bold": "6年間ほど習慣化を継続できている",
+  "cards": [
+   "R86-044"
+  ]
+ },
+ {
+  "bold": "Both groups are defined explicitly, and they are nearly the same set here.",
+  "cards": [
+   "R86-045"
+  ]
+ },
+ {
+  "bold": "建议ios9的都谨慎考虑内购",
+  "cards": [
+   "R86-021"
+  ]
+ },
+ {
+  "bold": "Верните",
+  "cards": [
+   "R86-049"
+  ]
+ },
+ {
+  "bold": "Caveat, stated because it matters:",
+  "cards": [
+   "R86-009"
+  ]
+ }
+]

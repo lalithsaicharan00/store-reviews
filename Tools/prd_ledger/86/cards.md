@@ -1,0 +1,741 @@
+# Cards — report 86
+
+Source: `App Store Reports/86. Today Habit tracker - For to-dos, routines & goals (REPORT).md`  
+67 cards. Generated from `cards.jsonl` by `cards_to_md.py` — edit the JSONL, not this file.
+
+## Contents
+
+- [Product rules](#product-rules) — 1
+- [Must-haves](#must-haves) — 2
+- [Must never break](#must-never-break) — 11
+- [Features](#features) — 6
+- [Monetization](#monetization) — 3
+- [Tactics the app used](#tactics-the-app-used) — 1
+- [Insights (the why)](#insights-the-why) — 8
+- [Audiences](#audiences) — 1
+- [Markets and languages](#markets-and-languages) — 6
+- [Dated events and trends](#dated-events-and-trends) — 11
+- [Positioning](#positioning) — 2
+- [Anti-patterns](#anti-patterns) — 2
+- [Things not to do](#things-not-to-do) — 3
+- [Things to do](#things-to-do) — 1
+- [Contradictions](#contradictions) — 1
+- [Data caveats and method](#data-caveats-and-method) — 8
+
+## Product rules
+
+### R86-060 — §8.9 experiment — re-examine the free tier with the corpus's own evidence: 1 habit → MON_FREE1 78 at 1.97★ (71 in 2016 alone; the complaint returned within months of the cap being restored ~2022); 3 habits → MON_FREE3 67 at 3.60★, the same grievance 1.63 stars higher; 3–5 habits → zero one-habit complaints in four years; MON_TRIAL_REQ 33 made identically in 2016 and 2024 — 'one habit is not a trial, it is a screenshot. A one-habit cap in an app whose paid value is multi-habit dashboards prevents the prospect from ever seeing the thing they would be buying'; caveat: the 1★ at a 1-habit cap come disproportionately from people who never used the app — removing them may raise the rating without raising revenue; §8.13 #1 A/B test with revenue, not rating, as the metric.
+
+- **Where:** §8.9; part 8 #9; §8.13 #1
+- **This app does:** 1-habit cap restored ~2022
+- **User reaction:** blocked-conversion
+- **Magnitude:** FREE1 78 / 1.97★; FREE3 67 / 3.60★; TRIAL_REQ 33; 0 complaints 2017–2020
+- **Direction for us:** product-rule · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `1346034110`, `8311997753`, `1346019622`, `10949219510`, `1351843491`
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C063 Free trial before purchase; C147 Let people use the product before they pay; C293 Raising a free habit cap by a couple of slots does not buy back sentiment — the objection re-forms at the new number; change what the cap gates or when it is hit, and instrument it; C296 The free tier must let the differentiator be experienced — a cap that hides the product's own thesis converts on nothing the user has felt
+
+## Must-haves
+
+### R86-025 — Onboarding and comprehension: UX_CONFUSE 74 (4.15%), UX_ONBOARD 20 — people cannot find check-in ('I could never figure out how to check in', 2★), cannot understand the custom chart or counter, cannot tell a skipped day from a missed one ('I can not to figure out what different between skipped and not to check in'), cannot find the statistics ('I only stumbled on the charts in the profile section by accident!', 5★); the cost stated plainly: 'The statistics are in the profile. You can't start the app with the list of goals… So I deleted it; otherwise I'd have bought it' (ch 1★) — a confused user who was willing to pay.
+
+- **Where:** §3.3 onboarding
+- **This app does:** check-in gesture and stats undiscoverable
+- **User reaction:** blocked-conversion
+- **Magnitude:** UX_CONFUSE 74 / 4.15%; UX_ONBOARD 20
+- **Direction for us:** must-have · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Review IDs:** `1659445486`, `1708111245`, `5692422621`, `7249989187`
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C142 Surface existing features where users look; C217 An unexplained metric reads as broken — explain the score on-screen; C234 Statistics stay readable on the free tier — gating the progress view removes the motivation loop the category sells
+
+### R86-059 — §8.8 experiment — give the one-page-per-habit model an escape hatch: REQ_DASHBOARD 70 (ten years), BUG_SWIPE 39, UX_FRICTION 41; 'the full-screen-photo model is the differentiator and the scaling problem. Do not remove it; make it optional past a threshold' — users have specified the fix: 'list as a default view; tap on an item will add a point; a habit image as a part of a row'; 'I want the task list shown on launch' (jp); 'the ability to not use a picture for every habit but rather just a simply background to make the app faster' (1★ — connecting the visual model to the performance problem).
+
+- **Where:** §8.8; part 8 #8
+- **This app does:** no list/overview view
+- **User reaction:** complaint
+- **Magnitude:** DASHBOARD 70; SWIPE 39; FRICTION 41
+- **Direction for us:** must-have · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Review IDs:** `5294830409`, `3440039586`, `2026175358`
+- **Canonical:** C079 Personal photos as habit icons; C254 An all-habits overview with one-tap check-off — never force one-habit-at-a-time navigation; C264 Log-entry friction is sacred — never add a tap to the logging path; a logging redesign is the highest-risk change in the product
+
+## Must never break
+
+### R86-006 — Reliability, not features, destroyed this product: U:bug_any 469 (26.27%, 2.89★); U:reliability (crash, won't launch, lag, glitch, broken by update) 234 (13.11%, 2.71★); bug mentions rise 12.36% → 50.85% of reviews from E1 to E5 while praise falls 77.87% → 33.9%; the corpus mean falls monotonically across five eras 4.16 → 4.14 → 3.59 → 3.51 → 3.07. Largest defect families (verbatim): Family | n | % of 1,785 | Band | Mean ★ ; BUG_CRASH | 126 | 7.06% | High-priority signal | 2.71 ; BUG_WATCH | 88 | 4.93% | Very strong signal | 2.98 ; BUG_PERF | 70 | 3.92% | Very strong signal | 2.99 ; BUG_NOTIF | 63 | 3.53% | Very strong signal | 2.57 ; BUG_LAUNCH | 58 | 3.25% | Very strong signal | 2.26 ; BUG_SWIPE | 39 | 2.18% | Meaningful signal | 3.95 ; BUG_WIDGET | 35 | 1.96% | Meaningful signal | 3.20 ; BUG_SYNC | 32 | 1.79% | Meaningful signal | 2.53
+
+- **Where:** §0.3; §0.3 table (verbatim); §3.3
+- **This app does:** n/a
+- **User reaction:** 1★-burst
+- **Magnitude:** bug_any 469 / 26.27%; reliability 234 / 2.71★; mean 4.16 → 3.07; CRASH 126; WATCH 88; PERF 70; NOTIF 63; LAUNCH 58 / 2.26★; SWIPE 39; WIDGET 35; SYNC 32
+- **Direction for us:** must-never-break · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `5541959561`, `5953889344`, `4921815578`, `1611850727`, `2433135123`
+- **Canonical:** C002 Ratings follow the offer, not the feature set; C022 Apple Watch app (done properly: timer, two-way sync); C031 Crashes / launch failures; C039 Reminders fire reliably, once; C040 Widgets must not go blank, stale or disagree with the app; C175 Updates must not break function or wipe progress
+
+### R86-007 — A performance bug that scales with success: the app slows in proportion to accumulated check-ins — BUG_PERF 70 (3.92%), 0.74% of E1 → 16.95% of E5; 'it takes about 5 seconds to register, if I'm registering a long streak of 50 day's or so, which is how I've been using it for 3 years, it takes so long I've stopped bothering' (gb 1★); 'past 1,000 days a single tap means a mysterious freeze then a crash' (jp 1★); '200 check-ins is not really a large amount of data; the storage must be inefficiently programmed' (de 3★); 'It can take over a minute from when you mark something as done… I've contacted support multiple times over the past 6 months' (1★); 'a habit tracker that punishes long streaks with latency drives away exactly the users who proved the product works' — 17 of the 70 also record leaving, being blocked or threatening to leave.
+
+- **Where:** §0.4; §3.3 (perf); §8.1
+- **This app does:** check-in latency grows with history size
+- **User reaction:** churn
+- **Magnitude:** BUG_PERF 70 / 3.92%, 0.74% → 16.95%; 17 of 70 churn signals
+- **Direction for us:** must-never-break · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Review IDs:** `3827656315`, `9295872427`, `11596711598`, `8580429365`, `1527351492`
+- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C083 Performance must not degrade with habit count; C303 Check-in latency must be independent of accumulated history — an app that slows with every completed day drives away exactly the users who proved it works and most likely paid
+
+### R86-013 — Data and privacy: the label declares no tracking; PR_PRIVACY 4, PR_NOADS 7, PR_SECURITY 3 vs PRIV_CONCERN 4 — three independent reports across three languages and three years that the paid privacy lock leaks the habit list: 'What is the point of protecting your goals with password / touchid / faceid if 3D Touch widget reveals all my habits even if I force-close the app?' (ua 4★); 'If the app keep opening on the background, no password is required to launch the app' (3★); 'can you briefly see the configured habits just before the fingerprint screen?' (jp 5★). Not establishable: any download/revenue figure, exact dates of the 3→5 and 5→1 cap changes, the date the one-time unlock was withdrawn, whether App Store replies were posted (replies by email and Twitter reported both ways: PR_DEV 39, SUP_NORESP 25).
+
+- **Where:** §2.4; §2.5
+- **This app does:** paid privacy lock leaks via widget / 3D Touch / background
+- **User reaction:** complaint
+- **Magnitude:** PRIV_CONCERN 4 (lock leak 3); PR_PRIVACY 4; PR_NOADS 7
+- **Direction for us:** must-never-break · **Report confidence:** Weak · **Generalisable:** generalisable
+- **Conditions:** a paid privacy feature that leaks is worse than none
+- **Review IDs:** `5116388115`, `2004605175`, `1449566698`
+- **Canonical:** C017 Passcode lock; C085 Address tracking / privacy visibly; C096 Privacy and discretion stack; C209 No sign-up wall before first use
+
+### R86-021 — Reliability breakdown: U:reliability 234 (13.11%, 2.71★) — BUG_CRASH 126, BUG_PERF 70, BUG_LAUNCH 58, BUG_UPDATE 42 (2.35%, 2.55★: 'a specific update broke this'), BUG_GLITCH 26; five datable crash waves: launch (Mar 2016), iOS 9/10 (Oct–Nov 2016), Face ID / Touch ID (Mar 2018), iOS 12 / watchOS 5 (Sep 2018), the black-screen build (Nov 2022).
+
+- **Where:** §3.3 reliability; §7.3 reference
+- **This app does:** n/a
+- **User reaction:** 1★-burst
+- **Magnitude:** reliability 234; CRASH 126; PERF 70; LAUNCH 58; UPDATE 42; 5 waves
+- **Direction for us:** must-never-break · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `5953889344`, `3259733326`, `1386797586`, `1477444905`
+- **Canonical:** C031 Crashes / launch failures; C175 Updates must not break function or wipe progress
+
+### R86-022 — Reminders that do not fire — BUG_NOTIF 63 (3.53%, 2.57★), 2016-04-04 → 2025-02-10, ten years never fully fixed: 'notifications are straight up not working for habits. I have 3 set up and they never go off'; 'The idea of the app is to have reminders so you develop habits. Reminders are extremely hit or miss'; 'out of ten habits it notifies one or two' (br); and a specific reproducible behaviour reported independently in 2017 and 2021 — 'if I don't check in every single day, the reminders stop all together' — missing a day silences the reminder, the opposite of what a habit app should do; 10 of 63 say it makes the app unusable.
+
+- **Where:** §3.3 reminders; §8.3
+- **This app does:** reminders stop after a missed day
+- **User reaction:** complaint
+- **Magnitude:** BUG_NOTIF 63 / 3.53% / 2.57★; unusable 10; stop-after-miss 2 (2017, 2021)
+- **Direction for us:** must-never-break · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Conditions:** a reminder that stops after a missed day abandons the user at the moment they need it
+- **Review IDs:** `1472871151`, `7333847009`, `12293267990`, `7936221496`, `1887236677`
+- **Canonical:** C039 Reminders fire reliably, once; C258 A 'nag until done' repeating reminder — the one reminder shape reviewers say no other app offers
+
+### R86-023 — Data loss — U:dataloss_any 55 (3.08%, 2.67★): BUG_DATALOSS 33, BUG_BACKUP 28, BUG_ICLOUD 17, BUG_SAVE 12; backup and restore is a paid feature, which makes these the most serious complaints — 12 of these reviewers also state they paid: 'this is the third time I've opened the app to find months worth of data has been randomly corrupted/lost… despite having paid extra to back it up' (1★); 'I lost my 3 years data due to an issue in restore backup' (it 1★); 'the crucial backup was overwritten and even the restore data was wiped' (jp, titled 'Farewell, Today'); 'iCloud was clearly on but there was no automatic backup — all the data is gone' (cn 1★); 'these people have lost ALL my information on 2 occasions' (pe 1★); REQ_ACCOUNT 3 ask for a login so history is not hostage to one device.
+
+- **Where:** §3.3 data loss; §8.4
+- **This app does:** paid iCloud/Dropbox backup that corrupts or overwrites
+- **User reaction:** 1★-burst
+- **Magnitude:** dataloss_any 55 / 3.08% / 2.67★; paid among them 12; REQ_ACCOUNT 3
+- **Direction for us:** must-never-break · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Review IDs:** `2955539119`, `5866189908`, `2168696471`, `9310883434`, `6432248651`
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C153 Automatic cloud backup on by default — never manual opt-in; C176 Never let fear of losing history be the reason people pay; C209 No sign-up wall before first use; C230 Sync merges an append-only, timestamped event log — never last-writer-wins state replacement
+
+### R86-038 — What goes wrong after purchase — U:purchase_friction 51 (2.86%, 2.61★) (verbatim): Failure | Code | n | Reading ; Purchase lost on reinstall / new device | MON_RESTORE | 18 | the largest single post-purchase failure ; The IAP itself fails | MON_IAP_FAIL | 11 | includes a March 2018 cluster where the product showed as "no longer available" ; Regret | MON_REGRET | 12 | — ; Refund sought | MON_REFUND | 7 | two report Apple refusing it ; Charged more than displayed | MON_OVERCHARGE | 2 | — ; Paid feature later taken away | MON_REGRESS | 3 | — — MON_RESTORE 18 (2016-03-28 → 2021-02-12), a nine-year unresolved defect attacking paying customers: 'I bought it last year — why does it charge again after reinstalling?'; 'I delete the app, now I install it again (on the same phone) and I have to buy the features again'; '¿Es una estafa?' (1★); 'I paid for the Premium twice' (2★); one found Settings → Restore Purchases himself — 'the function exists and is undiscoverable'; the March 2018 purchase outage: 5 reviews, mostly Chinese, report the IAP 'no longer available' ('I am trying to give you $4.99… It keeps failing. I wrote for help and no response', 1★); MON_REGRESS 3 — features taken back after purchase ('you have to pay to use your own pictures and completely took everything i had on my profile off to do so', 2023; a one-time buyer 'now unable to manage habits at all', 2026); MON_REFUND 7, two report Apple refusing.
+
+- **Where:** §5.4 table (verbatim); §5.4; §8.2
+- **This app does:** restore undiscoverable; IAP outage; paid features withdrawn
+- **User reaction:** 1★-burst
+- **Magnitude:** purchase_friction 51 / 2.61★; RESTORE 18; IAP_FAIL 11; REGRET 12; REFUND 7; OVERCHARGE 2; REGRESS 3
+- **Direction for us:** must-never-break · **Report confidence:** Meaningful · **Generalisable:** generalisable
+- **Review IDs:** `1698805807`, `5727531937`, `6868594425`, `13517933118`, `2274068869`, `2284049297`, `2568596703`, `9814749006`, `14015405307`
+- **Canonical:** C033 Restore purchase and entitlements must work immediately; C065 Paying customers are the highest 1★ risk — every paid feature must work; C142 Surface existing features where users look; C186 Never revoke what earlier buyers paid for when the model changes; C191 Never shrink a tier someone already holds — a paid tier's limits, or free capacity a user has already filled
+
+### R86-052 — §8.1 immediate fix — make check-in latency independent of history size: write latency grows with accumulated check-ins (diagnosed at ~200, total failure past 1,000, 5 seconds per tap after three years, over a minute); 24.3% of those reviewers also record leaving or being blocked; 'the highest-leverage fix in the report because of who it hits: the users with the longest histories are the ones who proved the product works, are most likely to have paid, and are most likely to be publicly enthusiastic'; 'test it the way users experience it: seed 20 habits × 1,000 check-ins and measure tap-to-confirmation. Do not test on a fresh install.'
+
+- **Where:** §8.1; part 8 #1
+- **This app does:** latency proportional to history
+- **User reaction:** churn
+- **Magnitude:** BUG_PERF 70 / 3.92% (16.95% of E5); churn among them 24.3%
+- **Direction for us:** must-never-break · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Review IDs:** `11596711598`, `9295872427`, `3827656315`, `8580429365`
+- **Canonical:** C083 Performance must not degrade with habit count; C303 Check-in latency must be independent of accumulated history — an app that slows with every completed day drives away exactly the users who proved it works and most likely paid
+
+### R86-053 — §8.2 immediate fix — restore purchases reliably and make restore discoverable: MON_RESTORE 18 over nine years plus IAP_FAIL 11 and OVERCHARGE 2; reviewers reinstall, lose premium and conclude they were scammed; one found Settings → Restore Purchases himself — 'the function exists and is undiscoverable'; fix receipt validation and 'surface restore at the paywall, not buried in Settings. Every user hitting the paywall who has already paid is a support ticket and a one-star review.'
+
+- **Where:** §8.2; part 8 #2
+- **This app does:** restore buried in Settings
+- **User reaction:** 1★-burst
+- **Magnitude:** RESTORE 18; IAP_FAIL 11; OVERCHARGE 2
+- **Direction for us:** must-never-break · **Report confidence:** Meaningful · **Generalisable:** generalisable
+- **Review IDs:** `6868594425`, `5727531937`, `1698805807`
+- **Canonical:** C033 Restore purchase and entitlements must work immediately; C142 Surface existing features where users look
+
+### R86-054 — §8.3 immediate fix — reminders must fire and must not stop when a user misses a day: BUG_NOTIF 63 across the full life of the app, 10 say it makes the app useless; the behaviour reported in 2017 and 2021 — 'the app seems to stop its reminders even if you miss just one activity so the following day, you don't get a reminder (surely this is the most important time to have a reminder?)' — 'a habit app that goes quiet precisely when the user lapses has inverted its own purpose'.
+
+- **Where:** §8.3; part 8 #3
+- **This app does:** reminders silenced after a missed day
+- **User reaction:** complaint
+- **Magnitude:** BUG_NOTIF 63; stop-after-miss 2
+- **Direction for us:** must-never-break · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Review IDs:** `1712510655`, `7936221496`
+- **Canonical:** C039 Reminders fire reliably, once; C258 A 'nag until done' repeating reminder — the one reminder shape reviewers say no other app offers
+
+### R86-055 — §8.4 immediate fix — never lose data, and never lose it from a paid backup: 12 of 55 data-loss reviewers had paid and backup is the paid feature (a wiped three-year history; a backup overwritten by the restore flow; 'lost ALL my information on 2 occasions'); minimum bar: restore must never destroy the backup it is reading, a failed restore must leave existing data intact, covers/photos must survive a restore; the right shape is probably optional account-based sync — not mandatory, because on-device data is something reviewers actively praise.
+
+- **Where:** §8.4; part 8 #4
+- **This app does:** paid backup that overwrites itself
+- **User reaction:** 1★-burst
+- **Magnitude:** dataloss_any 55; paid 12; REQ_ACCOUNT 3; PR_PRIVACY 4
+- **Direction for us:** must-never-break · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Review IDs:** `5866189908`, `2168696471`, `6432248651`, `2955539119`
+- **Canonical:** C034 Data must never be lost on update, reinstall or phone change; C176 Never let fear of losing history be the reason people pay; C209 No sign-up wall before first use; C230 Sync merges an append-only, timestamped event log — never last-writer-wins state replacement
+
+## Features
+
+### R86-019 — The depth layer — cards, stats, customisation, Health: U:depth_differentiator 192 (10.76%, 4.72★) — PR_CARDS 70, PR_STATS 65, PR_CUSTOM 87, PR_HEALTHKIT 38, PR_JOURNAL 24; 'EVERYTHING that is in your Apple Healthkit can be displayed… I tried all popular health dashboards and activity tracker, but this is miles ahead'; ''lead indicators' like calories consumed beside 'lag indicators' like your weight'; a weight graph from HealthKit and a distance-swum card (jp); 'I use it as sort of a memory box for things I've done'.
+
+- **Where:** §3.2 depth layer
+- **This app does:** paid cards with Health metrics, counters, charts, journal
+- **User reaction:** praise
+- **Magnitude:** depth 192 / 10.76% / 4.72★; HEALTHKIT 38; CUSTOM 87; STATS 65; JOURNAL 24
+- **Direction for us:** build-paid · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `1451883166`, `2054180552`, `1808438163`, `1503438365`
+- **Canonical:** C012 Week / month / year grid views; C021 Apple Health integration; C144 Habits, focus timer and journal in one simple app; C234 Statistics stay readable on the free tier — gating the progress view removes the motivation loop the category sells
+
+### R86-026 — The standing request list — demands the product never answered (verbatim): Request | Code | n | % | Band | First | Last | Status ; A widget (NC, then iOS-14 home screen) | REQ_WIDGET | 47 | 2.63% | Meaningful signal | 2016-03-10 | 2025-12-15 | NC widget shipped 2016, lost 2021, restored 2021; home-screen widget never shipped ; See all habits at once | REQ_DASHBOARD | 70 | 3.92% | Very strong signal | 2016-03-21 | 2026-07-13 | never shipped ; Apple Watch / more complications | REQ_WATCH | 34 | 1.90% | Meaningful signal | 2016-03-11 | 2021-02-21 | app shipped 2017; Infograph complications never ; Third-party / Shortcuts integration | REQ_INTEGRATION | 34 | 1.90% | Meaningful signal | 2016-03-16 | 2026-03-13 | URL scheme only ; More / better frequency options | REQ_FREQ | 27 | 1.51% | Meaningful signal | 2016-03-11 | 2021-01-31 | partially ; iPad version | REQ_IPAD | 27 | 1.51% | Meaningful signal | 2016-03-14 | 2026-03-19 | never, in 10 years ; More / better cover photos | REQ_IMAGES | 23 | 1.29% | Meaningful signal | 2016-08-03 | 2022-08-19 | never ; More card types | REQ_CARDS | 29 | 1.62% | Meaningful signal | 2016-03-15 | 2023-01-11 | never ; Richer reminder control | REQ_NOTIF_OPTS | 25 | 1.40% | Meaningful signal | 2016-03-26 | 2020-05-25 | never ; A timer / duration tracking | REQ_TIMER | 18 | 1.01% | Meaningful signal | 2016-03-11 | 2020-02-03 | never ; Back-fill a missed day | REQ_BACKFILL | 18 | 1.01% | Meaningful signal | 2016-05-09 | 2021-12-21 | partially, then made harder ; Bad-habit / limit tracking | REQ_BREAKBAD | 15 | 0.84% | Emerging signal | 2016-09-12 | 2026-03-13 | never — despite the listing advertising it ; Mac / desktop / web | REQ_MAC | 14 | 0.78% | Emerging signal | 2016-03-14 | 2021-01-06 | never ; Export data | REQ_EXPORT | 14 | 0.78% | Emerging signal | 2016-08-21 | 2021-02-14 | partial ("Manage Data", 2018) ; Note per check-in | REQ_NOTE | 12 | 0.67% | Emerging signal | 2017-08-15 | 2022-08-19 | never ; Archive / pause a habit | REQ_ARCHIVE | 11 | 0.62% | Emerging signal | 2017-11-10 | 2022-11-01 | never ; Reorder / sort habits | REQ_SORT | 11 | 0.62% | Emerging signal | 2018-01-03 | 2020-10-13 | added, but slow (#1376, #1403) ; Categories / grouping | REQ_CATEGORY | 11 | 0.62% | Emerging signal | 2016-08-29 | 2023-01-11 | never ; Skip a day without breaking the streak | REQ_SKIP | 11 | 0.62% | Emerging signal | 2017-02-13 | 2020-03-09 | added, but nobody understands it ; Auto check-in from Health | REQ_AUTOCHECK | 11 | 0.62% | Emerging signal | 2017-11-21 | 2021-08-02 | never ; Record a *missed* day explicitly | REQ_FAILMARK | 6 | 0.34% | Weak signal | 2017-04-24 | 2018-12-20 | never — a home-screen widget never shipped (NC widget shipped 2016, lost 2021, restored 2021), an overview never, Infograph complications never, iPad never in 10 years, more cover photos never, more card types never, richer reminder control never, a timer never, back-fill partially then made harder, bad-habit tracking never despite the listing advertising it, Mac/web never, export partial, a note per check-in never, archive/pause never, sort added but slow, categories never, skip added but nobody understands it, auto check-in from Health never, an explicit missed-day mark never.
+
+- **Where:** §3.4 table (verbatim); §3.4
+- **This app does:** n/a
+- **User reaction:** complaint
+- **Magnitude:** REQ_DASHBOARD 70; WIDGET 47; WATCH 34; INTEGRATION 34; CARDS 29; FREQ 27; IPAD 27; NOTIF_OPTS 25; IMAGES 23; TIMER 18; BACKFILL 18; BREAKBAD 15; MAC 14; EXPORT 14; NOTE 12; ARCHIVE 11; SORT 11; CATEGORY 11; SKIP 11; AUTOCHECK 11; FAILMARK 6
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** generalisable
+- **Review IDs:** `2223367800`, `3610997192`, `7645092267`
+- **Canonical:** C009 Basic widgets, icons and colours are free; C010 Backfill missed days / edit start date; C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C019 Quit-habit / bad-habit mode; C020 Data export / backup / CSV; C021 Apple Health integration; C022 Apple Watch app (done properly: timer, two-way sync); C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C043 Flexible / custom frequency — N times per week, specific weekdays, counts — with non-scheduled days neutral in the statistics; C044 Mac / desktop / web app; C045 Grouping / folders / categories / tags; C046 Shortcuts / Siri / URL scheme / API; C066 Focus timer; C073 Manual reordering, renaming and editing of habits/tasks — free; C141 Native iPad layout; C144 Habits, focus timer and journal in one simple app; C170 Configurable day boundary and hemisphere seasons; C172 Per-day / per-habit notes and journal text; C227 A 'graduated' state — keep tracking a mastered habit without it occupying an active slot; C254 An all-habits overview with one-tap check-off — never force one-habit-at-a-time navigation; C256 Skip, miss and not-yet-logged are visibly distinct states, and the stats explain which is which
+
+### R86-027 — Archive/pause a habit — the most-upvoted request in the corpus (22 up / 36): 'could you add a way to stop a habit? Sometimes a habit is already formed or no longer needed, but currently you can only delete it, and all the data goes with it — a great pity' (cn 5★) — 'the design forces a user who succeeded to destroy their record of succeeding'; restated across five years and four languages (REQ_ARCHIVE 11 + REQ_SKIP 11 = 21); skip was added but nobody understands it; a depressive user uses skip to 'sort days when I felt bad out of the streak'.
+
+- **Where:** §3.4 archive/pause; §8.6
+- **This app does:** no archive; delete destroys history; skip exists but unexplained
+- **User reaction:** complaint
+- **Magnitude:** REQ_ARCHIVE 11; REQ_SKIP 11; top-voted request 22/36
+- **Direction for us:** must-have · **Report confidence:** Meaningful · **Generalisable:** generalisable
+- **Review IDs:** `2223367800`, `1562859639`, `5692422621`
+- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C216 A forgiving long-run measure — cumulative or decaying credit that a missed day does not zero — alongside streaks; C227 A 'graduated' state — keep tracking a mastered habit without it occupying an active slot
+
+### R86-029 — A note per check-in — the second-most-upvoted request (31 up / 47): 'it would be great if each check-in could carry a note… to record it at that point in time. That way you can know yourself more accurately' (cn 5★); REQ_NOTE 12 (2017 → 2022), never shipped despite a journal card existing.
+
+- **Where:** §3.4 note per check-in
+- **This app does:** journal card exists; per-check-in note does not
+- **User reaction:** complaint
+- **Magnitude:** REQ_NOTE 12; votes 31/47
+- **Direction for us:** build-free · **Report confidence:** Emerging · **Generalisable:** generalisable
+- **Review IDs:** `3610997192`
+- **Canonical:** C172 Per-day / per-habit notes and journal text
+
+### R86-056 — §8.5 immediate fix — ship the iOS home-screen widget: REQ_WIDGET 47, the only request that grows as the corpus shrinks (1.98% → 16.95%), home-screen requests 2020-09 → 2025-12; conversion evidence is unusually direct — 'they urgently need a widget and I swear I'd pay premium'; 'its lack of a widget means I'll probably need to look for something else'; the NC widget's history proves the value: the primary interface when it existed (PR_WIDGET 28, 4.50★), 11 complaints in six languages when it vanished for two months.
+
+- **Where:** §8.5; part 8 #5
+- **This app does:** no home-screen widget in 5.5 years
+- **User reaction:** blocked-conversion
+- **Magnitude:** REQ_WIDGET 47; PR_WIDGET 28 / 4.50★; removal complaints 11
+- **Direction for us:** build-free · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Review IDs:** `10949219510`, `12176761820`, `7786249554`
+- **Canonical:** C009 Basic widgets, icons and colours are free; C155 Never remove a feature people bought the app for — add alongside, do not replace
+
+### R86-057 — §8.6 experiment — let a habit be paused, archived or legitimately skipped: REQ_ARCHIVE 11 + REQ_SKIP 11, the corpus's most-upvoted request; 'the current design forces a user who has succeeded to delete their habit and destroy the record of succeeding. That is a strange thing for a habit app to do'; two needs — archive ('already formed or no longer needed, but currently you can only delete it') and skip (illness, travel, 'a bad mental-health day' — one uses it to manage depressive episodes and calls it the reason the app worked); a skip feature already exists and nobody understands it — three ask what it does and one reports it damaging streak statistics: 'fixing the explanation may be worth more than building anything'.
+
+- **Where:** §8.6; part 8 #6
+- **This app does:** no archive; skip exists but unexplained and stat-damaging
+- **User reaction:** complaint
+- **Magnitude:** ARCHIVE 11; SKIP 11; top-voted request 22/36; skip-confusion 3
+- **Direction for us:** must-have · **Report confidence:** Meaningful · **Generalisable:** generalisable
+- **Review IDs:** `2223367800`, `1562859639`, `5692422621`
+- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C216 A forgiving long-run measure — cumulative or decaying credit that a missed day does not zero — alongside streaks; C227 A 'graduated' state — keep tracking a mastered habit without it occupying an active slot; C256 Skip, miss and not-yet-logged are visibly distinct states, and the stats explain which is which
+
+## Monetization
+
+### R86-012 — Free / paid classification (verbatim): Capability | Status | Basis ; Habit tracking, check-in, streak calendar | Free, but capped at 1 habit today | listing + #1684, #1690, #1691, #1710, #1759 ; Number of habits | Paid beyond the cap (cap has been 1 → 3 → 5 → 1 over ten years) | §0.6 ; Custom photo covers / premium galleries | Paid — *and moved behind payment after being free*, taking existing covers with it | listing + #1734 ; Cards beyond a small number | Paid | listing + #1690 ; Premium cards (incl. the stress/"limbic" card) | Paid | listing + #1293, #1323, #1524 ; iCloud Drive / Dropbox backup and restore | Paid | listing + #1219, #1156 ; Touch ID / Face ID / passcode lock | Paid | listing + #66 (objects to this on principle) ; Reminders, widget, Apple Watch app, Health integration | Free | no review reports them gated ; Advertising | None, ever | §9.F ; Trial | None. The free tier *is* the trial — the most-requested monetisation change in 2016 was a real one (MON_TRIAL_REQ 33, 1.85%) | §5.5 — habit tracking free but capped at 1 habit today; custom photo covers moved behind payment after being free, taking existing covers with it; cards beyond a small number, premium cards, backup/restore and the Face ID lock are paid (one objects on principle to paying for a lock); reminders, widget, Watch and Health free; no advertising ever; no trial — the free tier is the trial, and a real trial was the most-requested monetisation change in 2016 (MON_TRIAL_REQ 33, 1.85%); the one-time → subscription transition is bounded between Aug 2021 and Jul 2022.
+
+- **Where:** §2.3 table (verbatim); §2.3
+- **This app does:** free: 1 habit, reminders, widget, Watch, Health; paid: habits, covers, cards, backup, lock; no trial
+- **User reaction:** mixed
+- **Magnitude:** MON_TRIAL_REQ 33 / 1.85%; 112 reviews name a price
+- **Direction for us:** undecided · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `8311997753`, `1918053513`
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C017 Passcode lock; C063 Free trial before purchase; C147 Let people use the product before they pay; C176 Never let fear of losing history be the reason people pay
+
+### R86-020 — One-time pricing as a product feature: PR_ONETIME 23 (4.61★), PR_WORTH 73 (4.09%, 4.84★), MON_DEFEND 44 (2.46%) — reviewers arguing against other reviewers' price complaints.
+
+- **Where:** §3.2 one-time pricing
+- **This app does:** one-time ~$4.99 (2016–2021)
+- **User reaction:** purchase-driver
+- **Magnitude:** PR_ONETIME 23; PR_WORTH 73 / 4.84★; MON_DEFEND 44
+- **Direction for us:** build-paid · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Review IDs:** `1626756462`, `1708111245`
+- **Canonical:** C003 Lead with a one-time lifetime purchase — and keep it visibly on the shelf if a subscription is ever added beside it; C061 Goodwill conversion — a generous free tier and 'support the devs'; C064 Price level — where 'fair' turns into 'too expensive'
+
+### R86-039 — Upgrade barriers — MON_WILLBUY 43 is the most actionable code, people saying exactly what would make them pay (verbatim): Condition stated | Example ; Fix the Watch | "I will gladly pay for the full version but I really need it to work on my watch" — #872, 1637702429, us ; Ship a widget | "Les urgen widget y les juro pago el premium" (*they urgently need a widget and I swear I'd pay premium*) — #1749, 10949219510, mx ; Ship an iPad version | "Si la tuviesen para Ipad la compraría" — #1735, 9820894783, es ; Add every-N-days frequency | "If the app had this capability, I would rate it 5 stars and purchase the full version" — #608, 1494360640, us ; Add weekday-only reminders | "新增只工作日提醒。那么😊我立马付费" (*add weekday-only reminders and I'll pay immediately*) — #1160, 2492317967, cn ; Make the UI comprehensible | "Darum habe ich sie gelöscht, ansonsten hätte ich sie gekauft" (*so I deleted it, otherwise I'd have bought it*) — #1637, 7249989187, ch ; Fix the photo gallery | "I won't update to premium until the gallery is fixed" — #1510, 5535282962, us ; Just update the app | "I will gladly pay for an update if that is what is slowing the development down" — #1471, 4957079710, us — fix the Watch, ship a widget ('they urgently need a widget and I swear I'd pay premium'), an iPad version, every-N-days frequency ('I would rate it 5 stars and purchase the full version'), weekday-only reminders ('I'll pay immediately'), a comprehensible UI, a fixed gallery, 'just update the app'; and the trial objection — MON_TRIAL_REQ 33 (1.85%): 'Expand the free app to allow a proper trial and then ask for money' (2016); 'one is not enough for a trial' (2024) — 'eight years apart, the same sentence'.
+
+- **Where:** §5.5 table (verbatim); §5.5
+- **This app does:** 1-habit free tier as the only trial
+- **User reaction:** blocked-conversion
+- **Magnitude:** WILLBUY 43 / 2.41%; TRIAL_REQ 33 / 1.85%
+- **Direction for us:** research · **Report confidence:** Meaningful · **Generalisable:** generalisable
+- **Review IDs:** `1637702429`, `10949219510`, `9820894783`, `1494360640`, `2492317967`, `7249989187`, `5535282962`, `4957079710`, `1346019622`, `1346522458`
+- **Canonical:** C009 Basic widgets, icons and colours are free; C022 Apple Watch app (done properly: timer, two-way sync); C043 Flexible / custom frequency — N times per week, specific weekdays, counts — with non-scheduled days neutral in the statistics; C063 Free trial before purchase; C141 Native iPad layout; C147 Let people use the product before they pay; C296 The free tier must let the differentiator be experienced — a cap that hides the product's own thesis converts on nothing the user has felt
+
+## Tactics the app used
+
+### R86-067 — Two launch-era tactics with measured outcomes: shipping as an Apple Editors' Choice (MKT_EDITORS 6) brought a wave that crashed and hit a one-habit paywall — 209 reviews in March 2016 at 3.11★, 12.77% of the entire ten-year corpus pinned at 3.25★; two weeks in, raising the free cap from 1 to 3 habits was noticed within a day and converted an angry 1★ into a full-price purchase ('because they actually listened to there customers I just paid full price for it!') and silenced the cap complaint for four years.
+
+- **Where:** §7.3 Wave 1 (Editors' Choice); §7.6 (free tier 1→3); §0.6
+- **This app does:** Editors' Choice launch; cap raised 1 → 3 within a fortnight
+- **User reaction:** mixed
+- **Magnitude:** 2016-03: 209 reviews / 3.11★; cap complaints 71 (2016) → 0 (2017–2020)
+- **Direction for us:** do · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `1345892603`, `1351843491`, `1346034110`
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C059 Be visibly responsive; fixes bring reviewers back; C225 A one-off free promotion (App of the Week, partner promo) acquires durable users; C293 Raising a free habit cap by a couple of slots does not buy back sentiment — the objection re-forms at the new number; change what the cap gates or when it is hit, and instrument it
+
+## Insights (the why)
+
+### R86-004 — The product's differentiator is visual and it worked for ten years: PR_DESIGN 460 (25.77%, 4.33★, 2016 → 2026), the single largest theme; with the per-habit cover photo (PR_PHOTOS 97, 5.43%) the visual union is 523 (29.30%, 4.36★); reviewers treat it as the mechanism, not decoration — 'I'm a very visual person, so the combination of large pictures and colourful calendars/graphs is great. I really feel motivated to tick things off, more than any other habit app' (4★); custom backgrounds named as the one reason productivity improved most across 15 trackers in three years; 'It sets a craving, when I see the image, I want to accomplish the goal'; paired with simplicity (PR_SIMPLE 361, 20.22%, 4.68★) this is what 'best in category' rests on — PR_BEST 204 (11.43%), 4.78★, the highest mean of any large theme.
+
+- **Where:** §0.1; §3.2 (design)
+- **This app does:** full-screen photo per habit; free stock covers, paid custom
+- **User reaction:** praise
+- **Magnitude:** PR_DESIGN 460 / 25.77% / 4.33★; visual union 523 / 29.30%; PR_PHOTOS 97; PR_SIMPLE 361 / 4.68★; PR_BEST 204 / 4.78★
+- **Direction for us:** build-free · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Conditions:** a photo per habit is a craving mechanism, not decoration
+- **Review IDs:** `2337983734`, `1478570559`, `2636687666`, `3581019264`, `3610997192`
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C079 Personal photos as habit icons; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek; C185 Aesthetic and a polished onboarding convert; they do not retain
+
+### R86-015 — The visual model — beauty is functional for a habit app because it makes you want to open it: 'because the design is beautiful, motivation rises easily — a surprisingly important point' (jp 4★); 'So beautiful that it makes me want to just do the items so I can click them off'; 'if it isn't all there in front of me in an endearing way, then I slack off and say NOPE'; 'It changes habit tracking from a chore into a fun experience I enjoy and look forward to'; a Good Design Award recipient in broadcast graphics: 'one of the most thoughtfully designed apps I have used' (2026).
+
+- **Where:** §3.2 visual model
+- **This app does:** photo-per-habit visual design
+- **User reaction:** praise
+- **Magnitude:** PR_DESIGN 460 / 25.77%; PR_PHOTOS 97; union 523 / 29.30% / 4.36★
+- **Direction for us:** build-free · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `3440039586`, `1863740117`, `2914912972`, `1458034202`, `13875862512`
+- **Canonical:** C079 Personal photos as habit icons; C185 Aesthetic and a polished onboarding convert; they do not retain
+
+### R86-016 — Simplicity is defined negatively — the absence of what rivals do: 'No frills, no fuss—no need to sit through way-too-long animations and stories and celebrations every time you do something' (4★); 'a check-in app doesn't need lots of frills; this is just right' (cn); 'It doesn't give you confetti or a cookie but it helps form that path in your brain'; 'Perfect app. Don't ruin it with clutter!'.
+
+- **Where:** §3.2 simplicity
+- **This app does:** minimal check-in, no celebrations
+- **User reaction:** praise
+- **Magnitude:** PR_SIMPLE 361 / 20.22% / 4.68★
+- **Direction for us:** product-rule · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `9243354141`, `1881181884`, `1795611028`, `1427635117`
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C024 Streaks / gamification; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek
+
+### R86-018 — Motivation and outcomes: PR_MOTIVATION 184 (10.31%, 4.83★); PR_OUTCOME 106 (5.94%, 4.84★ — the highest mean in the corpus): 'App helped me drop 60lbs'; 'I haven't eaten meat in 50 days'; 'helped me quit drinking soda… over two months'; 'Makes learning 5 languages a breeze!'; '200 days of fitness' (cn); quitting smoking (a medical student, de); 'I've sustained habit-formation for about 6 years' (jp, 2026); and one on the mechanism — 'I started using this app to get a better grip on my depressive phases, and to sort days when I felt bad out of the streak. Over time it became easier to assess my successes' (de 5★) — describing the skip request as a mental-health tool.
+
+- **Where:** §3.2 motivation and outcomes
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** PR_MOTIVATION 184 / 4.83★; PR_OUTCOME 106 / 4.84★
+- **Direction for us:** none · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `2972263508`, `1391838159`, `1362961738`, `1505874152`, `4107813841`, `1553250877`, `13496344540`, `1562859639`
+- **Canonical:** C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface; C140 Market the generic-tracker use case; C216 A forgiving long-run measure — cumulative or decaying credit that a missed day does not zero — alongside streaks
+
+### R86-024 — The navigation model people fight with: BUG_SWIPE 39 (2.18%) — horizontal swipe between habits conflicting with vertical scroll — 2016-03-11 → 2024-08-11 in seven languages, the single longest-running unfixed complaint ('about half the time, instead of going sideways… it starts going up', 2016; 'Same same since summer last year at least', 2018; 'apparently not improved for a year', 2019); with UX_FRICTION 41 (too many taps) and REQ_DASHBOARD 70 (3.92%, see all habits at once, 2016-03-21 → 2026-07-13) this is one complaint: 'the one-page-per-habit model does not scale past a handful of habits' — 'Requiring each habit to be its own page makes this impractical for tracking more than a small number of items' (2★); 'I have more than 30 habits to track… please minimize that dashboard so i could see all my habits at once' (2026, 2★).
+
+- **Where:** §3.3 navigation model; §8.8
+- **This app does:** one full-screen page per habit; no overview
+- **User reaction:** complaint
+- **Magnitude:** BUG_SWIPE 39 (10 years); UX_FRICTION 41; REQ_DASHBOARD 70 / 3.92% (10 years)
+- **Direction for us:** must-have · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Conditions:** the signature design choice is also the scaling ceiling
+- **Review IDs:** `1346490678`, `2229824122`, `3646704940`, `1501989659`, `14293434159`, `2250385177`
+- **Canonical:** C012 Week / month / year grid views; C254 An all-habits overview with one-tap check-off — never force one-habit-at-a-time navigation; C264 Log-entry friction is sacred — never add a tap to the logging path; a logging redesign is the highest-risk change in the product
+
+### R86-037 — What triggers a purchase — MON_TRIGGER 18 (verbatim): Trigger | Example ; More habits (the cap) | "習慣を増やしたかったので、有料版を使っています" (*I wanted more habits, so I use the paid version*) — #424, 1454413050, jp ; Custom cover photos | "I purchased the full thing just because to put my own photo covers" — #572, 1483615798, us ; The cards / motivation boards | "The addition of cards which let you create little motivation boards was what made me pay for the full version" — #104, 1347650463, gb ; The developer listening | "because they actually listened to there customers I just paid full price for it!" — #169, 1351843491, us ; The Watch app | "I bought this app for the watch incorporation" — #1025, 1951004228, ca ; One specific premium card | "I just bought the premium version to calculate my stress level" — #1323, 3555120788, de ; Supporting the developer | MON_SUPPORT_DEV 8 reviews — "I bought the full version to support an app I use often" — #242, 1364442019, us — more habits ('I wanted more habits, so I use the paid version', jp), custom cover photos ('just because to put my own photo covers'), the cards ('little motivation boards was what made me pay'), the developer listening ('because they actually listened… I just paid full price'), the Watch app, one specific premium card ('to calculate my stress level'), supporting the developer (MON_SUPPORT_DEV 8); 'people buy to remove the habit cap, and they buy for the visual/customisation layer. Nobody reports buying for backup, for the passcode lock, or for statistics — even though backup and the lock are premium'.
+
+- **Where:** §5.3 table (verbatim); §5.3
+- **This app does:** cap + covers + cards convert; backup/lock/stats do not
+- **User reaction:** purchase-driver
+- **Magnitude:** MON_TRIGGER 18; SUPPORT_DEV 8
+- **Direction for us:** build-paid · **Report confidence:** Meaningful · **Generalisable:** generalisable
+- **Conditions:** the paid features that convert are the ones users can see; the ones they cannot see (backup, lock) convert no one
+- **Review IDs:** `1454413050`, `1483615798`, `1347650463`, `1351843491`, `1951004228`, `3555120788`, `1364442019`
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C022 Apple Watch app (done properly: timer, two-way sync); C061 Goodwill conversion — a generous free tier and 'support the devs'; C079 Personal photos as habit icons; C144 Habits, focus timer and journal in one simple app; C176 Never let fear of losing history be the reason people pay
+
+### R86-050 — What improved and what it cost (verbatim): Delivered | When | Confirmed by ; Free tier 1 → 3 habits | Mar 2016 | #169, #175, #1000 ; Multiple check-ins per day | Sep 2016 | #350 — *"Multiple checkins per item per day is what I've been asking for since this app was first released"* ; Notification-Centre widget | Oct 2016 | #508, #529, #538 ; 90-day start-date limit removed | Sep 2016 | #409 ; zh/ja localisation | Sep 2016 | #354, #374 (poorly) ; Apple Watch app | ~May 2017 | #871, #985 ; "Manage Data" export/delete | May 2018 | #1177 — *"Kudos for the new 'Manage Data' section… If only more companies would follow suit"* ; Nov-2018 redesign rolled back | Dec 2018–Feb 2019 | #1308, #1310 ; Performance fix | Mar & May 2020 | #1525, #1558 — *"The latest update fixed the lag. I've dealt with that tedious issue every single day (multiple times a day) for months"* ; Dark mode | Oct 2021 (§E4) | requested #1465, #1477 (2019) — two years later ; Widget restored | Nov 2021 (§E4) | #1678 ; Time-zone check-in bug | Oct 2025 (§E4) | first reported #1376 (Feb 2019) — six and a half years later — 'the pattern is latency, not absence': almost everything users asked for was eventually built or fixed — dark mode two years after the request, the time-zone check-in bug six and a half years after the first report, the performance fix after months of daily lag — and in several cases (iPad, home-screen widget, bad-habit tracking, archive, overview) never across ten years and 1,785 reviews.
+
+- **Where:** §7.6 table (verbatim); §7.6
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 12 deliveries; median lag years; 5 never
+- **Direction for us:** none · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Conditions:** delivery latency measured in years is functionally the same as absence for the reviewer who asked
+- **Review IDs:** `1351843491`, `1470744014`, `3491619389`, `5535282962`
+- **Canonical:** C020 Data export / backup / CSV; C038 Dates, streaks and statistics correct on every surface — month boundaries, week starts, DST and timezones; C071 Never ship and walk away
+
+### R86-063 — §8.13 research questions: does a wider free tier raise revenue or only the rating (A/B with revenue as the metric); who actually pays (18 reviewers name a trigger — instrument the paywall); the real retention curve (98 announce leaving; silent churn invisible); do cards drive retention or just enthusiasm (they correlate with the highest-rated reviews and with confusion — measure card usage against 90-day retention); is there an accessibility problem (2 mentions in 1,785; a full-screen-photo app with text over imagery has obvious contrast risk, reported in 2016); can the 2025–26 revival recover the base (E6 is 13 reviews — re-run in twelve months).
+
+- **Where:** §8.13
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** report gives none
+- **Direction for us:** research · **Report confidence:** limited evidence · **Generalisable:** generalisable
+- **Review IDs:** `1449566698`, `13496344540`
+- **Canonical:** C065 Paying customers are the highest 1★ risk — every paid feature must work; C144 Habits, focus timer and journal in one simple app; C171 Accessibility stack: VoiceOver, motion, sound and light sensitivity, text size
+
+## Audiences
+
+### R86-066 — Users managing depression use the skip mechanic as a mental-health tool: 'I started using this app to get a better grip on my depressive phases, and to sort days when I felt bad out of the streak. Over time it became easier to assess my successes' (de 5★) — the corpus's most substantive account of the app as a mental-health aid; the same skip feature is misunderstood by others (three ask what it does) — a forgiving state matters most to the people who need it most.
+
+- **Where:** §3.2 (outcomes — depression); §8.6 (skip as mental-health tool); §6.7
+- **This app does:** skip a day without breaking the streak
+- **User reaction:** praise
+- **Magnitude:** n=1 substantive account; REQ_SKIP 11; skip-confusion 3
+- **Direction for us:** must-have · **Report confidence:** Meaningful · **Generalisable:** generalisable
+- **Review IDs:** `1562859639`, `5692422621`
+- **Canonical:** C016 Skip / holiday / pause mode (pause a habit or counter without losing history); C103 Vulnerable users — recovery, mental-health and minors — are a sensitive surface; C216 A forgiving long-run measure — cumulative or decaying credit that a missed day does not zero — alongside streaks
+
+## Markets and languages
+
+### R86-040 — Full storefront table (verbatim): Storefront | Reviews | % of corpus | Mean | 5★ | 4★ | 3★ | 2★ | 1★ | Eligible (≥50) ; United States (us) | 595 | 33.33% | 3.81 | 301 | 99 | 61 | 46 | 88 | yes ; China mainland (cn) | 353 | 19.78% | 4.27 | 238 | 46 | 27 | 12 | 30 | yes ; United Kingdom (gb) | 89 | 4.99% | 3.73 | 48 | 13 | 3 | 6 | 19 | yes ; Canada (ca) | 79 | 4.43% | 3.91 | 39 | 18 | 7 | 6 | 9 | yes ; Germany (de) | 77 | 4.31% | 3.96 | 41 | 13 | 10 | 5 | 8 | yes ; Japan (jp) | 76 | 4.26% | 3.97 | 34 | 22 | 10 | 4 | 6 | yes ; Spain (es) | 49 | 2.75% | 3.45 | 17 | 13 | 6 | 1 | 12 | no ; India (in) | 47 | 2.63% | 4.21 | 30 | 7 | 5 | 0 | 5 | no ; Mexico (mx) | 45 | 2.52% | 4.27 | 29 | 10 | 0 | 1 | 5 | no ; France (fr) | 44 | 2.46% | 3.93 | 23 | 7 | 7 | 2 | 5 | no ; Australia (au) | 33 | 1.85% | 3.48 | 15 | 4 | 4 | 2 | 8 | no ; Brazil (br) | 25 | 1.40% | 3.88 | 12 | 5 | 4 | 1 | 3 | no ; Italy (it) | 18 | 1.01% | 4.06 | 8 | 6 | 2 | 1 | 1 | no ; Ukraine (ua) | 17 | 0.95% | 3.94 | 8 | 3 | 4 | 1 | 1 | no ; Taiwan (tw) | 16 | 0.90% | 4.12 | 8 | 4 | 3 | 0 | 1 | no ; Israel (il) | 12 | 0.67% | 3.92 | 8 | 1 | 0 | 0 | 3 | no ; Saudi Arabia (sa) | 11 | 0.62% | 4.55 | 6 | 5 | 0 | 0 | 0 | no ; South Africa (za) | 10 | 0.56% | 3.80 | 3 | 2 | 5 | 0 | 0 | no ; Argentina (ar) | 10 | 0.56% | 3.80 | 2 | 6 | 0 | 2 | 0 | no ; Colombia (co) | 10 | 0.56% | 4.40 | 7 | 2 | 0 | 0 | 1 | no ; Switzerland (ch) | 9 | 0.50% | 3.44 | 4 | 0 | 2 | 2 | 1 | no ; Netherlands (nl) | 9 | 0.50% | 4.67 | 6 | 3 | 0 | 0 | 0 | no ; Singapore (sg) | 9 | 0.50% | 4.44 | 6 | 1 | 2 | 0 | 0 | no ; Poland (pl) | 8 | 0.45% | 3.88 | 4 | 1 | 2 | 0 | 1 | no ; Turkey (tr) | 8 | 0.45% | 4.12 | 5 | 1 | 1 | 0 | 1 | no ; Denmark (dk) | 7 | 0.39% | 4.29 | 3 | 3 | 1 | 0 | 0 | no ; Norway (no) | 7 | 0.39% | 5.00 | 7 | 0 | 0 | 0 | 0 | no ; Chile (cl) | 7 | 0.39% | 4.29 | 4 | 1 | 2 | 0 | 0 | no ; Peru (pe) | 7 | 0.39% | 3.14 | 3 | 1 | 0 | 0 | 3 | no ; South Korea (kr) | 7 | 0.39% | 4.29 | 5 | 0 | 1 | 1 | 0 | no ; Austria (at) | 6 | 0.34% | 4.50 | 4 | 1 | 1 | 0 | 0 | no ; Sweden (se) | 5 | 0.28% | 4.00 | 3 | 1 | 0 | 0 | 1 | no ; Indonesia (id) | 5 | 0.28% | 4.40 | 2 | 3 | 0 | 0 | 0 | no ; HR (hr) | 4 | 0.22% | 4.75 | 3 | 1 | 0 | 0 | 0 | no ; Thailand (th) | 4 | 0.22% | 5.00 | 4 | 0 | 0 | 0 | 0 | no ; Greece (gr) | 4 | 0.22% | 5.00 | 4 | 0 | 0 | 0 | 0 | no ; Egypt (eg) | 4 | 0.22% | 4.50 | 2 | 2 | 0 | 0 | 0 | no ; Vietnam (vn) | 4 | 0.22% | 4.50 | 2 | 2 | 0 | 0 | 0 | no ; Hong Kong (hk) | 4 | 0.22% | 4.25 | 1 | 3 | 0 | 0 | 0 | no ; Malaysia (my) | 4 | 0.22% | 3.50 | 1 | 1 | 1 | 1 | 0 | no ; EC (ec) | 4 | 0.22% | 3.50 | 2 | 0 | 1 | 0 | 1 | no ; Romania (ro) | 3 | 0.17% | 5.00 | 3 | 0 | 0 | 0 | 0 | no ; Belgium (be) | 3 | 0.17% | 4.00 | 2 | 0 | 0 | 1 | 0 | no ; Czechia (cz) | 3 | 0.17% | 4.67 | 2 | 1 | 0 | 0 | 0 | no ; Ireland (ie) | 3 | 0.17% | 4.67 | 2 | 1 | 0 | 0 | 0 | no ; New Zealand (nz) | 3 | 0.17% | 4.00 | 2 | 0 | 0 | 1 | 0 | no ; Finland (fi) | 2 | 0.11% | 3.00 | 1 | 0 | 0 | 0 | 1 | no ; UAE (ae) | 2 | 0.11% | 4.00 | 1 | 0 | 1 | 0 | 0 | no ; Pakistan (pk) | 2 | 0.11% | 3.50 | 1 | 0 | 0 | 1 | 0 | no ; GT (gt) | 2 | 0.11% | 3.50 | 1 | 0 | 0 | 1 | 0 | no ; BY (by) | 1 | 0.06% | 1.00 | 0 | 0 | 0 | 0 | 1 | no ; Hungary (hu) | 1 | 0.06% | 5.00 | 1 | 0 | 0 | 0 | 0 | no ; KZ (kz) | 1 | 0.06% | 5.00 | 1 | 0 | 0 | 0 | 0 | no ; QA (qa) | 1 | 0.06% | 4.00 | 0 | 1 | 0 | 0 | 0 | no ; BW (bw) | 1 | 0.06% | 3.00 | 0 | 0 | 1 | 0 | 0 | no ; Portugal (pt) | 1 | 0.06% | 4.00 | 0 | 1 | 0 | 0 | 0 | no ; LB (lb) | 1 | 0.06% | 5.00 | 1 | 0 | 0 | 0 | 0 | no ; BG (bg) | 1 | 0.06% | 5.00 | 1 | 0 | 0 | 0 | 0 | no ; AZ (az) | 1 | 0.06% | 5.00 | 1 | 0 | 0 | 0 | 0 | no ; DO (do) | 1 | 0.06% | 5.00 | 1 | 0 | 0 | 0 | 0 | no ; JO (jo) | 1 | 0.06% | 5.00 | 1 | 0 | 0 | 0 | 0 | no ; Philippines (ph) | 1 | 0.06% | 4.00 | 0 | 1 | 0 | 0 | 0 | no ; CR (cr) | 1 | 0.06% | 1.00 | 0 | 0 | 0 | 0 | 1 | no ; BO (bo) | 1 | 0.06% | 4.00 | 0 | 1 | 0 | 0 | 0 | no ; UY (uy) | 1 | 0.06% | 5.00 | 1 | 0 | 0 | 0 | 0 | no ; SK (sk) | 1 | 0.06% | 4.00 | 0 | 1 | 0 | 0 | 0 | no ; KW (kw) | 1 | 0.06% | 1.00 | 0 | 0 | 0 | 0 | 1 | no ; OM (om) | 1 | 0.06% | 2.00 | 0 | 0 | 0 | 1 | 0 | no ; RS (rs) | 1 | 0.06% | 3.00 | 0 | 0 | 1 | 0 | 0 | no ; LK (lk) | 1 | 0.06% | 2.00 | 0 | 0 | 0 | 1 | 0 | no ; Total | 1785 | 100% | 3.97 | 975 | 318 | 175 | 100 | 217 | 6 eligible — six storefronts ≥50 (us 595, cn 353, gb 89, ca 79, de 77, jp 76 = 71.09%); 64 below get no standalone claim.
+
+- **Where:** §6.1 table (verbatim); §6.2
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** us 33.33% / 3.81★; cn 19.78% / 4.27★; gb 3.73★; ca 3.91★; de 3.96★; jp 3.97★
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** generalisable
+- **Review IDs:** `1345853521`
+- **Canonical:** C231 Audit the funnel per market and per channel — storefronts diverge on billing and funnel stage, not on the product, and written reviews are a complaint channel that under-rates it against public ratings
+
+### R86-041 — United States — 595 (33.33%), 3.81★, the most negative of the six (verbatim): Theme | n | % of 595 | Band | vs global ; PR_DESIGN | 154 | 25.88% | High-priority signal | ≈ ; U:bug_any | 162 | 27.23% | High-priority signal | ≈ ; PR_SIMPLE | 117 | 19.66% | High-priority signal | ≈ ; U:paywall_complaint | 82 | 13.78% | High-priority signal | above (10.98%) ; PR_BEST | 78 | 13.11% | High-priority signal | ≈ ; U:reliability | 74 | 12.44% | High-priority signal | ≈ ; MON_PAID_EXPLICIT | 60 | 10.08% | High-priority signal | ≈ ; MON_PRICE_NAMED | 56 | 9.41% | High-priority signal | above (6.27%) ; PR_OUTCOME | 51 | 8.57% | High-priority signal | above (5.94%) ; MON_FREE1 | 47 | 7.9% | High-priority signal | above (4.37%) ; U:churn_any | 42 | 7.06% | High-priority signal | above (5.49%) ; BUG_WATCH | 33 | 5.55% | High-priority signal | above (4.93%) ; REQ_DASHBOARD | 25 | 4.2% | Very strong signal | above (3.92%) ; DEV_STALE | 21 | 3.53% | Very strong signal | ≈ — MON_FREE1 7.9% (above global 4.37%); price sensitivity expressed as argument: US reviewers name a price (9.41%), compare it to a cup of coffee and argue with each other ('$4.99, but what's that? just a cup of coffee?… come on people, app devs gotta make a living', 5★; 'In a market where most apps are $2.99 or less, only twice have I paid more than that', 2★); the highest rate of concrete outcomes (8.57%) and of stated churn (7.06%) — 'the market that engages hardest in both directions'.
+
+- **Where:** §6.3 table (verbatim); §6.3
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** us n=595: FREE1 7.9%; price named 9.41%; OUTCOME 8.57%; churn 7.06%
+- **Direction for us:** none · **Report confidence:** High-priority · **Generalisable:** app-specific
+- **Review IDs:** `1346840632`, `1346047627`
+- **Canonical:** C062 Weight English-speaking rich markets; volume ≠ revenue; C064 Price level — where 'fair' turns into 'too expensive'; C092 Regional pricing; C130 Use the lead-user market as the beta cohort
+
+### R86-042 — China mainland — 353 (19.78%), 4.27★, the most positive of the six; 22 CN-storefront reviews in English (verbatim): Theme | n | % of 353 | Band | vs global ; PR_SIMPLE | 89 | 25.21% | High-priority signal | above (20.22%) ; PR_DESIGN | 75 | 21.25% | High-priority signal | ≈ ; U:bug_any | 87 | 24.65% | High-priority signal | ≈ ; U:reliability | 47 | 13.31% | High-priority signal | ≈ ; MON_PAID_EXPLICIT | 43 | 12.18% | High-priority signal | above (10.53%) ; U:paywall_complaint | 29 | 8.22% | High-priority signal | ≈ ; MON_FREE3 | 19 | 5.38% | High-priority signal | above (3.75%) ; MON_RESTORE | 8 | 2.27% | Meaningful signal | above (1.01%) ; LOC_TRANSLATE | 6 | 1.7% | Meaningful signal | above (0.56%) ; PR_BEST | 17 | 4.82% | Very strong signal | below (11.43%) ; U:churn_any | 8 | 2.27% | Meaningful signal | below (5.49%) ; BUG_WATCH | 9 | 2.55% | Meaningful signal | below (4.93%) — four patterns: simplicity valued above beauty (PR_SIMPLE 25.21% > PR_DESIGN 21.25%; 简约不简单 — 'concise, no superfluous features, no ads, the most usable habit app I've used'); higher self-reported payment (12.18% vs 10.53%) framed as buying the developer a meal ('what's 30 yuan — think of it as buying the developer dinner'), and the counter-case on affordability ('Why 4 stars — mainly because I'm poor… I hesitated for one day and 22 hours over whether to uninstall… under 10 yuan I could accept. Isn't the point of making an app to let more people use it?', MON_AFFORD 3); restore-purchase failures land hardest (2.27% vs 1.01%, 8 of 18 cases); localisation a live complaint — Chinese added Sep 2016 and immediately criticised ('what the hell is check-in translated as? If you can't translate, add a language option'), the 3D Touch menu and widget untranslated, Traditional Chinese still missing in 2018, a user posting a Settings walkthrough in a review to force the language; MON_FREE1 only 3 — a timing artefact (the cn storefront barely existed in March 2016).
+
+- **Where:** §6.4 table (verbatim); §6.4
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** cn n=353: SIMPLE 25.21%; PAID 12.18%; RESTORE 2.27%; FREE3 5.38%; LOC_TRANSLATE 6
+- **Direction for us:** research · **Report confidence:** High-priority · **Generalisable:** app-specific
+- **Review IDs:** `1714907062`, `1487599628`, `1676747409`, `1659830676`, `1656131507`, `1443163529`, `1479109039`, `2565901316`, `2293228457`
+- **Canonical:** C006 Stay minimal — every addition is opt-in or off by default; C025 Scholarship / hardship / discount program; C027 Localise early — it unlocks revenue; C033 Restore purchase and entitlements must work immediately; C061 Goodwill conversion — a generous free tier and 'support the devs'; C130 Use the lead-user market as the beta cohort; C255 An in-app language selector that respects the user's choice — shipping a localisation must never trap someone in a language
+
+### R86-043 — UK 89, 3.73★ (verbatim): Theme | n | % of 89 | Band ; PR_DESIGN | 28 | 31.46% | High-priority signal ; PR_BEST | 22 | 24.72% | High-priority signal ; U:bug_any | 17 | 19.1% | High-priority signal ; U:paywall_complaint | 12 | 13.48% | High-priority signal ; U:churn_any | 10 | 11.24% | High-priority signal ; MON_PRICE_NAMED | 10 | 11.24% | High-priority signal ; PR_OUTCOME | 8 | 8.99% | High-priority signal ; PR_CARDS | 7 | 7.87% | High-priority signal ; DEV_STALE | 5 | 5.62% | High-priority signal — the highest PR_BEST rate (24.72% vs 11.43%), highest PR_CARDS (7.87%) and highest churn (11.24%); the corpus's most detailed comparative evaluations ('I eventually downloaded about 12 to try… kept coming back to this one'; 'over 15 different habit trackers in the last three years. This one increased my productivity by the most'); sterling prices named in 11.24%. Canada 79, 3.91★ (verbatim): Theme | n | % of 79 | Band ; PR_DESIGN | 36 | 45.57% | High-priority signal ; PR_SIMPLE | 20 | 25.32% | High-priority signal ; U:bug_any | 17 | 21.52% | High-priority signal ; U:paywall_complaint | 15 | 18.99% | High-priority signal ; MON_FREE1 | 11 | 13.92% | High-priority signal ; MON_PAID_EXPLICIT | 14 | 17.72% | High-priority signal ; MON_PRICE_NAMED | 8 | 10.13% | High-priority signal ; REQ_IPAD | 3 | 3.8% | Very strong signal — the highest PR_DESIGN rate in the corpus (45.57%) and the highest MON_FREE1 among eligible markets (13.92%), driven by the CA$7 launch price conspicuously above US$4.99 ('$7 in the app world is premium', 2★).
+
+- **Where:** §6.5 table (verbatim); §6.5; §6.6 table (verbatim); §6.6
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** gb BEST 24.72% / churn 11.24%; ca DESIGN 45.57% / FREE1 13.92% / CA$7
+- **Direction for us:** research · **Report confidence:** High-priority · **Generalisable:** app-specific
+- **Side effects:** a regional price visibly above the US price draws its own cap complaint
+- **Review IDs:** `1708111245`, `1478570559`, `1346036611`
+- **Canonical:** C005 Know which competitors buyers compare against; C025 Scholarship / hardship / discount program; C092 Regional pricing
+
+### R86-044 — Germany 77, 3.96★ (verbatim): Theme | n | % of 77 | Band | vs global ; PR_DESIGN | 23 | 29.87% | High-priority signal | above ; U:reliability | 17 | 22.08% | High-priority signal | well above (13.11%) ; BUG_PERF | 9 | 11.69% | High-priority signal | 3× global (3.92%) ; DEV_STALE | 7 | 9.09% | High-priority signal | above (3.75%) ; PR_OUTCOME | 7 | 9.09% | High-priority signal | above ; U:paywall_complaint | 6 | 7.79% | High-priority signal | below — the performance-complaint market (BUG_PERF 11.69%, over three times global), reviewers diagnose rather than complain ('the storage must be inefficiently programmed'; tracking the swipe bug across a year); price objections below global (7.79% vs 10.98%); the most substantive mental-health account and a detailed redesign critique. Japan 76, 3.97★ (verbatim): Theme | n | % of 76 | Band | vs global ; U:bug_any | 32 | 42.11% | High-priority signal | far above (26.27%) ; PR_DESIGN | 19 | 25% | High-priority signal | ≈ ; U:reliability | 14 | 18.42% | High-priority signal | above ; MON_PAID_EXPLICIT | 9 | 11.84% | High-priority signal | above ; PR_CARDS | 5 | 6.58% | High-priority signal | above ; PR_OUTCOME | 7 | 9.21% | High-priority signal | above ; U:paywall_complaint | 4 | 5.26% | High-priority signal | below — the highest defect-report rate of any eligible market (42.11% vs 26.27%) while rating above the mean: 'Japanese reviewers report bugs carefully and rate generously. Any market-health read that uses the rating alone will systematically under-weight Japanese defect signal'; a twenty-item structured request list in 2016 (bulk check-in, parent/child habits, day-start time, font legibility, Excel export, badge sounds, colour coding, a privacy leak) — almost none built; 'I keep coming back and have sustained habit-formation for about 6 years'.
+
+- **Where:** §6.7 table (verbatim); §6.7; §6.8 table (verbatim); §6.8
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** de PERF 11.69%; jp defect 42.11% at 3.97★
+- **Direction for us:** none · **Report confidence:** High-priority · **Generalisable:** app-specific
+- **Side effects:** Japanese reviewers rate generously while reporting the most defects
+- **Review IDs:** `11596711598`, `2229824122`, `1562859639`, `3493496861`, `1449566698`, `13496344540`
+- **Canonical:** C170 Configurable day boundary and hemisphere seasons; C171 Accessibility stack: VoiceOver, motion, sound and light sensitivity, text size; C231 Audit the funnel per market and per channel — storefronts diverge on billing and funnel stage, not on the product, and written reviews are a complaint channel that under-rates it against public ratings; C303 Check-in latency must be independent of accumulated history — an app that slows with every completed day drives away exactly the users who proved it works and most likely paid
+
+### R86-045 — High-spend (us, jp, cn, gb, de — external ranking) vs high-volume (us, cn, gb, ca, de — review count) (verbatim): | High-spend | High-volume ; Reviews | 1,190 (66.67%) | 1,193 (66.83%) ; Mean rating | 3.96★ | 3.96★ ; U:praise_any | 65.88% | 66.55% ; U:bug_any | 26.64% | 25.31% ; U:reliability | 13.45% | 12.99% ; U:paywall_complaint | 11.18% | 12.07% ; MON_PAID_EXPLICIT | 10.84% | 11.23% ; BUG_WATCH | 4.54% | 4.44% ; DEV_STALE | 3.45% | 3.44% ; REQ_WIDGET | 2.35% | 2.51% — the two groups differ only in Japan vs Canada and profile almost identically: 'there is no market where this app is quietly working well'. Storefront is not language (verbatim): Mismatch | n ; English reviews on the China storefront | 22 ; Chinese reviews on the US storefront | 0 ; Spanish reviews on the US storefront | 1 || languages (verbatim): Language | Reviews | % | Mean | Main storefronts ; en | 1112 | 62.30% | 3.88 | us 594, gb 89, ca 78 ; zh | 341 | 19.10% | 4.25 | cn 331, tw 9, jp 1 ; es | 118 | 6.61% | 3.81 | es 42, mx 41, ar 9 ; ja | 66 | 3.70% | 3.98 | jp 65, tw 1 ; de | 59 | 3.31% | 4.08 | de 52, ch 4, at 3 ; fr | 33 | 1.85% | 4.03 | fr 32, ca 1 ; pt | 18 | 1.01% | 4.00 | br 17, pt 1 ; it | 11 | 0.62% | 4.36 | it 11 ; ko | 7 | 0.39% | 4.29 | kr 7 ; tr | 5 | 0.28% | 4.20 | tr 5 ; da | 4 | 0.22% | 4.50 | dk 4 ; ru | 3 | 0.17% | 5.00 | ua 3 ; pl | 2 | 0.11% | 5.00 | pl 2 ; nl | 2 | 0.11% | 5.00 | nl 1, be 1 ; sv | 1 | 0.06% | 1.00 | se 1 ; fi | 1 | 0.06% | 1.00 | fi 1 ; bg | 1 | 0.06% | 5.00 | bg 1 ; ar | 1 | 0.06% | 4.00 | eg 1 — 1,112 reviews (62.3%) are in English but only 595 from the US storefront. Below 50: Taiwan (16) — Traditional Chinese missing, corroborated by cn and the listing (Simplified only); Korea (7) — three of seven ask for a widget or frequency option.
+
+- **Where:** §6.9 table (verbatim); §6.9; §6.10 tables (verbatim); §6.10; §6.11
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** high-spend 1,190 / 3.96★; high-volume 1,193 / 3.96★; en 1,112 (62.3%); tw 16 zh-Hant missing
+- **Direction for us:** none · **Report confidence:** limited evidence · **Generalisable:** generalisable
+- **Review IDs:** `2565901316`, `2880986730`
+- **Canonical:** C027 Localise early — it unlocks revenue; C062 Weight English-speaking rich markets; volume ≠ revenue
+
+## Dated events and trends
+
+### R86-008 — The Apple Watch app was requested for 14 months, shipped and never worked properly: REQ_WATCH 34 (1.90%) from 2016-03-11; shipped ~May 2017; from then BUG_WATCH 88 (4.93%, 2.98★) vs 21 praising it — check-ins revert ('several check ins I did earlier had reverted to not done'; 'I tap an icon to say I've done it, then 20 minutes late it's unchecked again!!'), phone and watch disagree, the complication is unavailable on most watch faces ('there is only one watch face that'll work with this app'); requests for Infograph complications (2018) recur for seven years, never answered.
+
+- **Where:** §0.5; §3.3 (watch); §8.5 reference
+- **This app does:** Watch app shipped 2017, sync unreliable, complication limited
+- **User reaction:** complaint
+- **Magnitude:** REQ_WATCH 34; BUG_WATCH 88 / 4.93% / 2.98★; PR_WATCH 21; Infograph requests 10 over 7 years
+- **Direction for us:** must-never-break · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Conditions:** a shipped-but-unreliable companion app is a larger negative than its absence
+- **Review IDs:** `1620769515`, `1920258131`, `7720157586`, `5953889344`, `2056463243`
+- **Canonical:** C022 Apple Watch app (done properly: timer, two-way sync); C175 Updates must not break function or wipe progress
+
+### R86-009 — The free tier went 1 → 3 → 5 habits, then back to 1 — and the complaint came back with it (verbatim): Free tier | Complaint code | n | First | Last | Reviews 2017–2020 ; 1 habit | MON_FREE1 | 78 | 2016-03-10 | 2024-09-30 | 0 ; 3 habits | MON_FREE3 | 67 | 2016-03-22 | 2022-05-13 | — ; 5 habits | MON_FREE5 | 1 | 2017-11-13 | 2017-11-13 | — — at launch one habit: 71 complaints in 2016 alone, the dominant theme of the first fortnight; on ~22 March 2016 the developer raised it to three and reviewers noticed within a day ('because they actually listened to there customers I just paid full price for it!', 5★); then between January 2017 and December 2020 not one review complains the free tier allows only one habit; the complaint returns in 2022 ('you can only track ONE habit with the free version and can't add any cards… If they had just advertised this as a paid app, it would have been fair', 2★; 'I understood the free version allowed up to 3', 1★); the 5-habit stage rests on a single review; one-habit complaints average 1.97★ (78) — the lowest of any monetisation code — vs 3.60★ for three-habit complaints (67): 'the same grievance, attached to a tier three times wider, arrives with a rating 1.63 stars higher' (two groups six years apart, direction corroborated by the four-year silence and by reviewers narrating the change).
+
+- **Where:** §0.6; §0.6 table (verbatim); §8.9
+- **This app does:** free cap 1 → 3 (Mar 2016) → 5 (2017, n=1) → 1 (~2022)
+- **User reaction:** 1★-burst
+- **Magnitude:** MON_FREE1 78 / 1.97★; MON_FREE3 67 / 3.60★; 0 cap complaints 2017–2020
+- **Direction for us:** product-rule · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Conditions:** a natural experiment: widening the cap silenced the complaint for four years; narrowing it re-imported it verbatim
+- **Review IDs:** `1351843491`, `8311997753`, `8362191635`, `1918053513`, `1346837988`, `9591308969`
+- **Canonical:** C007 Generous fixed habit cap (or unlimited) — never change it; C191 Never shrink a tier someone already holds — a paid tier's limits, or free capacity a user has already filled; C293 Raising a free habit cap by a couple of slots does not buy back sentiment — the objection re-forms at the new number; change what the cap gates or when it is hit, and instrument it; C296 The free tier must let the differentiator be experienced — a cap that hides the product's own thesis converts on nothing the user has felt; C297 A free cap's acceptability is set by the bundle around it — the same number reads as generous or as a wall depending on what else is free; moving a loved feature behind the wall changes sentiment as much as changing the number
+
+### R86-010 — Pricing: a one-time $4.99 unlock was an asset; it is now a $299.99 tier — PR_ONETIME 23 (1.29%, 4.61★), U:pro_pricing 124 (6.95%, 4.75★): 'Paying once (4.99) for all these features is the prime reason I use this app as a Habit Tracker compared to others'; 'some apps out there have a yearly subscription circa £30… this one is a steal at £5'; as of 2026-09-13 the one-time unlock no longer exists (verbatim): In-app purchase | Price ; All premium features | $299.99 ; Today Premium Annual | $9.99 ; Today Premium Monthly | $3.99 — reviewers found this first: 'why is Today Premium $10 per year, but ALL Premium Features are $300 ❓'; 'premium used to be $4.99 and now… $299.99' (gt 2★); 'I paid for this app and reviewed it years ago (when it was under a different pricing model)… for the $300 you're asking for now'; MON_SUBSCRIPTION 8, all from 2022-07-21, 2.62★ — no review welcomes the subscription. Pricing history (verbatim): Period | Price | Evidence ; 2016 – ~2021 | one-time unlock, ~$4.99 / £3.99 / €4.99 / ¥30 / ¥600 / A$8 / CA$7 | 112 reviews name a price; §9.G ; ~2022 onward | subscription added; one-time tier repriced | #1701 (Jul 2022) is the first to ask "Suscripción?" ; 13 Sep 2026 (observed) | $3.99/mo, $9.99/yr, $299.99 lifetime | §E2
+
+- **Where:** §0.7; §0.7 table (verbatim); §2.3 pricing history table (verbatim); §8.10
+- **This app does:** one-time ~$4.99 → $3.99/mo, $9.99/yr, $299.99 lifetime
+- **User reaction:** churn
+- **Magnitude:** PR_ONETIME 23 / 4.61★; pro_pricing 124 / 4.75★; MON_SUBSCRIPTION 8 / 2.62★; lifetime $299.99 vs annual $9.99
+- **Direction for us:** product-rule · **Report confidence:** Meaningful · **Generalisable:** generalisable
+- **Conditions:** a lifetime price 30× the annual reads as a price designed not to be paid
+- **Review IDs:** `1626756462`, `1708111245`, `8946229677`, `8448197948`, `13865667618`
+- **Canonical:** C003 Lead with a one-time lifetime purchase — and keep it visibly on the shelf if a subscription is ever added beside it; C113 One stable, disclosed price — no discount wheels; C177 One clear SKU shelf — every plan distinctly named, stating its period, and delivering exactly what its label says; C186 Never revoke what earlier buyers paid for when the model changes; C294 When the pricing model changes, the historical review corpus keeps advertising the old one — state the current model on the listing and paywall, and honour every old receipt automatically
+
+### R86-011 — The app stopped shipping for 1,030 days — starting with a build that would not launch: Apple's history shows 1,030 days between 1.9.63 (2022-11-09) and 1.10 (2025-09-04), zero releases in 2023 or 2024; the first black-screen review is dated 2022-11-09 ('after the 2022.11.09 version update the app won't open', cn 3★) and eleven more follow within six weeks — then nothing was shipped to fix it for two years and ten months; DEV_STALE 67 (3.75%, 3.01★) and 20.34% of E5 reviews; users audited the developer themselves ('no update in 2 years… email bounces because the embedded address is toda@neybox.com… Odd because sister app Pillow is working well'; 'is the team shifting focus to Pillow?'); 11 releases Sep 2025 → Feb 2026 but E6 has only 13 reviews.
+
+- **Where:** §0.8; §8.11 reference
+- **This app does:** abandoned 2022–2025 with a launch-breaking last build
+- **User reaction:** 1★-burst
+- **Magnitude:** 1,030 days no release; black-screen 12 in 6 weeks; DEV_STALE 67 / 20.34% of E5
+- **Direction for us:** must-never-break · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Conditions:** the last build before a hiatus is the one users live with for years
+- **Review IDs:** `9271340335`, `12543093674`, `5060119494`
+- **Canonical:** C031 Crashes / launch failures; C071 Never ship and walk away; C239 A personal origin story in the listing builds trust — and turns any later gate into a betrayal
+
+### R86-030 — Churn — U:churn_any 98 (5.49%, 1.94★): CHURN_DELETE 40, CHURN_BLOCKED 43, CHURN_THREAT 13; what leavers cite (verbatim): Cited cause | Reviews also carrying a churn code ; Reliability (U:reliability) | 32 ; Paywall (U:paywall_complaint) | 17 ; Notifications (BUG_NOTIF) | 15 ; Watch (BUG_WATCH) | 22 ; Performance (BUG_PERF) | 17 ; Data loss (U:dataloss_any) | 14 ; Abandonment (DEV_STALE) | 12 — 'In 2016 people left over the paywall. From 2018 they leave over reliability. That shift is the whole story of this product compressed into one table.'
+
+- **Where:** §3.5 table (verbatim); §3.5
+- **This app does:** n/a
+- **User reaction:** churn
+- **Magnitude:** churn_any 98 / 1.94★; reliability 32; watch 22; paywall 17; perf 17; notif 15; dataloss 14; stale 12
+- **Direction for us:** none · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `2056463243`, `3259733326`, `1346837988`, `1606690337`
+- **Canonical:** C002 Ratings follow the offer, not the feature set; C065 Paying customers are the highest 1★ risk — every paid feature must work
+
+### R86-031 — Support: SUP_ASK 54 (3.03%) ask the developer a question in a review — a signal the in-app support path is not obvious; SUP_NORESP 25 (1.40%, 2.20★); against that PR_DEV 39 (4.59★) and, early on, an unusually responsive developer ('They reply very quickly and kindly', 2016; 'not only did I get a reply, the problem was fixed within days', 2017; 'Dev Team reacted quite quick… Changed my rating to 5 stars', 2018); FIX_CONFIRM 33 (4.76★) — 21 of 33 from before 2019: 'responsiveness is visibly the thing that used to convert angry reviewers into advocates, and it stopped'; by the end: 'haven't heard back from anyone in 6 months +' (2023); a three-week wait for a one-line 'import is currently not possible' (jp).
+
+- **Where:** §3.6; §8.11
+- **This app does:** responsive 2016–18, silent 2019–25
+- **User reaction:** mixed
+- **Magnitude:** SUP_ASK 54; SUP_NORESP 25 / 2.20★; PR_DEV 39 / 4.59★; FIX_CONFIRM 33 / 4.76★ (21 pre-2019)
+- **Direction for us:** do · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Review IDs:** `1356064325`, `1974586345`, `3493496861`, `10764479431`, `3744435175`
+- **Canonical:** C036 A support channel that exists, is reachable outside the app, and answers; C059 Be visibly responsive; fixes bring reviewers back
+
+### R86-034 — One- and two-star (verbatim): Theme in 1–2★ | 1★ | 2★ ; U:reliability | 38.71% | 26% ; U:paywall_complaint | 31.34% | 26% ; BUG_LAUNCH | 11.98% | 10% ; BUG_NOTIF | 8.29% | 12% ; U:churn_any | 22.12% | 22% ; U:dataloss_any | 8.29% | 9% ; MON_PAID_EXPLICIT | 16.13% | 16% — two populations separated by time: in 2016 a 1★ is a paywall objection from someone who never got to use the app ('Free version is worthless. You can only have 1 habit'); from 2018 a 1★ is a long-term user whose app broke ('It has become increasingly slow with every update. Now it's unusable… I've contacted support multiple times over the past 6 months', 2022) — 'the second kind is far more costly: those reviewers had already paid'.
+
+- **Where:** §4.6 table (verbatim); §4.6
+- **This app does:** n/a
+- **User reaction:** 1★-burst
+- **Magnitude:** 1★ 217; 2★ 100
+- **Direction for us:** none · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `1346034110`, `8580429365`, `1606690337`, `3924163363`
+- **Canonical:** C002 Ratings follow the offer, not the feature set; C007 Generous fixed habit cap (or unlimited) — never change it
+
+### R86-046 — Six eras set from the product timeline (verbatim): Era | Window | Reviews | Reviews/month | Mean | What the product did ; E1 Launch and first year | 2016-03-09 → 2017-04-30 | 809 | 59.1 | 4.16 | 1.0 ships 8 Mar 2016; free tier 1→3 habits (Mar); multi-check-in ships (Sep); iOS-10 widget ships (Oct) ; E2 Watch era | 2017-05-01 → 2018-10-31 | 473 | 26.3 | 4.14 | Apple Watch app ships (~May 2017); free tier reaches 5 habits (by Nov 2017) ; E3 Redesign and decay | 2018-11-01 → 2020-08-24 | 308 | 14.2 | 3.59 | Nov-2018 check-in redesign; severe performance regression; first abandonment claims ; E4 Silence and the lost widget | 2020-08-25 → 2022-11-09 | 123 | 4.6 | 3.51 | 374-day release gap; iOS-14 home-screen widget never ships; NC widget removed Sep 2021, restored Nov 2021; dark mode ships Oct 2021; subscription pricing arrives ; E5 Abandonment | 2022-11-10 → 2025-09-03 | 59 | 1.7 | 3.07 | 1,030 days with no release at all, beginning with a build that would not launch ; E6 Revival | 2025-09-04 → 2026-07-13 | 13 | 1.3 | 3.38 | 1.10 ships 4 Sep 2025 (iOS 18 minimum); 11 releases in 11 months — review volume per month collapses 45× from E1 to E6; the mean falls monotonically across five eras then ticks up on 13 reviews. Theme movement (verbatim): Theme | E1 | E2 | E3 | E4 | E5 | E6 ; U:praise_any | 77.9% | 66.2% | 49.0% | 43.9% | 33.9% | 38.5% ; PR_DESIGN | 32.5% | 23.3% | 18.8% | 14.6% | 15.2% | 15.4% ; PR_SIMPLE | 25.1% | 22.4% | 10.1% | 11.4% | 8.5% | 15.4% ; PR_OUTCOME | 6.9% | 5.5% | 4.9% | 4.9% | 1.7% | 15.4% ; U:bug_any | 12.4% | 29.4% | 46.4% | 43.1% | 50.9% | 30.8% ; U:reliability | 7.3% | 14.2% | 20.8% | 15.4% | 35.6% | 30.8% ; BUG_PERF | 0.7% | 3.4% | 8.8% | 8.9% | 16.9% | 0.0% ; U:dataloss_any | 0.7% | 4.2% | 6.5% | 4.9% | 5.1% | 0.0% ; DEV_STALE | 0.6% | 1.1% | 10.7% | 8.9% | 20.3% | 7.7% ; U:paywall_complaint | 16.2% | 5.1% | 6.5% | 12.2% | 6.8% | 15.4% ; U:churn_any | 2.7% | 5.7% | 8.4% | 11.4% | 13.6% | 7.7% ; REQ_WIDGET | 2.0% | 0.6% | 1.0% | 10.6% | 16.9% | 15.4% ; REQ_DASHBOARD | 1.7% | 4.4% | 7.5% | 7.3% | 1.7% | 15.4% ; *(denominator: reviews in that era)* | *809* | *473* | *308* | *123* | *59* | *13* — praise 77.87% → 33.9%; defects 12.36% → 50.85% (a majority of E5 reviews report something broken); abandonment claims 0.62% → 20.34%; PR_DESIGN never collapses (15.25% even in E5): 'The app never stopped being beautiful. It stopped working.'
+
+- **Where:** §7.1 table (verbatim); §7.1; §7.2 table (verbatim); §7.2
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** E1 809 / 59.1 per month / 4.16★; E2 473 / 4.14; E3 308 / 3.59; E4 123 / 3.51; E5 59 / 1.7 per month / 3.07; E6 13 / 3.38
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `9271340335`, `3827656315`
+- **Canonical:** C002 Ratings follow the offer, not the feature set; C175 Updates must not break function or wipe progress; C185 Aesthetic and a polished onboarding convert; they do not retain
+
+### R86-047 — The five crash waves: (1) launch, March 2016 — shipped as an Apple Editors' Choice (MKT_EDITORS 6) and crashed immediately ('Great crash simulator… All it does is crash'), 21 crash reviews in the first three weeks; with the one-habit paywall, the worst month in the app's history — 209 reviews at 3.11★, 54 on 2016-03-11 alone — leaving 228 reviews (12.77% of the corpus) at 3.25★ permanently on the listing; (2) iOS 9/10, Oct–Nov 2016 — 18 launch-crash reviews ('I'd advise iOS 9 users to think carefully before buying'); (3) Face ID / Touch ID, March 2018 — enabling the biometric lock, a paid feature, crashed the app on entry ('What was my 30 yuan for?… I appealed to Apple and was told no refund'), the same fortnight as the purchase outage — 'the month this app broke its paying users on two axes at once'; (4) iOS 12 / watchOS 5, Sep–Oct 2018 — the Watch app broken by the OS update ('App hasn't had an update in nearly 2 months, what's going on guys?'); (5) the black screen, November 2022 — 1.9.63 shipped 2022-11-09, the first black-screen review the same day, 14 in the following year ('I love this app and have years of check-in records, so I really want this fixed'), and the next release 1,030 days later.
+
+- **Where:** §7.3; §7.3 Wave 1; §7.3 Wave 2; §7.3 Wave 3; §7.3 Wave 4; §7.3 Wave 5
+- **This app does:** n/a
+- **User reaction:** 1★-burst
+- **Magnitude:** wave 1: 21 crash reviews, 2016-03 209 reviews / 3.11★; wave 2: 18; wave 3: 5 in 9 days; wave 4: 7; wave 5: 14 then 1,030-day gap
+- **Direction for us:** must-never-break · **Report confidence:** High-priority · **Generalisable:** app-specific
+- **Conditions:** an Editors' Choice launch that crashes pins its first month's reviews to the listing for a decade
+- **Review IDs:** `1345892603`, `1346499392`, `1470204089`, `1486760895`, `2273762627`, `3226036476`, `9272101069`, `9295872427`
+- **Canonical:** C022 Apple Watch app (done properly: timer, two-way sync); C031 Crashes / launch failures; C071 Never ship and walk away; C156 Content and event releases need a crash gate across device generations; C175 Updates must not break function or wipe progress; C225 A one-off free promotion (App of the Week, partner promo) acquires durable users
+
+### R86-048 — The 2018 redesign — rejected, then rolled back: in November 2018 the check-in and calendar UI changed (NEG_REDESIGN 23, 3.22★) — 'Instead of a single tap to log a habit for the day, you're forced to go through multiple steps now!' (1★); the calendar mark shrank 'from a fully filled-in square to a TINY dot'; 'no visual indicator telling you that you have completed that habit… I have ended up clicking the same habit multiple times'; the developer rolled it back and reviewers upgraded their ratings in public: 'Dev Team reacted quite quick… Happy to have single tap check in back… Changed my rating to 5 stars ;-)' (edited 1★ → 5★); 'Thank you for listening! The little green dot… has been restored to a solid green dot' — 'the corpus's clearest demonstration of responsiveness converting anger into loyalty'.
+
+- **Where:** §7.4
+- **This app does:** check-in redesign Nov 2018, rolled back within months
+- **User reaction:** mixed
+- **Magnitude:** NEG_REDESIGN 23 / 3.22★; rollback confirmed by 2 edited reviews; FIX_CONFIRM 33
+- **Direction for us:** product-rule · **Report confidence:** Meaningful · **Generalisable:** generalisable
+- **Conditions:** a rolled-back redesign converts a 1★ into a 5★ in the same review
+- **Review IDs:** `3390321767`, `3392908796`, `3418021543`, `3403476071`, `3493496861`, `3491619389`
+- **Canonical:** C059 Be visibly responsive; fixes bring reviewers back; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out; C264 Log-entry friction is sacred — never add a tap to the logging path; a logging redesign is the highest-risk change in the product
+
+### R86-049 — The widget: shipped, lost, restored — and never modernised: requested on day two of the app's life ('I use my today screen every day'), the Notification-Centre widget shipped October 2016 and was loved (PR_WIDGET 28, 4.50★; 'son Widget super bien pensé'; for many the primary interface — 'the main way i used the app'); removed silently in 1.9.55 (2021-09-02, notes say nothing about it) — 11 reviews in six languages ('No more widget. Which is the main way i used the app. So, I probably won't keep up to be using it', 1★; 'Give it back'; '还我小组件'); restored in 1.9.57 (2021-11-04) — 'Thank you for making the widget come back!'; but the iOS-14 home-screen widget (announced June 2020) was never built — requests from 2020-09-21 to 2025-12-15 ('I NEED a Today widget on my health/goals page'; 'The app needs a widget for IOS 26'), REQ_WIDGET rising from 1.98% of E1 to 16.95% of E5 — 'the only request that grows as the corpus shrinks'.
+
+- **Where:** §7.5; §8.5 reference
+- **This app does:** NC widget 2016 → removed 2021 → restored; home-screen widget never
+- **User reaction:** mixed
+- **Magnitude:** PR_WIDGET 28 / 4.50★; removed 11 reviews; REQ_WIDGET 47, 1.98% → 16.95%
+- **Direction for us:** must-have · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Review IDs:** `1345876517`, `1470744014`, `1476474960`, `7774471535`, `7786249554`, `7895168833`, `7939841492`, `8022641382`, `6552481616`, `6453348017`, `13304685452`
+- **Canonical:** C009 Basic widgets, icons and colours are free; C040 Widgets must not go blank, stale or disagree with the app; C104 Never ship a paywall or feature-removal change silently; C155 Never remove a feature people bought the app for — add alongside, do not replace
+
+## Positioning
+
+### R86-001 — Today Habit tracker (App Store ID 1055295863, com.neybox.Today) by Neybox Digital Ltd. (also ships Pillow, the sleep app), released 2016-03-08, current 1.18 (2026-02-13), iOS 18 / watchOS 11, 11 localisations — one full-screen page per habit with a cover photo (stock or your own), swipe between habits; check-in by double-tap, 3D Touch, list swipe, widget, rich notification or Watch; 'cards' per habit (streak calendar, counter, custom chart, milestones, journal, photo gallery, Apple Health metrics, a stress/'limbic' card from ~Jul 2018); scheduling daily / weekdays / N per week (max 6) or month (max 25) / multiple check-ins a day; multiple reminders; badges; a profile with persistence statistics several found only by accident; iCloud Drive / Dropbox backup, no account, no server sync; passcode/Face ID lock; Watch app (~May 2017); Today widget (Oct 2016, removed Sep 2021, restored Nov 2021); dark mode (Oct 2021); URL scheme; no advertising ever; no social features. Reviewers say it is not a to-do list or workout tracker ('just a yes/no - did you hit the gym today?'). Listing (verbatim): First released | 2016-03-08 ; Current version | 1.18, 2026-02-13 ; Minimum OS | iOS 18.0 / watchOS 11.0 ; Category | Health & Fitness (secondary: Productivity) ; Size | 290.4 MB ; Localisations | 11: EN, FR, DE, IT, JA, KO, PT, RU, ZH-Hans, ES, TR ; Seller | Neybox Digital Ltd. — also ships Pillow (sleep), named by reviewers in both praise and complaint — premium: photo covers, unlimited cards and habits, premium cards, backup, the lock.
+
+- **Where:** header lines 1-8; §2.1; §2.2 table (verbatim); §2.2
+- **This app does:** one-time $4.99 unlock (2016–~2021) → subscription + $299.99 lifetime
+- **User reaction:** mixed
+- **Magnitude:** 1,785 reviews, 70 storefronts, 18 languages, 2016-03-09 → 2026-07-13 (10.3 years), mean 3.97★; 166 hand codes; 636 checks
+- **Direction for us:** none · **Report confidence:** header · **Generalisable:** app-specific
+- **Conditions:** ten-year corpus, front-loaded to 2016
+- **Review IDs:** `2337983734`, `1720312452`, `1359218702`
+- **Canonical:** C079 Personal photos as habit icons; C144 Habits, focus timer and journal in one simple app; C209 No sign-up wall before first use; C254 An all-habits overview with one-tap check-off — never force one-habit-at-a-time navigation
+
+### R86-017 — Best-in-category and the named competition: PR_BEST 204 (11.43%, 4.78★ — the highest of any theme above 100); CMP_NAMED 48 (2.69%) — Way of Life, Momentum, Coach.me, Streaks, Done, Productive (2016), HabitBull, Habity, Shanbay (2017), iBetter, tiny routine, Strides (2018), Due (2019), Todoist, Day One, Evernote, Headspace, Notion (2022); Apple's Reminders, Calendar, Health and Activity named as both the thing replaced and the fallback; the corpus's most-voted review (38 up / 82): 'blew Momentum, Strides, and Way of Life out of the water… Momentum is too minimalistic (though I like their desktop sync, wink!) and Strides has a bubbly interface I can't stand' (2018).
+
+- **Where:** §3.2 best-in-category
+- **This app does:** n/a
+- **User reaction:** praise
+- **Magnitude:** PR_BEST 204 / 4.78★; CMP_NAMED 48; 18 rivals named
+- **Direction for us:** none · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `3581019264`, `1700023106`, `1696422920`
+- **Canonical:** C005 Know which competitors buyers compare against; C178 A quiet, adult, non-gamified tracker is a positioning some users actively seek; C185 Aesthetic and a polished onboarding convert; they do not retain
+
+## Anti-patterns
+
+### R86-064 — Gating the biometric lock as a paid feature — one reviewer objects on principle — and then shipping a build (March 2018) where enabling it crashed the app on entry: 'after enabling fingerprint unlock, pressing the fingerprint crashes, entering the password also crashes. What was my 30 yuan for?… I appealed to Apple and was told no refund' (cn 1★); the same fortnight carried the purchase outage; and the lock leaks the habit list via the widget, 3D Touch and background resume (three reports, three languages).
+
+- **Where:** §7.3 Wave 3; §2.3 (lock paid); §8.12
+- **This app does:** paid lock that crashed and leaks
+- **User reaction:** 1★-burst
+- **Magnitude:** wave 3: 5 in 9 days; lock-leak 3; PRIV_CONCERN 4
+- **Direction for us:** dont · **Report confidence:** Meaningful · **Generalisable:** generalisable
+- **Review IDs:** `2273762627`, `5116388115`, `2004605175`
+- **Canonical:** C017 Passcode lock; C096 Privacy and discretion stack; C156 Content and event releases need a crash gate across device generations
+
+### R86-065 — Silent removals and silent abandonment: the Notification-Centre widget was removed in 1.9.55 (2021-09-02) with release notes that said nothing about it — 11 complaints in six languages in three months, 'the main way i used the app… I probably won't keep up' (1★); then 1.9.63 (2022-11-09) shipped a black screen for many users and nothing followed for 1,030 days while the support address in the app was misspelled and Twitter went quiet — DEV_STALE 67 (20.34% of E5), users auditing the developer and concluding 'likely abandoned'.
+
+- **Where:** §0.8; §7.5 Act 2; §8.12
+- **This app does:** unannounced widget removal; 1,030-day silence after a broken build
+- **User reaction:** churn
+- **Magnitude:** removal complaints 11; DEV_STALE 67 / 20.34% of E5; 1,030 days
+- **Direction for us:** dont · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Review IDs:** `7786249554`, `9271340335`, `12543093674`, `6453348017`
+- **Canonical:** C071 Never ship and walk away; C104 Never ship a paywall or feature-removal change silently; C155 Never remove a feature people bought the app for — add alongside, do not replace; C239 A personal origin story in the listing builds trust — and turns any later gate into a betrayal
+
+## Things not to do
+
+### R86-028 — Bad-habit tracking — a marketing-to-product mismatch: the description says 'Quit bad habits and stay on track' and the feature does not exist (REQ_BREAKBAD 15, 2016 → 2026); 'if I only want to limit my intake to, say, two sodas a day, I can't both log each drink and show success for not going over the limit' (5★); 'the description talks about losing bad habits: we need an explanation. In what way does this app concern itself with our bad habits?' (fr 4★); USE_QUIT 16 are trying to use it that way anyway.
+
+- **Where:** §3.4 bad habits; §8.7
+- **This app does:** listing promises quit-habit tracking; no limit/negative mode
+- **User reaction:** complaint
+- **Magnitude:** REQ_BREAKBAD 15; USE_QUIT 16
+- **Direction for us:** dont · **Report confidence:** Emerging · **Generalisable:** generalisable
+- **Review IDs:** `7645092267`, `5953889344`
+- **Canonical:** C019 Quit-habit / bad-habit mode; C102 Inverse / 'good habit' mode for a counter; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
+
+### R86-058 — §8.7 experiment — resolve the 'bad habits' promise: the listing says 'Quit bad habits and stay on track' and the product cannot track a limit (REQ_BREAKBAD 15, USE_QUIT 16 trying anyway); two honest options — build a 'maximum N per period' habit type as five reviewers describe and as Done and HabitBull are named as having, or remove the promise; 'what is not defensible is the current state: advertising a capability, collecting users who need it, and having them discover the gap after purchase'.
+
+- **Where:** §8.7; part 8 #7
+- **This app does:** listing promise without the feature
+- **User reaction:** complaint
+- **Magnitude:** BREAKBAD 15; USE_QUIT 16
+- **Direction for us:** dont · **Report confidence:** Emerging · **Generalisable:** generalisable
+- **Review IDs:** `7645092267`, `5953889344`
+- **Canonical:** C019 Quit-habit / bad-habit mode; C102 Inverse / 'good habit' mode for a counter; C218 Store listing and paywall copy stay true — disclose limits, and never advertise a feature you removed, lack, or don't integrate
+
+### R86-061 — §8.10 immediate fix — the $299.99 tier needs an explanation or a change: $3.99/month, $9.99/year and $299.99 'All premium features' — 'why is Today Premium $10 per year, but ALL Premium Features are $300 ❓ what is the difference' (2★); 30× the annual price — 'whatever the intent — a lifetime tier, a price-anchoring device, a legacy artefact — it currently reads to users as either a mistake or contempt, and it sits next to a history of paying customers losing their purchase'; MON_SUBSCRIPTION 8, all post-2022, none positive, vs PR_ONETIME 23 at 4.61★ praising the replaced model.
+
+- **Where:** §8.10; part 8 #10
+- **This app does:** $299.99 lifetime beside $9.99/yr
+- **User reaction:** blocked-conversion
+- **Magnitude:** lifetime 30× annual; SUBSCRIPTION 8 / 0 positive; ONETIME 23 / 4.61★
+- **Direction for us:** dont · **Report confidence:** Meaningful · **Generalisable:** generalisable
+- **Review IDs:** `8946229677`, `8448197948`, `13865667618`
+- **Canonical:** C003 Lead with a one-time lifetime purchase — and keep it visibly on the shelf if a subscription is ever added beside it; C113 One stable, disclosed price — no discount wheels; C177 One clear SKU shelf — every plan distinctly named, stating its period, and delivering exactly what its label says
+
+## Things to do
+
+### R86-062 — §8.11 immediate fix — answer support, and be seen to: SUP_NORESP 25 vs PR_DEV 39 (30 of 39 pre-2019), FIX_CONFIRM 33 (21 pre-2019); repeated documented instances of a reply converting a 1★ into a 5★; the in-app support email address is misspelled (toda@neybox.com) and the corrected one got no reply — 'the cheapest fix in this report'. §8.12 copy: the full-screen personal photo per habit (the single most-credited mechanism), a per-habit configurable dashboard (PR_CARDS 4.69★), one-time pricing honestly priced (4.61★), visible responsiveness (a rollback earning public rating upgrades), no ads / no account / on-device data; do not copy: one screen per habit as the only navigation, selling backup then losing data, gating the biometric lock then shipping a build where enabling it crashes, a visual design whose data layer scales worse than the visuals, advertising a capability you do not have, letting an unlaunchable build sit for 1,030 days — 'what converts a category-leading app into abandonware'.
+
+- **Where:** §8.11; §8.12; part 8 #11; part 8 #12; part 8 #2019 (a wrapped line beginning '2019.' — not a numbered item)
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** SUP_NORESP 25; PR_DEV 39; FIX_CONFIRM 33; misspelled support address
+- **Direction for us:** do · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `12543093674`, `3493496861`, `3491619389`, `1974586345`
+- **Canonical:** C003 Lead with a one-time lifetime purchase — and keep it visibly on the shelf if a subscription is ever added beside it; C036 A support channel that exists, is reachable outside the app, and answers; C059 Be visibly responsive; fixes bring reviewers back; C079 Personal photos as habit icons; C085 Address tracking / privacy visibly; C119 Redesigns must not regress layout — ship a density / text-size option or an opt-out; C144 Habits, focus timer and journal in one simple app; C246 No ads in a personal habit tracker — 'no ads' is among the highest-rated topics and ads on the reward loop are the largest 1★ driver
+
+## Contradictions
+
+### R86-005 — The second differentiator — 'cards' — is loved by a minority and ignored by most: PR_CARDS 70 (3.92%, 4.69★), the depth union 192 (10.76%, 4.72★) — what power users name when explaining why they chose Today over a prettier-but-thinner rival ('the deciding factor was the extensibility of supplementary information via cards', jp 5★, running it alongside Momentum and Habity); but the corpus's most specific negative is NEG_FEATURE_UNUSED 15 (0.84%, 2.80★) — 'cards that are unusable in 95% cases'; 'those cards aren't really needed'; 'photos per habit are more of a gimmick at first' — and UX_CONFUSE 74 (4.15%) cannot work out the custom chart, counter or milestone card; 'the cards are simultaneously the reason power users pay and a source of confusion for everyone else'.
+
+- **Where:** §0.2; §3.2 (cards)
+- **This app does:** per-habit data cards (counters, charts, Health, journal)
+- **User reaction:** mixed
+- **Magnitude:** PR_CARDS 70 / 4.69★; depth union 192 / 10.76% / 4.72★; NEG_FEATURE_UNUSED 15 / 2.80★; UX_CONFUSE 74 / 4.15%
+- **Direction for us:** undecided · **Report confidence:** Very strong · **Generalisable:** generalisable
+- **Conditions:** depth features convert the few and confuse the many
+- **Review IDs:** `1524523819`, `3644769024`, `1478423070`, `1520730080`, `1700023106`, `2053507045`
+- **Canonical:** C075 Skippable, replayable onboarding tour and an in-app help screen — searchable FAQ and per-setting explanations for anything richer than the daily check-in; C144 Habits, focus timer and journal in one simple app; C217 An unexplained metric reads as broken — explain the score on-screen
+
+## Data caveats and method
+
+### R86-002 — Method and limits: every one of 1,785 reviews read in 18 batches in the original language (machine translation as a reading aid for zh/ja/ko/ru/tr/pl/bg, every quoted translation checked), hand codes with a quoted note per line, per-batch ID re-assertion caught three alignment drifts affecting 25 reviews; 166 codes, 25 unions, 636 checks, 8,300 computed facts, no number typed by hand; no duplicates, zero repeat authors, 60 edited, 254 with votes (max 82); the corpus is front-loaded — 645 reviews from 2016, 45.32% in E1 — so any global percentage is mostly a statement about 2016–17 ('Part 7 is not optional reading'); reviews decayed 59.1/month in E1 → 1.7/month in E5 (E5 59, E6 13 — directional only); no version field (Apple's history back to Mar 2020 only); 22 China-storefront reviews in English; six of 70 storefronts ≥50. Bands (verbatim): Share of reviews | Label ; < 0.1% | Ignore by default ; 0.1% – < 0.5% | Weak signal ; 0.5% – < 1% | Emerging signal ; 1% – < 3% | Meaningful signal ; 3% – 5% | Very strong signal ; > 5% | High-priority signal — 0.1% ≈ 2, 5% ≈ 89.
+
+- **Where:** How to read this; Ten warnings 2, 3, 4, 5, 7, 8, 10; §1.1 table (verbatim); §1.2 table (verbatim); §1.3 table (verbatim); §1.4; §1.5 table (verbatim); §1.6
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 1,785/1,785 read; 166 codes; 636 checks; E1 45.32%; E5 59; E6 13
+- **Direction for us:** none · **Report confidence:** method · **Generalisable:** generalisable
+- **Review IDs:** `1345853521`
+- **Canonical:** C231 Audit the funnel per market and per channel — storefronts diverge on billing and funnel stage, not on the product, and written reviews are a complaint channel that under-rates it against public ratings
+
+### R86-003 — This corpus is not the app's rating: corpus 3.97★ vs every public storefront mean 4.5–4.8★ — 'written reviews here skew far more negative than silent star taps'; selection runs both ways (the 2016 launch wave and the 2022 black-screen wave are both bursts of motivated writers); 188 reviewers state they paid — a self-selected 10.53%, not a conversion rate.
+
+- **Where:** Warning 1, 6, 9; §1.6 #1
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 3.97★ vs public 4.5–4.8★; paid 188 / 10.53%
+- **Direction for us:** none · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `1345853521`
+- **Canonical:** C231 Audit the funnel per market and per channel — storefronts diverge on billing and funnel stage, not on the product, and written reviews are a complaint channel that under-rates it against public ratings; C300 A headline star rating that sits far above its own written reviews is a signal to audit, not a satisfaction figure — find where and when star-only ratings are collected before trusting them
+
+### R86-014 — Prioritised theme table (verbatim): # | Theme | Code | n | % | Band | Mean ★ | Direction ; 1 | Any praise | U:praise_any | 1,173 | 65.71% | High-priority signal | 4.54 | + ; 2 | Visual design | PR_DESIGN | 460 | 25.77% | High-priority signal | 4.33 | + ; 3 | Any defect | U:bug_any | 469 | 26.27% | High-priority signal | 2.89 | − ; 4 | Any monetisation comment | U:monetisation_any | 451 | 25.27% | High-priority signal | 3.39 | mixed ; 5 | Any feature request | U:request_any | 445 | 24.93% | High-priority signal | 4.03 | mixed ; 6 | Simplicity / ease | PR_SIMPLE | 361 | 20.22% | High-priority signal | 4.68 | + ; 7 | "It doesn't work" | U:reliability | 234 | 13.11% | High-priority signal | 2.71 | − ; 8 | Best in category | PR_BEST | 204 | 11.43% | High-priority signal | 4.78 | + ; 9 | Paywall objection | U:paywall_complaint | 196 | 10.98% | High-priority signal | 2.76 | − ; 10 | Stated they paid | MON_PAID_EXPLICIT | 188 | 10.53% | High-priority signal | 3.69 | mixed ; 11 | Motivation / accountability | PR_MOTIVATION | 184 | 10.31% | High-priority signal | 4.83 | + ; 12 | Free-tier cap | U:free_tier_limit | 145 | 8.12% | High-priority signal | 2.72 | − ; 13 | Watch, any direction | U:watch_any | 135 | 7.56% | High-priority signal | 3.47 | mixed ; 14 | Crashes | BUG_CRASH | 126 | 7.06% | High-priority signal | 2.71 | − ; 15 | UX confusion / friction | U:ux_any | 118 | 6.61% | High-priority signal | 3.31 | − ; 16 | Concrete outcome achieved | PR_OUTCOME | 106 | 5.94% | High-priority signal | 4.84 | + ; 17 | Widget, any direction | U:widget_any | 103 | 5.77% | High-priority signal | 3.89 | mixed ; 18 | Left / blocked / threatening to leave | U:churn_any | 98 | 5.49% | High-priority signal | 1.94 | − ; 19 | Cover photos | PR_PHOTOS | 97 | 5.43% | High-priority signal | 4.58 | + ; 20 | Watch broken | BUG_WATCH | 88 | 4.93% | Very strong signal | 2.98 | − ; 21 | Abandonment claim | DEV_STALE | 67 | 3.75% | Very strong signal | 3.01 | − ; 22 | Reminders broken | BUG_NOTIF | 63 | 3.53% | Very strong signal | 2.57 | − ; 23 | Performance decay | BUG_PERF | 70 | 3.92% | Very strong signal | 2.99 | − ; 24 | Cards / dashboards | PR_CARDS | 70 | 3.92% | Very strong signal | 4.69 | + ; 25 | Want an overview screen | REQ_DASHBOARD | 70 | 3.92% | Very strong signal | 3.63 | − ; 26 | Data / backup loss | U:dataloss_any | 55 | 3.08% | Very strong signal | 2.67 | − ; 27 | Want a widget | REQ_WIDGET | 47 | 2.63% | Meaningful signal | 4.04 | − ; 28 | Named a competitor | CMP_NAMED | 48 | 2.69% | Meaningful signal | 3.88 | mixed ; 29 | Want iPad / Mac | U:platform_req | 38 | 2.13% | Meaningful signal | 4.08 | − ; 30 | Support unanswered | SUP_NORESP | 25 | 1.40% | Meaningful signal | 2.20 | − — praise and complaint are not separate populations: 152 reviews carry both a praise code and a bug code, 81 praise the design and report a defect — 'people who like the app describing what is broken in it'.
+
+- **Where:** §3.1 table (verbatim); §3.1
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** praise_any 1,173 (65.71%, 4.54★); bug_any 469 (26.27%); monetisation_any 451 (25.27%); request_any 445 (24.93%); reliability 234 (2.71★); paywall_complaint 196 (2.76★); PAID 188 (10.53%); churn_any 98 (1.94★)
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** generalisable
+- **Review IDs:** `1345853521`
+- **Canonical:** C231 Audit the funnel per market and per channel — storefronts diverge on billing and funnel stage, not on the product, and written reviews are a complaint channel that under-rates it against public ratings
+
+### R86-032 — Distribution (verbatim): Stars | Reviews | % of 1,785 ; ★★★★★ | 975 | 54.62% ; ★★★★ | 318 | 17.82% ; ★★★ | 175 | 9.8% ; ★★ | 100 | 5.6% ; ★ | 217 | 12.16% ; 4–5★ | 1,293 | 72.44% ; 1–2★ | 317 | 17.76% — 'a time series wearing a disguise' (verbatim by year): Year | Reviews | Mean | 5★ share | 1★ share ; 2016 | 645 | 4.04 | 59.2% | 14.0% ; 2017 | 401 | 4.51 | 72.8% | 3.7% ; 2018 | 281 | 3.79 | 46.6% | 12.1% ; 2019 | 167 | 3.67 | 41.3% | 12.6% ; 2020 | 119 | 3.61 | 33.6% | 16.0% ; 2021 | 70 | 3.51 | 38.6% | 17.1% ; 2022 | 40 | 3.08 | 22.5% | 20.0% ; 2023 | 23 | 3.39 | 47.8% | 26.1% ; 2024 | 15 | 3.20 | 33.3% | 33.3% ; 2025 | 18 | 3.11 | 38.9% | 33.3% ; 2026 | 6 | 3.33 | 33.3% | 16.7% — mean 4.04 (2016) and 4.51 (2017) falling to 3.11 (2025); the 1★ share triples; 'any statement about the ratings that ignores this is wrong'.
+
+- **Where:** §4.1 table (verbatim); §4.1 year table (verbatim); §4.1
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** 5★ 975 (54.62%); 1–2★ 317 (17.76%); 2017 4.51★ → 2025 3.11★
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** generalisable
+- **Review IDs:** `1345853521`
+- **Canonical:** C231 Audit the funnel per market and per channel — storefronts diverge on billing and funnel stage, not on the product, and written reviews are a complaint channel that under-rates it against public ratings
+
+### R86-033 — Themes by star band (verbatim): Theme | 1★ | 2★ | 3★ | 4★ | 5★ ; PR_DESIGN | 10.6% | 25.0% | 17.7% | 24.2% | 31.2% ; PR_SIMPLE | 0.9% | 7.0% | 8.0% | 18.2% | 28.7% ; PR_BEST | 0.0% | 3.0% | 1.7% | 9.4% | 17.2% ; PR_MOTIVATION | 0.0% | 0.0% | 0.6% | 9.1% | 15.8% ; PR_OUTCOME | 0.5% | 0.0% | 0.6% | 3.5% | 9.5% ; PR_CARDS | 0.5% | 0.0% | 1.1% | 4.4% | 5.4% ; U:bug_any | 60.4% | 56.0% | 57.7% | 30.5% | 8.6% ; U:reliability | 38.7% | 26.0% | 23.4% | 12.6% | 4.4% ; BUG_WATCH | 8.3% | 14.0% | 13.7% | 5.0% | 1.6% ; BUG_NOTIF | 8.3% | 12.0% | 9.1% | 4.1% | 0.4% ; U:paywall_complaint | 31.3% | 26.0% | 15.4% | 11.0% | 4.1% ; MON_PAID_EXPLICIT | 16.1% | 16.0% | 9.7% | 7.9% | 9.7% ; DEV_STALE | 7.8% | 7.0% | 8.0% | 5.0% | 1.3% ; U:request_any | 10.1% | 24.0% | 34.3% | 47.5% | 19.3% ; U:churn_any | 22.1% | 22.0% | 9.1% | 3.1% | 0.2% ; *(denominator: reviews in that star band)* | *217* | *100* | *175* | *318* | *975* — PR_DESIGN appears in every band (10.6% of 1★ still praise the design: 'beauty does not protect the rating; it is what makes the failure worth writing about'); U:reliability is the strongest gradient (38.71% of 1★ vs 4.41% of 5★) — the rating-determining theme; MON_PAID_EXPLICIT roughly flat (16.13% of 1★, 9.74% of 5★) — 'paying does not make people kind'; paywall_complaint 31.34% of 1★ but 4.1% of 5★. 5★: 84 (8.62%) also report a defect and 40 contain no praise at all; 4★ is the 'almost' band — request_any 47.48%, praise + one named missing thing (Watch, widget, iPad, overview), RATING_LEVERAGE 16 ('I'll be sure to change my rating to 5 stars when the updates come out!'); 3★ the most diagnostic — bug_any 57.71%, DEV_STALE 8% ('Great, when working').
+
+- **Where:** §4.2 table (verbatim); §4.2; §4.3; §4.4; §4.5
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** reliability 38.71% of 1★ vs 4.41% of 5★; 4★ request 47.48%; RATING_LEVERAGE 16
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** generalisable
+- **Review IDs:** `3018036105`, `1819603242`, `2186159961`, `5642646849`, `7936221496`
+- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C185 Aesthetic and a polished onboarding convert; they do not retain; C231 Audit the funnel per market and per channel — storefronts diverge on billing and funnel stage, not on the product, and written reviews are a complaint channel that under-rates it against public ratings
+
+### R86-035 — Rating-vs-text contradictions: CONTRA_RATING 46 (2.58%) (verbatim): Direction | n ; 5★ whose text is only a complaint | 40 ; 1–2★ whose text is substantially positive | 4 — 40 are 5★ whose text is only a complaint ('Blank Screen after IOS update' — entire text; 'the widget has a bug on iOS 10; purple blocks keep appearing'; 'it's OK, but why do I have to pay to go past three?') vs 4 low-star positives; 'the public 4.5–4.8★ average is inflated relative to written sentiment not only by silent star-tappers but by a measurable population of users who write a complaint and tap five stars anyway'.
+
+- **Where:** §4.7 table (verbatim); §4.7
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** CONTRA 46 / 2.58%: 40 5★-complaints, 4 low-star-positive
+- **Direction for us:** none · **Report confidence:** Meaningful · **Generalisable:** generalisable
+- **Review IDs:** `9309917073`, `1548898250`, `1611850727`, `1476921895`, `1460920237`
+- **Canonical:** C094 Ask for reviews well — tone converts; cadence and ignoring the OS opt-out backfire; C231 Audit the funnel per market and per channel — storefronts diverge on billing and funnel stage, not on the product, and written reviews are a complaint channel that under-rates it against public ratings; C300 A headline star rating that sits far above its own written reviews is a signal to audit, not a satisfaction figure — find where and when star-only ratings are collected before trusting them
+
+### R86-036 — Paid population: 188 (10.53%) state they paid, mean 3.69★ vs 3.97; not a conversion rate (mentioning payment is itself selective); MON_WILLBUY 43 (2.41%). Segment rates (verbatim): Theme | n in paid segment | % of 188 paid | % of all 1,785 | Lift ; PR_DESIGN | 39 | 20.7% | 25.8% | 0.80× ; PR_SIMPLE | 25 | 13.3% | 20.2% | 0.66× ; PR_BEST | 16 | 8.5% | 11.4% | 0.74× ; PR_WORTH | 36 | 19.1% | 4.1% | 4.68× ; PR_ONETIME | 9 | 4.8% | 1.3% | 3.71× ; PR_CARDS | 14 | 7.5% | 3.9% | 1.90× ; PR_OUTCOME | 16 | 8.5% | 5.9% | 1.43× ; U:bug_any | 65 | 34.6% | 26.3% | 1.32× ; U:reliability | 34 | 18.1% | 13.1% | 1.38× ; BUG_WATCH | 8 | 4.3% | 4.9% | 0.86× ; BUG_NOTIF | 9 | 4.8% | 3.5% | 1.36× ; U:dataloss_any | 12 | 6.4% | 3.1% | 2.07× ; MON_RESTORE | 16 | 8.5% | 1.0% | 8.43× ; MON_REGRET | 11 | 5.8% | 0.7% | 8.73× ; MON_REFUND | 6 | 3.2% | 0.4% | 8.18× ; DEV_STALE | 9 | 4.8% | 3.8% | 1.28× ; U:churn_any | 15 | 8.0% | 5.5% | 1.45× ; REQ_WIDGET | 5 | 2.7% | 2.6% | 1.01× ; REQ_DASHBOARD | 11 | 5.8% | 3.9% | 1.49× ; MON_EXPENSIVE | 6 | 3.2% | 3.3% | 0.96× — paid reviewers report defects at a higher rate (bug_any 34.57% vs 26.27%: they use it more, longer, with more habits — the condition under which the app degrades); they carry the data-loss complaint disproportionately (backup is paid; 12 of 55 data-loss reviewers paid — 'selling backup and then losing data is the corpus's sharpest breach of trust'); they defend the pricing (PR_ONETIME, PR_WORTH, MON_DEFEND far above global). Cannot claim conversion, ARPU, churn, that the tier change drove purchases, or anything about the ~2022 subscription (59 + 13 reviews).
+
+- **Where:** §5.1; §5.2 table (verbatim); §5.2; §5.6
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** PAID 188 / 10.53% / 3.69★; paid bug_any 34.57%; WILLBUY 43
+- **Direction for us:** none · **Report confidence:** High-priority · **Generalisable:** generalisable
+- **Review IDs:** `2955539119`, `1454413050`
+- **Canonical:** C033 Restore purchase and entitlements must work immediately; C065 Paying customers are the highest 1★ risk — every paid feature must work; C176 Never let fear of losing history be the reason people pay; C231 Audit the funnel per market and per channel — storefronts diverge on billing and funnel stage, not on the product, and written reviews are a complaint channel that under-rates it against public ratings
+
+### R86-051 — Persisted in every era (verbatim): Theme | E1 | E2 | E3 | E4 | E5 | E6 ; PR_DESIGN | 32.51% | 23.26% | 18.83% | 14.63% | 15.25% | 15.38% ; PR_SIMPLE | 25.09% | 22.41% | 10.06% | 11.38% | 8.47% | 15.38% ; U:paywall_complaint | 16.19% | 5.07% | 6.49% | 12.2% | 6.78% | 15.38% ; REQ_DASHBOARD | 1.73% | 4.44% | 7.47% | 7.32% | 1.69% | 15.38% — BUG_SWIPE (2016 → 2024), BUG_NOTIF (2016 → 2025) and REQ_DASHBOARD (2016 → 2026) each span essentially the entire corpus. Sensitivity (verbatim): Scenario | Mean | Δ vs 3.97 ; Full corpus | 3.97 | — ; Excluding the first 90 days (n=302, mean 3.57) | 4.05 | +0.08 ; Excluding Nov–Dec 2022 (n=12, mean 2.42) | 3.98 | +0.01 ; Pre-2019 only | 4.13 | — ; 2019 onward only (n=458) | 3.52 | — || CIs (verbatim): Theme | Rate | 95% CI ; PR_DESIGN | 25.77% | 23.79% – 27.85% ; PR_SIMPLE | 20.22% | 18.43% – 22.15% ; U:bug_any | 26.27% | 24.29% – 28.37% ; U:reliability | 13.11% | 11.62% – 14.75% ; BUG_WATCH | 4.93% | 4.02% – 6.03% ; DEV_STALE | 3.75% | 2.97% – 4.74% ; U:free_tier_limit | 8.12% | 6.94% – 9.48% ; MON_PAID_EXPLICIT | 10.53% | 9.19% – 12.04% ; REQ_WIDGET | 2.63% | 1.99% – 3.48% ; PR_OUTCOME | 5.94% | 4.93% – 7.13% ; REQ_DASHBOARD | 3.92% | 3.12% – 4.93% ; U:dataloss_any | 3.08% | 2.37% – 3.99% — no single episode drives the decline: removing the botched launch raises the mean by 0.08, the 2022 black-screen wave by 0.01; the gap that matters is pre-2019 (4.13★) vs 2019-onward (3.52★) — 0.61 stars over 458 reviews and seven years, 'not a bad week; it is the product's trajectory'.
+
+- **Where:** §7.7 table (verbatim); §7.7; §7.8 tables (verbatim); §7.8
+- **This app does:** n/a
+- **User reaction:** mixed
+- **Magnitude:** pre-2019 4.13★ vs 2019+ 3.52★; launch exclusion +0.08; black-screen exclusion +0.01
+- **Direction for us:** none · **Report confidence:** table · **Generalisable:** app-specific
+- **Review IDs:** `1346490678`, `1887236677`
+- **Canonical:** C175 Updates must not break function or wipe progress; C231 Audit the funnel per market and per channel — storefronts diverge on billing and funnel stage, not on the product, and written reviews are a complaint channel that under-rates it against public ratings
