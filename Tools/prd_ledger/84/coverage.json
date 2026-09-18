@@ -1,0 +1,204 @@
+[
+ {
+  "table_row": "review_id",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": "title",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": "date",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": "vote_count` / `vote_sum",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": "Unique `review_id",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": "Country records not identical, field by field, to the main-file record",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": "manifest.json` total / per-country counts / rating distribution",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": "_state.json` collected counts vs main file",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": "Exact title+body duplicates",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": "<0.1%",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": "0.5–<1%",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": "1–<3%",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": "3–5%",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": ">5%",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "table_row": "Ads",
+  "cards": [
+   "R84-008"
+  ]
+ },
+ {
+  "bold": "count, a percentage, the denominator, the market scope, the time window, a signal label and exact review IDs",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "bold": "non-exclusive",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "bold": "This corpus is small and almost uniformly positive.",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "bold": "No standalone country conclusion is made anywhere in this report",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "bold": "Country records not identical, field by field, to the main-file record",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "bold": "No deduplication was necessary or performed.",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "bold": "mechanically",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "bold": "Machine-free translation.",
+  "cards": [
+   "R84-002"
+  ]
+ },
+ {
+  "bold": "Downloads, active users or revenue",
+  "cards": [
+   "R84-005"
+  ]
+ },
+ {
+  "bold": "\"Free\" is usually said together with something else.",
+  "cards": [
+   "R84-006"
+  ]
+ },
+ {
+  "bold": "you always get all your tasks done",
+  "cards": [
+   "R84-022"
+  ]
+ },
+ {
+  "bold": "completing my daily task",
+  "cards": [
+   "R84-022"
+  ]
+ },
+ {
+  "bold": "Descriptive differences, stated with their counts and not generalised:",
+  "cards": [
+   "R84-012"
+  ]
+ },
+ {
+  "bold": "Eight reviews cannot support a US-specific conclusion",
+  "cards": [
+   "R84-033"
+  ]
+ },
+ {
+  "bold": "3 of 13 (23.1%) before 1.0.9; 51 of 73 (69.9%) from it.",
+  "cards": [
+   "R84-012"
+  ]
+ },
+ {
+  "bold": "0 of 13; 39 of 73 (53.4%).",
+  "cards": [
+   "R84-012"
+  ]
+ },
+ {
+  "bold": "nothing here rests on a large count",
+  "cards": [
+   "R84-037"
+  ]
+ },
+ {
+  "bold": "Recommendation, framed as an experiment because no purchase data exists:",
+  "cards": [
+   "R84-008"
+  ]
+ },
+ {
+  "kind": "audience",
+  "none_in_report": "Report 84 names no user group with distinct behaviour or satisfaction — 86 reviews, no ADHD / student / medication / clinical cohort; one non-habit use (watering plants) is carded inside R84-021."
+ }
+]
