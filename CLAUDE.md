@@ -4,7 +4,7 @@
 
 | Path | Contents |
 |---|---|
-| `PRD for App Store.md` | What we will build, do, and avoid — distilled from the reports. Decisions only; its writing rules are Stage 6 of `Report Synthesis Prompt.md`. |
+| `PRD for App Store.md` | **Superseded — ignore.** An aggregation of the whole ledger, not a decision record. Do not cite, build from, or extend it. See "PRD for App Store" below. |
 | `Store Review Analysis Prompt.md` | The analysis spec every report must follow |
 | `Report Synthesis Prompt.md` | How to combine all reports into one feature ledger (cards → coverage check → merge → confidence → final report) |
 | `App Store Reviews/<N>. <app name>/` | Source data per app: `reviews.jsonl`, `by_country/*.jsonl`, `manifest.json`, `_state.json`. **Read-only — do not add files here.** |
@@ -59,14 +59,25 @@ Non-negotiables, because they are what makes a report auditable:
 - Disclose review-burst / solicited-review patterns and rating-vs-text contradictions
   rather than silently dropping them.
 
-## PRD for App Store
+## PRD for App Store — superseded, ignore it
 
-`PRD for App Store.md` in the repo root collects what we will build, do, and avoid,
-distilled from the reports. It is a clean product requirements document: **decisions only,
-no rules section, no method notes, no statistics.** The writing rules (plain English, one
-point per bullet in 2–3 lines, every bullet ends with a "Repeated in:" list of linked
-report numbers) live in **Stage 6 of `Report Synthesis Prompt.md`**. Read that before
-adding anything, and use the bullet template there.
+`PRD for App Store.md` is **not** a decision record and must not be used as one. It was built by
+combining every point in the Feature Ledger into one document, so it states positions that were
+never actually decided — the decisive "we will / we will not" voice comes from the synthesis
+template, not from a choice anyone made.
+
+So, in any future session:
+
+- **Do not** cite it as settled, plan or scope against it, resolve an open question with it, or
+  treat its sections as agreed requirements.
+- **Do not** add to it or update it. It is frozen for reference and history.
+- For evidence, go to `Research Reports/Feature Ledger.md`, which carries the counts, confidence
+  and per-report links.
+- For actual decisions, go to **Notion** — the decisions document lives there, not in this repo.
+  Ask the user for the page if the link isn't to hand. Never substitute this file for it, and
+  never write a decisions document into this repository.
+
+The old writing rules for it (Stage 6 of `Report Synthesis Prompt.md`) no longer apply to new work.
 
 ## Git
 

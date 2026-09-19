@@ -6,7 +6,7 @@ Review research for habit / routine tracker apps, and the product decisions that
 
 | Path | What it is |
 |---|---|
-| `PRD for App Store.md` | **Start here.** What we will build, do, and avoid — every point has a count and a link to the report it came from. |
+| `PRD for App Store.md` | **Superseded — ignore.** Reads like a PRD but is an aggregation of the whole ledger, not decisions anyone made. Kept for history; do not build from it. Evidence is in the Feature Ledger below; the actual decisions live in Notion. |
 | `Research Reports/Feature Ledger.md` | **The consolidated evidence.** Every finding from all 70 reports in one file — what wins, what loses, what drives purchases, ranked — with confidence, app counts and links back to each report. |
 | `Store Review Analysis Prompt.md` | The spec every per-app report follows. |
 | `Report Synthesis Prompt.md` | How the 70 reports were combined into the Feature Ledger (cards → coverage → merge → confidence → report). |

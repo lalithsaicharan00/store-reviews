@@ -1,13 +1,22 @@
 # PRD for App Store
 
-What we will build, what we will do, and what we will avoid. Decisions only.
+> ### ⚠️ Superseded — do not treat this document as a decision record.
+>
+> **Ignore this file for planning, scoping and building.** It reads like a PRD, but it is not one.
+> It was produced by combining every point in the Feature Ledger into one document — an aggregation
+> of the research, not a set of choices. No bullet here has been weighed against the others,
+> traded off, or signed off by the product owner. The confident "we will / we will not" phrasing
+> throughout is inherited from the synthesis template, not earned.
+>
+> **For future sessions:** do not cite this file as settled, do not build from it, do not resolve
+> ambiguity with it, and do not add to it. **The real product decisions live in Notion, not in this
+> repository** — ask for the page rather than inferring a decision from anything here. What this
+> repo holds is evidence, in [Feature Ledger.md](<Research Reports/Feature Ledger.md>), and that is
+> the only thing in it that speaks for itself. This file is kept for reference and history only.
 
-Every bullet is distilled from the review analysis of 70 apps. The evidence, the counts and the
-conditions behind each one live in [Feature Ledger.md](<Research Reports/Feature Ledger.md>);
+Every bullet below is distilled from the review analysis of 70 apps. The evidence, the counts and
+the conditions behind each one live in [Feature Ledger.md](<Research Reports/Feature Ledger.md>);
 "Repeated in" lists the reports that point the same way.
-
-> **Status: in progress.** All nine sections now have entries; the ledger's lower-ranked points are
-> still being added.
 
 ---
 
