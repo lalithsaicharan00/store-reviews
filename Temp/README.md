@@ -1,66 +1,64 @@
-# `Temp/` — working directory for Claude Code / agent sessions
+# Temp — working scratch (gitignored except this file)
 
-**If you are a model or agent working in this repository: use THIS folder for all
-intermediate files. Do NOT use the session scratchpad under `/tmp` or
-`/private/tmp/claude-*`, and do not scatter temp files into the data folders.**
+All intermediate files for the current analysis live here. Never `/tmp`, never the
+session scratchpad, never inside `App Store Reviews/` or `Native Store Reviews/`.
 
-## Why
+## Current status
 
-Session scratchpads are lost in two ways that have nothing to do with git:
+**Native app 6 — "Google Tasks" — COMPLETE (2026-09-21).**
+Report written to `Native Store Reports/6. Google Tasks- Get Things Done - Plan, Organize & Schedule Work (REPORT).md`
+(1.16 MB, PART 0–10). All 7,069 reviews read individually and hand-coded; 166 of 170 codes used,
+18,423 assignments; 0 validation errors; every cited review ID and every quoted fragment verified
+against `reviews.jsonl`. The `n6-*` pipeline mirrors `n1-*` (same file roles, prefix `n6`);
+extra outputs: `n6-evidence.txt` (all quote fragments per code, the source of every citation),
+`n6-xtabs.txt`, `n6-extra.txt`, `n6-trend.txt`, `n6-painkiller.txt`, `n6-sensitivity.txt`, `n6-absence.txt`.
 
-1. They live under `/private/tmp/`, which macOS clears on reboot and via periodic cleanup.
-2. Their path contains the **session UUID**. A new session — after a restart, a
-   re-login, or an account switch — gets a *different* scratchpad path, so prior
-   work is no longer reachable even when the bytes still exist on disk.
+**Native app 1 — "Reminders" — COMPLETE.** Report in `Native Store Reports/1. …`. The `n1-*` files
+are still here (including the hand-coded `n1-cls/`); they were not deleted because that folder is
+the expensive artifact. Delete `n1-*` and `n6-*` only when you are sure the reports will not be revised.
 
-This folder is inside the project, so it survives all three: reboots, new sessions,
-and account switches. That matters because the expensive artifact in this repo is
-not the report — it is the **hand-curated classification** behind it. Re-creating one
-means re-reading every review in the corpus.
+## The `n1-*` / `n6-*` pipeline (one prefix per native app)
 
-## Rules
-
-- Put intermediate analysis artifacts here: classification maps, extracted corpora,
-  generated tables, one-off scripts, working notes.
-- **Name files so they are traceable to the app folder they belong to**, e.g.
-  `42-review-classification.py`, `43-all-reviews.txt`.
-- Everything here is **gitignored** (see `.gitignore`) — except this README. Nothing
-  in here enters the repo history, so it is safe to leave working files behind.
-- **Finished deliverables do not belong here.** Reports go to
-  `App Store Reports/`. Source review data stays in `App Store Reviews/<N>. <app>/`.
-- Do not delete another session's files unless they are clearly yours or the user asks.
-
-## What is worth preserving here
-
-Anything whose cost is *reading*, not *computing*. A file that regenerates from
-`reviews.jsonl` in one command is cheap — regenerate it. A file that encodes a
-judgement made while reading thousands of reviews is expensive — keep it here.
-
-## Current contents
-
-Report 59 is the current work; the report-76 working files were cleared at the start of this
-session (report 76 was complete and committed as `report 76 completed`). What follows belongs to
-**app 59, `Tappsk: ToDo & Habit Tracker`** (MATVEY KONDAKOV, bundle `com.tappsk.ios`, App Store ID 1385049326),
-**15,176 reviews**, 109 storefronts (ru 10667, ua 824, br 583, de 332, us 311, fr 279, kz 247, sa 220),
-**2018-10-14 → 2026-09-05**, corpus mean **4.60★**. Eligible countries (≥50): ru, ua, br, de, us, fr, kz, sa,
-gb, tr, ca, au, by, ch, se, es, it, mx, in.
-
-| File | What it is |
+| File | Role |
 |---|---|
-| `59-cls/*.txt` | **The expensive one.** Hand judgement per review: `idx review_id CODE,CODE  # lang=xx \| "verbatim quote"; "quote"`. One file per batch of 100, named like the batch. |
-| `59-themes.py` | Hand-code taxonomy (grown while reading; codes used in 59-cls must all be defined here). |
-| `59-fill-ids.py` | Fills `~` placeholders in column 2 of `59-cls/*.txt` with the review_id at that index. |
-| `59-check-cls.py` | Run after every batch: review_id at index **and** every quoted fragment occurs in that review. |
-| `59-build-classification.py` | Only writer of `59-review-classification.py` (generated). |
-| `59-validate.py` | Data checks on the classification. |
-| `59-dump.py`, `59-batch/`, `59-all-reviews.txt`, `59-index.tsv` | Cheap regenerable reading material (152 batches of 100; `#idx cc stars date [E=edited]`). |
-| `59-reconcile.py` / `-out.txt` | Main vs country files vs manifest vs `_state.json`. |
-| `59-itunes-{cc}.json` | Apple Lookup API captures for the 19 eligible storefronts, 2026-09-14. |
-| `59-common.py` | Shared loaders (corpus, classification, eras) imported by the scripts below. |
-| `59-build-report.py`, `59-verify-report.py`, `59-run-all.sh` | Report builder (asserts every quotation and narrative claim at build time), post-write verification (`59-verify-out.txt`), end-to-end rebuild. |
-| `59-analysis-out.txt`, `59-build-meta.json`, `59-verify-out.txt` | Generated: monthly code series, build metadata, final verification output (copied into §9.M). |
+| `n1-common.py` | loader (date order, 1-based `idx`), signal bands, paths |
+| `n1-dump.py` → `n1-batch/` | 260 batch files of 100 reviews, full text |
+| `n1-themes.py` | the 159-code taxonomy + 10 union definitions |
+| `n1-cls/*.txt` | **the hand-coded source of truth** — one line per review |
+| `n1-fill-ids.py` | replaces the `~` placeholder with the real review_id |
+| `n1-check-cls.py` | per-line validator, incl. verbatim-quote check. Run after every batch |
+| `n1-build-classification.py` | builds `n1-review-classification.py` (THEMES / UNIONS / PER_REVIEW) |
+| `n1-validate.py` | six integrity checks on the built map |
+| `n1-stats.py`, `n1-trend.py`, `n1-country.py`, `n1-sensitivity.py` | aggregation |
+| `n1-painkiller.py` | leave-intent lift per code |
+| `n1-absence.py`, `n1-script.py` | mechanical presence tests, script detection |
+| `n1-ev.py CODE [n]` | print evidence rows for a code/union |
+| `n1-idx.py IDX...` | **resolve a working index to its real review_id** |
+| `n1-verify-ids.py` | verify every ID cited in the report exists and its metadata matches |
+| `n1-storefront-table.py`, `n1-build-appendix.py` | generate §6.2, §9.B, §9.J, Part 10 |
 
-Status: **complete.** All 152 batches are hand-coded (`59-check-cls.py`: errors 0, unclassified 0),
-`59-validate.py` passes (2854 checks, 0 failures), and the report in `App Store Reports/59. … (REPORT).md`
-verifies (`59-verify-report.py`: 62224 checks, 0 failures; 15,176 IDs cited, all exist). Rebuild everything
-with `sh Temp/59-run-all.sh`. Committed as `report 59 completed`.
+## Hard-won lessons
+
+- **Never write a review ID from memory.** Use `n1-idx.py <index>` to resolve it, then
+  run `n1-verify-ids.py` on the finished report. The first draft contained 21 fabricated
+  IDs; all were caught by the verifier and corrected. This is disclosed in §9.M.
+- **Check the corpus for collection artefacts before claiming a trend.** Pre-Sept-2023
+  reviews in this corpus are a helpful-vote-ranked survivorship sample (13× the vote
+  rate, 2.42★ vs 4.11★ after). Reporting that as "ratings improved" would have been wrong.
+- **Compare the corpus mean to public ratings.** Here: 3.94★ vs 4.81★ over 2.85M ratings,
+  i.e. text reviewers are a 0.911% self-selected complaint-skewed slice.
+- The per-review `lang=` tag in early `n1-cls` batches sometimes captured the storefront
+  instead of the language. It is unusable for quantified claims; script is derived
+  mechanically instead (`n1-script.py`). Disclosed in §6.8.
+- **Check adjacent codes for coder drift before any trend claim.** In n6, `PR_CALVIEW` collapsed
+  8.2%→0.6% across 2024 while `PR_GOOGLEINT` rose by the same amount — the union was flat. Run
+  per-quarter shares of every pair of adjacent codes and use the union where they trade places.
+  Disclosed in the n6 report (warning 5, §1.4, §9.C).
+- Copied `n1-*` scripts carry n1 assumptions: app ID in `storefront-table`, iOS-era cut points in
+  `trend`/`sensitivity`, n1-only codes in `country`, a hard-coded base rate in `painkiller`, and a
+  `U_LEAVE_INTENT` that included `SW_PAPER`. Grep every copied script for code names and constants.
+
+## Naming
+
+`<N>-<purpose>.<ext>` so a file traces back to its app folder — `42-review-classification.py`,
+`n1-cls/`, `n1-stats.txt`.

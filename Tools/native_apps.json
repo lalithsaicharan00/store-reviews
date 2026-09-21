@@ -1,0 +1,16 @@
+{
+  "_comment": "Native / first-party apps people use as habit-tracking workarounds. 'position' is the folder number used under 'Native Store Reviews'. 'defer': true means run it LAST regardless of position -- Google Sheets is 7M ratings, an order of magnitude past the rest, and would otherwise block everything behind it. It is still extracted in full. App Store only; Samsung Reminder and Samsung Notes have no App Store listing (Galaxy Store / preinstalled only) and are therefore absent.",
+  "apps": [
+    {"position": 1,  "app_id": "1108187841", "name": "Reminders",                     "vendor": "Apple"},
+    {"position": 2,  "app_id": "1108185179", "name": "Calendar",                      "vendor": "Apple"},
+    {"position": 3,  "app_id": "1110145109", "name": "Notes",                         "vendor": "Apple"},
+    {"position": 4,  "app_id": "1242545199", "name": "Apple Health",                  "vendor": "Apple"},
+    {"position": 5,  "app_id": "1208224953", "name": "Apple Fitness",                 "vendor": "Apple"},
+    {"position": 6,  "app_id": "1353634006", "name": "Google Tasks: Get Things Done", "vendor": "Google"},
+    {"position": 7,  "app_id": "1029207872", "name": "Google Keep - Notes and lists", "vendor": "Google"},
+    {"position": 8,  "app_id": "909319292",  "name": "Google Calendar: Get Organized","vendor": "Google"},
+    {"position": 9,  "app_id": "842849113",  "name": "Google Sheets",                 "vendor": "Google", "defer": true},
+    {"position": 10, "app_id": "1212616790", "name": "Microsoft To Do",               "vendor": "Microsoft"},
+    {"position": 11, "app_id": "1224541484", "name": "Samsung Health",                "vendor": "Samsung"}
+  ]
+}
