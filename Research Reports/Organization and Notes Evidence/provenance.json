@@ -1,0 +1,74 @@
+[
+  {
+    "file": "01-reorder.png",
+    "original_bundle_manifest": "/var/folders/xr/mqz9yvds2nzd2c_bph9zkzpc0000gn/T/browser-use/assets/98f8ad14-4ecc-4f6f-9b82-9846156dfb50/manifest.json",
+    "unchanged_original": true,
+    "asset_id": "c0feab67b2210b93",
+    "source_asset_url": "https://664c2e21129e54ad44b62b4f.featurebase-attachments.com/c/changelog/699eb389c6f1ec1a5e47e355/019c9ccb-5714-75af-94bc-29f93267e1b8/b64u-SGFiaXRpZnkgLSBTcXVhcmUgc2NyZWVuc2hvdCAoMSkucG5n.png?X-Amz-Expires=3600&X-Amz-Date=20260923T090000Z&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=DO801TYC4FCVNNEKURKM%2F20260923%2Ffra1%2Fs3%2Faws4_request&X-Amz-SignedHeaders=host&X-Amz-Signature=1deada768ff3bfc5c4c81b144abdeb64084d419ed3f2913f1276d3b260bcc9b6",
+    "retrieved_date": "2026-09-23",
+    "annotation_origin": "Official Habitify published asset; preserved unchanged"
+  },
+  {
+    "file": "02-create-group.png",
+    "original_bundle_manifest": "/var/folders/xr/mqz9yvds2nzd2c_bph9zkzpc0000gn/T/browser-use/assets/f46ec1b7-df61-40d8-afe8-04d8162d91cf/manifest.json",
+    "unchanged_original": true,
+    "asset_id": "f2230217f20fb224",
+    "source_asset_url": "https://downloads.intercomcdn.com/i/o/z85a33or/2541500732/9acd6c1bbccd03bb2fa59e746c99/Add+Area+-+2.png?expires=1790157600&signature=9513b3226f22dee4b6b6c8413df98c4d921f1404c65b5f7c3ca4c4f9e4be9673&req=diUjF8x%2BnYZcW%2FMW1HO4zUqkDFPWBcj8uBjHcjRw7gqlTfHV76Lz8%2Fb4PITw%0AzlVS%0A",
+    "retrieved_date": "2026-09-23",
+    "annotation_origin": "Official Habitify published asset; preserved unchanged"
+  },
+  {
+    "file": "03-group-filter.png",
+    "original_bundle_manifest": "/var/folders/xr/mqz9yvds2nzd2c_bph9zkzpc0000gn/T/browser-use/assets/f46ec1b7-df61-40d8-afe8-04d8162d91cf/manifest.json",
+    "unchanged_original": true,
+    "asset_id": "83ee36e9c3dbf387",
+    "source_asset_url": "https://downloads.intercomcdn.com/i/o/z85a33or/2541502161/211cfcc73fefb6ecaa7dd2ed7510/Add+Area+-+Journal.png?expires=1790157600&signature=20be1ecd056dfb19ee030f9778e9159a966aa78e80fcb6c7ec21981765973cc8&req=diUjF8x%2Bn4BZWPMW1HO4zeTjLc5lw71EPagN%2Fe8RTCUlqc%2BJHjJo0jUbVmkK%0AFKDa%0A",
+    "retrieved_date": "2026-09-23",
+    "annotation_origin": "Official Habitify published asset; preserved unchanged"
+  },
+  {
+    "file": "04-time-of-day.png",
+    "original_bundle_manifest": "/var/folders/xr/mqz9yvds2nzd2c_bph9zkzpc0000gn/T/browser-use/assets/135e02eb-08a6-428d-bd08-536778f82e76/manifest.json",
+    "unchanged_original": true,
+    "asset_id": "d6667a414fb2268d",
+    "source_asset_url": "https://downloads.intercomcdn.com/i/o/z85a33or/2537831242/d6f8bc508ff815cb9fa8e982fce4/Magic+Fill+-10-.png?expires=1790157600&signature=90abb691c2b54adbe1d156ac49832fbb72f2cc05c1032d78e8bab989d19b390a&req=diUkEcF9nINbW%2FMW1HO4zS6O2nKVvMs14CM8Ec4PqOos2520HePKT5NyRgGv%0Ait8Y8BZq46DjqP%2BuTRs%3D%0A",
+    "retrieved_date": "2026-09-23",
+    "annotation_origin": "Official Habitify published asset; preserved unchanged"
+  },
+  {
+    "file": "05-time-settings.png",
+    "original_bundle_manifest": "/var/folders/xr/mqz9yvds2nzd2c_bph9zkzpc0000gn/T/browser-use/assets/135e02eb-08a6-428d-bd08-536778f82e76/manifest.json",
+    "unchanged_original": true,
+    "asset_id": "ce70b83bb0776970",
+    "source_asset_url": "https://downloads.intercomcdn.com/i/o/z85a33or/2018700681/0ad399377a6fa4417dedb295c2f6/Magic+Fill+%2825%29.png?expires=1790157600&signature=ec9e2cbb208065926dac9d8165dd9645bbd65d05b6807580a417b1ed1338e010&req=diAmHs5%2BnYdXWPMW1HO4zY96OLM9MDen4i072m4dBufKx729QaDU5W9Zai6Q%0ABAjuUuureZfiTLR3WTA%3D%0A",
+    "retrieved_date": "2026-09-23",
+    "annotation_origin": "Official Habitify published asset; preserved unchanged"
+  },
+  {
+    "file": "06-habit-notes.png",
+    "original_bundle_manifest": "/var/folders/xr/mqz9yvds2nzd2c_bph9zkzpc0000gn/T/browser-use/assets/c4b16316-126a-400f-a808-b325fdd7d161/manifest.json",
+    "unchanged_original": true,
+    "asset_id": "1d8cfe9f3f9c11ed",
+    "source_asset_url": "https://downloads.intercomcdn.com/i/o/z85a33or/2541570378/2fb789253aa76365d737ab6c972d/Timer+button+-1-.png?expires=1790157600&signature=129e9b67363a5a9f142d65f67247e8d88d635ee4056d95d78311f6a1cc3d7e32&req=diUjF8x5nYJYUfMW1HO4zRU%2BvLwDupWBf6aQiWj0%2BYul6Bds3nJQ2%2BPJ63SE%0AGUQNw9%2FJHCmzlR87XFo%3D%0A",
+    "retrieved_date": "2026-09-23",
+    "annotation_origin": "Official Habitify published asset; preserved unchanged"
+  },
+  {
+    "file": "07-note-editor.png",
+    "original_bundle_manifest": "/var/folders/xr/mqz9yvds2nzd2c_bph9zkzpc0000gn/T/browser-use/assets/c4b16316-126a-400f-a808-b325fdd7d161/manifest.json",
+    "unchanged_original": true,
+    "asset_id": "4099b3ec92891d97",
+    "source_asset_url": "https://downloads.intercomcdn.com/i/o/z85a33or/1779064306/169171c1665562fa2e0ec8458801/Untitled+design.png?expires=1790157600&signature=5e97220312459389887e5be6b689826095703c151c298b3d13e8bd0f2b8473bb&req=dScgH8l4mYJfX%2FMW1HO4zeXggqdwVLu5QAYP4ge4VwaCZZ83yiFas1%2FpUljR%0A0o5HoEeQnNgcUexpVC4%3D%0A",
+    "retrieved_date": "2026-09-23",
+    "annotation_origin": "Official Habitify published asset; preserved unchanged"
+  },
+  {
+    "file": "08-reorder-add-remove.png",
+    "original_bundle_manifest": "/var/folders/xr/mqz9yvds2nzd2c_bph9zkzpc0000gn/T/browser-use/assets/135e02eb-08a6-428d-bd08-536778f82e76/manifest.json",
+    "unchanged_original": true,
+    "asset_id": "32b0d8f2aae39cda",
+    "source_asset_url": "https://downloads.intercomcdn.com/i/o/z85a33or/2109553785/727017b792f67638a2995b92596e/Time+of+Day.png?expires=1790157600&signature=7c9c61b2027964de9c96ec738726a73b1ecb6ecbdd31afc5820dc58cd8bc8f06&req=diEnH8x7noZXXPMW1HO4zWkVn%2BfR8FF3BzJ4VCibCyJHPJfvmv%2F%2FPp2B2XI5%0Ael2gVhupPgh%2F%2BcmCoc0%3D%0A",
+    "retrieved_date": "2026-09-23",
+    "annotation_origin": "Official Habitify published asset; preserved unchanged"
+  }
+]
