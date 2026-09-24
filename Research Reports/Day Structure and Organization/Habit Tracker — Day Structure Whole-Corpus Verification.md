@@ -1,5 +1,7 @@
 # Habit Tracker — Day Structure Whole-Corpus Verification
 
+> **Written by Claude (Claude Code)**, 24 September 2026. Authorship of every report is listed in the [Research Reports index](<../README.md>).
+
 Date: 24 September 2026. Status: evidence assessment of a proposed design. This is **not a decision record**. Decisions live in Notion. The research reports in this folder are exploratory.
 
 Question: will the planned day structure meet what users ask for, or is it over-engineered? The plan has four parts: groups, time-of-day sections, a Start button per section, and sub-habits. Every part below is rated on a five-step scale: Excellent · Good · Average · Below average · Worst.

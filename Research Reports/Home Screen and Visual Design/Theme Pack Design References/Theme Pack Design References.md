@@ -4,7 +4,7 @@
 
 **First prototypes ki Midnight Pastel, Soft Pastel, Playful Doodles ni recommend chesthunnaanu.** Ee three directions ki visible popularity undi, distinct personality undi, mana cards/rows/calendar meeda adapt cheyyadaniki clear path undi. Paper/Field Notes attractive ga unna, current engagement low—experiment ga treat cheyyali.
 
-[Plus and Subscription Deep Dive](../Plus%20and%20Subscription%20Deep%20Dive/Plus%20and%20Subscription%20Deep%20Dive.md) lo section 2.1 chadivaanu. Report cosmetics ni strongest monetisation evidence group ga rank chesthundi. Adi theme packs category-wide #1 purchase cause ani prove cheyyadu; report itself exploratory. Free light/dark, richer Plus packs, live preview, Plus meeda second theme charge avoid cheyyadam ane recommendations tho ee shortlist align avutundi.
+[Plus and Subscription Deep Dive](../../Business%20Model%20and%20Monetization/Plus%20and%20Subscription%20Deep%20Dive/Plus%20and%20Subscription%20Deep%20Dive.md) lo section 2.1 chadivaanu. Report cosmetics ni strongest monetisation evidence group ga rank chesthundi. Adi theme packs category-wide #1 purchase cause ani prove cheyyadu; report itself exploratory. Free light/dark, richer Plus packs, live preview, Plus meeda second theme charge avoid cheyyadam ane recommendations tho ee shortlist align avutundi.
 
 **Ee names mana proposed pack names.** Source pages mostly UI concepts; purchasable theme packs ani claim cheyyatledu. Commercial product lo original artwork/design adaptations build cheyyali. Exact source assets use cheyyalante creator permission/licence scope verify cheyyali; public visibility resale rights ivvadu.
 

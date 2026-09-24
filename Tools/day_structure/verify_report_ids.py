@@ -3,7 +3,7 @@ at the folder/line recorded in cited-reviews.json; every E-reference in the text
 import json, re, sys, glob, os
 ROOT = "/Users/lalith/Desktop/store reviews"
 rep = open(sys.argv[1]).read()
-cites = json.load(open(os.path.join(ROOT, "Research Reports/Day Structure Evidence/Whole-Corpus Coding/cited-reviews.json")))["cites"]
+cites = json.load(open(os.path.join(ROOT, "Research Reports/Day Structure and Organization/Day Structure Evidence/Whole-Corpus Coding/cited-reviews.json")))["cites"]
 ids_in_report = set(re.findall(r"`([0-9a-f-]{8,})`", rep))
 base = {"App Store": "App Store Reviews", "Google Play": "Play Store Reviews"}
 bad = []

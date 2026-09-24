@@ -1,6 +1,6 @@
 # Day-structure corpus scan
 
-These scripts back `Research Reports/Habit Tracker — Day Structure Whole-Corpus Verification.md`.
+These scripts back `Research Reports/Day Structure and Organization/Habit Tracker — Day Structure Whole-Corpus Verification.md`.
 They read every `reviews.jsonl` in `App Store Reviews/`, `Play Store Reviews/` and `Native Store Reviews/`, and write their working files to `Temp/daystructure/`. Run them from that folder: `cd Temp/daystructure`, then `python3 ../../Tools/day_structure/<script>.py`, or copy them there.
 
 | Step | Script | Output |
@@ -13,4 +13,4 @@ They read every `reviews.jsonl` in `App Store Reviews/`, `Play Store Reviews/` a
 | 6 | `analyze.py`, `showcode.py`, `pick.py` | secondary breakdowns, the friction sub-typing views and candidate citations |
 | 7 | `resolve_cites.py`, `build_appendix.py` (+ `gists.py`) | resolve cited indices to review IDs and build the appendix table |
 
-The hand-coded map and its outputs are saved in `Research Reports/Day Structure Evidence/Whole-Corpus Coding/`, because `Temp/` is gitignored.
+The hand-coded map and its outputs are saved in `Research Reports/Day Structure and Organization/Day Structure Evidence/Whole-Corpus Coding/`, because `Temp/` is gitignored.

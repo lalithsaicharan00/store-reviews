@@ -1,5 +1,7 @@
 # Plus and Subscription Deep Dive
 
+> **Written by Claude (Claude Code)**, 23 September 2026. Authorship of every report is listed in the [Research Reports index](<../../README.md>).
+
 **Status: exploratory research, not a decision.** This takes each feature proposed for the one-time **Plus** purchase and the optional **Companion** subscription in [Habit Tracker — Business Model, Free Baseline and Moat](../Habit%20Tracker%20—%20Business%20Model,%20Free%20Baseline%20and%20Moat.md). For each one it explains what the feature is and how it works, and names which apps ship it. It shows the feature on screen with numbered highlights and says what reviewers think of it. It also covers:
 
 - the ad-funded model of **21 Days Challenge** (Kati & Lima), using its 27,095 Google Play reviews;
@@ -18,7 +20,7 @@ Decisions live in Notion. Nothing here is decided.
   - A listing screenshot is the developer's own marketing image. It shows the feature exists and roughly how it looks, but it can be staged, and it doesn't always say whether the feature is free or paid. When the paid status comes from somewhere else (the listing text, the in-app purchase list, or reviews), the caption says so.
 - **Features with no public image.** In those cases the section says so plainly. It then explains where to find the feature in the app, or how it should be built if no app has it.
 - **Evidence IDs.**
-  - `R47-012` is a finding card from App Store report 47, and `C263` is a merged theme. Both are in the [Feature Ledger](../Feature%20Ledger.md) and `Tools/prd_ledger/`.
+  - `R47-012` is a finding card from App Store report 47, and `C263` is a merged theme. Both are in the [Feature Ledger](../../Feature%20Ledger.md) and `Tools/prd_ledger/`.
   - `21D#15934` is line 15,934 (counting from 0) of `Play Store Reviews/125. 21 Days Challenge/reviews.jsonl`. The hand-coded theme map for those reviews is in `Temp/play125-21days-ads-classification.py`.
 - **Prices** are US App Store prices unless stated.
 
@@ -1001,7 +1003,7 @@ My view is A plus B, with a caveat. The connector reads the user's data only wit
 
 ## 11. Sources
 
-- **Ledger.** [Feature Ledger](../Feature%20Ledger.md); cards in `Tools/prd_ledger/<N>/cards.jsonl`; merged themes in `Tools/prd_ledger/canonical.json`.
+- **Ledger.** [Feature Ledger](../../Feature%20Ledger.md); cards in `Tools/prd_ledger/<N>/cards.jsonl`; merged themes in `Tools/prd_ledger/canonical.json`.
 - **21 Days Challenge reviews.** `Play Store Reviews/125. 21 Days Challenge/reviews.jsonl` (27,095). Theme map in `Temp/play125-21days-ads-classification.py`; reviews read in `Temp/play125-21days-ad-money-reviews.txt`.
 - **App Store listings** (metadata and screenshots via the iTunes Lookup API, September 2026). The apps are those linked in each caption. Working files are in `Temp/deepdive/listings/`, and the annotation script is `Temp/deepdive/annotate.py`.
 - **Google Play.** [21 Days Challenge](https://play.google.com/store/apps/details?id=com.limatech.dayschallenge.dayschallenge).

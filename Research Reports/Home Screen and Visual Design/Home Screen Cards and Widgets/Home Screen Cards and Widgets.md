@@ -1,5 +1,7 @@
 # Home Screen Cards and Widgets
 
+> **Written by Claude (Claude Code)**, 23 September 2026. Authorship of every report is listed in the [Research Reports index](<../../README.md>).
+
 **Status: exploratory research, not a decision.** This report covers:
 
 - which home-screen layouts habit-tracker users love or dislike;
@@ -21,7 +23,7 @@ It is built from what reviewers wrote, not from taste. Decisions live in Notion.
   - Percentages below use those denominators unless stated.
 - **The generic remainder is estimated, not hand-coded.** About 13,000 more reviews say only "nice layout", "love the colours" or "please add a widget". For those, I hand-labelled a random 200 from each half and report the estimate with a 95% margin (section 8).
 - **Evidence IDs.** `P3#11840` means line 11,840 (counting from 0) of `Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl`. `A34#48` is the same for `App Store Reviews/34. …`. Every ID in this report was checked against the source files.
-- **Ledger links.** `C023` and similar codes are merged themes in the [Feature Ledger](../Feature%20Ledger.md).
+- **Ledger links.** `C023` and similar codes are merged themes in the [Feature Ledger](../../Feature%20Ledger.md).
 - **Stars (★)** are the mean star rating of the reviews in a group. A low mean means the topic comes up in unhappy reviews.
 - **Screenshots** are developers' own listing images. They show a layout exists and how it looks, not how well it works.
 
@@ -187,7 +189,7 @@ This is a research observation, not a decided design.
 
 **Users want the colour to be theirs.**
 - 178 hand-coded reviews ask to choose colours or themes, plus about 460 in the remainder.
-- Colour choice is also the most tolerated thing to charge for (ledger `C167`, and the [Plus and Subscription Deep Dive](../Plus%20and%20Subscription%20Deep%20Dive/Plus%20and%20Subscription%20Deep%20Dive.md)).
+- Colour choice is also the most tolerated thing to charge for (ledger `C167`, and the [Plus and Subscription Deep Dive](../../Business%20Model%20and%20Monetization/Plus%20and%20Subscription%20Deep%20Dive/Plus%20and%20Subscription%20Deep%20Dive.md)).
 
 **Dark mode is expected, and wanted done properly.**
 - 503 dark-mode requests plus 65 light-mode requests (567 together, 10.5%, 70 apps, ★3.66).

@@ -1,5 +1,7 @@
 # Habit Tracker — Business Model, Free Baseline and Moat
 
+> **Written by Claude (Claude Code)**, 23 September 2026. Authorship of every report is listed in the [Research Reports index](<../README.md>).
+
 23 September 2026 · Built from a read of every card in the Feature Ledger (7,590 cards across 70 App Store reports, the two research documents and the native reports) · **Recommendations, not decisions.** Decisions stay in Notion.
 
 ---

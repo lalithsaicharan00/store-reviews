@@ -1,5 +1,7 @@
 # Habit Tracker — Day Structure Explained in Plain English
 
+> **Written by Claude (Claude Code)**, 24 September 2026. Authorship of every report is listed in the [Research Reports index](<../README.md>).
+
 Date: 24 September 2026. Status: an explanation of the evidence. **It is not a decision record.** Decisions are kept in Notion.
 
 This report is a companion to [Habit Tracker — Day Structure Whole-Corpus Verification](<Habit Tracker — Day Structure Whole-Corpus Verification.md>). That report gives the counts and the ratings. This one explains **every row of every table** in plain words:
@@ -712,7 +714,7 @@ A fifth of these (132 of 682, keyword floor) mention a routine or the morning. S
 
 ## Method notes
 
-**Hand sub-typing.** New in this report for the "one habit in several sections", exact-time, customisation, day-variant, whole-day-view and group-stats rows, plus a hand-read of the 124 stats-scan hits. The sub-type files are saved next to the coded map in `Research Reports/Day Structure Evidence/Whole-Corpus Coding/`:
+**Hand sub-typing.** New in this report for the "one habit in several sections", exact-time, customisation, day-variant, whole-day-view and group-stats rows, plus a hand-read of the 124 stats-scan hits. The sub-type files are saved next to the coded map in `Research Reports/Day Structure and Organization/Day Structure Evidence/Whole-Corpus Coding/`:
 
 - `multi-section-subtypes.txt`
 - `exact-time-subtypes.txt`

@@ -27,7 +27,7 @@ Raw canonical coverage: C045 = 54 cards / 29 source IDs; C053 = 12 / 7; C120 = 2
 
 **Defensible answer:** organisation need more broadly distributed; sequential execution need concentrated but consequential. **Not established:** all users lo exact percentage, which concept has the largest unique requester count, feature usage/retention rates, or which naming is most intuitive. Store reviews voting experiment or usage analytics kaavu. Ee limitations product decision ni aapavu; false precision ni aaputayi.
 
-Audit artifacts: [summary](</Users/lalith/Desktop/store reviews/Research Reports/Day Structure Evidence/audit-summary.json>), [retrieved cards](</Users/lalith/Desktop/store reviews/Research Reports/Day Structure Evidence/retrieved-cards.jsonl>), [45 original review excerpts with paths, line numbers and IDs](</Users/lalith/Desktop/store reviews/Research Reports/Day Structure Evidence/verified-review-excerpts.json>).
+Audit artifacts: [summary](</Users/lalith/Desktop/store reviews/Research Reports/Day Structure and Organization/Day Structure Evidence/audit-summary.json>), [retrieved cards](</Users/lalith/Desktop/store reviews/Research Reports/Day Structure and Organization/Day Structure Evidence/retrieved-cards.jsonl>), [45 original review excerpts with paths, line numbers and IDs](</Users/lalith/Desktop/store reviews/Research Reports/Day Structure and Organization/Day Structure Evidence/verified-review-excerpts.json>).
 
 ## 2. Evidence that changes the decision
 
@@ -118,7 +118,7 @@ Use one habit record. If Brush teeth genuinely occurs morning and evening, model
 | Premium themes, section cover art, extended palettes, alternate app icons and widget designs | One-time Plus | Matches the business report's actual personalisation examples. Attractive defaults and accessibility remain free. |
 | Save/switch entire day-plan variants, rotating roster automation, reusable nested sequences | Later Power/Plus scope, not initial requirement | MyRoutine modes and Routinery subroutine/variation requests provide a basis for investigation. Stronger purchase evidence exists for day modes than for every proposed automation. Ordinary irregular scheduling must still work free. |
 
-The [Business Model, Free Baseline and Moat report](</Users/lalith/Desktop/store reviews/Research Reports/Habit Tracker — Business Model, Free Baseline and Moat.md:170>) describes paid personalisation as theme packs, palettes, photo covers, app icons, widget designs, sounds and haptic styles. It separately places ordinary schedules in the free baseline. **“Anything the user customises is paid” is not what that boundary says.**
+The [Business Model, Free Baseline and Moat report](</Users/lalith/Desktop/store reviews/Research Reports/Business Model and Monetization/Habit Tracker — Business Model, Free Baseline and Moat.md:170>) describes paid personalisation as theme packs, palettes, photo covers, app icons, widget designs, sounds and haptic styles. It separately places ordinary schedules in the free baseline. **“Anything the user customises is paid” is not what that boundary says.**
 
 Free custom sections are not proven to maximise revenue. They are the recommendation that best matches the chosen “best free tier” strategy and observed schedule-fit needs. Existing paid groups/timers in Grit, Do Habits or MyRoutine demonstrate monetisability in those products; they do not compel us to gate the same utility. Cosmetic payer co-occurrence in the business report is also not causal proof of cosmetic conversion.
 

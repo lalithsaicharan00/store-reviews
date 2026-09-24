@@ -2,7 +2,7 @@
 and that every E/N reference used in the body is defined in the appendices."""
 import json, re, sys, os
 ROOT = "/Users/lalith/Desktop/store reviews"
-EV = os.path.join(ROOT, "Research Reports/Day Structure Evidence/Whole-Corpus Coding")
+EV = os.path.join(ROOT, "Research Reports/Day Structure and Organization/Day Structure Evidence/Whole-Corpus Coding")
 rep = open(sys.argv[1]).read()
 cites = {}
 cites.update(json.load(open(os.path.join(EV, "cited-reviews.json")))["cites"])
