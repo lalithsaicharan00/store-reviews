@@ -42,7 +42,7 @@ Manual reorder differs from automatic sorting: alphabetical order follows names;
 
 **Evidence:** Habitify has 47 review mentions of custom ordering/problems with persistence (R33-092). Daily Goals includes a reviewer for whom the lack of ordering made the tracker effectively unusable. Dots reorder requests ceased after the capability shipped; that is consistent with resolving friction, not causal proof of increased retention. C073 also documents dissatisfaction when editing moves a habit or custom order resets.
 
-![Official Habitify annotated controls: remove, add and reorder](</Users/lalith/Desktop/store reviews/Research Reports/Day Structure and Organization/Organization and Notes Evidence/08-reorder-add-remove.png>)
+![Official Habitify annotated controls: remove, add and reorder](<Organization and Notes Evidence/08-reorder-add-remove.png>)
 
 **Exact location:** Red marker **3**, on the right of the included habit rows, points to the three horizontal drag-handle lines. Hold and drag vertically. Markers **1** and **2** change membership of the time block, not the habit order. Removing from a section must not be confused with deleting the habit.
 
@@ -60,11 +60,11 @@ This means personal organization, not a social group. It is not a parent habit w
 
 **Proposed free scope:** Create, name, rename and remove a flat group; add/remove/move habits; show All habits and ungrouped habits; filter by group. Deleting a group preserves its habits and history. No compulsory category during habit creation. Start with a flat model and one optional category per habit if simplicity warrants it; multiple category membership is a separate design choice, not required by the evidence. The number of groups should not become an arbitrary paywall under our complete-free positioning.
 
-![Official Habitify grouping explanation](</Users/lalith/Desktop/store reviews/Research Reports/Day Structure and Organization/Organization and Notes Evidence/02-create-group.png>)
+![Official Habitify grouping explanation](<Organization and Notes Evidence/02-create-group.png>)
 
 **Exact location:** The red rectangle surrounds **New Area**, the category/folder option. The **New Time of Day** choice above it is a separate kind of organization.
 
-![Habitify Brain Train category containing Read Book and Practice Coding](</Users/lalith/Desktop/store reviews/Research Reports/Day Structure and Organization/Organization and Notes Evidence/03-group-filter.png>)
+![Habitify Brain Train category containing Read Book and Practice Coding](<Organization and Notes Evidence/03-group-filter.png>)
 
 **Concrete result:** The green **Brain Train** tab is the selected group; **Read Book** and **Practice Coding** are the habits inside it. This second image is unmarked in the official source; the preceding marked image identifies the group-creation concept.
 
@@ -85,7 +85,7 @@ HabitKit also documents custom categories and category filtering. Existing Every
 | Reminder | When should a notification arrive? | 9:00 PM |
 | Actual log time | When did I record/perform it? | 9:18 PM |
 
-![Official Habitify time-of-day settings with Morning highlighted](</Users/lalith/Desktop/store reviews/Research Reports/Day Structure and Organization/Organization and Notes Evidence/05-time-settings.png>)
+![Official Habitify time-of-day settings with Morning highlighted](<Organization and Notes Evidence/05-time-settings.png>)
 
 **Exact location:** Left red box highlights **Morning, 05:00–10:00**. The arrow leads to the right-hand screen with its **Start**, **End**, and included habits. These are section/filter settings; they are not automatically an alarm or a completion deadline.
 
@@ -107,7 +107,7 @@ For one habit assigned to multiple periods, do not silently create independent c
 
 **My interpretation of the earlier recommendation is the middle row.** “On any day” describes date/status availability: the note can be attached to today or a past day, including a missed day. It does not mean every day must have a journal entry, nor that every note is automatically a global day entry.
 
-![Official Habitify Add Note and habit-specific Notes tab](</Users/lalith/Desktop/store reviews/Research Reports/Day Structure and Organization/Organization and Notes Evidence/06-habit-notes.png>)
+![Official Habitify Add Note and habit-specific Notes tab](<Organization and Notes Evidence/06-habit-notes.png>)
 
 **Exact location:** Left red **Option 1** box identifies Add Note in a habit's action row. Right red **Option 2** box identifies the Notes tab inside **Read Book**. The habit title is the scope cue: this is a note connected to Read Book, not proof of a whole-day journal.
 
