@@ -1,0 +1,50 @@
+app,title,date,prog,strip,strip_ring,view,filter
+1 Habit Tracker,Today,none,none,y,y,none,dropdown
+7 HabitKit,appname,none,none,n,n,none,none
+23 Streaks,none,none,none,n,n,none,none
+33 Habitify,Today-eyebrow+My Journal,none,none,n,n,none,tabs
+46 everyday,none,none,count,y,n,none,none
+43 Habit Hub,month,month,none,y,y,none,dropdown
+13 Productive,Today,none,none,y,n,tabs,tabs
+5 Routinery,none,none,none,n,n,segmented,chip
+3 Days Since,other,none,none,n,n,none,none
+10 Finch,none,none,text,n,n,none,none
+25 Grit,Today,none,none,y,y,none,none
+27 Goal Streak,date,date,none,y,y,none,chips
+57 DayStamp,other,none,count,n,n,none,none
+2 Daily Habits,month,month,none,y,n,none,none
+6 StreakUp,appname,none,none,n,n,tabs,none
+8 Onrise,other,month,none,y,n,none,none
+9 Dear Me,Today,date,none,y,n,none,none
+11 Daily Habits Streak,appname,date,count,y,n,none,none
+12 ThatGirl,view-menu,none,none,y,n,title-menu,none
+16 Atoms,other,none,none,y,n,none,none
+28 Habit Rabbit,month,month,none,y,n,none,none
+29 Habit Tracker Daily Goals,Today,none,bar,y,n,none,none
+30 Simple&Powerful,other,none,none,y,y,none,none
+31 Do Habits,Today,none,none,n,n,none,chips
+34 Evoday,Today,none,none,n,n,none,none
+41 Awesome Habits,Today,none,ring,n,n,none,none
+42 Daily Habit & Routine,Today,none,none,y,n,none,none
+49 Life Reset,other,other,count,n,n,tabs,none
+50 HelloHabit,Today,none,none,y,n,none,none
+52 ShineDay,Today,weekday,count,n,n,tabs,chips
+55 Habit-Bull,other,none,none,n,n,tab-bar,none
+58 Blossom,other,date,ring,y,n,none,none
+59 Tappsk,none,none,count,n,n,none,none
+60 Mindway,Today,date,none,y,n,none,none
+62 Streaks Daily,other,none,none,n,n,none,none
+64 Critique AI,other,date,ring,y,n,none,none
+67 Habio,Today,none,count,n,n,none,none
+69 TheFor,other,none,bar,n,n,bottom-toggle,none
+71 MyStreaks,filter-menu,none,count,n,n,none,title-menu
+72 Habit Hearts,month,month,none,y,y,none,none
+74 Habit Check Calendar,month,month,none,y,n,none,tabs
+76 Way of Life,view-menu,none,none,y,n,title-menu,none
+79 Ripples,other,none,none,n,n,none,none
+84 HabitGrid,view-name,none,none,n,n,tab-bar,none
+86 Today app,none,none,ring,n,n,none,none
+89 Check Calendar,month,month,count,n,n,none,tabs
+52cn ShineDay CN,Today,weekday,none,n,n,none,chips
+18 MyRoutine,month,month,none,y,y,tabs,chips
+19 Wisey,Today,none,none,n,n,none,none

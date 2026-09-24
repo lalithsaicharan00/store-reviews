@@ -1,0 +1,1791 @@
+20	TB+	loves customizable tab bar [habit]
+28	TBR	wants bottom tab bar to reach statistics easily [habit]
+29	X	汉堡 = food
+30	X	food list spam
+32	X	spam, 抽屉 literal
+33	X	food list spam
+62	X	save button placement in nav bar (header), not navigation style
+73	X	iPad sheet bug
+85	X	crash on 4th/5th bottom tab (bug; tab bar exists) [habit]
+87	X	шторка = notification shade
+88	X	stats tab content
+118	X	layout bug cut-off buttons
+121	X	bug + theme too cutesy
+128	TB- HID	bottom icons unclear/similar; unused Friend tab wastes real estate; edit buried in settings [habit]
+155	TB- SWP REACH FAB	tiny tap targets, wants swipe + one-handed; unused Group tab, wants persistent add button instead [habit]
+173	X	unit picker drawer bug
+181	TB+	cute event nav bar (cosmetic) [habit]
+195	X	glitch
+204	X	store tabs content
+231	X	button at bottom
+248	X	bug stuck on events tab
+297	DR+	three lines menu shows tons of activities [habit]
+311	RD DEEP	shop tab now needs extra tap; fewer taps better; things hard to find (mail) [habit]
+312	RD TB- DEEP	update made shop tab slower, extra tap [habit]
+350	TBR	wants separate tabs goals/dailies/todo like Habitica [habit]
+369	X	hamburgers food
+375	TB- HID	so many tabs confusing; can't find reflections [habit]
+401	TBR CLT	unlabeled icons; wants bottom tabs to bring order to cluttered layout [habit]
+425	X	button at bottom
+431	X	side-bar = aside
+479	X	drawer metaphor
+510	X	tab switch triggers ad
+517	X	day buttons bug
+521	X	glitch
+529	X	reorder request
+530	X	challenge tab content
+535	X	crash on tab
+538	X	wants separate tabs for work/home (grouping, not nav) 
+547	TB- CLT	main screen = calendar + bottom menu, little left for tasks [habit]
+554	RD TB-	bottom bar now centres on add habit (least used); wants simple list [habit]
+565	X	desk drawer
+566	RD ONE	tabs to switch views removed; multiple swipes; habits should be priority [habit]
+581	X	phone dock
+583	X	date bug
+608	TBR DEEP	flow relies on back and menu; wants consistent bottom menu or swiping [habit]
+609	X	icon at bottom for instance
+635	X	phone dock
+661	X	browser sidebar
+663	NAV-	confusing interface
+667	X	calendar strip
+674	X	nav bar colour bug
+676	X	Today-view widget vs home screen
+683	X	stats content
+701	TB- ONE	Streaks page-switcher button; wants more per screen [habit]
+703	TB- CLT	edit-mode bottom menu buttons small [habit]
+714	NAV- TB- HID	hard to navigate, can't find notification setting; bottom icons unhelpful [habit]
+733	X	cosmetic
+734	TB- SWP	wants swipe instead of bottom page icon [habit]
+735	TB- ONE	habits split across 2 pages, button at bottom; wants scroll [habit]
+736	TB- SWP	unclear bottom icons; wants swipe [habit]
+737	TB- SWP ONE	tap icon at bottom old fashioned; wants swipe/scroll one page [habit]
+741	TB- SWP ONE	bottom page icon un-iOS; wants swipe/scroll [habit]
+750	TB- NAV-	bottom icons too small, no labels [habit]
+807	TB-	tab bar confusing at first then fine [habit]
+858	HID	no settings option, only activity tabs [habit]
+859	TB- CLT	too many tabs and popups [habit]
+870	X	hamburgers
+881	X	health tab content
+882	TB- CLT	too many tabs, get lost [habit]
+886	X	bug
+936	TB- NAV-	each bottom icon like a separate app; can't find anything [habit]
+939	X	bug
+1010	HID	no language setting anywhere
+1027	CLT	main screen like junk drawer [habit]
+1110	TB- CLT	labyrinth of popups and tabs [habit]
+1200	TB- CLT	too many tabs, hectic [habit]
+1216	CLT	organised like junk drawer, upsell [habit]
+1243	NAV-	problems navigating [habit]
+1353	TB- DEEP	so many tabs and dialogs, endless clicking to log [habit]
+1408	X	content removed from tabs
+1508	TB- NAV-	confusing, redundant tabs [habit]
+1596	TB+ ONE	not overloaded with features and tabs like Finch [habit]
+1616	X	mac sidebar widget
+1639	X	mac sidebar widget
+1679	X	keep tabs idiom
+1701	X	watch icon
+1731	NAV-	navigation takes a bit to figure out [habit]
+1743	X	date nav bug
+1758	DR-	side menu text overlap (polish) [habit]
+1769	CLT	animations/tabs distract
+1774	X	content
+1794	X	wants tab showing all tasks (view)
+1835	X	button
+1848	TB- 	useless tabs that can't be removed (feedback) [habit]
+1860	X	bug
+1863	X	3 habits cap
+1867	X	toggle
+1890	DR- SWP	sidebar has no advantage; wants swipe between habits/goals [habit]
+1893	X	onboarding bug
+1902	TB- CLT	wants to edit what is in tab bar like TickTick [habit]
+1907	X	tab bar hidden by dynamic island (bug)
+1910	HID CLT	notes buried in menus not visible in list; bloated [habit]
+1911	RD TB-	tab bar made slim overlapping home indicator [habit]
+1927	TB-	bottom bar transparent unreadable in light mode [habit]
+1928	RD TB- DEEP	stats removed from nav bar, now via Me tab [habit]
+1930	X	iOS today-view sidebar widget removed
+1931	X	iPad sidebar widget
+1933	X	iPad sidebar order
+1934	X	iPad sidebar
+1936	TBR SWP DEEP	wants customisable bottom nav (timeline + weekly overview); swipe days; tiny top button [habit]
+1942	TB+	found timeline can be put on bottom bar; should be default [habit]
+1947	X	tab content
+1954	X	crash on tab
+1965	TB+	daily/weekly/monthly/yearly view tabs at bottom praised [habit]
+1971	X	drawer literal
+1980	X	calendar tab content
+1986	TABF	wants separate tab for day notes [habit]
+1988	DR- TBR	would put Home/Shopping tabs on top instead of side menu [todo-habit]
+1989	TABF	wants habits in separate tab [todo-habit]
+1990	X	ideas tab praise
+1991	X	account bug
+1992	X	extra tap to check
+1996	X	grouping
+1999	X	bug
+2000	TABF ONE	wants Today tab; one screen overwhelming [todo-habit]
+2001	TABF	calendar tab
+2002	TABF	notes tab
+2003	TABF	month tab
+2005	TABF	yearly goals tab
+2006	X	diary tab cleanup
+2007	TABF	notes tab
+2008	X	bug
+2010	TABF	schedule tab
+2011	X	settings
+2014	X	later tab content
+2015	X	sidebar widgets
+2016	TABF	shopping list tab
+2017	X	browser tab
+2018	TABF	expenses tab
+2021	X	collapse sections
+2022	X	iOS subscription
+2023	TABF	hourly tab
+2028	HID	'Later' tab at very bottom, forgets it [todo-habit]
+2033	X	burger
+2034	X	slow
+2039	X	cancel tab
+2040	X	subscription
+2081	X	content tabs
+2128	X	three lines = habits
+2156	X	popup bug
+2170	X	close app tabs
+2171	X	bug
+2176	TB+	habits/dailies/todos separated by tabs praised [habit]
+2179	TB+	separate tabs for habits/dailies/todos easier to navigate than one list [habit]
+2182	RD ONE	redesign: habits too big, fewer visible [habit]
+2187	X	crash on three-lines menu (bug; drawer exists) [habit]
+2194	TABF	pets tab
+2195	TABF	goals tab
+2198	X	tabs are same list (feature)
+2204	NAV- DR-	menu setup confusing, hard to navigate [habit]
+2206	X	crash on menu button
+2224	X	burger menu mention (bug in swipe)
+2232	X	font / page indicator
+2247	X	tabs = counters
+2249	X	loading
+2250	X	loading
+2251	X	paywall popups
+2252	X	explore tab content
+2253	X	bug
+2254	X	paywall every tab
+2274	X	wants habit lists by tab (grouping)
+2276	X	daily tab content
+2277	X	bottom button layout fold
+2279	X	social tab
+2282	X	notif shade
+2283	X	tips tab filler
+2284	HID	long-term habits in separate tab disappear from focus; wants them in All [habit]
+2285	X	notif
+2290	X	system nav overlaps bottom nav (bug)
+2291	DR- NAV-	convoluted nested side-menu, same button different functions [habit]
+2299	X	notif shade
+2316	X	error
+2318	X	discover tab paywall
+2319	X	upsell on tab switch
+2320	X	slow
+2321	X	bugs
+2324	X	bottom nav blocked by system nav (bug)
+2357	DR- TBR	switch hamburger menu to bottom navigation bar; choose default tab [study planner]
+2368	TB- CLT	too many tabs; dashboard should be overview with filter [study planner]
+2430	TB- CLT	too many tabs and links [habit]
+2437	RD HID	journey hidden in bottom menu, home shows upsells [habit]
+2460	DRR	wants a side panel to navigate without visuals (sensory) [habit]
+2535	X	bundle apps as tabs
+2635	X	overlay bug
+2689	DRR CLT	wants side tabs to switch sections; single page cluttered, hard to find [habit]
+2767	TB- DEEP CLT	crowded, several tabs to get to what I want [habit]
+2790	NAV-	no design flow [habit]
+2866	CLT	upgrade tabs above habits [habit]
+3009	X	onboarding
+3014	TB- CLT	cluttered main screen; tabs not functional [habit]
+3016	TB- CLT	full of tabs and useless features; simplify [habit]
+3026	HID	discovered third tab after two weeks [habit]
+3036	TB- CLT	too many tabs, lost [habit]
+3053	X	suggestions on home
+3054	TB+	tabs for meditation etc (content breadth) [habit]
+3059	TB+	tabs separated neatly Home/Journey/Training [habit]
+3108	X	show live activity in nav bar (gym)
+3174	X	system nav overlap
+3246	X	nav bar colour
+3307	DR- HID	wants tutorial in three-lines menu; doesn't know how to complete [habit]
+3310	X	burger king
+3313	TBR REACH	move menu bar to bottom for large phones [todo]
+3319	X	
+3323	X	ads bottom bar
+3327	X	undo
+3337	FAB	snackbar hides + button [todo]
+3353	X	ads
+3355	X	app drawer
+3357	X	ads
+3398	X	notif drawer
+3406	X	nav bar colour
+3408	TABF	planning tab
+3409	X	widget
+3411	TABF	
+3412	TABF	completed tab
+3413	TABF	completed tab
+3414	TABF	lists as tabs [todo]
+3415	X	
+3416	X	
+3421	X	ads bottom
+3427	TABF	calendar tab
+3428	TABF	notes tab
+3430	X	shade
+3431	X	shade
+3432	X	shade
+3433	X	shade
+3434	X	shade
+3435	X	shade
+3436	X	shade
+3437	X	shade
+3438	X	
+3439	TABF	calendar tab
+3440	X	
+3441	X	
+3442	X	
+3443	X	
+3444	X	
+3445	X	
+3447	DRR	wants side menu with lists like other notes app; top is inconvenient [todo]
+3448	X	
+3449	X	shade
+3451	X	done tab
+3455	X	subtasks
+3461	X	system nav overlap
+3468	HID	personalize button at bottom not noticed [skincare routine]
+3469	X	drawer literal
+3485	X	slow
+3488	TB- TBR SWP	bottom nav wasted on Explore; Explore belongs in menu; wants Today/Weekly/Overall in bottom bar + swipe [habit]
+3492	X	Today button date reset
+3512	TB+	different tabs make tracking easy [habit]
+3531	TB- DR+	Categories in bottom menu redundant; already in top-left menu; use bottom space for something else [habit]
+3538	TB- TBR	rarely used categories in bottom menu; put in top menu; stats dashboard in bottom bar [habit]
+3547	TB-	replace least-used bottom icon with Backups [habit]
+3563	SWP	swipe Today tab between dates vs small bubbles [habit]
+3566	SWP	swipeable day tab [habit]
+3570	HID TB-	Tasks page hidden while Today/Habits are tabs; should be a tab [habit]
+3582	TABG	categories in tabs
+3583	X	widget tab
+3584	X	category tab history
+3585	X	stats tab
+3587	TB-	navbar clipped on curved screen; raise it [habit]
+3588	X	tab bar labels translation
+3593	TB+	lists tabs Today/Habits/Tasks/Categories/Timer (description) [habit]
+3599	X	tasks tab behaviour
+3601	TABG	tabs + favourites like Todoist
+3603	X	alphabetical
+3609	TB-	PRO item in bottom menu unnecessary for members [habit]
+3629	X	side menu typo
+3647	DR-	premium in one of the side menus, unsure what it does (hidden) [habit]
+3661	DR+ RD	always preferred slide menu (old version), reinstalled old version [habit]
+3662	DR-	side menu back button closes app instead of drawer (like Gmail) [habit]
+3676	DR- HID	side bar percentages unclear [habit]
+3689	TBR FAB	suggests bottom navigation or at least FAB to add [habit]
+3693	TABG	
+3697	X	app drawer
+3709	TABG	
+3722	X	nav bar colour
+3724	TABG	
+3732	TABG	separators or tabs by time of day
+3733	TABG	
+3734	TABG	
+3735	TABG	
+3736	TABG	
+3737	TABF	overview tab
+3738	TABG	
+3744	TABG	
+3747	TABG	
+3749	TABG	
+3751	TABF	overall stats tab
+3752	TABG	
+3753	TABF	notes tab
+3754	TABG	tab for daughter's habits
+3755	ONE	many habits on one screen with recent days praised [habit]
+3756	X	notification lands on stats; back exits (nav bug)
+3757	X	shade
+3759	X	shade
+3760	X	
+3761	TABG	tabs better than colours
+3762	TABG	
+3763	TABG	
+3772	TB+	easy to navigate UI with bottom tabs [habit]
+3778	DRR	wants left side navigation to switch custom folders/lists [habit-todo]
+3801	X	system nav overlap
+3802	X	start button confusion
+3810	X	slow bottom nav
+3811	X	UI bug
+3814	X	lag
+3815	RD	updates keep moving things and tabs [habit]
+3816	X	slow tabs
+3819	X	diary tab
+3821	X	fold overlap
+3841	X	system nav overlap
+3870	CLT	open gift button at bottom = ads [habit]
+3901	X	no content/'hamburger bar' absent - onboarding
+3906	TB- ONE	wants simplified version without Discover/Library tabs, only my routine [habit]
+3907	X	icon search
+3910	X	
+3911	TB+	many organisation tabs, ADHD [habit]
+3912	TB+	tabs for motivation, music (content) [habit]
+3916	TABF	own habits tab
+3917	X	shade
+3918	X	
+3924	TB- CLT	wants to hide unnecessary bottom tabs [habit]
+3930	X	nav bar colour
+3947	TBR DEEP	Scheduled/Flexible should be on bottom bar; routine page cluttered [routine]
+3954	X	run buttons
+3989	TB+	tasks in one tab, habits in another [habit-todo]
+3990	X	save bug
+3997	X	system nav
+4012	X	monthly tab
+4013	TABG	pro/perso tabs
+4015	TABG	browser-like tabs for categories
+4016	X	
+4022	X	system nav bug
+4024	X	system nav overlap
+4028	TB- CLT	too many tabs, badly organised [habit]
+4034	TB- NAV-	hard to navigate, so many tabs (ADHD) [habit]
+4043	TB-	task-type tabs complex, lose things [habit]
+4047	DR-	sidebar interface ugly [habit]
+4049	DR- HID	sidebar hides features; forget skills/party/items exist [habit]
+4050	DR-	sidebar could be tidier [habit]
+4052	DR- NAV-	burger-menu era navigation a mess; impossible to navigate [habit]
+4060	DR-	hamburger menu looks outdated [habit]
+4064	FAB	dislikes floating + circle; prefers + on bottom bar with tabs [habit]
+4074	X	
+4075	X	
+4087	TBR	wants party tab at top with tasks (not hidden) [habit]
+4091	TABF	goals as main bottom tab [habit]
+4095	X	remember last tab (sorting)
+4100	TB+	bottom tabs switch habit types; organised [habit]
+4104	X	zoom cut-off
+4105	X	system nav overlap
+4106	X	system overlap
+4109	X	system overlap
+4111	X	
+4112	X	lag
+4115	TB-	doesn't like tab switching but acceptable [habit]
+4122	RD TB- CLT	giant static bottom buttons take real estate; cluttered [habit]
+4126	TB-	floating bottom bar needs icons less text [habit]
+4135	DR-	tablet menu panel can't be closed, takes space [habit]
+4136	HID	options hidden in each tab [habit]
+4137	X	system overlap
+4141	TB- DR-	bottom bar ugly; notes hamburger not really approved [habit]
+4142	DR- CLT NAV-	nav drawer way too long; don't know where to click [habit]
+4144	DR- HID	language setting behind top-left hamburger (tip) [habit]
+4149	X	
+4156	X	
+4159	X	
+4161	X	
+4162	DR-	sidebar ugly [habit]
+4163	TB+	separate tabs habits/dailies/todos; clean [habit]
+4164	X	crash
+4165	X	crash
+4166	X	
+4167	TABF	today tab/filter
+4170	TB-	settings as icon; nav bar must be fixed [habit-todo]
+4174	TB+	tabs/sub-lists [todo]
+4176	DR- DEEP	must open menu bar to switch lists; wants list overview on start [todo]
+4188	DR-	not a fan of using the side bar to navigate between lists; wants home page overview [todo]
+4196	X	quick add bottom bar
+4204	TB+	tabs for everything [todo]
+4206	X	drag side bar
+4220	X	
+4227	DR- HID	only three lines top-left, few options visible [todo]
+4236	TB+	tabs at top to switch [todo]
+4237	X	drawer literal
+4239	TB+	categories as tabs at top [todo]
+4244	DR+	lists in side navigation bar [todo]
+4251	TB+	tabs per list [todo]
+4256	TB+	tabs per list [todo]
+4285	X	archive lists from sidebar
+4319	X	drawer drag bug
+4323	DR- ONE	wants home page rather than side bar for top-level lists [todo]
+4332	DR- ONE	make navbar of all lists or show all lists on open [todo]
+4334	X	
+4336	TB+	tabs made easily [todo]
+4347	DR- ONE	wants landing overview of all lists; now hidden in side bar [todo]
+4348	DR- ONE	wants home screen of lists not in side menu [todo]
+4363	DR+	lists easily accessible from side menu [todo]
+4370	DR- ONE	back exits app; lists in hamburger; wants homepage [todo]
+4372	TABF	notes/tasks/calendar as three tabs [todo]
+4396	DR- ONE	wants homescreen listing lists besides side-bar [todo]
+4417	DR- ONE	see all lists on one home screen without side bar [todo]
+4421	X	side-menu show completed (feature)
+4426	DR- REACH SWP	hamburger hard to reach one-handed on big phone; wants swipe or bottom buttons [todo]
+4430	TB+	tabs + sublists structure [todo]
+4431	TB+ ONE	one screen with tabs gives overview [todo]
+4432	DR- ONE	wants all tabs visible on one page instead of dropdown menu [todo]
+4433	TBR	lists as tabs [todo]
+4434	X	back to index
+4436	TB+	lists as tabs [todo]
+4440	TB+	notes in tabs [todo]
+4447	TB+	organise by tabs [todo]
+4448	TBR	tabs on start screen [todo]
+4449	TB+	tabs [todo]
+4450	TB+	tabs [todo]
+4451	TB+	tabs [todo]
+4453	TB+	tabs [todo]
+4455	TBR SWP	lists as tabs, dropdown, or swipe [todo]
+4456	TB+	tabs [todo]
+4458	TB-	too many sub-category tabs to scroll; prefer tags one view [todo]
+4460	X	
+4461	X	
+4462	X	
+4464	X	lag
+4465	TB-	horizontal tabs scroll off-screen; wants vertical like main list [todo]
+4468	TBR	main list with tabs for switching [todo]
+4469	X	
+4470	TB+	sections > tabs > tasks [todo]
+4471	X	
+4472	X	
+4473	X	remember last tab
+4474	TB- DR+	forgets horizontal tabs exist; prefers left menu showing lists [todo]
+4475	X	
+4477	X	
+4478	X	
+4479	TBR	see all list tabs for quick switch [todo]
+4481	X	
+4483	TB+	menus/tabs not tiring [todo]
+4491	HID	tools hidden in bottom button; want inline [habit]
+4502	X	nav bar colour
+4504	X	
+4505	TB+	multiple tabs [habit]
+4507	X	columns hidden behind bottom bar (layout bug)
+4508	TB-	bottom bar icons smaller/lower; theme bar colours [habit]
+4509	TB+	rows and tabs; 30 seconds tick and leave [habit]
+4510	TB+	tabs per category [habit]
+4511	X	
+4512	TABF	todo tab
+4517	DR- DEEP	can't quickly get to hamburger; press back many times [todo]
+4527	TB- CLT	too many tabs, hard to use [todo]
+4528	TABF	
+4529	TABF	
+4531	X	
+4533	X	widget blocks
+4534	X	
+4535	TABF	
+4536	X	
+4537	X	
+4538	X	
+4539	X	
+4540	TB+	tab for week/month view [todo]
+4541	TABF	
+4542	X	
+4543	X	
+4544	TABF	
+4546	HID	hidden ideas tab never found [todo]
+4547	X	
+4549	X	
+4550	X	
+4551	TABF	
+4552	TABF	
+4553	TABF	
+4554	X	
+4555	TABF	
+4556	TABF	
+4557	X	
+4558	X	
+4560	X	
+4561	X	
+4562	TABF	
+4563	RD HID	habits now small, must open separate tab to see all; empty space [todo-habit]
+4587	X	shade
+4595	DR+	collapsible sidebar with smart lists/tags very clear (iPad/Mac) [native]
+4597	X	
+4603	TB- ONE	too many tabs; just one tab with all [native]
+4604	NAV-	grocery sections landscape hard to navigate [native]
+4609	DRR	wants side bar to choose lists [native]
+4616	X	
+4617	X	
+4618	X	
+4620	X	
+4628	X	
+4635	X	sidebar widget accidental
+4659	DR-	search forces sidebar open, must close (iPad) [native]
+4680	X	
+4685	X	
+4691	X	
+4699	RD DR-	why full-screen sidebar on iPhone, bad UX [native MS To Do]
+4713	DRR	wants All Tasks in sidebar like Wunderlist [native]
+4714	X	
+4716	DRR	calendar at bottom of sidebar [native]
+4717	RD DR-	new full-screen sidebar huge step back [native]
+4718	RD DR-	sidebar update useless [native]
+4719	DRR	stick sidebar on iPad landscape [native]
+4721	RD DR-	new full-screen sidebar not good [native]
+4722	X	mac widget
+4723	X	ipad widget
+4724	DR-	sidebar slide page ugly/laggy [native]
+4725	X	widget
+4726	X	widget
+4727	X	widget
+4728	DR-	pulling out sidebar drops frames [native]
+4730	X	widget
+4731	RD DR-	full-screen sidebar: swipe in can't swipe out [native]
+4732	RD DR-	hate full-screen sidebar, lowers efficiency [native]
+4733	X	widget
+4734	DR-	sidebar covers top bar [native]
+4735	DRR	iPad sidebar auto shown [native]
+4736	DR-	right-swipe sidebar unresponsive [native]
+4738	X	
+4751	TABF	
+4752	X	bug
+4753	X	
+4754	X	
+4762	NAV-	unintuitive [native]
+4764	X	
+4765	X	
+4771	X	
+4772	X	
+4773	X	
+4787	X	
+4789	X	
+4790	TABF	
+4791	X	
+4792	X	
+4793	X	
+4794	HID DEEP	sync button only on Settings tab at bottom [native]
+4795	X	
+4796	TABF	
+4797	X	
+4798	TABF	
+4799	X	
+4800	X	
+4801	X	
+4803	RD DEEP HID	completed tasks moved from bottom button into menu, heavier UX [native]
+4807	TABF	
+4808	X	outlook sidebar
+4821	X	drawer bug
+4843	X	widget
+4855	X	
+4857	X	
+4864	X	
+4875	DR- CLT	sidebar takes 4/5 of screen mostly white; unnecessary swipe [native]
+4885	X	layout bug
+4895	X	
+4896	X	
+4897	TABF	
+4901	X	
+4904	X	
+4908	REACH FAB	move + to bottom for one-handed use; Apple moved primary actions to bottom elsewhere [native Calendar]
+4927	X	
+4935	X	
+4941	DR-	sidebar keeps overlaying, disappears [native Calendar iPad]
+4956	TBR	wants view switcher (month/day/list/year) on bottom bar [native Calendar]
+4970	X	
+4972	X	
+4974	DRR	side bar for unscheduled events [native]
+4975	DR-	sidebar shows up unwanted [native]
+4977	X	
+4978	RD DR-	sidebar added can't remove [native Calendar]
+4984	X	
+5040	X	
+5055	RD	side menu replaced by grid; wants it back [native Notes]
+5059	X	
+5064	DR-	swipe opens sidebar inconsistently [native]
+5065	DR-	sidebar blocks full-screen PDF [native]
+5067	X	
+5068	X	
+5069	X	
+5074	X	
+5075	X	
+5079	X	
+5082	TBR	wants tab bar [native Notes]
+5091	X	toolbar space
+5106	X	
+5107	X	bottom bar moves
+5120	X	
+5121	X	
+5125	X	
+5126	X	
+5135	X	
+5156	X	
+5174	DR- HID	folders only visible in side panel, not main panel; unintuitive [native Notes]
+5191	X	
+5197	X	
+5207	X	
+5210	DR- DEEP	must reopen side panel and scroll to find note each return [native Notes iPad]
+5215	X	
+5216	TABF	
+5223	X	
+5231	HID	key info buried in charts [native Health]
+5232	TABF	
+5234	X	
+5235	TABF	
+5236	TABF	
+5237	HID NAV-	hard to find categories; wants search [native Health]
+5240	DR-	can't reorder left side-panel items [native Health iPad]
+5255	X	
+5256	X	
+5257	X	
+5258	X	
+5259	X	
+5260	X	
+5261	TABF	
+5262	TABF	
+5264	X	
+5322	X	favourites order
+5354	X	
+5365	X	
+5371	X	
+5374	X	
+5377	TABF	
+5392	X	
+5400	TABF	
+5401	X	
+5403	X	
+5404	X	
+5405	X	
+5406	X	
+5407	TABF	
+5408	X	
+5409	X	
+5411	X	
+5413	X	
+5414	X	
+5415	TB- CLT	too many tabs [native Fitness]
+5424	X	
+5431	HID NAV-	saved/downloaded at bottom; wants tab at top; better navigation [native Fitness]
+5442	RD TB- CLT	redundant second tab bar on Fitness+ page; harder to find [native Fitness]
+5443	X	video scrub
+5464	X	iPad version missing tab
+5495	TB- CLT	paid Fitness+ takes a whole bottom tab (ad) [native Fitness]
+5499	DR-	wish hamburger bar moved instead of card over top (animation) [native GTasks]
+5504	X	gmail sidebar
+5506	DRR	iPad needs sidebar [native GTasks]
+5507	X	gmail sidebar
+5510	TB-	can't reorder tabs [native GTasks]
+5511	TABF	all-lists-by-date tab
+5513	TB- TABF	must scroll through list tabs; wants Today tab [native GTasks]
+5514	X	gmail sidebar
+5519	DRR	iPad: categories always visible in left sidebar instead of bottom menu [native GTasks]
+5520	DR- SWP	opening sidebar each time to switch lists is tedious; wants bottom swipe [native GTasks]
+5521	DRR	always show list sidebar option [native GTasks]
+5523	X	
+5524	X	widget
+5525	DRR	iPad sidebar should always be present [native GTasks]
+5526	X	
+5527	TABF	
+5528	TABF DEEP	
+5529	TABF	today tab
+5530	TB- DRR	top tabs require long scrolling; prefer menu list [native GTasks]
+5531	TABF	
+5533	TABF	
+5534	TABF	
+5535	X	
+5536	X	calendar burger menu checkbox
+5537	X	web sidemenu
+5540	X	gmail sidebar
+5541	RD TB- DR+	bring back side menu list selector; horizontal tabs need repeated swiping with many lists [native GTasks]
+5544	RD DR+ TB-	hamburger removed; scrolling tabs wastes time [native GTasks]
+5550	X	
+5556	X	
+5557	SWP TBR	wants swipe or top tabs between lists [native GTasks]
+5558	DRR	see all folders on sidebar like To Do [native GTasks]
+5559	DR-	list drawer cramped [native GTasks]
+5565	DR- REACH TBR	replace hamburger with bottom bar everyone uses; reach; constantly clicking menu to switch lists [native GTasks]
+5566	X	
+5570	X	
+5571	X	
+5572	X	
+5573	X	
+5574	X	
+5575	X	
+5577	X	
+5578	X	
+5581	X	
+5583	TB+ REACH DR-	5 stars for bottom menu bar; no reaching to top hamburger [native GTasks]
+5584	X	
+5585	X	bottom bar float bug
+5588	DR-	huge side menu font (polish) [native Keep]
+5597	X	
+5601	X	
+5602	DR- SWP	no gesture to open side menu on iOS [native Keep]
+5606	X	
+5610	X	
+5614	X	
+5620	X	
+5624	X	
+5625	X	
+5626	DR- SWP REACH	no swipe gestures, not one-handed; hamburger menu uncomfortable [native Keep]
+5635	DR- SWP	missing gesture to open hamburger menu [native Keep]
+5638	X	
+5639	X	
+5640	X	
+5642	X	
+5646	X	
+5647	TABG	
+5653	X	
+5658	X	
+5660	X	
+5662	X	
+5667	X	
+5668	X	
+5669	DRR	sidebar with drag-drop tags [native Keep]
+5673	X	
+5674	X	
+5676	DR-	slide-out menu doesn't slide correctly [native Keep]
+5678	DR- NAV-	two burger menus with arbitrary actions [native Keep]
+5681	X	
+5682	X	
+5683	X	widget
+5686	DR-	side bar menu glitching can't click [native GCal]
+5692	X	widget
+5703	HID	Apple Calendar Today hidden in bottom bar [native]
+5704	DR- DEEP	must go back to month via side menu each time [native GCal]
+5706	X	
+5715	X	
+5720	X	
+5722	DR-	can't open menu bar during call (top reach blocked) [native GCal]
+5733	X	
+5736	TABF	
+5741	X	
+5744	X	
+5748	RD DR- DEEP	must keep going back to burger menu to select month view [native GCal]
+5749	DR-	three lines top-left don't always work [native GCal]
+5751	X	
+5754	FAB	+ bottom right praised [native GCal]
+5762	X	
+5768	DR- DEEP	annoying to use hamburger menu every time to switch view [native GCal]
+5773	X	
+5774	DR- CLT	iPad always shows sidebar, takes real estate [native GCal]
+5782	DR-	hamburger unresponsive during call [native GCal]
+5784	X	widget
+5785	RD DR- DEEP	now must open burger to return to month view [native GCal]
+5786	X	
+5787	X	
+5788	HID	can't find goals tab in browser [native GCal]
+5789	DR-	side menu won't open in hotspot mode [native GCal]
+5790	X	
+5791	TABF	month tab
+5792	TABF	month tab
+5793	X	
+5799	DRR	sidebar list of tasks [native GCal]
+5801	DR-	sidebar jumps back (bug) [native GCal]
+5802	DR-	can't open sidebar (bug) [native GCal]
+5811	RD DR- DEEP	calendar toggles removed from hamburger top level [native GCal]
+5819	REACH	nav buttons split top and bottom; hand moves across phone [native GCal]
+5827	X	
+5829	X	
+5831	RD DR- DEEP	extra step via sidebar menu to get to month view (fixed later) [native GCal]
+5832	DR- DEEP	must click hamburger to go back to month view [native GCal]
+5837	X	
+5843	DR- SWP	can't swipe from edge to open side panel [native GCal]
+5847	DR-	side menu not opening (bug) [native GCal]
+5849	X	
+5858	X	
+5861	DR-	side panel won't open on hotspot [native GCal]
+5863	X	
+5914	X	
+5917	DR- HID	search inside side pane which disappears (bug) [native GCal]
+5927	HID DR-	search buried in sidebar; put it upfront [native GCal]
+5955	X	
+5969	X	sheets tabs = content
+5975	X	
+5992	X	sheets toolbar
+5993	X	
+5994	X	
+5997	X	
+5998	X	
+5999	X	
+6007	X	
+6010	X	
+6011	X	
+6012	X	
+6014	X	
+6035	X	
+6036	X	
+6037	X	
+6041	X	
+6043	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6046	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6052	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6054	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6056	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6065	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6069	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6074	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6075	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6079	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6089	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6095	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6098	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6115	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6124	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6129	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6132	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6135	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6139	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6141	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6142	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6143	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6158	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6159	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6160	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6161	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6163	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6164	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6165	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6166	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6168	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6169	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6170	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6171	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6177	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6179	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6180	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6183	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6185	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6203	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6209	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6226	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6244	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6249	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6250	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6256	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6260	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6269	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6276	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6280	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6301	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6304	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6305	DR- SWP	no gesture to open side bar [native Sheets]
+6310	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6314	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6320	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6333	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6336	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6352	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6355	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6360	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6363	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6380	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6385	FAB	big floating plus; wants it on nav bar [native Sheets]
+6393	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6415	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6417	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6423	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+6426	X	spreadsheet sheet-tabs / toolbar / bugs (content, not app navigation)
+5	DEEP	multiple clicks to complete a habit [habit]
+11	NAV+	others hard to navigate; this intuitive [habit]
+25	HID	reorder/archive hidden in settings menu [habit]
+38	NAV-	[habit]
+41	NAV-	[habit]
+52	NAV- CLT	hard to navigate, does too much; follow Apple design [habit]
+59	NAV-	[habit]
+61	X	
+78	NAV-	[habit]
+104	NAV- HID	hard to find how to add habits [habit]
+119	NAV- ONE	wants easy access on one calendar [habit]
+120	NAV-	[habit]
+140	NAV+	not difficult to navigate [habit]
+144	NAV-	[habit]
+176	NAV-	[habit]
+178	NAV+	others confusing; simple [habit]
+183	NAV-	[habit]
+208	RD HID NAV-	update made things hard to find [habit]
+212	NAVL	[habit]
+214	NAVL	[habit]
+220	DEEP CLT	too many clicks, too much text [habit]
+228	NAV-	[habit]
+235	NAVL HID	shop / add tasks hard to find at first [habit]
+253	X	
+263	RD HID	first aid moved from front page to buried in menu [habit]
+277	X	emoji picker
+285	NAVL	[habit]
+289	NAVL CLT	lot to look at [habit]
+298	X	
+299	X	catalog
+307	CLT DEEP	cluttered; fewer clicks to core tasks; hide unused features [habit]
+319	NAVL	[habit]
+343	NAVL	[habit]
+372	RD DEEP	adding goals now multiple pages [habit]
+373	RD NAV-	interface change confusing (neurodivergent) [habit]
+395	NAV-	[habit]
+399	NAVL	[habit]
+403	NAV-	[habit]
+410	X	upsell screens
+412	NAV- CLT	so many redundant buttons [habit]
+414	NAV-	[habit]
+416	NAVL	[habit]
+419	NAVL	[habit]
+421	NAVL	[habit]
+424	DEEP HID	first aid only via menu on main screen after many screens; wants shortcut on first page [habit]
+440	NAVL	[habit]
+442	NAVL	[habit]
+445	NAVL	[habit]
+448	NAV-	[habit]
+460	NAV-	[habit]
+468	NAVL	hard to find where everything was at first [habit]
+470	NAV-	[habit]
+471	NAV-	[habit]
+483	NAV-	[habit]
+491	NAV- CLT	popups make it impossible to navigate [habit]
+492	NAV-	[habit]
+503	NAV-	[habit]
+526	NAV-	clunky [habit]
+568	CLT	purchase prompts [habit]
+569	DEEP NAV- CLT	menus on menus; separate screen for everything; delete screens; do less [habit]
+570	RD CLT	new interface multiple menus instead of one [habit]
+571	RD HID	update defaults to view hiding anytime habits; scroll to find [habit]
+584	NAV-	[habit]
+585	NAV- HID	can't figure out how to check off [habit]
+592	NAV-	[habit]
+607	NAVL	[habit]
+612	NAVL	[habit]
+615	NAV-	confusing, can't find things [habit]
+627	NAV-	clunky navigation [habit]
+637	DEEP	too many menus to change name/colour [habit]
+664	NAV-	[habit]
+668	NAV-	[habit]
+686	RD DEEP NAV-	too many layers, unclear navigation, too many taps, inconsistent close buttons [habit]
+689	NAV-	[habit]
+694	NAV-	[habit]
+696	HID	categories tucked in a menu; should be main pages [habit]
+698	X	wants more screens (capacity)
+699	DEEP	multiple taps reveal metrics [habit]
+704	NAV- HID	multiple pages and buttons unexplained [habit]
+705	HID	edit/delete hard; pages unclear [habit]
+710	NAV- CLT	too many screens [habit]
+713	DEEP	watch widget many clicks [habit]
+715	ONE	wants full task list on one screen, not multiple pages [habit]
+720	NAV-	[habit]
+721	NAV- ONE	6 per page arbitrary [habit]
+722	ONE	wants today-due on one screen, not multiple screens [habit]
+728	DEEP	undo through several menus [habit]
+729	CLT	feature overload [habit]
+730	DEEP ONE	lots of clicks to edit; off-main-page habits least done [habit]
+732	DEEP ONE	too many taps for history; want list with all showing [habit]
+739	NAV-	[habit]
+744	ONE NAV-	multiple pages instead of scroll; took 3-5 min to find edit [habit]
+745	NAV-	[habit]
+754	NAV- CLT	[habit]
+756	NAV-	maze [habit]
+760	NAV- CLT	tricky, overstimulating [habit]
+762	NAV- HID	hard to find subscription; overstimulating [habit]
+763	NAV-	[habit]
+766	X	cancellation dark pattern
+767	X	paywall screens
+768	NAV-	+cancel hard [habit]
+770	NAV- CLT	[habit]
+772	X	paywall pages
+779	NAV-	adding own activities hard [habit]
+780	NAVL	[habit]
+783	NAV- CLT DEEP	popup within popup; can't remember where content was; yesterday hard to reach [habit]
+787	NAV- HID TB-	task bar needs simplification; must hunt for exercise each time [habit]
+792	NAV-	[habit]
+795	X	layers praised (content)
+796	NAV- CLT	noisy [habit]
+797	NAV- CLT	popups [habit]
+799	NAVL ONE	expected journeys on home page like a dashboard [habit]
+801	NAV-	buttons confusing [habit]
+803	NAV- CLT	too much going on [habit]
+812	NAV-	[habit]
+815	DEEP CLT	coaching ad on main page; multiple screens to exit [habit]
+816	NAV-	[habit]
+819	NAV- HID	can't find challenge content [habit]
+823	NAV-	earlier version confusing [habit]
+825	NAV- CLT	screens can't get out of [habit]
+827	NAV-	[habit]
+828	NAVL	[habit]
+829	NAV-	[habit]
+830	NAVL	[habit]
+835	NAV-	[habit]
+839	HID	monthly subscription option impossible to find [habit]
+840	NAV-	[habit]
+843	NAV- HID	[habit]
+868	NAV-	[habit]
+872	NAVL	[habit]
+873	NAVL	[habit]
+875	NAV-	[habit]
+878	NAV-	tricky but fun [habit]
+879	NAV- CLT	too many pages, sections [habit]
+887	NAV- CLT	[habit]
+888	DEEP CLT	so many clicks; fewer clicks [habit]
+890	X	subscriptions
+891	NAV-	ADHD [habit]
+892	NAV-	[habit]
+896	NAV- CLT	sensory overload ADHD [habit]
+898	DEEP CLT	too many clicks, upsell [habit]
+907	X	cancellation flow
+908	NAV- CLT	[habit]
+911	NAV- CLT	popups [habit]
+913	NAV- CLT	not ADHD friendly [habit]
+919	NAV-	no obvious next step [habit]
+921	NAV-	[habit]
+922	X	website
+925	DEEP NAV- CLT	menus within menus, sub-sections within subsections [habit]
+926	NAV-	[habit]
+931	NAV-	can't find way back [habit]
+932	NAV- HID CLT	confused where the home page with just my list is; different pages for same thing [habit]
+937	NAVL	[habit]
+940	NAV-	[habit]
+941	NAV-	[habit]
+943	NAV- HID	keeps finding things never seen [habit]
+946	NAVL	[habit]
+947	DEEP NAV-	too many clicks to find where you are in the day [habit]
+950	NAV-	[habit]
+951	NAV-	[habit]
+952	NAV-	[habit]
+953	NAV-	[habit]
+954	NAV- CLT	[habit]
+968	NAV-	[habit]
+971	NAV-	[habit]
+975	NAVL	[habit]
+976	X	cancellation
+982	DEEP	too many clicks in the morning [habit]
+1001	X	upsell
+1002	NAV- CLT	[habit]
+1005	NAV-	[habit]
+1006	NAV- CLT	[habit]
+1021	NAV- CLT	[habit]
+1022	NAV- CLT	front page lots of text and sections [habit]
+1030	X	cancellation
+1033	DEEP	multiple screens before account [habit]
+1034	NAV-	[habit]
+1035	HID DEEP CLT	checklist buried under coaching prompts; multiple screens [habit]
+1039	DEEP CLT	too many screens per action [habit]
+1040	NAV- CLT	neurodivergent [habit]
+1041	X	cancellation
+1044	NAV-	[habit]
+1045	NAV-	[habit]
+1047	NAV-	[habit]
+1049	NAV- CLT	add-ons [habit]
+1052	DEEP	five taps to check a habit [habit]
+1054	X	account deletion
+1056	NAV-	[habit]
+1059	NAV-	[habit]
+1060	NAV-	[habit]
+1063	NAV- CLT	[habit]
+1065	NAV- ONE	wants bird's eye view [habit]
+1071	NAV- CLT HID	can't find routines [habit]
+1073	X	subscription
+1074	X	subscription
+1076	NAV-	[habit]
+1077	NAV-	[habit]
+1078	X	subscription
+1080	NAV- DEEP	multiple layers circuitous [habit]
+1081	X	cancellation hidden
+1083	NAV-	+cancel [habit]
+1086	NAV- CLT	[habit]
+1088	RD NAV-	new updates difficult to navigate [habit]
+1092	NAVL	[habit]
+1094	NAV-	home page frustrating [habit]
+1095	NAV- CLT	[habit]
+1097	X	cancellation
+1101	X	cancellation
+1102	NAV- CLT	[habit]
+1104	NAV-	[habit]
+1105	NAV- CLT	[habit]
+1106	NAV-	[habit]
+1107	NAV- CLT	poor navigation, popups [habit]
+1111	NAV- CLT	[habit]
+1112	X	website
+1113	HID CLT	features difficult to access [habit]
+1117	NAV- CLT	[habit]
+1118	NAV-	[habit]
+1119	X	website
+1120	NAV- CLT	hard to get to parts I want [habit]
+1121	NAV-	[habit]
+1122	X	refund
+1125	NAV-	[habit]
+1126	NAV-	[habit]
+1127	DEEP NAV-	too many layers [habit]
+1129	X	
+1131	NAV- CLT	[habit]
+1132	NAV-	[habit]
+1134	X	
+1137	NAV-	[habit]
+1138	NAV-	layout difficult even for tech savvy [habit]
+1139	NAV-	[habit]
+1142	NAV- CLT	[habit]
+1145	NAV- CLT	so many menus, don't know where you are [habit]
+1147	X	upsell
+1148	NAV-	loops [habit]
+1149	NAV-	[habit]
+1153	NAV-	[habit]
+1155	NAV-	[habit]
+1156	NAV-	[habit]
+1157	NAV- HID	can't easily add custom routine [habit]
+1162	NAV-	[habit]
+1167	NAV-	[habit]
+1168	NAVL	[habit]
+1172	NAV- CLT	[habit]
+1174	NAV- CLT	dozen interconnected apps [habit]
+1179	X	
+1182	CLT	too many screens [habit]
+1192	NAV-	[habit]
+1193	NAV- CLT	[habit]
+1194	RD HID	centre button removed; can't find deep work [habit]
+1197	NAV- CLT	[habit]
+1198	NAV-	[habit]
+1201	X	help page
+1202	NAV-	[habit]
+1210	NAV- CLT	ADHD nightmare [habit]
+1214	NAV- CLT	[habit]
+1219	NAV-	[habit]
+1220	NAV-	[habit]
+1223	NAV-	[habit]
+1227	X	cancellation
+1228	NAV- CLT	visually overwhelming ADHD [habit]
+1229	NAV- CLT	[habit]
+1232	NAV-	VoiceOver accessibility [habit]
+1241	NAVL	[habit]
+1246	NAV- CLT	home overwhelming; routine disappears from home [habit]
+1249	NAV- DEEP	hard to go back to goals to check off [habit]
+1250	NAV- HID	can't get back to journey [habit]
+1252	NAV- CLT	paralysingly busy [habit]
+1253	NAV-	[habit]
+1257	NAV-	[habit]
+1260	NAV- CLT	[habit]
+1264	NAV-	[habit]
+1266	HID	takes longer than expected to find things [habit]
+1267	DEEP	lots of screens to click through [habit]
+1271	NAV-	[habit]
+1273	NAV-	[habit]
+1283	CLT DEEP	multiple pages of promos before routine [habit]
+1285	NAV-	[habit]
+1290	NAV-	[habit]
+1291	X	
+1295	NAV-	[habit]
+1297	NAV-	[habit]
+1300	NAV-	[habit]
+1301	NAV-	no clear sense of direction; wants map [habit]
+1302	NAV- CLT	always trying to remember how to get to the screen [habit]
+1306	DEEP	too many screens to set one habit [habit]
+1309	X	
+1310	NAVL	[habit]
+1317	NAV- HID	hard to find plan [habit]
+1323	NAV- CLT	[habit]
+1324	NAVL	home page difficult [habit]
+1327	NAV- CLT	home busy, paths unclear [habit]
+1329	NAV- CLT	popups [habit]
+1332	NAV-	[habit]
+1336	NAV-	[habit]
+1338	NAV-	[habit]
+1343	NAV+	not hard to navigate [habit]
+1344	NAVL	[habit]
+1345	NAV- CLT	[habit]
+1348	NAV-	[habit]
+1359	NAV- CLT	too many screens and options [habit]
+1361	NAV- CLT	ADHD overwhelming [habit]
+1362	NAVL	[habit]
+1366	NAV- HID	can't understand where anything is [habit]
+1367	NAV-	[habit]
+1368	NAVL	[habit]
+1369	NAV- CLT	popups/overlays [habit]
+1371	NAV-	[habit]
+1374	NAV-	morning routine easy; rest hard [habit]
+1376	CLT	too many screens, buttons leading to same thing [habit]
+1377	NAV- CLT	[habit]
+1382	NAVL	[habit]
+1383	NAV- CLT	[habit]
+1386	NAVL	[habit]
+1392	NAVL	[habit]
+1393	NAV- CLT	can't get back to where you were [habit]
+1394	NAV-	[habit]
+1398	NAV-	[habit]
+1399	NAV- CLT	less is more [habit]
+1400	NAV-	[habit]
+1406	X	cancel
+1409	X	
+1413	NAV- CLT	[habit]
+1418	NAV-	[habit]
+1419	DEEP CLT	swipe away multiple pages to log water [habit]
+1422	NAV- CLT	sections hard to navigate [habit]
+1425	NAV-	[habit]
+1426	X	
+1428	NAVL	[habit]
+1434	NAV- CLT	just give notification and a way to track [habit]
+1437	NAV- CLT	[habit]
+1441	NAV- HID	must figure out where things are [habit]
+1442	DEEP CLT	many screens, many steps [habit]
+1444	NAV- CLT	[habit]
+1448	CLT	[habit]
+1451	NAV-	[habit]
+1452	NAV-	[habit]
+1458	X	refund
+1460	NAV-	[habit]
+1463	NAVL	[habit]
+1465	NAV- CLT	[habit]
+1466	NAV- HID	things disappear [habit]
+1472	NAV-	[habit]
+1475	NAVL	[habit]
+1478	NAV-	wants simple [habit]
+1480	NAVL	[habit]
+1481	NAV-	[habit]
+1482	NAV-	[habit]
+1486	NAVL	[habit]
+1488	NAV-	[habit]
+1489	NAV-	[habit]
+1491	NAV- CLT	too many functions; simplify layout [habit]
+1494	NAV-	[habit]
+1495	NAV-	[habit]
+1497	NAV-	[habit]
+1499	NAVL CLT	[habit]
+1503	CLT NAV-	too many screens and clickables; easily lost [habit]
+1506	NAV-	[habit]
+1512	NAV- CLT	[habit]
+1513	NAV- HID	how to add things and where [habit]
+1514	NAV-	[habit]
+1515	NAV-	needs a manual [habit]
+1518	NAV-	[habit]
+1520	DEEP	must click secondary things to check off goals [habit]
+1522	CLT	too many menus [habit]
+1523	NAV-	[habit]
+1525	CLT	so many menus/buttons [habit]
+1529	NAV-	[habit]
+1533	NAV-	[habit]
+1540	NAV-	[habit]
+1548	NAVL	[habit]
+1551	NAV-	[habit]
+1552	NAV-	[habit]
+1564	NAV-	[habit]
+1566	NAV-	[habit]
+1569	HID DEEP	can't find letters later; can't go back to fill tasks [habit]
+1570	NAV- DEEP	going back to add breakfast [habit]
+1571	CLT NAV-	ads [habit]
+1575	NAV-	[habit]
+1580	NAV- CLT	[habit]
+1581	NAV- CLT	[habit]
+1598	NAVL	too many steps to learn [habit]
+1600	X	
+1697	X	wants multiple pages to reduce clutter (grouping)
+1699	NAV-	[habit]
+1713	CLT	ads [habit]
+1718	RD DEEP	change: no check mark; multiple clicks to see today's entry [habit]
+1719	RD DEEP SWP	swipe between days removed; now 3 clicks [habit]
+1723	X	button size
+1728	DEEP SWP	too many clicks; clunky swipe [habit]
+1737	RD NAV-	months via dropdown [habit]
+1742	X	
+1750	DEEP	details need multiple clicks [habit]
+1751	RD DEEP	too many taps to access stats [habit]
+1752	X	
+1756	NAV+	others confusing to navigate; minimal [habit]
+1760	NAV+ ONE	one touch vs multiple screens; simple dashboard [habit]
+1768	NAV-	[habit]
+1771	X	market
+1780	DEEP CLT	too many clicks to do one thing [habit]
+1782	NAV-	[habit]
+1795	NAV-	[habit]
+1796	NAV-	[habit]
+1811	X	onboarding screens
+1818	NAV-	[habit]
+1829	RD NAV-	time-of-day options gone; hard to organise [habit]
+1834	NAV- CLT	no tutorial; ads [habit]
+1845	X	onboarding screens
+1846	NAVL	[habit]
+1862	NAV+ ONE	simple; others loaded with features hard to navigate [habit]
+1873	RD DEEP	too many taps to log history [habit]
+1885	DEEP	2-3 clicks to log; want open-check-exit [habit]
+1887	DEEP	too many taps to mark done [habit]
+1897	NAV-	hard to navigate between tabs [habit]
+1899	DEEP	[habit]
+1919	DEEP NAV-	[habit]
+1921	X	icon categories
+1940	RD DEEP CLT	multiple functions on same screen; marking complete multiple taps [habit]
+1962	HID DEEP	sync buried under multiple menus [habit]
+2032	NAV-	too advanced [habit]
+2044	NAV-	[habit]
+2048	X	
+2068	X	
+2069	NAV- CLT	popups [habit]
+2082	NAV-	[habit]
+2093	X	
+2103	NAV-	[habit]
+2131	NAV- HID	can't change settings [habit]
+2138	DEEP	too many taps catching up [habit]
+2168	NAV-	[habit]
+2178	NAV- CLT	customisation tab full [habit]
+2186	NAV-	[habit]
+2196	NAVL	[habit]
+2197	NAV-	[habit]
+2199	NAV-	[habit]
+2200	HID	took tries to find customisation / pets [habit]
+2202	NAV- TBR	messy; make tabs to categories on top or larger [habit]
+2205	DEEP HID	nested in multiple menus [habit]
+2210	NAV- DR-	fewer long menu lists [habit]
+2212	NAV- DR-	menu hard to navigate [habit]
+2235	CLT	too many screens [habit]
+2236	NAV- ONE	long list difficult to navigate as habits grow [habit]
+2243	X	
+2246	NAV- HID	no page for accepted challenges [habit]
+2310	NAV-	[habit]
+2311	NAV-	[habit]
+2313	NAV-	[habit]
+2325	RD NAV-	new UI confusing [study planner]
+2326	RD NAV-	new UI [study planner]
+2328	RD NAV-	[study planner]
+2333	RD NAV-	old simpler [study planner]
+2334	RD DEEP ONE	form over function; multiple taps to see upcoming tasks; wants info at a glance [study planner]
+2340	RD NAV-	[study planner]
+2341	RD NAV-	[study planner]
+2342	RD NAV-	[study planner]
+2343	RD NAV-	[study planner]
+2345	RD NAV-	[study planner]
+2347	NAV-	[study planner]
+2349	NAVL	[study planner]
+2360	NAV-	[study planner]
+2365	NAVL	[study planner]
+2370	NAV-	[study planner]
+2372	NAV-	[study planner]
+2376	NAV-	[study planner]
+2387	NAV-	[study planner]
+2388	DEEP	many screens [study planner]
+2393	DEEP	too many taps to schedule; wants calendar default view [study planner]
+2410	NAV-	[habit]
+2424	NAV-	[habit]
+2428	X	
+2431	X	
+2432	X	
+2436	DEEP CLT	too many clicks per habit [habit]
+2438	NAV-	[habit]
+2454	HID NAV-	can't find menu to cancel; overwhelming [habit]
+2462	X	
+2469	NAV+	now easily found (improved) [habit]
+2479	NAV-	[habit]
+2481	NAV- CLT	[habit]
+2483	NAV- CLT	[habit]
+2484	NAV-	[habit]
+2486	NAV- CLT	many lists [habit]
+2487	X	
+2488	NAV-	cumbersome [habit]
+2490	NAV-	[habit]
+2491	NAV- CLT	[habit]
+2494	X	
+2499	X	cancel hidden
+2506	NAV-	[habit]
+2509	NAV-	[habit]
+2510	NAV- CLT HID	ADHD; can't find how to add goals [habit]
+2524	X	
+2525	NAV-	[habit]
+2527	NAV-	ADHD [habit]
+2529	X	
+2531	DEEP	lots of taps to update routines [habit]
+2532	NAV-	ADHD [habit]
+2533	NAV-	[habit]
+2538	NAV- CLT	[habit]
+2541	X	
+2549	NAV-	[habit]
+2550	X	
+2554	NAV-	[habit]
+2559	NAV-	[habit]
+2562	NAV+	laid out, not hard [habit]
+2573	NAVL	[habit]
+2582	NAV-	[habit]
+2585	NAV-	[habit]
+2593	X	
+2595	X	
+2598	HID NAV-	hard to find data / look back [habit]
+2599	NAV-	[habit]
+2600	NAV-	[habit]
+2602	NAV- CLT	[habit]
+2606	NAV-	[habit]
+2608	NAVL	[habit]
+2615	NAV-	[habit]
+2624	NAV-	[habit]
+2625	NAV-	[habit]
+2629	NAV-	[habit]
+2632	NAVL	[habit]
+2633	NAV-	never intuitive after a year [habit]
+2639	NAV-	[habit]
+2641	NAVL	[habit]
+2646	NAV-	[habit]
+2652	NAV-	[habit]
+2663	NAV-	[habit]
+2665	NAV-	[habit]
+2668	NAV- CLT	too many buttons, anxiety [habit]
+2669	X	unsubscribe hidden
+2675	NAV-	[habit]
+2678	NAV- CLT	prefers simple Loop [habit]
+2679	NAV-	[habit]
+2687	NAV-	[habit]
+2688	NAVL	[habit]
+2691	NAV-	[habit]
+2692	NAV- CLT	[habit]
+2695	NAVL	[habit]
+2701	NAV- CLT	blocky chunks [habit]
+2705	NAV- HID	can't go back to lessons [habit]
+2706	NAV-	[habit]
+2710	NAVL	[habit]
+2712	NAV- CLT	wants light simplified version for sensory issues [habit]
+2714	NAV-	[habit]
+2715	NAVL	[habit]
+2717	NAV-	[habit]
+2724	NAV- CLT	[habit]
+2730	NAV- ONE	unclear where tick leads; wants progress overview [habit]
+2739	NAV-	[habit]
+2742	NAV-	can't figure out layout [habit]
+2743	NAV-	[habit]
+2756	NAV- HID	feel I'm missing stuff not found [habit]
+2757	NAV-	[habit]
+2762	NAVL	[habit]
+2771	NAV+	not confusing [habit]
+2775	NAV-	[habit]
+2780	NAV-	[habit]
+2781	NAV-	[habit]
+2784	NAVL	[habit]
+2785	NAV-	[habit]
+2789	NAV-	[habit]
+2792	NAV- CLT	[habit]
+2805	NAVL	[habit]
+2806	NAV- CLT	[habit]
+2810	NAV-	[habit]
+2813	NAV-	[habit]
+2815	NAV-	[habit]
+2816	NAV- CLT	[habit]
+2819	NAV-	[habit]
+2820	NAV-	[habit]
+2822	NAV- CLT	[habit]
+2823	NAV- CLT	too many tabs/icons; never know where I am [habit]
+2827	NAV-	loops [habit]
+2829	NAVL	unclear buttons [habit]
+2834	NAV-	[habit]
+2838	NAV-	[habit]
+2839	NAV-	[habit]
+2845	NAVL	[habit]
+2849	NAV-	[habit]
+2854	NAV- CLT	windows redundant; streamline [habit]
+2856	NAV-	inconsistent screens [habit]
+2857	NAV- HID	tick not where you think [habit]
+2859	NAV- CLT	front page busy [habit]
+2860	NAV-	[habit]
+2861	NAV-	[habit]
+2863	NAV-	[habit]
+2865	NAV-	[habit]
+2867	NAV-	[habit]
+2869	NAV- TB-	coaching tab should be in settings; confusing [habit]
+2870	NAV- CLT	[habit]
+2874	NAV-	[habit]
+2877	NAV-	[habit]
+2881	NAVL	[habit]
+2882	NAV-	[habit]
+2885	NAV-	[habit]
+2888	NAV- ONE	wants tracking page to see where I'm at [habit]
+2889	NAVL	[habit]
+2892	NAV-	[habit]
+2898	NAV- ONE	wants each day to open knowing what's expected [habit]
+2900	NAV- HID	can't find how to tick [habit]
+2901	NAV-	[habit]
+2903	NAVL	[habit]
+2904	DEEP CLT	click through a lot to get to main screen; stuff over dashboard [habit]
+2906	NAVL HID	switching journeys hard to find [habit]
+2909	NAV-	[habit]
+2914	NAV-	[habit]
+2915	NAV-	[habit]
+2916	CLT	way too many menus [habit]
+2917	NAV-	[habit]
+2922	NAVL	[habit]
+2926	X	
+2931	NAV-	[habit]
+2939	NAV-	[habit]
+2940	NAV-	still doesn't know normal way to places [habit]
+2945	NAV- CLT	[habit]
+2946	NAV-	[habit]
+2956	NAV- CLT	invite button every screen [habit]
+2963	NAV-	[habit]
+2965	X	
+2966	HID NAV-	find something one day, can't next day [habit]
+2969	NAV- CLT	[habit]
+2974	HID NAV-	hard to find the page to mark habits complete [habit]
+2984	NAVL	[habit]
+2994	NAV-	[habit]
+2997	NAV-	[habit]
+3001	NAV-	[habit]
+3003	NAV-	[habit]
+3015	NAV-	[habit]
+3033	NAV-	[habit]
+3034	NAV-	[habit]
+3042	NAV- DEEP	check on homepage routes to another page first [habit]
+3048	NAV-	[habit]
+3067	DEEP	multiple screens on waking [habit]
+3075	NAV- CLT	too many calls to action [habit]
+3082	NAV-	[habit]
+3083	NAV-	[habit]
+3091	DEEP	too many buttons and pages per reminder [habit]
+3107	HID	privacy setting hidden [gym]
+3117	NAVL	[gym]
+3146	NAVL	[gym]
+3196	NAV+	not confusing; social not in the way [gym]
+3291	NAV-	[habit]
+3292	NAV- ONE	blocks large, scroll too much [habit]
+3343	NAV-	[todo]
+3344	NAV+	not lost in settings [todo]
+3364	NAV-	[todo]
+3514	DEEP	too many clicks [habit]
+3525	DEEP	notes behind too many taps [habit]
+3528	DEEP	too many clicks for timer habit [habit]
+3548	NAV-	[habit]
+3555	X	
+3567	HID	features hidden in settings [habit]
+3571	X	
+3591	DEEP CLT	too many taps; distractions from key operations [habit]
+3617	NAV+	simple; others hard to navigate [habit]
+3633	NAV-	[habit]
+3680	NAV- CLT	back closes app [habit]
+3765	NAV+	efficient without too many clicks [habit]
+3783	NAV- HID	can't find how to mark done [habit]
+3792	DEEP	multiple pages to add habit; condense [habit]
+3798	HID	challenges tucked behind menus; want in list [habit]
+3828	X	
+3832	X	onboarding
+3838	NAV-	[habit]
+3851	NAV- CLT	[habit]
+3859	NAV-	[habit]
+3865	X	
+3867	DEEP	so many clicks to set up [habit]
+3876	X	
+3878	NAV-	[habit]
+3888	NAV-	[habit]
+3890	X	
+3898	NAV-	[habit]
+3944	NAV-	[routine]
+3968	NAV-	[routine]
+3969	NAV-	[routine]
+3972	NAVL	[routine]
+3978	HID	routine-level notification settings hard to reach [routine]
+3992	NAVL	[habit]
+4008	ONE	wants all goals on one calendar, not multiple screens [habit]
+4026	NAV-	large table hard on phone [habit]
+4031	NAV-	[habit]
+4036	NAV-	[habit]
+4037	NAV-	[habit]
+4051	NAV-	categories mixed [habit]
+4062	NAV-	[habit]
+4076	NAV- TBR	wants home button / persistent dailies bar across screens [habit]
+4093	NAV-	[habit]
+4094	NAV-	[habit]
+4099	NAV-	[habit]
+4116	X	
+4118	DEEP FAB	+ asks task type again; ignore open tab [habit]
+4124	NAV-	[habit]
+4128	NAV-	[habit]
+4130	X	filter
+4147	NAV- CLT	[habit]
+4148	X	
+4241	X	
+4264	X	
+4269	NAV+	others difficult to navigate [todo]
+4293	NAV- HID	can't find postpone [todo]
+4310	NAV-	aspie [todo]
+4329	NAVL	[todo]
+4342	NAV+	others hard to navigate [todo]
+4362	ONE	condensed text, see more at a glance [todo]
+4418	NAV+	[todo]
+4486	NAV-	[routine]
+4488	RD HID	update: couldn't find things; later fixed [routine]
+4522	NAV-	[todo]
+4569	NAV-	paywall confusion [habit]
+4570	NAV- HID	can't find light mode [habit]
+4574	NAV-	[habit]
+4584	HID	hidden boxes at bottom [native]
+4588	DEEP NAV- ONE	too many clicks; hard to see everything without jumping sections [native]
+4590	DEEP	[native]
+4591	NAV-	[native]
+4602	DEEP	[native]
+4626	DEEP	[native]
+4629	NAV-	[native]
+4631	DEEP	[native]
+4643	X	
+4653	NAV-	[native]
+4654	NAV-	[native]
+4660	RD NAV-	[native]
+4661	X	
+4666	NAV-	[native]
+4668	NAV-	[native]
+4671	HID DEEP	key features hidden under multiple clicks [native]
+4677	NAV-	between reminders and lists [native]
+4678	NAV-	[native]
+4679	X	
+4681	NAV-	[native]
+4682	RD NAV-	[native]
+4683	HID	every option hidden behind a menu [native]
+4686	NAV-	[native]
+4687	RD DEEP	multiple screens to complete [native]
+4697	DEEP	[native]
+4755	NAV-	[native]
+4830	NAV- HID	[native]
+4832	NAV-	[native]
+4833	DEEP	[native]
+4844	DEEP	[native]
+4854	NAV- HID	can't find lists [native]
+4856	NAV-	[native]
+4891	NAV-	[native]
+4905	NAV-	[native]
+4911	NAV-	[native]
+4912	DEEP	[native]
+4915	NAV-	[native]
+4920	NAV-	[native]
+4942	NAV-	elderly [native]
+4949	DEEP	[native]
+4950	NAV-	[native]
+4989	NAV-	large fonts [native]
+4992	DEEP	too many layers interfere with simple access [native]
+5010	NAV-	[native]
+5015	NAV-	[native]
+5017	NAV-	[native]
+5019	RD DEEP ONE	fragmented; too many taps to see week; wants big picture [native]
+5020	NAV-	[native]
+5036	X	
+5037	NAV-	[native]
+5042	NAV-	[native]
+5060	X	
+5104	X	
+5138	NAV-	[native]
+5141	RD HID DEEP	commands buried under multiple menus [native]
+5147	NAV-	many folders [native]
+5154	X	
+5167	DEEP	[native]
+5172	NAV- HID	[native]
+5173	NAV-	[native]
+5181	X	
+5187	NAV-	[native]
+5193	X	
+5199	DEEP	[native]
+5209	X	
+5213	NAV-	[native]
+5219	RD NAV-	opening screen changed; hard to reach categories [native Health]
+5220	DEEP	[native]
+5221	NAV-	[native]
+5241	NAV-	[native]
+5242	NAV-	[native]
+5245	NAV-	[native]
+5267	X	
+5271	RD TB-	reduced to 3 tabs; Sharing wasted; wants specific/customisable tabs [native Health]
+5276	DEEP NAV-	easy to get lost several subpages in [native]
+5277	X	
+5278	NAV-	swipe multiple pages [native]
+5281	HID NAV-	can't find log function [native]
+5282	NAV- HID	favourites not on top [native]
+5286	HID DEEP	buried in submenus of submenus [native]
+5287	NAV- ONE	wants key info immediately on open [native]
+5293	NAV- HID	[native]
+5294	NAV-	[native]
+5298	NAV-	[native]
+5300	NAV- ONE	wants full month at once [native]
+5302	NAV-	[native]
+5304	NAV-	[native]
+5306	NAV-	[native]
+5307	NAV-	[native]
+5309	NAV-	[native]
+5310	NAV-	[native]
+5313	NAV-	[native]
+5314	NAV- HID	[native]
+5315	NAV-	[native]
+5317	NAV-	[native]
+5318	NAV-	[native]
+5319	NAV-	[native]
+5324	HID	can't find setting [native]
+5325	NAV-	[native]
+5329	NAV-	[native]
+5330	NAVL	[native]
+5331	NAV-	[native]
+5332	NAV-	[native]
+5333	NAV-	[native]
+5334	NAV- CLT	jumbled [native]
+5335	ONE	wants list view at a glance [native]
+5342	HID NAV-	long scrolling to find measurement [native]
+5349	NAV-	[native]
+5372	X	
+5380	RD HID	stacks moved; hunt around pages [native]
+5383	NAV-	[native]
+5418	NAV- DEEP	circular menus [native]
+5420	NAV-	[native]
+5423	NAV-	[native]
+5430	HID DEEP	steps behind layers of menus; want quick glance [native]
+5436	DEEP	too many taps to view workouts [native]
+5438	HID DEEP	challenges buried; multiple taps; pin to summary [native]
+5447	NAV-	[native]
+5462	RD HID DEEP	things no longer front and centre; multiple screens [native]
+5477	NAV-	[native]
+5480	NAV-	[native]
+5482	NAV- HID	even see steps [native]
+5484	HID	steps hidden at bottom [native]
+5487	TB- ONE	continually navigating tabs; wants grounding home screen with daily recap [native]
+5490	NAV-	[native]
+5493	HID CLT	too much content jammed; scroll to find [native]
+5518	NAV- CLT	[native]
+5562	DEEP SWP	switching lists multiple taps no gesture [native GTasks]
+5579	X	
+5609	DEEP	5-8 clicks before list opens (lag) [native]
+5618	X	
+5622	X	
+5632	X	
+5663	X	
+5664	X	
+5665	RD	[native]
+5666	RD NAV-	[native]
+5688	DEEP	[native GCal]
+5689	DEEP	[native GCal]
+5693	NAV- ONE	month and day not simultaneous [native GCal]
+5719	DEEP CLT	[native GCal]
+5753	NAV- HID	[native GCal]
+5763	RD NAV-	[native GCal]
+5764	NAV- REACH	hard to reach top to close event; wants iOS gestures [native GCal]
+5795	NAV- SWP	non-standard gestures [native GCal]
+5806	RD DEEP	jump to month removed [native GCal]
+5808	RD DEEP	month indicator removed; now menu + multiple clicks to switch view [native GCal]
+5812	X	
+5814	RD NAV-	[native GCal]
+5820	NAV-	[native GCal]
+5838	NAV-	[native GCal]
+5839	NAVL	[native GCal]
+5841	NAV- DEEP	lost in submenu [native GCal]
+5873	DEEP	[native GCal]
+5876	X	performance
+5883	X	performance
+5894	NAV-	[native GCal]
+5898	X	lag
+5908	X	lag
+5925	DEEP	[native GCal]
+5932	NAV-	[native GCal]
+5938	DEEP	[native GCal]
+5939	NAV- HID	[native GCal]
+5948	DEEP	[native GCal]
+5951	NAV-	[native GCal]
+5954	NAV-	[native GCal]
+5988	X	sheets
+6016	X	sheets
+6017	X	sheets
+6018	X	sheets
+6020	X	sheets
+6021	X	sheets
+6077	X	sheets
+6082	X	sheets
+6091	X	sheets
+6093	X	sheets
+6094	X	sheets
+6104	X	sheets
+6108	X	sheets
+6121	X	sheets
+6122	X	sheets
+6150	X	sheets
+6151	X	sheets
+6184	X	sheets
+6194	X	sheets
+6197	X	sheets
+6201	X	sheets
+6218	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6219	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6224	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6234	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6239	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6247	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6270	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6271	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6293	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6311	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6334	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6349	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6350	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6365	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6369	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6373	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6376	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6386	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6395	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6408	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6410	X	spreadsheet cell/content navigation (not app structure) [native Sheets]
+6416	X	spreadsheet cell/content navigation (not app structure) [native Sheets]

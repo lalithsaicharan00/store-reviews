@@ -1,0 +1,2911 @@
+# idx	citation	batch	rating	codes	note   (citation: A/P/N + folder number + # + 0-based line in reviews.jsonl)
+1	A1#170	Rs00	5	SCH-	weekly habit shows incomplete though done (ES)
+2	A1#217	B00	3	PCT- FLEX	weekly habits make only Sundays "perfect" days; 55% perfect-day score; wants perfect weeks
+3	A1#293	B00	5	SCH+	
+13	A1#659	B00	5	SCH+ FLEX	x/week with week/month/year views
+15	A1#694	B00	4	SCHR	nth weekday monthly; reschedule
+17	A1#901	A00	5	STRK-	loses streak for habit not due on unscheduled weekdays
+27	A1#1615	B00	2	X	
+31	A1#1779	B00	4	GREY- PCT-	skipped day counts as done in totals
+40	A1#2068	B00	5	FLEX	3x/week with visual progress
+42	A1#2146	A00	5	SCH+	custom weekday schedules praised
+48	A1#2342	B00	5	HISTR FLEX	weekly habit: wants to see which days it was completed, in week/month and daily views
+49	A1#2362	B00	5	FLEX	x/week without worrying which days
+50	A1#2379	O00	5	X	
+53	A1#2405	A00	4	SCH-	weekly scheduling confusing, frequency not editable
+54	A1#2413	B00	4	PCT-	weekly habit progress resets daily on share page
+55	A1#2442	B00	4	PCT- STRK-	non-daily (Mon/Wed or monthly) stats: completion 5%, streak by days not goal
+56	A1#2456	B00	5	X	
+64	A1#35845	B00	4	PCT- FLEX	does 2/2 per week count 100%? (ZH)
+65	A1#36669	O00	5	X	
+66	A1#43421	O00	5	SCHR HIDER	workday/rest-day options; option to stop showing x/week habit after weekly target met (ZH)
+67	A1#43839	B00	4	SCHR	every 4 days
+69	A1#43999	B00	4	FLEX	x/week without fixed days (DE)
+70	A1#44134	B00	4	SCHR	every other day
+71	A1#44140	Rs00	5	X	
+72	A1#44156	B00	2	SCHR	every 2nd day
+77	A1#44597	B00	5	GREY- HISTR	x/week goal met ticks the whole week; wants only the actual 3 days kept in calendar
+81	A1#44712	B00	4	GREYR	widget: grey "-" for "not done today" instead of blank
+87	A1#45225	O00	1	X	
+89	A1#45253	A00	5	SCH+	flexible daily/weekly/monthly
+91	A1#45273	A00	1	X	
+94	A1#45285	B00	4	SCH-	Tue/Thu/Sat habit autocompleted
+95	A1#45291	B00	3	TODAY- HIDER	set-day habits show every day; hide non-relevant ones
+97	A1#45315	B00	2	SCH-	changing weekly target rewrites past weeks
+104	A1#45428	A00	4	SCHR	wants every-3-days / 3 on 1 off, only calendar weekdays
+111	A1#45779	B00	4	SCH-	edit frequency deletes data
+112	A1#45835	B00	4	FLEX	
+113	A1#45837	A00	4	TODAY- STRK- FLEX	3x/week habit shows every day, looks like no progress, loses streak; wants choose days it shows
+114	A1#45852	O00	3	X	
+115	A1#45878	B00	5	SCHR	every X days / Tue+Thu
+116	A1#45937	A00	5	FLEX STRK-	did 3x but on other days, breaks streak
+117	A1#45955	B00	5	SCH+	
+118	A1#45984	O00	2	X	
+124	A1#46414	A00	4	MISS- PCT- SKIPR	non-due activity appears skipped on off day (vacation bug); can't skip without losing %
+132	A1#46830	B00	4	FLEX HIDER	show on Fri/Sat/Sun until done once, then hide
+154	A1#47546	B00	5	SCH-	
+159	A1#47617	B00	5	SCH+	weekday-specific tasks + calendar history (JP)
+160	A1#47688	B00	3	FLEX	
+161	A1#47693	A00	5	EXTRA	can't tick unscheduled day in calendar, wants to record unscheduled actions
+165	A1#48192	B00	2	PCT-	6x/week calendar circle looks incomplete
+166	A1#48264	B00	1	FLEX STRK-	3 random days a week impossible; breaks habit
+167	A1#48327	B00	4	SCHR	every N days
+171	A1#48407	B00	3	SCHR FLEX	
+172	A1#48426	B00	5	SCHR	monthly date / biweekly
+177	A1#48971	A00	4	STRK- PCT-	unscheduled day should not hit streak and completion rate
+188	A1#49407	B00	5	X	
+194	A1#49781	B00	1	PCT-	weekly habits not counted in monthly totals
+195	A1#49787	B00	5	X	
+198	A1#49923	B00	5	X	reminders after weekly completion
+201	A1#50023	B00	5	SCHR	count habit on specific days
+204	A1#50250	B00	2	SCH-	
+208	A1#50481	B00	5	SEE	can't see next days' plan to check schedule
+210	A1#50733	O00	5	X	
+217	A1#51061	B00	2	GREY- TODAY-	non-daily habits show complete every day after quota; want habit shown only on day used
+218	A1#51145	B00	3	X	
+219	A1#51163	B00	4	FLEX	
+224	A1#51341	B00	3	SCH-	quit habit ignores chosen weekdays
+226	A1#51454	B00	2	X	
+231	A1#51612	B00	5	FLEX	
+233	A1#51648	A00	1	X	
+236	A1#51674	A00	5	SKIPR	no skip days without upgrade
+242	A1#51814	B00	2	X	
+247	A1#51860	A00	2	X	
+249	A1#51908	B00	2	FLEX TODAY-	3x/week not marked done that day; hard to see what's needed today
+250	A1#51972	Rs00	5	X	
+256	A1#52119	B00	3	GREY-	skipped weekly habit shows as a streak
+262	A1#52221	B00	4	SCHR	
+268	A1#52310	B00	5	SCH+ SKIP+	certain days + vacation mode
+269	A1#52337	B00	3	PCT-	3x/week 100% completed shows 98%
+287	A1#52776	B00	4	TODAY- HISTR	x/week habit shows every day; wants to see the day it was done
+293	A1#52955	A00	4	TODAY- HIDER	watch shows habits not scheduled today; wants today-only
+296	A1#52978	Rs00	4	SEE	see all habits together to avoid double-booking days
+299	A1#53003	Rs00	5	X	
+302	A1#53106	B00	3	X	
+304	A1#53144	B00	5	SCHR SCH-	
+306	A1#53203	B00	4	HIDE+	habits only on assigned days, not overwhelmed
+310	A1#53357	B00	4	SCH+	
+314	A1#53459	O00	5	X	
+316	A1#53521	B00	3	X	
+319	A1#53620	A00	5	X	
+323	A1#53658	Rs00	1	SCHR	
+324	A1#53660	B01	5	SCH+	choose weekdays a habit appears
+335	A1#53968	Rs00	5	PCT- FLEX	yearly status for weekly habits unintuitive
+338	A1#54146	B01	5	SCH+	
+342	A1#54283	B01	5	SCH-	editing frequency resets data
+344	A1#54317	B01	2	STRK- FLEX	3-days/week habit restarts streak
+345	A1#54335	B01	4	STRK- FLEX	weekly streak breaks before week ends
+350	A1#54460	B01	5	X	
+354	A1#54545	B01	4	X	
+356	A1#54559	B01	5	SCH+ FLEX	3/5/7 days a week; weekly chart fills
+358	A1#54573	O00	5	X	
+359	A1#54581	B01	5	SCH-	
+360	A1#54607	B01	5	FLEX	
+365	A1#54718	B01	3	SCH-	weekly reset unclear
+369	A1#54768	B01	2	SCH-	
+376	A1#54853	A00	5	SCH+ FLEX	x/week with no specific day praised
+387	A1#55448	Rs00	5	X	
+393	A1#55607	A00	3	X	
+395	A1#55660	B01	4	SCHR	every other day
+400	A1#55802	A00	3	SCH-	can't edit frequency
+401	A1#55808	O00	2	X	
+409	A1#55973	B01	2	GREY- HISTR	x/week calendar shows progress circle on every day instead of marking days actually done
+413	A1#56030	B01	3	SCHR	days-of-week organised view
+417	A1#56306	B01	5	SCH+ FLEX	
+422	A1#56505	O00	3	PCT-	daily average includes days activity not done/scheduled
+430	A10#408	B01	5	SCH+	
+431	A10#416	A00	5	X	
+443	A10#1117	A00	5	SCH+	repeat goals on chosen days
+445	A10#1214	Rs00	5	X	
+456	A10#2800	O00	4	X	
+459	A10#2900	O00	3	X	
+462	A10#3235	O00	5	X	
+469	A10#3803	Rs00	5	X	
+473	A10#4106	O00	5	X	
+479	A10#4508	O00	5	X	
+482	A10#4687	Rs00	5	X	
+490	A10#5012	Rs00	5	X	
+492	A10#5069	O00	3	X	
+502	A10#5996	O00	5	X	
+515	A10#7855	Rs00	5	SCHR	every 4 weeks from completion
+518	A10#7987	B01	3	FLEX	
+522	A10#8967	O00	4	X	
+525	A10#9417	B01	4	X	
+527	A10#9467	O00	5	X	
+534	A10#10176	O00	5	X	
+537	A10#10315	A00	5	X	
+540	A10#10857	A00	5	X	
+541	A10#10870	O00	5	X	
+543	A10#10993	O00	5	X	
+546	A10#11883	O00	1	X	
+549	A10#12145	O00	5	X	
+553	A10#12338	O00	4	SCHR	every day except chosen rest day (Sunday)
+560	A10#12688	B01	5	X	
+562	A10#13159	O00	3	X	
+567	A10#13860	Rs00	5	X	
+572	A10#14973	O00	5	X	
+579	A10#16664	O00	5	X	
+582	A10#16948	A00	4	X	general streak loss
+586	A10#17959	A00	5	X	
+588	A10#18329	B01	4	X	
+591	A10#19033	B01	5	FLEX	x/week without specific days (changing schedule)
+614	A10#20519	O00	1	X	
+615	A10#20602	A00	5	X	
+616	A10#20628	B01	5	X	
+628	A10#21237	O00	5	X	
+635	A10#21530	B01	5	SCH+	
+636	A10#21554	A00	2	X	
+637	A10#21574	B01	5	FLEX	
+645	A10#22037	A00	1	X	
+655	A10#22685	B01	5	PCT-	wants success % against scheduled goals (missed + completed)
+657	A10#22854	A00	5	X	
+659	A10#22892	A00	5	EXTRA	wants optional not-required-today items that still reward
+670	A10#23209	O00	4	X	
+688	A10#23904	O00	5	X	
+702	A10#24349	O00	2	X	
+703	A10#24440	O00	5	X	
+712	A10#24804	O00	5	X	
+714	A10#24929	A00	3	X	
+732	A10#25945	B01	5	X	
+736	A10#26058	A00	5	X	
+745	A10#26577	B01	4	FLEX TODAY-	weekly tasks forced onto set days where they aren't intended
+747	A10#26688	Rs00	5	X	
+753	A10#27206	A00	5	X	
+761	A10#27673	O00	3	X	
+762	A10#27727	O00	5	X	
+765	A10#27749	O00	5	X	
+767	A10#27797	B01	5	FLEX	weekly habit show every day until done
+771	A10#27943	O00	5	X	
+782	A10#28402	B01	1	X	
+794	A10#29224	O00	5	X	
+798	A10#29328	Rs00	5	X	
+808	A10#29813	B01	5	SCH+	
+810	A10#29857	B01	4	FLEX	x/week shown daily with progress
+822	A10#30491	A00	5	SCHR	exclude weekends / exclude chosen days
+823	A10#30575	Rs00	5	X	
+830	A10#30848	B01	5	X	
+833	A10#31026	A00	5	FLEX	show weekly goals without a set day
+841	A10#31493	A00	3	X	
+842	A10#31585	O00	1	X	
+860	A10#32488	B01	5	X	
+863	A10#32645	A00	1	X	
+864	A10#32675	O00	5	X	
+865	A10#32708	B01	1	X	
+867	A10#32793	A00	1	X	
+872	A10#33371	O00	1	X	
+880	A10#33669	O00	5	X	
+883	A10#33885	B01	2	TODAY- HIDER	once-a-week goal shows every day, not only its day
+885	A10#33894	Rs00	5	X	
+889	A10#34086	O00	5	X	
+890	A10#34090	O00	4	X	
+901	A10#34694	O00	5	X	
+919	A10#35648	A00	5	X	
+920	A10#35672	A00	3	X	
+931	A10#36350	B01	5	X	
+938	A10#36675	B01	5	SCH+	
+939	A10#36680	B01	5	X	
+941	A10#36734	B01	5	SCH+	
+950	A10#37003	A00	2	SKIPR	no allowance for days off
+952	A10#37148	O00	5	X	
+956	A10#37214	O00	5	X	
+957	A10#37342	B01	5	SCH-	every-other-day goals show every day after new year
+960	A10#37615	B01	5	SCH+	
+964	A10#37669	O00	5	X	
+976	A10#38562	O00	5	X	
+977	A10#38669	A00	1	X	
+1012	A10#41137	O00	5	X	
+1013	A10#41253	O00	1	X	
+1035	A10#42600	O00	5	X	
+1036	A10#42607	O00	5	X	
+1051	A10#43868	O00	5	X	
+1053	A10#43944	B01	5	SCH+	
+1060	A10#44415	O00	5	X	
+1064	A10#44766	O00	5	X	
+1069	A10#45445	O00	1	X	
+1072	A10#45736	O01	5	X	
+1079	A10#46439	O01	5	X	
+1084	A10#46671	O01	5	SKIPR	sick/off day option
+1090	A10#46944	O01	5	X	
+1100	A10#48244	O01	5	X	
+1102	A10#48442	B01	5	X	
+1115	A10#49504	O01	5	X	
+1118	A10#49772	O01	5	X	
+1127	A10#50436	O01	4	X	
+1128	A10#50514	O01	5	X	
+1132	A10#50829	O01	5	X	
+1133	A10#50981	Rs00	5	X	
+1148	A10#52298	O01	5	X	
+1149	A10#52478	Rs00	5	X	
+1150	A10#52512	A00	2	X	
+1154	A10#52813	Rs00	5	X	
+1157	A10#53107	A00	4	X	
+1163	A10#53978	O01	3	X	
+1171	A10#54441	A00	5	X	
+1176	A10#54688	Rs00	5	X	
+1177	A10#54991	B01	5	X	
+1178	A10#54992	O01	5	X	
+1186	A10#55547	B01	4	X	
+1189	A10#55612	A00	5	X	
+1205	A10#57326	B01	5	FLEX	x/week: show daily until 3/3 met with counter; daily workaround clutters list
+1207	A10#57478	O01	5	X	
+1212	A10#58114	Rs00	5	X	
+1215	A10#58360	B01	4	X	
+1216	A10#58432	O01	5	X	
+1219	A10#58543	Rs00	5	X	
+1234	A10#59497	O01	5	X	
+1236	A10#59583	O01	5	X	
+1241	A10#60156	O01	5	X	
+1242	A10#60275	Rs00	5	X	
+1250	A10#60816	A00	5	SCH-	every-other-day doesn't re-anchor
+1257	A10#61396	O01	5	X	
+1260	A10#61844	O01	4	X	
+1265	A10#62822	O01	5	X	
+1266	A10#62892	O01	5	X	
+1271	A10#63152	O01	5	X	
+1276	A10#63639	O01	5	X	
+1278	A10#63698	A00	5	X	
+1302	A10#67954	A00	5	X	
+1304	A10#68206	O01	5	X	
+1308	A10#68374	O01	5	X	
+1311	A10#68644	O01	5	X	
+1313	A10#68796	O01	5	X	
+1319	A10#69574	B01	5	X	
+1335	A13#46	B01	5	SCH+	
+1336	A13#104	O01	5	X	
+1338	A13#220	B01	4	SCHR	
+1341	A13#276	O01	1	X	
+1343	A13#329	O01	5	X	
+1345	A13#377	B01	1	SCH-	6x/week stops after 4
+1347	A13#387	B01	2	PCT-	weekly goals block perfect day
+1350	A13#476	O01	1	X	
+1355	A13#547	B01	1	X	
+1360	A13#605	B01	5	SCHR	
+1367	A13#770	B01	4	GREY-	dislikes weekly goals greying out once ticked
+1369	A13#887	B01	4	SCH- STRK-	week-start setting breaks 3x/week streak
+1377	A13#1774	B01	1	OFF+	5 days/week habits keep streak and perfect days without weekends
+1381	A13#1822	A00	3	X	
+1387	A13#1999	B01	2	SCHR	
+1388	A13#2044	B01	1	SCH-	weekly habit not shown
+1390	A13#2066	Rs00	3	X	
+1394	A13#2113	A00	1	MISS- SCHR	week overview shows incomplete days because weekly tasks all due early; wants specific days
+1398	A13#2302	B02	5	SCH+	
+1409	A13#2765	B02	3	SCH-	changing 3→4 days/week resets history
+1411	A13#2883	A00	2	X	
+1412	A13#4417	B02	4	SCH-	
+1418	A13#4830	O01	1	X	
+1430	A13#5430	B02	4	TODAY- HIDER	choose weekdays (weekend) so non-concerned days' lists aren't polluted (FR)
+1435	A13#5697	A00	5	HIDE+	tasks not due are hidden
+1436	A13#5706	O01	5	EXTRA	check a habit not due today (FR)
+1440	A13#5821	O01	2	X	
+1443	A13#5894	B02	3	MISS- FLEX	week/month view all-or-some; 5x/week feels like failing when not daily
+1448	A13#6078	A00	2	SCH-	non-daily tasks not showing up (bug)
+1449	A13#6079	B02	3	SCH-	weekly/non-daily habit bug
+1455	A13#6341	A00	4	SKIPR	rest day for fitness has no proper way; skip marks done
+1461	A13#6440	B02	4	EXTRA	overload beyond 4/week
+1466	A13#6464	B02	1	X	
+1467	A13#6467	B02	5	SCH-	weekly/non-daily habit bug
+1470	A13#6640	O01	5	X	
+1472	A13#6646	Rs00	2	PCT- FLEX	biweekly habit blocks perfect days
+1473	A13#6676	B02	5	SCH+	
+1474	A13#6701	Rs00	5	X	
+1485	A13#6905	B02	5	FLEX SCH+	Today shows how many left this week for x/week
+1487	A13#7082	A00	5	X	
+1490	A13#7224	A00	5	X	
+1495	A13#7658	B02	5	X	
+1505	A13#7928	O01	3	X	
+1516	A13#9058	B02	2	PCT- FLEX	weekly habits never give a full week day
+1518	A13#9101	B02	4	SCHR	
+1519	A13#9142	A00	5	HIDE+	only tasks needed today shown, not overwhelmed
+1522	A13#9292	B02	4	OFF+ FLEX	3x/week tracked without "missing" days in between
+1527	A13#9481	Rs00	4	X	
+1530	A13#9593	B02	2	SCH-	weekly/non-daily habit bug
+1555	A13#11415	B02	4	PCT-	day circle all-or-nothing; wants partial fill
+1556	A13#11477	A00	1	X	
+1562	A13#11679	B02	1	PCT- STRK-	2x/week habit blocks ideal day and streak unless done daily
+1563	A13#11694	B02	4	STRK-	non-daily habits end streak
+1564	A13#11721	A00	4	SKIPR	random break day without ruining streaks
+1565	A13#11725	A01	4	X	daily % guilt, general
+1566	A13#11752	Rs00	5	FLEX SCH+	
+1568	A13#11807	B02	2	SCHR	
+1570	A13#11841	A01	1	SCH-	changing 7→5 days/week erased history
+1579	A13#12021	B02	2	X	monthly calendar removed
+1580	A13#12027	A01	4	FLEX SCH-	wants x/week; adding a day resets streak
+1585	A13#12151	A01	1	X	
+1588	A13#12184	Rs00	3	SCHR	
+1595	A13#12394	O01	4	SCHR	push/pull/legs/rest/rest split
+1603	A13#12569	Rs00	5	X	
+1613	A13#12805	B02	2	SCH-	
+1614	A13#12829	O01	4	GREYR SKIPR	wants "didn't have to do" state distinct from done/skip
+1619	A13#12917	O01	5	X	
+1623	A13#13028	O01	4	X	
+1627	A13#13110	A01	4	SKIPR	pause everything for days off
+1630	A13#13143	B02	1	SCH-	weekly/non-daily habit bug
+1633	A13#13158	B02	3	SCH-	weekly/non-daily habit bug
+1642	A13#13392	B02	1	PCT- STRK-	x/week streaks and charts wrong
+1643	A13#13445	B02	4	SCHR	biweekly on specific day
+1644	A13#13468	B02	2	X	
+1645	A13#13506	A01	5	SCH- SKIP+	skip praised; changing frequency ruins streak
+1649	A13#13555	A01	5	SCH+	specific days or x/week praised
+1651	A13#13573	B02	5	SCH-	weekly/non-daily habit bug
+1654	A13#13597	B02	5	SCH-	weekly/non-daily habit bug
+1656	A13#13608	B02	1	SCH-	weekly/non-daily habit bug
+1659	A13#13625	B02	1	SCH-	weekly/non-daily habit bug
+1661	A13#13640	B02	2	SCH-	weekly/non-daily habit bug
+1662	A13#13646	B02	1	MISS- SCH-	non-daily habits invisible yet dinged for not doing
+1663	A13#13649	B02	3	SCH-	weekly/non-daily habit bug
+1664	A13#13651	B02	4	SCH-	weekly/non-daily habit bug
+1665	A13#13659	B02	2	TODAY- GREY-	weekly habits shown each day as incomplete after done for week
+1666	A13#13663	B02	3	SCH-	weekly/non-daily habit bug
+1667	A13#13664	B02	1	SCH-	weekly/non-daily habit bug
+1669	A13#13673	B02	1	SCH-	weekly/non-daily habit bug
+1670	A13#13677	B02	4	SCH-	weekly/non-daily habit bug
+1673	A13#13703	B02	5	SCH-	weekly/non-daily habit bug
+1675	A13#13717	B02	5	SCH-	weekly/non-daily habit bug
+1676	A13#13721	B02	3	SCH-	weekly/non-daily habit bug
+1685	A13#13964	B02	4	SCHR	
+1696	A13#14162	A01	3	X	
+1697	A13#14165	B02	5	SCH-	weekly/non-daily habit bug
+1699	A13#14170	B02	1	SCH-	weekly/non-daily habit bug
+1700	A13#14183	A01	1	STRK-	x/week habits break streak every Sunday (bug)
+1703	A13#14248	B02	4	X	
+1704	A13#14250	A01	2	X	update broke streaks
+1712	A13#14517	B02	1	FLEX EXTRA	3+/week any day; can only log on reminder days
+1713	A13#14529	O01	1	X	
+1714	A13#14536	B02	5	SCH+	
+1718	A13#14802	O01	4	X	
+1721	A13#14871	Rs00	1	X	
+1725	A13#14961	B02	2	TODAY-	specific-day task shows every day until done; trains you to ignore
+1732	A13#15052	O01	4	X	
+1733	A13#15069	O01	1	X	
+1736	A13#15143	B02	1	X	
+1738	A13#15208	A01	3	MISS- FLEX	3x/week: undone days stay hollow; wants week filled when weekly goal met
+1747	A13#15341	A01	5	X	
+1753	A13#15427	B02	1	X	
+1762	A13#15591	B02	3	X	
+1767	A13#15640	Rs00	4	X	
+1770	A13#15676	B02	5	SCH+	
+1788	A13#15874	B02	4	X	
+1792	A13#15961	B02	3	EXTRA	x/week habit disappears after goal; wants choice to keep showing
+1793	A13#15967	O01	4	EXTRA	can't log completion when "nothing was due"
+1794	A13#15970	A01	3	EXTRA	wants to tick beyond weekly quota; completed quotas greyed at bottom but doable
+1799	A13#16093	A01	5	X	
+1813	A13#16336	A01	3	EXTRA	can't log 6th/7th day on 5x/week habit
+1816	A13#16378	B02	3	SCH-	
+1818	A13#16403	Rs00	5	X	
+1819	A13#16409	B02	4	GREYR	"not gonna happen" distinct from skipped, to see done/not done honestly
+1820	A13#16410	B02	3	SCH-	weekly/non-daily habit bug
+1829	A13#16586	A01	5	SKIPR	break day for vacation/illness
+1838	A13#16934	B02	3	SCH-	weekly/non-daily habit bug
+1841	A13#16974	B03	3	SCHR	
+1843	A13#17051	A01	1	X	
+1846	A13#17109	A01	4	SKIPR	no skip days
+1856	A13#17231	B03	5	SCH+ FLEX	
+1859	A13#17257	O01	5	X	
+1873	A13#17612	B03	5	SCH+	
+1876	A13#17648	A01	5	X	
+1882	A13#17761	A01	5	X	
+1885	A13#17847	B03	5	X	
+1903	A13#18233	Rs00	5	FLEX	
+1916	A13#18417	B03	5	X	
+1921	A13#18553	A01	5	X	
+1931	A13#18704	B03	4	X	
+1943	A13#18961	B03	5	HIDE+	tasks only show on certain days
+1945	A13#19045	A01	4	SEE	wants to see once-a-week habits ahead on calendar
+1948	A13#19096	Rs00	5	SEE	can't find future-day habit to edit
+1951	A13#19116	A01	2	X	
+1959	A13#19201	B03	3	FLEX	
+1967	A13#19374	B03	5	SCH+	
+1982	A16#296	A01	3	FLEX	must pick weekdays; wants once/twice a week any day
+1985	A16#522	B03	3	X	
+1992	A16#859	B03	4	FLEX HISTR	separate frequency (3/week) from reminder days; calendar dots fill on any day done
+1996	A16#1076	B03	1	MISS- FLEX	M/W/F habit done Tu/Th/Sa/Su shows whole week missed; exact days required
+2006	A18#29	O01	5	X	
+2008	A18#88	O01	4	SCHR	rest-day vs work-day routine modes (JP)
+2009	A18#110	O01	5	SKIP+	rest period by dates (JP)
+2010	A18#122	A01	4	CALOFF	weekend/holiday colours in calendar (not habit schedule)
+2011	A18#126	O01	4	SCHR	combine holiday/weekday routine modes (JP)
+2014	A18#164	B03	4	X	
+2016	A18#199	A01	5	SCHR	routine on chosen weekdays (JP)
+2017	A18#211	O01	5	SCHR	public-holiday repeat option (KR)
+2020	A18#264	B03	5	X	
+2021	A18#284	O01	4	SKIP+ GREY+	"rest" state besides check; traffic-light not % (JP)
+2022	A18#286	O01	5	X	
+2023	A18#287	O01	3	SCH-	rest setting confusing; erased past records (JP)
+2024	A18#376	B03	4	FLEX SEE	monthly n-times; see month/week of routines at once (KR)
+2025	A18#393	B03	4	FLEX	weekly/monthly n totals (KR)
+2034	A18#816	O01	2	X	
+2038	A18#871	Rs00	5	HIDER	reordering Tue/Thu routines shows all days' routines (KR)
+2039	A18#943	O01	5	SCHR	shift-based routine sets by date (KR)
+2043	A18#990	A01	4	FLEX	postpone routine to another weekday (KR)
+2056	A18#1302	Rs00	5	X	
+2070	A18#1588	O01	5	SCHR	holiday routine differs (KR)
+2071	A18#1622	O01	5	SCHR	holiday vs weekday routines (KR)
+2073	A18#1645	B03	4	X	
+2086	A18#1982	O01	5	SKIPR	rest day
+2087	A18#1992	B03	5	SCH+ FLEX	
+2088	A18#1995	B03	5	SCH+ FLEX	
+2090	A18#2013	B03	1	SCH-	widget fills wrong day
+2095	A2#62	B03	3	FLEX	
+2101	A2#280	B03	1	FLEX STRK-	must choose specific days; 3x/week random days can't keep streak
+2104	A2#470	B03	2	FLEX	
+2105	A2#483	Rs00	5	X	
+2106	A20#3	A01	5	X	
+2107	A20#45	Rs00	3	SCHR	
+2108	A20#116	B03	4	X	
+2110	A20#139	B03	4	PCT-	3x/week gym % low vs daily habits
+2117	A20#524	B03	2	SCHR	
+2121	A20#586	B03	4	PCT-	1x/week completed shows 4%
+2122	A20#587	A01	2	SCHR	no weekday scheduling
+2123	A20#604	O02	5	X	
+2125	A20#650	B03	4	PCT- HISTR	% meaningless; wants 1/3, 2/3 weekly progress; view past+upcoming days
+2128	A20#1262	B03	4	X	
+2135	A20#1325	B03	3	PCT-	5x/week done 5 days not 100%
+2137	A20#1370	B03	5	X	
+2138	A20#1620	B03	5	PCT- SCHR	% should follow 2x/week goal; wants specific days
+2140	A20#1703	B03	4	PCT-	unclear if weekly habits tracked properly in %
+2141	A20#1744	B03	4	SCHR	
+2143	A20#1827	B03	3	PCT-	once a week shows 1/7 not 100%
+2151	A20#2396	A01	3	SCHR	weekday-only reminders (RU)
+2152	A20#2397	A01	5	SCHR	habits on work/rest days (RU)
+2155	A20#2408	O02	5	SCHR	work/rest-day habits (RU)
+2157	A20#2506	Rs00	4	SCHR	(RU)
+2163	A20#2688	A01	5	EXTRA	weekend ticks don't raise % (RU)
+2170	A20#3161	B03	4	PCT-	does 4x/week habit's % take a hit
+2173	A20#3539	B03	2	HISTR	only 5 days visible; 3x/week needs whole week
+2179	A20#3593	B03	3	PCT- FLEX	weekly goal should reset weekly toward 100%
+2181	A20#3597	B03	5	X	
+2182	A20#3606	B03	3	PCT-	3x/week achieved shows 40%
+2183	A20#3610	B03	3	PCT- HISTR	only 5 days shown; % wrong for non-daily
+2188	A20#3777	B03	5	SCHR	reminders every day even for weekly
+2189	A20#3778	B03	4	PCT-	weekly habit completed gives 4%
+2192	A20#3835	B03	4	FLEX	widget fraction of weekly goal
+2193	A20#3837	B03	2	SCHR	
+2196	A20#3882	B03	3	PCT- HISTR	5x/week success shows 24%; only 5 days shown
+2200	A20#3987	B03	1	SCHR HISTR	Wed+Sun not possible; only Tue–Sat boxes shown
+2201	A23#67	B03	2	X	
+2202	A23#94	O02	5	X	
+2203	A23#95	B03	5	X	
+2205	A23#127	B03	5	FLEX	
+2207	A23#231	B03	4	SCH+	
+2209	A23#374	B03	2	SCHR	
+2213	A23#655	B03	4	FLEX	weekly goals as 1/3 fractions not daily 0/1
+2214	A23#682	A01	5	X	
+2215	A23#684	A01	4	TODAY-	wants not-due-today habits sorted to bottom
+2216	A23#703	A01	5	TODAY-	watch page doesn't adapt on rest day
+2217	A23#715	A01	3	MISS- TODAY-	shows activities as incomplete that aren't due today
+2219	A23#762	B03	2	STRK-	3x/week streak counts wrong
+2221	A23#831	B03	2	FLEX	
+2227	A23#1497	A01	4	X	
+2230	A23#1690	Rs00	2	FLEX	
+2231	A23#1708	B03	4	SCH+	
+2235	A23#1958	A01	4	TODAY- HIDER	non-due gym tasks visible greyed on Today, confusing; hide them
+2238	A23#1996	B03	4	X	
+2239	A23#2016	B03	4	OFF+ FLEX	3 days a week counts, no perfect every day needed
+2242	A23#2081	B03	5	SCH+ SKIP+	x days a week, skip days, auto-streak
+2243	A23#2082	B03	2	X	
+2244	A23#2101	B04	4	PCT- HIDER	weekend/weekday tasks: never 100% gold; widget should hide tasks not applicable today
+2246	A23#2160	A01	5	X	
+2247	A23#2169	A01	4	X	
+2249	A23#2362	A01	4	X	
+2250	A23#2380	A01	4	SCH+	certain days / x per week
+2253	A23#2414	B04	4	FLEX	
+2255	A23#2462	Rs00	5	FLEX	
+2258	A23#2531	B04	4	PCT-	3x/week stats miss earlier-week completions
+2264	A23#2750	O02	2	X	
+2266	A23#2820	B04	5	FLEX SCH+	
+2271	A23#3510	A01	5	X	
+2275	A23#3638	O02	3	TODAY- MISS-	weekend-only "no coffee" habit shown every day, logs as broken on weekdays (RU)
+2277	A23#3806	B04	5	FLEX SCH+	
+2279	A23#3839	O02	4	FLEX	weekly limit any day instead of fixed cheat days
+2281	A23#3989	O02	2	X	
+2283	A23#4089	B04	5	X	
+2286	A23#4190	B04	3	SCH-	notifications on unscheduled days; calendar view small
+2287	A23#4208	B04	3	HISTR	widget: habit list with days of week completed
+2292	A23#4437	B04	5	HISTR	widget table: days as columns, tasks as rows, dots on completion days
+2294	A23#4507	B04	5	OFF+	keeps streak when purposely not doing activity on specific days
+2295	A23#4540	Rs00	5	FLEX	
+2297	A23#4651	B04	2	TODAY- HIDER SCH-	every habit shows regardless of schedule; show only scheduled ones
+2301	A23#4669	B04	5	X	
+2303	A23#4781	B04	2	X	
+2305	A23#4809	A01	3	X	
+2306	A23#4823	B04	4	FLEX	
+2312	A23#4869	B04	5	HISTR FLEX	weekly task: can't log which days; on-track weekly shown as incomplete
+2314	A23#4923	B04	4	EXTRA	at least N per week, log extras
+2317	A23#4956	B04	5	GREY-	streak tally counts intervening non-task days
+2319	A23#4968	A01	5	PCT-	widget counts unscheduled task in daily progress (app shows it faded)
+2320	A23#5090	A01	3	SCH-	two rest days in a row break streak (bug)
+2321	A23#5100	B04	5	SCH+	
+2323	A23#5168	B04	3	FLEX	
+2324	A23#5185	B04	5	FLEX	
+2329	A23#5306	B04	4	X	
+2331	A23#5327	B04	3	X	
+2332	A23#5332	B04	5	SCH+	6 days/week with Sabbath
+2335	A23#5373	B04	4	SCHR	
+2336	A23#5391	A01	5	X	
+2339	A23#5408	A01	3	X	
+2344	A23#5486	B04	5	SCH+ OFF+	no build-up of incomplete tasks
+2348	A23#5751	A01	2	SCH-	every-other-day glitch
+2351	A23#5854	A01	4	X	
+2352	A23#5855	A01	4	X	
+2355	A23#5988	B04	5	SKIPR	exempt specific days (Christmas)
+2356	A23#6006	B04	5	X	
+2358	A23#6086	A01	5	X	
+2359	A23#6107	B04	5	SCH+	
+2363	A23#6213	B04	5	SCH+	
+2370	A23#6629	B04	4	FLEX	
+2381	A23#6892	B04	4	FLEX	
+2382	A23#6924	B04	4	SCHR	
+2387	A23#7011	B04	4	SCHR	Mon-Fri work tasks
+2388	A23#7020	B04	5	X	
+2390	A23#7098	B04	4	FLEX	
+2395	A23#7216	B04	3	X	
+2401	A24#960	O02	1	X	
+2413	A24#1792	O02	5	X	
+2418	A24#5662	B04	2	X	
+2431	A24#6688	Rs00	4	X	
+2443	A24#7675	O02	3	SCHR	7-on-7-off rota routines (ES)
+2445	A24#7963	O02	4	SCHR	different habits on rest days (ES)
+2452	A24#10822	Rs00	4	SCHR	(DE)
+2453	A24#10964	Rs00	3	X	
+2454	A24#11070	A01	3	SCHR STRK- SKIPR	habits forced every day incl. weekends, breaks streak; wants weekend/holiday modes
+2455	A24#11108	O02	3	SCHR	weekends/free days configured differently (DE)
+2456	A24#12453	O02	3	X	
+2457	A24#13096	B04	4	SCHR	weekly/monthly (FR)
+2461	A24#14227	A01	1	X	
+2470	A24#14797	A01	1	X	
+2477	A24#15212	A01	4	X	
+2497	A24#18413	B04	3	SCHR	
+2500	A24#18981	O02	5	X	
+2504	A24#20432	B04	2	FLEX TODAY-	habits show every day; wants 3x/week counter and Friday-only
+2507	A24#20643	B04	4	SCHR	
+2512	A24#20896	O02	5	X	
+2515	A24#21196	A01	5	SKIPR	pause for travel
+2517	A24#21411	B04	5	FLEX	
+2520	A24#22451	O02	1	X	
+2521	A24#22894	A01	4	X	
+2522	A24#23000	O02	5	SCHR	work vs rest day rituals (ZH)
+2524	A24#23237	O02	5	X	
+2527	A24#23342	B04	1	X	
+2539	A24#24483	B04	5	X	
+2545	A24#25333	A01	1	X	
+2548	A24#25647	O02	1	X	
+2549	A24#25728	A01	1	X	
+2557	A24#26733	O02	1	X	
+2567	A24#27431	O02	1	X	
+2576	A24#27989	Rs00	1	X	
+2580	A24#28283	O02	5	X	
+2591	A24#29223	B04	4	FLEX	
+2592	A24#29247	O02	1	X	
+2595	A24#29383	A02	4	SKIPR FLEX	sick/vacation pause; wants 3x/week without set time
+2599	A24#29716	A02	2	X	
+2605	A24#30317	O02	4	X	
+2639	A24#32136	Rs00	5	X	
+2641	A24#32159	O02	5	X	
+2644	A24#32469	O02	5	X	
+2656	A24#32895	A02	3	SCHR SKIPR	forced every day, rest days count as failing
+2671	A24#33828	A02	5	X	
+2674	A24#34003	O02	5	X	
+2677	A24#34142	B04	2	SCH+	
+2679	A24#34384	O02	5	X	
+2686	A24#34753	O02	4	X	
+2709	A24#36274	A02	2	X	
+2713	A24#36568	A02	1	SCHR MISS- STRK-	3-day/week exercise marked incomplete other days; looks like failing, streaks never >1
+2718	A24#36996	O02	5	X	
+2725	A24#37498	O02	1	X	
+2727	A24#37545	A02	4	SCH-	list shows tasks not due till next Monday
+2736	A24#38188	O02	1	X	
+2741	A24#38402	O02	4	X	
+2742	A24#38450	Rs00	3	X	
+2750	A24#39095	O02	5	X	
+2758	A24#39888	O02	5	X	
+2763	A24#40253	O02	5	X	
+2765	A24#40437	B04	3	FLEX	
+2775	A24#41191	O02	1	X	
+2776	A24#41223	O02	1	X	
+2782	A24#41371	B04	4	FLEX	at least 3x/week shown every day
+2799	A24#42126	O02	1	X	
+2801	A24#42208	A02	4	SCHR	per-habit 6 days/week inside a routine
+2802	A24#42249	A02	5	X	
+2803	A24#42277	A02	1	X	
+2812	A24#42818	B04	2	X	
+2813	A24#42911	A02	3	X	
+2818	A25#435	B04	4	SCHR	
+2820	A25#511	B04	4	FLEX	
+2824	A25#829	B04	5	FLEX	
+2826	A25#918	A02	5	SEE	wants a sort that shows all habits incl. not scheduled today; hard to reach settings of unscheduled habit
+2827	A25#980	O02	5	X	
+2830	A25#1162	B04	4	FLEX	5 days a week any days
+2832	A25#1205	B04	5	X	
+2833	A25#1238	B04	5	SCHR TODAY-	weekly habit stays on list until checked; wants Monday-only
+2848	A26#2871	A02	4	X	
+2851	A26#2921	Rs00	4	X	
+2859	A26#3471	A02	1	TODAY-	every-few-days routines show every day, non-due ones shown bold
+2861	A26#3593	O02	1	X	
+2863	A27#117	B04	5	TODAY- MISS-	weekday run shows Sat/Sun; feels like not sticking to habit
+2868	A28#608	B04	3	SCHR	
+2871	A28#770	B04	4	X	
+2875	A29#54	Rs00	4	FLEX	
+2876	A29#69	B04	5	X	
+2877	A29#115	B04	4	HIDE+	shows only habits scheduled for that weekday
+2879	A29#309	B05	5	SCH+ HIDE+	choose weekdays; checklist for the day
+2881	A29#314	B05	3	X	
+2882	A29#326	B05	5	FLEX	
+2886	A29#345	A02	1	SCHR	every other week pattern
+2889	A3#373	O02	5	X	
+2891	A3#588	A02	5	X	
+2894	A3#1074	A02	2	X	
+2895	A3#1301	O02	5	X	
+2896	A3#1470	A02	5	X	
+2899	A3#2174	O02	5	X	
+2900	A3#2370	O02	5	X	
+2901	A3#2390	B05	5	X	
+2902	A3#2513	O02	5	X	
+2903	A3#2543	O02	5	X	
+2904	A3#2592	A02	5	X	
+2905	A3#2632	A02	5	X	
+2906	A3#2687	O02	5	X	
+2907	A3#2818	B05	5	X	
+2908	A3#2941	O02	4	X	
+2909	A3#3268	O02	5	X	
+2911	A3#4102	A02	4	X	
+2913	A3#4519	A02	5	X	
+2915	A3#4843	B05	5	X	
+2916	A3#5373	O02	4	X	
+2917	A3#5470	O02	5	X	
+2918	A3#5518	O02	5	X	
+2919	A3#5546	B05	5	X	
+2920	A3#5582	A02	5	X	
+2923	A3#5616	O02	5	X	
+2925	A3#5788	B05	5	X	
+2928	A3#6147	A02	4	X	
+2934	A3#6835	O02	5	X	
+2937	A3#7123	B05	5	X	
+2944	A3#7492	A02	5	X	
+2945	A3#8047	O02	5	X	
+2949	A3#9455	B05	4	X	
+2950	A3#9579	B05	4	SCHR	Mon-Sat training: mark and count only those days
+2951	A3#9639	O02	5	X	
+2952	A3#9780	A02	5	X	
+2953	A3#10029	B05	4	X	
+2954	A3#10079	O02	5	X	
+2957	A3#10505	O02	5	X	
+2960	A31#2	B05	3	TODAY- HIDER	specific-day habits always shown with "NOT TRACKED TODAY"; want only on their days
+2961	A31#11	B05	4	GREY-	highlighting the entire week for weekly habits confusing
+2962	A31#35	B05	2	SCHR	
+2966	A31#234	B05	3	SCH-	notifications on opposite days
+2968	A31#386	B05	4	SCH-	watch lacks weekly habits
+2969	A31#402	A02	5	TODAY- HIDER	habits show on unscheduled days, wishes they wouldn't
+2971	A31#478	B05	2	SCH-	
+2973	A31#725	B05	4	EXTRA	star for exceeding weekly goal
+2974	A31#757	B05	4	X	
+2975	A31#957	B05	3	HISTR	weekly overview of which days logged
+2979	A31#1201	A02	3	SKIPR	day off without zero streak
+2980	A31#1223	A02	4	SCHR	4-on-4-off rota
+2984	A31#1644	A02	3	SCH-	5x/week streak lost (bug)
+2986	A31#1670	B05	3	SCH-	
+2987	A31#1706	A02	5	EXTRA	can't add on non-set day; wants bonus points on off days
+2990	A31#1820	B05	3	PCT-	weekly goal shows 0% until whole goal hit
+2995	A31#2064	B05	5	FLEX SCH+	weekly % progress, any days
+3000	A31#2230	A02	3	X	
+3010	A31#2845	B05	2	SCHR	pick day weekly habits repeat
+3022	A31#3193	B05	2	SCH-	
+3023	A31#3198	B05	3	SCH-	
+3024	A31#3211	B05	1	SCH-	
+3026	A31#3229	B05	1	SCH-	rolling week confusing
+3028	A31#3276	B05	1	SCH-	
+3029	A31#3354	A02	2	X	
+3032	A31#3485	A02	1	X	
+3035	A31#3633	A02	3	X	calendar ticks vs x indistinguishable (general)
+3037	A31#3710	B05	1	GREY-	x/week habit shows a check every day after first completion; can't tell if done today
+3039	A31#3753	B05	5	TODAY- HIDER	Tue/Thu goal shows greyed on Wednesday; screen never clear; show only goals for that day
+3045	A31#4490	B05	4	X	
+3046	A31#4505	Rs00	5	HIDE+	filter to see only what's on the list for that day
+3054	A31#4858	B05	1	SCHR	
+3063	A31#5124	B05	4	SCHR	
+3064	A33#80	B05	4	FLEX EXTRA	can't move weekly/daily habit to another day actually done; must backfill wrong day
+3071	A33#178	B05	3	HISTR	progress chains widget should include days of week
+3072	A33#250	A02	5	SEE EXTRA	wants habits shown even when not due today, to overachieve
+3073	A33#286	B05	3	PCT-	average daily completion shouldn't include weekly habits
+3074	A33#349	A02	5	X	
+3075	A33#359	B05	5	X	
+3081	A33#907	O02	5	SCHR	day off every 2 weeks (DE)
+3083	A33#969	B05	5	EXTRA	keep logging beyond weekly goal (ES)
+3087	A33#1055	B05	1	STRK- FLEX	4x/week streak only counts consecutive days
+3090	A33#1115	A02	5	FLEX	defer a non-daily task to next day instead of skip
+3093	A33#1229	A02	4	SCHR FLEX PCT- EXTRA	every-N-days; x/week affects stats if waiting; log extra
+3095	A33#1236	A02	1	X	
+3105	A33#1722	O03	4	X	
+3107	A33#1762	A02	5	X	
+3118	A33#2176	B05	5	X	
+3120	A33#2382	B05	3	X	
+3126	A33#2711	B05	2	X	
+3127	A33#2716	A02	5	X	
+3129	A33#2911	B05	2	SCH-	
+3132	A33#3097	B05	5	FLEX	
+3133	A33#3108	B05	1	STRK-	weekday-only and M/W/F habits no longer count in streak; told to use skip
+3134	A33#3155	B05	5	SCH+	
+3135	A33#3219	B05	4	SCH-	
+3136	A33#3245	A02	3	GREY+	widget used to show which days are off per task; lost after update
+3137	A33#3302	B05	3	FLEX	
+3138	A33#3307	A02	4	EXTRA	log 5th gym day over 4/week goal
+3139	A33#3341	B05	5	FLEX	
+3142	A33#3427	B05	5	SCHR HIDE+	wants habit to appear only on day due (like weekly habits)
+3143	A33#3435	B05	2	STRK- FLEX	weekly/3x habit streak 0 because not done yesterday
+3144	A33#3440	B05	2	X	
+3145	A33#3441	B05	1	STRK- FLEX	streaks for non-daily goals hard to see
+3150	A33#3591	B05	5	SCH+	
+3151	A33#3595	B05	4	SCH+	certain days + calendar view for all
+3153	A33#3602	A02	4	SKIPR	vacation days earned
+3154	A33#3611	B05	5	FLEX	
+3155	A33#3614	B05	4	SCHR	
+3156	A33#3638	B05	4	PCT-	day only "complete" if weekly tasks also done that day
+3158	A33#3675	O03	3	X	
+3160	A33#3726	B06	3	SCHR	
+3164	A34#138	A02	4	X	week resets empty; wants rolling 7 days
+3169	A34#415	B06	5	FLEX PCT-	weekly habits shown as 1 week not count of days; looks low vs daily
+3171	A34#640	A02	5	X	
+3172	A34#661	O03	5	X	
+3174	A34#713	B06	5	X	
+3175	A34#715	B06	4	FLEX	
+3180	A36#174	A02	4	X	
+3184	A36#369	A02	4	TODAY- HIDER	sees all habits even on unscheduled days, confusing
+3185	A36#412	B06	4	TODAY- HIDER	certain-days habit shows every day; confusing
+3189	A4#25	Rs00	5	X	
+3190	A4#80	O03	1	X	
+3192	A4#279	O03	1	X	
+3202	A4#599	O03	5	X	
+3223	A4#1000	A02	4	SCH-	weekly task setup confusing
+3229	A4#1181	B06	3	FLEX	
+3231	A4#1328	O03	1	X	
+3235	A4#1410	Rs00	5	SCHR	workaround: daily habit, check it on days it doesn't happen (PT)
+3236	A4#1964	A02	5	SCH+	alternate-day work schedule fits (PT)
+3254	A4#2835	O03	1	X	
+3255	A4#2904	B06	3	SEE	monthly calendar to plan weekly tasks
+3257	A4#2936	B06	3	FLEX	
+3266	A4#3175	A02	3	SCHR	one-off day tasks / irregular days off
+3267	A4#3177	B06	2	X	
+3275	A4#4142	A02	3	SCHR	all days except weekends
+3278	A4#4736	O03	1	X	
+3283	A4#5356	B06	5	X	
+3284	A4#5421	O03	5	X	
+3287	A4#5467	A02	4	SCH-	repeats sometimes skip days
+3306	A4#6073	Rs00	5	X	
+3311	A4#6217	A02	5	SCH+	2 rest days after run pattern
+3330	A4#6737	O03	5	X	
+3344	A4#7101	A02	5	X	
+3373	A4#9657	Rs00	5	X	
+3406	A4#11403	A02	2	X	
+3409	A4#11450	O03	4	X	
+3419	A4#11799	A02	3	SCHR	nth weekday of month
+3443	A4#12282	A02	5	X	
+3445	A4#12297	Rs00	5	X	
+3452	A4#12462	Rs00	5	X	
+3473	A4#12689	Rs01	3	X	
+3476	A4#12704	A02	3	X	
+3477	A4#12716	Rs01	1	SCHR	
+3488	A4#12920	A03	1	X	
+3493	A4#13014	O03	1	X	
+3501	A4#13118	Rs01	5	X	
+3506	A4#13284	O03	5	SCHR	skip Sat/Sun in routine
+3507	A4#13286	O03	5	X	
+3517	A4#13460	B06	4	X	
+3525	A4#13566	B06	1	PCT-	day marker all-or-nothing (silver star vs diamond)
+3526	A4#13582	A03	1	X	
+3559	A4#14045	A03	4	X	
+3575	A4#14307	Rs01	5	X	
+3648	A4#15718	A03	3	SCHR	no Mon/Wed/Fri repeat; must skip every other day manually
+3653	A4#15792	O03	2	X	
+3668	A4#16031	A03	2	X	
+3692	A4#16572	O03	5	X	
+3731	A4#17144	O03	5	X	
+3742	A4#17419	A03	1	SCH-	can't change scheduled day
+3767	A4#17945	B06	4	SEE	full list of habits to edit future days
+3778	A4#18094	B06	4	X	
+3794	A4#18349	B06	1	SCH-	can't edit routine on another day
+3821	A4#18763	A03	5	X	
+3857	A4#19235	Rs01	2	X	
+3866	A4#19326	A03	1	EXTRA	can't tick Wednesday task on Monday ("concentrate on today")
+3868	A4#19343	O03	5	X	
+3870	A4#19363	Rs01	5	X	
+3883	A4#19448	Rs01	4	X	
+3894	A4#19548	B06	3	FLEX MISS- GREYR	widget shows task as not done on days it wasn't assigned; wants shading
+3898	A4#19562	B06	1	SCH-	
+3907	A4#19737	Rs01	4	X	
+3914	A4#19792	Rs01	5	X	
+3925	A4#20000	B06	3	X	
+3937	A41#83	B06	4	FLEX SEE	days left in week for weekly habit
+3942	A41#220	B06	4	PCT- SEE	daily % ignores weekly task due today; unaware of failing
+3943	A41#237	B06	4	FLEX	(DE)
+3945	A41#366	B06	5	X	
+3950	A41#430	B06	3	HISTR FLEX	weekly habits: can't see which days completed
+3953	A41#502	B06	5	SCH+ SKIP+	certain days + skip day/week
+3955	A41#623	B06	4	SEE	indication of missed every-X-days habit; reschedule
+3957	A41#674	B06	4	PCT- FLEX	weekly habits need own %
+3958	A41#708	B06	5	FLEX	
+3959	A41#718	A03	5	X	
+3960	A41#740	B06	4	X	
+3961	A41#757	B06	4	SCHR SKIPR	every x days; snooze while travelling
+3962	A41#761	B06	5	HIDER	hide goals due other days from daily view (competitor has it)
+3964	A41#794	B06	5	X	
+3972	A43#116	B06	5	X	clutter of repeat text under habits
+3974	A43#124	B06	2	FLEX	5x/week: 2 skipped days not bad days, more should be
+3983	A43#267	B06	3	SCHR	
+3990	A43#334	B06	4	FLEX	x/week display should follow weekly goal
+3998	A43#433	B06	5	SCHR	
+4000	A43#450	O03	5	X	
+4006	A43#511	O03	5	X	
+4009	A43#528	B06	3	FLEX	
+4020	A46#47	B06	5	SCHR	
+4021	A46#97	A03	4	SCHR STRK-	weekday-only habit breaks streak every weekend
+4026	A46#276	A03	4	SCHR	every-other-day
+4028	A46#446	B06	4	HISTR FLEX	calendar/summary should highlight only scheduled days, not all days
+4029	A46#485	A03	5	GREYR	custom colour for skip days; set own weekend days
+4039	A46#1184	A03	4	FLEX	wants once a week any day, not specific days
+4042	A46#1456	A03	5	SKIP+	skip: one off day doesn't kill streak
+4044	A46#1492	A03	5	X	
+4048	A46#1537	A03	4	SCHR	1 on 2 off cycle
+4050	A46#1654	B06	5	GREYR	on a day habit doesn't apply, auto-mark as skipped
+4052	A46#1699	A03	5	SKIP+	skip days praised
+4053	A46#1769	A03	5	SKIP+ GREY+	skip marker keeps on-track feeling visually
+4055	A46#1810	A03	5	SKIP+ GREY+	skipped day shown as triangle = neutral data, not failure
+4057	A46#1837	B06	5	SCHR	
+4060	A46#1972	B06	5	SKIP+	intentional skip days keep streak
+4061	A46#2000	A03	5	X	
+4062	A46#2016	O03	5	X	
+4068	A47#192	B06	2	SCHR	fixed weekdays (JP)
+4069	A47#305	B06	5	SCH+	monthly view of fixed-weekday habits (JP)
+4070	A47#346	B06	4	STRK- FLEX	weekly habit count not continuous (JP)
+4074	A48#31	O03	4	X	
+4075	A48#156	B06	5	FLEX	
+4082	A48#491	B06	5	FLEX	
+4083	A48#575	O03	1	X	
+4086	A48#973	A03	2	X	
+4088	A48#1040	B06	5	X	
+4089	A48#1094	O03	1	X	
+4092	A48#1567	A03	2	TODAY- HIDER	tag view shows goals not due today; show only due
+4095	A48#1796	Rs01	5	X	
+4098	A48#1988	A03	4	TODAY-	watch/reports show tasks not due today, confusing
+4100	A48#2074	A03	5	SCHR	day on/off cycles
+4105	A48#2270	B06	5	FLEX	
+4108	A48#2401	B06	4	SEE	sees full list only if 7 days; wants M/W/F shown unfinished only when missed
+4112	A48#2503	B06	1	PCT- FLEX	weekly tasks break perfect-day streaks
+4115	A48#2604	B06	5	FLEX	weekly widget clears ticked items
+4119	A48#2685	O03	4	X	
+4124	A48#2998	O03	5	X	
+4125	A48#3010	B06	4	STRK- SCHR	weekday-only habits: must tick weekends or break chain; hiding list doesn't fix
+4126	A48#3041	A03	3	PCT- SKIPR	stats penalised on weekend for a weekday-only log habit
+4130	A48#3167	B06	5	X	
+4131	A48#3212	B06	3	GREY- FLEX	logging not-done days still counts streak for 4/week goal
+4134	A48#3274	B06	5	X	
+4139	A48#3382	B06	5	X	
+4140	A48#3451	B06	3	PCT-	project target counts weekend days not worked
+4141	A48#3524	B06	5	SCH+	
+4143	A48#3538	A03	3	SKIPR	skip without hitting streak/totals
+4144	A48#3594	B06	4	PCT-	M-F habit completion % counts weekends
+4145	A48#3595	B07	4	SCHR STRK-	soccer Mon/Wed without losing streak
+4146	A48#3655	B07	5	FLEX	
+4147	A48#3667	B07	5	HIDER	goal only shows on its weekday; no weekend notification
+4152	A48#3795	B07	5	X	
+4154	A48#3852	B07	5	FLEX	
+4155	A48#4208	B07	3	PCT- SCHR	daily average counts weekends; track Mon-Fri only
+4159	A49#135	O03	5	X	
+4160	A49#137	B07	5	X	
+4164	A49#336	B07	2	SCH-	
+4169	A49#398	O03	4	EXTRA	did extra tasks not assigned today, can't add
+4186	A49#931	B07	1	X	
+4199	A49#1130	A03	3	X	
+4204	A5#100	B07	4	SCHR	routine steps only on certain days
+4208	A5#223	O03	4	X	
+4211	A5#241	B07	4	X	
+4217	A5#433	A03	2	STRK-	routine for some weekdays: streak broken by off days
+4218	A5#440	O03	5	X	
+4222	A5#628	A03	4	X	
+4227	A5#661	Rs01	5	X	
+4230	A5#874	O03	5	X	
+4231	A5#876	O03	5	X	
+4232	A5#888	O03	1	SCHR	weekday vs holiday routines (JP)
+4233	A5#921	B07	2	X	
+4237	A5#1064	A03	4	SCHR	shift work, no routine on days off (JP)
+4239	A5#1142	B07	5	GREY-	weekday dots under routine (filled/outlined grey) unclear; just show "every day"/"Tue-Thu" (KR)
+4242	A5#1239	O03	3	X	
+4271	A5#2302	B07	5	SCHR	
+4276	A5#2436	B07	5	SCHR HIDER	hide evening tasks till later; tasks only on certain days
+4289	A5#2673	A03	3	X	
+4310	A5#3032	Rs01	5	X	
+4318	A5#3104	B07	4	SCHR	
+4321	A5#3112	A03	5	X	
+4322	A5#3123	A03	5	X	
+4331	A5#3191	A03	4	X	
+4334	A5#3211	Rs01	5	X	
+4338	A5#3313	A03	4	TODAY-	routines not due Monday still show, confusing
+4345	A50#112	A03	5	SKIP+	skip days
+4351	A50#204	B07	5	X	
+4355	A52#9191	O03	5	SCHR	separate workday/rest-day plans (ZH)
+4356	A52#9401	O03	5	FLEX	weekly habits for rest days (ZH)
+4358	A52#10098	O03	5	SCHR	weekday/weekend habit sets (ZH)
+4359	A52#10641	O03	5	SCHR	public holidays not fixed Sat/Sun (ZH)
+4363	A52#15149	O03	5	SCHR HIDER	workday/rest-day options; hide x/week habit after target met (ZH, dup text of #66)
+4367	A52#16568	O03	4	SKIPR	rest-day option not resetting count (ZH)
+4386	A53#466	B07	3	SCH- FLEX	3/week counter wrong
+4389	A53#526	B07	4	FLEX	
+4392	A53#645	B07	5	SCHR	weekly habit appears from Monday; wants Thursday only
+4395	A53#713	B07	5	SEE HISTR	no overview of last few days for non-daily habits; main view only today
+4396	A53#714	A03	3	EXTRA	add actions when not scheduled that day
+4398	A53#801	B07	3	HISTR	past data by weekday (JP)
+4404	A53#1119	B07	3	FLEX	
+4410	A53#1463	B07	5	EXTRA FLEX	missed Wednesday gym made up Saturday; debt carries
+4411	A53#1472	B07	5	SCHR	every other day; manual weekday swap
+4412	A53#1509	A03	5	SKIP+	skip day off from weights keeps streak
+4413	A53#1516	A03	4	EXTRA GREYR	grey out x/week habit after weekly goal; day marked incomplete otherwise
+4414	A53#1539	B07	5	SCHR PCT-	
+4417	A53#1553	A03	4	EXTRA	M/W/F habit should still accept weekend logs
+4418	A53#1567	A03	4	MISS- PCT- FLEX	3x/week: Mon/Tue marked incomplete, hits success score
+4421	A53#1590	B07	5	FLEX	
+4424	A53#1643	A03	4	X	
+4427	A53#1699	B07	5	SCH+ OFF+	change days so streak not broken
+4428	A53#1706	B07	4	SCHR	
+4433	A54#92	B07	4	FLEX	(DE)
+4436	A54#120	B07	5	FLEX SCHR	
+4440	A54#255	B07	5	X	
+4441	A54#277	B07	4	FLEX EXTRA	M/W/Su habit only shows on those days; can't log Tuesday workout
+4444	A54#286	B07	5	SEE	calendar view of upcoming habits per day
+4445	A54#294	B07	2	FLEX	
+4449	A55#266	B07	5	TODAY-	weekly habits shown in daily list
+4451	A55#573	B07	1	X	
+4453	A55#594	A03	5	X	
+4456	A55#698	B07	5	FLEX	
+4458	A55#764	Rs01	4	X	
+4460	A55#893	A03	3	SCH-	year change broke 4x/week streaks
+4464	A55#1071	B07	3	FLEX	
+4466	A55#1120	B07	4	X	
+4472	A55#1378	A03	5	SKIPR	break days built into streak
+4474	A55#1424	A03	5	X	
+4478	A55#1467	B07	4	X	
+4479	A55#1508	A03	3	SCH-	x/week streaks zeroed at year end
+4490	A55#1883	B07	4	SCH-	
+4492	A55#2010	B07	4	GREY+ SCH-	yellow "don't have to complete" days; editing frequency turns them red and cuts streak
+4494	A56#50	B07	5	FLEX	
+4495	A57#17	B07	2	SCHR FLEX	
+4496	A57#30	Rs01	5	HIDER	1x weekly display only on chosen weekday (DE)
+4497	A57#31	B07	5	SKIPR TODAY-	skip hides task for today (4x/week)
+4499	A57#107	O03	5	GREYR SKIPR	wants "rested" check for intentional rest day; blank feels like broken record (KR)
+4502	A57#120	B07	5	SCH- HIDER	"display on" weekdays shows every day (KR)
+4503	A57#157	B07	4	SCH- HIDER	
+4505	A57#267	B07	5	SCH-	
+4506	A57#268	B07	4	SCH- HIDER	
+4516	A57#501	Rs01	3	X	
+4520	A57#587	B07	4	X	
+4522	A57#656	Rs01	4	HIDER SCHR	habits appear per weekday, not just reminders (KR)
+4524	A57#702	A03	4	GREYR	distinguish rest/skipped days from failed days with a visual marker
+4527	A57#744	A03	5	X	fraction 2/3 for weekly goal (display of x/week) — note
+4529	A57#752	B07	5	SCH+ HISTR	certain days; weekly/monthly snapshot
+4531	A58#49	B07	5	HIDER	gym habits only on specific days
+4533	A59#120	B07	3	FLEX	
+4536	A59#983	B07	5	X	
+4538	A59#1011	B07	4	FLEX	
+4545	A59#1496	B07	3	FLEX	(DE)
+4547	A59#1778	B07	5	FLEX GREYR	weekly habit stays on until done; record shows done late
+4560	A59#2238	B07	5	X	
+4562	A59#2340	A03	5	CALOFF	weekend dates coloured in calendar (RU)
+4570	A59#3848	A03	5	FLEX	x/week without fixed days (RU)
+4571	A59#3870	A03	2	SCHR SKIPR	can't disable on weekends; must skip each manually (RU)
+4574	A59#5673	O03	5	X	
+4576	A59#6096	A03	5	SEE	wants next week's days shown ahead (RU)
+4579	A59#6884	O03	4	X	
+4582	A59#8007	O03	4	SCHR	weekday/weekend regularity (RU)
+4584	A59#8566	B07	5	GREYR	weekly habit greyed after done until next period (RU)
+4586	A59#9155	Rs01	5	X	
+4589	A59#9545	A03	5	CALOFF	
+4590	A59#9802	O03	3	MISS-	rest-day notification "0 tasks done" demotivating (RU)
+4594	A59#10738	O03	5	X	
+4599	A59#11983	O03	3	SCH-	weekday-repeat task only visible on creation day (RU)
+4603	A59#12889	A03	5	SKIPR	set a weekday as rest day not counted (RU)
+4604	A59#13178	O03	5	SCHR	weekdays only (RU)
+4606	A59#13789	B08	4	FLEX	
+4609	A59#14316	O03	4	SCHR	weekday/weekend choice (RU)
+4618	A59#15034	Rs01	5	X	
+4620	A59#15051	B08	5	FLEX	
+4630	A60#200	O03	1	X	
+4636	A65#135	B08	4	FLEX	(PT)
+4638	A65#209	B08	4	FLEX	0/3 progress (PT)
+4640	A65#441	B08	5	SKIPR	day doesn't allow habit; lie?
+4644	A67#708	O03	5	X	
+4653	A67#1550	Rs01	5	X	
+4657	A67#2016	B08	4	HISTR SEE	calendar to see when last done
+4664	A68#617	O03	1	X	
+4667	A68#1661	A03	5	TODAY- MISS-	specific-day habit appears in routine on off days and shows incomplete
+4668	A68#1715	O03	5	X	
+4675	A68#2360	O03	5	X	
+4677	A68#2713	O03	5	X	
+4678	A68#2715	O03	5	X	
+4685	A68#4048	O03	5	X	
+4686	A68#4101	B08	3	PCT-	weekly goal stats inaccurate
+4688	A68#4216	A03	3	MISS- SCHR	weekly-on-Friday habit marked incomplete other days
+4692	A68#4288	B08	4	TODAY- MISS-	Mon/Thu habit shows incomplete on Tuesday
+4693	A68#4360	B08	3	X	
+4697	A69#66	B08	5	OFF+ FLEX	6 days/week keeps streak with Sundays off
+4705	A7#377	O03	5	X	
+4706	A7#399	B08	5	X	
+4708	A7#440	A03	5	X	
+4710	A7#550	A03	5	SKIPR	skip on holidays/days off
+4711	A7#614	B08	4	HISTR PCT-	grid should show only scheduled weekdays; perfect 2x/week habit looks empty
+4712	A7#697	B08	4	FLEX	
+4713	A7#723	B08	4	STRK- FLEX	x/week streak count confusing
+4714	A7#725	O03	2	X	
+4716	A7#797	B08	4	X	
+4720	A70#34	O04	5	X	
+4722	A70#256	O04	5	X	
+4723	A70#261	O04	5	SKIPR	rest period (menstruation) without lying; worries about abuse (JP)
+4724	A70#269	O04	4	SKIPR	rest function when sick (JP)
+4725	A70#349	O04	5	X	
+4726	A70#367	O04	4	STRK- FLEX	2 unlogged days force reset; weekend rest days for training; wants x days/week (JP)
+4728	A70#429	O04	5	X	
+4729	A70#435	O04	5	SCHR	different reminder times weekday/holiday (JP)
+4733	A70#998	O04	5	X	
+4735	A70#1110	O04	4	SCHR	weekday vs weekend times (JP)
+4739	A70#1445	O04	5	X	
+4742	A70#1715	O04	5	X	
+4743	A70#2050	O04	5	X	
+4744	A70#2255	O04	5	X	
+4745	A71#2	B08	4	SCH-	
+4748	A74#92	O04	5	X	
+4751	A76#148	B08	1	FLEX	
+4752	A76#160	A03	4	X	
+4753	A76#168	B08	5	X	
+4754	A76#193	B08	4	FLEX	
+4755	A76#221	A04	3	SKIPR	default skip days
+4756	A76#240	A04	4	SKIPR SCHR	set default recurring skip days per habit; manual skip for 5 days tedious
+4765	A76#780	A04	4	SKIP+	skip day option
+4766	A76#850	A04	5	SKIP+ GREY+	yes/no/neutral: rest day not counted as no
+4767	A76#1025	O04	4	SKIPR	days off
+4769	A76#1366	B08	5	SCHR FLEX	
+4771	A76#1702	B08	4	SCHR	only specific days tracked; manual skip today
+4772	A76#1744	B08	4	FLEX STRK-	3x/week can't achieve chain
+4774	A76#1770	B08	4	SCHR FLEX	(DE)
+4775	A76#1788	B08	4	SCHR	specify skip weekdays up front
+4776	A76#1991	B08	4	FLEX	
+4777	A76#2004	B08	4	SCHR	
+4778	A76#2021	B08	5	SKIP+	skip for 3x/week computes 100% (ES)
+4785	A76#2308	A04	5	SKIP+ GREY+	skip keeps streak over rest days (3 of 4 goal)
+4786	A76#2351	A04	5	SKIP+ SCH+	skip days, own schedule
+4788	A76#2435	B08	5	FLEX	
+4792	A76#2692	B08	4	FLEX SKIP+	uses skip as workaround for 4/7
+4797	A76#2915	B08	4	HISTR	calendar view with weekday trends (JP)
+4798	A76#2972	B08	4	HISTR	calendar display (JP)
+4810	A76#4162	Rs01	5	FLEX	(RU)
+4815	A76#4321	B08	5	SKIP+	skip 4 days of 3/week plan without losing streak
+4816	A76#4397	B08	4	GREYR MISS-	Saturday-only habit: colour its day, grey out others; else looks like slacking
+4819	A76#4474	A04	5	SCHR	must manually mark skip on non-activity days
+4821	A76#4722	B08	4	FLEX	
+4824	A76#4822	B08	5	FLEX MISS-	twice a week looks like missed days
+4827	A76#4950	B08	3	X	
+4828	A76#5005	O04	5	X	
+4829	A76#5008	O04	5	SKIP+	skip for rest days
+4831	A76#5087	A04	3	FLEX	once/twice a week; workaround "or rest day" daily item
+4833	A76#5190	B08	4	FLEX	
+4840	A76#5506	O04	5	X	
+4845	A76#5584	B08	3	HIDER TODAY-	today widget only today's tasks; don't make me scan all
+4846	A76#5589	A04	4	SKIP+ FLEX	skip without breaking chain; no x/week
+4848	A76#5755	O04	4	SKIP+	
+4849	A76#5797	A04	4	SKIP+ SCH+	skip days, 3x/week
+4852	A76#5884	A04	5	SKIP+	skip without breaking chain
+4853	A76#5905	B08	3	FLEX	
+4858	A76#5979	B08	4	FLEX	
+4861	A76#6069	B08	5	FLEX	
+4865	A76#6271	B08	5	X	
+4869	A76#6341	B08	4	X	
+4873	A76#6411	A04	4	PCT- GREYR	days before habit existed counted as blank, skews %, should be skip
+4874	A76#6425	B08	5	X	
+4876	A76#6456	B08	4	SKIP+ FLEX	skip used for weekly goals
+4881	A76#6582	B08	5	SCHR	auto skip every other day
+4887	A76#6820	B08	4	FLEX	
+4888	A76#6824	B08	5	FLEX SKIP+	skip helps but must count weekly greens manually
+4892	A76#6914	O04	4	SKIP+	skip for planned skip days, want in trends
+4893	A76#6925	B08	4	SKIP-	cap skips per week; tempting to cheat
+4896	A76#6997	A04	3	SCHR	auto-skip days (spinning only Saturdays)
+4900	A76#7169	B08	5	X	
+4901	A76#7398	B08	4	SCHR	
+4905	A76#7514	O04	5	SKIP+	skip for days goals don't apply
+4906	A76#7565	A04	5	SKIP+	neutral skip day + % chart
+4910	A76#7615	B08	4	FLEX MISS-	twice a week shows red every other day
+4912	A76#7647	A04	3	SCHR	Sundays as free day
+4913	A76#7659	B08	3	GREYR	needs neutral option for non-daily habits
+4914	A76#7665	A04	3	MISS- SCHR	3x/week: red/green makes it look like failing; wants neutral days
+4915	A76#7684	A04	4	SCHR	off days for running program
+4916	A76#7685	A04	3	SCHR	weekday-only; badge never clears on off day
+4917	A76#7701	B08	5	FLEX	
+4918	A77#16	B08	4	FLEX	(DE)
+4931	A8#146	A04	4	FLEX	forced to allocate weekday; X in Y days enough
+4937	A8#426	A04	4	SKIPR	skip day without reset
+4938	A8#429	A04	4	X	
+4940	A8#522	B08	4	TODAY- FLEX	1x/week goal shown every day
+4941	A8#584	B08	4	FLEX PCT-	2x/week not noted; stats by consecutive days
+4942	A8#622	B08	5	OFF+ FLEX	
+4944	A8#651	Rs01	5	FLEX	
+4948	A8#755	B08	4	TODAY- HIDER	goals only visible on their days; whole list overwhelming
+4949	A8#762	B08	5	HIDER	habits only on Tue/Thu
+4952	A8#786	B09	5	FLEX HISTR	count mode for 3x/week; quick week overview
+4953	A8#821	O04	5	X	
+4962	A85#19	B09	4	SCHR	
+4967	A85#332	B09	2	HISTR	calendar to see last days done (every other day)
+4972	A85#915	Rs01	5	FLEX TODAY-	weekly task shown clearly in widget hard (FR)
+4975	A85#986	O04	4	X	
+4985	A85#1749	O04	5	X	
+4990	A85#2033	O04	5	X	
+4993	A85#2099	B09	3	HIDER	habits only displayed on planned days
+4995	A85#2194	B09	4	HISTR	calendar of which days done
+4996	A85#2199	B09	1	FLEX	
+4997	A85#2203	Rs01	4	X	
+5001	A85#2270	Rs01	5	SCHR	
+5002	A85#2276	B09	5	SCH+	
+5006	A85#2446	B09	5	SCHR	school dailies Mon-Fri
+5010	A85#2583	B09	3	FLEX SCHR	3x/week; missed due day carry to next day
+5014	A85#2611	A04	2	X	grey = not due, still notifies
+5017	A85#2741	B09	4	SCH+ HIDE+	dailies appear only on certain days
+5018	A85#2798	O04	5	X	
+5021	A85#3038	B09	5	SCH+	
+5022	A85#3040	O04	1	X	
+5023	A85#3080	B09	4	GREYR FLEX	missed daily just greys out; wants red overdue marker
+5030	A86#544	B09	4	HISTR	monthly view of all check-ins
+5033	A86#705	B09	5	FLEX	(FR)
+5034	A86#830	O04	4	GREYR	remove the picture (fade) when habit not planned that day
+5039	A86#992	O04	4	SCHR	weekday/holiday reminder times (JP)
+5042	A86#1180	B09	3	TODAY- FLEX	Sunday-only habit shows every day; counter lacks target 2/4
+5044	A86#1260	B09	4	SCHR	weekly reminders on specific day
+5045	A86#1269	B09	4	X	
+5046	A86#1288	O04	4	X	
+5050	A86#1312	B09	4	FLEX GREYR	x/week should show green when done today in widget
+5051	A86#1319	B09	2	SCH-	
+5052	A86#1339	B09	5	HISTR SCH+	streak calendar per day
+5053	A86#1341	B09	3	SCH-	
+5058	A86#1486	A04	2	SKIPR	skip days in streak
+5059	A86#1487	B09	4	STRK- FLEX	persistence graph broken for x/week
+5060	A86#1534	B09	4	SCHR	
+5061	A86#1582	B09	4	STRK- FLEX	
+5073	A86#1739	B09	1	X	
+5074	A86#1781	B09	3	EXTRA	6-day habit: double check-in to make up missed day
+5077	A88#326	O04	2	X	
+5084	A89#60	O04	5	X	
+5086	A89#163	B09	4	X	
+5087	A89#222	A04	5	X	
+5088	A89#233	O04	5	X	
+5089	A89#236	A04	2	X	
+5091	A89#238	B09	4	X	
+5092	A89#242	A04	5	X	
+5100	A9#480	B09	3	SCH-	Mon/Fri task shows on Tuesday
+5109	P1#189	B09	3	FLEX	
+5110	P1#206	B09	4	SCHR	
+5112	P10#4874	O04	4	GREY- PCT-	"day off" shows as completed in stats (EL)
+5113	P10#5094	O04	5	SKIP+	choose an off day
+5114	P10#5104	Rs01	5	X	
+5115	P10#5159	A04	5	X	
+5120	P10#6001	O04	5	SKIP+	
+5127	P10#7524	O04	3	X	
+5131	P10#7686	O04	4	X	
+5132	P10#7699	B09	5	GREYR	skipped should not show as done; skipped vs missed different colours
+5139	P10#8594	A04	5	X	
+5145	P10#9760	O04	3	X	
+5146	P10#9904	A04	3	X	
+5148	P10#10039	O04	4	SKIPR	rest day in office journey
+5151	P10#10760	A04	1	STRK-	losing streak on off days
+5153	P10#10875	B09	5	SCH+ HIDE+	tasks appear only on certain days
+5156	P10#11216	B09	3	SCHR	
+5161	P10#12908	O04	5	SKIP+	take a rest day (ES)
+5164	P10#14087	B09	5	FLEX SCH+	(ES)
+5167	P10#19163	A04	5	SKIP+	rest day without breaking streak (ES)
+5171	P10#23623	B09	4	SCHR	
+5174	P10#23769	B09	5	X	
+5180	P10#29243	O04	5	SKIP+	day off for habit (RU)
+5182	P10#29676	O04	5	SKIP+	mark day as "day off" (RU)
+5187	P10#30797	O04	5	SKIP+	(RU)
+5188	P10#30988	O04	4	GREYR	wants explicit "not done" mark distinct from day off (RU)
+5191	P10#32575	O04	5	GREY-	best streak counts day-off days (RU)
+5192	P10#33022	O04	2	SKIP- GREY-	day off marked as done; could be every day; habit becomes ticking (RU)
+5195	P10#33139	B09	3	SCH+	
+5200	P101#120	B09	5	PCT- FLEX	2x/week: "missed" days hurt stats (RU)
+5203	P105#91	Rs01	4	FLEX	(DE)
+5206	P105#246	B09	4	SCHR	
+5214	P105#463	A04	5	X	
+5216	P105#519	B09	3	X	
+5219	P105#579	B09	2	FLEX	
+5220	P105#669	O04	3	X	
+5221	P105#727	B09	2	FLEX	
+5223	P105#973	O04	4	SKIPR	flexible rest days
+5225	P105#1038	B09	4	FLEX	
+5229	P105#1941	A04	3	X	
+5233	P105#2473	O04	1	X	
+5235	P105#2558	O04	4	SCHR	2-on-2-off rota (RU)
+5236	P105#2617	A04	3	SCHR	workday vs day off habits
+5239	P106#52	B09	3	SCHR	
+5248	P106#306	B09	5	SCH+	
+5258	P106#617	B09	5	SCH+	
+5279	P11#3156	O04	3	X	
+5283	P11#3887	B09	1	FLEX	
+5302	P11#12362	O04	4	SCH+	month-day scheduling for irregular days off (RU)
+5303	P11#13473	O04	3	SCH-	widget says rest day despite activity (TR)
+5304	P11#14964	O04	3	X	
+5305	P110#1262	O04	5	X	
+5308	P110#2204	O04	5	X	
+5310	P110#4091	O04	5	X	
+5311	P110#4100	A04	5	CALOFF	
+5323	P111#577	B09	4	X	
+5332	P111#722	Rs01	1	X	
+5342	P111#830	Rs01	2	X	
+5413	P111#1418	A04	4	X	
+5418	P111#1461	Rs01	5	X	
+5484	P111#1967	Rs01	5	X	
+5511	P111#2186	A04	5	X	
+5518	P111#2262	Rs01	4	X	
+5546	P111#2542	B09	5	X	
+5646	P111#3645	Rs01	3	X	
+5648	P111#3656	B09	4	X	
+5660	P111#3790	O04	4	X	
+5706	P111#4317	Rs01	5	X	
+5721	P111#4537	Rs01	4	X	
+5723	P111#4542	B09	4	X	
+5725	P111#4623	Rs01	5	X	
+5738	P111#4896	B09	5	X	
+5748	P111#5037	B09	4	X	
+5772	P111#5355	Rs01	2	X	
+5832	P111#6212	O05	4	X	
+5872	P111#6782	B09	3	X	
+5881	P111#6925	Rs01	5	X	
+5889	P111#7026	B09	5	HISTR	hide Sat/Sun columns when no classes (non-habit)
+5894	P111#7079	O05	4	SEE	list tasks on home even if not due immediately
+5901	P111#7143	B09	4	HISTR	"don't show weekend" option for narrow screen (non-habit)
+5902	P111#7149	O05	4	X	
+5913	P111#7268	Rs01	5	X	
+5947	P111#7545	Rs01	3	X	
+5956	P111#7609	Rs01	5	X	
+6005	P111#8091	O05	3	X	
+6027	P111#8388	Rs01	3	X	
+6032	P111#8454	O05	4	X	
+6062	P111#8715	A04	4	X	
+6091	P111#9046	Rs01	5	X	
+6121	P111#9439	B09	4	X	
+6135	P111#9660	Rs01	5	X	
+6146	P111#9794	O05	5	X	
+6156	P111#9860	Rs01	4	X	
+6166	P111#9963	A04	5	X	
+6183	P111#10147	O05	4	X	
+6188	P111#10179	B09	3	X	
+6210	P111#10403	Rs01	4	X	
+6216	P111#10466	B09	3	HISTR	restrict week view to specific days (non-habit)
+6225	P111#10629	B10	4	X	
+6261	P111#11066	A04	4	X	
+6272	P111#11164	O05	4	X	
+6274	P111#11230	Rs01	5	X	
+6278	P111#11303	B10	4	X	
+6280	P111#11328	B10	3	HISTR	remove/disable Fri-Sun columns in calendar; crowded (non-habit)
+6288	P111#11514	A04	4	X	
+6292	P111#11609	O05	4	X	
+6306	P111#11777	A04	4	X	
+6315	P111#11941	A04	4	X	
+6323	P111#12087	Rs01	4	X	
+6328	P111#12131	B10	4	X	
+6343	P111#12472	O05	2	X	
+6354	P111#13162	Rs01	4	X	
+6365	P111#14024	B10	4	HISTR	calendar Mon-Fri only to use screen (non-habit)
+6377	P111#14567	B10	5	X	
+6387	P111#14951	Rs01	4	X	
+6394	P111#15044	O05	5	X	
+6407	P111#15891	A04	4	X	
+6412	P111#16191	O05	2	X	
+6415	P113#83	O05	2	X	
+6417	P117#12	B10	3	X	
+6421	P117#61	B10	3	SCHR	
+6428	P12#3325	A04	2	SCHR STRK-	habits forced daily, kills streak
+6429	P12#4010	O05	1	X	
+6430	P12#5402	O05	3	SCHR	work vs free day wake time (DE)
+6432	P12#6231	O05	5	X	
+6435	P12#7894	O05	2	X	
+6439	P12#8437	B10	1	SCHR	
+6443	P12#9191	B10	3	SCHR	
+6449	P12#10119	Rs01	5	X	
+6450	P12#10410	O05	5	X	
+6453	P12#11061	O05	1	X	
+6454	P12#11072	O05	1	X	
+6457	P12#11973	Rs01	5	X	
+6458	P12#12299	O05	5	X	
+6459	P12#13422	O05	5	X	
+6467	P12#14312	O05	2	X	
+6470	P12#14714	O05	4	X	
+6471	P12#14752	A04	5	X	
+6475	P12#15267	O05	4	X	
+6483	P12#16794	B10	5	SCHR SEE	turn habit on/off per day; plan future days
+6487	P12#17219	O05	5	X	
+6509	P12#19452	A04	5	SCHR	work days / days off input
+6511	P12#19627	B10	1	SCHR FLEX	
+6513	P12#19961	B10	5	SCH+	
+6520	P12#20771	Rs01	4	X	
+6533	P12#21880	O05	1	X	
+6544	P12#22770	Rs01	4	X	
+6548	P12#23272	O05	5	X	
+6549	P12#23375	O05	1	X	
+6558	P12#24069	O05	1	X	
+6562	P12#24741	O05	4	X	
+6584	P12#27615	O05	5	X	
+6588	P12#27968	A04	3	SCHR STRK-	weekday-only; lose streak for Saturday lie-in
+6596	P12#28996	O05	4	SKIPR	off days not allowed; lost 79-day progress when sick
+6605	P12#29610	B10	4	SCHR	
+6606	P12#29978	O05	5	X	
+6612	P12#30217	O05	1	X	
+6614	P12#30601	B10	5	X	
+6652	P12#34379	O05	5	X	
+6653	P12#34400	B10	4	X	
+6664	P12#35283	B10	4	FLEX	
+6666	P12#35457	A04	4	SKIPR	no cheat days
+6667	P12#35654	Rs01	1	X	
+6674	P12#35983	O05	1	X	
+6675	P12#36041	O05	1	X	
+6680	P12#36515	O05	3	X	
+6701	P12#38899	O05	1	X	
+6703	P12#39059	Rs01	4	X	
+6710	P12#40289	B10	3	SCHR	
+6719	P12#42753	A04	5	X	
+6725	P12#44806	O05	1	X	
+6741	P12#46453	O05	4	X	
+6746	P12#47351	O05	4	X	
+6764	P12#49926	O05	4	X	
+6778	P12#51725	O05	5	X	
+6787	P12#52867	Rs01	5	X	
+6793	P12#53898	A04	5	X	
+6795	P12#54148	O05	5	X	
+6802	P12#55147	O05	1	X	
+6806	P12#55829	O05	5	X	
+6814	P12#57097	Rs01	5	X	
+6818	P12#58090	O05	1	X	
+6819	P12#58131	O05	4	X	
+6828	P12#59850	O05	4	SCHR	2-on-2-off shifts per-day reminder times
+6829	P12#60231	O05	1	X	
+6830	P12#60252	Rs01	3	X	
+6832	P12#60518	B10	1	FLEX	
+6838	P12#61085	O05	5	X	
+6841	P12#61507	O05	5	X	
+6844	P12#61980	A04	4	X	
+6849	P12#62839	O05	3	X	
+6854	P12#63838	O05	5	X	
+6871	P12#67458	O05	1	X	
+6876	P12#70764	B10	5	SCHR	(ES)
+6898	P12#112176	B10	5	FLEX	(FR)
+6901	P12#113607	O05	5	X	
+6904	P12#114917	B10	2	X	
+6907	P12#117078	B10	3	FLEX	
+6908	P12#117676	O05	4	SCHR	once a week
+6916	P12#126103	O05	4	SCHR	alternating 2-day rota (PT)
+6921	P12#138278	B10	4	SCHR	(PT)
+6930	P12#150435	B10	3	SCHR	
+6932	P12#150468	Rs01	3	SCHR	
+6935	P12#151805	O06	1	X	
+6941	P121#39	O06	1	X	
+6948	P121#141	B10	5	X	
+6952	P122#2375	O06	5	X	
+6955	P122#3095	A04	4	X	
+6961	P122#3929	O06	5	X	
+6964	P122#4643	B10	5	X	
+6966	P122#4918	O06	5	X	
+6967	P122#4965	Rs02	5	X	
+6979	P122#7458	A04	5	X	
+6985	P122#8309	O06	4	X	
+6989	P122#9161	A04	5	X	
+6992	P122#10062	O06	5	X	
+6994	P122#10438	B10	4	X	
+6995	P122#10502	B10	4	SCHR	
+7001	P122#12472	B10	5	X	
+7014	P122#14478	B10	5	SCHR	
+7015	P122#14800	A04	5	X	
+7017	P122#15162	B10	5	FLEX	streak on custom days/week
+7024	P122#17286	B10	5	SCHR	
+7026	P122#17684	Rs02	4	X	
+7033	P122#19573	O06	5	X	
+7035	P122#19739	B10	5	X	
+7038	P122#19874	Rs02	5	X	
+7042	P122#20120	O06	5	X	
+7066	P122#32430	O06	5	X	
+7072	P123#44	B10	1	SCHR	
+7077	P123#451	O06	3	SKIPR SCHR	no way to track days off (Sundays, festivals, rest)
+7083	P123#902	A04	5	SKIPR	skip days for gym
+7089	P124#93	B10	5	FLEX	
+7111	P125#5588	O06	2	X	
+7131	P125#12142	O06	5	X	
+7137	P125#14449	O06	2	X	
+7143	P125#16215	O06	3	X	
+7152	P125#17381	O06	2	X	
+7155	P125#17705	O06	5	X	
+7157	P125#18358	O06	5	X	
+7170	P125#23464	O06	5	X	
+7182	P126#17354	O06	5	X	
+7184	P126#17457	B10	1	SCHR	
+7196	P126#18150	A04	4	X	
+7203	P126#18501	O06	1	X	
+7217	P126#19695	Rs02	2	SCHR	
+7225	P126#20649	O06	5	X	
+7232	P126#21432	Rs02	5	X	
+7236	P126#21959	O06	1	X	
+7299	P126#27111	A04	5	X	
+7312	P126#28160	O06	5	X	
+7330	P126#29325	B10	1	SCHR	
+7334	P126#29829	Rs02	4	X	
+7345	P126#31180	Rs02	5	X	
+7363	P126#32288	A04	5	X	
+7376	P126#33146	Rs02	5	X	
+7402	P126#35991	A05	5	X	
+7405	P126#36316	Rs02	5	X	
+7430	P126#38023	B10	1	SCHR	
+7441	P126#38379	Rs02	5	X	
+7445	P126#39141	O06	5	X	
+7453	P126#39924	O06	5	X	
+7456	P126#40018	A05	5	X	
+7469	P126#41371	O06	5	X	
+7503	P126#44042	Rs02	4	X	
+7519	P126#44794	Rs02	5	X	
+7551	P126#47368	Rs02	5	X	
+7555	P126#47509	Rs02	5	SCHR	
+7638	P126#55073	B10	4	SCHR	
+7653	P126#56250	Rs02	5	X	
+7663	P126#56965	Rs02	5	X	
+7681	P126#58278	B10	2	X	
+7690	P126#59167	Rs02	5	X	
+7694	P126#59717	A05	5	X	
+7697	P126#59914	O06	5	X	
+7711	P126#61028	B10	4	SCHR	
+7764	P126#66279	Rs02	5	X	
+7778	P126#67796	B10	4	X	
+7805	P126#70050	A05	3	X	
+7881	P126#75484	Rs02	5	X	
+7923	P126#112250	B10	4	SCHR	(ES)
+7924	P126#112643	O06	5	X	
+7936	P126#131500	B10	5	SCHR	(FR)
+7949	P126#142112	O06	2	X	
+7954	P126#147513	B10	4	X	
+7967	P126#153684	O06	2	X	
+7971	P126#158095	O06	4	X	
+7999	P126#184497	Rs02	4	SCHR	(PT)
+8017	P126#195388	A05	5	X	
+8027	P126#201319	Rs02	5	SCHR	(RU)
+8035	P126#205347	Rs02	5	SCHR	(RU)
+8050	P126#220992	A05	3	X	
+8055	P128#171	O06	4	SCHR	days off for some habits (RU)
+8056	P128#225	O06	4	SCHR	(RU)
+8058	P128#280	O06	4	SCHR	skip weekends for some goals (RU)
+8059	P128#494	O06	4	SCHR MISS-	Sunday rest makes daily goal overdue (RU)
+8069	P130#163	B10	5	HISTR	all habits each day of week at a glance
+8075	P131#217	O06	5	X	
+8078	P131#299	B10	4	X	
+8079	P131#332	A05	4	X	
+8082	P133#11	A05	4	SEE	can't see rituals outside the day they're due to edit them
+8083	P134#16	A05	5	GREYR SKIPR	weekly mission has only success/fail; wants pass/hold state for weekends/off days (KR)
+8091	P14#559	B10	4	SCHR	
+8102	P15#856	B10	4	FLEX	
+8105	P18#761	B10	5	FLEX PCT-	5x/week → 100% at week end
+8106	P18#838	B10	3	FLEX	
+8113	P19#65	Rs02	5	EXTRA	tasks disappear after weekly goal; sometimes do more
+8122	P19#433	B10	5	FLEX	
+8134	P19#862	B10	5	FLEX SCH+	(IT)
+8136	P2#316	B10	4	EXTRA	2x/week habit disappears after goal; can't track overperforming
+8140	P2#739	B10	4	FLEX	(DE)
+8143	P2#894	Rs02	4	SCH- SKIPR	change days keeping progress; pause
+8157	P2#1817	B10	5	FLEX	2/3 weekly progress
+8158	P2#1893	Rs02	3	X	
+8166	P2#2315	A05	5	SKIPR	schedule days off: no notification, no streak effect
+8176	P2#2690	B10	5	X	
+8178	P2#2772	B10	5	FLEX	
+8182	P2#2956	A05	3	SKIP+	skip doesn't break streak
+8187	P2#3173	B10	5	FLEX STRK-	
+8196	P2#3705	B11	4	FLEX EXTRA	at least 2/week
+8203	P2#4034	B11	5	SCHR	
+8204	P2#4078	O06	1	X	
+8207	P2#4219	Rs02	4	X	
+8220	P2#4650	B11	4	SCHR	
+8223	P2#4851	Rs02	5	X	
+8226	P2#5097	B11	5	FLEX	1/2, 1/3 weekly; green/yellow
+8239	P2#5560	B11	5	FLEX	
+8246	P2#5844	B11	5	EXTRA	praises logging after weekly goal reached
+8265	P2#6690	Rs02	2	X	
+8279	P2#7112	B11	3	FLEX	
+8282	P2#7157	B11	3	EXTRA	x/week habit disappears after goal
+8287	P2#7337	O06	3	X	
+8288	P2#7342	B11	4	EXTRA	at least X should allow logging more
+8289	P2#7344	B11	5	EXTRA	keep showing after completion to track overachieving
+8290	P2#7347	A05	4	SKIPR	pause a group of habits on holiday
+8293	P2#7451	A05	5	SKIP+ SCH+	skip + alternate repeat patterns
+8295	P2#7616	B11	4	FLEX	
+8296	P2#7691	A05	4	SKIPR	skip days
+8299	P2#7827	A05	4	FLEX	x/week not on set days
+8308	P2#8046	A05	5	SKIPR	cheat day
+8310	P2#8143	A05	5	SCH-	changing frequency resets streak
+8311	P2#8145	A05	5	SKIPR	skip weekday work tasks on vacation
+8318	P2#8528	B11	4	FLEX	
+8339	P2#9282	B11	5	FLEX	
+8340	P2#9295	B11	2	SCH-	
+8343	P2#9409	B11	3	X	
+8360	P2#10023	B11	5	HISTR	weekly habit streak widget
+8363	P2#10113	A05	4	SKIPR MISS-	vacation: work tasks show as not fulfilled; not supposed to do them
+8364	P2#10212	O06	5	X	
+8365	P2#10250	B11	5	FLEX	
+8383	P2#10691	A05	4	EXTRA	make-up on unscheduled day can't be logged
+8386	P2#10790	A05	5	SEE	show habits that aren't required today
+8388	P2#10848	Rs02	3	FLEX	
+8391	P2#10957	B11	5	EXTRA	3/week disappears from daily list once done
+8398	P2#11314	B11	5	FLEX SCH+	
+8419	P2#11788	A05	5	X	pie of success/fail/skip days (stats)
+8423	P2#11894	A05	5	SCH+	
+8426	P2#12079	B11	4	TODAY- HIDER	Sunday-only habit clutters list other days
+8428	P2#12230	B11	5	TODAY- HIDER	1x/week habit back in list next day; show only when due
+8434	P2#12395	B11	4	HISTR FLEX	week view of ticks/crosses for all habits at once
+8441	P2#12508	B11	5	SCH+	
+8447	P2#12656	B11	3	SCH-	
+8461	P2#12884	A05	3	X	
+8477	P2#13137	B11	5	X	
+8479	P2#13147	B11	4	SEE	calendar should list tasks under dates
+8482	P2#13193	B11	4	X	
+8487	P2#15533	Rs02	5	SCH+	(ES)
+8493	P2#20112	B11	4	EXTRA	log a 3rd session when plan was 2/week (ES)
+8496	P2#21258	A05	5	EXTRA	log habit done on an unplanned day
+8497	P2#21449	B11	5	SCHR	
+8498	P2#21478	Rs02	4	TODAY- SCH-	1x/month or 1x/week habit appears every day (FR)
+8504	P2#22288	Rs02	5	FLEX SCHR	(JP)
+8507	P2#22392	Rs02	5	FLEX	(KR)
+8511	P2#22833	B11	4	FLEX	(PL)
+8514	P2#23164	B11	5	SCHR	(PT)
+8521	P2#28284	B11	4	SEE+	see future tasks/habits per day in calendar
+8523	P2#28336	B11	5	FLEX	
+8526	P2#28515	O06	5	SCHR	work/weekend day habits (RU)
+8528	P2#28553	Rs02	5	SCHR	
+8535	P20#195	O06	5	X	
+8538	P20#273	B11	3	X	
+8540	P20#491	B11	5	SCH+	nth weekday (JP)
+8544	P20#675	B11	5	X	
+8548	P20#793	B11	5	GREYR	"show all days" mode: non-applicable habits should be clearly marked (only check cell grey now) (KR)
+8550	P20#839	A05	4	CALOFF	holidays in calendar (KR)
+8552	P20#910	A05	5	SCHR	weekdays only / exclude public holidays (KR)
+8565	P20#1301	A05	5	SCHR	public holidays vs weekday routine (KR)
+8577	P20#1640	B11	3	TODAY- HIDER NOCHK	every-2-days routine listed but uncheckable, barely marked; hide on off days entirely (KR)
+8580	P20#1912	O06	4	SKIPR	rest on public holidays (KR)
+8582	P20#1947	O06	5	SKIP+ GREY+	can check "rest day" instead of blank; good (KR)
+8584	P20#2040	Rs02	5	SCHR	(KR)
+8595	P20#2326	O06	5	SCHR SCH-	include public holidays; rest bug (KR)
+8597	P20#2412	O06	5	SCHR	exclude public holidays (KR)
+8600	P20#2532	O06	5	SCHR	skip routines on public holidays (KR)
+8604	P20#2651	O06	5	SCHR	treat weekday holidays as weekend (KR)
+8609	P20#2796	A05	5	SCHR	exclude public holidays (KR)
+8611	P20#2941	A05	3	SCHR	holiday/weekday distinction (KR)
+8626	P21#2399	O06	1	X	
+8632	P22#218	B11	1	STRK- FLEX	streak only for daily; 3x/week or MWF no streak
+8646	P22#1076	B11	3	FLEX	listed each day until goal reached
+8647	P22#1130	B11	3	X	
+8652	P22#1712	B11	4	EXTRA	3/week habit disappears after goal (FR)
+8657	P24#226	B11	4	SCH- PCT-	editing frequency changes past success rate (DE)
+8662	P24#1116	B11	2	X	
+8667	P24#1448	O06	4	X	
+8675	P24#1957	B11	5	OFF+ FLEX	streak continues for 4/month goal
+8678	P24#2124	Rs02	5	X	
+8680	P24#2176	O06	5	X	
+8683	P24#2549	A05	4	X	
+8686	P24#2930	B11	5	FLEX	
+8687	P24#2933	B11	4	SCH- TODAY-	Friday-only habit shows every day
+8689	P24#3084	B11	5	FLEX	
+8690	P24#3555	B11	4	SCH+	
+8692	P24#3972	B11	5	GREY+	every-other-day habit: chain shows open circles on gap days
+8694	P24#4003	O06	4	SEE GREYR	see when recurring habit is due; auto-complete habit not due
+8695	P24#4091	B11	5	X	
+8696	P24#4194	A05	3	SCH-	3x/week streak shows 0
+8697	P24#4280	B11	5	FLEX	
+8700	P24#4526	A05	4	SKIPR	skip days not counting against streak
+8702	P24#4569	A05	4	X	
+8703	P24#4693	A05	5	X	max rest days rule
+8711	P24#5507	O06	1	X	
+8712	P24#5599	A05	4	SCH-	every-other-day: off-day completion doesn't count
+8713	P24#5624	A05	5	X	
+8715	P24#5779	B11	5	SCH+	
+8717	P24#5951	B11	2	FLEX	
+8721	P24#6513	Rs02	4	X	
+8722	P24#6607	B11	4	SCH-	
+8723	P24#6644	B11	5	SCH+	
+8725	P24#6876	Rs02	5	X	
+8728	P24#7167	B11	5	FLEX OFF+	
+8735	P24#7714	B11	5	SCH+	
+8738	P24#8368	O06	5	SCH+	on/off days
+8743	P24#8571	O06	5	SCH+	off days like weekends
+8747	P24#8732	A05	4	SKIPR PCT-	unmarked day counts as fail, % off; wants neutral skip
+8754	P24#9196	O06	1	X	
+8757	P24#9400	B11	4	FLEX	
+8758	P24#9528	B11	1	FLEX	
+8767	P24#10527	O06	4	SCHR	21 on / 7 off cycle
+8768	P24#10594	O06	5	X	
+8770	P24#10685	B12	5	FLEX	
+8774	P24#11263	A05	4	SKIPR OFF+	M-F habit: weekends don't break streak and extra weekend days count; wants holiday omit
+8775	P24#11323	O06	1	X	
+8777	P24#11332	B12	5	SCHR	
+8778	P24#11459	B12	5	FLEX	
+8779	P24#11541	B12	5	FLEX	
+8781	P24#11610	O06	1	X	
+8784	P24#11726	A05	4	SKIPR	days off for holidays
+8786	P24#11915	B12	5	SCH+ FLEX	
+8787	P24#12012	A05	5	X	x/week % confusing
+8793	P24#12607	B12	4	FLEX	
+8794	P24#12642	O07	5	X	
+8796	P24#12749	B12	5	SCH+	
+8798	P24#12809	B12	4	FLEX	
+8800	P24#12933	B12	5	FLEX	
+8802	P24#13182	Rs02	2	FLEX	
+8803	P24#13300	A05	4	SKIPR	
+8805	P24#13380	A05	5	X	
+8806	P24#13455	B12	5	FLEX	
+8814	P24#13772	B12	4	PCT- FLEX	3x/week achieved not counted success
+8815	P24#13877	B12	5	FLEX	
+8822	P24#14202	B12	5	SCH-	certain-days habit missing from weekly widget
+8828	P24#14439	B12	4	FLEX	
+8832	P24#14759	B12	4	FLEX	
+8834	P24#14844	B12	5	SCH+	
+8842	P24#15842	B12	3	FLEX	
+8846	P24#16037	B12	5	X	
+8847	P24#16137	O07	5	X	
+8848	P24#16194	B12	2	GREY- PCT-	x/week streak visualisation too generous; % wrong
+8849	P24#16219	A05	5	SCH+ OFF+	specific days without breaking streak
+8851	P24#16429	A05	5	TODAY- HIDER	widget should hide habit not scheduled today
+8857	P24#19536	A05	5	OFF+ FLEX	weekly goal: missed day doesn't break streak
+8859	P24#20014	O07	3	X	
+8860	P24#20356	B12	4	FLEX	
+8862	P24#20808	B12	5	SCH+ HISTR	(KR) calendar widget
+8863	P24#21313	A05	4	GREYR TODAY-	every-2-days habit: wants indication that today it's not required
+8869	P24#24430	B12	1	FLEX	
+8876	P27#2	B12	4	SCH-	
+8879	P3#521	B12	4	SCHR	track only workdays
+8880	P3#617	B12	5	SCHR SKIPR	(DE)
+8882	P3#632	B12	4	X	
+8883	P3#680	B12	5	SCHR GREYR	enter specific days so the habit shows as a gap or not at all on other days (DE)
+8884	P3#742	B12	4	FLEX	rolling window (DE)
+8889	P3#1284	B12	5	HISTR	widget with multiple weekly habits in one calendar
+8891	P3#1306	B12	4	EXTRA	keep 3/week habit visible after goal (hide done only for the day)
+8892	P3#1382	B12	3	SCHR	(DE)
+8893	P3#1385	A05	3	X	
+8894	P3#1471	B12	5	SCHR	
+8898	P3#1628	B12	4	SCHR	
+8904	P3#1746	Rs02	5	X	
+8906	P3#1838	O07	5	SKIP+	
+8907	P3#1880	B12	5	SCH+	
+8911	P3#1984	O07	5	SKIP+	
+8915	P3#2066	B12	2	SCHR	
+8921	P3#2333	A05	5	X	
+8922	P3#2362	O07	5	SKIP+	
+8925	P3#2481	B12	4	GREYR	widget checkbox turns grey every day for weekly/monthly items; wants colour to persist
+8932	P3#2816	A05	5	SKIP+	
+8933	P3#2822	O07	5	X	
+8940	P3#3063	Rs02	5	X	
+8941	P3#3065	B12	5	SCH+	
+8944	P3#3160	B12	5	FLEX	
+8947	P3#3238	B12	5	SCHR TODAY-	X to hide failed habit for the day; days for x/week
+8952	P3#3426	Rs02	2	X	
+8953	P3#3453	B12	3	FLEX	rolling 7 days vs calendar week
+8954	P3#3460	O07	5	GREYR	widget half-lit on days habit not required
+8955	P3#3481	A05	5	X	streak display for 2x/week
+8958	P3#3620	B12	5	SCHR	
+8963	P3#3716	O07	5	X	
+8964	P3#3736	A05	5	SKIP+	
+8965	P3#3773	A05	5	X	
+8968	P3#3877	B12	4	X	
+8969	P3#3891	B12	3	FLEX	weekly reset by week not 7 days; marks next 7 days done
+8973	P3#4016	A05	5	SKIP+ GREY+	skip / unknown states don't count against
+8974	P3#4041	B12	2	SCHR	
+8978	P3#4192	B12	4	GREYR FLEX	calendar days should turn success colour when weekly goal met; grey is sad
+8981	P3#4314	A05	3	SCH-	x/week streak calc
+8988	P3#4540	B12	4	MISS-	alternate-day walk shows "not walking" on off days
+8990	P3#4592	A05	5	SKIP+	
+8991	P3#4646	B12	3	GREYR	non-daily ticked habit should look different on in-between days than a miss (widget)
+8993	P3#4654	B12	5	X	
+8996	P3#4684	B12	4	SCHR TODAY-	daily view with specific-day habits
+9000	P3#4816	B12	1	SCH-	
+9001	P3#4848	B12	5	SCH- GREYR	weekly goal days greyed unless met in a day
+9002	P3#4905	B12	4	X	
+9005	P3#5038	B12	4	SCHR GREYR	solid X for recorded no vs faint missing
+9010	P3#5207	A05	5	X	
+9011	P3#5233	B12	3	GREY- FLEX	empty checks after weekly goal / previous week confusing
+9012	P3#5243	A05	4	X	
+9015	P3#5302	O07	5	SKIP+ GREY+	skip days; distinguishes non-action from lack of data
+9016	P3#5353	B12	5	X	
+9020	P3#5385	B12	4	FLEX	
+9021	P3#5390	B12	5	FLEX	
+9022	P3#5405	A05	5	HIDER TODAY-	hide habits not scheduled today on home screen (10 vs 6)
+9024	P3#5552	B12	4	GREY-	once-a-week/5-day habit shows empty checks rest of week, confusing
+9033	P3#5741	A05	2	SKIP-	skip days = cheating yourself
+9035	P3#5780	B12	4	X	
+9039	P3#5902	Rs02	5	X	
+9040	P3#5915	O07	5	X	
+9041	P3#5940	B12	4	FLEX	
+9042	P3#5946	B13	4	SCHR	
+9047	P3#6203	O07	4	SKIPR	skip for numeric habits
+9051	P3#6321	B13	4	SCHR	
+9053	P3#6369	A06	5	GREY+	outline checkmarks on days not required are fine (Loop)
+9060	P3#6433	A06	4	SKIPR	
+9062	P3#6459	O07	4	X	
+9072	P3#6652	A06	4	X	
+9076	P3#6760	Rs02	4	X	
+9077	P3#6764	A06	5	SCHR	weekday assignment
+9082	P3#6909	B13	5	GREY-	3x/week auto hollow checks on other days confusing; affects charts?
+9083	P3#6927	A06	5	X	
+9084	P3#6969	A06	5	SKIP+ SCH+	
+9085	P3#7005	B13	4	PCT- FLEX	4/week met not 100%; bubble unfilled
+9087	P3#7043	A06	5	GREY+	auto unfulfilled marks for non-daily habits: see missed vs not scheduled
+9090	P3#7088	B13	3	FLEX	
+9091	P3#7161	A06	5	SCHR	specific weekdays so off days not flagged missed
+9092	P3#7184	O07	5	SKIP+	
+9095	P3#7216	A06	5	X	
+9096	P3#7253	B13	2	PCT- FLEX	2/week met shows 29%
+9098	P3#7271	B13	4	SCH-	
+9102	P3#7491	A06	4	GREY- GREY+	new coloured ticks make sanctioned skips hard to read; wants grey ticks back
+9103	P3#7496	B13	5	SKIP+	some tasks can't be done on certain days; new update fixes
+9105	P3#7557	A06	3	FLEX STRK- SCHR	6x/week still breaks streak; exclude chosen day
+9110	P3#7700	B13	4	GREYR SCHR	red x for not done; tick only on specified weekdays
+9111	P3#7713	A06	4	SKIPR	skip days removed
+9115	P3#8114	B13	5	X	
+9116	P3#8133	Rs02	4	X	
+9117	P3#8239	B13	3	HIDER	selecting days doesn't hide non-selected days from view; defeats purpose
+9120	P3#8296	B13	3	MISS- HIDER	weekly plant watering: x on other days looks undone; chose another app
+9121	P3#8356	A06	5	GREY+	faded check marks on off days: no stress of unchecked day
+9123	P3#8388	A06	4	STRK- FLEX	5x/week streak on rolling window not calendar week
+9127	P3#8537	Rs02	4	FLEX	
+9130	P3#8684	B13	5	HIDER	habits only on certain days
+9134	P3#8862	A06	4	SKIPR	holidays; bank off days
+9136	P3#8897	O07	5	X	
+9140	P3#9110	B13	3	HIDER SCHR	Mon & Wed; only show today's habits
+9145	P3#9354	A06	4	GREY-	grey marks on undone days counted in streak, inflates it
+9148	P3#9419	B13	4	X	
+9149	P3#9439	A06	4	SCHR	5 of 7 days
+9150	P3#9440	B13	5	SCHR	
+9152	P3#9462	B13	5	GREY-	grey ticks cover too many days after update; lost track
+9162	P3#10163	B13	5	X	
+9164	P3#10228	B13	3	PCT- FLEX	5/week done, pie not full
+9165	P3#10248	B13	3	PCT- FLEX	
+9173	P3#10486	B13	4	STRK- FLEX	weekly streaks for 3x/week
+9174	P3#10564	B13	5	STRK- FLEX	
+9178	P3#10671	A06	4	FLEX	x/week, calendar week
+9180	P3#10756	B13	2	X	
+9185	P3#11013	A06	3	FLEX STRK-	rolling 7-day window breaks streak
+9190	P3#11233	B13	4	SCH-	Mon/Fri habit missed session handled badly
+9191	P3#11235	Rs02	1	HISTR	only 5 days shown
+9192	P3#11242	A06	5	TODAY- NOCHK	Mon-Fri habit shows Sat/Sun check; confusing, feel incomplete
+9194	P3#11276	B13	5	GREY+ SCHR	calendar symbol: check if on track, cross if needed
+9196	P3#11342	B13	3	STRK- FLEX	week start breaks MWF count
+9201	P3#11461	B13	3	PCT- SCHR	percentage counts every unplanned day as missed
+9204	P3#11560	O07	4	X	
+9205	P3#11580	B13	4	STRK- FLEX	
+9206	P3#11584	B13	2	TODAY- HIDER	weekly habit checked shouldn't show on other days
+9208	P3#11671	A06	3	X	
+9215	P3#11775	A06	4	SCHR	specific weekdays off
+9219	P3#11860	B13	4	PCT- FLEX	
+9220	P3#11898	B13	3	HISTR	only 5 of 7 days shown
+9227	P3#12193	Rs02	1	SCHR	
+9235	P3#12458	O07	5	X	
+9236	P3#12476	B13	5	SCHR	
+9237	P3#12479	A06	4	FLEX STRK-	rolling window vs week
+9241	P3#12551	A06	5	X	
+9244	P3#12700	B13	5	X	
+9248	P3#12770	B13	4	TODAY- NOCHK	x/week habit should show only on designated days; can't mark other days
+9249	P3#12800	B13	5	HISTR	calendar interface showing selected weekdays
+9251	P3#12923	B13	3	FLEX	
+9253	P3#12949	A06	5	GREYR	demarcate rest days / week intervals in overview
+9255	P3#12967	B13	5	FLEX	
+9260	P3#13030	O07	2	X	
+9261	P3#13037	O07	5	X	
+9267	P3#13307	B13	5	HISTR	cross/check marks visible only for chosen days
+9268	P3#13308	B13	3	MISS- GREYR	2x/week Tue+Fri: in-between days don't count as fulfilled, disheartening
+9272	P3#13427	A06	5	GREY- PCT-	grey ticks inconsistent; frequency dots use count not % of possible days
+9276	P3#13497	B13	4	SCHR STRK-	
+9277	P3#13498	B13	5	STRK-	every-other-day streak counts 1
+9279	P3#13571	B13	5	X	
+9280	P3#13586	O07	5	X	
+9281	P3#13721	B13	3	SCHR	
+9286	P3#13933	O07	4	TODAY- HIDER	multi-day view shows habits not due that day; overwhelming; wants current-day view
+9292	P3#14066	B13	5	PCT- FLEX	2/7 week, 1 done shows 5%
+9295	P3#14104	B13	5	SCHR	
+9296	P3#14146	B13	5	X	
+9298	P3#14188	B13	5	GREYR FLEX	once-a-week done should check the rest of that week's days
+9301	P3#14263	B13	3	FLEX	
+9303	P3#14276	B13	5	X	
+9308	P3#14335	B13	4	X	
+9313	P3#14550	A06	4	TODAY- HIDER	weekly habit visible on days not due
+9316	P3#14629	B13	5	PCT-	non-daily % poor
+9320	P3#14791	B13	5	SCHR	
+9321	P3#14826	B13	2	SCH-	reminders fire on unselected days
+9325	P3#14922	A06	5	GREY+	x/week gets grey ticks on off days (after learning)
+9328	P3#14996	B13	4	STRK- FLEX	
+9330	P3#15002	B13	4	GREYR	for certain-days habits, non-applicable days greyed out
+9332	P3#15095	B13	5	SCHR STRK-	
+9334	P3#15191	A06	3	NOCHK	shouldn't be able to check habit not scheduled that day
+9335	P3#15193	B13	3	HISTR	show all 7 days
+9337	P3#15295	B13	4	HISTR	
+9350	P3#15808	B13	4	X	
+9360	P3#16279	O07	3	X	
+9361	P3#16295	A06	3	SKIPR	
+9372	P3#16896	A06	3	STRK-	rest days still break streak (ES)
+9373	P3#17004	B13	5	SCH+	(ES)
+9378	P3#17718	B14	4	FLEX PCT-	5/week progress % (ES)
+9379	P3#17749	Rs02	5	FLEX	(ES)
+9381	P3#17783	B14	5	X	
+9382	P3#17902	B14	4	SCHR	
+9383	P3#17912	B14	4	TODAY- SCHR	list shows habits for other days, not today's
+9386	P3#18099	A06	5	SKIP+	skip / no-data days
+9387	P3#18114	B14	4	FLEX STRK-	(FR) once/week becomes every 7 days
+9388	P3#18116	O07	4	PCT- SKIPR	rest days (e.g. period) shouldn't count in score (FR)
+9390	P3#18327	B14	1	X	
+9392	P3#18952	B14	5	HISTR	2x/week should show only 2 x marks
+9395	P3#19151	A06	4	X	note for missed day
+9414	P3#19813	B14	5	SCH+	(KR)
+9418	P3#19913	O07	4	GREYR	off days (Mon/Wed/Fri habit) shown as circles (KR)
+9427	P3#20744	O07	5	SKIPR	rest-day option removed (PT)
+9428	P3#20783	A06	5	SKIP+	folga days shown (PT)
+9433	P3#21012	O07	5	SKIP+	day-off option (PT)
+9440	P3#21827	B14	5	X	
+9446	P3#21993	B14	2	PCT- FLEX	3x/week done, loop not full
+9447	P3#22010	B14	1	FLEX HISTR	7 days not shown; weekly goal rolls into next week
+9451	P3#22208	O07	5	SCHR	numeric habit with weekend off (RU)
+9454	P3#22452	B14	4	FLEX	(RU)
+9460	P3#23015	B14	5	X	
+9465	P3#23334	Rs02	5	SCHR FLEX	(RU)
+9467	P3#23388	O07	4	X	
+9471	P3#24130	A06	5	SCHR	weekday reminders (RU)
+9474	P3#24282	O07	4	SCHR	every-other-day; per-day reminder times (RU)
+9480	P3#24648	B14	1	SCH-	
+9482	P3#24695	B14	5	GREYR	every-N-days should mark gaps with grey ticks like weekly does (RU)
+9486	P3#24924	B14	5	X	
+9488	P3#25245	B14	3	FLEX STRK-	
+9489	P3#25515	O07	5	X	
+9500	P31#19	A06	5	TODAY- HIDER	update showed all habits even when not due; future tasks clutter days
+9501	P31#60	A06	5	FLEX STRK-	
+9508	P31#228	B14	4	SCHR	
+9517	P31#419	A06	5	SKIP+	
+9518	P31#433	B14	5	FLEX	
+9529	P32#273	B14	5	SCH+ HIDE+	toggle days tasks show up
+9530	P32#287	B14	5	FLEX	see weekly habits each day crossed off when done
+9548	P33#175	B14	1	HISTR	
+9556	P33#796	A06	3	STRK-	5-day/week habit: 2 off days break streak
+9557	P33#863	B14	4	EXTRA	2-3x/week tasks vanish after day; can't mark later
+9561	P33#1257	B14	4	SCHR	
+9573	P33#1867	O07	1	X	
+9584	P33#5666	B14	4	SCHR	(RU)
+9592	P35#516	O07	4	SKIPR	day off (KR)
+9595	P36#138	B14	5	HISTR SEE	calendar to see weekly habits on specific day
+9601	P36#545	B14	5	TODAY-	3x/week habit done today stays in today's list
+9605	P37#24	B14	1	FLEX	(DE)
+9608	P37#342	B14	2	FLEX	
+9609	P37#352	A06	3	SEE EXTRA	can't see all habits to tick unscheduled extra session
+9610	P37#432	B14	1	STRK- FLEX	
+9611	P37#453	B14	4	TODAY-	weekly habit done today stays on widget
+9612	P37#692	A06	4	SKIP+	
+9614	P37#828	A06	4	X	
+9619	P37#1035	B14	1	SCH-	
+9623	P37#1424	B14	4	SCHR SKIPR	skip Monday habit doesn't carry to next day (JP)
+9651	P38#3568	O07	5	SKIPR	holiday/rest-day toggle (KR)
+9654	P4#108	B14	5	HISTR	
+9659	P4#3124	B14	5	SCHR	move task to next day
+9667	P4#3856	O07	1	X	
+9680	P4#4867	A06	5	X	
+9682	P4#5009	Rs02	5	X	
+9683	P4#5086	O07	1	X	
+9705	P4#6703	Rs02	5	X	
+9717	P4#8139	Rs02	1	X	
+9725	P4#8976	O07	1	X	
+9726	P4#9121	Rs02	5	X	
+9739	P4#10624	Rs02	5	X	
+9753	P4#11681	O07	1	X	
+9755	P4#11736	Rs02	5	X	
+9759	P4#12184	A06	5	X	
+9776	P4#13679	Rs02	5	X	
+9783	P4#14433	O07	1	X	
+9785	P4#14444	O07	4	FLEX	2 a month on any day
+9814	P4#17212	B14	3	FLEX	
+9817	P4#17417	B14	1	SEE	calendar full of tasks
+9820	P4#17442	B14	1	SCH-	
+9821	P4#17457	Rs02	4	SCH-	
+9826	P4#17663	Rs02	1	X	
+9828	P4#17703	A06	3	SKIPR	
+9829	P4#17716	O07	1	X	
+9831	P4#17811	B14	2	SCHR	
+9832	P4#17818	B14	2	STRK- SCH-	every-other-day days show no tasks but streak counted wrongly
+9836	P4#17862	Rs02	1	X	
+9881	P4#20994	O07	3	X	
+9888	P4#21476	B14	1	X	
+9913	P4#22999	B14	3	FLEX	
+9918	P4#23100	B14	2	X	
+9926	P4#23704	O07	1	X	
+9960	P4#26370	A06	3	SEE	can't edit habits not due today
+9967	P4#26951	Rs03	1	X	
+9968	P4#27010	O07	1	X	
+9975	P4#27262	O07	1	X	
+9981	P4#27594	Rs03	1	X	
+9986	P4#27779	O07	1	X	
+9987	P4#27819	B14	2	X	
+9991	P4#27877	O07	1	X	
+10002	P4#28686	O07	1	X	
+10004	P4#28795	Rs03	1	X	
+10006	P4#28940	O07	1	X	
+10011	P4#29186	O07	1	X	
+10014	P4#29310	Rs03	5	X	
+10020	P4#29435	O07	1	X	
+10058	P4#64095	O07	3	SCHR	work tasks only on work days (ES)
+10060	P4#71447	B14	4	HISTR	(FR)
+10061	P4#73230	B14	3	SCH-	(FR)
+10063	P4#73845	O07	1	X	
+10065	P4#74544	B14	5	FLEX	
+10066	P4#74835	Rs03	5	X	
+10078	P4#84080	B14	5	FLEX HISTR	(PT) weekly view
+10080	P4#86898	A06	5	SCHR	exclude Saturday (PT)
+10081	P4#87131	O07	5	X	
+10083	P4#91055	B14	4	SCHR	(PT)
+10085	P4#98937	Rs03	4	X	
+10091	P40#71	O07	2	X	
+10092	P40#75	O07	5	X	
+10099	P41#291	A06	5	SCHR	exclude public holidays (KR)
+10101	P41#363	O07	4	SKIPR	rest on public holidays (KR)
+10104	P44#20	B14	5	STRK- FLEX	4x/week streak 0
+10106	P44#74	A06	1	TODAY-	M/W/F habit appears all week, confusing
+10107	P44#124	B14	4	GREY- GREYR	non-selected days shown as completed yellow circles, confusing; should be greyed with no circle; skips red
+10113	P44#363	A06	4	FLEX STRK-	5x/week still loses streak
+10119	P46#49	B14	4	SCHR	
+10123	P49#126	O07	5	X	
+10133	P49#299	O07	5	SCH+	work vs rest day routines
+10136	P49#350	B14	5	X	
+10146	P49#757	O07	2	X	
+10152	P49#939	B14	4	FLEX	
+10183	P49#1637	O07	5	X	
+10210	P49#2539	Rs03	4	SCHR	
+10212	P49#2637	O08	5	X	
+10215	P49#2680	O08	5	X	
+10220	P49#2738	B14	4	FLEX	
+10224	P49#2817	B14	3	X	
+10227	P49#2950	B14	5	FLEX	
+10243	P49#3240	Rs03	5	X	
+10245	P49#3275	Rs03	5	X	
+10247	P49#3285	Rs03	4	SCHR	
+10256	P49#3568	B14	4	SCHR	
+10262	P49#3833	O08	5	SKIPR	tell app holiday/day off for work routines
+10267	P49#4006	A06	4	SCHR	shift work days off
+10276	P5#512	O08	5	X	
+10281	P5#669	A06	4	SCHR	
+10319	P5#1883	O08	4	SKIP+	skip function
+10327	P5#2055	A06	4	X	
+10341	P5#2615	A06	3	X	
+10345	P5#2750	O08	1	X	
+10366	P5#3760	B14	4	SCHR	(ES)
+10374	P5#5150	B14	5	HISTR	monthly calendar of all routines (KR)
+10389	P54#14	O08	3	X	
+10390	P54#19	A06	5	SKIPR	
+10396	P55#184	B15	4	SCHR	(PT)
+10400	P61#108	O08	4	X	
+10401	P61#111	A06	4	SEE	view all tasks with next due date
+10406	P61#566	Rs03	3	SCHR	(ES)
+10409	P61#1108	B15	5	FLEX HIDER	3/week reappears daily until target, then hides for week
+10416	P61#1692	O08	4	SCHR	weekday-specific planning (RU)
+10422	P63#663	A06	1	X	
+10425	P63#702	B15	3	SCHR	
+10429	P63#965	B15	4	HIDE+	Today flag shows today's tasks
+10430	P63#997	O08	5	EXTRA	mark habit done on an off day
+10438	P65#1389	B15	4	FLEX	(DE)
+10444	P65#1760	B15	4	FLEX	(DE)
+10450	P65#2194	B15	5	X	
+10453	P65#2783	A06	5	X	
+10456	P65#2859	B15	5	X	
+10457	P65#3033	B15	4	PCT-	weekday-only habit shows 5/7 not 5/5; wants unmarked weekend excluded
+10459	P65#3180	A06	4	GREYR	widget: hard to tell if goal is scheduled for that day
+10463	P65#3647	Rs03	2	NOCHK	widget lets me tick unassigned days of Mon/Sat habit; make them not clickable
+10465	P65#3760	A06	4	GREYR SKIPR	rest-day symbol distinct from tick/cross
+10466	P65#3826	O08	5	X	
+10469	P65#4046	B15	3	MISS- FLEX	5x/week goal shows red on other days, feels bad
+10470	P65#4073	B15	4	FLEX	
+10474	P65#4375	B15	5	SCHR	
+10477	P65#4623	O08	5	X	
+10478	P65#4625	B15	5	SCH+	
+10479	P65#4697	B15	4	HISTR	month view to see times per week
+10480	P65#4706	B15	3	GREYR	highlighted day numbers poorly defined
+10482	P65#4780	A07	5	SCHR	every day except Sunday rest
+10487	P65#4996	Rs03	5	X	
+10490	P65#5062	B15	4	FLEX MISS-	3 days a week without marking days failed
+10491	P65#5070	A07	5	GREYR	week view: bold day number too subtle; clearly differentiate on/off days per goal
+10494	P65#5158	A07	4	X	
+10496	P65#5227	A07	5	X	
+10497	P65#5282	B15	4	GREYR SKIPR	task day barely distinct (bold vs regular); holidays
+10503	P65#5484	A07	5	FLEX STRK-	rest days end streak; exact weekdays don't fit rota
+10516	P65#6100	O08	5	X	
+10517	P65#6106	A07	5	X	
+10520	P65#6240	B15	4	PCT-	count only the specific days needed
+10528	P65#6770	O08	3	X	
+10530	P65#6951	Rs03	5	X	
+10546	P65#7528	A07	4	X	
+10552	P65#7720	O08	5	X	
+10554	P65#7762	B15	3	PCT- FLEX	5/week tallied as 0/1 when one day missed
+10555	P65#7763	B15	3	FLEX	
+10557	P65#7841	O08	5	X	
+10560	P65#8178	B15	4	X	
+10562	P65#8211	A07	5	X	
+10567	P65#8734	B15	5	STRK- FLEX	weekly goals break best chain
+10569	P65#8831	B15	4	FLEX EXTRA	ticks on other days don't count
+10572	P65#9012	B15	5	PCT- FLEX	1 of 2 shows 0% not 50%
+10576	P65#9168	A07	5	X	
+10579	P65#9318	A07	4	GREYR NOCHK	make days not scheduled inactive in calendar
+10580	P65#9399	B15	3	X	
+10588	P65#9574	B15	4	FLEX EXTRA	
+10589	P65#9593	B15	4	FLEX EXTRA	make-up practice on "off" day doesn't count
+10593	P65#9724	B15	4	FLEX HIDER	widget should show only items due that day
+10597	P65#9798	B15	2	FLEX	
+10600	P65#9813	B15	3	GREYR NOCHK	other days not counted but not locked in progress/calendar
+10602	P65#9927	Rs03	5	X	
+10611	P65#13560	B15	5	GREYR MISS-	MWF schedule: Tue/Thu empty look like not done; grey/disable or show n/a icon (KR)
+10618	P65#14557	A07	5	SCHR	Sunday rest (PT)
+10620	P65#14867	O08	5	SKIPR	day off for goals (PT)
+10622	P65#15417	B15	4	SCHR	(RU)
+10623	P65#16012	O08	4	SCHR	weekday vs weekend reminders (RU)
+10629	P68#124	B15	4	STRK- SCHR	Tue/Fri habit streak should skip Wed/Thu
+10630	P69#30	B15	4	SCHR	
+10633	P69#131	B15	4	MISS- SCHR	certain-days habit looks like missed days
+10635	P69#158	O08	5	SKIPR	
+10637	P69#190	A07	3	SKIPR	
+10642	P69#323	B15	3	STRK-	
+10646	P7#132	A07	5	SCH-	frequency change rewrites past streaks
+10647	P7#163	O08	4	SKIPR	freezer for day off
+10654	P70#110	O08	5	X	
+10658	P70#196	B15	5	X	
+10659	P70#211	B15	5	X	
+10660	P70#213	B15	4	FLEX	
+10661	P70#229	B15	5	X	
+10665	P70#478	B15	4	FLEX	
+10667	P70#649	O08	5	SKIP+	neutral skip keeps chain for one day
+10675	P70#1029	O08	5	SKIPR	skip only one day not whole weekend (FR)
+10678	P71#35	A07	4	SCH-	reminder fires on off day
+10681	P71#149	B15	3	EXTRA	3x/week removed from list after done
+10683	P76#23	B15	3	SCHR	
+10688	P8#121	Rs03	2	FLEX SEE	Sunday daily stays grey all week; filtering due-only hides it; wants grey and due together
+10690	P8#245	B15	4	SCH-	monthly daily greyed-out days wrong
+10693	P8#481	B15	3	FLEX	
+10710	P8#1704	Rs03	5	X	
+10712	P8#1807	B15	4	HISTR	
+10719	P8#2289	B15	5	SCHR	
+10722	P8#2439	B15	2	FLEX	weekly task appears one day; punished if not done that day
+10729	P8#3068	B15	4	FLEX	
+10731	P8#3277	A07	4	HIDER	filter to only due today
+10735	P8#3418	B15	5	HIDER SCHR	subject dailies only on their weekdays
+10737	P8#3564	A07	1	X	
+10744	P8#3997	Rs03	4	X	
+10748	P8#4205	B15	2	FLEX	
+10763	P8#4574	A07	5	SCHR	rotating biweekly
+10773	P8#4922	B15	5	FLEX	
+10778	P8#5060	O08	2	X	
+10789	P8#5332	O08	3	EXTRA	check weekly task earlier and have it remembered until due
+10797	P8#5732	B15	1	SCHR	
+10806	P8#6235	A07	5	SCHR	A/B/C/D week cycles
+10809	P8#6311	B15	3	X	
+10827	P8#7031	A07	2	FLEX	weekly any-day task becomes daily and punished
+10831	P8#7159	Rs03	5	FLEX	
+10840	P8#7634	B15	4	SEE	
+10846	P8#7785	B15	5	HIDER	weekly tasks disappear after done, reappear when due
+10849	P8#7791	A07	5	X	
+10853	P8#7863	B15	4	SCHR	
+10854	P8#7899	Rs03	5	X	
+10858	P8#8001	B15	2	SCHR	
+10860	P8#8250	A07	4	SKIPR	snow day: not punished, not lie
+10861	P8#8315	B15	3	SCHR SEE	
+10862	P8#8328	A07	2	FLEX	
+10873	P8#8708	B15	3	FLEX	
+10883	P8#9394	O08	5	X	
+10885	P8#9468	B16	5	SCHR	
+10889	P8#9601	A07	2	X	
+10890	P8#9613	A07	3	SCH+	
+10893	P8#9850	B16	2	SCH-	
+10894	P8#9911	O08	3	X	
+10895	P8#9943	O08	1	X	
+10897	P8#9991	B16	2	TODAY- HIDER	app shows all dailies, no option to show only due today; unusable (web has it)
+10898	P8#10028	A07	3	HIDER	hide dailies not due today (web has it)
+10899	P8#10047	A07	2	X	
+10903	P8#11028	B16	5	SCH+	(ES)
+10908	P8#11665	A07	5	HIDER	hide dailies not due on certain days
+10917	P8#13074	Rs03	5	X	
+10920	P8#13260	A07	3	TODAY-	shows dailies that aren't due despite setting
+10931	P8#15945	B16	3	SCHR HISTR	
+10935	P82#82	B16	5	SCHR	
+10943	P84#6081	Rs03	4	X	
+10947	P84#6865	B16	5	X	
+10950	P84#6931	O08	5	X	
+10953	P84#7232	B16	5	SCHR	
+10959	P84#7446	O08	4	X	
+10960	P84#7550	O08	4	X	
+10961	P84#7673	O08	2	X	
+10993	P84#9821	O08	5	X	
+11020	P84#11442	A07	2	X	
+11022	P84#11493	Rs03	5	X	
+11023	P84#11608	O08	5	SEE	see next due date of repeating task
+11037	P84#12753	A07	3	HIDER	wants recurring task hidden until its day (request)
+11053	P84#14096	B16	5	HIDER	Friday task shows earlier in week; wants it only on its day
+11065	P84#14961	A07	5	HIDER	hide task until due
+11067	P84#15112	O08	1	X	
+11080	P84#15720	O08	5	X	
+11081	P84#15788	Rs03	5	X	
+11084	P84#16121	B16	5	X	
+11090	P84#16490	Rs03	5	X	
+11096	P84#16685	A07	2	X	
+11097	P84#16989	B16	4	SCHR	
+11100	P84#17059	A07	3	TODAY-	tasks not due today in today list
+11112	P84#17847	B16	5	X	
+11120	P84#18300	B16	5	SCHR	
+11123	P84#18698	B16	4	TODAY-	weekly Sunday task done reappears every day
+11134	P84#19457	B16	5	SCH+	
+11139	P84#20061	B16	5	X	
+11141	P84#20219	Rs03	5	X	
+11168	P84#23196	B16	4	SCHR	
+11192	P84#25486	O08	5	X	
+11209	P84#27372	B16	5	X	
+11212	P84#27612	Rs03	5	X	
+11222	P84#28497	B16	5	SCH+	
+11225	P84#28771	O08	5	X	
+11262	P84#32841	O08	5	X	
+11267	P84#32911	Rs03	5	X	
+11297	P86#429	B16	3	MISS- FLEX	5-6 days/week goal makes you feel you failed
+11299	P87#12	B16	4	SCHR	
+11301	P87#78	O08	3	X	
+11308	P87#210	B16	5	FLEX HISTR	
+11310	P87#270	A07	3	SCHR PCT- STRK-	daily-only offsets stats and streaks
+11313	P9#31	Rs03	4	SCHR	
+11317	P9#484	A07	2	GREYR MISS-	HabitKit leaves off days blank (no streak); prefers hollow ticks filling days between
+11319	P9#627	B16	4	GREYR FLEX	after 3/week met, show completed for rest of week; still allow extra
+11320	P9#644	B16	5	FLEX	
+11321	P9#665	B16	5	HISTR	whole week instead of last 5 days
+11322	P9#864	A07	5	X	
+11326	P9#1065	B16	4	FLEX	4/week completion state
+11330	P9#1775	B16	5	GREYR STRK-	highlight "in between" days for 3x/week goals
+11331	P9#1983	B16	5	SCHR	
+11341	P92#105	B16	3	TODAY- SCH-	certain-days tasks appear on other days
+11344	P94#60	B16	5	SCHR	
+11346	P95#471	Rs03	5	FLEX	(RU)
+11347	P95#509	A07	5	CALOFF	
+11367	P97#2918	B16	3	SCH-	
+11381	P97#5919	O08	5	X	
+11382	P97#7566	B16	4	FLEX	(ES)
+11383	P97#7794	Rs03	5	FLEX	(ES)
+11384	P97#11582	B16	5	FLEX	(FR)
+11389	P97#17147	B16	5	SCHR	(RU)
+11393	P97#19429	A07	5	CALOFF	
+11394	P97#20110	Rs03	5	SCHR	(RU)
+11395	P97#20154	A07	5	CALOFF	
+11396	P97#20308	O08	4	SCHR	shift due date around weekends (RU)
+11397	P97#20416	A07	5	CALOFF	
+11398	P97#20441	O08	4	CALOFF	colour work days in calendar (RU)
+11400	P97#20996	O08	5	X	
+11401	P97#21009	Rs03	5	FLEX	(RU)
+11402	P97#21255	A07	5	CALOFF	
+11403	P97#21526	A07	3	CALOFF	
+11404	P97#21920	A07	3	X	
+11408	P98#101	B16	3	X	
+11416	P98#514	B16	4	FLEX	
+11418	P98#563	A07	4	FLEX	
+11420	P98#678	Rs03	2	X	
+11421	P98#701	B16	1	X	
+11423	P98#742	A07	1	SCH-	update zeroed streaks for unscheduled days (bug)
+11427	P98#898	B16	3	SCHR	
+11428	P98#993	A07	2	MISS- STRK-	Tue/Thu/Sat habit marked undone on Friday, streak zero
+11429	P98#1030	B16	3	FLEX MISS-	5h/week done in 2 days appears skipped next 5 days
+11435	P98#1391	A07	5	SKIPR	break days
+11440	P98#1483	B16	4	FLEX	
+11444	P98#2154	B16	3	FLEX	(ES)
+11445	P98#2315	B16	3	FLEX SCHR	
+11457	P98#5559	Rs03	3	SCHR	(PT)
+11466	N1#92	B16	4	X	
+11478	N1#592	O08	5	X	
+11499	N1#952	O08	5	X	
+11506	N1#1444	B16	4	FLEX	(PT)
+11531	N1#2478	B16	3	SCHR	
+11541	N1#2996	A07	1	X	
+11547	N1#4876	O08	2	X	
+11548	N1#5263	A07	5	X	
+11553	N1#6162	A07	1	X	
+11562	N1#7880	A07	4	X	
+11565	N1#7971	Rs03	5	X	
+11581	N1#8432	Rs03	5	X	
+11610	N1#9103	O08	2	X	
+11614	N1#9383	A07	4	X	
+11632	N1#10631	O08	1	SCH-	weekday repeat notifies on holidays (JP)
+11633	N1#10672	B16	3	X	
+11647	N1#11157	O08	5	X	
+11650	N1#11314	O08	5	X	
+11652	N1#11574	A07	3	X	
+11671	N1#13060	O08	5	X	
+11672	N1#13077	O08	1	X	
+11687	N1#13761	Rs03	4	X	
+11689	N1#13785	B16	4	SCHR	
+11693	N1#13923	B16	3	X	
+11700	N1#14755	B16	3	FLEX SCHR	(RU)
+11701	N1#14937	Rs03	4	X	
+11708	N1#15333	Rs03	5	X	
+11729	N1#16821	Rs03	5	X	
+11751	N1#17305	A07	4	X	
+11762	N1#17633	Rs03	5	X	
+11779	N1#18029	A07	2	X	
+11792	N1#18334	B16	3	X	
+11800	N1#18516	B16	2	X	
+11802	N1#18556	Rs03	3	X	
+11806	N1#18668	A07	3	X	
+11815	N1#18818	Rs03	4	X	
+11844	N1#19547	O08	5	X	
+11861	N1#19909	B16	3	X	
+11884	N1#20344	B16	5	X	
+11892	N1#20503	B16	3	X	
+11923	N1#21409	Rs03	5	X	
+11934	N1#21684	A07	5	X	
+11940	N1#21821	O08	5	X	
+11947	N1#22014	Rs03	5	X	
+11949	N1#22048	B16	4	SCHR	
+11951	N1#22068	Rs03	3	SCHR	
+11958	N1#22274	A07	4	X	
+11972	N1#22638	A07	2	X	
+11982	N1#22866	B16	5	X	
+11985	N1#22905	O08	3	X	
+11988	N1#22982	Rs03	5	X	
+11991	N1#23084	Rs03	5	X	
+12034	N1#24104	O08	4	X	
+12037	N1#24120	A07	5	X	
+12053	N1#24535	Rs03	5	X	
+12062	N1#24797	O08	5	X	
+12067	N1#24884	B16	5	SCH+	
+12073	N1#24972	A08	1	X	
+12101	N1#25532	B16	1	X	
+12103	N1#25558	A08	3	X	
+12109	N1#25755	Rs03	5	SEE	repeated tasks: only first occurrence shown
+12140	N10#2483	O08	2	SCH- TODAY-	weekly task adds extra day; days filled with items not due
+12143	N10#5470	A08	4	CALOFF	wants workday/rest-day distinction in calendar (ZH)
+12146	N10#7883	B16	1	X	
+12159	N10#10353	A08	2	X	
+12163	N10#10565	A08	2	X	
+12167	N10#10687	A08	5	X	
+12174	N10#11242	B16	2	X	
+12191	N10#12111	O08	1	X	
+12192	N10#12156	B17	3	SCHR	(JP)
+12194	N10#12342	B17	4	X	
+12204	N10#14190	A08	3	X	
+12240	N10#18567	A08	1	TODAY-	monthly tasks added to My Day when not due; weekday tasks alert on weekends
+12241	N10#18661	A08	4	X	
+12256	N10#19124	A08	1	SCH-	weekly repeat sets two days
+12266	N10#19441	B17	4	X	
+12282	N10#19929	B17	4	SCHR	
+12285	N10#20018	A08	4	X	
+12290	N10#20198	A08	2	X	
+12300	N10#20520	O09	5	X	
+12309	N10#21097	B17	3	SCH-	
+12310	N10#21115	B17	5	X	
+12316	N10#21416	O09	3	X	
+12322	N10#21535	A08	2	SCH-	weekly repeat defaults to multiple days
+12328	N10#21631	B17	2	SCH- TODAY-	Friday task also shows Thursday; list cluttered
+12335	N10#21911	Rs03	5	X	
+12336	N10#21917	A08	3	X	
+12337	N10#22073	A08	1	X	
+12341	N10#22243	O09	5	X	
+12342	N10#22258	O09	5	X	
+12354	N10#22780	A08	1	X	
+12355	N10#22862	B17	5	SCHR	
+12356	N10#22878	A08	4	X	
+12360	N10#23038	O09	2	X	
+12362	N10#23134	B17	4	X	
+12367	N11#1423	A08	1	X	
+12369	N11#2230	A08	3	X	
+12373	N11#4401	A08	1	X	
+12376	N11#5047	A08	4	X	
+12377	N11#5069	A08	1	X	
+12378	N11#5199	O09	1	X	
+12380	N11#5462	O09	4	X	
+12382	N11#5889	B17	4	X	
+12383	N11#6302	A08	1	X	
+12388	N2#277	Rs03	2	X	
+12389	N2#320	A08	1	X	
+12395	N2#399	Rs03	1	X	
+12399	N2#513	B17	5	X	
+12400	N2#522	B17	2	X	
+12408	N2#721	A08	5	X	
+12411	N2#794	B17	4	X	
+12413	N2#832	O09	3	CALOFF	
+12425	N2#1667	A08	1	X	
+12426	N2#1686	Rs03	1	X	
+12431	N2#1745	O09	3	X	
+12440	N2#1825	Rs03	4	X	
+12441	N2#1882	B17	2	X	
+12453	N2#2075	Rs03	5	X	
+12455	N2#2091	A08	3	X	
+12460	N2#2138	O09	2	X	
+12478	N2#2395	B17	1	X	
+12482	N2#2886	O09	1	CALOFF	
+12483	N2#2900	B17	1	X	
+12484	N2#3047	B17	1	X	
+12485	N2#3085	A08	3	CALOFF	班/休 labels wanted (ZH)
+12486	N2#3207	O09	2	CALOFF	
+12487	N2#3218	A08	1	CALOFF	rest days not marked (ZH)
+12488	N2#3569	O09	1	CALOFF	
+12489	N2#3580	O09	3	CALOFF	
+12490	N2#3602	A08	1	CALOFF	
+12491	N2#3643	O09	5	SCHR	every N working days incl. adjusted workdays (ZH)
+12492	N2#4086	B17	1	X	
+12493	N2#4529	O09	1	CALOFF	
+12494	N2#4709	A08	1	CALOFF	
+12498	N2#5012	B17	4	CALOFF	background colour for selected days
+12499	N2#5042	Rs03	4	X	
+12503	N2#5406	A08	1	CALOFF	free days visible in week view (DE)
+12513	N2#6145	O09	4	X	
+12515	N2#6379	B17	3	X	
+12516	N2#6456	A08	1	X	
+12521	N2#8837	O09	3	CALOFF	
+12547	N2#9555	B17	5	SCHR	
+12553	N2#9802	B17	3	X	
+12555	N2#9906	O09	3	X	
+12557	N2#9916	A08	1	X	
+12561	N2#9972	O09	2	X	
+12586	N2#10469	A08	3	X	
+12590	N2#10556	A08	4	X	
+12596	N2#11291	B17	4	X	
+12598	N2#11354	B17	3	SCHR	(JP)
+12599	N2#11359	B17	5	SCHR	(JP)
+12600	N2#11375	B17	3	X	
+12605	N2#11466	B17	3	SCHR	weekdays-only repeat (JP)
+12606	N2#11501	O09	1	CALOFF	
+12607	N2#11597	B17	1	CALOFF	(JP)
+12609	N2#11666	B17	4	SCHR	(JP)
+12611	N2#11726	A08	3	CALOFF	holidays as grey dots indistinguishable; want red (JP)
+12615	N2#11863	A08	3	CALOFF	
+12618	N2#11929	O09	3	CALOFF	
+12619	N2#12000	O09	5	CALOFF	
+12620	N2#12005	A08	5	X	
+12623	N2#12047	A08	3	X	
+12624	N2#12096	O09	4	CALOFF	
+12625	N2#12125	A08	4	CALOFF	
+12627	N2#12166	O09	4	X	
+12628	N2#12180	O09	2	CALOFF	
+12629	N2#12206	B17	2	SCHR	(JP)
+12630	N2#12254	O09	1	X	
+12632	N2#12333	B17	1	X	
+12634	N2#12341	A08	2	CALOFF	
+12635	N2#12345	O09	1	CALOFF	
+12636	N2#12352	O09	1	X	
+12638	N2#12366	O09	5	CALOFF	
+12639	N2#12387	O09	2	CALOFF	
+12641	N2#12421	O09	2	CALOFF	
+12643	N2#12447	O09	3	CALOFF	
+12644	N2#12449	A08	2	X	
+12645	N2#12454	A08	1	X	
+12646	N2#12466	A08	3	CALOFF	
+12647	N2#12490	O09	4	CALOFF	
+12648	N2#12504	O09	3	CALOFF	
+12649	N2#12508	O09	4	CALOFF	
+12650	N2#12513	O09	4	CALOFF	
+12651	N2#12526	B17	4	SCHR	(KR)
+12652	N2#12541	A08	1	CALOFF	can't tell which days are off (KR)
+12654	N2#12550	O09	4	CALOFF	
+12655	N2#12561	O09	3	CALOFF	
+12656	N2#12563	Rs03	3	X	
+12657	N2#12601	O09	1	CALOFF	
+12658	N2#12604	O09	1	X	
+12659	N2#12611	A08	4	X	
+12660	N2#12616	O09	2	CALOFF	
+12661	N2#12618	O09	1	CALOFF	
+12664	N2#12736	B17	4	X	
+12665	N2#12737	A08	2	X	
+12677	N2#13329	O09	2	CALOFF	
+12686	N2#13808	A08	1	X	
+12687	N2#13860	B17	1	SCH-	
+12699	N2#14659	O09	2	CALOFF	
+12700	N2#14673	A08	4	CALOFF	off days every 6 days coloured (RU)
+12702	N2#14736	A08	1	CALOFF	grey dots; can't tell day off vs work (RU)
+12703	N2#14849	O09	3	CALOFF	
+12711	N2#16083	Rs03	4	X	
+12713	N2#16099	B17	3	X	
+12714	N2#16109	A08	1	X	
+12727	N2#16281	A08	1	X	
+12730	N2#16318	B17	3	X	
+12731	N2#16323	A08	2	X	
+12735	N2#16351	O09	1	X	
+12737	N2#16367	B17	3	SCHR	
+12738	N2#16371	A08	1	X	
+12745	N2#16451	B17	4	SCHR	
+12758	N2#16645	B17	4	SCHR	
+12761	N2#16680	A08	2	X	
+12766	N2#16730	Rs04	5	SCHR	
+12769	N2#16756	A08	2	X	
+12773	N2#16813	B17	3	SCHR	
+12777	N2#16866	B17	5	X	
+12780	N2#16885	O09	1	X	
+12785	N2#16914	B17	3	X	
+12789	N2#16970	A08	1	X	
+12790	N2#17003	A08	1	X	
+12791	N2#17011	A08	1	X	
+12807	N2#17194	B17	3	SCH-	
+12847	N2#17574	A09	1	CALOFF	colour work vs off days
+12861	N2#17760	Rs04	1	X	
+12862	N2#17763	Rs04	5	X	
+12882	N2#17928	Rs04	2	X	
+12889	N2#17991	B17	1	X	
+12916	N2#18203	B17	3	SCHR	
+12936	N2#18420	Rs04	4	X	
+12938	N2#18450	B17	5	X	
+12970	N2#18730	B17	1	X	
+13021	N2#19313	B17	5	X	
+13022	N2#19321	Rs04	5	X	
+13061	N2#19781	Rs04	2	SCHR	
+13064	N2#19805	A09	5	X	
+13082	N2#19991	B17	5	X	
+13101	N2#20151	A09	4	X	
+13120	N2#20320	A09	3	X	
+13123	N2#20366	O09	3	X	
+13134	N2#20431	Rs04	5	X	
+13135	N2#20435	B17	5	X	
+13142	N2#20477	A09	5	X	
+13147	N2#20514	Rs04	5	X	
+13159	N2#20681	O09	3	X	
+13164	N2#20722	B17	5	SCHR	
+13165	N2#20732	Rs04	5	X	
+13166	N2#20734	O09	1	X	
+13178	N2#20871	B17	5	SCH+	
+13203	N2#21064	B17	5	SCHR	
+13218	N2#21164	B17	4	X	
+13232	N2#21265	A09	1	X	
+13239	N2#21328	O09	1	X	
+13243	N2#21359	Rs04	5	X	
+13251	N2#21500	B17	1	X	
+13261	N2#21626	B17	3	X	
+13271	N2#21721	B17	1	X	
+13279	N2#21818	B17	3	X	
+13304	N2#22088	Rs04	5	X	
+13308	N2#22109	B17	5	X	
+13355	N2#22570	B17	3	SCHR	
+13391	N2#22930	Rs04	3	X	
+13403	N2#22999	A09	3	X	
+13404	N2#23005	B18	3	X	
+13408	N2#23015	B18	2	SCHR	no weekend reminders
+13411	N2#23053	A09	5	CALOFF	highlight days off
+13429	N2#23183	B18	4	X	
+13438	N2#23227	B18	3	X	
+13447	N2#23286	Rs04	4	X	
+13457	N2#23382	B18	5	SCH-	
+13459	N2#23416	B18	3	X	
+13470	N2#23541	A09	1	X	
+13474	N2#23558	A09	2	X	
+13475	N2#23575	B18	1	X	
+13478	N2#23602	A09	1	X	
+13479	N2#23616	Rs04	4	X	
+13480	N2#23642	B18	4	X	
+13487	N2#23710	A09	3	X	
+13490	N2#23755	B18	2	SCHR	weekday-only repeat
+13507	N2#24042	B18	3	X	
+13513	N2#24137	B18	4	SCHR	
+13514	N2#24139	B18	3	X	
+13521	N2#24358	Rs04	1	SCH-	
+13527	N3#3005	B18	4	X	
+13533	N3#21731	O09	3	X	
+13556	N3#25761	A09	1	X	
+13561	N3#26189	O09	1	X	
+13562	N3#26316	A09	1	X	
+13574	N3#28103	B18	1	X	
+13578	N4#50	B18	4	X	
+13582	N4#186	O09	3	X	
+13595	N4#654	B18	1	MISS- SCH-	every-other-day med appears on wrong days, shows missed on a day it shouldn't show
+13599	N4#706	B18	1	SCH-	
+13605	N4#766	B18	4	X	
+13608	N4#822	Rs04	2	X	
+13612	N4#952	O09	3	X	
+13615	N4#2009	B18	4	X	
+13619	N4#2317	O09	3	SKIPR	sick/rest days option (DE)
+13630	N4#3702	B18	3	X	
+13633	N4#3729	O09	2	X	
+13637	N4#3788	O09	4	SKIPR	day off / sick / holiday mode
+13642	N4#3846	B18	3	SCHR	
+13654	N4#4832	O09	1	X	
+13656	N4#5052	O10	3	SCHR	5-on-2-off medication cycles (JP)
+13657	N4#5318	A09	4	SCHR	sleep alarm on company holidays; weekday-only not enough (JP)
+13659	N4#5707	O10	1	X	
+13662	N4#5911	A09	4	SCHR	twice-weekly medication regime
+13678	N4#7364	O10	1	X	
+13682	N4#7449	O10	1	X	
+13683	N4#7487	B18	3	X	
+13685	N4#7511	B18	4	X	
+13693	N4#7634	Rs04	1	X	
+13703	N4#7806	B18	1	X	
+13707	N4#7934	A09	2	SCH-	every-other-day medication alerts misfire
+13712	N4#7997	O10	4	X	
+13718	N4#8096	B18	3	X	
+13723	N4#8162	B18	1	X	
+13730	N4#8281	B18	1	X	
+13756	N4#8904	B18	4	X	
+13757	N4#8913	A09	3	X	
+13763	N4#8988	O10	4	X	
+13764	N4#9019	Rs04	2	X	
+13772	N4#9172	O10	3	X	
+13789	N4#9520	A09	3	SKIPR	rest days in streak (sick)
+13801	N4#9801	A09	4	X	skipped medication timestamp
+13809	N4#10156	O10	1	X	
+13818	N5#246	A09	3	FLEX	weekly goals, rest days vary
+13821	N5#414	B18	2	X	
+13822	N5#828	B18	1	FLEX	(PT) weekly goals
+13825	N5#1241	A09	1	SCH- PCT-	per-weekday goal schedule broken; rest days miss goal
+13826	N5#1252	A09	3	X	
+13827	N5#1363	B18	1	X	
+13832	N5#1645	O10	1	SKIPR	rest day
+13838	N5#1756	A09	3	SKIPR	rest day option
+13842	N5#3187	A09	4	FLEX	weekly goal to allow rest days
+13848	N5#4632	O10	1	SKIPR	no rest day in challenges (ES)
+13850	N5#5561	A09	1	X	
+13851	N5#5643	Rs04	3	X	
+13852	N5#5654	B18	3	X	
+13854	N5#5742	O10	2	SKIPR	build rest day into week
+13856	N5#5830	A09	3	SKIPR	rest day / holiday mode
+13858	N5#5960	A09	2	X	
+13859	N5#6034	O10	4	SCHR	per-day goals for rest days
+13861	N5#6114	O10	1	SKIPR	select a rest day
+13865	N5#6502	B18	4	X	
+13869	N5#7662	O10	1	X	
+13870	N5#8054	O10	2	SKIPR	nagging on rest/injury days (JP)
+13877	N5#8810	Rs04	3	X	
+13879	N5#9006	B18	1	X	
+13880	N5#9355	A09	3	X	
+13887	N5#11779	A09	4	MISS-	rest/injury care counted as failing
+13888	N5#11787	B18	1	X	
+13889	N5#11833	B18	4	X	
+13893	N5#11918	A09	4	X	
+13895	N5#12086	A09	2	SKIPR	rest days
+13897	N5#12274	B18	2	X	
+13904	N5#12618	O10	3	SCHR	custom rings per day; rest days
+13905	N5#12628	B18	1	X	
+13911	N5#13017	B18	2	FLEX	
+13913	N5#13049	O10	5	X	
+13916	N5#13229	B18	3	X	
+13919	N5#13385	B18	1	X	
+13920	N5#13437	A09	2	FLEX	weekly calorie goal for rest days
+13921	N5#13475	A09	1	X	
+13929	N5#13598	A09	4	X	
+13931	N5#13656	O10	1	SKIPR	pause rings for rest day
+13932	N5#13730	B18	2	X	
+13936	N5#13868	A09	5	X	
+13939	N5#13948	A09	2	SKIPR	rest day for week award
+13941	N5#13975	A09	3	X	
+13942	N5#14012	O10	4	X	
+13944	N5#14083	A09	4	SKIPR	programme rest days on calendar without breaking streak
+13949	N5#14145	A09	3	SKIPR	rest/sick days; lowering rings feels like cheating
+13956	N5#14329	A09	4	SKIPR	rest day allowance
+13957	N5#14408	Rs04	2	X	
+13959	N5#14489	O10	2	X	
+13963	N5#14637	A09	4	SKIPR	schedule rest days / sick day
+13964	N5#14669	B18	1	X	
+13966	N5#14792	O10	5	X	
+13968	N5#14847	B18	2	X	
+13971	N5#14950	O10	4	SKIPR SCHR	1-2 rest days/week with lower goals
+13972	N5#15003	B18	2	X	
+13973	N5#15014	B18	3	X	
+13975	N5#15075	O10	3	SKIPR	
+13977	N5#15150	B18	5	X	
+13979	N5#15200	O10	5	SKIPR	
+13980	N5#15269	Rs04	2	X	
+13983	N5#15394	A09	4	SKIPR	schedule rest days
+13985	N5#15505	B18	1	X	
+13986	N5#15537	A09	4	X	
+13987	N5#15553	O10	1	X	
+13993	N5#15715	B18	2	X	
+14000	N5#15887	A09	3	SKIPR	
+14003	N5#16072	O10	3	FLEX	weekly goal instead of daily
+14004	N5#16074	A09	4	SCHR	per-weekday goal schedule with rest Friday
+14011	N5#16375	B18	4	X	
+14013	N5#16507	O10	4	SKIPR	rest day with lower goal
+14015	N5#16522	A09	2	X	
+14016	N5#16531	A09	2	SKIPR	rest day; nagging on 7th day
+14017	N5#16576	A09	4	FLEX	3-4 workouts a week consistency incl. rest days
+14018	N5#16589	O10	2	SKIPR	
+14019	N5#16616	A09	4	SKIPR	sick/rest day counts toward progress
+14021	N5#16643	O10	4	SKIPR	rest day modifies goals
+14022	N5#16682	A09	3	SKIPR FLEX	rest days + weekly goals
+14023	N5#16683	B18	3	FLEX	5 days a week; prodded the other two
+14026	N5#16800	A09	4	SKIPR	breaking streak to rest demoralising
+14029	N5#16836	B18	4	FLEX MISS-	goals 5 days/week not daily; feels like shaming
+14030	N5#16846	A09	4	SKIPR	weekly rest day
+14031	N5#16910	A09	3	X	
+14048	N6#1973	O10	2	X	
+14062	N6#2982	B18	5	SCHR	(JP)
+14071	N6#3917	A09	3	SEE	repeating task hidden until due; can't plan
+14099	N6#5401	A09	4	HIDER	only see items for that day
+14101	N6#5493	Rs04	3	X	
+14104	N6#5636	A09	3	SEE	recurring shows only on due day; hard to plan
+14112	N6#5797	Rs04	3	X	
+14113	N6#5832	A09	4	HIDER	widget hide tasks not due today (Apple's does)
+14121	N6#5961	A09	3	SEE	next recurrence appears only on due day; looks like nothing to do
+14129	N6#6214	A09	4	SEE	wants to see upcoming repeating tasks
+14132	N6#6264	A10	5	SEE	next recurrence only on due day; hard to look ahead
+14138	N6#6360	A10	2	SEE	weekly task not visible until its day
+14155	N6#6934	O10	1	X	
+14158	N7#1135	A10	1	X	
+14162	N7#2859	O10	1	X	
+14163	N7#2912	Rs04	1	X	
+14178	N7#8510	O10	1	X	
+14191	N7#11393	O10	2	X	
+14199	N7#12762	O10	4	X	
+14202	N8#56	B18	1	X	
+14206	N8#363	B18	2	SCH-	
+14213	N8#427	Rs04	4	X	
+14218	N8#530	A10	4	X	
+14227	N8#615	B18	4	X	
+14258	N8#1205	B18	1	X	
+14264	N8#1760	B18	3	SCHR	(PT)
+14285	N8#2759	O10	1	X	
+14291	N8#2832	B18	2	SCHR	
+14305	N8#3038	Rs04	5	X	
+14316	N8#3177	Rs04	4	X	
+14323	N8#3245	A10	4	X	
+14326	N8#3318	B18	3	X	
+14335	N8#3554	B19	3	X	
+14342	N8#3645	B19	3	SCH-	
+14359	N8#3902	Rs04	3	X	
+14360	N8#3908	A10	3	X	
+14361	N8#3916	Rs04	2	X	
+14362	N8#3931	A10	2	X	
+14363	N8#3934	B19	4	X	
+14370	N8#4043	Rs04	5	X	
+14378	N8#4124	A10	2	X	
+14381	N8#4945	A10	4	X	
+14384	N8#4994	O10	1	X	
+14396	N8#6510	B19	4	X	
+14402	N8#7359	A10	2	X	
+14404	N8#7723	B19	4	SCHR	choose days for 3x/week goal (FR)
+14411	N8#8612	A10	1	X	
+14422	N8#8706	B19	4	X	
+14429	N8#8894	A10	5	X	
+14441	N8#9150	Rs04	5	X	
+14452	N8#9457	O10	5	X	
+14454	N8#9482	Rs04	4	X	
+14468	N8#9682	O10	4	X	
+14492	N8#10203	O10	2	X	
+14501	N8#10331	Rs04	5	X	
+14508	N8#10482	A10	1	X	
+14521	N8#10701	B19	1	SCH-	
+14522	N8#10703	B19	3	X	
+14533	N8#10985	A10	3	SCHR	weekdays-only recurrence (meetings)
+14536	N8#11060	B19	3	SCHR	
+14544	N8#11151	B19	4	X	
+14551	N8#11300	B19	1	X	
+14555	N8#11457	B19	4	HISTR	view only some weekdays (IT)
+14556	N8#11672	B19	4	HISTR	custom view of chosen days for shift workers (IT)
+14557	N8#12151	B19	3	X	
+14561	N8#12258	O10	3	CALOFF	
+14562	N8#12367	O10	2	CALOFF	
+14565	N8#12462	O10	5	X	
+14567	N8#12489	O10	1	X	
+14568	N8#12494	O10	4	X	
+14569	N8#12503	A10	2	X	
+14571	N8#12536	O10	4	X	
+14573	N8#12551	A10	2	CALOFF	holidays red (JP)
+14574	N8#12581	O10	4	X	
+14575	N8#12590	O10	3	X	
+14579	N8#12682	A10	2	X	
+14581	N8#12749	B19	3	X	
+14584	N8#12852	B19	3	X	
+14588	N8#13004	O10	5	CALOFF	
+14589	N8#13032	O10	1	CALOFF	
+14591	N8#13040	O10	3	CALOFF	
+14594	N8#13118	B19	4	CALOFF	(JP)
+14596	N8#13131	B19	3	X	
+14599	N8#13159	A10	2	CALOFF	colour weekend/holiday dates (JP)
+14600	N8#13189	B19	4	X	
+14601	N8#13196	B19	3	SCHR	
+14603	N8#13238	O10	2	CALOFF	
+14604	N8#13249	B19	2	X	
+14606	N8#13310	A10	4	X	
+14610	N8#13369	B19	1	SCH-	(JP)
+14616	N8#13447	B19	1	CALOFF	(JP)
+14619	N8#13474	A10	4	X	
+14620	N8#13477	B19	4	X	
+14625	N8#13567	O10	4	CALOFF	
+14629	N8#13753	O10	1	CALOFF	
+14631	N8#13759	A10	4	X	
+14636	N8#14110	O10	1	X	
+14637	N8#14154	B19	4	X	
+14638	N8#14187	B19	3	X	
+14641	N8#14243	A10	2	X	
+14644	N8#14286	B19	3	X	
+14645	N8#14289	O10	4	CALOFF	
+14646	N8#14291	B19	4	X	
+14647	N8#14292	O10	4	CALOFF	
+14651	N8#14508	B19	2	CALOFF	(JP)
+14654	N8#15013	O10	5	X	
+14657	N8#15063	A10	2	X	
+14658	N8#15077	A10	2	CALOFF	
+14659	N8#15233	A10	5	X	
+14661	N8#15272	O10	4	X	
+14663	N8#15303	O10	3	X	
+14664	N8#15305	O11	3	CALOFF	holiday display (KR/RU)
+14665	N8#15356	O11	4	CALOFF	holiday display (KR/RU)
+14667	N8#15417	O11	4	CALOFF	holiday display (KR/RU)
+14668	N8#15433	O11	5	CALOFF	holiday display (KR/RU)
+14669	N8#15439	O11	4	CALOFF	holiday display (KR/RU)
+14670	N8#15472	O11	4	CALOFF	holiday display (KR/RU)
+14672	N8#15483	O11	5	CALOFF	holiday display (KR/RU)
+14673	N8#15502	O11	4	CALOFF	holiday display (KR/RU)
+14675	N8#15504	O11	3	CALOFF	holiday display (KR/RU)
+14681	N8#15643	O11	1	CALOFF	holiday display (KR/RU)
+14682	N8#15649	O11	1	CALOFF	holiday display (KR/RU)
+14683	N8#15659	O11	3	CALOFF	holiday display (KR/RU)
+14684	N8#15662	O11	3	CALOFF	holiday display (KR/RU)
+14685	N8#15667	O11	5	CALOFF	holiday display (KR/RU)
+14686	N8#15669	O11	4	CALOFF	holiday display (KR/RU)
+14687	N8#15671	O11	5	CALOFF	holiday display (KR/RU)
+14688	N8#15673	O11	5	CALOFF	holiday display (KR/RU)
+14689	N8#15675	O11	3	CALOFF	holiday display (KR/RU)
+14690	N8#15678	O11	1	CALOFF	holiday display (KR/RU)
+14691	N8#15684	O11	4	CALOFF	holiday display (KR/RU)
+14692	N8#15687	O11	2	CALOFF	holiday display (KR/RU)
+14693	N8#15697	A10	1	CALOFF	
+14695	N8#15925	O11	4	CALOFF	holiday display (KR/RU)
+14699	N8#16175	B19	4	SCHR	(ES)
+14737	N8#17752	A10	4	X	
+14746	N8#17815	O11	1	X	
+14758	N8#18335	A10	3	SCHR	workdays/weekends repeat option (RU)
+14760	N8#18354	A10	5	CALOFF	
+14763	N8#18609	O11	4	CALOFF	holiday display (KR/RU)
+14766	N8#19160	O11	4	SCHR	workday/weekend repeat (RU)
+14768	N8#19252	A10	4	CALOFF	weekend cell background colour (RU)
+14769	N8#19345	O11	5	SCHR	goals by work/rest days (RU)
+14773	N8#19752	Rs04	4	X	
+14790	N8#20359	O11	3	X	
+14796	N8#20417	A10	1	X	
+14800	N8#20500	Rs04	1	X	
+14806	N8#20524	O11	5	X	
+14814	N8#20723	B19	2	SCH-	(TR)
+14816	N8#20771	A10	2	X	
+14823	N8#21273	B19	4	X	
+14832	N8#22184	A10	4	X	
+14834	N8#22269	B19	4	SCH-	
+14836	N8#22282	Rs04	3	X	
+14841	N8#22408	B19	5	X	
+14851	N8#22485	B19	4	X	
+14874	N8#22640	B19	1	X	
+14885	N8#22723	A10	1	X	
+14895	N8#22864	Rs04	3	X	
+14909	N8#22951	B19	2	SCHR	
+14914	N8#22985	Rs04	1	X	
+14917	N8#22996	Rs04	1	X	
+14920	N8#23021	A10	1	X	
+14921	N8#23037	B19	1	X	
+14954	N8#23104	B19	1	X	
+14976	N8#23586	A10	3	X	
+14982	N8#23677	B19	1	SCHR	
+15000	N8#23839	B19	1	SCHR	
+15001	N8#23849	A10	3	X	
+15003	N8#23855	B19	4	X	
+15004	N8#23869	Rs04	1	X	
+15023	N8#24134	Rs04	3	X	
+15034	N8#24262	B19	4	X	
+15036	N8#24271	Rs04	5	X	
+15046	N8#24353	A10	1	X	
+15068	N8#24530	O11	3	X	
+15079	N8#24639	O11	3	X	
+15084	N8#24706	A10	1	X	
+15087	N8#24726	B19	4	X	
+15092	N8#24772	B19	3	X	
+15093	N8#24790	A10	4	X	
+15094	N8#24792	A10	1	X	
+15099	N8#24831	B19	3	X	
+15109	N8#24903	B19	3	X	
+15111	N8#24908	B19	3	X	
+15122	N8#25066	B19	1	SCHR	
+15126	N8#25082	A10	1	X	
+15129	N8#25116	O11	5	X	
+15138	N8#25162	B19	1	SCH-	
+15147	N8#25265	B19	5	X	
+15173	N8#25595	B19	4	X	
+15181	N8#25665	B19	4	X	
+15201	N8#25999	B19	4	FLEX MISS-	goals look unfinished for the week
+15213	N8#26169	A10	3	X	
+15223	N8#26247	B19	4	SCHR	
+15234	N8#26290	B19	4	SCH-	
+15247	N8#26436	B19	3	SCH-	
+15265	N8#26614	A10	2	X	
+15267	N8#26643	A10	4	X	
+15284	N8#26829	B19	4	X	
+15303	N8#27031	B19	3	X	
+15311	N8#27327	B19	3	X	
+15314	N8#27450	B20	1	SCH-	
+15330	N8#27642	B20	2	SCHR	
+15335	N8#27666	B20	2	SCHR	
+15350	N8#27786	A10	4	X	
+15351	N8#27792	A10	1	X	
+15355	N8#27810	B20	2	X	
+15358	N8#27822	B20	3	X	
+15360	N8#27849	B20	5	X	
+15361	N8#27860	B20	3	SCH-	
+15367	N8#27913	Rs04	4	X	
+15370	N8#27961	B20	1	SCH-	
+15382	N8#28072	B20	5	X	
+15412	N8#28405	B20	1	X	
+15417	N8#28466	A10	1	X	
+15420	N8#28512	Rs04	5	X	
+15426	N8#28595	Rs04	1	X	
+15451	N8#28911	B20	5	X	
+15507	N8#29719	B20	1	X	
+15538	N8#30053	A10	1	X	
+15552	N8#30234	B20	3	X	
+15559	N8#30338	B20	3	X	
+15565	N8#30379	B20	2	X	
+15568	N8#30411	B20	2	X	
+15585	N8#30583	B20	4	X	
+15587	N8#30609	Rs04	5	X	
+15601	N8#30742	B20	3	SCHR	
+15612	N8#30804	B20	4	SCHR	
+15614	N8#30809	B20	3	SCHR	
+15628	N8#30924	Rs04	5	X	
+15651	N8#31089	B20	4	X	
+15657	N8#31120	B20	4	SCHR	
+15682	N8#31425	Rs04	2	X	
+15700	N8#31603	B20	5	X	
+15701	N8#31610	B20	4	X	
+15718	N8#31791	B20	3	X	
+15735	N8#32017	A10	5	X	
+15745	N8#32141	Rs04	5	X	
+15748	N8#32180	B20	2	X	
+15767	N8#32471	B20	2	SCHR	
+15779	N8#32585	Rs04	5	X	
+15791	N8#32716	B20	3	X	
+15797	N8#32785	A10	4	X	
+15801	N8#32863	B20	2	X	
+15812	N8#32943	B20	5	X	
+15838	N8#33184	B20	1	HISTR	week view of 5 days, scroll for weekend
+15849	N8#33269	B20	1	X	
+15885	N8#33642	A10	2	X	
+15898	N8#33795	B20	5	X	
+15910	N8#33896	A10	4	X	
+15924	N8#34005	B20	3	X	
+15927	N8#34043	A10	4	X	
+15932	N8#34105	Rs04	4	X	
+15944	N8#34249	B20	4	X	
+15949	N8#34305	B20	5	X	
+15958	N8#34401	Rs04	3	X	
+15963	N8#34437	A10	3	CALOFF	colour days off vs worked in month view
+15964	N8#34449	Rs04	4	X	
+16007	N8#35026	Rs04	3	X	
+16009	N8#35064	B20	1	SCHR	
+16030	N8#35261	B20	4	X	
+16057	N8#35452	B20	1	X	
+16060	N8#35469	B20	2	X	
+16061	N8#35471	B20	4	X	
+16062	N8#35473	B20	2	SCHR	
+16064	N8#35490	B20	3	SCHR	
+16086	N8#35813	B20	3	X	
+16102	N8#36157	B20	1	X	
+16106	N8#36223	B20	5	SCHR	
+16128	N9#5777	B20	1	X	
+16130	N9#11593	B20	3	X	
+16141	N9#16131	O11	5	X	
+16143	N9#18466	O11	4	X	
+16146	N9#19038	B20	2	X	
+16147	N9#19282	O11	5	X	
+16153	N9#24680	A10	5	X	
+16159	N9#32796	B20	2	X	
+16166	N9#36117	A10	1	X	
+16168	N9#36322	Rs04	5	X	
+16191	N9#38143	O11	5	X	
+16192	N9#38428	B20	1	X	
+16194	N9#38522	A10	2	X	
+16196	N9#38714	A10	1	X	
+16198	N9#38786	O11	3	X	
+16211	N9#39728	Rs04	5	X	
+16225	N9#40743	Rs04	1	X	
+16230	N9#41288	A10	5	X	
+16278	N9#44144	B20	1	X	
+16295	N9#45785	B20	1	X	
+16315	N9#47326	Rs04	5	X	
+16340	N9#50063	B20	5	X	

@@ -1,0 +1,58 @@
+# Competitor Home top-area census (from App Store listing screenshots, Temp/deepdive/listings; sheets in sheets/)
+Fields: title | date/time | overall progress | date strip | view switch | filter chips | top actions
+- 1 Habit Tracker: small centred "Today" | none (weekday+date in strip) | none in header | 7-day strip, ring per day, date numbers | - | "All" chip left (dropdown) | emoji/mood right; + in tab bar
+- 7 HabitKit: app name "HabitKit" | none | none | none (each card is a heatmap) | - | - | gear, +
+- 23 Streaks: no title | none | none | none | pages (dots) | - | gear, star at bottom
+- 33 Habitify: eyebrow "TODAY" + title "My Journal" | none | none | none visible | - | area tabs "All Habits · Morning · + New" | two icons
+- 46 everyday: no title | none | trophy count 449 | day-column header with dates (Tue 20..Fri 23, today circled) | - | - | filter icon, +
+- 43 Habit Hub: "Edit" + month "January" + "All ▾" filter + "+" | month name | none | 7-day strip with rings | - | dropdown "All" | Edit, +
+- 48 Strides: "Reports ▾" title | - | "Average Progress 82%" | - | tabs Progress/Trends/Calendar/Rankings | - | settings, sort
+- 13 Productive: menu + centred "Today" + gear | none | none | 8-day strip (weekday letter + date, today filled) | Program/Habits tabs | time-of-day tabs Evening/All Day/Morning | scenery illustration takes ~1/4 screen
+- 5 Routinery: grid icon + Routine/Checklist segmented | none | none | none | segmented Routine/Checklist | "Today" chip | motivational heading
+- 3 Days Since: "Counters" | none | none | none | - | - | list icon, +
+- 10 Finch: pet scene | none | "3 goals left today!" text | none | - | - | -
+- 25 Grit: gear, stats icon, centred "Today", menu, + | none | none | curved week strip, ring per day with date | - | - | 4 icons
+- 27 Goal Streak: date chip "Sep 16, 2026" top-left | date | none | 7-day strip, ring per day + dots per habit | - | tag chips all/health/morning/evening | pencil, book, gear; floating "Today" button to jump back
+- 36 (Not Boring) Habits: one habit per screen | none | none | 7-day strip at bottom with TODAY label | - | - | -
+- 56 Dots: title "Dots." (app name) | none | none | none (year dot grids) | view switch in bottom bar (list/grid/calendar/heat) | - | +
+- 57 DayStamp: large "Activities" + "3 activities" subtitle | none | count only | none | - | - | +, …
+- 47_jp DotHabit: grid of dot cards | - | - | - | view toggle in tab bar | - | -
+- 2 Daily Habits: "Today" link left + month "October" centre + badge "3" | month | none | 7-day strip with dates, today filled | - | - | stars/calendar in tab bar
+- 6 StreakUp: app name "StreakUp" | none | none | none | Active/Archived tabs | - | +
+- 8 Onrise: large "Habits" + month "January" | month | none | day columns | - | - | +
+- 9 Dear Me: large "Today" left + "Thursday, 16th" right on same row | date | none | 7-day strip with ticks per day | - | - | -
+- 11 Daily Habits Streak: app title bar "Daily Habits" | "Today" + "Saturday 02/03/2024" in a card header | "Completed actions" label | weekday circles (no dates) | - | - | stats, gear
+- 12 ThatGirl (planner): view picker chip "Day ▾" (menu) + "+ New" + "…" | none | none | 7-day strip with dates+weekday | view switch = dropdown chip "Day" | - | +, …
+- 16 Atoms: avatar + "Habits" chip | none | none | 7-day strip, "Today" label over current date | - | - | "Compact View" toggle on Home
+- 28 Habit Rabbit: month "October 2022" with ‹ › arrows | month | 100% chip | month grid | - | - | icons
+- 29 Habit Tracker Daily Goals: gear + centred "Today" + calendar icon | none | "Progress" bar under strip | 6-day strip with dates | - | - | gear, calendar
+- 30 Simple&Powerful: small "Habits" + gear | none | none | 7-day strip, ring per day with dates | - | - | gear
+- 31 Do Habits: profile + centred "Today" + clipboard | none | none | none | - | time-of-day icon filter (all/morning/afternoon/evening) | profile, clipboard; "THIS WEEK" section
+- 34 Evoday: "Sync" + large "Today" + "+" | none | none | none (week dots on each card) | - | - | sync, +
+- 41 Awesome Habits: toolbar "Today" button + "Edit" + "+" | none | big overall % ring header (other shot) | none | - | - | Today, Edit, +
+- 42 Daily Habit & Routine: large "Today" + "+" | none | none | 7-day strip weekday+date, underline progress | - | - | +
+- 49 Life Reset: "DAY 14 / 66" + ‹ › arrows | program day | streak/xp counters | none | tabs To-dos/Done/Skipped | - | gear, +
+- 50 HelloHabit: menu + stats + centred "Today" + timer | none | none | 7-day strip with dates | - | - | 3 icons
+- 52 ShineDay: "Today • Fri" + "Daily check-in tasks" subtitle + "+" | weekday | "8/38" count on section | none | tabs All/Habits/Tasks/Notes + chips Tasks/Notes/Pomodoro + view icons | chips | +
+- 53 HabitMinder: list of bars | - | % per habit | none | - | - | tab bar
+- 55 Habit-Bull: "Habits" + "My Order" | none | % per habit | none | views in bottom bar (Daily/Weekly/Monthly) | - | add, edit
+- 58 Blossom: eyebrow "WEDNESDAY, MAY 20" above greeting "Good evening, Frances." | date as eyebrow | card "TODAY 4 of 6" + 66% ring below strip | 7-day strip with dates (today = coloured number, no ring) | - | - | + Edit on section
+- 59 Tappsk: menu + calendar icon | none | "TODAY 0/3" count in section header | habit icon row | - | - | -
+- 54 Avocation: garden scene | - | - | - | - | - | icons
+- 60 Mindway: "Today" + small "Apr 30" inline | date inline small | none | 5-day strip, selected big "30 Thu" | - | - | -
+- 62 Streaks Daily: "Habits" + "+" | none | none | none (per-habit dot grids) | - | - | +
+- 64 Critique AI: "Today's Plan" + subtitle "Wednesday, November 26" + 4 icons | date subtitle | 20% ring card | weekday circles (no dates) | - | - | filter, stats, trophy, gear
+- 67 Habio: "‹ Today ›" + "0/1 done" + edit, calendar | none | "0/1 done" under title, "2/3 jobs to do" ring | none; arrows to change day | - | - | edit, calendar
+- 69 TheFor: "Today's Habits" + "0 of 5 completed" + thin progress bar under title | none | text + bar under title | none | view toggle bottom (list/grid) | - | +, …
+- 71 MyStreaks: "All Streaks ▾" (filter = title menu) + "0/1 Completed" right | none | count | none | - | filter lives in the title dropdown | XP chip, add, gift
+- 72 Habit Hearts: "‹ JANUARY 2025 ›" | month | none | 7-day strip, hearts fill with progress | - | - | -
+- 74 Habit Check Calendar: group tabs at top (After Waking · Workout · +) + "July 2026 ▾" | month (tap = picker) | none | week columns with dates, today circled | - | group tabs | help, calendar, export, …
+- 76 Way of Life: title "This Week ▾" (view picker IN the title) + day numbers row | week | none | day columns with dates | view via title dropdown | - | menu, +
+- 79 Ripples: "Boards" + … + | none | none | none | - | - | …, +
+- 84 HabitGrid: large title "Year" = current view; Month/Week/Year are bottom tabs | none | none | none | view in tab bar, title follows | - | +
+- 86 Today (habit app): menu + small count ring "2" top-right | none | "6 more check-ins for your daily goal" | none | - | - | menu
+- 88 GetHabit: Statistics screen | - | 50% completion ring | day numbers | - | - | -
+- 89 Check Calendar: group tabs (Workout · Study · +) + "July 2026 ▾" + all-time count | month | none | month grid | - | group tabs | list icon, …
+- 52_cn ShineDay CN: "今日 • 周四 ^" (Today • Thu, tap for menu) + "+" | weekday | time counters | none | - | section chips (晨间/全天) | search, icons
+- 18 MyRoutine: "Aug 2026 ▾" + streak chip + sort + … | month (picker) | none | 7-day strip rings with dates | Daily / To-dos tabs | chip row "All Times ▾ · Self-care · Structure" | sort, …
+- 19 Wisey/other: large "Today" + "Reorder" | none | none | none (week squares per card) | - | - | Reorder

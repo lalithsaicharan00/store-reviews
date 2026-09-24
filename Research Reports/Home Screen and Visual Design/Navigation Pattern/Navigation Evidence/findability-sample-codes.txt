@@ -1,0 +1,200 @@
+0	HIDS	
+95	X	hard to find (market)
+105	X	
+112	HIDS	
+123	HID	can't find per-notification setting [habit]
+185	HID	micropet hard to find [habit]
+206	X	
+216	X	
+223	HID DEEP	first aid kit SO hard to find; takes years when overwhelmed [habit]
+227	X	
+240	X	
+286	X	
+309	X	
+317	HID	can't find house-cleaning part [habit]
+406	X	
+409	X	
+420	X	
+430	X	
+443	X	
+518	HID NAV+	easy to navigate; can't find light mode toggle [habit]
+523	X	
+533	HID	can't find sync [habit]
+544	HID	schedule option hard to find [habit]
+582	HIDS	
+599	X	
+629	HID	undo skip menu clunky [habit]
+665	X	
+706	SWP	wants swipe between screens [habit]
+711	HIDS	
+723	X	mac menu bar
+751	X	
+794	HID	can't find rituals [habit]
+824	HIDS	
+841	HIDS	
+851	HID	can't find how to unmark [habit]
+861	HIDS	
+889	HIDS	
+987	X	
+1011	X	
+1023	HIDS CLT	
+1053	X	
+1099	X	
+1159	X	
+1169	X	
+1218	HIDS	
+1276	HIDS	
+1316	NAV- HID	no idea how app is organised [habit]
+1372	X	
+1459	X	
+1492	HID	can't find content to repeat [habit]
+1519	HID NAV-	hard to maneuver/find help [habit]
+1546	X	
+1741	X	
+1744	HID	can't find how to delete [habit]
+1778	X	
+1837	HIDS	
+1859	X	
+1870	X	
+1955	TB- SWP	flip animation between tabs; weird [habit]
+1963	X	contact
+1970	HID	can't find delete habit [habit]
+2012	HID	where to set time [todo-habit]
+2019	X	
+2047	HIDS	
+2211	X	
+2237	X	
+2270	X	
+2296	HID	can't find stats per habit [habit]
+2389	X	menu bug
+2392	HID	options hard to find [study]
+2443	NAV- HID	impossible to find way around [habit]
+2444	X	
+2472	HID	can't find animated journey [habit]
+2504	HIDS	
+2516	HIDS	
+2578	X	
+2620	HIDS	
+2627	HIDS	
+2700	HIDS	
+2713	X	
+2736	X	
+2738	HID	night ritual hard to find [habit]
+2770	X	prompts
+2844	X	
+2850	HID FAB	hard to find where to add habit; should be front and centre [habit]
+2886	X	
+2960	HID	hard to find some goals [habit]
+2987	X	
+3021	X	
+3041	X	
+3049	X	
+3084	HID	change routine time hard to find [habit]
+3152	TBR	discover tab should be in menu bar [gym]
+3254	X	
+3346	HID	[todo]
+3358	X	
+3404	HID	tone setting [todo]
+3452	HID	language setting [todo]
+3481	X	
+3482	HID	skip function (later understood) [habit]
+3607	X	
+3686	DEEP	enter menu to change counter; wants long press +1 [habit]
+3703	X	
+3707	X	
+3723	X	
+3750	HID	wants search in habits menu when many [habit]
+3806	RD HID	UI changed every update; basic functions hard to find [habit]
+3808	X	
+3833	NAV-	menu confusing [habit]
+3837	X	
+3844	HIDS	
+3877	X	
+3879	HIDS	
+3908	HID	can't find delete [habit]
+3952	HID	couldn't find menu and setup [routine]
+4053	X	
+4056	HID	undo not found [habit]
+4078	X	
+4083	X	
+4085	X	
+4181	HID	[todo]
+4232	HID ONE	task disappears; wants main menu/overview of current and previous [todo]
+4280	X	
+4337	DR- DEEP	switching lists requires menu then select [todo]
+4391	X	
+4395	HID	[todo]
+4402	X	
+4406	HID	[todo]
+4520	HID	premium section not found [todo]
+4566	X	
+4583	X	
+4636	X	
+4642	X	search broken
+4646	X	
+4655	HID	hard to find specific reminders [native]
+4684	X	
+4708	HID	rename not found [native]
+4778	HID	completed item impossible to find [native]
+4785	X	mac menu bar
+4846	HID	[native]
+4888	X	
+4973	HID	[native]
+5002	HID	[native]
+5003	HID	[native]
+5006	X	
+5012	X	search
+5025	X	
+5047	X	
+5048	X	
+5115	X	
+5116	X	
+5117	X	
+5122	HID	[native]
+5124	X	search
+5129	X	
+5145	X	
+5151	X	
+5195	HID	[native]
+5212	X	
+5320	X	
+5347	X	search
+5388	HID NAV-	[native]
+5395	HID	can't find Fitness+ tab [native]
+5444	HID	[native]
+5454	X	filters
+5457	NAV-	[native]
+5486	HID	settings too hard to find [native]
+5564	X	search
+5567	X	search
+5608	X	
+5612	X	
+5651	X	
+5685	X	
+5707	HID	jump to date [native]
+5772	X	
+5813	HID	[native]
+5840	HID	[native]
+5846	X	
+5850	X	
+5852	X	menu bug
+5860	X	
+5867	RD HID	used to be apparent in the menu [native]
+5871	X	
+5900	X	
+5907	X	
+5953	X	
+5984	X	sheets
+6112	X	sheets
+6117	X	sheets
+6123	X	sheets
+6154	X	sheets
+6176	X	sheets
+6211	X	sheets
+6258	X	sheets
+6275	X	sheets
+6285	X	sheets
+6287	X	sheets
+6315	X	sheets
+6390	X	sheets
+6424	X	sheets

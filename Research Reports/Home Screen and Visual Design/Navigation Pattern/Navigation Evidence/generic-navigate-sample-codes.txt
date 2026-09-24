@@ -1,0 +1,200 @@
+1	NAV+	
+80	NAV+	
+103	NAV+	
+106	NAV-	
+113	NAV+	
+122	NAV+	
+134	NAV+	
+149	NAV+	
+154	X	not about app navigation (maps/other/bugs)
+158	NAV+	
+168	NAV+	
+187	X	not about app navigation (maps/other/bugs)
+267	X	not about app navigation (maps/other/bugs)
+302	NAV-	wardrobe hard to navigate; search [habit]
+313	X	not about app navigation (maps/other/bugs)
+451	NAV+	
+459	NAV+	
+464	NAV+	
+472	NAV-	
+487	NAV+	
+488	SWP	wants swipe navigation [habit]
+620	X	not about app navigation (maps/other/bugs)
+633	NAV+	
+654	X	not about app navigation (maps/other/bugs)
+693	NAVL	
+724	X	not about app navigation (maps/other/bugs)
+758	X	not about app navigation (maps/other/bugs)
+800	NAV-	
+826	NAVL	
+905	X	not about app navigation (maps/other/bugs)
+917	NAVL	
+942	NAV+	
+949	X	not about app navigation (maps/other/bugs)
+963	X	not about app navigation (maps/other/bugs)
+1026	NAV-	
+1103	X	not about app navigation (maps/other/bugs)
+1164	X	not about app navigation (maps/other/bugs)
+1213	NAV-	
+1263	NAV+	
+1279	X	not about app navigation (maps/other/bugs)
+1319	X	not about app navigation (maps/other/bugs)
+1364	NAV-	
+1401	X	not about app navigation (maps/other/bugs)
+1429	NAV-	
+1502	X	not about app navigation (maps/other/bugs)
+1511	X	not about app navigation (maps/other/bugs)
+1527	X	not about app navigation (maps/other/bugs)
+1572	NAV+	
+1664	NAV+	
+1667	NAV+	
+1682	NAV+	
+1806	X	not about app navigation (maps/other/bugs)
+1849	NAV+	
+1898	NAV+	
+1914	NAV+	
+1920	X	not about app navigation (maps/other/bugs)
+1923	NAV+	
+1946	X	not about app navigation (maps/other/bugs)
+2062	NAV+	
+2077	NAV+	
+2101	NAV+	
+2125	NAV+	
+2162	X	not about app navigation (maps/other/bugs)
+2173	NAV+	
+2226	X	not about app navigation (maps/other/bugs)
+2260	NAV+	
+2271	NAV+	
+2351	NAV+	
+2375	X	widget request
+2380	ONE	wants whole-week timetable [study]
+2383	NAV+	
+2455	NAV-	
+2468	X	not about app navigation (maps/other/bugs)
+2485	NAV-	
+2495	NAV-	
+2542	NAV-	
+2588	NAV-	
+2597	NAV-	
+2622	NAVL	
+2653	NAVL	
+2696	NAV+	
+2718	NAVL	
+2763	NAV+	
+2774	NAV- ONE	wants clear menu to see where I am [habit]
+2847	NAVL	
+2911	NAV+	
+2952	NAV-	
+2968	NAV+	
+2991	NAV+	
+2996	NAV+	
+3069	NAV-	
+3112	NAV+	
+3120	NAV+	
+3127	X	not about app navigation (maps/other/bugs)
+3136	NAV+	
+3159	NAV+	
+3163	NAV+	
+3171	NAV+	
+3202	NAV+	
+3204	NAV+	
+3232	X	not about app navigation (maps/other/bugs)
+3266	NAV+	
+3309	NAV+	
+3312	NAV+	
+3340	NAV+	
+3356	NAV+	
+3392	NAV+	
+3463	X	not about app navigation (maps/other/bugs)
+3500	NAV+	
+3502	X	not about app navigation (maps/other/bugs)
+3503	NAV+	
+3511	NAV+	
+3559	NAV+	
+3569	NAV+	
+3597	NAV+	
+3624	NAV+	
+3634	NAV+	
+3637	X	not about app navigation (maps/other/bugs)
+3652	NAV+	
+3671	NAV+	
+3672	NAV+	
+3712	X	not about app navigation (maps/other/bugs)
+3780	NAV+	
+3915	X	not about app navigation (maps/other/bugs)
+3941	X	not about app navigation (maps/other/bugs)
+3943	NAV+	
+3950	NAV+	
+3957	NAV+	
+3962	NAV+	
+3983	X	not about app navigation (maps/other/bugs)
+3985	NAV+ CLT	no forest of features [habit]
+4054	NAV-	
+4069	X	not about app navigation (maps/other/bugs)
+4081	NAV+	
+4089	NAV-	
+4132	X	not about app navigation (maps/other/bugs)
+4143	SWP	scroll misread as tab swipe [habit]
+4202	NAV+	
+4213	NAV+	
+4282	NAV+	
+4302	NAV+	
+4353	X	not about app navigation (maps/other/bugs)
+4361	NAV+	
+4400	NAV-	navigation could be quicker [todo]
+4416	X	not about app navigation (maps/other/bugs)
+4435	NAV+	
+4490	X	not about app navigation (maps/other/bugs)
+4524	NAV+	
+4530	NAV+	
+4579	X	not about app navigation (maps/other/bugs)
+4623	NAV+	
+4656	NAV+	
+4690	NAV+	
+4705	X	not about app navigation (maps/other/bugs)
+4739	X	not about app navigation (maps/other/bugs)
+4741	X	not about app navigation (maps/other/bugs)
+4746	X	not about app navigation (maps/other/bugs)
+4766	X	not about app navigation (maps/other/bugs)
+4917	X	not about app navigation (maps/other/bugs)
+4922	X	not about app navigation (maps/other/bugs)
+4925	X	not about app navigation (maps/other/bugs)
+4931	X	not about app navigation (maps/other/bugs)
+4943	NAV+	
+4960	X	not about app navigation (maps/other/bugs)
+5001	NAV+	
+5014	X	not about app navigation (maps/other/bugs)
+5031	NAV+	
+5032	NAV+	
+5071	X	not about app navigation (maps/other/bugs)
+5090	X	not about app navigation (maps/other/bugs)
+5228	X	not about app navigation (maps/other/bugs)
+5252	X	not about app navigation (maps/other/bugs)
+5283	X	not about app navigation (maps/other/bugs)
+5289	NAV-	
+5323	NAV-	
+5435	NAV-	
+5466	NAV-	
+5532	NAV-	
+5582	NAV+	
+5634	SWP	swipe back gesture [native]
+5670	NAV+	
+5717	X	not about app navigation (maps/other/bugs)
+5742	X	not about app navigation (maps/other/bugs)
+5872	X	not about app navigation (maps/other/bugs)
+5904	X	not about app navigation (maps/other/bugs)
+5966	X	not about app navigation (maps/other/bugs)
+5991	X	not about app navigation (maps/other/bugs)
+6057	NAV+	
+6060	X	not about app navigation (maps/other/bugs)
+6131	X	not about app navigation (maps/other/bugs)
+6152	X	not about app navigation (maps/other/bugs)
+6208	X	not about app navigation (maps/other/bugs)
+6215	NAV-	
+6235	X	not about app navigation (maps/other/bugs)
+6283	NAV-	
+6290	NAV+	
+6312	NAV+	
+6378	NAV+	
+6389	NAV+	
+6400	NAV+	

@@ -1,0 +1,13 @@
+# External sources (fetched 2026-09-24)
+- NN/g, Hamburger Menus and Hidden Navigation Hurt UX Metrics (study Dec 2015, 179 participants, 6 sites): hidden nav cuts discoverability ~half; mobile tasks 15% slower (desktop 39%); higher difficulty. https://www.nngroup.com/articles/hamburger-menus/
+- NN/g, Beyond the Hamburger (mobile): visible/combo nav outperforms hidden; label icons; give nav visual weight. https://www.nngroup.com/articles/find-navigation-mobile-even-hamburger/
+- NN/g, Basic Patterns for Mobile Navigation: tab bar = few destinations of similar importance, one tap, shows location; costs ~7–10% of screen; <=5. https://www.nngroup.com/articles/mobile-navigation-patterns/
+- Material 3 Navigation bar: 3–5 destinations, compact width <600dp; don't use for <3. https://m3.material.io/components/navigation-bar/guidelines
+- Material 3 Navigation drawer: 5+ destinations or >1 level; avoid drawer together with nav bar. https://m3.material.io/components/navigation-drawer/guidelines
+- Apple HIG Tab bars; iOS 26 tab bar floats (Liquid Glass) and can minimize on scroll (tabBarMinimizeBehavior). https://developer.apple.com/design/human-interface-guidelines/tab-bars ; WWDC25 session 284.
+- Spotify 2016: hamburger -> tab bar; test users clicked 30% more on menu items, 9% more items overall; no hit to retention. https://techcrunch.com/2016/05/03/spotify-ditches-the-controversial-hamburger-menu-in-ios-app-redesign/
+- Hoober 2013 (1,333 observations): 49% one-handed, 36% cradled, 15% two-handed; top corners hardest. https://www.uxmatters.com/mt/archives/2013/02/how-do-users-really-hold-mobile-devices.php
+- Google Drive mobile: bottom bar Home/Starred/Shared/Files. https://support.google.com/drive/answer/2424384
+- Gmail Android: bottom bar Mail/Chat/Meet (labels removed 2022 to save space) + drawer for labels/folders -> "both" because many labels. https://www.androidpolice.com/gmail-navigation-bar-icon-labels/
+- ChatGPT: one primary screen (chat) + sidebar/drawer holding an unbounded conversation list. https://help.openai.com/en/articles/6825453-chatgpt-release-notes
+- Claude iOS: drawer with chat list; a July 2026 blog reports an unconfirmed bottom-bar experiment (low reliability). https://www.progressiverobot.com/2026/07/19/claude-ios-bottom-navigation-bar/
