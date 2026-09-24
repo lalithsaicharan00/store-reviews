@@ -1,0 +1,128 @@
+# TC sub-types: BD change start/end time of each section | DS day-start / rollover time (night owls) | SH shift work or irregular wake times
+# MO more or different sections (lunch, bedtime, commute, 'before bed') | RN rename sections | OF turn a section off / not forced to use all
+# CW custom time window per habit | PR praise for customisable sections | FL filter behaviour (multi-select, auto-hide)
+10 MO SH
+14 MO
+29 MO
+32 MO
+47 CW
+48 SH
+51 PR
+69 CW
+71 BD
+73 BD DS
+77 PR
+84 BD
+126 MO
+139 MO
+172 SH DS BD
+268 MO
+269 BD DS
+271 BD
+291 BD
+330 BD
+400 SH
+408 MO
+466 MO
+487 MO
+545 MO
+556 DS
+571 SH OF
+578 DS
+619 MO
+635 DS
+677 PR
+695 PR RN
+703 MO
+723 DS
+781 PR
+787 OF
+809 PR
+830 PR
+844 BD SH
+848 MO
+875 MO
+877 PR BD
+878 BD
+894 MO RN
+896 DS
+903 BD SH
+969 BD
+1034 PR BD
+1047 PR BD
+1097 MO
+1125 PR
+1154 BD
+1162 PR
+1164 CW
+1169 RN MO
+1171 RN
+1172 BD W
+1178 BD
+1180 RN BD
+1197 MO
+1209 MO
+1216 MO
+1218 CW
+1240 PR
+1248 RN BD
+1284 BD
+1288 RN
+1294 MO
+1298 MO
+1299 MO
+1310 PR
+1314 PR MO
+1318 BD
+1319 MO
+1350 BD
+1398 DS
+1416 MO
+1417 MO
+1428 BD
+1429 MO
+1450 PR
+1465 MO
+1475 SH
+1483 PR
+1486 MO
+1494 MO
+1537 SH
+1582 PR
+1586 PR RN
+1707 OF
+1766 DS
+1792 DS
+1829 SH DS
+1832 BD
+1838 MO
+1839 FL
+1840 SH
+1891 DS
+1900 DS
+1946 BD SH
+1959 PR BD SH
+1960 MO
+1972 PR BD
+1977 PR
+2034 MO
+2057 PR MO
+2107 MO
+2123 PR
+2138 MO
+2265 MO
+2340 MO
+2760 MO
+2965 DS
+3133 DS
+3153 DS
+3224 MO
+3474 MO
+3942 MO
+4878 MO
+5566 PR RN
+5675 MO
+6181 DS
+6830 DS
+7269 MO
+7399 DS PR

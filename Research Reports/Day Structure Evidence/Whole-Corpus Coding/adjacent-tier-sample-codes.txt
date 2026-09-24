@@ -1,0 +1,81 @@
+# seeded (20260924) sample of 80 adjacent-tier hits, 20 per family. R = relevant to organising a day/list (D = one-off task or note context, H = recurring habit/routine sense), N = not relevant
+0 N
+1 N
+2 N
+3 N
+4 N
+5 R D time blocks
+6 R D time blocks
+7 N
+8 N
+9 R D time period
+10 N
+11 N
+12 N
+13 N
+14 R D shift presets
+15 N
+16 N
+17 N
+18 N
+19 R D colour to-dos by morning/afternoon/evening
+20 R D categories+filter
+21 R D calendar colour category
+22 R D categories+subcategories
+23 N
+24 R D category
+25 R D edit/delete categories
+26 R D subfolders
+27 R D own categories
+28 R D colour work vs leisure
+29 R D focused category view
+30 R D folder for completed
+31 N
+32 N
+33 R D folders vs labels
+34 R D sub-grouping lists, see all tags
+35 R D folders
+36 R D groups tags smart lists
+37 R D show only lists, not all together
+38 R D labels
+39 R D folders
+40 N
+41 N
+42 R D subtasks displayed nicely
+43 N
+44 N
+45 N
+46 R D day at a glance across lists
+47 R H daily routine feature request
+48 R D checklist under a heading
+49 R H habit stacking praise
+50 N
+51 N
+52 N
+53 R D category then sub-list for the day
+54 N
+55 N
+56 N
+57 R D subtasks visible from Today
+58 N
+59 N
+60 R D sublist delete
+61 R D sub list
+62 R D subtask progress
+63 R D sublists reorder
+64 R D collapse subtasks under task
+65 R D subtasks
+66 R D check subtasks in widget
+67 R D subtasks + repeat
+68 R D subtasks
+69 R D repeating subtasks
+70 R D subtasks
+71 R D subtasks
+72 R D subtasks
+73 R D add subtasks
+74 N
+75 R D how to create subtasks
+76 R D subtasks
+77 R D sub list
+78 R D reorder subtasks
+79 R D subtasks

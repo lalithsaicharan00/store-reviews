@@ -1,0 +1,2280 @@
+{
+ "cites": {
+  "N1": {
+   "i": 7,
+   "store": "App Store",
+   "folder": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+   "app": "Habit Tracker",
+   "line": 2107,
+   "id": "9788442073",
+   "rating": 5,
+   "date": "2023-04-05",
+   "codes": [
+    "TM",
+    "T+"
+   ]
+  },
+  "N2": {
+   "i": 1218,
+   "store": "App Store",
+   "folder": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+   "app": "ShineDay",
+   "line": 13911,
+   "id": "5392534160",
+   "rating": 5,
+   "date": "2020-01-12",
+   "codes": [
+    "TC",
+    "TM"
+   ]
+  },
+  "N3": {
+   "i": 1155,
+   "store": "App Store",
+   "folder": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+   "app": "ShineDay",
+   "line": 4029,
+   "id": "12055682808",
+   "rating": 5,
+   "date": "2024-12-12",
+   "codes": [
+    "TM",
+    "$"
+   ]
+  },
+  "N4": {
+   "i": 891,
+   "store": "App Store",
+   "folder": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+   "app": "Habitify",
+   "line": 1674,
+   "id": "7273250234",
+   "rating": 3,
+   "date": "2021-04-28",
+   "codes": [
+    "T+",
+    "TM",
+    "TF",
+    "W"
+   ]
+  },
+  "N5": {
+   "i": 454,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 16094,
+   "id": "2284758864",
+   "rating": 5,
+   "date": "2018-03-08",
+   "codes": [
+    "T+",
+    "TM"
+   ]
+  },
+  "N6": {
+   "i": 1383,
+   "store": "App Store",
+   "folder": "72. Habit Hearts - Habit Tracker - Daily Goal & Routine Planner",
+   "app": "Habit Hearts",
+   "line": 64,
+   "id": "12143331423",
+   "rating": 4,
+   "date": "2025-01-04",
+   "codes": [
+    "TM"
+   ]
+  },
+  "N7": {
+   "i": 1210,
+   "store": "App Store",
+   "folder": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+   "app": "ShineDay",
+   "line": 12982,
+   "id": "5877686227",
+   "rating": 4,
+   "date": "2020-04-29",
+   "codes": [
+    "TM"
+   ]
+  },
+  "N8": {
+   "i": 638,
+   "store": "App Store",
+   "folder": "23. Streaks - The habit-forming to-do list",
+   "app": "Streaks",
+   "line": 7159,
+   "id": "1231800707",
+   "rating": 3,
+   "date": "2015-07-23",
+   "codes": [
+    "TM"
+   ]
+  },
+  "N9": {
+   "i": 2011,
+   "store": "Google Play",
+   "folder": "4. Me+ Lifestyle Routine",
+   "app": "Me+ Lifestyle Routine",
+   "line": 27477,
+   "id": "40521efd-6d41-4ab8-9a7c-429e2d2c06a2",
+   "rating": 1,
+   "date": "2023-09-27",
+   "codes": [
+    "TM",
+    "SF"
+   ]
+  },
+  "N10": {
+   "i": 170,
+   "store": "App Store",
+   "folder": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+   "app": "Finch",
+   "line": 40122,
+   "id": "11683046715",
+   "rating": 5,
+   "date": "2024-09-03",
+   "codes": [
+    "TM"
+   ]
+  },
+  "N11": {
+   "i": 1923,
+   "store": "Google Play",
+   "folder": "3. Loop Habit Tracker",
+   "app": "Loop Habit Tracker",
+   "line": 24177,
+   "id": "34c3b06c-f52b-41c1-ac64-4d536c78817f",
+   "rating": 4,
+   "date": "2019-01-13",
+   "codes": [
+    "TM"
+   ]
+  },
+  "N12": {
+   "i": 595,
+   "store": "App Store",
+   "folder": "20. Habit — Daily Tracker - Crush your goals like a boss",
+   "app": "Habit — Daily Tracker",
+   "line": 2400,
+   "id": "5623922975",
+   "rating": 5,
+   "date": "2020-03-06",
+   "codes": [
+    "TM"
+   ]
+  },
+  "N13": {
+   "i": 5652,
+   "store": "App Store",
+   "folder": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+   "app": "ShineDay",
+   "line": 13403,
+   "id": "5630917021",
+   "rating": 5,
+   "date": "2020-03-08",
+   "codes": [
+    "TM"
+   ]
+  },
+  "N14": {
+   "i": 1471,
+   "store": "Google Play",
+   "folder": "10. Habit Tracker - Habit Diary",
+   "app": "Habit Tracker",
+   "line": 30507,
+   "id": "c1bd8dc1-ca14-41af-82c2-222e81afb52d",
+   "rating": 5,
+   "date": "2024-05-07",
+   "codes": [
+    "TM",
+    "ST",
+    "SP"
+   ]
+  },
+  "N15": {
+   "i": 1775,
+   "store": "Google Play",
+   "folder": "2. HabitNow Daily Routine Planner",
+   "app": "HabitNow Daily Routine Planner",
+   "line": 856,
+   "id": "2ace8ebf-9228-49fc-b8e0-8ad6e4d21510",
+   "rating": 5,
+   "date": "2020-12-08",
+   "codes": [
+    "TM",
+    "ST"
+   ]
+  },
+  "N16": {
+   "i": 474,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 16821,
+   "id": "1608588546",
+   "rating": 5,
+   "date": "2017-05-08",
+   "codes": [
+    "TM",
+    "TE"
+   ]
+  },
+  "N17": {
+   "i": 592,
+   "store": "App Store",
+   "folder": "20. Habit — Daily Tracker - Crush your goals like a boss",
+   "app": "Habit — Daily Tracker",
+   "line": 1293,
+   "id": "5735732049",
+   "rating": 3,
+   "date": "2020-03-30",
+   "codes": [
+    "TM",
+    "TE"
+   ]
+  },
+  "N18": {
+   "i": 1247,
+   "store": "App Store",
+   "folder": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+   "app": "ShineDay",
+   "line": 15669,
+   "id": "3106839647",
+   "rating": 5,
+   "date": "2018-08-24",
+   "codes": [
+    "TM"
+   ]
+  },
+  "N19": {
+   "i": 3014,
+   "store": "Google Play",
+   "folder": "3. Loop Habit Tracker",
+   "app": "Loop Habit Tracker",
+   "line": 13369,
+   "id": "ad216dbf-970e-4c07-a13a-c00c792eb693",
+   "rating": 2,
+   "date": "2018-02-18",
+   "codes": [
+    "TM"
+   ]
+  },
+  "N20": {
+   "i": 360,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 11478,
+   "id": "10753562338",
+   "rating": 1,
+   "date": "2023-12-28",
+   "codes": [
+    "TE",
+    "L"
+   ]
+  },
+  "N21": {
+   "i": 1444,
+   "store": "Google Play",
+   "folder": "10. Habit Tracker - Habit Diary",
+   "app": "Habit Tracker",
+   "line": 21246,
+   "id": "f5195b34-33a6-4630-a3fb-8edfb0a6a64e",
+   "rating": 5,
+   "date": "2022-01-04",
+   "codes": [
+    "TE"
+   ]
+  },
+  "N22": {
+   "i": 1428,
+   "store": "Google Play",
+   "folder": "10. Habit Tracker - Habit Diary",
+   "app": "Habit Tracker",
+   "line": 11240,
+   "id": "73d3d410-4d23-410c-a2c8-599d7437d39d",
+   "rating": 5,
+   "date": "2022-02-27",
+   "codes": [
+    "TE",
+    "TC"
+   ]
+  },
+  "N23": {
+   "i": 461,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 16269,
+   "id": "1937839398",
+   "rating": 2,
+   "date": "2017-11-21",
+   "codes": [
+    "TE"
+   ]
+  },
+  "N24": {
+   "i": 392,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 13535,
+   "id": "5373172344",
+   "rating": 2,
+   "date": "2020-01-07",
+   "codes": [
+    "TE",
+    "TO"
+   ]
+  },
+  "N25": {
+   "i": 6232,
+   "store": "Google Play",
+   "folder": "10. Habit Tracker - Habit Diary",
+   "app": "Habit Tracker",
+   "line": 11582,
+   "id": "f901f947-673f-4e0e-a61a-9c4afe018152",
+   "rating": 5,
+   "date": "2021-12-24",
+   "codes": [
+    "TO",
+    "TE"
+   ]
+  },
+  "N26": {
+   "i": 382,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 13102,
+   "id": "5784357359",
+   "rating": 4,
+   "date": "2020-04-09",
+   "codes": [
+    "TE"
+   ]
+  },
+  "N27": {
+   "i": 1033,
+   "store": "App Store",
+   "folder": "43. Habit Hub - Routine Tracker - Daily Todo, Goals & Schedule",
+   "app": "Habit Hub",
+   "line": 123,
+   "id": "7017819148",
+   "rating": 4,
+   "date": "2021-02-20",
+   "codes": [
+    "TE",
+    "$"
+   ]
+  },
+  "N28": {
+   "i": 1178,
+   "store": "App Store",
+   "folder": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+   "app": "ShineDay",
+   "line": 9451,
+   "id": "7432329369",
+   "rating": 2,
+   "date": "2021-06-06",
+   "codes": [
+    "TE",
+    "TC"
+   ]
+  },
+  "N29": {
+   "i": 269,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 2748,
+   "id": "1213880362",
+   "rating": 4,
+   "date": "2015-06-17",
+   "codes": [
+    "TC",
+    "TF"
+   ]
+  },
+  "N30": {
+   "i": 1350,
+   "store": "App Store",
+   "folder": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+   "app": "Tappsk",
+   "line": 9078,
+   "id": "7921454987",
+   "rating": 5,
+   "date": "2021-10-16",
+   "codes": [
+    "T+",
+    "TC"
+   ]
+  },
+  "N31": {
+   "i": 1900,
+   "store": "Google Play",
+   "folder": "3. Loop Habit Tracker",
+   "app": "Loop Habit Tracker",
+   "line": 14058,
+   "id": "3d129a4d-ab9d-4238-a257-2cb2e0167ed1",
+   "rating": 4,
+   "date": "2017-09-25",
+   "codes": [
+    "TM",
+    "TC"
+   ]
+  },
+  "N32": {
+   "i": 1891,
+   "store": "Google Play",
+   "folder": "3. Loop Habit Tracker",
+   "app": "Loop Habit Tracker",
+   "line": 8351,
+   "id": "aefc0593-638f-42d6-a8e3-2de0648f556e",
+   "rating": 4,
+   "date": "2021-02-07",
+   "codes": [
+    "TC"
+   ]
+  },
+  "N33": {
+   "i": 466,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 16404,
+   "id": "1771112848",
+   "rating": 5,
+   "date": "2017-09-03",
+   "codes": [
+    "TC",
+    "TM"
+   ]
+  },
+  "N34": {
+   "i": 268,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 2736,
+   "id": "1230639082",
+   "rating": 5,
+   "date": "2015-07-21",
+   "codes": [
+    "TC",
+    "RC",
+    "$"
+   ]
+  },
+  "N35": {
+   "i": 894,
+   "store": "App Store",
+   "folder": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+   "app": "Habitify",
+   "line": 1723,
+   "id": "6443527252",
+   "rating": 4,
+   "date": "2020-09-19",
+   "codes": [
+    "GF",
+    "TO",
+    "TC",
+    "$"
+   ]
+  },
+  "N36": {
+   "i": 1586,
+   "store": "Google Play",
+   "folder": "12. Fabulous Daily Routine Planner",
+   "app": "Fabulous Daily Routine Planner",
+   "line": 38293,
+   "id": "a5c82075-43ed-474b-90bd-540665c6c4d4",
+   "rating": 4,
+   "date": "2021-04-21",
+   "codes": [
+    "T+",
+    "TC"
+   ]
+  },
+  "N37": {
+   "i": 1171,
+   "store": "App Store",
+   "folder": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+   "app": "ShineDay",
+   "line": 8787,
+   "id": "7807522940",
+   "rating": 5,
+   "date": "2021-09-15",
+   "codes": [
+    "TC",
+    "$"
+   ]
+  },
+  "N38": {
+   "i": 172,
+   "store": "App Store",
+   "folder": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+   "app": "Finch",
+   "line": 40674,
+   "id": "11566387171",
+   "rating": 3,
+   "date": "2024-08-03",
+   "codes": [
+    "TC"
+   ]
+  },
+  "N39": {
+   "i": 1829,
+   "store": "Google Play",
+   "folder": "20. MyRoutine - Routine Habit Goal",
+   "app": "MyRoutine",
+   "line": 519,
+   "id": "1eeac6a4-ec12-4cdb-a137-aea86fc6b7f3",
+   "rating": 1,
+   "date": "2026-01-01",
+   "codes": [
+    "TC"
+   ]
+  },
+  "N40": {
+   "i": 1946,
+   "store": "Google Play",
+   "folder": "33. Productive - Habit tracker",
+   "app": "Productive",
+   "line": 1221,
+   "id": "0559f5a0-6fc7-4b33-85ec-957b58ea2218",
+   "rating": 3,
+   "date": "2021-07-28",
+   "codes": [
+    "TC"
+   ]
+  },
+  "N41": {
+   "i": 877,
+   "store": "App Store",
+   "folder": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+   "app": "Habitify",
+   "line": 350,
+   "id": "5932629140",
+   "rating": 5,
+   "date": "2020-05-11",
+   "codes": [
+    "T+",
+    "TC",
+    "I"
+   ]
+  },
+  "N42": {
+   "i": 1483,
+   "store": "Google Play",
+   "folder": "10. Habit Tracker - Habit Diary",
+   "app": "Habit Tracker",
+   "line": 33135,
+   "id": "935a2c9a-1c34-4030-a99b-af632407a095",
+   "rating": 5,
+   "date": "2023-07-04",
+   "codes": [
+    "T+",
+    "TC"
+   ]
+  },
+  "N43": {
+   "i": 2051,
+   "store": "Google Play",
+   "folder": "49. RoutineFlow - Routine for ADHD",
+   "app": "RoutineFlow",
+   "line": 1541,
+   "id": "65f6ffc9-a333-4a76-aa14-b41ecc73d61c",
+   "rating": 5,
+   "date": "2024-02-16",
+   "codes": [
+    "R+",
+    "TV"
+   ]
+  },
+  "N44": {
+   "i": 1553,
+   "store": "Google Play",
+   "folder": "12. Fabulous Daily Routine Planner",
+   "app": "Fabulous Daily Routine Planner",
+   "line": 21005,
+   "id": "4d6948ba-becc-48ca-b8b6-8a255915c8b0",
+   "rating": 4,
+   "date": "2022-12-14",
+   "codes": [
+    "TV",
+    "$"
+   ]
+  },
+  "N45": {
+   "i": 4123,
+   "store": "Google Play",
+   "folder": "5. Routine Planner, Habit Tracker",
+   "app": "Routine Planner, Habit Tracker",
+   "line": 2935,
+   "id": "99789bb3-6f66-44cb-b333-1cefb3aefc05",
+   "rating": 4,
+   "date": "2020-12-20",
+   "codes": [
+    "R?",
+    "TV"
+   ]
+  },
+  "N46": {
+   "i": 1113,
+   "store": "App Store",
+   "folder": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+   "app": "Routine Planner, Habit Tracker",
+   "line": 2439,
+   "id": "12911127629",
+   "rating": 5,
+   "date": "2025-07-19",
+   "codes": [
+    "TV"
+   ]
+  },
+  "N47": {
+   "i": 7145,
+   "store": "Google Play",
+   "folder": "20. MyRoutine - Routine Habit Goal",
+   "app": "MyRoutine",
+   "line": 3108,
+   "id": "c607d2b5-dcb8-4ca9-beb0-5c0d8c24c843",
+   "rating": 5,
+   "date": "2021-12-13",
+   "codes": [
+    "TV"
+   ]
+  },
+  "N48": {
+   "i": 2975,
+   "store": "Google Play",
+   "folder": "20. MyRoutine - Routine Habit Goal",
+   "app": "MyRoutine",
+   "line": 827,
+   "id": "deca4978-5180-4780-a855-1d378a4de222",
+   "rating": 4,
+   "date": "2026-02-25",
+   "codes": [
+    "TV",
+    "RF",
+    "$"
+   ]
+  },
+  "N49": {
+   "i": 4490,
+   "store": "App Store",
+   "folder": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+   "app": "Habit Tracker",
+   "line": 54642,
+   "id": "9426679660",
+   "rating": 5,
+   "date": "2022-12-23",
+   "codes": [
+    "G?",
+    "TV"
+   ]
+  },
+  "N50": {
+   "i": 2980,
+   "store": "Google Play",
+   "folder": "20. MyRoutine - Routine Habit Goal",
+   "app": "MyRoutine",
+   "line": 920,
+   "id": "c68a02cf-b840-4896-943f-5685e16a653a",
+   "rating": 5,
+   "date": "2025-12-29",
+   "codes": [
+    "TV",
+    "$"
+   ]
+  },
+  "N51": {
+   "i": 6764,
+   "store": "Google Play",
+   "folder": "2. HabitNow Daily Routine Planner",
+   "app": "HabitNow Daily Routine Planner",
+   "line": 7348,
+   "id": "44564785-0c4d-4003-8f3e-6438286d77c9",
+   "rating": 4,
+   "date": "2023-07-13",
+   "codes": [
+    "TV"
+   ]
+  },
+  "N52": {
+   "i": 446,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 15802,
+   "id": "2947592923",
+   "rating": 5,
+   "date": "2018-07-22",
+   "codes": [
+    "TV"
+   ]
+  },
+  "N53": {
+   "i": 2049,
+   "store": "Google Play",
+   "folder": "49. RoutineFlow - Routine for ADHD",
+   "app": "RoutineFlow",
+   "line": 1457,
+   "id": "ae69bcb2-3343-45ee-980d-8b23221723fb",
+   "rating": 5,
+   "date": "2024-03-08",
+   "codes": [
+    "R+",
+    "TV"
+   ]
+  },
+  "N54": {
+   "i": 2307,
+   "store": "App Store",
+   "folder": "18. MyRoutine - Organize your day - Built around your real life",
+   "app": "MyRoutine",
+   "line": 536,
+   "id": "13556531783",
+   "rating": 5,
+   "date": "2025-12-26",
+   "codes": [
+    "TV",
+    "$"
+   ]
+  },
+  "N55": {
+   "i": 312,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 6785,
+   "id": "1315253865",
+   "rating": 3,
+   "date": "2016-01-12",
+   "codes": [
+    "TA",
+    "TH"
+   ]
+  },
+  "N56": {
+   "i": 333,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 9059,
+   "id": "5909868820",
+   "rating": 2,
+   "date": "2020-05-06",
+   "codes": [
+    "TH",
+    "TA",
+    "L",
+    "$"
+   ]
+  },
+  "N57": {
+   "i": 296,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 6093,
+   "id": "5299406526",
+   "rating": 2,
+   "date": "2019-12-21",
+   "codes": [
+    "TH",
+    "TA"
+   ]
+  },
+  "N58": {
+   "i": 404,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 13734,
+   "id": "5303610660",
+   "rating": 1,
+   "date": "2019-12-22",
+   "codes": [
+    "TH"
+   ]
+  },
+  "N59": {
+   "i": 462,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 16274,
+   "id": "1930839935",
+   "rating": 3,
+   "date": "2017-11-18",
+   "codes": [
+    "TH"
+   ]
+  },
+  "N60": {
+   "i": 391,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 13534,
+   "id": "5373909092",
+   "rating": 1,
+   "date": "2020-01-07",
+   "codes": [
+    "TH"
+   ]
+  },
+  "N61": {
+   "i": 1948,
+   "store": "Google Play",
+   "folder": "33. Productive - Habit tracker",
+   "app": "Productive",
+   "line": 1860,
+   "id": "fa85f13e-1c31-483e-81af-7538c3cee33b",
+   "rating": 3,
+   "date": "2020-06-15",
+   "codes": [
+    "TH"
+   ]
+  },
+  "N62": {
+   "i": 377,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 12787,
+   "id": "6035890321",
+   "rating": 4,
+   "date": "2020-06-04",
+   "codes": [
+    "TH"
+   ]
+  },
+  "N63": {
+   "i": 4826,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 10147,
+   "id": "3292332659",
+   "rating": 3,
+   "date": "2018-10-12",
+   "codes": [
+    "TH",
+    "TA",
+    "GV"
+   ]
+  },
+  "N64": {
+   "i": 959,
+   "store": "App Store",
+   "folder": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+   "app": "Me+ Lifestyle Routine",
+   "line": 7884,
+   "id": "10892491681",
+   "rating": 3,
+   "date": "2024-02-02",
+   "codes": [
+    "T?",
+    "TA"
+   ]
+  },
+  "N65": {
+   "i": 881,
+   "store": "App Store",
+   "folder": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+   "app": "Habitify",
+   "line": 1201,
+   "id": "3491889583",
+   "rating": 5,
+   "date": "2018-12-04",
+   "codes": [
+    "T+",
+    "TA"
+   ]
+  },
+  "N66": {
+   "i": 853,
+   "store": "App Store",
+   "folder": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+   "app": "Do Habits",
+   "line": 1256,
+   "id": "10790122614",
+   "rating": 5,
+   "date": "2024-01-06",
+   "codes": [
+    "T+",
+    "TA"
+   ]
+  },
+  "N67": {
+   "i": 925,
+   "store": "App Store",
+   "folder": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+   "app": "Habitify",
+   "line": 3656,
+   "id": "2050580709",
+   "rating": 4,
+   "date": "2018-01-02",
+   "codes": [
+    "T+",
+    "G?",
+    "TA"
+   ]
+  },
+  "N68": {
+   "i": 1472,
+   "store": "Google Play",
+   "folder": "10. Habit Tracker - Habit Diary",
+   "app": "Habit Tracker",
+   "line": 30775,
+   "id": "ae5e4d84-94a1-4082-8d68-ac10846dfe22",
+   "rating": 1,
+   "date": "2024-02-14",
+   "codes": [
+    "TF",
+    "TH"
+   ]
+  },
+  "N69": {
+   "i": 734,
+   "store": "App Store",
+   "folder": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+   "app": "Fabulous",
+   "line": 28672,
+   "id": "10266506628",
+   "rating": 5,
+   "date": "2023-08-17",
+   "codes": [
+    "TH"
+   ]
+  },
+  "N70": {
+   "i": 385,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 13159,
+   "id": "5748623490",
+   "rating": 3,
+   "date": "2020-04-02",
+   "codes": [
+    "TO"
+   ]
+  },
+  "N71": {
+   "i": 368,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 12091,
+   "id": "7609630224",
+   "rating": 5,
+   "date": "2021-07-23",
+   "codes": [
+    "TO",
+    "RS"
+   ]
+  },
+  "N72": {
+   "i": 1035,
+   "store": "App Store",
+   "folder": "43. Habit Hub - Routine Tracker - Daily Todo, Goals & Schedule",
+   "app": "Habit Hub",
+   "line": 245,
+   "id": "11840965309",
+   "rating": 3,
+   "date": "2024-10-16",
+   "codes": [
+    "TO",
+    "RS",
+    "L"
+   ]
+  },
+  "N73": {
+   "i": 954,
+   "store": "App Store",
+   "folder": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+   "app": "Me+ Lifestyle Routine",
+   "line": 7142,
+   "id": "10216117860",
+   "rating": 3,
+   "date": "2023-08-03",
+   "codes": [
+    "TR",
+    "TO"
+   ]
+  },
+  "N74": {
+   "i": 1249,
+   "store": "App Store",
+   "folder": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+   "app": "ShineDay",
+   "line": 15917,
+   "id": "2931388961",
+   "rating": 5,
+   "date": "2018-07-19",
+   "codes": [
+    "TO",
+    "W"
+   ]
+  },
+  "N75": {
+   "i": 3316,
+   "store": "Google Play",
+   "folder": "98. Rabit - Habit Tracker & Planner",
+   "app": "Rabit",
+   "line": 1138,
+   "id": "2b9386a5-9182-4d92-acc0-a0019109c570",
+   "rating": 4,
+   "date": "2021-03-12",
+   "codes": [
+    "TO",
+    "RS"
+   ]
+  },
+  "N76": {
+   "i": 4415,
+   "store": "App Store",
+   "folder": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+   "app": "Habit Tracker",
+   "line": 46847,
+   "id": "12582947693",
+   "rating": 4,
+   "date": "2025-04-25",
+   "codes": [
+    "GS",
+    "GL"
+   ]
+  },
+  "N77": {
+   "i": 6674,
+   "store": "Google Play",
+   "folder": "2. HabitNow Daily Routine Planner",
+   "app": "HabitNow Daily Routine Planner",
+   "line": 2879,
+   "id": "b0abfd3f-e29c-4456-9a6f-8dafcba6d561",
+   "rating": 5,
+   "date": "2025-05-23",
+   "codes": [
+    "GD",
+    "GL",
+    "S+"
+   ]
+  },
+  "N78": {
+   "i": 6033,
+   "store": "App Store",
+   "folder": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+   "app": "Way of Life",
+   "line": 4090,
+   "id": "1364076276",
+   "rating": 5,
+   "date": "2016-04-16",
+   "codes": [
+    "GL",
+    "GD"
+   ]
+  },
+  "N79": {
+   "i": 2947,
+   "store": "Google Play",
+   "folder": "19. TheFor - Habit Tracker",
+   "app": "TheFor",
+   "line": 370,
+   "id": "d9f47220-1ca5-443b-a977-b0ef18b8416b",
+   "rating": 4,
+   "date": "2024-03-18",
+   "codes": [
+    "RC",
+    "GV",
+    "TH"
+   ]
+  },
+  "N80": {
+   "i": 5291,
+   "store": "App Store",
+   "folder": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+   "app": "Do Habits",
+   "line": 4697,
+   "id": "6171008582",
+   "rating": 5,
+   "date": "2020-07-08",
+   "codes": [
+    "GV",
+    "GL"
+   ]
+  },
+  "N81": {
+   "i": 4491,
+   "store": "App Store",
+   "folder": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+   "app": "Habit Tracker",
+   "line": 54665,
+   "id": "9391204679",
+   "rating": 5,
+   "date": "2022-12-13",
+   "codes": [
+    "GV",
+    "GL"
+   ]
+  },
+  "N82": {
+   "i": 5734,
+   "store": "App Store",
+   "folder": "57. Habit Tracker - DayStamp - Daily Routine, Streak & Widget",
+   "app": "Habit Tracker",
+   "line": 213,
+   "id": "10904548372",
+   "rating": 5,
+   "date": "2024-02-05",
+   "codes": [
+    "G?",
+    "GV"
+   ]
+  },
+  "N83": {
+   "i": 1905,
+   "store": "Google Play",
+   "folder": "3. Loop Habit Tracker",
+   "app": "Loop Habit Tracker",
+   "line": 16497,
+   "id": "d9bc4062-0806-4cea-9c7c-ab3e6e2aec03",
+   "rating": 5,
+   "date": "2026-01-26",
+   "codes": [
+    "T?",
+    "GV"
+   ]
+  },
+  "N84": {
+   "i": 50,
+   "store": "App Store",
+   "folder": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+   "app": "Habit Tracker",
+   "line": 45059,
+   "id": "10177962947",
+   "rating": 4,
+   "date": "2023-07-24",
+   "codes": [
+    "GV",
+    "TA",
+    "GL"
+   ]
+  },
+  "N85": {
+   "i": 5610,
+   "store": "App Store",
+   "folder": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+   "app": "ShineDay",
+   "line": 8435,
+   "id": "8103345642",
+   "rating": 5,
+   "date": "2021-12-07",
+   "codes": [
+    "GD",
+    "G?"
+   ]
+  },
+  "N86": {
+   "i": 5389,
+   "store": "App Store",
+   "folder": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+   "app": "Me+ Lifestyle Routine",
+   "line": 11734,
+   "id": "13214934363",
+   "rating": 4,
+   "date": "2025-10-02",
+   "codes": [
+    "G+",
+    "GD"
+   ]
+  },
+  "N87": {
+   "i": 3312,
+   "store": "Google Play",
+   "folder": "9. Habit Tracker - HabitKit",
+   "app": "Habit Tracker",
+   "line": 2023,
+   "id": "1a8eb08e-d387-4738-af74-68edbd05b57f",
+   "rating": 5,
+   "date": "2026-09-01",
+   "codes": [
+    "G+",
+    "GD",
+    "RC",
+    "$"
+   ]
+  },
+  "N88": {
+   "i": 4252,
+   "store": "App Store",
+   "folder": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+   "app": "Habit Tracker",
+   "line": 2035,
+   "id": "10204139203",
+   "rating": 5,
+   "date": "2023-07-31",
+   "codes": [
+    "GS"
+   ]
+  },
+  "N89": {
+   "i": 8397,
+   "store": "Google Play",
+   "folder": "9. Habit Tracker - HabitKit",
+   "app": "Habit Tracker",
+   "line": 1060,
+   "id": "05ec473c-58e1-4cf7-af93-b2b2a5ea29ee",
+   "rating": 4,
+   "date": "2024-02-08",
+   "codes": [
+    "G?",
+    "GS"
+   ]
+  },
+  "N90": {
+   "i": 5322,
+   "store": "App Store",
+   "folder": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+   "app": "Habitify",
+   "line": 2262,
+   "id": "5099504216",
+   "rating": 5,
+   "date": "2019-11-07",
+   "codes": [
+    "GL",
+    "GS"
+   ]
+  },
+  "N91": {
+   "i": 7008,
+   "store": "Google Play",
+   "folder": "2. HabitNow Daily Routine Planner",
+   "app": "HabitNow Daily Routine Planner",
+   "line": 23197,
+   "id": "7824ccec-b7aa-4038-859b-815014712719",
+   "rating": 3,
+   "date": "2026-04-23",
+   "codes": [
+    "GS"
+   ]
+  },
+  "N92": {
+   "i": 5609,
+   "store": "App Store",
+   "folder": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+   "app": "ShineDay",
+   "line": 8388,
+   "id": "8147234803",
+   "rating": 4,
+   "date": "2021-12-19",
+   "codes": [
+    "GS"
+   ]
+  },
+  "N93": {
+   "i": 7141,
+   "store": "Google Play",
+   "folder": "20. MyRoutine - Routine Habit Goal",
+   "app": "MyRoutine",
+   "line": 2356,
+   "id": "f328972b-6e9e-4ab8-b2d5-f35529cbc704",
+   "rating": 5,
+   "date": "2023-01-07",
+   "codes": [
+    "GS"
+   ]
+  },
+  "N94": {
+   "i": 7721,
+   "store": "Google Play",
+   "folder": "30. Habit Tracker - Routine & Goals",
+   "app": "Habit Tracker",
+   "line": 3623,
+   "id": "8b2d8fe4-d028-4b01-bacb-7603fe73adc5",
+   "rating": 4,
+   "date": "2023-08-10",
+   "codes": [
+    "G?",
+    "GS"
+   ]
+  },
+  "N95": {
+   "i": 6596,
+   "store": "Google Play",
+   "folder": "14. Habit Pixel - Streak Tracker",
+   "app": "Habit Pixel",
+   "line": 554,
+   "id": "a270791b-c51c-4c7f-bc8b-fc20338d0d3a",
+   "rating": 5,
+   "date": "2026-07-05",
+   "codes": [
+    "GS"
+   ]
+  },
+  "N96": {
+   "i": 5968,
+   "store": "App Store",
+   "folder": "7. Habit Tracker - HabitKit - Streaks & Accountability",
+   "app": "Habit Tracker",
+   "line": 171,
+   "id": "14005073188",
+   "rating": 4,
+   "date": "2026-04-28",
+   "codes": [
+    "GS",
+    "G?"
+   ]
+  },
+  "N97": {
+   "i": 8387,
+   "store": "Google Play",
+   "folder": "9. Habit Tracker - HabitKit",
+   "app": "Habit Tracker",
+   "line": 600,
+   "id": "994a1a4e-61f4-4548-83b3-326d633b9131",
+   "rating": 5,
+   "date": "2025-03-11",
+   "codes": [
+    "GS",
+    "SP"
+   ]
+  },
+  "N98": {
+   "i": 1220,
+   "store": "App Store",
+   "folder": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+   "app": "ShineDay",
+   "line": 14228,
+   "id": "4869327189",
+   "rating": 5,
+   "date": "2019-10-01",
+   "codes": [
+    "GS"
+   ]
+  },
+  "N99": {
+   "i": 1225,
+   "store": "App Store",
+   "folder": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+   "app": "ShineDay",
+   "line": 14511,
+   "id": "4428439161",
+   "rating": 4,
+   "date": "2019-07-08",
+   "codes": [
+    "GS",
+    "TF"
+   ]
+  },
+  "N100": {
+   "i": 7559,
+   "store": "Google Play",
+   "folder": "3. Loop Habit Tracker",
+   "app": "Loop Habit Tracker",
+   "line": 18253,
+   "id": "f9fd4133-b9f4-4ca4-8574-ad98b4d6152a",
+   "rating": 4,
+   "date": "2020-05-16",
+   "codes": [
+    "G?",
+    "GS",
+    "SP",
+    "T?"
+   ]
+  },
+  "N101": {
+   "i": 883,
+   "store": "App Store",
+   "folder": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+   "app": "Habitify",
+   "line": 1289,
+   "id": "13224394178",
+   "rating": 3,
+   "date": "2025-10-04",
+   "codes": [
+    "TF",
+    "GS",
+    "W"
+   ]
+  },
+  "N102": {
+   "i": 82,
+   "store": "App Store",
+   "folder": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+   "app": "Habit Tracker",
+   "line": 54276,
+   "id": "9653787577",
+   "rating": 5,
+   "date": "2023-02-25",
+   "codes": [
+    "T+"
+   ]
+  },
+  "N103": {
+   "i": 7095,
+   "store": "Google Play",
+   "folder": "2. HabitNow Daily Routine Planner",
+   "app": "HabitNow Daily Routine Planner",
+   "line": 28020,
+   "id": "d725af06-65d5-43ea-a4c8-c7e28e6381cd",
+   "rating": 4,
+   "date": "2021-07-29",
+   "codes": [
+    "GS"
+   ]
+  },
+  "N104": {
+   "i": 4225,
+   "store": "Google Play",
+   "folder": "24. Habit Tracker",
+   "app": "Habit Tracker",
+   "line": 9952,
+   "id": "1b67c4dd-b3b2-4153-b8c8-9a2911602ce3",
+   "rating": 4,
+   "date": "2017-11-10",
+   "codes": [
+    "GS",
+    "W",
+    "L"
+   ]
+  },
+  "N105": {
+   "i": 4635,
+   "store": "App Store",
+   "folder": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+   "app": "Finch",
+   "line": 33797,
+   "id": "12559327482",
+   "rating": 1,
+   "date": "2025-04-18",
+   "codes": [
+    "GS",
+    "L"
+   ]
+  },
+  "N106": {
+   "i": 3474,
+   "store": "App Store",
+   "folder": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+   "app": "Routine Planner, Habit Tracker",
+   "line": 3192,
+   "id": "7959641419",
+   "rating": 4,
+   "date": "2021-10-27",
+   "codes": [
+    "R?",
+    "S?",
+    "TC"
+   ]
+  },
+  "N107": {
+   "i": 3223,
+   "store": "Google Play",
+   "folder": "5. Routine Planner, Habit Tracker",
+   "app": "Routine Planner, Habit Tracker",
+   "line": 3154,
+   "id": "c03bda07-3969-4ec7-8de7-3bb5ab5d2c36",
+   "rating": 5,
+   "date": "2020-07-29",
+   "codes": [
+    "R+"
+   ]
+  },
+  "N108": {
+   "i": 4230,
+   "store": "Google Play",
+   "folder": "49. RoutineFlow - Routine for ADHD",
+   "app": "RoutineFlow",
+   "line": 2386,
+   "id": "36f563d0-837f-46cc-9d16-60d8cb433ba3",
+   "rating": 5,
+   "date": "2023-08-30",
+   "codes": [
+    "R+",
+    "GS"
+   ]
+  },
+  "N109": {
+   "i": 3222,
+   "store": "Google Play",
+   "folder": "5. Routine Planner, Habit Tracker",
+   "app": "Routine Planner, Habit Tracker",
+   "line": 3133,
+   "id": "3570c16c-2ed0-44e1-810c-c7633ecd8068",
+   "rating": 4,
+   "date": "2020-08-20",
+   "codes": [
+    "R?"
+   ]
+  },
+  "N110": {
+   "i": 874,
+   "store": "App Store",
+   "folder": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+   "app": "Habitify",
+   "line": 224,
+   "id": "5921374406",
+   "rating": 5,
+   "date": "2020-05-09",
+   "codes": [
+    "TF"
+   ]
+  },
+  "N111": {
+   "i": 1707,
+   "store": "Google Play",
+   "folder": "12. Fabulous Daily Routine Planner",
+   "app": "Fabulous Daily Routine Planner",
+   "line": 112535,
+   "id": "1a38d757-a68a-496b-a84c-943ec5d46ed5",
+   "rating": 3,
+   "date": "2016-04-20",
+   "codes": [
+    "TF",
+    "TH",
+    "TA",
+    "TC"
+   ]
+  },
+  "N112": {
+   "i": 238,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 308,
+   "id": "5985266266",
+   "rating": 4,
+   "date": "2020-05-23",
+   "codes": [
+    "TF",
+    "TV"
+   ]
+  },
+  "N113": {
+   "i": 6702,
+   "store": "Google Play",
+   "folder": "2. HabitNow Daily Routine Planner",
+   "app": "HabitNow Daily Routine Planner",
+   "line": 4259,
+   "id": "222e7a13-dce2-4184-b794-d94d7ab03284",
+   "rating": 5,
+   "date": "2024-09-10",
+   "codes": [
+    "G+",
+    "GF",
+    "$"
+   ]
+  },
+  "N114": {
+   "i": 6109,
+   "store": "App Store",
+   "folder": "83. Roubit  - Fun Routine Planner - Bunny Diary & Tasks",
+   "app": "Roubit",
+   "line": 321,
+   "id": "9285542940",
+   "rating": 3,
+   "date": "2022-11-13",
+   "codes": [
+    "GF"
+   ]
+  },
+  "N115": {
+   "i": 7258,
+   "store": "Google Play",
+   "folder": "24. Habit Tracker",
+   "app": "Habit Tracker",
+   "line": 23881,
+   "id": "3064b05d-5580-4a3e-b037-18ce85633014",
+   "rating": 1,
+   "date": "2020-01-19",
+   "codes": [
+    "GF"
+   ]
+  },
+  "N116": {
+   "i": 6911,
+   "store": "Google Play",
+   "folder": "2. HabitNow Daily Routine Planner",
+   "app": "HabitNow Daily Routine Planner",
+   "line": 15175,
+   "id": "b5a5dd3a-93f8-40fc-9aca-7fddea00dcbb",
+   "rating": 3,
+   "date": "2024-01-26",
+   "codes": [
+    "RC",
+    "GL",
+    "GF",
+    "GD"
+   ]
+  },
+  "N117": {
+   "i": 2522,
+   "store": "App Store",
+   "folder": "41. Awesome Habits - Habit Tracker - Streaks, days since & goals",
+   "app": "Awesome Habits",
+   "line": 767,
+   "id": "8290170982",
+   "rating": 4,
+   "date": "2022-01-28",
+   "codes": [
+    "RC",
+    "GS",
+    "W",
+    "RS"
+   ]
+  },
+  "N118": {
+   "i": 2111,
+   "store": "Google Play",
+   "folder": "5. Routine Planner, Habit Tracker",
+   "app": "Routine Planner, Habit Tracker",
+   "line": 2383,
+   "id": "c0ff81a5-b155-49ba-9d00-cef13c516089",
+   "rating": 5,
+   "date": "2021-09-27",
+   "codes": [
+    "R+",
+    "RS"
+   ]
+  },
+  "N119": {
+   "i": 3170,
+   "store": "Google Play",
+   "folder": "5. Routine Planner, Habit Tracker",
+   "app": "Routine Planner, Habit Tracker",
+   "line": 804,
+   "id": "fe93abb1-92ba-4a0d-925a-4ad07fbd6077",
+   "rating": 4,
+   "date": "2025-07-08",
+   "codes": [
+    "RS",
+    "R?"
+   ]
+  },
+  "N120": {
+   "i": 3140,
+   "store": "Google Play",
+   "folder": "49. RoutineFlow - Routine for ADHD",
+   "app": "RoutineFlow",
+   "line": 3330,
+   "id": "8e1e08c6-12fb-4195-b2f7-90c8cbd03d2d",
+   "rating": 5,
+   "date": "2023-04-02",
+   "codes": [
+    "R+",
+    "RS"
+   ]
+  },
+  "N121": {
+   "i": 2482,
+   "store": "App Store",
+   "folder": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+   "app": "Habitify",
+   "line": 325,
+   "id": "8083522711",
+   "rating": 2,
+   "date": "2021-12-01",
+   "codes": [
+    "RS",
+    "RF",
+    "$"
+   ]
+  },
+  "N122": {
+   "i": 2476,
+   "store": "App Store",
+   "folder": "28. Habit Rabbit - Habit Tracker - Your productivity pet",
+   "app": "Habit Rabbit",
+   "line": 625,
+   "id": "10969074775",
+   "rating": 4,
+   "date": "2024-02-23",
+   "codes": [
+    "HT",
+    "RF"
+   ]
+  },
+  "N123": {
+   "i": 2298,
+   "store": "App Store",
+   "folder": "18. MyRoutine - Organize your day - Built around your real life",
+   "app": "MyRoutine",
+   "line": 311,
+   "id": "14504465163",
+   "rating": 2,
+   "date": "2026-09-03",
+   "codes": [
+    "HT",
+    "RF",
+    "$",
+    "L"
+   ]
+  },
+  "N124": {
+   "i": 2123,
+   "store": "Google Play",
+   "folder": "5. Routine Planner, Habit Tracker",
+   "app": "Routine Planner, Habit Tracker",
+   "line": 2818,
+   "id": "7d920411-aee7-44d6-803f-e8d731fdcb00",
+   "rating": 5,
+   "date": "2021-02-07",
+   "codes": [
+    "RU",
+    "TC"
+   ]
+  },
+  "N125": {
+   "i": 2141,
+   "store": "Google Play",
+   "folder": "5. Routine Planner, Habit Tracker",
+   "app": "Routine Planner, Habit Tracker",
+   "line": 4702,
+   "id": "37357318-3ba3-4758-9bf4-1d6344873b6a",
+   "rating": 1,
+   "date": "2023-04-17",
+   "codes": [
+    "RF",
+    "$"
+   ]
+  },
+  "N126": {
+   "i": 2645,
+   "store": "App Store",
+   "folder": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+   "app": "Routine Planner, Habit Tracker",
+   "line": 2970,
+   "id": "9803199216",
+   "rating": 1,
+   "date": "2023-04-09",
+   "codes": [
+    "RF",
+    "L"
+   ]
+  },
+  "N127": {
+   "i": 2614,
+   "store": "App Store",
+   "folder": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+   "app": "Routine Planner, Habit Tracker",
+   "line": 2072,
+   "id": "14039999029",
+   "rating": 4,
+   "date": "2026-05-08",
+   "codes": [
+    "RF"
+   ]
+  },
+  "N128": {
+   "i": 1533,
+   "store": "Google Play",
+   "folder": "12. Fabulous Daily Routine Planner",
+   "app": "Fabulous Daily Routine Planner",
+   "line": 12510,
+   "id": "4e6e510d-83c9-4d9e-8f1f-24cd58e8d362",
+   "rating": 1,
+   "date": "2025-01-17",
+   "codes": [
+    "RF"
+   ]
+  },
+  "N129": {
+   "i": 1093,
+   "store": "App Store",
+   "folder": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+   "app": "Routine Planner, Habit Tracker",
+   "line": 1544,
+   "id": "7538016690",
+   "rating": 5,
+   "date": "2021-07-04",
+   "codes": [
+    "TA",
+    "RF",
+    "R?"
+   ]
+  },
+  "N130": {
+   "i": 395,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 13641,
+   "id": "5339345897",
+   "rating": 2,
+   "date": "2019-12-30",
+   "codes": [
+    "TF"
+   ]
+  },
+  "N131": {
+   "i": 399,
+   "store": "App Store",
+   "folder": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+   "app": "Productive",
+   "line": 13689,
+   "id": "5319311402",
+   "rating": 1,
+   "date": "2019-12-25",
+   "codes": [
+    "TF"
+   ]
+  },
+  "N132": {
+   "i": 760,
+   "store": "App Store",
+   "folder": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+   "app": "Fabulous",
+   "line": 32975,
+   "id": "8201856419",
+   "rating": 3,
+   "date": "2022-01-04",
+   "codes": [
+    "TF"
+   ]
+  },
+  "N133": {
+   "i": 1638,
+   "store": "Google Play",
+   "folder": "12. Fabulous Daily Routine Planner",
+   "app": "Fabulous Daily Routine Planner",
+   "line": 58394,
+   "id": "02552f23-6041-4e0f-a8e6-e0fcce56238f",
+   "rating": 5,
+   "date": "2019-11-07",
+   "codes": [
+    "TF"
+   ]
+  },
+  "N134": {
+   "i": 858,
+   "store": "App Store",
+   "folder": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+   "app": "Do Habits",
+   "line": 2511,
+   "id": "12789423554",
+   "rating": 1,
+   "date": "2025-06-18",
+   "codes": [
+    "GF",
+    "TF"
+   ]
+  },
+  "N135": {
+   "i": 1681,
+   "store": "Google Play",
+   "folder": "12. Fabulous Daily Routine Planner",
+   "app": "Fabulous Daily Routine Planner",
+   "line": 81446,
+   "id": "6db12307-a1c5-4623-a0f2-d0611d01a94f",
+   "rating": 2,
+   "date": "2021-05-06",
+   "codes": [
+    "TE",
+    "TF"
+   ]
+  },
+  "N136": {
+   "i": 1414,
+   "store": "App Store",
+   "folder": "9. Dear Me - Daily Routine Tracker - Self Care & ADHD Habit Planner",
+   "app": "Dear Me",
+   "line": 450,
+   "id": "12206654248",
+   "rating": 1,
+   "date": "2025-01-20",
+   "codes": [
+    "G?",
+    "TF"
+   ]
+  },
+  "N137": {
+   "i": 57,
+   "store": "App Store",
+   "folder": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+   "app": "Habit Tracker",
+   "line": 45897,
+   "id": "9145349154",
+   "rating": 4,
+   "date": "2022-10-03",
+   "codes": [
+    "TM",
+    "TF"
+   ]
+  },
+  "N138": {
+   "i": 3746,
+   "store": "Google Play",
+   "folder": "2. HabitNow Daily Routine Planner",
+   "app": "HabitNow Daily Routine Planner",
+   "line": 1682,
+   "id": "376896c0-e5e3-4be5-b17d-4334e2eed1e0",
+   "rating": 5,
+   "date": "2026-02-23",
+   "codes": [
+    "SP"
+   ]
+  },
+  "N139": {
+   "i": 3802,
+   "store": "Google Play",
+   "folder": "2. HabitNow Daily Routine Planner",
+   "app": "HabitNow Daily Routine Planner",
+   "line": 14799,
+   "id": "8016aab6-baf4-4bdb-86d1-ba07deaa1018",
+   "rating": 4,
+   "date": "2024-06-10",
+   "codes": [
+    "ST",
+    "GS"
+   ]
+  }
+ },
+ "groups": {
+  "TM_MS": [
+   "N1",
+   "N2",
+   "N3",
+   "N4",
+   "N5",
+   "N6",
+   "N7"
+  ],
+  "TM_SK": [
+   "N8",
+   "N9"
+  ],
+  "TM_RM": [
+   "N10",
+   "N11"
+  ],
+  "TM_CT": [
+   "N12",
+   "N13",
+   "N14",
+   "N15"
+  ],
+  "TM_IV": [
+   "N16",
+   "N17"
+  ],
+  "TM_DUP": [
+   "N18",
+   "N19"
+  ],
+  "TE_SC": [
+   "N20",
+   "N21",
+   "N22"
+  ],
+  "TE_RE": [
+   "E22",
+   "N23"
+  ],
+  "TE_SO": [
+   "N24",
+   "N25"
+  ],
+  "TE_TL": [
+   "N26",
+   "N27"
+  ],
+  "TE_CO": [
+   "N28"
+  ],
+  "TC_BD": [
+   "E19",
+   "N29",
+   "N30"
+  ],
+  "TC_DS": [
+   "E20",
+   "E21",
+   "N31",
+   "N32"
+  ],
+  "TC_MO": [
+   "N33",
+   "N34",
+   "N35"
+  ],
+  "TC_RN": [
+   "N36",
+   "N37"
+  ],
+  "TC_SH": [
+   "N38",
+   "N39",
+   "N40"
+  ],
+  "TC_PR": [
+   "N41",
+   "N42"
+  ],
+  "TV_WK": [
+   "N43",
+   "N44",
+   "N45",
+   "N46"
+  ],
+  "TV_SF": [
+   "N47",
+   "E32",
+   "N48"
+  ],
+  "TV_SE": [
+   "N49",
+   "N50"
+  ],
+  "TV_TR": [
+   "N51",
+   "N52"
+  ],
+  "TV_SH": [
+   "N53"
+  ],
+  "TV_MB": [
+   "N54"
+  ],
+  "TH_NO": [
+   "N55",
+   "N56"
+  ],
+  "TH_AS": [
+   "E12",
+   "N57",
+   "N58"
+  ],
+  "TH_HD": [
+   "N59",
+   "E13"
+  ],
+  "TH_OFF": [
+   "N60",
+   "N61"
+  ],
+  "TH_DV": [
+   "N62",
+   "E11"
+  ],
+  "TH_HDR": [
+   "E10",
+   "N63",
+   "N64"
+  ],
+  "TH_BOTH": [
+   "N65",
+   "N66",
+   "N67"
+  ],
+  "TH_ANY": [
+   "N68",
+   "N69"
+  ],
+  "TO": [
+   "N70",
+   "N71",
+   "N72",
+   "N73",
+   "N74",
+   "N75"
+  ],
+  "GL": [
+   "E48",
+   "E51",
+   "N76",
+   "N77",
+   "N78",
+   "N79"
+  ],
+  "GV": [
+   "N80",
+   "N81",
+   "N82",
+   "N83",
+   "N84"
+  ],
+  "GD": [
+   "E58",
+   "E59",
+   "N85",
+   "N86",
+   "N87"
+  ],
+  "GS_DC": [
+   "E64",
+   "N88",
+   "N89"
+  ],
+  "GS_FIL": [
+   "N76",
+   "N90"
+  ],
+  "GS_CMP": [
+   "N91",
+   "N92"
+  ],
+  "GS_TR": [
+   "E65",
+   "N93"
+  ],
+  "GS_OV": [
+   "N94",
+   "N95"
+  ],
+  "GS_TGT": [
+   "N96",
+   "N97"
+  ],
+  "GS_SEC": [
+   "E5",
+   "N98",
+   "N99",
+   "N100",
+   "N101",
+   "N102"
+  ],
+  "GS_TIME": [
+   "E67",
+   "N103"
+  ],
+  "GS_W": [
+   "N104"
+  ],
+  "GS_LOST": [
+   "N105"
+  ],
+  "SEC_RUN": [
+   "N106",
+   "N107",
+   "N108",
+   "N109"
+  ],
+  "SEC_NEG": [
+   "N110",
+   "N111"
+  ],
+  "SEC_RESET": [
+   "E39",
+   "E40",
+   "N112"
+  ],
+  "GF": [
+   "E68",
+   "E69",
+   "N35",
+   "N113",
+   "N114",
+   "E73",
+   "N115"
+  ],
+  "RC": [
+   "E111",
+   "N116",
+   "N117"
+  ],
+  "RS": [
+   "N118",
+   "N119",
+   "N120",
+   "N121"
+  ],
+  "HT": [
+   "N122",
+   "N123"
+  ],
+  "RU": [
+   "N124"
+  ],
+  "RF_B": [
+   "N125",
+   "N126"
+  ],
+  "RF_N": [
+   "E96",
+   "N127"
+  ],
+  "RF_P": [
+   "E102"
+  ],
+  "RF_TM": [
+   "E86"
+  ],
+  "RF_W": [
+   "E99"
+  ],
+  "RF_O": [
+   "E105"
+  ],
+  "RF_X": [
+   "N128"
+  ],
+  "RF_BG": [
+   "E94"
+  ],
+  "RF_TT": [
+   "E108"
+  ],
+  "RF_C": [
+   "N129"
+  ],
+  "TF_B": [
+   "N130",
+   "N131"
+  ],
+  "TF_X": [
+   "N132"
+  ],
+  "TF_P": [
+   "E33"
+  ],
+  "TF_RT": [
+   "E19"
+  ],
+  "TF_FC": [
+   "E36"
+  ],
+  "TF_H": [
+   "E34"
+  ],
+  "TF_RM": [
+   "N133"
+  ],
+  "TF_R": [
+   "N134"
+  ],
+  "TF_EX": [
+   "N135"
+  ],
+  "TF_CD": [
+   "N136"
+  ],
+  "TF_MS": [
+   "N137"
+  ],
+  "SUB_Q": [
+   "E120"
+  ],
+  "SUB_SP": [
+   "E124",
+   "N138"
+  ],
+  "SUB_ST": [
+   "E128",
+   "N139"
+  ],
+  "SUB_SF": [
+   "E133",
+   "E134",
+   "E135",
+   "E136"
+  ],
+  "SUB_SN": [
+   "E137"
+  ]
+ }
+}

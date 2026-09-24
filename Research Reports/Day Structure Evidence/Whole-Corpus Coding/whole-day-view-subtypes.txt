@@ -1,0 +1,92 @@
+# TH ∪ TA sub-types: AS app auto-opens / auto-switches to the current period (other habits out of sight, empty screen)
+# NO no single whole-day overview; must swipe or tap between period pages | HD unfinished habits hidden once their window passes (or by a filter)
+# OFF want to switch the time-of-day split off entirely | DV want to choose / remember the default view (All)
+# HDR want one list with section headers (grouped, on one screen) | BOTH praise having both 'now' and 'whole day' views | ANY anytime habits handled badly / forced into a period
+282 OFF DV
+283 NO
+285 NO AS
+292 DV
+295 AS
+296 NO AS
+297 AS NO
+312 NO
+327 NO AS
+333 NO
+347 AS
+367 OFF AS
+376 OFF
+377 DV
+384 OFF
+391 OFF
+394 ANY
+396 AS NO
+398 NO
+400 OFF
+402 NO OFF
+404 AS
+405 OFF
+406 NO
+462 HD
+550 NO
+557 NO
+571 OFF
+644 ANY
+714 ANY
+734 ANY
+880 AS
+897 HD
+910 OFF
+912 OFF
+929 HD
+1057 OFF NO
+1228 DV
+1271 OFF
+1418 ANY
+1472 ANY
+1480 OFF
+1510 NO
+1601 ANY
+1604 ANY
+1679 ANY
+1707 NO
+1948 OFF
+1970 OFF
+1974 OFF
+1985 ANY
+2947 DV
+4792 DV HDR
+4826 DV HDR
+5004 NO
+5030 NO
+5060 NO
+6416 NO
+7393 DV
+7491 DV
+7686 DV
+7968 NO
+8183 HD
+19 HDR
+24 HDR
+49 HDR
+50 HDR
+62 HDR
+197 HDR
+346 DV
+420 BOTH
+570 HDR
+606 HDR
+853 BOTH
+881 BOTH
+908 HDR
+921 NO
+925 BOTH
+943 BOTH
+958 NO ANY
+959 HDR
+1093 NO
+1839 NO
+1966 HDR
+3124 ANY
+3954 HDR
+4996 HDR
+1431 DV

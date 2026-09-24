@@ -1,0 +1,76 @@
+{
+  "date": "2026-09-23",
+  "completed_app_store_reports": 70,
+  "ledger_card_files": 72,
+  "ledger_cards": 7590,
+  "core_canonical_retrieval_cards": 92,
+  "saved_cards_with_supplemental_evidence": 97,
+  "raw_app_store_reviews_spot_checked": 30,
+  "raw_excerpts_saved_total": 45,
+  "tiimo_play_reviews_available": 223,
+  "tiimo_english_keyword_matches_inspected": 15,
+  "method": "Programmatic screening of the entire indexed ledger; contextual reading of relevant cards/report sections; targeted raw-review verification. Not a fresh full-corpus manual review classification. Canonical counts include inventory, repeated claims, mixed bundles and recommendations, not independent votes. Tiimo keyword retrieval is English-only and not a prevalence estimate.",
+  "canonical_retrieval": {
+    "C045": {
+      "cards": 54,
+      "source_ids": [
+        "R01",
+        "R03",
+        "R05",
+        "R07",
+        "R08",
+        "R09",
+        "R13",
+        "R20",
+        "R23",
+        "R25",
+        "R26",
+        "R27",
+        "R31",
+        "R33",
+        "R36",
+        "R43",
+        "R46",
+        "R48",
+        "R53",
+        "R56",
+        "R58",
+        "R59",
+        "R60",
+        "R65",
+        "R76",
+        "R79",
+        "R84",
+        "R86",
+        "R89"
+      ]
+    },
+    "C053": {
+      "cards": 12,
+      "source_ids": [
+        "R01",
+        "R13",
+        "R23",
+        "R33",
+        "R54",
+        "R72",
+        "R76"
+      ]
+    },
+    "C120": {
+      "cards": 22,
+      "source_ids": [
+        "R05",
+        "R17",
+        "R18",
+        "R50"
+      ]
+    },
+    "C206": {
+      "cards": 6,
+      "source_ids": [
+        "R18"
+      ]
+    }
+  }
+}

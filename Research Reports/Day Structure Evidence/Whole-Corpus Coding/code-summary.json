@@ -1,0 +1,1409 @@
+{
+ "N_index": 8439,
+ "N_coded": 5438,
+ "errors": [],
+ "by_store_index": {
+  "app": 4278,
+  "play": 4161
+ },
+ "by_store_coded": {
+  "app": 2467,
+  "play": 2971
+ },
+ "codes": {
+  "G+": {
+   "n": 749,
+   "app": 337,
+   "play": 412,
+   "D": 81,
+   "$": 25,
+   "L": 0,
+   "W": 8,
+   "I": 7,
+   "n_apps": 73,
+   "top_apps": [
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     201
+    ],
+    [
+     "app:59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+     77
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     59
+    ],
+    [
+     "play:4. Me+ Lifestyle Routine",
+     40
+    ],
+    [
+     "play:3. Loop Habit Tracker",
+     29
+    ],
+    [
+     "app:76. Way of Life - Habit Tracker - Build a better, stronger you",
+     28
+    ]
+   ],
+   "ratings": {
+    "1": 4,
+    "2": 6,
+    "3": 20,
+    "4": 86,
+    "5": 633
+   }
+  },
+  "G?": {
+   "n": 1011,
+   "app": 369,
+   "play": 642,
+   "D": 78,
+   "$": 18,
+   "L": 12,
+   "W": 16,
+   "I": 0,
+   "n_apps": 81,
+   "top_apps": [
+    [
+     "play:3. Loop Habit Tracker",
+     344
+    ],
+    [
+     "play:65. Goal & Habit Tracker Calendar",
+     51
+    ],
+    [
+     "play:8. Habitica - Gamify Your Tasks",
+     44
+    ],
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     43
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     40
+    ],
+    [
+     "app:52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+     38
+    ]
+   ],
+   "ratings": {
+    "1": 20,
+    "2": 19,
+    "3": 111,
+    "4": 353,
+    "5": 508
+   }
+  },
+  "GD": {
+   "n": 60,
+   "app": 22,
+   "play": 38,
+   "D": 3,
+   "$": 7,
+   "L": 1,
+   "W": 1,
+   "I": 0,
+   "n_apps": 24,
+   "top_apps": [
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     17
+    ],
+    [
+     "play:4. Me+ Lifestyle Routine",
+     8
+    ],
+    [
+     "app:52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+     7
+    ],
+    [
+     "app:59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+     3
+    ],
+    [
+     "play:38. Roubit -Daily Life Routine Care",
+     2
+    ],
+    [
+     "play:9. Habit Tracker - HabitKit",
+     2
+    ]
+   ],
+   "ratings": {
+    "1": 1,
+    "3": 11,
+    "4": 14,
+    "5": 34
+   }
+  },
+  "GF": {
+   "n": 492,
+   "app": 180,
+   "play": 312,
+   "D": 18,
+   "$": 72,
+   "L": 29,
+   "W": 9,
+   "I": 0,
+   "n_apps": 67,
+   "top_apps": [
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     99
+    ],
+    [
+     "play:4. Me+ Lifestyle Routine",
+     55
+    ],
+    [
+     "play:8. Habitica - Gamify Your Tasks",
+     53
+    ],
+    [
+     "app:23. Streaks - The habit-forming to-do list",
+     32
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     29
+    ],
+    [
+     "play:24. Habit Tracker",
+     21
+    ]
+   ],
+   "ratings": {
+    "1": 55,
+    "2": 53,
+    "3": 108,
+    "4": 146,
+    "5": 130
+   }
+  },
+  "GL": {
+   "n": 287,
+   "app": 94,
+   "play": 193,
+   "D": 27,
+   "$": 4,
+   "L": 2,
+   "W": 16,
+   "I": 0,
+   "n_apps": 48,
+   "top_apps": [
+    [
+     "play:3. Loop Habit Tracker",
+     64
+    ],
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     60
+    ],
+    [
+     "play:8. Habitica - Gamify Your Tasks",
+     22
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     19
+    ],
+    [
+     "app:76. Way of Life - Habit Tracker - Build a better, stronger you",
+     13
+    ],
+    [
+     "app:59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+     12
+    ]
+   ],
+   "ratings": {
+    "1": 6,
+    "2": 9,
+    "3": 32,
+    "4": 88,
+    "5": 152
+   }
+  },
+  "GN": {
+   "n": 8,
+   "app": 5,
+   "play": 3,
+   "D": 0,
+   "$": 0,
+   "L": 0,
+   "W": 0,
+   "I": 0,
+   "n_apps": 5,
+   "top_apps": [
+    [
+     "play:3. Loop Habit Tracker",
+     3
+    ],
+    [
+     "app:13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+     2
+    ],
+    [
+     "app:10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+     1
+    ],
+    [
+     "app:3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+     1
+    ],
+    [
+     "app:33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+     1
+    ]
+   ],
+   "ratings": {
+    "4": 1,
+    "5": 7
+   }
+  },
+  "GS": {
+   "n": 179,
+   "app": 84,
+   "play": 95,
+   "D": 5,
+   "$": 5,
+   "L": 5,
+   "W": 7,
+   "I": 0,
+   "n_apps": 44,
+   "top_apps": [
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     31
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     22
+    ],
+    [
+     "play:3. Loop Habit Tracker",
+     20
+    ],
+    [
+     "app:52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+     11
+    ],
+    [
+     "play:8. Habitica - Gamify Your Tasks",
+     11
+    ],
+    [
+     "app:76. Way of Life - Habit Tracker - Build a better, stronger you",
+     9
+    ]
+   ],
+   "ratings": {
+    "1": 5,
+    "2": 2,
+    "3": 17,
+    "4": 66,
+    "5": 89
+   }
+  },
+  "GV": {
+   "n": 165,
+   "app": 56,
+   "play": 109,
+   "D": 7,
+   "$": 3,
+   "L": 1,
+   "W": 3,
+   "I": 0,
+   "n_apps": 37,
+   "top_apps": [
+    [
+     "play:3. Loop Habit Tracker",
+     58
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     16
+    ],
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     15
+    ],
+    [
+     "app:59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+     8
+    ],
+    [
+     "app:31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+     7
+    ],
+    [
+     "play:24. Habit Tracker",
+     6
+    ]
+   ],
+   "ratings": {
+    "1": 4,
+    "2": 1,
+    "3": 16,
+    "4": 65,
+    "5": 79
+   }
+  },
+  "HT": {
+   "n": 94,
+   "app": 37,
+   "play": 57,
+   "D": 0,
+   "$": 6,
+   "L": 2,
+   "W": 1,
+   "I": 0,
+   "n_apps": 37,
+   "top_apps": [
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     13
+    ],
+    [
+     "app:52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+     10
+    ],
+    [
+     "play:10. Habit Tracker - Habit Diary",
+     8
+    ],
+    [
+     "play:3. Loop Habit Tracker",
+     5
+    ],
+    [
+     "play:98. Rabit - Habit Tracker & Planner",
+     5
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     4
+    ]
+   ],
+   "ratings": {
+    "1": 2,
+    "2": 4,
+    "3": 9,
+    "4": 19,
+    "5": 60
+   }
+  },
+  "R+": {
+   "n": 369,
+   "app": 164,
+   "play": 205,
+   "D": 0,
+   "$": 67,
+   "L": 2,
+   "W": 22,
+   "I": 0,
+   "n_apps": 17,
+   "top_apps": [
+    [
+     "app:5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+     105
+    ],
+    [
+     "play:49. RoutineFlow - Routine for ADHD",
+     96
+    ],
+    [
+     "play:5. Routine Planner, Habit Tracker",
+     68
+    ],
+    [
+     "app:24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+     29
+    ],
+    [
+     "play:12. Fabulous Daily Routine Planner",
+     25
+    ],
+    [
+     "app:18. MyRoutine - Organize your day - Built around your real life",
+     17
+    ]
+   ],
+   "ratings": {
+    "1": 3,
+    "2": 6,
+    "3": 13,
+    "4": 67,
+    "5": 280
+   }
+  },
+  "R?": {
+   "n": 110,
+   "app": 53,
+   "play": 57,
+   "D": 0,
+   "$": 11,
+   "L": 2,
+   "W": 13,
+   "I": 0,
+   "n_apps": 23,
+   "top_apps": [
+    [
+     "play:5. Routine Planner, Habit Tracker",
+     28
+    ],
+    [
+     "app:5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+     26
+    ],
+    [
+     "play:49. RoutineFlow - Routine for ADHD",
+     12
+    ],
+    [
+     "app:18. MyRoutine - Organize your day - Built around your real life",
+     10
+    ],
+    [
+     "play:20. MyRoutine - Routine Habit Goal",
+     6
+    ],
+    [
+     "app:24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+     5
+    ]
+   ],
+   "ratings": {
+    "2": 8,
+    "3": 15,
+    "4": 41,
+    "5": 46
+   }
+  },
+  "RC": {
+   "n": 119,
+   "app": 52,
+   "play": 67,
+   "D": 0,
+   "$": 11,
+   "L": 2,
+   "W": 9,
+   "I": 3,
+   "n_apps": 40,
+   "top_apps": [
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     12
+    ],
+    [
+     "app:4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+     11
+    ],
+    [
+     "play:3. Loop Habit Tracker",
+     11
+    ],
+    [
+     "app:18. MyRoutine - Organize your day - Built around your real life",
+     8
+    ],
+    [
+     "app:5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+     8
+    ],
+    [
+     "play:4. Me+ Lifestyle Routine",
+     5
+    ]
+   ],
+   "ratings": {
+    "1": 1,
+    "2": 2,
+    "3": 14,
+    "4": 35,
+    "5": 67
+   }
+  },
+  "RF": {
+   "n": 340,
+   "app": 136,
+   "play": 204,
+   "D": 0,
+   "$": 93,
+   "L": 29,
+   "W": 38,
+   "I": 0,
+   "n_apps": 30,
+   "top_apps": [
+    [
+     "play:5. Routine Planner, Habit Tracker",
+     91
+    ],
+    [
+     "app:5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+     88
+    ],
+    [
+     "play:49. RoutineFlow - Routine for ADHD",
+     36
+    ],
+    [
+     "play:12. Fabulous Daily Routine Planner",
+     31
+    ],
+    [
+     "app:24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+     17
+    ],
+    [
+     "play:20. MyRoutine - Routine Habit Goal",
+     14
+    ]
+   ],
+   "ratings": {
+    "1": 55,
+    "2": 48,
+    "3": 72,
+    "4": 90,
+    "5": 75
+   }
+  },
+  "RS": {
+   "n": 150,
+   "app": 83,
+   "play": 67,
+   "D": 1,
+   "$": 13,
+   "L": 7,
+   "W": 3,
+   "I": 1,
+   "n_apps": 39,
+   "top_apps": [
+    [
+     "app:24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+     14
+    ],
+    [
+     "play:12. Fabulous Daily Routine Planner",
+     13
+    ],
+    [
+     "play:49. RoutineFlow - Routine for ADHD",
+     10
+    ],
+    [
+     "app:16. Atoms - from Atomic Habits - The official Atomic Habits app",
+     10
+    ],
+    [
+     "play:5. Routine Planner, Habit Tracker",
+     9
+    ],
+    [
+     "app:33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+     9
+    ]
+   ],
+   "ratings": {
+    "1": 10,
+    "2": 8,
+    "3": 13,
+    "4": 22,
+    "5": 97
+   }
+  },
+  "RU": {
+   "n": 71,
+   "app": 3,
+   "play": 68,
+   "D": 0,
+   "$": 17,
+   "L": 0,
+   "W": 0,
+   "I": 0,
+   "n_apps": 7,
+   "top_apps": [
+    [
+     "play:5. Routine Planner, Habit Tracker",
+     39
+    ],
+    [
+     "play:49. RoutineFlow - Routine for ADHD",
+     26
+    ],
+    [
+     "play:45. PlanMe - Daily Routine Planner",
+     2
+    ],
+    [
+     "app:24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+     1
+    ],
+    [
+     "app:5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+     1
+    ],
+    [
+     "app:83. Roubit  - Fun Routine Planner - Bunny Diary & Tasks",
+     1
+    ]
+   ],
+   "ratings": {
+    "4": 7,
+    "5": 64
+   }
+  },
+  "S+": {
+   "n": 224,
+   "app": 109,
+   "play": 115,
+   "D": 79,
+   "$": 9,
+   "L": 1,
+   "W": 0,
+   "I": 3,
+   "n_apps": 24,
+   "top_apps": [
+    [
+     "app:59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+     65
+    ],
+    [
+     "play:4. Me+ Lifestyle Routine",
+     58
+    ],
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     27
+    ],
+    [
+     "app:4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+     16
+    ],
+    [
+     "app:85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+     9
+    ],
+    [
+     "play:49. RoutineFlow - Routine for ADHD",
+     8
+    ]
+   ],
+   "ratings": {
+    "1": 1,
+    "2": 5,
+    "3": 7,
+    "4": 24,
+    "5": 187
+   }
+  },
+  "S?": {
+   "n": 358,
+   "app": 115,
+   "play": 243,
+   "D": 30,
+   "$": 18,
+   "L": 15,
+   "W": 4,
+   "I": 0,
+   "n_apps": 65,
+   "top_apps": [
+    [
+     "play:3. Loop Habit Tracker",
+     70
+    ],
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     34
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     19
+    ],
+    [
+     "play:10. Habit Tracker - Habit Diary",
+     15
+    ],
+    [
+     "play:8. Habitica - Gamify Your Tasks",
+     15
+    ],
+    [
+     "app:10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+     13
+    ]
+   ],
+   "ratings": {
+    "1": 12,
+    "2": 16,
+    "3": 46,
+    "4": 118,
+    "5": 166
+   }
+  },
+  "SF": {
+   "n": 196,
+   "app": 73,
+   "play": 123,
+   "D": 51,
+   "$": 32,
+   "L": 9,
+   "W": 7,
+   "I": 0,
+   "n_apps": 21,
+   "top_apps": [
+    [
+     "play:4. Me+ Lifestyle Routine",
+     55
+    ],
+    [
+     "app:59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+     49
+    ],
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     22
+    ],
+    [
+     "app:4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+     13
+    ],
+    [
+     "play:8. Habitica - Gamify Your Tasks",
+     13
+    ],
+    [
+     "play:11. Dear Me - Daily Routine Tracker",
+     11
+    ]
+   ],
+   "ratings": {
+    "1": 30,
+    "2": 24,
+    "3": 47,
+    "4": 41,
+    "5": 54
+   }
+  },
+  "SN": {
+   "n": 8,
+   "app": 6,
+   "play": 2,
+   "D": 0,
+   "$": 0,
+   "L": 0,
+   "W": 0,
+   "I": 0,
+   "n_apps": 5,
+   "top_apps": [
+    [
+     "app:59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+     4
+    ],
+    [
+     "app:10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+     1
+    ],
+    [
+     "app:13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+     1
+    ],
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     1
+    ],
+    [
+     "play:49. RoutineFlow - Routine for ADHD",
+     1
+    ]
+   ],
+   "ratings": {
+    "5": 8
+   }
+  },
+  "SP": {
+   "n": 86,
+   "app": 34,
+   "play": 52,
+   "D": 16,
+   "$": 2,
+   "L": 2,
+   "W": 0,
+   "I": 1,
+   "n_apps": 27,
+   "top_apps": [
+    [
+     "play:3. Loop Habit Tracker",
+     17
+    ],
+    [
+     "app:59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+     15
+    ],
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     11
+    ],
+    [
+     "play:8. Habitica - Gamify Your Tasks",
+     6
+    ],
+    [
+     "play:4. Me+ Lifestyle Routine",
+     5
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     3
+    ]
+   ],
+   "ratings": {
+    "1": 1,
+    "2": 4,
+    "3": 7,
+    "4": 29,
+    "5": 45
+   }
+  },
+  "ST": {
+   "n": 110,
+   "app": 38,
+   "play": 72,
+   "D": 25,
+   "$": 8,
+   "L": 4,
+   "W": 1,
+   "I": 0,
+   "n_apps": 29,
+   "top_apps": [
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     31
+    ],
+    [
+     "app:59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+     24
+    ],
+    [
+     "play:3. Loop Habit Tracker",
+     11
+    ],
+    [
+     "play:4. Me+ Lifestyle Routine",
+     8
+    ],
+    [
+     "play:8. Habitica - Gamify Your Tasks",
+     8
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     3
+    ]
+   ],
+   "ratings": {
+    "1": 3,
+    "2": 5,
+    "3": 12,
+    "4": 40,
+    "5": 50
+   }
+  },
+  "T+": {
+   "n": 656,
+   "app": 430,
+   "play": 226,
+   "D": 0,
+   "$": 46,
+   "L": 0,
+   "W": 12,
+   "I": 11,
+   "n_apps": 47,
+   "top_apps": [
+    [
+     "app:13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+     159
+    ],
+    [
+     "play:12. Fabulous Daily Routine Planner",
+     137
+    ],
+    [
+     "app:24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+     102
+    ],
+    [
+     "app:52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+     45
+    ],
+    [
+     "play:10. Habit Tracker - Habit Diary",
+     38
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     31
+    ]
+   ],
+   "ratings": {
+    "1": 4,
+    "2": 9,
+    "3": 30,
+    "4": 97,
+    "5": 516
+   }
+  },
+  "T?": {
+   "n": 191,
+   "app": 82,
+   "play": 109,
+   "D": 1,
+   "$": 16,
+   "L": 6,
+   "W": 14,
+   "I": 0,
+   "n_apps": 50,
+   "top_apps": [
+    [
+     "play:3. Loop Habit Tracker",
+     39
+    ],
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     25
+    ],
+    [
+     "app:59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+     13
+    ],
+    [
+     "app:10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+     12
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     9
+    ],
+    [
+     "app:20. Habit — Daily Tracker - Crush your goals like a boss",
+     6
+    ]
+   ],
+   "ratings": {
+    "1": 8,
+    "2": 3,
+    "3": 19,
+    "4": 69,
+    "5": 92
+   }
+  },
+  "TA": {
+   "n": 39,
+   "app": 33,
+   "play": 6,
+   "D": 1,
+   "$": 6,
+   "L": 3,
+   "W": 1,
+   "I": 0,
+   "n_apps": 15,
+   "top_apps": [
+    [
+     "app:13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+     12
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     5
+    ],
+    [
+     "app:33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+     4
+    ],
+    [
+     "app:18. MyRoutine - Organize your day - Built around your real life",
+     3
+    ],
+    [
+     "app:4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+     3
+    ],
+    [
+     "app:23. Streaks - The habit-forming to-do list",
+     2
+    ]
+   ],
+   "ratings": {
+    "1": 2,
+    "2": 6,
+    "3": 8,
+    "4": 9,
+    "5": 14
+   }
+  },
+  "TC": {
+   "n": 125,
+   "app": 83,
+   "play": 42,
+   "D": 0,
+   "$": 19,
+   "L": 1,
+   "W": 2,
+   "I": 1,
+   "n_apps": 30,
+   "top_apps": [
+    [
+     "app:52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+     23
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     12
+    ],
+    [
+     "app:13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+     12
+    ],
+    [
+     "play:10. Habit Tracker - Habit Diary",
+     9
+    ],
+    [
+     "app:24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+     8
+    ],
+    [
+     "app:33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+     6
+    ]
+   ],
+   "ratings": {
+    "1": 4,
+    "2": 5,
+    "3": 15,
+    "4": 42,
+    "5": 59
+   }
+  },
+  "TE": {
+   "n": 139,
+   "app": 89,
+   "play": 50,
+   "D": 2,
+   "$": 17,
+   "L": 7,
+   "W": 3,
+   "I": 1,
+   "n_apps": 33,
+   "top_apps": [
+    [
+     "app:13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+     37
+    ],
+    [
+     "app:52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+     18
+    ],
+    [
+     "play:10. Habit Tracker - Habit Diary",
+     9
+    ],
+    [
+     "app:4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+     7
+    ],
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     7
+    ],
+    [
+     "play:3. Loop Habit Tracker",
+     6
+    ]
+   ],
+   "ratings": {
+    "1": 14,
+    "2": 15,
+    "3": 27,
+    "4": 42,
+    "5": 41
+   }
+  },
+  "TF": {
+   "n": 248,
+   "app": 164,
+   "play": 84,
+   "D": 0,
+   "$": 56,
+   "L": 16,
+   "W": 17,
+   "I": 0,
+   "n_apps": 31,
+   "top_apps": [
+    [
+     "play:12. Fabulous Daily Routine Planner",
+     46
+    ],
+    [
+     "app:24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+     43
+    ],
+    [
+     "app:13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+     31
+    ],
+    [
+     "app:52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+     27
+    ],
+    [
+     "app:33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+     17
+    ],
+    [
+     "app:18. MyRoutine - Organize your day - Built around your real life",
+     15
+    ]
+   ],
+   "ratings": {
+    "1": 49,
+    "2": 28,
+    "3": 50,
+    "4": 67,
+    "5": 54
+   }
+  },
+  "TH": {
+   "n": 64,
+   "app": 44,
+   "play": 20,
+   "D": 0,
+   "$": 12,
+   "L": 5,
+   "W": 1,
+   "I": 0,
+   "n_apps": 17,
+   "top_apps": [
+    [
+     "app:13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+     27
+    ],
+    [
+     "app:33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+     5
+    ],
+    [
+     "play:12. Fabulous Daily Routine Planner",
+     5
+    ],
+    [
+     "play:10. Habit Tracker - Habit Diary",
+     4
+    ],
+    [
+     "app:18. MyRoutine - Organize your day - Built around your real life",
+     3
+    ],
+    [
+     "app:24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+     3
+    ]
+   ],
+   "ratings": {
+    "1": 10,
+    "2": 5,
+    "3": 18,
+    "4": 23,
+    "5": 8
+   }
+  },
+  "TM": {
+   "n": 153,
+   "app": 93,
+   "play": 60,
+   "D": 0,
+   "$": 16,
+   "L": 5,
+   "W": 2,
+   "I": 0,
+   "n_apps": 39,
+   "top_apps": [
+    [
+     "app:52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+     27
+    ],
+    [
+     "play:3. Loop Habit Tracker",
+     20
+    ],
+    [
+     "app:13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+     15
+    ],
+    [
+     "app:20. Habit — Daily Tracker - Crush your goals like a boss",
+     10
+    ],
+    [
+     "app:1. Habit Tracker - Goal Tracker & ADHD Planner",
+     8
+    ],
+    [
+     "play:10. Habit Tracker - Habit Diary",
+     8
+    ]
+   ],
+   "ratings": {
+    "1": 8,
+    "2": 8,
+    "3": 24,
+    "4": 46,
+    "5": 67
+   }
+  },
+  "TO": {
+   "n": 292,
+   "app": 131,
+   "play": 161,
+   "D": 1,
+   "$": 18,
+   "L": 11,
+   "W": 8,
+   "I": 0,
+   "n_apps": 54,
+   "top_apps": [
+    [
+     "play:2. HabitNow Daily Routine Planner",
+     42
+    ],
+    [
+     "app:52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+     32
+    ],
+    [
+     "play:4. Me+ Lifestyle Routine",
+     26
+    ],
+    [
+     "play:10. Habit Tracker - Habit Diary",
+     19
+    ],
+    [
+     "app:4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+     16
+    ],
+    [
+     "app:13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+     11
+    ]
+   ],
+   "ratings": {
+    "1": 17,
+    "2": 24,
+    "3": 52,
+    "4": 89,
+    "5": 110
+   }
+  },
+  "TR": {
+   "n": 47,
+   "app": 42,
+   "play": 5,
+   "D": 0,
+   "$": 9,
+   "L": 12,
+   "W": 0,
+   "I": 0,
+   "n_apps": 3,
+   "top_apps": [
+    [
+     "app:4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+     41
+    ],
+    [
+     "play:4. Me+ Lifestyle Routine",
+     5
+    ],
+    [
+     "app:13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+     1
+    ]
+   ],
+   "ratings": {
+    "1": 14,
+    "2": 8,
+    "3": 14,
+    "4": 7,
+    "5": 4
+   }
+  },
+  "TV": {
+   "n": 77,
+   "app": 36,
+   "play": 41,
+   "D": 0,
+   "$": 13,
+   "L": 0,
+   "W": 0,
+   "I": 0,
+   "n_apps": 24,
+   "top_apps": [
+    [
+     "app:18. MyRoutine - Organize your day - Built around your real life",
+     13
+    ],
+    [
+     "play:20. MyRoutine - Routine Habit Goal",
+     10
+    ],
+    [
+     "app:5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+     7
+    ],
+    [
+     "play:12. Fabulous Daily Routine Planner",
+     7
+    ],
+    [
+     "play:3. Loop Habit Tracker",
+     6
+    ],
+    [
+     "play:49. RoutineFlow - Routine for ADHD",
+     4
+    ]
+   ],
+   "ratings": {
+    "1": 3,
+    "2": 1,
+    "3": 5,
+    "4": 25,
+    "5": 43
+   }
+  }
+ },
+ "families": {
+  "TOD": {
+   "all": 1798,
+   "habit_context": 1794
+  },
+  "GRP": {
+   "all": 2429,
+   "habit_context": 2228
+  },
+  "RTN": {
+   "all": 1063,
+   "habit_context": 1062
+  },
+  "SUB": {
+   "all": 869,
+   "habit_context": 682
+  }
+ }
+}

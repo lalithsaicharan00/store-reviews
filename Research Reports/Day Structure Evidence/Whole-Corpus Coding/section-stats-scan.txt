@@ -1,0 +1,30 @@
+# Hand-read from the stats-near-time-of-day scan (124 hits read). SEC = wants/praises stats per time-of-day section; RUN = wants/praises stats from a guided run (time per step, skipped steps, routine duration, per-routine history)
+# NEG = does not want time-of-day stats / split calendars; RESET = history lost when a habit moves section
+82 SEC
+348 SEC
+883 SEC
+1151 SEC
+1220 SEC
+1225 SEC
+1389 SEC
+711 SEC
+3927 SEC
+7559 SEC
+6100 SEC
+2522 RUN
+4228 RUN
+4230 RUN
+3222 RUN
+3223 RUN
+3474 RUN
+2655 RUN
+4223 RUN
+4090 RUN
+7141 RUN
+874 NEG
+1707 NEG
+238 RESET
+371 RESET
+388 RESET
+389 RESET
+436 RESET

@@ -1,0 +1,80 @@
+# TV sub-types: WK different habits/routines on specific weekdays (weekday vs weekend) | SF shift work: switch the whole day's set
+# SE periods: semester/holiday/exam/season/event sets turned on and off | TR travel/trip/holiday pause of normal habits
+# SH alternative version of the same day (short day, bad day, other house) | MB bugs/usability of an existing 'modes' feature | PR praise for existing variants
+17 SE
+48 SF
+238 TR
+446 TR
+1075 WK
+1078 WK
+1113 WK
+1126 SE
+1403 SH
+1527 WK
+1553 WK
+1565 WK
+1581 WK
+1660 WK
+1745 WK
+2049 SH
+2051 PR WK
+2058 PR WK
+2092 PR SH
+2190 PR WK
+2293 WK
+2297 MB
+2302 PR MB
+2303 WK MB
+2304 SF MB
+2305 MB
+2306 MB
+2307 MB
+2308 MB
+2319 WK
+2461 WK
+2526 PR WK
+2582 WK
+2583 WK
+2627 WK SE
+2968 MB
+2969 MB
+2970 MB
+2975 SF MB
+2976 MB
+2978 PR SE
+2980 PR SE
+2982 WK
+3066 SE
+3091 PR WK
+3236 SH
+3394 WK
+3872 WK
+3907 WK
+3926 SH
+4123 WK
+4490 SE
+4623 TR
+4920 WK
+4936 SF
+4937 SF
+5354 SE
+5356 SH
+5451 SE TR WK
+5597 SF
+6086 SE
+6095 WK
+6304 TR
+6363 SF
+6751 WK
+6764 TR SE
+6863 SF
+7137 SE
+7145 SF
+7379 WK
+7620 WK
+7698 WK
+7758 SF
+7997 SH
+8092 SE
+8207 SH
+8245 SF

@@ -1,0 +1,251 @@
+# TF hand sub-types: P paywall or cap per section | B bug: habits missing from sections, sync, lost | RT boundary/rollover times not adjustable, night owl/shift
+# EX sections too coarse, want exact time | H hidden: can't see all day, missed after window passes | FC forced to assign a section / can't turn one off
+# X clutter/confusing | RM reminders per section, not per habit | SR changing a habit's section resets its history | MS can't put multiple daily repeats in different sections | R section feature removed/changed | CD wants a category dimension besides time
+33 X
+36 P
+57 MS
+67 B RT
+71 RT P
+72 RT
+73 RT
+77 H
+80 RM
+87 B
+107 X
+141 X
+206 H
+238 SR
+252 X
+254 B
+259 B
+269 RT
+271 RT
+279 B
+290 X
+315 MS
+326 P
+330 RT
+332 EX
+334 X EX
+344 B
+349 EX
+354 B
+356 MS B
+371 B SR
+380 B
+383 RM
+388 SR
+389 SR
+394 B H P
+395 B
+397 B
+398 H B
+399 B
+400 B RT FC
+436 SR
+440 RM
+551 B P
+553 FC
+555 X
+564 P
+566 X
+568 B
+571 FC RT P
+577 B
+581 H
+583 RM
+642 P
+643 P
+646 X
+653 P
+656 R
+657 P
+660 R
+661 X
+662 P
+672 P R
+675 X
+679 X
+681 X
+700 X
+703 P
+706 B
+719 H X
+720 X
+723 RT
+732 RM P
+738 X RT
+743 R
+760 X
+764 P
+773 P
+783 P H
+787 FC
+791 X B
+794 X
+800 P
+810 B
+811 P
+816 X
+820 FC
+833 B
+834 X
+846 RT
+858 R
+864 R RT
+871 B P
+874 X
+878 RT X
+883 R
+886 B
+889 B RT
+891 B
+892 B
+893 RT B
+896 RT B
+904 B
+905 B
+907 R
+919 CD
+921 H P
+957 B
+969 RT
+971 B
+1026 B
+1089 B
+1094 B
+1096 B
+1168 X
+1170 EX
+1189 X CD
+1202 X P
+1204 X
+1216 B
+1219 X
+1223 RT FC
+1225 X
+1229 X
+1230 FC
+1244 B
+1246 X
+1251 B
+1253 X
+1256 B
+1257 B
+1258 X
+1270 X
+1272 B P
+1273 B
+1280 B
+1311 X
+1370 B
+1372 X
+1386 B
+1414 CD
+1418 H
+1435 P
+1472 H
+1475 RT
+1494 FC
+1496 P
+1508 B
+1512 B
+1521 EX
+1529 X
+1530 P
+1547 P
+1561 X
+1565 EX
+1567 P
+1576 P
+1579 FC P
+1580 B
+1594 X
+1601 FC
+1606 P
+1630 P
+1631 FC RM
+1635 X
+1636 P
+1638 RM
+1640 P
+1645 B
+1647 P
+1658 FC
+1661 B
+1662 X
+1663 P
+1664 P
+1669 P
+1672 P
+1676 P
+1681 EX RM
+1682 P
+1685 FC
+1687 FC
+1695 P
+1698 B
+1702 B
+1707 FC H
+1709 P
+1712 RM
+1714 P
+1727 RM
+1732 RM
+1738 X
+1746 X
+1748 RT
+1828 X
+1837 R
+1846 B
+1847 B
+1850 B
+1851 X FC
+1852 X
+1856 B CD
+1871 P
+1939 P
+1950 B
+1951 B
+1952 B
+1953 B
+1955 P
+1957 B RM
+1967 B
+1975 B
+1979 B
+1986 B
+1989 B
+1996 B
+1999 B
+2000 B
+2004 B
+2114 B
+2263 B
+2277 FC
+2297 X
+2304 B
+2305 B
+2306 B
+2322 R
+2333 B
+2350 X
+2351 X
+2352 B
+2377 X
+2404 FC
+2418 X
+2431 X
+2848 X
+3030 X
+4411 H
+4609 EX R
+5316 B
+5331 B CD
+5675 X
+5678 X
+5681 B
+5685 B
+6221 X
+6363 RT
+7874 X
