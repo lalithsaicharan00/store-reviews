@@ -1,0 +1,3576 @@
+[
+{
+"key": "A24#12364",
+"codes": [
+"L_REINST",
+"E_RESTORE",
+"B_NONE"
+],
+"quote": "they don’t keep backups of your account which is a pretty big disadvantage of this app",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "3685007181",
+"rating": 1,
+"date": "2019-01-23",
+"loc": "es"
+},
+{
+"key": "P19#283",
+"codes": [
+"B_MANUAL",
+"S_XOS",
+"AC_WANT_LOGIN"
+],
+"quote": "no log in auto back up option when switch to android to iPhone have to import export",
+"store": "P",
+"app": "19. TheFor - Habit Tracker",
+"review_id": "dacf71f3-e767-4f4e-8a35-53474faf407c",
+"rating": 5,
+"date": "2024-06-15",
+"loc": "en"
+},
+{
+"key": "P2#3399",
+"codes": [
+"B_WANT_AUTO"
+],
+"quote": "Perfect except for no account backup feature",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "0eb20cb6-0ce7-42e8-9c40-de4077f56762",
+"rating": 5,
+"date": "2025-02-12",
+"loc": "en"
+},
+{
+"key": "P3#347",
+"codes": [
+"B_NONE",
+"L_PHONE"
+],
+"quote": "one format and all is lost, no account and hence no backup",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "00dea7d2-d7b8-4e17-b8a0-af1668826619",
+"rating": 3,
+"date": "2020-03-16",
+"loc": "ar"
+},
+{
+"key": "P3#11713",
+"codes": [
+"POS_BACKUP",
+"AC_NOACC_PRAISE"
+],
+"quote": "no account binding yet you can still manually backup your list of habits",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "ed1198f3-1e7b-4284-b796-88e497850df1",
+"rating": 5,
+"date": "2019-03-20",
+"loc": "en"
+},
+{
+"key": "P37#665",
+"codes": [
+"POS_BACKUP",
+"AC_NOACC_PRAISE"
+],
+"quote": "can use without account creation, data backup",
+"store": "P",
+"app": "37. Habitify - Habit Tracker",
+"review_id": "3daa8203-11b6-42a6-8420-c2ac2f867907",
+"rating": 3,
+"date": "2022-08-06",
+"loc": "en"
+},
+{
+"key": "A10#20340",
+"codes": [
+"L_CORRUPT",
+"B_MANUAL",
+"X_PAYER"
+],
+"quote": "no long time support for users if you don’t do the backup often enough",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14251210046",
+"rating": 2,
+"date": "2026-07-01",
+"loc": "us"
+},
+{
+"key": "A13#15241",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "3649055728",
+"rating": 3,
+"date": "2019-01-14",
+"loc": "us"
+},
+{
+"key": "A23#527",
+"codes": [
+"L_UPD",
+"S_DUP",
+"POS_LOCAL_SNAPSHOTS"
+],
+"quote": "you can re-import your data by going to Prefs > Manage Data > Backups  and select the most recent that ran before the update",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "11764467723",
+"rating": 1,
+"date": "2024-09-25",
+"loc": "ca"
+},
+{
+"key": "A23#588",
+"codes": [
+"L_RANDOM",
+"POS_LOCAL_SNAPSHOTS",
+"B_HIDDEN",
+"X_SUPPORT_SAVED"
+],
+"quote": "there is a Settings > Manage Data > Backups page feature, so I just restored a backup",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "8527464658",
+"rating": 5,
+"date": "2022-04-03",
+"loc": "ca"
+},
+{
+"key": "A31#4681",
+"codes": [
+"B_NAG"
+],
+"quote": "there’s an annoying reminder to backup to iCloud that you can’t turn off",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "6288116547",
+"rating": 3,
+"date": "2020-08-06",
+"loc": "us"
+},
+{
+"key": "P126#198431",
+"codes": [
+"B_WANT_LOCAL",
+"S_FAIL"
+],
+"quote": "возможность сохранения бэкапа на локальном носителе",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "20671a28-1f8a-4f84-80c4-f636adbc8131",
+"rating": 3,
+"date": "2021-03-03",
+"loc": "ru"
+},
+{
+"key": "P2#3531",
+"codes": [
+"POS_BACKUP"
+],
+"quote": "Clear cahe, data and import backup Reminder started working again",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "c3f783ab-b77c-472c-9d40-76c59acb148a",
+"rating": 5,
+"date": "2025-01-19",
+"loc": "en"
+},
+{
+"key": "P84#17150",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "e6847717-0e68-493a-97f8-d7110a721dde",
+"rating": 4,
+"date": "2021-08-31",
+"loc": "en"
+},
+{
+"key": "P84#22423",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "64755e11-c30c-44ee-912f-960128d04dc3",
+"rating": 5,
+"date": "2020-02-26",
+"loc": "en"
+},
+{
+"key": "A20#2830",
+"codes": [
+"B_STALE",
+"B_RESTORE_FAIL",
+"X_PAYER"
+],
+"quote": "restored from cloud but the last backup was from months of not years ago. Shouldn’t the app be auto backing up every day?",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "12440071394",
+"rating": 3,
+"date": "2025-03-19",
+"loc": "se"
+},
+{
+"key": "A20#3400",
+"codes": [
+"B_STALE",
+"E_DOUBLE"
+],
+"quote": "I backed up from iCloud and of course lost everything since my last back up",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6938214798",
+"rating": 2,
+"date": "2021-02-01",
+"loc": "us"
+},
+{
+"key": "A23#3156",
+"codes": [
+"S_REVERT"
+],
+"quote": "reverts all the tasks to a random past state. Not even the last backup",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "7002334172",
+"rating": 5,
+"date": "2021-02-16",
+"loc": "lv"
+},
+{
+"key": "P12#145709",
+"codes": [
+"POS_BACKUP"
+],
+"quote": "clear Fabulous data after changing Android language, login and restore the last backup",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "17323e9a-6c34-4641-9042-0ad1ee4e0ed3",
+"rating": 3,
+"date": "2019-01-07",
+"loc": "pt"
+},
+{
+"key": "P12#149149",
+"codes": [
+"B_RESTORE_FAIL"
+],
+"quote": "It simply doesn't see the last backup",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "13184dd9-8ea3-452b-a334-2ff1c5aa19d5",
+"rating": 4,
+"date": "2017-06-29",
+"loc": "ru"
+},
+{
+"key": "P3#13226",
+"codes": [
+"B_NONE",
+"S_MULTI_REQ"
+],
+"quote": "Can't backup history on account",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "a05a942e-243f-411a-87a4-5132a3fbbfd5",
+"rating": 2,
+"date": "2018-03-25",
+"loc": "en"
+},
+{
+"key": "P65#8825",
+"codes": [
+"B_WANT_AUTO"
+],
+"quote": "back up history",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "f7a76128-f855-4a57-a74b-7bfef16ffc84",
+"rating": 5,
+"date": "2017-03-24",
+"loc": "en"
+},
+{
+"key": "P84#4039",
+"codes": [
+"B_WANT_OWN_STORAGE",
+"POS_BACKUP"
+],
+"quote": "Backups über WebDav ermöglichen",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "190721fc-a61e-48ea-b822-77515806dd63",
+"rating": 5,
+"date": "2020-02-23",
+"loc": "de"
+},
+{
+"key": "N1#25091",
+"codes": [
+"B_STATUS_CONFUSING",
+"L_USER"
+],
+"quote": "phone showed last backup date was the same morning at 6:00 (2/8/2023) but when I log in to iCloud try to restore, its shows my last archive backup option was Jan 17,2023",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "9602663920",
+"rating": 1,
+"date": "2023-02-10",
+"loc": "us"
+},
+{
+"key": "A1#49308",
+"codes": [
+"L_STORAGE_UNINSTALL",
+"S_MULTI_REQ"
+],
+"quote": "my phone has been running out of storage and i had to uninstall this app",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13307330802",
+"rating": 3,
+"date": "2025-10-24",
+"loc": "pt"
+},
+{
+"key": "A1#51358",
+"codes": [
+"S_FAIL",
+"B_ICLOUD_FULL_BLAMED"
+],
+"quote": "the developer has only ever asked if my cloud storage is full (it’s not)",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13315798339",
+"rating": 1,
+"date": "2025-10-26",
+"loc": "us"
+},
+{
+"key": "P105#572",
+"codes": [
+"L_STORAGE_UNINSTALL"
+],
+"quote": "since my storage is full i have to let go of this",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "21916729-2be3-4294-a177-b426b8533ab1",
+"rating": 5,
+"date": "2021-03-05",
+"loc": "en"
+},
+{
+"key": "P106#348",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "106. Habit Tracker n Pets - HabitYou",
+"review_id": "29190f7c-8acf-4a59-ab98-d6f735772c08",
+"rating": 1,
+"date": "2022-06-11",
+"loc": "en"
+},
+{
+"key": "P4#24366",
+"codes": [
+"L_STORAGE_UNINSTALL",
+"E_RESTORE"
+],
+"quote": "my storage is full so i deleted it",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "6e25f345-d499-4fa1-8a93-1a30fdffd999",
+"rating": 3,
+"date": "2023-12-27",
+"loc": "en"
+},
+{
+"key": "N2#13229",
+"codes": [
+"L_STORAGE_FULL"
+],
+"quote": "Removes your whole agenda when storage is full",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "13328063820",
+"rating": 1,
+"date": "2025-10-29",
+"loc": "nl"
+},
+{
+"key": "N9#37399",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "11640587023",
+"rating": 5,
+"date": "2024-08-22",
+"loc": "us"
+},
+{
+"key": "N1#23261",
+"codes": [
+"B_ICLOUD_FULL"
+],
+"quote": "If you’re iCloud is full then your reminds don’t work across your Apple devices",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "10952905206",
+"rating": 1,
+"date": "2024-02-18",
+"loc": "us"
+},
+{
+"key": "A10#5033",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "11829059842",
+"rating": 5,
+"date": "2024-10-13",
+"loc": "ca"
+},
+{
+"key": "A10#30504",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12976789528",
+"rating": 1,
+"date": "2025-08-04",
+"loc": "us"
+},
+{
+"key": "A13#18831",
+"codes": [
+"B_OS_ONLY"
+],
+"quote": "if you don't have an iphone backup then you lose all the data from your habits",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1313972378",
+"rating": 1,
+"date": "2016-01-09",
+"loc": "us"
+},
+{
+"key": "A13#19377",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1241237562",
+"rating": 5,
+"date": "2015-08-11",
+"loc": "us"
+},
+{
+"key": "A23#5456",
+"codes": [
+"B_WANT_AUTO",
+"B_OS_ONLY",
+"B_MANUAL"
+],
+"quote": "unless you restore your phone backup, which I as a habit don’t, then you have to rely on the manual export import option",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "2090013853",
+"rating": 4,
+"date": "2018-01-15",
+"loc": "us"
+},
+{
+"key": "A24#16478",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "6347763161",
+"rating": 5,
+"date": "2020-08-22",
+"loc": "gb"
+},
+{
+"key": "A24#25528",
+"codes": [
+"E_XOS",
+"E_DOUBLE"
+],
+"quote": "I had an account via Goggle play store on an Android phone and then transferred everything to an iPhone",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12813064876",
+"rating": 1,
+"date": "2025-06-24",
+"loc": "us"
+},
+{
+"key": "A24#27287",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11740886779",
+"rating": 5,
+"date": "2024-09-19",
+"loc": "us"
+},
+{
+"key": "A24#31883",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8412476835",
+"rating": 3,
+"date": "2022-03-02",
+"loc": "us"
+},
+{
+"key": "A24#32847",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8217835892",
+"rating": 4,
+"date": "2022-01-08",
+"loc": "us"
+},
+{
+"key": "P110#2542",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "110. Habit Tracker Unlimited",
+"review_id": "546308f9-3ced-49b0-a779-c218fbf7d48c",
+"rating": 5,
+"date": "2023-06-09",
+"loc": "en"
+},
+{
+"key": "P12#59020",
+"codes": [
+"L_PHONE",
+"B_OS_MIGRATION_MISSED"
+],
+"quote": "smartswitched all the data. But, the working that I did in the last phone Fabulous app, was lost",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "0b2fdf72-3ddb-46e5-8781-af7efda23125",
+"rating": 4,
+"date": "2019-10-22",
+"loc": "en"
+},
+{
+"key": "P122#8613",
+"codes": [
+"POS_XOS"
+],
+"quote": "I don't have to switch anything if I move to iOS later on",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "6b4fab68-9cf4-4845-921e-3f3bb4acab34",
+"rating": 5,
+"date": "2025-09-03",
+"loc": "en"
+},
+{
+"key": "P122#38234",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "13e84c46-f1bf-40cb-b31d-c55186881d9e",
+"rating": 5,
+"date": "2023-02-04",
+"loc": "zh-TW"
+},
+{
+"key": "P126#11004",
+"codes": [
+"B_OS_MIGRATION_MISSED"
+],
+"quote": "Alle Inhalte sind weg! Nur bei dieser App, alles andere ist da",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "ac0980dd-e91e-43c2-9d02-7c283c60591b",
+"rating": 1,
+"date": "2020-10-24",
+"loc": "de"
+},
+{
+"key": "P126#27435",
+"codes": [
+"B_OS_MIGRATION_MISSED",
+"B_HIDDEN"
+],
+"quote": "the app was not covered by Samsung backup system and I was not warned at any point",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "a03515a8-9821-416b-b831-0db966455af1",
+"rating": 3,
+"date": "2023-12-31",
+"loc": "en"
+},
+{
+"key": "P126#45758",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "636d187e-d6d5-4c52-b767-e975bd911113",
+"rating": 5,
+"date": "2021-05-21",
+"loc": "en"
+},
+{
+"key": "P126#47157",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "db0f36bb-94d9-439c-9475-5d9eee79c1e5",
+"rating": 5,
+"date": "2021-04-12",
+"loc": "en"
+},
+{
+"key": "P126#62656",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "77c8b4f7-dc33-476d-82d1-ae71ba0bc6b9",
+"rating": 4,
+"date": "2020-05-10",
+"loc": "en"
+},
+{
+"key": "P126#132788",
+"codes": [
+"B_OS_MIGRATION_PARTIAL"
+],
+"quote": "לא כל המשימות שלי עברו אלא רק חלק מהמשימות",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "dc98e48b-bd5a-4be9-af47-f2407fd9c201",
+"rating": 4,
+"date": "2022-10-26",
+"loc": "he"
+},
+{
+"key": "P18#715",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "18. Habit Tracker - Habit Radar",
+"review_id": "ab33999e-c1b5-4e44-9dff-887c5411c191",
+"rating": 5,
+"date": "2026-01-24",
+"loc": "en"
+},
+{
+"key": "P24#6357",
+"codes": [
+"B_NONE",
+"B_OS_MIGRATION_MISSED"
+],
+"quote": "there is no backup. not even Android backup integration",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "74a944f7-b7ca-439e-ab56-9e2729e78294",
+"rating": 5,
+"date": "2019-02-22",
+"loc": "en"
+},
+{
+"key": "P3#12937",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "b160734a-5bc4-4d27-8909-949afe5d7f75",
+"rating": 5,
+"date": "2018-06-04",
+"loc": "en"
+},
+{
+"key": "P49#895",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "96055e2a-9752-4499-bb02-1e6220658d7a",
+"rating": 2,
+"date": "2024-08-28",
+"loc": "en"
+},
+{
+"key": "P65#2887",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "a0728fa8-24a8-4933-89d1-3bb92d20d417",
+"rating": 5,
+"date": "2024-10-26",
+"loc": "en"
+},
+{
+"key": "P8#8947",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "4d25a9ec-a876-46e4-9d13-5aa209bf6474",
+"rating": 2,
+"date": "2017-01-30",
+"loc": "en"
+},
+{
+"key": "P84#8853",
+"codes": [
+"B_OS_MIGRATION_MISSED"
+],
+"quote": "thank you for deleting all my data from this program when smart switch moved it from S22 to S24",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "3ce778df-3c76-4306-a303-8261d95c8649",
+"rating": 1,
+"date": "2025-06-07",
+"loc": "en"
+},
+{
+"key": "P84#9767",
+"codes": [
+"POS_MIGRATE"
+],
+"quote": "I've even transferred everything from one phone to another for around 5 years",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "8bef29ed-e675-4722-8a0d-d7e7a989ad71",
+"rating": 5,
+"date": "2024-12-28",
+"loc": "en"
+},
+{
+"key": "P84#9975",
+"codes": [
+"B_OS_MIGRATION_MISSED",
+"B_PAID"
+],
+"quote": "doesn't allow you to do a Samsung back up and restore",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "4c75d659-009e-4a4a-a4c9-915e189ee8e8",
+"rating": 4,
+"date": "2024-11-18",
+"loc": "en"
+},
+{
+"key": "N3#21957",
+"codes": [
+"L_RANDOM"
+],
+"quote": "Suddenly all my notes are gone from my iPhone",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "13760907050",
+"rating": 1,
+"date": "2026-02-18",
+"loc": "us"
+},
+{
+"key": "N5#1665",
+"codes": [
+"B_OS_MIGRATION_PARTIAL"
+],
+"quote": "All my Limited Edition reward batches disappeared after I  transferred everything to my Iphone14 pro max",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "9098675550",
+"rating": 1,
+"date": "2022-09-18",
+"loc": "ca"
+},
+{
+"key": "N5#11943",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "14086962967",
+"rating": 2,
+"date": "2026-05-20",
+"loc": "us"
+},
+{
+"key": "P24#7689",
+"codes": [
+"B_MANUAL",
+"POS_BACKUP"
+],
+"quote": "Better stick with \"Loop - Habit Tracker\" and manually backup my data",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "d720fafb-33aa-4def-831a-cdfc4308b470",
+"rating": 1,
+"date": "2018-10-24",
+"loc": "en"
+},
+{
+"key": "P3#9143",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "Google drive backup option is crying need to backup my tracks in my own cloud",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "88357842-14e1-40b0-9eb0-6e6d1dc14c54",
+"rating": 3,
+"date": "2020-08-22",
+"loc": "en"
+},
+{
+"key": "A10#35429",
+"codes": [
+"B_MANUAL",
+"L_PHONE"
+],
+"quote": "You need to back up your data on a regular basis. Thanks to this poorly designed function, I just lost 150 days of progress",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12403284805",
+"rating": 3,
+"date": "2025-03-10",
+"loc": "us"
+},
+{
+"key": "P61#199",
+"codes": [
+"B_NONE"
+],
+"quote": "no Manual backup/Restore",
+"store": "P",
+"app": "61. Hizo - Habit Tracker & Todo",
+"review_id": "75ac2bf1-c810-4318-8b2c-583a7f8ce29a",
+"rating": 2,
+"date": "2026-01-17",
+"loc": "en"
+},
+{
+"key": "P126#27343",
+"codes": [
+"B_NONE"
+],
+"quote": "Need to back up phone to do factory reset",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "1e2397f6-4275-4c13-985c-52cadde1247f",
+"rating": 1,
+"date": "2024-01-06",
+"loc": "en"
+},
+{
+"key": "A10#33395",
+"codes": [
+"B_MANUAL",
+"B_HIDDEN",
+"L_REINST"
+],
+"quote": "I didn’t realize you have to back up your progress",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12595539720",
+"rating": 2,
+"date": "2025-04-28",
+"loc": "us"
+},
+{
+"key": "A10#33396",
+"codes": [
+"L_CORRUPT",
+"B_RESTORE_FAIL",
+"B_MANUAL",
+"X_PAYER"
+],
+"quote": "I always do a manual backup file every month when it reminds me",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12595515502",
+"rating": 1,
+"date": "2025-04-28",
+"loc": "us"
+},
+{
+"key": "P8#7172",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "e661810d-6f02-4221-8419-910caa6ccb85",
+"rating": 1,
+"date": "2019-05-27",
+"loc": "en"
+},
+{
+"key": "P110#1953",
+"codes": [
+"B_RESTORE_SAME_SOURCE"
+],
+"quote": "You have to backup and restore file from the same source that your new phone did it only",
+"store": "P",
+"app": "110. Habit Tracker Unlimited",
+"review_id": "f641e205-0d09-4c0c-a2f8-72e7fa8ee9d0",
+"rating": 1,
+"date": "2024-03-17",
+"loc": "en"
+},
+{
+"key": "A76#562",
+"codes": [
+"L_UPD",
+"B_MANUAL",
+"B_HIDDEN"
+],
+"quote": "I incorrectly believed that the data was linked to my account, when it actually is not linked to anything at all and needed to be manually backed up",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "13557616119",
+"rating": 2,
+"date": "2025-12-26",
+"loc": "ca"
+},
+{
+"key": "P100#85",
+"codes": [
+"B_PAID"
+],
+"quote": "Even backup/restore option is behind paywall",
+"store": "P",
+"app": "100. To Do List - Daily Task Planner",
+"review_id": "2436ccaf-ec75-4891-a4ab-ca4992be9a0a",
+"rating": 1,
+"date": "2024-07-12",
+"loc": "en"
+},
+{
+"key": "P24#2327",
+"codes": [
+"L_PHONE",
+"B_NONE",
+"X_CHURN",
+"X_PAYER"
+],
+"quote": "if you use the app and need to change your phone or reset it, your data will be lost",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "1126d481-7ce9-425d-8888-d22645900b35",
+"rating": 1,
+"date": "2021-08-21",
+"loc": "en"
+},
+{
+"key": "P12#29622",
+"codes": [
+"B_RESTORE_FAIL",
+"B_AUTO_BROKEN",
+"X_PAYER"
+],
+"quote": "It said there was no back up to restore, even tho I manually backed up the progress at least twice beforehand",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "c6bedf40-334e-4d60-8394-f422ea23073c",
+"rating": 1,
+"date": "2021-11-19",
+"loc": "en"
+},
+{
+"key": "P84#21002",
+"codes": [
+"B_LOCAL_REMOVED"
+],
+"quote": "When doing a local backup it informs the user that Manual backup \"will be removed in a future version",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "fc142828-1eb0-44f9-b156-ad6ba844e3a4",
+"rating": 1,
+"date": "2020-05-28",
+"loc": "en"
+},
+{
+"key": "P49#377",
+"codes": [
+"B_AUTO_BROKEN",
+"B_NONE",
+"L_PHONE",
+"X_PAYER"
+],
+"quote": "the app hadn't auto-backed up at all. I also can't see how to back up manually",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "f6bab211-e840-4080-8e2a-740ea4d04e82",
+"rating": 1,
+"date": "2025-10-29",
+"loc": "en"
+},
+{
+"key": "P3#21645",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "would be perfect if we could backup in Google Drive",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "8c3265cd-f065-40e1-94c7-9de195e13bc7",
+"rating": 4,
+"date": "2019-01-07",
+"loc": "pt"
+},
+{
+"key": "P3#8342",
+"codes": [
+"B_MANUAL",
+"L_PHONE"
+],
+"quote": "I forgot to do this when doing a factory reset so my history was gone",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "b483bf82-2a94-438c-8522-11906967c357",
+"rating": 4,
+"date": "2021-02-09",
+"loc": "en"
+},
+{
+"key": "A10#41909",
+"codes": [
+"B_RESTORE_LOOP"
+],
+"quote": "then it’s just a vicious cycle",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "11341614807",
+"rating": 5,
+"date": "2024-06-04",
+"loc": "us"
+},
+{
+"key": "P3#4938",
+"codes": [
+"B_WANT_AUTO"
+],
+"quote": "The auto sync feature would be very helpful if it will be added instead of manual back up",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "f8233d7a-936e-4587-86db-1ff8075e5960",
+"rating": 5,
+"date": "2023-09-13",
+"loc": "en"
+},
+{
+"key": "P84#25256",
+"codes": [
+"B_WANT_OWN_CLOUD",
+"B_MANUAL"
+],
+"quote": "I just wish it had a Google backup in the cloud instead of manual backups by emailing yourself the file",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "47ea2c86-7e1e-4063-86f7-7d8c14ad10c5",
+"rating": 5,
+"date": "2019-10-02",
+"loc": "en"
+},
+{
+"key": "N5#13171",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "12291072924",
+"rating": 2,
+"date": "2025-02-09",
+"loc": "us"
+},
+{
+"key": "N1#25217",
+"codes": [
+"L_RANDOM",
+"B_NONE_KNOWN"
+],
+"quote": "I can’t even recover with iCloud because it didn’t backup",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "9157319686",
+"rating": 2,
+"date": "2022-10-06",
+"loc": "us"
+},
+{
+"key": "N3#21670",
+"codes": [
+"L_RANDOM",
+"B_NONE_KNOWN"
+],
+"quote": "i didn’t back up my notes in I cloud",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "13960816359",
+"rating": 4,
+"date": "2026-04-15",
+"loc": "us"
+},
+{
+"key": "P3#7812",
+"codes": [
+"B_WANT_FILE"
+],
+"quote": "Please also add it backup file option",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "beef8b42-ac0f-4fdf-806a-9e287044ae34",
+"rating": 3,
+"date": "2021-06-27",
+"loc": "en"
+},
+{
+"key": "A10#22443",
+"codes": [
+"B_EMPTY_FILE",
+"AC_LOGIN_FAIL",
+"L_PHONE"
+],
+"quote": "the backup files always say they’re empty",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14021840948",
+"rating": 1,
+"date": "2026-05-02",
+"loc": "us"
+},
+{
+"key": "P12#14899",
+"codes": [
+"B_WANT_FILE",
+"AC_BACKUP_NEEDS_ACCOUNT"
+],
+"quote": "They should give an option to export the backup file to storage and restore from that file later",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "b5cb1cee-190c-497a-b69f-ba3063b58a8a",
+"rating": 3,
+"date": "2024-05-13",
+"loc": "en"
+},
+{
+"key": "P110#1447",
+"codes": [
+"B_RESTORE_FAIL"
+],
+"quote": "Couldn't restore earlier backup data",
+"store": "P",
+"app": "110. Habit Tracker Unlimited",
+"review_id": "0960f2b4-0805-4181-adc2-65cfa8dbdab7",
+"rating": 2,
+"date": "2024-09-08",
+"loc": "en"
+},
+{
+"key": "A10#57952",
+"codes": [
+"B_RESTORE_OVERWROTE"
+],
+"quote": "by mistake, I pressed upload file and a backup file from a week ago uploaded. When I realized this, it was too late. There was no option to cancel",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "9178711218",
+"rating": 1,
+"date": "2022-10-13",
+"loc": "us"
+},
+{
+"key": "P3#14949",
+"codes": [
+"B_FILE_HIDDEN"
+],
+"quote": "Why we can't find backup file in mobile storage & anywhere",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "aaf639cf-998b-4dd5-9a4b-7238be0a0a75",
+"rating": 1,
+"date": "2017-03-24",
+"loc": "en"
+},
+{
+"key": "A23#3706",
+"codes": [
+"B_IMPORT_CRASH"
+],
+"quote": "The app crashes as I try to import a backup file",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "1724358243",
+"rating": 2,
+"date": "2017-08-12",
+"loc": "ru"
+},
+{
+"key": "P84#26977",
+"codes": [
+"B_EXPORT_BAD"
+],
+"quote": "even after exporting a backup file - an error shows up",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "c134890b-245a-4794-973d-6479e7845447",
+"rating": 1,
+"date": "2019-07-09",
+"loc": "en"
+},
+{
+"key": "P2#10616",
+"codes": [
+"B_RESTORE_FAIL",
+"B_FORMAT_VERSION"
+],
+"quote": "when I tried to import it again it says it's an \"unsupported file type",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "17f87d3b-eba8-4bf5-8a1b-c991d39def1c",
+"rating": 1,
+"date": "2021-12-31",
+"loc": "en"
+},
+{
+"key": "P2#6517",
+"codes": [
+"B_IMPORT_CRASH"
+],
+"quote": "The app automatically closes, or closes and pops up with an error message when I press \"Create backup file\" or \"Import backup file",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "aef630f5-c167-41ed-a38e-6056e935471b",
+"rating": 3,
+"date": "2023-11-21",
+"loc": "en"
+},
+{
+"key": "P2#6863",
+"codes": [
+"B_PROPRIETARY_FORMAT"
+],
+"quote": "I have to go with stupid format .hn that no one use but HabitNow app",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "572bac8b-a2e1-4b90-b744-77f52d0ae9f7",
+"rating": 1,
+"date": "2023-09-26",
+"loc": "en"
+},
+{
+"key": "P84#10129",
+"codes": [
+"B_RESTORE_FAIL",
+"L_PHONE"
+],
+"quote": "I can't restore from the backup file, an error happens when trying to import",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "87f8271a-0a33-4d01-a15f-27f398f52181",
+"rating": 1,
+"date": "2024-10-18",
+"loc": "en"
+},
+{
+"key": "P84#17041",
+"codes": [
+"B_PAID",
+"B_RESTORE_FAIL"
+],
+"quote": "When I came to restore the data it's says that only in premium version its possible",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "ce75700f-830d-4dd9-8043-f963e1e81c93",
+"rating": 2,
+"date": "2021-09-21",
+"loc": "en"
+},
+{
+"key": "P18#1254",
+"codes": [
+"B_RESTORE_FAIL",
+"X_PAYER"
+],
+"quote": "backup and transfer to new device isn't working",
+"store": "P",
+"app": "18. Habit Tracker - Habit Radar",
+"review_id": "5e414c68-a481-4990-9b14-5347d7408ab8",
+"rating": 1,
+"date": "2026-06-04",
+"loc": "uk"
+},
+{
+"key": "P2#2415",
+"codes": [
+"B_QUOTA",
+"S_MULTI_REQ"
+],
+"quote": "there should be no quota on Cloud import and export",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "4c2c3be8-5322-4bef-a2bb-b04cf7c94ddc",
+"rating": 4,
+"date": "2025-09-10",
+"loc": "en"
+},
+{
+"key": "P2#11677",
+"codes": [
+"B_FILE_HIDDEN"
+],
+"quote": "The back up file doesn't appear on my tablet",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "afdb6455-16b6-4fe9-8040-ad8dde1830d4",
+"rating": 4,
+"date": "2021-04-23",
+"loc": "en"
+},
+{
+"key": "P3#5220",
+"codes": [
+"B_IMPORT"
+],
+"quote": "we could add data to the backup file and then import our historic data",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "056e8af1-27cf-4d5c-a283-7e78805bd7c3",
+"rating": 4,
+"date": "2023-06-22",
+"loc": "en"
+},
+{
+"key": "P129#130",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "129. TrackIt - Goal & Time Tracker",
+"review_id": "1227040b-ee78-4cae-8365-e745b39edf10",
+"rating": 4,
+"date": "2026-04-09",
+"loc": "en"
+},
+{
+"key": "P3#4066",
+"codes": [
+"B_EXPORT_INCOMPLETE"
+],
+"quote": "Adding options to see notes in exported files",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "efb8444b-40c8-482c-929b-e836049cf933",
+"rating": 4,
+"date": "2024-05-18",
+"loc": "en"
+},
+{
+"key": "N11#5026",
+"codes": [
+"B_RESTORE_PARTIAL"
+],
+"quote": "The backup funnction does not back up all the training data",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "9928743327",
+"rating": 4,
+"date": "2023-05-15",
+"loc": "se"
+},
+{
+"key": "N4#2451",
+"codes": [
+"B_IMPORT"
+],
+"quote": "Es wäre schön, wenn man mit einer Importfunktion dieses Datenpaket auch wieder einlesen könnte",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "10593452326",
+"rating": 3,
+"date": "2023-11-17",
+"loc": "de"
+},
+{
+"key": "N3#28252",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "8406778635",
+"rating": 1,
+"date": "2022-02-28",
+"loc": "us"
+},
+{
+"key": "A24#27656",
+"codes": [
+"B_RESTORE_FAIL",
+"S_MULTI_REQ"
+],
+"quote": "I even tried using the restore backup “feature” that apparently does t work",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11533337020",
+"rating": 2,
+"date": "2024-07-25",
+"loc": "us"
+},
+{
+"key": "A20#3607",
+"codes": [
+"B_MANUAL",
+"S_MULTI_REQ"
+],
+"quote": "storing and restoring backup before exit and on start looks inconvenient",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "5650661108",
+"rating": 3,
+"date": "2020-03-12",
+"loc": "us"
+},
+{
+"key": "P110#3033",
+"codes": [
+"B_RESTORE_SAME_DEVICE"
+],
+"quote": "Unable to restore backup on other device, back up can be restored on the same device",
+"store": "P",
+"app": "110. Habit Tracker Unlimited",
+"review_id": "97aa44eb-4388-4d16-a645-7daf88e5aa19",
+"rating": 1,
+"date": "2022-02-22",
+"loc": "en"
+},
+{
+"key": "A24#33174",
+"codes": [
+"E_RESTORE",
+"B_NONE"
+],
+"quote": "I didn’t create a back up, and now I can’t restore my purchase",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8148807884",
+"rating": 1,
+"date": "2021-12-20",
+"loc": "us"
+},
+{
+"key": "P84#10009",
+"codes": [
+"B_RESTORE_PARTIAL",
+"B_BAD_RESTORE_SYNCED"
+],
+"quote": "Then the automatic sync saved the bad restore",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "acbab2e4-d548-4a74-a25a-7876bb06bdea",
+"rating": 1,
+"date": "2024-11-11",
+"loc": "en"
+},
+{
+"key": "P2#8091",
+"codes": [
+"B_AUTO_BROKEN",
+"X_PAYER"
+],
+"quote": "Auto backup is not working",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "2374edca-d9e1-4ba6-9ad4-36d75d7842ea",
+"rating": 1,
+"date": "2023-03-01",
+"loc": "en"
+},
+{
+"key": "P84#8976",
+"codes": [
+"B_PAID",
+"B_HIDDEN"
+],
+"quote": "Impossible to restore from backup without paying. They do not tell you this when you make the backup",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "b061afe4-2731-40d0-a221-41f367d4744a",
+"rating": 1,
+"date": "2025-05-16",
+"loc": "en"
+},
+{
+"key": "P84#9991",
+"codes": [
+"B_RESTORE_FAIL",
+"AC_LOGIN_FAIL"
+],
+"quote": "Can't restore backup, can't login to previous account",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "af2e60a5-9c9e-4310-8f05-92ac549ce5bf",
+"rating": 1,
+"date": "2024-11-15",
+"loc": "en"
+},
+{
+"key": "A24#24546",
+"codes": [
+"B_SLOW",
+"B_RESTORE_FAIL"
+],
+"quote": "the app requires me to “restore a backup” which it says takes 10 minutes",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13489635184",
+"rating": 1,
+"date": "2025-12-08",
+"loc": "us"
+},
+{
+"key": "P3#15434",
+"codes": [
+"B_RESTORE_FAIL",
+"B_NO_PICKER"
+],
+"quote": "There is no file chooser",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "6f46543a-3e6c-4b5c-a277-bfef7c355b9c",
+"rating": 3,
+"date": "2016-12-27",
+"loc": "en"
+},
+{
+"key": "P3#13596",
+"codes": [
+"B_RESTORE_FAIL",
+"L_PHONE"
+],
+"quote": "I backup my data before. And sadly it won't restore",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "f44dda92-e841-4487-8cb2-4a7380747777",
+"rating": 3,
+"date": "2018-01-09",
+"loc": "en"
+},
+{
+"key": "A20#3085",
+"codes": [
+"L_UPD",
+"B_RESTORE_FAIL"
+],
+"quote": "everything is gone",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "12421896263",
+"rating": 1,
+"date": "2025-03-15",
+"loc": "us"
+},
+{
+"key": "P129#539",
+"codes": [
+"B_RESTORE_SAME_DEVICE",
+"S_MULTI_REQ"
+],
+"quote": "I tried restoring the backup saved from other device. But it is showing empty",
+"store": "P",
+"app": "129. TrackIt - Goal & Time Tracker",
+"review_id": "a37d360b-2bfc-4769-bf99-a532fb74b365",
+"rating": 3,
+"date": "2025-01-22",
+"loc": "en"
+},
+{
+"key": "A10#9027",
+"codes": [
+"B_ICLOUD_FAIL",
+"AC_LOGIN_FAIL"
+],
+"quote": "I’ve been trying to activate iCloud backup but it doesn’t work",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13321841148",
+"rating": 3,
+"date": "2025-10-27",
+"loc": "fr"
+},
+{
+"key": "P69#546",
+"codes": [
+"B_PROPRIETARY_FORMAT"
+],
+"quote": "Why it only backup in .hive format which I can't open in my computer",
+"store": "P",
+"app": "69. EZ Habit - simple habit tracker",
+"review_id": "62f3a5d8-f5d9-4ab3-a079-cef4daec7c1e",
+"rating": 5,
+"date": "2022-07-26",
+"loc": "tr"
+},
+{
+"key": "P2#13169",
+"codes": [
+"B_RESTORE_FAIL",
+"L_PHONE"
+],
+"quote": "the backup folder didn't work. So I had to do them all over again",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "3d4cb131-3ce3-4d2a-9642-baeeabf412a4",
+"rating": 4,
+"date": "2019-08-20",
+"loc": "en"
+},
+{
+"key": "P84#25888",
+"codes": [
+"B_FORMAT_VERSION"
+],
+"quote": "not being able to import a backup from a previous version",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "934ba29a-901c-4ac0-a7a8-cbfdbe377dc3",
+"rating": 4,
+"date": "2019-09-02",
+"loc": "en"
+},
+{
+"key": "P84#23860",
+"codes": [
+"B_FORMAT_VERSION",
+"X_SUPPORT_SAVED"
+],
+"quote": "Had a problem with restoring a backup file from an older version, and Steve solved this quickly",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "5c264f7e-f40d-43f6-9c47-5a882554dcbe",
+"rating": 5,
+"date": "2019-12-15",
+"loc": "en"
+},
+{
+"key": "N4#9825",
+"codes": [
+"L_PHONE",
+"S_WATCH"
+],
+"quote": "Most of my Health data got lost when I paired the phone with new series 8 watch",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "9236151941",
+"rating": 2,
+"date": "2022-10-30",
+"loc": "us"
+},
+{
+"key": "N2#24419",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "7954809020",
+"rating": 1,
+"date": "2021-10-26",
+"loc": "za"
+},
+{
+"key": "N3#28144",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "8574342409",
+"rating": 1,
+"date": "2022-04-16",
+"loc": "us"
+},
+{
+"key": "P8#8944",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "b58cb41a-1930-46ed-856d-c24c81e5b958",
+"rating": 2,
+"date": "2017-01-30",
+"loc": "en"
+},
+{
+"key": "P126#45557",
+"codes": [
+"B_WANT_LOCAL",
+"L_PHONE"
+],
+"quote": "there is no way I can find to save my list to my SD card",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "3d636052-3160-4b89-9adc-599096e477fa",
+"rating": 3,
+"date": "2021-05-27",
+"loc": "en"
+},
+{
+"key": "P126#20346",
+"codes": [
+"B_WANT_LOCAL"
+],
+"quote": "no local backup as it seems you can only sync with Google tasks",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "eddfbf05-4d72-4d9e-85fb-8e2e05e7ff17",
+"rating": 3,
+"date": "2025-10-22",
+"loc": "en"
+},
+{
+"key": "A85#370",
+"codes": [
+"P_ONLINE_ONLY"
+],
+"quote": "I wish i was able to check off habits when i’m outside with no data",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "4817526654",
+"rating": 2,
+"date": "2019-09-21",
+"loc": "ca"
+},
+{
+"key": "P33#1611",
+"codes": [
+"B_WANT_LOCAL"
+],
+"quote": "No local backup restore option",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "8bf44a07-b378-44f8-af80-f1f2bfadd33f",
+"rating": 2,
+"date": "2020-10-25",
+"loc": "en"
+},
+{
+"key": "P3#10997",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "ae594e77-5dc3-49b0-9f9f-ff35b1ce4546",
+"rating": 1,
+"date": "2019-08-25",
+"loc": "en"
+},
+{
+"key": "P12#37549",
+"codes": [
+"B_NONE"
+],
+"quote": "no automatic backup",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "07078814-a6c3-4627-a69f-4703710aeec8",
+"rating": 1,
+"date": "2021-05-05",
+"loc": "en"
+},
+{
+"key": "P12#19959",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "e254f08f-a71b-4488-96a4-383f9118fe2a",
+"rating": 3,
+"date": "2023-03-17",
+"loc": "en"
+},
+{
+"key": "P12#55305",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "59c39764-0ddf-4a6f-9aba-335cc57fa497",
+"rating": 3,
+"date": "2020-02-10",
+"loc": "en"
+},
+{
+"key": "P126#69047",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "ea649ab9-0b7f-4522-a571-8732df480f7f",
+"rating": 1,
+"date": "2019-08-18",
+"loc": "en"
+},
+{
+"key": "A13#15018",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "3825300811",
+"rating": 1,
+"date": "2019-02-28",
+"loc": "us"
+},
+{
+"key": "P33#1565",
+"codes": [
+"B_WANT_LOCAL"
+],
+"quote": "No local backup restore option",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "f6a8d301-816f-4e7e-9839-ce2bbe6f1f05",
+"rating": 1,
+"date": "2020-11-28",
+"loc": "en"
+},
+{
+"key": "P30#3647",
+"codes": [
+"B_PAID",
+"B_WANT_LOCAL"
+],
+"quote": "You should have given at least local backup feature in the free version",
+"store": "P",
+"app": "30. Habit Tracker - Routine & Goals",
+"review_id": "558d7101-7b61-40b2-b6dc-e2e5a289885f",
+"rating": 2,
+"date": "2023-05-24",
+"loc": "en"
+},
+{
+"key": "P3#17766",
+"codes": [
+"B_RESTORE_FAIL",
+"B_EMPTY_FILE"
+],
+"quote": "I lost all my data even though I exported it to my cloud and SD card. The backup file does not create any former habit",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "0ac0adc5-e932-4bf1-a118-2f7837500a6c",
+"rating": 3,
+"date": "2016-06-07",
+"loc": "es"
+},
+{
+"key": "P65#5063",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "there is no option to backup my progress on my google account",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "99648729-c5d6-431b-ba92-4d6fe9c3b631",
+"rating": 3,
+"date": "2020-08-28",
+"loc": "en"
+},
+{
+"key": "P84#7698",
+"codes": [
+"POS_LOCAL_SNAPSHOTS",
+"B_PAID",
+"PR_LOCAL_PRAISE"
+],
+"quote": "I love the local backup feature—it's a huge win for privacy and data control but to restore data requires subscription",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "b2c9a8b7-127c-4258-a8da-a7f95e53f9dd",
+"rating": 4,
+"date": "2026-01-18",
+"loc": "en"
+},
+{
+"key": "P84#23243",
+"codes": [
+"B_LOCAL_REMOVED",
+"B_PAID"
+],
+"quote": "removal of a simple local failsafe to push (Premium) cloud backup reeks",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "12fc5d6b-bb4e-4e76-96dc-c2519c3978f5",
+"rating": 4,
+"date": "2020-01-15",
+"loc": "en"
+},
+{
+"key": "P3#9148",
+"codes": [
+"B_NONE"
+],
+"quote": "You cannot sync your app data to a local file or on cloud",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "82c34cdf-ad3a-4817-8596-652d770fadc6",
+"rating": 4,
+"date": "2020-08-21",
+"loc": "en"
+},
+{
+"key": "P2#9434",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "c80c574f-7538-4859-9011-1cfc0a2cae95",
+"rating": 4,
+"date": "2022-08-29",
+"loc": "en"
+},
+{
+"key": "P40#60",
+"codes": [
+"B_WANT_LOCAL"
+],
+"quote": "Hopefully it will incorporate a Backup feature that can be saved to a place of desire such as A SD card",
+"store": "P",
+"app": "40. Habit Eazy - Habit & To Do Pal",
+"review_id": "b62ee0f9-8774-4db0-9bea-55ede22ecf80",
+"rating": 4,
+"date": "2025-06-19",
+"loc": "en"
+},
+{
+"key": "N8#8954",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "5151826149",
+"rating": 1,
+"date": "2019-11-16",
+"loc": "gb"
+},
+{
+"key": "N3#11562",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "7981336707",
+"rating": 1,
+"date": "2021-11-02",
+"loc": "in"
+},
+{
+"key": "N3#8627",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "13500042867",
+"rating": 1,
+"date": "2025-12-11",
+"loc": "gb"
+},
+{
+"key": "A10#39038",
+"codes": [
+"B_MANUAL",
+"L_PHONE",
+"AC_WANT_LOGIN",
+"X_SUPPORT_SAVED"
+],
+"quote": "If you don’t make a back file for your finch you will lose everything if deleted, restoring phone, etc",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "11882875394",
+"rating": 2,
+"date": "2024-10-28",
+"loc": "us"
+},
+{
+"key": "P84#21419",
+"codes": [
+"B_FORMAT_VERSION",
+"B_WANT_AUTO"
+],
+"quote": "Unable to restore,app version mismatch?",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "349b00d8-3016-4cc0-8384-6eb90352fd4d",
+"rating": 1,
+"date": "2020-05-04",
+"loc": "en"
+},
+{
+"key": "P3#9724",
+"codes": [
+"B_WANT_AUTO",
+"B_WANT_OWN_CLOUD",
+"L_PHONE"
+],
+"quote": "when my device broke I was lost my data",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "0f52c4db-ad28-4f70-9678-046bb6890b64",
+"rating": 3,
+"date": "2020-05-18",
+"loc": "en"
+},
+{
+"key": "A24#28960",
+"codes": [
+"B_NONE",
+"L_REINST",
+"X_SUPPORT_NONE",
+"X_CHURN"
+],
+"quote": "the application has no auto backup",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10012255705",
+"rating": 3,
+"date": "2023-06-08",
+"loc": "us"
+},
+{
+"key": "A23#4531",
+"codes": [
+"L_UPD",
+"B_STALE"
+],
+"quote": "Automatic backups are not frequent enough",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "9564489033",
+"rating": 2,
+"date": "2023-01-30",
+"loc": "us"
+},
+{
+"key": "P111#485",
+"codes": [
+"B_OS_WANT"
+],
+"quote": "Please add Android 6.0 Auto Backup",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "028b4617-df29-4e95-ac68-71e6ed7ba0ca",
+"rating": 1,
+"date": "2016-01-02",
+"loc": "de"
+},
+{
+"key": "A23#4691",
+"codes": [
+"L_UPD",
+"POS_LOCAL_SNAPSHOTS",
+"B_STALE",
+"B_HIDDEN"
+],
+"quote": "the company listed where to find backups in the app (I only use it on my iPhone).  I was able to restore data up until almost 2 weeks ago",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "8553855848",
+"rating": 2,
+"date": "2022-04-10",
+"loc": "us"
+},
+{
+"key": "P9#702",
+"codes": [
+"B_WANT_AUTO",
+"X_PAYER"
+],
+"quote": "Can't stress enough to have an automatic backup system",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "fb46c20b-700d-4035-8923-032b8180a497",
+"rating": 2,
+"date": "2025-01-03",
+"loc": "en"
+},
+{
+"key": "P2#5681",
+"codes": [
+"B_AUTO_BROKEN",
+"B_SILENT_FAIL",
+"L_PHONE",
+"X_PAYER"
+],
+"quote": "I discovered none of my backups had actually occurred and over two years of habit tracking data had been lost",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "612d885e-cb1c-4553-ac0b-fca77eaf2090",
+"rating": 2,
+"date": "2024-02-04",
+"loc": "en"
+},
+{
+"key": "A31#1828",
+"codes": [
+"B_NONE",
+"S_MULTI_REQ"
+],
+"quote": "no iCloud sync, No automatic backup",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "5441591830",
+"rating": 1,
+"date": "2020-01-24",
+"loc": "in"
+},
+{
+"key": "P3#11744",
+"codes": [
+"B_WANT_OWN_CLOUD",
+"B_WANT_AUTO"
+],
+"quote": "automatic backup to Google Drive (more convenient)",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "67f56df5-cd29-4670-912c-f44162880a75",
+"rating": 3,
+"date": "2019-03-16",
+"loc": "en"
+},
+{
+"key": "A20#1637",
+"codes": [
+"L_UPD",
+"B_WANT_AUTO"
+],
+"quote": "Please implement auto backup feature instead need to perform manual backup",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "12421785170",
+"rating": 3,
+"date": "2025-03-15",
+"loc": "my"
+},
+{
+"key": "P3#4272",
+"codes": [
+"B_WANT_OWN_CLOUD",
+"B_WANT_AUTO",
+"L_PHONE"
+],
+"quote": "Learned the hard way after losing my phone -- all that meticulous tracking, gone",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "89bf7cf4-c900-4d76-a9a7-fdfe0046fec6",
+"rating": 3,
+"date": "2024-03-02",
+"loc": "en"
+},
+{
+"key": "P3#1175",
+"codes": [
+"B_WANT_AUTO",
+"B_WANT_FOLDER"
+],
+"quote": "a scheduled backup to backup the data with a external backup-app",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "81d05405-e8dc-462d-8128-b2425912bb30",
+"rating": 4,
+"date": "2019-01-21",
+"loc": "de"
+},
+{
+"key": "P84#32700",
+"codes": [
+"B_WANT_AUTO",
+"B_MANUAL"
+],
+"quote": "that the info could be transferred from one phone to another without the  need to email",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "46a06b5d-8297-4c46-8bc3-af0a1f2cb05f",
+"rating": 4,
+"date": "2018-05-02",
+"loc": "en"
+},
+{
+"key": "A76#4640",
+"codes": [
+"B_WANT_AUTO",
+"POS_BACKUP"
+],
+"quote": "you can back up and restore. I wish it was an automatic back up",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "13987286550",
+"rating": 5,
+"date": "2026-04-23",
+"loc": "us"
+},
+{
+"key": "P84#26107",
+"codes": [
+"B_WANT_AUTO"
+],
+"quote": "hoping for automatic backups in a future enhancement",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "b6ba19fe-3908-4d0d-88db-973bf8d3228a",
+"rating": 4,
+"date": "2019-08-22",
+"loc": "en"
+},
+{
+"key": "P69#91",
+"codes": [
+"B_WANT_AUTO",
+"B_WANT_OWN_CLOUD"
+],
+"quote": "having automatic backup (to google account for example) because it is possible to loss the phone anytime",
+"store": "P",
+"app": "69. EZ Habit - simple habit tracker",
+"review_id": "0f067325-8b5c-44f0-b989-adc7636da2c4",
+"rating": 4,
+"date": "2023-07-25",
+"loc": "en"
+},
+{
+"key": "N3#21011",
+"codes": [
+"L_DRAFT",
+"B_WANT_AUTO",
+"B_WANT_VERSIONS"
+],
+"quote": "This app needs an auto backup feature that will let you restore to a recently auto saved version of the text",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "14480155057",
+"rating": 1,
+"date": "2026-08-28",
+"loc": "us"
+},
+{
+"key": "N9#50917",
+"codes": [
+"L_DRAFT"
+],
+"quote": "No auto backup? Really?!",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1077749103",
+"rating": 1,
+"date": "2014-10-09",
+"loc": "us"
+},
+{
+"key": "N3#12203",
+"codes": [
+"B_WANT_FOLDER"
+],
+"quote": "automatic export and sync with folder of all notes",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "8008724086",
+"rating": 2,
+"date": "2021-11-10",
+"loc": "it"
+},
+{
+"key": "A31#5003",
+"codes": [
+"B_CLOUD_PROVIDER_FAIL"
+],
+"quote": "There’s an option to sync to dropbox but when you press it it just loads forever and doesn’t sync",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "2857409910",
+"rating": 3,
+"date": "2018-07-07",
+"loc": "us"
+},
+{
+"key": "A13#12153",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "7301909283",
+"rating": 2,
+"date": "2021-05-05",
+"loc": "us"
+},
+{
+"key": "A76#6150",
+"codes": [
+"B_MANUAL",
+"L_STORAGE_UNINSTALL"
+],
+"quote": "I deleted it quickly to make room to take some urgent photos",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "1329477763",
+"rating": 1,
+"date": "2016-02-07",
+"loc": "us"
+},
+{
+"key": "P65#3359",
+"codes": [
+"B_CLOUD_PROVIDER_FAIL",
+"B_RESTORE_FAIL"
+],
+"quote": "after reset when i tried to export it showed error",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "7245b8ea-81d4-43aa-855c-a6efd89abcd9",
+"rating": 3,
+"date": "2023-03-23",
+"loc": "en"
+},
+{
+"key": "P65#1336",
+"codes": [
+"B_CLOUD_PROVIDER_FAIL",
+"B_FILE_HIDDEN"
+],
+"quote": "in irgendeinem komischen Data-Ordner, auf dem ich keinen Zugriff habe",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "6eb5e755-9be8-4147-87e6-80fc4f7b0038",
+"rating": 3,
+"date": "2025-08-29",
+"loc": "de"
+},
+{
+"key": "A86#575",
+"codes": [
+"B_RESTORE_FAIL",
+"B_CLOUD_PROVIDER_FAIL",
+"L_OSUPD"
+],
+"quote": "Wiederherstellung aus dem Backup (Dropbox) funktioniert nicht",
+"store": "A",
+"app": "86. Today Habit tracker - For to-dos, routines & goals",
+"review_id": "3212411518",
+"rating": 1,
+"date": "2018-09-21",
+"loc": "de"
+},
+{
+"key": "P97#9332",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "no hay ni backup ni restore con Google Drive",
+"store": "P",
+"app": "97. To-do list - tasks planner",
+"review_id": "db935c4b-35a9-46cd-a729-158ce36eda86",
+"rating": 3,
+"date": "2023-02-18",
+"loc": "es"
+},
+{
+"key": "P126#146855",
+"codes": [
+"B_CLOUD_PROVIDER_FAIL"
+],
+"quote": "Dropbox non memorizza il backup",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "20f09f73-231f-4b78-9188-5768e5d55262",
+"rating": 3,
+"date": "2019-09-07",
+"loc": "it"
+},
+{
+"key": "A86#1392",
+"codes": [
+"B_RESTORE_PARTIAL",
+"B_ATTACH",
+"B_SLOW"
+],
+"quote": "most pictures got broken and couldn't be shown",
+"store": "A",
+"app": "86. Today Habit tracker - For to-dos, routines & goals",
+"review_id": "1890431264",
+"rating": 1,
+"date": "2017-11-01",
+"loc": "us"
+},
+{
+"key": "P126#45498",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "Missing sync features (Dropbox or Google drive)",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "c9e11044-6dfd-4bf1-9874-ec7813045dcf",
+"rating": 2,
+"date": "2021-05-30",
+"loc": "en"
+},
+{
+"key": "P126#10334",
+"codes": [
+"B_WANT_OWN_STORAGE"
+],
+"quote": "Kein Synchronisieren über z.B Nextcloud möglich",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "3e854cd1-e045-45a3-96a6-e6cab9526058",
+"rating": 1,
+"date": "2021-12-28",
+"loc": "de"
+},
+{
+"key": "A86#951",
+"codes": [
+"B_RESTORE_FAIL",
+"X_SUPPORT_NONE"
+],
+"quote": "「現在、インポートはできません。」",
+"store": "A",
+"app": "86. Today Habit tracker - For to-dos, routines & goals",
+"review_id": "3744435175",
+"rating": 3,
+"date": "2019-02-07",
+"loc": "jp"
+},
+{
+"key": "P84#31514",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "Provide database backup option with Google Drive and Dropbox",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "99b6dd3c-73ab-4062-9d95-ac8fe8fc1541",
+"rating": 3,
+"date": "2018-11-02",
+"loc": "en"
+},
+{
+"key": "A31#3488",
+"codes": [
+"B_CLOUD_PROVIDER_FAIL",
+"L_UPD"
+],
+"quote": "it can no longer back up to Dropbox, after a recent update",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "9214908968",
+"rating": 3,
+"date": "2022-10-23",
+"loc": "us"
+},
+{
+"key": "A76#7038",
+"codes": [
+"B_IMPORT",
+"S_MULTI_REQ"
+],
+"quote": "You can export to Dropbox and other apps including email, but you cannot import or sync your log",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "770634885",
+"rating": 4,
+"date": "2013-03-16",
+"loc": "us"
+},
+{
+"key": "P3#26265",
+"codes": [
+"B_WANT_OWN_STORAGE"
+],
+"quote": "希望加入 webdav 同步功能",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "3e24d5f8-ef49-4211-896e-823512c7d24c",
+"rating": 5,
+"date": "2025-07-27",
+"loc": "zh-CN"
+},
+{
+"key": "A31#1642",
+"codes": [
+"B_WANT_AUTO",
+"B_WANT_FOLDER"
+],
+"quote": "Id love the ability to automatically export csv to Dropbox periodically, without having to remember to do it manually",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "5348354820",
+"rating": 5,
+"date": "2020-01-01",
+"loc": "gb"
+},
+{
+"key": "P3#26281",
+"codes": [
+"B_WANT_OWN_STORAGE"
+],
+"quote": "Hoping to add synchronization functionality, use webdav",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "380c1c9a-77d8-4c02-9bc5-c084fc9e7310",
+"rating": 5,
+"date": "2025-02-04",
+"loc": "zh-CN"
+},
+{
+"key": "P65#14090",
+"codes": [
+"POS_BACKUP"
+],
+"quote": "Backup opslaan ook mogelijk in Google Drive of Dropbox",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "19fd7b86-e44c-4394-8962-3cda0d13f386",
+"rating": 5,
+"date": "2023-11-06",
+"loc": "nl"
+},
+{
+"key": "N9#20504",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1142958063",
+"rating": 1,
+"date": "2015-02-07",
+"loc": "jp"
+},
+{
+"key": "N9#47238",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1314003671",
+"rating": 4,
+"date": "2016-01-10",
+"loc": "us"
+},
+{
+"key": "N9#37697",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "10914667195",
+"rating": 1,
+"date": "2024-02-08",
+"loc": "us"
+},
+{
+"key": "P97#11091",
+"codes": [
+"L_NOTSAVED"
+],
+"quote": "la moitié de mes enregistrements ne sont pas sauvegardés",
+"store": "P",
+"app": "97. To-do list - tasks planner",
+"review_id": "4f8d703e-78ec-46b2-b7c4-3509c7579632",
+"rating": 3,
+"date": "2025-07-28",
+"loc": "fr"
+},
+{
+"key": "P84#54023",
+"codes": [
+"B_PAID",
+"L_PHONE"
+],
+"quote": "да еще и бэкап можно восстановить только в платной версии",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "146575a0-0100-4e97-aa41-11dda1803054",
+"rating": 3,
+"date": "2021-12-12",
+"loc": "ru"
+},
+{
+"key": "P38#3068",
+"codes": [
+"AC_LOGIN_FAIL",
+"B_NONE",
+"X_PAYER"
+],
+"quote": "새로 하려고해도 백업이 안되니",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "e9c69e52-8b32-40bf-924c-dd91e504d1b5",
+"rating": 1,
+"date": "2023-07-01",
+"loc": "ko"
+},
+{
+"key": "A52#1033",
+"codes": [
+"B_STALE",
+"POS_LOCAL_SNAPSHOTS",
+"L_USER"
+],
+"quote": "自动备份间隔太久",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "13804721782",
+"rating": 3,
+"date": "2026-03-02",
+"loc": "cn"
+},
+{
+"key": "P84#43932",
+"codes": [
+"B_FORMAT_VERSION",
+"B_PAID"
+],
+"quote": "同じバージョンでないと復元できない",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "a3074214-0f93-49e3-b7c9-4b5d82dbb58e",
+"rating": 1,
+"date": "2025-02-27",
+"loc": "ja"
+},
+{
+"key": "A57#72",
+"codes": [
+"B_PAID"
+],
+"quote": "無料だとバックアップ機能がないので",
+"store": "A",
+"app": "57. Habit Tracker - DayStamp - Daily Routine, Streak & Widget",
+"review_id": "10869361826",
+"rating": 3,
+"date": "2024-01-27",
+"loc": "jp"
+},
+{
+"key": "A52#4790",
+"codes": [
+"B_MANUAL",
+"S_FAIL",
+"L_NOTSAVED"
+],
+"quote": "只好手动备份，结果一直闪退",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "11571581374",
+"rating": 1,
+"date": "2024-08-04",
+"loc": "cn"
+},
+{
+"key": "P84#57414",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "Google hesabı ile Yedekleme gelmeli",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "a502ac35-c1b6-4a44-972a-9d244f03682d",
+"rating": 1,
+"date": "2024-05-30",
+"loc": "tr"
+},
+{
+"key": "P12#93334",
+"codes": [
+"B_PAID"
+],
+"quote": "si pudieses guardar un respaldo sin necesidad de pagar",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "8200410d-10c4-4edc-9aa0-6aec9abc43e5",
+"rating": 3,
+"date": "2018-03-25",
+"loc": "es"
+},
+{
+"key": "P126#215761",
+"codes": [
+"B_NONE"
+],
+"quote": "yedeklemesi yok",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "0fe6746a-2c5c-4d99-b025-ad8385996b5b",
+"rating": 1,
+"date": "2020-10-25",
+"loc": "tr"
+},
+{
+"key": "A52#3395",
+"codes": [
+"B_COOLDOWN",
+"S_FAIL",
+"E_DEVICE"
+],
+"quote": "必须要24小时后才能备份",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "12494878265",
+"rating": 1,
+"date": "2025-04-02",
+"loc": "cn"
+},
+{
+"key": "A47#183",
+"codes": [
+"S_WIDGET"
+],
+"quote": "アプリでの更新内容がウィジェットに反映されない",
+"store": "A",
+"app": "47. Habit Streak Tracker - DotHabit - Daily Routine, Goals & Planner",
+"review_id": "12708077534",
+"rating": 1,
+"date": "2025-05-28",
+"loc": "jp"
+},
+{
+"key": "P3#24682",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "Нет нормального бэкапа в Google Drive",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "3fc3d5bb-2bfe-45ff-aebe-0517516fb8ea",
+"rating": 1,
+"date": "2017-11-11",
+"loc": "ru"
+},
+{
+"key": "P30#4449",
+"codes": [
+"B_PAID",
+"BL_EXPIRY_DATALOSS"
+],
+"quote": "solo los usuarios premium tienen respaldo en la nube",
+"store": "P",
+"app": "30. Habit Tracker - Routine & Goals",
+"review_id": "b2902bb6-bd67-4540-84a6-8a0266c6dfc4",
+"rating": 1,
+"date": "2024-07-15",
+"loc": "es"
+},
+{
+"key": "A57#301",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "이이클라우드에는 백업이 안되나요?",
+"store": "A",
+"app": "57. Habit Tracker - DayStamp - Daily Routine, Streak & Widget",
+"review_id": "9087079299",
+"rating": 3,
+"date": "2022-09-15",
+"loc": "kr"
+},
+{
+"key": "P84#39622",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "Dommage qu'il n'y ai pas un système de sauvegarde en ligne",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "ce73d3a4-4731-4a3a-a073-914eea376d30",
+"rating": 4,
+"date": "2023-06-10",
+"loc": "fr"
+},
+{
+"key": "A52#3358",
+"codes": [
+"POS_XOS"
+],
+"quote": "苹果和安卓数据互通了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "12515543073",
+"rating": 5,
+"date": "2025-04-07",
+"loc": "cn"
+},
+{
+"key": "P84#33223",
+"codes": [
+"B_PAID",
+"POS_BACKUP"
+],
+"quote": "puedes mantener un respaldo en la nube con la versión premium",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "131f9897-3765-4dc3-8781-eb082bb339f0",
+"rating": 5,
+"date": "2025-03-25",
+"loc": "es"
+},
+{
+"key": "P3#22991",
+"codes": [
+"B_WANT_AUTO"
+],
+"quote": "Хотелось бы синхронизацию и резервное копирование",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "0fb9c2c3-c3c2-49d2-a42c-a7c067f1cb3e",
+"rating": 5,
+"date": "2022-01-03",
+"loc": "ru"
+},
+{
+"key": "P84#41383",
+"codes": [
+"POS_LOCAL_SNAPSHOTS",
+"B_WANT_OWN_CLOUD"
+],
+"quote": "Il existe heureusement une sauvegarde locale sur la mémoire du smartphone",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "a352c92d-2739-4b84-9566-3cc0a8e516b8",
+"rating": 5,
+"date": "2019-06-12",
+"loc": "fr"
+},
+{
+"key": "N4#3362",
+"codes": [
+"L_RANDOM"
+],
+"quote": "Plus aucun enregistrement ne figure de mon passé thérapeutique",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "10378453982",
+"rating": 5,
+"date": "2023-09-17",
+"loc": "fr"
+},
+{
+"key": "N3#13796",
+"codes": [
+"B_RESTORE_TOO_HARD"
+],
+"quote": "バックアップを適用するのが面倒くさすぎる",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "8295057359",
+"rating": 1,
+"date": "2022-01-29",
+"loc": "jp"
+},
+{
+"key": "N2#14395",
+"codes": [
+"L_STORAGE_FULL",
+"B_NONE_KNOWN"
+],
+"quote": "Когда память телефона заканчивается (~<170Мб), календарь полностью обнуляется",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "14281089533",
+"rating": 2,
+"date": "2026-07-09",
+"loc": "ru"
+},
+{
+"key": "A59#96",
+"codes": [
+"B_ICLOUD_FAIL",
+"S_MULTI_REQ"
+],
+"quote": "Icloud Sync not working on IOS 13.6.1",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "6371026354",
+"rating": 2,
+"date": "2020-08-28",
+"loc": "at"
+},
+{
+"key": "A23#4382",
+"codes": [
+"B_ICLOUD_FAIL",
+"S_REVERT"
+],
+"quote": "where each device records immutable events with timestamps and you just apply them in order",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "10815885619",
+"rating": 3,
+"date": "2024-01-13",
+"loc": "us"
+},
+{
+"key": "A23#4282",
+"codes": [
+"B_ICLOUD_FAIL",
+"S_DUP"
+],
+"quote": "Soon as you introduce iCloud Sync it completely breaks down with issues of recreating old habits",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "11738653741",
+"rating": 2,
+"date": "2024-09-18",
+"loc": "us"
+},
+{
+"key": "A20#3238",
+"codes": [
+"B_ICLOUD_FAIL",
+"B_RESTORE_OVERWROTE",
+"X_PAYER"
+],
+"quote": "I backed up to ICloud... guess what... it deleted all my habits",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "7209252162",
+"rating": 1,
+"date": "2021-04-11",
+"loc": "us"
+},
+{
+"key": "A13#6175",
+"codes": [
+"B_ICLOUD_FAIL"
+],
+"quote": "growing issues with basic icloud syncing between devices",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "4465688204",
+"rating": 3,
+"date": "2019-07-15",
+"loc": "gb"
+},
+{
+"key": "A41#753",
+"codes": [
+"B_ICLOUD_REFUSED",
+"S_WATCH",
+"PR_CONCERN"
+],
+"quote": "I will never enable iCloud for privacy reasons",
+"store": "A",
+"app": "41. Awesome Habits - Habit Tracker - Streaks, days since & goals",
+"review_id": "9104605843",
+"rating": 1,
+"date": "2022-09-20",
+"loc": "us"
+},
+{
+"key": "A7#708",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "7. Habit Tracker - HabitKit - Streaks & Accountability",
+"review_id": "13695520678",
+"rating": 2,
+"date": "2026-01-31",
+"loc": "us"
+},
+{
+"key": "A13#5833",
+"codes": [
+"B_WANT_OWN_CLOUD",
+"AC_WANT_LOGIN"
+],
+"quote": "can save my routine to an account so that I could log back in and get all my stuff back on a new device",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8754824663",
+"rating": 3,
+"date": "2022-06-08",
+"loc": "gb"
+},
+{
+"key": "A31#2676",
+"codes": [
+"B_ICLOUD_FAIL",
+"L_REINST",
+"B_RESTORE_FAIL",
+"X_SUPPORT_NONE",
+"X_PAYER"
+],
+"quote": "it did succeed in deleting all my data and goals for at least the last year despite having utilized their iCloud backup feature",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "11032375638",
+"rating": 1,
+"date": "2024-03-11",
+"loc": "us"
+},
+{
+"key": "A20#524",
+"codes": [
+"B_STATUS_UNKNOWN",
+"B_RESTORE_FAIL",
+"L_PHONE",
+"X_PAYER"
+],
+"quote": "where does my data even backup to? iCloud? Doesn’t really say within the app",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "5963669614",
+"rating": 2,
+"date": "2020-05-19",
+"loc": "ca"
+},
+{
+"key": "A1#46439",
+"codes": [
+"B_ICLOUD_FAIL",
+"X_PAYER"
+],
+"quote": "the iCloud sync is unreliable. That's a deal-breaker for me",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12074625686",
+"rating": 3,
+"date": "2024-12-17",
+"loc": "hu"
+},
+{
+"key": "A13#18258",
+"codes": [
+"S_MULTI_REQ"
+],
+"quote": "doesn't have iCloud sync",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1379830019",
+"rating": 1,
+"date": "2016-05-17",
+"loc": "us"
+},
+{
+"key": "A1#52368",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11237315114",
+"rating": 2,
+"date": "2024-05-06",
+"loc": "us"
+},
+{
+"key": "A20#1272",
+"codes": [
+"B_ICLOUD_FAIL",
+"B_RESTORE_FAIL",
+"L_REINST"
+],
+"quote": "I backed up to iCloud but nothing happened when I tried to restore it",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6378437147",
+"rating": 1,
+"date": "2020-08-30",
+"loc": "gb"
+},
+{
+"key": "A1#864",
+"codes": [
+"B_ICLOUD_FAIL",
+"S_PARTIAL",
+"B_ICLOUD_FULL_BLAMED"
+],
+"quote": "is there free space in your iCloud storage and is iCloud Drive on?",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13782492451",
+"rating": 2,
+"date": "2026-02-24",
+"loc": "br"
+},
+{
+"key": "A7#246",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "Would appreciate additional iCloud sync",
+"store": "A",
+"app": "7. Habit Tracker - HabitKit - Streaks & Accountability",
+"review_id": "10787867539",
+"rating": 5,
+"date": "2024-01-05",
+"loc": "de"
+},
+{
+"key": "A1#44289",
+"codes": [
+"POS_SYNC"
+],
+"quote": "iPhone/iPad/Apple-Watch-App mit iCloud-Sync",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "7389974949",
+"rating": 5,
+"date": "2021-05-26",
+"loc": "de"
+},
+{
+"key": "A23#3290",
+"codes": [
+"B_ICLOUD_FAIL"
+],
+"quote": "5 stars if the icloud sync issues get solved",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "11585395569",
+"rating": 4,
+"date": "2024-08-08",
+"loc": "nl"
+},
+{
+"key": "A31#706",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "6032814643",
+"rating": 4,
+"date": "2020-06-04",
+"loc": "ca"
+},
+{
+"key": "N1#20386",
+"codes": [
+"POS_SYNC"
+],
+"quote": "Your reminders sync across iCloud",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "12337981947",
+"rating": 5,
+"date": "2025-02-21",
+"loc": "us"
+},
+{
+"key": "N3#25321",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "11116395215",
+"rating": 5,
+"date": "2024-04-03",
+"loc": "us"
+},
+{
+"key": "N11#6404",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "2861920533",
+"rating": 1,
+"date": "2018-07-08",
+"loc": "us"
+},
+{
+"key": "P24#20436",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "Sync with Google Drive?",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "8106552d-a80d-46ee-ae83-116030e0a36d",
+"rating": 3,
+"date": "2016-03-07",
+"loc": "it"
+},
+{
+"key": "P9#713",
+"codes": [
+"B_WANT_OWN_CLOUD",
+"B_MANUAL",
+"B_LISTING_FALSE"
+],
+"quote": "the \"Privacy\" section of your website mentions \"Authentication and cloud-backups\" but I couldn't find either in the app",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "2330795e-fd1b-483a-8350-7477a3400b6b",
+"rating": 3,
+"date": "2025-01-01",
+"loc": "en"
+},
+{
+"key": "P3#15239",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "A cloud saving feature or Google drive saving would be so awesome",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "5ab3a0fc-18a8-43f4-aeb1-e40e81f5320d",
+"rating": 3,
+"date": "2017-01-28",
+"loc": "en"
+},
+{
+"key": "P84#43623",
+"codes": [
+"B_WANT_OWN_CLOUD",
+"B_WANT_AUTO"
+],
+"quote": "Bisogna aggiungere il backup automatico su cloud",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "703c1cff-49f0-43f0-b5bd-af8dbd768131",
+"rating": 3,
+"date": "2019-07-10",
+"loc": "it"
+},
+{
+"key": "P3#15104",
+"codes": [
+"B_IMPORT",
+"L_PHONE"
+],
+"quote": "Exported the CSV to Google drive and changed my phone now I'm unable to import",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "91f43947-5cc0-4983-925b-578b64c73383",
+"rating": 3,
+"date": "2017-02-18",
+"loc": "en"
+},
+{
+"key": "A10#24131",
+"codes": [
+"L_CORRUPT",
+"B_RESTORE_FAIL"
+],
+"quote": "It won’t let me restore a backup saved on Google Drive",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13828518334",
+"rating": 1,
+"date": "2026-03-09",
+"loc": "us"
+},
+{
+"key": "P33#4344",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "add google drive backup",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "cb76bee5-1f2d-4d84-93dd-f0885aaddd70",
+"rating": 2,
+"date": "2019-11-18",
+"loc": "it"
+},
+{
+"key": "P65#4054",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "Please provide to take backup to google drive so that when we change our phone , we can restore the data",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "ab6aed76-4556-44ae-81fe-2fbcfc0036c6",
+"rating": 3,
+"date": "2021-09-28",
+"loc": "en"
+},
+{
+"key": "P2#14153",
+"codes": [
+"B_COOLDOWN"
+],
+"quote": "parece ser que la sincronización mínima es cada 2 días con mi propio Google Drive",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "e7180ddb-1bef-4657-b58f-a4df94afe885",
+"rating": 2,
+"date": "2025-04-04",
+"loc": "es"
+},
+{
+"key": "A55#188",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "Sugiro que busquem incluir a sincronização de dados com o iCloud, o Google Drive e o DropBox",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "1517199932",
+"rating": 3,
+"date": "2017-01-07",
+"loc": "br"
+},
+{
+"key": "P110#1342",
+"codes": [
+"B_WANT_OWN_CLOUD",
+"B_MANUAL",
+"L_PHONE"
+],
+"quote": "I lost a lot of data as I forgot to take backup of this app when resetting",
+"store": "P",
+"app": "110. Habit Tracker Unlimited",
+"review_id": "53ccafca-94e1-4127-8899-6a7c679b3c3c",
+"rating": 2,
+"date": "2024-10-14",
+"loc": "en"
+},
+{
+"key": "P84#1180",
+"codes": [
+"B_PAID",
+"B_WANT_OWN_CLOUD"
+],
+"quote": "Google hat kostenlosen \"Google Drive\" Speicherplatz. Warum wird dieser nicht angeboten für Daten?",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "4cab23b7-d3f6-4f74-9069-9f874c2c8dd4",
+"rating": 3,
+"date": "2025-08-02",
+"loc": "de"
+},
+{
+"key": "P65#7648",
+"codes": [
+"B_CLOUD_PROVIDER_FAIL",
+"B_FALSE_SUCCESS"
+],
+"quote": "Google Drive export fails every time,  but says that it was successful",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "9368b74c-412f-4d68-a861-a796b2fa43ae",
+"rating": 3,
+"date": "2018-06-11",
+"loc": "en"
+},
+{
+"key": "P65#4547",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "Google drive sync option",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "34f0130f-209c-41b7-aba8-d75105109512",
+"rating": 4,
+"date": "2021-02-22",
+"loc": "en"
+},
+{
+"key": "P84#189",
+"codes": [
+"B_WANT_OWN_CLOUD",
+"B_WANT_AUTO"
+],
+"quote": "if you add Cloud backup to google drive automatically",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "07375ea6-fe7d-41ea-bd95-917fa8e7ec11",
+"rating": 5,
+"date": "2019-09-17",
+"loc": "ar"
+},
+{
+"key": "P105#1103",
+"codes": [
+"B_LISTING_FALSE",
+"B_STATUS_UNKNOWN",
+"L_REINST"
+],
+"quote": "you say that the data is synced with Google drive but there is no option to login and connect my Gmail so how would the same take place?",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "d57f7b5d-fdeb-446d-9229-c14e049046ef",
+"rating": 4,
+"date": "2020-03-24",
+"loc": "en"
+},
+{
+"key": "A48#4231",
+"codes": [
+"B_WANT_OWN_CLOUD"
+],
+"quote": "an export to google drive or something would be cool",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1024952171",
+"rating": 4,
+"date": "2014-07-09",
+"loc": "us"
+},
+{
+"key": "P3#11068",
+"codes": [
+"B_MANUAL",
+"S_MULTI_REQ"
+],
+"quote": "I manually export/import to Google Drive so I can sync between two devices",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "67ddd9f2-12f3-42ea-8f8b-3889282f3a58",
+"rating": 5,
+"date": "2019-08-12",
+"loc": "en"
+},
+{
+"key": "N9#17202",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1853226055",
+"rating": 4,
+"date": "2017-10-16",
+"loc": "it"
+},
+{
+"key": "N9#13597",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "988779832",
+"rating": 1,
+"date": "2014-05-06",
+"loc": "gb"
+},
+{
+"key": "N9#52063",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "991514917",
+"rating": 3,
+"date": "2014-05-12",
+"loc": "us"
+}
+]

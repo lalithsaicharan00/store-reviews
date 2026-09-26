@@ -1,0 +1,60 @@
+A10#6306|A_LOGIN_FAIL,L_REINST|"today I redownloaded it and I&#39;m not able to sign into my old account"
+P24#23359|A_LOGIN_FAIL,A_PROVIDER|"I cant login using my facebook account"
+P24#23979|A_LOGIN_FAIL,L_PHONE,E_RESTORE,X_PAYER|"Now I've got a new phone and I can't log into my premium account"
+A24#30957|A_LOGOUT,X_SUPPORT_NONE|"the app logs me out constantly"
+P111#5825|A_LOGIN_FAIL|"I can't log in my account"
+A24#14278|E_CANCEL_ACCT|"I have even deleted my account and details but still once again being “charged”"
+A48#1494|A_LOGIN_FAIL,S_FAIL|"I can’t log in to my app. The whole point of this app doesn’t matter right now. I can’t sync"
+P24#4671|A_LOGIN_FAIL,X_ABANDON,X_PAYER|"Can't login on the app after having paid premium"
+P111#4687|A_LOGIN_FAIL|"it just won't let me login anymore"
+A33#3176|S_LIVEACTIVITY|"Live Activities are buggy and doesn’t sync well with the app information"
+P8#5444|A_LOGIN_FAIL,A_PROVIDER|"I can't register or log in with Google"
+A24#1514|E_DOUBLE,A_LOGIN_FAIL|"can’t even access my account"
+A85#151|A_PROVIDER|"it doesn&#39;t support facebook login"
+P125#11896|NR|
+A85#1053|A_LOGIN_FAIL,A_EMAIL|"Requested a password reset via email, no email has come through"
+P24#19586|A_LOGIN_FAIL,S_FAIL,X_SUPPORT_NONE,X_PAYER|"cannot sync my data, no login possible in account, no response from support"
+A10#16520|A_LOGIN_FAIL,A_PROVIDER|"The only available option for me is signing in with the phone number and it’s always showing “error”"
+A24#9091|A_LOGIN_FAIL|"can’t log in with email address"
+P8#100|A_LOGIN_FAIL|"I can't register or login"
+A50#51|NR|
+N8#30529|NR|
+N10#13590|A_LOGIN_FAIL|"First I get that there&#39;s no account with my email, then try to use the same email to create a new account and it says that there&#39;s already an account"
+N10#18322|A_LOGOUT|"every two or three months and asks for my password and I’m stuck in a 20 minute loop"
+N10#23249|A_LOGIN_FAIL|"Doesn&#39;t work with ADFS implementations"
+N4#8023|A_LOGOUT|"Constantly being asked to sign in again"
+P86#77|NR|
+A4#19563|L_REINST,L_OFFLOAD,A_NOACC|"I literally offloaded the app cause my storage was terrible"
+P8#1079|L_LOGIN,P_SERVER_DOWN|"When I tried logging in, everything was reset. Level 20 progress all gone"
+P2#2874|L_CORRUPT,X_REINSTALL_FEAR|"Don't want to reinstall as I'll lose months of data"
+P24#11555|L_CLEAR,L_CORRUPT,X_PAYER|"I had cleared the data before on the app. But now when I try to login the app keeps crashing"
+P8#2532|NR|
+P12#59689|NR|
+P8#4146|NR|
+P98#1089|L_CLEAR,L_CORRUPT,E_DOWNGRADE|"only fix was to clear data, all my habits and account were deleted because i didnt pay"
+P33#1006|L_REINST,X_PAYER|"Deleted all habits & history, uninstalled & reinstalled 3x"
+A8#557|L_CORRUPT,L_REINST|"Had to delete the app and lose all my data and reinstall just so the app would open"
+A24#28544|NR|
+P12#29843|NR|
+P98#175|L_CORRUPT,L_CLEAR|"Clearing app data erased my entire progresses"
+P125#6305|L_CORRUPT,L_REINST,X_SUPPORT_ADVICE,X_PAYER|"I did as suggested, deleted then restarted my phone, reinstall...NOW I lost all my challenges"
+A10#54884|L_OFFLOAD,A_LOGIN_FAIL|"I offloaded it and then brought it back"
+P3#3364|POS_EXPORT,POS_MIGRATE|"Export and import to another device is flawless"
+A24#2757|NR|
+P2#6966|NR|
+P126#40074|NR|
+N3#2509|L_OFFLOAD|"it literally offloaded without me knowing and i lost all my notes"
+N3#20760|L_OFFLOAD|"I offloaded the app and downloaded again, but all my data disappeared"
+N3#27900|NR|
+N4#710|NR|
+N5#11970|NR|
+A10#28052|L_CORRUPT,X_PAYER,X_CHURN|"get a message that my pet fine  has been corrupted"
+P98#3163|L_UPD,L_CORRUPT,L_REINST|"I 've just updated and seems like the app wont open, i 've tried to unninstall but the progress is reset"
+A55#1250|B_RESTORE_FAIL,S_FAIL,L_LOGIN,B_IMPORT|"App on new phone was not able to import data that was supposedly auto-synced to the cloud"
+A10#30089|L_CORRUPT,B_NONE_RECENT,X_PAYER,X_CHURN|"Out of nowhere I got a notice that my data was corrupted"
+A23#80|L_UPD,L_CORRUPT|"Updated to latest version and lost all of my streaks and activities"
+A85#2868|NR|
+A85#3363|T_TZ|"I can&#39;t change my time zone, leaving my daily goals to reset around 6 PM"
+A10#33396|L_CORRUPT,B_RESTORE_FAIL,X_PAYER,X_CHURN|"I always do a manual backup file every month when it reminds me"
+P111#12468|NR|
+A13#13790|L_SYNC,S_DUP,B_ICLOUD|"Even with iCloud backup enabled it will continually corrupt your tasks"

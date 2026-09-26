@@ -1,0 +1,70 @@
+P12#88071|BL_XOS_PAY_AGAIN,X_PAYER|"now that I've switched to Android I can't use the app without paying again"
+A24#41576|BL_XOS_PAY_AGAIN,BL_REFUND_DENIED,X_SUPPORT_NONE,X_PAYER|"It turns out you can’t move it from apple to google store"
+A24#5236|BL_WEBSUB,BL_TRIAL_CHARGED_EARLY|"They are not a part of the Apple App Store or the Google play store in regards to their subscription service"
+A55#1152|BL_LIFETIME_REVOKED,X_PAYER|"I used this app on IOS and Android paying for the premium app, but now they want $20 a year"
+P12#30020|BL_XOS_PAY_AGAIN,X_PAYER|"if you buy premium on one device, you only have access to premium features on that one device"
+A24#28372|BL_PLATFORM_PRICE_GAP|"They have a free and a paid version on android. But iPhone is pay only"
+P12#42019|BL_TRIAL_CHARGED_EARLY|"was charged for a full year subscription right after I agreed for the trial"
+P54#21|BL_XOS_PAY_AGAIN,X_PAYER|"I have Pro version on iOS and installed it on Android so I can use it on either device. However, the Android version indicated I had to PAY for Pro"
+P86#200|BL_XOS_PAY_AGAIN,X_PAYER|"I have since upgraded to an iPhone and am now unable to install my subscription to my new device"
+P24#19676|BL_XOS_PAY_AGAIN,X_SUPPORT_NONE,X_PAYER|"the app on android didn't synchronise (so I didn't get my premium features on android)"
+P4#27146|E_PLATFORM_GAP|"iOS is different compared to Android"
+P24#4300|BL_PLATFORM_PRICE_GAP|"Gives a cheap buy once option for Android users but for Apple users a more expensive yearly subscription price"
+P33#983|BL_XOS_PAY_AGAIN,BL_LIFETIME_REVOKED,X_PAYER|"they refused to honor my apple purchase as it's not beneficial for them bc they want to charge me annually"
+P4#91127|BL_XOS_PAY_AGAIN,X_PAYER|"Comprei pela play Store e quando troquei de celular pro iPhone a assinatura premium não funciona"
+A31#2813|BL_XOS_PAY_AGAIN,BL_LIFETIME_REVOKED,BL_UPSELL_AFTER_PAY,X_PAYER|"despite having purchased the Pro version years ago. It has disappeared. So I did it again. Still says basic plan"
+A24#21003|BL_POS_SUPPORT,BL_XOS_MANUAL|"the team helped me transfer my Fabulous Sphere account"
+A1#46205|NR|
+P12#46315|BL_XOS_PAY_AGAIN,L_XOS,X_PAYER|"has to pay for the app again on iOS only to find out that the progress doesn't back up"
+A10#67662|BL_XOS_PAY_AGAIN,L_XOS|"I got myself a Finch Plus subscription twice :) last week on my android phone and this week on my new iPhone"
+A20#3672|NR|
+N2#17672|NR|
+N3#14816|NR|
+A13#5908|NR|
+A1#44643|BL_FREE_TO_PAID|"now pay for something I was using because was free is not honest"
+A48#1246|BL_UPSELL_NAG|"Your reminders to subscribe makes me"
+A24#30209|NR|
+P24#1224|BL_LIFETIME_FEATURE_BROKEN,X_PAYER|"premium is largely useless (which i bought a lifetime subscription to"
+A24#42791|BL_UPSELL_NAG|"the 4 boxes that advertise the yearly subscription"
+P12#36026|NR|
+P12#35572|BL_UPSELL_DARK|"then they give you multiple 30 day free coupons to send to friends"
+P12#28338|BL_TRIAL_UNCLEAR,BL_UPSELL_DARK|"advertises a monthly cost but charges only a massive yearly amount"
+A1#51077|BL_PURCHASE_NOT_APPLIED,E_RESTORE|"frequently not given ability to redeem purchased products"
+A10#57092|NR|
+P18#1197|BL_PROMO_FAKE|"there is no way to redeem such code"
+P4#22221|BL_SUB_TIED_TO_INSTALL,X_PAYER|"my subscription expires if uninstalled"
+A24#19680|BL_UPSELL_DARK,BL_TRIAL_UNCLEAR|"they send me a coupon to expand my trial, so I signed up and once the 7 day-trial ended, they charged me the annual subscription"
+P18#871|BL_PROMO_FAKE,X_SUPPORT_NONE|"I emailed Developer about the promo code for lifetime subscription and have not received a response"
+A1#46995|BL_POS_PROMO|"providing me with a premium promo code since I am a student"
+A10#28973|NR|
+P30#3498|NR|
+A10#5942|NR|
+A24#40578|NR|
+N5#5588|BL_REDEEM_BROKEN|"none of the buttons on the Redeem code screen work at all"
+N4#9765|NR|
+N4#8864|NR|
+A1#51390|BL_NO_ONE_TIME|"They also don’t offer a lifetime payment option like other habit apps do"
+A5#2833|BL_NO_ONE_TIME|"there is no option for a one time lifetime access payment"
+A13#15290|BL_NO_ONE_TIME|"I would gladly pay an upfront fee for a solid app"
+A13#11630|BL_NO_ONE_TIME|"if it was $100 for a lifetime usage i’d say it’s worth it"
+P124#73|BL_NO_ONE_TIME,BL_ENTITLEMENT_NOT_CACHED,X_PAYER|"every time you end the app and restart it, you are not recognized as a premium user"
+A23#4827|BL_POS_ONE_TIME|"No subscription, just a one time purchase"
+P33#1401|BL_NO_ONE_TIME|"I wish the premium version was a one time purchase only"
+A1#51027|BL_DOUBLE,X_PAYER|"why am I being charged for something I ALREADY PAID FOR"
+P38#909|BL_NO_ONE_TIME|"no one-time purchases available"
+A12#333|BL_PROMO_FAKE|"it was supposed to offer the lifetime version at no cost. However, after completing everything that option was, in fact, not offered"
+A13#9516|BL_NO_ONE_TIME,BL_PRICE_HIKE|"now it's x4 price. No possibility for lifetime purchase"
+A10#14454|BL_NO_ONE_TIME|"There is no pay once option"
+A48#67|BL_NO_ONE_TIME|"they do offer a one time payment- for $125"
+P5#2349|BL_NO_ONE_TIME|"I just wish there was an option for a one time payment rather than a subscription, I would be more likely to support"
+A36#399|BL_NO_ONE_TIME|"I’m tired of not having the option to outright own something and keep it"
+P5#3244|BL_NO_ONE_TIME|"I just wish there was a one time purchase option"
+A16#1128|BL_NO_ONE_TIME|"I would pay at most $10 as a one-time purchase"
+P5#4563|BL_NO_ONE_TIME|"If there was a lifetime choise It would be 5 star"
+P122#13555|BL_POS_ONE_TIME|"They offer a one time payment for pro subscription, which is the only condition with which I'd actually purchase"
+A3#5280|BL_POS_ONE_TIME|"I like that they also offer a lifetime option where you only pay once"
+A20#365|BL_LIFETIME_REVOKED,E_RESTORE,X_PAYER|"I also tried “restore purchase”. It does not work"
+A4#11960|BL_UPSELL_AFTER_PAY|"I purchased the subscription so this is not even an issue of it asking me to subscribe"
+A31#458|BL_PURCHASE_NOT_APPLIED,X_SUPPORT_NONE,X_PAYER|"upgraded to premium but my account stayed at the basic level"
+A33#3647|BL_PURCHASE_NOT_APPLIED,X_PAYER|"I upgraded but it will won’t let me use premium features"
+A20#3332|BL_LIFETIME_REVOKED,BL_PURCHASE_NOT_APPLIED,X_PAYER|"I still do not have access to the premium features and it tells me about this sale every time I open the app"

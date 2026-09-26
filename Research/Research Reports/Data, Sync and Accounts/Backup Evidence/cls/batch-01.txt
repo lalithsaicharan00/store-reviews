@@ -1,0 +1,70 @@
+A24#12364|L_REINST,E_RESTORE,B_NONE|"they don’t keep backups of your account which is a pretty big disadvantage of this app"
+P19#283|B_MANUAL,S_XOS,AC_WANT_LOGIN|"no log in auto back up option when switch to android to iPhone have to import export"
+P2#3399|B_WANT_AUTO|"Perfect except for no account backup feature"
+P3#347|B_NONE,L_PHONE|"one format and all is lost, no account and hence no backup"
+P3#11713|POS_BACKUP,AC_NOACC_PRAISE|"no account binding yet you can still manually backup your list of habits"
+P37#665|POS_BACKUP,AC_NOACC_PRAISE|"can use without account creation, data backup"
+A10#20340|L_CORRUPT,B_MANUAL,X_PAYER|"no long time support for users if you don’t do the backup often enough"
+A13#15241|NR|
+A23#527|L_UPD,S_DUP,POS_LOCAL_SNAPSHOTS|"you can re-import your data by going to Prefs > Manage Data > Backups  and select the most recent that ran before the update"
+A23#588|L_RANDOM,POS_LOCAL_SNAPSHOTS,B_HIDDEN,X_SUPPORT_SAVED|"there is a Settings > Manage Data > Backups page feature, so I just restored a backup"
+A31#4681|B_NAG|"there’s an annoying reminder to backup to iCloud that you can’t turn off"
+P126#198431|B_WANT_LOCAL,S_FAIL|"возможность сохранения бэкапа на локальном носителе"
+P2#3531|POS_BACKUP|"Clear cahe, data and import backup Reminder started working again"
+P84#17150|NR|
+P84#22423|NR|
+A20#2830|B_STALE,B_RESTORE_FAIL,X_PAYER|"restored from cloud but the last backup was from months of not years ago. Shouldn’t the app be auto backing up every day?"
+A20#3400|B_STALE,E_DOUBLE|"I backed up from iCloud and of course lost everything since my last back up"
+A23#3156|S_REVERT|"reverts all the tasks to a random past state. Not even the last backup"
+P12#145709|POS_BACKUP|"clear Fabulous data after changing Android language, login and restore the last backup"
+P12#149149|B_RESTORE_FAIL|"It simply doesn't see the last backup"
+P3#13226|B_NONE,S_MULTI_REQ|"Can't backup history on account"
+P65#8825|B_WANT_AUTO|"back up history"
+P84#4039|B_WANT_OWN_STORAGE,POS_BACKUP|"Backups über WebDav ermöglichen"
+N1#25091|B_STATUS_CONFUSING,L_USER|"phone showed last backup date was the same morning at 6:00 (2/8/2023) but when I log in to iCloud try to restore, its shows my last archive backup option was Jan 17,2023"
+A1#49308|L_STORAGE_UNINSTALL,S_MULTI_REQ|"my phone has been running out of storage and i had to uninstall this app"
+A1#51358|S_FAIL,B_ICLOUD_FULL_BLAMED|"the developer has only ever asked if my cloud storage is full (it’s not)"
+P105#572|L_STORAGE_UNINSTALL|"since my storage is full i have to let go of this"
+P106#348|NR|
+P4#24366|L_STORAGE_UNINSTALL,E_RESTORE|"my storage is full so i deleted it"
+N2#13229|L_STORAGE_FULL|"Removes your whole agenda when storage is full"
+N9#37399|NR|
+N1#23261|B_ICLOUD_FULL|"If you’re iCloud is full then your reminds don’t work across your Apple devices"
+A10#5033|NR|
+A10#30504|NR|
+A13#18831|B_OS_ONLY|"if you don't have an iphone backup then you lose all the data from your habits"
+A13#19377|NR|
+A23#5456|B_WANT_AUTO,B_OS_ONLY,B_MANUAL|"unless you restore your phone backup, which I as a habit don’t, then you have to rely on the manual export import option"
+A24#16478|NR|
+A24#25528|E_XOS,E_DOUBLE|"I had an account via Goggle play store on an Android phone and then transferred everything to an iPhone"
+A24#27287|NR|
+A24#31883|NR|
+A24#32847|NR|
+P110#2542|NR|
+P12#59020|L_PHONE,B_OS_MIGRATION_MISSED|"smartswitched all the data. But, the working that I did in the last phone Fabulous app, was lost"
+P122#8613|POS_XOS|"I don't have to switch anything if I move to iOS later on"
+P122#38234|NR|
+P126#11004|B_OS_MIGRATION_MISSED|"Alle Inhalte sind weg! Nur bei dieser App, alles andere ist da"
+P126#27435|B_OS_MIGRATION_MISSED,B_HIDDEN|"the app was not covered by Samsung backup system and I was not warned at any point"
+P126#45758|NR|
+P126#47157|NR|
+P126#62656|NR|
+P126#132788|B_OS_MIGRATION_PARTIAL|"לא כל המשימות שלי עברו אלא רק חלק מהמשימות"
+P18#715|NR|
+P24#6357|B_NONE,B_OS_MIGRATION_MISSED|"there is no backup. not even Android backup integration"
+P3#12937|NR|
+P49#895|NR|
+P65#2887|NR|
+P8#8947|NR|
+P84#8853|B_OS_MIGRATION_MISSED|"thank you for deleting all my data from this program when smart switch moved it from S22 to S24"
+P84#9767|POS_MIGRATE|"I've even transferred everything from one phone to another for around 5 years"
+P84#9975|B_OS_MIGRATION_MISSED,B_PAID|"doesn't allow you to do a Samsung back up and restore"
+N3#21957|L_RANDOM|"Suddenly all my notes are gone from my iPhone"
+N5#1665|B_OS_MIGRATION_PARTIAL|"All my Limited Edition reward batches disappeared after I  transferred everything to my Iphone14 pro max"
+N5#11943|NR|
+P24#7689|B_MANUAL,POS_BACKUP|"Better stick with "Loop - Habit Tracker" and manually backup my data"
+P3#9143|B_WANT_OWN_CLOUD|"Google drive backup option is crying need to backup my tracks in my own cloud"
+A10#35429|B_MANUAL,L_PHONE|"You need to back up your data on a regular basis. Thanks to this poorly designed function, I just lost 150 days of progress"
+P61#199|B_NONE|"no Manual backup/Restore"
+P126#27343|B_NONE|"Need to back up phone to do factory reset"
+A10#33395|B_MANUAL,B_HIDDEN,L_REINST|"I didn’t realize you have to back up your progress"

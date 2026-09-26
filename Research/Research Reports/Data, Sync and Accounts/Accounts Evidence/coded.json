@@ -1,0 +1,6054 @@
+[
+{
+"key": "A24#14144",
+"codes": [
+"AC_RELAY_BILLING",
+"E_WEBSUB"
+],
+"quote": "signing up created three separate recurring subscriptions connected to an Apple “Hide My Email” relay address",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "14093506265",
+"rating": 1,
+"date": "2026-05-22",
+"loc": "gb"
+},
+{
+"key": "A24#25058",
+"codes": [
+"AC_RELAY_SUPPORT",
+"AC_CANCEL_NEEDS_LOGIN"
+],
+"quote": "because I used Apple hide-my-email to sign up, the support staff cannot find me",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13198378083",
+"rating": 1,
+"date": "2025-09-29",
+"loc": "us"
+},
+{
+"key": "A24#25539",
+"codes": [
+"AC_RELAY_PRIVACY",
+"AC_SPAM"
+],
+"quote": "Thankfully I used Apple’s hide my email feature and was able to remove that account, and the spam stopped",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12803902473",
+"rating": 1,
+"date": "2025-06-22",
+"loc": "us"
+},
+{
+"key": "A33#3334",
+"codes": [
+"AC_SPAM",
+"AC_RELAY_PRIVACY"
+],
+"quote": "The only way out is to signup with Apple private relay and block the emails that way",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "10096299644",
+"rating": 1,
+"date": "2023-07-02",
+"loc": "us"
+},
+{
+"key": "A5#263",
+"codes": [
+"AC_RELAY_SUPPORT",
+"E_RESTORE"
+],
+"quote": "I use private relay with Apple to protect my personal information so I am reaching out via a review",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "10265409364",
+"rating": 1,
+"date": "2023-08-16",
+"loc": "ca"
+},
+{
+"key": "A10#28066",
+"codes": [
+"AC_PHONE_CODE",
+"L_LOGIN"
+],
+"quote": "I put my phone number and the “code” never sent to connect my account apparently",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13406868209",
+"rating": 1,
+"date": "2025-11-16",
+"loc": "us"
+},
+{
+"key": "P110#3247",
+"codes": [
+"AC_WANT_LOGIN"
+],
+"quote": "SMS jo hai ki login hone ka yah karykram Hona chahie",
+"store": "P",
+"app": "110. Habit Tracker Unlimited",
+"review_id": "b41b316d-38f5-400b-a924-433b04414103",
+"rating": 1,
+"date": "2020-05-17",
+"loc": "en"
+},
+{
+"key": "N10#22559",
+"codes": [
+"AC_PROVIDER_REVERIFY",
+"AC_PASSWORD"
+],
+"quote": "I found I had apparently forgotten my Microsoft account password for this app",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "4343197586",
+"rating": 1,
+"date": "2019-06-20",
+"loc": "us"
+},
+{
+"key": "N11#4890",
+"codes": [
+"AC_PHONE_CODE"
+],
+"quote": "I’m struggling to get the verification sms code to get through in Moscow",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "2955894602",
+"rating": 4,
+"date": "2018-07-23",
+"loc": "ru"
+},
+{
+"key": "N10#21409",
+"codes": [
+"AC_PROVIDER_LOCK",
+"PR_CONCERN"
+],
+"quote": "Now I log in and account is locked due to violating the MS TOS",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5886925811",
+"rating": 1,
+"date": "2020-05-01",
+"loc": "us"
+},
+{
+"key": "N10#11326",
+"codes": [
+"AC_ONE_PROVIDER"
+],
+"quote": "Why we are restricted to Microsoft account only",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "12219799928",
+"rating": 1,
+"date": "2025-01-23",
+"loc": "in"
+},
+{
+"key": "N10#22872",
+"codes": [
+"AC_PROVIDER_LOCK"
+],
+"quote": "My MS account was suspended on creation and wanted me to SMS an unlock code",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "2938635218",
+"rating": 1,
+"date": "2018-07-20",
+"loc": "us"
+},
+{
+"key": "A10#3194",
+"codes": [
+"AC_GUEST_TRAP",
+"L_CORRUPT"
+],
+"quote": "it wouldn’t let me create a new without deleting my Old permanently",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13918528864",
+"rating": 2,
+"date": "2026-04-03",
+"loc": "ca"
+},
+{
+"key": "A10#4499",
+"codes": [
+"AC_GUEST_PRAISE"
+],
+"quote": "if you don’t want to give it your email you can just use it as a guest you get NO disadvantages at all",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12442439332",
+"rating": 5,
+"date": "2025-03-20",
+"loc": "ca"
+},
+{
+"key": "A10#5618",
+"codes": [
+"AC_GUEST_PRAISE"
+],
+"quote": "you still get the same service as a guest",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "10995914956",
+"rating": 3,
+"date": "2024-03-01",
+"loc": "ca"
+},
+{
+"key": "A33#3099",
+"codes": [
+"AC_GUEST_STUCK"
+],
+"quote": "it is not possible to sign out from guest account, so then I&#39;m not able to sing in to my account",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "9250877212",
+"rating": 1,
+"date": "2022-11-03",
+"loc": "ua"
+},
+{
+"key": "A33#3356",
+"codes": [
+"AC_GUEST_STUCK",
+"E_PLATFORM_GAP"
+],
+"quote": "can&#39;t connect the Mac app. Just stuck in Guest mode",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "9172420396",
+"rating": 1,
+"date": "2022-10-11",
+"loc": "us"
+},
+{
+"key": "A33#3525",
+"codes": [
+"AC_GUEST_TRAP",
+"X_SUPPORT_SAVED"
+],
+"quote": "Not realizing that I had been using a guest account for over a year, when I signed in with an account to the Mac app and then to the iOS app all my habits and histories were deleted",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "4188962054",
+"rating": 5,
+"date": "2019-05-22",
+"loc": "us"
+},
+{
+"key": "A4#13809",
+"codes": [
+"AC_GUEST_PRAISE"
+],
+"quote": "you just need to close out of subscription options and proceed as a guest",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "11628266726",
+"rating": 4,
+"date": "2024-08-19",
+"loc": "us"
+},
+{
+"key": "A4#18213",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10357483069",
+"rating": 4,
+"date": "2023-09-11",
+"loc": "us"
+},
+{
+"key": "A85#2012",
+"codes": [
+"AC_FORCED"
+],
+"quote": "there’s not a guest account and I don’t wanna do that stuff",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "13512712099",
+"rating": 1,
+"date": "2025-12-14",
+"loc": "us"
+},
+{
+"key": "P11#4562",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "11. Dear Me - Daily Routine Tracker",
+"review_id": "297f39fb-ca55-4d32-9c5d-735fb3724a5b",
+"rating": 1,
+"date": "2025-05-29",
+"loc": "en"
+},
+{
+"key": "P122#16641",
+"codes": [
+"AC_FORCED"
+],
+"quote": "There's no option to check out the app as a guest, like any normal app does it",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "f6c4ec1c-0e20-4a9b-a0a8-b9b07fdaa980",
+"rating": 1,
+"date": "2023-08-22",
+"loc": "en"
+},
+{
+"key": "P37#89",
+"codes": [
+"AC_LOGIN_FAIL",
+"AC_SERVER_REQUIRED"
+],
+"quote": "can't log in as a guest, can't log in with Google or another email",
+"store": "P",
+"app": "37. Habitify - Habit Tracker",
+"review_id": "fd4b06eb-e05c-4b1d-956a-ea4540ef210a",
+"rating": 1,
+"date": "2026-04-30",
+"loc": "en"
+},
+{
+"key": "P37#640",
+"codes": [
+"AC_SERVER_REQUIRED"
+],
+"quote": "Press continue as a guest: internal error has occurred",
+"store": "P",
+"app": "37. Habitify - Habit Tracker",
+"review_id": "e692c0c2-6acd-4185-9acb-7587d77031ad",
+"rating": 1,
+"date": "2022-10-02",
+"loc": "en"
+},
+{
+"key": "P4#6128",
+"codes": [
+"AC_LOGIN_FAIL",
+"E_RESTORE"
+],
+"quote": "I subscribed for a year but now am unable to login and it looks like I'm going to have to remain in guest mode",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "9c69ee2c-2432-45b9-8120-b3376cda6d14",
+"rating": 2,
+"date": "2025-08-24",
+"loc": "en"
+},
+{
+"key": "P4#12874",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "078143e9-848c-4e7c-bc67-f37548f55917",
+"rating": 1,
+"date": "2025-01-02",
+"loc": "en"
+},
+{
+"key": "P8#2149",
+"codes": [
+"AC_USERNAME"
+],
+"quote": "Another app that ask you to pick a username before you can use the app",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "39a8507f-b964-4838-8d5e-c1c51741ef9a",
+"rating": 1,
+"date": "2025-01-12",
+"loc": "en"
+},
+{
+"key": "P8#3150",
+"codes": [
+"AC_FORCED"
+],
+"quote": "if your app requires me to make an account before I've even gotten to try it, it gets a negative review from me",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "b28f9c46-1582-4ebc-bbc7-e4cf9364d05d",
+"rating": 1,
+"date": "2024-06-20",
+"loc": "en"
+},
+{
+"key": "P8#4143",
+"codes": [
+"AC_FORCED"
+],
+"quote": "Please allow me to use as a guest until I'm comfortable with creating a login",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "cb40a457-af44-4e06-9e26-747efcc27426",
+"rating": 2,
+"date": "2023-09-26",
+"loc": "en"
+},
+{
+"key": "N10#21617",
+"codes": [
+"AC_NO_APPLE",
+"AC_ONE_PROVIDER"
+],
+"quote": "it doesn’t support sign-in with Apple anonymous accounts",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5815300853",
+"rating": 1,
+"date": "2020-04-15",
+"loc": "us"
+},
+{
+"key": "A24#14597",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12182235132",
+"rating": 1,
+"date": "2025-01-14",
+"loc": "gb"
+},
+{
+"key": "A24#15951",
+"codes": [
+"AC_FORCED",
+"AC_NO_APPLE"
+],
+"quote": "they don’t support Apple sign in, so you know they will be spamming you",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "7388766971",
+"rating": 1,
+"date": "2021-05-26",
+"loc": "gb"
+},
+{
+"key": "A24#25055",
+"codes": [
+"AC_LOGIN_LOOP",
+"AC_CANCEL_NEEDS_LOGIN"
+],
+"quote": "I try to login with Apple ID and it takes me back to the home page",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13203237180",
+"rating": 1,
+"date": "2025-09-30",
+"loc": "us"
+},
+{
+"key": "A24#27063",
+"codes": [
+"AC_WEB_FLOW",
+"AC_EMAIL_NOT_ARRIVE"
+],
+"quote": "The magic link took me to a page that didn’t have Apple sign in and then it made me change my password",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11819191300",
+"rating": 1,
+"date": "2024-10-10",
+"loc": "us"
+},
+{
+"key": "A33#480",
+"codes": [
+"AC_APPLE_FAIL",
+"AC_CHINA"
+],
+"quote": "URLSessionTask failed with error: The request timed out",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "9183834275",
+"rating": 1,
+"date": "2022-10-14",
+"loc": "cn"
+},
+{
+"key": "A33#505",
+"codes": [
+"AC_LOGIN_FAIL"
+],
+"quote": "Can&#39;t login with Apple ID or any other way",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "6695606591",
+"rating": 1,
+"date": "2020-11-28",
+"loc": "cn"
+},
+{
+"key": "A33#528",
+"codes": [
+"AC_APPLE_FAIL",
+"AC_CHINA"
+],
+"quote": "fail to login with apple id",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "5994652527",
+"rating": 1,
+"date": "2020-05-26",
+"loc": "cn"
+},
+{
+"key": "A33#1308",
+"codes": [
+"AC_APPLE_FAIL",
+"AC_APPLE_NO_EMAIL"
+],
+"quote": "I chose to sign in with Apple ID and doesn’t let the app to obtain my email",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "6526122944",
+"rating": 3,
+"date": "2020-10-12",
+"loc": "id"
+},
+{
+"key": "A33#3103",
+"codes": [
+"AC_APPLE_REPEAT",
+"X_PAYER"
+],
+"quote": "App requires me to hit Sign In with Apple button each launch of the app",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "8052654243",
+"rating": 5,
+"date": "2021-11-22",
+"loc": "ua"
+},
+{
+"key": "A33#3209",
+"codes": [
+"AC_APPLE_FAIL",
+"S_FAIL"
+],
+"quote": "Can’t consistently Sign in with Apple",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "13332042806",
+"rating": 1,
+"date": "2025-10-30",
+"loc": "us"
+},
+{
+"key": "A33#3388",
+"codes": [
+"AC_APPLE_REPEAT"
+],
+"quote": "I have to sign back in with my Apple ID almost daily",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "7907020932",
+"rating": 1,
+"date": "2021-10-12",
+"loc": "us"
+},
+{
+"key": "A33#3475",
+"codes": [
+"AC_APPLE_FAIL",
+"E_PLATFORM_GAP",
+"X_PAYER"
+],
+"quote": "I need the Mac Apple sign in Feature",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "5867168818",
+"rating": 5,
+"date": "2020-04-26",
+"loc": "us"
+},
+{
+"key": "A46#933",
+"codes": [
+"AC_APPLE_FAIL",
+"AC_WEB_FLOW"
+],
+"quote": "the page does not redirect to a successful signin as it should",
+"store": "A",
+"app": "46. everyday - Habit Tracker - Daily Routine Checklist",
+"review_id": "10771638093",
+"rating": 5,
+"date": "2024-01-01",
+"loc": "in"
+},
+{
+"key": "A50#52",
+"codes": [
+"AC_SIGNUP_FAIL",
+"AC_APPLE_FAIL"
+],
+"quote": "Error: unable to login with apple",
+"store": "A",
+"app": "50. HelloHabit - Habit Tracker - Tasks, Routines, & Streaks",
+"review_id": "12766734680",
+"rating": 1,
+"date": "2025-06-12",
+"loc": "gb"
+},
+{
+"key": "A50#60",
+"codes": [
+"AC_ONLY_SOCIAL",
+"PR_CONCERN"
+],
+"quote": "can only Sign in with Apple or Google account",
+"store": "A",
+"app": "50. HelloHabit - Habit Tracker - Tasks, Routines, & Streaks",
+"review_id": "11192482249",
+"rating": 2,
+"date": "2024-04-23",
+"loc": "gb"
+},
+{
+"key": "A53#1609",
+"codes": [
+"AC_ICLOUD_PROMPT"
+],
+"quote": "The app keeps asking me to sign into my Apple ID",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "3066587541",
+"rating": 2,
+"date": "2018-08-15",
+"loc": "us"
+},
+{
+"key": "A85#975",
+"codes": [
+"AC_SIGNUP_FAIL",
+"AC_APPLE_FAIL"
+],
+"quote": "tried signing up with apple and also didn’t work",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "13260705766",
+"rating": 1,
+"date": "2025-10-13",
+"loc": "gb"
+},
+{
+"key": "A85#995",
+"codes": [
+"AC_APPLE_FAIL",
+"L_REINST"
+],
+"quote": "logging in with Apple ID doesn’t work",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "10374981811",
+"rating": 4,
+"date": "2023-09-16",
+"loc": "gb"
+},
+{
+"key": "A85#2444",
+"codes": [
+"AC_APPLE_FAIL"
+],
+"quote": "FIX APPLE SIGN IN ALREADY!!!",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "5979357112",
+"rating": 1,
+"date": "2020-05-22",
+"loc": "us"
+},
+{
+"key": "P31#506",
+"codes": [
+"AC_ONLY_SOCIAL"
+],
+"quote": "Needs an option to create an account with an email address",
+"store": "P",
+"app": "31. HelloHabit - Habit Tracker",
+"review_id": "56cc35fa-f234-42bf-8e3f-2eff4a1f6b3f",
+"rating": 4,
+"date": "2024-09-05",
+"loc": "en"
+},
+{
+"key": "P70#443",
+"codes": [
+"AC_ANDROID_APPLE_ONLY"
+],
+"quote": "I'm on Android, why would I sign up with Apple?",
+"store": "P",
+"app": "70. everyday Habit Tracker",
+"review_id": "c2c017d7-473f-4b94-b280-63a578e712c1",
+"rating": 4,
+"date": "2022-01-07",
+"loc": "en"
+},
+{
+"key": "P70#621",
+"codes": [
+"AC_ANDROID_APPLE_ONLY"
+],
+"quote": "Why on an android app only have apple sign in option?",
+"store": "P",
+"app": "70. everyday Habit Tracker",
+"review_id": "403826ce-65eb-4990-910d-a093e28c24f6",
+"rating": 1,
+"date": "2021-01-02",
+"loc": "en"
+},
+{
+"key": "N5#15086",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "10146815499",
+"rating": 1,
+"date": "2023-07-16",
+"loc": "us"
+},
+{
+"key": "N10#10576",
+"codes": [
+"AC_ONE_PROVIDER",
+"AC_NO_APPLE"
+],
+"quote": "Please implement sign in with Apple",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "4845524884",
+"rating": 2,
+"date": "2019-09-27",
+"loc": "gb"
+},
+{
+"key": "A1#246",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "without registration-perfect",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "7812613815",
+"rating": 5,
+"date": "2021-09-16",
+"loc": "at"
+},
+{
+"key": "A1#51220",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "the fact no account is required",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13738101346",
+"rating": 5,
+"date": "2026-02-11",
+"loc": "us"
+},
+{
+"key": "A13#17387",
+"codes": [
+"AC_NOACC_PRAISE",
+"PR_LOCAL_PRAISE"
+],
+"quote": "Thanks for not requiring account creation",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1494409125",
+"rating": 4,
+"date": "2016-12-02",
+"loc": "us"
+},
+{
+"key": "A20#506",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "there is no sign up required",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6038787492",
+"rating": 5,
+"date": "2020-06-05",
+"loc": "ca"
+},
+{
+"key": "A3#8708",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "with no account creation screen",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "9590050027",
+"rating": 5,
+"date": "2023-02-06",
+"loc": "us"
+},
+{
+"key": "A33#3682",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "Having a no signup - jump start was the best thing other apps should learn",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "1615099784",
+"rating": 5,
+"date": "2017-05-16",
+"loc": "us"
+},
+{
+"key": "A55#223",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "No account needed",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "5099378918",
+"rating": 5,
+"date": "2019-11-07",
+"loc": "ca"
+},
+{
+"key": "A7#486",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "No sign up needed",
+"store": "A",
+"app": "7. Habit Tracker - HabitKit - Streaks & Accountability",
+"review_id": "9901846846",
+"rating": 4,
+"date": "2023-05-07",
+"loc": "kr"
+},
+{
+"key": "P1#134",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "No ads, no account, no subscriptions needed",
+"store": "P",
+"app": "1. Habit Builder",
+"review_id": "9a3ba27a-16f3-43ca-9624-8ebee75e35c3",
+"rating": 5,
+"date": "2024-01-13",
+"loc": "en"
+},
+{
+"key": "P109#25",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no login",
+"store": "P",
+"app": "109. My Habit Tracker & Planner",
+"review_id": "793cfb1c-a78e-4574-a59f-a9646a1c0ded",
+"rating": 5,
+"date": "2025-07-19",
+"loc": "en"
+},
+{
+"key": "P126#20628",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "No login no useless hassles",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "5b1d5ffd-965e-4aea-91f2-17af81e20c01",
+"rating": 5,
+"date": "2025-09-27",
+"loc": "en"
+},
+{
+"key": "P126#53434",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no login or ads",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "9b6abe05-ed89-4229-b1b0-7ede35e95c4b",
+"rating": 5,
+"date": "2020-12-07",
+"loc": "en"
+},
+{
+"key": "P14#123",
+"codes": [
+"AC_NOACC_PRAISE",
+"POS_OFFLINE"
+],
+"quote": "Love that it works offline, has no accounts",
+"store": "P",
+"app": "14. Habit Pixel - Streak Tracker",
+"review_id": "abdfad84-f443-4ff6-8c29-c255f61972a8",
+"rating": 5,
+"date": "2026-01-09",
+"loc": "en"
+},
+{
+"key": "P2#3399",
+"codes": [
+"AC_NOACC_PRAISE",
+"AC_WANT_LOGIN"
+],
+"quote": "Perfect except for no account backup feature",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "0eb20cb6-0ce7-42e8-9c40-de4077f56762",
+"rating": 5,
+"date": "2025-02-12",
+"loc": "en"
+},
+{
+"key": "P2#4000",
+"codes": [
+"AC_NOACC_PRAISE",
+"B_PAID"
+],
+"quote": "No account creation required",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "2f8222c8-70e0-458b-bf3f-f8561007d960",
+"rating": 5,
+"date": "2024-10-29",
+"loc": "en"
+},
+{
+"key": "P2#10492",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no signup required",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "67589bd0-4348-4a9b-9ddc-55d54e04a42a",
+"rating": 5,
+"date": "2022-01-16",
+"loc": "en"
+},
+{
+"key": "P3#1205",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no account needed",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "3ba719b4-b3c3-47fa-82e4-eac69b1d5cc9",
+"rating": 4,
+"date": "2018-08-31",
+"loc": "de"
+},
+{
+"key": "P3#1288",
+"codes": [
+"AC_NOACC_PRAISE",
+"POS_OFFLINE"
+],
+"quote": "no account needed, works offline",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "9e987a2f-c543-48e4-916c-c1d428a619ae",
+"rating": 5,
+"date": "2017-10-11",
+"loc": "de"
+},
+{
+"key": "P3#2597",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no account set up",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "b853a95d-8452-4490-beec-835a20f10a3f",
+"rating": 5,
+"date": "2025-09-26",
+"loc": "en"
+},
+{
+"key": "P3#5127",
+"codes": [
+"AC_NOACC_PRAISE",
+"POS_EXPORT"
+],
+"quote": "I can download and manage my data without any premium subscription",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "f898e3e0-cc35-4388-a578-310f2b9aa89e",
+"rating": 5,
+"date": "2023-07-17",
+"loc": "en"
+},
+{
+"key": "P3#6491",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no account needed",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "e9bddee9-5d67-4096-8208-076c9efc5ce1",
+"rating": 5,
+"date": "2022-06-19",
+"loc": "en"
+},
+{
+"key": "P3#9872",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "No account needed",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "e2c142d0-ba82-4693-b13c-a949ca5186de",
+"rating": 5,
+"date": "2020-04-26",
+"loc": "en"
+},
+{
+"key": "P49#2356",
+"codes": [
+"AC_NO_SIGNIN_BUTTON",
+"E_DEVICE",
+"X_PAYER"
+],
+"quote": "Where is the log in and out button? I tried installing it again on my tablet, and it seems like I have no account",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "de41df65-32e2-4df5-b29a-3bb298373e8d",
+"rating": 3,
+"date": "2023-09-03",
+"loc": "en"
+},
+{
+"key": "P5#1733",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no account or cash needed for 2 routines",
+"store": "P",
+"app": "5. Routine Planner, Habit Tracker",
+"review_id": "4612baba-08fb-4ceb-bb0f-b3e9b28ece47",
+"rating": 5,
+"date": "2022-12-27",
+"loc": "en"
+},
+{
+"key": "P8#13135",
+"codes": [
+"AC_FORCED",
+"P_ONLINE_ONLY"
+],
+"quote": "Could you make the version without login?",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "7778e0bb-4f83-4aa1-962b-9457e2fb94d1",
+"rating": 4,
+"date": "2019-04-04",
+"loc": "ko"
+},
+{
+"key": "P84#1764",
+"codes": [
+"AC_NOACC_PRAISE",
+"POS_OFFLINE"
+],
+"quote": "everything works without an account/offline",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "f0ff1f3e-8969-40b4-b2d2-07068e317d99",
+"rating": 5,
+"date": "2024-03-17",
+"loc": "de"
+},
+{
+"key": "P84#17714",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no login required like others",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "ac8112ca-0e33-46c9-b907-3f4474309e88",
+"rating": 5,
+"date": "2021-04-26",
+"loc": "en"
+},
+{
+"key": "P84#28803",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "No account / profile links required",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "7a99edc5-2b78-4071-86de-8d38b7120571",
+"rating": 5,
+"date": "2019-04-06",
+"loc": "en"
+},
+{
+"key": "P84#31839",
+"codes": [
+"AC_NOACC_PRAISE",
+"PR_LOCAL_PRAISE"
+],
+"quote": "No sign up for online storage. Stores locally",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "43feb851-008c-4cf8-a323-b47176466416",
+"rating": 5,
+"date": "2018-10-08",
+"loc": "en"
+},
+{
+"key": "P84#32324",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no logins or emails required",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "ed938815-073b-45e3-a5a3-db2086bedc28",
+"rating": 5,
+"date": "2018-07-31",
+"loc": "en"
+},
+{
+"key": "P84#45077",
+"codes": [
+"AC_NOACC_PRAISE",
+"PR_LOCAL_PRAISE"
+],
+"quote": "I gave a donation to support privacy minded apps",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "e5ec102a-e298-4763-9ff1-2a9d3ca12a97",
+"rating": 5,
+"date": "2018-06-13",
+"loc": "nl"
+},
+{
+"key": "P84#57077",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "No login",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "1e566c2f-8463-48f8-87ab-2b4d6e46f207",
+"rating": 5,
+"date": "2020-03-05",
+"loc": "sl"
+},
+{
+"key": "P9#280",
+"codes": [
+"AC_NOACC_PRAISE",
+"POS_OFFLINE"
+],
+"quote": "I love that it doesn't require a login and works offline",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "bb488f09-0efe-4783-95ca-c8a0dc919d60",
+"rating": 5,
+"date": "2026-02-12",
+"loc": "en"
+},
+{
+"key": "P94#12",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no accounts",
+"store": "P",
+"app": "94. Pixel Habit Tracker",
+"review_id": "ad1a7a3f-c103-4f45-a666-872c7cdc8800",
+"rating": 5,
+"date": "2026-08-20",
+"loc": "en"
+},
+{
+"key": "N9#8207",
+"codes": [
+"AC_FORCED",
+"PR_CONCERN"
+],
+"quote": "The app can not be used without login",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1386052922",
+"rating": 1,
+"date": "2016-05-29",
+"loc": "de"
+},
+{
+"key": "N9#1409",
+"codes": [
+"AC_FORCED",
+"PR_CONCERN"
+],
+"quote": "without the option to just use on your device without login",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1515414025",
+"rating": 1,
+"date": "2017-01-04",
+"loc": "au"
+},
+{
+"key": "N9#49438",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1191874351",
+"rating": 5,
+"date": "2015-05-03",
+"loc": "us"
+},
+{
+"key": "A10#33162",
+"codes": [
+"AC_EMAIL_UNKNOWN",
+"L_LOGIN"
+],
+"quote": "wiped off all my progress and pretends my email doesn’t exist",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12618588846",
+"rating": 2,
+"date": "2025-05-04",
+"loc": "us"
+},
+{
+"key": "A16#644",
+"codes": [
+"AC_EMAIL_CHANGE"
+],
+"quote": "i can&#39;t change my email address in the app",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "13717258566",
+"rating": 4,
+"date": "2026-02-05",
+"loc": "us"
+},
+{
+"key": "A20#3104",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "11655625375",
+"rating": 1,
+"date": "2024-08-26",
+"loc": "us"
+},
+{
+"key": "A20#3158",
+"codes": [
+"E_RESTORE",
+"X_SUPPORT_NONE"
+],
+"quote": "Needed to reinstall app. When I did, my purchase would not restore",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "8651373725",
+"rating": 1,
+"date": "2022-05-08",
+"loc": "us"
+},
+{
+"key": "A20#3274",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "7041165859",
+"rating": 3,
+"date": "2021-02-26",
+"loc": "us"
+},
+{
+"key": "A24#11086",
+"codes": [
+"AC_EMAIL_CHANGE"
+],
+"quote": "how can I change my e-mail adress?",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "5841759374",
+"rating": 5,
+"date": "2020-04-21",
+"loc": "de"
+},
+{
+"key": "A24#14504",
+"codes": [
+"E_WEBSUB"
+],
+"quote": "the subscription made on the desktop and the one on phone was different",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12501478408",
+"rating": 1,
+"date": "2025-04-04",
+"loc": "gb"
+},
+{
+"key": "A24#25729",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12610947103",
+"rating": 4,
+"date": "2025-05-02",
+"loc": "us"
+},
+{
+"key": "A24#26231",
+"codes": [
+"AC_EMAIL_UNKNOWN",
+"AC_CANCEL_NEEDS_LOGIN",
+"E_WEBSUB"
+],
+"quote": "it won’t let me sign in stating my email doesn’t exist after multiple tries",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12242547906",
+"rating": 1,
+"date": "2025-01-28",
+"loc": "us"
+},
+{
+"key": "A33#306",
+"codes": [
+"AC_SPAM",
+"AC_DELETE_INCOMPLETE"
+],
+"quote": "I then DELETED my account and I am still getting emails",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "10106326416",
+"rating": 1,
+"date": "2023-07-05",
+"loc": "ca"
+},
+{
+"key": "A82#140",
+"codes": [
+"AC_EMAIL_UNKNOWN",
+"AC_LOGIN_FAIL",
+"X_PAYER"
+],
+"quote": "now it says my username/email doesn’t exist",
+"store": "A",
+"app": "82. Lasting Change - Habit Builder - Daily Habits & Mental Wellness",
+"review_id": "12262018303",
+"rating": 1,
+"date": "2025-02-02",
+"loc": "us"
+},
+{
+"key": "P111#911",
+"codes": [
+"AC_LOGOUT_UPDATE",
+"AC_PASSWORD"
+],
+"quote": "Signed me out with the new update and now it's not possible to log in or change my password",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "e11d6121-6ac6-49ca-9385-f834e958ec15",
+"rating": 1,
+"date": "2024-11-05",
+"loc": "en"
+},
+{
+"key": "P111#1056",
+"codes": [
+"AC_LOGOUT_UPDATE",
+"AC_EMAIL_UNKNOWN",
+"L_LOGIN"
+],
+"quote": "when trying to log back in, it says my email doesn't exist so everything I set up on there is gone",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "c720b194-f6a9-40a8-96c4-7e14c732797d",
+"rating": 1,
+"date": "2024-09-18",
+"loc": "en"
+},
+{
+"key": "P111#3780",
+"codes": [
+"AC_LOGIN_FAIL"
+],
+"quote": "U have denied me access saying that my email or password is wrong",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "ad1b5af5-853b-4170-936a-05e5fc70b28c",
+"rating": 1,
+"date": "2018-10-15",
+"loc": "en"
+},
+{
+"key": "P12#13697",
+"codes": [
+"E_WEBSUB"
+],
+"quote": "I went to the webpage to cancel the unnecessary subscription",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "37424ae6-d94d-4e5f-9d4d-64e9105e30fe",
+"rating": 1,
+"date": "2024-10-01",
+"loc": "en"
+},
+{
+"key": "P12#14347",
+"codes": [
+"AC_EMAIL_CHANGE",
+"X_SUPPORT_NONE"
+],
+"quote": "Cannot get through to customer service to change my email address",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "c35d72f1-c981-4a1a-bd83-35385362939e",
+"rating": 1,
+"date": "2024-07-28",
+"loc": "en"
+},
+{
+"key": "P12#16689",
+"codes": [
+"AC_PURCHASE_EMAIL_MISMATCH",
+"E_RESTORE",
+"X_PAYER"
+],
+"quote": "The email I signed up with was different than the email I paid with",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "9d3b6610-0725-4577-ae92-b2dbf91d75c7",
+"rating": 1,
+"date": "2023-11-05",
+"loc": "en"
+},
+{
+"key": "P12#16722",
+"codes": [
+"AC_EMAIL_CHANGE",
+"X_PAYER"
+],
+"quote": "I've been trying to change my email address (on a premium membership) for days",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "09a6e9d8-c228-48d2-bb23-13cf312ef07c",
+"rating": 3,
+"date": "2023-11-02",
+"loc": "en"
+},
+{
+"key": "P12#16912",
+"codes": [
+"AC_PURCHASE_EMAIL_MISMATCH",
+"AC_PROVIDER_EMAIL",
+"X_PAYER"
+],
+"quote": "I joined \"through google\" and when I made my payment for premium, it went through using a different email",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "f6a76c16-71d3-434e-a56b-238c2d016621",
+"rating": 1,
+"date": "2023-10-16",
+"loc": "en"
+},
+{
+"key": "P12#17369",
+"codes": [
+"AC_EMAIL_CHANGE",
+"AC_PASSWORD",
+"E_WEBSUB"
+],
+"quote": "My e-mail has changed since I applied for premium and I can't access the app on the old email",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "c150c1d6-21f9-4c12-87ed-941dc266062b",
+"rating": 1,
+"date": "2023-09-12",
+"loc": "en"
+},
+{
+"key": "P12#27886",
+"codes": [
+"AC_EMAIL_CHANGE"
+],
+"quote": "I would like an easier way to change my email address",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "6da1d4df-2d10-4047-8eb2-880d585c2021",
+"rating": 3,
+"date": "2022-01-19",
+"loc": "en"
+},
+{
+"key": "P12#29912",
+"codes": [
+"L_PHONE",
+"AC_LOGIN_FAIL",
+"E_RESTORE",
+"X_PAYER"
+],
+"quote": "I switched phones and couldn't get back in",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "8f678aa4-c987-47ea-8528-cb5e8fa454a2",
+"rating": 3,
+"date": "2021-11-12",
+"loc": "en"
+},
+{
+"key": "P12#40416",
+"codes": [
+"AC_TWO_ACCOUNTS",
+"E_DOUBLE"
+],
+"quote": "sadly didn't signed in with google for any transaction to be through my play account",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "ff6741d5-4a79-4f76-84f5-987606395269",
+"rating": 1,
+"date": "2021-03-15",
+"loc": "en"
+},
+{
+"key": "P12#44626",
+"codes": [
+"AC_OLD_EMAIL"
+],
+"quote": "logged me in with an old email address which I didn't use for years now",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "f6b1084e-ca28-4015-bbbe-39185f56a805",
+"rating": 1,
+"date": "2021-01-08",
+"loc": "en"
+},
+{
+"key": "P12#46280",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "cf28ff5f-37db-4bfa-8d2c-2308e4e7fcea",
+"rating": 1,
+"date": "2020-10-27",
+"loc": "en"
+},
+{
+"key": "P12#64856",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "b919dae1-3b5c-4eda-945c-c4bb283c8f3b",
+"rating": 1,
+"date": "2019-05-30",
+"loc": "en"
+},
+{
+"key": "P12#153144",
+"codes": [
+"AC_EMAIL_CHANGE"
+],
+"quote": "why I can't change my email address?",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "00fc94f0-7211-4a4d-a8e2-1951729c6b7c",
+"rating": 4,
+"date": "2017-01-25",
+"loc": "zh-CN"
+},
+{
+"key": "P24#4768",
+"codes": [
+"AC_EMAIL_UNKNOWN",
+"L_PHONE",
+"X_PAYER"
+],
+"quote": "when I switched mobile and try to login it shows email doesn't exist",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "0148ba44-56fb-4702-b975-b63ca9999432",
+"rating": 1,
+"date": "2019-09-02",
+"loc": "en"
+},
+{
+"key": "P24#7200",
+"codes": [
+"AC_PASSWORD",
+"AC_LOGIN_FAIL"
+],
+"quote": "Resetted the password 10 times already, nothing works",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "f1299ae1-6733-4020-ac4c-b030d39ccece",
+"rating": 3,
+"date": "2018-12-17",
+"loc": "en"
+},
+{
+"key": "P24#7609",
+"codes": [
+"AC_EMAIL_CHANGE",
+"E_RESTORE",
+"X_PAYER"
+],
+"quote": "After changing my email, I cannot use HabitBull's premium features",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "c78d4310-4130-4b0c-b1c1-a7b70796ae5a",
+"rating": 2,
+"date": "2018-11-03",
+"loc": "en"
+},
+{
+"key": "P24#9140",
+"codes": [
+"AC_EMAIL_UNKNOWN",
+"L_REINST",
+"X_PAYER"
+],
+"quote": "My email doesnt exist in their database error",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "47d250fe-6a63-496f-9fea-449972fa873e",
+"rating": 1,
+"date": "2018-03-25",
+"loc": "en"
+},
+{
+"key": "P24#9225",
+"codes": [
+"AC_EMAIL_UNKNOWN",
+"L_PHONE",
+"X_PAYER"
+],
+"quote": "it's saying that the email doesn't exist in your database",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "5fad5627-ad20-4f58-a914-e1cec8492221",
+"rating": 1,
+"date": "2018-03-12",
+"loc": "en"
+},
+{
+"key": "P24#9736",
+"codes": [
+"AC_EMAIL_CHANGE"
+],
+"quote": "How can I change my email address?",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "5ded036f-eb51-4c20-be32-da59c0860ceb",
+"rating": 5,
+"date": "2018-01-02",
+"loc": "en"
+},
+{
+"key": "P4#5086",
+"codes": [
+"E_WEBSUB",
+"AC_OLD_EMAIL"
+],
+"quote": "I finally found it in google play with an old email",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "41c3f8bc-c9f4-4e81-a798-ef88e420c719",
+"rating": 1,
+"date": "2025-10-17",
+"loc": "en"
+},
+{
+"key": "P4#21767",
+"codes": [
+"AC_WRONG_ACCOUNT",
+"E_RESTORE",
+"X_PAYER"
+],
+"quote": "Got a new phone and now the app keeps trying to launch with a different email",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "7ab49ba8-8dd8-413f-a6f7-9d457fd1e681",
+"rating": 2,
+"date": "2024-03-11",
+"loc": "en"
+},
+{
+"key": "P4#30612",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "5287d115-5097-46ff-a42d-494d9d538052",
+"rating": 1,
+"date": "2023-07-29",
+"loc": "en"
+},
+{
+"key": "P8#4935",
+"codes": [
+"AC_PROVIDER_EMAIL",
+"AC_PASSWORD"
+],
+"quote": "I signed up with Google account, then I need change my email but password required",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "5f0c146b-41b8-4de3-bf0c-a10af3175295",
+"rating": 3,
+"date": "2022-10-03",
+"loc": "en"
+},
+{
+"key": "P8#5740",
+"codes": [
+"AC_LOGOUT_UPDATE",
+"AC_EMAIL_NOT_ARRIVE"
+],
+"quote": "They will not even send me a password change email",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "92d79527-ddca-479a-8f9c-8d351052800d",
+"rating": 1,
+"date": "2021-05-04",
+"loc": "en"
+},
+{
+"key": "P8#8704",
+"codes": [
+"AC_SPAM",
+"PR_CONCERN"
+],
+"quote": "Sold email address to third parties for spam distribution",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "a29f3cb7-9257-402f-8278-44a5f48277b0",
+"rating": 1,
+"date": "2017-05-17",
+"loc": "en"
+},
+{
+"key": "P84#13945",
+"codes": [
+"AC_EMAIL_CHANGE",
+"X_PAYER"
+],
+"quote": "I need to change Email or Google Account ASAP",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "a9782d89-a138-4124-b506-77c8a0aed7ff",
+"rating": 3,
+"date": "2023-03-22",
+"loc": "en"
+},
+{
+"key": "N10#20042",
+"codes": [
+"AC_WORK_EMAIL_LOST",
+"L_ACCOUNT"
+],
+"quote": "I lost 8 years worth of lists, notes, ideas, things to explore, and things to create since my Microsoft email no longer works",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "7870764946",
+"rating": 1,
+"date": "2021-10-02",
+"loc": "us"
+},
+{
+"key": "N10#21000",
+"codes": [
+"AC_LOGIN_FAIL"
+],
+"quote": "I can never successfully logged in",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "6177994704",
+"rating": 1,
+"date": "2020-07-09",
+"loc": "us"
+},
+{
+"key": "N8#24343",
+"codes": [
+"AC_EMAIL_CHANGE"
+],
+"quote": "Can’t update email",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "9668022301",
+"rating": 3,
+"date": "2023-03-01",
+"loc": "us"
+},
+{
+"key": "N2#16681",
+"codes": [
+"AC_EMAIL_CHANGE"
+],
+"quote": "I cannot remove my Google email address and substitute my Apple email address",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "13067025915",
+"rating": 2,
+"date": "2025-08-27",
+"loc": "us"
+},
+{
+"key": "N8#26490",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "4236928343",
+"rating": 2,
+"date": "2019-05-30",
+"loc": "us"
+},
+{
+"key": "A10#22440",
+"codes": [
+"AC_ENCRYPTION_KEY",
+"L_PHONE"
+],
+"quote": "every time I enter it, it asks for an encryption key which I don’t have",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14021874994",
+"rating": 1,
+"date": "2026-05-03",
+"loc": "us"
+},
+{
+"key": "A10#48760",
+"codes": [
+"AC_DEVICE_LINK_BROKEN"
+],
+"quote": "it says to go to settings &gt; linked devices on my iPhone.  Of course such a thing does not exist",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "10372204243",
+"rating": 1,
+"date": "2023-09-15",
+"loc": "us"
+},
+{
+"key": "A10#54869",
+"codes": [
+"AC_WANT_LOGIN",
+"L_REINST"
+],
+"quote": "i also don’t get why we can’t make accounts so we can log in again when we need to",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "9580750933",
+"rating": 3,
+"date": "2023-02-04",
+"loc": "us"
+},
+{
+"key": "A12#18",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "12. That Girl - Routine Planner - Cute Daily Calendar Schedule",
+"review_id": "11500680241",
+"rating": 1,
+"date": "2024-07-16",
+"loc": "au"
+},
+{
+"key": "A13#5469",
+"codes": [
+"AC_SIGNUP_WEB_ONLY",
+"S_MULTI_REQ"
+],
+"quote": "i can’t even create an account from the ios app, where i started using this app",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8127546739",
+"rating": 3,
+"date": "2021-12-14",
+"loc": "fr"
+},
+{
+"key": "A18#2036",
+"codes": [
+"AC_FORCED",
+"AC_ONLY_SOCIAL",
+"PR_CONCERN"
+],
+"quote": "I saw that I had to sign in with my accounts. I really don’t want to give away my account information",
+"store": "A",
+"app": "18. MyRoutine - Organize your day - Built around your real life",
+"review_id": "10178633937",
+"rating": 1,
+"date": "2023-07-25",
+"loc": "us"
+},
+{
+"key": "A3#7053",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no need to make an account",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "12082908015",
+"rating": 5,
+"date": "2024-12-20",
+"loc": "us"
+},
+{
+"key": "A3#9561",
+"codes": [
+"AC_NOACC_PRAISE",
+"PR_LOCAL_PRAISE"
+],
+"quote": "there is no need to make an account or give up personal information to use it",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "8458864979",
+"rating": 5,
+"date": "2022-03-15",
+"loc": "us"
+},
+{
+"key": "A43#74",
+"codes": [
+"AC_NOACC_PRAISE",
+"PR_LOCAL_PRAISE"
+],
+"quote": "No need to create user account",
+"store": "A",
+"app": "43. Habit Hub - Routine Tracker - Daily Todo, Goals & Schedule",
+"review_id": "7316654754",
+"rating": 5,
+"date": "2021-05-09",
+"loc": "de"
+},
+{
+"key": "A55#1986",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "No need to register any account",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "8755695551",
+"rating": 5,
+"date": "2022-06-09",
+"loc": "vn"
+},
+{
+"key": "A85#1021",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "if you have started out on the app with your Facebook account - you can’t login into the app",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "7553380797",
+"rating": 2,
+"date": "2021-07-08",
+"loc": "gb"
+},
+{
+"key": "A85#2372",
+"codes": [
+"AC_PASSWORD"
+],
+"quote": "my laptop was stolen and I am changing all my passwords. I can’t do that in the app",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "6967980110",
+"rating": 2,
+"date": "2021-02-08",
+"loc": "us"
+},
+{
+"key": "A89#75",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "No need to signup or provide personal info to just mark something on calendar",
+"store": "A",
+"app": "89. Check Calendar - Habit Tracker - Check your habit calendar!",
+"review_id": "13157323803",
+"rating": 3,
+"date": "2025-09-19",
+"loc": "in"
+},
+{
+"key": "P10#11994",
+"codes": [
+"AC_NOACC_PRAISE",
+"AC_LATER_SIGNUP"
+],
+"quote": "You don't need to sign up to try out the app. No need to give my email and name, until I want to",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "1fcea44e-7da8-4398-be8f-9e708640048d",
+"rating": 5,
+"date": "2021-09-01",
+"loc": "en"
+},
+{
+"key": "P106#577",
+"codes": [
+"AC_NOACC_PRAISE",
+"POS_OFFLINE"
+],
+"quote": "no need to make an account or stay online",
+"store": "P",
+"app": "106. Habit Tracker n Pets - HabitYou",
+"review_id": "8f343e3a-c027-43e2-8bbc-9cebcfb33757",
+"rating": 5,
+"date": "2021-02-16",
+"loc": "en"
+},
+{
+"key": "P111#4931",
+"codes": [
+"AC_FORCED",
+"PR_CONCERN"
+],
+"quote": "As long as I don't want to sync stuff I don't want to be asked to enter any personal contact information",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "cb69ffef-160f-47ca-b34b-65e45c7284b1",
+"rating": 1,
+"date": "2017-10-15",
+"loc": "en"
+},
+{
+"key": "P111#5987",
+"codes": [
+"AC_FORCED"
+],
+"quote": "I dont get it why we should sign up with email first before using it",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "3b62affc-13b9-402a-a857-e09a559bc497",
+"rating": 2,
+"date": "2017-05-02",
+"loc": "en"
+},
+{
+"key": "P111#16076",
+"codes": [
+"AC_PROVIDER_FAIL",
+"E_PLATFORM_GAP"
+],
+"quote": "Why can't I log in with my Google account on my phone, even though I can do it on my computer?",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "5a5dc425-15de-46e8-8be5-4ddb07c21c92",
+"rating": 1,
+"date": "2024-09-22",
+"loc": "vi"
+},
+{
+"key": "P12#12306",
+"codes": [
+"AC_ONLY_SOCIAL"
+],
+"quote": "Why do you want to sign up with Google account",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "d168fc3a-e553-4a70-8ca1-01436f197e36",
+"rating": 2,
+"date": "2025-02-02",
+"loc": "en"
+},
+{
+"key": "P12#13337",
+"codes": [
+"AC_NAG"
+],
+"quote": "Despite this, it asks for my email again later",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "8ac23da0-bd7c-473c-949f-4d095f2bc7d5",
+"rating": 1,
+"date": "2024-10-28",
+"loc": "en"
+},
+{
+"key": "P12#14899",
+"codes": [
+"AC_BACKUP_NEEDS_ACCOUNT",
+"B_NONE"
+],
+"quote": "they are making it mandatory to sign in to backup and restore the data",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "b5cb1cee-190c-497a-b69f-ba3063b58a8a",
+"rating": 3,
+"date": "2024-05-13",
+"loc": "en"
+},
+{
+"key": "P12#25630",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "d9b9de02-7809-454a-909e-c299ed78e1a6",
+"rating": 1,
+"date": "2022-04-09",
+"loc": "en"
+},
+{
+"key": "P12#36481",
+"codes": [
+"AC_FORCED"
+],
+"quote": "Why must I enter my email address?? I can't get a try-it-out period without additional data from me",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "b54ddc38-2940-4d52-a7ee-8a5c1943ca1c",
+"rating": 1,
+"date": "2021-05-28",
+"loc": "en"
+},
+{
+"key": "P122#6543",
+"codes": [
+"AC_FORCED"
+],
+"quote": "Why do I have to make an account? just let me use the app without signing up",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "8c6590ad-835b-4854-a8b7-48ae86e00d45",
+"rating": 1,
+"date": "2026-01-13",
+"loc": "en"
+},
+{
+"key": "P122#6897",
+"codes": [
+"AC_FORCED"
+],
+"quote": "I don't want to create an account to be able to try the free tier",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "bb4ba052-315f-4aa0-b161-1d91e5b82b65",
+"rating": 1,
+"date": "2025-12-21",
+"loc": "en"
+},
+{
+"key": "P122#6979",
+"codes": [
+"AC_FORCED",
+"X_CHURN"
+],
+"quote": "why should i create an account to start using an app ffs? deleted immediately",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "bf18017c-1530-4dba-8f2c-f7bf22cd0d6d",
+"rating": 1,
+"date": "2025-12-16",
+"loc": "en"
+},
+{
+"key": "P122#19751",
+"codes": [
+"AC_FORCED"
+],
+"quote": "I don't want to create an account for an app that tracks my workout",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "7e8c5dd8-65e5-4017-a2c6-e4612e212bd9",
+"rating": 2,
+"date": "2022-05-31",
+"loc": "en"
+},
+{
+"key": "P122#21258",
+"codes": [
+"AC_FORCED"
+],
+"quote": "why would I want to have to make an account just to track my workouts",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "5963bc8d-ea99-491c-a80b-45f86641bebf",
+"rating": 1,
+"date": "2021-03-03",
+"loc": "en"
+},
+{
+"key": "P122#38181",
+"codes": [
+"AC_SIGNUP_FAIL"
+],
+"quote": "why is it so hard for me to sign up an account wth",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "53c0b9bb-a6f7-4a3f-b6c6-46926b78c4df",
+"rating": 4,
+"date": "2023-01-28",
+"loc": "vi"
+},
+{
+"key": "P126#61250",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no need to make an account",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "b68821cc-31d9-402d-aa44-753bd6aa0199",
+"rating": 5,
+"date": "2020-06-22",
+"loc": "en"
+},
+{
+"key": "P24#3375",
+"codes": [
+"AC_PASSWORD",
+"AC_WANT_LOGIN",
+"X_PHONE_FEAR"
+],
+"quote": "What if I change my phone, then I wouldn't be able to load my data into the new one",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "76f6ba1e-f358-4a93-b50d-32ae7927db7b",
+"rating": 3,
+"date": "2020-06-25",
+"loc": "en"
+},
+{
+"key": "P3#2241",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no need to login / using email",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "556606f8-7045-4b7b-a3c3-b6b76bd49824",
+"rating": 5,
+"date": "2026-01-03",
+"loc": "en"
+},
+{
+"key": "P44#324",
+"codes": [
+"AC_WANT_LOGIN",
+"E_RESTORE"
+],
+"quote": "what if I uninstall and re install the app, I have to now re subscribe",
+"store": "P",
+"app": "44. Habit Tracker - TickOff",
+"review_id": "467d6cbf-56b7-4bf6-bf1d-e9e8185f7dd0",
+"rating": 1,
+"date": "2025-06-06",
+"loc": "en"
+},
+{
+"key": "P68#84",
+"codes": [
+"AC_WANT_LOGIN"
+],
+"quote": "why can't I login my Google account to save progression",
+"store": "P",
+"app": "68. Habit Tracker - Habstick",
+"review_id": "a48219e5-bf17-406e-90d6-8f1fe0c8d452",
+"rating": 4,
+"date": "2026-02-15",
+"loc": "en"
+},
+{
+"key": "P70#340",
+"codes": [
+"AC_WANT_OWN_CLOUD"
+],
+"quote": "Why must I create another online account that can get hacked, instead of using the Google drive I already have?",
+"store": "P",
+"app": "70. everyday Habit Tracker",
+"review_id": "4ccc8f63-45e3-4cdd-a916-6701c384611c",
+"rating": 3,
+"date": "2023-01-16",
+"loc": "en"
+},
+{
+"key": "P70#797",
+"codes": [
+"AC_FORCED",
+"A_DELETE"
+],
+"quote": "why are we forced to make an account? And how can we delete it?",
+"store": "P",
+"app": "70. everyday Habit Tracker",
+"review_id": "f57c0c4a-62de-4be6-bb77-13ff782d5d66",
+"rating": 1,
+"date": "2019-09-21",
+"loc": "en"
+},
+{
+"key": "P8#1330",
+"codes": [
+"AC_FORCED"
+],
+"quote": "why do I have to make an account for everything these days",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "29eaf84d-4897-475c-ab28-c8225f3b08ad",
+"rating": 1,
+"date": "2025-10-01",
+"loc": "en"
+},
+{
+"key": "P8#4856",
+"codes": [
+"AC_FORCED",
+"X_CHURN"
+],
+"quote": "couldn't understand why I would need to register an account to use a task app",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "d03bcf33-1ca9-4029-92f8-8a35f31deef2",
+"rating": 1,
+"date": "2022-11-17",
+"loc": "en"
+},
+{
+"key": "P8#5085",
+"codes": [
+"AC_FORCED",
+"P_ONLINE_ONLY"
+],
+"quote": "Why I have to create a account ? Why the game is online ?",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "7fd01aa5-0d61-4d85-9d84-7187f6f8c722",
+"rating": 1,
+"date": "2022-06-16",
+"loc": "en"
+},
+{
+"key": "P8#9078",
+"codes": [
+"AC_FORCED",
+"PR_CONCERN"
+],
+"quote": "Another password, more people accessing my personal information",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "8a7d5fb6-0cbd-4fe3-beed-d8009d089bfa",
+"rating": 1,
+"date": "2016-12-10",
+"loc": "en"
+},
+{
+"key": "P8#9130",
+"codes": [
+"AC_FORCED"
+],
+"quote": "I don't want to give it my account",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "8213e2c1-e50b-4551-ab63-4eafd4914d79",
+"rating": 2,
+"date": "2016-11-17",
+"loc": "en"
+},
+{
+"key": "P84#44909",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "no need to log in to any account",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "5005925f-5033-4bda-89fd-02f2fa9f732c",
+"rating": 5,
+"date": "2019-04-18",
+"loc": "nl"
+},
+{
+"key": "P98#620",
+"codes": [
+"AC_NOACC_PRAISE"
+],
+"quote": "No need to sign up for an account",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "6d3da82b-5f10-416d-b721-926a2f6bd4e1",
+"rating": 5,
+"date": "2022-02-07",
+"loc": "en"
+},
+{
+"key": "N10#2008",
+"codes": [
+"AC_LOGOUT"
+],
+"quote": "why do I have to enter my email and password often just to open a to do list",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "11499770057",
+"rating": 2,
+"date": "2024-07-16",
+"loc": "ca"
+},
+{
+"key": "N10#2492",
+"codes": [
+"AC_PROVIDER_LOCK",
+"PR_CONCERN"
+],
+"quote": "I&#39;m being forced to provide my phone number to access it",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5704578946",
+"rating": 1,
+"date": "2020-03-24",
+"loc": "ca"
+},
+{
+"key": "N10#10602",
+"codes": [
+"AC_FORCED"
+],
+"quote": "why should I have to make an account and go through 100 different things just for that",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "4555470515",
+"rating": 1,
+"date": "2019-08-02",
+"loc": "gb"
+},
+{
+"key": "N10#21314",
+"codes": [
+"AC_ONE_PROVIDER",
+"AC_LOGOUT"
+],
+"quote": "No linking to other accounts like google, fb",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5921509024",
+"rating": 1,
+"date": "2020-05-09",
+"loc": "us"
+},
+{
+"key": "N2#6627",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "7862569932",
+"rating": 2,
+"date": "2021-09-30",
+"loc": "de"
+},
+{
+"key": "A24#14659",
+"codes": [
+"AC_EMAIL_UNKNOWN",
+"AC_CANCEL_NEEDS_LOGIN",
+"E_WEBSUB"
+],
+"quote": "it keeps telling me it can’t find my account",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12029837217",
+"rating": 1,
+"date": "2024-12-05",
+"loc": "gb"
+},
+{
+"key": "P111#949",
+"codes": [
+"AC_USER_NOT_FOUND",
+"E_PLATFORM_GAP"
+],
+"quote": "I can log in to the web version, but the app keeps saying \"user not found.",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "651157c2-bd39-4069-b0b4-7e9fc0490fa1",
+"rating": 1,
+"date": "2024-10-07",
+"loc": "en"
+},
+{
+"key": "A10#4836",
+"codes": [
+"AC_ACCOUNT_NEVER_EXISTED",
+"L_REINST",
+"E_RESTORE",
+"X_PAYER"
+],
+"quote": "it told me my account never existed",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12067078989",
+"rating": 3,
+"date": "2024-12-15",
+"loc": "ca"
+},
+{
+"key": "P24#8198",
+"codes": [
+"AC_ACCOUNT_LOST",
+"E_RESTORE",
+"X_PAYER"
+],
+"quote": "premium account is gone too",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "eb238d8b-06c2-45c8-bfc0-2847fa30fd65",
+"rating": 2,
+"date": "2018-08-19",
+"loc": "en"
+},
+{
+"key": "A55#930",
+"codes": [
+"AC_ACCOUNT_LOST",
+"E_RESTORE",
+"X_SUPPORT_NONE",
+"X_PAYER"
+],
+"quote": "when installed it back my premium account was gone",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "2168102167",
+"rating": 1,
+"date": "2018-02-05",
+"loc": "nz"
+},
+{
+"key": "A10#41951",
+"codes": [
+"AC_ACCOUNT_NEVER_EXISTED",
+"L_REINST"
+],
+"quote": "im entering my email but it says no account found with that gmail",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "11331681844",
+"rating": 3,
+"date": "2024-06-01",
+"loc": "us"
+},
+{
+"key": "A67#320",
+"codes": [
+"AC_CANCEL_NEEDS_LOGIN",
+"AC_DELETE_INCOMPLETE"
+],
+"quote": "They deleted my account, but saved my card data and purchase every month",
+"store": "A",
+"app": "67. Habio - Daily Habit Tracker - Routine planner & To do list",
+"review_id": "11278038650",
+"rating": 1,
+"date": "2024-05-17",
+"loc": "de"
+},
+{
+"key": "A10#24940",
+"codes": [
+"L_UPD",
+"L_CORRUPT",
+"AC_LOGIN_FAIL",
+"X_PAYER"
+],
+"quote": "Eventually, I decided to uninstall and reinstall, at which point I was logged out and could not sign b",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13756726098",
+"rating": 1,
+"date": "2026-02-16",
+"loc": "us"
+},
+{
+"key": "A24#25431",
+"codes": [
+"AC_EMAIL_UNKNOWN",
+"E_WEBSUB"
+],
+"quote": "they claim they can’t find my account even though I provided the subscription number they sent",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12922161740",
+"rating": 1,
+"date": "2025-07-22",
+"loc": "us"
+},
+{
+"key": "A24#23329",
+"codes": [
+"AC_CANCEL_NEEDS_LOGIN",
+"E_WEBSUB"
+],
+"quote": "they can’t find my account to cancel, and they keep charging me",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "14306007760",
+"rating": 1,
+"date": "2026-07-15",
+"loc": "us"
+},
+{
+"key": "P111#635",
+"codes": [
+"AC_USER_NOT_FOUND",
+"AC_PASSWORD"
+],
+"quote": "I clicked forgot my password it went not as expected it started saying user not found",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "4282dbf7-a2fb-4331-a7dc-b28d854465b1",
+"rating": 1,
+"date": "2026-07-05",
+"loc": "en"
+},
+{
+"key": "P12#13517",
+"codes": [
+"AC_DELETE_INCOMPLETE",
+"E_WEBSUB"
+],
+"quote": "Impossible to get a refund as they say account doesnt exist",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "23771e5e-3a2d-45a1-a4f9-09ece4a71339",
+"rating": 1,
+"date": "2024-10-14",
+"loc": "en"
+},
+{
+"key": "A24#43285",
+"codes": [
+"AC_DELETE_INCOMPLETE",
+"AC_CANCEL_NEEDS_LOGIN"
+],
+"quote": "I couldn’t even log back in to remove my card details, because my account was already deleted",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10846846273",
+"rating": 1,
+"date": "2024-01-21",
+"loc": "za"
+},
+{
+"key": "A10#39209",
+"codes": [
+"AC_ACCOUNT_NEVER_EXISTED",
+"L_PHONE"
+],
+"quote": "I got a new iPhone and can’t even get my account on here. It just says it doesn’t exist",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "11844009643",
+"rating": 1,
+"date": "2024-10-17",
+"loc": "us"
+},
+{
+"key": "P12#21117",
+"codes": [
+"E_WEBSUB"
+],
+"quote": "Was charged but the account doesn't exist",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "0cfb1283-3417-4f65-a6b9-8d1488407882",
+"rating": 1,
+"date": "2022-12-01",
+"loc": "en"
+},
+{
+"key": "P12#24581",
+"codes": [
+"AC_EMAIL_UNKNOWN",
+"E_WEBSUB"
+],
+"quote": "When I log in from the browser it just says there's no account with that email",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "d75b7b17-97f9-4570-bb37-37303d57fa65",
+"rating": 1,
+"date": "2022-05-29",
+"loc": "en"
+},
+{
+"key": "A10#33224",
+"codes": [
+"AC_ACCOUNT_NEVER_EXISTED",
+"E_RESTORE",
+"X_SUPPORT_SAVED",
+"X_PAYER"
+],
+"quote": "it said my account never existed",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12611463470",
+"rating": 4,
+"date": "2025-05-02",
+"loc": "us"
+},
+{
+"key": "P15#81",
+"codes": [
+"AC_WANT_LOGIN",
+"E_DEVICE",
+"X_PAYER"
+],
+"quote": "the payment is linked to my phone so if I change my phone my payments and Pro account is gone",
+"store": "P",
+"app": "15. Habit Tracker - HabitGenius",
+"review_id": "b555a919-a874-449f-a7fa-2251f4923f2c",
+"rating": 4,
+"date": "2026-08-25",
+"loc": "en"
+},
+{
+"key": "A10#53474",
+"codes": [
+"AC_DEVICE_LINK_BROKEN",
+"AC_EMAIL_UNKNOWN"
+],
+"quote": "when I tried to find the QR code scan thingy in settings it was absolutely nowhere to be found",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "9731896692",
+"rating": 4,
+"date": "2023-03-20",
+"loc": "us"
+},
+{
+"key": "N10#13590",
+"codes": [
+"AC_USER_NOT_FOUND",
+"AC_TWO_ACCOUNTS"
+],
+"quote": "First I get that there&#39;s no account with my email, then try to use the same email to create a new account and it says that there&#39;s already an account",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "1592820392",
+"rating": 1,
+"date": "2017-04-19",
+"loc": "mx"
+},
+{
+"key": "N7#10097",
+"codes": [
+"AC_WORK_EMAIL_LOST",
+"L_ACCOUNT"
+],
+"quote": "When my account got deleted the notes were fine until one day they just got deleted",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "12366990228",
+"rating": 3,
+"date": "2025-03-01",
+"loc": "us"
+},
+{
+"key": "N10#20808",
+"codes": [
+"AC_USER_NOT_FOUND"
+],
+"quote": "it says “domain.com isn’t in our system",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "6416805797",
+"rating": 5,
+"date": "2020-09-11",
+"loc": "us"
+},
+{
+"key": "A85#70",
+"codes": [
+"AC_PROVIDER_FAIL",
+"AC_PROVIDER_EMAIL",
+"L_PHONE"
+],
+"quote": "tried to login with my email that is on facebook and user is not registered",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "5146658439",
+"rating": 2,
+"date": "2019-11-16",
+"loc": "au"
+},
+{
+"key": "P111#3885",
+"codes": [
+"AC_PROVIDER_SWAP",
+"L_UPD"
+],
+"quote": "your app decided that my gmail login into Facebook is better to be replaced by Google+ account instead without any sync with all my data",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "7222e77d-0a09-4ba0-8d86-ba6b7e6d7033",
+"rating": 2,
+"date": "2018-09-19",
+"loc": "en"
+},
+{
+"key": "P24#10147",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "Facebook login doesn't work but registering with email worked immediately",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "240ec459-7448-4be1-becb-062562cf581b",
+"rating": 3,
+"date": "2017-09-29",
+"loc": "en"
+},
+{
+"key": "P111#2119",
+"codes": [
+"AC_PROVIDER_GONE",
+"AC_LOGOUT"
+],
+"quote": "Feature unavailable: Facebook Login is currently unavailable for this app.",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "c8afd5a3-24a8-4bfb-a266-84d43dcf630b",
+"rating": 2,
+"date": "2021-07-02",
+"loc": "en"
+},
+{
+"key": "P111#2020",
+"codes": [
+"AC_PROVIDER_GONE"
+],
+"quote": "Will only let me login with Facebook because I used that to make an account",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "65392e0f-b432-4cc4-b582-fcb08927eaa2",
+"rating": 1,
+"date": "2021-09-09",
+"loc": "en"
+},
+{
+"key": "P8#9366",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "b6fcd21b-3168-47a9-b59b-ae2d3373a367",
+"rating": 1,
+"date": "2016-08-11",
+"loc": "en"
+},
+{
+"key": "A85#3416",
+"codes": [
+"AC_PROVIDER_FAIL",
+"E_PLATFORM_GAP"
+],
+"quote": "it won&#39;t let me login with Facebook which is how I initially signed up online",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "1223729300",
+"rating": 1,
+"date": "2015-07-07",
+"loc": "us"
+},
+{
+"key": "P111#11460",
+"codes": [
+"AC_ONE_PROVIDER",
+"AC_PROVIDER_GONE"
+],
+"quote": "It's forcing me to sign up with Facebook. I've deactivated my Facebook",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "50e7eb3b-04c2-410e-bb44-75b3039929da",
+"rating": 1,
+"date": "2014-11-01",
+"loc": "en"
+},
+{
+"key": "A85#81",
+"codes": [
+"AC_EMAIL_NOT_ARRIVE",
+"AC_SIGNUP_FAIL"
+],
+"quote": "It has a registration page for direct login, but you never get any email from them",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "3727587972",
+"rating": 1,
+"date": "2019-02-03",
+"loc": "au"
+},
+{
+"key": "A85#151",
+"codes": [
+"AC_PROVIDER_FAIL",
+"E_PLATFORM_GAP"
+],
+"quote": "it doesn&#39;t support facebook login",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "1228372858",
+"rating": 2,
+"date": "2015-07-16",
+"loc": "au"
+},
+{
+"key": "P111#2146",
+"codes": [
+"AC_PROVIDER_GONE"
+],
+"quote": "the website doesn't allow me to log-in my facebook account",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "05e94754-2ea7-4854-8ea8-4e980b9f65f2",
+"rating": 3,
+"date": "2021-06-02",
+"loc": "en"
+},
+{
+"key": "A85#1140",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "it doesn&#39;t yet allow the login of users registered via facebook",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "1226881612",
+"rating": 3,
+"date": "2015-07-14",
+"loc": "hr"
+},
+{
+"key": "A85#347",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "Whenever I select to login via Facebook the app shuts down",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "7476734015",
+"rating": 2,
+"date": "2021-06-18",
+"loc": "ca"
+},
+{
+"key": "P24#10071",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "I cannot just log in through Facebook",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "b9b01e39-e9fc-4291-b627-75e850160031",
+"rating": 2,
+"date": "2017-10-16",
+"loc": "en"
+},
+{
+"key": "P24#24007",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "just 'setting up your account' permanently",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "cc2bcfef-8fed-462d-b2bc-4238f10b2d94",
+"rating": 3,
+"date": "2018-03-12",
+"loc": "ru"
+},
+{
+"key": "P111#14803",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "Can't log in with Facebook",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "0a58b327-01bf-4040-8692-7e9c8553c932",
+"rating": 3,
+"date": "2021-07-18",
+"loc": "ja"
+},
+{
+"key": "A85#3397",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "To those having Facebook login issues",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "1224653066",
+"rating": 5,
+"date": "2015-07-09",
+"loc": "us"
+},
+{
+"key": "P111#11871",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "getting 404page not found",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "315a8a15-5ae0-450b-9a9c-eefb89ecbacc",
+"rating": 5,
+"date": "2014-09-15",
+"loc": "en"
+},
+{
+"key": "A85#3401",
+"codes": [
+"AC_ADD_METHOD_WORKAROUND"
+],
+"quote": "If you use Facebook to login, you can go into Settings-&gt;Site on the website version and add a local account",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "1224284461",
+"rating": 5,
+"date": "2015-07-09",
+"loc": "us"
+},
+{
+"key": "P111#2104",
+"codes": [
+"AC_PROVIDER_GONE"
+],
+"quote": "I am unable to login using Facebook login anymore please fix the api",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "e116a817-95c6-40bf-918d-dde47cab3bad",
+"rating": 5,
+"date": "2021-07-25",
+"loc": "en"
+},
+{
+"key": "P12#10642",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "6ba52583-fc5e-42b1-b677-d477d78dd632",
+"rating": 1,
+"date": "2025-10-03",
+"loc": "en"
+},
+{
+"key": "P12#10279",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "81a7b7b5-2364-434b-8bcd-2b59faf16072",
+"rating": 1,
+"date": "2025-11-13",
+"loc": "en"
+},
+{
+"key": "A24#14686",
+"codes": [
+"AC_WEB_FLOW"
+],
+"quote": "web link went to a questionnaire followed by asking for payment. Went back to the app where it asked me to do the same questionnaire again",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11976398606",
+"rating": 1,
+"date": "2024-11-21",
+"loc": "gb"
+},
+{
+"key": "A16#1030",
+"codes": [
+"AC_EMAIL_LINK_LOOP"
+],
+"quote": "Email link doesn’t open in sign in window. It’s a continual circle of request link, open link, request link",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "10983253990",
+"rating": 1,
+"date": "2024-02-26",
+"loc": "us"
+},
+{
+"key": "P12#9729",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "6809ecee-1eec-46ff-bfc2-0d7770de7545",
+"rating": 1,
+"date": "2026-01-04",
+"loc": "en"
+},
+{
+"key": "P12#62417",
+"codes": [
+"AC_EMAIL_UNKNOWN",
+"AC_CANCEL_NEEDS_LOGIN",
+"E_WEBSUB"
+],
+"quote": "it says I have NO Fabulous account at that address",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "a0a5c71b-4f13-44bc-bb31-b854efa7feb2",
+"rating": 2,
+"date": "2019-07-25",
+"loc": "en"
+},
+{
+"key": "A24#25809",
+"codes": [
+"AC_WEB_FLOW",
+"E_DOUBLE"
+],
+"quote": "I was charged once online after having followed the verification link and now the app itself is insisting I pay AGAIN",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12532097196",
+"rating": 1,
+"date": "2025-04-11",
+"loc": "us"
+},
+{
+"key": "A24#26602",
+"codes": [
+"AC_WEB_FLOW"
+],
+"quote": "signed up for a trial before even downloading or looking at the app",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12057715359",
+"rating": 2,
+"date": "2024-12-13",
+"loc": "us"
+},
+{
+"key": "P12#9363",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "ef312801-42b5-4e5c-8dfa-b4427120a18d",
+"rating": 1,
+"date": "2026-01-28",
+"loc": "en"
+},
+{
+"key": "P12#11932",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "145fc09b-0e29-403b-924d-948b54930e76",
+"rating": 1,
+"date": "2025-03-26",
+"loc": "en"
+},
+{
+"key": "A24#28341",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10685347404",
+"rating": 1,
+"date": "2023-12-12",
+"loc": "us"
+},
+{
+"key": "P12#20496",
+"codes": [
+"AC_EMAIL_UNKNOWN",
+"E_WEBSUB"
+],
+"quote": "fabulous claims I don't have an account every time I try to log in",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "2baffe10-bf1a-43c4-96db-495d600e88b9",
+"rating": 1,
+"date": "2023-01-30",
+"loc": "en"
+},
+{
+"key": "A24#25989",
+"codes": [
+"AC_WEB_FLOW",
+"E_RESTORE"
+],
+"quote": "The “magic link” didn’t do that for me",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12365221365",
+"rating": 1,
+"date": "2025-02-28",
+"loc": "us"
+},
+{
+"key": "P12#24938",
+"codes": [
+"E_WEBSUB"
+],
+"quote": "I have to bounce back between the app, being redirected to the confirmation email",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "d308ac51-585d-4502-af8b-63f96105a443",
+"rating": 1,
+"date": "2022-05-11",
+"loc": "en"
+},
+{
+"key": "A24#25245",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13079948339",
+"rating": 1,
+"date": "2025-08-30",
+"loc": "us"
+},
+{
+"key": "A67#1890",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "67. Habio - Daily Habit Tracker - Routine planner & To do list",
+"review_id": "10607823887",
+"rating": 1,
+"date": "2023-11-21",
+"loc": "us"
+},
+{
+"key": "P8#8940",
+"codes": [
+"E_CHARGED",
+"E_CONSUMABLE"
+],
+"quote": "Recently bought gems and received confirmation email,  no gems in sight",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "402902d8-5cc4-4a50-af4c-e75ce8222451",
+"rating": 5,
+"date": "2017-02-02",
+"loc": "en"
+},
+{
+"key": "A28#347",
+"codes": [
+"AC_EMAIL_RESEND"
+],
+"quote": "Pls add an option to resend a email verification link",
+"store": "A",
+"app": "28. Habit Rabbit - Habit Tracker - Your productivity pet",
+"review_id": "7979580285",
+"rating": 4,
+"date": "2021-11-02",
+"loc": "ph"
+},
+{
+"key": "A10#53857",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "9687132764",
+"rating": 4,
+"date": "2023-03-07",
+"loc": "us"
+},
+{
+"key": "N8#3567",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "2033132710",
+"rating": 2,
+"date": "2017-12-27",
+"loc": "ca"
+},
+{
+"key": "N8#25079",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "7094865297",
+"rating": 1,
+"date": "2021-03-12",
+"loc": "us"
+},
+{
+"key": "N9#39644",
+"codes": [
+"AC_PROVIDER_LOCK",
+"L_ACCOUNT"
+],
+"quote": "my account was banned for being a “spammer”",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "5130846272",
+"rating": 2,
+"date": "2019-11-13",
+"loc": "us"
+},
+{
+"key": "N8#10263",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "2878213998",
+"rating": 4,
+"date": "2018-07-10",
+"loc": "hk"
+},
+{
+"key": "N8#33068",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "1434720764",
+"rating": 4,
+"date": "2016-08-18",
+"loc": "us"
+},
+{
+"key": "A64#393",
+"codes": [
+"AC_LOGIN_UPSELL_LOCK"
+],
+"quote": "every time I opened the app it would appear again making it so I could t actually do anything",
+"store": "A",
+"app": "64. Critique AI - Habit Tracker - Routine Builder & AI Coach",
+"review_id": "12719428859",
+"rating": 1,
+"date": "2025-05-31",
+"loc": "us"
+},
+{
+"key": "P70#379",
+"codes": [
+"AC_NO_GOOGLE"
+],
+"quote": "How can there be no option to sign up with Google",
+"store": "P",
+"app": "70. everyday Habit Tracker",
+"review_id": "65500b22-abd9-4f40-877f-7171573677c8",
+"rating": 1,
+"date": "2022-08-18",
+"loc": "en"
+},
+{
+"key": "A13#11399",
+"codes": [
+"AC_SIGNUP_WEB_ONLY",
+"AC_LOGIN_FAIL"
+],
+"quote": "The profile is created in the browser but the app won’t let me login",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "11462557591",
+"rating": 1,
+"date": "2024-07-06",
+"loc": "us"
+},
+{
+"key": "P111#323",
+"codes": [
+"AC_PROVIDER_FAIL",
+"L_UPD"
+],
+"quote": "can't use Google sign in on phone",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "70d4cba9-be27-4b06-8767-09a349b71b89",
+"rating": 1,
+"date": "2024-09-27",
+"loc": "bg"
+},
+{
+"key": "P2#6080",
+"codes": [
+"AC_WANT_LOGIN",
+"E_DEVICE"
+],
+"quote": "our purchase is linked with our email I'd",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "538a6e82-2ccb-4874-9ef5-d4b84c70bdf3",
+"rating": 2,
+"date": "2024-01-02",
+"loc": "en"
+},
+{
+"key": "P8#13417",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "Can't sign up with Google",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "a29a572f-bf34-47d5-a662-35a104eb45a4",
+"rating": 1,
+"date": "2023-01-26",
+"loc": "pl"
+},
+{
+"key": "P8#8385",
+"codes": [
+"AC_PROVIDER_NAME"
+],
+"quote": "won't have to use my full name without being able to change it because I signed up with Google",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "6b666bb0-d82c-4122-baef-740e1e748800",
+"rating": 2,
+"date": "2017-09-10",
+"loc": "en"
+},
+{
+"key": "P12#57698",
+"codes": [
+"AC_PROVIDER_FAIL",
+"AC_BACKUP_NEEDS_ACCOUNT"
+],
+"quote": "Google login keeps failing",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "90018f4f-e305-407e-b6be-4cdad65aee11",
+"rating": 3,
+"date": "2019-11-27",
+"loc": "en"
+},
+{
+"key": "P122#7116",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "103f5366-a49b-4376-9d30-2bc8dd90aaf7",
+"rating": 1,
+"date": "2025-12-08",
+"loc": "en"
+},
+{
+"key": "P8#4677",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "You press the login with Google. Nothing happens",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "178b9e01-142e-45b2-a944-8ebc81f58738",
+"rating": 1,
+"date": "2023-02-12",
+"loc": "en"
+},
+{
+"key": "P111#5943",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "can't sign in with google/fb",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "10d7f7db-835c-4de1-89bc-2d6655f1c670",
+"rating": 1,
+"date": "2017-05-14",
+"loc": "en"
+},
+{
+"key": "P136#11",
+"codes": [
+"AC_PROVIDER_FAIL",
+"E_CHARGED"
+],
+"quote": "Google Sign in isn't working",
+"store": "P",
+"app": "136. Life Engine - Habit Tracker",
+"review_id": "6afb16c2-9ff2-4c5d-85b8-590efa4eaab2",
+"rating": 3,
+"date": "2026-07-04",
+"loc": "en"
+},
+{
+"key": "P8#3293",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "0cd2c927-1033-4102-ae7d-ada2ef65b551",
+"rating": 3,
+"date": "2024-05-22",
+"loc": "en"
+},
+{
+"key": "P111#4712",
+"codes": [
+"AC_PROVIDER_FAIL",
+"AC_TWO_ACCOUNTS"
+],
+"quote": "Tried to signup again, says my email address is already set up as Gmail",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "14e29471-48c8-4550-b5b4-f4f002a13565",
+"rating": 1,
+"date": "2017-12-03",
+"loc": "en"
+},
+{
+"key": "A85#2666",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "I get an error message when I try to sign in with google",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "3091314847",
+"rating": 1,
+"date": "2018-08-20",
+"loc": "us"
+},
+{
+"key": "P3#3121",
+"codes": [
+"AC_WANT_LOGIN"
+],
+"quote": "restore it in a new device by signing up with Google account",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "7b284475-5b67-419e-99f0-ca6f4150a4d1",
+"rating": 4,
+"date": "2025-03-24",
+"loc": "en"
+},
+{
+"key": "P3#13386",
+"codes": [
+"AC_WANT_LOGIN",
+"AC_WANT_OWN_CLOUD"
+],
+"quote": "Please provide Google login for easy data backup to Google drive",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "dc37362c-a01f-42b0-a2fb-c68010c23b6a",
+"rating": 5,
+"date": "2018-02-14",
+"loc": "en"
+},
+{
+"key": "P111#7779",
+"codes": [
+"POS_LOGIN"
+],
+"quote": "if you sign in with Google or another pre-existing service, it's really easy to access on any device",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "f0a280d9-ad7b-4623-85f1-0b6e2346f17b",
+"rating": 5,
+"date": "2016-08-24",
+"loc": "en"
+},
+{
+"key": "N10#1209",
+"codes": [
+"AC_ONE_PROVIDER"
+],
+"quote": "let me sign in with google not only ridiculous Microsoft",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "12051105534",
+"rating": 1,
+"date": "2024-12-11",
+"loc": "bh"
+},
+{
+"key": "N11#6572",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "missing Google button",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "8846324957",
+"rating": 1,
+"date": "2022-07-06",
+"loc": "vn"
+},
+{
+"key": "N10#10473",
+"codes": [
+"AC_ONE_PROVIDER"
+],
+"quote": "I’d rather interface with google sign in",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5650338339",
+"rating": 1,
+"date": "2020-03-12",
+"loc": "gb"
+},
+{
+"key": "N11#3062",
+"codes": [
+"AC_PROVIDER_FAIL",
+"AC_NO_CHANNEL"
+],
+"quote": "You told us to inquire, but we can&#39;t log in at all, so we can&#39;t leave an inquiry",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "9824176692",
+"rating": 1,
+"date": "2023-04-15",
+"loc": "kr"
+},
+{
+"key": "A10#21825",
+"codes": [
+"AC_LOGOUT",
+"L_LOGIN",
+"X_SUPPORT_NONE"
+],
+"quote": "then it logged me out of my account and i lost all my progress from the past 6 months",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14106775895",
+"rating": 2,
+"date": "2026-05-26",
+"loc": "us"
+},
+{
+"key": "P111#3359",
+"codes": [
+"AC_LOGOUT",
+"AC_LOGIN_FAIL"
+],
+"quote": "I have been using this until it just logged me out",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "8033e9fa-8493-4fd8-bb5d-967896b76e3e",
+"rating": 1,
+"date": "2019-05-10",
+"loc": "en"
+},
+{
+"key": "P122#4884",
+"codes": [
+"AC_LOGOUT",
+"AC_LOGIN_FAIL"
+],
+"quote": "all of the sudden it logged me out and I cant get back in",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "1f752ce7-0b68-4d05-8d9f-5e418df28a3e",
+"rating": 2,
+"date": "2026-04-08",
+"loc": "en"
+},
+{
+"key": "P45#75",
+"codes": [
+"AC_LOGOUT"
+],
+"quote": "After the update I have to log in again every single time I open the app",
+"store": "P",
+"app": "45. PlanMe - Daily Routine Planner",
+"review_id": "7016925f-37be-4111-aa04-3105c0ccd009",
+"rating": 2,
+"date": "2024-04-09",
+"loc": "en"
+},
+{
+"key": "P98#478",
+"codes": [
+"AC_LOGOUT"
+],
+"quote": "keeps logging me out",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "b33bef97-feb3-460a-9d0f-224dedb57070",
+"rating": 1,
+"date": "2022-09-23",
+"loc": "en"
+},
+{
+"key": "P111#5234",
+"codes": [
+"AC_LOGOUT",
+"L_LOGIN"
+],
+"quote": "When I logged back in, it had deleted my schedule, timetable, tasks EVERYTHING",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "951d5c8a-6add-435e-9274-51fa5d7dd5f3",
+"rating": 2,
+"date": "2017-09-15",
+"loc": "en"
+},
+{
+"key": "P111#6081",
+"codes": [
+"AC_LOGOUT",
+"L_LOGIN",
+"AC_FORCED"
+],
+"quote": "Why does it even require you to have an account?",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "ef000311-7a55-4fa6-9a4e-782b3d55bcb5",
+"rating": 3,
+"date": "2017-04-10",
+"loc": "en"
+},
+{
+"key": "P24#5053",
+"codes": [
+"AC_LOGOUT"
+],
+"quote": "have to login everytime I open",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "e34a4fc0-3226-4771-b35d-cc3cf74bc2f7",
+"rating": 1,
+"date": "2019-07-25",
+"loc": "en"
+},
+{
+"key": "A48#1995",
+"codes": [
+"AC_LOGOUT_UPDATE",
+"AC_NO_CHANNEL",
+"S_INVISIBLE"
+],
+"quote": "It says that i don’t have anything saved on icloud which is not true",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "11835614686",
+"rating": 3,
+"date": "2024-10-15",
+"loc": "us"
+},
+{
+"key": "P8#7974",
+"codes": [
+"AC_LOGOUT"
+],
+"quote": "it cut off and logged me out",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "1c2abb5b-ea78-44d9-9392-124e3b5833a2",
+"rating": 1,
+"date": "2018-04-11",
+"loc": "en"
+},
+{
+"key": "A24#31133",
+"codes": [
+"AC_LOGOUT"
+],
+"quote": "Fabulous keeps logging me out",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8651201869",
+"rating": 3,
+"date": "2022-05-08",
+"loc": "us"
+},
+{
+"key": "P111#10929",
+"codes": [
+"AC_LOGOUT",
+"AC_PROVIDER_FAIL"
+],
+"quote": "every time a semester starts, it decides to log me out, forget my log in info",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "35d1a70f-4f89-4739-82a0-c539e6e62318",
+"rating": 2,
+"date": "2015-02-03",
+"loc": "en"
+},
+{
+"key": "P5#825",
+"codes": [
+"AC_LOGOUT",
+"AC_PASSWORD",
+"E_RESTORE",
+"X_PAYER"
+],
+"quote": "Paid for a subscription only for this app to log me out and not let me back in",
+"store": "P",
+"app": "5. Routine Planner, Habit Tracker",
+"review_id": "0ef1cf27-7582-4e36-822f-ac885c0e02de",
+"rating": 1,
+"date": "2025-06-09",
+"loc": "en"
+},
+{
+"key": "P8#4768",
+"codes": [
+"AC_LOGOUT"
+],
+"quote": "The app keeps logging out of my account for some reason",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "13c70e27-ae4b-462c-9771-1c971d718daf",
+"rating": 2,
+"date": "2023-01-07",
+"loc": "en"
+},
+{
+"key": "A10#16729",
+"codes": [
+"AC_LOGOUT",
+"AC_USER_NOT_FOUND"
+],
+"quote": "the app said theres no my acc registered",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13836733873",
+"rating": 2,
+"date": "2026-03-11",
+"loc": "my"
+},
+{
+"key": "P111#2801",
+"codes": [
+"AC_LOGOUT",
+"L_LOGIN"
+],
+"quote": "until it logged me out and now all of my clases and exams etc are gone",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "dc6b3d61-1080-4bd1-b379-e8ac47d4f0a6",
+"rating": 4,
+"date": "2020-04-23",
+"loc": "en"
+},
+{
+"key": "A9#20",
+"codes": [
+"AC_LOGOUT",
+"L_LOGIN"
+],
+"quote": "the app was logged out and now has wiped all my hard work",
+"store": "A",
+"app": "9. Dear Me - Daily Routine Tracker - Self Care & ADHD Habit Planner",
+"review_id": "13026998730",
+"rating": 4,
+"date": "2025-08-17",
+"loc": "au"
+},
+{
+"key": "A24#15269",
+"codes": [
+"AC_LOGOUT"
+],
+"quote": "it keeps logging me out",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8770071146",
+"rating": 4,
+"date": "2022-06-13",
+"loc": "gb"
+},
+{
+"key": "P8#1680",
+"codes": [
+"AC_LOGOUT",
+"L_PHONE",
+"X_SUPPORT_SAVED"
+],
+"quote": "I got a new phone and the app logged me out. Over a period of two weeks, Ri helped me to retrieve my account",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "a65a98b6-8a1f-4742-927c-d861615bef1a",
+"rating": 5,
+"date": "2025-05-19",
+"loc": "en"
+},
+{
+"key": "N10#16614",
+"codes": [
+"AC_PROVIDER_LOCK",
+"AC_LOGOUT"
+],
+"quote": "it logs me out saying my account was blocked",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5858228613",
+"rating": 1,
+"date": "2020-04-24",
+"loc": "se"
+},
+{
+"key": "N10#19640",
+"codes": [
+"AC_LOGOUT",
+"AC_LOGIN_FAIL"
+],
+"quote": "App logged me out and won’t let me log back in to get my notes",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "9061640276",
+"rating": 1,
+"date": "2022-09-07",
+"loc": "us"
+},
+{
+"key": "N10#60",
+"codes": [
+"AC_LOGOUT"
+],
+"quote": "if it doesnt log me out every two seconds",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "7340498232",
+"rating": 1,
+"date": "2021-05-15",
+"loc": "ae"
+},
+{
+"key": "N10#21746",
+"codes": [
+"AC_LOGOUT",
+"L_LOGIN"
+],
+"quote": "It constantly signs me out",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5725941279",
+"rating": 1,
+"date": "2020-03-28",
+"loc": "us"
+},
+{
+"key": "N10#23139",
+"codes": [
+"AC_LOGOUT"
+],
+"quote": "App signs me out and don&#39;t want to sign in every time I use an app",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "1636791849",
+"rating": 2,
+"date": "2017-06-07",
+"loc": "us"
+},
+{
+"key": "P12#106988",
+"codes": [
+"AC_TWO_ACCOUNTS",
+"E_WEBSUB"
+],
+"quote": "there was another account created from the website after the cancellation",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "93b3557f-a3a6-4678-9ed0-a33229c62e4f",
+"rating": 1,
+"date": "2021-12-29",
+"loc": "fr"
+},
+{
+"key": "A24#25211",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13099924545",
+"rating": 1,
+"date": "2025-09-05",
+"loc": "us"
+},
+{
+"key": "P8#9523",
+"codes": [
+"AC_FORCED"
+],
+"quote": "Can I not bother with making yet another account please?",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "47ad5300-9995-403e-a838-f6c74acc226e",
+"rating": 1,
+"date": "2016-06-16",
+"loc": "en"
+},
+{
+"key": "P12#8870",
+"codes": [
+"AC_TWO_ACCOUNTS",
+"E_WEBSUB"
+],
+"quote": "Made two accounts due to confusion and they kept charging me",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "086952f0-4ca1-4686-8331-ec4cfceb4a99",
+"rating": 1,
+"date": "2026-03-30",
+"loc": "en"
+},
+{
+"key": "A24#14682",
+"codes": [
+"AC_TWO_ACCOUNTS",
+"AC_EMAIL_UNKNOWN",
+"E_WEBSUB"
+],
+"quote": "They claim that I have two accounts but I don’t even have one",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11991973583",
+"rating": 1,
+"date": "2024-11-25",
+"loc": "gb"
+},
+{
+"key": "P12#51965",
+"codes": [
+"AC_SECURITY"
+],
+"quote": "2 accounts with same email address were hacked",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "84cc2351-cc7b-4c04-8883-a6bd9545134f",
+"rating": 1,
+"date": "2020-06-06",
+"loc": "en"
+},
+{
+"key": "P12#115052",
+"codes": [
+"AC_TWO_ACCOUNTS"
+],
+"quote": "it asks me to create a new account. Why should I put the gift on another account?",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "33631563-f712-404d-9d21-93663eaba643",
+"rating": 1,
+"date": "2020-09-19",
+"loc": "it"
+},
+{
+"key": "P111#855",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "a0bb4da1-f066-45a3-a0ca-d07827d221bc",
+"rating": 1,
+"date": "2025-01-24",
+"loc": "en"
+},
+{
+"key": "A24#35151",
+"codes": [
+"AC_TWO_ACCOUNTS",
+"E_WEBSUB"
+],
+"quote": "because I already had an account it said “you’ve already subscribed”",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "7463092284",
+"rating": 2,
+"date": "2021-06-14",
+"loc": "us"
+},
+{
+"key": "P12#41448",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "52cc3268-fc8f-467f-8559-006ec40fdb86",
+"rating": 2,
+"date": "2021-02-25",
+"loc": "en"
+},
+{
+"key": "A24#14941",
+"codes": [
+"AC_TWO_ACCOUNTS",
+"AC_WEB_FLOW",
+"E_WEBSUB"
+],
+"quote": "Ended up with two accounts one of which was impossible to cancel",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10706841793",
+"rating": 1,
+"date": "2023-12-17",
+"loc": "gb"
+},
+{
+"key": "P8#6713",
+"codes": [
+"AC_SIGNUP_FAIL"
+],
+"quote": "I can't save the username and display name I create",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "52634f9f-9ba9-41b4-bafe-a995a542f54e",
+"rating": 1,
+"date": "2020-01-05",
+"loc": "en"
+},
+{
+"key": "P8#5810",
+"codes": [
+"AC_TWO_ACCOUNTS",
+"AC_SILENT_SIGNUP"
+],
+"quote": "it just creates an account without warning",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "41181311-ae5c-4012-a63c-1d4e0893469b",
+"rating": 1,
+"date": "2021-03-23",
+"loc": "en"
+},
+{
+"key": "A4#19680",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "9709808642",
+"rating": 2,
+"date": "2023-03-13",
+"loc": "us"
+},
+{
+"key": "A13#11891",
+"codes": [
+"AC_TWO_ACCOUNTS",
+"S_FAIL",
+"AC_PASSWORD"
+],
+"quote": "I would thoroughly enjoy it if I could link my accounts (both have same email attached to them?",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8338472841",
+"rating": 2,
+"date": "2022-02-10",
+"loc": "us"
+},
+{
+"key": "A10#32344",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12712734321",
+"rating": 5,
+"date": "2025-05-29",
+"loc": "us"
+},
+{
+"key": "A10#11219",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12688927952",
+"rating": 4,
+"date": "2025-05-23",
+"loc": "gb"
+},
+{
+"key": "A10#20270",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14261726782",
+"rating": 5,
+"date": "2026-07-04",
+"loc": "us"
+},
+{
+"key": "P8#10001",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "The game app didn't connect through Facebook",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "ed5a66c6-4807-4c5a-8845-ff4d9125bdcc",
+"rating": 5,
+"date": "2016-01-30",
+"loc": "en"
+},
+{
+"key": "N10#2041",
+"codes": [
+"AC_TWO_ACCOUNTS",
+"S_FAIL"
+],
+"quote": "I use the same sign ins but its like two different accounts",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "11211504428",
+"rating": 1,
+"date": "2024-04-29",
+"loc": "ca"
+},
+{
+"key": "N10#2351",
+"codes": [
+"AC_TWO_ACCOUNTS"
+],
+"quote": "said my email was already in use by another account holder. Yeah, me",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "6349577261",
+"rating": 1,
+"date": "2020-08-22",
+"loc": "ca"
+},
+{
+"key": "N10#18621",
+"codes": [
+"A_MULTI_ACCOUNT"
+],
+"quote": "ipad version lacks capability to switch between different accounts",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "11599671412",
+"rating": 4,
+"date": "2024-08-12",
+"loc": "us"
+},
+{
+"key": "N10#13791",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "11497283798",
+"rating": 1,
+"date": "2024-07-15",
+"loc": "nl"
+},
+{
+"key": "N10#20168",
+"codes": [
+"A_MULTI_ACCOUNT"
+],
+"quote": "Can’t login to two different accounts on iOS",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "7520187468",
+"rating": 2,
+"date": "2021-06-29",
+"loc": "us"
+},
+{
+"key": "P8#5418",
+"codes": [
+"AC_SIGNUP_FAIL",
+"AC_PROVIDER_FAIL"
+],
+"quote": "I also couldn't register with google at all",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "57c82805-345a-4c7f-8544-83df6079d743",
+"rating": 1,
+"date": "2021-11-16",
+"loc": "en"
+},
+{
+"key": "P8#1206",
+"codes": [
+"AC_SIGNUP_FAIL"
+],
+"quote": "I enter my name but i cannot \"Get Start",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "e5acb8e2-f112-4f7b-b61b-9052cd82eb56",
+"rating": 3,
+"date": "2025-12-03",
+"loc": "en"
+},
+{
+"key": "P24#6015",
+"codes": [
+"AC_SIGNUP_FAIL"
+],
+"quote": "tells me I have an invalid session",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "cf5ddfd7-5749-450a-ad24-afc80d0cb3c5",
+"rating": 1,
+"date": "2019-03-24",
+"loc": "en"
+},
+{
+"key": "P24#20070",
+"codes": [
+"AC_SIGNUP_FAIL"
+],
+"quote": "I can't sign up!",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "db167e84-ba01-479f-8896-c3bae80e605f",
+"rating": 3,
+"date": "2019-01-24",
+"loc": "hu"
+},
+{
+"key": "A85#2712",
+"codes": [
+"AC_SIGNUP_FAIL",
+"AC_SERVER_REQUIRED"
+],
+"quote": "Given a false connection error when I try to register",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "2784799182",
+"rating": 1,
+"date": "2018-06-28",
+"loc": "us"
+},
+{
+"key": "P33#866",
+"codes": [
+"AC_SIGNUP_FAIL"
+],
+"quote": "cannot create account or login",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "767505e5-e4d4-49e5-9212-ba22b1a8d5d3",
+"rating": 3,
+"date": "2023-01-01",
+"loc": "en"
+},
+{
+"key": "A85#406",
+"codes": [
+"AC_SIGNUP_FAIL"
+],
+"quote": "Registration doesn’t work",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "2566030731",
+"rating": 1,
+"date": "2018-05-19",
+"loc": "ca"
+},
+{
+"key": "P111#10314",
+"codes": [
+"AC_SIGNUP_FAIL"
+],
+"quote": "I cannot sign up",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "3f26ee8e-1b96-4037-a1f4-58535fbcf074",
+"rating": 1,
+"date": "2015-06-11",
+"loc": "en"
+},
+{
+"key": "P24#21162",
+"codes": [
+"AC_SIGNUP_FAIL"
+],
+"quote": "I can't register by email or Facebook",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "dec6bbf3-7299-4d6a-a48e-06c562406939",
+"rating": 1,
+"date": "2024-02-23",
+"loc": "pl"
+},
+{
+"key": "P8#11277",
+"codes": [
+"AC_SIGNUP_FAIL"
+],
+"quote": "Ive got a welcoming email, so I guess that in the backend somehow I did actually registered",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "429d475f-404c-4057-95a1-3a1552b432bf",
+"rating": 1,
+"date": "2020-10-29",
+"loc": "es"
+},
+{
+"key": "P8#4223",
+"codes": [
+"AC_SIGNUP_FAIL",
+"AC_SERVER_REQUIRED"
+],
+"quote": "it say lost serve connection",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "3ca8cd1e-a798-4719-86a6-fed5491fb2ca",
+"rating": 1,
+"date": "2023-09-16",
+"loc": "en"
+},
+{
+"key": "A85#1057",
+"codes": [
+"AC_SIGNUP_FAIL",
+"AC_SERVER_REQUIRED",
+"AC_ONLY_SOCIAL"
+],
+"quote": "No way am I logging in with Facebook or Google before I can even see what this app does",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "2625359577",
+"rating": 1,
+"date": "2018-06-01",
+"loc": "gb"
+},
+{
+"key": "P8#7854",
+"codes": [
+"AC_SIGNUP_FAIL",
+"AC_USERNAME"
+],
+"quote": "it says \"only letters from a to  z\" and \"only numbers from 0 to 9\" but I follow that",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "0ab92d50-a9ed-4814-a1fb-9c92eec49327",
+"rating": 3,
+"date": "2018-06-18",
+"loc": "en"
+},
+{
+"key": "P111#5826",
+"codes": [
+"AC_SIGNUP_FAIL",
+"AC_PROVIDER_FAIL"
+],
+"quote": "the screen is cut off halfway and I can't fill up the info needed",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "05c17bc9-3592-4091-b6c2-90871091abd5",
+"rating": 2,
+"date": "2017-06-12",
+"loc": "en"
+},
+{
+"key": "P8#5411",
+"codes": [
+"AC_SIGNUP_FAIL"
+],
+"quote": "You can't register",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "66be28c1-f468-4524-ba2d-afbc6a539f3c",
+"rating": 1,
+"date": "2021-11-18",
+"loc": "en"
+},
+{
+"key": "P12#44721",
+"codes": [
+"AC_SIGNUP_FAIL"
+],
+"quote": "I can't sign up to CIRCLES either",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "737b10f9-30b8-4f13-8382-95daa4545524",
+"rating": 4,
+"date": "2021-01-06",
+"loc": "en"
+},
+{
+"key": "P8#8027",
+"codes": [
+"AC_SIGNUP_FAIL"
+],
+"quote": "I CANT REGISTER OR LOG IN",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "ccff2759-c671-4e8e-9076-e009fc9786c1",
+"rating": 4,
+"date": "2018-03-09",
+"loc": "en"
+},
+{
+"key": "P24#9694",
+"codes": [
+"AC_SIGNUP_FAIL",
+"AC_PROVIDER_FAIL"
+],
+"quote": "This app won't let me register or even sign in with Facebook",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "0ebfed93-83ca-473a-932d-7e82461cd056",
+"rating": 5,
+"date": "2018-01-06",
+"loc": "en"
+},
+{
+"key": "P8#12485",
+"codes": [
+"AC_SIGNUP_FAIL",
+"AC_WEBVIEW_OAUTH"
+],
+"quote": "Error 403: disallowed_useragent Unable to register",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "c8d237d6-ee09-4fbe-95d7-c4c6e267b58a",
+"rating": 5,
+"date": "2023-04-15",
+"loc": "id"
+},
+{
+"key": "N1#9853",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "10412846800",
+"rating": 5,
+"date": "2023-09-27",
+"loc": "in"
+},
+{
+"key": "N9#45048",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1462509243",
+"rating": 3,
+"date": "2016-10-07",
+"loc": "us"
+},
+{
+"key": "N5#15960",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "9331600136",
+"rating": 1,
+"date": "2022-11-26",
+"loc": "us"
+},
+{
+"key": "N10#10373",
+"codes": [
+"A_MULTI_ACCOUNT"
+],
+"quote": "unable to register my partner account to synchronise",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5915438398",
+"rating": 5,
+"date": "2020-05-07",
+"loc": "gb"
+},
+{
+"key": "N11#200",
+"codes": [
+"AC_AGE_GATE"
+],
+"quote": "what is the point of making a health app when young people can’t sign up",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "4545256331",
+"rating": 5,
+"date": "2019-07-31",
+"loc": "au"
+},
+{
+"key": "A13#16540",
+"codes": [
+"PR_CONCERN"
+],
+"quote": "there&#39;s no point if my data is not secure",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1701657469",
+"rating": 1,
+"date": "2017-07-28",
+"loc": "us"
+},
+{
+"key": "A24#17547",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13057241147",
+"rating": 1,
+"date": "2025-08-25",
+"loc": "hu"
+},
+{
+"key": "A10#66823",
+"codes": [
+"AC_PROFILES"
+],
+"quote": "The only thing that I wish it had(so far) is an option for multiple profiles",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "8506326353",
+"rating": 3,
+"date": "2022-03-28",
+"loc": "us"
+},
+{
+"key": "A24#28555",
+"codes": [
+"AC_CANCEL_NEEDS_LOGIN"
+],
+"quote": "They make it impossible to reach out or log in after canceling",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10398946364",
+"rating": 1,
+"date": "2023-09-23",
+"loc": "us"
+},
+{
+"key": "A10#19556",
+"codes": [
+"L_CORRUPT"
+],
+"quote": "They have very horrible bugs that make you lose your Birb’s progress",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14392162968",
+"rating": 1,
+"date": "2026-08-05",
+"loc": "us"
+},
+{
+"key": "A4#9411",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "11757840008",
+"rating": 1,
+"date": "2024-09-24",
+"loc": "nz"
+},
+{
+"key": "P36#194",
+"codes": [
+"AC_PROFILES"
+],
+"quote": "allow tracking for multiple users: for my case, plan to use it to track my kids' habit too",
+"store": "P",
+"app": "36. Fun Habit - Habit Tracker",
+"review_id": "642076e7-4560-4230-b7f5-5ffa850424ed",
+"rating": 3,
+"date": "2021-02-22",
+"loc": "en"
+},
+{
+"key": "P4#26998",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "51d04af4-144c-43d4-b394-6c20b1085455",
+"rating": 3,
+"date": "2023-10-10",
+"loc": "en"
+},
+{
+"key": "P12#15180",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "6d3158bf-5a3d-4621-b519-d84c3a374495",
+"rating": 1,
+"date": "2024-04-07",
+"loc": "en"
+},
+{
+"key": "A10#4665",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12286126321",
+"rating": 3,
+"date": "2025-02-08",
+"loc": "ca"
+},
+{
+"key": "P24#7476",
+"codes": [
+"AC_FAMILY_DEVICES",
+"S_FAIL",
+"X_SUPPORT_NONE",
+"X_PAYER"
+],
+"quote": "when I tried logging onto my son's phone it didn't recognize the account",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "9c0a311a-2ccb-4fb7-9f35-d02572670149",
+"rating": 2,
+"date": "2018-11-18",
+"loc": "en"
+},
+{
+"key": "P12#43200",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "586536b2-3613-44bb-8663-9b8ae16fdd8e",
+"rating": 1,
+"date": "2021-01-28",
+"loc": "en"
+},
+{
+"key": "A24#25520",
+"codes": [
+"AC_DELETE_INCOMPLETE",
+"E_WEBSUB"
+],
+"quote": "I’ve deleted my account, and screenshotted I’ve canceled the subscription months ago",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12821801770",
+"rating": 1,
+"date": "2025-06-27",
+"loc": "us"
+},
+{
+"key": "A10#4039",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12877389441",
+"rating": 3,
+"date": "2025-07-11",
+"loc": "ca"
+},
+{
+"key": "P84#23068",
+"codes": [
+"S_SHARED"
+],
+"quote": "allow multiple users to see each others task list",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "e9fe62fb-94df-4cce-9bf1-35d4fd676750",
+"rating": 3,
+"date": "2020-01-24",
+"loc": "en"
+},
+{
+"key": "P111#1878",
+"codes": [
+"AC_MANAGED_EMAIL",
+"AC_EMAIL_NOT_ARRIVE"
+],
+"quote": "It said it's because her online class email is managed by the school",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "fca11527-728b-4e8b-9411-1ab21488d123",
+"rating": 1,
+"date": "2021-12-13",
+"loc": "en"
+},
+{
+"key": "A1#55044",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "8731590196",
+"rating": 5,
+"date": "2022-06-02",
+"loc": "us"
+},
+{
+"key": "A10#28036",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13414082095",
+"rating": 5,
+"date": "2025-11-18",
+"loc": "us"
+},
+{
+"key": "A10#32965",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12640433000",
+"rating": 5,
+"date": "2025-05-10",
+"loc": "us"
+},
+{
+"key": "P3#3992",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "563b4182-112c-4f1c-b754-c4afed1b150d",
+"rating": 5,
+"date": "2024-06-14",
+"loc": "en"
+},
+{
+"key": "N8#8686",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "10897498355",
+"rating": 2,
+"date": "2024-02-03",
+"loc": "gb"
+},
+{
+"key": "N10#20555",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "6685602212",
+"rating": 1,
+"date": "2020-11-25",
+"loc": "us"
+},
+{
+"key": "N8#23580",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "12254549846",
+"rating": 2,
+"date": "2025-01-31",
+"loc": "us"
+},
+{
+"key": "N9#4955",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "3187325012",
+"rating": 5,
+"date": "2018-09-14",
+"loc": "ca"
+},
+{
+"key": "N2#17988",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "10055224747",
+"rating": 2,
+"date": "2023-06-21",
+"loc": "us"
+},
+{
+"key": "P24#9379",
+"codes": [
+"AC_PROVIDER_GONE",
+"AC_PASSWORD",
+"L_PHONE"
+],
+"quote": "I notice that they have removed Google login... And I am unable to recover my password",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "a8633e3c-2e4c-4911-a277-93d938523954",
+"rating": 2,
+"date": "2018-02-16",
+"loc": "en"
+},
+{
+"key": "A85#380",
+"codes": [
+"AC_PASSWORD",
+"AC_EMAIL_NOT_ARRIVE"
+],
+"quote": "It’s been 2 days and I still haven’t gotten that reset email",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "3573095356",
+"rating": 1,
+"date": "2018-12-26",
+"loc": "ca"
+},
+{
+"key": "P8#5263",
+"codes": [
+"AC_PASSWORD",
+"AC_LOGIN_FAIL"
+],
+"quote": "won't accept the password I set- won't recognize my user name",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "764f1340-3b62-4c7d-a423-b7f46a33cd5a",
+"rating": 1,
+"date": "2022-02-25",
+"loc": "en"
+},
+{
+"key": "P24#22707",
+"codes": [
+"AC_PASSWORD",
+"AC_EMAIL_NOT_ARRIVE"
+],
+"quote": "I forgot my password and the new one never came",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "3a19fd42-385a-49cf-9624-fb4033bf2f28",
+"rating": 1,
+"date": "2019-01-01",
+"loc": "pt"
+},
+{
+"key": "P13#16",
+"codes": [
+"AC_PASSWORD",
+"AC_EMAIL_NOT_ARRIVE"
+],
+"quote": "says password reset link emailed but never any email received, checked spam folder",
+"store": "P",
+"app": "13. Aura - Habit Tracker & Streaks",
+"review_id": "63f50578-f1f0-452e-ad26-a7a17ce4efa0",
+"rating": 3,
+"date": "2026-03-07",
+"loc": "en"
+},
+{
+"key": "P49#4266",
+"codes": [
+"AC_LOGOUT",
+"AC_PASSWORD",
+"X_SUPPORT_NONE",
+"X_PAYER"
+],
+"quote": "I paid for the pro version. I was logged out and I can't log in anymore",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "3845b78d-3a1b-49db-9674-8e9bf59343f0",
+"rating": 1,
+"date": "2026-02-15",
+"loc": "nl"
+},
+{
+"key": "P24#8959",
+"codes": [
+"AC_PASSWORD",
+"X_SUPPORT_NONE",
+"X_PAYER"
+],
+"quote": "Nobody answers my email for password reset",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "373925e2-67dc-4212-b68d-eb08c8bd92b7",
+"rating": 1,
+"date": "2018-04-26",
+"loc": "en"
+},
+{
+"key": "P111#1189",
+"codes": [
+"AC_PASSWORD",
+"AC_LOGIN_FAIL"
+],
+"quote": "it wouldn't let me log back in or reset my password or create a new account",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "7447a80f-01ec-49cb-a74b-130cf07f62ef",
+"rating": 1,
+"date": "2024-09-14",
+"loc": "en"
+},
+{
+"key": "P12#45112",
+"codes": [
+"AC_PASSWORD",
+"AC_LOGIN_LOOP"
+],
+"quote": "I click forgot password. It sends me right back to the login page",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "24642379-956b-4b2e-b222-887fcf28c60f",
+"rating": 1,
+"date": "2020-12-30",
+"loc": "en"
+},
+{
+"key": "P8#4902",
+"codes": [
+"AC_PASSWORD"
+],
+"quote": "used to keep forgetting password",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "be4475be-e4c0-4f19-8c9d-86618df40d71",
+"rating": 2,
+"date": "2022-10-20",
+"loc": "en"
+},
+{
+"key": "P24#2831",
+"codes": [
+"AC_PASSWORD",
+"AC_EMAIL_UNKNOWN",
+"L_REINST",
+"X_PAYER"
+],
+"quote": "While doing forget password it is showing your email is not registered with our data base",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "d9d0e424-5cec-4737-bd9d-fcde318c5b8b",
+"rating": 1,
+"date": "2020-11-23",
+"loc": "en"
+},
+{
+"key": "P24#1259",
+"codes": [
+"AC_PASSWORD",
+"AC_LOGIN_LOOP"
+],
+"quote": "then again I put the new password to login it said wrong password",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "fa729d92-06c2-4ac2-a163-ca90e060b66c",
+"rating": 1,
+"date": "2025-04-20",
+"loc": "en"
+},
+{
+"key": "A4#13677",
+"codes": [
+"AC_PASSWORD",
+"AC_EMAIL_UNKNOWN",
+"X_PAYER"
+],
+"quote": "when I chose forget password I get the message that this account doesn’t exist, even thought I did subscribe",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "11681562934",
+"rating": 1,
+"date": "2024-09-02",
+"loc": "us"
+},
+{
+"key": "A24#24259",
+"codes": [
+"AC_PASSWORD",
+"AC_CANCEL_NEEDS_LOGIN"
+],
+"quote": "it says my password is incorrect but won’t allow me to recover it",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13628856700",
+"rating": 1,
+"date": "2026-01-13",
+"loc": "us"
+},
+{
+"key": "P24#10411",
+"codes": [
+"AC_PASSWORD",
+"AC_TWO_ACCOUNTS",
+"L_PHONE"
+],
+"quote": "I've gotten the \"that email is already taken\" message half a dozen times, but it never hints at realising that maybe it was taken by me",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "71c836e5-84e6-465d-882f-87977fd91c34",
+"rating": 2,
+"date": "2017-08-05",
+"loc": "en"
+},
+{
+"key": "P12#25734",
+"codes": [
+"E_WEBSUB"
+],
+"quote": "If you signed up through the play store and the subscription isn't showing up you need to go to the fabulous website",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "ac77c3d7-43b1-4813-8b42-c87d48347564",
+"rating": 1,
+"date": "2022-04-05",
+"loc": "en"
+},
+{
+"key": "P111#8915",
+"codes": [
+"AC_LOGIN_FAIL"
+],
+"quote": "it keep showing that the email address or password is incorrect even though it's perfectly right",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "8a2b1ed7-eeb3-4a62-9713-27e301850180",
+"rating": 4,
+"date": "2016-01-16",
+"loc": "en"
+},
+{
+"key": "P24#16280",
+"codes": [
+"AC_PASSWORD"
+],
+"quote": "my password reset is not working",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "251ee328-6569-49cc-bd4b-e1a13370c9e6",
+"rating": 5,
+"date": "2014-08-17",
+"loc": "en"
+},
+{
+"key": "P33#1278",
+"codes": [
+"AC_PASSWORD"
+],
+"quote": "forgot password is not working for me",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "3e87d3d4-e704-4dae-999c-2a0d9b63f5f7",
+"rating": 5,
+"date": "2021-05-30",
+"loc": "en"
+},
+{
+"key": "P3#10847",
+"codes": [
+"POS_MIGRATE",
+"AC_NOACC_PRAISE"
+],
+"quote": "the fast and seamless copy of data from old phone to my new phone via Bluetooth, without any hitch, and without the need to log in",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "81b45c92-fb55-4dbd-bcde-df70f0a193c5",
+"rating": 5,
+"date": "2019-10-02",
+"loc": "en"
+},
+{
+"key": "N3#11289",
+"codes": [
+"L_ENCRYPT_LOCKOUT"
+],
+"quote": "Please please add forgotten password option for the lock notes",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "9678901475",
+"rating": 2,
+"date": "2023-03-04",
+"loc": "in"
+},
+{
+"key": "N10#21463",
+"codes": [
+"AC_PASSWORD",
+"AC_LOGIN_FAIL"
+],
+"quote": "I could never log in again no matter how many times I went through the process of getting a security code and resetting my password",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5861813850",
+"rating": 1,
+"date": "2020-04-25",
+"loc": "us"
+},
+{
+"key": "N3#18827",
+"codes": [
+"AC_PASSWORD"
+],
+"quote": "notes not accept  my password and ID",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "8368842989",
+"rating": 1,
+"date": "2022-02-18",
+"loc": "sa"
+},
+{
+"key": "N3#21070",
+"codes": [
+"L_ENCRYPT_LOCKOUT"
+],
+"quote": "There should be a better way, when I forget password of my password protected note",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "14436341236",
+"rating": 5,
+"date": "2026-08-16",
+"loc": "us"
+},
+{
+"key": "N3#27510",
+"codes": [
+"L_ENCRYPT_LOCKOUT"
+],
+"quote": "I put in a password for certain notes, and of course I forgot the password",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "9420642510",
+"rating": 1,
+"date": "2022-12-21",
+"loc": "us"
+},
+{
+"key": "P97#15744",
+"codes": [
+"AC_LOGIN_FAIL"
+],
+"quote": "сегодня не могу зайти в приложение",
+"store": "P",
+"app": "97. To-do list - tasks planner",
+"review_id": "5cae9ecb-2ed5-4c68-9828-4a142ce5fd08",
+"rating": 3,
+"date": "2026-04-12",
+"loc": "ru"
+},
+{
+"key": "P12#94281",
+"codes": [
+"AC_LOGIN_FAIL"
+],
+"quote": "no me deja entrar",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "ac67df8d-3e1f-4221-91f9-52ced4378b61",
+"rating": 3,
+"date": "2018-01-10",
+"loc": "es"
+},
+{
+"key": "P5#3623",
+"codes": [
+"AC_UPDATE_ONBOARDING",
+"L_UPD"
+],
+"quote": "cada dos por tres me sale el menú de bienvenida como si fuera nueva",
+"store": "P",
+"app": "5. Routine Planner, Habit Tracker",
+"review_id": "a28c5e88-6a1c-4b50-813b-94429e03472d",
+"rating": 1,
+"date": "2024-09-09",
+"loc": "es"
+},
+{
+"key": "P11#16037",
+"codes": [
+"AC_LOGIN_FAIL",
+"E_RESTORE",
+"L_UPD",
+"X_PAYER"
+],
+"quote": "1 yıllık üyelik aldığım halde giriş yapamıyorum güncellemeden sonra yeniden üyelik istiyor",
+"store": "P",
+"app": "11. Dear Me - Daily Routine Tracker",
+"review_id": "03635146-6c3c-480b-b7d8-07d15505a10c",
+"rating": 1,
+"date": "2024-11-07",
+"loc": "tr"
+},
+{
+"key": "A1#2575",
+"codes": [
+"L_UPD",
+"L_CORRUPT"
+],
+"quote": "ahora me sale que se está actualizando la base de datos sin parar",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10415879454",
+"rating": 1,
+"date": "2023-09-28",
+"loc": "cl"
+},
+{
+"key": "A13#7823",
+"codes": [
+"AC_APPLE_FAIL",
+"E_PLATFORM_GAP"
+],
+"quote": "아이패드에서 애플계정으로 로그인 하려고 하는데 로그인이 안 됩니다",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "10798245834",
+"rating": 3,
+"date": "2024-01-08",
+"loc": "kr"
+},
+{
+"key": "A65#109",
+"codes": [
+"AC_LOGIN_FAIL",
+"E_RESTORE",
+"L_UPD",
+"X_PAYER"
+],
+"quote": "Depois da nova atualização não consigo logar minha conta como versão plus",
+"store": "A",
+"app": "65. Rabit - Daily Routine Planner - Habit Tracker & ADHD Help",
+"review_id": "10135201402",
+"rating": 1,
+"date": "2023-07-13",
+"loc": "br"
+},
+{
+"key": "P12#143555",
+"codes": [
+"AC_LOGIN_FAIL",
+"L_PHONE",
+"AC_NO_CHANNEL",
+"X_PAYER"
+],
+"quote": "troquei de celular e não consigo acessar no novo",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "dc6076d3-8e4f-4a06-83fc-076c8c9f9e21",
+"rating": 2,
+"date": "2019-06-27",
+"loc": "pt"
+},
+{
+"key": "P4#62214",
+"codes": [
+"AC_LOGIN_FAIL"
+],
+"quote": "No me deja entrar, ya llevo más de dos meses",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "f1af1530-b511-4237-bfc6-f7a6b5b72907",
+"rating": 1,
+"date": "2024-04-02",
+"loc": "es"
+},
+{
+"key": "P8#14197",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "Created an account via Facebook and now I can't login",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "d91db9a5-451e-4d92-aedb-663b46af4a3d",
+"rating": 1,
+"date": "2022-09-13",
+"loc": "pt"
+},
+{
+"key": "P98#2379",
+"codes": [
+"AC_LOGIN_FAIL"
+],
+"quote": "no me deja entrar, me sale una pantalla negra",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "55c1ae5b-6e90-4c84-a7c4-aef46426525b",
+"rating": 1,
+"date": "2021-06-24",
+"loc": "es"
+},
+{
+"key": "P24#18257",
+"codes": [
+"AC_PROVIDER_FAIL",
+"AC_SIGNUP_FAIL"
+],
+"quote": "No me deja iniciar sesión en Facebook , igual si me registro",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "1a50f99d-40b5-460e-b2b0-143911cd3f02",
+"rating": 1,
+"date": "2018-10-05",
+"loc": "es"
+},
+{
+"key": "A24#24880",
+"codes": [
+"AC_WEB_FLOW",
+"AC_PROVIDER_FAIL",
+"E_WEBSUB"
+],
+"quote": "Для входа гоняют по ссылкам, которые работают через раз",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13301925343",
+"rating": 1,
+"date": "2025-10-23",
+"loc": "us"
+},
+{
+"key": "P70#1181",
+"codes": [
+"AC_PROVIDER_FAIL",
+"E_PLATFORM_GAP"
+],
+"quote": "на Айфоне вошёл, а на Андроиде не заходит",
+"store": "P",
+"app": "70. everyday Habit Tracker",
+"review_id": "a93a19bb-0d3a-44d7-8080-a6a5b2a25400",
+"rating": 2,
+"date": "2026-04-20",
+"loc": "ru"
+},
+{
+"key": "P11#7626",
+"codes": [
+"AC_UPDATE_ONBOARDING",
+"AC_LOGIN_FAIL"
+],
+"quote": "ya no pasa de la pantalla de bienvenida y no me deja acceder",
+"store": "P",
+"app": "11. Dear Me - Daily Routine Tracker",
+"review_id": "ef5e3802-a421-4b3d-856a-715128c3017a",
+"rating": 1,
+"date": "2025-07-23",
+"loc": "es"
+},
+{
+"key": "A68#2206",
+"codes": [
+"AC_LOGIN_FAIL",
+"X_PAYER"
+],
+"quote": "Деньги списали за годовое обслуживание, но уже 3-день не могу войти в систему",
+"store": "A",
+"app": "68. Ultiself - Self-Improvement - Biohacker Routine Planner App",
+"review_id": "12837727396",
+"rating": 1,
+"date": "2025-07-01",
+"loc": "kg"
+},
+{
+"key": "P8#12976",
+"codes": [
+"AC_LOGIN_FAIL",
+"AC_SERVER_REQUIRED"
+],
+"quote": "서버가 끊어졌다고 나와요",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "83b02260-a8e9-4046-86ac-852e92dd3a5b",
+"rating": 4,
+"date": "2023-09-16",
+"loc": "ko"
+},
+{
+"key": "A24#9557",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "6920899056",
+"rating": 5,
+"date": "2021-01-27",
+"loc": "co"
+},
+{
+"key": "A5#1493",
+"codes": [
+"AC_APPLE_ON_ANDROID_FAIL",
+"X_PAYER"
+],
+"quote": "애플 아이디 로그인시 애플아이디에 로그인할 수 없습니다.라는 메시지가 전송됩니다",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "7979070960",
+"rating": 4,
+"date": "2021-11-01",
+"loc": "kr"
+},
+{
+"key": "A9#836",
+"codes": [
+"AC_LOGIN_FAIL",
+"X_PAYER"
+],
+"quote": "para çekildi, ardından uygulamaya giriş yapamadım",
+"store": "A",
+"app": "9. Dear Me - Daily Routine Tracker - Self Care & ADHD Habit Planner",
+"review_id": "13025036138",
+"rating": 5,
+"date": "2025-08-16",
+"loc": "tr"
+},
+{
+"key": "N11#3314",
+"codes": [
+"AC_LOGIN_FAIL"
+],
+"quote": "삼성 헬스 앱에서 로그인이 안됩니다",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "7732749436",
+"rating": 1,
+"date": "2021-08-25",
+"loc": "kr"
+},
+{
+"key": "N7#7296",
+"codes": [
+"L_UPD",
+"L_CORRUPT"
+],
+"quote": "После обновления приложение вообще не открывается",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "13963201582",
+"rating": 4,
+"date": "2026-04-16",
+"loc": "ru"
+},
+{
+"key": "N9#26951",
+"codes": [
+"AC_LOGIN_FAIL",
+"AC_NO_CHANNEL"
+],
+"quote": "Нет формы обратной связи, для экстренной связи",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "12548937493",
+"rating": 1,
+"date": "2025-04-16",
+"loc": "ru"
+},
+{
+"key": "N11#95",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "5268886421",
+"rating": 3,
+"date": "2019-12-13",
+"loc": "ar"
+},
+{
+"key": "N10#9582",
+"codes": [
+"AC_PROVIDER_FAIL"
+],
+"quote": "Impossible de se connecter depuis un compte Microsoft lié à un compte Google (erreur 403)",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5518451857",
+"rating": 1,
+"date": "2020-02-11",
+"loc": "fr"
+},
+{
+"key": "A52#16637",
+"codes": [
+"AC_CHINA_PAY"
+],
+"quote": "却不能支付宝或者微信付款",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "2415453515",
+"rating": 3,
+"date": "2018-04-13",
+"loc": "cn"
+},
+{
+"key": "A52#13143",
+"codes": [
+"AC_CHINA_PAY"
+],
+"quote": "如果能开通微信或者支付宝就好了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "5766553800",
+"rating": 2,
+"date": "2020-04-05",
+"loc": "cn"
+},
+{
+"key": "A52#8420",
+"codes": [
+"AC_CHINA",
+"E_RESTORE"
+],
+"quote": "以前的会员记录恢复不了，微信绑定不了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "8114097048",
+"rating": 3,
+"date": "2021-12-10",
+"loc": "cn"
+},
+{
+"key": "A24#8449",
+"codes": [
+"AC_CHINA",
+"AC_LOGIN_FAIL"
+],
+"quote": "为什么我登录不了？是要什么邮件？QQ邮箱不行嘛",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "7698801930",
+"rating": 3,
+"date": "2021-08-16",
+"loc": "cn"
+},
+{
+"key": "A52#805",
+"codes": [
+"AC_CHINA",
+"E_RESTORE",
+"X_PAYER"
+],
+"quote": "想绑定微信继续会员身份，但是试了好多次都绑定不了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "13925405995",
+"rating": 1,
+"date": "2026-04-05",
+"loc": "cn"
+},
+{
+"key": "A52#488",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "14206066896",
+"rating": 1,
+"date": "2026-06-20",
+"loc": "cn"
+},
+{
+"key": "A52#3385",
+"codes": [
+"AC_CHINA",
+"E_PLATFORM_GAP",
+"X_PAYER"
+],
+"quote": "但是在mac上登陆不了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "12500685012",
+"rating": 3,
+"date": "2025-04-04",
+"loc": "cn"
+},
+{
+"key": "A52#503",
+"codes": [
+"AC_CHINA",
+"E_PLATFORM_GAP"
+],
+"quote": "绑定不了微信，Mac 上根本没法用",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "14191839187",
+"rating": 3,
+"date": "2026-06-17",
+"loc": "cn"
+},
+{
+"key": "A13#3074",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6975185002",
+"rating": 1,
+"date": "2021-02-09",
+"loc": "cn"
+},
+{
+"key": "A33#687",
+"codes": [
+"AC_CHINA",
+"AC_SERVER_REQUIRED"
+],
+"quote": "不翻墙根本没法用",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "3187489552",
+"rating": 1,
+"date": "2018-09-14",
+"loc": "cn"
+},
+{
+"key": "A52#16512",
+"codes": [
+"AC_CHINA",
+"AC_WANT_LOGIN"
+],
+"quote": "账号与qq、微信等关联功能未提供",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "2494103884",
+"rating": 1,
+"date": "2018-05-02",
+"loc": "cn"
+},
+{
+"key": "A13#4114",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "3205940717",
+"rating": 1,
+"date": "2018-09-19",
+"loc": "cn"
+},
+{
+"key": "A52#6845",
+"codes": [
+"AC_CHINA"
+],
+"quote": "如果要绑定微信，不能使用微信扫码",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "9457287641",
+"rating": 1,
+"date": "2023-01-01",
+"loc": "cn"
+},
+{
+"key": "A52#12967",
+"codes": [
+"AC_CHINA",
+"L_REINST",
+"AC_BACKUP_ASSUMED"
+],
+"quote": "绑定微信之后 我以为记录都会存在里面 结果刚删了重新下载 竟然没有以往记录了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "5889128451",
+"rating": 2,
+"date": "2020-05-01",
+"loc": "cn"
+},
+{
+"key": "A13#3733",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5307809011",
+"rating": 1,
+"date": "2019-12-23",
+"loc": "cn"
+},
+{
+"key": "A52#15799",
+"codes": [
+"E_DOUBLE"
+],
+"quote": "我不是微信已经支付过一次了吗",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "2990031763",
+"rating": 3,
+"date": "2018-07-30",
+"loc": "cn"
+},
+{
+"key": "A1#42949",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3815584401",
+"rating": 5,
+"date": "2019-02-26",
+"loc": "cn"
+},
+{
+"key": "A1#43382",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3763886567",
+"rating": 5,
+"date": "2019-02-13",
+"loc": "cn"
+},
+{
+"key": "A52#14144",
+"codes": [
+"AC_CHINA",
+"AC_LOGIN_FAIL",
+"X_PAYER"
+],
+"quote": "微信也无法绑定",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "4949007094",
+"rating": 5,
+"date": "2019-10-15",
+"loc": "cn"
+},
+{
+"key": "A52#12468",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "6488052672",
+"rating": 5,
+"date": "2020-10-01",
+"loc": "cn"
+},
+{
+"key": "N8#4761",
+"codes": [
+"AC_CHINA"
+],
+"quote": "对翻墙怨念很深",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "1421625317",
+"rating": 4,
+"date": "2016-07-28",
+"loc": "cn"
+},
+{
+"key": "N3#5793",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "8167244634",
+"rating": 3,
+"date": "2021-12-25",
+"loc": "cn"
+},
+{
+"key": "N4#1814",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "8287109016",
+"rating": 1,
+"date": "2022-01-27",
+"loc": "cn"
+},
+{
+"key": "N10#4583",
+"codes": [
+"AC_CHINA",
+"AC_LOGIN_FAIL"
+],
+"quote": "反正我的账户永远登不上去",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5879857121",
+"rating": 1,
+"date": "2020-04-29",
+"loc": "cn"
+},
+{
+"key": "N10#4867",
+"codes": [
+"AC_LOGIN_FAIL"
+],
+"quote": "提示账号密码出错",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5537596177",
+"rating": 1,
+"date": "2020-02-16",
+"loc": "cn"
+}
+]

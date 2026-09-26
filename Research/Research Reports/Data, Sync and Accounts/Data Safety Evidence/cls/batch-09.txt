@@ -1,0 +1,60 @@
+A24#43389|L_PHONE,L_LOGIN,E_GRANDFATHER|"Fabulous doesn&#39;t let you keep your data when you log in with your details again"
+P24#3819|S_FAIL,L_NOTSAVED,A_STUCK|"now I can't sync, log out or save changes made to habits"
+A13#2755|L_CORRUPT,L_REINST,B_NONE|"J’ai dû réinstaller l’application car elle ne démarrait plus"
+A86#87|L_REINST,L_CORRUPT,B_HIDDEN,B_ICLOUD|"I thought it was being backed up on my iCloud apparently not"
+A10#36634|L_CORRUPT,L_REINST|"I had to delete it and redownload it, losing my ALL progress"
+A10#33224|L_REINST,A_LOGIN_FAIL,E_RESTORE,E_DOUBLE,X_PAYER|"it said my account never existed"
+A10#52473|L_UPD,L_CORRUPT,X_REINSTALL_FEAR,X_NO_CHANNEL|"i don&#39;t want to uninstall &amp; reinstall in case i lose all of my data"
+P12#46762|NR|
+P125#5272|L_REINST|"i deleted this app for free up some space. Can I get all data back?"
+A10#59582|L_REINST|"All my data was gone when I somehow found the app not on my phone"
+N11#4194|L_REINST,S_WATCH,S_FAIL|"after signing in all data from my Gear S3 from the past two weeks where gone"
+N3#28492|L_CORRUPT,L_REINST,B_HIDDEN,X_REINSTALL_FEAR,X_NO_CHANNEL|"in hopes that my stuff was stored in iCloud, I deleted and re-downloaded app.  Yeah… lost everything"
+N3#6105|L_OFFLOAD|"se desinstalo sola y me borro todo"
+N3#14950|L_REINST,L_NOTSAVED|"I deleted by accident and when redownloaded it didn’t let me save the notes"
+N8#2843|NR|
+A85#3220|L_GAME_DESIGN|"all of my accomplishments, health, strength, and everything is lost"
+P126#76876|L_PARTIAL|"IT Deleted some of My tasks for No reason"
+A13#11388|E_LIFETIME,A_LOGIN_FAIL,X_PAYER|"Recently unable to log back back in without repurchasing a much pricier version"
+P3#7335|L_PARTIAL|"I'll check items off and then a couple days later, those same check marks are gone"
+P8#1221|L_NOTSAVED,L_GAME_DESIGN|"the app does not clock in my activities"
+P58#16|NR|
+P126#15730|L_PARTIAL,L_RANDOM,S_FAIL,X_SUPPORT_NONE|"Zunächst verschwanden nach und nach ständig irgendwelche Punkte von meinen Listen"
+P126#74850|L_LOGIN,L_SYNC|"deleted all my tasks when I tried to sync it to my Google account"
+A1#50868|L_RANDOM,T_SKIP_SEMANTICS,X_PAYER|"When I skip a habit it’s indicated as performed"
+A10#28561|L_CORRUPT,A_NOACC,X_PAYER|"Creators really need to change the save progress to an actual account"
+A20#1034|L_UPD,L_RANDOM|"tout s’est supprimé d’un coup"
+A52#5891|A_STUCK,A_DELETE|"不能退出苹果账号，注销账号也只是清空数据"
+A10#20251|NR|
+A10#19381|L_CORRUPT,B_MANUAL,X_PAYER|"luckily i make back~ups twice a day"
+A31#1104|E_LIFETIME,X_PAYER|"Puedo restaurar la compra pero ya ha perdido toda la funcionalidad"
+A1#46783|T_SKIP_SEMANTICS|"when I skip a habit, the app currently logs it as completed"
+A3#8920|NR|
+P63#577|NR|
+P12#43276|NR|
+A10#23598|NR|
+N3#25007|L_RANDOM,L_SYNC|"The notes app deleted every note I’ve ever taken, including iCloud"
+N3#6694|L_UPD,L_RANDOM|"Alle meine Daten würden dort gelöscht"
+N7#10100|NR|
+N3#19623|L_CORRUPT,L_REINST,L_PARTIAL|"now all my handwritten notes are gone but the ones which are not handwritten stays"
+N3#23478|L_RANDOM,S_FAIL|"The only way I can access them in through icloud"
+A13#14957|T_NOBACKFILL,T_STREAK|"At the moment app allows to mark habits only for the previous 7 days"
+P126#9772|L_UPD,L_RETENTION,X_NOTICE|"Bei dem letzten Update wurden aber alle Einträge in "Fertig" gelöscht, die älter als 30 Tage sind"
+P122#12953|L_NOTSAVED,X_PAYER|"it has stopped saving my session details despite pressing FINISH and SAVE"
+P8#4017|S_DELETE_RESURRECT|"even after I have deleted an task it's still shows it"
+P12#16760|L_EDITHIST|"Any removal of habits for TODAY is also reflected for all the previous days"
+A1#51678|L_NOTSAVED|"I couldn’t save new habits and when I closed the app and came back, some of the habits that did save were gone"
+P111#4766|L_UPD,L_LOGIN,A_LOGIN_FAIL|"Update signed me out and wouldn't log back in to my previous account"
+P84#8779|L_UPD|"suddenly it updated and ALL my lists were gone"
+A13#13150|L_EDITHIST,X_PAYER|"it will “update the stats”, not that it will “delete the stats”"
+P98#2023|L_UPD|"Al actualizar perdi toda mi racha progreso y tareas guardadas"
+P86#424|T_STREAK,L_UPD|"So I lost my last 100 days streak on the app"
+A31#3273|L_UPD,T_WEEKSTART|"My week setting is to start on Monday, but on Sunday it cleared and reset the week"
+A20#1035|L_UPD|"tous mes suivis ont été supprimés sans pré-avis"
+P12#9308|NR|
+A13#11421|L_PAYWALL,L_UPD|"The free version has become inaccessible, and I&#39;ve lost all my previously stored data"
+A33#1562|NR|
+P12#4244|T_NOBACKFILL|"when I've forgotten to 'tick off' a task I can't follow up with that on the next day"
+P97#20864|NR|
+P3#14542|L_UPD,L_CORRUPT|"One of my habit widget shows "habit data deleted" itself"
+A76#7672|L_ARCHIVE_REQ|"The ability to stop tracking a habit without losing my tracking information"

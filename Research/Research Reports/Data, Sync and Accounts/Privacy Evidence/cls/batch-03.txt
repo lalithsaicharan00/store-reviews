@@ -1,0 +1,50 @@
+A13#13759|NR|
+A24#22793|NR|
+P12#147734|NR|
+A10#41980|NR|
+A10#4786|NR|
+N2#17901|NR|
+N5#388|NR|
+N8#20085|NR|
+A13#11798|NR|
+A46#633|PV_LOCK_WANT|"Trobo a faltar un sistema de proteccio d acces a la privadesa i un filtre tipus face id"
+P12#32339|PV_FINGERPRINT_CONTRACT|"surely there are other ways to commit to a programme that don't involve providing fingerprint data"
+A24#30827|PV_LOCK_WANT|"I’d love to see an option to lock the app for diary purposes"
+P12#17906|PV_FINGERPRINT_CONTRACT|"I do not want to be fingerprinted to use this app"
+P12#34190|PV_FINGERPRINT_CONTRACT|"I couldn't even start using app."
+P65#2811|PV_LOCK_WANT|"Users should be able to lock the app with a code or thumbprint to avoid others from 'spying' on them."
+A24#31986|PV_FINGERPRINT_CONTRACT|"They need your fingerprint?"
+A12#206|NR|
+A53#1595|PV_LOCK_UX|"just have the app go automatically into Face ID or Touch ID"
+P4#26539|PV_FINGERPRINT_CONTRACT|"It won't move on without a fingerprint"
+A55#1944|PV_LOCK_WANT|"the lack of Touch ID integration"
+P4#23385|PV_FINGERPRINT_CONTRACT|"Whyyy would you need fingerprints?!"
+P3#8282|PV_LOCK_WANT|"I'd love a feature where you can lock the app with a passcode."
+A23#1121|PV_LOCK_WANT|"增加TouchID就好了"
+A55#796|PV_LOCK_WANT|"My only request is to implement pin and Touch ID protection."
+A10#6727|POS_APP_LOCK|"I also appreciate the option to use face ID to open the app."
+A59#12939|PV_LOCK_WANT|"хотелось бы иметь возможность сделать face/touch id на вход"
+N9#342|PV_LOCK_WANT|"Se necesita un Face ID para documentos privados"
+N3#27521|PV_LOCK_LOSES_DATA|"there is no way you can recover your notes once you forget your password"
+N3#24095|PV_LOCK_LOSES_DATA|"The Face ID is now gone so I still can’t get into my old notes."
+P8#8704|PV_EMAIL_SOLD|"Sold email address to third parties for spam distribution."
+P12#31706|NR|
+A4#14087|NR|
+P12#19691|PV_FINGERPRINT_CONTRACT,PV_OVERCOLLECT|"All while you were collecting my personal information."
+P12#13856|PV_OVERCOLLECT|"just started trying get money and personal information from me"
+A4#10294|PV_OVERCOLLECT|"this is asking 1000s of questions before starting"
+P63#310|PV_THIRD_PARTY_ACCOUNT|"this would also be ok if it was linked through Google instead of being a third party account"
+P24#291|NR|
+P126#27155|NR|
+P8#5061|PV_UNVERIFIABLE,PV_SELLS_DATA,PV_WANT_LOCAL|"Would be great if there was a 100% offline version of this, which did not require an account, because what I do in my life is none of this company's business."
+A67#366|PV_SIGNUP_FORCED|"demand to enter your personal data the first time you open it (email, for example)"
+A4#14647|PV_CROSS_PROMO|"I keep getting ads the app for online therapy, a fitness app, a sleep tracker, and a food tracker that’s all owned by the same company"
+P8#12833|PV_OVERCOLLECT|"why do you need my ip address"
+P122#19931|NR|
+P15#323|PV_SENSITIVE_DATA|"a concern regarding the privacy of the financial data"
+P84#11918|POS_PRIVACY|"respect for user privacy"
+A1#49022|NR|
+A1#47834|NR|
+N1#23551|NR|
+N8#3818|PV_CANT_DELETE_DATA|"It is very hard to delete personal information."
+N3#2390|NR|

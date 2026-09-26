@@ -1,0 +1,15 @@
+screened 1487223 {'A': 337331, 'P': 901453, 'N': 248439}; candidates 2539
+
+mode                     n apps     A     P     N   1★%  mean
+DAY_BOUNDARY           769   91   306   325   138  11.7  3.63
+TIMEZONE               513   62   125    89   299  25.0  2.97
+STREAK_CALC            290   46   208    60    22  24.1  3.26
+RECURRING              256   40    27    85   144  32.4  2.62
+WEEK_START             178   48    58    93    27   9.6  3.70
+SYNC_CONFLICT          177   32    24    20   133  47.5  2.10
+DUPLICATES             129   32    25    38    66  24.8  2.91
+SYNC_SLOW              103   21    15     8    80  41.7  2.29
+BACKFILL                94   45    31    50    13  28.7  2.68
+DELETED_BACK            55   23    11    10    34  45.5  2.25
+COUNT_DOUBLE            42   16    12     8    22  57.1  1.88
+EDIT_HISTORY             7    5     4     3     0  28.6  3.00

@@ -1,0 +1,60 @@
+P4#24372|NR|
+A55#604|X_ABANDON|"Not supported on iPhone X and above"
+A1#54106|L_RANDOM|"the things were gone like they disappeared"
+P24#2720|S_FAIL,X_ABANDON,X_PAYER|"Sync working again after ~2-3 yrs of being broken"
+P12#106687|NR|
+P3#1569|X_ABANDON,X_CHURN|"The developer doesn't update it anymore"
+P11#4959|E_UPSELL,X_PAYER|"I have paid for 1 year still it not updated.Asking to pay everytime"
+P12#48056|NR|
+A31#1157|E_LIFETIME,X_PAYER,X_CHURN|"J’ai acheté cette appli en 2020"
+A86#734|X_ABANDON|"abandoned with no updates or developer response for years"
+P8#6812|P_ONLINE_ONLY,P_SERVER_DOWN|"Server has been down today and I cant check off or edit my to-do list"
+A24#38627|NR|
+A4#15359|E_RESTORE,L_REINST,X_PAYER|"When I reinstalled the app I noticed that the whole area"
+A4#16700|NR|
+A1#51980|L_DRAFT|"the app shutsdown and I lose all the progress I’ve made while trying to create my first habit"
+P19#60|X_ABANDON|"Is the app development abandoned?"
+A1#1340|NR|
+P24#18782|NR|
+A10#30051|NR|
+A10#50596|NR|
+N8#30347|S_WATCH|"it’s not supported"
+N3#25503|L_RANDOM|"I opened the app and it’s all gone"
+N3#26256|L_REINST,B_NONE_KNOWN|"I did not back them up to icloud, which I regret"
+N8#21101|NR|
+N11#1883|NR|
+P4#22100|A_DELETE,E_REFUND|"I will delete once you have confirmed account deletion and refund"
+A24#28712|E_CANCEL_ACCT|"Have cancelled my account multiple times"
+A24#14236|E_CANCEL_ACCT|"I cancelled my account but Fabulous attempted to take £34.99 repeatedly"
+A24#14609|E_CANCEL_ACCT,A_DELETE|"I attempted to delete my account and card information"
+P12#21679|A_DELETE,PR_CONCERN|"Doesn't delete profile on request, i guess gdpr doesn't exist"
+A24#5157|E_CANCEL_ACCT|"I cancelled my account through the website"
+A33#1266|E_CANCEL_ACCT|"I deleted my account thinking it would delete my subscription, it did not"
+P12#12460|E_CANCEL_ACCT|"still billing me WAY after cancelling the subscription AND deleting my account"
+A67#1796|E_CANCEL_ACCT|"canceled and deleted my account and all my information"
+A24#28192|E_CANCEL_ACCT,E_WEBSUB|"deleting your account doesn’t cancel pending subscriptions"
+P12#23862|E_CANCEL_ACCT|"tried to charge me even though I had already cancelled the account"
+A24#42734|L_ACCOUNT,X_SUPPORT_NONE,X_PAYER|"all my account and progress was deleted"
+P12#2703|A_LOGIN_FAIL,A_DELETE|"Cant login, cant delet account"
+A13#5836|A_DELETE|"Why is there no delete account option?"
+A68#3017|E_CANCEL_ACCT|"I couldn’t log in because I had previously deleted my account"
+A24#22110|A_DELETE|"I can’t delete my account"
+P12#26798|A_DELETE|"i want delete my account how i delete it"
+P12#26175|NR|
+A24#23341|E_CANCEL_ACCT|"canceled my subscription, deleted My account, yet your still trying to charge me"
+P24#20751|A_DELETE|"How can I delete my account?"
+N10#17724|A_STUCK|"doesn&#39;t give me an option to remove the account"
+N4#3460|NR|
+N11#5679|NR|
+N8#23431|NR|
+N8#2900|A_LOGIN_FAIL,L_ACCOUNT|"Google mail just deleted my account when I started the app"
+A24#27728|E_WEBSUB|"all it did was tell me to  use the website to cancel"
+A24#23338|E_WEBSUB|"The subscription is not present in your Apple subscriptions"
+A68#1602|E_CANCEL_ACCT|"my email is no longer recognised as a valid account"
+A24#5278|NR|
+P12#31054|NR|
+P12#10832|NR|
+A24#22335|E_WEBSUB|"I needed to log in into their website (not in the app on my phone)"
+A13#490|NR|
+A24#24047|E_DOUBLE|"double the price (2 x 39.99)"
+P12#37179|NR|

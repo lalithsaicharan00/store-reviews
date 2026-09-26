@@ -1,0 +1,2159 @@
+[
+{
+"key": "A10#26896",
+"codes": [
+"L_PHONE"
+],
+"quote": "now have new phone and it was not restored",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13562168720",
+"rating": 5,
+"date": "2025-12-27",
+"loc": "us"
+},
+{
+"key": "A20#770",
+"codes": [
+"BL_DEVICE_CHANGE_LOST",
+"BL_RESTORE_FALSE_SUCCESS",
+"X_PAYER"
+],
+"quote": "while it says my purchase has been restored it isn’t",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "7023168141",
+"rating": 1,
+"date": "2021-02-22",
+"loc": "cz"
+},
+{
+"key": "A48#1908",
+"codes": [
+"L_PHONE",
+"S_FAIL"
+],
+"quote": "when I got a new iPhone, all my history is gone, even when I “synced” my trackers",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "13571226286",
+"rating": 2,
+"date": "2025-12-30",
+"loc": "us"
+},
+{
+"key": "A7#796",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "7. Habit Tracker - HabitKit - Streaks & Accountability",
+"review_id": "12150441065",
+"rating": 5,
+"date": "2025-01-06",
+"loc": "us"
+},
+{
+"key": "P24#9227",
+"codes": [
+"BL_DEVICE_CHANGE_LOST",
+"X_SUPPORT_NONE",
+"X_PAYER"
+],
+"quote": "Recently I installed the app again but could not use any premium features",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "394e2b2d-fe14-4f12-84e0-10bca25b82c1",
+"rating": 1,
+"date": "2018-03-12",
+"loc": "en"
+},
+{
+"key": "P33#2478",
+"codes": [
+"BL_DEVICE_CHANGE_LOST",
+"X_PAYER"
+],
+"quote": "everything but this app transferred so I redownloaded it and it's asking me to pay for it again",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "00e97e6e-35aa-432d-9277-8162225ae996",
+"rating": 1,
+"date": "2019-11-03",
+"loc": "en"
+},
+{
+"key": "P84#8100",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "10ec515f-a989-46e9-b3b0-6aa544a373c5",
+"rating": 2,
+"date": "2025-10-30",
+"loc": "en"
+},
+{
+"key": "P84#27816",
+"codes": [
+"L_PHONE",
+"B_HIDDEN",
+"A_NOACC"
+],
+"quote": "Got a new phone and everything transferred but because this app doesn't have you log in, everything is gone",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "659c8fd7-c26c-4460-ac85-0180214abf37",
+"rating": 3,
+"date": "2019-05-26",
+"loc": "en"
+},
+{
+"key": "N3#2572",
+"codes": [
+"L_RANDOM"
+],
+"quote": "it says that I don’t have any notes saved",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "11655401811",
+"rating": 1,
+"date": "2024-08-26",
+"loc": "ca"
+},
+{
+"key": "N6#291",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "6. Google Tasks- Get Things Done - Plan, Organize & Schedule Work",
+"review_id": "10239102831",
+"rating": 3,
+"date": "2023-08-09",
+"loc": "be"
+},
+{
+"key": "A20#1287",
+"codes": [
+"L_PHONE",
+"A_NOACC"
+],
+"quote": "my old phone broke and I couldn’t get back my progress",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "5899000126",
+"rating": 5,
+"date": "2020-05-03",
+"loc": "gb"
+},
+{
+"key": "A33#335",
+"codes": [
+"BL_DEVICE_CHANGE_LOST",
+"X_PAYER"
+],
+"quote": "that phone got stolen and on my new phone when I download the app, despite logging in it doesn’t show my purchase",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "6574885307",
+"rating": 1,
+"date": "2020-10-26",
+"loc": "ca"
+},
+{
+"key": "A4#2374",
+"codes": [
+"MG_FREE_LIMIT_NEW_PHONE"
+],
+"quote": "now I bought same style iPhone,but I can’t add more than six routines daily",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13249657539",
+"rating": 4,
+"date": "2025-10-10",
+"loc": "ca"
+},
+{
+"key": "A55#1369",
+"codes": [
+"L_PHONE",
+"BL_DEVICE_CHANGE_LOST",
+"X_PAYER"
+],
+"quote": "Bought the premium on my old phone. I switched to my new phone and lost everything",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "3527650179",
+"rating": 1,
+"date": "2018-12-13",
+"loc": "us"
+},
+{
+"key": "P12#60614",
+"codes": [
+"L_PHONE",
+"AC_LOGIN_FAIL",
+"X_PAYER"
+],
+"quote": "I am unable to log into my old account on the new phone",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "46796ff0-48a8-4634-a4e0-753839d10cd9",
+"rating": 1,
+"date": "2019-09-11",
+"loc": "en"
+},
+{
+"key": "P12#148862",
+"codes": [
+"L_PHONE",
+"AC_LOGIN_FAIL",
+"X_PAYER"
+],
+"quote": "I can login but can not restore progress",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "f9897e8f-b13a-4b03-b19a-ded118fb118a",
+"rating": 1,
+"date": "2018-05-03",
+"loc": "ru"
+},
+{
+"key": "P2#12383",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "da2b2661-f522-46e0-b630-eaf4d9c745cc",
+"rating": 5,
+"date": "2020-09-01",
+"loc": "en"
+},
+{
+"key": "P24#4331",
+"codes": [
+"L_PHONE",
+"S_FAIL",
+"B_IMPORT",
+"X_PAYER"
+],
+"quote": "Had to switch phones when my old phone died and can't get my old data back",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "8e61848d-67bc-4fd2-80d5-72ce397535fc",
+"rating": 1,
+"date": "2019-11-17",
+"loc": "en"
+},
+{
+"key": "P24#4830",
+"codes": [
+"L_PHONE",
+"AC_LOGIN_FAIL",
+"X_SUPPORT_NONE",
+"X_PAYER"
+],
+"quote": "Old phone died now can't restore the data on the new phone",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "f00ebdc7-e67b-462d-aa47-787d4a5c4fc6",
+"rating": 1,
+"date": "2019-08-22",
+"loc": "en"
+},
+{
+"key": "P3#3961",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "e3da3433-4d2c-4e80-9b50-1fe06b8cdb16",
+"rating": 1,
+"date": "2024-06-25",
+"loc": "en"
+},
+{
+"key": "P3#6031",
+"codes": [
+"L_PHONE",
+"B_WANT_OWN_CLOUD"
+],
+"quote": "when my old phone died I lost all my data",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "b92d8e28-37e6-4cf3-9d8d-29a35374b486",
+"rating": 4,
+"date": "2022-11-01",
+"loc": "en"
+},
+{
+"key": "P3#7894",
+"codes": [
+"B_WANT_AUTO"
+],
+"quote": "when someone changes devices, the data in the previous phone will not be lost",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "973bc3b3-a8f4-4970-9500-c187f9996618",
+"rating": 4,
+"date": "2021-06-07",
+"loc": "en"
+},
+{
+"key": "P3#12259",
+"codes": [
+"L_PHONE",
+"AC_WANT_LOGIN"
+],
+"quote": "My old phone broke and I lost my data",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "11d3f7a5-1623-4a40-9321-131a6c9a4ed6",
+"rating": 5,
+"date": "2018-11-29",
+"loc": "en"
+},
+{
+"key": "P4#25223",
+"codes": [
+"MG_FREE_LIMIT_NEW_PHONE"
+],
+"quote": "Upon buying a new phone I downloaded the app, only to find I can now only have two tasks per day",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "496fe9b0-f419-417e-97c3-914a84348cb4",
+"rating": 1,
+"date": "2023-11-28",
+"loc": "en"
+},
+{
+"key": "P84#7416",
+"codes": [
+"L_PHONE",
+"B_STATUS_UNKNOWN"
+],
+"quote": "where is the data stored? I had to replace my previous phone,and lost all my stored tasks",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "085ad63f-7d5a-4f59-b1a1-31071c1a3a9a",
+"rating": 4,
+"date": "2026-03-28",
+"loc": "en"
+},
+{
+"key": "P84#16215",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "7743aa8e-c388-4901-a277-06111c8d9ad4",
+"rating": 5,
+"date": "2022-03-29",
+"loc": "en"
+},
+{
+"key": "P84#29454",
+"codes": [
+"POS_BACKUP",
+"POS_MIGRATE"
+],
+"quote": "The backup feature came in handy when my old phone broke",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "3c75f278-a97f-4029-8ffa-807c8b170ca3",
+"rating": 5,
+"date": "2019-03-07",
+"loc": "en"
+},
+{
+"key": "N7#11778",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "1951891235",
+"rating": 3,
+"date": "2017-11-27",
+"loc": "us"
+},
+{
+"key": "N1#22355",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "11314083890",
+"rating": 5,
+"date": "2024-05-27",
+"loc": "us"
+},
+{
+"key": "N3#25855",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "10760707920",
+"rating": 2,
+"date": "2023-12-30",
+"loc": "us"
+},
+{
+"key": "A1#45902",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9114508292",
+"rating": 2,
+"date": "2022-09-23",
+"loc": "gb"
+},
+{
+"key": "A1#51459",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12896948414",
+"rating": 2,
+"date": "2025-07-16",
+"loc": "us"
+},
+{
+"key": "A1#52938",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10841942903",
+"rating": 1,
+"date": "2024-01-20",
+"loc": "us"
+},
+{
+"key": "P8#8408",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "a61e45f4-5fdf-4c2b-8539-0c42552ba640",
+"rating": 3,
+"date": "2017-08-29",
+"loc": "en"
+},
+{
+"key": "A85#2683",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "2997437638",
+"rating": 2,
+"date": "2018-07-31",
+"loc": "us"
+},
+{
+"key": "A4#20107",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "8551002827",
+"rating": 1,
+"date": "2022-04-10",
+"loc": "us"
+},
+{
+"key": "P8#8143",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "828dc4a0-f5a7-44ec-81d3-5304be682d28",
+"rating": 3,
+"date": "2018-01-10",
+"loc": "en"
+},
+{
+"key": "P8#8451",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "9ffc03c0-064f-43bb-9705-68ac207880c1",
+"rating": 2,
+"date": "2017-08-17",
+"loc": "en"
+},
+{
+"key": "A10#23538",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13887372356",
+"rating": 2,
+"date": "2026-03-26",
+"loc": "us"
+},
+{
+"key": "A10#54470",
+"codes": [
+"L_REINST",
+"MG_NO_RECOVERY_CODE"
+],
+"quote": "It never gave me a “QR Code” recovery code",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "9626540450",
+"rating": 2,
+"date": "2023-02-17",
+"loc": "us"
+},
+{
+"key": "P40#14",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "40. Habit Eazy - Habit & To Do Pal",
+"review_id": "14076110-fde8-4303-a8c1-473f2b17257b",
+"rating": 1,
+"date": "2025-12-07",
+"loc": "en"
+},
+{
+"key": "A1#49842",
+"codes": [
+"MG_QR_REQ",
+"B_ICLOUD_REFUSED"
+],
+"quote": "How to sync habit app by QR code between iPhone and iPad",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9334866766",
+"rating": 4,
+"date": "2022-11-27",
+"loc": "sa"
+},
+{
+"key": "A10#44813",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "10992427813",
+"rating": 5,
+"date": "2024-02-29",
+"loc": "us"
+},
+{
+"key": "A10#53474",
+"codes": [
+"MG_LINK_UI_MISSING"
+],
+"quote": "when I tried to find the QR code scan thingy in settings it was absolutely nowhere to be found",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "9731896692",
+"rating": 4,
+"date": "2023-03-20",
+"loc": "us"
+},
+{
+"key": "P8#8128",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "4b33460b-4300-4017-a8cf-53f253dda328",
+"rating": 4,
+"date": "2018-01-15",
+"loc": "en"
+},
+{
+"key": "A10#47248",
+"codes": [
+"MG_LINK_UI_MISSING"
+],
+"quote": "I couldn’t connect or find the links devices to use the QR code",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "10647328142",
+"rating": 5,
+"date": "2023-12-02",
+"loc": "us"
+},
+{
+"key": "N11#5805",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "8247793396",
+"rating": 1,
+"date": "2022-01-16",
+"loc": "us"
+},
+{
+"key": "N4#635",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "13904933801",
+"rating": 1,
+"date": "2026-03-30",
+"loc": "ca"
+},
+{
+"key": "N2#6326",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "9763800867",
+"rating": 5,
+"date": "2023-03-29",
+"loc": "de"
+},
+{
+"key": "P111#1187",
+"codes": [
+"MG_APP_VERSION_MIGRATION",
+"L_UPD"
+],
+"quote": "they added the ability to carry over our old data to the new version, but when I try to do that, Google tells me the app doesn't follow its policies",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "6c933bfd-6df3-4298-9ce1-e7f60efd48cb",
+"rating": 1,
+"date": "2024-09-15",
+"loc": "en"
+},
+{
+"key": "P126#74726",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "5d1cb246-627b-41ea-a566-ab6a9127c8b6",
+"rating": 3,
+"date": "2018-10-14",
+"loc": "en"
+},
+{
+"key": "P12#55586",
+"codes": [
+"B_PAID",
+"MG_TRANSFER_PAID"
+],
+"quote": "There is also no way to transfer your data to a new device unless you're paying for a subscription",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "d0ae5544-e5eb-4bca-baac-02c18b5e74be",
+"rating": 3,
+"date": "2020-01-30",
+"loc": "en"
+},
+{
+"key": "A23#4138",
+"codes": [
+"MG_EXPORT_TO_LEAVE"
+],
+"quote": "until I can find a way to move my existing task data elsewhere",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "13458083376",
+"rating": 1,
+"date": "2025-11-30",
+"loc": "us"
+},
+{
+"key": "P111#1111",
+"codes": [
+"MG_APP_VERSION_MIGRATION",
+"L_UPD"
+],
+"quote": "I CANT EVEN EXPORT MY OLD DATA INTO THE NEW ONE",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "4e0dc5b7-f2c6-492e-b9f8-b60d1af8893e",
+"rating": 1,
+"date": "2024-09-17",
+"loc": "en"
+},
+{
+"key": "P2#3105",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "bea41e75-18d6-4ce1-8c3f-d3e3b8f4cf4c",
+"rating": 3,
+"date": "2025-04-10",
+"loc": "en"
+},
+{
+"key": "A13#12339",
+"codes": [
+"S_XOS",
+"BL_XOS_PAY_AGAIN"
+],
+"quote": "Android and iOS are two different operative systems and therefore the accounts and purchases are not connected or synced in any way",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6806854391",
+"rating": 2,
+"date": "2020-12-29",
+"loc": "us"
+},
+{
+"key": "P12#27982",
+"codes": [
+"BL_XOS_PAY_AGAIN",
+"MG_XOS_HASSLE"
+],
+"quote": "The only way to transfer data is to buy an entirely new subscription and then ask for a refund of your old one",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "f5e6cc3c-a254-4d72-b772-22d88ea51417",
+"rating": 1,
+"date": "2022-01-16",
+"loc": "en"
+},
+{
+"key": "A31#3276",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "9558384861",
+"rating": 1,
+"date": "2023-01-29",
+"loc": "us"
+},
+{
+"key": "P24#4363",
+"codes": [
+"L_PHONE",
+"X_PAYER"
+],
+"quote": "I recently shifted to a new phone. I have a premium membership. But I am unable to transfer my data",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "173521e3-86e6-41a2-9103-2b6017224f26",
+"rating": 3,
+"date": "2019-11-12",
+"loc": "en"
+},
+{
+"key": "A26#620",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "26. Eden - Daily Routine Planner - Self care habit tracker, to do",
+"review_id": "8807578550",
+"rating": 3,
+"date": "2022-06-25",
+"loc": "ca"
+},
+{
+"key": "A31#3614",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8718896246",
+"rating": 1,
+"date": "2022-05-29",
+"loc": "us"
+},
+{
+"key": "P24#4422",
+"codes": [
+"S_FAIL",
+"X_ABANDON"
+],
+"quote": "premium features like sync no longer work. No way to transfer data",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "ef0c9de8-c02a-42e1-9c71-82f2f94bde25",
+"rating": 3,
+"date": "2019-11-01",
+"loc": "en"
+},
+{
+"key": "A13#1977",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5747390966",
+"rating": 3,
+"date": "2020-04-01",
+"loc": "ca"
+},
+{
+"key": "P126#38396",
+"codes": [
+"L_PHONE"
+],
+"quote": "was unable to carry over the tasks from my old phone to the new one",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "a4de1b60-c66c-4739-85ee-4b09a367900e",
+"rating": 3,
+"date": "2022-02-20",
+"loc": "en"
+},
+{
+"key": "P84#11646",
+"codes": [
+"B_OS_MIGRATION_MISSED"
+],
+"quote": "I have purchased a new upgraded version of my last phone (Samsung) and the program didn't bring the data set over",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "77726e7d-93e6-4774-a7e2-2bf521292838",
+"rating": 5,
+"date": "2024-02-15",
+"loc": "en"
+},
+{
+"key": "P106#263",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "106. Habit Tracker n Pets - HabitYou",
+"review_id": "addb4ea0-f114-4410-885d-26d52e3c1439",
+"rating": 5,
+"date": "2023-01-20",
+"loc": "en"
+},
+{
+"key": "P37#751",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "37. Habitify - Habit Tracker",
+"review_id": "fdf1f6c8-577b-4751-8251-e2a5fe07d3ac",
+"rating": 4,
+"date": "2021-12-25",
+"loc": "en"
+},
+{
+"key": "P84#14111",
+"codes": [
+"POS_MIGRATE",
+"POS_INSTRUCTIONS"
+],
+"quote": "The instructions on how to transfer my data worked beautifully and were painless",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "4a1d5eb5-7951-477a-8e37-4160e2217b7d",
+"rating": 5,
+"date": "2023-02-25",
+"loc": "en"
+},
+{
+"key": "A23#4115",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "13880969556",
+"rating": 5,
+"date": "2026-03-24",
+"loc": "us"
+},
+{
+"key": "N11#5899",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "7168895198",
+"rating": 4,
+"date": "2021-04-01",
+"loc": "us"
+},
+{
+"key": "N3#22327",
+"codes": [
+"L_XOS",
+"MG_XOS_NO_PATH"
+],
+"quote": "I was able to transfer mostly everything over except for my notes on my Samsung",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "13378932651",
+"rating": 1,
+"date": "2025-11-10",
+"loc": "us"
+},
+{
+"key": "N4#3717",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "11536160404",
+"rating": 2,
+"date": "2024-07-26",
+"loc": "gb"
+},
+{
+"key": "P126#11004",
+"codes": [
+"B_OS_MIGRATION_MISSED"
+],
+"quote": "Nun habe ich mein Pad mit Smart Switch gesichert",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "ac0980dd-e91e-43c2-9d02-7c283c60591b",
+"rating": 1,
+"date": "2020-10-24",
+"loc": "de"
+},
+{
+"key": "P111#880",
+"codes": [
+"MG_APP_VERSION_MIGRATION"
+],
+"quote": "asked us to export and import our data ourself, but the process was so bad",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "bb817f0a-0721-480e-a3aa-6ac9fb249eb6",
+"rating": 2,
+"date": "2024-12-22",
+"loc": "en"
+},
+{
+"key": "A13#12166",
+"codes": [
+"MG_XDEVICE_NONE",
+"B_NONE"
+],
+"quote": "I can’t export my data to another device for data transfer either",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "7251948119",
+"rating": 1,
+"date": "2021-04-22",
+"loc": "us"
+},
+{
+"key": "A24#25528",
+"codes": [
+"BL_XOS_PAY_AGAIN",
+"E_DOUBLE"
+],
+"quote": "was charged again when setting up on my iPhone",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12813064876",
+"rating": 1,
+"date": "2025-06-24",
+"loc": "us"
+},
+{
+"key": "P12#23900",
+"codes": [
+"AC_PROVIDER_MISMATCH",
+"L_PHONE"
+],
+"quote": "I can't access my subscription due accidentally clicking on signing on with Google instead of e-mail even though they're based on the same account",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "5f3f08dd-3d4f-452b-b3ae-1fc74b73931f",
+"rating": 1,
+"date": "2022-06-29",
+"loc": "en"
+},
+{
+"key": "A10#30504",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12976789528",
+"rating": 1,
+"date": "2025-08-04",
+"loc": "us"
+},
+{
+"key": "P5#1126",
+"codes": [
+"S_WATCH"
+],
+"quote": "frequent disruptions and delays in data transfer between the app and the watch",
+"store": "P",
+"app": "5. Routine Planner, Habit Tracker",
+"review_id": "8e4217ad-9430-4683-b772-d9f0caee08ee",
+"rating": 2,
+"date": "2024-03-19",
+"loc": "en"
+},
+{
+"key": "A24#24882",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13301472420",
+"rating": 1,
+"date": "2025-10-22",
+"loc": "us"
+},
+{
+"key": "A76#7473",
+"codes": [
+"B_IMPORT",
+"MG_XDEVICE_NONE"
+],
+"quote": "Devices are changed very frequently these days, I can not imagine an app without data transfer and import functions",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "613482330",
+"rating": 3,
+"date": "2012-07-02",
+"loc": "us"
+},
+{
+"key": "P84#8853",
+"codes": [
+"B_OS_MIGRATION_MISSED"
+],
+"quote": "when smart switch moved it from S22 to S24",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "3ce778df-3c76-4306-a303-8261d95c8649",
+"rating": 1,
+"date": "2025-06-07",
+"loc": "en"
+},
+{
+"key": "P84#54147",
+"codes": [
+"MG_TRANSFER_PAID"
+],
+"quote": "With no real data transferring there as well could be no free version at all",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "89ab82b3-5da3-47a7-b3e3-72df4833f95f",
+"rating": 1,
+"date": "2021-03-01",
+"loc": "ru"
+},
+{
+"key": "P111#1144",
+"codes": [
+"MG_APP_VERSION_MIGRATION"
+],
+"quote": "The data transfer from the old version didn't even work properly",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "df28c7e1-2ade-4621-9e9c-60c71593c677",
+"rating": 1,
+"date": "2024-09-16",
+"loc": "en"
+},
+{
+"key": "P111#891",
+"codes": [
+"MG_APP_VERSION_MIGRATION"
+],
+"quote": "None of my old data transferred properly and they updated in the middle of a semester",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "85273f12-fa65-4be3-8470-ac9def13bff3",
+"rating": 1,
+"date": "2024-11-27",
+"loc": "en"
+},
+{
+"key": "P49#895",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "96055e2a-9752-4499-bb02-1e6220658d7a",
+"rating": 2,
+"date": "2024-08-28",
+"loc": "en"
+},
+{
+"key": "P8#8947",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "4d25a9ec-a876-46e4-9d13-5aa209bf6474",
+"rating": 2,
+"date": "2017-01-30",
+"loc": "en"
+},
+{
+"key": "P126#47157",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "db0f36bb-94d9-439c-9475-5d9eee79c1e5",
+"rating": 5,
+"date": "2021-04-12",
+"loc": "en"
+},
+{
+"key": "P110#2542",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "110. Habit Tracker Unlimited",
+"review_id": "546308f9-3ced-49b0-a779-c218fbf7d48c",
+"rating": 5,
+"date": "2023-06-09",
+"loc": "en"
+},
+{
+"key": "A24#32847",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8217835892",
+"rating": 4,
+"date": "2022-01-08",
+"loc": "us"
+},
+{
+"key": "P126#132788",
+"codes": [
+"B_OS_MIGRATION_PARTIAL"
+],
+"quote": "לא כל המשימות שלי עברו אלא רק חלק מהמשימות",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "dc98e48b-bd5a-4be9-af47-f2407fd9c201",
+"rating": 4,
+"date": "2022-10-26",
+"loc": "he"
+},
+{
+"key": "P4#22128",
+"codes": [
+"MG_XDEVICE_REQ"
+],
+"quote": "I wish you add device cross over data transfer and data backup feature",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "49590484-7a21-47bc-b999-e2007b4753d3",
+"rating": 5,
+"date": "2024-02-23",
+"loc": "en"
+},
+{
+"key": "N5#14525",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "10799017919",
+"rating": 2,
+"date": "2024-01-08",
+"loc": "us"
+},
+{
+"key": "N9#36447",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "13592027091",
+"rating": 3,
+"date": "2026-01-04",
+"loc": "us"
+},
+{
+"key": "N10#23270",
+"codes": [
+"MG_SERVICE_MIGRATION"
+],
+"quote": "Just says \"Hold Tight...\" but no data transfer",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "1593006432",
+"rating": 1,
+"date": "2017-04-20",
+"loc": "us"
+},
+{
+"key": "P12#27476",
+"codes": [
+"BL_XOS_PAY_AGAIN",
+"BL_CANCEL_NOT_HONORED",
+"X_PAYER"
+],
+"quote": "I swapped from IPhone to android and I've been unable to get someone to get back to me",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "b78b9d52-241d-4c38-942d-c98c6fb9e288",
+"rating": 1,
+"date": "2022-02-01",
+"loc": "en"
+},
+{
+"key": "A46#2100",
+"codes": [
+"POS_XOS"
+],
+"quote": "I was able to move from Android to iOS seemlessly",
+"store": "A",
+"app": "46. everyday - Habit Tracker - Daily Routine Checklist",
+"review_id": "5953797238",
+"rating": 3,
+"date": "2020-05-16",
+"loc": "us"
+},
+{
+"key": "P12#55563",
+"codes": [
+"BL_XOS_PAY_AGAIN",
+"BL_REFUND_DENIED"
+],
+"quote": "they'll only refund the IOS subscription if I purchase a subscription on my Android",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "3e6a437f-6ec8-45ec-8fbe-a2950e5c1de3",
+"rating": 1,
+"date": "2020-01-30",
+"loc": "en"
+},
+{
+"key": "P12#52019",
+"codes": [
+"BL_XOS_PAY_AGAIN",
+"L_XOS",
+"X_PAYER"
+],
+"quote": "my paid subscription did not transfer with the app when I signed into the account",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "fbba7bd5-ceef-453f-b19b-b8c6e5c12e65",
+"rating": 1,
+"date": "2020-06-04",
+"loc": "en"
+},
+{
+"key": "A24#37673",
+"codes": [
+"BL_XOS_PAY_AGAIN",
+"E_DOUBLE"
+],
+"quote": "they don’t have a way to transfer from Android to iPhone",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "6670758426",
+"rating": 1,
+"date": "2020-11-21",
+"loc": "us"
+},
+{
+"key": "A24#30518",
+"codes": [
+"AC_LOGIN_FAIL",
+"BL_XOS_PAY_AGAIN",
+"X_SUPPORT_NONE",
+"X_PAYER"
+],
+"quote": "switched from Android to IPhone. I’m unable to log back in through my gmail act",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8911964794",
+"rating": 1,
+"date": "2022-07-26",
+"loc": "us"
+},
+{
+"key": "P2#5465",
+"codes": [
+"MG_ONE_PLATFORM_ONLY"
+],
+"quote": "So if we switch from Android to iOS, what would be the use of backup?",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "d160ae27-2635-45f1-83f0-5a6f3141873e",
+"rating": 3,
+"date": "2024-02-29",
+"loc": "en"
+},
+{
+"key": "A24#40556",
+"codes": [
+"AC_LOGIN_FAIL",
+"L_XOS",
+"BL_XOS_PAY_AGAIN"
+],
+"quote": "when I switch my phone from Apple to Samsung, I can no longer sign back in",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "5429521321",
+"rating": 2,
+"date": "2020-01-21",
+"loc": "us"
+},
+{
+"key": "P126#65993",
+"codes": [
+"S_FAIL"
+],
+"quote": "Its stopped syncing from Android to Android",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "404602a8-e2b3-42cf-853f-52c3d7e5e2bb",
+"rating": 1,
+"date": "2019-12-15",
+"loc": "en"
+},
+{
+"key": "P33#2254",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "b01b2ce1-246e-43f0-9cd4-380fc07460b6",
+"rating": 1,
+"date": "2020-01-01",
+"loc": "en"
+},
+{
+"key": "A10#20322",
+"codes": [
+"L_XOS",
+"T_STREAK"
+],
+"quote": "I had to switch from android to iPhone last year since I got a new phone, it didn’t save any of my progress",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14254142625",
+"rating": 5,
+"date": "2026-07-02",
+"loc": "us"
+},
+{
+"key": "P130#267",
+"codes": [
+"E_PLATFORM_GAP"
+],
+"quote": "I changed from IPhone to Android and didn't realise that's why the streak option was gone",
+"store": "P",
+"app": "130. Way of Life - habit tracker",
+"review_id": "591db1f4-b8d0-4353-97d1-1a22feb4b0aa",
+"rating": 5,
+"date": "2021-01-06",
+"loc": "en"
+},
+{
+"key": "A24#21003",
+"codes": [
+"BL_POS_SUPPORT",
+"BL_XOS_MANUAL"
+],
+"quote": "the team helped me transfer my Fabulous Sphere account",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "5941734740",
+"rating": 5,
+"date": "2020-05-13",
+"loc": "om"
+},
+{
+"key": "P2#1875",
+"codes": [
+"MG_SWITCHER_ACQUIRED"
+],
+"quote": "I recently moved from iOS to Android. I wanted to find a replacement app",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "26cb291c-7e3e-42a8-ac66-248e528b6e36",
+"rating": 5,
+"date": "2026-01-14",
+"loc": "en"
+},
+{
+"key": "P2#7559",
+"codes": [
+"MG_ONE_PLATFORM_ONLY"
+],
+"quote": "I've just switched from Samsung to iPhone and unfortunately can't find your app in the store",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "51289ff0-6745-488f-bba1-ee179d0f13e4",
+"rating": 5,
+"date": "2023-06-06",
+"loc": "en"
+},
+{
+"key": "N11#6110",
+"codes": [
+"E_PLATFORM_GAP",
+"A_LOGOUT"
+],
+"quote": "It’s different from android to iPhone",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "5213084028",
+"rating": 4,
+"date": "2019-11-29",
+"loc": "us"
+},
+{
+"key": "N7#10966",
+"codes": [
+"E_PLATFORM_GAP"
+],
+"quote": "I recently switched from Samsung to Apple, and I noticed this app lags constantly",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "5517467056",
+"rating": 2,
+"date": "2020-02-11",
+"loc": "us"
+},
+{
+"key": "N11#2122",
+"codes": [
+"E_PLATFORM_GAP",
+"L_XOS"
+],
+"quote": "all my challenges have disappeared",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "9360081395",
+"rating": 2,
+"date": "2022-12-04",
+"loc": "gb"
+},
+{
+"key": "P33#2574",
+"codes": [
+"L_PHONE"
+],
+"quote": "Upgraded my phone and lost all my previous data",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "bb55006c-d93e-490b-b84a-66e9a5d0e806",
+"rating": 1,
+"date": "2019-10-22",
+"loc": "en"
+},
+{
+"key": "A24#37855",
+"codes": [
+"L_PHONE",
+"MG_ACCOUNT_NO_DATA"
+],
+"quote": "What’s the point of making an account if when u get a new phone all your progress is lost?",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "6576967437",
+"rating": 3,
+"date": "2020-10-26",
+"loc": "us"
+},
+{
+"key": "P24#10869",
+"codes": [
+"L_PHONE",
+"AC_LOGIN_FAIL",
+"X_SUPPORT_NONE",
+"X_PAYER"
+],
+"quote": "Upgraded phone and now can't get in",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "114c07a6-e176-4364-a328-c92575f87112",
+"rating": 1,
+"date": "2017-04-30",
+"loc": "en"
+},
+{
+"key": "P3#8725",
+"codes": [
+"L_PHONE"
+],
+"quote": "Didn't save my data over to my new device",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "b1e75e7c-5924-4e23-9128-f82e486491ea",
+"rating": 1,
+"date": "2020-11-28",
+"loc": "en"
+},
+{
+"key": "P12#58508",
+"codes": [
+"L_PHONE",
+"B_PAID"
+],
+"quote": "I got a new phone and realized I can't transfer my data over",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "38807cac-f1ef-417e-83b6-685ea9a2ac6f",
+"rating": 2,
+"date": "2019-11-04",
+"loc": "en"
+},
+{
+"key": "P126#24443",
+"codes": [
+"L_PHONE",
+"X_SUPPORT_NONE"
+],
+"quote": "lost all my notes and tasks after getting new phone",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "4288a4c1-87c0-4a05-a357-cc0fa30cf51e",
+"rating": 1,
+"date": "2024-09-28",
+"loc": "en"
+},
+{
+"key": "P24#2011",
+"codes": [
+"L_PHONE",
+"AC_LOGIN_FAIL",
+"X_SUPPORT_SAVED",
+"X_PAYER"
+],
+"quote": "Switched phone and now the app won't recognize my account or user, even though I have a premium account",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "981ae577-142c-47d8-a00c-545eb268ff7b",
+"rating": 1,
+"date": "2022-06-12",
+"loc": "en"
+},
+{
+"key": "P12#46241",
+"codes": [
+"L_PHONE"
+],
+"quote": "Changed my phone, and lost access to the app",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "89113281-d80f-4835-888b-87b10678284c",
+"rating": 1,
+"date": "2020-10-29",
+"loc": "en"
+},
+{
+"key": "P125#11518",
+"codes": [
+"L_PHONE"
+],
+"quote": "I bought a new phone,downloaded this app and noticed i had to start all over again",
+"store": "P",
+"app": "125. 21 Days Challenge",
+"review_id": "3b64d52e-456e-405f-8bd2-b0be1fddb98f",
+"rating": 3,
+"date": "2021-04-27",
+"loc": "en"
+},
+{
+"key": "P12#115825",
+"codes": [
+"L_PHONE",
+"B_ONBOARD_FIRST",
+"MG_SYNC_ERASED"
+],
+"quote": "When start the app should ask the account before start the tutorial or the sync will erase the previous data",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "c89815ae-5b56-4d46-9309-d19865c9f9e8",
+"rating": 1,
+"date": "2016-09-13",
+"loc": "it"
+},
+{
+"key": "A10#103",
+"codes": [
+"L_PHONE",
+"AC_PHONE_CODE"
+],
+"quote": "i bought a new phone and cant add my number",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14163211816",
+"rating": 3,
+"date": "2026-06-09",
+"loc": "at"
+},
+{
+"key": "P24#1603",
+"codes": [
+"L_PHONE",
+"AC_PROVIDER_GONE"
+],
+"quote": "Got a new phone. Doesnt link w FB login anymore. All my data is gone",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "4e279ba1-681a-485d-b3d1-ac8f8c2d045c",
+"rating": 1,
+"date": "2023-08-11",
+"loc": "en"
+},
+{
+"key": "P4#20475",
+"codes": [
+"BL_DEVICE_CHANGE_LOST"
+],
+"quote": "just got a new phone and can't transfer it to my new phone",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "36fd5715-a2f6-41e6-b945-f82576e29ac3",
+"rating": 1,
+"date": "2024-05-20",
+"loc": "en"
+},
+{
+"key": "P3#2436",
+"codes": [
+"L_PHONE",
+"B_NONE"
+],
+"quote": "I recently switched to a new phone and lost all my data",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "16cc8d9e-2ba1-4d55-bcec-df0d9e5ec8ee",
+"rating": 2,
+"date": "2025-11-18",
+"loc": "en"
+},
+{
+"key": "A1#45109",
+"codes": [
+"L_PHONE",
+"B_ICLOUD_FAIL"
+],
+"quote": "iCloud syncing is not working. When I changed my phone, I lost all my progress",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9296132369",
+"rating": 1,
+"date": "2022-11-16",
+"loc": "fr"
+},
+{
+"key": "P3#5171",
+"codes": [
+"L_PHONE",
+"B_NONE"
+],
+"quote": "I changed my mobile phone and logged into new one all my previous records gone",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "eacd9801-ea7a-4b43-a01f-ef73cc5e7ce6",
+"rating": 4,
+"date": "2023-07-06",
+"loc": "en"
+},
+{
+"key": "A10#34647",
+"codes": [
+"L_PHONE",
+"B_RESTORE_PARTIAL"
+],
+"quote": "reinstalled it when i got a new phone and lost ALL of my furniture and clothes and pets",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12483515837",
+"rating": 4,
+"date": "2025-03-30",
+"loc": "us"
+},
+{
+"key": "P125#24360",
+"codes": [
+"L_PHONE"
+],
+"quote": "when I install this app in my new phone, my old data were lost",
+"store": "P",
+"app": "125. 21 Days Challenge",
+"review_id": "0037df06-d36d-49aa-aedb-01c79b8c8595",
+"rating": 5,
+"date": "2021-09-01",
+"loc": "id"
+},
+{
+"key": "P84#9290",
+"codes": [
+"L_PHONE",
+"B_HIDDEN"
+],
+"quote": "I assumed the data would back up when I transferred phones, but all my lists were lost",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "84d23d6b-d7dc-497c-8cfc-889484e753f1",
+"rating": 4,
+"date": "2025-03-22",
+"loc": "en"
+},
+{
+"key": "A10#27156",
+"codes": [
+"AC_WANT_LOGIN",
+"L_PHONE"
+],
+"quote": "you should be able to sign into an account on another device",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13529097909",
+"rating": 4,
+"date": "2025-12-18",
+"loc": "us"
+},
+{
+"key": "N3#25719",
+"codes": [
+"L_PHONE",
+"B_OS_MIGRATION_PARTIAL"
+],
+"quote": "All but one note is LOST",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "10837689729",
+"rating": 1,
+"date": "2024-01-19",
+"loc": "us"
+},
+{
+"key": "N7#1490",
+"codes": [
+"L_PHONE",
+"S_FAIL"
+],
+"quote": "It knows me as a client but all data is empty",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "2416129427",
+"rating": 1,
+"date": "2018-04-13",
+"loc": "ch"
+},
+{
+"key": "N8#24894",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "7844486742",
+"rating": 2,
+"date": "2021-09-25",
+"loc": "us"
+},
+{
+"key": "P12#70100",
+"codes": [
+"MG_UNCLEAR_HOW"
+],
+"quote": "no esta bien claro como cambiar todo el progreso, ni siquiera la cuenta al nuevo dispositivo",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "18aebd6e-eefb-409a-ad0e-4037946add60",
+"rating": 3,
+"date": "2024-02-03",
+"loc": "es"
+},
+{
+"key": "P24#17683",
+"codes": [
+"L_PHONE",
+"L_CORRUPT",
+"X_PAYER"
+],
+"quote": "Al momento de querer sincronizar mi cuenta en mi nuevo teléfono, la aplicación me saca",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "40c653e8-789b-4708-a3e5-c2c074019d09",
+"rating": 1,
+"date": "2019-06-27",
+"loc": "es"
+},
+{
+"key": "A24#3023",
+"codes": [
+"BL_XOS_PAY_AGAIN",
+"MG_OTHERS_DO_IT"
+],
+"quote": "Tenho assinatura de outras plataformas pela play s e continuei tendo acesso no sistema iOS",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10824538105",
+"rating": 1,
+"date": "2024-01-15",
+"loc": "br"
+},
+{
+"key": "P24#20263",
+"codes": [
+"AC_PASSWORD",
+"AC_TWO_ACCOUNTS",
+"L_PHONE"
+],
+"quote": "non mi fa usare la mia mail perché già presente nel database",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "3fcc5c7d-0edf-4ec9-b769-133c899ba756",
+"rating": 1,
+"date": "2019-12-02",
+"loc": "it"
+},
+{
+"key": "P22#1407",
+"codes": [
+"BL_PREMIUM_FLAPS"
+],
+"quote": "cada que la app se actualiza pide pagar la suscripción",
+"store": "P",
+"app": "22. Disciplined - Habit Tracker",
+"review_id": "92a45dfc-6973-414f-9c67-095399362977",
+"rating": 1,
+"date": "2025-02-09",
+"loc": "es"
+},
+{
+"key": "P12#96823",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "4f50301b-0433-43cd-a8dd-2ad877e77266",
+"rating": 1,
+"date": "2017-05-26",
+"loc": "es"
+},
+{
+"key": "A1#43946",
+"codes": [
+"L_PHONE",
+"MG_ACCOUNT_NO_DATA"
+],
+"quote": "Konto ist angelegt aber meine Gewohnheiten die ich angelegt hatte nicht",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11961508167",
+"rating": 2,
+"date": "2024-11-17",
+"loc": "de"
+},
+{
+"key": "P9#1864",
+"codes": [
+"L_PHONE",
+"B_PAID"
+],
+"quote": "Troquei de celular e perdi todos os meus registros, para poder exportar precisa ser PRO",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "2783052b-2875-40b9-9c7f-b42e46d5d324",
+"rating": 3,
+"date": "2024-11-09",
+"loc": "pt"
+},
+{
+"key": "P98#3536",
+"codes": [
+"L_PHONE",
+"L_UPD"
+],
+"quote": "como troquei de celular",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "f4b886a3-fa6a-4c1a-8bed-1bf5e24780be",
+"rating": 3,
+"date": "2024-06-25",
+"loc": "pt"
+},
+{
+"key": "P126#114215",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "3df250c1-f54c-43e4-a59f-29b0ecd95933",
+"rating": 1,
+"date": "2017-10-22",
+"loc": "es"
+},
+{
+"key": "A24#17406",
+"codes": [
+"BL_DEVICE_CHANGE_LOST",
+"L_PHONE"
+],
+"quote": "Aunque le doy restaurar progreso para recuperar mi cuenta no me deja en mi nuevo celular",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "4508088380",
+"rating": 1,
+"date": "2019-07-23",
+"loc": "gt"
+},
+{
+"key": "P12#101387",
+"codes": [
+"MG_EXISTING_USER_NOT_ASKED"
+],
+"quote": "Al bajar la app en un dispositivo nuevo no busca ver si eres un usuario existente; te considera siempre como un newbee",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "12007156-c96c-49d4-917f-011a1e7d3cca",
+"rating": 2,
+"date": "2016-05-12",
+"loc": "es"
+},
+{
+"key": "A52#6795",
+"codes": [
+"BL_DEVICE_CHANGE_LOST"
+],
+"quote": "换手机vip就没了？",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "9499485873",
+"rating": 1,
+"date": "2023-01-12",
+"loc": "cn"
+},
+{
+"key": "A76#1622",
+"codes": [
+"BL_DEVICE_CHANGE_LOST",
+"L_PHONE",
+"X_PAYER"
+],
+"quote": "Jetzt habe ich ein neues iPhone, will meine Einkäufe wiederherstellen und da steht, es gebe nichts zum wiederherstellen",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "13364421716",
+"rating": 1,
+"date": "2025-11-06",
+"loc": "de"
+},
+{
+"key": "A1#3936",
+"codes": [
+"BL_DEVICE_CHANGE_LOST",
+"X_SUPPORT_NONE",
+"X_PAYER"
+],
+"quote": "换手机后重新下载，恢复购买失败",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9283876341",
+"rating": 1,
+"date": "2022-11-13",
+"loc": "cn"
+},
+{
+"key": "P12#71833",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "5a10e5b9-7be1-45d2-aa25-e8124990ee3b",
+"rating": 4,
+"date": "2023-07-28",
+"loc": "es"
+},
+{
+"key": "P12#84412",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "ce29b3d8-68bb-4d81-adf4-da6609e8e8a4",
+"rating": 5,
+"date": "2020-09-14",
+"loc": "es"
+},
+{
+"key": "P12#92242",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "da0c725b-6d8c-4a82-9bf4-54db64c4a2db",
+"rating": 5,
+"date": "2018-10-07",
+"loc": "es"
+},
+{
+"key": "P10#14605",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "55987186-eea9-4fd0-8458-895a75a87c69",
+"rating": 5,
+"date": "2024-08-06",
+"loc": "es"
+},
+{
+"key": "P125#20361",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "125. 21 Days Challenge",
+"review_id": "b01ffa44-e4a7-4235-b895-ad40c9e7d2a5",
+"rating": 5,
+"date": "2023-06-29",
+"loc": "es"
+},
+{
+"key": "N5#951",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "9647234471",
+"rating": 1,
+"date": "2023-02-23",
+"loc": "br"
+},
+{
+"key": "N7#6862",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "3365714084",
+"rating": 1,
+"date": "2018-10-31",
+"loc": "pe"
+},
+{
+"key": "N4#5230",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "9278633245",
+"rating": 3,
+"date": "2022-11-11",
+"loc": "jp"
+}
+]

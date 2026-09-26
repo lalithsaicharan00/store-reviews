@@ -1,0 +1,60 @@
+N3#22327|L_XOS,L_NOTSAVED,B_HIDDEN|"I didn’t have iCloud set up bc I did not know what that was yet"
+N3#26500|L_NOTSAVED,L_RANDOM|"i leave the note and it usually pops up on the screen and saves it but it just like evaporates"
+N3#24273|L_PHONE,L_RANDOM|"Switched phones recently,  may have been lost then?"
+N1#12944|P_SLOW_LOAD|"it takes a long time to load all the reminders"
+N11#4206|L_PHONE,S_INVISIBLE,B_FALSE_SUCCESS|"I thought it syncs my data to the cloud. But when I got a new phone and logged back in, all my weight data for the last two years was gone"
+A13#14376|T_DATE,X_PAYER|"I found my habits were starting to show up randomly as “Overdue,”"
+A5#1065|L_OSUPD,L_CORRUPT|"アプリが落ちたままエラーとなり（iPhone14pro iOS16.1）起動しない"
+A86#1024|L_SYNC,B_ICLOUD,L_OSUPD|"ICloud no sirve. Se reinicia perdí todo"
+A23#5447|L_OSUPD,X_SHUTDOWN_MIGRATION,X_SUPPORT_NONE|"I updated my iPhone and lost the ability to open the old Streaks app (several years of data)"
+A2#355|L_OSUPD|"After upgrading to IOS 14.5, all the habits gone"
+A23#6192|L_UPD,X_NOTICE|"in the really small update description you warn users to backup their app data before the update"
+A13#13881|L_CORRUPT,X_REINSTALL_FEAR|"I’ve been reluctant to delete the app and download it again because I’d lose my tasks and data"
+A79#100|L_OSUPD,L_SYNC_TEMP,POS_SYNC|"after a day seems like icloud sync fixed the issue"
+P126#27435|L_OSUPD,B_HIDDEN,X_NOTICE,PR_LOCAL_PRAISE|"the app was not covered by Samsung backup system and I was not warned at any point"
+A48#537|L_OSUPD,L_CORRUPT,L_REINST|"All of my data is lost due to reinstall"
+A13#13747|L_UPD,T_STREAK|"when you upgrade you’re existing habits will not all display correctly. Say bye bye to any streaks you had"
+A20#3085|L_UPD,L_RANDOM,B_RESTORE_FAIL,X_PAYER|"I tried restoring from back up with no luck"
+A86#1088|S_FAIL,S_WIDGET,L_NOTSAVED|"Check ins dont save"
+A20#3088|L_UPD|"an iOS update reset the entire app overnight"
+A24#16559|L_NOTSAVED,X_PAYER|"It lets you tick off your tasks then randomly deletes all the ticks again"
+A76#1587|NR|
+A1#48403|NR|
+A52#20498|NR|
+P3#4628|P_OS_HIBERNATE|"turn off the "Pause app activity if unused" feature"
+A13#13952|S_FAIL,L_OSUPD,X_SUPPORT_NONE,X_PAYER|"Since the update iPad has stopped synchronizing with the data from iPhone"
+N3#16430|L_OSUPD|"After the iOS 17 update, all my 262 notes disappeared"
+N3#2897|NR|
+N3#18618|L_OSUPD|"После обновления на ios15 пропали все заметки"
+N3#16047|L_OSUPD,S_FAIL|"Since iOS 17 Notes is empty on my iPhone, whereas icloud.com still shows all my notes"
+N3#18082|L_RANDOM|"просто исчезли напрочь все заметки и их нет даже в удаленных"
+A24#26608|E_CANCEL_ACCT|"deleted my accounted and data was removed. I requested to cancel my subscription"
+A24#31445|E_CANCEL_ACCT,A_DELETE|"requesting that they delete my data, which support agreed to do"
+A24#5154|NR|
+A24#865|E_CANCEL_ACCT|"I deleted my account and consequently their rights to keep my data"
+A10#28377|B_MANUAL|"if you don’t back up your progres"
+A24#14681|E_CANCEL_ACCT|"I had deleted my account and removed all details since cancelling but somehow the app have still been charging me"
+A10#36740|NR|
+A10#28684|T_STREAK,E_CONSUMABLE|"I had a streak saver but it didn’t save it,it ended it"
+P12#104613|NR|
+A24#25419|NR|
+A24#42364|NR|
+P91#167|L_PAYWALL|"you will lose all your data and access to the app unless you pay the premium"
+P12#37405|L_LOGIN,X_PAYER|"My phone crashed and when I longed into the app all the progress was lost"
+P12#115285|L_REINST,X_SUPPORT_ADVICE,X_PAYER|"Mi hanno detto di reinstallare l'app per risolvere ogni problema tanto i miei dati non si sarebbero persi"
+A31#3602|L_REINST,S_WATCH,B_RESTORE_FAIL,X_PAYER|"removed the app from my phone and reinstalled (which deleted years of data that wasn&#39;t recovered"
+A33#3925|L_UPD,E_LIFETIME,X_PAYER|"On the recent update my habits and progress have all disappeared as well as my subscription"
+A41#712|NR|
+A24#38350|E_RESTORE,L_REINST,X_PAYER|"I was prompted to use a free trial again"
+A48#4022|E_LIFETIME,X_CHURN|"due to a bug, after the free, trial period ended, I was locked out of the app"
+A10#41654|NR|
+P12#94805|L_REINST,A_PROVIDER|"Sin querer la desinstale y perdi todo mi progreso habiendo conectado con Google"
+A24#27764|NR|
+A24#39901|L_CORRUPT,L_REINST,L_LOGIN|"signing up did not save my progress I keep starting over"
+A20#856|E_LIFETIME,X_PAYER|"I have lost access to most of my habits, and lost access to the widget"
+A20#3348|E_RESTORE,E_LIFETIME,L_REINST,X_SUPPORT_NONE,X_PAYER|"I deleted the app and redownloaded it, thinking that would help. I subsequently lost all of my data"
+P98#887|L_CORRUPT,L_REINST,X_SUPPORT_NONE,X_PAYER|"I have to uninstall and reinstall the app and lose all my progress, often"
+A13#15018|T_DATE,L_CLEAR|"The dates in the app is messed up! It thinks Wednesday is 02/26"
+P12#35027|L_REINST,X_SUPPORT_ADVICE,B_RESTORE_FAIL,X_PAYER|"their solution was "delete everything and re-install the app" and that's how I lost all of my journeys"
+A13#11959|S_MULTI_REQ,B_NONE,X_PAYER|"if you lose your device or delete the app, the data cannot be restored"
+A13#12452|L_CORRUPT,X_REINSTALL_FEAR|"I am scared to delete it and reinstall bc I don’t want to lose all my data over the years"

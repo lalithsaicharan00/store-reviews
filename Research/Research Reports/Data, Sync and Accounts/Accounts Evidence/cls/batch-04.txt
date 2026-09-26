@@ -1,0 +1,70 @@
+P111#2119|AC_PROVIDER_GONE,AC_LOGOUT|"Feature unavailable: Facebook Login is currently unavailable for this app."
+P111#2020|AC_PROVIDER_GONE|"Will only let me login with Facebook because I used that to make an account"
+P8#9366|NR|
+A85#3416|AC_PROVIDER_FAIL,E_PLATFORM_GAP|"it won&#39;t let me login with Facebook which is how I initially signed up online"
+P111#11460|AC_ONE_PROVIDER,AC_PROVIDER_GONE|"It's forcing me to sign up with Facebook. I've deactivated my Facebook"
+A85#81|AC_EMAIL_NOT_ARRIVE,AC_SIGNUP_FAIL|"It has a registration page for direct login, but you never get any email from them"
+A85#151|AC_PROVIDER_FAIL,E_PLATFORM_GAP|"it doesn&#39;t support facebook login"
+P111#2146|AC_PROVIDER_GONE|"the website doesn't allow me to log-in my facebook account"
+A85#1140|AC_PROVIDER_FAIL|"it doesn&#39;t yet allow the login of users registered via facebook"
+A85#347|AC_PROVIDER_FAIL|"Whenever I select to login via Facebook the app shuts down"
+P24#10071|AC_PROVIDER_FAIL|"I cannot just log in through Facebook"
+P24#24007|AC_PROVIDER_FAIL|"just 'setting up your account' permanently"
+P111#14803|AC_PROVIDER_FAIL|"Can't log in with Facebook"
+A85#3397|AC_PROVIDER_FAIL|"To those having Facebook login issues"
+P111#11871|AC_PROVIDER_FAIL|"getting 404page not found"
+A85#3401|AC_ADD_METHOD_WORKAROUND|"If you use Facebook to login, you can go into Settings-&gt;Site on the website version and add a local account"
+P111#2104|AC_PROVIDER_GONE|"I am unable to login using Facebook login anymore please fix the api"
+P12#10642|NR|
+P12#10279|NR|
+A24#14686|AC_WEB_FLOW|"web link went to a questionnaire followed by asking for payment. Went back to the app where it asked me to do the same questionnaire again"
+A16#1030|AC_EMAIL_LINK_LOOP|"Email link doesn’t open in sign in window. It’s a continual circle of request link, open link, request link"
+P12#9729|NR|
+P12#62417|AC_EMAIL_UNKNOWN,AC_CANCEL_NEEDS_LOGIN,E_WEBSUB|"it says I have NO Fabulous account at that address"
+A24#25809|AC_WEB_FLOW,E_DOUBLE|"I was charged once online after having followed the verification link and now the app itself is insisting I pay AGAIN"
+A24#26602|AC_WEB_FLOW|"signed up for a trial before even downloading or looking at the app"
+P12#9363|NR|
+P12#11932|NR|
+A24#28341|NR|
+P12#20496|AC_EMAIL_UNKNOWN,E_WEBSUB|"fabulous claims I don't have an account every time I try to log in"
+A24#25989|AC_WEB_FLOW,E_RESTORE|"The “magic link” didn’t do that for me"
+P12#24938|E_WEBSUB|"I have to bounce back between the app, being redirected to the confirmation email"
+A24#25245|NR|
+A67#1890|NR|
+P8#8940|E_CHARGED,E_CONSUMABLE|"Recently bought gems and received confirmation email,  no gems in sight"
+A28#347|AC_EMAIL_RESEND|"Pls add an option to resend a email verification link"
+A10#53857|NR|
+N8#3567|NR|
+N8#25079|NR|
+N9#39644|AC_PROVIDER_LOCK,L_ACCOUNT|"my account was banned for being a “spammer”"
+N8#10263|NR|
+N8#33068|NR|
+A64#393|AC_LOGIN_UPSELL_LOCK|"every time I opened the app it would appear again making it so I could t actually do anything"
+P70#379|AC_NO_GOOGLE|"How can there be no option to sign up with Google"
+A13#11399|AC_SIGNUP_WEB_ONLY,AC_LOGIN_FAIL|"The profile is created in the browser but the app won’t let me login"
+P111#323|AC_PROVIDER_FAIL,L_UPD|"can't use Google sign in on phone"
+P2#6080|AC_WANT_LOGIN,E_DEVICE|"our purchase is linked with our email I'd"
+P8#13417|AC_PROVIDER_FAIL|"Can't sign up with Google"
+P8#8385|AC_PROVIDER_NAME|"won't have to use my full name without being able to change it because I signed up with Google"
+P12#57698|AC_PROVIDER_FAIL,AC_BACKUP_NEEDS_ACCOUNT|"Google login keeps failing"
+P122#7116|NR|
+P8#4677|AC_PROVIDER_FAIL|"You press the login with Google. Nothing happens"
+P111#5943|AC_PROVIDER_FAIL|"can't sign in with google/fb"
+P136#11|AC_PROVIDER_FAIL,E_CHARGED|"Google Sign in isn't working"
+P8#3293|NR|
+P111#4712|AC_PROVIDER_FAIL,AC_TWO_ACCOUNTS|"Tried to signup again, says my email address is already set up as Gmail"
+A85#2666|AC_PROVIDER_FAIL|"I get an error message when I try to sign in with google"
+P3#3121|AC_WANT_LOGIN|"restore it in a new device by signing up with Google account"
+P3#13386|AC_WANT_LOGIN,AC_WANT_OWN_CLOUD|"Please provide Google login for easy data backup to Google drive"
+P111#7779|POS_LOGIN|"if you sign in with Google or another pre-existing service, it's really easy to access on any device"
+N10#1209|AC_ONE_PROVIDER|"let me sign in with google not only ridiculous Microsoft"
+N11#6572|AC_PROVIDER_FAIL|"missing Google button"
+N10#10473|AC_ONE_PROVIDER|"I’d rather interface with google sign in"
+N11#3062|AC_PROVIDER_FAIL,AC_NO_CHANNEL|"You told us to inquire, but we can&#39;t log in at all, so we can&#39;t leave an inquiry"
+A10#21825|AC_LOGOUT,L_LOGIN,X_SUPPORT_NONE|"then it logged me out of my account and i lost all my progress from the past 6 months"
+P111#3359|AC_LOGOUT,AC_LOGIN_FAIL|"I have been using this until it just logged me out"
+P122#4884|AC_LOGOUT,AC_LOGIN_FAIL|"all of the sudden it logged me out and I cant get back in"
+P45#75|AC_LOGOUT|"After the update I have to log in again every single time I open the app"
+P98#478|AC_LOGOUT|"keeps logging me out"
+P111#5234|AC_LOGOUT,L_LOGIN|"When I logged back in, it had deleted my schedule, timetable, tasks EVERYTHING"
+P111#6081|AC_LOGOUT,L_LOGIN,AC_FORCED|"Why does it even require you to have an account?"

@@ -1,0 +1,60 @@
+A10#40025|E_FAMILY_REQ,X_PAYER|"there is no family sharing with this app"
+A31#4529|E_FAMILY,E_GIFT|"I acquired this application to share it with my family.  It doesn’t seem to support this capability at all"
+A31#2945|NR|
+A59#189|S_SHARED|"it would be fantastic if a shared task would sync and update between phones"
+A10#21613|E_FAMILY_REQ|"It would be nice to have a family plan option"
+N5#13267|NR|
+N1#17608|S_DELAY,S_SHARED|"sometimes it takes 10+ minutes to do so"
+N8#28400|NR|
+N2#17886|S_SHARED|"Don’t know what you’ve done to the family sharing part of this sppp but it no longer work"
+N1#25353|S_SHARED,S_FAIL|"none of my shared lists are syncing amongst family shared devices"
+A1#54736|NR|
+P12#7609|A_FORCED|"it makes you set an account an put your email"
+P8#4753|A_FORCED|"I shouldn't have to put in my email in order to play your game or use your app"
+P12#9236|E_WEBSUB|"You have to go to their website, login and cancel each? subscription"
+A4#15884|NR|
+P4#26634|NR|
+P97#14504|A_WRONG_ACCOUNT_DATA,L_RANDOM|"uma hora apareceu as tarefas e hábitos do meu outro cadastro"
+A24#25758|A_EMAIL,A_LOGIN_FAIL|"It kept prompting me to verify my email"
+P10#8584|NR|
+A86#1280|NR|
+P55#95|NR|
+P12#31590|NR|
+A16#123|A_LOGOUT,A_EMAIL|"almost every time I open it, I’m logged out, and it forces me to send a verification email"
+P4#11681|A_FORCED,PR_CONCERN|"why must it require the my actuall pass word to my email?"
+P111#1138|L_UPD,A_FORCED|"It "updated" and cleared all of my classes and exams, required a sign up"
+P3#15476|NR|
+A76#7435|S_MULTI_REQ|"Would be nice if app could sync on ipad with phone but would require log in etc"
+A4#15651|POS_NOACCOUNT|"You don’t need to sign up"
+A7#486|POS_NOACCOUNT,PR_LOCAL_PRAISE|"No sign up needed and treats your personal data with respect"
+P5#801|NR|
+N10#14917|A_FORCED|"you have to been log in to microsoft account to use this app"
+N10#14019|A_FORCED|"Microsoft forces you to use a Microsoft account to use the app"
+N8#9133|NR|
+N10#20114|L_LOGIN,L_UPD,A_FORCED|"After the update it force asked me to sign in. After I did so, the entire app was wiped clean"
+N10#14118|A_LOGOUT,A_LOGIN_FAIL|"Everytime I want to start the app, it says I need to log inn again"
+A31#4077|NR|
+A20#69|E_LIFETIME,X_PAYER|"I paid from premium and they took it away"
+P122#4442|NR|
+A31#2562|E_LIFETIME,E_DOUBLE,X_SUPPORT_NONE,X_PAYER|"I leave for a bit and revisit the app to see I no longer have premium membership"
+P37#885|E_LIFETIME,L_UPD,X_PAYER|"broke existing habits, broke existing stats"
+A20#75|E_LIFETIME,X_SUPPORT_NONE,X_PAYER|"Purchased lifetime premium in the past but they&#39;ve now changed to a subscription model"
+A68#4299|NR|
+A13#2812|NR|
+A59#14326|E_DEVICE,X_PAYER|"it turned out that I had to pay for the application again if I wanted to use on my Mac"
+A31#2536|E_LIFETIME,X_SUPPORT_NONE,X_PAYER|"I paid for a lifetime premium subscription that isn’t working"
+A16#874|NR|
+A20#1458|E_LIFETIME,X_PAYER|"I paid for a lifetime subscription, which was taken away in just 2 weeks"
+A31#2571|E_LIFETIME,E_UPSELL,X_SUPPORT_NONE,X_PAYER|"When they first came out I bought a lifetime package. Somehow that disappeared to a monthly package"
+A24#40072|NR|
+A31#5162|E_LIFETIME,X_PAYER|"I bought the lifetime full version once upon a time when there wasn’t a subscription and now my purchase won’t renew"
+P122#6931|NR|
+A1#51336|NR|
+P105#1003|NR|
+A1#50273|NR|
+A13#16831|NR|
+N9#50131|S_CONFLICT,L_SYNC|"I had this one time where I lost a heap of changes when I went from one device to another"
+N2#23360|NR|
+N7#10494|S_DUP,L_SYNC,B_TRASH_BLANK|"all my notes mass duplicate themselves"
+N5#6293|NR|
+N1#2812|T_ROLLOVER|"the reminder list doesn&#39;t reset and clear the list on the next day"

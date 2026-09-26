@@ -1,0 +1,159 @@
+A10#26896|L_PHONE|"now have new phone and it was not restored"
+A20#770|BL_DEVICE_CHANGE_LOST,BL_RESTORE_FALSE_SUCCESS,X_PAYER|"while it says my purchase has been restored it isn’t"
+A48#1908|L_PHONE,S_FAIL|"when I got a new iPhone, all my history is gone, even when I “synced” my trackers"
+A7#796|NR|
+P24#9227|BL_DEVICE_CHANGE_LOST,X_SUPPORT_NONE,X_PAYER|"Recently I installed the app again but could not use any premium features"
+P33#2478|BL_DEVICE_CHANGE_LOST,X_PAYER|"everything but this app transferred so I redownloaded it and it's asking me to pay for it again"
+P84#8100|NR|
+P84#27816|L_PHONE,B_HIDDEN,A_NOACC|"Got a new phone and everything transferred but because this app doesn't have you log in, everything is gone"
+N3#2572|L_RANDOM|"it says that I don’t have any notes saved"
+N6#291|NR|
+A20#1287|L_PHONE,A_NOACC|"my old phone broke and I couldn’t get back my progress"
+A33#335|BL_DEVICE_CHANGE_LOST,X_PAYER|"that phone got stolen and on my new phone when I download the app, despite logging in it doesn’t show my purchase"
+A4#2374|MG_FREE_LIMIT_NEW_PHONE|"now I bought same style iPhone,but I can’t add more than six routines daily"
+A55#1369|L_PHONE,BL_DEVICE_CHANGE_LOST,X_PAYER|"Bought the premium on my old phone. I switched to my new phone and lost everything"
+P12#60614|L_PHONE,AC_LOGIN_FAIL,X_PAYER|"I am unable to log into my old account on the new phone"
+P12#148862|L_PHONE,AC_LOGIN_FAIL,X_PAYER|"I can login but can not restore progress"
+P2#12383|NR|
+P24#4331|L_PHONE,S_FAIL,B_IMPORT,X_PAYER|"Had to switch phones when my old phone died and can't get my old data back"
+P24#4830|L_PHONE,AC_LOGIN_FAIL,X_SUPPORT_NONE,X_PAYER|"Old phone died now can't restore the data on the new phone"
+P3#3961|NR|
+P3#6031|L_PHONE,B_WANT_OWN_CLOUD|"when my old phone died I lost all my data"
+P3#7894|B_WANT_AUTO|"when someone changes devices, the data in the previous phone will not be lost"
+P3#12259|L_PHONE,AC_WANT_LOGIN|"My old phone broke and I lost my data"
+P4#25223|MG_FREE_LIMIT_NEW_PHONE|"Upon buying a new phone I downloaded the app, only to find I can now only have two tasks per day"
+P84#7416|L_PHONE,B_STATUS_UNKNOWN|"where is the data stored? I had to replace my previous phone,and lost all my stored tasks"
+P84#16215|NR|
+P84#29454|POS_BACKUP,POS_MIGRATE|"The backup feature came in handy when my old phone broke"
+N7#11778|NR|
+N1#22355|NR|
+N3#25855|NR|
+A1#45902|NR|
+A1#51459|NR|
+A1#52938|NR|
+P8#8408|NR|
+A85#2683|NR|
+A4#20107|NR|
+P8#8143|NR|
+P8#8451|NR|
+A10#23538|NR|
+A10#54470|L_REINST,MG_NO_RECOVERY_CODE|"It never gave me a “QR Code” recovery code"
+P40#14|NR|
+A1#49842|MG_QR_REQ,B_ICLOUD_REFUSED|"How to sync habit app by QR code between iPhone and iPad"
+A10#44813|NR|
+A10#53474|MG_LINK_UI_MISSING|"when I tried to find the QR code scan thingy in settings it was absolutely nowhere to be found"
+P8#8128|NR|
+A10#47248|MG_LINK_UI_MISSING|"I couldn’t connect or find the links devices to use the QR code"
+N11#5805|NR|
+N4#635|NR|
+N2#6326|NR|
+P111#1187|MG_APP_VERSION_MIGRATION,L_UPD|"they added the ability to carry over our old data to the new version, but when I try to do that, Google tells me the app doesn't follow its policies"
+P126#74726|NR|
+P12#55586|B_PAID,MG_TRANSFER_PAID|"There is also no way to transfer your data to a new device unless you're paying for a subscription"
+A23#4138|MG_EXPORT_TO_LEAVE|"until I can find a way to move my existing task data elsewhere"
+P111#1111|MG_APP_VERSION_MIGRATION,L_UPD|"I CANT EVEN EXPORT MY OLD DATA INTO THE NEW ONE"
+P2#3105|NR|
+A13#12339|S_XOS,BL_XOS_PAY_AGAIN|"Android and iOS are two different operative systems and therefore the accounts and purchases are not connected or synced in any way"
+P12#27982|BL_XOS_PAY_AGAIN,MG_XOS_HASSLE|"The only way to transfer data is to buy an entirely new subscription and then ask for a refund of your old one"
+A31#3276|NR|
+P24#4363|L_PHONE,X_PAYER|"I recently shifted to a new phone. I have a premium membership. But I am unable to transfer my data"
+A26#620|NR|
+A31#3614|NR|
+P24#4422|S_FAIL,X_ABANDON|"premium features like sync no longer work. No way to transfer data"
+A13#1977|NR|
+P126#38396|L_PHONE|"was unable to carry over the tasks from my old phone to the new one"
+P84#11646|B_OS_MIGRATION_MISSED|"I have purchased a new upgraded version of my last phone (Samsung) and the program didn't bring the data set over"
+P106#263|NR|
+P37#751|NR|
+P84#14111|POS_MIGRATE,POS_INSTRUCTIONS|"The instructions on how to transfer my data worked beautifully and were painless"
+A23#4115|NR|
+N11#5899|NR|
+N3#22327|L_XOS,MG_XOS_NO_PATH|"I was able to transfer mostly everything over except for my notes on my Samsung"
+N4#3717|NR|
+P126#11004|B_OS_MIGRATION_MISSED|"Nun habe ich mein Pad mit Smart Switch gesichert"
+P111#880|MG_APP_VERSION_MIGRATION|"asked us to export and import our data ourself, but the process was so bad"
+A13#12166|MG_XDEVICE_NONE,B_NONE|"I can’t export my data to another device for data transfer either"
+A24#25528|BL_XOS_PAY_AGAIN,E_DOUBLE|"was charged again when setting up on my iPhone"
+P12#23900|AC_PROVIDER_MISMATCH,L_PHONE|"I can't access my subscription due accidentally clicking on signing on with Google instead of e-mail even though they're based on the same account"
+A10#30504|NR|
+P5#1126|S_WATCH|"frequent disruptions and delays in data transfer between the app and the watch"
+A24#24882|NR|
+A76#7473|B_IMPORT,MG_XDEVICE_NONE|"Devices are changed very frequently these days, I can not imagine an app without data transfer and import functions"
+P84#8853|B_OS_MIGRATION_MISSED|"when smart switch moved it from S22 to S24"
+P84#54147|MG_TRANSFER_PAID|"With no real data transferring there as well could be no free version at all"
+P111#1144|MG_APP_VERSION_MIGRATION|"The data transfer from the old version didn't even work properly"
+P111#891|MG_APP_VERSION_MIGRATION|"None of my old data transferred properly and they updated in the middle of a semester"
+P49#895|NR|
+P8#8947|NR|
+P126#47157|NR|
+P110#2542|NR|
+A24#32847|NR|
+P126#132788|B_OS_MIGRATION_PARTIAL|"לא כל המשימות שלי עברו אלא רק חלק מהמשימות"
+P4#22128|MG_XDEVICE_REQ|"I wish you add device cross over data transfer and data backup feature"
+N5#14525|NR|
+N9#36447|NR|
+N10#23270|MG_SERVICE_MIGRATION|"Just says "Hold Tight..." but no data transfer"
+P12#27476|BL_XOS_PAY_AGAIN,BL_CANCEL_NOT_HONORED,X_PAYER|"I swapped from IPhone to android and I've been unable to get someone to get back to me"
+A46#2100|POS_XOS|"I was able to move from Android to iOS seemlessly"
+P12#55563|BL_XOS_PAY_AGAIN,BL_REFUND_DENIED|"they'll only refund the IOS subscription if I purchase a subscription on my Android"
+P12#52019|BL_XOS_PAY_AGAIN,L_XOS,X_PAYER|"my paid subscription did not transfer with the app when I signed into the account"
+A24#37673|BL_XOS_PAY_AGAIN,E_DOUBLE|"they don’t have a way to transfer from Android to iPhone"
+A24#30518|AC_LOGIN_FAIL,BL_XOS_PAY_AGAIN,X_SUPPORT_NONE,X_PAYER|"switched from Android to IPhone. I’m unable to log back in through my gmail act"
+P2#5465|MG_ONE_PLATFORM_ONLY|"So if we switch from Android to iOS, what would be the use of backup?"
+A24#40556|AC_LOGIN_FAIL,L_XOS,BL_XOS_PAY_AGAIN|"when I switch my phone from Apple to Samsung, I can no longer sign back in"
+P126#65993|S_FAIL|"Its stopped syncing from Android to Android"
+P33#2254|NR|
+A10#20322|L_XOS,T_STREAK|"I had to switch from android to iPhone last year since I got a new phone, it didn’t save any of my progress"
+P130#267|E_PLATFORM_GAP|"I changed from IPhone to Android and didn't realise that's why the streak option was gone"
+A24#21003|BL_POS_SUPPORT,BL_XOS_MANUAL|"the team helped me transfer my Fabulous Sphere account"
+P2#1875|MG_SWITCHER_ACQUIRED|"I recently moved from iOS to Android. I wanted to find a replacement app"
+P2#7559|MG_ONE_PLATFORM_ONLY|"I've just switched from Samsung to iPhone and unfortunately can't find your app in the store"
+N11#6110|E_PLATFORM_GAP,A_LOGOUT|"It’s different from android to iPhone"
+N7#10966|E_PLATFORM_GAP|"I recently switched from Samsung to Apple, and I noticed this app lags constantly"
+N11#2122|E_PLATFORM_GAP,L_XOS|"all my challenges have disappeared"
+P33#2574|L_PHONE|"Upgraded my phone and lost all my previous data"
+A24#37855|L_PHONE,MG_ACCOUNT_NO_DATA|"What’s the point of making an account if when u get a new phone all your progress is lost?"
+P24#10869|L_PHONE,AC_LOGIN_FAIL,X_SUPPORT_NONE,X_PAYER|"Upgraded phone and now can't get in"
+P3#8725|L_PHONE|"Didn't save my data over to my new device"
+P12#58508|L_PHONE,B_PAID|"I got a new phone and realized I can't transfer my data over"
+P126#24443|L_PHONE,X_SUPPORT_NONE|"lost all my notes and tasks after getting new phone"
+P24#2011|L_PHONE,AC_LOGIN_FAIL,X_SUPPORT_SAVED,X_PAYER|"Switched phone and now the app won't recognize my account or user, even though I have a premium account"
+P12#46241|L_PHONE|"Changed my phone, and lost access to the app"
+P125#11518|L_PHONE|"I bought a new phone,downloaded this app and noticed i had to start all over again"
+P12#115825|L_PHONE,B_ONBOARD_FIRST,MG_SYNC_ERASED|"When start the app should ask the account before start the tutorial or the sync will erase the previous data"
+A10#103|L_PHONE,AC_PHONE_CODE|"i bought a new phone and cant add my number"
+P24#1603|L_PHONE,AC_PROVIDER_GONE|"Got a new phone. Doesnt link w FB login anymore. All my data is gone"
+P4#20475|BL_DEVICE_CHANGE_LOST|"just got a new phone and can't transfer it to my new phone"
+P3#2436|L_PHONE,B_NONE|"I recently switched to a new phone and lost all my data"
+A1#45109|L_PHONE,B_ICLOUD_FAIL|"iCloud syncing is not working. When I changed my phone, I lost all my progress"
+P3#5171|L_PHONE,B_NONE|"I changed my mobile phone and logged into new one all my previous records gone"
+A10#34647|L_PHONE,B_RESTORE_PARTIAL|"reinstalled it when i got a new phone and lost ALL of my furniture and clothes and pets"
+P125#24360|L_PHONE|"when I install this app in my new phone, my old data were lost"
+P84#9290|L_PHONE,B_HIDDEN|"I assumed the data would back up when I transferred phones, but all my lists were lost"
+A10#27156|AC_WANT_LOGIN,L_PHONE|"you should be able to sign into an account on another device"
+N3#25719|L_PHONE,B_OS_MIGRATION_PARTIAL|"All but one note is LOST"
+N7#1490|L_PHONE,S_FAIL|"It knows me as a client but all data is empty"
+N8#24894|NR|
+P12#70100|MG_UNCLEAR_HOW|"no esta bien claro como cambiar todo el progreso, ni siquiera la cuenta al nuevo dispositivo"
+P24#17683|L_PHONE,L_CORRUPT,X_PAYER|"Al momento de querer sincronizar mi cuenta en mi nuevo teléfono, la aplicación me saca"
+A24#3023|BL_XOS_PAY_AGAIN,MG_OTHERS_DO_IT|"Tenho assinatura de outras plataformas pela play s e continuei tendo acesso no sistema iOS"
+P24#20263|AC_PASSWORD,AC_TWO_ACCOUNTS,L_PHONE|"non mi fa usare la mia mail perché già presente nel database"
+P22#1407|BL_PREMIUM_FLAPS|"cada que la app se actualiza pide pagar la suscripción"
+P12#96823|NR|
+A1#43946|L_PHONE,MG_ACCOUNT_NO_DATA|"Konto ist angelegt aber meine Gewohnheiten die ich angelegt hatte nicht"
+P9#1864|L_PHONE,B_PAID|"Troquei de celular e perdi todos os meus registros, para poder exportar precisa ser PRO"
+P98#3536|L_PHONE,L_UPD|"como troquei de celular"
+P126#114215|NR|
+A24#17406|BL_DEVICE_CHANGE_LOST,L_PHONE|"Aunque le doy restaurar progreso para recuperar mi cuenta no me deja en mi nuevo celular"
+P12#101387|MG_EXISTING_USER_NOT_ASKED|"Al bajar la app en un dispositivo nuevo no busca ver si eres un usuario existente; te considera siempre como un newbee"
+A52#6795|BL_DEVICE_CHANGE_LOST|"换手机vip就没了？"
+A76#1622|BL_DEVICE_CHANGE_LOST,L_PHONE,X_PAYER|"Jetzt habe ich ein neues iPhone, will meine Einkäufe wiederherstellen und da steht, es gebe nichts zum wiederherstellen"
+A1#3936|BL_DEVICE_CHANGE_LOST,X_SUPPORT_NONE,X_PAYER|"换手机后重新下载，恢复购买失败"
+P12#71833|NR|
+P12#84412|NR|
+P12#92242|NR|
+P10#14605|NR|
+P125#20361|NR|
+N5#951|NR|
+N7#6862|NR|
+N4#5230|NR|

@@ -1,0 +1,11 @@
+screened 1487223 {'A': 337331, 'P': 901453, 'N': 248439}; candidates 3163
+
+mode                     n apps     A     P     N   1★%  mean
+ML_NEWPHONE           2683   96   374  2045   264  11.4  4.17
+NEW_PHONE_LOSS         157   36    55    77    25  45.2  2.46
+XOS_SWITCH             108   22    15    31    62  35.2  2.81
+MOVE_TOOL               71   27    10    26    35  39.4  2.55
+TRANSFER_REQ            68   33    21    38     9  16.2  3.63
+QR_TRANSFER             55   15    21     9    25  30.9  2.67
+OLD_PHONE_GONE          20   13     4    13     3  40.0  2.95
+NEW_PHONE_OK            10    9     4     4     2  40.0  2.40

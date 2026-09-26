@@ -1,0 +1,2485 @@
+[
+{
+"key": "A10#30767",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12939486987",
+"rating": 1,
+"date": "2025-07-26",
+"loc": "us"
+},
+{
+"key": "A16#389",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "11715418924",
+"rating": 5,
+"date": "2024-09-12",
+"loc": "hu"
+},
+{
+"key": "A24#17973",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "14305008015",
+"rating": 1,
+"date": "2026-07-15",
+"loc": "in"
+},
+{
+"key": "A24#28052",
+"codes": [
+"PV_DELETE_IGNORED"
+],
+"quote": "Even GDPR claims won’t stop them from keeping your billing info",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10979942908",
+"rating": 1,
+"date": "2024-02-25",
+"loc": "us"
+},
+{
+"key": "A24#41802",
+"codes": [
+"PV_EMAIL_OPTOUT_TRICK"
+],
+"quote": "the tricky email “opt out” message is not GDPR friendly",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "4292909423",
+"rating": 1,
+"date": "2019-06-10",
+"loc": "us"
+},
+{
+"key": "A33#1119",
+"codes": [
+"PV_SPAM_AFTER_DELETE"
+],
+"quote": "I then chose to delete my account but I’m still getting daily spam messages that contain all my data.",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "10101814356",
+"rating": 1,
+"date": "2023-07-04",
+"loc": "gb"
+},
+{
+"key": "A55#74",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "1325376912",
+"rating": 5,
+"date": "2016-01-31",
+"loc": "au"
+},
+{
+"key": "A7#655",
+"codes": [
+"PV_EXPORT_PAYWALL"
+],
+"quote": "I cannot export my data without buying the subscription. It is against GDPR.",
+"store": "A",
+"app": "7. Habit Tracker - HabitKit - Streaks & Accountability",
+"review_id": "13904375498",
+"rating": 1,
+"date": "2026-03-30",
+"loc": "ua"
+},
+{
+"key": "P111#1691",
+"codes": [
+"PV_CONSENT"
+],
+"quote": "does not exempt you from GDPR as you made the app available in the EU",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "fc9a9582-e62f-4dfd-b6c3-f4b2657ab79b",
+"rating": 1,
+"date": "2022-06-25",
+"loc": "en"
+},
+{
+"key": "P12#1504",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "a31ff1d0-d0db-4520-b9c1-6ecc75e93cc9",
+"rating": 1,
+"date": "2023-09-17",
+"loc": "da"
+},
+{
+"key": "P12#21679",
+"codes": [
+"PV_DELETE_IGNORED"
+],
+"quote": "Doesn't delete profile on request, i guess gdpr doesn't exist.",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "2d2e9aab-517d-4f0a-91e6-f47e570f66a6",
+"rating": 1,
+"date": "2022-10-21",
+"loc": "en"
+},
+{
+"key": "P12#32388",
+"codes": [
+"PV_DELETE_IGNORED"
+],
+"quote": "I want to have the right to be forgotten. (GDPR)But they are just ignoring my emails.",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "3187baf3-b3b0-41fb-8179-e00a613f8c84",
+"rating": 1,
+"date": "2021-09-07",
+"loc": "en"
+},
+{
+"key": "P126#28253",
+"codes": [
+"POS_PRIVACY"
+],
+"quote": "Data protection is there",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "7c8b3800-9895-48d1-b375-78f428685c8f",
+"rating": 5,
+"date": "2023-10-23",
+"loc": "en"
+},
+{
+"key": "P24#9544",
+"codes": [
+"PV_EXPORT_PAYWALL"
+],
+"quote": "Export is now a premium feature which is in violation of the GDPR.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "e2ea5c34-7031-41f9-8d7b-82a3ce0505b8",
+"rating": 1,
+"date": "2018-01-23",
+"loc": "en"
+},
+{
+"key": "P4#23446",
+"codes": [
+"PV_POLICY_MISSING"
+],
+"quote": "Terms of Service and Privacy Policy don't load.",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "fdcfc16a-5ee7-4a30-8df1-9fea9492a9ba",
+"rating": 1,
+"date": "2024-01-05",
+"loc": "en"
+},
+{
+"key": "P70#624",
+"codes": [
+"PV_SIGNUP_FORCED",
+"PV_POLICY_MISSING"
+],
+"quote": "I don't really want to have to provide login details when I have no idea how they are storing my data.",
+"store": "P",
+"app": "70. everyday Habit Tracker",
+"review_id": "28b4f22a-61de-4a87-9875-60a99e6f359f",
+"rating": 2,
+"date": "2020-12-07",
+"loc": "en"
+},
+{
+"key": "P8#7201",
+"codes": [
+"PV_UNVERIFIABLE"
+],
+"quote": "we don't know if it's GDPR compliant",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "ac734349-0ac0-4f21-ad6e-a0a3dc2668f8",
+"rating": 1,
+"date": "2019-05-11",
+"loc": "en"
+},
+{
+"key": "N4#3460",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "8650658919",
+"rating": 1,
+"date": "2022-05-08",
+"loc": "fr"
+},
+{
+"key": "N9#16323",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "2263182557",
+"rating": 3,
+"date": "2018-03-02",
+"loc": "in"
+},
+{
+"key": "N4#5528",
+"codes": [
+"PV_CANT_DELETE_DATA"
+],
+"quote": "Health data can’t be removed.",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "13550080218",
+"rating": 1,
+"date": "2025-12-24",
+"loc": "lt"
+},
+{
+"key": "A13#11726",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "9127847082",
+"rating": 4,
+"date": "2022-09-27",
+"loc": "us"
+},
+{
+"key": "A13#12320",
+"codes": [
+"PV_OVERCOLLECT"
+],
+"quote": "this app collects far more personal data than is needed for a habit-tracking app",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6830364558",
+"rating": 2,
+"date": "2021-01-04",
+"loc": "us"
+},
+{
+"key": "A13#15850",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "2778886924",
+"rating": 3,
+"date": "2018-06-27",
+"loc": "us"
+},
+{
+"key": "A13#16233",
+"codes": [
+"PV_SELLS_DATA"
+],
+"quote": "you are voluntarily giving them a treasure trove of intensely personal and personally identifiable information",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "2027478113",
+"rating": 1,
+"date": "2017-12-26",
+"loc": "us"
+},
+{
+"key": "A36#449",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "36. (Not Boring) Habits - Science-backed habit tracker",
+"review_id": "9846762333",
+"rating": 5,
+"date": "2023-04-21",
+"loc": "us"
+},
+{
+"key": "A4#1049",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10447376647",
+"rating": 4,
+"date": "2023-10-07",
+"loc": "au"
+},
+{
+"key": "A4#1098",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10365805483",
+"rating": 5,
+"date": "2023-09-14",
+"loc": "au"
+},
+{
+"key": "A41#403",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "41. Awesome Habits - Habit Tracker - Streaks, days since & goals",
+"review_id": "6344341522",
+"rating": 5,
+"date": "2020-08-21",
+"loc": "gb"
+},
+{
+"key": "A53#1702",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "1944894283",
+"rating": 3,
+"date": "2017-11-24",
+"loc": "us"
+},
+{
+"key": "A68#3991",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "68. Ultiself - Self-Improvement - Biohacker Routine Planner App",
+"review_id": "12817747166",
+"rating": 5,
+"date": "2025-06-26",
+"loc": "us"
+},
+{
+"key": "A82#42",
+"codes": [
+"PV_OVERCOLLECT"
+],
+"quote": "Nothing of the answers has any impact on the app",
+"store": "A",
+"app": "82. Lasting Change - Habit Builder - Daily Habits & Mental Wellness",
+"review_id": "11339754455",
+"rating": 1,
+"date": "2024-06-03",
+"loc": "de"
+},
+{
+"key": "P122#15152",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "f089ee79-6532-42b5-8cf6-1982340250b9",
+"rating": 5,
+"date": "2024-02-06",
+"loc": "en"
+},
+{
+"key": "P122#19725",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "44c4e5fd-d342-42d9-88e3-8e67f00bf645",
+"rating": 5,
+"date": "2022-06-07",
+"loc": "en"
+},
+{
+"key": "P126#25179",
+"codes": [
+"PV_SELLS_DATA",
+"PV_ADS_CONSENT_FORCED"
+],
+"quote": "I only installed this because it wasn't selling my information. No longer the case.",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "f4531087-8c19-4185-8ebb-d1df58a00deb",
+"rating": 1,
+"date": "2024-07-22",
+"loc": "en"
+},
+{
+"key": "P126#25886",
+"codes": [
+"PV_ADS_CONSENT_FORCED"
+],
+"quote": "Doesn't let you use it if you don't consent to personalized ads....",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "2cb2f479-d273-459a-abdc-03650c084759",
+"rating": 1,
+"date": "2024-05-15",
+"loc": "en"
+},
+{
+"key": "P126#27219",
+"codes": [
+"PV_ADS_CONSENT_FORCED"
+],
+"quote": "Can't use the app anymore without either consenting to personalised ads or paying to remove ads entirely.",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "86e0f811-7b2e-4b61-92d5-4b40f87b34b1",
+"rating": 1,
+"date": "2024-01-15",
+"loc": "en"
+},
+{
+"key": "P70#813",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "70. everyday Habit Tracker",
+"review_id": "00a36eec-1c87-43f6-9189-50642ee6691b",
+"rating": 5,
+"date": "2019-07-21",
+"loc": "en"
+},
+{
+"key": "P9#679",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "3ba9917c-c3dd-4011-9297-fac5c57fac65",
+"rating": 5,
+"date": "2025-01-14",
+"loc": "en"
+},
+{
+"key": "P9#1250",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "12c9f899-5a94-4d10-b893-9ed6bf43d7e2",
+"rating": 5,
+"date": "2023-09-23",
+"loc": "en"
+},
+{
+"key": "N5#15644",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "9598272686",
+"rating": 1,
+"date": "2023-02-09",
+"loc": "us"
+},
+{
+"key": "N9#47940",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1278533763",
+"rating": 5,
+"date": "2015-10-28",
+"loc": "us"
+},
+{
+"key": "N4#8878",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "11438309535",
+"rating": 1,
+"date": "2024-06-29",
+"loc": "us"
+},
+{
+"key": "A13#16626",
+"codes": [
+"PV_OVERCOLLECT",
+"PV_POLICY_CHANGE"
+],
+"quote": "this app should *never need location data*",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1677532530",
+"rating": 1,
+"date": "2017-07-11",
+"loc": "us"
+},
+{
+"key": "A23#98",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "10600473428",
+"rating": 2,
+"date": "2023-11-19",
+"loc": "au"
+},
+{
+"key": "A3#10449",
+"codes": [
+"POS_NO_PERMISSIONS"
+],
+"quote": "Doesn’t do wack stuff like asking for contacts or wack ads.",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "6580222451",
+"rating": 5,
+"date": "2020-10-27",
+"loc": "us"
+},
+{
+"key": "P110#3528",
+"codes": [
+"POS_NO_PERMISSIONS"
+],
+"quote": "doesnt need unnecessary permissions",
+"store": "P",
+"app": "110. Habit Tracker Unlimited",
+"review_id": "3cbabd19-98c2-4caa-a2b7-145509243f0c",
+"rating": 5,
+"date": "2015-07-21",
+"loc": "en"
+},
+{
+"key": "P12#47180",
+"codes": [
+"PV_PERMISSION_UNNEEDED"
+],
+"quote": "Requires a photo for setting up an account, which requires camera permissions.",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "ec308eca-dd17-4461-bcf7-06d5b07660e0",
+"rating": 1,
+"date": "2020-09-21",
+"loc": "en"
+},
+{
+"key": "P126#10173",
+"codes": [
+"PV_PERMISSION_UNNEEDED"
+],
+"quote": "Needs Access to my contacts, wont sync otherwise with google tasks",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "6998dc16-d696-4fa8-bb4a-2ec490f2b09b",
+"rating": 1,
+"date": "2022-09-01",
+"loc": "de"
+},
+{
+"key": "P126#44550",
+"codes": [
+"PV_PERMISSION_UNNEEDED"
+],
+"quote": "why do you need access to my contacts?",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "7514cb99-24d6-4bfb-8a68-65056006807f",
+"rating": 2,
+"date": "2021-06-25",
+"loc": "en"
+},
+{
+"key": "P126#46623",
+"codes": [
+"PV_PERMISSION_UNNEEDED"
+],
+"quote": "Wants access to contacts. NO!",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "9a8ff3aa-2506-479b-a1b8-923627410507",
+"rating": 1,
+"date": "2021-04-24",
+"loc": "en"
+},
+{
+"key": "P126#54842",
+"codes": [
+"PV_PERMISSION_UNNEEDED"
+],
+"quote": "Why do the need access to my contacts to sync? This is spyware.",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "62881e35-34ce-47b4-892e-9fc72ba9c0c3",
+"rating": 1,
+"date": "2020-11-09",
+"loc": "en"
+},
+{
+"key": "P126#75199",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "7a46ff60-ee00-4d19-b74b-91b81d23b793",
+"rating": 4,
+"date": "2018-09-18",
+"loc": "en"
+},
+{
+"key": "P3#3621",
+"codes": [
+"POS_NO_PERMISSIONS"
+],
+"quote": "no ads and no unnecessary permissions",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "ae37b1cc-6b3d-4e14-859c-2bce5ac973fa",
+"rating": 5,
+"date": "2024-10-24",
+"loc": "en"
+},
+{
+"key": "P3#11282",
+"codes": [
+"POS_NO_PERMISSIONS"
+],
+"quote": "Thank you for not asking for unnecessary permissions.",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "0f4e58c7-da15-4cd9-9619-f34d4367a215",
+"rating": 5,
+"date": "2019-06-25",
+"loc": "en"
+},
+{
+"key": "P3#13789",
+"codes": [
+"POS_NO_PERMISSIONS"
+],
+"quote": "No unnecessary permissions for sharing information nobody but you cares  about.",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "9aa585e3-4488-417f-91e1-bf8ee3968d40",
+"rating": 5,
+"date": "2017-12-01",
+"loc": "en"
+},
+{
+"key": "P3#13973",
+"codes": [
+"POS_NO_PERMISSIONS"
+],
+"quote": "No unnecessary permissions needed.",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "814592cc-6a16-470f-a0a6-feadf14980c5",
+"rating": 5,
+"date": "2017-10-19",
+"loc": "en"
+},
+{
+"key": "P3#14837",
+"codes": [
+"POS_NO_PERMISSIONS"
+],
+"quote": "free without ads or unnecessary permissions",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "485bf144-d0d2-48a7-9668-cb34ca6c1dd8",
+"rating": 5,
+"date": "2017-04-17",
+"loc": "en"
+},
+{
+"key": "P35#179",
+"codes": [
+"POS_NO_PERMISSIONS",
+"POS_PRIVACY"
+],
+"quote": "No unnecessary permissions, no data is collected. Peace of mind",
+"store": "P",
+"app": "35. Motivated - Habit Tracker",
+"review_id": "8d1d5199-ff55-494d-b41b-d24ff367b1c9",
+"rating": 5,
+"date": "2024-09-10",
+"loc": "en"
+},
+{
+"key": "P38#1272",
+"codes": [
+"PV_PERMISSION_UNNEEDED"
+],
+"quote": "i want to know why it needs camera",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "dbb8e5ff-67a1-4f13-820d-a057b977fd58",
+"rating": 4,
+"date": "2022-11-05",
+"loc": "en"
+},
+{
+"key": "P8#12231",
+"codes": [
+"PV_PERMISSION_UNNEEDED",
+"PV_SIGNUP_FORCED"
+],
+"quote": "Unnecessary permissions and intrusive account creation.",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "ccdd6140-73da-4915-996c-3833e18f9f1c",
+"rating": 1,
+"date": "2023-05-05",
+"loc": "hr"
+},
+{
+"key": "P84#6835",
+"codes": [
+"POS_NO_PERMISSIONS",
+"POS_LOCAL_OPTION"
+],
+"quote": "It gives you the option to keep all of your data local.",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "0edf6383-ba94-48ab-aa1f-a1d293bfc0a8",
+"rating": 5,
+"date": "2026-08-20",
+"loc": "en"
+},
+{
+"key": "P84#44723",
+"codes": [
+"PV_PERMISSION_EXPLAIN"
+],
+"quote": "I wished that the app somehow tells in advance why it asks for a permission.",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "f4b5cabf-ab92-43f7-b9d7-c09fd792e913",
+"rating": 4,
+"date": "2019-11-14",
+"loc": "nl"
+},
+{
+"key": "N8#4833",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "4613169615",
+"rating": 1,
+"date": "2019-08-14",
+"loc": "co"
+},
+{
+"key": "N7#12358",
+"codes": [
+"PV_LOCK_WANT"
+],
+"quote": "Password protection for a note would be helpful.",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "1401531731",
+"rating": 5,
+"date": "2016-06-28",
+"loc": "us"
+},
+{
+"key": "N10#20043",
+"codes": [
+"PV_PHONE_NUMBER"
+],
+"quote": "Needs my phone number?",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "7867525380",
+"rating": 1,
+"date": "2021-10-02",
+"loc": "us"
+},
+{
+"key": "A16#510",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "10989744513",
+"rating": 1,
+"date": "2024-02-28",
+"loc": "nl"
+},
+{
+"key": "P12#16641",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "2d05e6c8-9391-4fdf-b513-af0e84a9d42e",
+"rating": 1,
+"date": "2023-11-08",
+"loc": "en"
+},
+{
+"key": "P3#15857",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "5774e216-581a-4d32-8ef5-59efcfaf11ec",
+"rating": 3,
+"date": "2016-09-03",
+"loc": "en"
+},
+{
+"key": "A24#28250",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10797287074",
+"rating": 1,
+"date": "2024-01-08",
+"loc": "us"
+},
+{
+"key": "A4#6899",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10471452191",
+"rating": 2,
+"date": "2023-10-14",
+"loc": "gb"
+},
+{
+"key": "P125#18959",
+"codes": [
+"PV_SHARED_VISIBLE"
+],
+"quote": "I did not like that others could see my gratitude list.",
+"store": "P",
+"app": "125. 21 Days Challenge",
+"review_id": "19f69ef4-7ee8-4188-aead-6b6827c23ad7",
+"rating": 3,
+"date": "2020-06-19",
+"loc": "en"
+},
+{
+"key": "P12#17928",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "9535a3c1-98ec-418b-a8d4-eaab17578aee",
+"rating": 2,
+"date": "2023-08-07",
+"loc": "en"
+},
+{
+"key": "A53#1727",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "1928611106",
+"rating": 3,
+"date": "2017-11-17",
+"loc": "us"
+},
+{
+"key": "P3#4898",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "983d9b8b-827f-4379-87fe-b3f635a2e460",
+"rating": 3,
+"date": "2023-09-18",
+"loc": "en"
+},
+{
+"key": "P4#30570",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "4f8d03f3-0704-4ab3-b5fd-d2859ad9893d",
+"rating": 1,
+"date": "2023-08-01",
+"loc": "en"
+},
+{
+"key": "P33#5966",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "0652cf9d-e833-4d9b-aa65-46e2e1dfca1c",
+"rating": 2,
+"date": "2020-05-29",
+"loc": "ru"
+},
+{
+"key": "A49#714",
+"codes": [
+"PV_OVERCOLLECT"
+],
+"quote": "intruding on your personal habits",
+"store": "A",
+"app": "49. Life Reset - 66 Day Habit - Gamified Habit Tracker",
+"review_id": "13513197968",
+"rating": 1,
+"date": "2025-12-14",
+"loc": "us"
+},
+{
+"key": "P2#1509",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "ebe29c0c-4aee-424d-8aaf-311f476d0fb0",
+"rating": 5,
+"date": "2026-04-11",
+"loc": "en"
+},
+{
+"key": "P12#48950",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "afff01b0-3914-44ee-a1d2-cd62360bd80b",
+"rating": 5,
+"date": "2020-08-15",
+"loc": "en"
+},
+{
+"key": "P111#10424",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "81fc324b-d22e-4bbc-9bf5-239c258d6493",
+"rating": 4,
+"date": "2015-05-01",
+"loc": "en"
+},
+{
+"key": "A10#44189",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "11058814744",
+"rating": 5,
+"date": "2024-03-18",
+"loc": "us"
+},
+{
+"key": "A67#1639",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "67. Habio - Daily Habit Tracker - Routine planner & To do list",
+"review_id": "11468512235",
+"rating": 5,
+"date": "2024-07-08",
+"loc": "us"
+},
+{
+"key": "N10#18207",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "12644821580",
+"rating": 5,
+"date": "2025-05-11",
+"loc": "us"
+},
+{
+"key": "N11#6132",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "4953195877",
+"rating": 5,
+"date": "2019-10-16",
+"loc": "us"
+},
+{
+"key": "N8#17565",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "1251829322",
+"rating": 4,
+"date": "2015-09-02",
+"loc": "nz"
+},
+{
+"key": "A24#36351",
+"codes": [
+"PV_DELETE_MISSING"
+],
+"quote": "There’s no way to delete your account Why?",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "7129934808",
+"rating": 2,
+"date": "2021-03-22",
+"loc": "us"
+},
+{
+"key": "P8#5549",
+"codes": [
+"PV_DELETE_MISSING"
+],
+"quote": "Wanted to delete my account. There is no option to do so.",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "652d7aad-829c-4008-b86d-c52e555f9ba1",
+"rating": 1,
+"date": "2021-09-08",
+"loc": "en"
+},
+{
+"key": "P24#5713",
+"codes": [
+"PV_ACCOUNT_PURGED_SILENTLY"
+],
+"quote": "not only had it deleted my data, it also essentially deleted me!",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "a4b84fdf-5343-4968-8f2f-4be8a210d3b8",
+"rating": 3,
+"date": "2019-04-23",
+"loc": "en"
+},
+{
+"key": "A24#25635",
+"codes": [
+"PV_CHARGED_AFTER_DELETE"
+],
+"quote": "they continue to charge you for premium even AFTER YOU DELETE YOUR ACCOUNT!!",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12712044038",
+"rating": 1,
+"date": "2025-05-29",
+"loc": "us"
+},
+{
+"key": "P12#53654",
+"codes": [
+"PV_DELETE_BY_EMAIL"
+],
+"quote": "when I wanted to delete my account it gives you an email to message which I did and then that email told me to fill out a form",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "d7ad1ccf-a007-42f2-b24d-ac0444225bff",
+"rating": 1,
+"date": "2020-04-14",
+"loc": "en"
+},
+{
+"key": "A24#26327",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12204281406",
+"rating": 2,
+"date": "2025-01-19",
+"loc": "us"
+},
+{
+"key": "A67#1058",
+"codes": [
+"PV_CHARGED_AFTER_DELETE"
+],
+"quote": "They will charge you even if you have deleted your account",
+"store": "A",
+"app": "67. Habio - Daily Habit Tracker - Routine planner & To do list",
+"review_id": "10496471870",
+"rating": 1,
+"date": "2023-10-20",
+"loc": "se"
+},
+{
+"key": "A23#2493",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "13690015653",
+"rating": 1,
+"date": "2026-01-29",
+"loc": "ie"
+},
+{
+"key": "P111#4806",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "6beda2cc-40e9-4c54-84e5-00e31befeba7",
+"rating": 1,
+"date": "2017-11-10",
+"loc": "en"
+},
+{
+"key": "A68#2884",
+"codes": [
+"PV_CHARGED_AFTER_DELETE"
+],
+"quote": "6 months ago I paid for one particular course then deleted the account and the app. Now they charged me",
+"store": "A",
+"app": "68. Ultiself - Self-Improvement - Biohacker Routine Planner App",
+"review_id": "13453711514",
+"rating": 1,
+"date": "2025-11-29",
+"loc": "pl"
+},
+{
+"key": "P12#2652",
+"codes": [
+"PV_CHARGED_AFTER_DELETE"
+],
+"quote": "I deleted my account properly but still had a subscription set up on PayPal",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "17b49497-6c9f-468e-b6e1-8c318aa52e5f",
+"rating": 1,
+"date": "2023-05-14",
+"loc": "de"
+},
+{
+"key": "A1#44581",
+"codes": [
+"PV_DELETE_MISSING"
+],
+"quote": "there is a button “reset” which doesn’t delete the account",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13622360478",
+"rating": 1,
+"date": "2026-01-11",
+"loc": "es"
+},
+{
+"key": "A85#222",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "7712740288",
+"rating": 1,
+"date": "2021-08-20",
+"loc": "br"
+},
+{
+"key": "P70#382",
+"codes": [
+"POS_DELETE"
+],
+"quote": "can delete account",
+"store": "P",
+"app": "70. everyday Habit Tracker",
+"review_id": "73e201e8-99ea-419d-8261-15ac6c394e12",
+"rating": 4,
+"date": "2022-08-06",
+"loc": "en"
+},
+{
+"key": "A24#23341",
+"codes": [
+"PV_CHARGED_AFTER_DELETE"
+],
+"quote": "I’ve canceled my subscription, deleted My account, yet your still trying to charge me",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "14295216619",
+"rating": 4,
+"date": "2026-07-12",
+"loc": "us"
+},
+{
+"key": "P12#26798",
+"codes": [
+"PV_DELETE_MISSING"
+],
+"quote": "i want delete my account how i delete it",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "213882f9-fb83-40a6-a85d-95ab1804f93b",
+"rating": 4,
+"date": "2022-02-23",
+"loc": "en"
+},
+{
+"key": "P49#1871",
+"codes": [
+"POS_DELETE",
+"POS_PRIVACY",
+"POS_SYNC_OPTIN"
+],
+"quote": "seems to collect very minimal data and features a comforting \"delete my data\" button",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "4a5e4011-9591-402e-bec7-9f21f36489da",
+"rating": 5,
+"date": "2023-12-09",
+"loc": "en"
+},
+{
+"key": "P8#8211",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "9f91e2e6-c759-419d-acc4-73cd9bf3be9f",
+"rating": 4,
+"date": "2017-11-27",
+"loc": "en"
+},
+{
+"key": "N9#37267",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "11859575264",
+"rating": 1,
+"date": "2024-10-21",
+"loc": "us"
+},
+{
+"key": "N4#8713",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "11808657175",
+"rating": 1,
+"date": "2024-10-07",
+"loc": "us"
+},
+{
+"key": "N10#21947",
+"codes": [
+"PV_PHONE_NUMBER",
+"PV_DELETE_MISSING"
+],
+"quote": "Now they won’t let me back in unless I give them my phone number. I want to delete my account, but I can’t get help to do that.",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5597618606",
+"rating": 1,
+"date": "2020-02-29",
+"loc": "us"
+},
+{
+"key": "P4#25976",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "39cb9a63-497f-4ec6-acf9-4f752ae928c7",
+"rating": 1,
+"date": "2023-11-11",
+"loc": "en"
+},
+{
+"key": "P4#28153",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "9eeee74b-bd65-4720-aefe-ae4fb331d213",
+"rating": 1,
+"date": "2023-09-12",
+"loc": "en"
+},
+{
+"key": "A16#702",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "12539170479",
+"rating": 1,
+"date": "2025-04-13",
+"loc": "us"
+},
+{
+"key": "A24#14682",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11991973583",
+"rating": 1,
+"date": "2024-11-25",
+"loc": "gb"
+},
+{
+"key": "A13#11541",
+"codes": [
+"PV_SIGNUP_FORCED"
+],
+"quote": "Why would I want to buy it when I can’t even try it without signing up?",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "10207493108",
+"rating": 1,
+"date": "2023-08-01",
+"loc": "us"
+},
+{
+"key": "P38#1142",
+"codes": [
+"PV_SIGNUP_FORCED"
+],
+"quote": "I get repeated \"An error has occurred\" messages when I try to go forward without an account",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "cf148c56-0907-4136-b1d8-292b0677b4e2",
+"rating": 1,
+"date": "2023-05-12",
+"loc": "en"
+},
+{
+"key": "P12#64010",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "1bf78520-ae43-4652-9009-fb1840fd76cf",
+"rating": 1,
+"date": "2019-06-19",
+"loc": "en"
+},
+{
+"key": "P12#10202",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "d3c7af60-2b7e-4f69-bef8-1b4a4635a10e",
+"rating": 1,
+"date": "2025-11-21",
+"loc": "en"
+},
+{
+"key": "A19#104",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "19. Wisey - Habit Builder - Form habits, change your life",
+"review_id": "12692126207",
+"rating": 1,
+"date": "2025-05-24",
+"loc": "us"
+},
+{
+"key": "P3#9092",
+"codes": [
+"PV_WANT_ACCOUNT"
+],
+"quote": "I loved this app but my only problem is there is no sign in option.",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "fe3a3ea9-5126-4c6c-a20a-334ef5a4dff0",
+"rating": 3,
+"date": "2020-08-29",
+"loc": "en"
+},
+{
+"key": "P12#18576",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "781462f8-fb11-42f6-8f4e-ac93002e7afb",
+"rating": 1,
+"date": "2023-06-28",
+"loc": "en"
+},
+{
+"key": "P4#25760",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "a9fae4bd-4b27-417c-8377-c644b87aaffb",
+"rating": 1,
+"date": "2023-11-15",
+"loc": "en"
+},
+{
+"key": "P111#4444",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "67a30e31-7ef1-4fff-855c-dafe74383363",
+"rating": 1,
+"date": "2018-02-10",
+"loc": "en"
+},
+{
+"key": "P126#20073",
+"codes": [
+"PV_WANT_LOCAL"
+],
+"quote": "not offline only, not open Source... Be careful what you put in here.",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "3ec9ff62-c67f-4fcf-9310-2c2f598d4ce4",
+"rating": 4,
+"date": "2025-11-18",
+"loc": "en"
+},
+{
+"key": "P84#1764",
+"codes": [
+"POS_NO_ACCOUNT"
+],
+"quote": "everything works without an account/offline",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "f0ff1f3e-8969-40b4-b2d2-07068e317d99",
+"rating": 5,
+"date": "2024-03-17",
+"loc": "de"
+},
+{
+"key": "P129#375",
+"codes": [
+"PV_WANT_ACCOUNT"
+],
+"quote": "there is no login option either or anything that will help us using this in another device",
+"store": "P",
+"app": "129. TrackIt - Goal & Time Tracker",
+"review_id": "f83d6ecd-532e-41c2-9291-7fc538022a9b",
+"rating": 4,
+"date": "2025-07-01",
+"loc": "en"
+},
+{
+"key": "P84#44909",
+"codes": [
+"POS_NO_ACCOUNT"
+],
+"quote": "no need to log in to any account",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "5005925f-5033-4bda-89fd-02f2fa9f732c",
+"rating": 5,
+"date": "2019-04-18",
+"loc": "nl"
+},
+{
+"key": "P8#5710",
+"codes": [
+"PV_WANT_GUEST"
+],
+"quote": "I Would love to sign up without email or anything, just as what is called guest",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "c30fc4f7-2a73-4cce-a7b7-f78324a9a031",
+"rating": 5,
+"date": "2021-05-26",
+"loc": "en"
+},
+{
+"key": "N10#20208",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "7416247848",
+"rating": 5,
+"date": "2021-06-02",
+"loc": "us"
+},
+{
+"key": "N8#24053",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "10783594756",
+"rating": 3,
+"date": "2024-01-04",
+"loc": "us"
+},
+{
+"key": "N10#20274",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "7239897107",
+"rating": 1,
+"date": "2021-04-19",
+"loc": "us"
+},
+{
+"key": "A24#751",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13692949789",
+"rating": 1,
+"date": "2026-01-30",
+"loc": "au"
+},
+{
+"key": "P12#24621",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "45e874b0-676d-41ca-a1f1-5035f85af343",
+"rating": 1,
+"date": "2022-05-27",
+"loc": "en"
+},
+{
+"key": "A68#3486",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "68. Ultiself - Self-Improvement - Biohacker Routine Planner App",
+"review_id": "12629124291",
+"rating": 1,
+"date": "2025-05-07",
+"loc": "ua"
+},
+{
+"key": "P4#30509",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "930dc7e4-9afb-462c-8568-0b985c0d5b80",
+"rating": 1,
+"date": "2023-08-07",
+"loc": "en"
+},
+{
+"key": "A24#20478",
+"codes": [
+"PV_PROMO_EMAILS",
+"PV_SIGNUP_FORCED"
+],
+"quote": "i get 4(!) promotional email within a day",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "7793837248",
+"rating": 1,
+"date": "2021-09-11",
+"loc": "nl"
+},
+{
+"key": "A24#40932",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "5265142640",
+"rating": 1,
+"date": "2019-12-12",
+"loc": "us"
+},
+{
+"key": "P12#36212",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "33d6cfba-1a1e-43d0-a5dc-66f10bc76e55",
+"rating": 1,
+"date": "2021-06-03",
+"loc": "en"
+},
+{
+"key": "A13#14070",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "4910898154",
+"rating": 1,
+"date": "2019-10-08",
+"loc": "us"
+},
+{
+"key": "A13#4580",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6960315628",
+"rating": 1,
+"date": "2021-02-06",
+"loc": "de"
+},
+{
+"key": "P12#24585",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "002ba81f-d9af-46a2-9c12-623ab00a5034",
+"rating": 1,
+"date": "2022-05-28",
+"loc": "en"
+},
+{
+"key": "A68#4104",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "68. Ultiself - Self-Improvement - Biohacker Routine Planner App",
+"review_id": "12521487492",
+"rating": 1,
+"date": "2025-04-09",
+"loc": "us"
+},
+{
+"key": "A68#3051",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "68. Ultiself - Self-Improvement - Biohacker Routine Planner App",
+"review_id": "12885452647",
+"rating": 1,
+"date": "2025-07-13",
+"loc": "qa"
+},
+{
+"key": "P4#30469",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "e3a82efd-60df-4594-8b8b-a6e9895bdd39",
+"rating": 1,
+"date": "2023-08-10",
+"loc": "en"
+},
+{
+"key": "A13#13759",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5283839962",
+"rating": 4,
+"date": "2019-12-17",
+"loc": "us"
+},
+{
+"key": "A24#22793",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "9584566972",
+"rating": 5,
+"date": "2023-02-05",
+"loc": "tr"
+},
+{
+"key": "P12#147734",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "1d2be581-6325-462a-bd04-08e5eb4558c7",
+"rating": 5,
+"date": "2022-10-27",
+"loc": "ro"
+},
+{
+"key": "A10#41980",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "11323529859",
+"rating": 4,
+"date": "2024-05-30",
+"loc": "us"
+},
+{
+"key": "A10#4786",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12141944529",
+"rating": 4,
+"date": "2025-01-04",
+"loc": "ca"
+},
+{
+"key": "N2#17901",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "10319704928",
+"rating": 1,
+"date": "2023-08-31",
+"loc": "us"
+},
+{
+"key": "N5#388",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "9999825859",
+"rating": 1,
+"date": "2023-06-04",
+"loc": "au"
+},
+{
+"key": "N8#20085",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "1166576623",
+"rating": 2,
+"date": "2015-03-11",
+"loc": "se"
+},
+{
+"key": "A13#11798",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8807527904",
+"rating": 2,
+"date": "2022-06-25",
+"loc": "us"
+},
+{
+"key": "A46#633",
+"codes": [
+"PV_LOCK_WANT"
+],
+"quote": "Trobo a faltar un sistema de proteccio d acces a la privadesa i un filtre tipus face id",
+"store": "A",
+"app": "46. everyday - Habit Tracker - Daily Routine Checklist",
+"review_id": "10404136654",
+"rating": 2,
+"date": "2023-09-25",
+"loc": "es"
+},
+{
+"key": "P12#32339",
+"codes": [
+"PV_FINGERPRINT_CONTRACT"
+],
+"quote": "surely there are other ways to commit to a programme that don't involve providing fingerprint data",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "2377effd-5384-44b9-ba0d-75eddaff31ac",
+"rating": 2,
+"date": "2021-09-09",
+"loc": "en"
+},
+{
+"key": "A24#30827",
+"codes": [
+"PV_LOCK_WANT"
+],
+"quote": "I’d love to see an option to lock the app for diary purposes",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8791737570",
+"rating": 2,
+"date": "2022-06-20",
+"loc": "us"
+},
+{
+"key": "P12#17906",
+"codes": [
+"PV_FINGERPRINT_CONTRACT"
+],
+"quote": "I do not want to be fingerprinted to use this app",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "203a07f9-53e3-45de-b8fd-b594ca50f2cf",
+"rating": 2,
+"date": "2023-08-08",
+"loc": "en"
+},
+{
+"key": "P12#34190",
+"codes": [
+"PV_FINGERPRINT_CONTRACT"
+],
+"quote": "I couldn't even start using app.",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "a65a44a0-adce-4419-8f55-bee7d245c12c",
+"rating": 1,
+"date": "2021-07-25",
+"loc": "en"
+},
+{
+"key": "P65#2811",
+"codes": [
+"PV_LOCK_WANT"
+],
+"quote": "Users should be able to lock the app with a code or thumbprint to avoid others from 'spying' on them.",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "11d734c4-938d-4761-86d3-d5cc7829e186",
+"rating": 3,
+"date": "2025-01-24",
+"loc": "en"
+},
+{
+"key": "A24#31986",
+"codes": [
+"PV_FINGERPRINT_CONTRACT"
+],
+"quote": "They need your fingerprint?",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8383160245",
+"rating": 2,
+"date": "2022-02-22",
+"loc": "us"
+},
+{
+"key": "A12#206",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "12. That Girl - Routine Planner - Cute Daily Calendar Schedule",
+"review_id": "13726769977",
+"rating": 3,
+"date": "2026-02-08",
+"loc": "nz"
+},
+{
+"key": "A53#1595",
+"codes": [
+"PV_LOCK_UX"
+],
+"quote": "just have the app go automatically into Face ID or Touch ID",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "3236220997",
+"rating": 2,
+"date": "2018-09-27",
+"loc": "us"
+},
+{
+"key": "P4#26539",
+"codes": [
+"PV_FINGERPRINT_CONTRACT"
+],
+"quote": "It won't move on without a fingerprint",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "aebad619-63cc-4285-822c-64ab4f3dcb49",
+"rating": 1,
+"date": "2023-10-24",
+"loc": "en"
+},
+{
+"key": "A55#1944",
+"codes": [
+"PV_LOCK_WANT"
+],
+"quote": "the lack of Touch ID integration",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "1292917661",
+"rating": 3,
+"date": "2015-11-28",
+"loc": "us"
+},
+{
+"key": "P4#23385",
+"codes": [
+"PV_FINGERPRINT_CONTRACT"
+],
+"quote": "Whyyy would you need fingerprints?!",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "89845fc4-7825-45d2-b25a-095ec5a0abb1",
+"rating": 1,
+"date": "2024-01-06",
+"loc": "en"
+},
+{
+"key": "P3#8282",
+"codes": [
+"PV_LOCK_WANT"
+],
+"quote": "I'd love a feature where you can lock the app with a passcode.",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "c9d4d664-ad72-4c41-856a-ac61c20163c9",
+"rating": 5,
+"date": "2021-02-23",
+"loc": "en"
+},
+{
+"key": "A23#1121",
+"codes": [
+"PV_LOCK_WANT"
+],
+"quote": "增加TouchID就好了",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "1722889635",
+"rating": 5,
+"date": "2017-08-11",
+"loc": "cn"
+},
+{
+"key": "A55#796",
+"codes": [
+"PV_LOCK_WANT"
+],
+"quote": "My only request is to implement pin and Touch ID protection.",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "1936459904",
+"rating": 5,
+"date": "2017-11-21",
+"loc": "in"
+},
+{
+"key": "A10#6727",
+"codes": [
+"POS_APP_LOCK"
+],
+"quote": "I also appreciate the option to use face ID to open the app.",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "8738593454",
+"rating": 5,
+"date": "2022-06-04",
+"loc": "ca"
+},
+{
+"key": "A59#12939",
+"codes": [
+"PV_LOCK_WANT"
+],
+"quote": "хотелось бы иметь возможность сделать face/touch id на вход",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "5508183864",
+"rating": 5,
+"date": "2020-02-09",
+"loc": "ru"
+},
+{
+"key": "N9#342",
+"codes": [
+"PV_LOCK_WANT"
+],
+"quote": "Se necesita un Face ID para documentos privados",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "7269825378",
+"rating": 5,
+"date": "2021-04-27",
+"loc": "ar"
+},
+{
+"key": "N3#27521",
+"codes": [
+"PV_LOCK_LOSES_DATA"
+],
+"quote": "there is no way you can recover your notes once you forget your password",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "9414522213",
+"rating": 1,
+"date": "2022-12-20",
+"loc": "us"
+},
+{
+"key": "N3#24095",
+"codes": [
+"PV_LOCK_LOSES_DATA"
+],
+"quote": "The Face ID is now gone so I still can’t get into my old notes.",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "11947380816",
+"rating": 1,
+"date": "2024-11-14",
+"loc": "us"
+},
+{
+"key": "P8#8704",
+"codes": [
+"PV_EMAIL_SOLD"
+],
+"quote": "Sold email address to third parties for spam distribution.",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "a29f3cb7-9257-402f-8278-44a5f48277b0",
+"rating": 1,
+"date": "2017-05-17",
+"loc": "en"
+},
+{
+"key": "P12#31706",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "52a98002-5f75-4773-bcb9-7edd13b18fef",
+"rating": 1,
+"date": "2021-09-23",
+"loc": "en"
+},
+{
+"key": "A4#14087",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "11534848272",
+"rating": 1,
+"date": "2024-07-25",
+"loc": "us"
+},
+{
+"key": "P12#19691",
+"codes": [
+"PV_FINGERPRINT_CONTRACT",
+"PV_OVERCOLLECT"
+],
+"quote": "All while you were collecting my personal information.",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "aeaa6549-edf1-4d7c-af94-5eefb5b57e39",
+"rating": 1,
+"date": "2023-04-09",
+"loc": "en"
+},
+{
+"key": "P12#13856",
+"codes": [
+"PV_OVERCOLLECT"
+],
+"quote": "just started trying get money and personal information from me",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "5b89c7ef-d0f5-4f42-9285-ac07b4477701",
+"rating": 1,
+"date": "2024-09-22",
+"loc": "en"
+},
+{
+"key": "A4#10294",
+"codes": [
+"PV_OVERCOLLECT"
+],
+"quote": "this is asking 1000s of questions before starting",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10891582939",
+"rating": 1,
+"date": "2024-02-02",
+"loc": "se"
+},
+{
+"key": "P63#310",
+"codes": [
+"PV_THIRD_PARTY_ACCOUNT"
+],
+"quote": "this would also be ok if it was linked through Google instead of being a third party account",
+"store": "P",
+"app": "63. Habit Hunter - Gamified Routine",
+"review_id": "004b4cc1-154b-46eb-90a1-61ee433a2c46",
+"rating": 3,
+"date": "2025-05-06",
+"loc": "en"
+},
+{
+"key": "P24#291",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "132255b8-7345-46af-8195-a3c7eda7f1fd",
+"rating": 1,
+"date": "2020-12-11",
+"loc": "de"
+},
+{
+"key": "P126#27155",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "49c8ed7a-b992-4301-8f4f-1ac44c30c8a5",
+"rating": 1,
+"date": "2024-01-20",
+"loc": "en"
+},
+{
+"key": "P8#5061",
+"codes": [
+"PV_UNVERIFIABLE",
+"PV_SELLS_DATA",
+"PV_WANT_LOCAL"
+],
+"quote": "Would be great if there was a 100% offline version of this, which did not require an account, because what I do in my life is none of this company's business.",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "de50293c-f02d-4eb4-a07e-9295f7a72d35",
+"rating": 2,
+"date": "2022-06-29",
+"loc": "en"
+},
+{
+"key": "A67#366",
+"codes": [
+"PV_SIGNUP_FORCED"
+],
+"quote": "demand to enter your personal data the first time you open it (email, for example)",
+"store": "A",
+"app": "67. Habio - Daily Habit Tracker - Routine planner & To do list",
+"review_id": "10020111019",
+"rating": 1,
+"date": "2023-06-10",
+"loc": "de"
+},
+{
+"key": "A4#14647",
+"codes": [
+"PV_CROSS_PROMO"
+],
+"quote": "I keep getting ads the app for online therapy, a fitness app, a sleep tracker, and a food tracker that’s all owned by the same company",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "11384507292",
+"rating": 1,
+"date": "2024-06-15",
+"loc": "us"
+},
+{
+"key": "P8#12833",
+"codes": [
+"PV_OVERCOLLECT"
+],
+"quote": "why do you need my ip address",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "76b21879-d279-4d57-8e71-910f21c6615e",
+"rating": 1,
+"date": "2023-12-02",
+"loc": "ka"
+},
+{
+"key": "P122#19931",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "0c6c8742-8ef1-47e7-ac43-f6aa5e36784e",
+"rating": 5,
+"date": "2022-04-29",
+"loc": "en"
+},
+{
+"key": "P15#323",
+"codes": [
+"PV_SENSITIVE_DATA"
+],
+"quote": "a concern regarding the privacy of the financial data",
+"store": "P",
+"app": "15. Habit Tracker - HabitGenius",
+"review_id": "65dad70b-60ce-457c-a6f4-0c949257eac9",
+"rating": 5,
+"date": "2026-01-13",
+"loc": "en"
+},
+{
+"key": "P84#11918",
+"codes": [
+"POS_PRIVACY"
+],
+"quote": "respect for user privacy",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "1c1bd44a-df60-4ef0-a6ce-bd2f92261ce9",
+"rating": 5,
+"date": "2024-01-07",
+"loc": "en"
+},
+{
+"key": "A1#49022",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10059508062",
+"rating": 5,
+"date": "2023-06-22",
+"loc": "ph"
+},
+{
+"key": "A1#47834",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9131894720",
+"rating": 5,
+"date": "2022-09-29",
+"loc": "kz"
+},
+{
+"key": "N1#23551",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "10851408640",
+"rating": 4,
+"date": "2024-01-22",
+"loc": "us"
+},
+{
+"key": "N8#3818",
+"codes": [
+"PV_CANT_DELETE_DATA"
+],
+"quote": "It is very hard to delete personal information.",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "1448249381",
+"rating": 1,
+"date": "2016-09-11",
+"loc": "ca"
+},
+{
+"key": "N3#2390",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "12568111690",
+"rating": 1,
+"date": "2025-04-21",
+"loc": "ca"
+}
+]

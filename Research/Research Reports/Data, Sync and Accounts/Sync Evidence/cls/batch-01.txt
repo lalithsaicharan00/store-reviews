@@ -1,0 +1,73 @@
+A1#47967|SY_EDIT_WIPES_HISTORY|"if I change the frequency of a habit, the progress is deleted"
+A13#10540|SY_EDIT_WIPES_HISTORY|"the streak and progress that I have will be deleted, if I edit my habit"
+A13#11841|SY_EDIT_WIPES_HISTORY|"it erases all your past accomplishments"
+A13#13079|SY_EDIT_WIPES_HISTORY|"I changed my workout habit to five days instead of three and it erased all my previous work"
+P123#536|S_WIDGET|"Widgets do not update at all"
+P2#996|SY_EDIT_WIPES_HISTORY|"it says that the data entries will be deleted"
+P24#7965|SY_EDIT_WIPES_HISTORY|"if I change my target on one of my goals, then previous weeks would not be affected by it"
+A23#2573|S_DUP,B_RESTORE_DUP|"when I restore the backup, every task gets added twice/thrice"
+A24#11670|NR|
+A24#14649|NR|
+A24#24188|NR|
+A24#25758|NR|
+A31#1210|SY_HEALTH_DOUBLE|"it’s double counting steps from the health app"
+A31#2974|SY_HEALTH_DOUBLE|"it is double counting the steps that I am taking"
+A48#4184|SY_DOUBLE_LOG|"the app began double logging my entries and double counting them"
+A53#1105|SY_WATCH_DOUBLE|"On the Apple Watch, I periodically record how much water I drink, and all the data are recorded twice"
+A53#1578|SY_HEALTH_DOUBLE|"this app is not smart enough to avoid double counting from iPhone and the Apple Watch"
+A67#1720|NR|
+A67#1908|NR|
+P12#8125|NR|
+P12#8821|NR|
+P12#63084|SY_DOUBLE_LOG|"it kept double counting goals"
+P12#118071|SY_DOUBLE_LOG|"there can appear a double notification which makes things count double"
+P122#32369|NR|
+P24#6759|NR|
+P4#19615|NR|
+P8#8907|SY_DOUBLE_LOG|"sometimes my task is added twice"
+N11#6170|SY_HEALTH_DOUBLE|"it double counted my steps between my iPhone and watch"
+N5#11064|SY_HEALTH_DOUBLE|"this Apple fitness counts as 20k"
+N4#7580|NR|
+P5#1548|SY_DELETE_RESURRECT|"I also deleted them and they still show up"
+A10#2836|NR|
+P12#27342|NR|
+P84#19023|T_RECURRENCE|"repeating tasks don't actually repeat"
+A4#8071|NR|
+A10#33418|NR|
+A48#4064|SY_DELETE_RESURRECT|"Remainder icon keep reappearing"
+P129#825|NR|
+A1#48912|SY_DELETE_RESURRECT,L_NOTSAVED|"I also deleted some habits yesterday but they still reappeared today"
+A24#23748|SY_DELETE_RESURRECT|"Deleted habits and routines would reappear on their own"
+A23#3297|SY_DELETE_RESURRECT,S_DUP|"constant double entries / deleted tasks reappear"
+A24#40422|NR|
+P8#4017|SY_DELETE_RESURRECT|"even after I have deleted an task it's still shows it"
+P84#12457|S_WIDGET|"Even though I deleted all to do's from my list, the count still shows on my widget"
+P3#10185|NR|
+A46#1553|S_WIDGET,SY_DELETE_RESURRECT|"I deleted the Dry January task but the widget still shows it"
+A13#11738|NR|
+P4#12644|NR|
+N9#44868|NR|
+N7#11185|SY_DELETE_RESURRECT,S_WATCH|"I have deleted the note from Keep, but it still shows up on my w"
+N1#21303|S_WIDGET|"they should disappear from my widget until the next day"
+P24#7804|NR|
+A1#55645|T_NOBACKFILL,L_CORRUPT|"now I can’t go back to previous days"
+P3#10845|T_NOBACKFILL|"Can't go back to add habits I achieved yesterday"
+A24#38063|NR|
+P37#965|NR|
+P111#998|NR|
+A31#4824|T_NOBACKFILL|"I can’t edit if I’ve made a mistake on a previous day"
+P12#13151|T_NOBACKFILL|"you can't go back to the previou"
+A24#32989|NR|
+P49#560|T_NOBACKFILL,SY_BACKFILL_HITS_TODAY|"you can't mark a previous day's tasks as complete, because it will mark today's as complete too"
+P65#8987|T_NOBACKFILL|"Cannot update previous dates"
+P7#497|T_NOBACKFILL,B_PAID|"Can't update previous days without premium so you need to remember to check everything until midnight"
+P131#314|T_NOBACKFILL,T_MIDNIGHT|"I came home after midnite and I can't update the routine cuz I'm in the next day"
+A13#5729|NR|
+P12#115446|T_NOBACKFILL,L_USER|"you can't edit the past day if you forgot to mark your progress"
+A5#194|T_NOBACKFILL|"you can’t check off habits from previous days unless you already started tracking them that day"
+A13#11933|T_NOBACKFILL|"there’s no way to go back and check the previous day"
+A11#15|T_NOBACKFILL|"you cannot go back and review or change previous days without, again, skipping back a single day at a time"
+A57#771|T_NOBACKFILL|"either you can’t mark off goals on previous days"
+N10#20434|NR|
+N3#2950|NR|
+N9#35990|NR|

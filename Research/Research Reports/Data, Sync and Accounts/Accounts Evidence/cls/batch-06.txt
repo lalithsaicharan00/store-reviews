@@ -1,0 +1,70 @@
+A4#9411|NR|
+P36#194|AC_PROFILES|"allow tracking for multiple users: for my case, plan to use it to track my kids' habit too"
+P4#26998|NR|
+P12#15180|NR|
+A10#4665|NR|
+P24#7476|AC_FAMILY_DEVICES,S_FAIL,X_SUPPORT_NONE,X_PAYER|"when I tried logging onto my son's phone it didn't recognize the account"
+P12#43200|NR|
+A24#25520|AC_DELETE_INCOMPLETE,E_WEBSUB|"I’ve deleted my account, and screenshotted I’ve canceled the subscription months ago"
+A10#4039|NR|
+P84#23068|S_SHARED|"allow multiple users to see each others task list"
+P111#1878|AC_MANAGED_EMAIL,AC_EMAIL_NOT_ARRIVE|"It said it's because her online class email is managed by the school"
+A1#55044|NR|
+A10#28036|NR|
+A10#32965|NR|
+P3#3992|NR|
+N8#8686|NR|
+N10#20555|NR|
+N8#23580|NR|
+N9#4955|NR|
+N2#17988|NR|
+P24#9379|AC_PROVIDER_GONE,AC_PASSWORD,L_PHONE|"I notice that they have removed Google login... And I am unable to recover my password"
+A85#380|AC_PASSWORD,AC_EMAIL_NOT_ARRIVE|"It’s been 2 days and I still haven’t gotten that reset email"
+P8#5263|AC_PASSWORD,AC_LOGIN_FAIL|"won't accept the password I set- won't recognize my user name"
+P24#22707|AC_PASSWORD,AC_EMAIL_NOT_ARRIVE|"I forgot my password and the new one never came"
+P13#16|AC_PASSWORD,AC_EMAIL_NOT_ARRIVE|"says password reset link emailed but never any email received, checked spam folder"
+P49#4266|AC_LOGOUT,AC_PASSWORD,X_SUPPORT_NONE,X_PAYER|"I paid for the pro version. I was logged out and I can't log in anymore"
+P24#8959|AC_PASSWORD,X_SUPPORT_NONE,X_PAYER|"Nobody answers my email for password reset"
+P111#1189|AC_PASSWORD,AC_LOGIN_FAIL|"it wouldn't let me log back in or reset my password or create a new account"
+P12#45112|AC_PASSWORD,AC_LOGIN_LOOP|"I click forgot password. It sends me right back to the login page"
+P8#4902|AC_PASSWORD|"used to keep forgetting password"
+P24#2831|AC_PASSWORD,AC_EMAIL_UNKNOWN,L_REINST,X_PAYER|"While doing forget password it is showing your email is not registered with our data base"
+P24#1259|AC_PASSWORD,AC_LOGIN_LOOP|"then again I put the new password to login it said wrong password"
+A4#13677|AC_PASSWORD,AC_EMAIL_UNKNOWN,X_PAYER|"when I chose forget password I get the message that this account doesn’t exist, even thought I did subscribe"
+A24#24259|AC_PASSWORD,AC_CANCEL_NEEDS_LOGIN|"it says my password is incorrect but won’t allow me to recover it"
+P24#10411|AC_PASSWORD,AC_TWO_ACCOUNTS,L_PHONE|"I've gotten the "that email is already taken" message half a dozen times, but it never hints at realising that maybe it was taken by me"
+P12#25734|E_WEBSUB|"If you signed up through the play store and the subscription isn't showing up you need to go to the fabulous website"
+P111#8915|AC_LOGIN_FAIL|"it keep showing that the email address or password is incorrect even though it's perfectly right"
+P24#16280|AC_PASSWORD|"my password reset is not working"
+P33#1278|AC_PASSWORD|"forgot password is not working for me"
+P3#10847|POS_MIGRATE,AC_NOACC_PRAISE|"the fast and seamless copy of data from old phone to my new phone via Bluetooth, without any hitch, and without the need to log in"
+N3#11289|L_ENCRYPT_LOCKOUT|"Please please add forgotten password option for the lock notes"
+N10#21463|AC_PASSWORD,AC_LOGIN_FAIL|"I could never log in again no matter how many times I went through the process of getting a security code and resetting my password"
+N3#18827|AC_PASSWORD|"notes not accept  my password and ID"
+N3#21070|L_ENCRYPT_LOCKOUT|"There should be a better way, when I forget password of my password protected note"
+N3#27510|L_ENCRYPT_LOCKOUT|"I put in a password for certain notes, and of course I forgot the password"
+P97#15744|AC_LOGIN_FAIL|"сегодня не могу зайти в приложение"
+P12#94281|AC_LOGIN_FAIL|"no me deja entrar"
+P5#3623|AC_UPDATE_ONBOARDING,L_UPD|"cada dos por tres me sale el menú de bienvenida como si fuera nueva"
+P11#16037|AC_LOGIN_FAIL,E_RESTORE,L_UPD,X_PAYER|"1 yıllık üyelik aldığım halde giriş yapamıyorum güncellemeden sonra yeniden üyelik istiyor"
+A1#2575|L_UPD,L_CORRUPT|"ahora me sale que se está actualizando la base de datos sin parar"
+A13#7823|AC_APPLE_FAIL,E_PLATFORM_GAP|"아이패드에서 애플계정으로 로그인 하려고 하는데 로그인이 안 됩니다"
+A65#109|AC_LOGIN_FAIL,E_RESTORE,L_UPD,X_PAYER|"Depois da nova atualização não consigo logar minha conta como versão plus"
+P12#143555|AC_LOGIN_FAIL,L_PHONE,AC_NO_CHANNEL,X_PAYER|"troquei de celular e não consigo acessar no novo"
+P4#62214|AC_LOGIN_FAIL|"No me deja entrar, ya llevo más de dos meses"
+P8#14197|AC_PROVIDER_FAIL|"Created an account via Facebook and now I can't login"
+P98#2379|AC_LOGIN_FAIL|"no me deja entrar, me sale una pantalla negra"
+P24#18257|AC_PROVIDER_FAIL,AC_SIGNUP_FAIL|"No me deja iniciar sesión en Facebook , igual si me registro"
+A24#24880|AC_WEB_FLOW,AC_PROVIDER_FAIL,E_WEBSUB|"Для входа гоняют по ссылкам, которые работают через раз"
+P70#1181|AC_PROVIDER_FAIL,E_PLATFORM_GAP|"на Айфоне вошёл, а на Андроиде не заходит"
+P11#7626|AC_UPDATE_ONBOARDING,AC_LOGIN_FAIL|"ya no pasa de la pantalla de bienvenida y no me deja acceder"
+A68#2206|AC_LOGIN_FAIL,X_PAYER|"Деньги списали за годовое обслуживание, но уже 3-день не могу войти в систему"
+P8#12976|AC_LOGIN_FAIL,AC_SERVER_REQUIRED|"서버가 끊어졌다고 나와요"
+A24#9557|NR|
+A5#1493|AC_APPLE_ON_ANDROID_FAIL,X_PAYER|"애플 아이디 로그인시 애플아이디에 로그인할 수 없습니다.라는 메시지가 전송됩니다"
+A9#836|AC_LOGIN_FAIL,X_PAYER|"para çekildi, ardından uygulamaya giriş yapamadım"
+N11#3314|AC_LOGIN_FAIL|"삼성 헬스 앱에서 로그인이 안됩니다"
+N7#7296|L_UPD,L_CORRUPT|"После обновления приложение вообще не открывается"
+N9#26951|AC_LOGIN_FAIL,AC_NO_CHANNEL|"Нет формы обратной связи, для экстренной связи"
+N11#95|NR|
+N10#9582|AC_PROVIDER_FAIL|"Impossible de se connecter depuis un compte Microsoft lié à un compte Google (erreur 403)"

@@ -1,0 +1,17 @@
+screened 1487223 {'A': 337331, 'P': 901453, 'N': 248439}; candidates 3901
+
+mode                     n apps     A     P     N   1★%  mean
+GDRIVE                1441   47    13   216  1212  23.7  3.51
+ICLOUD                 918   50   442     0   476  38.1  2.71
+ML_BACKUP              843   80   252   401   190  22.1  3.48
+OTHER_CLOUD            264   32    74    75   115  19.7  3.49
+AUTO_BACKUP            157   36    22   125    10   8.3  4.02
+LOCAL_BACKUP           135   38    12    71    52  28.9  3.02
+RESTORE_BACKUP         101   27    40    49    12  42.6  2.43
+BACKUP_FILE             83   18    26    45    12  30.1  3.22
+MANUAL_BACKUP           71   21    21    42     8  25.4  3.20
+OS_BACKUP               55   24    10    20    25  38.2  2.80
+STORAGE_FULL            30    9     2     3    25  63.3  1.90
+BACKUP_REMINDER          9    7     5     4     0  11.1  3.44
+BACKUP_STATUS            9    7     3     5     1  11.1  3.33
+NOACC_BACKUP             6    5     1     5     0  16.7  3.67

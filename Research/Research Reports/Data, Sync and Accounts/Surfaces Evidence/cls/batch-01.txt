@@ -1,0 +1,70 @@
+P24#11367|SF_NOTIF_ACTION_BROKEN|"actions in the notification drop down are completely unresponsive"
+P129#551|NR|
+P10#12058|SF_NOTIF_ACTION_WANT|"have option to Complete or Skip from Notification itself, without opening the app"
+P11#3593|SF_NOTIF_ACTION_WANT|"it doesn't have a button to complete immediately in the notification"
+P2#10082|NR|
+P12#19941|SF_NOTIF_STALE|"I already checked a habit task and it will keep popping up on the notifications tray"
+P8#754|SF_NOTIF_ACTION_REMOVED|"removed the ability to "complete" (check off as done) a task or habit from the notification bar"
+P3#16074|SF_NOTIF_ACTION_BROKEN|"When I press check button in notification it is not recorded!"
+P3#13639|NR|
+P12#61458|SF_NOTIF_STALE|"constantly* sends notifications to finish my Morning Routine -- even after I complete it"
+P3#15971|SF_NOTIF_ACTION_WANT|"you can't check from the notification reminder"
+A31#2506|SF_NOTIF_ACTION_WANT,SF_WIDGET_WANT_INTERACTIVE|"Why can’t we click on the notification to mark as complete?"
+P9#641|NR|
+P84#12044|POS_NOTIF_ACTION,POS_WATCH|"I can even complete a task from my Galaxy Watch 4"
+P3#13425|SF_NOTIF_ACTION_WANT|"if i can checking the habit via notification"
+P2#22644|SF_NOTIF_ACTION_WANT|"I don't seem to have an option to mark a habit or task as completed from the notification screen"
+A48#370|SF_NOTIF_ACTION_STALE_APP|"the badges don’t update sometimes"
+A13#10578|SF_NOTIF_ACTION_WANT|"make it possible for the user to mark a habit as"
+N1#25633|POS_NOTIF_ACTION|"long-press on the notification. Mark as completed"
+N1#6331|SF_NOTIF_ACTION_BROKEN|"Do not end the reminder as completed from notifications"
+N1#2791|SF_NOTIF_ACTION_STALE_APP,SF_DESKTOP_SYNC|"when completing from the notification it will still appear as uncompleted when I open the app"
+P111#778|NR|
+P12#12747|NR|
+A23#4253|SF_COMPLICATION_BROKEN|"Suddenly can’t be used as a complication"
+A31#3485|SF_COMPLICATION_BROKEN,SF_WIDGET_BROKEN|"No complication for Apple Watch has ever shown up"
+A48#3089|SF_COMPLICATION_WANT|"does not have any complications listed to put on the watch face"
+A33#89|SF_COMPLICATION_STALE|"Forever states there is 1/1 habit complete although tapping this and opening the app reveals 0/3 habits completed"
+A53#1110|SF_COMPLICATION_WANT|"Useless without opportunity to add the app to watch face on Apple Watch"
+A50#147|SF_COMPLICATION_WANT,SF_WATCH_BROKEN|"It’s impossible to add a Habit complication to the watch face"
+P10#23527|NR|
+A13#1890|SF_COMPLICATION_BROKEN|"Apple Watch complication doesn’t work 99% of the time"
+A31#4514|SF_COMPLICATION_STALE,SF_WATCH_SYNC|"when you update a task it doesn’t update the complication and it does not reflect on iOS application"
+A13#6016|SF_TABLET_NOSYNC,SF_COMPLICATION_WANT|"the iPad app doesn’t update/sync when I enter info on my iPhone or Apple Watch"
+A31#2350|SF_COMPLICATION_STALE|"the Apple watch complication sync has been very slow lately"
+A86#1215|SF_COMPLICATION_LIMITED|"there is only one watch face that’ll work with this app"
+P65#7914|NR|
+A86#1278|SF_COMPLICATION_LIMITED|"only on certain watch fac"
+P84#11140|POS_NOTIF_ACTION|"I like the tick marks on the notifications"
+P3#3321|POS_OFFLINE_NO_NETWORK|"does not require network connections for any of its features"
+N2#17104|NR|
+N4#8395|NR|
+N9#50051|NR|
+A24#36516|NR|
+A33#3176|SF_LIVE_STALE|"Live activities for a habit that I’ve marked complete should not be showing up"
+P12#53047|NR|
+P122#15676|SF_LOCK_WANT,SF_WATCH_WANT,POS_WEB|"It easily has the best companion website"
+A3#3875|SF_WIDGET_PAID|"The only reason i wanted this was to put it on the lock screen but you need to pay."
+P97#2104|NR|
+A3#1218|SF_LOCK_WANT|"Missing a Lock Screen widget to get 5"
+A23#4258|SF_WIDGET_BROKEN,SF_SHORTCUTS_BROKEN|"the app has updated to break widgets, shortcuts"
+A85#1975|SF_LOCK_WANT|"there should be a lock screen checklist widget"
+A1#20|NR|
+P126#30078|NR|
+A5#837|SF_LIVE_WANT|"Not taking advantage of IOS 16 and Dynamic Island"
+P98#100|NR|
+P84#31676|SF_LOCK_WANT|"Also wish it could be my lock screen!"
+P24#16359|SF_LOCK_WANT|"a home/lock screen widget with my goals for the day"
+A8#597|SF_WATCH_WANT,SF_LIVE_WANT|"We need an AW app now."
+A5#596|SF_LIVE_STALE|"the live activity and Dynamic Island don’t advance to the next task and show the wrong time"
+A3#2467|POS_LOCK|"being able to have widgets on the Home Screen or even Lock Screen helps keep me reminded"
+N1#18803|SF_LOCK_WANT|"Need to find a way to display the full reminder on the lock screen"
+N5#11141|SF_LIVE_STALE|"its active in dynamic island"
+N8#1181|SF_LOCK_WANT|"Daily appointments recap not on the lock screen for Iphone"
+A86#1176|NR|
+A4#9994|NR|
+A86#1744|NR|
+P12#14470|NR|
+A3#6640|NR|
+A13#5646|SF_SIRI_ONLY_BAD|"sans utiliser Siri"
+A31#4527|POS_SHORTCUTS|"you can even make shortcuts to allow Siri to log things"

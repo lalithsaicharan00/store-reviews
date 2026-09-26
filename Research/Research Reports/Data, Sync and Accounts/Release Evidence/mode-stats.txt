@@ -1,0 +1,13 @@
+screened 1487223 {'A': 337331, 'P': 901453, 'N': 248439}; candidates 5840
+
+mode                     n apps     A     P     N   1★%  mean
+CRASH_LOOP            2029   78   717   258  1054  68.5  1.67
+SUPPORT_NONE          1616   78   837   685    94  78.6  1.42
+COMMS                  638   52   286   208   144  75.9  1.49
+SUPPORT_GOOD           475   74   254   209    12  27.6  3.62
+UPDATE_WIPED           366   44   142    69   155  70.2  1.63
+OS_UPDATE_BREAK        325   29    30     3   292  60.6  1.87
+UPDATE_CRASH           269   36    40    19   210  63.6  1.79
+ROLLBACK_WANT          146   35    41    33    72  56.2  1.97
+FORCED_UPDATE          105   35    17    24    64  41.0  2.47
+REDESIGN                48   14    15    12    21  58.3  1.62

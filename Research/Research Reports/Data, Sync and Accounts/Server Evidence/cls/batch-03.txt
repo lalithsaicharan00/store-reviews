@@ -1,0 +1,31 @@
+N9#40201|NR|
+N4#712|SV_SYNC_SLOW,SV_DATA_MISSING_UNTIL_SYNC|"This app takes forever to sync with iCloud"
+N8#24975|SV_SLOW_START|"most of the time I can’t get my calendar to load whatsoever"
+N9#49321|NR|
+A24#5338|NR|
+A24#5488|NR|
+A31#4225|NR|
+A24#34275|NR|
+A13#17268|NR|
+A31#1214|NR|
+A67#2014|NR|
+P24#2524|SV_OUTAGE_BLOCKS_USE|"nothing worked for weeks"
+P4#10489|NR|
+A1#55407|SV_FEATURE_REMOVED|"pulling features out of the blue after I’ve already settled into using it"
+A1#48526|NR|
+A31#1561|NR|
+P8#6606|NR|
+A4#10427|NR|
+P24#5653|SV_SHUTDOWN|"This app is no longer supported."
+A13#6994|SV_SHUTDOWN|"which is no longer available in AppStore"
+A55#1490|NR|
+P12#40807|NR|
+P84#9989|SV_SHUTDOWN|"I had a list app that I loved, but is no longer supported"
+P122#7591|SV_SHUTDOWN_FEAR|"will probably use it until it will get discontinued"
+P111#3332|SV_SHUTDOWN|"hearing that you're shutting down is making me really sad"
+P122#38236|NR|
+P4#5105|NR|
+N10#22913|SV_SHUTDOWN|"officially announce the demise of Wunderlist"
+N3#19058|NR|
+N10#19002|NR|
+N7#9882|SV_CONNECT_ERROR_NOISE|"constantly flashes “Cannot Connect, try again later”"

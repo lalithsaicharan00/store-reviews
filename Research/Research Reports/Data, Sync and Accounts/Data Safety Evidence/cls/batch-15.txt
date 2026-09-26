@@ -1,0 +1,60 @@
+P125#17701|NR|
+P3#18612|NR|
+P4#96073|NR|
+P2#9890|NR|
+P3#13971|L_USER|"I can overwrite my previous day's data"
+A53#1505|S_DUP,L_CORRUPT,S_HEALTH_WRONG,X_NO_CHANNEL|"Then the old habits reappeared. At this point it crashed"
+A13#8943|S_DUP,L_RANDOM|"there are times where my habits are missing and some habits are duplicated"
+A1#46473|NR|
+A33#294|NR|
+P5#2279|NR|
+A85#89|POS_SYNC,S_CONFLICT|"it&#39;s pretty good with conflict resolution between tasks as far as I can tell"
+A10#40225|NR|
+A3#7853|NR|
+A59#12429|NR|
+P2#9368|NR|
+N2#9784|S_DUP|"Change event from my calendar to my wife’s often results in duplicate events being created"
+N8#26864|NR|
+N8#16237|S_DUP,L_UPD|"All my events, reminders and goals have been duplicated since last update. If I delete one the other also goes off"
+N2#17524|NR|
+N10#14461|L_SYNC,S_FAIL,X_TRUST_FEAR|"the syncing functionality seems to fail and delete data. I’ve reverted to taking screen shots"
+P24#8950|S_FAIL,A_LOGIN_FAIL|"I must create the same account over and over  again"
+P10#10757|S_FAIL|"Sync is not working"
+A13#413|S_FAIL,L_REINST,B_ICLOUD|"I was not able to sync my progress on iCloud and once I deleted the app I lost everything"
+A23#3352|S_HEALTH_WRONG,S_DELAY|"it is slow to sync the Apple HealthKit data"
+P111#12255|S_DELAY|"Dashboard syncs information slowly"
+A13#11968|S_FAIL,X_PAYER,X_CHURN|"I did the premium trial but I couldn’t get the app to sync"
+P2#4715|S_MULTI_REQ,X_PAYER|"it can not be synced to my other devices"
+A1#51899|S_FAIL|"App does not sync across devices"
+A24#11332|POS_SYNC|"Neue Synchronisation eliminiert erstmal grösstes Problem"
+P126#198431|S_FAIL,B_LOCAL_ONLY|"синхронизация с google работает неадекватно"
+A31#4710|S_WATCH,S_DELAY|"It can take forever to update in the watch"
+A13#14872|S_FAIL|"The data won’t sync with my iPad"
+P24#4848|S_FAIL|"not able to sync data"
+A33#1193|PR_LOCAL_PRAISE|"an app which is basically local and just uses iCloud to sync my data to other platforms is not a “service”"
+P126#190335|S_MULTI_REQ|"Só poderia ter uma versão pra Windows e a sincronização"
+P111#1877|POS_SYNC|"Previous sync problems have been long solved"
+P126#120729|NR|
+A13#11337|NR|
+P3#2257|S_MULTI_REQ,B_NONE|"need sync so that data doesn't get lost"
+P84#35390|POS_SYNC,X_PAYER|"ya con la sincronizacion me anime a suscribirme"
+N8#9146|S_WIDGET|"it doesn’t sync in the background with app - and there may be an outdated info"
+N1#21656|S_WATCH|"won’t sync to watch"
+N10#9971|S_FAIL|"Data doesn’t sync between devices"
+N7#1378|S_FAIL,X_NO_CHANNEL|"writing a negative review is the only way to get technical support"
+N9#1863|S_FAIL|"always fail to refresh and show new files"
+A48#1666|T_TZ,T_REMINDER_TZ|"changing time zone inside the app all reminders were reseted to 1am without any message"
+A1#52145|T_TZ|"Every time I go to a new time zone, my habits get all messed up"
+A1#578|T_TZ|"Time zone adjustment for be great"
+P8#10411|T_TZ,S_WIDGET|"No se le puede cambiar la zona horaria"
+A13#14171|T_TZ,S_DUP,L_UPD|"It’s Tuesday but it’s showing that it’s Wednesday"
+P4#21250|T_DST,T_REMINDER_TZ|"After switching to daylight saving time, notifications began to arrive an hour later"
+P8#4306|T_TZ|"Devs intentionally prevented you from manually setting your timezone"
+P11#5243|T_TZ,T_DATE|"the app marks it complete on 23rd March"
+A10#2749|T_TZ,T_STREAK|"I can’t figure out if it’s a time zone thing wherever their office is"
+A31#4961|T_REMINDER_TZ|"Reminder time isn&#39;t adjusted for the timezone"
+A24#42271|T_TZ,X_CHURN|"This whole counting ‘bit’ of being on track gets ruined when you travel internationally"
+A24#28430|T_TZ|"my career takes me all over the globe in different time zones"
+A1#52293|NR|
+A1#54319|T_REMINDER_TZ|"I don&#39;t know what time zone this is in"
+A33#2494|T_TZ,L_PARTIAL|"When paddling between countries, the progress is incorrect and often wiped out"

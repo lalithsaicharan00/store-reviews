@@ -1,0 +1,60 @@
+N3#748|L_NOTSAVED|"Notes didn’t save my scans"
+N3#27738|L_RANDOM,S_FAIL|"Everything in the note disappears. It can take several force quits to get it to show back up"
+N10#21901|POS_MIGRATE,X_SHUTDOWN_MIGRATION|"I was happy to be able to transfer all my lists easily to this new app"
+N8#24256|NR|
+N9#41393|L_UPD,L_LOGIN,A_FORCED|"after updating their app and now they want me to log in with my google account? It never asked for that before. Everything has been wiped out"
+P12#64632|NR|
+P12#67621|NR|
+A48#4081|E_LIFETIME,E_GRANDFATHER,L_CORRUPT|"early adopters were supposed to get a lifetime subscription"
+A46#505|P_SLOW_DATA|"The app lags when multiple habits are setup"
+A1#56070|NR|
+A31#3710|P_SLOW_DATA,L_UPD,L_NOTSAVED|"it takes an unusually long amount of time to record my tracking updates"
+P24#3938|L_REINST,L_CORRUPT,S_FAIL,X_ABANDON,X_SUPPORT_NONE|"A de/reinstall has now lost all my data"
+A53#1334|NR|
+P8#4093|P_SERVER_DOWN,L_GAME_DESIGN|"it constantly lost connection to the servers"
+P8#8540|P_SLOW_DATA|"Keeps lagging and stop working when i try to input my habits"
+P4#20704|NR|
+A10#21199|NR|
+A31#2533|P_SLOW_DATA,X_CHURN|"It takes ages to log habits and even scrolling through a short habit list has become a pain"
+A31#529|L_CORRUPT,S_WATCH,T_STREAK|"That’s going to hurt a lot of streaks"
+P24#1652|NR|
+P105#54|NR|
+A24#6187|NR|
+A24#38071|NR|
+A24#33453|NR|
+P2#21251|NR|
+N10#18381|NR|
+N6#6772|NR|
+N3#24914|L_DRAFT,P_SLOW_DATA|"all the notes I have been writing during the lecture have just disappeared with no trace"
+N3#11359|B_RESTORE_FAIL|"No particular way through which it retrieves the data back from cloud"
+N1#9870|P_SLOW_LOAD|"The app takes a lot of time to open and list the reminders"
+A10#4391|T_STREAK|"it was reset even tho it usually gives me another chance to restore it"
+A23#5355|T_STREAK,T_MIDNIGHT,T_NOBACKFILL|"I’ll mark it the night before well before midnight only to find out the next day that I’m starting at day one again"
+A10#21024|T_STREAK,E_CONSUMABLE|"completely reset my more then a YEAR streak for no reason"
+A10#18457|T_STREAK|"my Day streak of 267 disappeared even though I didn’t miss any days"
+A10#29910|T_STREAK|"it restarts me and undoes my streak"
+A13#16289|T_STREAK,L_EDITHIST|"1 week perfect streak just gone after i deleted an unnecessary habit"
+A31#2778|T_STREAK|"my 200+ day streaks of reading scripture and writing a book simply went to 0 days"
+A1#2281|T_STREAK|"it shows your streaks as being broken even though the data says they’re complete"
+P12#41875|T_STREAK,X_PAYER|"it said i was at 40 still. Then the next day it reset to 0"
+P7#520|T_STREAK|"My streak was reset even though it's visible in the calendar as non interrupted"
+A10#28050|NR|
+A24#15750|T_STREAK,L_REINST,L_CORRUPT|"It suddenly decides your streak counter has been reset to 0 even though you’ve missed nothing"
+A10#26667|T_STREAK|"my streak went to zero without the option for streak repair"
+A1#48547|T_STREAK|"streaks are shown incorrectly"
+A23#0|T_MIDNIGHT,T_STREAK|"The ‘start of the day’ feature is really not intuitive"
+P98#1078|T_STREAK,L_EDITHIST|"Every time I make a new task I loose my streak"
+P12#16759|NR|
+A10#325|T_STREAK,E_CONSUMABLE|"TWO ON HAND STREAK REPAIRS AND IT LOST MY STREAKKKKKKKKKKK"
+A23#2010|T_STREAK,L_RANDOM|"all of a sudden some/most of my streaks are disappearing from no warning"
+A10#20322|L_XOS,T_STREAK|"I had to switch from android to iPhone last year since I got a new phone, it didn’t save any of my progress"
+N5#12438|T_STREAK|"It says the last day of closing my ring was 11/7 and my current streak is 33 days on 11/9"
+N5#12409|T_STREAK,T_NOBACKFILL|"I tried my best to edit to add exercise that I did that day that wasn’t counted and it didn’t matter"
+N5#12108|T_STREAK|"I’m on day 8 and it says my streak was reset to 0"
+N5#11557|T_STREAK,X_NO_CHANNEL|"My longest activity streak keeps resetting even though all workouts are completed"
+N5#17017|T_STREAK,S_HEALTH_WRONG|"since I got a Garmin wearable the App is not behaving anymore"
+P69#512|S_DUP,L_FREE_LIMIT_EXISTING|"will people who have already created more than 20 be affected"
+A24#36395|NR|
+A13#14183|S_DUP,T_DATE,T_STREAK,E_LIFETIME|"All day today, since updating the app, “Today” has been tomorrow"
+A24#23172|E_DOUBLE|"15 out of the last 20 transactions are duplicate unauthorized charges"
+A48#1204|S_DUP,S_REMINDER_XDEVICE|"if you have already checked off a habit on one device, you still receive a reminder to mark the habit on another device"

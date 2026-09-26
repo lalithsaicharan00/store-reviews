@@ -1,0 +1,70 @@
+P12#92905|NR|
+A31#2382|SF_SHORTCUTS_WANT|"No Siri or Shortcuts integration"
+A59#11972|SF_SHORTCUTS_WANT,SF_DESKTOP_PAID|"нет синхронизации с Siri, десктоп версия изначально платная"
+A24#11145|NR|
+A24#10397|SF_SHORTCUTS_WANT|"Vielleicht kann man ja per Siri die Gewohnheiten abhaken?"
+A31#140|SF_SHORTCUTS_WANT|"please add apple shortcuts support"
+A3#3521|SF_SHORTCUTS_READ_WANT|"Please add support for displaying the current streak in shortcuts"
+A10#43992|NR|
+P84#32043|SF_SHORTCUTS_WANT|"I wish it connected with Google so I could use my Google Assistant with it"
+A24#43186|SF_WATCH_WANT,SF_SHORTCUTS_WANT|"I wish it worked on other smart watches e.g. fitbit, garmin"
+A24#10314|NR|
+N1#14384|NR|
+N6#2067|SF_SHORTCUTS_WANT|"I still can’t add tasks with Siri or with the Apple shortcuts app"
+N1#23461|NR|
+A46#1477|SF_DESKTOP_SLOW,SF_DESKTOP_SYNC|"The Mac app is slow and clunky. Does not sync with my phone app in a timely manner."
+A46#1253|SF_DESKTOP_SLOW,SF_DESKTOP_KEYBOARD|"please add hotkeys"
+A23#4793|SF_VERSION_SKEW_LOSS|"The MacBook version hasn’t been updated yet to have 4 panels so maybe that wiped them from the cloud."
+A46#1864|POS_DESKTOP|"available on mac book"
+P2#1052|SF_DESKTOP_WANT,SF_MULTI_DEVICE_WANT|"you can't sync different devices. + no Windows/Mac app"
+P70#664|POS_WEB|"I've been using it on my computer so it's been fine"
+P8#8416|NR|
+A19#101|NR|
+A48#2039|SF_DESKTOP_SYNC,SF_DESKTOP_LOSS|"the desktop version crashed and when I reopend it all of the trackers were gone"
+A33#367|NR|
+A85#3125|SF_WEB_APP_MISMATCH|"even though I checked off my dailies on my computer instead of the app"
+A33#3208|SF_DESKTOP_SYNC,SF_ACCOUNT_SHOWN_WRONG|"The habits are different on iOS vs. Mac OS—even though I am signed into the same account."
+P22#503|SF_DESKTOP_WANT,SF_WEB_WANT|"desktop version or at least browser version"
+A23#4198|POS_ALL_DEVICES|"Has functionality on all Mac devices from MacBook, iPad, iphone, and apple watch."
+P3#21798|SF_DESKTOP_WANT|"seria bom se tivesse uma versão pra Windows"
+A1#46128|SF_DESKTOP_WANT,SF_ICLOUD_SYNC_FAIL|"would be nice to have a Mac companion app"
+P126#25586|SF_DESKTOP_WANT|"except desktop version that sync's with mobile app"
+P9#669|SF_DESKTOP_WANT|"I wish there was a desktop app as well"
+N2#422|NR|
+N9#41888|NR|
+N2#6670|NR|
+A24#27555|SF_WEB_BILLING_TRAP|"cancelling the subscription is so hard through the website"
+P12#17309|SF_WEB_BILLING_TRAP|"cancelled my subscription through the website only to find out I've been charged $39.99 today"
+A33#3618|SF_WEB_NO_SIGNUP|"I visited the desktop website on my PC to create an account and there was no option to do so"
+A19#95|SF_WEB_BILLING_TRAP|"you have to go to the website to delete your account"
+P12#1936|SF_WEB_BILLING_TRAP|"In der App wird man fazu gebeten auf die Website zu gehen. Aber kein Link, keine URL."
+A24#27423|SF_WEB_BILLING_TRAP|"it forces you into a web version to complete the sign-up"
+P33#1294|SF_WEB_BILLING_TRAP|"nor was it listed in my Google play subscriptions"
+P12#13461|SF_WEB_BILLING_TRAP|"where you can only cancel your subscription on the website, but not in the app itself"
+A24#22803|SF_WEB_BILLING_TRAP|"The app is not shown on my app store subscriptions"
+P111#11241|NR|
+A13#8539|NR|
+P8#7013|SF_WEB_PARITY|"the app doesn't show all the content that the website does"
+P111#1154|POS_WEB_FALLBACK|"The only functional aspect is the web version"
+P35#274|SF_WEB_WANT,SF_DESKTOP_WANT|"I hope there's a PC or Web version one day with cross platform syncing."
+A85#2276|NR|
+P30#4478|SF_WEB_WANT|"I'd love to buy the subscription, but I also need to use the app on the PC."
+P111#8093|POS_DESKTOP,POS_WEB|"It's on my laptop too available on windows store. And you have a website."
+P122#17791|POS_WEB|"also has a webapp if u wanna use it on ur browser"
+N9#25645|SF_WEB_PARITY|"The app functionality is a far cry from the web version"
+N8#24054|NR|
+N8#25995|SF_WEB_PARITY|"much like how it does in the web version"
+A31#3616|SF_WATCH_BROKEN|"Doesn’t work with Apple Watch"
+A33#1288|SF_COMPLICATION_REMOVED|"since the update they removed the progress complications"
+A20#2900|SF_WATCH_WANT|"Please add Apple Watch support this is so simple"
+A13#8579|SF_WATCH_SYNC,SF_TABLET_NOSYNC|"The app does not sync with the other gadgets even being in the same web profile."
+A53#1551|SF_WATCH_SYNC|"I have to restart the app and uninstall it from my Apple Watch to get it to sync"
+A53#821|SF_WATCH_SYNC|"It is sometimes DOESN’T SYNC with APPLE WATCH"
+A31#4551|SF_WATCH_REMINDERS|"these reminders only pop up on my phone"
+A13#16207|SF_COMPLICATION_WANT|"I want to be able to check off my habits from my watch face"
+A31#3590|SF_WATCH_BROKEN|"I can no longer track my goals through my Apple Watch"
+A23#5950|SF_WATCH_DOUBLE|"It will often delay responding to adding to your progress and by trying to do it again, it will double down."
+A1#55701|SF_WATCH_BROKEN|"when I click it on my Apple Watch it’s just a black screen"
+A3#1467|SF_WATCH_BROKEN|"App stürzt oft bei der apple watch app"
+A3#8888|SF_WATCH_PAID|"it is not worth the price to be able to add it to your Apple Watch"
+A23#5673|POS_WATCH|"The function on the iPhone and the Apple Watch make this on of my favorites."

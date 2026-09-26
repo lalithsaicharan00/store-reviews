@@ -1,0 +1,60 @@
+P111#11918|E_PLATFORM_GAP|"It was not compatible when I had an iPhone"
+A1#49455|NR|
+A36#277|NR|
+A13#12520|L_CORRUPT,L_UPD|"since I updated the app, it just tried to open and never can"
+A1#54685|E_DEVICE,X_PAYER|"Purchased premium on iPad and it did not transfer to iPhone"
+N11#1096|S_HEALTH_WRONG|"The displayed amount of steps in the iOS app is almoust always twice as much"
+N10#20680|T_RECURRENCE|"I’ve had to check off items twice for them to move on to the next recurrence"
+N8#16058|S_DUP|"I have a triple events"
+N5#1436|NR|
+N11#6216|E_PLATFORM_GAP,L_XOS|"It’s missing a critical data section. I’m diabetic"
+A10#47997|NR|
+P2#6436|NR|
+A24#20365|NR|
+P111#9229|POS_SYNC|"syncs perfectly with your PC"
+A10#17688|NR|
+A24#42281|NR|
+A10#26896|L_PHONE|"now have new phone and it was not restored"
+P122#2261|NR|
+P98#1125|NR|
+P2#11541|NR|
+P122#323|POS_SYNC|"the Samsung Galaxy Watch integration works amazingly well and syncs seamlessly"
+P37#683|L_SYNC_TEMP|"Luckily after resetting all my data came back"
+P84#9132|POS_SYNC,POS_SUPPORT|"It syncs perfectly between my phone and laptop"
+A24#35618|NR|
+A46#2003|POS_SYNC|"Available on all devices, stable, syncs perfectly"
+A10#51017|NR|
+A24#31492|NR|
+P12#62148|NR|
+P122#16825|NR|
+A10#29080|NR|
+P91#53|POS_MIGRATE|"I also recently changed devices and everything transferred perfectly"
+A24#39933|NR|
+A41#126|POS_SYNC,POS_SUPPORT|"syncs perfectly with all your devises and is just great with the Apple Watch"
+P122#8098|POS_SYNC|"It syncs seamlessly with my devices"
+P12#56950|L_REINST,L_LOGIN|"when it is reinstalled the previous data is not restored so he has to start as a new user"
+P4#21751|NR|
+A41#746|POS_SYNC|"Syncs perfectly between iphone and desktop"
+A33#2107|POS_SYNC|"syncs perfectly with my phone"
+A10#36219|NR|
+A24#17342|NR|
+P84#29255|L_PHONE,S_XOS|"sharing lists with ios users seems impossible"
+A41#379|POS_SYNC|"it all syncs seamlessly unlike most habit trackers I’ve used"
+N10#21019|POS_SYNC|"Syncs flawlessly with all of my computers and devices"
+N8#30921|POS_SYNC|"Everything syncs seamlessly"
+N10#10591|POS_SYNC|"Syncs perfectly between desktop, 365 &amp; iOS"
+N9#5107|POS_SYNC|"So handy having it sync perfectly to the web app"
+N3#23595|B_WANT_ALWAYS|"I would appreciate if Apple would make sure that everything is backed up whether it is edited or not"
+N9#50749|POS_BACKUP|"I like that my data is backed up in my Google drive space"
+N10#23174|POS_SYNC|"syncs perfectly with outlook task folders"
+N9#40861|POS_SYNC|"Easy to use, syncs perfectly"
+A13#16540|PR_CONCERN,X_CHURN|"there&#39;s no point if my data is not secure"
+P4#21633|PR_CONCERN,A_DELETE|"Your data cannot be deleted and is not encrypted"
+P126#26321|PR_CONCERN|"asking for permission to sell your data"
+P99#35|PR_CONCERN,A_DELETE|"won't allow delete info"
+P8#13215|PR_CONCERN|"Extremely aggressive privacy policy"
+P12#36418|PR_CONCERN|"I don't appreciate you collecting my personal information before telling me that a subscription is required"
+P122#2263|A_FORCED,P_ONLINE_ONLY,PR_CONCERN,X_CHURN|"You cannot use it offline/standalone - forces you to make an account to sell your data"
+P97#2637|A_FORCED,PR_CONCERN|"I shouldn't have to sign up to use this app"
+A52#20081|PR_CONCERN|"when you click on the link to the privacy policy, the webpage doesn’t exist"
+P126#22268|PR_CONCERN|"sells your data"

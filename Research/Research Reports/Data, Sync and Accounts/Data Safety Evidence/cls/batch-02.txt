@@ -1,0 +1,60 @@
+A13#15672|NR|
+A5#2442|NR|
+P12#113174|NR|
+P4#19964|E_NOSTATUS|"there's no real way to look at your purchase"
+A24#17234|NR|
+A24#20620|NR|
+P4#20048|NR|
+A24#23068|NR|
+P12#9420|NR|
+P12#42129|NR|
+N8#36068|L_SYNC,S_WRONGDELETE|"when I cancel a individual event, It automatically delete all other events of the  year"
+N8#11363|NR|
+N8#20578|L_RANDOM|"Its cancel and delete schedule by itself"
+N6#2233|E_PENDING|"My subscription details shows pending payment, even after making the payment"
+N3#9658|L_NOTSAVED|"It fails to save my notes"
+A55#553|E_CRASH_AFTER_PAY,X_PAYER|"I paid for the app and now it does not open"
+P24#2373|A_LOGIN_FAIL,A_PROVIDER,S_FAIL,X_PAYER|"Tried to log in with Facebook - email already in use"
+A24#12456|E_CHARGED,X_PAYER|"was charged and then 5 days later I lost access to it"
+A24#6923|NR|
+P98#3364|E_UPSELL,X_PAYER|"i paid for it and still have to watch them"
+A31#430|E_CHARGED,X_SUPPORT_NONE,X_PAYER|"I bought the lifetime upgrade and have never received it"
+A31#2896|E_CHARGED,X_SUPPORT_NONE,X_PAYER|"I’ve fully paid and yet I still have no access"
+A31#1225|E_CHARGED,E_UPSELL,X_CHURN,X_PAYER|"Twice, I actually purchased the offer just to make it go away, but it was never applied"
+A1#46797|E_FAMILY,X_PAYER|"it&#39;s not getting activated for my family member"
+P49#2574|NR|
+A10#31406|NR|
+A67#762|NR|
+P12#8729|NR|
+P123#316|E_CHARGED,X_SUPPORT_NONE,X_PAYER|"Paid for premium membership and is still not working"
+A31#2226|E_LIFETIME,X_PAYER|"now app switched to subscription model and I need to subscribe"
+A1#51482|NR|
+A90#25|NR|
+A24#16004|NR|
+A10#20467|POS_OFFLINE|"no WiFi needed"
+P12#46069|NR|
+N11#5616|NR|
+N3#27182|S_FAIL|"since, my shared notes do not work"
+N1#15403|NR|
+N5#12272|NR|
+N10#16660|X_SHUTDOWN_MIGRATION|"They bought Wunderlist and ruined it"
+A59#14926|S_FAIL,S_SETUP,X_SUPPORT_NONE,X_PAYER|"I have no idea how to get the app to sync from my iPad to my iPhone"
+A86#1284|L_PHONE,A_NOACC,B_NONE|"When I switched over to my new phone and downloaded the app again I lost everything"
+A24#4684|NR|
+P126#45498|B_NONE|"Missing sync features (Dropbox or Google drive)"
+A24#3165|E_WEBSUB|"this subscription wasn’t listed on icloud settings"
+A24#24386|E_WEBSUB|"wasn’t listed as a subscription through my iCloud account"
+A1#55314|S_FAIL,S_PARTIAL|"I cannot sync all my habits to my iPad version, which got me worried about what will happen when I get new phones"
+P33#2468|B_NONE|"I would give 5 star if there was cloud backups"
+A23#5431|S_MULTI_REQ|"Where’s iCloud support? Would be great to sync with my iPad"
+A59#6837|S_MULTI_REQ,X_CHURN|"Нет синхронизации с iCloud"
+A13#2127|NR|
+A13#3722|S_FAIL|"为什么我iPhone的习惯不能同步到ipad上？我勾选了iCloud同步呀?"
+A52#331|S_FORCED_ICLOUD,X_PAYER|"还非要强制绑定icloud"
+A86#1392|B_RESTORE_FAIL,B_ATTACH,B_SLOW|"most pictures got broken and couldn&#39;t be shown"
+A68#1245|E_WEBSUB|"la suscripción no aparece en icloud"
+P24#13898|B_EXPORT_BAD|"export does not work"
+A8#231|S_MULTI_REQ|"I have no possibility to sync within my different Apple devices"
+P65#5005|B_NONE|"Wish there was Google cloud backup"
+A26#725|S_MULTI_REQ|"可是想要有iCloud功能"
+A23#4681|POS_SYNC,S_FAIL|"the sync system is now using iCloud directly so that watch sync works well"

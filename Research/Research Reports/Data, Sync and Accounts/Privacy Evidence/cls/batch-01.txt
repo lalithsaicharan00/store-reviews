@@ -1,0 +1,70 @@
+A10#30767|NR|
+A16#389|NR|
+A24#17973|NR|
+A24#28052|PV_DELETE_IGNORED|"Even GDPR claims won’t stop them from keeping your billing info"
+A24#41802|PV_EMAIL_OPTOUT_TRICK|"the tricky email “opt out” message is not GDPR friendly"
+A33#1119|PV_SPAM_AFTER_DELETE|"I then chose to delete my account but I’m still getting daily spam messages that contain all my data."
+A55#74|NR|
+A7#655|PV_EXPORT_PAYWALL|"I cannot export my data without buying the subscription. It is against GDPR."
+P111#1691|PV_CONSENT|"does not exempt you from GDPR as you made the app available in the EU"
+P12#1504|NR|
+P12#21679|PV_DELETE_IGNORED|"Doesn't delete profile on request, i guess gdpr doesn't exist."
+P12#32388|PV_DELETE_IGNORED|"I want to have the right to be forgotten. (GDPR)But they are just ignoring my emails."
+P126#28253|POS_PRIVACY|"Data protection is there"
+P24#9544|PV_EXPORT_PAYWALL|"Export is now a premium feature which is in violation of the GDPR."
+P4#23446|PV_POLICY_MISSING|"Terms of Service and Privacy Policy don't load."
+P70#624|PV_SIGNUP_FORCED,PV_POLICY_MISSING|"I don't really want to have to provide login details when I have no idea how they are storing my data."
+P8#7201|PV_UNVERIFIABLE|"we don't know if it's GDPR compliant"
+N4#3460|NR|
+N9#16323|NR|
+N4#5528|PV_CANT_DELETE_DATA|"Health data can’t be removed."
+A13#11726|NR|
+A13#12320|PV_OVERCOLLECT|"this app collects far more personal data than is needed for a habit-tracking app"
+A13#15850|NR|
+A13#16233|PV_SELLS_DATA|"you are voluntarily giving them a treasure trove of intensely personal and personally identifiable information"
+A36#449|NR|
+A4#1049|NR|
+A4#1098|NR|
+A41#403|NR|
+A53#1702|NR|
+A68#3991|NR|
+A82#42|PV_OVERCOLLECT|"Nothing of the answers has any impact on the app"
+P122#15152|NR|
+P122#19725|NR|
+P126#25179|PV_SELLS_DATA,PV_ADS_CONSENT_FORCED|"I only installed this because it wasn't selling my information. No longer the case."
+P126#25886|PV_ADS_CONSENT_FORCED|"Doesn't let you use it if you don't consent to personalized ads...."
+P126#27219|PV_ADS_CONSENT_FORCED|"Can't use the app anymore without either consenting to personalised ads or paying to remove ads entirely."
+P70#813|NR|
+P9#679|NR|
+P9#1250|NR|
+N5#15644|NR|
+N9#47940|NR|
+N4#8878|NR|
+A13#16626|PV_OVERCOLLECT,PV_POLICY_CHANGE|"this app should *never need location data*"
+A23#98|NR|
+A3#10449|POS_NO_PERMISSIONS|"Doesn’t do wack stuff like asking for contacts or wack ads."
+P110#3528|POS_NO_PERMISSIONS|"doesnt need unnecessary permissions"
+P12#47180|PV_PERMISSION_UNNEEDED|"Requires a photo for setting up an account, which requires camera permissions."
+P126#10173|PV_PERMISSION_UNNEEDED|"Needs Access to my contacts, wont sync otherwise with google tasks"
+P126#44550|PV_PERMISSION_UNNEEDED|"why do you need access to my contacts?"
+P126#46623|PV_PERMISSION_UNNEEDED|"Wants access to contacts. NO!"
+P126#54842|PV_PERMISSION_UNNEEDED|"Why do the need access to my contacts to sync? This is spyware."
+P126#75199|NR|
+P3#3621|POS_NO_PERMISSIONS|"no ads and no unnecessary permissions"
+P3#11282|POS_NO_PERMISSIONS|"Thank you for not asking for unnecessary permissions."
+P3#13789|POS_NO_PERMISSIONS|"No unnecessary permissions for sharing information nobody but you cares  about."
+P3#13973|POS_NO_PERMISSIONS|"No unnecessary permissions needed."
+P3#14837|POS_NO_PERMISSIONS|"free without ads or unnecessary permissions"
+P35#179|POS_NO_PERMISSIONS,POS_PRIVACY|"No unnecessary permissions, no data is collected. Peace of mind"
+P38#1272|PV_PERMISSION_UNNEEDED|"i want to know why it needs camera"
+P8#12231|PV_PERMISSION_UNNEEDED,PV_SIGNUP_FORCED|"Unnecessary permissions and intrusive account creation."
+P84#6835|POS_NO_PERMISSIONS,POS_LOCAL_OPTION|"It gives you the option to keep all of your data local."
+P84#44723|PV_PERMISSION_EXPLAIN|"I wished that the app somehow tells in advance why it asks for a permission."
+N8#4833|NR|
+N7#12358|PV_LOCK_WANT|"Password protection for a note would be helpful."
+N10#20043|PV_PHONE_NUMBER|"Needs my phone number?"
+A16#510|NR|
+P12#16641|NR|
+P3#15857|NR|
+A24#28250|NR|
+A4#6899|NR|

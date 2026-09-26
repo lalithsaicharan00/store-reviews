@@ -1,0 +1,2734 @@
+[
+{
+"key": "P111#1046",
+"codes": [
+"RL_REDESIGN_BACKLASH"
+],
+"quote": "The new update has ruined everything.",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "26e1482f-3818-4cd4-9dc7-d2da6a66e0d9",
+"rating": 1,
+"date": "2024-09-19",
+"loc": "en"
+},
+{
+"key": "A10#5731",
+"codes": [
+"RL_REDESIGN_BACKLASH",
+"RL_PAYWALL_ON_UPDATE"
+],
+"quote": "the new layout is super confusing",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "10777733863",
+"rating": 2,
+"date": "2024-01-03",
+"loc": "ca"
+},
+{
+"key": "A31#3310",
+"codes": [
+"RL_REDESIGN_BACKLASH",
+"RL_FEATURE_REMOVED"
+],
+"quote": "they no longer show you streaks on the dashboard!",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "9525164553",
+"rating": 2,
+"date": "2023-01-19",
+"loc": "us"
+},
+{
+"key": "A23#247",
+"codes": [
+"RL_REDESIGN_BACKLASH"
+],
+"quote": "The new UI is confusing, annoying, inefficient and difficult to orient yourself in.",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "1699860194",
+"rating": 3,
+"date": "2017-07-27",
+"loc": "au"
+},
+{
+"key": "A31#1307",
+"codes": [
+"RL_REDESIGN_PERF"
+],
+"quote": "since the latest design update it keeps lagging really badly",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "9918772665",
+"rating": 2,
+"date": "2023-05-12",
+"loc": "gb"
+},
+{
+"key": "P126#7811",
+"codes": [
+"RL_REDESIGN_BACKLASH",
+"RL_BUGS_UNFIXED"
+],
+"quote": "The new redesign of the app introduced many bugs that are still not fixed after months",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "6550351e-ecc4-46db-8fdc-07cb394d020f",
+"rating": 1,
+"date": "2026-08-12",
+"loc": "cs"
+},
+{
+"key": "P110#1486",
+"codes": [
+"RL_REDESIGN_BACKLASH",
+"RL_ROLLBACK_WANT"
+],
+"quote": "I would appreciate it if the old interface could be reinstated",
+"store": "P",
+"app": "110. Habit Tracker Unlimited",
+"review_id": "81f5ecd5-9570-47c3-943e-3652997de5d0",
+"rating": 3,
+"date": "2024-09-01",
+"loc": "en"
+},
+{
+"key": "P12#11089",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "d38d8001-bf4f-4369-a8dd-5a3d3100b4af",
+"rating": 1,
+"date": "2025-08-02",
+"loc": "en"
+},
+{
+"key": "A10#14820",
+"codes": [
+"RL_REDESIGN_BACKLASH"
+],
+"quote": "the recent updates to the journey system have made it really frustrating and overloading for me use",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "9330701695",
+"rating": 2,
+"date": "2022-11-26",
+"loc": "gb"
+},
+{
+"key": "A31#1342",
+"codes": [
+"RL_FEATURE_REMOVED"
+],
+"quote": "Went from a 5* app to a 0* app in one update.",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "9592185239",
+"rating": 1,
+"date": "2023-02-07",
+"loc": "gb"
+},
+{
+"key": "P126#49286",
+"codes": [
+"RL_REDESIGN_BACKLASH"
+],
+"quote": "Why update at all when it worked perfectly before.",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "5d68c28a-2520-46b6-9ec6-62b8590f4c8e",
+"rating": 1,
+"date": "2021-03-02",
+"loc": "en"
+},
+{
+"key": "P111#905",
+"codes": [
+"RL_MIGRATION_FAIL"
+],
+"quote": "none of my previous information transfered over",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "fd0f9d4d-fa04-41dd-93aa-1df520dde384",
+"rating": 1,
+"date": "2024-11-11",
+"loc": "en"
+},
+{
+"key": "A10#40772",
+"codes": [
+"RL_REDESIGN_BACKLASH"
+],
+"quote": "The new UI is terrible",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "11550728165",
+"rating": 2,
+"date": "2024-07-30",
+"loc": "us"
+},
+{
+"key": "A10#45481",
+"codes": [
+"RL_ROLLBACK_WANT",
+"RL_FEATURE_REMOVED"
+],
+"quote": "I hate the new layout. Please let us go back.",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "10917900975",
+"rating": 4,
+"date": "2024-02-09",
+"loc": "us"
+},
+{
+"key": "N8#26775",
+"codes": [
+"RL_REDESIGN_BACKLASH"
+],
+"quote": "The new layout looks terrible!",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "3743619233",
+"rating": 3,
+"date": "2019-02-07",
+"loc": "us"
+},
+{
+"key": "N1#23022",
+"codes": [
+"RL_REDESIGN_BACKLASH"
+],
+"quote": "Hate the new layout",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "11051952520",
+"rating": 1,
+"date": "2024-03-16",
+"loc": "us"
+},
+{
+"key": "N8#9052",
+"codes": [
+"RL_REDESIGN_BACKLASH"
+],
+"quote": "new look is horrible",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "3541664527",
+"rating": 3,
+"date": "2018-12-17",
+"loc": "gb"
+},
+{
+"key": "P122#7087",
+"codes": [
+"RL_UPDATE_OVERWRITES_USER_DATA"
+],
+"quote": "Hevy silently pushed an update, which doesn't offer to not update the routine",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "abf9f7c8-0b13-4492-86ff-6a4077ddd729",
+"rating": 1,
+"date": "2025-12-10",
+"loc": "en"
+},
+{
+"key": "A10#3842",
+"codes": [
+"RL_FORCED_UPDATE",
+"RL_UPDATE_BUG"
+],
+"quote": "I was forced to update the app on Friday morning",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13166203445",
+"rating": 1,
+"date": "2025-09-21",
+"loc": "ca"
+},
+{
+"key": "P114#9",
+"codes": [
+"RL_FORCED_UPDATE",
+"RL_PAYWALL_ON_UPDATE"
+],
+"quote": "I was forced to update it and it limited me to 3 free free habits unless I paid",
+"store": "P",
+"app": "114. Habit Tracker - HabitSwipe",
+"review_id": "1575013a-c718-4a5e-bb44-8f7d3c6e325f",
+"rating": 1,
+"date": "2026-02-27",
+"loc": "en"
+},
+{
+"key": "A10#24390",
+"codes": [
+"RL_FORCED_UPDATE"
+],
+"quote": "I was forced to update the app to a version with a changed icon",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13805896636",
+"rating": 3,
+"date": "2026-03-02",
+"loc": "us"
+},
+{
+"key": "P4#14692",
+"codes": [
+"RL_UPDATE_TOO_OFTEN"
+],
+"quote": "I have to update it almost everyday",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "da442720-5922-4e51-a874-c2f9b76fc211",
+"rating": 2,
+"date": "2024-10-21",
+"loc": "en"
+},
+{
+"key": "P12#9042",
+"codes": [
+"RL_PAYWALL_ON_UPDATE"
+],
+"quote": "This was good back in the older version but now, i cant even perform habit without paying.",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "7010edb5-30ac-4364-99e9-1746a561e2c7",
+"rating": 1,
+"date": "2026-03-09",
+"loc": "en"
+},
+{
+"key": "P97#2860",
+"codes": [
+"RL_OLD_DEVICE_DROPPED"
+],
+"quote": "doesn't work on my older phone",
+"store": "P",
+"app": "97. To-do list - tasks planner",
+"review_id": "9a333d9b-92a9-455b-ad09-42474765011a",
+"rating": 3,
+"date": "2023-12-12",
+"loc": "en"
+},
+{
+"key": "P20#159",
+"codes": [
+"RL_FORCED_UPDATE",
+"RL_PAYWALL_ON_UPDATE"
+],
+"quote": "Forced to update and now I can't use the app without upgrade to paid version.",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "b600da29-146d-4cd3-830b-69081fac6a87",
+"rating": 1,
+"date": "2024-01-16",
+"loc": "en"
+},
+{
+"key": "A1#51960",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11858595493",
+"rating": 1,
+"date": "2024-10-21",
+"loc": "us"
+},
+{
+"key": "P12#26638",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "bcc8a21e-6339-46d8-9e42-b8e8393c3820",
+"rating": 1,
+"date": "2022-03-01",
+"loc": "en"
+},
+{
+"key": "A4#19563",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "9791906911",
+"rating": 2,
+"date": "2023-04-06",
+"loc": "us"
+},
+{
+"key": "A4#5652",
+"codes": [
+"RL_UPDATE_TOO_OFTEN"
+],
+"quote": "have to update regularly",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "12278212569",
+"rating": 2,
+"date": "2025-02-06",
+"loc": "gb"
+},
+{
+"key": "P12#148033",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "14f2b22e-e24f-43ac-b1a4-d2d8d71a112f",
+"rating": 1,
+"date": "2016-02-01",
+"loc": "ro"
+},
+{
+"key": "A13#7340",
+"codes": [
+"RL_OS_BREAK"
+],
+"quote": "Please provide update for this wonderful app to continue working with the latest update IOS",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "2638969864",
+"rating": 5,
+"date": "2018-06-04",
+"loc": "in"
+},
+{
+"key": "A10#22686",
+"codes": [
+"RL_CORRUPT_MESSAGE"
+],
+"quote": "it told me my account was corrupted",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13986651592",
+"rating": 4,
+"date": "2026-04-22",
+"loc": "us"
+},
+{
+"key": "P31#19",
+"codes": [
+"RL_REDESIGN_BACKLASH",
+"RL_MIGRATION_CHORE",
+"RL_FIXED_AFTER"
+],
+"quote": "Now I have to update every single one of my tasks or habits just to make it work again.",
+"store": "P",
+"app": "31. HelloHabit - Habit Tracker",
+"review_id": "30791c9b-c675-4aa0-b695-808ecfd77da8",
+"rating": 5,
+"date": "2025-10-01",
+"loc": "de"
+},
+{
+"key": "A10#68218",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "8407822968",
+"rating": 5,
+"date": "2022-03-01",
+"loc": "us"
+},
+{
+"key": "P84#10229",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "31e430e6-4321-48f4-9cd1-e36054e1281b",
+"rating": 5,
+"date": "2024-10-01",
+"loc": "en"
+},
+{
+"key": "N9#37822",
+"codes": [
+"RL_UPDATE_TOO_OFTEN"
+],
+"quote": "I have to update the app every single time I need to use it!",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "10665372832",
+"rating": 1,
+"date": "2023-12-07",
+"loc": "us"
+},
+{
+"key": "N2#16677",
+"codes": [
+"RL_ROLLBACK_WANT",
+"RL_FEATURE_REMOVED"
+],
+"quote": "RESTORE THE OLD VERSION!",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "13070754070",
+"rating": 1,
+"date": "2025-08-28",
+"loc": "us"
+},
+{
+"key": "N9#38729",
+"codes": [
+"RL_UPDATE_TOO_OFTEN"
+],
+"quote": "The amount of times I have to update this app makes me nauseous",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "6605964959",
+"rating": 5,
+"date": "2020-11-03",
+"loc": "us"
+},
+{
+"key": "P111#1118",
+"codes": [
+"RL_MIGRATION_CHORE",
+"RL_ROLLBACK_WANT"
+],
+"quote": "when I tried to export and import the data it didn't do it correctly",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "4fa415d2-6479-4a6d-b809-82ffedd15e25",
+"rating": 1,
+"date": "2024-09-16",
+"loc": "en"
+},
+{
+"key": "A4#7890",
+"codes": [
+"RL_ROLLBACK_WANT",
+"RL_FEATURE_REMOVED"
+],
+"quote": "Also the ability to put more than one count daily for a single habit is gone???",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10779343590",
+"rating": 2,
+"date": "2024-01-03",
+"loc": "it"
+},
+{
+"key": "A13#13704",
+"codes": [
+"RL_ROLLBACK_WANT",
+"RL_FEATURE_REMOVED"
+],
+"quote": "I can’t track a large portion of my habits that aren’t daily.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5311003729",
+"rating": 1,
+"date": "2019-12-24",
+"loc": "us"
+},
+{
+"key": "A13#13706",
+"codes": [
+"RL_ROLLBACK_WANT",
+"RL_UPDATE_HIDES_DATA"
+],
+"quote": "Many of my habits no longer show up so I can’t track them.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5310318473",
+"rating": 2,
+"date": "2019-12-23",
+"loc": "us"
+},
+{
+"key": "A13#12021",
+"codes": [
+"RL_FEATURE_REMOVED"
+],
+"quote": "you removed the easy, quick-glance monthly calendar view",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "7887861703",
+"rating": 2,
+"date": "2021-10-07",
+"loc": "us"
+},
+{
+"key": "P111#966",
+"codes": [
+"RL_ROLLBACK_WANT"
+],
+"quote": "Please bring back the old version",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "a0b43e81-451b-49e7-99ea-e9f070a34248",
+"rating": 2,
+"date": "2024-10-02",
+"loc": "en"
+},
+{
+"key": "P111#15849",
+"codes": [
+"RL_ROLLBACK_WANT"
+],
+"quote": "people stopped using your app because of the new version",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "2d20cb4d-d6b7-475a-a43a-ed36be03ace6",
+"rating": 1,
+"date": "2024-09-22",
+"loc": "sk"
+},
+{
+"key": "A10#31838",
+"codes": [
+"RL_FEATURE_REMOVED"
+],
+"quote": "They removed journeys which were intended to track long term goals",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12778041860",
+"rating": 1,
+"date": "2025-06-15",
+"loc": "us"
+},
+{
+"key": "A33#1311",
+"codes": [
+"RL_ROLLBACK_WANT",
+"RL_FEATURE_BROKEN_BY_UPDATE"
+],
+"quote": "Siri Shortcuts doesn’t work anymore",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "6389369919",
+"rating": 2,
+"date": "2020-09-03",
+"loc": "id"
+},
+{
+"key": "P3#9093",
+"codes": [
+"RL_ROLLBACK_WANT"
+],
+"quote": "Please bring back the old notification style",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "157ba9b5-f681-423e-a590-c2c604cd006e",
+"rating": 2,
+"date": "2020-08-29",
+"loc": "en"
+},
+{
+"key": "A48#2398",
+"codes": [
+"RL_ROLLBACK_WANT"
+],
+"quote": "Latest update makes it MUCH harder to go back and fill in logs for days you missed.",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "7397956611",
+"rating": 2,
+"date": "2021-05-28",
+"loc": "us"
+},
+{
+"key": "A10#7868",
+"codes": [
+"RL_CRASH_LOOP",
+"RL_ROLLBACK_WANT",
+"RL_SLOW_FIX"
+],
+"quote": "just go back to the last version that worked (5 days ago!)",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13718339682",
+"rating": 1,
+"date": "2026-02-06",
+"loc": "de"
+},
+{
+"key": "P49#265",
+"codes": [
+"RL_ROLLBACK_WANT",
+"RL_NO_OPT_OUT"
+],
+"quote": "bring back the old app or allow auto-starting of routines to be turned off",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "2cebcbfb-ab01-45eb-89e3-aa4a81b4d99c",
+"rating": 3,
+"date": "2026-02-22",
+"loc": "en"
+},
+{
+"key": "A10#45070",
+"codes": [
+"RL_ROLLBACK_WANT"
+],
+"quote": "i regret updating",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "10967872314",
+"rating": 5,
+"date": "2024-02-22",
+"loc": "us"
+},
+{
+"key": "A13#6088",
+"codes": [
+"RL_ROLLBACK_WANT",
+"RL_UPDATE_HIDES_DATA"
+],
+"quote": "habits are now disappearing",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5306068227",
+"rating": 4,
+"date": "2019-12-22",
+"loc": "gb"
+},
+{
+"key": "A4#6166",
+"codes": [
+"RL_ROLLBACK_WANT",
+"RL_PAYWALL_ON_UPDATE"
+],
+"quote": "Now the soundscapes are gone",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "11496906064",
+"rating": 5,
+"date": "2024-07-15",
+"loc": "gb"
+},
+{
+"key": "A52#20487",
+"codes": [
+"RL_ROLLBACK_WANT",
+"RL_FEATURE_REMOVED"
+],
+"quote": "Please bring back the old widgets!",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "8239700598",
+"rating": 4,
+"date": "2022-01-14",
+"loc": "us"
+},
+{
+"key": "A13#14776",
+"codes": [
+"RL_ROLLBACK_WANT",
+"RL_NO_OPT_OUT"
+],
+"quote": "it would be nice if I have the option to switch back to the old UI",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "4075684499",
+"rating": 5,
+"date": "2019-04-29",
+"loc": "us"
+},
+{
+"key": "N7#11008",
+"codes": [
+"RL_ROLLBACK_WANT"
+],
+"quote": "Bring back the old color options.",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "5311866339",
+"rating": 1,
+"date": "2019-12-24",
+"loc": "us"
+},
+{
+"key": "N8#25208",
+"codes": [
+"RL_ROLLBACK_WANT",
+"RL_FEATURE_REMOVED"
+],
+"quote": "Bring back old widget",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "6724254209",
+"rating": 1,
+"date": "2020-12-06",
+"loc": "us"
+},
+{
+"key": "N5#12407",
+"codes": [
+"RL_ROLLBACK_WANT"
+],
+"quote": "please roll back to previous versions",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "13427207213",
+"rating": 1,
+"date": "2025-11-22",
+"loc": "us"
+},
+{
+"key": "A48#140",
+"codes": [
+"RL_UPDATE_CRASH",
+"RL_SUPPORT_NONE"
+],
+"quote": "Since update crashes at end of sync, making unusable.",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1133877695",
+"rating": 1,
+"date": "2015-01-21",
+"loc": "au"
+},
+{
+"key": "P130#289",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "App crashes after latest update. Completely unusable.",
+"store": "P",
+"app": "130. Way of Life - habit tracker",
+"review_id": "fc02dbac-eaf2-4e0b-9ee9-df449655b7c0",
+"rating": 1,
+"date": "2020-01-07",
+"loc": "en"
+},
+{
+"key": "P84#10761",
+"codes": [
+"RL_UPDATE_CRASH",
+"RL_REINSTALL_LOSES"
+],
+"quote": "I had to delete the app and reinstall it.. I lost everything.",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "59f1040e-47bb-410b-9f7c-3f734e4f5cb5",
+"rating": 1,
+"date": "2024-06-29",
+"loc": "en"
+},
+{
+"key": "P126#48139",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "Since the update I cant open the app as it crashes frequently",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "bfcde01f-ba97-4019-bd68-8895360c1f73",
+"rating": 1,
+"date": "2021-03-23",
+"loc": "en"
+},
+{
+"key": "A48#4081",
+"codes": [
+"RL_UPDATE_CRASH",
+"RL_PAYWALL_ON_UPDATE"
+],
+"quote": "the only way to restore it has been to uninstall and reinstall it",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1151667463",
+"rating": 1,
+"date": "2015-02-17",
+"loc": "us"
+},
+{
+"key": "A13#2067",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "since last update it won’t open",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5121372777",
+"rating": 1,
+"date": "2019-11-11",
+"loc": "ca"
+},
+{
+"key": "A85#1996",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "Crashes immediately upon launch.",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "13823675799",
+"rating": 2,
+"date": "2026-03-07",
+"loc": "us"
+},
+{
+"key": "A64#174",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "after the update ,it crashes the up",
+"store": "A",
+"app": "64. Critique AI - Habit Tracker - Routine Builder & AI Coach",
+"review_id": "13874326932",
+"rating": 3,
+"date": "2026-03-22",
+"loc": "in"
+},
+{
+"key": "A1#56068",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "Crashes every time you open it.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "5354441884",
+"rating": 1,
+"date": "2020-01-03",
+"loc": "us"
+},
+{
+"key": "A10#25319",
+"codes": [
+"RL_UPDATE_CRASH",
+"RL_STATE_CRASH"
+],
+"quote": "i drank the juice to make my finch big but now whenever i open the app it crashes immediately",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13719270017",
+"rating": 3,
+"date": "2026-02-06",
+"loc": "us"
+},
+{
+"key": "P5#1791",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "after the update I can't open it",
+"store": "P",
+"app": "5. Routine Planner, Habit Tracker",
+"review_id": "796f704c-3af2-49d4-8018-7ca43870cb15",
+"rating": 1,
+"date": "2022-11-10",
+"loc": "en"
+},
+{
+"key": "A53#226",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "Can’t open it after the update",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "9488215086",
+"rating": 3,
+"date": "2023-01-09",
+"loc": "cn"
+},
+{
+"key": "A85#1422",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "Even after the update, the app crashes when I delete a to-do item.",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "1760588393",
+"rating": 2,
+"date": "2017-08-30",
+"loc": "my"
+},
+{
+"key": "P38#3607",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "after last update i can't use app. I see only white screen.",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "6d68507a-ccf0-4c56-88a1-adc1fd5ac5d7",
+"rating": 5,
+"date": "2025-07-16",
+"loc": "pl"
+},
+{
+"key": "P8#630",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "Since update can't add or change tasks always crashes",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "5687a4d5-8935-4e2a-a256-112d558aca7f",
+"rating": 4,
+"date": "2017-07-13",
+"loc": "de"
+},
+{
+"key": "A48#4101",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "after this update it keeps crashing",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1138580078",
+"rating": 4,
+"date": "2015-01-30",
+"loc": "us"
+},
+{
+"key": "P8#167",
+"codes": [
+"RL_UPDATE_BUG"
+],
+"quote": "old checked tasks are mysteriously showing!",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "ff2d8d11-39b5-42f9-b81e-1c155832c1b0",
+"rating": 5,
+"date": "2019-01-15",
+"loc": "cs"
+},
+{
+"key": "A85#2860",
+"codes": [
+"RL_UPDATE_CRASH",
+"RL_FIXED_AFTER"
+],
+"quote": "Works like a charm now.",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "1845020389",
+"rating": 5,
+"date": "2017-10-13",
+"loc": "us"
+},
+{
+"key": "N8#33413",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "after last update it crashes about 10 seconds after opening it",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "1399251542",
+"rating": 1,
+"date": "2016-06-23",
+"loc": "us"
+},
+{
+"key": "N9#5703",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "Every time I open a sheet within the app it crashes.",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1301581254",
+"rating": 1,
+"date": "2015-12-16",
+"loc": "ca"
+},
+{
+"key": "N9#47576",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "After the recent update it crashes whenever I try to open any docs.",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1301235097",
+"rating": 1,
+"date": "2015-12-16",
+"loc": "us"
+},
+{
+"key": "A33#2521",
+"codes": [
+"RL_OS_BREAK",
+"RL_OLD_DEVICE_DROPPED"
+],
+"quote": "it still crashes on my iPad 4 runnings its latest possible iOS",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "3301143310",
+"rating": 1,
+"date": "2018-10-14",
+"loc": "nl"
+},
+{
+"key": "A23#63",
+"codes": [
+"RL_OLD_DEVICE_DROPPED"
+],
+"quote": "I also run ios 16 and it doesn’t work properly at all on it",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "13728261499",
+"rating": 2,
+"date": "2026-02-08",
+"loc": "au"
+},
+{
+"key": "A55#151",
+"codes": [
+"RL_OS_BREAK"
+],
+"quote": "closes everytime i try to open",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "3389236529",
+"rating": 1,
+"date": "2018-11-07",
+"loc": "br"
+},
+{
+"key": "A23#4575",
+"codes": [
+"RL_OS_BREAK",
+"RL_WIDGET_BROKEN_BY_OS"
+],
+"quote": "The new OS update broke the widget though",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "9339847964",
+"rating": 1,
+"date": "2022-11-29",
+"loc": "us"
+},
+{
+"key": "A76#7682",
+"codes": [
+"RL_OS_BREAK"
+],
+"quote": "updating to iOS 5 made the alarm stop working",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "478785615",
+"rating": 3,
+"date": "2011-11-05",
+"loc": "us"
+},
+{
+"key": "A27#112",
+"codes": [
+"RL_OS_BREAK"
+],
+"quote": "Please fix it for iOS 26. Instantly crashes!",
+"store": "A",
+"app": "27. Goal Streak - Habit Tracker - Build a growth mindset, daily",
+"review_id": "13169445559",
+"rating": 3,
+"date": "2025-09-22",
+"loc": "us"
+},
+{
+"key": "A13#11806",
+"codes": [
+"RL_OS_BREAK",
+"RL_SLOW_FIX"
+],
+"quote": "iOS 15 broke it.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8768888755",
+"rating": 2,
+"date": "2022-06-13",
+"loc": "us"
+},
+{
+"key": "A27#109",
+"codes": [
+"RL_OS_BREAK"
+],
+"quote": "Ever since I updated to iOS 26 the app immediately crashes when I try to open",
+"store": "A",
+"app": "27. Goal Streak - Habit Tracker - Build a growth mindset, daily",
+"review_id": "13338573061",
+"rating": 1,
+"date": "2025-10-31",
+"loc": "us"
+},
+{
+"key": "A48#790",
+"codes": [
+"RL_OS_BREAK"
+],
+"quote": "Keeps crashing on iOS8",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1122983148",
+"rating": 2,
+"date": "2015-01-01",
+"loc": "de"
+},
+{
+"key": "A85#3261",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "the latest iOS app update crashes a few moments after load, every time",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "1373331657",
+"rating": 1,
+"date": "2016-05-04",
+"loc": "us"
+},
+{
+"key": "A33#1482",
+"codes": [
+"RL_OS_BREAK"
+],
+"quote": "Con iOS 10 crasha",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "6337780066",
+"rating": 2,
+"date": "2020-08-19",
+"loc": "it"
+},
+{
+"key": "A48#2302",
+"codes": [
+"RL_OS_BREAK",
+"RL_SLOW_FIX"
+],
+"quote": "is now barely usable since iOS 15 came out",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "8376438218",
+"rating": 1,
+"date": "2022-02-20",
+"loc": "us"
+},
+{
+"key": "A48#4189",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1090590889",
+"rating": 2,
+"date": "2014-11-02",
+"loc": "us"
+},
+{
+"key": "A13#9050",
+"codes": [
+"RL_OS_BREAK"
+],
+"quote": "Since the IOS14 update it’s slow and doesn’t work correctly.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6585568314",
+"rating": 5,
+"date": "2020-10-29",
+"loc": "nl"
+},
+{
+"key": "A13#12823",
+"codes": [
+"RL_OS_BREAK",
+"RL_SUPPORT_GOOD"
+],
+"quote": "Thanks to the responsive dev support.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5998221732",
+"rating": 4,
+"date": "2020-05-27",
+"loc": "us"
+},
+{
+"key": "P126#11608",
+"codes": [
+"RL_OS_BREAK",
+"RL_SUPPORT_GOOD"
+],
+"quote": "Possible that it doesn't work anymore with Android 9?",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "7a603546-c4a6-4c76-bd96-1b2f0b3fe8ca",
+"rating": 4,
+"date": "2019-08-27",
+"loc": "de"
+},
+{
+"key": "A1#50733",
+"codes": [
+"RL_OS_BREAK"
+],
+"quote": "Reminder Button is not working responding with iOS14.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "6544540081",
+"rating": 5,
+"date": "2020-10-17",
+"loc": "tw"
+},
+{
+"key": "A85#2911",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "1776065259",
+"rating": 4,
+"date": "2017-09-06",
+"loc": "us"
+},
+{
+"key": "N7#6516",
+"codes": [
+"RL_OS_BREAK"
+],
+"quote": "apps kept crashing after installing in iOS11.3.1",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "3254594616",
+"rating": 2,
+"date": "2018-10-02",
+"loc": "my"
+},
+{
+"key": "N8#9420",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "1967474292",
+"rating": 3,
+"date": "2017-12-03",
+"loc": "gb"
+},
+{
+"key": "N7#7167",
+"codes": [
+"RL_OS_BREAK"
+],
+"quote": "Doesnt wprk on ios10.",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "1457090568",
+"rating": 1,
+"date": "2016-09-28",
+"loc": "pl"
+},
+{
+"key": "P78#2",
+"codes": [
+"RL_UPDATE_WIPED"
+],
+"quote": "the last update deleted all of my habits, history and now doesn't work",
+"store": "P",
+"app": "78. Daily habit tracker",
+"review_id": "226f6a8f-ab01-430c-8d1a-23532750e832",
+"rating": 1,
+"date": "2025-09-27",
+"loc": "en"
+},
+{
+"key": "A5#2683",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "11711468724",
+"rating": 2,
+"date": "2024-09-11",
+"loc": "us"
+},
+{
+"key": "A20#1108",
+"codes": [
+"RL_UPDATE_WIPED",
+"RL_PARTIAL_RESTORE"
+],
+"quote": "The new update has lost all of my data.",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "12426768569",
+"rating": 1,
+"date": "2025-03-16",
+"loc": "gb"
+},
+{
+"key": "P111#1133",
+"codes": [
+"RL_UPDATE_WIPED",
+"RL_ACCOUNT_BROKEN_BY_UPDATE"
+],
+"quote": "New update is horrible and it deleted my account and data",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "3d4d1fc7-8a82-4033-ba27-78916997b28a",
+"rating": 1,
+"date": "2024-09-16",
+"loc": "en"
+},
+{
+"key": "P126#135411",
+"codes": [
+"RL_UPDATE_WIPED"
+],
+"quote": "After last update I lost my data",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "e4442e8d-b4ca-4e14-a838-b31158000490",
+"rating": 1,
+"date": "2017-10-18",
+"loc": "hr"
+},
+{
+"key": "A23#4531",
+"codes": [
+"RL_UPDATE_WIPED",
+"RL_BACKUP_INFREQUENT"
+],
+"quote": "Lost 2 weeks worth of data after recent update with no warning. Automatic backups are not frequent enough",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "9564489033",
+"rating": 2,
+"date": "2023-01-30",
+"loc": "us"
+},
+{
+"key": "P126#74948",
+"codes": [
+"RL_UPDATE_WIPED"
+],
+"quote": "After the update it has wiped all my to do lists",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "aea2850b-5278-41a8-ac19-eb3371acb977",
+"rating": 1,
+"date": "2018-10-02",
+"loc": "en"
+},
+{
+"key": "P111#1157",
+"codes": [
+"RL_UPDATE_WIPED",
+"RL_ACCOUNT_BROKEN_BY_UPDATE"
+],
+"quote": "They updated it, deleted my account, and all of my information is gone.",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "e45435bd-1b45-41f6-92d5-964afda78fa4",
+"rating": 1,
+"date": "2024-09-15",
+"loc": "en"
+},
+{
+"key": "A13#13131",
+"codes": [
+"RL_UPDATE_BUG"
+],
+"quote": "With this new update I lost my badge number count for my habits",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5762593522",
+"rating": 3,
+"date": "2020-04-04",
+"loc": "us"
+},
+{
+"key": "P12#8342",
+"codes": [
+"RL_UPDATE_REMOVES_BACKFILL"
+],
+"quote": "Now the app is updated and won't even let you go back.",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "5c95dfb8-65ea-4b49-b6e5-08725624b732",
+"rating": 1,
+"date": "2026-06-05",
+"loc": "en"
+},
+{
+"key": "A20#753",
+"codes": [
+"RL_UPDATE_WIPED",
+"RL_PAYWALL_ON_UPDATE"
+],
+"quote": "after last updated i lost my data, my premium features",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6936293276",
+"rating": 1,
+"date": "2021-01-31",
+"loc": "co"
+},
+{
+"key": "P111#873",
+"codes": [
+"RL_UPDATE_WIPED"
+],
+"quote": "the new update erased all my data",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "21a961ea-d8eb-4125-aae4-7a88bf5bd752",
+"rating": 1,
+"date": "2025-01-13",
+"loc": "en"
+},
+{
+"key": "A33#116",
+"codes": [
+"RL_PAYWALL_ON_UPDATE",
+"RL_NO_WARNING"
+],
+"quote": "You should put a warning in bold font so people can make an informed decision wether they want to update the app or not.",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "4002480223",
+"rating": 1,
+"date": "2019-04-12",
+"loc": "au"
+},
+{
+"key": "A10#17855",
+"codes": [
+"RL_UPDATE_WIPED"
+],
+"quote": "with the newest update my house disappeared",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "8926512894",
+"rating": 5,
+"date": "2022-07-30",
+"loc": "pl"
+},
+{
+"key": "A4#7190",
+"codes": [
+"RL_UPDATE_WIPED"
+],
+"quote": "this morning it did an update and lost all my",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "9788489966",
+"rating": 4,
+"date": "2023-04-05",
+"loc": "gb"
+},
+{
+"key": "A13#13701",
+"codes": [
+"RL_UPDATE_WIPED"
+],
+"quote": "They released an app update that wiped out my habits and the calendar doesn’t work.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5313518242",
+"rating": 5,
+"date": "2019-12-24",
+"loc": "us"
+},
+{
+"key": "A10#20949",
+"codes": [
+"RL_UPDATE_BUG"
+],
+"quote": "after the last update I lost my streak after missing one day",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14166689872",
+"rating": 4,
+"date": "2026-06-10",
+"loc": "us"
+},
+{
+"key": "A10#10086",
+"codes": [
+"RL_UPDATE_BUG"
+],
+"quote": "I just lost my 300 day streak for no reason",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13870712805",
+"rating": 5,
+"date": "2026-03-21",
+"loc": "gb"
+},
+{
+"key": "N8#8718",
+"codes": [
+"RL_UPDATE_WIPED"
+],
+"quote": "I recently updated the app and have lost all my data inputted on.",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "9894215956",
+"rating": 1,
+"date": "2023-05-05",
+"loc": "gb"
+},
+{
+"key": "N3#21277",
+"codes": [
+"RL_UPDATE_WIPED"
+],
+"quote": "Deletes all my information then tells me to update and is not possible to update.",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "14267030104",
+"rating": 1,
+"date": "2026-07-05",
+"loc": "us"
+},
+{
+"key": "N3#9348",
+"codes": [
+"RL_UPDATE_WIPED"
+],
+"quote": "i lost all my notes, after the update",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "9422807314",
+"rating": 1,
+"date": "2022-12-22",
+"loc": "gb"
+},
+{
+"key": "P24#4618",
+"codes": [
+"RL_ABANDONED",
+"RL_SUPPORT_NONE"
+],
+"quote": "I guess the app has now been abandoned.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "1e549298-7d0d-499b-adbf-e4b34e7408f7",
+"rating": 2,
+"date": "2019-09-24",
+"loc": "en"
+},
+{
+"key": "A24#14912",
+"codes": [
+"RL_SUPPORT_NONE"
+],
+"quote": "I have written loads and I mean loads of support tickets. Not one has been responded to.",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10913738737",
+"rating": 1,
+"date": "2024-02-07",
+"loc": "gb"
+},
+{
+"key": "A24#25312",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13041058761",
+"rating": 1,
+"date": "2025-08-20",
+"loc": "us"
+},
+{
+"key": "P12#62972",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "f3a17b5a-30de-4e1a-bdde-1c1b08881bcb",
+"rating": 1,
+"date": "2019-07-11",
+"loc": "en"
+},
+{
+"key": "P12#65512",
+"codes": [
+"RL_SUPPORT_SLOW"
+],
+"quote": "It took awhile but support eventaully replied to my request",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "325b4bba-ee9f-4e79-9e29-8d831ba4a872",
+"rating": 3,
+"date": "2019-05-07",
+"loc": "en"
+},
+{
+"key": "A24#27463",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11653270566",
+"rating": 1,
+"date": "2024-08-26",
+"loc": "us"
+},
+{
+"key": "P24#10892",
+"codes": [
+"RL_ABANDONED",
+"RL_SUPPORT_NONE"
+],
+"quote": "Looks like this project is dead.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "a91f1752-ffd4-4c2b-8356-9c5cc9b90f4c",
+"rating": 1,
+"date": "2017-04-26",
+"loc": "en"
+},
+{
+"key": "A55#1415",
+"codes": [
+"RL_SUPPORT_NONE"
+],
+"quote": "I’ve email for support numerous times and no one has replied.",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "2694764480",
+"rating": 1,
+"date": "2018-06-14",
+"loc": "us"
+},
+{
+"key": "A1#51390",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13147347824",
+"rating": 3,
+"date": "2025-09-17",
+"loc": "us"
+},
+{
+"key": "P111#6014",
+"codes": [
+"RL_SUPPORT_NONE"
+],
+"quote": "I have contacted customer support but no one has got back to me.",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "131baea9-3ae6-4bdd-b0b7-2026d718877d",
+"rating": 1,
+"date": "2017-04-27",
+"loc": "en"
+},
+{
+"key": "A16#135",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "10988283964",
+"rating": 1,
+"date": "2024-02-28",
+"loc": "ca"
+},
+{
+"key": "A31#2727",
+"codes": [
+"RL_SUPPORT_NONE"
+],
+"quote": "Customer support has not responded to my inquiries.",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "10841139544",
+"rating": 1,
+"date": "2024-01-19",
+"loc": "us"
+},
+{
+"key": "A13#14834",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "4003438052",
+"rating": 1,
+"date": "2019-04-12",
+"loc": "us"
+},
+{
+"key": "P12#20591",
+"codes": [
+"RL_SUPPORT_GOOD"
+],
+"quote": "The team responded quickly when I had an issue, and they told me how to fix it.",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "9804a2fb-6ddd-4ae9-b6f9-e1cbeb10d3c7",
+"rating": 5,
+"date": "2023-01-21",
+"loc": "en"
+},
+{
+"key": "A10#17752",
+"codes": [
+"RL_SUPPORT_GOOD",
+"RL_SUPPORT_RECOVERED"
+],
+"quote": "the team replied within a day",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14408352580",
+"rating": 5,
+"date": "2026-08-09",
+"loc": "pk"
+},
+{
+"key": "P3#9697",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "21e1ebc0-5b67-44a7-a316-25065dec63d8",
+"rating": 5,
+"date": "2020-05-20",
+"loc": "en"
+},
+{
+"key": "P9#174",
+"codes": [
+"RL_SUPPORT_GOOD"
+],
+"quote": "the dev responded to my feedback within a day",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "bbbbd416-63af-42bc-9f5b-8cbfdee7eb2a",
+"rating": 5,
+"date": "2026-08-19",
+"loc": "en"
+},
+{
+"key": "P12#18738",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "430c0a57-30f0-46f4-835c-3b392376cc5b",
+"rating": 5,
+"date": "2023-06-20",
+"loc": "en"
+},
+{
+"key": "N5#406",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "9783719280",
+"rating": 4,
+"date": "2023-04-03",
+"loc": "au"
+},
+{
+"key": "N10#19605",
+"codes": [
+"RL_CRASH_LOOP",
+"RL_SUPPORT_NONE"
+],
+"quote": "Developers have not responded.",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "9151491817",
+"rating": 1,
+"date": "2022-10-04",
+"loc": "us"
+},
+{
+"key": "N3#28345",
+"codes": [
+"RL_UPDATE_BUG"
+],
+"quote": "not sure what developers have done in the last updates?",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "8263530072",
+"rating": 1,
+"date": "2022-01-20",
+"loc": "us"
+},
+{
+"key": "A24#32636",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8244061667",
+"rating": 2,
+"date": "2022-01-15",
+"loc": "us"
+},
+{
+"key": "A13#15611",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "3245169646",
+"rating": 1,
+"date": "2018-09-29",
+"loc": "us"
+},
+{
+"key": "A1#51120",
+"codes": [
+"RL_NO_WARNING",
+"RL_DATA_DELETED"
+],
+"quote": "App deletes data without warning",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13979913839",
+"rating": 1,
+"date": "2026-04-20",
+"loc": "us"
+},
+{
+"key": "P12#37218",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "613964e6-931a-412c-97ba-d358d314be1e",
+"rating": 1,
+"date": "2021-05-12",
+"loc": "en"
+},
+{
+"key": "A24#25904",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12441065630",
+"rating": 1,
+"date": "2025-03-20",
+"loc": "us"
+},
+{
+"key": "P12#25673",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "ed732c7c-5b69-4b46-9804-6e98ba9f6a6f",
+"rating": 2,
+"date": "2022-04-07",
+"loc": "en"
+},
+{
+"key": "A24#27106",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11796312404",
+"rating": 2,
+"date": "2024-10-04",
+"loc": "us"
+},
+{
+"key": "A55#1197",
+"codes": [
+"RL_PAYWALL_ON_UPDATE",
+"RL_NO_WARNING"
+],
+"quote": "Why am I suddenly being forced to pay a subscription for an app which has been free, with no warning?",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "6198853326",
+"rating": 1,
+"date": "2020-07-15",
+"loc": "us"
+},
+{
+"key": "P126#69069",
+"codes": [
+"RL_DATA_DELETED"
+],
+"quote": "all of my appts. and info. just disappeared without warning",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "7edb7a8e-0084-4f48-b85c-cb081cf84a1e",
+"rating": 1,
+"date": "2019-08-17",
+"loc": "en"
+},
+{
+"key": "A10#33659",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12571177603",
+"rating": 1,
+"date": "2025-04-22",
+"loc": "us"
+},
+{
+"key": "A68#1693",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "68. Ultiself - Self-Improvement - Biohacker Routine Planner App",
+"review_id": "13035804121",
+"rating": 1,
+"date": "2025-08-19",
+"loc": "gb"
+},
+{
+"key": "A13#6396",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "2483161055",
+"rating": 1,
+"date": "2018-04-29",
+"loc": "gb"
+},
+{
+"key": "P12#19432",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "fb386646-a6be-4bd8-923c-6fc12fe68241",
+"rating": 1,
+"date": "2023-05-04",
+"loc": "en"
+},
+{
+"key": "P8#3595",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "10bba000-a464-48a1-98a0-13cebaf38d21",
+"rating": 4,
+"date": "2024-03-20",
+"loc": "en"
+},
+{
+"key": "P12#32458",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "0987e17c-f8fb-4852-a38a-55fa97a1f693",
+"rating": 4,
+"date": "2021-09-05",
+"loc": "en"
+},
+{
+"key": "P4#17020",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "9b4458e2-334a-417b-a6d6-500d4c20b1c8",
+"rating": 5,
+"date": "2024-08-20",
+"loc": "en"
+},
+{
+"key": "A4#528",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "12095470854",
+"rating": 5,
+"date": "2024-12-23",
+"loc": "au"
+},
+{
+"key": "P12#42913",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "bf1956d3-1b60-4ae7-9a75-2435959e3c0d",
+"rating": 5,
+"date": "2021-02-01",
+"loc": "en"
+},
+{
+"key": "N8#22389",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "14556796835",
+"rating": 1,
+"date": "2026-09-16",
+"loc": "us"
+},
+{
+"key": "N1#19397",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "12924729626",
+"rating": 5,
+"date": "2025-07-23",
+"loc": "us"
+},
+{
+"key": "N2#16484",
+"codes": [
+"RL_DATA_DELETED"
+],
+"quote": "It will arbitrarily delete while calendars and events with no warning",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "13581494391",
+"rating": 1,
+"date": "2026-01-01",
+"loc": "us"
+},
+{
+"key": "P24#9297",
+"codes": [
+"RL_PAYWALL_ON_UPDATE",
+"RL_SUPPORT_NONE"
+],
+"quote": "Bought premium years ago, now my amount has disappeared along with my premium. No response from devs.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "8c07ae14-831f-4f5f-ab50-649630c9016c",
+"rating": 1,
+"date": "2018-03-02",
+"loc": "en"
+},
+{
+"key": "A20#88",
+"codes": [
+"RL_PAYWALL_ON_UPDATE",
+"RL_SUPPORT_NONE"
+],
+"quote": "They removed features that I’d already paid for",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6931983866",
+"rating": 1,
+"date": "2021-01-30",
+"loc": "au"
+},
+{
+"key": "P12#23862",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "38791bc0-849c-484a-9fba-f3ff23ee0090",
+"rating": 1,
+"date": "2022-07-01",
+"loc": "en"
+},
+{
+"key": "P12#61395",
+"codes": [
+"RL_SUPPORT_NONE"
+],
+"quote": "I've contacted support twice, with no response as a premium member.",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "6573e8ea-55de-4e3e-ab92-093fc5514df8",
+"rating": 1,
+"date": "2019-08-21",
+"loc": "en"
+},
+{
+"key": "P12#12130",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "eb261ce9-1fe9-4c43-901f-b600f891fe8c",
+"rating": 1,
+"date": "2025-02-21",
+"loc": "en"
+},
+{
+"key": "A1#738",
+"codes": [
+"RL_SUPPORT_NONE"
+],
+"quote": "you haven’t responded for three weeks",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11994782701",
+"rating": 1,
+"date": "2024-11-26",
+"loc": "be"
+},
+{
+"key": "A24#789",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13365165262",
+"rating": 1,
+"date": "2025-11-06",
+"loc": "au"
+},
+{
+"key": "P4#22265",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "f82ad51a-e515-48e5-a9b6-6ff036147746",
+"rating": 1,
+"date": "2024-02-18",
+"loc": "en"
+},
+{
+"key": "P98#418",
+"codes": [
+"RL_UPDATE_BUG",
+"RL_SUPPORT_NONE"
+],
+"quote": "after one of the updates I found a bug - the app does not send notifications which makes it useless",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "45cbb106-eaa8-4d4a-b5e6-c0fcbe3d6a0c",
+"rating": 1,
+"date": "2023-01-01",
+"loc": "en"
+},
+{
+"key": "A24#23265",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "14366913445",
+"rating": 1,
+"date": "2026-07-30",
+"loc": "us"
+},
+{
+"key": "A31#2016",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "9840628489",
+"rating": 3,
+"date": "2023-04-20",
+"loc": "nl"
+},
+{
+"key": "A20#1257",
+"codes": [
+"RL_SUPPORT_NONE"
+],
+"quote": "No response when emailed for help.",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6866660903",
+"rating": 1,
+"date": "2021-01-14",
+"loc": "gb"
+},
+{
+"key": "A67#78",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "67. Habio - Daily Habit Tracker - Routine planner & To do list",
+"review_id": "10638082217",
+"rating": 1,
+"date": "2023-11-29",
+"loc": "au"
+},
+{
+"key": "P12#65539",
+"codes": [
+"RL_SUPPORT_NONE"
+],
+"quote": "I wrote to you through the App feedback feature but there has been no response there either.",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "66b4dd81-8d73-4a92-9129-a9276c41eeda",
+"rating": 5,
+"date": "2019-05-06",
+"loc": "en"
+},
+{
+"key": "P122#17400",
+"codes": [
+"RL_SUPPORT_ACK_WANT"
+],
+"quote": "Atleast some acknowledgement for the mail would be beneficial",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "989e3ffb-46eb-4db2-ba75-50e73c23ca2d",
+"rating": 5,
+"date": "2023-05-15",
+"loc": "en"
+},
+{
+"key": "P12#65719",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "177d608b-afdd-4466-8a01-5aad71afbaae",
+"rating": 4,
+"date": "2019-04-29",
+"loc": "en"
+},
+{
+"key": "A31#2919",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "10323742685",
+"rating": 5,
+"date": "2023-09-01",
+"loc": "us"
+},
+{
+"key": "P24#9150",
+"codes": [
+"RL_PAYWALL_ON_UPDATE",
+"RL_SUPPORT_NONE"
+],
+"quote": "The people who paid for premium level no longer have it.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "d275dbcf-3b9d-4128-831f-bb5b015d9df4",
+"rating": 5,
+"date": "2018-03-24",
+"loc": "en"
+},
+{
+"key": "N11#2718",
+"codes": [
+"RL_SUPPORT_NONE"
+],
+"quote": "i have even send a video to error support in app still there is no response",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "4238056333",
+"rating": 1,
+"date": "2019-05-31",
+"loc": "in"
+},
+{
+"key": "N5#12601",
+"codes": [
+"RL_SUPPORT_NONE"
+],
+"quote": "I tried reaching out and received no reply.",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "13087151437",
+"rating": 1,
+"date": "2025-09-01",
+"loc": "us"
+},
+{
+"key": "N7#11393",
+"codes": [
+"RL_UPDATE_BUG"
+],
+"quote": "The app was working perfectly fine before the most recent update.",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "3380507075",
+"rating": 2,
+"date": "2018-11-04",
+"loc": "us"
+},
+{
+"key": "A24#25118",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13154689135",
+"rating": 1,
+"date": "2025-09-18",
+"loc": "us"
+},
+{
+"key": "A13#12560",
+"codes": [
+"RL_CRASH_LOOP"
+],
+"quote": "The app crashes every time I open it.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6429282642",
+"rating": 1,
+"date": "2020-09-14",
+"loc": "us"
+},
+{
+"key": "A31#1496",
+"codes": [
+"RL_CRASH_LOOP"
+],
+"quote": "it won’t open when i click on it",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8197381971",
+"rating": 1,
+"date": "2022-01-02",
+"loc": "gb"
+},
+{
+"key": "A24#16457",
+"codes": [
+"RL_CRASH_LOOP",
+"RL_STATE_CRASH"
+],
+"quote": "once it’s finished importing my data it just starts crashing all over again",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "6383748304",
+"rating": 2,
+"date": "2020-09-01",
+"loc": "gb"
+},
+{
+"key": "A31#4296",
+"codes": [
+"RL_CRASH_LOOP"
+],
+"quote": "I deleted and redowloaded a few times and still won’t open.",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8192110115",
+"rating": 1,
+"date": "2022-01-01",
+"loc": "us"
+},
+{
+"key": "A31#1514",
+"codes": [
+"RL_CRASH_LOOP"
+],
+"quote": "they’re also struggling with this problem",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8196284154",
+"rating": 1,
+"date": "2022-01-02",
+"loc": "gb"
+},
+{
+"key": "A85#2718",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "2654562487",
+"rating": 1,
+"date": "2018-06-07",
+"loc": "us"
+},
+{
+"key": "A55#554",
+"codes": [
+"RL_CRASH_LOOP"
+],
+"quote": "I can’t open it.",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "6634571609",
+"rating": 1,
+"date": "2020-11-11",
+"loc": "gb"
+},
+{
+"key": "A4#16243",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10841162033",
+"rating": 1,
+"date": "2024-01-19",
+"loc": "us"
+},
+{
+"key": "A10#33396",
+"codes": [
+"RL_CORRUPT_MESSAGE",
+"RL_BACKUP_UNOPENABLE"
+],
+"quote": "It looks like your pet data got corrupted",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12595515502",
+"rating": 1,
+"date": "2025-04-28",
+"loc": "us"
+},
+{
+"key": "A1#45443",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "I am guessing after the last update",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11209021406",
+"rating": 3,
+"date": "2024-04-28",
+"loc": "gb"
+},
+{
+"key": "A4#11717",
+"codes": [
+"RL_CRASH_LOOP"
+],
+"quote": "I cant open the app at all like it just says the logo thats it",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13255060034",
+"rating": 1,
+"date": "2025-10-12",
+"loc": "us"
+},
+{
+"key": "A10#54140",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "I updated my app over the weekend and now it won’t open.",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "9661730973",
+"rating": 2,
+"date": "2023-02-27",
+"loc": "us"
+},
+{
+"key": "A10#48595",
+"codes": [
+"RL_CRASH_LOOP"
+],
+"quote": "I can’t open the app!",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "10399566500",
+"rating": 5,
+"date": "2023-09-23",
+"loc": "us"
+},
+{
+"key": "P8#2566",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "edb65d27-088f-447e-b506-e1defb7ad5f1",
+"rating": 4,
+"date": "2024-10-15",
+"loc": "en"
+},
+{
+"key": "P111#10195",
+"codes": [
+"RL_CRASH_LOOP"
+],
+"quote": "it keeps telling me that it won't open or it shuts me out",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "3dfe539f-5d7f-45d2-98b7-c346738cf27c",
+"rating": 4,
+"date": "2015-07-30",
+"loc": "en"
+},
+{
+"key": "P8#9497",
+"codes": [
+"RL_CRASH_LOOP"
+],
+"quote": "Crashes when I open the app",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "a1eca3e4-4cbe-4d09-bcdd-dac31a54092a",
+"rating": 5,
+"date": "2016-06-24",
+"loc": "en"
+},
+{
+"key": "A13#12504",
+"codes": [
+"RL_UPDATE_CRASH",
+"RL_REPEAT_BREAKAGE"
+],
+"quote": "this is the second time that an update has made it completely unusable for an extended period of time",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6523909120",
+"rating": 4,
+"date": "2020-10-11",
+"loc": "us"
+},
+{
+"key": "N7#3770",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "the latest app update crashes on start up",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "13867703328",
+"rating": 1,
+"date": "2026-03-20",
+"loc": "in"
+},
+{
+"key": "N9#48297",
+"codes": [
+"RL_CRASH_LOOP"
+],
+"quote": "It just shuts down and won",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1261302386",
+"rating": 1,
+"date": "2015-09-22",
+"loc": "us"
+},
+{
+"key": "N8#27143",
+"codes": [
+"RL_UPDATE_CRASH"
+],
+"quote": "Won’t even open after last update.",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "3470579763",
+"rating": 1,
+"date": "2018-11-28",
+"loc": "us"
+}
+]

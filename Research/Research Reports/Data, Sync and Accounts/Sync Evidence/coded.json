@@ -1,0 +1,3219 @@
+[
+{
+"key": "A1#47967",
+"codes": [
+"SY_EDIT_WIPES_HISTORY"
+],
+"quote": "if I change the frequency of a habit, the progress is deleted",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13820822653",
+"rating": 4,
+"date": "2026-03-06",
+"loc": "mx"
+},
+{
+"key": "A13#10540",
+"codes": [
+"SY_EDIT_WIPES_HISTORY"
+],
+"quote": "the streak and progress that I have will be deleted, if I edit my habit",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6124052082",
+"rating": 3,
+"date": "2020-06-26",
+"loc": "sg"
+},
+{
+"key": "A13#11841",
+"codes": [
+"SY_EDIT_WIPES_HISTORY"
+],
+"quote": "it erases all your past accomplishments",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8582075309",
+"rating": 1,
+"date": "2022-04-18",
+"loc": "us"
+},
+{
+"key": "A13#13079",
+"codes": [
+"SY_EDIT_WIPES_HISTORY"
+],
+"quote": "I changed my workout habit to five days instead of three and it erased all my previous work",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5801418907",
+"rating": 4,
+"date": "2020-04-12",
+"loc": "us"
+},
+{
+"key": "P123#536",
+"codes": [
+"S_WIDGET"
+],
+"quote": "Widgets do not update at all",
+"store": "P",
+"app": "123. Rise - Habit List",
+"review_id": "bb8d31fa-d5e8-4513-8c72-362f6e3359f2",
+"rating": 1,
+"date": "2024-12-26",
+"loc": "en"
+},
+{
+"key": "P2#996",
+"codes": [
+"SY_EDIT_WIPES_HISTORY"
+],
+"quote": "it says that the data entries will be deleted",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "190d1b36-8958-43c2-ad05-44646882a0b4",
+"rating": 4,
+"date": "2026-08-24",
+"loc": "en"
+},
+{
+"key": "P24#7965",
+"codes": [
+"SY_EDIT_WIPES_HISTORY"
+],
+"quote": "if I change my target on one of my goals, then previous weeks would not be affected by it",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "09bb09cd-0058-41d0-be30-73fe34835bb3",
+"rating": 4,
+"date": "2018-09-18",
+"loc": "en"
+},
+{
+"key": "A23#2573",
+"codes": [
+"S_DUP",
+"B_RESTORE_DUP"
+],
+"quote": "when I restore the backup, every task gets added twice/thrice",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "8789907313",
+"rating": 1,
+"date": "2022-06-19",
+"loc": "in"
+},
+{
+"key": "A24#11670",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11912591726",
+"rating": 1,
+"date": "2024-11-04",
+"loc": "ee"
+},
+{
+"key": "A24#14649",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12050399016",
+"rating": 1,
+"date": "2024-12-11",
+"loc": "gb"
+},
+{
+"key": "A24#24188",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13653522994",
+"rating": 1,
+"date": "2026-01-20",
+"loc": "us"
+},
+{
+"key": "A24#25758",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12577345554",
+"rating": 1,
+"date": "2025-04-23",
+"loc": "us"
+},
+{
+"key": "A31#1210",
+"codes": [
+"SY_HEALTH_DOUBLE"
+],
+"quote": "it’s double counting steps from the health app",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "12773578933",
+"rating": 2,
+"date": "2025-06-14",
+"loc": "gb"
+},
+{
+"key": "A31#2974",
+"codes": [
+"SY_HEALTH_DOUBLE"
+],
+"quote": "it is double counting the steps that I am taking",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "10132390884",
+"rating": 2,
+"date": "2023-07-12",
+"loc": "us"
+},
+{
+"key": "A48#4184",
+"codes": [
+"SY_DOUBLE_LOG"
+],
+"quote": "the app began double logging my entries and double counting them",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1092529839",
+"rating": 5,
+"date": "2014-11-06",
+"loc": "us"
+},
+{
+"key": "A53#1105",
+"codes": [
+"SY_WATCH_DOUBLE"
+],
+"quote": "On the Apple Watch, I periodically record how much water I drink, and all the data are recorded twice",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "2911198078",
+"rating": 4,
+"date": "2018-07-15",
+"loc": "ru"
+},
+{
+"key": "A53#1578",
+"codes": [
+"SY_HEALTH_DOUBLE"
+],
+"quote": "this app is not smart enough to avoid double counting from iPhone and the Apple Watch",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "3494175379",
+"rating": 1,
+"date": "2018-12-05",
+"loc": "us"
+},
+{
+"key": "A67#1720",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "67. Habio - Daily Habit Tracker - Routine planner & To do list",
+"review_id": "11201312848",
+"rating": 1,
+"date": "2024-04-26",
+"loc": "us"
+},
+{
+"key": "A67#1908",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "67. Habio - Daily Habit Tracker - Routine planner & To do list",
+"review_id": "10417763593",
+"rating": 1,
+"date": "2023-09-29",
+"loc": "us"
+},
+{
+"key": "P12#8125",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "994da4c0-9dc6-4aee-968f-1e40724dad97",
+"rating": 1,
+"date": "2026-07-20",
+"loc": "en"
+},
+{
+"key": "P12#8821",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "52c2f662-17ad-4b8c-9d7a-f2c5f60aaa60",
+"rating": 1,
+"date": "2026-04-04",
+"loc": "en"
+},
+{
+"key": "P12#63084",
+"codes": [
+"SY_DOUBLE_LOG"
+],
+"quote": "it kept double counting goals",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "26bd4c34-d96a-4366-a9fc-083aee7e07bd",
+"rating": 2,
+"date": "2019-07-09",
+"loc": "en"
+},
+{
+"key": "P12#118071",
+"codes": [
+"SY_DOUBLE_LOG"
+],
+"quote": "there can appear a double notification which makes things count double",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "57b1211d-b295-4efa-81e9-1ae3d24c69f8",
+"rating": 4,
+"date": "2016-06-18",
+"loc": "nl"
+},
+{
+"key": "P122#32369",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "1681b94b-93cd-44e5-92d9-790d9f756186",
+"rating": 4,
+"date": "2025-02-14",
+"loc": "pl"
+},
+{
+"key": "P24#6759",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "bf3ecedd-3f90-47c2-a7bd-17b3b8ea17bf",
+"rating": 5,
+"date": "2019-01-23",
+"loc": "en"
+},
+{
+"key": "P4#19615",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "0387e9cb-88b9-4761-9bd1-e33776110ef4",
+"rating": 1,
+"date": "2024-06-29",
+"loc": "en"
+},
+{
+"key": "P8#8907",
+"codes": [
+"SY_DOUBLE_LOG"
+],
+"quote": "sometimes my task is added twice",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "b0ff96bc-3224-484d-9b80-8f213f9b8262",
+"rating": 4,
+"date": "2017-02-12",
+"loc": "en"
+},
+{
+"key": "N11#6170",
+"codes": [
+"SY_HEALTH_DOUBLE"
+],
+"quote": "it double counted my steps between my iPhone and watch",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "4610631192",
+"rating": 1,
+"date": "2019-08-13",
+"loc": "us"
+},
+{
+"key": "N5#11064",
+"codes": [
+"SY_HEALTH_DOUBLE"
+],
+"quote": "this Apple fitness counts as 20k",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "12973982282",
+"rating": 1,
+"date": "2025-08-04",
+"loc": "sg"
+},
+{
+"key": "N4#7580",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "14147505242",
+"rating": 2,
+"date": "2026-06-05",
+"loc": "us"
+},
+{
+"key": "P5#1548",
+"codes": [
+"SY_DELETE_RESURRECT"
+],
+"quote": "I also deleted them and they still show up",
+"store": "P",
+"app": "5. Routine Planner, Habit Tracker",
+"review_id": "12767fe3-0fa5-44cc-bc7a-9fb0c9776b66",
+"rating": 1,
+"date": "2023-05-19",
+"loc": "en"
+},
+{
+"key": "A10#2836",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14300275597",
+"rating": 2,
+"date": "2026-07-14",
+"loc": "ca"
+},
+{
+"key": "P12#27342",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "25c40ccb-ea8c-4c4e-b43a-924572011e0d",
+"rating": 1,
+"date": "2022-02-04",
+"loc": "en"
+},
+{
+"key": "P84#19023",
+"codes": [
+"T_RECURRENCE"
+],
+"quote": "repeating tasks don't actually repeat",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "4371e5a8-dd2c-4740-bf0c-aa8cd1ff8013",
+"rating": 3,
+"date": "2020-10-29",
+"loc": "en"
+},
+{
+"key": "A4#8071",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "8701281671",
+"rating": 1,
+"date": "2022-05-23",
+"loc": "kw"
+},
+{
+"key": "A10#33418",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12593468837",
+"rating": 3,
+"date": "2025-04-27",
+"loc": "us"
+},
+{
+"key": "A48#4064",
+"codes": [
+"SY_DELETE_RESURRECT"
+],
+"quote": "Remainder icon keep reappearing",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1158574964",
+"rating": 1,
+"date": "2015-02-26",
+"loc": "us"
+},
+{
+"key": "P129#825",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "129. TrackIt - Goal & Time Tracker",
+"review_id": "c2374ade-d21a-4300-a967-b78a1fc95a13",
+"rating": 1,
+"date": "2024-07-11",
+"loc": "en"
+},
+{
+"key": "A1#48912",
+"codes": [
+"SY_DELETE_RESURRECT",
+"L_NOTSAVED"
+],
+"quote": "I also deleted some habits yesterday but they still reappeared today",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12189045458",
+"rating": 2,
+"date": "2025-01-15",
+"loc": "ph"
+},
+{
+"key": "A24#23748",
+"codes": [
+"SY_DELETE_RESURRECT"
+],
+"quote": "Deleted habits and routines would reappear on their own",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13883624721",
+"rating": 1,
+"date": "2026-03-24",
+"loc": "us"
+},
+{
+"key": "A23#3297",
+"codes": [
+"SY_DELETE_RESURRECT",
+"S_DUP"
+],
+"quote": "constant double entries / deleted tasks reappear",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "10012793329",
+"rating": 2,
+"date": "2023-06-08",
+"loc": "nl"
+},
+{
+"key": "A24#40422",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "5504866643",
+"rating": 1,
+"date": "2020-02-08",
+"loc": "us"
+},
+{
+"key": "P8#4017",
+"codes": [
+"SY_DELETE_RESURRECT"
+],
+"quote": "even after I have deleted an task it's still shows it",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "2ca936fa-1dc6-402f-9f2b-b8a68580f846",
+"rating": 3,
+"date": "2023-12-21",
+"loc": "en"
+},
+{
+"key": "P84#12457",
+"codes": [
+"S_WIDGET"
+],
+"quote": "Even though I deleted all to do's from my list, the count still shows on my widget",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "e59846ea-d5e0-4461-9483-987814b7f647",
+"rating": 5,
+"date": "2023-10-22",
+"loc": "en"
+},
+{
+"key": "P3#10185",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "77bf02c3-6b79-40c4-b38d-6016d5ec467f",
+"rating": 5,
+"date": "2020-02-25",
+"loc": "en"
+},
+{
+"key": "A46#1553",
+"codes": [
+"S_WIDGET",
+"SY_DELETE_RESURRECT"
+],
+"quote": "I deleted the Dry January task but the widget still shows it",
+"store": "A",
+"app": "46. everyday - Habit Tracker - Daily Routine Checklist",
+"review_id": "12294579474",
+"rating": 4,
+"date": "2025-02-10",
+"loc": "us"
+},
+{
+"key": "A13#11738",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "9075946866",
+"rating": 4,
+"date": "2022-09-12",
+"loc": "us"
+},
+{
+"key": "P4#12644",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "0f53cd7f-dd90-493f-bd87-1414e7e1e665",
+"rating": 4,
+"date": "2025-01-05",
+"loc": "en"
+},
+{
+"key": "N9#44868",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1475887788",
+"rating": 5,
+"date": "2016-10-30",
+"loc": "us"
+},
+{
+"key": "N7#11185",
+"codes": [
+"SY_DELETE_RESURRECT",
+"S_WATCH"
+],
+"quote": "I have deleted the note from Keep, but it still shows up on my w",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "4180793163",
+"rating": 4,
+"date": "2019-05-20",
+"loc": "us"
+},
+{
+"key": "N1#21303",
+"codes": [
+"S_WIDGET"
+],
+"quote": "they should disappear from my widget until the next day",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "11813320786",
+"rating": 1,
+"date": "2024-10-09",
+"loc": "us"
+},
+{
+"key": "P24#7804",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "36b98084-8216-4f25-b1bd-c3d80b9344c2",
+"rating": 1,
+"date": "2018-10-08",
+"loc": "en"
+},
+{
+"key": "A1#55645",
+"codes": [
+"T_NOBACKFILL",
+"L_CORRUPT"
+],
+"quote": "now I can’t go back to previous days",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "7784255692",
+"rating": 1,
+"date": "2021-09-08",
+"loc": "us"
+},
+{
+"key": "P3#10845",
+"codes": [
+"T_NOBACKFILL"
+],
+"quote": "Can't go back to add habits I achieved yesterday",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "16be4b35-ba55-4916-b495-8450333120a7",
+"rating": 1,
+"date": "2019-10-03",
+"loc": "en"
+},
+{
+"key": "A24#38063",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "6480734988",
+"rating": 1,
+"date": "2020-09-29",
+"loc": "us"
+},
+{
+"key": "P37#965",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "37. Habitify - Habit Tracker",
+"review_id": "1752a6d8-bbfc-4f17-95fa-fd3d511b9d02",
+"rating": 1,
+"date": "2020-02-02",
+"loc": "en"
+},
+{
+"key": "P111#998",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "2de48207-757a-47c2-aee3-c7fef6ce18c4",
+"rating": 1,
+"date": "2024-09-26",
+"loc": "en"
+},
+{
+"key": "A31#4824",
+"codes": [
+"T_NOBACKFILL"
+],
+"quote": "I can’t edit if I’ve made a mistake on a previous day",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "4744139341",
+"rating": 2,
+"date": "2019-09-07",
+"loc": "us"
+},
+{
+"key": "P12#13151",
+"codes": [
+"T_NOBACKFILL"
+],
+"quote": "you can't go back to the previou",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "8680c3d9-adb4-46ba-a173-9a665302bd78",
+"rating": 2,
+"date": "2024-11-14",
+"loc": "en"
+},
+{
+"key": "A24#32989",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8200409266",
+"rating": 1,
+"date": "2022-01-03",
+"loc": "us"
+},
+{
+"key": "P49#560",
+"codes": [
+"T_NOBACKFILL",
+"SY_BACKFILL_HITS_TODAY"
+],
+"quote": "you can't mark a previous day's tasks as complete, because it will mark today's as complete too",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "657eee6b-0f4d-4af7-a706-0f7d7d153136",
+"rating": 2,
+"date": "2025-04-30",
+"loc": "en"
+},
+{
+"key": "P65#8987",
+"codes": [
+"T_NOBACKFILL"
+],
+"quote": "Cannot update previous dates",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "646e8abd-b0fc-495f-b1d0-6973099e4e62",
+"rating": 2,
+"date": "2017-01-12",
+"loc": "en"
+},
+{
+"key": "P7#497",
+"codes": [
+"T_NOBACKFILL",
+"B_PAID"
+],
+"quote": "Can't update previous days without premium so you need to remember to check everything until midnight",
+"store": "P",
+"app": "7. Habit Tracker - Habit Streak",
+"review_id": "288d98ee-1fe4-4184-a19e-6b634d980be6",
+"rating": 3,
+"date": "2026-07-21",
+"loc": "pl"
+},
+{
+"key": "P131#314",
+"codes": [
+"T_NOBACKFILL",
+"T_MIDNIGHT"
+],
+"quote": "I came home after midnite and I can't update the routine cuz I'm in the next day",
+"store": "P",
+"app": "131. Skincare Routine - FeelinMySkin",
+"review_id": "a5fd6a9c-fbdd-4d04-a9b3-e27c7c53366b",
+"rating": 3,
+"date": "2021-05-22",
+"loc": "en"
+},
+{
+"key": "A13#5729",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "10707791696",
+"rating": 2,
+"date": "2023-12-17",
+"loc": "gb"
+},
+{
+"key": "P12#115446",
+"codes": [
+"T_NOBACKFILL",
+"L_USER"
+],
+"quote": "you can't edit the past day if you forgot to mark your progress",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "f9c44334-437f-4e78-96ed-5480ce70c23e",
+"rating": 4,
+"date": "2018-02-06",
+"loc": "it"
+},
+{
+"key": "A5#194",
+"codes": [
+"T_NOBACKFILL"
+],
+"quote": "you can’t check off habits from previous days unless you already started tracking them that day",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "13781582927",
+"rating": 4,
+"date": "2026-02-23",
+"loc": "ca"
+},
+{
+"key": "A13#11933",
+"codes": [
+"T_NOBACKFILL"
+],
+"quote": "there’s no way to go back and check the previous day",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8218840512",
+"rating": 4,
+"date": "2022-01-08",
+"loc": "us"
+},
+{
+"key": "A11#15",
+"codes": [
+"T_NOBACKFILL"
+],
+"quote": "you cannot go back and review or change previous days without, again, skipping back a single day at a time",
+"store": "A",
+"app": "11. Daily Habits - Streak Tracker - Morning Routine & Goal Planner",
+"review_id": "10985521600",
+"rating": 4,
+"date": "2024-02-27",
+"loc": "gb"
+},
+{
+"key": "A57#771",
+"codes": [
+"T_NOBACKFILL"
+],
+"quote": "either you can’t mark off goals on previous days",
+"store": "A",
+"app": "57. Habit Tracker - DayStamp - Daily Routine, Streak & Widget",
+"review_id": "4901780444",
+"rating": 4,
+"date": "2019-10-06",
+"loc": "us"
+},
+{
+"key": "N10#20434",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "6901551719",
+"rating": 4,
+"date": "2021-01-22",
+"loc": "us"
+},
+{
+"key": "N3#2950",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "9182186808",
+"rating": 2,
+"date": "2022-10-14",
+"loc": "ca"
+},
+{
+"key": "N9#35990",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "14270564206",
+"rating": 3,
+"date": "2026-07-06",
+"loc": "us"
+},
+{
+"key": "A85#2529",
+"codes": [
+"SY_SLOW_UI"
+],
+"quote": "the iOS app is kind of slow",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "4257434203",
+"rating": 3,
+"date": "2019-06-03",
+"loc": "us"
+},
+{
+"key": "P8#13398",
+"codes": [
+"S_DELAY"
+],
+"quote": "It can even take a couple of minutes to synch",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "3e25884b-e88a-4075-aede-dd2c3660c917",
+"rating": 3,
+"date": "2023-09-22",
+"loc": "pl"
+},
+{
+"key": "A13#11941",
+"codes": [
+"S_MULTI_REQ",
+"E_DEVICE"
+],
+"quote": "this app doesn’t sync with your other devices",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8205652768",
+"rating": 1,
+"date": "2022-01-05",
+"loc": "us"
+},
+{
+"key": "P8#8090",
+"codes": [
+"S_DELAY"
+],
+"quote": "Sync is slow and pressing on habits doesn't work sometimes",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "069cda4f-f598-4ee8-87e5-8e0f6d893633",
+"rating": 2,
+"date": "2018-02-06",
+"loc": "en"
+},
+{
+"key": "A13#11964",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8145219578",
+"rating": 1,
+"date": "2021-12-19",
+"loc": "us"
+},
+{
+"key": "A31#2350",
+"codes": [
+"S_WATCH",
+"S_DELAY"
+],
+"quote": "the Apple watch complication sync has been very slow lately",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "6684199943",
+"rating": 2,
+"date": "2020-11-25",
+"loc": "se"
+},
+{
+"key": "A13#12937",
+"codes": [
+"S_DELAY",
+"SY_NO_PULL"
+],
+"quote": "it might take an hour or more for the change to appear on my iPad Pro with the devices sitting next to each other",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5902720790",
+"rating": 3,
+"date": "2020-05-04",
+"loc": "us"
+},
+{
+"key": "A2#60",
+"codes": [
+"S_DELAY"
+],
+"quote": "Syncing makes a slow app even slower",
+"store": "A",
+"app": "2. Daily Habits - Habit Tracker - Habit List and Routine Tracker",
+"review_id": "5229271933",
+"rating": 2,
+"date": "2019-12-03",
+"loc": "ca"
+},
+{
+"key": "A5#3249",
+"codes": [
+"S_WATCH"
+],
+"quote": "watch app got out of sync again",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "7266678836",
+"rating": 3,
+"date": "2021-04-26",
+"loc": "us"
+},
+{
+"key": "P111#12255",
+"codes": [
+"S_DELAY"
+],
+"quote": "Dashboard syncs information slowly",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "0fef553a-3eff-433b-9826-19d5aaad082b",
+"rating": 2,
+"date": "2014-08-09",
+"loc": "en"
+},
+{
+"key": "A23#2061",
+"codes": [
+"S_DELAY",
+"SY_NO_PULL"
+],
+"quote": "I have to kill the app to force a sync. Not ideal. A pull to refresh or a button is needed",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "8438191895",
+"rating": 3,
+"date": "2022-03-09",
+"loc": "gb"
+},
+{
+"key": "P24#14013",
+"codes": [
+"S_DELAY"
+],
+"quote": "syncing between devices is pretty slow",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "250ea048-f4d8-41c3-84c1-3655b4118221",
+"rating": 4,
+"date": "2015-12-20",
+"loc": "en"
+},
+{
+"key": "A1#46812",
+"codes": [
+"S_WATCH",
+"S_DELAY"
+],
+"quote": "Watch app integration",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13474469093",
+"rating": 4,
+"date": "2025-12-04",
+"loc": "in"
+},
+{
+"key": "P8#13394",
+"codes": [
+"S_DELAY"
+],
+"quote": "Synchronizing seems a little buggy and slow",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "57ff850d-1da4-4a28-b0e8-0c6db8314f6a",
+"rating": 4,
+"date": "2023-10-21",
+"loc": "pl"
+},
+{
+"key": "A23#5237",
+"codes": [
+"S_DELAY",
+"SY_DIVERGE"
+],
+"quote": "I have different numbers on each device even after turning on and off iCloud sync",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "3977317524",
+"rating": 5,
+"date": "2019-04-06",
+"loc": "us"
+},
+{
+"key": "A1#55502",
+"codes": [
+"S_DELAY",
+"X_PAYER"
+],
+"quote": "it sometimes takes hours for it to sync up",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "8196026084",
+"rating": 4,
+"date": "2022-01-02",
+"loc": "us"
+},
+{
+"key": "N10#13944",
+"codes": [
+"S_DELAY",
+"SY_NO_PULL"
+],
+"quote": "the “hard refresh”option Wunderlist used to have (just pulling the screen downwards) has simply not been implemented",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "6897571910",
+"rating": 1,
+"date": "2021-01-21",
+"loc": "nl"
+},
+{
+"key": "N3#8627",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "13500042867",
+"rating": 1,
+"date": "2025-12-11",
+"loc": "gb"
+},
+{
+"key": "N10#12002",
+"codes": [
+"S_DELAY"
+],
+"quote": "Sync is slow",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5611517171",
+"rating": 1,
+"date": "2020-03-03",
+"loc": "it"
+},
+{
+"key": "P63#1575",
+"codes": [
+"S_REMINDER_XDEVICE",
+"SY_NOTIF_DUP"
+],
+"quote": "Notifications about already marked events",
+"store": "P",
+"app": "63. Habit Hunter - Gamified Routine",
+"review_id": "6c5c3948-cb6d-4667-b76d-bb2624256c2a",
+"rating": 1,
+"date": "2026-01-19",
+"loc": "ru"
+},
+{
+"key": "P4#23182",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "3ad712a3-fd4b-4ba1-8bee-62f6bc001f59",
+"rating": 3,
+"date": "2024-01-11",
+"loc": "en"
+},
+{
+"key": "A13#8943",
+"codes": [
+"S_DUP",
+"L_RANDOM"
+],
+"quote": "some habits are duplicated",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5169468125",
+"rating": 2,
+"date": "2019-11-19",
+"loc": "my"
+},
+{
+"key": "A1#46473",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "14349154274",
+"rating": 2,
+"date": "2026-07-26",
+"loc": "id"
+},
+{
+"key": "A13#14183",
+"codes": [
+"S_DUP",
+"T_DATE",
+"T_WEEKSTART"
+],
+"quote": "Items I have scheduled to do X days per week “break” their streak every Sunday",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "4794443997",
+"rating": 1,
+"date": "2019-09-17",
+"loc": "us"
+},
+{
+"key": "A13#4449",
+"codes": [
+"S_DUP",
+"L_UPD",
+"T_STREAK"
+],
+"quote": "Some habits got duplicated, those that were stopped appeared in the list, streak and stats completely broken",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5169912469",
+"rating": 1,
+"date": "2019-11-19",
+"loc": "cz"
+},
+{
+"key": "A48#4110",
+"codes": [
+"S_DUP"
+],
+"quote": "it keeps crashing & duplicating habits",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1136446541",
+"rating": 1,
+"date": "2015-01-26",
+"loc": "us"
+},
+{
+"key": "P84#12516",
+"codes": [
+"S_DUP",
+"S_CONFLICT"
+],
+"quote": "Some of subtasks may be overwritten by other ones",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "d9be9563-f080-4c2d-a51d-ae3a40771e27",
+"rating": 1,
+"date": "2023-10-13",
+"loc": "en"
+},
+{
+"key": "A23#506",
+"codes": [
+"S_DUP",
+"SY_DELETE_RESURRECT"
+],
+"quote": "I got deleted items, duplicated items",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "13491181225",
+"rating": 2,
+"date": "2025-12-08",
+"loc": "ca"
+},
+{
+"key": "P8#9615",
+"codes": [
+"S_DUP",
+"SY_DEDUP_DELETES_ALL"
+],
+"quote": "All my Habits got duplicated in the app, but when I deleted the duplicates everything disappeared",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "8e1f9d54-4ebd-4805-bb2c-2eaabd5ef4a4",
+"rating": 3,
+"date": "2016-05-25",
+"loc": "en"
+},
+{
+"key": "A4#15447",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "11108215375",
+"rating": 3,
+"date": "2024-04-01",
+"loc": "us"
+},
+{
+"key": "P8#9683",
+"codes": [
+"S_DUP"
+],
+"quote": "My tasks got duplicated... 10 times",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "69734720-5919-46e6-a73a-08a3a1013a1d",
+"rating": 3,
+"date": "2016-05-09",
+"loc": "en"
+},
+{
+"key": "P84#43062",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "d536d56f-a069-4784-a819-64b55f7f5f02",
+"rating": 2,
+"date": "2025-12-13",
+"loc": "it"
+},
+{
+"key": "P84#22854",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "ef8bdf3e-7da5-4547-a6de-2f75b614559e",
+"rating": 5,
+"date": "2020-02-03",
+"loc": "en"
+},
+{
+"key": "P84#30085",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "b938e276-1c71-44b1-9d92-acefccbccf04",
+"rating": 5,
+"date": "2019-02-06",
+"loc": "en"
+},
+{
+"key": "P84#23147",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "0d8d14c7-6f44-4a54-84ea-4ca528afdb28",
+"rating": 5,
+"date": "2020-01-20",
+"loc": "en"
+},
+{
+"key": "P2#2929",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "4176a85a-bf4e-4243-837f-41a67b7ee163",
+"rating": 5,
+"date": "2025-05-09",
+"loc": "en"
+},
+{
+"key": "A33#2976",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "11472660208",
+"rating": 4,
+"date": "2024-07-09",
+"loc": "th"
+},
+{
+"key": "N10#13497",
+"codes": [
+"S_DUP",
+"S_PARTIAL"
+],
+"quote": "duplicated steps and not correctly synchronized between devices",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "5959739735",
+"rating": 4,
+"date": "2020-05-18",
+"loc": "mx"
+},
+{
+"key": "N7#12215",
+"codes": [
+"S_DUP"
+],
+"quote": "I've experienced it duplicating items on list",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "1520690886",
+"rating": 2,
+"date": "2017-01-12",
+"loc": "us"
+},
+{
+"key": "N2#16675",
+"codes": [
+"S_DUP"
+],
+"quote": "My calendar has started duplicating every entry I create",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "13074289751",
+"rating": 3,
+"date": "2025-08-29",
+"loc": "us"
+},
+{
+"key": "A24#5461",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12047728556",
+"rating": 1,
+"date": "2024-12-10",
+"loc": "ca"
+},
+{
+"key": "A13#13997",
+"codes": [
+"SY_DELETE_RESURRECT"
+],
+"quote": "suddenly reappearing habits I deleted months ago",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5022631032",
+"rating": 3,
+"date": "2019-10-26",
+"loc": "us"
+},
+{
+"key": "P24#13064",
+"codes": [
+"SY_DELETE_RESURRECT",
+"SY_PAUSE_COUNTS"
+],
+"quote": "Deactivate a habit on one device, or even all your devices, and it'll constantly reappear upon sync",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "2e28f7b0-b3be-4809-bcde-ccef5a94cd5d",
+"rating": 2,
+"date": "2016-03-12",
+"loc": "en"
+},
+{
+"key": "P31#116",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "31. HelloHabit - Habit Tracker",
+"review_id": "91f825d3-039a-4517-bf97-0c1cb55284d5",
+"rating": 1,
+"date": "2026-05-09",
+"loc": "en"
+},
+{
+"key": "P8#1500",
+"codes": [
+"L_OFFLINE_EDITS",
+"P_ONLINE_ONLY"
+],
+"quote": "When I try to add a task or habit when I am not connected to the Internet, the app creates it with a warning sign",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "7b1a79c4-792b-4186-87a0-b059ca490890",
+"rating": 3,
+"date": "2025-07-22",
+"loc": "en"
+},
+{
+"key": "P126#74514",
+"codes": [
+"L_SYNC"
+],
+"quote": "Sync issues where 90% of my tasks disappeared",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "d2779b9a-e63c-445b-a367-f754c3d9cd56",
+"rating": 1,
+"date": "2018-10-27",
+"loc": "en"
+},
+{
+"key": "A53#1505",
+"codes": [
+"S_DUP",
+"SY_DELETE_RESURRECT"
+],
+"quote": "Then the old habits reappeared",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "5058596592",
+"rating": 1,
+"date": "2019-11-01",
+"loc": "us"
+},
+{
+"key": "A13#12418",
+"codes": [
+"S_WATCH",
+"S_DELAY"
+],
+"quote": "it shows syncing for so long",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6615449813",
+"rating": 3,
+"date": "2020-11-06",
+"loc": "us"
+},
+{
+"key": "A1#353",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11508521594",
+"rating": 2,
+"date": "2024-07-18",
+"loc": "au"
+},
+{
+"key": "P126#12012",
+"codes": [
+"L_SYNC"
+],
+"quote": "yesterday I synchronized it with google.. today all my list disappeared",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "f3a2ae93-5ccb-4253-a347-c7a065109874",
+"rating": 1,
+"date": "2018-09-30",
+"loc": "de"
+},
+{
+"key": "A48#3736",
+"codes": [
+"SY_DIVERGE"
+],
+"quote": "The desktop and mobile apps never sync correctly, the dashboard almost always shows wrong information",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1429888093",
+"rating": 1,
+"date": "2016-08-09",
+"loc": "us"
+},
+{
+"key": "A1#52536",
+"codes": [
+"S_SHARED",
+"L_SYNC"
+],
+"quote": "Our habits won’t sync or they disappear once they close the app",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11130270394",
+"rating": 2,
+"date": "2024-04-07",
+"loc": "us"
+},
+{
+"key": "A23#4431",
+"codes": [
+"SY_DIVERGE",
+"S_INVISIBLE"
+],
+"quote": "My Mac and iphone don't sync properly - even though they say they are - so I have to double check off everything on both devices",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "10407060874",
+"rating": 3,
+"date": "2023-09-25",
+"loc": "us"
+},
+{
+"key": "P37#514",
+"codes": [
+"S_DUP"
+],
+"quote": "I get a lot of duplicates for the same timed habit on my Google Calendar",
+"store": "P",
+"app": "37. Habitify - Habit Tracker",
+"review_id": "b7bed9d5-0328-4c65-9747-1cc3e391ca1f",
+"rating": 4,
+"date": "2023-08-18",
+"loc": "en"
+},
+{
+"key": "A23#3820",
+"codes": [
+"SY_DELETE_RESURRECT",
+"T_STREAK",
+"X_SUPPORT_SAVED"
+],
+"quote": "habits that I removed are back in the app and stats are all wrong",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "8545693662",
+"rating": 5,
+"date": "2022-04-08",
+"loc": "se"
+},
+{
+"key": "A16#76",
+"codes": [
+"L_LOGIN",
+"SY_GUEST_TO_ACCOUNT"
+],
+"quote": "I set up a couple of ones without logging in and go some reason I decided to include my account and all my tracks are gone",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "12207339830",
+"rating": 4,
+"date": "2025-01-20",
+"loc": "br"
+},
+{
+"key": "P126#45331",
+"codes": [
+"S_DUP",
+"T_TZ"
+],
+"quote": "Google calendar duplicates the entries and the timing is totally off",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "b55674f3-8342-4fa9-b9b0-4c584563b428",
+"rating": 4,
+"date": "2021-06-04",
+"loc": "en"
+},
+{
+"key": "P111#10660",
+"codes": [
+"S_DUP"
+],
+"quote": "it even duplicates classes and times",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "08653fca-e03d-4bbe-a639-fa1252a756cd",
+"rating": 4,
+"date": "2015-03-10",
+"loc": "en"
+},
+{
+"key": "N10#14931",
+"codes": [
+"S_DUP",
+"SY_DEDUP_DELETES_ALL"
+],
+"quote": "Deleted one of duplicated tasks, lost both copies of same tasks",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "2098884112",
+"rating": 1,
+"date": "2018-01-17",
+"loc": "pl"
+},
+{
+"key": "N8#35515",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "1202573469",
+"rating": 3,
+"date": "2015-05-25",
+"loc": "us"
+},
+{
+"key": "N8#25654",
+"codes": [
+"S_FAIL"
+],
+"quote": "I can’t sync between devices",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "5944775400",
+"rating": 3,
+"date": "2020-05-14",
+"loc": "us"
+},
+{
+"key": "A31#105",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "I can’t set the start of the week to the day I want. It just reverts back to Sunday",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "9827752865",
+"rating": 2,
+"date": "2023-04-16",
+"loc": "au"
+},
+{
+"key": "P84#9107",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "Is there a way to set manually Monday as 1st week day?",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "c7394ea9-152e-408f-ae5f-a82ed83a59cc",
+"rating": 2,
+"date": "2025-04-23",
+"loc": "en"
+},
+{
+"key": "P124#388",
+"codes": [
+"T_WEEKSTART",
+"T_DATE"
+],
+"quote": "When Monday is first day of the week, all dates are shifted",
+"store": "P",
+"app": "124. Habit Streak Tracker - DotHabit",
+"review_id": "aad5be82-2ec7-4a6a-aea3-ffe907abfde2",
+"rating": 3,
+"date": "2019-12-15",
+"loc": "fr"
+},
+{
+"key": "P3#3539",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "it considers 'Sunday' as the first day of the week by default",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "fa856450-e900-4855-8f96-f494acfb1fa7",
+"rating": 3,
+"date": "2024-11-20",
+"loc": "en"
+},
+{
+"key": "P2#12402",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "you can't change first day of the week",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "1a9d76fa-70f4-4d85-96de-05cac2cc75ae",
+"rating": 3,
+"date": "2020-08-25",
+"loc": "en"
+},
+{
+"key": "P8#6311",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "First day of the week setting doesn't work",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "4cd78d0a-a92d-40e1-a353-eedb27aa51b5",
+"rating": 3,
+"date": "2020-07-18",
+"loc": "en"
+},
+{
+"key": "A13#547",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "starting day of the week is set by region 'according to local custom'",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1764087912",
+"rating": 1,
+"date": "2017-08-31",
+"loc": "au"
+},
+{
+"key": "A43#124",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "it’s counting from sunday even if it’s set that week starts on monday",
+"store": "A",
+"app": "43. Habit Hub - Routine Tracker - Daily Todo, Goals & Schedule",
+"review_id": "4074841178",
+"rating": 2,
+"date": "2019-04-29",
+"loc": "hr"
+},
+{
+"key": "P33#749",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "there is no such feature to change the starting day",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "540000de-2665-430b-863e-3ccf5dbf8216",
+"rating": 3,
+"date": "2023-06-13",
+"loc": "en"
+},
+{
+"key": "P98#3293",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "you can only choose between friday and saturday",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "01240456-1d38-4a86-bbd2-b6b953627eb0",
+"rating": 2,
+"date": "2021-11-03",
+"loc": "it"
+},
+{
+"key": "A74#16",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "We ar arab start day of week on Saturday",
+"store": "A",
+"app": "74. Habit Check Calendar - Track habits with a calendar!",
+"review_id": "8810157668",
+"rating": 3,
+"date": "2022-06-25",
+"loc": "eg"
+},
+{
+"key": "P91#171",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "the start of the week is Sunday and I couldn't change that",
+"store": "P",
+"app": "91. Habit Check Calendar",
+"review_id": "862370bb-c8c4-41ad-9fd6-900267b042e2",
+"rating": 3,
+"date": "2025-01-09",
+"loc": "en"
+},
+{
+"key": "A48#89",
+"codes": [
+"T_WEEKSTART",
+"SY_WEEK_PROGRESS"
+],
+"quote": "taking into account days that haven't passed yet",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "2442386658",
+"rating": 1,
+"date": "2018-04-19",
+"loc": "au"
+},
+{
+"key": "P111#11786",
+"codes": [
+"T_WEEKSTART",
+"T_LOCALE"
+],
+"quote": "The week starts Sunday and it doesn't have a 24h format",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "e645c2ea-981b-44ad-956e-dadd255cdf8a",
+"rating": 2,
+"date": "2014-09-22",
+"loc": "en"
+},
+{
+"key": "A59#11775",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "in Israel the week starts on Sunday",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "6212605433",
+"rating": 5,
+"date": "2020-07-18",
+"loc": "ru"
+},
+{
+"key": "P44#62",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "there is not any Saturday for first day of week",
+"store": "P",
+"app": "44. Habit Tracker - TickOff",
+"review_id": "7c507b6f-3382-44a6-b5b4-b0c9505c9872",
+"rating": 4,
+"date": "2026-06-27",
+"loc": "en"
+},
+{
+"key": "A13#10213",
+"codes": [
+"T_WEEKSTART",
+"T_LOCALE"
+],
+"quote": "change the first day of the week to Monday and to change 12hours clock to 24",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1557484920",
+"rating": 4,
+"date": "2017-03-04",
+"loc": "ru"
+},
+{
+"key": "P3#13495",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "«start of the week» option",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "237b845c-20f9-4ed1-8686-2de40f05a56d",
+"rating": 5,
+"date": "2018-01-25",
+"loc": "en"
+},
+{
+"key": "A10#27409",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "pick the first day",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13486439102",
+"rating": 4,
+"date": "2025-12-07",
+"loc": "us"
+},
+{
+"key": "N10#22899",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "2719446968",
+"rating": 5,
+"date": "2018-06-18",
+"loc": "us"
+},
+{
+"key": "N8#655",
+"codes": [
+"T_WEEKSTART"
+],
+"quote": "only allows for the start of week to be set as Saturday, Sunday or Monday",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "3979466546",
+"rating": 4,
+"date": "2019-04-06",
+"loc": "au"
+},
+{
+"key": "N8#548",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "7256786099",
+"rating": 4,
+"date": "2021-04-24",
+"loc": "au"
+},
+{
+"key": "P126#76208",
+"codes": [
+"T_RECURRENCE"
+],
+"quote": "Why do my repeating  tasks sometimes disappear?",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "b0dac216-909c-466c-8f2f-9f0cd95ab099",
+"rating": 3,
+"date": "2018-07-29",
+"loc": "en"
+},
+{
+"key": "P105#505",
+"codes": [
+"SY_NOTIF_BURST"
+],
+"quote": "all of my notifications would be blowing up my phone all at once",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "f3a5e616-9ea1-40c6-bc89-6ae62b840ae0",
+"rating": 1,
+"date": "2021-07-02",
+"loc": "en"
+},
+{
+"key": "P84#7932",
+"codes": [
+"T_RECURRENCE"
+],
+"quote": "you have no way to stop the alarm without canceling the entire task",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "657ed91d-273f-447b-97cf-268517302348",
+"rating": 1,
+"date": "2025-12-03",
+"loc": "en"
+},
+{
+"key": "P2#6649",
+"codes": [
+"T_RECURRENCE",
+"L_RANDOM"
+],
+"quote": "One of the recurring tasks I set for myself disappeared on its own",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "0fa7c090-d88a-497b-bde2-070d2384300a",
+"rating": 1,
+"date": "2023-11-01",
+"loc": "en"
+},
+{
+"key": "P8#4759",
+"codes": [
+"P_ONLINE_ONLY"
+],
+"quote": "it doesn't work well offline",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "beb7f444-e6f1-4a71-aba2-b14820b7138e",
+"rating": 3,
+"date": "2023-01-13",
+"loc": "en"
+},
+{
+"key": "P12#22696",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "95307b83-7169-4229-82e8-efb12fe52cde",
+"rating": 3,
+"date": "2022-08-31",
+"loc": "en"
+},
+{
+"key": "P84#16127",
+"codes": [
+"T_RECURRENCE"
+],
+"quote": "the \"all day\" notification function would NOT repeat",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "827e0b66-2d82-4d54-b3c3-a287d8957e97",
+"rating": 3,
+"date": "2022-04-15",
+"loc": "en"
+},
+{
+"key": "P126#29540",
+"codes": [
+"T_RECURRENCE"
+],
+"quote": "Repeat doesn't work",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "0263e67b-c837-42b5-a0bc-9a72dd362ef7",
+"rating": 2,
+"date": "2023-07-13",
+"loc": "en"
+},
+{
+"key": "P126#201016",
+"codes": [
+"T_RECURRENCE"
+],
+"quote": "despite setting up \"Repeat once a day\" it doesn't repeat",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "c75828b4-1ae3-4f37-bdd5-690126a70c76",
+"rating": 1,
+"date": "2019-12-23",
+"loc": "ru"
+},
+{
+"key": "P84#18295",
+"codes": [
+"T_RECURRENCE"
+],
+"quote": "it doesn't ring on reoccurrence",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "387da14a-cdd8-442a-8507-c0f56755d2a2",
+"rating": 2,
+"date": "2021-01-25",
+"loc": "en"
+},
+{
+"key": "A59#1913",
+"codes": [
+"T_RECURRENCE",
+"L_CORRUPT"
+],
+"quote": "it closes the app every time you tick an recurring event",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "10260566628",
+"rating": 3,
+"date": "2023-08-15",
+"loc": "gb"
+},
+{
+"key": "P33#2679",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "1fc67575-5b0c-488b-88f2-bcf157bf3333",
+"rating": 1,
+"date": "2019-10-07",
+"loc": "en"
+},
+{
+"key": "P49#245",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "6ee0acc1-4abd-4c35-ac4c-08ed9f59bcf2",
+"rating": 3,
+"date": "2026-03-04",
+"loc": "en"
+},
+{
+"key": "P122#6231",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "d98151f3-9820-41a5-b5fb-f5d4de34558d",
+"rating": 3,
+"date": "2026-01-26",
+"loc": "en"
+},
+{
+"key": "A59#14892",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "11088740581",
+"rating": 4,
+"date": "2024-03-26",
+"loc": "us"
+},
+{
+"key": "P84#42782",
+"codes": [
+"T_RECURRENCE"
+],
+"quote": "the recurring tasks disappear from the list",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "effe1f22-36a6-442d-87f6-2882214d64c8",
+"rating": 4,
+"date": "2019-04-27",
+"loc": "hu"
+},
+{
+"key": "A13#13743",
+"codes": [
+"T_RECURRENCE",
+"L_UPD"
+],
+"quote": "One of my repeat weekly 3x habit just disappeared with the new UI",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5297862589",
+"rating": 5,
+"date": "2019-12-21",
+"loc": "us"
+},
+{
+"key": "A76#197",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "1306473387",
+"rating": 5,
+"date": "2015-12-26",
+"loc": "au"
+},
+{
+"key": "A76#240",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "1035276458",
+"rating": 4,
+"date": "2014-07-26",
+"loc": "au"
+},
+{
+"key": "N6#4857",
+"codes": [
+"T_RECURRENCE"
+],
+"quote": "It eventually stops pushing a reminder",
+"store": "N",
+"app": "6. Google Tasks- Get Things Done - Plan, Organize & Schedule Work",
+"review_id": "14346805691",
+"rating": 3,
+"date": "2026-07-25",
+"loc": "us"
+},
+{
+"key": "N1#939",
+"codes": [
+"T_RECURRENCE",
+"L_NOTSAVED"
+],
+"quote": "no reoccurring times are being saved",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "8333062072",
+"rating": 1,
+"date": "2022-02-08",
+"loc": "au"
+},
+{
+"key": "N10#1010",
+"codes": [
+"T_RECURRENCE"
+],
+"quote": "the task would just disappear after a day or two",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "2167440175",
+"rating": 1,
+"date": "2018-02-04",
+"loc": "au"
+},
+{
+"key": "P7#520",
+"codes": [
+"T_STREAK"
+],
+"quote": "My streak was reset even though it's visible in the calendar as non interrupted",
+"store": "P",
+"app": "7. Habit Tracker - Habit Streak",
+"review_id": "40603c13-18b2-475c-9aba-f396c0a5de28",
+"rating": 1,
+"date": "2024-07-29",
+"loc": "ru"
+},
+{
+"key": "P98#3295",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "25951668-6bf8-424f-9a06-e0b802428a15",
+"rating": 3,
+"date": "2021-10-21",
+"loc": "it"
+},
+{
+"key": "A13#12690",
+"codes": [
+"S_FAIL"
+],
+"quote": "to get my iPhone app to sync habit",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6131984072",
+"rating": 3,
+"date": "2020-06-28",
+"loc": "us"
+},
+{
+"key": "A10#19834",
+"codes": [
+"T_STREAK",
+"E_CONSUMABLE"
+],
+"quote": "it didn’t use the streak repair it just reset",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14336409561",
+"rating": 3,
+"date": "2026-07-23",
+"loc": "us"
+},
+{
+"key": "A23#4460",
+"codes": [
+"L_SYNC",
+"T_NOBACKFILL"
+],
+"quote": "unable to edit task completions for the past days, no undo",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "10125490424",
+"rating": 1,
+"date": "2023-07-10",
+"loc": "us"
+},
+{
+"key": "A1#44629",
+"codes": [
+"SY_VACATION_BUG",
+"T_STREAK"
+],
+"quote": "I went on vacation and set the vacation mode. It didn’t skip all days",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11456633644",
+"rating": 1,
+"date": "2024-07-04",
+"loc": "es"
+},
+{
+"key": "A10#18481",
+"codes": [
+"L_USER",
+"T_STREAK"
+],
+"quote": "I accidentally clicked to reset my streak to 1",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12198428519",
+"rating": 2,
+"date": "2025-01-18",
+"loc": "se"
+},
+{
+"key": "A13#1886",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6525011522",
+"rating": 3,
+"date": "2020-10-11",
+"loc": "ca"
+},
+{
+"key": "P13#8",
+"codes": [
+"S_WIDGET"
+],
+"quote": "Daily streak widget broken?",
+"store": "P",
+"app": "13. Aura - Habit Tracker & Streaks",
+"review_id": "60c240da-9d52-4096-a421-2e366291425e",
+"rating": 3,
+"date": "2026-05-14",
+"loc": "en"
+},
+{
+"key": "A10#4391",
+"codes": [
+"T_STREAK"
+],
+"quote": "it was reset even tho it usually gives me another chance",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12535083607",
+"rating": 3,
+"date": "2025-04-12",
+"loc": "ca"
+},
+{
+"key": "P31#255",
+"codes": [
+"SY_HEALTH_SYNC",
+"T_STREAK"
+],
+"quote": "health connect not syncing fully with this app. My step streak keeps getting lost",
+"store": "P",
+"app": "31. HelloHabit - Habit Tracker",
+"review_id": "5711f25a-4621-4f17-9c59-47674873db3a",
+"rating": 3,
+"date": "2025-07-14",
+"loc": "en"
+},
+{
+"key": "A1#53022",
+"codes": [
+"T_STREAK",
+"SY_EDIT_WIPES_HISTORY"
+],
+"quote": "The quit streaks are wrong, and while trying to adjust it to get it to work properly it deletes all the previous data",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10795015250",
+"rating": 3,
+"date": "2024-01-07",
+"loc": "us"
+},
+{
+"key": "P33#959",
+"codes": [
+"T_STREAK"
+],
+"quote": "It says 5 day streak even though I just skipped a habit the previousday",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "8d62c33b-33aa-4247-a0e6-555c619a3c7a",
+"rating": 2,
+"date": "2022-05-19",
+"loc": "en"
+},
+{
+"key": "A10#9236",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14516698686",
+"rating": 5,
+"date": "2026-09-06",
+"loc": "gb"
+},
+{
+"key": "A10#32406",
+"codes": [
+"T_STREAK",
+"SY_OFFLINE_STREAK"
+],
+"quote": "Whne your offline for a week or so, it doesn’t save your streak",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12704590917",
+"rating": 5,
+"date": "2025-05-27",
+"loc": "us"
+},
+{
+"key": "P3#6050",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "5906fc2c-2a5a-4df5-a627-a4d750c78f5d",
+"rating": 4,
+"date": "2022-10-25",
+"loc": "en"
+},
+{
+"key": "A10#21168",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14146975367",
+"rating": 5,
+"date": "2026-06-05",
+"loc": "us"
+},
+{
+"key": "P98#1078",
+"codes": [
+"T_STREAK",
+"L_EDITHIST"
+],
+"quote": "Every time I make a new task I loose my streak",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "3c945169-b08c-4824-9396-3e92e41acf26",
+"rating": 4,
+"date": "2021-03-26",
+"loc": "en"
+},
+{
+"key": "N5#15567",
+"codes": [
+"T_STREAK",
+"SY_DIVERGE"
+],
+"quote": "The daily numbers show that I have been meeting my target for the last 20+ days in a row while the achievements tab says that I only have a 4 day streak",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "9662629580",
+"rating": 1,
+"date": "2023-02-28",
+"loc": "us"
+},
+{
+"key": "N5#14236",
+"codes": [
+"T_STREAK"
+],
+"quote": "now I am looking at an inaccurate number",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "11022437607",
+"rating": 1,
+"date": "2024-03-08",
+"loc": "us"
+},
+{
+"key": "N5#17017",
+"codes": [
+"T_STREAK",
+"SY_HEALTH_SYNC"
+],
+"quote": "since I got a Garmin wearable the App is not behaving anymore",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "10680934061",
+"rating": 1,
+"date": "2023-12-11",
+"loc": "za"
+},
+{
+"key": "A33#3089",
+"codes": [
+"L_PARTIAL",
+"T_TZ"
+],
+"quote": "my entire log history was messed up at least 3 times",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "11961320357",
+"rating": 1,
+"date": "2024-11-17",
+"loc": "ua"
+},
+{
+"key": "P4#21515",
+"codes": [
+"T_REMINDER_TZ"
+],
+"quote": "All of my reminders come in an hour after they're supposed to",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "8c4ca878-ba7b-4961-ad69-4a194ea3bc36",
+"rating": 1,
+"date": "2024-03-26",
+"loc": "en"
+},
+{
+"key": "P126#73281",
+"codes": [
+"T_REMINDER_TZ"
+],
+"quote": "As many time zones you travel, that many hours app shifts all your tasks",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "cec997ab-8461-45f1-b1f7-c7bb18fd4890",
+"rating": 2,
+"date": "2019-01-24",
+"loc": "en"
+},
+{
+"key": "A85#3364",
+"codes": [
+"T_TZ",
+"T_MIDNIGHT"
+],
+"quote": "my dailies reset at five in the afternoon",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "1259021448",
+"rating": 3,
+"date": "2015-09-18",
+"loc": "us"
+},
+{
+"key": "A1#54319",
+"codes": [
+"T_REMINDER_TZ"
+],
+"quote": "I don't know what time zone this is in",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9619961309",
+"rating": 1,
+"date": "2023-02-15",
+"loc": "us"
+},
+{
+"key": "A31#2661",
+"codes": [
+"T_TZ",
+"SY_SLOW_UI"
+],
+"quote": "Clicking to mark a task as done often results in a delay of several seconds",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "11133834669",
+"rating": 2,
+"date": "2024-04-08",
+"loc": "us"
+},
+{
+"key": "A85#2687",
+"codes": [
+"T_TZ",
+"SY_DIVERGE"
+],
+"quote": "It started my day today in the middle of the afternoon and it thinks it’s tomorrow already",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "2989077004",
+"rating": 2,
+"date": "2018-07-29",
+"loc": "us"
+},
+{
+"key": "P4#29782",
+"codes": [
+"T_TZ"
+],
+"quote": "the timezone/date doesn't allow you to be anywhere other than the developers timezone",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "4a6b6f55-42a9-432a-a8ed-9e8fbd8e0aef",
+"rating": 3,
+"date": "2023-08-19",
+"loc": "en"
+},
+{
+"key": "P111#859",
+"codes": [
+"T_TZ"
+],
+"quote": "I noticed on the website that assignments/reminders beyond February weren",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "c192bbe6-2c20-4e57-bdf8-e3436cadf52c",
+"rating": 1,
+"date": "2025-01-22",
+"loc": "en"
+},
+{
+"key": "A23#4544",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "9522443552",
+"rating": 3,
+"date": "2023-01-19",
+"loc": "us"
+},
+{
+"key": "P8#7344",
+"codes": [
+"T_TZ",
+"T_MIDNIGHT"
+],
+"quote": "App reset at around 7:00 pm, instead of at midnight of my time zone",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "bf454910-fba2-4c60-9112-2b1eaa20eb16",
+"rating": 2,
+"date": "2019-03-20",
+"loc": "en"
+},
+{
+"key": "P84#10099",
+"codes": [
+"T_REMINDER_TZ"
+],
+"quote": "i set a task at 7am, and i move 1 time zone back. The task also automatically sets itself to 6am",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "b1ffd211-194a-4da8-a934-35eef13f49d4",
+"rating": 1,
+"date": "2024-10-25",
+"loc": "en"
+},
+{
+"key": "A48#4193",
+"codes": [
+"T_REMINDER_TZ"
+],
+"quote": "the alerts are going off at my home time zone's time",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1085293808",
+"rating": 3,
+"date": "2014-10-24",
+"loc": "us"
+},
+{
+"key": "P8#7468",
+"codes": [
+"T_TZ",
+"T_MIDNIGHT"
+],
+"quote": "My day does not reset at midnight, despite what the app says",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "a75c715d-734b-49f9-b27a-68b7c88062ce",
+"rating": 1,
+"date": "2019-01-26",
+"loc": "en"
+},
+{
+"key": "P9#917",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "b890b709-f91a-4e89-85b6-ea6579631b25",
+"rating": 5,
+"date": "2024-05-19",
+"loc": "en"
+},
+{
+"key": "P125#5716",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "125. 21 Days Challenge",
+"review_id": "534e7995-5dc0-4cad-9a40-1f90a3c2f5f7",
+"rating": 5,
+"date": "2023-04-01",
+"loc": "en"
+},
+{
+"key": "P19#291",
+"codes": [
+"SY_VACATION_REQ"
+],
+"quote": "the ability to switch off habits if you are on a vacation or travelling",
+"store": "P",
+"app": "19. TheFor - Habit Tracker",
+"review_id": "c55bce1a-4e08-4084-9146-993bd039195a",
+"rating": 4,
+"date": "2024-06-06",
+"loc": "en"
+},
+{
+"key": "P84#20023",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "6f670be7-169b-4b59-a079-16066d200051",
+"rating": 5,
+"date": "2020-08-01",
+"loc": "en"
+},
+{
+"key": "P3#14098",
+"codes": [
+"T_TZ"
+],
+"quote": "I have to input a day behind because we are in a different time zone",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "16cdde3b-bb74-4690-8bed-a3647a71d93f",
+"rating": 4,
+"date": "2017-09-16",
+"loc": "en"
+},
+{
+"key": "N8#23847",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "11446920973",
+"rating": 3,
+"date": "2024-07-02",
+"loc": "us"
+},
+{
+"key": "N1#21139",
+"codes": [
+"T_DST"
+],
+"quote": "After daylight saving time changed, my suggested times for reminders are under by one hour",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "11909562139",
+"rating": 2,
+"date": "2024-11-04",
+"loc": "us"
+},
+{
+"key": "N2#21810",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "9842727657",
+"rating": 4,
+"date": "2023-04-20",
+"loc": "us"
+},
+{
+"key": "P3#1730",
+"codes": [
+"SY_WIDGET_APP_MISMATCH"
+],
+"quote": "When I tick off the widget it's fine",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "cabc6c33-45ca-4dfc-8720-f3d4e3a47479",
+"rating": 3,
+"date": "2026-06-01",
+"loc": "en"
+},
+{
+"key": "A4#19153",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10042269824",
+"rating": 2,
+"date": "2023-06-17",
+"loc": "us"
+},
+{
+"key": "P63#201",
+"codes": [
+"T_MIDNIGHT"
+],
+"quote": "I need to adjust the time that the day resets",
+"store": "P",
+"app": "63. Habit Hunter - Gamified Routine",
+"review_id": "345ad7df-161f-4908-a334-c74d00da1eea",
+"rating": 3,
+"date": "2025-12-06",
+"loc": "en"
+},
+{
+"key": "P12#16077",
+"codes": [
+"T_SHIFT_WORK"
+],
+"quote": "not fit for people who work different shifts everyday",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "facead48-7c74-4ad3-abde-b954a3583a5c",
+"rating": 3,
+"date": "2024-01-07",
+"loc": "en"
+},
+{
+"key": "A23#5355",
+"codes": [
+"T_STREAK",
+"T_MIDNIGHT",
+"T_NOBACKFILL"
+],
+"quote": "I’ll mark it the night before well before midnight only to find out the next day that I’m starting at day one again",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "3250173126",
+"rating": 2,
+"date": "2018-10-01",
+"loc": "us"
+},
+{
+"key": "P126#43831",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "76a1b577-c556-4c9b-82cd-e1971a52b9bb",
+"rating": 3,
+"date": "2021-07-18",
+"loc": "en"
+},
+{
+"key": "A31#1200",
+"codes": [
+"T_TZ",
+"T_STREAK"
+],
+"quote": "it is now counting any habits completed after 11pm as being completed after 12am which pushes them into the following day",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "14489049875",
+"rating": 2,
+"date": "2026-08-30",
+"loc": "gb"
+},
+{
+"key": "P8#9046",
+"codes": [
+"T_MIDNIGHT"
+],
+"quote": "my day goes from 10 am to 2 am",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "8f0bcccd-d1c2-43a4-baaf-0eb05129f3a6",
+"rating": 3,
+"date": "2016-12-23",
+"loc": "en"
+},
+{
+"key": "P8#9539",
+"codes": [
+"T_MIDNIGHT",
+"T_SHIFT_WORK"
+],
+"quote": "My work day overlaps a day change",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "e6faa336-9a28-4308-8b5c-0a45c1d67218",
+"rating": 1,
+"date": "2016-06-08",
+"loc": "en"
+},
+{
+"key": "P12#15922",
+"codes": [
+"T_MIDNIGHT",
+"T_SHIFT_WORK"
+],
+"quote": "the two options of 2am the next day or midnight just isn't realistic for me",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "3b0c1efc-c734-4d39-a281-034fccbc7868",
+"rating": 3,
+"date": "2024-01-19",
+"loc": "en"
+},
+{
+"key": "A24#5925",
+"codes": [
+"T_SHIFT_WORK"
+],
+"quote": "they do not seem to have anythibg for people working night shifts",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8478977469",
+"rating": 1,
+"date": "2022-03-21",
+"loc": "ca"
+},
+{
+"key": "P8#5501",
+"codes": [
+"T_MIDNIGHT"
+],
+"quote": "for people like me who can't cross out the tasks within the day and do it after midnight",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "dda1dc99-5f69-452d-ac19-99533cb331bb",
+"rating": 3,
+"date": "2021-10-04",
+"loc": "en"
+},
+{
+"key": "A24#15747",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "7898961141",
+"rating": 2,
+"date": "2021-10-10",
+"loc": "gb"
+},
+{
+"key": "P2#12186",
+"codes": [
+"T_MIDNIGHT"
+],
+"quote": "please add the possibility to set custom time when the new day begins",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "86ce24a2-7c14-4194-9f21-ec851764f8af",
+"rating": 5,
+"date": "2020-12-04",
+"loc": "en"
+},
+{
+"key": "A1#47683",
+"codes": [
+"POS_DAY_START"
+],
+"quote": "Love that this app has the night owl mode where it resets at 5am",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "7092324140",
+"rating": 5,
+"date": "2021-03-11",
+"loc": "jp"
+},
+{
+"key": "A10#35666",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12379101516",
+"rating": 5,
+"date": "2025-03-04",
+"loc": "us"
+},
+{
+"key": "A33#2979",
+"codes": [
+"SY_HEALTH_SYNC",
+"T_MIDNIGHT"
+],
+"quote": "The app tends to confuse about the sleep hour when retrieve data from Apple health",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "9530252692",
+"rating": 5,
+"date": "2023-01-21",
+"loc": "th"
+},
+{
+"key": "P3#11497",
+"codes": [
+"T_WEEKSTART",
+"S_WIDGET"
+],
+"quote": "change the widget to be a Monday start",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "bfaf1b69-1fd4-4893-a7a2-adb81da1a8a9",
+"rating": 4,
+"date": "2019-05-09",
+"loc": "en"
+},
+{
+"key": "N5#15396",
+"codes": [
+"SY_HEALTH_SYNC",
+"T_MIDNIGHT"
+],
+"quote": "i had walk for 4 minutes before midnight and it didn’t update",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "9823281224",
+"rating": 3,
+"date": "2023-04-15",
+"loc": "us"
+},
+{
+"key": "N5#8052",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "9269378183",
+"rating": 1,
+"date": "2022-11-08",
+"loc": "jp"
+},
+{
+"key": "N2#20963",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "9864533326",
+"rating": 1,
+"date": "2023-04-26",
+"loc": "us"
+}
+]

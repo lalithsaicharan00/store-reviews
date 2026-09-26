@@ -1,0 +1,70 @@
+P125#18959|PV_SHARED_VISIBLE|"I did not like that others could see my gratitude list."
+P12#17928|NR|
+A53#1727|NR|
+P3#4898|NR|
+P4#30570|NR|
+P33#5966|NR|
+A49#714|PV_OVERCOLLECT|"intruding on your personal habits"
+P2#1509|NR|
+P12#48950|NR|
+P111#10424|NR|
+A10#44189|NR|
+A67#1639|NR|
+N10#18207|NR|
+N11#6132|NR|
+N8#17565|NR|
+A24#36351|PV_DELETE_MISSING|"There’s no way to delete your account Why?"
+P8#5549|PV_DELETE_MISSING|"Wanted to delete my account. There is no option to do so."
+P24#5713|PV_ACCOUNT_PURGED_SILENTLY|"not only had it deleted my data, it also essentially deleted me!"
+A24#25635|PV_CHARGED_AFTER_DELETE|"they continue to charge you for premium even AFTER YOU DELETE YOUR ACCOUNT!!"
+P12#53654|PV_DELETE_BY_EMAIL|"when I wanted to delete my account it gives you an email to message which I did and then that email told me to fill out a form"
+A24#26327|NR|
+A67#1058|PV_CHARGED_AFTER_DELETE|"They will charge you even if you have deleted your account"
+A23#2493|NR|
+P111#4806|NR|
+A68#2884|PV_CHARGED_AFTER_DELETE|"6 months ago I paid for one particular course then deleted the account and the app. Now they charged me"
+P12#2652|PV_CHARGED_AFTER_DELETE|"I deleted my account properly but still had a subscription set up on PayPal"
+A1#44581|PV_DELETE_MISSING|"there is a button “reset” which doesn’t delete the account"
+A85#222|NR|
+P70#382|POS_DELETE|"can delete account"
+A24#23341|PV_CHARGED_AFTER_DELETE|"I’ve canceled my subscription, deleted My account, yet your still trying to charge me"
+P12#26798|PV_DELETE_MISSING|"i want delete my account how i delete it"
+P49#1871|POS_DELETE,POS_PRIVACY,POS_SYNC_OPTIN|"seems to collect very minimal data and features a comforting "delete my data" button"
+P8#8211|NR|
+N9#37267|NR|
+N4#8713|NR|
+N10#21947|PV_PHONE_NUMBER,PV_DELETE_MISSING|"Now they won’t let me back in unless I give them my phone number. I want to delete my account, but I can’t get help to do that."
+P4#25976|NR|
+P4#28153|NR|
+A16#702|NR|
+A24#14682|NR|
+A13#11541|PV_SIGNUP_FORCED|"Why would I want to buy it when I can’t even try it without signing up?"
+P38#1142|PV_SIGNUP_FORCED|"I get repeated "An error has occurred" messages when I try to go forward without an account"
+P12#64010|NR|
+P12#10202|NR|
+A19#104|NR|
+P3#9092|PV_WANT_ACCOUNT|"I loved this app but my only problem is there is no sign in option."
+P12#18576|NR|
+P4#25760|NR|
+P111#4444|NR|
+P126#20073|PV_WANT_LOCAL|"not offline only, not open Source... Be careful what you put in here."
+P84#1764|POS_NO_ACCOUNT|"everything works without an account/offline"
+P129#375|PV_WANT_ACCOUNT|"there is no login option either or anything that will help us using this in another device"
+P84#44909|POS_NO_ACCOUNT|"no need to log in to any account"
+P8#5710|PV_WANT_GUEST|"I Would love to sign up without email or anything, just as what is called guest"
+N10#20208|NR|
+N8#24053|NR|
+N10#20274|NR|
+A24#751|NR|
+P12#24621|NR|
+A68#3486|NR|
+P4#30509|NR|
+A24#20478|PV_PROMO_EMAILS,PV_SIGNUP_FORCED|"i get 4(!) promotional email within a day"
+A24#40932|NR|
+P12#36212|NR|
+A13#14070|NR|
+A13#4580|NR|
+P12#24585|NR|
+A68#4104|NR|
+A68#3051|NR|
+P4#30469|NR|

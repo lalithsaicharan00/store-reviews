@@ -1,0 +1,70 @@
+P2#11662|BL_PURCHASE_NOT_APPLIED,X_PAYER|"I have already paid for the premium features,but again it is showing for the payment"
+P24#9679|BL_REINSTALL_LOST,AC_LOGIN_FAIL,X_PAYER|"Purchased Premium. Reinstalled. No longer shows up as Premium"
+A24#23185|BL_PURCHASE_NOT_APPLIED|"I paid a dollar it took my money and still didn’t give me premium"
+P12#11400|BL_PURCHASE_NOT_APPLIED,X_PAYER|"It is paid, but the app can not verify this, keeps asking for payment"
+P24#11794|BL_DEVICE_CHANGE_LOST,X_SUPPORT_NONE,X_PAYER|"doesn't recognize me as as a premium customer despite using the same Google account on Google play"
+A20#3436|BL_UPDATE_LOST,X_PAYER|"I paid for the premium version and after an update it now says I have the free version"
+A33#1379|BL_PURCHASE_NOT_APPLIED,X_PAYER|"I just purchased the lifetime package for the app for the app still shows me the free version"
+P12#153634|BL_CANCEL_NOT_HONORED|"I did unsubscribed your app for few days But I still received your payment request"
+P12#49798|BL_PURCHASE_NOT_APPLIED,X_SUPPORT_NONE,X_PAYER|"i bought it but the app still does not upgrade"
+A31#4493|BL_UPSELL_AFTER_PAY,X_PAYER|"I have already upgraded, but every single time I open the app I STILL get the upgrade option"
+P84#9761|B_PAID,L_PHONE|"I do wish the free version allowed backup to the cloud, as I lost all my information when I upgraded my phone"
+A33#141|BL_PURCHASE_NOT_APPLIED,X_SUPPORT_SAVED|"Keeps asking me to upgrade- contacted help desk- fixed promptly"
+A59#14859|BL_POS_FREE_FAIR|"The free version is great, don’t get me wrong. I just wanted to unlock more Habits"
+A10#21515|NR|
+A53#1673|BL_FAMILY_LISTING_FALSE,X_PAYER|"in the description on Habitminder it says it SUPPORTS FAMILY SHARING. But that it's not true"
+N2#17901|NR|
+N8#22721|NR|
+A24#13788|BL_REFUND_DENIED|"Il est apparemment impossible de se faire rembourser"
+A24#13819|BL_PURCHASE_NOT_APPLIED,BL_REINSTALL_LOST,X_PAYER|"quand je veux reprendre l’abonnement un message m’indique que je suis déjà abonnée"
+A67#223|BL_LANGUAGE_MISMATCH,BL_CANCEL_HARD|"Une fois inscrit et payé l application n est qu en anglais"
+P126#129106|BL_DEVICE_CHANGE_LOST,X_PAYER|"en changeant de téléphone l'abonnement n'a pas suivi"
+P12#104647|BL_CARRIER_BILLING,BL_REINSTALL_LOST|"on me demande de payer pour restaurer car mon compte premium n'est pas reconnu"
+A59#3016|BL_DEVICE_CHANGE_LOST,X_PAYER|"купил подписку, в этом году обновил телефон, а приложение не работает"
+P24#23191|BL_PURCHASE_NOT_APPLIED,L_RANDOM,X_PAYER|"Comprei a versão Premium porém o  App não reconhece o upgrade"
+A20#974|BL_FEATURE_BROKEN,X_PAYER|"Cuando compré premium creí que podría tener un widget para ver mejor las cosas pero no funciona"
+P24#691|BL_SYNC_PAID_BROKEN,X_SUPPORT_NONE,X_PAYER|"hab daher zusätzlich Premium~Version gekauft. Leider ist eine Profil Erstellung/Registrierung um meine Daten zu synchronisieren seit Tagen nicht möglich"
+P4#71459|BL_TRIAL_REQUIRED,BL_CANCEL_HARD|"On doit obligatoirement payer pour essayer la période d'essai gratuite"
+A4#5175|BL_REGIONAL_PRICE|"Il faudrait voir pour des tarifs préférentiels"
+A20#672|BL_PRICE_COUNTDOWN|"Le compte à rebours est infini"
+A20#707|BL_PURCHASE_NOT_APPLIED,BL_FEATURE_BROKEN,X_PAYER|"me sale un mensaje que dice que para acceder al witget compre premium a pesar de que ya lo compré"
+P4#73518|NR|
+P12#130323|BL_CANCEL_HARD,BL_TRIAL_UNCLEAR,BL_LANGUAGE_MISMATCH|"toda informação vem em inglês e passa o tempo do cancelamento"
+P4#71705|NR|
+A1#44935|BL_POS_ONE_TIME|"J’ai acheté la version premium sur un coup de tête pour la modique somme de 3,99€"
+P33#3967|BL_UNCLEAR_BENEFITS|"on ne sait même pas les avantages que cela rapporte"
+P2#725|BL_POS_ONE_TIME|"Super, dass es eine Einmalzahlung ist und kein Abo-Modell"
+P12#108609|BL_UNCLEAR_BENEFITS|"J'aimerai seulement mieux comprendre ce quelle nous réserve en premium"
+N5#5484|NR|
+N1#5310|NR|
+N11#2824|NR|
+A20#29|BL_LIFETIME_REVOKED,X_PAYER|"It said one payment only for lifetime and now my premium is gone"
+P12#17127|BL_WEBSUB,BL_CANCEL_NOT_HONORED|"They have charged my credit card for a yearly premium even though it was removed from Google Play"
+P24#10271|BL_REINSTALL_LOST,X_SUPPORT_NONE,X_PAYER|"after having to reinstall the app my premium status is gone"
+P12#20454|BL_DEVICE_CHANGE_LOST,BL_CANCEL_NOT_HONORED|"after resetting my phone, I could not even access the account anymore. Still got charged"
+A10#21024|NR|
+A20#3364|BL_LIFETIME_REVOKED,BL_RESTORE_FALSE_SUCCESS,X_PAYER|"When I do hit “Restore Purchase” it tells me it has been restored but it has not been"
+A20#367|BL_LIFETIME_REVOKED,X_PAYER|"I paid the one time price for a product and now I can’t even use it"
+P24#10988|BL_DEVICE_CHANGE_LOST,X_SUPPORT_SAVED,X_PAYER|"The program wouldn't allow the full reinstall until the owner manually reset my profile"
+P123#116|BL_LIFETIME_REVOKED,X_SUPPORT_NONE,X_PAYER|"paid for a lifetime membership... suddenly revoked"
+A31#4872|BL_PREMIUM_VANISHED,X_PAYER|"Now when trying to add a habit, it tells me my Premium is gone"
+A24#29314|BL_PREMIUM_VANISHED,X_PAYER|"I already purchased this and now it’s asking me to purchase again"
+A1#44160|BL_IAP_BROKEN,X_PAYER|"they told me that unfortunately in-app purchases for the premium version don’t work in the Apple App Store"
+P123#12|BL_PREMIUM_VANISHED,X_SUPPORT_NONE,X_PAYER|"Bought premium a year ago. suddenly the premium features disappeared"
+A1#51796|BL_RESTORE_LOOP,X_PAYER|"it tells me I’ve purchased previously and asks if I’d like to download again for free"
+P15#81|BL_DEVICE_CHANGE_LOST,AC_WANT_LOGIN,X_PAYER|"the payment is linked to my phone so if I change my phone my payments and Pro account is gone"
+P35#154|BL_DEVICE_CHANGE_LOST,AC_WANT_LOGIN|"If app was accidently deleted your lifetime subscription is gone"
+P12#52436|NR|
+P8#15847|NR|
+P4#16855|NR|
+N3#24123|NR|
+N3#27811|NR|
+N7#10757|NR|
+A53#1389|BL_DEVICE_CHANGE_LOST,BL_ENTITLEMENT_LAG|"I downloaded the iPad app on my iPad. It again wanted a subscription"
+P129#437|BL_DEVICE_CHANGE_LOST,E_RESTORE,AC_NO_CHANNEL,X_PAYER|"it says no subscription found"
+A5#1792|NR|
+A1#52429|NR|
+P24#24746|BL_DEVICE_CHANGE_LOST,S_FAIL,X_PAYER|"Can't sync with ny new device. Even I am a premium member"
+A24#22998|BL_DEVICE_CHANGE_LOST,X_PAYER|"I switch to a new phone, yet I can’t restore my account on the new phone, my purchase was wasted"
+A24#41436|E_PLATFORM_GAP|"no iPad version?"
+A76#5104|S_MULTI_REQ|"it really needs a dedicated iPad version and a sync feature"

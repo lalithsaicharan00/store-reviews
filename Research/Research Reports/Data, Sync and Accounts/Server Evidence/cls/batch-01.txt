@@ -1,0 +1,70 @@
+A10#8984|SV_DATA_LOST,SV_SUPPORT_PARTIAL|"They restored a few of my items but the ones I really loved"
+A10#20447|SV_UPDATE_CRASH,SV_DATA_LOST|"Had to do a full reinstall to regain functionality which in turn killed my streak and data without warning"
+A13#11959|SV_NO_SERVER_BACKUP|"if you lose your device or delete the app, the data cannot be restored"
+A23#6155|NR|
+A24#18835|NR|
+A24#28752|SV_RESTORE_FAIL|"restored my journeys (2 completed, one half done) from the apps backup on my old device and no progress appears"
+A3#8946|SV_NO_SERVER_BACKUP|"My data was gone when I restored the backup to my new phone"
+P110#3033|SV_RESTORE_FAIL|"Unable to restore backup on other device"
+P12#61422|SV_ENTITLEMENT_DROPPED,SV_SUPPORT_RESTORED|"contacted developer and they restored it right away"
+P145#470|SV_SYNC_FAIL|"it's not syncing even though I have logged in"
+P3#7511|SV_WANT_ACCOUNT_SYNC|"Please add account synchronisation option"
+N5#406|NR|
+N3#21729|SV_DATA_LOST|"My extensive notes that I had meticulously documentary over 10 + years suddenly vanished"
+A13#8926|SV_SECURITY_FEAR|"my Apple ID has been hacked by some random gambling accounts"
+A20#1213|NR|
+A24#14646|NR|
+A24#20788|NR|
+A24#27583|SV_PLAINTEXT_PASSWORD|"they’re also storing your password in cleartext"
+A31#2356|SV_ENTITLEMENT_DROPPED|"This shows they have no idea who has subscribed to them"
+A33#838|SV_SECURITY_FEAR|"Personal data breach"
+A33#1119|SV_DELETION_INCOMPLETE|"I then chose to delete my account but I’m still getting daily spam messages that contain all my data"
+P12#29506|NR|
+P12#30549|NR|
+P12#30872|SV_DATA_MINIMISE|"the answers to all the behavioral questions can be used by hackers"
+P12#34025|NR|
+P12#45398|NR|
+P12#56750|NR|
+P126#18860|NR|
+P24#2237|SV_PASSWORD_BREACH,SV_DELETE_NEEDS_LOGIN|"my password was exposed in a security breaches"
+P8#1960|SV_PASSWORD_BREACH|"there have been password breaches on this service"
+P8#4979|NR|
+P8#7279|NR|
+N3#22967|NR|
+N5#12065|NR|
+N3#24228|NR|
+N7#6777|NR|
+P8#4180|SV_OUTAGE_BLOCKS_USE|"the servers crashed for more than 24 hours which made all of my *daily* habit tracking inaccessible"
+P8#9858|SV_OUTAGE_BLOCKS_USE|"It says it can't connect to the server"
+P8#8028|SV_SIGNUP_SERVER_ERROR|"i cant even create an account because it keeps on saying server error"
+A68#4348|SV_FALSE_SUCCESS,SV_DATA_LOST|"got server error but it said the tracking was added"
+P122#4670|SV_OUTAGE_BLOCKS_USE,SV_SILENT_FAIL|"it just silently fails to register the button press"
+A85#1503|SV_OUTAGE_BLOCKS_USE|"Please fix your servers. Impossible to progress."
+A13#5653|NR|
+A85#102|SV_SIGNUP_SERVER_ERROR,SV_BLAMES_USER_NETWORK|"It was constantly saying that I can’t connect to the server and I should check my internet connection"
+A85#2705|SV_SIGNUP_SERVER_ERROR|"It said it could not connect to server"
+P111#1875|SV_SIGNUP_SERVER_ERROR|"it is showing "server error please try again""
+P12#104458|NR|
+A5#1902|SV_OUTAGE_BLOCKS_USE|"I’m getting an error on homepage and an error when i start a routine"
+A68#4353|SV_SIGNUP_SERVER_ERROR|"every attempt to login results in a Server error"
+A53#159|SV_INTEGRATION_DOWN,SV_BUG_REPORT_FAIL|"the sync to SleepCycle app is down for months"
+A55#1557|SV_PURCHASE_SERVER_ERROR|"maybe it was a server issue"
+A24#13381|NR|
+P4#73787|NR|
+A68#2694|SV_SIGNUP_SERVER_ERROR|"It won’t allow me to create my account, I get the message: server error!"
+A10#42184|NR|
+A10#34107|NR|
+P8#1219|SV_OUTAGE_BLOCKS_USE|"it is saying Server down many times"
+P8#2565|SV_OUTAGE_BLOCKS_USE|"right now the server is down or lost"
+P8#12182|SV_UPDATE_BREAKS_CONNECT|"the latest update makes it so I can't connect to the server"
+N3#28473|SV_DATA_LOST|"My iCloud folder just flat out disappeared"
+N10#987|SV_SIGNUP_SERVER_ERROR|"keeps coming up with ‘Internal Server Error’"
+N10#23471|SV_SIGNUP_SERVER_ERROR|"I can not log in my account"
+N10#11710|SV_UPDATE_BREAKS_CONNECT,SV_SIGNUP_SERVER_ERROR|"after I updated it, I am unable to sign in into my account"
+P122#14960|SV_MAINT_UNANNOUNCED,SV_MAINT_LOST_EDITS|"When They do server maintenance they notify you during, not prior, so any edited routines don't get saved"
+P9#867|NR|
+P24#20870|SV_COST_PERCEPTION|"these kinds of apps are simple to make and require almost no maintenance"
+A76#3704|NR|
+A24#5860|NR|
+A13#11814|SV_COST_PERCEPTION|"For a simple database app?"
+P98#770|SV_ENTITLEMENT_DROPPED,SV_FORCED_LOGOUT|"suddenly the next day was logged out and not a plus member anymore"

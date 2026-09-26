@@ -1,0 +1,2487 @@
+[
+{
+"key": "P24#11367",
+"codes": [
+"SF_NOTIF_ACTION_BROKEN"
+],
+"quote": "actions in the notification drop down are completely unresponsive",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "278bdd99-df9c-43b1-81e9-9e23b2e48acd",
+"rating": 3,
+"date": "2017-02-03",
+"loc": "en"
+},
+{
+"key": "P129#551",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "129. TrackIt - Goal & Time Tracker",
+"review_id": "5de80d83-71e6-4531-a382-3763aa0a314e",
+"rating": 3,
+"date": "2025-01-12",
+"loc": "en"
+},
+{
+"key": "P10#12058",
+"codes": [
+"SF_NOTIF_ACTION_WANT"
+],
+"quote": "have option to Complete or Skip from Notification itself, without opening the app",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "4d51d84f-2518-45f5-a139-6f97595c7dc5",
+"rating": 1,
+"date": "2021-08-11",
+"loc": "en"
+},
+{
+"key": "P11#3593",
+"codes": [
+"SF_NOTIF_ACTION_WANT"
+],
+"quote": "it doesn't have a button to complete immediately in the notification",
+"store": "P",
+"app": "11. Dear Me - Daily Routine Tracker",
+"review_id": "68ba2800-d6d5-4627-9cf9-e1e7face83b3",
+"rating": 3,
+"date": "2025-07-30",
+"loc": "en"
+},
+{
+"key": "P2#10082",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "c09049c3-a7d0-49b6-b344-5cfce8a50456",
+"rating": 3,
+"date": "2022-03-28",
+"loc": "en"
+},
+{
+"key": "P12#19941",
+"codes": [
+"SF_NOTIF_STALE"
+],
+"quote": "I already checked a habit task and it will keep popping up on the notifications tray",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "786e17f2-bef7-4f45-9058-fc78cbf11f41",
+"rating": 3,
+"date": "2023-03-19",
+"loc": "en"
+},
+{
+"key": "P8#754",
+"codes": [
+"SF_NOTIF_ACTION_REMOVED"
+],
+"quote": "removed the ability to \"complete\" (check off as done) a task or habit from the notification bar",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "581aaafb-19f4-432e-a8c7-06bcce04bf19",
+"rating": 2,
+"date": "2026-08-18",
+"loc": "en"
+},
+{
+"key": "P3#16074",
+"codes": [
+"SF_NOTIF_ACTION_BROKEN"
+],
+"quote": "When I press check button in notification it is not recorded!",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "f059036c-a940-4b5f-bf5c-e36eafa9a529",
+"rating": 3,
+"date": "2016-07-07",
+"loc": "en"
+},
+{
+"key": "P3#13639",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "af576b09-6960-4db7-8e2d-980ce1a5fcc6",
+"rating": 2,
+"date": "2018-01-03",
+"loc": "en"
+},
+{
+"key": "P12#61458",
+"codes": [
+"SF_NOTIF_STALE"
+],
+"quote": "constantly* sends notifications to finish my Morning Routine -- even after I complete it",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "4419c65e-5cc1-4c5c-8610-0cd883046b10",
+"rating": 3,
+"date": "2019-08-19",
+"loc": "en"
+},
+{
+"key": "P3#15971",
+"codes": [
+"SF_NOTIF_ACTION_WANT"
+],
+"quote": "you can't check from the notification reminder",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "980d7bd1-feb4-453f-86a1-da27a2f388cb",
+"rating": 3,
+"date": "2016-08-08",
+"loc": "en"
+},
+{
+"key": "A31#2506",
+"codes": [
+"SF_NOTIF_ACTION_WANT",
+"SF_WIDGET_WANT_INTERACTIVE"
+],
+"quote": "Why can’t we click on the notification to mark as complete?",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "12829229457",
+"rating": 3,
+"date": "2025-06-28",
+"loc": "us"
+},
+{
+"key": "P9#641",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "339b3713-77f5-4c9c-8172-800ab7d83ddd",
+"rating": 3,
+"date": "2025-02-06",
+"loc": "en"
+},
+{
+"key": "P84#12044",
+"codes": [
+"POS_NOTIF_ACTION",
+"POS_WATCH"
+],
+"quote": "I can even complete a task from my Galaxy Watch 4",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "d308b9d6-45d1-4244-85a5-0dc9ee80fc5c",
+"rating": 5,
+"date": "2023-12-20",
+"loc": "en"
+},
+{
+"key": "P3#13425",
+"codes": [
+"SF_NOTIF_ACTION_WANT"
+],
+"quote": "if i can checking the habit via notification",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "cfe5f940-e9fd-48a2-88e2-e59453db8a58",
+"rating": 4,
+"date": "2018-02-06",
+"loc": "en"
+},
+{
+"key": "P2#22644",
+"codes": [
+"SF_NOTIF_ACTION_WANT"
+],
+"quote": "I don't seem to have an option to mark a habit or task as completed from the notification screen",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "b9277051-1ba7-49a8-84f9-59d2c34782a7",
+"rating": 5,
+"date": "2026-06-21",
+"loc": "nl"
+},
+{
+"key": "A48#370",
+"codes": [
+"SF_NOTIF_ACTION_STALE_APP"
+],
+"quote": "the badges don’t update sometimes",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "4332014322",
+"rating": 4,
+"date": "2019-06-17",
+"loc": "ca"
+},
+{
+"key": "A13#10578",
+"codes": [
+"SF_NOTIF_ACTION_WANT"
+],
+"quote": "make it possible for the user to mark a habit as",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1349198600",
+"rating": 4,
+"date": "2016-03-17",
+"loc": "sg"
+},
+{
+"key": "N1#25633",
+"codes": [
+"POS_NOTIF_ACTION"
+],
+"quote": "long-press on the notification. Mark as completed",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "7847939769",
+"rating": 4,
+"date": "2021-09-26",
+"loc": "us"
+},
+{
+"key": "N1#6331",
+"codes": [
+"SF_NOTIF_ACTION_BROKEN"
+],
+"quote": "Do not end the reminder as completed from notifications",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "11614023729",
+"rating": 3,
+"date": "2024-08-15",
+"loc": "eg"
+},
+{
+"key": "N1#2791",
+"codes": [
+"SF_NOTIF_ACTION_STALE_APP",
+"SF_DESKTOP_SYNC"
+],
+"quote": "when completing from the notification it will still appear as uncompleted when I open the app",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "10417644212",
+"rating": 3,
+"date": "2023-09-28",
+"loc": "ca"
+},
+{
+"key": "P111#778",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "a15bb6db-4524-44db-b23a-4b45009f43d8",
+"rating": 1,
+"date": "2025-08-09",
+"loc": "en"
+},
+{
+"key": "P12#12747",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "5921a728-5702-451f-a864-5f8e2bb03659",
+"rating": 2,
+"date": "2024-12-28",
+"loc": "en"
+},
+{
+"key": "A23#4253",
+"codes": [
+"SF_COMPLICATION_BROKEN"
+],
+"quote": "Suddenly can’t be used as a complication",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "11985122698",
+"rating": 1,
+"date": "2024-11-24",
+"loc": "us"
+},
+{
+"key": "A31#3485",
+"codes": [
+"SF_COMPLICATION_BROKEN",
+"SF_WIDGET_BROKEN"
+],
+"quote": "No complication for Apple Watch has ever shown up",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "9231892848",
+"rating": 1,
+"date": "2022-10-28",
+"loc": "us"
+},
+{
+"key": "A48#3089",
+"codes": [
+"SF_COMPLICATION_WANT"
+],
+"quote": "does not have any complications listed to put on the watch face",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "2454738299",
+"rating": 2,
+"date": "2018-04-22",
+"loc": "us"
+},
+{
+"key": "A33#89",
+"codes": [
+"SF_COMPLICATION_STALE"
+],
+"quote": "Forever states there is 1/1 habit complete although tapping this and opening the app reveals 0/3 habits completed",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "8197549712",
+"rating": 3,
+"date": "2022-01-03",
+"loc": "au"
+},
+{
+"key": "A53#1110",
+"codes": [
+"SF_COMPLICATION_WANT"
+],
+"quote": "Useless without opportunity to add the app to watch face on Apple Watch",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "2411128229",
+"rating": 3,
+"date": "2018-04-11",
+"loc": "ru"
+},
+{
+"key": "A50#147",
+"codes": [
+"SF_COMPLICATION_WANT",
+"SF_WATCH_BROKEN"
+],
+"quote": "It’s impossible to add a Habit complication to the watch face",
+"store": "A",
+"app": "50. HelloHabit - Habit Tracker - Tasks, Routines, & Streaks",
+"review_id": "12662311740",
+"rating": 1,
+"date": "2025-05-16",
+"loc": "us"
+},
+{
+"key": "P10#23527",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "6d5cd22b-640e-46c0-95b8-74dc600f3554",
+"rating": 3,
+"date": "2024-06-07",
+"loc": "id"
+},
+{
+"key": "A13#1890",
+"codes": [
+"SF_COMPLICATION_BROKEN"
+],
+"quote": "Apple Watch complication doesn’t work 99% of the time",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6515512168",
+"rating": 1,
+"date": "2020-10-09",
+"loc": "ca"
+},
+{
+"key": "A31#4514",
+"codes": [
+"SF_COMPLICATION_STALE",
+"SF_WATCH_SYNC"
+],
+"quote": "when you update a task it doesn’t update the complication and it does not reflect on iOS application",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "7195211400",
+"rating": 3,
+"date": "2021-04-07",
+"loc": "us"
+},
+{
+"key": "A13#6016",
+"codes": [
+"SF_TABLET_NOSYNC",
+"SF_COMPLICATION_WANT"
+],
+"quote": "the iPad app doesn’t update/sync when I enter info on my iPhone or Apple Watch",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5750912589",
+"rating": 1,
+"date": "2020-04-02",
+"loc": "gb"
+},
+{
+"key": "A31#2350",
+"codes": [
+"SF_COMPLICATION_STALE"
+],
+"quote": "the Apple watch complication sync has been very slow lately",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "6684199943",
+"rating": 2,
+"date": "2020-11-25",
+"loc": "se"
+},
+{
+"key": "A86#1215",
+"codes": [
+"SF_COMPLICATION_LIMITED"
+],
+"quote": "there is only one watch face that’ll work with this app",
+"store": "A",
+"app": "86. Today Habit tracker - For to-dos, routines & goals",
+"review_id": "7720157586",
+"rating": 4,
+"date": "2021-08-22",
+"loc": "us"
+},
+{
+"key": "P65#7914",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "3f1f9a9c-4696-4e4c-802f-2249f4a85381",
+"rating": 4,
+"date": "2018-02-20",
+"loc": "en"
+},
+{
+"key": "A86#1278",
+"codes": [
+"SF_COMPLICATION_LIMITED"
+],
+"quote": "only on certain watch fac",
+"store": "A",
+"app": "86. Today Habit tracker - For to-dos, routines & goals",
+"review_id": "3882077129",
+"rating": 5,
+"date": "2019-03-15",
+"loc": "us"
+},
+{
+"key": "P84#11140",
+"codes": [
+"POS_NOTIF_ACTION"
+],
+"quote": "I like the tick marks on the notifications",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "76f57dc2-d739-4ed1-909a-f6e79411d81b",
+"rating": 5,
+"date": "2024-05-07",
+"loc": "en"
+},
+{
+"key": "P3#3321",
+"codes": [
+"POS_OFFLINE_NO_NETWORK"
+],
+"quote": "does not require network connections for any of its features",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "3325927f-cb28-4e72-99bd-ff0272d483d9",
+"rating": 5,
+"date": "2025-01-23",
+"loc": "en"
+},
+{
+"key": "N2#17104",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "12187210183",
+"rating": 2,
+"date": "2025-01-15",
+"loc": "us"
+},
+{
+"key": "N4#8395",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "12409579824",
+"rating": 3,
+"date": "2025-03-11",
+"loc": "us"
+},
+{
+"key": "N9#50051",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1144497083",
+"rating": 4,
+"date": "2015-02-10",
+"loc": "us"
+},
+{
+"key": "A24#36516",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "7079691701",
+"rating": 1,
+"date": "2021-03-08",
+"loc": "us"
+},
+{
+"key": "A33#3176",
+"codes": [
+"SF_LIVE_STALE"
+],
+"quote": "Live activities for a habit that I’ve marked complete should not be showing up",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "13759922947",
+"rating": 3,
+"date": "2026-02-17",
+"loc": "us"
+},
+{
+"key": "P12#53047",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "e2159fe4-c585-4204-a9c4-3f211112b210",
+"rating": 2,
+"date": "2020-05-02",
+"loc": "en"
+},
+{
+"key": "P122#15676",
+"codes": [
+"SF_LOCK_WANT",
+"SF_WATCH_WANT",
+"POS_WEB"
+],
+"quote": "It easily has the best companion website",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "1b6df066-2125-4c47-981f-f6f829d9b091",
+"rating": 2,
+"date": "2023-12-14",
+"loc": "en"
+},
+{
+"key": "A3#3875",
+"codes": [
+"SF_WIDGET_PAID"
+],
+"quote": "The only reason i wanted this was to put it on the lock screen but you need to pay.",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "13595341185",
+"rating": 1,
+"date": "2026-01-04",
+"loc": "mx"
+},
+{
+"key": "P97#2104",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "97. To-do list - tasks planner",
+"review_id": "f9911141-2107-4061-945b-2f2285c0f73f",
+"rating": 3,
+"date": "2026-05-29",
+"loc": "en"
+},
+{
+"key": "A3#1218",
+"codes": [
+"SF_LOCK_WANT"
+],
+"quote": "Missing a Lock Screen widget to get 5",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "8209176286",
+"rating": 3,
+"date": "2022-01-06",
+"loc": "ca"
+},
+{
+"key": "A23#4258",
+"codes": [
+"SF_WIDGET_BROKEN",
+"SF_SHORTCUTS_BROKEN"
+],
+"quote": "the app has updated to break widgets, shortcuts",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "11926602326",
+"rating": 2,
+"date": "2024-11-08",
+"loc": "us"
+},
+{
+"key": "A85#1975",
+"codes": [
+"SF_LOCK_WANT"
+],
+"quote": "there should be a lock screen checklist widget",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "14115259816",
+"rating": 3,
+"date": "2026-05-28",
+"loc": "us"
+},
+{
+"key": "A1#20",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11756854404",
+"rating": 1,
+"date": "2024-09-23",
+"loc": "ae"
+},
+{
+"key": "P126#30078",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "1893f074-3843-4796-8aa1-4965bd3f6e81",
+"rating": 2,
+"date": "2023-05-27",
+"loc": "en"
+},
+{
+"key": "A5#837",
+"codes": [
+"SF_LIVE_WANT"
+],
+"quote": "Not taking advantage of IOS 16 and Dynamic Island",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "9923645583",
+"rating": 3,
+"date": "2023-05-13",
+"loc": "in"
+},
+{
+"key": "P98#100",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "440a4fdf-82d4-45fc-b31f-795622ec4bd3",
+"rating": 3,
+"date": "2021-04-17",
+"loc": "de"
+},
+{
+"key": "P84#31676",
+"codes": [
+"SF_LOCK_WANT"
+],
+"quote": "Also wish it could be my lock screen!",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "cea73d83-89e5-4c87-89af-1f723fbb50c7",
+"rating": 5,
+"date": "2018-10-20",
+"loc": "en"
+},
+{
+"key": "P24#16359",
+"codes": [
+"SF_LOCK_WANT"
+],
+"quote": "a home/lock screen widget with my goals for the day",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "e889abee-b869-46da-bbb6-1da7d5436a15",
+"rating": 5,
+"date": "2014-07-19",
+"loc": "en"
+},
+{
+"key": "A8#597",
+"codes": [
+"SF_WATCH_WANT",
+"SF_LIVE_WANT"
+],
+"quote": "We need an AW app now.",
+"store": "A",
+"app": "8. Onrise - Habit Tracker & Focus - Build habits, focus & journal",
+"review_id": "10885750722",
+"rating": 4,
+"date": "2024-01-31",
+"loc": "se"
+},
+{
+"key": "A5#596",
+"codes": [
+"SF_LIVE_STALE"
+],
+"quote": "the live activity and Dynamic Island don’t advance to the next task and show the wrong time",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "14191150102",
+"rating": 4,
+"date": "2026-06-16",
+"loc": "gb"
+},
+{
+"key": "A3#2467",
+"codes": [
+"POS_LOCK"
+],
+"quote": "being able to have widgets on the Home Screen or even Lock Screen helps keep me reminded",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "11413627527",
+"rating": 5,
+"date": "2024-06-23",
+"loc": "gb"
+},
+{
+"key": "N1#18803",
+"codes": [
+"SF_LOCK_WANT"
+],
+"quote": "Need to find a way to display the full reminder on the lock screen",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "13303989824",
+"rating": 4,
+"date": "2025-10-23",
+"loc": "us"
+},
+{
+"key": "N5#11141",
+"codes": [
+"SF_LIVE_STALE"
+],
+"quote": "its active in dynamic island",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "11088266753",
+"rating": 1,
+"date": "2024-03-26",
+"loc": "sk"
+},
+{
+"key": "N8#1181",
+"codes": [
+"SF_LOCK_WANT"
+],
+"quote": "Daily appointments recap not on the lock screen for Iphone",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "13642787804",
+"rating": 2,
+"date": "2026-01-17",
+"loc": "be"
+},
+{
+"key": "A86#1176",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "86. Today Habit tracker - For to-dos, routines & goals",
+"review_id": "13844953512",
+"rating": 3,
+"date": "2026-03-13",
+"loc": "us"
+},
+{
+"key": "A4#9994",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10485522662",
+"rating": 1,
+"date": "2023-10-17",
+"loc": "ro"
+},
+{
+"key": "A86#1744",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "86. Today Habit tracker - For to-dos, routines & goals",
+"review_id": "1346089353",
+"rating": 1,
+"date": "2016-03-11",
+"loc": "us"
+},
+{
+"key": "P12#14470",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "71622adf-878a-46a5-a5e7-7dd4e7b740e4",
+"rating": 3,
+"date": "2024-07-14",
+"loc": "en"
+},
+{
+"key": "A3#6640",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "12456220146",
+"rating": 1,
+"date": "2025-03-23",
+"loc": "us"
+},
+{
+"key": "A13#5646",
+"codes": [
+"SF_SIRI_ONLY_BAD"
+],
+"quote": "sans utiliser Siri",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "3278878581",
+"rating": 3,
+"date": "2018-10-08",
+"loc": "fr"
+},
+{
+"key": "A31#4527",
+"codes": [
+"POS_SHORTCUTS"
+],
+"quote": "you can even make shortcuts to allow Siri to log things",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "7109975257",
+"rating": 3,
+"date": "2021-03-16",
+"loc": "us"
+},
+{
+"key": "P12#92905",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "2940ad77-9c70-432c-b4dd-16d776978afa",
+"rating": 1,
+"date": "2018-05-14",
+"loc": "es"
+},
+{
+"key": "A31#2382",
+"codes": [
+"SF_SHORTCUTS_WANT"
+],
+"quote": "No Siri or Shortcuts integration",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "3387923047",
+"rating": 3,
+"date": "2018-11-06",
+"loc": "sg"
+},
+{
+"key": "A59#11972",
+"codes": [
+"SF_SHORTCUTS_WANT",
+"SF_DESKTOP_PAID"
+],
+"quote": "нет синхронизации с Siri, десктоп версия изначально платная",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "6078801671",
+"rating": 1,
+"date": "2020-06-15",
+"loc": "ru"
+},
+{
+"key": "A24#11145",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "5394177311",
+"rating": 3,
+"date": "2020-01-12",
+"loc": "de"
+},
+{
+"key": "A24#10397",
+"codes": [
+"SF_SHORTCUTS_WANT"
+],
+"quote": "Vielleicht kann man ja per Siri die Gewohnheiten abhaken?",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "9616740473",
+"rating": 2,
+"date": "2023-02-14",
+"loc": "de"
+},
+{
+"key": "A31#140",
+"codes": [
+"SF_SHORTCUTS_WANT"
+],
+"quote": "please add apple shortcuts support",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8388663038",
+"rating": 3,
+"date": "2022-02-23",
+"loc": "au"
+},
+{
+"key": "A3#3521",
+"codes": [
+"SF_SHORTCUTS_READ_WANT"
+],
+"quote": "Please add support for displaying the current streak in shortcuts",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "9387304699",
+"rating": 4,
+"date": "2022-12-12",
+"loc": "in"
+},
+{
+"key": "A10#43992",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "11080974077",
+"rating": 5,
+"date": "2024-03-24",
+"loc": "us"
+},
+{
+"key": "P84#32043",
+"codes": [
+"SF_SHORTCUTS_WANT"
+],
+"quote": "I wish it connected with Google so I could use my Google Assistant with it",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "3dea909b-032a-4395-8557-fcd8da48ece8",
+"rating": 5,
+"date": "2018-09-18",
+"loc": "en"
+},
+{
+"key": "A24#43186",
+"codes": [
+"SF_WATCH_WANT",
+"SF_SHORTCUTS_WANT"
+],
+"quote": "I wish it worked on other smart watches e.g. fitbit, garmin",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "5134078018",
+"rating": 4,
+"date": "2019-11-13",
+"loc": "vn"
+},
+{
+"key": "A24#10314",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10778633958",
+"rating": 4,
+"date": "2024-01-03",
+"loc": "de"
+},
+{
+"key": "N1#14384",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "13522731545",
+"rating": 2,
+"date": "2025-12-17",
+"loc": "ru"
+},
+{
+"key": "N6#2067",
+"codes": [
+"SF_SHORTCUTS_WANT"
+],
+"quote": "I still can’t add tasks with Siri or with the Apple shortcuts app",
+"store": "N",
+"app": "6. Google Tasks- Get Things Done - Plan, Organize & Schedule Work",
+"review_id": "13504785565",
+"rating": 2,
+"date": "2025-12-12",
+"loc": "hu"
+},
+{
+"key": "N1#23461",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "10879325172",
+"rating": 5,
+"date": "2024-01-30",
+"loc": "us"
+},
+{
+"key": "A46#1477",
+"codes": [
+"SF_DESKTOP_SLOW",
+"SF_DESKTOP_SYNC"
+],
+"quote": "The Mac app is slow and clunky. Does not sync with my phone app in a timely manner.",
+"store": "A",
+"app": "46. everyday - Habit Tracker - Daily Routine Checklist",
+"review_id": "13459643027",
+"rating": 2,
+"date": "2025-11-30",
+"loc": "us"
+},
+{
+"key": "A46#1253",
+"codes": [
+"SF_DESKTOP_SLOW",
+"SF_DESKTOP_KEYBOARD"
+],
+"quote": "please add hotkeys",
+"store": "A",
+"app": "46. everyday - Habit Tracker - Daily Routine Checklist",
+"review_id": "11387719561",
+"rating": 3,
+"date": "2024-06-16",
+"loc": "ru"
+},
+{
+"key": "A23#4793",
+"codes": [
+"SF_VERSION_SKEW_LOSS"
+],
+"quote": "The MacBook version hasn’t been updated yet to have 4 panels so maybe that wiped them from the cloud.",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "7636228315",
+"rating": 3,
+"date": "2021-07-30",
+"loc": "us"
+},
+{
+"key": "A46#1864",
+"codes": [
+"POS_DESKTOP"
+],
+"quote": "available on mac book",
+"store": "A",
+"app": "46. everyday - Habit Tracker - Daily Routine Checklist",
+"review_id": "10017325468",
+"rating": 3,
+"date": "2023-06-10",
+"loc": "us"
+},
+{
+"key": "P2#1052",
+"codes": [
+"SF_DESKTOP_WANT",
+"SF_MULTI_DEVICE_WANT"
+],
+"quote": "you can't sync different devices. + no Windows/Mac app",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "e8b43efb-d51c-4855-b059-d2938135659b",
+"rating": 3,
+"date": "2026-08-08",
+"loc": "en"
+},
+{
+"key": "P70#664",
+"codes": [
+"POS_WEB"
+],
+"quote": "I've been using it on my computer so it's been fine",
+"store": "P",
+"app": "70. everyday Habit Tracker",
+"review_id": "f982192b-957e-4d70-9f97-073c13b22404",
+"rating": 2,
+"date": "2020-06-18",
+"loc": "en"
+},
+{
+"key": "P8#8416",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "d22ca2ff-eb0e-4315-be69-c748ff63dce2",
+"rating": 1,
+"date": "2017-08-26",
+"loc": "en"
+},
+{
+"key": "A19#101",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "19. Wisey - Habit Builder - Form habits, change your life",
+"review_id": "12742285860",
+"rating": 1,
+"date": "2025-06-06",
+"loc": "us"
+},
+{
+"key": "A48#2039",
+"codes": [
+"SF_DESKTOP_SYNC",
+"SF_DESKTOP_LOSS"
+],
+"quote": "the desktop version crashed and when I reopend it all of the trackers were gone",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "11444997725",
+"rating": 1,
+"date": "2024-07-01",
+"loc": "us"
+},
+{
+"key": "A33#367",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "4401174963",
+"rating": 2,
+"date": "2019-07-02",
+"loc": "ca"
+},
+{
+"key": "A85#3125",
+"codes": [
+"SF_WEB_APP_MISMATCH"
+],
+"quote": "even though I checked off my dailies on my computer instead of the app",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "1484468774",
+"rating": 1,
+"date": "2016-11-14",
+"loc": "us"
+},
+{
+"key": "A33#3208",
+"codes": [
+"SF_DESKTOP_SYNC",
+"SF_ACCOUNT_SHOWN_WRONG"
+],
+"quote": "The habits are different on iOS vs. Mac OS—even though I am signed into the same account.",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "13332457934",
+"rating": 1,
+"date": "2025-10-30",
+"loc": "us"
+},
+{
+"key": "P22#503",
+"codes": [
+"SF_DESKTOP_WANT",
+"SF_WEB_WANT"
+],
+"quote": "desktop version or at least browser version",
+"store": "P",
+"app": "22. Disciplined - Habit Tracker",
+"review_id": "5c0c0b9c-1dae-4de3-af82-a70e6e500b5f",
+"rating": 3,
+"date": "2025-04-03",
+"loc": "en"
+},
+{
+"key": "A23#4198",
+"codes": [
+"POS_ALL_DEVICES"
+],
+"quote": "Has functionality on all Mac devices from MacBook, iPad, iphone, and apple watch.",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "12481543741",
+"rating": 5,
+"date": "2025-03-30",
+"loc": "us"
+},
+{
+"key": "P3#21798",
+"codes": [
+"SF_DESKTOP_WANT"
+],
+"quote": "seria bom se tivesse uma versão pra Windows",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "f321a3b7-feda-4c1a-bdc5-e31381e42e92",
+"rating": 5,
+"date": "2018-01-09",
+"loc": "pt"
+},
+{
+"key": "A1#46128",
+"codes": [
+"SF_DESKTOP_WANT",
+"SF_ICLOUD_SYNC_FAIL"
+],
+"quote": "would be nice to have a Mac companion app",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "6247116863",
+"rating": 4,
+"date": "2020-07-27",
+"loc": "gb"
+},
+{
+"key": "P126#25586",
+"codes": [
+"SF_DESKTOP_WANT"
+],
+"quote": "except desktop version that sync's with mobile app",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "b756b5e0-2a42-4c2f-9bcb-c8ddf44bf156",
+"rating": 5,
+"date": "2024-06-15",
+"loc": "en"
+},
+{
+"key": "P9#669",
+"codes": [
+"SF_DESKTOP_WANT"
+],
+"quote": "I wish there was a desktop app as well",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "40b3dd07-bb88-4c66-8380-f0b66855148c",
+"rating": 4,
+"date": "2025-01-21",
+"loc": "en"
+},
+{
+"key": "N2#422",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "10851444519",
+"rating": 2,
+"date": "2024-01-22",
+"loc": "au"
+},
+{
+"key": "N9#41888",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1846273155",
+"rating": 2,
+"date": "2017-10-13",
+"loc": "us"
+},
+{
+"key": "N2#6670",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "10671331056",
+"rating": 1,
+"date": "2023-12-08",
+"loc": "dk"
+},
+{
+"key": "A24#27555",
+"codes": [
+"SF_WEB_BILLING_TRAP"
+],
+"quote": "cancelling the subscription is so hard through the website",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11603732736",
+"rating": 1,
+"date": "2024-08-13",
+"loc": "us"
+},
+{
+"key": "P12#17309",
+"codes": [
+"SF_WEB_BILLING_TRAP"
+],
+"quote": "cancelled my subscription through the website only to find out I've been charged $39.99 today",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "f402e3c8-9168-465f-8bc6-c572aa0b6622",
+"rating": 1,
+"date": "2023-09-15",
+"loc": "en"
+},
+{
+"key": "A33#3618",
+"codes": [
+"SF_WEB_NO_SIGNUP"
+],
+"quote": "I visited the desktop website on my PC to create an account and there was no option to do so",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "2747824219",
+"rating": 1,
+"date": "2018-06-22",
+"loc": "us"
+},
+{
+"key": "A19#95",
+"codes": [
+"SF_WEB_BILLING_TRAP"
+],
+"quote": "you have to go to the website to delete your account",
+"store": "A",
+"app": "19. Wisey - Habit Builder - Form habits, change your life",
+"review_id": "12821851615",
+"rating": 1,
+"date": "2025-06-27",
+"loc": "us"
+},
+{
+"key": "P12#1936",
+"codes": [
+"SF_WEB_BILLING_TRAP"
+],
+"quote": "In der App wird man fazu gebeten auf die Website zu gehen. Aber kein Link, keine URL.",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "e9bf18fd-3e22-4f0d-8d2c-f3cfb4792f7c",
+"rating": 1,
+"date": "2025-01-28",
+"loc": "de"
+},
+{
+"key": "A24#27423",
+"codes": [
+"SF_WEB_BILLING_TRAP"
+],
+"quote": "it forces you into a web version to complete the sign-up",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11678723741",
+"rating": 1,
+"date": "2024-09-01",
+"loc": "us"
+},
+{
+"key": "P33#1294",
+"codes": [
+"SF_WEB_BILLING_TRAP"
+],
+"quote": "nor was it listed in my Google play subscriptions",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "add721d4-83e3-4f43-abf2-ab87192eb2a2",
+"rating": 1,
+"date": "2021-05-19",
+"loc": "en"
+},
+{
+"key": "P12#13461",
+"codes": [
+"SF_WEB_BILLING_TRAP"
+],
+"quote": "where you can only cancel your subscription on the website, but not in the app itself",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "8c854f8f-b6b3-4c25-b27b-d871b1130753",
+"rating": 1,
+"date": "2024-10-19",
+"loc": "en"
+},
+{
+"key": "A24#22803",
+"codes": [
+"SF_WEB_BILLING_TRAP"
+],
+"quote": "The app is not shown on my app store subscriptions",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8749731480",
+"rating": 1,
+"date": "2022-06-07",
+"loc": "tr"
+},
+{
+"key": "P111#11241",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "281a6e68-09a9-4ca1-b8ce-c73d4fc71186",
+"rating": 1,
+"date": "2014-12-19",
+"loc": "en"
+},
+{
+"key": "A13#8539",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "13786245103",
+"rating": 1,
+"date": "2026-02-25",
+"loc": "mx"
+},
+{
+"key": "P8#7013",
+"codes": [
+"SF_WEB_PARITY"
+],
+"quote": "the app doesn't show all the content that the website does",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "2673a43a-59d4-4452-8f72-0052f78c0729",
+"rating": 3,
+"date": "2019-08-09",
+"loc": "en"
+},
+{
+"key": "P111#1154",
+"codes": [
+"POS_WEB_FALLBACK"
+],
+"quote": "The only functional aspect is the web version",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "16e4c195-c915-4079-8087-f991ebe3b9a4",
+"rating": 1,
+"date": "2024-09-16",
+"loc": "en"
+},
+{
+"key": "P35#274",
+"codes": [
+"SF_WEB_WANT",
+"SF_DESKTOP_WANT"
+],
+"quote": "I hope there's a PC or Web version one day with cross platform syncing.",
+"store": "P",
+"app": "35. Motivated - Habit Tracker",
+"review_id": "77e70fce-1240-4e5b-b790-d0065c960eaf",
+"rating": 5,
+"date": "2023-12-27",
+"loc": "en"
+},
+{
+"key": "A85#2276",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "8161073523",
+"rating": 5,
+"date": "2021-12-23",
+"loc": "us"
+},
+{
+"key": "P30#4478",
+"codes": [
+"SF_WEB_WANT"
+],
+"quote": "I'd love to buy the subscription, but I also need to use the app on the PC.",
+"store": "P",
+"app": "30. Habit Tracker - Routine & Goals",
+"review_id": "4b96889d-bbe1-46e3-8b9c-c072bf6c10f3",
+"rating": 5,
+"date": "2022-02-11",
+"loc": "es"
+},
+{
+"key": "P111#8093",
+"codes": [
+"POS_DESKTOP",
+"POS_WEB"
+],
+"quote": "It's on my laptop too available on windows store. And you have a website.",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "e43edc6a-1c28-4f1e-b161-681d4d836709",
+"rating": 5,
+"date": "2016-06-12",
+"loc": "en"
+},
+{
+"key": "P122#17791",
+"codes": [
+"POS_WEB"
+],
+"quote": "also has a webapp if u wanna use it on ur browser",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "c4665531-0f2f-4044-bad7-8f2d3a871c92",
+"rating": 5,
+"date": "2023-04-01",
+"loc": "en"
+},
+{
+"key": "N9#25645",
+"codes": [
+"SF_WEB_PARITY"
+],
+"quote": "The app functionality is a far cry from the web version",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "11151640753",
+"rating": 1,
+"date": "2024-04-13",
+"loc": "ph"
+},
+{
+"key": "N8#24054",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "10783560844",
+"rating": 3,
+"date": "2024-01-04",
+"loc": "us"
+},
+{
+"key": "N8#25995",
+"codes": [
+"SF_WEB_PARITY"
+],
+"quote": "much like how it does in the web version",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "5322155221",
+"rating": 4,
+"date": "2019-12-26",
+"loc": "us"
+},
+{
+"key": "A31#3616",
+"codes": [
+"SF_WATCH_BROKEN"
+],
+"quote": "Doesn’t work with Apple Watch",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8707337083",
+"rating": 3,
+"date": "2022-05-25",
+"loc": "us"
+},
+{
+"key": "A33#1288",
+"codes": [
+"SF_COMPLICATION_REMOVED"
+],
+"quote": "since the update they removed the progress complications",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "13224394178",
+"rating": 3,
+"date": "2025-10-04",
+"loc": "id"
+},
+{
+"key": "A20#2900",
+"codes": [
+"SF_WATCH_WANT"
+],
+"quote": "Please add Apple Watch support this is so simple",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "5598423921",
+"rating": 3,
+"date": "2020-02-29",
+"loc": "tr"
+},
+{
+"key": "A13#8579",
+"codes": [
+"SF_WATCH_SYNC",
+"SF_TABLET_NOSYNC"
+],
+"quote": "The app does not sync with the other gadgets even being in the same web profile.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "10287006010",
+"rating": 3,
+"date": "2023-08-22",
+"loc": "mx"
+},
+{
+"key": "A53#1551",
+"codes": [
+"SF_WATCH_SYNC"
+],
+"quote": "I have to restart the app and uninstall it from my Apple Watch to get it to sync",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "3832875558",
+"rating": 3,
+"date": "2019-03-02",
+"loc": "us"
+},
+{
+"key": "A53#821",
+"codes": [
+"SF_WATCH_SYNC"
+],
+"quote": "It is sometimes DOESN’T SYNC with APPLE WATCH",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "4332893371",
+"rating": 3,
+"date": "2019-06-18",
+"loc": "kh"
+},
+{
+"key": "A31#4551",
+"codes": [
+"SF_WATCH_REMINDERS"
+],
+"quote": "these reminders only pop up on my phone",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "6982050267",
+"rating": 3,
+"date": "2021-02-11",
+"loc": "us"
+},
+{
+"key": "A13#16207",
+"codes": [
+"SF_COMPLICATION_WANT"
+],
+"quote": "I want to be able to check off my habits from my watch face",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "2056985079",
+"rating": 2,
+"date": "2018-01-04",
+"loc": "us"
+},
+{
+"key": "A31#3590",
+"codes": [
+"SF_WATCH_BROKEN"
+],
+"quote": "I can no longer track my goals through my Apple Watch",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8782979995",
+"rating": 3,
+"date": "2022-06-17",
+"loc": "us"
+},
+{
+"key": "A23#5950",
+"codes": [
+"SF_WATCH_DOUBLE"
+],
+"quote": "It will often delay responding to adding to your progress and by trying to do it again, it will double down.",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "1518715109",
+"rating": 2,
+"date": "2017-01-09",
+"loc": "us"
+},
+{
+"key": "A1#55701",
+"codes": [
+"SF_WATCH_BROKEN"
+],
+"quote": "when I click it on my Apple Watch it’s just a black screen",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "7591691722",
+"rating": 1,
+"date": "2021-07-18",
+"loc": "us"
+},
+{
+"key": "A3#1467",
+"codes": [
+"SF_WATCH_BROKEN"
+],
+"quote": "App stürzt oft bei der apple watch app",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "13859355590",
+"rating": 2,
+"date": "2026-03-18",
+"loc": "de"
+},
+{
+"key": "A3#8888",
+"codes": [
+"SF_WATCH_PAID"
+],
+"quote": "it is not worth the price to be able to add it to your Apple Watch",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "9221347657",
+"rating": 1,
+"date": "2022-10-25",
+"loc": "us"
+},
+{
+"key": "A23#5673",
+"codes": [
+"POS_WATCH"
+],
+"quote": "The function on the iPhone and the Apple Watch make this on of my favorites.",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "1720627297",
+"rating": 5,
+"date": "2017-08-09",
+"loc": "us"
+},
+{
+"key": "A25#832",
+"codes": [
+"SF_MAC_MENUBAR_WANT",
+"SF_SHORTCUTS_WANT",
+"POS_ALL_DEVICES"
+],
+"quote": "works well most of the time on all my Apple devices",
+"store": "A",
+"app": "25. Grit - Daily Habit Tracker - Routines & Goals ADHD Planner",
+"review_id": "10545731685",
+"rating": 4,
+"date": "2023-11-03",
+"loc": "nl"
+},
+{
+"key": "A52#16975",
+"codes": [
+"SF_WATCH_WANT"
+],
+"quote": "非常期待出Apple Watch版",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "2203609471",
+"rating": 5,
+"date": "2018-02-13",
+"loc": "cn"
+},
+{
+"key": "A23#1580",
+"codes": [
+"POS_WATCH"
+],
+"quote": "Neben der Apple Watch App nutze ich oft auch das Widget.",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "3467834338",
+"rating": 5,
+"date": "2018-11-27",
+"loc": "de"
+},
+{
+"key": "A41#466",
+"codes": [
+"SF_WATCH_WANT"
+],
+"quote": "Just want app for watch be released!",
+"store": "A",
+"app": "41. Awesome Habits - Habit Tracker - Streaks, days since & goals",
+"review_id": "6524254804",
+"rating": 5,
+"date": "2020-10-11",
+"loc": "kr"
+},
+{
+"key": "N11#2873",
+"codes": [
+"SF_WATCH_SYNC"
+],
+"quote": "Non sono sincronizzati i dati",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "4413875064",
+"rating": 1,
+"date": "2019-07-05",
+"loc": "it"
+},
+{
+"key": "N8#24410",
+"codes": [
+"SF_WATCH_WANT"
+],
+"quote": "Please please add to Apple Watch",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "9435067721",
+"rating": 5,
+"date": "2022-12-26",
+"loc": "us"
+},
+{
+"key": "N4#7881",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "13605639943",
+"rating": 2,
+"date": "2026-01-07",
+"loc": "us"
+},
+{
+"key": "A13#10633",
+"codes": [
+"SF_TABLET_NOSYNC"
+],
+"quote": "it still cannot sync between iPhone and iPad",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8428925113",
+"rating": 3,
+"date": "2022-03-07",
+"loc": "th"
+},
+{
+"key": "A31#4853",
+"codes": [
+"SF_TABLET_LAYOUT"
+],
+"quote": "Need to use in landscape mode",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "4248713009",
+"rating": 1,
+"date": "2019-06-02",
+"loc": "us"
+},
+{
+"key": "A24#12314",
+"codes": [
+"SF_TABLET_LAYOUT"
+],
+"quote": "No está adaptada para iPad",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "4997452870",
+"rating": 1,
+"date": "2019-10-22",
+"loc": "es"
+},
+{
+"key": "P4#96816",
+"codes": [
+"SF_TABLET_NO_LOGIN"
+],
+"quote": "Assinei o Premium no celular e não consigo usar no meu Tablet.",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "bc46da10-7ddf-43ff-8cdf-b78f459290db",
+"rating": 1,
+"date": "2024-01-18",
+"loc": "pt"
+},
+{
+"key": "A13#11950",
+"codes": [
+"SF_TABLET_NOSYNC",
+"SF_WATCH_SYNC"
+],
+"quote": "it would only work on my phone, and not across with my devices",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8185663867",
+"rating": 1,
+"date": "2021-12-30",
+"loc": "us"
+},
+{
+"key": "A24#24035",
+"codes": [
+"SF_TABLET_LAYOUT"
+],
+"quote": "it is cut off and looks like a tiny window on my iPad",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13719382354",
+"rating": 3,
+"date": "2026-02-06",
+"loc": "us"
+},
+{
+"key": "A1#48682",
+"codes": [
+"SF_TABLET_NOSYNC"
+],
+"quote": "I bought the app on my iPhone but it won’t sync to my iPad, which is the device I use mostly for planning",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10504250869",
+"rating": 3,
+"date": "2023-10-22",
+"loc": "no"
+},
+{
+"key": "A36#152",
+"codes": [
+"SF_TABLET_NOSYNC"
+],
+"quote": "I have downloaded on iPhone and iPad and they dont link",
+"store": "A",
+"app": "36. (Not Boring) Habits - Science-backed habit tracker",
+"review_id": "11301370583",
+"rating": 1,
+"date": "2024-05-24",
+"loc": "gb"
+},
+{
+"key": "A52#20532",
+"codes": [
+"SF_TABLET_NOSYNC"
+],
+"quote": "I literally have to sync on my iPhone and then “restore” the sync on my iPad.",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "6897673880",
+"rating": 3,
+"date": "2021-01-21",
+"loc": "us"
+},
+{
+"key": "P24#19280",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "4cf70133-d68f-497d-8fc2-3289a7595f30",
+"rating": 1,
+"date": "2017-03-02",
+"loc": "es"
+},
+{
+"key": "A31#2347",
+"codes": [
+"SF_TABLET_LAYOUT"
+],
+"quote": "On iPad it’s just the iPhone version blown up.",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "7576402211",
+"rating": 2,
+"date": "2021-07-14",
+"loc": "se"
+},
+{
+"key": "A24#25500",
+"codes": [
+"SF_TABLET_NOSYNC"
+],
+"quote": "it won’t have the data from the Fabulous app on the phone",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12841245397",
+"rating": 2,
+"date": "2025-07-01",
+"loc": "us"
+},
+{
+"key": "P10#12843",
+"codes": [
+"SF_TABLET_PARTIAL"
+],
+"quote": "salían los hábitos pero no los días que hice",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "fd40a321-dd96-4967-be72-d44fc9bb36be",
+"rating": 2,
+"date": "2025-11-10",
+"loc": "es"
+},
+{
+"key": "A48#4232",
+"codes": [
+"SF_TABLET_WANT"
+],
+"quote": "Once they have an ipad app plus sync it will really be nice.",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1024490133",
+"rating": 4,
+"date": "2014-07-08",
+"loc": "us"
+},
+{
+"key": "P3#1640",
+"codes": [
+"SF_TABLET_WANT"
+],
+"quote": "Can you make a version for Ipad, please",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "37eec3bf-6cce-4f32-b9b0-17b83ecab6bd",
+"rating": 5,
+"date": "2026-07-05",
+"loc": "en"
+},
+{
+"key": "A53#1007",
+"codes": [
+"SF_TABLET_LAYOUT"
+],
+"quote": "Please add slide-over and split-window support for the iPad.",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "5532826021",
+"rating": 5,
+"date": "2020-02-15",
+"loc": "ph"
+},
+{
+"key": "A23#5370",
+"codes": [
+"POS_SHORTCUTS",
+"POS_WATCH"
+],
+"quote": "Now I can complete my task without touching the app.",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "3213327315",
+"rating": 5,
+"date": "2018-09-21",
+"loc": "us"
+},
+{
+"key": "A10#35205",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12428825330",
+"rating": 5,
+"date": "2025-03-16",
+"loc": "us"
+},
+{
+"key": "N2#10197",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "10988208467",
+"rating": 1,
+"date": "2024-02-28",
+"loc": "id"
+},
+{
+"key": "N9#28001",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "2430000194",
+"rating": 5,
+"date": "2018-04-16",
+"loc": "ru"
+},
+{
+"key": "N8#24566",
+"codes": [
+"SF_DESKTOP_WANT"
+],
+"quote": "I would find this a lot more useful on Mac while working",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "8908478848",
+"rating": 1,
+"date": "2022-07-25",
+"loc": "us"
+},
+{
+"key": "P4#73702",
+"codes": [
+"SF_WIDGET_WANT"
+],
+"quote": "y'a pas de widget ni de sauvegarde",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "d1ac82a4-572c-47d7-aca4-e22591fcf632",
+"rating": 2,
+"date": "2024-02-24",
+"loc": "fr"
+},
+{
+"key": "A1#52656",
+"codes": [
+"SF_WIDGET_BROKEN"
+],
+"quote": "the widget I have on my main iPhone screen will not load",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11043430676",
+"rating": 3,
+"date": "2024-03-14",
+"loc": "us"
+},
+{
+"key": "P126#188538",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "0079b6b4-b1db-44c3-81f9-133dc0ffb00d",
+"rating": 3,
+"date": "2016-12-11",
+"loc": "pt"
+},
+{
+"key": "P111#3522",
+"codes": [
+"SF_WIDGET_WANT"
+],
+"quote": "would appreciate some widgets",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "5e8a38a5-8fe1-4fd9-9e07-2c6e93e7987a",
+"rating": 3,
+"date": "2019-02-13",
+"loc": "en"
+},
+{
+"key": "P111#6063",
+"codes": [
+"SF_WIDGET_WANT"
+],
+"quote": "Also needs a widget.",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "c5606b3e-6e54-4061-8a96-fbf136bf0516",
+"rating": 3,
+"date": "2017-04-15",
+"loc": "en"
+},
+{
+"key": "P111#15355",
+"codes": [
+"SF_WIDGET_WANT"
+],
+"quote": "falta os widgets",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "6205873c-2e37-46d3-be7e-0f0d4254a81f",
+"rating": 3,
+"date": "2016-08-11",
+"loc": "pt"
+},
+{
+"key": "A3#5",
+"codes": [
+"SF_WIDGET_PAID"
+],
+"quote": "what do u mean i’m gonna pay for a subscription to put a tracker in my home screen?",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "13950998269",
+"rating": 1,
+"date": "2026-04-12",
+"loc": "ae"
+},
+{
+"key": "P38#355",
+"codes": [
+"SF_WIDGET_STALE"
+],
+"quote": "it doesn't show newly added furniture",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "133ecce5-745d-4a33-9b0b-4d00ed0738a7",
+"rating": 3,
+"date": "2025-05-25",
+"loc": "en"
+},
+{
+"key": "P3#18822",
+"codes": [
+"SF_WIDGET_WANT"
+],
+"quote": "Kenapa tidak bisa menambahkan widget??",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "a4684d26-081f-4f16-93fe-0c7f6b29e4d9",
+"rating": 2,
+"date": "2021-03-03",
+"loc": "id"
+},
+{
+"key": "P24#14468",
+"codes": [
+"SF_WIDGET_BROKEN"
+],
+"quote": "Bought Premium but widgets still not working.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "6e6a2264-bee3-48cc-ad56-44785f3876b4",
+"rating": 2,
+"date": "2015-09-25",
+"loc": "en"
+},
+{
+"key": "P123#1122",
+"codes": [
+"SF_WIDGET_BROKEN"
+],
+"quote": "Widget stuck not working correctly",
+"store": "P",
+"app": "123. Rise - Habit List",
+"review_id": "add78ed2-4ebd-4489-9446-43819bdc0b1a",
+"rating": 1,
+"date": "2024-03-17",
+"loc": "en"
+},
+{
+"key": "P126#152484",
+"codes": [
+"SF_WIDGET_BROKEN"
+],
+"quote": "in de widget zijn alle taken verdwenen",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "5bd2ddf5-d535-4919-bdc6-a78aa59f0485",
+"rating": 1,
+"date": "2021-03-23",
+"loc": "nl"
+},
+{
+"key": "P24#1812",
+"codes": [
+"SF_INTEGRATION_DISCONNECT"
+],
+"quote": "my connection to Google Fit to show my steps keeps disconnecting",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "85942056-b1b3-4f0d-9750-3a580d7795e1",
+"rating": 3,
+"date": "2022-12-08",
+"loc": "en"
+},
+{
+"key": "P126#170766",
+"codes": [
+"POS_WIDGET"
+],
+"quote": "Apenas uma lista bem organizada com widget.",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "012c95e6-5f46-4a00-86d1-9af6a36b2508",
+"rating": 5,
+"date": "2021-03-23",
+"loc": "pt"
+},
+{
+"key": "P105#307",
+"codes": [
+"SF_WIDGET_WANT"
+],
+"quote": "I miss widgets",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "1ea26603-2f10-4549-a305-816b2f6364f2",
+"rating": 4,
+"date": "2023-05-19",
+"loc": "en"
+},
+{
+"key": "P24#9622",
+"codes": [
+"SF_WIDGET_BROKEN",
+"SF_WIDGET_NEEDS_LOGIN"
+],
+"quote": "The login is fked up, can't get the widget to work.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "51c68392-3a95-41e9-8d1d-1b9ca9920493",
+"rating": 5,
+"date": "2018-01-11",
+"loc": "en"
+},
+{
+"key": "P3#757",
+"codes": [
+"SF_WIDGET_REMOVED"
+],
+"quote": "there used to be a widget to tick of all habits over the day",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "5675eb18-5abd-44b9-9936-3003343653d3",
+"rating": 4,
+"date": "2024-02-20",
+"loc": "de"
+},
+{
+"key": "P65#7712",
+"codes": [
+"POS_WIDGET"
+],
+"quote": "I find the widget really helpful, I keep it on my home page.",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "85621794-de3c-4ac7-b323-bf4ea989c50d",
+"rating": 5,
+"date": "2018-05-15",
+"loc": "en"
+},
+{
+"key": "N8#18219",
+"codes": [
+"SF_WIDGET_BROKEN"
+],
+"quote": "Why doesn",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "13623684882",
+"rating": 1,
+"date": "2026-01-12",
+"loc": "ru"
+},
+{
+"key": "N1#9603",
+"codes": [
+"SF_WIDGET_BROKEN"
+],
+"quote": "the widget of reminder app is totally useless",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "12462752378",
+"rating": 2,
+"date": "2025-03-25",
+"loc": "in"
+},
+{
+"key": "N2#9855",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "8280825818",
+"rating": 2,
+"date": "2022-01-25",
+"loc": "gb"
+}
+]

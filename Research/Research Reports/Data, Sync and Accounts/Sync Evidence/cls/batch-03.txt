@@ -1,0 +1,70 @@
+A13#547|T_WEEKSTART|"starting day of the week is set by region 'according to local custom'"
+A43#124|T_WEEKSTART|"it’s counting from sunday even if it’s set that week starts on monday"
+P33#749|T_WEEKSTART|"there is no such feature to change the starting day"
+P98#3293|T_WEEKSTART|"you can only choose between friday and saturday"
+A74#16|T_WEEKSTART|"We ar arab start day of week on Saturday"
+P91#171|T_WEEKSTART|"the start of the week is Sunday and I couldn't change that"
+A48#89|T_WEEKSTART,SY_WEEK_PROGRESS|"taking into account days that haven't passed yet"
+P111#11786|T_WEEKSTART,T_LOCALE|"The week starts Sunday and it doesn't have a 24h format"
+A59#11775|T_WEEKSTART|"in Israel the week starts on Sunday"
+P44#62|T_WEEKSTART|"there is not any Saturday for first day of week"
+A13#10213|T_WEEKSTART,T_LOCALE|"change the first day of the week to Monday and to change 12hours clock to 24"
+P3#13495|T_WEEKSTART|"«start of the week» option"
+A10#27409|T_WEEKSTART|"pick the first day"
+N10#22899|NR|
+N8#655|T_WEEKSTART|"only allows for the start of week to be set as Saturday, Sunday or Monday"
+N8#548|NR|
+P126#76208|T_RECURRENCE|"Why do my repeating  tasks sometimes disappear?"
+P105#505|SY_NOTIF_BURST|"all of my notifications would be blowing up my phone all at once"
+P84#7932|T_RECURRENCE|"you have no way to stop the alarm without canceling the entire task"
+P2#6649|T_RECURRENCE,L_RANDOM|"One of the recurring tasks I set for myself disappeared on its own"
+P8#4759|P_ONLINE_ONLY|"it doesn't work well offline"
+P12#22696|NR|
+P84#16127|T_RECURRENCE|"the "all day" notification function would NOT repeat"
+P126#29540|T_RECURRENCE|"Repeat doesn't work"
+P126#201016|T_RECURRENCE|"despite setting up "Repeat once a day" it doesn't repeat"
+P84#18295|T_RECURRENCE|"it doesn't ring on reoccurrence"
+A59#1913|T_RECURRENCE,L_CORRUPT|"it closes the app every time you tick an recurring event"
+P33#2679|NR|
+P49#245|NR|
+P122#6231|NR|
+A59#14892|NR|
+P84#42782|T_RECURRENCE|"the recurring tasks disappear from the list"
+A13#13743|T_RECURRENCE,L_UPD|"One of my repeat weekly 3x habit just disappeared with the new UI"
+A76#197|NR|
+A76#240|NR|
+N6#4857|T_RECURRENCE|"It eventually stops pushing a reminder"
+N1#939|T_RECURRENCE,L_NOTSAVED|"no reoccurring times are being saved"
+N10#1010|T_RECURRENCE|"the task would just disappear after a day or two"
+P7#520|T_STREAK|"My streak was reset even though it's visible in the calendar as non interrupted"
+P98#3295|NR|
+A13#12690|S_FAIL|"to get my iPhone app to sync habit"
+A10#19834|T_STREAK,E_CONSUMABLE|"it didn’t use the streak repair it just reset"
+A23#4460|L_SYNC,T_NOBACKFILL|"unable to edit task completions for the past days, no undo"
+A1#44629|SY_VACATION_BUG,T_STREAK|"I went on vacation and set the vacation mode. It didn’t skip all days"
+A10#18481|L_USER,T_STREAK|"I accidentally clicked to reset my streak to 1"
+A13#1886|NR|
+P13#8|S_WIDGET|"Daily streak widget broken?"
+A10#4391|T_STREAK|"it was reset even tho it usually gives me another chance"
+P31#255|SY_HEALTH_SYNC,T_STREAK|"health connect not syncing fully with this app. My step streak keeps getting lost"
+A1#53022|T_STREAK,SY_EDIT_WIPES_HISTORY|"The quit streaks are wrong, and while trying to adjust it to get it to work properly it deletes all the previous data"
+P33#959|T_STREAK|"It says 5 day streak even though I just skipped a habit the previousday"
+A10#9236|NR|
+A10#32406|T_STREAK,SY_OFFLINE_STREAK|"Whne your offline for a week or so, it doesn’t save your streak"
+P3#6050|NR|
+A10#21168|NR|
+P98#1078|T_STREAK,L_EDITHIST|"Every time I make a new task I loose my streak"
+N5#15567|T_STREAK,SY_DIVERGE|"The daily numbers show that I have been meeting my target for the last 20+ days in a row while the achievements tab says that I only have a 4 day streak"
+N5#14236|T_STREAK|"now I am looking at an inaccurate number"
+N5#17017|T_STREAK,SY_HEALTH_SYNC|"since I got a Garmin wearable the App is not behaving anymore"
+A33#3089|L_PARTIAL,T_TZ|"my entire log history was messed up at least 3 times"
+P4#21515|T_REMINDER_TZ|"All of my reminders come in an hour after they're supposed to"
+P126#73281|T_REMINDER_TZ|"As many time zones you travel, that many hours app shifts all your tasks"
+A85#3364|T_TZ,T_MIDNIGHT|"my dailies reset at five in the afternoon"
+A1#54319|T_REMINDER_TZ|"I don't know what time zone this is in"
+A31#2661|T_TZ,SY_SLOW_UI|"Clicking to mark a task as done often results in a delay of several seconds"
+A85#2687|T_TZ,SY_DIVERGE|"It started my day today in the middle of the afternoon and it thinks it’s tomorrow already"
+P4#29782|T_TZ|"the timezone/date doesn't allow you to be anywhere other than the developers timezone"
+P111#859|T_TZ|"I noticed on the website that assignments/reminders beyond February weren"
+A23#4544|NR|
+P8#7344|T_TZ,T_MIDNIGHT|"App reset at around 7:00 pm, instead of at midnight of my time zone"

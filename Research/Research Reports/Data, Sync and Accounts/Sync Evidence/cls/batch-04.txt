@@ -1,0 +1,32 @@
+P84#10099|T_REMINDER_TZ|"i set a task at 7am, and i move 1 time zone back. The task also automatically sets itself to 6am"
+A48#4193|T_REMINDER_TZ|"the alerts are going off at my home time zone's time"
+P8#7468|T_TZ,T_MIDNIGHT|"My day does not reset at midnight, despite what the app says"
+P9#917|NR|
+P125#5716|NR|
+P19#291|SY_VACATION_REQ|"the ability to switch off habits if you are on a vacation or travelling"
+P84#20023|NR|
+P3#14098|T_TZ|"I have to input a day behind because we are in a different time zone"
+N8#23847|NR|
+N1#21139|T_DST|"After daylight saving time changed, my suggested times for reminders are under by one hour"
+N2#21810|NR|
+P3#1730|SY_WIDGET_APP_MISMATCH|"When I tick off the widget it's fine"
+A4#19153|NR|
+P63#201|T_MIDNIGHT|"I need to adjust the time that the day resets"
+P12#16077|T_SHIFT_WORK|"not fit for people who work different shifts everyday"
+A23#5355|T_STREAK,T_MIDNIGHT,T_NOBACKFILL|"I’ll mark it the night before well before midnight only to find out the next day that I’m starting at day one again"
+P126#43831|NR|
+A31#1200|T_TZ,T_STREAK|"it is now counting any habits completed after 11pm as being completed after 12am which pushes them into the following day"
+P8#9046|T_MIDNIGHT|"my day goes from 10 am to 2 am"
+P8#9539|T_MIDNIGHT,T_SHIFT_WORK|"My work day overlaps a day change"
+P12#15922|T_MIDNIGHT,T_SHIFT_WORK|"the two options of 2am the next day or midnight just isn't realistic for me"
+A24#5925|T_SHIFT_WORK|"they do not seem to have anythibg for people working night shifts"
+P8#5501|T_MIDNIGHT|"for people like me who can't cross out the tasks within the day and do it after midnight"
+A24#15747|NR|
+P2#12186|T_MIDNIGHT|"please add the possibility to set custom time when the new day begins"
+A1#47683|POS_DAY_START|"Love that this app has the night owl mode where it resets at 5am"
+A10#35666|NR|
+A33#2979|SY_HEALTH_SYNC,T_MIDNIGHT|"The app tends to confuse about the sleep hour when retrieve data from Apple health"
+P3#11497|T_WEEKSTART,S_WIDGET|"change the widget to be a Monday start"
+N5#15396|SY_HEALTH_SYNC,T_MIDNIGHT|"i had walk for 4 minutes before midnight and it didn’t update"
+N5#8052|NR|
+N2#20963|NR|

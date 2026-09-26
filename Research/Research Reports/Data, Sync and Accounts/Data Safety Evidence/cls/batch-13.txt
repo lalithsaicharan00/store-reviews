@@ -1,0 +1,60 @@
+A1#52926|NR|
+A76#7381|NR|
+A10#33058|PR_CONCERN|"it collects your user information as you use it"
+P4#16569|L_NOTSAVED,PR_CONCERN,X_PAYER|"I spent 2 hours planning yesterday, and today, there is none of the to-do list task"
+A13#12093|PR_CONCERN|"This app collects far too much personal data"
+A86#84|PR_LOCAL_PRAISE,POS_BACKUP|"All data in the app stays in your phone"
+P84#7771|L_ENCRYPT_LOCKOUT,B_PAID|"Since the data is encrypted, it will not transfer phone to phone"
+A85#2002|PR_LOCAL_PRAISE|"they don&#39;t collect your personal data so its also a pro"
+A10#21485|PR_LOCAL_PRAISE|"i love knowing this app is private"
+P84#16329|NR|
+N3#23493|NR|
+N4#8816|L_USER,B_TRASH_NONE|"I accidentally deleted all the history for my fitness workouts and there is apparently no way to restore it"
+N7#6564|PR_CONCERN|"App isn&#39;t safe, not even encryption-wise"
+N9#36117|PR_CONCERN|"Google Sheets is sending notices to a Gmail not listed as a shared account"
+N3#23227|NR|
+A13#10923|NR|
+A20#1776|L_PAYWALL,X_SUPPORT_NONE,X_CHURN,X_PAYER|"My premium finished"
+A20#1814|L_UPD,E_LIFETIME,X_NOTICE,X_PAYER|"After last update all my data disappear and I have to pay new subscription"
+A20#2172|E_CHARGED,X_PAYER|"I bought premium version of Habit and widget still doesn’t work"
+P12#22707|E_DOUBLE|"Have been charged twice for a yearly subscription"
+A55#105|E_LIFETIME,X_PAYER|"I had the app a while back and had purchased the paid version, just to realize now that it works as a subscription"
+P24#10377|E_RESTORE,A_PROVIDER,X_PAYER|"I paid for premium and then went to connect to Facebook. The app just hangs, never connecting. Now it tells me I need to pay again"
+P91#477|E_RESTORE,L_PHONE|"HOW TO CHANGE TO OTHER DEVICE? I encountered an error when clicking restore purchase"
+A1#51211|E_DEVICE,E_FAMILY,S_DUP,X_PAYER|"when I downloaded the same application on iPad, it’s asking me to make the purchase again"
+A1#50255|E_LIFETIME,X_PAYER|"One or two years ago I bought Lifetime Premium. And now it wants me to buy again"
+P24#738|E_RESTORE,L_REINST,X_SUPPORT_NONE,X_PAYER|"after reinstalling the app when the premium unlock was gone"
+A20#2872|E_LIFETIME,X_SUPPORT_NONE,X_PAYER|"it switched from lifetime premium to subscription after like 3 days"
+A24#26779|NR|
+A24#39828|E_DOUBLE|"they charged me twice for the same subscription"
+A20#3331|E_LIFETIME,X_PAYER|"my app doesnt work with its previous capabilities that I already paid for"
+P2#5733|NR|
+P2#5022|E_PURCHASE_FAIL|"everytime I try end up into error "Not working at this time, try again""
+P98#848|NR|
+A20#3290|E_LIFETIME,X_SUPPORT_SAVED,X_PAYER|"Glad Habit has responded and updated the app to restore premium for users who purchased before the upgrade"
+A4#2671|NR|
+N7#6544|NR|
+N4#4258|NR|
+N8#8736|NR|
+N5#12609|NR|
+N5#14114|S_HEALTH_WRONG|"now it thinks I did twice the exercise"
+P2#1413|E_DEVICE,B_PAID,L_PHONE,X_PAYER|"I cannot restore my data from the cloud backup, as the app prompts me to pay for Premium again"
+P3#14776|B_IMPORT,L_PHONE|"I exported the db, but couldn't import it back"
+P44#65|E_CHARGED,E_RESTORE,X_PAYER|"I keep clicking on Restore still nothing happens"
+A10#7470|L_CORRUPT,B_RESTORE_FAIL|"its prone to randomly corrupting your data out of nowhere. The back up wont load either"
+A24#41114|E_RESTORE,L_UPD,X_PAYER|"any attempts I made to restore it failed"
+P126#72982|L_PARTIAL,T_RECURRENCE|"It just keeps deleting all my daily repeat tasks"
+A24#31203|NR|
+A86#23|B_RESTORE_FAIL,B_ICLOUD,S_WATCH|"I’ve lost my data so many times now to the iCloud backup that I’ve given up"
+A20#1557|E_LIFETIME,E_RESTORE,X_PAYER|"i cant even restore my purchase"
+A13#13867|L_RANDOM,X_SUPPORT_NONE,X_CHURN|"Twice now it has randomly deleted all my habits and their history"
+P12#45153|E_RESTORE,L_PHONE,X_PAYER|"changing phone, signing with the same email I couldn't restore my yearly purchase"
+A24#24947|B_SLOW,P_SLOW_LOAD|"Every time I open it, it has to restore my journey progress which can take a while"
+A31#1594|E_RESTORE,E_LIFETIME,L_PHONE,X_SUPPORT_NONE,X_PAYER|"When I tapped restore purchase it just shows me ads for the subscription"
+P2#7157|S_MULTI_REQ,B_LOCAL_ONLY|"it still only has Backup, not Sync"
+P30#4189|L_PHONE,B_NONE|"I couldn't see a way to back up and restore my data"
+A20#315|POS_RESTORE,X_SUPPORT_SAVED|"the premium features I had paid for and come to enjoy were restored through the “restore purchases” button"
+A5#1926|POS_SUPPORT|"after reporting it, the team fixed it within just a week"
+A1#55740|L_PARTIAL,L_RANDOM|"I recently lost a 3 month set of habit data on one of my most consistent habits"
+A10#28394|L_REINST,A_LOGIN_FAIL,A_PROVIDER|"it doesn’t recognize my phone number and says I can try email but all my progress will be lost"
+A13#25|NR|

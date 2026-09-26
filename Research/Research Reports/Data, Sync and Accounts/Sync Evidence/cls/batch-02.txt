@@ -1,0 +1,67 @@
+A85#2529|SY_SLOW_UI|"the iOS app is kind of slow"
+P8#13398|S_DELAY|"It can even take a couple of minutes to synch"
+A13#11941|S_MULTI_REQ,E_DEVICE|"this app doesn’t sync with your other devices"
+P8#8090|S_DELAY|"Sync is slow and pressing on habits doesn't work sometimes"
+A13#11964|NR|
+A31#2350|S_WATCH,S_DELAY|"the Apple watch complication sync has been very slow lately"
+A13#12937|S_DELAY,SY_NO_PULL|"it might take an hour or more for the change to appear on my iPad Pro with the devices sitting next to each other"
+A2#60|S_DELAY|"Syncing makes a slow app even slower"
+A5#3249|S_WATCH|"watch app got out of sync again"
+P111#12255|S_DELAY|"Dashboard syncs information slowly"
+A23#2061|S_DELAY,SY_NO_PULL|"I have to kill the app to force a sync. Not ideal. A pull to refresh or a button is needed"
+P24#14013|S_DELAY|"syncing between devices is pretty slow"
+A1#46812|S_WATCH,S_DELAY|"Watch app integration"
+P8#13394|S_DELAY|"Synchronizing seems a little buggy and slow"
+A23#5237|S_DELAY,SY_DIVERGE|"I have different numbers on each device even after turning on and off iCloud sync"
+A1#55502|S_DELAY,X_PAYER|"it sometimes takes hours for it to sync up"
+N10#13944|S_DELAY,SY_NO_PULL|"the “hard refresh”option Wunderlist used to have (just pulling the screen downwards) has simply not been implemented"
+N3#8627|NR|
+N10#12002|S_DELAY|"Sync is slow"
+P63#1575|S_REMINDER_XDEVICE,SY_NOTIF_DUP|"Notifications about already marked events"
+P4#23182|NR|
+A13#8943|S_DUP,L_RANDOM|"some habits are duplicated"
+A1#46473|NR|
+A13#14183|S_DUP,T_DATE,T_WEEKSTART|"Items I have scheduled to do X days per week “break” their streak every Sunday"
+A13#4449|S_DUP,L_UPD,T_STREAK|"Some habits got duplicated, those that were stopped appeared in the list, streak and stats completely broken"
+A48#4110|S_DUP|"it keeps crashing & duplicating habits"
+P84#12516|S_DUP,S_CONFLICT|"Some of subtasks may be overwritten by other ones"
+A23#506|S_DUP,SY_DELETE_RESURRECT|"I got deleted items, duplicated items"
+P8#9615|S_DUP,SY_DEDUP_DELETES_ALL|"All my Habits got duplicated in the app, but when I deleted the duplicates everything disappeared"
+A4#15447|NR|
+P8#9683|S_DUP|"My tasks got duplicated... 10 times"
+P84#43062|NR|
+P84#22854|NR|
+P84#30085|NR|
+P84#23147|NR|
+P2#2929|NR|
+A33#2976|NR|
+N10#13497|S_DUP,S_PARTIAL|"duplicated steps and not correctly synchronized between devices"
+N7#12215|S_DUP|"I've experienced it duplicating items on list"
+N2#16675|S_DUP|"My calendar has started duplicating every entry I create"
+A24#5461|NR|
+A13#13997|SY_DELETE_RESURRECT|"suddenly reappearing habits I deleted months ago"
+P24#13064|SY_DELETE_RESURRECT,SY_PAUSE_COUNTS|"Deactivate a habit on one device, or even all your devices, and it'll constantly reappear upon sync"
+P31#116|NR|
+P8#1500|L_OFFLINE_EDITS,P_ONLINE_ONLY|"When I try to add a task or habit when I am not connected to the Internet, the app creates it with a warning sign"
+P126#74514|L_SYNC|"Sync issues where 90% of my tasks disappeared"
+A53#1505|S_DUP,SY_DELETE_RESURRECT|"Then the old habits reappeared"
+A13#12418|S_WATCH,S_DELAY|"it shows syncing for so long"
+A1#353|NR|
+P126#12012|L_SYNC|"yesterday I synchronized it with google.. today all my list disappeared"
+A48#3736|SY_DIVERGE|"The desktop and mobile apps never sync correctly, the dashboard almost always shows wrong information"
+A1#52536|S_SHARED,L_SYNC|"Our habits won’t sync or they disappear once they close the app"
+A23#4431|SY_DIVERGE,S_INVISIBLE|"My Mac and iphone don't sync properly - even though they say they are - so I have to double check off everything on both devices"
+P37#514|S_DUP|"I get a lot of duplicates for the same timed habit on my Google Calendar"
+A23#3820|SY_DELETE_RESURRECT,T_STREAK,X_SUPPORT_SAVED|"habits that I removed are back in the app and stats are all wrong"
+A16#76|L_LOGIN,SY_GUEST_TO_ACCOUNT|"I set up a couple of ones without logging in and go some reason I decided to include my account and all my tracks are gone"
+P126#45331|S_DUP,T_TZ|"Google calendar duplicates the entries and the timing is totally off"
+P111#10660|S_DUP|"it even duplicates classes and times"
+N10#14931|S_DUP,SY_DEDUP_DELETES_ALL|"Deleted one of duplicated tasks, lost both copies of same tasks"
+N8#35515|NR|
+N8#25654|S_FAIL|"I can’t sync between devices"
+A31#105|T_WEEKSTART|"I can’t set the start of the week to the day I want. It just reverts back to Sunday"
+P84#9107|T_WEEKSTART|"Is there a way to set manually Monday as 1st week day?"
+P124#388|T_WEEKSTART,T_DATE|"When Monday is first day of the week, all dates are shifted"
+P3#3539|T_WEEKSTART|"it considers 'Sunday' as the first day of the week by default"
+P2#12402|T_WEEKSTART|"you can't change first day of the week"
+P8#6311|T_WEEKSTART|"First day of the week setting doesn't work"

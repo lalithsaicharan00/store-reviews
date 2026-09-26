@@ -1,0 +1,21 @@
+screened 1487223 {'A': 337331, 'P': 901453, 'N': 248439}; candidates 2643
+
+mode                     n apps     A     P     N   1★%  mean
+CHINA_LOGIN            549   32   305    11   233  37.5  2.86
+LOGIN_FAIL_ML          470   60    96   196   178  57.4  2.03
+PASSWORD               343   35    54    81   208  56.0  1.97
+SHARED_DEVICE          225   32    36    28   161  16.0  3.82
+SIGNUP_FAIL            201   35    48   147     6  68.7  1.63
+TWO_ACCOUNTS           157   27    40    31    86  38.2  2.70
+LOGOUT                 142   29    48    42    52  50.7  1.95
+GOOGLE_SIGNIN          131   30    16   109     6  43.5  2.50
+EMAIL_VERIFY           121   22    51    57    13  82.6  1.36
+FACEBOOK                98    9    19    78     1  45.9  2.22
+ACCOUNT_LOST            70   19    41    25     4  68.6  1.56
+WHY_ACCOUNT             58   28    14    30    14  44.8  2.34
+EMAIL_CHANGE            52   16    11    29    12  55.8  1.96
+NO_ACCOUNT_PRAISE       37   20     8    26     3   5.4  4.62
+APPLE_SIGNIN            25   10    20     3     2  60.0  2.04
+GUEST                   19   10     9     9     1  57.9  2.00
+PHONE_LOGIN             11    5     1     1     9  72.7  1.73
+HIDE_EMAIL               5    3     5     0     0 100.0  1.00

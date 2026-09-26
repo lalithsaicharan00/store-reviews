@@ -1,0 +1,70 @@
+P9#1176|SV_COST_PERCEPTION|"this app is not "high maintenance""
+A24#28157|NR|
+A48#1067|SV_SIGNUP_SERVER_ERROR|"it just keeps saying &#39;error 503&#39;"
+P105#1011|SV_COST_PERCEPTION|"Maintenance of such app requires minimum resources"
+P4#10465|NR|
+A16#294|SV_COST_PERCEPTION|"from then only needs basic maintenance"
+P37#1027|NR|
+P98#510|SV_COST_PERCEPTION|"the maintenance of the app will cost a lot"
+A5#2967|NR|
+A85#1800|SV_SIGNUP_SERVER_ERROR|"Availability is a key concern."
+A85#67|SV_OUTAGE_BLOCKS_USE,SV_MAINT_UNANNOUNCED|"They don’t announce maintenance or server outages"
+A24#5909|NR|
+P84#7003|POS_BACKUP_PAID|"we decided to pay for premium to have everything backed up"
+A24#30864|NR|
+P126#71104|NR|
+A10#66566|NR|
+N1#25227|NR|
+N9#37874|NR|
+N4#9237|NR|
+N11#3241|SV_OUTAGE_BLOCKS_USE|"이틀째 작동 안합니다"
+P8#3336|SV_ONLINE_ONLY|"it doesn't work offline"
+P8#8288|SV_ONLINE_ONLY|"Need internet connection to use"
+P4#26292|NR|
+A10#12512|NR|
+P12#43831|NR|
+A4#6592|NR|
+A31#2711|NR|
+P122#7102|SV_ONLINE_ONLY|"does not work without internet"
+P126#59985|SV_ONLINE_ONLY|"It doesn’t work without internet. Worst app."
+P8#7641|SV_ONLINE_ONLY|"doesn't work without an internet connection"
+A85#81|NR|
+P2#4147|NR|
+P12#13092|NR|
+A25#1167|NR|
+P38#936|SV_ONLINE_ONLY|"can't use it without internet connection"
+P4#20185|NR|
+P12#67395|SV_ONLINE_ONLY|"it always requires an internet connection"
+A13#38|NR|
+P8#8759|SV_ONLINE_ONLY,SV_WANT_QUEUE|"simply upload the changes all at once when online"
+A10#50937|POS_OFFLINE|"you DONT need Wi-Fi"
+P8#4848|SV_ONLINE_ONLY|"One con: the app doesn't work offline."
+A10#69828|POS_OFFLINE|"It works without cell service which was a nice touch while I was in the wilderness"
+A10#50913|POS_OFFLINE|"You don’t even need Wi-Fi to use it!"
+N7#9692|SV_ONLINE_ONLY|"you need WiFi or cell service to add copy’d clipboard items"
+N11#6139|NR|
+N4#3551|POS_OFFLINE|"I don&#39;t think you need WIFI for it"
+N5#12774|NR|
+P10#9754|SV_SLOW_START|"an app this simple shouldn't have a 15 second loading screen"
+A4#12284|SV_SLOW_START|"I got stuck on the loading screen"
+A48#999|SV_BLOCKING_SCREEN,SV_ENTITLEMENT_DROPPED|"you get stuck on a never ending screen about subscription renewal"
+A24#27796|SV_SLOW_START|"takes FOREVER to load"
+P49#992|SV_BLOCKING_SCREEN|"I get stuck at this loading screen"
+P5#868|SV_SLOW_START,SV_SYNC_BLOCKS_START|"Is it syncing everytime I open the app?"
+A24#34597|SV_BACKUP_SPINS|"The loading screen spins continuously"
+A9#426|SV_SLOW_START|"App is struck in loading screen"
+P98#617|SV_SLOW_START,SV_ENTITLEMENT_DROPPED|"gets stuck on the splash screen"
+P12#52526|NR|
+P126#67250|SV_SLOW_START|"Takes too long to load"
+A16#702|SV_BLOCKING_SCREEN|"Whether i had no account or created an account, it won’t let me in."
+A10#63821|NR|
+A5#2754|NR|
+P123#708|SV_PURCHASE_SLOW|"the loading screen is taking so long to update"
+P10#10173|SV_SLOW_START|"I'd rather write down my Habits than wait at the loading screen."
+A83#435|SV_SLOW_START|"I was stuck on the loading screen for a long time"
+P49#1058|SV_BLOCKING_SCREEN|"gave me what I would describe as a loading screen"
+P12#39369|NR|
+A24#9238|SV_SLOW_START|"loading forever"
+A10#69016|NR|
+A10#10427|SV_SLOW_START|"I get bored midway through it loading"
+P49#1064|SV_BLOCKING_SCREEN|"It'll just be stuck on a black loading screen"

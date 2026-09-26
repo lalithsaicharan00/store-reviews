@@ -1,0 +1,25 @@
+A52#16637|AC_CHINA_PAY|"却不能支付宝或者微信付款"
+A52#13143|AC_CHINA_PAY|"如果能开通微信或者支付宝就好了"
+A52#8420|AC_CHINA,E_RESTORE|"以前的会员记录恢复不了，微信绑定不了"
+A24#8449|AC_CHINA,AC_LOGIN_FAIL|"为什么我登录不了？是要什么邮件？QQ邮箱不行嘛"
+A52#805|AC_CHINA,E_RESTORE,X_PAYER|"想绑定微信继续会员身份，但是试了好多次都绑定不了"
+A52#488|NR|
+A52#3385|AC_CHINA,E_PLATFORM_GAP,X_PAYER|"但是在mac上登陆不了"
+A52#503|AC_CHINA,E_PLATFORM_GAP|"绑定不了微信，Mac 上根本没法用"
+A13#3074|NR|
+A33#687|AC_CHINA,AC_SERVER_REQUIRED|"不翻墙根本没法用"
+A52#16512|AC_CHINA,AC_WANT_LOGIN|"账号与qq、微信等关联功能未提供"
+A13#4114|NR|
+A52#6845|AC_CHINA|"如果要绑定微信，不能使用微信扫码"
+A52#12967|AC_CHINA,L_REINST,AC_BACKUP_ASSUMED|"绑定微信之后 我以为记录都会存在里面 结果刚删了重新下载 竟然没有以往记录了"
+A13#3733|NR|
+A52#15799|E_DOUBLE|"我不是微信已经支付过一次了吗"
+A1#42949|NR|
+A1#43382|NR|
+A52#14144|AC_CHINA,AC_LOGIN_FAIL,X_PAYER|"微信也无法绑定"
+A52#12468|NR|
+N8#4761|AC_CHINA|"对翻墙怨念很深"
+N3#5793|NR|
+N4#1814|NR|
+N10#4583|AC_CHINA,AC_LOGIN_FAIL|"反正我的账户永远登不上去"
+N10#4867|AC_LOGIN_FAIL|"提示账号密码出错"

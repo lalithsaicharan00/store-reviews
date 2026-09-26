@@ -1,0 +1,12 @@
+screened 1487223 {'A': 337331, 'P': 901453, 'N': 248439}; candidates 6227
+
+mode                     n apps     A     P     N   1★%  mean
+PRIVACY               2385  116   629  1055   701  27.5  3.46
+APP_LOCK              1328   59   283   223   822  31.4  2.94
+EMAIL_SPAM            1312   56   719   549    44  85.4  1.29
+NO_ACCOUNT             496   90   169   266    61  47.4  2.64
+DELETE_ACCOUNT         495   56   303   151    41  80.8  1.38
+SENSITIVE              333   66   191   111    31  10.8  4.19
+PERMISSIONS             38   20     3    17    18  31.6  2.97
+ADS_TRACKING            25   15    11     8     6  28.0  3.36
+LEGAL                   20   15     8     9     3  75.0  1.75

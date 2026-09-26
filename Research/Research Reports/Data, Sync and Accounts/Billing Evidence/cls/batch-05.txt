@@ -1,0 +1,70 @@
+P2#24457|BL_SYNC_PAID_BROKEN,X_PAYER|"a sincronização mesmo no premium tem que ser feita de forma manual e ainda há limite diário de sincronizações"
+A24#27585|BL_SECOND_DEVICE_ONBOARD,B_RESTORE_PARTIAL,X_PAYER|"If I click out it sends me through the new user questionnaire"
+P4#22598|BL_DEVICE_CHANGE_LOST,BL_SECOND_DEVICE_ONBOARD,X_PAYER|"despite having a subscription it's making me go through the questionnaire at the start"
+P84#11375|B_PAID,L_PHONE|"CANNOT BE TRANSFERRED to my new phone unless I pay for the premium version"
+P145#346|BL_DEVICE_CHANGE_LOST,L_PHONE,X_SUPPORT_NONE,X_PAYER|"despite "cloud saving" I lost everything when I got a new phone and wasn't able to even restore the $10 purchase I made"
+P84#10559|L_PHONE,B_RESTORE_FAIL|"this was the ONLY app I couldn't restore"
+A31#2031|BL_ADS_AFTER_PAY,S_WATCH,X_SUPPORT_NONE,X_PAYER|"premium subscriber but I get advertisements all the time"
+A23#5422|NR|
+A33#1457|BL_PLATFORM_PAY_TWICE|"Paying once doesn't give you all features on both the platforms"
+A1#2374|BL_SYNC_PAID_BROKEN,X_PAYER|"I paid for premium mostly so that I can have the ability to Sync my habits on my devices"
+P84#14542|POS_MIGRATE|"Got a new phone and the backup/restore feature is so simple"
+A31#2480|NR|
+N8#10402|NR|
+N5#14182|NR|
+N5#414|NR|
+A10#9847|B_RESTORE_PARTIAL,X_SUPPORT_NONE|"all the furniture and outfits I had built up over months disappeared"
+A31#2658|BL_PURCHASE_NOT_APPLIED,L_REINST,X_SUPPORT_NONE,X_PAYER|"paid $20 to upgrade.  The update never worked.  I tried restoring purchase"
+P12#148862|BL_DEVICE_CHANGE_LOST,AC_LOGIN_FAIL,X_PAYER|"I can login but can not restore progress"
+A20#2970|BL_LIFETIME_REVOKED,X_PAYER|"I bought a lifetime premium, but after an update the app asks now for a new premium subscription"
+A33#3287|BL_STATUS_CONFUSING,X_PAYER|"I seem to have premium access I think? But in the settings, it gives me the option to purchase premium"
+A31#392|BL_PURCHASE_NOT_APPLIED,X_PAYER|"In my settings my plan shows up as "Done basic""
+A4#6821|BL_TRIAL_UNCLEAR|"It said I would be charged 1.49 a month"
+A24#23643|BL_UPSELL_NAG,B_SLOW|"Asked to restore my progress when I opened the app on a different device which takes up to TEN MINUTES"
+A20#2977|BL_LIFETIME_REVOKED,BL_RESTORE_FALSE_SUCCESS,X_PAYER|"I restored the purchase, but it didn't help"
+P19#167|BL_RESTORE_AFTER_RELOGIN,X_PAYER|"I paid already when I logged out and logged in. It won't allow me to restore purchase"
+A1#51475|BL_PREMIUM_FLAPS,X_PAYER|"it often breaks and goes back to non premium version"
+A24#41347|L_REINST,BL_RESTORE_PURCHASE_NOT_DATA|"Despite being able to restore my purchase of premium, all my progress was gone"
+P12#46463|B_RESTORE_FAIL,X_PAYER|"now it breaks when restoring my progress"
+A20#2982|BL_LIFETIME_REVOKED,BL_RESTORE_FALSE_SUCCESS,X_PAYER|"the ‘restore purchase’ has no effect"
+A53#1632|BL_PURCHASE_NOT_APPLIED,X_PAYER|"Trying to restore purchases doesn’t work"
+P12#149181|B_PAID,L_REINST|"I can't restore my progress without being a sphere member"
+A20#3319|BL_LIFETIME_REVOKED,BL_RESTORE_FLAKY|"I tried “restore purchase” for the fortieth time today and it finally worked"
+A10#53477|BL_PREMIUM_VANISHED,X_SUPPORT_SAVED|"I lost all of my finch plus benefits and it wasn’t even let me restore my purchase"
+A1#46107|BL_RESTORE_HIDDEN|"just couldn’t find the restore purchase button. To be fair it’s very small and greyed out"
+A34#83|BL_STATUS_CONFUSING|"removing “Restore purchase” if premium is active"
+N5#15958|L_PHONE,S_WATCH|"When I synced my watch to new phone I lost ALL fitness data"
+N1#2448|B_RESTORE_FAIL,B_ICLOUD|"iCloud restore isn’t working"
+A10#46182|NR|
+P12#11108|BL_DUNNING_AFTER_CANCEL|"they STILL keep emailing me to tell me that my payment failed"
+P4#25885|BL_WRONG_STORE_ACCOUNT|"it keeps trying to log me in to a different Gmail account"
+P33#1398|BL_CANT_AFFORD|"I can't pay subscription for poor"
+A50#70|BL_PURCHASE_ERROR|"The app does not accept any of my cards"
+A13#12822|BL_PURCHASE_ERROR|"it won’t allow in app purchases which means you cannot upgrade"
+A10#2808|BL_CANT_AFFORD|"it’s unfair for people who can’t pay for plus to not be helped"
+P8#4395|NR|
+A10#4749|BL_PURCHASE_ERROR,BL_PURCHASE_ERROR_CODE|"PurchaseErrorCode.storeProblemError"
+P33#1465|BL_CANT_AFFORD|"the limit on the amount of tasks for people who can't pay is saddening"
+A13#2014|BL_PURCHASE_ERROR,BL_NOT_AUTHORIZED|"I get a message that says I’m not authorized to purchase from the App Store"
+P33#1632|BL_CANT_AFFORD|"I have no money and I can't pay for any of those subscriptions"
+P12#61196|BL_TRIAL_REQUIRED,BL_NO_MONTHLY,BL_CANCEL_NOT_HONORED|"Forced to give payment details for annual membership before signing to a trial"
+P12#117420|BL_CANT_AFFORD,BL_MINOR|"my mom wont let me buy it"
+A24#37577|BL_CANT_AFFORD|"Some people may really need this app but can’t pay"
+A24#1897|BL_CANT_AFFORD|"a sum of money that I cant exactly afford right now"
+A10#3203|NR|
+A33#535|BL_PURCHASE_ERROR|"Selected one of the options to upgrade but nothing happened"
+P12#36119|BL_NO_MONTHLY|"I can't pay for an annual membership... I can pay monthly"
+P98#982|BL_CANT_AFFORD|"a lot of people can't pay the amount of money"
+N3#2950|NR|
+N3#23|NR|
+N3#18924|NR|
+A1#50808|BL_FAMILY_BROKEN,X_SUPPORT_NONE,X_PAYER|"I paid the lifetime family plan and it just doesn’t work on my husband’s phone"
+A10#24618|BL_FAMILY_WANT|"It wants $50/yr PER FAMILY MEMBER, unlike most apps I have where you buy it, then all family members can use it"
+A1#51778|BL_FAMILY_BROKEN,AC_NO_CHANNEL,X_PAYER|"No way to add family members"
+A1#51099|BL_FAMILY_BROKEN,X_SUPPORT_NONE,X_PAYER|"I paid for the family plan, there is no option to adding a family member"
+A10#32830|NR|
+A85#2969|NR|
+A4#19364|NR|
+A13#14660|BL_FAMILY_LISTING_FALSE|"it’s advertised as being part of family sharing, but all that’s shareable is the limited, free version"
+A33#3232|BL_FAMILY_PROFILES,X_PAYER|"we are unable to separate each kid as a user under the one account even though we paid for family access"
+P110#2151|NR|

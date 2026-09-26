@@ -1,0 +1,66 @@
+N5#406|NR|
+N10#19605|RL_CRASH_LOOP,RL_SUPPORT_NONE|"Developers have not responded."
+N3#28345|RL_UPDATE_BUG|"not sure what developers have done in the last updates?"
+A24#32636|NR|
+A13#15611|NR|
+A1#51120|RL_NO_WARNING,RL_DATA_DELETED|"App deletes data without warning"
+P12#37218|NR|
+A24#25904|NR|
+P12#25673|NR|
+A24#27106|NR|
+A55#1197|RL_PAYWALL_ON_UPDATE,RL_NO_WARNING|"Why am I suddenly being forced to pay a subscription for an app which has been free, with no warning?"
+P126#69069|RL_DATA_DELETED|"all of my appts. and info. just disappeared without warning"
+A10#33659|NR|
+A68#1693|NR|
+A13#6396|NR|
+P12#19432|NR|
+P8#3595|NR|
+P12#32458|NR|
+P4#17020|NR|
+A4#528|NR|
+P12#42913|NR|
+N8#22389|NR|
+N1#19397|NR|
+N2#16484|RL_DATA_DELETED|"It will arbitrarily delete while calendars and events with no warning"
+P24#9297|RL_PAYWALL_ON_UPDATE,RL_SUPPORT_NONE|"Bought premium years ago, now my amount has disappeared along with my premium. No response from devs."
+A20#88|RL_PAYWALL_ON_UPDATE,RL_SUPPORT_NONE|"They removed features that I’d already paid for"
+P12#23862|NR|
+P12#61395|RL_SUPPORT_NONE|"I've contacted support twice, with no response as a premium member."
+P12#12130|NR|
+A1#738|RL_SUPPORT_NONE|"you haven’t responded for three weeks"
+A24#789|NR|
+P4#22265|NR|
+P98#418|RL_UPDATE_BUG,RL_SUPPORT_NONE|"after one of the updates I found a bug - the app does not send notifications which makes it useless"
+A24#23265|NR|
+A31#2016|NR|
+A20#1257|RL_SUPPORT_NONE|"No response when emailed for help."
+A67#78|NR|
+P12#65539|RL_SUPPORT_NONE|"I wrote to you through the App feedback feature but there has been no response there either."
+P122#17400|RL_SUPPORT_ACK_WANT|"Atleast some acknowledgement for the mail would be beneficial"
+P12#65719|NR|
+A31#2919|NR|
+P24#9150|RL_PAYWALL_ON_UPDATE,RL_SUPPORT_NONE|"The people who paid for premium level no longer have it."
+N11#2718|RL_SUPPORT_NONE|"i have even send a video to error support in app still there is no response"
+N5#12601|RL_SUPPORT_NONE|"I tried reaching out and received no reply."
+N7#11393|RL_UPDATE_BUG|"The app was working perfectly fine before the most recent update."
+A24#25118|NR|
+A13#12560|RL_CRASH_LOOP|"The app crashes every time I open it."
+A31#1496|RL_CRASH_LOOP|"it won’t open when i click on it"
+A24#16457|RL_CRASH_LOOP,RL_STATE_CRASH|"once it’s finished importing my data it just starts crashing all over again"
+A31#4296|RL_CRASH_LOOP|"I deleted and redowloaded a few times and still won’t open."
+A31#1514|RL_CRASH_LOOP|"they’re also struggling with this problem"
+A85#2718|NR|
+A55#554|RL_CRASH_LOOP|"I can’t open it."
+A4#16243|NR|
+A10#33396|RL_CORRUPT_MESSAGE,RL_BACKUP_UNOPENABLE|"It looks like your pet data got corrupted"
+A1#45443|RL_UPDATE_CRASH|"I am guessing after the last update"
+A4#11717|RL_CRASH_LOOP|"I cant open the app at all like it just says the logo thats it"
+A10#54140|RL_UPDATE_CRASH|"I updated my app over the weekend and now it won’t open."
+A10#48595|RL_CRASH_LOOP|"I can’t open the app!"
+P8#2566|NR|
+P111#10195|RL_CRASH_LOOP|"it keeps telling me that it won't open or it shuts me out"
+P8#9497|RL_CRASH_LOOP|"Crashes when I open the app"
+A13#12504|RL_UPDATE_CRASH,RL_REPEAT_BREAKAGE|"this is the second time that an update has made it completely unusable for an extended period of time"
+N7#3770|RL_UPDATE_CRASH|"the latest app update crashes on start up"
+N9#48297|RL_CRASH_LOOP|"It just shuts down and won"
+N8#27143|RL_UPDATE_CRASH|"Won’t even open after last update."

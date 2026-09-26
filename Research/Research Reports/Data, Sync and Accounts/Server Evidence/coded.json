@@ -1,0 +1,2242 @@
+[
+{
+"key": "A10#8984",
+"codes": [
+"SV_DATA_LOST",
+"SV_SUPPORT_PARTIAL"
+],
+"quote": "They restored a few of my items but the ones I really loved",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13893623312",
+"rating": 1,
+"date": "2026-03-27",
+"loc": "fr"
+},
+{
+"key": "A10#20447",
+"codes": [
+"SV_UPDATE_CRASH",
+"SV_DATA_LOST"
+],
+"quote": "Had to do a full reinstall to regain functionality which in turn killed my streak and data without warning",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "14236733262",
+"rating": 1,
+"date": "2026-06-28",
+"loc": "us"
+},
+{
+"key": "A13#11959",
+"codes": [
+"SV_NO_SERVER_BACKUP"
+],
+"quote": "if you lose your device or delete the app, the data cannot be restored",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8160728631",
+"rating": 1,
+"date": "2021-12-23",
+"loc": "us"
+},
+{
+"key": "A23#6155",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "1456207719",
+"rating": 5,
+"date": "2016-09-26",
+"loc": "us"
+},
+{
+"key": "A24#18835",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "14389221707",
+"rating": 5,
+"date": "2026-08-05",
+"loc": "kz"
+},
+{
+"key": "A24#28752",
+"codes": [
+"SV_RESTORE_FAIL"
+],
+"quote": "restored my journeys (2 completed, one half done) from the apps backup on my old device and no progress appears",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10177295771",
+"rating": 2,
+"date": "2023-07-24",
+"loc": "us"
+},
+{
+"key": "A3#8946",
+"codes": [
+"SV_NO_SERVER_BACKUP"
+],
+"quote": "My data was gone when I restored the backup to my new phone",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "9112628469",
+"rating": 1,
+"date": "2022-09-23",
+"loc": "us"
+},
+{
+"key": "P110#3033",
+"codes": [
+"SV_RESTORE_FAIL"
+],
+"quote": "Unable to restore backup on other device",
+"store": "P",
+"app": "110. Habit Tracker Unlimited",
+"review_id": "97aa44eb-4388-4d16-a645-7daf88e5aa19",
+"rating": 1,
+"date": "2022-02-22",
+"loc": "en"
+},
+{
+"key": "P12#61422",
+"codes": [
+"SV_ENTITLEMENT_DROPPED",
+"SV_SUPPORT_RESTORED"
+],
+"quote": "contacted developer and they restored it right away",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "1f04b445-a580-41ec-a939-8bb38b339c38",
+"rating": 5,
+"date": "2019-08-20",
+"loc": "en"
+},
+{
+"key": "P145#470",
+"codes": [
+"SV_SYNC_FAIL"
+],
+"quote": "it's not syncing even though I have logged in",
+"store": "P",
+"app": "145. Habit Rabbit - Habit Tracker",
+"review_id": "1c58bde6-7c1d-471b-b12e-a98f1eb8eb64",
+"rating": 4,
+"date": "2023-08-07",
+"loc": "en"
+},
+{
+"key": "P3#7511",
+"codes": [
+"SV_WANT_ACCOUNT_SYNC"
+],
+"quote": "Please add account synchronisation option",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "c9d3a981-ec67-4a32-bf84-c68c6cb722ad",
+"rating": 3,
+"date": "2021-09-21",
+"loc": "en"
+},
+{
+"key": "N5#406",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "9783719280",
+"rating": 4,
+"date": "2023-04-03",
+"loc": "au"
+},
+{
+"key": "N3#21729",
+"codes": [
+"SV_DATA_LOST"
+],
+"quote": "My extensive notes that I had meticulously documentary over 10 + years suddenly vanished",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "13923106008",
+"rating": 1,
+"date": "2026-04-04",
+"loc": "us"
+},
+{
+"key": "A13#8926",
+"codes": [
+"SV_SECURITY_FEAR"
+],
+"quote": "my Apple ID has been hacked by some random gambling accounts",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "7941199972",
+"rating": 1,
+"date": "2021-10-22",
+"loc": "my"
+},
+{
+"key": "A20#1213",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6937424790",
+"rating": 1,
+"date": "2021-01-31",
+"loc": "gb"
+},
+{
+"key": "A24#14646",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12053212154",
+"rating": 1,
+"date": "2024-12-12",
+"loc": "gb"
+},
+{
+"key": "A24#20788",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11563045109",
+"rating": 1,
+"date": "2024-08-02",
+"loc": "nz"
+},
+{
+"key": "A24#27583",
+"codes": [
+"SV_PLAINTEXT_PASSWORD"
+],
+"quote": "they’re also storing your password in cleartext",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11588300814",
+"rating": 1,
+"date": "2024-08-09",
+"loc": "us"
+},
+{
+"key": "A31#2356",
+"codes": [
+"SV_ENTITLEMENT_DROPPED"
+],
+"quote": "This shows they have no idea who has subscribed to them",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "13602037395",
+"rating": 1,
+"date": "2026-01-06",
+"loc": "sg"
+},
+{
+"key": "A33#838",
+"codes": [
+"SV_SECURITY_FEAR"
+],
+"quote": "Personal data breach",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "10101941744",
+"rating": 1,
+"date": "2023-07-04",
+"loc": "de"
+},
+{
+"key": "A33#1119",
+"codes": [
+"SV_DELETION_INCOMPLETE"
+],
+"quote": "I then chose to delete my account but I’m still getting daily spam messages that contain all my data",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "10101814356",
+"rating": 1,
+"date": "2023-07-04",
+"loc": "gb"
+},
+{
+"key": "P12#29506",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "0db71662-335a-4647-9822-c7b0cf9476b5",
+"rating": 1,
+"date": "2021-11-24",
+"loc": "en"
+},
+{
+"key": "P12#30549",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "89225096-c834-4faf-b56b-69889bffc2f5",
+"rating": 1,
+"date": "2021-10-23",
+"loc": "en"
+},
+{
+"key": "P12#30872",
+"codes": [
+"SV_DATA_MINIMISE"
+],
+"quote": "the answers to all the behavioral questions can be used by hackers",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "d7899b46-805c-45db-b2b0-f49c3a8159e7",
+"rating": 1,
+"date": "2021-10-14",
+"loc": "en"
+},
+{
+"key": "P12#34025",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "1e53c33d-7ffa-4b56-aa79-2430299602d9",
+"rating": 1,
+"date": "2021-07-29",
+"loc": "en"
+},
+{
+"key": "P12#45398",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "b2c4f63f-2b62-4a3a-84af-64441e030438",
+"rating": 1,
+"date": "2020-12-13",
+"loc": "en"
+},
+{
+"key": "P12#56750",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "4cbab403-9aa2-4bec-b73b-bedf984561a4",
+"rating": 1,
+"date": "2019-12-30",
+"loc": "en"
+},
+{
+"key": "P126#18860",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "373349de-f246-4f7b-9d26-b1c87f99d707",
+"rating": 4,
+"date": "2026-03-22",
+"loc": "en"
+},
+{
+"key": "P24#2237",
+"codes": [
+"SV_PASSWORD_BREACH",
+"SV_DELETE_NEEDS_LOGIN"
+],
+"quote": "my password was exposed in a security breaches",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "b72f6cab-438f-4324-aa71-fdee2aa8032b",
+"rating": 2,
+"date": "2021-11-17",
+"loc": "en"
+},
+{
+"key": "P8#1960",
+"codes": [
+"SV_PASSWORD_BREACH"
+],
+"quote": "there have been password breaches on this service",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "6d7306dd-5ada-4ee3-8e0d-ad695f75bed4",
+"rating": 4,
+"date": "2025-03-01",
+"loc": "en"
+},
+{
+"key": "P8#4979",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "ce3314be-0d1c-4cd5-8069-13a222d71356",
+"rating": 1,
+"date": "2022-08-25",
+"loc": "en"
+},
+{
+"key": "P8#7279",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "153894c5-8f46-47b6-bb4f-5b98bb3cc22b",
+"rating": 3,
+"date": "2019-04-13",
+"loc": "en"
+},
+{
+"key": "N3#22967",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "12786888997",
+"rating": 1,
+"date": "2025-06-18",
+"loc": "us"
+},
+{
+"key": "N5#12065",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "13912251386",
+"rating": 4,
+"date": "2026-04-01",
+"loc": "us"
+},
+{
+"key": "N3#24228",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "11921588783",
+"rating": 5,
+"date": "2024-11-07",
+"loc": "us"
+},
+{
+"key": "N7#6777",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "14087500699",
+"rating": 4,
+"date": "2026-05-21",
+"loc": "nz"
+},
+{
+"key": "P8#4180",
+"codes": [
+"SV_OUTAGE_BLOCKS_USE"
+],
+"quote": "the servers crashed for more than 24 hours which made all of my *daily* habit tracking inaccessible",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "9d86164d-4291-4fbc-a1fe-f0dd0b49bc56",
+"rating": 2,
+"date": "2023-09-17",
+"loc": "en"
+},
+{
+"key": "P8#9858",
+"codes": [
+"SV_OUTAGE_BLOCKS_USE"
+],
+"quote": "It says it can't connect to the server",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "d15563b6-fbc9-484e-be9c-ba9603a39f5e",
+"rating": 3,
+"date": "2016-03-21",
+"loc": "en"
+},
+{
+"key": "P8#8028",
+"codes": [
+"SV_SIGNUP_SERVER_ERROR"
+],
+"quote": "i cant even create an account because it keeps on saying server error",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "b4d91753-2082-42dc-8a1f-0513c4ffd9cc",
+"rating": 1,
+"date": "2018-03-09",
+"loc": "en"
+},
+{
+"key": "A68#4348",
+"codes": [
+"SV_FALSE_SUCCESS",
+"SV_DATA_LOST"
+],
+"quote": "got server error but it said the tracking was added",
+"store": "A",
+"app": "68. Ultiself - Self-Improvement - Biohacker Routine Planner App",
+"review_id": "9088010109",
+"rating": 1,
+"date": "2022-09-15",
+"loc": "us"
+},
+{
+"key": "P122#4670",
+"codes": [
+"SV_OUTAGE_BLOCKS_USE",
+"SV_SILENT_FAIL"
+],
+"quote": "it just silently fails to register the button press",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "70352834-36de-4a98-ac35-0dc943a18783",
+"rating": 1,
+"date": "2026-04-18",
+"loc": "en"
+},
+{
+"key": "A85#1503",
+"codes": [
+"SV_OUTAGE_BLOCKS_USE"
+],
+"quote": "Please fix your servers. Impossible to progress.",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "10373503599",
+"rating": 2,
+"date": "2023-09-16",
+"loc": "ph"
+},
+{
+"key": "A13#5653",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "3039699939",
+"rating": 1,
+"date": "2018-08-09",
+"loc": "fr"
+},
+{
+"key": "A85#102",
+"codes": [
+"SV_SIGNUP_SERVER_ERROR",
+"SV_BLAMES_USER_NETWORK"
+],
+"quote": "It was constantly saying that I can’t connect to the server and I should check my internet connection",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "2697589870",
+"rating": 1,
+"date": "2018-06-15",
+"loc": "au"
+},
+{
+"key": "A85#2705",
+"codes": [
+"SV_SIGNUP_SERVER_ERROR"
+],
+"quote": "It said it could not connect to server",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "2861054245",
+"rating": 1,
+"date": "2018-07-08",
+"loc": "us"
+},
+{
+"key": "P111#1875",
+"codes": [
+"SV_SIGNUP_SERVER_ERROR"
+],
+"quote": "it is showing \"server error please try again",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "6c22403f-af0b-4a59-8fc5-52059733cc92",
+"rating": 1,
+"date": "2021-12-15",
+"loc": "en"
+},
+{
+"key": "P12#104458",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "79c86fae-50c4-419f-84c5-6967cba515b5",
+"rating": 1,
+"date": "2026-04-18",
+"loc": "fr"
+},
+{
+"key": "A5#1902",
+"codes": [
+"SV_OUTAGE_BLOCKS_USE"
+],
+"quote": "I’m getting an error on homepage and an error when i start a routine",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "9844447734",
+"rating": 1,
+"date": "2023-04-21",
+"loc": "pl"
+},
+{
+"key": "A68#4353",
+"codes": [
+"SV_SIGNUP_SERVER_ERROR"
+],
+"quote": "every attempt to login results in a Server error",
+"store": "A",
+"app": "68. Ultiself - Self-Improvement - Biohacker Routine Planner App",
+"review_id": "8989149518",
+"rating": 1,
+"date": "2022-08-17",
+"loc": "us"
+},
+{
+"key": "A53#159",
+"codes": [
+"SV_INTEGRATION_DOWN",
+"SV_BUG_REPORT_FAIL"
+],
+"quote": "the sync to SleepCycle app is down for months",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "12447492487",
+"rating": 1,
+"date": "2025-03-21",
+"loc": "ch"
+},
+{
+"key": "A55#1557",
+"codes": [
+"SV_PURCHASE_SERVER_ERROR"
+],
+"quote": "maybe it was a server issue",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "1764529135",
+"rating": 3,
+"date": "2017-08-31",
+"loc": "us"
+},
+{
+"key": "A24#13381",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "7259619296",
+"rating": 1,
+"date": "2021-04-24",
+"loc": "fr"
+},
+{
+"key": "P4#73787",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "bdadd070-2257-4f79-9cc2-43edc0b1e5c5",
+"rating": 1,
+"date": "2024-02-09",
+"loc": "fr"
+},
+{
+"key": "A68#2694",
+"codes": [
+"SV_SIGNUP_SERVER_ERROR"
+],
+"quote": "It won’t allow me to create my account, I get the message: server error!",
+"store": "A",
+"app": "68. Ultiself - Self-Improvement - Biohacker Routine Planner App",
+"review_id": "7037301565",
+"rating": 1,
+"date": "2021-02-25",
+"loc": "mx"
+},
+{
+"key": "A10#42184",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "11277054251",
+"rating": 4,
+"date": "2024-05-17",
+"loc": "us"
+},
+{
+"key": "A10#34107",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12532006223",
+"rating": 5,
+"date": "2025-04-11",
+"loc": "us"
+},
+{
+"key": "P8#1219",
+"codes": [
+"SV_OUTAGE_BLOCKS_USE"
+],
+"quote": "it is saying Server down many times",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "b9bb20e8-b895-4325-b4f9-a299fc605ce4",
+"rating": 5,
+"date": "2025-11-28",
+"loc": "en"
+},
+{
+"key": "P8#2565",
+"codes": [
+"SV_OUTAGE_BLOCKS_USE"
+],
+"quote": "right now the server is down or lost",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "62bf3247-0105-411e-8c70-ce96d042f2f7",
+"rating": 4,
+"date": "2024-10-15",
+"loc": "en"
+},
+{
+"key": "P8#12182",
+"codes": [
+"SV_UPDATE_BREAKS_CONNECT"
+],
+"quote": "the latest update makes it so I can't connect to the server",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "0744e016-09e2-45db-8fdd-4a830db96ec9",
+"rating": 4,
+"date": "2016-05-22",
+"loc": "fr"
+},
+{
+"key": "N3#28473",
+"codes": [
+"SV_DATA_LOST"
+],
+"quote": "My iCloud folder just flat out disappeared",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "8046121369",
+"rating": 1,
+"date": "2021-11-21",
+"loc": "us"
+},
+{
+"key": "N10#987",
+"codes": [
+"SV_SIGNUP_SERVER_ERROR"
+],
+"quote": "keeps coming up with ‘Internal Server Error’",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "3498848755",
+"rating": 1,
+"date": "2018-12-06",
+"loc": "au"
+},
+{
+"key": "N10#23471",
+"codes": [
+"SV_SIGNUP_SERVER_ERROR"
+],
+"quote": "I can not log in my account",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "4031027428",
+"rating": 1,
+"date": "2019-04-19",
+"loc": "vn"
+},
+{
+"key": "N10#11710",
+"codes": [
+"SV_UPDATE_BREAKS_CONNECT",
+"SV_SIGNUP_SERVER_ERROR"
+],
+"quote": "after I updated it, I am unable to sign in into my account",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "3523141649",
+"rating": 4,
+"date": "2018-12-12",
+"loc": "in"
+},
+{
+"key": "P122#14960",
+"codes": [
+"SV_MAINT_UNANNOUNCED",
+"SV_MAINT_LOST_EDITS"
+],
+"quote": "When They do server maintenance they notify you during, not prior, so any edited routines don't get saved",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "54c49b48-cda2-4f54-a1a0-2ee7ea330019",
+"rating": 3,
+"date": "2024-02-27",
+"loc": "en"
+},
+{
+"key": "P9#867",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "d18bf187-f937-42c9-a10c-bb73cc956700",
+"rating": 1,
+"date": "2024-07-06",
+"loc": "en"
+},
+{
+"key": "P24#20870",
+"codes": [
+"SV_COST_PERCEPTION"
+],
+"quote": "these kinds of apps are simple to make and require almost no maintenance",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "f30833b6-f369-434b-bece-5b54a95ef062",
+"rating": 1,
+"date": "2022-06-06",
+"loc": "nl"
+},
+{
+"key": "A76#3704",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "628504555",
+"rating": 1,
+"date": "2012-07-24",
+"loc": "nz"
+},
+{
+"key": "A24#5860",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8737779066",
+"rating": 1,
+"date": "2022-06-03",
+"loc": "ca"
+},
+{
+"key": "A13#11814",
+"codes": [
+"SV_COST_PERCEPTION"
+],
+"quote": "For a simple database app?",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8712065518",
+"rating": 1,
+"date": "2022-05-27",
+"loc": "us"
+},
+{
+"key": "P98#770",
+"codes": [
+"SV_ENTITLEMENT_DROPPED",
+"SV_FORCED_LOGOUT"
+],
+"quote": "suddenly the next day was logged out and not a plus member anymore",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "e66b757d-499c-4e01-a586-ac759b738a58",
+"rating": 1,
+"date": "2021-10-29",
+"loc": "en"
+},
+{
+"key": "P9#1176",
+"codes": [
+"SV_COST_PERCEPTION"
+],
+"quote": "this app is not \"high maintenance",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "f8b02f04-aa4c-4ca0-94a0-3b7506c5ee20",
+"rating": 2,
+"date": "2023-12-23",
+"loc": "en"
+},
+{
+"key": "A24#28157",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10872101037",
+"rating": 1,
+"date": "2024-01-28",
+"loc": "us"
+},
+{
+"key": "A48#1067",
+"codes": [
+"SV_SIGNUP_SERVER_ERROR"
+],
+"quote": "it just keeps saying &#39;error 503&#39;",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1704816937",
+"rating": 1,
+"date": "2017-07-30",
+"loc": "gb"
+},
+{
+"key": "P105#1011",
+"codes": [
+"SV_COST_PERCEPTION"
+],
+"quote": "Maintenance of such app requires minimum resources",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "50d15a65-81b5-4c22-8deb-7f42648b759f",
+"rating": 2,
+"date": "2020-05-25",
+"loc": "en"
+},
+{
+"key": "P4#10465",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "c1ca21d4-c1b0-4214-9e83-029d18ac993c",
+"rating": 1,
+"date": "2025-03-28",
+"loc": "en"
+},
+{
+"key": "A16#294",
+"codes": [
+"SV_COST_PERCEPTION"
+],
+"quote": "from then only needs basic maintenance",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "11685719155",
+"rating": 1,
+"date": "2024-09-03",
+"loc": "gb"
+},
+{
+"key": "P37#1027",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "37. Habitify - Habit Tracker",
+"review_id": "64cc4344-9cbe-46ce-b332-b04064bf93d1",
+"rating": 3,
+"date": "2019-10-20",
+"loc": "en"
+},
+{
+"key": "P98#510",
+"codes": [
+"SV_COST_PERCEPTION"
+],
+"quote": "the maintenance of the app will cost a lot",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "fdf3b648-c50b-4c22-8244-c2786a5cfd57",
+"rating": 2,
+"date": "2022-08-06",
+"loc": "en"
+},
+{
+"key": "A5#2967",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "9842275773",
+"rating": 2,
+"date": "2023-04-20",
+"loc": "us"
+},
+{
+"key": "A85#1800",
+"codes": [
+"SV_SIGNUP_SERVER_ERROR"
+],
+"quote": "Availability is a key concern.",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "2757579496",
+"rating": 1,
+"date": "2018-06-24",
+"loc": "sg"
+},
+{
+"key": "A85#67",
+"codes": [
+"SV_OUTAGE_BLOCKS_USE",
+"SV_MAINT_UNANNOUNCED"
+],
+"quote": "They don’t announce maintenance or server outages",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "5778957971",
+"rating": 1,
+"date": "2020-04-08",
+"loc": "au"
+},
+{
+"key": "A24#5909",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8534048867",
+"rating": 5,
+"date": "2022-04-05",
+"loc": "ca"
+},
+{
+"key": "P84#7003",
+"codes": [
+"POS_BACKUP_PAID"
+],
+"quote": "we decided to pay for premium to have everything backed up",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "96061852-b03a-46a1-ad66-a510f1ea94c7",
+"rating": 5,
+"date": "2026-06-29",
+"loc": "en"
+},
+{
+"key": "A24#30864",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8774333731",
+"rating": 5,
+"date": "2022-06-14",
+"loc": "us"
+},
+{
+"key": "P126#71104",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "4843759b-74ed-4d05-9c56-505c8eee7676",
+"rating": 5,
+"date": "2019-05-20",
+"loc": "en"
+},
+{
+"key": "A10#66566",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "8517657876",
+"rating": 5,
+"date": "2022-04-01",
+"loc": "us"
+},
+{
+"key": "N1#25227",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "9101233611",
+"rating": 1,
+"date": "2022-09-19",
+"loc": "us"
+},
+{
+"key": "N9#37874",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "10580642049",
+"rating": 3,
+"date": "2023-11-13",
+"loc": "us"
+},
+{
+"key": "N4#9237",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "10639435074",
+"rating": 4,
+"date": "2023-11-29",
+"loc": "us"
+},
+{
+"key": "N11#3241",
+"codes": [
+"SV_OUTAGE_BLOCKS_USE"
+],
+"quote": "이틀째 작동 안합니다",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "7774841921",
+"rating": 1,
+"date": "2021-09-05",
+"loc": "kr"
+},
+{
+"key": "P8#3336",
+"codes": [
+"SV_ONLINE_ONLY"
+],
+"quote": "it doesn't work offline",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "95bc1b23-0069-4c93-a23e-d93d0dd8f856",
+"rating": 3,
+"date": "2024-05-11",
+"loc": "en"
+},
+{
+"key": "P8#8288",
+"codes": [
+"SV_ONLINE_ONLY"
+],
+"quote": "Need internet connection to use",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "d7f0b338-5186-4c70-b614-958b57684721",
+"rating": 1,
+"date": "2017-10-24",
+"loc": "en"
+},
+{
+"key": "P4#26292",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "173f3970-c099-494f-8f2c-cff51c9616e6",
+"rating": 1,
+"date": "2023-11-02",
+"loc": "en"
+},
+{
+"key": "A10#12512",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "11643687450",
+"rating": 1,
+"date": "2024-08-23",
+"loc": "gb"
+},
+{
+"key": "P12#43831",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "a9a92be6-107b-4802-b7e2-a52c89d71725",
+"rating": 1,
+"date": "2021-01-19",
+"loc": "en"
+},
+{
+"key": "A4#6592",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10796554469",
+"rating": 1,
+"date": "2024-01-07",
+"loc": "gb"
+},
+{
+"key": "A31#2711",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "10884694028",
+"rating": 1,
+"date": "2024-01-31",
+"loc": "us"
+},
+{
+"key": "P122#7102",
+"codes": [
+"SV_ONLINE_ONLY"
+],
+"quote": "does not work without internet",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "78c0ca55-f63a-4627-918f-9b2e6842371c",
+"rating": 1,
+"date": "2025-12-09",
+"loc": "en"
+},
+{
+"key": "P126#59985",
+"codes": [
+"SV_ONLINE_ONLY"
+],
+"quote": "It doesn’t work without internet. Worst app.",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "3e1c00ce-6092-4a60-8b5d-00643e10078a",
+"rating": 1,
+"date": "2020-07-25",
+"loc": "en"
+},
+{
+"key": "P8#7641",
+"codes": [
+"SV_ONLINE_ONLY"
+],
+"quote": "doesn't work without an internet connection",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "9271b761-6b5d-4903-bad3-442b81016d62",
+"rating": 1,
+"date": "2018-10-24",
+"loc": "en"
+},
+{
+"key": "A85#81",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "3727587972",
+"rating": 1,
+"date": "2019-02-03",
+"loc": "au"
+},
+{
+"key": "P2#4147",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "4d061304-ee33-4525-af05-5f53b3dc8814",
+"rating": 1,
+"date": "2024-09-30",
+"loc": "en"
+},
+{
+"key": "P12#13092",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "04e8297b-e03e-4947-b73d-0308809ecfc6",
+"rating": 1,
+"date": "2024-11-19",
+"loc": "en"
+},
+{
+"key": "A25#1167",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "25. Grit - Daily Habit Tracker - Routines & Goals ADHD Planner",
+"review_id": "12138137641",
+"rating": 1,
+"date": "2025-01-03",
+"loc": "us"
+},
+{
+"key": "P38#936",
+"codes": [
+"SV_ONLINE_ONLY"
+],
+"quote": "can't use it without internet connection",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "e7178aca-6072-4ebf-99d2-bdafd55c16a3",
+"rating": 1,
+"date": "2024-01-20",
+"loc": "en"
+},
+{
+"key": "P4#20185",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "3b9c261c-2eb3-42a6-abf5-c46dc326279d",
+"rating": 3,
+"date": "2024-06-05",
+"loc": "en"
+},
+{
+"key": "P12#67395",
+"codes": [
+"SV_ONLINE_ONLY"
+],
+"quote": "it always requires an internet connection",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "0fd05929-b93b-4d83-8e3c-cb9de704867b",
+"rating": 3,
+"date": "2019-02-02",
+"loc": "en"
+},
+{
+"key": "A13#38",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "3789880750",
+"rating": 1,
+"date": "2019-02-19",
+"loc": "ae"
+},
+{
+"key": "P8#8759",
+"codes": [
+"SV_ONLINE_ONLY",
+"SV_WANT_QUEUE"
+],
+"quote": "simply upload the changes all at once when online",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "b7a79715-f5d6-4036-8f75-b03331660bc8",
+"rating": 4,
+"date": "2017-04-19",
+"loc": "en"
+},
+{
+"key": "A10#50937",
+"codes": [
+"POS_OFFLINE"
+],
+"quote": "you DONT need Wi-Fi",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "10051233270",
+"rating": 5,
+"date": "2023-06-19",
+"loc": "us"
+},
+{
+"key": "P8#4848",
+"codes": [
+"SV_ONLINE_ONLY"
+],
+"quote": "One con: the app doesn't work offline.",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "df65e89c-e875-4749-8317-a133db35dad0",
+"rating": 5,
+"date": "2022-11-21",
+"loc": "en"
+},
+{
+"key": "A10#69828",
+"codes": [
+"POS_OFFLINE"
+],
+"quote": "It works without cell service which was a nice touch while I was in the wilderness",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "7849623824",
+"rating": 5,
+"date": "2021-09-27",
+"loc": "us"
+},
+{
+"key": "A10#50913",
+"codes": [
+"POS_OFFLINE"
+],
+"quote": "You don’t even need Wi-Fi to use it!",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "10054914380",
+"rating": 5,
+"date": "2023-06-20",
+"loc": "us"
+},
+{
+"key": "N7#9692",
+"codes": [
+"SV_ONLINE_ONLY"
+],
+"quote": "you need WiFi or cell service to add copy’d clipboard items",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "13966097363",
+"rating": 3,
+"date": "2026-04-17",
+"loc": "us"
+},
+{
+"key": "N11#6139",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "11. Samsung Health - Health & Fitness",
+"review_id": "4867031604",
+"rating": 1,
+"date": "2019-10-01",
+"loc": "us"
+},
+{
+"key": "N4#3551",
+"codes": [
+"POS_OFFLINE"
+],
+"quote": "I don&#39;t think you need WIFI for it",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "13664277627",
+"rating": 4,
+"date": "2026-01-22",
+"loc": "gb"
+},
+{
+"key": "N5#12774",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "12835640264",
+"rating": 2,
+"date": "2025-06-30",
+"loc": "us"
+},
+{
+"key": "P10#9754",
+"codes": [
+"SV_SLOW_START"
+],
+"quote": "an app this simple shouldn't have a 15 second loading screen",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "12c30756-6a02-4dba-9281-272a0669c2c5",
+"rating": 1,
+"date": "2023-04-18",
+"loc": "en"
+},
+{
+"key": "A4#12284",
+"codes": [
+"SV_SLOW_START"
+],
+"quote": "I got stuck on the loading screen",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "12464502722",
+"rating": 2,
+"date": "2025-03-25",
+"loc": "us"
+},
+{
+"key": "A48#999",
+"codes": [
+"SV_BLOCKING_SCREEN",
+"SV_ENTITLEMENT_DROPPED"
+],
+"quote": "you get stuck on a never ending screen about subscription renewal",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "4426868262",
+"rating": 1,
+"date": "2019-07-07",
+"loc": "gb"
+},
+{
+"key": "A24#27796",
+"codes": [
+"SV_SLOW_START"
+],
+"quote": "takes FOREVER to load",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11347120207",
+"rating": 1,
+"date": "2024-06-05",
+"loc": "us"
+},
+{
+"key": "P49#992",
+"codes": [
+"SV_BLOCKING_SCREEN"
+],
+"quote": "I get stuck at this loading screen",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "688eebc4-56ed-42b3-aeda-44804de0192b",
+"rating": 3,
+"date": "2024-07-23",
+"loc": "en"
+},
+{
+"key": "P5#868",
+"codes": [
+"SV_SLOW_START",
+"SV_SYNC_BLOCKS_START"
+],
+"quote": "Is it syncing everytime I open the app?",
+"store": "P",
+"app": "5. Routine Planner, Habit Tracker",
+"review_id": "d8a32d38-cc4b-4c80-8ed9-99f9e6ae2e95",
+"rating": 3,
+"date": "2025-04-29",
+"loc": "en"
+},
+{
+"key": "A24#34597",
+"codes": [
+"SV_BACKUP_SPINS"
+],
+"quote": "The loading screen spins continuously",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "7677965737",
+"rating": 2,
+"date": "2021-08-10",
+"loc": "us"
+},
+{
+"key": "A9#426",
+"codes": [
+"SV_SLOW_START"
+],
+"quote": "App is struck in loading screen",
+"store": "A",
+"app": "9. Dear Me - Daily Routine Tracker - Self Care & ADHD Habit Planner",
+"review_id": "12960927081",
+"rating": 1,
+"date": "2025-08-01",
+"loc": "in"
+},
+{
+"key": "P98#617",
+"codes": [
+"SV_SLOW_START",
+"SV_ENTITLEMENT_DROPPED"
+],
+"quote": "gets stuck on the splash screen",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "057465de-879d-4cb4-a169-089c491a249a",
+"rating": 1,
+"date": "2022-02-09",
+"loc": "en"
+},
+{
+"key": "P12#52526",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "153f67d6-7543-49e8-b7b4-2886232bde10",
+"rating": 3,
+"date": "2020-05-18",
+"loc": "en"
+},
+{
+"key": "P126#67250",
+"codes": [
+"SV_SLOW_START"
+],
+"quote": "Takes too long to load",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "0e7fdb9a-1d54-41aa-b67f-a320a1c2cd41",
+"rating": 2,
+"date": "2019-10-24",
+"loc": "en"
+},
+{
+"key": "A16#702",
+"codes": [
+"SV_BLOCKING_SCREEN"
+],
+"quote": "Whether i had no account or created an account, it won’t let me in.",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "12539170479",
+"rating": 1,
+"date": "2025-04-13",
+"loc": "us"
+},
+{
+"key": "A10#63821",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "8637261906",
+"rating": 1,
+"date": "2022-05-04",
+"loc": "us"
+},
+{
+"key": "A5#2754",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "11338931644",
+"rating": 1,
+"date": "2024-06-03",
+"loc": "us"
+},
+{
+"key": "P123#708",
+"codes": [
+"SV_PURCHASE_SLOW"
+],
+"quote": "the loading screen is taking so long to update",
+"store": "P",
+"app": "123. Rise - Habit List",
+"review_id": "f09ee9fe-2ee2-42aa-b1ab-fe44b3b62657",
+"rating": 2,
+"date": "2024-11-27",
+"loc": "en"
+},
+{
+"key": "P10#10173",
+"codes": [
+"SV_SLOW_START"
+],
+"quote": "I'd rather write down my Habits than wait at the loading screen.",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "62a61a6b-a29f-4221-81ec-a183c38fadb1",
+"rating": 2,
+"date": "2022-11-22",
+"loc": "en"
+},
+{
+"key": "A83#435",
+"codes": [
+"SV_SLOW_START"
+],
+"quote": "I was stuck on the loading screen for a long time",
+"store": "A",
+"app": "83. Roubit  - Fun Routine Planner - Bunny Diary & Tasks",
+"review_id": "14219258022",
+"rating": 3,
+"date": "2026-06-24",
+"loc": "us"
+},
+{
+"key": "P49#1058",
+"codes": [
+"SV_BLOCKING_SCREEN"
+],
+"quote": "gave me what I would describe as a loading screen",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "cd78e40e-72ef-44e0-80ae-5d51bce5397a",
+"rating": 2,
+"date": "2024-07-03",
+"loc": "en"
+},
+{
+"key": "P12#39369",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "a6afdd33-8edc-473d-91fa-2f000036de91",
+"rating": 5,
+"date": "2021-04-03",
+"loc": "en"
+},
+{
+"key": "A24#9238",
+"codes": [
+"SV_SLOW_START"
+],
+"quote": "loading forever",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "1988370273",
+"rating": 4,
+"date": "2017-12-11",
+"loc": "cn"
+},
+{
+"key": "A10#69016",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "8308484106",
+"rating": 5,
+"date": "2022-02-01",
+"loc": "us"
+},
+{
+"key": "A10#10427",
+"codes": [
+"SV_SLOW_START"
+],
+"quote": "I get bored midway through it loading",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13649832117",
+"rating": 4,
+"date": "2026-01-19",
+"loc": "gb"
+},
+{
+"key": "P49#1064",
+"codes": [
+"SV_BLOCKING_SCREEN"
+],
+"quote": "It'll just be stuck on a black loading screen",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "5bc1aca5-c524-4214-9906-7a271efea963",
+"rating": 5,
+"date": "2024-07-02",
+"loc": "en"
+},
+{
+"key": "N9#40201",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "3937382027",
+"rating": 5,
+"date": "2019-03-28",
+"loc": "us"
+},
+{
+"key": "N4#712",
+"codes": [
+"SV_SYNC_SLOW",
+"SV_DATA_MISSING_UNTIL_SYNC"
+],
+"quote": "This app takes forever to sync with iCloud",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "12737317164",
+"rating": 2,
+"date": "2025-06-05",
+"loc": "ca"
+},
+{
+"key": "N8#24975",
+"codes": [
+"SV_SLOW_START"
+],
+"quote": "most of the time I can’t get my calendar to load whatsoever",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "7480172560",
+"rating": 1,
+"date": "2021-06-19",
+"loc": "us"
+},
+{
+"key": "N9#49321",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1199727150",
+"rating": 1,
+"date": "2015-05-19",
+"loc": "us"
+},
+{
+"key": "A24#5338",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13183929494",
+"rating": 1,
+"date": "2025-09-25",
+"loc": "ca"
+},
+{
+"key": "A24#5488",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11921052370",
+"rating": 1,
+"date": "2024-11-07",
+"loc": "ca"
+},
+{
+"key": "A31#4225",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8196764934",
+"rating": 1,
+"date": "2022-01-02",
+"loc": "us"
+},
+{
+"key": "A24#34275",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "7803587308",
+"rating": 1,
+"date": "2021-09-14",
+"loc": "us"
+},
+{
+"key": "A13#17268",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1515378460",
+"rating": 3,
+"date": "2017-01-04",
+"loc": "us"
+},
+{
+"key": "A31#1214",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "12131022272",
+"rating": 3,
+"date": "2025-01-01",
+"loc": "gb"
+},
+{
+"key": "A67#2014",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "67. Habio - Daily Habit Tracker - Routine planner & To do list",
+"review_id": "7620440199",
+"rating": 1,
+"date": "2021-07-26",
+"loc": "us"
+},
+{
+"key": "P24#2524",
+"codes": [
+"SV_OUTAGE_BLOCKS_USE"
+],
+"quote": "nothing worked for weeks",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "0fe6bf31-d304-49e5-9907-1d51dfb24a17",
+"rating": 2,
+"date": "2021-04-03",
+"loc": "en"
+},
+{
+"key": "P4#10489",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "ddbe7840-fc1d-4c6b-8eeb-b6643eb84bb2",
+"rating": 1,
+"date": "2025-03-26",
+"loc": "en"
+},
+{
+"key": "A1#55407",
+"codes": [
+"SV_FEATURE_REMOVED"
+],
+"quote": "pulling features out of the blue after I’ve already settled into using it",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "8245363970",
+"rating": 2,
+"date": "2022-01-16",
+"loc": "us"
+},
+{
+"key": "A1#48526",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11209248666",
+"rating": 1,
+"date": "2024-04-28",
+"loc": "nl"
+},
+{
+"key": "A31#1561",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8162072279",
+"rating": 2,
+"date": "2021-12-24",
+"loc": "gb"
+},
+{
+"key": "P8#6606",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "6d392cd9-acfb-4de2-9362-6f255a5272de",
+"rating": 3,
+"date": "2020-02-29",
+"loc": "en"
+},
+{
+"key": "A4#10427",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "8560889903",
+"rating": 2,
+"date": "2022-04-12",
+"loc": "sk"
+},
+{
+"key": "P24#5653",
+"codes": [
+"SV_SHUTDOWN"
+],
+"quote": "This app is no longer supported.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "b7a26e7c-6cf3-4bfa-a64c-6e68f446e5d6",
+"rating": 1,
+"date": "2019-05-01",
+"loc": "en"
+},
+{
+"key": "A13#6994",
+"codes": [
+"SV_SHUTDOWN"
+],
+"quote": "which is no longer available in AppStore",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "2806394933",
+"rating": 3,
+"date": "2018-06-30",
+"loc": "hr"
+},
+{
+"key": "A55#1490",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "2063468801",
+"rating": 3,
+"date": "2018-01-06",
+"loc": "us"
+},
+{
+"key": "P12#40807",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "dafe1f1a-d83f-4b7a-89c7-006d89c4d5df",
+"rating": 1,
+"date": "2021-03-08",
+"loc": "en"
+},
+{
+"key": "P84#9989",
+"codes": [
+"SV_SHUTDOWN"
+],
+"quote": "I had a list app that I loved, but is no longer supported",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "c3350458-684a-43bd-aedd-7503137fefbf",
+"rating": 5,
+"date": "2024-11-15",
+"loc": "en"
+},
+{
+"key": "P122#7591",
+"codes": [
+"SV_SHUTDOWN_FEAR"
+],
+"quote": "will probably use it until it will get discontinued",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "03604524-3bd4-49fb-8d55-7ea6d3b4a4ec",
+"rating": 5,
+"date": "2025-11-08",
+"loc": "en"
+},
+{
+"key": "P111#3332",
+"codes": [
+"SV_SHUTDOWN"
+],
+"quote": "hearing that you're shutting down is making me really sad",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "a57ea79a-ba0d-4a31-8ebf-c62b5f2a4ffa",
+"rating": 5,
+"date": "2019-06-10",
+"loc": "en"
+},
+{
+"key": "P122#38236",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "14205b0d-ed52-4734-8f80-325615104dad",
+"rating": 5,
+"date": "2022-07-15",
+"loc": "zh-TW"
+},
+{
+"key": "P4#5105",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "549152a0-a556-43d8-b51c-25f084c45df8",
+"rating": 5,
+"date": "2025-10-16",
+"loc": "en"
+},
+{
+"key": "N10#22913",
+"codes": [
+"SV_SHUTDOWN"
+],
+"quote": "officially announce the demise of Wunderlist",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "2637414153",
+"rating": 1,
+"date": "2018-06-03",
+"loc": "us"
+},
+{
+"key": "N3#19058",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "10559676319",
+"rating": 2,
+"date": "2023-11-07",
+"loc": "sg"
+},
+{
+"key": "N10#19002",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "10767379232",
+"rating": 2,
+"date": "2023-12-31",
+"loc": "us"
+},
+{
+"key": "N7#9882",
+"codes": [
+"SV_CONNECT_ERROR_NOISE"
+],
+"quote": "constantly flashes “Cannot Connect, try again later”",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "13429190590",
+"rating": 1,
+"date": "2025-11-22",
+"loc": "us"
+}
+]

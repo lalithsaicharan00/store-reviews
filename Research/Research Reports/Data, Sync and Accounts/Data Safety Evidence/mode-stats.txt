@@ -1,0 +1,43 @@
+total reviews screened: {'A': 337331, 'P': 901453, 'N': 248439} = 1487223
+candidates: 53884
+
+mode                               n  apps      A       P      N   1★%  mean
+LOSS                           15619   157   4272    3579   7768  42.1  2.58
+MULTI_DEVICE                   14040   118   2849    1726   9465  27.3  3.03
+LOSS+UNEXPLAINED               11730   152   3042    2731   5957  38.9  2.73
+SYNC_FAIL                       5932   107    934     988   4010  41.5  2.36
+CLOUD_BACKUP                    4536   104    949     444   3143  34.4  2.96
+DATE_WRONG                      2480   125    902     795    783  21.7  3.29
+PURCHASE_RESTORE                2432   111   1567     776     89  72.0  1.66
+LOSS+UPDATE                     2329    96    700     364   1265  53.9  2.06
+OFFLINE                         1574    87    114     951    509  13.9  3.71
+SLOW_WITH_DATA                  1441    73    427     231    783  39.7  2.55
+FORCED_LOGIN                    1391   104    434     548    409  52.1  2.36
+LIFETIME_REVOKED                1312    96    860     442     10  35.9  3.02
+SYNC_DUP                        1304    66    279     242    783  30.4  2.83
+NO_BACKUP                       1217    91    232     672    313  23.6  3.23
+ABANDONED                       1134    91    337     327    470  41.8  2.58
+LOGIN_FAIL                      1070    81    300     525    245  64.9  1.79
+CROSS_PLATFORM                  1063    79    115     369    579  28.0  3.07
+DELETE_NO_UNDO                  1030    77    258     214    558  39.5  2.53
+LOSS+REINSTALL                  1025    84    394     262    369  51.5  2.08
+RESTORE_FAIL                     914    76    291     256    367  48.2  2.26
+WATCH_SYNC                       840    37    256      61    523  37.5  2.47
+EXPORT_FMT                       627    66    111     243    273  17.1  3.65
+WIDGET_STALE                     609    69    164     181    264  22.2  2.88
+CHARGED_NOT_UNLOCKED             560    65    339     205     16  72.9  1.62
+ACCOUNT_DELETE                   514    42    308     186     20  85.0  1.28
+TIMEZONE                         492    60    101      91    300  27.6  2.79
+POS_MIGRATE                      449    63    138     110    201  18.7  3.73
+LOSS+NEW_PHONE                   396    59    112     191     93  40.2  2.46
+PRIVACY                          384    69    119     150    115  47.7  2.55
+LOSS+LOGOUT                      334    57    113     108    113  51.5  2.21
+LOSS+OS_UPDATE                   308    32     28       7    273  64.6  1.70
+FAMILY                           233    33    114       6    113  22.3  3.35
+LOSS+CRASH_OPEN                  175    36     85      22     68  61.1  1.70
+AUTO_REFUND                      149    18     84      58      7  77.2  1.43
+NO_ACCOUNT                        75    28     14      46     15  18.7  3.39
+PAY_CROSS_OS                      65    31     28      18     19  44.6  2.18
+STREAK_WRONG                      58    19     34      17      7  41.4  2.60
+LOSS+PAYWALL_LOSS                 48    17     37      11      0  64.6  1.83
+LOSS+CLEARDATA                    48    21      8      20     20  54.2  2.12

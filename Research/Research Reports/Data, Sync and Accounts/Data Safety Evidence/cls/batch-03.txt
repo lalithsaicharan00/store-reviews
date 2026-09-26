@@ -1,0 +1,60 @@
+N9#52271|NR|
+N3#20857|NR|
+N3#19228|L_RANDOM,B_ICLOUD|"ทุกอย่างหายในiCloud ก็ไม่มี"
+N9#7318|NR|
+N2#2732|NR|
+A10#65706|L_XOS,S_XOS|"I used to have an android but I got a new iPhone and I don’t see any way to transfer my birdie over"
+P4#2666|E_PLATFORM_GAP,X_PAYER|"die Widgets kann ich scheinbar nicht auf Android installieren sonder nur auf IOS"
+P12#14074|E_PLATFORM_GAP|"Android version is much much worse that the ios one"
+P71#181|E_LIFETIME,X_SHUTDOWN_MIGRATION,X_PAYER|"Eu comprei o aplicativo vitalício tenho o iPhone 7 e parou de funcionar"
+P130#354|B_XOS_FORMAT,L_XOS|"I can't even get my backup from the IOS version to restore on the Android version"
+P117#132|X_SHUTDOWN_MIGRATION,E_REFUND,X_PAYER|"when they stopped supporting android"
+P111#12999|NR|
+A24#11796|E_WEBSUB|"The subscription doesn’t show up in my app store nor my google play"
+P12#78318|E_XOS,X_PAYER|"Quiero migrar mi suscripción de un sistema Android a iOS y no me lo permite"
+A85#2394|A_STUCK,A_LOGIN_FAIL|"I can’t log out on my iPad"
+P130#384|E_PLATFORM_GAP|"en su versión Android no funciona algo tan sencillo como el recordatorio"
+A10#54722|E_PLATFORM_GAP|"I thought it may be because I have and apple and she has an android"
+A24#28372|E_PRICE_GAP|"Free on android but not on apple products"
+P12#30234|E_XOS,X_PAYER|"I recently shifted from an android to the iPhone and my premium subscription is not enabled"
+A85#1978|S_XOS,S_FAIL|"broken cross platform reminder between PC, Android, and iOS"
+P33#551|E_PLATFORM_GAP|"Hoping that the UI and new features in iOS will roll out soon for android"
+P24#16207|NR|
+P111#11579|POS_SYNC,POS_XOS|"I can access my account from any device via the internet on my apple products or the application on my android"
+P33#3822|E_XOS|"tengo una cuenta que compré en iOS quisiera saber cómo puedo usar esa cuenta en la app para Android"
+P84#23770|S_XOS|"Is it only for android?"
+N10#18136|E_PLATFORM_GAP|"it works flawlessly on Android and Windows, the iOS version has become nearly unusable"
+N7#6881|E_PLATFORM_GAP|"Now that I switched to Apple for a bit to try things out the Home Screen widgets are no longer available"
+N7#3787|E_PLATFORM_GAP|"I used to love this app in android but for iphone"
+N7#10220|E_PLATFORM_GAP|"I use Keep on both Android and iPhone"
+N8#24518|NR|
+P49#727|T_FUTURE|"it also completes the task for all the following days"
+A24#17999|NR|
+A10#47450|L_PARTIAL,E_CONSUMABLE|"the next day the gems on the bird dissapeared"
+A26#3526|T_NOBACKFILL|"Unable to go back and view previous days"
+A16#852|L_NOTSAVED,T_NOBACKFILL|"saying my habit has been recorded then not showing up as completed"
+P37#341|L_RANDOM,T_DATE,X_PAYER|"if I mark habits as complete on one day it will mark them as failed the next day"
+P84#14733|NR|
+P4#4532|NR|
+A24#28049|E_WEBSUB|"i had a web based account w them that had the account listed as active there while not active on the app itself"
+A23#2502|T_NOBACKFILL|"impossible to change previous day record"
+A31#3283|NR|
+A1#43802|B_EXPORT_BAD|"it is some sort of text document and in most app it doesn’t show anything"
+A24#21712|NR|
+A31#2614|E_UPSELL,X_PAYER|"I paid for a lifetime subscription. The next day I started getting hit with adds"
+A23#5327|S_WATCH,S_REVERT,T_STREAK|"Next morning, sometimes, the streak was zeroed out"
+A76#7169|NR|
+P126#36704|NR|
+A13#4417|L_EDITHIST|"if you change how many times per week for any habit, it destroys the overall streak data for ALL previous days"
+P125#9104|NR|
+A20#1365|NR|
+N8#24314|NR|
+N8#553|T_DATE|"They keep saving on incorrect dates"
+N8#10011|T_DATE|"showing birthdays on 20th October as being on 20th April"
+N7#11732|S_CONFLICT,S_INVISIBLE|"certain notes conflict for no apparent reason"
+N2#24263|T_CALENDAR_SYSTEM|"The lunar day of Vietnam is wrong"
+A13#14194|L_USER|"I accidentally deleted a completed task from yesterday and had no way of reinstating it"
+A10#27400|E_REINSTALL_PAY|"i accidentally deleted it and after i went back to get it it told me i have to pay"
+P8#3889|NR|
+P84#10047|B_RESTORE_FAIL,L_PHONE|"I cant restore my backup so i cant use it on my new phone"
+P12#12020|E_RESTORE,A_FIND,X_PAYER|"accidentally deleted the app. Can't find my account that I'm paying for"

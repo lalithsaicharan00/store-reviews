@@ -1,0 +1,60 @@
+N2#17841|NR|
+N8#24754|NR|
+N8#3977|L_UPD|"Your update deleted all my events and reminders"
+N4#6566|L_OSUPD|"Потерял все данные за несколько лет после обновления iOS"
+N3#28498|L_NOTSAVED,L_DRAFT|"the app will erase an entire note while you’re working on it"
+A24#24340|E_WEBSUB,A_LOGIN_FAIL|"My email that I can see in the app does not allow me to recover my password"
+A33#3374|E_PLATFORM_GAP|"The web app lacks many features on iOS"
+A13#1005|S_FAIL,A_WRONG_ACCOUNT,X_PAYER|"Fica vazio como se fosse outro usuário"
+A1#52191|S_WATCH|"the Apple Watch app states “Please add a habit to the iPhone app please”"
+A24#26452|E_WEBSUB,A_WRONG_ACCOUNT|"it was telling me it didn’t recognize me even though I’m looking at one of those accounts"
+P84#17957|NR|
+P12#10866|E_WEBSUB|"subscriptions are only cancelled through the website"
+A13#12671|NR|
+A24#31510|NR|
+P8#7651|NR|
+P12#3030|A_DELETE|"Man kann weder auf der Website noch in der App sein Konto löschen"
+P111#14980|NR|
+A85#2764|S_XDEVICE_MISMATCH|"The website knows I&#39;m in a party, but the app can&#39;t seem to figure it out"
+P33#2029|S_XOS,S_MULTI_REQ|"i'm using android phone and ipad. Can't sync it on these two devices"
+A24#7501|S_MULTI_REQ|"I see there is no iPad app"
+P2#543|S_MULTI_REQ|"make an app for windows/macOs and with synchronised data/account"
+P12#36922|NR|
+P122#8521|POS_SYNC|"the pairing with watch is smooth"
+P111#7217|P_ONLINE_ONLY,E_PLATFORM_GAP|"i don't always have Web Access"
+A86#106|S_WATCH,X_TRUST_FEAR|"These issues always scare me from fully committing to this app long term"
+N3#24358|NR|
+N8#28954|NR|
+N11#4026|S_WATCH,S_DELAY|"it takes about more than a couple of hours for it to be synced"
+N5#10852|NR|
+N9#36513|NR|
+A13#13561|A_NOACC,S_MULTI_REQ,X_PAYER|"If there was a “Sign In With Existing Account” feature, I would be able to use the app over more than one device"
+A31#4424|A_NOACC,S_MULTI_REQ,X_PAYER|"there&#39;s no user login so syncing data between 2 different devices is a pain"
+P3#2247|A_NOACC|"no option to login and save data to account"
+P2#2681|A_NOACC,S_MULTI_REQ|"please add a cloud account (not only cloud backup) feature"
+P3#7511|A_NOACC|"Please add account synchronisation option so that once we change our device"
+A13#18258|A_NOACC,S_MULTI_REQ,X_PAYER|"there is no account creation and no sync setting"
+P33#1787|A_NOACC,S_MULTI_REQ|"there's no account system or multi-device sync"
+P129#805|E_DEVICE,A_NOACC,B_NONE,X_PAYER|"installed it on another device and the premium is gone. No option to account recovery"
+P3#347|A_NOACC,L_PHONE|"one format and all is lost, no account and hence no backup"
+A53#909|A_NOACC,S_MULTI_REQ|"Doesn’t have a account so it can sync"
+P111#8237|A_LOGIN_FAIL,A_PROVIDER,X_NO_CHANNEL|"I have my account synced with my Facebook and I keep getting an error"
+A7#767|A_NOACC,S_MULTI_REQ|"desperately needs an account and sync function"
+P3#9704|A_NOACC,L_PHONE|"Lost all data when my phone crashed"
+P37#665|POS_NOACCOUNT,POS_BACKUP|"can use without account creation, data backup"
+A24#25031|E_CANCEL_ACCT|"I even terminated my account and guess what? They’re still trying to charge my card"
+P84#26752|A_NOACC,L_PHONE|"my phone stopped working and in that case ive lost all written task"
+P3#8770|A_NOACC|"Please add social media login and sync options. Even as a premium feature"
+P19#283|A_NOACC,S_XOS,B_MANUAL|"when switch to android to iPhone have to import export"
+P3#12336|A_NOACC|"add a Google account sync"
+P3#2381|A_NOACC|"add Google account support for data backup and recovery"
+N10#22167|A_MULTI_ACCOUNT|"needs multi account syncing. Have a business account and personal"
+N10#17691|S_DELAY,S_SHARED|"notify me that it has some new items to buy that my wife has added about 15 minutes before"
+N10#18118|S_XOS,S_SHARED,S_FAIL|"it no longer syncs with anything added on my husband’s Android phone"
+N10#10391|A_LOGOUT,X_SHUTDOWN_MIGRATION|"Keeps logging off everyday automatically"
+N10#22199|A_MULTI_ACCOUNT|"Needs multi account switching"
+P3#5197|A_NOACC,B_NONE|"Please introduce somekind of backup which is linked with a google account"
+P84#2913|B_PAID,B_HIDDEN,L_REINST|"Backup lässt sich nur als Premium Kunde wiederherstellen. Darauf wird weder bei der Installation noch beim Backup hingewiesen"
+P65#8327|B_LOCAL_ONLY|"I wish auto backup could be to cloud instead of my local drive"
+P12#31872|B_MANUAL,B_ONBOARD_FIRST|"you need to go through the process of starting from scratch before you can reload the data"
+A10#29795|L_REINST,B_MANUAL,B_HIDDEN|"You must choose to manually backup your account or manually save it to finches cloud"
