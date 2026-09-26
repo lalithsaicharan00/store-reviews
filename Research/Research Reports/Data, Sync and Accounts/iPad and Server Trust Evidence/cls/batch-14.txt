@@ -1,0 +1,70 @@
+P12#130749|NR|
+P12#132103|NR|
+P12#132487|NR|
+P12#133146|NR|
+P12#134565|NR|
+P12#135540|NR|
+P12#13842|NR|
+P12#143437|NR|
+P12#14393|NR|
+P12#145829|NR|
+P12#14701|NR|
+P12#148207|NR|
+P12#16856|NR|
+P12#17507|NR|
+P12#17548|NR|
+P12#17824|NR|
+P12#17980|NR|
+P12#18576|NR|
+P12#19767|NR|
+P12#19987|NR|
+P12#20797|NR|
+P12#21034|NR|
+P12#21207|NR|
+P12#23659|NR|
+P12#24581|NR|
+P12#24985|NR|
+P12#31891|NR|
+P12#36374|NR|
+P12#37061|NR|
+P12#38870|NR|
+P12#41798|NR|
+P12#49260|NR|
+P12#50723|NR|
+P12#53178|NR|
+P12#55386|NR|
+P12#60628|NR|
+P12#61525|NR|
+P12#64881|NR|
+P12#81486|NR|
+P12#8672|NR|
+P12#915|NR|
+P12#9568|NR|
+P122#12972|NR|
+P122#33726|NR|
+P122#34382|NR|
+P122#35416|NR|
+P122#36042|NR|
+P122#36823|NR|
+P122#36937|NR|
+P125#25645|NR|
+P126#160390|NR|
+P126#161071|NR|
+P126#178478|NR|
+P126#180781|NR|
+P126#184093|NR|
+P126#184337|NR|
+P12#20231|NOACCT_LOSS|"App has no login screen, forces you to restart your progress."
+P12#29834|SYNC_ANY_REQ|"if you download the app on another device there's no way to easily login and see your routines"
+P12#6699|ACCT_FORCED_BAD|"Wozu soll ich mich anmelden. Da gibt es andere Apps ohne Anmeldung."
+P120#34|ACCT_FORCED_BAD|"no demo without login"
+P121#160|ACCT_FORCED_BAD|"Без регистрации не войдёшь"
+P122#19751|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"I don't want to create an account for an app that tracks my workout"
+P122#20233|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"I'll just go back to some no account app"
+P122#20681|ACCT_FORCED_BAD|"It should work without signup"
+P122#28702|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"sin registro no puedes entrar, así instala y desinstala"
+P122#680|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"Sofort gelöscht."
+P123#908|WANTS_SYNC|"Does this app have cloud storage backup option ?"
+P126#10033|NOACCT_PRAISE|"ohne Registrierung Ohne Schnik Schnack"
+P126#12706|NOACCT_PRAISE|"Einfach ohne Account nutzbar"
+P126#17281|NOACCT_PRAISE|"No sign in process"

@@ -1,0 +1,70 @@
+P84#24391|MULTI_SYNC_REQ|"just waiting to fully utilize until I can sync between devices"
+A76#2555|MULTI_SYNC_REQ,IPAD_APP_REQ,IPAD_BUYER|"Looking forward to iPad version. Happy to have paid the extra to unlock."
+P84#21736|MULTI_SYNC_FAIL,IPAD_BUYER|"Have been paying for premium each month for several months now and now it's not syncing across devices"
+P12#52581|MULTI_SYNC_FAIL|"On every additional device it accepts my login credentials but starts 'the journey ' anew."
+A1#44795|IPAD_SYNC_FAIL,ICLOUD_SYNC_FAIL|"my account in my ipad doesnt upload when i add something in my phone or so (yes my icloud account its connected)"
+A1#45428|MAC_REQ|"Oh an also a MacOS version would be great."
+A13#13117|NR|
+A1#2465|NR|
+A53#685|MAC_SYNC_FAIL|"No sync between MacOS and iOS versions!"
+A23#1476|IPAD_SYNC_FAIL,ICLOUD_SYNC_FAIL|"Synchronisation zwischen allen Geräten (Mac, iPhone, iPad, Apple Watch, Macbook) leider komplette Katastrophe."
+A4#19175|MAC_REQ|"WOULD LOVE TO SEE THIS APP ON MAC!!!!"
+A1#49266|MAC_REQ|"Are you cinsidering to make it version for Mac?"
+A33#2769|MAC_SYNC_FAIL|"after buying a new Macbook Pro M1, I can&#39;t log in to my account here"
+A23#1547|MULTI_SYNC_PRAISE|"synct problemlos mit der iOS-Version"
+P2#543|MAC_REQ,SYNC_ANY_REQ|"It would be great if you make an app for windows/macOs and with synchronised data/account"
+A41#806|NR|
+A23#3443|MULTI_SYNC_PRAISE|"Works well with Mac and iPad as well."
+A13#10825|MAC_REQ,IPAD_BUYER|"I have been using your app premium gladly for a long time, using on ipad and iphone. But i wonder why you don’t have a Macbook version"
+A13#11047|MULTI_SYNC_REQ,IPAD_BUYER|"Will there be a cross-platform(iphone/ipad/Mac) synchronization function? Willing to pay for it"
+A53#1077|NR|
+P111#2739|MAC_REQ|"Please make an app for macOs."
+A10#39867|NR|
+A33#2499|MAC_SYNC_FAIL|"For example, it does not sync completed habits"
+A59#11885|MAC_REQ,IPAD_PREMIUM_MISSING,IPAD_BUYER|"Хочу скачать на mac, но в App Store предлагается купить приложение за 599₽."
+A5#589|NR|
+A25#832|MULTI_SYNC_PRAISE|"works well most of the time on all my Apple devices"
+A7#775|MAC_REQ|"Should make a Mac app"
+A1#45935|MAC_REQ,IPAD_BUYER|"I would really like to be able to use it in all my devices, even paying a one-time price"
+A23#4431|MAC_SYNC_FAIL,ICLOUD_SYNC_FAIL|"My Mac and iphone don&#39;t sync properly - even though they say they are"
+A13#12056|IPAD_SYNC_FAIL,MAC_REQ|"I have the app on iPhone &amp; iPad but even when I’m logged into the same account on both the same habits are not on both."
+A49#921|NR|
+A13#12124|MAC_REQ|"it would be much better if there is App for macbook too"
+A13#5469|IPAD_SYNC_REQ,ACCT_FORCED_BAD|"I want to try Productive app on my iPhone, iPad and Macbook at the same time, they have to be synchronized on the same account."
+P126#74125|NR|
+A68#4370|NR|
+P8#8333|IPAD_APP_BAD|"Just wish it was tablet-friendly."
+P84#11975|MULTI_SYNC_PRAISE|"It's tablet friendly and syncs seamlessly across devices."
+P126#208473|TABLET_SYNC_REQ|"Nefunguje spoľahlivo synchronizácia tablet smartphone."
+A24#8157|IPAD_APP_BAD|"软件和iPad还不能很好的适配，不能分屏"
+A24#41764|IPAD_SYNC_REQ|"This app would be amazing if there was syncing between iPhone and iPad."
+P111#12451|NR|
+P12#11612|NR|
+P8#9851|IPAD_APP_BAD|"landscape mode for tablets would be comfortable"
+P3#657|NR|
+A24#27287|NR|
+P9#119|TABLET_SYNC_REQ|"Sync zwischen Telefon und tablet"
+P4#87427|NR|
+P2#21927|TABLET_SYNC_REQ|"non riesco a sincronizzare i dati tra il mio smartphone e il mio tablet"
+A18#1723|IPAD_APP_BAD|"가로모드 좀 지원해 주세요"
+A1#36403|IPAD_SYNC_FAIL|"我平板和手机 为什么同步不了"
+A52#15035|IPAD_APP_REQ,IPAD_PRIMARY|"现在因为多用平板学习"
+P86#59|NR|
+P84#30186|TABLET_SYNC_REQ|"Is there anyway to sync this app from my Note 8 phone to my Samsung tablet?"
+A1#28774|IPAD_APP_PRAISE|"而且可以横屏使用，对平板党友好"
+P84#12297|NR|
+P9#1786|TABLET_SYNC_REQ,IPAD_BUYER|"I can't have any clound account. You can't be log in on two devices."
+P111#10137|IPAD_APP_REQ|"please make it for tablet version"
+P84#8662|MULTI_SYNC_PRAISE,IPAD_BUYER|"I'm sold on the premium feature that enables me to view my tasks from a computer / tablet."
+P12#24913|TABLET_SYNC_REQ,IPAD_PREMIUM_MISSING,IPAD_BUYER|"it will not sync your paid membership across devices"
+P65#3173|NR|
+P84#14631|TABLET_SYNC_REQ|"I'm still trying to figure out if I can sync the task list on my tablet to the one on my phone"
+P111#11454|IPAD_APP_BAD|"needs landscape tablet support"
+A59#5203|NR|
+N8#24453|ACCT_FORCED_BAD,ACCT_FORCED_PRIVACY|"Why do I have to sign in with a google account so you can share my personal info."
+N10#21777|ACCT_FORCED_BAD|"I don’t use Microsoft anything, but I had to create an account."
+N1#19309|NR|
+N3#5405|NR|
+N8#35878|NR|
+N2#1624|NR|
+N10#633|NR|

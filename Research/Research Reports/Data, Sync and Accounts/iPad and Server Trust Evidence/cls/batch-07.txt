@@ -1,0 +1,70 @@
+P3#6073|WANTS_SYNC|"Like save all our data to server when we remove and reinstall the app."
+P3#7101|WANTS_SYNC|"there's no way to backup your data over cloud"
+P3#9570|WANTS_SYNC|"Would be nice to have a cloud backup."
+P3#9705|LOCAL_WANTED|"save your data to a local folder of your choice, in addition to online"
+P33#844|WANTS_SYNC,LOCAL_LOSS|"it doesn't save your data to the cloud, even when you make an account"
+P33#944|WANTS_SYNC|"Which makes this a ticking time bomb till you lose your data."
+P37#67|NR|
+P37#861|NR|
+P38#644|PRIVACY_CONCERN|"This app shares your personal info with ChatGBT"
+P4#18255|NR|
+P4#21633|PRIVACY_CONCERN|"They sell your data to third parties (stated in their privacy policy)."
+P5#1153|NR|
+P68#110|PRIVACY_PRAISE,NOACCT_PRAISE,WANTS_E2EE|"The offline mode and AES-256 encrypted backups give me peace of mind about my data."
+P70#785|ACCT_FORCED_BAD|"Can't use app w/o creating an acct, even if don't want cloud sync."
+P71#95|NR|
+P8#7624|NR|
+P8#9133|PRIVACY_PRAISE|"get your data and use on your own server, and audit the code for security"
+P84#11161|SERVER_DISTRUST,LOCAL_PRAISE|"wanted an app that didn't forcibly give any of my data/app info to a cloud provider"
+P84#13557|PRIVACY_PRAISE,WANTS_E2EE|"it's also private/encrypted!"
+P84#14330|PRIVACY_PRAISE,WANTS_E2EE|"I appreciate Tasks encryption"
+P84#14560|WANTS_SYNC|"so I cud have my settings stored somewhere in your cloud"
+P84#14578|PRIVACY_PRAISE|"The privacy minded developer uses encryption"
+P84#14704|LOCAL_PRAISE,SERVER_DISTRUST,NOACCT_PRAISE|"Can run locally so no need to log in or trust your information to th cloud servers."
+P84#15566|WANTS_E2EE|"there needs to be an option to encrypt backups"
+P84#15887|WANTS_E2EE|"The backup file tasks_backup.json is not encrypted"
+P84#4251|LOCAL_WANTED|"the local backup feature going to be removed in favor of a cloud backup"
+P84#5220|WANTS_E2EE|"encryption and more security options"
+P84#7553|PRIVACY_PRAISE|"of course it is encrypted and not in the Google ecosystem"
+P84#7771|WANTS_SYNC,WANTS_E2EE|"the app data is encrypted and backed up to a cloud"
+P84#9089|NR|
+P84#9267|WANTS_SYNC|"I was able to get my data syncing with the cloud perfectly"
+P84#9890|WANTS_SYNC|"so my info is uploaded to a cloud in case I lose or damage my phone"
+P9#1340|WANTS_SYNC|"If we able to login with gmail and store our data into your server instead our local."
+P91#121|WANTS_E2EE|"WISHLIST: encryption"
+P94#55|WANTS_E2EE|"encryption or password protection"
+P97#3264|WANTS_E2EE|"Would be good if we could get encrypted notes."
+A1#22482|NR|
+A1#36346|LOCAL_LOSS|"之前写的几个月的习惯全部都没有了"
+A1#41767|NR|
+A1#44612|PRIVACY_CONCERN|"tiene rastreadores"
+A1#47701|PRIVACY_CONCERN|"プライバシー矛盾しています"
+A1#51966|PRIVACY_PRAISE|"Absolutely fantastic and privacy friendly."
+A1#52926|NR|
+A1#9370|NR|
+A10#1665|PRIVACY_PRAISE|"respectful of privacy and data management"
+A10#18787|NR|
+A10#19979|WANTS_SYNC|"it doesn’t keep your data across devices"
+A10#21485|PRIVACY_PRAISE|"i love knowing this app is private"
+A10#2592|PRIVACY_CONCERN|"O app coleta os dados do usuário para depois serem processados por IA"
+A10#3694|NR|
+A10#38022|NR|
+A10#38531|NR|
+A10#38765|PRIVACY_PRAISE|"for having a good data privacy rating here on the App Store"
+A10#39823|NR|
+A10#41110|NR|
+A10#41131|NR|
+A10#42501|PRIVACY_PRAISE|"Please keep data private and you’ll be the best!"
+A10#58567|NR|
+A10#60325|NR|
+A10#62257|PRIVACY_PRAISE|"I appreciate the privacy"
+A10#64087|NR|
+A10#64305|NR|
+A10#68413|IPAD_SYNC_FAIL,IPAD_PRIMARY|"I started it on my iPad and it will not sync between devices"
+A10#68904|NR|
+A10#69136|NR|
+A10#7106|PRIVACY_CONCERN|"access camera, contacts, and photos while using app"
+A10#827|NR|
+A13#1059|PRIVACY_CONCERN|"Coleta dados que não são necessários"
+A13#12870|NR|
+A13#15591|NR|

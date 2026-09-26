@@ -1,0 +1,70 @@
+A55#1166|NR|
+A55#1489|NR|
+A59#6793|NR|
+A68#1090|NR|
+A68#1651|NR|
+A68#327|NR|
+A68#4169|NR|
+A68#417|NR|
+A76#577|NR|
+A82#160|NR|
+A83#99|NR|
+A85#1053|NR|
+A85#2248|NR|
+A89#62|NR|
+P10#26624|NR|
+P10#27588|NR|
+P10#28231|NR|
+P10#28568|NR|
+P105#2079|NR|
+P11#11632|NR|
+P11#9091|NR|
+P111#7107|NR|
+P117#54|NR|
+P12#10459|NR|
+P12#105002|NR|
+P12#107345|NR|
+P12#119447|NR|
+P12#119458|NR|
+P12#120405|NR|
+P12#120501|NR|
+P12#120773|NR|
+P12#120882|NR|
+P12#122352|NR|
+P12#123605|NR|
+P12#123986|NR|
+P12#123997|NR|
+P12#124541|NR|
+P12#125685|NR|
+P12#126619|NR|
+P12#126670|NR|
+P12#126945|NR|
+P12#128971|NR|
+P12#130207|NR|
+A5#2141|NOACCT_PRAISE|"but you don’t have to sign up, but I love that"
+A5#2278|NOACCT_PRAISE|"There is no sign in required to!"
+A5#655|ACCT_FORCED_BAD|"Please chang this so there is no email or pass."
+A52#19662|NOACCT_LOSS|"如果我换了手机，打卡记录就没有了吧？那我干嘛要花6块钱"
+A53#1298|NOACCT_PRAISE|"No registration required."
+A53#5|NOACCT_PRAISE|"you don’t have to sign up or do anything"
+A55#1450|ACCT_FORCED_BAD,SERVER_DISTRUST|"I was excited this could be run without sign-in or cloud storage."
+A55#1703|WANTS_SYNC|"I would like it to linked up to an email again to be backed up"
+A55#223|NOACCT_PRAISE|"No account needed, no money to pay."
+A56#63|NOACCT_PRAISE|"no sign-in wall"
+A58#43|NOACCT_PRAISE|"I like that you don’t have to sign in with an email or create an account."
+A7#486|NOACCT_PRAISE,PRIVACY_PRAISE|"No sign up needed and treats your personal data with respect"
+A72#50|NOACCT_PRAISE,ICLOUD_SYNC_PRAISE|"With iCloud synchronization and no sign-in requirements"
+A8#440|NOACCT_LOSS|"Now after installing the app, there is no login option. All my habit records are gone."
+A8#540|NOACCT_PRAISE|"you don’t need to sign in or buy any monthly subscriptions"
+P1#134|NOACCT_PRAISE|"No ads, no account, no subscriptions needed."
+P10#11994|NOACCT_PRAISE|"You don't need to sign up to try out the app. No need to give my email and name, until I want to."
+P10#23732|NOACCT_PRAISE|"구글 로그인 없이 사용 가능 한거 맞죠?"
+P10#9474|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"If I can't even see what your app is about without email. Well then I do not want what you have"
+P105#221|SYNC_ANY_REQ|"Why there is no login feature?"
+P109#25|NOACCT_PRAISE|"no login, daily goals"
+P111#15828|ACCT_FORCED_BAD|"Программа не работает без регистрации"
+P111#390|ACCT_FORCED_BAD|"Ich brauche eine App die ohne Konto-Zwang geht!"
+P111#391|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"ohne konto geht da nichts... gleich wieder deinstalliert."
+P111#5047|ACCT_FORCED_BAD|"Allow people to use this app without email id."
+P111#5987|ACCT_FORCED_BAD|"I dont get it why we should sign up with email first before using it"
+P117#4|ACCT_FORCED_BAD|"Ohne Anmeldung kein Test möglich."

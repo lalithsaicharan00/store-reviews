@@ -1,0 +1,70 @@
+A24#9249|ICLOUD_REQ|"希望能用iCloud 进行多端同步"
+A3#1995|ICLOUD_REQ,NOACCT_LOSS|"It would be great to have iCloud sync"
+A3#3509|ICLOUD_REQ|"Try adding iCloud backup please"
+A3#3669|ICLOUD_REQ,LOCAL_LOSS|"I Restored my phone last night and lost all my tracking"
+A3#4545|ICLOUD_REQ|"iCloud support please"
+A3#4760|ICLOUD_REQ|"only this missing is icloud sync"
+A31#4772|ICLOUD_NOT_ENOUGH|"The iOS option forces me to have the same iCloud (which is not an option)"
+A31#5020|ICLOUD_REQ|"iCloud backup would be nice"
+A33#542|ICLOUD_OVER_SERVER|"Why not use iCloud ?"
+A33#544|NR|
+A33#681|ICLOUD_OVER_SERVER|"直接使用iCloud同步内容吧"
+A34#221|LOCAL_PRAISE,PRIVACY_PRAISE|"no servers with your data on"
+A34#292|ICLOUD_REQ,LOCAL_LOSS|"I lost my data when I did a factory reset."
+A34#500|ICLOUD_REQ|"iCloud connectivity would be nice"
+A34#582|ICLOUD_REQ,IPAD_SYNC_REQ,IPAD_BUYER|"I wish this app had iCloud sync to use on iPadOS and macOS."
+A36#203|ICLOUD_REQ|"No icloud Sync option"
+A36#38|ICLOUD_REQ,LOCAL_LOSS|"I lost all my progress because of that"
+A4#18504|ICLOUD_REQ|"save it to iCloud or something like that"
+A41#32|ICLOUD_SYNC_FAIL|"updates to habit descriptions or titles often revert to previous versions"
+A41#753|ICLOUD_AVOID,PRIVACY_CONCERN|"I will never enable iCloud for privacy reasons"
+A43#369|ICLOUD_SYNC_FAIL|"Crashes when connecting to iCloud"
+A52#16247|ICLOUD_NOT_ENOUGH|"用iCloud的保存进度总有种奇怪的不喵之感没有安全感"
+A52#16941|ICLOUD_NOT_ENOUGH|"希望可以开发一个自己的账户。不想用icloud."
+A52#19991|ICLOUD_NOT_ENOUGH,ICLOUD_SYNC_FAIL|"make the data connected to the account instead of icloud"
+A52#20300|ICLOUD_SYNC_FAIL,IPAD_SYNC_FAIL|"為什麼iphone跟ipad不同步"
+A53#1448|ICLOUD_REQ|"Just wish it had iCloud sync."
+A53#1492|NR|
+A7#708|NR|
+A76#1363|ICLOUD_REQ|"要是能用iCloud 备份就完美了"
+A76#2615|SYNC_ANY_REQ|"Sync via iCloud or Dropbox please."
+A76#313|ICLOUD_REQ,IPAD_APP_REQ|"make it universal and sync data through iCloud"
+A76#3492|ICLOUD_REQ,IPAD_SYNC_REQ|"sync over icloud so I could also use with ipad"
+A76#4424|ICLOUD_REQ|"I really feel entitled to a iCloud sync"
+A76#5443|SYNC_ANY_REQ|"auto sync with iCloud or Dropbox or the like"
+A76#5772|ICLOUD_REQ,IPAD_APP_REQ|"lack of an iPad app and missing iCloud sync"
+A76#7625|ICLOUD_REQ|"ICloud integration would be nice."
+A76#82|ICLOUD_REQ|"Please add iCloud support."
+A76#839|SYNC_ANY_REQ|"syncing across devices through iCloud or Dropbox"
+A77#32|ICLOUD_REQ|"I just wish I could sync between devices via iCloud"
+A8#231|ICLOUD_REQ,IPAD_SYNC_REQ|"sync within my different Apple devices, like my iPad or Macbook"
+A8#395|ICLOUD_REQ,OWN_CLOUD_PREF|"store the user data in their own cloud space"
+A8#552|ICLOUD_REQ|"I just wish it has icloud saving"
+P106#678|OWN_CLOUD_PREF|"backup & restore to my own Google Drive"
+P124#93|OWN_CLOUD_PREF|"export to my own Dropbox"
+P2#8195|OWN_CLOUD_PREF|"I also want to backup to my own cloud server (Nextcloud) rather than Google."
+P3#11940|NR|
+P3#9143|OWN_CLOUD_PREF|"backup my tracks in my own cloud"
+P84#21395|OWN_CLOUD_PREF|"Back-ups locally, or to my own Drive"
+P97#2829|NR|
+A1#51722|NR|
+A1#53166|NR|
+A10#12241|LOCAL_LOSS|"I lost my last finch"
+A10#1522|NR|
+A10#1694|NR|
+A10#19131|NR|
+A10#20340|LOCAL_LOSS|"my data was corrupted"
+A10#21854|LOCAL_LOSS|"my data was apparently stored locally and not properly backed up"
+A10#2202|LOCAL_PRAISE|"information stored on your phone rather than external drives/the cloud/wherever"
+A10#25094|NR|
+A10#26894|LOCAL_PRAISE|"no internet required"
+A10#32465|LOCAL_LOSS|"was lost forever"
+A10#37958|NR|
+A10#42209|NR|
+A10#47416|NR|
+A10#47470|NR|
+A10#50187|LOCAL_PRAISE|"no internet required"
+A10#52168|NR|
+A10#53529|NR|
+A10#55363|LOCAL_PRAISE,PRIVACY_PRAISE|"your writing is only stored on your device so no one else can see or sell your data"
+A10#56746|LOCAL_LOSS|"no way to restore the data since everything"

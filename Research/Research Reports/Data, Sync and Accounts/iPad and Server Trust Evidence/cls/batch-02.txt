@@ -1,0 +1,70 @@
+P2#20727|NR|
+P2#5112|NOACCT_PRAISE|"You don't have to create an account"
+P20#2534|ACCT_FORCED_BAD|"회원가입해야됨"
+P24#20551|NR|
+P3#1078|NOACCT_PRAISE|"does not require you to create an account"
+P3#4602|NOACCT_PRAISE|"the fact that I dont have to make an account is amazing"
+P31#362|NOACCT_PRAISE|"without forcing you to make an account"
+P33#1136|ACCT_FORCED_BAD|"Why do I need to sign in?"
+P33#1980|NR|
+P38#3469|NOACCT_PRAISE|"회원가입해야 할 때가 있는데 없어서 좋음"
+P4#25976|NR|
+P49#1072|NR|
+P49#199|NR|
+P49#2907|NOACCT_PRAISE|"force you to make an account"
+P70#797|ACCT_FORCED_BAD|"why are we forced to make an account?"
+P8#1330|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"im not going to make another account"
+P8#2394|ACCT_FORCED_BAD,ACCT_FORCED_PRIVACY|"They just want your personal info."
+P8#2459|ACCT_FORCED_BAD|"make an account for everything now"
+P8#3095|ACCT_FORCED_BAD|"Have to create an account for no reason"
+P8#3150|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"Uninstall for me."
+P8#3243|NR|
+P8#4256|ACCT_FORCED_BAD|"You also have to sign up for an account which is absolute stupidity"
+P8#4528|ACCT_FORCED_BAD,LOCAL_WANTED|"DOES NOT WORK OFFLINE! This is a deal breaker for me."
+P8#5085|ACCT_FORCED_BAD|"Why I have to create a account ?"
+P8#544|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"You have to create an account? No, thanks."
+P8#570|ACCT_FORCED_BAD|"Warum muss man sich registrieren?"
+P8#7017|ACCT_FORCED_BAD,ACCT_FORCED_QUIT,SERVER_DISTRUST,LOCAL_WANTED|"I'd much rather my data was stored locally where only I have access to it."
+P8#9078|ACCT_FORCED_BAD,ACCT_FORCED_QUIT,ACCT_FORCED_PRIVACY|"more people accessing my personal information"
+P8#9778|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"I was interested until I had to make an account."
+P8#9905|ACCT_FORCED_BAD|"which I don't typically care for"
+P84#12543|NOACCT_PRAISE|"I refuse to accept that the little checklist on my phone needs to know my email."
+P84#30521|NOACCT_PRAISE|"I rejected several other list apps for that reason alone"
+P98#1074|NR|
+A1#44157|NR|
+A1#46251|ICLOUD_SYNC_FAIL,IPAD_SYNC_FAIL|"I try to sync with my old habit with my iCloud but it hang"
+A1#46961|NR|
+A1#48904|ICLOUD_SYNC_FAIL,IPAD_SYNC_FAIL,IPAD_BUYER|"I cannot connect my iphone and ipad"
+A1#49963|ICLOUD_NOT_ENOUGH|"please add shared habits via email instead of iCloud"
+A1#53562|ICLOUD_NOT_ENOUGH|"希望出app自带的云备份空间"
+A10#7428|IPAD_SYNC_REQ,SYNC_ANY_REQ|"syncing the app to another device via icloud or account options"
+A13#10222|SYNC_ANY_REQ|"please add iCloud sync or account support"
+A13#12264|IPAD_SYNC_FAIL|"if I click completed on my Apple Watch or iPhone"
+A13#12668|ICLOUD_SYNC_FAIL|"Sync via iCloud doesn't work in the latest version?"
+A13#12669|ICLOUD_SYNC_FAIL|"iCloud sync does not even sync"
+A13#14310|ICLOUD_SYNC_FAIL,IPAD_SYNC_FAIL|"Would be better if data synced between my phone and tablet"
+A13#14645|ICLOUD_SYNC_FAIL|"Poor sync, worse service ruins fantastic app for me"
+A13#15078|ICLOUD_SYNC_FAIL,ICLOUD_LOSS|"Developer excuse is iCloud performance issues"
+A13#17106|ICLOUD_REQ,IPAD_APP_REQ|"iCloud syncing would be a great addition (via CloudKit or the like)"
+A13#17113|ICLOUD_REQ,NOACCT_LOSS|"Lost everything when I moved to a new device."
+A13#17339|ICLOUD_REQ|"I wish there was iCloud Sync for all your devices."
+A13#19149|SYNC_ANY_REQ|"Please add iCloud sync or other sync options"
+A13#2771|ICLOUD_REQ|"This should not be impossible with iCloud etc"
+A13#4603|ICLOUD_REQ|"please add cross device syncing via iCloud"
+A13#5812|ICLOUD_REQ,IPAD_SYNC_REQ|"iCloud sync across devices so I can use the app on iPad too."
+A13#6392|ICLOUD_SYNC_FAIL,IPAD_SYNC_FAIL|"sometimes my iPad will change, sometimes not"
+A13#9559|IPAD_SYNC_FAIL,IPAD_BUYER|"kill the option to sync the two"
+A20#1237|NR|
+A20#156|ICLOUD_REQ|"automatic backups to icloud"
+A20#229|ICLOUD_LOSS|"it only restored data from perhaps a year ago"
+A20#2499|ICLOUD_REQ|"add iCloud sync"
+A20#3085|LOCAL_LOSS|"everything is gone"
+A20#31|ICLOUD_REQ,IPAD_APP_REQ|"a universal App for iPad support with iCloud sync would be great!"
+A20#3468|NR|
+A20#38|ICLOUD_LOSS|"Backing up from iCloud only yielded an error."
+A23#2747|ICLOUD_SYNC_FAIL|"勝手にiCloudに同期されて同期データがめちゃくちゃになりまして"
+A23#4527|NR|
+A23#4679|ICLOUD_SYNC_FAIL|"wish the icloud sync worked"
+A23#5431|ICLOUD_REQ,IPAD_SYNC_REQ|"Would be great to sync with my iPad"
+A23#5510|ICLOUD_REQ,IPAD_APP_REQ|"I do wish there were an iPad version with iCloud sync."
+A23#603|ICLOUD_SYNC_FAIL,IPAD_SYNC_FAIL|"sync tasks with iCloud"

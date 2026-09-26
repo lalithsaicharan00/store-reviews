@@ -1,0 +1,70 @@
+A10#20391|NOACCT_LOSS|"none of your data is saved by default"
+A10#33775|NR|
+A10#39249|NOACCT_LOSS|"little did I know Id lose everything"
+A10#43857|NOACCT_PRAISE,NOACCT_LOSS|"I appreciate that you DO NOT HAVE TO MAKE AN ACCOUNT"
+A10#56970|NOACCT_PRAISE|"have to make an account. Just enjoy Finch"
+A10#69130|NOACCT_PRAISE|"Such a great feature for an app these days is not having to"
+A13#1215|NR|
+A13#12286|WANTS_SYNC|"Apalon killed device-syncing"
+A13#12627|NR|
+A13#1758|ACCT_FORCED_BAD,ACCT_FORCED_PRIVACY|"why do i have to provide my email to continue?"
+A18#1784|NR|
+A18#730|ACCT_FORCED_BAD|"가입은 왜 필요한건지"
+A19#74|NR|
+A23#5196|NOACCT_PRAISE,ICLOUD_SYNC_PRAISE|"nor does it require you to create an account"
+A24#10270|NR|
+A24#20297|NR|
+A24#23412|NR|
+A24#23746|NR|
+A24#24556|NR|
+A24#26208|ACCT_FORCED_BAD|"First, I had to create an account."
+A24#27410|NR|
+A24#29564|NR|
+A24#30660|NR|
+A24#9948|NR|
+A28#697|NR|
+A3#10114|NOACCT_PRAISE|"have to make an account or pay for something to just track time"
+A3#7059|NOACCT_PRAISE|"require you to make an account or give any info"
+A3#8665|NOACCT_PRAISE|"require you to create an account"
+A3#9839|NOACCT_PRAISE|"Simple no account required"
+A33#2514|ACCT_FORCED_BAD,SERVER_DISTRUST|"This app requires you to create an account and save your data on their server(s)."
+A33#812|ACCT_FORCED_BAD|"Man muss sich anmelden zum benutzen"
+A4#2613|NR|
+A46#569|ACCT_FORCED_BAD|"muss man sich anmelden mit email usw. was total sinnfrei ist"
+A46#839|ACCT_FORCED_BAD|"Had to create an account and experiment to even find this out."
+A48#1077|ACCT_FORCED_BAD,ACCT_FORCED_QUIT,ACCT_FORCED_PRIVACY|"What does it do with my data?"
+A48#147|NOACCT_PRAISE|"have to create an account and log in to use it"
+A48#4011|ACCT_FORCED_BAD,ACCT_FORCED_PRIVACY|"That is a little to intrusive for me."
+A48#4106|NR|
+A59#14811|NOACCT_PRAISE|"have to make an account"
+A8#469|NOACCT_PRAISE|"require you to create an account"
+P103#9|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"forced to make an account"
+P111#1062|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"forces you to make an account"
+P111#1196|ACCT_FORCED_BAD|"after a week it requires you to make an account"
+P111#4748|NR|
+P111#749|ACCT_FORCED_BAD|"you HAVE to sign up for an account to use it"
+P111#8233|ACCT_FORCED_BAD|"why do i need to sign up please"
+P12#10280|ACCT_FORCED_BAD,ACCT_FORCED_PRIVACY|"dont force me to make an account so you can sell my personal data"
+P12#11856|NR|
+P12#12291|NR|
+P12#124498|NR|
+P12#126360|NR|
+P12#134240|NR|
+P12#147231|WANTS_SYNC|"there is no backup option"
+P12#18001|ACCT_FORCED_BAD,ACCT_FORCED_PRIVACY|"Requires you to sign up for no particular reason and all just to farm emails."
+P12#2584|NR|
+P12#3273|NR|
+P12#32769|ACCT_FORCED_BAD|"require you to make an account and login"
+P12#40561|NR|
+P12#47973|NR|
+P12#56591|NR|
+P12#61586|NR|
+P12#9009|NR|
+P122#17295|ACCT_FORCED_BAD,ACCT_FORCED_QUIT,ACCT_FORCED_PRIVACY|"I don't want to give my info to anyone"
+P122#1879|ACCT_FORCED_BAD|"why do i need to sign up?"
+P122#19914|ACCT_FORCED_BAD|"I shouldn't be required to create an account just track my reps"
+P122#21258|ACCT_FORCED_BAD|"why would I want to have to make an account just to track my workouts"
+P122#21452|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"the barrier to entry is that I have to create an account"
+P122#2263|ACCT_FORCED_BAD,ACCT_FORCED_QUIT,ACCT_FORCED_PRIVACY|"forces you to make an account to sell your data. Uninstalled."
+P122#6543|ACCT_FORCED_BAD|"just let me use the app without signing up ffs"
+P122#8205|ACCT_FORCED_BAD|"The app will force you to create an account"

@@ -1,0 +1,70 @@
+P3#2154|LOCAL_PRAISE|"data stored locally. 11/10"
+P3#2436|WANTS_SYNC,LOCAL_LOSS|"No Cloud Backup — Entire Year of Data Gone"
+P3#2444|LOCAL_PRAISE|"No internet required, data remains locally"
+P3#4284|WANTS_SYNC|"No cloud sync feature, only export and import."
+P3#6270|WANTS_SYNC|"No cloud backup"
+P3#9020|WANTS_SYNC|"you need to backup by yourself, no cloud backup"
+P3#9788|WANTS_SYNC|"it offers no cloud sync or login features"
+P35#572|WANTS_SYNC|"Apparently no cloud sync, only manual data export/import."
+P36#339|OWN_CLOUD_PREF,SERVER_DISTRUST|"please agree web dav option (NO CLOUD SERVICES)"
+P4#27243|NR|
+P4#28487|NR|
+P4#5595|NR|
+P70#594|ACCT_FORCED_BAD,LOCAL_WANTED|"Shouldn't need an account for something I'd be wanting to use offline only anyway."
+P8#4188|LOCAL_WANTED|"I'd just recommend a future update that stores locally then server syncs"
+P8#4968|LOCAL_WANTED|"it just needs wifi sadly"
+P8#5049|LOCAL_WANTED|"it's totally server based"
+P84#11864|NR|
+P84#16108|LOCAL_PRAISE,SERVER_DISTRUST|"the data stays on MY phone, not their servers"
+P84#16329|NR|
+P84#19718|NR|
+P84#19925|WANTS_SYNC|"Only con, no cloud-sync"
+P84#21960|NR|
+P84#30530|NR|
+P84#31839|LOCAL_PRAISE,NOACCT_PRAISE|"No sign up for online storage. Stores locally."
+P84#32395|WANTS_SYNC|"No cloud sync, but other than that, it's probably the best one out there."
+P84#4950|LOCAL_PRAISE|"Simple, offline, no cloud service, no monthly fees."
+P84#55343|WANTS_SYNC|"no cloud sync. useless."
+P84#7509|NR|
+P84#7621|LOCAL_PRAISE|"best of all is that all the data/backups are kept locally"
+P87#39|NR|
+P9#1325|PRIVACY_CONCERN|"Your privacy policy says that you sell data and then you also put"
+P9#1769|WANTS_SYNC|"Works well. No cloud sync."
+P91#218|PRIVACY_CONCERN|"consent to sending data to hundreds of vendors"
+P98#157|WANTS_SYNC|"no cloud sync for free version"
+P98#520|WANTS_SYNC|"No cloud backup after plus"
+A1#52185|NR|
+A1#53048|NR|
+A1#55428|NR|
+A1#55468|WANTS_SYNC|"I decided just to pay the $4.99 in case my data doesn’t back up in the cloud"
+A1#55592|NR|
+A1#790|NR|
+A10#162|NR|
+A10#22356|LOCAL_LOSS|"with all of that lost data, progress, journals, everything"
+A10#22440|LOCAL_LOSS|"it asks for an encryption key which I don"
+A10#27315|LOCAL_LOSS|"Try to use my encryption code and app says not found."
+A10#35649|LOCAL_LOSS|"you will lose your finch and all of the progress you made"
+A10#44607|PRIVACY_PRAISE|"I really appreciate the extra backup encryption as well."
+A10#46548|NR|
+A10#54062|NR|
+A10#58056|WANTS_SYNC|"my data can’t be uploaded anywhere else except locally to my phone"
+A10#60729|PRIVACY_PRAISE|"I love the concept and the fact that it&#39;s encrypted"
+A10#69075|NR|
+A13#11967|IPAD_SYNC_REQ,IPAD_BUYER|"having the flexibility to use my iPad would have been great"
+A13#11986|IPAD_SYNC_REQ,WANTS_SYNC|"I also have an iPad that I would like to use for looking at me progress and creating new habits"
+A13#12320|PRIVACY_CONCERN|"this app collects far more personal data than is needed for a habit-tracking app"
+A13#13169|NR|
+A13#13747|NR|
+A13#16647|PRIVACY_CONCERN|"STOP! new version includes DATA MINING."
+A13#1822|NR|
+A13#277|WANTS_SYNC,LOCAL_LOSS|"I lost months of data and dozens of customised habits I had setup"
+A16#28|NR|
+A16#389|NR|
+A20#1108|NR|
+A20#232|WANTS_SYNC,LOCAL_LOSS|"would be nice if you guys psisibly save it on your server or something"
+A20#3216|NR|
+A24#16383|NR|
+A24#18456|NR|
+A24#19816|NR|
+A24#20446|NR|
+A24#28349|NR|

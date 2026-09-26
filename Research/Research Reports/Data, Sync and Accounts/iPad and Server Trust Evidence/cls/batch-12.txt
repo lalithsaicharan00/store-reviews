@@ -1,0 +1,70 @@
+A24#18657|NR|
+A24#20277|NR|
+A24#20759|NR|
+A24#23514|NR|
+A24#23646|NR|
+A24#23659|NR|
+A24#23909|NR|
+A24#24587|NR|
+A24#24646|NR|
+A24#25031|NR|
+A24#25177|NR|
+A24#25295|NR|
+A24#25358|NR|
+A24#25758|NR|
+A24#26018|NR|
+A24#2630|NR|
+A24#26598|NR|
+A24#27726|NR|
+A24#27767|NR|
+A24#27996|NR|
+A24#28052|NR|
+A24#29342|NR|
+A24#30747|NR|
+A24#30802|NR|
+A24#31505|NR|
+A24#3507|NR|
+A24#35314|NR|
+A24#36300|NR|
+A24#4059|NR|
+A24#42016|NR|
+A24#43091|NR|
+A24#43326|NR|
+A24#4337|NR|
+A24#5107|NR|
+A24#8300|NR|
+A24#9980|NR|
+A26#272|NR|
+A26#438|NR|
+A3#2070|NR|
+A31#2915|NR|
+A4#14145|NR|
+A4#14880|NR|
+A4#1648|NR|
+A4#1812|NR|
+A49#1029|NR|
+A5#1584|NR|
+A24#42153|ACCT_FORCED_BAD,ACCT_FORCED_PRIVACY|"You are required to give email address before you see any utility."
+A24#8318|NOACCT_PRAISE|"且不需要登录就能完成4个旅程"
+A26#1243|NOACCT_LOSS,IPAD_PRIMARY|"It also deletes the purchase price of the app if you bought it as there is no account to sign into."
+A26#2768|SYNC_ANY_REQ|"There is no account option"
+A29#227|NOACCT_PRAISE|"the fact I didn’t even have to list my email sold me"
+A3#419|NOACCT_PRAISE|"no sign in, no ads"
+A3#6909|NOACCT_PRAISE|"No login or signup required either."
+A3#8708|NOACCT_PRAISE|"with no account creation screen. That’s awesome."
+A33#2669|ICLOUD_OVER_SERVER,NOACCT_PRAISE|"I’d consider buying subscription if there will be seamless iCloud sync (like in the Streaks app - no registration process)."
+A33#3682|NOACCT_PRAISE|"Having a no signup - jump start was the best thing other apps should learn!"
+A4#11341|NOACCT_PRAISE|"i love that we don’t need to sign up or anything just to use it"
+A4#15651|NOACCT_PRAISE|"You don’t need to sign up"
+A4#18394|NOACCT_LOSS,SYNC_ANY_REQ|"Its also not multi-device friendly. Becuase there is no login"
+A4#18562|NOACCT_PRAISE|"you don’t have to sign in or anything"
+A4#19912|NOACCT_LOSS,IPAD_SYNC_REQ,IPAD_BUYER,IPAD_PRIMARY|"I want to start using the app on my iPad instead so I’m not distracted by my phone. Sadly there is no log in"
+A4#8864|NOACCT_LOSS|"si pagas y le pasa algo a tu cel no puedes recuperar los datos o el premium"
+A4#9815|NOACCT_LOSS|"No account- you Lost everything if u reapload"
+A4#9840|NOACCT_LOSS|"You can’t even made an account here to have your progress safe"
+A41#503|NOACCT_PRAISE|"No account or login is needed."
+A41#747|NOACCT_PRAISE,ICLOUD_SYNC_PRAISE|"No account to setup, ready to go with iCloud Drive."
+A46#506|NOACCT_PRAISE|"Tolle App mit Zugang auch ohne Registrierung!"
+A48#3744|ACCT_FORCED_BAD|"Really hate apps that ask me to create an account before I even have a chance to try out"
+A48#4135|ACCT_FORCED_BAD,IPAD_SYNC_FAIL|"Once you access Strides with several devices(iphone, ipad, and browser), it makes lots of same items!"
+A48#784|ACCT_FORCED_BAD|"Funktioniert nicht mehr ohne Registrierung!!"

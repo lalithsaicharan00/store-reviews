@@ -1,0 +1,70 @@
+P126#187093|NR|
+P126#187360|NR|
+P126#189387|NR|
+P126#189757|NR|
+P2#23005|NR|
+P2#23394|NR|
+P2#23425|NR|
+P2#23800|NR|
+P2#24122|NR|
+P2#25250|NR|
+P2#26903|NR|
+P2#26982|NR|
+P2#27176|NR|
+P2#27502|NR|
+P2#27536|NR|
+P2#27901|NR|
+P21#4629|NR|
+P22#514|NR|
+P24#1118|NR|
+P24#1536|NR|
+P24#1612|NR|
+P24#18917|NR|
+P24#18943|NR|
+P24#19586|NR|
+P24#21335|NR|
+P24#21592|NR|
+P24#21743|NR|
+P24#22398|NR|
+P24#22666|NR|
+P24#23216|NR|
+P24#23465|NR|
+P24#2404|NR|
+P24#2640|NR|
+P24#4568|NR|
+P24#5198|NR|
+P24#7030|NR|
+P24#7089|NR|
+P26#721|NR|
+P126#20057|NOACCT_PRAISE|"free without login"
+P126#205728|NOACCT_PRAISE|"без регистрации"
+P126#205845|NOACCT_PRAISE|"без регистрации и смс"
+P126#20628|NOACCT_PRAISE|"No login no useless hassles."
+P126#214826|NOACCT_PRAISE|"No log in requirements."
+P126#53434|NOACCT_PRAISE|"no login or ads"
+P126#60512|NOACCT_PRAISE|"No sign in needed"
+P126#62891|NOACCT_PRAISE|"Easy to use, no login"
+P126#63579|NOACCT_PRAISE|"No login required."
+P126#70972|NOACCT_PRAISE|"no account setup required"
+P126#72326|NOACCT_PRAISE|"requires no account"
+P126#83983|NOACCT_PRAISE|"Fácil y sin registro"
+P129#375|NOACCT_LOSS,TABLET_SYNC_REQ|"there is no login option either or anything that will help us using this in another device"
+P129#756|NOACCT_LOSS|"when I need to change my mobile how I can access"
+P130#298|NOACCT_LOSS|"there is no login so all my journals and traxking is lost"
+P131#518|ACCT_FORCED_BAD|"I hate it when you can't even try the app without registering."
+P131#8|ACCT_FORCED_BAD,ACCT_FORCED_QUIT|"Wird daher wieder deinstalliert."
+P14#16|NOACCT_PRAISE|"I like that you dont need to create a account."
+P19#283|NOACCT_LOSS|"no log in auto back up option when switch to android to iPhone"
+P2#10492|NOACCT_PRAISE|"no signup required"
+P2#10676|SYNC_ANY_REQ|"No login option"
+P2#21727|NOACCT_LOSS|"What if I have purchased premium and want to move the premium purchase of the app to another device?"
+P2#3399|SYNC_ANY_REQ|"Perfect except for no account backup feature."
+P2#4000|NOACCT_PRAISE|"No account creation required."
+P2#4066|NOACCT_LOSS|"There are no login credentials if I uninstall the app will my habits list be same"
+P2#5436|NOACCT_PRAISE|"No sign in required"
+P20#251|NR|
+P21#2640|NOACCT_LOSS|"SE ME HAN BORRADO TODAS"
+P24#7671|NOACCT_LOSS|"I bought premium without an account and was fine until I switched phones."
+P3#10403|NOACCT_PRAISE,LOCAL_PRAISE|"No account or cloud access needed which I like."
+P3#1205|NOACCT_PRAISE|"It's free, no account needed, no advertizing!"
+P3#12254|NOACCT_PRAISE|"most importantly no account needed"

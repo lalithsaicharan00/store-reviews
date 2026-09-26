@@ -1,0 +1,70 @@
+A24#30258|NR|
+A24#31411|NR|
+A24#32391|NR|
+A24#33892|NR|
+A24#35752|NR|
+A24#37660|NR|
+A24#42121|ACCT_FORCED_BAD,SERVER_DISTRUST,LOCAL_WANTED|"Another App that safes personal information on some servers?"
+A24#4376|NR|
+A24#6571|NR|
+A31#2356|NR|
+A31#3632|NR|
+A31#725|SERVER_DISTRUST|"I don’t want to backup to the cloud."
+A33#1193|LOCAL_NO_SUB|"my habits don’t need a rack of servers to justify ongoing fees"
+A33#401|NR|
+A34#703|LOCAL_PRAISE,SERVER_DISTRUST|"I love that there are no subscription fees and my data isn’t stored on a server!"
+A36#403|NR|
+A4#10294|PRIVACY_CONCERN|"I think this app record our personal data and send some offers."
+A4#11950|PRIVACY_CONCERN|"how your information is stored or if it is shared"
+A41#375|LOCAL_NO_SUB|"However this app just uses iCloud to sync, which I already pay for."
+A41#500|NOACCT_PRAISE,ICLOUD_SYNC_PRAISE|"requires no account—your data is stored securely in iCloud"
+A46#138|NR|
+A48#1951|NR|
+A48#2850|LOCAL_NO_SUB,SERVER_DISTRUST|"Simply save my data locally or offer connection to cloud service (i.e. dropbox) if users really want to sync."
+A49#845|NR|
+A5#2748|SERVER_DISTRUST,ICLOUD_OVER_SERVER|"No I don&#39;t want to login and send my data to you."
+A55#899|SERVER_DISTRUST|"Should you agree to HabitBull to save all your data in their cloud? I rather not."
+A7#687|WANTS_SYNC,LOCAL_LOSS|"Wish it was stored in the cloud."
+A76#2724|NR|
+A76#702|NR|
+A79#118|NR|
+A85#2263|NR|
+P1#172|WANTS_SYNC|"able to sign in with google account and sync our habits in cloud"
+P10#8340|WANTS_E2EE|"it doesn't have any encryption feature"
+P106#575|NR|
+P111#1006|NR|
+P111#1150|NR|
+P12#13648|NR|
+P12#151090|NR|
+P12#153173|WANTS_SYNC|"How to save my data on cloud??"
+P12#21310|NR|
+P12#21606|PRIVACY_CONCERN|"they just keep user data"
+P12#35211|NR|
+P12#39344|NR|
+P12#41874|NR|
+P12#8194|NR|
+P122#4608|WANTS_SYNC|"I want the data I enter to be safe beyond my changing phones, forever."
+P126#192430|PRIVACY_CONCERN|"Why forcing me to allow my data to be sent to vendors?"
+P126#46264|WANTS_E2EE|"Zero-Knowledge cryptography"
+P2#12211|WANTS_SYNC|"Any way I can save my data on cloud or make an account to save it?"
+P2#1413|NR|
+P2#3973|WANTS_SYNC,TABLET_SYNC_REQ|"Please make it so that the user data is stored on the cloud"
+P20#278|NR|
+P24#10009|SERVER_DISTRUST|"the app immediately syncs your data to the company's servers, which I did not want"
+P24#14617|NR|
+P24#2041|NR|
+P24#2329|NR|
+P24#4271|NR|
+P24#4375|WANTS_SYNC,LOCAL_LOSS|"If you cannot save on JSON file of mine in your cloud, please explain why I should buy premium?"
+P24#5826|NR|
+P24#8997|NR|
+P24#9239|NR|
+P24#9284|NR|
+P3#10442|WANTS_SYNC|"multiple device sync and store our data into cloud"
+P3#14498|WANTS_SYNC|"Would love to see cloud sync instead of opml export"
+P3#15370|WANTS_SYNC|"Its just missing the way to sync your data in the cloud"
+P3#15946|WANTS_SYNC|"Any chance to use social account login so that my data is stored on cloud?"
+P3#16314|WANTS_SYNC|"the ability to sync your data to the cloud for backup purposes"
+P3#17766|NR|
+P3#2038|WANTS_SYNC|"cloud sync or auto backup"
+P3#4360|WANTS_SYNC|"I hope they allow us to make an account and save our data on the cloud"

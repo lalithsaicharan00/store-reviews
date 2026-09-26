@@ -1,0 +1,70 @@
+P3#20793|NR|
+P33#1294|NR|
+P37#1026|NR|
+P38#1142|NR|
+P38#4003|NR|
+P38#4079|NR|
+P38#4130|NR|
+P38#4223|NR|
+P38#4331|NR|
+P38#4402|NR|
+P38#4457|NR|
+P4#15821|NR|
+P4#18520|NR|
+P4#23038|NR|
+P4#25760|NR|
+P4#27392|NR|
+P4#4806|NR|
+P4#71460|NR|
+P4#73142|NR|
+P4#78139|NR|
+P4#81331|NR|
+P4#82522|NR|
+P4#82590|NR|
+P4#82771|NR|
+P4#83233|NR|
+P4#83751|NR|
+P4#84070|NR|
+P4#84676|NR|
+P4#87089|NR|
+P4#87734|NR|
+P4#88074|NR|
+P4#90948|NR|
+P4#91095|NR|
+P4#91413|NR|
+P4#92074|NR|
+P4#93012|NR|
+P3#1288|NOACCT_PRAISE,LOCAL_PRAISE|"no account needed, works offline!"
+P3#1375|NOACCT_PRAISE|"no registration required"
+P3#16995|NOACCT_PRAISE|"sin registro"
+P3#1718|NOACCT_PRAISE|"no registration"
+P3#1792|NOACCT_PRAISE|"No ads, no account"
+P3#2327|NOACCT_PRAISE|"no account needed"
+P3#2597|NOACCT_PRAISE|"no account set up"
+P3#26696|NOACCT_PRAISE,PRIVACY_PRAISE|"私密性好，不用注册和登录"
+P3#3074|NOACCT_PRAISE|"No login info required."
+P3#347|NOACCT_LOSS|"one format and all is lost, no account and hence no backup"
+P3#3698|NOACCT_PRAISE|"doesn't require registration"
+P3#4401|NOACCT_PRAISE|"No sign up, no ads, no nonsense!"
+P3#5127|NOACCT_PRAISE|"no login necessary"
+P3#5168|NOACCT_PRAISE|"No sign in required."
+P3#6299|NOACCT_PRAISE|"No ads, no account, no hassle."
+P3#6387|NOACCT_LOSS|"the risk is that my data disappears if, let's say, my phone crashes"
+P3#6424|NOACCT_PRAISE|"No account setup."
+P3#6491|NOACCT_PRAISE|"no account needed"
+P3#662|NOACCT_PRAISE|"ohne Anmeldung"
+P3#6857|SYNC_ANY_REQ|"there is no sign up option"
+P3#7991|NOACCT_PRAISE|"doesn't require an account to be setup to use it"
+P3#8875|NOACCT_LOSS|"I'm not sure how to back up data when changing to a new mobile phone as there's no log-in or registration"
+P3#8926|SYNC_ANY_REQ|"There is no sign-in option in the App."
+P3#9092|NOACCT_LOSS,SYNC_ANY_REQ|"So if you had to change your device your progress will be lost."
+P3#9194|NOACCT_PRAISE|"No registration nor any ads."
+P3#9872|NOACCT_PRAISE|"No account needed."
+P32#1789|NOACCT_PRAISE|"без регистрации"
+P33#1787|SYNC_ANY_REQ|"there's no account system or multi-device sync"
+P33#1916|NOACCT_LOSS|"your purchase will be just vanished. No sync. No backups."
+P35#318|NOACCT_PRAISE|"doesn't require account"
+P37#665|NOACCT_PRAISE|"can use without account creation"
+P4#21927|NOACCT_LOSS|"lost all my progress due to no account saving method available"
+P4#26337|NOACCT_LOSS|"There's no log in or anything either so you have to completely start over"
+P4#27559|NOACCT_LOSS|"I changed my device after paying the whole year and couldn't recover my premium features."

@@ -1,0 +1,70 @@
+A13#3580|NR|
+A13#3614|NR|
+A13#4583|PRIVACY_CONCERN|"schaut euch mal den Datenschutz an was die App alles haben möchte"
+A13#4815|PRIVACY_CONCERN|"keine Wege sich weder auszuloggen noch zu löschen"
+A13#4846|PRIVACY_CONCERN|"ausgehend von den Datenschutzbestimmungen profitiert der neue Herausgeber gleich doppelt"
+A13#9111|PRIVACY_CONCERN|"the privacy policy are far from great"
+A16#253|PRIVACY_CONCERN|"it has a very bad and invasive Privacy Policy"
+A18#1827|NR|
+A18#1838|NR|
+A23#1031|LOCK_PRIVACY|"使用faceID 进入app以此来保护隐私"
+A23#2821|SYNC_ANY_REQ|"アカウントで同期出来れば完璧"
+A23#3389|PRIVACY_PRAISE|"no ads or upsell options, no tracking"
+A24#10017|NR|
+A24#29239|NR|
+A24#34052|PRIVACY_CONCERN|"the privacy practices are not available at all"
+A24#37931|NR|
+A24#8460|NR|
+A26#1716|PRIVACY_PRAISE|"I would really pay for my privacy"
+A26#3295|PRIVACY_PRAISE|"I love how private it is"
+A29#245|PRIVACY_CONCERN|"Am I trading off data privacy for this?"
+A3#10022|LOCK_PRIVACY|"use face id/passcode for privacy purposes"
+A3#10187|LOCK_PRIVACY|"i love the fact that i can lock - makes it feel more private"
+A3#10409|PRIVACY_PRAISE|"This app does so good and respects your privacy."
+A3#10613|PRIVACY_PRAISE|"Wonderful little app with a strong privacy policy."
+A3#1252|LOCK_PRIVACY|"has a great password feature to keep your habits private"
+A3#1293|PRIVACY_PRAISE|"the developer(s) take great care to protect the privacy of its users"
+A3#2772|PRIVACY_PRAISE|"the data privacy is great!"
+A3#2988|PRIVACY_PRAISE|"Amazing, privacy-conscious app that does the job."
+A3#3016|NR|
+A3#3100|LOCK_PRIVACY|"the lock option is great and allows privacy"
+A3#358|LOCK_PRIVACY|"the added privacy from Face ID to a discreet app icon is great"
+A3#3682|PRIVACY_PRAISE|"while respecting your privacy"
+A3#3840|PRIVACY_PRAISE|"the privacy is nice"
+A3#3909|PRIVACY_PRAISE|"de una manera fácil y con privacidad"
+A3#4252|LOCK_PRIVACY|"i love that you’re allowed to lock it by password/face id"
+A3#4611|NR|
+A3#5323|NR|
+A3#6555|PRIVACY_PRAISE|"Love the privacy of such a sensitive service"
+A3#6745|LOCK_PRIVACY|"I appreciate the widgets and privacy features."
+A3#6967|LOCK_PRIVACY|"so that someone with your phone can’t see what you’re struggling with"
+A3#9012|PRIVACY_PRAISE|"It tracks progress and respects your privacy."
+A3#9213|NOACCT_PRAISE,PRIVACY_PRAISE|"they do not require you to sign up for an unnecessary account"
+A3#9313|PRIVACY_PRAISE|"I love your privacy"
+A3#9360|LOCAL_PRAISE,PRIVACY_PRAISE|"No ads, all data is local!"
+A3#9419|LOCK_PRIVACY|"it has a privacy feature"
+A3#9526|LOCAL_PRAISE,PRIVACY_PRAISE|"respect your privacy everything stays on device"
+A31#3867|PRIVACY_CONCERN|"The actual privacy policies freak me out"
+A33#2238|PRIVACY_CONCERN|"계정 삭제가 불가능(개인정보.....)"
+A34#247|PRIVACY_PRAISE|"very private"
+A34#492|PRIVACY_PRAISE|"Love the privacy focus."
+A34#507|PRIVACY_PRAISE|"I love the privacy."
+A36#474|PRIVACY_PRAISE|"not harvesting your data to sell to third parties"
+A4#1037|PRIVACY_CONCERN|"In a world where our online privacy keeps being violated this is just one step too far."
+A4#16033|NR|
+A4#4639|PRIVACY_PRAISE|"respetan la privacidad"
+A41#291|PRIVACY_PRAISE|"respeta la privacidad"
+A43#74|PRIVACY_PRAISE,NOACCT_PRAISE|"No need to create user account"
+A48#1112|NR|
+A48#347|PRIVACY_PRAISE|"No personal data is collected."
+A5#2039|PRIVACY_PRAISE|"They respect user privacy with opt-in settings."
+A52#12696|LOCK_PRIVACY|"密码锁只有会员可以用，这个不能接受"
+A52#13328|NR|
+A52#15118|LOCK_PRIVACY|"开启隐私保护，点开软件，会先显示我的习惯界面"
+A52#16617|PRIVACY_CONCERN|"下载完系统默认以ID账号注册，是否会泄露隐私"
+A52#3358|PRIVACY_PRAISE|"数据备份和隐私保护也请做好"
+A52#7657|PRIVACY_CONCERN,WANTS_SYNC|"只能以微信和QQ登录，有种泄露隐私的感觉"
+A52#7982|LOCK_PRIVACY|"到了你这里却要花六块钱开通高级用户才能保护"
+A52#8151|LOCK_PRIVACY|"开通高级会员权益其中有一项是隐私保护"
+A55#1983|NOACCT_PRAISE,PRIVACY_PRAISE|"let you used it with out register or login"
+A56#26|PRIVACY_PRAISE,ICLOUD_SYNC_PRAISE|"Simple, free, privacy friendly - optional icloud sync"

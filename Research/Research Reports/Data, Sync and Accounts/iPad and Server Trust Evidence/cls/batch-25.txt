@@ -1,0 +1,32 @@
+N3#6449|NR|
+N7#1070|NR|
+N3#26970|MULTI_SYNC_PRAISE,PRIVACY_PRAISE|"now sends everything through the encrypted cloud to all devices"
+N7#6564|WANTS_E2EE,LOCK_PRIVACY|"App isn&#39;t safe, not even encryption-wise."
+N1#6681|WANTS_E2EE|"I have tried everything that supports e2ee (end to end encryption)"
+N8#5984|PRIVACY_CONCERN|"kein Datenschutz"
+N3#26767|LOCK_PRIVACY|"I like the lock for private notes"
+N2#6503|PRIVACY_CONCERN|"Leider sind andere, bessere Apps oft schlecht im Datenschutz."
+N10#16117|ACCT_FORCED_BAD|"Без регистрации учётной записи Microsoft использовать программу невозможно."
+N9#49438|NOACCT_PRAISE|"Compatible, No sign up required"
+N11#6414|NR|
+N5#15663|IPAD_SYNC_FAIL|"Sync between iPad/iPhone is not possible !"
+N9#4994|IPAD_APP_BAD|"now that I’m using it on iPad it constantly crashes"
+N8#14790|IPAD_SYNC_PRAISE|"パソコン 携帯 iPad全て同期してます"
+N5#14081|NR|
+N2#18046|MULTI_SYNC_FAIL,ICLOUD_SYNC_FAIL|"Appointments show up on some devices and not others, or disappear from all."
+N1#23084|IPAD_PRIMARY|"I have started using the Reminders app on my iPhone and iPad as a way to keep track of all work I’m doing."
+N3#21312|ICLOUD_SYNC_FAIL|"also sync with phone and iCloud is slow and weird"
+N8#10341|NR|
+N1#25837|NR|
+N6#6918|IPAD_APP_REQ,IPAD_PRIMARY|"half of my mobile time is spent on iPad"
+N8#33940|IPAD_APP_REQ|"I wish this app had some features like iPad support"
+N1#5156|NR|
+N3#25773|IPAD_APP_BAD|"This app is no longer operational since upgrading my iPad and iPhone to IOS 17."
+N10#22027|ACCT_FORCED_BAD,ACCT_FORCED_PRIVACY|"asks for a bunch of unnecessary personal information to do so"
+N2#21811|MULTI_SYNC_PRAISE|"I love the way it functions across all of my devices."
+N10#10743|IPAD_APP_REQ,MAC_REQ|"Lack of sharing, iPad or mac integration and smooth syncing"
+N7#6742|MAC_REQ|"can’t afford to release a simple Mac app"
+N3#28557|NR|
+N9#45567|NR|
+N3#4678|NR|
+N10#4311|NR|

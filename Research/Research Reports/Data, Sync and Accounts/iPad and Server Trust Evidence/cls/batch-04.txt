@@ -1,0 +1,70 @@
+A10#59906|NR|
+A10#63195|LOCAL_PRAISE,SERVER_DISTRUST|"The data stays on your phone rather than a server and I hope they maintain that for sake of privacy."
+A10#66307|NR|
+A10#67744|NR|
+A10#69715|LOCAL_PRAISE,SERVER_DISTRUST|"I really appreciate how my entries are stored locally on my phone, and not uploaded to who knows where."
+A13#11478|WANTS_SYNC,LOCAL_LOSS|"I lost all my progress when I got my new phone."
+A13#12545|WANTS_SYNC|"No way to sync between devices."
+A13#15525|LOCAL_NO_SUB|"I have no desire to pay a subscription fee for an app that requires no server interaction for my use."
+A13#2127|LOCAL_NO_SUB|"They have no server costs as the syncing is done through iCloud."
+A13#259|WANTS_SYNC|"App is now useless if it doesn’t sync or backup"
+A13#6668|NR|
+A13#9467|NR|
+A23#5271|WANTS_SYNC|"No cloud sync across devices."
+A24#32505|NR|
+A24#42104|NR|
+A24#42146|NR|
+A3#10395|PRIVACY_PRAISE|"I also greatly appreciate that the app doesn’t collect any user data"
+A3#1052|IPAD_SYNC_REQ,IPAD_BUYER|"I use the app on my iPad &amp; my phone &amp; wish I could sync data between the two"
+A3#2892|LOCAL_PRAISE|"the data based on the terms of services stays on your device so i think thats also good"
+A3#2920|PRIVACY_PRAISE|"doesn’t collect your data as far as I’m aware"
+A3#4049|LOCAL_PRAISE|"Simple, no cloud needed, works great."
+A3#4799|LOCAL_LOSS|"Whole data will loss as it couldn’t backup"
+A3#7569|NR|
+A31#1428|LOCAL_NO_SUB|"Not sure what i would be paying for in a subscription as everything is stored locally."
+A31#1601|LOCAL_NO_SUB|"Considering that the data is stored on my device locally, I would not expect there to be a large upkeep cost"
+A36#161|LOCAL_NO_SUB|"The data is (I assume) stored locally so there&#39;s no server costs."
+A4#11548|NR|
+A4#15747|WANTS_SYNC|"There’s no cloud backup of data"
+A4#18674|NR|
+A52#20498|NR|
+A52#9079|NR|
+A53#1521|NR|
+A57#551|NR|
+A7#689|WANTS_SYNC|"with no cloud sync, it’s not very useful to me"
+A7#696|LOCAL_PRAISE,PRIVACY_PRAISE|"all data stays on the phone"
+A7#725|WANTS_SYNC|"No cloud sync or cloudkit. No Mac app."
+A74#142|SERVER_DISTRUST,LOCAL_WANTED|"Please add a NON-cloud backup or export option."
+A76#5704|WANTS_SYNC|"between devices is a non-starter"
+A85#1062|NR|
+A86#1395|IPAD_APP_REQ,IPAD_BUYER|"why doesn't it show up for ipad?"
+A86#1747|NR|
+P10#7633|NR|
+P105#447|WANTS_SYNC|"no cloud saves"
+P105#618|NR|
+P105#663|NR|
+P12#13654|NR|
+P12#50871|NR|
+P122#15834|NR|
+P122#16455|LOCAL_NO_SUB|"even though the data is entered by me and kept on my phone is ridiculous"
+P126#15182|LOCAL_PRAISE|"no cloud force"
+P126#20073|PRIVACY_CONCERN,LOCAL_WANTED|"not offline only, not open Source... Be careful what you put in here."
+P126#63293|WANTS_SYNC|"Perhaps it has no cloud based back up, so there is chance to lose the data any time."
+P126#76111|NR|
+P142#47|LOCAL_PRAISE,NOACCT_PRAISE|"no sign-ups, no cloud, just me and my goals"
+P19#905|WANTS_SYNC|"No cloud sync (at least in a free version)."
+P2#22856|WANTS_SYNC|"There is no cloud sync in a free version."
+P2#3253|NR|
+P2#3455|LOCAL_PRAISE|"You can even back up your data (offline only)"
+P2#4980|WANTS_SYNC|"No cloud backup. if your device damage/lost, forget all the data."
+P2#8394|PRIVACY_CONCERN|"Looking for an app that doesn't Collect Any of my Personal Data."
+P24#11370|WANTS_SYNC|"Storing the data in an online account, e.g. Google+, would be a great idea."
+P24#14110|WANTS_SYNC|"no cloud storage or multiple device sync"
+P24#14152|WANTS_SYNC|"Also, no cloud service."
+P24#14186|NR|
+P24#1842|NR|
+P3#10560|LOCAL_PRAISE,NOACCT_PRAISE|"it's also not another account to sign in to"
+P3#11713|LOCAL_PRAISE,NOACCT_PRAISE|"no internet required, no account binding"
+P3#12169|WANTS_SYNC|"My only gripe applies to many apps of this type - no cloud sync."
+P3#13514|WANTS_SYNC|"Awesome app, but no cloud syncing makes me sad"
+P3#20631|WANTS_SYNC,LOCAL_LOSS|"I lost 1 year of logs due to phone's failure"

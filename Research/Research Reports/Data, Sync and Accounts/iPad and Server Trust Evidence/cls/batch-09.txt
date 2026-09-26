@@ -1,0 +1,70 @@
+A59#10409|NR|
+A67#1446|PRIVACY_PRAISE|"I appreciate how Habio respects my privacy and keeps all my data secure."
+A67#1633|PRIVACY_PRAISE|"A trustworthy app that respects user privacy and data."
+A67#420|NR|
+A68#1594|NR|
+A68#3704|NR|
+A76#1089|LOCAL_PRAISE,PRIVACY_PRAISE|"本地数据大大保障了数据安全和用户隐私"
+A76#7381|NR|
+A79#155|PRIVACY_PRAISE|"no tracking"
+A79#23|LOCAL_PRAISE,PRIVACY_PRAISE|"dass ein starker Datenschutz Fokus gesetzt wurde und alle Daten offline bleiben"
+A8#212|PRIVACY_PRAISE|"Datenschutz ok"
+A8#250|PRIVACY_PRAISE|"Datenschutz Gross geschrieben"
+A8#99|NR|
+A85#2002|PRIVACY_PRAISE|"they don&#39;t collect your personal data so its also a pro"
+A85#2430|NR|
+A86#1162|LOCK_PRIVACY|"3D Touch widget reveals all my habits"
+A86#269|LOCK_PRIVACY|"忘记隐私的锁屏密码怎么办啊"
+A86#90|NR|
+A86#994|NR|
+A9#242|PRIVACY_CONCERN|"der Datenschutz ist mir viel zu schlecht"
+P110#866|NR|
+P111#1217|ACCT_FORCED_BAD,ACCT_FORCED_PRIVACY|"no respect for privacy having to log in"
+P12#10890|NR|
+P12#10992|ACCT_FORCED_PRIVACY,PRIVACY_CONCERN|"no respect for privacy,why do you need my email?"
+P12#131429|NR|
+P12#133709|NR|
+P12#135469|PRIVACY_CONCERN|"A política de privacidade só está disponível após a assinatura."
+P12#14239|PRIVACY_CONCERN|"i am not sure about data sharing privacy policy"
+P12#151822|NR|
+P12#1718|PRIVACY_CONCERN|"Zur Profilbildung von Personen super geeignet."
+P12#2178|PRIVACY_CONCERN|"gezwungen werde diverse personenbezogene Daten einzugeben"
+P12#2400|PRIVACY_CONCERN|"Datenschutzrechte werden massiv verletzt"
+P12#3828|PRIVACY_CONCERN|"die Datenschutzbestimmungen nur auf englisch?"
+P12#4241|PRIVACY_CONCERN|"Datenschutzerklärung angucken. Nur leider funktioniert das nicht"
+P12#70241|PRIVACY_CONCERN|"Aprecio mucho mi seguridad y privacidad así que la desinstale"
+P12#75510|NR|
+P12#85191|NR|
+P12#85808|PRIVACY_CONCERN|"No permite acceder a los términos y condiciones del servicio ni a la política de privacidad."
+P122#11071|NR|
+P122#1318|ACCT_FORCED_BAD,ACCT_FORCED_PRIVACY,SERVER_DISTRUST,LOCAL_WANTED|"Aber ich will kein online Konto mit all den üblichen Datenschutzproblemen"
+P122#16211|NR|
+P122#7226|NR|
+P125#1255|PRIVACY_CONCERN|"Fragwürdige Datenschutzbestimmungen."
+P126#111022|PRIVACY_CONCERN|"No acepto su abusiva Política de Privacidad."
+P126#112058|PRIVACY_CONCERN|"invade mucho la privacidad"
+P126#117588|PRIVACY_CONCERN|"me pide leer mis contactos para sincronizar"
+P126#161413|PRIVACY_PRAISE|"não fica querendo invadir a privacidade das pessoas"
+P126#23558|PRIVACY_CONCERN|"their wish to share my information with many vendors for targeted adverts"
+P126#26372|PRIVACY_PRAISE,WANTS_SYNC|"Great privacy but I can't use it until it has Backup/Restore for when I change my phone."
+P126#41455|NR|
+P126#71520|PRIVACY_CONCERN|"Too many ads. Privacy concerns."
+P126#78472|PRIVACY_CONCERN|"ANUNCIOS PERSONALIZADOS invadiendo la privacidad"
+P126#9881|PRIVACY_CONCERN|"ob meine Daten genutzt werden dürfen"
+P126#9967|PRIVACY_CONCERN|"sämtliche Zustimmungen zu Datensammlung zu geben"
+P133#47|PRIVACY_PRAISE|"Ability to turn off analytics is great to see as well for privacy minded folks."
+P14#407|PRIVACY_PRAISE|"No data collection apart from chash logs"
+P145#76|PRIVACY_CONCERN|"Vendors for them not to sell your info"
+P15#912|NR|
+P2#12362|LOCK_PRIVACY|"You can also put password for your privacy."
+P2#17266|LOCK_PRIVACY|"cuenta con contraseña para tu mayor privacidad"
+P2#25239|NR|
+P2#660|PRIVACY_CONCERN|"Die App hat leider auf zuviele Daten Zugriff."
+P2#8170|PRIVACY_PRAISE|"no privacy selling manager"
+P20#908|PRIVACY_CONCERN,ACCT_FORCED_PRIVACY|"가입시 너무 많은 개인정보를 요구해요"
+P22#1936|NR|
+P22#79|PRIVACY_CONCERN|"Datenschutzerklärung sind nicht aufrufbar"
+P24#15106|NR|
+P24#18566|LOCK_PRIVACY|"privacidad de tu  calendario"
+P3#10001|LOCAL_PRAISE,PRIVACY_PRAISE|"works offline, small size, respects privacy"
+P3#12300|NR|

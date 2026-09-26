@@ -1,0 +1,70 @@
+P84#23597|PRIVACY_CONCERN|"Does the app share my lists with any othet human or entity?"
+P84#24034|WANTS_SYNC,PRIVACY_PRAISE|"Congrats on getting the Sync option up and running! I'll be paying for the service"
+P84#26753|NR|
+P84#29886|PRIVACY_PRAISE|"the privacy is great"
+P84#3206|OWN_CLOUD_PREF|"Könnte man nicht eine Anbindung an Nextcloud o. ein eigenes Script (API + DB) anbieten, um die Cloud selbst zu hosten?"
+P84#43829|NR|
+P84#46658|PRIVACY_PRAISE|"focado em privacidade"
+P84#46665|PRIVACY_CONCERN|"tinha dúvidas quanto a privacidade"
+P84#49217|LOCK_PRIVACY|"senti falta de um PIN"
+P84#6996|PRIVACY_PRAISE|"I like that they respect the user's privacy"
+P84#8307|PRIVACY_PRAISE|"great privacy policy"
+P87#245|ACCT_FORCED_BAD,ACCT_FORCED_QUIT,ACCT_FORCED_PRIVACY|"Exige cuenta. Desinstalada sin abrir"
+P9#245|PRIVACY_PRAISE|"Privacy first! Best app"
+P9#690|PRIVACY_PRAISE|"no data collection"
+P91#909|NR|
+P94#25|PRIVACY_PRAISE,LOCAL_PRAISE|"Fully offline and private too."
+A1#19453|NOACCT_PRAISE|"为啥不用登录就能使用呢"
+A1#246|NOACCT_PRAISE|"without registration-perfect"
+A1#41044|NOACCT_PRAISE|"不用注册很方便"
+A1#48921|IPAD_SYNC_REQ,SYNC_ANY_REQ|"All your save habits that you put on your iPhone cannot be found if you use other device such as iPad."
+A1#51220|NOACCT_PRAISE|"the fact no account is required"
+A1#53693|NOACCT_PRAISE|"you don’t need to sign in to use it"
+A1#54118|NOACCT_PRAISE,ICLOUD_SYNC_PRAISE|"It uses iCloud, no login account needed."
+A10#13221|NR|
+A10#16381|NR|
+A10#19967|NR|
+A10#26304|NR|
+A10#30285|NR|
+A10#31395|NR|
+A10#31929|NR|
+A10#4132|SYNC_ANY_REQ|"it doesn’t seem like I can make an account to log into on other devices"
+A10#41951|NR|
+A10#42010|NOACCT_PRAISE|"You don’t have to sign in to do anything"
+A10#51972|NR|
+A10#5236|NR|
+A10#52916|NOACCT_PRAISE|"You don’t have to sign up or anything"
+A10#53037|NR|
+A10#8891|NR|
+A13#10789|IPAD_SYNC_FAIL|"I downloaded in my iPad first then iphone but these two can not see each other."
+A13#11482|NR|
+A13#13637|NR|
+A13#1440|NR|
+A13#1577|NR|
+A13#17387|NOACCT_PRAISE,LOCAL_PRAISE|"Thanks for not requiring account creation.  Keeps data on the phone"
+A13#1793|NR|
+A13#18258|IPAD_APP_REQ,IPAD_BUYER|"Not sure why any serious app is even released without an iPad counterpart these days."
+A13#1921|NOACCT_PRAISE,ICLOUD_SYNC_PRAISE|"I love that the free version allows iCloud sync"
+A13#485|NOACCT_PRAISE,ICLOUD_SYNC_PRAISE|"syncs across all my devices no drama, there’s no account or sign up so ZERO spam!"
+A13#4949|NOACCT_PRAISE|"dass auf einen Account Zwang verzichtet wird"
+A13#5667|NR|
+A13#7193|NR|
+A16#702|NR|
+A20#1214|NR|
+A20#1534|NOACCT_PRAISE|"No registration, premium features without invasive screens"
+A20#3762|NR|
+A20#506|NOACCT_PRAISE|"Evan better there is no sign up required"
+A20#650|NOACCT_PRAISE|"I’m tired of having to put my email somewhere to try the app out."
+A23#1977|NOACCT_LOSS|"no way to restore as there is no account option"
+A24#11714|NR|
+A24#11884|NR|
+A24#11967|NR|
+A24#12364|NR|
+A24#12723|NR|
+A24#13631|NR|
+A24#14134|NR|
+A24#14681|NR|
+A24#14682|NR|
+A24#15227|NR|
+A24#15782|NR|
+A24#17707|NR|

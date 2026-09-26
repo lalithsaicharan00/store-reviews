@@ -1,0 +1,55 @@
+code                     AP    A    P   N apps  mean   1★%
+NOACCT_PRAISE           151   54   97   1   44  4.85   0.0
+PRIVACY_PRAISE          118   53   65   1   34  4.86   0.0
+IPAD_SYNC_FAIL          106   99    7   1   30  2.97  27.4
+IPAD_BUYER               92   71   21   0   39  3.30  21.7
+ACCT_FORCED_BAD          82   18   64   4   24  1.43  74.4
+ICLOUD_REQ               78   77    1   0   22  3.96   7.7
+IPAD_APP_REQ             74   69    5   3   22  4.15   6.8
+WANTS_SYNC               76   22   54   0   27  3.74  10.5
+IPAD_SYNC_REQ            76   71    5   0   29  4.05   1.3
+PRIVACY_CONCERN          68   24   44   2   29  1.75  67.6
+IPAD_APP_BAD             62   55    7   2   24  3.48  14.5
+ICLOUD_SYNC_FAIL         46   46    0   2   10  2.85  21.7
+LOCAL_PRAISE             43   16   27   0   15  4.98   0.0
+NOACCT_LOSS              35   17   18   0   20  2.66  37.1
+SYNC_ANY_REQ             35   17   18   0   20  3.66   5.7
+IPAD_PRIMARY             29   29    0   2   14  3.83  13.8
+LOCAL_LOSS               25   20    5   0   12  2.60  40.0
+LOCK_PRIVACY             22   16    6   2    9  4.41   9.1
+SERVER_DISTRUST          23   12   11   0   16  2.83  43.5
+MAC_REQ                  21   18    3   2   14  4.10   0.0
+ACCT_FORCED_PRIVACY      19    6   13   2   11  1.05  94.7
+ACCT_FORCED_QUIT         20    1   19   0    8  1.25  85.0
+ICLOUD_SYNC_PRAISE       19   19    0   0   11  4.95   0.0
+TABLET_SYNC_REQ          19    0   19   0   11  3.32  10.5
+IPAD_SYNC_PRAISE         18   15    3   1   11  4.94   0.0
+LOCAL_WANTED             17    2   15   0    9  2.76  29.4
+MULTI_SYNC_REQ           17   10    7   0   12  3.76   5.9
+WANTS_E2EE               12    0   12   2    7  4.50   0.0
+MULTI_SYNC_PRAISE        11    5    6   2    6  4.36   0.0
+LOCAL_NO_SUB             11   10    1   0    7  2.82  27.3
+MULTI_SYNC_FAIL          10    7    3   1    9  2.10  40.0
+IPAD_PREMIUM_MISSING     10    5    5   0    7  3.00  20.0
+ICLOUD_NOT_ENOUGH         8    8    0   0    4  4.12   0.0
+ICLOUD_LOSS               8    8    0   0    6  1.88  75.0
+OWN_CLOUD_PREF            8    1    7   0    7  4.00   0.0
+ICLOUD_OVER_SERVER        6    6    0   0    3  2.50  50.0
+ICLOUD_AVOID              4    4    0   0    3  3.50  25.0
+MAC_SYNC_FAIL             4    4    0   0    3  3.25   0.0
+IPAD_APP_PRAISE           2    2    0   0    2  5.00   0.0
+
+precision by drawn mode (habit stores): relevant / read
+  FORCED_ACCOUNT       65/103     63%
+  ICLOUD               65/79      82%
+  ICLOUD_PREF          76/86      88%
+  IPAD                 95/110     86%
+  IPAD_APP_REQ         34/45      76%
+  IPAD_SYNC           143/147     97%
+  LOCAL_ONLY           77/126     61%
+  MAC                  21/28      75%
+  MULTI_DEVICE         43/45      96%
+  NO_ACCOUNT_PRAISE   198/473     42%
+  PRIVACY_POS         189/260     73%
+  SERVER_DISTRUST      73/141     52%
+  TABLET_OTHER         19/30      63%

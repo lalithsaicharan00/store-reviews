@@ -1,0 +1,70 @@
+P4#94110|NR|
+P4#96005|NR|
+P4#96059|NR|
+P4#97028|NR|
+P49#341|NR|
+P61#1246|NR|
+P71#474|NR|
+P8#14908|NR|
+P8#1619|NR|
+P8#5810|NR|
+P84#50935|NR|
+P84#51740|NR|
+P84#6810|NR|
+P95#451|NR|
+P97#14507|NR|
+P97#5253|NR|
+P98#3532|NR|
+P98#3678|NR|
+P98#4305|NR|
+P98#4721|NR|
+P98#5470|NR|
+A23#4826|IPAD_SYNC_FAIL,IPAD_PRIMARY|"Right now if you start a timer on your phone your watch and iPad will show no progress"
+P45#101|SYNC_ANY_REQ|"no sign up with profile to have across multiple devices"
+P49#2356|TABLET_SYNC_REQ,SYNC_ANY_REQ|"I tried installing it again on my tablet, and it seems like I have no account."
+P5#1733|NOACCT_PRAISE|"no account or cash needed for 2 routines"
+P5#2928|NOACCT_PRAISE|"no email required"
+P61#2160|NOACCT_PRAISE|"бесплатное и без регистрации"
+P65#15871|NOACCT_PRAISE|"Просто и без регистрации и смс"
+P65#3029|NOACCT_PRAISE|"You don't need to sign up or sign in to use it either, a refreshing way of use in this always-connected era."
+P65#3036|NOACCT_PRAISE|"no login required"
+P65#5566|NOACCT_PRAISE|"doesn't require an account"
+P68#26|LOCAL_WANTED|"it is not completely offline"
+P70#449|LOCAL_WANTED,ACCT_FORCED_BAD|"Offline mode? I'd happily pay for an offline service"
+P71#859|ACCT_FORCED_BAD|"Нельзя попробовать без регистрации."
+P8#13135|ACCT_FORCED_BAD,LOCAL_WANTED|"I want to use without login, or not require wi-fi."
+P8#347|ACCT_FORCED_BAD,LOCAL_WANTED|"Tablet ohne Internet, keine Nutzung ohne Anmeldung."
+P8#5710|ACCT_FORCED_BAD|"I Would love to sign up without email or anything, just as what is called guest"
+P8#9788|ACCT_FORCED_BAD,ACCT_FORCED_PRIVACY,SERVER_DISTRUST,LOCAL_WANTED|"Just let me use the app offline, with no account required"
+P84#1014|WANTS_SYNC|"I can't just login and sync data, cause it's premium service and cost money - no problem, I am glad to support cool project."
+P84#16390|NOACCT_PRAISE|"At least no login required."
+P84#1764|NOACCT_PRAISE,LOCAL_PRAISE|"everything works without an account/offline"
+P84#17714|NOACCT_PRAISE|"no login required like others"
+P84#19764|NOACCT_PRAISE,LOCAL_PRAISE|"use it no registration. No fuzz. Can use offline."
+P84#20341|NOACCT_PRAISE,LOCAL_PRAISE|"You can keep your tasks offline (no account needed)"
+P84#20478|NOACCT_PRAISE|"It's simple and no registration."
+P84#21934|NOACCT_PRAISE|"no account required"
+P84#22610|NOACCT_LOSS|"Has no sign in option only export and the file won't open"
+P84#25320|NOACCT_PRAISE|"requires no account to use!"
+P84#25905|NOACCT_PRAISE|"doesn't require account"
+P84#28565|NOACCT_PRAISE|"You don't need to sign in"
+P84#28803|NOACCT_PRAISE|"No account / profile links required"
+P84#29522|NOACCT_PRAISE|"no account required"
+P84#29770|SYNC_ANY_REQ|"in this no login facility"
+P84#30197|NOACCT_PRAISE|"And no account required."
+P84#31756|NOACCT_PRAISE|"no sign in"
+P84#31896|NOACCT_PRAISE|"No email or social media sign up!!!"
+P84#45077|NOACCT_PRAISE,LOCAL_PRAISE,PRIVACY_PRAISE|"No account needed. Your tasks on your device in a nice overview."
+P84#5435|NOACCT_PRAISE,LOCAL_PRAISE|"Ohne Registrierung, die auch funktioniert wenn ich die Netzwerkberechtigungen abschalte."
+P84#56248|NOACCT_PRAISE|"Спасибо, что без регистрации и смс"
+P84#57077|NOACCT_PRAISE|"No login, simple task lists"
+P84#6552|NOACCT_PRAISE|"ohne Anmeldung bei fb, google etc möglich"
+P84#9978|NOACCT_PRAISE|"no login prompts or spam or demanding my phone number for no reason"
+P9#1919|SYNC_ANY_REQ|"Mais o aplicativo poderia ser vinculado no email. Só assim não perdermos o que já foi salvo"
+P9#280|NOACCT_PRAISE,LOCAL_PRAISE|"I love that it doesn't require a login and works offline"
+P9#598|NOACCT_PRAISE|"I admire it doesn't require an account registration or personal information."
+P97#14841|ACCT_FORCED_BAD|"pedem o cadastro no e-mail antes de visualizar e conhecer as funcionalidade"
+P97#1512|NOACCT_PRAISE|"Außerdem mal ne App, die ich ohne Anmeldung benutzen kann."
+P97#19456|NOACCT_PRAISE|"Нравится, что можно использовать приложение без регистрации"
+P97#1979|ACCT_FORCED_BAD|"Keine Möglichkeit ohne Registrierung zu sehen, ob es was für einen ist."
+P97#22261|ACCT_FORCED_BAD|"Без регистрации невозможно войти!"
