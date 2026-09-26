@@ -1,0 +1,114 @@
+{
+  "is_research_data": false,
+  "selected_date": "2026-09-24",
+  "habits": [
+    {
+      "name": "Water",
+      "group": "Health",
+      "section": "Anytime",
+      "scheduled_today": true
+    },
+    {
+      "name": "Read",
+      "group": "Mind",
+      "section": "Anytime",
+      "scheduled_today": true
+    },
+    {
+      "name": "Call family",
+      "group": "Home",
+      "section": "Anytime",
+      "scheduled_today": true
+    },
+    {
+      "name": "Stretch",
+      "group": "Health",
+      "section": "Morning",
+      "scheduled_today": true
+    },
+    {
+      "name": "Breakfast",
+      "group": "Health",
+      "section": "Morning",
+      "scheduled_today": true
+    },
+    {
+      "name": "Floss",
+      "group": "Health",
+      "section": "Morning",
+      "scheduled_today": true
+    },
+    {
+      "name": "Walk",
+      "group": "Health",
+      "section": "Afternoon",
+      "scheduled_today": true
+    },
+    {
+      "name": "Meds",
+      "group": "Health",
+      "section": "Afternoon",
+      "scheduled_today": true
+    },
+    {
+      "name": "Skincare",
+      "group": "Self-care",
+      "section": "Evening",
+      "scheduled_today": true
+    },
+    {
+      "name": "Brush teeth",
+      "group": "Health",
+      "section": "Evening",
+      "scheduled_today": true
+    },
+    {
+      "name": "Journal",
+      "group": "Mind",
+      "section": "Evening",
+      "scheduled_today": true
+    },
+    {
+      "name": "Cycle",
+      "group": "Health",
+      "section": "Afternoon",
+      "scheduled_today": false
+    },
+    {
+      "name": "Sun salutations",
+      "group": "Health",
+      "section": "Morning",
+      "scheduled_today": false
+    },
+    {
+      "name": "Breathing",
+      "group": "Mind",
+      "section": "Morning",
+      "scheduled_today": false
+    },
+    {
+      "name": "Plan the week",
+      "group": "Mind",
+      "section": "Anytime",
+      "scheduled_today": false
+    },
+    {
+      "name": "Language practice",
+      "group": "Learning",
+      "section": "Morning",
+      "scheduled_today": false
+    },
+    {
+      "name": "Piano practice",
+      "group": "Learning",
+      "section": "Night shift",
+      "scheduled_today": false
+    },
+    {
+      "name": "Read history",
+      "group": "Learning",
+      "section": "Night shift",
+      "scheduled_today": false
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+# Q48 classification map — cite<TAB>stars<TAB>codes<TAB>quoted fragment (verified)
+A10#50532	4	QN=1	help me break a seven year addiction with the internet
+A23#131	5	QV=FEW,MIX	break a few bad habits (smoking, sugar etc)
+A24#37163	5	QN=2	I already quit 2 bad habits
+A3#279	4	QV=FEW	quit a few difficult habits
+A3#727	5	QV=MANY	helped me quit many things I find unhealthy
+A3#889	5	QV=FEW	break a few bad habits
+A3#2078	5	QV=FEW,MIX	given up a few bad habits and the days since I started a good habits
+A3#2291	5	QV=SEVERAL	I have several counters on the free version
+A3#2435	5	QN=2,QOF=2/5	give up on 2 bad habits and been consistent with 3 good ones
+A3#3095	5	QV=FEW	quit a few terrible habits
+A3#3107	5	QV=FEW	give up a few things in my life
+A3#4033	5	QN=5	quit over 5 addiction at a time with different counters
+A3#4306	5	QV=FEW	break a few habits
+A3#4504	5	QN=1	I quit one of habits since then
+A3#5153	5	QN=2	helped me quit two habits
+A3#5643	5	QV=MANY	regulate or stop many habits of mine
+A3#5785	5	QV=SEVERAL	work on quitting several habits
+A3#5931	5	QV=FEW	Helped me kick a few bad habits
+A3#5973	5	QV=MANY	I have kicked so many harmful habits
+A3#6007	5	QV=MANY	quitting many bad habits in my life
+A3#6116	5	QV=MULTI	helped me quit multiple bad habits
+A3#6177	5	QV=FEW	quit a few bad addictions
+A3#6469	5	QV=MANY	helped me kick so many habits
+A3#6470	5	QV=MANY	kick so many bad habits
+A3#6501	5	QN=2	kick a couple of habits
+A3#6535	5	QV=FEW	stop a few bad habits
+A3#6687	4	QV=FEW	quit a few things
+A3#6830	5	QV=MANY	sober from many things
+A3#6886	5	QV=SEVERAL	quit several bad habits
+A3#7011	5	QN=3	I had 3 that I wanted to work on
+A3#7224	5	QV=MULTI	kick multiple bad habits
+A3#7457	5	QV=MANY	break so many bad habits
+A3#7594	5	QV=FEW	Trying to break a few habits
+A3#8041	5	QN=10	As someone quitting like 10 things
+A3#8229	5	QN=3	biting my nails, not making my bed, texting a situationship
+A3#8366	5	QV=SEVERAL	stop several bad habits
+A3#8464	5	QN=4	more than 3 addictions down
+A3#8931	5	QV=SEVERAL	quit several things
+A3#9465	5	QV=SEVERAL	quit several bad habits
+A3#9900	5	QV=SEVERAL	quit several different things
+A3#10171	5	QV=SEVERAL	quit several bad habits
+A3#10551	5	QN=6	I have kicked about 6 habits
+A68#3765	1	QN=1	Got this to break one habit
+A85#85	3	QV=FEW,MIX	kicking a few bad habits and drinking more water
+P12#34518	5	QN=2,MIX	quitting a couple bad habits
+P24#5568	5	QN=2,QOF=2/3	Trying to break 2 habits and create 1 new
+P24#10366	5	QN=2	Kicked one bad habit. Working on kicking No. 2.
+P24#13637	5	QV=FEW,MIX	kick a few habits and to pick up some new healthier ones
+P3#4792	5	QV=SEVERAL,MIX	make and break several habits
+A10#26701	5	QV=MANY	overcome so many bad habits
+A10#41518	5	QN=1	I am on day 25 of sobriety now
+A13#16699	5	QN=1,MIX	break a 15 year bad habit
+A23#2138	5	QV=MANY,MIX	get rid of many bad habits and implemented good ones
+A23#3159	5	QV=SEVERAL,MIX	get rid of the several bad habits and create couple of good
+A23#4661	5	QN=2,MIX	several new habits that I’d like to establish a couple bad habits I’d like to break
+A23#5233	3	QN=2,MIX	one of my negative habits is &#34;Eating Bad Food&#34;
+A24#1307	5	QV=MANY	overcome many bad habits
+A24#36277	5	QN=2	I have a couple of bad habits I’ve been trying to eradicate
+A3#140	5	QN=3	Still working on my other bad habits
+A3#159	5	QN=1	which I haven’t needed to d
+A3#237	5	MULTI_PRAISE	Able to have many counters going at the same time
+A3#239	5	MULTI_PRAISE	can set up at many trackers as you like
+A3#247	5	QV=MULTI	calculate multiple bad habits
+A3#249	5	MULTI_PRAISE	allows multiple counters
+A3#347	5	QV=FEW	I’ve set a few different counters for different bad habits
+A3#359	5	MULTI_PRAISE	the widget that allows you track multiple counters
+A3#491	3	QN=6	instead of the usual 6
+A3#573	5	MULTI_PRAISE	you can add multiple trackers unlike other apps
+A3#778	5	QN=2	I have a couple of bad habits that I’m trying to quit
+A3#796	5	QN=2	Mine is alcohol and weed
+A3#825	5	MULTI_PRAISE	Lets you keep multiple counters
+A3#864	5	MULTI_PRAISE	I love how you can track multiple vices on this app
+A3#908	5	MULTI_PRAISE	Let&#39;s you set up many counter
+A3#913	5	MULTI_PRAISE	you dont have to pay to have multiple counters
+A3#932	5	QN=4	I have 4 separate ongoing trackers
+A3#1045	5	MULTI_PRAISE	you can add more than 1 tracker
+A3#1059	4	QV=MANY	lets me do as many of my addiction
+A3#1125	5	MULTI_PRAISE	You can have multiple timers
+A3#1203	5	MULTI_PRAISE	Love being able to set multiple trackers
+A3#1300	5	MULTI_PRAISE	having multiple trackers going at the same time
+A3#1315	5	MULTI_PRAISE	Being able to have more than one tracker has to be my favourite feature
+A3#1331	5	MULTI_PRAISE	I can add as many counters as I want or need to
+A3#1650	5	QN=2	tracking my progress regarding two Bad habits
+A3#1825	5	QV=MULTI	keeps track of my multiple counters very well
+A3#1940	5	MULTI_PRAISE	you can have multiple counters
+A3#1942	5	MULTI_PRAISE	add as many counters as you want
+A3#2066	5	QN=5	I’m tracking 5 bad habits
+A3#2120	5	QV=MULTI	when one counter slips as it shows my other achievements
+A3#2148	5	QV=MULTI	allows me to track multiple addictions
+A3#2208	5	MULTI_PRAISE	Love the ability to add many trackers
+A3#2265	4	MULTI_PRAISE	you can have more than one counter at once
+A3#2327	5	MULTI_PRAISE	many addictions or anything to truck
+A3#2458	5	QN=5	ive got 5 separate counters running
+A3#2479	5	QV=MULTI	I use it to track multiple habits I’m trying to quit
+A3#2484	4	QV=MULTI	struggle to find an app with multiple addictions that I didn’t need to pay for
+A3#2506	5	MULTI_PRAISE	I like that you can add multiple counters
+A3#2560	5	QN=5	I have 5 going on this app
+A3#2611	5	QV=MANY	my many addictions
+A3#2623	5	MULTI_PRAISE	you can add multiple counters on one page
+A3#2721	5	MULTI_PRAISE	with several counters of you want them
+A3#2750	5	QV=MANY	I have many bad habits I want to get rid of
+A3#2775	5	MULTI_PRAISE	instead of capping it at 2/3 counters
+A3#2780	5	QN=1	All I was looking for was a simple tool to record my non smoking journey
+A3#3092	5	QN=2	I for example have one for alcohol
+A3#3180	5	QV=MANY	some of my many bad habits
+A3#3259	5	QV=MANY	So many bad habits to cure
+A3#3267	4	MULTI_PRAISE	it allows you to make more than 2 counters for tracking
+A3#3277	5	QN=8	I’ve 8
+A3#3283	5	QN=12	I have sometimes had around 12 different counters referring to 3 or 4 habits
+A3#3297	5	MULTI_PRAISE	Multiple counters
+A3#3464	5	MULTI_PRAISE	creating multiple counters
+A3#3517	5	QN=2	Added 2 bad habits
+A3#3776	5	MULTI_PRAISE	You can add as many trackers as you want
+A3#3830	5	MULTI_PRAISE	this app does not have any limitations on how many counters you can create
+A3#3842	5	QV=FEW	I have a few counters on here
+A3#4027	5	QV=MANY	so many of my addictions
+A3#4058	5	QV=MULTI	lookup multiple trackers at once
+A3#4092	5	QN=2	I don&#39;t need more than 2
+A3#4110	5	MULTI_PRAISE	You can make multiple timers for free
+A3#4175	5	QN=1	I only track one addiction
+A3#4210	5	QV=FEW	plus a few other bad habits
+A3#4213	5	QN=2	I have 2 timers going
+A3#4255	5	QV=FEW,MIX	I have a few bad habits I want to stop and good habits I want to maintain
+A3#4256	5	MULTI_PRAISE	customisable to have a few counters going
+A3#4372	5	MULTI_PRAISE	track multiple addictions at once
+A3#4913	5	QV=MANY	I’m cutting back on so many bad habits
+A3#4930	3	QN=12	I have over a dozen counters going
+A3#4948	5	MULTI_PRAISE	Can set up multiple counters
+A3#5038	5	QV=FEW	a few different date trackers
+A3#5047	5	MULTI_PRAISE	you can make multiple trackers at once
+A3#5069	5	MULTI_PRAISE	lets me have so many different trackers for different things
+A3#5162	5	QN=1	I use it to track my sobriety
+A3#5175	5	QN=1	Has helped me beat one addiction so far
+A3#5315	5	QN=1	I use this to track my alcohol consumption
+A3#5373	4	QN=1	you don’t need premium for one counter
+A3#5440	5	QN=1-2	I’ve only used 1/2 different trackers
+A3#5487	4	QN=4	it would show me four of my counters
+A3#5531	5	QV=MULTI	I use it to count my sober time, and other things
+A3#5573	5	QV=MULTI	You can also have multiple trackers and widgets if you’re like me
+A3#5582	5	QV=MULTI	tracking days in program and days off bottom lines
+A3#5609	5	QV=MULTI	to track multiple bad habits
+A3#5610	5	QV=SEVERAL	helped me beat several bad habits
+A3#5633	5	QV=MULTI	I like that I can track multiple habits I’m trying to break
+A3#5699	5	QN=2	i’ve only had to set two trackers
+A3#5802	5	QV=SEVERAL	Helped me with several bad habits
+A3#6037	5	QN=7	recovering out of seven different addictions
+A3#6144	5	QN=2	I track a few things I’m quitting (alcohol, sugar)
+A3#6302	5	QN=3	I have 3 different t
+A3#6324	5	QV=MANY	get rid of many bad habits
+A3#6495	5	QV=MULTI	I&#39;ve broken multiple bad habits
+A3#6568	5	QV=MULTI	I use Days Since to track multiple sobriety lines in my recovery
+A3#6805	5	QV=MULTI	It keeps track of multiple bad habits that I am quitting
+A3#6927	5	QV=MULTI	i have multiple counters going on at once
+A3#7381	5	QV=FEW	I have multiple counters for a few things
+A3#7422	5	QV=MANY	have many counters going that I check everyday
+A3#7430	5	QN=2	knowing I had a couple bad habits myse
+A3#7684	4	QV=FEW	help me quit a few different bad habits
+A3#7703	5	QN=5	So far I have 5 timers
+A3#7969	5	QN=1	i’ve used this app to track days without self harm for 147 days
+A3#8095	5	QN=1	I’ve been using this app to track my sh for a few years
+A3#8101	5	QV=MANY	track many habits I’m trying to quit at the same time
+A3#8142	5	QN=2	I use this app to track my time quit from cigarettes and the separately I track my days without nicotine lozenges
+A3#8401	5	QV=MULTI	I have multiple counters to keep me on track with my goals
+A3#8559	5	QV=SEVERAL	I have several habits I am trying to break
+A3#8700	5	QN=2	trying to let go of a couple bad habits
+A3#8759	5	QV=MULTI	Helps me keep track of multiple bad habits
+A3#8793	5	QN=10	I’ve added 10 counters
+A3#8841	5	QN=1,MIX	discourage bad ones like eating fried foods
+A3#8855	5	QN=1	to count the time since I started dieting
+A3#8915	5	QN=20	I’ve got like 20+
+A3#8950	5	QN=2	I have a couple bad habits that I wanted to quit cold turkey
+A3#9170	5	QN=3	I’ve said goodbye to junk food, too much inactivity, and smoking
+A3#9396	3	QN=3	I have three bad habits that I need to break
+A3#9431	5	QN=1	my journey to quit tobacco
+A3#9434	5	QN=3	I had three going at once
+A3#9623	5	QV=FEW	I have a few big habits to kick
+A3#9931	5	QV=MANY	get rid of so many bad habits
+A3#10121	5	QV=MANY	there’s a lot of habits i’m trying to break
+A3#10152	5	QV=FEW	I have knocked out a few bad habits
+A3#10195	5	QV=MULTI	i use this app to help me keep track of my bad habits
+A3#10285	5	QN=2	This helped me break 2 random bad habits
+A33#3816	4	QN=1,MIX	I created one bad hab
+A48#2513	5	QN=1,MIX	log every cigarette and countdown correctly as a negative habit
+A48#3251	5	QV=FEW,MIX	a few good habits that I want to be doing, and a few bad habits that I want to avoid
+A48#3495	5	QV=MULTI,MIX	I have broken more than one bad habit
+A48#4256	2	QN=1,MIX	I am tracking my weight and smoking
+A55#1741	5	QN=3,MIX	I&#39;ve improved 3 pesky bad habits so far
+A7#466	5	QV=MULTI,MIX	Helped my get rid of multiple bad habits
+A76#879	5	QN=3	Doesn&#39;t let me track more than 3 bad habits
+P2#9189	4	QV=MULTI	quiting multiple bad habits
+P24#4233	5	QV=FEW,MIX	get over a few bad habits i was stuck in, and is helping me form some good habits
+P24#8720	5	QN=2	the two habits I'm trying to break
+P24#8868	5	QN=4	Jelped me overcome 4 bad habits
+P24#15228	4	QV=SEVERAL,MIX	I've eliminated several bad habits and started new ones
+P3#3999	5	QN=1,MIX	Using it to mindfulness count number of my drinks
+P3#6710	3	QV=FEW,MIX	Got me out of quite a few bad habits
+P3#12635	5	QV=SEVERAL	I literally turned around several bad habits

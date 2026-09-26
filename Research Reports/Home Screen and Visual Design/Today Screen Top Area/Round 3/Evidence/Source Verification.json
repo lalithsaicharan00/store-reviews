@@ -1,0 +1,5 @@
+{
+  "source_records_checked": 83,
+  "mismatches": [],
+  "method": "Read saved one-based physical newline-delimited source line with file.readlines and compare raw review_id. Python str.splitlines is inappropriate for embedded Unicode line separators in review text."
+}

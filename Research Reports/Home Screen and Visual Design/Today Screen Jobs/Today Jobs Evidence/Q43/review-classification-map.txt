@@ -1,0 +1,144 @@
+# Q43 classification map — cite<TAB>stars<TAB>codes<TAB>quoted fragment (verified)
+A3#247	5	QSEE	the widget allows me to put the days since on my home screen for a constant reminder
+A3#347	5	QN	I’ve set a few different counters for different bad habits
+A3#359	5	QSEE	keep them visible on your most used screen
+A3#546	5	QN	a few streaks of different habits
+A3#796	5	QN	Mine is alcohol and weed
+A3#1650	5	QN	I‘m actually tracking my progress regarding two Bad habits
+A3#2066	5	QN	I’m tracking 5 bad habits I’ve quit in the last 90 days
+A3#2194	5	QSEE	Having a widget on my Home Screen is also nice to see at a glance
+A3#2435	5	QN	I managed to give up on 2 bad habits
+A3#2560	5	QN	I have 5 going on this app
+A3#2721	5	QSEE	I can see my counter on the widgets screen without having to open the app
+A3#3092	5	QN	I for example have one for alcohol and another for tobacco
+A3#3277	5	QN,QSEE	I’ve 8
+A3#3283	5	QN,QMANY_PROB	I have sometimes had around 12 different counters referring to 3 or 4 habits
+A3#3517	5	QN	Added 2 bad habits
+A3#4033	5	QN	quit over 5 addiction at a time
+A3#4092	5	QN,QSEE	I don’t need more than 2
+A3#4213	5	QN	I have 2 timers going
+A3#5315	5	QSEE	it’s great to have as a widget right on my screen
+A3#5440	5	QN	I’ve only used 1/2 different trackers
+A3#5573	5	QSEE	The widget makes it easy to know exactly how many days I have
+A3#5699	5	QN	i’ve only had to set two trackers
+A3#6144	5	QN	I track a few things I’m quitting (alcohol, sugar)
+A3#6194	5	QSEE	display them on your iPhone to always see
+A3#6302	5	QN	I have 3 different timers going currently
+A3#6347	5	QSEE	has widgets you can put on your Home Screen to remind you
+A3#6495	5	QSEE	I've broken multiple bad habits just by adding this as a widget on my phone
+A3#6833	5	QN	you can at least have six
+A3#7011	5	QN	I had 3 that I wanted to work on
+A3#7190	1	QN	it doesn't allow for more than three counters
+A3#7381	5	QSEE	I use the app and the widget to keep myself accountable
+A3#7422	5	QN	have many counters going that I check everyday
+A3#7684	4	QSEE	allows widget setup so you don’t have to actually open the app ever
+A3#7703	5	QN	So far I have 5 timers
+A3#7795	4	QN	Can hold at least 6 trackers
+A3#7969	5	QSEE	the widget has been soooo helpful on my homescreen
+A3#8142	5	QN	I use this app to track my time quit from cigarettes and the separately I track my days without nicotine lozenges
+A3#8464	5	QN	more than 3 addictions
+A3#8792	4	QMANY_PROB	instead of 2 counters per line
+A3#8793	5	QN	I’ve added 10 counters
+A3#8915	5	QN	I’ve got like 20+
+A3#9396	3	QN	I have three bad habits that I need to break
+A3#9434	5	QN	I had three going at once
+A3#10392	5	QSEE,QN	The widget has space for eight counters
+A6#3	5	QN	u can only have 2 streaks on the free plan
+A6#21	4	QN	wish i could have more than 2 streaks without paying
+A6#31	4	QN	I would like to have more than 2 streaks
+A76#879	5	QN	Doesn't let me track more than 3 bad habits
+P2#9189	4	QN	Lack of multiple timer and naming timer for quiting multiple bad habits
+P24#8868	5	QN	Jelped me overcome 4 bad habits
+P6#65	1	QN	if you want more than 2 streaks
+A1#52792	5	UNTIMED	you can see things that are able to be done at any time of the day
+A10#41058	5	UNTIMED,FORCED_BAD	I am able to see what tasks I have for the day but without a specific time to do them
+A13#1766	4	UNTIMED	instead of just "whenever"
+A13#4451	5	UNTIMED	anytime in the day or twice in week
+A13#6092	2	HIDDEN_BAD,UNTIMED	I set all my habits to be all day
+A13#9500	5	UNTIMED	you can choose "do any time in the day"
+A13#10405	5	UNTIMED	morning, afternoon, evening, any time of day
+A13#12636	1	HIDDEN_BAD	would often switch the view from All Day to Morning
+A13#12697	4	UNTIMED,HIDDEN_BAD	a lot of anyone’s habits aren’t strictly for one time of day
+A13#13664	1	UNTIMED,HIDDEN_BAD	Many of my habits are set up to be done at any point throughout the week
+A13#13673	1	UNTIMED,HIDDEN_BAD	4x a week anytime of day
+A13#13723	5	SEE_ALWAYS,HIDDEN_BAD	I want to be able to see my “anytime” habits all of the time
+A13#13733	1	HIDDEN_BAD,UNTIMED	auto focusing on time of day even though I have zero habits for this time
+A13#13744	1	SEE_ALWAYS,HIDDEN_BAD	I want to be able to see my anytime habits on the same page with the time of day
+A13#14517	1	UNTIMED	I’ll play whenever I can find time
+A13#15613	3	NOWFOCUS_OK	By only showing one of applicable time frames, it helps keep you focused
+A13#15757	4	NOWFOCUS_OK,UNTIMED	set to appear only during he appropriate time of day
+A13#18494	5	UNTIMED	as well as "Do anytime habits"
+A13#19222	5	UNTIMED	morning, afternoon, evening or any time of the day
+A13#19734	5	SEE_ALWAYS	I cannot see the undone tasks in 1 screen
+A16#300	3	UNTIMED	whenever I feel like having an unhealthy snack
+A20#3106	1	WANT_TIME	It doesn’t allow you to pick a specific time of the day
+A20#3574	3	FORCED_BAD	I’m forced to pick a time to be reminded
+A23#2126	4	FORCED_BAD	most others you have to set a time to be notified
+A24#28671	5	UNTIMED,WANT_TIME	add tasks that could be completed at any time of the day, instead of morning, afternoon, and evening
+A24#29383	4	UNTIMED	optional time period
+A33#223	5	UNTIMED	I can do them at any time of the day
+A33#1265	5	UNTIMED	My all day habit tracker
+A33#3664	4	UNTIMED	at any time of day, any day of the week
+A33#3680	5	UNTIMED,WANT_TIME	morning, afternoon, evening, and all day habits
+A33#3693	3	HIDDEN_BAD	It doesn't show habits that are past due, though, unless you toggle off focus
+A36#482	5	UNTIMED	an all day habit of stretching
+A4#1172	2	WANT_TIME	All my tasks go into “any time of day” which makes the app useless to me
+A4#2953	2	WANT_TIME	All tasks says “any time of the day”
+A4#6965	5	UNTIMED,FORCED_BAD	u don’t have to set a time for everything
+A4#7140	3	WANT_TIME	I was only able to choose any time of the day
+A4#7141	3	WANT_TIME	it’s now just tasks at any time of day
+A4#9693	4	WANT_TIME	jumbled all together under “Any time of the day.”
+A4#15119	5	UNTIMED	I could knock it out any time of day
+A4#17143	5	WANT_TIME	a place that wasn’t just for :”Anytime of the day.”
+A4#17347	3	WANT_TIME	All tasks show under ‘Anytime of day’
+A4#17993	4	WANT_TIME,UNTIMED	morning, afternoon evening and anytime of day
+A4#18134	4	WANT_TIME	all of my habits show up as “any time of day”
+A4#18137	3	WANT_TIME	set the habit for the morning, afternoon, or night
+A4#18196	3	WANT_TIME	They all appear under “any time of day”
+A4#18348	3	WANT_TIME	all my tasks are just in one long list of “Any Time of Day.”
+A4#18412	3	WANT_TIME,UNTIMED	Some task I do have for any time of day
+A4#18964	3	WANT_TIME,UNTIMED	stretching any time
+A4#19194	1	WANT_TIME	Now you can only select anytime of the day
+A4#19726	4	UNTIMED,WANT_TIME	broken up between all day morning afternoon and evening tasks
+A43#409	4	UNTIMED,SEE_ALWAYS	the all day task can be manually placed in a certain spot between the specific times
+A59#1988	4	UNTIMED,FORCED_BAD	I don’t have to assign times to tasks as this allows more flexibility
+A8#430	3	UNTIMED,FORCED_BAD	i wnt to walk anytime during the day..so i dont need to mention time
+A86#1338	5	UNTIMED	no specific time or count
+P11#3156	3	UNTIMED	when there's no set time
+P111#1409	3	FORCED_BAD	you HAVE to assign a time and schedule to each class
+P111#8897	2	FORCED_BAD	My online classes don't have a specific time and it requires me to input a time
+P12#48100	1	FORCED_BAD	way too fussy to have to choose a time of day
+P12#64779	1	FORCED_BAD	it had no option other than to pick a time
+P126#17041	1	FORCED_BAD	you need to assign a time for a task that doesn't require a specific time
+P126#17564	3	FORCED_BAD	I'm forced to set the time on each task to 11:59pm to mimc an all day task
+P126#17760	3	FORCED_BAD	schedule a task for a specific day without specifying a time
+P126#17923	1	FORCED_BAD	schedule a task for a particular day, but not a specific time
+P126#17990	2	FORCED_BAD	it forces me to set the exact time and date
+P126#18087	1	FORCED_BAD	can no longer have repeating all-day tasks
+P126#18262	3	FORCED_BAD	Please make the time element optional again
+P126#18298	1	FORCED_BAD	i am now forced to pick a time for all tasks
+P126#18328	3	FORCED_BAD	it makes me pick a time when I don't want a time
+P126#18369	4	FORCED_BAD,UNTIMED	an option for an all-day task without a specific hour
+P126#18471	1	FORCED_BAD	I can't make an "all-day" task anymore
+P126#22439	5	UNTIMED	setting a task for the day without a specific time
+P126#69117	5	UNTIMED	with or without a specific time
+P2#10197	5	UNTIMED	routines that are not bound to a specific time
+P24#13318	5	UNTIMED	whenever I can get in some time to do something, I can easily mark it off
+P36#57	5	UNTIMED,WANT_TIME	adding a morning, afternoon, evening and anytime of the day
+P40#71	2	FORCED_BAD	you have to set a time reminder for tasks
+P65#2934	4	UNTIMED	set a goal with no specific time
+P65#12738	4	UNTIMED	some tasks for everyday doesn't have a specific time why donn't make it for all day
+P8#3223	5	UNTIMED	Habit is just an any time of the day thing
+P84#15892	5	UNTIMED,FORCED_BAD	MOST of my repeating tasks aren't time-specific
+P84#24005	5	FORCED_BAD	set a due date without being forced to choose a time
+N2#9321	1	UNTIMED	add notes to calendar without a specific time
+N2#13143	4	UNTIMED	events which I can do at any time of the day, like a reminder/checklist
+N6#1973	2	WANT_TIME	Cannot set when exactly the reminder is due only by day
+N6#6799	1	WANT_TIME	A reminder without a specific time is not a reminder
+N7#11010	4	UNTIMED,SEE_ALWAYS	broken up by all day tasks, timed tasks
+N8#2811	3	SEE_ALWAYS	the calender widget doesn’t show current day “all day tasks”
+N8#2874	1	SEE_ALWAYS	My all day tasks tasks no longer show on the Home Screen widget
+N8#10637	4	SEE_ALWAYS	I don’t see my tasks set to all-day
+N8#11092	3	UNTIMED	a day that don’t have a particular time
+N8#17692	5	SEE_ALWAYS	shows all day tasks as well, not just the timed ones
+N8#24409	4	SEE_ALWAYS	My all-day tasks and reminders don’t show on my widget

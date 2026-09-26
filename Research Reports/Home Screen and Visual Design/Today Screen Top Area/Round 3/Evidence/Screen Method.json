@@ -1,0 +1,10 @@
+{
+  "date": "2026-09-24",
+  "screened_records": 1238784,
+  "scope": "All canonical reviews.jsonl files under App Store Reviews and Play Store Reviews; includes adjacent Play apps; excludes Native Store Reviews",
+  "queries": "Exact patterns preserved in Retrieval Patterns.json; 51 matched records individually assessed in Targeted Review Assessment.jsonl.",
+  "candidates": 51,
+  "read_in_full": 51,
+  "prior_reviews_verified": 32,
+  "limit": "Targeted English retrieval, not a new multilingual prevalence study. Keyword absence is not absence of need."
+}

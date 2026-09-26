@@ -1,0 +1,996 @@
+# Q42 review classification map — cite<TAB>stars<TAB>codes<TAB>quoted fragment (verified against the review text)
+A10#35966	4	OVERW,HIDECOUNT	put off by how high the number was ... is there a way to hide the number of tasks left
+A13#2628	5	COUNT	the number of habits left for the day shows up on the icon
+A13#8068	4	COUNT	see the number of habits left to accomplish
+A13#15688	1	COUNT	red circles with numbers telling me how many habits I have due
+A23#5035	4	BADGE_UNCLEAR,SCROLL_BAD	I’m never sure which tasks are attributed to that badge number ... more than 6 tasks per page
+A24#40818	1	BADGE_UNCLEAR	cannot figure out what it is notifying me of
+A31#4944	3	BADGE_UNCLEAR	If it told me what it was regarding
+A31#5042	3	COUNT	a little red badge on the icon to display habits that haven’t been updated for the day
+P2#22994	4	HIDEDONE,COUNT	estimate quickly how many habits left
+P24#14597	4	COUNT	how many habits remaining for the day
+A1#43933	1	WANT_ALL	see several at a glance
+A1#48324	4	MANYN,HIDEDONE	I have a lot of habits to track
+A1#51536	5	HIDEDONE	hide completed habits, so u can focus on current tasks
+A1#52711	5	NEXT	“Next up” option based on the order of my habits
+A10#284	4	DENSE,SCROLL_BAD,OVERW	having to scroll to see them can be overwhelming
+A10#2775	4	LEFT	so I know what I have left to do for the day
+A10#52042	5	OVERW,ONEATATIME	difficult to start especially seeing all of my tasks at once
+A13#1908	5	ONEATATIME	follow step by step, one thing at a time
+A13#2741	5	HIDEDONE	hide finished tasks
+A13#11175	3	HIDEDONE	without an ability to hide completed habits for the day looks too cluttered
+A13#11339	4	COUNT	correct number of tasks/habits I have left for the day
+A13#16273	3	HIDEDONE,LEFT	you see your greyed out completed habits rather than those you have yet to do
+A13#16345	4	HIDEDONE,LEFT	finding incomplete tasks can be a hassle
+A13#16533	5	KEEPDONE,DENSE	completed tasks to be smaller so I can see my whole list
+A13#16911	5	NOWONLY,NEXT	I only see what I need to do right now
+A13#17181	5	NOWONLY,OVERW	I hated that I was stuck looking at a long list
+A13#17989	5	ONEATATIME	everything I have to do today, one task at a time
+A2#442	3	HIDEDONE,SCROLL_BAD	scroll through all the earlier times of a day to get to your next habit
+A23#3489	3	NEXT	displays just a single next task (used to show two)
+A23#4959	1	NEXT,PLAN	I use the list to plan out my day
+A24#1106	5	COLLAPSE,OVERW	a way to collapse some content
+A24#23389	3	NEXT	see what’s next on the list without waiting
+A24#27359	4	HIDDENLIST	It’s hard to even find the daily tasks you set out for yourself
+A24#27426	5	ONEATATIME	pins me down to just one thing at a time instead of letting me scroll ahead to peek
+A25#1271	5	COLLAPSE	I like being able to collapse groups
+A31#1564	1	WANT_ALL,HIDEDONE	easily view a large portion of me task list from the widget page, completed tasks disappeared
+A31#2169	1	COLLAPSE	does not offer categorizing and collapsing habits
+A31#2702	1	HIDEDONE,LEFT	won’t let me hide completed tasks so it clutters my screen
+A33#3305	4	NOWONLY,PLAN,OVERW	only show what I need to do by time of day, which keeps me from feeling overwhelmed
+A36#313	3	SCROLL_BAD,MANYN	through 16 habits
+A36#427	3	WANT_ALL	quickly choose seeing all our habits in the day (a dashboard)
+A4#19937	3	OVERW,MANYN	now I have like 57 tasks to complete in the day
+A41#281	5	HIDEDONE	checked habits move to the bottom of the list is useful
+A41#787	5	HIDEDONE,NEXT,GROUPING	glance at the top to see what to do next
+A5#28	5	NEXT,ONEATATIME	what the next task is. No more decision paralysis
+A5#265	2	NEXT	time for the next task is really helpful
+A5#2185	5	RUNNER,NEXT	announce the next task out loud
+A5#2203	5	RUNNER,PLAN	predict how long a routine task might take and to plan my day
+A5#2438	5	RUNNER	reminders of when the next task will start and when it will all end
+A5#2770	5	RUNNER,NEXT	I know that the app will tell me what to do next
+A5#2966	2	RUNNER	the time that you will finish the routine updates
+A5#3112	5	RUNNER	updates your estimated end time
+A5#3151	5	RUNNER	not being able to move on to the next task until the current one has been completed
+A5#3322	3	ONE_BAD,NEXT	see the rest of the list as the timers are on, so that I could tell what’s coming up next
+A7#368	5	GLHIST	see at a glance how you’re doing and which habits need more attention
+A7#737	4	WANT_ALL	widgets allowed me to see more then one habit at a time, or gave me a overview
+A7#880	5	HIDEDONE,SCROLL_BAD	scrolling past checked items slows things down
+A76#3676	4	HIDEDONE	show or hide completed tasks
+A76#4943	5	CALM	see what I needed to see without being overwhelmed
+A76#7255	4	GLHIST	A summary chart of your progress for all habits
+A8#645	3	WANT_ALL	a one block widget where I can see all my tasks
+A85#1151	3	HIDEDONE,MANYN,GROUPING	people who set many Dailies
+A86#1135	4	HIDEDONE,WANT_ALL	only able to see unchecked tasks
+A86#1222	1	NOTDUE	for today just I want to see all my habits of today
+P10#6787	4	NEXT,TIMELINE	automatic sorting of tiles based upon the reminder
+P12#13394	2	ONE_BAD	routines only allow you to see one task at a time
+P12#32728	5	NEXT	see what is the next upcoming task while I’m in my routine
+P12#56437	3	OVERW	This app screen has a ton going on though
+P12#66780	2	OVERW	it is overwhelming & all over the place
+P125#4284	4	KEEPDONE	I don't like the update that hide the completed habits
+P2#6700	3	GLHIST	overall summary of all the active habits
+P2#7452	4	COLLAPSE,MANYN,LEFT	My app's daily menu has many tasks and habits, how can I found what I need
+P2#9136	5	HIDEDONE_ISSUE	the entry disappears on the first toggle
+P2#10764	5	HIDEDONE,NOWONLY	doesn't appear on my list until 8pm
+P2#12010	4	GLHIST	view monthly progress ONE HABIT AT A TIME
+P2#12015	5	NOWONLY,MANYN	With several habits the widgit can become cluttered
+P2#12613	4	GLHIST	not a overall statistics
+P2#12803	4	HIDEDONE	They just hang around cluttering the list
+P2#13160	4	HIDEDONE	Completed tasks move to the bottom
+P2#22992	4	HIDEDONE	add an option to hide done habits
+P2#28255	4	HIDEDONE	hide the completed tasks from the widget
+P22#58	4	HIDEDONE,MANYN,SCROLL_BAD	Not have to scroll down every time when i have 20 Tasks
+P22#364	4	HIDEDONE,MANYN	make the list smaller and therefore easier to navigate as the day goes on
+P24#15092	4	NOTDUE	only show habits for today
+P3#950	5	HIDEDONE,KEEPDONE	The overview hiding done things is great
+P3#1306	4	HIDEDONE_ISSUE	stay visible for the rest of the week
+P3#1884	3	COLLAPSE,GROUPING	Category collapse
+P3#1916	5	COLLAPSE,MANYN	group and collapse habits.. Because there are quite a lot
+P3#3080	5	HIDEDONE	hide done things option
+P3#3671	5	HIDEDONE_ISSUE	checked out 'hide completed'
+P3#4371	4	NOTDUE,GROUPING	Only show habits I need to do today
+P3#5243	4	HIDEDONE_ISSUE,OVERW	gets crowded at some point
+P3#5625	5	NEXT	see what my next step in the day is
+P3#7224	2	HIDEDONE_ISSUE	on the first touch the card disappears
+P3#7496	5	HIDEDONE_ISSUE	can't really mark a skip whilst having the "hide completed" checked
+P3#8172	4	WANT_ALL,DENSE	a simplified widget that had all the tasks listed
+P3#8301	4	COLLAPSE,OVERW	having everything in one long list is visually overwhelming
+P3#9272	5	COLLAPSE	viewed in tabs or collapsible lists
+P3#9811	5	COLLAPSE,MANYN	as I track a lot of stuff
+P3#10968	5	COLLAPSE	put certain habits into a collapsible group
+P3#13645	5	COLLAPSE	collapsible categories
+P3#14550	4	NOTDUE	seeing a weekly habit on a day when it isn't due
+P3#15880	4	GLHIST	overview of how well you're doing with all the habits
+P3#21092	5	COLLAPSE	collapse habits into groups
+P31#418	4	LEFT	A view of habits remaining today
+P37#957	5	LEFT	easy to see what habits I have left for the day
+P4#22120	3	HIDEDONE,GROUPING	remaining to do at the top
+P4#71175	3	HIDEDONE	automatically hide the completed tasks
+P45#142	5	HIDEDONE	hide completed tasks for today
+P49#952	4	NEXT	see it from a glance without having to tap into a routine to see my next task
+P49#1880	5	RUNNER,OVERW	instead of lookimg at my full overwhelming to do list
+P49#2457	5	RUNNER,OVERW	where to-do lists were sometimes overwhelming
+P49#3319	5	RUNNER	makes the whole routine less scary by breaking it into smaller chunks
+P5#1044	4	RUNNER,OVERW	avoid the anxiety of having to look at everything you still have to do
+P5#1176	5	RUNNER,OVERW	not get distracted/overwhelmed
+P5#2241	5	RUNNER	No time to get distracted or experience decision overload
+P5#2411	5	NEXT	a little box that says what your next task is
+P5#2418	5	NEXT	next habit preview
+P5#2783	5	NEXT	If I could see what the next task is
+P5#2799	5	RUNNER,NOWONLY,OVERW	I get overwhelmed with long todo lists
+P65#1846	2	HIDEDONE_ISSUE	nothing gets hidden
+P65#4553	5	HIDEDONE,NOTDUE	hide finished and non-started challenges in the overview
+P65#6048	3	HIDEDONE	a way to hide the completed goals
+P8#11665	5	HIDEDONE,NOTDUE	hide completed Dailies (and the ones that are not supposed to appear certain days
+A1#594	4	FILTER,OVERW,LEFT	not get overwhelmed by seeing all the tasks and isolating the ones I need to complete
+A1#2008	4	MANYN	probably closer to 100
+A1#2416	4	PRIORITY	I need that immediate direction without scrolling
+A1#47325	4	GROUPING	right now it a long list with no separation
+A1#49333	4	GROUPING,MANYN	so I don’t have a really long list of habits
+A1#49418	4	GROUPING,MANYN	too much to scroll through 100 habits
+A1#49455	5	WANT_ALL,MANYN	now I can see max 15 tasks
+A1#50051	4	MANYN	I created more than 10 habits to check everyday
+A1#52115	4	OVERW	overwhelmed by analysis paralysis when I see a giant list
+A1#52390	5	WANT_ALL	a convenient way to see my habits daily
+A1#52481	5	GLTODAY	they’re the first thing I see when I open my phone
+A1#52606	5	WANT_ALL	nice to see everything in one screen
+A1#53078	5	LEFT,GLHIST	easily see which habit I still need to complete
+A1#54011	4	MANYN,WANT_ALL	only shows 12 tasks
+A1#54721	1	WANT_ALL	display all my habits on one screen
+A1#54741	4	MANYN,LEFT	see what I have and haven’t done
+A1#55602	5	WANT_ALL	6 is too small and the whole page one is too big
+A1#55795	5	MANYN	I have put 17 habits in so far
+A10#3576	4	PRIORITY	I don’t have to scroll down to complete it
+A10#6004	5	OVERW,CALM	overwhelmed when I look at the long list of things I need get done
+A10#6364	5	NOWONLY,TIMELINE	scrolling up and down the list to try to find all my goals relevant to the time that it is
+A10#14802	5	GROUPING	instead of it being a massive list
+A10#19484	5	PLAN,GLTODAY	Just seeing the list is helpful
+A10#22678	3	OVERW	a goal on a very long list I had
+A10#24390	3	PLAN	I just have to get on in the morning and record what I plan to achieve
+A10#25973	3	TIMELINE	one long list with no time-based structure
+A10#27975	4	TRIM,OVERW	clear the days tasks for when it looks too overwhelming
+A10#30478	5	MANYN,PRIORITY	I have a lot of daily tasks
+A10#34773	4	GROUPING,OVERW	It can be overwhelming seeing everything at once
+A10#39687	4	GROUPING,PLAN	see how much I had to do and plan accordingly without having to scroll
+A10#41123	3	GROUPING	instead of one big list
+A10#44371	5	NOTDUE,OVERW	doesn’t have them show up until they day you need them
+A10#45101	4	SCROLL_BAD,MANYN,DENSE,FORGET_BELOW	if you have a lot of goals, you kinda have to scroll all the way down to see them and then I kinda forget about them
+A10#45434	5	GROUPING,OVERW	overwhelming to see the list of personal and work on the same list
+A10#51387	4	TIMELINE,MANYN	My morning teeth brushing is underneath my night teeth brushing task
+A10#53886	5	NOWONLY,TIMELINE,MANYN	scroll through my list of 25 goals and seeing if I missed any that I could do right now
+A10#57935	5	FILTER,GROUPING,OVERW	overwhelming seeing just a huge list of goals at the start of the day
+A10#58287	5	OVERW	When I have a long list of priorities or added stress, I can become easily overwhelmed
+A10#62076	5	TIMELINE,MANYN,PRIORITY	I have to go through 40 tasks to find them
+A10#62393	5	TIMELINE	get my day started in order
+A13#6092	2	WANT_ALL,NOWONLY_BAD,SCROLL_BAD	I can’t see as many on the screen at once
+A13#6415	3	MANYN	can't seem to handle and organise long lists
+A13#6743	5	SECTIONS,OVERW	Splits your day into morning, afternoon and evening so you don't get overwhelmed
+A13#11510	5	DENSE,WANT_ALL	fit more on one viewing page (without having to scroll)
+A13#11675	3	GROUPING,SECTIONS,OVERW	it's at least separated by time of day which helps a lot
+A13#13622	1	OVERW,SCROLL_BAD	why do I have to look at four lists that I must awkwardly scroll through
+A13#13638	5	MANYN	I have nearly 20 habits
+A13#15118	5	SECTIONS,OVERW	helps make my long lists seem less intimidating
+A13#15907	5	SECTIONS,NOWONLY,COUNT,OVERW	these periods keep me from becoming overwhelmed by looking at a whole days worth of tasks
+A13#16064	4	DENSE,WANT_ALL	I want to see all my habits in one view
+A13#16122	3	PREVIEW	see future tasks as well as past
+A13#16722	4	CALM	doesn't overwhelm you with all of your tasks at once
+A13#17323	5	GROUPING,MANYN,OVERW	i have so many tasks i wish to put on the app- it becomes overwhelming
+A13#19188	4	SCROLL_BAD,DENSE	Text is big so it's a lot of scrolling
+A13#19365	5	NEXT	can't sort what to do next
+A13#19559	5	SECTIONS,OVERW	i love how it splits the day so you're not overwhelmed
+A13#19573	5	SECTIONS,OVERW	organizing habits by times a day is the missing link
+A13#19734	5	LEFT,SCROLL_BAD	I cannot see the undone tasks in 1 screen
+A16#104	3	SCROLL_BAD	you have to scroll down to get to all your habits
+A16#564	5	SCROLL_BAD	In the big view I have to scroll down to find my active habit
+A16#782	2	WANT_ALL,SCROLL_BAD,FORGET_BELOW	Having all my habits visible on one screen would have been much more impactful
+A18#10	4	OVERW	a little overwhelming to look at
+A18#1978	3	OVERW	UI feels cluttered
+A18#2010	1	WANT_ALL,TIMELINE,PLAN	plan my day out in chronological order
+A20#435	5	DENSE,WANT_ALL	Make the row heights smaller so that more habits can be seen on the screen without scrolling
+A20#1694	4	DENSE,WANT_ALL	a overview of all the habits without scrolling
+A20#1703	4	SCROLL_BAD,MANYN,DENSE,GROUPING	The main screen gets fairly cluttered when you have many habits
+A20#3574	3	GROUPING,NOTDUE	make it clear that I don’t need to do a habit today
+A20#3672	4	DENSE,SCROLL_BAD,FORGET_BELOW	Sometimes I forget to scroll down the list
+A20#3796	5	TIMELINE	auto-sort by time of day so I don’t have to scroll
+A23#369	3	WANT_ALL	All on one screen
+A23#581	5	WANT_ALL	see all of the tasks/trackers on a page as they look on a certain day
+A23#681	3	COUNT	a simple “this is how many out of 12
+A23#867	4	WANT_ALL	see all the tasks on one page
+A23#1732	3	DENSE	more than 6 tasks per page
+A23#1988	3	WANT_ALL	it’s tedious not having them all on one screen
+A23#3151	5	DENSE,WANT_ALL,MANYN	Up next view also does not do the job as well, as if I would have all items in one page
+A23#4311	5	OVERW	overwhelmed by the sheer number of tasks
+A23#4321	5	OVERW	I added too many tasks, got overwhelmed, didn’t want to open it
+A23#4394	5	SECTIONS	segmenting your day into four sections
+A23#4439	1	NOTDUE,WANT_ALL	simply look at the screen and see clearly what is due today
+A23#5099	4	DENSE,WANT_ALL	make the icons smaller to fit more tasks on one page
+A23#5141	3	WANT_ALL	instead of being able to scroll
+A23#5144	5	WANT_ALL	No way to view progress on even 6 on the same screen
+A23#5196	5	WANT_ALL	include all 12 habits on one screen
+A23#5213	2	WANT_ALL,FORGET_BELOW	seeing everything on one page so nothing gets forgotten
+A23#5336	5	NOTDUE	I wont see the habit on screen that I don’t have to accomplish today
+A23#5446	5	GLTODAY	gives you a quick glance into your habits
+A23#6612	4	CALM	less overwhelming than a giant list and helps me structure my day
+A23#6706	5	CALM	rather than create an overwhelming list of goals
+A24#2143	5	TIMELINE	always in the order you should next complete them
+A24#2958	3	FORGET_BELOW	I have to scroll down everyday to find it and I might forget
+A24#5367	5	WANT_ALL,FORGET_BELOW	see everything on my lists in one place
+A24#6311	4	NOWONLY,NEXT	Frontpage should be simple, with no need to scroll down
+A24#7048	5	OVERW	when I looked at it I felt overwhelmed and disappointed with myself
+A24#7323	3	HIDDENLIST	scroll through 2 screens of marketing the paid version before ticking off my morning checklist
+A24#14826	2	OVERW	All on one page!!
+A24#18403	4	OVERW	checking all the time the to do list was a bit overwhelming
+A24#24358	5	OVERW	someone like me who gets overwhelmed with a huge task list
+A24#27593	5	OVERW	fulling fleshed out multi step routines for several parts of the day like most. That’s very overwhelming
+A24#28585	5	HIDDENLIST	the default screen you see when opening the app is your main goals
+A24#29345	3	OVERW,DENSE	offer a list or small tiles view
+A24#30507	1	HIDDENLIST,GLTODAY	Other apps when you open you can glance and instantly see what is required of you
+A24#32849	1	HIDDENLIST	I have to scroll down for pages to even get to my daily routine
+A24#33007	3	HIDDENLIST	Maybe put the routine at the top
+A24#36714	5	CALM	not overloaded with this huge list
+A24#36922	4	CALM	it doesn’t give you a long list of things to do right out the gate
+A24#36975	3	OVERW	so many cards and tasks shuffling around it can get overwhelming
+A24#39402	5	CALM	throwing a long list in front of you of things to check off
+A25#177	5	GROUPING,DENSE	side by side groups instead of a long list
+A25#1040	4	COLLAPSE,HIDEDONE	scroll and see all my tasks or hide the ones I don’t need to see at the moment
+A26#3594	1	HIDDENLIST	The list should be the first thing you see
+A3#2962	5	WANT_ALL	track all my goals and habits all on one screen
+A3#3000	5	DENSE,WANT_ALL,MANYN	a smaller thumbnail view that includes all of them
+A3#5172	5	WANT_ALL	The days app is all on one page
+A3#5546	5	MANYN,GLTODAY	scroll through my long list of things I’m tracking to see if anything stands out that I should focus on
+A3#8324	5	WANT_ALL	look at my progress all on one page
+A3#9204	5	DENSE,MANYN	stacked, horizontal lines for less scrolling
+A3#9329	5	WANT_ALL	when I open the app the info is all on one page
+A30#42	3	SCROLL_BAD,DENSE,MANYN	more then 10 habits and you have to scroll down
+A31#3523	2	WANT_ALL	limited to 4 habits in the widget
+A31#3588	3	WANT_ALL,FORGET_BELOW	You used to be able to see all of your tasks in one view, making it a constant visual reminder
+A31#4958	4	DENSE,WANT_ALL,MANYN	viewing more at once is motivating
+A31#5124	4	DENSE,WANT_ALL,MANYN	see more on one page than just 6
+A33#81	4	SECTIONS,MANYN,OVERW	without being overwhelmed by the gigantic list
+A33#1378	5	OVERW,FILTER	focus on few of the habits rather than getting overwhelmed by all the habits
+A33#3003	3	WANT_ALL	I just can’t see all my habits in one screen
+A33#3422	4	DENSE,FORGET_BELOW	I regularly miss marking off some habits because I forget to scroll down
+A33#3655	4	SECTIONS,FILTER	change the view between all or time of day
+A34#563	5	WANT_ALL,MANYN	I like that I can see all my habits on one page
+A34#705	4	WANT_ALL	they’re all on one page
+A36#53	5	WANT_ALL	view all the habits in a single page to check or uncheck
+A4#16151	3	LEFT	know what tasks I have missed the last few days
+A4#18348	3	SECTIONS	all my tasks are just in one long list
+A4#18502	4	SECTIONS,TIMELINE	all my tasks just appear in one long list with no breakup by the time of day
+A41#94	4	MANYN,FILTER,OVERW	I have about 40 that i track and it can feel a bit cluttered with anything past 20
+A41#395	5	FILTER,MANYN	tags to filter a long list of habits
+A41#768	5	HIDEDONE,SCROLL_BAD	It’s nice seeing them disappear and seeing my list get smaller
+A46#183	5	DENSE,WANT_ALL,MANYN	compact and beautiful grid view that can show many habits at once
+A46#1571	5	WANT_ALL,MANYN	I wish I could see all my habits on one screen
+A46#1907	3	DENSE,SCROLL_BAD	because the rows are so tall
+A46#1925	4	DENSE,WANT_ALL,MANYN	zoom out to see all my habits in one screen, even if they’re really small
+A46#1968	5	COUNT	a “red” number that gives me an update on what I’m missing
+A46#2067	2	SCROLL_BAD	scroll down to see the rest of my list
+A48#529	4	GROUPING	rather than having them all in one big list
+A48#1147	4	GROUPING,FILTER	so that you don't have to scroll through a big list of them
+A48#3051	5	WANT_ALL	Almost fits all of them on one screen which I like more than scrolling up and down
+A48#3740	5	WANT_ALL,MANYN	All those goals don't feel daunting when I can see them all on one tall screen
+A48#4239	5	WANT_ALL	see them all on one screen
+A5#2069	2	RUNNER,OVERW	Instead of feeling overwhelmed by a long list of tasks, the app guides me through one step at a time
+A5#3294	5	RUNNER,NEXT	I can also see what’s coming up ahead on my task list
+A53#1539	5	OVERW	how overwhelming my to-do list looks when I open the app
+A55#639	5	WANT_ALL	with everything on one screen
+A55#771	3	LEFT,HIDEDONE	sort daily habits which aren’t done so that we can focus on those
+A55#1464	2	COUNT	icon badge to show how many items are undone
+A59#1030	4	WANT_ALL	seeing tasks and habits is very useful all in one screen
+A59#1910	5	GROUPING,OVERW	reduce overwhelm of seeing everything as once
+A7#324	3	DENSE,SCROLL_BAD	I currently have 5 habits and I need to scroll to see the 5th
+A7#373	5	GROUPING,MANYN	organisation can be a bit rough once you have very many habits
+A7#408	4	WANT_ALL	see all habits on one page without scrolling so they can be all seen at a glance
+A7#878	5	COUNT	a 1/7 just so you can see how many are left for the day
+A76#330	3	WANT_ALL,DENSE	you can fit 4 habits on screen without scrolling
+A76#3467	4	SECTIONS,OVERW	a long list can get overwhelming and I divide my habits with tags (for the mornings, afternoon and night)
+A76#5632	3	MANYN	With a large list, it all blends together
+A76#7144	5	MANYN	Now I have 23 items on my list
+A76#7493	4	GROUPING,OVERW,MANYN	so it's less overwhelming and I can pick and choose the list based on my needs
+A79#132	4	FILTER,MANYN	Scrolling through a long list gets tedious when you have many things to track
+A8#304	4	PRIORITY	see my highest priority goals at the top
+A85#1372	2	SCROLL_BAD,DENSE	Impossible to find what you want without endless scrolling
+A85#2430	5	WANT_ALL	easy to see everything without scrolling If one keeps things minimal
+A85#3338	2	DENSE,SCROLL_BAD	prevents seeing more than two tasks at a time
+A86#848	5	WANT_ALL	the full list of habits was a fixed screen
+A86#1010	2	DENSE,WANT_ALL,MANYN	minimize that dashboard so i could see all my habits at once
+A86#1309	4	WANT_ALL,COUNT	“5/7 tasks completed today”
+A86#1380	3	LEFT,HIDEDONE	see just the remaining items
+A86#1576	4	WANT_ALL,DENSE	see multiple habits stacked on top of eachother
+P10#6887	5	COUNT	see how many of them I achieve in the current day
+P10#7562	4	DENSE	They are gigantic
+P10#10595	4	DENSE,WANT_ALL,TIMELINE,KEEPDONE	see the routine in just one glance ... arrange it like a daily planner ... let it stay where it is arranged
+P10#11082	5	SECTIONS	seperates AM, PM, eve habits rather than have a long list
+P10#11423	3	DENSE,SCROLL_BAD	constantly scroll up and down to find the particular habit
+P10#12285	3	DENSE,WANT_ALL	see 1 day with minimal or no scrolling with 7-10 habits
+P103#35	5	OVERW	a bit overwhelming to have all the lists on one page
+P105#1072	5	HIDEDONE,NEXT	habits to disappear when i complete them, so i can see what to do next
+P106#170	2	DENSE,WANT_ALL	you can't add as many habits on one screen
+P106#524	3	OVERW	just a long list of tasks
+P12#8457	3	OVERW	this list that seems super long and with no rhyme or reason
+P12#15316	1	HIDDENLIST	scroll through adds to get to your routines
+P12#28707	3	GROUPING,OVERW	everything on a single page and you see it all at once
+P12#28759	2	HIDDENLIST	a primary focus on what it is I'm trying to complete in the day
+P12#38711	1	OVERW	Endless lists
+P12#55311	4	HIDDENLIST	Your daily routines should be on the top but instead you've to scroll down
+P12#56471	2	OVERW	greeted with a giant list of things you could/should be doing
+P12#57359	3	WANT_ALL,DENSE	an easy check-boxes list that I can quickly go through. All on one screen
+P12#58799	2	HIDDENLIST	in order to see your routine you have to scroll through bunch of offers
+P12#67805	4	HIDDENLIST	I have to scroll through all of that just to look at my daily tasks
+P12#147924	4	COUNT	showing how many habits i chevked each day
+P124#94	4	DENSE,WANT_ALL	fit more habits within the screen without scrolling
+P14#95	4	SECTIONS,OVERW	Right now they're just in a big long list, which is a bit overwhelming
+P19#142	5	WANT_ALL,FORGET_BELOW	view more habits without needing to open and close the app every 5 seconds I forget
+P19#525	5	DENSE,OVERW,MANYN	an optional "compact mode" feature so it will be less overwhelming when you have lots of habits
+P2#2328	1	GROUPING,OVERW,PRIORITY	when the list gets long its overwhelming
+P2#2956	3	WANT_ALL	a widget that shows all your habits on one screen
+P2#4754	4	DENSE,WANT_ALL	see more habits without having to scroll
+P2#4928	4	PRIORITY,MANYN	when u get a lot of tasks
+P2#5869	5	GROUPING,MANYN,SCROLL_BAD	if you have 20 or more tasks that you have to scroll down to eternity
+P2#10863	5	WANT_ALL	i can see all habits in 1 page
+P2#11124	4	PRIORITY,GROUPING	pin the reminders at the top, have the daily habits after that
+P2#11484	4	SECTIONS,SCROLL_BAD	organze a day into sections (morning/evening routine, work, personal) to avoid endlessly scrolling
+P2#12712	5	HIDEDONE,MANYN,OVERW	if you have many tasks there is quite chaos on the screen
+P2#22962	4	COUNT	informing how many tasks of each group has been completed
+P22#145	4	DENSE,SCROLL_BAD,MANYN,GROUPING	can only fit 6 habits on a screen
+P24#1895	5	CALM	does not overwhelm me with the list of things that I've to do
+P24#12197	3	GROUPING,SCROLL_BAD,MANYN	uncomfortable to scroll down if i have so much habits
+P24#16284	4	DENSE,MANYN	Wished interface could be more compact
+P3#989	5	HIDEDONE,NOTDUE,GROUPING	hide only habits literally done today
+P3#1589	3	GROUPING,MANYN,FORGET_BELOW	some of them get lost far down the list
+P3#1683	3	SECTIONS,FILTER,MANYN	option to categorise habits by morn, afternoon etc
+P3#1814	4	COLLAPSE,MANYN	long list of habit goes deep blow
+P3#2090	4	FILTER,GROUPING,OVERW	without scrolling through one giant, messy list
+P3#2588	5	COLLAPSE,GROUPING	open/close so don't have to scroll all the way down
+P3#2801	5	GROUPING,OVERW,PLAN	seeing everything ... all in one page makes me feel overwhelmed, especially if I open it first thing in the morning
+P3#2829	5	NOWONLY,CALM	not overwhelmed with entire to-do list - just one simple thing
+P3#3424	5	COUNT	how many habits are completed in a day out of total
+P3#5405	5	NOTDUE,MANYN	instead of seeing 10 habits on the screen it will be great if I can only see those 6 habits
+P3#5757	4	GROUPING,OVERW	one long list can look overwhelming at times
+P3#5938	5	COLLAPSE,GROUPING,MANYN	I have so many habits that scrolling through the list is a bit too slow
+P3#6617	4	COUNT	a counter on top that said how many habits I accomplished that day
+P3#6824	5	FILTER,MANYN	When you have many habits, it's hard to scroll down
+P3#7306	5	GROUPING	shorten the long list of goals/habits
+P3#8942	4	WANT_ALL	I tend to only do however many habits I can fit in one screen
+P3#9975	4	GROUPING,MANYN	Scrolling down to a long list of habits might jeopardize the simplicity
+P3#10455	5	WANT_ALL	see all my habits on the screen without having to scroll
+P3#11080	4	WANT_ALL,DENSE	the amount of habits that can be tracked and displayed on screen without having to scroll
+P3#12132	4	GROUPING,MANYN	I would prefer not to scroll through a long list every time I open the app
+P3#12774	4	FILTER,GROUPING	hide the ones I don't need at the moment
+P3#13933	4	NOTDUE,OVERW	you can see multiple days tasks not due on that day
+P3#15112	5	GROUPING	break up a long list
+P3#15540	4	GROUPING	so not everything is on one long list
+P3#15988	5	WANT_ALL,DENSE,NOTDUE	allows you to see a lot of habits on one screen
+P3#16022	4	GROUPING	without having them all appear in an endless list
+P3#16363	5	WANT_ALL,DENSE	see so many habits on one screen without having to scroll
+P3#24978	5	FILTER,MANYN	i have too many habits and I spend too much time to scroll for them
+P3#25218	5	WANT_ALL,DENSE	the overview fits lots of habits without scrolling
+P37#40	3	DENSE,MANYN	I have ~50 habits and can only see 5 1/2 at a time
+P4#22143	4	HIDEDONE,LEFT	completed tasks used to go to the bottom so you could see what still needs to be done from the top
+P4#23836	5	HIDEDONE,LEFT	uncompleted tasks will stay on the top
+P4#24906	1	TIMELINE,GROUPING	starting with breakfast and moving through the day
+P4#29396	1	SECTIONS,TIMELINE	The tasks are all in a long list
+P4#100926	5	WANT_ALL,OVERW	I cannot see my entire list on the widget
+P49#260	4	CALM	doesn't feel overwhelming when seeing a massive list of things to do
+P49#422	5	RUNNER,NEXT	I don't have to think about what's next as I go
+P49#1894	5	CALM,GROUPING	not just one big list of overwhelming routines
+P49#2112	5	GROUPING,SECTIONS,CALM	it's not just 1 huge list that seems intimidating
+P49#2963	5	OVERW	overwhelmed with the idea of everything I have to do in a day
+P49#3545	5	RUNNER,NEXT,CALM	you see the step you are currently on, & the next step. That's it
+P49#3776	5	SECTIONS,GROUPING,CALM	grouped together by time of day or context ... makes it seem less overwhelming
+P5#1611	5	RUNNER,OVERW	it only shows the current task you're at and a timer
+P5#2031	5	RUNNER,OVERW	having a list to look at made the routine feel more overwhelming
+P60#3	4	COLLAPSE,DENSE,MANYN	a collapsed view, because once you have more than five habits, there's a lot of scrolling
+P63#467	4	GROUPING	it's just one huge list
+P63#1137	4	GROUPING,MANYN	When you have lots of tasks, it starts getting tedious to keep scrolling
+P65#2174	5	GROUPING	see different grouped goals on one screen
+P65#5094	5	WANT_ALL	I can see it all on one screen
+P65#5475	4	GROUPING	I will not have to scroll through the page up n down to check the habits under a particular category
+P65#9111	5	DENSE	only allow 3 goals per page
+P65#9444	5	WANT_ALL	view your goals all in one page for a quick snapshot
+P65#9567	4	FILTER,MANYN	I have a lot of habits in my list
+P66#16	4	PRIORITY,LEFT	incomplete, active tasks could be pinned to the top
+P8#1988	5	GROUPING,OVERW,MANYN	one long list somewhat overwhelming for my many habits
+P8#5718	5	TRIM	every morning, we can choose a few to-dos for today from our long list
+P8#5995	4	LEFT,HIDEDONE,MANYN	I always just want to see what haven't been done yet, cuz I have a lot of items
+P8#6616	5	DENSE,WANT_ALL,MANYN	an option to change the layout so you can have a better overview
+P8#6966	2	WANT_ALL,DENSE	see all your tasks etc at a glance without having to scroll so much
+P8#8610	5	WANT_ALL,DENSE	see everything i need to do Today on a single page
+P82#37	5	WANT_ALL	all in one page and simple
+P9#665	5	DENSE,SCROLL_BAD	when you have more than 3 habits you have to scroll
+P9#763	2	OVERW,GROUPING	After adding 5 habits it got out of control for me
+P9#895	2	GROUPING,FILTER	so that I dont have to scroll through irrelevant habits
+P9#1059	4	GROUPING,COUNT	a nice tiled view as well, showing n/x completed for the day per category
+A1#8	5	PLAN	It helps me to plan my day clearly
+A1#1679	5	GLHIST	show habits in a week at a glance
+A1#1884	5	PLAN,NEXT	plan out my days with small tasks so i don't even need to think about what i need to do next
+A1#3623	5	GLTODAY	一目了然一天要做的事情
+A1#3652	5	GLTODAY	一目了然的知道需要做什么
+A1#3859	5	NOWONLY	可以根据当前时间显示，而不是所有
+A1#6140	5	PLAN	可以把计划一目了然
+A1#7937	5	GLTODAY	每天需要打卡的事情一目了然
+A1#11236	5	GLTODAY	一目了然，有助自己更好的发现今天的目标
+A1#11519	5	GLTODAY,MANYN	吃了就点完成，一目了然
+A1#12065	5	GLTODAY,LEFT	计划完成的未完成的一目了然
+A1#12066	5	GLTODAY,PLAN	可以一目了然一天的目标
+A1#12468	5	PLAN	所有计划一目了然
+A1#15375	5	GLTODAY	每天的任务一目了然
+A1#17006	5	GLTODAY	不用怕会忘记每天要做的事情
+A1#21959	5	GLTODAY	一目了然看清楚今天运动状态
+A1#26351	4	GLTODAY,PLAN	自己一天要做的事情一目了然
+A1#41520	5	GLTODAY	任务清单一目了然
+A1#43142	5	PLAN	日常计划管理一目了然
+A13#8012	3	GLTODAY,PLAN	오늘 할 일을 저장한 데이터를 한눈에 볼 수 있었으면
+A18#446	5	WANT_ALL,TIMELINE,PLAN	하루 일정을 한 화면에서 한눈에 확인하는 것
+A18#784	5	TIMELINE,PLAN	시간표나 타임테이블처럼 한눈에 보고싶어요
+A18#889	3	WANT_ALL,FORGET_BELOW	한눈에 다 보여야 하는 점이 매우 중요하거든요
+A18#923	3	WANT_ALL,PLAN	루틴과 투두를 한눈에 볼 수 있는 게 이 어플을 쓰는 이유였는데
+A18#936	5	WANT_ALL,TIMELINE	시간대에 맞춰 순서대로 투두 작성 후 체크하는데
+A33#738	4	HIDEDONE,MANYN	在条目较多时，能更加一目了然
+A5#1543	5	WANT_ALL,PLAN,SECTIONS	하루의 계획을 한번에 볼 수 있으면 더 좋을 것 같아요
+A52#1283	4	WANT_ALL	小组件里显示的当日事项总是列的不全
+A52#3037	5	WANT_ALL,DENSE	我想每天的习惯能够一目了然
+A52#3072	5	GLTODAY	每天要干的事情一目了然
+A52#3672	5	GLTODAY	当天小事清单一目了然
+A52#5672	5	WANT_ALL,TIMELINE	还能按照时间排序
+A52#10392	4	COLLAPSE_BAD	全都被折叠起来了，可以改回去吗
+A52#14816	5	SECTIONS	可以按照时间段分类
+A52#16943	4	SECTIONS,GLTODAY	查看今日习惯那个页面我也很爱，一目了然
+A74#75	5	GLTODAY	やることが一目で俯瞰できて
+A74#126	5	DENSE,WANT_ALL	칸의 높이를 더줄일수있으면
+A83#386	5	GLTODAY	매일 뭘 해야할지 한눈에 알면 좋을거같아요
+P20#793	5	NOTDUE	해당일이 아닌 습관이 좀 더 명확히 구분되면
+P20#796	4	ONE_BAD,NEXT	남은루틴목록나오게 ... 한번에다나오면부담
+P20#1555	5	GLTODAY,PLAN	하루 할 일을 한눈에 확인하면서
+P20#3035	5	WANT_ALL	한눈에! 깔끔하게!
+P3#26867	5	WANT_ALL,DENSE	字不會太太，所以可以容納多項，可以一目了然，不用上下移動
+P41#232	5	WANT_ALL,HIDEDONE	할일목록이랑 루틴을 한눈에 보는게 좋아요. 다만 이미 끝낸 할일은 보이지않게
+P41#257	5	TIMELINE	시간표처럼 표 하나로 한눈에 볼 수 있는
+P65#13904	5	DENSE,WANT_ALL	스크롤 내리지않고도 6-7개 할일도 한눈에 보일수있게
+P98#3312	5	SECTIONS	시간별로 나눠져 있어서 너무 좋아요
+N8#12371	4	GLTODAY,TIMELINE	一目でその日の予定がわかってとても便利です
+N10#4349	4	GLTODAY	只想记录今天要做什么事的人
+A1#44119	5	GLHIST	quick overview of what I’ve achieved
+A1#45550	5	PLANGEN	I can plan my day
+A1#46135	5	GLHIST	weekly overview of all the habits
+A1#46940	5	GLHIST	see my progress at a glance
+A1#47314	5	GLTODAY	Shows everything at a glance
+A1#48786	5	GLTODAY,LEFT	see what circles I’ve filled or need to fill at a glance
+A1#48894	1	PREVIEW	I can plan my day ahead but I cannot check the future date
+A1#49007	5	GLHIST	overview of your improvement day by day
+A1#51978	4	PLANGEN	it helps me plan my days
+A1#51981	4	SECTIONS,GLHIST	see at a glance all of my morning or evening routines and how often I completed each step
+A1#52137	5	GLHIST	track my habits at a glance
+A1#52555	5	GLHIST	quick glance as to how I performed
+A1#52749	5	NEXT,LEFT,OVERW	know exactly what I have done and what is next to do ... at a glance helps when I’m in or near meltdown mode
+A1#54722	5	LEFT,GLTODAY	see at a glance the completed tasks and uncompleted tasks
+A1#55341	5	PLANGEN	helps me plan my day
+A1#55788	5	GLTODAY	see them at a glance
+A1#56008	5	PREVIEW	look at what your next day looks like
+A10#3256	3	GLTODAY,LEFT	see what I need to do for the day one my home screen
+A10#5222	5	PLANGEN	helps plan my day out
+A10#8302	5	PLANGEN	so much easier to plan my day
+A10#13307	5	PLANGEN	plan out my day
+A10#14329	5	PLANGEN	plan my day and set goals
+A10#14646	5	PLANGEN	plan my day out ahead of me
+A10#21285	5	PLAN,GLTODAY	in the morning I don’t know what to do so I go on finch ... see my routine for the day
+A10#23973	5	PLANGEN	plan my day on
+A10#26661	5	GLTODAY	When I see what I have to do today I do them
+A10#36576	5	GLTODAY,GROUPING	At a glance seeing what I need to do and being able to seperate the tasks
+A10#38078	5	PLANGEN	helps plan my day
+A10#39058	5	PLANGEN	plan my day a little bit better
+A10#41532	5	PLANGEN	helped me plan my days
+A10#41980	4	PLANGEN	helps me plan my day out
+A10#42955	5	PLANGEN	helps me plan my day
+A10#47437	5	PLANGEN	helped me plan my day
+A10#47588	5	PLANGEN	helps me not only plan my day
+A10#49287	1	PLANGEN	to plan my days
+A10#49480	4	PLANGEN	it helps me plan out my day
+A10#49950	5	PLAN	plan out my day in advance
+A10#51504	5	PLANGEN	helps me plan my day
+A10#51898	5	PLANGEN	helps me plan my days
+A10#53860	5	PLANGEN	helps me plan my day with manageable goals
+A10#55367	5	PLANGEN	helping plan out my day
+A10#56079	5	GLTODAY	check what I need to do for the day
+A10#63438	5	PLANGEN	plan out my day
+A10#64897	5	PLANGEN	plan my day
+A10#69499	5	PLANGEN	plan my day
+A11#14	5	PLANGEN	plan my days thoroughly
+A13#2368	5	PREVIEW	see what’s coming up in the next week or 2 weeks
+A13#2544	5	PLAN	a daily agenda for your routine tasks
+A13#2568	5	PLANGEN	helps me plan my day
+A13#6290	5	GLTODAY	I know what I need to do each day
+A13#6723	5	PLANGEN	plan out my day
+A13#8898	5	GLTODAY	keeps those things that consider important to you at a glance
+A13#9058	2	WANT_ALL,NOWONLY_BAD	not one overview of all habits/tasks and you end up swiping between morning/afternoon
+A13#11519	4	PLAN	check my day ahead on my iPad before I go
+A13#12055	1	GLHIST	how many days a month I worked out at a glance
+A13#12371	4	PLANGEN	plan my day with more order
+A13#13936	5	PLANGEN	help plan my day
+A13#15088	5	LEFT,NEXT,PLAN	quickly reminds me what habits are left or coming up so that I can plan my day accordingly
+A13#15626	5	TIMELINE	see at a glance where you are on a time line with your tasks
+A13#15818	4	PLANGEN	plan my day
+A13#16051	3	GLHIST	days completed and not completed at a glance for each habit
+A13#16164	5	TIMELINE,SECTIONS,PLAN	a time by time overview of my plans for the day, while also having general goals based on time blocks
+A13#17083	5	PLANGEN	plan my days better
+A13#17411	5	GLHIST	more of a calendar at a glance
+A13#17577	5	COUNT,LEFT,SECTIONS	see at a glance how much is left without opening the app ... section out by time of day
+A13#17849	5	GLHIST	displays your stats at a glance
+A13#17907	5	NOWONLY,GLTODAY	a quick overview of my activities for that time of day
+A13#18050	5	SECTIONS,NOWONLY	splits up the events so you are not taunted by things at a time when you are actually on track ... recognize tasks at a glance
+A13#19128	4	PREVIEW	see and edit my week at a glance
+A2#146	5	GLHIST	Ver de un vistazo en un calendario cuantos días cumplo
+A20#154	4	GLHIST	clear overview of the month
+A20#787	4	DENSE,WANT_ALL	so dass mehr Gewohnheiten auf dem Bildschirm Platz haben und man nicht nach unten scrollen muss
+A20#1270	4	GLHIST	an overview of all the habits
+A20#1647	3	COUNT,LEFT	Daily percentage of accomplishment summary ... track down which routine is not done
+A20#2861	5	GLHIST	easy overview of your week
+A23#62	3	GLHIST	an annual view for my streaks
+A23#122	4	LEFT,PREVIEW	see at a glance what you have left to complete for they week or month
+A23#637	5	GLTODAY,GROUPING	let me see whatever I choose (specific tasks or all tasks) at a glance
+A23#882	5	GLTODAY	a state of your goals at a glance
+A23#1958	4	NOTDUE	Hide any task which isn’t due for the day ... I only want to see what I need to do for the day
+A23#2092	5	GLTODAY	check in at a glance
+A23#2217	5	GLHIST	shows my performance at a glance
+A23#3368	5	COUNT	a quick view of your daily task completion progress
+A23#4272	4	GLTODAY	see at a glance how much time is left or has passed since you last completed the task
+A23#4437	5	GLHIST	weekly completion stats for all tasks at a glance
+A23#4757	4	DENSE,WANT_ALL	scale down in size, and still all be visible at a glance
+A23#5306	4	NOTDUE,GLTODAY	I knew at a glance exactly what the app was telling me
+A23#5389	2	GLHIST	see your recent success with the different habits at a glance
+A23#6886	4	GLTODAY	a quick view of tasks I need to develop habits for
+A24#6674	5	PLANGEN	i can plan out my days
+A24#15046	5	PLANGEN	helps me plan my days
+A24#15170	5	PLANGEN	I find it hard to plan my day
+A24#18772	5	PLANGEN	plan my days
+A24#29012	5	PLAN	opening it every morning to see my day ahead
+A24#30160	5	PLANGEN	manage and plan my day
+A24#32918	1	PLAN	a quick and easy way to plan my day
+A24#38794	3	PLAN	let me plan my day (how much to work, when to exercise, etc.)
+A24#42055	4	NEXT	opening up my fabulous app to see what’s next
+A24#42669	5	PLANGEN	plan my day
+A26#3253	5	PLANGEN	plan my day
+A27#51	5	GLHIST	see at a glance how well I am doing at each habit
+A3#87	5	GLHIST	check my status at a glance
+A3#410	4	GLHIST	see everything at a glance
+A3#2486	5	GLTODAY	at a glance look at what I haven’t done for a while and do it
+A3#4092	5	GLHIST	see at a glance how long it's been
+A3#4913	5	GLHIST	see at a glance how far I’ve come
+A3#5945	5	GLHIST	see at a glance how long it’s been since I’ve taken a particular med
+A3#6697	4	GLHIST	see how I’m tracking against all my goals on one screen
+A3#7191	5	GLHIST	a quick view of all your habits
+A3#8506	5	GLHIST	see the progress of all at a glance
+A31#957	3	GLHIST	a weekly and monthly overview of all habits
+A31#1615	4	GLHIST	seeing all your habits together on one chart
+A31#2070	5	GLHIST	a weekly or monthly overview of all tracked things combined
+A31#3196	4	GLTODAY	Can’t look at a glance to see what I want now
+A31#3310	2	GLTODAY	at a glance you could always see how well you were doing overall
+A31#4383	5	HIDEDONE	it clears the items off of my screen when I’ve completed them for the day
+A31#4532	5	WANT_ALL	a widget where I can see all my entries at a glance
+A31#4538	5	LEFT,GLTODAY	At a glance, I can see what I have done and have yet to do
+A31#4631	4	GLTODAY	Easy to see completion of all items and streaks at a glance
+A33#152	4	GLTODAY	a CLEAN, MINIMAL & FUNCTIONAL overview of your daily habits
+A33#362	5	PLANGEN	I use it daily to plan my days
+A33#1335	5	GLTODAY	I often check what I need to do each day
+A33#2157	5	SUMMARY	Please make daily briefing page
+A33#3633	3	WANT_ALL,NOWONLY_BAD,HIDEDONE	I need to see my day at a glance but the app only shows chunks of time
+A34#138	4	GLTODAY	I really like the today overview
+A4#369	4	PLANGEN	Helps me plan out my day better
+A4#503	4	PLANGEN	It helps me plan out my day
+A4#523	5	PLANGEN	It helps me plan my day
+A4#3790	5	PLANGEN	plan my day
+A4#4179	3	COUNT	it should say on the overview of all habits (on that specific habit) 5/8
+A4#5759	4	PLANGEN	helps plan out my day
+A4#5852	5	PLANGEN	helped me plan my day
+A4#5863	5	PLANGEN	easier to plan my day
+A4#6583	5	PLANGEN	helped me plan my days
+A4#6831	5	PLANGEN	plan my day
+A4#7700	5	PLANGEN	helped me plan my day so well
+A4#7701	5	PLANGEN	helped me plan my day so well
+A4#10276	5	PLAN	hard to plan my day realistically
+A4#11256	2	PLANGEN	I can plan out my days so easily
+A4#11448	5	PLANGEN	plan out my day
+A4#11946	5	PLANGEN	using the routine to plan out my day
+A4#11962	4	PLAN	plan out my day and organize everything I’m going to do as the day goes on
+A4#12892	5	PLAN	I plan out my day tomorrow at night so I can just go in and check things off
+A4#13184	5	PLANGEN	helps me plan my day
+A4#13199	5	PLANGEN	plan out my days
+A4#13431	5	PLANGEN	plan out my day
+A4#14411	5	PLANGEN	plan out my days
+A4#14808	5	GLTODAY	Reminder at a glance
+A4#15041	5	PLAN	I plan my day every night before I go to bed
+A4#15201	5	PLANGEN	I can finally plan out my day
+A4#15405	5	PLANGEN	plan out my day
+A4#15430	5	PLANGEN	plan my day
+A4#15713	5	PLANGEN	plan my day correctly
+A4#16154	5	PLANGEN	plan my day out
+A4#16329	5	PLANGEN	plan my days
+A4#16394	5	PLAN	plan out my day for tomorrow
+A4#16420	1	HIDEDONE,NEXT	the tasks stays on your screen above the tasks you haven’t completed yet. This makes it difficult to see what’s next
+A4#17574	5	PLANGEN	plan my day out
+A4#18979	5	PLANGEN	plan out my day
+A4#18998	2	TIMELINE,PLAN	I can't even plan my day out because the time doesn't show up
+A4#19497	2	PLANGEN	I really want to plan my day
+A4#19596	5	PLANGEN	it helps me plan out my day
+A41#25	4	LEFT,NOTDUE,GLTODAY	it is hard at a glance to work out what is done and what is outstanding
+A41#29	5	GLHIST	see your progress at a glance
+A41#350	5	GROUPING	For groups id like to be able to see them more easily at a glance
+A43#304	3	GLHIST	at a glance let’s me know where I need to step things up
+A43#388	5	GLTODAY,PREVIEW	I can see at a glance which tasks are behind or what's coming soon
+A43#437	5	PLAN	I've been able to plan my day and actually do everything
+A43#595	5	GLHIST	showing progress on goals at a glance
+A46#78	5	GLHIST	an incredible visual at a glance of how you’re going
+A46#887	5	GLHIST	see all my habits streaks at a glance
+A46#1611	5	PRIORITY	a quick view of my top 3 habits to keep them fresh on my mind
+A46#1683	5	GLHIST	describes your progress at a glance
+A48#1041	4	GLTODAY	give the user a quick glance of their progress
+A48#2422	5	WANT_ALL,DENSE	see all of your goals at a glance. Currently the fonts are too large and I’m only able to view about half
+A48#3456	5	GLTODAY,LEFT	I can see at a glance my healthy habits 'to-do' for the day then check them off
+A48#3971	5	WANT_ALL,LEFT	all your goals are at a glance ... clearly see my accomplishments, and what I still need to do
+A48#4174	3	HIDEDONE,MANYN,GLTODAY	the screen should be a quick glance to show where you are ... Those I complete should automatically sort to the bottom
+A5#209	3	TIMELINE,PLAN	showed the time range of the task instead of how long the task is ... helps plan my day better
+A5#1796	4	PLAN	plan my day ahead
+A5#2027	5	PLANGEN	plan out my day
+A5#2444	5	PLAN	I need to plan my day ahead
+A5#2521	5	PLAN,TIMELINE	plan my day down to the minute
+A5#2716	5	PLAN,OVERW	hard to plan evrything out without getting overwhelmed
+A5#3287	5	RUNNER,PLAN	once I start a “routine,” I can’t see the whole list at once, so I’m less tempted to get distracted
+A52#20	5	PLANGEN	plan my day
+A52#19838	5	PLANGEN	plan my day everyday
+A53#8	4	DENSE,WANT_ALL,LEFT	see at a glance the goals for the day or the onces that are not yet completed instead of having to swipe down
+A53#656	4	DENSE,WANT_ALL,MANYN	rather than having a big overall view on my whole day tasks ... maximum items at a glance are 4 only
+A53#713	5	PREVIEW,NOTDUE	the main view only shows “today” habits
+A53#961	2	WANT_ALL	look at all your habits at a glance
+A53#1515	4	LEFT,HIDEDONE	only showing remaining habits at the top ... helping you see only what you need to see
+A54#14	5	LEFT,GLTODAY	see at a glance what was done and what wasn’t
+A54#137	3	CALM,GLTODAY	crammed with so much info that you can’t see at a glance the info you require
+A55#915	4	GLHIST	at a glance which habits are lagging
+A55#1176	5	WANT_ALL	view all my habits at a glance
+A55#1526	5	NOTDUE	see which ones are truly daily and due today
+A59#107	3	GLTODAY,PLAN	so I know what I have to do each day and so I don’t forget
+A59#115	5	PLAN	The best daily agenda app
+A59#947	3	PLANGEN	helps me plan my day
+A59#955	4	PLANGEN	helps me plan my day better
+A59#980	5	GLHIST	see a week at a glance
+A59#1048	4	PLAN	i can plan my day online while i am in the Tram
+A59#1196	4	PLANGEN	plan my days better
+A59#1226	5	PLANGEN	plan out my day
+A59#1227	4	WANT_ALL,PREVIEW	alles wichtige auf einen Blick ... heutige und zukünftige Aufgaben
+A59#1385	5	WANT_ALL	alle Aufgaben auf einen Blick
+A59#1390	5	WANT_ALL	alles schön auf einen Blick
+A59#1912	5	PLANGEN	plan my day
+A59#2683	4	PLANGEN	plan my day
+A59#9821	3	NOTDUE	ты не видишь реального объёма своих задач вообще
+A59#14318	5	PLANGEN	plan my day
+A59#15110	3	PREVIEW	I’m not able to see which routines and recurring tasks are scheduled for tomorrow
+A68#3119	5	PLANGEN	helps me plan my day
+A68#4026	5	PLAN	Every morning, I open this app, sip my coffee, and plan my day
+A7#83	5	WANT_ALL	seeing everything at a glance at once
+A7#244	5	GLHIST	a quick overview of all your tasks and their frequency in one picture
+A7#375	5	GLHIST	show me the days I’d achieved my habits at a glance
+A7#469	5	GLHIST	consistent at a glance
+A7#838	5	GLHIST	see your progress at a glance
+A7#850	5	GLHIST	see the year at a glance
+A76#128	5	GLHIST	multi month view gives me such a quick look at my progress
+A76#583	5	GLTODAY,MANYN	I'm in and out of the app in seconds
+A76#693	5	GLHIST	At a quick glance I can see what I have completed this week
+A76#716	5	GLHIST	a good overview of all your habits over the whole month
+A76#870	4	GLHIST	see at a glance how I am doing
+A76#2179	5	GLHIST	The simple green and red visuals just makes it much easier to take a quick glance
+A76#2256	5	GLHIST	easy to see how you are doing at a glance
+A76#2379	4	GLTODAY	in a single swipe I could see what I have to do today
+A76#2454	4	GLHIST	see days achieved and those not at a glance
+A76#2462	5	GLHIST	see at a glance how you've done over a longer period
+A76#2568	5	GLHIST,MANYN	I have 20 odd items and the interface means I can update it for the day in less than 2 mins
+A76#4444	5	WANT_ALL	quickly see the overview of your all habits and quickly mark them off
+A76#4960	5	GLHIST	the monthly view so you can see at a glance
+A76#7049	4	GLHIST	a quick view of progress of all the goals
+A76#7584	5	GLHIST	see at a glance what you're keeping up with and what you're not
+A79#45	5	GLTODAY	everything you need to see right at a glance
+A8#755	4	OVERW,GLTODAY	Looking at the entire list every time is a bit overwhelming ... see at a glance which goals you were closer/further from meeting
+A85#78	4	GLTODAY	see what you have to do for the day without opening the app
+A85#418	4	TIMELINE,PLAN	a specific time of the day ... plan out my day
+A85#2583	3	GLTODAY	Getting your tasks organized at a glance is not really an option
+A86#90	4	GLTODAY	the daily overview of all habits
+A86#544	4	WANT_ALL	shows all of my habits at once
+A86#1265	5	GLTODAY	glance at the widget to know what I have to do for the day
+A86#1665	4	LEFT,SUMMARY	the starting screen to be a summery so I can see at a glance what is left to do
+A86#1767	4	GLTODAY	add my daily habits to the daily overview
+P10#5857	5	GLTODAY	i get up in the morning check ✔️ all the habits thats all
+P10#7265	5	PLANGEN	Really helps me plan my day
+P10#9293	5	PLANGEN	helping plan my day
+P10#11996	5	PLAN	plan out my day and make sure that I get everything done
+P105#389	4	PLANGEN	plan my day
+P12#4634	5	WANT_ALL	alles auf einen Blick
+P12#8698	5	PLANGEN	plan your day
+P12#15077	1	PLAN,PREVIEW	I want to plan my day tomorrow the night before
+P12#16607	5	PLANGEN	plan my days
+P12#17734	5	PLANGEN	Helps me plan my day
+P12#26009	5	PLANGEN	plan my day
+P12#31122	5	GLTODAY	every morning i open this app, and track the habits
+P12#33218	5	PLANGEN	plan out my day and night
+P12#33841	5	PLANGEN	plan my day
+P12#39143	5	PLANGEN	Helps me plan my day
+P12#42158	5	PLANGEN	plan my day well
+P12#42686	5	PLANGEN	plan my day
+P12#55456	5	PLANGEN	how I face and plan my day
+P12#61663	5	PLANGEN	helps me plan my day
+P123#321	5	PLAN	plan my day every day before my sleep
+P125#8826	5	GLTODAY	Every day my morning starts with , "what's today's challenge"
+P125#9929	5	GLTODAY	Every morning I check the challenges
+P125#24038	5	GLTODAY	waiting to see what's for today each morning
+P130#163	5	WANT_ALL,GLHIST	see all your habits each day of the week at a glance
+P14#431	5	WANT_ALL,DENSE	compact home screen widget ... see all my habits at a glance
+P19#802	5	GLHIST	overview of the month
+P2#1288	3	GLHIST	No quick glance to see streaks
+P2#1505	5	PLANGEN	plan my days well
+P2#2641	5	WANT_ALL	see my habitual task and general task at a glance
+P2#4196	5	GLHIST	at a glance see their streak
+P2#4902	4	PLAN	a "plan my day" feature, like in Microsoft's To Do
+P2#5469	5	GLHIST	a dashboard with summary statistics
+P2#5496	5	GLHIST	how many times we've failed in the month at a glance
+P2#5665	5	PLANGEN	plan my day
+P2#6140	5	PLANGEN	plan my day well
+P2#6419	5	PLAN,PREVIEW	plan my day and days in advance
+P2#9118	5	LEFT,GLTODAY	a quick overview what you still need to do
+P2#9610	4	GLHIST	see at a glance which habits I would need to pay closer attention to
+P2#9764	5	PLANGEN	plan my days
+P2#11774	5	PLAN,GLTODAY	gives me an overview of my day
+P2#11777	5	PLAN	works well as a daily agenda
+P2#11926	5	GLHIST	a habit overview page
+P2#12169	5	PLAN	pace and plan my day
+P2#12587	5	WANT_ALL,PLAN	plan my day with my habits and tasks in one screen
+P2#12618	5	PLAN	plan my day with my morning coffee
+P2#12684	5	PLANGEN	plan my day
+P2#12962	5	PLAN,HIDEDONE	reminders in the morning about what's on my agenda for the day ... they move to the bottom
+P2#20882	4	GLHIST	a general success widget
+P2#22717	3	GROUPING	not a good overview of your tasks and habits because you can not put them into maps
+P2#22987	2	TIMELINE,PLAN	I need a starting hour and ending hour of this task
+P2#28489	5	GLTODAY	get all the info at a glance
+P2#28629	2	WANT_ALL	a poor overview of all the habits
+P22#460	2	PLAN,TIMELINE	a widget for the overview of the day's shape
+P22#1101	5	GLHIST	stats over a year at a glance
+P24#883	5	WANT_ALL	auf einen Blick gleich mehrere Ziele parallel überblicken
+P24#3096	5	GLTODAY	see at a glance the info you need
+P24#4790	5	GLHIST	progress percentages which can be seen at a glance
+P24#5345	5	GLHIST	how I'm maintaining at a glance
+P24#5712	5	GLHIST	seeing how I'm doing at a glance
+P24#11522	4	GLHIST	at a glance i can see how ive been performing
+P24#12375	4	GLHIST	keep track of multiple goals at a glance
+P24#12961	4	GLHIST	shows you at a glance how you're doing
+P24#12966	4	GLTODAY,PLAN	I wake up in the morning and see what I need to do for the day
+P24#15545	5	GLHIST	Seeing the week at a glance
+P24#15554	1	GLHIST	at a glance tell how many times I have failed
+P3#759	5	WANT_ALL	alles auf einen Blick zu sehen
+P3#1076	5	LEFT,GLTODAY	so sehe ich auf einen Blick, was ich heute schon abgehakt habe
+P3#1678	5	WANT_ALL	an overview of all the habits
+P3#2369	4	GLTODAY,COUNT	Knowing how much more you need to do to complete your weekly goals
+P3#2518	4	GLTODAY	impossible to tell at a glance which habits I've done on a day to day basis
+P3#2926	3	GLHIST	collated overview of all my habits
+P3#3012	4	GLHIST	a simple widget that shows an overview of all my habits together
+P3#5244	4	WANT_ALL	see all my tasks at a glance everytime i needed to check
+P3#5289	5	GLTODAY,MANYN	hard to keep track of which ones I've supposed to do on each day ... makes this easy at a glance
+P3#6136	5	LEFT,GLTODAY	see what's done at a glance
+P3#6858	5	GLHIST	5 days a week progress horizontally and habits listed vertically
+P3#6942	5	GLHIST	track your progress at a glance
+P3#7414	3	GLHIST	all habits at a glance in percentage
+P3#8451	4	GLTODAY,WANT_ALL	see at a glance each habit that needs to be done for the day
+P3#8668	5	LEFT,WANT_ALL	at a glance know which habits are completed or still due
+P3#8860	5	GLHIST	see past days at a glance
+P3#9117	5	GLHIST	an overview of all your habits in one graph
+P3#9494	4	NOTDUE	show which days you chose for each habit at a glance
+P3#9531	5	GLHIST	all habits' streak at a glance
+P3#9693	5	GLHIST	a widget so you can see at a glance your performance of all the habits
+P3#10065	4	GLTODAY,WANT_ALL	no widget that really displays an overview of my habits for the day
+P3#10108	5	GLHIST	review whole week,month at a glance
+P3#10145	5	WANT_ALL,DENSE	an overview of all the habits I've defined ... in a compact view
+P3#10430	3	GLHIST	all your habits on one big calendar
+P3#10601	5	WANT_ALL,LEFT,FORGET_BELOW	see everything listed on the main page to check at a glance if I've missed anything
+P3#11577	5	WANT_ALL	you could see everything at a glance
+P3#11840	5	GLHIST	a weeks view of all habits at a glance
+P3#12223	5	GLHIST	a monthly dashboard
+P3#12631	5	GLHIST,PLAN	sticky notes to plan my day ... a bird eye view
+P3#12949	5	GLHIST	show you your progress at a glance
+P3#13457	5	GLHIST	an overview of all habits
+P3#14043	5	COUNT,GLHIST	rating of the day to track how many habits I have completed on particular day
+P3#15966	5	WANT_ALL	see everything 'at a glance' on the opening screen
+P3#16192	5	GLHIST	see at a glance which habits are strong
+P3#20858	5	GLHIST	an overview of your day, week and months
+P3#21472	5	GLHIST	check history at a glance
+P32#213	4	PLANGEN	help plan my day
+P32#277	5	PLANGEN	help to plan my day
+P33#286	5	PLANGEN	plan my day
+P33#1736	4	GLTODAY,WANT_ALL	keep on top of everything at a glance ... a widget that shows the habits for that day
+P37#731	5	SECTIONS,GROUPING	see my habits for morning routine and night routine at a glance
+P37#935	4	GLHIST,PREVIEW	Seeing past and upcoming goals at a glance
+P38#684	5	PLANGEN	helps me plan my day
+P38#716	5	PLANGEN	plan my day
+P38#761	5	GLTODAY,NEXT	a button that you push that automatically tells you which one of your tasks you should do
+P38#1169	5	GLTODAY	a nice overview of the to-do list
+P38#1246	3	GLHIST	an overview of all the routine (the calendar being the main page)
+P4#2310	4	WANT_ALL	alles auf einen Blick
+P4#4401	5	PLANGEN	helps me plan my day
+P4#4993	5	PLANGEN	plan out my day
+P4#7203	5	GLHIST	see at a glance where I'm spending my time
+P4#7490	5	PLANGEN	plan my day
+P4#9346	5	PLANGEN	plan my day better
+P4#9716	3	PLANGEN	plan my day
+P4#10161	5	PLANGEN	plan my day
+P4#13786	5	PLANGEN	plan my day
+P4#13790	5	PLANGEN	plan my day to day activities
+P4#13833	5	PLANGEN	plan my day
+P4#14176	5	PLANGEN	plan my days
+P4#14486	5	PLANGEN	plan my days
+P4#15384	5	PLANGEN	plan my day out
+P4#17067	2	WANT_ALL	I have no overview of my tasks on my watch
+P4#17136	1	PLANGEN	I wanted to plan out my day
+P4#17394	4	PLANGEN	something I can use to plan my day
+P4#17762	5	PLANGEN	plan out my day
+P4#18842	5	PLANGEN	plan my day
+P4#19314	5	PLANGEN	plan my day
+P4#21448	5	PLANGEN	plan my day to know what I'm doing
+P4#22007	4	PLANGEN	plan my day
+P4#22235	5	PLANGEN	plan out my day
+P4#22261	5	GLHIST	see the whole month results
+P4#22942	1	PREVIEW	a monthly at a glance calendar for tasks
+P4#23690	5	PLANGEN	plan out my day
+P4#25943	5	PLANGEN	plan my day
+P4#26144	1	TIMELINE,NOTDUE	You can't organize the schedule so things appear in the right order every day
+P4#26768	1	PLANGEN	plan out my day
+P4#76587	5	PLANGEN	plan my day
+P49#350	5	PLAN,TIMELINE	plan out my days to a T with time estimates
+P49#538	4	PLANGEN	plan my days
+P49#1385	3	PREVIEW	an overview of all of your tasks in one view of the week
+P49#1566	4	PLANGEN	plan my day
+P49#2639	5	GLTODAY	super easy to see what I need to do for the day
+P49#2702	4	PLAN	a checklist/daily agenda for filling in spaces between routines
+P49#2749	5	PLAN,TIMELINE	plan my day out ... a rough estimate of the time it will take
+P49#2906	4	PLANGEN	plan my day
+P49#3268	5	PLANGEN	helps me plan my day
+P5#3439	5	PLANGEN	plan my day
+P55#33	5	PLAN,TIMELINE	plan my day ... planning the day with time intervals
+P65#1666	5	WANT_ALL	Alle Ziele super auf einen Blick
+P65#1785	5	GLTODAY,PLAN	jeden Tag auf einen Blick alles aufgelistet, was zu tun ist
+P65#2194	5	GLHIST	easy to see at a glance
+P65#2251	5	GLHIST	at a quick glance I know what days are strength and what days are cardio
+P65#4337	5	GLHIST	tell at a glance which areas need improvement
+P65#4424	5	GLTODAY	check whats done daily/weekly/monthly at a glance
+P65#5822	5	GLHIST	shows you at a glance what you have been accomplishing
+P65#6631	5	WANT_ALL	see many goals at a glance
+P65#7183	4	GLHIST	an overview of stats
+P65#7607	5	GLHIST	identify problem areas and patterns at a glance
+P65#9082	5	GLHIST	MONITORS your w/projects & habits AT A GLANCE
+P65#9500	5	GLTODAY	see at a glance if it has been done
+P65#9677	5	PLAN	the act of writing helps me center and plan my day
+P65#11030	4	DENSE,WANT_ALL	hacer más pequeña la fuente para poder ver más en la pantalla general de un vistazo
+P65#11369	5	GLHIST	ver de un vistazo si realmente estás cumpliendo
+P69#45	4	WANT_ALL	a daily view option with both the habits and the to-dos
+P8#494	2	WANT_ALL,MANYN	you can see everything you need to do at a glance ... the lists ... can get quite long
+P8#772	4	LEFT,GLTODAY	see what I still have to do for the day in the dailies
+P8#4775	5	PREVIEW	weekly or monthly view of tasks
+P8#5611	3	TIMELINE,PLAN	schedule a specific time of day ... I would love to plan my days
+P8#5769	5	PREVIEW,PLAN	preview the next day's dailies to plan my day better
+P8#6158	5	WANT_ALL,CALM	an overview of all these things inside a single app ... less overwhelming
+P8#9457	4	GLTODAY	seeing my tasks at a glance from the main screen
+P9#574	5	GLTODAY	a simple list of check boxes to go through each day
+P9#723	5	GLHIST	see at a glance what I’ve been neglecting
+P111#2387	5	SUMMARY,COUNT	a quick summary of what is overdue ... tasks due the next day ... number of tasks due
+P126#7361	5	COUNT	the task counter on the icon of the app
+P126#31481	5	COUNT	see how many tasks remaining on that day
+P126#74238	4	COUNT	the count of tasks due that stays in the notification drawer
+P84#17544	5	COUNT	see the number of tasks remaining
+N1#18521	1	COUNT	a number on the app icon ... of the number of tasks due that day
+N10#12046	1	COUNT	the badge on the app icon
+N10#12086	3	COUNT	a badge on the icon app with the number of tasks due for the day
+N10#14816	3	COUNT	the overdue tasks counter on the app icon
+N10#16671	3	COUNT	displaying the number of tasks for today on the app-badge! This is essential
+N10#21078	4	COUNT	the app badge number to only display the number of overdue tasks
+N10#21913	2	COUNT	the red notification bubble that tells me with a number how many things I have to do today
+N6#714	4	COUNT	tells you how many outstanding tasks you have by glancing at your phones Home Screen
+N6#756	2	COUNT	a badge on the app icon to signal that a task is due or outstanding
+N6#1382	4	COUNT	a badge on it if i have tasks due that day
+N6#1874	1	COUNT	Do you have tasks to do today? Any you have not done yet? How many?
+N6#1947	4	COUNT	badge on app icon showing number of incompleted tasks today
+N6#4974	3	COUNT	no indication you have any reminders that are due
+N6#5139	4	COUNT,NOTDUE	a status indicator to let me know without opening the app how many tasks left for this day ... not make visible tasks I have for other days
+N6#5281	2	COUNT	badge with count of active reminders
+N6#6244	3	COUNT	a badge ... as a constant reminder I have past due items
+N8#10078	3	COUNT	A notification badge is needed
+P111#2597	5	HIDEDONE	hide completed tasks
+P111#5129	4	NEXT	an alarm that reminds you of your next task
+P122#19729	4	HIDEDONE,SCROLL_BAD	hide completed excersises so no long scrolling is required
+P126#18106	1	SCROLL_BAD	auto scroll to the next time a task is due ... scroll back to the top
+P126#18301	4	NEXT	recommends that I have to finish my next task
+P126#18379	4	NEXT	verbally tells you the next task
+P126#20104	5	NEXT	reminded you about your upcoming task
+P126#25941	5	NEXT	remind us for our upcoming task
+P126#32562	4	NEXT,TIMELINE	how much time stills tell the next task
+P126#37794	5	HIDEDONE	I love how your completed tasks disappear
+P126#45210	3	NEXT,PREVIEW	Good to see the next task
+P126#47294	5	NEXT	reminds me the next task
+P126#47726	4	KEEPDONE	have completed tasks stay visible
+P126#51973	3	HIDEDONE	finished tasks MOVES TO THE BOTTOM
+P126#52190	1	KEEPDONE	I don't like the finished tasks disappearing
+P126#70975	5	HIDEDONE	The completed tasks vanish keeping the list clean and manageable
+P84#6955	4	HIDEDONE	automatically shift it to the bottom of the list
+P84#7549	5	HIDEDONE	hide completed tasks
+P84#7931	1	HIDEDONE	completed tasks don't disappear
+P84#9390	5	HIDEDONE	completed tasks disappear at a set time - the end of the day
+P84#12346	5	HIDEDONE	sort completed tasks from uncompleted instead of hiding
+P84#12719	4	KEEPDONE	really like that completed tasks stay visible
+P84#13311	5	HIDEDONE,MANYN	Can hide completed tasks ... over 100 recurring events
+P84#14803	5	OVERW	When everything I should do seems overwhelming, I make a list and do one thing at a time
+P84#14960	5	HIDEDONE	Mark as done and *woosh* they disappear
+P84#15608	4	HIDEDONE	completed tasks move to the bottom of the list by default
+P84#15957	5	HIDEDONE,KEEPDONE	I wish they dropped to the bottom of the list but still be visible
+P84#16956	5	HIDEDONE	I can check off my tasks and they go away
+P84#18249	5	HIDEDONE	easily hide completed
+P84#18544	5	KEEPDONE	DOESN'T put completed tasks at the bottom on a separate list
+P84#18659	5	KEEPDONE	I feel so much more productive after a day when I can see all that I've checked off
+P84#21279	5	HIDEDONE	auto hide or put done tasks at the bottom of the list
+P84#23559	5	HIDEDONE,NEXT	Upcoming tasks should be on top and completed task should go below
+P84#25675	5	DENSE,HIDEDONE,KEEPDONE	condense the text on screen, so I can see more at a glance. Completed items move to the bottom ... but are still visible
+P84#29843	5	HIDEDONE,NEXT	completed tasks are removed and my lists stay clear and ready for me to move o to the next task
+P84#29899	5	KEEPDONE,HIDEDONE	see my completed tasks dropping to the bottom - it helps me remember what I've accomplished
+N1#18946	3	NOTDUE	a reoccurring chore list that only shows me what I need done today
+N1#21505	4	OVERW,COLLAPSE	the Today Section seems very clustered and unorganized, not to many options to collapse
+N1#22123	5	HIDEDONE	completed items disappear. Love it
+N10#912	4	HIDEDONE	automatically hide completed tasks
+N10#2392	2	WANT_ALL	every list is split into 2 lists (undone on top vs completed on the bottom)
+N10#21696	2	HIDEDONE	make it so they move to the bottom of the list when they’re checked off
+N10#22619	4	TIMELINE,HIDEDONE,KEEPDONE	arrange the items in order of which task I am going to do first ... for My Day I like to be able to see what I accomplished
+N10#23048	4	HIDEDONE	showing incomplete up top and the ability to hide completed
+N10#23614	3	LEFT,HIDEDONE	it is difficult to see all the tasks needing completion
+N3#22254	4	HIDEDONE,LEFT	dropped to the bottom of the list so I could see what was done Abe not done
+N3#25566	4	COLLAPSE,COUNT	collapse each month (and even show how many items remain out of the total)
+N3#25886	2	HIDEDONE	doesn’t allow to hide completed tasks ... limits overview
+N6#1919	1	COUNT	how much the badge count reminds you after dismissing reminder
+N6#4921	4	PREVIEW	see my upcoming task
+N6#5027	5	HIDEDONE,KEEPDONE	marked off as done tasks disappear, BUT, can be shown with the drop down button
+N6#5961	3	PREVIEW	It could look like you have nothing to do two days from now
+N6#5979	4	COLLAPSE,OVERW	collapse lists ... keep the screen far less cluttered
+N7#12019	5	HIDEDONE	check box items just fall to the bottom of the list once you check it off
+N7#12442	4	HIDEDONE,SCROLL_BAD	Why won't the checked items drop to the bottom anymore ... Now I have to scroll up and down
+N7#12445	3	HIDEDONE	leaving a cluttered list with lots of scrolling involved
+N8#8740	4	HIDEDONE	My brain doesn't feel tasks are "done" if I can still see them
+N8#10647	4	HIDEDONE	please hide the completed task
+P126#14809	4	GLTODAY	auf einen Blick erinnert, was heute zu tun ist
+N10#375	3	GLTODAY	Everything in the to do list looks the same ... at a glance use ability
+N2#16330	1	WANT_ALL,TIMELINE	fit an entire day’s schedule on the screen ... quick scan
+N2#24159	1	GLTODAY,TIMELINE	A calendar should be able to give you info about your day at a glance
+N10#21885	2	WANT_ALL,COLLAPSE_BAD	I want everything at a glance. Get rid of the collapsible boxes
+N8#24479	2	WANT_ALL,TIMELINE	you can’t see the whole day’s events at a glance
+N8#34171	3	WANT_ALL,TIMELINE	see the whole day at once
+P84#30073	5	OVERW	Too much stress from just looking at an endless list of tasks to do
+N10#11678	5	WANT_ALL,LEFT	All the tasks from all the lists should be displayed in a single list for an overview of the pending tasks
+N6#1892	5	PREVIEW,SUMMARY	see tasks due the next day and next week on a summary
+P111#12153	5	GLTODAY	Seeing everything at a glance makes it easier to tackle everything
+P84#14677	4	PLAN	the 'daily moment'/plan my day
+N6#2416	4	GLTODAY	a quick glance of agenda for the week/day
+N8#36007	3	PLAN,GLTODAY	see the overview of the planning of the day
+N10#10388	4	CALM,NOTDUE	it just shows on the day as it doesn't get cluttered or stressful seeing what i have planned that week
+N3#27856	2	HIDEDONE,SCROLL_BAD	now I’m scrolling up and down my list
+N11#6329	3	PLAN	plan out my day in advance
+N4#8862	4	GLTODAY	view medications, vitals, etc at a glance
+N1#18562	5	GLTODAY	see what I need to do that day
+N10#14180	3	GLTODAY	a quick overview of the to do’s of today
+N8#30663	4	WANT_ALL,TIMELINE	see all of my obligations for the day without having to scroll
+N10#17995	4	GLTODAY	we stared at the to-do from the Daytimer
+N2#8961	3	TIMELINE	I have to scroll through to get to my items
+N2#23486	4	WANT_ALL,PLAN	see my whole day in one place
+N10#20353	2	DENSE,WANT_ALL	a compact mode to see more items on one page without scrolling so much
+P126#10808	5	WANT_ALL	alles auf einen Blick habe
+P84#28379	5	GLTODAY	see at a glance what I need or want to accomplish
+N1#5850	1	WANT_ALL	I still have to open the entire app to get an overview
+N2#13822	3	SUMMARY	I preferred when everyday had it’s own summary of events
+N10#23121	5	CALM	not feeling overwhelmed by looking at a massive to-do list
+N8#25398	3	SUMMARY,GLTODAY	at a glance see the date and a summary of events
+P126#14786	5	LEFT,GLTODAY	sieht man auf einen Blick was noch offen ist
+P84#4386	4	WANT_ALL,LEFT	eine Gesamtansicht in der ich auf einen Blick sehe was ansteht
+P84#22616	5	WANT_ALL	Can see everything at a glance
+P84#32887	4	DENSE,WANT_ALL	keep long lists visible on whole page so don't need to scroll down
+N2#18636	4	PREVIEW	view all upcoming events without scrolling
+N1#25114	4	WANT_ALL,OVERW	overwhelming to get into each list to see what’s up for the day, so I just open the “today” list
+P84#32375	3	NOTDUE,OVERW	1 large overwhelming list. Having the option to see my tasks day by day is a huge stress-reliever

@@ -1,0 +1,168 @@
+{
+  "round2": {
+    "fingerprint": "a33a6c23",
+    "expected": "a33a6c23",
+    "unchanged": true,
+    "bytes": 1997827,
+    "nodes": 4960
+  },
+  "round3": {
+    "id": "57:2",
+    "boards": [
+      {
+        "id": "57:4",
+        "name": "A · Today (default)"
+      },
+      {
+        "id": "57:386",
+        "name": "B · Yesterday"
+      },
+      {
+        "id": "57:760",
+        "name": "C · Last week (after swiping the strip)"
+      },
+      {
+        "id": "57:1139",
+        "name": "D · Saturday preview (later this week)"
+      },
+      {
+        "id": "57:1525",
+        "name": "E · 01:30 Friday, day starts 04:00"
+      },
+      {
+        "id": "57:1913",
+        "name": "F · Tap the title → dates"
+      },
+      {
+        "id": "57:2489",
+        "name": "G · One title rule for every view"
+      },
+      {
+        "id": "57:2585",
+        "name": "H · Tap the filter button → Filter sheet"
+      },
+      {
+        "id": "57:3032",
+        "name": "I · Filter on: Afternoon + Health"
+      },
+      {
+        "id": "57:3302",
+        "name": "J · Hide completed habits on"
+      },
+      {
+        "id": "57:3688",
+        "name": "K · Edit → Your day"
+      },
+      {
+        "id": "57:4123",
+        "name": "L · Long-press a header"
+      },
+      {
+        "id": "57:4536",
+        "name": "M · End of list: Reorder · Edit your day"
+      },
+      {
+        "id": "60:134",
+        "name": "O · Layout → Card layout"
+      },
+      {
+        "id": "62:42",
+        "name": "P · All group habits"
+      },
+      {
+        "id": "62:95",
+        "name": "Q · Health — full inventory"
+      },
+      {
+        "id": "62:155",
+        "name": "R · Learning — nothing due today"
+      },
+      {
+        "id": "62:184",
+        "name": "S · Filter — zero options expanded"
+      },
+      {
+        "id": "62:230",
+        "name": "T · Learning selected — zero today"
+      },
+      {
+        "id": "62:623",
+        "name": "U · Add group from Filter"
+      },
+      {
+        "id": "62:653",
+        "name": "V · Add section from Filter"
+      },
+      {
+        "id": "62:681",
+        "name": "W · Day starts at — one boundary"
+      },
+      {
+        "id": "62:712",
+        "name": "X · First group — optional setup"
+      },
+      {
+        "id": "62:750",
+        "name": "Y · Work — genuinely empty"
+      },
+      {
+        "id": "62:768",
+        "name": "Z · All section habits"
+      },
+      {
+        "id": "62:809",
+        "name": "AA · Afternoon — full inventory"
+      },
+      {
+        "id": "62:840",
+        "name": "AB · Two filters — no intersection"
+      },
+      {
+        "id": "62:862",
+        "name": "AC · All matching habits completed"
+      },
+      {
+        "id": "62:880",
+        "name": "AD · Edit section — sections off"
+      },
+      {
+        "id": "64:111",
+        "name": "AE · Edit groups"
+      },
+      {
+        "id": "64:156",
+        "name": "AF · Edit Health group"
+      },
+      {
+        "id": "64:186",
+        "name": "AG · Edit Afternoon section"
+      },
+      {
+        "id": "64:216",
+        "name": "AH · Filter — non-due section"
+      },
+      {
+        "id": "67:141",
+        "name": "AI · Night shift — all assigned habits"
+      },
+      {
+        "id": "67:165",
+        "name": "AJ · Filter — intersection is zero"
+      }
+    ],
+    "screenCount": 35,
+    "evidenceBoard": "57:4938",
+    "fontFamilies": [
+      "DM Sans"
+    ],
+    "layoutIssues": [],
+    "staleCopy": [],
+    "navigationSources": 121,
+    "badTargets": [],
+    "componentSets": [
+      "59:6",
+      "59:11"
+    ],
+    "instances": 149
+  }
+}

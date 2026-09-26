@@ -1,0 +1,63 @@
+{
+ "tot": {
+  "habit": 876180,
+  "native": 611043
+ },
+ "cnt": {
+  "habit": {
+   "sections": 1614,
+   "categories": 1330,
+   "tags": 1602,
+   "lists": 1536,
+   "parts of the day": 174,
+   "filter": 291,
+   "morning/evening routine": 2160,
+   "areas": 1072,
+   "groups": 1106,
+   "due today": 26,
+   "folders": 207,
+   "time of day": 472,
+   "this week": 281,
+   "last 7 days": 37,
+   "sort by": 114,
+   "filter by": 36,
+   "hide completed": 26,
+   "what's left": 20,
+   "hide finished": 2,
+   "default view": 21,
+   "group by": 21,
+   "view by": 13,
+   "due now": 2,
+   "show completed": 8,
+   "hide done": 3
+  },
+  "native": {
+   "tags": 1452,
+   "sections": 1303,
+   "categories": 1344,
+   "groups": 1170,
+   "morning/evening routine": 37,
+   "lists": 7916,
+   "folders": 1199,
+   "due today": 82,
+   "this week": 164,
+   "areas": 579,
+   "default view": 55,
+   "filter": 569,
+   "hide completed": 42,
+   "sort by": 226,
+   "what's left": 13,
+   "time of day": 80,
+   "filter by": 85,
+   "last 7 days": 9,
+   "view by": 42,
+   "parts of the day": 18,
+   "group by": 31,
+   "hide done": 2,
+   "show completed": 39,
+   "due now": 2,
+   "hide checked": 2,
+   "hide finished": 1
+  }
+ }
+}

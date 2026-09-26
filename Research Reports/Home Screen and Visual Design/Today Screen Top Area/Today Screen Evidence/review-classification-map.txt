@@ -2496,3 +2496,986 @@ P82#7	VMAIN	5	82. Habit Tracker - To-Do List
 P98#1309	VHABIT	3	98. Rabit - Habit Tracker & Planner	
 P98#269	VHABIT	2	98. Rabit - Habit Tracker & Planner	
 P98#6118	VMAIN	4	98. Rabit - Habit Tracker & Planner	
+
+## Round 2 (Q10–Q13): views, strip, filter wording (264 relevant)
+A1#45058	GFILT-	4	1. Habit Tracker - Goal Tracker & ADHD Planner	filters each time; wants coloured headers
+A1#49150	FILTERBY	4	1. Habit Tracker - Goal Tracker & ADHD Planner	filter by time crucial
+A1#52733	FILTERBY	4	1. Habit Tracker - Goal Tracker & ADHD Planner	widget filter by tag
+A1#54362	GFILT+	5	1. Habit Tracker - Goal Tracker & ADHD Planner	tag and filter by tag
+A1#54764	DATE_WHICH	1	1. Habit Tracker - Goal Tracker & ADHD Planner	days at top random letters not dates
+A1#55065	VREMEMBER	5	1. Habit Tracker - Goal Tracker & ADHD Planner	save last filter view
+A13#11175	HIDEDONE	3	13. Productive - Habit Tracker - Daily Routine & Goals Planner	hide completed; cluttered
+A13#12184	VSTICK	3	13. Productive - Habit Tracker - Daily Routine & Goals Planner	default view should be All Day
+A13#13533	STRIPCLUT	1	13. Productive - Habit Tracker - Daily Routine & Goals Planner	option to remove dates at the top
+A13#13534	SORTBY	2	13. Productive - Habit Tracker - Daily Routine & Goals Planner	auto sort by times
+A13#13702	VSTICK	2	13. Productive - Habit Tracker - Daily Routine & Goals Planner	let default view be all day, stop swiping
+A13#13733	STRIPCLUT	1	13. Productive - Habit Tracker - Daily Routine & Goals Planner	hate the calendar at the top
+A13#14619	HIDEDONE	4	13. Productive - Habit Tracker - Daily Routine & Goals Planner	hide completed to see what's left
+A13#16345	HIDEDONE	4	13. Productive - Habit Tracker - Daily Routine & Goals Planner	hide completed
+A13#18620	VOPENTODAY,VSTICK	5	13. Productive - Habit Tracker - Daily Routine & Goals Planner	open to today page
+A13#19487	SORTBY	5	13. Productive - Habit Tracker - Daily Routine & Goals Planner	sort by time of day praise
+A13#2741	HIDEDONE	5	13. Productive - Habit Tracker - Daily Routine & Goals Planner	hide finished tasks
+A13#6094	STRIPCLUT	1	13. Productive - Habit Tracker - Daily Routine & Goals Planner	dominating days at top prevent overview
+A13#6255	ONLYDUE	4	13. Productive - Habit Tracker - Daily Routine & Goals Planner	see what's left for the day
+A13#736	ONLYDUE	5	13. Productive - Habit Tracker - Daily Routine & Goals Planner	only current part of day
+A18#1992	DATE_LAST7	5	18. MyRoutine - Organize your day - Built around your real life	progress as last 7 days
+A20#3164	SORTBY	4	20. Habit — Daily Tracker - Crush your goals like a boss	sort by color
+A23#4099	VSTICK	3	23. Streaks - The habit-forming to-do list	default view monthly calendar
+A29#19	FILTERBY	4	29. Habit Tracker - Daily Goals - Motivation & Accountability	group by category praise
+A31#1141	STRIPNAV	3	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#1843	STRIPNAV	3	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#2702	HIDEDONE	1	31. Do Habits - Get It Done - Daily Routine & Goal Planner	hide completed tasks
+A31#2845	STRIPNAV	2	31. Do Habits - Get It Done - Daily Routine & Goal Planner	quick jump today/yesterday/tomorrow
+A31#3270	STRIPNAV	2	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3625	DATE_TOP	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	date at top instead of Today/Yesterday
+A31#4696	FILTERBY	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	view goals grouped by category
+A31#4958	FILTERBY	4	31. Do Habits - Get It Done - Daily Routine & Goal Planner	view by group at the top
+A31#969	STRIPNAV	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	can't easily switch between days anymore
+A33#3588	FILTERBY,GFILT+	5	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	filter by time of day makes it clean
+A33#3680	SORTBY	5	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	sort by time of day praise
+A4#13197	SORTBY	3	4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker	
+A4#16739	HIDEDONE	3	4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker	completed to bottom
+A4#3690	HIDEDONE	4	4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker	completed used to move below
+A41#531	VSTICK	5	41. Awesome Habits - Habit Tracker - Streaks, days since & goals	default starting page for chosen list
+A43#218	ONLYDUE	2	43. Habit Hub - Routine Tracker - Daily Todo, Goals & Schedule	only what's currently due
+A43#253	DATE_TOP	3	43. Habit Hub - Routine Tracker - Daily Todo, Goals & Schedule	date at top of screen
+A46#2070	FILTERBY	3	46. everyday - Habit Tracker - Daily Routine Checklist	view by time of day
+A48#1988	STRIPNAV	4	48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist	swipe calendar at top
+A53#1412	SHOWDONE	5	53. HabitMinder • Habit Tracker - Daily Reminders & Routines	likes seeing completed, easy to see what's left
+A65#447	HIDEDONE	4	65. Rabit - Daily Routine Planner - Habit Tracker & ADHD Help	
+A7#252	HIDEDONE	3	7. Habit Tracker - HabitKit - Streaks & Accountability	unchecked first
+A7#880	HIDEDONE	5	7. Habit Tracker - HabitKit - Streaks & Accountability	option to hide completed habits
+A76#307	STRIPNAV	1	76. Way of Life - Habit Tracker - Build a better, stronger you	tap days on top broken
+A76#3676	HIDEDONE	4	76. Way of Life - Habit Tracker - Build a better, stronger you	show or hide completed tasks
+A76#4950	FILTERBY	3	76. Way of Life - Habit Tracker - Build a better, stronger you	filter by tag
+A76#968	STRIPNAV	4	76. Way of Life - Habit Tracker - Build a better, stronger you	wants to tap previous day
+A8#527	ONLYDUE,STRIPNAV	4	8. Onrise - Habit Tracker & Focus - Build habits, focus & journal	small calendar at top; show only that day's habits
+A8#657	STRIPNAV	4	8. Onrise - Habit Tracker & Focus - Build habits, focus & journal	click through calendar to see lists on days
+A85#1151	HIDEDONE	3	85. Habitica - Gamified Taskmanager - Stay motivated and organized	hide completed dailies
+A85#1698	VSTICK	4	85. Habitica - Gamified Taskmanager - Stay motivated and organized	default tab on open; switching every time is bad
+A85#439	SHOWDONE	3	85. Habitica - Gamified Taskmanager - Stay motivated and organized	show checked off tasks
+A86#1135	HIDEDONE	4	86. Today Habit tracker - For to-dos, routines & goals	hide completed, only unchecked
+A86#1665	ONLYDUE	4	86. Today Habit tracker - For to-dos, routines & goals	what's left in day/week/month at a glance
+A86#848	VSTICK	5	86. Today Habit tracker - For to-dos, routines & goals	full list as default screen
+N1#11575	SHOWDONE	4	1. Reminders - Don’t forget. Use Reminders	"show completed" in Today
+N1#12199	FILTERBY	5	1. Reminders - Don’t forget. Use Reminders	
+N1#13147	FILTERBY	4	1. Reminders - Don’t forget. Use Reminders	filter by tag inside list
+N1#14668	FILTERBY	3	1. Reminders - Don’t forget. Use Reminders	filter by group
+N1#16346	FILTERBY	1	1. Reminders - Don’t forget. Use Reminders	sort by list in Today view
+N1#16452	SHOWDONE	4	1. Reminders - Don’t forget. Use Reminders	"Show Completed Today"
+N1#17688	FILTERBY	4	1. Reminders - Don’t forget. Use Reminders	filter by tags
+N1#1795	FILTERBY	4	1. Reminders - Don’t forget. Use Reminders	
+N1#18007	HIDEDONE,SHOWDONE	2	1. Reminders - Don’t forget. Use Reminders	hide/show completed useful
+N1#20206	FILTERBY	4	1. Reminders - Don’t forget. Use Reminders	
+N1#21504	SHOWDONE	5	1. Reminders - Don’t forget. Use Reminders	option to show completed
+N1#22161	SHOWDONE	3	1. Reminders - Don’t forget. Use Reminders	"Show Completed"
+N1#23321	SHOWDONE	5	1. Reminders - Don’t forget. Use Reminders	one touch to show completed
+N1#23980	SHOWDONE	2	1. Reminders - Don’t forget. Use Reminders	"show completed"
+N1#24624	FILTERBY,SORTBY	4	1. Reminders - Don’t forget. Use Reminders	
+N1#24803	SORTBY	3	1. Reminders - Don’t forget. Use Reminders	
+N1#25428	HIDEDONE	4	1. Reminders - Don’t forget. Use Reminders	"Hide completed items"
+N1#2915	FILTERBY	5	1. Reminders - Don’t forget. Use Reminders	group by lists in Today view
+N1#531	SORTBY	5	1. Reminders - Don’t forget. Use Reminders	
+N1#9753	SHOWDONE	4	1. Reminders - Don’t forget. Use Reminders	show completed reminders
+N10#10126	SORTBY	1	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#10374	SORTBY	4	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#10405	HIDEDONE	1	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#1068	SORTBY	2	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#10934	SHOWDONE	2	10. Microsoft To Do - Capture Tasks & Set Reminders	hide/show completed 2 more clicks, hidden
+N10#11193	SORTBY	1	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#11651	HIDEDONE,SHOWDONE	3	10. Microsoft To Do - Capture Tasks & Set Reminders	separate show/hide completed button
+N10#14514	SORTBY	5	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#16388	FILTERBY	2	10. Microsoft To Do - Capture Tasks & Set Reminders	group by categories
+N10#16430	SHOWDONE	1	10. Microsoft To Do - Capture Tasks & Set Reminders	"Show Completed" removed
+N10#17826	SORTBY	1	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#17940	FILTERBY	1	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#18044	SHOWDONE	4	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#18371	HIDEDONE,SORTBY	1	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#18442	FILTERBY	1	10. Microsoft To Do - Capture Tasks & Set Reminders	group by category
+N10#19204	FILTERBY	2	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#19569	FILTERBY	3	10. Microsoft To Do - Capture Tasks & Set Reminders	filter by category
+N10#19765	SORTBY	1	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#19900	FILTERBY	4	10. Microsoft To Do - Capture Tasks & Set Reminders	view by category
+N10#20092	FILTERBY	1	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#20628	HIDEDONE	3	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#20911	SORTBY	5	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#21197	HIDEDONE	5	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#21366	HIDEDONE	1	10. Microsoft To Do - Capture Tasks & Set Reminders	toggle to hide completed removed
+N10#21370	HIDEDONE,SHOWDONE	4	10. Microsoft To Do - Capture Tasks & Set Reminders	show/hide completed button praised
+N10#21371	SHOWDONE	1	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#21376	SORTBY	5	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#21422	SHOWDONE	2	10. Microsoft To Do - Capture Tasks & Set Reminders	extra clicks to show completed
+N10#21500	SHOWDONE	1	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#21578	SHOWDONE	1	10. Microsoft To Do - Capture Tasks & Set Reminders	3 extra clicks to show completed
+N10#21621	SHOWDONE	3	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#21696	HIDEDONE	2	10. Microsoft To Do - Capture Tasks & Set Reminders	hide completed or move to bottom
+N10#21719	SORTBY	4	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#21778	SHOWDONE	3	10. Microsoft To Do - Capture Tasks & Set Reminders	"show completed tasks" annoying
+N10#21798	HIDEDONE	1	10. Microsoft To Do - Capture Tasks & Set Reminders	hide completed buried in list options
+N10#2182	SORTBY	3	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#22052	SHOWDONE	3	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#22193	SORTBY	4	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#22238	ONLYDUE	4	10. Microsoft To Do - Capture Tasks & Set Reminders	what is left at a glance
+N10#22545	FILTERBY	2	10. Microsoft To Do - Capture Tasks & Set Reminders	group by categories
+N10#22619	SORTBY	4	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#2337	HIDEDONE	2	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#23614	HIDEDONE	3	10. Microsoft To Do - Capture Tasks & Set Reminders	sort/hide completed steps
+N10#476	FILTERBY	3	10. Microsoft To Do - Capture Tasks & Set Reminders	group by category
+N10#483	SORTBY	4	10. Microsoft To Do - Capture Tasks & Set Reminders	sort by categories
+N10#560	FILTERBY	1	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#6168	HIDEDONE	1	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#6805	SORTBY	1	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#7557	HIDEDONE	4	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#7721	SHOWDONE	4	10. Microsoft To Do - Capture Tasks & Set Reminders	complicated to re-show done items
+N10#912	HIDEDONE	4	10. Microsoft To Do - Capture Tasks & Set Reminders	auto hide completed
+N10#9949	SORTBY	4	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N10#9994	SORTBY	2	10. Microsoft To Do - Capture Tasks & Set Reminders	
+N2#5137	SHOWDONE	1	2. Calendar	"Show Completed Reminders" setting
+N3#25886	HIDEDONE	2	3. Notes - Take note of almost anything	hide completed tasks from checklist
+N3#28360	SORTBY	4	3. Notes - Take note of almost anything	
+N3#8448	HIDEDONE	3	3. Notes - Take note of almost anything	checked to bottom
+N5#11773	FILTERBY	5	5. Apple Fitness - Fitness and Fitness+	filter by time/equipment
+N6#5405	FILTERBY	4	6. Google Tasks- Get Things Done - Plan, Organize & Schedule Work	organize by areas of life
+N6#5827	SORTBY	3	6. Google Tasks- Get Things Done - Plan, Organize & Schedule Work	
+N7#11027	FILTERBY	4	7. Google Keep - Notes and lists	labels to sort by group
+N7#11722	FILTERBY	4	7. Google Keep - Notes and lists	
+N7#12019	HIDEDONE	5	7. Google Keep - Notes and lists	checked fall to bottom
+N8#10073	FILTERBY	5	8. Google Calendar- Get Organized - Easily plan & schedule	group by color
+N8#10647	HIDEDONE	4	8. Google Calendar- Get Organized - Easily plan & schedule	hide completed task
+N9#52153	FILTERBY	1	9. Google Sheets - Collaborate on Spreadsheets	view by folder
+P10#11581	SORTBY	5	10. Habit Tracker - Habit Diary	
+P10#12117	VSTICK	5	10. Habit Tracker - Habit Diary	default view All
+P106#511	HIDEDONE	2	106. Habit Tracker n Pets - HabitYou	
+P110#1341	VSTICK	1	110. Habit Tracker Unlimited	landing page default to calendar
+P110#1951	DATE_TOP	4	110. Habit Tracker Unlimited	week number
+P110#3412	VSTICK	2	110. Habit Tracker Unlimited	all activities list default
+P111#2597	HIDEDONE	5	111. My Study Life - School Planner	
+P122#19729	HIDEDONE	4	122. Hevy - Gym Log Workout Tracker	
+P125#4284	SHOWDONE	4	125. 21 Days Challenge	dislikes update that hides completed
+P126#14331	SORTBY	4	126. To Do List	
+P126#148486	FILTERBY	4	126. To Do List	
+P126#18804	SORTBY	5	126. To Do List	
+P126#18833	FILTERBY	5	126. To Do List	filter by lists
+P126#208665	SORTBY	5	126. To Do List	
+P126#221498	SORTBY	5	126. To Do List	
+P126#22977	FILTERBY	3	126. To Do List	view by category grouped
+P126#28838	SHOWDONE	5	126. To Do List	show finished tasks crossed out
+P126#29935	SORTBY	4	126. To Do List	
+P126#37663	SHOWDONE	3	126. To Do List	completed at bottom
+P126#55586	SHOWDONE	3	126. To Do List	completed crossed then gone at end of day
+P126#57861	SHOWDONE	3	126. To Do List	
+P126#62084	FILTERBY	5	126. To Do List	view by list or all together
+P126#74098	SORTBY	4	126. To Do List	
+P130#175	DATE_TOP,VSTICK	5	130. Way of Life - habit tracker	default monthly view; date on top of weekdays
+P130#326	VSWITCHOFT	3	130. Way of Life - habit tracker	easily switch week and month view
+P14#276	FILTERBY,GFILT+	5	14. Habit Pixel - Streak Tracker	filter by category
+P19#896	SORTBY	5	19. TheFor - Habit Tracker	
+P2#10764	HIDEDONE	5	2. HabitNow Daily Routine Planner	
+P2#11228	SORTBY	5	2. HabitNow Daily Routine Planner	
+P2#11741	HIDEDONE	4	2. HabitNow Daily Routine Planner	hide skipped too
+P2#12803	HIDEDONE	4	2. HabitNow Daily Routine Planner	
+P2#12836	SORTBY	5	2. HabitNow Daily Routine Planner	
+P2#1495	DATE_TOP,STRIPVAL+	3	2. HabitNow Daily Routine Planner	date at top with day's count 2/3
+P2#1767	DATE_WHICH	4	2. HabitNow Daily Routine Planner	widget header always says today
+P2#22992	HIDEDONE	4	2. HabitNow Daily Routine Planner	hide done habits
+P2#28255	HIDEDONE	4	2. HabitNow Daily Routine Planner	
+P2#3258	SORTBY	3	2. HabitNow Daily Routine Planner	sort by time
+P2#7223	FILTERBY	4	2. HabitNow Daily Routine Planner	filter or group by category
+P2#8070	SORTBY	5	2. HabitNow Daily Routine Planner	
+P2#9136	HIDEDONE	5	2. HabitNow Daily Routine Planner	uses "Hide Completed"
+P20#116	GFILT-	5	20. MyRoutine - Routine Habit Goal	tags shown under routine not filter
+P20#270	SHOWDONE	3	20. MyRoutine - Routine Habit Goal	
+P22#364	HIDEDONE	4	22. Disciplined - Habit Tracker	
+P24#12306	VSTICK	4	24. Habit Tracker	startup view weekly
+P24#15092	ONLYDUE	4	24. Habit Tracker	widget only today's habits
+P24#2437	VSTICK	3	24. Habit Tracker	view-on-startup option (weekly) broken
+P24#8479	VSTICK	4	24. Habit Tracker	change standard startup view
+P3#10185	FILTERBY	5	3. Loop Habit Tracker	
+P3#10328	SORTBY	5	3. Loop Habit Tracker	
+P3#1306	HIDEDONE	4	3. Loop Habit Tracker	"hide done habits" mode
+P3#14047	SORTBY	5	3. Loop Habit Tracker	
+P3#14550	HIDEDONE,ONLYDUE	4	3. Loop Habit Tracker	hide not-due too
+P3#14575	SORTBY	5	3. Loop Habit Tracker	
+P3#15099	SORTBY	5	3. Loop Habit Tracker	
+P3#18231	VSTICK	5	3. Loop Habit Tracker	history chart weekly default
+P3#2816	SORTBY	5	3. Loop Habit Tracker	group by color
+P3#3080	HIDEDONE	5	3. Loop Habit Tracker	hide done things option praised
+P3#3453	DATE_THISWEEK	3	3. Loop Habit Tracker	2x/week counted over last 7 days not calendar week
+P3#4982	SORTBY	5	3. Loop Habit Tracker	
+P3#5243	HIDEDONE,SORTBY	4	3. Loop Habit Tracker	"hide completed"
+P3#6376	SORTBY	5	3. Loop Habit Tracker	
+P3#6394	STRIPVAL+	5	3. Loop Habit Tracker	progress for one day for all tasks
+P3#6522	SORTBY	4	3. Loop Habit Tracker	
+P3#6824	FILTERBY	5	3. Loop Habit Tracker	filter by category tag
+P3#7000	HIDEDONE	5	3. Loop Habit Tracker	"Hide completed"
+P3#7153	DATE_THISWEEK	4	3. Loop Habit Tracker	once a week should be calendar week
+P3#7224	HIDEDONE	2	3. Loop Habit Tracker	
+P3#7230	SORTBY	5	3. Loop Habit Tracker	
+P3#7937	SORTBY	4	3. Loop Habit Tracker	
+P3#950	HIDEDONE	5	3. Loop Habit Tracker	overview hiding done is great
+P3#9596	FILTERBY	5	3. Loop Habit Tracker	
+P4#13211	SORTBY,VREMEMBER	2	4. Me+ Lifestyle Routine	sort setting forgotten
+P4#71175	HIDEDONE	3	4. Me+ Lifestyle Routine	
+P4#75849	SORTBY	4	4. Me+ Lifestyle Routine	
+P45#142	HIDEDONE,SORTBY	5	45. PlanMe - Daily Routine Planner	
+P5#1755	STRIPVAL+	5	5. Routine Planner, Habit Tracker	week at landing screen helps cover all days
+P65#15049	SORTBY	5	65. Goal & Habit Tracker Calendar	
+P65#1846	HIDEDONE	2	65. Goal & Habit Tracker Calendar	"hide completed goals"
+P65#4553	HIDEDONE	5	65. Goal & Habit Tracker Calendar	
+P65#6048	HIDEDONE	3	65. Goal & Habit Tracker Calendar	
+P65#7551	FILTERBY	4	65. Goal & Habit Tracker Calendar	
+P71#149	STRIPNAV	3	71. Habitude Daily Routine Planner	switching between days slow
+P75#8	VSWITCHOFT	5	75. Habit Tracker & ToDo - HabitJar	likes switching daily/monthly/yearly
+P8#10203	FILTERBY	5	8. Habitica - Gamify Your Tasks	filter by tags
+P8#12766	ONLYDUE,VREMEMBER	2	8. Habitica - Gamify Your Tasks	always due for a tag
+P8#13267	VREMEMBER	5	8. Habitica - Gamify Your Tasks	filter resets to all every open
+P8#16468	VREMEMBER	5	8. Habitica - Gamify Your Tasks	remember filter
+P8#2977	SORTBY	4	8. Habitica - Gamify Your Tasks	
+P8#3747	ONLYDUE	5	8. Habitica - Gamify Your Tasks	focus on what is left
+P8#4857	SORTBY	3	8. Habitica - Gamify Your Tasks	
+P8#4915	SORTBY	5	8. Habitica - Gamify Your Tasks	
+P8#5758	ONLYDUE,VREMEMBER	4	8. Habitica - Gamify Your Tasks	default to due
+P8#5993	VSTICK	2	8. Habitica - Gamify Your Tasks	default tab
+P8#7163	ONLYDUE,VREMEMBER	3	8. Habitica - Gamify Your Tasks	filter not saved
+P8#8814	FILTERBY	3	8. Habitica - Gamify Your Tasks	filter by tag
+P8#8923	FILTERBY	4	8. Habitica - Gamify Your Tasks	
+P84#12021	HIDEDONE	5	84. Tasks - To Do List & Reminders	"hide completed" check box
+P84#13048	FILTERBY	5	84. Tasks - To Do List & Reminders	
+P84#13311	HIDEDONE	5	84. Tasks - To Do List & Reminders	
+P84#13408	SHOWDONE	5	84. Tasks - To Do List & Reminders	"click to show completed"
+P84#14960	HIDEDONE	5	84. Tasks - To Do List & Reminders	
+P84#16255	HIDEDONE	5	84. Tasks - To Do List & Reminders	
+P84#16956	HIDEDONE,SHOWDONE	5	84. Tasks - To Do List & Reminders	
+P84#18659	HIDEDONE,SHOWDONE	5	84. Tasks - To Do List & Reminders	show or hide completed
+P84#18998	SORTBY	5	84. Tasks - To Do List & Reminders	
+P84#23559	HIDEDONE	5	84. Tasks - To Do List & Reminders	sink unless hidden
+P84#23562	HIDEDONE	5	84. Tasks - To Do List & Reminders	
+P84#26355	HIDEDONE	5	84. Tasks - To Do List & Reminders	
+P84#27768	HIDEDONE,SHOWDONE	5	84. Tasks - To Do List & Reminders	
+P84#28343	HIDEDONE	5	84. Tasks - To Do List & Reminders	
+P84#29572	HIDEDONE	5	84. Tasks - To Do List & Reminders	"hide completed"
+P84#30926	HIDEDONE	5	84. Tasks - To Do List & Reminders	
+P84#32118	SHOWDONE	5	84. Tasks - To Do List & Reminders	"show completed tasks"
+P84#32773	HIDEDONE	5	84. Tasks - To Do List & Reminders	
+P84#6897	SHOWDONE	5	84. Tasks - To Do List & Reminders	"show completed task"
+P84#6955	HIDEDONE	4	84. Tasks - To Do List & Reminders	sink to bottom
+P84#7124	FILTERBY	5	84. Tasks - To Do List & Reminders	
+P84#7931	HIDEDONE	1	84. Tasks - To Do List & Reminders	
+P9#601	SORTBY	5	9. Habit Tracker - HabitKit	
+
+## Round 3 (Q15–Q19): layouts, adding groups, counts, not-due, day start (101 relevant)
+A1#1585	DS_PRAISE,DS_WORD	5	1. Habit Tracker - Goal Tracker & ADHD Planner	"night owl mode / start of day setting"
+A1#43789	ADDFIND	4	1. Habit Tracker - Goal Tracker & ADHD Planner	custom section can't be saved
+A1#45753	DS_PRAISE,DS_WORD	5	1. Habit Tracker - Goal Tracker & ADHD Planner	"set the time it refreshes"; night worker
+A1#46106	NOTDUEACC	5	1. Habit Tracker - Goal Tracker & ADHD Planner	found the habit on the all habits page
+A1#46844	DS_WANT,DS_WORD	1	1. Habit Tracker - Goal Tracker & ADHD Planner	"daily reset time"; night shifts
+A1#48895	DS_WANT,DS_WORD	5	1. Habit Tracker - Goal Tracker & ADHD Planner	"reset time" limited to 5am
+A1#50937	GRPEDIT	5	1. Habit Tracker - Goal Tracker & ADHD Planner	can't delete/organize groups in top row
+A1#51508	DS_PRAISE,DS_WORD	4	1. Habit Tracker - Goal Tracker & ADHD Planner	"daily reset time" essential
+A10#21835	DS_WANT	5	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	2am starts; app blocks morning items
+A13#16273	NOTDUEACC	3	13. Productive - Habit Tracker - Daily Routine & Goals Planner	other-period habits behind a small link at the bottom
+A13#5697	NOTDUEHIDE	5	13. Productive - Habit Tracker - Daily Routine & Goals Planner	praise: not-due tasks hidden for later
+A13#6078	NOTDUEACC	2	13. Productive - Habit Tracker - Daily Routine & Goals Planner	not-daily tasks not showing
+A20#3632	LAY_PREF	4	20. Habit — Daily Tracker - Crush your goals like a boss	monthly view up top
+A23#0	DS_CONF,DS_WORD	3	23. Streaks - The habit-forming to-do list	"start of the day" not intuitive; still asked which day
+A23#2192	DS_WANT,DS_WORD	5	23. Streaks - The habit-forming to-do list	"the time a new day starts"
+A23#3485	DS_WANT	5	23. Streaks - The habit-forming to-do list	shifted day 03:00–02:59; found "start day at"
+A23#4391	DS_WANT,DS_WORD	5	23. Streaks - The habit-forming to-do list	"day starts at" = wake time
+A23#4544	NOTDUEACC	3	23. Streaks - The habit-forming to-do list	one view of all tasks regardless of status
+A23#5057	DS_CONF,DS_WORD	4	23. Streaks - The habit-forming to-do list	later "day starts" should extend the previous day
+A23#5224	LAY_PREF	3	23. Streaks - The habit-forming to-do list	compact/list view option
+A23#5231	DS_CONF	2	23. Streaks - The habit-forming to-do list	4am start caused ticks to go to wrong day
+A23#5254	DS_WANT,DS_WORD	4	23. Streaks - The habit-forming to-do list	"own 24 hour cycle"
+A24#22049	DS_WANT,DS_WORD	5	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	"change the start of the day"
+A24#37876	DS_WANT,DS_WORD	3	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	"my day starts at 5pm and ends at 9pm" night shift
+A24#42353	DS_WANT,DS_WORD	3	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	"my day starts at 2pm and ends at 6am"; 2am end not enough
+A24#5564	DS_WANT	5	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	not for night shift
+A31#1798	DS_WANT,DS_WORD	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	"resets daily at 12 am"
+A31#2245	LAY_SWITCH	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	swipe to change weekly/monthly view
+A34#668	LAY_SWITCH	5	34. Habit Tracker - Evoday - Daily Streaks Calendar & Goals	praise: change the layout
+A36#369	NOTDUEHIDE	4	36. (Not Boring) Habits - Science-backed habit tracker	sees habits on days not scheduled, confusing
+A4#13132	DS_WANT,DS_WORD	4	4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker	"day start time" like week start time
+A4#19388	NOTDUEACC	4	4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker	wants a tab listing every active task to edit
+A4#2254	NOTDUEACC	1	4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker	can't see all habits in one place (only in profile)
+A4#2301	GRPEDIT	5	4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker	can't find how to delete tags
+A4#6032	NOTDUEACC	3	4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker	saved task not on page; found under manage tasks
+A4#7354	NOTDUEACC	3	4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker	can't edit a task for another day
+A41#296	DS_WANT,DS_WORD	4	41. Awesome Habits - Habit Tracker - Streaks, days since & goals	"select what time the day ends" / "when the next day starts"
+A48#1567	NOTDUEHIDE	2	48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist	tag filter shows goals not due today; wants only due
+A48#1988	NOTDUEHIDE	4	48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist	reports list shows not-due, confusing
+A52#20472	DS_WANT,DS_WORD	4	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	"adjust the start of the day and end of the day time"
+A53#1284	DS_WANT,DS_WORD	5	53. HabitMinder • Habit Tracker - Daily Reminders & Routines	"start of the day time"
+A55#1754	LAY_SWITCH	5	55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker	praise daily/weekly/monthly view options
+A7#143	DS_WANT,DS_WORD	5	7. Habit Tracker - HabitKit - Streaks & Accountability	"reset time" to 4 am
+A7#598	DS_WANT,DS_WORD	5	7. Habit Tracker - HabitKit - Streaks & Accountability	"starting a new day"
+A76#2829	DS_WANT,DS_WORD	4	76. Way of Life - Habit Tracker - Build a better, stronger you	"what time a new day begins"
+A76#5632	DS_WANT,DS_WORD	3	76. Way of Life - Habit Tracker - Build a better, stronger you	"past midnight" feature
+A76#6069	LAY_SWITCH	5	76. Way of Life - Habit Tracker - Build a better, stronger you	praise monthly and weekly view options
+A79#106	DS_WANT,DS_WORD	5	79. Habit Tracker - Ripples - Routines, streaks, reminders	"configure the start of the day"
+A85#2234	DS_WANT,DS_WORD	3	85. Habitica - Gamified Taskmanager - Stay motivated and organized	"my day ends at 2am"
+A85#3110	DS_WANT,DS_WORD	3	85. Habitica - Gamified Taskmanager - Stay motivated and organized	dailies lack a logical "reset time"
+A86#1222	NOTDUEHIDE	1	86. Today Habit tracker - For to-dos, routines & goals	today section shows all habits
+P105#1743	DS_WANT,DS_WORD	4	105. Avocation Goal & Habit Tracker	"day end at 12:00"
+P12#148352	DS_CONF,DS_WORD	4	12. Fabulous Daily Routine Planner	"my day ends at 2am (next day)" setting, bug after 00:00
+P12#149925	DS_WANT,DS_WORD	4	12. Fabulous Daily Routine Planner	"end of the day time"
+P12#16875	DS_WANT,DS_WORD	3	12. Fabulous Daily Routine Planner	"day start and end"; "cycle at 4am"
+P12#21889	DS_WANT,DS_WORD	2	12. Fabulous Daily Routine Planner	"day rollover"
+P12#32824	DS_CONF,DS_WORD	3	12. Fabulous Daily Routine Planner	"day resets at 2am", no way to change
+P12#38292	GRPEDIT	4	12. Fabulous Daily Routine Planner	praise: default sections renamable
+P19#368	LAY_SWITCH	5	19. TheFor - Habit Tracker	daily/weekly/monthly view to choose
+P2#10726	DS_WANT,DS_WORD	3	2. HabitNow Daily Routine Planner	"reset time for each routine"
+P2#10959	DS_WANT	5	2. HabitNow Daily Routine Planner	night owls
+P2#11272	DS_WANT,DS_WORD	4	2. HabitNow Daily Routine Planner	"when a new day starts"
+P2#12186	DS_WANT,DS_WORD	5	2. HabitNow Daily Routine Planner	"custom time when the new day begins"
+P2#1695	DS_WANT,DS_WORD	5	2. HabitNow Daily Routine Planner	"make the day end at 03:00"
+P2#22962	GRPCOUNT	4	2. HabitNow Daily Routine Planner	progress per group on widget
+P2#3314	DS_WANT,DS_WORD	5	2. HabitNow Daily Routine Planner	"daily reset time"
+P2#7573	GRPEDIT,NOTDUEACC	5	2. HabitNow Daily Routine Planner	all habits under a category tab; manage categories there
+P24#10639	DS_WANT,DS_WORD	5	24. Habit Tracker	"our day might not end at 23:59"
+P24#11440	LAY_PREF	4	24. Habit Tracker	weekly view setting
+P24#14773	NOTDUEACC	5	24. Habit Tracker	open on the all habits page
+P24#220	DS_WANT,DS_WORD	3	24. Habit Tracker	"when a new day starts"
+P24#3789	LAY_PREF	2	24. Habit Tracker	weekly view set in settings, opens monthly
+P24#8062	NOTDUEHIDE	3	24. Habit Tracker	all-habits view doesn't show what's due today
+P3#13590	DS_WANT,DS_WORD	5	3. Loop Habit Tracker	"roll over to the next day"
+P3#14071	NOTDUEHIDE	4	3. Loop Habit Tracker	hide habits not needed that day
+P3#14111	DS_WANT,DS_WORD	4	3. Loop Habit Tracker	"when to start the next day"
+P3#15630	DS_WANT,DS_WORD	5	3. Loop Habit Tracker	"daily reset time"
+P3#15716	DS_WANT,DS_WORD	5	3. Loop Habit Tracker	"next day starts at 0:00"
+P3#1575	LAY_PREF	4	3. Loop Habit Tracker	month view separately
+P3#2995	DS_WANT,DS_WORD	5	3. Loop Habit Tracker	"set time for new day"
+P3#5405	NOTDUEHIDE	5	3. Loop Habit Tracker	don't show habits not scheduled that day
+P37#257	NOTDUEACC	5	37. Habitify - Habit Tracker	see all habits at all times, not only today's
+P37#940	LAY_PREF	3	37. Habitify - Habit Tracker	month view option on journal
+P4#100732	NOTDUEACC	2	4. Me+ Lifestyle Routine	edit tasks before their day
+P4#26370	NOTDUEACC	3	4. Me+ Lifestyle Routine	can't edit habits not due today
+P46#3	DS_WANT,DS_WORD	4	46. Streaks	"rollover/reset time"
+P49#2996	DS_WANT,DS_WORD	2	49. RoutineFlow - Routine for ADHD	"day rolls over at exactly midnight"
+P8#10040	ADDFIND	5	8. Habitica - Gamify Your Tasks	couldn't figure out how to add tags in-app
+P8#5404	DS_WANT,DS_WORD	5	8. Habitica - Gamify Your Tasks	"delay for the beginning of the day"
+P8#6616	LAY_SWITCH	5	8. Habitica - Gamify Your Tasks	option to change the layout for overview
+P8#7929	ADDFIND	3	8. Habitica - Gamify Your Tasks	cannot add tags
+P8#8104	DS_WANT,DS_WORD	4	8. Habitica - Gamify Your Tasks	"my day ends at midnight" wrong
+P8#8711	DS_WANT,DS_WORD	2	8. Habitica - Gamify Your Tasks	"change the start of a day"
+P8#9331	DS_WANT,DS_WORD	5	8. Habitica - Gamify Your Tasks	"reset time"
+P8#9387	DS_WANT,DS_WORD	4	8. Habitica - Gamify Your Tasks	"what time their day ends"
+P8#9485	DS_WANT,DS_WORD	4	8. Habitica - Gamify Your Tasks	"Day Starts At" and "Day ends at"
+P8#9911	ADDFIND	3	8. Habitica - Gamify Your Tasks	can't set up areas after onboarding
+P9#1770	DS_WANT,DS_WORD	5	9. Habit Tracker - HabitKit	"moment when new day starts"
+P9#1787	DS_WANT,DS_WORD	5	9. Habit Tracker - HabitKit	"days reset at midnight"
+P9#450	LAY_SWITCH	5	9. Habit Tracker - HabitKit	change the view day to day or long term
+P9#593	DS_WANT,DS_WORD	5	9. Habit Tracker - HabitKit	"day reset at a later hour"
+
+## Round 3 follow-up (Q23–Q24): cited reviews from 94 read (screen7.py)
+A24#37029	DELSEC	4	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	want to turn off afternoon
+A33#3193	DELSEC	3	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	can't get rid of Afternoon Area
+P33#1859	DELSEC	3	33. Productive - Habit tracker	disable morning/noon/evening
+A1#49737	GRPORDER	4	1. Habit Tracker - Goal Tracker & ADHD Planner	manual group order
+A31#3128	GRPORDER	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	rearrange group orders
+A1#2029	GRPORDER	4	1. Habit Tracker - Goal Tracker & ADHD Planner	reorder tags
+P4#17811	GRPORDER	2	4. Me+ Lifestyle Routine	reorder tags
+A85#2057	GRPORDER	5	85. Habitica - Gamified Taskmanager - Stay motivated and organized	alphabetize tags
+P4#15088	GRPORDER	4	4. Me+ Lifestyle Routine	sort tags
+
+## R4 · Day cards (Questions 27–30). Hand-read from C_TIMESHOW (72), C_LISTSTATS (29), C_TAPCOUNT (13), C_TIMERLIST (2), C_CARDCLUT (166), and two 45-review vocabulary samples (seed 7).
+A1#44160	TIME_ON_LIST	1	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#47727	TIME_ON_LIST	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#55597	TIME_ON_LIST	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A13#1826	TIME_ON_LIST	4	13. Productive - Habit Tracker - Daily Routine & Goals Planner	
+A20#1298	TIME_ON_LIST	4	20. Habit — Daily Tracker - Crush your goals like a boss	
+A59#142	TIME_ON_LIST	4	59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule	
+P19#372	TIME_ON_LIST	4	19. TheFor - Habit Tracker	
+P2#8869	TIME_ON_LIST	3	2. HabitNow Daily Routine Planner	
+P3#6444	TIME_ON_LIST	3	3. Loop Habit Tracker	
+P3#18958	TIME_ON_LIST	5	3. Loop Habit Tracker	
+P4#15144	TIME_ON_WIDGET	4	4. Me+ Lifestyle Routine	
+A13#1826	SORT_BY_TIME	4	13. Productive - Habit Tracker - Daily Routine & Goals Planner	
+P19#372	SORT_BY_TIME	4	19. TheFor - Habit Tracker	
+P2#8869	SORT_BY_TIME	3	2. HabitNow Daily Routine Planner	
+A34#138	LIST_HISTORY_WANTED	4	34. Habit Tracker - Evoday - Daily Streaks Calendar & Goals	
+P3#8860	LIST_HISTORY_WANTED	5	3. Loop Habit Tracker	
+P3#9466	LIST_HISTORY_WANTED	4	3. Loop Habit Tracker	
+P3#10237	LIST_HISTORY_WANTED	4	3. Loop Habit Tracker	
+A31#4986	LIST_HISTORY_WANTED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+P2#3195	LIST_HISTORY_WANTED	4	2. HabitNow Daily Routine Planner	
+A62#4	LIST_HISTORY_WANTED	4	62. Streaks – Daily Habit Tracker - Atomic Goals & Accountability	
+P133#61	LIST_HISTORY_WANTED	4	133. Respawn - Routines & Habits	
+P2#28509	LIST_HISTORY_WANTED	5	2. HabitNow Daily Routine Planner	
+A1#55870	LIST_HISTORY_AGAINST	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+P14#242	LIST_HISTORY_AGAINST	5	14. Habit Pixel - Streak Tracker	
+A13#13533	LIST_HISTORY_AGAINST	1	13. Productive - Habit Tracker - Daily Routine & Goals Planner	
+A1#45243	TAP_INCREMENT_WANTED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#48561	TAP_INCREMENT_WANTED	3	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#56112	TAP_INCREMENT_WANTED	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A23#4826	TAP_INCREMENT_WANTED	4	23. Streaks - The habit-forming to-do list	
+A59#1030	TAP_INCREMENT_WANTED	4	59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule	
+P2#2567	TAP_INCREMENT_WANTED	4	2. HabitNow Daily Routine Planner	
+P3#4390	TAP_INCREMENT_WANTED	5	3. Loop Habit Tracker	
+P3#2731	TAP_INCREMENT_WANTED	5	3. Loop Habit Tracker	
+A24#29531	CARD_TOO_BUSY	3	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	
+P2#10403	CARD_TOO_BUSY	5	2. HabitNow Daily Routine Planner	
+A24#40669	CARD_TOO_BUSY	2	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	
+P14#242	CARD_TOO_BUSY	5	14. Habit Pixel - Streak Tracker	
+A13#13533	CARD_TOO_BUSY	1	13. Productive - Habit Tracker - Daily Routine & Goals Planner	
+A24#41676	JUST_CHECK_AND_GO	3	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	
+P3#10179	JUST_CHECK_AND_GO	5	3. Loop Habit Tracker	
+A41#655	PROGRESS_GENERIC	5	41. Awesome Habits - Habit Tracker - Streaks, days since & goals	sample
+A10#69490	PROGRESS_GENERIC	5	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	sample
+A1#51359	PROGRESS_GENERIC	2	1. Habit Tracker - Goal Tracker & ADHD Planner	sample
+P10#7206	PROGRESS_GENERIC	5	10. Habit Tracker - Habit Diary	sample
+A24#35942	PROGRESS_GENERIC	3	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	sample
+A48#3769	PROGRESS_GENERIC	5	48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist	sample
+A1#53696	PROGRESS_GENERIC	5	1. Habit Tracker - Goal Tracker & ADHD Planner	sample
+A76#816	PROGRESS_GENERIC	5	76. Way of Life - Habit Tracker - Build a better, stronger you	sample
+A68#3687	PROGRESS_GENERIC	5	68. Ultiself - Self-Improvement - Biohacker Routine Planner App	sample
+A1#51303	PROGRESS_GENERIC	5	1. Habit Tracker - Goal Tracker & ADHD Planner	sample
+A3#7910	PROGRESS_GENERIC	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	sample
+P2#6544	PROGRESS_GENERIC	5	2. HabitNow Daily Routine Planner	sample
+A1#49831	PROGRESS_GENERIC	5	1. Habit Tracker - Goal Tracker & ADHD Planner	sample
+P3#1642	PROGRESS_GENERIC	5	3. Loop Habit Tracker	sample
+P65#7971	PROGRESS_GENERIC	5	65. Goal & Habit Tracker Calendar	sample
+P37#316	PROGRESS_GENERIC	5	37. Habitify - Habit Tracker	sample
+P3#11992	PROGRESS_GENERIC	5	3. Loop Habit Tracker	sample
+P8#2530	PROGRESS_GENERIC	3	8. Habitica - Gamify Your Tasks	sample
+P7#109	PROGRESS_GENERIC	5	7. Habit Tracker - Habit Streak	sample
+A26#3519	PROGRESS_GENERIC	5	26. Eden - Daily Routine Planner - Self care habit tracker, to do	sample
+A33#3141	PROGRESS_GENERIC	5	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	sample
+P65#2735	PROGRESS_GENERIC	5	65. Goal & Habit Tracker Calendar	sample
+P125#18136	PROGRESS_GENERIC	4	125. 21 Days Challenge	sample
+A55#1178	PROGRESS_PERIOD_VIEW	4	55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker	sample
+P3#5833	PROGRESS_PERIOD_VIEW	5	3. Loop Habit Tracker	sample
+P123#1150	PROGRESS_PERIOD_VIEW	5	123. Rise - Habit List	sample
+A1#49260	PROGRESS_PERIOD_VIEW	5	1. Habit Tracker - Goal Tracker & ADHD Planner	sample
+A1#47303	PROGRESS_PERIOD_VIEW	5	1. Habit Tracker - Goal Tracker & ADHD Planner	sample
+A1#52390	PROGRESS_PERIOD_VIEW	5	1. Habit Tracker - Goal Tracker & ADHD Planner	sample
+A69#21	PROGRESS_PERIOD_VIEW	5	69. Habit Tracker - TheFor - Routine Planner, Goal, Journal	sample
+A28#790	PROGRESS_PERIOD_VIEW	4	28. Habit Rabbit - Habit Tracker - Your productivity pet	sample
+P2#12664	PROGRESS_PERIOD_VIEW	4	2. HabitNow Daily Routine Planner	sample
+P2#12010	PROGRESS_PERIOD_VIEW	4	2. HabitNow Daily Routine Planner	sample
+A34#135	PROGRESS_PERIOD_VIEW	5	34. Habit Tracker - Evoday - Daily Streaks Calendar & Goals	sample
+A1#48614	PROGRESS_STATS_REPORTS_WIDGETS	2	1. Habit Tracker - Goal Tracker & ADHD Planner	sample
+P20#86	PROGRESS_STATS_REPORTS_WIDGETS	5	20. MyRoutine - Routine Habit Goal	sample
+A1#52965	PROGRESS_STATS_REPORTS_WIDGETS	2	1. Habit Tracker - Goal Tracker & ADHD Planner	sample
+P2#10452	PROGRESS_STATS_REPORTS_WIDGETS	3	2. HabitNow Daily Routine Planner	sample
+A1#55370	PROGRESS_STATS_REPORTS_WIDGETS	5	1. Habit Tracker - Goal Tracker & ADHD Planner	sample
+P3#2968	PROGRESS_STATS_REPORTS_WIDGETS	5	3. Loop Habit Tracker	sample
+A1#48325	PROGRESS_STATS_REPORTS_WIDGETS	5	1. Habit Tracker - Goal Tracker & ADHD Planner	sample
+P2#6876	PROGRESS_STATS_REPORTS_WIDGETS	5	2. HabitNow Daily Routine Planner	sample
+A10#30491	PROGRESS_STATS_REPORTS_WIDGETS	5	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	sample
+A10#50324	PROGRESS_STATS_REPORTS_WIDGETS	5	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	sample
+A1#55296	PROGRESS_STATS_REPORTS_WIDGETS	5	1. Habit Tracker - Goal Tracker & ADHD Planner	sample
+
+## R5 · Day cards round 2 (Questions 31–33). Hand-read from C_STRKUNIT (52), C_STRKSHOW (12), C_PROGLIST (16); streak-length phrasing counted by streak_units_count.py (day 574, year 24, week 15, month 9).
+P3#10486	STREAK_WEEKS_FOR_WEEKLY	4	3. Loop Habit Tracker	
+A43#334	STREAK_WEEKS_FOR_WEEKLY	4	43. Habit Hub - Routine Tracker - Daily Todo, Goals & Schedule	
+P3#1630	STREAK_WEEKS_FOR_WEEKLY	4	3. Loop Habit Tracker	
+P9#556	STREAK_WEEKS_FOR_WEEKLY	4	9. Habit Tracker - HabitKit	
+A7#723	WEEKLY_STREAK_CONFUSING	4	7. Habit Tracker - HabitKit - Streaks & Accountability	
+A1#54413	WEEKLY_STREAK_CONFUSING	2	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A33#3219	WEEKLY_STREAK_CONFUSING	4	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	
+P69#200	WEEKLY_STREAK_CONFUSING	4	69. EZ Habit - simple habit tracker	
+A1#52119	WEEKLY_STREAK_CONFUSING	3	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A86#1282	WEEKLY_STREAK_CONFUSING	5	86. Today Habit tracker - For to-dos, routines & goals	
+P37#130	WEEKLY_STREAK_CONFUSING	4	37. Habitify - Habit Tracker	
+A1#54335	WEEKLY_STREAK_CONFUSING	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A13#11679	WEEKLY_STREAK_CONFUSING	1	13. Productive - Habit Tracker - Daily Routine & Goals Planner	
+A10#1261	SPOKEN_LONG_UNITS	5	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	
+A10#4147	SPOKEN_LONG_UNITS	5	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	
+A10#20322	SPOKEN_LONG_UNITS	5	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	
+A10#24974	SPOKEN_LONG_UNITS	5	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	
+A10#26794	SPOKEN_LONG_UNITS	5	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	
+A10#31187	SPOKEN_LONG_UNITS	5	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	
+A10#40480	SPOKEN_LONG_UNITS	5	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	
+A55#1768	SPOKEN_LONG_UNITS	5	55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker	
+A76#3522	SPOKEN_LONG_UNITS	5	76. Way of Life - Habit Tracker - Build a better, stronger you	
+A3#8693	SPOKEN_LONG_UNITS	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A48#428	SPOKEN_LONG_UNITS	5	48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist	
+A1#217	SPOKEN_LONG_UNITS	3	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A34#730	SPOKEN_LONG_UNITS	5	34. Habit Tracker - Evoday - Daily Streaks Calendar & Goals	
+A31#3206	STREAK_ON_LIST_WANTED	3	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3272	STREAK_ON_LIST_WANTED	2	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3273	STREAK_ON_LIST_WANTED	3	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3277	STREAK_ON_LIST_WANTED	3	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A53#522	STREAK_ON_LIST_WANTED	4	53. HabitMinder • Habit Tracker - Daily Reminders & Routines	
+P2#7680	STREAK_ON_LIST_WANTED	4	2. HabitNow Daily Routine Planner	
+P3#901	STREAK_ON_LIST_WANTED	5	3. Loop Habit Tracker	
+P3#4422	STREAK_ON_LIST_WANTED	5	3. Loop Habit Tracker	
+P37#440	STREAK_ON_LIST_WANTED	3	37. Habitify - Habit Tracker	
+P37#789	STREAK_NEXT_TO_HABIT_PRAISED	5	37. Habitify - Habit Tracker	
+A50#134	STREAK_HIDE_PER_HABIT	4	50. HelloHabit - Habit Tracker - Tasks, Routines, & Streaks	
+P2#10693	PROGRESS_FRACTION_WANTED	5	2. HabitNow Daily Routine Planner	
+A48#3508	PROGRESS_ON_HOME_WANTED	5	48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist	
+P24#12097	PROGRESS_ON_HOME_WANTED	5	24. Habit Tracker	
+P37#273	PROGRESS_ON_HOME_WANTED	4	37. Habitify - Habit Tracker	
+A1#43900	PROGRESS_UNITS_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+
+## R6 · Day cards round 3 (Question 34). Hand-read: App Store 1 fill/bar/swipe reviews (226), App Store 31 Done mechanic reviews (368), C_TAPTARGET (32), C_MISTAP scroll subset (15).
+A1#2146	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#44165	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#44227	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#45099	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#45581	A1_FILL_PRAISED	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#45600	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#46715	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#48757	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#50904	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#51010	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#52615	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#53765	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#53866	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#55023	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#55424	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#55547	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#56606	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#46149	A1_FILL_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#234	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#1751	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#2117	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#2171	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#2216	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#2308	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#45457	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#45595	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#45728	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#45941	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#47112	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#47217	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#47255	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#47313	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#47393	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#48397	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#48528	A1_SWIPE_PRAISED	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#49105	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#51055	A1_SWIPE_PRAISED	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#52444	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#52526	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#52735	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#52870	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#52968	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#53674	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#53964	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#54276	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#54559	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#55230	A1_SWIPE_PRAISED	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#55543	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#55847	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#55991	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#53336	A1_SWIPE_PRAISED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#92	A1_PARTIAL_FILL_RELIED_ON	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#1636	A1_PARTIAL_FILL_RELIED_ON	2	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#44897	A1_PARTIAL_FILL_RELIED_ON	1	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#45219	A1_PARTIAL_FILL_RELIED_ON	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#45247	A1_PARTIAL_FILL_RELIED_ON	1	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#48901	A1_PARTIAL_FILL_RELIED_ON	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#56049	A1_PARTIAL_FILL_RELIED_ON	3	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#51321	A1_PARTIAL_FILL_RELIED_ON	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#51684	A1_PARTIAL_FILL_RELIED_ON	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#51804	A1_PARTIAL_FILL_RELIED_ON	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#50823	A1_PARTIAL_FILL_RELIED_ON	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#45835	A1_PARTIAL_FILL_RELIED_ON	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#54718	A1_PARTIAL_FILL_RELIED_ON	3	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#1733	A1_TAP_PREFERRED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#1932	A1_TAP_PREFERRED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#1961	A1_TAP_PREFERRED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#45995	A1_TAP_PREFERRED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#375	A1_TAP_PREFERRED	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#53758	A1_TAP_PREFERRED	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#45251	A1_TAP_PREFERRED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#45243	A1_TAP_PREFERRED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#48561	A1_TAP_PREFERRED	3	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#46120	A1_TAP_PREFERRED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#50586	A1_FILL_MISINPUT	3	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#54079	A1_FILL_MISINPUT	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#54501	A1_FILL_MISINPUT	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#54593	A1_FILL_MISINPUT	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#546	A1_COUNT_VISIBLE_WANTED	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#43892	A1_COUNT_VISIBLE_WANTED	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#47697	A1_COUNT_VISIBLE_WANTED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#55984	A1_COUNT_VISIBLE_WANTED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A31#200	A31_FILL_PRAISED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#205	A31_FILL_PRAISED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#1075	A31_FILL_PRAISED	4	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#1395	A31_FILL_PRAISED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#1707	A31_FILL_PRAISED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#2200	A31_FILL_PRAISED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3764	A31_FILL_PRAISED	3	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3794	A31_FILL_PRAISED	3	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#4437	A31_FILL_PRAISED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#4758	A31_FILL_PRAISED	4	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#4809	A31_FILL_PRAISED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#4917	A31_FILL_PRAISED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#5014	A31_FILL_PRAISED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#5025	A31_FILL_PRAISED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#4962	A31_FILL_PRAISED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#4732	A31_FILL_PRAISED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#494	A31_STREAK_REMOVED_FROM_ROW	4	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#1335	A31_STREAK_REMOVED_FROM_ROW	2	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#2327	A31_STREAK_REMOVED_FROM_ROW	2	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3177	A31_STREAK_REMOVED_FROM_ROW	1	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3194	A31_STREAK_REMOVED_FROM_ROW	3	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3208	A31_STREAK_REMOVED_FROM_ROW	1	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3225	A31_STREAK_REMOVED_FROM_ROW	1	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3227	A31_STREAK_REMOVED_FROM_ROW	1	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3229	A31_STREAK_REMOVED_FROM_ROW	1	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3241	A31_STREAK_REMOVED_FROM_ROW	1	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3269	A31_STREAK_REMOVED_FROM_ROW	2	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3310	A31_STREAK_REMOVED_FROM_ROW	2	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#5135	A31_STREAK_REMOVED_FROM_ROW	2	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#4491	A31_TAP_UNCLEAR	2	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#4899	A31_TAP_UNCLEAR	3	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#5089	A31_TAP_UNCLEAR	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#4823	A31_TAP_UNCLEAR	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3579	A31_TAP_UNCLEAR	1	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#792	A31_TAP_UNCLEAR	1	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3566	A31_TAP_UNCLEAR	1	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#1879	A31_TAP_UNCLEAR	4	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#5135	A31_TAP_UNCLEAR	2	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3187	A31_ACCIDENTAL	3	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#4628	A31_ACCIDENTAL	2	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#729	A31_NUMBER_BESIDE_BAR	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#669	A31_NUMBER_BESIDE_BAR	4	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#3517	A31_NUMBER_BESIDE_BAR	2	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A31#4703	A31_NUMBER_BESIDE_BAR	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A1#44569	SMALL_TAP_TARGET	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#50817	SMALL_TAP_TARGET	2	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#51319	SMALL_TAP_TARGET	2	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#51849	SMALL_TAP_TARGET	1	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#55125	SMALL_TAP_TARGET	2	1. Habit Tracker - Goal Tracker & ADHD Planner	
+P24#19901	SMALL_TAP_TARGET	5	24. Habit Tracker	
+P3#19773	SMALL_TAP_TARGET	4	3. Loop Habit Tracker	
+P98#396	SMALL_TAP_TARGET	1	98. Rabit - Habit Tracker & Planner	
+A31#3642	SMALL_TAP_TARGET	1	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+P33#1478	CANT_FIND_HOW_TO_CHECK	2	33. Productive - Habit tracker	
+P98#1007	CANT_FIND_HOW_TO_CHECK	4	98. Rabit - Habit Tracker & Planner	
+P125#7918	CANT_FIND_HOW_TO_CHECK	3	125. 21 Days Challenge	
+P18#815	CANT_FIND_HOW_TO_CHECK	2	18. Habit Tracker - Habit Radar	
+P108#3	CANT_FIND_HOW_TO_CHECK	2	108. Intelligent Change Habits	
+A10#17251	SCROLL_MISTAP	5	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	
+A13#12283	SCROLL_MISTAP	4	13. Productive - Habit Tracker - Daily Routine & Goals Planner	
+P65#2979	SCROLL_MISTAP	4	65. Goal & Habit Tracker Calendar	
+P65#3687	SCROLL_MISTAP	5	65. Goal & Habit Tracker Calendar	
+
+## R7 · Quit habits on Today (Question 35). Hand-read: Q_QPLACE (34), Q_QRESET (30), Q_QSHOW (115). Wording counts in quit_words.json.
+A3#231	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#247	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#400	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#1264	SEE_COUNTER_DAILY_MOTIVATES	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2072	SEE_COUNTER_DAILY_MOTIVATES	2	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2845	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#3644	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5428	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5494	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5676	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#6626	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7045	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7326	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7402	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7508	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8134	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8388	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8524	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8924	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9408	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9449	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9472	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9863	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9893	SEE_COUNTER_DAILY_MOTIVATES	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+P22#1292	GOOD_AND_BAD_TOGETHER	5	22. Disciplined - Habit Tracker	
+A41#806	GOOD_AND_BAD_TOGETHER	5	41. Awesome Habits - Habit Tracker - Streaks, days since & goals	
+P3#11615	SEPARATE_WANTED_OR_MIXING_DISLIKED	4	3. Loop Habit Tracker	
+A23#5593	SEPARATE_WANTED_OR_MIXING_DISLIKED	5	23. Streaks - The habit-forming to-do list	
+A3#716	ACCIDENTAL_RESET	3	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#1937	ACCIDENTAL_RESET	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#1964	ACCIDENTAL_RESET	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2005	ACCIDENTAL_RESET	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2237	ACCIDENTAL_RESET	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2420	ACCIDENTAL_RESET	1	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5072	ACCIDENTAL_RESET	1	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5317	ACCIDENTAL_RESET	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7159	ACCIDENTAL_RESET	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7349	ACCIDENTAL_RESET	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7929	ACCIDENTAL_RESET	3	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7976	ACCIDENTAL_RESET	3	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#10068	ACCIDENTAL_RESET	2	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A10#18481	ACCIDENTAL_RESET	2	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	
+P106#599	ACCIDENTAL_RESET	4	106. Habit Tracker n Pets - HabitYou	
+A3#10200	RESET_NEEDS_CONFIRM_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2042	RESET_NEEDS_CONFIRM_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#4585	HOURS_EARLY_WANTED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#10584	HOURS_EARLY_WANTED	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#4123	HOURS_EARLY_WANTED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2604	HOURS_EARLY_WANTED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#425	UNIT_SWITCHING_USED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#526	UNIT_SWITCHING_USED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2376	UNIT_SWITCHING_USED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7407	UNIT_SWITCHING_USED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#10287	UNIT_SWITCHING_USED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#3162	UNIT_SWITCHING_USED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#3187	UNIT_SWITCHING_USED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#425	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2265	LONGEST_STREAK_PRAISED	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2408	LONGEST_STREAK_PRAISED	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2427	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2701	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2809	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#4057	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#4060	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5280	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5619	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#6268	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8339	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8877	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8901	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9149	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9558	LONGEST_STREAK_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A31#1660	LONGEST_STREAK_PRAISED	5	31. Do Habits - Get It Done - Daily Routine & Goal Planner	
+A3#9621	LONGEST_STREAK_HURTS	2	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8629	DAY0_VS_DAY1	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#269	MONEY_SAVED_WANTED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+
+## R8 · Quit habits round 2 (Question 36). Hand-read: Q2_LIVE counter subset (172), Q2_DATES (52), Q2_LOGEACH (31), Q2_REDUCE vice subset (145).
+A3#0	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#39	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#159	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#178	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#1459	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2180	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2370	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2607	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2633	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2758	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#4078	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#4132	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#4922	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#4933	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5080	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5302	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5337	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5691	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5804	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#6165	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#6267	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#6370	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#6457	LIVE_SECONDS_PRAISED	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#6721	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#6976	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7275	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7626	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8319	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8387	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8442	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8515	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8562	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8993	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9037	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9151	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9338	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9525	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9642	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9769	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9970	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#10128	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#10481	LIVE_SECONDS_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A41#738	LIVE_SECONDS_PRAISED	5	41. Awesome Habits - Habit Tracker - Streaks, days since & goals	
+P2#4957	LIVE_SECONDS_PRAISED	4	2. HabitNow Daily Routine Planner	
+A3#5296	DAYS_ONLY_PREFERRED	3	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#1118	COUNTING_UP_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#1176	COUNTING_UP_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2613	COUNTING_UP_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8880	COUNTING_UP_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9010	COUNTING_UP_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9063	COUNTING_UP_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9258	COUNTING_UP_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A34#72	COUNTING_UP_PRAISED	5	34. Habit Tracker - Evoday - Daily Streaks Calendar & Goals	
+A76#5070	COUNTING_UP_PRAISED	5	76. Way of Life - Habit Tracker - Build a better, stronger you	
+A3#526	CLEAN_DATE_MATTERS	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5073	CLEAN_DATE_MATTERS	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5426	CLEAN_DATE_MATTERS	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5573	CLEAN_DATE_MATTERS	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5717	CLEAN_DATE_MATTERS	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5731	CLEAN_DATE_MATTERS	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#6691	CLEAN_DATE_MATTERS	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7239	CLEAN_DATE_MATTERS	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7310	CLEAN_DATE_MATTERS	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8993	CLEAN_DATE_MATTERS	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#1185	EDIT_START_OR_RESET_DATE_WANTED	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#3158	EDIT_START_OR_RESET_DATE_WANTED	3	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#3740	EDIT_START_OR_RESET_DATE_WANTED	3	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#3991	EDIT_START_OR_RESET_DATE_WANTED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#6997	EDIT_START_OR_RESET_DATE_WANTED	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7496	EDIT_START_OR_RESET_DATE_WANTED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7559	EDIT_START_OR_RESET_DATE_WANTED	3	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8476	EDIT_START_OR_RESET_DATE_WANTED	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9124	EDIT_START_OR_RESET_DATE_WANTED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9713	EDIT_START_OR_RESET_DATE_WANTED	3	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#10004	EDIT_START_OR_RESET_DATE_WANTED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#10490	EDIT_START_OR_RESET_DATE_WANTED	2	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#10604	EDIT_START_OR_RESET_DATE_WANTED	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+P35#103	EDIT_START_OR_RESET_DATE_WANTED	5	35. Motivated - Habit Tracker	
+P9#453	EDIT_START_OR_RESET_DATE_WANTED	4	9. Habit Tracker - HabitKit	
+A3#7276	PICK_RESET_TIME_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8445	PICK_RESET_TIME_PRAISED	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9447	PICK_RESET_TIME_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#10200	PICK_RESET_TIME_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#10212	PICK_RESET_TIME_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9322	PICK_RESET_TIME_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A1#784	LIMIT_TYPE_REQUESTED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#44146	LIMIT_TYPE_REQUESTED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#48612	LIMIT_TYPE_REQUESTED	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#53758	LIMIT_TYPE_REQUESTED	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A1#53962	LIMIT_TYPE_REQUESTED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A13#4441	LIMIT_TYPE_REQUESTED	4	13. Productive - Habit Tracker - Daily Routine & Goals Planner	
+A13#11755	LIMIT_TYPE_REQUESTED	4	13. Productive - Habit Tracker - Daily Routine & Goals Planner	
+A20#330	LIMIT_TYPE_REQUESTED	1	20. Habit — Daily Tracker - Crush your goals like a boss	
+A20#1302	LIMIT_TYPE_REQUESTED	5	20. Habit — Daily Tracker - Crush your goals like a boss	
+A23#3839	LIMIT_TYPE_REQUESTED	4	23. Streaks - The habit-forming to-do list	
+A23#4089	LIMIT_TYPE_REQUESTED	5	23. Streaks - The habit-forming to-do list	
+A24#33935	LIMIT_TYPE_REQUESTED	4	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	
+A33#2515	LIMIT_TYPE_REQUESTED	2	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	
+A48#4223	LIMIT_TYPE_REQUESTED	5	48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist	
+A48#4245	LIMIT_TYPE_REQUESTED	2	48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist	
+A3#1390	LIMIT_TYPE_REQUESTED	2	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+P2#489	LIMIT_TYPE_REQUESTED	5	2. HabitNow Daily Routine Planner	
+P3#1087	LIMIT_TYPE_REQUESTED	5	3. Loop Habit Tracker	
+P3#5046	LIMIT_TYPE_REQUESTED	3	3. Loop Habit Tracker	
+P3#6580	LIMIT_TYPE_REQUESTED	5	3. Loop Habit Tracker	
+P3#9925	LIMIT_TYPE_REQUESTED	3	3. Loop Habit Tracker	
+P3#18382	LIMIT_TYPE_REQUESTED	4	3. Loop Habit Tracker	
+A41#383	LIMIT_TYPE_PRAISED	2	41. Awesome Habits - Habit Tracker - Streaks, days since & goals	
+A48#55	LIMIT_TYPE_PRAISED	5	48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist	
+A48#988	LIMIT_TYPE_PRAISED	4	48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist	
+A55#1435	LIMIT_TYPE_PRAISED	5	55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker	
+A55#922	LIMIT_TYPE_PRAISED	5	55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker	
+A23#4724	LIMIT_TYPE_PRAISED	5	23. Streaks - The habit-forming to-do list	
+A55#1140	LIMIT_DIRECTION_CONFUSED	5	55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker	
+A55#1252	LIMIT_DIRECTION_CONFUSED	5	55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker	
+A3#211	COUNTER_USED_TO_CUT_DOWN	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2216	COUNTER_USED_TO_CUT_DOWN	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2414	COUNTER_USED_TO_CUT_DOWN	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#3400	COUNTER_USED_TO_CUT_DOWN	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5062	COUNTER_USED_TO_CUT_DOWN	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#5886	COUNTER_USED_TO_CUT_DOWN	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7599	COUNTER_USED_TO_CUT_DOWN	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7635	COUNTER_USED_TO_CUT_DOWN	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#7805	COUNTER_USED_TO_CUT_DOWN	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#8994	COUNTER_USED_TO_CUT_DOWN	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#9494	COUNTER_USED_TO_CUT_DOWN	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A13#11755	LOG_EACH_OCCURRENCE_WANTED	4	13. Productive - Habit Tracker - Daily Routine & Goals Planner	
+A23#664	LOG_EACH_OCCURRENCE_WANTED	3	23. Streaks - The habit-forming to-do list	
+P3#5600	LOG_EACH_OCCURRENCE_WANTED	5	3. Loop Habit Tracker	
+P3#9133	LOG_EACH_OCCURRENCE_WANTED	4	3. Loop Habit Tracker	
+P9#1016	LOG_EACH_OCCURRENCE_WANTED	5	9. Habit Tracker - HabitKit	
+A86#1216	LOG_EACH_OCCURRENCE_WANTED	5	86. Today Habit tracker - For to-dos, routines & goals	
+
+## R9 · Section headers (Question 37). Hand-read: S_WHENSTART (2), S_SECTIONWRONG (10). None asks to see section times on the list.
+A1#53099	SET_SECTION_TIMES_PRAISED	4	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A13#4935	SECTION_HIDES_MISSED	5	13. Productive - Habit Tracker - Daily Routine & Goals Planner	
+
+## R10 · Section counts (Question 38). Hand-read: SC_LEFT (13), SC_XOFY (51), SC_SECPROG (17), SC_COUNTNOISE (35). No request for done/total per time-of-day section.
+A10#26814	REMAINING_WANTED	4	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	
+A13#2628	REMAINING_WANTED	5	13. Productive - Habit Tracker - Daily Routine & Goals Planner	
+A13#15385	REMAINING_WANTED	4	13. Productive - Habit Tracker - Daily Routine & Goals Planner	
+A20#1276	REMAINING_WANTED	4	20. Habit — Daily Tracker - Crush your goals like a boss	
+A85#3190	REMAINING_WANTED	5	85. Habitica - Gamified Taskmanager - Stay motivated and organized	
+P2#22994	REMAINING_WANTED	4	2. HabitNow Daily Routine Planner	
+P24#14597	REMAINING_WANTED	4	24. Habit Tracker	
+P31#418	REMAINING_WANTED	4	31. HelloHabit - Habit Tracker	
+P33#1468	REMAINING_WANTED	3	33. Productive - Habit tracker	
+A10#29587	ZERO_LEFT_SATISFYING	5	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	
+A1#47380	DAY_TOTAL_WANTED	5	1. Habit Tracker - Goal Tracker & ADHD Planner	
+A86#1309	DAY_TOTAL_WANTED	4	86. Today Habit tracker - For to-dos, routines & goals	
+P3#5545	DAY_TOTAL_WANTED	5	3. Loop Habit Tracker	
+P3#11938	DAY_TOTAL_WANTED	5	3. Loop Habit Tracker	
+P91#182	DAY_TOTAL_WANTED	3	91. Habit Check Calendar	
+P92#7	DAY_TOTAL_WANTED	4	92. Qhabit - Daily habit tracker	
+P2#22962	GROUP_PROGRESS_WANTED	4	2. HabitNow Daily Routine Planner	
+P30#3622	GROUP_PROGRESS_WANTED	4	30. Habit Tracker - Routine & Goals	
+P2#3055	GROUP_PROGRESS_WANTED	4	2. HabitNow Daily Routine Planner	
+P3#14012	FEWER_NUMBERS_PRAISED	5	3. Loop Habit Tracker	
+A23#4472	FEWER_NUMBERS_PRAISED	5	23. Streaks - The habit-forming to-do list	
+
+## R11 · Week view (Questions 39–41). Hand-read: Loop (P3) main-screen streak subset (50), CELLNUM (3), TICKX (12), COLUMNS (12), STRENGTH (17), measurable (127); Days Since calendar mentions (152, 70 read closely).
+P3#901	LOOP_STREAK_ON_MAIN_WANTED	5	3. Loop Habit Tracker	
+P3#1645	LOOP_STREAK_ON_MAIN_WANTED	3	3. Loop Habit Tracker	
+P3#1708	LOOP_STREAK_ON_MAIN_WANTED	5	3. Loop Habit Tracker	
+P3#1860	LOOP_STREAK_ON_MAIN_WANTED	5	3. Loop Habit Tracker	
+P3#1905	LOOP_STREAK_ON_MAIN_WANTED	3	3. Loop Habit Tracker	
+P3#2848	LOOP_STREAK_ON_MAIN_WANTED	4	3. Loop Habit Tracker	
+P3#3098	LOOP_STREAK_ON_MAIN_WANTED	4	3. Loop Habit Tracker	
+P3#3563	LOOP_STREAK_ON_MAIN_WANTED	5	3. Loop Habit Tracker	
+P3#4422	LOOP_STREAK_ON_MAIN_WANTED	5	3. Loop Habit Tracker	
+P3#6874	LOOP_STREAK_ON_MAIN_WANTED	3	3. Loop Habit Tracker	
+P3#12700	LOOP_STREAK_ON_MAIN_WANTED	5	3. Loop Habit Tracker	
+P3#1489	LOOP_STREAK_ON_MAIN_WANTED	5	3. Loop Habit Tracker	
+P3#3051	LOOP_STREAK_ON_MAIN_WANTED	2	3. Loop Habit Tracker	
+P3#25244	LOOP_STREAK_ON_MAIN_WANTED	5	3. Loop Habit Tracker	
+P3#4068	LOOP_CELL_NUMBER_OR_SHADE_WANTED	5	3. Loop Habit Tracker	
+P3#3304	LOOP_CELL_NUMBER_OR_SHADE_WANTED	5	3. Loop Habit Tracker	
+P3#6850	LOOP_CELL_NUMBER_OR_SHADE_WANTED	4	3. Loop Habit Tracker	
+P3#8700	LOOP_CELL_NUMBER_OR_SHADE_WANTED	5	3. Loop Habit Tracker	
+P3#4815	LOOP_CELL_NUMBER_OR_SHADE_WANTED	5	3. Loop Habit Tracker	
+P3#903	LOOP_ONE_TAP_INCREMENT_WANTED	4	3. Loop Habit Tracker	
+P3#1671	LOOP_ONE_TAP_INCREMENT_WANTED	4	3. Loop Habit Tracker	
+P3#1766	LOOP_ONE_TAP_INCREMENT_WANTED	5	3. Loop Habit Tracker	
+P3#1926	LOOP_ONE_TAP_INCREMENT_WANTED	5	3. Loop Habit Tracker	
+P3#2508	LOOP_ONE_TAP_INCREMENT_WANTED	5	3. Loop Habit Tracker	
+P3#3614	LOOP_ONE_TAP_INCREMENT_WANTED	5	3. Loop Habit Tracker	
+P3#3737	LOOP_ONE_TAP_INCREMENT_WANTED	5	3. Loop Habit Tracker	
+P3#3822	LOOP_ONE_TAP_INCREMENT_WANTED	5	3. Loop Habit Tracker	
+P3#4646	LOOP_ONE_TAP_INCREMENT_WANTED	3	3. Loop Habit Tracker	
+P3#4782	LOOP_ONE_TAP_INCREMENT_WANTED	4	3. Loop Habit Tracker	
+P3#4916	LOOP_ONE_TAP_INCREMENT_WANTED	2	3. Loop Habit Tracker	
+P3#4944	LOOP_ONE_TAP_INCREMENT_WANTED	4	3. Loop Habit Tracker	
+P3#5236	LOOP_ONE_TAP_INCREMENT_WANTED	5	3. Loop Habit Tracker	
+P3#6020	LOOP_ONE_TAP_INCREMENT_WANTED	5	3. Loop Habit Tracker	
+P3#6833	LOOP_ONE_TAP_INCREMENT_WANTED	4	3. Loop Habit Tracker	
+P3#6920	LOOP_ONE_TAP_INCREMENT_WANTED	5	3. Loop Habit Tracker	
+P3#7082	LOOP_ONE_TAP_INCREMENT_WANTED	5	3. Loop Habit Tracker	
+P3#957	LOOP_MAX_LIMIT_WANTED	4	3. Loop Habit Tracker	
+P3#5060	LOOP_MAX_LIMIT_WANTED	4	3. Loop Habit Tracker	
+P3#5367	LOOP_MAX_LIMIT_WANTED	4	3. Loop Habit Tracker	
+P3#5740	LOOP_MAX_LIMIT_WANTED	5	3. Loop Habit Tracker	
+P3#5856	LOOP_MAX_LIMIT_WANTED	4	3. Loop Habit Tracker	
+P3#5907	LOOP_MAX_LIMIT_WANTED	5	3. Loop Habit Tracker	
+P3#6026	LOOP_MAX_LIMIT_WANTED	5	3. Loop Habit Tracker	
+P3#6577	LOOP_MAX_LIMIT_WANTED	5	3. Loop Habit Tracker	
+P3#6888	LOOP_MAX_LIMIT_WANTED	4	3. Loop Habit Tracker	
+P3#7212	LOOP_MAX_LIMIT_WANTED	5	3. Loop Habit Tracker	
+P3#7353	LOOP_MAX_LIMIT_WANTED	5	3. Loop Habit Tracker	
+P3#6216	LOOP_MAX_LIMIT_WANTED	3	3. Loop Habit Tracker	
+P3#1714	LOOP_MAX_LIMIT_WANTED	4	3. Loop Habit Tracker	
+P3#6960	LOOP_MAX_LIMIT_WANTED	5	3. Loop Habit Tracker	
+P3#1943	LOOP_MORE_DAYS_WANTED	5	3. Loop Habit Tracker	
+P3#4777	LOOP_MORE_DAYS_WANTED	4	3. Loop Habit Tracker	
+P3#5648	LOOP_MORE_DAYS_WANTED	3	3. Loop Habit Tracker	
+P3#8004	LOOP_MORE_DAYS_WANTED	4	3. Loop Habit Tracker	
+P3#9466	LOOP_MORE_DAYS_WANTED	4	3. Loop Habit Tracker	
+P3#11960	LOOP_MORE_DAYS_WANTED	4	3. Loop Habit Tracker	
+P3#13163	LOOP_MORE_DAYS_WANTED	4	3. Loop Habit Tracker	
+P3#16176	LOOP_MORE_DAYS_WANTED	3	3. Loop Habit Tracker	
+P3#4467	LOOP_MORE_DAYS_WANTED	5	3. Loop Habit Tracker	
+P3#5677	LOOP_NO_VS_NOLOG	5	3. Loop Habit Tracker	
+P3#1514	LOOP_NO_VS_NOLOG	4	3. Loop Habit Tracker	
+P3#7440	LOOP_TICK_STYLE_CONFUSING	3	3. Loop Habit Tracker	
+P3#7481	LOOP_TICK_STYLE_CONFUSING	5	3. Loop Habit Tracker	
+P3#7493	LOOP_TICK_STYLE_CONFUSING	5	3. Loop Habit Tracker	
+P3#2041	LOOP_TICK_STYLE_CONFUSING	5	3. Loop Habit Tracker	
+P3#4203	LOOP_SCORE_CONFUSING	4	3. Loop Habit Tracker	
+P3#6065	LOOP_SCORE_CONFUSING	4	3. Loop Habit Tracker	
+P3#7253	LOOP_SCORE_CONFUSING	2	3. Loop Habit Tracker	
+P3#7567	LOOP_SCORE_CONFUSING	3	3. Loop Habit Tracker	
+P3#12438	LOOP_SCORE_CONFUSING	4	3. Loop Habit Tracker	
+P3#11689	LOOP_SCORE_CONFUSING	5	3. Loop Habit Tracker	
+A3#1300	DS_CALENDAR_LINE_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#3092	DS_CALENDAR_LINE_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#3535	DS_CALENDAR_LINE_PRAISED	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#4507	DS_CALENDAR_LINE_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#1305	DS_CALENDAR_LINE_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2194	DS_CALENDAR_LINE_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2390	DS_CALENDAR_LINE_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2833	DS_CALENDAR_LINE_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#3985	DS_CALENDAR_LINE_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#1926	DS_CALENDAR_LINE_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#2968	DS_CALENDAR_LINE_PRAISED	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#4175	DS_CALENDAR_HARD_TO_READ	5	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	
+A3#3844	DS_CALENDAR_HARD_TO_READ	4	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	

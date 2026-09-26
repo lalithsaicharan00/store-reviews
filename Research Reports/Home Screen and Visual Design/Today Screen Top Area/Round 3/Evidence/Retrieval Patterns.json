@@ -1,0 +1,8 @@
+{
+  "flags": "IGNORECASE; whitespace normalized before matching",
+  "patterns": {
+    "zero_group": "(?:empty|zero|no (?:habits|tasks)|nothing (?:due|scheduled)).{0,60}(?:categor|group|section|filter)|(?:categor|group|section|filter).{0,60}(?:empty|zero|nothing (?:due|scheduled)|no (?:habits|tasks))",
+    "group_count": "(?:categor|group|section|filter).{0,50}(?:total (?:number|habits)|number of (?:habits|tasks)|count of|not (?:due|scheduled))|(?:total (?:number|habits)|number of (?:habits|tasks)|not (?:due|scheduled)).{0,50}(?:categor|group|section|filter)",
+    "create_context": "(?:add|creat|edit|renam).{0,35}(?:categor|group|section).{0,40}(?:filter|menu|button|hidden|find)|(?:filter|menu|button).{0,40}(?:add|creat|edit|renam).{0,30}(?:categor|group|section)"
+  }
+}

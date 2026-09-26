@@ -1,0 +1,40 @@
+# Q45 classification map — cite<TAB>stars<TAB>codes<TAB>quoted fragment (verified)
+A24#7305	5	ACCIDENTAL_CHECK	when I accidentally check off / press the check mark circle, I can’t uncheck it
+A54#351	3	ACCIDENTAL_CHECK	I accidentally clicked on the icon and it marked as I completed it
+N1#928	4	ACCIDENTAL_CHECK	I accidentally tap the circle button
+N1#19346	5	ACCIDENTAL_CHECK	accidentally click the circle to mark as done
+N1#23426	4	ACCIDENTAL_CHECK	you can accidentally tap the circle to complete a task
+N1#23921	5	ACCIDENTAL_CHECK	Sometimes that accidentally tap the circle
+N1#24863	4	ACCIDENTAL_CHECK	i accidentally click the circle to say i completed the reminder
+N10#13567	4	ACCIDENTAL_CHECK	when I scroll my screen with my left thumb and click on a circle accidentally
+N10#18008	5	ACCIDENTAL_CHECK	I often accidentally click the circle on the left side of a list item
+N5#9514	1	BIG_PRESS_GO	Before it was ok with big icons and press and go
+A23#2605	5	CHECK_SATISFYING	the satisfying circle graphic to tick of your items
+A4#893	5	CHECK_SATISFYING	you press the little circle that’s across from the wrighting and it will tick you
+P2#11912	5	CHECK_SATISFYING	it is more satisfying to click on a circle and have color pop in
+N8#24244	3	CHECK_SATISFYING	it was way easier and more satisfying to mark a task completed
+P2#11426	4	GRID_BIG_BUTTON	a grid option where each habit/task is a big button
+P41#56	5	GRID_BIG_BUTTON	Simple Grid Setting is good and Simple to tick
+A41#688	5	ICON_ALONE_AMBIG	as the number of habits grow icons alone make it hard to tell what is what
+A1#44361	5	ICON_BIG_WANT	make text, icons larger
+A1#44627	3	ICON_BIG_WANT	Too small icons and buttons
+P2#3323	5	ICON_BIG_WANT	it looks a bit tiny for me
+P2#11223	5	ICON_BIG_WANT	the icons could've been larger/better
+P3#14190	5	ICON_BIG_WANT	expecting large icons
+A23#2388	5	ICON_OVERSHADOWS	they kind of fade in to the background next to the large icons
+A23#3441	3	ICON_OVERSHADOWS	a tiny number under a huge icon for the habit
+A46#2050	5	ICON_RECOG	a large icon next to a small descriptive word
+A13#18050	5	ICON_RECOG	the icons are neat allowing you to recognize tasks at a glance
+A31#4802	4	ICON_RECOG	each thing could have an icon to help identify
+P9#574	5	ICON_RECOG	options for colors and icons to see things at a glance
+A23#1732	3	ICON_SMALLER_DENSITY	more than 6 tasks per page
+A23#1812	4	ICON_SMALLER_DENSITY	more items with small icons
+A23#4153	3	ICON_SMALLER_DENSITY	smaller icons (or even sub tasks) instead of the 6 icon grid on 4 pages
+A23#5213	2	ICON_SMALLER_DENSITY	Use smaller icons so users have the option of seeing everything on one page
+A23#1932	3	ICON_TOO_BIG	the icons for tasks are now too big
+A23#4942	5	ICON_TOO_BIG	the tasks and logos are TOO BIG
+P10#5011	4	ICON_TOO_BIG	the icons is too big for me
+P98#3176	3	ICON_TOO_BIG	too big icon on habit list
+A26#3540	2	TINY_CHECK	click on a teeny tiny icon in a row of other icons
+A86#1363	4	TINY_CHECK	move to a small icon the bottom of the screen to check in
+N6#6687	3	TINY_CHECK	Make the selection icons bigger and easier to use

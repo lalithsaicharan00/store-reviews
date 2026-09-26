@@ -1,0 +1,30 @@
+# Q44 classification map — cite<TAB>stars<TAB>codes<TAB>quoted fragment (verified)
+A1#53979	5	GRID_WANT	a grid view so we could see all the to do’s together
+A20#1031	4	GRID_WANT	fit in more buttons per row
+A23#2542	4	GRID_WANT	I could adjust how much habits I can see in 1 page
+A24#29345	3	GRID_WANT	offer a list or small tiles view
+A3#5837	5	GRID_WANT	3x3 scrolling grid of tiles on iPhone
+A31#3630	4	GRID_WANT	Grid Mode would allow for more items seen on one screen
+A31#5061	5	GRID_WANT	if you have a lot they could all fit on one screen so you can see them all at once? I have over 50
+A46#183	5	GRID_WANT	compact and beautiful grid view that can show many habits at once
+A5#2709	5	GRID_WANT	Please add a grid view
+P69#296	5	GRID_WANT	The tile view is a little limiting with two tiles across. It should be adjustable to 3, 4
+P9#1059	4	GRID_WANT	a nice tiled view as well, showing n/x completed
+A23#1999	4	LIST_WANT	Please add a list view for the habits
+A23#5224	3	LIST_WANT	a compact view to see all my streaks on one page. Maybe a list view
+A23#6328	5	LIST_WANT	toggle between circle view and list view
+A16#104	3	CIRCLE_PRAISE	returning it to the previous circled bubbles. It was easier to see your habits
+A43#455	3	CIRCLE_PRAISE	I really like the circles display for tracking completions
+A26#3540	2	TINY_TAP	click on a teeny tiny icon in a row of other icons
+A31#1335	2	STREAK_MAIN	they removed the numbers next to each habit showing how many days in a row
+A31#2126	3	STREAK_MAIN	Now you have to open the tasks to see the streaks
+A31#3194	3	STREAK_MAIN	I also can no longer see the number of days in a row I have done one of my habits
+A31#3210	2	STREAK_MAIN	The main screen uses to show me how many days or weeks in a row I’ve kept up a habit and they just removed it
+A31#3269	2	STREAK_MAIN	At least incorporate the option to show how many days in a row
+A33#3402	2	TRUNC	Log task names are truncated so you can’t even read what the task is
+A41#350	5	TRUNC	longer habit names get cut off in the UI
+A48#1738	4	TRUNC	longer goal names which get truncated
+A54#361	5	TRUNC	the words didn’t fit within the boxes correctly making the text/overall interface cut off
+P37#955	3	TRUNC	it cut off the name of my habit
+P49#3156	3	TRUNC	in some places the text doesn't fit and overlaps
+P65#5685	3	TRUNC	make the font text smaller so I can see ALL tasks instead of scrolling

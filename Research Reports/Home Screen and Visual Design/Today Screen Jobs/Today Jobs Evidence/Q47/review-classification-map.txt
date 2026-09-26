@@ -1,0 +1,120 @@
+# Q47 classification map — cite<TAB>stars<TAB>codes<TAB>quoted fragment (verified)
+A13#12636	1	ACCIDENT	Swiping on a habit to mark it as completed would often switch the view from All Day to Morning
+A13#1766	4	ALLDAY_DEFAULT	i would change the formatting thing to stay on the &#34;all day&#34; tab
+A13#5406	5	ALLDAY_DEFAULT	une page par défaut qui serait la page « toutes »
+A13#12292	2	AUTOSWITCH	every time you come back to the app it’ll switch back to afternoon or evening, eliminating the task you missed
+A13#13651	4	AUTOSWITCH,TAB_NEG	It keeps opening into the morning section instead of the full day
+A13#13733	1	AUTOSWITCH	auto focusing on time of day even though I have zero habits for this time
+P5#1611	5	CURRENT_ONLY_POS	it only shows the current task you're at and a timer, which helps me with not feeling overwhelmed
+A31#3310	2	DAYSWIPE	removed the ability to just swipe to go back and forth a single day
+A33#3691	2	DAYSWIPE	I also instinctively would try to swipe the list back to look at previous days
+A34#578	4	DAYSWIPE	a swipe gesture could be added to the “Today” page
+P2#8570	5	DAYSWIPE	swipe left-right between days in the &#34;Today&#34; tab
+P2#9959	5	DAYSWIPE	Scrolling through dates on the Today tab would've been easier if we could swipe right or left
+P2#10421	5	DAYSWIPE	make swiping right/left in the Today's tab to switch between other dates
+P2#10997	5	DAYSWIPE	make the calendar day tab swipeable
+P2#22230	5	DAYSWIPE	you can't swipe left or right to switch day to yesterday or tomorrow
+A41#388	5	HEADERS_POS	allows for segments/lists (eg morning routine, evening routine etc)
+A68#4308	4	HEADERS_POS	Make the font size for “Morning Routine,” “Afternoon Routine,” “Evening Routine” bigger
+A13#13259	1	HEADERS_POS	They had an awesome view where you could group habits by morning/day/evening that just disappeared one day
+A33#1164	5	HIDDEN_FILTER	it was because of the selected time of day filter on the top of the screen. This isn’t very intuitive
+A13#4935	5	HIDDEN_PART	If I was missing a morning habit it will be hidden in the afternoon
+A13#6079	3	HIDDEN_PART	my ‘all day’ habits, completing 5 days a week, do not show on the home screen
+A13#13723	5	HIDDEN_PART,ANYTIME_ALWAYS	I want to be able to see my “anytime” habits all of the time
+A18#2022	3	HIDDEN_PART	it only showed me the tasks from the morning, it didn’t show me any evening tasks
+A4#19953	1	HIDDEN_PART	if you forgot to do a morning routine it won’t show you what you forgot to do because it’s now afternoon
+P84#26471	5	LISTTAB_POS	I love the fact that I can have different divisions (tabs)
+N6#5009	5	LISTTAB_POS	I have tabs for tasks listed by dates
+A23#3808	4	PAGES_NEG	Dont want to flip to page two
+A23#3151	5	PAGES_NEG	I find it tiring to swipe between all pages
+A23#4246	3	PAGES_NEG	u don’t like swiping across three pages
+A23#5224	3	PAGES_NEG,WANT_ALL	see all my streaks on one page
+A23#703	5	PAGES_USE	switching to the view of the 2nd page when all non daily tasks are complete
+A23#1552	4	PAGES_USE,WANT_SWIPE	allow swiping between the pages
+A23#2146	4	PAGES_USE	split tasks into morning, daytime and evening
+A23#4296	5	PAGES_USE	allows me to create a morning routine that is visually separate from evening
+A23#4428	5	PAGES_USE	Page 1: My Morning Routine
+A23#4780	5	PAGES_USE	I have my morning, afternoon, and evening habits on their own page
+A23#5012	5	PAGES_USE	I have divided each screen into a morning routine and an evening routine
+A7#333	5	PAGES_USE	I use three iPhone pages with just HabitKit widgets on. One for morning, Afternoon and evening tasks
+A4#7031	5	PARTS_REMOVED_BAD	the option to set your habit into morning, afternoon and evening is gone. I hate this new format
+A4#7122	3	PARTS_REMOVED_BAD	the option to have a task appear in the morning, afternoon or evening has disappeared
+A4#7141	3	PARTS_REMOVED_BAD	the morning, afternoon and evening sections have disappeared
+A4#18991	4	PARTS_REMOVED_BAD	all of a sudden the option to set a task for a certain time of day is gone
+A4#19088	4	PARTS_REMOVED_BAD	the option to give a task a time of day disappeared
+A13#13697	1	SHIFT	for a night shift person that is constantly switching when I sleep
+A24#29836	4	SHIFT	I also need the ability to switch my complete switch my day/night because I work nights
+P12#21509	2	SHIFT	many many people are forced into working shift work and do not have a regular wake up time
+P12#21591	1	SHIFT	it will switch you to tomorrow automatically after 2am
+P84#12407	5	SWIPE_CONFLICT	If I swipe to delete, I end up deleting the task when intent is to change the list
+P84#15014	4	SWIPE_CONFLICT	it's a little too easy to accidentally swipe and delete a task instead
+P84#22848	5	SWIPE_CONFLICT	swiping left and right to change lists instead of deleting tasks
+P84#27904	5	SWIPE_CONFLICT	I've deleted a few tasks just trying to swipe down a list
+P84#29536	1	SWIPE_CONFLICT	try to swipe to switch between lists and youll remove an item from your list
+P8#494	2	SWIPE_POS	On a smaller screen you need to swipe between the categories, which works quite well
+P84#10120	3	SWIPE_POS	used to be able to swipe between lists. Now, have to open and select lists
+P84#22077	4	SWIPE_POS,SWIPE_CONFLICT	though I tend to accidentally delete tasks when trying to switch lists
+P84#31215	4	SWIPE_POS	sub-lists that are easy to add to and swipe between
+P84#32239	4	SWIPE_POS	Swiping sideways to see sublist is awesome
+A13#842	5	TAB_BUG	tabs (all day, evening, morning...) are not synchronised
+A24#42193	4	TAB_BUG	in the evening tab why does it say eat a healthy breakfast
+A85#3248	4	TAB_BUG	There is a bug not being able to select the &#34;evening&#34; tab on some screens
+A13#6092	2	TAB_NEG,AUTOSWITCH	I now have to scroll sideways from morning list to all day
+A13#9058	2	TAB_NEG	not one overview of all habits/tasks and you end up swiping between morning/afternoon/etc.
+A13#13533	1	TAB_NEG	I’m constantly swiping left just to see the habits I have for the day
+A13#13702	2	TAB_NEG,ALLDAY_DEFAULT	I hate having to swipe to see all the habits
+A13#13714	2	TAB_NEG	I don’t want to have to go to separate screens to see all my habits
+A13#13744	1	TAB_NEG,ACCIDENT	while accidentally marking tasks as completed or skipped because it’s the same motion
+A4#11625	1	TAB_NEG	Even tried the morning, afternoon, evening tabs and go into each tab separately
+A68#2033	1	TAB_NEG	If u filter out the morning habits it will show all the habits in unsorted manner
+P37#359	3	TAB_NEG	I couldn't remove the 'times of day' categorisation
+P37#702	4	TAB_NEG	an option to turn off the challenges tab; morning, afternoon and evening areas
+A13#13550	5	TAB_OK	doesn’t bother me now without the animations
+A13#2035	2	TAB_POS	being able to toggle between the periods to do the habits specific to that time frame
+A13#14645	2	TAB_POS	the new slider at the top to switch between the current part of the day versus the entire day
+A33#3588	5	TAB_POS	The ability to set and filter by time of day makes the app clean and easy to see what should be completed next
+A4#18418	3	TAB_POS	I love being able to filter things by tag/time of day
+P9#477	5	TAB_POS	so I can quickly filter my list for 'morning' 'afternoon' and 'evening'
+P91#404	5	TAB_POS	Love the option for the tabs so I can have morning, afternoon and evening
+A13#14549	2	TAB_POS	This makes the to-do list much, much less intimidating than showing them all at once
+A13#15613	3	TAB_POS	By only showing one of applicable time frames, it helps keep you focused
+N6#4541	3	TOPTABS_NEG	the lists are displayed as horizontal tabs at the top, which requires repeatedly swiping left and right to find a specific list
+N6#5834	1	TOPTABS_NEG	I dislike having to swipe to see all my lists
+A33#3003	3	WANT_ALL	I just can’t see all my habits in one screen
+N6#4419	5	WANT_ALL	maybe being able to view a few lists concurrently instead of just one at a time
+P2#1011	4	WANT_CURRENT	if it is in the morning schedule, it will only show in the morning
+P30#4091	3	WANT_CURRENT	if I have habits in the morning and now is the morning time it will only shows them nothing more
+A1#45058	4	WANT_HEADERS	using filters each time gets annoying, so having something easy to show and hide on the spot
+P3#14304	5	WANT_HEADERS	a &#34;Morning Routine&#34; group with all of the individual task within that header
+A1#53099	4	WANT_SWIPE	swiping left/right to see morning, afternoon, evening vs the full filter button
+A23#1544	5	WANT_SWIPE	I constantly try to swipe left/right between the pages of the tasks
+A23#2029	1	WANT_SWIPE	I also can&#39;t swipe left or right between pages
+A23#2241	4	WANT_SWIPE	I keep finding myself trying to swipe between the two pages of goals
+A23#5046	3	WANT_SWIPE	not being able to swipe between sections is annoying
+A23#5178	4	WANT_SWIPE	a swipe action for switching between the two pages
+A23#5406	5	WANT_SWIPE	Allow us to switch pages by swiping between pages or scrolling
+A23#5431	2	WANT_SWIPE	Please add ability to SWIPE between the pages
+A31#1195	5	WANT_SWIPE	swipe left or right to have automatically a display per group instead of having to apply filters
+A85#348	5	WANT_SWIPE	a horizontal swipe navigation option to switch between tabs for tablet
+P2#6923	5	WANT_SWIPE	Swiping gestures to move between the 'Today' & 'Habits' page
+P84#11862	5	WANT_SWIPE	possibility to switch between lists with a single swipe
+P84#32890	5	WANT_SWIPE	swiping left/right to change the active list
+P84#56295	5	WANT_SWIPE	easy switching between lists, for example, with side swipe
+P84#57816	5	WANT_SWIPE	Please add swipe to the right and swipe to the left to move between task lists
+N6#7	4	WANT_SWIPE	An easier swipe feature needed to toggle between lists
+N6#2084	4	WANT_SWIPE	add left-right swiping possibility between lists
+N6#2133	3	WANT_SWIPE	I wish I could just swipe left or right to go to my other list
+N6#3713	4	WANT_SWIPE	by swiping left or right on the list title to switch between my lists
+N6#4441	5	WANT_SWIPE	swipe left and right from one list to another
+N6#4688	4	WANT_SWIPE	switch lists by Swipe left or right
+N6#5860	2	WANT_SWIPE	Should be swiping a feature for swiping left/right
+N6#6504	5	WANT_SWIPE	It would be nice to either swipe from the name of list or some other gesture
+N6#6604	3	WANT_SWIPE	why can’t I just swipe between lists?
+N6#6632	4	WANT_SWIPE	the ability to swipe left and right to go between task lists
+N6#6752	2	WANT_SWIPE	why can’t you swipe left/right to move between lists?
+A1#53397	5	WANT_TABS	all the things for my morning or night time routines, in one tab
+A10#41351	4	WANT_TABS	a separate kind of tab for night/morning routines
+A4#6358	2	WANT_TABS	there should be a toggle for the day for morning / afternoon / evening with alternate views to show all
+P2#11171	4	WANT_TABS	is less tabbed (morning, afternoon, evening)
+P3#5125	5	WANT_TABS	Add 3 different pages and right marks for the morning routine, evening routine, and night routine
+P3#25382	4	WANT_TABS	categorize few of my habits under a tab. Such as morning, afternoon, night

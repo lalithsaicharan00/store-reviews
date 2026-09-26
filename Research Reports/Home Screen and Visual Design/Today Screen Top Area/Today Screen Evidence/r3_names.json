@@ -1,0 +1,26 @@
+{
+ "morning_evening": 1791,
+ "names": {
+  "category": 42,
+  "group": 32,
+  "tag": 18,
+  "routine": 863,
+  "section": 45,
+  "list": 168,
+  "block": 11,
+  "folder": 7,
+  "period": 26,
+  "time of day": 74,
+  "area": 20,
+  "part of the day": 8
+ },
+ "organising": 5744,
+ "org_names": {
+  "list": 576,
+  "group": 875,
+  "tag": 121,
+  "category": 249,
+  "area": 66,
+  "folder": 76
+ }
+}

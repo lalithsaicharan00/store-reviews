@@ -59,6 +59,24 @@ Non-negotiables, because they are what makes a report auditable:
 - Disclose review-burst / solicited-review patterns and rating-vs-text contradictions
   rather than silently dropping them.
 
+## Design decisions: never copy competitors blindly (applies to every design task)
+
+Competitors are a source to check, not an authority. An app doing something does not make it right;
+it may be doing it badly.
+
+1. **Reviews first.** Look for user evidence about the pattern: our corpus, and the competitor's own
+   reviews. Adopt a competitor pattern only when reviews show users actually like it or it solves their
+   problem.
+2. **No reviews? Reason from first principles.** Ask:
+   - What is the user trying to do on this screen?
+   - What do they see, expect and tap?
+   - What could go wrong?
+
+   Then apply sound design principles: clarity, fewest steps for frequent tasks, no hidden state,
+   consistency, and recovery from mistakes. Design from that.
+3. **In reports, say which it was:** "users show…" (review evidence) or "reasoned from first principles".
+   Never "App X does it, so we should".
+
 ## PRD for App Store — superseded, ignore it
 
 `PRD for App Store.md` is **not** a decision record and must not be used as one. It was built by

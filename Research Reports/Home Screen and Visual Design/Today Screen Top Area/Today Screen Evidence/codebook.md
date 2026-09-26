@@ -132,3 +132,44 @@ Judgement codes:
 | TODAYFOCUS+ | Values a screen focused on just today's habits |
 | ALLHABITS | Wants to see all habits, not only today's (a non-day list) |
 | MULTIVIEW | Wants week / month / history on the main screen next to today |
+
+## Round 2 (R2) — view frequency, strip value, filter vocabulary, group-filter frequency, date wording
+| Code | Meaning |
+|---|---|
+| VSTICK | Uses one view mostly / wants to set the view the app opens on (implies rare switching) |
+| VREMEMBER | Wants the app to remember the last view or filter |
+| VSWITCHOFT | Switches between views often / wants switching fast |
+| VOPENTODAY | Wants the app to open on today's list |
+| STRIPVAL+ | Values the day strip (progress per day, glance at the week) |
+| STRIPNAV | Uses / wants the strip to move between days |
+| STRIPCLUT | Strip wastes space / redundant / wants to hide it |
+| GFILT+ | Uses a group filter routinely / praises it |
+| GFILT- | Group filter tedious (switching each time, hides habits) |
+| GRARE | Rarely or never uses groups or filters |
+| HIDEDONE | Wants completed habits hidden (words used noted) |
+| SHOWDONE | Wants completed habits kept visible |
+| FILTERBY | Wants to filter / view by category, tag, group, area |
+| SORTBY | Wants to sort / order by time, name, priority |
+| ONLYDUE | Wants to see only what is due / left today |
+| DATE_THISWEEK | Prefers the calendar week ("this week") |
+| DATE_LAST7 | Prefers the last 7 days |
+| DATE_WHICH | Unsure which date / week / period is shown |
+| DATE_TOP | Wants the date or period shown at the top |
+
+## Round 3 (R3) — add/edit groups & sections, counts, empty, not-due access, day start, layout
+| Code | Meaning |
+|---|---|
+| ADDFIND | Can't find how to create a group/category/section, or wants creation easier/in context |
+| ADDCTX+ | Praises or wants creating a group/section right where it is used (filter bar, "+ new", while making a habit) |
+| GRPEDIT | Wants to edit/rename/delete groups or sections from where they appear |
+| GRPCOUNT | Wants to see how many habits are in a group/section, or per-group counts |
+| EMPTYVIS | Empty group/section shown or hidden — complaint or wish |
+| NOTDUEACC | Wants to see / reach habits not due today (all habits list, upcoming, not-due row) |
+| NOTDUEHIDE | Wants habits not due today kept off the list |
+| DS_WANT | Wants to set when the day starts / ends (rollover) |
+| DS_WORD | Uses specific wording for it (noted: start of day / day starts / reset / rollover / end of day) |
+| DS_CONF | Confused which day a late-night tick counts for, or by the setting |
+| DS_PRAISE | Praises a day-start setting |
+| LAY_PREF | Prefers/uses a particular layout (list, grid, calendar, cards) |
+| LAY_SWITCH | Wants to switch layouts / toggle praised; notes where |
+| LAY_FIND | Couldn't find the layout switch |
