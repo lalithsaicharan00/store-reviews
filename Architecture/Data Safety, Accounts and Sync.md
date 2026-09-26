@@ -179,20 +179,18 @@ ourselves, and there is no monthly-active-user cap like Firebase's.
 - **Every sync checks that token,** which takes under 1 ms of the 10 ms free CPU budget.
 - **The provider ID → account table** lives in D1 and is written only at sign-up.
 - **Email codes** need a mail sender:
-  - Cloudflare Email Service is in public beta since April 2026. It needs the $5 plan, includes 3,000 emails a
-    month, then costs $0.35 per 1,000.
-  - A free-tier provider works too.
-  - Email sign-in only happens on a new device, so volume is low.
+  - Use a replaceable external sending adapter on the free Worker; initial provider selection is pending. Email login does not require Workers Paid.
+  - Cloudflare’s own outbound Email Sending is currently Beta and requires Workers Paid; it remains a later migration option.
+  - Codes are sent on actual sign-in/linking, including after sign-out or session revocation, not on every app opening. Purchase confirmations share the quota. See [Email Delivery Decision](<Email Delivery Decision.md>) for current provider allowances and migration.
 
 **Launch on the free plan; upgrade when usage calls for it** (decided 26 Sep 2026):
-- **Sign-in at launch: Apple + Google only.** They cost nothing and need no email sending. Email-code sign-in
-  comes with the $5 plan.
+- **Sign-in at launch: Apple + Google + email OTP** (updated 26 Sep 2026). Email is passwordless; an external free-tier sender can support OTPs and purchase confirmations while the Worker remains on the free plan.
 - **If a daily limit is hit, sync pauses until the next day.** No data is lost, because phones keep their
   outbox. The app shows "Backup delayed", not an error.
 - **A Cloudflare rate-limiting rule sits in front of the Worker,** so blocked requests never count against the
   100k. The Worker also limits syncs per device.
 - **A daily scheduled Worker (cron) counts yesterday's sync requests** and emails us.
-- **Upgrade trigger:** requests pass **50k/day** (about 6k daily users), or we want email sign-in. Upgrading
+- **Upgrade trigger:** requests pass **50k/day** (about 6k daily users), or another backend limit requires it. Email-provider quotas are monitored separately. Upgrading
   takes a minute and needs no code change or data move.
 
 ---
@@ -203,7 +201,7 @@ ourselves, and there is no monthly-active-user cap like Firebase's.
 
 - **Accounts exist from day one, but signing up is never required.** The app is fully usable without an
   account.
-  - **Onboarding** has a "Keep your habits safe" step with **Sign in with Apple** and **Google** (email code later),
+  - **Onboarding** has a "Keep your habits safe" step with **Sign in with Apple**, **Google** and **Continue with email**,
     plus **Not now**.
   - **Without an account**, the avatar shows a small "Not backed up" dot, with one gentle reminder after a few
     days.
@@ -211,9 +209,8 @@ ourselves, and there is no monthly-active-user cap like Firebase's.
   - **Apple:** required by App Store guideline 4.8 once Google sign-in is offered. It also works on Android and
     web through Apple's web flow, so an iPhone user who moves to Android can still sign in.
   - **Google:** on every platform.
-  - **Email with a 6-digit code:** added later, once we are on the $5 plan (see 3.4). No passwords to store.
-- **An account is identified by the sign-in provider's user ID**, not by email address, because Apple's
-  "Hide my email" gives out relay addresses. One account can link several sign-in methods.
+  - **Email with a 6-digit code:** included at launch. No password or password-reset flow; normal session refresh does not send another code. See [Email Delivery Decision](<Email Delivery Decision.md>).
+- **An account has our own UUID.** Linked Apple/Google provider IDs and verified email sign-in keys open that account. Contact email is not the account ID; matching emails never silently merge accounts. Apple relay addresses are supported.
 - **First sign-in when the account already has data** (for example, a second phone):
   - the app asks whether to merge, keep the account's data, or keep this phone's data;
   - whatever is set aside is saved as a snapshot, so nothing is thrown away.
@@ -337,8 +334,7 @@ It adds these requirements to the design above:
 
 ## 9. Open decisions
 
-- **Shared code:** write the sync client twice (Swift and Kotlin), or once with Kotlin Multiplatform plus
-  SQLDelight? The recommendation is twice for now, since it's small, with shared tests of expected results.
+- **Shared code:** *decided 26 Sep 2026:* one Kotlin Multiplatform domain core, native platform UIs, written behavior specifications and shared fixtures. Merge rules live in the core; transport, storage and transactions remain adapters. This does not select SQLDelight or require sharing every part of the sync client. See [Shared Core Decision](<Shared Core Decision.md>).
 - **Purchases:** *decided 26 Sep 2026:* native StoreKit 2 and Play Billing, verified and recorded by our own Worker
   for cross-platform use; no RevenueCat. See [02 Billing §3.11](<02. Billing and Entitlements.md>).
 - **Where the sign-in step goes in onboarding:** before or after the user adds their first habit. Research

@@ -31,5 +31,9 @@ SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one a
 
 - **Parked decisions:** [Backlog.md](Backlog.md).
 
+- **Accepted email behavior:** [Email OTP login, purchase confirmations and replaceable sending provider](<Email Delivery Decision.md>) — decided 26 Sep 2026; initial provider selection remains open.
+
+- **Accepted shared-core decision:** [Kotlin Multiplatform + native UI + documented rules + shared tests](<Shared Core Decision.md>) — finalized 26 Sep 2026; resolves Backlog #15. [Research, production examples and support routes](<Shared Core Research.md>).
+
 - **Evidence behind all of this:** [Research/Research Reports/Data, Sync and Accounts/](<../Research/Research Reports/Data, Sync and Accounts/>).
 - **Bug catalogue** (separate workstream, after these topics or in parallel when asked): [Research/Research Reports/Bugs and Fixes/](<../Research/Research Reports/Bugs and Fixes/>).

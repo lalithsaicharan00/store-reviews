@@ -7,3 +7,5 @@
 | [`iOS/`](iOS/) | The iPhone app (SwiftUI). |
 
 Android and web will get their own top-level folders when they start.
+
+**Shared core:** Kotlin Multiplatform with native platform UIs, documented domain rules and shared tests. See the [accepted decision](<Architecture/Shared Core Decision.md>). The planned `Core/` module has not been implemented yet.
