@@ -1,0 +1,10 @@
+screened 1487223 {'A': 337331, 'P': 901453, 'N': 248439}; candidates 1099
+baseline paid-word rate: A 10.84%, P 3.54%, N 1.14%
+
+mode                   n apps     A     P     N   1★%  mean A paid% P paid%
+FAMILY_SHARING       358   41   134    15   209  18.4  3.61    60.4     6.7
+HOUSEHOLD_USE        293   31   118    25   150  12.6  4.15     7.6     4.0
+KID_PROFILES         248   33    39    25   184  13.7  3.83    30.8    32.0
+FAMILY_PLAN          133   22    89    10    34  28.6  3.16    69.7    30.0
+SHARE_PURCHASE        83   34    40    31    12   8.4  3.99    40.0    12.9
+BUY_AGAIN_PERSON      26   18    11     9     6  30.8  3.35    81.8    77.8

@@ -1,0 +1,70 @@
+A16#866|NR|
+P12#50709|NR|
+P126#14481|NR|
+P84#19994|NR|
+A1#47003|NR|
+A1#53456|NR|
+A1#56130|NR|
+A10#21603|NR|
+A10#37986|NR|
+A10#38531|NR|
+A10#43891|NR|
+A10#44047|NR|
+A10#54050|NR|
+A16#389|NR|
+A2#456|NR|
+A23#5263|NR|
+A24#25766|NR|
+A24#29399|NR|
+A24#34808|NR|
+A24#35425|NR|
+A25#406|NR|
+A3#2315|NR|
+A3#5310|NR|
+A3#9120|NR|
+A34#577|NR|
+A4#12325|NR|
+A46#1756|NR|
+A76#584|NR|
+A76#6877|NR|
+A85#1504|NR|
+A85#331|NR|
+P10#7591|NR|
+P12#19576|NR|
+P12#20000|NR|
+P12#37507|NR|
+P12#38686|NR|
+P12#38759|NR|
+P12#41756|NR|
+P12#42768|NR|
+P122#11632|NR|
+P122#11693|NR|
+P122#13881|NR|
+P122#14673|NR|
+P122#14863|NR|
+P122#15322|NR|
+P122#20940|NR|
+P122#7603|NR|
+P123#947|NR|
+A12#400|FS_BROKEN,FS_BOUGHT_FOR|"Unable to share in the family plan for Apple once paid for"
+A13#13429|FS_WANT,FS_NOT_BUY,HOUSEHOLD|"I can’t afford 3 premium memberships for my family."
+A13#16188|FS_WANT,KID_USE,SHARE_TOGETHER,FS_ANDROID|"Also wish this was available for Android which are the phones my children have."
+A24#28130|FS_WANT,HOUSEHOLD|"A family membership option would be great too as I hit share to my husband and four teens constantly."
+A24#6075|FS_HOWTO|"Is a subscription shareable under the Apple App Store family plan?"
+A31#3026|FS_BROKEN|"The family subscription doesn’t work"
+A33#187|FS_BROKEN,FS_BOUGHT_FOR|"family plan was only available 2005 onwards"
+A33#3232|FS_BOUGHT_FOR,MULTI_PROFILE_REQ,KID_USE|"we are unable to separate each kid as a user under the one account even though we paid for family access"
+A4#17306|FS_WANT,FS_PRICE_FAMILY,HOUSEHOLD|"My husband is interested in the app, but both of us paying for it is a lot"
+A5#2674|FS_WANT,FS_NOT_BUY,KID_USE|"my kids could benefit from the app as well but I can’t afford the full price for all of us individually yet"
+P12#18986|FS_WANT,FS_PAID_TWICE,KID_USE|"I also pay for the app for my daughter (9)."
+P12#24710|FS_WANT,KID_USE,SHARE_TOGETHER|"Is there a family option, if like to use it for me and my kids together"
+P122#1760|FS_WANT|"1 missing star due to lack of family plans"
+P5#1096|FS_WANT,SHARE_TOGETHER|"I only wish I could share routines with my partner or that there was a family plan."
+P8#846|HOUSEHOLD,FS_GIFT|"I finally gifted my husband a one year sub. for his birthday"
+P84#14894|FS_WANT,SHARE_TOGETHER|"If there was some kind of family plan style cost where the main user covers costs it wouldn't be so bad."
+P84#8443|SHARE_TOGETHER,HOUSEHOLD|"can also be shared w/husb for groceries"
+A1#43863|FS_HOWTO,FS_BOUGHT_FOR|"I do have the Family Premium Account but also no clue how to actually share it with others"
+A1#52053|FS_HOWTO,FS_BOUGHT_FOR|"I thought it said I can share the lifetime app access with up to 5 people but I cannot figure it out."
+A1#52192|FS_HOWTO,FS_BOUGHT_FOR,HOUSEHOLD|"bought it for my partner and I and cant seem to figure out how to share the premium with her"
+A10#51139|FS_WANT,FS_PAID_TWICE|"Does not share purchase with Apple Family."
+A48#2932|HOUSEHOLD,SHARE_TOGETHER|"I have my whole family using this app s we can share our progress on our personal goals."

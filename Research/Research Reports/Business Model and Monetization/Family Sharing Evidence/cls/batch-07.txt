@@ -1,0 +1,70 @@
+P122#10845|NR|
+A10#10650|NR|
+A10#12550|NR|
+A10#19326|NR|
+A10#19556|NR|
+A10#30780|NR|
+A10#32975|NR|
+A10#37896|NR|
+A10#38582|NR|
+A10#41764|NR|
+A10#4665|NR|
+A10#51034|NR|
+A10#58646|NR|
+A10#62264|NR|
+A10#64393|NR|
+A10#67310|NR|
+A10#7809|NR|
+A13#16540|NR|
+A23#6559|NR|
+A24#12394|NR|
+A24#17547|NR|
+A24#1767|NR|
+A24#25520|NR|
+A24#28555|NR|
+A24#35719|NR|
+A3#6743|NR|
+A4#9411|NR|
+A4#18994|HOUSEHOLD|"My partner and I use it as a friendly  competition"
+A4#56|HOUSEHOLD|"my family loves it so much"
+A46#1748|HOUSEHOLD|"My wife and I use this together for shared accountability."
+A85#1041|HOUSEHOLD|"My wife and I both use this app"
+A85#1983|KID_USE|"This helped me and my kids enjoy them!"
+A85#2068|HOUSEHOLD|"my wife and I love Habitica so much"
+A85#3014|HOUSEHOLD|"my whole family has Habitica now and we all play together!"
+A85#3053|HOUSEHOLD|"My wife and I both use Habitica every day."
+A85#3217|HOUSEHOLD,KID_USE|"Our whole family has been using Habitica for a few months"
+A86#1630|HOUSEHOLD|"now we both use it every day"
+P12#12079|HOUSEHOLD|"My whole family is using and we enjoy each step ahead toward our goals."
+P12#18297|HOUSEHOLD|"My husband and I started this 4 days ago"
+P12#54318|HOUSEHOLD|"my wife suggested it and we both use it now"
+P12#63531|HOUSEHOLD|"my partner and I love using this"
+P12#67179|HOUSEHOLD|"my husband and i both use it"
+P122#10500|HOUSEHOLD|"my whole family use it daily"
+P122#11034|HOUSEHOLD|"my entire family is using it"
+P122#13659|HOUSEHOLD|"my partner and I use it"
+P122#15027|HOUSEHOLD|"wife and I both use it"
+P122#20155|HOUSEHOLD|"my husband and i both love it"
+P126#25330|HOUSEHOLD|"My wife and I both use this app"
+P126#47406|KID_USE|"Even my children use it."
+P24#7702|HOUSEHOLD|"Our whole family loves it!"
+P4#21175|HOUSEHOLD|"now my entire family has been doing it"
+P49#4065|HOUSEHOLD|"My partner and I both use it and we love it."
+P63#1072|KID_USE|"My son loves it and it has been helping him keep his tasks fun!!"
+P8#3768|HOUSEHOLD|"My girlfriend and I love the shared quest feature."
+P8#4387|HOUSEHOLD,KID_USE|"My entire family is using it."
+P8#5731|HOUSEHOLD|"My husband and I both use it"
+P8#768|HOUSEHOLD|"Our whole family uses it to encourage and hold each other accountable."
+P8#9094|HOUSEHOLD|"My husband and I use this app."
+P8#9935|KID_USE|"My kids love it, and it has helped me too."
+P84#26065|HOUSEHOLD,SHARE_TOGETHER|"my wife and I both use this great app but we can't share our lists with each other"
+P86#108|HOUSEHOLD|"My wife and I started using it together"
+A1#54374|KID_USE|"I use this to track my kids homework and chores"
+A10#21667|HOUSEHOLD,SHARE_TOGETHER|"My daughter had this for over a month and then shared with myself, my mom, and my husband."
+A10#28036|HOUSEHOLD|"now multiple people in my family do too!"
+A10#4039|KID_USE|"I like the app and even shared it with multiple people and my daughter."
+A10#5036|MULTI_PROFILE_REQ,KID_USE|"wish there was a way to add multiple users on one app or have separate sign ins for kids who don’t have their own device"
+A10#66823|MULTI_PROFILE_REQ,KID_USE|"Having an option for multiple profiles would make it a little easier for larger families."
+A10#9046|MULTI_PROFILE_REQ,KID_USE|"I just wish I could have multiple users so that my daughter could also have her own profile/pets/quests."
+A13#15491|FS_LISTING_FALSE,FS_PRICE_FAMILY|"it only works if you buy a separate subscription for each family member (at $24/yr each). $96/yr is way too much"
+A4#11820|KID_USE,FS_PRICE_FAMILY|"Why do we need a seven day for each child"

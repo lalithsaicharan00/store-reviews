@@ -1,0 +1,70 @@
+P129#534|NR|
+P2#11136|NR|
+P2#12476|NR|
+P24#9273|NR|
+P3#13961|NR|
+P3#5230|NR|
+P37#190|NR|
+P37#665|NR|
+P44#387|NR|
+P49#3006|NR|
+P49#3355|NR|
+P65#6437|NR|
+P84#7785|NR|
+A1#49580|NR|
+A10#13441|NR|
+A10#47009|NR|
+A10#6222|NR|
+A13#13607|NR|
+A24#41385|NR|
+A24#5365|NR|
+A31#2724|NR|
+P12#116479|NR|
+P12#15860|NR|
+P2#12769|NR|
+P24#14617|NR|
+P24#8717|NR|
+P37#411|NR|
+P4#22520|NR|
+P9#19|NR|
+P9#30|SHARE_TOGETHER|"so that both friends don't have to buy pro if they don't want to just to share progress"
+A1#52106|FS_BOUGHT_FOR,HOUSEHOLD|"I just purchased for my family and I can’t wait to see how we do"
+A53#857|FS_PAID_TWICE,KID_USE|"tried to share my son, so I have to pay separately"
+A53#858|FS_PAID_TWICE,KID_USE|"tried to share my son, so I have to pay separately"
+P84#8463|FS_PAID_TWICE,SHARE_TOGETHER,FS_ANDROID|"The other person has to pay too, which isn't worth it or advertised when paying."
+A1#52756|HOUSEHOLD|"My wife and I love this app so much."
+A1#55204|HOUSEHOLD,KID_USE|"My kids love the app and I do to."
+A1#633|HOUSEHOLD|"everyone in my family uses it"
+A10#10806|HOUSEHOLD,KID_USE|"Oh and my kids love it too"
+A10#11292|KID_USE|"My kids love this app it helps with there ADHD and anxiety"
+A10#11942|HOUSEHOLD|"The whole family has Finch now"
+A10#1419|HOUSEHOLD|"me and my whole family use it"
+A10#19485|HOUSEHOLD|"Me and my family love this app!"
+A10#19580|HOUSEHOLD|"My whole family uses the app and it helps so much"
+A10#19585|HOUSEHOLD|"My entire family loves it!"
+A10#19806|HOUSEHOLD|"My girlfriend and I both love it"
+A10#20134|HOUSEHOLD|"Me and my family love this app so much"
+A10#20391|HOUSEHOLD,HOUSEHOLD_PAID_EACH|"Two of the four of us have Plus."
+A10#21186|HOUSEHOLD|"Our whole family uses this app"
+A10#21658|HOUSEHOLD|"My whole family is using finch"
+A10#22497|KID_USE|"my kids love it"
+A10#22936|KID_USE|"My daughter loves this app it is very kid friendly"
+A10#25130|KID_USE,HOUSEHOLD|"ME AND MY DAUGHTER USE IT EVERY DAY"
+A10#26645|HOUSEHOLD|"My whole family uses finch."
+A10#26747|HOUSEHOLD|"My girlfriend and I love it!"
+A10#26758|HOUSEHOLD|"basically my whole family has this app"
+A10#27137|KID_USE|"it gives my daughter love it too"
+A10#28671|KID_USE|"My kids love it too"
+A10#28751|KID_USE|"The most fun thing on my phone my daughter loves it"
+A10#29422|KID_USE|"And my kids love it too."
+A10#29594|HOUSEHOLD|"my whole family has this app"
+A10#30247|HOUSEHOLD|"My whole family has downloaded this app"
+A10#30954|KID_USE|"My daughter loves it"
+A10#31854|HOUSEHOLD|"My boyfriend and I use it together too"
+A10#32074|HOUSEHOLD|"my girlfriend and I are using it together"
+A10#32606|NR|
+A10#33431|HOUSEHOLD,HOUSEHOLD_PAID_EACH|"Our whole family has is and we love to connect our daily goals together"
+A10#34437|HOUSEHOLD,KID_USE|"My kids use it also and it helps get them to do their chores."
+A10#34538|HOUSEHOLD,KID_USE|"I got this app with my family"
+A10#34639|HOUSEHOLD|"My family loves it!"
+A10#35630|KID_USE,MULTI_PROFILE_REQ,FS_WOULD_PAY|"there isn’t a way to add multiple accounts. Please please make a way for our entire family to enjoy this app. I would gladly pay for this service."

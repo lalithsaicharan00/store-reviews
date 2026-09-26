@@ -1,0 +1,43 @@
+A86#1175|NR|
+P12#118218|NR|
+P12#15180|NR|
+P12#34068|NR|
+P12#43200|NR|
+P122#11942|NR|
+P125#13897|NR|
+P126#73711|NR|
+P2#3572|NR|
+P4#25770|NR|
+P70#415|NR|
+P8#3063|NR|
+N5#780|NR|
+N1#17470|NR|
+N2#18365|NR|
+N9#5055|NR|
+N5#1748|NR|
+N1#19129|NR|
+N3#28044|NR|
+N9#49529|NR|
+N2#16952|NR|
+N8#23580|NR|
+N9#41943|NR|
+P126#41168|SHARE_TOGETHER|"making it an online which can be accessed by multiple users"
+P126#70921|SHARE_TOGETHER|"have a sinple way of sharing with multiple users"
+P2#9360|HOUSEHOLD,SHARE_TOGETHER|"Even able to install across two devices to sink habits and have multiple people add them."
+P3#5415|KID_USE,MULTI_PROFILE_REQ|"a folder for me and one for each child"
+P36#194|KID_USE,MULTI_PROFILE_REQ|"allow tracking for multiple users: for my case, plan to use it to track my kids' habit too"
+P37#745|FS_WANT,MULTI_PROFILE_REQ|"please allow one subscription to be used to multiple users, or add the ability to create multiple profiles"
+P5#1869|KID_USE|"I help just a daily routines for my son's and me."
+P84#14352|KID_USE|"I created a list for each child"
+P84#17821|KID_USE|"chores list for each kid"
+P84#19663|KID_USE|"let me create one for each child (& husband!)"
+P84#23068|SHARE_TOGETHER|"I wish it would allow multiple users to see each others task list"
+P84#31584|KID_USE|"I have colour coded lists for myself and four children including a baby"
+P84#4585|SHARE_TOGETHER|"Can you PLEASE make the lists shareable?"
+N6#2292|SHARE_TOGETHER|"There should be option for Task status to be shared with family/ frnds"
+N3#26171|SHARE_TOGETHER|"I have shared notes with the family"
+N8#3840|SHARE_TOGETHER|"easy to share a calendar with my family"
+N10#20848|HOUSEHOLD,SHARE_TOGETHER|"We have tried EVERYTHING to get our lists to sync"
+N2#656|HOUSEHOLD,SHARE_TOGETHER|"my husband and I have been using iCal for many years now"
+N8#24883|HOUSEHOLD,SHARE_TOGETHER|"My family uses this app all together to know all of our events!"
+N2#19954|KID_USE,SHARE_TOGETHER|"it allows me to share calendars with everyone in my family"
