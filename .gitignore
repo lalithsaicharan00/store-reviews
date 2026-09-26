@@ -1,11 +1,19 @@
 # ---------------------------------------------------------------
-# Working scratch directory for Claude Code / agent sessions.
-# Contents are intentionally UNTRACKED — they are intermediate
-# analysis artifacts, not deliverables.
-# The README is tracked so the convention survives a fresh clone.
+# Research: working scratch for Claude Code / agent sessions.
+# Contents are intentionally UNTRACKED — intermediate analysis
+# artifacts, not deliverables. The README is tracked so the
+# convention survives a fresh clone.
 # ---------------------------------------------------------------
-Temp/*
-!Temp/README.md
+Research/Temp/*
+!Research/Temp/README.md
+
+# iOS / Xcode
+iOS/**/DerivedData/
+iOS/**/build/
+iOS/**/xcuserdata/
+iOS/**/*.xcuserstate
+iOS/**/.swiftpm/
+iOS/**/.build/
 
 # macOS
 .DS_Store
