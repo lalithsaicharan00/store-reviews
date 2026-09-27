@@ -1,0 +1,70 @@
+A20#3674|IPAD_QUALITY|"Please add iPad Pro full screen support"
+A20#757|PAY_FOR_DEVICES|"I would like to get an optimized version on my iPad, though.  That way I’d pay for the Upgrade."
+A13#10|PAID_EXPECT_ALL_DEVICES,PAY_AGAIN_BAD,X_PAYER|"I registered from my Ipad and now it ask me to start over again with another subscription"
+A12#318|PAY_FOR_DEVICES,IPAD_QUALITY|"Please make an iPad version so I can buy the lifetime subscription!"
+A24#3091|IPAD_QUALITY,X_PAYER|"I paid the full price and the app doesn&#39;t work properly on iPad"
+A85#2626|NR|
+A10#32510|NR|
+A13#11669|PAID_EXPECT_ALL_DEVICES,X_PAYER|"Even though I am a subscriber, my iPad app functions totally independently from my iPhone app"
+A4#1879|PAID_EXPECT_ALL_DEVICES,X_PAYER|"Eu adquiri justamente para utilizar pelo tablet porém efetuei a aquisição pelo telefone"
+A24#2215|PAID_EXPECT_ALL_DEVICES,X_PAYER|"j’aimerai le transférer vers ma tablette Samsung"
+A10#28291|IPAD_KIDS|"iPads on kid mode can&#39;t do in app purchases"
+A48#1907|NR|
+A55#1003|PAID_EXPECT_ALL_DEVICES,X_PAYER|"Sync doesn’t work I have a premium account"
+A76#5679|PAY_AGAIN_BAD|"I like this App but hate the idea of buying it twice"
+A59#13332|NR|
+A7#340|PAID_EXPECT_ALL_DEVICES,X_PAYER|"I probably wouldn’t have subscribed if I had noticed this sooner"
+A13#2766|NR|
+A48#715|PAID_EXPECT_ALL_DEVICES,X_PAYER|"I decided to pay for Strides Plus in the beginning of February. But now I cannot sync between iPhone and iPad"
+P84#11370|PAY_FOR_DEVICES|"The premium version has a web mirror so you can you use the app on your laptop or tablet or both"
+A76#4176|IPAD_QUALITY|"Нет версии для iPad"
+A20#3504|PAY_FOR_DEVICES|"With premium, does Habit sync my data if the app is installed on iPhone and iPad"
+A10#46266|NR|
+A2#195|NR|
+P24#20969|PAID_EXPECT_ALL_DEVICES,X_PAYER|"Heb de Premium gekozen om op iPad en Android mobiel mijn habits bij te kunnen houden"
+A18#1167|NR|
+P70#154|NR|
+P4#74208|PAID_EXPECT_ALL_DEVICES|"il faut choisir entre téléphone ou tablette pour pouvoir en profiter"
+P12#13470|NR|
+A4#12721|NR|
+P5#5107|PAID_EXPECT_ALL_DEVICES,X_PAYER|"추가로 설정했던 루틴이 다 사라졌습니다"
+P129#601|NR|
+P19#1033|PAID_EXPECT_ALL_DEVICES,PAY_AGAIN_BAD|"instead of sync it offered me to buy subscription once again"
+A10#30072|NR|
+P84#1711|PAID_EXPECT_ALL_DEVICES,X_PAYER|"Also genau das, wofür ich damals Premium gekauft habe"
+P33#887|PAY_AGAIN_BAD|"I am not paying for two separate subscriptions"
+P2#13839|PAID_EXPECT_ALL_DEVICES,X_PAYER|"pague el premium y no sé cómo se hace para instalar en mi tablet"
+P49#1900|PAID_EXPECT_ALL_DEVICES|"I purchased the free trial of the app on my iPad and want to transfer it to my Samsung phone but I can't"
+P84#44331|PAY_FOR_DEVICES|"Deze maand gaan we de premium versie proberen zodat hij ook op de tablet gebruikt kan worden"
+P15#381|PAID_EXPECT_ALL_DEVICES,PAY_AGAIN_BAD,X_PAYER|"The app wants me to pay again"
+A36#206|PAID_EXPECT_ALL_DEVICES,X_PAYER|"this won&#39;t sync between my iPhone and iPad"
+A36#196|CAP_BAD,PAID_EXPECT_ALL_DEVICES|"You have removed the option to add more habits without paying"
+P129#437|PAID_EXPECT_ALL_DEVICES,LIFETIME_BUYER|"it says no subscription found"
+A7#48|PAID_EXPECT_ALL_DEVICES,X_PAYER|"for a Pro plan, it should include sync with iPhone and iPad"
+A34#555|PAY_FOR_DEVICES,LIFETIME_WANT|"A lifetime or yearly purchase with the app across the ecosystem and i&#39;ll be right back"
+A59#11478|PAID_EXPECT_ALL_DEVICES,LIFETIME_BUYER|"Оплатила доступ навсегда, версия для айфон"
+A85#1520|NR|
+P126#70738|PAY_AGAIN_BAD,X_PAYER|"it wants me to pay to have them removed again"
+A4#3275|PAID_EXPECT_ALL_DEVICES,X_PAYER|"I have everything on my phone but on my tablet the account has nothing"
+P2#24189|PAID_EXPECT_ALL_DEVICES,X_PAYER|"Comprei o Premium na esperança de poder usar o app no celular e tablet"
+P4#61638|PAID_EXPECT_ALL_DEVICES|"ni compartir entre tablet y celular"
+A5#1336|NR|
+P19#213|PAID_EXPECT_ALL_DEVICES,X_PAYER|"My subscription also does not sync and work across various gadgets"
+P2#28595|IPAD_QUALITY|"doesn't rotate on the screen"
+P49#2837|PAID_EXPECT_ALL_DEVICES,PAY_AGAIN_BAD,X_PAYER|"from my tablet (same account) the app is not syncing and still asking me to pay (again)"
+A31#8|IPAD_QUALITY|"that makes the screen tiny on my iPad"
+P38#2047|IPAD_QUALITY|"No hay un modo de rotación para tablets horizontal"
+A76#2555|PAY_FOR_DEVICES,X_PAYER|"Looking forward to iPad version. Happy to have paid the extra to unlock."
+A4#9578|IPAD_QUALITY|"no hay para iPads mejoren eso"
+A4#13796|NR|
+A23#580|PAY_FOR_DEVICES,X_PAYER|"I paid for this app because it was available on all platforms"
+A52#14126|WATCH_WANT,X_PAYER|"希望出watch版 简单的提醒就行了"
+A20#330|WATCH_WANT,LIFETIME_BUYER|"I’d rather have full Apple Watch integration"
+A1#46964|WATCH_PRAISE|"Works with an Apple Watch as well"
+A24#6506|WATCH_QUALITY|"It does same on apple watch too"
+A31#730|WATCH_QUALITY,X_PAYER|"I paid for this app and I’m disappointed"
+A23#6290|WATCH_PRAISE|"Apple Watch support is great"
+A86#1637|WATCH_WANT,X_PAYER|"Cannot wait for more updates and Apple Watch support"
+A10#1363|WATCH_WANT|"Really wish there was an Apple Watch feature!"
+A33#2394|WATCH_QUALITY,X_PAYER|"i paid for premium to be able to use different icons, why is not shown in apple watch?"
+A31#4895|WATCH_PRAISE,LIFETIME_PRAISE|"I absolutely love that it is a one time purchase to upgrade unlike the other apps that make you pay monthly! Love that it connects to my Apple Watch as well."

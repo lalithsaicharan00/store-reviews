@@ -1,0 +1,69 @@
+A41#350|NR|
+A13#11807|WATCH_WANT|"Apple Watch “complication” is needed"
+A20#1855|WATCH_WANT,X_PAYER|"i gone premium 😎 but i have a question will there be a version for apple watch?"
+P92#6|WATCH_PRAISE|"on the plus side it has a version for the galaxy watch"
+P20#1987|WATCH_WANT,X_PAYER|"유료구매해서 사용하고있습니다. 너무 좋은데 워치랑 연동되면 더 좋을 것 같아요"
+A24#18467|WATCH_QUALITY|"Applicazione per Apple Watch non funziona"
+A41#42|WATCH_PRAISE,X_PAYER|"I especially love the watch app"
+P4#20182|WATCH_WANT|"If those were implemented, especially the watch app and watch notifications, I'll consider subscribing again"
+A33#1614|WATCH_QUALITY|"Watchアプリで同期されない"
+P122#30729|NR|
+A85#2524|WATCH_WANT|"was devastated when I figured out this app didn’t have accessibility to the Apple Watch"
+A52#7766|WATCH_WANT|"希望他能在Apple Watch上使用打卡"
+A52#14637|WATCH_WANT,X_PAYER|"今天第一次下载，我就买了高级会员"
+A76#422|WATCH_BUY_REASON,WATCH_WANT|"Vim com a intenção de adquirir a conta premium, mas percebi que não tem para o Apple Watch"
+A48#2207|WATCH_PAID_OK,X_PAYER|"I have the paid version which lets me keep a recurring to-do list on my Apple Watch"
+A76#2108|WATCH_WANT|"A quand une interface sur l’apple watch?"
+P20#2120|WATCH_WANT,X_PAYER|"갤럭시워치와 함께 사용할수 있었으면 좋겠어요"
+A13#6829|WATCH_PRAISE|"love Apple Watch integration"
+A13#17954|WATCH_PRAISE,WATCH_BUY_REASON|"More than anything the sync between phone and Apple Watch is perfect"
+A1#53067|LIFETIME_BUYER|"I purchased a lifetime subscription in order to  help cover expenses"
+P84#7641|LIFETIME_BUYER|"It's unheard of for me to buy a lifetime license on day 1"
+P122#6172|LIFETIME_BUYER|"I bought the lifetime membership. 100% worth it"
+A59#10022|LIFETIME_BUYER|"в итоге купила премиум навсегда по скидке"
+P124#435|LIFETIME_WANT|"買い切りが出来ると尚いい"
+A24#7292|NR|
+A31#1428|LIFETIME_WANT|"Not sure what i would be paying for in a subscription as everything is stored locally"
+A1#46513|CAP5_ACCEPTED,LIFETIME_PRAISE|"I have made about 5 habits, I was disappointed that I had to pay if I wanted to make more. But, then I saw the price."
+A1#48630|LIFETIME_PRAISE|"This app is affordable (a few dollar for lifetime subscription)"
+P49#1983|LIFETIME_BUYER|"I purchased the lifetime access"
+P2#4661|LIFETIME_PRAISE|"It has an affordable lifetime purchase option"
+A1#54126|LIFETIME_PRAISE|"WELL worth the $6"
+P12#59107|NR|
+A1#272|LIFETIME_PRAISE|"I’m glad I got in early for the lifetime membership because subscriptions suck"
+P35#76|NR|
+P3#19276|LIFETIME_WANT|"買い切り版なら金払うから出してほしいわ"
+P122#9971|LIFETIME_PRAISE|"lifetime membership deal is good value too"
+P69#329|LIFETIME_BUYER,SUPPORT_DEV|"I bought the lifetime version to support you"
+A10#35007|LIFETIME_WANT|"you really should add a lifetime plan. I am positive a lot would buy it!"
+P84#14869|LIFETIME_WANT|"Half the price and I would consider buying the lifetime licence"
+P122#30093|LIFETIME_BUYER|"I bought the lifetime subscription and I'm pretty happy with it"
+P2#4160|LIFETIME_PRAISE|"The premium membership is so affordable, and it is a lifetime subscription"
+A41#603|NR|
+A1#1901|CAP5_ACCEPTED|"It only allows five habits unless you pay for premium"
+P30#4015|LIFETIME_PRAISE|"a low cost, one off payment for lifetime access ensures you get the best out of the app"
+P122#17317|LIFETIME_BUYER|"I purchased the lifetime subscription, and it was certainly worth the extra features"
+A1#45215|NR|
+A1#50386|NR|
+P105#462|LIFETIME_PRAISE|"it's really cheap and you only pay once"
+A59#9918|LIFETIME_BUYER|"Оплатила приложение навсегда"
+P122#8797|NR|
+P7#460|LIFETIME_WANT|"I would gladly pay a reasonable one time fee to unlock everything"
+P12#27779|LIFETIME_BUYER|"Got the lifetime subscription"
+P49#1017|WATCH_WANT,LIFETIME_BUYER|"I don't use it because it doesn't work with my wear os watch"
+P122#3028|WATCH_WANT|"It would be the best and most perfect app if I can track my sets, rest, and reps on my watch"
+A59#5408|NR|
+A26#1403|LIFETIME_PRAISE|"買い切りもあるしそれなりに安いし"
+A25#1062|LIFETIME_BUYER|"I bought the lifetime license since I believe it’s worth it"
+A25#1165|LIFETIME_BUYER|"I just discovered this one and bought the lifetime subscription"
+A33#302|NR|
+A76#563|LIFETIME_PRAISE,PAID_EXPECT_ALL_DEVICES|"It&#39;s great that there is a lifetime subscription - absolutely a no-brainer!"
+P84#9953|LIFETIME_PRAISE|"And the option for lifetime subscription? Amazing."
+P2#9812|LIFETIME_PRAISE|"the paid version is excellent and cheap one time buy"
+P84#12665|NR|
+P122#11384|LIFETIME_PRAISE|"its cheaper for a lifetime subscription"
+A59#10451|NR|
+P12#17234|NR|
+P20#1657|NR|
+P20#535|LIFETIME_BUYER|"マイルーティン買い切りで使用しており"
+P122#32040|LIFETIME_BUYER|"Bought lifetime access after just a week"

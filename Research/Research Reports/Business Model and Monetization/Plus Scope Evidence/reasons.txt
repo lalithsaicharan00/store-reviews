@@ -1,0 +1,13 @@
+reviews saying they paid (strict pattern): 14034
+reason words co-occurring in those reviews (a review can count in several):
+  LIFETIME            2213   15.8%
+  SYNC_DEVICES         604    4.3%
+  WIDGETS              496    3.5%
+  THEMES               454    3.2%
+  SUPPORT_DEV          343    2.4%
+  STATS                308    2.2%
+  UNLIMITED_HABITS     249    1.8%
+  WATCH                237    1.7%
+  BACKUP               131    0.9%
+
+candidate modes: PAYER_LIFETIME_POS 1169, WATCH_PAYWALL 304, IPAD_PAYWALL 440

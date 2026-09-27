@@ -1,0 +1,3742 @@
+[
+{
+"key": "P24#11808",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "As a premium member, I'm disappointed that there's no autosync feature",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "d34de10a-f0ee-40b0-952e-3d18621db514",
+"rating": 2,
+"date": "2016-11-12",
+"loc": "en"
+},
+{
+"key": "P44#18",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"LIFETIME_BUYER"
+],
+"quote": "I thought on purchase of lifetime version on my ipad I will get access from my android tab or phone too",
+"store": "P",
+"app": "44. Habit Tracker - TickOff",
+"review_id": "5e17bd8e-f4ae-4bfc-a935-1b5b975cbcf5",
+"rating": 3,
+"date": "2026-08-26",
+"loc": "en"
+},
+{
+"key": "P2#415",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "muss ich dort das Premium noch mal kaufen und alles neu einrichten",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "98061f19-f572-4ea8-abce-f3f8882487a2",
+"rating": 4,
+"date": "2024-11-05",
+"loc": "de"
+},
+{
+"key": "A52#11868",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "我在安卓手机客户端上买了会员，买了平板之后想继续用小日常结果发现登录不了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "6633228957",
+"rating": 4,
+"date": "2020-11-11",
+"loc": "cn"
+},
+{
+"key": "A24#42521",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "3222151872",
+"rating": 3,
+"date": "2018-09-23",
+"loc": "us"
+},
+{
+"key": "A13#10825",
+"codes": [
+"PAY_FOR_DEVICES",
+"X_PAYER"
+],
+"quote": "I have been using your app premium gladly for a long time, using on ipad and iphone",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5956891909",
+"rating": 5,
+"date": "2020-05-17",
+"loc": "tr"
+},
+{
+"key": "A13#9433",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6740181659",
+"rating": 3,
+"date": "2020-12-11",
+"loc": "ph"
+},
+{
+"key": "A52#6707",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "iPad上买过了，为什么手机上下载没有会员呢",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "9592085201",
+"rating": 1,
+"date": "2023-02-07",
+"loc": "cn"
+},
+{
+"key": "A4#8418",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "12880265049",
+"rating": 1,
+"date": "2025-07-11",
+"loc": "mx"
+},
+{
+"key": "A52#6373",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"LIFETIME_BUYER"
+],
+"quote": "平板上的app计划，不能同步更新到手机上的app",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "9949752520",
+"rating": 5,
+"date": "2023-05-21",
+"loc": "cn"
+},
+{
+"key": "A59#14326",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"LIFETIME_BUYER"
+],
+"quote": "I was hoping to get access to it for all devices like phone, iPad and laptop",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "8059217653",
+"rating": 2,
+"date": "2021-11-24",
+"loc": "ua"
+},
+{
+"key": "A1#7973",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES"
+],
+"quote": "ipad和手机下了 咋会员没同步啊",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "8893622341",
+"rating": 5,
+"date": "2022-07-20",
+"loc": "cn"
+},
+{
+"key": "P129#58",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "I can't access my premium purchase in my tablet",
+"store": "P",
+"app": "129. TrackIt - Goal & Time Tracker",
+"review_id": "64ac4a78-bd47-428e-8676-b207fbc596e6",
+"rating": 1,
+"date": "2026-07-19",
+"loc": "en"
+},
+{
+"key": "P12#2880",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES"
+],
+"quote": "So macht eine Premiummitgliedschaft keinen Sinn",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "b0415b6a-de3c-4f5f-9b42-9373c7b49f48",
+"rating": 3,
+"date": "2022-11-17",
+"loc": "de"
+},
+{
+"key": "A13#5982",
+"codes": [
+"IPAD_QUALITY",
+"X_PAYER"
+],
+"quote": "I cannot multitask it on my iPad",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5947353714",
+"rating": 4,
+"date": "2020-05-15",
+"loc": "gb"
+},
+{
+"key": "A52#16462",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "Ipad里购买了高级会员，同一苹果id的手机却无法恢复购买",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "2519133766",
+"rating": 4,
+"date": "2018-05-08",
+"loc": "cn"
+},
+{
+"key": "A24#10347",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10199958171",
+"rating": 2,
+"date": "2023-07-30",
+"loc": "de"
+},
+{
+"key": "P84#8662",
+"codes": [
+"PAY_FOR_DEVICES",
+"X_PAYER"
+],
+"quote": "I'm sold on the premium feature that enables me to view my tasks from a computer / tablet",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "476654cc-8e8a-414d-949b-dcd5408816f3",
+"rating": 5,
+"date": "2025-07-17",
+"loc": "en"
+},
+{
+"key": "A13#291",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES"
+],
+"quote": "i’m annoyed that this app does not sync between my devices",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6234118226",
+"rating": 1,
+"date": "2020-07-24",
+"loc": "au"
+},
+{
+"key": "A5#2329",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "13157287254",
+"rating": 1,
+"date": "2025-09-19",
+"loc": "us"
+},
+{
+"key": "A48#4232",
+"codes": [
+"PAY_FOR_DEVICES"
+],
+"quote": "Once they have an ipad app plus sync it will really be nice",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1024490133",
+"rating": 4,
+"date": "2014-07-08",
+"loc": "us"
+},
+{
+"key": "A20#1413",
+"codes": [
+"PAY_FOR_DEVICES"
+],
+"quote": "Wish I could access this across device! Wanna pay for it!",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6039273409",
+"rating": 5,
+"date": "2020-06-05",
+"loc": "hk"
+},
+{
+"key": "P124#1133",
+"codes": [
+"PAY_FOR_DEVICES"
+],
+"quote": "특히 아이패드, 윈도우, 안드로이드 다 연동되길 바랍니다",
+"store": "P",
+"app": "124. Habit Streak Tracker - DotHabit",
+"review_id": "3819cab6-6c9c-4d58-be2f-67360ddec616",
+"rating": 5,
+"date": "2020-04-02",
+"loc": "ko"
+},
+{
+"key": "A1#44185",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9541317673",
+"rating": 3,
+"date": "2023-01-24",
+"loc": "de"
+},
+{
+"key": "A1#5641",
+"codes": [
+"PAY_AGAIN_BAD"
+],
+"quote": "iPad下载还要重新买会员 为什么没有账户登录数据不能共享",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9046720226",
+"rating": 4,
+"date": "2022-09-03",
+"loc": "cn"
+},
+{
+"key": "A20#884",
+"codes": [
+"IPAD_QUALITY"
+],
+"quote": "Format leider nicht auf für iPad optimiert",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6444668296",
+"rating": 2,
+"date": "2020-09-19",
+"loc": "de"
+},
+{
+"key": "A1#54696",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"LIFETIME_BUYER"
+],
+"quote": "nowadays I truly appreciate a lifetime option",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9336120630",
+"rating": 4,
+"date": "2022-11-27",
+"loc": "us"
+},
+{
+"key": "A23#2419",
+"codes": [
+"ALL_DEVICES_PRAISE",
+"LIFETIME_PRAISE"
+],
+"quote": "I use it on all my devices: Mac, iPad, and iPhone. I can't believe it doesn't require a subscription!",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "11544584645",
+"rating": 5,
+"date": "2024-07-28",
+"loc": "ge"
+},
+{
+"key": "P129#551",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "129. TrackIt - Goal & Time Tracker",
+"review_id": "5de80d83-71e6-4531-a382-3763aa0a314e",
+"rating": 3,
+"date": "2025-01-12",
+"loc": "en"
+},
+{
+"key": "A31#909",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "3782004584",
+"rating": 3,
+"date": "2019-02-17",
+"loc": "cz"
+},
+{
+"key": "A13#12686",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "I have an iPad and an iPhone with the app signed in under my Apple account, with a subscribed premium option",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6134787448",
+"rating": 5,
+"date": "2020-06-29",
+"loc": "us"
+},
+{
+"key": "A5#1773",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "9942204853",
+"rating": 2,
+"date": "2023-05-19",
+"loc": "mx"
+},
+{
+"key": "A1#51695",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12234376280",
+"rating": 3,
+"date": "2025-01-26",
+"loc": "us"
+},
+{
+"key": "P19#635",
+"codes": [
+"PAY_FOR_DEVICES"
+],
+"quote": "hasta consideré pagar la versión pro, sin embargo, al descargarla en mi tablet",
+"store": "P",
+"app": "19. TheFor - Habit Tracker",
+"review_id": "301e8314-43de-48ff-b547-6a6e357fd949",
+"rating": 4,
+"date": "2025-01-09",
+"loc": "es"
+},
+{
+"key": "P2#8462",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "I paid for the premium app on my tablet, but my phone has the app separately",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "03b6be07-8d34-4e65-b3f8-701a0b0b23ba",
+"rating": 3,
+"date": "2023-01-15",
+"loc": "en"
+},
+{
+"key": "A74#143",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "I upgraded to premium on my tablet but the information is not transferring to my phone",
+"store": "A",
+"app": "74. Habit Check Calendar - Track habits with a calendar!",
+"review_id": "10989685029",
+"rating": 3,
+"date": "2024-02-28",
+"loc": "us"
+},
+{
+"key": "P44#305",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "I paid for Premium, but it does not sync between my Samsung phone and my Samsung tablet",
+"store": "P",
+"app": "44. Habit Tracker - TickOff",
+"review_id": "755a6ed0-ed10-4f7f-b236-303cf874aef1",
+"rating": 1,
+"date": "2025-07-02",
+"loc": "en"
+},
+{
+"key": "A59#1012",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "6367498731",
+"rating": 4,
+"date": "2020-08-27",
+"loc": "ca"
+},
+{
+"key": "P5#5173",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "태블릿도 연결하기 위해서 이메일을 연결하려고 했지만",
+"store": "P",
+"app": "5. Routine Planner, Habit Tracker",
+"review_id": "894833d6-5115-4717-8300-1baf52d3b070",
+"rating": 4,
+"date": "2021-11-24",
+"loc": "ko"
+},
+{
+"key": "P84#12103",
+"codes": [
+"PAY_FOR_BACKUP",
+"X_PAYER"
+],
+"quote": "I upgraded to premium app for the back up capabilities well worth it to me",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "f8a37906-5d61-48e1-a73b-038dcbc5a52e",
+"rating": 5,
+"date": "2023-12-13",
+"loc": "en"
+},
+{
+"key": "P4#99045",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES"
+],
+"quote": "Ja que é pago poderia deixar eu acessar mijha conta tanto no tablet quanto no celular",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "a74dbe46-b458-4fd8-8f72-cde31056f035",
+"rating": 4,
+"date": "2023-09-03",
+"loc": "pt"
+},
+{
+"key": "A52#4916",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "但是平板不是会员",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "11480814084",
+"rating": 3,
+"date": "2024-07-11",
+"loc": "cn"
+},
+{
+"key": "A52#4212",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"LIFETIME_BUYER"
+],
+"quote": "Ipad上买了永久会员，为什么手机用不了啊",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "11937479074",
+"rating": 5,
+"date": "2024-11-11",
+"loc": "cn"
+},
+{
+"key": "A48#2055",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "11165592973",
+"rating": 3,
+"date": "2024-04-16",
+"loc": "us"
+},
+{
+"key": "A76#3131",
+"codes": [
+"PAY_AGAIN_BAD",
+"X_PAYER"
+],
+"quote": "아이패드용도 만들어 주셨음 좋겠구요(추가로 돈 안받았음 좋겠구요^^)",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "1907277530",
+"rating": 4,
+"date": "2017-11-09",
+"loc": "kr"
+},
+{
+"key": "A31#1857",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8193092532",
+"rating": 1,
+"date": "2022-01-01",
+"loc": "it"
+},
+{
+"key": "P4#96816",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "Assinei o Premium no celular e não consigo usar no meu Tablet",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "bc46da10-7ddf-43ff-8cdf-b78f459290db",
+"rating": 1,
+"date": "2024-01-18",
+"loc": "pt"
+},
+{
+"key": "A36#150",
+"codes": [
+"LIFETIME_WANT"
+],
+"quote": "if the developer could introduce one time purchase option that would be awesome",
+"store": "A",
+"app": "36. (Not Boring) Habits - Science-backed habit tracker",
+"review_id": "11803536707",
+"rating": 4,
+"date": "2024-10-06",
+"loc": "gb"
+},
+{
+"key": "A52#12497",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"LIFETIME_BUYER"
+],
+"quote": "永久高级会员身份可以同步。但是！！！我的数据一直同步不了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "6477472036",
+"rating": 4,
+"date": "2020-09-28",
+"loc": "cn"
+},
+{
+"key": "A1#55437",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "8227256303",
+"rating": 4,
+"date": "2022-01-11",
+"loc": "us"
+},
+{
+"key": "A52#14704",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "4061773636",
+"rating": 3,
+"date": "2019-04-26",
+"loc": "cn"
+},
+{
+"key": "A47#136",
+"codes": [
+"PAY_FOR_DEVICES"
+],
+"quote": "iPadとの同期を求めます。そしたら課金します。",
+"store": "A",
+"app": "47. Habit Streak Tracker - DotHabit - Daily Routine, Goals & Planner",
+"review_id": "13780402439",
+"rating": 5,
+"date": "2026-02-23",
+"loc": "jp"
+},
+{
+"key": "A59#11497",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "6374953271",
+"rating": 1,
+"date": "2020-08-29",
+"loc": "ru"
+},
+{
+"key": "A18#1718",
+"codes": [
+"PAY_FOR_DEVICES"
+],
+"quote": "아이패드 가로형만 지원되면 유료 구매도 하고 싶네요",
+"store": "A",
+"app": "18. MyRoutine - Organize your day - Built around your real life",
+"review_id": "8107694384",
+"rating": 5,
+"date": "2021-12-08",
+"loc": "kr"
+},
+{
+"key": "A1#17269",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "手机购买了会员，iPad怎么登陆呢",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "8401328910",
+"rating": 3,
+"date": "2022-02-27",
+"loc": "cn"
+},
+{
+"key": "P84#37587",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "791975a6-2ca4-459e-821d-649f2a25d937",
+"rating": 5,
+"date": "2019-03-19",
+"loc": "es"
+},
+{
+"key": "A1#46083",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "Pointless upgrading to premium really as the synching is really poor",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "7191005808",
+"rating": 3,
+"date": "2021-04-06",
+"loc": "gb"
+},
+{
+"key": "A23#4090",
+"codes": [
+"ALL_DEVICES_PRAISE",
+"LIFETIME_PRAISE"
+],
+"quote": "i also love that there&#39;s no subscription",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "14469956788",
+"rating": 5,
+"date": "2026-08-25",
+"loc": "us"
+},
+{
+"key": "A31#3719",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "I got the annual subscription on my iPad but it won’t let me add more habits on my phone",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8434358679",
+"rating": 2,
+"date": "2022-03-08",
+"loc": "us"
+},
+{
+"key": "A76#7704",
+"codes": [
+"IPAD_QUALITY"
+],
+"quote": "Looks pixelated on iPad",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "439329837",
+"rating": 3,
+"date": "2011-06-23",
+"loc": "us"
+},
+{
+"key": "P2#12182",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES"
+],
+"quote": "Especially after paying for premium",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "45e102ba-335c-4096-8163-4aa997671e3e",
+"rating": 4,
+"date": "2020-12-06",
+"loc": "en"
+},
+{
+"key": "A24#32636",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "I signed up for premium on my iPad and I tried to access the app on my phone, there was no way to link the premium access",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8244061667",
+"rating": 2,
+"date": "2022-01-15",
+"loc": "us"
+},
+{
+"key": "A18#1457",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "18. MyRoutine - Organize your day - Built around your real life",
+"review_id": "9513306665",
+"rating": 1,
+"date": "2023-01-16",
+"loc": "kr"
+},
+{
+"key": "A86#1175",
+"codes": [
+"IPAD_QUALITY",
+"X_PAYER"
+],
+"quote": "figure out how to make this app run on iPad Pro",
+"store": "A",
+"app": "86. Today Habit tracker - For to-dos, routines & goals",
+"review_id": "13865667618",
+"rating": 5,
+"date": "2026-03-19",
+"loc": "us"
+},
+{
+"key": "A24#32989",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "I put it on my iPad and wanted to open it on my iPhone today",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8200409266",
+"rating": 1,
+"date": "2022-01-03",
+"loc": "us"
+},
+{
+"key": "A23#1985",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "11818664634",
+"rating": 4,
+"date": "2024-10-10",
+"loc": "gb"
+},
+{
+"key": "A7#226",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "I only realised afterwards that there is no iCloud sync with the iPad",
+"store": "A",
+"app": "7. Habit Tracker - HabitKit - Streaks & Accountability",
+"review_id": "11818567731",
+"rating": 4,
+"date": "2024-10-10",
+"loc": "de"
+},
+{
+"key": "A48#1141",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1133252104",
+"rating": 2,
+"date": "2015-01-20",
+"loc": "gb"
+},
+{
+"key": "A24#15666",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8074608482",
+"rating": 1,
+"date": "2021-11-29",
+"loc": "gb"
+},
+{
+"key": "A24#27585",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES"
+],
+"quote": "It is buggy when trying to sign into phone if you started on iPad",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "11584252860",
+"rating": 3,
+"date": "2024-08-07",
+"loc": "us"
+},
+{
+"key": "A20#3674",
+"codes": [
+"IPAD_QUALITY"
+],
+"quote": "Please add iPad Pro full screen support",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "5083577645",
+"rating": 4,
+"date": "2019-11-04",
+"loc": "us"
+},
+{
+"key": "A20#757",
+"codes": [
+"PAY_FOR_DEVICES"
+],
+"quote": "I would like to get an optimized version on my iPad, though.  That way I’d pay for the Upgrade.",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6451182919",
+"rating": 5,
+"date": "2020-09-21",
+"loc": "co"
+},
+{
+"key": "A13#10",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"PAY_AGAIN_BAD",
+"X_PAYER"
+],
+"quote": "I registered from my Ipad and now it ask me to start over again with another subscription",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "9916270772",
+"rating": 2,
+"date": "2023-05-11",
+"loc": "ae"
+},
+{
+"key": "A12#318",
+"codes": [
+"PAY_FOR_DEVICES",
+"IPAD_QUALITY"
+],
+"quote": "Please make an iPad version so I can buy the lifetime subscription!",
+"store": "A",
+"app": "12. That Girl - Routine Planner - Cute Daily Calendar Schedule",
+"review_id": "11678330257",
+"rating": 2,
+"date": "2024-09-01",
+"loc": "us"
+},
+{
+"key": "A24#3091",
+"codes": [
+"IPAD_QUALITY",
+"X_PAYER"
+],
+"quote": "I paid the full price and the app doesn&#39;t work properly on iPad",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "10429770268",
+"rating": 1,
+"date": "2023-10-02",
+"loc": "br"
+},
+{
+"key": "A85#2626",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "3494858662",
+"rating": 1,
+"date": "2018-12-05",
+"loc": "us"
+},
+{
+"key": "A10#32510",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12690661641",
+"rating": 5,
+"date": "2025-05-24",
+"loc": "us"
+},
+{
+"key": "A13#11669",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "Even though I am a subscriber, my iPad app functions totally independently from my iPhone app",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "9434075209",
+"rating": 4,
+"date": "2022-12-25",
+"loc": "us"
+},
+{
+"key": "A4#1879",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "Eu adquiri justamente para utilizar pelo tablet porém efetuei a aquisição pelo telefone",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "11388584104",
+"rating": 1,
+"date": "2024-06-16",
+"loc": "br"
+},
+{
+"key": "A24#2215",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "j’aimerai le transférer vers ma tablette Samsung",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "12116890487",
+"rating": 4,
+"date": "2024-12-28",
+"loc": "be"
+},
+{
+"key": "A10#28291",
+"codes": [
+"IPAD_KIDS"
+],
+"quote": "iPads on kid mode can&#39;t do in app purchases",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13372023035",
+"rating": 4,
+"date": "2025-11-08",
+"loc": "us"
+},
+{
+"key": "A48#1907",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "13576643207",
+"rating": 1,
+"date": "2025-12-31",
+"loc": "us"
+},
+{
+"key": "A55#1003",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "Sync doesn’t work I have a premium account",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "4658666246",
+"rating": 1,
+"date": "2019-08-23",
+"loc": "ru"
+},
+{
+"key": "A76#5679",
+"codes": [
+"PAY_AGAIN_BAD"
+],
+"quote": "I like this App but hate the idea of buying it twice",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "1508130404",
+"rating": 3,
+"date": "2016-12-24",
+"loc": "us"
+},
+{
+"key": "A59#13332",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "4841389420",
+"rating": 3,
+"date": "2019-09-26",
+"loc": "ru"
+},
+{
+"key": "A7#340",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "I probably wouldn’t have subscribed if I had noticed this sooner",
+"store": "A",
+"app": "7. Habit Tracker - HabitKit - Streaks & Accountability",
+"review_id": "13473841112",
+"rating": 3,
+"date": "2025-12-04",
+"loc": "gb"
+},
+{
+"key": "A13#2766",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "9067017189",
+"rating": 4,
+"date": "2022-09-09",
+"loc": "ch"
+},
+{
+"key": "A48#715",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "I decided to pay for Strides Plus in the beginning of February. But now I cannot sync between iPhone and iPad",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "7053752127",
+"rating": 2,
+"date": "2021-03-01",
+"loc": "de"
+},
+{
+"key": "P84#11370",
+"codes": [
+"PAY_FOR_DEVICES"
+],
+"quote": "The premium version has a web mirror so you can you use the app on your laptop or tablet or both",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "759ffbae-278b-49a0-86a1-741b0d684944",
+"rating": 5,
+"date": "2024-03-29",
+"loc": "en"
+},
+{
+"key": "A76#4176",
+"codes": [
+"IPAD_QUALITY"
+],
+"quote": "Нет версии для iPad",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "1144085734",
+"rating": 3,
+"date": "2015-02-09",
+"loc": "ru"
+},
+{
+"key": "A20#3504",
+"codes": [
+"PAY_FOR_DEVICES"
+],
+"quote": "With premium, does Habit sync my data if the app is installed on iPhone and iPad",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6828221687",
+"rating": 4,
+"date": "2021-01-04",
+"loc": "us"
+},
+{
+"key": "A10#46266",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "10816091396",
+"rating": 5,
+"date": "2024-01-13",
+"loc": "us"
+},
+{
+"key": "A2#195",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "2. Daily Habits - Habit Tracker - Habit List and Routine Tracker",
+"review_id": "1693292648",
+"rating": 5,
+"date": "2017-07-22",
+"loc": "gb"
+},
+{
+"key": "P24#20969",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "Heb de Premium gekozen om op iPad en Android mobiel mijn habits bij te kunnen houden",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "fb4838b3-2482-4daa-991d-fb70009a97ab",
+"rating": 1,
+"date": "2018-08-28",
+"loc": "nl"
+},
+{
+"key": "A18#1167",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "18. MyRoutine - Organize your day - Built around your real life",
+"review_id": "10864490435",
+"rating": 4,
+"date": "2024-01-26",
+"loc": "kr"
+},
+{
+"key": "P70#154",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "70. everyday Habit Tracker",
+"review_id": "b95e1291-bf92-45e0-b254-0f92d2956bf0",
+"rating": 4,
+"date": "2025-03-25",
+"loc": "en"
+},
+{
+"key": "P4#74208",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES"
+],
+"quote": "il faut choisir entre téléphone ou tablette pour pouvoir en profiter",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "7692a33d-6504-46e2-99fe-4624b13b738a",
+"rating": 2,
+"date": "2023-09-13",
+"loc": "fr"
+},
+{
+"key": "P12#13470",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "36f4c584-a70b-4cf2-9fa3-9f518799c785",
+"rating": 2,
+"date": "2024-10-18",
+"loc": "en"
+},
+{
+"key": "A4#12721",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "12171951882",
+"rating": 5,
+"date": "2025-01-11",
+"loc": "us"
+},
+{
+"key": "P5#5107",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "추가로 설정했던 루틴이 다 사라졌습니다",
+"store": "P",
+"app": "5. Routine Planner, Habit Tracker",
+"review_id": "2b839dc5-776e-4e53-bd7a-14d04c21950e",
+"rating": 5,
+"date": "2022-03-18",
+"loc": "ko"
+},
+{
+"key": "P129#601",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "129. TrackIt - Goal & Time Tracker",
+"review_id": "06a04063-a345-4c20-9987-3e64739c7c88",
+"rating": 1,
+"date": "2024-11-30",
+"loc": "en"
+},
+{
+"key": "P19#1033",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"PAY_AGAIN_BAD"
+],
+"quote": "instead of sync it offered me to buy subscription once again",
+"store": "P",
+"app": "19. TheFor - Habit Tracker",
+"review_id": "b817a277-6943-457f-8adf-c0e4875c4748",
+"rating": 3,
+"date": "2024-03-01",
+"loc": "ru"
+},
+{
+"key": "A10#30072",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13036642562",
+"rating": 5,
+"date": "2025-08-19",
+"loc": "us"
+},
+{
+"key": "P84#1711",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "Also genau das, wofür ich damals Premium gekauft habe",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "bf6af536-9f4e-4a01-b9ed-01f42def93cb",
+"rating": 1,
+"date": "2024-04-24",
+"loc": "de"
+},
+{
+"key": "P33#887",
+"codes": [
+"PAY_AGAIN_BAD"
+],
+"quote": "I am not paying for two separate subscriptions",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "89b48360-b507-49dc-8513-860e06252a50",
+"rating": 3,
+"date": "2022-11-26",
+"loc": "en"
+},
+{
+"key": "P2#13839",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "pague el premium y no sé cómo se hace para instalar en mi tablet",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "c555ad13-ea15-4e46-b11e-0c1a82036e2a",
+"rating": 5,
+"date": "2025-09-18",
+"loc": "es"
+},
+{
+"key": "P49#1900",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES"
+],
+"quote": "I purchased the free trial of the app on my iPad and want to transfer it to my Samsung phone but I can't",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "ef4240a3-0fcc-4e0b-bf8b-62463be60f0d",
+"rating": 4,
+"date": "2023-12-04",
+"loc": "en"
+},
+{
+"key": "P84#44331",
+"codes": [
+"PAY_FOR_DEVICES"
+],
+"quote": "Deze maand gaan we de premium versie proberen zodat hij ook op de tablet gebruikt kan worden",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "abb5fc25-247b-4145-bb95-5e641a051fba",
+"rating": 5,
+"date": "2025-02-13",
+"loc": "nl"
+},
+{
+"key": "P15#381",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"PAY_AGAIN_BAD",
+"X_PAYER"
+],
+"quote": "The app wants me to pay again",
+"store": "P",
+"app": "15. Habit Tracker - HabitGenius",
+"review_id": "f8873781-55ea-4d25-a3ee-8581745c3fb1",
+"rating": 2,
+"date": "2025-12-14",
+"loc": "en"
+},
+{
+"key": "A36#206",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "this won&#39;t sync between my iPhone and iPad",
+"store": "A",
+"app": "36. (Not Boring) Habits - Science-backed habit tracker",
+"review_id": "12155806021",
+"rating": 1,
+"date": "2025-01-07",
+"loc": "in"
+},
+{
+"key": "A36#196",
+"codes": [
+"CAP_BAD",
+"PAID_EXPECT_ALL_DEVICES"
+],
+"quote": "You have removed the option to add more habits without paying",
+"store": "A",
+"app": "36. (Not Boring) Habits - Science-backed habit tracker",
+"review_id": "13624027434",
+"rating": 1,
+"date": "2026-01-12",
+"loc": "in"
+},
+{
+"key": "P129#437",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"LIFETIME_BUYER"
+],
+"quote": "it says no subscription found",
+"store": "P",
+"app": "129. TrackIt - Goal & Time Tracker",
+"review_id": "f9458212-86f3-454a-82fd-da1a80b9eacf",
+"rating": 1,
+"date": "2025-03-27",
+"loc": "en"
+},
+{
+"key": "A7#48",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "for a Pro plan, it should include sync with iPhone and iPad",
+"store": "A",
+"app": "7. Habit Tracker - HabitKit - Streaks & Accountability",
+"review_id": "13833569208",
+"rating": 2,
+"date": "2026-03-10",
+"loc": "br"
+},
+{
+"key": "A34#555",
+"codes": [
+"PAY_FOR_DEVICES",
+"LIFETIME_WANT"
+],
+"quote": "A lifetime or yearly purchase with the app across the ecosystem and i&#39;ll be right back",
+"store": "A",
+"app": "34. Habit Tracker - Evoday - Daily Streaks Calendar & Goals",
+"review_id": "11077980453",
+"rating": 4,
+"date": "2024-03-23",
+"loc": "us"
+},
+{
+"key": "A59#11478",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"LIFETIME_BUYER"
+],
+"quote": "Оплатила доступ навсегда, версия для айфон",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "6385107133",
+"rating": 1,
+"date": "2020-09-01",
+"loc": "ru"
+},
+{
+"key": "A85#1520",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "1622846131",
+"rating": 5,
+"date": "2017-05-24",
+"loc": "ph"
+},
+{
+"key": "P126#70738",
+"codes": [
+"PAY_AGAIN_BAD",
+"X_PAYER"
+],
+"quote": "it wants me to pay to have them removed again",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "b1ed0ae8-bd40-4fd9-9878-1a24b27e7c07",
+"rating": 4,
+"date": "2019-06-05",
+"loc": "en"
+},
+{
+"key": "A4#3275",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "I have everything on my phone but on my tablet the account has nothing",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10839937346",
+"rating": 4,
+"date": "2024-01-19",
+"loc": "ch"
+},
+{
+"key": "P2#24189",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "Comprei o Premium na esperança de poder usar o app no celular e tablet",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "d2e52ca4-a394-41c0-a3b8-98911917b243",
+"rating": 4,
+"date": "2024-11-08",
+"loc": "pt"
+},
+{
+"key": "P4#61638",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES"
+],
+"quote": "ni compartir entre tablet y celular",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "332f5273-cb47-48c1-8242-d8771fe29e8d",
+"rating": 1,
+"date": "2024-04-16",
+"loc": "es"
+},
+{
+"key": "A5#1336",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "10332054796",
+"rating": 3,
+"date": "2023-09-04",
+"loc": "kr"
+},
+{
+"key": "P19#213",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "My subscription also does not sync and work across various gadgets",
+"store": "P",
+"app": "19. TheFor - Habit Tracker",
+"review_id": "ade159ad-e8e7-49ed-98ed-9e2099654dd5",
+"rating": 3,
+"date": "2024-09-08",
+"loc": "en"
+},
+{
+"key": "P2#28595",
+"codes": [
+"IPAD_QUALITY"
+],
+"quote": "doesn't rotate on the screen",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "b4408373-92ed-4286-b62a-352ef155402d",
+"rating": 2,
+"date": "2020-02-04",
+"loc": "sk"
+},
+{
+"key": "P49#2837",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"PAY_AGAIN_BAD",
+"X_PAYER"
+],
+"quote": "from my tablet (same account) the app is not syncing and still asking me to pay (again)",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "2192a853-6bfe-4fe2-b993-a593e5e04b0f",
+"rating": 5,
+"date": "2023-06-21",
+"loc": "en"
+},
+{
+"key": "A31#8",
+"codes": [
+"IPAD_QUALITY"
+],
+"quote": "that makes the screen tiny on my iPad",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "5935719687",
+"rating": 5,
+"date": "2020-05-12",
+"loc": "ae"
+},
+{
+"key": "P38#2047",
+"codes": [
+"IPAD_QUALITY"
+],
+"quote": "No hay un modo de rotación para tablets horizontal",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "e9a9fcd1-9e70-4608-bd13-7b5804f171ea",
+"rating": 4,
+"date": "2024-03-03",
+"loc": "es"
+},
+{
+"key": "A76#2555",
+"codes": [
+"PAY_FOR_DEVICES",
+"X_PAYER"
+],
+"quote": "Looking forward to iPad version. Happy to have paid the extra to unlock.",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "641693006",
+"rating": 4,
+"date": "2012-08-15",
+"loc": "gb"
+},
+{
+"key": "A4#9578",
+"codes": [
+"IPAD_QUALITY"
+],
+"quote": "no hay para iPads mejoren eso",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "11202160608",
+"rating": 5,
+"date": "2024-04-26",
+"loc": "pe"
+},
+{
+"key": "A4#13796",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "11633352957",
+"rating": 3,
+"date": "2024-08-20",
+"loc": "us"
+},
+{
+"key": "A23#580",
+"codes": [
+"PAY_FOR_DEVICES",
+"X_PAYER"
+],
+"quote": "I paid for this app because it was available on all platforms",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "9044438629",
+"rating": 3,
+"date": "2022-09-02",
+"loc": "ca"
+},
+{
+"key": "A52#14126",
+"codes": [
+"WATCH_WANT",
+"X_PAYER"
+],
+"quote": "希望出watch版 简单的提醒就行了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "4983059664",
+"rating": 5,
+"date": "2019-10-20",
+"loc": "cn"
+},
+{
+"key": "A20#330",
+"codes": [
+"WATCH_WANT",
+"LIFETIME_BUYER"
+],
+"quote": "I’d rather have full Apple Watch integration",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6963185972",
+"rating": 1,
+"date": "2021-02-07",
+"loc": "ca"
+},
+{
+"key": "A1#46964",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "Works with an Apple Watch as well",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11097519625",
+"rating": 5,
+"date": "2024-03-29",
+"loc": "in"
+},
+{
+"key": "A24#6506",
+"codes": [
+"WATCH_QUALITY"
+],
+"quote": "It does same on apple watch too",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "6969473349",
+"rating": 4,
+"date": "2021-02-08",
+"loc": "ca"
+},
+{
+"key": "A31#730",
+"codes": [
+"WATCH_QUALITY",
+"X_PAYER"
+],
+"quote": "I paid for this app and I’m disappointed",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "4972839566",
+"rating": 1,
+"date": "2019-10-19",
+"loc": "ca"
+},
+{
+"key": "A23#6290",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "Apple Watch support is great",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "1407834248",
+"rating": 5,
+"date": "2016-07-08",
+"loc": "us"
+},
+{
+"key": "A86#1637",
+"codes": [
+"WATCH_WANT",
+"X_PAYER"
+],
+"quote": "Cannot wait for more updates and Apple Watch support",
+"store": "A",
+"app": "86. Today Habit tracker - For to-dos, routines & goals",
+"review_id": "1362607270",
+"rating": 5,
+"date": "2016-04-12",
+"loc": "us"
+},
+{
+"key": "A10#1363",
+"codes": [
+"WATCH_WANT"
+],
+"quote": "Really wish there was an Apple Watch feature!",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "11800094976",
+"rating": 4,
+"date": "2024-10-05",
+"loc": "au"
+},
+{
+"key": "A33#2394",
+"codes": [
+"WATCH_QUALITY",
+"X_PAYER"
+],
+"quote": "i paid for premium to be able to use different icons, why is not shown in apple watch?",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "11976954207",
+"rating": 2,
+"date": "2024-11-22",
+"loc": "mx"
+},
+{
+"key": "A31#4895",
+"codes": [
+"WATCH_PRAISE",
+"LIFETIME_PRAISE"
+],
+"quote": "I absolutely love that it is a one time purchase to upgrade unlike the other apps that make you pay monthly! Love that it connects to my Apple Watch as well.",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "3824960131",
+"rating": 5,
+"date": "2019-02-28",
+"loc": "us"
+},
+{
+"key": "P24#5959",
+"codes": [
+"WATCH_PRAISE",
+"X_PAYER"
+],
+"quote": "I love the reminders sent to my Galaxy watch",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "69c9d593-b7c6-4f73-85dd-832631b241a0",
+"rating": 4,
+"date": "2019-03-28",
+"loc": "en"
+},
+{
+"key": "A53#116",
+"codes": [
+"WATCH_PRAISE",
+"LIFETIME_PRAISE"
+],
+"quote": "Thank you for making it a one time payment and not yearly. Great app and love the apple watch integration!",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "6845067659",
+"rating": 5,
+"date": "2021-01-08",
+"loc": "ca"
+},
+{
+"key": "A23#2478",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "It’s even integrated with your apple watch!",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "6686258653",
+"rating": 5,
+"date": "2020-11-26",
+"loc": "id"
+},
+{
+"key": "A33#3413",
+"codes": [
+"WATCH_QUALITY",
+"X_PAYER"
+],
+"quote": "the app doesn’t work as promised on my Apple Watch",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "7206302157",
+"rating": 1,
+"date": "2021-04-10",
+"loc": "us"
+},
+{
+"key": "A13#8245",
+"codes": [
+"WATCH_BUY_REASON",
+"WATCH_QUALITY"
+],
+"quote": "애플워치도 연동되는 어플이라 습관 만들기에 도움이 되겠다 싶어 결제했어요",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "3468033536",
+"rating": 3,
+"date": "2018-11-28",
+"loc": "kr"
+},
+{
+"key": "A1#47826",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "I also used it with my apple watch",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10270473140",
+"rating": 5,
+"date": "2023-08-18",
+"loc": "kz"
+},
+{
+"key": "A31#1318",
+"codes": [
+"WATCH_QUALITY"
+],
+"quote": "apple watch app doesn’t work",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "9837692269",
+"rating": 3,
+"date": "2023-04-19",
+"loc": "gb"
+},
+{
+"key": "P122#11102",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "676e8a24-d07c-4ddd-9284-b6f8893a9aaf",
+"rating": 5,
+"date": "2025-03-05",
+"loc": "en"
+},
+{
+"key": "A33#1184",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "loved using it on my phone and Apple Watch",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "4125870536",
+"rating": 5,
+"date": "2019-05-09",
+"loc": "gb"
+},
+{
+"key": "A23#386",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "Pluspunten zijn de workouts met apple watch",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "5401917677",
+"rating": 5,
+"date": "2020-01-14",
+"loc": "be"
+},
+{
+"key": "A1#3160",
+"codes": [
+"WATCH_QUALITY",
+"X_PAYER"
+],
+"quote": "手机和手表不同步，手表上计划一个都没有，浪费了会员了",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11630025684",
+"rating": 1,
+"date": "2024-08-20",
+"loc": "cn"
+},
+{
+"key": "A3#518",
+"codes": [
+"PAY_FOR_DEVICES"
+],
+"quote": "if there were I would have paid for a full version",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "6661758382",
+"rating": 4,
+"date": "2020-11-19",
+"loc": "au"
+},
+{
+"key": "A31#1424",
+"codes": [
+"WATCH_QUALITY"
+],
+"quote": "watch app not working",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8504189919",
+"rating": 1,
+"date": "2022-03-28",
+"loc": "gb"
+},
+{
+"key": "P122#323",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "the Samsung Galaxy Watch integration works amazingly well",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "8eb0ab80-46b1-4929-a7d5-19e61783c858",
+"rating": 5,
+"date": "2026-07-31",
+"loc": "da"
+},
+{
+"key": "A24#13757",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "5611035291",
+"rating": 5,
+"date": "2020-03-03",
+"loc": "fr"
+},
+{
+"key": "A13#18266",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "Although it works great",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1379480118",
+"rating": 4,
+"date": "2016-05-16",
+"loc": "us"
+},
+{
+"key": "A5#929",
+"codes": [
+"WATCH_QUALITY",
+"X_PAYER"
+],
+"quote": "Apple Watchの連携問題が解決されるまでは課金はしないです",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "13259002296",
+"rating": 3,
+"date": "2025-10-12",
+"loc": "jp"
+},
+{
+"key": "A10#37596",
+"codes": [
+"PAY_FOR_DEVICES",
+"WATCH_WANT"
+],
+"quote": "I can’t open my tablet to tell it I completed a task, because it’s in my phone",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12110291462",
+"rating": 4,
+"date": "2024-12-27",
+"loc": "us"
+},
+{
+"key": "A13#465",
+"codes": [
+"WATCH_QUALITY",
+"X_PAYER"
+],
+"quote": "What was the point of paying for premium?",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "3237159036",
+"rating": 2,
+"date": "2018-09-27",
+"loc": "au"
+},
+{
+"key": "A5#3212",
+"codes": [
+"WATCH_QUALITY",
+"X_PAYER"
+],
+"quote": "as soon as I did, the app would not sync to my apple watch",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "7755142510",
+"rating": 3,
+"date": "2021-08-31",
+"loc": "us"
+},
+{
+"key": "A23#1447",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "9598460858",
+"rating": 5,
+"date": "2023-02-09",
+"loc": "de"
+},
+{
+"key": "A1#51220",
+"codes": [
+"WATCH_PRAISE",
+"LIFETIME_PRAISE",
+"NOACC_PRAISE"
+],
+"quote": "the fact no account is required, and most importantly there is an affordable purchase option so no subscription is required",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13738101346",
+"rating": 5,
+"date": "2026-02-11",
+"loc": "us"
+},
+{
+"key": "P20#1312",
+"codes": [
+"WATCH_BUY_REASON"
+],
+"quote": "갤럭시 워치 연동되는거 보고 바로 결제 했습니다",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "2816ea0e-d508-4857-96c3-64989f678dcb",
+"rating": 5,
+"date": "2025-02-24",
+"loc": "ko"
+},
+{
+"key": "A33#3436",
+"codes": [
+"WATCH_QUALITY",
+"X_PAYER"
+],
+"quote": "As a premium user this was a helpful, useful functionality",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "6449879378",
+"rating": 2,
+"date": "2020-09-20",
+"loc": "us"
+},
+{
+"key": "A85#2816",
+"codes": [
+"WATCH_WANT"
+],
+"quote": "It really needs Apple Watch support though",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "2080964109",
+"rating": 4,
+"date": "2018-01-12",
+"loc": "us"
+},
+{
+"key": "A7#806",
+"codes": [
+"PAY_FOR_DEVICES",
+"WATCH_WANT"
+],
+"quote": "Especially as a pro feature, it’d be nice to have a built in sync",
+"store": "A",
+"app": "7. Habit Tracker - HabitKit - Streaks & Accountability",
+"review_id": "12082667088",
+"rating": 4,
+"date": "2024-12-19",
+"loc": "us"
+},
+{
+"key": "P122#25130",
+"codes": [
+"WATCH_BUY_REASON"
+],
+"quote": "Subcripcion pro el primer día de uso",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "08a103f9-656a-472f-8bb2-15da3a00ac1b",
+"rating": 5,
+"date": "2025-06-19",
+"loc": "es"
+},
+{
+"key": "A86#1444",
+"codes": [
+"WATCH_QUALITY"
+],
+"quote": "The watch app, though promising, does not work well enough to rely upon",
+"store": "A",
+"app": "86. Today Habit tracker - For to-dos, routines & goals",
+"review_id": "1620769515",
+"rating": 2,
+"date": "2017-05-22",
+"loc": "us"
+},
+{
+"key": "A1#2676",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "还能手表互通",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13931608305",
+"rating": 5,
+"date": "2026-04-07",
+"loc": "cn"
+},
+{
+"key": "P36#443",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "36. Fun Habit - Habit Tracker",
+"review_id": "f5a1c1f7-9e01-47f4-beab-890bf05899b0",
+"rating": 5,
+"date": "2025-03-09",
+"loc": "ko"
+},
+{
+"key": "A5#1038",
+"codes": [
+"WATCH_PRAISE",
+"WATCH_QUALITY"
+],
+"quote": "Apple Watchで使えることがとてもよく",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "10141244395",
+"rating": 5,
+"date": "2023-07-15",
+"loc": "jp"
+},
+{
+"key": "P122#16858",
+"codes": [
+"WATCH_WANT"
+],
+"quote": "Please make wear os app!! I would pay for it.",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "5c300b86-6fdc-440d-a2d0-45b934636652",
+"rating": 5,
+"date": "2023-07-23",
+"loc": "en"
+},
+{
+"key": "A1#45570",
+"codes": [
+"WATCH_QUALITY",
+"X_PAYER"
+],
+"quote": "I would like to see an improvement to the Apple Watch",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10786515437",
+"rating": 4,
+"date": "2024-01-05",
+"loc": "gb"
+},
+{
+"key": "A23#812",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "C&#39;est un plus qu&#39;elle soit disponible sur Apple Watch",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "1386924995",
+"rating": 5,
+"date": "2016-05-31",
+"loc": "ca"
+},
+{
+"key": "A24#41202",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "4840789226",
+"rating": 5,
+"date": "2019-09-26",
+"loc": "us"
+},
+{
+"key": "A20#3498",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "It can be on your apple watch and can be synced through your icloud",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6900111965",
+"rating": 5,
+"date": "2021-01-22",
+"loc": "us"
+},
+{
+"key": "A33#810",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "Určitě oceňuju dostupnost aplikace na Apple Watch a iPad",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "1987277264",
+"rating": 5,
+"date": "2017-12-11",
+"loc": "cz"
+},
+{
+"key": "A3#6950",
+"codes": [
+"WATCH_PAYWALL_BAD"
+],
+"quote": "I just don’t like that in order to access it on my apple watch I’d have to pay",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "12134334067",
+"rating": 5,
+"date": "2025-01-02",
+"loc": "us"
+},
+{
+"key": "P122#30599",
+"codes": [
+"WATCH_BUY_REASON",
+"LIFETIME_WANT"
+],
+"quote": "integrazione fenomenale con wear os acquistata subito la pro per 1 anno",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "3cce01b5-b9a2-41b2-b747-e58ddf6699c0",
+"rating": 5,
+"date": "2026-04-25",
+"loc": "it"
+},
+{
+"key": "A2#430",
+"codes": [
+"WATCH_QUALITY",
+"X_PAYER"
+],
+"quote": "Paid to upgrade, still doesn’t sync",
+"store": "A",
+"app": "2. Daily Habits - Habit Tracker - Habit List and Routine Tracker",
+"review_id": "4402829597",
+"rating": 1,
+"date": "2019-07-02",
+"loc": "us"
+},
+{
+"key": "A5#1792",
+"codes": [
+"WATCH_QUALITY",
+"X_PAYER"
+],
+"quote": "it stopped notifying in the last few months",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "10881832037",
+"rating": 1,
+"date": "2024-01-30",
+"loc": "my"
+},
+{
+"key": "A41#780",
+"codes": [
+"WATCH_BUY_REASON",
+"LIFETIME_BUYER"
+],
+"quote": "I love that it’s an app on all Apple devices. That was my main concern",
+"store": "A",
+"app": "41. Awesome Habits - Habit Tracker - Streaks, days since & goals",
+"review_id": "7489814726",
+"rating": 5,
+"date": "2021-06-21",
+"loc": "us"
+},
+{
+"key": "A43#74",
+"codes": [
+"LIFETIME_PRAISE",
+"NOACC_PRAISE"
+],
+"quote": "No need to create user account",
+"store": "A",
+"app": "43. Habit Hub - Routine Tracker - Daily Todo, Goals & Schedule",
+"review_id": "7316654754",
+"rating": 5,
+"date": "2021-05-09",
+"loc": "de"
+},
+{
+"key": "A59#1898",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "11629317671",
+"rating": 1,
+"date": "2024-08-19",
+"loc": "gb"
+},
+{
+"key": "P122#35563",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "2422276d-781d-4df9-be68-b225f8f5c8d7",
+"rating": 5,
+"date": "2024-11-27",
+"loc": "pt"
+},
+{
+"key": "A23#1980",
+"codes": [
+"WATCH_QUALITY"
+],
+"quote": "if I complete a habit on the phone it does not reflect on the watch",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "12125340154",
+"rating": 1,
+"date": "2024-12-30",
+"loc": "gb"
+},
+{
+"key": "A1#45951",
+"codes": [
+"WATCH_QUALITY"
+],
+"quote": "this same flare doesn’t carry over to the watch app",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "8590229952",
+"rating": 4,
+"date": "2022-04-21",
+"loc": "gb"
+},
+{
+"key": "A1#52012",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11760989367",
+"rating": 4,
+"date": "2024-09-24",
+"loc": "us"
+},
+{
+"key": "A33#3550",
+"codes": [
+"PAY_FOR_DEVICES",
+"LIFETIME_WANT"
+],
+"quote": "since I get Mac OS, iPad, and Apple Watch apps all for one subscription, along with the features offered, I’m fine with it",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "3678466422",
+"rating": 5,
+"date": "2019-01-21",
+"loc": "us"
+},
+{
+"key": "A23#1785",
+"codes": [
+"PAY_AGAIN_BAD"
+],
+"quote": "la obligación de tener que pagar por versiones de la app en otros ecosistemas de Apple",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "6857817689",
+"rating": 1,
+"date": "2021-01-11",
+"loc": "es"
+},
+{
+"key": "A33#1405",
+"codes": [
+"WATCH_QUALITY"
+],
+"quote": "I’ll only go premium if this issue is resolved",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "7429487896",
+"rating": 1,
+"date": "2021-06-05",
+"loc": "in"
+},
+{
+"key": "A3#5766",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "The primary advantage I appreciate about this application is the capability to view the clock display on my watch",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "13333635882",
+"rating": 5,
+"date": "2025-10-30",
+"loc": "us"
+},
+{
+"key": "P2#6722",
+"codes": [
+"WATCH_WANT",
+"X_PAYER"
+],
+"quote": "I wish it had a Wear OS app",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "1b1ed46f-af92-4ec0-9f43-f409acd6d290",
+"rating": 4,
+"date": "2023-10-16",
+"loc": "en"
+},
+{
+"key": "A23#1868",
+"codes": [
+"WATCH_QUALITY"
+],
+"quote": "La complication sur l’Apple Watch n’affiche pas toujours la tâche comme finie",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "11802720358",
+"rating": 5,
+"date": "2024-10-06",
+"loc": "fr"
+},
+{
+"key": "A59#11385",
+"codes": [
+"PAY_FOR_DEVICES",
+"X_PAYER"
+],
+"quote": "Для меня важно, чтобы мои планы всегда были под рукой",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "6430786114",
+"rating": 3,
+"date": "2020-09-15",
+"loc": "ru"
+},
+{
+"key": "A24#17950",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "5603393317",
+"rating": 1,
+"date": "2020-03-01",
+"loc": "il"
+},
+{
+"key": "A86#1437",
+"codes": [
+"WATCH_QUALITY",
+"WATCH_BUY_REASON"
+],
+"quote": "I will gladly pay for the full version but I really need it to work on my watch",
+"store": "A",
+"app": "86. Today Habit tracker - For to-dos, routines & goals",
+"review_id": "1637702429",
+"rating": 2,
+"date": "2017-06-08",
+"loc": "us"
+},
+{
+"key": "A52#6268",
+"codes": [
+"WATCH_WANT",
+"X_PAYER"
+],
+"quote": "迫切希望出apple watch版方便打卡",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "10078574991",
+"rating": 5,
+"date": "2023-06-27",
+"loc": "cn"
+},
+{
+"key": "P12#120533",
+"codes": [
+"WATCH_WANT"
+],
+"quote": "They should create a Wear OS app for the routines",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "9530bcb9-2b72-4c78-9754-8f2f8088ae14",
+"rating": 3,
+"date": "2024-05-30",
+"loc": "pt"
+},
+{
+"key": "A7#722",
+"codes": [
+"WATCH_WANT",
+"X_PAYER"
+],
+"quote": "The app also does not have an Apple Watch app",
+"store": "A",
+"app": "7. Habit Tracker - HabitKit - Streaks & Accountability",
+"review_id": "13583765027",
+"rating": 1,
+"date": "2026-01-02",
+"loc": "us"
+},
+{
+"key": "A20#1442",
+"codes": [
+"WATCH_WANT"
+],
+"quote": "don’t think it’s too much to ask to have an Apple Watch application for it for the price you pay",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "7141993073",
+"rating": 3,
+"date": "2021-03-25",
+"loc": "ie"
+},
+{
+"key": "A20#3582",
+"codes": [
+"WATCH_BUY_REASON",
+"WATCH_QUALITY"
+],
+"quote": "The advertisement to upgrade to premium shows a photo of an Apple Watch",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "5975479771",
+"rating": 1,
+"date": "2020-05-21",
+"loc": "us"
+},
+{
+"key": "A13#5567",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "c’est compatible avec l’Apple Watch",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5301226914",
+"rating": 5,
+"date": "2019-12-21",
+"loc": "fr"
+},
+{
+"key": "A31#2031",
+"codes": [
+"WATCH_QUALITY",
+"X_PAYER"
+],
+"quote": "Apple Watch doesn’t work: empty screen",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8688370551",
+"rating": 1,
+"date": "2022-05-20",
+"loc": "nl"
+},
+{
+"key": "P5#4891",
+"codes": [
+"WATCH_QUALITY",
+"X_PAYER"
+],
+"quote": "워치랑 아예 동기화가 안될거면 워치앱 왜 만들었습니까?",
+"store": "P",
+"app": "5. Routine Planner, Habit Tracker",
+"review_id": "7753c730-15a4-4751-9caf-ff87565804fe",
+"rating": 1,
+"date": "2024-01-08",
+"loc": "ko"
+},
+{
+"key": "A86#143",
+"codes": [
+"WATCH_WANT",
+"X_PAYER"
+],
+"quote": "I paid for the upgrade to not only support future feature upgrades",
+"store": "A",
+"app": "86. Today Habit tracker - For to-dos, routines & goals",
+"review_id": "1353568072",
+"rating": 5,
+"date": "2016-03-26",
+"loc": "ca"
+},
+{
+"key": "A31#2480",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "this is the best habit tracking app for ios and apple watch",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "13701503325",
+"rating": 5,
+"date": "2026-02-01",
+"loc": "us"
+},
+{
+"key": "P122#36837",
+"codes": [
+"WATCH_BUY_REASON"
+],
+"quote": "com a falta de um app para smartwatch android torna-se impossivel pagar o preço do pro",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "1ea970bb-9f6d-49ee-9b1f-48b261da8069",
+"rating": 2,
+"date": "2023-08-03",
+"loc": "pt"
+},
+{
+"key": "A12#73",
+"codes": [
+"PAID_EXPECT_ALL_DEVICES",
+"X_PAYER"
+],
+"quote": "Payed Money for it and can‘t habe Widgets or use it on my Apple Watch or iPad",
+"store": "A",
+"app": "12. That Girl - Routine Planner - Cute Daily Calendar Schedule",
+"review_id": "12178849529",
+"rating": 1,
+"date": "2025-01-13",
+"loc": "de"
+},
+{
+"key": "A20#50",
+"codes": [
+"WATCH_WANT"
+],
+"quote": "I wouldn&#39;t have swapped to another (paid) habit app if this one had an Apple Watch app",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "8252692779",
+"rating": 5,
+"date": "2022-01-18",
+"loc": "au"
+},
+{
+"key": "A41#350",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "41. Awesome Habits - Habit Tracker - Streaks, days since & goals",
+"review_id": "13969274929",
+"rating": 5,
+"date": "2026-04-18",
+"loc": "gb"
+},
+{
+"key": "A13#11807",
+"codes": [
+"WATCH_WANT"
+],
+"quote": "Apple Watch “complication” is needed",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8765057858",
+"rating": 2,
+"date": "2022-06-12",
+"loc": "us"
+},
+{
+"key": "A20#1855",
+"codes": [
+"WATCH_WANT",
+"X_PAYER"
+],
+"quote": "i gone premium 😎 but i have a question will there be a version for apple watch?",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6470918293",
+"rating": 5,
+"date": "2020-09-26",
+"loc": "ro"
+},
+{
+"key": "P92#6",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "on the plus side it has a version for the galaxy watch",
+"store": "P",
+"app": "92. Qhabit - Daily habit tracker",
+"review_id": "c4dc54b3-7631-4838-b574-fce7c1ee8db4",
+"rating": 3,
+"date": "2026-04-16",
+"loc": "en"
+},
+{
+"key": "P20#1987",
+"codes": [
+"WATCH_WANT",
+"X_PAYER"
+],
+"quote": "유료구매해서 사용하고있습니다. 너무 좋은데 워치랑 연동되면 더 좋을 것 같아요",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "3c48aafd-23a6-4e25-a3a1-db0d17cca27b",
+"rating": 5,
+"date": "2024-01-06",
+"loc": "ko"
+},
+{
+"key": "A24#18467",
+"codes": [
+"WATCH_QUALITY"
+],
+"quote": "Applicazione per Apple Watch non funziona",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8265107322",
+"rating": 1,
+"date": "2022-01-21",
+"loc": "it"
+},
+{
+"key": "A41#42",
+"codes": [
+"WATCH_PRAISE",
+"X_PAYER"
+],
+"quote": "I especially love the watch app",
+"store": "A",
+"app": "41. Awesome Habits - Habit Tracker - Streaks, days since & goals",
+"review_id": "8949712027",
+"rating": 5,
+"date": "2022-08-06",
+"loc": "au"
+},
+{
+"key": "P4#20182",
+"codes": [
+"WATCH_WANT"
+],
+"quote": "If those were implemented, especially the watch app and watch notifications, I'll consider subscribing again",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "2ff794b6-9f66-4b84-aac4-b37bcf4c7130",
+"rating": 3,
+"date": "2024-06-06",
+"loc": "en"
+},
+{
+"key": "A33#1614",
+"codes": [
+"WATCH_QUALITY"
+],
+"quote": "Watchアプリで同期されない",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "9577705212",
+"rating": 4,
+"date": "2023-02-03",
+"loc": "jp"
+},
+{
+"key": "P122#30729",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "38719941-13eb-4ec5-8d10-e1783da4356c",
+"rating": 5,
+"date": "2025-12-28",
+"loc": "it"
+},
+{
+"key": "A85#2524",
+"codes": [
+"WATCH_WANT"
+],
+"quote": "was devastated when I figured out this app didn’t have accessibility to the Apple Watch",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "4334591270",
+"rating": 5,
+"date": "2019-06-18",
+"loc": "us"
+},
+{
+"key": "A52#7766",
+"codes": [
+"WATCH_WANT"
+],
+"quote": "希望他能在Apple Watch上使用打卡",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "8582846826",
+"rating": 5,
+"date": "2022-04-19",
+"loc": "cn"
+},
+{
+"key": "A52#14637",
+"codes": [
+"WATCH_WANT",
+"X_PAYER"
+],
+"quote": "今天第一次下载，我就买了高级会员",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "4184103599",
+"rating": 5,
+"date": "2019-05-21",
+"loc": "cn"
+},
+{
+"key": "A76#422",
+"codes": [
+"WATCH_BUY_REASON",
+"WATCH_WANT"
+],
+"quote": "Vim com a intenção de adquirir a conta premium, mas percebi que não tem para o Apple Watch",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "3724403561",
+"rating": 4,
+"date": "2019-02-02",
+"loc": "br"
+},
+{
+"key": "A48#2207",
+"codes": [
+"WATCH_PAID_OK",
+"X_PAYER"
+],
+"quote": "I have the paid version which lets me keep a recurring to-do list on my Apple Watch",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "9287729490",
+"rating": 5,
+"date": "2022-11-14",
+"loc": "us"
+},
+{
+"key": "A76#2108",
+"codes": [
+"WATCH_WANT"
+],
+"quote": "A quand une interface sur l’apple watch?",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "4510042305",
+"rating": 5,
+"date": "2019-07-24",
+"loc": "fr"
+},
+{
+"key": "P20#2120",
+"codes": [
+"WATCH_WANT",
+"X_PAYER"
+],
+"quote": "갤럭시워치와 함께 사용할수 있었으면 좋겠어요",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "b913367c-c129-4193-930e-90249f445422",
+"rating": 5,
+"date": "2023-10-11",
+"loc": "ko"
+},
+{
+"key": "A13#6829",
+"codes": [
+"WATCH_PRAISE"
+],
+"quote": "love Apple Watch integration",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1274782103",
+"rating": 5,
+"date": "2015-10-21",
+"loc": "gb"
+},
+{
+"key": "A13#17954",
+"codes": [
+"WATCH_PRAISE",
+"WATCH_BUY_REASON"
+],
+"quote": "More than anything the sync between phone and Apple Watch is perfect",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1394329489",
+"rating": 5,
+"date": "2016-06-14",
+"loc": "us"
+},
+{
+"key": "A1#53067",
+"codes": [
+"LIFETIME_BUYER"
+],
+"quote": "I purchased a lifetime subscription in order to  help cover expenses",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10770593574",
+"rating": 5,
+"date": "2024-01-01",
+"loc": "us"
+},
+{
+"key": "P84#7641",
+"codes": [
+"LIFETIME_BUYER"
+],
+"quote": "It's unheard of for me to buy a lifetime license on day 1",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "912e3fef-0cf0-4fb3-907c-f54384a11cee",
+"rating": 5,
+"date": "2026-02-02",
+"loc": "en"
+},
+{
+"key": "P122#6172",
+"codes": [
+"LIFETIME_BUYER"
+],
+"quote": "I bought the lifetime membership. 100% worth it",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "7cd870e2-648c-4d28-bafc-ec7e7d9b6f43",
+"rating": 5,
+"date": "2026-01-29",
+"loc": "en"
+},
+{
+"key": "A59#10022",
+"codes": [
+"LIFETIME_BUYER"
+],
+"quote": "в итоге купила премиум навсегда по скидке",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "7161633357",
+"rating": 5,
+"date": "2021-03-30",
+"loc": "ru"
+},
+{
+"key": "P124#435",
+"codes": [
+"LIFETIME_WANT"
+],
+"quote": "買い切りが出来ると尚いい",
+"store": "P",
+"app": "124. Habit Streak Tracker - DotHabit",
+"review_id": "2a3df5b3-ad46-4432-9029-8203612be97e",
+"rating": 4,
+"date": "2026-05-25",
+"loc": "ja"
+},
+{
+"key": "A24#7292",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "3335320651",
+"rating": 5,
+"date": "2018-10-23",
+"loc": "ca"
+},
+{
+"key": "A31#1428",
+"codes": [
+"LIFETIME_WANT"
+],
+"quote": "Not sure what i would be paying for in a subscription as everything is stored locally",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8500970280",
+"rating": 4,
+"date": "2022-03-27",
+"loc": "gb"
+},
+{
+"key": "A1#46513",
+"codes": [
+"CAP5_ACCEPTED",
+"LIFETIME_PRAISE"
+],
+"quote": "I have made about 5 habits, I was disappointed that I had to pay if I wanted to make more. But, then I saw the price.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11342173209",
+"rating": 5,
+"date": "2024-06-04",
+"loc": "id"
+},
+{
+"key": "A1#48630",
+"codes": [
+"LIFETIME_PRAISE"
+],
+"quote": "This app is affordable (a few dollar for lifetime subscription)",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "8197049003",
+"rating": 5,
+"date": "2022-01-02",
+"loc": "nl"
+},
+{
+"key": "P49#1983",
+"codes": [
+"LIFETIME_BUYER"
+],
+"quote": "I purchased the lifetime access",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "31d3f782-e23d-4655-8b7f-1438e20473a8",
+"rating": 5,
+"date": "2023-11-17",
+"loc": "en"
+},
+{
+"key": "P2#4661",
+"codes": [
+"LIFETIME_PRAISE"
+],
+"quote": "It has an affordable lifetime purchase option",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "9145de33-1cf0-4f61-9571-459afa45f087",
+"rating": 5,
+"date": "2024-06-30",
+"loc": "en"
+},
+{
+"key": "A1#54126",
+"codes": [
+"LIFETIME_PRAISE"
+],
+"quote": "WELL worth the $6",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9769933825",
+"rating": 5,
+"date": "2023-03-31",
+"loc": "us"
+},
+{
+"key": "P12#59107",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "01942da2-b6ae-4392-95c5-31cfec92bb96",
+"rating": 4,
+"date": "2019-10-20",
+"loc": "en"
+},
+{
+"key": "A1#272",
+"codes": [
+"LIFETIME_PRAISE"
+],
+"quote": "I’m glad I got in early for the lifetime membership because subscriptions suck",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "14076814177",
+"rating": 5,
+"date": "2026-05-18",
+"loc": "au"
+},
+{
+"key": "P35#76",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "35. Motivated - Habit Tracker",
+"review_id": "2ba0ffd7-5220-47e1-8a8b-27f214805f1d",
+"rating": 5,
+"date": "2026-01-08",
+"loc": "en"
+},
+{
+"key": "P3#19276",
+"codes": [
+"LIFETIME_WANT"
+],
+"quote": "買い切り版なら金払うから出してほしいわ",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "38214fec-51dd-4b2f-8de9-7236b5609b9e",
+"rating": 5,
+"date": "2025-12-07",
+"loc": "ja"
+},
+{
+"key": "P122#9971",
+"codes": [
+"LIFETIME_PRAISE"
+],
+"quote": "lifetime membership deal is good value too",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "0965d7ac-f8ce-480a-9676-286fdce9d9e7",
+"rating": 5,
+"date": "2025-05-31",
+"loc": "en"
+},
+{
+"key": "P69#329",
+"codes": [
+"LIFETIME_BUYER",
+"SUPPORT_DEV"
+],
+"quote": "I bought the lifetime version to support you",
+"store": "P",
+"app": "69. EZ Habit - simple habit tracker",
+"review_id": "98d853be-2566-4fc0-b3e4-783f155b6caf",
+"rating": 5,
+"date": "2021-10-08",
+"loc": "en"
+},
+{
+"key": "A10#35007",
+"codes": [
+"LIFETIME_WANT"
+],
+"quote": "you really should add a lifetime plan. I am positive a lot would buy it!",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "12450265322",
+"rating": 5,
+"date": "2025-03-22",
+"loc": "us"
+},
+{
+"key": "P84#14869",
+"codes": [
+"LIFETIME_WANT"
+],
+"quote": "Half the price and I would consider buying the lifetime licence",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "0853a45b-84f4-481e-a3fe-6dadcd8e8063",
+"rating": 5,
+"date": "2022-10-29",
+"loc": "en"
+},
+{
+"key": "P122#30093",
+"codes": [
+"LIFETIME_BUYER"
+],
+"quote": "I bought the lifetime subscription and I'm pretty happy with it",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "b7fb4a45-5ac3-499c-a25f-70f52cbd938c",
+"rating": 4,
+"date": "2026-07-31",
+"loc": "he"
+},
+{
+"key": "P2#4160",
+"codes": [
+"LIFETIME_PRAISE"
+],
+"quote": "The premium membership is so affordable, and it is a lifetime subscription",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "059fcc0c-4f68-4c17-8c30-5a00b6e67739",
+"rating": 5,
+"date": "2024-09-28",
+"loc": "en"
+},
+{
+"key": "A41#603",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "41. Awesome Habits - Habit Tracker - Streaks, days since & goals",
+"review_id": "11360590820",
+"rating": 5,
+"date": "2024-06-09",
+"loc": "ua"
+},
+{
+"key": "A1#1901",
+"codes": [
+"CAP5_ACCEPTED"
+],
+"quote": "It only allows five habits unless you pay for premium",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10878847255",
+"rating": 5,
+"date": "2024-01-29",
+"loc": "ca"
+},
+{
+"key": "P30#4015",
+"codes": [
+"LIFETIME_PRAISE"
+],
+"quote": "a low cost, one off payment for lifetime access ensures you get the best out of the app",
+"store": "P",
+"app": "30. Habit Tracker - Routine & Goals",
+"review_id": "6a93507d-d287-4d2c-b946-b065d9b18f95",
+"rating": 5,
+"date": "2022-03-17",
+"loc": "en"
+},
+{
+"key": "P122#17317",
+"codes": [
+"LIFETIME_BUYER"
+],
+"quote": "I purchased the lifetime subscription, and it was certainly worth the extra features",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "3508d46c-e088-4e72-bc5a-fba9ec144aa5",
+"rating": 5,
+"date": "2023-05-26",
+"loc": "en"
+},
+{
+"key": "A1#45215",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13649314776",
+"rating": 5,
+"date": "2026-01-18",
+"loc": "gb"
+},
+{
+"key": "A1#50386",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10007685939",
+"rating": 5,
+"date": "2023-06-07",
+"loc": "tr"
+},
+{
+"key": "P105#462",
+"codes": [
+"LIFETIME_PRAISE"
+],
+"quote": "it's really cheap and you only pay once",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "17266d21-f431-438f-853e-958015101648",
+"rating": 5,
+"date": "2021-10-20",
+"loc": "en"
+},
+{
+"key": "A59#9918",
+"codes": [
+"LIFETIME_BUYER"
+],
+"quote": "Оплатила приложение навсегда",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "7229238349",
+"rating": 5,
+"date": "2021-04-16",
+"loc": "ru"
+},
+{
+"key": "P122#8797",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "f6770a4f-928e-4dc6-8407-b116de5166bd",
+"rating": 4,
+"date": "2025-08-21",
+"loc": "en"
+},
+{
+"key": "P7#460",
+"codes": [
+"LIFETIME_WANT"
+],
+"quote": "I would gladly pay a reasonable one time fee to unlock everything",
+"store": "P",
+"app": "7. Habit Tracker - Habit Streak",
+"review_id": "9466ef9d-2a39-48b3-a893-25cf6289323c",
+"rating": 5,
+"date": "2024-11-22",
+"loc": "fr"
+},
+{
+"key": "P12#27779",
+"codes": [
+"LIFETIME_BUYER"
+],
+"quote": "Got the lifetime subscription",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "9b155794-9f6c-4b6e-906c-d4e6650037d3",
+"rating": 5,
+"date": "2022-01-22",
+"loc": "en"
+},
+{
+"key": "P49#1017",
+"codes": [
+"WATCH_WANT",
+"LIFETIME_BUYER"
+],
+"quote": "I don't use it because it doesn't work with my wear os watch",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "ca77a8f4-3ebb-4d71-8f5a-6127fb9ea82c",
+"rating": 4,
+"date": "2024-07-15",
+"loc": "en"
+},
+{
+"key": "P122#3028",
+"codes": [
+"WATCH_WANT"
+],
+"quote": "It would be the best and most perfect app if I can track my sets, rest, and reps on my watch",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "079457c0-acd8-4e02-b2ee-b09e35bb0ca4",
+"rating": 4,
+"date": "2026-07-12",
+"loc": "en"
+},
+{
+"key": "A59#5408",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "10644734566",
+"rating": 5,
+"date": "2023-12-01",
+"loc": "ru"
+},
+{
+"key": "A26#1403",
+"codes": [
+"LIFETIME_PRAISE"
+],
+"quote": "買い切りもあるしそれなりに安いし",
+"store": "A",
+"app": "26. Eden - Daily Routine Planner - Self care habit tracker, to do",
+"review_id": "12556781748",
+"rating": 4,
+"date": "2025-04-18",
+"loc": "jp"
+},
+{
+"key": "A25#1062",
+"codes": [
+"LIFETIME_BUYER"
+],
+"quote": "I bought the lifetime license since I believe it’s worth it",
+"store": "A",
+"app": "25. Grit - Daily Habit Tracker - Routines & Goals ADHD Planner",
+"review_id": "13064873599",
+"rating": 5,
+"date": "2025-08-27",
+"loc": "us"
+},
+{
+"key": "A25#1165",
+"codes": [
+"LIFETIME_BUYER"
+],
+"quote": "I just discovered this one and bought the lifetime subscription",
+"store": "A",
+"app": "25. Grit - Daily Habit Tracker - Routines & Goals ADHD Planner",
+"review_id": "12184038268",
+"rating": 5,
+"date": "2025-01-14",
+"loc": "us"
+},
+{
+"key": "A33#302",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "10793301666",
+"rating": 4,
+"date": "2024-01-07",
+"loc": "ca"
+},
+{
+"key": "A76#563",
+"codes": [
+"LIFETIME_PRAISE",
+"PAID_EXPECT_ALL_DEVICES"
+],
+"quote": "It&#39;s great that there is a lifetime subscription - absolutely a no-brainer!",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "13534435911",
+"rating": 5,
+"date": "2025-12-20",
+"loc": "ca"
+},
+{
+"key": "P84#9953",
+"codes": [
+"LIFETIME_PRAISE"
+],
+"quote": "And the option for lifetime subscription? Amazing.",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "55447956-f0b8-4298-bcb4-1bc717627f82",
+"rating": 5,
+"date": "2024-11-21",
+"loc": "en"
+},
+{
+"key": "P2#9812",
+"codes": [
+"LIFETIME_PRAISE"
+],
+"quote": "the paid version is excellent and cheap one time buy",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "b9f14634-f04d-4830-9ffb-7efb9c4cfcc9",
+"rating": 5,
+"date": "2022-06-08",
+"loc": "en"
+},
+{
+"key": "P84#12665",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "b70f818a-1bc6-40cf-8e60-54e0ec2d64fc",
+"rating": 5,
+"date": "2023-09-20",
+"loc": "en"
+},
+{
+"key": "P122#11384",
+"codes": [
+"LIFETIME_PRAISE"
+],
+"quote": "its cheaper for a lifetime subscription",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "cf4833a8-b911-4237-bb38-eb0796f6b201",
+"rating": 5,
+"date": "2025-02-13",
+"loc": "en"
+},
+{
+"key": "A59#10451",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "6916405455",
+"rating": 4,
+"date": "2021-01-26",
+"loc": "ru"
+},
+{
+"key": "P12#17234",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "1647747f-211b-42f2-b55b-fa1079d3c744",
+"rating": 4,
+"date": "2023-09-20",
+"loc": "en"
+},
+{
+"key": "P20#1657",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "d1721c85-db0d-423b-aa29-bb40723208f2",
+"rating": 5,
+"date": "2024-08-28",
+"loc": "ko"
+},
+{
+"key": "P20#535",
+"codes": [
+"LIFETIME_BUYER"
+],
+"quote": "マイルーティン買い切りで使用しており",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "45939eb4-adfa-498f-8bf3-3d970401b623",
+"rating": 5,
+"date": "2025-10-27",
+"loc": "ja"
+},
+{
+"key": "P122#32040",
+"codes": [
+"LIFETIME_BUYER"
+],
+"quote": "Bought lifetime access after just a week",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "d72219b3-006f-49f1-b53b-a6420b3c1641",
+"rating": 5,
+"date": "2026-03-30",
+"loc": "no"
+}
+]

@@ -1,0 +1,70 @@
+P24#11808|PAID_EXPECT_ALL_DEVICES,X_PAYER|"As a premium member, I'm disappointed that there's no autosync feature"
+P44#18|PAID_EXPECT_ALL_DEVICES,LIFETIME_BUYER|"I thought on purchase of lifetime version on my ipad I will get access from my android tab or phone too"
+P2#415|PAID_EXPECT_ALL_DEVICES,X_PAYER|"muss ich dort das Premium noch mal kaufen und alles neu einrichten"
+A52#11868|PAID_EXPECT_ALL_DEVICES,X_PAYER|"我在安卓手机客户端上买了会员，买了平板之后想继续用小日常结果发现登录不了"
+A24#42521|NR|
+A13#10825|PAY_FOR_DEVICES,X_PAYER|"I have been using your app premium gladly for a long time, using on ipad and iphone"
+A13#9433|NR|
+A52#6707|PAID_EXPECT_ALL_DEVICES,X_PAYER|"iPad上买过了，为什么手机上下载没有会员呢"
+A4#8418|NR|
+A52#6373|PAID_EXPECT_ALL_DEVICES,LIFETIME_BUYER|"平板上的app计划，不能同步更新到手机上的app"
+A59#14326|PAID_EXPECT_ALL_DEVICES,LIFETIME_BUYER|"I was hoping to get access to it for all devices like phone, iPad and laptop"
+A1#7973|PAID_EXPECT_ALL_DEVICES|"ipad和手机下了 咋会员没同步啊"
+P129#58|PAID_EXPECT_ALL_DEVICES,X_PAYER|"I can't access my premium purchase in my tablet"
+P12#2880|PAID_EXPECT_ALL_DEVICES|"So macht eine Premiummitgliedschaft keinen Sinn"
+A13#5982|IPAD_QUALITY,X_PAYER|"I cannot multitask it on my iPad"
+A52#16462|PAID_EXPECT_ALL_DEVICES,X_PAYER|"Ipad里购买了高级会员，同一苹果id的手机却无法恢复购买"
+A24#10347|NR|
+P84#8662|PAY_FOR_DEVICES,X_PAYER|"I'm sold on the premium feature that enables me to view my tasks from a computer / tablet"
+A13#291|PAID_EXPECT_ALL_DEVICES|"i’m annoyed that this app does not sync between my devices"
+A5#2329|NR|
+A48#4232|PAY_FOR_DEVICES|"Once they have an ipad app plus sync it will really be nice"
+A20#1413|PAY_FOR_DEVICES|"Wish I could access this across device! Wanna pay for it!"
+P124#1133|PAY_FOR_DEVICES|"특히 아이패드, 윈도우, 안드로이드 다 연동되길 바랍니다"
+A1#44185|NR|
+A1#5641|PAY_AGAIN_BAD|"iPad下载还要重新买会员 为什么没有账户登录数据不能共享"
+A20#884|IPAD_QUALITY|"Format leider nicht auf für iPad optimiert"
+A1#54696|PAID_EXPECT_ALL_DEVICES,LIFETIME_BUYER|"nowadays I truly appreciate a lifetime option"
+A23#2419|ALL_DEVICES_PRAISE,LIFETIME_PRAISE|"I use it on all my devices: Mac, iPad, and iPhone. I can't believe it doesn't require a subscription!"
+P129#551|NR|
+A31#909|NR|
+A13#12686|PAID_EXPECT_ALL_DEVICES,X_PAYER|"I have an iPad and an iPhone with the app signed in under my Apple account, with a subscribed premium option"
+A5#1773|NR|
+A1#51695|NR|
+P19#635|PAY_FOR_DEVICES|"hasta consideré pagar la versión pro, sin embargo, al descargarla en mi tablet"
+P2#8462|PAID_EXPECT_ALL_DEVICES,X_PAYER|"I paid for the premium app on my tablet, but my phone has the app separately"
+A74#143|PAID_EXPECT_ALL_DEVICES,X_PAYER|"I upgraded to premium on my tablet but the information is not transferring to my phone"
+P44#305|PAID_EXPECT_ALL_DEVICES,X_PAYER|"I paid for Premium, but it does not sync between my Samsung phone and my Samsung tablet"
+A59#1012|NR|
+P5#5173|PAID_EXPECT_ALL_DEVICES,X_PAYER|"태블릿도 연결하기 위해서 이메일을 연결하려고 했지만"
+P84#12103|PAY_FOR_BACKUP,X_PAYER|"I upgraded to premium app for the back up capabilities well worth it to me"
+P4#99045|PAID_EXPECT_ALL_DEVICES|"Ja que é pago poderia deixar eu acessar mijha conta tanto no tablet quanto no celular"
+A52#4916|PAID_EXPECT_ALL_DEVICES,X_PAYER|"但是平板不是会员"
+A52#4212|PAID_EXPECT_ALL_DEVICES,LIFETIME_BUYER|"Ipad上买了永久会员，为什么手机用不了啊"
+A48#2055|NR|
+A76#3131|PAY_AGAIN_BAD,X_PAYER|"아이패드용도 만들어 주셨음 좋겠구요(추가로 돈 안받았음 좋겠구요^^)"
+A31#1857|NR|
+P4#96816|PAID_EXPECT_ALL_DEVICES,X_PAYER|"Assinei o Premium no celular e não consigo usar no meu Tablet"
+A36#150|LIFETIME_WANT|"if the developer could introduce one time purchase option that would be awesome"
+A52#12497|PAID_EXPECT_ALL_DEVICES,LIFETIME_BUYER|"永久高级会员身份可以同步。但是！！！我的数据一直同步不了"
+A1#55437|NR|
+A52#14704|NR|
+A47#136|PAY_FOR_DEVICES|"iPadとの同期を求めます。そしたら課金します。"
+A59#11497|NR|
+A18#1718|PAY_FOR_DEVICES|"아이패드 가로형만 지원되면 유료 구매도 하고 싶네요"
+A1#17269|PAID_EXPECT_ALL_DEVICES,X_PAYER|"手机购买了会员，iPad怎么登陆呢"
+P84#37587|NR|
+A1#46083|PAID_EXPECT_ALL_DEVICES,X_PAYER|"Pointless upgrading to premium really as the synching is really poor"
+A23#4090|ALL_DEVICES_PRAISE,LIFETIME_PRAISE|"i also love that there&#39;s no subscription"
+A31#3719|PAID_EXPECT_ALL_DEVICES,X_PAYER|"I got the annual subscription on my iPad but it won’t let me add more habits on my phone"
+A76#7704|IPAD_QUALITY|"Looks pixelated on iPad"
+P2#12182|PAID_EXPECT_ALL_DEVICES|"Especially after paying for premium"
+A24#32636|PAID_EXPECT_ALL_DEVICES,X_PAYER|"I signed up for premium on my iPad and I tried to access the app on my phone, there was no way to link the premium access"
+A18#1457|NR|
+A86#1175|IPAD_QUALITY,X_PAYER|"figure out how to make this app run on iPad Pro"
+A24#32989|PAID_EXPECT_ALL_DEVICES,X_PAYER|"I put it on my iPad and wanted to open it on my iPhone today"
+A23#1985|NR|
+A7#226|PAID_EXPECT_ALL_DEVICES,X_PAYER|"I only realised afterwards that there is no iCloud sync with the iPad"
+A48#1141|NR|
+A24#15666|NR|
+A24#27585|PAID_EXPECT_ALL_DEVICES|"It is buggy when trying to sign into phone if you started on iPad"

@@ -1,0 +1,9 @@
+refuse server (#5)             n=  78 say they paid=4
+refuse server (#4)             n=   9 say they paid=2
+want Google Drive              n= 131 say they paid=1
+want iCloud                    n=  79 say they paid=8
+no-account praise              n= 151 say they paid=3
+want sync/multi/iPad sync      n= 209 say they paid=17
+iPad sync failed               n= 106 say they paid=21
+lost data, no account          n=  60 say they paid=6
+baseline (2% sample): 346/24709 = 1.40%
