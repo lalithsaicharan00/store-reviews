@@ -1,0 +1,70 @@
+P37#63|NR|
+A23#4611|CR_SETUP_HARD|"there is no real easy way to set up habits"
+A24#39723|CR_NOT_INTUITIVE|"the app is not intuitive  to use or navigate"
+A23#4185|CR_EASY,RM_NOT_CANCELLED_WHEN_DONE|"Setting up my habits was easy"
+P2#12949|CR_NUMBER_ENTRY|"It kept telling me to choose a number, I would, press next, and same error."
+P8#5166|NR|
+A24#20977|FQ_SPECIFIC_DAYS|"there is no flexibility in choosing days"
+A16#614|NR|
+P12#44233|NR|
+A67#326|CR_TOO_MANY_STEPS|"there are many steps to take to get into the program"
+A16#206|CR_EASY|"Creating a habit is absolutely intuitive"
+A24#9763|NR|
+A33#2394|NR|
+A10#45796|NR|
+A1#52396|NR|
+P12#150636|NR|
+P8#4884|NR|
+A13#18779|CR_EASY|"adding habits to your day simple"
+P122#6738|CR_NUMBER_ENTRY|"there is no easy way to only input the amount of time"
+A1#331|CR_NUMBER_ENTRY|"It consistently doesn’t allow me to input the value of my goals correctly."
+A48#1145|UN_NO_UNITS,TD_MULTI_TAP|"There are no units of measurement"
+A48#1685|NR|
+A55#483|CR_KEYBOARD|"the keyboard also covers the rating request"
+P2#1913|FQ_WEEKLY_GOAL,GL_LIMIT|"drink at most 10 units of alcohol over 1 week"
+P122#5728|NR|
+A1#2010|CR_KEYBOARD|"keyboard screen won’t close"
+A53#1000|UN_MORE_UNITS|"I would like to suggest for more units to be available for the Goal feature"
+A23#2215|UN_MORE_UNITS|"I drink a cup of water at a time"
+A1#54718|UN_CONFUSING,FQ_WEEKLY_GOAL|"What does “count” mean?"
+P3#2435|CR_KEYBOARD|"The keyboard now hides half the screen"
+A31#4597|UN_MORE_UNITS|"Can it include other tracking units such as time spent on a task?"
+P122#2243|CR_KEYBOARD|"it moves the screen down when I try to type in a number"
+P49#4046|CR_NUMBER_ENTRY|"I would love to be able to tap the time a step takes when creating it to enter a number manually instead of scrolling"
+A3#3631|UN_ENTER_VALUE|"I like to enter value like 10 if I finished 10 miles"
+P2#5409|NR|
+P24#12809|CR_NUMBER_ENTRY|"I couldnt get the option to enter numbers to work properly"
+N9#35359|NR|
+N9#42849|NR|
+N10#18345|CR_KEYBOARD|"the keyboard screen covers the new task that you’re trying to add"
+A85#739|OO_PRAISE|"todo list and habits (the +/ - ones) are great"
+P12#15467|NR|
+A4#20007|OO_WANT,FQ_MONTHLY|"you can’t do one time events"
+P111#6747|OO_WANT|"one time events such as school counsellor appointments"
+A85#2019|NR|
+P84#13895|NR|
+A33#2069|NR|
+A85#2583|NR|
+A13#319|OO_ORDER|"You can&#39;t arrange one off tasks and habits in order for the day"
+A20#212|NR|
+P33#2184|NR|
+P8#13439|NR|
+A59#190|OO_PRAISE|"an app that has both a to-do list with categories and a habit improvement feature"
+A10#52146|NR|
+P49#2652|NR|
+A13#12431|OO_TIME|"on the one time tasks we should be able to set what time we have to do it"
+P2#10132|OO_SECONDARY|"Ease of use for me would be if they removed one off tasks as the primary focus"
+P5#1641|OO_PRAISE|"an easy combination of life planner, to-do list and habit tracker"
+N8#25458|FQ_SPECIFIC_DAYS|"not unique intervals like repeat weekday only events"
+N1#22315|OO_PRAISE|"Reminders keeps me on track with one-off tasks to repeated tasks"
+N1#25036|OO_CONFUSED_WITH_REPEAT|"the app changes it from daily to a onetime event on a specific day"
+A4#16910|RM_MULTIPLE_WANT|"there&#39;s no way to get multiple reminders to do any task"
+P8#11637|NR|
+P3#9519|RM_MULTIPLE_WANT|"you can't have multiple reminders a day"
+A55#1569|RM_MULTIPLE_WANT|"I miss the ability to get multiple reminders throughout the day"
+A31#1968|RM_MULTIPLE_PAID|"I was excited to see I could use multiple reminders until I realized I had to pay"
+A33#1013|RM_MULTIPLE_PAID|"doesn&#39;t seem to have effect on adding multiple reminders"
+P126#59799|RM_MULTIPLE_WANT|"I need flexible, multiple reminders."
+P3#11225|RM_MULTIPLE_WANT|"there should be an option for time period and multiple reminder."
+A13#15743|RM_MULTIPLE_PAID|"seriously only two reminders?"
+P69#190|RM_MULTIPLE_WANT|"you are unable to skip days and set multiple reminders"

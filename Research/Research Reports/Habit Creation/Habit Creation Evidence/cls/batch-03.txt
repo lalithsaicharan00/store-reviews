@@ -1,0 +1,46 @@
+A16#795|NR|
+P65#8402|NR|
+A23#2197|NR|
+A24#38965|NR|
+A31#3213|GL_CUT_DOWN|"it’s been invaluable for trying to cut down on my bad habits"
+N4#9977|NR|
+N4#5935|NR|
+N5#13884|NR|
+A1#55104|IC_MORE|"Definitely needs more report styles and icons to choose from."
+A4#7904|NR|
+A5#2683|IC_MORE,CR_CLUNKY|"the icons are super limited"
+A4#13048|IC_MORE|"There’s a middle finger but no vacuum, sink, fridge"
+A54#118|IC_MORE|"more icons"
+P33#1293|IC_MORE|"I'm looking for some Christian ones for things like prayer, Bible study, church attendance."
+A1#51557|NR|
+P4#24545|IC_HARD_TO_FIND,FQ_WEEKLY_GOAL|"the icons are a bit hard to find"
+A13#7145|NR|
+A23#7157|NR|
+A41#446|IC_LETTERS|"Can you introduce alphabets in icons."
+A85#2514|NR|
+A10#3818|NR|
+P97#3121|IC_PRAISE|"there's icons and colors for lots of customization"
+P9#1097|IC_AUTO_RETURN|"a very nice to have would be an auto close and return to adding a new habit"
+P84#4672|NR|
+A13#17532|IC_PRAISE,FQ_SPECIFIC_DAYS|"neat and colorful icons to select from"
+A23#5299|NR|
+N8#27773|NR|
+N2#17950|NR|
+N7#11075|NR|
+A20#3259|NR|
+A24#30290|TD_SEPARATE_CHECKS|"rather than giving me three boxes/buttons a day to check"
+A23#646|TD_WANT|"allows you to do a certain task many times a day"
+A4#4179|FQ_TIMES_WEEK|"If you only want to do a habit once a week you have to add it to a specific day"
+P3#15459|TD_WANT|"there should be a 0/8 fraction instead of an X, with 8 reminders for the day"
+P24#13773|TD_WANT|"Meditate 2x daily for 20 minutes"
+P12#46296|NR|
+P12#25242|NR|
+A20#3600|TD_WANT|"there is no way for me to track a habit that I am trying to do multiple times per day"
+A13#14507|NR|
+A24#21885|NR|
+P8#8193|NR|
+P3#12752|TD_WANT|"Didn't have a way to track a habit multiple times a day"
+A13#16060|NR|
+A13#15218|OO_ELSEWHERE|"I still use calendars for future 1-off tasks and reminders for today’s 1-off tasks"
+A43#105|NR|
+A33#3674|TD_WANT|"the ability to have habits that repeat twice a day, like brushing teeth"

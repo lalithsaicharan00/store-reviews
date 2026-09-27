@@ -1,0 +1,132 @@
+import Core
+import Foundation
+
+// Converts between the app's model and the database rows in Core.
+
+extension LocalDay {
+    var key: String { String(format: "%04d-%02d-%02d", year, month, day) }
+
+    init?(key: String) {
+        let parts = key.split(separator: "-").compactMap { Int($0) }
+        guard parts.count == 3 else { return nil }
+        self.init(year: parts[0], month: parts[1], day: parts[2])
+    }
+}
+
+extension Date {
+    var millis: Int64 { Int64((timeIntervalSince1970 * 1000).rounded()) }
+    init(millis: Int64) { self.init(timeIntervalSince1970: Double(millis) / 1000) }
+}
+
+extension Habit {
+    func record(position: Int, now: Date = .now) -> HabitRecord {
+        let kindName: String
+        var unit: String?
+        var increment = 1.0
+        switch kind {
+        case .check: kindName = "check"
+        case .amount(let u, let inc): kindName = "amount"; unit = u; increment = inc
+        case .duration: kindName = "duration"
+        case .checklist: kindName = "checklist"
+        case .quit: kindName = "quit"
+        case .task: kindName = "task"
+        }
+        return HabitRecord(
+            id: id.uuidString, name: name, symbol: symbol, color: color.rawValue, kind: kindName,
+            unit: unit, increment: increment, part: parts.joined(separator: ","), goal: goal, period: "day",
+            scheduleDays: nil, frequency: frequency.storageKey, dueDay: dueDay?.key,
+            dueMinute: dueMinute.map { KotlinInt(value: Int32($0)) },
+            atMost: atMost, quitSince: quitSince.map { KotlinLong(value: $0.millis) },
+            position: Int32(position), createdAt: createdAt.millis, updatedAt: now.millis,
+            archivedAt: archived ? KotlinLong(value: now.millis) : nil, deletedAt: nil)
+    }
+
+    func stepRecords() -> [StepRecord] {
+        steps.enumerated().map { StepRecord(id: $1.id.uuidString, habitId: id.uuidString, name: $1.name, position: Int32($0), deletedAt: nil) }
+    }
+
+    func reminderRecords() -> [ReminderRecord] {
+        reminders.map { ReminderRecord(id: $0.id.uuidString, habitId: id.uuidString, hour: Int32($0.hour), minute: Int32($0.minute), deletedAt: nil) }
+    }
+
+    /// Nil for a row this version can't read, so it is skipped rather than guessed at.
+    init?(record r: HabitRecord, steps: [StepRecord], reminders: [ReminderRecord]) {
+        guard let id = UUID(uuidString: r.id),
+              let color = HabitColor(rawValue: r.color),
+              let frequency = Frequency(storageKey: r.frequency) else { return nil }
+        let kind: HabitKind
+        switch r.kind {
+        case "check": kind = .check
+        case "amount": kind = .amount(unit: r.unit ?? "", increment: r.increment)
+        case "duration": kind = .duration
+        case "checklist": kind = .checklist
+        case "quit": kind = .quit
+        case "task": kind = .task
+        default: return nil
+        }
+        self.init(id: id, name: r.name, symbol: r.symbol, color: color, kind: kind, parts: Habit.parts(from: r.part), goal: r.goal, frequency: frequency)
+        dueDay = r.dueDay.flatMap(LocalDay.init(key:))
+        dueMinute = r.dueMinute.map { Int($0.int32Value) }
+        atMost = r.atMost
+        quitSince = r.quitSince.map { Date(millis: $0.int64Value) }
+        createdAt = Date(millis: r.createdAt)
+        archived = r.archivedAt != nil
+        self.steps = steps.filter { $0.habitId == r.id }.sorted { $0.position < $1.position }
+            .compactMap { s in UUID(uuidString: s.id).map { Step(id: $0, name: s.name) } }
+        self.reminders = reminders.filter { $0.habitId == r.id }
+            .compactMap { m in UUID(uuidString: m.id).map { ReminderTime(id: $0, hour: Int(m.hour), minute: Int(m.minute)) } }
+    }
+}
+
+extension Habit {
+    /// The database keeps the section IDs in one column, comma-separated ("morning,evening").
+    static func parts(from column: String) -> [String] {
+        let ids = column.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
+        return ids.isEmpty ? [.anytime] : ids
+    }
+}
+
+extension Entry {
+    var record: EntryRecord {
+        EntryRecord(id: id.uuidString, habitId: habitID.uuidString, stepId: stepID?.uuidString, day: day.key,
+                    value: value, createdAt: createdAt.millis, timeZone: timeZone, deletedAt: nil, slot: slot)
+    }
+
+    init?(record r: EntryRecord) {
+        guard let id = UUID(uuidString: r.id), let habit = UUID(uuidString: r.habitId), let day = LocalDay(key: r.day) else { return nil }
+        self.init(id: id, habitID: habit, stepID: r.stepId.flatMap(UUID.init(uuidString:)), day: day,
+                  value: r.value, createdAt: Date(millis: r.createdAt), timeZone: r.timeZone, slot: r.slot)
+    }
+}
+
+extension Frequency {
+    /// The database form: `daily`, `weekdays:2,4,6`, `every:3`, `weeks:2`, `dates:1,15`, `week:3`, `month:4`, `year:6`.
+    var storageKey: String {
+        switch self {
+        case .daily: "daily"
+        case .weekdays(let days): "weekdays:" + days.sorted().map(String.init).joined(separator: ",")
+        case .everyNDays(let n): "every:\(n)"
+        case .everyNWeeks(let n): "weeks:\(n)"
+        case .monthDates(let dates): "dates:" + dates.sorted().map(String.init).joined(separator: ",")
+        case .perWeek(let n): "week:\(n)"
+        case .perMonth(let n): "month:\(n)"
+        case .perYear(let n): "year:\(n)"
+        }
+    }
+
+    init?(storageKey: String) {
+        let parts = storageKey.split(separator: ":", maxSplits: 1).map(String.init)
+        let value = parts.count > 1 ? parts[1] : ""
+        switch parts[0] {
+        case "daily": self = .daily
+        case "weekdays": self = .weekdays(Set(value.split(separator: ",").compactMap { Int($0) }))
+        case "every": guard let n = Int(value), n > 0 else { return nil }; self = .everyNDays(n)
+        case "weeks": guard let n = Int(value), n > 0 else { return nil }; self = .everyNWeeks(n)
+        case "dates": self = .monthDates(Set(value.split(separator: ",").compactMap { Int($0) }))
+        case "year": guard let n = Int(value), n > 0 else { return nil }; self = .perYear(n)
+        case "week": guard let n = Int(value), n > 0 else { return nil }; self = .perWeek(n)
+        case "month": guard let n = Int(value), n > 0 else { return nil }; self = .perMonth(n)
+        default: return nil
+        }
+    }
+}

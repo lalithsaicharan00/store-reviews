@@ -1,0 +1,2431 @@
+[
+{
+"key": "P37#63",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "37. Habitify - Habit Tracker",
+"review_id": "c850af4b-5b3e-4f42-b644-8c90be1227e7",
+"rating": 3,
+"date": "2026-08-09",
+"loc": "en"
+},
+{
+"key": "A23#4611",
+"codes": [
+"CR_SETUP_HARD"
+],
+"quote": "there is no real easy way to set up habits",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "9119920718",
+"rating": 1,
+"date": "2022-09-25",
+"loc": "us"
+},
+{
+"key": "A24#39723",
+"codes": [
+"CR_NOT_INTUITIVE"
+],
+"quote": "the app is not intuitive  to use or navigate",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "5845376998",
+"rating": 1,
+"date": "2020-04-21",
+"loc": "us"
+},
+{
+"key": "A23#4185",
+"codes": [
+"CR_EASY",
+"RM_NOT_CANCELLED_WHEN_DONE"
+],
+"quote": "Setting up my habits was easy",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "12630378882",
+"rating": 1,
+"date": "2025-05-07",
+"loc": "us"
+},
+{
+"key": "P2#12949",
+"codes": [
+"CR_NUMBER_ENTRY"
+],
+"quote": "It kept telling me to choose a number, I would, press next, and same error.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "2b920057-c29a-4c89-a193-d3df58148908",
+"rating": 3,
+"date": "2020-01-18",
+"loc": "en"
+},
+{
+"key": "P8#5166",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "9ed2e406-9a78-4a9a-ae9b-161059d4ee93",
+"rating": 2,
+"date": "2022-05-01",
+"loc": "en"
+},
+{
+"key": "A24#20977",
+"codes": [
+"FQ_SPECIFIC_DAYS"
+],
+"quote": "there is no flexibility in choosing days",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "3668250399",
+"rating": 1,
+"date": "2019-01-19",
+"loc": "nz"
+},
+{
+"key": "A16#614",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "14287877372",
+"rating": 2,
+"date": "2026-07-10",
+"loc": "us"
+},
+{
+"key": "P12#44233",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "095810cb-5f28-41e9-a93c-d2caa8df4cd6",
+"rating": 3,
+"date": "2021-01-14",
+"loc": "en"
+},
+{
+"key": "A67#326",
+"codes": [
+"CR_TOO_MANY_STEPS"
+],
+"quote": "there are many steps to take to get into the program",
+"store": "A",
+"app": "67. Habio - Daily Habit Tracker - Routine planner & To do list",
+"review_id": "11223315584",
+"rating": 1,
+"date": "2024-05-02",
+"loc": "de"
+},
+{
+"key": "A16#206",
+"codes": [
+"CR_EASY"
+],
+"quote": "Creating a habit is absolutely intuitive",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "10985727014",
+"rating": 2,
+"date": "2024-02-27",
+"loc": "de"
+},
+{
+"key": "A24#9763",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13676997248",
+"rating": 1,
+"date": "2026-01-26",
+"loc": "cz"
+},
+{
+"key": "A33#2394",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "11976954207",
+"rating": 2,
+"date": "2024-11-22",
+"loc": "mx"
+},
+{
+"key": "A10#45796",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "10874084814",
+"rating": 5,
+"date": "2024-01-28",
+"loc": "us"
+},
+{
+"key": "A1#52396",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11216328331",
+"rating": 5,
+"date": "2024-04-30",
+"loc": "us"
+},
+{
+"key": "P12#150636",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "797ecb60-648f-4d47-8210-e723cddcee04",
+"rating": 5,
+"date": "2018-04-23",
+"loc": "sv"
+},
+{
+"key": "P8#4884",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "87b838db-08b7-4a9b-abdb-ab057c4757c5",
+"rating": 5,
+"date": "2022-11-05",
+"loc": "en"
+},
+{
+"key": "A13#18779",
+"codes": [
+"CR_EASY"
+],
+"quote": "adding habits to your day simple",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1318365140",
+"rating": 5,
+"date": "2016-01-18",
+"loc": "us"
+},
+{
+"key": "P122#6738",
+"codes": [
+"CR_NUMBER_ENTRY"
+],
+"quote": "there is no easy way to only input the amount of time",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "cb393991-b9a7-4b07-88eb-31631eb4f332",
+"rating": 3,
+"date": "2026-01-03",
+"loc": "en"
+},
+{
+"key": "A1#331",
+"codes": [
+"CR_NUMBER_ENTRY"
+],
+"quote": "It consistently doesn’t allow me to input the value of my goals correctly.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12117289603",
+"rating": 1,
+"date": "2024-12-28",
+"loc": "au"
+},
+{
+"key": "A48#1145",
+"codes": [
+"UN_NO_UNITS",
+"TD_MULTI_TAP"
+],
+"quote": "There are no units of measurement",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1097369177",
+"rating": 1,
+"date": "2014-11-15",
+"loc": "gb"
+},
+{
+"key": "A48#1685",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1135803726",
+"rating": 3,
+"date": "2015-01-25",
+"loc": "ru"
+},
+{
+"key": "A55#483",
+"codes": [
+"CR_KEYBOARD"
+],
+"quote": "the keyboard also covers the rating request",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "1675008191",
+"rating": 3,
+"date": "2017-07-09",
+"loc": "ee"
+},
+{
+"key": "P2#1913",
+"codes": [
+"FQ_WEEKLY_GOAL",
+"GL_LIMIT"
+],
+"quote": "drink at most 10 units of alcohol over 1 week",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "4f132107-2f1b-4b24-b5a1-56183340459f",
+"rating": 2,
+"date": "2026-01-08",
+"loc": "en"
+},
+{
+"key": "P122#5728",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "84e7a287-aae3-4e1e-ad73-7811ec416952",
+"rating": 3,
+"date": "2026-02-20",
+"loc": "en"
+},
+{
+"key": "A1#2010",
+"codes": [
+"CR_KEYBOARD"
+],
+"quote": "keyboard screen won’t close",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10328505440",
+"rating": 2,
+"date": "2023-09-03",
+"loc": "ca"
+},
+{
+"key": "A53#1000",
+"codes": [
+"UN_MORE_UNITS"
+],
+"quote": "I would like to suggest for more units to be available for the Goal feature",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "13853472130",
+"rating": 3,
+"date": "2026-03-16",
+"loc": "ph"
+},
+{
+"key": "A23#2215",
+"codes": [
+"UN_MORE_UNITS"
+],
+"quote": "I drink a cup of water at a time",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "1904760032",
+"rating": 3,
+"date": "2017-11-07",
+"loc": "gb"
+},
+{
+"key": "A1#54718",
+"codes": [
+"UN_CONFUSING",
+"FQ_WEEKLY_GOAL"
+],
+"quote": "What does “count” mean?",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9287651787",
+"rating": 3,
+"date": "2022-11-14",
+"loc": "us"
+},
+{
+"key": "P3#2435",
+"codes": [
+"CR_KEYBOARD"
+],
+"quote": "The keyboard now hides half the screen",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "382cabbf-63d4-4773-b253-d59887b28c39",
+"rating": 1,
+"date": "2025-11-18",
+"loc": "en"
+},
+{
+"key": "A31#4597",
+"codes": [
+"UN_MORE_UNITS"
+],
+"quote": "Can it include other tracking units such as time spent on a task?",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "6794069020",
+"rating": 3,
+"date": "2020-12-26",
+"loc": "us"
+},
+{
+"key": "P122#2243",
+"codes": [
+"CR_KEYBOARD"
+],
+"quote": "it moves the screen down when I try to type in a number",
+"store": "P",
+"app": "122. Hevy - Gym Log Workout Tracker",
+"review_id": "b3eddd22-d603-46a6-807f-08a3338c094b",
+"rating": 5,
+"date": "2026-08-17",
+"loc": "en"
+},
+{
+"key": "P49#4046",
+"codes": [
+"CR_NUMBER_ENTRY"
+],
+"quote": "I would love to be able to tap the time a step takes when creating it to enter a number manually instead of scrolling",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "f2980c4b-3922-4608-b03d-75491b79b7e2",
+"rating": 5,
+"date": "2022-11-15",
+"loc": "en"
+},
+{
+"key": "A3#3631",
+"codes": [
+"UN_ENTER_VALUE"
+],
+"quote": "I like to enter value like 10 if I finished 10 miles",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "8121035207",
+"rating": 5,
+"date": "2021-12-12",
+"loc": "in"
+},
+{
+"key": "P2#5409",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "8b99e436-98cb-4a83-952c-f04dfe858063",
+"rating": 4,
+"date": "2024-03-07",
+"loc": "en"
+},
+{
+"key": "P24#12809",
+"codes": [
+"CR_NUMBER_ENTRY"
+],
+"quote": "I couldnt get the option to enter numbers to work properly",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "9dfdf5eb-5a17-4cee-b6f2-dbda9bbec3bd",
+"rating": 4,
+"date": "2016-04-13",
+"loc": "en"
+},
+{
+"key": "N9#35359",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "9720959136",
+"rating": 3,
+"date": "2023-03-17",
+"loc": "ua"
+},
+{
+"key": "N9#42849",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "9. Google Sheets - Collaborate on Spreadsheets",
+"review_id": "1646915510",
+"rating": 1,
+"date": "2017-06-16",
+"loc": "us"
+},
+{
+"key": "N10#18345",
+"codes": [
+"CR_KEYBOARD"
+],
+"quote": "the keyboard screen covers the new task that you’re trying to add",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "12245289511",
+"rating": 1,
+"date": "2025-01-29",
+"loc": "us"
+},
+{
+"key": "A85#739",
+"codes": [
+"OO_PRAISE"
+],
+"quote": "todo list and habits (the +/ - ones) are great",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "4648741739",
+"rating": 3,
+"date": "2019-08-21",
+"loc": "cz"
+},
+{
+"key": "P12#15467",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "5ce84a8a-d3f4-4930-a1db-47befba28e59",
+"rating": 1,
+"date": "2024-03-01",
+"loc": "en"
+},
+{
+"key": "A4#20007",
+"codes": [
+"OO_WANT",
+"FQ_MONTHLY"
+],
+"quote": "you can’t do one time events",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "9247408220",
+"rating": 2,
+"date": "2022-11-02",
+"loc": "us"
+},
+{
+"key": "P111#6747",
+"codes": [
+"OO_WANT"
+],
+"quote": "one time events such as school counsellor appointments",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "ecb3bb47-4512-44c1-a53d-619163d2b763",
+"rating": 3,
+"date": "2017-01-08",
+"loc": "en"
+},
+{
+"key": "A85#2019",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "13436939464",
+"rating": 1,
+"date": "2025-11-24",
+"loc": "us"
+},
+{
+"key": "P84#13895",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "651a4001-4566-427a-a1e9-043db4d63899",
+"rating": 3,
+"date": "2023-03-31",
+"loc": "en"
+},
+{
+"key": "A33#2069",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "8556013756",
+"rating": 3,
+"date": "2022-04-11",
+"loc": "kr"
+},
+{
+"key": "A85#2583",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "3781866267",
+"rating": 3,
+"date": "2019-02-17",
+"loc": "us"
+},
+{
+"key": "A13#319",
+"codes": [
+"OO_ORDER"
+],
+"quote": "You can&#39;t arrange one off tasks and habits in order for the day",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5790325306",
+"rating": 2,
+"date": "2020-04-10",
+"loc": "au"
+},
+{
+"key": "A20#212",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6923244817",
+"rating": 1,
+"date": "2021-01-28",
+"loc": "by"
+},
+{
+"key": "P33#2184",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "fa7ace69-ea88-42c9-924c-1a5ecb21aa77",
+"rating": 3,
+"date": "2020-01-18",
+"loc": "en"
+},
+{
+"key": "P8#13439",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "748512cd-79f6-490b-b70e-4ad9b0151433",
+"rating": 2,
+"date": "2021-06-26",
+"loc": "pl"
+},
+{
+"key": "A59#190",
+"codes": [
+"OO_PRAISE"
+],
+"quote": "an app that has both a to-do list with categories and a habit improvement feature",
+"store": "A",
+"app": "59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule",
+"review_id": "4174959753",
+"rating": 3,
+"date": "2019-05-19",
+"loc": "au"
+},
+{
+"key": "A10#52146",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "9880235069",
+"rating": 5,
+"date": "2023-05-01",
+"loc": "us"
+},
+{
+"key": "P49#2652",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "40cd7278-61dc-4588-971c-d16354ae3a33",
+"rating": 5,
+"date": "2023-07-21",
+"loc": "en"
+},
+{
+"key": "A13#12431",
+"codes": [
+"OO_TIME"
+],
+"quote": "on the one time tasks we should be able to set what time we have to do it",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6594528562",
+"rating": 5,
+"date": "2020-10-31",
+"loc": "us"
+},
+{
+"key": "P2#10132",
+"codes": [
+"OO_SECONDARY"
+],
+"quote": "Ease of use for me would be if they removed one off tasks as the primary focus",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "d5b6350a-fb22-4b33-9822-22de5be2e401",
+"rating": 5,
+"date": "2022-03-12",
+"loc": "en"
+},
+{
+"key": "P5#1641",
+"codes": [
+"OO_PRAISE"
+],
+"quote": "an easy combination of life planner, to-do list and habit tracker",
+"store": "P",
+"app": "5. Routine Planner, Habit Tracker",
+"review_id": "052f6611-8252-423a-8dba-30a67099c579",
+"rating": 5,
+"date": "2023-02-21",
+"loc": "en"
+},
+{
+"key": "N8#25458",
+"codes": [
+"FQ_SPECIFIC_DAYS"
+],
+"quote": "not unique intervals like repeat weekday only events",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "6393024854",
+"rating": 3,
+"date": "2020-09-04",
+"loc": "us"
+},
+{
+"key": "N1#22315",
+"codes": [
+"OO_PRAISE"
+],
+"quote": "Reminders keeps me on track with one-off tasks to repeated tasks",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "11331749014",
+"rating": 5,
+"date": "2024-06-01",
+"loc": "us"
+},
+{
+"key": "N1#25036",
+"codes": [
+"OO_CONFUSED_WITH_REPEAT"
+],
+"quote": "the app changes it from daily to a onetime event on a specific day",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "9801331884",
+"rating": 1,
+"date": "2023-04-08",
+"loc": "us"
+},
+{
+"key": "A4#16910",
+"codes": [
+"RM_MULTIPLE_WANT"
+],
+"quote": "there&#39;s no way to get multiple reminders to do any task",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10716092581",
+"rating": 1,
+"date": "2023-12-19",
+"loc": "us"
+},
+{
+"key": "P8#11637",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "1d391593-919b-49a1-b8e1-127879778e2b",
+"rating": 3,
+"date": "2016-07-29",
+"loc": "es"
+},
+{
+"key": "P3#9519",
+"codes": [
+"RM_MULTIPLE_WANT"
+],
+"quote": "you can't have multiple reminders a day",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "a1dea0c5-6256-4f94-adf7-26528b3273f0",
+"rating": 1,
+"date": "2020-06-19",
+"loc": "en"
+},
+{
+"key": "A55#1569",
+"codes": [
+"RM_MULTIPLE_WANT"
+],
+"quote": "I miss the ability to get multiple reminders throughout the day",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "1719930448",
+"rating": 2,
+"date": "2017-08-09",
+"loc": "us"
+},
+{
+"key": "A31#1968",
+"codes": [
+"RM_MULTIPLE_PAID"
+],
+"quote": "I was excited to see I could use multiple reminders until I realized I had to pay",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "3606137601",
+"rating": 1,
+"date": "2019-01-03",
+"loc": "mx"
+},
+{
+"key": "A33#1013",
+"codes": [
+"RM_MULTIPLE_PAID"
+],
+"quote": "doesn&#39;t seem to have effect on adding multiple reminders",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "6009503696",
+"rating": 1,
+"date": "2020-05-29",
+"loc": "fi"
+},
+{
+"key": "P126#59799",
+"codes": [
+"RM_MULTIPLE_WANT"
+],
+"quote": "I need flexible, multiple reminders.",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "be605349-1ef3-4a86-9525-5371e07240a0",
+"rating": 3,
+"date": "2020-07-29",
+"loc": "en"
+},
+{
+"key": "P3#11225",
+"codes": [
+"RM_MULTIPLE_WANT"
+],
+"quote": "there should be an option for time period and multiple reminder.",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "61c9b8ef-1458-45c6-998e-b04310ffae73",
+"rating": 3,
+"date": "2019-07-08",
+"loc": "en"
+},
+{
+"key": "A13#15743",
+"codes": [
+"RM_MULTIPLE_PAID"
+],
+"quote": "seriously only two reminders?",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "3052663898",
+"rating": 3,
+"date": "2018-08-12",
+"loc": "us"
+},
+{
+"key": "P69#190",
+"codes": [
+"RM_MULTIPLE_WANT"
+],
+"quote": "you are unable to skip days and set multiple reminders",
+"store": "P",
+"app": "69. EZ Habit - simple habit tracker",
+"review_id": "e39e69e7-c38a-4994-b80f-42a57f2d7cff",
+"rating": 3,
+"date": "2022-09-23",
+"loc": "en"
+},
+{
+"key": "A1#55744",
+"codes": [
+"TD_MORNING_EVENING"
+],
+"quote": "set a habit for BOTH mornings and evenings",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "7435724052",
+"rating": 5,
+"date": "2021-06-07",
+"loc": "us"
+},
+{
+"key": "N2#16423",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "13759950885",
+"rating": 1,
+"date": "2026-02-17",
+"loc": "us"
+},
+{
+"key": "N3#27765",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "3. Notes - Take note of almost anything",
+"review_id": "9126523364",
+"rating": 1,
+"date": "2022-09-27",
+"loc": "us"
+},
+{
+"key": "N10#18750",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "11250648100",
+"rating": 1,
+"date": "2024-05-10",
+"loc": "us"
+},
+{
+"key": "P49#2817",
+"codes": [
+"FQ_MONTHLY"
+],
+"quote": "would like the option for a once a month or once a year routine",
+"store": "P",
+"app": "49. RoutineFlow - Routine for ADHD",
+"review_id": "6916c28b-6490-4c3f-a065-8db901a14e43",
+"rating": 3,
+"date": "2023-06-25",
+"loc": "en"
+},
+{
+"key": "A24#34474",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "7725749786",
+"rating": 1,
+"date": "2021-08-23",
+"loc": "us"
+},
+{
+"key": "A33#1154",
+"codes": [
+"FQ_BEYOND_GOAL"
+],
+"quote": "If my goal is to complete something five days a week but I manage to do it six (hooray!), it&#39;s very difficult log it",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "5947785761",
+"rating": 1,
+"date": "2020-05-15",
+"loc": "gb"
+},
+{
+"key": "A41#373",
+"codes": [
+"FQ_TIMES_WEEK"
+],
+"quote": "you can’t set a habit for an amount of times per week",
+"store": "A",
+"app": "41. Awesome Habits - Habit Tracker - Streaks, days since & goals",
+"review_id": "11105723095",
+"rating": 2,
+"date": "2024-03-31",
+"loc": "gb"
+},
+{
+"key": "P3#25245",
+"codes": [
+"FQ_TIMES_WEEK"
+],
+"quote": "if I want to track something 3 days per week this is not the same as 3 out of 7 days",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "673569e1-c9e3-4c7f-9b33-576bcdad8a41",
+"rating": 3,
+"date": "2018-01-04",
+"loc": "sv"
+},
+{
+"key": "A23#2082",
+"codes": [
+"FQ_TIMES_WEEK"
+],
+"quote": "I wanted to track weekly streaks for running, cycling and swimming targets",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "7339719249",
+"rating": 2,
+"date": "2021-05-15",
+"loc": "gb"
+},
+{
+"key": "P65#7763",
+"codes": [
+"FQ_TIMES_WEEK"
+],
+"quote": "Can't add a goal to do x times a week without adding specific days",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "b0a94160-dbc0-4a58-b619-65ff42f29dc0",
+"rating": 3,
+"date": "2018-04-16",
+"loc": "en"
+},
+{
+"key": "A33#3239",
+"codes": [
+"FQ_WEEKLY_STATS"
+],
+"quote": "the data incorrectly reports completion percentage for each day UNLESS weekly and monthly items also done daily",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "12774234840",
+"rating": 3,
+"date": "2025-06-14",
+"loc": "us"
+},
+{
+"key": "A23#1690",
+"codes": [
+"FQ_TIMES_WEEK"
+],
+"quote": "why not have an option of &#34;three times a week&#34;",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "1223211392",
+"rating": 2,
+"date": "2015-07-06",
+"loc": "de"
+},
+{
+"key": "P24#11490",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "c8751fe0-1970-4f95-93de-adeaecc16193",
+"rating": 1,
+"date": "2017-01-18",
+"loc": "en"
+},
+{
+"key": "A23#5751",
+"codes": [
+"TD_PARTIAL"
+],
+"quote": "completes the whole thing instead of part when I mark it complete",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "1625223936",
+"rating": 2,
+"date": "2017-05-27",
+"loc": "us"
+},
+{
+"key": "A5#288",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "9316964487",
+"rating": 3,
+"date": "2022-11-22",
+"loc": "ca"
+},
+{
+"key": "P3#4151",
+"codes": [
+"FQ_SPECIFIC_DAYS"
+],
+"quote": "Really need an option to choose what specific days you want to do a habit on",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "7724741b-a189-447e-9594-33f900513a10",
+"rating": 3,
+"date": "2024-04-15",
+"loc": "en"
+},
+{
+"key": "A31#386",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "12134105446",
+"rating": 4,
+"date": "2025-01-02",
+"loc": "ca"
+},
+{
+"key": "P126#50796",
+"codes": [
+"FQ_EVERY_N_DAYS"
+],
+"quote": "reminds you everyday or every week or every 4 days",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "c135189f-ab4d-4fdf-ba15-081668738852",
+"rating": 5,
+"date": "2021-01-29",
+"loc": "en"
+},
+{
+"key": "A13#15720",
+"codes": [
+"OO_WANT"
+],
+"quote": "Is there a way I can set a one time reminder for an activity that I do not wish to repeat?",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "3091985476",
+"rating": 4,
+"date": "2018-08-20",
+"loc": "us"
+},
+{
+"key": "P2#6101",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "839a3a02-ab0f-4a21-bc86-33a4a970a022",
+"rating": 5,
+"date": "2024-01-01",
+"loc": "en"
+},
+{
+"key": "P125#14625",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "125. 21 Days Challenge",
+"review_id": "dedcbe88-f817-4b66-9f65-da8510f07346",
+"rating": 4,
+"date": "2020-12-20",
+"loc": "en"
+},
+{
+"key": "N8#22640",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "13860087035",
+"rating": 1,
+"date": "2026-03-18",
+"loc": "us"
+},
+{
+"key": "N5#14669",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "10649616600",
+"rating": 1,
+"date": "2023-12-02",
+"loc": "us"
+},
+{
+"key": "N8#8786",
+"codes": [
+"FQ_EVERY_N_DAYS"
+],
+"quote": "allow things as &#34;reminder every 3 days&#34;",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "8530348734",
+"rating": 3,
+"date": "2022-04-04",
+"loc": "gb"
+},
+{
+"key": "P4#19543",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "4d0be564-0c2a-4b5a-9ecc-b0083d360d4b",
+"rating": 3,
+"date": "2024-07-02",
+"loc": "en"
+},
+{
+"key": "P12#36570",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "f3fca345-f2cc-49e0-864a-16a8cbd1fc3b",
+"rating": 2,
+"date": "2021-05-26",
+"loc": "en"
+},
+{
+"key": "A1#46435",
+"codes": [
+"CL_DAILY_RESET",
+"CR_TOO_COMPLEX"
+],
+"quote": "I need something like google keep check list where i can thick boxes but than they should reappear every day",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12884346290",
+"rating": 3,
+"date": "2025-07-12",
+"loc": "hu"
+},
+{
+"key": "P3#2594",
+"codes": [
+"CL_WANT"
+],
+"quote": "add subtasks also",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "6431b77e-31d7-4a79-8114-0a105d2ec846",
+"rating": 1,
+"date": "2025-09-27",
+"loc": "en"
+},
+{
+"key": "P11#5245",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "11. Dear Me - Daily Routine Tracker",
+"review_id": "834c6465-4515-44e8-96a4-b7a2808f09a8",
+"rating": 1,
+"date": "2025-03-24",
+"loc": "en"
+},
+{
+"key": "A24#14248",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "13815368119",
+"rating": 1,
+"date": "2026-03-05",
+"loc": "gb"
+},
+{
+"key": "P12#15132",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "51a4be49-2cb4-4170-9991-b76d5496e671",
+"rating": 1,
+"date": "2024-04-12",
+"loc": "en"
+},
+{
+"key": "A88#87",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "88. GetHabit - Easy Habit Tracker - Habits Tracker for a BetterMe",
+"review_id": "7627531648",
+"rating": 1,
+"date": "2021-07-28",
+"loc": "de"
+},
+{
+"key": "P84#21551",
+"codes": [
+"CL_WIDGET"
+],
+"quote": "Why is it not possible to check off the subtasks within the widget?",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "745a90bf-4e4b-40db-8092-e9b0c772c7ae",
+"rating": 3,
+"date": "2020-04-25",
+"loc": "en"
+},
+{
+"key": "A67#2044",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "67. Habio - Daily Habit Tracker - Routine planner & To do list",
+"review_id": "10800985056",
+"rating": 1,
+"date": "2024-01-09",
+"loc": "za"
+},
+{
+"key": "P24#2452",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "c428903d-592c-4944-af89-e8ee89421ff7",
+"rating": 3,
+"date": "2021-05-15",
+"loc": "en"
+},
+{
+"key": "A1#43741",
+"codes": [
+"CL_WANT",
+"CL_PARTIAL"
+],
+"quote": "Sub-tasks are very important to me, as I can break tasks down into smaller chunks.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10688157208",
+"rating": 3,
+"date": "2023-12-13",
+"loc": "cr"
+},
+{
+"key": "A88#368",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "88. GetHabit - Easy Habit Tracker - Habits Tracker for a BetterMe",
+"review_id": "7087567561",
+"rating": 1,
+"date": "2021-03-10",
+"loc": "us"
+},
+{
+"key": "P84#21473",
+"codes": [
+"CL_PRAISE"
+],
+"quote": "Love the ability to make subtasks.",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "34768e9d-b671-4ec2-a82e-2e7b0a7461cb",
+"rating": 5,
+"date": "2020-04-30",
+"loc": "en"
+},
+{
+"key": "P2#5401",
+"codes": [
+"CL_PRAISE",
+"RM_NOT_CANCELLED_WHEN_DONE"
+],
+"quote": "Tasks are enhanced with the use checklists",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "b127af47-e26b-4059-9835-b1b1a110806d",
+"rating": 4,
+"date": "2024-03-09",
+"loc": "en"
+},
+{
+"key": "P2#26416",
+"codes": [
+"CL_PRAISE"
+],
+"quote": "todos funcionam como check list",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "19a01bfa-3a5d-475f-85f7-eea58a0f314b",
+"rating": 5,
+"date": "2022-12-24",
+"loc": "pt"
+},
+{
+"key": "A13#11439",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "11056783101",
+"rating": 4,
+"date": "2024-03-18",
+"loc": "us"
+},
+{
+"key": "P84#7216",
+"codes": [
+"CL_PRAISE"
+],
+"quote": "break tasks into sub tasks or keep it simple",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "02e26657-d242-4ac0-8724-d1f1c2292062",
+"rating": 4,
+"date": "2026-05-02",
+"loc": "en"
+},
+{
+"key": "N1#25181",
+"codes": [
+"CL_TEMPLATES"
+],
+"quote": "Please add Save templates to save subtask with it.",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "9246463737",
+"rating": 5,
+"date": "2022-11-02",
+"loc": "us"
+},
+{
+"key": "N10#10724",
+"codes": [
+"CL_WANT"
+],
+"quote": "2) subtasks abs lists",
+"store": "N",
+"app": "10. Microsoft To Do - Capture Tasks & Set Reminders",
+"review_id": "1857991190",
+"rating": 2,
+"date": "2017-10-18",
+"loc": "gb"
+},
+{
+"key": "N6#1886",
+"codes": [
+"CL_WANT"
+],
+"quote": "there seem no way to view/create sub tasks in the mobile app",
+"store": "N",
+"app": "6. Google Tasks- Get Things Done - Plan, Organize & Schedule Work",
+"review_id": "6821593479",
+"rating": 5,
+"date": "2021-01-02",
+"loc": "gb"
+},
+{
+"key": "P111#15393",
+"codes": [
+"RM_EDIT_HARD"
+],
+"quote": "we can't change the reminder however we want",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "fc8a49bd-3007-4b7a-b30a-23ee0c285d29",
+"rating": 3,
+"date": "2016-04-02",
+"loc": "pt"
+},
+{
+"key": "P34#26",
+"codes": [
+"RM_MULTIPLE_WANT"
+],
+"quote": "there should be multiple reminder /notifications",
+"store": "P",
+"app": "34. Habit Tracker - Strik",
+"review_id": "937956c7-3247-43c4-81d2-10e991e00e01",
+"rating": 3,
+"date": "2025-09-27",
+"loc": "en"
+},
+{
+"key": "P37#825",
+"codes": [
+"RM_REMOVE_HARD"
+],
+"quote": "Stopped the onboarding process when I wasn't easily able to remove a reminder for my first habit.",
+"store": "P",
+"app": "37. Habitify - Habit Tracker",
+"review_id": "8c0afdb1-a1d1-4d61-b774-406d4a76b180",
+"rating": 3,
+"date": "2021-04-21",
+"loc": "en"
+},
+{
+"key": "P126#58894",
+"codes": [
+"RM_EDIT_HARD"
+],
+"quote": "it would be increasingly helpful for users to change the notification times for each task individually",
+"store": "P",
+"app": "126. To Do List",
+"review_id": "e7d693d6-bd64-40b3-9463-0a21b9808e85",
+"rating": 5,
+"date": "2020-08-18",
+"loc": "en"
+},
+{
+"key": "P84#22614",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "c628581d-667a-47b3-891f-4b70918a6b2e",
+"rating": 5,
+"date": "2020-02-16",
+"loc": "en"
+},
+{
+"key": "P84#12870",
+"codes": [
+"RM_MULTIPLE_WANT"
+],
+"quote": "Would give 5 stars if you could do multiple reminders",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "c6c699fd-b368-40e3-94f7-24d8e01efd23",
+"rating": 5,
+"date": "2023-08-24",
+"loc": "en"
+},
+{
+"key": "A13#13777",
+"codes": [
+"RM_MULTIPLE_PRAISE"
+],
+"quote": "I love that I can set up multiple reminders at different parts of the day.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5265019732",
+"rating": 5,
+"date": "2019-12-12",
+"loc": "us"
+},
+{
+"key": "A13#6429",
+"codes": [
+"RM_MULTIPLE_PRAISE"
+],
+"quote": "you can set multiple reminders",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "2245556973",
+"rating": 5,
+"date": "2018-02-25",
+"loc": "gb"
+},
+{
+"key": "N1#19723",
+"codes": [
+"CL_DAILY_RESET"
+],
+"quote": "making the subtasks reappear without another reminder",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "12708583549",
+"rating": 5,
+"date": "2025-05-28",
+"loc": "us"
+},
+{
+"key": "N7#10739",
+"codes": [
+"RM_REMOVE_HARD"
+],
+"quote": "I open the note and try to delete the reminder but can’t.",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "7133930439",
+"rating": 1,
+"date": "2021-03-23",
+"loc": "us"
+},
+{
+"key": "N1#25144",
+"codes": [
+"RM_MULTIPLE_WANT"
+],
+"quote": "having to set multiple reminders for something can be frustrating",
+"store": "N",
+"app": "1. Reminders - Don’t forget. Use Reminders",
+"review_id": "9373689984",
+"rating": 4,
+"date": "2022-12-08",
+"loc": "us"
+},
+{
+"key": "A1#54160",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9737920031",
+"rating": 2,
+"date": "2023-03-21",
+"loc": "us"
+},
+{
+"key": "P24#9804",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "40e14d1b-bf3c-4f3f-b9ec-af6213790f77",
+"rating": 2,
+"date": "2017-12-15",
+"loc": "en"
+},
+{
+"key": "A20#2104",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "7090282099",
+"rating": 1,
+"date": "2021-03-11",
+"loc": "ru"
+},
+{
+"key": "P37#402",
+"codes": [
+"GL_LIMIT"
+],
+"quote": "Negative habits can have a time limit but you can't start a timer for them",
+"store": "P",
+"app": "37. Habitify - Habit Tracker",
+"review_id": "1f0581a4-6c64-4c03-95ad-e3c437766d9b",
+"rating": 2,
+"date": "2024-04-21",
+"loc": "en"
+},
+{
+"key": "A31#37",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "8193561211",
+"rating": 1,
+"date": "2022-01-01",
+"loc": "at"
+},
+{
+"key": "P9#284",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "fdf8e1b4-347d-4043-9111-f104afc2a510",
+"rating": 1,
+"date": "2026-02-10",
+"loc": "en"
+},
+{
+"key": "P12#32322",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "b12b33ae-193e-4eec-83cc-901a65e98943",
+"rating": 3,
+"date": "2021-09-09",
+"loc": "en"
+},
+{
+"key": "P24#13047",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "5da63e56-81e0-49de-9e6b-ee319027a51f",
+"rating": 1,
+"date": "2016-03-15",
+"loc": "en"
+},
+{
+"key": "P70#245",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "70. everyday Habit Tracker",
+"review_id": "4955c5f5-12ef-43e9-bdac-848761a26792",
+"rating": 1,
+"date": "2024-03-03",
+"loc": "en"
+},
+{
+"key": "P70#132",
+"codes": [
+"FQ_TIMES_WEEK"
+],
+"quote": "I'm planning to go to the gym 3 days in a week, you have to choose exact day",
+"store": "P",
+"app": "70. everyday Habit Tracker",
+"review_id": "1f548614-89fc-44d4-9c36-a02f1db14b1e",
+"rating": 3,
+"date": "2025-07-20",
+"loc": "en"
+},
+{
+"key": "A23#4571",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "9405934613",
+"rating": 1,
+"date": "2022-12-17",
+"loc": "us"
+},
+{
+"key": "A36#313",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "36. (Not Boring) Habits - Science-backed habit tracker",
+"review_id": "13670415847",
+"rating": 3,
+"date": "2026-01-24",
+"loc": "us"
+},
+{
+"key": "A23#4401",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "10709565816",
+"rating": 3,
+"date": "2023-12-17",
+"loc": "us"
+},
+{
+"key": "A16#795",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "11216662132",
+"rating": 5,
+"date": "2024-04-30",
+"loc": "us"
+},
+{
+"key": "P65#8402",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "ec8628df-b419-4fcc-a3b7-3090f123888c",
+"rating": 4,
+"date": "2017-09-02",
+"loc": "en"
+},
+{
+"key": "A23#2197",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "2517626225",
+"rating": 5,
+"date": "2018-05-07",
+"loc": "gb"
+},
+{
+"key": "A24#38965",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "6148747701",
+"rating": 5,
+"date": "2020-07-02",
+"loc": "us"
+},
+{
+"key": "A31#3213",
+"codes": [
+"GL_CUT_DOWN"
+],
+"quote": "it’s been invaluable for trying to cut down on my bad habits",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "9587720408",
+"rating": 4,
+"date": "2023-02-06",
+"loc": "us"
+},
+{
+"key": "N4#9977",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "8839656943",
+"rating": 1,
+"date": "2022-07-04",
+"loc": "us"
+},
+{
+"key": "N4#5935",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "4. Apple Health",
+"review_id": "8614448862",
+"rating": 1,
+"date": "2022-04-28",
+"loc": "pa"
+},
+{
+"key": "N5#13884",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "5. Apple Fitness - Fitness and Fitness+",
+"review_id": "11392550892",
+"rating": 2,
+"date": "2024-06-17",
+"loc": "us"
+},
+{
+"key": "A1#55104",
+"codes": [
+"IC_MORE"
+],
+"quote": "Definitely needs more report styles and icons to choose from.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "8651151609",
+"rating": 3,
+"date": "2022-05-08",
+"loc": "us"
+},
+{
+"key": "A4#7904",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10589238862",
+"rating": 3,
+"date": "2023-11-15",
+"loc": "it"
+},
+{
+"key": "A5#2683",
+"codes": [
+"IC_MORE",
+"CR_CLUNKY"
+],
+"quote": "the icons are super limited",
+"store": "A",
+"app": "5. Routine Planner, Habit Tracker - Daily Time Management for ADHD",
+"review_id": "11711468724",
+"rating": 2,
+"date": "2024-09-11",
+"loc": "us"
+},
+{
+"key": "A4#13048",
+"codes": [
+"IC_MORE"
+],
+"quote": "There’s a middle finger but no vacuum, sink, fridge",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "12024620648",
+"rating": 3,
+"date": "2024-12-04",
+"loc": "us"
+},
+{
+"key": "A54#118",
+"codes": [
+"IC_MORE"
+],
+"quote": "more icons",
+"store": "A",
+"app": "54. Avocation - Habit Tracker - Daily planner & ADHD organizer",
+"review_id": "9591763371",
+"rating": 3,
+"date": "2023-02-07",
+"loc": "es"
+},
+{
+"key": "P33#1293",
+"codes": [
+"IC_MORE"
+],
+"quote": "I'm looking for some Christian ones for things like prayer, Bible study, church attendance.",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "58a02b11-bca3-462f-96cf-364b4e76accd",
+"rating": 3,
+"date": "2021-05-20",
+"loc": "en"
+},
+{
+"key": "A1#51557",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12569836075",
+"rating": 2,
+"date": "2025-04-21",
+"loc": "us"
+},
+{
+"key": "P4#24545",
+"codes": [
+"IC_HARD_TO_FIND",
+"FQ_WEEKLY_GOAL"
+],
+"quote": "the icons are a bit hard to find",
+"store": "P",
+"app": "4. Me+ Lifestyle Routine",
+"review_id": "e5165957-90ca-4d65-a8bd-5903e83845f4",
+"rating": 3,
+"date": "2023-12-21",
+"loc": "en"
+},
+{
+"key": "A13#7145",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "10489498999",
+"rating": 1,
+"date": "2023-10-18",
+"loc": "il"
+},
+{
+"key": "A23#7157",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "1232047274",
+"rating": 3,
+"date": "2015-07-23",
+"loc": "us"
+},
+{
+"key": "A41#446",
+"codes": [
+"IC_LETTERS"
+],
+"quote": "Can you introduce alphabets in icons.",
+"store": "A",
+"app": "41. Awesome Habits - Habit Tracker - Streaks, days since & goals",
+"review_id": "7193643397",
+"rating": 1,
+"date": "2021-04-07",
+"loc": "in"
+},
+{
+"key": "A85#2514",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "4465364765",
+"rating": 2,
+"date": "2019-07-15",
+"loc": "us"
+},
+{
+"key": "A10#3818",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "13210591707",
+"rating": 1,
+"date": "2025-10-01",
+"loc": "ca"
+},
+{
+"key": "P97#3121",
+"codes": [
+"IC_PRAISE"
+],
+"quote": "there's icons and colors for lots of customization",
+"store": "P",
+"app": "97. To-do list - tasks planner",
+"review_id": "2c951c3b-8d8c-4b20-8547-1a7aaafa6fc5",
+"rating": 5,
+"date": "2023-08-16",
+"loc": "en"
+},
+{
+"key": "P9#1097",
+"codes": [
+"IC_AUTO_RETURN"
+],
+"quote": "a very nice to have would be an auto close and return to adding a new habit",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "869e7702-f350-40aa-83b7-da1fb35ab12f",
+"rating": 4,
+"date": "2024-01-25",
+"loc": "en"
+},
+{
+"key": "P84#4672",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "84. Tasks - To Do List & Reminders",
+"review_id": "8a908dad-e774-4bd8-9f50-ae2c69ef41bd",
+"rating": 4,
+"date": "2019-09-18",
+"loc": "de"
+},
+{
+"key": "A13#17532",
+"codes": [
+"IC_PRAISE",
+"FQ_SPECIFIC_DAYS"
+],
+"quote": "neat and colorful icons to select from",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1459814799",
+"rating": 5,
+"date": "2016-10-02",
+"loc": "us"
+},
+{
+"key": "A23#5299",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "3596141272",
+"rating": 5,
+"date": "2018-12-31",
+"loc": "us"
+},
+{
+"key": "N8#27773",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "8. Google Calendar- Get Organized - Easily plan & schedule",
+"review_id": "3086080124",
+"rating": 2,
+"date": "2018-08-19",
+"loc": "us"
+},
+{
+"key": "N2#17950",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "2. Calendar",
+"review_id": "10173154423",
+"rating": 5,
+"date": "2023-07-23",
+"loc": "us"
+},
+{
+"key": "N7#11075",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "N",
+"app": "7. Google Keep - Notes and lists",
+"review_id": "4914076213",
+"rating": 2,
+"date": "2019-10-09",
+"loc": "us"
+},
+{
+"key": "A20#3259",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "7090352624",
+"rating": 2,
+"date": "2021-03-11",
+"loc": "us"
+},
+{
+"key": "A24#30290",
+"codes": [
+"TD_SEPARATE_CHECKS"
+],
+"quote": "rather than giving me three boxes/buttons a day to check",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "9026484273",
+"rating": 1,
+"date": "2022-08-28",
+"loc": "us"
+},
+{
+"key": "A23#646",
+"codes": [
+"TD_WANT"
+],
+"quote": "allows you to do a certain task many times a day",
+"store": "A",
+"app": "23. Streaks - The habit-forming to-do list",
+"review_id": "6594339395",
+"rating": 3,
+"date": "2020-10-31",
+"loc": "ca"
+},
+{
+"key": "A4#4179",
+"codes": [
+"FQ_TIMES_WEEK"
+],
+"quote": "If you only want to do a habit once a week you have to add it to a specific day",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "10464151025",
+"rating": 3,
+"date": "2023-10-12",
+"loc": "dk"
+},
+{
+"key": "P3#15459",
+"codes": [
+"TD_WANT"
+],
+"quote": "there should be a 0/8 fraction instead of an X, with 8 reminders for the day",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "ae532e5b-97f1-4ecc-bffb-30b333cfec8a",
+"rating": 3,
+"date": "2016-12-18",
+"loc": "en"
+},
+{
+"key": "P24#13773",
+"codes": [
+"TD_WANT"
+],
+"quote": "Meditate 2x daily for 20 minutes",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "bc6dd59d-8809-4525-8eea-564e90b71e07",
+"rating": 3,
+"date": "2016-01-12",
+"loc": "en"
+},
+{
+"key": "P12#46296",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "0735f56d-15d0-499f-968b-f14c417571e4",
+"rating": 2,
+"date": "2020-10-27",
+"loc": "en"
+},
+{
+"key": "P12#25242",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "aaf4fe9b-edf1-4cd7-a2e2-7eeb01f71419",
+"rating": 1,
+"date": "2022-04-28",
+"loc": "en"
+},
+{
+"key": "A20#3600",
+"codes": [
+"TD_WANT"
+],
+"quote": "there is no way for me to track a habit that I am trying to do multiple times per day",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "5727735406",
+"rating": 2,
+"date": "2020-03-28",
+"loc": "us"
+},
+{
+"key": "A13#14507",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "4407757853",
+"rating": 1,
+"date": "2019-07-04",
+"loc": "us"
+},
+{
+"key": "A24#21885",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "8811798816",
+"rating": 2,
+"date": "2022-06-26",
+"loc": "ru"
+},
+{
+"key": "P8#8193",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "8. Habitica - Gamify Your Tasks",
+"review_id": "8ef6f486-95ae-43d5-a87e-b802d1e36cc8",
+"rating": 2,
+"date": "2017-12-08",
+"loc": "en"
+},
+{
+"key": "P3#12752",
+"codes": [
+"TD_WANT"
+],
+"quote": "Didn't have a way to track a habit multiple times a day",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "95bbeff9-0a4c-4350-b018-2e9ed8cfa2cc",
+"rating": 3,
+"date": "2018-07-22",
+"loc": "en"
+},
+{
+"key": "A13#16060",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "2359297804",
+"rating": 5,
+"date": "2018-03-29",
+"loc": "us"
+},
+{
+"key": "A13#15218",
+"codes": [
+"OO_ELSEWHERE"
+],
+"quote": "I still use calendars for future 1-off tasks and reminders for today’s 1-off tasks",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "3661082237",
+"rating": 5,
+"date": "2019-01-17",
+"loc": "us"
+},
+{
+"key": "A43#105",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "43. Habit Hub - Routine Tracker - Daily Todo, Goals & Schedule",
+"review_id": "5750812833",
+"rating": 4,
+"date": "2020-04-02",
+"loc": "gb"
+},
+{
+"key": "A33#3674",
+"codes": [
+"TD_WANT"
+],
+"quote": "the ability to have habits that repeat twice a day, like brushing teeth",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "1745724575",
+"rating": 4,
+"date": "2017-08-24",
+"loc": "us"
+}
+]

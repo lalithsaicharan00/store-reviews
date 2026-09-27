@@ -1,0 +1,140 @@
+import SwiftUI
+
+/// The centre of the bottom bar: a progress ring, "Today ⌄" and "6/15". Tapping it opens the calendar.
+struct DayLabel: View {
+    let label: String
+    let done: Int
+    let total: Int
+
+    var body: some View {
+        HStack(spacing: 10) {
+            MiniRing(progress: total == 0 ? 0 : Double(done) / Double(total)).frame(width: 20, height: 20)
+            HStack(spacing: 5) {
+                Text(label).font(.body.weight(.semibold))
+                Image(systemName: "chevron.down").font(.footnote.weight(.bold))
+            }
+            Text("\(done)/\(total)").font(.subheadline.weight(.semibold).monospacedDigit()).foregroundStyle(.secondary)
+                .frame(minWidth: 40, alignment: .leading)
+        }
+        .foregroundStyle(Color.ink)
+        .lineLimit(1)
+        .minimumScaleFactor(0.8)
+        // A fixed width, so ‹ and › and the label never move as the day changes.
+        .frame(width: 196)
+    }
+}
+
+/// A native SwiftUI month grid with the same completion totals as the bottom bar.
+struct CalendarSheet: View {
+    let selected: LocalDay
+    let today: LocalDay
+    let onPick: (LocalDay?) -> Void
+    @State private var month: LocalDay
+    @Environment(HabitStore.self) private var store
+    @Environment(\.dismiss) private var dismiss
+
+    init(day: LocalDay, today: LocalDay, onPick: @escaping (LocalDay?) -> Void) {
+        selected = day
+        self.today = today
+        self.onPick = onPick
+        _month = State(initialValue: LocalDay(year: day.year, month: day.month, day: 1))
+    }
+
+    private var calendar: Calendar { store.calendar }
+    private var monthDate: Date { month.date(calendar: calendar) }
+    private var leading: Int { (calendar.component(.weekday, from: monthDate) - calendar.firstWeekday + 7) % 7 }
+    private var days: Int { calendar.range(of: .day, in: .month, for: monthDate)?.count ?? 0 }
+    private var cells: Int { ((leading + days + 6) / 7) * 7 }
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 16) {
+                    HStack(spacing: 4) {
+                        Button("Previous month", systemImage: "chevron.left") { moveMonth(-1) }
+                            .labelStyle(.iconOnly).frame(width: 44, height: 44)
+                        Text(monthDate.formatted(.dateTime.month(.wide).year()))
+                            .font(.title3.weight(.semibold)).lineLimit(1).minimumScaleFactor(0.8)
+                            .frame(maxWidth: .infinity)
+                            .accessibilityIdentifier("calendar-month")
+                        Button("Next month", systemImage: "chevron.right") { moveMonth(1) }
+                            .labelStyle(.iconOnly).frame(width: 44, height: 44)
+                    }
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 7), spacing: 8) {
+                        ForEach(0..<7, id: \.self) { offset in
+                            let weekday = (calendar.firstWeekday - 1 + offset) % 7
+                            Text(calendar.veryShortStandaloneWeekdaySymbols[weekday])
+                                .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity).accessibilityHidden(true)
+                        }
+                        ForEach(0..<cells, id: \.self) { cell in
+                            let number = cell - leading + 1
+                            if number > 0 && number <= days {
+                                dayButton(LocalDay(year: month.year, month: month.month, day: number))
+                            } else { Color.clear.frame(height: 44).accessibilityHidden(true) }
+                        }
+                    }
+                    Text("Tap any day to open it. Past days can be logged, with no limit on how far back. Later days open as a preview.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.top, 4)
+                }.padding(.horizontal, 16).padding(.bottom, 20)
+            }
+            .background(Color(.systemBackground))
+            .navigationTitle("Go to a day")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) { Button("Today") { pick(today) } }
+                ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
+            }
+        }
+    }
+
+    private func dayButton(_ day: LocalDay) -> some View {
+        let summary = store.daySummary(on: day)
+        let future = day > today
+        let progress = summary.total == 0 ? 0 : Double(summary.done) / Double(summary.total)
+        return Button { pick(day) } label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(day == selected ? Color(.secondarySystemFill) : .clear)
+                if summary.total > 0 {
+                    Circle().stroke(Color.ink.opacity(future ? 0.07 : 0.12), lineWidth: 3)
+                    if !future && progress > 0 {
+                        Circle().trim(from: 0, to: progress)
+                            .stroke(Color.ink, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                            .rotationEffect(.degrees(-90))
+                    }
+                }
+                Text(String(day.day)).font(.callout.weight(day == today || day == selected ? .bold : .medium))
+                    .foregroundStyle(future ? Color.secondary : Color.ink)
+            }
+            .frame(width: 38, height: 38)
+            .overlay(alignment: .topTrailing) {
+                if summary.total > 0 && summary.done == summary.total && !future {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 11, weight: .bold)).foregroundStyle(Color.ink)
+                        .background(Circle().fill(Color(.systemBackground)))
+                        .offset(x: 2, y: -2)
+                }
+            }
+            .frame(maxWidth: .infinity, minHeight: 44)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(day.date(calendar: calendar).formatted(date: .complete, time: .omitted))
+        .accessibilityValue((day == today ? "Today. " : "") + (summary.total == 0 ? "No habits scheduled" : future ? "Preview, \(summary.total) habits scheduled" : "\(summary.done) of \(summary.total) done"))
+        .accessibilityAddTraits(day == selected ? [.isSelected] : [])
+        .accessibilityIdentifier("calendar-day-\(day.year)-\(day.month)-\(day.day)")
+    }
+
+    private func moveMonth(_ amount: Int) {
+        guard let date = calendar.date(byAdding: .month, value: amount, to: monthDate) else { return }
+        month = LocalDay(date, calendar: calendar)
+    }
+
+    private func pick(_ day: LocalDay) {
+        onPick(day == today ? nil : day)
+        dismiss()
+    }
+}

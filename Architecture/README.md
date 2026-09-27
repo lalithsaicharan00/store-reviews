@@ -37,5 +37,7 @@ SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one a
 
 - **Accepted shared-core decision:** [Kotlin Multiplatform + native UI + documented rules + shared tests](<Shared Core Decision.md>) — finalized 26 Sep 2026; resolves Backlog #15. [Research, production examples and support routes](<Shared Core Research.md>).
 
+- **Local database:** [SQLite through Room 3, inside the Kotlin core](<Local Database Decision.md>) — decided 27 Sep 2026 (build-plan task 4); replaces the GRDB/Room split.
+
 - **Evidence behind all of this:** [Research/Research Reports/Data, Sync and Accounts/](<../Research/Research Reports/Data, Sync and Accounts/>).
 - **Bug catalogue** (separate workstream, after these topics or in parallel when asked): [Research/Research Reports/Bugs and Fixes/](<../Research/Research Reports/Bugs and Fixes/>).

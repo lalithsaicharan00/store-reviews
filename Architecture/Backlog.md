@@ -21,6 +21,7 @@ working through the topics are added at the bottom, with the topic they came fro
 | 28 Sep 2026 | **Apple Health / Health Connect: a Plus feature, read-only, in the first update after launch.** 1,552 reviews mention it (58 apps); it is a high-intent purchase reason and nobody resents it being paid; broken integrations average 2.96★, so it ships carefully. No writing to Health | [Evidence](<../Research/Research Reports/Data, Sync and Accounts/QR Move, Apple Health and Launch Operations — Final Backlog.md>), 05 Sync §9 (was #10) |
 | 29 Sep 2026 | **Free plan details.** 5 free habits, fixed. Interactive home-screen and lock-screen widgets are free and show every free habit; Plus adds designs and sizes. The store description's first lines say what is free. The app shows the limit only as a quiet "3 of 5 free habits" line, with no prompts before the limit and one calm Plus screen at the 6th habit | 02 Billing §3.1, 07 Surfaces; [Free Plan Design](<../Research/Research Reports/Business Model and Monetization/Free Plan Design — Habit Cap, Widgets and an Honest Listing.md>), [Free Habit Limit](<../Research/Research Reports/Business Model and Monetization/Free Habit Limit — 5, 6, 7 or More.md>) |
 | 29 Sep 2026 | **No subscriptions, so no trials.** Plus and Plus Family are one-time purchases; every trial, renewal, grace-period and cancellation part is removed from the design | 02 Billing §3.7 |
+| 27 Sep 2026 | **Checklist is its own type** (was #30). After trying round 1, the user found steps inside Check odd; round 2 makes "Follow a checklist" a type of its own, and "Cut back" separate from "Reach an amount" | [New Habit round 2](<../Research/Research Reports/Habit Creation/New Habit Screen, Round 2 — Types, Frequency, One-Time Tasks.md>) |
 | 28 Sep 2026 | **Not doing:** shared habits between accounts (not at launch), per-habit time zones, a public status page (in-app banner instead), a published shutdown promise, an off-Cloudflare backup copy (R2 + point-in-time recovery + every Plus phone's copy), web sales, Fitbit/Garmin apps, subscriptions and trials, grandfathering (the free limit never changes), a lawyer review (generated privacy policy, checked against our data map) | 05, 06, 07, 08, 09 (were #2, #9, #11, #12, #13, #14, #16, #17, #19, #26) |
 | 28 Sep 2026 | **Operations:** iOS 18+ / watchOS 11+ / Android 8.0 (API 26)+ / Wear OS 3+; Sentry free tier for crashes; PostHog EU cloud for analytics; a shared support mailbox plus our console; Windows later (web app first); **EU accounts stored in the EU** (Durable Objects and R2 support an EU jurisdiction) | 08 Release §7, §11; 09 Privacy §6, §11; 06 Server §15 (were #18, #20–#23, #25) |
 
@@ -28,6 +29,14 @@ working through the topics are added at the bottom, with the topic they came fro
 
 | # | Question | From | Options | Current lean |
 |---|---|---|---|---|
+| 31 | **Do one-time tasks count toward the 5 free habits?** | [New Habit round 2 §4](<../Research/Research Reports/Habit Creation/New Habit Screen, Round 2 — Types, Frequency, One-Time Tasks.md>) | Count them, or keep them free | Built as free (a cap would be felt on every errand) |
 | 27 | **Figma "App Architecture" diagram** (topic 10) | [README](README.md) | Draw now, or skip | Waiting for your go-ahead |
 | 28 | **Free vs Plus comparison on the store page** (a screenshot or not, and what it shows) | 02 Billing §3.1 | Research first | Research later |
 | 29 | **Plus and Plus Family prices,** with regional pricing | 02 Billing §3.7 | Research first | Later; building features comes first |
+
+## Contradictions found while building (27 Sep 2026)
+
+| # | What disagrees | What the build does for now |
+|---|---|---|
+| C1 | **Minimum iOS:** the backlog says iOS 18+, the iOS README said "iOS 26", and the chosen designs use iOS 26-only parts (Liquid Glass day bar, grouped toolbar buttons) | Targets **iOS 18**; iOS 26 gets the glass look, iOS 18–25 get a frosted capsule and one toolbar group |
+| C2 | **Local database:** the Shared Core Decision keeps "the existing GRDB/Room storage plan", while build-plan task 4 asks for one well-established database that works on every platform | **Resolved 27 Sep:** SQLite through Room 3 inside the Kotlin core, on every platform ([Local Database Decision](<Local Database Decision.md>)). Review if you disagree |

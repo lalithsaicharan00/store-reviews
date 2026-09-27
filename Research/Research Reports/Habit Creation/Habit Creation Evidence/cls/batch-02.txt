@@ -1,0 +1,70 @@
+A1#55744|TD_MORNING_EVENING|"set a habit for BOTH mornings and evenings"
+N2#16423|NR|
+N3#27765|NR|
+N10#18750|NR|
+P49#2817|FQ_MONTHLY|"would like the option for a once a month or once a year routine"
+A24#34474|NR|
+A33#1154|FQ_BEYOND_GOAL|"If my goal is to complete something five days a week but I manage to do it six (hooray!), it&#39;s very difficult log it"
+A41#373|FQ_TIMES_WEEK|"you can’t set a habit for an amount of times per week"
+P3#25245|FQ_TIMES_WEEK|"if I want to track something 3 days per week this is not the same as 3 out of 7 days"
+A23#2082|FQ_TIMES_WEEK|"I wanted to track weekly streaks for running, cycling and swimming targets"
+P65#7763|FQ_TIMES_WEEK|"Can't add a goal to do x times a week without adding specific days"
+A33#3239|FQ_WEEKLY_STATS|"the data incorrectly reports completion percentage for each day UNLESS weekly and monthly items also done daily"
+A23#1690|FQ_TIMES_WEEK|"why not have an option of &#34;three times a week&#34;"
+P24#11490|NR|
+A23#5751|TD_PARTIAL|"completes the whole thing instead of part when I mark it complete"
+A5#288|NR|
+P3#4151|FQ_SPECIFIC_DAYS|"Really need an option to choose what specific days you want to do a habit on"
+A31#386|NR|
+P126#50796|FQ_EVERY_N_DAYS|"reminds you everyday or every week or every 4 days"
+A13#15720|OO_WANT|"Is there a way I can set a one time reminder for an activity that I do not wish to repeat?"
+P2#6101|NR|
+P125#14625|NR|
+N8#22640|NR|
+N5#14669|NR|
+N8#8786|FQ_EVERY_N_DAYS|"allow things as &#34;reminder every 3 days&#34;"
+P4#19543|NR|
+P12#36570|NR|
+A1#46435|CL_DAILY_RESET,CR_TOO_COMPLEX|"I need something like google keep check list where i can thick boxes but than they should reappear every day"
+P3#2594|CL_WANT|"add subtasks also"
+P11#5245|NR|
+A24#14248|NR|
+P12#15132|NR|
+A88#87|NR|
+P84#21551|CL_WIDGET|"Why is it not possible to check off the subtasks within the widget?"
+A67#2044|NR|
+P24#2452|NR|
+A1#43741|CL_WANT,CL_PARTIAL|"Sub-tasks are very important to me, as I can break tasks down into smaller chunks."
+A88#368|NR|
+P84#21473|CL_PRAISE|"Love the ability to make subtasks."
+P2#5401|CL_PRAISE,RM_NOT_CANCELLED_WHEN_DONE|"Tasks are enhanced with the use checklists"
+P2#26416|CL_PRAISE|"todos funcionam como check list"
+A13#11439|NR|
+P84#7216|CL_PRAISE|"break tasks into sub tasks or keep it simple"
+N1#25181|CL_TEMPLATES|"Please add Save templates to save subtask with it."
+N10#10724|CL_WANT|"2) subtasks abs lists"
+N6#1886|CL_WANT|"there seem no way to view/create sub tasks in the mobile app"
+P111#15393|RM_EDIT_HARD|"we can't change the reminder however we want"
+P34#26|RM_MULTIPLE_WANT|"there should be multiple reminder /notifications"
+P37#825|RM_REMOVE_HARD|"Stopped the onboarding process when I wasn't easily able to remove a reminder for my first habit."
+P126#58894|RM_EDIT_HARD|"it would be increasingly helpful for users to change the notification times for each task individually"
+P84#22614|NR|
+P84#12870|RM_MULTIPLE_WANT|"Would give 5 stars if you could do multiple reminders"
+A13#13777|RM_MULTIPLE_PRAISE|"I love that I can set up multiple reminders at different parts of the day."
+A13#6429|RM_MULTIPLE_PRAISE|"you can set multiple reminders"
+N1#19723|CL_DAILY_RESET|"making the subtasks reappear without another reminder"
+N7#10739|RM_REMOVE_HARD|"I open the note and try to delete the reminder but can’t."
+N1#25144|RM_MULTIPLE_WANT|"having to set multiple reminders for something can be frustrating"
+A1#54160|NR|
+P24#9804|NR|
+A20#2104|NR|
+P37#402|GL_LIMIT|"Negative habits can have a time limit but you can't start a timer for them"
+A31#37|NR|
+P9#284|NR|
+P12#32322|NR|
+P24#13047|NR|
+P70#245|NR|
+P70#132|FQ_TIMES_WEEK|"I'm planning to go to the gym 3 days in a week, you have to choose exact day"
+A23#4571|NR|
+A36#313|NR|
+A23#4401|NR|
