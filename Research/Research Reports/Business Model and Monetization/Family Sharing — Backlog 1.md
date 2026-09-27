@@ -1,5 +1,7 @@
 # Family Sharing for Plus — Backlog #1
 
+> **Update 27 Sep 2026: decided.** Plus Family ships as **our own account-based family groups** (invite by link, own accounts, any platform), not Apple Family Sharing, because it must work on Android and the invite must live in the app. §6's guardrails still apply; guardrail 1 (one product) no longer does, since a family seat plan is a separate product. Design: [02 Billing §3.6](<../../../Architecture/02. Billing and Entitlements.md>).
+
 *Written by Claude (Claude Code), 26 Sep 2026. Evidence for [Backlog #1](<../../../Architecture/Backlog.md>) ("Apple Family Sharing for Plus"). Research, not a decision.*
 
 **The question:** should one Plus purchase cover the buyer's Apple family (up to 5 more people)? Your worry: less money per household, and one more promise to keep working.
