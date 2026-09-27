@@ -33,7 +33,7 @@ SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one a
 
 - **Parked decisions:** [Backlog.md](Backlog.md).
 
-- **Accepted email behavior:** [The one email: purchase confirmation](<Email Delivery Decision.md>). Decided 26 Sep 2026 and narrowed 27 Sep 2026; the provider selection remains open.
+- **Accepted email behavior:** [The one email: purchase confirmation](<Email Delivery Decision.md>). Decided 26 Sep 2026, narrowed 27 Sep 2026; sent through Resend.
 
 - **Accepted shared-core decision:** [Kotlin Multiplatform + native UI + documented rules + shared tests](<Shared Core Decision.md>) — finalized 26 Sep 2026; resolves Backlog #15. [Research, production examples and support routes](<Shared Core Research.md>).
 

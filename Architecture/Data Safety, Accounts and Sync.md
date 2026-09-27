@@ -185,7 +185,7 @@ ourselves, and there is no monthly-active-user cap like Firebase's.
 - **The Worker checks the Apple or Google sign-in token** and issues our own session token.
 - **Every sync checks that token,** which takes under 1 ms of the 10 ms free CPU budget.
 - **The provider ID → account table** lives in D1 and is written only at sign-up.
-- **The one email** (the purchase confirmation) uses an external free-tier sender, so the Worker stays on the free plan. See [Email Delivery Decision](<Email Delivery Decision.md>).
+- **The one email** (the purchase confirmation) goes through Resend's free tier, so the Worker stays on the free plan. See [Email Delivery Decision](<Email Delivery Decision.md>).
 
 **Launch on the free plan; upgrade when usage calls for it** (decided 26 Sep 2026):
 - **Sign-in at launch: Apple + Google** (decided 27 Sep 2026; email codes removed). Accounts exist only for Plus.

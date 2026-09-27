@@ -5,7 +5,7 @@
 - **Removed on 27 Sep 2026:**
   - **Email sign-in (one-time codes).** Accounts are Plus-only, and Plus buyers sign in with Apple or Google ([Accounts §1](<01. Accounts and Identity.md>)).
   - **Every other message:** deletion emails, marketing, reminders, shutdown notices and family invites. The owner shares invites as a link, QR or code.
-- The sending provider is still pending.
+- **Provider: Resend** (decided 27 Sep 2026).
 
 ## 1. Who gets it, and when
 
@@ -35,7 +35,7 @@ Keep one small **server-side email interface**, with provider adapters:
 verified purchase event
     → our template + delivery policy
     → email sender interface
-    → Resend / Brevo / Cloudflare adapter
+    → Resend adapter (Cloudflare adapter later, if ever)
 ```
 
 - Keep HTML/plain-text templates in our repository, with ordinary message fields (recipient, sender, subject, body). Avoid dependence on provider-hosted templates or marketing workflows.
@@ -50,9 +50,13 @@ This is a bounded backend integration and DNS change, not merely an API-key repl
 
 ## 4. Provider choice and cost
 
-**Not finalized:** Resend is the current implementation preference for our low expected volume and its official Cloudflare Workers example. Brevo offers more free daily headroom. Choose based on expected peak sends, onboarding and actual delivery tests, not only monthly allowance.
+**Decided 27 Sep 2026: Resend.**
+- **Why:** it has an official Cloudflare Workers example, and its free tier (3,000 a month, 100 a day) far exceeds one email per purchase.
+- **If a launch day ever needs more than 100 sends,** jobs queue and go out the next day. The email never blocks Plus, so nothing breaks. Upgrading Resend's plan is a configuration change.
+- **Set up:** verify our sending domain (SPF, DKIM), register it with Apple's Private Email Relay, keep the API key in Worker secrets, and test real delivery to Gmail, Outlook and an Apple relay address before launch.
+- The other providers below stay as reference only.
 
-Official published allowances checked 26 Sep 2026:
+Published allowances checked 26 Sep 2026 (for reference):
 
 | Provider | Free allowance | Burst constraint / source |
 |---|---|---|
