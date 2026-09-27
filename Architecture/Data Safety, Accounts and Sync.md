@@ -219,17 +219,8 @@ ourselves, and there is no monthly-active-user cap like Firebase's.
   - one step, inside the app, with an offer to export first;
   - it also removes the R2 snapshots;
   - Play also needs a web link for deletion.
-- **"Move to a new phone"** (WhatsApp style) is the main way to switch phones. It needs no password.
-  1. On the old phone: Settings → Move to a new phone. The app encrypts a copy of all the data, uploads it to
-     a one-time slot on our server (deleted after 15 minutes or on first use) and shows a QR code.
-  2. On the new phone, iPhone or Android: "I'm moving from another phone", then scan. The key to unlock the
-     copy is **inside the QR code**, so the server never sees the data.
-  3. If the old phone was signed in, the new phone joins **the same account** (like linking WhatsApp Web). An
-     iPhone user who signed in with Apple never has to type an Apple ID on Android. The app then suggests adding
-     Google as a second sign-in, for recovery.
-  4. It works **without an account too**, so free users can move, including iPhone ⇄ Android.
-  - **Its limit:** it needs the old phone in hand. If that phone is lost or broken, Plus users sign in; free
-    users rely on the phone's own backup (same platform) or a file they exported (topic 4).
+- **Moving phones** (topic 4): the phone's own transfer on the same platform; Plus users sign in; free users moving
+  iPhone ⇄ Android export a file and import it. No QR phone-to-phone move (decided 28 Sep 2026).
 - **Purchases are tied to the account**, so a paid plan follows the user to a new phone or platform. This
   addresses the lost-purchase complaints in C035.
 
@@ -293,8 +284,6 @@ This is the "prove it" part of C030.
 - **The protocol is ours.** It is two plain HTTPS endpoints (push and pull). All Cloudflare-specific code stays in
   one thin storage layer.
 - **The data is plain SQLite,** so it can be moved to Postgres or SQLite anywhere.
-- **Weekly off-Cloudflare copy:** a weekly export of all accounts to storage outside Cloudflare (for example,
-  Backblaze B2 or a machine we own). Pennies a month.
 - **Exit plan:** keep a short, tested script that runs the same push/pull API on a plain server (Node or Bun
   with SQLite). Cloudflare's runtime, `workerd`, is also open source.
 - **Recovery after a move:** point the domain at the new server. Phones re-upload anything the server is
@@ -318,7 +307,7 @@ The full failure catalogue, with review evidence and the Apple and Google rules,
 It adds these requirements to the design above:
 
 1. **Crash-loop recovery:** after 2 failed launches, open a recovery screen (export, backup status, support). Support never tells a user to reinstall.
-2. **"I've used this before"** is offered on a fresh install *before* onboarding: sign in, scan a code, or import a file.
+2. **"I've used this before"** is offered on a fresh install *before* onboarding: sign in (Plus) or import a file.
 3. **Signing in never deletes local data.** Show which account it is before merging; warn when a sign-in creates a brand-new account; signing out asks whether to keep a local copy.
 4. **Schedules and goals have effective dates.** Streaks are always *computed* from records, never stored as a counter.
 5. **Undo** for every destructive action, **Recently deleted** for 30 days, and **Archive** instead of delete.
@@ -331,7 +320,7 @@ It adds these requirements to the design above:
 12. **Entitlements are restored automatically on launch.** Play purchases are acknowledged at once (Google refunds after 3 days). "Lifetime" is stored on the server and kept forever.
 13. **The device ID, sync cursor and session tokens stay out of OS backups** (`no_backup` on Android, excluded on iOS). After an OS restore, the app does a full sync.
 14. **Performance budget:** 10 years × 50 habits of data, ticking under 100 ms.
-15. **Incidents** are communicated in the app and on a status page.
+15. **Incidents** are communicated in the app (a banner from `/v1/status`).
 
 ## 9. Open decisions
 

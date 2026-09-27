@@ -1,0 +1,27 @@
+"""Reading set: cross-OS moves (cap 10 per app), transfer praise (all), Health (120, cap 10 per app)."""
+import json, random, collections, os
+HERE = os.path.dirname(os.path.abspath(__file__)); WORK = os.path.join(HERE, '../../../Temp/final-backlog')
+rnd = random.Random(20260928)
+C = [json.loads(l) for l in open(f'{WORK}/candidates.jsonl', encoding='utf-8')]
+by = collections.defaultdict(list)
+for c in C:
+    for m in c['modes']: by[m].append(c)
+def capped(pool, n, cap):
+    pool = pool[:]; rnd.shuffle(pool); out, per = [], collections.Counter()
+    for c in pool:
+        if per[c['app']] < cap: out.append(c); per[c['app']] += 1
+        if len(out) >= n: break
+    return out
+seen, order = set(), []
+for m, n, cap in [('XOS_MOVE', 200, 10), ('TRANSFER_PRAISE', 100, 99), ('HEALTH', 120, 8)]:
+    for c in capped(by[m], n, cap):
+        if c['key'] in seen: continue
+        seen.add(c['key']); order.append((m, c))
+os.makedirs(f'{WORK}/read', exist_ok=True)
+for b in range(0, len(order), 70):
+    with open(f'{WORK}/read/batch-{b//70+1:02d}.txt', 'w', encoding='utf-8') as f:
+        for m, c in order[b:b+70]:
+            t = c['text']; t = t if len(t) <= 450 else t[:450] + ' …'
+            f.write(f"[{c['key']}] {m} | {c['rating']}★ {c['date']} {c['loc']} | {c['app'][:24]}\n{t}\n\n")
+json.dump([{'key': c['key'], 'drawn': m} for m, c in order], open(f'{HERE}/sample-index.json', 'w'))
+print(len(order), collections.Counter(m for m, _ in order))

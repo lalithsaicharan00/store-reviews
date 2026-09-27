@@ -1,0 +1,70 @@
+P24#6336|XOS_PAID_LOST|"asking to transfer my premium account I had on iphone to my samsung phone but got no reply"
+P12#24872|XOS_DATA_LOST_FREE|"Since I don't have premium, I cannot get back any of my progress"
+A52#15346|XOS_NO_SYNC|"为什么安卓和苹果数据不互通"
+A76#4487|XOS_NO_SYNC|"iPhone跟安卓的資料似乎無法同步"
+A24#21003|XOS_OK,X_PAYER|"the team helped me transfer my Fabulous Sphere account"
+A52#15244|XOS_PAID_LOST|"竟然不通账号，重复付费"
+A52#3252|NR|
+A52#4671|XOS_OK|"苹果安卓通用"
+A52#10278|NR|
+A52#14067|NR|
+A52#3358|XOS_OK,X_PAYER|"苹果和安卓数据互通了"
+A52#6974|XOS_PAID_LOST|"原来在安卓机上买过会员，换成苹果就用不了了"
+A52#4636|XOS_NO_SYNC|"安卓苹果不互通，换手机用不了"
+A52#12484|XOS_PAID_LOST|"之前安卓买了会员 在苹果端不能用"
+P12#67558|XOS_PAID_LOST,X_PAYER|"after switching from iphone to android this month I found that I couldn't sync my account with the new phone"
+P5#5116|XOS_PAID_LOST|"안드로이드에서 아이폰으로 바꿨는데 구독이만료됐다면서 새로하라고하네요"
+A1#43438|XOS_PAID_LOST|"苹果端是高级会员了，怎么能在安卓端登录高级会员"
+P12#66741|XOS_PAID_LOST,X_PAYER|"the account cannot be transferred from one OS to another yet"
+P9#588|XOS_OK|"Had an issue when switching from iOS to Android and the developer, Sebastian, was more than willing to help"
+A24#30518|XOS_PAID_LOST,X_PAYER|"I was in a premium subscription switched from Android to IPhone"
+A10#63752|XOS_PAID_LOST|"I have switched from Samsung to iPhone and I’m having trouble"
+P2#5465|XOS_NO_APP,X_PAYER|"So if we switch from Android to iOS, what would be the use of backup?"
+A24#9147|NR|
+A1#33658|NR|
+A24#29796|NR|
+P3#2338|XOS_DATA_LOST_FREE,NA|"when the users to switch android to ios they easily use the account"
+P19#283|XOS_FILE_OK|"have to import export"
+P2#7778|XOS_NO_APP|"Do you have ios version?"
+P122#16698|NR|
+A24#40556|XOS_PAID_LOST,XOS_DATA_LOST|"not mentioning all my past data were all gone"
+P2#7559|XOS_NO_APP|"I've just switched from Samsung to iPhone and unfortunately can't find your app in the store"
+A57#554|XOS_NO_APP|"안드로 옮기면서 이 어플을 사용하지 못해"
+P130#621|NR|
+A24#37153|XOS_PAID_LOST,X_PAYER|"Wouldn’t let me restore my purchase"
+P33#1069|XOS_PAID_LOST|"I'm unable to transfer my subscription from android to ios"
+A85#2392|NR|
+P126#19112|NR|
+P12#28742|XOS_PAID_LOST,X_PAYER|"when I asked to transfer from my android to my new iPhone I received no reply email"
+A85#585|NR|
+P37#1808|NR|
+A13#3185|NR|
+P24#2968|NR|
+A1#51292|XOS_NO_APP|"could you please please pleasseeeeee make this app"
+P12#46315|XOS_PAID_LOST,XOS_DATA_LOST|"has to pay for the app again on iOS only to find out that the progress doesn't back up"
+A24#19350|XOS_PAID_LOST|"there is no way you can transfer your account"
+A24#39219|XOS_PAID_LOST,XOS_DATA_LOST,X_PAYER|"Neither did any of my progress that I had built up"
+A20#3854|NR|
+P12#26699|XOS_DATA_LOST|"I'm unable to transfer my progress"
+P84#58016|NR|
+P3#19067|XOS_NO_APP|"I now have to migrate from Android to iOS and I can't find something quite like it"
+A24#9284|NR|
+P3#9127|XOS_NO_APP|"this app is honestly the only thing I miss"
+A13#12165|NR|
+A1#22820|NR|
+P5#4849|NR|
+P49#326|XOS_PAID_LOST,XOS_DATA_LOST,X_PAYER|"So all my routines and data will be lost, as well as the premium version I bought!"
+P12#4880|XOS_PAID_LOST,XOS_DATA_LOST,X_PAYER|"I had to start my journey from the beginning but that's OK. What pisses me off is that I lost my annual membership"
+A46#2100|XOS_OK|"I was able to move from Android to iOS seemlessly"
+P2#1875|NR|
+P115#33|NR|
+P126#151110|XOS_NO_APP|"아이폰용도 만들어주세요"
+P130#267|NR|
+A57#430|NR|
+P12#30020|XOS_PAID_LOST,X_PAYER|"if you buy premium on one device, you only have access to premium features on that one device"
+A1#11917|NR|
+P12#47008|XOS_PAID_LOST,X_PAYER|"App and subscription information doesn't transfer from android to iPhone"
+A1#4274|XOS_NO_SYNC|"能和苹果互通就好了"
+P84#9001|NR|
+A24#34652|XOS_PAID_LOST|"it was ridiculously complicated"
+A18#1563|NR|

@@ -1,0 +1,4 @@
+screened 1238784 App Store + Play reviews
+HEALTH           n= 1552 apps= 58 per10k= 12.5 mean=4.18 say-paid= 4.6%  top apps: 10. Finch - Self-Care  458, 122. Hevy - Gym Log Wo 228, 23. Streaks - The habi 199, 1. Habit Tracker - Goa 147
+XOS_MOVE         n=  154 apps= 28 per10k=  1.2 mean=3.38 say-paid=13.6%  top apps: 52. ShineDay - Habit T 74, 24. Fabulous - Daily H 14, 12. Fabulous Daily Rou 14, 1. Habit Tracker - Goa 6
+TRANSFER_PRAISE  n=   52 apps= 21 per10k=  0.4 mean=4.27 say-paid=13.5%  top apps: 84. Tasks - To Do List 17, 10. Finch - Self-Care  7, 12. Fabulous Daily Rou 4, 122. Hevy - Gym Log Wo 3

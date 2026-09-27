@@ -1,0 +1,70 @@
+A10#53636|NR|
+A23#3959|HEALTH_PRAISE|"the apple health integration is pretty great too"
+A10#53961|NR|
+A10#8845|NR|
+A10#22321|NR|
+A24#27143|NR|
+A10#21034|NR|
+A1#46068|HEALTH_BROKEN|"it keeps ones that are linked to my Apple Health such as exercis"
+A23#3927|HEALTH_PRAISE|"It implemented all sorts of features that’s exclusive for iOS. SiriKit, HealthKit"
+A10#47023|NR|
+A13#9470|HEALTH_WANT|"Just hope you guys can add integration to Apple&#39;s Health App in the future"
+P122#14523|HEALTH_BROKEN|"I can't use Samsung Health to track my workout"
+A53#606|HEALTH_BROKEN|"le nombre d’étages montés est le double de l’app santé"
+P122#31033|HEALTH_PRAISE|"it synchronizes with google fit and I love its design"
+A1#50835|HEALTH_WANT|"Can you please sync with Apple Health for running activities?"
+A23#1400|HEALTH_PRAISE|"verbindet sich mit der Health App"
+A23#4448|HEALTH_PRAISE|"The integrations with apple health and other apps reduce the mental lo"
+P122#15834|HEALTH_BROKEN|"it doesn't upload my data to Google fit, Health connect"
+A23#4960|HEALTH_PRAISE|"some nice features have been added like integration with apple health"
+A24#18601|HEALTH_WANT|"It&#39;s not integrated with the health app nor any other fitness app, so I can lie and cheat on my activities at any moment"
+A1#46401|HEALTH_PRAISE|"it can sync to your Apple Health app which is good"
+A41#283|HEALTH_BROKEN,HEALTH_BUY_REASON,X_PAYER|"I paid for it specifically for synching with the health app but even iam sure all permissions are allowed it doesn&#39;t sync"
+A23#6509|HEALTH_PRAISE|"health kit integration that simplifies usage"
+P8#5513|NR|
+P24#16590|NR|
+A23#4479|HEALTH_PRAISE|"Love the integration with Apple Health too!"
+P24#20408|HEALTH_PRAISE|"+1: Integrato con google fit"
+A86#1645|HEALTH_PRAISE|"it&#39;s a great app that takes advantage of iOS and hardware"
+A31#2845|NR|
+A86#1323|NR|
+A53#749|HEALTH_BROKEN,X_PAYER|"プレミアム購入しました"
+A86#28|HEALTH_PRAISE,X_PAYER|"You can set health goals &amp; monitor health data from Apple&#39;s Health App"
+A33#3268|HEALTH_BROKEN|"The data syncing from apple health is really a let down"
+A53#1642|HEALTH_WANT|"biking, unlike walking, doesn&#39;t integrate with the Health app"
+A86#1124|HEALTH_WANT|"can you turn the one click tracking to input data into Apple health kit?"
+A33#2095|HEALTH_WANT|"애플 건강 앱들에 업데이트 된 내용이 자동으로 반영되면 더 좋을 것 같습니다"
+A1#46127|HEALTH_PRAISE|"the fact that it will collect data from your Apple Health app if you want it"
+A86#1327|HEALTH_PRAISE|"I definitely love the look of your app and the integration with Apple Health"
+A1#44284|HEALTH_PRAISE|"Man kann die App mit der Apple Health App verbinden"
+P122#14032|HEALTH_PRAISE,HEALTH_MUST|"Thank you for adding health connect. I am missing this in so many apps."
+A33#1542|HEALTH_BROKEN|"ヘルスケアデータが自動トラッキングタスクされなくなりました"
+P122#11003|HEALTH_WANT|"it doesn't sync with Samsung Health"
+P122#6062|HEALTH_WANT|"logged exercises don't automatically sync through Health Connect and Fitbit"
+A1#51535|HEALTH_PRAISE|"integration with your health app to track your steps"
+A1#46746|HEALTH_PRAISE|"The Apple Health integration is seamless, fetches all vitals and activity automatically"
+A52#11663|HEALTH_WANT,X_PAYER|"不过都适配Apple Watch和健康app了"
+A24#42830|HEALTH_WANT|"Nice but lacking iOS Health app integration"
+P122#18370|HEALTH_PRAISE|"combines my session and reading from polar flow into one recording for Google fit"
+A86#637|HEALTH_BROKEN|"sleep graph is not reading from apple health"
+A76#5513|HEALTH_PRAISE|"The card feature from Apple health is an excellent idea"
+P3#13815|HEALTH_WANT|"it would have been better if, I could integrate this app with Google fit for tracking my workouts"
+A53#1333|HEALTH_WANT|"other Habit trackers that truly connect to Apple Health"
+P24#12343|NR|
+A24#435|HEALTH_WANT|"Sería menester que puedan cruzar datos con la app Salud de iPhone"
+A53#1389|HEALTH_BROKEN|"App does not permit linking to health app"
+P3#1260|HEALTH_WANT|"Z.B. Samsung Health, oder Fabulous"
+P4#22834|NR|
+P24#13023|HEALTH_BROKEN|"Google fit data seems to be synced only once per day"
+P12#8373|NR|
+A53#1621|HEALTH_BROKEN|"Sadly it doesn’t seem to work consistently"
+P120#87|NR|
+A41#354|NR|
+A83#204|NR|
+P31#458|HEALTH_PRAISE|"Love the Health Connect integration!"
+A24#11118|HEALTH_WANT|"Einzig und allein die Apple Health Anbindung fehlt mir"
+A33#852|NR|
+A86#607|HEALTH_PRAISE|"Das HealthKit macht die Nutzung der Heal"
+A41#381|NR|
+A33#1216|HEALTH_WANT|"automatically complete a goal based on the health app"
+A7#603|HEALTH_WANT|"link with Health kit"

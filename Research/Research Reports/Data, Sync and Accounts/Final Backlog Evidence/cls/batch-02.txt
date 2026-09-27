@@ -1,0 +1,70 @@
+A53#830|NR|
+A33#472|NR|
+P12#42289|XOS_PAID_LOST,X_PAYER|"Non transfer able from apple to android too"
+A85#1326|NR|
+P33#2254|NR|
+A10#7621|XOS_NO_SYNC|"我和朋友一个苹果一个安卓，互相没办法加对方好友"
+P2#7192|XOS_NO_APP|"I switched from Android to iPhone, please bring this app to app store"
+A10#9238|XOS_DATA_LOST_FREE|"I can not get my finch to successfully transfer from my old android to my iPhone so I’m gutted now"
+P84#25843|NR|
+P130#617|NR|
+A10#20322|XOS_DATA_LOST_FREE|"it didn’t save any of my progress and I had almost 2 years streak"
+P3#1423|XOS_NO_APP|"now changing from android to ios i do not know how to find it"
+P84#27058|NR|
+P100#98|NR|
+P12#26684|NR|
+A24#1995|NR|
+P84#8766|MOVE_HARD,MOVE_PAID|"Data does not transfer to new phones easily"
+A59#2014|NR|
+P122#2019|NR|
+P4#4752|NR|
+P2#11249|NR|
+P84#13569|MOVE_PRAISE|"I recently got a new phone and I was able to transfer all my content to it easily"
+P84#18052|MOVE_PRAISE,MOVE_PAID|"I did not hesitate to make a donation for the ability to transfer my tasks. That process was seamless and extremely fast!"
+P84#15552|NR|
+P35#46|NR|
+P12#8799|NR|
+P84#14111|MOVE_PRAISE,X_PAYER|"The instructions on how to transfer my data worked beautifully and were painless"
+A10#3110|NR|
+P84#19200|NR|
+P84#21646|NR|
+P84#8471|MOVE_PRAISE|"I can even transfer over to new phones smoothly!"
+P125#6556|NR|
+P84#13523|NR|
+P49#2521|NR|
+A13#12021|NR|
+P5#2056|NR|
+A10#37566|NR|
+A10#45587|NR|
+P69#281|NR|
+P126#42798|NR|
+P122#4543|NR|
+P91#53|MOVE_PRAISE|"I also recently changed devices and everything transferred perfectly"
+P84#8768|NR|
+P4#15853|NR|
+A23#4680|NR|
+P84#30801|NR|
+A1#51358|NR|
+A10#3044|NR|
+P84#16677|NR|
+P84#17689|NR|
+P126#48286|NR|
+P5#2370|NR|
+A10#49074|NR|
+A10#20120|MOVE_WANT|"I wish that Finch could transfer to a differen"
+P12#10746|NR|
+P84#28422|NR|
+P84#8981|NR|
+P3#4881|NR|
+P84#15622|NR|
+P12#35567|NR|
+A10#25967|NR|
+P122#3699|NR|
+P4#20380|MOVE_HARD|"when I got a new phone, I was hoping my account will be transferred too for a seamless transition"
+A4#20107|NR|
+A10#50157|NR|
+A53#1697|HEALTH_PRAISE|"Love that it syncs with Apple health"
+A10#62491|NR|
+A23#6078|HEALTH_PRAISE|"Pros include the integration with Health app so many streaks can be tracked automatically"
+A1#1068|HEALTH_PRAISE,HEALTH_BROKEN|"o aplicativo tem integração com o Apple Health, o que é ótimo para automatizar o preenchimento"
+P122#16338|HEALTH_PRAISE,HEALTH_MUST|"Sync well with Google Fit which for me is a must for tracking apps"

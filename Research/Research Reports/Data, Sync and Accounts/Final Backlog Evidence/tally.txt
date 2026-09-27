@@ -1,0 +1,22 @@
+code                       n apps  mean payers
+HEALTH_WANT               34   20  3.59      2
+HEALTH_PRAISE             31   11  4.55      1
+XOS_PAID_LOST             23    9  2.35     11
+HEALTH_BROKEN             23   10  2.96      4
+X_PAYER                   22   10  2.77     22
+XOS_NO_APP                10    5  4.80      1
+XOS_DATA_LOST              6    3  1.83      3
+XOS_NO_SYNC                5    4  3.40      0
+XOS_OK                     5    4  4.60      2
+MOVE_PRAISE                5    2  5.00      1
+XOS_DATA_LOST_FREE         4    3  3.50      0
+MOVE_HARD                  2    2  3.50      0
+MOVE_PAID                  2    1  4.00      0
+HEALTH_MUST                2    1  5.00      0
+HEALTH_CHURN               2    2  1.00      0
+NA                         1    1  5.00      0
+XOS_FILE_OK                1    1  5.00      0
+MOVE_WANT                  1    1  4.00      0
+HEALTH_BUY_REASON          1    1  1.00      1
+HEALTH_PARITY              1    1  1.00      0
+precision: XOS_MOVE 49/82, TRANSFER_PRAISE 8/52, HEALTH 88/120

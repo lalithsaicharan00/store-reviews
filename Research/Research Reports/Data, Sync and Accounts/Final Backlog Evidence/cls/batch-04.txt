@@ -1,0 +1,44 @@
+P120#77|NR|
+A24#42361|HEALTH_WANT|"It would be better if the app was connected to the Health app"
+A53#80|HEALTH_WANT|"It only lacks integration to the “sleep” indicators from Apple Health"
+A24#24522|NR|
+A31#5008|HEALTH_WANT|"Would love it more if it integrated with Health Kit though"
+P12#5623|HEALTH_WANT|"Google Fit und Sleep könnte man auch noch einbinden"
+A33#3146|HEALTH_BROKEN,X_PAYER|"Apple Health synci"
+A31#483|HEALTH_BROKEN|"The steps on the app end up being 2ish times what’s on Apple Health"
+P37#277|HEALTH_BROKEN|"In recent update Sync with Google fit is not working"
+A31#2440|HEALTH_BROKEN|"無法自動連結Apple Health的睡眠數據"
+P24#8539|HEALTH_BROKEN|"yet your app has  no "meditation" option in the Google fit link menu"
+A4#17848|NR|
+A86#851|HEALTH_WANT|"why not to autocomplete such gaols like steps or hours standing for example?"
+A52#19992|HEALTH_WANT|"More connect to apple health"
+P120#16|NR|
+A59#1602|NR|
+A25#508|HEALTH_PRAISE|"I love the interface with Apple Health - so no need to key in that data again"
+P24#24120|HEALTH_WANT|"в обход Google fit"
+A25#833|HEALTH_PRAISE|"Works smoothly with Apple Health"
+A33#1651|HEALTH_BROKEN,X_PAYER|"ヘルスケアの連携がされなかったのでチャットしてみたらすぐに返信してくれて解決しました"
+P24#13504|HEALTH_PRAISE|"Integration with Google Fit also means you can't lie to yourself!"
+A3#5272|NR|
+A46#866|HEALTH_WANT|"It&#39;s not connected with the Health app"
+A13#12396|HEALTH_WANT|"For the price it’s missing sync with health app"
+A77#45|HEALTH_WANT|"healthkit integration"
+A46#1533|NR|
+P4#5182|NR|
+A33#3321|HEALTH_BROKEN|"a somehow poor integration with HealthKit"
+A24#25177|NR|
+P8#13961|HEALTH_WANT|"sincronização/automação com o app saúde para contar os passos automaticamente"
+A13#11323|HEALTH_WANT|"Apple health integration for reading and exercise habits"
+P2#1325|NR|
+P24#21102|HEALTH_BROKEN|"Unable to sync with Google Fit"
+A79#119|HEALTH_WANT|"Wondering when will the Apple Health be available in the APP?"
+A13#11807|HEALTH_WANT|"Better Apple Health intergration"
+A41#420|HEALTH_PRAISE|"can connects to Apple Health"
+A41#366|HEALTH_WANT,X_PAYER|"integrate with apple health/fitness trackers so things like &#39;step count&#39; goals"
+A31#2176|HEALTH_BROKEN|"It added all my daily steps to my currently building habit"
+P2#14819|HEALTH_WANT|"me gustaría que se pudiera sincronizar con otra app como samsung health"
+A36#190|HEALTH_WANT,HEALTH_CHURN|"No Apple health connectivity"
+A25#538|HEALTH_BROKEN|"Sleep habit not syncing with Apple health data please fix it"
+P17#1|HEALTH_PARITY|"sync with Apple health. but on Android you have no options"
+A20#3440|HEALTH_PRAISE,HEALTH_CHURN|"I&#39;m switching to Streaks it&#39;s better anyways it adds things to apple health"
+A41#755|NR|
