@@ -19,7 +19,7 @@ SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one a
 | # | Topic | Why this order | Status |
 |---|---|---|---|
 | 1 | **Accounts and identity**: who gets an account (Plus buyers and family members), the sign-in step after purchase, Apple and Google keys, sessions, recovery, sign-out, deletion | Everything else hangs off *who the user is*. Billing links a purchase to an identity; migration moves an identity | [Done](<01. Accounts and Identity.md>) |
-| 2 | **Billing and entitlements**: App Store and Play purchases, verifying and acknowledging them, linking premium to the account, restore, cross-platform, lifetime, family, refunds, grace periods | The top paid-user 1★ cause (72% 1★) | [Done](<02. Billing and Entitlements.md>) |
+| 2 | **Billing and entitlements**: App Store and Play purchases, verifying and acknowledging them, linking premium to the account, restore, cross-platform, lifetime, family, refunds | The top paid-user 1★ cause (72% 1★) | [Done](<02. Billing and Entitlements.md>) |
 | 3 | **Backup and restore**: on-device snapshots, the phone's own backups, export/import, restore; server backup for Plus | Every user, free or Plus | [Done](<03. Backup and Restore.md>) |
 | 4 | **Phone migration**: same OS, iPhone ⇄ Android (account or export file), restore before onboarding | Third most common 1★ story | [Done](<04. Phone Migration.md>) |
 | 5 | **Sync engine**: data model, outbox, conflicts, tombstones, schema versions, dates and time zones | The core protocol | [Done](<05. Sync Engine.md>) |

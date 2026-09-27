@@ -1,6 +1,6 @@
 # Free Habit Limit — 5, 6, 7 or More
 
-*Written by Claude (Claude Code), 29 Sep 2026. A follow-up to [Free Plan Design — Habit Cap, Widgets and an Honest Listing](<Free Plan Design — Habit Cap, Widgets and an Honest Listing.md>). The user's question: 4 is already ruled out, so what is the best free limit: 5, 6, 7, 8 or more? It has to drive revenue, keep complaints low, and fit the free widgets. A recommendation, not a decision.*
+*Written by Claude (Claude Code), 29 Sep 2026. A follow-up to [Free Plan Design — Habit Cap, Widgets and an Honest Listing](<Free Plan Design — Habit Cap, Widgets and an Honest Listing.md>). The user's question: 4 is already ruled out, so what is the best free limit: 5, 6, 7, 8 or more? It has to drive revenue, keep complaints low, and fit the free widgets. A recommendation, not a decision. **Outcome (29 Sep 2026):** 5 was chosen and fixed; the "raise to 6 later" option in §8 was not taken ([02 §3.1](<../../../Architecture/02. Billing and Entitlements.md>)).*
 
 **How each point is backed:**
 - **Users show**: review evidence.

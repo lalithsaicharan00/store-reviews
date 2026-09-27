@@ -311,12 +311,12 @@ It adds these requirements to the design above:
 3. **Signing in never deletes local data.** Show which account it is before merging; warn when a sign-in creates a brand-new account; signing out asks whether to keep a local copy.
 4. **Schedules and goals have effective dates.** Streaks are always *computed* from records, never stored as a counter.
 5. **Undo** for every destructive action, **Recently deleted** for 30 days, and **Archive** instead of delete.
-6. **Data is never held hostage:** backup, restore, export and sync are free forever, and an ended subscription never hides data.
+6. **Data is never held hostage:** backup, restore, export and sync are free forever, and a refund never hides data.
 7. **Export uses local calendar dates,** every export can be imported back on either platform, and there is CSV import from rival apps.
 8. **A backup counts only when the server confirms it.** CI runs backup → wipe → restore → compare on every build.
 9. **Ticking a habit on one device cancels its pending reminder on the others.**
 10. **The widget database uses "complete until first unlock" file protection,** and widgets refresh at the user's day boundary.
-11. **Store billing only.** Account deletion shows the subscription status and links to the store to cancel.
+11. **Store billing only, one-time purchases only.** No subscriptions, so no trials, renewals or cancellations.
 12. **Entitlements are restored automatically on launch.** Play purchases are acknowledged at once (Google refunds after 3 days). "Lifetime" is stored on the server and kept forever.
 13. **The device ID, sync cursor and session tokens stay out of OS backups** (`no_backup` on Android, excluded on iOS). After an OS restore, the app does a full sync.
 14. **Performance budget:** 10 years × 50 habits of data, ticking under 100 ms.
