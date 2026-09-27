@@ -1,0 +1,70 @@
+P15#209|CAP6,ENOUGH,WILLPAY|"6 habit for free peogram, good ui perhaps better to upgrade"
+P15#1098|CAP6,NOT_ENOUGH|"Бесплатно только 6 привычек. В чем смысл трекера, если можно лишь так мало задач добавить"
+A16#84|PAIDAPP|"they only allow you to do 6 habits, which I understand, but is also kind of weird to limit people paying for the app"
+A16#88|PAIDAPP|"Can&#39;t have more than 6 habits at a time."
+A16#284|PAIDAPP|"there is a cap of only 6 habits you can be working on at any one time. It’s a major flaw"
+A16#300|NR|
+A16#307|PAIDAPP,X_PAYER|"There is a cap of 6 habits for the paid version which is probably reasonable."
+A16#529|PAIDAPP,X_PAYER|"In my opinion free version should let you manage at least 3 to 5 habits while paid version should not have a limit."
+A16#574|PAIDAPP,LEFT|"Unfortunately I will have to use another app with more habits to track."
+A16#651|PAIDAPP,X_PAYER|"the maximum 6 habits they give on the app isn’t enough to cover everything"
+A16#652|NR|
+A16#659|PAIDAPP|"Simply three stacks in a day with three or four habits in each takes you well over the six habit limit."
+A16#723|PAIDAPP|"Tracking only 6 habits with the “Pro” version is a joke."
+A16#739|PAIDAPP|"People complain about only 6 habits but they’re missing the point of building a habit."
+A16#770|PAIDAPP|"Only allows 6 habits, unlike a large part of the excellent book&#39;s approach."
+P2#2919|CAP6,NOT_ENOUGH|"only allows 6 tasks on free version - pointless and greedy. just get ads"
+P2#7638|CAP6,STATED|"Add up to 6 habits...."
+P2#10506|CAP6,LEFT,SURPRISE|"For this app you can only have 6 tasks and habits total before you have to pay."
+P2#21106|CAP6,STATED|"there is a maximum of 6 habits you can take if you don't pay"
+P2#21524|CAP6,NOT_ENOUGH|"Good but only 6 habits/task or pay if you want more."
+P2#28466|CAP6,PAID,X_PAYER|"i first tried the free version until i wanted to add another habit and realized you can add up to 6 free habits. So i had an existential chrisis and a debate over if the premium is worth it and decided to go through with the payment."
+P2#28506|CAP6,NOT_ENOUGH|"But only 6 habits to track, for more need to buy premium. It's sad"
+A24#8805|NR|
+A24#36352|CAP4,WANT6,NOT_ENOUGH|"I wish you would let us have 6 habits for free not just 4"
+A29#276|NR|
+A29#335|ENOUGH,CHOSE_GENEROUS|"So long as I can track my 5-6 habits for free, I’m using this app."
+P3#5405|NR|
+A31#5104|PAIDAPP|"I also use streaks, but it is limited to six habits."
+P38#1143|NOT_ENOUGH|"it would be much easier if we could add more than only 6 habits/tasks"
+A4#386|NR|
+A4#2374|CAP6,CHANGED_DOWN,X_PAYER|"I can’t add more than six routines daily"
+A4#2389|CAP6,NOT_ENOUGH,NAG|"Why can’t I put more than 6 tasks without the app begging me to give it money"
+A4#3502|CAP6,NOT_ENOUGH|"the only flaw is that it doesn’t let me add more than six tasks"
+A4#3726|CAP6,NOT_ENOUGH|"I can only add six tasks every day"
+A4#5312|CAP6,ENOUGH|"u get a limit of 6 tasks unless u pay it sounds little but it really isn’t bad"
+A4#5468|CAP6,NOT_ENOUGH|"when i tried to add a 7th task to the list it said i needed vip"
+A4#5486|CAP6,NOT_ENOUGH|"You can only have 6 tasks before you have to pay"
+A4#7498|CAP6,NOT_ENOUGH|"If you would let me do more than six tasks I would’ve loved this app"
+A4#7509|CAP6,NOT_ENOUGH,CHANGED_DOWN|"it won’t let me add more than six tasks"
+A4#9394|CAP6,NOT_ENOUGH,SURPRISE|"When I checked the Pro benefits, it mostly talked about better quality features, but didn’t clearly mention the task limit."
+A4#10932|CAP6,CHANGED_DOWN|"before you used to be able to add as many tasks as you want without paying"
+A4#11368|CAP6,CHANGED_DOWN|"Only to find that you now have to PAY to get more than 6 tasks!"
+A4#11548|CAP6,CHANGED_DOWN|"it stopped me at 6 tasks and asked me if I wanted to continue making tasks"
+A4#11794|CAP6,LEFT|"now i need to find a new app with will take time"
+A4#11943|CAP6,NOT_ENOUGH|"The only thing I don’t like is that you have to have the    Me+ VIP to add more than 6 tasks."
+A4#12006|CAP6,STATED|"The only thing is that you can only do 6 tasks without vip. Other than that, very good."
+P5#1850|NR|
+P50#73|CAP6,NOT_ENOUGH|"I don't like the fact that you can't add more than 6 habits."
+A52#1923|CAP6,NOT_ENOUGH|"只能免费设置6个"
+A52#6325|CAP6,LEFT|"居然在设置第6个习惯之后收费哈哈哈，于是我又卸载了"
+A52#6944|CAP6,LEFT|"结果再添加的时候就要会员充值，果断卸载"
+A52#8011|NR|
+A52#9075|CAP5,NOT_ENOUGH|"当满了五个就要付"
+A52#15979|CAP6,NOT_ENOUGH|"普通版就只有6个习惯，实在是太鸡肋了"
+A52#15993|NR|
+A52#16014|CAP6,NOT_ENOUGH|"苹果APP超过6个以上就要收费"
+A52#16053|CAP6,NOT_ENOUGH|"只给6个免费习惯"
+A52#16097|CAP6,LEFT|"这么多APP，我凭什么用你"
+A52#19482|CAP6,NOT_ENOUGH|"每天习惯只能设置6个，要增加就需要付费开成会员"
+A54#321|CAP6,ENOUGH|"You can add up to 6 tasks for free. Truly love it!"
+A55#169|CAP6,WILLPAY|"I decided to buy the premium. Unfortunately there’s a bug that makes the app crash every time you try to do so"
+P61#2117|CAP6,NOT_ENOUGH|"Жаль что можно добавить только 6 привычек на день"
+A76#6040|PAIDAPP|"In streaks you can only have 6 tasks to track and so I use that for the top 6 things that are most important"
+A83#286|NR|
+P98#368|CAP6,LEFT|"I'm personally deleting this app and finding a new one"
+A1#14996|NR|
+A1#40292|NR|
+A1#40368|NR|
+A1#42296|NR|
+A1#42891|NR|

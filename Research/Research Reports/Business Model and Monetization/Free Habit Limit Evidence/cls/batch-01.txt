@@ -1,0 +1,70 @@
+A1#306|CAP6,NOT_ENOUGH,REFUSE|"Waste of your time unless you only want to track 6 habits."
+A1#817|CAP6,NOT_ENOUGH,CHANGED_DOWN|"Now I can only add six habits?"
+A1#1657|CAP6,NOT_ENOUGH,WANT8|"Can you please make it to 8 or 10 free habits?"
+A1#2718|CAP6,ENOUGH|"可以自定义免费6个养成习惯"
+A1#2828|CAP6,NOT_ENOUGH,PRICE_FAIR|"只能弄6个 要是想再加就要花钱了 不过倒是也不贵"
+A1#3386|NR|
+A1#38065|NR|
+A1#41561|NR|
+A1#41715|NR|
+A1#41716|NR|
+A1#41979|NR|
+A1#42005|NR|
+A1#42052|NR|
+A1#42100|NR|
+A1#42164|NR|
+A1#42464|NR|
+A1#42594|NR|
+A1#42617|NR|
+A1#42680|NR|
+A1#42704|NR|
+A1#42731|NR|
+A1#42741|NR|
+A1#42865|NR|
+A1#43031|NR|
+A1#43033|NR|
+A1#43065|NR|
+A1#43117|NR|
+A1#43201|NR|
+A1#43225|NR|
+A1#43352|NR|
+A1#43507|NR|
+A1#43515|NR|
+A1#43760|CAP6,ENOUGH|"it is for free (up to 6 habits)"
+A1#45170|CAP6,ENOUGH|"u get a limit of six tasks but it’s so GOOOOOOD!!!"
+A1#45179|CAP6,NOT_ENOUGH|"Requires payment to keep track of more than 6 habits"
+A1#45192|CAP6,ENOUGH|"I believe this app allows you to add up to 6 habits without paying which is plenty for the core habits to get you through a day"
+A1#45204|CAP6,NOT_ENOUGH|"Putting creating habits behind a paywall for a habit creating app is not how you charge for a service"
+A1#45287|CAP6,NOT_ENOUGH|"I just don’t think we need to pay for more than 6 habits."
+A1#45731|CAP6,NOT_ENOUGH|"can’t even add more than 6 habits"
+A1#46277|CAP5,STATED,CHANGED_DOWN|"Currently it does only offer 5 habits at once (I think they updated)"
+A1#46404|NR|
+A1#46686|CAP6,NOT_ENOUGH|"So if you don&#39;t pay additionally it&#39;s not that useful"
+A1#47402|CAP6,NOT_ENOUGH,SURPRISE|"then when I was making my 7th habit I need to pay…"
+A1#48028|CAP6,NOT_ENOUGH|"You have to pay to hace more than 6 habits"
+A1#48918|WIDGET_FIT|"the big widget is limited to 6 habits only"
+A1#49466|CAP6,NOT_ENOUGH|"Бесплатно можно использовать ТОЛЬКО 6 ПРИВЫЧЕК."
+A1#49483|CAP6,NOT_ENOUGH|"Здесь бесплатно можно добавить только 6 привычек."
+A1#50789|CAP6,NOT_ENOUGH|"I&#39;m disappointed, many apps have a pro version, but this is too much."
+A1#51032|CAP6,ENOUGH|"you can add up to 6 habits under the free version which is fine for the most part, though I do wish that there could be more"
+A1#51195|CAP6,STATED|"it wont let me make more than 6 tasks. Just saying this but overall its alright"
+A1#51363|CAP6,LEFT|"Deleted the App"
+A1#51405|CAP6,NOT_ENOUGH|"Only lets you have 6 habits and if you want more you have to pay extra"
+A1#51419|CAP6,NOT_ENOUGH|"Requires payment when you try and make more than 6 habits."
+A1#51465|CAP6,NOT_ENOUGH|"you get only 6 habits for free, before you have to pay to create new ones. this is really upsetting"
+A1#51472|NR|
+A1#51556|CAP6,NOT_ENOUGH|"you can only have 6 habits unless you have pro which does interfere with what I want to achieve"
+A1#51610|CAP6,NOT_ENOUGH|"I know for a fact that not everybody only does six things a day"
+A1#53378|CAP6,NOT_ENOUGH|"Why not have unlimited habits and then make the subscription for the extra stuff?"
+A1#53761|CAP6,NOT_ENOUGH|"Like i understand you need your money but still only six habits."
+A1#55617|WIDGET_FIT|"Allow the user to select up to 6 habits on a medium widget or less if they want."
+P105#1024|CAP6,ENOUGH,PRICE_FAIR|"the subscription prices are extremely fair if you wish to increase"
+P111#643|NR|
+P124#48|CAP6,STATED|"6 free habits for free version"
+A13#226|CAP6,NOT_ENOUGH|"I know it’s free to use but only 6 habits? That’s a little damning."
+A13#276|CAP6,NOT_ENOUGH|"the free version you can only have 6 habits and cannot set reminders for tasks"
+A13#11570|CAP6,NOT_ENOUGH|"i can only add six tasks; if i want more than that i have to pay"
+A13#12121|CAP6,NOT_ENOUGH|"I’ve used the app for 2 days and already am at my limit."
+A13#13197|CAP6,NOT_ENOUGH|"I wouldn’t mind ads as long as I can write more than six habits down"
+A13#13443|CAP6,ENOUGH|"Freemium can have up to 6 habits/to-dos at a time."
+A13#18463|CAP6,ENOUGH|"Glad it keeps me to no more than 6 habits!"

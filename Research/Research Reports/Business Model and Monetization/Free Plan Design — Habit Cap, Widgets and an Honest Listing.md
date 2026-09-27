@@ -1,6 +1,6 @@
 # Free Plan Design — Habit Cap, Widgets and an Honest Listing
 
-*Written by Claude (Claude Code), 28 Sep 2026. Research for the free plan: how many habits, what else is free, and how to show the limit on the store page. It builds on [Plus Scope and Account at Purchase](<Plus Scope and Account at Purchase.md>) and [Q46: How Many Habits People Actually Track](<../Home Screen and Visual Design/Today Screen Jobs/46. How Many Habits People Actually Track.md>). A recommendation, not a decision.*
+*Written by Claude (Claude Code), 28 Sep 2026. Follow-up on 5 vs 6, 7, 8 or 10: [Free Habit Limit — 5, 6, 7 or More](<Free Habit Limit — 5, 6, 7 or More.md>). Research for the free plan: how many habits, what else is free, and how to show the limit on the store page. It builds on [Plus Scope and Account at Purchase](<Plus Scope and Account at Purchase.md>) and [Q46: How Many Habits People Actually Track](<../Home Screen and Visual Design/Today Screen Jobs/46. How Many Habits People Actually Track.md>). A recommendation, not a decision.*
 
 **The goal (the user's words, shortened):** earn good revenue without looking greedy. Get as many downloads as possible, make the free plan genuinely usable, push people to upgrade without making them angry, and feel like better value than the apps people already know.
 

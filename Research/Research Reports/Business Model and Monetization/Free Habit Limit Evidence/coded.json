@@ -1,0 +1,6876 @@
+[
+{
+"key": "A1#306",
+"codes": [
+"CAP6",
+"NOT_ENOUGH",
+"REFUSE"
+],
+"quote": "Waste of your time unless you only want to track 6 habits.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12854965347",
+"rating": 1,
+"date": "2025-07-05",
+"loc": "au"
+},
+{
+"key": "A1#817",
+"codes": [
+"CAP6",
+"NOT_ENOUGH",
+"CHANGED_DOWN"
+],
+"quote": "Now I can only add six habits?",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10537318033",
+"rating": 1,
+"date": "2023-11-01",
+"loc": "bo"
+},
+{
+"key": "A1#1657",
+"codes": [
+"CAP6",
+"NOT_ENOUGH",
+"WANT8"
+],
+"quote": "Can you please make it to 8 or 10 free habits?",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13106454979",
+"rating": 4,
+"date": "2025-09-06",
+"loc": "ca"
+},
+{
+"key": "A1#2718",
+"codes": [
+"CAP6",
+"ENOUGH"
+],
+"quote": "可以自定义免费6个养成习惯",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13711763153",
+"rating": 5,
+"date": "2026-02-04",
+"loc": "cn"
+},
+{
+"key": "A1#2828",
+"codes": [
+"CAP6",
+"NOT_ENOUGH",
+"PRICE_FAIR"
+],
+"quote": "只能弄6个 要是想再加就要花钱了 不过倒是也不贵",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13045748241",
+"rating": 1,
+"date": "2025-08-22",
+"loc": "cn"
+},
+{
+"key": "A1#3386",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11068828703",
+"rating": 5,
+"date": "2024-03-21",
+"loc": "cn"
+},
+{
+"key": "A1#38065",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "5303031721",
+"rating": 5,
+"date": "2019-12-22",
+"loc": "cn"
+},
+{
+"key": "A1#41561",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "4055836837",
+"rating": 5,
+"date": "2019-04-24",
+"loc": "cn"
+},
+{
+"key": "A1#41715",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "4041503195",
+"rating": 4,
+"date": "2019-04-21",
+"loc": "cn"
+},
+{
+"key": "A1#41716",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "4041435102",
+"rating": 5,
+"date": "2019-04-21",
+"loc": "cn"
+},
+{
+"key": "A1#41979",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3946696996",
+"rating": 3,
+"date": "2019-03-30",
+"loc": "cn"
+},
+{
+"key": "A1#42005",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3936827687",
+"rating": 3,
+"date": "2019-03-28",
+"loc": "cn"
+},
+{
+"key": "A1#42052",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3927979859",
+"rating": 5,
+"date": "2019-03-26",
+"loc": "cn"
+},
+{
+"key": "A1#42100",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3921043224",
+"rating": 5,
+"date": "2019-03-24",
+"loc": "cn"
+},
+{
+"key": "A1#42164",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3907409389",
+"rating": 5,
+"date": "2019-03-21",
+"loc": "cn"
+},
+{
+"key": "A1#42464",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3869945682",
+"rating": 5,
+"date": "2019-03-11",
+"loc": "cn"
+},
+{
+"key": "A1#42594",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3859216158",
+"rating": 5,
+"date": "2019-03-09",
+"loc": "cn"
+},
+{
+"key": "A1#42617",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3855384703",
+"rating": 5,
+"date": "2019-03-08",
+"loc": "cn"
+},
+{
+"key": "A1#42680",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3843275160",
+"rating": 5,
+"date": "2019-03-04",
+"loc": "cn"
+},
+{
+"key": "A1#42704",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3838033954",
+"rating": 5,
+"date": "2019-03-03",
+"loc": "cn"
+},
+{
+"key": "A1#42731",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3831976127",
+"rating": 5,
+"date": "2019-03-02",
+"loc": "cn"
+},
+{
+"key": "A1#42741",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3830376854",
+"rating": 5,
+"date": "2019-03-02",
+"loc": "cn"
+},
+{
+"key": "A1#42865",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3823316785",
+"rating": 5,
+"date": "2019-02-28",
+"loc": "cn"
+},
+{
+"key": "A1#43031",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3811289790",
+"rating": 4,
+"date": "2019-02-25",
+"loc": "cn"
+},
+{
+"key": "A1#43033",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3810789222",
+"rating": 5,
+"date": "2019-02-24",
+"loc": "cn"
+},
+{
+"key": "A1#43065",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3805141393",
+"rating": 5,
+"date": "2019-02-23",
+"loc": "cn"
+},
+{
+"key": "A1#43117",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3795954921",
+"rating": 4,
+"date": "2019-02-21",
+"loc": "cn"
+},
+{
+"key": "A1#43201",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3782986471",
+"rating": 4,
+"date": "2019-02-18",
+"loc": "cn"
+},
+{
+"key": "A1#43225",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3778933331",
+"rating": 5,
+"date": "2019-02-17",
+"loc": "cn"
+},
+{
+"key": "A1#43352",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3764821819",
+"rating": 1,
+"date": "2019-02-13",
+"loc": "cn"
+},
+{
+"key": "A1#43507",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3750488327",
+"rating": 5,
+"date": "2019-02-09",
+"loc": "cn"
+},
+{
+"key": "A1#43515",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3749433352",
+"rating": 5,
+"date": "2019-02-09",
+"loc": "cn"
+},
+{
+"key": "A1#43760",
+"codes": [
+"CAP6",
+"ENOUGH"
+],
+"quote": "it is for free (up to 6 habits)",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12545192128",
+"rating": 5,
+"date": "2025-04-15",
+"loc": "cz"
+},
+{
+"key": "A1#45170",
+"codes": [
+"CAP6",
+"ENOUGH"
+],
+"quote": "u get a limit of six tasks but it’s so GOOOOOOD!!!",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "14444692907",
+"rating": 4,
+"date": "2026-08-18",
+"loc": "gb"
+},
+{
+"key": "A1#45179",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "Requires payment to keep track of more than 6 habits",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "14261435861",
+"rating": 1,
+"date": "2026-07-04",
+"loc": "gb"
+},
+{
+"key": "A1#45192",
+"codes": [
+"CAP6",
+"ENOUGH"
+],
+"quote": "I believe this app allows you to add up to 6 habits without paying which is plenty for the core habits to get you through a day",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13979313289",
+"rating": 5,
+"date": "2026-04-20",
+"loc": "gb"
+},
+{
+"key": "A1#45204",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "Putting creating habits behind a paywall for a habit creating app is not how you charge for a service",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13762683686",
+"rating": 1,
+"date": "2026-02-18",
+"loc": "gb"
+},
+{
+"key": "A1#45287",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "I just don’t think we need to pay for more than 6 habits.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12407142026",
+"rating": 3,
+"date": "2025-03-11",
+"loc": "gb"
+},
+{
+"key": "A1#45731",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "can’t even add more than 6 habits",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10019854963",
+"rating": 1,
+"date": "2023-06-10",
+"loc": "gb"
+},
+{
+"key": "A1#46277",
+"codes": [
+"CAP5",
+"STATED",
+"CHANGED_DOWN"
+],
+"quote": "Currently it does only offer 5 habits at once (I think they updated)",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10841195127",
+"rating": 5,
+"date": "2024-01-19",
+"loc": "hk"
+},
+{
+"key": "A1#46404",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3855292338",
+"rating": 5,
+"date": "2019-03-08",
+"loc": "hk"
+},
+{
+"key": "A1#46686",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "So if you don&#39;t pay additionally it&#39;s not that useful",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12159082590",
+"rating": 1,
+"date": "2025-01-08",
+"loc": "il"
+},
+{
+"key": "A1#47402",
+"codes": [
+"CAP6",
+"NOT_ENOUGH",
+"SURPRISE"
+],
+"quote": "then when I was making my 7th habit I need to pay…",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "14505537596",
+"rating": 2,
+"date": "2026-09-03",
+"loc": "it"
+},
+{
+"key": "A1#48028",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "You have to pay to hace more than 6 habits",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12151796993",
+"rating": 2,
+"date": "2025-01-06",
+"loc": "mx"
+},
+{
+"key": "A1#48918",
+"codes": [
+"WIDGET_FIT"
+],
+"quote": "the big widget is limited to 6 habits only",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11812963753",
+"rating": 3,
+"date": "2024-10-09",
+"loc": "ph"
+},
+{
+"key": "A1#49466",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "Бесплатно можно использовать ТОЛЬКО 6 ПРИВЫЧЕК.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "14353851251",
+"rating": 4,
+"date": "2026-07-27",
+"loc": "ru"
+},
+{
+"key": "A1#49483",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "Здесь бесплатно можно добавить только 6 привычек.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13700822904",
+"rating": 1,
+"date": "2026-02-01",
+"loc": "ru"
+},
+{
+"key": "A1#50789",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "I&#39;m disappointed, many apps have a pro version, but this is too much.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13334306866",
+"rating": 1,
+"date": "2025-10-30",
+"loc": "ua"
+},
+{
+"key": "A1#51032",
+"codes": [
+"CAP6",
+"ENOUGH"
+],
+"quote": "you can add up to 6 habits under the free version which is fine for the most part, though I do wish that there could be more",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "14168414665",
+"rating": 4,
+"date": "2026-06-11",
+"loc": "us"
+},
+{
+"key": "A1#51195",
+"codes": [
+"CAP6",
+"STATED"
+],
+"quote": "it wont let me make more than 6 tasks. Just saying this but overall its alright",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13823701313",
+"rating": 3,
+"date": "2026-03-07",
+"loc": "us"
+},
+{
+"key": "A1#51363",
+"codes": [
+"CAP6",
+"LEFT"
+],
+"quote": "Deleted the App",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13280996074",
+"rating": 3,
+"date": "2025-10-18",
+"loc": "us"
+},
+{
+"key": "A1#51405",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "Only lets you have 6 habits and if you want more you have to pay extra",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13088523947",
+"rating": 2,
+"date": "2025-09-02",
+"loc": "us"
+},
+{
+"key": "A1#51419",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "Requires payment when you try and make more than 6 habits.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "13028846891",
+"rating": 1,
+"date": "2025-08-17",
+"loc": "us"
+},
+{
+"key": "A1#51465",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "you get only 6 habits for free, before you have to pay to create new ones. this is really upsetting",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12888696695",
+"rating": 3,
+"date": "2025-07-14",
+"loc": "us"
+},
+{
+"key": "A1#51472",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12867627790",
+"rating": 5,
+"date": "2025-07-08",
+"loc": "us"
+},
+{
+"key": "A1#51556",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "you can only have 6 habits unless you have pro which does interfere with what I want to achieve",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12578684859",
+"rating": 4,
+"date": "2025-04-24",
+"loc": "us"
+},
+{
+"key": "A1#51610",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "I know for a fact that not everybody only does six things a day",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "12442625360",
+"rating": 4,
+"date": "2025-03-20",
+"loc": "us"
+},
+{
+"key": "A1#53378",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "Why not have unlimited habits and then make the subscription for the extra stuff?",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10430769666",
+"rating": 2,
+"date": "2023-10-02",
+"loc": "us"
+},
+{
+"key": "A1#53761",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "Like i understand you need your money but still only six habits.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10093341926",
+"rating": 4,
+"date": "2023-07-01",
+"loc": "us"
+},
+{
+"key": "A1#55617",
+"codes": [
+"WIDGET_FIT"
+],
+"quote": "Allow the user to select up to 6 habits on a medium widget or less if they want.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "7897921680",
+"rating": 3,
+"date": "2021-10-10",
+"loc": "us"
+},
+{
+"key": "P105#1024",
+"codes": [
+"CAP6",
+"ENOUGH",
+"PRICE_FAIR"
+],
+"quote": "the subscription prices are extremely fair if you wish to increase",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "a977fc5b-5bb8-4816-9e14-214506635553",
+"rating": 5,
+"date": "2020-05-18",
+"loc": "en"
+},
+{
+"key": "P111#643",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "111. My Study Life - School Planner",
+"review_id": "d7edb64c-53be-4b1c-ac05-d778bc0b179e",
+"rating": 1,
+"date": "2026-06-11",
+"loc": "en"
+},
+{
+"key": "P124#48",
+"codes": [
+"CAP6",
+"STATED"
+],
+"quote": "6 free habits for free version",
+"store": "P",
+"app": "124. Habit Streak Tracker - DotHabit",
+"review_id": "2b7d2feb-fb31-4802-b559-23dd52fa6109",
+"rating": 3,
+"date": "2025-04-04",
+"loc": "en"
+},
+{
+"key": "A13#226",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "I know it’s free to use but only 6 habits? That’s a little damning.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "9580528665",
+"rating": 4,
+"date": "2023-02-04",
+"loc": "au"
+},
+{
+"key": "A13#276",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "the free version you can only have 6 habits and cannot set reminders for tasks",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6561250652",
+"rating": 1,
+"date": "2020-10-22",
+"loc": "au"
+},
+{
+"key": "A13#11570",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "i can only add six tasks; if i want more than that i have to pay",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "10038385952",
+"rating": 3,
+"date": "2023-06-16",
+"loc": "us"
+},
+{
+"key": "A13#12121",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "I’ve used the app for 2 days and already am at my limit.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "7491914547",
+"rating": 2,
+"date": "2021-06-22",
+"loc": "us"
+},
+{
+"key": "A13#13197",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "I wouldn’t mind ads as long as I can write more than six habits down",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5718494843",
+"rating": 3,
+"date": "2020-03-27",
+"loc": "us"
+},
+{
+"key": "A13#13443",
+"codes": [
+"CAP6",
+"ENOUGH"
+],
+"quote": "Freemium can have up to 6 habits/to-dos at a time.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5448777351",
+"rating": 5,
+"date": "2020-01-26",
+"loc": "us"
+},
+{
+"key": "A13#18463",
+"codes": [
+"CAP6",
+"ENOUGH"
+],
+"quote": "Glad it keeps me to no more than 6 habits!",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1355969735",
+"rating": 5,
+"date": "2016-03-30",
+"loc": "us"
+},
+{
+"key": "P15#209",
+"codes": [
+"CAP6",
+"ENOUGH",
+"WILLPAY"
+],
+"quote": "6 habit for free peogram, good ui perhaps better to upgrade",
+"store": "P",
+"app": "15. Habit Tracker - HabitGenius",
+"review_id": "5b3ed4fd-ed2e-4c42-8e73-a5b1cc67d496",
+"rating": 4,
+"date": "2026-03-31",
+"loc": "en"
+},
+{
+"key": "P15#1098",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "Бесплатно только 6 привычек. В чем смысл трекера, если можно лишь так мало задач добавить",
+"store": "P",
+"app": "15. Habit Tracker - HabitGenius",
+"review_id": "6d921331-4ff1-472b-b894-9d1a5281388f",
+"rating": 1,
+"date": "2026-03-19",
+"loc": "ru"
+},
+{
+"key": "A16#84",
+"codes": [
+"PAIDAPP"
+],
+"quote": "they only allow you to do 6 habits, which I understand, but is also kind of weird to limit people paying for the app",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "14169935813",
+"rating": 3,
+"date": "2026-06-11",
+"loc": "ca"
+},
+{
+"key": "A16#88",
+"codes": [
+"PAIDAPP"
+],
+"quote": "Can&#39;t have more than 6 habits at a time.",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "13681275543",
+"rating": 2,
+"date": "2026-01-27",
+"loc": "ca"
+},
+{
+"key": "A16#284",
+"codes": [
+"PAIDAPP"
+],
+"quote": "there is a cap of only 6 habits you can be working on at any one time. It’s a major flaw",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "12197112425",
+"rating": 3,
+"date": "2025-01-18",
+"loc": "gb"
+},
+{
+"key": "A16#300",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "11402101270",
+"rating": 3,
+"date": "2024-06-20",
+"loc": "gb"
+},
+{
+"key": "A16#307",
+"codes": [
+"PAIDAPP",
+"X_PAYER"
+],
+"quote": "There is a cap of 6 habits for the paid version which is probably reasonable.",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "11114756333",
+"rating": 2,
+"date": "2024-04-02",
+"loc": "gb"
+},
+{
+"key": "A16#529",
+"codes": [
+"PAIDAPP",
+"X_PAYER"
+],
+"quote": "In my opinion free version should let you manage at least 3 to 5 habits while paid version should not have a limit.",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "13838905269",
+"rating": 5,
+"date": "2026-03-12",
+"loc": "pe"
+},
+{
+"key": "A16#574",
+"codes": [
+"PAIDAPP",
+"LEFT"
+],
+"quote": "Unfortunately I will have to use another app with more habits to track.",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "13621302296",
+"rating": 4,
+"date": "2026-01-11",
+"loc": "se"
+},
+{
+"key": "A16#651",
+"codes": [
+"PAIDAPP",
+"X_PAYER"
+],
+"quote": "the maximum 6 habits they give on the app isn’t enough to cover everything",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "13573785597",
+"rating": 3,
+"date": "2025-12-30",
+"loc": "us"
+},
+{
+"key": "A16#652",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "13517748845",
+"rating": 2,
+"date": "2025-12-15",
+"loc": "us"
+},
+{
+"key": "A16#659",
+"codes": [
+"PAIDAPP"
+],
+"quote": "Simply three stacks in a day with three or four habits in each takes you well over the six habit limit.",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "13222746779",
+"rating": 5,
+"date": "2025-10-04",
+"loc": "us"
+},
+{
+"key": "A16#723",
+"codes": [
+"PAIDAPP"
+],
+"quote": "Tracking only 6 habits with the “Pro” version is a joke.",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "12199586867",
+"rating": 1,
+"date": "2025-01-18",
+"loc": "us"
+},
+{
+"key": "A16#739",
+"codes": [
+"PAIDAPP"
+],
+"quote": "People complain about only 6 habits but they’re missing the point of building a habit.",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "12115363939",
+"rating": 4,
+"date": "2024-12-28",
+"loc": "us"
+},
+{
+"key": "A16#770",
+"codes": [
+"PAIDAPP"
+],
+"quote": "Only allows 6 habits, unlike a large part of the excellent book&#39;s approach.",
+"store": "A",
+"app": "16. Atoms - from Atomic Habits - The official Atomic Habits app",
+"review_id": "11490817427",
+"rating": 2,
+"date": "2024-07-14",
+"loc": "us"
+},
+{
+"key": "P2#2919",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "only allows 6 tasks on free version - pointless and greedy. just get ads",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "655f8702-eaf2-4de2-8a19-086a1201c468",
+"rating": 1,
+"date": "2025-05-11",
+"loc": "en"
+},
+{
+"key": "P2#7638",
+"codes": [
+"CAP6",
+"STATED"
+],
+"quote": "Add up to 6 habits....",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "4d14d938-34b0-4eba-9904-b87fdbc14b44",
+"rating": 5,
+"date": "2023-05-20",
+"loc": "en"
+},
+{
+"key": "P2#10506",
+"codes": [
+"CAP6",
+"LEFT",
+"SURPRISE"
+],
+"quote": "For this app you can only have 6 tasks and habits total before you have to pay.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "164c6289-1b0b-470c-a188-aa742c8a30ac",
+"rating": 2,
+"date": "2022-01-12",
+"loc": "en"
+},
+{
+"key": "P2#21106",
+"codes": [
+"CAP6",
+"STATED"
+],
+"quote": "there is a maximum of 6 habits you can take if you don't pay",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "ac177116-af0b-4c9f-91c2-fdada93dedd7",
+"rating": 5,
+"date": "2023-06-17",
+"loc": "fr"
+},
+{
+"key": "P2#21524",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "Good but only 6 habits/task or pay if you want more.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "0ee671d4-35d2-46ea-b572-1c672b3c4526",
+"rating": 2,
+"date": "2024-10-16",
+"loc": "hr"
+},
+{
+"key": "P2#28466",
+"codes": [
+"CAP6",
+"PAID",
+"X_PAYER"
+],
+"quote": "i first tried the free version until i wanted to add another habit and realized you can add up to 6 free habits. So i had an existential chrisis and a debate over if the premium is worth it and decided to go through with the payment.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "1ff6eb18-ebf4-47f4-99f9-939d2fa9b7ed",
+"rating": 5,
+"date": "2023-11-06",
+"loc": "ru"
+},
+{
+"key": "P2#28506",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "But only 6 habits to track, for more need to buy premium. It's sad",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "3cb21907-c0d4-4e2d-a674-05ba4b9d6984",
+"rating": 5,
+"date": "2023-01-21",
+"loc": "ru"
+},
+{
+"key": "A24#8805",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "5755056907",
+"rating": 5,
+"date": "2020-04-03",
+"loc": "cn"
+},
+{
+"key": "A24#36352",
+"codes": [
+"CAP4",
+"WANT6",
+"NOT_ENOUGH"
+],
+"quote": "I wish you would let us have 6 habits for free not just 4",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "7129865156",
+"rating": 3,
+"date": "2021-03-22",
+"loc": "us"
+},
+{
+"key": "A29#276",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "29. Habit Tracker - Daily Goals - Motivation & Accountability",
+"review_id": "12781234520",
+"rating": 5,
+"date": "2025-06-16",
+"loc": "us"
+},
+{
+"key": "A29#335",
+"codes": [
+"ENOUGH",
+"CHOSE_GENEROUS"
+],
+"quote": "So long as I can track my 5-6 habits for free, I’m using this app.",
+"store": "A",
+"app": "29. Habit Tracker - Daily Goals - Motivation & Accountability",
+"review_id": "11939963526",
+"rating": 5,
+"date": "2024-11-12",
+"loc": "us"
+},
+{
+"key": "P3#5405",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "7559fad3-b1e4-48d9-b999-cd95fd23e496",
+"rating": 5,
+"date": "2023-04-27",
+"loc": "en"
+},
+{
+"key": "A31#5104",
+"codes": [
+"PAIDAPP"
+],
+"quote": "I also use streaks, but it is limited to six habits.",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "1493502607",
+"rating": 5,
+"date": "2016-11-30",
+"loc": "us"
+},
+{
+"key": "P38#1143",
+"codes": [
+"NOT_ENOUGH"
+],
+"quote": "it would be much easier if we could add more than only 6 habits/tasks",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "de9c8d7e-2413-402a-9cfc-a4ea578d7f0a",
+"rating": 5,
+"date": "2023-05-12",
+"loc": "en"
+},
+{
+"key": "A4#386",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13568016154",
+"rating": 1,
+"date": "2025-12-29",
+"loc": "au"
+},
+{
+"key": "A4#2374",
+"codes": [
+"CAP6",
+"CHANGED_DOWN",
+"X_PAYER"
+],
+"quote": "I can’t add more than six routines daily",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13249657539",
+"rating": 4,
+"date": "2025-10-10",
+"loc": "ca"
+},
+{
+"key": "A4#2389",
+"codes": [
+"CAP6",
+"NOT_ENOUGH",
+"NAG"
+],
+"quote": "Why can’t I put more than 6 tasks without the app begging me to give it money",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13061025919",
+"rating": 1,
+"date": "2025-08-26",
+"loc": "ca"
+},
+{
+"key": "A4#3502",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "the only flaw is that it doesn’t let me add more than six tasks",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13307354054",
+"rating": 4,
+"date": "2025-10-24",
+"loc": "cn"
+},
+{
+"key": "A4#3726",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "I can only add six tasks every day",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13476157861",
+"rating": 3,
+"date": "2025-12-05",
+"loc": "cr"
+},
+{
+"key": "A4#5312",
+"codes": [
+"CAP6",
+"ENOUGH"
+],
+"quote": "u get a limit of 6 tasks unless u pay it sounds little but it really isn’t bad",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "14444688615",
+"rating": 4,
+"date": "2026-08-18",
+"loc": "gb"
+},
+{
+"key": "A4#5468",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "when i tried to add a 7th task to the list it said i needed vip",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13133932638",
+"rating": 2,
+"date": "2025-09-13",
+"loc": "gb"
+},
+{
+"key": "A4#5486",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "You can only have 6 tasks before you have to pay",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13028782607",
+"rating": 2,
+"date": "2025-08-17",
+"loc": "gb"
+},
+{
+"key": "A4#7498",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "If you would let me do more than six tasks I would’ve loved this app",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "14096559570",
+"rating": 1,
+"date": "2026-05-23",
+"loc": "ie"
+},
+{
+"key": "A4#7509",
+"codes": [
+"CAP6",
+"NOT_ENOUGH",
+"CHANGED_DOWN"
+],
+"quote": "it won’t let me add more than six tasks",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13037009395",
+"rating": 1,
+"date": "2025-08-19",
+"loc": "ie"
+},
+{
+"key": "A4#9394",
+"codes": [
+"CAP6",
+"NOT_ENOUGH",
+"SURPRISE"
+],
+"quote": "When I checked the Pro benefits, it mostly talked about better quality features, but didn’t clearly mention the task limit.",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "12969778054",
+"rating": 3,
+"date": "2025-08-03",
+"loc": "nz"
+},
+{
+"key": "A4#10932",
+"codes": [
+"CAP6",
+"CHANGED_DOWN"
+],
+"quote": "before you used to be able to add as many tasks as you want without paying",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "14289321433",
+"rating": 2,
+"date": "2026-07-11",
+"loc": "us"
+},
+{
+"key": "A4#11368",
+"codes": [
+"CAP6",
+"CHANGED_DOWN"
+],
+"quote": "Only to find that you now have to PAY to get more than 6 tasks!",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13705509114",
+"rating": 1,
+"date": "2026-02-02",
+"loc": "us"
+},
+{
+"key": "A4#11548",
+"codes": [
+"CAP6",
+"CHANGED_DOWN"
+],
+"quote": "it stopped me at 6 tasks and asked me if I wanted to continue making tasks",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13557184530",
+"rating": 1,
+"date": "2025-12-26",
+"loc": "us"
+},
+{
+"key": "A4#11794",
+"codes": [
+"CAP6",
+"LEFT"
+],
+"quote": "now i need to find a new app with will take time",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13060809368",
+"rating": 2,
+"date": "2025-08-26",
+"loc": "us"
+},
+{
+"key": "A4#11943",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "The only thing I don’t like is that you have to have the    Me+ VIP to add more than 6 tasks.",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "12837015409",
+"rating": 5,
+"date": "2025-06-30",
+"loc": "us"
+},
+{
+"key": "A4#12006",
+"codes": [
+"CAP6",
+"STATED"
+],
+"quote": "The only thing is that you can only do 6 tasks without vip. Other than that, very good.",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "12766956419",
+"rating": 4,
+"date": "2025-06-12",
+"loc": "us"
+},
+{
+"key": "P5#1850",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "5. Routine Planner, Habit Tracker",
+"review_id": "0a1ecdbb-731b-45d1-975e-761d734ac186",
+"rating": 5,
+"date": "2022-09-26",
+"loc": "en"
+},
+{
+"key": "P50#73",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "I don't like the fact that you can't add more than 6 habits.",
+"store": "P",
+"app": "50. Habicat - RPG Habit Tracker",
+"review_id": "a5413bec-e368-43a7-85f6-0aa5befb40b1",
+"rating": 3,
+"date": "2026-06-18",
+"loc": "fr"
+},
+{
+"key": "A52#1923",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "只能免费设置6个",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "13230827018",
+"rating": 3,
+"date": "2025-10-06",
+"loc": "cn"
+},
+{
+"key": "A52#6325",
+"codes": [
+"CAP6",
+"LEFT"
+],
+"quote": "居然在设置第6个习惯之后收费哈哈哈，于是我又卸载了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "10001666932",
+"rating": 1,
+"date": "2023-06-05",
+"loc": "cn"
+},
+{
+"key": "A52#6944",
+"codes": [
+"CAP6",
+"LEFT"
+],
+"quote": "结果再添加的时候就要会员充值，果断卸载",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "9341757561",
+"rating": 1,
+"date": "2022-11-29",
+"loc": "cn"
+},
+{
+"key": "A52#8011",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "8420004586",
+"rating": 5,
+"date": "2022-03-04",
+"loc": "cn"
+},
+{
+"key": "A52#9075",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "当满了五个就要付",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "7629610045",
+"rating": 2,
+"date": "2021-07-29",
+"loc": "cn"
+},
+{
+"key": "A52#15979",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "普通版就只有6个习惯，实在是太鸡肋了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "2885065704",
+"rating": 4,
+"date": "2018-07-11",
+"loc": "cn"
+},
+{
+"key": "A52#15993",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "2880272763",
+"rating": 3,
+"date": "2018-07-10",
+"loc": "cn"
+},
+{
+"key": "A52#16014",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "苹果APP超过6个以上就要收费",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "2864818578",
+"rating": 3,
+"date": "2018-07-08",
+"loc": "cn"
+},
+{
+"key": "A52#16053",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "只给6个免费习惯",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "2835295507",
+"rating": 4,
+"date": "2018-07-04",
+"loc": "cn"
+},
+{
+"key": "A52#16097",
+"codes": [
+"CAP6",
+"LEFT"
+],
+"quote": "这么多APP，我凭什么用你",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "2813702205",
+"rating": 1,
+"date": "2018-07-01",
+"loc": "cn"
+},
+{
+"key": "A52#19482",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "每天习惯只能设置6个，要增加就需要付费开成会员",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "1843508655",
+"rating": 2,
+"date": "2017-10-12",
+"loc": "cn"
+},
+{
+"key": "A54#321",
+"codes": [
+"CAP6",
+"ENOUGH"
+],
+"quote": "You can add up to 6 tasks for free. Truly love it!",
+"store": "A",
+"app": "54. Avocation - Habit Tracker - Daily planner & ADHD organizer",
+"review_id": "8079025146",
+"rating": 5,
+"date": "2021-11-30",
+"loc": "us"
+},
+{
+"key": "A55#169",
+"codes": [
+"CAP6",
+"WILLPAY"
+],
+"quote": "I decided to buy the premium. Unfortunately there’s a bug that makes the app crash every time you try to do so",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "2047546299",
+"rating": 4,
+"date": "2018-01-01",
+"loc": "br"
+},
+{
+"key": "P61#2117",
+"codes": [
+"CAP6",
+"NOT_ENOUGH"
+],
+"quote": "Жаль что можно добавить только 6 привычек на день",
+"store": "P",
+"app": "61. Hizo - Habit Tracker & Todo",
+"review_id": "2536f618-b64a-4319-a733-23c98b8f9200",
+"rating": 5,
+"date": "2024-10-09",
+"loc": "ru"
+},
+{
+"key": "A76#6040",
+"codes": [
+"PAIDAPP"
+],
+"quote": "In streaks you can only have 6 tasks to track and so I use that for the top 6 things that are most important",
+"store": "A",
+"app": "76. Way of Life - Habit Tracker - Build a better, stronger you",
+"review_id": "1351673812",
+"rating": 5,
+"date": "2016-03-22",
+"loc": "us"
+},
+{
+"key": "A83#286",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "83. Roubit  - Fun Routine Planner - Bunny Diary & Tasks",
+"review_id": "10276574658",
+"rating": 3,
+"date": "2023-08-19",
+"loc": "kr"
+},
+{
+"key": "P98#368",
+"codes": [
+"CAP6",
+"LEFT"
+],
+"quote": "I'm personally deleting this app and finding a new one",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "24ea16cf-7542-43ad-a971-2695eaf0d98b",
+"rating": 3,
+"date": "2023-02-01",
+"loc": "en"
+},
+{
+"key": "A1#14996",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "8514562260",
+"rating": 3,
+"date": "2022-03-31",
+"loc": "cn"
+},
+{
+"key": "A1#40292",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "4679188133",
+"rating": 3,
+"date": "2019-08-27",
+"loc": "cn"
+},
+{
+"key": "A1#40368",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "4660486454",
+"rating": 5,
+"date": "2019-08-23",
+"loc": "cn"
+},
+{
+"key": "A1#42296",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3883401256",
+"rating": 5,
+"date": "2019-03-15",
+"loc": "cn"
+},
+{
+"key": "A1#42891",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3819722254",
+"rating": 5,
+"date": "2019-02-27",
+"loc": "cn"
+},
+{
+"key": "A1#43122",
+"codes": [
+"CAP3",
+"SOLICITED"
+],
+"quote": "评论额外获得7个习惯",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "3795420530",
+"rating": 4,
+"date": "2019-02-21",
+"loc": "cn"
+},
+{
+"key": "P10#4843",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "Es ist nur schade, dass man nur 7 Gewohnheiten ohne die Premiumversion erstellen kann.",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "9d586de8-6b76-4b87-8ece-c4c8e81534d4",
+"rating": 4,
+"date": "2021-10-22",
+"loc": "de"
+},
+{
+"key": "P10#4873",
+"codes": [
+"CAP7",
+"STATED"
+],
+"quote": "No more than 7 habits for the free version.",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "ab40cf31-d998-413b-b327-864068487dee",
+"rating": 3,
+"date": "2023-05-28",
+"loc": "el"
+},
+{
+"key": "P10#12285",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "442bf3c0-f258-458f-827a-d3b7acbd8873",
+"rating": 3,
+"date": "2021-04-13",
+"loc": "en"
+},
+{
+"key": "A13#3498",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5647950805",
+"rating": 4,
+"date": "2020-03-12",
+"loc": "cn"
+},
+{
+"key": "A18#183",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "7つしか作れないのではきついです",
+"store": "A",
+"app": "18. MyRoutine - Organize your day - Built around your real life",
+"review_id": "12691605362",
+"rating": 3,
+"date": "2025-05-24",
+"loc": "jp"
+},
+{
+"key": "P2#563",
+"codes": [
+"CAP7",
+"NOT_ENOUGH",
+"PRICE_FAIR"
+],
+"quote": "Man kann aber kostenlos leider nur 7 Gewohnheiten hinzufügen. Die Vollversion ist aber für einen fairen einmaligen Betrag zu kaufen.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "4b15b8a9-9c6d-4886-a879-55bd82b6893e",
+"rating": 4,
+"date": "2023-09-01",
+"loc": "de"
+},
+{
+"key": "P2#580",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "Man kann nur 7 Gewohnheiten machen in freeversion amk",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "7451451e-d358-4018-8c3c-33eae16922d0",
+"rating": 1,
+"date": "2023-05-25",
+"loc": "de"
+},
+{
+"key": "P2#1166",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "only 7 habits available to force you to buy premium",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "586d1c9a-0b76-484b-a160-f6ae2af42e2d",
+"rating": 1,
+"date": "2026-07-07",
+"loc": "en"
+},
+{
+"key": "P2#1171",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "i can only add 7 habits at the time with the free version",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "db547533-e125-4b64-a40e-282734fc2a3e",
+"rating": 1,
+"date": "2026-07-06",
+"loc": "en"
+},
+{
+"key": "P2#1546",
+"codes": [
+"CAP7",
+"STATED",
+"WILLPAY"
+],
+"quote": "great ui, but only 7 habit for free, good option if you can get the premium",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "30e07231-ac17-4e32-9698-bb5cdf55f9db",
+"rating": 4,
+"date": "2026-03-31",
+"loc": "en"
+},
+{
+"key": "P2#1844",
+"codes": [
+"CAP7",
+"ENOUGH"
+],
+"quote": "very nice app and nice of them to give 7 habits for free",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "78c777d9-5aa0-46b6-9d06-8e95f21490e3",
+"rating": 5,
+"date": "2026-01-20",
+"loc": "en"
+},
+{
+"key": "P2#2004",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "The free version only allows 7 tasks.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "575e083e-4696-4d20-88f3-fc8d2e2f66a8",
+"rating": 1,
+"date": "2025-12-30",
+"loc": "en"
+},
+{
+"key": "P2#2283",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "You can add only 7 habits for free",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "cf2a3b93-70c1-400c-ae4f-23f043b5f2c7",
+"rating": 1,
+"date": "2025-10-12",
+"loc": "en"
+},
+{
+"key": "P2#2554",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "only 7 habits for free. Bad model",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "9b4d3d22-1f87-43b7-85b5-fcc39e203172",
+"rating": 5,
+"date": "2025-08-02",
+"loc": "en"
+},
+{
+"key": "P2#3618",
+"codes": [
+"CAP7",
+"ENOUGH"
+],
+"quote": "It lets you pick six or seven habits for free.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "3e5d8177-1b11-40cf-94e3-b3d779bf1688",
+"rating": 5,
+"date": "2025-01-06",
+"loc": "en"
+},
+{
+"key": "P2#3794",
+"codes": [
+"CAP7",
+"STATED"
+],
+"quote": "Great functionality, easy-to-use, but has a limit to 7 habits",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "b3f7b5d9-d4a1-4bbd-accd-d09b0495f018",
+"rating": 4,
+"date": "2024-12-08",
+"loc": "en"
+},
+{
+"key": "P2#4000",
+"codes": [
+"CAP7",
+"ENOUGH"
+],
+"quote": "Can have up to 7 habits with free version",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "2f8222c8-70e0-458b-bf3f-f8561007d960",
+"rating": 5,
+"date": "2024-10-29",
+"loc": "en"
+},
+{
+"key": "P2#4334",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "gatekeeping something as simple as having more than 7 habits is not",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "e1742e34-26d9-49b9-9b10-42338a36a850",
+"rating": 1,
+"date": "2024-08-26",
+"loc": "en"
+},
+{
+"key": "P2#4834",
+"codes": [
+"CAP7",
+"STATED"
+],
+"quote": "Can create maximum 7 free habits",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "bd5dbdd9-4e5c-4718-9e8e-a252b2a84184",
+"rating": 5,
+"date": "2024-06-03",
+"loc": "en"
+},
+{
+"key": "P2#5046",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "It's premium for more than 7 habits, awful",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "f3c4476d-2e35-47ef-9039-3453ffe0c55a",
+"rating": 1,
+"date": "2024-04-27",
+"loc": "en"
+},
+{
+"key": "P2#5310",
+"codes": [
+"CAP7",
+"WILLPAY"
+],
+"quote": "I tried to buy the premium to overcome the limitations of 7 habits only in free, but the button is not working.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "6426d482-6da3-4a8f-af1f-a4ea2797a031",
+"rating": 4,
+"date": "2024-03-23",
+"loc": "en"
+},
+{
+"key": "P2#5518",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "The free version is very limited and only allows you to create up to 7 habits/reoccurring tasks.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "0e0de79f-638b-46e9-9a25-0b68b7c542ed",
+"rating": 4,
+"date": "2024-02-23",
+"loc": "en"
+},
+{
+"key": "P2#6438",
+"codes": [
+"CAP7",
+"ENOUGH"
+],
+"quote": "The free version lets you set up to 7 habits daily, which can cover a lot that you need to do in the day, I managed with the free version for months",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "654ed830-9b7a-4f0a-a454-c651d6efbfc7",
+"rating": 5,
+"date": "2023-12-01",
+"loc": "en"
+},
+{
+"key": "P2#6471",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "premium olmadan max 7 habit giribeliyorsunuz. Bu da az bir sayı",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "af3047a7-e8a5-4c0b-a658-c1548c702051",
+"rating": 3,
+"date": "2023-11-28",
+"loc": "en"
+},
+{
+"key": "P2#6524",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "forces to buy premium after adding only 7 habits!!",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "4a4777be-55c5-4780-898e-e964bc32ecbb",
+"rating": 1,
+"date": "2023-11-20",
+"loc": "en"
+},
+{
+"key": "P2#6603",
+"codes": [
+"CAP7",
+"STATED"
+],
+"quote": "Only problem is that you can only make 7 habits for free",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "cac9ab79-95fa-4b0a-bcb0-4b9c22b7de53",
+"rating": 5,
+"date": "2023-11-09",
+"loc": "en"
+},
+{
+"key": "P2#7282",
+"codes": [
+"CAP7",
+"STATED"
+],
+"quote": "Only downside is you are limited to 7 habits overall without premium",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "e0e3ea53-84c3-45fb-832f-d25fce8de90f",
+"rating": 4,
+"date": "2023-07-23",
+"loc": "en"
+},
+{
+"key": "P2#7386",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "one can't save more than 7 habits without premium",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "5644387a-99b1-41c2-80e5-871d58dbeeca",
+"rating": 3,
+"date": "2023-07-06",
+"loc": "en"
+},
+{
+"key": "P2#7430",
+"codes": [
+"CAP7",
+"LEFT"
+],
+"quote": "I am needing to track approx. 20 habits and this one only let's you track 7 for free.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "1181f3d9-bdaf-418a-83e2-2d4a7e4f71eb",
+"rating": 3,
+"date": "2023-06-28",
+"loc": "en"
+},
+{
+"key": "P2#7763",
+"codes": [
+"CAP7",
+"CHANGED_DOWN"
+],
+"quote": "Clearly, the limit has been reduced, forcing you to buy the premium(which is worth it).",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "e58d9e3f-a3f2-4270-a5d6-23946f5b08c1",
+"rating": 3,
+"date": "2023-04-26",
+"loc": "en"
+},
+{
+"key": "P2#8410",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "If you have 7 or less things you want to track, it's good",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "cc0539ec-5973-4259-b454-f2f124a81486",
+"rating": 1,
+"date": "2023-01-21",
+"loc": "en"
+},
+{
+"key": "P2#8788",
+"codes": [
+"CAP7",
+"NOT_ENOUGH",
+"WANT10"
+],
+"quote": "the 7 habits limit is kind of strict. I suggest adding 3 more free habits",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "a6d5f18d-1d4f-45e2-9025-b822cae88f1c",
+"rating": 4,
+"date": "2022-12-05",
+"loc": "en"
+},
+{
+"key": "P2#8936",
+"codes": [
+"CAP7",
+"STATED",
+"PRICE_FAIR"
+],
+"quote": "I like that Premium is a single, affordable fee.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "4ccc3cb0-28e8-491d-9386-a95a9f497b89",
+"rating": 5,
+"date": "2022-11-12",
+"loc": "en"
+},
+{
+"key": "P2#9429",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "The limit of 7 habits is far to low without premium.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "a338cc40-1f04-4f60-91dc-fb8fa714f420",
+"rating": 4,
+"date": "2022-08-31",
+"loc": "en"
+},
+{
+"key": "P2#9474",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "A limit of seven habitual tasks is to few to track half the necessities going on",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "62e11e37-02cc-4433-8b4a-1957286a34ea",
+"rating": 3,
+"date": "2022-08-24",
+"loc": "en"
+},
+{
+"key": "P2#10258",
+"codes": [
+"CAP7",
+"STATED"
+],
+"quote": "you can add only 7 habits aur tasks , after that you have to buy premium of 300 rupees",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "b683aabc-9cbe-4f00-bd0a-0c39aecf3882",
+"rating": 3,
+"date": "2022-02-18",
+"loc": "en"
+},
+{
+"key": "P2#10335",
+"codes": [
+"CAP7",
+"ENOUGH"
+],
+"quote": "It lets you track up to 7 habits for the free version.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "f63315f1-9946-4ea2-82a5-4f71af85db41",
+"rating": 5,
+"date": "2022-02-07",
+"loc": "en"
+},
+{
+"key": "P2#10361",
+"codes": [
+"CAP7",
+"ENOUGH"
+],
+"quote": "Like 6-7 habits only, but acceptable",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "eb076bcd-9e5c-4684-92df-a6cfc1f0288f",
+"rating": 5,
+"date": "2022-02-03",
+"loc": "en"
+},
+{
+"key": "P2#10736",
+"codes": [
+"CAP7",
+"STATED"
+],
+"quote": "Only 7 habit tracking in free version",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "45e24cbf-0131-431a-b057-a08c774e1fc7",
+"rating": 3,
+"date": "2021-12-08",
+"loc": "en"
+},
+{
+"key": "P2#10883",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "Didn't even get to use the app for a day before it became useless.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "0e0ae268-4900-4cc5-944b-f743f793e1a6",
+"rating": 1,
+"date": "2021-11-07",
+"loc": "en"
+},
+{
+"key": "P2#11284",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "later found that I can track only 7 habits through this app",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "30da3b0b-9fb8-4f83-8842-fc2b5e231878",
+"rating": 5,
+"date": "2021-08-27",
+"loc": "en"
+},
+{
+"key": "P2#11423",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "I have more than 7 things I need to do a day.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "13422996-dd9c-431c-93ef-83b383e3cf42",
+"rating": 3,
+"date": "2021-07-30",
+"loc": "en"
+},
+{
+"key": "P2#11855",
+"codes": [
+"CAP7",
+"WILLPAY"
+],
+"quote": "Haven't payed for the premium yet, although I want to create more than 7 habits.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "be51f2c1-c089-4387-b5dc-8d4330ad7dae",
+"rating": 4,
+"date": "2021-02-22",
+"loc": "en"
+},
+{
+"key": "P2#11873",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "max 7 free habits",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "373c8fd2-fcff-458a-8071-008f5f196c50",
+"rating": 2,
+"date": "2021-02-18",
+"loc": "en"
+},
+{
+"key": "P2#12086",
+"codes": [
+"CAP7",
+"SURPRISE"
+],
+"quote": "If I'd known when I started using this that you could only have 7 habits set up without paying, I wouldn't have bothered to start",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "3abcc03c-fe99-4a1f-a51c-82885b061551",
+"rating": 2,
+"date": "2021-01-06",
+"loc": "en"
+},
+{
+"key": "P2#12384",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "You can only add 7 habit for free version.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "3b5320d5-c11c-4a55-8e07-d5f84717883e",
+"rating": 2,
+"date": "2020-08-31",
+"loc": "en"
+},
+{
+"key": "P2#12499",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "only 7 free habits",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "b4d594d3-ccba-49e1-ad4d-ef046fec4598",
+"rating": 1,
+"date": "2020-07-08",
+"loc": "en"
+},
+{
+"key": "P2#12632",
+"codes": [
+"CAP7",
+"ENOUGH"
+],
+"quote": "premium version is worth buying if you need to track more than 7 habits",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "bbcfa89c-d2ce-4ca2-a974-85474cd8774c",
+"rating": 5,
+"date": "2020-05-20",
+"loc": "en"
+},
+{
+"key": "P2#12744",
+"codes": [
+"CAP7",
+"REFUSE",
+"PAID_THIN"
+],
+"quote": "I feel like currently the only reason to buy premium is to have more than 7 habits and to make it look pretty.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "f8175ea8-606f-47b6-9ee3-eabbeb0a242a",
+"rating": 4,
+"date": "2020-04-16",
+"loc": "en"
+},
+{
+"key": "P2#12756",
+"codes": [
+"CAP7",
+"PAID",
+"PAID_THIN",
+"X_PAYER"
+],
+"quote": "The only thing that I really needed was to have more than 7 habits but, the rest is just decoration.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "ff7a5f87-f7f4-461f-a238-64616c014bd3",
+"rating": 4,
+"date": "2020-04-09",
+"loc": "en"
+},
+{
+"key": "P2#12799",
+"codes": [
+"CAP7",
+"PAID",
+"PAID_THIN",
+"X_PAYER"
+],
+"quote": "The only benefit I found so far, is the ability to add more than 7 habits.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "a04bea46-d0a4-4d4e-a737-021f229f118b",
+"rating": 2,
+"date": "2020-03-19",
+"loc": "en"
+},
+{
+"key": "P2#12884",
+"codes": [
+"CAP7",
+"PAID",
+"X_PAYER"
+],
+"quote": "I like this app and I bought Premium, even it was a little expensive (5,49 Euro).",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "37a335f4-08e8-490d-b165-9cf184e34507",
+"rating": 3,
+"date": "2020-02-10",
+"loc": "en"
+},
+{
+"key": "P2#13183",
+"codes": [
+"CAP7",
+"PRICE_FAIR"
+],
+"quote": "you can only track seven habits without paying. It's one time five bucks and worth it though",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "a26082b4-67fe-481d-baa8-61e423a28ad3",
+"rating": 4,
+"date": "2019-08-07",
+"loc": "en"
+},
+{
+"key": "P2#14494",
+"codes": [
+"CAP7",
+"PAID",
+"X_PAYER"
+],
+"quote": "La versión gratuita está bastante limitada con solo 7 hábitos pero la versión de pago es muy accesible y con gusto la compré.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "1ef3baa0-f2b3-4df8-b99d-34d5dd6c609d",
+"rating": 5,
+"date": "2024-11-03",
+"loc": "es"
+},
+{
+"key": "P2#14772",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "te deja poner solo 7 hábitos",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "f4eb62b4-2198-4955-b086-a0d5a9cf0286",
+"rating": 1,
+"date": "2024-06-24",
+"loc": "es"
+},
+{
+"key": "P2#15629",
+"codes": [
+"CAP7",
+"NOT_ENOUGH",
+"LEFT"
+],
+"quote": "El único inconveniente es la limitación a sólo 7 hábitos a menos que pagues por la suscripción.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "17140127-9e96-46a3-ba3e-cb45fd798d6e",
+"rating": 4,
+"date": "2023-09-27",
+"loc": "es"
+},
+{
+"key": "P2#19113",
+"codes": [
+"CAP7",
+"STATED"
+],
+"quote": "la cuenta free te da max 7 habitos. Eso es lo unico malo",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "516b36ec-3ba2-4b54-a190-dc6966a59b0a",
+"rating": 4,
+"date": "2020-11-09",
+"loc": "es"
+},
+{
+"key": "P2#21754",
+"codes": [
+"CAP7",
+"STATED",
+"PRICE_FAIR"
+],
+"quote": "Kalo non premium max 7 habits yg bisa ditambahkan. Tapi kalo mau premium pun ga mahal",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "03f18e2c-e9e7-4153-98f7-bdf3c75f6f5b",
+"rating": 5,
+"date": "2022-02-02",
+"loc": "id"
+},
+{
+"key": "P2#28494",
+"codes": [
+"CAP7",
+"STATED"
+],
+"quote": "Cons: only 7 habits without premium",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "056983d0-21e1-4c1b-b318-a7027f5465e2",
+"rating": 5,
+"date": "2023-03-22",
+"loc": "ru"
+},
+{
+"key": "P20#1718",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "루틴 7개까지는 무료라면서",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "81e8941c-d68f-4a3d-8d4f-32e05a6652b6",
+"rating": 1,
+"date": "2024-07-20",
+"loc": "ko"
+},
+{
+"key": "P22#117",
+"codes": [
+"UL_PRAISE"
+],
+"quote": "allows you to add more than 7 habits for free!",
+"store": "P",
+"app": "22. Disciplined - Habit Tracker",
+"review_id": "00a6719b-df63-4409-aa43-27b88a29942e",
+"rating": 5,
+"date": "2025-07-09",
+"loc": "el"
+},
+{
+"key": "A24#8944",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "5168684268",
+"rating": 5,
+"date": "2019-11-19",
+"loc": "cn"
+},
+{
+"key": "P36#196",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "Grate app but you can't add more than 7 habits",
+"store": "P",
+"app": "36. Fun Habit - Habit Tracker",
+"review_id": "3ec7d8ac-df49-428a-b0bc-553861bbf791",
+"rating": 3,
+"date": "2021-02-17",
+"loc": "en"
+},
+{
+"key": "P36#206",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "If you could increase that by a little would be really useful.",
+"store": "P",
+"app": "36. Fun Habit - Habit Tracker",
+"review_id": "c5279633-b86a-4be5-b3e9-98ec616062cc",
+"rating": 4,
+"date": "2021-01-24",
+"loc": "en"
+},
+{
+"key": "P36#257",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "you can add only 7 habits only without premium membership",
+"store": "P",
+"app": "36. Fun Habit - Habit Tracker",
+"review_id": "bf0a1b0c-f110-4240-8e91-5c4953295f46",
+"rating": 2,
+"date": "2020-11-14",
+"loc": "en"
+},
+{
+"key": "P36#675",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "只是普通用户只能设置7个",
+"store": "P",
+"app": "36. Fun Habit - Habit Tracker",
+"review_id": "69db1c92-bd50-4ab6-ad24-0f23491c3342",
+"rating": 3,
+"date": "2021-08-14",
+"loc": "zh-CN"
+},
+{
+"key": "P38#535",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "can't make more than 7 routines",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "44c82406-730a-4a2b-ae95-1fa152550c51",
+"rating": 3,
+"date": "2024-12-12",
+"loc": "en"
+},
+{
+"key": "A4#3250",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "11586060669",
+"rating": 2,
+"date": "2024-08-08",
+"loc": "ch"
+},
+{
+"key": "A4#9754",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "maximum 7 tasks and I have to pay? Be so for real.",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "14426594797",
+"rating": 2,
+"date": "2026-08-14",
+"loc": "pl"
+},
+{
+"key": "P44#361",
+"codes": [
+"CAP3",
+"WANT7",
+"NOT_ENOUGH"
+],
+"quote": "should have been great if u atleast put 6 or7 habits for free not just 3",
+"store": "P",
+"app": "44. Habit Tracker - TickOff",
+"review_id": "fbc051df-78ac-4441-b498-4ae65b021858",
+"rating": 1,
+"date": "2025-01-21",
+"loc": "en"
+},
+{
+"key": "A48#375",
+"codes": [
+"CAP7",
+"ENOUGH",
+"WILLPAY"
+],
+"quote": "Thank you for letting us have 7 goals in the free version.",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "4090829156",
+"rating": 4,
+"date": "2019-05-02",
+"loc": "ca"
+},
+{
+"key": "A48#1177",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "A limit of 7 habits is a bit tight. I kept amending and deleting some of them.",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "4162960750",
+"rating": 4,
+"date": "2019-05-17",
+"loc": "hk"
+},
+{
+"key": "A48#1454",
+"codes": [
+"CAP7",
+"ENOUGH"
+],
+"quote": "the 7 goal limit for non Premium is good enough for me",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "3301263665",
+"rating": 5,
+"date": "2018-10-14",
+"loc": "my"
+},
+{
+"key": "A48#2113",
+"codes": [
+"CAP7",
+"PAID",
+"CHOSE_GENEROUS",
+"X_PAYER"
+],
+"quote": "unlike other habit apps, this one gives you up to 7 habits before making you upgrade) I liked it and after several days I noticed on their website that you had the option to pay for a lifetime subscription. I took the plunge",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "10413395300",
+"rating": 5,
+"date": "2023-09-27",
+"loc": "us"
+},
+{
+"key": "A48#2648",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "the only thing I wish they would fix is the ability to add more than 7 tasks/goals per day",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "5463103041",
+"rating": 5,
+"date": "2020-01-29",
+"loc": "us"
+},
+{
+"key": "A48#2754",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "Only get 7 habits the have to pay. Disappointed.",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "4235832209",
+"rating": 1,
+"date": "2019-05-30",
+"loc": "us"
+},
+{
+"key": "A48#2834",
+"codes": [
+"CAP7",
+"ENOUGH",
+"CHOSE_GENEROUS"
+],
+"quote": "I can track up to 7 habits without having to pay a monthly fee.",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "3655592067",
+"rating": 5,
+"date": "2019-01-16",
+"loc": "us"
+},
+{
+"key": "A48#2848",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "I hate that I can only have like seven habits for free",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "3609199783",
+"rating": 3,
+"date": "2019-01-04",
+"loc": "us"
+},
+{
+"key": "A48#2956",
+"codes": [
+"CAP7",
+"NOT_ENOUGH",
+"X_PAYER"
+],
+"quote": "I am not paying $5 a month for me to have more than seven habits to track when I already paid for the app!",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "3105030053",
+"rating": 1,
+"date": "2018-08-23",
+"loc": "us"
+},
+{
+"key": "A48#2985",
+"codes": [
+"CAP7",
+"NOT_ENOUGH",
+"LEFT"
+],
+"quote": "free version is useless which limits to only 7 habits",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "3017109535",
+"rating": 3,
+"date": "2018-08-04",
+"loc": "us"
+},
+{
+"key": "A52#1717",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "超过7个习惯就要收费了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "13355774013",
+"rating": 2,
+"date": "2025-11-04",
+"loc": "cn"
+},
+{
+"key": "A52#2758",
+"codes": [
+"CAP7",
+"NOT_ENOUGH"
+],
+"quote": "普通会员7个太少了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "12839252836",
+"rating": 3,
+"date": "2025-07-01",
+"loc": "cn"
+},
+{
+"key": "A52#5306",
+"codes": [
+"CAP7",
+"ENOUGH",
+"PAID",
+"X_PAYER"
+],
+"quote": "24年的日常只有7个，再添加就要开通会员，不过也还行吧",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "11193902846",
+"rating": 4,
+"date": "2024-04-24",
+"loc": "cn"
+},
+{
+"key": "A52#14933",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "3823855755",
+"rating": 5,
+"date": "2019-02-28",
+"loc": "cn"
+},
+{
+"key": "A52#15440",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "3304276879",
+"rating": 4,
+"date": "2018-10-15",
+"loc": "cn"
+},
+{
+"key": "A52#20006",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "11837864869",
+"rating": 2,
+"date": "2024-10-15",
+"loc": "it"
+},
+{
+"key": "P69#512",
+"codes": [
+"CAP7",
+"CHANGED_DOWN"
+],
+"quote": "with this update that can only create 7 habits",
+"store": "P",
+"app": "69. EZ Habit - simple habit tracker",
+"review_id": "846ad637-cb0d-455f-8e14-daff903687b3",
+"rating": 3,
+"date": "2023-05-29",
+"loc": "pt"
+},
+{
+"key": "P98#482",
+"codes": [
+"PAIDAPP",
+"X_PAYER"
+],
+"quote": "I have premium too but can you only have 7 habits??",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "612be20b-9d94-4870-8964-e2c66f0b9dd6",
+"rating": 4,
+"date": "2022-09-15",
+"loc": "en"
+},
+{
+"key": "P12#152410",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "fb470d34-db33-4ad3-a0d4-3bb25f1eddfb",
+"rating": 5,
+"date": "2021-06-02",
+"loc": "zh-CN"
+},
+{
+"key": "A13#5942",
+"codes": [
+"CAP8",
+"NOT_ENOUGH",
+"NAG"
+],
+"quote": "But you can only do 8 habits. Really?",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "6198340888",
+"rating": 1,
+"date": "2020-07-14",
+"loc": "gb"
+},
+{
+"key": "P145#647",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "Only 8 habits can be added, it's a small amount.",
+"store": "P",
+"app": "145. Habit Rabbit - Habit Tracker",
+"review_id": "e60a7405-c9fc-46da-8855-07d615df791c",
+"rating": 3,
+"date": "2022-04-10",
+"loc": "en"
+},
+{
+"key": "P145#798",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "I couldn't add more than 8 habits",
+"store": "P",
+"app": "145. Habit Rabbit - Habit Tracker",
+"review_id": "1b8103a2-a370-42d9-9fd6-76d2b57fa9fb",
+"rating": 3,
+"date": "2021-09-22",
+"loc": "en"
+},
+{
+"key": "P145#1202",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "you can add only eight habits, that's not motivational at all",
+"store": "P",
+"app": "145. Habit Rabbit - Habit Tracker",
+"review_id": "694889a5-fa72-4171-81d4-901103f0c86c",
+"rating": 4,
+"date": "2021-11-12",
+"loc": "pl"
+},
+{
+"key": "P18#748",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "how can I add more than 8 habit.",
+"store": "P",
+"app": "18. Habit Tracker - Habit Radar",
+"review_id": "0866f848-e8e1-49a4-8618-7cf2ce2260b5",
+"rating": 4,
+"date": "2025-12-30",
+"loc": "en"
+},
+{
+"key": "P18#818",
+"codes": [
+"CAP8",
+"STATED"
+],
+"quote": "note: 8 habits free",
+"store": "P",
+"app": "18. Habit Tracker - Habit Radar",
+"review_id": "b9027e1f-28e9-4e9b-acab-1739bcbcb0d6",
+"rating": 3,
+"date": "2025-09-22",
+"loc": "en"
+},
+{
+"key": "A18#636",
+"codes": [
+"CAP8",
+"ENOUGH"
+],
+"quote": "습관 8개밖에 추가못하는건 좀 안좋았음 그래도 만족중",
+"store": "A",
+"app": "18. MyRoutine - Organize your day - Built around your real life",
+"review_id": "13039120146",
+"rating": 3,
+"date": "2025-08-20",
+"loc": "kr"
+},
+{
+"key": "P2#6368",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "a pity that has got only 8 habits you can put in",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "194d30c3-d7c3-4743-b7b2-4c01f98cea05",
+"rating": 4,
+"date": "2023-12-05",
+"loc": "en"
+},
+{
+"key": "P2#11270",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "Cant be used to make timeteble as more than 8 habits required premium",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "734614e8-6cde-4990-b9f1-ba0a217af1d3",
+"rating": 1,
+"date": "2021-08-30",
+"loc": "en"
+},
+{
+"key": "P2#22809",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "Only 8 habits for free. Useless app.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "491f683a-a368-4fa2-8df7-a6a597cf0e5b",
+"rating": 1,
+"date": "2025-08-26",
+"loc": "pl"
+},
+{
+"key": "P20#563",
+"codes": [
+"CAP8",
+"CHANGED_DOWN",
+"LEFT"
+],
+"quote": "「ルーティン」を8個までしか無料で追加できなくなったから消しました",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "aaac23f2-0e55-4b26-91d7-0441e52e4823",
+"rating": 4,
+"date": "2024-01-19",
+"loc": "ja"
+},
+{
+"key": "P20#1941",
+"codes": [
+"CAP8",
+"NOT_ENOUGH",
+"NAG"
+],
+"quote": "프리미엄 결제 안하면 루틴도 최대 8개까지 밖에 안되고",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "f4a8092a-0220-48c8-96bf-4802cef100c3",
+"rating": 3,
+"date": "2024-01-27",
+"loc": "ko"
+},
+{
+"key": "P24#3286",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "78a85d8e-43c2-4629-b154-485f310470f9",
+"rating": 4,
+"date": "2020-07-21",
+"loc": "en"
+},
+{
+"key": "A28#714",
+"codes": [
+"CAP8",
+"NOT_ENOUGH",
+"WANT_CHEAP_TIER"
+],
+"quote": "There should be an option to just pay like two dollars to just get unlimited tasks",
+"store": "A",
+"app": "28. Habit Rabbit - Habit Tracker - Your productivity pet",
+"review_id": "9089433219",
+"rating": 3,
+"date": "2022-09-16",
+"loc": "us"
+},
+{
+"key": "A28#758",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "One thing I don’t like how I only get 8 habits.",
+"store": "A",
+"app": "28. Habit Rabbit - Habit Tracker - Your productivity pet",
+"review_id": "8322655745",
+"rating": 5,
+"date": "2022-02-05",
+"loc": "us"
+},
+{
+"key": "A3#3000",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+"review_id": "8075905047",
+"rating": 5,
+"date": "2021-11-29",
+"loc": "gb"
+},
+{
+"key": "A31#849",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "2095087895",
+"rating": 2,
+"date": "2018-01-16",
+"loc": "cn"
+},
+{
+"key": "P38#227",
+"codes": [
+"CAP8",
+"ENOUGH",
+"CHOSE_GENEROUS"
+],
+"quote": "the app offers you 8 routines in the free version which is more than some other apps i've tried",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "a72ef191-540b-4c4f-9d9f-49eccb2fceb4",
+"rating": 4,
+"date": "2026-02-25",
+"loc": "en"
+},
+{
+"key": "P38#242",
+"codes": [
+"CAP8",
+"LEFT"
+],
+"quote": "Definitely not worthy Deleted it immediately",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "2b57e135-2d63-45ce-b6fa-7f6b9106526f",
+"rating": 1,
+"date": "2026-01-25",
+"loc": "en"
+},
+{
+"key": "P38#266",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "for any free user this app is SUPER limited (you can only have 8 tasks)",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "5180df49-6263-4549-bb0a-3675bd860ef6",
+"rating": 4,
+"date": "2025-11-21",
+"loc": "en"
+},
+{
+"key": "P38#395",
+"codes": [
+"CAP8",
+"ENOUGH"
+],
+"quote": "only allows up to 8 habits on the free version - which I fine by me, but not necessarily for others",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "b56f2e3f-55b9-4534-80e0-005e5e039779",
+"rating": 3,
+"date": "2025-04-16",
+"loc": "en"
+},
+{
+"key": "P38#505",
+"codes": [
+"CAP8",
+"STATED"
+],
+"quote": "you can only add up to 8 routines which means your options as a free user are somewhat limited",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "f387b9a7-aa22-4ae2-8045-15587b2b0a74",
+"rating": 4,
+"date": "2025-01-03",
+"loc": "en"
+},
+{
+"key": "P38#523",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "I hate the limited 8 routine",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "264fe4d2-eddd-46e7-ae6d-042309da885e",
+"rating": 4,
+"date": "2024-12-18",
+"loc": "en"
+},
+{
+"key": "P38#525",
+"codes": [
+"CAP8",
+"LEFT"
+],
+"quote": "The application would have been great if it weren't for the idea of ​​limited tasks. Uninstalled .",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "a4ebfa14-91dd-45e1-8aaf-d8285e9adf1a",
+"rating": 2,
+"date": "2024-12-17",
+"loc": "en"
+},
+{
+"key": "P38#688",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "You can only make 8 routines, not have, MAKE.",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "998d4f5a-4f6a-4bde-8094-fab856432cbb",
+"rating": 3,
+"date": "2024-08-13",
+"loc": "en"
+},
+{
+"key": "P38#707",
+"codes": [
+"CAP8",
+"ENOUGH"
+],
+"quote": "now I don't mind having only 8 habits max",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "f5c52177-7c20-4737-9ac8-81e5979eeda1",
+"rating": 3,
+"date": "2024-07-28",
+"loc": "en"
+},
+{
+"key": "P38#943",
+"codes": [
+"CAP8",
+"LEFT"
+],
+"quote": "Uninstalled immediately and am going to find a different app.",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "8f9d9700-4672-471e-98c3-eb69c9ea17f4",
+"rating": 2,
+"date": "2024-01-17",
+"loc": "en"
+},
+{
+"key": "P38#948",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "Free users only get 8 routines Max but I only had 4 four (final) ones",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "f9a50fc7-6fef-4a20-b1e1-be169fb7d99e",
+"rating": 1,
+"date": "2024-01-16",
+"loc": "en"
+},
+{
+"key": "P38#951",
+"codes": [
+"CAP8",
+"LEFT"
+],
+"quote": "I can't make more than 8 routines please change this feature. So I deleted this app",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "d170ef4c-d6ee-402c-9fac-95ace7375285",
+"rating": 4,
+"date": "2024-01-15",
+"loc": "en"
+},
+{
+"key": "P38#954",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "You can only make 8 routines before having to buy premium",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "ecf1792e-5e74-45dd-acca-1a13886ab320",
+"rating": 1,
+"date": "2024-01-12",
+"loc": "en"
+},
+{
+"key": "P38#1032",
+"codes": [
+"CAP8",
+"LEFT",
+"WANT_LIFETIME"
+],
+"quote": "if it was a one-time purchase, i'd buy it",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "a4c7d445-4cea-4806-adef-ed3cce3b56e1",
+"rating": 3,
+"date": "2023-11-23",
+"loc": "en"
+},
+{
+"key": "P38#1033",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "you can only add 8 tasks! How little is that!",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "af6f76b4-cf70-40fa-af4c-b8965051a4e9",
+"rating": 3,
+"date": "2023-11-21",
+"loc": "en"
+},
+{
+"key": "P38#1070",
+"codes": [
+"CAP8",
+"STATED"
+],
+"quote": "The app only gives 8 routines for free",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "0b48e088-774f-4b1a-8530-4e967909b65d",
+"rating": 2,
+"date": "2023-09-30",
+"loc": "en"
+},
+{
+"key": "P38#1094",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "you can't do more than 8 routines",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "d472e7ea-fe45-4134-b17c-900733ab17a1",
+"rating": 1,
+"date": "2023-08-18",
+"loc": "en"
+},
+{
+"key": "P38#1100",
+"codes": [
+"CAP8",
+"STATED"
+],
+"quote": "the free version has only 8 tasks after that you will have to pay",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "e92f7612-993d-4a7c-b310-315d28cd159e",
+"rating": 3,
+"date": "2023-07-22",
+"loc": "en"
+},
+{
+"key": "P38#1107",
+"codes": [
+"CAP8",
+"LEFT"
+],
+"quote": "I'm uninstalling because you only get 8 routines for free",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "a733c76a-f246-4e4c-af46-74aa74d427a4",
+"rating": 3,
+"date": "2023-07-09",
+"loc": "en"
+},
+{
+"key": "P38#1121",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "you have to buy premium just to have more than 8 routines is really annoying",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "14e6021c-84b1-4d08-8520-8fadf86bea45",
+"rating": 3,
+"date": "2023-06-14",
+"loc": "en"
+},
+{
+"key": "P38#1176",
+"codes": [
+"CAP8",
+"ENOUGH"
+],
+"quote": "only complaint is that you can only have 8 routines without paying money, but i understand that devs have to pay their bills too",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "743d68ca-bebf-42f0-81fa-bc5857885c88",
+"rating": 5,
+"date": "2023-03-25",
+"loc": "en"
+},
+{
+"key": "P38#1192",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "the 8 routines limit is so frustrating because it's not even close to being enough for me",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "6f31f14a-1cbf-46e9-a78f-e9c5cbd60d73",
+"rating": 3,
+"date": "2023-03-14",
+"loc": "en"
+},
+{
+"key": "P38#1213",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "why can I only add 8 routines",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "80594b0e-c2e1-4600-854d-5996378f8b9f",
+"rating": 4,
+"date": "2023-02-01",
+"loc": "en"
+},
+{
+"key": "P38#1558",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "cómo que solo 8 hábitos sin ser primium?",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "f2dea69a-ce14-46c6-8590-52ceb471a41f",
+"rating": 2,
+"date": "2025-04-02",
+"loc": "es"
+},
+{
+"key": "P38#3188",
+"codes": [
+"CAP8",
+"STATED"
+],
+"quote": "무료는 반복루틴 8개밖에 안되요",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "66e56dab-2a88-433a-8570-9bbc3c46cb18",
+"rating": 3,
+"date": "2022-10-02",
+"loc": "ko"
+},
+{
+"key": "P38#3483",
+"codes": [
+"CAP8",
+"ENOUGH"
+],
+"quote": "무료는 8개까지 등록가능하지만 충분해요",
+"store": "P",
+"app": "38. Roubit -Daily Life Routine Care",
+"review_id": "41788be6-7b0d-4117-8bfb-69305d6d0649",
+"rating": 5,
+"date": "2021-12-29",
+"loc": "ko"
+},
+{
+"key": "A4#10948",
+"codes": [
+"CAP8",
+"NOT_ENOUGH",
+"CHANGED_DOWN"
+],
+"quote": "tell me why I have to pay to add more than 8 tasks",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "14276433670",
+"rating": 3,
+"date": "2026-07-08",
+"loc": "us"
+},
+{
+"key": "A46#1529",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "46. everyday - Habit Tracker - Daily Routine Checklist",
+"review_id": "12623943797",
+"rating": 5,
+"date": "2025-05-05",
+"loc": "us"
+},
+{
+"key": "A48#2632",
+"codes": [
+"CAP8",
+"ENOUGH"
+],
+"quote": "The free version only lets you have 8 tasks, but honestly, it just helps narrow down priorities.",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "5613195521",
+"rating": 5,
+"date": "2020-03-04",
+"loc": "us"
+},
+{
+"key": "A52#1810",
+"codes": [
+"CAP8",
+"ENOUGH",
+"GROWING_CAP"
+],
+"quote": "后来发现是会随着使用增加习惯数量的，好评！",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "13289981450",
+"rating": 4,
+"date": "2025-10-20",
+"loc": "cn"
+},
+{
+"key": "A52#7837",
+"codes": [
+"PAID",
+"CONVERT_AFTER_USE",
+"X_PAYER"
+],
+"quote": "使用了8个月之后直接补票永久会员啦！",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "8537354732",
+"rating": 5,
+"date": "2022-04-06",
+"loc": "cn"
+},
+{
+"key": "A52#16613",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "2428918406",
+"rating": 4,
+"date": "2018-04-16",
+"loc": "cn"
+},
+{
+"key": "A52#17806",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "1967712726",
+"rating": 3,
+"date": "2017-12-03",
+"loc": "cn"
+},
+{
+"key": "A53#375",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "53. HabitMinder • Habit Tracker - Daily Reminders & Routines",
+"review_id": "2759857389",
+"rating": 1,
+"date": "2018-06-24",
+"loc": "cn"
+},
+{
+"key": "A8#93",
+"codes": [
+"NOT_ENOUGH_UNL"
+],
+"quote": "I want to track more than 8 habits",
+"store": "A",
+"app": "8. Onrise - Habit Tracker & Focus - Build habits, focus & journal",
+"review_id": "11928419125",
+"rating": 5,
+"date": "2024-11-09",
+"loc": "ca"
+},
+{
+"key": "A83#206",
+"codes": [
+"CAP8",
+"NOT_ENOUGH"
+],
+"quote": "아쉬운점은 루틴을 8개까지 밖에 못 설정하고",
+"store": "A",
+"app": "83. Roubit  - Fun Routine Planner - Bunny Diary & Tasks",
+"review_id": "12550130574",
+"rating": 3,
+"date": "2025-04-16",
+"loc": "kr"
+},
+{
+"key": "P9#1011",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "9. Habit Tracker - HabitKit",
+"review_id": "babfd057-56a0-4cf7-87d9-a9c26d0e1b74",
+"rating": 5,
+"date": "2024-03-01",
+"loc": "en"
+},
+{
+"key": "A1#39761",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "5053522765",
+"rating": 5,
+"date": "2019-10-31",
+"loc": "cn"
+},
+{
+"key": "P10#5938",
+"codes": [
+"CAP9",
+"ENOUGH",
+"CHOSE_GENEROUS"
+],
+"quote": "Free version up to 9 habits, which is quite generous compared to other freemium apps.",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "f4ae35a1-3cd3-4d7b-b6ed-e8009991c5d2",
+"rating": 4,
+"date": "2025-09-23",
+"loc": "en"
+},
+{
+"key": "P10#6342",
+"codes": [
+"CAP9",
+"ENOUGH"
+],
+"quote": "max 9 habits can be tracked for free. it is good",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "eaa05e29-ed56-4034-a4cf-b13db1c9b51a",
+"rating": 5,
+"date": "2025-03-20",
+"loc": "en"
+},
+{
+"key": "P18#770",
+"codes": [
+"CAP9",
+"ENOUGH"
+],
+"quote": "you can track up to 9 habits for free and its so easy to use",
+"store": "P",
+"app": "18. Habit Tracker - Habit Radar",
+"review_id": "0b658986-2471-423f-8f3c-6a25984a859a",
+"rating": 5,
+"date": "2025-11-23",
+"loc": "en"
+},
+{
+"key": "P2#11417",
+"codes": [
+"CAP9",
+"ENOUGH"
+],
+"quote": "You can track 9 habits in the free mod, which I'm really pleased with.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "8ee6351c-5911-431a-880e-6c4d94dab752",
+"rating": 5,
+"date": "2021-07-31",
+"loc": "en"
+},
+{
+"key": "A20#3393",
+"codes": [
+"CAP9",
+"CHANGED_DOWN",
+"PAID",
+"WANT_LIFETIME"
+],
+"quote": "So I definitely don’t like the idea of paying a subscription to access $ More than 9 habits",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6940257847",
+"rating": 4,
+"date": "2021-02-01",
+"loc": "us"
+},
+{
+"key": "P20#3347",
+"codes": [
+"CAP9",
+"NOT_ENOUGH"
+],
+"quote": "혹시 9개까지만 루틴을 만들수 있는건가요?",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "dbcb5073-c63a-455a-8bac-f593910ac9ad",
+"rating": 2,
+"date": "2020-08-28",
+"loc": "ko"
+},
+{
+"key": "A4#14572",
+"codes": [
+"CAP9",
+"NOT_ENOUGH"
+],
+"quote": "I can’t add more than 9 routines.",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "11407758645",
+"rating": 2,
+"date": "2024-06-21",
+"loc": "us"
+},
+{
+"key": "A1#50051",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9070770527",
+"rating": 4,
+"date": "2022-09-10",
+"loc": "sg"
+},
+{
+"key": "A1#53433",
+"codes": [
+"CAP5",
+"CHANGED_DOWN",
+"LEFT",
+"WANT10"
+],
+"quote": "I wish they would pay wall some other stuff like the background and color stuff and leave the habit part free, or at least block it at more than 10 habits.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10372833744",
+"rating": 2,
+"date": "2023-09-16",
+"loc": "us"
+},
+{
+"key": "A10#12317",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "10. Finch - Self-Care Pet - Daily Journal & Habit Tracker",
+"review_id": "11880971192",
+"rating": 5,
+"date": "2024-10-27",
+"loc": "gb"
+},
+{
+"key": "P10#5204",
+"codes": [
+"CAP10",
+"NOT_ENOUGH",
+"SURPRISE"
+],
+"quote": "It says that the app is free but we can't add more than 10 habits.",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "06f53b99-ed22-4616-aa46-cca65509b7f6",
+"rating": 3,
+"date": "2026-05-01",
+"loc": "en"
+},
+{
+"key": "P10#6335",
+"codes": [
+"CAP10",
+"ENOUGH"
+],
+"quote": "I've been trying to track my habits but the apps just do 10 habits max but this app is the best",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "b95e4c69-c3d4-4c2d-bec7-585b03b5b349",
+"rating": 5,
+"date": "2025-03-22",
+"loc": "en"
+},
+{
+"key": "P10#7574",
+"codes": [
+"CAP10",
+"SURPRISE"
+],
+"quote": "only 10 habits available on the free one, should be specified here",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "b004947a-8e35-485c-a4f9-e490ea592772",
+"rating": 4,
+"date": "2024-03-20",
+"loc": "en"
+},
+{
+"key": "P10#9083",
+"codes": [
+"CAP10",
+"STATED"
+],
+"quote": "The only thing is that you can only have ten habits.",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "f0e86111-cada-4f7d-b162-6a76e7e7f7a7",
+"rating": 5,
+"date": "2023-08-07",
+"loc": "en"
+},
+{
+"key": "P10#9348",
+"codes": [
+"CAP10",
+"ENOUGH"
+],
+"quote": "I was happily surprised that I could add and customize 10 habits for free.",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "56727528-1d76-49f5-8aaa-b1768ed59127",
+"rating": 5,
+"date": "2023-07-03",
+"loc": "en"
+},
+{
+"key": "P10#27842",
+"codes": [
+"CAP10",
+"NOT_ENOUGH"
+],
+"quote": "Só é permitido criar apenas 10 hábitos e isso é frustrante",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "59860f00-78c3-493b-9d56-f2f840ad0f50",
+"rating": 1,
+"date": "2022-01-28",
+"loc": "pt"
+},
+{
+"key": "P10#29848",
+"codes": [
+"CAP10",
+"STATED"
+],
+"quote": "то что в бесплатной версии маскимум доступно только 10 привычек (или 9)",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "4ac85bf3-c138-4524-ac69-1a9efcb53552",
+"rating": 5,
+"date": "2025-02-13",
+"loc": "ru"
+},
+{
+"key": "P10#30971",
+"codes": [
+"CAP10",
+"NOT_ENOUGH"
+],
+"quote": "Можно только 10 привычек.",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "e91dcbed-6dbf-4544-8ff6-3f14b4b066c7",
+"rating": 4,
+"date": "2023-12-29",
+"loc": "ru"
+},
+{
+"key": "P123#442",
+"codes": [
+"CAP3",
+"WANT10"
+],
+"quote": "you should atleast give us 10 habits in the free version",
+"store": "P",
+"app": "123. Rise - Habit List",
+"review_id": "67826459-f58b-47eb-b897-8af8b1ce67d4",
+"rating": 5,
+"date": "2025-01-23",
+"loc": "en"
+},
+{
+"key": "P123#987",
+"codes": [
+"CAP3",
+"WANT10"
+],
+"quote": "give some 10 habit without premium",
+"store": "P",
+"app": "123. Rise - Habit List",
+"review_id": "f32608e4-6620-4e4b-b535-2b42279b2d38",
+"rating": 4,
+"date": "2024-09-22",
+"loc": "en"
+},
+{
+"key": "A13#11976",
+"codes": [
+"WANT10"
+],
+"quote": "only thing i would change is to have at least 10 habits without premium",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8078583905",
+"rating": 5,
+"date": "2021-11-30",
+"loc": "us"
+},
+{
+"key": "A13#19385",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1239300708",
+"rating": 5,
+"date": "2015-08-07",
+"loc": "us"
+},
+{
+"key": "P15#427",
+"codes": [
+"CAP6",
+"WANT10"
+],
+"quote": "make 10 habit free option.",
+"store": "P",
+"app": "15. Habit Tracker - HabitGenius",
+"review_id": "ad7f3a87-eee9-4aaa-a098-db2cf723f77e",
+"rating": 3,
+"date": "2025-11-18",
+"loc": "en"
+},
+{
+"key": "P18#626",
+"codes": [
+"CAP8",
+"WANT10"
+],
+"quote": "My only request would be to at least have a maximum of 10 habits in the free version.",
+"store": "P",
+"app": "18. Habit Tracker - Habit Radar",
+"review_id": "bda634c8-a38a-414c-a7b8-ab39f4da38e3",
+"rating": 5,
+"date": "2026-06-01",
+"loc": "en"
+},
+{
+"key": "P2#21176",
+"codes": [
+"CAP10",
+"ENOUGH",
+"PRICE_FAIR"
+],
+"quote": "Premium version is paid one off, so is rather affordable",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "d3e9b059-40b0-4374-8dd1-6b35ead5da7a",
+"rating": 5,
+"date": "2023-01-09",
+"loc": "fr"
+},
+{
+"key": "P20#105",
+"codes": [
+"WANT10",
+"WANT_LIFETIME"
+],
+"quote": "What would get it to 5 stars for me is more than 10 habits on the free version or at the very least a reasonably priced lifetime purchase option",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "4b929289-ea14-47a3-8c4d-278129f77a72",
+"rating": 2,
+"date": "2025-05-17",
+"loc": "en"
+},
+{
+"key": "P24#3143",
+"codes": [
+"CAP5",
+"WANT10",
+"NOT_ENOUGH"
+],
+"quote": "Only 5 give at least 10 habits for free",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "e1867a4f-c9a4-4471-8fb5-3c6b34ac125c",
+"rating": 1,
+"date": "2020-08-21",
+"loc": "en"
+},
+{
+"key": "P24#3461",
+"codes": [
+"CAP5",
+"WANT10",
+"NOT_ENOUGH"
+],
+"quote": "Have 10 habits for free instead of 5.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "a73c71fc-36b9-4f93-bf99-e4e38f873721",
+"rating": 5,
+"date": "2020-06-07",
+"loc": "en"
+},
+{
+"key": "P24#16313",
+"codes": [
+"CAP5",
+"WANT10",
+"NOT_ENOUGH"
+],
+"quote": "please make it 10 habits without premium",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "0c28fa40-b0a8-4be8-982c-a2b7d3647511",
+"rating": 4,
+"date": "2014-08-03",
+"loc": "en"
+},
+{
+"key": "P24#23854",
+"codes": [
+"CAP5",
+"WANT10",
+"NOT_ENOUGH"
+],
+"quote": "I think, 10 habits for free would be more useable",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "49e07ef8-fe49-4468-abf8-c7df5ea848c2",
+"rating": 4,
+"date": "2020-09-07",
+"loc": "ru"
+},
+{
+"key": "A34#2",
+"codes": [
+"CAP2",
+"WANT10",
+"NOT_ENOUGH"
+],
+"quote": "No free trial and no 8-10 habits for free",
+"store": "A",
+"app": "34. Habit Tracker - Evoday - Daily Streaks Calendar & Goals",
+"review_id": "9342516160",
+"rating": 5,
+"date": "2022-11-29",
+"loc": "ae"
+},
+{
+"key": "A4#11997",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "12773861748",
+"rating": 5,
+"date": "2025-06-14",
+"loc": "us"
+},
+{
+"key": "A48#4",
+"codes": [
+"CAP3",
+"WANT10",
+"NOT_ENOUGH"
+],
+"quote": "Make it at least 10 Goals for free version",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "5397476810",
+"rating": 1,
+"date": "2020-01-13",
+"loc": "ae"
+},
+{
+"key": "A48#396",
+"codes": [
+"CAP10",
+"ENOUGH"
+],
+"quote": "So cool you can have under 10 tasks without paying!",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "3212244452",
+"rating": 5,
+"date": "2018-09-21",
+"loc": "ca"
+},
+{
+"key": "A48#770",
+"codes": [
+"CAP10",
+"ENOUGH",
+"CHOSE_GENEROUS"
+],
+"quote": "The free version allows up to  10 habits (more than most other goal tracker apps)",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1374234114",
+"rating": 5,
+"date": "2016-05-06",
+"loc": "de"
+},
+{
+"key": "A48#1064",
+"codes": [
+"CAP10",
+"ENOUGH",
+"CHOSE_GENEROUS"
+],
+"quote": "this is by far the best, allowing you to set up to 10 goals for free",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1830303780",
+"rating": 5,
+"date": "2017-10-06",
+"loc": "gb"
+},
+{
+"key": "A48#1094",
+"codes": [
+"CAP10",
+"LEFT",
+"REFUSE"
+],
+"quote": "i could not set more than 10 trackers unless i bought a subscription for £29.99 a year",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1484336137",
+"rating": 1,
+"date": "2016-11-14",
+"loc": "gb"
+},
+{
+"key": "A48#1221",
+"codes": [
+"CAP10",
+"ENOUGH",
+"CHOSE_GENEROUS"
+],
+"quote": "What made me choose it was the fact that you can add 10 habits on the free version",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "4031479507",
+"rating": 5,
+"date": "2019-04-19",
+"loc": "ie"
+},
+{
+"key": "A48#2757",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "4220820733",
+"rating": 2,
+"date": "2019-05-27",
+"loc": "us"
+},
+{
+"key": "A48#3051",
+"codes": [
+"CAP10",
+"ENOUGH",
+"CHOSE_GENEROUS"
+],
+"quote": "This app gives you ten habits for FREE.",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "2627851211",
+"rating": 5,
+"date": "2018-06-01",
+"loc": "us"
+},
+{
+"key": "A48#3374",
+"codes": [
+"CAP10",
+"ENOUGH"
+],
+"quote": "10 habits for free, but you&#39;ll do best starting with only 2-5.",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1778949440",
+"rating": 5,
+"date": "2017-09-07",
+"loc": "us"
+},
+{
+"key": "A48#3530",
+"codes": [
+"CAP10",
+"ENOUGH"
+],
+"quote": "For the 10 I&#39;m working on though this is really helpful.",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1560420673",
+"rating": 5,
+"date": "2017-03-09",
+"loc": "us"
+},
+{
+"key": "A48#3667",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1479180254",
+"rating": 5,
+"date": "2016-11-05",
+"loc": "us"
+},
+{
+"key": "A48#3830",
+"codes": [
+"CAP10",
+"CHANGED_DOWN"
+],
+"quote": "when they modified the free version to limit you to 10 goals, they sent me an email and gave me LIFETIME FREE access to the PRO version",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1370918266",
+"rating": 5,
+"date": "2016-04-30",
+"loc": "us"
+},
+{
+"key": "A52#20108",
+"codes": [
+"CAP10",
+"ENOUGH",
+"WILLPAY"
+],
+"quote": "Free version can track up to 10 habits which is really good enough to try and see if you like it enough to upgrade.",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "13684050383",
+"rating": 5,
+"date": "2026-01-28",
+"loc": "sg"
+},
+{
+"key": "P69#540",
+"codes": [
+"CAP10",
+"STATED"
+],
+"quote": "You only get 10 habits with the free version",
+"store": "P",
+"app": "69. EZ Habit - simple habit tracker",
+"review_id": "6db7e476-1299-48cd-975e-c6b67998e636",
+"rating": 3,
+"date": "2025-06-05",
+"loc": "sr"
+},
+{
+"key": "A8#728",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "8. Onrise - Habit Tracker & Focus - Build habits, focus & journal",
+"review_id": "12138019597",
+"rating": 5,
+"date": "2025-01-03",
+"loc": "us"
+},
+{
+"key": "P10#15046",
+"codes": [
+"CAP11",
+"NOT_ENOUGH"
+],
+"quote": "me dejo poner solo 11 hábitos",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "5bff0c8d-0d40-42c8-befb-7eeeb5abb990",
+"rating": 3,
+"date": "2024-05-12",
+"loc": "es"
+},
+{
+"key": "P12#31657",
+"codes": [
+"CAP12",
+"NOT_ENOUGH"
+],
+"quote": "it only allows you to have 12 tasks total unless you have premium",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "6e7945c9-f6b8-440d-8ad9-c027fcefbfe0",
+"rating": 3,
+"date": "2021-09-24",
+"loc": "en"
+},
+{
+"key": "A13#12113",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "7512931952",
+"rating": 2,
+"date": "2021-06-27",
+"loc": "us"
+},
+{
+"key": "A31#716",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "31. Do Habits - Get It Done - Daily Routine & Goal Planner",
+"review_id": "5796652717",
+"rating": 4,
+"date": "2020-04-11",
+"loc": "ca"
+},
+{
+"key": "P61#90",
+"codes": [
+"CAP12",
+"ENOUGH"
+],
+"quote": "you get to have up to 12 habits in the free version and thats enough for me",
+"store": "P",
+"app": "61. Hizo - Habit Tracker & Todo",
+"review_id": "ddcab481-35bd-4636-8243-2022b5adf8e8",
+"rating": 4,
+"date": "2026-07-28",
+"loc": "en"
+},
+{
+"key": "P61#274",
+"codes": [
+"CAP12",
+"NOT_ENOUGH"
+],
+"quote": "You can add only 12 Habits for free.",
+"store": "P",
+"app": "61. Hizo - Habit Tracker & Todo",
+"review_id": "06255d6a-745d-4128-9159-e6582725cd9a",
+"rating": 1,
+"date": "2025-10-12",
+"loc": "en"
+},
+{
+"key": "P61#2161",
+"codes": [
+"CAP12",
+"NOT_ENOUGH"
+],
+"quote": "можно выбрать только 12 привычек",
+"store": "P",
+"app": "61. Hizo - Habit Tracker & Todo",
+"review_id": "4e4db570-9b93-4427-95cb-25d861140923",
+"rating": 4,
+"date": "2024-08-15",
+"loc": "ru"
+},
+{
+"key": "A20#3481",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "20. Habit — Daily Tracker - Crush your goals like a boss",
+"review_id": "6922264077",
+"rating": 1,
+"date": "2021-01-28",
+"loc": "us"
+},
+{
+"key": "A1#49455",
+"codes": [
+"WIDGET_FIT"
+],
+"quote": "now I can see max 15 tasks",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10228931291",
+"rating": 5,
+"date": "2023-08-07",
+"loc": "rs"
+},
+{
+"key": "P20#279",
+"codes": [
+"CAP15",
+"ENOUGH"
+],
+"quote": "allow free users to creat up to 15 routines and other to dos",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "059ac78c-774b-4389-baa5-dffbe6de07c8",
+"rating": 4,
+"date": "2023-03-09",
+"loc": "en"
+},
+{
+"key": "P24#3467",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "I would give it a 5 star but your limited to only 5 habits at a time.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "901455f6-5275-4988-88ca-92b09b067d32",
+"rating": 4,
+"date": "2020-06-06",
+"loc": "en"
+},
+{
+"key": "A1#52116",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "you can only have 5 habit trackers or else you have to pay a ton of money",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11568419478",
+"rating": 3,
+"date": "2024-08-03",
+"loc": "us"
+},
+{
+"key": "A4#8120",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "I can only add 5 tasks and no more or i have to buy it",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13346142437",
+"rating": 3,
+"date": "2025-11-02",
+"loc": "lt"
+},
+{
+"key": "A52#11135",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "唯一不足的就是只能免费记录5个习惯，超出的要付费",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "6831715361",
+"rating": 4,
+"date": "2021-01-05",
+"loc": "cn"
+},
+{
+"key": "A1#54160",
+"codes": [
+"CAP5",
+"CHANGED_DOWN",
+"REFUSE"
+],
+"quote": "All of a sudden I go on my app, and I’ve been cut down to five habits for free",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9737920031",
+"rating": 2,
+"date": "2023-03-21",
+"loc": "us"
+},
+{
+"key": "A1#45453",
+"codes": [
+"CAP5",
+"NOT_ENOUGH",
+"WANT8",
+"PRICE_FAIR"
+],
+"quote": "maybe like 8 habits for free because that is abit more equal for people without money",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11187896036",
+"rating": 3,
+"date": "2024-04-22",
+"loc": "gb"
+},
+{
+"key": "P24#3144",
+"codes": [
+"CAP5",
+"REFUSE"
+],
+"quote": "$6.99/month seems steep to record more than 5 habits.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "79e6c45f-972d-4fa2-8b1b-dc0b66ff875d",
+"rating": 3,
+"date": "2020-08-20",
+"loc": "en"
+},
+{
+"key": "P105#2384",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "можно сделать только 5 привычек(жалко)",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "c98f99bf-71d2-4c51-8a52-0c08f882fd88",
+"rating": 3,
+"date": "2021-01-31",
+"loc": "ru"
+},
+{
+"key": "A13#1992",
+"codes": [
+"CAP5",
+"NOT_ENOUGH",
+"WANT10",
+"CANT_EVALUATE"
+],
+"quote": "I need to see it working with more habits before I decide",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5606418956",
+"rating": 5,
+"date": "2020-03-02",
+"loc": "ca"
+},
+{
+"key": "A1#52504",
+"codes": [
+"CAP5",
+"ENOUGH",
+"PRICE_FAIR"
+],
+"quote": "you can have up to five habits without premium. As for premium itself- it’s only about $10 so it is pretty cheap and easy to afford",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11146949156",
+"rating": 5,
+"date": "2024-04-11",
+"loc": "us"
+},
+{
+"key": "P31#208",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Apenas 5 hábitos gratuitos",
+"store": "P",
+"app": "31. HelloHabit - Habit Tracker",
+"review_id": "84459b5c-907e-4c47-9d8c-11002635449c",
+"rating": 2,
+"date": "2025-10-26",
+"loc": "en"
+},
+{
+"key": "A13#1611",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "More than five habits needs to pay. Better use the iPhone to do list default.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1677856923",
+"rating": 2,
+"date": "2017-07-11",
+"loc": "br"
+},
+{
+"key": "P24#12907",
+"codes": [
+"CAP5",
+"LEFT"
+],
+"quote": "Let's see if there's something else out there that will let me input more for free.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "4035cff3-bd96-4cd7-bf75-3a85c1323b4d",
+"rating": 2,
+"date": "2016-04-01",
+"loc": "en"
+},
+{
+"key": "A52#12800",
+"codes": [
+"CAP5",
+"LEFT"
+],
+"quote": "才建5个就要让开会员才能用？呵呵哒～太过自信了，果断卸载了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "6072976335",
+"rating": 1,
+"date": "2020-06-14",
+"loc": "cn"
+},
+{
+"key": "A52#10347",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "只可以填写5个免费习惯，是不是有点太不人性了呢",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "7044964796",
+"rating": 3,
+"date": "2021-02-27",
+"loc": "cn"
+},
+{
+"key": "A4#5381",
+"codes": [
+"CAP5",
+"CHANGED_DOWN"
+],
+"quote": "Previously I could add more than 5 tasks but now I can’t.",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13720656690",
+"rating": 5,
+"date": "2026-02-06",
+"loc": "gb"
+},
+{
+"key": "P24#7072",
+"codes": [
+"CAP5",
+"LEFT",
+"SURPRISE"
+],
+"quote": "deleted after 5 min app neglects to mention before downloading you can only track 5 habits for free",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "337ee7e4-7ac8-422d-9591-905caea93e08",
+"rating": 1,
+"date": "2019-01-01",
+"loc": "en"
+},
+{
+"key": "A13#11531",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "This app ask you to buy a subscription after making only 5 habits!",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "10271603885",
+"rating": 1,
+"date": "2023-08-18",
+"loc": "us"
+},
+{
+"key": "P105#710",
+"codes": [
+"CAP5",
+"ENOUGH"
+],
+"quote": "You only get five habit slots to start, but I'm a believer in gradual success so that doesnt bother me.",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "04db9440-7bb7-4ab3-af47-68b26397bebc",
+"rating": 4,
+"date": "2020-10-15",
+"loc": "en"
+},
+{
+"key": "P24#9077",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Only 5 habits before unlocking.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "fdccfc08-65b0-4d5a-9643-ddadfe0337dc",
+"rating": 1,
+"date": "2018-04-05",
+"loc": "en"
+},
+{
+"key": "A55#358",
+"codes": [
+"CAP5",
+"ENOUGH"
+],
+"quote": "Easy, simple, 5 habits for free.",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "3858564272",
+"rating": 5,
+"date": "2019-03-08",
+"loc": "cn"
+},
+{
+"key": "P24#9392",
+"codes": [
+"CAP5",
+"ENOUGH"
+],
+"quote": "There is a 5 habit limit for the free version but you dont want to juggle too many things at once.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "f5545441-7eca-47e8-a443-67748b043224",
+"rating": 5,
+"date": "2018-02-14",
+"loc": "en"
+},
+{
+"key": "P24#12363",
+"codes": [
+"CAP5",
+"LEFT"
+],
+"quote": "I've uninstalled it when faced 5 habits limit of the free version",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "0c7632e4-81f4-4446-b37a-a208b7412dcb",
+"rating": 2,
+"date": "2016-07-11",
+"loc": "en"
+},
+{
+"key": "A52#10642",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "添加5个计划就要付钱",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "6963585492",
+"rating": 2,
+"date": "2021-02-07",
+"loc": "cn"
+},
+{
+"key": "A52#20395",
+"codes": [
+"CAP5",
+"ENOUGH",
+"LIFETIME_PRAISE",
+"X_PAYER"
+],
+"quote": "At first, I didn’t like that we were limited to 5 habits. Now I’m appreciative because it helped me truly focus on the habits that would have the greatest impact.",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "12283194695",
+"rating": 5,
+"date": "2025-02-07",
+"loc": "us"
+},
+{
+"key": "P24#1642",
+"codes": [
+"CAP5",
+"REFUSE",
+"WANT_LIFETIME"
+],
+"quote": "Fine, you know what, I'm willing to pay $10 for this, it's handy. Nope, it's $7/month.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "0d603c6e-88a2-43b2-bed3-b47452fa77c3",
+"rating": 1,
+"date": "2023-04-30",
+"loc": "en"
+},
+{
+"key": "A1#53048",
+"codes": [
+"CAP5",
+"STATED"
+],
+"quote": "One downside is you can only track 5 habits unless you pay like $6.99 but, it’s still a pretty good app so would recommend.",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10779221886",
+"rating": 4,
+"date": "2024-01-03",
+"loc": "us"
+},
+{
+"key": "A52#1741",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "13343360669",
+"rating": 1,
+"date": "2025-11-01",
+"loc": "cn"
+},
+{
+"key": "P98#4018",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Ter apenas 5 hábitos faz com que as pessoas saiam do app",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "4459bc3a-832d-4994-a7c8-ae26948597ad",
+"rating": 3,
+"date": "2022-12-24",
+"loc": "pt"
+},
+{
+"key": "P24#13941",
+"codes": [
+"CAP5",
+"PAID"
+],
+"quote": "Well worth getting the pro. Free version only allows you to track 5 habits.",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "1992e9cb-411a-4281-85e0-9a7414b31352",
+"rating": 5,
+"date": "2015-12-31",
+"loc": "en"
+},
+{
+"key": "A1#54119",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Should be able to have more than five habits free",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "9780678424",
+"rating": 1,
+"date": "2023-04-03",
+"loc": "us"
+},
+{
+"key": "A13#7280",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Only 5 habits can be made",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5373008305",
+"rating": 3,
+"date": "2020-01-07",
+"loc": "in"
+},
+{
+"key": "P24#1944",
+"codes": [
+"CAP5",
+"SURPRISE"
+],
+"quote": "Only 5 habits in free edition. Would be good to know upfront",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "06a699fb-f847-447e-abcd-72e9363f7537",
+"rating": 3,
+"date": "2022-08-20",
+"loc": "en"
+},
+{
+"key": "P24#5316",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "wish we could add more than 5 tasks",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "280a37f8-b27a-4b91-a5de-98db82fb3f44",
+"rating": 4,
+"date": "2019-06-20",
+"loc": "en"
+},
+{
+"key": "A52#9711",
+"codes": [
+"CAP5",
+"CHANGED_DOWN",
+"LEFT"
+],
+"quote": "不付费只能添加5个习惯。瞬间好感度全无。卸载了",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "7263972721",
+"rating": 1,
+"date": "2021-04-25",
+"loc": "cn"
+},
+{
+"key": "P24#4377",
+"codes": [
+"CAP5",
+"ENOUGH",
+"PAID",
+"X_PAYER"
+],
+"quote": "basic version is great - simple but fully functional and effective for tracking up to 5 habits",
+"store": "P",
+"app": "24. Habit Tracker",
+"review_id": "f8a6ec36-cdd7-487a-8f9e-4578d336b888",
+"rating": 2,
+"date": "2019-11-10",
+"loc": "en"
+},
+{
+"key": "P33#333",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "this would be so good if it didn't require a subscription to add more than 5 habits",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "49728828-3a7a-4933-b1f2-87f54b144945",
+"rating": 1,
+"date": "2025-12-01",
+"loc": "en"
+},
+{
+"key": "A13#16295",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "pointless if I can only track 5 things",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1882210922",
+"rating": 3,
+"date": "2017-10-29",
+"loc": "us"
+},
+{
+"key": "A52#13612",
+"codes": [
+"CAP5",
+"STATED"
+],
+"quote": "只能有5个标签，接下来就是付钱",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "5570515238",
+"rating": 3,
+"date": "2020-02-23",
+"loc": "cn"
+},
+{
+"key": "A52#7375",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "只能用不到5个的打卡事项",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "8908629277",
+"rating": 1,
+"date": "2022-07-25",
+"loc": "cn"
+},
+{
+"key": "P12#44967",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "12132ec3-fbd2-4ebe-a9c3-cb85a95caf58",
+"rating": 4,
+"date": "2021-01-03",
+"loc": "en"
+},
+{
+"key": "A1#45601",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "why do i need to pay £8 constantly to have more than 5 habits",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10694879183",
+"rating": 4,
+"date": "2023-12-14",
+"loc": "gb"
+},
+{
+"key": "A13#2019",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "I’m disappointed how you can only have 5 habits which is honestly not enough for many people.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "5440577075",
+"rating": 3,
+"date": "2020-01-24",
+"loc": "ca"
+},
+{
+"key": "A1#47562",
+"codes": [
+"CAP5",
+"STATED"
+],
+"quote": "just know that you can only have 5 habits at a time on the free version",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10903531069",
+"rating": 3,
+"date": "2024-02-05",
+"loc": "jm"
+},
+{
+"key": "A1#48751",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10910587978",
+"rating": 5,
+"date": "2024-02-07",
+"loc": "nz"
+},
+{
+"key": "P105#71",
+"codes": [
+"CAP5",
+"ENOUGH"
+],
+"quote": "Ohne Premium kann man nur 5 Gewohnheiten erstellen, das reicht aber wirklich für den Anfang.",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "573c66df-f3ff-4d8d-b412-ba60278b6d11",
+"rating": 5,
+"date": "2022-05-07",
+"loc": "de"
+},
+{
+"key": "A13#17018",
+"codes": [
+"CAP5",
+"PAID"
+],
+"quote": "I needed help with more than 5 habits so the upgrade was necessary.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1551744886",
+"rating": 5,
+"date": "2017-02-24",
+"loc": "us"
+},
+{
+"key": "P3#8203",
+"codes": [
+"CHOSE_GENEROUS"
+],
+"quote": "Unlike other habit tracking apps I've tried, this one allows you to add more than 5 habits for free.",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "c895913f-1968-42a6-ad10-f44549e4d661",
+"rating": 5,
+"date": "2021-03-20",
+"loc": "en"
+},
+{
+"key": "A13#1789",
+"codes": [
+"CAP5",
+"ENOUGH",
+"GATE_OTHER",
+"LEFT"
+],
+"quote": "App worked fine on the free version (limited to 5 habits), until they pulled the final straw",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "8606769692",
+"rating": 2,
+"date": "2022-04-26",
+"loc": "ca"
+},
+{
+"key": "A52#15346",
+"codes": [
+"CAP5",
+"NOT_ENOUGH",
+"WILLPAY"
+],
+"quote": "如果价格合理的话我也会支持",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "3420105102",
+"rating": 5,
+"date": "2018-11-15",
+"loc": "cn"
+},
+{
+"key": "P98#3880",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Eu recomendo, só se você estiver disponível a ter 5 hábitos utilizáveis apenas",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "b2d61071-fefc-43da-af7d-b9879b040914",
+"rating": 3,
+"date": "2023-02-22",
+"loc": "pt"
+},
+{
+"key": "A13#18086",
+"codes": [
+"CAP5",
+"WILLPAY"
+],
+"quote": "plan to buy the upgraded version so I can add more &#34;habits&#34;",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1384029393",
+"rating": 5,
+"date": "2016-05-25",
+"loc": "us"
+},
+{
+"key": "A52#13081",
+"codes": [
+"CAP5",
+"STATED"
+],
+"quote": "普通用户只能写5个习惯，要多写的话就要开会员",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "5803478565",
+"rating": 3,
+"date": "2020-04-13",
+"loc": "cn"
+},
+{
+"key": "A1#52125",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "I need to keep my life together with more than just 5 tasks",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11557958708",
+"rating": 1,
+"date": "2024-08-01",
+"loc": "us"
+},
+{
+"key": "A13#4944",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1352715129",
+"rating": 5,
+"date": "2016-03-24",
+"loc": "de"
+},
+{
+"key": "A86#314",
+"codes": [
+"CAP5",
+"ENOUGH"
+],
+"quote": "免费版可以设5个习惯，对一般人来说，够用了",
+"store": "A",
+"app": "86. Today Habit tracker - For to-dos, routines & goals",
+"review_id": "1918053513",
+"rating": 5,
+"date": "2017-11-13",
+"loc": "cn"
+},
+{
+"key": "A52#6693",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "不充钱一天就只有5个计划",
+"store": "A",
+"app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+"review_id": "9605411304",
+"rating": 2,
+"date": "2023-02-11",
+"loc": "cn"
+},
+{
+"key": "A13#2446",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "The only drawback is the limit of five habits on the free version.",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "1642480239",
+"rating": 4,
+"date": "2017-06-13",
+"loc": "ca"
+},
+{
+"key": "A55#52",
+"codes": [
+"CAP5",
+"PAID"
+],
+"quote": "Bought the premium version after 3 days so that I could track more than 5 habits.",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "1601365268",
+"rating": 5,
+"date": "2017-04-30",
+"loc": "au"
+},
+{
+"key": "A1#53269",
+"codes": [
+"CAP5",
+"WILLPAY",
+"LIFETIME_PRAISE"
+],
+"quote": "considering lifetime premium is less than yearly subscriptions to other apps im tempted to go ahead and pay",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "10554907176",
+"rating": 4,
+"date": "2023-11-06",
+"loc": "us"
+},
+{
+"key": "P31#146",
+"codes": [
+"CAP5",
+"ENOUGH",
+"CHOSE_GENEROUS",
+"WANT_LIFETIME"
+],
+"quote": "the free version suffices, allowing you a max of 5 habits instead of usually just 3 habits",
+"store": "P",
+"app": "31. HelloHabit - Habit Tracker",
+"review_id": "101c7b49-dc1d-4acb-884d-f50409eb5a35",
+"rating": 5,
+"date": "2026-02-13",
+"loc": "en"
+},
+{
+"key": "A50#69",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "it’s not free, you only get 5 free habits",
+"store": "A",
+"app": "50. HelloHabit - Habit Tracker - Tasks, Routines, & Streaks",
+"review_id": "13617932313",
+"rating": 3,
+"date": "2026-01-10",
+"loc": "it"
+},
+{
+"key": "A13#16132",
+"codes": [
+"CAP5",
+"REFUSE",
+"WANT_LIFETIME"
+],
+"quote": "I would have easily paid $3, $5, or even $7 for this app in full",
+"store": "A",
+"app": "13. Productive - Habit Tracker - Daily Routine & Goals Planner",
+"review_id": "2189456384",
+"rating": 1,
+"date": "2018-02-10",
+"loc": "us"
+},
+{
+"key": "P2#4299",
+"codes": [
+"CHOSE_GENEROUS"
+],
+"quote": "Amazing with unlimited ability to add more than five habits in habit tracker unlike tick tick",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "5dff4cc0-64d0-4a4a-953d-354f9af12466",
+"rating": 5,
+"date": "2024-09-01",
+"loc": "en"
+},
+{
+"key": "P65#5059",
+"codes": [
+"CHOSE_GENEROUS"
+],
+"quote": "you can add more than 5 goals in free version which is the upper limit in most goal tracking apps",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "1a02752f-0d6e-478d-822a-24b8646a239e",
+"rating": 5,
+"date": "2020-08-29",
+"loc": "en"
+},
+{
+"key": "A4#11822",
+"codes": [
+"CAP5",
+"CHANGED_DOWN"
+],
+"quote": "Before we could do as many tasks as we want but now we can only dob5!?!?",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "12991610363",
+"rating": 2,
+"date": "2025-08-08",
+"loc": "us"
+},
+{
+"key": "P40#159",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "40. Habit Eazy - Habit & To Do Pal",
+"review_id": "e9115415-60ae-4a53-8d0d-bec5962ce839",
+"rating": 1,
+"date": "2025-09-09",
+"loc": "es"
+},
+{
+"key": "A1#52398",
+"codes": [
+"CAP5",
+"ENOUGH"
+],
+"quote": "Free version still AMAZING if you need 5 new habits!",
+"store": "A",
+"app": "1. Habit Tracker - Goal Tracker & ADHD Planner",
+"review_id": "11215638411",
+"rating": 5,
+"date": "2024-04-30",
+"loc": "us"
+},
+{
+"key": "P31#242",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "only 5 free habits",
+"store": "P",
+"app": "31. HelloHabit - Habit Tracker",
+"review_id": "58abed89-c246-4862-bb97-628291011e50",
+"rating": 3,
+"date": "2025-08-04",
+"loc": "en"
+},
+{
+"key": "P105#842",
+"codes": [
+"CAP5",
+"ENOUGH",
+"PRICE_FAIR"
+],
+"quote": "the paid one isn't too expensive, so its not a huge con",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "1f0c65ed-0328-415a-8ccd-e83574bd47be",
+"rating": 5,
+"date": "2020-08-19",
+"loc": "en"
+},
+{
+"key": "A55#897",
+"codes": [
+"CAP5",
+"ENOUGH"
+],
+"quote": "Free version is amazing, you can track up to 5 habits.",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "3100650552",
+"rating": 5,
+"date": "2018-08-22",
+"loc": "nl"
+},
+{
+"key": "A4#5414",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "I can only add 5 task and it won’t let me do future days",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13591356068",
+"rating": 3,
+"date": "2026-01-03",
+"loc": "gb"
+},
+{
+"key": "A55#227",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Costs money for more than five habits.",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "4755264918",
+"rating": 1,
+"date": "2019-09-10",
+"loc": "ca"
+},
+{
+"key": "P105#938",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "only 5 free habits",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "2c6393b8-d5ac-42aa-8a6c-f78602509d9a",
+"rating": 1,
+"date": "2020-07-06",
+"loc": "en"
+},
+{
+"key": "A55#373",
+"codes": [
+"CAP5",
+"STATED"
+],
+"quote": "唯一的问题是免费用户最多只能添加5个习惯",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "1474097184",
+"rating": 5,
+"date": "2016-10-28",
+"loc": "cn"
+},
+{
+"key": "P31#194",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Only 5 Free Habits",
+"store": "P",
+"app": "31. HelloHabit - Habit Tracker",
+"review_id": "909915bc-73aa-4a14-9982-b0b50c74d23b",
+"rating": 4,
+"date": "2025-11-24",
+"loc": "en"
+},
+{
+"key": "P33#1820",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Can only have 5 goals without paying money...",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "c28b1f20-d7d3-4eff-a6ea-49f7270863f9",
+"rating": 1,
+"date": "2020-07-09",
+"loc": "en"
+},
+{
+"key": "P105#536",
+"codes": [
+"CAP5",
+"NOT_ENOUGH",
+"SURPRISE"
+],
+"quote": "I was rly happy w it turns out you have to pay to have more than 5 habits",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "dc712d5f-eac1-4f91-a76c-8f00356eab9c",
+"rating": 2,
+"date": "2021-05-01",
+"loc": "en"
+},
+{
+"key": "A26#3540",
+"codes": [
+"CAP5",
+"NOT_ENOUGH",
+"X_PAYER"
+],
+"quote": "you only get to have five tasks anyway. Dreadful.",
+"store": "A",
+"app": "26. Eden - Daily Routine Planner - Self care habit tracker, to do",
+"review_id": "9273659264",
+"rating": 2,
+"date": "2022-11-10",
+"loc": "us"
+},
+{
+"key": "P10#10791",
+"codes": [
+"CHOSE_GENEROUS"
+],
+"quote": "doesn't require you to upgrade to premium before entering more than 5 habits",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "5dba989e-d6af-4ffc-b6c4-32221873f680",
+"rating": 5,
+"date": "2022-06-21",
+"loc": "en"
+},
+{
+"key": "A55#909",
+"codes": [
+"CAP5",
+"ENOUGH"
+],
+"quote": "You can track up to 5 goals with the free version",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "1320580141",
+"rating": 5,
+"date": "2016-01-22",
+"loc": "nl"
+},
+{
+"key": "P36#681",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "没买会员就只能添加5个，为难小孩",
+"store": "P",
+"app": "36. Fun Habit - Habit Tracker",
+"review_id": "5eed8e23-ae69-41b0-b6f3-380a5f0d84d5",
+"rating": 2,
+"date": "2021-05-29",
+"loc": "zh-CN"
+},
+{
+"key": "A55#1815",
+"codes": [
+"CAP5",
+"NOT_ENOUGH",
+"SYNC_WANT"
+],
+"quote": "it&#39;s good if you only have a phone and no tablet",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "1337205851",
+"rating": 3,
+"date": "2016-02-22",
+"loc": "us"
+},
+{
+"key": "P71#172",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "só dá pra fazer apenas 5 hábitos isso da a impressão q o app é muito limitado",
+"store": "P",
+"app": "71. Habitude Daily Routine Planner",
+"review_id": "085f87c4-def3-44e7-89a0-bd41b3e91f4a",
+"rating": 4,
+"date": "2023-03-24",
+"loc": "pt"
+},
+{
+"key": "A18#284",
+"codes": [
+"CAP15",
+"PAID"
+],
+"quote": "無料版だと15個までしか登録できないので少し躊躇いましたが有料会員でもやる価値はあると思います",
+"store": "A",
+"app": "18. MyRoutine - Organize your day - Built around your real life",
+"review_id": "9744682977",
+"rating": 4,
+"date": "2023-03-23",
+"loc": "jp"
+},
+{
+"key": "P3#9547",
+"codes": [
+"CHOSE_GENEROUS"
+],
+"quote": "I like very much becoz of more than 5 habits can track",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "194dbd34-4792-4776-be7a-a32ce2297a39",
+"rating": 5,
+"date": "2020-06-14",
+"loc": "en"
+},
+{
+"key": "A65#118",
+"codes": [
+"CAP5",
+"CHANGED_DOWN",
+"LEFT"
+],
+"quote": "Para mim que tenho mais hábitos vou ter que procurar outro App",
+"store": "A",
+"app": "65. Rabit - Daily Routine Planner - Habit Tracker & ADHD Help",
+"review_id": "10032904573",
+"rating": 3,
+"date": "2023-06-14",
+"loc": "br"
+},
+{
+"key": "A4#418",
+"codes": [
+"CAP5",
+"NOT_ENOUGH",
+"CHANGED_DOWN"
+],
+"quote": "I could only make 5 tasks and I had to SUBSCRIBE!?",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "12971121418",
+"rating": 2,
+"date": "2025-08-03",
+"loc": "au"
+},
+{
+"key": "A55#1416",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "My only complaint is there is a 5 habit limit",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "2681497834",
+"rating": 4,
+"date": "2018-06-12",
+"loc": "us"
+},
+{
+"key": "P98#262",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Only 5 Habits in the free version - paid quite expensive",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "4eeff604-af32-4174-a3a2-fa5d45657acd",
+"rating": 1,
+"date": "2023-10-06",
+"loc": "en"
+},
+{
+"key": "P105#1184",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Sólo 5 hábitos sin premium",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "f4c78f21-6123-4299-a5bd-069d053f32ca",
+"rating": 1,
+"date": "2023-03-14",
+"loc": "es"
+},
+{
+"key": "P12#36327",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "It's a bit useless when you can only add more than 5 tasks if you buy premium",
+"store": "P",
+"app": "12. Fabulous Daily Routine Planner",
+"review_id": "46055980-d417-4ef3-8172-ac478038695e",
+"rating": 2,
+"date": "2021-05-31",
+"loc": "en"
+},
+{
+"key": "P2#8820",
+"codes": [
+"CAP5",
+"STATED"
+],
+"quote": "You can only have 5 habits at once, which is kinda a let down",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "3142169d-1c0e-4462-99fb-2912c57ef248",
+"rating": 5,
+"date": "2022-11-30",
+"loc": "en"
+},
+{
+"key": "A33#1745",
+"codes": [
+"CAP3",
+"WANT5",
+"REFUSE"
+],
+"quote": "タスクの数を5つまでは無料にして欲しい",
+"store": "A",
+"app": "33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks",
+"review_id": "6325631017",
+"rating": 1,
+"date": "2020-08-16",
+"loc": "jp"
+},
+{
+"key": "P20#2606",
+"codes": [
+"CAP15",
+"ENOUGH"
+],
+"quote": "무료가 15개까지라서 아쉽지만 매우 편하고",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "5dab6f82-9a92-4c5a-a4d0-7d08e7c30b5c",
+"rating": 5,
+"date": "2022-06-05",
+"loc": "ko"
+},
+{
+"key": "A4#10980",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "It wouldn&#39;t let me add more than 5 goals",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "14233223407",
+"rating": 1,
+"date": "2026-06-27",
+"loc": "us"
+},
+{
+"key": "P79#53",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "the limit of 5 tasks for the free version is basically forcing us to pay",
+"store": "P",
+"app": "79. Habit Tracker - IsleGrow",
+"review_id": "e164feea-ccfa-4735-9fda-398bc596dc6c",
+"rating": 2,
+"date": "2026-05-29",
+"loc": "fr"
+},
+{
+"key": "A55#495",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "It&#39;s very little if you compare it to the other apps",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "6086854350",
+"rating": 2,
+"date": "2020-06-17",
+"loc": "es"
+},
+{
+"key": "A26#2758",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "You can only have 5 habits and 1 flower in the free version.",
+"store": "A",
+"app": "26. Eden - Daily Routine Planner - Self care habit tracker, to do",
+"review_id": "13395181371",
+"rating": 2,
+"date": "2025-11-14",
+"loc": "us"
+},
+{
+"key": "P31#581",
+"codes": [
+"CAP5",
+"REFUSE"
+],
+"quote": "Only 5 habits before you pay? No thanks, that's just ridiculous.",
+"store": "P",
+"app": "31. HelloHabit - Habit Tracker",
+"review_id": "542e2642-c3f6-4ed5-8fc1-80636756eea9",
+"rating": 1,
+"date": "2024-05-29",
+"loc": "en"
+},
+{
+"key": "A48#3463",
+"codes": [
+"CAP5",
+"REFUSE",
+"WANT_LIFETIME"
+],
+"quote": "I would happily pay $15 once or maybe once a year, but not what they are asking for.",
+"store": "A",
+"app": "48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist",
+"review_id": "1631117043",
+"rating": 3,
+"date": "2017-06-02",
+"loc": "us"
+},
+{
+"key": "A26#532",
+"codes": [
+"CAP5",
+"LEFT"
+],
+"quote": "premium for more than 5 tasks really sucksss. Will stop me from using it.",
+"store": "A",
+"app": "26. Eden - Daily Routine Planner - Self care habit tracker, to do",
+"review_id": "12837119873",
+"rating": 3,
+"date": "2025-07-01",
+"loc": "ca"
+},
+{
+"key": "P15#236",
+"codes": [
+"CAP5",
+"LEFT"
+],
+"quote": "uninstalling it because only 5 habits can be added in free version",
+"store": "P",
+"app": "15. Habit Tracker - HabitGenius",
+"review_id": "99b14f95-a53b-448d-b573-3437af200031",
+"rating": 5,
+"date": "2026-03-07",
+"loc": "en"
+},
+{
+"key": "A85#2835",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "85. Habitica - Gamified Taskmanager - Stay motivated and organized",
+"review_id": "2021463823",
+"rating": 2,
+"date": "2017-12-23",
+"loc": "us"
+},
+{
+"key": "P105#1747",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "More than 5 habits is premium option, disappointing.",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "1cb8a32d-5f28-412e-9be0-1c20ae8981f5",
+"rating": 2,
+"date": "2024-03-03",
+"loc": "hr"
+},
+{
+"key": "P31#135",
+"codes": [
+"CAP5",
+"REFUSE"
+],
+"quote": "I'm not paying for an app I'm not going to use that much in that case.",
+"store": "P",
+"app": "31. HelloHabit - Habit Tracker",
+"review_id": "798fc363-a034-4b0b-9e4f-13ee7bb8ac35",
+"rating": 1,
+"date": "2026-03-13",
+"loc": "en"
+},
+{
+"key": "A26#3475",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Was good until the having to bug premium to get more than 5 tasks.. seriously?!",
+"store": "A",
+"app": "26. Eden - Daily Routine Planner - Self care habit tracker, to do",
+"review_id": "9727613481",
+"rating": 1,
+"date": "2023-03-18",
+"loc": "us"
+},
+{
+"key": "P106#822",
+"codes": [
+"CAP5",
+"STATED"
+],
+"quote": "gratuit seulement 5 habitudes et moins de données",
+"store": "P",
+"app": "106. Habit Tracker n Pets - HabitYou",
+"review_id": "b3ded10d-1a54-4903-80b9-b102e77e6838",
+"rating": 4,
+"date": "2024-01-25",
+"loc": "fr"
+},
+{
+"key": "P2#28982",
+"codes": [
+"CAP7",
+"ENOUGH"
+],
+"quote": "基础版的功能也很够用了",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "c9065e31-a8d8-4ebd-8a42-8e7a9e56027b",
+"rating": 5,
+"date": "2022-11-18",
+"loc": "zh-CN"
+},
+{
+"key": "P98#371",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "I can add only up to 5 habits. If you want more, you have to pay.",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "305d969c-fa41-4db6-95fa-41cc6c5ff3f2",
+"rating": 1,
+"date": "2023-01-30",
+"loc": "en"
+},
+{
+"key": "P3#15039",
+"codes": [
+"CHOSE_GENEROUS",
+"SW_FROM_CAP"
+],
+"quote": "I switched from Habitbull to this as that requires pro version for more than 5 habits.",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "caabc068-896f-4d31-8611-a45f39d4f9ea",
+"rating": 5,
+"date": "2017-03-05",
+"loc": "en"
+},
+{
+"key": "A4#11340",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "13748454414",
+"rating": 3,
+"date": "2026-02-14",
+"loc": "us"
+},
+{
+"key": "P98#290",
+"codes": [
+"CAP5",
+"LEFT"
+],
+"quote": "you can only add five habits for free, which sucks. Forced to uninstall",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "07a1f7d3-3492-4214-99cf-4e16b27eb7bd",
+"rating": 2,
+"date": "2023-08-10",
+"loc": "en"
+},
+{
+"key": "P105#2137",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "fcdf8aa1-21f8-45d8-b090-45b6a835d37b",
+"rating": 2,
+"date": "2020-06-22",
+"loc": "pt"
+},
+{
+"key": "P2#4477",
+"codes": [
+"CAP5",
+"ENOUGH"
+],
+"quote": "Good app, lets you follow up to 5 habits for free.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "8e024319-9500-4b73-89de-a63ff826a0cc",
+"rating": 4,
+"date": "2024-08-02",
+"loc": "en"
+},
+{
+"key": "P36#642",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "添加了5个待办之后免费用户就不可再添加待办了",
+"store": "P",
+"app": "36. Fun Habit - Habit Tracker",
+"review_id": "5c5b78b3-1150-41f5-933d-1122f6ffd6e1",
+"rating": 1,
+"date": "2024-01-15",
+"loc": "zh-CN"
+},
+{
+"key": "P10#8862",
+"codes": [
+"CHOSE_GENEROUS"
+],
+"quote": "I am not limited to 5 habits as found in my daily planner",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "dc9d9d12-c793-44fb-8574-d7ea01684446",
+"rating": 5,
+"date": "2023-09-02",
+"loc": "en"
+},
+{
+"key": "P105#802",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "U can't have more than 5 habits going on without buying premium.",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "43dd1d6d-c2a7-46a0-a1bb-14ab2979bcaf",
+"rating": 2,
+"date": "2020-08-31",
+"loc": "en"
+},
+{
+"key": "P10#8744",
+"codes": [
+"CAP5",
+"ENOUGH",
+"EARN_SLOT"
+],
+"quote": "You can do five habits for free than if you want to add more just watch an add",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "a8ce023f-7eb7-4186-89aa-fdae2b41b734",
+"rating": 5,
+"date": "2023-09-15",
+"loc": "en"
+},
+{
+"key": "P98#3702",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "no plano gratuito tem apenas 5 hábitos. Não funciona pra mim.",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "da3ee036-c3c2-4639-bb7e-b6d8664bc101",
+"rating": 3,
+"date": "2023-08-24",
+"loc": "pt"
+},
+{
+"key": "A55#1660",
+"codes": [
+"CAP5",
+"ENOUGH"
+],
+"quote": "The free version only lets you track 5 habits at a time, but that&#39;s been enough for me so far.",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "1519990236",
+"rating": 5,
+"date": "2017-01-11",
+"loc": "us"
+},
+{
+"key": "P105#1874",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Of you want more than 5 habits this app is not free at all!",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "d961d139-a929-4caa-bc64-e856c56462ab",
+"rating": 2,
+"date": "2020-08-15",
+"loc": "nl"
+},
+{
+"key": "P37#663",
+"codes": [
+"CAP3",
+"WANT5",
+"WILLPAY"
+],
+"quote": "It would be nice to have 4 or 5 habits in the free version, though I'm sure I'll do the lifetime option",
+"store": "P",
+"app": "37. Habitify - Habit Tracker",
+"review_id": "d5cd5f25-908b-4e2f-81d4-cf5001982208",
+"rating": 4,
+"date": "2022-08-13",
+"loc": "en"
+},
+{
+"key": "P31#346",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "only 5 habits for free seems like a really low limit",
+"store": "P",
+"app": "31. HelloHabit - Habit Tracker",
+"review_id": "4e8d04f0-c72a-4248-b8f6-571b21f5073f",
+"rating": 3,
+"date": "2025-02-27",
+"loc": "en"
+},
+{
+"key": "P98#1766",
+"codes": [
+"CAP5",
+"LEFT"
+],
+"quote": "ya la desinstalé, no me sirve poner solo 5 hábitos y ya",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "5e0f0d98-2503-4272-966b-ca19faa33017",
+"rating": 1,
+"date": "2023-05-13",
+"loc": "es"
+},
+{
+"key": "A55#1708",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "you can only track 5 habits with the free version and I&#39;m not sure it&#39;s worth $4.99",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "1455910300",
+"rating": 4,
+"date": "2016-09-26",
+"loc": "us"
+},
+{
+"key": "P105#1485",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "when I discovered that you can only have 5 habits and then you have to pay I didn't like it at all",
+"store": "P",
+"app": "105. Avocation Goal & Habit Tracker",
+"review_id": "1fc8bcc4-7fa2-4776-a3e4-f81778ad76e1",
+"rating": 2,
+"date": "2020-09-25",
+"loc": "es"
+},
+{
+"key": "P31#535",
+"codes": [
+"CAP5",
+"ENOUGH"
+],
+"quote": "having a limit of 5 habit trackers at once is fine by me",
+"store": "P",
+"app": "31. HelloHabit - Habit Tracker",
+"review_id": "ec479275-5c29-4452-b832-21423f23324d",
+"rating": 5,
+"date": "2024-07-31",
+"loc": "en"
+},
+{
+"key": "A55#30",
+"codes": [
+"CAP5",
+"ENOUGH"
+],
+"quote": "Only 5 habits are available in free version but it does what it says it does",
+"store": "A",
+"app": "55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker",
+"review_id": "3965893283",
+"rating": 5,
+"date": "2019-04-03",
+"loc": "au"
+},
+{
+"key": "P7#3",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "7. Habit Tracker - Habit Streak",
+"review_id": "6f533354-84e9-4052-b092-3fc8b11596f9",
+"rating": 1,
+"date": "2025-05-25",
+"loc": "ar"
+},
+{
+"key": "P3#6035",
+"codes": [
+"CHOSE_GENEROUS"
+],
+"quote": "most of them either charge for more than 5 habits or the interface is a bit rubbish",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "46d52022-244c-4c03-b634-cab7a2247784",
+"rating": 5,
+"date": "2022-10-31",
+"loc": "en"
+},
+{
+"key": "A4#11874",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Why can I add only 5 task.",
+"store": "A",
+"app": "4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker",
+"review_id": "12927790530",
+"rating": 1,
+"date": "2025-07-23",
+"loc": "us"
+},
+{
+"key": "P31#333",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Bur five habit limit is quite low.",
+"store": "P",
+"app": "31. HelloHabit - Habit Tracker",
+"review_id": "2dcbec9c-70ec-4c05-9bae-6d83ff4ef779",
+"rating": 4,
+"date": "2025-03-17",
+"loc": "en"
+},
+{
+"key": "P2#2102",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "can only have like 5 habits without paying. horrible.",
+"store": "P",
+"app": "2. HabitNow Daily Routine Planner",
+"review_id": "d8850c7a-b0ef-4250-8712-679b6592ce33",
+"rating": 4,
+"date": "2025-12-07",
+"loc": "en"
+},
+{
+"key": "P33#522",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "Only max of five habits for free version.",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "c62885e7-2868-404b-8d82-8ab14bf5180d",
+"rating": 1,
+"date": "2024-06-18",
+"loc": "en"
+},
+{
+"key": "P65#9726",
+"codes": [
+"CHOSE_GENEROUS"
+],
+"quote": "The only app I've found that tracks more than five goals, for free",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "25273403-1cd8-4d7b-8c9d-0b1738e8c42c",
+"rating": 5,
+"date": "2015-12-05",
+"loc": "en"
+},
+{
+"key": "A58#33",
+"codes": [
+"CHOSE_GENEROUS"
+],
+"quote": "Finally a habit tracker app where you can add more than 5 habits for free!",
+"store": "A",
+"app": "58. Blossom Habit Tracker (Fern) - Build habits. Grow every day",
+"review_id": "14305681444",
+"rating": 5,
+"date": "2026-07-15",
+"loc": "hr"
+},
+{
+"key": "P98#3805",
+"codes": [
+"CAP5",
+"CHANGED_DOWN"
+],
+"quote": "Apenas 5 hábitos estragou todo esse app",
+"store": "P",
+"app": "98. Rabit - Habit Tracker & Planner",
+"review_id": "5945ca7f-138a-4c06-9618-2b49cf660c91",
+"rating": 3,
+"date": "2023-04-21",
+"loc": "pt"
+},
+{
+"key": "P33#1920",
+"codes": [
+"CAP5",
+"NOT_ENOUGH",
+"WANT10"
+],
+"quote": "if the in free plan we could track atleast 10 habit that would have been great",
+"store": "P",
+"app": "33. Productive - Habit tracker",
+"review_id": "24063814-10ce-4a66-98ea-054139985718",
+"rating": 5,
+"date": "2020-05-02",
+"loc": "en"
+},
+{
+"key": "A7#8",
+"codes": [
+"CAP5",
+"STATED"
+],
+"quote": "You can only track 5 habits with the free version of the app. Other than that, great app.",
+"store": "A",
+"app": "7. Habit Tracker - HabitKit - Streaks & Accountability",
+"review_id": "13586841442",
+"rating": 3,
+"date": "2026-01-02",
+"loc": "ar"
+},
+{
+"key": "P115#7",
+"codes": [
+"CAP5",
+"STATED"
+],
+"quote": "5 habits free tier; P170, pay once",
+"store": "P",
+"app": "115. ShineDay - Habit Tracker& Goals",
+"review_id": "61ed8c63-4b60-46f8-bbec-6466873e27b5",
+"rating": 3,
+"date": "2025-10-18",
+"loc": "en"
+},
+{
+"key": "P3#8267",
+"codes": [
+"CHOSE_GENEROUS"
+],
+"quote": "it doesn't cost money to have more than 5 habits",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "2fa25d65-0319-4841-982f-696ae518c61d",
+"rating": 5,
+"date": "2021-02-27",
+"loc": "en"
+},
+{
+"key": "A26#3516",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "you must but their subscription to add more than five goals per day",
+"store": "A",
+"app": "26. Eden - Daily Routine Planner - Self care habit tracker, to do",
+"review_id": "9467741672",
+"rating": 1,
+"date": "2023-01-03",
+"loc": "us"
+},
+{
+"key": "P20#3163",
+"codes": [
+"CAP15",
+"NOT_ENOUGH"
+],
+"quote": "처음에 15개밖에 안되는건 아쉽고",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "6bbe3325-3984-467c-b243-619f76b5efee",
+"rating": 3,
+"date": "2021-10-31",
+"loc": "ko"
+},
+{
+"key": "P20#2743",
+"codes": [
+"NR"
+],
+"quote": "",
+"store": "P",
+"app": "20. MyRoutine - Routine Habit Goal",
+"review_id": "6e92cb42-aa47-47d7-8cd4-1f6e4c12eee7",
+"rating": 1,
+"date": "2022-03-19",
+"loc": "ko"
+},
+{
+"key": "P10#33102",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "можно использовать только 5 привычек",
+"store": "P",
+"app": "10. Habit Tracker - Habit Diary",
+"review_id": "0e1ce56f-b440-4559-8f04-8c41ceaabe62",
+"rating": 5,
+"date": "2021-01-24",
+"loc": "ru"
+},
+{
+"key": "P65#3863",
+"codes": [
+"CHOSE_GENEROUS"
+],
+"quote": "it lets me track more than 5 habits at once",
+"store": "P",
+"app": "65. Goal & Habit Tracker Calendar",
+"review_id": "2e92de8e-3f27-44ee-989b-6e3df566032c",
+"rating": 5,
+"date": "2022-01-14",
+"loc": "en"
+},
+{
+"key": "P3#11454",
+"codes": [
+"CHOSE_GENEROUS"
+],
+"quote": "You can add more than 5 habits for free",
+"store": "P",
+"app": "3. Loop Habit Tracker",
+"review_id": "61f39ba8-92ee-455d-bc6c-c1533f386ebf",
+"rating": 5,
+"date": "2019-05-21",
+"loc": "en"
+},
+{
+"key": "A26#2934",
+"codes": [
+"CAP5",
+"REFUSE"
+],
+"quote": "I like the idea of the app but I don’t like paying for it",
+"store": "A",
+"app": "26. Eden - Daily Routine Planner - Self care habit tracker, to do",
+"review_id": "12298596229",
+"rating": 2,
+"date": "2025-02-11",
+"loc": "us"
+},
+{
+"key": "A24#19512",
+"codes": [
+"CAP5",
+"NOT_ENOUGH"
+],
+"quote": "if you want more than 5 habits in the morning you need to pay but either way it helps me lots",
+"store": "A",
+"app": "24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help",
+"review_id": "7938019621",
+"rating": 4,
+"date": "2021-10-21",
+"loc": "mx"
+}
+]

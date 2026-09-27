@@ -1,0 +1,70 @@
+A53#375|NR|
+A8#93|NOT_ENOUGH_UNL|"I want to track more than 8 habits"
+A83#206|CAP8,NOT_ENOUGH|"아쉬운점은 루틴을 8개까지 밖에 못 설정하고"
+P9#1011|NR|
+A1#39761|NR|
+P10#5938|CAP9,ENOUGH,CHOSE_GENEROUS|"Free version up to 9 habits, which is quite generous compared to other freemium apps."
+P10#6342|CAP9,ENOUGH|"max 9 habits can be tracked for free. it is good"
+P18#770|CAP9,ENOUGH|"you can track up to 9 habits for free and its so easy to use"
+P2#11417|CAP9,ENOUGH|"You can track 9 habits in the free mod, which I'm really pleased with."
+A20#3393|CAP9,CHANGED_DOWN,PAID,WANT_LIFETIME|"So I definitely don’t like the idea of paying a subscription to access $ More than 9 habits"
+P20#3347|CAP9,NOT_ENOUGH|"혹시 9개까지만 루틴을 만들수 있는건가요?"
+A4#14572|CAP9,NOT_ENOUGH|"I can’t add more than 9 routines."
+A1#50051|NR|
+A1#53433|CAP5,CHANGED_DOWN,LEFT,WANT10|"I wish they would pay wall some other stuff like the background and color stuff and leave the habit part free, or at least block it at more than 10 habits."
+A10#12317|NR|
+P10#5204|CAP10,NOT_ENOUGH,SURPRISE|"It says that the app is free but we can't add more than 10 habits."
+P10#6335|CAP10,ENOUGH|"I've been trying to track my habits but the apps just do 10 habits max but this app is the best"
+P10#7574|CAP10,SURPRISE|"only 10 habits available on the free one, should be specified here"
+P10#9083|CAP10,STATED|"The only thing is that you can only have ten habits."
+P10#9348|CAP10,ENOUGH|"I was happily surprised that I could add and customize 10 habits for free."
+P10#27842|CAP10,NOT_ENOUGH|"Só é permitido criar apenas 10 hábitos e isso é frustrante"
+P10#29848|CAP10,STATED|"то что в бесплатной версии маскимум доступно только 10 привычек (или 9)"
+P10#30971|CAP10,NOT_ENOUGH|"Можно только 10 привычек."
+P123#442|CAP3,WANT10|"you should atleast give us 10 habits in the free version"
+P123#987|CAP3,WANT10|"give some 10 habit without premium"
+A13#11976|WANT10|"only thing i would change is to have at least 10 habits without premium"
+A13#19385|NR|
+P15#427|CAP6,WANT10|"make 10 habit free option."
+P18#626|CAP8,WANT10|"My only request would be to at least have a maximum of 10 habits in the free version."
+P2#21176|CAP10,ENOUGH,PRICE_FAIR|"Premium version is paid one off, so is rather affordable"
+P20#105|WANT10,WANT_LIFETIME|"What would get it to 5 stars for me is more than 10 habits on the free version or at the very least a reasonably priced lifetime purchase option"
+P24#3143|CAP5,WANT10,NOT_ENOUGH|"Only 5 give at least 10 habits for free"
+P24#3461|CAP5,WANT10,NOT_ENOUGH|"Have 10 habits for free instead of 5."
+P24#16313|CAP5,WANT10,NOT_ENOUGH|"please make it 10 habits without premium"
+P24#23854|CAP5,WANT10,NOT_ENOUGH|"I think, 10 habits for free would be more useable"
+A34#2|CAP2,WANT10,NOT_ENOUGH|"No free trial and no 8-10 habits for free"
+A4#11997|NR|
+A48#4|CAP3,WANT10,NOT_ENOUGH|"Make it at least 10 Goals for free version"
+A48#396|CAP10,ENOUGH|"So cool you can have under 10 tasks without paying!"
+A48#770|CAP10,ENOUGH,CHOSE_GENEROUS|"The free version allows up to  10 habits (more than most other goal tracker apps)"
+A48#1064|CAP10,ENOUGH,CHOSE_GENEROUS|"this is by far the best, allowing you to set up to 10 goals for free"
+A48#1094|CAP10,LEFT,REFUSE|"i could not set more than 10 trackers unless i bought a subscription for £29.99 a year"
+A48#1221|CAP10,ENOUGH,CHOSE_GENEROUS|"What made me choose it was the fact that you can add 10 habits on the free version"
+A48#2757|NR|
+A48#3051|CAP10,ENOUGH,CHOSE_GENEROUS|"This app gives you ten habits for FREE."
+A48#3374|CAP10,ENOUGH|"10 habits for free, but you&#39;ll do best starting with only 2-5."
+A48#3530|CAP10,ENOUGH|"For the 10 I&#39;m working on though this is really helpful."
+A48#3667|NR|
+A48#3830|CAP10,CHANGED_DOWN|"when they modified the free version to limit you to 10 goals, they sent me an email and gave me LIFETIME FREE access to the PRO version"
+A52#20108|CAP10,ENOUGH,WILLPAY|"Free version can track up to 10 habits which is really good enough to try and see if you like it enough to upgrade."
+P69#540|CAP10,STATED|"You only get 10 habits with the free version"
+A8#728|NR|
+P10#15046|CAP11,NOT_ENOUGH|"me dejo poner solo 11 hábitos"
+P12#31657|CAP12,NOT_ENOUGH|"it only allows you to have 12 tasks total unless you have premium"
+A13#12113|NR|
+A31#716|NR|
+P61#90|CAP12,ENOUGH|"you get to have up to 12 habits in the free version and thats enough for me"
+P61#274|CAP12,NOT_ENOUGH|"You can add only 12 Habits for free."
+P61#2161|CAP12,NOT_ENOUGH|"можно выбрать только 12 привычек"
+A20#3481|NR|
+A1#49455|WIDGET_FIT|"now I can see max 15 tasks"
+P20#279|CAP15,ENOUGH|"allow free users to creat up to 15 routines and other to dos"
+P24#3467|CAP5,NOT_ENOUGH|"I would give it a 5 star but your limited to only 5 habits at a time."
+A1#52116|CAP5,NOT_ENOUGH|"you can only have 5 habit trackers or else you have to pay a ton of money"
+A4#8120|CAP5,NOT_ENOUGH|"I can only add 5 tasks and no more or i have to buy it"
+A52#11135|CAP5,NOT_ENOUGH|"唯一不足的就是只能免费记录5个习惯，超出的要付费"
+A1#54160|CAP5,CHANGED_DOWN,REFUSE|"All of a sudden I go on my app, and I’ve been cut down to five habits for free"
+A1#45453|CAP5,NOT_ENOUGH,WANT8,PRICE_FAIR|"maybe like 8 habits for free because that is abit more equal for people without money"
+P24#3144|CAP5,REFUSE|"$6.99/month seems steep to record more than 5 habits."
+P105#2384|CAP5,NOT_ENOUGH|"можно сделать только 5 привычек(жалко)"

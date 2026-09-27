@@ -1,0 +1,14 @@
+cap | n | apps | mean★ | 1★% | enough | not enough | left | refuse | paid | will pay | surprise | lowered | enough share (enough / enough+not+left+refuse) | buy share ((paid+will pay)/n) | top apps
+1 | 35 | 10 | 2.63 | 34 | 5 | 25 | 1 | 0 | 1 | 0 | 3 | 2 | 16% | 2.9% | 49. RoutineFlow -  9, 86. Today Habit tr 9, 16. Atoms - from A 7, 4. Me+ Lifestyle R 4
+2 | 46 | 11 | 3.04 | 28 | 7 | 33 | 1 | 0 | 2 | 2 | 0 | 4 | 17% | 8.7% | 5. Routine Planner 19, 4. Me+ Lifestyle R 8, 34. Habit Tracker  4, 59. Tappsk - ToDo  3
+3 | 98 | 27 | 2.40 | 43 | 12 | 50 | 11 | 6 | 1 | 2 | 4 | 8 | 15% | 3.1% | 76. Way of Life -  10, 70. everyday Habit 10, 31. Do Habits - Ge 9, 13. Productive - H 8
+4 | 29 | 13 | 2.21 | 38 | 1 | 22 | 2 | 2 | 1 | 0 | 0 | 2 | 4% | 3.4% | 9. Habit Tracker - 6, 33. Productive - H 4, 12. Fabulous Daily 3, 4. Me+ Lifestyle R 2
+5 | 188 | 31 | 3.18 | 18 | 33 | 94 | 14 | 10 | 4 | 7 | 5 | 14 | 22% | 5.9% | 24. Habit Tracker 29, 1. Habit Tracker - 20, 55. Habit-Bull - D 19, 13. Productive - H 17
+6 | 80 | 14 | 2.85 | 28 | 11 | 50 | 7 | 1 | 1 | 2 | 4 | 6 | 16% | 3.8% | 1. Habit Tracker - 30, 4. Me+ Lifestyle R 16, 52. ShineDay - Hab 8, 13. Productive - H 7
+7 | 86 | 12 | 3.27 | 19 | 14 | 45 | 3 | 1 | 6 | 4 | 2 | 2 | 22% | 11.6% | 2. HabitNow Daily  58, 48. Strides - Habi 12, 36. Fun Habit - Ha 4, 52. ShineDay - Hab 3
+8 | 53 | 12 | 2.98 | 17 | 9 | 27 | 10 | 2 | 0 | 2 | 0 | 3 | 19% | 3.8% | 38. Roubit -Daily  30, 2. HabitNow Daily  4, 18. Habit Tracker  4, 20. MyRoutine - Ro 3
+10 | 31 | 9 | 4.16 | 6 | 16 | 8 | 1 | 1 | 1 | 2 | 2 | 2 | 62% | 9.7% | 10. Habit Tracker  13, 48. Strides - Habi 9, 20. MyRoutine - Ro 2, 2. HabitNow Daily  2
+12-15 | 8 | 4 | 3.50 | 12 | 3 | 4 | 0 | 0 | 1 | 0 | 0 | 0 | 43% | 12.5% | 61. Hizo - Habit T 3, 20. MyRoutine - Ro 3, 12. Fabulous Daily 1, 18. MyRoutine - Or 1
+
+numbers asked for (WANT, both passes): 2: 1, 3: 4, 5: 9, 6: 1, 7: 3, 8: 2, 10: 23, 12: 1
+this pass, other codes: NOT_ENOUGH 198, NR 82, ENOUGH 69, STATED 35, LEFT 31, CHOSE_GENEROUS 23, CHANGED_DOWN 21, X_PAYER 17, PAIDAPP 14, PAID 14, REFUSE 12, WILLPAY 11, PRICE_FAIR 10, SURPRISE 9, WANT_LIFETIME 7, WIDGET_FIT 3, NAG 3, PAID_THIN 3, LIFETIME_PRAISE 2, SOLICITED 1, UL_PRAISE 1, WANT_CHEAP_TIER 1, GROWING_CAP 1, CONVERT_AFTER_USE 1, NOT_ENOUGH_UNL 1, CANT_EVALUATE 1, GATE_OTHER 1, SYNC_WANT 1, SW_FROM_CAP 1, EARN_SLOT 1
