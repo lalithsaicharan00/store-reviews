@@ -32,7 +32,7 @@
 | **iPad = Plus** | **Agree, with one change**: let the free app *open* on iPad as a standalone single device, and make **using iPad together with the phone** (sync) the Plus feature | Users who pay for iPad expect it; nobody complains iPad costs money. The failure is "I paid and it doesn't reach my iPad" (58 reviews). iPad-only users would otherwise hit a wall on first launch (§4) |
 | **Watch = Plus** | **Agree** | Payers ask for Watch support and some buy for it; only 1 in 88 objects to paying. The real risk is a broken Watch app (27 reviews, 2.22★) (§5) |
 | **5 free habits** | **Workable, but pick once and never change it** | Caps of 1–3 are hated. 5–6 is tolerated and converts engaged users. Changing a cap later is what enrages people (§6) |
-| **Account at purchase** | **Offer it, optional, on the purchase screen.** Never required | Apple rejects apps that require registration before buying a non-account purchase (§7). Plus restores from the store on the same platform anyway. An account adds cross-platform and backup |
+| **Account at purchase** | **Sign-in is the main button on the purchase screen; sync and backup require it. A visible "Buy for this device only" link stays** (§7) | Apple rejects apps that require registration before buying a non-account purchase (§7). Plus restores from the store on the same platform anyway. An account adds cross-platform and backup |
 
 ---
 
@@ -180,28 +180,53 @@ The evidence is from the ledger ([C007](<../Feature Ledger.md#c007>), Contested,
 
 ---
 
-## 7. Account at purchase: yes, but optional
+## 7. Account at purchase: sign-in is part of buying, with an honest "this phone only" option
 
-**Platform rule (Apple 5.1.1(v)):**
-- An app can't require users to register before buying an in-app purchase that isn't account-based. Registration must be optional.
-- Apple's own suggested fix is to tell users that registering lets them use the purchase on all their devices, and let them register at any time.
-- Sources: [App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/), and Apple forum threads quoting App Review ([731471](https://developer.apple.com/forums/thread/731471), [724336](https://developer.apple.com/forums/thread/724336)).
+*Revised 27 Sep 2026 after the user's follow-up: multi-device, sync and backup are why people buy, so the purchase flow should make signing in the normal path.*
 
-**What this allows:**
-- The purchase screen says: "Sign in with Apple / Google to keep Plus and your habits on every phone and tablet, iPhone or Android."
-- It shows **[Sign in and buy]** as the main button, with a visible **[Buy without an account]**.
-- After a no-account purchase, the "Plus is yours" screen offers sign-in once (Backlog 4).
-- This is the only prompt a free user ever sees about accounts, apart from features that need one.
+**What the stores allow:**
+- **Apple (5.1.1(v)):**
+  - Registration can't be *required* to buy something that isn't account-based. Plus includes unlimited habits, Watch and themes, which work without an account, so the purchase itself must stay possible without one ([App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/); App Review's wording quoted in [731471](https://developer.apple.com/forums/thread/731471) and [724336](https://developer.apple.com/forums/thread/724336)).
+  - **Login can be required for account-specific features**, and syncing data across devices is one. App Review's own suggested wording is to "explain to the user that registering will enable them to access the purchased content from any of their supported devices" ([724336](https://developer.apple.com/forums/thread/724336), [Microsoft Q&A on a rejected game](https://learn.microsoft.com/en-au/answers/questions/5896293/apple-app-store-my-game-was-rejected-because-i-don)).
+- **Google Play:** no rule found against asking for sign-in before purchase. An app that lets people create an account must also let them delete it, in the app and on the web ([Play account deletion](https://support.google.com/googleplay/android-developer/answer/13327111?hl=en)); that is already in 09. We use the same flow on both platforms so there is one design and one set of tests.
 
-**Why optional is enough:**
-- On the same store, Plus restores itself without an account (02 §3.4).
-- The account adds three things:
-  - the other platform;
-  - sync with iPad and other devices;
-  - a server backup of habits.
-- Those are the Plus promises, so most buyers will sign in. The review failures in §4 are what happens without it.
+**So the rule is:**
+- sync, backup and multi-device **require** an account (allowed, and technically true);
+- the purchase itself **offers** the account as the normal path, and never hides the alternative.
 
-**Plus Family:** needs an account (it is account-based), which Apple allows.
+**Users show why this matters.** Of the 58 "I paid but it's not on my other device" reviews (§4), many are people who bought without any account and then had no way to connect:
+- “Tem alguma forma de fazer login?? Assinei o Premium no celular e não consigo usar no meu Tablet.” — is there any way to log in? I bought Premium on my phone and can't use it on my tablet (`P4#96816`);
+- “Adquiri o premium e não posso utilizar o aplicativo pelo tablet pois não existe área de login” — I bought premium and can't use it on the tablet because there is no login (`A4#1879`).
+
+**The purchase screen** (first principles: say plainly what each choice gets, before money changes hands):
+
+> **Plus · one-time, yours forever**
+> ✓ Unlimited habits · ✓ Apple Watch · ✓ Themes and deeper stats
+> ✓ **Sync with your iPad and other phones, iPhone or Android** ¹
+> ✓ **Automatic backup: new phone, everything's there** ¹
+>
+> **[ Continue with Apple ]**  ← main button: signs in, then opens the purchase sheet
+> **[ Continue with Google ]**
+>
+> ¹ Sync and backup use your free account. *Buy for this device only* ›
+
+- **"Buy for this device only"** is a visible text link, not hidden or greyed out. Apple treats hidden or misleading choices as a rejection risk, and users treat them as a trick.
+- **If they choose it,** the "Plus is yours" screen says what they have and what they don't:
+  - **Working now:** unlimited habits, Watch, themes.
+  - **Needs sign-in:** sync to iPad and other phones, backup.
+  - One button: **[Turn on sync and backup]**.
+- **After that, sign-in comes only from the features.**
+  - On the iPad or a second phone, Plus is recognised from the store automatically, and the screen says "Sign in to bring your habits here."
+  - In Settings → Backup: "Backed up only on this phone · Turn on backup".
+  - There are no timed reminders (Backlog 4).
+- **Signing in never loses anything.** Habits already on the phone upload as the first sync (05 §5).
+
+**Expected result (first principles):**
+- Most buyers sign in, because the main button does it in the same tap and the benefits are the ones they're paying for.
+- The few who skip still get what they paid for on that device. When they later want the iPad, the app tells them exactly how.
+- That is the story the 58 reviews were missing.
+
+**Plus Family** requires an account (it is account-based). Apple allows this.
 
 ---
 
@@ -243,7 +268,7 @@ The evidence is from the ledger ([C007](<../Feature Ledger.md#c007>), Contested,
 
 ## Appendix — reviews cited
 
-20 reviews cited. Ref = store letter (A App Store, P Play Store, N native app) + app number + line index in that app's `reviews.jsonl`.
+22 reviews cited. Ref = store letter (A App Store, P Play Store, N native app) + app number + line index in that app's `reviews.jsonl`.
 
 | Ref | Review ID | Store | App | Date | Stars | Codes |
 |---|---|---|---|---|---|---|
@@ -253,6 +278,7 @@ The evidence is from the ledger ([C007](<../Feature Ledger.md#c007>), Contested,
 | `A1#46513` | `11342173209` | App Store (id) | 1. Habit Tracker - Goal Tracker & ADHD Planner | 2024-06-04 | 5★ | CAP5_ACCEPTED, LIFETIME_PRAISE |
 | `A2#430` | `4402829597` | App Store (us) | 2. Daily Habits - Habit Tracker - Habit List and Routine Tracker | 2019-07-02 | 1★ | WATCH_QUALITY, X_PAYER |
 | `A3#6950` | `12134334067` | App Store (us) | 3. Days Since - Quit Habit Tracker - Sober Streak Day Counter | 2025-01-02 | 5★ | WATCH_PAYWALL_BAD |
+| `A4#1879` | `11388584104` | App Store (br) | 4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker | 2024-06-16 | 1★ | PAID_EXPECT_ALL_DEVICES, X_PAYER |
 | `A7#48` | `13833569208` | App Store (br) | 7. Habit Tracker - HabitKit - Streaks & Accountability | 2026-03-10 | 2★ | PAID_EXPECT_ALL_DEVICES, X_PAYER |
 | `A10#35007` | `12450265322` | App Store (us) | 10. Finch - Self-Care Pet - Daily Journal & Habit Tracker | 2025-03-22 | 5★ | LIFETIME_WANT |
 | `A20#757` | `6451182919` | App Store (co) | 20. Habit — Daily Tracker - Crush your goals like a boss | 2020-09-21 | 5★ | PAY_FOR_DEVICES |
@@ -264,6 +290,7 @@ The evidence is from the ledger ([C007](<../Feature Ledger.md#c007>), Contested,
 | `A76#563` | `13534435911` | App Store (ca) | 76. Way of Life - Habit Tracker - Build a better, stronger you | 2025-12-20 | 5★ | LIFETIME_PRAISE, PAID_EXPECT_ALL_DEVICES |
 | `P2#24189` | `d2e52ca4-a394-41c0-a3b8-98911917b243` | Play Store (pt) | 2. HabitNow Daily Routine Planner | 2024-11-08 | 4★ | PAID_EXPECT_ALL_DEVICES, X_PAYER |
 | `P3#19276` | `38214fec-51dd-4b2f-8de9-7236b5609b9e` | Play Store (ja) | 3. Loop Habit Tracker | 2025-12-07 | 5★ | LIFETIME_WANT |
+| `P4#96816` | `bc46da10-7ddf-43ff-8cdf-b78f459290db` | Play Store (pt) | 4. Me+ Lifestyle Routine | 2024-01-18 | 1★ | PAID_EXPECT_ALL_DEVICES, X_PAYER |
 | `P15#381` | `f8873781-55ea-4d25-a3ee-8581745c3fb1` | Play Store (en) | 15. Habit Tracker - HabitGenius | 2025-12-14 | 2★ | PAID_EXPECT_ALL_DEVICES, PAY_AGAIN_BAD, X_PAYER |
 | `P20#1312` | `2816ea0e-d508-4857-96c3-64989f678dcb` | Play Store (ko) | 20. MyRoutine - Routine Habit Goal | 2025-02-24 | 5★ | WATCH_BUY_REASON |
 | `P44#305` | `755a6ed0-ed10-4f7f-b236-303cf874aef1` | Play Store (en) | 44. Habit Tracker - TickOff | 2025-07-02 | 1★ | PAID_EXPECT_ALL_DEVICES, X_PAYER |
