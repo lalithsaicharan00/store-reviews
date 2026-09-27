@@ -1,0 +1,21 @@
+group                                                                                          n apps  mean   1★% payers
+Repeated prompts of any kind (upsell, sign-in, backup, iCloud, referral)                      72   20  1.75    60     15
+  of which: sign-in, iCloud or backup prompts                                                  9    6  2.33    33      1
+Praise for not nagging / no account needed                                                    53   26  4.91     0      3
+Accounts that broke: stuck at sign-up, can't log in, logged out, friction                    111   24  2.03    54     14
+Lost data with no off-phone copy (reinstall, new/lost/broken phone, iCloud off or full)       44   17  3.16    23     10
+Ask for automatic backup to their own cloud (Drive, iCloud, any)                             225   47  4.17     4     11
+Manual backup forgotten or a burden                                                           22   12  3.09    27      4
+Backup or restore behind a paywall                                                            17    8  2.35    41      3
+iCloud backup/restore failed (error, empty, stale, crash, overwrote)                          46    8  1.93    57     16
+Google Drive backup/restore failed                                                             7    6  3.29    29      0
+Google Drive backup works (praise)                                                            10    7  4.80     0      1
+iCloud backup works (praise)                                                                   2    2  4.50     0      0
+iCloud sync failed (none, partial, slow, duplicates, reverts, wipes)                          37   12  3.08    22      5
+iCloud sync works (praise)                                                                    10    6  4.60    10      0
+Backup file used as sync: manual, stale, lost edits                                           23   10  3.91     4      6
+iCloud not usable for them (full, off, refused, corporate, confusing setup)                   16   10  3.88    12      2
+Uninstalled or leaving because of it (LEFT)                                                   22   14  1.68    59      4
+
+repeated-prompt reviews that say they left or will leave: 14 of 72
+read 885, relevant 671, apps 76, stores A 387 P 284

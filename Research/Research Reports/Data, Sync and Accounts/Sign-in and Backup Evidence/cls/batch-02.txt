@@ -1,0 +1,70 @@
+A24#14388|NR|
+A24#14536|NR|
+A24#14659|NR|
+A24#14748|NR|
+A24#14787|NR|
+A24#14797|NR|
+A24#14939|NR|
+A24#1611|NR|
+A24#17973|NR|
+A24#17998|NR|
+A24#17999|NR|
+A24#20109|SN_LOGOUT|"Fabulous App keeps signing me out and it’s driving me crazy"
+A24#20111|SN_LOGOUT|"the annoying signing out issue"
+A24#20757|NR|
+A24#20809|SN_FORCED,UP_NAG|"they ask for your email as a requirement to use the app and then they spam you literally every day to sign up to premium"
+A24#21172|NR|
+A24#21718|NR|
+A24#22378|UP_NAG|"anything I wanted to do I got a pop up that I had to sign up for their “free” trial period"
+A24#22471|NR|
+A24#2279|NR|
+A24#23215|NR|
+A24#23448|NR|
+A24#23537|NR|
+A24#23853|NR|
+A24#24001|NR|
+A24#24053|NR|
+A24#24271|NR|
+A24#24338|NR|
+A24#24340|NR|
+A24#24354|NR|
+A24#24642|NR|
+A24#25198|NR|
+A24#25276|NR|
+A24#25567|NR|
+A24#26344|NR|
+A24#26530|SN_LOGIN_FAIL,X_PAYER|"Made a purchase and cant log in"
+A24#26887|NR|
+A24#27173|NR|
+A24#27411|SN_STUCK|"every time I try to log in the screen freezes"
+A24#27944|NR|
+A24#28325|SN_FRICTION|"the extremely annoying account creation process"
+A24#30290|NR|
+A24#30393|NR|
+A24#30660|SN_LOGOUT,X_PAYER|"I have to sign in everyday as I’m asked to upgrade"
+A24#30857|SN_LOGOUT,X_PAYER|"every time I open my app I either have to relogin or restore my purchase"
+A24#31425|NR|
+A24#31740|NR|
+A24#34275|NR|
+A24#36248|NR|
+A24#38899|NR|
+A24#41950|NR|
+A24#42016|SN_STUCK|"It keeps asking me to sign up again, then said my email is invalid"
+A24#42493|NR|
+A24#43086|NR|
+A24#43205|NR|
+A24#5192|NR|
+A24#5416|SN_STUCK|"I cannot even log in as the screen stalls when loading"
+A24#546|NR|
+A24#5478|NR|
+A24#5611|UP_NAG|"pesters for ‘free trial’ signups"
+A24#585|SN_LOGIN_FAIL,X_PAYER|"Ich bin Premium Mitglied und kann mich weder vollständig anmelden"
+A24#5863|NR|
+A24#8219|SN_LOGIN_FAIL|"不知道为啥一直登录不了"
+A24#8325|SN_LOGIN_FAIL|"担心换了手机我的账户没啦"
+A24#8336|SN_LOGIN_FAIL|"为什么一直登录不了，每次都是登陆失败"
+A24#8462|SN_LOGIN_FAIL|"账号一直登录不上"
+A24#8534|SN_LOGIN_FAIL,LOSS_REINSTALL,X_PAYER|"之前的记录也没有了"
+A24#8593|NR|
+A24#8847|SN_LOGIN_FAIL|"为什么登陆不上，总是说登录失败啊"
+A24#8878|SN_LOGIN_FAIL|"一直登录不上，一直登录错误"

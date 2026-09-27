@@ -1,0 +1,15 @@
+screened 1487223 {'A': 337331, 'P': 901453, 'N': 248439}; candidates 2792
+baseline paid-word rate: A 11.14%, P 3.85%, N 1.97%
+baseline mean rating: A 4.24, P 4.51, N 3.24
+
+mode                   n apps     A     P     N   1★%  mean  paid%
+ICLOUD_SYNC          952   47   465     0   487  33.1  2.88   15.3
+NO_NAG_PRAISE        619   59   363   243    13   2.3  4.73   21.5
+SIGNIN_NAG           452   61   192   111   149  56.4  2.02   30.5
+ICLOUD_BACKUP        265   34   144     1   120  45.7  2.46   20.4
+BACKUP_NAG           209   40    44    28   137  34.4  2.60    9.1
+DRIVE_SYNC           132   21     4    72    56   6.1  4.18    8.3
+DRIVE_BACKUP         110   22     5    99     6   4.5  4.15    6.4
+DRIVE_AUTH           103   13     0    14    89  10.7  4.00    1.9
+CLOUD_BACKUP_FAIL     62   20    18    24    20  43.5  2.58   16.1
+SIGNIN_NO_SKIP        31   17    12    14     5  71.0  1.48   12.9

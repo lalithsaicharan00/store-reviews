@@ -1,0 +1,70 @@
+A24#15862|SN_FRICTION|"no option to skip and log in using the account I’d just created"
+A24#26017|NR|
+A24#38849|SN_STUCK|"I can’t get past the signup screen for Challenges"
+A24#5157|NR|
+A4#15853|SN_FORCED|"Why would I spend so much time registering when I haven’t seen the app yet"
+A49#817|SN_STUCK|"every time I install it I can’t get past adding my account name"
+A55#1486|SN_STUCK|"I can’t get past the log in screen"
+A68#4189|NR|
+A85#104|SN_STUCK|"I can’t get past the sign-up page no matter what I do"
+A85#1568|SN_STUCK|"I cannot get past the registration"
+A88#301|NR|
+A88#70|NR|
+P111#5439|SN_STUCK|"I can't get past the sign up page"
+P12#14614|SN_STUCK|"I cant get past the sign up"
+P12#29842|SN_STUCK|"I can't get past the initial sign up stage"
+P12#29976|SN_STUCK|"Can't get past the first part of setting up my account"
+P12#45463|NR|
+P24#9009|SN_STUCK|"cant get past the registration screen"
+P24#9085|SN_STUCK|"cannot get past log in screen"
+P24#9251|SN_STUCK|"I keep registering and getting kicked back to register again"
+P24#9403|SN_STUCK|"it can't get past the third intro screen to set up my account"
+P38#504|NR|
+P4#8120|SN_STUCK|"theres no way to skip the intro and log in"
+P8#2654|SN_STUCK|"I cannot get past the register page"
+P8#4625|SN_STUCK|"Can't get past login screen"
+P8#5165|SN_STUCK|"I literally can't get past the login/sign up page"
+A1#36497|SN_STUCK|"因为闪退后一直没办法登录"
+A10#10736|NR|
+A10#18084|NR|
+A10#20380|LOSS_MOVE|"Yesterday’s work is gone, not recorded"
+A10#21185|NR|
+A10#21632|NR|
+A10#25721|NR|
+A10#26304|SN_LOGIN_FAIL|"every time I try to login it says there is no login under my phone number or email"
+A10#2749|NR|
+A10#3019|NR|
+A10#32508|NAG_OTHER|"super annoying app for constantly trying to make me sign up my friends"
+A10#43387|NR|
+A10#45019|NR|
+A10#50182|NR|
+A10#59652|LOSS_NO_ACCOUNT|"there should be a persistent log in, I lost my finch after resetting my phone"
+A10#60169|NOUP_PRAISE|"it doesn’t constantly bug you to sign up for plus which is amazing"
+A10#69263|NOUP_PRAISE,X_PAYER|"I really appreciate that the free one doesn’t pester you to sign up"
+A13#11482|NR|
+A13#11532|XDEV_WANT,X_PAYER|"The habits you create and track only exist on the device in which you created them"
+A13#11634|UP_NAG|"They ask you to go premium every time you open the app"
+A13#11687|UP_NAG|"How bout letting me try the app for five minutes without the incessant pop ups and nags to sign up?"
+A13#11705|UP_NAG|"Constant ads, constant pop ups to sign up"
+A13#12100|UP_NAG|"Once is fine but they keep popping up"
+A13#12194|UP_NAG,LEFT|"more than 10 pop ups appeared asking me to sign up for the premium version"
+A13#12195|UP_NAG|"the pester the crap out of you every time you open the app"
+A13#12205|UP_NAG|"I just wish that I didn’t get 3+ pop-up ads to sign up for the Premium service every time I’m in the app"
+A13#12298|NR|
+A13#12435|UP_NAG|"non-stop nagware to register"
+A13#12862|NR|
+A13#15039|NR|
+A13#15368|NR|
+A13#15769|NR|
+A13#15822|UP_NAG|"it’s asking you over and over to sign up"
+A13#19829|NR|
+A13#282|UP_NAG|"keeps pushing to sign up"
+A13#5797|XDEV_WANT,UP_NAG,X_PAYER|"not having a cloud storage to allowing you to sign in from other devices is absolutely appalling"
+A13#6410|NR|
+A13#7740|UP_NAG|"the pop up of premium member register keeps showing up constant"
+A16#681|NR|
+A18#391|NR|
+A19#74|NR|
+A20#2574|NOUP_PRAISE|"не выскакивает постоянно предложение премиум аккаунта"
+A24#10590|SN_LOGOUT|"it keeps logging you out"
+A24#14294|UP_NAG,LEFT|"constantly prompting me to sign up for various upgrades to my subscription"

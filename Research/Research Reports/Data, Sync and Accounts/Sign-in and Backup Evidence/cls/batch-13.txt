@@ -1,0 +1,45 @@
+A24#42641|NOUP_PRAISE,X_PAYER|"I just decided to do the premium because, it’s not pushy"
+A55#1741|NONAG_PRAISE|"Not naggy or pushy"
+P12#41537|NR|
+A1#2185|NONAG_PRAISE|"It’s a great reminder that isn’t pushy"
+A24#33493|NR|
+A68#4059|NR|
+P12#33321|NR|
+A24#16969|NR|
+P122#2312|NOUP_PRAISE|"Doesn't bug you to buy the paid version"
+P65#9641|NONAG_PRAISE|"no pop ups or ads"
+A68#3862|NR|
+P122#6987|NOUP_PRAISE|"it doesn't force you to pay"
+A8#114|NONAG_PRAISE|"No ads, no annoying popups"
+A24#24557|NONAG_PRAISE|"It doesn’t nag. It doesn’t guilt. It doesn’t overwhelm."
+P49#718|NR|
+A24#40698|NONAG_PRAISE|"It’s guided but not naggy"
+A3#1219|NONAG_PRAISE|"a nice counter that doesn’t nag you constantly to update, subscribe, and review"
+P12#61359|NONAG_PRAISE|"Very motivational and not pushy"
+A26#1119|NR|
+A3#3838|NONAG_PRAISE|"I love that there are no pushy notifications"
+P12#36439|NONAG_PRAISE|"Insightful, but not pushy"
+A31#214|NOUP_PRAISE|"it doesn’t force you to pay a monthly subscription"
+A27#115|NOUP_PRAISE|"doesn’t pressure you to go premium"
+P12#50677|NOUP_PRAISE|"it's not pushy to get you to pay for additional services"
+P3#7691|NONAG_PRAISE|"doesn't pester you with a bunch of annoying ads"
+P12#23950|NR|
+P31#88|NR|
+P2#12977|NONAG_PRAISE|"A scheduling app that doesn't force me to sync my google calendar with it"
+P24#9111|NONAG_PRAISE|"Doesn't bug you to review"
+A68#563|NONAG_PRAISE|"Helps, but doesn’t nag, nice"
+P3#2874|NONAG_PRAISE|"it doesn't nag you or make you feel guilty for missing days"
+P84#12549|NONAG_PRAISE|"No annoying popups"
+A4#20386|NR|
+P49#2233|NR|
+P122#11920|NOUP_PRAISE|"it doesn't pester me to upgrade to the pro version"
+P122#14890|NOUP_PRAISE|"it also doesn't force you to pay for pro version"
+P24#6598|NONAG_PRAISE|"just what I needed and no pop ups"
+P3#8834|NONAG_PRAISE|"No ads, no pop-ups"
+P3#11690|NR|
+A13#19267|NONAG_PRAISE|"intuitive, not naggy"
+A1#51883|NR|
+A8#23|NONAG_PRAISE|"no pop ups no ads"
+A3#5546|NONAG_PRAISE|"I love that this app doesn’t nag me"
+P24#5148|NR|
+P84#24230|NONAG_PRAISE|"Simple to use, no pop-ups"

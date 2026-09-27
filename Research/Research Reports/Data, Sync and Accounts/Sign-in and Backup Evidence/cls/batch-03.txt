@@ -1,0 +1,70 @@
+A24#9046|SN_LOGIN_FAIL|"登陆一直失败"
+A24#976|NR|
+A24#9879|UP_NAG,LEFT|"when the app asked me trice within the process of creating an account"
+A24#9901|NR|
+A24#9913|NR|
+A28#564|NAG_OTHER|"I just don’t understand why it’s so persistent about me signing in"
+A3#3888|NR|
+A31#1220|UP_NAG,X_PAYER|"forces me to click through the pop up again and again"
+A31#123|UP_NAG,X_PAYER|"they harass me every time I login to buy this growth bundle"
+A31#1241|NR|
+A31#1419|UP_NAG,X_PAYER,LEFT|"I will be switching to something that does not hit me with continual unwanted adverts"
+A31#2818|NR|
+A31#2899|UP_NAG,X_PAYER|"Not once a day, every single time I access the app"
+A31#2970|UP_NAG,X_PAYER,LEFT|"Have to close the pop up trying to get me to buy literally every time I log in"
+A31#3138|UP_NAG,X_PAYER|"Every time you log in you have to dismiss an ad just to use the app"
+A31#3379|UP_NAG|"Every time you sign in there is a pop up pushing you to buy a different package"
+A31#3525|UP_NAG|"They bombard you with premium add-ons darn near every time you log in"
+A31#3652|UP_NAG,X_PAYER|"after I upgraded I get ads to sign up for their $30 a month recurring package every time I sign in the app"
+A31#3720|UP_NAG|"every single time you try to do something it comes up at sign up"
+A31#477|UP_NAG,X_PAYER|"constantly keep trying to get me to sign up for their subscription model"
+A31#5003|OC_FAIL|"There’s an option to sync to dropbox but when you press it it just loads forever and doesn’t sync"
+A31#545|UP_NAG,X_PAYER,LEFT|"every time I log in they beg me to upgrade to their bundle of apps"
+A33#279|NR|
+A33#474|SN_LOGIN_FAIL|"账号似乎总是很不容易登录上"
+A33#490|SN_LOGIN_FAIL|"根本登录不上"
+A33#551|SN_STUCK|"一直显示网络问题登录不了"
+A33#633|SN_STUCK|"一直注册不成功也进不去"
+A33#645|SN_STUCK|"一直卡在注册和创建账号那里"
+A33#729|SN_STUCK|"注册不了，也使用不了"
+A33#795|NR|
+A4#1145|UP_NAG|"you can’t do a lot in the app without signing up or having heaps of pop ups"
+A4#16558|UP_NAG,X_PAYER,LEFT|"No matter how many times I close out of it, it comes back"
+A4#16595|NR|
+A4#18818|UP_NAG|"kept getting pop-up after pop-up to sign up for a subscription"
+A4#9422|UP_NAG|"I don’t want it popping up every time I sign into the app"
+A46#1036|SN_LOGOUT|"계속 로그인이 풀려서 계속 재로그인을 하다가 지웠습니다"
+A46#2056|SN_LOGOUT,ONLINE_ONLY|"If you are offline, this means you can’t do anything until you go back online"
+A47#42|SN_STUCK|"为什么总是注册失败"
+A47#47|SN_STUCK,ACCT_WANT|"一直注册不了无法备份"
+A48#3752|NR|
+A48#4121|SN_STUCK|"it crashes every time I try and login"
+A49#1055|LOSS_REINSTALL|"every time I do I lose my account/all my progress"
+A49#304|SN_LOGOUT|"It asked me to login once again every single time"
+A5#3167|SN_LOGOUT|"every time I open the app I have to sign in. Every single time"
+A5#788|SN_LOGOUT|"I used to be annoyed by a login prompt every time I opened the app"
+A53#1609|SN_NAG|"The app keeps asking me to sign into my Apple ID. I don’t want to do this. It’s annoying."
+A54#313|NOUP_PRAISE,X_PAYER|"especially not being pressured into it with annoying ads and sign ups and all that"
+A55#1133|UP_NAG|"Pretty annoying to be prompted to get it EVERY time I open the app"
+A55#1692|NR|
+A55#1703|SN_STUCK,ACCT_WANT|"I would like it to linked up to an email again to be backed up"
+A55#627|SN_STUCK|"it constant crashes after just seconds"
+A57#201|XDEV_WANT|"로그인을 할 수 있게하여 연동하는 기능을 만들어주시길 부탁드립니다"
+A59#4856|NR|
+A64#303|NR|
+A68#1070|NR|
+A68#1246|NR|
+A68#170|NR|
+A68#233|NR|
+A7#709|NR|
+A8#819|NOUP_PRAISE|"it can be annoying when they are pushing you to sign up all the time! But this app completely avoids that!"
+A83#247|SN_STUCK|"로그인 이후에 계속 오류라고 뜨고 시작이 안되네요"
+A83#44|SN_STUCK|"之前一直卡在外面登录不了"
+A85#102|SN_STUCK|"I was unable to register"
+A85#112|SN_STUCK|"I had trouble logging in"
+A85#1211|SN_LOGOUT|"Always logs me out"
+A85#1467|SN_LOGOUT|"Forces me to log in with password every time I open the app"
+A85#1561|SN_STUCK|"Tried to register, nothing happened"
+A85#2664|SN_LOGIN_FAIL|"I can’t log back in with my google account"
+A85#2718|SN_STUCK|"Every time I try to make an account it won’t let me"
+A85#2729|SN_STUCK|"I can’t even register"

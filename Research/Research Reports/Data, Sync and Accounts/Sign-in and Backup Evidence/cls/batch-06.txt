@@ -1,0 +1,70 @@
+A31#3686|IC_BK_FAIL,UP_NAG|"now I can’t back up to iCloud anymore"
+A31#459|BK_NAG,LEFT|"There isn’t an option to turn off the reminder, only remind me tomorrow or remind me in 5 days. For that reason I’m deleting the app."
+A31#4660|BK_NAG|"It’s also constantly asking me to back up, which is unnecessary with iCloud."
+A31#4681|BK_NAG|"there’s an annoying reminder to backup to iCloud that you can’t turn off"
+A31#5020|IC_WANT|"I don’t need to set up yet another backup site (Dropbox) just for this"
+A31#725|BK_NAG,CLOUD_REFUSE|"How about never? I don’t want to backup to the cloud."
+A33#1148|NR|
+A33#2976|NR|
+A33#898|NR|
+A41#20|NR|
+A5#1807|NR|
+A5#855|NR|
+A53#1050|NR|
+A55#1853|NR|
+A55#432|NR|
+A76#576|XDEV_MANUAL|"I would need to go to the other device and restore that back up to the device each and every time. It’s really annoying so I just use one device."
+A85#20|NR|
+A86#1321|NR|
+A86#849|OC_FAIL|"every time I try to restore from dropbox backup the app crashes"
+P111#1236|NR|
+P111#12422|NR|
+P111#7203|SYNC_LOSS|"every change I've ever made on mobile (windows app works OK) somehow gets lost during syncing process"
+P12#13094|NR|
+P122#3194|NR|
+P122#4568|NR|
+P122#5432|NR|
+P126#158211|NR|
+P126#27596|NR|
+P126#42515|NR|
+P126#71552|NR|
+P130#151|BK_MANUAL,GD_WANT,XDEV_WANT|"I thought it synced with Google Drive. Also, it does not sync across devices."
+P17#1|NR|
+P2#12192|NONAG_PRAISE|"when I don't use it for a while it doesn't keep sending me notifications which is what I appreciated the most"
+P2#3087|XDEV_MANUAL,LOSS_XDEV,X_PAYER|"I accidently lost a few days worth of tracking because I backed up the wrong device and imported from cloud on the device with the last few days on it"
+P24#13064|SYNC_RESURRECT|"Deactivate a habit on one device, or even all your devices, and it'll constantly reappear upon sync"
+P24#21918|XDEV_FAIL,X_PAYER|"I have not managed to sync the app between my cellphone and ipad"
+P3#2577|XDEV_WANT|"It would also be great to be able to sync across devices to save progress"
+P3#27087|XDEV_WANT|"will be great if I can sync my process onto other devices I am using"
+P3#5324|NR|
+P37#182|NR|
+P4#26425|NR|
+P4#3629|NR|
+P45#70|NR|
+P49#2371|NR|
+P8#2549|ONLINE_ONLY|"sometimes (and also right now while I'm writing this review) the tasks cannot be marked as completed"
+P8#9324|NR|
+P84#8930|NR|
+A1#50908|LOSS_UPDATE,IC_BK_FAIL,X_PAYER|"I even backed up to the cloud but they would not restore my purchase so I lost years of data"
+A10#12241|IC_FULL_LOSS|"due to upgrading my iPhone with no cloud backup space I lost my last finch"
+A10#21854|LOSS_MOVE,X_PAYER|"my data was apparently stored locally and not properly backed up"
+A10#29795|LOSS_REINSTALL,BK_MANUAL|"It’s 2025 automatic account backup is the most basic feature to literally any application"
+A10#31071|BK_SILENT_FAIL|"I’m scared of loosing all my data"
+A10#32483|LOSS_REINSTALL|"because of a cloud backup system I never got to use back then"
+A10#9027|IC_BK_FAIL|"I’ve been trying to activate iCloud backup but it doesn’t work"
+A20#1256|IC_BK_FAIL,X_PAYER|"the iCloud backup doesn’t work either and wiped all the history on my tasks"
+A20#3072|IC_BK_FAIL,LOSS_UPDATE|"Restore from icloud does not work either"
+A20#524|IC_BK_FAIL,BK_STATUS_UNKNOWN,X_PAYER|"where does my data even backup to? iCloud? Doesn’t really say within the app"
+A3#4799|BK_WANT|"No backup no cloud sync"
+A31#2425|IC_BK_FAIL|"after i restore my backup from icloud it stucked on welcome screen again"
+A31#3701|IC_BK_FAIL,X_PAYER|"When I tried to back up my data from iCloud it tells me “Oops, something went wrong” so now I’ve lost all my data"
+A36#38|BK_WANT,LOSS_NO_BACKUP|"Please add iCloud or other form of backup to that. It’s very pity. I lost all my progress because of that."
+A86#1392|IC_BK_FAIL,OC_FAIL|"backup was shown successful"
+A86#663|IC_BK_FAIL|"I changed phones today and try to recover the backup and it didn’t work"
+P1#111|BK_WANT,ACCT_WANT|"Cloud BackUp and Google signIn will be the best feature is still missing"
+P2#3497|XDEV_MANUAL|"if a backup isn't manually performed on each device, data will not be consistent across devices"
+P2#3917|GD_WANT|"Add backup to Google Drive instead of an obscure third-party location"
+P2#4980|BK_WANT,X_PAYER|"if your device damage/lost, forget all the data"
+P24#720|BK_WANT|"I need the cloud backup"
+P3#10433|LOSS_NO_BACKUP,BK_MANUAL,GD_WANT|"Today i lost 2.5 years of data as i forgot to backup the file and hit factory reset."
+P3#11416|LOSS_NO_BACKUP|"I lost my phone and I lost track of over a year of habits"

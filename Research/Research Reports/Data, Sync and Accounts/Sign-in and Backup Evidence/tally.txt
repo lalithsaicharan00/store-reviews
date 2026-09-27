@@ -1,0 +1,110 @@
+code                      n    A    P apps  mean   1★% payer
+GD_WANT                 131    2  129   18  4.30   1.5     1
+X_PAYER                  89   69   20   24  2.33  44.9    89
+IC_WANT                  79   79    0   28  4.00   6.3     8
+SN_STUCK                 66   28   38   18  1.85  62.1     3
+UP_NAG                   58   37   21   13  1.53  67.2    13
+IC_BK_FAIL               39   39    0    8  1.92  56.4    13
+IC_SYNC_FAIL             28   28    0   11  3.07  21.4     5
+NONAG_PRAISE             26   13   13   15  4.96   0.0     0
+LEFT                     22   14    8   14  1.68  59.1     4
+BK_MANUAL                22   15    7   12  3.09  27.3     4
+XDEV_MANUAL              22   16    6   10  3.91   4.5     6
+SN_LOGIN_FAIL            20   14    6    7  2.65  30.0     4
+ACCT_WANT                18   11    7   14  3.94  11.1     0
+LOSS_NO_BACKUP           18    4   14    7  3.78   5.6     1
+NOUP_PRAISE              17   11    6   11  4.88   0.0     3
+BK_PAID                  17   14    3    8  2.35  41.2     3
+SN_LOGOUT                16   12    4    8  2.44  37.5     5
+LOSS_REINSTALL           15   12    3   12  2.60  40.0     4
+BK_WANT                  15    6    9   11  4.00   6.7     2
+XDEV_WANT                14    4   10    6  3.64  21.4     3
+LOSS_UPDATE              14   14    0    7  1.29  85.7     4
+IC_SYNC_OK               10   10    0    6  4.60  10.0     0
+GD_BK_OK                 10    1    9    7  4.80   0.0     1
+LOSS_MOVE                 9    7    2    8  2.11  33.3     5
+NOACC_PRAISE              7    1    6    4  4.71   0.0     0
+GD_BK_FAIL                7    1    6    6  3.29  28.6     0
+SN_FRICTION               6    3    3    4  1.17  83.3     2
+NAG_OTHER                 5    3    2    3  3.20  20.0     1
+IC_SETUP_CONFUSE          5    5    0    4  3.80   0.0     0
+BK_NAG                    5    5    0    2  2.80  20.0     0
+XPLAT_WANT                5    2    3    3  3.60  20.0     0
+ONLINE_ONLY               4    1    3    2  2.25  25.0     0
+LOCAL_PRAISE              4    2    2    4  5.00   0.0     0
+PAY_FOR_BACKUP            4    1    3    3  4.75   0.0     0
+IC_FULL                   4    4    0    3  3.25  25.0     2
+SN_FORCED                 3    2    1    3  1.33  66.7     0
+OC_FAIL                   3    3    0    2  3.00  33.3     0
+SN_NAG                    3    2    1    3  1.33  66.7     1
+SYNC_UNSURE               3    2    1    2  2.67   0.0     1
+LOSS_CORRUPT              3    3    0    2  1.33  66.7     1
+BK_LOCAL_SAVED            3    3    0    1  2.67  33.3     0
+IC_BK_STALE               3    3    0    2  1.33  66.7     3
+IC_NOT_USED               3    3    0    3  4.67   0.0     0
+PRIVACY_PRAISE            3    3    0    3  5.00   0.0     0
+OWN_CLOUD_CHOICE          3    3    0    3  4.00   0.0     1
+LOSS_CRASH                2    1    1    2  2.50   0.0     1
+LOSS_XDEV                 2    0    2    1  3.50   0.0     1
+IC_SYNC_SLOW              2    2    0    2  3.00   0.0     0
+OWN_CLOUD_PREF            2    0    2    2  4.00   0.0     0
+IC_ONLY_LIMIT             2    2    0    2  4.50   0.0     1
+GD_SYNC_OK                2    0    2    2  5.00   0.0     1
+IC_BK_OK                  2    2    0    2  4.50   0.0     0
+LOSS_RESET                2    2    0    1  1.00 100.0     0
+IC_SYNC_CORRUPT           2    2    0    2  2.00  50.0     0
+IC_OFF_LOSS               2    2    0    1  5.00   0.0     0
+BK_PARTIAL                2    2    0    2  4.00   0.0     0
+IC_CRASH                  2    2    0    2  2.50  50.0     0
+SERVER_WARY               2    2    0    2  3.00  50.0     1
+LOSS_NO_ACCOUNT           1    1    0    1  5.00   0.0     0
+ACCT_NO_SYNC              1    0    1    1  2.00   0.0     0
+ASK_ONCE                  1    0    1    1  4.00   0.0     1
+LOSS_ACCOUNT              1    0    1    1  3.00   0.0     0
+IC_NAG                    1    1    0    1  3.00   0.0     0
+BK_FAIL                   1    1    0    1  2.00   0.0     0
+BK_RESTORE_SLOW           1    1    0    1  2.00   0.0     1
+CLOUD_REFUSE              1    1    0    1  4.00   0.0     0
+SYNC_LOSS                 1    0    1    1  2.00   0.0     0
+SYNC_RESURRECT            1    0    1    1  2.00   0.0     0
+XDEV_FAIL                 1    0    1    1  1.00 100.0     1
+IC_FULL_LOSS              1    1    0    1  5.00   0.0     0
+BK_SILENT_FAIL            1    1    0    1  5.00   0.0     0
+BK_STATUS_UNKNOWN         1    1    0    1  2.00   0.0     1
+BK_TRANSFER_FAIL          1    0    1    1  1.00 100.0     1
+GD_NOT_USED               1    0    1    1  2.00   0.0     0
+CLOUD_OPTIONAL            1    0    1    1  5.00   0.0     0
+GD_SETUP_CONFUSE          1    0    1    1  4.00   0.0     0
+GD_SYNC_FAIL              1    0    1    1  2.00   0.0     0
+GD_SYNC_SLOW              1    0    1    1  2.00   0.0     1
+BK_LOCAL_TRAP             1    0    1    1  1.00 100.0     0
+IC_SIZE                   1    1    0    1  3.00   0.0     0
+IC_SYNC_WIPE              1    1    0    1  1.00 100.0     0
+SN_NO_SKIP                1    1    0    1  1.00 100.0     1
+SERVER_REFUSE             1    1    0    1  1.00 100.0     1
+RESTORE_REPLACE           1    1    0    1  5.00   0.0     0
+XPLAT_LOSS                1    1    0    1  4.00   0.0     1
+IC_SILENT_FAIL            1    1    0    1  1.00 100.0     0
+IC_BK_OVERWRITE           1    1    0    1  4.00   0.0     0
+SYNC_PARTIAL              1    1    0    1  5.00   0.0     0
+IC_SYNC_FLICKER           1    1    0    1  3.00   0.0     0
+IC_SYNC_DUP               1    1    0    1  5.00   0.0     0
+IC_PAY_OBJECTION          1    1    0    1  3.00   0.0     0
+SYNC_UNCLEAR              1    1    0    1  5.00   0.0     0
+IC_PREF_OVER_ACCOUNT      1    1    0    1  4.00   0.0     0
+IC_OPTIONAL_PRAISE        1    1    0    1  5.00   0.0     0
+IC_REFUSE                 1    1    0    1  1.00 100.0     0
+PRIVACY_CONCERN           1    1    0    1  1.00 100.0     0
+IC_SYNC_REVERT            1    1    0    1  4.00   0.0     0
+
+precision by drawn mode: relevant / read
+  BACKUP_NAG           37/70      53%
+  CLOUD_BACKUP_FAIL    40/40     100%
+  DRIVE_AUTH            1/3       33%
+  DRIVE_BACKUP         96/96     100%
+  DRIVE_SYNC           58/60      97%
+  ICLOUD_BACKUP       118/130     91%
+  ICLOUD_SYNC          94/100     94%
+  NO_NAG_PRAISE        36/59      61%
+  SIGNIN_NAG          172/301     57%
+  SIGNIN_NO_SKIP       19/26      73%

@@ -1,0 +1,70 @@
+A85#2821|SN_STUCK|"Crashes every time on login and on registration"
+A85#3039|NR|
+A85#3097|NR|
+A85#412|SN_STUCK|"every time I try to register a “cannot connect to server” message pops up"
+A85#524|SN_STUCK|"打不开登录后进不去一直在登录界面"
+A88#136|NR|
+P105#499|UP_NAG|"Maybe let people use the app long enough to input even a single habit before throwing a "give me money" message in our faces"
+P11#12579|UP_NAG|"постоянно выходит реклама при входе в приложение"
+P11#3470|SN_STUCK|"I wasn't able to create an account to even see if I like it"
+P11#4349|SN_LOGOUT,X_PAYER|"constantly have to restore my purchase when trying to log in"
+P111#12296|NR|
+P111#12352|SN_STUCK|"every time I sign in it shut down by self"
+P111#12448|SN_STUCK|"the app closes every time I try to sign up"
+P111#3239|SN_STUCK|"I can't even register"
+P111#994|NR|
+P12#10021|NR|
+P12#10188|UP_NAG|"you're constantly bombarded with popups to write a review or share the app or sign up for the other apps"
+P12#10891|UP_NAG|"They constantly offer you a dozen apps to sign up for in addition"
+P12#10905|UP_NAG|"its constantly wanting you to sign up for other pricey apps"
+P12#11150|NR|
+P12#11317|UP_NAG|"constantly prompting to sign up for premium or to set up notifications"
+P12#11339|NR|
+P12#115057|SN_LOGIN_FAIL,LOSS_REINSTALL|"Since uninstalling the app you loose all your progress"
+P12#115856|LOSS_CRASH,ACCT_NO_SYNC|"Why do you request a login if the app data is not synced?"
+P12#11663|NR|
+P12#11686|NR|
+P12#11781|NR|
+P12#12076|UP_NAG,X_PAYER|"even if you sign up to premium the app still tries to sell you more apps non stop"
+P12#13107|NR|
+P12#13604|NR|
+P12#14445|NR|
+P12#15661|LOSS_MOVE,X_PAYER|"since changing phones I can't restore my premium membership nor restore my progress"
+P12#16006|NR|
+P12#20496|NR|
+P12#20741|NR|
+P12#21229|NR|
+P12#22632|UP_NAG,LEFT|"every time I open the app there is at least one ad to sign up for premium"
+P12#23732|NR|
+P12#24250|NR|
+P12#24413|NR|
+P12#24679|NR|
+P12#27684|NR|
+P12#28024|UP_NAG|"No need for constant pop ups asking"
+P12#31599|NR|
+P12#45014|NR|
+P12#45574|UP_NAG|"The app is very persistent to get you to sign up"
+P12#51759|NAG_OTHER,ASK_ONCE,X_PAYER|"I don't want to be asked again after I say no the first time"
+P12#54018|NR|
+P12#59107|NAG_OTHER|"the constant nagging to sign up your friends"
+P12#64498|NR|
+P12#67113|UP_NAG,LEFT|"Within about 15min of using the app I had been prompted multiple times to pay"
+P12#67738|SN_FRICTION,X_PAYER|"The app isn't giving me the option to sign in"
+P12#67881|UP_NAG,LEFT|"He brings me 5 or 6 pop ups after I first time log in"
+P12#8773|SN_STUCK|"every time I try to log in i get a blank screen"
+P12#9071|NR|
+P12#9740|UP_NAG|"Really pushy about the free trial sign up before you even get into the app itself"
+P120#23|SN_LOGOUT|"every time update & every time login"
+P122#26302|NR|
+P126#156727|SN_NAG,LEFT|"I got rid of it because it nagged me to create an account"
+P126#63579|NOACC_PRAISE|"No login required. No pop-ups."
+P2#19663|NR|
+P2#3106|LOSS_XDEV|"it never saves and that's very devastating to start over many times"
+P20#23|NR|
+P20#2685|SN_STUCK|"로그인 조차 안되네요"
+P20#3057|NR|
+P20#424|UP_NAG,LEFT|"使う前から課金課金しつこくて"
+P24#10084|SN_LOGIN_FAIL,LOSS_ACCOUNT|"all my changes and progress are lost"
+P24#10229|SN_LOGIN_FAIL,X_PAYER|"Problems with using an existing account when reinstalling"
+P24#11099|SN_STUCK,X_PAYER|"It just keeps force closing on me, every time i sign in"
+P24#1118|SN_LOGIN_FAIL|"it won't send a reset link for my password"
