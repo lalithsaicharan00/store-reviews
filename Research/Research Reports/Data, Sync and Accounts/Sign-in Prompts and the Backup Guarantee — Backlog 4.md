@@ -168,7 +168,7 @@ Counts are from the reading sample, not the whole corpus. A review counts once p
 
 ## 5. Worst cases, and what catches each
 
-"Layer" refers to the five safety nets in [Data Safety, Accounts and Sync §5](<../../../Architecture/Data Safety, Accounts and Sync.md>) and the backup rules in [03](<../../../Architecture/03. Backup Without Our Account.md>).
+"Layer" refers to the five safety nets in [Data Safety, Accounts and Sync §5](<../../../Architecture/Data Safety, Accounts and Sync.md>) and the backup rules in [03](<../../../Architecture/03. Backup and Restore.md>).
 
 | # | Worst case | What catches it | Left at risk |
 |---|---|---|---|

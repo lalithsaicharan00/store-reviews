@@ -9,6 +9,8 @@ How the app works under the hood, on every platform: iPhone, Android, Watch, and
 
 The system diagram in Figma (page "App Architecture") comes **last**, once every topic below is settled.
 
+**Product shape (decided 27 Sep 2026):** free is one phone, 5 habits, local-only, with no account. Plus (one-time, lifetime) adds every device, Watch, sync and server backup, through an account created right after purchase (Apple or Google). We make no copies in iCloud or Google Drive, and send one email ever: the purchase confirmation.
+
 **Starting point:** [Data Safety, Accounts and Sync.md](<Data Safety, Accounts and Sync.md>) is the overall proposal: local-first
 SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one at a time.
 
@@ -16,9 +18,9 @@ SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one a
 
 | # | Topic | Why this order | Status |
 |---|---|---|---|
-| 1 | **Accounts and identity**: sign-up, sign-in, people who never sign in, linking Apple, Google and email, sessions, recovery, sign-out, deletion | Everything else hangs off *who the user is*. Billing links a purchase to an identity; migration moves an identity; backup needs an identity even for people without an account | [Done](<01. Accounts and Identity.md>) |
+| 1 | **Accounts and identity**: who gets an account (Plus buyers and family members), the sign-in step after purchase, Apple and Google keys, sessions, recovery, sign-out, deletion | Everything else hangs off *who the user is*. Billing links a purchase to an identity; migration moves an identity | [Done](<01. Accounts and Identity.md>) |
 | 2 | **Billing and entitlements**: App Store and Play purchases, verifying and acknowledging them, linking premium to the account, restore, cross-platform, lifetime, family, refunds, grace periods | The top paid-user 1★ cause (72% 1★) | [Done](<02. Billing and Entitlements.md>) |
-| 3 | **Backup without our account**: iCloud, Google Drive, OS backups, how the app *knows* a backup exists and how old it is | For people who never sign in | [Done](<03. Backup Without Our Account.md>) |
+| 3 | **Backup and restore**: on-device snapshots, the phone's own backups, export/import, restore; server backup for Plus | Every user, free or Plus | [Done](<03. Backup and Restore.md>) |
 | 4 | **Phone migration**: same OS, iPhone ⇄ Android, QR transfer, restore before onboarding | Third most common 1★ story | [Done](<04. Phone Migration.md>) |
 | 5 | **Sync engine**: data model, outbox, conflicts, tombstones, schema versions, dates and time zones | The core protocol | [Done](<05. Sync Engine.md>) |
 | 6 | **Server on Cloudflare**: Worker, Durable Objects, R2, recovery, limits, cost, exit plan | Mostly designed already; needs production detail | [Done](<06. Server on Cloudflare.md>) |
@@ -31,7 +33,7 @@ SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one a
 
 - **Parked decisions:** [Backlog.md](Backlog.md).
 
-- **Accepted email behavior:** [Email OTP login, purchase confirmations and replaceable sending provider](<Email Delivery Decision.md>) — decided 26 Sep 2026; initial provider selection remains open.
+- **Accepted email behavior:** [The one email: purchase confirmation](<Email Delivery Decision.md>). Decided 26 Sep 2026 and narrowed 27 Sep 2026; the provider selection remains open.
 
 - **Accepted shared-core decision:** [Kotlin Multiplatform + native UI + documented rules + shared tests](<Shared Core Decision.md>) — finalized 26 Sep 2026; resolves Backlog #15. [Research, production examples and support routes](<Shared Core Research.md>).
 

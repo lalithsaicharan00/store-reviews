@@ -2,6 +2,13 @@
 
 *Written by Claude, 26 Sep 2026. A proposal: nothing here is built yet.*
 
+*Updated 27 Sep 2026:*
+- *Free is one phone and 5 habits, local-only, with no account.*
+- *Plus (lifetime) adds every device, sync and server backup through an account created right after purchase (Apple or Google).*
+- *No copies in iCloud or Google Drive, and no email sign-in. One email ever: the purchase confirmation.*
+
+*See [01](<01. Accounts and Identity.md>), [02 §3.1](<02. Billing and Entitlements.md>) and [03](<03. Backup and Restore.md>).*
+
 **Goal:** a habit, a check-in or a streak is never lost. That holds through an app update, a reinstall, a new
 phone, or a switch from iPhone to Android (and later to web or Windows). The app stays offline-first, and we
 avoid running costs.
@@ -28,8 +35,8 @@ holds one copy per account. Five independent safety nets sit underneath, so no s
 
 | Option | Works across iPhone ⇄ Android ⇄ web? | Running cost | Gives us accounts? | Verdict |
 |---|---|---|---|---|
-| **iCloud** (CloudKit / iCloud Drive) | ❌ Apple only | $0, uses the user's iCloud storage | Apple ID only | Use as a **backup destination** on iPhone, not as the sync |
-| **Google Drive hidden app folder** (`drive.appdata`) | ⚠️ iOS, Android and web, but only for people with a Google account | $0, uses the user's Drive storage | Google only | Hidden from the user, and deleted if they disconnect the app in Drive. **Backup copy at most** |
+| **iCloud** (CloudKit / iCloud Drive) | ❌ Apple only | $0, uses the user's iCloud storage | Apple ID only | **Not used** (decided 27 Sep 2026): no sync and no backup copies of ours |
+| **Google Drive hidden app folder** (`drive.appdata`) | ⚠️ iOS, Android and web, but only for people with a Google account | $0, uses the user's Drive storage | Google only | **Not used** (decided 27 Sep 2026) |
 | **Android Auto Backup** | Android → Android only | $0: 25 MB, and doesn't count toward the user's quota | – | **Turn on**: a free safety net |
 | **iPhone backup / Quick Start** | iPhone → iPhone only | $0 | – | **Automatic** if the database sits in the right folder |
 | **Firebase** (Firestore + Auth) | ✅ | $0 up to 20k writes/day (about 2,000 daily users at ~10 check-ins each). After that, pay-as-you-go **with no hard spending cap** | ✅ | Workable, but a poor fit: offline storage is a cache, conflicts are resolved per whole document, lock-in, and the risk of a surprise bill |
@@ -39,8 +46,8 @@ holds one copy per account. Five independent safety nets sit underneath, so no s
 
 **Why the user's own cloud can't be the main answer.** iCloud and Google Drive can't see each other. An iPhone
 user who moves to Android has data sitting in iCloud, and the Android app can't reach it. Anything
-cross-platform needs one neutral place in the middle. The user's cloud is still valuable as an extra,
-user-visible copy (net 4 below).
+cross-platform needs one neutral place in the middle. Decided 27 Sep 2026: we don't build on the user's cloud at
+all. The group that asks for it is small and rarely pays ([evidence](<../Research/Research Reports/Business Model and Monetization/Plus Scope and Account at Purchase.md>)).
 
 **Cloudflare free tier, checked on 26 Sep 2026:**
 - Workers: 100k requests/day.
@@ -50,7 +57,7 @@ user-visible copy (net 4 below).
 
 **Other costs that can't be avoided:**
 - Apple Developer: $99/year (already needed).
-- A domain: about $10/year. Needed for the Sign in with Apple web flow and for sign-in emails.
+- A domain: about $10/year. Needed for the Sign in with Apple web flow and for the purchase email.
 
 ---
 
@@ -178,19 +185,16 @@ ourselves, and there is no monthly-active-user cap like Firebase's.
 - **The Worker checks the Apple or Google sign-in token** and issues our own session token.
 - **Every sync checks that token,** which takes under 1 ms of the 10 ms free CPU budget.
 - **The provider ID → account table** lives in D1 and is written only at sign-up.
-- **Email codes** need a mail sender:
-  - Use a replaceable external sending adapter on the free Worker; initial provider selection is pending. Email login does not require Workers Paid.
-  - Cloudflare’s own outbound Email Sending is currently Beta and requires Workers Paid; it remains a later migration option.
-  - Codes are sent on actual sign-in/linking, including after sign-out or session revocation, not on every app opening. Purchase confirmations share the quota. See [Email Delivery Decision](<Email Delivery Decision.md>) for current provider allowances and migration.
+- **The one email** (the purchase confirmation) uses an external free-tier sender, so the Worker stays on the free plan. See [Email Delivery Decision](<Email Delivery Decision.md>).
 
 **Launch on the free plan; upgrade when usage calls for it** (decided 26 Sep 2026):
-- **Sign-in at launch: Apple + Google + email OTP** (updated 26 Sep 2026). Email is passwordless; an external free-tier sender can support OTPs and purchase confirmations while the Worker remains on the free plan.
+- **Sign-in at launch: Apple + Google** (decided 27 Sep 2026; email codes removed). Accounts exist only for Plus.
 - **If a daily limit is hit, sync pauses until the next day.** No data is lost, because phones keep their
   outbox. The app shows "Backup delayed", not an error.
 - **A Cloudflare rate-limiting rule sits in front of the Worker,** so blocked requests never count against the
   100k. The Worker also limits syncs per device.
 - **A daily scheduled Worker (cron) counts yesterday's sync requests** and emails us.
-- **Upgrade trigger:** requests pass **50k/day** (about 6k daily users), or another backend limit requires it. Email-provider quotas are monitored separately. Upgrading
+- **Upgrade trigger:** requests pass **50k/day** (about 6k daily users), or another backend limit requires it. Upgrading
   takes a minute and needs no code change or data move.
 
 ---
@@ -199,18 +203,15 @@ ourselves, and there is no monthly-active-user cap like Firebase's.
 
 *The full design, including evidence and platform rules, is in [01. Accounts and Identity.md](<01. Accounts and Identity.md>).*
 
-- **Accounts exist from day one, but signing up is never required.** The app is fully usable without an
-  account.
-  - **Onboarding** has a "Keep your habits safe" step with **Sign in with Apple**, **Google** and **Continue with email**,
-    plus **Not now**.
-  - **Without an account**, the avatar shows a small "Not backed up" dot, with one gentle reminder after a few
-    days.
+- **Accounts are for Plus only** (decided 27 Sep 2026). The free app has no sign-in at all.
+  - **The purchase flow ends with "One last step: turn on sync and backup":** **Continue with Apple**, **Continue with Google**, and a visible "Not now: use Plus on this device only" (Apple 5.1.1(v)).
+  - **There are no sign-in nudges.** After "Not now", only the features ask: a tablet or second device, and Settings → Backup.
 - **Sign-in methods:**
   - **Apple:** required by App Store guideline 4.8 once Google sign-in is offered. It also works on Android and
     web through Apple's web flow, so an iPhone user who moves to Android can still sign in.
   - **Google:** on every platform.
-  - **Email with a 6-digit code:** included at launch. No password or password-reset flow; normal session refresh does not send another code. See [Email Delivery Decision](<Email Delivery Decision.md>).
-- **An account has our own UUID.** Linked Apple/Google provider IDs and verified email sign-in keys open that account. Contact email is not the account ID; matching emails never silently merge accounts. Apple relay addresses are supported.
+  - **No email sign-in and no passwords.** Every buyer has an Apple ID or a Google account.
+- **An account has our own UUID.** Linked Apple and Google provider IDs open that account. Matching emails never silently merge accounts. Apple relay addresses are supported.
 - **First sign-in when the account already has data** (for example, a second phone):
   - the app asks whether to merge, keep the account's data, or keep this phone's data;
   - whatever is set aside is saved as a snapshot, so nothing is thrown away.
@@ -226,9 +227,9 @@ ourselves, and there is no monthly-active-user cap like Firebase's.
   3. If the old phone was signed in, the new phone joins **the same account** (like linking WhatsApp Web). An
      iPhone user who signed in with Apple never has to type an Apple ID on Android. The app then suggests adding
      Google as a second sign-in, for recovery.
-  4. It works **without an account too**.
-  - **Its limit:** it needs the old phone in hand. If that phone is lost or broken, the path back is signing in,
-    which is why sign-in still exists.
+  4. It works **without an account too**, so free users can move, including iPhone ⇄ Android.
+  - **Its limit:** it needs the old phone in hand. If that phone is lost or broken, Plus users sign in; free
+    users rely on the phone's own backup (same platform) or a file they exported (topic 4).
 - **Purchases are tied to the account**, so a paid plan follows the user to a new phone or platform. This
   addresses the lost-purchase complaints in C035.
 
@@ -242,8 +243,8 @@ Any one of these can fail, and the data still survives.
 |---|---|---|---|
 | 1 | **Safe local database:** transactions, WAL mode, stored in Application Support (iOS) or app files (Android), never in caches | crashes, the app being killed mid-write | $0 |
 | 2 | **Local snapshots:** 7 daily + 4 weekly copies of the database, and a copy taken **before every schema migration** | a bad update or migration, accidental deletes | $0 |
-| 3 | **Operating-system backup:** iCloud device backup / Quick Start on iPhone; Auto Backup (25 MB) and device transfer on Android | same-platform phone switch **without an account** | $0 |
-| 4 | **Export and import, plus an optional weekly automatic copy** to a folder the user picks (iCloud Drive, Google Drive, Files). A readable JSON file plus CSV; either app can import the other's file | cross-platform move without an account; the user owns a copy | $0 |
+| 3 | **Operating-system backup:** iCloud device backup / Quick Start on iPhone; Auto Backup (25 MB) and device transfer on Android | same-platform phone switch **without an account** (the free user's main net) | $0 |
+| 4 | **Export and import:** a readable JSON file plus CSV; either app can import the other's file | cross-platform move without an account; the user owns a copy | $0 |
 | 5 | **Account sync:** the server copy, 30-day point-in-time recovery and nightly R2 snapshots | any device, any platform, including web and Windows later | $0 → $5–30/month |
 
 **Settings → Backup & sync** shows:
@@ -305,7 +306,7 @@ This is the "prove it" part of C030.
 
 1. **Data model and local database** on iOS: tables, outbox, snapshots, export/import (nets 1, 2 and 4).
 2. **Sync service:** a Worker plus one Durable Object per account, with push/pull and the convergence test.
-3. **Accounts:** Apple, Google, email code; merge on first sign-in; account deletion.
+3. **Accounts:** Apple and Google (Plus only); merge on first sign-in; account deletion.
 4. **Nightly R2 snapshots and the data-loss canary.**
 5. **Android** uses the same schema and protocol. The schema lives in one shared folder, and both apps are tested
    against it.
@@ -337,5 +338,4 @@ It adds these requirements to the design above:
 - **Shared code:** *decided 26 Sep 2026:* one Kotlin Multiplatform domain core, native platform UIs, written behavior specifications and shared fixtures. Merge rules live in the core; transport, storage and transactions remain adapters. This does not select SQLDelight or require sharing every part of the sync client. See [Shared Core Decision](<Shared Core Decision.md>).
 - **Purchases:** *decided 26 Sep 2026:* native StoreKit 2 and Play Billing, verified and recorded by our own Worker
   for cross-platform use; no RevenueCat. See [02 Billing §3.11](<02. Billing and Entitlements.md>).
-- **Where the sign-in step goes in onboarding:** before or after the user adds their first habit. Research
-  needed.
+- **Where the sign-in step goes:** *decided 27 Sep 2026:* not in onboarding. It is the last step of the Plus purchase flow, with a skip link. See [02 §3.2](<02. Billing and Entitlements.md>).

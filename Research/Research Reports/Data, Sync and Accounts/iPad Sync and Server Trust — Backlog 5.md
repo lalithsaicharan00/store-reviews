@@ -31,7 +31,7 @@
 
 ## 2. What "CloudKit sync" means, in plain words
 
-**Our plan today** (first principles, from [05 Sync](<../../../Architecture/05. Sync Engine.md>) and [03 Backup](<../../../Architecture/03. Backup Without Our Account.md>)):
+**Our plan today** (first principles, from [05 Sync](<../../../Architecture/05. Sync Engine.md>) and [03 Backup](<../../../Architecture/03. Backup and Restore.md>)):
 
 ```
  Signed in:      iPhone ⇄ our server (Cloudflare) ⇄ iPad / Android / web     ← live sync
@@ -57,7 +57,7 @@
 
 ## 3. What happens today to someone who won't use our server
 
-This is already designed ([01 Accounts](<../../../Architecture/01. Accounts and Identity.md>), [03 Backup](<../../../Architecture/03. Backup Without Our Account.md>), [09 Privacy](<../../../Architecture/09. Privacy and Account Deletion.md>)):
+This is already designed ([01 Accounts](<../../../Architecture/01. Accounts and Identity.md>), [03 Backup](<../../../Architecture/03. Backup and Restore.md>), [09 Privacy](<../../../Architecture/09. Privacy and Account Deletion.md>)):
 
 | They get | How |
 |---|---|
