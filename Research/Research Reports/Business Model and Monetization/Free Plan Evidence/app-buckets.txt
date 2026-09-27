@@ -1,0 +1,8 @@
+free cap | apps | reviews | mean ★ (review-weighted) | cap mentions per 10k | say they paid % | apps
+1 | 4 | 7925 | 4.00 | 427 | 4.40 | P49 49. RoutineFlow - , A86 86. Today Habit tr, A16 16. Atoms - from A, A36 36. (Not Boring) H
+2 | 5 | 128099 | 4.44 | 31 | 1.01 | P4 4. Me+ Lifestyle R, A59 59. Tappsk - ToDo , P5 5. Routine Planner, A5 5. Routine Planner, A34 34. Habit Tracker 
+3 | 19 | 100187 | 4.33 | 176 | 3.22 | A1 1. Habit Tracker -, A76 76. Way of Life - , A31 31. Do Habits - Ge, P30 30. Habit Tracker , A48 48. Strides - Habi, A20 20. Habit — Daily , A33 33. Habitify - Hab, A46 46. everyday - Hab, P37 37. Habitify - Hab, A53 53. HabitMinder • , P70 70. everyday Habit, P123 123. Rise - Habit , A25 25. Grit - Daily H, A41 41. Awesome Habits, A43 43. Habit Hub - Ro, P130 130. Way of Life -, P7 7. Habit Tracker -, P44 44. Habit Tracker , A54 54. Avocation - Ha
+4 | 4 | 10293 | 3.79 | 163 | 1.62 | P33 33. Productive - H, P9 9. Habit Tracker -, P15 15. Habit Tracker , P14 14. Habit Pixel - 
+5 | 8 | 81276 | 4.06 | 142 | 2.82 | P24 24. Habit Tracker, A52 52. ShineDay - Hab, A13 13. Productive - H, P98 98. Rabit - Habit , A26 26. Eden - Daily R, P105 105. Avocation Goa, A55 55. Habit-Bull - D, P31 31. HelloHabit - H
+6-8 | 2 | 33969 | 4.61 | 39 | 2.04 | P2 2. HabitNow Daily , P38 38. Roubit -Daily 
+unlimited | 6 | 48760 | 4.64 | 16 | 0.19 | P3 3. Loop Habit Trac, P65 65. Goal & Habit T, P19 19. TheFor - Habit, P106 106. Habit Tracker, A8 8. Onrise - Habit , A29 29. Habit Tracker 

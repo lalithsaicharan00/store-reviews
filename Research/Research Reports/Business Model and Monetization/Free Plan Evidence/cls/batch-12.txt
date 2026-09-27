@@ -1,0 +1,70 @@
+A55#1076|FE_GENEROUS,VALUE_BETTER|"Even for the free version, it’s much better than the many of the paid ones."
+P84#617|SW_TO_THIS|"I have switched from great old Tasks app"
+P2#11995|SW_TO_THIS,X_PAYER|"tried a bunch of apps and paid for them, but this one is simple and clean"
+P12#45697|FE_GENEROUS|"I can understand that not everything can be free but even the free features are really good!"
+P12#37692|NR|
+P12#8206|LS_TRIAL_TRAP|"Steals your card details after free trial."
+A24#14065|LS_TRIAL_TRAP|"actually signs you up to multiple of their apps (and their own subscriptions too) with little to no indication of this"
+A33#798|NR|
+A24#26893|LS_TRIAL_TRAP|"Instead of seven days, it charged me after 12 hours."
+A23#172|NR|
+A1#1670|FE_GENEROUS,VALUE_BETTER|"one of the only APPS that is still easy to use, add-free, and doesn’t require payment for most functions"
+A1#47082|NR|
+P122#12234|NR|
+P3#10261|FE_GENEROUS,SUPPORT_DEV|"I am surprised there are no ads nor any way to support the developers monetarily."
+A13#14307|GATE_TOO_MUCH,VALUE_WORSE|"There are tons of free apps that are just as good if not better than this."
+P37#257|NR|
+P2#6584|FE_GENEROUS,SW_TO_THIS|"It's just the best actually free app there is for habits and tasks"
+A31#4735|CAP_WILLPAY,CONVERT_AFTER_USE|"Haven’t switched to premium yet but I do love it and will whenever I have money for it."
+P3#14584|SUPPORT_DEV,FE_GENEROUS|"Would definitely pay for it if came to this."
+P49#2288|CAP_OK,N2,GATE_OTHER|"Dark mode should not be gated behind the pro feature set, customizing colours however is something that could be."
+P62#3|SW_TO_THIS,LIFETIME_PRAISE|"reasonably priced premium with a lifetime option"
+A23#4498|NR|
+P126#75060|NAG|"When you try to exit they will flash you ads faster than you can click on the exit button."
+A1#649|UL_PRAISE,FE_GENEROUS,VALUE_BETTER|"There are no in app purchases, and you can add as many habits as you would like"
+A20#1477|PAID_LOST,X_PAYER|"I bought the paid version of the app and they moved to a subscription based model right after that."
+P24#7511|CAP_STATED,N5,VALUE_BETTER|"But free version is limited to 5 habits"
+P5#1005|NR|
+A55#529|VALUE_BETTER,PRICE_FAIR|"Great value to subscribe - a winner"
+P122#3373|NR|
+A10#39868|NR|
+P2#9436|FE_GENEROUS,VALUE_BETTER|"Even the free version is better than the premium of some other apps."
+A13#13438|SW_AWAY|"Switching to the reminders app."
+A10#20036|NR|
+P38#1222|CAP_COMPLAIN,WANT_EARN|"I'd honestly rather watch ads than have a routine limit."
+P24#3569|PRICE_FAIR,VALUE_BETTER|"TOTALLY worth the price"
+P84#7836|GATE_BACKUP,SW_AWAY,SUPPORT_DEV|"I cannot restore a back up to my new phone without buying a subscription!?!"
+A24#41667|CONVERT_AFTER_USE|"I’m leaning strongly towards purchasing a year’s subscription!"
+A31#5151|NR|
+P30#3633|NR|
+A59#15050|CAP_COMPLAIN|"giving it 4 stars because I so wish everything was free &amp; unlimited"
+A4#16187|LS_HARD_PAYWALL|"if they do it for 7 days for free then they are basically like saying” oh your 7 days are up and you have no money"
+A76#5850|NR|
+A24#2605|NR|
+A85#2820|NR|
+P106#633|VALUE_BETTER,SUB_PRICE,NAG|"This is better than any free habit tracker I've tried previously."
+P84#12048|NR|
+A8#147|NR|
+A36#176|NR|
+A41#753|NR|
+P33#573|VALUE_WORSE|"you can get things better than that and for free !"
+A48#923|NR|
+A68#884|NR|
+P122#12152|CONVERT_AFTER_USE,SW_TO_THIS|"I had no hesitation to take the pro version even if the free one is also complete"
+A23#4451|LIFETIME_PRAISE,VALUE_BETTER|"I liked how the devolopers haven’t made it into a subscription business like most of the other habit tracking apps."
+P49#363|CAP_OK,N1,LS_FAIR_DISCLOSED|"it basically encourages you to pay if you will actually use the app"
+A48#4045|NR|
+A31#1093|NR|
+P126#62770|CONVERT_AFTER_USE,LIFETIME_PRAISE|"I just didn't feel like paying for a program - at least until I knew I liked it"
+P122#18859|LIFETIME_PRAISE|"I especially like that it has a one-time purchase option for the premium features instead of a perpetual subscription"
+A13#19188|NR|
+P8#8655|NR|
+A13#4449|SW_AWAY|"Time to switch to alternatives with better UX"
+A53#1133|NR|
+A49#707|NR|
+A41#200|LIFETIME_PRAISE,CONVERT_AFTER_USE,X_PAYER|"I like this app so much that I decided to purchase the full version. I appreciate the purchase option instead of having to do a subscription."
+A88#448|NR|
+A53#1569|VALUE_BETTER,PRICE_FAIR|"Far better than any Apple reminders or their Health app. Definitely worth the price."
+P8#6928|NR|
+A41#528|NR|
+A4#5471|NAG|"it would keep asking me to join vip which i dont want to do and now it does it all the time"

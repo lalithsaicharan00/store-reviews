@@ -1,0 +1,8 @@
+screened 1238784 App Store + Play reviews; strict "I paid" 14034 (1.13%)
+LISTING_BETRAY  n= 17156 apps=155 per10k= 138.5 mean=2.80 1star=41.8% say-paid= 9.7%  top: 12. Fabulous Daily Rou 2613, 24. Fabulous - Daily H 2050, 10. Finch - Self-Care  1234, 4. Me+ Lifestyle Routi 1064
+CAP             n=  5015 apps=121 per10k=  40.5 mean=3.02 1star=27.1% say-paid= 5.5%  top: 1. Habit Tracker - Goa 606, 31. Do Habits - Get It 356, 13. Productive - Habit 340, 23. Streaks - The habi 336
+SWITCH          n=  4632 apps=139 per10k=  37.4 mean=3.67 1star=19.0% say-paid=10.9%  top: 10. Finch - Self-Care  425, 24. Fabulous - Daily H 378, 12. Fabulous Daily Rou 342, 13. Productive - Habit 261
+FREE_ENOUGH     n=  2784 apps= 98 per10k=  22.5 mean=4.87 1star= 0.0% say-paid= 9.6%  top: 122. Hevy - Gym Log Wo 656, 10. Finch - Self-Care  624, 2. HabitNow Daily Rout 140, 12. Fabulous Daily Rou 135
+WIDGET_PAY      n=  1774 apps=119 per10k=  14.3 mean=3.31 1star=23.7% say-paid=19.6%  top: 20. Habit — Daily Trac 206, 2. HabitNow Daily Rout 180, 24. Habit Tracker 177, 3. Days Since - Quit H 165
+UNLIMITED       n=   525 apps= 68 per10k=   4.2 mean=3.70 1star=21.1% say-paid=12.6%  top: 20. Habit — Daily Trac 72, 1. Habit Tracker - Goa 67, 31. Do Habits - Get It 57, 13. Productive - Habit 43
+DISCLOSE_POS    n=   276 apps= 45 per10k=   2.2 mean=1.77 1star=69.2% say-paid= 5.4%  top: 12. Fabulous Daily Rou 67, 24. Fabulous - Daily H 45, 13. Productive - Habit 29, 4. Me+ Lifestyle Routi 23

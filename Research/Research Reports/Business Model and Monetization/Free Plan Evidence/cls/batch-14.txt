@@ -1,0 +1,67 @@
+A3#3689|FE_GENEROUS|"the basic functionality is for free and is enough for basic usage"
+A3#4575|FE_GENEROUS|"Unmatched functionality for a free tier"
+A1#47100|FE_GENEROUS,PRICE_FAIR|"Premium version is affordable and Free version is also great."
+P15#245|CAP_COMPLAIN,N6,WANT10|"I think it's reasonable to have like 10 habits at least, it being only six makes it kind of hard to effectively track your habits"
+A59#1924|CAP_COMPLAIN,N2|"i wish you could have more than two without paying because it puts people off"
+P10#11083|FE_GENEROUS|"Even the free version is good enough for most habits I would want to add"
+A3#6516|FE_GENEROUS,UL_PRAISE,WG_FREE_PRAISE,SW_TO_THIS|"every other one i’ve tried required a subscription for every feature"
+P70#117|WG_FREE_PRAISE,CAP_OK,N3|"I use the widget to track three doses of a medication."
+A13#19763|CAP_COMPLAIN,N3,WANT5|"Only 3 habits in free version. 5 would be perfect"
+A13#644|CONVERT_AFTER_USE,SUPPORT_DEV,FE_GENEROUS|"The free version would have been perfectly fine for my needs, but I upgraded to support the developer."
+P4#25526|CAP_COMPLAIN,N2|"Won't let me set more than 2 daily routines without paying for it."
+A1#599|FE_GENEROUS,CAP_OK|"Even on the basic free version, it’s enough to get you started to build your habits!"
+P65#2162|FE_GENEROUS|"best free app pls keep it free very useful"
+A1#49429|FE_GENEROUS,CONVERT_AFTER_USE,WG_PAID_OK,X_PAYER|"It’s totally worth the price, even though even the free version is more than enough!"
+A24#20723|FE_GENEROUS|"Even the free version of This app has to offer so much."
+A3#6813|FE_GENEROUS|"the free version lets me do everything I want"
+A76#4684|FE_GENEROUS|"The amount of stuff you get for free is awesome."
+P10#11533|CAP_OK|"For building simple habits, this is enough."
+A5#327|CAP_COMPLAIN,N2|"The one thing I would add or like to have is to be able to make more routines without paying"
+A76#5134|CAP_CHOSE_GENEROUS,SUPPORT_DEV|"Many of the other apps out there only let you track about 3 habits for free"
+P24#9627|FE_GENEROUS|"Even the free version is awesome!"
+A4#9717|SUB_PRICE|"payments are too much"
+P49#2132|CONVERT_AFTER_USE,CAP_OK,LIFETIME_PRAISE|"I will most likely pay for lifetime soon because the cost is low"
+P5#3011|CAP_OK,N2|"you can only have 2 routines in the free version, but thats enough for me"
+P24#1954|CAP_OK,N5|"Free version with up to 5 habits has been great."
+A36#31|FE_GENEROUS|"Doesn’t constantly ask you to upgrade and offers good features in the free version"
+P8#7289|FE_GENEROUS,SUPPORT_DEV|"you don't have to pay a penny if you don't want to"
+A76#5682|CAP_OK,N3|"I think tracking 3 habits at once (free version) is enough for me."
+P3#4249|FE_GENEROUS,WG_FREE_PRAISE,SW_TO_THIS|"I tried few others, but they are always limited to some features by paywall"
+A54#333|CAP_PAID,CONVERT_AFTER_USE,SUPPORT_DEV,X_PAYER|"I went ahead and paid for the lifetime pro bc it’s such a great app and I want to support the developers. Also I wanted to add more habits bc it is that useful."
+A48#1970|CAP_OK,N3,WG_FREE_PRAISE|"you do only get 3 goals with the free version but honestly 3 is the perfect amount for the widget anyways"
+P84#47805|FE_GENEROUS|"GREAT app, with amazing features in the free version!"
+P21#1221|NR|
+A53#106|SUB_PRICE,VALUE_WORSE|"there are apps that are less quality but do the exact same thing for free"
+P84#13583|NR|
+A24#39519|NR|
+A4#5980|NR|
+A48#1016|CAP_PAID,CONVERT_AFTER_USE,X_PAYER|"the free version was good enough for me but I wanted to achieve more goals this year so I upgraded"
+P5#1278|NR|
+P36#70|FE_GENEROUS|"most features you want and need are there for free"
+P98#1179|CAP_COMPLAIN,N3|"Could've kept a little more than three plants for free users."
+P61#104|NR|
+P9#1078|CAP_OK,N4|"only get 4 habits without paying but that's plenty!"
+A13#14027|NR|
+A4#2754|NR|
+P5#2834|NR|
+P4#6014|FE_GENEROUS|"The free version is great! I've used it on and off for two years now."
+A48#2323|CONVERT_AFTER_USE,LIFETIME_PRAISE,X_PAYER|"first 2 yrs the free version, loved it, paid for the life-time nearly 2 yrs ago"
+P49#3197|CAP_OK,CAP_WILLPAY,N2|"this is enough to test out the app and see how well it works"
+P5#1779|CAP_OK,N2|"two routine variations are all I really need!"
+P35#62|FE_GENEROUS,SUPPORT_DEV|"Thinking about buying the Pro version to support the author"
+P126#66769|NR|
+P126#137206|NR|
+A29#333|NR|
+P70#529|CAP_COMPLAIN,N3,WANT5|"Wish you could have 5 for free."
+P4#29149|NR|
+A16#57|NR|
+P38#2564|NR|
+P49#1871|CAP_OK,CONVERT_AFTER_USE,N1|"free version is totally usable on its own if you only want to use it for 1 daily routine (i loved it right off the bat and upgraded)"
+P35#78|FE_GENEROUS,LIFETIME_PRAISE|"lifetime subscription is only £14.99"
+P37#280|NR|
+A48#3240|NR|
+P97#2117|NR|
+A5#1855|NR|
+A33#360|FE_GENEROUS|"Thank you Habitify for keeping the free version usable and free."
+P15#569|CONVERT_AFTER_USE,LIFETIME_PRAISE|"when i found out how cheap the app is, about 12 bucks for lifetime I had to get"
+A33#1189|PAID_LOST,SUB_PRICE,VALUE_WORSE|"there is plenty of free apps which do this for free"

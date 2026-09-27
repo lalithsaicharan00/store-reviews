@@ -1,0 +1,70 @@
+A20#3434|PAID_LOST,X_PAYER|"I opened the app to find that it had switched to subscription based and I’d LOST ALL the features that I paid for"
+A3#1602|NR|
+A20#80|PAID_LOST,X_PAYER|"Paid the one off premium price I thought was fair when it said it was &#34;lifetime&#34;."
+A4#14219|NR|
+A20#3900|FE_GENEROUS|"I’m grateful for such a quality app to be free"
+P5#5492|NR|
+P3#3561|NR|
+A4#19143|LS_TRIAL_TRAP,VALUE_WORSE|"If you have a calendar and reminders and notes or even my fitness pal, you Don’t Need This."
+A76#5316|NR|
+A3#9071|NR|
+P8#2610|NR|
+A3#6534|FE_GENEROUS,VALUE_BETTER,UL_PRAISE|"i get as many counters as i want, no annoying ads just understandable paywall content"
+A43#358|WG_FREE_PRAISE|"I can miss notifications, but not if it’s on my Home Screen."
+P3#13352|SW_TO_THIS,CAP_CHOSE_GENEROUS,N5|"I used to use habit bull which is great but doesn't let me track more than 5 habits so switched to loop"
+P130#87|PAID_LOST,X_PAYER|"my premium is now binded to my account and if I am going to switch to another phone, I shouldn't worry because I won't lose my premium"
+A8#695|NR|
+A53#522|NR|
+A34#740|SW_TO_THIS|"Switching to Super Habit feels like a breath of fresh air."
+P9#1149|NR|
+P126#46058|NAG|"they've suddenly thrown in adds you have to pay to get around"
+A16#760|NR|
+A59#11917|SW_TO_THIS,FE_GENEROUS|"There’s no annoying spam and ads."
+P101#55|SW_TO_THIS,FE_GENEROUS|"most importantly, it's a free app, no premium subscription needed"
+P84#25379|NR|
+P65#8343|NR|
+P19#353|NR|
+P19#191|FE_GENEROUS,VALUE_BETTER|"the free version is better than others apps"
+P37#913|CONVERT_AFTER_USE|"Switched to premium account on the very first day of using it."
+P24#12996|NR|
+A86#1056|NR|
+P5#364|NR|
+P8#4300|NR|
+A23#4913|NR|
+A9#428|VALUE_WORSE,X_PAYER|"you can easily use a free notepad app which is far better than this"
+A33#3429|LIFETIME_PRAISE,VALUE_BETTER|"this is the ONLY one that is worth the money. Better yet, it&#39;s got a one time purchase option instead of a subscription."
+P49#441|LS_TRIAL_TRAP,X_PAYER|"Said it would tell me before the free trial ran out. It did not."
+P109#49|FE_GENEROUS,SW_TO_THIS|"and its freee"
+A16#184|CAP_OK,N5,GATE_CHECKIN,SUB_PRICE|"All of sudden after a month of using I wasn’t able to log another finished activity unless paying 10$ a month premium subscription."
+P2#5260|FE_GENEROUS|"Free version is enough for basic use"
+A10#32949|FE_GENEROUS|"even the free version is really great!"
+P122#4898|NR|
+A13#12437|GATE_TOO_MUCH|"I just wish I could do more without paying a bunch of money"
+A10#15713|FE_GENEROUS,CONVERT_AFTER_USE|"there are so many features on the free version alone it’s amazing"
+P12#53703|NR|
+A10#12426|FE_GENEROUS|"free version is more than enough"
+P12#28457|CONVERT_AFTER_USE|"I used the free version originally and fell in love with it and so upgraded to the subscription"
+P122#14982|NR|
+A24#20528|SUPPORT_DEV|"If you get the service, the least you can do is pay fo"
+P12#41531|FE_GENEROUS|"I'm onky using the free version!"
+P49#1306|FE_GENEROUS|"I'm using the free version, and it's still amazing"
+A10#64305|FE_GENEROUS,CONVERT_AFTER_USE|"the free version is amazing on its own but i’m probably going to pay for an annual subscription"
+P24#15911|CAP_OK,N5|"Free version is 5 habits and no widgets."
+A4#19930|FE_GENEROUS|"There’s a lot of options to chose from even if your only using the free version."
+P10#10203|FE_GENEROUS|"It's free no need to pay to unlock everything unlike other apps"
+P12#35949|NR|
+A85#129|NR|
+A24#22005|FE_GENEROUS|"even the free version is enough"
+P84#14511|FE_GENEROUS,CONVERT_AFTER_USE,SUPPORT_DEV|"I'm considering going premium for the first time ever with an app, because I've never seen a developer be so generous in a free version"
+P24#9361|CAP_OK,N5|"free version let's you track 5 things which is great to get you started"
+P122#17879|NR|
+P122#13181|NR|
+A1#52872|FE_GENEROUS,X_PAYER|"Developers are incredibly generous and understanding in offering a free version for those who can’t afford to pay for premium."
+A8#640|UL_PRAISE|"Unlimited habits for FREE"
+A20#3858|FE_GENEROUS|"Great free app"
+A5#3096|FE_GENEROUS,LS_PRICE_UNCLEAR|"I can’t find much more info on the paid version"
+P2#6586|FE_GENEROUS,WG_PAID_OK|"The free plan gives everything you need, but the Premium plan gives some additional customization and added features to the widgets."
+P84#10142|FE_GENEROUS|"works perfectly with many great features"
+P10#11314|NR|
+P2#4267|FE_GENEROUS,LIFETIME_PRAISE,CAP_WILLPAY|"appreciate that the paid version is a one-time payment, and not a subscription. I will probably buy the paid version."
+P2#5975|FE_GENEROUS,PRICE_FAIR|"The free version is still very robust and useful, and the price for the full version is reasonable and worth it."

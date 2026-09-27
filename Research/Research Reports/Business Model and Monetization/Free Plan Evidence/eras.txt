@@ -1,0 +1,27 @@
+A1 Habit Tracker: free cap 3 → 5 → 6 (non-China)
+era                                reviews  mean  1star  cap/1k wgpay/1k  paid%
+cap 3 (2020–2022)                     3997  4.34   7.1%    10.0      4.3  2.23%
+cap 5 (2023–2024)                     8310  4.38   7.6%    18.1      6.7  3.68%
+cap 6 (2025–2026)                     2809  3.85  16.2%    15.3      3.9  6.37%
+
+A1 Habit Tracker, China only (review-for-membership offer)
+era                                reviews  mean  1star  cap/1k wgpay/1k  paid%
+cap 3 (2020–2022)                    33937  4.83   0.9%     7.7      0.4  0.00%
+cap 5 (2023–2024)                      870  4.66   4.7%     8.0      8.0  0.00%
+cap 6 (2025–2026)                      404  4.55   7.4%     7.4     14.9  0.00%
+
+A20 Habit: unlimited free → cap 3 + subscription (Feb 2021)
+era                                reviews  mean  1star  cap/1k wgpay/1k  paid%
+unlimited (2019–2020)                 2012  4.58   3.0%     8.4     13.9  2.19%
+cap 3 (2021-02 on)                    1532  1.78  65.4%    29.4     85.5 20.89%
+
+A3 Days Since: widgets free → paid (mid-2025)
+era                                reviews  mean  1star  cap/1k wgpay/1k  paid%
+widgets free (2024-01 – 2025-06)      3189  4.80   1.9%     0.3      6.0  0.75%
+widgets paid (2025-07 on)             2404  4.62   5.0%     0.8     49.1  1.25%
+
+A48 Strides: 10 → 7 → 3 free goals
+era                                reviews  mean  1star  cap/1k wgpay/1k  paid%
+10 free (to 2017)                     1830  4.07  14.5%     6.0      0.5  3.28%
+7 free (2018–2020)                    1422  4.48   6.0%    22.5      0.0  1.90%
+3 free (2021 on)                      1104  4.18  11.4%    44.4      2.7  3.44%

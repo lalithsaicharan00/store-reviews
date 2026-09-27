@@ -1,0 +1,70 @@
+P3#1755|WG_FREE_PRAISE|"Widgets aren't hidden behind a paywall like other habit apps!"
+P9#148|WG_PAID_OK,CONVERT_AFTER_USE,LIFETIME_PRAISE,X_PAYER|"Free version is great, and the upgrade is very reasonable. I bought lifetime."
+A65#229|NR|
+A10#38895|NR|
+A41#477|WG_PAID_OK|"Los widgets también me son muy útiles. Vale la pena la versión pro."
+A59#2299|WG_PAID_BUY|"위젯디자인이 마음에 들어서 유료결제하고 사용하고 있습니다"
+P12#130278|WG_PAID_OK|"Só poderia ter widget para facilitar, mas deve ter na conta Premium."
+A12#73|WG_BROKEN_PAID,X_PAYER|"Payed Money for it and can‘t habe Widgets"
+P61#1152|WG_FREE_PRAISE,CONVERT_AFTER_USE|"무료로도 괜찮아요 하지만 전 유료로 구매했어요"
+P9#734|WG_PAID_OK|"Big plus for widgets. Worth of extending to premium features as affordable"
+A3#5368|WG_PAID_RESENT|"Have to pay to have widget. So lame. All I wanted it for."
+A31#3517|NR|
+P126#139122|NR|
+A85#2050|NR|
+A33#3743|WG_PAID_BUY,WG_BROKEN_PAID,X_PAYER|"The today widget has disappeared. This was the entire reason I paid for the app."
+A1#2744|WG_FREE_PRAISE,FE_GENEROUS|"没有会员也可以满足日常使用的需求并且！！小组件可以放在桌面实时提醒自己！"
+A7#672|LIFETIME_PRAISE|"Well worth the one-time payment."
+P3#3929|WG_FREE_PRAISE,FE_GENEROUS|"Allows a lot of features without paying, a good number of widgets"
+P84#17799|WANT_LIFETIME|"I would have bought premium but I don't do subscriptions. Never ever. Period."
+A1#794|WG_REMOVED,WG_PAID_RESENT,CAP_LEFT|"The widget is now behind a lock icon with no new functionality. Uninstalled immediately"
+P4#75983|WG_BROKEN_PAID,X_PAYER|"Pagata la versione premium ma i reminder non funzionano e non ci sono widget"
+A86#1228|NR|
+P10#18285|NR|
+A36#273|WG_PAID_RESENT,WG_BASIC_FREE_ASK,CAP_LEFT|"A basic widget should be free. Come on!"
+P34#14|WG_PAID_RESENT,GATE_TOO_MUCH|"atleast do not make widgets premium or your analytics!!!"
+A18#410|WG_BROKEN_PAID,X_PAYER|"다 괜찮은것같아서 결제했는데"
+A57#409|WG_PAID_OK,X_PAYER|"유료 구매 완료했습니다"
+A52#11683|WANT_LIFETIME|"希望有永久会员"
+P69#363|NR|
+P123#1190|WG_PAID_OK|"Diseño decente y con widgets prácticos, aunque tienes que pagarlos."
+A34#717|NR|
+P55#159|WG_FREE_PRAISE,SW_TO_THIS|"best thing about u know is you give widget features free, i tried many apps but widget is paid only everywhere"
+P9#1715|NR|
+P111#5628|NR|
+A65#469|WG_WANT,X_PAYER|"i bought the premium and definitely has motivated me to keep this app"
+A18#146|WG_PAID_RESENT|"ウィジェットって有料なんですね 続いてる時はいいんですけど戻るときのハードルが…"
+P20#2262|NR|
+A41#645|WG_PAID_BUY,LIFETIME_PRAISE,X_PAYER|"They have a “Lifetime Purchase” which is reasonably priced (I hate subscriptions)."
+A18#1221|WG_BROKEN_PAID|"유료결제까지 했는데 앱 사용성이 너무 안 좋습니다"
+P3#2169|WG_FREE_PRAISE,FE_GENEROUS|"Props for not locking features behind a paywall!"
+P9#1574|WG_PAID_BUY,WG_BROKEN_PAID,X_PAYER|"He pagado la versión pro vitalicia para poder usar widgets"
+A33#1558|CAP_OK,N3|"無課金でも３つまで習慣が登録できるので、一日朝昼晩で一つずつ習慣を設定してチェックする形で使用していた"
+P123#770|WG_BROKEN_PAID,X_PAYER|"Paid full. Widget doesnt respond."
+A10#49591|NR|
+A10#31050|FE_GENEROUS,WG_FREE_PRAISE|"there is a subscription u have to buy but I haven’t and I still get notifications, the widget, task, coins and adventures"
+P42#0|WG_FREE_PRAISE|"I found it because I wanted to have a widget on my home screen"
+P3#3304|FE_GENEROUS,WG_FREE_PRAISE|"it was a relief to find after downloading so many apps that wanted subscription fees"
+A85#1434|NR|
+P105#265|CONVERT_AFTER_USE,SUPPORT_DEV,WG_WANT|"Have just bought Pro to support."
+P3#11003|WG_FREE_PRAISE|"1 reason: widgets."
+P5#3855|NR|
+P3#24298|FE_GENEROUS|"За такое приложение не жалко заплатить деньги, так оно бесплатное!"
+A13#11668|NR|
+P10#18491|NR|
+A86#1011|WG_WANT,CAP_COMPLAIN,N1,WANT3,CANT_EVALUATE|"Les urgen widget y les juro pago el premium."
+P41#439|WG_PAID_OK,WG_FREE_PRAISE|"Widget'lardan bazıları Premium ama geriye kalanlar fazlasıyla iş görüyor zaten."
+A33#3369|WG_BROKEN_PAID,X_PAYER|"I just paid for a yearly subscription."
+A33#1366|WG_BROKEN_PAID|"The widgets are completely useless."
+A10#63679|FE_GENEROUS,WG_FREE_PRAISE|"I hope to eventually get premium, but for now, the free version is great."
+A4#17858|NR|
+P126#170766|NR|
+P105#52|WG_WANT,CAP_WILLPAY|"Für die Features würde ich sogar überlegen mir die Pro Version zu kaufen."
+P100#169|WG_PAID_RESENT|"Widget é Premium"
+A90#508|NR|
+P123#789|WG_PAID_OK|"Thinking of availing lifetime subscription. Awesome widgets"
+P98#534|WG_BROKEN_PAID|"upgraded to Pro but the widget still doesn't work"
+P44#262|WG_PAID_OK,WANT_TRIAL|"I hope they do have a free trial to see (the widget) if this is the one for me before going pro"
+A59#10114|CONVERT_AFTER_USE,FE_GENEROUS,X_PAYER|"Можно попробовать весь функционал в бесплатной версии. Покупать не навязывают"
+A86#45|WG_WANT,PRICE_FAIR|"Bit pricey to upgrade - but worth it."
+A28#178|NR|

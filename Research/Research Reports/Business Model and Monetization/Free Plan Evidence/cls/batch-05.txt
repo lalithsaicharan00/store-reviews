@@ -1,0 +1,70 @@
+P105#548|CAP_SURPRISE,N1|"I seem to only be able to track one habit only"
+A86#902|CAP_COMPLAIN,N1|"free version is limited to track only one habit"
+A24#42947|CAP_CHOSE_GENEROUS|"not like those other apps where you can only add 3 habits without paying an additional $10"
+A25#882|CAP_COMPLAIN,N3|"can only track 3 habits without premium? wow, 1 star"
+A55#1300|CAP_CHOSE_GENEROUS,CAP_OK,N5|"The only app I’ve found that allows you to track five habits for free."
+P50#45|CAP_STATED,N5|"You can only have 5 habits at a time"
+P105#968|CAP_LEFT,CANT_EVALUATE,N3|"Hardly enough to actually truly test drive the app before paying."
+P12#56127|CAP_OK,N3,SUB_PRICE|"the free version is quite useful altogether"
+P70#743|CAP_REFUSE,N3|"the price is just too much in my opinion"
+A62#8|CAP_COMPLAIN,N3|"You can only have 3 habits at a time this app is useless"
+A48#321|CAP_CHANGED,N3,SUB_PRICE|"reducing their free trackers from 7 to 3"
+A48#369|CAP_OK,N7|"Bummed out that you’re only limited to 7 habits for the free version, but I understand that the money helps support the developers"
+A41#125|CAP_LEFT,N3|"No point even keeping app, deleted it immediately."
+A26#2329|CAP_LEFT,N3|"Пришлось удалить"
+A46#1879|CAP_COMPLAIN,N3|"minus 1 star for me because it&#39;s kind of upsetting that you can only add 3 habits before having to pay"
+A70#1716|CAP_OK,N1,DESIGN_CAP|"目標を1つしか設定出来ないという所がポイントですね。"
+P55#141|CAP_COMPLAIN,CANT_EVALUATE,N2|"It isn't even usable enough for a week to justify the purchase."
+A53#198|NR|
+P18#785|CAP_COMPLAIN,N8,WANT12|"pls increase the number of recording habits from 8 to 12"
+P108#13|CAP_COMPLAIN,N2|"it only allows two habits for the free version, that's too little"
+A20#241|WG_PAID_BUY,WG_BROKEN_PAID,X_PAYER|"mainly bought premium for widget option AND IT DOES NOT WORKING!!!"
+P24#1459|WG_BROKEN_PAID,X_PAYER|"Bought premium but unable to use home screen widgets"
+A52#2340|WG_BROKEN_PAID,X_PAYER|"我买了永久，小组件用不了"
+P24#8576|WG_BROKEN_PAID,X_PAYER|"The widgets don't work on the app after I paid for it."
+P2#8254|WG_PAID_BUY,PRICE_FAIR|"I wanted to use the app widget properly so i caved and spent 300 rupees to buy the premium version."
+P2#2134|NR|
+A1#35579|WG_PAID_OK,WANT_TRIAL|"希望可以体验下会员的功能，再决定要不要买永久会员"
+P2#25555|WG_PAID_RESENT,WG_BASIC_FREE_ASK|"E não limitar os widgets para quem é premium."
+P24#24029|WG_BROKEN_PAID,X_PAYER|"After updating widget doesnt work. Black screen. I have premium version."
+A20#3140|WG_PAID_BUY,WG_BROKEN_PAID,X_PAYER|"I bought premium for the widget and it doesn’t work"
+P24#6892|NR|
+A20#3354|WG_PAID_BUY,WG_BROKEN_PAID,X_PAYER|"I paid to upgrade solely for the use of a widget and no widget is available."
+P55#192|WG_PAID_RESENT|"widget pago na versão pro."
+A31#2999|WG_PAID_BUY,WG_BROKEN_PAID,X_PAYER|"Paid for this app mostly for the widget function."
+P24#2697|WG_PAID_BUY,WG_BROKEN_PAID|"I was surprised to learn I needed to pay a subscription for widget control, however I was okay with that since it offered what I was looking for. Sadly the widget barely works."
+P37#79|NR|
+A1#46877|NR|
+A10#48|NR|
+P24#9339|WG_BASIC_FREE_ASK|"maybe add some non-premium widgets"
+A20#1665|WG_PAID_BUY,WG_BROKEN_PAID|"bought premium to get the widget, but i didnt get it"
+A41#796|NR|
+A1#45580|WG_WANT,X_PAYER|"Happily paid for the premium version in-app.  When can iPhone users expect widgets?"
+P4#94822|NR|
+A20#236|WG_PAID_BUY,WG_BROKEN_PAID|"Upgraded to premium to be able to add a widget, not able to create a widget under current iOS."
+A3#6313|WG_REMOVED,WG_PAID_RESENT|"Widgets were free but now it’s behind a paywall…truly despicable."
+A55#1867|WG_WANT|"But for $3.99 we should definitely get a Widget to quickly mark our habits while phone is still locked!!!"
+A10#56939|NR|
+A20#1897|WG_BROKEN_PAID,X_PAYER|"Купил премиум. Виджет на iOS не работает."
+A26#3450|NR|
+P46#57|CAP_CHOSE_GENEROUS,WG_FREE_PRAISE|"la mayoría de apps de este estilo piden ser premium para poner más de 2 rachas pero esta app NO"
+A3#2110|WG_REMOVED,WG_PAID_RESENT|"That’s why I’m really disappointed to see widgets moved behind a paywall, especially one that isn’t particularly affordable."
+P2#9684|WG_PAID_BUY,WG_BROKEN_PAID,X_PAYER|"I bought the app just for the widgets."
+A3#4365|WG_REMOVED,WG_PAID_RESENT|"The widgets stopped working after the recent update - forcing me to pay for it!"
+P122#8153|NR|
+P61#682|NR|
+P44#287|WG_PAID_RESENT|"Can't get even a single widget without paying money"
+A3#5631|WG_PAID_OK|"Just another app where you can use the base model and then can pay for things like widgets."
+P123#928|WG_PAID_OK,LIFETIME_PRAISE,FE_GENEROUS|"This app is pretty good without subscription but if you want subscription you can pay only 200 rupee and enjoy it for LIFETIME."
+P2#21989|WG_PAID_RESENT|"Davvero per spuntare una casella da widget devo essere premium? È solo un tap sullo schermo."
+P130#403|NR|
+P38#1720|NR|
+A7#729|WG_PAID_BUY,WG_BROKEN_PAID,X_PAYER|"I bought the lifetime subscription, but the widget is not unlocking."
+P92#20|WG_PAID_RESENT,CANT_EVALUATE|"I have to first subscribe to even check out the widget format... no thanks."
+A18#1232|NR|
+A7#576|WG_PAID_BUY|"I don’t usually buy the “premium” version of apps, but the widgets alone are worth the money."
+A1#520|NR|
+P9#1169|WG_PAID_RESENT|"tengo que pagar para usar el widget, una pena"
+P4#1714|NR|
+P2#3702|NR|
+A3#6260|WG_REMOVED,WG_PAID_RESENT|"They turned the main functionality of this app into a paid feature."
