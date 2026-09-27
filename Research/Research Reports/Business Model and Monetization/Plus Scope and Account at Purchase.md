@@ -32,7 +32,7 @@
 | **iPad = Plus** | **Agree, with one change**: let the free app *open* on iPad as a standalone single device, and make **using iPad together with the phone** (sync) the Plus feature | Users who pay for iPad expect it; nobody complains iPad costs money. The failure is "I paid and it doesn't reach my iPad" (58 reviews). iPad-only users would otherwise hit a wall on first launch (§4) |
 | **Watch = Plus** | **Agree** | Payers ask for Watch support and some buy for it; only 1 in 88 objects to paying. The real risk is a broken Watch app (27 reviews, 2.22★) (§5) |
 | **5 free habits** | **Workable, but pick once and never change it** | Caps of 1–3 are hated. 5–6 is tolerated and converts engaged users. Changing a cap later is what enrages people (§6) |
-| **Account at purchase** | **Sign-in is the main button on the purchase screen; sync and backup require it. A visible "Buy for this device only" link stays** (§7) | Apple rejects apps that require registration before buying a non-account purchase (§7). Plus restores from the store on the same platform anyway. An account adds cross-platform and backup |
+| **Account at purchase** | **Buy first, then "one last step: turn on sync and backup" (Continue with Apple / Google), with a visible "Not now". Sync and backup require the account** (§7) | Apple rejects apps that require registration before buying a non-account purchase (§7). Plus restores from the store on the same platform anyway. An account adds cross-platform and backup |
 
 ---
 
@@ -180,7 +180,7 @@ The evidence is from the ledger ([C007](<../Feature Ledger.md#c007>), Contested,
 
 ---
 
-## 7. Account at purchase: sign-in is part of buying, with an honest "this phone only" option
+## 7. Account at purchase: buy first, then one tap to turn on sync
 
 *Revised 27 Sep 2026 after the user's follow-up: multi-device, sync and backup are why people buy, so the purchase flow should make signing in the normal path.*
 
@@ -192,41 +192,42 @@ The evidence is from the ledger ([C007](<../Feature Ledger.md#c007>), Contested,
 
 **So the rule is:**
 - sync, backup and multi-device **require** an account (allowed, and technically true);
-- the purchase itself **offers** the account as the normal path, and never hides the alternative.
+- the purchase itself never waits on an account; signing in is the step right after paying, and it can be skipped.
 
 **Users show why this matters.** Of the 58 "I paid but it's not on my other device" reviews (§4), many are people who bought without any account and then had no way to connect:
 - “Tem alguma forma de fazer login?? Assinei o Premium no celular e não consigo usar no meu Tablet.” — is there any way to log in? I bought Premium on my phone and can't use it on my tablet (`P4#96816`);
 - “Adquiri o premium e não posso utilizar o aplicativo pelo tablet pois não existe área de login” — I bought premium and can't use it on the tablet because there is no login (`A4#1879`).
 
-**The purchase screen** (first principles: say plainly what each choice gets, before money changes hands):
+**The order: buy first, then set up sync (revised 27 Sep 2026, the user's call).**
 
-> **Plus · one-time, yours forever**
-> ✓ Unlimited habits · ✓ Apple Watch · ✓ Themes and deeper stats
-> ✓ **Sync with your iPad and other phones, iPhone or Android** ¹
-> ✓ **Automatic backup: new phone, everything's there** ¹
->
-> **[ Continue with Apple ]**  ← main button: signs in, then opens the purchase sheet
-> **[ Continue with Google ]**
->
-> ¹ Sync and backup use your free account. *Buy for this device only* ›
+*First principles:* the account system is a point of failure. Users show 111 reviews of sign-up or login breaking (stuck on the screen, provider errors, loops; [Backlog 4 §2.2](<../Data, Sync and Accounts/Sign-in Prompts and the Backup Guarantee — Backlog 4.md>)). If sign-in comes first, any of those failures blocks the sale. If it comes second, it only delays sync. Buying first is also the cleanest reading of Apple 5.1.1(v): nothing stands between the user and the purchase.
 
-- **"Buy for this device only"** is a visible text link, not hidden or greyed out. Apple treats hidden or misleading choices as a rejection risk, and users treat them as a trick.
-- **If they choose it,** the "Plus is yours" screen says what they have and what they don't:
-  - **Working now:** unlimited habits, Watch, themes.
-  - **Needs sign-in:** sync to iPad and other phones, backup.
-  - One button: **[Turn on sync and backup]**.
-- **After that, sign-in comes only from the features.**
-  - On the iPad or a second phone, Plus is recognised from the store automatically, and the screen says "Sign in to bring your habits here."
-  - In Settings → Backup: "Backed up only on this phone · Turn on backup".
-  - There are no timed reminders (Backlog 4).
-- **Signing in never loses anything.** Habits already on the phone upload as the first sync (05 §5).
+1. **Purchase screen:** "Plus · one-time, yours forever". It lists unlimited habits, Watch, themes, **sync with your iPad and other phones, iPhone or Android**, and **automatic backup**, with a footnote: "Sync and backup use a free account; you'll set it up in one tap after buying." Then **[Get Plus]** opens the store sheet. No sign-in here.
+2. **Straight after payment, as the last step of the same flow**, not a separate prompt:
+   > **Plus is yours 🎉**
+   > **One last step: turn on sync and backup**
+   > Your habits on your iPad and any phone, and safe if you lose this one.
+   > **[ Continue with Apple ]**  **[ Continue with Google ]**
+   > *Not now: use Plus on this device only* ›
+3. **"Not now" is a visible link and is final.**
+   - Everything that doesn't need an account works at once: unlimited habits, Watch, themes.
+   - Apple does not allow making the account compulsory for these.
+   - Sync and backup stay off, and say so where they live.
+4. **Interrupted** (the app was closed between paying and signing in): the "one last step" card appears once on the next launch. It is the unfinished purchase flow, not a reminder. After that, the rules in the next point apply.
+5. **After that, only the features ask:**
+   - on the iPad or a second phone, Plus is recognised from the store and the screen says "Sign in to bring your habits here";
+   - Settings → Backup shows "Backed up only on this phone · Turn on backup".
+6. **Signing in never loses anything:**
+   - the purchase is sent to the server and linked to the account (02);
+   - the phone's habits upload as the first sync (05 §5);
+   - if the account already holds data from another phone, the merge preview applies (01 §3.4).
+
+**Plus Family** uses the same order: pay, then sign in. Inviting people needs the account, so the "one last step" there reads "Sign in to invite your family", with no "device only" option. A family plan is account-based, which Apple allows.
 
 **Expected result (first principles):**
-- Most buyers sign in, because the main button does it in the same tap and the benefits are the ones they're paying for.
-- The few who skip still get what they paid for on that device. When they later want the iPad, the app tells them exactly how.
-- That is the story the 58 reviews were missing.
-
-**Plus Family** requires an account (it is account-based). Apple allows this.
+- Nothing slows the payment.
+- Most buyers take the one-tap step, because it is framed as finishing what they paid for.
+- The few who skip still have Plus on that device, and the app tells them exactly how to get the rest.
 
 ---
 
