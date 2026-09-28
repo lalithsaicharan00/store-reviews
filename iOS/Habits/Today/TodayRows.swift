@@ -203,9 +203,12 @@ struct QuitRow: View {
     }
 }
 
-/// The first row of every card: name, Now, folded icons, status (or Start) and the fold chevron.
+/// The first row of every card: name, Now, folded icons, then "N left" (or ✓), Start and the fold chevron.
 ///
-/// Space goes, in order of importance: Start and the status never shrink. Folded, the name shows at
+/// "N left" always shows, open or folded: it's what people open the app to see. Start: "▶ Start" when
+/// open, ▶ alone when folded, primary in the Now section; a folded section that isn't Now has no ▶, so
+/// its icons get the room (research: "Section Header — Start Button, Left Count and Icons").
+/// Space goes, in order of importance: the status and Start never shrink. Folded, the name shows at
 /// most 8 letters and the icons take the rest; open, the name gets whatever is left and ends in "…".
 struct PartHeader: View {
     let title: String
@@ -221,11 +224,11 @@ struct PartHeader: View {
     @State private var room: CGFloat = 0
     @State private var titleWidth: CGFloat = 0
 
-    /// At least this much space between the icons and "2 left" / "All done".
-    static let statusGap: CGFloat = 24
+    /// At least this much space between the icons and "2 left" / ✓.
+    static let statusGap: CGFloat = 12
 
-    /// Starting a routine is independent of disclosure and the preferred time window.
-    private var showsStart: Bool { (left ?? 0) > 0 && onStart != nil }
+    /// Start shows while habits are left, today: in any open section, and folded only in the Now section.
+    private var showsStart: Bool { (left ?? 0) > 0 && onStart != nil && (isOpen || isNow) }
 
     private var iconCount: Int? {
         guard !isOpen, room > 0 else { return nil }
@@ -278,39 +281,29 @@ struct PartHeader: View {
     }
 
     private var controls: some View {
-            HStack(spacing: 4) {
-                if showsStart, let onStart {
-                    Button(action: onStart) {
-                        Image(systemName: "play.fill")
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundStyle(isNow ? Color.black.opacity(0.82) : Color.ink)
-                            .frame(width: 34, height: 34)
-                            .background(Circle().fill(isNow ? Color.white : Color(.tertiarySystemFill)))
-                            .overlay(Circle().strokeBorder(Color.ink.opacity(isNow ? 0.18 : 0), lineWidth: 1))
-                            .shadow(color: .black.opacity(isNow ? 0.1 : 0), radius: 2, y: 1)
-                            .frame(width: 44, height: 44)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("Start \(title) routine")
-                    .accessibilityHint("Opens unfinished habits, one at a time")
-                } else if left == 0 {
-                    HStack(spacing: 4) { Image(systemName: "checkmark"); Text("All done") }
-                        .font(.subheadline.weight(.medium)).foregroundStyle(.secondary)
+            HStack(spacing: 8) {
+                if left == 0 {
+                    // Done: a ✓ in about 20 pt, where "✓ All done" took about 78. VoiceOver says "All done".
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 18))
+                        .foregroundStyle(.secondary)
                         .accessibilityHidden(true)
                 } else if let status {
-                    Text(status).font(.subheadline).foregroundStyle(.secondary).accessibilityHidden(true)
+                    Text(status).font(.subheadline).monospacedDigit().foregroundStyle(.secondary).accessibilityHidden(true)
+                }
+                if showsStart, let onStart {
+                    StartButton(compact: !isOpen, primary: isNow, title: title, action: onStart)
                 }
                 Button(action: onToggle) {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundStyle(.secondary)
                         .rotationEffect(.degrees(isOpen ? 90 : 0))
-                        .frame(width: 44, height: 44)
+                        .frame(width: 36, height: 44)
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-                .padding(.trailing, -12)
+                .padding(.trailing, -8)
                 .accessibilityLabel("\(isOpen ? "Fold" : "Open") \(title)")
             }
             .lineLimit(1)
@@ -318,6 +311,34 @@ struct PartHeader: View {
             .fixedSize()
     }
 
+}
+
+/// Starts a section's routine. Open: "▶ Start"; folded: ▶ alone. Primary (filled ink) in the Now section,
+/// grey elsewhere. Always a 44 pt tall target.
+struct StartButton: View {
+    let compact: Bool
+    let primary: Bool
+    let title: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 6) {
+                Image(systemName: "play.fill").font(.system(size: 12, weight: .bold))
+                if !compact { Text("Start").font(.subheadline.weight(.semibold)) }
+            }
+            .foregroundStyle(primary ? Color.onInk : Color.ink)
+            .frame(width: compact ? 34 : nil, height: 34)
+            .padding(.horizontal, compact ? 0 : 14)
+            .background(Capsule().fill(primary ? Color.ink : Color(.tertiarySystemFill)))
+            .frame(minWidth: 44, minHeight: 44)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Start \(title) routine")
+        .accessibilityHint("Opens unfinished habits, one at a time")
+        .accessibilityIdentifier("start-\(title)")
+    }
 }
 
 struct FoldedIcons: View {

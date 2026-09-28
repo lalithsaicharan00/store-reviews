@@ -27,6 +27,8 @@ External checks, accessed 27 September 2026:
 - [Apple disclosure controls](https://developer.apple.com/design/human-interface-guidelines/disclosure-controls): frequent actions should remain visible near the top of the disclosure hierarchy.
 - [Routinery's own description](https://www.routinery.app/blog/best-app-daily-rituals): sequential execution with separate morning/evening rituals. Product documentation corroborates the interaction concept; marketing claims are not treated as user evidence.
 
+> **Superseded 28 Sep:** see [Section Header — Start Button, Left Count and Icons](<../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/Section Header — Start Button, Left Count and Icons.md>). "N left" always shows; ▶ Start in open sections; a folded section shows ▶ only if it's Now; done is a ✓.
+
 **Reasoned from first principles:** show play on both open and collapsed unfinished sections today. Folding means hiding details; it should not disable the section's principal action or add a prerequisite tap. Now indicates a preferred time, not permission to act. This is an inference, not an experimentally established preference for collapsed-card buttons. Separate 44-point disclosure and play targets reduce accidental actions; full section names remain in accessibility labels.
 
 ## Implementation
