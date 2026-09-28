@@ -2,6 +2,8 @@
 
 The iPhone app (SwiftUI, native components only). Apple Watch and widget extensions will live here too.
 
+**Before changing a screen, read [Design Rules — Don't Regress](<Design Rules — Don't Regress.md>).**
+
 - **Project:** `Habits.xcodeproj` (targets `Habits` and `HabitsUITests`). Source folders are synchronized, so new files need no project edits. Work order: [Build Plan.md](<Build Plan.md>).
 - **Shared core:** `../Core` (Kotlin Multiplatform), built by the target's "Build Kotlin Core" phase (`embedAndSignAppleFrameworkForXcode`; uses Android Studio's JDK if `JAVA_HOME` is unset). It owns local storage today: SQLite through Room 3 ([decision](<../Architecture/Local Database Decision.md>)). The day, streak and progress rules still live in `Habits/Model/HabitStore.swift` and move into Core next ([decision](<../Architecture/Shared Core Decision.md>)).
 - **Data on the phone:** `Application Support/Data/habits.db`; local copies in `Application Support/Backups/` (a daily copy, and one before every schema upgrade).

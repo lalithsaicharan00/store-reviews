@@ -42,4 +42,4 @@ External checks, accessed 27 September 2026:
 
 ## Verification
 
-Pending simulator test results. See `Research/Temp/routine-calendar/` for logs, result bundles and screenshots.
+Superseded by the 28 Sep full run on the iPhone 16: every UI test passes (see `iOS/Design Rules — Don't Regress.md`, "Test status").
