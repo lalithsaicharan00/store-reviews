@@ -6,7 +6,7 @@ Written by Claude (Claude Code), 28 September 2026. **Read this before changing 
 
 | Rule | What went wrong |
 |---|---|
-| **Research first, then build; write down every point the user makes before starting** (a checklist file in `iOS/`) | Points were dropped between turns |
+| **Research first, then build; write down every point the user makes before starting** (a checklist file in `iOS/Docs/Checklists/`) | Points were dropped between turns |
 | **Reports in plain English**, opening with "Written by …, date", and added to `Research/Research Reports/README.md` | A draft was written in mixed Telugu and English, with no index entry |
 | **Never type a review ID from memory.** Copy it from a hit file and run `Research/Temp/goals/verify_ids.py <report>` before finishing | IDs were invented or truncated twice |
 | **Never copy a competitor because it does something.** Say "users show…" (reviews) or "reasoned from first principles" | Decisions justified as "Habitify does X" |
@@ -50,6 +50,8 @@ Sources: [Goals — Periods, Entry and What + Adds](<../Research/Research Report
 - **Units** are grouped by what people track (Drinking, Walking and running, Reading and writing, Exercise, Everyday, Money), with metric or imperial first by region. Making your own unit is a green ⊕ **Create Your Own Unit** row, the same pattern as Add Reminder.
 
 ## Schedule and Goal: one success clock
+
+> **Round 2 proposal (28 Sep 2026, not built yet):** [Schedule and Goal — Round 2, Making It Intuitive](<../Research/Research Reports/Habit Creation/Schedule and Goal — Round 2, Making It Intuitive.md>) replaces the confirmation alerts, removes the Goal period from Check it off, and renames the choices. Ask the user before building either version.
 
 Source: [Schedule and Goal — One Coherent System](<../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>), supplied by the user and archived 28 September 2026. This supersedes conflicting earlier Repeat/Goal guidance.
 
@@ -122,9 +124,9 @@ Source: [Back to Today — When and Where](<../Research/Research Reports/Home Sc
 
 ## Where the rest is
 
-- Everything decided about creating and editing a habit: [New Habit Goal and Time of Day.md](<New Habit Goal and Time of Day.md>).
-- Today's other rules: [Today Improvements.md](<Today Improvements.md>) (partly superseded; see its notes).
-- User checklists behind each round: `iOS/Goal and Choice Screens — Round 2 Checklist.md`, `iOS/Section Header — Start and Left Checklist.md`.
+- Everything decided about creating and editing a habit: [New Habit Goal and Time of Day.md](<Docs/Specs/New Habit Goal and Time of Day.md>).
+- Today's other rules: [Today Improvements.md](<Docs/Specs/Today Improvements.md>) (partly superseded; see its notes).
+- User checklists behind each round: `iOS/Docs/Checklists/Goal and Choice Screens — Round 2 Checklist.md`, `iOS/Docs/Checklists/Section Header — Start and Left Checklist.md`.
 
 ## Tests retired on 28 Sep, and why (don't bring them back)
 

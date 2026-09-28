@@ -1,0 +1,40 @@
+reviews scanned (English or App/Native any language): 922405
+   452  N times a week
+   245  N days a week
+    42  N days out of 7 / N of 7 days
+    31  N times a month
+     6  N days a month
+    13  N times a year
+   251  once a week
+    99  twice a week
+    20  one day a week
+   560  a week (after number)
+   130  per week (after number)
+     5  each week (after number)
+   231  every other day
+    74  every 2/two days
+    12  every second day
+    63  every other week
+   120  every 2/two weeks
+   110  biweekly
+    51  fortnight(ly)
+   365  specific days
+   294  certain days
+    42  set days
+    28  particular days
+     3  chosen days
+    10  selected days
+   150  weekdays
+    72  monday to/through friday
+   204  weekends
+   160  any day(s)
+     5  any N days
+  1533  daily goal
+   208  weekly goal
+   150  monthly goal
+    61  yearly/annual goal
+  9998  schedule (word)
+   723  frequency (word)
+  3279  repeat (word)
+  1527  recurr* (word)
+   420  how often
