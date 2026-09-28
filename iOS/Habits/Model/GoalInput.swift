@@ -1,0 +1,140 @@
+import Foundation
+
+/// Shared validation for goal entry and actual progress; never silently rounds a user's input.
+enum GoalNumber {
+    // A representation safety bound, not a product goal cap (keeps integer formatting safe).
+    static let maximum = 9_000_000_000_000.0
+
+    static func parse(_ text: String, decimals: Int = 2, locale: Locale = .current) -> Double? {
+        let raw = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let normalized = raw.replacingOccurrences(of: locale.decimalSeparator ?? ".", with: ".")
+        let pattern = decimals == 0 ? #"^[0-9]+$"# : "^[0-9]+(?:\\.[0-9]{0,\(decimals)})?$"
+        guard normalized.range(of: pattern, options: .regularExpression) != nil,
+              let value = Double(normalized), value.isFinite, value <= maximum else { return nil }
+        return value
+    }
+
+    static func text(_ value: Double) -> String {
+        value.formatted(.number.grouping(.never).precision(.fractionLength(0...2)))
+    }
+}
+
+/// The period a goal is for. Each one stands alone: a week, month or year goal never needs a daily
+/// goal underneath it ("Goals — Periods, Entry and What + Adds", 28 Sep).
+enum GoalPeriod: String, CaseIterable, Identifiable {
+    case day = "Day", week = "Week", month = "Month", year = "Year"
+    var id: Self { self }
+    var suffix: String { "per " + rawValue.lowercased() }
+    var noun: String { rawValue.lowercased() }
+
+    /// Longest time that fits in one period, so a time goal can't ask for 30 hours a day.
+    var maxMinutes: Double {
+        switch self {
+        case .day: 24 * 60
+        case .week: 7 * 24 * 60
+        case .month: 31 * 24 * 60
+        case .year: 366 * 24 * 60
+        }
+    }
+
+    func frequency(count: Int = 1, daily: Frequency = .daily) -> Frequency {
+        switch self {
+        case .day: daily
+        case .week: .perWeek(count)
+        case .month: .perMonth(count)
+        case .year: .perYear(count)
+        }
+    }
+}
+
+/// What the Goal screen edits, as typed. Check it off starts at "1 time per day"; Count it starts empty
+/// so the number and unit are the user's own; Time it starts at 20 minutes.
+struct GoalDraft {
+    var period: GoalPeriod = .day
+    var amount = "1"
+    var unit = "times"
+    var hours = "0"
+    var minutes = "20"
+
+    static func initial(for type: ItemType) -> GoalDraft {
+        type == .amount ? GoalDraft(amount: "", unit: "") : GoalDraft()
+    }
+
+    var trimmedUnit: String { TextLimit.clean(unit, TextLimit.unit) }
+
+    var duration: Double? { duration(max: GoalNumber.maximum) }
+
+    func duration(max: Double) -> Double? {
+        guard let h = GoalNumber.parse(hours, decimals: 0),
+              let m = GoalNumber.parse(minutes, decimals: 0), m < 60,
+              h * 60 + m > 0, h * 60 + m <= max else { return nil }
+        return h * 60 + m
+    }
+
+    /// Whole times for a tick; up to 2 decimal places for anything counted.
+    func wholeOnly(check: Bool) -> Bool { check && trimmedUnit == "times" }
+
+    func amountValue(check: Bool) -> Double? {
+        guard let n = GoalNumber.parse(amount, decimals: wholeOnly(check: check) ? 0 : 2), n > 0 else { return nil }
+        return n
+    }
+
+    func value(timed: Bool, check: Bool) -> Double? {
+        if timed { return duration(max: period.maxMinutes) }
+        guard let n = amountValue(check: check), !trimmedUnit.isEmpty else { return nil }
+        return n
+    }
+
+    /// "1 time per day", "8 glasses per day", "3 h per week".
+    func summary(timed: Bool, check: Bool) -> String? {
+        guard let value = value(timed: timed, check: check) else { return nil }
+        if timed { return "\(Format.minutes(value)) \(period.suffix)" }
+        let unit = trimmedUnit == "times" && value == 1 ? "time" : trimmedUnit
+        return "\(Format.amount(value)) \(unit) \(period.suffix)"
+    }
+
+    func apply(to habit: inout Habit, timed: Bool, check: Bool) {
+        habit.goal = value(timed: timed, check: check) ?? 1
+        habit.kind = timed ? .duration : wholeOnly(check: check) ? .check : .amount(unit: trimmedUnit, increment: 1)
+        habit.frequency = period.frequency(count: habit.kind == .check ? Int(habit.goal) : 1, daily: habit.frequency)
+    }
+}
+
+/// What one tap on + adds, decided from the goal so nobody is asked "Each tap adds" (research:
+/// "Goals — Periods, Entry and What + Adds" §3). + adds 1 when one at a time is how it happens;
+/// otherwise + asks how much, with the number keyboard.
+enum CountLogging {
+    /// Measured amounts (distance, volume, weight, money): real entries are rarely whole ones.
+    static let measured: Set<String> = ["km", "miles", "mi", "m", "ml", "oz", "litres", "liters", "l", "cl",
+                                        "kg", "lbs", "lb", "g", "grams", "$", "€", "£", "₹", "calories", "kcal"]
+    /// Things that happen one at a time, however big the goal: 12 books a year is still one book per log.
+    static let oneAtATime: Set<String> = ["times", "glasses", "cups", "bottles", "books", "chapters", "meals",
+                                          "servings", "workouts", "sessions", "classes", "lessons", "pills"]
+    /// Up to this goal, tapping + one by one is quicker than typing.
+    static let tapLimit = 10.0
+
+    static func quickIncrement(goal: Double, unit: String) -> Double? {
+        let unit = unit.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        guard !measured.contains(unit), goal.rounded() == goal, goal >= 1 else { return nil }
+        return goal <= tapLimit || oneAtATime.contains(unit) ? 1 : nil
+    }
+
+    /// The Goal screen's footer: exactly what + will do on Today, before the habit is saved.
+    static func explanation(goal: Double?, unit: String) -> String {
+        guard let goal else { return "" }
+        let unit = unit.trimmingCharacters(in: .whitespacesAndNewlines)
+        if quickIncrement(goal: goal, unit: unit) != nil {
+            return "On Today, each tap on + adds 1. To log more at once, touch and hold the habit."
+        }
+        return "On Today, + asks how much you did, with the number keyboard. It adds to what you've already logged."
+    }
+}
+
+extension Habit {
+    /// Older saved increments remain readable. Only cut-down habits still use that setting.
+    var quickIncrement: Double? {
+        guard case .amount(let unit, let increment) = kind else { return nil }
+        if atMost { return increment }
+        return CountLogging.quickIncrement(goal: goal, unit: unit)
+    }
+}

@@ -10,13 +10,13 @@ Written by Claude (Claude Code), 27 September 2026, from the user's decisions th
 
 | # | Decision |
 |---|---|
-| 1 | Creating starts with two questions, one per screen: **What do you want to create?** (a good habit, a bad habit, a task), then **How do you want to track it?** or **What do you want to do?**. Then one form. Everything is pushed; no icons |
-| 2 | Check it off, Count an amount and Time it are **one "New habit"** with a **Goal row**: a number and a unit, per day |
+| 1 | Creating starts with two questions, one per screen: **What do you want to do?** (Build or maintain, Quit or cut down, Add a task), then **How do you want to track it?** or **What do you want to do?**. Then one form. Everything is pushed; no icons. Copy: §1 and the Habit Flow Copy report |
+| 2 | Check it off, Track an amount and Time it are **one "New habit"** with a **Goal row**: an amount, a unit and an independent Day / Week / Month / Year period |
 | 3 | **Times** is a tick at any number (1 time = plain tick, no "0/1"); **any other unit** is a counter; **minutes** is timed |
 | 4 | The time unit is called **minutes** (with a timer), set with an hours-and-minutes wheel, shown as "1 h 25 min". No separate hours unit |
 | 5 | **Numbers:** whole stays whole; decimals up to 2 places; totals follow the same rule; **1,000 and up uses "k"**; time never uses decimals or "k" |
 | 6 | **"Time of Day"** replaces "Day Section" everywhere. A menu: parts of the day, then **"or"**, then **Anytime** (GOV.UK exclusive-checkbox pattern). Anytime is the default |
-| 7 | The **daily goal and the time of day are independent**: the goal is how much; the time of day is only where it's displayed. Picking parts never changes the goal. Parts are **always multi-select**; only Anytime is single. Several parts show **the same row in each, with one shared progress**, for every type (no per-part ticks, no splitting) |
+| 7 | The **goal and the time of day are independent**: the goal is how much; the time of day is only where it's displayed. Picking parts never changes the goal. Parts are **always multi-select**; only Anytime is single. Several parts show **the same row in each, with one shared progress**, for every type (no per-part ticks, no splitting) |
 | 8 | **Reminders** are separate: Remind Me is off by default and never moves the habit. Each reminder stays inside its time of day. Tasks have no progress or stats |
 | 9 | **Editing** shows only what can change (as HabitNow does). **How it's tracked** (Done or not / A number / Time / Checklist, and Build / Break / Once) **is fixed and not shown.** Changes apply from today; past days keep their results; if the kind of period changes, the streak restarts |
 | 10 | **Progress:** did-I-do-it stats run straight through changes; how-much stats start at the change, with a marker. Nothing is ever invented |
@@ -38,38 +38,37 @@ Written by Claude (Claude Code), 27 September 2026, from the user's decisions th
 - There are no sheets or pop-ups inside the flow. The only dialog is "Discard this?" on Cancel.
 - **No icons** on the choice screens: the words carry them (the user's rule: no coloured icons).
 
-**Wording** comes from the reviews (246,230 English habit-app reviews, `Temp/timeofday/plain_words.py`; Reddit was blocked, so it isn't used):
-- "good habit" 4,389 · "new habit" 3,816 · "build a habit" 2,471
-- "bad habit" 2,411 · "quit" 1,455 · "break a habit" 481
-- "task" 19,440 · "to-do" 3,568
-- "check off" 2,302 · "tick off" 536 · "yes or no" 358
-- "count" 2,491 · "how many" 1,613 · "how much" 1,869
-- "minutes" 2,480 · "timer" 1,914 · "how long" 795
-- "checklist" 1,317
+**Copy (replaced 28 Sep):** from [Habit Flow Copy — Deep Research Report](<../Research/Research Reports/Habit Creation/Habit Flow Copy — Deep Research Report.md>). **Read its opening "mistakes" table before changing any copy here.** The first copy (27 Sep) picked the most frequent review phrases ("good habit" 4,389, "bad habit" 2,411). That produced "What do you want to *create*? → A *bad* habit", and examples that tied an activity to one type. Frequency alone isn't a reason to use a phrase as a label.
 
-**Screen 1: "What do you want to create?"**
+Rules:
+- Screen 1 names the user's **intent** as a verb, with no good/bad and no examples.
+- Examples name **what gets recorded**, never an activity as if it belonged to one type: a walk or reading can be ticked, counted or timed.
 
-| Row | Line under it | Example |
-|---|---|---|
-| **A good habit** | Something you want to do regularly. | Read every day |
-| **A bad habit** | Something you want to stop, or do less. | Smoking, coffee |
-| **A task** | Something to get done, once or on repeat. Tasks don't have progress or stats. | Pay the rent |
+**Screen 1: "What do you want to do?"** (no examples)
 
-**Screen 2 after a good habit: "How do you want to track it?"**
+| Row | Line under it |
+|---|---|
+| **Build or maintain** | A habit you want to start or keep doing. |
+| **Quit or cut down** | A habit you want to stop or do less. |
+| **Add a task** | Something to get done, once or on repeat. No habit progress, streaks or stats. |
 
-| Row | Line | Example |
-|---|---|---|
-| **Check it off** | Done or not done. | Take vitamins |
-| **Count it** | How many or how much. | Drink 8 glasses of water |
-| **Time it** | How long, with a timer. | Read for 20 minutes |
-| **Checklist** | A short list to tick off. | Push-ups, squats, plank |
+**Screen 2 after Build or maintain** (title "Build or maintain"): **"How do you want to track it?"** The lines were kept as they were (the user's decision, 28 Sep); the titles and the checklist example are from the report. The other three examples were redone the same day, because the report's ("Check off each walk", "Log pages as you read", "Record minutes spent reading") read as instructions, not habits. Each is now a common habit that can only be recorded one way: a bed is never counted or timed, water is counted and never timed, meditation is timed and never counted. Review counts (`Research/Temp/goals/example_scan.py`): make my bed 192; glasses of water 91 (+31 cups); meditate with minutes 26. Reading is avoided because reviewers both count it (pages 94) and time it (72).
 
-**Screen 2 after a bad habit: "What do you want to do?"**
+| Row | Line | Example | Name placeholder |
+|---|---|---|---|
+| **Check it off** | Done or not done. | Make your bed | e.g. Walk |
+| **Track an amount** | How many or how much. | Drink 8 glasses of water | e.g. Read |
+| **Time it** | How long, with a timer. | Meditate for 10 minutes | e.g. Practise piano |
+| **Checklist** | A short list to tick off. | Clean kitchen — dishes, sink, floor | e.g. Clean kitchen |
+
+**Screen 2 after Quit or cut down** (title "Quit or cut down"): **"What do you want to do?"**
 
 | Row | Line | Example |
 |---|---|---|
-| **Quit** | Stop completely. It counts the time since. | Smoking |
-| **Cut down** | Do it less, with a daily limit. | At most 2 coffees a day |
+| **Quit** | Stop completely. Track time since you stopped. | Time since you last smoked |
+| **Cut down** | Set a daily maximum and log how much. | Log coffees, up to 2 a day |
+
+To test next (from the report): **Build or maintain** and **Track an amount**, with its first-time comprehension protocol.
 
 **A task** opens its form directly:
 - **Repeat:** Never (a date) or On a schedule (How Often, set schedules only).
@@ -77,7 +76,7 @@ Written by Claude (Claude Code), 27 September 2026, from the user's decisions th
 - **Always says:** "Tasks don't have progress or stats." A task has no streak, no statistics and no progress (the user's decision).
 - A repeating task is due on its schedule and is done per day.
 
-**Free plan:** the habit limit is checked when a good or bad habit's form would open. Tasks are always free.
+**Free plan:** the habit limit is checked when a habit's form would open (Build or maintain, Quit or cut down). Tasks are always free.
 
 ## 2. The New habit form (compact; built 28 Sep)
 
@@ -121,34 +120,46 @@ A **Dates** section of its own on the form, above Reminders (the user's change, 
   - Scan: `Research/Temp/timeofday/dates_scan.py`, 28 Sep.
 - **Built 28 Sep** (Core schema 5, migration test 4→5 passes). **Storage:** `habit.createdAt` stays the moment it was made. Add `starts_on` (a day) and `ends_on` (a day, optional) to the habit in an add-only schema change. The day rules use `starts_on` in place of the created day, and hide the habit after `ends_on`.
 
-## 3. Goal: a number and a unit, per day
+## 3. Goal: its own screen, any period, no "Each tap adds" (decided 28 Sep, built 28 Sep)
 
-One row: `Each day   [−] 1 [+]   times ⌃⌄`. The default is **1 time**.
+**Evidence:** [Goals — Periods, Entry and What + Adds](<../Research/Research Reports/Habit Creation/Goals — Periods, Entry and What + Adds.md>) (1,238,784 reviews scanned, targeted themes read by hand, 52 review IDs verified). It replaces Codex's two drafts from the same morning.
 
-| Goal | What it is | On Today |
-|---|---|---|
-| **1 time** | A plain tick | The name and a ✓ button. **No "0/1".** |
-| **2 or more times** | Still a tick habit: each tap is one tick | "1/3" and a ✓ button; a partial day shows as partial |
-| **Any other unit** | A counter | "3/8 glasses" and a + button that adds one step |
-| **minutes** | Timed | "12 min/20 min" and ▶ for the timer |
+**The answers:**
+- **Periods are independent.** Day, Week, Month and Year are four equal choices. A week, month or year goal is **not an add-on to a daily goal**, and it never needs one. Reviewers ask for the period *instead of* a daily goal: "the app is forcing me to specify a daily goal" (HabitNow, `531ca9fe…`). Day is the default.
+- **Counts are typed** on the number keyboard: 14 of the 16 number-entry reviews want to type ("imagine scrolling the wheel from 1 to get to 5000"). There's no cap.
+- **Time is wheels first, with Type**: two short wheels (0–23 h, 0–59 min) like the Clock timer, and a Scroll / Type switch for exact or large times (100 h a year).
+- **Nobody is asked "Each tap adds".** + follows one rule, and the Goal screen says what it will do before saving.
 
-- **The rule users see** in the Goal footer: "Leave it at 1 time for a simple tick. Change the unit to count something." The number of times never makes a counter; only the unit does.
-- **Units:**
-  - times;
-  - minutes, labelled "with a timer";
-  - glasses, cups, pages, steps, reps, km, miles, litres, ml, kg, $;
-  - your own.
-  Minutes sets its goal with an hours-and-minutes wheel.
-- **The step per tap** ("Each tap adds") stays for counters.
-- **Long-press menu** on counters and timed habits:
-  - **Add Amount…** types any amount (3.2 km, 45 min);
-  - **Mark as Done** fills the day's goal in one tap.
-  Going past the goal is allowed and recorded.
-- **No caps** on goals or amounts.
-- **Evidence** (addendum 3):
-  - No reviewer wants "a unit but only a tick".
-  - A plain habit shown as "0/1" annoys people.
-  - Strides' separate tracker types cause setup confusion (118 reviews).
+**The Goal screen** (pushed from the form's Goal row; native `Form`):
+
+| Section | Check it off | Count it | Time it |
+|---|---|---|---|
+| **Per** | Segmented Day · Week · Month · Year. Footer: Day: "The goal is for each day it's due…"; others: "Any days you like: … adds up. There's no daily minimum. First period: 28 Sep – 3 Oct." | same | same |
+| **Goal** | Amount **1**, Unit **times**. Footer: another unit, like glasses, makes it a count with + | Amount **empty, keyboard up**, Unit **Choose** (required) | Scroll / Type; wheels at **20 min**; typed Hours and Minutes. **No units**: time is only hours and minutes |
+| **Your goal** | "3 times per week" | "2k ml per day" | "3 h per week" |
+| Footer: what Today does | "tap ✓ when it's done" / "each tap on ✓ ticks it once, even twice in one day" | the + rule below | "▶ starts a timer…; add time by touching and holding" |
+
+- **Unit screen:** one screen. "Your own unit" field at the top, then units you've used, then Count (times, glasses, cups, pages, steps, reps, push-ups, books, chapters, laps), Volume, Distance, Weight and Money. There's no separate unit-name screen and no time units.
+- **Number fields select their value when tapped**, so typing "3" replaces "1" instead of making "31".
+- **Validation:** above 0; up to 2 decimal places for amounts; whole numbers for "times"; a time goal can't be longer than its period (at most 24 h a day).
+- **Repeat shows only for a Day goal.** A week, month or year goal is done on any days, so a second schedule would be hidden state. Fixed days (Mon, Wed, Fri) are a Day goal with Repeat on certain days.
+
+**What + adds (`CountLogging` in `GoalInput.swift`):**
+1. A measured unit (km, miles, ml, litres, oz, kg, lbs, g, money, calories) → **+ asks how much**.
+2. A decimal goal → + asks how much.
+3. A whole goal of **10 or less** → **+ adds 1** (any other unit, including your own).
+4. A bigger goal → + asks how much, **except** units that happen one at a time (times, glasses, cups, bottles, books, chapters, meals, servings, workouts, sessions, classes, lessons, pills) → + adds 1. "12 books a year" is one book per log.
+
+Why 10: in the goal phrases reviewers write, times (95%), glasses (100%) and cups (95%) sit at 10 or under, while steps (94%), minutes (68%) and push-ups (60%) go above it.
+
+- **Add Amount / Add Time sheet** (what + opens, and Add Amount… on touch-and-hold): the number keyboard is up, and the entry **adds** to what's logged, never replaces it. **"Add 250 ml — the same as last time"** is one tap, which answers the "+10 for running, +100 ml" requests with no setting.
+- **Touch-and-hold** on counts and timed habits: Add Amount… / Add Time… and Undo Last Entry. **+ never undoes**; going past the goal is kept.
+- Check it off keeps ✓ and Time it keeps ▶. A reminder's "+1" button only appears when + adds 1; otherwise the notification opens the app.
+- Older habits' saved step values stay readable. Only Cut down still uses its step.
+
+**Not built (in the report's §5):** an amount on any N days a week ("30 min on any 4 days", 9 reviews; it needs a new schedule kind); a daily minimum plus a weekly total on one habit (1 review); "days" as a unit for weekly ticks.
+
+**Checked:** `HabitsUITests/GoalFlowUITests`, 5 tests on the iPhone 17 Pro simulator, all pass: 2,000 ml a day, 8 glasses, 12 books a year, 3 times a week and 3 h a week. The rest of the UI suite hasn't been run; `NewFlowUITests` still taps the old Goal stepper.
 
 ## 4. Numbers
 
@@ -232,7 +243,7 @@ All of them use the same Time of Day row, always multi-select (§5). Quit has no
 |---|---|
 | **How it's tracked:** Done or not, A number, Time, Checklist | Name, icon, colour |
 | **What it is:** Build (habit), Break (Set a limit, Quit), Just once (to-do) | How Often |
-| For **Done or not:** that it's ticks. For **A number:** that it's a counter. For **Time:** that it's minutes | The goal's number: times a day, the amount, the minutes. For A number, also the unit and the step |
+| For **Done or not:** that it's ticks. For **A number:** that it's a counter. For **Time:** that it's minutes | The goal: its period, number and, for A number, the unit |
 | | Time of Day, Reminders, Alert, Remind Again |
 | | Checklist items, a limit's maximum, a to-do's date and time |
 

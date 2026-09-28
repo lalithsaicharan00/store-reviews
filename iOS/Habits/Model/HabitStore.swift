@@ -197,6 +197,19 @@ final class HabitStore {
         return first...last
     }
 
+    func periodRangeForGoal(_ goal: GoalPeriod, starting day: LocalDay) -> String {
+        let kind: PeriodKind
+        switch goal {
+        case .day: return ""
+        case .week: kind = .week
+        case .month: kind = .month
+        case .year: kind = .year
+        }
+        let range = period(kind, containing: day)
+        let format = Date.FormatStyle.dateTime.day().month(.abbreviated).year()
+        return "First period: \(max(day, range.lowerBound).date(calendar: calendar).formatted(format))–\(range.upperBound.date(calendar: calendar).formatted(format))."
+    }
+
     private func periodRange(_ habit: Habit, containing day: LocalDay) -> ClosedRange<LocalDay>? {
         switch habit.frequency {
         case .perWeek: period(.week, containing: day)
@@ -526,13 +539,21 @@ final class HabitStore {
         }
     }
 
-    /// Amount habits: add one increment. Once done, a tap undoes the last increment. A limit is "done"
-    /// while under it, so + always logs there.
+    /// Quick counts always add; undo is a separate, explicit action.
     func increment(_ habit: Habit, on day: LocalDay) {
-        guard case .amount(_, let increment) = habit.kind else { return }
+        guard let value = habit.quickIncrement else { return }
+        addProgress(habit, value: value, on: day)
+    }
+
+    func addProgress(_ habit: Habit, value: Double, on day: LocalDay) {
+        guard value.isFinite, value > 0, value <= GoalNumber.maximum, day <= today() else { return }
         perform { [self] in
-            if isDone(habit, on: day) && !habit.atMost { try await undoLast(habit, on: day) } else { try await log(habit, value: increment, on: day) }
+            try await log(habit, value: value, on: day)
         }
+    }
+
+    func undoProgress(_ habit: Habit, on day: LocalDay) {
+        perform { [self] in try await undoLast(habit, on: day) }
     }
 
     /// From a notification or an alarm: only ever adds, never undoes. A row already done is left alone;
@@ -541,7 +562,8 @@ final class HabitStore {
         perform { [self] in
             guard let habit = habits.first(where: { $0.id == habit.id }) else { return }
             switch habit.kind {
-            case .amount(_, let increment):
+            case .amount:
+                guard let increment = habit.quickIncrement else { return }
                 let entry = Entry(habitID: habit.id, day: day, value: increment, slot: slot.flatMap { slots(of: habit).contains($0) ? $0 : nil })
                 try await repository.addEntry(entry: entry.record)
                 withAnimation { entries.append(entry) }

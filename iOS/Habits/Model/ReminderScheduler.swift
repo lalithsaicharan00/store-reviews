@@ -244,7 +244,7 @@ final class ReminderScheduler {
     private static func category(for habit: Habit) -> String {
         switch habit.kind {
         case .check, .task: singleCategory
-        case .amount: addCategoryPrefix + habit.id.uuidString
+        case .amount: habit.quickIncrement == nil ? "" : addCategoryPrefix + habit.id.uuidString
         default: ""
         }
     }
@@ -262,7 +262,7 @@ final class ReminderScheduler {
         ]
         // An amount's button names its own step, so each amount habit has its own category.
         for habit in habits where !habit.archived {
-            guard case .amount(let unit, let increment) = habit.kind else { continue }
+            guard case .amount(let unit, _) = habit.kind, let increment = habit.quickIncrement else { continue }
             let title = "+\(Format.amount(increment)) \(unit)".trimmingCharacters(in: .whitespaces)
             set.insert(UNNotificationCategory(identifier: addCategoryPrefix + habit.id.uuidString,
                                               actions: [UNNotificationAction(identifier: addAction, title: title, options: [])],

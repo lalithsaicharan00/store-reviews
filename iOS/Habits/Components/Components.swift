@@ -94,11 +94,12 @@ struct RoundActionButton: View {
     let done: Bool
     let color: HabitColor
     let label: String
+    var keepSymbolWhenDone = false
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: done ? "checkmark" : symbol)
+            Image(systemName: done && !keepSymbolWhenDone ? "checkmark" : symbol)
                 .font(.system(size: 14, weight: .bold))
                 .foregroundStyle(done ? Color.white : Color.ink)
                 .frame(width: 34, height: 34)
@@ -206,6 +207,15 @@ enum Format {
 extension View {
     /// Stops typing or pasting past `limit` characters. Once full, more typing is ignored (nothing
     /// already written is lost); a long paste keeps its first `limit` characters.
+    /// Number fields select what's in them when tapped, so typing replaces "1" or "20" instead of
+    /// inserting next to it ("31"), as in Settings and Health.
+    func selectsNumbersOnFocus() -> some View {
+        onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { note in
+            guard let field = note.object as? UITextField, [.numberPad, .decimalPad].contains(field.keyboardType) else { return }
+            DispatchQueue.main.async { field.selectAll(nil) }
+        }
+    }
+
     func limitText(_ text: Binding<String>, to limit: Int) -> some View {
         onChange(of: text.wrappedValue) { old, new in
             guard new.count > limit else { return }

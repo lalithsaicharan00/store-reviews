@@ -47,6 +47,7 @@ struct HabitRow: View {
     var time: ReminderTime? = nil
     /// Flashes briefly after the habit is added.
     var highlighted = false
+    @State private var showLog = false
     @Binding var stepsOpen: Bool
     @Environment(HabitStore.self) private var store
 
@@ -76,6 +77,19 @@ struct HabitRow: View {
         // The same spacing as the Quitting rows.
         .padding(.vertical, 2)
         .listRowBackground(ProgressFill(progress: progress / max(goal, 1), color: habit.color).overlay(HighlightFlash(on: highlighted, color: habit.color)))
+        .sheet(isPresented: $showLog) { LogProgressView(habit: habit, day: day) }
+        .contextMenu {
+            if case .amount = habit.kind {
+                Button("Add Amount…") { showLog = true }.disabled(day > store.today())
+                Button("Undo Last Entry") { store.undoProgress(habit, on: day) }
+                    .disabled(progress <= 0 || day > store.today())
+            }
+            if habit.kind == .duration {
+                Button("Add Time…") { showLog = true }.disabled(day > store.today())
+                Button("Undo Last Entry") { store.undoProgress(habit, on: day) }
+                    .disabled(progress <= 0 || day > store.today())
+            }
+        }
     }
 
     /// "3/8 glasses", "1/3", "12 min/20 min"; a once-a-day tick shows no "0/1", only its time if it has one.
@@ -107,10 +121,13 @@ struct HabitRow: View {
                         if let slot { store.toggleSlot(habit, slot: slot, on: day) } else { store.toggleCheck(habit, on: day) }
                     }
                 }
-            case .amount(_, let increment):
+            case .amount:
                 RoundActionButton(symbol: "plus", done: done, color: habit.color,
-                                  label: done ? "Undo last \(habit.name)" : "Add \(Format.amount(increment)) to \(habit.name)") {
-                    withAnimation { store.increment(habit, on: day) }
+                                  label: habit.quickIncrement.map { "Add \(Format.amount($0)) to \(habit.name)" } ?? "Add amount to \(habit.name)",
+                                  keepSymbolWhenDone: true) {
+                    if habit.quickIncrement != nil {
+                        withAnimation { store.increment(habit, on: day) }
+                    } else { showLog = true }
                 }
             case .duration:
                 let running = store.timers[habit.id] != nil

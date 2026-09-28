@@ -5,11 +5,12 @@ enum ItemType: String, CaseIterable, Identifiable {
     case doIt, amount, time, checklist, cutBack, quit, task
     var id: Self { self }
 
-    /// The form's title, in the words reviewers use most ("New Habit Words and Units", 27 Sep counts).
+    /// The form's title. Copy from "Habit Flow Copy — Deep Research Report" (28 Sep): "Track an amount"
+    /// replaces "Count it" because amounts can be decimals and units like km, not only counts.
     var title: String {
         switch self {
         case .doIt: "Check it off"
-        case .amount: "Count it"
+        case .amount: "Track an amount"
         case .time: "Time it"
         case .checklist: "Checklist"
         case .cutBack: "Cut down"
@@ -18,27 +19,32 @@ enum ItemType: String, CaseIterable, Identifiable {
         }
     }
 
-    /// One plain line under the title.
+    /// One plain line under the title. Build screen: kept as it was (the user's decision, 28 Sep).
+    /// Quit screen: says how it's recorded, from the copy report.
     var summary: String {
         switch self {
         case .doIt: "Done or not done."
         case .amount: "How many or how much."
         case .time: "How long, with a timer."
         case .checklist: "A short list to tick off."
-        case .cutBack: "Do it less, with a daily limit."
-        case .quit: "Stop completely. It counts the time since."
+        case .cutBack: "Set a daily maximum and log how much."
+        case .quit: "Stop completely. Track time since you stopped."
         case .task: "Something to get done."
         }
     }
 
+    /// A common habit that can only be recorded one way, so the example shows the type without
+    /// implying reading or walking belong to one (copy report, 28 Sep; review counts in Research
+    /// Temp/goals/example_scan.py): making a bed is never counted or timed, water is counted in
+    /// glasses and never timed, meditation is timed and never counted.
     var example: String {
         switch self {
-        case .doIt: "Take vitamins"
+        case .doIt: "Make your bed"
         case .amount: "Drink 8 glasses of water"
-        case .time: "Read for 20 minutes"
-        case .checklist: "Push-ups, squats, plank"
-        case .cutBack: "At most 2 coffees a day"
-        case .quit: "Smoking"
+        case .time: "Meditate for 10 minutes"
+        case .checklist: "Clean kitchen — dishes, sink, floor"
+        case .cutBack: "Log coffees, up to 2 a day"
+        case .quit: "Time since you last smoked"
         case .task: "Pay the rent"
         }
     }
@@ -46,10 +52,10 @@ enum ItemType: String, CaseIterable, Identifiable {
     /// The name field's hint.
     var namePlaceholder: String {
         switch self {
-        case .doIt: "e.g. Take vitamins"
-        case .amount: "e.g. Drink water"
-        case .time: "e.g. Read"
-        case .checklist: "e.g. Workout"
+        case .doIt: "e.g. Walk"
+        case .amount: "e.g. Read"
+        case .time: "e.g. Practise piano"
+        case .checklist: "e.g. Clean kitchen"
         case .cutBack: "e.g. Coffee"
         case .quit: "e.g. Smoking"
         case .task: "e.g. Pay the rent"
@@ -60,7 +66,7 @@ enum ItemType: String, CaseIterable, Identifiable {
     var isHabit: Bool { self != .task }
 }
 
-/// The screen behind +: "What do you want to create?", then, for habits, how to track it; then one
+/// The screen behind +: "What do you want to do?", then, for habits, how to track it; then one
 /// form. Each question is its own list, pushed in the same sheet, so every step looks and moves
 /// the same way (spec: iOS/New Habit Goal and Time of Day.md §1).
 struct NewItemView: View {
@@ -76,19 +82,19 @@ struct NewItemView: View {
             List {
                 Section {
                     NavigationLink(value: Kind.good) {
-                        ChoiceLabel(title: "A good habit", detail: "Something you want to do regularly.", example: "Read every day")
+                        ChoiceLabel(title: "Build or maintain", detail: "A habit you want to start or keep doing.")
                     }
                     NavigationLink(value: Kind.bad) {
-                        ChoiceLabel(title: "A bad habit", detail: "Something you want to stop, or do less.", example: "Smoking, coffee")
+                        ChoiceLabel(title: "Quit or cut down", detail: "A habit you want to stop or do less.")
                     }
                     NavigationLink {
                         form(.task)
                     } label: {
-                        ChoiceLabel(title: "A task", detail: "Something to get done, once or on repeat. Tasks don't have progress or stats.",
-                                    example: "Pay the rent")
+                        ChoiceLabel(title: "Add a task", detail: "Something to get done, once or on repeat. No habit progress, streaks or stats.")
                     }
                 } header: {
-                    QuestionHeader("What do you want to create?")
+                    // No examples on this screen: the labels name what the user wants to do (copy report).
+                    QuestionHeader("What do you want to do?")
                 } footer: {
                     if !store.isPlus {
                         Text("\(store.activeHabitCount) of \(HabitStore.freeHabitLimit) free habits used. Tasks are always free.").formNote()
@@ -124,7 +130,7 @@ struct NewItemView: View {
                 QuestionHeader(text)
             }
         }
-        .navigationTitle(types.contains(.quit) ? "A bad habit" : "A good habit")
+        .navigationTitle(types.contains(.quit) ? "Quit or cut down" : "Build or maintain")
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -152,16 +158,16 @@ struct QuestionHeader: View {
     }
 }
 
-/// A choice row: title, one plain line, and a marked example. No icons: the words carry it.
+/// A choice row: title, one plain line, and (on the second screens) a marked example. No icons: the words carry it.
 struct ChoiceLabel: View {
     let title: String
     let detail: String
-    let example: String
+    var example: String? = nil
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(title).font(.body.weight(.semibold))
             Text(detail).font(.subheadline).foregroundStyle(.secondary)
-            Text("Example: \(example)").font(.subheadline).foregroundStyle(.secondary)
+            if let example { Text("Example: \(example)").font(.subheadline).foregroundStyle(.secondary) }
         }
         .padding(.vertical, 6)
         .accessibilityElement(children: .combine)
@@ -213,10 +219,7 @@ struct HabitForm: View {
     @State private var amount: Double?
     @State private var unit = ""
     @State private var increment: Double? = 1
-    @State private var minutes: Double?
-    @State private var showMinuteWheels = false
-    /// Check it off: how many ticks a day while it's in one time of day.
-    @State private var timesADay = 1
+    @State private var goal = GoalDraft()
     /// Tasks: once on a date, or on a schedule.
     @State private var taskRepeats = false
     /// Empty until the user taps Add Item.
@@ -260,6 +263,7 @@ struct HabitForm: View {
         self.type = type
         self.onSaved = onSaved
         _color = State(initialValue: .blue)
+        _goal = State(initialValue: GoalDraft.initial(for: type))
         _symbol = State(initialValue: type == .quit ? "nosign" : type == .task ? "calendar" : "star.fill")
     }
 
@@ -273,20 +277,21 @@ struct HabitForm: View {
     private var remind: Bool { remindOn && !times.isEmpty }
     private var hasChanges: Bool { !trimmedName.isEmpty || !filledItems.isEmpty }
     private var offersFrequency: Bool { type != .quit && (type != .task || taskRepeats) }
+    private var hasGoalEditor: Bool { [.doIt, .amount, .time].contains(type) }
     private var canAdd: Bool {
         guard !trimmedName.isEmpty else { return false }
         switch type {
-        case .amount, .cutBack:
+        case .doIt, .amount, .time:
+            if goal.value(timed: type == .time, check: type == .doIt) == nil { return false }
+        case .cutBack:
             if (amount ?? 0) <= 0 || (increment ?? 0) <= 0 || unit.trimmingCharacters(in: .whitespaces).isEmpty { return false }
-        case .time:
-            if (minutes ?? 0) < 1 { return false }
         case .checklist:
             if filledItems.isEmpty { return false }
         default:
             break
         }
-        if offersFrequency && howOften == .certainDays { return !weekdays.isEmpty }
-        if offersFrequency && howOften == .monthDates { return !monthDates.isEmpty }
+        if offersFrequency && (!hasGoalEditor || goal.period == .day) && howOften == .certainDays { return !weekdays.isEmpty }
+        if offersFrequency && (!hasGoalEditor || goal.period == .day) && howOften == .monthDates { return !monthDates.isEmpty }
         return true
     }
 
@@ -304,7 +309,7 @@ struct HabitForm: View {
                 remindersSections
             default:
                 Section {
-                    repeatRow
+                    if !hasGoalEditor || goal.period == .day { repeatRow }
                     timeOfDayRow
                 }
                 Section { goalRow }
@@ -331,8 +336,10 @@ struct HabitForm: View {
                 Button("Add", action: save).disabled(!canAdd).fontWeight(.semibold)
             }
             ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button("Done") { focus = nil }.fontWeight(.semibold)
+                if focus != nil {
+                    Spacer()
+                    Button("Done") { focus = nil }.fontWeight(.semibold)
+                }
             }
         }
         .interactiveDismissDisabled(hasChanges)
@@ -473,12 +480,11 @@ struct HabitForm: View {
     }
 
     private var goalSummary: String {
+        if hasGoalEditor { return goal.summary(timed: type == .time, check: type == .doIt) ?? "Set" }
         let per = howOften == .weekTotal ? "a week" : howOften == .monthTotal ? "a month" : "a day"
         switch type {
-        case .doIt: return timesADay == 1 ? "1 time a day" : "\(timesADay) times a day"
         case .amount: return amount.map { "\(Format.amount($0)) \(unit.isEmpty ? "" : unit + " ")\(per)" } ?? "Set"
         case .cutBack: return amount.map { "At most \(Format.amount($0)) \(unit.isEmpty ? "" : unit + " ")\(per)" } ?? "Set"
-        case .time: return minutes.map { "\(Format.minutes($0)) \(per)" } ?? "Set"
         case .checklist: return filledItems.isEmpty ? "Add items" : filledItems.count == 1 ? "1 item" : "\(filledItems.count) items"
         default: return ""
         }
@@ -486,18 +492,20 @@ struct HabitForm: View {
 
     private var goalRow: some View {
         screenRow(type == .checklist ? "Items" : "Goal", value: goalSummary) {
-            Form {
-                switch type {
-                case .doIt: ticksSection
-                case .amount: amountSection(limit: false)
-                case .cutBack: amountSection(limit: true)
-                case .time: timeSection
-                case .checklist: checklistSection
-                default: EmptyView()
+            if hasGoalEditor {
+                GoalEditor(goal: $goal, timed: type == .time, check: type == .doIt, usedUnits: store.usedUnits) { period in
+                    let range = store.periodRangeForGoal(period, starting: LocalDay(startDate))
+                    return range
                 }
+                .onAppear { focus = nil }
+            } else {
+                Form {
+                    if type == .cutBack { amountSection(limit: true) }
+                    if type == .checklist { checklistSection }
+                }
+                .navigationTitle(type == .checklist ? "Items" : "Goal")
+                .navigationBarTitleDisplayMode(.inline)
             }
-            .navigationTitle(type == .checklist ? "Items" : "Goal")
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 
@@ -522,55 +530,6 @@ struct HabitForm: View {
             Text(limit
                  ? "Log each one as it happens. It counts while you stay at or under the limit."
                  : "Each tap on + adds \(Format.amount(increment ?? 1)).").formNote()
-        }
-    }
-
-    /// Check it off: once a day by default. Spread over several times of day, it's a tick in each.
-    private var ticksSection: some View {
-        Section {
-            Stepper(value: $timesADay, in: 1...99) {
-                LabeledContent("Times a day", value: "\(timesADay)")
-            }
-        } header: {
-            Text("Goal")
-        } footer: {
-            Text(timesADay == 1 ? "Leave it at 1 for a simple tick." : "Tap the tick \(timesADay) times a day.").formNote()
-        }
-    }
-
-    /// Time it: hours and minutes on wheels, like the Clock app's timer. Shown as "1 h 25 min".
-    private var timeSection: some View {
-        Section {
-            Button {
-                focus = nil
-                if minutes == nil { minutes = 20 }
-                withAnimation { showMinuteWheels.toggle() }
-            } label: {
-                ValueRow(title: "Each day") {
-                    Text(minutes.map { Format.minutes($0) } ?? "Set").foregroundStyle(minutes == nil ? .tertiary : .secondary)
-                }
-                .contentShape(Rectangle())
-            }
-            .foregroundStyle(Color.primary)
-            .accessibilityLabel("Each day, \(minutes.map { Format.minutes($0) } ?? "not set")")
-            if showMinuteWheels {
-                HStack(spacing: 0) {
-                    Picker("Hours", selection: Binding(get: { Int(minutes ?? 0) / 60 },
-                                                       set: { minutes = Double($0 * 60 + Int(minutes ?? 0) % 60) })) {
-                        ForEach(0..<13, id: \.self) { Text("\($0) h").tag($0) }
-                    }
-                    Picker("Minutes", selection: Binding(get: { Int(minutes ?? 0) % 60 },
-                                                         set: { minutes = Double((Int(minutes ?? 0) / 60) * 60 + $0) })) {
-                        ForEach(0..<60, id: \.self) { Text("\($0) min").tag($0) }
-                    }
-                }
-                .pickerStyle(.wheel)
-                .frame(height: 150)
-            }
-        } header: {
-            Text("\(howOften.goalPeriod) goal")
-        } footer: {
-            Text("On Today, ▶ starts a timer. It counts toward \(minutes.map { Format.minutes($0) } ?? "the goal").").formNote()
         }
     }
 
@@ -636,7 +595,7 @@ struct HabitForm: View {
                 CheckRow(title: option.rawValue, selected: howOften == option) { withAnimation { howOften = option } }
             }
         }
-        if type != .task {
+        if type != .task && !hasGoalEditor {
             Section("On any days you like") {
                 ForEach(type == .doIt || type == .checklist ? HowOften.anyDays : HowOften.totals) { option in
                     CheckRow(title: option.rawValue, selected: howOften == option) { withAnimation { howOften = option } }
@@ -894,16 +853,12 @@ struct HabitForm: View {
         var habit = Habit(name: trimmedName, symbol: symbol, color: color, kind: .check)
         let cal = Calendar.current
         switch type {
-        case .doIt:
-            // Spread over several times of day on a set schedule, it's a tick in each; otherwise the times a day chosen.
-            habit.goal = Double(timesADay)
-        case .amount, .cutBack:
+        case .doIt, .amount, .time:
+            break // The shared goal draft applies after the daily schedule below.
+        case .cutBack:
             habit.kind = .amount(unit: TextLimit.clean(unit, TextLimit.unit), increment: increment ?? 1)
             habit.goal = amount ?? 1
             habit.atMost = type == .cutBack
-        case .time:
-            habit.kind = .duration
-            habit.goal = (minutes ?? 1).rounded()
         case .checklist:
             habit.kind = .checklist
             habit.steps = filledItems
@@ -935,6 +890,7 @@ struct HabitForm: View {
             case .monthTotal: habit.frequency = .perMonth(1)
             }
         }
+        if hasGoalEditor { goal.apply(to: &habit, timed: type == .time, check: type == .doIt) }
         // Reminders only when Remind Me is on: one per minute, keeping each one's ID, earliest first.
         if remind && type != .quit {
             var seen = Set<Int>()
@@ -1158,8 +1114,7 @@ struct UnitPicker: View {
     @FocusState private var typing: Bool
 
     static let groups: [(String, [String])] = [
-        ("Count", ["times", "glasses", "cups", "pages", "steps", "reps", "push-ups"]),
-        ("Time", ["minutes", "hours"]),
+        ("Count", ["times", "glasses", "cups", "pages", "steps", "reps", "push-ups", "books", "chapters", "laps"]),
         ("Volume", ["ml", "oz", "litres"]),
         ("Distance", ["km", "miles"]),
         ("Weight", ["kg", "lbs"]),
@@ -1183,7 +1138,7 @@ struct UnitPicker: View {
                 Text("Any word works: \"chapters\", \"laps\", \"prayers\".")
             }
             let known = Set(Self.groups.flatMap(\.1))
-            let mine = used.filter { !known.contains($0) }
+            let mine = used.filter { !known.contains($0) && !["minutes", "hours"].contains($0) }
             if !mine.isEmpty {
                 Section("Yours") { ForEach(mine, id: \.self, content: row) }
             }
