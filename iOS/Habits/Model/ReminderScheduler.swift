@@ -126,7 +126,7 @@ final class ReminderScheduler {
                     // A limit is never "not done", so it always reminds. Anything else stops once its row is done;
                     // for week and month rules, once the period's goal is met.
                     if !habit.atMost {
-                        let done = placement.slot.map { store.isSlotDone(habit, slot: $0, on: day) } ?? store.isDone(habit, on: day)
+                        let done = placement.slot.map { store.isSlotDone(habit, slot: $0, on: day) } ?? store.isSatisfied(habit, on: day)
                         if done { continue }
                     }
                     for (i, time) in placement.times.enumerated() {
@@ -279,7 +279,7 @@ final class ReminderScheduler {
         var ids = Set<String>()
         for habit in store.habits where !habit.atMost && habit.kind != .quit {
             for placement in store.placements(of: habit) {
-                let done = placement.slot.map { store.isSlotDone(habit, slot: $0, on: today) } ?? store.isDone(habit, on: today)
+                let done = placement.slot.map { store.isSlotDone(habit, slot: $0, on: today) } ?? store.isSatisfied(habit, on: today)
                 if done { ids.formUnion(placement.times.map { "\(Self.prefix)\(habit.id.uuidString).\($0.id.uuidString)." }) }
             }
         }
@@ -296,7 +296,7 @@ final class ReminderScheduler {
             if done.contains(where: { id.hasPrefix($0) }) { return true }
             guard id.hasPrefix(Self.prefix + "group."), let list = request.content.userInfo["habits"] as? String else { return false }
             let ids = list.split(separator: ",").compactMap { UUID(uuidString: String($0)) }
-            return ids.allSatisfy { id in store.habits.first { $0.id == id }.map { store.isDone($0, on: today) } ?? true }
+            return ids.allSatisfy { id in store.habits.first { $0.id == id }.map { store.isSatisfied($0, on: today) } ?? true }
         }
         center.removeDeliveredNotifications(withIdentifiers: stale.map(\.identifier))
     }

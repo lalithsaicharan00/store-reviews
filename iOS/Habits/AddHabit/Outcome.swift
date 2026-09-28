@@ -6,6 +6,9 @@ import Foundation
 enum Outcome {
     /// Where it shows on Today, and for week, month and year rules, until when.
     static func timeOfDay(_ habit: Habit, store: HabitStore) -> String {
+        if case .flexible(let period, let n) = habit.frequency {
+            return "Reach the daily goal on \(n) different days each \(period.noun). You can still log extra days after reaching it."
+        }
         let placements = store.placements(of: habit)
         let names = placements.map { store.section($0.section).name }
         var sentence: String
@@ -79,6 +82,9 @@ enum Outcome {
     /// Week, month and year rules: "you've done it 3 times this week", "you reach 180 min this week";
     /// for reminders, "the week's 3 are done". Nil for set schedules and limits.
     private static func periodRule(_ habit: Habit, forReminders: Bool = false) -> String? {
+        if case .flexible(let period, let n) = habit.frequency {
+            return "you reach the daily goal on \(n) different days this \(period.noun)"
+        }
         let n: Int, period: String
         switch habit.frequency {
         case .perWeek(let k): n = k; period = "week"

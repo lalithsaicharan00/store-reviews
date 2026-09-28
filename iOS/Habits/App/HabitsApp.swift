@@ -9,7 +9,7 @@ struct HabitsApp: App {
     var body: some Scene {
         WindowGroup {
             #if DEBUG
-            if ProcessInfo.processInfo.arguments.contains("-placementcheck") {
+            if ProcessInfo.processInfo.arguments.contains("-placementcheck") || ProcessInfo.processInfo.arguments.contains("-schedulecheck") {
                 PlacementCheckView()
             } else {
                 today
@@ -45,7 +45,7 @@ private struct PlacementCheckView: View {
     @State private var result = "Running"
     var body: some View {
         Text(result).padding().task {
-            let failures = await PlacementCheck.run()
+            let failures = ProcessInfo.processInfo.arguments.contains("-schedulecheck") ? await ScheduleCheck.run() : await PlacementCheck.run()
             result = failures.isEmpty ? "Placement: all checks passed" : "Placement failed: " + failures.joined(separator: "; ")
         }
     }

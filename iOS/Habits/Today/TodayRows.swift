@@ -9,7 +9,12 @@ func goalLine(_ habit: Habit, progress: Double, goal: Double, running: Bool = fa
     case .perYear: " this year"
     default: ""
     }
-    let max = habit.atMost ? " max" : ""
+    if habit.atMost {
+        let unit: String
+        if case .amount(let text, _) = habit.kind { unit = text.isEmpty ? "" : " " + text } else { unit = "" }
+        return "\(Format.amount(progress))\(unit) logged\(period.isEmpty ? " today" : period) · limit \(Format.amount(goal))"
+    }
+    let max = ""
     switch habit.kind {
     case .duration:
         // Time is always hours and minutes: "12 min/1 h 30 min".
@@ -92,7 +97,14 @@ struct HabitRow: View {
                 if !line.isEmpty { Text(line)
                     .font(.subheadline).foregroundStyle(isRunning ? .primary : .secondary)
                     .monospacedDigit()
-                    .lineLimit(1) }
+                    .lineLimit(habit.atMost ? 2 : 1) }
+                if case .flexible(let period, let needed) = habit.frequency,
+                   let count = store.flexibleProgress(habit, on: day) {
+                    Text(count > needed ? "\(count) days this \(period.noun) · goal reached"
+                         : "\(count) of \(needed) \(needed == 1 ? "day" : "days") this \(period.noun)\(count == needed ? " ✓" : "")")
+                        .font(.caption).foregroundStyle(.secondary)
+                        .accessibilityIdentifier("flexible-progress")
+                }
             }
             Spacer(minLength: 8)
             if streak > 0 { StreakLabel(count: streak, unit: habit.frequency.streakUnit, onFill: progress / max(goal, 1) >= 0.7) }
@@ -105,7 +117,7 @@ struct HabitRow: View {
         }
         // The same spacing as the Quitting rows.
         .padding(.vertical, 2)
-        .listRowBackground(ProgressFill(progress: progress / max(goal, 1), color: habit.color).overlay(HighlightFlash(on: highlighted, color: habit.color)))
+        .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color).overlay(HighlightFlash(on: highlighted, color: habit.color)))
         .sheet(isPresented: $showLog) { LogProgressView(habit: habit, day: day) }
         .contextMenu {
             if case .amount = habit.kind {

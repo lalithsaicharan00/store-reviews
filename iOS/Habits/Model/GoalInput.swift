@@ -22,16 +22,16 @@ enum GoalNumber {
 /// The period a goal is for. Each one stands alone: a week, month or year goal never needs a daily
 /// goal underneath it ("Goals — Periods, Entry and What + Adds", 28 Sep). Named the way reviewers
 /// name them: "daily goal", "8 glasses a day" ("Goal Screen Round 2", T4).
-enum GoalPeriod: String, CaseIterable, Identifiable {
+enum GoalPeriod: String, CaseIterable, Identifiable, Codable, Hashable, Sendable {
     case day, week, month, year
     var id: Self { self }
-    /// The segment: "Daily", "Weekly", "Monthly", "Yearly".
+    /// Values in the labelled "Goal counts over" menu.
     var label: String {
         switch self {
-        case .day: "Daily"
-        case .week: "Weekly"
-        case .month: "Monthly"
-        case .year: "Yearly"
+        case .day: "A day"
+        case .week: "A week"
+        case .month: "A month"
+        case .year: "A year"
         }
     }
     /// After an amount: "a day", "a week".

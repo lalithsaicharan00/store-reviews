@@ -27,7 +27,7 @@ enum ItemType: String, CaseIterable, Identifiable {
         case .amount: "How many or how much."
         case .time: "How long, with a timer."
         case .checklist: "A short list to tick off."
-        case .cutBack: "Set a daily maximum and log how much."
+        case .cutBack: "Set a maximum and log how much."
         case .quit: "Stop completely. Track time since you stopped."
         case .task: "Something to get done."
         }
@@ -203,22 +203,6 @@ struct ChoiceLabel: View {
 /// Reminders. Choices are menus; anything needing its own page (icon, unit, a new time of day) is
 /// pushed, never a sheet, so the whole flow moves one way (spec §1–6).
 struct HabitForm: View {
-    enum HowOften: String, CaseIterable, Identifiable {
-        case everyDay = "Every Day", certainDays = "On Certain Days", everyFewDays = "Every Few Days"
-        case everyFewWeeks = "Every Few Weeks", monthDates = "On Dates of the Month"
-        case perWeek = "A Few Times a Week", perMonth = "A Few Times a Month", perYear = "A Few Times a Year"
-        case weekTotal = "A Weekly Total", monthTotal = "A Monthly Total"
-        var id: Self { self }
-        var isDayBased: Bool { Self.fixedDays.contains(self) }
-        /// "Daily", "Weekly" or "Monthly": the period the goal is for.
-        var goalPeriod: String { self == .weekTotal ? "Weekly" : self == .monthTotal ? "Monthly" : "Daily" }
-        static let fixedDays: [HowOften] = [.everyDay, .certainDays, .everyFewDays, .everyFewWeeks, .monthDates]
-        /// Check it off and checklists: a number of times, on any days.
-        static let anyDays: [HowOften] = [.perWeek, .perMonth, .perYear]
-        /// Amounts, minutes and limits: a total over the week or month, on any days.
-        static let totals: [HowOften] = [.weekTotal, .monthTotal]
-    }
-
     enum Field: Hashable { case name, amount, unit, increment, minutes, item(UUID) }
 
     /// One reminder. `part` is the time of day it's for (nil for Anytime); its time stays inside that part.
@@ -254,14 +238,8 @@ struct HabitForm: View {
     @State private var taskHasTime = false
     @State private var taskTime = Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: .now)!
 
-    @State private var howOften: HowOften = .everyDay
-    @State private var weekdays: Set<Int> = Set(1...7)
-    @State private var everyDays = 2
-    @State private var everyWeeks = 2
-    @State private var monthDates: Set<Int> = []
-    @State private var perWeek = 3
-    @State private var perMonth = 4
-    @State private var perYear = 4
+    @State private var schedule = ScheduleDraft()
+    @State private var limitPeriod: GoalPeriod = .day
     /// Where it shows on Today: Anytime, or one or more parts of the day.
     @State private var timesOfDay: [String] = [.anytime]
     @State private var addingSection = false
@@ -282,6 +260,7 @@ struct HabitForm: View {
     @State private var notificationsDenied = false
     @State private var alarmsDenied = false
     @State private var confirmDiscard = false
+    @State private var confirmOnce = false
     @FocusState private var focus: Field?
 
     init(type: ItemType, onSaved: @escaping (UUID) -> Void) {
@@ -301,7 +280,7 @@ struct HabitForm: View {
     }
     private var remind: Bool { remindOn && !times.isEmpty }
     private var hasChanges: Bool { !trimmedName.isEmpty || !filledItems.isEmpty }
-    private var offersFrequency: Bool { type != .quit && (type != .task || taskRepeats) }
+    private var offersFrequency: Bool { type != .quit && type != .cutBack && (type != .task || taskRepeats) }
     private var hasGoalEditor: Bool { [.doIt, .amount, .time].contains(type) }
     private var canAdd: Bool {
         guard !trimmedName.isEmpty else { return false }
@@ -315,8 +294,6 @@ struct HabitForm: View {
         default:
             break
         }
-        if offersFrequency && (!hasGoalEditor || goal.period == .day) && howOften == .certainDays { return !weekdays.isEmpty }
-        if offersFrequency && (!hasGoalEditor || goal.period == .day) && howOften == .monthDates { return !monthDates.isEmpty }
         return true
     }
 
@@ -334,10 +311,12 @@ struct HabitForm: View {
                 remindersSections
             default:
                 Section {
-                    if !hasGoalEditor || goal.period == .day { repeatRow }
+                    if type != .cutBack { repeatRow }
                     timeOfDayRow
                 }
-                Section { goalRow }
+                Section { goalRow } footer: {
+                    if hasGoalEditor { Text(combinedSummary).formNote() }
+                }
                 startEndSection
                 remindersSections
             }
@@ -358,7 +337,7 @@ struct HabitForm: View {
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
-                Button("Add", action: save).disabled(!canAdd).fontWeight(.semibold)
+                Button("Add", action: requestSave).disabled(!canAdd).fontWeight(.semibold)
             }
             ToolbarItemGroup(placement: .keyboard) {
                 if focus != nil {
@@ -367,6 +346,14 @@ struct HabitForm: View {
                 }
             }
         }
+        .alert("Use 1 day a \(goal.period.noun)?", isPresented: $confirmOnce) {
+            Button("Use 1 Day") {
+                schedule.mode = .flexible; schedule.flexiblePeriod = goal.period; schedule.count = 1
+                goal.period = .day
+                save()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: { Text("One check-off in a period is one successful day. This sets Schedule to one day in the period and Goal to once a day.") }
         .interactiveDismissDisabled(hasChanges)
         // Icon and colour are quick picks, so they pop up over the form (the user's choice).
         .sheet(isPresented: $showAppearance) {
@@ -454,33 +441,36 @@ struct HabitForm: View {
         NavigationLink {
             destination()
         } label: {
-            ValueRow(title: title) { Text(value).foregroundStyle(.secondary) }
+            LabeledContent(title) {
+                Text(value).foregroundStyle(.secondary).multilineTextAlignment(.trailing)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
         .accessibilityLabel("\(title), \(value)")
     }
 
     private var repeatSummary: String {
-        switch howOften {
-        case .certainDays:
-            let symbols = Calendar.current.shortStandaloneWeekdaySymbols
-            let order = (0..<7).map { (store.settings.weekStart - 1 + $0) % 7 + 1 }
-            return weekdays.count == 7 ? "Every Day" : order.filter(weekdays.contains).map { symbols[$0 - 1] }.joined(separator: ", ")
-        case .everyFewDays: return "Every \(everyDays) days"
-        case .everyFewWeeks: return "Every \(everyWeeks) weeks"
-        case .perWeek: return "\(perWeek) times a week"
-        case .perMonth: return "\(perMonth) times a month"
-        case .perYear: return "\(perYear) times a year"
-        default: return howOften.rawValue
+        hasGoalEditor && goal.period != .day ? "Any day this \(goal.period.noun)" : schedule.summary
+    }
+
+    private var combinedSummary: String {
+        guard let amount = goal.amountText(timed: type == .time, check: type == .doIt) else { return "Set your goal to see the plan here." }
+        if goal.period != .day { return "\(amount) \(goal.period.suffix), on any days." }
+        let what = type == .doIt && amount == "Once" ? "Check it off" : amount
+        switch schedule.mode {
+        case .daily: return "\(what) every day."
+        case .specific: return "\(what) on \(schedule.dayNames(schedule.weekdays))."
+        case .flexible: return "\(what) on any \(schedule.summary)."
+        default: return "\(what), \(schedule.summary.lowercased())."
         }
     }
 
     private var repeatRow: some View {
-        screenRow("Repeat", value: repeatSummary) {
-            Form {
-                howOftenSection
-            }
-            .navigationTitle("Repeat")
-            .navigationBarTitleDisplayMode(.inline)
+        screenRow("Schedule", value: repeatSummary) {
+            ScheduleEditor(schedule: $schedule, goalPeriod: $goal.period, start: startDate,
+                           end: hasEnd ? endDate : nil, weekStart: store.settings.weekStart,
+                           hasGoal: hasGoalEditor, checklist: type == .checklist, task: type == .task)
+                .onAppear { focus = nil }
         }
     }
 
@@ -504,8 +494,8 @@ struct HabitForm: View {
     }
 
     private var goalSummary: String {
-        if hasGoalEditor { return goal.summary(timed: type == .time, check: type == .doIt) ?? "Set" }
-        let per = howOften == .weekTotal ? "a week" : howOften == .monthTotal ? "a month" : "a day"
+        if hasGoalEditor { return (goal.period == .day ? goal.amountText(timed: type == .time, check: type == .doIt) : goal.summary(timed: type == .time, check: type == .doIt)) ?? "Set" }
+        let per = limitPeriod.suffix
         switch type {
         case .amount: return amount.map { "\(Format.amount($0)) \(unit.isEmpty ? "" : unit + " ")\(per)" } ?? "Set"
         case .cutBack: return amount.map { "At most \(Format.amount($0)) \(unit.isEmpty ? "" : unit + " ")\(per)" } ?? "Set"
@@ -515,17 +505,24 @@ struct HabitForm: View {
     }
 
     private var goalRow: some View {
-        screenRow(type == .checklist ? "Items" : "Goal", value: goalSummary) {
+        screenRow(type == .checklist ? "Items" : type == .cutBack ? "Limit" : "Goal", value: goalSummary) {
             if hasGoalEditor {
-                GoalEditor(goal: $goal, timed: type == .time, check: type == .doIt, usedUnits: store.usedUnits,
+                GoalEditor(goal: $goal, schedule: $schedule, timed: type == .time, check: type == .doIt, usedUnits: store.usedUnits,
                            weekStart: store.settings.weekStart)
                 .onAppear { focus = nil }
             } else {
                 Form {
-                    if type == .cutBack { amountSection(limit: true) }
+                    if type == .cutBack {
+                        Section {
+                            Picker("Limit counts over", selection: $limitPeriod) {
+                                ForEach([GoalPeriod.day, .week, .month]) { Text($0.label).tag($0) }
+                            }
+                        }
+                        amountSection(limit: true)
+                    }
                     if type == .checklist { checklistSection }
                 }
-                .navigationTitle(type == .checklist ? "Items" : "Goal")
+                .navigationTitle(type == .checklist ? "Items" : type == .cutBack ? "Limit" : "Goal")
                 .navigationBarTitleDisplayMode(.inline)
             }
         }
@@ -547,7 +544,7 @@ struct HabitForm: View {
             NumberRow(title: "Each tap adds", value: $increment, placeholder: "1",
                       suffix: unit.isEmpty ? "" : unit, focus: $focus, field: .increment)
         } header: {
-            Text("\(howOften.goalPeriod) \(limit ? "limit" : "goal")")
+            Text(limit ? "Limit" : "Goal")
         } footer: {
             Text(limit
                  ? "Log each one as it happens. It counts while you stay at or under the limit."
@@ -586,77 +583,6 @@ struct HabitForm: View {
     }
 
     // MARK: How often, part of day, reminders
-
-    @ViewBuilder
-    private var howOftenSection: some View {
-        // Every option is shown at once, in two named groups, so "Every Few Days" and "A Few Times a
-        // Week" can't be mixed up. The chosen one's details follow in their own section.
-        Section("On a set schedule") {
-            ForEach(HowOften.fixedDays) { option in
-                CheckRow(title: option.rawValue, selected: howOften == option) { withAnimation { howOften = option } }
-            }
-        }
-        if type != .task && !hasGoalEditor {
-            Section("On any days you like") {
-                ForEach(type == .doIt || type == .checklist ? HowOften.anyDays : HowOften.totals) { option in
-                    CheckRow(title: option.rawValue, selected: howOften == option) { withAnimation { howOften = option } }
-                }
-            }
-        }
-        Section {
-            switch howOften {
-            case .everyDay:
-                EmptyView()
-            case .certainDays:
-                WeekdayPicker(selection: $weekdays, firstWeekday: store.settings.weekStart)
-            case .everyFewDays:
-                Stepper(value: $everyDays, in: 2...30) { LabeledContent("Every", value: "\(everyDays) days") }
-            case .everyFewWeeks:
-                Stepper(value: $everyWeeks, in: 2...12) { LabeledContent("Every", value: "\(everyWeeks) weeks") }
-            case .monthDates:
-                MonthDatePicker(selection: $monthDates)
-            case .perWeek:
-                Stepper(value: $perWeek, in: 1...14) { LabeledContent("Times", value: "\(perWeek) a week") }
-            case .perMonth:
-                Stepper(value: $perMonth, in: 1...31) { LabeledContent("Times", value: "\(perMonth) a month") }
-            case .perYear:
-                Stepper(value: $perYear, in: 1...52) { LabeledContent("Times", value: "\(perYear) a year") }
-            case .weekTotal, .monthTotal:
-                EmptyView() // the total is the goal, set below
-            }
-        } footer: {
-            // A set schedule not due today would look lost on Today, so say when it starts.
-            Text(howOftenSummary + (Outcome.firstDue(draft, store: store).map { " First due \($0)." } ?? "")).formNote()
-        }
-    }
-
-    /// One plain sentence that says exactly what was chosen. Set schedules and any-day rules
-    /// start differently, so the two kinds read as different at a glance.
-    private var howOftenSummary: String {
-        let weekday = Date.now.formatted(.dateTime.weekday(.wide))
-        let period = howOften == .perWeek || howOften == .weekTotal ? "week" : howOften == .perYear ? "year" : "month"
-        switch howOften {
-        case .everyDay:
-            return "Due every day."
-        case .certainDays:
-            return "A set schedule: due only on the days you pick. Other days are hidden and never break the streak."
-        case .everyFewDays:
-            return "A set schedule: due every \(everyDays) days, counting from today. The days between never break the streak."
-        case .everyFewWeeks:
-            return "A set schedule: due every \(everyWeeks) weeks, on \(weekday)."
-        case .monthDates:
-            return "A set schedule: due on these dates each month. 29–31 move to the last day in shorter months."
-        case .perWeek, .perMonth, .perYear:
-            let n = howOften == .perWeek ? perWeek : howOften == .perMonth ? perMonth : perYear
-            return type == .checklist
-                ? "Any days you like: finish it on \(n) \(n == 1 ? "day" : "days") in the \(period). The streak counts \(period)s."
-                : "Any days you like: tick it \(n) \(n == 1 ? "time" : "times") in the \(period), even twice in one day. The streak counts \(period)s."
-        case .weekTotal, .monthTotal:
-            return type == .cutBack
-                ? "Any days you like: everything you log in the \(period) adds up, and it counts while the total stays at or under the limit."
-                : "Any days you like: everything you log in the \(period) adds up to the goal. The streak counts \(period)s."
-        }
-    }
 
     // MARK: Time of day, reminders
 
@@ -875,21 +801,8 @@ struct HabitForm: View {
             }
         }
         if type != .quit { habit.parts = timesOfDay }
-        if offersFrequency {
-            switch howOften {
-            case .everyDay: habit.frequency = .daily
-            case .certainDays: habit.frequency = .weekdays(weekdays)
-            case .everyFewDays: habit.frequency = .everyNDays(everyDays)
-            case .everyFewWeeks: habit.frequency = .everyNWeeks(everyWeeks)
-            case .monthDates: habit.frequency = .monthDates(monthDates)
-            case .perWeek: habit.frequency = .perWeek(perWeek)
-            case .perMonth: habit.frequency = .perMonth(perMonth)
-            case .perYear: habit.frequency = .perYear(perYear)
-            // Totals: the goal is the amount (or minutes) for the whole period.
-            case .weekTotal: habit.frequency = .perWeek(1)
-            case .monthTotal: habit.frequency = .perMonth(1)
-            }
-        }
+        if offersFrequency { habit.frequency = schedule.frequency }
+        if type == .cutBack { habit.frequency = limitPeriod.frequency() }
         if hasGoalEditor { goal.apply(to: &habit, timed: type == .time, check: type == .doIt) }
         // Reminders only when Remind Me is on: one per minute, keeping each one's ID, earliest first.
         if remind && type != .quit {
@@ -903,13 +816,18 @@ struct HabitForm: View {
         }
         habit.remind = remind
         // Start and end dates: for anything with How Often (a one-time task has only its date).
-        if offersFrequency {
+        if offersFrequency || type == .cutBack {
             habit.startsOn = LocalDay(startDate)
             habit.endsOn = hasEnd ? LocalDay(max(endDate, startDate)) : nil
         }
         habit.alert = ReminderScheduler.alarmsAvailable ? alert : .notification
         habit.followUpMinutes = habit.atMost ? nil : followUp
         return habit
+    }
+
+    private func requestSave() {
+        if type == .doIt && goal.period != .day && goal.amountValue(check: true) == 1 { confirmOnce = true }
+        else { save() }
     }
 
     private func save() {
@@ -1017,9 +935,8 @@ struct CheckRow: View {
             .frame(minHeight: 44)
             .contentShape(Rectangle())
         }
-        .accessibilityElement(children: .ignore)
         .accessibilityLabel(title)
-        .accessibilityAddTraits(selected ? [.isButton, .isSelected] : .isButton)
+        .accessibilityAddTraits(selected ? .isSelected : [])
     }
 }
 
@@ -1091,25 +1008,31 @@ struct ColorGrid: View {
 struct WeekdayPicker: View {
     @Binding var selection: Set<Int>
     let firstWeekday: Int
+    @Environment(\.dynamicTypeSize) private var dynamicType
 
     var body: some View {
         let symbols = Calendar.current.veryShortStandaloneWeekdaySymbols
         let full = Calendar.current.standaloneWeekdaySymbols
         let order = (0..<7).map { (firstWeekday - 1 + $0) % 7 + 1 }
-        HStack(spacing: 6) {
+        let layout = dynamicType.isAccessibilitySize ? AnyLayout(VStackLayout(alignment: .leading, spacing: 6)) : AnyLayout(HStackLayout(spacing: 2))
+        layout {
             ForEach(order, id: \.self) { day in
                 let on = selection.contains(day)
                 Button {
-                    if on { selection.remove(day) } else { selection.insert(day) }
+                    if on { if selection.count > 1 { selection.remove(day) } } else { selection.insert(day) }
                 } label: {
-                    Text(symbols[day - 1])
+                    Text(dynamicType.isAccessibilitySize ? full[day - 1] : symbols[day - 1])
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(on ? Color.onInk : Color.primary)
-                        .frame(maxWidth: .infinity, minHeight: 36)
-                        .background(Circle().fill(on ? Color.ink : Color(.tertiarySystemFill)))
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .background(Capsule().fill(on ? Color.ink : Color(.tertiarySystemFill)))
+                        .overlay(alignment: .topTrailing) {
+                            if on { Image(systemName: "checkmark.circle.fill").font(.caption2).foregroundStyle(Color.ink, Color(.systemBackground)).accessibilityHidden(true) }
+                        }
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(full[day - 1])
+                .accessibilityValue(on ? "Selected" : "Not selected")
                 .accessibilityAddTraits(on ? .isSelected : [])
             }
         }
@@ -1120,19 +1043,23 @@ struct WeekdayPicker: View {
 /// 1–31, like the Calendar app's monthly repeat.
 struct MonthDatePicker: View {
     @Binding var selection: Set<Int>
+    @ScaledMetric(relativeTo: .body) private var cellSize = 44.0
 
     var body: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 7), spacing: 6) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: cellSize), spacing: 2)], spacing: 6) {
             ForEach(1...31, id: \.self) { date in
                 let on = selection.contains(date)
                 Button {
-                    if on { selection.remove(date) } else { selection.insert(date) }
+                    if on { if selection.count > 1 { selection.remove(date) } } else { selection.insert(date) }
                 } label: {
                     Text("\(date)")
                         .font(.subheadline.weight(.semibold).monospacedDigit())
                         .foregroundStyle(on ? Color.onInk : Color.primary)
-                        .frame(maxWidth: .infinity, minHeight: 36)
-                        .background(Circle().fill(on ? Color.ink : Color(.tertiarySystemFill)))
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .background(Capsule().fill(on ? Color.ink : Color(.tertiarySystemFill)))
+                        .overlay(alignment: .topTrailing) {
+                            if on { Image(systemName: "checkmark.circle.fill").font(.caption2).foregroundStyle(Color.ink, Color(.systemBackground)).accessibilityHidden(true) }
+                        }
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("Day \(date)")

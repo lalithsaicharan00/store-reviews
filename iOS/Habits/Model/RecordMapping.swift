@@ -111,6 +111,8 @@ extension Frequency {
     /// The database form: `daily`, `weekdays:2,4,6`, `every:3`, `weeks:2`, `dates:1,15`, `week:3`, `month:4`, `year:6`.
     var storageKey: String {
         switch self {
+        case .calendar, .flexible, .afterCompletion:
+            "v2:" + (try! JSONEncoder().encode(self)).base64EncodedString()
         case .daily: "daily"
         case .weekdays(let days): "weekdays:" + days.sorted().map(String.init).joined(separator: ",")
         case .everyNDays(let n): "every:\(n)"
@@ -123,6 +125,13 @@ extension Frequency {
     }
 
     init?(storageKey: String) {
+        if storageKey.hasPrefix("v2:") {
+            guard let data = Data(base64Encoded: String(storageKey.dropFirst(3))),
+                  let decoded = try? JSONDecoder().decode(Frequency.self, from: data) else { return nil }
+            self = decoded
+            return
+        }
+        guard !storageKey.isEmpty else { return nil }
         let parts = storageKey.split(separator: ":", maxSplits: 1).map(String.init)
         let value = parts.count > 1 ? parts[1] : ""
         switch parts[0] {

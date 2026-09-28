@@ -82,9 +82,9 @@ enum HabitKind: Codable, Hashable, Sendable {
     case task
 }
 
-/// How often a habit is due. Day rules have a per-day goal. Period rules: for Check it off and
-/// checklists, n completions on any days; for amounts, minutes and limits, a total for the period
-/// (the goal is the habit's `goal`, and n is 1).
+/// Exactly one active success clock. Fixed rules have a daily goal; flexible rules count distinct
+/// days meeting that daily goal. Legacy perWeek/Month/Year cases retain aggregate totals/ticks
+/// (and legacy checklist day counts), so existing saved habits never change meaning.
 enum Frequency: Codable, Hashable, Sendable {
     case daily
     /// Weekday numbers as in `Calendar` (1 = Sunday … 7 = Saturday).
@@ -102,9 +102,13 @@ enum Frequency: Codable, Hashable, Sendable {
     /// n completions a year, on any days.
     case perYear(Int)
 
+    case flexible(GoalPeriod, Int)
+    case calendar(CalendarSchedule)
+    case afterCompletion(Int, ScheduleUnit)
+
     var isDayBased: Bool {
         switch self {
-        case .daily, .weekdays, .everyNDays, .everyNWeeks, .monthDates: true
+        case .daily, .weekdays, .everyNDays, .everyNWeeks, .monthDates, .calendar, .afterCompletion, .flexible: true
         case .perWeek, .perMonth, .perYear: false
         }
     }
@@ -220,7 +224,9 @@ extension Frequency {
         switch self {
         case .daily: .days
         case .weekdays(let days): days.count == 7 ? .days : .times
-        case .everyNDays, .everyNWeeks, .monthDates: .times
+        case .everyNDays, .everyNWeeks, .monthDates, .calendar, .afterCompletion: .times
+        case .flexible(let period, _):
+            switch period { case .week: .weeks; case .month: .months; case .year: .years; case .day: .days }
         case .perWeek: .weeks
         case .perMonth: .months
         case .perYear: .years

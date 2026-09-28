@@ -81,6 +81,7 @@ final class HabitStore {
     func daySummary(on day: LocalDay) -> (done: Int, total: Int) {
         let due = habits.filter {
             !$0.archived && $0.kind != .quit && startDay(of: $0) <= day && isDue($0, on: day)
+                && (!$0.frequency.isFlexible || isDayMet($0, on: day))
         }
         return (due.filter { isDone($0, on: day) }.count, due.count)
     }
@@ -202,6 +203,8 @@ final class HabitStore {
 
     private func periodRange(_ habit: Habit, containing day: LocalDay) -> ClosedRange<LocalDay>? {
         switch habit.frequency {
+        case .flexible(let kind, _):
+            switch kind { case .week: period(.week, containing: day); case .month: period(.month, containing: day); case .year: period(.year, containing: day); case .day: day...day }
         case .perWeek: period(.week, containing: day)
         case .perMonth: period(.month, containing: day)
         case .perYear: period(.year, containing: day)
@@ -254,7 +257,18 @@ final class HabitStore {
         }
         guard day >= created else { return false }
         switch habit.frequency {
-        case .daily, .perWeek, .perMonth, .perYear:
+        case .calendar(let rule):
+            return rule.matches(day, start: created, calendar: calendar)
+        case .afterCompletion(let n, let unit):
+            // Read actual completion dates, including late completions; no fabricated history.
+            let completions = entries.filter { $0.habitID == habit.id && $0.day <= day }.map(\.day)
+            if completions.contains(day) { return true }
+            let next: LocalDay
+            if let last = completions.max() {
+                next = LocalDay(calendar.date(byAdding: unit.component, value: n, to: last.date(calendar: calendar))!, calendar: calendar)
+            } else { next = created }
+            return day >= next
+        case .daily, .perWeek, .perMonth, .perYear, .flexible:
             return true
         case .weekdays(let days):
             return days.contains(calendar.component(.weekday, from: day.date(calendar: calendar)))
@@ -316,21 +330,22 @@ final class HabitStore {
 
     /// Completions in the week or month: ticks for "Do it", met days for everything else.
     private func periodCount(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Double {
-        if habit.kind == .check {
+        if habit.kind == .check, !habit.frequency.isFlexible {
             return entries.lazy.filter { $0.habitID == habit.id && $0.stepID == nil && range.contains($0.day) }.reduce(0) { $0 + $1.value }
         }
         var count = 0.0
         var day = range.lowerBound
         while day <= range.upperBound {
-            if isDayMet(habit, on: day) { count += 1 }
+            if day >= startDay(of: habit), day <= (habit.endsOn ?? range.upperBound), isDayMet(habit, on: day) { count += 1 }
             day = day.adding(days: 1, calendar: calendar)
         }
         return count
     }
 
-    /// Shown on the card: today's amount for day rules, completions so far for week and month rules.
+    /// Shown on the card: daily quantities (including flexible schedules) or aggregate quantities.
+    /// Flexible quota progress is shown separately so 15/30 min and 2/4 days cannot be confused.
     func progress(of habit: Habit, on day: LocalDay, now: Date = .now) -> Double {
-        if let range = periodRange(habit, containing: day) {
+        if !habit.frequency.isFlexible, let range = periodRange(habit, containing: day) {
             return isTotal(habit) ? periodTotal(habit, in: range, now: now) : periodCount(habit, in: range)
         }
         return dayProgress(of: habit, on: day, now: now)
@@ -350,12 +365,30 @@ final class HabitStore {
         case .task: return dayProgress(of: habit, on: day) >= 1
         default: break
         }
-        if let range = periodRange(habit, containing: day) {
+        if !habit.frequency.isFlexible, let range = periodRange(habit, containing: day) {
             guard isTotal(habit) else { return periodCount(habit, in: range) >= goal(of: habit) }
             let total = periodTotal(habit, in: range)
             return habit.atMost ? total <= habit.goal : total >= habit.goal
         }
         return isDayMet(habit, on: day)
+    }
+
+    func flexibleProgress(_ habit: Habit, on day: LocalDay) -> Int? {
+        guard habit.frequency.isFlexible, let range = periodRange(habit, containing: day) else { return nil }
+        return Int(periodCount(habit, in: range))
+    }
+
+    /// The daily action can remain available after a flexible quota is met; reminders and the
+    /// section's remaining count must not imply that extra days are required.
+    func isSatisfied(_ habit: Habit, on day: LocalDay) -> Bool {
+        isDone(habit, on: day) || (habit.frequency.isFlexible && isPeriodMet(habit, on: day))
+    }
+
+    func isPeriodMet(_ habit: Habit, on day: LocalDay) -> Bool {
+        if case .flexible(_, let needed) = habit.frequency {
+            return (flexibleProgress(habit, on: day) ?? 0) >= needed
+        }
+        return isDone(habit, on: day)
     }
 
     /// A habit ticked per section (round 4 data): whether this section's tick is done.
@@ -373,9 +406,9 @@ final class HabitStore {
         guard habit.kind != .quit, habit.kind != .task else { return 0 }
         let created = startDay(of: habit)
         if let current = periodRange(habit, containing: day) {
-            var count = isDone(habit, on: day) ? 1 : 0
+            var count = isPeriodMet(habit, on: day) ? 1 : 0
             var cursor = current.lowerBound.adding(days: -1, calendar: calendar)
-            while cursor >= created, let range = periodRange(habit, containing: cursor), isDone(habit, on: cursor) {
+            while cursor >= created, let range = periodRange(habit, containing: cursor), isPeriodMet(habit, on: cursor) {
                 count += 1
                 cursor = range.lowerBound.adding(days: -1, calendar: calendar)
             }
@@ -630,7 +663,7 @@ final class HabitStore {
 
     private func undoLast(_ habit: Habit, on day: LocalDay) async throws {
         // Undo the latest log on this day; for week and month rules, the latest one in the period.
-        let range = periodRange(habit, containing: day) ?? (day...day)
+        let range = habit.frequency.isFlexible ? (day...day) : (periodRange(habit, containing: day) ?? (day...day))
         guard let i = entries.lastIndex(where: { $0.habitID == habit.id && $0.stepID == nil && range.contains($0.day) }) else { return }
         try await repository.removeEntry(id: entries[i].id.uuidString, at: Date.now.millis)
         withAnimation { _ = entries.remove(at: i) }

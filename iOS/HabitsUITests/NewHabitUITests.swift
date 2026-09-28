@@ -91,9 +91,14 @@ final class NewHabitUITests: XCTestCase {
     private func setGoal(_ amount: String, unit: String? = nil, period: String? = nil) {
         row("Goal").tap()
         XCTAssertTrue(app.navigationBars["Goal"].waitForExistence(timeout: 3))
-        if let period { app.segmentedControls["goal-period"].buttons[period].tap() }
         let field = app.textFields["goal-amount"]
         field.tap(); sleep(1); field.typeText(amount)
+        if let period {
+            app.toolbars.buttons["Done"].firstMatch.tap()
+            app.buttons["goal-period"].tap()
+            app.buttons[["Weekly": "A week", "Monthly": "A month", "Yearly": "A year"][period]!].firstMatch.tap()
+            app.alerts.buttons["Use Any Day"].tap()
+        }
         if let unit {
             let done = app.toolbars.buttons["Done"].firstMatch
             if done.exists && done.isHittable { done.tap(); sleep(1) }
@@ -106,8 +111,8 @@ final class NewHabitUITests: XCTestCase {
     }
 
     private func repeatScreen(_ option: String) {
-        row("Repeat").tap()
-        XCTAssertTrue(app.navigationBars["Repeat"].waitForExistence(timeout: 3))
+        row("Schedule").tap()
+        XCTAssertTrue(app.navigationBars["Schedule"].waitForExistence(timeout: 3))
         app.buttons[option].firstMatch.tap()
     }
 
@@ -117,7 +122,7 @@ final class NewHabitUITests: XCTestCase {
         type(name: "Drink water")
         XCTAssertFalse(app.navigationBars["Track an amount"].buttons["Add"].isEnabled, "No goal, no Add")
         setGoal("8", unit: "glasses")
-        XCTAssertTrue(row("Goal, 8 glasses a day").exists)
+        XCTAssertTrue(row("Goal, 8 glasses").exists)
         XCTAssertEqual(app.descendants(matching: .any)["name-field"].value as? String, "Drink water", "Coming back leaves the name alone")
         let remove = app.buttons["Remove reminder"].firstMatch
         scrollTo(remove)
@@ -137,7 +142,7 @@ final class NewHabitUITests: XCTestCase {
         type(name: "Gym")
         setGoal("3", period: "Weekly")
         XCTAssertTrue(row("Goal, 3 times a week").exists)
-        XCTAssertFalse(row("Repeat").exists, "A weekly goal has no daily schedule")
+        XCTAssertTrue(row("Schedule, Any day this week").exists)
         app.navigationBars["Check it off"].buttons["Add"].tap()
         allowNotificationsIfAsked()
         sleep(2); shot("06b-after-add")
@@ -184,12 +189,11 @@ final class NewHabitUITests: XCTestCase {
     func testLimitCanBeAWeeklyTotal() {
         open("Quit or cut down", "Cut down", title: "Cut down")
         type(name: "Cigarettes")
-        repeatScreen("A Weekly Total")
-        XCTAssertFalse(app.buttons["A Few Times a Week"].exists, "Amounts use totals, not a count of days")
-        shot("09-limit-repeat")
-        back()
-        row("Goal").tap()
-        XCTAssertTrue(app.staticTexts["Weekly limit"].waitForExistence(timeout: 2))
+        XCTAssertFalse(row("Schedule").exists)
+        row("Limit").tap()
+        row("Limit counts over").tap()
+        app.buttons["A week"].firstMatch.tap()
+        shot("09-limit-period")
         // The limit's number shows what's typed (the field isn't sized to its placeholder).
         let field = app.textFields["No more than"]
         field.tap(); field.typeText("20")
@@ -208,7 +212,7 @@ final class NewHabitUITests: XCTestCase {
         app.buttons["Evening"].firstMatch.tap()
         back()
         XCTAssertTrue(row("Time of Day, Morning, Evening").exists)
-        XCTAssertTrue(row("Goal, 2 times a day").exists, "Picking parts leaves the goal alone")
+        XCTAssertTrue(row("Goal, 2 times").exists, "Picking parts leaves the goal alone")
         // One reminder per part of the day, labelled with its part (the Starts date is a picker too, so count by name).
         for part in ["Morning", "Evening"] {
             let reminder = app.staticTexts["\(part) reminder"]
@@ -348,13 +352,10 @@ final class NewHabitUITests: XCTestCase {
     func testFirstDueForCertainDays() {
         open("Build or maintain", "Check it off", title: "Check it off")
         type(name: "Gym")
-        repeatScreen("On Certain Days")
-        let today = Calendar.current.component(.weekday, from: .now)
-        let keep: Set<Int> = [2, 4, 6].contains(today) ? [3, 5, 7] : [2, 4, 6]
-        let names = Calendar.current.standaloneWeekdaySymbols
-        for day in 1...7 where !keep.contains(day) { app.buttons[names[day - 1]].tap() }
-        let firstDue = app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'First due'")).firstMatch
-        XCTAssertTrue(firstDue.waitForExistence(timeout: 2), "The Repeat screen says when it first shows")
+        repeatScreen("Specific days")
+        app.buttons["Weekdays"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["schedule-summary"].exists)
+        XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'break the streak'")).firstMatch.exists)
         shot("23-first-due")
     }
 }

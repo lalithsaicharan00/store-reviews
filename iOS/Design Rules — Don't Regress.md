@@ -37,7 +37,7 @@ Source: [Habit Flow Copy — Deep Research Report](<../Research/Research Reports
 
 Sources: [Goals — Periods, Entry and What + Adds](<../Research/Research Reports/Habit Creation/Goals — Periods, Entry and What + Adds.md>), [Goal Screen Round 2](<../Research/Research Reports/Habit Creation/Goal Screen Round 2 — Icons, Periods, Units and Copy.md>).
 
-- **Periods are independent:** Daily · Weekly · Monthly · Yearly. A weekly goal never needs a daily goal under it. Summaries say "**a** day" / "**a** week" (reviewers write "a day" 4× more than "per day"). Don't use a bare "Per" header.
+- **Goal counts over is a labelled menu:** A day · A week · A month · A year. The period says when quantities start again; it is not recurrence. Daily form-row values omit "a day"; period goals retain it. This supersedes the earlier unlabeled Daily/Weekly segments based on the supplied [Schedule and Goal research](<../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>).
 - **Typed numbers, not wheels** for counts. Time: wheels plus a Type option. **No caps.** A number field **selects its value when tapped**, so typing replaces it.
 - **No "Each tap adds" question.**
   - + adds 1 when the goal is whole and ≤ 10, or the unit happens one at a time (books, glasses…).
@@ -48,6 +48,22 @@ Sources: [Goals — Periods, Entry and What + Adds](<../Research/Research Report
 - **Check it off stays Check it off, whatever the unit.** ✓ counts one; the unit only names it ("3/8 glasses"); whole numbers only; units that happen one at a time only.
 - **Copy never says** due, overdue, missed, failed, minimum or "First period" (overdue and red labels stress people; ADHD reviewers praise shame-free apps). Say what **counts** and when it **starts fresh**, and name the user's own week start.
 - **Units** are grouped by what people track (Drinking, Walking and running, Reading and writing, Exercise, Everyday, Money), with metric or imperial first by region. Making your own unit is a green ⊕ **Create Your Own Unit** row, the same pattern as Add Reminder.
+
+## Schedule and Goal: one success clock
+
+Source: [Schedule and Goal — One Coherent System](<../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>), supplied by the user and archived 28 September 2026. This supersedes conflicting earlier Repeat/Goal guidance.
+
+- **Schedule owns calendar days; Goal owns quantity.** Keep both form rows visible. A longer Goal shows Schedule as "Any day this week/month/year".
+- **Never silently replace a schedule.** Confirm before moving a daily goal to an aggregate period; retain its inactive Schedule draft. Returning to daily offers restoration or Every day. Editing Schedule from a period goal confirms the move back to daily.
+- **Flexible schedules count different dates, never taps.** Check, amount, time and checklist all support N days/week/month/year. A day qualifies only after reaching its daily goal. More logs on that date never earn a second day. Extra qualifying days remain loggable after the quota.
+- **One check-off per week/month/year canonicalises to one flexible day**, with explicit confirmation. Higher period counts can count multiple logs on the same date. Never reinterpret an existing saved period count as a distinct-day quota.
+- **Four main choices:** Every day, Specific days, Every…, A number of days. Parameters expand immediately after the selected choice. Keep the read-back and explanation above them.
+- **Specific days starts with the Starts-date weekday.** Keep at least one selected; selecting all seven canonicalises to Every day. Full VoiceOver weekday labels, 44-point targets, large-text vertical layout, and a visible checkmark distinguish selection.
+- **Starts is the recurrence anchor.** Show it and the next generated occurrence for interval rules. Every-N-weeks stores its anchor week start, so changing display week start cannot shift it. Flexible weekly quotas and aggregate Goals use the current user preference.
+- **Monthly/yearly recurrence is explicit:** selected dates, last day, ordinal weekday, month/year intervals; shorter-month and leap-day fallback/skip policies are visible. Off-days stay neutral. Schedule copy does not explain streaks or deadlines.
+- **Cut down has Limit, not Goal or Schedule.** Its day/week/month period belongs to Limit. Today says "logged · limit", never a target to reach.
+- **Tasks can repeat after actual completion.** Fixed recurrence remains available; completion-relative recurrence is not offered for habits.
+- **Research recommendations are not usability results.** The proposed participant study remains unperformed; simulator tests do not establish comprehension rates.
 
 ## Logging a count
 

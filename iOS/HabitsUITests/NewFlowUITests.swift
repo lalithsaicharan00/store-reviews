@@ -71,10 +71,10 @@ final class NewFlowUITests: XCTestCase {
         shot("f05-time-of-day-screen")
         back()
         XCTAssertTrue(row("Time of Day, Morning, Afternoon").waitForExistence(timeout: 3))
-        XCTAssertTrue(row("Goal, 4 times a day").exists, "Picking parts of the day leaves the goal alone")
+        XCTAssertTrue(row("Goal, 4 times").exists, "Picking parts of the day leaves the goal alone")
         // Repeat, with start and end dates.
-        row("Repeat").tap()
-        XCTAssertTrue(app.navigationBars["Repeat"].waitForExistence(timeout: 3))
+        row("Schedule").tap()
+        XCTAssertTrue(app.navigationBars["Schedule"].waitForExistence(timeout: 3))
         shot("f05b-repeat-screen")
         back()
         // Colour pops up.

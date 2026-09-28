@@ -83,7 +83,12 @@ final class GoalFlowUITests: XCTestCase {
     }
 
     private func period(_ name: String) {
-        app.segmentedControls["goal-period"].buttons[name].tap()
+        dismissKeyboard()
+        app.buttons["goal-period"].tap()
+        let label = ["Daily": "A day", "Weekly": "A week", "Monthly": "A month", "Yearly": "A year"][name]!
+        app.buttons[label].firstMatch.tap()
+        if app.alerts.buttons["Use Any Day"].waitForExistence(timeout: 1) { app.alerts.buttons["Use Any Day"].tap() }
+        if app.alerts.buttons["Restore Schedule"].exists { app.alerts.buttons["Restore Schedule"].tap() }
     }
 
     private func addHabit() {
@@ -108,7 +113,7 @@ final class GoalFlowUITests: XCTestCase {
         shot("g02-count-goal-2000ml")
         XCTAssertTrue(summary("2k ml a day"))
         back()
-        XCTAssertTrue(row("Goal, 2k ml a day").exists)
+        XCTAssertTrue(row("Goal, 2k ml").exists)
         shot("g03-count-form")
         addHabit()
         rowButton("Add amount to Hydrate").tap()
@@ -150,7 +155,7 @@ final class GoalFlowUITests: XCTestCase {
         shot("g20-count-goal-12-books-year")
         back()
         XCTAssertTrue(row("Goal, 12 books a year").exists)
-        XCTAssertFalse(row("Repeat").exists, "A year goal has no daily schedule")
+        XCTAssertTrue(row("Schedule, Any day this year").exists)
         shot("g21-count-form-year")
     }
 
@@ -159,12 +164,12 @@ final class GoalFlowUITests: XCTestCase {
         newHabit("Check it off", name: "Gym")
         openGoal()
         shot("g30-check-goal-default")
-        period("Weekly")
         typeAmount("3")
+        period("Weekly")
         shot("g31-check-goal-3-week")
         back()
         XCTAssertTrue(row("Goal, 3 times a week").exists)
-        XCTAssertFalse(row("Repeat").exists)
+        XCTAssertTrue(row("Schedule, Any day this week").exists)
         shot("g32-check-form-week")
     }
 
@@ -220,7 +225,7 @@ final class GoalFlowUITests: XCTestCase {
         chooseUnit("glasses")
         shot("r03-check-goal-8-glasses")
         back()
-        XCTAssertTrue(row("Goal, 8 glasses a day").exists)
+        XCTAssertTrue(row("Goal, 8 glasses").exists)
         addHabit()
         rowButton("Mark Hydrate done").tap()
         sleep(1)
@@ -246,6 +251,11 @@ final class GoalFlowUITests: XCTestCase {
         openGoal()
         let amount = app.textFields["goal-amount"]
         XCTAssertTrue(amount.waitForExistence(timeout: 3))
+        // Explicitly enter the field as a person would. Simulator can leave the software
+        // keyboard hidden after the name field's Return, even while this field owns focus.
+        amount.tap()
+        let visibleKey = XCTNSPredicateExpectation(predicate: NSPredicate(format: "hittable == true"), object: app.keys["2"])
+        XCTAssertEqual(XCTWaiter.wait(for: [visibleKey], timeout: 4), .completed, "The number keyboard is visible for editing")
         for (i, key) in ["2", "5", "0", "0"].enumerated() {
             app.keys[key].tap(); usleep(400_000)
             let typed = String("2500".prefix(i + 1))
@@ -260,7 +270,7 @@ final class GoalFlowUITests: XCTestCase {
         XCTAssertEqual(amount.value as? String, "7")
         shot("k02-replaced-7")
         back()
-        let goalRow = row("Goal, 7 ml a day")
+        let goalRow = row("Goal, 7 ml")
         if !goalRow.waitForExistence(timeout: 3) {
             shot("k02b-form-after-back")
             XCTFail("Goal row: " + app.buttons.allElementsBoundByIndex.map(\.label).filter { $0.hasPrefix("Goal") }.joined(separator: " | "))
@@ -289,7 +299,7 @@ final class GoalFlowUITests: XCTestCase {
         XCTAssertTrue(summary("8 a week"))
         period("Daily")
         back()
-        XCTAssertTrue(row("Goal, 8 a day").exists)
+        XCTAssertTrue(row("Goal, 8").exists)
         XCTAssertTrue(app.navigationBars["Track an amount"].buttons["Add"].isEnabled, "No unit needed to add it")
         addHabit()
         let line = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '0/8'")).firstMatch

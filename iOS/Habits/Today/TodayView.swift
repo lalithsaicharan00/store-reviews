@@ -218,7 +218,7 @@ struct TodayView: View {
 
     private func isDone(_ item: TodayItem, on day: LocalDay) -> Bool {
         // A habit ticked per section is done here once this section's tick is.
-        item.placement.slot.map { store.isSlotDone(item.habit, slot: $0, on: day) } ?? store.isDone(item.habit, on: day)
+        item.placement.slot.map { store.isSlotDone(item.habit, slot: $0, on: day) } ?? store.isSatisfied(item.habit, on: day)
     }
 
     @ViewBuilder

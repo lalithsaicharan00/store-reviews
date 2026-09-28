@@ -1,5 +1,7 @@
 # New Habit — the Complete Decided Spec
 
+> **28 September 2026 update:** Schedule/Goal behaviour below is historical where it conflicts with [Schedule and Goal — One Coherent System](<../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>) and [Design Rules — Don't Regress](<Design Rules — Don't Regress.md>). Schedule stays visible for aggregate goals; flexible distinct-day schedules work with daily quantities; Goal uses a labelled period menu; Cut down uses Limit.
+
 Written by Claude (Claude Code), 27 September 2026, from the user's decisions the same day. **This is the one place for everything decided about creating and editing a habit.** Build from this file.
 
 - **Evidence:** [Time of Day and Reminders — What Users Want](<../Research/Research Reports/Habit Creation/Time of Day and Reminders — What Users Want.md>) (main report plus addenda 1–5).

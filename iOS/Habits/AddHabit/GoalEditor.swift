@@ -1,11 +1,12 @@
 import SwiftUI
 
-/// The Goal screen for Check it off, Track an amount and Time it. From the top: what you're setting, read
-/// back big (not a row, so it never looks editable, and above the keyboard); Daily · Weekly · Monthly · Yearly;
-/// then the amount. Copy says what counts and when it starts fresh, never "due" or "missed"
-/// (research: "Goal Screen Round 2 — Icons, Periods, Units and Copy", T4–T8).
+/// Quantity and reset period, separate from Schedule. Period changes that replace the active
+/// calendar rule are confirmed; the Schedule draft survives for restoration.
 struct GoalEditor: View {
     @Binding var goal: GoalDraft
+    @Binding var schedule: ScheduleDraft
+    @State private var pendingPeriod: GoalPeriod?
+    @State private var confirmPeriod = false
     let timed: Bool
     let check: Bool
     let usedUnits: [String]
@@ -15,31 +16,51 @@ struct GoalEditor: View {
 
     private var value: Double? { goal.value(timed: timed, check: check) }
 
-    /// What counts, in the type's own words.
-    private var done: String {
-        timed ? "All the time you log" : check ? "Every time you check it off" : "Everything you log"
-    }
-
     private var periodNote: String {
         switch goal.period {
-        case .day:
-            return "Starts fresh every day. Choose which days in Repeat."
+        case .day: return "Starts again each scheduled day."
         case .week:
-            let names = Calendar.current.standaloneWeekdaySymbols
-            let first = names[(weekStart - 1) % 7], last = names[(weekStart + 5) % 7]
-            return "Do it on any days. \(done) from \(first) to \(last) counts, then it starts fresh."
-        case .month:
-            return "Do it on any days. \(done) this month counts, and it starts fresh on the 1st."
+            let first = Calendar.current.standaloneWeekdaySymbols[(weekStart - 1) % 7]
+            return "Everything you log this week adds up. It starts again on \(first)."
+        case .month: return "Everything you log this month adds up. It starts again on the 1st."
         case .year:
-            let jan1 = Calendar.current.date(from: DateComponents(year: 2026, month: 1, day: 1)) ?? .now
-            let text = jan1.formatted(.dateTime.day().month(.wide))
-            return "Do it on any days. \(done) this year counts, and it starts fresh on \(text)."
+            let first = Calendar.current.date(from: DateComponents(year: 2026, month: 1, day: 1))!
+            return "Everything you log this year adds up. It starts again on \(first.formatted(.dateTime.day().month(.wide)))."
         }
+    }
+
+    private var periodSelection: Binding<GoalPeriod> {
+        Binding(get: { goal.period }, set: { proposed in
+            guard proposed != goal.period else { return }
+            typing = false
+            if goal.period == .day || proposed == .day {
+                pendingPeriod = proposed
+                confirmPeriod = true
+            } else { goal.period = proposed }
+        })
+    }
+    private var oncePerPeriod: Bool {
+        check && goal.amountValue(check: true) == 1 && pendingPeriod != .day
+    }
+    private var transitionTitle: String {
+        if pendingPeriod == .day { return "Restore \(schedule.summary)?" }
+        if oncePerPeriod { return "Use 1 day a \(pendingPeriod?.noun ?? "week")?" }
+        return "Use Any Day?"
+    }
+    private func acceptPeriod() {
+        guard let period = pendingPeriod else { return }
+        if oncePerPeriod {
+            schedule.mode = .flexible
+            schedule.flexiblePeriod = period
+            schedule.count = 1
+            goal.period = .day
+        } else { goal.period = period }
+        pendingPeriod = nil
     }
 
     private var todayNote: String {
         if timed { return "On Today, ▶ starts a timer that keeps going when you leave the app. To type the time instead, tap the habit." }
-        if check { return "On Today, each tap on ✓ counts one. The unit just names what you're counting." }
+        if check { return "Each tap on ✓ adds one. The unit names what you're counting." }
         return CountLogging.explanation(goal: value, unit: goal.trimmedUnit)
     }
 
@@ -50,17 +71,17 @@ struct GoalEditor: View {
             }
             .listRowBackground(Color.clear)
             Section {
-                Picker("Goal period", selection: $goal.period.animation()) {
+                Picker("Goal counts over", selection: periodSelection) {
                     ForEach(GoalPeriod.allCases) { Text($0.label).tag($0) }
                 }
-                .pickerStyle(.segmented)
+                .pickerStyle(.menu)
                 .accessibilityIdentifier("goal-period")
             } footer: {
                 Text(periodNote).formNote()
             }
             if timed {
                 DurationInput(hours: $goal.hours, minutes: $goal.minutes, period: goal.period,
-                              header: "\(goal.period.label) goal", note: todayNote)
+                              header: "Goal", note: todayNote)
             } else {
                 Section {
                     LabeledContent("Amount") {
@@ -82,7 +103,7 @@ struct GoalEditor: View {
                     }
                     .accessibilityIdentifier("goal-unit")
                 } header: {
-                    Text("\(goal.period.label) goal")
+                    Text("Goal")
                 } footer: {
                     Text(entryError ?? todayNote).formNote()
                 }
@@ -99,6 +120,18 @@ struct GoalEditor: View {
             ToolbarItemGroup(placement: .keyboard) {
                 if typing { Spacer(); Button("Done") { typing = false }.fontWeight(.semibold) }
             }
+        }
+        .alert(transitionTitle, isPresented: $confirmPeriod) {
+            Button(pendingPeriod == .day ? "Restore Schedule" : oncePerPeriod ? "Use 1 Day" : "Use Any Day", action: acceptPeriod)
+            if pendingPeriod == .day {
+                Button("Every day") { schedule.mode = .daily; goal.period = .day; pendingPeriod = nil }
+            }
+            Button("Cancel", role: .cancel) { pendingPeriod = nil }
+        } message: {
+            Text(pendingPeriod == .day
+                 ? "Your goal will start again each scheduled day."
+                 : oncePerPeriod ? "One check-off in a period is one successful day. Schedule will count that day, with a goal of once a day."
+                 : "Your \(pendingPeriod?.noun ?? "week") goal adds up across the period, so the current day schedule won't apply. Your previous schedule is kept for later.")
         }
         // Track an amount opens empty, so the keyboard is ready for its number.
         .task { if !timed && goal.amount.isEmpty { typing = true } }
@@ -123,10 +156,10 @@ struct GoalReadBack: View {
             Text(amount ?? "—")
                 .font(.system(.largeTitle, design: .rounded).weight(.bold).monospacedDigit())
                 .foregroundStyle(amount == nil ? .tertiary : .primary)
-                .lineLimit(1)
-                .minimumScaleFactor(0.6)
+                .fixedSize(horizontal: false, vertical: true)
+                .multilineTextAlignment(.center)
                 .contentTransition(.numericText())
-            Text(amount == nil ? "Enter your goal below" : period.suffix)
+            Text(amount == nil ? "Set your goal below." : period.suffix)
                 .font(.title3)
                 .foregroundStyle(.secondary)
         }
@@ -188,13 +221,13 @@ struct DurationInput: View {
                         TextField("0", text: $hours).keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing).focused($typing, equals: .hours)
                             .font(.body.monospacedDigit().weight(.semibold))
-                            .frame(minWidth: 28, maxWidth: 72).fixedSize(horizontal: true, vertical: false)
+                            .frame(minWidth: 28, maxWidth: 72)
                             .accessibilityLabel("Hours").accessibilityIdentifier("duration-hours")
                         Text("h").foregroundStyle(.secondary)
                         TextField("0", text: $minutes).keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing).focused($typing, equals: .minutes)
                             .font(.body.monospacedDigit().weight(.semibold))
-                            .frame(minWidth: 28, maxWidth: 44).fixedSize(horizontal: true, vertical: false)
+                            .frame(minWidth: 28, maxWidth: 44)
                             .accessibilityLabel("Minutes").accessibilityIdentifier("duration-minutes")
                         Text("min").foregroundStyle(.secondary)
                     }
