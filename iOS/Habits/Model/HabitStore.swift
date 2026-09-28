@@ -21,6 +21,8 @@ struct DaySettings: Codable, Hashable, Sendable {
 final class HabitStore {
     @ObservationIgnored private let repository: HabitRepository
     @ObservationIgnored private var writeQueue: Task<Void, Never>?
+    /// Tried once per launch, so a failing write can't loop through reloads.
+    @ObservationIgnored private var triedPlacementUpgrade = false
     /// False until the first load finishes; the UI waits rather than flashing an empty screen.
     private(set) var isLoaded = false
     /// Shown to the user when a write fails or the data can't be read.
@@ -35,6 +37,8 @@ final class HabitStore {
     var settings = DaySettings()
     /// Running timers for duration habits: habit ID → start time.
     private(set) var timers: [UUID: Date] = [:]
+    /// For a timed habit spread over times of day: the part a running timer is for.
+    private(set) var timerSlots: [UUID: String] = [:]
     /// Plus unlocks unlimited habits. Set from the store purchase (build-plan: billing, later).
     var isPlus = false
     static let freeHabitLimit = 5
@@ -73,7 +77,7 @@ final class HabitStore {
     /// One definition for the day bar and calendar. Count a multi-section habit only once.
     func daySummary(on day: LocalDay) -> (done: Int, total: Int) {
         let due = habits.filter {
-            !$0.archived && $0.kind != .quit && LocalDay($0.createdAt, calendar: calendar) <= day && isDue($0, on: day)
+            !$0.archived && $0.kind != .quit && startDay(of: $0) <= day && isDue($0, on: day)
         }
         return (due.filter { isDone($0, on: day) }.count, due.count)
     }
@@ -98,12 +102,62 @@ final class HabitStore {
     /// The section that is "Now", if any.
     func nowSection(now: Date = .now) -> DaySection? {
         let c = calendar.dateComponents([.hour, .minute], from: now)
-        var minute = (c.hour ?? 0) * 60 + (c.minute ?? 0)
-        if minute < settings.dayEndHour * 60 { minute += 24 * 60 }
+        let minute = dayMinute((c.hour ?? 0) * 60 + (c.minute ?? 0))
         return timedSections.first { ($0.section.start ?? 0) <= minute && minute < $0.end }?.section
     }
 
-    /// Saves the whole list; habits in a removed section move to Anytime.
+    /// A clock minute on the user's day: times before the day's end belong to the night before, so they
+    /// come after midnight (1:00 AM with the day ending at 3 is 25:00).
+    func dayMinute(_ minute: Int) -> Int {
+        minute < settings.dayEndHour * 60 ? minute + 24 * 60 : minute
+    }
+
+    /// The section a time falls in: the timed section that contains it. Before the first section it
+    /// counts as the first; after the last one's end, as the last. With no timed sections, Anytime.
+    func section(forMinute minute: Int) -> DaySection {
+        let timed = timedSections
+        guard let first = timed.first, let last = timed.last else { return section(.anytime) }
+        let m = dayMinute(minute)
+        if m < first.section.start! { return first.section }
+        return timed.first { $0.section.start! <= m && m < $0.end }?.section ?? last.section
+    }
+
+    /// Where a habit shows on Today: one entry per row. Its time of day decides (`parts`); reminders
+    /// never move it ("Time of Day and Reminders — What Users Want"). `slot` is the section ID for a
+    /// habit ticked once per time of day (Check it off on a set schedule, in two or more), else nil.
+    struct Placement: Hashable {
+        let section: String
+        let slot: String?
+        /// The reminder times that belong to this row, earliest first on the user's day.
+        let times: [ReminderTime]
+    }
+
+    func placements(of habit: Habit) -> [Placement] {
+        guard habit.kind != .quit else { return [] }
+        let times = habit.reminders.sorted { dayMinute($0.minuteOfDay) < dayMinute($1.minuteOfDay) }
+        var seen = Set<String>()
+        let chosen = habit.parts.map { section($0).id }.filter { seen.insert($0).inserted }
+        let order = sections.map(\.id)
+        let parts = chosen.sorted { (order.firstIndex(of: $0) ?? 99) < (order.firstIndex(of: $1) ?? 99) }
+        guard parts.count >= 2 else {
+            return [Placement(section: chosen.first ?? .anytime, slot: nil, times: times)]
+        }
+        // Each reminder belongs to the tick of its own time of day; one outside them all, to the tick
+        // before it (or the first), so it still stops once that tick is done.
+        var byPart: [String: [ReminderTime]] = [:]
+        let starts = parts.map { section($0).start.map(dayMinute) ?? 0 }
+        for time in times {
+            let own = section(forMinute: time.minuteOfDay).id
+            let m = dayMinute(time.minuteOfDay)
+            let home = parts.contains(own) ? own : (Array(zip(parts, starts)).last { $0.1 <= m }?.0 ?? parts[0])
+            byPart[home, default: []].append(time)
+        }
+        // The time of day only says where it's displayed: the same row, with one shared progress, in each
+        // chosen part. The goal is never split (the user's decision, 28 Sep).
+        return parts.map { Placement(section: $0, slot: nil, times: byPart[$0] ?? []) }
+    }
+
+    /// Saves the whole list; habits in a removed time of day move to Anytime.
     func saveSections(_ list: [DaySection]) {
         let sorted = [list.first { $0.isAnytime } ?? DaySection.defaults[0]]
             + list.filter { !$0.isAnytime }.sorted { $0.start! < $1.start! }
@@ -154,13 +208,10 @@ final class HabitStore {
 
     // MARK: Calculations
 
-    /// The sections a habit is ticked in separately: two or more, for Check it off only.
-    /// Empty for everything else (one row, one progress).
+    /// The times of day a habit is ticked in separately: two or more, for Check it off on a set
+    /// schedule. Empty for everything else (one row, one progress).
     func slots(of habit: Habit) -> [String] {
-        guard habit.kind == .check else { return [] }
-        var seen = Set<String>()
-        let ids = habit.parts.map { section($0).id }.filter { seen.insert($0).inserted }
-        return ids.count > 1 ? ids : []
+        placements(of: habit).compactMap(\.slot)
     }
 
     /// Amounts, minutes and limits on a week or month rule: a total for the whole period.
@@ -179,14 +230,21 @@ final class HabitStore {
         return total
     }
 
+    /// The first day a habit counts: its start date (past or future), or the day it was made.
+    func startDay(of habit: Habit) -> LocalDay {
+        habit.startsOn ?? LocalDay(habit.createdAt, calendar: calendar)
+    }
+
     /// Whether the habit belongs on `day`. Days that aren't due are hidden on Today and never break a streak.
-    /// Unfinished one-time tasks move forward to today.
+    /// Unfinished one-time tasks move forward to today. Nothing is due before the start or after the end date.
     func isDue(_ habit: Habit, on day: LocalDay, now: Date = .now) -> Bool {
-        let created = LocalDay(habit.createdAt, calendar: calendar)
+        let created = startDay(of: habit)
+        if let end = habit.endsOn, day > end, habit.kind != .quit { return false }
         switch habit.kind {
         case .quit: return false
         case .task:
-            guard let due = habit.dueDay else { return false }
+            // A task with no date repeats on its schedule, like a habit.
+            guard let due = habit.dueDay else { break }
             if day == due { return true }
             return due < day && day == today(now: now) && !isDone(habit, on: day)
         default: break
@@ -227,13 +285,17 @@ final class HabitStore {
             return Double(habit.steps.filter { ticked.contains($0.id) }.count)
         }
         if habit.kind == .task {
+            // A one-time task is done once; a repeating one each day it's due.
+            if habit.dueDay == nil { return entries.contains { $0.habitID == habit.id && $0.day == day } ? 1 : 0 }
             return entries.contains { $0.habitID == habit.id } ? 1 : 0
         }
         let slots = slots(of: habit)
-        if !slots.isEmpty {
-            // One per section ticked; older ticks without a section still count.
+        if habit.kind == .check && !slots.isEmpty {
+            // One per section ticked, plus older ticks without a section, capped at the number of rows.
+            // Ticks aren't matched to today's sections, so a section edit that re-files a time can
+            // never turn a finished day unfinished.
             let today = entries.filter { $0.habitID == habit.id && $0.stepID == nil && $0.day == day }
-            let ticked = Set(today.compactMap(\.slot)).intersection(slots).count
+            let ticked = Set(today.compactMap(\.slot)).count
             let loose = today.filter { $0.slot == nil }.reduce(0) { $0 + $1.value }
             return min(Double(slots.count), Double(ticked) + loose)
         }
@@ -293,7 +355,7 @@ final class HabitStore {
         return isDayMet(habit, on: day)
     }
 
-    /// A habit in several sections: whether this section's tick is done.
+    /// A habit ticked per section (round 4 data): whether this section's tick is done.
     func isSlotDone(_ habit: Habit, slot: String, on day: LocalDay) -> Bool {
         entries.contains { $0.habitID == habit.id && $0.slot == slot && $0.day == day }
     }
@@ -306,7 +368,7 @@ final class HabitStore {
     /// only counts once met, so an unfinished today never breaks the streak.
     func streak(of habit: Habit, asOf day: LocalDay) -> Int {
         guard habit.kind != .quit, habit.kind != .task else { return 0 }
-        let created = LocalDay(habit.createdAt, calendar: calendar)
+        let created = startDay(of: habit)
         if let current = periodRange(habit, containing: day) {
             var count = isDone(habit, on: day) ? 1 : 0
             var cursor = current.lowerBound.adding(days: -1, calendar: calendar)
@@ -350,8 +412,12 @@ final class HabitStore {
             entries = snapshot.entries.compactMap(Entry.init(record:))
             var loaded = DaySettings()
             var running: [UUID: Date] = [:]
+            var runningSlots: [UUID: String] = [:]
+            var upgradedV1 = false, repaired = false
             for setting in snapshot.settings {
                 switch setting.key {
+                case Keys.placementV1: upgradedV1 = true
+                case Keys.placementV2: repaired = true
                 case Keys.dayEndHour: loaded.dayEndHour = Int(setting.value) ?? 0
                 case Keys.weekStart: loaded.weekStart = Int(setting.value) ?? loaded.weekStart
                 case Keys.sections:
@@ -359,16 +425,20 @@ final class HabitStore {
                         sections = list
                     }
                 default:
+                    let value = setting.value.split(separator: "|", maxSplits: 1).map(String.init)
                     if setting.key.hasPrefix(Keys.timerPrefix),
                        let id = UUID(uuidString: String(setting.key.dropFirst(Keys.timerPrefix.count))),
-                       let ms = Int64(setting.value) {
+                       let ms = Int64(value.first ?? "") {
                         running[id] = Date(millis: ms)
+                        if value.count > 1 { runningSlots[id] = value[1] }
                     }
                 }
             }
             settings = loaded
             timers = running
+            timerSlots = runningSlots
             isLoaded = true
+            if upgradedV1 && !repaired && !triedPlacementUpgrade { triedPlacementUpgrade = true; repairPlacement() }
             onChange?()
         } catch {
             problem = "Your habits couldn't be read. Nothing has been changed; please restart the app."
@@ -380,6 +450,28 @@ final class HabitStore {
         static let weekStart = "week_start"
         static let timerPrefix = "timer."
         static let sections = "day_sections"
+        static let placementV1 = "placement_v1"
+        static let placementV2 = "placement_v2"
+    }
+
+    /// Once: development builds briefly let times place habits, and turned a habit in several times
+    /// of day into one with a silent time in each. Put those back in their times of day.
+    private func repairPlacement() {
+        perform { [self] in
+            for i in habits.indices where !habits[i].remind && habits[i].reminders.count >= 2 && habits[i].parts.count == 1 {
+                var seen = Set<String>()
+                let parts = habits[i].reminders.map { section(forMinute: $0.minuteOfDay).id }.filter { seen.insert($0).inserted }
+                guard parts.count >= 2 else { continue }
+                var habit = habits[i]
+                habit.parts = parts
+                habit.reminders = []
+                habit.remind = true
+                try await repository.saveHabit(habit: habit.record(position: i), steps: habit.stepRecords(),
+                                               reminders: habit.reminderRecords(), at: Date.now.millis)
+                habits[i] = habit
+            }
+            try await repository.saveSetting(key: Keys.placementV2, value: "1")
+        }
     }
 
     // MARK: Changes
@@ -422,10 +514,10 @@ final class HabitStore {
         }
     }
 
-    /// One-time tasks: done or not, wherever it is shown.
+    /// Tasks: done or not. A one-time task wherever it's shown; a repeating one on that day.
     private func toggleTask(_ habit: Habit, on day: LocalDay) {
         perform { [self] in
-            if let i = entries.lastIndex(where: { $0.habitID == habit.id }) {
+            if let i = entries.lastIndex(where: { $0.habitID == habit.id && (habit.dueDay != nil || $0.day == day) }) {
                 try await repository.removeEntry(id: entries[i].id.uuidString, at: Date.now.millis)
                 withAnimation { _ = entries.remove(at: i) }
             } else {
@@ -434,11 +526,38 @@ final class HabitStore {
         }
     }
 
-    /// Amount habits: add one increment. Once done, a tap undoes the last increment.
+    /// Amount habits: add one increment. Once done, a tap undoes the last increment. A limit is "done"
+    /// while under it, so + always logs there.
     func increment(_ habit: Habit, on day: LocalDay) {
         guard case .amount(_, let increment) = habit.kind else { return }
         perform { [self] in
-            if isDone(habit, on: day) { try await undoLast(habit, on: day) } else { try await log(habit, value: increment, on: day) }
+            if isDone(habit, on: day) && !habit.atMost { try await undoLast(habit, on: day) } else { try await log(habit, value: increment, on: day) }
+        }
+    }
+
+    /// From a notification or an alarm: only ever adds, never undoes. A row already done is left alone;
+    /// an amount adds one increment.
+    func logFromReminder(_ habit: Habit, slot: String?, on day: LocalDay) {
+        perform { [self] in
+            guard let habit = habits.first(where: { $0.id == habit.id }) else { return }
+            switch habit.kind {
+            case .amount(_, let increment):
+                let entry = Entry(habitID: habit.id, day: day, value: increment, slot: slot.flatMap { slots(of: habit).contains($0) ? $0 : nil })
+                try await repository.addEntry(entry: entry.record)
+                withAnimation { entries.append(entry) }
+            case .check, .task:
+                if let slot, slots(of: habit).contains(slot) {
+                    guard !isSlotDone(habit, slot: slot, on: day) else { return }
+                    let entry = Entry(habitID: habit.id, day: day, value: 1, slot: slot)
+                    try await repository.addEntry(entry: entry.record)
+                    withAnimation { entries.append(entry) }
+                } else {
+                    guard !isDone(habit, on: day) else { return }
+                    try await log(habit, value: 1, on: day)
+                }
+            default:
+                return
+            }
         }
     }
 
@@ -469,20 +588,24 @@ final class HabitStore {
         }
     }
 
-    /// Duration habits: start the timer, or stop it and log the minutes. A running timer is saved,
-    /// so it survives the app being closed.
-    func toggleTimer(_ habit: Habit) {
+    /// Duration habits: start the timer, or stop it and log the minutes. A running timer is saved
+    /// (with the part of the day it's for), so it survives the app being closed.
+    func toggleTimer(_ habit: Habit, slot: String? = nil) {
         perform { [self] in
             let now = Date.now
             let key = Keys.timerPrefix + habit.id.uuidString
             if let start = timers[habit.id] {
                 let minutes = now.timeIntervalSince(start) / 60
-                if minutes >= 1 / 60 { try await log(habit, value: minutes, on: today(now: now)) }
+                if minutes >= 1 / 60 {
+                    let entry = Entry(habitID: habit.id, day: today(now: now), value: minutes, slot: timerSlots[habit.id])
+                    try await repository.addEntry(entry: entry.record)
+                    withAnimation { entries.append(entry) }
+                }
                 try await repository.removeSetting(key: key)
-                withAnimation { _ = timers.removeValue(forKey: habit.id) }
+                withAnimation { _ = timers.removeValue(forKey: habit.id); _ = timerSlots.removeValue(forKey: habit.id) }
             } else {
-                try await repository.saveSetting(key: key, value: String(now.millis))
-                withAnimation { timers[habit.id] = now }
+                try await repository.saveSetting(key: key, value: String(now.millis) + (slot.map { "|" + $0 } ?? ""))
+                withAnimation { timers[habit.id] = now; timerSlots[habit.id] = slot }
             }
         }
     }

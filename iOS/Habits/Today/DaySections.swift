@@ -28,20 +28,21 @@ struct DaySectionsView: View {
                         }
                         .disabled(section.isAnytime)
                     }
-                    AddRow(title: "Add Section") { adding = true }
+                    AddRow(title: "Add Time of Day") { adding = true }
                 } footer: {
-                    Text("Morning, Evening, or your own, like Before work. Each section ends when the next one starts.")
+                    Text("Morning, Evening, or your own, like Before work. Each one ends when the next one starts.")
                 }
             }
-            .navigationTitle("Day Sections")
+            .navigationTitle("Times of Day")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
             }
-            .sheet(item: $editing) { section in
+            // Pushed, like the pages in the New flow.
+            .navigationDestination(item: $editing) { section in
                 SectionEditor(existing: section) { _ in }
             }
-            .sheet(isPresented: $adding) {
+            .navigationDestination(isPresented: $adding) {
                 SectionEditor(existing: nil) { _ in }
             }
         }
@@ -92,20 +93,19 @@ struct SectionEditor: View {
     private var trimmed: String { TextLimit.clean(name, TextLimit.section) }
     private var problem: String? {
         if trimmed.isEmpty { return nil }
-        if others.contains(where: { $0.start == minutes(start) }) { return "Another section already starts at \(DaySection.clock(minutes(start)))." }
+        if others.contains(where: { $0.start == minutes(start) }) { return "Another time of day already starts at \(DaySection.clock(minutes(start)))." }
         if isLatest && minutes(end) <= minutes(start) && minutes(end) > store.settings.dayEndHour * 60 { return "It must end after it starts." }
         return nil
     }
 
     var body: some View {
-        NavigationStack {
             Form {
                 Section {
                     TextField("e.g. Before work", text: $name)
                         .focused($nameFocused)
                         .limitText($name, to: TextLimit.section)
                         .submitLabel(.done)
-                        .accessibilityLabel("Section name")
+                        .accessibilityLabel("Name")
                 }
                 Section {
                     DatePicker("Starts", selection: $start, displayedComponents: .hourAndMinute)
@@ -124,15 +124,15 @@ struct SectionEditor: View {
                     }
                 } footer: {
                     if let problem { Text(problem).foregroundStyle(.red) }
-                    else { Text("Habits can still be ticked at any time; the section only orders Today and marks what's Now.") }
+                    else { Text("Habits can still be ticked at any time; the time of day only orders Today and marks what's Now.") }
                 }
                 if existing != nil {
                     Section {
-                        Button("Delete Section", role: .destructive) { confirmDelete = true }
+                        Button("Delete Time of Day", role: .destructive) { confirmDelete = true }
                     }
                 }
             }
-            .navigationTitle(existing == nil ? "New Section" : "Edit Section")
+            .navigationTitle(existing == nil ? "New Time of Day" : "Edit Time of Day")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
@@ -141,7 +141,7 @@ struct SectionEditor: View {
                 }
             }
             .confirmationDialog("Delete \(existing?.name ?? "")?", isPresented: $confirmDelete, titleVisibility: .visible) {
-                Button("Delete Section", role: .destructive) {
+                Button("Delete Time of Day", role: .destructive) {
                     store.saveSections(store.sections.filter { $0.id != existing?.id })
                     dismiss()
                 }
@@ -149,8 +149,7 @@ struct SectionEditor: View {
                 Text("Its habits move to Anytime. Nothing else changes.")
             }
             .task { if existing == nil { nameFocused = true } }
-        }
-        .presentationDetents([.medium, .large])
+            .navigationBarBackButtonHidden()
     }
 
     private func save() {

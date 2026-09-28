@@ -11,6 +11,13 @@ struct TodayView: View {
     @State private var routine: RoutineSession?
     @State private var showCalendar = false
     @State private var showNewHabit = false
+    /// The habit just added, revealed once the sheet closes.
+    @State private var added: UUID?
+    /// A row or header to scroll to, and the row that flashes briefly after Add.
+    @State private var scrollTarget: String?
+    @State private var highlighted: String?
+    @Environment(AppRouter.self) private var router
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         NavigationStack {
@@ -31,11 +38,21 @@ struct TodayView: View {
                 RoutinePlayer(session: session)
             }
             .sheet(isPresented: $showSections) { DaySectionsView() }
-            .sheet(isPresented: $showNewHabit) {
-                NewItemView()
+            .sheet(isPresented: $showNewHabit, onDismiss: revealAdded) {
+                NewItemView { added = $0 }
             }
         }
         .onChange(of: selectedDay) { foldOverrides = [:] }
+        .onChange(of: router.focusSection) {
+            // A tapped notification opens today's section.
+            guard let section = router.focusSection else { return }
+            router.focusSection = nil
+            Task {
+                if day != nil && day != store.today() { day = nil; try? await Task.sleep(for: .milliseconds(50)) }
+                foldOverrides[section] = true
+                scrollTarget = Self.headerKey(section)
+            }
+        }
         .alert("Something went wrong", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -47,12 +64,69 @@ struct TodayView: View {
     /// The fold key for the Quitting card; section IDs are UUIDs or fixed words, so this can't clash.
     private static let quitting = "quitting-card"
 
+    /// One row on Today: a habit in one section (a habit ticked per section has one in each).
+    struct TodayItem: Identifiable {
+        let habit: Habit
+        let placement: HabitStore.Placement
+        var id: UUID { habit.id }
+    }
+
+    private static func rowKey(_ section: String, _ habit: UUID) -> String { "row-\(section)-\(habit.uuidString)" }
+    private static func headerKey(_ section: String) -> String { "header-\(section)" }
+
+    /// Each section's rows: timed rows by their earliest time there, then untimed rows in saved order.
+    private func rowsBySection(_ habits: [Habit]) -> [String: [TodayItem]] {
+        var rows: [String: [(item: TodayItem, index: Int)]] = [:]
+        for (index, habit) in habits.enumerated() {
+            for placement in store.placements(of: habit) {
+                rows[placement.section, default: []].append((TodayItem(habit: habit, placement: placement), index))
+            }
+        }
+        return rows.mapValues { list in
+            list.sorted { a, b in
+                let ta = a.item.placement.times.first.map { store.dayMinute($0.minuteOfDay) } ?? .max
+                let tb = b.item.placement.times.first.map { store.dayMinute($0.minuteOfDay) } ?? .max
+                return ta != tb ? ta < tb : a.index < b.index
+            }.map(\.item)
+        }
+    }
+
+    /// After Add: open the new habit's section on today, scroll to it and flash it. If it isn't due
+    /// today, the form already said when it first is.
+    private func revealAdded() {
+        guard let id = added else { return }
+        added = nil
+        Task {
+            await store.flush()
+            guard let habit = store.habits.first(where: { $0.id == id }) else { return }
+            let today = store.today()
+            if day != nil && day != today {
+                day = nil
+                try? await Task.sleep(for: .milliseconds(50)) // lets the day change reset the folds first
+            }
+            let key: String
+            if habit.kind == .quit {
+                foldOverrides[Self.quitting] = true
+                key = Self.rowKey(Self.quitting, id)
+            } else {
+                guard store.isDue(habit, on: today), let first = store.placements(of: habit).first else { return }
+                foldOverrides[first.section] = true
+                key = Self.rowKey(first.section, id)
+            }
+            try? await Task.sleep(for: .milliseconds(250)) // the sheet finishes closing and the row exists
+            scrollTarget = key
+            if reduceMotion { highlighted = key } else { withAnimation(.easeOut(duration: 0.25)) { highlighted = key } }
+            try? await Task.sleep(for: .seconds(1.5))
+            if reduceMotion { highlighted = nil } else { withAnimation(.easeIn(duration: 0.4)) { highlighted = nil } }
+        }
+    }
+
     @ViewBuilder
     private func content(now: Date) -> some View {
         let today = store.today(now: now)
         let shown = day ?? today
         let isToday = shown == today
-        let active = store.habits.filter { !$0.archived && LocalDay($0.createdAt, calendar: store.calendar) <= shown }
+        let active = store.habits.filter { !$0.archived && store.startDay(of: $0) <= shown }
         let quitting = active.filter { $0.kind == .quit }
         let tracked = active.filter { $0.kind != .quit && store.isDue($0, on: shown) }
         let nowPart = isToday ? store.nowSection(now: now)?.id : nil
@@ -72,6 +146,8 @@ struct TodayView: View {
             }
             .background(Color(.systemGroupedBackground))
         } else {
+            let rows = rowsBySection(tracked)
+            ScrollViewReader { proxy in
             List {
                 if isToday && !quitting.isEmpty {
                     // Quitting folds like the other cards, and starts open.
@@ -79,20 +155,23 @@ struct TodayView: View {
                     Section {
                         PartHeader(title: "Quitting", habits: quitting, left: nil, isNow: false, isOpen: open, onStart: nil,
                                    onToggle: { withAnimation { foldOverrides[Self.quitting] = !open } })
-                        if open { ForEach(quitting) { QuitRow(habit: $0) } }
+                        if open {
+                            ForEach(quitting) { habit in
+                                QuitRow(habit: habit, highlighted: highlighted == Self.rowKey(Self.quitting, habit.id))
+                                    .id(Self.rowKey(Self.quitting, habit.id))
+                            }
+                        }
                     }
                 }
                 ForEach(store.sections) { section in
-                    let part = section.id
-                    // A habit in several sections shows in each of them.
-                    let habits = tracked.filter { $0.parts.contains { store.section($0).id == part } }
-                    if !habits.isEmpty {
-                        partSection(part, habits: habits, day: shown, isToday: isToday, isNow: part == nowPart)
+                    // Times decide the section; a habit ticked per section shows in each of its sections.
+                    if let items = rows[section.id], !items.isEmpty {
+                        partSection(section.id, items: items, day: shown, isToday: isToday, isNow: section.id == nowPart)
                     }
                 }
                 Section {
                     Button { showSections = true } label: {
-                        Label("Edit Day Sections", systemImage: "rectangle.split.3x1")
+                        Label("Edit Times of Day", systemImage: "rectangle.split.3x1")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
@@ -104,35 +183,46 @@ struct TodayView: View {
             .listSectionSpacing(14)
             .environment(\.defaultMinListRowHeight, 44)
             .contentMargins(.top, 4, for: .scrollContent)
+            .onChange(of: scrollTarget) {
+                guard let target = scrollTarget else { return }
+                if reduceMotion { proxy.scrollTo(target, anchor: .center) } else { withAnimation { proxy.scrollTo(target, anchor: .center) } }
+                scrollTarget = nil
+            }
+            }
         }
     }
 
-    @ViewBuilder
-    private func partSection(_ part: String, habits: [Habit], day: LocalDay, isToday: Bool, isNow: Bool) -> some View {
+    private func isDone(_ item: TodayItem, on day: LocalDay) -> Bool {
         // A habit ticked per section is done here once this section's tick is.
-        let slotted = Set(habits.filter { !store.slots(of: $0).isEmpty }.map(\.id))
-        let isDone: (Habit) -> Bool = { habit in
-            slotted.contains(habit.id) ? store.isSlotDone(habit, slot: part, on: day) : store.isDone(habit, on: day)
-        }
-        let left = habits.filter { !isDone($0) }.count
+        item.placement.slot.map { store.isSlotDone(item.habit, slot: $0, on: day) } ?? store.isDone(item.habit, on: day)
+    }
+
+    @ViewBuilder
+    private func partSection(_ part: String, items: [TodayItem], day: LocalDay, isToday: Bool, isNow: Bool) -> some View {
+        let habits = items.map(\.habit)
+        let left = items.filter { !isDone($0, on: day) }.count
         // Default: the Now part and Anytime are open while anything is left; finished parts fold.
         let open = foldOverrides[part] ?? (left > 0 && (isNow || part == .anytime || !isToday))
         Section {
             PartHeader(title: store.section(part).name, habits: habits, left: left, isNow: isNow, isOpen: open,
-                       onStart: isToday ? { start(part: part, habits: habits, day: day) } : nil,
+                       onStart: isToday ? { start(part: part, items: items, day: day) } : nil,
                        onToggle: { withAnimation { foldOverrides[part] = !open } })
+                .id(Self.headerKey(part))
                 .contextMenu {
-                    Button("Edit Day Sections…", systemImage: "rectangle.split.3x1") { showSections = true }
+                    Button("Edit Times of Day…", systemImage: "rectangle.split.3x1") { showSections = true }
                     Button(open ? "Fold" : "Open", systemImage: open ? "chevron.up" : "chevron.down") {
                         withAnimation { foldOverrides[part] = !open }
                     }
                 }
             if open {
                 // Done habits sink to the bottom, keeping their order otherwise.
-                let ordered = habits.filter { !isDone($0) } + habits.filter { isDone($0) }
-                ForEach(ordered) { habit in
-                    HabitRow(habit: habit, day: day, isToday: isToday, slot: slotted.contains(habit.id) ? part : nil,
-                             stepsOpen: stepsBinding(habit))
+                let ordered = items.filter { !isDone($0, on: day) } + items.filter { isDone($0, on: day) }
+                ForEach(ordered) { item in
+                    let habit = item.habit
+                    let key = Self.rowKey(part, habit.id)
+                    HabitRow(habit: habit, day: day, isToday: isToday, slot: item.placement.slot,
+                             time: item.placement.times.first, highlighted: highlighted == key, stepsOpen: stepsBinding(habit))
+                        .id(key)
                     if habit.kind == .checklist && openSteps.contains(habit.id) {
                         ForEach(habit.steps) { StepRow(step: $0, habit: habit, day: day) }
                     }
@@ -146,11 +236,9 @@ struct TodayView: View {
                 set: { if $0 { openSteps.insert(habit.id) } else { openSteps.remove(habit.id) } })
     }
 
-    private func start(part: String, habits: [Habit], day: LocalDay) {
+    private func start(part: String, items: [TodayItem], day: LocalDay) {
         guard day == store.today() else { return }
-        let pending = habits.filter {
-            !store.slots(of: $0).isEmpty ? !store.isSlotDone($0, slot: part, on: day) : !store.isDone($0, on: day)
-        }
+        let pending = items.filter { !isDone($0, on: day) }.map(\.habit)
         guard !pending.isEmpty else { return }
         routine = RoutineSession(part: part, day: day, habits: pending)
     }

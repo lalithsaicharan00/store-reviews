@@ -8,4 +8,5 @@ The iPhone app (SwiftUI, native components only). Apple Watch and widget extensi
 - **Minimum iOS 18**, built with the iOS 26 SDK; iOS 26 adds Liquid Glass (see Backlog C1).
 - **Signing during development:** Personal Team `5RR56C2WTA` (free Apple ID). Switch to the paid developer account before TestFlight / release.
 - **Test device:** iPhone 16 (Developer Mode on). Run the UI tests on it with `Research/Temp/ios-device-test.sh <TestClass> <folder>` (scratch script; screenshots land in `Research/Temp/ios-shots/`).
-- **Debug builds** save the demo habits from the design into an empty database once, and act as Plus. Launch arguments: `-empty` (no demo), `-free` (free limit), `-uitest` (in-memory database, for UI tests), `-longtext` (demo names, units and sections at their length limits). Release builds start empty and free.
+- **Debug builds** save the demo habits from the design into an empty database once, and act as Plus. Launch arguments: `-empty` (no demo), `-free` (free limit), `-uitest` (in-memory database, for UI tests), `-longtext` (demo names, units and sections at their length limits), `-placementcheck` (runs the placement-rule checks instead of Today). Release builds start empty and free.
+- **Info.plist:** generated from build settings, plus `Habits-Info.plist` for the keys that can't be settings (background refresh, AlarmKit usage text).

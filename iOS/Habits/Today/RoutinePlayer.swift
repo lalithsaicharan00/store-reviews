@@ -54,6 +54,7 @@ struct RoutinePlayer: View {
                             Button("Skip for now") { advance() }.disabled(busy)
                         }
                     }
+                    .accessibilityIdentifier("routine-list")
                     .disabled(busy)
                 } else {
                     ContentUnavailableView {
@@ -73,7 +74,7 @@ struct RoutinePlayer: View {
         .task(id: index) {
             guard session.day == store.today(), let habit = current, habit.kind == .duration,
                   !done(habit), store.timers[habit.id] == nil else { return }
-            store.toggleTimer(habit)
+            store.toggleTimer(habit, slot: store.slots(of: habit).isEmpty ? nil : session.part)
             await store.flush()
         }
         .alert("Something went wrong", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {

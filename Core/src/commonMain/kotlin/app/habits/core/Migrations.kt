@@ -33,4 +33,22 @@ internal object Migrations {
             connection.execSQL("ALTER TABLE entry ADD COLUMN slot TEXT")
         }
     }
+
+    /** Schema 4: a habit's times place it on Today; "Remind Me", the alert style and "Remind Again" are per habit.
+     *  Existing habits keep reminding as before (remind = 1, notification, no repeat). */
+    val v3ToV4 = object : Migration(3, 4) {
+        override suspend fun migrate(connection: SQLiteConnection) {
+            connection.execSQL("ALTER TABLE habit ADD COLUMN remind INTEGER NOT NULL DEFAULT 1")
+            connection.execSQL("ALTER TABLE habit ADD COLUMN alert TEXT NOT NULL DEFAULT 'notification'")
+            connection.execSQL("ALTER TABLE habit ADD COLUMN follow_up_minutes INTEGER")
+        }
+    }
+
+    /** Schema 5: a start date (past or future) and an optional end date per habit. */
+    val v4ToV5 = object : Migration(4, 5) {
+        override suspend fun migrate(connection: SQLiteConnection) {
+            connection.execSQL("ALTER TABLE habit ADD COLUMN starts_on TEXT")
+            connection.execSQL("ALTER TABLE habit ADD COLUMN ends_on TEXT")
+        }
+    }
 }

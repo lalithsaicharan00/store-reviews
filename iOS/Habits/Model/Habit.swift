@@ -2,7 +2,7 @@ import Foundation
 
 /// A calendar day in the user's own reckoning ("2026-09-27"), independent of time zone.
 /// Entries store the day they count for, so travelling never moves them (Architecture 05 §4.1).
-struct LocalDay: Hashable, Comparable, Codable, Sendable {
+nonisolated struct LocalDay: Hashable, Comparable, Codable, Sendable {
     let year: Int
     let month: Int
     let day: Int
@@ -110,11 +110,20 @@ enum Frequency: Codable, Hashable, Sendable {
     }
 }
 
-/// A reminder time, in the user's local clock (Architecture 05 §4.4: "local time" reminders).
+/// One of a habit's times, in the user's local clock (Architecture 05 §4.4: "local time" reminders).
+/// A time places the habit on Today; with Remind Me on, it also notifies. (Called "reminders" in
+/// storage, which predates times placing habits.)
 struct ReminderTime: Codable, Hashable, Sendable, Identifiable {
     var id: UUID = UUID()
     var hour: Int
     var minute: Int
+
+    var minuteOfDay: Int { hour * 60 + minute }
+}
+
+/// How a habit's times alert: a notification, or (iOS 26+) an AlarmKit alarm that rings on silent.
+enum AlertStyle: String, Codable, Hashable, Sendable {
+    case notification, alarm
 }
 
 struct Step: Identifiable, Codable, Hashable, Sendable {
@@ -133,8 +142,8 @@ struct Habit: Identifiable, Codable, Hashable, Sendable {
     var symbol: String
     var color: HabitColor
     var kind: HabitKind
-    /// The day sections it sits in (`DaySection.id`s); unknown IDs show under Anytime. Only
-    /// Check it off can have more than one: it shows in each, with a tick of its own.
+    /// The day section for a habit with no times (`DaySection.id`); unknown IDs show under Anytime.
+    /// Ignored while it has times: they decide where it shows (`HabitStore.placements(of:)`).
     var parts: [String] = [.anytime]
     /// Day rules: the goal for each due day (times, amount or minutes). Period rules: taken from the frequency.
     var goal: Double = 1
@@ -145,7 +154,17 @@ struct Habit: Identifiable, Codable, Hashable, Sendable {
     var dueDay: LocalDay?
     var dueMinute: Int?
     var steps: [Step] = []
+    /// The habit's times. They place it on Today, and notify when `remind` is on.
     var reminders: [ReminderTime] = []
+    /// "Remind Me": whether the times notify.
+    var remind = true
+    var alert: AlertStyle = .notification
+    /// "Remind Again If Not Done": minutes between repeats (15, 30 or 60), at most 3; nil when off.
+    var followUpMinutes: Int?
+    /// The first day it counts (past or future); nil means the day it was made.
+    var startsOn: LocalDay?
+    /// The last day it's due; nil means it never ends.
+    var endsOn: LocalDay?
     /// Quit habits: when the current run started (the last slip, or when the habit was made).
     var quitSince: Date?
     var createdAt: Date = .now

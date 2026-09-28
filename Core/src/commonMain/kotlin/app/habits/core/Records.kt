@@ -21,7 +21,8 @@ data class HabitRecord(
     val unit: String?,
     /** Amount habits: what one tap adds. */
     val increment: Double,
-    /** anytime, morning, afternoon or evening. */
+    /** The day section (`anytime`, `morning`, … or a UUID) for a habit with no times. Since schema 4, a habit's
+     *  times decide where it shows; this is only used while it has none. (Schema 3 builds could store several, comma-separated.) */
     val part: String,
     val goal: Double,
     /** Unused since schema 2 (replaced by `frequency`); kept because columns are never dropped in the release that stops using them. */
@@ -41,6 +42,16 @@ data class HabitRecord(
     @ColumnInfo(name = "updated_at") val updatedAt: Long,
     @ColumnInfo(name = "archived_at") val archivedAt: Long?,
     @ColumnInfo(name = "deleted_at") val deletedAt: Long?,
+    /** Schema 4: "Remind Me". When false, the habit's times only place it on Today. */
+    @ColumnInfo(defaultValue = "1") val remind: Boolean = true,
+    /** Schema 4: `notification` or `alarm`. Readers treat values they don't know as `notification`. */
+    @ColumnInfo(defaultValue = "'notification'") val alert: String = "notification",
+    /** Schema 4: "Remind Again If Not Done", in minutes (15, 30 or 60); null when off. */
+    @ColumnInfo(name = "follow_up_minutes") val followUpMinutes: Int? = null,
+    /** Schema 5: the first day it counts ("YYYY-MM-DD"), past or future; null means the day it was made. */
+    @ColumnInfo(name = "starts_on") val startsOn: String? = null,
+    /** Schema 5: the last day it's due ("YYYY-MM-DD"); null means it never ends. */
+    @ColumnInfo(name = "ends_on") val endsOn: String? = null,
 )
 
 @Entity(tableName = "step", indices = [Index("habit_id")])
@@ -52,6 +63,7 @@ data class StepRecord(
     @ColumnInfo(name = "deleted_at") val deletedAt: Long?,
 )
 
+/** A habit's times. Since schema 4 they decide where it shows on Today; `habit.remind` decides whether they notify. */
 @Entity(tableName = "reminder", indices = [Index("habit_id")])
 data class ReminderRecord(
     @PrimaryKey val id: String,

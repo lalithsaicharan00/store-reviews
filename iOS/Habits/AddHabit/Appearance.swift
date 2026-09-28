@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Picks the icon, and only the icon (colour is chosen on the form). Search, tap, done:
-/// picking closes the sheet (users asked to return automatically).
+/// picking goes back to the form (users asked to return automatically). Pushed, like every page in the flow.
 struct IconSheet: View {
     @Binding var symbol: String
     /// The habit's colour, to show the chosen icon as it will look.
@@ -11,7 +11,6 @@ struct IconSheet: View {
     @State private var search = ""
 
     var body: some View {
-        NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
                     ForEach(IconLibrary.groups, id: \.name) { group in
@@ -47,11 +46,6 @@ struct IconSheet: View {
             .navigationTitle("Icon")
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search icons")
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
-            }
-        }
-        .presentationDetents([.large])
     }
 
     private func matches(_ symbol: String, group: String) -> Bool {

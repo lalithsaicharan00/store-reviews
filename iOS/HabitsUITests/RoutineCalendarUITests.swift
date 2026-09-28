@@ -18,7 +18,13 @@ final class RoutineCalendarUITests: XCTestCase {
     }
 
     private func reveal(_ element: XCUIElement) {
-        for _ in 0..<7 where !(element.exists && element.isHittable) { app.swipeUp() }
+        let window = app.windows.firstMatch
+        for _ in 0..<12 {
+            if element.exists && element.isHittable && element.frame.minY > 100 && element.frame.maxY < window.frame.maxY - 90 { return }
+            let upward = !element.exists || element.frame.minY > window.frame.midY
+            window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: upward ? 0.65 : 0.35))
+                .press(forDuration: 0.05, thenDragTo: window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: upward ? 0.42 : 0.58)))
+        }
         XCTAssertTrue(element.isHittable)
     }
 
@@ -61,11 +67,11 @@ final class RoutineCalendarUITests: XCTestCase {
         reveal(play)
         play.tap()
         XCTAssertTrue(app.navigationBars["Afternoon routine"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.buttons["Add 1000 to Walk"].exists)
+        XCTAssertTrue(app.buttons["Add 1k to Walk"].exists)
         XCTAssertFalse(app.buttons["Next habit"].isEnabled)
         app.buttons["Skip for now"].tap()
         XCTAssertTrue(app.buttons["Mark Lunch, no phone done"].waitForExistence(timeout: 3))
-        app.buttons["Mark Lunch, no phone done"].tap()
+        app.collectionViews["routine-list"].buttons["Mark Lunch, no phone done"].tap()
         XCTAssertTrue(app.buttons["Undo Lunch, no phone"].waitForExistence(timeout: 3))
         app.buttons["Finish routine"].tap()
         XCTAssertTrue(app.staticTexts["1 left for later. Your progress is saved."].waitForExistence(timeout: 3))
@@ -73,9 +79,9 @@ final class RoutineCalendarUITests: XCTestCase {
         app.buttons["Done"].tap()
         reveal(play)
         play.tap()
-        XCTAssertTrue(app.buttons["Add 1000 to Walk"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons["Add 1k to Walk"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["Habit 1 of 1"].exists, "Resume includes only unfinished habits")
-        for _ in 0..<3 { app.buttons["Add 1000 to Walk"].tap() }
+        for _ in 0..<3 { app.collectionViews["routine-list"].buttons["Add 1k to Walk"].tap() }
         XCTAssertTrue(app.buttons["Undo last Walk"].waitForExistence(timeout: 3))
         app.buttons["Finish routine"].tap()
         XCTAssertTrue(app.staticTexts["All habits in this routine are done."].waitForExistence(timeout: 3))
@@ -84,6 +90,8 @@ final class RoutineCalendarUITests: XCTestCase {
     }
 
     func testChecklistRoutineUsesExistingEntries() {
+        app.buttons["Fold Quitting"].tap()
+        app.buttons["Fold Anytime"].tap()
         let morning = app.buttons["Open Morning"]
         reveal(morning)
         morning.tap()
@@ -98,7 +106,7 @@ final class RoutineCalendarUITests: XCTestCase {
         play.tap()
         XCTAssertTrue(app.buttons["Mark Cleanser done"].waitForExistence(timeout: 3))
         XCTAssertFalse(app.buttons["Finish routine"].isEnabled)
-        app.buttons["Mark Cleanser done"].tap()
+        app.collectionViews["routine-list"].buttons["Mark Cleanser done"].tap()
         XCTAssertTrue(app.buttons["Undo Cleanser"].waitForExistence(timeout: 3))
         shot("routine-checklist")
         app.buttons["Finish routine"].tap()
@@ -165,7 +173,7 @@ final class RoutineCalendarUITests: XCTestCase {
         app.navigationBars["Check it off"].buttons["Add"].tap()
         XCTAssertTrue(app.buttons["Start Anytime routine"].waitForExistence(timeout: 3))
         app.buttons["Start Anytime routine"].tap()
-        app.buttons["Mark Practice done"].tap()
+        app.collectionViews["routine-list"].buttons["Mark Practice done"].tap()
         XCTAssertTrue(app.buttons["Undo Practice"].waitForExistence(timeout: 3))
         app.buttons["Finish routine"].tap()
         app.buttons["Done"].tap()

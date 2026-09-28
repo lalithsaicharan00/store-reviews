@@ -4,9 +4,9 @@ import Foundation
 // Converts between the app's model and the database rows in Core.
 
 extension LocalDay {
-    var key: String { String(format: "%04d-%02d-%02d", year, month, day) }
+    nonisolated var key: String { String(format: "%04d-%02d-%02d", year, month, day) }
 
-    init?(key: String) {
+    nonisolated init?(key: String) {
         let parts = key.split(separator: "-").compactMap { Int($0) }
         guard parts.count == 3 else { return nil }
         self.init(year: parts[0], month: parts[1], day: parts[2])
@@ -38,7 +38,9 @@ extension Habit {
             dueMinute: dueMinute.map { KotlinInt(value: Int32($0)) },
             atMost: atMost, quitSince: quitSince.map { KotlinLong(value: $0.millis) },
             position: Int32(position), createdAt: createdAt.millis, updatedAt: now.millis,
-            archivedAt: archived ? KotlinLong(value: now.millis) : nil, deletedAt: nil)
+            archivedAt: archived ? KotlinLong(value: now.millis) : nil, deletedAt: nil,
+            remind: remind, alert: alert.rawValue, followUpMinutes: followUpMinutes.map { KotlinInt(value: Int32($0)) },
+            startsOn: startsOn?.key, endsOn: endsOn?.key)
     }
 
     func stepRecords() -> [StepRecord] {
@@ -71,6 +73,11 @@ extension Habit {
         quitSince = r.quitSince.map { Date(millis: $0.int64Value) }
         createdAt = Date(millis: r.createdAt)
         archived = r.archivedAt != nil
+        remind = r.remind
+        alert = AlertStyle(rawValue: r.alert) ?? .notification
+        followUpMinutes = r.followUpMinutes.map { Int($0.int32Value) }
+        startsOn = r.startsOn.flatMap(LocalDay.init(key:))
+        endsOn = r.endsOn.flatMap(LocalDay.init(key:))
         self.steps = steps.filter { $0.habitId == r.id }.sorted { $0.position < $1.position }
             .compactMap { s in UUID(uuidString: s.id).map { Step(id: $0, name: s.name) } }
         self.reminders = reminders.filter { $0.habitId == r.id }

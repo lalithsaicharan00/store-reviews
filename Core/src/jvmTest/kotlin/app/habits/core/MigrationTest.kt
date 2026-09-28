@@ -77,7 +77,45 @@ class MigrationTest {
         val snapshot = repo.load()
         assertEquals(listOf("e1"), snapshot.entries.map { it.id })
         assertEquals(null, snapshot.entries.single().slot)
-        assertEquals("3", repo.pragma("user_version"))
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        repo.close()
+    }
+
+    @Test fun version3UpgradesAndHabitsKeepReminding() = runTest {
+        val connection = createSchema(3)
+        connection.execSQL(
+            "INSERT INTO habit VALUES ('h1', 'Floss', 'mouth', 'cyan', 'check', NULL, 1.0, 'morning,evening', 1.0, 'day', " +
+                "NULL, 'daily', NULL, NULL, 0, NULL, 0, 1000, 1000, NULL, NULL)"
+        )
+        connection.execSQL("INSERT INTO reminder VALUES ('r1', 'h1', 21, 0, NULL)")
+        connection.execSQL("INSERT INTO entry VALUES ('e1', 'h1', NULL, '2026-09-27', 1.0, 2000, 'Europe/London', NULL, 'morning')")
+        connection.close()
+        val repo = HabitRepository.open(path)
+        val snapshot = repo.load()
+        val habit = snapshot.habits.single()
+        assertEquals("morning,evening", habit.part)
+        assertEquals(true, habit.remind)
+        assertEquals("notification", habit.alert)
+        assertEquals(null, habit.followUpMinutes)
+        assertEquals(listOf(21), snapshot.reminders.map { it.hour })
+        assertEquals(listOf("morning"), snapshot.entries.map { it.slot })
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        repo.close()
+    }
+
+    @Test fun version4UpgradesWithNoStartOrEndDate() = runTest {
+        val connection = createSchema(4)
+        connection.execSQL(
+            "INSERT INTO habit VALUES ('h1', 'Read', 'book', 'orange', 'duration', NULL, 1.0, 'anytime', 20.0, 'day', " +
+                "NULL, 'daily', NULL, NULL, 0, NULL, 0, 1000, 1000, NULL, NULL, 1, 'notification', NULL)"
+        )
+        connection.close()
+        val repo = HabitRepository.open(path)
+        val habit = repo.load().habits.single()
+        assertEquals(null, habit.startsOn)
+        assertEquals(null, habit.endsOn)
+        assertEquals(true, habit.remind)
+        assertEquals("5", repo.pragma("user_version"))
         repo.close()
     }
 }

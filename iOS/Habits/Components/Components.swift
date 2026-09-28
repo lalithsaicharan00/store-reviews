@@ -162,14 +162,31 @@ struct MiniRing: View {
 // MARK: - Formatting
 
 enum Format {
-    /// "8", "0.5", "5.2k", "12k". One grammar for every amount.
+    /// Numbers as entered: whole stays whole ("8"), decimals up to two places ("0.25", "2.5"),
+    /// and from 1,000 the k suffix with at most one decimal ("1k", "5.2k", "12.5k").
     static func amount(_ v: Double) -> String {
-        if v >= 1000 {
-            let k = v / 1000
-            return (k >= 10 || k == k.rounded() ? String(format: "%.0f", k) : String(format: "%.1f", k)) + "k"
+        if abs(v) >= 1000 {
+            let k = (v / 100).rounded() / 10
+            return trimmed(k, places: 1) + "k"
         }
-        if v == v.rounded() { return String(format: "%.0f", v) }
-        return String(format: "%.1f", v)
+        return trimmed(v, places: 2)
+    }
+
+    /// Minutes as hours and minutes: "45 min", "1 h", "1 h 25 min". Never decimals or "k".
+    static func minutes(_ v: Double) -> String {
+        let total = Int(v.rounded())
+        let h = total / 60, m = total % 60
+        if h == 0 { return "\(m) min" }
+        return m == 0 ? "\(h) h" : "\(h) h \(m) min"
+    }
+
+    private static func trimmed(_ v: Double, places: Int) -> String {
+        let f = NumberFormatter()
+        f.minimumFractionDigits = 0
+        f.maximumFractionDigits = places
+        f.usesGroupingSeparator = false
+        f.locale = .current
+        return f.string(from: NSNumber(value: v)) ?? String(v)
     }
 
     /// "12d 11:23:07"

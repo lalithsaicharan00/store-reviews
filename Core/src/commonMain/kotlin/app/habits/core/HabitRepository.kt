@@ -52,7 +52,7 @@ class HabitRepository private constructor(private val database: HabitDatabase) {
 
     companion object {
         /** Bump with every schema change, and add a migration plus a migration test. */
-        const val SCHEMA_VERSION = 3
+        const val SCHEMA_VERSION = 5
 
         fun open(path: String): HabitRepository = HabitRepository(configure(databaseBuilder(path)))
 
@@ -63,7 +63,7 @@ class HabitRepository private constructor(private val database: HabitDatabase) {
             builder
                 .setDriver(BundledSQLiteDriver())
                 .setQueryCoroutineContext(databaseDispatcher)
-                .addMigrations(Migrations.v1ToV2, Migrations.v2ToV3)
+                .addMigrations(Migrations.v1ToV2, Migrations.v2ToV3, Migrations.v3ToV4, Migrations.v4ToV5)
                 .addCallback(Durability)
                 .build()
     }

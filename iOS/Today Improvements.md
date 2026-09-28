@@ -5,7 +5,7 @@ Requested by the user, 27 September 2026. This task uses simulators only; the ph
 ## Requested behavior
 
 - Let every day section launch its routine independently of the Now label, including Anytime and custom sections.
-- Research whether unfinished collapsed sections should expose play too. Use a circular play icon, with stronger white/system-background emphasis for Now and a quiet neutral fill elsewhere.
+- Research whether unfinished collapsed sections should expose play too. Use a circular play icon, with stronger white emphasis for Now and a quiet neutral fill elsewhere.
 - Never offer routine play on Quitting. Hide it when nothing remains. Keep ordinary habit logging available without running a routine.
 - Replace the bottom-bar calendar picker with daily completion rings. Dates with no eligible habits are plain; the selected date uses a light adaptive fill, never a dark block.
 - Validate on simulators, including existing habit creation, persistence and small-screen layouts.

@@ -1,5 +1,7 @@
 # Pending to Implement — Times Place Habits; Reminders, Alarms and Remind Again
 
+> **Partly superseded (27 Sep 2026, round 5b):** time of day, not reminder times, now decides where a habit shows; reminders are a separate switch, off by default. See Build Plan.md round 5b, "Time of Day and Reminders — What Users Want", and the decided design in [New Habit Goal and Time of Day.md](<New Habit Goal and Time of Day.md>). The scheduler, alarm and notification-action parts (§6) still apply.
+
 Written by Claude (Claude Code), 27 September 2026, for the session that implements it.
 **Why:** [Times, Day Sections and Reminders — Can People Predict What Happens?](<../Research/Research Reports/Habit Creation/Times, Day Sections and Reminders — Can People Predict What Happens.md>).
 Read that report's §3 before starting. This file is the build spec; the report is the reasoning.
@@ -24,14 +26,14 @@ This replaces round 4's multi-select Day Section menu. Check it off in two secti
 
 | # | Step | Status |
 |---|---|---|
-| 1 | Placement rules in `HabitStore` (§2), with Today using them (§5) | Pending |
-| 2 | Storage: schema 4 (§3) | Pending |
-| 3 | Form: When and Reminders groups, live sentences, other footers (§4) | Pending |
-| 4 | Run the five-person predict-the-outcome test (report §6) on a build of step 3; fix any wording that fails | Pending: needs the user |
-| 5 | Scheduler: per-row suppression, same-minute grouping, Remind Again (§6.1–6.3) | Pending |
-| 6 | Alarm via AlarmKit on iOS 26+ (§6.4) | Pending |
-| 7 | Notification actions: Done, +1 (§6.5) | Pending |
-| 8 | Day Sections editor copy, After-Add scroll and highlight, data upgrade (§7, §8) | Pending |
+| 1 | Placement rules in `HabitStore` (§2), with Today using them (§5) | Done 27 Sep (round 5) |
+| 2 | Storage: schema 4 (§3) | Done 27 Sep |
+| 3 | Form: When and Reminders groups, live sentences, other footers (§4) | Done 27 Sep |
+| 4 | Run the five-person predict-the-outcome test (report §6) on a build of step 3; fix any wording that fails | Pending: needs the user (the build is on the iPhone) |
+| 5 | Scheduler: per-row suppression, same-minute grouping, Remind Again (§6.1–6.3) | Done 27 Sep; manual device checks in §10 still to do |
+| 6 | Alarm via AlarmKit on iOS 26+ (§6.4) | Done 27 Sep; "rings on silent" still to check by hand |
+| 7 | Notification actions: Done, +1 (§6.5) | Done 27 Sep |
+| 8 | Day Sections editor copy, After-Add scroll and highlight, data upgrade (§7, §8) | Done 27 Sep |
 
 Steps 1–3 are one shippable unit. 5–7 can each ship alone.
 
@@ -271,7 +273,7 @@ A one-time pass on load, guarded by a setting key `placement_v1`:
 
 - [ ] The report §6 test passes (4 of 5 per scenario, and no surprise alarm), or the failing wording is fixed and re-tested.
 - [ ] All existing UI tests pass on the iPhone 16. The new ones in §4.6 pass. `LongTextUITests` passes on the iPhone SE simulator.
-- [ ] `Core` migration test 3→4 passes.
+- [x] `Core` migration test 3→4 passes.
 - [ ] A manual check on the device:
   - 7:00 AM and 9:00 PM on Floss: ticking the morning row before 7 means the 7:00 notification doesn't come, and the 9:00 one does.
   - Remind Again every 15 min: it stops at the tick.

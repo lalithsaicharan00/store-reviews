@@ -21,13 +21,16 @@ final class LongTextUITests: XCTestCase {
 
     /// From the top of Today, scrolls down slowly until `element` is on screen.
     private func find(_ element: XCUIElement) -> Bool {
+        let window = app.windows.firstMatch
         for _ in 0..<4 { app.swipeDown() }
-        let screen = app.windows.firstMatch.frame
-        // Past the lower quarter too, so the bottom bar never covers it.
-        for _ in 0..<10 where !(element.exists && element.isHittable && element.frame.maxY < screen.maxY * 0.75) {
-            app.swipeUp(velocity: .slow)
+        // Short drags avoid jumping over compact rows on the SE.
+        for _ in 0..<20 {
+            if element.exists && element.isHittable && element.frame.minY > 100 && element.frame.maxY < window.frame.maxY - 90 { return true }
+            let upward = !element.exists || element.frame.minY > window.frame.midY
+            window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: upward ? 0.65 : 0.35))
+                .press(forDuration: 0.05, thenDragTo: window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: upward ? 0.42 : 0.58)))
         }
-        return element.exists
+        return element.exists && element.isHittable
     }
 
     private func button(startingWith text: String) -> XCUIElement {

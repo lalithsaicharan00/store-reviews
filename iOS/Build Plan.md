@@ -63,3 +63,62 @@ Checked by `LongTextUITests` (launch argument `-longtext` fills every field at i
 | 30 | **Habit names on Today:** one line always; 15 characters, then "…" (VoiceOver reads the full name) | Done |
 
 Decisions and evidence: [New Habit Round 4 — Checklists, Streaks and Times a Day](<../Research/Research Reports/Habit Creation/New Habit Round 4 — Checklists, Streaks and Times a Day.md>). Schema 3 adds `entry.slot` (add-only, migration tested). Checked by 17 UI tests on the iPhone 16 and `LongTextUITests` on the iPhone SE simulator.
+
+## Round 5: times place habits; reminders, alarms and Remind Again (27 Sep 2026)
+
+Spec: [Pending to Implement.md](<Pending to Implement.md>). Reasoning: [Times, Day Sections and Reminders — Can People Predict What Happens?](<../Research/Research Reports/Habit Creation/Times, Day Sections and Reminders — Can People Predict What Happens.md>).
+
+| # | Task | Status |
+|---|---|---|
+| 31 | ~~**Placement:** a habit's times decide its section (`HabitStore.placements(of:)`, `section(forMinute:)`), worked out on every render and never stored. Check it off on a set schedule with times in 2+ sections gets a row per section; everything else is one row (Anytime if its times spread). Today sorts timed rows by time and shows the time on the row ("0/1 · 7:00 AM")~~ | Replaced by 39 |
+| 32 | **Storage, schema 4:** `habit.remind`, `alert`, `follow_up_minutes` (add-only; migration test 3→4 passes) | Done |
+| 33 | ~~**Form:** When (Day Section picker with no time, read-only list with times; time rows labelled with their section) and Reminders (Remind Me, Alert on iOS 26+, Remind Again If Not Done, Open Settings when denied). Live sentences from `Outcome`, "First due …", Time it and Quit footers~~ | Replaced by 39 |
+| 34 | **Predict-the-outcome test** with five people (report §6) | Waiting for the user |
+| 35 | **Scheduler:** a row's reminders stop once that row is ticked; same-minute notifications share one; Remind Again every 15/30/60 min, up to 3 more, today and tomorrow only; background refresh about twice a day | Done |
+| 36 | **Alarm (AlarmKit, iOS 26+):** fixed-date alarms with a Done button that marks the row done; below iOS 26 an alarm habit uses a notification | Done |
+| 37 | **Notification actions:** Done (Check it off, to-dos), "+1 glass" (amounts); only ever add | Done |
+| 38 | **Day Sections copy, After-Add reveal** (opens the section, scrolls, flashes the row) and the one-time upgrade of round-4 multi-section habits (`placement_v1`) | Done |
+
+Decisions made while building (none contradict the spec's intent):
+- **Alarm button is Done, not Snooze.** AlarmKit allows one custom secondary button (`secondaryButtonBehavior: .custom` with an App Intent), so the alarm offers Stop and Done as the spec prefers. The Reminders footer says so: "…until you stop it. Stopping it doesn't mark it done; its Done button does." This replaces "until you stop or snooze it", which would have promised a Snooze that doesn't exist. Test this wording in step 34.
+- **Alarm IDs are derived, not stored:** each AlarmKit ID is a hash of the reminder's ID, so no `alarm_ids` setting is needed to cancel exactly what's no longer wanted. A ringing alarm is only cancelled once its row is done. The per-app alarm limit isn't published; the app keeps the nearest 30 and stops on `maximumLimitReached`.
+- **Remind Again stops at the row's next time** (the next time reminds anyway) as well as at the day's end.
+- **"If not done"** in the sentence for amounts, Time it and checklists; "If not ticked" for Check it off and to-dos.
+- **Upgrade times** are an hour into each section, or halfway for a section shorter than two hours, so the time never lands in the next section.
+- **Fixed on the way:** tapping + on a limit ("Set a limit") undid instead of logging while under the limit, so a limit could never be logged. + now always logs on a limit.
+- **Info.plist:** the background-refresh identifier, `fetch` background mode and `NSAlarmKitUsageDescription` can't be build settings, so they live in `iOS/Habits-Info.plist`, merged with the generated keys.
+- **Placement tests:** the app has no unit-test target, so the §2 cases run in a debug-only `-placementcheck` launch, checked by `PlacementUITests`.
+
+### Round 5b: Time of Day (user feedback, 27 Sep 2026)
+
+The user found "When / Day Section / Add Time" confusing and hard to tap. Research: [Time of Day and Reminders — What Users Want](<../Research/Research Reports/Habit Creation/Time of Day and Reminders — What Users Want.md>).
+
+| # | Task | Status |
+|---|---|---|
+| 39 | **Time of Day** (renamed from Day Section everywhere, "Edit Times of Day" on Today): large chips, always editable, decide where a habit shows; multi-select ("Pick one or more", with ticks) for Check it off on a set schedule, "Pick one" otherwise. **Reminders** are separate and off by default; Remind Me adds one reminder per chosen time of day, labelled "Morning reminder", and they follow the chips until edited; reminders never move a habit. Alert and "If Not Done, Remind Again" show only with Remind Me on. Form sentences are larger (callout) and rewritten in plain words. Round-5 dev data (silent times) is put back into its times of day once (`placement_v2`) | Built and installed on the iPhone; checked by `FormWalkthroughUITests` and `PlacementUITests`. Full UI suite not re-run yet (the user asked to review the screen first); `NewHabitUITests` and `LongTextUITests` still use the old wording and need updating |
+
+
+## Round 6: New flow, Goal row, Time of Day (27 Sep 2026)
+
+Spec (everything decided, in one place): [New Habit Goal and Time of Day.md](<New Habit Goal and Time of Day.md>).
+
+| # | Task | Status |
+|---|---|---|
+| 40 | **New flow:** "What do you want to create?" (a good habit, a bad habit, a task) → "How do you want to track it?" / "What do you want to do?" → one form. Pushed lists, no icons; icon picker and New Time of Day are pushed pages, not sheets | Built; installed on the iPhone |
+| 41 | **Numbers:** whole stays whole, up to 2 decimal places, "k" from 1,000, time as "1 h 25 min" | Built |
+| 42 | **Check it off:** "Times a day" (1 = plain tick, no "0/1"); several times of day = a tick in each | Built; **to change** (28 Sep): the goal stays as typed, no "one in each" |
+| 43 | **Time it:** hours-and-minutes wheels | Built |
+| 44 | **Time of Day** menu (parts, then "Or", then Anytime; always multi-select for every type, only Anytime single); ticks one per part, counts and times shared, anything else the same row in each part | Built; **to change** (28 Sep): the time of day is display only, the same row with one shared progress in each part for every type, no splitting. Reminders unlimited within the chosen parts |
+| 45 | **Reminders:** progressive (Remind Me → times → Remind Me With → If Not Done, Remind Again); each reminder limited to its time of day | Built |
+| 46 | **Tasks:** once or on a schedule; "Tasks don't have progress or stats" | Built |
+| 47 | Goal history, long-press Add Amount… / Mark as Done, edit screen | Not started |
+| 48 | **Flow test** `NewFlowUITests` | Passes on the iPhone 16 (27 Sep): all three choices, both questions, the Check it off form with Morning + Evening and reminders, Today, Count it, Time it, Cut down, Task. Fixed on the way: a per-part tick row showed "0/2"; it now shows only its time. `NewHabitUITests`, `LongTextUITests` and `FormWalkthroughUITests` still use the old chooser and need updating before a full run |
+
+### Round 6b: compact form, display-only time of day, start and end dates (28 Sep 2026)
+
+| # | Task | Status |
+|---|---|---|
+| 49 | **Compact form:** name row; Icon · Colour pop-ups; Repeat and Time of Day, and Goal, each opening a full screen; reminders (one by default, add more) with Remind Me With / Remind Again right below | Built; `NewFlowUITests` passes on the iPhone; installed |
+| 50 | **Time of Day is display only:** the same row with one shared progress in each chosen part; the goal is never changed or split | Built (the flow test checks a goal of 4 stays 4 after picking Morning and Afternoon) |
+| 51 | **Start and end dates:** Starts (Today, any past or future day), Ends (Never or a date, never before the start) on the Repeat screen; Core schema 5 (`starts_on`, `ends_on`) | Built; Core migration test 4→5 passes |
+| 52 | Repeat screen lists every How Often option; Dates is its own section above Reminders; a Remind Me switch shows the reminder sections only when on; switches are green (checked in dark and light) | Built; `NewFlowUITests` passes on the iPhone; installed |

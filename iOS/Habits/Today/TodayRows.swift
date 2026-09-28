@@ -2,14 +2,6 @@ import SwiftUI
 
 /// "3/8 glasses", "12/20 min", "2/3 this week", "1/4 items", "0/2 cups max": one format for every habit.
 func goalLine(_ habit: Habit, progress: Double, goal: Double) -> String {
-    let unit: String
-    switch habit.kind {
-    case .amount(let u, _): unit = " " + u
-    case .duration: unit = " min"
-    case .checklist: unit = " items"
-    case .check, .quit, .task: unit = ""
-    }
-    let shown = habit.kind == .duration ? progress.rounded(.down) : progress
     let period = switch habit.frequency {
     case .perWeek: " this week"
     case .perMonth: " this month"
@@ -17,7 +9,17 @@ func goalLine(_ habit: Habit, progress: Double, goal: Double) -> String {
     default: ""
     }
     let max = habit.atMost ? " max" : ""
-    return "\(Format.amount(shown))/\(Format.amount(goal))\(unit)\(max)\(period)"
+    switch habit.kind {
+    case .duration:
+        // Time is always hours and minutes: "12 min/1 h 30 min".
+        return "\(Format.minutes(progress.rounded(.down)))/\(Format.minutes(goal))\(max)\(period)"
+    case .amount(let unit, _):
+        return "\(Format.amount(progress))/\(Format.amount(goal)) \(unit)\(max)\(period)"
+    case .checklist:
+        return "\(Format.amount(progress))/\(Format.amount(goal)) items\(period)"
+    case .check, .quit, .task:
+        return "\(Format.amount(progress))/\(Format.amount(goal))\(max)\(period)"
+    }
 }
 
 /// One-time tasks: the time if set, and where it came from if it moved forward.
@@ -41,6 +43,10 @@ struct HabitRow: View {
     let isToday: Bool
     /// For a habit in several day sections: the section this row ticks.
     var slot: String? = nil
+    /// The row's earliest time, shown after the goal ("0/1 · 7:00 AM") so Today says why it's here.
+    var time: ReminderTime? = nil
+    /// Flashes briefly after the habit is added.
+    var highlighted = false
     @Binding var stepsOpen: Bool
     @Environment(HabitStore.self) private var store
 
@@ -56,10 +62,11 @@ struct HabitRow: View {
                 // One line always: names show 15 characters, then "…".
                 Text(habit.name.capped(HabitRow.nameShown)).font(.body).foregroundStyle(done ? .secondary : .primary).lineLimit(1)
                     .accessibilityLabel(habit.name) // VoiceOver reads it in full
-                Text(habit.kind == .task ? taskLine(habit, shownOn: day, calendar: store.calendar) : goalLine(habit, progress: progress, goal: goal))
+                let line = subtitle(progress: progress, goal: goal)
+                if !line.isEmpty { Text(line)
                     .font(.subheadline).foregroundStyle(.secondary)
                     .monospacedDigit()
-                    .lineLimit(1)
+                    .lineLimit(1) }
             }
             Spacer(minLength: 8)
             if streak > 0 { StreakLabel(count: streak, unit: habit.frequency.streakUnit, onFill: progress / max(goal, 1) >= 0.7) }
@@ -68,7 +75,19 @@ struct HabitRow: View {
         }
         // The same spacing as the Quitting rows.
         .padding(.vertical, 2)
-        .listRowBackground(ProgressFill(progress: progress / max(goal, 1), color: habit.color))
+        .listRowBackground(ProgressFill(progress: progress / max(goal, 1), color: habit.color).overlay(HighlightFlash(on: highlighted, color: habit.color)))
+    }
+
+    /// "3/8 glasses", "1/3", "12 min/20 min"; a once-a-day tick shows no "0/1", only its time if it has one.
+    private func subtitle(progress: Double, goal: Double) -> String {
+        let time = self.time.map { DaySection.clock($0.minuteOfDay) }
+        if habit.kind == .task { return taskLine(habit, shownOn: day, calendar: store.calendar) }
+        // A once-a-day tick, or one part's tick of a habit done in several times of day, is a single
+        // tick: no "0/1" or "0/2", just its time if it has one.
+        if habit.kind == .check && habit.frequency.isDayBased && (slot != nil || goal <= 1) {
+            return time ?? ""
+        }
+        return goalLine(habit, progress: progress, goal: goal) + (time.map { " · " + $0 } ?? "")
     }
 
     @ViewBuilder
@@ -97,7 +116,7 @@ struct HabitRow: View {
                 let running = store.timers[habit.id] != nil
                 RoundActionButton(symbol: running ? "pause.fill" : "play.fill", done: done && !running, color: habit.color,
                                   label: running ? "Stop \(habit.name) timer" : "Start \(habit.name) timer") {
-                    withAnimation { store.toggleTimer(habit) }
+                    withAnimation { store.toggleTimer(habit, slot: slot) }
                 }
                 .disabled(!isToday)
             case .quit, .checklist:
@@ -130,8 +149,16 @@ struct StepRow: View {
     }
 }
 
+/// A row's brief flash after it's added: a tint over the row, faded in and out by the caller.
+struct HighlightFlash: View {
+    let on: Bool
+    let color: HabitColor
+    var body: some View { color.color.opacity(on ? 0.3 : 0).allowsHitTesting(false) }
+}
+
 struct QuitRow: View {
     let habit: Habit
+    var highlighted = false
     @Environment(HabitStore.self) private var store
 
     var body: some View {
@@ -153,6 +180,7 @@ struct QuitRow: View {
             .padding(.vertical, 2)
             .accessibilityElement(children: .combine)
         }
+        .listRowBackground(Color(.secondarySystemGroupedBackground).overlay(HighlightFlash(on: highlighted, color: habit.color)))
     }
 }
 
@@ -236,9 +264,9 @@ struct PartHeader: View {
                     Button(action: onStart) {
                         Image(systemName: "play.fill")
                             .font(.system(size: 13, weight: .semibold))
-                            .foregroundStyle(Color.ink)
+                            .foregroundStyle(isNow ? Color.black.opacity(0.82) : Color.ink)
                             .frame(width: 34, height: 34)
-                            .background(Circle().fill(isNow ? Color(.systemBackground) : Color(.tertiarySystemFill)))
+                            .background(Circle().fill(isNow ? Color.white : Color(.tertiarySystemFill)))
                             .overlay(Circle().strokeBorder(Color.ink.opacity(isNow ? 0.18 : 0), lineWidth: 1))
                             .shadow(color: .black.opacity(isNow ? 0.1 : 0), radius: 2, y: 1)
                             .frame(width: 44, height: 44)
