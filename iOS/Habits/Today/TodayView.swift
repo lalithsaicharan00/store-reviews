@@ -183,6 +183,15 @@ struct TodayView: View {
             .listSectionSpacing(14)
             .environment(\.defaultMinListRowHeight, 44)
             .contentMargins(.top, 4, for: .scrollContent)
+            // Another day is open: one tap back to today, just above the day bar (reviews: people get
+            // lost on another date, and log on the wrong day). Hidden on today itself.
+            .safeAreaInset(edge: .bottom) {
+                if !isToday {
+                    BackToTodayButton { withAnimation { day = nil } }
+                        .padding(.bottom, 6)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            }
             .onChange(of: scrollTarget) {
                 guard let target = scrollTarget else { return }
                 if reduceMotion { proxy.scrollTo(target, anchor: .center) } else { withAnimation { proxy.scrollTo(target, anchor: .center) } }

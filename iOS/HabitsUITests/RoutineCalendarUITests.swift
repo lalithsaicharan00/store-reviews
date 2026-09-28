@@ -156,7 +156,7 @@ final class RoutineCalendarUITests: XCTestCase {
         oldDay.tap()
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label CONTAINS '0 of 0 done'")).firstMatch.waitForExistence(timeout: 3))
         openCalendar()
-        app.buttons["Today"].tap()
+        app.buttons["calendar-back-to-today"].tap()
         XCTAssertTrue(app.buttons["Start Anytime routine"].waitForExistence(timeout: 3))
     }
 
@@ -199,7 +199,7 @@ final class RoutineCalendarUITests: XCTestCase {
         openCalendar()
         XCTAssertEqual(app.buttons[dayID(Date())].value as? String, "Today. 1 of 1 done")
         shot("calendar-complete")
-        app.buttons["Today"].tap()
+        app.navigationBars["Go to a day"].buttons["Done"].tap()
         // Just added, Anytime stays open after it's finished; open it if it folded.
         let open = app.buttons["Open Anytime"]
         if open.waitForExistence(timeout: 1) { open.tap() }

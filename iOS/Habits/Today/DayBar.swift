@@ -81,10 +81,17 @@ struct CalendarSheet: View {
                 }.padding(.horizontal, 16).padding(.bottom, 20)
             }
             .background(Color(.systemBackground))
+            // Back to Today shows only once you're away from today, at the bottom where the thumb is
+            // (reviews ask for one tap back; an always-on button at the top did nothing on today, 28 Sep).
+            .safeAreaInset(edge: .bottom) {
+                if selected != today || month.year != today.year || month.month != today.month {
+                    BackToTodayButton(id: "calendar-back-to-today") { pick(today) }
+                        .padding(.bottom, 8)
+                }
+            }
             .navigationTitle("Go to a day")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) { Button("Today") { pick(today) } }
                 ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
             }
         }
@@ -96,7 +103,8 @@ struct CalendarSheet: View {
         let progress = summary.total == 0 ? 0 : Double(summary.done) / Double(summary.total)
         return Button { pick(day) } label: {
             ZStack {
-                RoundedRectangle(cornerRadius: 12)
+                // A circle, like the rings: every shape on this screen is round.
+                Circle()
                     .fill(day == selected ? Color(.secondarySystemFill) : .clear)
                 if summary.total > 0 {
                     Circle().stroke(Color.ink.opacity(future ? 0.07 : 0.12), lineWidth: 3)
@@ -136,5 +144,25 @@ struct CalendarSheet: View {
     private func pick(_ day: LocalDay) {
         onPick(day == today ? nil : day)
         dismiss()
+    }
+}
+
+/// "Back to Today": shown only while another day is open, near the bottom, in the primary style.
+struct BackToTodayButton: View {
+    var id = "back-to-today"
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Label("Back to Today", systemImage: "arrow.uturn.backward")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Color.onInk)
+                .padding(.horizontal, 18)
+                .frame(height: 44)
+                .background(Capsule().fill(Color.ink))
+                .shadow(color: .black.opacity(0.15), radius: 6, y: 2)
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier(id)
     }
 }

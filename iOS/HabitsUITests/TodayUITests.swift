@@ -69,11 +69,33 @@ final class TodayUITests: XCTestCase {
         label.tap()
         XCTAssertTrue(app.navigationBars["Go to a day"].waitForExistence(timeout: 2))
         shot("05-calendar")
-        app.buttons["Today"].firstMatch.tap()
+        XCTAssertFalse(app.buttons["calendar-back-to-today"].exists, "No Back to Today while on today")
+        app.navigationBars["Go to a day"].buttons["Done"].tap()
 
         // + opens New Habit.
         app.buttons["New Habit"].tap()
         XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
         shot("06-new-habit")
+    }
+
+    /// Back to Today appears only on another day: above the day bar on Today, and at the bottom of the
+    /// calendar. The calendar marks the open day with a circle, like its rings.
+    func testBackToToday() {
+        XCTAssertTrue(app.buttons["Previous day"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["back-to-today"].exists, "Hidden on today")
+        app.buttons["Previous day"].tap()
+        let back = app.buttons["back-to-today"]
+        XCTAssertTrue(back.waitForExistence(timeout: 3), "Shown on another day")
+        shot("b01-yesterday-back-to-today")
+        // The calendar offers it too, at the bottom, while another day is open.
+        app.buttons.matching(NSPredicate(format: "label CONTAINS 'Open calendar'")).firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["Go to a day"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons["calendar-back-to-today"].waitForExistence(timeout: 2))
+        XCTAssertFalse(app.navigationBars["Go to a day"].buttons["Today"].exists, "No Today button at the top")
+        shot("b02-calendar-selected-circle")
+        app.navigationBars["Go to a day"].buttons["Done"].tap()
+        back.tap()
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Today,'")).firstMatch.waitForExistence(timeout: 3))
+        XCTAssertFalse(app.buttons["back-to-today"].waitForExistence(timeout: 1), "Gone once back on today")
     }
 }

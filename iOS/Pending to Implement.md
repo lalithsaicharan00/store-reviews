@@ -281,3 +281,7 @@ A one-time pass on load, guarded by a setting key `placement_v1`:
   - An Alarm rings on silent (iOS 26).
   - Editing Morning's start moves a timed habit.
 - [ ] Build Plan.md has the new round with its status. This file's steps are ticked.
+
+## Routine player: redesign pending (noted 28 Sep 2026)
+
+The full-screen routine that ▶ Start opens isn't designed properly yet (the user). Don't test its UI until it's redesigned; see `Design Rules — Don't Regress.md`, "Not designed yet".

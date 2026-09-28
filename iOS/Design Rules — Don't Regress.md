@@ -61,6 +61,17 @@ Source: [Section Header — Start Button, Left Count and Icons](<../Research/Res
   - Start is today only, never on Quitting.
 - Space order: status and Start never shrink; the name gives way first; the icons take the rest and end in "+N".
 
+## Calendar and Back to Today
+
+Source: [Back to Today — When and Where](<../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/Back to Today — When and Where.md>).
+
+- **Every shape in the calendar is round.** The open day is a filled circle inside its ring, never a square.
+- **"Back to Today" shows only while another day is open.** It sits at the **bottom**: above the day bar on Today, and pinned at the bottom of the calendar sheet. There's no always-on Today button at the top.
+
+## Not designed yet: don't test
+
+- **The routine player** (the full-screen view that Start opens) isn't designed properly yet (the user, 28 Sep). Don't write new tests for it or judge its layout. Existing routine tests check only the underlying logic (skip, finish, resume). Redesign it before testing its UI.
+
 ## Where the rest is
 
 - Everything decided about creating and editing a habit: [New Habit Goal and Time of Day.md](<New Habit Goal and Time of Day.md>).
