@@ -276,4 +276,25 @@ final class GoalFlowUITests: XCTestCase {
         app.navigationBars["Add Amount"].buttons["Add"].tap(); sleep(2)
         shot("k04-today-350")
     }
+
+    /// The unit is optional: the number shows as soon as it's typed ("8" / "a day"), and a goal with no
+    /// unit can be added (the user's decision, 28 Sep).
+    func testNumberShowsWithoutAUnit() {
+        newHabit("Track an amount", name: "Pushups set")
+        openGoal()
+        typeAmount("8")
+        XCTAssertTrue(summary("8 a day"), "The number shows before any unit is chosen")
+        shot("u01-number-no-unit")
+        period("Weekly")
+        XCTAssertTrue(summary("8 a week"))
+        period("Daily")
+        back()
+        XCTAssertTrue(row("Goal, 8 a day").exists)
+        XCTAssertTrue(app.navigationBars["Track an amount"].buttons["Add"].isEnabled, "No unit needed to add it")
+        addHabit()
+        let line = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '0/8'")).firstMatch
+        for _ in 0..<6 where !line.exists { app.swipeUp(velocity: .slow) }
+        XCTAssertTrue(line.exists, "Today shows just the numbers")
+        shot("u02-today-no-unit")
+    }
 }

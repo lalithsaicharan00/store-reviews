@@ -14,7 +14,8 @@ func goalLine(_ habit: Habit, progress: Double, goal: Double) -> String {
         // Time is always hours and minutes: "12 min/1 h 30 min".
         return "\(Format.minutes(progress.rounded(.down)))/\(Format.minutes(goal))\(max)\(period)"
     case .amount(let unit, _):
-        return "\(Format.amount(progress))/\(Format.amount(goal)) \(unit)\(max)\(period)"
+        // No unit: just the numbers ("3/8").
+        return "\(Format.amount(progress))/\(Format.amount(goal))\(unit.isEmpty ? "" : " " + unit)\(max)\(period)"
     case .checklist:
         return "\(Format.amount(progress))/\(Format.amount(goal)) items\(period)"
     case .check where habit.checkUnit != nil:

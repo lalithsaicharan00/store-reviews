@@ -135,7 +135,7 @@ A **Dates** section of its own on the form, above Reminders (the user's change, 
 | Section | Check it off | Count it | Time it |
 |---|---|---|---|
 | **Per** | Segmented Day · Week · Month · Year. Footer: Day: "The goal is for each day it's due…"; others: "Any days you like: … adds up. There's no daily minimum. First period: 28 Sep – 3 Oct." | same | same |
-| **Goal** | Amount **1**, Unit **times**. Footer: another unit, like glasses, makes it a count with + | Amount **empty, keyboard up**, Unit **Choose** (required) | Scroll / Type; wheels at **20 min**; typed Hours and Minutes. **No units**: time is only hours and minutes |
+| **Goal** | Amount **1**, Unit **times**. Footer: another unit, like glasses, makes it a count with + | Amount **empty, keyboard up**, Unit **Optional** (a "No Unit" row; "8 a day" is a goal) | Scroll / Type; wheels at **20 min**; typed Hours and Minutes. **No units**: time is only hours and minutes |
 | **Your goal** | "3 times per week" | "2k ml per day" | "3 h per week" |
 | Footer: what Today does | "tap ✓ when it's done" / "each tap on ✓ ticks it once, even twice in one day" | the + rule below | "▶ starts a timer…; add time by touching and holding" |
 

@@ -73,10 +73,10 @@ struct GoalEditor: View {
                             .accessibilityIdentifier("goal-amount")
                     }
                     NavigationLink {
-                        UnitPicker(unit: $goal.unit, used: usedUnits, mode: check ? .tick : .amount)
+                        UnitPicker(unit: $goal.unit, used: usedUnits, mode: check ? .tick : .amount, allowsNone: !check)
                     } label: {
                         LabeledContent("Unit") {
-                            Text(goal.trimmedUnit.isEmpty ? "Choose" : goal.trimmedUnit)
+                            Text(goal.trimmedUnit.isEmpty ? "Optional" : goal.trimmedUnit)
                                 .foregroundStyle(goal.trimmedUnit.isEmpty ? .tertiary : .secondary)
                         }
                     }

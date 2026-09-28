@@ -1150,6 +1150,8 @@ struct UnitPicker: View {
     @Binding var unit: String
     let used: [String]
     var mode: Mode = .amount
+    /// Track an amount: the unit is optional, so "No Unit" is a choice too.
+    var allowsNone = false
     @Environment(\.dismiss) private var dismiss
     @State private var creating = false
     @State private var custom = ""
@@ -1206,6 +1208,19 @@ struct UnitPicker: View {
                         typing = true
                     }
                     .accessibilityIdentifier("create-unit")
+                }
+                if allowsNone {
+                    Button {
+                        unit = ""
+                        dismiss()
+                    } label: {
+                        HStack {
+                            Text("No Unit").foregroundStyle(Color.primary)
+                            Spacer(minLength: 16)
+                            if unit.trimmingCharacters(in: .whitespaces).isEmpty { Image(systemName: "checkmark").foregroundStyle(Color.ink).fontWeight(.semibold) }
+                        }
+                    }
+                    .accessibilityIdentifier("no-unit")
                 }
                 let known = Set(groups.flatMap(\.1))
                 ForEach(used.reversed().filter { !known.contains($0) && !["minutes", "hours"].contains($0) }, id: \.self, content: row)

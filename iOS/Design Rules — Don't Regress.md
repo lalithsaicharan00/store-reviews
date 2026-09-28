@@ -44,6 +44,7 @@ Sources: [Goals — Periods, Entry and What + Adds](<../Research/Research Report
   - Otherwise + asks how much.
   - The Goal screen says which, before saving.
 - **The goal is read back big at the top** ("8 glasses" / "a day"), never as a Form row at the bottom: a row looks editable, and the keyboard hides it. Keep the amount and unit above the number keyboard.
+- **The unit is optional** (Track an amount): the read-back shows the number the moment it's typed ("8" / "a day"); a unit only adds its word; "No Unit" is a choice; Today shows "3/8". Never make the goal wait for a unit (reported 28 Sep).
 - **Check it off stays Check it off, whatever the unit.** ✓ counts one; the unit only names it ("3/8 glasses"); whole numbers only; units that happen one at a time only.
 - **Copy never says** due, overdue, missed, failed, minimum or "First period" (overdue and red labels stress people; ADHD reviewers praise shame-free apps). Say what **counts** and when it **starts fresh**, and name the user's own week start.
 - **Units** are grouped by what people track (Drinking, Walking and running, Reading and writing, Exercise, Everyday, Money), with metric or imperial first by region. Making your own unit is a green ⊕ **Create Your Own Unit** row, the same pattern as Add Reminder.

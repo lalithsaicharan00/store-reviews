@@ -92,8 +92,8 @@ struct GoalDraft {
 
     func value(timed: Bool, check: Bool) -> Double? {
         if timed { return duration(max: period.maxMinutes) }
-        guard let n = amountValue(check: check), !trimmedUnit.isEmpty else { return nil }
-        return n
+        // The unit is optional: "8 a day" is a goal too (the user's decision, 28 Sep).
+        return amountValue(check: check)
     }
 
     /// The big part of the read-back: "8 glasses", "3 times", "Once", "1 h 30 min".
@@ -101,7 +101,7 @@ struct GoalDraft {
         guard let value = value(timed: timed, check: check) else { return nil }
         if timed { return Format.minutes(value) }
         if trimmedUnit == "times" { return value == 1 ? "Once" : "\(Format.amount(value)) times" }
-        return "\(Format.amount(value)) \(trimmedUnit)"
+        return trimmedUnit.isEmpty ? Format.amount(value) : "\(Format.amount(value)) \(trimmedUnit)"
     }
 
     /// One line, for the form's Goal row and VoiceOver: "8 glasses a day", "Once a day", "3 h a week".
@@ -113,7 +113,7 @@ struct GoalDraft {
     func apply(to habit: inout Habit, timed: Bool, check: Bool) {
         habit.goal = value(timed: timed, check: check) ?? 1
         habit.kind = timed ? .duration : check ? .check : .amount(unit: trimmedUnit, increment: 1)
-        habit.checkUnit = check && trimmedUnit != "times" ? trimmedUnit : nil
+        habit.checkUnit = check && trimmedUnit != "times" && !trimmedUnit.isEmpty ? trimmedUnit : nil
         habit.frequency = period.frequency(count: habit.kind == .check ? Int(habit.goal) : 1, daily: habit.frequency)
     }
 }
