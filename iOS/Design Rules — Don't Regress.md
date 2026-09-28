@@ -51,7 +51,7 @@ Sources: [Goals — Periods, Entry and What + Adds](<../Research/Research Report
 
 ## Schedule and Goal: one success clock
 
-> **Round 2 proposal (28 Sep 2026, not built yet):** [Schedule and Goal — Round 2, Making It Intuitive](<../Research/Research Reports/Habit Creation/Schedule and Goal — Round 2, Making It Intuitive.md>) replaces the confirmation alerts, removes the Goal period from Check it off, and renames the choices. Ask the user before building either version.
+> **Round 2 proposal (28 Sep 2026, not built yet):** [Schedule and Goal — Round 2, Making It Intuitive](<../Research/Research Reports/Habit Creation/Schedule and Goal — Round 2, Making It Intuitive.md>) settles this section in one rule: **Schedule says which days the habit is on your list; the Goal says what counts and over what period; Schedule never counts.** It removes "A number of days" from Schedule and every confirmation alert, and keeps weekly, monthly and yearly goals for every type, Check it off included. Ask the user before building either version.
 
 Source: [Schedule and Goal — One Coherent System](<../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>), supplied by the user and archived 28 September 2026. This supersedes conflicting earlier Repeat/Goal guidance.
 
