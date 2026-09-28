@@ -1,7 +1,8 @@
 import SwiftUI
 
 /// "3/8 glasses", "12/20 min", "2/3 this week", "1/4 items", "0/2 cups max": one format for every habit.
-func goalLine(_ habit: Habit, progress: Double, goal: Double) -> String {
+/// While a timer runs, time is a live clock instead: "7:42/20 min" ("Timing a Habit", 28 Sep).
+func goalLine(_ habit: Habit, progress: Double, goal: Double, running: Bool = false) -> String {
     let period = switch habit.frequency {
     case .perWeek: " this week"
     case .perMonth: " this month"
@@ -12,7 +13,8 @@ func goalLine(_ habit: Habit, progress: Double, goal: Double) -> String {
     switch habit.kind {
     case .duration:
         // Time is always hours and minutes: "12 min/1 h 30 min".
-        return "\(Format.minutes(progress.rounded(.down)))/\(Format.minutes(goal))\(max)\(period)"
+        let done = running ? Format.clock(progress) : Format.minutes(progress.rounded(.down))
+        return "\(done)/\(Format.minutes(goal))\(max)\(period)"
     case .amount(let unit, _):
         // No unit: just the numbers ("3/8").
         return "\(Format.amount(progress))/\(Format.amount(goal))\(unit.isEmpty ? "" : " " + unit)\(max)\(period)"
@@ -55,12 +57,32 @@ struct HabitRow: View {
     @Environment(HabitStore.self) private var store
 
     var body: some View {
-        let progress = store.progress(of: habit, on: day)
+        if habit.kind == .duration, isToday, let start = store.timers[habit.id] {
+            // A running timer redraws its row every second: the clock ticks and the fill grows, so it's
+            // plain that time is being counted. Anchor it at the timer's own start: `.now` changes the
+            // schedule on every redraw, and `.distantPast` replays every missed tick; both redraw
+            // nonstop and freeze the app (28 Sep).
+            TimelineView(.periodic(from: start, by: 1)) { context in
+                row(now: context.date)
+            }
+        } else {
+            row(now: .now)
+        }
+    }
+
+    private var isRunning: Bool { isToday && store.timers[habit.id] != nil }
+
+    @ViewBuilder
+    private func row(now: Date) -> some View {
+        let progress = store.progress(of: habit, on: day, now: now)
         let goal = store.goal(of: habit)
         // A cut-back habit is "met" while under its maximum, but never shown as finished.
         let done = slot.map { store.isSlotDone(habit, slot: $0, on: day) } ?? (store.isDone(habit, on: day) && !habit.atMost)
         let streak = store.streak(of: habit, asOf: day)
         HStack(spacing: 12) {
+          // The row itself opens Add Amount / Add Time for any count or timed habit: one place to type a
+          // number, for every habit (research: "Logging a Count — One Tap or Type", 28 Sep).
+          HStack(spacing: 12) {
             HabitIcon(symbol: habit.symbol, color: habit.color)
             VStack(alignment: .leading, spacing: 1) {
                 // One line always: names show 15 characters, then "…".
@@ -68,12 +90,16 @@ struct HabitRow: View {
                     .accessibilityLabel(habit.name) // VoiceOver reads it in full
                 let line = subtitle(progress: progress, goal: goal)
                 if !line.isEmpty { Text(line)
-                    .font(.subheadline).foregroundStyle(.secondary)
+                    .font(.subheadline).foregroundStyle(isRunning ? .primary : .secondary)
                     .monospacedDigit()
                     .lineLimit(1) }
             }
             Spacer(minLength: 8)
             if streak > 0 { StreakLabel(count: streak, unit: habit.frequency.streakUnit, onFill: progress / max(goal, 1) >= 0.7) }
+          }
+          .contentShape(Rectangle())
+          .onTapGesture { if logsNumbers && day <= store.today() { showLog = true } }
+          .accessibilityAction(named: habit.kind == .duration ? "Add Time" : "Add Amount") { if logsNumbers && day <= store.today() { showLog = true } }
             actionButton(done: done)
                 .disabled(habit.kind != .checklist && day > store.today())
         }
@@ -95,6 +121,14 @@ struct HabitRow: View {
         }
     }
 
+    /// Counts and timed habits take a typed number from the row (Add Amount / Add Time).
+    private var logsNumbers: Bool {
+        switch habit.kind {
+        case .amount, .duration: true
+        default: false
+        }
+    }
+
     /// "3/8 glasses", "1/3", "12 min/20 min"; a once-a-day tick shows no "0/1", only its time if it has one.
     private func subtitle(progress: Double, goal: Double) -> String {
         let time = self.time.map { DaySection.clock($0.minuteOfDay) }
@@ -104,7 +138,7 @@ struct HabitRow: View {
         if habit.kind == .check && habit.frequency.isDayBased && (slot != nil || goal <= 1) {
             return time ?? ""
         }
-        return goalLine(habit, progress: progress, goal: goal) + (time.map { " · " + $0 } ?? "")
+        return goalLine(habit, progress: progress, goal: goal, running: isRunning) + (time.map { " · " + $0 } ?? "")
     }
 
     @ViewBuilder
@@ -125,9 +159,11 @@ struct HabitRow: View {
                     }
                 }
             case .amount:
+                // The button says what one tap does: "+1" adds one; "+" asks how much.
                 RoundActionButton(symbol: "plus", done: done, color: habit.color,
                                   label: habit.quickIncrement.map { "Add \(Format.amount($0)) to \(habit.name)" } ?? "Add amount to \(habit.name)",
-                                  keepSymbolWhenDone: true) {
+                                  keepSymbolWhenDone: true,
+                                  text: habit.quickIncrement.map { "+" + Format.amount($0) }) {
                     if habit.quickIncrement != nil {
                         withAnimation { store.increment(habit, on: day) }
                     } else { showLog = true }

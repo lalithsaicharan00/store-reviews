@@ -95,12 +95,20 @@ struct RoundActionButton: View {
     let color: HabitColor
     let label: String
     var keepSymbolWhenDone = false
+    /// Text instead of the symbol, e.g. "+1", so the button says what one tap adds.
+    var text: String? = nil
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: done && !keepSymbolWhenDone ? "checkmark" : symbol)
-                .font(.system(size: 14, weight: .bold))
+            Group {
+                if let text {
+                    Text(text).font(.system(size: 13, weight: .bold).monospacedDigit()).lineLimit(1).minimumScaleFactor(0.7)
+                } else {
+                    Image(systemName: done && !keepSymbolWhenDone ? "checkmark" : symbol)
+                        .font(.system(size: 14, weight: .bold))
+                }
+            }
                 .foregroundStyle(done ? Color.white : Color.ink)
                 .frame(width: 34, height: 34)
                 .background(Circle().fill(done ? AnyShapeStyle(color.color) : AnyShapeStyle(Color(.tertiarySystemFill))))
@@ -179,6 +187,13 @@ enum Format {
         let h = total / 60, m = total % 60
         if h == 0 { return "\(m) min" }
         return m == 0 ? "\(h) h" : "\(h) h \(m) min"
+    }
+
+    /// A running timer's clock, counting up: "0:07", "7:42", "1:07:42". Minutes in, whole seconds out.
+    static func clock(_ minutes: Double) -> String {
+        let total = max(0, Int((minutes * 60).rounded(.down)))
+        let h = total / 3600, m = total / 60 % 60, s = total % 60
+        return h > 0 ? String(format: "%d:%02d:%02d", h, m, s) : String(format: "%d:%02d", m, s)
     }
 
     private static func trimmed(_ v: Double, places: Int) -> String {

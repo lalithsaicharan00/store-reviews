@@ -38,7 +38,7 @@ struct GoalEditor: View {
     }
 
     private var todayNote: String {
-        if timed { return "On Today, ▶ starts a timer. To add time yourself, touch and hold the habit." }
+        if timed { return "On Today, ▶ starts a timer that keeps going when you leave the app. To type the time instead, tap the habit." }
         if check { return "On Today, each tap on ✓ counts one. The unit just names what you're counting." }
         return CountLogging.explanation(goal: value, unit: goal.trimmedUnit)
     }

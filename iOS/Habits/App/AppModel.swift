@@ -17,6 +17,8 @@ final class AppModel {
 
     let store: HabitStore
     let scheduler = ReminderScheduler()
+    /// A running timer on the Lock Screen, and its one "goal reached" notification.
+    let timerPresence = TimerPresence()
     let router = AppRouter()
     private let persistence: Persistence?
     private var loading: Task<Void, Never>?
@@ -54,8 +56,13 @@ final class AppModel {
             #if DEBUG
             if !ProcessInfo.processInfo.arguments.contains("-empty") { await store.seedDemo() }
             #endif
-            store.onChange = { [store, scheduler] in scheduler.scheduleReconcile(store) }
+            store.onChange = { [store, scheduler, timerPresence] in
+                scheduler.scheduleReconcile(store)
+                Task { await timerPresence.sync(store) }
+            }
             scheduler.scheduleReconcile(store)
+            // A timer left running (the app was closed, or the phone restarted) gets its Live Activity back.
+            await timerPresence.sync(store)
         }
         loading = task
         await task.value

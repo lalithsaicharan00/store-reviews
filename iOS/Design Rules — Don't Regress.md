@@ -49,6 +49,31 @@ Sources: [Goals — Periods, Entry and What + Adds](<../Research/Research Report
 - **Copy never says** due, overdue, missed, failed, minimum or "First period" (overdue and red labels stress people; ADHD reviewers praise shame-free apps). Say what **counts** and when it **starts fresh**, and name the user's own week start.
 - **Units** are grouped by what people track (Drinking, Walking and running, Reading and writing, Exercise, Everyday, Money), with metric or imperial first by region. Making your own unit is a green ⊕ **Create Your Own Unit** row, the same pattern as Add Reminder.
 
+## Logging a count
+
+Source: [Logging a Count — One Tap or Type](<../Research/Research Reports/Habit Creation/Logging a Count — One Tap or Type.md>).
+
+- **The button says what it does:** "+1" adds one (quick counts); "+" opens Add Amount. Never two habits with the same-looking button that behave differently.
+- **Tapping the habit row always opens Add Amount / Add Time** for count and timed habits.
+- **Don't** make every + open the input, and **don't** make the input full screen: those are Loop users' top complaints. Add Amount is a sheet, with the number pad up and "Add … again" (the last amount) as one tap. Units never read "1 glasses".
+
+## Timing a habit
+
+Source: [Timing a Habit — Start, See and Stop](<../Research/Research Reports/Habit Creation/Timing a Habit — Start, See and Stop.md>).
+
+- **▶ starts the timer in place, for any goal length.** Never open a full-screen timer for one habit: full screen belongs only to the routine player (Start on a section). Being sent to a timer screen is a top complaint.
+- **A running timer must be visible**:
+  - The row's line is a live clock, redrawn every second: "7:42/20 min" (`goalLine(running:)`).
+  - When the row is off screen or folded, a timer bar sits at the bottom of Today (`TimerBar`).
+  - Outside the app, a Live Activity shows it (`TimerPresence`; the `HabitsLiveActivity` extension).
+  - Never show only ▶ turning into ⏸.
+- **Keep the `TimelineView` inside the timed row itself.** A `TimelineView` higher up doesn't reliably redraw child rows whose inputs didn't change. And whole minutes hide a running timer for its first minute. Together these caused the "nothing moves" report (28 Sep).
+- **One notification when the goal is reached, never repeats or per-second pings.** The timer keeps counting past the goal.
+- **The Live Activity ends the moment the timer stops.** One left behind looks like time still counting.
+- **Time is counted from the saved start time, never by ticking.** So it survives closing the app and restarting the phone.
+- **A timer is never the only way.** Tapping the row opens Add Time. ⏸ saves what was done; sessions add up.
+- The clock counts up, with the goal beside it. The row's fill shows what's left.
+
 ## Today section headers
 
 Source: [Section Header — Start Button, Left Count and Icons](<../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/Section Header — Start Button, Left Count and Icons.md>).

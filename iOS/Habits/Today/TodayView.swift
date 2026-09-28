@@ -16,6 +16,8 @@ struct TodayView: View {
     /// A row or header to scroll to, and the row that flashes briefly after Add.
     @State private var scrollTarget: String?
     @State private var highlighted: String?
+    /// Rows now on screen, so a running timer whose row is out of sight gets the timer bar.
+    @State private var visibleRows: Set<String> = []
     @Environment(AppRouter.self) private var router
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -190,6 +192,19 @@ struct TodayView: View {
                     BackToTodayButton { withAnimation { day = nil } }
                         .padding(.bottom, 6)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
+                } else {
+                    // A running timer whose row is scrolled away or folded stays in sight here
+                    // ("Timing a Habit — Start, See and Stop"). Timers only run today.
+                    let hidden = hiddenTimers()
+                    if !hidden.isEmpty {
+                        VStack(spacing: 8) {
+                            ForEach(hidden, id: \.habit.id) { timer in
+                                TimerBar(habit: timer.habit, start: timer.start) { show(timer.habit) }
+                            }
+                        }
+                        .padding(.bottom, 6)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
                 }
             }
             .onChange(of: scrollTarget) {
@@ -232,11 +247,34 @@ struct TodayView: View {
                     HabitRow(habit: habit, day: day, isToday: isToday, slot: item.placement.slot,
                              time: item.placement.times.first, highlighted: highlighted == key, stepsOpen: stepsBinding(habit))
                         .id(key)
+                        .onAppear { if !visibleRows.contains(key) { visibleRows.insert(key) } }
+                        .onDisappear { if visibleRows.contains(key) { visibleRows.remove(key) } }
                     if habit.kind == .checklist && openSteps.contains(habit.id) {
                         ForEach(habit.steps) { StepRow(step: $0, habit: habit, day: day) }
                     }
                 }
             }
+        }
+    }
+
+    /// Running timers with no row of theirs on screen, oldest first.
+    private func hiddenTimers() -> [(habit: Habit, start: Date)] {
+        store.timers
+            .compactMap { id, start in store.habits.first { $0.id == id && !$0.archived }.map { ($0, start) } }
+            .filter { timer in !visibleRows.contains { $0.hasSuffix(timer.0.id.uuidString) } }
+            .sorted { $0.1 < $1.1 }
+            .map { (habit: $0.0, start: $0.1) }
+    }
+
+    /// From the timer bar: open the timer's section and bring its row into view.
+    private func show(_ habit: Habit) {
+        let placements = store.placements(of: habit)
+        let slot = store.timerSlots[habit.id]
+        guard let section = (placements.first { slot != nil && $0.slot == slot } ?? placements.first)?.section else { return }
+        withAnimation { foldOverrides[section] = true }
+        Task {
+            try? await Task.sleep(for: .milliseconds(100)) // the section opens and the row exists
+            scrollTarget = Self.rowKey(section, habit.id)
         }
     }
 

@@ -297,4 +297,29 @@ final class GoalFlowUITests: XCTestCase {
         XCTAssertTrue(line.exists, "Today shows just the numbers")
         shot("u02-today-no-unit")
     }
+
+    /// One rule for logging counts: the button says what it does ("+1" adds one; "+" asks how much), and
+    /// tapping the row always opens Add Amount, for every count habit.
+    func testRowOpensAddAmountAndButtonSaysPlusOne() {
+        newHabit("Track an amount", name: "Glasses")
+        openGoal()
+        typeAmount("8")
+        chooseUnit("glasses")
+        back()
+        addHabit()
+        let plusOne = rowButton("Add 1 to Glasses")
+        XCTAssertTrue(plusOne.exists)
+        shot("l01-plus-one-button")
+        plusOne.tap(); sleep(1)
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '1/8 glasses'")).firstMatch.exists, "+1 adds one")
+        // Tapping the row itself opens Add Amount.
+        app.staticTexts["Glasses"].firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["Add Amount"].waitForExistence(timeout: 3), "The row opens Add Amount")
+        sleep(1)
+        shot("l02-row-opens-add-amount")
+        app.textFields["log-amount"].typeText("3")
+        app.navigationBars["Add Amount"].buttons["Add"].tap(); sleep(2)
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '4/8 glasses'")).firstMatch.exists, "The typed amount adds up")
+        shot("l03-today-4-of-8")
+    }
 }

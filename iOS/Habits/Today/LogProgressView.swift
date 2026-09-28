@@ -19,7 +19,11 @@ struct LogProgressView: View {
     private var lastAmount: Double? {
         store.entries.last { $0.habitID == habit.id && $0.stepID == nil && $0.value > 0 }?.value
     }
-    private func text(_ v: Double) -> String { timed ? Format.minutes(v) : "\(Format.amount(v)) \(unit)".trimmingCharacters(in: .whitespaces) }
+    /// "1", "250 ml", "25 min": a count of one never gets a plural unit ("1 glasses").
+    private func text(_ v: Double) -> String {
+        if timed { return Format.minutes(v) }
+        return v == 1 || unit.isEmpty ? Format.amount(v) : "\(Format.amount(v)) \(unit)"
+    }
 
     private var value: Double? {
         if timed { return GoalDraft(hours: hours, minutes: minutes).duration }
@@ -55,11 +59,11 @@ struct LogProgressView: View {
                 }
                 if let lastAmount {
                     Section {
-                        Button("Add \(text(lastAmount))") { add(lastAmount) }
+                        Button("Add \(text(lastAmount)) again") { add(lastAmount) }
                             .disabled(saving)
                             .accessibilityIdentifier("log-same-again")
                     } footer: {
-                        Text("The same as last time.")
+                        Text("The same as last time, in one tap.")
                     }
                 }
                 Section {

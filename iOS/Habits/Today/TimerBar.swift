@@ -1,0 +1,47 @@
+import SwiftUI
+
+/// A running timer whose row isn't on screen (scrolled away, or in a folded section): its icon, name
+/// and live clock, pinned at the bottom of Today. Tapping it shows the row; ⏸ stops and saves.
+/// Research: "Timing a Habit — Start, See and Stop" (28 Sep): people want to see the timer while
+/// they do other things, and the row alone can be out of sight.
+struct TimerBar: View {
+    let habit: Habit
+    let start: Date
+    let onShow: () -> Void
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        TimelineView(.periodic(from: start, by: 1)) { context in
+            let progress = store.progress(of: habit, on: store.today(now: context.date), now: context.date)
+            let line = goalLine(habit, progress: progress, goal: store.goal(of: habit), running: true)
+            HStack(spacing: 12) {
+                Button(action: onShow) {
+                    HStack(spacing: 12) {
+                        HabitIcon(symbol: habit.symbol, color: habit.color, size: 30)
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text(habit.name.capped(HabitRow.nameShown)).font(.subheadline.weight(.semibold)).lineLimit(1)
+                            Text(line).font(.subheadline).monospacedDigit().lineLimit(1)
+                        }
+                        Spacer(minLength: 8)
+                    }
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("\(habit.name) timer, \(line)")
+                .accessibilityHint("Shows the habit")
+                .accessibilityIdentifier("timer-bar")
+                RoundActionButton(symbol: "pause.fill", done: false, color: habit.color, label: "Stop \(habit.name) timer") {
+                    withAnimation { store.toggleTimer(habit) }
+                }
+                .accessibilityIdentifier("timer-bar-stop")
+            }
+            .padding(.leading, 12)
+            .padding(.trailing, 4)
+            .padding(.vertical, 4)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
+            .padding(.horizontal, 16)
+        }
+    }
+}

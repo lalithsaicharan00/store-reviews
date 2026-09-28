@@ -285,3 +285,10 @@ A one-time pass on load, guarded by a setting key `placement_v1`:
 ## Routine player: redesign pending (noted 28 Sep 2026)
 
 The full-screen routine that ▶ Start opens isn't designed properly yet (the user). Don't test its UI until it's redesigned; see `Design Rules — Don't Regress.md`, "Not designed yet".
+
+## Timers: not built yet (noted 28 Sep 2026)
+
+From [Timing a Habit — Start, See and Stop](<../Research/Research Reports/Habit Creation/Timing a Habit — Start, See and Stop.md>). The rest of that report is built.
+
+- **Stop from the Lock Screen.** A ⏸ button in the Live Activity (a `LiveActivityIntent` that calls `HabitStore.toggleTimer`). Three reviews ask for it. For now, tapping the Live Activity opens the app, where ⏸ is one tap.
+- **A check when a forgotten timer is stopped.** For example, "Save 6 h 12 min for Read?" when a session runs far past its goal. Two reviews. For now, Undo Last Entry removes a wrong session.

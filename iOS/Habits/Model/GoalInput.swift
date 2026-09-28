@@ -141,7 +141,7 @@ enum CountLogging {
     static func explanation(goal: Double?, unit: String) -> String {
         guard let goal else { return "" }
         if quickIncrement(goal: goal, unit: unit) != nil {
-            return "On Today, each tap on + adds 1. To add more at once, touch and hold the habit."
+            return "On Today, each tap on +1 adds 1. To add more at once, tap the habit."
         }
         return "On Today, + asks how much, so you can type it."
     }
