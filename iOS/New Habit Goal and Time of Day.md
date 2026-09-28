@@ -144,6 +144,25 @@ A **Dates** section of its own on the form, above Reminders (the user's change, 
 - **Validation:** above 0; up to 2 decimal places for amounts; whole numbers for "times"; a time goal can't be longer than its period (at most 24 h a day).
 - **Repeat shows only for a Day goal.** A week, month or year goal is done on any days, so a second schedule would be hidden state. Fixed days (Mon, Wed, Fri) are a Day goal with Repeat on certain days.
 
+**Round 2 changes (28 Sep, built):** research in [Goal Screen Round 2 — Icons, Periods, Units and Copy](<../Research/Research Reports/Habit Creation/Goal Screen Round 2 — Icons, Periods, Units and Copy.md>); checklist in [Goal and Choice Screens — Round 2 Checklist](<Goal and Choice Screens — Round 2 Checklist.md>). These replace the table above where they differ.
+- **The choice screens** have plain monochrome icons:
+  - First screen: Build or maintain `chart.line.uptrend.xyaxis` · Quit or cut down `chart.line.downtrend.xyaxis` · Add a task `calendar`.
+  - Build screen: Check it off `checkmark.circle` · Track an amount `number` · Time it `timer` · Checklist `list.bullet.clipboard`.
+  - Quit screen: Quit `nosign` · Cut down `gauge.with.dots.needle.33percent`.
+  - Rows have a fixed icon column, and the separator starts at the text.
+- **Read-back at the top:** "8 glasses" big, with "a day" under it, on the screen's background. It replaces the "Your goal" row, which looked like a field and sat under the keyboard.
+- **Period segments:** Daily · Weekly · Monthly · Yearly, with no "Per" header. The next section is titled "Daily goal" (reviewers: "daily goal" 1,558; "8 glasses **a** day" 68% against "per day" 17%). All summaries say "a day" / "a week" / "Once a day".
+- **Period copy:** no due, missed, minimum or "First period".
+  - Daily: "Starts fresh every day. Choose which days in Repeat."
+  - Weekly: "Do it on any days. Everything you log from Sunday to Saturday counts, then it starts fresh." (the user's own week start and end)
+  - Monthly: "… this month counts, and it starts fresh on the 1st."
+  - Yearly: "… on 1 January."
+- **Check it off stays a check-off with any unit.** ✓ counts one; the unit names each tick ("3/8 glasses"); whole numbers only; one-at-a-time units only. The unit is stored in the existing unit column (`Habit.checkUnit`), so there's no schema change. Footer: "On Today, each tap on ✓ counts one. The unit just names what you're counting."
+- **Unit screen:**
+  - First: "Your own", with a green ⊕ **Create Your Own Unit** row that opens the field. Your earlier units are listed under it.
+  - Then groups by what people track: Drinking · Walking and running · Reading and writing · Exercise · Everyday · Money (Cutting down for Cut down only).
+  - Metric or imperial first by the phone's region; the phone's currency first; no Weight group.
+
 **What + adds (`CountLogging` in `GoalInput.swift`):**
 1. A measured unit (km, miles, ml, litres, oz, kg, lbs, g, money, calories) → **+ asks how much**.
 2. A decimal goal → + asks how much.

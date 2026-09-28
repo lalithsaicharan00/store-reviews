@@ -57,7 +57,10 @@ final class HabitStore {
     /// Units already used, so a unit typed once is offered again.
     var usedUnits: [String] {
         var seen = Set<String>()
-        return habits.compactMap { if case .amount(let unit, _) = $0.kind { unit } else { nil } }
+        return habits.compactMap { habit -> String? in
+            if case .amount(let unit, _) = habit.kind { return unit }
+            return habit.checkUnit
+        }
             .filter { !$0.isEmpty && seen.insert($0).inserted }
     }
 
@@ -195,19 +198,6 @@ final class HabitStore {
         let first = LocalDay(interval.start, calendar: calendar)
         let last = LocalDay(interval.end.addingTimeInterval(-1), calendar: calendar)
         return first...last
-    }
-
-    func periodRangeForGoal(_ goal: GoalPeriod, starting day: LocalDay) -> String {
-        let kind: PeriodKind
-        switch goal {
-        case .day: return ""
-        case .week: kind = .week
-        case .month: kind = .month
-        case .year: kind = .year
-        }
-        let range = period(kind, containing: day)
-        let format = Date.FormatStyle.dateTime.day().month(.abbreviated).year()
-        return "First period: \(max(day, range.lowerBound).date(calendar: calendar).formatted(format))–\(range.upperBound.date(calendar: calendar).formatted(format))."
     }
 
     private func periodRange(_ habit: Habit, containing day: LocalDay) -> ClosedRange<LocalDay>? {

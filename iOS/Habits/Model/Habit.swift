@@ -148,6 +148,8 @@ struct Habit: Identifiable, Codable, Hashable, Sendable {
     /// Day rules: the goal for each due day (times, amount or minutes). Period rules: taken from the frequency.
     var goal: Double = 1
     var frequency: Frequency = .daily
+    /// Check it off: what one tick counts ("glasses"); nil means "times". Stored in the unit column.
+    var checkUnit: String?
     /// Amount habits: the goal is a maximum ("no more than 2 coffees"), not a minimum.
     var atMost = false
     /// One-time tasks: the day it is for, and an optional time (minutes after midnight).

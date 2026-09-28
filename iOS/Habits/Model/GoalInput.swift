@@ -20,12 +20,23 @@ enum GoalNumber {
 }
 
 /// The period a goal is for. Each one stands alone: a week, month or year goal never needs a daily
-/// goal underneath it ("Goals — Periods, Entry and What + Adds", 28 Sep).
+/// goal underneath it ("Goals — Periods, Entry and What + Adds", 28 Sep). Named the way reviewers
+/// name them: "daily goal", "8 glasses a day" ("Goal Screen Round 2", T4).
 enum GoalPeriod: String, CaseIterable, Identifiable {
-    case day = "Day", week = "Week", month = "Month", year = "Year"
+    case day, week, month, year
     var id: Self { self }
-    var suffix: String { "per " + rawValue.lowercased() }
-    var noun: String { rawValue.lowercased() }
+    /// The segment: "Daily", "Weekly", "Monthly", "Yearly".
+    var label: String {
+        switch self {
+        case .day: "Daily"
+        case .week: "Weekly"
+        case .month: "Monthly"
+        case .year: "Yearly"
+        }
+    }
+    /// After an amount: "a day", "a week".
+    var suffix: String { "a " + noun }
+    var noun: String { rawValue }
 
     /// Longest time that fits in one period, so a time goal can't ask for 30 hours a day.
     var maxMinutes: Double {
@@ -71,8 +82,8 @@ struct GoalDraft {
         return h * 60 + m
     }
 
-    /// Whole times for a tick; up to 2 decimal places for anything counted.
-    func wholeOnly(check: Bool) -> Bool { check && trimmedUnit == "times" }
+    /// Check it off is always whole ticks, whatever the unit; amounts take up to 2 decimal places.
+    func wholeOnly(check: Bool) -> Bool { check }
 
     func amountValue(check: Bool) -> Double? {
         guard let n = GoalNumber.parse(amount, decimals: wholeOnly(check: check) ? 0 : 2), n > 0 else { return nil }
@@ -85,17 +96,24 @@ struct GoalDraft {
         return n
     }
 
-    /// "1 time per day", "8 glasses per day", "3 h per week".
-    func summary(timed: Bool, check: Bool) -> String? {
+    /// The big part of the read-back: "8 glasses", "3 times", "Once", "1 h 30 min".
+    func amountText(timed: Bool, check: Bool) -> String? {
         guard let value = value(timed: timed, check: check) else { return nil }
-        if timed { return "\(Format.minutes(value)) \(period.suffix)" }
-        let unit = trimmedUnit == "times" && value == 1 ? "time" : trimmedUnit
-        return "\(Format.amount(value)) \(unit) \(period.suffix)"
+        if timed { return Format.minutes(value) }
+        if trimmedUnit == "times" { return value == 1 ? "Once" : "\(Format.amount(value)) times" }
+        return "\(Format.amount(value)) \(trimmedUnit)"
     }
 
+    /// One line, for the form's Goal row and VoiceOver: "8 glasses a day", "Once a day", "3 h a week".
+    func summary(timed: Bool, check: Bool) -> String? {
+        amountText(timed: timed, check: check).map { "\($0) \(period.suffix)" }
+    }
+
+    /// Check it off stays a check-off whatever the unit; the unit only names each tick ("Goal Screen Round 2", T7).
     func apply(to habit: inout Habit, timed: Bool, check: Bool) {
         habit.goal = value(timed: timed, check: check) ?? 1
-        habit.kind = timed ? .duration : wholeOnly(check: check) ? .check : .amount(unit: trimmedUnit, increment: 1)
+        habit.kind = timed ? .duration : check ? .check : .amount(unit: trimmedUnit, increment: 1)
+        habit.checkUnit = check && trimmedUnit != "times" ? trimmedUnit : nil
         habit.frequency = period.frequency(count: habit.kind == .check ? Int(habit.goal) : 1, daily: habit.frequency)
     }
 }
@@ -119,14 +137,13 @@ enum CountLogging {
         return goal <= tapLimit || oneAtATime.contains(unit) ? 1 : nil
     }
 
-    /// The Goal screen's footer: exactly what + will do on Today, before the habit is saved.
+    /// The Goal screen's footer: exactly what + will do on Today, before the habit is saved ("Goal Screen Round 2", T7).
     static func explanation(goal: Double?, unit: String) -> String {
         guard let goal else { return "" }
-        let unit = unit.trimmingCharacters(in: .whitespacesAndNewlines)
         if quickIncrement(goal: goal, unit: unit) != nil {
-            return "On Today, each tap on + adds 1. To log more at once, touch and hold the habit."
+            return "On Today, each tap on + adds 1. To add more at once, touch and hold the habit."
         }
-        return "On Today, + asks how much you did, with the number keyboard. It adds to what you've already logged."
+        return "On Today, + asks how much, so you can type it."
     }
 }
 

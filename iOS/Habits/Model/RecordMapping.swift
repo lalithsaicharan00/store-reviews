@@ -24,7 +24,7 @@ extension Habit {
         var unit: String?
         var increment = 1.0
         switch kind {
-        case .check: kindName = "check"
+        case .check: kindName = "check"; unit = checkUnit
         case .amount(let u, let inc): kindName = "amount"; unit = u; increment = inc
         case .duration: kindName = "duration"
         case .checklist: kindName = "checklist"
@@ -67,6 +67,7 @@ extension Habit {
         default: return nil
         }
         self.init(id: id, name: r.name, symbol: r.symbol, color: color, kind: kind, parts: Habit.parts(from: r.part), goal: r.goal, frequency: frequency)
+        if kind == .check, let u = r.unit, !u.isEmpty, u != "times" { checkUnit = u }
         dueDay = r.dueDay.flatMap(LocalDay.init(key:))
         dueMinute = r.dueMinute.map { Int($0.int32Value) }
         atMost = r.atMost

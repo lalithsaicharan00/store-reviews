@@ -1,49 +1,66 @@
 import SwiftUI
 
-/// The Goal screen for Check it off, Count it and Time it: the period first, then how much, then one
-/// sentence saying the goal back and what + will do on Today. Native Form controls only
-/// (spec: iOS/New Habit Goal and Time of Day.md §3).
+/// The Goal screen for Check it off, Track an amount and Time it. From the top: what you're setting, read
+/// back big (not a row, so it never looks editable, and above the keyboard); Daily · Weekly · Monthly · Yearly;
+/// then the amount. Copy says what counts and when it starts fresh, never "due" or "missed"
+/// (research: "Goal Screen Round 2 — Icons, Periods, Units and Copy", T4–T8).
 struct GoalEditor: View {
     @Binding var goal: GoalDraft
     let timed: Bool
     let check: Bool
     let usedUnits: [String]
-    let periodDates: (GoalPeriod) -> String
+    /// The user's week start (1 = Sunday), so the weekly copy names their own days.
+    let weekStart: Int
     @FocusState private var typing: Bool
 
     private var value: Double? { goal.value(timed: timed, check: check) }
 
+    /// What counts, in the type's own words.
+    private var done: String {
+        timed ? "All the time you log" : check ? "Every time you check it off" : "Everything you log"
+    }
+
     private var periodNote: String {
-        if goal.period == .day { return "The goal is for each day it's due. Repeat, on the form, sets which days." }
-        let what = timed ? "all the time you log" : goal.wholeOnly(check: check) ? "every tick" : "everything you log"
-        return "Any days you like: \(what) in the \(goal.period.noun) adds up. There's no daily minimum. \(periodDates(goal.period))"
+        switch goal.period {
+        case .day:
+            return "Starts fresh every day. Choose which days in Repeat."
+        case .week:
+            let names = Calendar.current.standaloneWeekdaySymbols
+            let first = names[(weekStart - 1) % 7], last = names[(weekStart + 5) % 7]
+            return "Do it on any days. \(done) from \(first) to \(last) counts, then it starts fresh."
+        case .month:
+            return "Do it on any days. \(done) this month counts, and it starts fresh on the 1st."
+        case .year:
+            let jan1 = Calendar.current.date(from: DateComponents(year: 2026, month: 1, day: 1)) ?? .now
+            let text = jan1.formatted(.dateTime.day().month(.wide))
+            return "Do it on any days. \(done) this year counts, and it starts fresh on \(text)."
+        }
     }
 
     private var todayNote: String {
-        if timed { return "On Today, ▶ starts a timer. You can also add time by touching and holding the habit." }
-        if goal.wholeOnly(check: check) {
-            let v = value ?? 1
-            return v == 1 && goal.period == .day ? "On Today, tap ✓ when it's done."
-                : "On Today, each tap on ✓ ticks it once, even twice in one day."
-        }
+        if timed { return "On Today, ▶ starts a timer. To add time yourself, touch and hold the habit." }
+        if check { return "On Today, each tap on ✓ counts one. The unit just names what you're counting." }
         return CountLogging.explanation(goal: value, unit: goal.trimmedUnit)
     }
 
     var body: some View {
         Form {
             Section {
-                Picker("Per", selection: $goal.period.animation()) {
-                    ForEach(GoalPeriod.allCases) { Text($0.rawValue).tag($0) }
+                GoalReadBack(amount: goal.amountText(timed: timed, check: check), period: goal.period)
+            }
+            .listRowBackground(Color.clear)
+            Section {
+                Picker("Goal period", selection: $goal.period.animation()) {
+                    ForEach(GoalPeriod.allCases) { Text($0.label).tag($0) }
                 }
                 .pickerStyle(.segmented)
                 .accessibilityIdentifier("goal-period")
-            } header: {
-                Text("Per")
             } footer: {
                 Text(periodNote).formNote()
             }
             if timed {
-                DurationInput(hours: $goal.hours, minutes: $goal.minutes, period: goal.period)
+                DurationInput(hours: $goal.hours, minutes: $goal.minutes, period: goal.period,
+                              header: "\(goal.period.label) goal", note: todayNote)
             } else {
                 Section {
                     LabeledContent("Amount") {
@@ -56,7 +73,7 @@ struct GoalEditor: View {
                             .accessibilityIdentifier("goal-amount")
                     }
                     NavigationLink {
-                        UnitPicker(unit: $goal.unit, used: usedUnits)
+                        UnitPicker(unit: $goal.unit, used: usedUnits, mode: check ? .tick : .amount)
                     } label: {
                         LabeledContent("Unit") {
                             Text(goal.trimmedUnit.isEmpty ? "Choose" : goal.trimmedUnit)
@@ -65,39 +82,60 @@ struct GoalEditor: View {
                     }
                     .accessibilityIdentifier("goal-unit")
                 } header: {
-                    Text("Goal")
+                    Text("\(goal.period.label) goal")
                 } footer: {
-                    if let note = entryNote { Text(note).formNote() }
+                    Text(entryError ?? todayNote).formNote()
                 }
             }
-            Section {
-                LabeledContent("Your goal", value: goal.summary(timed: timed, check: check) ?? "Not set yet")
-                    .accessibilityIdentifier("goal-summary")
-            } footer: {
-                Text(todayNote).formNote()
-            }
         }
-        .selectsNumbersOnFocus()
+        // Compact, so the amount and unit stay above the number keyboard.
+        .listSectionSpacing(.compact)
+        .contentMargins(.top, 4, for: .scrollContent)
         .navigationTitle("Goal")
         .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)
+        .selectsNumbersOnFocus()
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 if typing { Spacer(); Button("Done") { typing = false }.fontWeight(.semibold) }
             }
         }
-        // Count it opens empty, so the keyboard is ready for its number.
+        // Track an amount opens empty, so the keyboard is ready for its number.
         .task { if !timed && goal.amount.isEmpty { typing = true } }
     }
 
-    /// What's wrong with the amount or unit, or for Check it off, what choosing another unit does.
-    private var entryNote: String? {
+    /// Only when what's typed can't be used; otherwise the footer says what Today will do.
+    private var entryError: String? {
         let text = goal.amount.trimmingCharacters(in: .whitespaces)
-        if !text.isEmpty && goal.amountValue(check: check) == nil {
-            return goal.wholeOnly(check: check) ? "Enter a whole number above 0." : "Enter a number above 0, with up to 2 decimal places."
+        guard !text.isEmpty, goal.amountValue(check: check) == nil else { return nil }
+        return goal.wholeOnly(check: check) ? "Enter a whole number above 0." : "Enter a number above 0, with up to 2 decimal places."
+    }
+}
+
+/// The goal said back, big and centred on the screen's background, like Fitness's Move goal: a result,
+/// not a field. VoiceOver reads it as one line.
+struct GoalReadBack: View {
+    let amount: String?
+    let period: GoalPeriod
+
+    var body: some View {
+        VStack(spacing: 2) {
+            Text(amount ?? "—")
+                .font(.system(.largeTitle, design: .rounded).weight(.bold).monospacedDigit())
+                .foregroundStyle(amount == nil ? .tertiary : .primary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
+                .contentTransition(.numericText())
+            Text(amount == nil ? "Enter your goal below" : period.suffix)
+                .font(.title3)
+                .foregroundStyle(.secondary)
         }
-        if check { return "Keep “times” for a tick. Choose another unit, like glasses or pages, to count an amount with +." }
-        return nil
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, -4)
+        .animation(.snappy, value: amount)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(amount.map { "Your goal: \($0) \(period.suffix)" } ?? "No goal yet")
+        .accessibilityIdentifier("goal-summary")
     }
 }
 
@@ -107,6 +145,9 @@ struct DurationInput: View {
     @Binding var hours: String
     @Binding var minutes: String
     var period: GoalPeriod = .day
+    var header = "Time"
+    /// Shown under the wheels when the time is valid (what Today does with it).
+    var note: String? = nil
     @State private var exact = false
     @FocusState private var typing: Bool
 
@@ -152,7 +193,7 @@ struct DurationInput: View {
                 .frame(height: 160)
             }
         } header: {
-            Text("Goal")
+            Text(header)
         } footer: {
             Text(footer).formNote()
         }
@@ -168,6 +209,6 @@ struct DurationInput: View {
             let most = Int(period.maxMinutes / 60)
             return "Enter whole hours and 0–59 minutes: more than 0, and at most \(most) hours in a \(period.noun)."
         }
-        return exact ? "Hours and minutes, typed exactly." : "Choose Type for an exact time, or more than \(wheelHours) hours."
+        return note ?? (exact ? "Hours and minutes, typed exactly." : "Choose Type for more than \(wheelHours) hours.")
     }
 }

@@ -17,6 +17,8 @@ func goalLine(_ habit: Habit, progress: Double, goal: Double) -> String {
         return "\(Format.amount(progress))/\(Format.amount(goal)) \(unit)\(max)\(period)"
     case .checklist:
         return "\(Format.amount(progress))/\(Format.amount(goal)) items\(period)"
+    case .check where habit.checkUnit != nil:
+        return "\(Format.amount(progress))/\(Format.amount(goal)) \(habit.checkUnit!)\(period)"
     case .check, .quit, .task:
         return "\(Format.amount(progress))/\(Format.amount(goal))\(max)\(period)"
     }

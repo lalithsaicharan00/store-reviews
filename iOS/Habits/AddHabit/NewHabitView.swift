@@ -62,6 +62,19 @@ enum ItemType: String, CaseIterable, Identifiable {
         }
     }
 
+    /// A plain SF Symbol for the choice rows (research: "Goal Screen Round 2", T1). Monochrome.
+    var icon: String {
+        switch self {
+        case .doIt: "checkmark.circle"
+        case .amount: "number"
+        case .time: "timer"
+        case .checklist: "list.bullet.clipboard"
+        case .cutBack: "gauge.with.dots.needle.33percent"
+        case .quit: "nosign"
+        case .task: "calendar"
+        }
+    }
+
     /// Everything except tasks counts toward the free habit limit.
     var isHabit: Bool { self != .task }
 }
@@ -82,15 +95,15 @@ struct NewItemView: View {
             List {
                 Section {
                     NavigationLink(value: Kind.good) {
-                        ChoiceLabel(title: "Build or maintain", detail: "A habit you want to start or keep doing.")
+                        ChoiceLabel(icon: "chart.line.uptrend.xyaxis", title: "Build or maintain", detail: "A habit you want to start or keep doing.")
                     }
                     NavigationLink(value: Kind.bad) {
-                        ChoiceLabel(title: "Quit or cut down", detail: "A habit you want to stop or do less.")
+                        ChoiceLabel(icon: "chart.line.downtrend.xyaxis", title: "Quit or cut down", detail: "A habit you want to stop or do less.")
                     }
                     NavigationLink {
                         form(.task)
                     } label: {
-                        ChoiceLabel(title: "Add a task", detail: "Something to get done, once or on repeat. No habit progress, streaks or stats.")
+                        ChoiceLabel(icon: ItemType.task.icon, title: "Add a task", detail: "Something to get done, once or on repeat. No habit progress, streaks or stats.")
                     }
                 } header: {
                     // No examples on this screen: the labels name what the user wants to do (copy report).
@@ -123,7 +136,7 @@ struct NewItemView: View {
                     NavigationLink {
                         form(type)
                     } label: {
-                        ChoiceLabel(title: type.title, detail: type.summary, example: type.example)
+                        ChoiceLabel(icon: type.icon, title: type.title, detail: type.summary, example: type.example)
                     }
                 }
             } header: {
@@ -153,23 +166,35 @@ struct QuestionHeader: View {
             .font(.title3.weight(.semibold))
             .foregroundStyle(Color.primary)
             .textCase(nil)
-            .padding(.bottom, 6)
+            .padding(.bottom, 2)
             .accessibilityAddTraits(.isHeader)
     }
 }
 
-/// A choice row: title, one plain line, and (on the second screens) a marked example. No icons: the words carry it.
+/// A choice row: a plain icon in a fixed column, the title, one plain line and (on the second screens) a
+/// marked example. The separator starts at the text, as in Settings (research: "Goal Screen Round 2", T2).
 struct ChoiceLabel: View {
+    let icon: String
     let title: String
     let detail: String
     var example: String? = nil
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(title).font(.body.weight(.semibold))
-            Text(detail).font(.subheadline).foregroundStyle(.secondary)
-            if let example { Text("Example: \(example)").font(.subheadline).foregroundStyle(.secondary) }
+        HStack(spacing: 14) {
+            Image(systemName: icon)
+                .font(.system(size: 22, weight: .regular))
+                .foregroundStyle(Color.primary)
+                .frame(width: 30)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title).font(.body.weight(.semibold))
+                Text(detail).font(.subheadline).foregroundStyle(.secondary)
+                if let example { Text("Example: \(example)").font(.subheadline).foregroundStyle(.secondary) }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
         }
-        .padding(.vertical, 6)
+        .padding(.vertical, 8)
         .accessibilityElement(children: .combine)
     }
 }
@@ -493,10 +518,8 @@ struct HabitForm: View {
     private var goalRow: some View {
         screenRow(type == .checklist ? "Items" : "Goal", value: goalSummary) {
             if hasGoalEditor {
-                GoalEditor(goal: $goal, timed: type == .time, check: type == .doIt, usedUnits: store.usedUnits) { period in
-                    let range = store.periodRangeForGoal(period, starting: LocalDay(startDate))
-                    return range
-                }
+                GoalEditor(goal: $goal, timed: type == .time, check: type == .doIt, usedUnits: store.usedUnits,
+                           weekStart: store.settings.weekStart)
                 .onAppear { focus = nil }
             } else {
                 Form {
@@ -516,7 +539,7 @@ struct HabitForm: View {
             NumberRow(title: limit ? "No more than" : "Amount", value: $amount, placeholder: limit ? "2" : "8",
                       suffix: unit.isEmpty ? (limit ? "cups" : "glasses") : unit, focus: $focus, field: .amount)
             NavigationLink {
-                UnitPicker(unit: $unit, used: store.usedUnits)
+                UnitPicker(unit: $unit, used: store.usedUnits, mode: .limit)
             } label: {
                 ValueRow(title: "Unit") {
                     Text(unit.isEmpty ? "Choose" : unit).foregroundStyle(unit.isEmpty ? .tertiary : .secondary)
@@ -1105,44 +1128,80 @@ struct MonthDatePicker: View {
     }
 }
 
-/// Your own unit first, then the units people name most (research: "New Habit Words and Units").
+/// Units grouped by what people track, most used first (research: "Goal Screen Round 2", T8), with
+/// "Create Your Own Unit" first, in the same green ⊕ row the form uses to add things.
 struct UnitPicker: View {
+    /// Check it off only offers things done one at a time; Cut down adds the usual things to cut.
+    enum Mode { case tick, amount, limit }
+
     @Binding var unit: String
     let used: [String]
+    var mode: Mode = .amount
     @Environment(\.dismiss) private var dismiss
+    @State private var creating = false
     @State private var custom = ""
     @FocusState private var typing: Bool
 
-    static let groups: [(String, [String])] = [
-        ("Count", ["times", "glasses", "cups", "pages", "steps", "reps", "push-ups", "books", "chapters", "laps"]),
-        ("Volume", ["ml", "oz", "litres"]),
-        ("Distance", ["km", "miles"]),
-        ("Weight", ["kg", "lbs"]),
-        ("Money", ["$", "€", "£", "₹"]),
-    ]
+    private static var metric: Bool { Locale.current.measurementSystem != .us }
+
+    /// The phone's currency first.
+    private static var money: [String] {
+        let own = Locale.current.currency?.identifier == "INR" ? "₹" : Locale.current.currencySymbol ?? "$"
+        return [own] + ["$", "€", "£", "₹"].filter { $0 != own }
+    }
+
+    var groups: [(String, [String])] {
+        let volume = Self.metric ? ["ml", "litres", "oz"] : ["oz", "ml", "litres"]
+        let distance = Self.metric ? ["km", "miles"] : ["miles", "km"]
+        switch mode {
+        case .tick:
+            return [("Everyday", ["times", "meals", "pills", "sessions"]),
+                    ("Drinking", ["glasses", "cups", "bottles"]),
+                    ("Exercise", ["reps", "sets", "push-ups", "workouts", "laps"]),
+                    ("Reading and writing", ["pages", "chapters", "books"])]
+        case .amount, .limit:
+            var list: [(String, [String])] = [
+                ("Drinking", ["glasses", "cups", "bottles"] + volume),
+                ("Walking and running", ["steps"] + distance),
+                ("Reading and writing", ["pages", "chapters", "books", "words"]),
+                ("Exercise", ["reps", "sets", "push-ups", "workouts", "laps"]),
+                ("Everyday", ["times", "meals", "servings", "sessions", "pills"]),
+                ("Money", Self.money),
+            ]
+            if mode == .limit { list.insert(("Cutting down", ["cigarettes", "drinks", "coffees", "snacks"]), at: 0) }
+            return list
+        }
+    }
 
     var body: some View {
         List {
             Section {
-                HStack {
-                    TextField("Your own unit, e.g. chapters", text: $custom)
-                        .focused($typing)
-                        .limitText($custom, to: TextLimit.unit)
-                        .submitLabel(.done)
-                        .onSubmit(useCustom)
-                    if !custom.trimmingCharacters(in: .whitespaces).isEmpty {
-                        Button("Use", action: useCustom).fontWeight(.semibold)
+                if creating {
+                    HStack {
+                        TextField("e.g. prayers", text: $custom)
+                            .focused($typing)
+                            .limitText($custom, to: TextLimit.unit)
+                            .submitLabel(.done)
+                            .onSubmit(useCustom)
+                            .accessibilityIdentifier("custom-unit")
+                        Button("Done", action: useCustom).fontWeight(.semibold)
+                            .disabled(custom.trimmingCharacters(in: .whitespaces).isEmpty)
                     }
+                } else {
+                    AddRow(title: "Create Your Own Unit") {
+                        withAnimation { creating = true }
+                        typing = true
+                    }
+                    .accessibilityIdentifier("create-unit")
                 }
+                let known = Set(groups.flatMap(\.1))
+                ForEach(used.reversed().filter { !known.contains($0) && !["minutes", "hours"].contains($0) }, id: \.self, content: row)
+            } header: {
+                Text("Your own")
             } footer: {
-                Text("Any word works: \"chapters\", \"laps\", \"prayers\".")
+                Text("Anything you count: prayers, chapters, glasses of juice.")
             }
-            let known = Set(Self.groups.flatMap(\.1))
-            let mine = used.filter { !known.contains($0) && !["minutes", "hours"].contains($0) }
-            if !mine.isEmpty {
-                Section("Yours") { ForEach(mine, id: \.self, content: row) }
-            }
-            ForEach(Self.groups, id: \.0) { group in
+            ForEach(groups, id: \.0) { group in
                 Section(group.0) { ForEach(group.1, id: \.self, content: row) }
             }
         }

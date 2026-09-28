@@ -58,7 +58,13 @@ final class GoalFlowUITests: XCTestCase {
         return element.waitForExistence(timeout: 2) && "\(element.label) \(element.value ?? "")".contains(text)
     }
 
+    private func dismissKeyboard() {
+        let done = app.toolbars.buttons["Done"].firstMatch
+        if done.exists && done.isHittable { done.tap(); sleep(1) }
+    }
+
     private func chooseUnit(_ unit: String) {
+        dismissKeyboard()
         app.buttons["goal-unit"].tap()
         XCTAssertTrue(app.navigationBars["Unit"].waitForExistence(timeout: 3))
         let choice = app.buttons[unit].firstMatch
@@ -91,9 +97,9 @@ final class GoalFlowUITests: XCTestCase {
         typeAmount("2000")
         chooseUnit("ml")
         shot("g02-count-goal-2000ml")
-        XCTAssertTrue(summary("2k ml per day"))
+        XCTAssertTrue(summary("2k ml a day"))
         back()
-        XCTAssertTrue(row("Goal, 2k ml per day").exists)
+        XCTAssertTrue(row("Goal, 2k ml a day").exists)
         shot("g03-count-form")
         addHabit()
         rowButton("Add amount to Hydrate").tap()
@@ -129,12 +135,12 @@ final class GoalFlowUITests: XCTestCase {
     func testCountBooksPerYear() {
         newHabit("Track an amount", name: "Books")
         openGoal()
-        period("Year")
+        period("Yearly")
         typeAmount("12")
         chooseUnit("books")
         shot("g20-count-goal-12-books-year")
         back()
-        XCTAssertTrue(row("Goal, 12 books per year").exists)
+        XCTAssertTrue(row("Goal, 12 books a year").exists)
         XCTAssertFalse(row("Repeat").exists, "A year goal has no daily schedule")
         shot("g21-count-form-year")
     }
@@ -144,11 +150,11 @@ final class GoalFlowUITests: XCTestCase {
         newHabit("Check it off", name: "Gym")
         openGoal()
         shot("g30-check-goal-default")
-        period("Week")
+        period("Weekly")
         typeAmount("3")
         shot("g31-check-goal-3-week")
         back()
-        XCTAssertTrue(row("Goal, 3 times per week").exists)
+        XCTAssertTrue(row("Goal, 3 times a week").exists)
         XCTAssertFalse(row("Repeat").exists)
         shot("g32-check-form-week")
     }
@@ -158,7 +164,7 @@ final class GoalFlowUITests: XCTestCase {
         newHabit("Time it", name: "Study")
         openGoal()
         shot("g40-time-goal-default")
-        period("Week")
+        period("Weekly")
         app.segmentedControls["duration-entry-mode"].buttons["Type"].tap()
         let hours = app.textFields["duration-hours"]
         hours.tap(); sleep(1); hours.typeText("3")
@@ -166,7 +172,7 @@ final class GoalFlowUITests: XCTestCase {
         minutes.tap(); sleep(1); minutes.typeText("0")
         shot("g41-time-goal-3h-week")
         back()
-        XCTAssertTrue(row("Goal, 3 h per week").exists)
+        XCTAssertTrue(row("Goal, 3 h a week").exists)
         shot("g42-time-form-week")
     }
 
@@ -184,5 +190,41 @@ final class GoalFlowUITests: XCTestCase {
         row("Quit or cut down").tap()
         XCTAssertTrue(app.navigationBars["Quit or cut down"].waitForExistence(timeout: 3))
         shot("c03-quit-or-cut-down")
+    }
+
+    /// Check it off with a unit stays a check-off: ✓ on Today, "1/8 glasses". The Unit screen offers your own unit.
+    func testCheckWithUnitStaysCheck() {
+        newHabit("Check it off", name: "Hydrate")
+        openGoal()
+        typeAmount("8")
+        dismissKeyboard()
+        app.buttons["goal-unit"].tap()
+        XCTAssertTrue(app.navigationBars["Unit"].waitForExistence(timeout: 3))
+        XCTAssertFalse(app.buttons["ml"].exists, "No measured units for a check-off")
+        shot("r01-unit-screen-check")
+        app.buttons["create-unit"].tap()
+        XCTAssertTrue(app.textFields["custom-unit"].waitForExistence(timeout: 2))
+        shot("r02-create-own-unit")
+        app.navigationBars.buttons["BackButton"].firstMatch.tap(); sleep(1)
+        chooseUnit("glasses")
+        shot("r03-check-goal-8-glasses")
+        back()
+        XCTAssertTrue(row("Goal, 8 glasses a day").exists)
+        addHabit()
+        rowButton("Mark Hydrate done").tap()
+        sleep(1)
+        shot("r04-today-check-glasses")
+    }
+
+    /// The period copy for each choice, and the read-back at the top.
+    func testPeriodCopy() {
+        newHabit("Track an amount", name: "Steps")
+        openGoal()
+        typeAmount("8000")
+        chooseUnit("steps")
+        shot("r10-daily")
+        period("Weekly"); shot("r11-weekly")
+        period("Monthly"); shot("r12-monthly")
+        period("Yearly"); shot("r13-yearly")
     }
 }
