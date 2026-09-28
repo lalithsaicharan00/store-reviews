@@ -1,0 +1,215 @@
+read 3517 candidates; on topic 1937; OFF 1580
+
+== code counts ==
+HCAP               868
+TW_HABIT           645
+SHARED             342
+PAID               300
+TASK_FREE_PRAISE   292
+ALLINONE           210
+FREE_ELSEWHERE     185
+PAIDAPP            155
+OK                 154
+WANT_MORE          114
+LEFT               107
+BAIT               91
+HABIT_FOR_TODO     59
+TCAP               57
+RECUR_PAID         50
+TODO_DEMAND        35
+TASKFEAT_PAID      27
+TODO_PAID          18
+RECUR_FREE_PRAISE  17
+RECUR_AS_HABIT     13
+WORKAROUND         10
+TASK_NO_STATS      2
+
+== 1. vocabulary: habit caps described as tasks ==
+free-tier habit caps (HCAP, not PAIDAPP)         n= 713 apps= 65 mean=2.77 1★=  31% NEG=578 OK=82 PAID=57 LEFT=52 BAIT=27 WANT_MORE=45 FREE_ELSEWHERE=59
+    top apps: 13. Productive - Habit Tra 170, 31. Do Habits - Get It Don 104, 12. Fabulous Daily Routine 51, 1. Habit Tracker - Goal Tr 47, 33. Productive - Habit tra 46, 2. HabitNow Daily Routine  25
+  of which said in task / to-do / reminder words: 489 (69%)
+  paid-app (Streaks) task=habit caps: 155, TW_HABIT 151
+
+== 2. caps ==
+TCAP real one-off task cap                       n=  57 apps=  8 mean=2.39 1★=  46% NEG=55 OK=4 PAID=1 LEFT=5 BAIT=18 WANT_MORE=2 FREE_ELSEWHERE=1
+    top apps: 59. Tappsk - ToDo & Habit  43, 126. To Do List 5, 111. My Study Life - Schoo 3, 97. To-do list - tasks pla 2, 8. Google Calendar- Get Or 1, 36. Fun Habit - Habit Trac 1
+SHARED one cap on habits+tasks                   n= 342 apps= 15 mean=2.25 1★=  45% NEG=306 OK=19 PAID=23 LEFT=34 BAIT=43 WANT_MORE=10 FREE_ELSEWHERE=11
+    top apps: 4. Me+ Lifestyle Routine 133, 4. Me+ Lifestyle Routine - 84, 2. HabitNow Daily Routine  81, 25. Grit - Daily Habit Tra 13, 26. Eden - Daily Routine P 12, 98. Rabit - Habit Tracker  7
+HCAP habit-only cap (free tier)                  n= 713 apps= 65 mean=2.77 1★=  31% NEG=578 OK=82 PAID=57 LEFT=52 BAIT=27 WANT_MORE=45 FREE_ELSEWHERE=59
+    top apps: 13. Productive - Habit Tra 170, 31. Do Habits - Get It Don 104, 12. Fabulous Daily Routine 51, 1. Habit Tracker - Goal Tr 47, 33. Productive - Habit tra 46, 2. HabitNow Daily Routine  25
+  SHARED N1-3                                    n= 150 apps=  9 mean=1.45 1★=  72% NEG=147 OK=3 PAID=3 LEFT=8 BAIT=7 WANT_MORE=4 FREE_ELSEWHERE=3
+    top apps: 4. Me+ Lifestyle Routine 121, 25. Grit - Daily Habit Tra 13, 4. Me+ Lifestyle Routine - 5, 2. HabitNow Daily Routine  4, 26. Eden - Daily Routine P 2, 60. Mindway - Daily Routin 2
+  SHARED N4-6                                    n=  69 apps=  7 mean=2.48 1★=  30% NEG=65 OK=3 PAID=1 LEFT=10 BAIT=20 WANT_MORE=2 FREE_ELSEWHERE=3
+    top apps: 4. Me+ Lifestyle Routine - 46, 2. HabitNow Daily Routine  11, 26. Eden - Daily Routine P 8, 59. Tappsk - ToDo & Habit  1, 65. Rabit - Daily Routine  1, 33. Productive - Habit tra 1
+  SHARED N7-10                                   n=  22 apps=  2 mean=2.77 1★=  23% NEG=19 OK=2 PAID=2 LEFT=3 BAIT=3 WANT_MORE=1 FREE_ELSEWHERE=0
+    top apps: 2. HabitNow Daily Routine  17, 4. Me+ Lifestyle Routine - 5
+  SHARED N11+                                    n=0
+
+== 3. what is paid ==
+RECUR_PAID                                       n=  50 apps= 10 mean=3.20 1★=  28% NEG=41 OK=4 PAID=6 LEFT=4 BAIT=2 WANT_MORE=5 FREE_ELSEWHERE=2
+    top apps: 2. HabitNow Daily Routine  28, 59. Tappsk - ToDo & Habit  11, 61. Hizo - Habit Tracker & 4, 1. Habit Tracker - Goal Tr 1, 42. Daily Habit & Routine  1, 4. Me+ Lifestyle Routine 1
+TODO_PAID                                        n=  18 apps=  5 mean=3.56 1★=  11% NEG=13 OK=5 PAID=2 LEFT=0 BAIT=1 WANT_MORE=0 FREE_ELSEWHERE=1
+    top apps: 98. Rabit - Habit Tracker  13, 18. MyRoutine - Organize y 2, 12. Fabulous Daily Routine 1, 33. Productive - Habit tra 1, 106. Habit Tracker n Pets  1
+TASKFEAT_PAID                                    n=  27 apps= 12 mean=3.26 1★=  22% NEG=18 OK=0 PAID=0 LEFT=1 BAIT=1 WANT_MORE=0 FREE_ELSEWHERE=6
+    top apps: 59. Tappsk - ToDo & Habit  8, 84. Tasks - To Do List & R 7, 10. Microsoft To Do - Capt 3, 10. Finch - Self-Care Pet  1, 42. Daily Habit & Routine  1, 85. Habitica - Gamified Ta 1
+
+== 4. praise, demand, use ==
+TASK_FREE_PRAISE                                 n= 292 apps= 33 mean=4.82 1★=   0% NEG=26 OK=7 PAID=14 LEFT=1 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=26
+    top apps: 84. Tasks - To Do List & R 50, 59. Tappsk - ToDo & Habit  38, 1. Reminders - Don’t forge 26, 10. Microsoft To Do - Capt 26, 97. To-do list - tasks pla 23, 4. Me+ Lifestyle Routine 18
+RECUR_FREE_PRAISE                                n=  17 apps=  3 mean=4.88 1★=   0% NEG=1 OK=0 PAID=2 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 126. To Do List 10, 84. Tasks - To Do List & R 5, 97. To-do list - tasks pla 2
+ALLINONE                                         n= 210 apps= 26 mean=4.87 1★=   0% NEG=7 OK=24 PAID=127 LEFT=0 BAIT=0 WANT_MORE=1 FREE_ELSEWHERE=1
+    top apps: 2. HabitNow Daily Routine  109, 59. Tappsk - ToDo & Habit  31, 61. Hizo - Habit Tracker & 14, 8. Habitica - Gamify Your  10, 85. Habitica - Gamified Ta 7, 10. Finch - Self-Care Pet  5
+TODO_DEMAND                                      n=  35 apps= 16 mean=3.91 1★=   6% NEG=8 OK=0 PAID=13 LEFT=0 BAIT=0 WANT_MORE=1 FREE_ELSEWHERE=2
+    top apps: 13. Productive - Habit Tra 9, 1. Habit Tracker - Goal Tr 3, 2. HabitNow Daily Routine  3, 12. Fabulous Daily Routine 3, 4. Me+ Lifestyle Routine - 2, 23. Streaks - The habit-fo 2
+HABIT_FOR_TODO                                   n=  59 apps= 18 mean=3.68 1★=   8% NEG=21 OK=2 PAID=17 LEFT=2 BAIT=3 WANT_MORE=5 FREE_ELSEWHERE=1
+    top apps: 13. Productive - Habit Tra 16, 1. Habit Tracker - Goal Tr 8, 23. Streaks - The habit-fo 8, 2. HabitNow Daily Routine  8, 4. Me+ Lifestyle Routine - 3, 31. Do Habits - Get It Don 2
+RECUR_AS_HABIT                                   n=  13 apps=  9 mean=4.15 1★=  15% NEG=2 OK=0 PAID=0 LEFT=1 BAIT=1 WANT_MORE=0 FREE_ELSEWHERE=2
+    top apps: 84. Tasks - To Do List & R 3, 1. Reminders - Don’t forge 2, 8. Google Calendar- Get Or 2, 10. Microsoft To Do - Capt 1, 3. Loop Habit Tracker 1, 10. Habit Tracker - Habit  1
+WORKAROUND                                       n=  10 apps=  6 mean=4.00 1★=   0% NEG=5 OK=2 PAID=0 LEFT=0 BAIT=0 WANT_MORE=1 FREE_ELSEWHERE=0
+    top apps: 4. Me+ Lifestyle Routine - 3, 23. Streaks - The habit-fo 2, 59. Tappsk - ToDo & Habit  2, 13. Productive - Habit Tra 1, 33. Productive - Habit tra 1, 49. RoutineFlow - Routine  1
+TASK_NO_STATS                                    n=   2 apps=  2 mean=5.00 1★=   0% NEG=0 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 84. Tasks - To Do List & R 1, 128. Habit - habit tracker 1
+FREE_ELSEWHERE                                   n= 185 apps= 37 mean=2.17 1★=  48% NEG=78 OK=1 PAID=26 LEFT=15 BAIT=8 WANT_MORE=3 FREE_ELSEWHERE=185
+    top apps: 13. Productive - Habit Tra 38, 4. Me+ Lifestyle Routine 21, 31. Do Habits - Get It Don 15, 4. Me+ Lifestyle Routine - 12, 1. Reminders - Don’t forge 11, 24. Fabulous - Daily Habit 9
+NO_PAY_FOR_LIST                                  n=  93 apps= 20 mean=1.96 1★=  45% NEG=15 OK=0 PAID=24 LEFT=11 BAIT=2 WANT_MORE=0 FREE_ELSEWHERE=34
+    top apps: 13. Productive - Habit Tra 22, 12. Fabulous Daily Routine 16, 4. Me+ Lifestyle Routine 15, 4. Me+ Lifestyle Routine - 6, 24. Fabulous - Daily Habit 6, 33. Productive - Habit tra 4
+
+== 5. per-app breakdown for key apps ==
+-- ^4\. Me\+
+  all coded                                      n= 278 apps=  2 mean=2.02 1★=  53% NEG=217 OK=4 PAID=21 LEFT=27 BAIT=38 WANT_MORE=5 FREE_ELSEWHERE=33
+    top apps: 4. Me+ Lifestyle Routine 177, 4. Me+ Lifestyle Routine - 101
+  SHARED                                         n= 217 apps=  2 mean=1.79 1★=  58% NEG=213 OK=4 PAID=3 LEFT=25 BAIT=38 WANT_MORE=5 FREE_ELSEWHERE=9
+    top apps: 4. Me+ Lifestyle Routine 133, 4. Me+ Lifestyle Routine - 84
+  RECUR_PAID                                     n=   1 apps=  1 mean=2.00 1★=   0% NEG=1 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 4. Me+ Lifestyle Routine 1
+  TASK_FREE_PRAISE                               n=  24 apps=  2 mean=4.83 1★=   0% NEG=2 OK=1 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=1
+    top apps: 4. Me+ Lifestyle Routine 18, 4. Me+ Lifestyle Routine - 6
+  ALLINONE                                       n=   1 apps=  1 mean=4.00 1★=   0% NEG=0 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 4. Me+ Lifestyle Routine - 1
+  PAID                                           n=  21 apps=  2 mean=1.52 1★=  76% NEG=3 OK=0 PAID=21 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=10
+    top apps: 4. Me+ Lifestyle Routine 16, 4. Me+ Lifestyle Routine - 5
+-- HabitNow
+  all coded                                      n= 244 apps=  1 mean=4.16 1★=   9% NEG=82 OK=36 PAID=126 LEFT=8 BAIT=2 WANT_MORE=3 FREE_ELSEWHERE=3
+    top apps: 2. HabitNow Daily Routine  244
+  SHARED                                         n=  81 apps=  1 mean=3.27 1★=  17% NEG=55 OK=9 PAID=20 LEFT=6 BAIT=2 WANT_MORE=3 FREE_ELSEWHERE=1
+    top apps: 2. HabitNow Daily Routine  81
+  RECUR_PAID                                     n=  28 apps=  1 mean=3.29 1★=  21% NEG=22 OK=2 PAID=4 LEFT=3 BAIT=2 WANT_MORE=2 FREE_ELSEWHERE=1
+    top apps: 2. HabitNow Daily Routine  28
+  TASK_FREE_PRAISE                               n=   9 apps=  1 mean=5.00 1★=   0% NEG=1 OK=1 PAID=1 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 2. HabitNow Daily Routine  9
+  ALLINONE                                       n= 109 apps=  1 mean=4.94 1★=   0% NEG=0 OK=20 PAID=87 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 2. HabitNow Daily Routine  109
+  PAID                                           n= 126 apps=  1 mean=4.87 1★=   1% NEG=4 OK=14 PAID=126 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=1
+    top apps: 2. HabitNow Daily Routine  126
+-- Tappsk
+  all coded                                      n= 135 apps=  1 mean=3.77 1★=  21% NEG=71 OK=9 PAID=27 LEFT=6 BAIT=17 WANT_MORE=6 FREE_ELSEWHERE=3
+    top apps: 59. Tappsk - ToDo & Habit  135
+  SHARED                                         n=   3 apps=  1 mean=3.00 1★=  33% NEG=3 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 59. Tappsk - ToDo & Habit  3
+  TCAP                                           n=  43 apps=  1 mean=2.44 1★=  47% NEG=42 OK=3 PAID=1 LEFT=4 BAIT=17 WANT_MORE=2 FREE_ELSEWHERE=1
+    top apps: 59. Tappsk - ToDo & Habit  43
+  RECUR_PAID                                     n=  11 apps=  1 mean=3.09 1★=  36% NEG=13 OK=0 PAID=1 LEFT=0 BAIT=0 WANT_MORE=3 FREE_ELSEWHERE=1
+    top apps: 59. Tappsk - ToDo & Habit  11
+  TASK_FREE_PRAISE                               n=  38 apps=  1 mean=4.87 1★=   0% NEG=3 OK=5 PAID=3 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 59. Tappsk - ToDo & Habit  38
+  ALLINONE                                       n=  31 apps=  1 mean=4.90 1★=   0% NEG=2 OK=1 PAID=21 LEFT=0 BAIT=0 WANT_MORE=1 FREE_ELSEWHERE=0
+    top apps: 59. Tappsk - ToDo & Habit  31
+  PAID                                           n=  27 apps=  1 mean=4.67 1★=   4% NEG=1 OK=0 PAID=27 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 59. Tappsk - ToDo & Habit  27
+-- Rabit - Habit Tracke
+  all coded                                      n=  29 apps=  1 mean=3.14 1★=  24% NEG=19 OK=4 PAID=4 LEFT=0 BAIT=3 WANT_MORE=0 FREE_ELSEWHERE=1
+    top apps: 98. Rabit - Habit Tracker  29
+  SHARED                                         n=   7 apps=  1 mean=2.00 1★=  29% NEG=7 OK=0 PAID=0 LEFT=0 BAIT=2 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 98. Rabit - Habit Tracker  7
+  TCAP                                           n=   1 apps=  1 mean=4.00 1★=   0% NEG=1 OK=1 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 98. Rabit - Habit Tracker  1
+  RECUR_PAID                                     n=   1 apps=  1 mean=1.00 1★= 100% NEG=0 OK=0 PAID=1 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 98. Rabit - Habit Tracker  1
+  TODO_PAID                                      n=  13 apps=  1 mean=3.77 1★=  15% NEG=9 OK=3 PAID=2 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=1
+    top apps: 98. Rabit - Habit Tracker  13
+  TASK_FREE_PRAISE                               n=   3 apps=  1 mean=5.00 1★=   0% NEG=0 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 98. Rabit - Habit Tracker  3
+  ALLINONE                                       n=   2 apps=  1 mean=5.00 1★=   0% NEG=0 OK=0 PAID=1 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 98. Rabit - Habit Tracker  2
+  PAID                                           n=   4 apps=  1 mean=2.50 1★=  25% NEG=0 OK=0 PAID=4 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 98. Rabit - Habit Tracker  4
+-- Hizo
+  all coded                                      n=  19 apps=  1 mean=4.16 1★=  11% NEG=5 OK=3 PAID=2 LEFT=2 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 61. Hizo - Habit Tracker & 19
+  RECUR_PAID                                     n=   4 apps=  1 mean=2.75 1★=  50% NEG=2 OK=2 PAID=0 LEFT=1 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 61. Hizo - Habit Tracker & 4
+  TASK_FREE_PRAISE                               n=   3 apps=  1 mean=5.00 1★=   0% NEG=0 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 61. Hizo - Habit Tracker & 3
+  ALLINONE                                       n=  14 apps=  1 mean=4.79 1★=   0% NEG=1 OK=2 PAID=2 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 61. Hizo - Habit Tracker & 14
+  PAID                                           n=   2 apps=  1 mean=5.00 1★=   0% NEG=0 OK=0 PAID=2 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 61. Hizo - Habit Tracker & 2
+-- ^12\. Fabulous
+  all coded                                      n=  70 apps=  1 mean=2.43 1★=  37% NEG=50 OK=2 PAID=4 LEFT=2 BAIT=11 WANT_MORE=3 FREE_ELSEWHERE=6
+    top apps: 12. Fabulous Daily Routine 70
+  TODO_PAID                                      n=   1 apps=  1 mean=3.00 1★=   0% NEG=1 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 12. Fabulous Daily Routine 1
+  ALLINONE                                       n=   1 apps=  1 mean=4.00 1★=   0% NEG=0 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 12. Fabulous Daily Routine 1
+  PAID                                           n=   4 apps=  1 mean=1.00 1★= 100% NEG=0 OK=0 PAID=4 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=1
+    top apps: 12. Fabulous Daily Routine 4
+-- Productive
+  all coded                                      n= 274 apps=  3 mean=2.50 1★=  35% NEG=191 OK=12 PAID=39 LEFT=26 BAIT=1 WANT_MORE=15 FREE_ELSEWHERE=41
+    top apps: 13. Productive - Habit Tra 217, 33. Productive - Habit tra 55, 42. Daily Habit & Routine  2
+  SHARED                                         n=   1 apps=  1 mean=1.00 1★= 100% NEG=1 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 33. Productive - Habit tra 1
+  RECUR_PAID                                     n=   1 apps=  1 mean=1.00 1★= 100% NEG=1 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 42. Daily Habit & Routine  1
+  TODO_PAID                                      n=   1 apps=  1 mean=2.00 1★=   0% NEG=1 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 33. Productive - Habit tra 1
+  TASK_FREE_PRAISE                               n=   2 apps=  2 mean=5.00 1★=   0% NEG=0 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 13. Productive - Habit Tra 1, 33. Productive - Habit tra 1
+  ALLINONE                                       n=   4 apps=  1 mean=4.00 1★=   0% NEG=0 OK=0 PAID=1 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 13. Productive - Habit Tra 4
+  PAID                                           n=  39 apps=  2 mean=3.49 1★=  26% NEG=0 OK=3 PAID=39 LEFT=1 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=8
+    top apps: 13. Productive - Habit Tra 38, 33. Productive - Habit tra 1
+-- Do Habits
+  all coded                                      n= 107 apps=  1 mean=2.01 1★=  45% NEG=83 OK=8 PAID=15 LEFT=5 BAIT=3 WANT_MORE=4 FREE_ELSEWHERE=15
+    top apps: 31. Do Habits - Get It Don 107
+  PAID                                           n=  15 apps=  1 mean=2.27 1★=  53% NEG=2 OK=1 PAID=15 LEFT=0 BAIT=3 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 31. Do Habits - Get It Don 15
+-- ^126\. To Do List
+  all coded                                      n=  26 apps=  1 mean=3.96 1★=  19% NEG=4 OK=0 PAID=2 LEFT=2 BAIT=1 WANT_MORE=0 FREE_ELSEWHERE=2
+    top apps: 126. To Do List 26
+  TCAP                                           n=   5 apps=  1 mean=1.60 1★=  60% NEG=4 OK=0 PAID=0 LEFT=1 BAIT=1 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 126. To Do List 5
+  TASK_FREE_PRAISE                               n=  15 apps=  1 mean=4.87 1★=   0% NEG=0 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 126. To Do List 15
+  ALLINONE                                       n=   1 apps=  1 mean=5.00 1★=   0% NEG=0 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 126. To Do List 1
+  PAID                                           n=   2 apps=  1 mean=5.00 1★=   0% NEG=0 OK=0 PAID=2 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 126. To Do List 2
+-- 84\. Tasks
+  all coded                                      n=  61 apps=  1 mean=4.64 1★=   3% NEG=7 OK=0 PAID=10 LEFT=0 BAIT=1 WANT_MORE=0 FREE_ELSEWHERE=7
+    top apps: 84. Tasks - To Do List & R 61
+  TCAP                                           n=   1 apps=  1 mean=5.00 1★=   0% NEG=1 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 84. Tasks - To Do List & R 1
+  RECUR_PAID                                     n=   1 apps=  1 mean=5.00 1★=   0% NEG=0 OK=0 PAID=0 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 84. Tasks - To Do List & R 1
+  TASK_FREE_PRAISE                               n=  50 apps=  1 mean=4.94 1★=   0% NEG=1 OK=0 PAID=10 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=3
+    top apps: 84. Tasks - To Do List & R 50
+  PAID                                           n=  10 apps=  1 mean=4.90 1★=   0% NEG=0 OK=0 PAID=10 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 84. Tasks - To Do List & R 10
+-- Grit
+  all coded                                      n=  15 apps=  1 mean=2.40 1★=  53% NEG=10 OK=3 PAID=2 LEFT=0 BAIT=0 WANT_MORE=2 FREE_ELSEWHERE=1
+    top apps: 25. Grit - Daily Habit Tra 15
+  SHARED                                         n=  13 apps=  1 mean=2.08 1★=  62% NEG=10 OK=3 PAID=0 LEFT=0 BAIT=0 WANT_MORE=2 FREE_ELSEWHERE=1
+    top apps: 25. Grit - Daily Habit Tra 13
+  ALLINONE                                       n=   2 apps=  1 mean=4.50 1★=   0% NEG=0 OK=0 PAID=2 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 25. Grit - Daily Habit Tra 2
+  PAID                                           n=   2 apps=  1 mean=4.50 1★=   0% NEG=0 OK=0 PAID=2 LEFT=0 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 25. Grit - Daily Habit Tra 2
+-- Eden
+  all coded                                      n=  12 apps=  1 mean=3.42 1★=  17% NEG=9 OK=3 PAID=0 LEFT=1 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 26. Eden - Daily Routine P 12
+  SHARED                                         n=  12 apps=  1 mean=3.42 1★=  17% NEG=9 OK=3 PAID=0 LEFT=1 BAIT=0 WANT_MORE=0 FREE_ELSEWHERE=0
+    top apps: 26. Eden - Daily Routine P 12
+
+== 6. ALLINONE and PAID together ==
+ALLINONE 210; with PAID 127

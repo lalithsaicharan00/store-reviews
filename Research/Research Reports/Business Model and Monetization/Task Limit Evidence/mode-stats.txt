@@ -1,0 +1,6 @@
+screened 1487223 App Store + Play + native reviews; candidates 3772
+TASK_PAY               n=  2514 apps=117 mean=3.40 1star=22.7%  top: 2. HabitNow Daily Routin 297, 13. Productive - Habit T 251, 12. Fabulous Daily Routi 193, 4. Me+ Lifestyle Routine 169, 59. Tappsk - ToDo & Habi 165, 10. Finch - Self-Care Pe 107
+TASK_CAP               n=   873 apps= 76 mean=2.77 1star=30.8%  top: 23. Streaks - The habit- 169, 4. Me+ Lifestyle Routine 97, 13. Productive - Habit T 84, 31. Do Habits - Get It D 78, 4. Me+ Lifestyle Routine 63, 12. Fabulous Daily Routi 26
+SHARED_OR_WORKAROUND   n=   447 apps= 61 mean=3.09 1star=26.2%  top: 8. Google Calendar- Get  40, 9. Google Sheets - Colla 31, 10. Microsoft To Do - Ca 27, 10. Finch - Self-Care Pe 26, 12. Fabulous Daily Routi 23, 3. Notes - Take note of  23
+RECUR_PAY              n=   139 apps= 40 mean=3.85 1star=15.1%  top: 2. HabitNow Daily Routin 26, 84. Tasks - To Do List & 19, 59. Tappsk - ToDo & Habi 13, 126. To Do List 12, 13. Productive - Habit T 9, 4. Me+ Lifestyle Routine 9
+TASK_FREE              n=   123 apps= 38 mean=3.85 1star= 8.9%  top: 1. Reminders - Don’t for 15, 10. Microsoft To Do - Ca 12, 2. HabitNow Daily Routin 9, 3. Loop Habit Tracker 9, 6. Google Tasks- Get Thi 9, 31. Do Habits - Get It D 8
