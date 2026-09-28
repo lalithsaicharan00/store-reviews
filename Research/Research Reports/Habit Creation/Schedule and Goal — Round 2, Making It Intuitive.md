@@ -1,5 +1,7 @@
 Written by Claude (Claude Code), 28 September 2026. Revised the same day after the user pointed back to the earlier Goal research (§3.10).
 
+> **Superseded (28 Sep 2026).** The user rejected this design as still rule-based. The replacement proposal is [Creating a Habit — Round 3, The User's Own Words](<Creating a Habit — Round 3, The User's Own Words.md>). This report's evidence still stands.
+
 # Schedule and Goal — Round 2, Making It Intuitive
 
 The user tested the Schedule and Goal screens built from [Schedule and Goal — One Coherent System](<Schedule and Goal — One Coherent System.md>) and found them confusing, even as the person who built the app. This report finds out why, using the review corpus and every earlier report on goals and frequency, and sets out **one model to settle Schedule and Goal for good**: the design and the copy.
