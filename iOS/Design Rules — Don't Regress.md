@@ -61,6 +61,13 @@ Source: [Section Header — Start Button, Left Count and Icons](<../Research/Res
   - Start is today only, never on Quitting.
 - Space order: status and Start never shrink; the name gives way first; the icons take the rest and end in "+N".
 
+## Text lengths
+
+Source: [Name, Unit and Time of Day Lengths](<../Research/Research Reports/Habit Creation/Name, Unit and Time of Day Lengths.md>).
+
+- **Limits:** names **24**, checklist items **24**, times of day **16**, units **12** (`TextLimit`). Don't raise them to "just in case" sizes: 100 is how pasted paragraphs broke layouts. Don't cut below 20 either: reviewers complain about 20.
+- Show "N characters left" only in the last 5. Never truncate text that's already saved.
+
 ## Calendar and Back to Today
 
 Source: [Back to Today — When and Where](<../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/Back to Today — When and Where.md>).

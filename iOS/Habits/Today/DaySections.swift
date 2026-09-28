@@ -124,6 +124,7 @@ struct SectionEditor: View {
                     }
                 } footer: {
                     if let problem { Text(problem).foregroundStyle(.red) }
+                    else if let note = TextLimit.note(name, TextLimit.section) { Text(note) }
                     else { Text("Habits can still be ticked at any time; the time of day only orders Today and marks what's Now.") }
                 }
                 if existing != nil {

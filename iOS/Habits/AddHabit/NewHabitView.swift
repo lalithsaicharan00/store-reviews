@@ -409,7 +409,7 @@ struct HabitForm: View {
     private var nameSection: some View {
         Section {
             TextField(type.namePlaceholder, text: $name, axis: .vertical)
-                .lineLimit(1...3)
+                .lineLimit(1...2)
                 .font(.body.weight(.semibold))
                 .focused($focus, equals: .name)
                 .limitText($name, to: TextLimit.name)
@@ -442,6 +442,8 @@ struct HabitForm: View {
                 .accessibilityLabel("Colour, \(color.name)")
             }
             .frame(minHeight: 44)
+        } footer: {
+            if let note = TextLimit.note(name, TextLimit.name) { Text(note).formNote() }
         }
     }
 
@@ -1227,7 +1229,7 @@ struct UnitPicker: View {
             } header: {
                 Text("Your own")
             } footer: {
-                Text("Anything you count: prayers, chapters, glasses of juice.")
+                Text(TextLimit.note(custom, TextLimit.unit) ?? "Anything you count, in a word or two: prayers, laps, sets.")
             }
             ForEach(groups, id: \.0) { group in
                 Section(group.0) { ForEach(group.1, id: \.self, content: row) }

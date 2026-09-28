@@ -235,13 +235,21 @@ extension String {
     }
 }
 
-/// Longest text a person can type in each field. Generous, so real names never hit them;
-/// they only stop pasted paragraphs from breaking the layout.
+/// Longest text a person can type in each field (research: "Name, Unit and Time of Day Lengths", 28 Sep).
+/// Generous for real names, short enough to keep every screen tidy. Existing longer text is kept as it is;
+/// the limits apply to typing.
 enum TextLimit {
-    static let name = 100      // habit and to-do names
-    static let checklistPart = 60
-    static let section = 30    // day section names
-    static let unit = 24       // "tablespoons of chia seed"
+    static let name = 24       // habit and task names: 94% of names quoted in reviews fit; 20 drew complaints
+    static let checklistPart = 24
+    static let section = 16    // times of day: "After school" 12, "Evening wind-down" 17 → "Evening wind-dow"
+    static let unit = 12       // "tablespoons" 11, "cigarettes" 10
+
+    /// "3 characters left", only in the last 5, so the limit is never a surprise.
+    static func note(_ text: String, _ limit: Int) -> String? {
+        let left = limit - text.count
+        guard left <= 5 else { return nil }
+        return left <= 0 ? "That's the most: \(limit) characters." : left == 1 ? "1 character left" : "\(left) characters left"
+    }
 
     /// Trimmed and cut to `limit` characters.
     static func clean(_ text: String, _ limit: Int) -> String {

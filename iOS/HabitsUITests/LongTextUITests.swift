@@ -72,7 +72,7 @@ final class LongTextUITests: XCTestCase {
     }
 
     func testTodayWithLongText() {
-        let morning = button(startingWith: "Early morning")
+        let morning = button(startingWith: "Before breakfast")
         for _ in 0..<4 where !morning.exists { app.swipeUp() }
         XCTAssertTrue(morning.exists)
         app.swipeDown(); app.swipeDown(); app.swipeDown()
@@ -102,7 +102,7 @@ final class LongTextUITests: XCTestCase {
         quitting.tap()
         XCTAssertFalse(smoking.waitForExistence(timeout: 1), "Folding Quitting hides its rows")
         // Fold every section to see the header icons and "+N".
-        for name in ["Anytime", "Early morning", "Lunch break", "Evening once"] {
+        for name in ["Anytime", "Before breakfast", "Lunch break walk", "Once kids sleep"] {
             let header = button(startingWith: name)
             if header.exists, header.value as? String == "Open" { header.tap(); sleep(1) }
         }
@@ -115,15 +115,15 @@ final class LongTextUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Times of Day"].waitForExistence(timeout: 3))
         shot("06-times-of-day")
         // The row in the sheet, not the Today header behind it: its label carries the hours.
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Early morning' AND label CONTAINS '–'")).firstMatch.tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Before breakfast' AND label CONTAINS '–'")).firstMatch.tap()
         XCTAssertTrue(app.navigationBars["Edit Time of Day"].waitForExistence(timeout: 3))
         shot("07-section-editor")
         let field = app.textFields["Name"]
         field.tap()
         field.typeText(" and a lot more words")
-        let atLimit = expectation(for: NSPredicate { el, _ in ((el as? XCUIElement)?.value as? String ?? "").count <= 30 }, evaluatedWith: field)
+        let atLimit = expectation(for: NSPredicate { el, _ in ((el as? XCUIElement)?.value as? String ?? "").count <= 16 }, evaluatedWith: field)
         wait(for: [atLimit], timeout: 3)
-        XCTAssertTrue((field.value as? String ?? "").hasPrefix("Early morning before"), "Typing into a full name keeps what was there")
+        XCTAssertTrue((field.value as? String ?? "") == "Before breakfast", "Typing into a full name keeps what was there")
         shot("08-section-editor-at-limit")
     }
 
@@ -136,12 +136,12 @@ final class LongTextUITests: XCTestCase {
         name.tap()
         name.typeText(String(repeating: "Read one more chapter of the book on the nightstand ", count: 3))
         // The cap is applied as each change lands, so wait for the last one before reading.
-        let capped = expectation(for: NSPredicate { el, _ in ((el as? XCUIElement)?.value as? String ?? "").count <= 100 }, evaluatedWith: name)
+        let capped = expectation(for: NSPredicate { el, _ in ((el as? XCUIElement)?.value as? String ?? "").count <= 24 }, evaluatedWith: name)
         wait(for: [capped], timeout: 3)
         shot("09-form-long-name")
         app.toolbars.buttons["Done"].firstMatch.tap()
 
-        // Goal: 12 of a long unit of your own (units stop at 24 characters).
+        // Goal: 12 of a long unit of your own (units stop at 12 characters).
         button(startingWith: "Goal").tap()
         let amount = app.textFields["goal-amount"]
         amount.tap(); sleep(1); amount.typeText("12")
@@ -152,7 +152,7 @@ final class LongTextUITests: XCTestCase {
         let own = app.textFields["custom-unit"]
         XCTAssertTrue(own.waitForExistence(timeout: 2))
         own.typeText("tablespoons of chia seeds and oats")
-        XCTAssertLessThanOrEqual((own.value as? String ?? "").count, 24, "Units stop at 24 characters")
+        XCTAssertLessThanOrEqual((own.value as? String ?? "").count, 12, "Units stop at 12 characters")
         own.typeText("\n")
         sleep(1)
         shot("10-goal-long-unit")
@@ -162,7 +162,7 @@ final class LongTextUITests: XCTestCase {
         button(startingWith: "Time of Day").tap()
         XCTAssertTrue(app.navigationBars["Time of Day"].waitForExistence(timeout: 3))
         // The Time of Day row itself (the Today header behind the sheet also starts "Lunch break").
-        let lunch = app.buttons["Lunch break and the walk after"].firstMatch
+        let lunch = app.buttons["Lunch break walk"].firstMatch
         XCTAssertTrue(lunch.waitForExistence(timeout: 2))
         lunch.tap()
         shot("11-time-of-day-long")
@@ -172,7 +172,7 @@ final class LongTextUITests: XCTestCase {
         let allow = XCUIApplication(bundleIdentifier: "com.apple.springboard").buttons["Allow"]
         if allow.waitForExistence(timeout: 3) { allow.tap() }
         // Sections that aren't Now start folded; open this one to see the new row.
-        let lunch2 = button(startingWith: "Lunch break")
+        let lunch2 = button(startingWith: "Lunch break walk")
         XCTAssertTrue(find(lunch2))
         if lunch2.value as? String == "Folded" { lunch2.tap(); sleep(1) }
         // 12 of an unknown unit: + asks how much.

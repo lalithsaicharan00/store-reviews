@@ -205,8 +205,6 @@ enum Format {
 // MARK: - Text fields and rows
 
 extension View {
-    /// Stops typing or pasting past `limit` characters. Once full, more typing is ignored (nothing
-    /// already written is lost); a long paste keeps its first `limit` characters.
     /// Number fields select what's in them when tapped, so typing replaces "1" or "20" instead of
     /// inserting next to it ("31"), as in Settings and Health.
     func selectsNumbersOnFocus() -> some View {
@@ -216,6 +214,8 @@ extension View {
         }
     }
 
+    /// Stops typing or pasting past `limit` characters. Once full, more typing is ignored (nothing
+    /// already written is lost); a long paste keeps its first `limit` characters.
     func limitText(_ text: Binding<String>, to limit: Int) -> some View {
         onChange(of: text.wrappedValue) { old, new in
             guard new.count > limit else { return }

@@ -654,7 +654,7 @@ final class HabitStore {
         await load()
         if ProcessInfo.processInfo.arguments.contains("-longtext") {
             // Every section name at its limit, to test layouts.
-            let long = ["Early morning before breakfast", "Lunch break and the walk after", "Evening once kids are in bed"]
+            let long = ["Before breakfast", "Lunch break walk", "Once kids sleep"] // 16, 16, 15: at the limit
             saveSections(sections.map { section in
                 var section = section
                 if let i = [String.morning, .afternoon, .evening].firstIndex(of: section.id) { section.name = TextLimit.clean(long[i], TextLimit.section) }
@@ -694,13 +694,13 @@ final class HabitStore {
             for i in habits.indices {
                 switch habits[i].id {
                 case water.id:
-                    habits[i].name = "Drink a big glass of warm water with lemon first thing after waking up, before coffee or my phone"
-                    habits[i].kind = .amount(unit: "teaspoons of chia seeds", increment: 1)
+                    habits[i].name = TextLimit.clean("Drink a big glass of warm water with lemon", TextLimit.name)
+                    habits[i].kind = .amount(unit: TextLimit.clean("tablespoons", TextLimit.unit), increment: 1)
                 case skincare.id:
-                    habits[i].name = "Morning skincare: the full routine the dermatologist gave me, including SPF"
-                    habits[i].steps[0].name = "Double cleanse: the oil cleanser first, then the gel one"
-                case smoking.id: habits[i].name = "Smoking, including the social cigarettes at weekends"
-                case lunch.id: habits[i].name = "Lunch away from the desk, with no phone, no laptop and no work chat"
+                    habits[i].name = TextLimit.clean("Morning skincare routine with SPF", TextLimit.name)
+                    habits[i].steps[0].name = TextLimit.clean("Double cleanse, oil then gel", TextLimit.checklistPart)
+                case smoking.id: habits[i].name = TextLimit.clean("Smoking, social ones too", TextLimit.name)
+                case lunch.id: habits[i].name = TextLimit.clean("Lunch away from the desk", TextLimit.name)
                 case floss.id: habits[i].name = "Floss"
                 default: break
                 }
