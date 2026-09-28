@@ -3,6 +3,15 @@ import XCTest
 /// The Goal screen for Check it off, Track an amount and Time it, and what + does on Today afterwards
 /// (spec: New Habit Goal and Time of Day.md §3). Keeps a screenshot of each step.
 final class GoalFlowUITests: XCTestCase {
+    override func record(_ issue: XCTIssue) {
+        let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        shot.name = "FAIL-\(name)"
+        shot.lifetime = .keepAlways
+        var issue = issue
+        issue.add(shot)
+        super.record(issue)
+    }
+
     private var app: XCUIApplication!
 
     override func setUp() {
@@ -166,10 +175,12 @@ final class GoalFlowUITests: XCTestCase {
         shot("g40-time-goal-default")
         period("Weekly")
         app.segmentedControls["duration-entry-mode"].buttons["Type"].tap()
-        let hours = app.textFields["duration-hours"]
-        hours.tap(); sleep(1); hours.typeText("3")
-        let minutes = app.textFields["duration-minutes"]
-        minutes.tap(); sleep(1); minutes.typeText("0")
+        // Type focuses hours at once; Next moves to minutes. Both sit on one row above the keyboard.
+        sleep(1)
+        XCTAssertEqual(app.buttons.matching(identifier: "Next").count, 1, "One Next button on the keyboard, not one per row")
+        app.textFields["duration-hours"].typeText("3")
+        app.toolbars.buttons["Next"].firstMatch.tap(); sleep(1)
+        app.textFields["duration-minutes"].typeText("0")
         shot("g41-time-goal-3h-week")
         back()
         XCTAssertTrue(row("Goal, 3 h a week").exists)
@@ -226,5 +237,43 @@ final class GoalFlowUITests: XCTestCase {
         period("Weekly"); shot("r11-weekly")
         period("Monthly"); shot("r12-monthly")
         period("Yearly"); shot("r13-yearly")
+    }
+
+    /// Typing the way a person does: one key at a time on the number pad, checking the field and the
+    /// read-back after each key (the user reported typed amounts not showing).
+    func testTypingKeyByKey() {
+        newHabit("Track an amount", name: "Keys")
+        openGoal()
+        let amount = app.textFields["goal-amount"]
+        XCTAssertTrue(amount.waitForExistence(timeout: 3))
+        for (i, key) in ["2", "5", "0", "0"].enumerated() {
+            app.keys[key].tap(); usleep(400_000)
+            let typed = String("2500".prefix(i + 1))
+            XCTAssertEqual(amount.value as? String, typed, "The field shows each key as it's typed")
+        }
+        shot("k01-typed-2500")
+        chooseUnit("ml")
+        XCTAssertTrue(summary("2.5k ml a day"), "The read-back shows the typed goal")
+        // Change it: tapping the field selects 2500, so typing replaces it.
+        amount.tap(); sleep(1)
+        app.keys["7"].tap(); usleep(400_000)
+        XCTAssertEqual(amount.value as? String, "7")
+        shot("k02-replaced-7")
+        back()
+        let goalRow = row("Goal, 7 ml a day")
+        if !goalRow.waitForExistence(timeout: 3) {
+            shot("k02b-form-after-back")
+            XCTFail("Goal row: " + app.buttons.allElementsBoundByIndex.map(\.label).filter { $0.hasPrefix("Goal") }.joined(separator: " | "))
+        }
+        addHabit()
+        rowButton("Add amount to Keys").tap()
+        let log = app.textFields["log-amount"]
+        XCTAssertTrue(log.waitForExistence(timeout: 3))
+        sleep(1)
+        for key in ["3", "5", "0"] { app.keys[key].tap(); usleep(400_000) }
+        XCTAssertEqual(log.value as? String, "350", "Add Amount shows what's typed")
+        shot("k03-add-amount-350")
+        app.navigationBars["Add Amount"].buttons["Add"].tap(); sleep(2)
+        shot("k04-today-350")
     }
 }

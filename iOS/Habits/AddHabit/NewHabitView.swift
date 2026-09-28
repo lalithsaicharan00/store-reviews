@@ -368,9 +368,6 @@ struct HabitForm: View {
             }
         }
         .interactiveDismissDisabled(hasChanges)
-        .navigationDestination(isPresented: $addingSection) {
-            SectionEditor(existing: nil) { id in choose(id) }
-        }
         // Icon and colour are quick picks, so they pop up over the form (the user's choice).
         .sheet(isPresented: $showAppearance) {
             NavigationStack {
@@ -556,28 +553,7 @@ struct HabitForm: View {
         }
     }
 
-    private var checklistSection: some View {
-        Section {
-            ForEach($items) { $item in
-                HStack(spacing: 12) {
-                    RemoveButton(label: "Remove \(item.name.isEmpty ? "item" : item.name)") {
-                        withAnimation { items.removeAll { $0.id == item.id } }
-                    }
-                    TextField(items.first?.id == item.id ? "e.g. Push-ups" : "Next item", text: $item.name)
-                        .focused($focus, equals: .item(item.id))
-                        .limitText($item.name, to: TextLimit.checklistPart)
-                        .submitLabel(.next)
-                        .onSubmit { addItem() }
-                }
-            }
-            .onDelete { items.remove(atOffsets: $0) }
-            AddRow(title: "Add Item", action: addItem)
-        } header: {
-            Text("Items")
-        } footer: {
-            Text("One habit with a few items to tick. They reset each time it's due, and the habit is done when every item is ticked.").formNote()
-        }
-    }
+    private var checklistSection: some View { ChecklistItemsSection(items: $items) }
 
     private var quitSection: some View {
         Section {
@@ -728,6 +704,11 @@ struct HabitForm: View {
             }
             .navigationTitle("Time of Day")
             .navigationBarTitleDisplayMode(.inline)
+            // Pushed from here, so saving comes back to this list with the new one ticked (attached to
+            // the form, it replaced this screen and Save jumped back to the form; found 28 Sep).
+            .navigationDestination(isPresented: $addingSection) {
+                SectionEditor(existing: nil) { id in choose(id) }
+            }
         }
     }
 
@@ -860,12 +841,6 @@ struct HabitForm: View {
 
     // MARK: Helpers
 
-    private func addItem() {
-        let item = Step(name: "")
-        withAnimation { items.append(item) }
-        focus = .item(item.id)
-    }
-
     private func suggestIcon() {
         guard !pickedSymbol, let suggestion = IconSuggester.symbol(for: name) else { return }
         symbol = suggestion
@@ -948,6 +923,43 @@ struct HabitForm: View {
 
 // MARK: - Rows
 
+/// The checklist's items, on the pushed Items screen. It keeps its own focus, so Add Item puts the
+/// cursor in the new row (the form's focus doesn't reach a pushed screen; found on the iPhone, 28 Sep).
+struct ChecklistItemsSection: View {
+    @Binding var items: [Step]
+    @FocusState private var focused: UUID?
+
+    var body: some View {
+        Section {
+            ForEach($items) { $item in
+                HStack(spacing: 12) {
+                    RemoveButton(label: "Remove \(item.name.isEmpty ? "item" : item.name)") {
+                        withAnimation { items.removeAll { $0.id == item.id } }
+                    }
+                    TextField(items.first?.id == item.id ? "e.g. Push-ups" : "Next item", text: $item.name)
+                        .focused($focused, equals: item.id)
+                        .limitText($item.name, to: TextLimit.checklistPart)
+                        .submitLabel(.next)
+                        .onSubmit(addItem)
+                }
+            }
+            .onDelete { items.remove(atOffsets: $0) }
+            AddRow(title: "Add Item", action: addItem)
+        } header: {
+            Text("Items")
+        } footer: {
+            Text("One habit with a few items to tick. They reset each time it's due, and the habit is done when every item is ticked.").formNote()
+        }
+    }
+
+    private func addItem() {
+        let item = Step(name: "")
+        withAnimation { items.append(item) }
+        // After the row exists, so the field can take focus.
+        DispatchQueue.main.async { focused = item.id }
+    }
+}
+
 extension Text {
     /// The sentences under a form group: a size people can read at a glance, not the tiny default.
     func formNote() -> some View { font(.callout).foregroundStyle(.secondary) }
@@ -967,11 +979,12 @@ struct NumberRow: View {
         HStack(spacing: 6) {
             Text(title).lineLimit(1).fixedSize()
             Spacer(minLength: 16)
+            // Not fixedSize: a field sized to its placeholder clipped what was typed (reported 28 Sep).
             TextField(placeholder, value: $value, format: .number)
                 .keyboardType(.decimalPad)
                 .multilineTextAlignment(.trailing)
                 .focused(focus, equals: field)
-                .fixedSize()
+                .frame(minWidth: 44, maxWidth: 160)
                 .font(.body.monospacedDigit().weight(.semibold))
                 .accessibilityLabel(title)
             if !suffix.isEmpty { Text(suffix).foregroundStyle(.secondary).lineLimit(1).truncationMode(.tail) }

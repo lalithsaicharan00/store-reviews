@@ -3,6 +3,15 @@ import XCTest
 /// Today's section headers: "N left" always, ✓ when done, Start per the rules in
 /// "Section Header — Start Button, Left Count and Icons". Screenshots only.
 final class SectionHeaderUITests: XCTestCase {
+    override func record(_ issue: XCTIssue) {
+        let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        shot.name = "FAIL-\(name)"
+        shot.lifetime = .keepAlways
+        var issue = issue
+        issue.add(shot)
+        super.record(issue)
+    }
+
     private var app: XCUIApplication!
 
     override func setUp() {

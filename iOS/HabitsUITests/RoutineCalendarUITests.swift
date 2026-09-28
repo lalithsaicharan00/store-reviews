@@ -1,6 +1,15 @@
 import XCTest
 
 final class RoutineCalendarUITests: XCTestCase {
+    override func record(_ issue: XCTIssue) {
+        let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        shot.name = "FAIL-\(name)"
+        shot.lifetime = .keepAlways
+        var issue = issue
+        issue.add(shot)
+        super.record(issue)
+    }
+
     private var app: XCUIApplication!
     override func setUp() {
         continueAfterFailure = false
@@ -40,23 +49,24 @@ final class RoutineCalendarUITests: XCTestCase {
         return "calendar-day-\(c.year!)-\(c.month!)-\(c.day!)"
     }
 
-    func testPlayIndependentOfDisclosureAndNow() {
+    /// Start follows the section-header rules (28 Sep): "▶ Start" in open sections; folded, only the Now
+    /// section keeps ▶; never on Quitting or a finished section. Play never changes disclosure.
+    func testPlayFollowsHeaderRules() {
         let play = app.buttons["Start Anytime routine"]
-        app.buttons["Fold Anytime"].tap()
-        XCTAssertTrue(app.buttons["Open Anytime"].exists)
-        XCTAssertTrue(play.isHittable)
-        XCTAssertGreaterThanOrEqual(play.frame.width, 44)
+        XCTAssertTrue(play.isHittable, "An open section has Start")
+        XCTAssertGreaterThanOrEqual(play.frame.height, 44)
         play.tap()
         XCTAssertTrue(app.navigationBars["Anytime routine"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.buttons["Stop Read timer"].waitForExistence(timeout: 3))
         shot("routine-timer")
         app.buttons["Close"].tap()
-        XCTAssertTrue(app.buttons["Open Anytime"].waitForExistence(timeout: 3), "Play does not change disclosure")
-        app.buttons["Open Anytime"].tap()
+        XCTAssertTrue(app.buttons["Fold Anytime"].waitForExistence(timeout: 3), "Play does not change disclosure")
         XCTAssertTrue(app.buttons["Start Read timer"].waitForExistence(timeout: 3), "Closing pauses the timer")
-        XCTAssertTrue(play.exists)
-        XCTAssertFalse(app.buttons["Start Quitting routine"].exists)
-        app.buttons["Fold Quitting"].tap()
+        app.buttons["Fold Anytime"].tap()
+        XCTAssertFalse(play.waitForExistence(timeout: 1), "A folded section that isn't Now has no ▶")
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Anytime' AND label CONTAINS 'left'")).firstMatch.exists, "Folded, it still says how many are left")
+        app.buttons["Open Anytime"].tap()
+        XCTAssertTrue(play.waitForExistence(timeout: 2), "Opening shows Start again")
         XCTAssertFalse(app.buttons["Start Quitting routine"].exists)
         XCTAssertFalse(app.buttons["Start Morning routine"].exists, "Completed sections have no play")
         shot("routine-headers")
@@ -67,7 +77,7 @@ final class RoutineCalendarUITests: XCTestCase {
         reveal(play)
         play.tap()
         XCTAssertTrue(app.navigationBars["Afternoon routine"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.buttons["Add 1k to Walk"].exists)
+        XCTAssertTrue(app.buttons["Add amount to Walk"].exists)
         XCTAssertFalse(app.buttons["Next habit"].isEnabled)
         app.buttons["Skip for now"].tap()
         XCTAssertTrue(app.buttons["Mark Lunch, no phone done"].waitForExistence(timeout: 3))
@@ -79,10 +89,17 @@ final class RoutineCalendarUITests: XCTestCase {
         app.buttons["Done"].tap()
         reveal(play)
         play.tap()
-        XCTAssertTrue(app.buttons["Add 1k to Walk"].waitForExistence(timeout: 3))
+        // Walk's goal is 8,000 steps, so + asks how much (the automatic + rule), inside the routine too.
+        let walk = app.collectionViews["routine-list"].buttons["Add amount to Walk"]
+        XCTAssertTrue(walk.waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["Habit 1 of 1"].exists, "Resume includes only unfinished habits")
-        for _ in 0..<3 { app.collectionViews["routine-list"].buttons["Add 1k to Walk"].tap() }
-        XCTAssertTrue(app.buttons["Undo last Walk"].waitForExistence(timeout: 3))
+        walk.tap()
+        let amount = app.textFields["log-amount"]
+        XCTAssertTrue(amount.waitForExistence(timeout: 3), "+ opens Add Amount")
+        sleep(1); amount.typeText("3000")
+        app.navigationBars["Add Amount"].buttons["Add"].tap()
+        sleep(2)
+        shot("routine-walk-added")
         app.buttons["Finish routine"].tap()
         XCTAssertTrue(app.staticTexts["All habits in this routine are done."].waitForExistence(timeout: 3))
         app.buttons["Done"].tap()
@@ -165,7 +182,8 @@ final class RoutineCalendarUITests: XCTestCase {
         app.launchArguments = ["-uitest", "-empty"]
         app.launch()
         app.buttons["New Habit"].firstMatch.tap()
-        app.buttons["Check it off"].tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check it off'")).firstMatch.tap()
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.tap()
@@ -182,7 +200,9 @@ final class RoutineCalendarUITests: XCTestCase {
         XCTAssertEqual(app.buttons[dayID(Date())].value as? String, "Today. 1 of 1 done")
         shot("calendar-complete")
         app.buttons["Today"].tap()
-        app.buttons["Open Anytime"].tap()
+        // Just added, Anytime stays open after it's finished; open it if it folded.
+        let open = app.buttons["Open Anytime"]
+        if open.waitForExistence(timeout: 1) { open.tap() }
         app.buttons["Undo Practice"].tap()
         XCTAssertTrue(app.buttons["Start Anytime routine"].waitForExistence(timeout: 3))
         openCalendar()

@@ -3,6 +3,15 @@ import XCTest
 /// Proves that what the user does survives the app being killed, using a real database file
 /// on the device (a test-only file, never the user's).
 final class PersistenceUITests: XCTestCase {
+    override func record(_ issue: XCTIssue) {
+        let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        shot.name = "FAIL-\(name)"
+        shot.lifetime = .keepAlways
+        var issue = issue
+        issue.add(shot)
+        super.record(issue)
+    }
+
     private func launch(reset: Bool) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["-dbname", "uitest-persistence", "-empty"] + (reset ? ["-reset-db"] : [])
@@ -25,7 +34,8 @@ final class PersistenceUITests: XCTestCase {
 
         app.buttons["New Habit"].firstMatch.tap()
         XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
-        app.buttons["Check it off"].tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check it off'")).firstMatch.tap()
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.tap()
@@ -35,11 +45,10 @@ final class PersistenceUITests: XCTestCase {
         if !tick.waitForExistence(timeout: 5) { print("TREE-DUMP\n" + app.debugDescription); shot("01b-debug") }
         XCTAssertTrue(tick.exists)
         tick.tap()
-        // A finished part folds to "All done"; open it to see the row.
+        // The part says it's finished. Just added, it stays open, so the row doesn't vanish under the finger.
         let header = app.buttons["Anytime, All done"]
         if !header.waitForExistence(timeout: 3) { print("TREE-DUMP\n" + app.debugDescription); shot("02-debug") }
         XCTAssertTrue(header.exists, "Ticking the only habit finishes the part")
-        header.tap()
         XCTAssertTrue(app.buttons["Undo Stretch"].waitForExistence(timeout: 3))
         shot("02-created-and-ticked")
 

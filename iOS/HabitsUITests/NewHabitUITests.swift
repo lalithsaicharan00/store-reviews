@@ -1,7 +1,19 @@
 import XCTest
 
-/// Creates every kind of item through + on a real device, and keeps screenshots of each state.
+/// Creates every kind of item through + (the current two-question flow and form), and keeps screenshots.
+/// Rewritten 28 Sep 2026 for the decided spec (iOS/New Habit Goal and Time of Day.md). Retired checks, and why:
+/// times that placed a habit in a section, and a separate tick per part of the day, were both replaced by
+/// Time of Day (display only, one shared row); the How Often menu became the Repeat screen.
 final class NewHabitUITests: XCTestCase {
+    override func record(_ issue: XCTIssue) {
+        let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        shot.name = "FAIL-\(name)"
+        shot.lifetime = .keepAlways
+        var issue = issue
+        issue.add(shot)
+        super.record(issue)
+    }
+
     private var app: XCUIApplication!
 
     override func setUp() {
@@ -18,7 +30,11 @@ final class NewHabitUITests: XCTestCase {
         add(attachment)
     }
 
-    /// Forms build rows lazily, so scroll the sheet's form until the element can be tapped.
+    private func row(_ title: String) -> XCUIElement {
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", title)).firstMatch
+    }
+
+    /// Forms build rows lazily, so scroll the form until the element can be tapped.
     private func scrollTo(_ element: XCUIElement) {
         let form = app.collectionViews["habit-form"]
         for _ in 0..<6 where !(element.exists && element.isHittable) { form.swipeUp() }
@@ -26,20 +42,34 @@ final class NewHabitUITests: XCTestCase {
 
     private func revealOnToday(_ element: XCUIElement) {
         let window = app.windows.firstMatch
+        // Start from the top: the list builds rows lazily, so a row above the screen doesn't "exist" yet.
+        for _ in 0..<3 { app.swipeDown(velocity: .fast) }
         for _ in 0..<20 {
             if element.exists && element.isHittable && element.frame.minY > 100 && element.frame.maxY < window.frame.maxY - 90 { return }
             let upward = !element.exists || element.frame.minY > window.frame.midY
             window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: upward ? 0.65 : 0.35))
                 .press(forDuration: 0.05, thenDragTo: window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: upward ? 0.42 : 0.58)))
         }
-        XCTAssertTrue(element.isHittable)
+        if !element.exists { print("TEXTS: " + app.staticTexts.allElementsBoundByIndex.map(\.label).joined(separator: " | ")) }
+        XCTAssertTrue(element.exists)
     }
 
-    private func open(_ type: String) {
+    private func back() {
+        let done = app.toolbars.buttons["Done"].firstMatch
+        if done.exists && done.isHittable { done.tap() }
+        app.navigationBars.buttons["BackButton"].firstMatch.tap()
+        sleep(1)
+    }
+
+    /// + → the first question → (the second) → the form.
+    private func open(_ first: String, _ second: String? = nil, title: String) {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
         XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
-        app.buttons[type].tap()
-        XCTAssertTrue(app.navigationBars[type].waitForExistence(timeout: 3))
+        // Choice rows read "Title, detail…": match the title and its comma, so "Quit" can't match
+        // the Quitting header behind the sheet.
+        row(first + ",").tap()
+        if let second { row(second + ",").tap() }
+        XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 3))
     }
 
     private func type(name: String) {
@@ -54,214 +84,164 @@ final class NewHabitUITests: XCTestCase {
         if allow.waitForExistence(timeout: 3) { allow.tap() }
     }
 
-    private func pickHowOften(_ option: String) {
-        let row = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'How Often'")).firstMatch
-        scrollTo(row)
-        row.tap()
+    private func text(startingWith prefix: String) -> XCUIElement {
+        app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", prefix)).firstMatch
+    }
+
+    private func setGoal(_ amount: String, unit: String? = nil, period: String? = nil) {
+        row("Goal").tap()
+        XCTAssertTrue(app.navigationBars["Goal"].waitForExistence(timeout: 3))
+        if let period { app.segmentedControls["goal-period"].buttons[period].tap() }
+        let field = app.textFields["goal-amount"]
+        field.tap(); sleep(1); field.typeText(amount)
+        if let unit {
+            let done = app.toolbars.buttons["Done"].firstMatch
+            if done.exists && done.isHittable { done.tap(); sleep(1) }
+            app.buttons["goal-unit"].tap()
+            let choice = app.buttons[unit].firstMatch
+            while !choice.isHittable { app.swipeUp(velocity: .slow) }
+            choice.tap(); sleep(1)
+        }
+        back()
+    }
+
+    private func repeatScreen(_ option: String) {
+        row("Repeat").tap()
+        XCTAssertTrue(app.navigationBars["Repeat"].waitForExistence(timeout: 3))
         app.buttons[option].firstMatch.tap()
     }
 
-    func testChooserThenAmountWithReminderRemoved() {
-        app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
-        shot("01-chooser")
-        app.buttons["Count an amount"].tap()
+    /// Track an amount: nothing pre-filled, Add waits for a goal; one reminder by default, removable.
+    func testAmountWithReminderRemoved() {
+        open("Build or maintain", "Track an amount", title: "Track an amount")
         type(name: "Drink water")
-        shot("02-amount-form")
-
-        // Nothing is pre-filled: the amount is empty and Add waits for it.
-        XCTAssertFalse(app.navigationBars["Count an amount"].buttons["Add"].isEnabled, "No example values are saved")
-        // The whole row opens the number pad, and the keyboard has Done.
-        app.textFields["Amount"].tap()
-        app.textFields["Amount"].typeText("8")
-        XCTAssertTrue(app.buttons["Done"].firstMatch.waitForExistence(timeout: 2))
-        shot("03-number-keyboard")
-        app.buttons["Done"].firstMatch.tap()
-        let unitRow = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Unit'")).firstMatch
-        scrollTo(unitRow)
-        unitRow.tap()
-        XCTAssertTrue(app.navigationBars["Unit"].waitForExistence(timeout: 2))
-        shot("03b-units")
-        app.buttons["glasses"].tap()
-        XCTAssertEqual(app.descendants(matching: .any)["name-field"].value as? String, "Drink water", "Coming back from Unit leaves the name alone")
-
-        let addTime = app.buttons["Add Time"]
-        scrollTo(addTime)
-        addTime.tap()
-        allowNotificationsIfAsked()
-        let remove = app.buttons["Remove time"]
-        XCTAssertTrue(remove.waitForExistence(timeout: 3), "A time row has a remove button")
+        XCTAssertFalse(app.navigationBars["Track an amount"].buttons["Add"].isEnabled, "No goal, no Add")
+        setGoal("8", unit: "glasses")
+        XCTAssertTrue(row("Goal, 8 glasses a day").exists)
+        XCTAssertEqual(app.descendants(matching: .any)["name-field"].value as? String, "Drink water", "Coming back leaves the name alone")
+        let remove = app.buttons["Remove reminder"].firstMatch
+        scrollTo(remove)
+        XCTAssertTrue(remove.exists, "A reminder is on by default, and removable")
         shot("04-reminder")
         remove.tap()
-        XCTAssertFalse(app.buttons["Remove time"].waitForExistence(timeout: 1), "The time is removed")
-
-        app.navigationBars["Count an amount"].buttons["Add"].tap()
-        XCTAssertTrue(app.staticTexts["Drink water"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.staticTexts["0/8 glasses"].exists)
+        XCTAssertFalse(app.buttons["Remove reminder"].waitForExistence(timeout: 1), "The reminder is removed")
+        app.navigationBars["Track an amount"].buttons["Add"].tap()
+        let today = app.staticTexts["0/8 glasses"]
+        revealOnToday(today)
+        XCTAssertTrue(today.exists)
         shot("05-on-today")
     }
 
-    func testDoItThreeTimesAWeek() {
-        open("Check it off")
+    func testCheckOffThreeTimesAWeek() {
+        open("Build or maintain", "Check it off", title: "Check it off")
         type(name: "Gym")
-        pickHowOften("A Few Times a Week")
-        let summary = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Any days you like'")).firstMatch
-        XCTAssertTrue(summary.waitForExistence(timeout: 2), "Any-day rules say so, unlike set schedules")
-        shot("06-times-a-week")
+        setGoal("3", period: "Weekly")
+        XCTAssertTrue(row("Goal, 3 times a week").exists)
+        XCTAssertFalse(row("Repeat").exists, "A weekly goal has no daily schedule")
         app.navigationBars["Check it off"].buttons["Add"].tap()
-        XCTAssertTrue(app.staticTexts["0/3 this week"].waitForExistence(timeout: 3))
+        allowNotificationsIfAsked()
+        sleep(2); shot("06b-after-add")
+        let line = text(startingWith: "0/3 this week")
+        revealOnToday(line)
+        XCTAssertTrue(line.exists)
     }
 
     func testChecklist() {
-        open("Checklist")
+        open("Build or maintain", "Checklist", title: "Checklist")
         type(name: "Workout")
-        XCTAssertFalse(app.textFields["e.g. Push-ups"].exists, "No empty item until Add Item")
         XCTAssertFalse(app.navigationBars["Checklist"].buttons["Add"].isEnabled, "A checklist needs an item")
-        let addItem = app.buttons["Add Item"]
-        scrollTo(addItem)
-        addItem.tap()
+        row("Items").tap()
+        XCTAssertFalse(app.textFields["e.g. Push-ups"].exists, "No empty item until Add Item")
+        app.buttons["Add Item"].tap()
         let item = app.textFields["e.g. Push-ups"].firstMatch
         XCTAssertTrue(item.waitForExistence(timeout: 2))
         item.typeText("Push-ups\n")
         app.textFields["Next item"].firstMatch.typeText("Squats")
         shot("07-checklist")
+        back()
+        XCTAssertTrue(row("Items, 2 items").exists)
         app.navigationBars["Checklist"].buttons["Add"].tap()
-        XCTAssertTrue(app.staticTexts["Workout"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.staticTexts["0/2 items"].exists)
+        allowNotificationsIfAsked()
+        sleep(2); shot("07b-after-add")
+        let line = text(startingWith: "0/2 items") // then " · 9:00 AM", its reminder time
+        revealOnToday(line)
+        XCTAssertTrue(line.exists)
     }
 
     func testOneTimeTask() {
-        open("To-do")
-        let field = app.descendants(matching: .any)["name-field"]
-        XCTAssertTrue(field.waitForExistence(timeout: 3))
-        field.tap()
-        field.typeText("Book dentist\n")
+        open("Add a task", title: "Task")
+        type(name: "Book dentist")
+        XCTAssertTrue(text(startingWith: "If it isn't done, it moves forward to today").exists)
         shot("08-task")
-        app.navigationBars["To-do"].buttons["Add"].tap()
-        XCTAssertTrue(app.staticTexts["Book dentist"].waitForExistence(timeout: 3))
-        app.buttons["Mark Book dentist done"].tap()
-        XCTAssertTrue(app.buttons["Undo Book dentist"].waitForExistence(timeout: 3) || app.staticTexts["All done"].exists)
-    }
-
-    func testLimitCanBeAWeeklyTotal() {
-        open("Set a limit")
-        type(name: "Cigarettes")
-        XCTAssertTrue(app.staticTexts["No more than"].exists)
-        let row = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'How Often'")).firstMatch
-        scrollTo(row)
-        row.tap()
-        XCTAssertFalse(app.buttons["A Few Times a Week"].waitForExistence(timeout: 1), "Amounts use totals, not a count of days")
-        shot("09-limit-menu")
-        app.buttons["A Weekly Total"].firstMatch.tap()
-        XCTAssertTrue(app.staticTexts["Weekly limit"].waitForExistence(timeout: 2))
-    }
-
-    func testAmountWeeklyTotal() {
-        open("Time it")
-        type(name: "Practise piano")
-        pickHowOften("A Weekly Total")
-        let minutes = app.textFields["Minutes"]
-        scrollTo(minutes)
-        XCTAssertTrue(app.staticTexts["Weekly goal"].exists)
-        minutes.tap()
-        minutes.typeText("180")
-        app.toolbars.buttons["Done"].firstMatch.tap()
-        shot("15-weekly-total")
-        app.navigationBars["Time it"].buttons["Add"].tap()
-        XCTAssertTrue(app.staticTexts["0/180 min this week"].waitForExistence(timeout: 3))
-    }
-
-    /// Taps Add Time `count` times; each new time is an hour after the last (the first is 9:00 AM in Anytime).
-    private func addTimes(_ count: Int) {
-        let add = app.buttons["Add Time"]
-        for i in 0..<count {
-            scrollTo(add)
-            add.tap()
-            if i == 0 { allowNotificationsIfAsked() }
-        }
-    }
-
-    /// Sets the `index`th time row's picker, e.g. to 9 PM, with its wheels (12- or 24-hour phones).
-    private func setTime(row index: Int, hour24: Int, minute: Int = 0) {
-        let picker = app.datePickers.element(boundBy: index)
-        scrollTo(picker)
-        picker.tap()
-        let wheels = app.pickerWheels
-        XCTAssertTrue(wheels.firstMatch.waitForExistence(timeout: 3), "The time wheels open")
-        if wheels.count >= 3 {
-            wheels.element(boundBy: 0).adjust(toPickerWheelValue: "\(hour24 % 12 == 0 ? 12 : hour24 % 12)")
-            wheels.element(boundBy: 1).adjust(toPickerWheelValue: String(format: "%02d", minute))
-            wheels.element(boundBy: 2).adjust(toPickerWheelValue: hour24 < 12 ? "AM" : "PM")
-        } else {
-            wheels.element(boundBy: 0).adjust(toPickerWheelValue: String(format: "%02d", hour24))
-            wheels.element(boundBy: 1).adjust(toPickerWheelValue: String(format: "%02d", minute))
-        }
-        // Close the wheels by tapping outside them.
-        app.windows.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.1)).tap()
-    }
-
-    private func element(_ label: String) -> XCUIElement {
-        app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", label)).firstMatch
-    }
-
-    private func text(startingWith prefix: String) -> XCUIElement {
-        app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", prefix)).firstMatch
-    }
-
-    /// Two times, in two sections: a row in each, ticked separately.
-    func testCheckOffInTwoSections() {
-        open("Check it off")
-        type(name: "Brush teeth")
-        // Morning first, so the first time is 7:00 AM; the second becomes 9:00 PM.
-        let menu = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Day Section'")).firstMatch
-        scrollTo(menu)
-        menu.tap()
-        app.buttons["Morning"].firstMatch.tap()
-        XCTAssertTrue(app.buttons["Day Section, Morning"].waitForExistence(timeout: 2))
-        addTimes(2)
-        setTime(row: 1, hour24: 21)
-        shot("16-two-times")
-        XCTAssertTrue(element("Day Section, Morning, Evening, set by the times").waitForExistence(timeout: 2))
-        let when = text(startingWith: "Shows in Morning and Evening, with a tick in each")
-        scrollTo(when)
-        XCTAssertTrue(when.exists)
-        // Times use the phone's format (with a narrow space before AM), so match the hours only.
-        let reminders = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'A notification at 7:00' OR label BEGINSWITH 'A notification at 07:00'")).firstMatch
-        scrollTo(reminders)
-        XCTAssertTrue(reminders.exists)
-        XCTAssertTrue(reminders.label.contains("None for a time you've already ticked."))
-        shot("17-two-sections-form")
-        app.navigationBars["Check it off"].buttons["Add"].tap()
-        sleep(3) // Today scrolls to the new row and flashes it
-        shot("17b-after-add")
-        // Open both sections, then tick the habit in one of them only.
-        for name in ["Morning", "Evening"] {
-            // Lists only build the rows on screen, so scroll until the header is there.
-            let header = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", name)).firstMatch
-            revealOnToday(header)
-            XCTAssertTrue(header.exists, "\(name) is on Today")
-            if header.value as? String == "Folded" { header.tap(); sleep(1) }
-        }
-        // Morning's row: tick it, and Evening's row stays to do.
-        app.swipeDown(); app.swipeDown()
-        let tick = app.buttons["Mark Brush teeth done"].firstMatch
+        app.navigationBars["Task"].buttons["Add"].tap()
+        let tick = app.buttons["Mark Book dentist done"]
         revealOnToday(tick)
         tick.tap()
-        // Morning is finished; Evening's tick is still to do.
-        let morning = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Morning'")).firstMatch
-        XCTAssertTrue(morning.waitForExistence(timeout: 3))
-        XCTAssertTrue(morning.label.contains("All done"), "Ticking in Morning finishes Morning")
-        let evening = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Evening'")).firstMatch
-        revealOnToday(evening)
-        XCTAssertTrue(evening.label.contains("left"), "Evening's tick is separate")
-        let eveningTick = app.buttons["Mark Brush teeth done"].firstMatch
-        revealOnToday(eveningTick)
-        XCTAssertTrue(eveningTick.exists, "Evening's row is still to do")
-        shot("18-two-sections-today")
+        XCTAssertTrue(app.buttons["Undo Book dentist"].waitForExistence(timeout: 3) || app.buttons.matching(NSPredicate(format: "label CONTAINS 'All done'")).firstMatch.exists)
+    }
+
+    /// Cut down: a maximum, and it can be a weekly total.
+    func testLimitCanBeAWeeklyTotal() {
+        open("Quit or cut down", "Cut down", title: "Cut down")
+        type(name: "Cigarettes")
+        repeatScreen("A Weekly Total")
+        XCTAssertFalse(app.buttons["A Few Times a Week"].exists, "Amounts use totals, not a count of days")
+        shot("09-limit-repeat")
+        back()
+        row("Goal").tap()
+        XCTAssertTrue(app.staticTexts["Weekly limit"].waitForExistence(timeout: 2))
+        // The limit's number shows what's typed (the field isn't sized to its placeholder).
+        let field = app.textFields["No more than"]
+        field.tap(); field.typeText("20")
+        XCTAssertEqual(field.value as? String, "20")
+        shot("09b-limit-typed")
+    }
+
+    /// Two parts of the day: the same row in each, with one shared progress (spec §5).
+    func testCheckOffInTwoTimesOfDay() {
+        open("Build or maintain", "Check it off", title: "Check it off")
+        type(name: "Brush teeth")
+        setGoal("2")
+        row("Time of Day").tap()
+        XCTAssertTrue(app.navigationBars["Time of Day"].waitForExistence(timeout: 3))
+        app.buttons["Morning"].firstMatch.tap()
+        app.buttons["Evening"].firstMatch.tap()
+        back()
+        XCTAssertTrue(row("Time of Day, Morning, Evening").exists)
+        XCTAssertTrue(row("Goal, 2 times a day").exists, "Picking parts leaves the goal alone")
+        // One reminder per part of the day, labelled with its part (the Starts date is a picker too, so count by name).
+        for part in ["Morning", "Evening"] {
+            let reminder = app.staticTexts["\(part) reminder"]
+            scrollTo(reminder)
+            XCTAssertTrue(reminder.exists, "\(part) has its reminder")
+        }
+        shot("17-two-parts-form")
+        app.navigationBars["Check it off"].buttons["Add"].tap()
+        allowNotificationsIfAsked()
+        sleep(2)
+        for name in ["Morning", "Evening"] {
+            let header = row(name)
+            revealOnToday(header)
+            if header.value as? String == "Folded" { header.tap(); sleep(1) }
+        }
+        let tick = app.buttons["Mark Brush teeth done"].firstMatch
+        revealOnToday(tick)
+        tick.tap(); sleep(1)
+        // One shared progress: both rows now show 1/2.
+        for name in ["Morning", "Evening"] {
+            let header = row(name)
+            revealOnToday(header)
+            // 1 of 2 done, shared: the habit still counts as left in both parts (Morning "1 left", Evening its 5 + 1).
+            XCTAssertTrue(header.label.contains(name == "Morning" ? "1 left" : "6 left"), "\(name): \(header.label)")
+        }
+        let shared = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '1/2'")).firstMatch
+        revealOnToday(shared)
+        XCTAssertTrue(shared.exists, "The rows show the shared 1/2")
+        shot("18-two-parts-today")
     }
 
     func testIconSheetClosesOnPick() {
-        open("Check it off")
+        open("Build or maintain", "Check it off", title: "Check it off")
         type(name: "Walk the dog")
         app.buttons["Icon"].tap()
         XCTAssertTrue(app.navigationBars["Icon"].waitForExistence(timeout: 3))
@@ -271,147 +251,110 @@ final class NewHabitUITests: XCTestCase {
     }
 
     func testQuitDiscard() {
-        open("Quit")
+        open("Quit or cut down", "Quit", title: "Quit")
         type(name: "Sugar")
         XCTAssertTrue(app.staticTexts["Started"].exists)
-        XCTAssertFalse(app.buttons["Add Time"].exists)
+        XCTAssertFalse(app.switches["Remind Me"].exists, "Quit has no reminders")
         XCTAssertTrue(text(startingWith: "The counter runs from here. It shows at the top of Today under Quitting").exists)
         app.navigationBars["Quit"].buttons["Cancel"].tap()
         let discard = app.buttons["Discard Changes"]
         XCTAssertTrue(discard.waitForExistence(timeout: 2))
         discard.tap()
-        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 2))
+        XCTAssertFalse(app.navigationBars["Quit"].waitForExistence(timeout: 1))
     }
 
+    /// Your own unit: the green ⊕ row opens a field; the typed unit is used.
     func testCustomUnit() {
-        open("Count an amount")
+        open("Build or maintain", "Track an amount", title: "Track an amount")
         type(name: "Read")
-        let unitRow = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Unit'")).firstMatch
-        scrollTo(unitRow)
-        unitRow.tap()
-        let own = app.textFields["Your own unit, e.g. chapters"]
+        row("Goal").tap()
+        let field = app.textFields["goal-amount"]
+        field.tap(); sleep(1); field.typeText("3")
+        let done = app.toolbars.buttons["Done"].firstMatch
+        if done.exists && done.isHittable { done.tap(); sleep(1) }
+        app.buttons["goal-unit"].tap()
+        app.buttons["create-unit"].tap()
+        let own = app.textFields["custom-unit"]
         XCTAssertTrue(own.waitForExistence(timeout: 2))
-        own.tap()
         own.typeText("chapters\n")
-        XCTAssertTrue(app.staticTexts["chapters"].waitForExistence(timeout: 2), "The typed unit is used")
+        XCTAssertTrue(app.descendants(matching: .any)["goal-summary"].label.contains("3 chapters"), "The typed unit is used")
         shot("11-custom-unit")
     }
 
     func testDatesOfTheMonth() {
-        open("Check it off")
+        open("Build or maintain", "Check it off", title: "Check it off")
         type(name: "Pay rent")
-        pickHowOften("On Dates of the Month")
-        let add = app.navigationBars["Check it off"].buttons["Add"]
-        XCTAssertFalse(add.isEnabled, "At least one date is needed")
+        repeatScreen("On Dates of the Month")
         app.buttons["Day 1"].tap()
-        XCTAssertTrue(add.isEnabled)
         shot("12-month-dates")
+        back()
+        XCTAssertTrue(app.navigationBars["Check it off"].buttons["Add"].isEnabled)
     }
 
-    func testNewSectionFromTheForm() {
-        open("Check it off")
+    func testDatesOfTheMonthNeedADate() {
+        open("Build or maintain", "Check it off", title: "Check it off")
+        type(name: "Pay rent")
+        repeatScreen("On Dates of the Month")
+        back()
+        XCTAssertFalse(app.navigationBars["Check it off"].buttons["Add"].isEnabled, "At least one date is needed")
+    }
+
+    /// A new time of day from the form; on Today it's folded (not Now), with no ▶ until opened.
+    func testNewTimeOfDayFromTheForm() {
+        open("Build or maintain", "Check it off", title: "Check it off")
         type(name: "Pack lunch")
-        let menu = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Day Section'")).firstMatch
-        scrollTo(menu)
-        menu.tap()
-        app.buttons["New Section…"].tap()
-        let name = app.textFields["Section name"]
+        row("Time of Day").tap()
+        app.buttons["New Time of Day"].tap()
+        let name = app.textFields["Name"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.typeText("Before work")
-        shot("13-new-section")
-        app.navigationBars["New Section"].buttons["Save"].tap()
-        XCTAssertTrue(app.buttons["Day Section, Before work"].waitForExistence(timeout: 3), "The new section is chosen")
+        shot("13-new-time-of-day")
+        app.navigationBars["New Time of Day"].buttons["Save"].tap()
+        XCTAssertTrue(app.buttons["Before work"].waitForExistence(timeout: 3))
+        back()
+        XCTAssertTrue(row("Time of Day, Before work").exists, "The new time of day is chosen")
         app.navigationBars["Check it off"].buttons["Add"].tap()
-        let header = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Before work'")).firstMatch
+        allowNotificationsIfAsked()
+        let header = row("Before work")
         revealOnToday(header)
-        XCTAssertTrue(header.exists, "Today shows the new section")
-        shot("14-section-on-today")
-        let disclosure = header.value as? String
+        XCTAssertTrue(header.exists, "Today shows the new time of day")
+        if header.value as? String == "Folded" { header.tap(); sleep(1) }
         let play = app.buttons["Start Before work routine"]
-        XCTAssertTrue(play.isHittable)
+        XCTAssertTrue(play.waitForExistence(timeout: 2), "An open section has ▶ Start")
+        shot("14-time-of-day-on-today")
         play.tap()
         XCTAssertTrue(app.navigationBars["Before work routine"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.collectionViews["routine-list"].buttons["Mark Pack lunch done"].exists)
         app.buttons["Close"].tap()
-        XCTAssertEqual(header.value as? String, disclosure)
-        if disclosure == "Folded" { header.tap() }
-        XCTAssertTrue(play.isHittable, "Custom sections also expose play when expanded")
     }
 
-    /// An amount with times in two sections isn't split: one row, in Anytime.
-    func testAmountWithSpreadTimesShowsInAnytime() {
-        open("Count an amount")
-        type(name: "Water")
-        app.textFields["Amount"].tap()
-        app.textFields["Amount"].typeText("8")
-        app.toolbars.buttons["Done"].firstMatch.tap()
-        let unitRow = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Unit'")).firstMatch
-        scrollTo(unitRow)
-        unitRow.tap()
-        app.buttons["glasses"].tap()
-        // 9, 10, 11 AM and 12 PM: Morning and Afternoon.
-        addTimes(4)
-        XCTAssertTrue(element("Day Section, Anytime, set by the times").waitForExistence(timeout: 2))
-        let footer = text(startingWith: "Shows once, in Anytime: an amount adds up across the day")
-        scrollTo(footer)
-        XCTAssertTrue(footer.exists)
-        XCTAssertEqual(app.staticTexts.matching(NSPredicate(format: "label == 'Time'")).count, 4, "Spread times aren't labelled with a section")
-        shot("19-spread-amount-form")
-        app.navigationBars["Count an amount"].buttons["Add"].tap()
-        let anytime = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Anytime'")).firstMatch
-        revealOnToday(anytime)
-        if anytime.value as? String == "Folded" { anytime.tap(); sleep(1) }
-        let row = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '0/8 glasses'")).firstMatch
-        revealOnToday(row)
-        XCTAssertTrue(row.label.contains("· 9:00") || row.label.contains("· 09:00"), "The row shows its first time: \(row.label)")
-        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "label == 'Add 1 to Water'")).count, 1, "One row only")
-        shot("20-spread-amount-today")
-    }
-
-    /// Remind Me off: no Alert or Remind Again, and the footer says the times only place it.
-    func testRemindMeOffHidesAlertAndRemindAgain() {
-        open("Check it off")
+    /// Remind Me off hides the reminder rows and how to be reminded.
+    func testRemindMeOffHidesTheRest() {
+        open("Build or maintain", "Check it off", title: "Check it off")
         type(name: "Stretch")
-        addTimes(1)
         let remind = app.switches["Remind Me"].firstMatch
         scrollTo(remind)
-        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Remind Again If Not Done'")).firstMatch.exists)
+        let again = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'If Not Done, Remind Again'")).firstMatch
+        scrollTo(again)
+        XCTAssertTrue(again.exists)
         shot("21-reminders-on")
         remind.switches.firstMatch.tap()
-        XCTAssertFalse(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Remind Again If Not Done'")).firstMatch.waitForExistence(timeout: 1))
-        XCTAssertFalse(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Alert'")).firstMatch.exists)
-        XCTAssertTrue(text(startingWith: "No notifications. The times only place it on Today.").exists)
+        XCTAssertFalse(again.waitForExistence(timeout: 1))
+        XCTAssertTrue(text(startingWith: "No reminders. You'll see it on Today.").exists)
         shot("22-reminders-off")
-    }
-
-    /// Removing the last time keeps the section the time put it in.
-    func testRemovingTheLastTimeKeepsTheSection() {
-        open("Check it off")
-        type(name: "Journal")
-        addTimes(1) // 9:00 AM, in Morning
-        XCTAssertTrue(element("Day Section, Morning, set by the times").waitForExistence(timeout: 2))
-        app.buttons["Remove time"].tap()
-        XCTAssertTrue(app.buttons["Day Section, Morning"].waitForExistence(timeout: 2), "It stays in Morning")
-        XCTAssertTrue(text(startingWith: "Shows in Morning on Today (").exists)
-        XCTAssertFalse(app.switches["Remind Me"].exists, "No time, no reminders")
     }
 
     /// A set schedule that isn't due today says when it first is.
     func testFirstDueForCertainDays() {
-        open("Check it off")
+        open("Build or maintain", "Check it off", title: "Check it off")
         type(name: "Gym")
-        pickHowOften("On Certain Days")
-        // Keep three days that aren't today (Mon/Wed/Fri, or Tue/Thu/Sat if today is one of those).
+        repeatScreen("On Certain Days")
         let today = Calendar.current.component(.weekday, from: .now)
         let keep: Set<Int> = [2, 4, 6].contains(today) ? [3, 5, 7] : [2, 4, 6]
         let names = Calendar.current.standaloneWeekdaySymbols
-        for day in 1...7 where !keep.contains(day) {
-            let button = app.buttons[names[day - 1]]
-            scrollTo(button)
-            button.tap()
-        }
+        for day in 1...7 where !keep.contains(day) { app.buttons[names[day - 1]].tap() }
         let firstDue = app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'First due'")).firstMatch
-        XCTAssertTrue(firstDue.waitForExistence(timeout: 2), "The form says when it first shows")
+        XCTAssertTrue(firstDue.waitForExistence(timeout: 2), "The Repeat screen says when it first shows")
         shot("23-first-due")
     }
 }

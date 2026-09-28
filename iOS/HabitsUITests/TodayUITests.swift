@@ -2,6 +2,15 @@ import XCTest
 
 /// Drives the Today screen on a real device or simulator and keeps screenshots of each state.
 final class TodayUITests: XCTestCase {
+    override func record(_ issue: XCTIssue) {
+        let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        shot.name = "FAIL-\(name)"
+        shot.lifetime = .keepAlways
+        var issue = issue
+        issue.add(shot)
+        super.record(issue)
+    }
+
     private var app: XCUIApplication!
 
     override func setUp() {

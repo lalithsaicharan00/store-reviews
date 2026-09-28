@@ -3,6 +3,15 @@ import XCTest
 /// Long names, units and section names at their limits, on every screen that shows them.
 /// Run it on the smallest and largest iPhones as well as the test phone.
 final class LongTextUITests: XCTestCase {
+    override func record(_ issue: XCTIssue) {
+        let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        shot.name = "FAIL-\(name)"
+        shot.lifetime = .keepAlways
+        var issue = issue
+        issue.add(shot)
+        super.record(issue)
+    }
+
     private var app: XCUIApplication!
 
     override func setUp() {
@@ -37,18 +46,29 @@ final class LongTextUITests: XCTestCase {
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", text)).firstMatch
     }
 
-    /// Every kind of item is on screen when + opens, with no scrolling.
+    /// Every choice is on screen with no scrolling, on each question screen.
     func testChooserShowsEverything() {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
         XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
         sleep(1) // let the sheet finish rising
         shot("01-chooser")
         let screen = app.windows.firstMatch.frame
-        for type in ["Check it off", "Count an amount", "Time it", "Checklist", "Set a limit", "Quit", "To-do"] {
-            let row = app.buttons[type]
-            XCTAssertTrue(row.exists, "\(type) is listed")
-            XCTAssertLessThanOrEqual(row.frame.maxY, screen.maxY, "\(type) is visible without scrolling")
+        func visible(_ titles: [String]) {
+            for title in titles {
+                let row = button(startingWith: title)
+                XCTAssertTrue(row.exists, "\(title) is listed")
+                XCTAssertLessThanOrEqual(row.frame.maxY, screen.maxY, "\(title) is visible without scrolling")
+            }
         }
+        visible(["Build or maintain", "Quit or cut down", "Add a task"])
+        button(startingWith: "Build or maintain").tap()
+        XCTAssertTrue(app.navigationBars["Build or maintain"].waitForExistence(timeout: 3))
+        visible(["Check it off", "Track an amount", "Time it", "Checklist"])
+        shot("01b-build")
+        app.navigationBars.buttons["BackButton"].firstMatch.tap()
+        button(startingWith: "Quit or cut down").tap()
+        XCTAssertTrue(app.navigationBars["Quit or cut down"].waitForExistence(timeout: 3))
+        visible(["Quit", "Cut down"])
     }
 
     func testTodayWithLongText() {
@@ -89,16 +109,16 @@ final class LongTextUITests: XCTestCase {
         shot("04-today-folded")
         app.swipeUp()
         shot("05-today-folded-scrolled")
-        let edit = app.buttons["Edit Day Sections"]
+        let edit = app.buttons["Edit Times of Day"]
         XCTAssertTrue(edit.waitForExistence(timeout: 3))
         edit.tap()
-        XCTAssertTrue(app.navigationBars["Day Sections"].waitForExistence(timeout: 3))
-        shot("06-day-sections")
+        XCTAssertTrue(app.navigationBars["Times of Day"].waitForExistence(timeout: 3))
+        shot("06-times-of-day")
         // The row in the sheet, not the Today header behind it: its label carries the hours.
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Early morning' AND label CONTAINS '–'")).firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["Edit Section"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["Edit Time of Day"].waitForExistence(timeout: 3))
         shot("07-section-editor")
-        let field = app.textFields["Section name"]
+        let field = app.textFields["Name"]
         field.tap()
         field.typeText(" and a lot more words")
         let atLimit = expectation(for: NSPredicate { el, _ in ((el as? XCUIElement)?.value as? String ?? "").count <= 30 }, evaluatedWith: field)
@@ -109,46 +129,54 @@ final class LongTextUITests: XCTestCase {
 
     func testFormWithLongText() {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        app.buttons["Count an amount"].tap()
+        button(startingWith: "Build or maintain").tap()
+        button(startingWith: "Track an amount").tap()
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.tap()
         name.typeText(String(repeating: "Read one more chapter of the book on the nightstand ", count: 3))
-        XCTAssertLessThanOrEqual((name.value as? String ?? "").count, 100, "Names stop at 100 characters")
+        // The cap is applied as each change lands, so wait for the last one before reading.
+        let capped = expectation(for: NSPredicate { el, _ in ((el as? XCUIElement)?.value as? String ?? "").count <= 100 }, evaluatedWith: name)
+        wait(for: [capped], timeout: 3)
         shot("09-form-long-name")
         app.toolbars.buttons["Done"].firstMatch.tap()
 
-        let unitRow = button(startingWith: "Unit")
-        let form = app.collectionViews["habit-form"]
-        for _ in 0..<4 where !unitRow.isHittable { form.swipeUp() }
-        unitRow.tap()
-        let own = app.textFields["Your own unit, e.g. chapters"]
+        // Goal: 12 of a long unit of your own (units stop at 24 characters).
+        button(startingWith: "Goal").tap()
+        let amount = app.textFields["goal-amount"]
+        amount.tap(); sleep(1); amount.typeText("12")
+        let done = app.toolbars.buttons["Done"].firstMatch
+        if done.exists && done.isHittable { done.tap(); sleep(1) }
+        app.buttons["goal-unit"].tap()
+        app.buttons["create-unit"].tap()
+        let own = app.textFields["custom-unit"]
         XCTAssertTrue(own.waitForExistence(timeout: 2))
-        own.tap()
         own.typeText("tablespoons of chia seeds and oats")
         XCTAssertLessThanOrEqual((own.value as? String ?? "").count, 24, "Units stop at 24 characters")
         own.typeText("\n")
-        let amount = app.textFields["Amount"]
-        XCTAssertTrue(amount.waitForExistence(timeout: 3))
-        amount.tap()
-        amount.typeText("12")
-        app.toolbars.buttons["Done"].firstMatch.tap()
-        shot("10-form-long-unit")
+        sleep(1)
+        shot("10-goal-long-unit")
+        app.navigationBars.buttons["BackButton"].firstMatch.tap(); sleep(1)
 
-        let section = button(startingWith: "Day Section")
-        for _ in 0..<4 where !section.isHittable { form.swipeUp() }
-        section.tap()
-        shot("11-section-menu")
-        let lunch = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Lunch break'")).firstMatch
+        // Time of Day: the long-named lunch section.
+        button(startingWith: "Time of Day").tap()
+        XCTAssertTrue(app.navigationBars["Time of Day"].waitForExistence(timeout: 3))
+        // The Time of Day row itself (the Today header behind the sheet also starts "Lunch break").
+        let lunch = app.buttons["Lunch break and the walk after"].firstMatch
         XCTAssertTrue(lunch.waitForExistence(timeout: 2))
         lunch.tap()
+        shot("11-time-of-day-long")
+        app.navigationBars.buttons["BackButton"].firstMatch.tap(); sleep(1)
         shot("12-form-long-section")
-        app.navigationBars["Count an amount"].buttons["Add"].tap()
+        app.navigationBars["Track an amount"].buttons["Add"].tap()
+        let allow = XCUIApplication(bundleIdentifier: "com.apple.springboard").buttons["Allow"]
+        if allow.waitForExistence(timeout: 3) { allow.tap() }
         // Sections that aren't Now start folded; open this one to see the new row.
         let lunch2 = button(startingWith: "Lunch break")
         XCTAssertTrue(find(lunch2))
         if lunch2.value as? String == "Folded" { lunch2.tap(); sleep(1) }
-        let row = button(startingWith: "Add 1 to Read one more")
+        // 12 of an unknown unit: + asks how much.
+        let row = button(startingWith: "Add amount to Read one more")
         if !find(row) {
             print("BUTTONS: " + app.buttons.allElementsBoundByIndex.map(\.label).joined(separator: " | "))
             shot("13-debug")

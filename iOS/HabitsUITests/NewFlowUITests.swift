@@ -1,8 +1,17 @@
 import XCTest
 
-/// Walks the New flow (What do you want to create? → how to track it → the form) and keeps a
+/// Walks the New flow (What do you want to do? → how to track it → the form) and keeps a
 /// screenshot of each screen. Only the flow; the form's details are checked by hand for now.
 final class NewFlowUITests: XCTestCase {
+    override func record(_ issue: XCTIssue) {
+        let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        shot.name = "FAIL-\(name)"
+        shot.lifetime = .keepAlways
+        var issue = issue
+        issue.add(shot)
+        super.record(issue)
+    }
+
     private var app: XCUIApplication!
 
     override func setUp() {
@@ -35,10 +44,10 @@ final class NewFlowUITests: XCTestCase {
 
     func testFlow() {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        XCTAssertTrue(app.staticTexts["What do you want to create?"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["What do you want to do?"].waitForExistence(timeout: 3))
         shot("f01-what-to-create")
 
-        row("A good habit").tap()
+        row("Build or maintain").tap()
         XCTAssertTrue(app.staticTexts["How do you want to track it?"].waitForExistence(timeout: 3))
         shot("f02-good-habit")
         row("Check it off").tap()
@@ -50,8 +59,8 @@ final class NewFlowUITests: XCTestCase {
         // Goal: 4 a day.
         row("Goal").tap()
         XCTAssertTrue(app.navigationBars["Goal"].waitForExistence(timeout: 3))
-        let plus = app.steppers.firstMatch.buttons.element(boundBy: 1)
-        for _ in 0..<3 { plus.tap() }
+        let amount = app.textFields["goal-amount"]
+        amount.tap(); sleep(1); amount.typeText("4")
         shot("f04-goal-screen")
         back()
         // Time of Day: Morning and Afternoon. The goal must stay 4.
@@ -96,24 +105,25 @@ final class NewFlowUITests: XCTestCase {
         shot("f07-today")
 
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        row("A good habit").tap()
-        row("Count it").tap()
-        XCTAssertTrue(app.navigationBars["Count it"].waitForExistence(timeout: 3))
+        row("Build or maintain").tap()
+        row("Track an amount").tap()
+        XCTAssertTrue(app.navigationBars["Track an amount"].waitForExistence(timeout: 3))
         shot("f08-count-form")
         back()
         row("Time it").tap()
         XCTAssertTrue(app.navigationBars["Time it"].waitForExistence(timeout: 3))
         shot("f09-time-form")
-        back(); back()
+        // Back to the first question, however many steps that takes.
+        for _ in 0..<3 where !app.navigationBars["New"].exists { back() }
 
-        row("A bad habit").tap()
+        row("Quit or cut down").tap()
         XCTAssertTrue(app.staticTexts["What do you want to do?"].waitForExistence(timeout: 3))
         shot("f10-bad-habit")
         row("Cut down").tap()
         XCTAssertTrue(app.navigationBars["Cut down"].waitForExistence(timeout: 3))
-        back(); back()
+        for _ in 0..<3 where !app.navigationBars["New"].exists { back() }
 
-        row("A task").tap()
+        row("Add a task").tap()
         XCTAssertTrue(app.navigationBars["Task"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS \"Tasks don't have progress or stats\"")).firstMatch.exists)
         shot("f11-task-form")
