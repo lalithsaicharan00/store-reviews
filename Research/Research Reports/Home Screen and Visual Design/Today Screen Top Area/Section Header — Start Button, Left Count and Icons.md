@@ -2,12 +2,12 @@ Written by Claude (Claude Code), 28 September 2026.
 
 # Section Header — Start Button, Left Count and Icons
 
-Checklist of the user's points: [iOS/Section Header — Start and Left Checklist.md](<../../../../iOS/Section Header — Start and Left Checklist.md>).
+Checklist of the user's points: [iOS/Section Header — Start and Left Checklist.md](<../../../../iOS/Docs/Checklists/Section Header — Start and Left Checklist.md>).
 
 **The problem.**
 - Today treats each time of day as a routine: Morning is the morning routine, started with ▶ into a full-screen focused player, as in Routinery.
 - The first build showed **Start** (▶ and the word) only in the Now section, when it was open.
-- A later change (27 Sep, `iOS/Today Improvements.md`) put a ▶ on **every** unfinished section, open or folded, and **replaced "N left" with it**.
+- A later change (27 Sep, `iOS/Docs/Specs/Today Improvements.md`) put a ▶ on **every** unfinished section, open or folded, and **replaced "N left" with it**.
 - That removed the number people open the app to see. It also crowded out the folded icons.
 
 ## What users show
@@ -102,4 +102,4 @@ There were no complaints about accidentally starting a routine from a list. The 
   - **Anytime and Evening, open:** "N left" · ▶ Start (grey).
   - **Evening, folded:** all five icons, then "5 left", with no ▶.
   - **Morning, all done:** its four icons and a ✓.
-- **Supersedes:** "show play on both open and collapsed unfinished sections" in `iOS/Today Improvements.md`, and Question 38's "count only when collapsed".
+- **Supersedes:** "show play on both open and collapsed unfinished sections" in `iOS/Docs/Specs/Today Improvements.md`, and Question 38's "count only when collapsed".

@@ -4,7 +4,7 @@ Written by Codex, 28 September 2026.
 
 User request: archive the supplied report, improve frequency and Goal screens from it, update the code, and test on an iOS simulator. No physical-device test is required for this request.
 
-Source: [Schedule and Goal — One Coherent System](<../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>).
+Source: [Schedule and Goal — One Coherent System](<../../../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>).
 
 - [x] Archive the original report and add its index entry; retain citation provenance.
 - [x] Replace Repeat with Schedule; keep it visible for period goals.

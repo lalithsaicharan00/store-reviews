@@ -1,7 +1,7 @@
 # Section Header — Start and Left Checklist
 
 Written by Claude (Claude Code), 28 September 2026, from the user's request of the same day. Research goes in
-[Section Header — Start Button, Left Count and Icons](<../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/Section Header — Start Button, Left Count and Icons.md>).
+[Section Header — Start Button, Left Count and Icons](<../../../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/Section Header — Start Button, Left Count and Icons.md>).
 
 **Context (the user's words, tidied):** Today works like Routinery: full-screen, focused running of habits. Each time of day (Morning, Afternoon…) is a routine, so each section has a **play** button that starts it.
 

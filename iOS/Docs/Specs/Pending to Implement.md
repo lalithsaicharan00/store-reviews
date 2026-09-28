@@ -3,10 +3,10 @@
 > **Partly superseded (27 Sep 2026, round 5b):** time of day, not reminder times, now decides where a habit shows; reminders are a separate switch, off by default. See Build Plan.md round 5b, "Time of Day and Reminders — What Users Want", and the decided design in [New Habit Goal and Time of Day.md](<New Habit Goal and Time of Day.md>). The scheduler, alarm and notification-action parts (§6) still apply.
 
 Written by Claude (Claude Code), 27 September 2026, for the session that implements it.
-**Why:** [Times, Day Sections and Reminders — Can People Predict What Happens?](<../Research/Research Reports/Habit Creation/Times, Day Sections and Reminders — Can People Predict What Happens.md>).
+**Why:** [Times, Day Sections and Reminders — Can People Predict What Happens?](<../../../Research/Research Reports/Habit Creation/Times, Day Sections and Reminders — Can People Predict What Happens.md>).
 Read that report's §3 before starting. This file is the build spec; the report is the reasoning.
 
-Work the way [Build Plan.md](<Build Plan.md>) says: one step at a time, build and test each step on the iPhone 16, native SwiftUI only, data never lost.
+Work the way [Build Plan.md](<../../Build Plan.md>) says: one step at a time, build and test each step on the iPhone 16, native SwiftUI only, data never lost.
 When a step is done, add it to Build Plan.md as a new round and tick it here.
 
 ---
@@ -288,7 +288,7 @@ The full-screen routine that ▶ Start opens isn't designed properly yet (the us
 
 ## Timers: not built yet (noted 28 Sep 2026)
 
-From [Timing a Habit — Start, See and Stop](<../Research/Research Reports/Habit Creation/Timing a Habit — Start, See and Stop.md>). The rest of that report is built.
+From [Timing a Habit — Start, See and Stop](<../../../Research/Research Reports/Habit Creation/Timing a Habit — Start, See and Stop.md>). The rest of that report is built.
 
 - **Stop from the Lock Screen.** A ⏸ button in the Live Activity (a `LiveActivityIntent` that calls `HabitStore.toggleTimer`). Three reviews ask for it. For now, tapping the Live Activity opens the app, where ⏸ is one tap.
 - **A check when a forgotten timer is stopped.** For example, "Save 6 h 12 min for Read?" when a session runs far past its goal. Two reviews. For now, Undo Last Entry removes a wrong session.

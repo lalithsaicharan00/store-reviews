@@ -167,7 +167,7 @@ The app's ▶ is a separate, labelled button, so it's already one deliberate tap
 - **Stop from the Lock Screen.** Asked for by `c2f31b9d-4367-4063-bed0-b94263409917`, `9aed45d9-1adb-4f6f-b9f2-fb586b8c447c` and `3666c52b-3a0b-410c-b4bd-c93ac4ea4ba3`. Tapping the Live Activity opens the app, where ⏸ is one tap.
 - **A check when a forgotten timer is stopped.** Asked for by `9467496894` and `9f9cbc3c-a890-42b2-9ec3-896914293a00`. Undo Last Entry already removes a wrong session.
 
-Both are in `iOS/Pending to Implement.md`.
+Both are in `iOS/Docs/Specs/Pending to Implement.md`.
 
 **Checked (28 Sep):**
 - `TimerUITests.testRowTicksBarShowsWhenOutOfSightAndStopKeepsTime` passes on the iPhone 17 Pro simulator:

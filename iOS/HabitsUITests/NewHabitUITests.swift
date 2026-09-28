@@ -1,7 +1,7 @@
 import XCTest
 
 /// Creates every kind of item through + (the current two-question flow and form), and keeps screenshots.
-/// Rewritten 28 Sep 2026 for the decided spec (iOS/New Habit Goal and Time of Day.md). Retired checks, and why:
+/// Rewritten 28 Sep 2026 for the decided spec (iOS/Docs/Specs/New Habit Goal and Time of Day.md). Retired checks, and why:
 /// times that placed a habit in a section, and a separate tick per part of the day, were both replaced by
 /// Time of Day (display only, one shared row); the How Often menu became the Repeat screen.
 final class NewHabitUITests: XCTestCase {

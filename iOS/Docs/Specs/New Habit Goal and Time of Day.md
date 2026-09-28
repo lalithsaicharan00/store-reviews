@@ -1,10 +1,10 @@
 # New Habit — the Complete Decided Spec
 
-> **28 September 2026 update:** Schedule/Goal behaviour below is historical where it conflicts with [Schedule and Goal — One Coherent System](<../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>) and [Design Rules — Don't Regress](<Design Rules — Don't Regress.md>). Schedule stays visible for aggregate goals; flexible distinct-day schedules work with daily quantities; Goal uses a labelled period menu; Cut down uses Limit.
+> **28 September 2026 update:** Schedule/Goal behaviour below is historical where it conflicts with [Schedule and Goal — One Coherent System](<../../../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>) and [Design Rules — Don't Regress](<../../Design Rules — Don't Regress.md>). Schedule stays visible for aggregate goals; flexible distinct-day schedules work with daily quantities; Goal uses a labelled period menu; Cut down uses Limit.
 
 Written by Claude (Claude Code), 27 September 2026, from the user's decisions the same day. **This is the one place for everything decided about creating and editing a habit.** Build from this file.
 
-- **Evidence:** [Time of Day and Reminders — What Users Want](<../Research/Research Reports/Habit Creation/Time of Day and Reminders — What Users Want.md>) (main report plus addenda 1–5).
+- **Evidence:** [Time of Day and Reminders — What Users Want](<../../../Research/Research Reports/Habit Creation/Time of Day and Reminders — What Users Want.md>) (main report plus addenda 1–5).
 - **Still valid from the older spec:** [Pending to Implement.md](<Pending to Implement.md>) §6. Reminder scheduling (per-row suppression, same-minute grouping, Remind Again), the AlarmKit alarm and the notification actions are already built and apply unchanged. Everything else there about placement is replaced by this file.
 - **Mockup:** shown in chat on 27 Sep (the chooser plus the New habit form with a Goal row and the Time of Day menu).
 
@@ -40,7 +40,7 @@ Written by Claude (Claude Code), 27 September 2026, from the user's decisions th
 - There are no sheets or pop-ups inside the flow. The only dialog is "Discard this?" on Cancel.
 - **No icons** on the choice screens: the words carry them (the user's rule: no coloured icons).
 
-**Copy (replaced 28 Sep):** from [Habit Flow Copy — Deep Research Report](<../Research/Research Reports/Habit Creation/Habit Flow Copy — Deep Research Report.md>). **Read its opening "mistakes" table before changing any copy here.** The first copy (27 Sep) picked the most frequent review phrases ("good habit" 4,389, "bad habit" 2,411). That produced "What do you want to *create*? → A *bad* habit", and examples that tied an activity to one type. Frequency alone isn't a reason to use a phrase as a label.
+**Copy (replaced 28 Sep):** from [Habit Flow Copy — Deep Research Report](<../../../Research/Research Reports/Habit Creation/Habit Flow Copy — Deep Research Report.md>). **Read its opening "mistakes" table before changing any copy here.** The first copy (27 Sep) picked the most frequent review phrases ("good habit" 4,389, "bad habit" 2,411). That produced "What do you want to *create*? → A *bad* habit", and examples that tied an activity to one type. Frequency alone isn't a reason to use a phrase as a label.
 
 Rules:
 - Screen 1 names the user's **intent** as a verb, with no good/bad and no examples.
@@ -124,7 +124,7 @@ A **Dates** section of its own on the form, above Reminders (the user's change, 
 
 ## 3. Goal: its own screen, any period, no "Each tap adds" (decided 28 Sep, built 28 Sep)
 
-**Evidence:** [Goals — Periods, Entry and What + Adds](<../Research/Research Reports/Habit Creation/Goals — Periods, Entry and What + Adds.md>) (1,238,784 reviews scanned, targeted themes read by hand, 52 review IDs verified). It replaces Codex's two drafts from the same morning.
+**Evidence:** [Goals — Periods, Entry and What + Adds](<../../../Research/Research Reports/Habit Creation/Goals — Periods, Entry and What + Adds.md>) (1,238,784 reviews scanned, targeted themes read by hand, 52 review IDs verified). It replaces Codex's two drafts from the same morning.
 
 **The answers:**
 - **Periods are independent.** Day, Week, Month and Year are four equal choices. A week, month or year goal is **not an add-on to a daily goal**, and it never needs one. Reviewers ask for the period *instead of* a daily goal: "the app is forcing me to specify a daily goal" (HabitNow, `531ca9fe…`). Day is the default.
@@ -146,7 +146,7 @@ A **Dates** section of its own on the form, above Reminders (the user's change, 
 - **Validation:** above 0; up to 2 decimal places for amounts; whole numbers for "times"; a time goal can't be longer than its period (at most 24 h a day).
 - **Repeat shows only for a Day goal.** A week, month or year goal is done on any days, so a second schedule would be hidden state. Fixed days (Mon, Wed, Fri) are a Day goal with Repeat on certain days.
 
-**Round 2 changes (28 Sep, built):** research in [Goal Screen Round 2 — Icons, Periods, Units and Copy](<../Research/Research Reports/Habit Creation/Goal Screen Round 2 — Icons, Periods, Units and Copy.md>); checklist in [Goal and Choice Screens — Round 2 Checklist](<Goal and Choice Screens — Round 2 Checklist.md>). These replace the table above where they differ.
+**Round 2 changes (28 Sep, built):** research in [Goal Screen Round 2 — Icons, Periods, Units and Copy](<../../../Research/Research Reports/Habit Creation/Goal Screen Round 2 — Icons, Periods, Units and Copy.md>); checklist in [Goal and Choice Screens — Round 2 Checklist](<../Checklists/Goal and Choice Screens — Round 2 Checklist.md>). These replace the table above where they differ.
 - **The choice screens** have plain monochrome icons:
   - First screen: Build or maintain `chart.line.uptrend.xyaxis` · Quit or cut down `chart.line.downtrend.xyaxis` · Add a task `calendar`.
   - Build screen: Check it off `checkmark.circle` · Track an amount `number` · Time it `timer` · Checklist `list.bullet.clipboard`.

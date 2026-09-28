@@ -2,7 +2,7 @@
 import Foundation
 
 /// The placement rules' test cases, run against an in-memory store. Updated 28 Sep 2026 to the decided spec
-/// (iOS/New Habit Goal and Time of Day.md §5): several parts show the same row in each, with one shared
+/// (iOS/Docs/Specs/New Habit Goal and Time of Day.md §5): several parts show the same row in each, with one shared
 /// progress, for every type (no per-part ticks); reminders never move a habit.
 /// The app has no unit-test target, so a UI test launches with `-placementcheck` and reads the result.
 enum PlacementCheck {

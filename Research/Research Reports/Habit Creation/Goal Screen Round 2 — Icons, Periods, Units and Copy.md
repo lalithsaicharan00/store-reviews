@@ -2,7 +2,7 @@ Written by Claude (Claude Code), 28 September 2026.
 
 # Goal Screen Round 2 — Icons, Periods, Units and Copy
 
-Research for the user's round-2 feedback on the New flow's choice screens and the Goal screen. The checklist of every point is in [iOS/Goal and Choice Screens — Round 2 Checklist.md](<../../../iOS/Goal and Choice Screens — Round 2 Checklist.md>). Each section below is one loop task, written when that task is done.
+Research for the user's round-2 feedback on the New flow's choice screens and the Goal screen. The checklist of every point is in [iOS/Goal and Choice Screens — Round 2 Checklist.md](<../../../iOS/Docs/Checklists/Goal and Choice Screens — Round 2 Checklist.md>). Each section below is one loop task, written when that task is done.
 
 Basis rule (CLAUDE.md): every decision says whether **users show it** (review evidence) or it's **reasoned from first principles**. A competitor doing something is never the reason.
 
@@ -301,4 +301,4 @@ These follow the T5 rules: no due, missed or minimum; one idea per sentence; the
 - The full UI suite was **not** run; `NewFlowUITests` still uses round-1 labels and the old Goal stepper.
 - **Fixed during the check:** the first version of the read-back pushed the Unit row under the number keyboard. It's now compact, and the amount and unit stay above the keyboard.
 - **Screenshots:** `Habit Creation Evidence/round2_*.png`.
-- **Spec updated:** `iOS/New Habit Goal and Time of Day.md` §3, "Round 2 changes".
+- **Spec updated:** `iOS/Docs/Specs/New Habit Goal and Time of Day.md` §3, "Round 2 changes".

@@ -1,8 +1,8 @@
 # Goal and Choice Screens — Round 2 Checklist
 
 Written by Claude (Claude Code), 28 September 2026, from the user's request of the same day. This is the working list for a loop that does **one task per turn**, with a one-minute gap between turns. Research goes in
-[Goal Screen Round 2 — Icons, Periods, Units and Copy](<../Research/Research Reports/Habit Creation/Goal Screen Round 2 — Icons, Periods, Units and Copy.md>).
-Decisions go into [New Habit Goal and Time of Day.md](<New Habit Goal and Time of Day.md>) once they're built.
+[Goal Screen Round 2 — Icons, Periods, Units and Copy](<../../../Research/Research Reports/Habit Creation/Goal Screen Round 2 — Icons, Periods, Units and Copy.md>).
+Decisions go into [New Habit Goal and Time of Day.md](<../Specs/New Habit Goal and Time of Day.md>) once they're built.
 
 ## Every point the user made
 

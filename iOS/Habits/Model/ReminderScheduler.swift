@@ -7,7 +7,7 @@ import UserNotifications
 /// Reminders are not written once and forgotten: every change re-plans the next few days and
 /// reconciles against what is pending. So a reminder never fires for a row that is done, a habit
 /// that is deleted or not due, and a changed time always takes (Feature Ledger C039). Rules:
-/// "Times, Day Sections and Reminders" §3.4 and iOS/Pending to Implement.md §6.
+/// "Times, Day Sections and Reminders" §3.4 and iOS/Docs/Specs/Pending to Implement.md §6.
 @MainActor @Observable
 final class ReminderScheduler {
     @ObservationIgnored private let center = UNUserNotificationCenter.current()

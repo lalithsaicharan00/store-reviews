@@ -66,7 +66,7 @@ Decisions and evidence: [New Habit Round 4 — Checklists, Streaks and Times a D
 
 ## Round 5: times place habits; reminders, alarms and Remind Again (27 Sep 2026)
 
-Spec: [Pending to Implement.md](<Pending to Implement.md>). Reasoning: [Times, Day Sections and Reminders — Can People Predict What Happens?](<../Research/Research Reports/Habit Creation/Times, Day Sections and Reminders — Can People Predict What Happens.md>).
+Spec: [Pending to Implement.md](<Docs/Specs/Pending to Implement.md>). Reasoning: [Times, Day Sections and Reminders — Can People Predict What Happens?](<../Research/Research Reports/Habit Creation/Times, Day Sections and Reminders — Can People Predict What Happens.md>).
 
 | # | Task | Status |
 |---|---|---|
@@ -100,7 +100,7 @@ The user found "When / Day Section / Add Time" confusing and hard to tap. Resear
 
 ## Round 6: New flow, Goal row, Time of Day (27 Sep 2026)
 
-Spec (everything decided, in one place): [New Habit Goal and Time of Day.md](<New Habit Goal and Time of Day.md>).
+Spec (everything decided, in one place): [New Habit Goal and Time of Day.md](<Docs/Specs/New Habit Goal and Time of Day.md>).
 
 | # | Task | Status |
 |---|---|---|

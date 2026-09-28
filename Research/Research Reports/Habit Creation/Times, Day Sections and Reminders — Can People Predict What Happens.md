@@ -1,6 +1,6 @@
 # Times, Day Sections and Reminders — Can People Predict What Happens?
 
-> **Written by Claude (Claude Code)**, 27 September 2026. Follows [New Habit Round 4](<New Habit Round 4 — Checklists, Streaks and Times a Day.md>) §3 and replaces its "Day Section menu takes several sections" rule. The implementation spec is [iOS/Pending to Implement.md](<../../../iOS/Pending to Implement.md>). Authorship of every report is listed in the [Research Reports index](<../README.md>).
+> **Written by Claude (Claude Code)**, 27 September 2026. Follows [New Habit Round 4](<New Habit Round 4 — Checklists, Streaks and Times a Day.md>) §3 and replaces its "Day Section menu takes several sections" rule. The implementation spec is [iOS/Pending to Implement.md](<../../../iOS/Docs/Specs/Pending to Implement.md>). Authorship of every report is listed in the [Research Reports index](<../README.md>).
 
 **The questions.**
 1. The user's idea: drop the Day Section choice. A habit shows in the day section that its reminder time falls in (a reminder at 7 AM puts it in Morning). A habit with no reminder goes to Anytime. Is that right, and is it intuitive?

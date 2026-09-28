@@ -81,7 +81,7 @@ enum ItemType: String, CaseIterable, Identifiable {
 
 /// The screen behind +: "What do you want to do?", then, for habits, how to track it; then one
 /// form. Each question is its own list, pushed in the same sheet, so every step looks and moves
-/// the same way (spec: iOS/New Habit Goal and Time of Day.md §1).
+/// the same way (spec: iOS/Docs/Specs/New Habit Goal and Time of Day.md §1).
 struct NewItemView: View {
     /// Called with the new habit's ID, so Today can show where it went.
     var onAdded: (UUID) -> Void = { _ in }
