@@ -589,19 +589,25 @@ struct RoutinePlayer: View {
                             showQueue = false
                             navigate(to: position)
                         } label: {
-                            HStack(spacing: 12) {
+                            // Top-aligned like the Today rows (RowBand): a long name runs on below, the icon and mark stay up.
+                            HStack(alignment: .top, spacing: 12) {
                                 HabitIcon(symbol: habit.symbol, color: habit.color)
+                                    .frame(height: RowBand.height)
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(habit.name).foregroundStyle(.primary)
                                     Text(habit.atMost ? (reviewed.contains(habit.id) ? "Checked in" : "Limit check-in")
                                          : done(habit) ? "Done" : skipped(habit) ? "Skipped for today" : "Not finished")
                                         .font(.caption).foregroundStyle(.secondary)
                                 }
+                                .frame(minHeight: RowBand.height)
                                 Spacer()
-                                if current?.id == habit.id { Image(systemName: "play.fill").accessibilityLabel("Current habit") }
-                                else if skipped(habit) { Image(systemName: "forward.fill").foregroundStyle(.secondary).accessibilityLabel("Skipped") }
-                                else if covered(habit) { Image(systemName: "checkmark").accessibilityLabel(done(habit) ? "Done" : "Checked in") }
-                            }.frame(minHeight: 44)
+                                Group {
+                                    if current?.id == habit.id { Image(systemName: "play.fill").accessibilityLabel("Current habit") }
+                                    else if skipped(habit) { Image(systemName: "forward.fill").foregroundStyle(.secondary).accessibilityLabel("Skipped") }
+                                    else if covered(habit) { Image(systemName: "checkmark").accessibilityLabel(done(habit) ? "Done" : "Checked in") }
+                                }
+                                .frame(height: RowBand.height)
+                            }
                         }
                         .accessibilityIdentifier("queue-" + habit.name)
                     }
