@@ -39,6 +39,9 @@ final class HabitStore {
     private(set) var timers: [UUID: Date] = [:]
     /// For a timed habit spread over times of day: the part a running timer is for.
     private(set) var timerSlots: [UUID: String] = [:]
+    /// Days a habit was skipped ("Skip today"). A skipped day is simply not one of its days: hidden on Today and
+    /// neutral in the streak, the ring and every percentage (Feature Ledger C016: "a skipped day is not a missed day").
+    private(set) var skips: [UUID: Set<LocalDay>] = [:]
     /// Plus unlocks unlimited habits. Set from the store purchase (build-plan: billing, later).
     var isPlus = false
     static let freeHabitLimit = 5
@@ -236,6 +239,29 @@ final class HabitStore {
         return total
     }
 
+    func isSkipped(_ habit: Habit, on day: LocalDay) -> Bool { skips[habit.id]?.contains(day) == true }
+
+    /// Skip today can be offered for habits whose days are counted one by one; a weekly or monthly total, or a
+    /// limit, has no "day" to set aside.
+    func canSkip(_ habit: Habit) -> Bool {
+        guard !habit.atMost, habit.kind != .quit else { return false }
+        switch habit.frequency {
+        case .perWeek, .perMonth, .perYear: return false
+        default: return true
+        }
+    }
+
+    /// Skips (or un-skips) the habit on `day`. Saved like any other change.
+    func setSkipped(_ habit: Habit, on day: LocalDay, _ skipped: Bool) {
+        perform { [self] in
+            var days = skips[habit.id] ?? []
+            if skipped { days.insert(day) } else { days.remove(day) }
+            try await repository.saveSetting(key: Keys.skipPrefix + habit.id.uuidString,
+                                             value: days.map(\.key).sorted().joined(separator: ","))
+            withAnimation { skips[habit.id] = days.isEmpty ? nil : days }
+        }
+    }
+
     /// The first day a habit counts: its start date (past or future), or the day it was made.
     func startDay(of habit: Habit) -> LocalDay {
         habit.startsOn ?? LocalDay(habit.createdAt, calendar: calendar)
@@ -244,6 +270,7 @@ final class HabitStore {
     /// Whether the habit belongs on `day`. Days that aren't due are hidden on Today and never break a streak.
     /// Unfinished one-time tasks move forward to today. Nothing is due before the start or after the end date.
     func isDue(_ habit: Habit, on day: LocalDay, now: Date = .now) -> Bool {
+        if isSkipped(habit, on: day) { return false }
         let created = startDay(of: habit)
         if let end = habit.endsOn, day > end, habit.kind != .quit { return false }
         switch habit.kind {
@@ -449,6 +476,7 @@ final class HabitStore {
             var loaded = DaySettings()
             var running: [UUID: Date] = [:]
             var runningSlots: [UUID: String] = [:]
+            var loadedSkips: [UUID: Set<LocalDay>] = [:]
             var upgradedV1 = false, repaired = false
             for setting in snapshot.settings {
                 switch setting.key {
@@ -461,6 +489,12 @@ final class HabitStore {
                         sections = list
                     }
                 default:
+                    if setting.key.hasPrefix(Keys.skipPrefix),
+                       let id = UUID(uuidString: String(setting.key.dropFirst(Keys.skipPrefix.count))) {
+                        let days = Set(setting.value.split(separator: ",").compactMap { LocalDay(key: String($0)) })
+                        if !days.isEmpty { loadedSkips[id] = days }
+                        continue
+                    }
                     let value = setting.value.split(separator: "|", maxSplits: 1).map(String.init)
                     if setting.key.hasPrefix(Keys.timerPrefix),
                        let id = UUID(uuidString: String(setting.key.dropFirst(Keys.timerPrefix.count))),
@@ -473,6 +507,7 @@ final class HabitStore {
             settings = loaded
             timers = running
             timerSlots = runningSlots
+            skips = loadedSkips
             isLoaded = true
             if upgradedV1 && !repaired && !triedPlacementUpgrade { triedPlacementUpgrade = true; repairPlacement() }
             onChange?()
@@ -485,6 +520,7 @@ final class HabitStore {
         static let dayEndHour = "day_end_hour"
         static let weekStart = "week_start"
         static let timerPrefix = "timer."
+        static let skipPrefix = "skip."
         static let sections = "day_sections"
         static let placementV1 = "placement_v1"
         static let placementV2 = "placement_v2"
@@ -521,6 +557,13 @@ final class HabitStore {
         let previous = writeQueue
         writeQueue = Task { @MainActor in
             await previous?.value
+            #if DEBUG
+            // Exercise navigation against deliberately slow storage without touching the user's database.
+            if ProcessInfo.processInfo.arguments.contains("-uitest"),
+               ProcessInfo.processInfo.arguments.contains("-focus-slow-writes"), TimerPresence.playerOpen {
+                try? await Task.sleep(for: .seconds(2))
+            }
+            #endif
             do {
                 try await change()
                 onChange?()
@@ -577,6 +620,15 @@ final class HabitStore {
 
     func undoProgress(_ habit: Habit, on day: LocalDay) {
         perform { [self] in try await undoLast(habit, on: day) }
+    }
+
+    /// Player feedback undoes the exact tap, even if another surface logged since then.
+    func undoEntry(_ id: UUID) {
+        perform { [self] in
+            guard let i = entries.firstIndex(where: { $0.id == id }) else { return }
+            try await repository.removeEntry(id: id.uuidString, at: Date.now.millis)
+            withAnimation { _ = entries.remove(at: i) }
+        }
     }
 
     /// From a notification or an alarm: only ever adds, never undoes. A row already done is left alone;
@@ -636,23 +688,34 @@ final class HabitStore {
     /// Duration habits: start the timer, or stop it and log the minutes. A running timer is saved
     /// (with the part of the day it's for), so it survives the app being closed.
     func toggleTimer(_ habit: Habit, slot: String? = nil) {
-        perform { [self] in
-            let now = Date.now
-            let key = Keys.timerPrefix + habit.id.uuidString
-            if let start = timers[habit.id] {
-                let minutes = now.timeIntervalSince(start) / 60
-                if minutes >= 1 / 60 {
-                    let entry = Entry(habitID: habit.id, day: today(now: now), value: minutes, slot: timerSlots[habit.id])
-                    try await repository.addEntry(entry: entry.record)
-                    withAnimation { entries.append(entry) }
-                }
-                try await repository.removeSetting(key: key)
-                withAnimation { _ = timers.removeValue(forKey: habit.id); _ = timerSlots.removeValue(forKey: habit.id) }
-            } else {
-                try await repository.saveSetting(key: key, value: String(now.millis) + (slot.map { "|" + $0 } ?? ""))
-                withAnimation { timers[habit.id] = now; timerSlots[habit.id] = slot }
-            }
+        let now = Date.now
+        if timers[habit.id] != nil {
+            stopTimer(habit, on: today(now: now), through: now)
+            return
         }
+        // The screen changes at once and the save follows in order (writes are queued). Waiting for the save
+        // first made quick Pause/Resume taps land on the old state and get lost (found by hand 29 Sep). If the
+        // save fails, `perform` reloads what's really stored.
+        timers[habit.id] = now
+        timerSlots[habit.id] = slot
+        let key = Keys.timerPrefix + habit.id.uuidString
+        let value = String(now.millis) + (slot.map { "|" + $0 } ?? "")
+        perform { [self] in try await repository.saveSetting(key: key, value: value) }
+    }
+
+    /// An explicit stop is idempotent: navigating/closing cannot accidentally start a timer.
+    /// A focus session supplies its tracking day, including when the day rolls over.
+    func stopTimer(_ habit: Habit, on day: LocalDay, through end: Date = .now) {
+        guard let start = timers[habit.id] else { return }
+        let minutes = max(0, end.timeIntervalSince(start)) / 60
+        let entry = minutes >= 1 / 60
+            ? Entry(habitID: habit.id, day: day, value: minutes, slot: timerSlots[habit.id]) : nil
+        // Same as starting: the time shows as saved at once; the database write follows in order.
+        if let entry { entries.append(entry) }
+        timers.removeValue(forKey: habit.id)
+        timerSlots.removeValue(forKey: habit.id)
+        let key = Keys.timerPrefix + habit.id.uuidString
+        perform { [self] in try await repository.finishTimer(entry: entry?.record, key: key) }
     }
 
     private func log(_ habit: Habit, value: Double, on day: LocalDay) async throws {
@@ -694,6 +757,32 @@ final class HabitStore {
                 return section
             })
         }
+    }
+
+    /// Debug builds only, once per database: one habit of every kind in Anytime, so the routine player can be
+    /// tried with each (the user, 29 Sep). Anytime already has a weekly check (Call family), a count with +1
+    /// (Water) and a timer (Read).
+    func addEveryTypeToAnytime() async {
+        let key = "test_types_anytime_v1"
+        guard isLoaded, let snapshot = try? await repository.load(),
+              !snapshot.settings.contains(where: { $0.key == key }) else { return }
+        let types = [
+            Habit(name: "Take vitamins", symbol: "pills.fill", color: .yellow, kind: .check, remind: false),
+            Habit(name: "Drink tea", symbol: "cup.and.saucer.fill", color: .brown, kind: .check, goal: 3, checkUnit: "cups", remind: false),
+            Habit(name: "Read pages", symbol: "book.pages.fill", color: .indigo, kind: .amount(unit: "pages", increment: 0), goal: 20, remind: false),
+            Habit(name: "Push-ups", symbol: "figure.strengthtraining.traditional", color: .red, kind: .amount(unit: "push-ups", increment: 10), goal: 50, remind: false),
+            Habit(name: "Practice guitar", symbol: "guitars.fill", color: .orange, kind: .duration, goal: 15, remind: false),
+            Habit(name: "Tidy desk", symbol: "sparkles", color: .teal, kind: .checklist,
+                  steps: [Step(name: "Clear papers"), Step(name: "Wipe the surface"), Step(name: "Put pens away")], remind: false),
+            Habit(name: "Coffee", symbol: "mug.fill", color: .brown, kind: .amount(unit: "cups", increment: 1), goal: 2, atMost: true, remind: false),
+            Habit(name: "Social media", symbol: "iphone", color: .pink, kind: .duration, goal: 30, atMost: true, remind: false),
+            Habit(name: "Pay the phone bill", symbol: "creditcard.fill", color: .green, kind: .task, dueDay: today(), remind: false),
+            Habit(name: "Run", symbol: "figure.run", color: .blue, kind: .amount(unit: "km", increment: 0), goal: 15, frequency: .perWeek(1), remind: false),
+            Habit(name: "Yoga", symbol: "figure.yoga", color: .purple, kind: .duration, goal: 20, frequency: .flexible(.week, 3), remind: false),
+        ]
+        for habit in types { add(habit) }
+        perform { [self] in try await repository.saveSetting(key: key, value: "1") }
+        await flush()
     }
 
     private func buildDemo(now: Date) {

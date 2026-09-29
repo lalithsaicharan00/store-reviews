@@ -14,6 +14,12 @@ final class TimerPresence {
     static let prefix = "timer."
     private let center = UNUserNotificationCenter.current()
     private var askedPermission = false
+    /// The full-screen routine player is open: never interrupt it with the permission prompt (a pop-up over
+    /// the timer, found by hand 29 Sep). The first timer started from Today asks instead.
+    static var playerOpen = false
+    /// Set when the person taps ▶ on Today: the only moment the prompt makes sense. Restoring a timer at launch
+    /// or inside the player never asks (a prompt over Today at launch, found by hand 29 Sep).
+    static var askOnNextSync = false
     /// UI tests leave the Lock Screen and notifications alone unless a test asks (-timer-presence).
     private let enabled: Bool = {
         let arguments = ProcessInfo.processInfo.arguments
@@ -109,7 +115,8 @@ final class TimerPresence {
     private func allowed() async -> Bool {
         switch await center.notificationSettings().authorizationStatus {
         case .authorized, .provisional, .ephemeral: return true
-        case .notDetermined where !askedPermission:
+        case .notDetermined where !askedPermission && !Self.playerOpen && Self.askOnNextSync:
+            Self.askOnNextSync = false
             askedPermission = true
             return (try? await center.requestAuthorization(options: [.alert, .sound, .badge])) ?? false
         default: return false

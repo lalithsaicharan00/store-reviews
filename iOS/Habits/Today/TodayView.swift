@@ -9,6 +9,11 @@ struct TodayView: View {
     @State private var showSections = false
     @State private var openSteps: Set<UUID> = []
     @State private var routine: RoutineSession?
+    /// The routine player has finished opening over Today. Until it closes, Today draws nothing: its rows,
+    /// streaks and toolbar were recalculated behind the player on every tap and tick, which made the player lag
+    /// (found by hand 29 Sep).
+    @State private var playerCovering = false
+    @State private var returnToPart: String?
     @State private var showCalendar = false
     @State private var showNewHabit = false
     /// The habit just added, revealed once the sheet closes.
@@ -23,12 +28,20 @@ struct TodayView: View {
 
     var body: some View {
         NavigationStack {
-            // Ticks once a second only while a timer runs, so live progress stays current.
-            TimelineView(.periodic(from: .now, by: store.timers.isEmpty ? 60 : 1)) { context in
-                content(now: context.date)
+            Group {
+                if covered {
+                    Color(.systemGroupedBackground).ignoresSafeArea()
+                } else {
+                    // Once a minute (Now moves, a new day starts), and when a running timer reaches its goal so
+                    // "N left" and the day bar change on time. A running row ticks its own clock every second;
+                    // redrawing the whole list every second made every tap wait (29 Sep).
+                    TimelineView(TodaySchedule(goalTimes: goalTimes())) { context in
+                        content(now: context.date)
+                    }
+                }
             }
-            .toolbar { topBar }
-            .toolbar { if store.isLoaded && !store.habits.isEmpty { dayBar } }
+            .toolbar { if !covered { topBar } }
+            .toolbar { if !covered && store.isLoaded && !store.habits.isEmpty { dayBar } }
             .sheet(isPresented: $showCalendar) {
                 CalendarSheet(day: selectedDay, today: store.today()) { day = $0 }
                     // Sized to the calendar and solid, so nothing shows through or gets cut off.
@@ -36,14 +49,30 @@ struct TodayView: View {
                     .presentationBackground(Color(.systemBackground))
                     .presentationDragIndicator(.visible)
             }
-            .sheet(item: $routine) { session in
+            .fullScreenCover(item: $routine, onDismiss: { playerCovering = false }) { session in
                 RoutinePlayer(session: session)
+                    .onAppear { playerCovering = true }
             }
             .sheet(isPresented: $showSections) { DaySectionsView() }
             .sheet(isPresented: $showNewHabit, onDismiss: revealAdded) {
                 NewItemView { added = $0 }
             }
         }
+        #if DEBUG && targetEnvironment(simulator)
+        // Launch the actual player directly for visual review in Simulator, using the isolated fixture.
+        .task {
+            await AppModel.shared.ensureLoaded()
+            let arguments = ProcessInfo.processInfo.arguments
+            guard store.isLoaded, arguments.contains("-focus-preview"),
+                  arguments.contains("-focus-fixture"), routine == nil else { return }
+            var habits = store.habits.filter { $0.kind != .quit && !$0.archived }
+            if let flag = arguments.firstIndex(of: "-focus-preview-habit"), flag + 1 < arguments.count,
+               let position = habits.firstIndex(where: { $0.name == arguments[flag + 1] }) {
+                habits = Array(habits[position...]) + Array(habits[..<position])
+            }
+            routine = RoutineSession(part: .anytime, day: store.today(), habits: habits)
+        }
+        #endif
         .onChange(of: selectedDay) { foldOverrides = [:] }
         .onChange(of: router.focusSection) {
             // A tapped notification opens today's section.
@@ -63,6 +92,19 @@ struct TodayView: View {
     }
 
     private var selectedDay: LocalDay { day ?? store.today() }
+    /// Today comes back the moment the player starts closing, so it's drawn while the cover slides away.
+    private var covered: Bool { playerCovering && routine != nil }
+
+    /// When each running timer reaches its goal: the only moments between minutes that Today's counts change.
+    private func goalTimes(now: Date = .now) -> [Date] {
+        let today = store.today(now: now)
+        return store.timers.keys.compactMap { id in
+            guard let habit = store.habits.first(where: { $0.id == id }) else { return nil }
+            let left = store.goal(of: habit) - store.progress(of: habit, on: today, now: now)
+            // Whole seconds, so the same goal gives the same schedule on every redraw.
+            return left > 0 ? Date(timeIntervalSinceReferenceDate: now.addingTimeInterval(left * 60).timeIntervalSinceReferenceDate.rounded(.up)) : nil
+        }.sorted()
+    }
     /// The fold key for the Quitting card; section IDs are UUIDs or fixed words, so this can't clash.
     private static let quitting = "quitting-card"
 
@@ -96,6 +138,8 @@ struct TodayView: View {
     /// After Add: open the new habit's section on today, scroll to it and flash it. If it isn't due
     /// today, the form already said when it first is.
     private func revealAdded() {
+        // However the form was closed (Cancel, Add, or swiped away mid-typing), its keyboard goes with it.
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         guard let id = added else { return }
         added = nil
         Task {
@@ -185,27 +229,37 @@ struct TodayView: View {
             .listSectionSpacing(14)
             .environment(\.defaultMinListRowHeight, 44)
             .contentMargins(.top, 4, for: .scrollContent)
-            // Another day is open: one tap back to today, just above the day bar (reviews: people get
-            // lost on another date, and log on the wrong day). Hidden on today itself.
+            // Another day is open: one tap back to today, just above the day bar, in the primary style
+            // (reviews: people get lost on another date). Its space is kept on today too (invisible), so the
+            // list never shifts as ‹ › change the day (the user, 29 Sep). Running timers sit above it, today.
             .safeAreaInset(edge: .bottom) {
-                if !isToday {
-                    BackToTodayButton { withAnimation { day = nil } }
-                        .padding(.bottom, 6)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                } else {
-                    // A running timer whose row is scrolled away or folded stays in sight here
-                    // ("Timing a Habit — Start, See and Stop"). Timers only run today.
-                    let hidden = hiddenTimers()
-                    if !hidden.isEmpty {
-                        VStack(spacing: 8) {
-                            ForEach(hidden, id: \.habit.id) { timer in
-                                TimerBar(habit: timer.habit, start: timer.start) { show(timer.habit) }
-                            }
+                VStack(spacing: 8) {
+                    if isToday {
+                        // A running timer whose row is scrolled away or folded stays in sight here
+                        // ("Timing a Habit — Start, See and Stop"). Timers only run today.
+                        ForEach(hiddenTimers(), id: \.habit.id) { timer in
+                            TimerBar(habit: timer.habit, start: timer.start) { show(timer.habit) }
+                                .transition(.move(edge: .bottom).combined(with: .opacity))
                         }
-                        .padding(.bottom, 6)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
                     }
+                    // On today the button isn't there at all (so VoiceOver can't find an invisible button, found
+                    // by the UI tests 29 Sep); an empty space of its height keeps the list from shifting.
+                    ZStack {
+                        Color.clear.frame(height: 44)
+                        if !isToday {
+                            BackToTodayButton { withAnimation { day = nil } }
+                                .transition(.opacity)
+                        }
+                    }
+                    .animation(.snappy, value: isToday)
                 }
+                .padding(.bottom, 6)
+            }
+            // Today is rebuilt as the player closes; it comes back at the section the routine started from.
+            .onAppear {
+                guard let part = returnToPart else { return }
+                returnToPart = nil
+                proxy.scrollTo(Self.headerKey(part), anchor: .center)
             }
             .onChange(of: scrollTarget) {
                 guard let target = scrollTarget else { return }
@@ -229,7 +283,8 @@ struct TodayView: View {
         let open = foldOverrides[part] ?? (left > 0 && (isNow || part == .anytime || !isToday))
         Section {
             PartHeader(title: store.section(part).name, habits: habits, left: left, isNow: isNow, isOpen: open,
-                       onStart: isToday ? { start(part: part, items: items, day: day) } : nil,
+                       onStart: isToday && items.contains(where: { $0.habit.atMost || !isDone($0, on: day) })
+                           ? { start(part: part, items: items, day: day) } : nil,
                        onToggle: { withAnimation { foldOverrides[part] = !open } })
                 .id(Self.headerKey(part))
                 .contextMenu {
@@ -285,8 +340,12 @@ struct TodayView: View {
 
     private func start(part: String, items: [TodayItem], day: LocalDay) {
         guard day == store.today() else { return }
-        let pending = items.filter { !isDone($0, on: day) }.map(\.habit)
+        // Limits are check-ins, not completed goals. Include them even with nothing logged.
+        let pending = items.filter { $0.habit.atMost || !isDone($0, on: day) }.map(\.habit)
         guard !pending.isEmpty else { return }
+        returnToPart = part
+        // Close any keyboard still open from a form, so the player doesn't open with its space reserved.
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         routine = RoutineSession(part: part, day: day, habits: pending)
     }
 
@@ -364,6 +423,27 @@ private extension ToolbarContent {
             self.sharedBackgroundVisibility(.hidden)
         } else {
             self
+        }
+    }
+}
+
+/// Today's redraws: at the start of every minute, and at each running timer's goal time.
+struct TodaySchedule: TimelineSchedule {
+    let goalTimes: [Date]
+
+    func entries(from startDate: Date, mode: TimelineScheduleMode) -> AnyIterator<Date> {
+        var minute = Date(timeIntervalSinceReferenceDate: (startDate.timeIntervalSinceReferenceDate / 60).rounded(.down) * 60)
+        var goals = goalTimes.filter { $0 > startDate }[...]
+        var first = true
+        return AnyIterator {
+            if first { first = false; return startDate }
+            if minute <= startDate { minute += 60 }
+            if let goal = goals.first, goal <= minute {
+                goals.removeFirst()
+                if goal < minute { return goal }
+            }
+            defer { minute += 60 }
+            return minute
         }
     }
 }

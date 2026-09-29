@@ -117,8 +117,15 @@ struct GoalDraft {
 extension Habit {
     /// What one tap on + adds: always the step saved with the habit and shown on the button ("+250"), never
     /// a rule that changes with the goal's size (Round 3 §2.7, replacing `CountLogging`'s "+1 or ask").
+    /// nil for an amount habit set to "Ask how much" (a saved step of 0): + opens the number pad (29 Sep).
     var quickIncrement: Double? {
-        guard case .amount(_, let increment) = kind else { return nil }
-        return increment > 0 ? increment : 1
+        guard case .amount(_, let increment) = kind, increment > 0 else { return nil }
+        return increment
+    }
+
+    /// Tapping + asks how much instead of adding a set step.
+    var asksHowMuch: Bool {
+        if case .amount(_, let increment) = kind { return increment <= 0 }
+        return false
     }
 }

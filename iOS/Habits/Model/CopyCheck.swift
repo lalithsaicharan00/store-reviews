@@ -149,7 +149,7 @@ enum CopyCheck {
         draft.choice = .times; draft.count = 4; draft.countPeriod = .month
         ensure(draft.often(hasAmount: false) == .times(.month, 4), "Draft: 4 times a month")
         draft.countsDays = true
-        ensure(draft.often(hasAmount: false) == .days(.month, 4), "Draft: 4 days a month")
+        ensure(draft.often(hasAmount: false) == .times(.month, 4), "Draft: Just do it always counts times (Days removed 29 Sep)")
         draft.choice = .timesADay
         ensure(draft.perDay == 3, "Draft: switching back keeps 3 a day")
         draft.choice = .total; draft.totalPeriod = .year
@@ -160,7 +160,7 @@ enum CopyCheck {
 
         // Longest names and units still read as one sentence.
         let long = made(HabitPlan(amount: 12345.67, unit: "tablespoons", often: .weekdays([1, 3, 5, 7])), "Evening wind-down routin")
-        expect(HabitCopy.sentence(long, weekStart: 2), "Evening wind-down routin 12,345.67 tablespoons every Wednesday, Friday, Saturday and Sunday",
+        expect(HabitCopy.sentence(long, weekStart: 2), "Evening wind-down routin 12,345.67 tablespoons every Tuesday, Thursday, Saturday and Sunday",
                "Longest name and unit")
         return failures
     }

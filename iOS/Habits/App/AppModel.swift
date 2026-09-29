@@ -54,7 +54,13 @@ final class AppModel {
             guard store.isLoaded else { return }
             persistence?.markSchemaCurrent()
             #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("-focus-fixture") {
+                await FocusPlayerFixture.install(in: store, shortTimer: ProcessInfo.processInfo.arguments.contains("-focus-short-timer"))
+            }
             if !ProcessInfo.processInfo.arguments.contains("-empty") { await store.seedDemo() }
+            if !ProcessInfo.processInfo.arguments.contains("-uitest") && !ProcessInfo.processInfo.arguments.contains("-empty") {
+                await store.addEveryTypeToAnytime()
+            }
             #endif
             store.onChange = { [store, scheduler, timerPresence] in
                 scheduler.scheduleReconcile(store)

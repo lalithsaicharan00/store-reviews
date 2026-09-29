@@ -71,6 +71,15 @@ extension Habit {
         dueDay = r.dueDay.flatMap(LocalDay.init(key:))
         dueMinute = r.dueMinute.map { Int($0.int32Value) }
         atMost = r.atMost
+        // Before Round 3 (29 Sep 2026) every amount was saved with a step of 1, and + ignored it for measured
+        // units and big goals (it asked how much). + now always adds the saved step, so those habits get the
+        // step the form would suggest: 2,000 ml → +250 ml, not +1 ml. Only habits saved before Round 3 existed
+        // (29 Sep 2026, 03:00 UTC), so a step of 1 chosen on the new form is kept.
+        if case .amount(let unit, let increment) = kind, increment == 1, !r.atMost, r.createdAt < 1_790_650_800_000,
+           Habit.legacyAskedHowMuch(goal: r.goal, unit: unit) {
+            let often: HowOften = if case .flexible = frequency { .days(.week, 1) } else { .everyDay }
+            self.kind = .amount(unit: unit, increment: HabitPlan.suggestedStep(amount: r.goal, unit: unit, often: often))
+        }
         quitSince = r.quitSince.map { Date(millis: $0.int64Value) }
         createdAt = Date(millis: r.createdAt)
         archived = r.archivedAt != nil
@@ -87,6 +96,17 @@ extension Habit {
 }
 
 extension Habit {
+    /// The goal-size rule + followed before Round 3: true where + asked how much instead of adding the saved 1.
+    static func legacyAskedHowMuch(goal: Double, unit: String) -> Bool {
+        let measured: Set<String> = ["km", "miles", "mi", "m", "ml", "oz", "litres", "liters", "l", "cl",
+                                     "kg", "lbs", "lb", "g", "grams", "$", "€", "£", "₹", "calories", "kcal"]
+        let oneAtATime: Set<String> = ["times", "glasses", "cups", "bottles", "books", "chapters", "meals",
+                                       "servings", "workouts", "sessions", "classes", "lessons", "pills"]
+        let unit = unit.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        guard !measured.contains(unit), goal.rounded() == goal, goal >= 1 else { return true }
+        return !(goal <= 10 || oneAtATime.contains(unit))
+    }
+
     /// The database keeps the section IDs in one column, comma-separated ("morning,evening").
     static func parts(from column: String) -> [String] {
         let ids = column.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }

@@ -81,13 +81,18 @@ struct CalendarSheet: View {
                 }.padding(.horizontal, 16).padding(.bottom, 20)
             }
             .background(Color(.systemBackground))
-            // Back to Today shows only once you're away from today, at the bottom where the thumb is
-            // (reviews ask for one tap back; an always-on button at the top did nothing on today, 28 Sep).
+            // Back to Today: only here, at the bottom, and only while another day is open (the user, 29 Sep).
+            // Its space is always kept, so nothing shifts when it appears.
             .safeAreaInset(edge: .bottom) {
-                if selected != today || month.year != today.year || month.month != today.month {
-                    BackToTodayButton(id: "calendar-back-to-today") { pick(today) }
-                        .padding(.bottom, 8)
+                // Only while another day is open; the empty space of its height stays, so nothing shifts
+                // (and VoiceOver never finds an invisible button).
+                ZStack {
+                    Color.clear.frame(height: 44)
+                    if selected != today {
+                        BackToTodayButton(id: "calendar-back-to-today", primary: false) { pick(today) }
+                    }
                 }
+                .padding(.bottom, 8)
             }
             .navigationTitle("Go to a day")
             .navigationBarTitleDisplayMode(.inline)
@@ -147,22 +152,37 @@ struct CalendarSheet: View {
     }
 }
 
-/// "Back to Today": shown only while another day is open, near the bottom, in the primary style.
+/// "Back to Today": primary (filled) above the day bar on Today, secondary (bordered) in the calendar sheet
+/// (the user, 29 Sep). Shown only while another day is open; where it sits, its space is always kept.
 struct BackToTodayButton: View {
     var id = "back-to-today"
+    var primary = true
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
-            Label("Back to Today", systemImage: "arrow.uturn.backward")
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(Color.onInk)
-                .padding(.horizontal, 18)
-                .frame(height: 44)
-                .background(Capsule().fill(Color.ink))
-                .shadow(color: .black.opacity(0.15), radius: 6, y: 2)
+        if primary {
+            Button(action: action) {
+                Label("Back to Today", systemImage: "arrow.uturn.backward")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Color.onInk)
+                    .padding(.horizontal, 18)
+                    .frame(height: 44)
+                    .background(Capsule().fill(Color.ink))
+                    .shadow(color: .black.opacity(0.15), radius: 6, y: 2)
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier(id)
+        } else {
+            Button(action: action) {
+                Label("Back to Today", systemImage: "arrow.uturn.backward")
+                    .font(.subheadline.weight(.semibold))
+                    .padding(.horizontal, 6)
+                    .frame(minHeight: 36)
+            }
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.capsule)
+            .tint(Color.ink)
+            .accessibilityIdentifier(id)
         }
-        .buttonStyle(.plain)
-        .accessibilityIdentifier(id)
     }
 }

@@ -17,12 +17,23 @@ struct LogProgressView: View {
     /// The last amount logged for this habit: most logs repeat it (a 250 ml glass, a 5 km run),
     /// so it's one tap instead of typing, with no "Each tap adds" setting to configure.
     private var lastAmount: Double? {
-        store.entries.last { $0.habitID == habit.id && $0.stepID == nil && $0.value > 0 }?.value
+        // For time, a whole minute or more: a few seconds between Pause and Resume isn't an amount to repeat
+        // ("Add 0 min again", found by hand 29 Sep).
+        let smallest: Double = timed ? 1 : 0.0001
+        let entry = store.entries.last { (e: Entry) -> Bool in e.habitID == habit.id && e.stepID == nil && e.value >= smallest }
+        guard let value = entry?.value else { return nil }
+        return timed ? value.rounded() : value
     }
-    /// "1", "250 ml", "25 min": a count of one never gets a plural unit ("1 glasses").
+    /// "1 glass", "5,200 steps", "25 min": whole numbers in sentences ("k" is only for Today's compact rows).
     private func text(_ v: Double) -> String {
-        if timed { return Format.minutes(v) }
-        return v == 1 || unit.isEmpty ? Format.amount(v) : "\(Format.amount(v)) \(unit)"
+        timed ? Format.minutes(v) : HabitCopy.amount(v, unit)
+    }
+
+    /// "12 min of 20 min", "5,200 of 8,000 steps".
+    private var progressText: String {
+        let progress = store.progress(of: habit, on: day), goal = store.goal(of: habit)
+        if timed { return "\(Format.minutes(progress)) of \(Format.minutes(goal))" }
+        return "\(HabitCopy.number(progress)) of \(HabitCopy.amount(goal, unit))"
     }
 
     private var value: Double? {
@@ -34,10 +45,17 @@ struct LogProgressView: View {
     var body: some View {
         NavigationStack {
             Form {
+                // The habit and, for another day, the date; today needs no date line (the sheet opened over it).
                 Section {
-                    Text(habit.name)
-                    Text(day.date(calendar: store.calendar).formatted(date: .abbreviated, time: .omitted))
-                        .foregroundStyle(.secondary)
+                    LabeledContent(habit.name, value: progressText)
+                        .accessibilityIdentifier("log-progress")
+                    if day != store.today() {
+                        Text(day.date(calendar: store.calendar).formatted(date: .abbreviated, time: .omitted))
+                            .foregroundStyle(.secondary)
+                    }
+                } footer: {
+                    Text(habit.atMost ? "Record what happened. Your limit stays the same."
+                         : "This adds to your progress. You can go beyond your goal.")
                 }
                 if timed {
                     DurationInput(hours: $hours, minutes: $minutes)
@@ -54,31 +72,27 @@ struct LogProgressView: View {
                             }
                         }
                     } footer: {
-                        Text("Enter the amount to add, not your total. Up to 2 decimal places.")
+                        Text("Enter what you did, not your total so far. Up to 2 decimal places.")
                     }
                 }
                 if let lastAmount {
                     Section {
-                        Button("Add \(text(lastAmount)) again") { add(lastAmount) }
+                        Button("Log \(text(lastAmount)) again") { add(lastAmount) }
                             .disabled(saving)
                             .accessibilityIdentifier("log-same-again")
                     } footer: {
                         Text("The same as last time, in one tap.")
                     }
                 }
-                Section {
-                    LabeledContent("Progress", value: goalLine(habit, progress: store.progress(of: habit, on: day), goal: store.goal(of: habit)))
-                } footer: {
-                    Text("This entry adds to your progress. You can go beyond your goal.")
-                }
             }
             .selectsNumbersOnFocus()
-            .navigationTitle(timed ? "Add Time" : "Add Amount")
+            // "Log", never "Add Time": this records time done by hand; "add time" reads as adding extra (the user, 29 Sep).
+            .navigationTitle(timed ? "Log Time" : "Log Amount")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() }.disabled(saving) }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Add") { if let value { add(value) } }
+                    Button("Log") { if let value { add(value) } }
                         .fontWeight(.semibold)
                         .disabled(value == nil || saving)
                 }
@@ -87,7 +101,9 @@ struct LogProgressView: View {
                 }
             }
             .task { if !timed { typing = true } }
-            .presentationDetents([.medium, .large])
+            // Time needs the wheels, the Scroll/Type switch and "again" in view at once: open it at full height
+            // (at half height the wheels were cut off and had to be dragged up, found by hand 29 Sep).
+            .presentationDetents(timed ? [.large] : [.medium, .large])
             .alert("Couldn't save progress", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
                 Button("OK") { store.problem = nil }
             } message: { Text(store.problem ?? "") }

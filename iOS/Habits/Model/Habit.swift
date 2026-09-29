@@ -211,7 +211,7 @@ enum StreakUnit {
     func explained(_ n: Int) -> String {
         switch self {
         case .days: n == 1 ? "Done 1 day in a row" : "Done \(n) days in a row"
-        case .times: n == 1 ? "Done the last time it was due" : "Done the last \(n) times it was due, in a row"
+        case .times: n == 1 ? "Done the last time it came round" : "Done the last \(n) times in a row"
         case .weeks: n == 1 ? "Goal met 1 week in a row" : "Goal met \(n) weeks in a row"
         case .months: n == 1 ? "Goal met 1 month in a row" : "Goal met \(n) months in a row"
         case .years: n == 1 ? "Goal met 1 year in a row" : "Goal met \(n) years in a row"

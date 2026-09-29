@@ -57,6 +57,8 @@ struct HabitRow: View {
     var time: ReminderTime? = nil
     /// Flashes briefly after the habit is added.
     var highlighted = false
+    /// The New Habit preview: replaces the progress line ("—" before an amount is set).
+    var lineOverride: String? = nil
     @State private var showLog = false
     @Binding var stepsOpen: Bool
     @Environment(HabitStore.self) private var store
@@ -93,7 +95,7 @@ struct HabitRow: View {
                 // One line always: names show 15 characters, then "…".
                 Text(habit.name.capped(HabitRow.nameShown)).font(.body).foregroundStyle(done ? .secondary : .primary).lineLimit(1)
                     .accessibilityLabel(habit.name) // VoiceOver reads it in full
-                let line = subtitle(progress: progress, goal: goal)
+                let line = lineOverride ?? subtitle(progress: progress, goal: goal)
                 if !line.isEmpty { Text(line)
                     .font(.subheadline).foregroundStyle(isRunning ? .primary : .secondary)
                     .monospacedDigit()
@@ -119,7 +121,7 @@ struct HabitRow: View {
           }
           .contentShape(Rectangle())
           .onTapGesture { if logsNumbers && day <= store.today() { showLog = true } }
-          .accessibilityAction(named: habit.kind == .duration ? "Add Time" : "Add Amount") { if logsNumbers && day <= store.today() { showLog = true } }
+          .accessibilityAction(named: habit.kind == .duration ? "Log time manually" : "Log amount manually") { if logsNumbers && day <= store.today() { showLog = true } }
             actionButton(done: done)
                 .disabled(habit.kind != .checklist && day > store.today())
         }
@@ -129,12 +131,12 @@ struct HabitRow: View {
         .sheet(isPresented: $showLog) { LogProgressView(habit: habit, day: day) }
         .contextMenu {
             if case .amount = habit.kind {
-                Button("Add Amount…") { showLog = true }.disabled(day > store.today())
+                Button("Log amount manually", systemImage: "square.and.pencil") { showLog = true }.disabled(day > store.today())
                 Button("Undo Last Entry") { store.undoProgress(habit, on: day) }
                     .disabled(progress <= 0 || day > store.today())
             }
             if habit.kind == .duration {
-                Button("Add Time…") { showLog = true }.disabled(day > store.today())
+                Button("Log time manually", systemImage: "square.and.pencil") { showLog = true }.disabled(day > store.today())
                 Button("Undo Last Entry") { store.undoProgress(habit, on: day) }
                     .disabled(progress <= 0 || day > store.today())
             }
@@ -179,19 +181,27 @@ struct HabitRow: View {
                     }
                 }
             case .amount(let unit, _):
-                // The button says what one tap adds, always its saved step ("+1", "+250", "+1k"); the unit is in
-                // the line beside it and read by VoiceOver. Tapping the row types any other amount.
-                let step = habit.quickIncrement ?? 1
-                RoundActionButton(symbol: "plus", done: done, color: habit.color,
-                                  label: "Add \(HabitCopy.amount(step, unit)) to \(habit.name)",
-                                  keepSymbolWhenDone: true,
-                                  text: "+" + Format.amount(step)) {
-                    withAnimation { store.increment(habit, on: day) }
+                // The person chose on the form what + does, and the button shows it: "+1", "+250", "+1k" adds that
+                // step; a plain "+" asks how much, with the number pad (29 Sep). Tapping the row always types.
+                if let step = habit.quickIncrement {
+                    RoundActionButton(symbol: "plus", done: done, color: habit.color,
+                                      label: "Add \(HabitCopy.amount(step, unit)) to \(habit.name)",
+                                      keepSymbolWhenDone: true,
+                                      text: "+" + Format.amount(step)) {
+                        withAnimation { store.increment(habit, on: day) }
+                    }
+                } else {
+                    RoundActionButton(symbol: "plus", done: done, color: habit.color,
+                                      label: "Add an amount to \(habit.name)",
+                                      keepSymbolWhenDone: true) {
+                        showLog = true
+                    }
                 }
             case .duration:
                 let running = store.timers[habit.id] != nil
                 RoundActionButton(symbol: running ? "pause.fill" : "play.fill", done: done && !running, color: habit.color,
                                   label: running ? "Stop \(habit.name) timer" : "Start \(habit.name) timer") {
+                    if store.timers[habit.id] == nil { TimerPresence.askOnNextSync = true }
                     withAnimation { store.toggleTimer(habit, slot: slot) }
                 }
                 .disabled(!isToday)
@@ -236,9 +246,12 @@ struct QuitRow: View {
     let habit: Habit
     var highlighted = false
     @Environment(HabitStore.self) private var store
+    /// Set once, on a whole second, so every quit clock ticks together.
+    private static let anchor = Date(timeIntervalSinceReferenceDate: Date.now.timeIntervalSinceReferenceDate.rounded(.down))
 
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 1)) { context in
+        // A fixed anchor: `.now` gave a new schedule on every redraw, restarting the clock each time (see HabitRow).
+        TimelineView(.periodic(from: Self.anchor, by: 1)) { context in
             let runs = store.quitRuns(of: habit, now: context.date)
             HStack(spacing: 12) {
                 HabitIcon(symbol: habit.symbol, color: habit.color)
@@ -284,8 +297,8 @@ struct PartHeader: View {
     /// At least this much space between the icons and "2 left" / ✓.
     static let statusGap: CGFloat = 12
 
-    /// Start shows while habits are left, today: in any open section, and folded only in the Now section.
-    private var showsStart: Bool { (left ?? 0) > 0 && onStart != nil && (isOpen || isNow) }
+    /// The caller provides Start for unfinished habits or limit check-ins today; folded only in Now.
+    private var showsStart: Bool { onStart != nil && (isOpen || isNow) }
 
     private var iconCount: Int? {
         guard !isOpen, room > 0 else { return nil }

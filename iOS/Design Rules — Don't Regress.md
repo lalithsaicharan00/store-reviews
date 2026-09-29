@@ -21,6 +21,22 @@ Written by Claude (Claude Code), 28 September 2026. **Read this before changing 
 | **Run UI tests on the real iPhone before saying done:** `Research/Temp/ios-device-all.sh` (all) or `ios-device-test.sh <Class>` | Simulator-only checks missed keyboard overlap |
 | **Commit only when asked.** Never touch another agent's untracked files; leave them and say so | Two agents worked in the repo at once |
 
+## Speed: every tap answers at once (whole app)
+
+**The bug (29 Sep 2026):** in the routine player, Pause, ‹ ›, and "Anytime ⌄" lagged, and Pause showed a strange fade. The buttons were native; the cause was **redrawing**. Today, hidden behind the full-screen player, sat inside one `TimelineView` that ticked every second while any timer ran, so every row, streak and the toolbar were recalculated every second and on every tap. Taps waited behind that work, and the pressed (half-faded) button stayed on screen until they were handled. Measured with `sample`: main thread ~22% busy before, ~2% after. Full write-up: `Docs/Checklists/Focus Player — Speed and Responsiveness.md`.
+
+These rules apply to **every screen**, not just the player:
+
+| Rule | Why |
+|---|---|
+| **Never put a ticking `TimelineView` (or timer) around a whole screen or list.** Only the small view that shows the time ticks (the clock, a running row, the timer bar). The screen itself redraws once a minute, or at the exact moment something changes (e.g. `TodaySchedule`: at a timer's goal time) | A whole-screen tick recalculated every row every second |
+| **A screen that's covered stops drawing.** Under a full-screen cover (or anything that hides it), show a plain background until it's uncovered, and bring the person back to where they were | Today redrew behind the player on every tap |
+| **Never switch a view between a `TimelineView` and a plain view** (e.g. running vs paused). Keep one `TimelineView` and change its schedule (paused = a schedule that never ticks) | SwiftUI rebuilt the circle on Pause, so its text faded in again |
+| **Never anchor a `TimelineView` at `.now` or `.distantPast`.** Use a fixed date (the timer's start, or one set once) | `.now` makes a new schedule on every redraw; `.distantPast` replays missed ticks and froze the app (28 Sep) |
+| **A line that comes and goes keeps its space** (hide it with opacity, don't remove it), so nothing else jumps | "Paused" appearing pushed the icon and clock up |
+| **Heavy numbers (streaks, period counts) are never worked out every second.** Work them out when the data changes | `streak` and `isDayMet` for every row were the top cost |
+| **Check speed by measuring, not by screenshots.** On the simulator, run `sample <pid> 15 1 -file out.txt` while tapping by hand, and look at how busy the main thread is and which of the app's functions show up. The simulator tool's screenshots lag the tap, so they can't time anything | Screenshots made fixed taps look slow, and slow ones look fine |
+
 ## New flow (+) copy
 
 Source: [Habit Flow Copy — Deep Research Report](<../Research/Research Reports/Habit Creation/Habit Flow Copy — Deep Research Report.md>), whose opening table lists the first copy's mistakes.
@@ -33,23 +49,36 @@ Source: [Habit Flow Copy — Deep Research Report](<../Research/Research Reports
 - "Track an amount", not "Count it". Tasks: "No **habit** progress, streaks or stats."
 - Icons on the choice rows are **monochrome** SF Symbols, one meaning each. Nothing that already means something in iOS or this app: `arrow.up.right` means "open a link", `minus.circle` means remove, `checklist` is the All habits button.
 
-## New Habit form (Round 3, built 29 Sep 2026)
+## New Habit form (Round 3 built 29 Sep 2026; Round 4 layout the same day)
 
-Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Research Reports/Habit Creation/Creating a Habit — Round 3, The User's Own Words.md>), from [How People Describe a Habit](<../Research/Research Reports/Habit Creation/How People Describe a Habit — 4,407 Descriptions From Reviews.md>). Checklist: `Docs/Checklists/Round 3 Build — Copy, Days, Dates and Limits Checklist.md`.
+Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Research Reports/Habit Creation/Creating a Habit — Round 3, The User's Own Words.md>), from [How People Describe a Habit](<../Research/Research Reports/Habit Creation/How People Describe a Habit — 4,407 Descriptions From Reviews.md>). Checklists: `Docs/Checklists/Round 3 Build — Copy, Days, Dates and Limits Checklist.md` and `Docs/Checklists/New Habit Form — Round 4, Artifact Layout and Smart Defaults Checklist.md`.
 
-- **Build or maintain opens one form. There is no type screen** (Check it off · Track an amount · Time it · Checklist are gone). How much decides it: no amount → ✓; the Time unit (hours and minutes) → ▶; any other unit → +; Steps → a checklist.
-- **The habit is read back as a sentence, big, at the top** ("Read 2 chapters a week", "Gym every Monday and Wednesday"), with its time of day under it. It's built from the same saved habit Today shows (`HabitCopy.sentence`).
-- **Rows:** Habit (name, icon, colour) · How much (or Limit for Cut down) · Each + adds (amounts only) · How often · Steps (Just do it only) · Time of Day · Dates · Reminders. The line under How often says what Today will show and what one tap does.
+- **Keep the type screen** (the user, 29 Sep): New → Build or maintain → *How do you want to track it?* (Check it off · Track an amount · Time it · Checklist) → the form. *Round 3 removed it; the user brought it back.* The form shows only the rows that type needs.
+- **Two steps, not one screen** (tried on the phone 29 Sep and rejected: switching How much inside one form kept changing the rows). Check it off has no How much and no Steps; Track an amount has How much; Time it has How long; only Checklist has Steps.
+- **Two previews at the very top, together:** a centred "Preview" label over the habit drawn by Today's own row (`HabitRow`, taps off), and the text preview right under the card (its footer, no gap). Before a name the text reads "Enter a habit name to see the preview."; with a name, the whole sentence.
+- **Screens the form opens** head with just the rhythm until there's a name ("Every day", "3 times a week", "8 glasses a day"), then the whole sentence with the name and time of day.
+- **One sentence says the whole habit, including the parts of the day:** "Read twice a day, morning and afternoon", "Walk 10,000 steps a day, anytime". It heads the form **and every screen the form opens** (How much / How long, How often, Steps, Time of Day, Reminders, Starts, Ends), so each choice is read where it's made. *The Today-row preview was removed once on 29 Sep, then brought back above the text by the user the same day.*
+- **Reminders are off by default** (the user, 29 Sep; replaces "on by default with one reminder", 28 Sep). Turning them on brings one per chosen time of day.
+- **The sentence is built from the same saved habit Today shows** (`HabitCopy.sentence`, plus the parts of the day).
+- **On every screen the form opens, the sentence is pinned at the top** (`stickySentence`: a bar that stays while the choices scroll; the user, 29 Sep).
+- **Layout (the Round 3 mockup's form board):** previews · name, Icon | Colour · How much (Track an amount), How long (Time it), Steps (Checklist only), Limit (Cut down) · Each + adds (amounts only) · How often · then Time of Day and Reminders · then Starts and Ends. No explanation lines under the rows.
+- **A weekday of the month is one phrase row: "The [first ▾] [Saturday ▾] of the month."** The first menu is which one of that weekday in the month (first to fifth, or last: a weekday comes 4 or 5 times a month); the second is the weekday, all seven. Two separate rows, "Which" (six options) and "Day", looked like a mistake (29 Sep).
+- **Reminders open their own screen**; the row says when ("9:00 AM", "Off").
+- **Starts reads "Today"** (or "Tomorrow", "Wed 1 Oct") and **Ends reads "Never"**; each opens its own screen with a calendar.
+- **Defaults only where one value fits most people:** How often = Every day, Time of Day = Anytime, Starts = Today, Ends = Never, Reminders = Off. **Amounts start empty** and are simply left out until typed: the text reads "Drink water every day, anytime" and the card has no line (**no "—" anywhere**, the user, 29 Sep, so every type reads the same); the card's name shows "Your habit" until one is typed; what the name suggests ("Walk" → 10,000 steps) is only the field's hint. No line under the text preview (removed by the user, 29 Sep). Evidence: the Round 4 checklist's quick research.
+- **How often screen (29 Sep, round 2):** the sentence at the top and nothing under it (no "Tick ✓…" or "Each ✓ counts one" lines; the form's "On Today, tap ✓…" footer is gone too). One section per kind of rhythm: *Daily* (Every day · Several times a day) · *A number of times* (week/month/year; **times only**: the user removed Days on 29 Sep, "3 times a week" means within the week, done 3 times) · *Days of the week* · *Every few days, weeks or months* · *On a date*. A choice's own settings show right under it only while it's chosen; **they're indented (`.nested()`) only in sections with several choices** (Daily; Every few days, weeks or months). One-choice sections (A number of times, Days of the week, On a date) have no indent. Unchosen choices name their kind ("Several times a day", "Every few weeks"); chosen ones say exactly what ("Twice a day", "Every other week").
+- **Every few weeks needs no days** (`.everyNWeeks`, counted from the start date); "On set days" is an optional switch (5 of 43 week intervals in the descriptions name a weekday). **Every few months** is there too (11–21 statements: oil change, meds every 3 or 6 months). Each shows its next date.
 - **How often is one list of sentence endings with the person's amount in them** ("2 chapters a week", "5 km on 3 days a week", "every Monday and Wednesday"). No pop-ups, no confirmations, nothing greyed out: every choice is a whole sentence. Schedule and Goal are no longer two rows.
-- **"Times" counts every ✓; "days" counts different days.** "3 times a week" (`.perWeek(3)`): two walks on Sunday count 2. "3 days a week" (`.flexible(.week, 3)`): they count 1. An amount on some days counts the days it's reached ("5 km on 3 days a week"). *Supersedes "Flexible schedules count different dates, never taps".*
+- **Just do it counts every ✓ toward "N times a week"** (`.perWeek(n)`); there's no "N different days" choice (removed 29 Sep: to people times and days are the same). An amount on N days a week still counts the days it's reached ("5 km on 3 days a week").
 - **An amount with "a week / a month / a year" is a total**; with "N days" it's each of those days. The sentence says which.
 - **Not built, on purpose:** the "say it" fill-in (typing "Run 5 km 3 times a week" into the name: it fights the 24-character name limit, and review evidence for it in habit apps is 5 reviews); an amount "each time, N times a day" (it needs a new stored field). Both are in the Round 3 report.
-- **Kept from before:** typed numbers select on focus; time is wheels plus Type; the unit is optional; units grouped by what people track, with ⊕ Create Your Own Unit, and **time first** ("Hours and minutes", the most common amount); copy never says due, overdue, missed, failed or minimum; Cut down's limit is a day, a week or a month.
+- **Kept from before:** typed numbers select on focus; time is wheels plus Type; the unit is optional; units grouped by what people track, with ⊕ Create Your Own Unit (no time unit: Time it is its own type); copy never says due, overdue, missed, failed or minimum; Cut down's limit is a day, a week or a month (its How often has no set days).
 - **Set days, kept from the Schedule rules** ([Schedule and Goal — One Coherent System](<../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>)):
   - Certain days start with the start date's weekday and keep at least one chosen; all seven become Every day. Full VoiceOver day names, 44-point targets, a vertical layout at large text sizes.
   - The start date anchors "every few days or weeks" (shown as "Counted from"), and the next date is shown ("Coming up: Thu 2 Oct").
   - Monthly and yearly dates say what short months and 29 February do, and let the person choose (use the last day, or skip).
   - Tasks can repeat "after it's done"; habits can't (fixed rhythms only).
+- **Tasks use the same How often screen as habits** (`HowOftenEditor(task: true)`, 29 Sep), with the same pinned sentence and the same Preview card and text on the form ("Pay rent tomorrow" for a one-time task). Kept: Every day · Days of the week · Every few days, weeks or months · On a date · **After it's done** (its own last section; about 59 reviews ask to repeat from completion, many from Reminders users). Left out: Several times a day and A number of times, since a task is ticked once each time it's due. Reminders is a row that opens its own screen, as for habits.
   - Research recommendations are not usability results: no participant study has been run.
 
 ## Habit copy: say it the way people do (built 29 Sep 2026)
@@ -66,6 +95,7 @@ The user's rule: **the copy is the value.** Whatever is picked must read the way
 
 Source: [Logging a Count — One Tap or Type](<../Research/Research Reports/Habit Creation/Logging a Count — One Tap or Type.md>), updated by Round 3 §2.7.
 
+- **What + does is the person's choice on the form, in its own section "When you tap +"** (Track an amount only; 29 Sep): **Add a set amount** (default; "Each tap adds [1] glass" under it) or **Type the amount each time** (saved as a step of 0; Today shows a plain "+" that opens Add Amount with the number pad; the reminder has no "+" action). Evidence: 13 Loop reviews want one tap; "tapping +1 80 times for an 80m run is exhausting"; Round 3 §1.3 (19 type the odd amount, 13 want their own step). Visible and chosen, so it's no hidden rule.
 - **+ always adds the step saved with the habit and says it** ("+1", "+250", "+1k" on the button; "Add 250 ml to Water" for VoiceOver). *Supersedes "No 'Each tap adds' question" and "+1 adds one; + opens Add Amount": `CountLogging` and its goal-size rule are gone.*
 - **The step is a row on the form, "Each + adds", filled in for the person, never a question.** Suggested: the amount itself when it's per day on some days; a glass for drinks (250 ml, 8 oz, 0.25 L); 1 for whole counts up to 20; 1 km or mile; otherwise a round tenth of the goal (10,000 steps → 1,000). The person's own step is kept.
 - **Tapping the habit row always opens Add Amount / Add Time** for amounts and timed habits (unchanged), with "Add … again" and Undo Last Entry on touch-and-hold.
@@ -113,11 +143,39 @@ Source: [Name, Unit and Time of Day Lengths](<../Research/Research Reports/Habit
 Source: [Back to Today — When and Where](<../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/Back to Today — When and Where.md>).
 
 - **Every shape in the calendar is round.** The open day is a filled circle inside its ring, never a square.
-- **"Back to Today" shows only while another day is open.** It sits at the **bottom**: above the day bar on Today, and pinned at the bottom of the calendar sheet. There's no always-on Today button at the top.
+- **"Back to Today" in two places, only while the open day isn't today** (the user, 29 Sep): **primary** (filled) just above the day bar on Today, and **secondary** (bordered) pinned at the bottom of the calendar sheet. **Both keep their space on today** (invisible, not removed), so nothing shifts as ‹ › change the day. No always-on Today button at the top.
 
-## Not designed yet: don't test
+## Full-screen routine player (29 Sep 2026)
 
-- **The routine player** (the full-screen view that Start opens) isn't designed properly yet (the user, 28 Sep). Don't write new tests for it or judge its layout. Existing routine tests check only the underlying logic (skip, finish, resume). Redesign it before testing its UI.
+Source: [Full-screen Focus Player — One Thing at a Time](<../Research/Research Reports/Day Structure and Organization/Full-screen Focus Player — One Thing at a Time.md>). The user requested this redesign on 29 Sep, superseding the earlier instruction to defer its UI tests. Validation is recorded in the [player checklist](<Docs/Checklists/Full-screen Routine Focus Player.md>).
+
+- **Section Start opens full screen**, centered on one habit. Keep native controls, the routine position, a next-item preview, Back, Skip and a reachable queue.
+- **No invented routine countdown.** Untimed items stay untimed; timed items use one existing count-up habit clock. Pause saves time; reaching the goal does not automatically advance. Next, Skip and Close save before leaving.
+- **Completion stays visible until Next.** A repeated check adds one; a count adds its saved increment; a checklist keeps its existing steps. Keep manual logging and exact-entry Undo available.
+- **Cut-down items are check-ins.** Include them even when under their limit. Continue never logs consumption or marks the whole day successful. Quit streaks stay outside the player.
+- Queue reordering and reviewed-limit state belong to the current session. Habit progress and timers persist; do not imply persisted routine history or a saved session cursor.
+
+## Routine (focus) player
+
+Sources: [Focus Player — How It Should Behave](<../Research/Research Reports/Day Structure and Organization/Focus Player — How It Should Behave.md>) and the user's hands-on review (29 Sep). Checklist: `Docs/Checklists/Focus Player — Manual Bug Hunt Checklist.md`.
+
+- **A playlist of habits:** swipe, ‹, or tap Up next to move. Moving on never marks anything done and never asks to confirm. Segments at the top show done / current / left.
+- **Compact routine header:** routine name, position (`Morning · 2/10`) and a chevron are one tappable queue button. Keep progress segments below it; no separate Habit N of M / View routine row. The top ⋯ remains routine-only.
+- **Bottom navigation is two chevrons with Habit options between them** (Task options for tasks). This supersedes the earlier inline Skip today and Log manually row. The button opens a native bottom sheet titled with the current habit, containing manual logging first where applicable, skip/undo skip, session undo and clock visibility. Sheet dismissal completes before presenting manual entry.
+- **Keep the primary action visible.** Timer Start/Pause/Resume, quick logging, checks and checklist steps stay direct. If typing is the configured logging method, Log manually remains primary. Manual time entry remains available from the options sheet and clock tap; the decision does not claim manual logging is universally rare. Research: `Docs/Checklists/Focus Player — Header and Habit Options.md`.
+- **"Log time manually" / "Log amount manually"**, never "Add Time" (reads as adding extra time).
+- **Skip today** (day-by-day habits and tasks; not limits or weekly/monthly totals): a skipped day is not one of its days (`isDue` false), so it's hidden on Today and neutral in the streak, the ring and every percentage (Feature Ledger C016). Undo from the message, or "Undo skip" on its page. Pausing a habit for several days is not built yet.
+- **Circular focus hierarchy for every type** (supersedes the earlier linear bar and side-by-side period badge, user review, 29 Sep evening): habit title immediately above a smaller central circle (272 points; checklist 236 points); a circular progress ring containing the small icon, current/target (`2 / 3`, `7:42 / 20 min`), with units and maximum limits. The later spacing/goal-context rule below moves period context above the circle and flexible day-count details into Habit options. No repeated schedule sentence. Checklist rows stay below the ring. Checklist: `Docs/Checklists/Focus Player — Circular Hierarchy.md`.
+- **Spacing and goal context** (29 Sep, follow-up): progress segments have a 24-point top gap scaled with Dynamic Type (capped at 36); the centred CTA uses a 240-point baseline width (capped at 320) and a similarly scaled gap above bottom navigation. No Tick each step instruction or reserved CTA row for unfinished checklists. One goal-context line sits below the habit title, above the circle: Today for daily quantities, This week/month/year for period totals, the saved plan (e.g. 20 min on 3 days a week) for flexible goals. This supersedes period labels and flexible day-count text inside the circle. Flexible day-count progress lives in Habit options; the ring still tracks today's quantity. Reasons: `Docs/Checklists/Focus Player — Spacing and Goal Clarity.md`.
+- **Next, previous and queue navigation never wait for storage.** Stop the old timer, change the page and start the new timer immediately; the store serializes persistence. Save errors still surface in the player.
+- **Pause/Resume is instant and never blocked by a save**: the store changes its state at once and queues the write. Only the clock ticks (its own `TimelineView`, only while running); a timeline around the whole player made the buttons flicker. The main button never animates its label.
+- **Nothing redraws behind the player, and nothing big redraws every second** (29 Sep; the app-wide rules are in "Speed: every tap answers at once" at the top). Today draws a plain background while the player covers it (`playerCovering`) and returns at the routine's section. Today's list redraws once a minute and at each running timer's goal time (`TodaySchedule`), never every second: a running row and the timer bar tick themselves. A `TimelineView` never switches on and off with Pause (that rebuilt the circle and faded its text) and is never anchored at `.now` (a new schedule on every redraw). A status line that comes and goes keeps its space (the "Paused" line is hidden, not removed). Measured: the main thread was busy ~22% of the time with a timer running, ~2% after.
+- **No permission prompt over the player** (`TimerPresence.playerOpen`); the prompt only follows a ▶ tap on Today. The screen stays awake while a timer runs in the player.
+
+## Words the app never uses
+
+- **"Due", "overdue"** anywhere (the user, 29 Sep; copy rule from before). Tasks are "For today" or "Planned for Wed 1 Oct"; habits happen "on its days".
+- **"Add Time" / "Add Amount"** for logging by hand: say "Log time manually" / "Log amount manually" (sheet titles "Log Time" / "Log Amount").
 
 ## Where the rest is
 
@@ -142,6 +200,8 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
 | "Items", "Add Item" for a checklist (29 Sep) | "Steps", "Add Step"; Today reads "0/2 steps" |
 
 ## Test status
+
+- **29 Sep 2026, Round 3 + Round 4:** builds on the Mac. Tests updated to the type screen, Reminders screen and suggested amounts; `HabitScenarioUITests` adds the user's day and date edge cases.
 
 - **29 Sep 2026: Round 3 is built but not yet compiled or run.** The cloud session that built it has no Swift toolchain (download.swift.org is blocked there). The copy rules were checked in Python against every case (`iOS/Tools/copy_oracle`), and the Swift files were parsed for syntax; the first step on a Mac is to build, then run `NewHabitUITests/testCopyChecks` and the rewritten `NewHabitUITests`, `GoalFlowUITests` and `ScheduleUITests`.
 

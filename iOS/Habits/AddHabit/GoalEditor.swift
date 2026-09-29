@@ -59,8 +59,13 @@ struct DurationInput: View {
             .onChange(of: exact) {
                 // Type: the hours field is ready at once.
                 typing = exact ? .hours : nil
-                // Invalid typed input stays visible for correction; never normalize it silently.
-                if !exact && !valid { exact = true }
+                // Back to Scroll is always allowed (it was blocked until something valid was typed, and the
+                // time now starts empty; found on the phone 29 Sep). The wheels then hold exactly what's
+                // stored: typed text they can't show becomes the value they show, never a hidden one.
+                if !exact {
+                    hours = String(hourValue)
+                    minutes = String(minuteValue)
+                }
             }
             .toolbar {
                 // The number pad has no return key: Next moves from hours to minutes.
@@ -109,6 +114,10 @@ struct DurationInput: View {
     }
 
     private var footer: String {
+        // Nothing set yet (0 h 0 min): a hint, not an error, until the person has chosen something.
+        if hourValue == 0 && minuteValue == 0 && (GoalNumber.parse(minutes, decimals: 0) ?? 0) == 0 {
+            return exact ? "Type the hours and minutes." : "Scroll to the hours and minutes."
+        }
         if !valid {
             let most = Int(period.maxMinutes / 60)
             return "Enter whole hours and 0–59 minutes: more than 0, and at most \(most) hours in a \(period.noun)."

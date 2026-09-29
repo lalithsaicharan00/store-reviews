@@ -16,8 +16,14 @@ enum HowOften: Hashable {
     case total(GoalPeriod)
     /// On certain days of the week ("every Monday and Wednesday").
     case weekdays(Set<Int>)
-    /// Every few days or weeks, or on a date each month or year.
+    /// Every few weeks, counted from the start date, with no set days ("every other week"). Days are an
+    /// add-on: choosing them makes it a calendar rule ("every other week on Saturday").
+    case everyWeeks(Int)
+    /// Every few days or weeks on set days, every few months, or on a date each month or year.
     case calendar(CalendarSchedule)
+    /// Tasks only: comes back a while after it's done ("2 weeks after it's done"), counted from the day it
+    /// was ticked, not from a fixed date. Habits keep fixed rhythms.
+    case afterDone(Int, ScheduleUnit)
 
     /// The choice as the end of the person's sentence, for the How often row: "Every day", "Twice a day",
     /// "3 times a week", "A week (in total)", "Every Monday and Wednesday".
@@ -41,8 +47,12 @@ enum HowOften: Hashable {
             return "a \(period.noun)"
         case .weekdays(let days):
             return HabitCopy.dayText(days, weekStart: weekStart)
+        case .everyWeeks(let n):
+            return HabitCopy.everyN(n, "week")
         case .calendar(let rule):
             return HabitCopy.calendarText(rule, weekStart: weekStart)
+        case .afterDone(let n, let unit):
+            return HabitCopy.rhythm(.afterCompletion(n, unit), weekStart: weekStart)
         }
     }
 
@@ -60,8 +70,12 @@ enum HowOften: Hashable {
             return period.frequency(count: 1)
         case .weekdays(let days):
             return days.count >= 7 ? .daily : .weekdays(days)
+        case .everyWeeks(let n):
+            return .everyNWeeks(n)
         case .calendar(let rule):
             return .calendar(rule)
+        case .afterDone(let n, let unit):
+            return .afterCompletion(n, unit)
         }
     }
 }
@@ -77,6 +91,8 @@ struct HabitPlan {
     var unit = ""
     /// What one tap on + adds. nil: the suggested step (`suggestedStep`), shown on the form.
     var step: Double?
+    /// "Ask how much": + opens the number pad instead of adding a step (saved as a step of 0; 29 Sep).
+    var asks = false
     var often: HowOften = .everyDay
     /// Cut down: the amount is a limit, not a goal.
     var atMost = false
@@ -128,7 +144,7 @@ struct HabitPlan {
             habit.kind = .checklist
             habit.goal = 1
         } else if let amount {
-            habit.kind = isTimed ? .duration : .amount(unit: TextLimit.clean(unit, TextLimit.unit), increment: stepValue)
+            habit.kind = isTimed ? .duration : .amount(unit: TextLimit.clean(unit, TextLimit.unit), increment: asks ? 0 : stepValue)
             habit.goal = amount
         } else {
             habit.kind = .check
@@ -155,7 +171,7 @@ struct HabitPlan {
 /// What the How often screen remembers while choosing, so switching between choices never loses a number
 /// already set (3 times a week, the chosen days, the 15th). `often` is the one choice in force.
 struct OftenDraft {
-    enum Choice: Hashable { case everyDay, timesADay, times, total, weekdays, every, date }
+    enum Choice: Hashable { case everyDay, timesADay, times, total, weekdays, everyDays, everyWeeks, everyMonths, date, afterDone }
 
     var choice: Choice = .everyDay
     var perDay = 2
@@ -165,8 +181,16 @@ struct OftenDraft {
     var countsDays = false
     var totalPeriod: GoalPeriod = .week
     var weekdays: Set<Int> = []
-    /// Every few days or weeks (day or week units).
-    var everyRule = CalendarSchedule(unit: .day, interval: 2)
+    /// Every few days, weeks or months. Weeks may add set days (empty: counted from the start date).
+    var daysInterval = 2
+    var weeksInterval = 2
+    var weeksDays: Set<Int> = []
+    var monthsInterval = 3
+    /// Tasks: again this long after it's done.
+    var afterCount = 1
+    var afterUnit: ScheduleUnit = .week
+    private(set) var startDate = 1
+    private(set) var anchorWeekStart = 2
     /// On a date each month or year (month or year units).
     var dateRule = CalendarSchedule(unit: .month, interval: 1)
     private(set) var seeded = false
@@ -178,8 +202,8 @@ struct OftenDraft {
         let weekday = calendar.component(.weekday, from: start)
         let date = calendar.component(.day, from: start)
         weekdays = [weekday]
-        everyRule.weekdays = [weekday]
-        everyRule.anchorWeekStart = weekStart
+        startDate = date
+        anchorWeekStart = weekStart
         dateRule.dates = [date]
         dateRule.day = date
         dateRule.month = calendar.component(.month, from: start)
@@ -192,11 +216,20 @@ struct OftenDraft {
         switch choice {
         case .everyDay: return .everyDay
         case .timesADay: return hasAmount ? .everyDay : .timesADay(max(2, perDay))
-        case .times: return countsDays || hasAmount ? .days(countPeriod, max(1, count)) : .times(countPeriod, max(1, count))
+        // Just do it counts every time (the user, 29 Sep: "times" and "days" mean the same to people); an
+        // amount counts the days it's reached.
+        case .times: return hasAmount ? .days(countPeriod, max(1, count)) : .times(countPeriod, max(1, count))
         case .total: return hasAmount ? .total(totalPeriod) : .times(totalPeriod, 1)
         case .weekdays: return .weekdays(weekdays)
-        case .every: return .calendar(everyRule)
+        case .everyDays: return .calendar(CalendarSchedule(unit: .day, interval: max(2, daysInterval)))
+        case .everyWeeks:
+            if weeksDays.isEmpty { return .everyWeeks(max(1, weeksInterval)) }
+            return .calendar(CalendarSchedule(unit: .week, interval: max(1, weeksInterval), weekdays: weeksDays, anchorWeekStart: anchorWeekStart))
+        case .everyMonths:
+            return .calendar(CalendarSchedule(unit: .month, interval: max(1, monthsInterval), dates: [startDate], pattern: .dates,
+                                              anchorWeekStart: anchorWeekStart))
         case .date: return .calendar(dateRule)
+        case .afterDone: return .afterDone(max(1, afterCount), afterUnit)
         }
     }
 

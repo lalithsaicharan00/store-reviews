@@ -1,34 +1,46 @@
 import SwiftUI
 
-/// What the user wants to make: the form each choice opens. Build or maintain goes straight to one form
-/// whose How much decides how it's tracked (Round 3 design §2.6): no amount → ✓, minutes → ▶, any other
-/// unit → +, steps → a checklist. The old type screen (Check it off · Track an amount · Time it · Checklist) is gone.
+/// What the user wants to make: the form each choice opens. Build or maintain asks how to track it first
+/// (the user tried one screen on 29 Sep and kept the two steps); the form shows only that type's rows.
 enum ItemType: String, CaseIterable, Identifiable {
-    case build, cutBack, quit, task
+    case doIt, amount, time, checklist, cutBack, quit, task
     var id: Self { self }
 
+    /// The form's title. Copy from "Habit Flow Copy — Deep Research Report" (28 Sep): "Track an amount"
+    /// replaces "Count it" because amounts can be decimals and units like km, not only counts.
     var title: String {
         switch self {
-        case .build: "New Habit"
+        case .doIt: "Check it off"
+        case .amount: "Track an amount"
+        case .time: "Time it"
+        case .checklist: "Checklist"
         case .cutBack: "Cut down"
         case .quit: "Quit"
         case .task: "Task"
         }
     }
 
-    /// One plain line under the title on the Quit or cut down screen, from the copy report.
+    /// One plain line under the title on the choice screens.
     var summary: String {
         switch self {
-        case .build: "A habit you want to start or keep doing."
+        case .doIt: "Done or not done."
+        case .amount: "How many or how much."
+        case .time: "How long, with a timer."
+        case .checklist: "A short list to tick off."
         case .cutBack: "Set a maximum and log how much."
         case .quit: "Stop completely. Track time since you stopped."
         case .task: "Something to get done."
         }
     }
 
+    /// A common habit that can only be recorded one way (copy report, 28 Sep): a bed is never counted or
+    /// timed, water is counted in glasses, meditation is timed.
     var example: String {
         switch self {
-        case .build: "Read 2 chapters a week"
+        case .doIt: "Make your bed"
+        case .amount: "Drink 8 glasses of water"
+        case .time: "Meditate for 10 minutes"
+        case .checklist: "Clean kitchen — dishes, sink, floor"
         case .cutBack: "Log coffees, up to 2 a day"
         case .quit: "Time since you last smoked"
         case .task: "Pay the rent"
@@ -38,7 +50,10 @@ enum ItemType: String, CaseIterable, Identifiable {
     /// The name field's hint.
     var namePlaceholder: String {
         switch self {
-        case .build: "Name, e.g. Read"
+        case .doIt: "Name, e.g. Make bed"
+        case .amount: "Name, e.g. Drink water"
+        case .time: "Name, e.g. Meditate"
+        case .checklist: "Name, e.g. Clean kitchen"
         case .cutBack: "Name, e.g. Coffee"
         case .quit: "e.g. Smoking"
         case .task: "e.g. Pay the rent"
@@ -48,7 +63,10 @@ enum ItemType: String, CaseIterable, Identifiable {
     /// A plain SF Symbol for the choice rows (research: "Goal Screen Round 2", T1). Monochrome.
     var icon: String {
         switch self {
-        case .build: "chart.line.uptrend.xyaxis"
+        case .doIt: "checkmark.circle"
+        case .amount: "number"
+        case .time: "timer"
+        case .checklist: "list.bullet.clipboard"
         case .cutBack: "gauge.with.dots.needle.33percent"
         case .quit: "nosign"
         case .task: "calendar"
@@ -57,6 +75,8 @@ enum ItemType: String, CaseIterable, Identifiable {
 
     /// Everything except tasks counts toward the free habit limit.
     var isHabit: Bool { self != .task }
+    /// The four ways to build or maintain a habit.
+    var isBuild: Bool { [.doIt, .amount, .time, .checklist].contains(self) }
 }
 
 /// The screen behind +: "What do you want to do?", then, for habits, how to track it; then one
@@ -68,16 +88,14 @@ struct NewItemView: View {
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
 
-    private enum Kind: Hashable { case bad }
+    private enum Kind: Hashable { case good, bad }
 
     var body: some View {
         NavigationStack {
             List {
                 Section {
-                    NavigationLink {
-                        form(.build)
-                    } label: {
-                        ChoiceLabel(icon: ItemType.build.icon, title: "Build or maintain", detail: "A habit you want to start or keep doing.")
+                    NavigationLink(value: Kind.good) {
+                        ChoiceLabel(icon: "chart.line.uptrend.xyaxis", title: "Build or maintain", detail: "A habit you want to start or keep doing.")
                     }
                     NavigationLink(value: Kind.bad) {
                         ChoiceLabel(icon: "chart.line.downtrend.xyaxis", title: "Quit or cut down", detail: "A habit you want to stop or do less.")
@@ -98,6 +116,7 @@ struct NewItemView: View {
             }
             .navigationDestination(for: Kind.self) { kind in
                 switch kind {
+                case .good: question("How do you want to track it?", [.doIt, .amount, .time, .checklist])
                 case .bad: question("What do you want to do?", [.quit, .cutBack])
                 }
             }
@@ -124,7 +143,7 @@ struct NewItemView: View {
                 QuestionHeader(text)
             }
         }
-        .navigationTitle("Quit or cut down")
+        .navigationTitle(types.contains(.quit) ? "Quit or cut down" : "Build or maintain")
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -180,9 +199,11 @@ struct ChoiceLabel: View {
     }
 }
 
-/// The form for one type, on one screen: icon, name and colour; How Often; the goal; Time of Day;
-/// Reminders. Choices are menus; anything needing its own page (icon, unit, a new time of day) is
-/// pushed, never a sheet, so the whole flow moves one way (spec §1–6).
+/// The form for one type, laid out like the Round 3 mockup (the user's choice, 29 Sep): the habit read back
+/// as a sentence; name, icon and colour; How much, Each + adds and How often (only the rows the type needs);
+/// Time of Day and Reminders; then Starts and Ends. Every row starts filled with a suggestion
+/// (`HabitDefaults`), and the line under the sentence says which ones. Anything needing its own page is
+/// pushed, never a sheet, so the whole flow moves one way.
 struct HabitForm: View {
     enum Field: Hashable { case name, amount, unit, increment, minutes, item(UUID) }
 
@@ -206,18 +227,20 @@ struct HabitForm: View {
     @State private var color: HabitColor
     @State private var showAppearance = false
 
-    /// How much: Just do it, or an amount (typed, or hours and minutes when the unit is time).
-    @State private var usesAmount = false
-    @State private var amountText = ""
-    @State private var unit = ""
-    @State private var hours = "0"
-    @State private var minutes = "20"
+    /// How much (amounts and limits: typed, with a unit) or how long (Time it: hours and minutes).
+    /// They start as the suggestion for the name, and follow it until the person changes them.
+    @State private var amountText: String
+    @State private var unit: String
+    @State private var hours: String
+    @State private var minutes: String
     /// Each + adds: nil keeps the suggested step, which follows the amount and unit.
     @State private var step: Double?
+    /// Track an amount: what + does on Today, chosen here. Off: adds the step. On: asks how much (29 Sep).
+    @State private var asksHowMuch = false
     @State private var often = OftenDraft()
     /// Tasks: once on a date, or on a schedule.
     @State private var taskRepeats = false
-    /// A habit's optional steps (a checklist), or nothing until the user adds one.
+    /// A checklist's steps.
     @State private var items: [Step] = []
     @State private var quitSince = Date.now
     @State private var taskDate = Date.now
@@ -230,9 +253,9 @@ struct HabitForm: View {
     @State private var timesOfDay: [String] = [.anytime]
     @State private var addingSection = false
     @State private var didSetUp = false
-    /// Remind Me: a switch first; the reminder rows and how to be reminded show only while it's on.
-    /// On by default with one reminder (the user's decision, 28 Sep).
-    @State private var remindOn = true
+    /// Remind Me: off by default (the user, 29 Sep; it was on with one reminder since 28 Sep). Turning it
+    /// on brings one reminder per time of day.
+    @State private var remindOn = false
     @State private var times: [DraftTime] = []
     @State private var showColors = false
     @State private var startDate = Calendar.current.startOfDay(for: .now)
@@ -253,6 +276,16 @@ struct HabitForm: View {
         self.onSaved = onSaved
         _color = State(initialValue: .blue)
         _symbol = State(initialValue: type == .quit ? "nosign" : type == .task ? "calendar" : "star.fill")
+        // Amounts start empty (left out of the sentence): the right amount depends on the person. How often starts
+        // as every day and Time of Day as Anytime (the user, 29 Sep).
+        let start = HabitDefaults.suggest(type, name: "")
+        _amountText = State(initialValue: "")
+        _unit = State(initialValue: "")
+        _hours = State(initialValue: "0")
+        _minutes = State(initialValue: "0")
+        var draft = OftenDraft()
+        draft.choose(start.often)
+        _often = State(initialValue: draft)
     }
 
     private var trimmedName: String { TextLimit.clean(name, TextLimit.name) }
@@ -264,25 +297,28 @@ struct HabitForm: View {
     }
     private var remind: Bool { remindOn && !times.isEmpty }
     private var hasChanges: Bool { !trimmedName.isEmpty || !filledItems.isEmpty }
-    private var isHabit: Bool { type == .build || type == .cutBack }
-    private var timed: Bool { unit == HabitPlan.timeUnit }
+    private var isHabit: Bool { type.isBuild || type == .cutBack }
+    /// How it's tracked: the type chosen before the form.
+    private var kind: ItemType { type }
+    private var hasAmount: Bool { kind == .amount || kind == .time || kind == .cutBack }
+    private var timed: Bool { kind == .time }
     /// A time amount can't be longer than its period ("3 h a week" is fine, "30 h a day" isn't).
     private var amountPeriod: GoalPeriod {
         if case .total(let period) = often.often(hasAmount: true), often.choice == .total { return period }
         return .day
     }
     private var amountValue: Double? {
-        guard usesAmount || type == .cutBack else { return nil }
+        guard hasAmount else { return nil }
         if timed { return GoalDraft(hours: hours, minutes: minutes).duration(max: amountPeriod.maxMinutes) }
         guard let n = GoalNumber.parse(amountText), n > 0 else { return nil }
         return n
     }
     /// The habit's how much and how often, as chosen: the one source for the read-back, Today and saving.
     private var plan: HabitPlan {
-        let checklist = type == .build && !filledItems.isEmpty
-        let amount = checklist ? nil : amountValue
-        return HabitPlan(amount: amount, unit: timed ? HabitPlan.timeUnit : TextLimit.clean(unit, TextLimit.unit), step: step,
-                         often: often.often(hasAmount: amount != nil), atMost: type == .cutBack, checklist: checklist)
+        var plan = HabitPlan(amount: amountValue, unit: timed ? HabitPlan.timeUnit : TextLimit.clean(unit, TextLimit.unit), step: step,
+                             often: often.often(hasAmount: hasAmount), atMost: type == .cutBack, checklist: kind == .checklist)
+        plan.asks = type == .amount && asksHowMuch
+        return plan
     }
     /// "2 chapters", "30 min": the amount as the How often choices say it.
     private var amountWords: String? {
@@ -292,14 +328,8 @@ struct HabitForm: View {
     private var weekStart: Int { store.settings.weekStart }
     private var canAdd: Bool {
         guard !trimmedName.isEmpty else { return false }
-        switch type {
-        case .build:
-            if usesAmount && filledItems.isEmpty && amountValue == nil { return false }
-        case .cutBack:
-            if amountValue == nil { return false }
-        default:
-            break
-        }
+        if hasAmount && amountValue == nil { return false }
+        if type == .checklist && filledItems.isEmpty { return false }
         if isHabit, case .weekdays(let days) = plan.often, days.isEmpty { return false }
         if isHabit, case .calendar(let rule) = plan.often {
             if rule.unit == .week && rule.weekdays.isEmpty { return false }
@@ -308,9 +338,22 @@ struct HabitForm: View {
         return true
     }
 
+    // MARK: Suggestions
+
+    private func suggestion(for name: String) -> HabitDefaults {
+        HabitDefaults.suggest(kind == .checklist ? .doIt : kind, name: name)
+    }
+
+    /// The amount the name suggests, as the amount field's hint only ("e.g. 10000"); never filled in.
+    private var amountHint: String? {
+        let s = HabitDefaults.suggest(type == .cutBack ? .cutBack : .amount, name: name)
+        guard s.amount != 1 || !s.unit.isEmpty, s.amount != 3 || !s.unit.isEmpty else { return nil }
+        return "e.g. " + GoalNumber.text(s.amount) + (s.unit.isEmpty ? "" : " " + s.unit)
+    }
+
     var body: some View {
         Form {
-            if isHabit { readBackSection }
+            if isHabit || type == .task { previewSection }
             nameSection
             switch type {
             case .quit:
@@ -318,19 +361,23 @@ struct HabitForm: View {
             case .task:
                 taskSection
                 if taskRepeats { Section { repeatRow } }
-                Section { timeOfDayRow }
+                Section {
+                    timeOfDayRow
+                    remindersRow
+                }
                 if taskRepeats { startEndSection }
-                remindersSections
-            case .build, .cutBack:
+            default:
                 planSection
-                if type == .build && !usesAmount { stepsSection }
-                Section { timeOfDayRow }
+                if type == .amount { tapSection }
+                Section {
+                    timeOfDayRow
+                    remindersRow
+                }
                 startEndSection
-                remindersSections
             }
         }
         .accessibilityIdentifier("habit-form")
-        .navigationTitle(type.title)
+        .navigationTitle(isHabit && type != .cutBack ? "New Habit" : type.title)
         .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)
         .navigationBarBackButtonHidden(hasChanges)
@@ -372,7 +419,7 @@ struct HabitForm: View {
             }
             .presentationDetents([.height(260)])
         }
-        .onChange(of: name) {
+        .onChange(of: name) { old, new in
             // A wrapping field puts Return into the text; treat it as Done instead.
             if name.contains("\n") { name = name.replacingOccurrences(of: "\n", with: ""); focus = nil }
             suggestIcon()
@@ -450,115 +497,248 @@ struct HabitForm: View {
         .accessibilityLabel("\(title), \(value)")
     }
 
-    /// A repeating task's schedule, on its own screen (with "after it's done", which only tasks have).
+    /// A repeating task's How often: the habit screen without counts, plus "After it's done" (29 Sep).
     private var repeatRow: some View {
-        screenRow("How often", value: schedule.summary) {
-            ScheduleEditor(schedule: $schedule, goalPeriod: .constant(.day), start: startDate,
-                           end: hasEnd ? endDate : nil, weekStart: weekStart,
-                           hasGoal: false, checklist: false, task: true)
+        screenRow("How often", value: often.often(hasAmount: false).label(hasAmount: false, weekStart: weekStart)) {
+            HowOftenEditor(draft: $often, amountText: nil, checklist: false, limit: false, start: startDate,
+                           weekStart: weekStart, sentence: screenText, task: true)
                 .onAppear { focus = nil }
         }
+        .accessibilityIdentifier("how-often-row")
     }
 
     // MARK: The sentence, how much and how often
 
-    /// The habit said back big at the top, the way a person says it: "Read 2 chapters a week",
-    /// "Gym every Monday and Wednesday". Built from the same saved habit Today shows.
-    private var readBackSection: some View {
-        Section {
-            VStack(spacing: 4) {
-                Text(HabitCopy.sentence(draft, weekStart: weekStart))
-                    .font(.system(.title2, design: .rounded).weight(.bold))
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .contentTransition(.opacity)
-                    .accessibilityAddTraits(.isHeader)
-                    .accessibilityIdentifier("habit-sentence")
-                Text(timeOfDaySummary)
-                    .font(.callout).foregroundStyle(.secondary)
-                    .accessibilityLabel("Time of day: \(timeOfDaySummary)")
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 2)
-            .animation(.snappy, value: HabitCopy.sentence(draft, weekStart: weekStart))
-        }
-        .listRowBackground(Color.clear)
+    /// The whole habit in one sentence: name, how much, how often and the parts of the day ("Read twice a
+    /// day, morning and afternoon"). The same sentence heads every screen the form opens (the user, 29 Sep).
+    private var fullSentence: String {
+        if type == .task && !taskRepeats { return oneTimeTaskText(name: previewHabit.name) }
+        // Before an amount is set it's simply left out ("Drink water every day, anytime"), the same as Check it
+        // off: no dash anywhere (the user, 29 Sep).
+        let text = HabitCopy.sentence(amountValue == nil && hasAmount ? withoutAmount(previewHabit) : previewHabit, weekStart: weekStart)
+        let parts = timesOfDay == [.anytime] ? "anytime" : HabitCopy.partsPhrase(timesOfDay.map { store.section($0).name })
+        return text + ", " + parts
     }
 
-    /// How much, what + adds, and how often: three rows that make the sentence above.
+    /// The sentence heading the screens the form opens: before a name, only how much and how often ("Every
+    /// day", "3 times a week", "8 glasses a day"); with a name, the whole sentence (the user, 29 Sep).
+    /// "Pay rent today", "Book dentist on Wed, 1 Oct", with its time if it has one.
+    private func oneTimeTaskText(name: String) -> String {
+        let day = dayWords(taskDate)
+        var text = name + (["Today", "Tomorrow", "Yesterday"].contains(day) ? " " + day.lowercased() : " on " + day)
+        if taskHasTime { text += " at " + taskTime.formatted(date: .omitted, time: .shortened) }
+        return text
+    }
+
+    private var screenText: String {
+        guard !trimmedName.isEmpty else {
+            // No amount yet either: just the rhythm, as the How often row says it.
+            if hasAmount && amountValue == nil {
+                return plan.often.label(hasAmount: true, weekStart: weekStart)
+            }
+            var habit = previewHabit
+            habit.name = ""
+            return HabitCopy.sentence(habit, weekStart: weekStart)
+        }
+        return fullSentence
+    }
+
+    /// The habit read as done-or-not, for the sentence before its amount is set.
+    private func withoutAmount(_ habit: Habit) -> Habit {
+        var habit = habit
+        habit.kind = .check
+        habit.goal = 1
+        return habit
+    }
+
+    /// Before an amount is set, the preview card carries a stand-in amount (so it shows its + or ▶) and no line.
+    private static let standIn = 7_777_777.0
+    private var amountStandIn: String? {
+        guard hasAmount && amountValue == nil else { return nil }
+        return timed ? HabitCopy.minutes(Self.standIn) : HabitCopy.number(Self.standIn)
+    }
+
+    /// The habit as the previews show it: "Your habit" until named, and the stand-in amount until set, so
+    /// the row already has its +, ▶ or ✓.
+    private var previewHabit: Habit {
+        var habit = draft
+        if habit.name.isEmpty { habit.name = type == .task ? "Your task" : "Your habit" }
+        if hasAmount && amountValue == nil {
+            var stand = plan
+            stand.amount = Self.standIn
+            stand.step = step ?? 1
+            stand.apply(to: &habit)
+        }
+        return habit
+    }
+
+    /// The visual preview: the habit drawn by Today's own row, under a centred "Preview" label.
+    private var previewSection: some View {
+        Section {
+            HabitRow(habit: previewHabit, day: LocalDay(.now), isToday: true, time: remind ? previewHabit.reminders.first : nil,
+                     lineOverride: amountStandIn == nil ? nil : "", stepsOpen: .constant(false))
+                .allowsHitTesting(false)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Preview on Today")
+                .accessibilityIdentifier("today-preview")
+        } header: {
+            Text("Preview")
+                .frame(maxWidth: .infinity, alignment: .center)
+        } footer: {
+            // The text preview, right under the card: the whole habit once it has a name.
+            Group {
+                if trimmedName.isEmpty {
+                    Text(type == .task ? "Enter a task name to see the preview." : "Enter a habit name to see the preview.")
+                        .font(.callout).foregroundStyle(.secondary)
+                } else {
+                    Text(fullSentence)
+                        .font(.system(.title3, design: .rounded).weight(.bold))
+                        .foregroundStyle(Color.primary)
+                        .contentTransition(.opacity)
+                        .animation(.snappy, value: fullSentence)
+                }
+            }
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity)
+            // A little air under the card, and a clear gap before the name: the previews are one group.
+            .padding(.top, 10)
+            .padding(.bottom, 18)
+            .accessibilityAddTraits(.isHeader)
+            .accessibilityIdentifier("habit-sentence")
+        }
+    }
+
+    /// How much, what + adds, and how often: the rows that make the sentence above, only as the type needs.
     private var planSection: some View {
         Section {
-            if filledItems.isEmpty {
-                screenRow(type == .cutBack ? "Limit" : "How much", value: amountValue == nil && (usesAmount || type == .cutBack) ? "Set" : plan.howMuchLabel) {
-                    HowMuchEditor(usesAmount: $usesAmount, amount: $amountText, unit: $unit, hours: $hours, minutes: $minutes,
-                                  limit: type == .cutBack, usedUnits: store.usedUnits, period: amountPeriod)
+            switch type {
+            case .amount, .cutBack:
+                screenRow(type == .cutBack ? "Limit" : "How much", value: amountValue == nil ? "Set" : plan.howMuchLabel) {
+                    HowMuchEditor(mode: type == .cutBack ? .limit : .amount, amount: $amountText, unit: $unit, hours: $hours,
+                                  minutes: $minutes, usedUnits: store.usedUnits, period: amountPeriod, sentence: screenText, hint: amountHint)
                         .onAppear { focus = nil }
                 }
                 .accessibilityIdentifier("how-much-row")
-            }
-            if plan.hasStep {
-                NumberRow(title: "Each + adds", value: $step, placeholder: HabitCopy.number(plan.stepValue),
-                          suffix: HabitCopy.unitWord(plan.stepValue, plan.unit), focus: $focus, field: .increment)
+            case .time:
+                screenRow("How long", value: amountValue == nil ? "Set" : plan.howMuchLabel) {
+                    HowMuchEditor(mode: .time, amount: $amountText, unit: $unit, hours: $hours, minutes: $minutes,
+                                  usedUnits: store.usedUnits, period: amountPeriod, sentence: screenText, hint: amountHint)
+                        .onAppear { focus = nil }
+                }
+                .accessibilityIdentifier("how-much-row")
+            case .checklist:
+                screenRow("Steps", value: filledItems.isEmpty ? "Add" : filledItems.count == 1 ? "1 step" : "\(filledItems.count) steps") {
+                    Form { ChecklistItemsSection(items: $items) }
+                        .stickySentence(screenText, id: "screen-sentence")
+                        .navigationTitle("Steps")
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+                .accessibilityIdentifier("steps-row")
+            default:
+                EmptyView()
             }
             screenRow("How often", value: plan.often.label(hasAmount: plan.hasAmount, checklist: plan.checklist, weekStart: weekStart)) {
                 HowOftenEditor(draft: $often, amountText: amountWords, checklist: plan.checklist, limit: type == .cutBack,
-                               start: startDate, weekStart: weekStart)
+                               start: startDate, weekStart: weekStart, sentence: screenText, amountExpected: hasAmount)
                     .onAppear { focus = nil }
             }
             .accessibilityIdentifier("how-often-row")
-        } footer: {
-            Text(todayNote).formNote()
         }
     }
 
-    /// What Today will show and what one tap does, before saving: no rule the person can't see.
-    private var todayNote: String {
-        if plan.checklist { return "On Today, tick each step. It's done when every step is ticked." }
-        guard plan.amount != nil else {
-            if usesAmount || type == .cutBack { return "Type the amount in \(type == .cutBack ? "Limit" : "How much")." }
-            switch plan.often {
-            case .timesADay(let n): return "On Today, tap ✓ each time. It shows 1/\(n) after the first."
-            case .times(let period, let n): return "On Today, tap ✓ each time you do it. \(n) this \(period.noun) meets it, on any days."
-            case .days(let period, let n): return "On Today, tap ✓ once on a day you do it. \(n) different days this \(period.noun) meets it."
-            default: return "On Today, tap ✓ when it's done."
-            }
-        }
-        if plan.isTimed { return "On Today, ▶ times it, or tap the habit to type the time." }
-        let adds = HabitCopy.amount(plan.stepValue, plan.unit)
-        if type == .cutBack { return "On Today, + adds \(adds) each time you have one. Tap the habit to type any amount." }
-        return "On Today, + adds \(adds). Tap the habit to type any amount."
-    }
-
-    /// A few steps to tick each time ("dishes, sink, floor"), for a habit that's done or not.
-    private var stepsSection: some View {
+    /// What + does on Today, chosen, never a hidden rule: add a set step ("+1 glass", good for small counts),
+    /// or type the amount each time (good for big or odd amounts: steps, ml). Research: "Logging a Count — One
+    /// Tap or Type" (13 reviews want one tap; "tapping +1 80 times for an 80m run is exhausting"), Round 3 §1.3
+    /// (19 statements type the odd amount, 13 want a step of their own). Tapping the habit always types.
+    private var tapSection: some View {
         Section {
-            screenRow("Steps", value: filledItems.isEmpty ? "None" : filledItems.count == 1 ? "1 step" : "\(filledItems.count) steps") {
-                Form { ChecklistItemsSection(items: $items) }
-                    .navigationTitle("Steps")
-                    .navigationBarTitleDisplayMode(.inline)
+            CheckRow(title: "Add a set amount", selected: !asksHowMuch) { withAnimation { asksHowMuch = false } }
+                .accessibilityIdentifier("tap-adds-step")
+            if !asksHowMuch {
+                NumberRow(title: "Each tap adds", value: $step, placeholder: HabitCopy.number(plan.stepValue),
+                          suffix: HabitCopy.unitWord(plan.stepValue, plan.unit), focus: $focus, field: .increment)
+                    .padding(.leading, 22)
+                    .font(.subheadline)
             }
-            .accessibilityIdentifier("steps-row")
+            CheckRow(title: "Type the amount each time", selected: asksHowMuch) {
+                focus = nil
+                withAnimation { asksHowMuch = true }
+            }
+            .accessibilityIdentifier("tap-asks")
+        } header: {
+            Text("When you tap +")
         } footer: {
-            Text("Optional: a short list to tick each time, like dishes, sink, floor.").formNote()
+            Text(asksHowMuch ? "Tap + to type how much you did."
+                 : "Each tap on + adds \(HabitCopy.amount(plan.stepValue, plan.unit)).").formNote()
         }
     }
 
-    /// Starts today by default, any day past or future; ends never, or on a day from the start onward.
+    /// "Today", "Tomorrow", "Yesterday", or "Wed 1 Oct": the start as a person says it.
+    private func dayWords(_ date: Date) -> String {
+        let cal = Calendar.current
+        if cal.isDateInToday(date) { return "Today" }
+        if cal.isDateInTomorrow(date) { return "Tomorrow" }
+        if cal.isDateInYesterday(date) { return "Yesterday" }
+        let sameYear = cal.component(.year, from: date) == cal.component(.year, from: .now)
+        return sameYear ? date.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated))
+            : date.formatted(.dateTime.day().month(.abbreviated).year())
+    }
+
+    /// Starts and Ends, in words ("Today", "Never"); each opens its own screen to pick a date.
     private var startEndSection: some View {
         Section {
-            DatePicker("Starts", selection: $startDate, displayedComponents: .date)
-            Picker("Ends", selection: $hasEnd.animation()) {
-                Text("Never").tag(false)
-                Text("On a Date").tag(true)
+            // "Started" for a day in the past, as a person would say it.
+            screenRow(startDate < Calendar.current.startOfDay(for: .now) ? "Started" : "Starts", value: dayWords(startDate)) {
+                Form {
+                    Section {
+                        DatePicker("Starts", selection: $startDate, displayedComponents: .date)
+                            .datePickerStyle(.graphical)
+                            .accessibilityIdentifier("start-date-picker")
+                    } footer: {
+                        Text("A start date in the past lets you tick the days since then.").formNote()
+                    }
+                    if !Calendar.current.isDateInToday(startDate) {
+                        Section {
+                            Button("Start Today") { startDate = Calendar.current.startOfDay(for: .now) }
+                        }
+                    }
+                }
+                .stickySentence(screenText, id: "screen-sentence")
+                .navigationTitle("Starts")
+                .navigationBarTitleDisplayMode(.inline)
+                .onAppear { focus = nil }
             }
-            if hasEnd {
-                DatePicker("End Date", selection: $endDate, in: startDate..., displayedComponents: .date)
+            .accessibilityIdentifier("starts-row")
+            screenRow("Ends", value: hasEnd ? dayWords(endDate) : "Never") {
+                Form {
+                    Section {
+                        CheckRow(title: "Never", selected: !hasEnd) { withAnimation { hasEnd = false } }
+                        CheckRow(title: "On a Date", selected: hasEnd) {
+                            withAnimation {
+                                if !hasEnd && endDate <= startDate {
+                                    endDate = Calendar.current.date(byAdding: .day, value: 30, to: startDate) ?? startDate
+                                }
+                                hasEnd = true
+                            }
+                        }
+                    }
+                    if hasEnd {
+                        Section {
+                            DatePicker("Ends", selection: $endDate, in: startDate..., displayedComponents: .date)
+                                .datePickerStyle(.graphical)
+                                .accessibilityIdentifier("end-date-picker")
+                        } footer: {
+                            Text("After \(endDate.formatted(.dateTime.day().month(.wide))), it leaves Today. Its history stays.").formNote()
+                        }
+                    }
+                }
+                .stickySentence(screenText, id: "screen-sentence")
+                .navigationTitle("Ends")
+                .navigationBarTitleDisplayMode(.inline)
+                .onAppear { focus = nil }
             }
-        } header: {
-            Text("Dates")
-        } footer: {
-            Text(hasEnd ? "After \(endDate.formatted(.dateTime.day().month(.wide))), it leaves Today. Its history stays."
-                 : "A start date in the past lets you tick the days since then.").formNote()
+            .accessibilityIdentifier("ends-row")
         }
     }
 
@@ -639,6 +819,7 @@ struct HabitForm: View {
                     Text(Outcome.timeOfDay(draft, store: store)).formNote()
                 }
             }
+            .stickySentence(isHabit || type == .task ? screenText : nil, id: "screen-sentence")
             .navigationTitle("Time of Day")
             .navigationBarTitleDisplayMode(.inline)
             // Pushed from here, so saving comes back to this list with the new one ticked (attached to
@@ -664,6 +845,26 @@ struct HabitForm: View {
         reminder.part.map { "\(store.section($0).name) reminder" } ?? "Reminder"
     }
 
+    /// "9:00 AM", "9:00 AM and 6:00 PM", "3 reminders", "Off": what the Reminders row says.
+    private var remindersSummary: String {
+        guard remind else { return "Off" }
+        let sorted = times.map(\.time).sorted { Self.minute(of: $0) < Self.minute(of: $1) }
+        if sorted.count > 2 { return "\(sorted.count) reminders" }
+        return HabitCopy.join(sorted.map { $0.formatted(date: .omitted, time: .shortened) })
+    }
+
+    /// Reminders on their own screen (the user's choice, 29 Sep); the row says when.
+    private var remindersRow: some View {
+        screenRow("Reminders", value: remindersSummary) {
+            Form { remindersSections }
+                .stickySentence(isHabit || type == .task ? screenText : nil, id: "screen-sentence")
+                .navigationTitle("Reminders")
+                .navigationBarTitleDisplayMode(.inline)
+                .onAppear { focus = nil }
+        }
+        .accessibilityIdentifier("reminders-row")
+    }
+
     /// Reminders: one by default, any number more, each inside a chosen time of day. How to be reminded
     /// sits in the section right below, close together, and only while there's a reminder.
     @ViewBuilder
@@ -671,7 +872,8 @@ struct HabitForm: View {
         Section {
             Toggle("Remind Me", isOn: $remindOn.animation())
                 .tint(.green)
-                .onChange(of: remindOn) { if remindOn && times.isEmpty { syncReminders(force: true) } }
+                // Turning it on brings one reminder per chosen time of day, unless the person already set their own.
+                .onChange(of: remindOn) { if remindOn && (times.isEmpty || !remindersEdited) { syncReminders(force: true) } }
         } header: {
             Text("Reminders")
         } footer: {
@@ -788,7 +990,7 @@ struct HabitForm: View {
         var habit = Habit(name: trimmedName, symbol: symbol, color: color, kind: .check)
         let cal = Calendar.current
         switch type {
-        case .build, .cutBack:
+        case .doIt, .amount, .time, .checklist, .cutBack:
             plan.apply(to: &habit)
             if plan.checklist { habit.steps = filledItems }
         case .quit:
@@ -798,7 +1000,7 @@ struct HabitForm: View {
             habit.kind = .task
             // A repeating task has no date: it comes back on its schedule.
             habit.dueDay = taskRepeats ? nil : LocalDay(taskDate)
-            if taskRepeats { habit.frequency = schedule.frequency }
+            if taskRepeats { habit.frequency = often.often(hasAmount: false).frequency(hasAmount: false, checklist: false) }
             if taskHasTime {
                 let c = cal.dateComponents([.hour, .minute], from: taskTime)
                 habit.dueMinute = (c.hour ?? 9) * 60 + (c.minute ?? 0)
@@ -864,7 +1066,7 @@ struct ChecklistItemsSection: View {
         } header: {
             Text("Steps")
         } footer: {
-            Text("A few steps to tick. They reset each time it's due, and the habit is done when every step is ticked.").formNote()
+            Text("A few steps to tick. They reset each time it comes round, and the habit is done when every step is ticked.").formNote()
         }
     }
 
@@ -873,6 +1075,32 @@ struct ChecklistItemsSection: View {
         withAnimation { items.append(item) }
         // After the row exists, so the field can take focus.
         DispatchQueue.main.async { focused = item.id }
+    }
+}
+
+extension View {
+    /// The habit's sentence pinned at the top of a screen the New Habit form opens, so it stays in view while
+    /// the choices scroll under it (the user, 29 Sep). Nil shows nothing.
+    @ViewBuilder func stickySentence(_ text: String?, id: String) -> some View {
+        if let text {
+            safeAreaInset(edge: .top, spacing: 0) {
+                Text(text)
+                    .font(.system(.title3, design: .rounded).weight(.bold))
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .background(.bar)
+                    .overlay(alignment: .bottom) { Divider() }
+                    .contentTransition(.opacity)
+                    .animation(.snappy, value: text)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityIdentifier(id)
+            }
+        } else {
+            self
+        }
     }
 }
 
@@ -890,13 +1118,18 @@ struct NumberRow: View {
     let suffix: String
     var focus: FocusState<HabitForm.Field?>.Binding
     let field: HabitForm.Field
+    /// What's typed. The value follows it key by key, so the previews update as the person types (29 Sep);
+    /// a number-formatted field only committed on leaving it.
+    @State private var text = ""
 
     var body: some View {
         HStack(spacing: 6) {
             Text(title).lineLimit(1).fixedSize()
             Spacer(minLength: 16)
             // Not fixedSize: a field sized to its placeholder clipped what was typed (reported 28 Sep).
-            TextField(placeholder, value: $value, format: .number)
+            TextField(placeholder, text: $text)
+                .onAppear { text = value.map(GoalNumber.text) ?? "" }
+                .onChange(of: text) { value = GoalNumber.parse(text).flatMap { $0 > 0 ? $0 : nil } }
                 .keyboardType(.decimalPad)
                 .multilineTextAlignment(.trailing)
                 .focused(focus, equals: field)
@@ -1100,8 +1333,7 @@ struct UnitPicker: View {
                     ("Exercise", ["reps", "sets", "push-ups", "workouts", "laps"]),
                     ("Reading and writing", ["pages", "chapters", "books"])]
         case .amount, .limit:
-            // Time first: it's the most common amount people give ("30 min a day"; 35.6% of amounts,
-            // "How People Describe a Habit" §3). It makes the habit timed, with ▶ on Today.
+            // Time isn't a unit here: Time it is its own type, with ▶ on Today.
             var list: [(String, [String])] = [
                 ("Drinking", ["glasses", "cups", "bottles"] + volume),
                 ("Walking and running", ["steps"] + distance),
@@ -1111,7 +1343,6 @@ struct UnitPicker: View {
                 ("Money", Self.money),
             ]
             if mode == .limit { list.insert(("Cutting down", ["cigarettes", "drinks", "coffees", "snacks"]), at: 0) }
-            if mode == .amount { list.insert(("Time", [HabitPlan.timeUnit]), at: 0) }
             return list
         }
     }

@@ -47,8 +47,11 @@ final class NewFlowUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["What do you want to do?"].waitForExistence(timeout: 3))
         shot("f01-what-to-create")
 
-        // Build or maintain goes straight to the one form: no type screen (Round 3).
+        // Build or maintain asks how to track it, then the form (the user kept this step, 29 Sep).
         row("Build or maintain").tap()
+        XCTAssertTrue(app.staticTexts["How do you want to track it?"].waitForExistence(timeout: 3))
+        shot("f02-how-to-track")
+        row("Check it off,").tap()
         XCTAssertTrue(app.navigationBars["New Habit"].waitForExistence(timeout: 3))
         let field = app.descendants(matching: .any)["name-field"]
         field.tap(); field.typeText("Brush teeth\n")
@@ -61,7 +64,7 @@ final class NewFlowUITests: XCTestCase {
         app.buttons["often-per-day-Increment"].tap(); app.buttons["often-per-day-Increment"].tap()
         shot("f04-how-often-screen")
         back()
-        XCTAssertEqual(app.descendants(matching: .any)["habit-sentence"].label, "Brush teeth 4 times a day")
+        XCTAssertEqual(app.descendants(matching: .any)["habit-sentence"].label, "Brush teeth 4 times a day, anytime")
         // Time of Day: Morning and Afternoon. The goal must stay 4.
         row("Time of Day").tap()
         XCTAssertTrue(app.navigationBars["Time of Day"].waitForExistence(timeout: 3))
@@ -79,20 +82,24 @@ final class NewFlowUITests: XCTestCase {
         sleep(1)
         shot("f03b-compact-form")
         form.swipeUp()
+        row("Reminders").tap()
+        XCTAssertTrue(app.navigationBars["Reminders"].waitForExistence(timeout: 3))
         XCUIDevice.shared.appearance = .dark
         sleep(1)
         shot("f06-reminders-dark")
         XCUIDevice.shared.appearance = .light
         sleep(1)
         shot("f06b-reminders-light")
-        // Off hides the reminder rows and how to be reminded.
+        // Reminders start off; on shows the rows, off hides them again.
         let remind = app.switches["Remind Me"].firstMatch
+        remind.switches.firstMatch.tap()
+        XCTAssertTrue(app.buttons["Add Another Reminder"].waitForExistence(timeout: 2), "On shows the reminders")
         remind.switches.firstMatch.tap()
         XCTAssertFalse(app.buttons["Add Another Reminder"].waitForExistence(timeout: 1), "Reminders hide when the switch is off")
         shot("f06c-reminders-off-light")
         remind.switches.firstMatch.tap()
-        form.swipeUp()
         XCTAssertTrue(app.buttons["Add Another Reminder"].waitForExistence(timeout: 2), "Switching it back on shows the reminders again")
+        back()
         XCUIDevice.shared.appearance = .dark
         app.navigationBars["New Habit"].buttons["Add"].tap()
         sleep(3)

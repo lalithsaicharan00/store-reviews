@@ -26,7 +26,8 @@ final class ScheduleUITests: XCTestCase {
     private func create(name: String = "Practice") {
         app.launch()
         app.navigationBars.buttons["New Habit"].tap()
-        row("Build or maintain").tap()
+        row("Build or maintain,").tap()
+        row("Check it off,").tap()
         let field = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(field.waitForExistence(timeout: 3)); field.tap(); field.typeText(name + "\n")
         row("How often").tap()
@@ -42,57 +43,76 @@ final class ScheduleUITests: XCTestCase {
         XCTAssertEqual(result.label, "Placement: all checks passed")
     }
 
+    /// Every few days, weeks (days optional) or months, each read back in the pinned sentence.
     func testEveryFewDaysAndWeeks() {
         create(name: "Jog")
-        app.buttons["often-every"].tap()
-        XCTAssertTrue(summary.hasPrefix("Every other day"), summary)
+        app.revealAndTap(app.buttons["often-everyDays"])
+        XCTAssertEqual(summary, "Jog every other day, anytime")
         app.buttons["often-every-count-Increment"].tap()
-        XCTAssertTrue(summary.hasPrefix("Every 3 days"), summary)
+        XCTAssertEqual(summary, "Jog every 3 days, anytime")
         shot("often-every-3-days")
-        app.buttons["Few weeks"].tap()
+        app.revealAndTap(app.buttons["often-everyWeeks"])
+        XCTAssertEqual(summary, "Jog every other week, anytime", "No days needed")
+        let days = app.switches["often-weeks-days"]
+        XCTAssertEqual(days.value as? String, "0", "Set days are off until wanted")
+        days.switches.firstMatch.tap()
         let today = Calendar.current.standaloneWeekdaySymbols[Calendar.current.component(.weekday, from: .now) - 1]
-        XCTAssertTrue(summary.hasPrefix("Every 3 weeks on \(today)") || summary.hasPrefix("Every other week on \(today)"), summary)
+        XCTAssertEqual(summary, "Jog every other week on \(today), anytime")
         shot("often-every-weeks")
+        app.revealAndTap(app.buttons["often-everyMonths"])
+        XCTAssertTrue(summary.contains("every 3 months"), summary)
         back()
-        XCTAssertTrue(sentence.hasPrefix("Jog every"), sentence)
+        XCTAssertTrue(sentence.hasPrefix("Jog "), sentence)
     }
 
     func testMonthDatesAndShortMonths() {
         create(name: "Pay rent")
-        app.buttons["often-date"].tap()
+        app.revealAndTap(app.buttons["often-date"])
         let day = app.buttons["Day 31"]
-        for _ in 0..<4 where !day.isHittable { app.swipeUp() }
+        app.reveal(day)
         day.tap()
         let policy = row("Shorter months")
-        for _ in 0..<3 where !policy.isHittable { app.swipeUp() }
+        app.reveal(policy)
         XCTAssertTrue(policy.exists, "A date over the 28th asks what shorter months do")
-        XCTAssertTrue(app.staticTexts["Months without that date use their last day."].exists)
+        let note = app.staticTexts["Months without that date use their last day."]
+        app.reveal(note)
+        XCTAssertTrue(note.exists)
         app.swipeDown(); shot("often-month-dates-policy")
     }
 
     func testYearlyDateAndLeapDay() {
         create(name: "Anniversary")
-        app.buttons["often-date"].tap()
-        app.buttons["Year"].tap()
-        row("Month,").tap(); app.buttons["February"].firstMatch.tap()
-        row("Date,").tap(); app.buttons["29th"].firstMatch.tap()
-        XCTAssertTrue(summary.hasPrefix("Every year on February 29"), summary)
+        app.revealAndTap(app.buttons["often-date"])
+        app.revealAndTap(app.buttons["Year"])
+        app.revealAndTap(row("Month,")); app.buttons["February"].firstMatch.tap()
+        app.revealAndTap(row("Date,"))
+        let date = app.buttons["29th"].firstMatch
+        app.reveal(date); date.tap()
+        XCTAssertEqual(summary, "Anniversary every year on February 29, anytime")
         let leap = row("Years without 29 February")
-        for _ in 0..<3 where !leap.isHittable { app.swipeUp() }
+        app.reveal(leap)
         XCTAssertTrue(leap.exists)
         leap.tap(); app.buttons["Skip that year"].firstMatch.tap()
         app.swipeDown(); shot("often-yearly-leap-policy")
         back()
-        XCTAssertEqual(sentence, "Anniversary every year on February 29")
+        XCTAssertEqual(sentence, "Anniversary every year on February 29, anytime")
     }
 
+    /// A task's How often is the habit screen without counts, plus After it's done.
     func testTaskAfterCompletion() {
         app.launch()
         app.navigationBars.buttons["New Habit"].tap(); row("Add a task").tap()
         let name = app.descendants(matching: .any)["name-field"]
         name.tap(); name.typeText("Replace filter\n")
+        XCTAssertEqual(sentence, "Replace filter today")
         row("Repeat,").tap(); app.buttons["On a schedule"].firstMatch.tap()
-        row("How often, Every day").tap(); app.buttons["After completion"].firstMatch.tap()
+        row("How often").tap()
+        XCTAssertFalse(app.buttons["often-timesADay"].exists, "No counts for a task")
+        XCTAssertFalse(app.buttons["often-times"].exists, "No counts for a task")
+        let after = app.buttons["often-afterDone"]
+        app.reveal(after)
+        after.tap()
+        XCTAssertEqual(summary, "Replace filter 1 week after it's done, anytime")
         shot("task-after-completion")
         back(); XCTAssertTrue(row("How often, 1 week after it's done").exists)
     }
@@ -101,10 +121,10 @@ final class ScheduleUITests: XCTestCase {
         app.launchArguments += ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
         create()
         let certain = app.buttons["often-weekdays"]
-        for _ in 0..<6 where !certain.isHittable { app.swipeUp() }
+        app.reveal(certain)
         certain.tap()
         let monday = app.buttons["Monday"]
-        for _ in 0..<5 where !monday.isHittable { app.swipeUp() }
+        app.reveal(monday)
         XCTAssertTrue(monday.isHittable)
         XCTAssertGreaterThanOrEqual(monday.frame.height, 44)
         shot("often-accessibility-text-weekdays")

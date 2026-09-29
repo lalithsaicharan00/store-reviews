@@ -9,7 +9,7 @@ struct HabitsApp: App {
     var body: some Scene {
         WindowGroup {
             #if DEBUG
-            if ["-placementcheck", "-schedulecheck", "-copycheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
             } else {
                 today
@@ -46,6 +46,11 @@ private struct PlacementCheckView: View {
     var body: some View {
         Text(result).padding().task {
             let arguments = ProcessInfo.processInfo.arguments
+            if arguments.contains("-focuscheck") {
+                let failures = await FocusPlayerCheck.run()
+                result = failures.isEmpty ? "Focus: all checks passed" : "Focus failed: " + failures.joined(separator: "; ")
+                return
+            }
             if arguments.contains("-copycheck") {
                 // The copy checks name each wrong phrase, so a failure says exactly which words to fix.
                 let failures = CopyCheck.run()

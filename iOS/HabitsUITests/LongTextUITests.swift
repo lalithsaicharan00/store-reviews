@@ -30,16 +30,7 @@ final class LongTextUITests: XCTestCase {
 
     /// From the top of Today, scrolls down slowly until `element` is on screen.
     private func find(_ element: XCUIElement) -> Bool {
-        let window = app.windows.firstMatch
-        for _ in 0..<4 { app.swipeDown() }
-        // Short drags avoid jumping over compact rows on the SE.
-        for _ in 0..<20 {
-            if element.exists && element.isHittable && element.frame.minY > 100 && element.frame.maxY < window.frame.maxY - 90 { return true }
-            let upward = !element.exists || element.frame.minY > window.frame.midY
-            window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: upward ? 0.65 : 0.35))
-                .press(forDuration: 0.05, thenDragTo: window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: upward ? 0.42 : 0.58)))
-        }
-        return element.exists && element.isHittable
+        app.reveal(element, clear: true, maxSwipes: 20)
     }
 
     private func button(startingWith text: String) -> XCUIElement {
@@ -62,8 +53,8 @@ final class LongTextUITests: XCTestCase {
         }
         visible(["Build or maintain", "Quit or cut down", "Add a task"])
         button(startingWith: "Build or maintain").tap()
-        XCTAssertTrue(app.navigationBars["New Habit"].waitForExistence(timeout: 3), "Build or maintain opens the form: no type screen")
-        visible(["How much", "How often"])
+        XCTAssertTrue(app.navigationBars["Build or maintain"].waitForExistence(timeout: 3), "Build or maintain asks how to track it")
+        visible(["Check it off", "Track an amount", "Time it", "Checklist"])
         shot("01b-build")
         app.navigationBars.buttons["BackButton"].firstMatch.tap()
         button(startingWith: "Quit or cut down").tap()
@@ -73,19 +64,17 @@ final class LongTextUITests: XCTestCase {
 
     func testTodayWithLongText() {
         let morning = button(startingWith: "Before breakfast")
-        for _ in 0..<4 where !morning.exists { app.swipeUp() }
+        app.reveal(morning)
         XCTAssertTrue(morning.exists)
-        app.swipeDown(); app.swipeDown(); app.swipeDown()
         // Long names show 15 characters, then "…", on one line.
         let water = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Drink a big glass'")).firstMatch
-        for _ in 0..<3 where !water.exists { app.swipeUp() }
+        app.reveal(water)
         XCTAssertTrue(water.exists)
         XCTAssertLessThan(water.frame.height, 30, "A long name stays on one line (15 characters, then …)")
-        app.swipeDown(); app.swipeDown()
         shot("02-today-open")
         // The circular play control retains a 44 pt tap target beside a long name.
         let start = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Start ' AND label ENDSWITH ' routine'")).firstMatch
-        for _ in 0..<3 where !start.exists { app.swipeUp() }
+        app.reveal(start)
         XCTAssertTrue(start.exists, "Routine play remains available")
         XCTAssertGreaterThanOrEqual(start.frame.width, 44, "Play keeps its accessible tap target")
         // Bring the Now card to the middle of the screen for the picture.
@@ -93,9 +82,9 @@ final class LongTextUITests: XCTestCase {
         if start.frame.midY > middle { app.windows.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8)).press(forDuration: 0.05, thenDragTo: app.windows.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8 - (start.frame.midY - middle) / app.windows.firstMatch.frame.height))) }
         sleep(1)
         shot("03-today-now-open")
-        app.swipeDown(); app.swipeDown()
         // Quitting starts open and folds like the other cards.
         let quitting = button(startingWith: "Quitting")
+        app.reveal(quitting, clear: true)
         XCTAssertTrue(quitting.waitForExistence(timeout: 2))
         let smoking = app.descendants(matching: .any).matching(NSPredicate(format: "label BEGINSWITH 'Smoking'")).firstMatch
         XCTAssertTrue(smoking.exists, "Quitting starts open")
@@ -130,6 +119,7 @@ final class LongTextUITests: XCTestCase {
     func testFormWithLongText() {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
         button(startingWith: "Build or maintain").tap()
+        button(startingWith: "Track an amount").tap()
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.tap()
@@ -142,9 +132,10 @@ final class LongTextUITests: XCTestCase {
 
         // How much: 12 of a long unit of your own (units stop at 12 characters).
         button(startingWith: "How much").tap()
-        app.buttons["much-amount"].tap()
         let amount = app.textFields["much-number"]
-        amount.tap(); sleep(1); amount.typeText("12")
+        XCTAssertTrue(amount.waitForExistence(timeout: 2))
+        amount.tap(); sleep(1)
+        amount.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 6) + "12")
         let done = app.toolbars.buttons["Done"].firstMatch
         if done.exists && done.isHittable { done.tap(); sleep(1) }
         app.buttons["much-unit"].tap()
@@ -159,7 +150,7 @@ final class LongTextUITests: XCTestCase {
         app.navigationBars.buttons["BackButton"].firstMatch.tap(); sleep(1)
 
         // Time of Day: the long-named lunch section.
-        button(startingWith: "Time of Day").tap()
+        app.revealAndTap(button(startingWith: "Time of Day"))
         XCTAssertTrue(app.navigationBars["Time of Day"].waitForExistence(timeout: 3))
         // The Time of Day row itself (the Today header behind the sheet also starts "Lunch break").
         let lunch = app.buttons["Lunch break walk"].firstMatch
@@ -169,7 +160,9 @@ final class LongTextUITests: XCTestCase {
         app.navigationBars.buttons["BackButton"].firstMatch.tap(); sleep(1)
         shot("12-form-long-section")
         // The whole sentence still reads as one, with the longest name and unit.
-        XCTAssertEqual(app.descendants(matching: .any)["habit-sentence"].label, "Read one more chapter of 12 tablespoons a day")
+        let sentence = app.descendants(matching: .any)["habit-sentence"]
+        app.reveal(sentence)
+        XCTAssertEqual(sentence.label, "Read one more chapter of 12 tablespoons a day, Lunch break walk")
         app.navigationBars["New Habit"].buttons["Add"].tap()
         let allow = XCUIApplication(bundleIdentifier: "com.apple.springboard").buttons["Allow"]
         if allow.waitForExistence(timeout: 3) { allow.tap() }

@@ -245,7 +245,8 @@ final class ReminderScheduler {
     private static func category(for habit: Habit) -> String {
         switch habit.kind {
         case .check, .task: singleCategory
-        case .amount: addCategoryPrefix + habit.id.uuidString
+        // "Ask how much" has no one-tap step, so its reminder has no "+" action.
+        case .amount: habit.quickIncrement == nil ? "" : addCategoryPrefix + habit.id.uuidString
         default: ""
         }
     }

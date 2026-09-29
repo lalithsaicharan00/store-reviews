@@ -52,6 +52,13 @@ interface HabitDao {
     @Transaction
     suspend fun snapshot(): Snapshot = Snapshot(habits(), steps(), reminders(), entries(), settings())
 
+    /** Stopping a timer must never save elapsed time without removing its running marker. */
+    @Transaction
+    suspend fun finishTimer(entry: EntryRecord?, key: String) {
+        if (entry != null) insertEntries(listOf(entry))
+        deleteSetting(key)
+    }
+
     /** A habit with its steps and reminders, saved all-or-nothing. */
     @Transaction
     suspend fun saveHabit(habit: HabitRecord, steps: List<StepRecord>, reminders: List<ReminderRecord>, at: Long) {

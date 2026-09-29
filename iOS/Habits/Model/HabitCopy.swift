@@ -372,6 +372,13 @@ enum HabitCopy {
         return "\(name) \(text)"
     }
 
+    /// The parts of the day as they end a sentence: "morning and afternoon", "evening", "before work".
+    /// The usual parts read in lower case; a part the person named keeps their spelling.
+    static func partsPhrase(_ names: [String]) -> String {
+        let usual: Set<String> = ["morning", "afternoon", "evening", "night"]
+        return join(names.map { usual.contains($0.lowercased()) ? $0.lowercased() : $0 })
+    }
+
     /// Today's extra line for rules that name days ("Every Mon and Wed", "On the 1st of every month").
     /// Empty when the progress line already says how often ("1/3 this week", "0/8 glasses").
     static func todayCaption(_ habit: Habit, weekStart: Int) -> String {

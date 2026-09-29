@@ -39,14 +39,14 @@ enum Outcome {
         let at = "at " + list(times.map { DaySection.clock($0.minuteOfDay) })
         var sentence: String
         if habit.atMost {
-            sentence = "\(word) \(at) each day it's due."
+            sentence = "\(word) \(at) on each of its days."
         } else if habit.kind == .task {
             sentence = "\(word) \(at) on the day. None once it's done."
         } else if let until = periodRule(habit, forReminders: true) {
             sentence = "\(word) \(at) each day until \(until)."
         } else {
             let ticks = !store.slots(of: habit).isEmpty
-            sentence = "\(word) \(at) on days it's due. " + (ticks ? "None for a part of the day you've already finished." : "None once it's done for the day.")
+            sentence = "\(word) \(at) on its days. " + (ticks ? "None for a part of the day you've already finished." : "None once it's done for the day.")
         }
         if alarm {
             sentence += " It rings even on silent, until you stop it. Stopping it doesn't tick the habit; its Done button does."

@@ -50,6 +50,24 @@ class HabitRepositoryTest {
         repo.close()
     }
 
+    @Test fun stoppingATimerCommitsTimeAndRemovesItsRunningMarker() = runTest {
+        val repo = HabitRepository.open(path)
+        repo.saveHabit(habit(), emptyList(), emptyList(), 1_000)
+        repo.saveSetting("timer.h1", "1000")
+        repo.finishTimer(entry("timer-entry"), "timer.h1")
+        // Replaying the same completed transaction must not duplicate time.
+        repo.finishTimer(entry("timer-entry"), "timer.h1")
+        repo.close()
+        val reopened = HabitRepository.open(path)
+        assertEquals(listOf("timer-entry"), reopened.load().entries.map { it.id })
+        assertTrue(reopened.load().settings.none { it.key == "timer.h1" })
+        reopened.saveSetting("timer.h1", "2000")
+        reopened.finishTimer(null, "timer.h1")
+        assertEquals(1, reopened.load().entries.size)
+        assertTrue(reopened.load().settings.none { it.key == "timer.h1" })
+        reopened.close()
+    }
+
     @Test fun undoKeepsATombstoneAndHidesTheEntry() = runTest {
         val repo = HabitRepository.open(path)
         repo.saveHabit(habit(), emptyList(), emptyList(), 1_000)

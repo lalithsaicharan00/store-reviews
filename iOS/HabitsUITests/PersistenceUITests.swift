@@ -35,6 +35,7 @@ final class PersistenceUITests: XCTestCase {
         app.buttons["New Habit"].firstMatch.tap()
         XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check it off'")).firstMatch.tap()
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.tap()

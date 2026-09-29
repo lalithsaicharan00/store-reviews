@@ -34,12 +34,13 @@ final class FormWalkthroughUITests: XCTestCase {
 
     private func scrollTo(_ element: XCUIElement) {
         let form = app.collectionViews["habit-form"]
-        for _ in 0..<6 where !(element.exists && element.isHittable) { form.swipeUp() }
+        app.reveal(element)
     }
 
-    private func open(name: String) {
+    private func open(name: String, type: String = "Check it off") {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        row("Build or maintain").tap()
+        row("Build or maintain,").tap()
+        row(type + ",").tap()
         let field = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(field.waitForExistence(timeout: 3))
         field.tap()
@@ -47,6 +48,7 @@ final class FormWalkthroughUITests: XCTestCase {
     }
 
     private func pickParts(_ parts: [String]) {
+        scrollTo(row("Time of Day"))
         row("Time of Day").tap()
         XCTAssertTrue(app.navigationBars["Time of Day"].waitForExistence(timeout: 3))
         for part in parts { app.buttons[part].firstMatch.tap() }
@@ -61,15 +63,19 @@ final class FormWalkthroughUITests: XCTestCase {
         XCTAssertTrue(row("Time of Day, Anytime").exists, "Anytime is the default")
         pickParts(["Morning", "Evening"])
         XCTAssertTrue(row("Time of Day, Morning and Evening").exists)
-        // One reminder per time of day, labelled with its part (count by name: Starts is a date picker too).
+        // Reminders start off; turned on, there's one per time of day, labelled with its part.
+        let reminders = row("Reminders")
+        scrollTo(reminders)
+        XCTAssertEqual(reminders.label, "Reminders, Off")
+        reminders.tap()
+        app.switches["Remind Me"].firstMatch.switches.firstMatch.tap()
         for part in ["Morning", "Evening"] {
-            let reminder = app.staticTexts["\(part) reminder"]
-            scrollTo(reminder)
-            XCTAssertTrue(reminder.exists, "\(part) has its reminder")
+            XCTAssertTrue(app.staticTexts["\(part) reminder"].waitForExistence(timeout: 2), "\(part) has its reminder")
         }
         shot("w03-reminders-on")
-        app.collectionViews["habit-form"].swipeUp()
+        app.swipeUp()
         shot("w04-reminders-footer")
+        app.navigationBars.buttons["BackButton"].firstMatch.tap(); sleep(1)
         app.navigationBars["New Habit"].buttons["Add"].tap()
         let allow = XCUIApplication(bundleIdentifier: "com.apple.springboard").buttons["Allow"]
         if allow.waitForExistence(timeout: 3) { allow.tap() }
@@ -79,7 +85,7 @@ final class FormWalkthroughUITests: XCTestCase {
 
     /// Parts of the day are multi-select for every type, amounts included.
     func testAmountPicksSeveralParts() {
-        open(name: "Water")
+        open(name: "Water", type: "Track an amount")
         pickParts(["Morning", "Afternoon"])
         XCTAssertTrue(row("Time of Day, Morning and Afternoon").exists)
         shot("w06-amount-two-parts")
