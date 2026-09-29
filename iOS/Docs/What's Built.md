@@ -124,6 +124,7 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 ## Settings
 
 - [x] The avatar on Today opens Settings: Plan (Free, N of 5, Plus…), Day Ends At (midnight to noon), Week Starts On (any day), Times of Day, Show Streaks, Notifications (with a way back if off), How It Works (searchable), Privacy, Version
+- [x] Your Data: in the phone's backups; Export a Spreadsheet (CSV); Save a Backup File; Restore from a Backup File (adds only what's missing)
 - [ ] Contact Support (waits for a support address)
 
 ## Under the hood

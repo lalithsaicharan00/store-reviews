@@ -41,7 +41,11 @@ struct HelpView: View {
         Topic(id: "Turn off vibration or sound",
               answer: "In Settings, under When You Log, switch Haptics or Sounds. Sounds are off until you turn them on."),
         Topic(id: "Where my data is",
-              answer: "On this iPhone only. There's no account and nothing is sent anywhere."),
+              answer: "On this iPhone only, and in its own iCloud or computer backups. There's no account and nothing is sent anywhere."),
+        Topic(id: "Back up or move to a new phone",
+              answer: "In Settings, under Your Data, Save a Backup File and keep it in Files or send it to yourself. On the new phone, Restore from a Backup File. Restoring only adds what's missing."),
+        Topic(id: "Open my history in a spreadsheet",
+              answer: "In Settings, under Your Data, Export a Spreadsheet (CSV). Each row is a day's entry or note, with its date."),
     ]
 
     private var shown: [Topic] {

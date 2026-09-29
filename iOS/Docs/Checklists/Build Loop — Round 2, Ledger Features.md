@@ -39,3 +39,17 @@ Research: [Check-off Feedback — Haptics, Sound and Animation](<../../../Resear
 | L6.4 | One small bounce of ✓; none with Reduce Motion; no confetti | [x] |
 | L6.5 | Feedback only right after a tap on that button (not when the day changes) | [x] |
 | L6.6 | #58: the done row stays in place until the next log (it offers Add note), so the fill finishes where the person looks | [x] Already true; recorded |
+
+## Loop 7 — Export and backup (C020, C034, C176)
+
+Research: [Export and Backup — Keeping Your Own Data](<../../../Research/Research Reports/Data, Sync and Accounts/Export and Backup — Keeping Your Own Data.md>), building on the Data Safety report.
+
+| # | Point | Done |
+|---|---|---|
+| L7.1 | Settings → Your Data: "Included in your iPhone's backups" (the database is in Application Support) | [x] |
+| L7.2 | Export a Spreadsheet (CSV): local dates, habit, what, amount, unit, note; archived habits too | [x] `DataExport` |
+| L7.3 | Save a Backup File: a consistent copy of the database, shared through the share sheet | [x] `HabitStore.backupFile` |
+| L7.4 | Restore from a Backup File: adds only what's missing; never overwrites, never revives; old backups upgrade; no free-limit stop | [x] `HabitStore.restore`, Core `mergeAll` |
+| L7.5 | Tell the person what was added | [x] |
+| L7.6 | Core test for the merge | [x] `mergingABackupAddsOnlyWhatIsMissing` (written; not run: Google Maven blocked here) |
+| L7.7 | Help answers for backup, moving phones, the spreadsheet | [x] |

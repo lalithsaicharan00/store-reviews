@@ -40,6 +40,39 @@ class HabitRepositoryTest {
         reopened.close()
     }
 
+    /** Restoring a backup adds what's missing and never overwrites newer edits, deletions or settings. */
+    @Test fun mergingABackupAddsOnlyWhatIsMissing() = runTest {
+        val backupPath = File(dir, "backup.db").path
+        val backup = HabitRepository.open(backupPath)
+        backup.saveHabit(habit(name = "Water (old name)"), emptyList(), emptyList(), 1_000)
+        backup.saveHabit(habit(id = "h2", name = "Read"), emptyList(), emptyList(), 1_000)
+        backup.addEntry(entry("e1"))
+        backup.addEntry(entry("e-old", day = "2026-09-01"))
+        backup.addEntry(entry("gone"))
+        backup.saveSetting("day_end_hour", "0")
+        backup.saveSetting("note.h1|2026-09-01", "From the backup")
+        backup.saveSetting("timer.h1", "1000")
+        val snapshot = backup.load()
+        backup.close()
+
+        val repo = HabitRepository.open(path)
+        repo.saveHabit(habit(name = "Water"), emptyList(), emptyList(), 2_000)
+        repo.addEntry(entry("e1"))
+        repo.addEntry(entry("gone"))
+        repo.removeEntry("gone", 3_000)
+        repo.saveSetting("day_end_hour", "3")
+        repo.mergeAll(snapshot)
+        repo.mergeAll(snapshot) // restoring twice changes nothing more
+
+        val merged = repo.load()
+        assertEquals(listOf("Water", "Read"), merged.habits.map { it.name }, "newer edits win; missing habits are added")
+        assertEquals(setOf("e1", "e-old"), merged.entries.map { it.id }.toSet(), "missing days are added; a deleted entry stays deleted")
+        assertEquals("3", merged.settings.single { it.key == "day_end_hour" }.value, "this phone's settings win")
+        assertEquals("From the backup", merged.settings.single { it.key == "note.h1|2026-09-01" }.value, "missing notes are added")
+        assertTrue(merged.settings.none { it.key.startsWith("timer.") }, "an old running timer doesn't restart")
+        repo.close()
+    }
+
     @Test fun theSameTapSavedTwiceCountsOnce() = runTest {
         val repo = HabitRepository.open(path)
         repo.saveHabit(habit(), emptyList(), emptyList(), 1_000)

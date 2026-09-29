@@ -1156,6 +1156,52 @@ final class HabitStore {
         withAnimation { _ = entries.remove(at: i) }
     }
 
+    // MARK: Your data: export, backup file, restore (report "Export and Backup — Keeping Your Own Data", 29 Sep)
+
+    enum RestoreError: LocalizedError {
+        case notABackup
+        var errorDescription: String? { "This file isn't a Habits backup, or it was made by a newer version of the app." }
+    }
+
+    /// A file with everything, to keep somewhere else or move to another phone: a consistent copy of the database, the
+    /// same format on every platform, which a later version of the app upgrades when it's restored.
+    func backupFile(now: Date = .now) async throws -> URL {
+        await flush()
+        let url = FileManager.default.temporaryDirectory
+            .appendingPathComponent("Habits Backup \(LocalDay(now, calendar: calendar).key).db")
+        for suffix in ["", "-wal", "-shm"] { try? FileManager.default.removeItem(atPath: url.path + suffix) }
+        try await repository.snapshot(path: url.path)
+        return url
+    }
+
+    /// Adds what a backup file has and this iPhone doesn't: never changes, overwrites or brings back anything here
+    /// (`HabitRepository.mergeAll`). Returns how many habits and logged entries were added.
+    func restore(from file: URL) async throws -> (habits: Int, entries: Int) {
+        await flush()
+        let fm = FileManager.default
+        let scoped = file.startAccessingSecurityScopedResource()
+        defer { if scoped { file.stopAccessingSecurityScopedResource() } }
+        // Work on a copy: opening it may upgrade an older backup, and the person's file stays as it was.
+        let copy = fm.temporaryDirectory.appendingPathComponent("restore-\(UUID().uuidString).db")
+        try fm.copyItem(at: file, to: copy)
+        defer { for suffix in ["", "-wal", "-shm"] { try? fm.removeItem(atPath: copy.path + suffix) } }
+        let source = HabitRepository.companion.open(path: copy.path)
+        let snapshot: Snapshot
+        do {
+            snapshot = try await source.load()
+        } catch {
+            source.close()
+            throw RestoreError.notABackup
+        }
+        source.close()
+        guard !snapshot.habits.isEmpty else { throw RestoreError.notABackup }
+        let knownHabits = Set(habits.map(\.id))
+        let knownEntries = Set(entries.map(\.id))
+        try await repository.mergeAll(snapshot: snapshot)
+        await load()
+        return (habits.filter { !knownHabits.contains($0.id) }.count, entries.filter { !knownEntries.contains($0.id) }.count)
+    }
+
     // MARK: Undo on Today
 
     /// What was just logged on Today, offered back in a bar at the bottom with Undo (report "Undo After Logging",

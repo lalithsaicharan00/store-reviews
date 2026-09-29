@@ -97,6 +97,15 @@ Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Resear
 - **A note never changes progress**, and can be added on any past day, done or not.
 - **Note sheets are solid** (`presentationBackground`), like the calendar sheet.
 
+## Your data: export, backup, restore (built 29 Sep 2026)
+
+Source: [Export and Backup — Keeping Your Own Data](<../Research/Research Reports/Data, Sync and Accounts/Export and Backup — Keeping Your Own Data.md>) and the Data Safety report.
+
+- **Export, backup and restore are free, always** (C176, C262). Never put them behind Plus.
+- **Restore only adds** (Core `mergeAll`: insert-if-new): it never overwrites, never revives a deleted row, never restarts an old timer. Never use `importAll` (it upserts) for a person's file.
+- **The database stays in Application Support**, never Caches; the backup file is a consistent copy of it (`VACUUM INTO`), so any later version can open and upgrade it.
+- **Exported dates are local calendar days** (`LocalDay.key`), never UTC timestamps.
+
 ## Check-off feedback (built 29 Sep 2026)
 
 Source: [Check-off Feedback — Haptics, Sound and Animation](<../Research/Research Reports/Day Structure and Organization/Check-off Feedback — Haptics, Sound and Animation.md>).

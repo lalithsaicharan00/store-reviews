@@ -69,6 +69,25 @@ interface HabitDao {
         upsertReminders(reminders)
     }
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertHabitsIfNew(habits: List<HabitRecord>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertStepsIfNew(steps: List<StepRecord>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertRemindersIfNew(reminders: List<ReminderRecord>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertSettingsIfNew(settings: List<SettingRecord>)
+
+    /**
+     * Restoring from a backup file adds what's missing and never overwrites: a row this database already has (alive
+     * or deleted) wins, so an older backup can't undo newer edits, notes or goal history, and a deleted habit or
+     * entry doesn't come back (Data Safety B2, C230). Running timers from the backup are left out.
+     */
+    @Transaction
+    suspend fun mergeAll(snapshot: Snapshot) {
+        insertHabitsIfNew(snapshot.habits)
+        insertStepsIfNew(snapshot.steps)
+        insertRemindersIfNew(snapshot.reminders)
+        insertEntries(snapshot.entries)
+        insertSettingsIfNew(snapshot.settings.filter { !it.key.startsWith("timer.") })
+    }
+
     @Transaction
     suspend fun importAll(snapshot: Snapshot) {
         snapshot.habits.forEach { upsertHabit(it) }

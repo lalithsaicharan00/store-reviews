@@ -32,6 +32,9 @@ class HabitRepository private constructor(private val database: HabitDatabase) {
     /** Writes everything in one transaction; rows that already exist are kept as they are. */
     suspend fun importAll(snapshot: Snapshot) = dao.importAll(snapshot)
 
+    /** Adds a backup's rows that this database doesn't have; never overwrites or revives anything (see `HabitDao.mergeAll`). */
+    suspend fun mergeAll(snapshot: Snapshot) = dao.mergeAll(snapshot)
+
     /** A consistent copy of the whole database to `path` (SQLite `VACUUM INTO`), for local snapshots. */
     suspend fun snapshot(path: String) {
         database.useWriterConnection { transactor ->
