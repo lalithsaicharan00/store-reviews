@@ -18,6 +18,7 @@ struct TodayView: View {
     @State private var showCalendar = false
     @State private var showNewHabit = false
     @State private var showAllHabits = false
+    @State private var showProgress = false
     /// A habit's page, opened from its row's long-press menu (View Habit).
     @State private var pageHabit: UUID?
     /// The habit just added, revealed once the sheet closes.
@@ -47,6 +48,7 @@ struct TodayView: View {
             .environment(\.openHabitPage, { pageHabit = $0 })
             .toolbar { if !covered { topBar } }
             .navigationDestination(isPresented: $showAllHabits) { AllHabitsView() }
+            .navigationDestination(isPresented: $showProgress) { ProgressScreen() }
             .navigationDestination(item: $pageHabit) { HabitPageView(id: $0) }
             .toolbar { if !covered && store.isLoaded && !store.habits.isEmpty { dayBar } }
             .sheet(isPresented: $showCalendar) {
@@ -495,7 +497,7 @@ struct TodayView: View {
         }
         .hidingSharedBackground()
         ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Progress", systemImage: "chart.bar.xaxis") {}
+            Button("Progress", systemImage: "chart.bar.xaxis") { showProgress = true }
             Button("All habits", systemImage: "checklist") { showAllHabits = true }
         }
         if #available(iOS 26, *) {

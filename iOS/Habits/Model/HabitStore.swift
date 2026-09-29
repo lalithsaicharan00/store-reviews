@@ -59,6 +59,9 @@ final class HabitStore {
     /// The note being written in the note bar: a habit's note (`habit` set) or the day's note (`habit` nil).
     var noteTarget: NoteTarget?
     struct NoteTarget: Equatable { let habit: UUID?; let day: LocalDay }
+    /// Goes up by one after every saved change and every load, so heavy numbers (Progress) are worked out again only
+    /// when the data changed, never on a redraw (Design Rules: Speed).
+    private(set) var revision = 0
     /// Plus unlocks unlimited habits. Set from the store purchase (build-plan: billing, later).
     var isPlus = false
     static let freeHabitLimit = 5
@@ -221,7 +224,7 @@ final class HabitStore {
         return first...last
     }
 
-    private func periodRange(_ habit: Habit, containing day: LocalDay) -> ClosedRange<LocalDay>? {
+    func periodRange(_ habit: Habit, containing day: LocalDay) -> ClosedRange<LocalDay>? {
         switch habit.frequency {
         case .flexible(let kind, _):
             switch kind { case .week: period(.week, containing: day); case .month: period(.month, containing: day); case .year: period(.year, containing: day); case .day: day...day }
@@ -241,7 +244,7 @@ final class HabitStore {
     }
 
     /// Amounts, minutes and limits on a week or month rule: a total for the whole period.
-    private func isTotal(_ habit: Habit) -> Bool {
+    func isTotal(_ habit: Habit) -> Bool {
         switch habit.kind {
         case .amount, .duration: !habit.frequency.isDayBased
         default: false
@@ -549,7 +552,7 @@ final class HabitStore {
         return count
     }
 
-    private func hasPause(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Bool {
+    func hasPause(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Bool {
         pauses[habit.id]?.contains { p in p.from <= range.upperBound && (p.through.map { $0 >= range.lowerBound } ?? true) && (p.through.map { $0 >= p.from } ?? true) } == true
     }
 
@@ -660,6 +663,7 @@ final class HabitStore {
             dayNotes = loadedDayNotes
             descriptions = loadedDescriptions
             isLoaded = true
+            revision &+= 1
             if upgradedV1 && !repaired && !triedPlacementUpgrade { triedPlacementUpgrade = true; repairPlacement() }
             onChange?()
         } catch {
@@ -722,6 +726,7 @@ final class HabitStore {
             #endif
             do {
                 try await change()
+                revision &+= 1
                 onChange?()
             } catch {
                 problem = "That change couldn't be saved, so it was undone. Please try again."

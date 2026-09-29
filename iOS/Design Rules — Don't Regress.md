@@ -97,6 +97,17 @@ Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Resear
 - **A note never changes progress**, and can be added on any past day, done or not.
 - **Note sheets are solid** (`presentationBackground`), like the calendar sheet.
 
+## Progress and statistics (built 29 Sep 2026)
+
+Source: [Progress and Statistics — What People Want](<../Research/Research Reports/Progress and Statistics/Progress and Statistics — What People Want.md>).
+
+- **One tap from Today** (the chart button on the top bar), and a habit's own numbers on its page. Never tucked in a menu or a profile.
+- **One way of counting everywhere** (`HabitStats`): a planned day counts once; a week, month or year goal once for its period; skipped, paused and not-its-days are neutral; today, and a period still going, count only once met. Past days use the rule they had. Never count a weekly goal day by day ("3 times a week" done 3 times is 100%).
+- **The overall share always shows its raw numbers and the period before** ("82% done · 23 of 28 planned · last week 76%"), and every figure is explained in a line under it (C217).
+- **Weekly and monthly goals stay out of the daily bars.** The bars show each day's share of day-by-day habits.
+- **No scores, grades or radar charts; nothing paywalled** (C234). Quit habits show slips and the best run, never a rate.
+- **Heavy numbers are worked out once per change** (`HabitStore.revision` in a `.task(id:)`), never in `body`, so touching the chart stays instant.
+
 ## Undo after logging (built 29 Sep 2026)
 
 Source: [Undo After Logging](<../Research/Research Reports/Day Structure and Organization/Undo After Logging.md>).

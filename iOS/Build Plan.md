@@ -139,5 +139,5 @@ Rounds 7–9 (New Habit form Round 3/4 and the full-screen routine player) are r
 | 57 | **Easy undo after checking or logging** (snackbar or a suitable native presentation) | Built 29 Sep: the Undo bar on Today (`Docs/Checklists/Build Loop — Habit Page to Statistics.md`, research "Undo After Logging"). Also 29 Sep: the habit page's calendar fills in a past day, and View Habit opens the page from Today |
 | 58 | **Completion feedback:** finish the fill or check animation before the row moves below unfinished rows; smooth on repeated goals (the last of three checks) | Not started |
 | 59 | **Section open and close animation** beyond the current fade | Not started |
-| 60 | **Progress and statistics screens** | Not started |
+| 60 | **Progress and statistics screens** | Built 29 Sep: Progress from Today's top bar and statistics on the habit page (research "Progress and Statistics — What People Want"; `Docs/Checklists/Build Loop — Habit Page to Statistics.md`). Not compiled in the cloud session |
 | 61 | **Settings and account** (the avatar button) | Not started |

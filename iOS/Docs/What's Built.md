@@ -103,6 +103,13 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Tap a day in the habit page's calendar to fill it in or change it: Mark as Done / Not Done, times, Log Amount / Time with each entry deletable, checklist steps, Skip, and the day's note
 - [x] Long-press a row on Today → View Habit opens its page
 
+## Progress and statistics
+
+- [x] Progress, from the chart button on Today: the overall share done with its numbers and the period before, a bar per day, every habit side by side, quit habits' slips
+- [x] Week, Month and Year, back through every period; a year grid of every day
+- [x] Counted on each habit's own rhythm; skipped and paused days neutral; today counts once done
+- [x] Habit page: This month and All time share, total, a 30-day chart for amounts and time, the last 12 months
+
 ## Routine player (▶ Start on a time of day)
 
 - [x] Full screen, one habit at a time: header "Morning · 2/10 ⌄", progress segments, circle with icon and progress
@@ -122,6 +129,5 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 
 - [ ] Completion animation before a done row moves down
 - [ ] Section open and close animation
-- [ ] Progress and statistics screens
 - [ ] Settings and account
 - [ ] Sync, backup, widgets, Apple Watch, iPad, Apple Health

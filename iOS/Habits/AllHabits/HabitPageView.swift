@@ -16,6 +16,8 @@ struct HabitPageView: View {
     @State private var noteDay: LocalDay?
     /// The day opened from the calendar, to fill in or change (report "Filling In a Past Day From the Habit Page").
     @State private var openDay: LocalDay?
+    /// Its statistics, worked out when the data changes (Progress report, 29 Sep), never on a redraw.
+    @State private var stats: HabitStats?
 
     var body: some View {
         if let habit = store.habits.first(where: { $0.id == id }) {
@@ -54,7 +56,11 @@ struct HabitPageView: View {
                 }
             }
             if habit.kind != .task {
-                Section { numbers(habit) }
+                Section {
+                    numbers(habit)
+                } footer: {
+                    if habit.kind != .quit { Text(numbersFooter(habit)) }
+                }
             }
             if habit.kind != .quit && habit.kind != .task {
                 Section {
@@ -63,6 +69,22 @@ struct HabitPageView: View {
                                    onSelect: { openDay = $0 })
                 } footer: {
                     if !habit.archived { Text("Tap a day to fill it in or change it.") }
+                }
+                if let stats {
+                    if Self.logsAmounts(habit) {
+                        Section("Last 30 days") { HabitAmountChart(habit: habit, stats: stats) }
+                    }
+                    Section {
+                        let first = max(store.startDay(of: habit), today.adding(days: -364, calendar: store.calendar))
+                        YearGrid(first: first, last: today, color: habit.color.color, calendar: store.calendar,
+                                 value: { stats.dayShare(habit, on: $0) })
+                            .frame(height: 70)
+                            .padding(.vertical, 4)
+                            .accessibilityElement(children: .ignore)
+                            .accessibilityLabel("The last 12 months, a square per day")
+                    } header: {
+                        Text("Last 12 months")
+                    }
                 }
             }
             notesSection(habit, today: today)
@@ -90,6 +112,7 @@ struct HabitPageView: View {
                 Text("Archive stops it and keeps its history. Delete removes it and its history for good.")
             }
         }
+        .task(id: store.revision) { stats = HabitStats(store: store) }
         .navigationTitle(habit.name.capped(HabitRow.nameShown))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -144,7 +167,53 @@ struct HabitPageView: View {
                 stat(unit.short(store.bestStreak(of: habit)), "Best")
                 stat(done == 1 ? "1 day" : "\(done) days", "Done this month")
             }
+            if let stats {
+                // Success on its own rhythm, this month and since it started, and what it adds up to (Progress report).
+                let all = store.startDay(of: habit)...today
+                HStack(spacing: 0) {
+                    stat(Self.rate(stats.tally(habit, in: store.period(.month, containing: today))), "This month")
+                    stat(Self.rate(stats.tally(habit, in: all)), "All time")
+                    let total = Self.total(habit, stats: stats, in: all)
+                    stat(total.value, total.label)
+                }
+                .accessibilityIdentifier("habit-rates")
+            }
         }
+    }
+
+    /// Amounts and timed habits get the 30-day chart; for ticks and checklists the calendar is the chart.
+    private static func logsAmounts(_ habit: Habit) -> Bool {
+        switch habit.kind {
+        case .amount, .duration: true
+        default: false
+        }
+    }
+
+    private static func rate(_ tally: HabitStats.Tally) -> String {
+        tally.rate.map { ProgressScreen.percent($0) } ?? "Not yet"
+    }
+
+    /// "1,240 km" / "Total", "52 h" / "Total", "143 times" / "Total", "96 days" / "Days done".
+    private static func total(_ habit: Habit, stats: HabitStats, in range: ClosedRange<LocalDay>) -> (value: String, label: String) {
+        let total = stats.total(habit, in: range)
+        switch habit.kind {
+        case .amount(let unit, _): return (HabitCopy.amount(total, unit), "Total")
+        case .duration: return (Format.minutes(total), "Total")
+        case .check where habit.goal > 1 || habit.checkUnit != nil || !habit.frequency.isDayBased:
+            return (HabitCopy.amount(total, habit.checkUnit ?? (total == 1 ? "time" : "times")), "Total")
+        default:
+            let days = stats.daysDone(habit, in: range)
+            return (days == 1 ? "1 day" : "\(days) days", "Days done")
+        }
+    }
+
+    /// What the percentages count, under them (C217: an unexplained number reads as broken).
+    private func numbersFooter(_ habit: Habit) -> String {
+        var text = "This month and All time count each planned day once (a weekly or monthly goal once for its week or month). Skipped and paused days don't count."
+        if let since = stats?.unitSince(habit) {
+            text += " The total counts from \(PauseSheet.short(since, calendar: store.calendar)), when its unit changed."
+        }
+        return text
     }
 
     private func stat(_ value: String, _ label: String) -> some View {

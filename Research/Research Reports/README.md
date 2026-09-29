@@ -133,6 +133,14 @@ Evidence folders in this section:
 | [Today Screen Jobs, 49. Row Colours — One Colour per Habit, and How the Fill Should Look](<Home Screen and Visual Design/Today Screen Jobs/49. Row Colours — One Colour per Habit, and How the Fill Should Look.md>) | **Claude** | 26 Sep 2026 | 968 colour reviews read (habit apps, English). Per-habit colour: 364 praise (4.80★), 76 want it and can't (all-one-colour, random, paywalled), 65 want more colours or a picker, 38 colour by group, 8 want greys, 5 against. Fill: 17 complain about tinted/shaded rows (3.00★) — text vanishes, partial vs full look alike; App Store 1 uses the tinted base. No review compares white-base vs tinted-base or asks for a fill setting. Suggests: colour per habit by default, full palette incl. greys and a picker, white row + light tint fill, no fill-style setting. Evidence in `Today Screen Jobs/Today Jobs Evidence/Q49/`. |
 | [Today Screen Top Area, Round 3 — Requirements and Evidence](<Home Screen and Visual Design/Today Screen Top Area/Round 3/01. Evidence and Design Rationale.md>) | Codex | 24 Sep 2026 | Layout vs date, contextual editing/creation, scheduled vs total counts, zero/empty groups and day start. 32 prior reviews verified and all 51 new targeted matches read; rationale written before Figma changes. |
 
+## Progress and Statistics
+
+What people want to see about how their habits are going, how and where.
+
+| Report | Author | Date | What it is |
+|---|---|---|---|
+| [Progress and Statistics — What People Want](<Progress and Statistics/Progress and Statistics — What People Want.md>) | **Claude** | 29 Sep 2026 | 8,801 statistics reviews in 148 trackers (604 requests, 260 praises and 553 in the smaller themes read): the overall share with raw numbers and the week before, daily bars, every habit side by side on its own rhythm, Week / Month / Year, a year grid, totals in the habit's unit; one tap from Today, explained, free. |
+
 ## Data, Sync and Accounts
 
 Data loss, backup and restore, sync, accounts, switching phones and platforms, purchases and entitlements, dates and time.

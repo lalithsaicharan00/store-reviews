@@ -10,7 +10,7 @@ Written by Claude (Claude Code), 29 September 2026. The user's points for this r
 | U2 | Before each build, check the ledger cards; research how and where people expect it | [x] Each loop links its research |
 | U3 | Habit page first | [x] Loop 1 |
 | U4 | Edit Habit, if not finished | [x] Loop 2: already complete |
-| U5 | Statistics: deep research on what people want, how and where, then build | [ ] Loop 4 |
+| U5 | Statistics: deep research on what people want, how and where, then build | [x] Loop 4 |
 | U6 | Don't ask the user at each step | [x] |
 
 ## Loop 1 — Habit page: fill in a past day, open the page from Today
@@ -44,3 +44,24 @@ Research: [Undo After Logging](<../../../Research/Research Reports/Day Structure
 | L3.5 | No Undo after ⏸ on a timer (it would delete the time; player lesson) | [x] |
 | L3.6 | Keep the other visible ways back: ✓ again, Undo Last Entry, the day sheet's Delete | [x] |
 | L3.7 | UI test | [x] `UndoUITests` (written; not run: no Mac in this session) |
+
+## Loop 4 — Progress and statistics (#60)
+
+Research: [Progress and Statistics — What People Want](<../../../Research/Research Reports/Progress and Statistics/Progress and Statistics — What People Want.md>): 8,801 statistics reviews in 148 trackers; all 604 requests, 260 praises and 553 in the smaller themes read by hand. Ledger: C011, C012, C234, C216, C256, C217, C047, C038.
+
+| # | Point | Done |
+|---|---|---|
+| L4.1 | Where: one tap from Today (the chart button on the top bar), and a habit's own numbers on its page | [x] `ProgressScreen` |
+| L4.2 | The overall share of what was planned that got done, with raw numbers and the period before ("82% done · 23 of 28 planned · last week 76%") | [x] |
+| L4.3 | Counted on each habit's own rhythm: a planned day once, a weekly or monthly goal once per period; skipped and paused days neutral; today and a period still going count once met | [x] `HabitStats` |
+| L4.4 | A bar per day (per month in Year), exact numbers on touch; weekly goals stay out of the daily bars | [x] Swift Charts, `chartXSelection` |
+| L4.5 | Week / Month / Year and ‹ › through every past period | [x] |
+| L4.6 | Year: a grid of every day (GitHub-style) | [x] `YearGrid` |
+| L4.7 | Every habit side by side with its share, a bar and "6 of 7 days · 42 km"; tap for its page | [x] |
+| L4.8 | Quit habits: slips in the period and the best run | [x] |
+| L4.9 | Habit page: This month and All time share, a total in its own unit (or days done), a 30-day chart with the goal line for amounts and time, the last 12 months as a grid | [x] |
+| L4.10 | Every number explained under it; nothing scored, graded or paywalled | [x] Footers |
+| L4.11 | Fast: worked out once per change (`HabitStore.revision`), never while a finger moves on a chart | [x] |
+| L4.12 | UI test | [x] `ProgressUITests` (written; not run: no Mac in this session) |
+
+**Not built, on purpose** (in the report): overlaying habits on one graph / correlations, scores and radar charts, category statistics, export, time-of-day patterns.
