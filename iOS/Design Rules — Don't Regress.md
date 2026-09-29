@@ -97,6 +97,17 @@ Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Resear
 - **A note never changes progress**, and can be added on any past day, done or not.
 - **Note sheets are solid** (`presentationBackground`), like the calendar sheet.
 
+## Settings (built 29 Sep 2026)
+
+Source: [Settings — What People Need There](<../Research/Research Reports/Settings and Help/Settings — What People Need There.md>).
+
+- **The avatar opens a Settings sheet; values apply as they change.** Only rows with documented need; add a row only with evidence (C006).
+- **Day Ends At runs from midnight to noon, Week Starts On allows all seven days.** Never cap the day end at 5 am (shift workers end at 8) and never fix the week start by region.
+- **Show Streaks is on by default**; off hides Today's flame only. Streaks are still counted and shown on the habit's page.
+- **If notifications are off for the app, Settings says so and links to iOS Settings** (C288).
+- **How It Works names the exact place to tap.** When a way in changes, change its answer in `HelpView.topics` in the same change.
+- **The Privacy line must stay true.** If anything ever leaves the phone (sync, analytics), change it the same day (C218).
+
 ## Progress and statistics (built 29 Sep 2026)
 
 Source: [Progress and Statistics — What People Want](<../Research/Research Reports/Progress and Statistics/Progress and Statistics — What People Want.md>).

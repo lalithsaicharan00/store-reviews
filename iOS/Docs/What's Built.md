@@ -120,6 +120,11 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Summary at the end
 - [x] Fast: Today stops drawing behind the player
 
+## Settings
+
+- [x] The avatar on Today opens Settings: Plan (Free, N of 5, Plus…), Day Ends At (midnight to noon), Week Starts On (any day), Times of Day, Show Streaks, Notifications (with a way back if off), How It Works (searchable), Privacy, Version
+- [ ] Contact Support (waits for a support address)
+
 ## Under the hood
 
 - [x] Data saved on the phone (SQLite through the Kotlin shared core), survives closing the app
@@ -129,5 +134,4 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 
 - [ ] Completion animation before a done row moves down
 - [ ] Section open and close animation
-- [ ] Settings and account
 - [ ] Sync, backup, widgets, Apple Watch, iPad, Apple Health

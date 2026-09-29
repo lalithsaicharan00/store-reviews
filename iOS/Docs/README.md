@@ -46,3 +46,4 @@ The work order for the whole app is [Build Plan](<../Build Plan.md>).
 | [Pause a Habit](<Checklists/Pause a Habit.md>) | Built 29 Sep |
 | [All Habits and Habit Page](<Checklists/All Habits and Habit Page.md>) | Built 29 Sep |
 | [Build Loop — Habit Page to Statistics](<Checklists/Build Loop — Habit Page to Statistics.md>) | The user's loop, 29 Sep: habit page, Edit, undo, statistics, one at a time |
+| [Build Loop — Round 2, Ledger Features](<Checklists/Build Loop — Round 2, Ledger Features.md>) | Round 2, 29 Sep: Settings, feedback, backup, widgets and more, from the ledger |

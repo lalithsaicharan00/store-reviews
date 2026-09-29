@@ -19,6 +19,7 @@ struct TodayView: View {
     @State private var showNewHabit = false
     @State private var showAllHabits = false
     @State private var showProgress = false
+    @State private var showSettings = false
     /// A habit's page, opened from its row's long-press menu (View Habit).
     @State private var pageHabit: UUID?
     /// The habit just added, revealed once the sheet closes.
@@ -63,6 +64,7 @@ struct TodayView: View {
                     .onAppear { playerCovering = true }
             }
             .sheet(isPresented: $showSections) { DaySectionsView() }
+            .sheet(isPresented: $showSettings) { SettingsView() }
 
             .sheet(isPresented: $showNewHabit, onDismiss: revealAdded) {
                 NewItemView { added = $0 }
@@ -486,7 +488,7 @@ struct TodayView: View {
     @ToolbarContentBuilder
     private var topBar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Button {} label: {
+            Button { showSettings = true } label: {
                 Image(systemName: "person.fill")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(Color.onInk)

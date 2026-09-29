@@ -141,6 +141,12 @@ What people want to see about how their habits are going, how and where.
 |---|---|---|---|
 | [Progress and Statistics — What People Want](<Progress and Statistics/Progress and Statistics — What People Want.md>) | **Claude** | 29 Sep 2026 | 8,801 statistics reviews in 148 trackers (604 requests, 260 praises and 553 in the smaller themes read): the overall share with raw numbers and the week before, daily bars, every habit side by side on its own rhythm, Week / Month / Year, a year grid, totals in the habit's unit; one tap from Today, explained, free. |
 
+## Settings and Help
+
+| Report | Author | Date | What it is |
+|---|---|---|---|
+| [Settings — What People Need There](<Settings and Help/Settings — What People Need There.md>) | **Claude** | 29 Sep 2026 | Day end from midnight to noon (576 asks in 70 apps), any week start (181), optional streaks (77), a searchable help screen (482 missing-help reviews, 2.69★), notifications recovery, privacy stated, the free limit shown. |
+
 ## Data, Sync and Accounts
 
 Data loss, backup and restore, sync, accounts, switching phones and platforms, purchases and entitlements, dates and time.

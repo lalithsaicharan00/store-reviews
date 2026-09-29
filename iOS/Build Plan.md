@@ -140,4 +140,4 @@ Rounds 7–9 (New Habit form Round 3/4 and the full-screen routine player) are r
 | 58 | **Completion feedback:** finish the fill or check animation before the row moves below unfinished rows; smooth on repeated goals (the last of three checks) | Not started |
 | 59 | **Section open and close animation** beyond the current fade | Not started |
 | 60 | **Progress and statistics screens** | Built 29 Sep: Progress from Today's top bar and statistics on the habit page (research "Progress and Statistics — What People Want"; `Docs/Checklists/Build Loop — Habit Page to Statistics.md`). Not compiled in the cloud session |
-| 61 | **Settings and account** (the avatar button) | Not started |
+| 61 | **Settings and account** (the avatar button) | Built 29 Sep: Settings sheet (research "Settings — What People Need There"; `Docs/Checklists/Build Loop — Round 2, Ledger Features.md`). No account, by the product rules; Contact Support waits for an address |

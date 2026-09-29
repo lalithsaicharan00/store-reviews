@@ -9,6 +9,9 @@ struct DaySettings: Codable, Hashable, Sendable {
     var dayEndHour: Int = 0
     /// 1 = Sunday … 7 = Saturday, as in `Calendar.firstWeekday`.
     var weekStart: Int = Calendar.current.firstWeekday
+    /// The flame and number on Today's rows. On by default (streaks are praised), and a switch in Settings, because
+    /// every guilt mechanic must be optional (Feature Ledger C157, C207).
+    var showStreaks = true
 }
 
 /// Holds habits and entries and applies every change. Everything shown is calculated from
@@ -182,6 +185,19 @@ final class HabitStore {
         // The time of day only says where it's displayed: the same row, with one shared progress, in each
         // chosen part. The goal is never split (the user's decision, 28 Sep).
         return parts.map { Placement(section: $0, slot: nil, times: byPart[$0] ?? []) }
+    }
+
+    /// Saves Settings: when the day ends, the first day of the week, and whether Today shows streaks. Days already
+    /// logged keep their dates (entries store the day they count for); reminders are planned again after the save.
+    func saveSettings(_ new: DaySettings) {
+        let dayEnd = min(max(new.dayEndHour, 0), 12)
+        let weekStart = min(max(new.weekStart, 1), 7)
+        perform { [self] in
+            try await repository.saveSetting(key: Keys.dayEndHour, value: String(dayEnd))
+            try await repository.saveSetting(key: Keys.weekStart, value: String(weekStart))
+            try await repository.saveSetting(key: Keys.showStreaks, value: new.showStreaks ? "1" : "0")
+            settings = DaySettings(dayEndHour: dayEnd, weekStart: weekStart, showStreaks: new.showStreaks)
+        }
     }
 
     /// Saves the whole list; habits in a removed time of day move to Anytime.
@@ -606,6 +622,7 @@ final class HabitStore {
                 case Keys.placementV2: repaired = true
                 case Keys.dayEndHour: loaded.dayEndHour = Int(setting.value) ?? 0
                 case Keys.weekStart: loaded.weekStart = Int(setting.value) ?? loaded.weekStart
+                case Keys.showStreaks: loaded.showStreaks = setting.value != "0"
                 case Keys.sections:
                     if let list = try? JSONDecoder().decode([DaySection].self, from: Data(setting.value.utf8)), !list.isEmpty {
                         sections = list
@@ -674,6 +691,7 @@ final class HabitStore {
     private enum Keys {
         static let dayEndHour = "day_end_hour"
         static let weekStart = "week_start"
+        static let showStreaks = "show_streaks"
         static let timerPrefix = "timer."
         static let skipPrefix = "skip."
         static let pausePrefix = "pause."

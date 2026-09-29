@@ -128,7 +128,7 @@ struct HabitRow: View {
             }
             .frame(minHeight: RowBand.height)
             Spacer(minLength: 8)
-            if streak > 0 {
+            if streak > 0 && store.settings.showStreaks {
                 StreakLabel(count: streak, unit: habit.frequency.streakUnit, onFill: progress / max(goal, 1) >= 0.7)
                     .frame(height: RowBand.height)
             }
