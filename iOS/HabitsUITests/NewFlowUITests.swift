@@ -47,22 +47,21 @@ final class NewFlowUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["What do you want to do?"].waitForExistence(timeout: 3))
         shot("f01-what-to-create")
 
+        // Build or maintain goes straight to the one form: no type screen (Round 3).
         row("Build or maintain").tap()
-        XCTAssertTrue(app.staticTexts["How do you want to track it?"].waitForExistence(timeout: 3))
-        shot("f02-good-habit")
-        row("Check it off").tap()
-        XCTAssertTrue(app.navigationBars["Check it off"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["New Habit"].waitForExistence(timeout: 3))
         let field = app.descendants(matching: .any)["name-field"]
         field.tap(); field.typeText("Brush teeth\n")
         shot("f03-check-form")
         let form = app.collectionViews["habit-form"]
-        // Goal: 4 a day.
-        row("Goal").tap()
-        XCTAssertTrue(app.navigationBars["Goal"].waitForExistence(timeout: 3))
-        let amount = app.textFields["goal-amount"]
-        amount.tap(); sleep(1); amount.typeText("4")
-        shot("f04-goal-screen")
+        // How often: 4 times a day.
+        row("How often").tap()
+        XCTAssertTrue(app.navigationBars["How Often"].waitForExistence(timeout: 3))
+        app.buttons["often-timesADay"].tap()
+        app.buttons["often-per-day-Increment"].tap(); app.buttons["often-per-day-Increment"].tap()
+        shot("f04-how-often-screen")
         back()
+        XCTAssertEqual(app.descendants(matching: .any)["habit-sentence"].label, "Brush teeth 4 times a day")
         // Time of Day: Morning and Afternoon. The goal must stay 4.
         row("Time of Day").tap()
         XCTAssertTrue(app.navigationBars["Time of Day"].waitForExistence(timeout: 3))
@@ -70,13 +69,8 @@ final class NewFlowUITests: XCTestCase {
         app.buttons["Afternoon"].firstMatch.tap()
         shot("f05-time-of-day-screen")
         back()
-        XCTAssertTrue(row("Time of Day, Morning, Afternoon").waitForExistence(timeout: 3))
-        XCTAssertTrue(row("Goal, 4 times").exists, "Picking parts of the day leaves the goal alone")
-        // Repeat, with start and end dates.
-        row("Schedule").tap()
-        XCTAssertTrue(app.navigationBars["Schedule"].waitForExistence(timeout: 3))
-        shot("f05b-repeat-screen")
-        back()
+        XCTAssertTrue(row("Time of Day, Morning and Afternoon").waitForExistence(timeout: 3))
+        XCTAssertTrue(row("How often, 4 times a day").exists, "Picking parts of the day leaves how often alone")
         // Colour pops up.
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Colour'")).firstMatch.tap()
         XCTAssertTrue(app.navigationBars["Colour"].waitForExistence(timeout: 3))
@@ -100,21 +94,11 @@ final class NewFlowUITests: XCTestCase {
         form.swipeUp()
         XCTAssertTrue(app.buttons["Add Another Reminder"].waitForExistence(timeout: 2), "Switching it back on shows the reminders again")
         XCUIDevice.shared.appearance = .dark
-        app.navigationBars["Check it off"].buttons["Add"].tap()
+        app.navigationBars["New Habit"].buttons["Add"].tap()
         sleep(3)
         shot("f07-today")
 
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        row("Build or maintain").tap()
-        row("Track an amount").tap()
-        XCTAssertTrue(app.navigationBars["Track an amount"].waitForExistence(timeout: 3))
-        shot("f08-count-form")
-        back()
-        row("Time it").tap()
-        XCTAssertTrue(app.navigationBars["Time it"].waitForExistence(timeout: 3))
-        shot("f09-time-form")
-        // Back to the first question, however many steps that takes.
-        for _ in 0..<3 where !app.navigationBars["New"].exists { back() }
 
         row("Quit or cut down").tap()
         XCTAssertTrue(app.staticTexts["What do you want to do?"].waitForExistence(timeout: 3))

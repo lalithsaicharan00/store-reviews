@@ -123,30 +123,11 @@ struct ScheduleDraft {
         let order = (0..<7).map { (rule.anchorWeekStart - 1 + $0) % 7 + 1 }
         return order.filter(days.contains).map { symbols[$0 - 1] }.formatted(.list(type: .and))
     }
+    /// The Repeat row and screen, in the shared habit words ("Every Monday and Wednesday", "Every other week on
+    /// Friday", "2 weeks after it's done"), so a task reads the way a habit does.
     var summary: String {
-        switch mode {
-        case .daily: return "Every day"
-        case .specific: return dayNames(weekdays)
-        case .flexible: return "\(count) \(count == 1 ? "day" : "days") \(flexiblePeriod.suffix)"
-        case .after: return "\(afterCount) \(afterCount == 1 ? afterUnit.rawValue : afterUnit.plural) after completion"
-        case .interval:
-            let base = rule.interval == 1 ? "Every \(rule.unit.rawValue)" : "Every \(rule.interval) \(rule.unit.plural)"
-            switch rule.unit {
-            case .day: return base
-            case .week: return base + " · " + dayNames(rule.weekdays)
-            case .month:
-                let pattern: String
-                switch rule.pattern {
-                case .last: pattern = "Last day"
-                case .dates: pattern = rule.dates.sorted().map(Self.ordinal).formatted(.list(type: .and))
-                case .weekday: pattern = Self.ordinalName(rule.ordinal) + " " + Calendar.current.shortStandaloneWeekdaySymbols[rule.weekday - 1]
-                }
-                return base + " · " + pattern
-            case .year:
-                let date = Calendar.current.date(from: DateComponents(year: 2024, month: rule.month, day: rule.day))!
-                return base + " · " + date.formatted(.dateTime.day().month(.abbreviated))
-            }
-        }
+        if mode == .flexible { return "\(count) \(count == 1 ? "day" : "days") \(flexiblePeriod.suffix)" }
+        return HabitCopy.capitalized(HabitCopy.rhythm(frequency, weekStart: rule.anchorWeekStart))
     }
     func explanation(start: Date, checklist: Bool = false) -> String {
         switch mode {

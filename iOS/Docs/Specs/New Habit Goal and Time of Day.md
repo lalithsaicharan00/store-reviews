@@ -1,5 +1,7 @@
 # New Habit — the Complete Decided Spec
 
+> **29 September 2026, Round 3 built:** Build or maintain now opens one form with **How much** and **How often**, read back as a sentence ("Read 2 chapters a week"). The type screen (§1, screen 2), the Goal screen (§3) and the Schedule screen are replaced, and + always adds its saved step (no "+1 or ask" rule). Source: [Creating a Habit — Round 3](<../../../Research/Research Reports/Habit Creation/Creating a Habit — Round 3, The User's Own Words.md>); rules: [Design Rules](<../../Design Rules — Don't Regress.md>) "New Habit form" and "Habit copy". Time of Day (§5), reminders (§6), dates (§2b) and editing (§8) are unchanged.
+
 > **28 September 2026 update:** Schedule/Goal behaviour below is historical where it conflicts with [Schedule and Goal — One Coherent System](<../../../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>) and [Design Rules — Don't Regress](<../../Design Rules — Don't Regress.md>). Schedule stays visible for aggregate goals; flexible distinct-day schedules work with daily quantities; Goal uses a labelled period menu; Cut down uses Limit.
 
 Written by Claude (Claude Code), 27 September 2026, from the user's decisions the same day. **This is the one place for everything decided about creating and editing a habit.** Build from this file.

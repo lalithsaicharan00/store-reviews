@@ -33,49 +33,43 @@ Source: [Habit Flow Copy — Deep Research Report](<../Research/Research Reports
 - "Track an amount", not "Count it". Tasks: "No **habit** progress, streaks or stats."
 - Icons on the choice rows are **monochrome** SF Symbols, one meaning each. Nothing that already means something in iOS or this app: `arrow.up.right` means "open a link", `minus.circle` means remove, `checklist` is the All habits button.
 
-## Goal screen
+## New Habit form (Round 3, built 29 Sep 2026)
 
-Sources: [Goals — Periods, Entry and What + Adds](<../Research/Research Reports/Habit Creation/Goals — Periods, Entry and What + Adds.md>), [Goal Screen Round 2](<../Research/Research Reports/Habit Creation/Goal Screen Round 2 — Icons, Periods, Units and Copy.md>).
+Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Research Reports/Habit Creation/Creating a Habit — Round 3, The User's Own Words.md>), from [How People Describe a Habit](<../Research/Research Reports/Habit Creation/How People Describe a Habit — 4,407 Descriptions From Reviews.md>). Checklist: `Docs/Checklists/Round 3 Build — Copy, Days, Dates and Limits Checklist.md`.
 
-- **Goal counts over is a labelled menu:** A day · A week · A month · A year. The period says when quantities start again; it is not recurrence. Daily form-row values omit "a day"; period goals retain it. This supersedes the earlier unlabeled Daily/Weekly segments based on the supplied [Schedule and Goal research](<../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>).
-- **Typed numbers, not wheels** for counts. Time: wheels plus a Type option. **No caps.** A number field **selects its value when tapped**, so typing replaces it.
-- **No "Each tap adds" question.**
-  - + adds 1 when the goal is whole and ≤ 10, or the unit happens one at a time (books, glasses…).
-  - Otherwise + asks how much.
-  - The Goal screen says which, before saving.
-- **The goal is read back big at the top** ("8 glasses" / "a day"), never as a Form row at the bottom: a row looks editable, and the keyboard hides it. Keep the amount and unit above the number keyboard.
-- **The unit is optional** (Track an amount): the read-back shows the number the moment it's typed ("8" / "a day"); a unit only adds its word; "No Unit" is a choice; Today shows "3/8". Never make the goal wait for a unit (reported 28 Sep).
-- **Check it off stays Check it off, whatever the unit.** ✓ counts one; the unit only names it ("3/8 glasses"); whole numbers only; units that happen one at a time only.
-- **Copy never says** due, overdue, missed, failed, minimum or "First period" (overdue and red labels stress people; ADHD reviewers praise shame-free apps). Say what **counts** and when it **starts fresh**, and name the user's own week start.
-- **Units** are grouped by what people track (Drinking, Walking and running, Reading and writing, Exercise, Everyday, Money), with metric or imperial first by region. Making your own unit is a green ⊕ **Create Your Own Unit** row, the same pattern as Add Reminder.
+- **Build or maintain opens one form. There is no type screen** (Check it off · Track an amount · Time it · Checklist are gone). How much decides it: no amount → ✓; the Time unit (hours and minutes) → ▶; any other unit → +; Steps → a checklist.
+- **The habit is read back as a sentence, big, at the top** ("Read 2 chapters a week", "Gym every Monday and Wednesday"), with its time of day under it. It's built from the same saved habit Today shows (`HabitCopy.sentence`).
+- **Rows:** Habit (name, icon, colour) · How much (or Limit for Cut down) · Each + adds (amounts only) · How often · Steps (Just do it only) · Time of Day · Dates · Reminders. The line under How often says what Today will show and what one tap does.
+- **How often is one list of sentence endings with the person's amount in them** ("2 chapters a week", "5 km on 3 days a week", "every Monday and Wednesday"). No pop-ups, no confirmations, nothing greyed out: every choice is a whole sentence. Schedule and Goal are no longer two rows.
+- **"Times" counts every ✓; "days" counts different days.** "3 times a week" (`.perWeek(3)`): two walks on Sunday count 2. "3 days a week" (`.flexible(.week, 3)`): they count 1. An amount on some days counts the days it's reached ("5 km on 3 days a week"). *Supersedes "Flexible schedules count different dates, never taps".*
+- **An amount with "a week / a month / a year" is a total**; with "N days" it's each of those days. The sentence says which.
+- **Not built, on purpose:** the "say it" fill-in (typing "Run 5 km 3 times a week" into the name: it fights the 24-character name limit, and review evidence for it in habit apps is 5 reviews); an amount "each time, N times a day" (it needs a new stored field). Both are in the Round 3 report.
+- **Kept from before:** typed numbers select on focus; time is wheels plus Type; the unit is optional; units grouped by what people track, with ⊕ Create Your Own Unit, and **time first** ("Hours and minutes", the most common amount); copy never says due, overdue, missed, failed or minimum; Cut down's limit is a day, a week or a month.
+- **Set days, kept from the Schedule rules** ([Schedule and Goal — One Coherent System](<../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>)):
+  - Certain days start with the start date's weekday and keep at least one chosen; all seven become Every day. Full VoiceOver day names, 44-point targets, a vertical layout at large text sizes.
+  - The start date anchors "every few days or weeks" (shown as "Counted from"), and the next date is shown ("Coming up: Thu 2 Oct").
+  - Monthly and yearly dates say what short months and 29 February do, and let the person choose (use the last day, or skip).
+  - Tasks can repeat "after it's done"; habits can't (fixed rhythms only).
+  - Research recommendations are not usability results: no participant study has been run.
 
-## Schedule and Goal: one success clock
+## Habit copy: say it the way people do (built 29 Sep 2026)
 
-> **Round 3 proposal (28 Sep 2026, not built yet; replaces Round 2):** [Creating a Habit — Round 3, The User's Own Words](<../Research/Research Reports/Habit Creation/Creating a Habit — Round 3, The User's Own Words.md>). One form that reads back the habit as a sentence (Habit · How much · How often); Schedule and Goal become one **How often** list; the type screen goes; **+ always says what it adds**, replacing `CountLogging.quickIncrement`; "times" counts every time and "days" counts days. If it is approved, its §6 lists the rules in this file that change (Goal screen, Logging a count, Flexible schedules). Until then the rules below describe what is built. Ask the user before building.
->
-> **Round 2 proposal (28 Sep 2026, superseded by Round 3, never built):** [Schedule and Goal — Round 2, Making It Intuitive](<../Research/Research Reports/Habit Creation/Schedule and Goal — Round 2, Making It Intuitive.md>) settles this section in one rule: **Schedule says which days the habit is on your list; the Goal says what counts and over what period; Schedule never counts.** It removes "A number of days" from Schedule and every confirmation alert, and keeps weekly, monthly and yearly goals for every type, Check it off included. Ask the user before building either version.
+The user's rule: **the copy is the value.** Whatever is picked must read the way a person says it, on the form and on Today.
 
-Source: [Schedule and Goal — One Coherent System](<../Research/Research Reports/Habit Creation/Schedule and Goal — One Coherent System.md>), supplied by the user and archived 28 September 2026. This supersedes conflicting earlier Repeat/Goal guidance.
-
-- **Schedule owns calendar days; Goal owns quantity.** Keep both form rows visible. A longer Goal shows Schedule as "Any day this week/month/year".
-- **Never silently replace a schedule.** Confirm before moving a daily goal to an aggregate period; retain its inactive Schedule draft. Returning to daily offers restoration or Every day. Editing Schedule from a period goal confirms the move back to daily.
-- **Flexible schedules count different dates, never taps.** Check, amount, time and checklist all support N days/week/month/year. A day qualifies only after reaching its daily goal. More logs on that date never earn a second day. Extra qualifying days remain loggable after the quota.
-- **One check-off per week/month/year canonicalises to one flexible day**, with explicit confirmation. Higher period counts can count multiple logs on the same date. Never reinterpret an existing saved period count as a distinct-day quota.
-- **Four main choices:** Every day, Specific days, Every…, A number of days. Parameters expand immediately after the selected choice. Keep the read-back and explanation above them.
-- **Specific days starts with the Starts-date weekday.** Keep at least one selected; selecting all seven canonicalises to Every day. Full VoiceOver weekday labels, 44-point targets, large-text vertical layout, and a visible checkmark distinguish selection.
-- **Starts is the recurrence anchor.** Show it and the next generated occurrence for interval rules. Every-N-weeks stores its anchor week start, so changing display week start cannot shift it. Flexible weekly quotas and aggregate Goals use the current user preference.
-- **Monthly/yearly recurrence is explicit:** selected dates, last day, ordinal weekday, month/year intervals; shorter-month and leap-day fallback/skip policies are visible. Off-days stay neutral. Schedule copy does not explain streaks or deadlines.
-- **Cut down has Limit, not Goal or Schedule.** Its day/week/month period belongs to Limit. Today says "logged · limit", never a target to reach.
-- **Tasks can repeat after actual completion.** Fixed recurrence remains available; completion-relative recurrence is not offered for habits.
-- **Research recommendations are not usability results.** The proposed participant study remains unperformed; simulator tests do not establish comprehension rates.
+- **One home: `Habits/Model/HabitCopy.swift`.** The read-back, the How often row, Today's line, a task's How often and the reminders all use it. Never build a habit sentence anywhere else.
+- **Days of the week** (in the user's week order): 7 → "every day"; Mon–Fri → "on weekdays"; Sat+Sun → "on weekends"; 6 → "every day except Sunday"; **one unbroken run of 3 or more → a range, "every Sunday to Thursday"** (also across the week's end: "every Friday to Monday"); 5 that aren't one run → "every day except Thursday and Saturday"; otherwise every day named: "every Monday, Wednesday and Friday". Today uses short names: "Every Mon and Wed".
+- **Dates of the month:** "on the 1st and 15th of every month"; runs of 3+ → "the 1st to 5th"; with a range, each part gets "the" ("the 1st to 3rd and the 15th"); the 31st with "use the last day" → "on the last day of every month"; odd or even dates by name; more than 6 separate dates → "on 7 dates each month" (the grid shows them); 28 or more → "every day except the 31st"; all 31 → "every day".
+- **Numbers in sentences are whole and grouped** ("10,000 steps", "2,000 ml"); "k" only on Today's progress line. A count of one is never plural ("1 glass", "1 push-up"). A name that is the unit isn't said twice ("100 push-ups a day").
+- **To change the copy:** change `iOS/Tools/copy_oracle/copy_oracle.py` and `HabitCopy.swift` the same way, read the print-outs, regenerate `CopyCheckCases.swift`, and run `NewHabitUITests/testCopyChecks` (the `-copycheck` launch shows "Copy: all checks passed" or the phrases that differ). The oracle's print-outs are the review sheet.
 
 ## Logging a count
 
-Source: [Logging a Count — One Tap or Type](<../Research/Research Reports/Habit Creation/Logging a Count — One Tap or Type.md>).
+Source: [Logging a Count — One Tap or Type](<../Research/Research Reports/Habit Creation/Logging a Count — One Tap or Type.md>), updated by Round 3 §2.7.
 
-- **The button says what it does:** "+1" adds one (quick counts); "+" opens Add Amount. Never two habits with the same-looking button that behave differently.
-- **Tapping the habit row always opens Add Amount / Add Time** for count and timed habits.
-- **Don't** make every + open the input, and **don't** make the input full screen: those are Loop users' top complaints. Add Amount is a sheet, with the number pad up and "Add … again" (the last amount) as one tap. Units never read "1 glasses".
+- **+ always adds the step saved with the habit and says it** ("+1", "+250", "+1k" on the button; "Add 250 ml to Water" for VoiceOver). *Supersedes "No 'Each tap adds' question" and "+1 adds one; + opens Add Amount": `CountLogging` and its goal-size rule are gone.*
+- **The step is a row on the form, "Each + adds", filled in for the person, never a question.** Suggested: the amount itself when it's per day on some days; a glass for drinks (250 ml, 8 oz, 0.25 L); 1 for whole counts up to 20; 1 km or mile; otherwise a round tenth of the goal (10,000 steps → 1,000). The person's own step is kept.
+- **Tapping the habit row always opens Add Amount / Add Time** for amounts and timed habits (unchanged), with "Add … again" and Undo Last Entry on touch-and-hold.
+- **Don't** make every + open the input, and **don't** make the input full screen. Units never read "1 glasses".
 
 ## Timing a habit
 
@@ -112,6 +106,7 @@ Source: [Name, Unit and Time of Day Lengths](<../Research/Research Reports/Habit
 
 - **Limits:** names **24**, checklist items **24**, times of day **16**, units **12** (`TextLimit`). Don't raise them to "just in case" sizes: 100 is how pasted paragraphs broke layouts. Don't cut below 20 either: reviewers complain about 20.
 - Show "N characters left" only in the last 5. Never truncate text that's already saved.
+- **Checked again 29 Sep** (the user: "around 20 for names, 12 for units, or whatever is best"): **kept at 24 and 12.** With Round 3 the goal and rhythm leave the name, so names get shorter anyway; 87% of quoted names fit 20 even with goals written in, and 20 is the one limit reviewers complained about. The longest sentence, a 24-character name with a 12-character unit, is covered by `CopyCheck` and `LongTextUITests`.
 
 ## Calendar and Back to Today
 
@@ -126,7 +121,7 @@ Source: [Back to Today — When and Where](<../Research/Research Reports/Home Sc
 
 ## Where the rest is
 
-- Everything decided about creating and editing a habit: [New Habit Goal and Time of Day.md](<Docs/Specs/New Habit Goal and Time of Day.md>).
+- Everything decided about creating and editing a habit: [New Habit Goal and Time of Day.md](<Docs/Specs/New Habit Goal and Time of Day.md>) (its §1 screen 2 and §3 are replaced by Round 3, above).
 - Today's other rules: [Today Improvements.md](<Docs/Specs/Today Improvements.md>) (partly superseded; see its notes).
 - User checklists behind each round: `iOS/Docs/Checklists/Goal and Choice Screens — Round 2 Checklist.md`, `iOS/Docs/Checklists/Section Header — Start and Left Checklist.md`.
 
@@ -142,8 +137,15 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
 | A folded section keeps ▶ | ▶ only on the folded **Now** section; open sections show "▶ Start" |
 | The first screen lists every type ("Count an amount", "Set a limit", "To-do") | Two questions: Build or maintain / Quit or cut down / Add a task, then the type |
 | Goal stepper, "Each tap adds", "Add 1k to Walk" | Typed goal; the automatic + rule (Walk's 8,000 steps asks how much) |
+| The type screen (Check it off · Track an amount · Time it · Checklist); the Goal and Schedule screens; "Goal counts over", "A number of days", the "Use 1 day a week?" and "Use Any Day?" alerts (29 Sep) | One form: How much and How often (`GoalFlowUITests`, `ScheduleUITests` and `NewHabitUITests` rewritten to it) |
+| + adds 1 or asks how much, by goal size ("Add amount to Walk") (29 Sep) | + adds its saved step ("Add 1,000 steps to Walk"); the row opens Add Amount |
+| "Items", "Add Item" for a checklist (29 Sep) | "Steps", "Add Step"; Today reads "0/2 steps" |
 
-## Test status (28 Sep 2026, iPhone 16, iOS 26.6)
+## Test status
+
+- **29 Sep 2026: Round 3 is built but not yet compiled or run.** The cloud session that built it has no Swift toolchain (download.swift.org is blocked there). The copy rules were checked in Python against every case (`iOS/Tools/copy_oracle`), and the Swift files were parsed for syntax; the first step on a Mac is to build, then run `NewHabitUITests/testCopyChecks` and the rewritten `NewHabitUITests`, `GoalFlowUITests` and `ScheduleUITests`.
+
+### 28 Sep 2026, iPhone 16, iOS 26.6
 
 - **UI tests (`HabitsUITests`): all 40 pass on the phone.**
   - Full runs: 16/42 passed at first, then 29/40 after the stale tests were rewritten.

@@ -77,7 +77,7 @@ final class RoutineCalendarUITests: XCTestCase {
         reveal(play)
         play.tap()
         XCTAssertTrue(app.navigationBars["Afternoon routine"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.buttons["Add amount to Walk"].exists)
+        XCTAssertTrue(app.buttons["Add 1,000 steps to Walk"].exists, "+ says its step")
         XCTAssertFalse(app.buttons["Next habit"].isEnabled)
         app.buttons["Skip for now"].tap()
         XCTAssertTrue(app.buttons["Mark Lunch, no phone done"].waitForExistence(timeout: 3))
@@ -89,13 +89,13 @@ final class RoutineCalendarUITests: XCTestCase {
         app.buttons["Done"].tap()
         reveal(play)
         play.tap()
-        // Walk's goal is 8,000 steps, so + asks how much (the automatic + rule), inside the routine too.
-        let walk = app.collectionViews["routine-list"].buttons["Add amount to Walk"]
+        // + adds its step (1,000 steps); tapping the row types any other amount, inside the routine too.
+        let walk = app.collectionViews["routine-list"].staticTexts["Walk"].firstMatch
         XCTAssertTrue(walk.waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["Habit 1 of 1"].exists, "Resume includes only unfinished habits")
         walk.tap()
         let amount = app.textFields["log-amount"]
-        XCTAssertTrue(amount.waitForExistence(timeout: 3), "+ opens Add Amount")
+        XCTAssertTrue(amount.waitForExistence(timeout: 3), "The row opens Add Amount")
         sleep(1); amount.typeText("3000")
         app.navigationBars["Add Amount"].buttons["Add"].tap()
         sleep(2)
@@ -112,7 +112,7 @@ final class RoutineCalendarUITests: XCTestCase {
         let morning = app.buttons["Open Morning"]
         reveal(morning)
         morning.tap()
-        let checklist = app.buttons["Show Skincare items"]
+        let checklist = app.buttons["Show Skincare steps"]
         reveal(checklist)
         checklist.tap()
         let undo = app.buttons["Undo Cleanser"]
@@ -183,12 +183,11 @@ final class RoutineCalendarUITests: XCTestCase {
         app.launch()
         app.buttons["New Habit"].firstMatch.tap()
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check it off'")).firstMatch.tap()
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.tap()
         name.typeText("Practice")
-        app.navigationBars["Check it off"].buttons["Add"].tap()
+        app.navigationBars["New Habit"].buttons["Add"].tap()
         XCTAssertTrue(app.buttons["Start Anytime routine"].waitForExistence(timeout: 3))
         app.buttons["Start Anytime routine"].tap()
         app.collectionViews["routine-list"].buttons["Mark Practice done"].tap()

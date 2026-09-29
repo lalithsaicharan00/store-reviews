@@ -1,0 +1,258 @@
+
+== weekday sets, week starts Monday ==
+Sun                          every Sunday                                               | every Sun
+Mon                          every Monday                                               | every Mon
+Tue                          every Tuesday                                              | every Tue
+Wed                          every Wednesday                                            | every Wed
+Thu                          every Thursday                                             | every Thu
+Fri                          every Friday                                               | every Fri
+Sat                          every Saturday                                             | every Sat
+Sun,Mon                      every Sunday and Monday                                    | every Sun and Mon
+Sun,Tue                      every Tuesday and Sunday                                   | every Tue and Sun
+Sun,Wed                      every Wednesday and Sunday                                 | every Wed and Sun
+Sun,Thu                      every Thursday and Sunday                                  | every Thu and Sun
+Sun,Fri                      every Friday and Sunday                                    | every Fri and Sun
+Sun,Sat                      on weekends                                                | on weekends
+Mon,Tue                      every Monday and Tuesday                                   | every Mon and Tue
+Mon,Wed                      every Monday and Wednesday                                 | every Mon and Wed
+Mon,Thu                      every Monday and Thursday                                  | every Mon and Thu
+Mon,Fri                      every Monday and Friday                                    | every Mon and Fri
+Mon,Sat                      every Monday and Saturday                                  | every Mon and Sat
+Tue,Wed                      every Tuesday and Wednesday                                | every Tue and Wed
+Tue,Thu                      every Tuesday and Thursday                                 | every Tue and Thu
+Tue,Fri                      every Tuesday and Friday                                   | every Tue and Fri
+Tue,Sat                      every Tuesday and Saturday                                 | every Tue and Sat
+Wed,Thu                      every Wednesday and Thursday                               | every Wed and Thu
+Wed,Fri                      every Wednesday and Friday                                 | every Wed and Fri
+Wed,Sat                      every Wednesday and Saturday                               | every Wed and Sat
+Thu,Fri                      every Thursday and Friday                                  | every Thu and Fri
+Thu,Sat                      every Thursday and Saturday                                | every Thu and Sat
+Fri,Sat                      every Friday and Saturday                                  | every Fri and Sat
+Sun,Mon,Tue                  every Sunday to Tuesday                                    | every Sun to Tue
+Sun,Mon,Wed                  every Sunday, Monday and Wednesday                         | every Sun, Mon and Wed
+Sun,Mon,Thu                  every Sunday, Monday and Thursday                          | every Sun, Mon and Thu
+Sun,Mon,Fri                  every Sunday, Monday and Friday                            | every Sun, Mon and Fri
+Sun,Mon,Sat                  every Saturday to Monday                                   | every Sat to Mon
+Sun,Tue,Wed                  every Tuesday, Wednesday and Sunday                        | every Tue, Wed and Sun
+Sun,Tue,Thu                  every Tuesday, Thursday and Sunday                         | every Tue, Thu and Sun
+Sun,Tue,Fri                  every Tuesday, Friday and Sunday                           | every Tue, Fri and Sun
+Sun,Tue,Sat                  every Tuesday, Saturday and Sunday                         | every Tue, Sat and Sun
+Sun,Wed,Thu                  every Wednesday, Thursday and Sunday                       | every Wed, Thu and Sun
+Sun,Wed,Fri                  every Wednesday, Friday and Sunday                         | every Wed, Fri and Sun
+Sun,Wed,Sat                  every Wednesday, Saturday and Sunday                       | every Wed, Sat and Sun
+Sun,Thu,Fri                  every Thursday, Friday and Sunday                          | every Thu, Fri and Sun
+Sun,Thu,Sat                  every Thursday, Saturday and Sunday                        | every Thu, Sat and Sun
+Sun,Fri,Sat                  every Friday to Sunday                                     | every Fri to Sun
+Mon,Tue,Wed                  every Monday to Wednesday                                  | every Mon to Wed
+Mon,Tue,Thu                  every Monday, Tuesday and Thursday                         | every Mon, Tue and Thu
+Mon,Tue,Fri                  every Monday, Tuesday and Friday                           | every Mon, Tue and Fri
+Mon,Tue,Sat                  every Monday, Tuesday and Saturday                         | every Mon, Tue and Sat
+Mon,Wed,Thu                  every Monday, Wednesday and Thursday                       | every Mon, Wed and Thu
+Mon,Wed,Fri                  every Monday, Wednesday and Friday                         | every Mon, Wed and Fri
+Mon,Wed,Sat                  every Monday, Wednesday and Saturday                       | every Mon, Wed and Sat
+Mon,Thu,Fri                  every Monday, Thursday and Friday                          | every Mon, Thu and Fri
+Mon,Thu,Sat                  every Monday, Thursday and Saturday                        | every Mon, Thu and Sat
+Mon,Fri,Sat                  every Monday, Friday and Saturday                          | every Mon, Fri and Sat
+Tue,Wed,Thu                  every Tuesday to Thursday                                  | every Tue to Thu
+Tue,Wed,Fri                  every Tuesday, Wednesday and Friday                        | every Tue, Wed and Fri
+Tue,Wed,Sat                  every Tuesday, Wednesday and Saturday                      | every Tue, Wed and Sat
+Tue,Thu,Fri                  every Tuesday, Thursday and Friday                         | every Tue, Thu and Fri
+Tue,Thu,Sat                  every Tuesday, Thursday and Saturday                       | every Tue, Thu and Sat
+Tue,Fri,Sat                  every Tuesday, Friday and Saturday                         | every Tue, Fri and Sat
+Wed,Thu,Fri                  every Wednesday to Friday                                  | every Wed to Fri
+Wed,Thu,Sat                  every Wednesday, Thursday and Saturday                     | every Wed, Thu and Sat
+Wed,Fri,Sat                  every Wednesday, Friday and Saturday                       | every Wed, Fri and Sat
+Thu,Fri,Sat                  every Thursday to Saturday                                 | every Thu to Sat
+Sun,Mon,Tue,Wed              every Sunday to Wednesday                                  | every Sun to Wed
+Sun,Mon,Tue,Thu              every Sunday, Monday, Tuesday and Thursday                 | every Sun, Mon, Tue and Thu
+Sun,Mon,Tue,Fri              every Sunday, Monday, Tuesday and Friday                   | every Sun, Mon, Tue and Fri
+Sun,Mon,Tue,Sat              every Saturday to Tuesday                                  | every Sat to Tue
+Sun,Mon,Wed,Thu              every Sunday, Monday, Wednesday and Thursday               | every Sun, Mon, Wed and Thu
+Sun,Mon,Wed,Fri              every Sunday, Monday, Wednesday and Friday                 | every Sun, Mon, Wed and Fri
+Sun,Mon,Wed,Sat              every Saturday, Sunday, Monday and Wednesday               | every Sat, Sun, Mon and Wed
+Sun,Mon,Thu,Fri              every Sunday, Monday, Thursday and Friday                  | every Sun, Mon, Thu and Fri
+Sun,Mon,Thu,Sat              every Saturday, Sunday, Monday and Thursday                | every Sat, Sun, Mon and Thu
+Sun,Mon,Fri,Sat              every Friday to Monday                                     | every Fri to Mon
+Sun,Tue,Wed,Thu              every Tuesday, Wednesday, Thursday and Sunday              | every Tue, Wed, Thu and Sun
+Sun,Tue,Wed,Fri              every Tuesday, Wednesday, Friday and Sunday                | every Tue, Wed, Fri and Sun
+Sun,Tue,Wed,Sat              every Tuesday, Wednesday, Saturday and Sunday              | every Tue, Wed, Sat and Sun
+Sun,Tue,Thu,Fri              every Tuesday, Thursday, Friday and Sunday                 | every Tue, Thu, Fri and Sun
+Sun,Tue,Thu,Sat              every Tuesday, Thursday, Saturday and Sunday               | every Tue, Thu, Sat and Sun
+Sun,Tue,Fri,Sat              every Tuesday, Friday, Saturday and Sunday                 | every Tue, Fri, Sat and Sun
+Sun,Wed,Thu,Fri              every Wednesday, Thursday, Friday and Sunday               | every Wed, Thu, Fri and Sun
+Sun,Wed,Thu,Sat              every Wednesday, Thursday, Saturday and Sunday             | every Wed, Thu, Sat and Sun
+Sun,Wed,Fri,Sat              every Wednesday, Friday, Saturday and Sunday               | every Wed, Fri, Sat and Sun
+Sun,Thu,Fri,Sat              every Thursday to Sunday                                   | every Thu to Sun
+Mon,Tue,Wed,Thu              every Monday to Thursday                                   | every Mon to Thu
+Mon,Tue,Wed,Fri              every Monday, Tuesday, Wednesday and Friday                | every Mon, Tue, Wed and Fri
+Mon,Tue,Wed,Sat              every Monday, Tuesday, Wednesday and Saturday              | every Mon, Tue, Wed and Sat
+Mon,Tue,Thu,Fri              every Monday, Tuesday, Thursday and Friday                 | every Mon, Tue, Thu and Fri
+Mon,Tue,Thu,Sat              every Monday, Tuesday, Thursday and Saturday               | every Mon, Tue, Thu and Sat
+Mon,Tue,Fri,Sat              every Monday, Tuesday, Friday and Saturday                 | every Mon, Tue, Fri and Sat
+Mon,Wed,Thu,Fri              every Monday, Wednesday, Thursday and Friday               | every Mon, Wed, Thu and Fri
+Mon,Wed,Thu,Sat              every Monday, Wednesday, Thursday and Saturday             | every Mon, Wed, Thu and Sat
+Mon,Wed,Fri,Sat              every Monday, Wednesday, Friday and Saturday               | every Mon, Wed, Fri and Sat
+Mon,Thu,Fri,Sat              every Monday, Thursday, Friday and Saturday                | every Mon, Thu, Fri and Sat
+Tue,Wed,Thu,Fri              every Tuesday to Friday                                    | every Tue to Fri
+Tue,Wed,Thu,Sat              every Tuesday, Wednesday, Thursday and Saturday            | every Tue, Wed, Thu and Sat
+Tue,Wed,Fri,Sat              every Tuesday, Wednesday, Friday and Saturday              | every Tue, Wed, Fri and Sat
+Tue,Thu,Fri,Sat              every Tuesday, Thursday, Friday and Saturday               | every Tue, Thu, Fri and Sat
+Wed,Thu,Fri,Sat              every Wednesday to Saturday                                | every Wed to Sat
+Sun,Mon,Tue,Wed,Thu          every Sunday to Thursday                                   | every Sun to Thu
+Sun,Mon,Tue,Wed,Fri          every day except Thursday and Saturday                     | every day except Thu and Sat
+Sun,Mon,Tue,Wed,Sat          every Saturday to Wednesday                                | every Sat to Wed
+Sun,Mon,Tue,Thu,Fri          every day except Wednesday and Saturday                    | every day except Wed and Sat
+Sun,Mon,Tue,Thu,Sat          every day except Wednesday and Friday                      | every day except Wed and Fri
+Sun,Mon,Tue,Fri,Sat          every Friday to Tuesday                                    | every Fri to Tue
+Sun,Mon,Wed,Thu,Fri          every day except Tuesday and Saturday                      | every day except Tue and Sat
+Sun,Mon,Wed,Thu,Sat          every day except Tuesday and Friday                        | every day except Tue and Fri
+Sun,Mon,Wed,Fri,Sat          every day except Tuesday and Thursday                      | every day except Tue and Thu
+Sun,Mon,Thu,Fri,Sat          every Thursday to Monday                                   | every Thu to Mon
+Sun,Tue,Wed,Thu,Fri          every day except Monday and Saturday                       | every day except Mon and Sat
+Sun,Tue,Wed,Thu,Sat          every day except Monday and Friday                         | every day except Mon and Fri
+Sun,Tue,Wed,Fri,Sat          every day except Monday and Thursday                       | every day except Mon and Thu
+Sun,Tue,Thu,Fri,Sat          every day except Monday and Wednesday                      | every day except Mon and Wed
+Sun,Wed,Thu,Fri,Sat          every Wednesday to Sunday                                  | every Wed to Sun
+Mon,Tue,Wed,Thu,Fri          on weekdays                                                | on weekdays
+Mon,Tue,Wed,Thu,Sat          every day except Friday and Sunday                         | every day except Fri and Sun
+Mon,Tue,Wed,Fri,Sat          every day except Thursday and Sunday                       | every day except Thu and Sun
+Mon,Tue,Thu,Fri,Sat          every day except Wednesday and Sunday                      | every day except Wed and Sun
+Mon,Wed,Thu,Fri,Sat          every day except Tuesday and Sunday                        | every day except Tue and Sun
+Tue,Wed,Thu,Fri,Sat          every Tuesday to Saturday                                  | every Tue to Sat
+Sun,Mon,Tue,Wed,Thu,Fri      every day except Saturday                                  | every day except Sat
+Sun,Mon,Tue,Wed,Thu,Sat      every day except Friday                                    | every day except Fri
+Sun,Mon,Tue,Wed,Fri,Sat      every day except Thursday                                  | every day except Thu
+Sun,Mon,Tue,Thu,Fri,Sat      every day except Wednesday                                 | every day except Wed
+Sun,Mon,Wed,Thu,Fri,Sat      every day except Tuesday                                   | every day except Tue
+Sun,Tue,Wed,Thu,Fri,Sat      every day except Monday                                    | every day except Mon
+Mon,Tue,Wed,Thu,Fri,Sat      every day except Sunday                                    | every day except Sun
+Sun,Mon,Tue,Wed,Thu,Fri,Sat  every day                                                  | every day
+
+== weekday sets, week starts Sunday ==
+Sun                          every Sunday                                               | every Sun
+Mon                          every Monday                                               | every Mon
+Tue                          every Tuesday                                              | every Tue
+Wed                          every Wednesday                                            | every Wed
+Thu                          every Thursday                                             | every Thu
+Fri                          every Friday                                               | every Fri
+Sat                          every Saturday                                             | every Sat
+Sun,Mon                      every Sunday and Monday                                    | every Sun and Mon
+Sun,Tue                      every Sunday and Tuesday                                   | every Sun and Tue
+Sun,Wed                      every Sunday and Wednesday                                 | every Sun and Wed
+Sun,Thu                      every Sunday and Thursday                                  | every Sun and Thu
+Sun,Fri                      every Sunday and Friday                                    | every Sun and Fri
+Sun,Sat                      on weekends                                                | on weekends
+Mon,Tue                      every Monday and Tuesday                                   | every Mon and Tue
+Mon,Wed                      every Monday and Wednesday                                 | every Mon and Wed
+Mon,Thu                      every Monday and Thursday                                  | every Mon and Thu
+Mon,Fri                      every Monday and Friday                                    | every Mon and Fri
+Mon,Sat                      every Monday and Saturday                                  | every Mon and Sat
+Tue,Wed                      every Tuesday and Wednesday                                | every Tue and Wed
+Tue,Thu                      every Tuesday and Thursday                                 | every Tue and Thu
+Tue,Fri                      every Tuesday and Friday                                   | every Tue and Fri
+Tue,Sat                      every Tuesday and Saturday                                 | every Tue and Sat
+Wed,Thu                      every Wednesday and Thursday                               | every Wed and Thu
+Wed,Fri                      every Wednesday and Friday                                 | every Wed and Fri
+Wed,Sat                      every Wednesday and Saturday                               | every Wed and Sat
+Thu,Fri                      every Thursday and Friday                                  | every Thu and Fri
+Thu,Sat                      every Thursday and Saturday                                | every Thu and Sat
+Fri,Sat                      every Friday and Saturday                                  | every Fri and Sat
+Sun,Mon,Tue                  every Sunday to Tuesday                                    | every Sun to Tue
+Sun,Mon,Wed                  every Sunday, Monday and Wednesday                         | every Sun, Mon and Wed
+Sun,Mon,Thu                  every Sunday, Monday and Thursday                          | every Sun, Mon and Thu
+Sun,Mon,Fri                  every Sunday, Monday and Friday                            | every Sun, Mon and Fri
+Sun,Mon,Sat                  every Saturday to Monday                                   | every Sat to Mon
+Sun,Tue,Wed                  every Sunday, Tuesday and Wednesday                        | every Sun, Tue and Wed
+Sun,Tue,Thu                  every Sunday, Tuesday and Thursday                         | every Sun, Tue and Thu
+Sun,Tue,Fri                  every Sunday, Tuesday and Friday                           | every Sun, Tue and Fri
+Sun,Tue,Sat                  every Saturday, Sunday and Tuesday                         | every Sat, Sun and Tue
+Sun,Wed,Thu                  every Sunday, Wednesday and Thursday                       | every Sun, Wed and Thu
+Sun,Wed,Fri                  every Sunday, Wednesday and Friday                         | every Sun, Wed and Fri
+Sun,Wed,Sat                  every Saturday, Sunday and Wednesday                       | every Sat, Sun and Wed
+Sun,Thu,Fri                  every Sunday, Thursday and Friday                          | every Sun, Thu and Fri
+Sun,Thu,Sat                  every Saturday, Sunday and Thursday                        | every Sat, Sun and Thu
+Sun,Fri,Sat                  every Friday to Sunday                                     | every Fri to Sun
+Mon,Tue,Wed                  every Monday to Wednesday                                  | every Mon to Wed
+Mon,Tue,Thu                  every Monday, Tuesday and Thursday                         | every Mon, Tue and Thu
+Mon,Tue,Fri                  every Monday, Tuesday and Friday                           | every Mon, Tue and Fri
+Mon,Tue,Sat                  every Monday, Tuesday and Saturday                         | every Mon, Tue and Sat
+Mon,Wed,Thu                  every Monday, Wednesday and Thursday                       | every Mon, Wed and Thu
+Mon,Wed,Fri                  every Monday, Wednesday and Friday                         | every Mon, Wed and Fri
+Mon,Wed,Sat                  every Monday, Wednesday and Saturday                       | every Mon, Wed and Sat
+Mon,Thu,Fri                  every Monday, Thursday and Friday                          | every Mon, Thu and Fri
+Mon,Thu,Sat                  every Monday, Thursday and Saturday                        | every Mon, Thu and Sat
+Mon,Fri,Sat                  every Monday, Friday and Saturday                          | every Mon, Fri and Sat
+Tue,Wed,Thu                  every Tuesday to Thursday                                  | every Tue to Thu
+Tue,Wed,Fri                  every Tuesday, Wednesday and Friday                        | every Tue, Wed and Fri
+Tue,Wed,Sat                  every Tuesday, Wednesday and Saturday                      | every Tue, Wed and Sat
+Tue,Thu,Fri                  every Tuesday, Thursday and Friday                         | every Tue, Thu and Fri
+Tue,Thu,Sat                  every Tuesday, Thursday and Saturday                       | every Tue, Thu and Sat
+Tue,Fri,Sat                  every Tuesday, Friday and Saturday                         | every Tue, Fri and Sat
+Wed,Thu,Fri                  every Wednesday to Friday                                  | every Wed to Fri
+Wed,Thu,Sat                  every Wednesday, Thursday and Saturday                     | every Wed, Thu and Sat
+Wed,Fri,Sat                  every Wednesday, Friday and Saturday                       | every Wed, Fri and Sat
+Thu,Fri,Sat                  every Thursday to Saturday                                 | every Thu to Sat
+Sun,Mon,Tue,Wed              every Sunday to Wednesday                                  | every Sun to Wed
+Sun,Mon,Tue,Thu              every Sunday, Monday, Tuesday and Thursday                 | every Sun, Mon, Tue and Thu
+Sun,Mon,Tue,Fri              every Sunday, Monday, Tuesday and Friday                   | every Sun, Mon, Tue and Fri
+Sun,Mon,Tue,Sat              every Saturday to Tuesday                                  | every Sat to Tue
+Sun,Mon,Wed,Thu              every Sunday, Monday, Wednesday and Thursday               | every Sun, Mon, Wed and Thu
+Sun,Mon,Wed,Fri              every Sunday, Monday, Wednesday and Friday                 | every Sun, Mon, Wed and Fri
+Sun,Mon,Wed,Sat              every Saturday, Sunday, Monday and Wednesday               | every Sat, Sun, Mon and Wed
+Sun,Mon,Thu,Fri              every Sunday, Monday, Thursday and Friday                  | every Sun, Mon, Thu and Fri
+Sun,Mon,Thu,Sat              every Saturday, Sunday, Monday and Thursday                | every Sat, Sun, Mon and Thu
+Sun,Mon,Fri,Sat              every Friday to Monday                                     | every Fri to Mon
+Sun,Tue,Wed,Thu              every Sunday, Tuesday, Wednesday and Thursday              | every Sun, Tue, Wed and Thu
+Sun,Tue,Wed,Fri              every Sunday, Tuesday, Wednesday and Friday                | every Sun, Tue, Wed and Fri
+Sun,Tue,Wed,Sat              every Saturday, Sunday, Tuesday and Wednesday              | every Sat, Sun, Tue and Wed
+Sun,Tue,Thu,Fri              every Sunday, Tuesday, Thursday and Friday                 | every Sun, Tue, Thu and Fri
+Sun,Tue,Thu,Sat              every Saturday, Sunday, Tuesday and Thursday               | every Sat, Sun, Tue and Thu
+Sun,Tue,Fri,Sat              every Friday, Saturday, Sunday and Tuesday                 | every Fri, Sat, Sun and Tue
+Sun,Wed,Thu,Fri              every Sunday, Wednesday, Thursday and Friday               | every Sun, Wed, Thu and Fri
+Sun,Wed,Thu,Sat              every Saturday, Sunday, Wednesday and Thursday             | every Sat, Sun, Wed and Thu
+Sun,Wed,Fri,Sat              every Friday, Saturday, Sunday and Wednesday               | every Fri, Sat, Sun and Wed
+Sun,Thu,Fri,Sat              every Thursday to Sunday                                   | every Thu to Sun
+Mon,Tue,Wed,Thu              every Monday to Thursday                                   | every Mon to Thu
+Mon,Tue,Wed,Fri              every Monday, Tuesday, Wednesday and Friday                | every Mon, Tue, Wed and Fri
+Mon,Tue,Wed,Sat              every Monday, Tuesday, Wednesday and Saturday              | every Mon, Tue, Wed and Sat
+Mon,Tue,Thu,Fri              every Monday, Tuesday, Thursday and Friday                 | every Mon, Tue, Thu and Fri
+Mon,Tue,Thu,Sat              every Monday, Tuesday, Thursday and Saturday               | every Mon, Tue, Thu and Sat
+Mon,Tue,Fri,Sat              every Monday, Tuesday, Friday and Saturday                 | every Mon, Tue, Fri and Sat
+Mon,Wed,Thu,Fri              every Monday, Wednesday, Thursday and Friday               | every Mon, Wed, Thu and Fri
+Mon,Wed,Thu,Sat              every Monday, Wednesday, Thursday and Saturday             | every Mon, Wed, Thu and Sat
+Mon,Wed,Fri,Sat              every Monday, Wednesday, Friday and Saturday               | every Mon, Wed, Fri and Sat
+Mon,Thu,Fri,Sat              every Monday, Thursday, Friday and Saturday                | every Mon, Thu, Fri and Sat
+Tue,Wed,Thu,Fri              every Tuesday to Friday                                    | every Tue to Fri
+Tue,Wed,Thu,Sat              every Tuesday, Wednesday, Thursday and Saturday            | every Tue, Wed, Thu and Sat
+Tue,Wed,Fri,Sat              every Tuesday, Wednesday, Friday and Saturday              | every Tue, Wed, Fri and Sat
+Tue,Thu,Fri,Sat              every Tuesday, Thursday, Friday and Saturday               | every Tue, Thu, Fri and Sat
+Wed,Thu,Fri,Sat              every Wednesday to Saturday                                | every Wed to Sat
+Sun,Mon,Tue,Wed,Thu          every Sunday to Thursday                                   | every Sun to Thu
+Sun,Mon,Tue,Wed,Fri          every day except Thursday and Saturday                     | every day except Thu and Sat
+Sun,Mon,Tue,Wed,Sat          every Saturday to Wednesday                                | every Sat to Wed
+Sun,Mon,Tue,Thu,Fri          every day except Wednesday and Saturday                    | every day except Wed and Sat
+Sun,Mon,Tue,Thu,Sat          every day except Wednesday and Friday                      | every day except Wed and Fri
+Sun,Mon,Tue,Fri,Sat          every Friday to Tuesday                                    | every Fri to Tue
+Sun,Mon,Wed,Thu,Fri          every day except Tuesday and Saturday                      | every day except Tue and Sat
+Sun,Mon,Wed,Thu,Sat          every day except Tuesday and Friday                        | every day except Tue and Fri
+Sun,Mon,Wed,Fri,Sat          every day except Tuesday and Thursday                      | every day except Tue and Thu
+Sun,Mon,Thu,Fri,Sat          every Thursday to Monday                                   | every Thu to Mon
+Sun,Tue,Wed,Thu,Fri          every day except Monday and Saturday                       | every day except Mon and Sat
+Sun,Tue,Wed,Thu,Sat          every day except Monday and Friday                         | every day except Mon and Fri
+Sun,Tue,Wed,Fri,Sat          every day except Monday and Thursday                       | every day except Mon and Thu
+Sun,Tue,Thu,Fri,Sat          every day except Monday and Wednesday                      | every day except Mon and Wed
+Sun,Wed,Thu,Fri,Sat          every Wednesday to Sunday                                  | every Wed to Sun
+Mon,Tue,Wed,Thu,Fri          on weekdays                                                | on weekdays
+Mon,Tue,Wed,Thu,Sat          every day except Sunday and Friday                         | every day except Sun and Fri
+Mon,Tue,Wed,Fri,Sat          every day except Sunday and Thursday                       | every day except Sun and Thu
+Mon,Tue,Thu,Fri,Sat          every day except Sunday and Wednesday                      | every day except Sun and Wed
+Mon,Wed,Thu,Fri,Sat          every day except Sunday and Tuesday                        | every day except Sun and Tue
+Tue,Wed,Thu,Fri,Sat          every Tuesday to Saturday                                  | every Tue to Sat
+Sun,Mon,Tue,Wed,Thu,Fri      every day except Saturday                                  | every day except Sat
+Sun,Mon,Tue,Wed,Thu,Sat      every day except Friday                                    | every day except Fri
+Sun,Mon,Tue,Wed,Fri,Sat      every day except Thursday                                  | every day except Thu
+Sun,Mon,Tue,Thu,Fri,Sat      every day except Wednesday                                 | every day except Wed
+Sun,Mon,Wed,Thu,Fri,Sat      every day except Tuesday                                   | every day except Tue
+Sun,Tue,Wed,Thu,Fri,Sat      every day except Monday                                    | every day except Mon
+Mon,Tue,Wed,Thu,Fri,Sat      every day except Sunday                                    | every day except Sun
+Sun,Mon,Tue,Wed,Thu,Fri,Sat  every day                                                  | every day

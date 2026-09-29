@@ -1,0 +1,41 @@
+[1]                                        on the 1st of every month | every 2: on the 1st, every other month | no last: on the 1st of every month
+[15]                                       on the 15th of every month | every 2: on the 15th, every other month | no last: on the 15th of every month
+[1, 15]                                    on the 1st and 15th of every month | every 2: on the 1st and 15th, every other month | no last: on the 1st and 15th of every month
+[1, 10, 20]                                on the 1st, 10th and 20th of every month | every 2: on the 1st, 10th and 20th, every other month | no last: on the 1st, 10th and 20th of every month
+[31]                                       on the last day of every month | every 2: on the last day, every other month | no last: on the 31st of every month
+[30]                                       on the 30th of every month | every 2: on the 30th, every other month | no last: on the 30th of every month
+[29, 30, 31]                               on the 29th to 31st of every month | every 2: on the 29th to 31st, every other month | no last: on the 29th to 31st of every month
+[1, 2, 3, 4, 5]                            on the 1st to 5th of every month | every 2: on the 1st to 5th, every other month | no last: on the 1st to 5th of every month
+[1, 2, 3, 15]                              on the 1st to 3rd and the 15th of every month | every 2: on the 1st to 3rd and the 15th, every other month | no last: on the 1st to 3rd and the 15th of every month
+[1, 2, 3, 10, 11, 12]                      on the 1st to 3rd and the 10th to 12th of every month | every 2: on the 1st to 3rd and the 10th to 12th, every other month | no last: on the 1st to 3rd and the 10th to 12th of every month
+[1, 2]                                     on the 1st and 2nd of every month | every 2: on the 1st and 2nd, every other month | no last: on the 1st and 2nd of every month
+[5, 6, 20, 21]                             on the 5th, 6th, 20th and 21st of every month | every 2: on the 5th, 6th, 20th and 21st, every other month | no last: on the 5th, 6th, 20th and 21st of every month
+[1, 5, 9, 13, 17, 21, 25]                  on 7 dates each month | every 2: on 7 dates, every other month | no last: on 7 dates each month
+[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21,    on odd dates | every 2: on odd dates, every other month | no last: on odd dates
+[2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22,   on even dates | every 2: on even dates, every other month | no last: on even dates
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,    every day | every 2: every day, every other month | no last: every day
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,    every day except the 31st | every 2: every day except the 31st, every other month | no last: every day except the 31st
+[1, 15, 28, 31]                            on the 1st, 15th, 28th and 31st of every month | every 2: on the 1st, 15th, 28th and 31st, every other month | no last: on the 1st, 15th, 28th and 31st of every month
+[28, 29, 30, 31]                           on the 28th to 31st of every month | every 2: on the 28th to 31st, every other month | no last: on the 28th to 31st of every month
+[1, 2, 4, 5, 7, 8]                         on the 1st, 2nd, 4th, 5th, 7th and 8th of every month | every 2: on the 1st, 2nd, 4th, 5th, 7th and 8th, every other month | no last: on the 1st, 2nd, 4th, 5th, 7th and 8th of every month
+on the first Saturday of every month | on the first Monday, every 3 months
+on the second Saturday of every month | on the second Monday, every 3 months
+on the third Saturday of every month | on the third Monday, every 3 months
+on the fourth Saturday of every month | on the fourth Monday, every 3 months
+on the fifth Saturday of every month | on the fifth Monday, every 3 months
+on the last Saturday of every month | on the last Monday, every 3 months
+every year on October 1
+every year on February 29
+every other year on December 25
+every 5 years on January 1
+every day
+every other day
+every 3 days
+every 14 days
+every other week on Monday and Wednesday
+every 3 weeks on Tuesday
+every other week, Sunday to Thursday
+every other week on weekdays
+every day, every other week
+every other week, every day except Sunday
+every 4 weeks on Friday and Saturday

@@ -62,8 +62,8 @@ final class LongTextUITests: XCTestCase {
         }
         visible(["Build or maintain", "Quit or cut down", "Add a task"])
         button(startingWith: "Build or maintain").tap()
-        XCTAssertTrue(app.navigationBars["Build or maintain"].waitForExistence(timeout: 3))
-        visible(["Check it off", "Track an amount", "Time it", "Checklist"])
+        XCTAssertTrue(app.navigationBars["New Habit"].waitForExistence(timeout: 3), "Build or maintain opens the form: no type screen")
+        visible(["How much", "How often"])
         shot("01b-build")
         app.navigationBars.buttons["BackButton"].firstMatch.tap()
         button(startingWith: "Quit or cut down").tap()
@@ -130,7 +130,6 @@ final class LongTextUITests: XCTestCase {
     func testFormWithLongText() {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
         button(startingWith: "Build or maintain").tap()
-        button(startingWith: "Track an amount").tap()
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.tap()
@@ -141,13 +140,14 @@ final class LongTextUITests: XCTestCase {
         shot("09-form-long-name")
         app.toolbars.buttons["Done"].firstMatch.tap()
 
-        // Goal: 12 of a long unit of your own (units stop at 12 characters).
-        button(startingWith: "Goal").tap()
-        let amount = app.textFields["goal-amount"]
+        // How much: 12 of a long unit of your own (units stop at 12 characters).
+        button(startingWith: "How much").tap()
+        app.buttons["much-amount"].tap()
+        let amount = app.textFields["much-number"]
         amount.tap(); sleep(1); amount.typeText("12")
         let done = app.toolbars.buttons["Done"].firstMatch
         if done.exists && done.isHittable { done.tap(); sleep(1) }
-        app.buttons["goal-unit"].tap()
+        app.buttons["much-unit"].tap()
         app.buttons["create-unit"].tap()
         let own = app.textFields["custom-unit"]
         XCTAssertTrue(own.waitForExistence(timeout: 2))
@@ -155,7 +155,7 @@ final class LongTextUITests: XCTestCase {
         XCTAssertLessThanOrEqual((own.value as? String ?? "").count, 12, "Units stop at 12 characters")
         own.typeText("\n")
         sleep(1)
-        shot("10-goal-long-unit")
+        shot("10-how-much-long-unit")
         app.navigationBars.buttons["BackButton"].firstMatch.tap(); sleep(1)
 
         // Time of Day: the long-named lunch section.
@@ -168,15 +168,17 @@ final class LongTextUITests: XCTestCase {
         shot("11-time-of-day-long")
         app.navigationBars.buttons["BackButton"].firstMatch.tap(); sleep(1)
         shot("12-form-long-section")
-        app.navigationBars["Track an amount"].buttons["Add"].tap()
+        // The whole sentence still reads as one, with the longest name and unit.
+        XCTAssertEqual(app.descendants(matching: .any)["habit-sentence"].label, "Read one more chapter of 12 tablespoons a day")
+        app.navigationBars["New Habit"].buttons["Add"].tap()
         let allow = XCUIApplication(bundleIdentifier: "com.apple.springboard").buttons["Allow"]
         if allow.waitForExistence(timeout: 3) { allow.tap() }
         // Sections that aren't Now start folded; open this one to see the new row.
         let lunch2 = button(startingWith: "Lunch break walk")
         XCTAssertTrue(find(lunch2))
         if lunch2.value as? String == "Folded" { lunch2.tap(); sleep(1) }
-        // 12 of an unknown unit: + asks how much.
-        let row = button(startingWith: "Add amount to Read one more")
+        // + says its step: one tablespoon.
+        let row = button(startingWith: "Add 1 tablespoon to Read one more")
         if !find(row) {
             print("BUTTONS: " + app.buttons.allElementsBoundByIndex.map(\.label).joined(separator: " | "))
             shot("13-debug")

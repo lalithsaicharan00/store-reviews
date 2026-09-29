@@ -67,10 +67,6 @@ struct GoalDraft {
     var hours = "0"
     var minutes = "20"
 
-    static func initial(for type: ItemType) -> GoalDraft {
-        type == .amount ? GoalDraft(amount: "", unit: "") : GoalDraft()
-    }
-
     var trimmedUnit: String { TextLimit.clean(unit, TextLimit.unit) }
 
     var duration: Double? { duration(max: GoalNumber.maximum) }
@@ -118,40 +114,11 @@ struct GoalDraft {
     }
 }
 
-/// What one tap on + adds, decided from the goal so nobody is asked "Each tap adds" (research:
-/// "Goals — Periods, Entry and What + Adds" §3). + adds 1 when one at a time is how it happens;
-/// otherwise + asks how much, with the number keyboard.
-enum CountLogging {
-    /// Measured amounts (distance, volume, weight, money): real entries are rarely whole ones.
-    static let measured: Set<String> = ["km", "miles", "mi", "m", "ml", "oz", "litres", "liters", "l", "cl",
-                                        "kg", "lbs", "lb", "g", "grams", "$", "€", "£", "₹", "calories", "kcal"]
-    /// Things that happen one at a time, however big the goal: 12 books a year is still one book per log.
-    static let oneAtATime: Set<String> = ["times", "glasses", "cups", "bottles", "books", "chapters", "meals",
-                                          "servings", "workouts", "sessions", "classes", "lessons", "pills"]
-    /// Up to this goal, tapping + one by one is quicker than typing.
-    static let tapLimit = 10.0
-
-    static func quickIncrement(goal: Double, unit: String) -> Double? {
-        let unit = unit.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        guard !measured.contains(unit), goal.rounded() == goal, goal >= 1 else { return nil }
-        return goal <= tapLimit || oneAtATime.contains(unit) ? 1 : nil
-    }
-
-    /// The Goal screen's footer: exactly what + will do on Today, before the habit is saved ("Goal Screen Round 2", T7).
-    static func explanation(goal: Double?, unit: String) -> String {
-        guard let goal else { return "" }
-        if quickIncrement(goal: goal, unit: unit) != nil {
-            return "On Today, each tap on +1 adds 1. To add more at once, tap the habit."
-        }
-        return "On Today, + asks how much, so you can type it."
-    }
-}
-
 extension Habit {
-    /// Older saved increments remain readable. Only cut-down habits still use that setting.
+    /// What one tap on + adds: always the step saved with the habit and shown on the button ("+250"), never
+    /// a rule that changes with the goal's size (Round 3 §2.7, replacing `CountLogging`'s "+1 or ask").
     var quickIncrement: Double? {
-        guard case .amount(let unit, let increment) = kind else { return nil }
-        if atMost { return increment }
-        return CountLogging.quickIncrement(goal: goal, unit: unit)
+        guard case .amount(_, let increment) = kind else { return nil }
+        return increment > 0 ? increment : 1
     }
 }

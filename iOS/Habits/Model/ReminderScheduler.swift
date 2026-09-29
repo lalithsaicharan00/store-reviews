@@ -230,9 +230,10 @@ final class ReminderScheduler {
     private func reminderBody(_ habit: Habit, store: HabitStore) -> String {
         let goal = store.goal(of: habit)
         switch habit.kind {
-        case .amount(let unit, _): return habit.atMost ? "No more than \(Format.amount(goal)) \(unit) today" : "Goal: \(Format.amount(goal)) \(unit)"
-        case .duration: return "Goal: \(Format.amount(goal)) min"
-        case .checklist: return "\(habit.steps.count) items"
+        case .amount(let unit, _): return habit.atMost ? "No more than \(HabitCopy.amount(goal, unit)) today"
+            : HabitCopy.capitalized(HabitCopy.plan(habit, weekStart: store.settings.weekStart))
+        case .duration: return HabitCopy.capitalized(HabitCopy.plan(habit, weekStart: store.settings.weekStart))
+        case .checklist: return habit.steps.count == 1 ? "1 step" : "\(habit.steps.count) steps"
         case .task: return "To-do"
         default: return "Time for \(habit.name.lowercased())"
         }
@@ -244,7 +245,7 @@ final class ReminderScheduler {
     private static func category(for habit: Habit) -> String {
         switch habit.kind {
         case .check, .task: singleCategory
-        case .amount: habit.quickIncrement == nil ? "" : addCategoryPrefix + habit.id.uuidString
+        case .amount: addCategoryPrefix + habit.id.uuidString
         default: ""
         }
     }
@@ -263,7 +264,7 @@ final class ReminderScheduler {
         // An amount's button names its own step, so each amount habit has its own category.
         for habit in habits where !habit.archived {
             guard case .amount(let unit, _) = habit.kind, let increment = habit.quickIncrement else { continue }
-            let title = "+\(Format.amount(increment)) \(unit)".trimmingCharacters(in: .whitespaces)
+            let title = "+" + HabitCopy.amount(increment, unit)
             set.insert(UNNotificationCategory(identifier: addCategoryPrefix + habit.id.uuidString,
                                               actions: [UNNotificationAction(identifier: addAction, title: title, options: [])],
                                               intentIdentifiers: []))

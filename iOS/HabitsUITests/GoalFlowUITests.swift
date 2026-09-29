@@ -1,7 +1,8 @@
 import XCTest
 
-/// The Goal screen for Check it off, Track an amount and Time it, and what + does on Today afterwards
-/// (spec: New Habit Goal and Time of Day.md §3). Keeps a screenshot of each step.
+/// How much and How often (Round 3 design, built 29 Sep 2026), and what + does on Today afterwards.
+/// Rewritten from the old Goal-screen tests: the Goal and Schedule screens and the type screen are gone.
+/// Keeps a screenshot of each step.
 final class GoalFlowUITests: XCTestCase {
     override func record(_ issue: XCTIssue) {
         let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
@@ -33,226 +34,59 @@ final class GoalFlowUITests: XCTestCase {
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", title)).firstMatch
     }
 
+    private func rowButton(_ label: String) -> XCUIElement {
+        let button = app.buttons[label].firstMatch
+        for _ in 0..<6 where !(button.exists && button.isHittable) { app.swipeUp(velocity: .slow) }
+        return button
+    }
+
     private func back() {
         let done = app.toolbars.buttons["Done"].firstMatch
-        if done.exists { done.tap() }
+        if done.exists && done.isHittable { done.tap() }
         app.navigationBars.buttons["BackButton"].firstMatch.tap()
         sleep(1)
     }
 
-    /// + → Build or maintain → the type → a name.
-    private func newHabit(_ type: String, name: String) {
+    /// + → Build or maintain → the New Habit form → a name.
+    private func newHabit(name: String) {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
         row("Build or maintain").tap()
-        row(type).tap()
-        XCTAssertTrue(app.navigationBars[type].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["New Habit"].waitForExistence(timeout: 3))
         let field = app.descendants(matching: .any)["name-field"]
         field.tap(); field.typeText(name + "\n")
     }
 
-    private func openGoal() {
-        row("Goal").tap()
-        XCTAssertTrue(app.navigationBars["Goal"].waitForExistence(timeout: 3))
-    }
-
-    /// Tapping a number field selects its value, so typing replaces it.
-    private func typeAmount(_ text: String) {
-        let amount = app.textFields["goal-amount"]
-        amount.tap(); sleep(1)
-        amount.typeText(text)
-    }
-
-    private func summary(_ text: String) -> Bool {
-        let element = app.descendants(matching: .any)["goal-summary"]
-        return element.waitForExistence(timeout: 2) && "\(element.label) \(element.value ?? "")".contains(text)
-    }
-
-    private func dismissKeyboard() {
-        let done = app.toolbars.buttons["Done"].firstMatch
-        if done.exists && done.isHittable { done.tap(); sleep(1) }
+    private func openHowMuch(amount: Bool = true) {
+        row("How much").tap()
+        XCTAssertTrue(app.navigationBars["How Much"].waitForExistence(timeout: 3))
+        if amount { app.buttons["much-amount"].tap() }
     }
 
     private func chooseUnit(_ unit: String) {
-        dismissKeyboard()
-        app.buttons["goal-unit"].tap()
-        XCTAssertTrue(app.navigationBars["Unit"].waitForExistence(timeout: 3))
+        let done = app.toolbars.buttons["Done"].firstMatch
+        if done.exists && done.isHittable { done.tap(); sleep(1) }
+        app.buttons["much-unit"].tap()
         let choice = app.buttons[unit].firstMatch
-        while !choice.isHittable { app.swipeUp(velocity: .slow) }
-        choice.tap()
-        sleep(1)
-    }
-
-    private func period(_ name: String) {
-        dismissKeyboard()
-        app.buttons["goal-period"].tap()
-        let label = ["Daily": "A day", "Weekly": "A week", "Monthly": "A month", "Yearly": "A year"][name]!
-        app.buttons[label].firstMatch.tap()
-        if app.alerts.buttons["Use Any Day"].waitForExistence(timeout: 1) { app.alerts.buttons["Use Any Day"].tap() }
-        if app.alerts.buttons["Restore Schedule"].exists { app.alerts.buttons["Restore Schedule"].tap() }
+        for _ in 0..<8 where !choice.isHittable { app.swipeUp(velocity: .slow) }
+        choice.tap(); sleep(1)
     }
 
     private func addHabit() {
-        app.navigationBars.buttons["Add"].tap()
+        app.navigationBars["New Habit"].buttons["Add"].tap()
+        let allow = XCUIApplication(bundleIdentifier: "com.apple.springboard").buttons["Allow"]
+        if allow.waitForExistence(timeout: 3) { allow.tap() }
         sleep(2)
     }
 
-    private func rowButton(_ label: String) -> XCUIElement {
-        let button = app.buttons[label].firstMatch
-        var tries = 0
-        while !button.isHittable && tries < 6 { app.swipeUp(velocity: .slow); tries += 1 }
-        return button
-    }
+    private var sentence: String { app.descendants(matching: .any)["habit-sentence"].label }
 
-    /// 2,000 ml a day: a measured unit, so + asks how much, and remembers the last amount.
-    func testCountMeasuredAsksHowMuch() {
-        newHabit("Track an amount", name: "Hydrate")
-        openGoal()
-        shot("g01-count-goal-empty")
-        typeAmount("2000")
-        chooseUnit("ml")
-        shot("g02-count-goal-2000ml")
-        XCTAssertTrue(summary("2k ml a day"))
-        back()
-        XCTAssertTrue(row("Goal, 2k ml").exists)
-        shot("g03-count-form")
-        addHabit()
-        rowButton("Add amount to Hydrate").tap()
-        XCTAssertTrue(app.navigationBars["Add Amount"].waitForExistence(timeout: 3))
-        shot("g04-add-amount-sheet")
-        app.textFields["log-amount"].typeText("250")
-        app.navigationBars["Add Amount"].buttons["Add"].tap()
-        sleep(2)
-        shot("g05-today-250ml")
-        rowButton("Add amount to Hydrate").tap()
-        XCTAssertTrue(app.buttons["log-same-again"].waitForExistence(timeout: 3))
-        shot("g06-add-amount-same-again")
-        app.buttons["log-same-again"].tap()
-        sleep(2)
-        shot("g07-today-500ml")
-    }
-
-    /// 8 glasses a day: small whole goal, so + adds 1 with no question.
-    func testCountSmallAddsOne() {
-        newHabit("Track an amount", name: "Glasses")
-        openGoal()
-        typeAmount("8")
-        chooseUnit("glasses")
-        shot("g10-count-goal-8-glasses")
-        back()
-        addHabit()
-        rowButton("Add 1 to Glasses").tap()
-        sleep(1)
-        shot("g11-today-1-of-8")
-    }
-
-    /// 12 books a year: over 10, but books happen one at a time, so + still adds 1.
-    func testCountBooksPerYear() {
-        newHabit("Track an amount", name: "Books")
-        openGoal()
-        period("Yearly")
-        typeAmount("12")
-        chooseUnit("books")
-        shot("g20-count-goal-12-books-year")
-        back()
-        XCTAssertTrue(row("Goal, 12 books a year").exists)
-        XCTAssertTrue(row("Schedule, Any day this year").exists)
-        shot("g21-count-form-year")
-    }
-
-    /// Check it off: 3 times a week, straight from the Goal screen; Repeat leaves the form.
-    func testCheckWeekly() {
-        newHabit("Check it off", name: "Gym")
-        openGoal()
-        shot("g30-check-goal-default")
-        typeAmount("3")
-        period("Weekly")
-        shot("g31-check-goal-3-week")
-        back()
-        XCTAssertTrue(row("Goal, 3 times a week").exists)
-        XCTAssertTrue(row("Schedule, Any day this week").exists)
-        shot("g32-check-form-week")
-    }
-
-    /// Time it: wheels open at 20 min; a week goal of 3 h typed exactly.
-    func testTimeWeekly() {
-        newHabit("Time it", name: "Study")
-        openGoal()
-        shot("g40-time-goal-default")
-        period("Weekly")
-        app.segmentedControls["duration-entry-mode"].buttons["Type"].tap()
-        // Type focuses hours at once; Next moves to minutes. Both sit on one row above the keyboard.
-        sleep(1)
-        XCTAssertEqual(app.buttons.matching(identifier: "Next").count, 1, "One Next button on the keyboard, not one per row")
-        app.textFields["duration-hours"].typeText("3")
-        app.toolbars.buttons["Next"].firstMatch.tap(); sleep(1)
-        app.textFields["duration-minutes"].typeText("0")
-        shot("g41-time-goal-3h-week")
-        back()
-        XCTAssertTrue(row("Goal, 3 h a week").exists)
-        shot("g42-time-form-week")
-    }
-
-    /// The copy on the two choice screens (Habit Flow Copy — Deep Research Report).
-    func testChoiceScreensCopy() {
-        app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        XCTAssertTrue(app.staticTexts["What do you want to do?"].waitForExistence(timeout: 3))
-        XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Example'")).firstMatch.exists, "No examples on the first screen")
-        shot("c01-what-do-you-want-to-do")
-        row("Build or maintain").tap()
-        XCTAssertTrue(app.navigationBars["Build or maintain"].waitForExistence(timeout: 3))
-        XCTAssertTrue(row("Track an amount").exists)
-        shot("c02-build-or-maintain")
-        back()
-        row("Quit or cut down").tap()
-        XCTAssertTrue(app.navigationBars["Quit or cut down"].waitForExistence(timeout: 3))
-        shot("c03-quit-or-cut-down")
-    }
-
-    /// Check it off with a unit stays a check-off: ✓ on Today, "1/8 glasses". The Unit screen offers your own unit.
-    func testCheckWithUnitStaysCheck() {
-        newHabit("Check it off", name: "Hydrate")
-        openGoal()
-        typeAmount("8")
-        dismissKeyboard()
-        app.buttons["goal-unit"].tap()
-        XCTAssertTrue(app.navigationBars["Unit"].waitForExistence(timeout: 3))
-        XCTAssertFalse(app.buttons["ml"].exists, "No measured units for a check-off")
-        shot("r01-unit-screen-check")
-        app.buttons["create-unit"].tap()
-        XCTAssertTrue(app.textFields["custom-unit"].waitForExistence(timeout: 2))
-        shot("r02-create-own-unit")
-        app.navigationBars.buttons["BackButton"].firstMatch.tap(); sleep(1)
-        chooseUnit("glasses")
-        shot("r03-check-goal-8-glasses")
-        back()
-        XCTAssertTrue(row("Goal, 8 glasses").exists)
-        addHabit()
-        rowButton("Mark Hydrate done").tap()
-        sleep(1)
-        shot("r04-today-check-glasses")
-    }
-
-    /// The period copy for each choice, and the read-back at the top.
-    func testPeriodCopy() {
-        newHabit("Track an amount", name: "Steps")
-        openGoal()
-        typeAmount("8000")
-        chooseUnit("steps")
-        shot("r10-daily")
-        period("Weekly"); shot("r11-weekly")
-        period("Monthly"); shot("r12-monthly")
-        period("Yearly"); shot("r13-yearly")
-    }
-
-    /// Typing the way a person does: one key at a time on the number pad, checking the field and the
-    /// read-back after each key (the user reported typed amounts not showing).
+    /// Typing the way a person does: one key at a time on the number pad, checking the field after each key
+    /// (the user reported typed amounts not showing). Then Add Amount on Today, key by key too.
     func testTypingKeyByKey() {
-        newHabit("Track an amount", name: "Keys")
-        openGoal()
-        let amount = app.textFields["goal-amount"]
+        newHabit(name: "Keys")
+        openHowMuch()
+        let amount = app.textFields["much-number"]
         XCTAssertTrue(amount.waitForExistence(timeout: 3))
-        // Explicitly enter the field as a person would. Simulator can leave the software
-        // keyboard hidden after the name field's Return, even while this field owns focus.
         amount.tap()
         let visibleKey = XCTNSPredicateExpectation(predicate: NSPredicate(format: "hittable == true"), object: app.keys["2"])
         XCTAssertEqual(XCTWaiter.wait(for: [visibleKey], timeout: 4), .completed, "The number keyboard is visible for editing")
@@ -263,20 +97,17 @@ final class GoalFlowUITests: XCTestCase {
         }
         shot("k01-typed-2500")
         chooseUnit("ml")
-        XCTAssertTrue(summary("2.5k ml a day"), "The read-back shows the typed goal")
+        XCTAssertTrue(app.descendants(matching: .any)["much-summary"].label.contains("2,500 ml"), "The read-back shows the typed amount")
         // Change it: tapping the field selects 2500, so typing replaces it.
         amount.tap(); sleep(1)
         app.keys["7"].tap(); usleep(400_000)
         XCTAssertEqual(amount.value as? String, "7")
         shot("k02-replaced-7")
         back()
-        let goalRow = row("Goal, 7 ml")
-        if !goalRow.waitForExistence(timeout: 3) {
-            shot("k02b-form-after-back")
-            XCTFail("Goal row: " + app.buttons.allElementsBoundByIndex.map(\.label).filter { $0.hasPrefix("Goal") }.joined(separator: " | "))
-        }
+        XCTAssertTrue(row("How much, 7 ml").waitForExistence(timeout: 3))
+        XCTAssertEqual(sentence, "Keys 7 ml a day")
         addHabit()
-        rowButton("Add amount to Keys").tap()
+        app.staticTexts["Keys"].firstMatch.tap()
         let log = app.textFields["log-amount"]
         XCTAssertTrue(log.waitForExistence(timeout: 3))
         sleep(1)
@@ -287,20 +118,18 @@ final class GoalFlowUITests: XCTestCase {
         shot("k04-today-350")
     }
 
-    /// The unit is optional: the number shows as soon as it's typed ("8" / "a day"), and a goal with no
-    /// unit can be added (the user's decision, 28 Sep).
+    /// The unit is optional: "8" alone is an amount, and it can be added.
     func testNumberShowsWithoutAUnit() {
-        newHabit("Track an amount", name: "Pushups set")
-        openGoal()
-        typeAmount("8")
-        XCTAssertTrue(summary("8 a day"), "The number shows before any unit is chosen")
+        newHabit(name: "Pushups set")
+        openHowMuch()
+        let amount = app.textFields["much-number"]
+        amount.tap(); sleep(1); amount.typeText("8")
+        XCTAssertTrue(app.descendants(matching: .any)["much-summary"].label.contains("8"), "The number shows before any unit is chosen")
         shot("u01-number-no-unit")
-        period("Weekly")
-        XCTAssertTrue(summary("8 a week"))
-        period("Daily")
         back()
-        XCTAssertTrue(row("Goal, 8").exists)
-        XCTAssertTrue(app.navigationBars["Track an amount"].buttons["Add"].isEnabled, "No unit needed to add it")
+        XCTAssertTrue(row("How much, 8").exists)
+        XCTAssertEqual(sentence, "Pushups set 8 a day")
+        XCTAssertTrue(app.navigationBars["New Habit"].buttons["Add"].isEnabled, "No unit needed to add it")
         addHabit()
         let line = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '0/8'")).firstMatch
         for _ in 0..<6 where !line.exists { app.swipeUp(velocity: .slow) }
@@ -308,28 +137,84 @@ final class GoalFlowUITests: XCTestCase {
         shot("u02-today-no-unit")
     }
 
-    /// One rule for logging counts: the button says what it does ("+1" adds one; "+" asks how much), and
-    /// tapping the row always opens Add Amount, for every count habit.
-    func testRowOpensAddAmountAndButtonSaysPlusOne() {
-        newHabit("Track an amount", name: "Glasses")
-        openGoal()
-        typeAmount("8")
+    /// One rule for logging an amount: + adds the step written on it, the same for every amount; the row
+    /// opens Add Amount for anything else. A step the person types is kept.
+    func testButtonAddsItsStepAndRowOpensAddAmount() {
+        newHabit(name: "Glasses")
+        openHowMuch()
+        let amount = app.textFields["much-number"]
+        amount.tap(); sleep(1); amount.typeText("8")
         chooseUnit("glasses")
         back()
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'On Today, + adds 1 glass'")).firstMatch.exists)
         addHabit()
-        let plusOne = rowButton("Add 1 to Glasses")
-        XCTAssertTrue(plusOne.exists)
-        shot("l01-plus-one-button")
-        plusOne.tap(); sleep(1)
-        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '1/8 glasses'")).firstMatch.exists, "+1 adds one")
-        // Tapping the row itself opens Add Amount.
+        let plus = rowButton("Add 1 glass to Glasses")
+        XCTAssertTrue(plus.exists)
+        shot("l01-plus-step-button")
+        plus.tap(); sleep(1)
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '1/8 glasses'")).firstMatch.exists, "+ adds one glass")
         app.staticTexts["Glasses"].firstMatch.tap()
         XCTAssertTrue(app.navigationBars["Add Amount"].waitForExistence(timeout: 3), "The row opens Add Amount")
         sleep(1)
-        shot("l02-row-opens-add-amount")
         app.textFields["log-amount"].typeText("3")
         app.navigationBars["Add Amount"].buttons["Add"].tap(); sleep(2)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '4/8 glasses'")).firstMatch.exists, "The typed amount adds up")
         shot("l03-today-4-of-8")
+    }
+
+    /// A step of the person's own: a 500 ml bottle.
+    func testOwnStep() {
+        newHabit(name: "Water")
+        openHowMuch()
+        let amount = app.textFields["much-number"]
+        amount.tap(); sleep(1); amount.typeText("2000")
+        chooseUnit("ml")
+        back()
+        let step = app.textFields["Each + adds"]
+        XCTAssertEqual(step.placeholderValue, "250", "A glass is suggested")
+        step.tap(); step.typeText("500")
+        app.toolbars.buttons["Done"].firstMatch.tap()
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'On Today, + adds 500 ml'")).firstMatch.exists)
+        addHabit()
+        rowButton("Add 500 ml to Water").tap(); sleep(1)
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '500/2k ml'")).firstMatch.exists)
+    }
+
+    /// How often with an amount: each choice is the whole sentence ending, with the amount in it.
+    func testHowOftenChoicesSayTheAmount() {
+        newHabit(name: "Run")
+        openHowMuch()
+        let amount = app.textFields["much-number"]
+        amount.tap(); sleep(1); amount.typeText("5")
+        chooseUnit("km")
+        back()
+        row("How often").tap()
+        XCTAssertTrue(app.buttons["5 km a day"].exists)
+        XCTAssertTrue(app.buttons["5 km a week"].exists)
+        XCTAssertTrue(app.buttons["5 km on 3 days a week"].exists)
+        app.buttons["often-times"].tap()
+        shot("o01-amount-on-days")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Counts the days you reach 5 km'")).firstMatch.exists)
+        back()
+        XCTAssertEqual(sentence, "Run 5 km on 3 days a week")
+        XCTAssertEqual(app.textFields["Each + adds"].placeholderValue, "5", "Each time, so + adds the whole 5 km")
+    }
+
+    /// The Unit screen: time first, as "Hours and minutes"; your own unit; the usual groups.
+    func testUnitScreen() {
+        newHabit(name: "Anything")
+        openHowMuch()
+        chooseUnitScreenOnly()
+        XCTAssertTrue(app.buttons["Hours and minutes"].exists)
+        XCTAssertTrue(app.buttons["create-unit"].exists)
+        XCTAssertTrue(app.buttons["glasses"].exists)
+        shot("u10-unit-screen")
+    }
+
+    private func chooseUnitScreenOnly() {
+        let done = app.toolbars.buttons["Done"].firstMatch
+        if done.exists && done.isHittable { done.tap(); sleep(1) }
+        app.buttons["much-unit"].tap()
+        XCTAssertTrue(app.navigationBars["Unit"].waitForExistence(timeout: 3))
     }
 }

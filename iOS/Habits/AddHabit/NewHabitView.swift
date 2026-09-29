@@ -1,48 +1,34 @@
 import SwiftUI
 
-/// What the user wants to make: the form each choice opens.
+/// What the user wants to make: the form each choice opens. Build or maintain goes straight to one form
+/// whose How much decides how it's tracked (Round 3 design §2.6): no amount → ✓, minutes → ▶, any other
+/// unit → +, steps → a checklist. The old type screen (Check it off · Track an amount · Time it · Checklist) is gone.
 enum ItemType: String, CaseIterable, Identifiable {
-    case doIt, amount, time, checklist, cutBack, quit, task
+    case build, cutBack, quit, task
     var id: Self { self }
 
-    /// The form's title. Copy from "Habit Flow Copy — Deep Research Report" (28 Sep): "Track an amount"
-    /// replaces "Count it" because amounts can be decimals and units like km, not only counts.
     var title: String {
         switch self {
-        case .doIt: "Check it off"
-        case .amount: "Track an amount"
-        case .time: "Time it"
-        case .checklist: "Checklist"
+        case .build: "New Habit"
         case .cutBack: "Cut down"
         case .quit: "Quit"
         case .task: "Task"
         }
     }
 
-    /// One plain line under the title. Build screen: kept as it was (the user's decision, 28 Sep).
-    /// Quit screen: says how it's recorded, from the copy report.
+    /// One plain line under the title on the Quit or cut down screen, from the copy report.
     var summary: String {
         switch self {
-        case .doIt: "Done or not done."
-        case .amount: "How many or how much."
-        case .time: "How long, with a timer."
-        case .checklist: "A short list to tick off."
+        case .build: "A habit you want to start or keep doing."
         case .cutBack: "Set a maximum and log how much."
         case .quit: "Stop completely. Track time since you stopped."
         case .task: "Something to get done."
         }
     }
 
-    /// A common habit that can only be recorded one way, so the example shows the type without
-    /// implying reading or walking belong to one (copy report, 28 Sep; review counts in Research
-    /// Temp/goals/example_scan.py): making a bed is never counted or timed, water is counted in
-    /// glasses and never timed, meditation is timed and never counted.
     var example: String {
         switch self {
-        case .doIt: "Make your bed"
-        case .amount: "Drink 8 glasses of water"
-        case .time: "Meditate for 10 minutes"
-        case .checklist: "Clean kitchen — dishes, sink, floor"
+        case .build: "Read 2 chapters a week"
         case .cutBack: "Log coffees, up to 2 a day"
         case .quit: "Time since you last smoked"
         case .task: "Pay the rent"
@@ -52,11 +38,8 @@ enum ItemType: String, CaseIterable, Identifiable {
     /// The name field's hint.
     var namePlaceholder: String {
         switch self {
-        case .doIt: "e.g. Walk"
-        case .amount: "e.g. Read"
-        case .time: "e.g. Practise piano"
-        case .checklist: "e.g. Clean kitchen"
-        case .cutBack: "e.g. Coffee"
+        case .build: "Name, e.g. Read"
+        case .cutBack: "Name, e.g. Coffee"
         case .quit: "e.g. Smoking"
         case .task: "e.g. Pay the rent"
         }
@@ -65,10 +48,7 @@ enum ItemType: String, CaseIterable, Identifiable {
     /// A plain SF Symbol for the choice rows (research: "Goal Screen Round 2", T1). Monochrome.
     var icon: String {
         switch self {
-        case .doIt: "checkmark.circle"
-        case .amount: "number"
-        case .time: "timer"
-        case .checklist: "list.bullet.clipboard"
+        case .build: "chart.line.uptrend.xyaxis"
         case .cutBack: "gauge.with.dots.needle.33percent"
         case .quit: "nosign"
         case .task: "calendar"
@@ -88,14 +68,16 @@ struct NewItemView: View {
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
 
-    private enum Kind: Hashable { case good, bad }
+    private enum Kind: Hashable { case bad }
 
     var body: some View {
         NavigationStack {
             List {
                 Section {
-                    NavigationLink(value: Kind.good) {
-                        ChoiceLabel(icon: "chart.line.uptrend.xyaxis", title: "Build or maintain", detail: "A habit you want to start or keep doing.")
+                    NavigationLink {
+                        form(.build)
+                    } label: {
+                        ChoiceLabel(icon: ItemType.build.icon, title: "Build or maintain", detail: "A habit you want to start or keep doing.")
                     }
                     NavigationLink(value: Kind.bad) {
                         ChoiceLabel(icon: "chart.line.downtrend.xyaxis", title: "Quit or cut down", detail: "A habit you want to stop or do less.")
@@ -116,7 +98,6 @@ struct NewItemView: View {
             }
             .navigationDestination(for: Kind.self) { kind in
                 switch kind {
-                case .good: question("How do you want to track it?", [.doIt, .amount, .time, .checklist])
                 case .bad: question("What do you want to do?", [.quit, .cutBack])
                 }
             }
@@ -143,7 +124,7 @@ struct NewItemView: View {
                 QuestionHeader(text)
             }
         }
-        .navigationTitle(types.contains(.quit) ? "Quit or cut down" : "Build or maintain")
+        .navigationTitle("Quit or cut down")
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -225,21 +206,26 @@ struct HabitForm: View {
     @State private var color: HabitColor
     @State private var showAppearance = false
 
-    @State private var amount: Double?
+    /// How much: Just do it, or an amount (typed, or hours and minutes when the unit is time).
+    @State private var usesAmount = false
+    @State private var amountText = ""
     @State private var unit = ""
-    @State private var increment: Double? = 1
-    @State private var goal = GoalDraft()
+    @State private var hours = "0"
+    @State private var minutes = "20"
+    /// Each + adds: nil keeps the suggested step, which follows the amount and unit.
+    @State private var step: Double?
+    @State private var often = OftenDraft()
     /// Tasks: once on a date, or on a schedule.
     @State private var taskRepeats = false
-    /// Empty until the user taps Add Item.
+    /// A habit's optional steps (a checklist), or nothing until the user adds one.
     @State private var items: [Step] = []
     @State private var quitSince = Date.now
     @State private var taskDate = Date.now
     @State private var taskHasTime = false
     @State private var taskTime = Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: .now)!
 
+    /// A repeating task's schedule (tasks keep their own Repeat screen, with "after it's done").
     @State private var schedule = ScheduleDraft()
-    @State private var limitPeriod: GoalPeriod = .day
     /// Where it shows on Today: Anytime, or one or more parts of the day.
     @State private var timesOfDay: [String] = [.anytime]
     @State private var addingSection = false
@@ -260,14 +246,12 @@ struct HabitForm: View {
     @State private var notificationsDenied = false
     @State private var alarmsDenied = false
     @State private var confirmDiscard = false
-    @State private var confirmOnce = false
     @FocusState private var focus: Field?
 
     init(type: ItemType, onSaved: @escaping (UUID) -> Void) {
         self.type = type
         self.onSaved = onSaved
         _color = State(initialValue: .blue)
-        _goal = State(initialValue: GoalDraft.initial(for: type))
         _symbol = State(initialValue: type == .quit ? "nosign" : type == .task ? "calendar" : "star.fill")
     }
 
@@ -280,25 +264,53 @@ struct HabitForm: View {
     }
     private var remind: Bool { remindOn && !times.isEmpty }
     private var hasChanges: Bool { !trimmedName.isEmpty || !filledItems.isEmpty }
-    private var offersFrequency: Bool { type != .quit && type != .cutBack && (type != .task || taskRepeats) }
-    private var hasGoalEditor: Bool { [.doIt, .amount, .time].contains(type) }
+    private var isHabit: Bool { type == .build || type == .cutBack }
+    private var timed: Bool { unit == HabitPlan.timeUnit }
+    /// A time amount can't be longer than its period ("3 h a week" is fine, "30 h a day" isn't).
+    private var amountPeriod: GoalPeriod {
+        if case .total(let period) = often.often(hasAmount: true), often.choice == .total { return period }
+        return .day
+    }
+    private var amountValue: Double? {
+        guard usesAmount || type == .cutBack else { return nil }
+        if timed { return GoalDraft(hours: hours, minutes: minutes).duration(max: amountPeriod.maxMinutes) }
+        guard let n = GoalNumber.parse(amountText), n > 0 else { return nil }
+        return n
+    }
+    /// The habit's how much and how often, as chosen: the one source for the read-back, Today and saving.
+    private var plan: HabitPlan {
+        let checklist = type == .build && !filledItems.isEmpty
+        let amount = checklist ? nil : amountValue
+        return HabitPlan(amount: amount, unit: timed ? HabitPlan.timeUnit : TextLimit.clean(unit, TextLimit.unit), step: step,
+                         often: often.often(hasAmount: amount != nil), atMost: type == .cutBack, checklist: checklist)
+    }
+    /// "2 chapters", "30 min": the amount as the How often choices say it.
+    private var amountWords: String? {
+        guard let value = plan.amount else { return nil }
+        return plan.isTimed ? HabitCopy.minutes(value) : HabitCopy.amount(value, plan.unit)
+    }
+    private var weekStart: Int { store.settings.weekStart }
     private var canAdd: Bool {
         guard !trimmedName.isEmpty else { return false }
         switch type {
-        case .doIt, .amount, .time:
-            if goal.value(timed: type == .time, check: type == .doIt) == nil { return false }
+        case .build:
+            if usesAmount && filledItems.isEmpty && amountValue == nil { return false }
         case .cutBack:
-            if (amount ?? 0) <= 0 || (increment ?? 0) <= 0 || unit.trimmingCharacters(in: .whitespaces).isEmpty { return false }
-        case .checklist:
-            if filledItems.isEmpty { return false }
+            if amountValue == nil { return false }
         default:
             break
+        }
+        if isHabit, case .weekdays(let days) = plan.often, days.isEmpty { return false }
+        if isHabit, case .calendar(let rule) = plan.often {
+            if rule.unit == .week && rule.weekdays.isEmpty { return false }
+            if rule.unit == .month && rule.pattern == .dates && rule.dates.isEmpty { return false }
         }
         return true
     }
 
     var body: some View {
         Form {
+            if isHabit { readBackSection }
             nameSection
             switch type {
             case .quit:
@@ -309,14 +321,10 @@ struct HabitForm: View {
                 Section { timeOfDayRow }
                 if taskRepeats { startEndSection }
                 remindersSections
-            default:
-                Section {
-                    if type != .cutBack { repeatRow }
-                    timeOfDayRow
-                }
-                Section { goalRow } footer: {
-                    if hasGoalEditor { Text(combinedSummary).formNote() }
-                }
+            case .build, .cutBack:
+                planSection
+                if type == .build && !usesAmount { stepsSection }
+                Section { timeOfDayRow }
                 startEndSection
                 remindersSections
             }
@@ -337,7 +345,8 @@ struct HabitForm: View {
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
-                Button("Add", action: requestSave).disabled(!canAdd).fontWeight(.semibold)
+                Button("Add", action: save).disabled(!canAdd).fontWeight(.semibold)
+                    .accessibilityIdentifier("add-habit")
             }
             ToolbarItemGroup(placement: .keyboard) {
                 if focus != nil {
@@ -346,14 +355,6 @@ struct HabitForm: View {
                 }
             }
         }
-        .alert("Use 1 day a \(goal.period.noun)?", isPresented: $confirmOnce) {
-            Button("Use 1 Day") {
-                schedule.mode = .flexible; schedule.flexiblePeriod = goal.period; schedule.count = 1
-                goal.period = .day
-                save()
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: { Text("One check-off in a period is one successful day. This sets Schedule to one day in the period and Goal to once a day.") }
         .interactiveDismissDisabled(hasChanges)
         // Icon and colour are quick picks, so they pop up over the form (the user's choice).
         .sheet(isPresented: $showAppearance) {
@@ -449,28 +450,96 @@ struct HabitForm: View {
         .accessibilityLabel("\(title), \(value)")
     }
 
-    private var repeatSummary: String {
-        hasGoalEditor && goal.period != .day ? "Any day this \(goal.period.noun)" : schedule.summary
-    }
-
-    private var combinedSummary: String {
-        guard let amount = goal.amountText(timed: type == .time, check: type == .doIt) else { return "Set your goal to see the plan here." }
-        if goal.period != .day { return "\(amount) \(goal.period.suffix), on any days." }
-        let what = type == .doIt && amount == "Once" ? "Check it off" : amount
-        switch schedule.mode {
-        case .daily: return "\(what) every day."
-        case .specific: return "\(what) on \(schedule.dayNames(schedule.weekdays))."
-        case .flexible: return "\(what) on any \(schedule.summary)."
-        default: return "\(what), \(schedule.summary.lowercased())."
+    /// A repeating task's schedule, on its own screen (with "after it's done", which only tasks have).
+    private var repeatRow: some View {
+        screenRow("How often", value: schedule.summary) {
+            ScheduleEditor(schedule: $schedule, goalPeriod: .constant(.day), start: startDate,
+                           end: hasEnd ? endDate : nil, weekStart: weekStart,
+                           hasGoal: false, checklist: false, task: true)
+                .onAppear { focus = nil }
         }
     }
 
-    private var repeatRow: some View {
-        screenRow("Schedule", value: repeatSummary) {
-            ScheduleEditor(schedule: $schedule, goalPeriod: $goal.period, start: startDate,
-                           end: hasEnd ? endDate : nil, weekStart: store.settings.weekStart,
-                           hasGoal: hasGoalEditor, checklist: type == .checklist, task: type == .task)
-                .onAppear { focus = nil }
+    // MARK: The sentence, how much and how often
+
+    /// The habit said back big at the top, the way a person says it: "Read 2 chapters a week",
+    /// "Gym every Monday and Wednesday". Built from the same saved habit Today shows.
+    private var readBackSection: some View {
+        Section {
+            VStack(spacing: 4) {
+                Text(HabitCopy.sentence(draft, weekStart: weekStart))
+                    .font(.system(.title2, design: .rounded).weight(.bold))
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .contentTransition(.opacity)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityIdentifier("habit-sentence")
+                Text(timeOfDaySummary)
+                    .font(.callout).foregroundStyle(.secondary)
+                    .accessibilityLabel("Time of day: \(timeOfDaySummary)")
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 2)
+            .animation(.snappy, value: HabitCopy.sentence(draft, weekStart: weekStart))
+        }
+        .listRowBackground(Color.clear)
+    }
+
+    /// How much, what + adds, and how often: three rows that make the sentence above.
+    private var planSection: some View {
+        Section {
+            if filledItems.isEmpty {
+                screenRow(type == .cutBack ? "Limit" : "How much", value: amountValue == nil && (usesAmount || type == .cutBack) ? "Set" : plan.howMuchLabel) {
+                    HowMuchEditor(usesAmount: $usesAmount, amount: $amountText, unit: $unit, hours: $hours, minutes: $minutes,
+                                  limit: type == .cutBack, usedUnits: store.usedUnits, period: amountPeriod)
+                        .onAppear { focus = nil }
+                }
+                .accessibilityIdentifier("how-much-row")
+            }
+            if plan.hasStep {
+                NumberRow(title: "Each + adds", value: $step, placeholder: HabitCopy.number(plan.stepValue),
+                          suffix: HabitCopy.unitWord(plan.stepValue, plan.unit), focus: $focus, field: .increment)
+            }
+            screenRow("How often", value: plan.often.label(hasAmount: plan.hasAmount, checklist: plan.checklist, weekStart: weekStart)) {
+                HowOftenEditor(draft: $often, amountText: amountWords, checklist: plan.checklist, limit: type == .cutBack,
+                               start: startDate, weekStart: weekStart)
+                    .onAppear { focus = nil }
+            }
+            .accessibilityIdentifier("how-often-row")
+        } footer: {
+            Text(todayNote).formNote()
+        }
+    }
+
+    /// What Today will show and what one tap does, before saving: no rule the person can't see.
+    private var todayNote: String {
+        if plan.checklist { return "On Today, tick each step. It's done when every step is ticked." }
+        guard plan.amount != nil else {
+            if usesAmount || type == .cutBack { return "Type the amount in \(type == .cutBack ? "Limit" : "How much")." }
+            switch plan.often {
+            case .timesADay(let n): return "On Today, tap ✓ each time. It shows 1/\(n) after the first."
+            case .times(let period, let n): return "On Today, tap ✓ each time you do it. \(n) this \(period.noun) meets it, on any days."
+            case .days(let period, let n): return "On Today, tap ✓ once on a day you do it. \(n) different days this \(period.noun) meets it."
+            default: return "On Today, tap ✓ when it's done."
+            }
+        }
+        if plan.isTimed { return "On Today, ▶ times it, or tap the habit to type the time." }
+        let adds = HabitCopy.amount(plan.stepValue, plan.unit)
+        if type == .cutBack { return "On Today, + adds \(adds) each time you have one. Tap the habit to type any amount." }
+        return "On Today, + adds \(adds). Tap the habit to type any amount."
+    }
+
+    /// A few steps to tick each time ("dishes, sink, floor"), for a habit that's done or not.
+    private var stepsSection: some View {
+        Section {
+            screenRow("Steps", value: filledItems.isEmpty ? "None" : filledItems.count == 1 ? "1 step" : "\(filledItems.count) steps") {
+                Form { ChecklistItemsSection(items: $items) }
+                    .navigationTitle("Steps")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+            .accessibilityIdentifier("steps-row")
+        } footer: {
+            Text("Optional: a short list to tick each time, like dishes, sink, floor.").formNote()
         }
     }
 
@@ -492,67 +561,6 @@ struct HabitForm: View {
                  : "A start date in the past lets you tick the days since then.").formNote()
         }
     }
-
-    private var goalSummary: String {
-        if hasGoalEditor { return (goal.period == .day ? goal.amountText(timed: type == .time, check: type == .doIt) : goal.summary(timed: type == .time, check: type == .doIt)) ?? "Set" }
-        let per = limitPeriod.suffix
-        switch type {
-        case .amount: return amount.map { "\(Format.amount($0)) \(unit.isEmpty ? "" : unit + " ")\(per)" } ?? "Set"
-        case .cutBack: return amount.map { "At most \(Format.amount($0)) \(unit.isEmpty ? "" : unit + " ")\(per)" } ?? "Set"
-        case .checklist: return filledItems.isEmpty ? "Add items" : filledItems.count == 1 ? "1 item" : "\(filledItems.count) items"
-        default: return ""
-        }
-    }
-
-    private var goalRow: some View {
-        screenRow(type == .checklist ? "Items" : type == .cutBack ? "Limit" : "Goal", value: goalSummary) {
-            if hasGoalEditor {
-                GoalEditor(goal: $goal, schedule: $schedule, timed: type == .time, check: type == .doIt, usedUnits: store.usedUnits,
-                           weekStart: store.settings.weekStart)
-                .onAppear { focus = nil }
-            } else {
-                Form {
-                    if type == .cutBack {
-                        Section {
-                            Picker("Limit counts over", selection: $limitPeriod) {
-                                ForEach([GoalPeriod.day, .week, .month]) { Text($0.label).tag($0) }
-                            }
-                        }
-                        amountSection(limit: true)
-                    }
-                    if type == .checklist { checklistSection }
-                }
-                .navigationTitle(type == .checklist ? "Items" : type == .cutBack ? "Limit" : "Goal")
-                .navigationBarTitleDisplayMode(.inline)
-            }
-        }
-    }
-
-    // MARK: Type sections
-
-    private func amountSection(limit: Bool) -> some View {
-        Section {
-            NumberRow(title: limit ? "No more than" : "Amount", value: $amount, placeholder: limit ? "2" : "8",
-                      suffix: unit.isEmpty ? (limit ? "cups" : "glasses") : unit, focus: $focus, field: .amount)
-            NavigationLink {
-                UnitPicker(unit: $unit, used: store.usedUnits, mode: .limit)
-            } label: {
-                ValueRow(title: "Unit") {
-                    Text(unit.isEmpty ? "Choose" : unit).foregroundStyle(unit.isEmpty ? .tertiary : .secondary)
-                }
-            }
-            NumberRow(title: "Each tap adds", value: $increment, placeholder: "1",
-                      suffix: unit.isEmpty ? "" : unit, focus: $focus, field: .increment)
-        } header: {
-            Text(limit ? "Limit" : "Goal")
-        } footer: {
-            Text(limit
-                 ? "Log each one as it happens. It counts while you stay at or under the limit."
-                 : "Each tap on + adds \(Format.amount(increment ?? 1)).").formNote()
-        }
-    }
-
-    private var checklistSection: some View { ChecklistItemsSection(items: $items) }
 
     private var quitSection: some View {
         Section {
@@ -602,8 +610,9 @@ struct HabitForm: View {
         syncReminders()
     }
 
+    /// "Anytime", "Morning", "Morning and Evening".
     private var timeOfDaySummary: String {
-        timesOfDay.map { store.section($0).name }.joined(separator: ", ")
+        HabitCopy.join(timesOfDay.map { store.section($0).name })
     }
 
     /// Where it's displayed on Today (never the goal). Its own full screen: the parts of the day, any
@@ -779,15 +788,9 @@ struct HabitForm: View {
         var habit = Habit(name: trimmedName, symbol: symbol, color: color, kind: .check)
         let cal = Calendar.current
         switch type {
-        case .doIt, .amount, .time:
-            break // The shared goal draft applies after the daily schedule below.
-        case .cutBack:
-            habit.kind = .amount(unit: TextLimit.clean(unit, TextLimit.unit), increment: increment ?? 1)
-            habit.goal = amount ?? 1
-            habit.atMost = type == .cutBack
-        case .checklist:
-            habit.kind = .checklist
-            habit.steps = filledItems
+        case .build, .cutBack:
+            plan.apply(to: &habit)
+            if plan.checklist { habit.steps = filledItems }
         case .quit:
             habit.kind = .quit
             habit.quitSince = quitSince
@@ -795,15 +798,13 @@ struct HabitForm: View {
             habit.kind = .task
             // A repeating task has no date: it comes back on its schedule.
             habit.dueDay = taskRepeats ? nil : LocalDay(taskDate)
+            if taskRepeats { habit.frequency = schedule.frequency }
             if taskHasTime {
                 let c = cal.dateComponents([.hour, .minute], from: taskTime)
                 habit.dueMinute = (c.hour ?? 9) * 60 + (c.minute ?? 0)
             }
         }
         if type != .quit { habit.parts = timesOfDay }
-        if offersFrequency { habit.frequency = schedule.frequency }
-        if type == .cutBack { habit.frequency = limitPeriod.frequency() }
-        if hasGoalEditor { goal.apply(to: &habit, timed: type == .time, check: type == .doIt) }
         // Reminders only when Remind Me is on: one per minute, keeping each one's ID, earliest first.
         if remind && type != .quit {
             var seen = Set<Int>()
@@ -815,19 +816,14 @@ struct HabitForm: View {
             .sorted { store.dayMinute($0.minuteOfDay) < store.dayMinute($1.minuteOfDay) }
         }
         habit.remind = remind
-        // Start and end dates: for anything with How Often (a one-time task has only its date).
-        if offersFrequency || type == .cutBack {
+        // Start and end dates: for habits and repeating tasks (a one-time task has only its date).
+        if isHabit || (type == .task && taskRepeats) {
             habit.startsOn = LocalDay(startDate)
             habit.endsOn = hasEnd ? LocalDay(max(endDate, startDate)) : nil
         }
         habit.alert = ReminderScheduler.alarmsAvailable ? alert : .notification
         habit.followUpMinutes = habit.atMost ? nil : followUp
         return habit
-    }
-
-    private func requestSave() {
-        if type == .doIt && goal.period != .day && goal.amountValue(check: true) == 1 { confirmOnce = true }
-        else { save() }
     }
 
     private func save() {
@@ -853,10 +849,10 @@ struct ChecklistItemsSection: View {
         Section {
             ForEach($items) { $item in
                 HStack(spacing: 12) {
-                    RemoveButton(label: "Remove \(item.name.isEmpty ? "item" : item.name)") {
+                    RemoveButton(label: "Remove \(item.name.isEmpty ? "step" : item.name)") {
                         withAnimation { items.removeAll { $0.id == item.id } }
                     }
-                    TextField(items.first?.id == item.id ? "e.g. Push-ups" : "Next item", text: $item.name)
+                    TextField(items.first?.id == item.id ? "e.g. Dishes" : "Next step", text: $item.name)
                         .focused($focused, equals: item.id)
                         .limitText($item.name, to: TextLimit.checklistPart)
                         .submitLabel(.next)
@@ -864,11 +860,11 @@ struct ChecklistItemsSection: View {
                 }
             }
             .onDelete { items.remove(atOffsets: $0) }
-            AddRow(title: "Add Item", action: addItem)
+            AddRow(title: "Add Step", action: addItem)
         } header: {
-            Text("Items")
+            Text("Steps")
         } footer: {
-            Text("One habit with a few items to tick. They reset each time it's due, and the habit is done when every item is ticked.").formNote()
+            Text("A few steps to tick. They reset each time it's due, and the habit is done when every step is ticked.").formNote()
         }
     }
 
@@ -1104,6 +1100,8 @@ struct UnitPicker: View {
                     ("Exercise", ["reps", "sets", "push-ups", "workouts", "laps"]),
                     ("Reading and writing", ["pages", "chapters", "books"])]
         case .amount, .limit:
+            // Time first: it's the most common amount people give ("30 min a day"; 35.6% of amounts,
+            // "How People Describe a Habit" §3). It makes the habit timed, with ▶ on Today.
             var list: [(String, [String])] = [
                 ("Drinking", ["glasses", "cups", "bottles"] + volume),
                 ("Walking and running", ["steps"] + distance),
@@ -1113,6 +1111,7 @@ struct UnitPicker: View {
                 ("Money", Self.money),
             ]
             if mode == .limit { list.insert(("Cutting down", ["cigarettes", "drinks", "coffees", "snacks"]), at: 0) }
+            if mode == .amount { list.insert(("Time", [HabitPlan.timeUnit]), at: 0) }
             return list
         }
     }
@@ -1172,7 +1171,7 @@ struct UnitPicker: View {
             dismiss()
         } label: {
             HStack {
-                Text(value).foregroundStyle(Color.primary).lineLimit(1)
+                Text(value == HabitPlan.timeUnit ? "Hours and minutes" : value).foregroundStyle(Color.primary).lineLimit(1)
                 Spacer(minLength: 16)
                 if value == unit { Image(systemName: "checkmark").foregroundStyle(Color.ink).fontWeight(.semibold) }
             }

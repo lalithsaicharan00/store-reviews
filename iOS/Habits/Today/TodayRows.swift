@@ -24,7 +24,7 @@ func goalLine(_ habit: Habit, progress: Double, goal: Double, running: Bool = fa
         // No unit: just the numbers ("3/8").
         return "\(Format.amount(progress))/\(Format.amount(goal))\(unit.isEmpty ? "" : " " + unit)\(max)\(period)"
     case .checklist:
-        return "\(Format.amount(progress))/\(Format.amount(goal)) items\(period)"
+        return "\(Format.amount(progress))/\(Format.amount(goal)) steps\(period)"
     case .check where habit.checkUnit != nil:
         return "\(Format.amount(progress))/\(Format.amount(goal)) \(habit.checkUnit!)\(period)"
     case .check, .quit, .task:
@@ -98,6 +98,14 @@ struct HabitRow: View {
                     .font(.subheadline).foregroundStyle(isRunning ? .primary : .secondary)
                     .monospacedDigit()
                     .lineLimit(habit.atMost ? 2 : 1) }
+                // How often, in words, for rules that name days: "Every Mon and Wed", "On the 1st of every month".
+                let rhythm = HabitCopy.todayCaption(habit, weekStart: store.settings.weekStart)
+                if !rhythm.isEmpty {
+                    Text(rhythm)
+                        .font(.caption).foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .accessibilityIdentifier("habit-rhythm")
+                }
                 if case .flexible(let period, let needed) = habit.frequency,
                    let count = store.flexibleProgress(habit, on: day) {
                     Text(count > needed ? "\(count) days this \(period.noun) · goal reached"
@@ -158,7 +166,7 @@ struct HabitRow: View {
         if habit.kind == .checklist {
             // The button opens and closes the items; the checklist is done when every item is.
             RoundActionButton(symbol: stepsOpen ? "chevron.up" : "chevron.down", done: done, color: habit.color,
-                              label: stepsOpen ? "Hide \(habit.name) items" : "Show \(habit.name) items") {
+                              label: stepsOpen ? "Hide \(habit.name) steps" : "Show \(habit.name) steps") {
                 withAnimation { stepsOpen.toggle() }
             }
         } else {
@@ -170,15 +178,15 @@ struct HabitRow: View {
                         if let slot { store.toggleSlot(habit, slot: slot, on: day) } else { store.toggleCheck(habit, on: day) }
                     }
                 }
-            case .amount:
-                // The button says what one tap does: "+1" adds one; "+" asks how much.
+            case .amount(let unit, _):
+                // The button says what one tap adds, always its saved step ("+1", "+250", "+1k"); the unit is in
+                // the line beside it and read by VoiceOver. Tapping the row types any other amount.
+                let step = habit.quickIncrement ?? 1
                 RoundActionButton(symbol: "plus", done: done, color: habit.color,
-                                  label: habit.quickIncrement.map { "Add \(Format.amount($0)) to \(habit.name)" } ?? "Add amount to \(habit.name)",
+                                  label: "Add \(HabitCopy.amount(step, unit)) to \(habit.name)",
                                   keepSymbolWhenDone: true,
-                                  text: habit.quickIncrement.map { "+" + Format.amount($0) }) {
-                    if habit.quickIncrement != nil {
-                        withAnimation { store.increment(habit, on: day) }
-                    } else { showLog = true }
+                                  text: "+" + Format.amount(step)) {
+                    withAnimation { store.increment(habit, on: day) }
                 }
             case .duration:
                 let running = store.timers[habit.id] != nil

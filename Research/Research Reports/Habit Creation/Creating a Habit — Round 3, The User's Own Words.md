@@ -10,7 +10,7 @@ This round did the research first. [How People Describe a Habit](<How People Des
 - **Evidence, including one row per statement:** [`Habit Creation Evidence/habit_descriptions_round3/`](<Habit Creation Evidence/habit_descriptions_round3/README.md>).
 - **Mockups:** [New Habit — Round 3](https://claude.ai/artifact/ANKvCwMetGruSECAC2AiMY) (four iPhone screens: the form, How often, "say it", Today).
 
-**Status: proposal, not built.** It changes built behaviour and three decided rules (§6), so it needs the user's go-ahead.
+**Status: built 29 September 2026, at the user's go-ahead,** with the differences in §7. It has not yet been compiled or run on a phone (the cloud session has no Swift toolchain).
 
 ---
 
@@ -303,3 +303,47 @@ These are review sentences about habits, not habits typed into a name field, so 
 | Kept | Screen 1 · Cut down's Limit (now "At most") · ▶ timer in place · Add Amount sheet · units list · edits apply from today · dates of the month (now under On a date) · task repeat-after-done | |
 
 **The Design Rules file is not changed yet.** It describes what is built. §6 is the list of edits it needs when this is approved.
+
+---
+
+## 7. Build notes (29 September 2026)
+
+The user asked for the build with one emphasis: **the copy is the value** ("whatever users select, multiple days or multiple dates, it should read the way people read it", on Today and on the form). Checklist: [Round 3 Build — Copy, Days, Dates and Limits](<../../../iOS/Docs/Checklists/Round 3 Build — Copy, Days, Dates and Limits Checklist.md>).
+
+**Built as designed:** one form for Build or maintain with the read-back sentence; How much (Just do it, an amount, or time); Each + adds; How often as sentence endings; Steps instead of the Checklist type; Cut down with Limit and a day, week or month; + always adds its saved step; "times" counts every time and "days" counts days; Today shows how often for rules that name days ("Every Mon and Wed", "Every Sun to Thu", "On the 1st of every month").
+
+**The copy rules**, decided while building and checked in every combination:
+
+- All 127 sets of weekdays, for weeks starting Sunday and Monday.
+- 24 date patterns, each with and without "use the last day" and at three intervals.
+- 54 calendar rules, each for weeks starting Sunday and Monday.
+- 70 habit shapes, including the longest name and unit.
+
+The rules are in the Design Rules ("Habit copy"). The Python reference and its print-outs are in `iOS/Tools/copy_oracle/`, and `CopyCheck` compares the app against them on the phone. The main decisions:
+
+- **Weekday ranges:** a range only for one unbroken run of three or more days ("every Sunday to Thursday", "every Friday to Monday"). Mixed sets name every day, because "every Monday, and Wednesday to Friday" read worse than listing them.
+- **Five days that aren't a run** read as "every day except Thursday and Saturday".
+- **Dates:** "on the 1st to 3rd and the 15th"; "on odd dates"; more than six separate dates → "on 7 dates each month"; 28 or more → "every day except the 31st".
+- **Sentences:** use whole, grouped numbers ("Walk 10,000 steps a day"; "k" stays on Today's progress line). Never "1 glasses". A name that is the unit isn't repeated ("100 push-ups a day").
+
+**Different from the proposal:**
+
+| Proposal | Built | Why |
+|---|---|---|
+| "Say it" fill-in from the name field | Not built | The user asked in the same message for short names, and kept limits (24 characters) cut a typed sentence short. There are only 5 habit-app reviews for it. It can come back with its own field. |
+| "2 tablets each time, 3 times a day" | Not offered; an amount is per day, per total or on some days | It needs a new stored field (a schema change) |
+| "5 km each time, 3 times a week" | Reads **"5 km on 3 days a week"** | It counts the days 5 km is reached, and the words now say exactly that |
+| A task's schedule row, "Schedule" / "Repeat" | **How often**, with the same words as habits | One name for one thing |
+
+**Known effect on existing habits:** amount habits made before this build saved a step of 1, so their + now adds 1 (for example, one step on an old 8,000-step habit). There is no edit screen yet, so re-create those habits; new ones get the suggested step.
+
+**Tests:** `NewHabitUITests`, `GoalFlowUITests` and `ScheduleUITests` are rewritten for the new form. New tests cover:
+
+- the user's examples;
+- a weekday range on the form and on Today;
+- Anytime never combining with another time of day;
+- your own step;
+- the time unit;
+- the copy check.
+
+The other UI tests that walked through the old type screen are updated.

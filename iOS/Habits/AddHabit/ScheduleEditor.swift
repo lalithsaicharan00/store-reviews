@@ -90,7 +90,7 @@ struct ScheduleEditor: View {
             }
         }
         .onAppear { schedule.seed(start: start, weekStart: weekStart) }
-        .navigationTitle("Schedule")
+        .navigationTitle("How Often")
         .navigationBarTitleDisplayMode(.inline)
         .listSectionSpacing(.compact)
         .alert("Use a goal for each scheduled day?", isPresented: $changeGoal) {

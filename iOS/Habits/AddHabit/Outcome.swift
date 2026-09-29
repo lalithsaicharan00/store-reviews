@@ -7,7 +7,8 @@ enum Outcome {
     /// Where it shows on Today, and for week, month and year rules, until when.
     static func timeOfDay(_ habit: Habit, store: HabitStore) -> String {
         if case .flexible(let period, let n) = habit.frequency {
-            return "Reach the daily goal on \(n) different days each \(period.noun). You can still log extra days after reaching it."
+            let what = HabitCopy.howMuch(habit).map { "Reach \($0)" } ?? "Tick it"
+            return "\(what) on \(n == 1 ? "1 day" : "\(n) different days") each \(period.noun). You can still log extra days after that."
         }
         let placements = store.placements(of: habit)
         let names = placements.map { store.section($0.section).name }
@@ -83,7 +84,7 @@ enum Outcome {
     /// for reminders, "the week's 3 are done". Nil for set schedules and limits.
     private static func periodRule(_ habit: Habit, forReminders: Bool = false) -> String? {
         if case .flexible(let period, let n) = habit.frequency {
-            return "you reach the daily goal on \(n) different days this \(period.noun)"
+            return "it's done on \(n == 1 ? "1 day" : "\(n) different days") this \(period.noun)"
         }
         let n: Int, period: String
         switch habit.frequency {
@@ -94,12 +95,12 @@ enum Outcome {
         }
         guard !habit.atMost else { return nil }
         switch habit.kind {
-        case .amount(let unit, _): return "you reach \(Format.amount(habit.goal)) \(unit) this \(period)"
-        case .duration: return "you reach \(Format.amount(habit.goal)) min this \(period)"
+        case .amount(let unit, _): return "you reach \(HabitCopy.amount(habit.goal, unit)) this \(period)"
+        case .duration: return "you reach \(HabitCopy.minutes(habit.goal)) this \(period)"
         default: break
         }
         if forReminders { return n == 1 ? "it's done this \(period)" : "this \(period)'s \(n) are done" }
-        return "you've done it \(n == 1 ? "once" : "\(n) times") this \(period)"
+        return "you've done it \(HabitCopy.times(n)) this \(period)"
     }
 
     static func hours(_ section: DaySection, store: HabitStore) -> String? {
