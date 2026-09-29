@@ -249,6 +249,8 @@ enum TextLimit {
     static let checklistPart = 24
     static let section = 16    // times of day: "After school" 12, "Evening wind-down" 17 → "Evening wind-dow"
     static let unit = 12       // "tablespoons" 11, "cigarettes" 10
+    static let noteText = 1000       // a habit's or a day's note: a few lines, never an essay editor
+    static let descriptionText = 200 // a habit's standing description: what counts, why it matters
 
     /// "3 characters left", only in the last 5, so the limit is never a surprise.
     static func note(_ text: String, _ limit: Int) -> String? {

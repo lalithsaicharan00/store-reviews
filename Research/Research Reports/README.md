@@ -24,6 +24,7 @@ Time-of-day sections, groups, guided routines, sub-habits, ordering and notes.
 | [Habit Tracker — Day Structure Explained in Plain English](<Day Structure and Organization/Habit Tracker — Day Structure Explained in Plain English.md>) | **Claude** | 24 Sep 2026 | Companion to the verification report. Explains every table row, how each feature should work, and which stats to show. |
 | [Habit Tracker — Day Sections, Categories and Routines Decision](<Day Structure and Organization/Habit Tracker — Day Sections, Categories and Routines Decision.md>) | Codex | 23 Sep 2026 | Earlier recommendation built from Feature Ledger cards and spot-checked reviews. |
 | [Habit Tracker — Organization and Notes Deep Dive](<Day Structure and Organization/Habit Tracker — Organization and Notes Deep Dive.md>) | Codex | 23 Sep 2026 | Rename, reorder, groups, time of day and per-habit notes. |
+| [Habit Notes and Day Notes — What People Ask For](<Day Structure and Organization/Habit Notes and Day Notes — What People Ask For.md>) | Claude | 29 Sep 2026 | Whole-corpus counts: habit notes (main ask), a standing description, and a small whole-day note; never prompted. |
 
 Evidence folders in this section:
 

@@ -132,7 +132,7 @@ Rounds 7–9 (New Habit form Round 3/4 and the full-screen routine player) are r
 | # | Feature | Status |
 |---|---|---|
 | 53 | **Habit page and Edit habit:** open a habit, edit name, icon, colour, goal, how often, time of day, reminders, dates; edits apply from today and past days keep their goal (the old #47). The page is the home for notes, pause, archive and delete | Edit built 29 Sep (long-press → Edit Habit; goal history); the habit page itself comes with notes (#54) |
-| 54 | **Habit notes** (research first whether notes for the whole day are needed) | Not started |
+| 54 | **Habit notes** (research first whether notes for the whole day are needed) | Built 29 Sep: habit notes, a description, and a note for the day (`Docs/Checklists/Habit Notes and Day Notes.md`) |
 | 55 | **Pause a habit** (research pausing tracking across the whole app) | Not started |
 | 56 | **All Habits:** the list behind the top-bar button, with archive and delete | Not started |
 | 57 | **Easy undo after checking or logging** (snackbar or a suitable native presentation) | Not started |

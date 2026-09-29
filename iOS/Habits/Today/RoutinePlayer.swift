@@ -25,7 +25,8 @@ struct RoutinePlayer: View {
     @State private var showLog = false
     @State private var showHabitOptions = false
     @State private var pendingHabitAction: HabitAction?
-    private enum HabitAction { case log, skip, unskip, undo(UUID), timer, edit }
+    private enum HabitAction { case log, skip, unskip, undo(UUID), timer, edit, note }
+    @State private var showNote = false
     @State private var showEdit = false
     @State private var manualEntryIDs: Set<UUID> = []
     /// The timer was running when Add Time opened; it runs again when the sheet closes (Cancel included).
@@ -157,6 +158,12 @@ struct RoutinePlayer: View {
             if let habit = current { habitOptions(habit) }
         }
         .sheet(isPresented: $showEdit) { if let habit = current { EditHabitSheet(habit: habit) } }
+        .sheet(isPresented: $showNote) {
+            if let habit = current {
+                NoteSheet(title: "Note", subtitle: habit.name + " · " + NoteSheet.dayText(session.day, today: store.today(), calendar: store.calendar),
+                          initial: store.note(of: habit, on: session.day) ?? "") { store.setNote($0, of: habit, on: session.day) }
+            }
+        }
         .sheet(isPresented: $showLog, onDismiss: manualLogFinished) {
             if let habit = current { LogProgressView(habit: habit, day: session.day) }
         }
@@ -221,6 +228,13 @@ struct RoutinePlayer: View {
                                 .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
                                 .accessibilityAddTraits(.isHeader)
                                 .accessibilityIdentifier("focus-name")
+                            // The habit's description (what counts, how to do it) is at hand while doing it.
+                            if let description = store.description(of: habit) {
+                                Text(description)
+                                    .font(.subheadline).foregroundStyle(.secondary)
+                                    .multilineTextAlignment(.center).lineLimit(3)
+                                    .accessibilityIdentifier("focus-description")
+                            }
                             Text(habit.frequency.isFlexible
                                  ? HabitCopy.capitalized(HabitCopy.plan(habit, weekStart: store.settings.weekStart))
                                  : FocusProgressValue.period(habit))
@@ -369,6 +383,8 @@ struct RoutinePlayer: View {
                     }
                 }
                 Section {
+                    Button(store.note(of: habit, on: session.day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") { selectHabitAction(.note) }
+                        .accessibilityIdentifier("focus-note")
                     Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { selectHabitAction(.edit) }
                         .accessibilityIdentifier("focus-edit-habit")
                 }
@@ -404,6 +420,7 @@ struct RoutinePlayer: View {
         case .undo(let id): change("Entry removed", captureUndo: false) { store.undoEntry(id) }
         case .timer: toggleTimer(habit)
         case .edit: showEdit = true
+        case .note: showNote = true
         }
     }
 

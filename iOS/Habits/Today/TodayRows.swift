@@ -61,6 +61,8 @@ struct HabitRow: View {
     var lineOverride: String? = nil
     @State private var showLog = false
     @State private var showEdit = false
+    @State private var showNote = false
+    @State private var showNotes = false
     @Binding var stepsOpen: Bool
     @Environment(HabitStore.self) private var store
 
@@ -110,6 +112,15 @@ struct HabitRow: View {
                         .lineLimit(1)
                         .accessibilityIdentifier("habit-rhythm")
                 }
+                // The day's note, first line only: a visible cue that it's there (long-press to change it).
+                if lineOverride == nil, let note = store.note(of: habit, on: day) {
+                    Label(note.split(separator: "\n").first.map(String.init) ?? note, systemImage: "note.text")
+                        .font(.caption).foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .labelStyle(NoteLineLabel())
+                        .accessibilityLabel("Note: \(note)")
+                        .accessibilityIdentifier("habit-note-line")
+                }
                 if case .flexible(let period, let needed) = habit.frequency,
                    let count = store.flexibleProgress(habit, on: day) {
                     Text(count > needed ? "\(count) days this \(period.noun) · goal reached"
@@ -132,9 +143,20 @@ struct HabitRow: View {
         .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color).overlay(HighlightFlash(on: highlighted, color: habit.color)))
         .sheet(isPresented: $showLog) { LogProgressView(habit: habit, day: day) }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
+        .sheet(isPresented: $showNote) {
+            NoteSheet(title: "Note", subtitle: habit.name + " · " + NoteSheet.dayText(day, today: store.today(), calendar: store.calendar),
+                      initial: store.note(of: habit, on: day) ?? "") { store.setNote($0, of: habit, on: day) }
+        }
+        .sheet(isPresented: $showNotes) { HabitNotesView(habit: habit) }
         .contextMenu {
             // Edit sits with the item's other actions, as in Reminders; a tap on the row logs (spec §8).
             Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { showEdit = true }
+            // Any day, done or not, past or today; a note never changes progress (notes report, 29 Sep).
+            Button(store.note(of: habit, on: day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") { showNote = true }
+                .disabled(day > store.today())
+            if !store.notes(of: habit).isEmpty {
+                Button("All Notes", systemImage: "list.bullet.rectangle") { showNotes = true }
+            }
             if case .amount = habit.kind {
                 Button("Log amount manually", systemImage: "square.and.pencil") { showLog = true }.disabled(day > store.today())
                 Button("Undo Last Entry") { store.undoProgress(habit, on: day) }
@@ -460,7 +482,15 @@ struct EditHabitSheet: View {
 
     var body: some View {
         NavigationStack {
-            HabitForm(editing: store.habits.first { $0.id == habit.id } ?? habit, weekStart: store.settings.weekStart) { _ in onSaved() }
+            HabitForm(editing: store.habits.first { $0.id == habit.id } ?? habit, weekStart: store.settings.weekStart,
+                      description: store.description(of: habit) ?? "") { _ in onSaved() }
         }
+    }
+}
+
+/// The note line's small icon, tight to the text.
+private struct NoteLineLabel: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(spacing: 4) { configuration.icon.imageScale(.small); configuration.title }
     }
 }

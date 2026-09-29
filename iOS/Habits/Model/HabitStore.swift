@@ -45,6 +45,11 @@ final class HabitStore {
     /// Goal history: the rules a habit had before it was edited, oldest first. Each applies up to and including
     /// its `until` day, so past days keep the result they had (spec §8.2).
     private(set) var rules: [UUID: [HabitRule]] = [:]
+    /// Notes (report "Habit Notes and Day Notes", 29 Sep): one per habit per day, one per day, and a standing
+    /// description per habit. Optional, never prompted, and they never change progress.
+    private(set) var habitNotes: [UUID: [LocalDay: String]] = [:]
+    private(set) var dayNotes: [LocalDay: String] = [:]
+    private(set) var descriptions: [UUID: String] = [:]
     /// Plus unlocks unlimited habits. Set from the store purchase (build-plan: billing, later).
     var isPlus = false
     static let freeHabitLimit = 5
@@ -492,6 +497,9 @@ final class HabitStore {
             var runningSlots: [UUID: String] = [:]
             var loadedSkips: [UUID: Set<LocalDay>] = [:]
             var loadedRules: [UUID: [HabitRule]] = [:]
+            var loadedHabitNotes: [UUID: [LocalDay: String]] = [:]
+            var loadedDayNotes: [LocalDay: String] = [:]
+            var loadedDescriptions: [UUID: String] = [:]
             var upgradedV1 = false, repaired = false
             for setting in snapshot.settings {
                 switch setting.key {
@@ -504,6 +512,21 @@ final class HabitStore {
                         sections = list
                     }
                 default:
+                    if setting.key.hasPrefix(Keys.notePrefix) {
+                        let parts = setting.key.dropFirst(Keys.notePrefix.count).split(separator: "|")
+                        if parts.count == 2, let id = UUID(uuidString: String(parts[0])), let day = LocalDay(key: String(parts[1])) {
+                            loadedHabitNotes[id, default: [:]][day] = setting.value
+                        }
+                        continue
+                    }
+                    if setting.key.hasPrefix(Keys.dayNotePrefix), let day = LocalDay(key: String(setting.key.dropFirst(Keys.dayNotePrefix.count))) {
+                        loadedDayNotes[day] = setting.value
+                        continue
+                    }
+                    if setting.key.hasPrefix(Keys.descriptionPrefix), let id = UUID(uuidString: String(setting.key.dropFirst(Keys.descriptionPrefix.count))) {
+                        loadedDescriptions[id] = setting.value
+                        continue
+                    }
                     if setting.key.hasPrefix(Keys.rulesPrefix),
                        let id = UUID(uuidString: String(setting.key.dropFirst(Keys.rulesPrefix.count))),
                        let list = try? JSONDecoder().decode([HabitRule].self, from: Data(setting.value.utf8)) {
@@ -530,6 +553,9 @@ final class HabitStore {
             timerSlots = runningSlots
             skips = loadedSkips
             rules = loadedRules
+            habitNotes = loadedHabitNotes
+            dayNotes = loadedDayNotes
+            descriptions = loadedDescriptions
             isLoaded = true
             if upgradedV1 && !repaired && !triedPlacementUpgrade { triedPlacementUpgrade = true; repairPlacement() }
             onChange?()
@@ -544,6 +570,9 @@ final class HabitStore {
         static let timerPrefix = "timer."
         static let skipPrefix = "skip."
         static let rulesPrefix = "rules."
+        static let notePrefix = "note."
+        static let dayNotePrefix = "daynote."
+        static let descriptionPrefix = "desc."
         static let sections = "day_sections"
         static let placementV1 = "placement_v1"
         static let placementV2 = "placement_v2"
@@ -605,6 +634,45 @@ final class HabitStore {
             try await repository.saveHabit(habit: habit.record(position: habits.count), steps: habit.stepRecords(),
                                            reminders: habit.reminderRecords(), at: Date.now.millis)
             withAnimation { habits.append(habit) }
+        }
+    }
+
+    // MARK: Notes
+
+    func note(of habit: Habit, on day: LocalDay) -> String? { habitNotes[habit.id]?[day] }
+    /// Every note on a habit, newest first.
+    func notes(of habit: Habit) -> [(day: LocalDay, text: String)] {
+        (habitNotes[habit.id] ?? [:]).map { (day: $0.key, text: $0.value) }.sorted { $0.day > $1.day }
+    }
+    func dayNote(on day: LocalDay) -> String? { dayNotes[day] }
+    func description(of habit: Habit) -> String? { descriptions[habit.id] }
+
+    /// Empty text removes the note.
+    func setNote(_ text: String, of habit: Habit, on day: LocalDay) {
+        let text = TextLimit.clean(text, TextLimit.noteText)
+        let key = Keys.notePrefix + habit.id.uuidString + "|" + day.key
+        perform { [self] in
+            if text.isEmpty { try await repository.removeSetting(key: key) } else { try await repository.saveSetting(key: key, value: text) }
+            habitNotes[habit.id, default: [:]][day] = text.isEmpty ? nil : text
+        }
+    }
+
+    func setDayNote(_ text: String, on day: LocalDay) {
+        let text = TextLimit.clean(text, TextLimit.noteText)
+        let key = Keys.dayNotePrefix + day.key
+        perform { [self] in
+            if text.isEmpty { try await repository.removeSetting(key: key) } else { try await repository.saveSetting(key: key, value: text) }
+            dayNotes[day] = text.isEmpty ? nil : text
+        }
+    }
+
+    func setDescription(_ text: String, of id: UUID) {
+        let text = TextLimit.clean(text, TextLimit.descriptionText)
+        guard text != (descriptions[id] ?? "") else { return }
+        let key = Keys.descriptionPrefix + id.uuidString
+        perform { [self] in
+            if text.isEmpty { try await repository.removeSetting(key: key) } else { try await repository.saveSetting(key: key, value: text) }
+            descriptions[id] = text.isEmpty ? nil : text
         }
     }
 

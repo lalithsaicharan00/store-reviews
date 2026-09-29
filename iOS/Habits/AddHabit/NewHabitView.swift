@@ -205,7 +205,7 @@ struct ChoiceLabel: View {
 /// (`HabitDefaults`), and the line under the sentence says which ones. Anything needing its own page is
 /// pushed, never a sheet, so the whole flow moves one way.
 struct HabitForm: View {
-    enum Field: Hashable { case name, amount, unit, increment, minutes, item(UUID) }
+    enum Field: Hashable { case name, description, amount, unit, increment, minutes, item(UUID) }
 
     /// One reminder. `part` is the time of day it's for (nil for Anytime); its time stays inside that part.
     struct DraftTime: Identifiable, Hashable {
@@ -225,6 +225,10 @@ struct HabitForm: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var name = ""
+    /// What counts, how to do it, why it matters: optional, shown in the routine player (notes report, 29 Sep).
+    @State private var descriptionText = ""
+    /// The description as saved, when editing.
+    private var originalDescription = ""
     @State private var symbol: String
     @State private var pickedSymbol = false
     @State private var color: HabitColor
@@ -293,10 +297,12 @@ struct HabitForm: View {
     }
 
     /// Opens the form on a saved habit, every row as it is now.
-    init(editing habit: Habit, weekStart: Int, onSaved: @escaping (UUID) -> Void) {
+    init(editing habit: Habit, weekStart: Int, description: String = "", onSaved: @escaping (UUID) -> Void) {
         type = ItemType(habit)
         self.onSaved = onSaved
         original = habit
+        originalDescription = description
+        _descriptionText = State(initialValue: description)
         _name = State(initialValue: habit.name)
         _symbol = State(initialValue: habit.symbol)
         _pickedSymbol = State(initialValue: true)
@@ -358,7 +364,9 @@ struct HabitForm: View {
         if habit.reminders.isEmpty && original.reminders.isEmpty { habit.remind = original.remind }
         return habit
     }
-    private var editChanged: Bool { edited.map { $0 != original } ?? false }
+    private var editChanged: Bool {
+        (edited.map { $0 != original } ?? false) || TextLimit.clean(descriptionText, TextLimit.descriptionText) != originalDescription
+    }
 
     private var trimmedName: String { TextLimit.clean(name, TextLimit.name) }
     private var filledItems: [Step] {
@@ -555,8 +563,16 @@ struct HabitForm: View {
                 .accessibilityLabel("Colour, \(color.name)")
             }
             .frame(minHeight: 44)
+            if type != .quit {
+                TextField("Description (optional)", text: $descriptionText, axis: .vertical)
+                    .lineLimit(1...4)
+                    .focused($focus, equals: .description)
+                    .limitText($descriptionText, to: TextLimit.descriptionText)
+                    .accessibilityIdentifier("description-field")
+            }
         } footer: {
             if let note = TextLimit.note(name, TextLimit.name) { Text(note).formNote() }
+            else if focus == .description { Text("What counts, or how to do it. Shown while you do it.").formNote() }
         }
     }
 
@@ -1132,6 +1148,7 @@ struct HabitForm: View {
         if let habit = edited {
             if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
             store.update(habit)
+            store.setDescription(descriptionText, of: habit.id)
             onSaved(habit.id)
             dismiss()
             return
@@ -1140,6 +1157,7 @@ struct HabitForm: View {
         // Reminders are on by default, so permission is asked when the habit is saved, not before.
         if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
         store.add(habit)
+        store.setDescription(descriptionText, of: habit.id)
         onSaved(habit.id)
     }
 }

@@ -14,6 +14,8 @@ struct TodayView: View {
     /// (found by hand 29 Sep).
     @State private var playerCovering = false
     @State private var returnToPart: String?
+    /// The day being written about in the note sheet.
+    @State private var dayNoteFor: LocalDay?
     @State private var showCalendar = false
     @State private var showNewHabit = false
     /// The habit just added, revealed once the sheet closes.
@@ -54,6 +56,10 @@ struct TodayView: View {
                     .onAppear { playerCovering = true }
             }
             .sheet(isPresented: $showSections) { DaySectionsView() }
+            .sheet(item: $dayNoteFor) { day in
+                NoteSheet(title: "Note for the Day", subtitle: NoteSheet.dayText(day, today: store.today(), calendar: store.calendar),
+                          initial: store.dayNote(on: day) ?? "") { store.setDayNote($0, on: day) }
+            }
             .sheet(isPresented: $showNewHabit, onDismiss: revealAdded) {
                 NewItemView { added = $0 }
             }
@@ -195,6 +201,17 @@ struct TodayView: View {
             let rows = rowsBySection(tracked)
             ScrollViewReader { proxy in
             List {
+                // The day's note, when there is one: context for the whole day, above its habits (notes report).
+                if shown <= today, let note = store.dayNote(on: shown) {
+                    Section {
+                        Button { dayNoteFor = shown } label: {
+                            Label { Text(note).foregroundStyle(Color.primary).multilineTextAlignment(.leading) }
+                                icon: { Image(systemName: "note.text").foregroundStyle(.secondary) }
+                        }
+                        .accessibilityHint("Edit the note for the day")
+                        .accessibilityIdentifier("day-note")
+                    }
+                }
                 if isToday && !quitting.isEmpty {
                     // Quitting folds like the other cards, and starts open.
                     let open = foldOverrides[Self.quitting] ?? true
@@ -216,11 +233,20 @@ struct TodayView: View {
                     }
                 }
                 Section {
-                    Button { showSections = true } label: {
-                        Label("Edit Times of Day", systemImage: "rectangle.split.3x1")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                    HStack(spacing: 20) {
+                        if shown <= today && store.dayNote(on: shown) == nil {
+                            Button { dayNoteFor = shown } label: {
+                                Label("Note for the Day", systemImage: "note.text")
+                            }
+                            .accessibilityIdentifier("add-day-note")
+                        }
+                        Button { showSections = true } label: {
+                            Label("Edit Times of Day", systemImage: "rectangle.split.3x1")
+                        }
                     }
+                    .buttonStyle(.borderless)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity)
                     .listRowBackground(Color.clear)
                 }

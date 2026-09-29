@@ -88,6 +88,13 @@ Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Resear
 - **Past days keep their result.** Anything that judges a day (goal, how often, unit, steps) must go through `store.rule(habit, on: day)`; never read `habit.goal` or `habit.frequency` directly for a past day.
 - **One line above Save says what happens:** "Changes apply from today. Your history stays as it was." or, when the kind of period changes, "Your streak restarts. Your history stays."
 
+## Notes (built 29 Sep 2026)
+
+- **Three kinds, never mixed:** a habit's note for one day (long-press → Add Note), a habit's standing description (in the form; shown in the player), and a note for the whole day (bottom of Today → Note for the Day; shown as a card at the top).
+- **Never prompt for a note**, after a check-in, a skip or anything else. Users show a forced "why did you skip?" is disliked (report, `c8bde985…`).
+- **A note never changes progress**, and can be added on any past day, done or not.
+- **Note sheets are solid** (`presentationBackground`), like the calendar sheet.
+
 ## Habit copy: say it the way people do (built 29 Sep 2026)
 
 The user's rule: **the copy is the value.** Whatever is picked must read the way a person says it, on the form and on Today.
