@@ -12,6 +12,11 @@ struct DaySettings: Codable, Hashable, Sendable {
     /// The flame and number on Today's rows. On by default (streaks are praised), and a switch in Settings, because
     /// every guilt mechanic must be optional (Feature Ledger C157, C207).
     var showStreaks = true
+    /// A click when a tap logs, and a firmer one when a habit is done (C069). On by default, and a switch: vibration
+    /// that can't be turned off is a one-star complaint from people with sensory overload.
+    var haptics = true
+    /// A short sound when a habit is done. Off by default (C006: additions are opt-in); some find sounds intrusive.
+    var sounds = false
 }
 
 /// Holds habits and entries and applies every change. Everything shown is calculated from
@@ -196,7 +201,12 @@ final class HabitStore {
             try await repository.saveSetting(key: Keys.dayEndHour, value: String(dayEnd))
             try await repository.saveSetting(key: Keys.weekStart, value: String(weekStart))
             try await repository.saveSetting(key: Keys.showStreaks, value: new.showStreaks ? "1" : "0")
-            settings = DaySettings(dayEndHour: dayEnd, weekStart: weekStart, showStreaks: new.showStreaks)
+            try await repository.saveSetting(key: Keys.haptics, value: new.haptics ? "1" : "0")
+            try await repository.saveSetting(key: Keys.sounds, value: new.sounds ? "1" : "0")
+            var saved = new
+            saved.dayEndHour = dayEnd
+            saved.weekStart = weekStart
+            settings = saved
         }
     }
 
@@ -623,6 +633,8 @@ final class HabitStore {
                 case Keys.dayEndHour: loaded.dayEndHour = Int(setting.value) ?? 0
                 case Keys.weekStart: loaded.weekStart = Int(setting.value) ?? loaded.weekStart
                 case Keys.showStreaks: loaded.showStreaks = setting.value != "0"
+                case Keys.haptics: loaded.haptics = setting.value != "0"
+                case Keys.sounds: loaded.sounds = setting.value == "1"
                 case Keys.sections:
                     if let list = try? JSONDecoder().decode([DaySection].self, from: Data(setting.value.utf8)), !list.isEmpty {
                         sections = list
@@ -692,6 +704,8 @@ final class HabitStore {
         static let dayEndHour = "day_end_hour"
         static let weekStart = "week_start"
         static let showStreaks = "show_streaks"
+        static let haptics = "haptics"
+        static let sounds = "sounds"
         static let timerPrefix = "timer."
         static let skipPrefix = "skip."
         static let pausePrefix = "pause."

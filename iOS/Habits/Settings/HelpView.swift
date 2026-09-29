@@ -38,6 +38,8 @@ struct HelpView: View {
               answer: "Tap ▶ Start on a time of day. Its unfinished habits open one at a time; move with ‹ ›, and use Habit options to skip or log by hand."),
         Topic(id: "Archive or delete a habit",
               answer: "In All Habits (☑︎ on Today) swipe a habit, or open it. Archive stops it and keeps its history, and frees a place on the free plan. Delete removes it and its history for good."),
+        Topic(id: "Turn off vibration or sound",
+              answer: "In Settings, under When You Log, switch Haptics or Sounds. Sounds are off until you turn them on."),
         Topic(id: "Where my data is",
               answer: "On this iPhone only. There's no account and nothing is sent anywhere."),
     ]

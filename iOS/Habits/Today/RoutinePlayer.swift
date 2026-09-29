@@ -14,6 +14,7 @@ struct RoutinePlayer: View {
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.checkFeedback) private var checkFeedback
     @ScaledMetric(relativeTo: .title) private var numberSize = 36.0
     @ScaledMetric(relativeTo: .body) private var breathingRoom = 24.0
     @ScaledMetric(relativeTo: .body) private var actionWidth = 240.0
@@ -166,7 +167,7 @@ struct RoutinePlayer: View {
         .alert("Couldn't save progress", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
             Button("OK", role: .cancel) { store.problem = nil }
         } message: { Text(store.problem ?? "") }
-        .sensoryFeedback(.success, trigger: feedbackCount)
+        .sensoryFeedback(.success, trigger: feedbackCount) { _, _ in checkFeedback.haptics }
     }
 
     // MARK: The player: a playlist of habits (round 2, "Focus Player — How It Should Behave" P18–P23)

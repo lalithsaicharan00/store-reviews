@@ -97,6 +97,14 @@ Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Resear
 - **A note never changes progress**, and can be added on any past day, done or not.
 - **Note sheets are solid** (`presentationBackground`), like the calendar sheet.
 
+## Check-off feedback (built 29 Sep 2026)
+
+Source: [Check-off Feedback — Haptics, Sound and Animation](<../Research/Research Reports/Day Structure and Organization/Check-off Feedback — Haptics, Sound and Animation.md>).
+
+- **Haptics on by default, Sounds off by default, both switchable** (Settings → When You Log). Never add a haptic or sound that ignores these switches.
+- **Feedback answers a tap on that button**, within a moment of it; never a redraw or a day change.
+- **No confetti or full-screen celebration.** One small ✓ bounce, none with Reduce Motion.
+
 ## Settings (built 29 Sep 2026)
 
 Source: [Settings — What People Need There](<../Research/Research Reports/Settings and Help/Settings — What People Need There.md>).

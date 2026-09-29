@@ -29,6 +29,7 @@ struct HabitsApp: App {
             .environment(model.store)
             .environment(model.scheduler)
             .environment(model.router)
+            .environment(\.checkFeedback, CheckFeedback(haptics: model.store.settings.haptics, sounds: model.store.settings.sounds))
             .tint(.ink)
             .task {
                 await model.ensureLoaded()

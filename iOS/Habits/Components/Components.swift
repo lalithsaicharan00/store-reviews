@@ -1,3 +1,4 @@
+import AudioToolbox
 import SwiftUI
 
 // MARK: - Colours
@@ -98,15 +99,30 @@ struct RoundActionButton: View {
     /// Text instead of the symbol, e.g. "+1", so the button says what one tap adds.
     var text: String? = nil
     let action: () -> Void
+    @Environment(\.checkFeedback) private var feedback
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// Taps on this button, and when the last one was: feedback answers a tap, never a row that shows another day.
+    @State private var taps = 0
+    @State private var lastTap = Date.distantPast
+    @State private var completions = 0
+
+    private var justTapped: Bool { Date.now.timeIntervalSince(lastTap) < 1.5 }
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            lastTap = .now
+            taps += 1
+            action()
+        } label: {
             Group {
                 if let text {
                     Text(text).font(.system(size: 13, weight: .bold).monospacedDigit()).lineLimit(1).minimumScaleFactor(0.7)
                 } else {
                     Image(systemName: done && !keepSymbolWhenDone ? "checkmark" : symbol)
                         .font(.system(size: 14, weight: .bold))
+                        // One small bounce when it's done; nothing with Reduce Motion (C149). No confetti: users find it
+                        // patronising and slow (Check-off Feedback report).
+                        .symbolEffect(.bounce, value: reduceMotion ? 0 : completions)
                 }
             }
                 .foregroundStyle(done ? Color.white : Color.ink)
@@ -117,8 +133,26 @@ struct RoundActionButton: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(label)
-        .sensoryFeedback(.success, trigger: done) { old, new in !old && new }
+        // A light click for every + (each tap logs), a firmer one when the habit is done; both off with Haptics off.
+        .sensoryFeedback(.impact(weight: .light), trigger: taps) { _, _ in feedback.haptics && keepSymbolWhenDone }
+        .sensoryFeedback(.success, trigger: done) { old, new in feedback.haptics && !old && new && justTapped }
+        .onChange(of: done) { old, new in
+            guard new, !old, justTapped else { return }
+            completions += 1
+            // A system sound: quiet, follows the ring/silent switch and doesn't stop the person's music.
+            if feedback.sounds { AudioServicesPlaySystemSound(1057) }
+        }
     }
+}
+
+/// Haptics and sound after a tap that logs, from Settings (Check-off Feedback report). Set at the app's root.
+struct CheckFeedback: Equatable {
+    var haptics = true
+    var sounds = false
+}
+
+extension EnvironmentValues {
+    @Entry var checkFeedback = CheckFeedback()
 }
 
 /// A row background that fills from the left with the habit's colour as progress grows.

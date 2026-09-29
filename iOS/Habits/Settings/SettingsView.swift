@@ -48,6 +48,16 @@ struct SettingsView: View {
                          ? "The flame and number beside each habit."
                          : "Streaks are hidden on Today. They're still counted, and each habit's page shows them.")
                 }
+                Section {
+                    Toggle("Haptics", isOn: $draft.haptics)
+                        .accessibilityIdentifier("settings-haptics")
+                    Toggle("Sounds", isOn: $draft.sounds)
+                        .accessibilityIdentifier("settings-sounds")
+                } header: {
+                    Text("When You Log")
+                } footer: {
+                    Text("Haptics: a click each time you log, and a firmer one when a habit is done. Sounds: a short sound when a habit is done; it follows the silent switch and doesn't stop your music.")
+                }
                 notificationsSection
                 Section("Help") {
                     NavigationLink("How It Works") { HelpView() }

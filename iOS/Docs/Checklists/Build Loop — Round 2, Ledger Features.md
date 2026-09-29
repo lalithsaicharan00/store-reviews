@@ -26,3 +26,16 @@ Research: [Settings — What People Need There](<../../../Research/Research Repo
 | L5.7 | Plan row (Free, N of 5, Plus…); Privacy stated; Version | [x] |
 | L5.8 | Contact Support | [ ] Row ready; hidden until a support address is set (`AppInfo.supportEmail`) |
 | L5.9 | UI test | [x] `SettingsUITests` (written; not run: no Mac in this session) |
+
+## Loop 6 — Check-off feedback (#58, C069)
+
+Research: [Check-off Feedback — Haptics, Sound and Animation](<../../../Research/Research Reports/Day Structure and Organization/Check-off Feedback — Haptics, Sound and Animation.md>).
+
+| # | Point | Done |
+|---|---|---|
+| L6.1 | A light click on every +, a success haptic when a habit becomes done | [x] `RoundActionButton` |
+| L6.2 | A short system sound when done, off by default | [x] |
+| L6.3 | Haptics and Sounds switches in Settings (When You Log); the player follows Haptics too | [x] `CheckFeedback` environment |
+| L6.4 | One small bounce of ✓; none with Reduce Motion; no confetti | [x] |
+| L6.5 | Feedback only right after a tap on that button (not when the day changes) | [x] |
+| L6.6 | #58: the done row stays in place until the next log (it offers Add note), so the fill finishes where the person looks | [x] Already true; recorded |
