@@ -160,12 +160,6 @@ struct RoutinePlayer: View {
             if let habit = current { habitOptions(habit) }
         }
         .sheet(isPresented: $showEdit) { if let habit = current { EditHabitSheet(habit: habit) } }
-        .sheet(isPresented: $showNote) {
-            if let habit = order.first(where: { $0.id == noteHabitID }) ?? current {
-                NoteSheet(title: "Note", subtitle: habit.name + " · " + NoteSheet.dayText(session.day, today: store.today(), calendar: store.calendar),
-                          initial: store.note(of: habit, on: session.day) ?? "") { store.setNote($0, of: habit, on: session.day) }
-            }
-        }
         .sheet(isPresented: $showLog, onDismiss: manualLogFinished) {
             if let habit = current { LogProgressView(habit: habit, day: session.day) }
         }
@@ -189,8 +183,15 @@ struct RoutinePlayer: View {
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             // The save message floats over the bottom of the page, so nothing above it jumps when it appears.
-            .overlay(alignment: .bottom) { feedbackBanner }
-            if let habit = current { controls(habit) }
+            .overlay(alignment: .bottom) { if !showNote { feedbackBanner } }
+            // Writing a note: the same note bar as Today, above the keyboard, in place of the controls.
+            if showNote, let habit = order.first(where: { $0.id == noteHabitID }) ?? current {
+                NoteBar(title: habit.name + " · " + NoteSheet.dayText(session.day, today: store.today(), calendar: store.calendar),
+                        initial: store.note(of: habit, on: session.day) ?? "",
+                        onSave: { store.setNote($0, of: habit, on: session.day) },
+                        onClose: { withAnimation(.snappy) { showNote = false } })
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            } else if let habit = current { controls(habit) }
         }
         // Not .disabled(busy): that greyed the whole player for each save and turned the Pause/Resume button
         // dark (found by hand 29 Sep). Every action already ignores taps while a save is in progress.

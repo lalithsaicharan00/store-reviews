@@ -14,8 +14,7 @@ struct TodayView: View {
     /// (found by hand 29 Sep).
     @State private var playerCovering = false
     @State private var returnToPart: String?
-    /// The day being written about in the note sheet.
-    @State private var dayNoteFor: LocalDay?
+
     @State private var showCalendar = false
     @State private var showNewHabit = false
     /// The habit just added, revealed once the sheet closes.
@@ -56,10 +55,7 @@ struct TodayView: View {
                     .onAppear { playerCovering = true }
             }
             .sheet(isPresented: $showSections) { DaySectionsView() }
-            .sheet(item: $dayNoteFor) { day in
-                NoteSheet(title: "Note for the Day", subtitle: NoteSheet.dayText(day, today: store.today(), calendar: store.calendar),
-                          initial: store.dayNote(on: day) ?? "") { store.setDayNote($0, on: day) }
-            }
+
             .sheet(isPresented: $showNewHabit, onDismiss: revealAdded) {
                 NewItemView { added = $0 }
             }
@@ -98,6 +94,26 @@ struct TodayView: View {
     }
 
     private var selectedDay: LocalDay { day ?? store.today() }
+
+    /// The note bar for a habit's note or the day's note.
+    @ViewBuilder private func noteBar(_ target: HabitStore.NoteTarget) -> some View {
+        let dayText = NoteSheet.dayText(target.day, today: store.today(), calendar: store.calendar)
+        let close = {
+            withAnimation(.snappy) {
+                store.noteTarget = nil
+                if let id = target.habit, store.noteOffer == .init(habit: id, day: target.day) { store.noteOffer = nil }
+            }
+        }
+        if let id = target.habit, let habit = store.habits.first(where: { $0.id == id }) {
+            NoteBar(title: habit.name + " · " + dayText, initial: store.note(of: habit, on: target.day) ?? "",
+                    onSave: { store.setNote($0, of: habit, on: target.day) }, onClose: close)
+                .id(id.uuidString + target.day.key)
+        } else {
+            NoteBar(title: "Note for the day · " + dayText, initial: store.dayNote(on: target.day) ?? "",
+                    onSave: { store.setDayNote($0, on: target.day) }, onClose: close)
+                .id("day" + target.day.key)
+        }
+    }
     /// Today comes back the moment the player starts closing, so it's drawn while the cover slides away.
     private var covered: Bool { playerCovering && routine != nil }
 
@@ -204,7 +220,7 @@ struct TodayView: View {
                 // The day's note, when there is one: context for the whole day, above its habits (notes report).
                 if shown <= today, let note = store.dayNote(on: shown) {
                     Section {
-                        Button { dayNoteFor = shown } label: {
+                        Button { store.noteTarget = .init(habit: nil, day: shown) } label: {
                             Label { Text(note).foregroundStyle(Color.primary).multilineTextAlignment(.leading) }
                                 icon: { Image(systemName: "note.text").foregroundStyle(.secondary) }
                         }
@@ -235,7 +251,7 @@ struct TodayView: View {
                 Section {
                     HStack(spacing: 20) {
                         if shown <= today && store.dayNote(on: shown) == nil {
-                            Button { dayNoteFor = shown } label: {
+                            Button { store.noteTarget = .init(habit: nil, day: shown) } label: {
                                 Label("Note for the Day", systemImage: "note.text")
                             }
                             .accessibilityIdentifier("add-day-note")
@@ -259,6 +275,11 @@ struct TodayView: View {
             // (reviews: people get lost on another date). Its space is kept on today too (invisible), so the
             // list never shifts as ‹ › change the day (the user, 29 Sep). Running timers sit above it, today.
             .safeAreaInset(edge: .bottom) {
+                if let target = store.noteTarget {
+                    // Writing a note: the bar sits above the keyboard, the row stays in view above it.
+                    noteBar(target)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                } else {
                 VStack(spacing: 8) {
                     if isToday {
                         // A running timer whose row is scrolled away or folded stays in sight here
@@ -280,6 +301,19 @@ struct TodayView: View {
                     .animation(.snappy, value: isToday)
                 }
                 .padding(.bottom, 6)
+                }
+            }
+            // The row the note is for scrolls into view above the note bar.
+            .onChange(of: store.noteTarget) {
+                guard let target = store.noteTarget, let id = target.habit,
+                      let habit = store.habits.first(where: { $0.id == id }) else { return }
+                let key = habit.kind == .quit ? Self.rowKey(Self.quitting, id)
+                    : store.placements(of: habit).first.map { Self.rowKey($0.section, id) }
+                guard let key else { return }
+                Task {
+                    try? await Task.sleep(for: .milliseconds(350)) // after the keyboard has come up
+                    withAnimation { proxy.scrollTo(key, anchor: .bottom) }
+                }
             }
             // Today is rebuilt as the player closes; it comes back at the section the routine started from.
             .onAppear {

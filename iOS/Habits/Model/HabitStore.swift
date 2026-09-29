@@ -54,6 +54,9 @@ final class HabitStore {
     /// Only one row at a time; nothing pops up by itself.
     var noteOffer: NoteOffer?
     struct NoteOffer: Equatable { let habit: UUID; let day: LocalDay }
+    /// The note being written in the note bar: a habit's note (`habit` set) or the day's note (`habit` nil).
+    var noteTarget: NoteTarget?
+    struct NoteTarget: Equatable { let habit: UUID?; let day: LocalDay }
     /// Plus unlocks unlimited habits. Set from the store purchase (build-plan: billing, later).
     var isPlus = false
     static let freeHabitLimit = 5

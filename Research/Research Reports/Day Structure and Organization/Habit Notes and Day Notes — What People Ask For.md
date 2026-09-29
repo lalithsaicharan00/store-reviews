@@ -67,6 +67,10 @@ The first build used a long-press menu and a sheet. The user said that isn't a g
 - In the routine player, the "Saved · Undo" message gets **Add Note**.
 - Nothing pops up by itself.
 
+## Where the note is typed (revised the same day)
+
+The in-row field felt wrong to the user: typing inside the card. Reviews agree it's the weak spot of notes written near the entry: "the keyboard hides the note section so you can't see what you're typing" (`1386531056`); "it is difficult to write lengthy entires" (`1023368205`); "cumbersome on the phone" (`11541396347`); and Loop's note "obstructed by the phone's keyboard" (`0cda4235-b93e-4694-9862-211b90f5f960`). Way of Life itself writes the note in a notepad revealed from its bottom update bar, with only a marker on the cell. So the note is written in a **note bar docked above the keyboard** (like Messages' compose bar). It names the habit and day ("Drink tea · Today") and has Delete, Cancel and Save, and the row stays highlighted in view above it. Every way in (Add note, swipe, long-press, tap the note, the player) opens this bar. It's reasoned from first principles plus these reviews; no review compares the two directly.
+
 ## Other ways to reach a note (added the same day, at the user's request)
 
 The after-logging offer covers one moment. Reviews show where else people expect to find a note (`Research/Temp/notes/places.json`, sentences that mention a note and a place, read by hand):

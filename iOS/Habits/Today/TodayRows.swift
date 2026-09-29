@@ -62,10 +62,6 @@ struct HabitRow: View {
     @State private var showLog = false
     @State private var showEdit = false
     @State private var showNotes = false
-    /// Writing this day's note in place, in the row (no sheet, no pop-up).
-    @State private var writing = false
-    @State private var draft = ""
-    @FocusState private var noteFocused: Bool
     @Binding var stepsOpen: Bool
     @Environment(HabitStore.self) private var store
 
@@ -93,11 +89,15 @@ struct HabitRow: View {
         // A cut-back habit is "met" while under its maximum, but never shown as finished.
         let done = slot.map { store.isSlotDone(habit, slot: $0, on: day) } ?? (store.isDone(habit, on: day) && !habit.atMost)
         let streak = store.streak(of: habit, asOf: day)
-        HStack(spacing: 12) {
+        // Top-aligned (the user, 29 Sep): icon, streak and button sit in a 44-pt band at the top of the row. Rows
+        // of one or two lines look centred; with three or more lines the text runs on below instead of the icon
+        // and button drifting to the middle.
+        HStack(alignment: .top, spacing: 12) {
           // The row itself opens Add Amount / Add Time for any count or timed habit: one place to type a
           // number, for every habit (research: "Logging a Count — One Tap or Type", 28 Sep).
-          HStack(spacing: 12) {
+          HStack(alignment: .top, spacing: 12) {
             HabitIcon(symbol: habit.symbol, color: habit.color)
+                .frame(height: RowBand.height)
             VStack(alignment: .leading, spacing: 1) {
                 // One line always: names show 15 characters, then "…".
                 Text(habit.name.capped(HabitRow.nameShown)).font(.body).foregroundStyle(done ? .secondary : .primary).lineLimit(1)
@@ -124,18 +124,24 @@ struct HabitRow: View {
                         .accessibilityIdentifier("flexible-progress")
                 }
             }
+            .frame(minHeight: RowBand.height)
             Spacer(minLength: 8)
-            if streak > 0 { StreakLabel(count: streak, unit: habit.frequency.streakUnit, onFill: progress / max(goal, 1) >= 0.7) }
+            if streak > 0 {
+                StreakLabel(count: streak, unit: habit.frequency.streakUnit, onFill: progress / max(goal, 1) >= 0.7)
+                    .frame(height: RowBand.height)
+            }
           }
           .contentShape(Rectangle())
           .onTapGesture { if logsNumbers && day <= store.today() { showLog = true } }
           .accessibilityAction(named: habit.kind == .duration ? "Log time manually" : "Log amount manually") { if logsNumbers && day <= store.today() { showLog = true } }
             actionButton(done: done)
+                .frame(height: RowBand.height)
                 .disabled(habit.kind != .checklist && day > store.today())
         }
         // The same spacing as the Quitting rows.
         .padding(.vertical, 2)
-        .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color).overlay(HighlightFlash(on: highlighted, color: habit.color)))
+        .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color)
+            .overlay(HighlightFlash(on: highlighted || store.noteTarget == .init(habit: habit.id, day: day), color: habit.color)))
         .sheet(isPresented: $showLog) { LogProgressView(habit: habit, day: day) }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .sheet(isPresented: $showNotes) { HabitNotesView(habit: habit) }
@@ -171,21 +177,11 @@ struct HabitRow: View {
 
     // MARK: The note, in place
 
-    /// The note line: the text field while writing; the note (tap to change it); or, right after logging,
-    /// a small "Add note". Nothing when there's no note and nothing was just logged.
+    /// The note line: the note (tap to change it); or, right after logging, a small "Add note". Nothing when
+    /// there's no note and nothing was just logged. Writing happens in the note bar above the keyboard, never in
+    /// the row (research: typing in the card was hidden by the keyboard and too cramped, 29 Sep).
     @ViewBuilder private var noteLine: some View {
-        if writing {
-            TextField("Add a note", text: $draft, axis: .vertical)
-                .font(.subheadline)
-                .lineLimit(1...5)
-                .focused($noteFocused)
-                .submitLabel(.done)
-                .limitText($draft, to: TextLimit.noteText)
-                .onChange(of: draft) { if draft.contains("\n") { draft = draft.replacingOccurrences(of: "\n", with: ""); noteFocused = false } }
-                .onChange(of: noteFocused) { if !noteFocused { finishWriting() } }
-                .padding(.top, 4)
-                .accessibilityIdentifier("habit-note-field")
-        } else if let note = store.note(of: habit, on: day) {
+        if let note = store.note(of: habit, on: day) {
             Button { startWriting() } label: {
                 Label(note, systemImage: "note.text")
                     .font(.caption).foregroundStyle(.secondary)
@@ -215,24 +211,10 @@ struct HabitRow: View {
         withAnimation(.easeOut(duration: 0.2)) { store.noteOffer = .init(habit: habit.id, day: day) }
     }
 
+    /// Opens the note bar for this habit and day. The row is held in place (and marked) while the note is written.
     private func startWriting() {
-        draft = store.note(of: habit, on: day) ?? ""
-        // Held in place while writing; it moves down (if done) once the note is finished.
         store.noteOffer = .init(habit: habit.id, day: day)
-        withAnimation(.snappy) { writing = true }
-        DispatchQueue.main.async { noteFocused = true }
-    }
-
-    /// Done, Return or tapping away saves; an emptied note is removed.
-    private func finishWriting() {
-        guard writing else { return }
-        if TextLimit.clean(draft, TextLimit.noteText) != (store.note(of: habit, on: day) ?? "") {
-            store.setNote(draft, of: habit, on: day)
-        }
-        withAnimation(.snappy) {
-            writing = false
-            if store.noteOffer == .init(habit: habit.id, day: day) { store.noteOffer = nil }
-        }
+        withAnimation(.snappy) { store.noteTarget = .init(habit: habit.id, day: day) }
     }
 
     /// Counts and timed habits take a typed number from the row (Add Amount / Add Time).
@@ -342,6 +324,7 @@ struct QuitRow: View {
     var highlighted = false
     @Environment(HabitStore.self) private var store
     @State private var showEdit = false
+    private var today: LocalDay { store.today() }
     /// Set once, on a whole second, so every quit clock ticks together.
     private static let anchor = Date(timeIntervalSinceReferenceDate: Date.now.timeIntervalSinceReferenceDate.rounded(.down))
 
@@ -349,24 +332,48 @@ struct QuitRow: View {
         // A fixed anchor: `.now` gave a new schedule on every redraw, restarting the clock each time (see HabitRow).
         TimelineView(.periodic(from: Self.anchor, by: 1)) { context in
             let runs = store.quitRuns(of: habit, now: context.date)
-            HStack(spacing: 12) {
+            HStack(alignment: .top, spacing: 12) {
                 HabitIcon(symbol: habit.symbol, color: habit.color)
+                    .frame(height: RowBand.height)
                 VStack(alignment: .leading, spacing: 1) {
                     Text(habit.name.capped(HabitRow.nameShown)).font(.body).lineLimit(1).accessibilityLabel(habit.name)
                     Text("Best \(Format.days(runs.best))").font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+                    // A craving or a slip, noted for today (quit rows take notes too, 29 Sep).
+                    if let note = store.note(of: habit, on: today) {
+                        Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
+                            Label(note, systemImage: "note.text")
+                                .font(.caption).foregroundStyle(.secondary)
+                                .lineLimit(2).multilineTextAlignment(.leading)
+                                .labelStyle(NoteLineLabel())
+                        }
+                        .buttonStyle(.borderless)
+                    }
                 }
+                .frame(minHeight: RowBand.height)
                 Spacer(minLength: 8)
                 Text(Format.elapsed(runs.current))
                     .font(.body.monospacedDigit().weight(.semibold))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
                     .fixedSize()
+                    .frame(height: RowBand.height)
             }
             .padding(.vertical, 2)
             .accessibilityElement(children: .combine)
         }
         .listRowBackground(Color(.secondarySystemGroupedBackground).overlay(HighlightFlash(on: highlighted, color: habit.color)))
-        .contextMenu { Button("Edit Habit", systemImage: "pencil") { showEdit = true } }
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
+                Label(store.note(of: habit, on: today) == nil ? "Note" : "Edit Note", systemImage: "note.text")
+            }
+            .tint(.indigo)
+        }
+        .contextMenu {
+            Button("Edit Habit", systemImage: "pencil") { showEdit = true }
+            Button(store.note(of: habit, on: today) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") {
+                store.noteTarget = .init(habit: habit.id, day: today)
+            }
+        }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
     }
 }
@@ -562,3 +569,6 @@ private struct NoteLineLabel: LabelStyle {
         HStack(spacing: 4) { configuration.icon.imageScale(.small); configuration.title }
     }
 }
+
+/// The band at the top of every row that the icon, streak and button sit in (the row's minimum height).
+enum RowBand { static let height: CGFloat = 44 }
