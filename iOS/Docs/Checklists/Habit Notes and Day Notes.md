@@ -13,6 +13,7 @@ Written by Claude (Claude Code), 29 September 2026. Build Plan #54. Research: [H
 | N5 | A note for the whole day | [x] "Note for the Day" at the bottom of Today; the note shows as a card at the top; checked by hand |
 | N6 | Never prompted, always optional | [x] Nothing asks for a note |
 | N7 | Note sheet solid and above the keyboard | [x] Solid background (it was see-through at first) |
+| N8 | (User, same day) The sheet isn't a good way: research which app adds notes most intuitively and build that | [x] Way of Life (174 note praises, 4 complaints): the note is written in place. Built: Add note appears in the row after logging, the row stays put, the field opens in the row; the player's banner has Add Note. Checked by hand (Drink tea) |
 
 **Found by hand:** on the simulator, Save sometimes needed a second tap (the first ended typing). Watch for it on the phone.
 

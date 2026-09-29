@@ -320,8 +320,11 @@ struct TodayView: View {
                     }
                 }
             if open {
-                // Done habits sink to the bottom, keeping their order otherwise.
-                let ordered = items.filter { !isDone($0, on: day) } + items.filter { isDone($0, on: day) }
+                // Done habits sink to the bottom, keeping their order otherwise. The row just logged stays put while it
+                // offers "Add note" (or its note is being written), so the offer is where the person is looking.
+                let held = store.noteOffer.flatMap { $0.day == day ? $0.habit : nil }
+                let ordered = items.filter { !isDone($0, on: day) || $0.habit.id == held }
+                    + items.filter { isDone($0, on: day) && $0.habit.id != held }
                 ForEach(ordered) { item in
                     let habit = item.habit
                     let key = Self.rowKey(part, habit.id)

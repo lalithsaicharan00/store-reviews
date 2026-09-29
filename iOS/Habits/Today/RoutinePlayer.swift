@@ -436,6 +436,10 @@ struct RoutinePlayer: View {
                     Button("Undo") { change("Undone", captureUndo: false) { store.undoEntry(id) } }
                         .font(.subheadline.weight(.semibold))
                         .accessibilityIdentifier("focus-undo")
+                    // The note belongs right after logging, next to Undo; never asked for (notes UX report).
+                    Button("Add Note") { showNote = true }
+                        .font(.subheadline.weight(.semibold))
+                        .accessibilityIdentifier("focus-banner-note")
                 }
             }
             .padding(.horizontal, 16).frame(minHeight: 44)

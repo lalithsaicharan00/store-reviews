@@ -50,6 +50,10 @@ final class HabitStore {
     private(set) var habitNotes: [UUID: [LocalDay: String]] = [:]
     private(set) var dayNotes: [LocalDay: String] = [:]
     private(set) var descriptions: [UUID: String] = [:]
+    /// The row just logged on Today: it offers "Add note" in place (Way of Life's inline note, notes UX report).
+    /// Only one row at a time; nothing pops up by itself.
+    var noteOffer: NoteOffer?
+    struct NoteOffer: Equatable { let habit: UUID; let day: LocalDay }
     /// Plus unlocks unlimited habits. Set from the store purchase (build-plan: billing, later).
     var isPlus = false
     static let freeHabitLimit = 5

@@ -90,7 +90,8 @@ Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Resear
 
 ## Notes (built 29 Sep 2026)
 
-- **Three kinds, never mixed:** a habit's note for one day (long-press → Add Note), a habit's standing description (in the form; shown in the player), and a note for the whole day (bottom of Today → Note for the Day; shown as a card at the top).
+- **A habit's note is written in the row, in place** (Way of Life, the most-praised note in the corpus): after logging, the row offers **Add note**; the field opens in the row; tap a note to change it. Never a pop-up after each tick (the top complaint), never only behind a menu (the other). The just-logged row stays put while it offers the note.
+- **Three kinds, never mixed:** a habit's note for one day (in the row, or long-press → Add Note), a habit's standing description (in the form; shown in the player), and a note for the whole day (bottom of Today → Note for the Day; shown as a card at the top).
 - **Never prompt for a note**, after a check-in, a skip or anything else. Users show a forced "why did you skip?" is disliked (report, `c8bde985…`).
 - **A note never changes progress**, and can be added on any past day, done or not.
 - **Note sheets are solid** (`presentationBackground`), like the calendar sheet.

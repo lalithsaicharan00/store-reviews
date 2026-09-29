@@ -61,8 +61,11 @@ struct HabitRow: View {
     var lineOverride: String? = nil
     @State private var showLog = false
     @State private var showEdit = false
-    @State private var showNote = false
     @State private var showNotes = false
+    /// Writing this day's note in place, in the row (no sheet, no pop-up).
+    @State private var writing = false
+    @State private var draft = ""
+    @FocusState private var noteFocused: Bool
     @Binding var stepsOpen: Bool
     @Environment(HabitStore.self) private var store
 
@@ -112,15 +115,7 @@ struct HabitRow: View {
                         .lineLimit(1)
                         .accessibilityIdentifier("habit-rhythm")
                 }
-                // The day's note, first line only: a visible cue that it's there (long-press to change it).
-                if lineOverride == nil, let note = store.note(of: habit, on: day) {
-                    Label(note.split(separator: "\n").first.map(String.init) ?? note, systemImage: "note.text")
-                        .font(.caption).foregroundStyle(.secondary)
-                        .lineLimit(1)
-                        .labelStyle(NoteLineLabel())
-                        .accessibilityLabel("Note: \(note)")
-                        .accessibilityIdentifier("habit-note-line")
-                }
+                if lineOverride == nil { noteLine }
                 if case .flexible(let period, let needed) = habit.frequency,
                    let count = store.flexibleProgress(habit, on: day) {
                     Text(count > needed ? "\(count) days this \(period.noun) · goal reached"
@@ -143,16 +138,12 @@ struct HabitRow: View {
         .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color).overlay(HighlightFlash(on: highlighted, color: habit.color)))
         .sheet(isPresented: $showLog) { LogProgressView(habit: habit, day: day) }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
-        .sheet(isPresented: $showNote) {
-            NoteSheet(title: "Note", subtitle: habit.name + " · " + NoteSheet.dayText(day, today: store.today(), calendar: store.calendar),
-                      initial: store.note(of: habit, on: day) ?? "") { store.setNote($0, of: habit, on: day) }
-        }
         .sheet(isPresented: $showNotes) { HabitNotesView(habit: habit) }
         .contextMenu {
             // Edit sits with the item's other actions, as in Reminders; a tap on the row logs (spec §8).
             Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { showEdit = true }
             // Any day, done or not, past or today; a note never changes progress (notes report, 29 Sep).
-            Button(store.note(of: habit, on: day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") { showNote = true }
+            Button(store.note(of: habit, on: day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") { startWriting() }
                 .disabled(day > store.today())
             if !store.notes(of: habit).isEmpty {
                 Button("All Notes", systemImage: "list.bullet.rectangle") { showNotes = true }
@@ -167,6 +158,72 @@ struct HabitRow: View {
                 Button("Undo Last Entry") { store.undoProgress(habit, on: day) }
                     .disabled(progress <= 0 || day > store.today())
             }
+        }
+    }
+
+    // MARK: The note, in place
+
+    /// The note line: the text field while writing; the note (tap to change it); or, right after logging,
+    /// a small "Add note". Nothing when there's no note and nothing was just logged.
+    @ViewBuilder private var noteLine: some View {
+        if writing {
+            TextField("Add a note", text: $draft, axis: .vertical)
+                .font(.subheadline)
+                .lineLimit(1...5)
+                .focused($noteFocused)
+                .submitLabel(.done)
+                .limitText($draft, to: TextLimit.noteText)
+                .onChange(of: draft) { if draft.contains("\n") { draft = draft.replacingOccurrences(of: "\n", with: ""); noteFocused = false } }
+                .onChange(of: noteFocused) { if !noteFocused { finishWriting() } }
+                .padding(.top, 4)
+                .accessibilityIdentifier("habit-note-field")
+        } else if let note = store.note(of: habit, on: day) {
+            Button { startWriting() } label: {
+                Label(note, systemImage: "note.text")
+                    .font(.caption).foregroundStyle(.secondary)
+                    .lineLimit(2).multilineTextAlignment(.leading)
+                    .labelStyle(NoteLineLabel())
+            }
+            .buttonStyle(.borderless)
+            .accessibilityLabel("Note: \(note)")
+            .accessibilityHint("Edit the note")
+            .accessibilityIdentifier("habit-note-line")
+        } else if store.noteOffer == .init(habit: habit.id, day: day) && store.note(of: habit, on: day) == nil {
+            Button { startWriting() } label: {
+                Label("Add note", systemImage: "square.and.pencil")
+                    .font(.caption.weight(.medium))
+                    .labelStyle(NoteLineLabel())
+            }
+            .buttonStyle(.borderless)
+            .tint(.secondary)
+            .transition(.opacity)
+            .accessibilityIdentifier("habit-add-note")
+        }
+    }
+
+    /// After a check, an amount or a stopped timer: this row offers "Add note" (and no other row does).
+    private func offerNote() {
+        guard day <= store.today() else { return }
+        withAnimation(.easeOut(duration: 0.2)) { store.noteOffer = .init(habit: habit.id, day: day) }
+    }
+
+    private func startWriting() {
+        draft = store.note(of: habit, on: day) ?? ""
+        // Held in place while writing; it moves down (if done) once the note is finished.
+        store.noteOffer = .init(habit: habit.id, day: day)
+        withAnimation(.snappy) { writing = true }
+        DispatchQueue.main.async { noteFocused = true }
+    }
+
+    /// Done, Return or tapping away saves; an emptied note is removed.
+    private func finishWriting() {
+        guard writing else { return }
+        if TextLimit.clean(draft, TextLimit.noteText) != (store.note(of: habit, on: day) ?? "") {
+            store.setNote(draft, of: habit, on: day)
+        }
+        withAnimation(.snappy) {
+            writing = false
+            if store.noteOffer == .init(habit: habit.id, day: day) { store.noteOffer = nil }
         }
     }
 
@@ -203,6 +260,7 @@ struct HabitRow: View {
             case .check, .task:
                 RoundActionButton(symbol: "checkmark", done: done, color: habit.color,
                                   label: done ? "Undo \(habit.name)" : "Mark \(habit.name) done") {
+                    if !done { offerNote() }
                     withAnimation {
                         if let slot { store.toggleSlot(habit, slot: slot, on: day) } else { store.toggleCheck(habit, on: day) }
                     }
@@ -215,6 +273,7 @@ struct HabitRow: View {
                                       label: "Add \(HabitCopy.amount(step, unit)) to \(habit.name)",
                                       keepSymbolWhenDone: true,
                                       text: "+" + Format.amount(step)) {
+                        offerNote()
                         withAnimation { store.increment(habit, on: day) }
                     }
                 } else {
@@ -228,7 +287,7 @@ struct HabitRow: View {
                 let running = store.timers[habit.id] != nil
                 RoundActionButton(symbol: running ? "pause.fill" : "play.fill", done: done && !running, color: habit.color,
                                   label: running ? "Stop \(habit.name) timer" : "Start \(habit.name) timer") {
-                    if store.timers[habit.id] == nil { TimerPresence.askOnNextSync = true }
+                    if store.timers[habit.id] == nil { TimerPresence.askOnNextSync = true } else { offerNote() }
                     withAnimation { store.toggleTimer(habit, slot: slot) }
                 }
                 .disabled(!isToday)
@@ -253,6 +312,7 @@ struct StepRow: View {
             Spacer(minLength: 8)
             RoundActionButton(symbol: "checkmark", done: done, color: habit.color,
                               label: done ? "Undo \(step.name)" : "Mark \(step.name) done") {
+                if !done { store.noteOffer = .init(habit: habit.id, day: day) }
                 withAnimation { store.toggleStep(step, of: habit, on: day) }
             }
         }
