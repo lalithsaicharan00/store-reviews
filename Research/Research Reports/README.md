@@ -164,3 +164,6 @@ The Feature Ledger files carry no "Written by Claude" line, because each rebuild
 ## Superseded
 
 `PRD for App Store.md` (repository root) is an aggregation of the whole Feature Ledger, not a decision record. **Do not use it.**
+
+- [Full-screen Focus Player — One Thing at a Time](<Day Structure and Organization/Full-screen Focus Player — One Thing at a Time.md>) — Codex, 29 Sep 2026. Review evidence, native focus-player design, mixed habit types and the decision against a competing whole-routine countdown.
+- [Focus Player — How It Should Behave](<Day Structure and Organization/Focus Player — How It Should Behave.md>) — Claude, 29 Sep 2026. 2,271 routine/timer reviews screened in ten themes; pause that doesn't hold is the top bug elsewhere; 17 numbered behaviours the manual bug hunt checks.
