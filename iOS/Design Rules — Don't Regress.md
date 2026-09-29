@@ -97,6 +97,15 @@ Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Resear
 - **A note never changes progress**, and can be added on any past day, done or not.
 - **Note sheets are solid** (`presentationBackground`), like the calendar sheet.
 
+## The habit page (built 29 Sep 2026)
+
+Sources: [The Habit Page — What People Expect](<../Research/Research Reports/Day Structure and Organization/The Habit Page — What People Expect.md>) and [Filling In a Past Day From the Habit Page](<../Research/Research Reports/Day Structure and Organization/Filling In a Past Day From the Habit Page.md>).
+
+- **Opens from All Habits and from View Habit in a row's long-press menu** (after Edit Habit). Never from a tap on the row: a tap logs.
+- **A tap on a calendar day opens that day's sheet; it never changes the day by itself.** Users show a tap-to-toggle calendar changes history by mistake. The sheet says what the day was, then offers the habit's own control (Mark as Done / Not Done, times, Log Amount / Time Manually with each entry deletable, steps), Skip / Undo Skip, and the day's note (written in the page's note bar).
+- **Only days that can honestly change are tappable** (`HabitStore.canChange`): its first day to today, on its days or a skipped day. Paused days, days before it started and days to come only show.
+- Past days are judged by the rule they had (`store.rule(habit, on: day)`), as everywhere.
+
 ## Pausing a habit (built 29 Sep 2026)
 
 Source: [Pausing a Habit — What People Need](<../Research/Research Reports/Day Structure and Organization/Pausing a Habit — What People Need.md>).

@@ -43,3 +43,6 @@ The work order for the whole app is [Build Plan](<../Build Plan.md>).
 | [Focus Player — Speed and Responsiveness](<Checklists/Focus Player — Speed and Responsiveness.md>) | Lag and the Pause fade measured and fixed 29 Sep (Today no longer redraws behind the player) |
 | [Edit Habit](<Checklists/Edit Habit.md>) | Built 29 Sep: edit from the row's long-press menu, changes apply from today, goal history keeps past days |
 | [Habit Notes and Day Notes](<Checklists/Habit Notes and Day Notes.md>) | Built 29 Sep: a note per habit per day, a description, and a note for the day |
+| [Pause a Habit](<Checklists/Pause a Habit.md>) | Built 29 Sep |
+| [All Habits and Habit Page](<Checklists/All Habits and Habit Page.md>) | Built 29 Sep |
+| [Build Loop — Habit Page to Statistics](<Checklists/Build Loop — Habit Page to Statistics.md>) | The user's loop, 29 Sep: habit page, Edit, undo, statistics, one at a time |

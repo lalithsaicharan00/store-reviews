@@ -99,6 +99,8 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Select several to pause, archive or delete; drag to reorder (Today follows)
 - [x] Archiving keeps all history and frees a free slot
 - [x] Habit page: its sentence and description, streak, best, done this month, a month calendar of its days, notes, Edit, Pause / Resume, Archive, Delete
+- [x] Tap a day in the habit page's calendar to fill it in or change it: Mark as Done / Not Done, times, Log Amount / Time with each entry deletable, checklist steps, Skip, and the day's note
+- [x] Long-press a row on Today → View Habit opens its page
 
 ## Routine player (▶ Start on a time of day)
 

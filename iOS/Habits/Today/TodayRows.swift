@@ -65,6 +65,7 @@ struct HabitRow: View {
     @State private var showPause = false
     @Binding var stepsOpen: Bool
     @Environment(HabitStore.self) private var store
+    @Environment(\.openHabitPage) private var openHabitPage
 
     var body: some View {
         if habit.kind == .duration, isToday, let start = store.timers[habit.id] {
@@ -158,6 +159,10 @@ struct HabitRow: View {
         .contextMenu {
             // Edit sits with the item's other actions, as in Reminders; a tap on the row logs (spec §8).
             Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { showEdit = true }
+            // Its own page: history calendar, streak and best, notes (habit page report). Never on a tap: a tap logs.
+            if let openHabitPage {
+                Button(habit.kind == .task ? "View Task" : "View Habit", systemImage: "info.circle") { openHabitPage(habit.id) }
+            }
             // A stretch of days off: travel, illness (pause report, 29 Sep). Skip today stays for one day.
             PauseMenuItems(habit: habit, showPause: $showPause)
             // Any day, done or not, past or today; a note never changes progress (notes report, 29 Sep).
@@ -327,6 +332,7 @@ struct QuitRow: View {
     let habit: Habit
     var highlighted = false
     @Environment(HabitStore.self) private var store
+    @Environment(\.openHabitPage) private var openHabitPage
     @State private var showEdit = false
     @State private var showPause = false
     private var today: LocalDay { store.today() }
@@ -375,6 +381,7 @@ struct QuitRow: View {
         }
         .contextMenu {
             Button("Edit Habit", systemImage: "pencil") { showEdit = true }
+            if let openHabitPage { Button("View Habit", systemImage: "info.circle") { openHabitPage(habit.id) } }
             // Pausing ends this run (kept as a run, not a slip); a new one starts when it's back (the user, 29 Sep).
             PauseMenuItems(habit: habit, showPause: $showPause)
             Button(store.note(of: habit, on: today) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") {
@@ -576,6 +583,12 @@ private struct NoteLineLabel: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         HStack(spacing: 4) { configuration.icon.imageScale(.small); configuration.title }
     }
+}
+
+extension EnvironmentValues {
+    /// Opens a habit's own page from a row's long-press menu. Set by Today; nil elsewhere (the New Habit preview,
+    /// the page itself), where the menu leaves the item out.
+    @Entry var openHabitPage: ((UUID) -> Void)? = nil
 }
 
 /// The band at the top of every row that the icon, streak and button sit in (the row's minimum height).

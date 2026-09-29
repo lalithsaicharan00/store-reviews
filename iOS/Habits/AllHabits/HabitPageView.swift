@@ -14,6 +14,8 @@ struct HabitPageView: View {
     @State private var confirmingDelete = false
     @State private var month: LocalDay?
     @State private var noteDay: LocalDay?
+    /// The day opened from the calendar, to fill in or change (report "Filling In a Past Day From the Habit Page").
+    @State private var openDay: LocalDay?
 
     var body: some View {
         if let habit = store.habits.first(where: { $0.id == id }) {
@@ -57,7 +59,10 @@ struct HabitPageView: View {
             if habit.kind != .quit && habit.kind != .task {
                 Section {
                     HabitMonthView(habit: habit, month: Binding(get: { month ?? Self.firstOfMonth(today, store.calendar) },
-                                                                set: { month = $0 }))
+                                                                set: { month = $0 }),
+                                   onSelect: { openDay = $0 })
+                } footer: {
+                    if !habit.archived { Text("Tap a day to fill it in or change it.") }
                 }
             }
             notesSection(habit, today: today)
@@ -94,6 +99,9 @@ struct HabitPageView: View {
         .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
         .sheet(isPresented: $showNotes) { HabitNotesView(habit: habit) }
         .sheet(isPresented: $showPlus) { PlusView() }
+        .sheet(item: $openDay) { day in
+            HabitDaySheet(habit: habit, day: day) { withAnimation(.snappy) { noteDay = day } }
+        }
         .confirmationDialog("Delete \(habit.name)?", isPresented: $confirmingDelete, titleVisibility: .visible) {
             Button("Delete", role: .destructive) {
                 dismiss()
@@ -212,6 +220,8 @@ struct HabitPageView: View {
 struct HabitMonthView: View {
     let habit: Habit
     @Binding var month: LocalDay
+    /// A tap on a day that can be filled in or changed (nil: the calendar only shows).
+    var onSelect: ((LocalDay) -> Void)? = nil
     @Environment(HabitStore.self) private var store
 
     var body: some View {
@@ -261,7 +271,17 @@ struct HabitMonthView: View {
         return HabitPageView.firstOfMonth(LocalDay(d, calendar: store.calendar), store.calendar)
     }
 
-    private func cell(_ day: LocalDay, isToday: Bool) -> some View {
+    @ViewBuilder private func cell(_ day: LocalDay, isToday: Bool) -> some View {
+        if let onSelect, store.canChange(habit, on: day) {
+            Button { onSelect(day) } label: { dayCell(day, isToday: isToday) }
+                .buttonStyle(.plain)
+                .accessibilityHint("Fill in or change this day")
+        } else {
+            dayCell(day, isToday: isToday)
+        }
+    }
+
+    private func dayCell(_ day: LocalDay, isToday: Bool) -> some View {
         let mark = store.dayMark(habit, on: day)
         let color = habit.color.color
         let faint = [.notItsDay, .before, .paused, .skipped].contains(mark)
@@ -285,6 +305,7 @@ struct HabitMonthView: View {
             }
         }
         .frame(height: 36)
+        .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(day.date(calendar: store.calendar).formatted(.dateTime.weekday(.wide).day().month(.wide))), \(words(mark))")
     }

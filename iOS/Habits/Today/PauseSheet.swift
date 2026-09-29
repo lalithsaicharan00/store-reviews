@@ -149,6 +149,7 @@ struct PausedRow: View {
     let habit: Habit
     let day: LocalDay
     @Environment(HabitStore.self) private var store
+    @Environment(\.openHabitPage) private var openHabitPage
     @State private var showEdit = false
 
     var body: some View {
@@ -178,6 +179,9 @@ struct PausedRow: View {
         .contextMenu {
             if running { Button("Resume", systemImage: "play.circle") { store.resume(habit) } }
             Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { showEdit = true }
+            if let openHabitPage {
+                Button(habit.kind == .task ? "View Task" : "View Habit", systemImage: "info.circle") { openHabitPage(habit.id) }
+            }
             if day <= today {
                 Button(store.note(of: habit, on: day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") {
                     store.noteTarget = .init(habit: habit.id, day: day)

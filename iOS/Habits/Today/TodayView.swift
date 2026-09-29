@@ -18,6 +18,8 @@ struct TodayView: View {
     @State private var showCalendar = false
     @State private var showNewHabit = false
     @State private var showAllHabits = false
+    /// A habit's page, opened from its row's long-press menu (View Habit).
+    @State private var pageHabit: UUID?
     /// The habit just added, revealed once the sheet closes.
     @State private var added: UUID?
     /// A row or header to scroll to, and the row that flashes briefly after Add.
@@ -42,8 +44,10 @@ struct TodayView: View {
                     }
                 }
             }
+            .environment(\.openHabitPage, { pageHabit = $0 })
             .toolbar { if !covered { topBar } }
             .navigationDestination(isPresented: $showAllHabits) { AllHabitsView() }
+            .navigationDestination(item: $pageHabit) { HabitPageView(id: $0) }
             .toolbar { if !covered && store.isLoaded && !store.habits.isEmpty { dayBar } }
             .sheet(isPresented: $showCalendar) {
                 CalendarSheet(day: selectedDay, today: store.today()) { day = $0 }

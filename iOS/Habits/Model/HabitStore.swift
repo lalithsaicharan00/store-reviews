@@ -829,6 +829,29 @@ final class HabitStore {
         return day == today ? .open : .missed
     }
 
+    /// Whether a day in the habit's calendar can be filled in or changed: from its first day up to today, on a day that
+    /// counts for it (or one set aside with Skip, so the skip can be undone). Paused days stay as they are.
+    func canChange(_ habit: Habit, on day: LocalDay) -> Bool {
+        guard habit.kind != .quit, habit.kind != .task, !habit.archived,
+              day >= startDay(of: habit), day <= today(), !isPaused(habit, on: day) else { return false }
+        return isSkipped(habit, on: day) || isDue(habit, on: day)
+    }
+
+    /// What was logged on exactly this day (checklist steps aside), oldest first: the day sheet lists each one so a
+    /// wrong entry can be taken out (C223: undo is a visible button; Strides: "can't edit / delete a log").
+    func loggedEntries(of habit: Habit, on day: LocalDay) -> [Entry] {
+        entries.filter { $0.habitID == habit.id && $0.stepID == nil && $0.day == day }
+    }
+
+    /// Marks a past day not done: takes out everything logged on it (a mistaken check, C010 / C262). Only that day.
+    func clearDay(_ habit: Habit, on day: LocalDay) {
+        perform { [self] in
+            let ids = entries.filter { $0.habitID == habit.id && $0.day == day }.map(\.id)
+            for id in ids { try await repository.removeEntry(id: id.uuidString, at: Date.now.millis) }
+            withAnimation { entries.removeAll { ids.contains($0.id) } }
+        }
+    }
+
     /// The longest streak so far, counted the same way as `streak`: paused, skipped and other days are neutral.
     func bestStreak(of habit: Habit) -> Int {
         guard habit.kind != .quit, habit.kind != .task else { return 0 }

@@ -27,6 +27,7 @@ Time-of-day sections, groups, guided routines, sub-habits, ordering and notes.
 | [Habit Notes and Day Notes — What People Ask For](<Day Structure and Organization/Habit Notes and Day Notes — What People Ask For.md>) | Claude | 29 Sep 2026 | Whole-corpus counts: habit notes (main ask), a standing description, and a small whole-day note; never prompted. |
 | [Pausing a Habit — What People Need](<Day Structure and Organization/Pausing a Habit — What People Need.md>) | **Claude** | 29 Sep 2026 | Whole-corpus counts (607 read, 260 on topic): pause one habit for a stretch, streak kept, until a date; how pause works on Today, streaks, weekly goals, reminders, quit habits. |
 | [The Habit Page — What People Expect](<Day Structure and Organization/The Habit Page — What People Expect.md>) | **Claude** | 29 Sep 2026 | Short check (128 read): a habit's page is for its history calendar and its numbers, details up front, notes, Edit/Pause/Archive/Delete; never the way to check off. |
+| [Filling In a Past Day From the Habit Page](<Day Structure and Organization/Filling In a Past Day From the Habit Page.md>) | **Claude** | 29 Sep 2026 | Short check (108 read): a tap on a calendar day opens that day with the habit's own control (never a tap-to-toggle, which changes history by mistake); skip and the note there too. |
 
 Evidence folders in this section:
 
