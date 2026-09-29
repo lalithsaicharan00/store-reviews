@@ -139,6 +139,14 @@ struct HabitRow: View {
         .sheet(isPresented: $showLog) { LogProgressView(habit: habit, day: day) }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .sheet(isPresented: $showNotes) { HabitNotesView(habit: habit) }
+        // Swipe left for a note, on any day and whether or not it's done: the standard iOS row gesture (Mail,
+        // Reminders), for people who don't long-press. Opens the same field in the row.
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            if day <= store.today() {
+                Button { startWriting() } label: { Label(store.note(of: habit, on: day) == nil ? "Note" : "Edit Note", systemImage: "note.text") }
+                    .tint(.indigo)
+            }
+        }
         .contextMenu {
             // Edit sits with the item's other actions, as in Reminders; a tap on the row logs (spec §8).
             Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { showEdit = true }

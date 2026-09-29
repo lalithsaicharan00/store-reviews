@@ -649,6 +649,10 @@ final class HabitStore {
         (habitNotes[habit.id] ?? [:]).map { (day: $0.key, text: $0.value) }.sorted { $0.day > $1.day }
     }
     func dayNote(on day: LocalDay) -> String? { dayNotes[day] }
+    /// Any note on that day, a habit's or the day's own: the calendar marks it.
+    func hasNotes(on day: LocalDay) -> Bool {
+        dayNotes[day] != nil || habitNotes.values.contains { $0[day] != nil }
+    }
     func description(of habit: Habit) -> String? { descriptions[habit.id] }
 
     /// Empty text removes the note.

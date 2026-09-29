@@ -67,7 +67,22 @@ The first build used a long-press menu and a sheet. The user said that isn't a g
 - In the routine player, the "Saved · Undo" message gets **Add Note**.
 - Nothing pops up by itself.
 
-## Design (users show the need; placement reasoned from first principles)
+## Other ways to reach a note (added the same day, at the user's request)
+
+The after-logging offer covers one moment. Reviews show where else people expect to find a note (`Research/Temp/notes/places.json`, sentences that mention a note and a place, read by hand):
+
+| Where people expect it | Reviews say | Built |
+|---|---|---|
+| **On a day it wasn't done** (missed, skipped, not yet) | The largest group: "the ability to add notes on days when habits are NOT completed" (`13583853777`); "attach notes at any time and not just I'd completed or skipped" (`7882731498`) | Swipe left on any row → **Note**; long-press → Add Note; both on any day, done or not |
+| **A long-press on the habit** | "Short press to Mark and Long Press to add some note" (`bb97d2ef-6340-4612-ab84-1eeb7d163e17`); "you press and hold on the habit" (`1649e727-3cc0-4d5e-a810-78dce554f651`) | Long-press → Add Note (opens the field in the row) |
+| **A swipe on the row** | Productive's "swipe left on a task to add notes" is how its users reach them, though it failed on finished tasks (`4774012838`) | Swipe left → Note, on finished and unfinished rows alike |
+| **Past days and the calendar** | "go back to previous days, update and/or add notes" (`13801600222`); "notes added can be flagged up on calendar" (`1213877172`) | Any past day opens from the calendar with the same ways in; days with a note get a dot in the calendar |
+| **Why it was skipped** | "hit the skip button and write a note why you had to skip" (`4475881446`) | Player: **Add Note** beside Undo in "Skipped for today" |
+| **In the routine player** | (reasoned: the player hides the rows) | Add Note beside Undo after logging; Habit options → Add Note |
+
+Not built now: a note from a notification or a widget (40 widget and 16 notification mentions, mostly other requests; revisit with widgets).
+
+
 
 | Note | Where it's written | Where it shows |
 |---|---|---|

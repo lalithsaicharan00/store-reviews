@@ -15,6 +15,8 @@ Written by Claude (Claude Code), 29 September 2026. Build Plan #54. Research: [H
 | N7 | Note sheet solid and above the keyboard | [x] Solid background (it was see-through at first) |
 | N8 | (User, same day) The sheet isn't a good way: research which app adds notes most intuitively and build that | [x] Way of Life (174 note praises, 4 complaints): the note is written in place. Built: Add note appears in the row after logging, the row stays put, the field opens in the row; the player's banner has Add Note. Checked by hand (Drink tea) |
 
+| N9 | (User, same day) Keep that, and add the other ways people expect to reach a note | [x] Swipe left → Note (any row, done or not, any day); long-press → Add Note; tap a note to change it; player: Add Note after a skip; calendar dot on days with notes. Swipe and calendar dot checked by hand (Read pages) |
+
 **Found by hand:** on the simulator, Save sometimes needed a second tap (the first ended typing). Watch for it on the phone.
 
 **Storage:** settings keys `note.<habit id>|<day>`, `daynote.<day>`, `desc.<habit id>` (no schema change, like goal history).

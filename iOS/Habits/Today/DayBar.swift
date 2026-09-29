@@ -123,6 +123,13 @@ struct CalendarSheet: View {
                     .foregroundStyle(future ? Color.secondary : Color.ink)
             }
             .frame(width: 38, height: 38)
+            // A dot under days with a note, so notes can be found again (users show: Habit Hub's shading).
+            .overlay(alignment: .bottom) {
+                if store.hasNotes(on: day) {
+                    Circle().fill(Color.secondary).frame(width: 4, height: 4).offset(y: 6)
+                        .accessibilityHidden(true)
+                }
+            }
             .overlay(alignment: .topTrailing) {
                 if summary.total > 0 && summary.done == summary.total && !future {
                     Image(systemName: "checkmark.circle.fill")

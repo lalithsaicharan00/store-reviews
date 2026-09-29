@@ -27,6 +27,8 @@ struct RoutinePlayer: View {
     @State private var pendingHabitAction: HabitAction?
     private enum HabitAction { case log, skip, unskip, undo(UUID), timer, edit, note }
     @State private var showNote = false
+    /// The habit the note is for: the current one, or the one just skipped (the banner's Add Note).
+    @State private var noteHabitID: UUID?
     @State private var showEdit = false
     @State private var manualEntryIDs: Set<UUID> = []
     /// The timer was running when Add Time opened; it runs again when the sheet closes (Cancel included).
@@ -159,7 +161,7 @@ struct RoutinePlayer: View {
         }
         .sheet(isPresented: $showEdit) { if let habit = current { EditHabitSheet(habit: habit) } }
         .sheet(isPresented: $showNote) {
-            if let habit = current {
+            if let habit = order.first(where: { $0.id == noteHabitID }) ?? current {
                 NoteSheet(title: "Note", subtitle: habit.name + " · " + NoteSheet.dayText(session.day, today: store.today(), calendar: store.calendar),
                           initial: store.note(of: habit, on: session.day) ?? "") { store.setNote($0, of: habit, on: session.day) }
             }
@@ -420,7 +422,7 @@ struct RoutinePlayer: View {
         case .undo(let id): change("Entry removed", captureUndo: false) { store.undoEntry(id) }
         case .timer: toggleTimer(habit)
         case .edit: showEdit = true
-        case .note: showNote = true
+        case .note: noteHabitID = habit.id; showNote = true
         }
     }
 
@@ -432,12 +434,16 @@ struct RoutinePlayer: View {
                 if let id = undoSkipID, let habit = order.first(where: { $0.id == id }) {
                     Button("Undo") { unskip(habit, stay: false) }
                         .font(.subheadline.weight(.semibold))
+                    // Why it was skipped, if the person wants to say (users show: Way of Life); never asked.
+                    Button("Add Note") { noteHabitID = id; showNote = true }
+                        .font(.subheadline.weight(.semibold))
+                        .accessibilityIdentifier("focus-skip-note")
                 } else if let id = undoID {
                     Button("Undo") { change("Undone", captureUndo: false) { store.undoEntry(id) } }
                         .font(.subheadline.weight(.semibold))
                         .accessibilityIdentifier("focus-undo")
                     // The note belongs right after logging, next to Undo; never asked for (notes UX report).
-                    Button("Add Note") { showNote = true }
+                    Button("Add Note") { noteHabitID = current?.id; showNote = true }
                         .font(.subheadline.weight(.semibold))
                         .accessibilityIdentifier("focus-banner-note")
                 }
