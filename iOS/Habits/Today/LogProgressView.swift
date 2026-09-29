@@ -4,6 +4,8 @@ import SwiftUI
 struct LogProgressView: View {
     let habit: Habit
     let day: LocalDay
+    /// From Today: what's logged here is offered back in Today's Undo bar.
+    var offersUndo = false
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @State private var amount = ""
@@ -113,7 +115,11 @@ struct LogProgressView: View {
 
     private func add(_ value: Double) {
         saving = true
-        store.addProgress(habit, value: value, on: day)
+        if offersUndo {
+            store.withUndo(habit, on: day) { store.addProgress(habit, value: value, on: day) }
+        } else {
+            store.addProgress(habit, value: value, on: day)
+        }
         Task { @MainActor in
             await store.flush()
             saving = false

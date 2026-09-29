@@ -144,7 +144,7 @@ struct HabitRow: View {
         .padding(.vertical, 2)
         .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color)
             .overlay(HighlightFlash(on: highlighted || store.noteTarget == .init(habit: habit.id, day: day), color: habit.color)))
-        .sheet(isPresented: $showLog) { LogProgressView(habit: habit, day: day) }
+        .sheet(isPresented: $showLog) { LogProgressView(habit: habit, day: day, offersUndo: true) }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .sheet(isPresented: $showNotes) { HabitNotesView(habit: habit) }
         .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
@@ -260,8 +260,11 @@ struct HabitRow: View {
                 RoundActionButton(symbol: "checkmark", done: done, color: habit.color,
                                   label: done ? "Undo \(habit.name)" : "Mark \(habit.name) done") {
                     if !done { offerNote() }
-                    withAnimation {
-                        if let slot { store.toggleSlot(habit, slot: slot, on: day) } else { store.toggleCheck(habit, on: day) }
+                    // Undo in the bar below; the same ✓ also takes it back (Undo After Logging, 29 Sep).
+                    store.withUndo(habit, on: day) {
+                        withAnimation {
+                            if let slot { store.toggleSlot(habit, slot: slot, on: day) } else { store.toggleCheck(habit, on: day) }
+                        }
                     }
                 }
             case .amount(let unit, _):
@@ -273,7 +276,7 @@ struct HabitRow: View {
                                       keepSymbolWhenDone: true,
                                       text: "+" + Format.amount(step)) {
                         offerNote()
-                        withAnimation { store.increment(habit, on: day) }
+                        store.withUndo(habit, on: day) { withAnimation { store.increment(habit, on: day) } }
                     }
                 } else {
                     RoundActionButton(symbol: "plus", done: done, color: habit.color,
@@ -287,6 +290,7 @@ struct HabitRow: View {
                 RoundActionButton(symbol: running ? "pause.fill" : "play.fill", done: done && !running, color: habit.color,
                                   label: running ? "Stop \(habit.name) timer" : "Start \(habit.name) timer") {
                     if store.timers[habit.id] == nil { TimerPresence.askOnNextSync = true } else { offerNote() }
+                    // No Undo for ⏸: it would delete the time instead of un-pausing (found in the player, 29 Sep).
                     withAnimation { store.toggleTimer(habit, slot: slot) }
                 }
                 .disabled(!isToday)
@@ -312,7 +316,7 @@ struct StepRow: View {
             RoundActionButton(symbol: "checkmark", done: done, color: habit.color,
                               label: done ? "Undo \(step.name)" : "Mark \(step.name) done") {
                 if !done { store.noteOffer = .init(habit: habit.id, day: day) }
-                withAnimation { store.toggleStep(step, of: habit, on: day) }
+                store.withUndo(habit, on: day) { withAnimation { store.toggleStep(step, of: habit, on: day) } }
             }
         }
         .disabled(day > store.today())

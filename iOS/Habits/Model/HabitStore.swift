@@ -1119,6 +1119,68 @@ final class HabitStore {
         withAnimation { _ = entries.remove(at: i) }
     }
 
+    // MARK: Undo on Today
+
+    /// What was just logged on Today, offered back in a bar at the bottom with Undo (report "Undo After Logging",
+    /// 29 Sep; Feature Ledger C223: undo is a visible button, never a gesture). It takes back exactly the entries that
+    /// one tap added, never the whole day.
+    struct UndoOffer: Equatable {
+        let id = UUID()
+        let habit: UUID
+        let day: LocalDay
+        /// "Water: +1 glass", "Read: 12 min logged", "Skincare: Serum done".
+        let text: String
+        let entries: [UUID]
+    }
+    var undoOffer: UndoOffer?
+
+    /// Runs a logging action from Today and, once it's saved, offers Undo for what it added. An action that added
+    /// nothing (an untick, starting a timer) takes away an offer for the same habit, which would now be out of date.
+    func withUndo(_ habit: Habit, on day: LocalDay, _ action: () -> Void) {
+        let before = Set(entries.lazy.filter { $0.habitID == habit.id }.map(\.id))
+        action()
+        Task { @MainActor in
+            await flush()
+            let added = entries.filter { $0.habitID == habit.id && !before.contains($0.id) }
+            withAnimation(.snappy) {
+                if added.isEmpty {
+                    if undoOffer?.habit == habit.id { undoOffer = nil }
+                } else {
+                    undoOffer = UndoOffer(habit: habit.id, day: day, text: undoText(habit, added, on: day), entries: added.map(\.id))
+                }
+            }
+        }
+    }
+
+    /// Takes back what the offer logged, and the "Add note" that came with it.
+    func undo(_ offer: UndoOffer) {
+        for id in offer.entries { undoEntry(id) }
+        withAnimation(.snappy) {
+            if noteOffer == .init(habit: offer.habit, day: offer.day) { noteOffer = nil }
+            undoOffer = nil
+        }
+    }
+
+    private func undoText(_ habit: Habit, _ added: [Entry], on day: LocalDay) -> String {
+        let rule = rule(habit, on: day)
+        let total = added.reduce(0) { $0 + $1.value }
+        let what: String
+        switch rule.kind {
+        case .amount(let unit, _):
+            what = "+" + HabitCopy.amount(total, unit)
+        case .duration:
+            what = total < 1 ? "under a minute logged" : Format.minutes(total) + " logged"
+        case .checklist:
+            let names = added.compactMap { e in rule.steps.first { $0.id == e.stepID }?.name }
+            what = names.count == 1 ? names[0].capped(HabitRow.nameShown) + " done" : "done"
+        case .check where rule.frequency.isDayBased && rule.goal > 1:
+            what = "\(HabitCopy.number(dayProgress(of: rule, on: day))) of \(HabitCopy.amount(rule.goal, rule.checkUnit ?? ""))"
+        default:
+            what = "done"
+        }
+        return habit.name.capped(HabitRow.nameShown) + ": " + what
+    }
+
     // MARK: Demo data
 
     #if DEBUG

@@ -97,6 +97,15 @@ Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Resear
 - **A note never changes progress**, and can be added on any past day, done or not.
 - **Note sheets are solid** (`presentationBackground`), like the calendar sheet.
 
+## Undo after logging (built 29 Sep 2026)
+
+Source: [Undo After Logging](<../Research/Research Reports/Day Structure and Organization/Undo After Logging.md>).
+
+- **After a tap logs on Today, the Undo bar says what was logged: "Water: +1 glass · Undo"** (`UndoBar`, `HabitStore.withUndo`). About 6 s, 20 s with VoiceOver. Undo takes back **exactly the entries that tap added**, never the whole day.
+- **Never ask before logging** (no "Are you sure?", no press-and-hold, no shake): logging stays one tap (C264).
+- **No Undo after ⏸.** Pausing a timer saves its time; an Undo there deleted the time instead of un-pausing (player, 29 Sep).
+- Keep the other visible ways back: ✓ again, Undo Last Entry in the long-press menu, Delete on the habit page's day sheet.
+
 ## The habit page (built 29 Sep 2026)
 
 Sources: [The Habit Page — What People Expect](<../Research/Research Reports/Day Structure and Organization/The Habit Page — What People Expect.md>) and [Filling In a Past Day From the Habit Page](<../Research/Research Reports/Day Structure and Organization/Filling In a Past Day From the Habit Page.md>).

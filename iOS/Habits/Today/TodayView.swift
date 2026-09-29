@@ -81,7 +81,7 @@ struct TodayView: View {
             routine = RoutineSession(part: .anytime, day: store.today(), habits: habits)
         }
         #endif
-        .onChange(of: selectedDay) { foldOverrides = [:] }
+        .onChange(of: selectedDay) { foldOverrides = [:]; store.undoOffer = nil }
         .onChange(of: router.focusSection) {
             // A tapped notification opens today's section.
             guard let section = router.focusSection else { return }
@@ -304,6 +304,12 @@ struct TodayView: View {
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 } else {
                 VStack(spacing: 8) {
+                    // What was just logged, with Undo, for a few seconds (Undo After Logging, 29 Sep).
+                    if let offer = store.undoOffer, offer.day == shown {
+                        UndoBar(offer: offer)
+                            .id(offer.id)
+                            .transition(reduceMotion ? .opacity : .move(edge: .bottom).combined(with: .opacity))
+                    }
                     if isToday {
                         // A running timer whose row is scrolled away or folded stays in sight here
                         // ("Timing a Habit — Start, See and Stop"). Timers only run today.

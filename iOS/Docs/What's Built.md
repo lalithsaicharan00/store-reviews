@@ -41,6 +41,7 @@ This is the short list of what the iPhone app can do today. The reasons behind e
 - [x] Times of day as cards, each with "N left" and ▶ Start; Quitting card; cards fold
 - [x] Habit rows with progress fill, streak and action button; rows top-aligned (icon, streak and button stay at the top when the text runs to 3 lines)
 - [x] Tap + / ✓ to log; tap the row to log an amount or time by hand; Undo Last Entry
+- [x] Undo bar after logging: "Water: +1 glass · Undo" for a few seconds, taking back exactly that entry
 - [x] Timers start in the row; a timer bar when the row is off screen; Live Activity outside the app
 - [x] Streaks for every frequency ("23", "4 wk")
 - [x] Skip today (a skipped day isn't a missed day)
@@ -119,7 +120,6 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 
 ## Not built yet (Build Plan order)
 
-- [ ] Easy undo after checking or logging
 - [ ] Completion animation before a done row moves down
 - [ ] Section open and close animation
 - [ ] Progress and statistics screens

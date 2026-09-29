@@ -136,7 +136,7 @@ Rounds 7–9 (New Habit form Round 3/4 and the full-screen routine player) are r
 | 55 | **Pause a habit** (research pausing tracking across the whole app) | Built 29 Sep: research, long-press → Pause…, Paused card, quit runs (`Docs/Checklists/Pause a Habit.md`); installed on the iPhone. Also on the habit page since #56b |
 | 56 | **All Habits:** the list behind the top-bar button, with archive and delete | Built 29 Sep (`Docs/Checklists/All Habits and Habit Page.md`); builds, not yet installed or tested by hand |
 | 56b | **Habit page** (added by the user, 29 Sep): tap a habit (in All Habits) to open its page, the home for its notes, Edit, **Pause / Resume** (built #55, needs a place here), archive and delete | Built 29 Sep with #56 |
-| 57 | **Easy undo after checking or logging** (snackbar or a suitable native presentation) | Not started |
+| 57 | **Easy undo after checking or logging** (snackbar or a suitable native presentation) | Built 29 Sep: the Undo bar on Today (`Docs/Checklists/Build Loop — Habit Page to Statistics.md`, research "Undo After Logging"). Also 29 Sep: the habit page's calendar fills in a past day, and View Habit opens the page from Today |
 | 58 | **Completion feedback:** finish the fill or check animation before the row moves below unfinished rows; smooth on repeated goals (the last of three checks) | Not started |
 | 59 | **Section open and close animation** beyond the current fade | Not started |
 | 60 | **Progress and statistics screens** | Not started |
