@@ -25,6 +25,8 @@ Time-of-day sections, groups, guided routines, sub-habits, ordering and notes.
 | [Habit Tracker — Day Sections, Categories and Routines Decision](<Day Structure and Organization/Habit Tracker — Day Sections, Categories and Routines Decision.md>) | Codex | 23 Sep 2026 | Earlier recommendation built from Feature Ledger cards and spot-checked reviews. |
 | [Habit Tracker — Organization and Notes Deep Dive](<Day Structure and Organization/Habit Tracker — Organization and Notes Deep Dive.md>) | Codex | 23 Sep 2026 | Rename, reorder, groups, time of day and per-habit notes. |
 | [Habit Notes and Day Notes — What People Ask For](<Day Structure and Organization/Habit Notes and Day Notes — What People Ask For.md>) | Claude | 29 Sep 2026 | Whole-corpus counts: habit notes (main ask), a standing description, and a small whole-day note; never prompted. |
+| [Pausing a Habit — What People Need](<Day Structure and Organization/Pausing a Habit — What People Need.md>) | **Claude** | 29 Sep 2026 | Whole-corpus counts (607 read, 260 on topic): pause one habit for a stretch, streak kept, until a date; how pause works on Today, streaks, weekly goals, reminders, quit habits. |
+| [The Habit Page — What People Expect](<Day Structure and Organization/The Habit Page — What People Expect.md>) | **Claude** | 29 Sep 2026 | Short check (128 read): a habit's page is for its history calendar and its numbers, details up front, notes, Edit/Pause/Archive/Delete; never the way to check off. |
 
 Evidence folders in this section:
 

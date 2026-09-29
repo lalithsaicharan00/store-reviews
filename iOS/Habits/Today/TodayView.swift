@@ -17,6 +17,7 @@ struct TodayView: View {
 
     @State private var showCalendar = false
     @State private var showNewHabit = false
+    @State private var showAllHabits = false
     /// The habit just added, revealed once the sheet closes.
     @State private var added: UUID?
     /// A row or header to scroll to, and the row that flashes briefly after Add.
@@ -42,6 +43,7 @@ struct TodayView: View {
                 }
             }
             .toolbar { if !covered { topBar } }
+            .navigationDestination(isPresented: $showAllHabits) { AllHabitsView() }
             .toolbar { if !covered && store.isLoaded && !store.habits.isEmpty { dayBar } }
             .sheet(isPresented: $showCalendar) {
                 CalendarSheet(day: selectedDay, today: store.today()) { day = $0 }
@@ -129,6 +131,7 @@ struct TodayView: View {
     }
     /// The fold key for the Quitting card; section IDs are UUIDs or fixed words, so this can't clash.
     private static let quitting = "quitting-card"
+    private static let pausedCard = "paused-card"
 
     /// One row on Today: a habit in one section (a habit ticked per section has one in each).
     struct TodayItem: Identifiable {
@@ -195,7 +198,9 @@ struct TodayView: View {
         let shown = day ?? today
         let isToday = shown == today
         let active = store.habits.filter { !$0.archived && store.startDay(of: $0) <= shown }
-        let quitting = active.filter { $0.kind == .quit }
+        let quitting = active.filter { $0.kind == .quit && !store.isPaused($0, on: today) }
+        // Paused habits leave their cards for one folded card at the bottom, so they're never lost (pause report).
+        let paused = active.filter { store.isPaused($0, on: shown) && ($0.kind != .quit || isToday) }
         let tracked = active.filter { $0.kind != .quit && store.isDue($0, on: shown) }
         let nowPart = isToday ? store.nowSection(now: now)?.id : nil
 
@@ -246,6 +251,20 @@ struct TodayView: View {
                     // Times decide the section; a habit ticked per section shows in each of its sections.
                     if let items = rows[section.id], !items.isEmpty {
                         partSection(section.id, items: items, day: shown, isToday: isToday, isNow: section.id == nowPart)
+                    }
+                }
+                if !paused.isEmpty {
+                    let open = foldOverrides[Self.pausedCard] ?? false
+                    Section {
+                        PartHeader(title: "Paused", habits: paused, left: nil, isNow: false, isOpen: open, onStart: nil,
+                                   onToggle: { withAnimation { foldOverrides[Self.pausedCard] = !open } })
+                            .accessibilityIdentifier("paused-card")
+                        if open {
+                            ForEach(paused) { habit in
+                                PausedRow(habit: habit, day: shown)
+                                    .id(Self.rowKey(Self.pausedCard, habit.id))
+                            }
+                        }
                     }
                 }
                 Section {
@@ -307,7 +326,8 @@ struct TodayView: View {
             .onChange(of: store.noteTarget) {
                 guard let target = store.noteTarget, let id = target.habit,
                       let habit = store.habits.first(where: { $0.id == id }) else { return }
-                let key = habit.kind == .quit ? Self.rowKey(Self.quitting, id)
+                let key = store.isPaused(habit, on: target.day) ? Self.rowKey(Self.pausedCard, id)
+                    : habit.kind == .quit ? Self.rowKey(Self.quitting, id)
                     : store.placements(of: habit).first.map { Self.rowKey($0.section, id) }
                 guard let key else { return }
                 Task {
@@ -466,7 +486,7 @@ struct TodayView: View {
         .hidingSharedBackground()
         ToolbarItemGroup(placement: .topBarTrailing) {
             Button("Progress", systemImage: "chart.bar.xaxis") {}
-            Button("All habits", systemImage: "checklist") {}
+            Button("All habits", systemImage: "checklist") { showAllHabits = true }
         }
         if #available(iOS 26, *) {
             ToolbarSpacer(.fixed, placement: .topBarTrailing)

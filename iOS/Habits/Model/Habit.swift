@@ -300,3 +300,19 @@ struct HabitRule: Codable, Hashable, Sendable {
             || checkUnit != habit.checkUnit || steps.map(\.id) != habit.steps.map(\.id)
     }
 }
+
+/// A stretch of days a habit is paused (report "Pausing a Habit — What People Need", 29 Sep). A paused day
+/// works exactly like a skipped day: not one of the habit's days, so it's neutral in the streak and every count.
+/// Kept after it ends, so past paused days stay neutral.
+struct HabitPause: Codable, Hashable, Sendable {
+    /// The first paused day.
+    var from: LocalDay
+    /// The last paused day; nil until it's turned back on. Resuming today sets it to yesterday.
+    var through: LocalDay?
+    /// When it was paused. For a quit habit the current run ends here (kept as a run, not a slip).
+    var pausedAt: Date
+    /// When it was turned back on by hand. For a quit habit a new run starts here.
+    var resumedAt: Date?
+
+    func contains(_ day: LocalDay) -> Bool { from <= day && through.map { day <= $0 } ?? true }
+}

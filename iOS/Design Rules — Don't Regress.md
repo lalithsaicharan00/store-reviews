@@ -97,6 +97,17 @@ Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Resear
 - **A note never changes progress**, and can be added on any past day, done or not.
 - **Note sheets are solid** (`presentationBackground`), like the calendar sheet.
 
+## Pausing a habit (built 29 Sep 2026)
+
+Source: [Pausing a Habit — What People Need](<../Research/Research Reports/Day Structure and Organization/Pausing a Habit — What People Need.md>).
+
+- **A paused day is a skipped day** (`HabitStore.isPaused`, checked in `isDue`): off Today, no reminders, not in routines, neutral in the streak and every count. Never mark a paused day missed, and never ask about it on resume (the top complaint in other apps).
+- **A week, month or year with a paused day can't break the streak;** it still counts if met.
+- **Per habit, any length:** 1 week, 2 weeks, a date (comes back on its own) or until turned back on. No minimum or maximum. No app-wide vacation switch.
+- **Paused habits go to a folded Paused card at the bottom of Today** with Resume, never just hidden.
+- **Quit habits:** pausing ends the current run (kept as a run, not a slip), and resuming starts a new run (the user, 29 Sep). The clock never carries on across a pause.
+- **Pause is free and never suggested.** No streak freeze to earn or buy.
+
 ## Habit copy: say it the way people do (built 29 Sep 2026)
 
 The user's rule: **the copy is the value.** Whatever is picked must read the way a person says it, on the form and on Today.

@@ -19,7 +19,7 @@ extension Date {
 }
 
 extension Habit {
-    func record(position: Int, now: Date = .now) -> HabitRecord {
+    func record(position: Int, now: Date = .now, deleted: Bool = false) -> HabitRecord {
         let kindName: String
         var unit: String?
         var increment = 1.0
@@ -38,7 +38,7 @@ extension Habit {
             dueMinute: dueMinute.map { KotlinInt(value: Int32($0)) },
             atMost: atMost, quitSince: quitSince.map { KotlinLong(value: $0.millis) },
             position: Int32(position), createdAt: createdAt.millis, updatedAt: now.millis,
-            archivedAt: archived ? KotlinLong(value: now.millis) : nil, deletedAt: nil,
+            archivedAt: archived ? KotlinLong(value: now.millis) : nil, deletedAt: deleted ? KotlinLong(value: now.millis) : nil,
             remind: remind, alert: alert.rawValue, followUpMinutes: followUpMinutes.map { KotlinInt(value: Int32($0)) },
             startsOn: startsOn?.key, endsOn: endsOn?.key)
     }

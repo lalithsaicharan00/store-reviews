@@ -42,6 +42,8 @@ final class HabitStore {
     /// Days a habit was skipped ("Skip today"). A skipped day is simply not one of its days: hidden on Today and
     /// neutral in the streak, the ring and every percentage (Feature Ledger C016: "a skipped day is not a missed day").
     private(set) var skips: [UUID: Set<LocalDay>] = [:]
+    /// Pauses per habit, oldest first. A paused day is a skipped day, for a whole stretch (pause report, 29 Sep).
+    private(set) var pauses: [UUID: [HabitPause]] = [:]
     /// Goal history: the rules a habit had before it was edited, oldest first. Each applies up to and including
     /// its `until` day, so past days keep the result they had (spec §8.2).
     private(set) var rules: [UUID: [HabitRule]] = [:]
@@ -277,6 +279,73 @@ final class HabitStore {
         }
     }
 
+    // MARK: Pause
+
+    /// Whether the habit is paused on `day`. Paused days aren't its days: off Today, no reminders, neutral in the
+    /// streak and every count.
+    func isPaused(_ habit: Habit, on day: LocalDay) -> Bool {
+        pauses[habit.id]?.contains { $0.contains(day) } == true
+    }
+
+    /// The pause covering `day`, or the next one still to come after it (a trip booked ahead).
+    func pause(of habit: Habit, on day: LocalDay) -> HabitPause? {
+        let list = pauses[habit.id] ?? []
+        return list.first { $0.contains(day) } ?? list.filter { $0.from > day }.min { $0.from < $1.from }
+    }
+
+    /// One-time tasks are rescheduled instead; everything else can be paused.
+    func canPause(_ habit: Habit) -> Bool { !(habit.kind == .task && habit.dueDay != nil) && !habit.archived }
+
+    /// Pauses the habit from `from` through `through` (nil: until turned back on). A quit habit pauses now: its
+    /// current run ends and is kept. Any pause still to come is replaced.
+    func pause(_ habit: Habit, from: LocalDay, through: LocalDay?, now: Date = .now) {
+        let today = today(now: now)
+        let from = habit.kind == .quit ? today : from
+        var list = (pauses[habit.id] ?? []).filter { $0.from <= today }
+        // A pause already running is closed the day before the new one starts.
+        for i in list.indices where list[i].through.map({ $0 >= from }) ?? true {
+            list[i].through = from.adding(days: -1, calendar: calendar)
+        }
+        list.removeAll { p in habit.kind != .quit && p.through.map { $0 < p.from } == true }
+        list.append(HabitPause(from: from, through: through, pausedAt: now))
+        savePauses(list, of: habit)
+    }
+
+    /// Turns the habit back on today: a pause running now ends yesterday, one still to come is dropped. Nothing is
+    /// asked about the paused days. A quit habit starts a new run now.
+    func resume(_ habit: Habit, now: Date = .now) {
+        let today = today(now: now)
+        var list = pauses[habit.id] ?? []
+        list.removeAll { $0.from > today }
+        for i in list.indices where list[i].contains(today) {
+            list[i].through = today.adding(days: -1, calendar: calendar)
+            list[i].resumedAt = now
+        }
+        // A pause that began and ended today leaves nothing behind, except a quit habit's run boundary.
+        list.removeAll { p in habit.kind != .quit && p.through.map { $0 < p.from } == true }
+        savePauses(list, of: habit)
+    }
+
+    private func savePauses(_ list: [HabitPause], of habit: Habit) {
+        perform { [self] in
+            let json = String(decoding: try JSONEncoder().encode(list), as: UTF8.self)
+            try await repository.saveSetting(key: Keys.pausePrefix + habit.id.uuidString, value: json)
+            withAnimation { pauses[habit.id] = list.isEmpty ? nil : list }
+        }
+    }
+
+    /// When a pause gave the habit back: by hand, or at the start of the day after its last day.
+    private func resumeMoment(_ p: HabitPause) -> Date? {
+        if let at = p.resumedAt { return at }
+        guard let last = p.through else { return nil }
+        return dayStart(last.adding(days: 1, calendar: calendar))
+    }
+
+    /// The moment a day begins, honouring the user's day end.
+    private func dayStart(_ day: LocalDay) -> Date {
+        calendar.startOfDay(for: day.date(calendar: calendar)).addingTimeInterval(Double(settings.dayEndHour) * 3600)
+    }
+
     /// The first day a habit counts: its start date (past or future), or the day it was made.
     func startDay(of habit: Habit) -> LocalDay {
         habit.startsOn ?? LocalDay(habit.createdAt, calendar: calendar)
@@ -285,7 +354,7 @@ final class HabitStore {
     /// Whether the habit belongs on `day`. Days that aren't due are hidden on Today and never break a streak.
     /// Unfinished one-time tasks move forward to today. Nothing is due before the start or after the end date.
     func isDue(_ habit: Habit, on day: LocalDay, now: Date = .now) -> Bool {
-        if isSkipped(habit, on: day) { return false }
+        if isSkipped(habit, on: day) || isPaused(habit, on: day) { return false }
         let habit = rule(habit, on: day)
         let created = startDay(of: habit)
         if let end = habit.endsOn, day > end, habit.kind != .quit { return false }
@@ -461,8 +530,9 @@ final class HabitStore {
         if let current = periodRange(habit, containing: day) {
             var count = isPeriodMet(habit, on: day) ? 1 : 0
             var cursor = current.lowerBound.adding(days: -1, calendar: calendar)
-            while cursor >= created, samePeriodKind(cursor), let range = periodRange(habit, containing: cursor), isPeriodMet(habit, on: cursor) {
-                count += 1
+            // A week or month with a paused day can't break the streak; it still counts if it was met.
+            while cursor >= created, samePeriodKind(cursor), let range = periodRange(habit, containing: cursor) {
+                if isPeriodMet(habit, on: cursor) { count += 1 } else if !hasPause(habit, in: range) { break }
                 cursor = range.lowerBound.adding(days: -1, calendar: calendar)
             }
             return count
@@ -479,15 +549,33 @@ final class HabitStore {
         return count
     }
 
-    /// Quit habits: the current run and the best run, from the slip history.
+    private func hasPause(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Bool {
+        pauses[habit.id]?.contains { p in p.from <= range.upperBound && (p.through.map { $0 >= range.lowerBound } ?? true) && (p.through.map { $0 >= p.from } ?? true) } == true
+    }
+
+    /// Quit habits: the current run and the best run, from the slip history. A pause ends the run it interrupts
+    /// (kept as a run, not a slip), and turning it back on starts a new one. While paused, there's no current run.
     func quitRuns(of habit: Habit, now: Date = .now) -> (current: TimeInterval, best: TimeInterval) {
         let start = habit.quitSince ?? habit.createdAt
-        let slips = entries.filter { $0.habitID == habit.id }.map(\.createdAt).sorted()
-        var marks = [habit.createdAt] + slips.filter { $0 > habit.createdAt }
-        if start > marks.last! { marks.append(start) }
+        var slips = entries.filter { $0.habitID == habit.id }.map(\.createdAt)
+        if start > habit.createdAt && !slips.contains(start) { slips.append(start) }
+        // Each boundary ends the run going on (if any) and may start the next.
+        var edges: [(at: Date, starts: Bool)] = slips.map { ($0, true) }
+        var pausedNow = false
+        for p in pauses[habit.id] ?? [] where p.pausedAt <= now {
+            edges.append((p.pausedAt, false))
+            if let back = resumeMoment(p), back <= now { edges.append((back, true)) } else { pausedNow = true }
+        }
+        edges.sort { $0.at < $1.at }
+        let origin = min(habit.createdAt, start)
+        var runStart: Date? = origin
         var best: TimeInterval = 0
-        for (a, b) in zip(marks, marks.dropFirst()) { best = max(best, b.timeIntervalSince(a)) }
-        let current = max(0, now.timeIntervalSince(start))
+        for edge in edges where edge.at > origin {
+            if let s = runStart { best = max(best, edge.at.timeIntervalSince(s)) }
+            runStart = edge.starts ? edge.at : nil
+        }
+        guard !pausedNow, let runStart else { return (0, best) }
+        let current = max(0, now.timeIntervalSince(max(start, runStart)))
         return (current, max(best, current))
     }
 
@@ -503,6 +591,7 @@ final class HabitStore {
             var running: [UUID: Date] = [:]
             var runningSlots: [UUID: String] = [:]
             var loadedSkips: [UUID: Set<LocalDay>] = [:]
+            var loadedPauses: [UUID: [HabitPause]] = [:]
             var loadedRules: [UUID: [HabitRule]] = [:]
             var loadedHabitNotes: [UUID: [LocalDay: String]] = [:]
             var loadedDayNotes: [LocalDay: String] = [:]
@@ -540,6 +629,12 @@ final class HabitStore {
                         loadedRules[id] = list.sorted { $0.until < $1.until }
                         continue
                     }
+                    if setting.key.hasPrefix(Keys.pausePrefix),
+                       let id = UUID(uuidString: String(setting.key.dropFirst(Keys.pausePrefix.count))),
+                       let list = try? JSONDecoder().decode([HabitPause].self, from: Data(setting.value.utf8)) {
+                        if !list.isEmpty { loadedPauses[id] = list }
+                        continue
+                    }
                     if setting.key.hasPrefix(Keys.skipPrefix),
                        let id = UUID(uuidString: String(setting.key.dropFirst(Keys.skipPrefix.count))) {
                         let days = Set(setting.value.split(separator: ",").compactMap { LocalDay(key: String($0)) })
@@ -559,6 +654,7 @@ final class HabitStore {
             timers = running
             timerSlots = runningSlots
             skips = loadedSkips
+            pauses = loadedPauses
             rules = loadedRules
             habitNotes = loadedHabitNotes
             dayNotes = loadedDayNotes
@@ -576,6 +672,7 @@ final class HabitStore {
         static let weekStart = "week_start"
         static let timerPrefix = "timer."
         static let skipPrefix = "skip."
+        static let pausePrefix = "pause."
         static let rulesPrefix = "rules."
         static let notePrefix = "note."
         static let dayNotePrefix = "daynote."
@@ -642,6 +739,121 @@ final class HabitStore {
                                            reminders: habit.reminderRecords(), at: Date.now.millis)
             withAnimation { habits.append(habit) }
         }
+    }
+
+    // MARK: All Habits: archive, restore, delete, reorder
+
+    /// Stops habits for good but keeps all their history (Feature Ledger C016: people delete only because there's no
+    /// archive, and lose everything). An archived habit frees its free slot (C219). A running timer is saved first.
+    func archive(_ list: [Habit]) {
+        for habit in list where timers[habit.id] != nil { stopTimer(habit, on: today()) }
+        perform { [self] in
+            for habit in list {
+                guard let i = habits.firstIndex(where: { $0.id == habit.id }) else { continue }
+                var h = habits[i]
+                h.archived = true
+                try await repository.saveHabit(habit: h.record(position: i), steps: h.stepRecords(),
+                                               reminders: h.reminderRecords(), at: Date.now.millis)
+                withAnimation { habits[i] = h }
+            }
+        }
+    }
+
+    /// Brings an archived habit back, if there's a free slot (or Plus). False when the free limit is reached.
+    @discardableResult
+    func restore(_ habit: Habit) -> Bool {
+        guard canAddHabit else { return false }
+        perform { [self] in
+            guard let i = habits.firstIndex(where: { $0.id == habit.id }) else { return }
+            var h = habits[i]
+            h.archived = false
+            try await repository.saveHabit(habit: h.record(position: i), steps: h.stepRecords(),
+                                           reminders: h.reminderRecords(), at: Date.now.millis)
+            withAnimation { habits[i] = h }
+        }
+        return true
+    }
+
+    /// Deletes habits and their history. The row is kept as a tombstone (never hard-deleted, so a later sync can't
+    /// bring it back); nothing of it shows again.
+    func delete(_ list: [Habit]) {
+        for habit in list where timers[habit.id] != nil { stopTimer(habit, on: today()) }
+        perform { [self] in
+            for habit in list {
+                guard let i = habits.firstIndex(where: { $0.id == habit.id }) else { continue }
+                try await repository.saveHabit(habit: habits[i].record(position: i, deleted: true), steps: [],
+                                               reminders: [], at: Date.now.millis)
+                withAnimation {
+                    habits.remove(at: i)
+                    if noteOffer?.habit == habit.id { noteOffer = nil }
+                    if noteTarget?.habit == habit.id { noteTarget = nil }
+                }
+            }
+        }
+    }
+
+    /// Puts `ids` (one group in All Habits) in this order, keeping every other habit where it is. Today follows it.
+    func reorder(_ ids: [UUID]) {
+        perform { [self] in
+            let slots = habits.indices.filter { ids.contains(habits[$0].id) }
+            var next = habits
+            for (slot, id) in zip(slots, ids) { if let h = habits.first(where: { $0.id == id }) { next[slot] = h } }
+            for i in next.indices where next[i].id != habits[i].id {
+                try await repository.saveHabit(habit: next[i].record(position: i), steps: next[i].stepRecords(),
+                                               reminders: next[i].reminderRecords(), at: Date.now.millis)
+            }
+            withAnimation { habits = next }
+        }
+    }
+
+    // MARK: A habit's own page
+
+    /// How one day reads in a habit's calendar. Never a harsh mark for a miss (C095): a missed day is just the number.
+    enum DayMark { case done, some, missed, open, skipped, paused, notItsDay, upcoming, before }
+
+    func dayMark(_ habit: Habit, on day: LocalDay) -> DayMark {
+        let today = today()
+        if day < startDay(of: habit) { return .before }
+        if isPaused(habit, on: day) { return .paused }
+        if isSkipped(habit, on: day) { return .skipped }
+        if day > today { return isDue(habit, on: day) ? .upcoming : .notItsDay }
+        let rule = rule(habit, on: day)
+        // A week or month goal has no failed day: a day with something logged shows it, others are neutral.
+        if !rule.frequency.isDayBased || rule.frequency.isFlexible {
+            if dayProgress(of: rule, on: day) > 0 { return isDayMet(rule, on: day) || !rule.frequency.isFlexible ? .done : .some }
+            return isDue(habit, on: day) ? .open : .notItsDay
+        }
+        guard isDue(habit, on: day) else { return .notItsDay }
+        if isDayMet(rule, on: day) { return .done }
+        if dayProgress(of: rule, on: day) > 0 { return .some }
+        return day == today ? .open : .missed
+    }
+
+    /// The longest streak so far, counted the same way as `streak`: paused, skipped and other days are neutral.
+    func bestStreak(of habit: Habit) -> Int {
+        guard habit.kind != .quit, habit.kind != .task else { return 0 }
+        let today = today()
+        var best = 0, run = 0
+        var day = startDay(of: habit)
+        if periodRange(habit, containing: today) != nil {
+            while day <= today {
+                // Days from before an edit to a weekly goal are stepped over one by one.
+                guard let range = periodRange(rule(habit, on: day), containing: day) else {
+                    day = day.adding(days: 1, calendar: calendar); continue
+                }
+                if isPeriodMet(habit, on: day) { run += 1; best = max(best, run) }
+                else if range.upperBound < today && !hasPause(habit, in: range) { run = 0 }
+                day = range.upperBound.adding(days: 1, calendar: calendar)
+            }
+            return best
+        }
+        while day <= today {
+            if isDue(habit, on: day) {
+                if isDayMet(habit, on: day) { run += 1; best = max(best, run) } else if day < today { run = 0 }
+            }
+            day = day.adding(days: 1, calendar: calendar)
+        }
+        return best
     }
 
     // MARK: Notes

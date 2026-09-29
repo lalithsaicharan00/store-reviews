@@ -4,6 +4,8 @@ Written by Claude (Claude Code), 28 September 2026.
 
 These are the iPhone app's own documents: the specs it was built from and the user's point-by-point checklists for each round. They are kept apart from the store-review research in [`Research/Research Reports/`](<../../Research/Research Reports/README.md>), which is evidence. Everything here was implemented in the app, or is waiting to be.
 
+**What the app can do today:** [What's Built](<What's Built.md>), a checklist ticked as each feature is finished.
+
 ## How to use these without reading them all
 
 1. **Always read [Design Rules — Don't Regress](<../Design Rules — Don't Regress.md>) first.** It is the short version of everything below: each rule the app must keep, and the research behind it. For most changes it is enough.
