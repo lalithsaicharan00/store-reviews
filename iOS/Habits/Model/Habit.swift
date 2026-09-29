@@ -262,3 +262,39 @@ enum TextLimit {
         String(text.trimmingCharacters(in: .whitespacesAndNewlines).prefix(limit))
     }
 }
+
+/// What a habit was judged by until a day (goal history, spec §8.2). Saved when an edit changes it.
+struct HabitRule: Codable, Hashable, Sendable {
+    /// The last day this rule applied.
+    var until: LocalDay
+    var goal: Double
+    var frequency: Frequency
+    var kind: HabitKind
+    var checkUnit: String?
+    var steps: [Step]
+
+    init(_ habit: Habit, until: LocalDay) {
+        self.until = until
+        goal = habit.goal
+        frequency = habit.frequency
+        kind = habit.kind
+        checkUnit = habit.checkUnit
+        steps = habit.steps
+    }
+
+    func apply(to habit: inout Habit) {
+        habit.goal = goal
+        habit.frequency = frequency
+        habit.kind = kind
+        habit.checkUnit = checkUnit
+        habit.steps = steps
+    }
+
+    /// Whether `habit` would judge a day differently. Renaming a step or changing + doesn't.
+    func judgesDifferently(from habit: Habit) -> Bool {
+        var kindChanged = kind != habit.kind
+        if case .amount(let a, _) = kind, case .amount(let b, _) = habit.kind { kindChanged = a != b }
+        return goal != habit.goal || frequency != habit.frequency || kindChanged
+            || checkUnit != habit.checkUnit || steps.map(\.id) != habit.steps.map(\.id)
+    }
+}

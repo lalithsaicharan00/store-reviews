@@ -81,6 +81,13 @@ Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Resear
 - **Tasks use the same How often screen as habits** (`HowOftenEditor(task: true)`, 29 Sep), with the same pinned sentence and the same Preview card and text on the form ("Pay rent tomorrow" for a one-time task). Kept: Every day · Days of the week · Every few days, weeks or months · On a date · **After it's done** (its own last section; about 59 reviews ask to repeat from completion, many from Reminders users). Left out: Several times a day and A number of times, since a task is ticked once each time it's due. Reminders is a row that opens its own screen, as for habits.
   - Research recommendations are not usability results: no participant study has been run.
 
+## Editing a habit (built 29 Sep 2026)
+
+- **Edit lives in the row's long-press menu** ("Edit Habit", first item) and in the player's Habit options. A tap on a row logs; never make it open Edit.
+- **The edit form is the New Habit form** (`HabitForm(editing:)`), showing only what can change: the type is fixed and never shown. Save stays grey until something changes; Cancel asks before discarding.
+- **Past days keep their result.** Anything that judges a day (goal, how often, unit, steps) must go through `store.rule(habit, on: day)`; never read `habit.goal` or `habit.frequency` directly for a past day.
+- **One line above Save says what happens:** "Changes apply from today. Your history stays as it was." or, when the kind of period changes, "Your streak restarts. Your history stays."
+
 ## Habit copy: say it the way people do (built 29 Sep 2026)
 
 The user's rule: **the copy is the value.** Whatever is picked must read the way a person says it, on the form and on Today.

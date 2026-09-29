@@ -216,6 +216,9 @@ struct HabitForm: View {
 
     let type: ItemType
     let onSaved: (UUID) -> Void
+    /// Editing: the habit as saved. The form opens filled in, shows only what can change (how it's tracked is
+    /// fixed and never shown, spec §8) and saves with Save.
+    private let original: Habit?
 
     @Environment(HabitStore.self) private var store
     @Environment(ReminderScheduler.self) private var scheduler
@@ -274,6 +277,7 @@ struct HabitForm: View {
     init(type: ItemType, onSaved: @escaping (UUID) -> Void) {
         self.type = type
         self.onSaved = onSaved
+        original = nil
         _color = State(initialValue: .blue)
         _symbol = State(initialValue: type == .quit ? "nosign" : type == .task ? "calendar" : "star.fill")
         // Amounts start empty (left out of the sentence): the right amount depends on the person. How often starts
@@ -288,6 +292,74 @@ struct HabitForm: View {
         _often = State(initialValue: draft)
     }
 
+    /// Opens the form on a saved habit, every row as it is now.
+    init(editing habit: Habit, weekStart: Int, onSaved: @escaping (UUID) -> Void) {
+        type = ItemType(habit)
+        self.onSaved = onSaved
+        original = habit
+        _name = State(initialValue: habit.name)
+        _symbol = State(initialValue: habit.symbol)
+        _pickedSymbol = State(initialValue: true)
+        _color = State(initialValue: habit.color)
+        var amountText = "", unit = "", hours = "0", minutes = "0"
+        switch habit.kind {
+        case .amount(let u, let increment):
+            amountText = GoalNumber.text(habit.goal); unit = u
+            _step = State(initialValue: increment > 0 ? increment : nil)
+            _asksHowMuch = State(initialValue: increment <= 0)
+        case .duration where habit.atMost:
+            // Cut down has one amount field; minutes as its unit make it timed.
+            amountText = GoalNumber.text(habit.goal); unit = HabitPlan.timeUnit
+        case .duration:
+            hours = String(Int(habit.goal) / 60); minutes = String(Int(habit.goal) % 60)
+        default: break
+        }
+        _amountText = State(initialValue: amountText)
+        _unit = State(initialValue: unit)
+        _hours = State(initialValue: hours)
+        _minutes = State(initialValue: minutes)
+        let cal = Calendar.current
+        let start = (habit.startsOn ?? LocalDay(habit.createdAt)).date(calendar: cal)
+        var draft = OftenDraft()
+        draft.seed(start: start, weekStart: weekStart)
+        draft.choose(HowOften(habit))
+        _often = State(initialValue: draft)
+        _items = State(initialValue: habit.steps)
+        _quitSince = State(initialValue: habit.quitSince ?? habit.createdAt)
+        _taskRepeats = State(initialValue: habit.kind == .task && habit.dueDay == nil)
+        if let due = habit.dueDay { _taskDate = State(initialValue: due.date(calendar: cal)) }
+        if let minute = habit.dueMinute {
+            _taskHasTime = State(initialValue: true)
+            _taskTime = State(initialValue: Self.date(minute: minute))
+        }
+        _timesOfDay = State(initialValue: habit.parts.isEmpty ? [.anytime] : habit.parts)
+        _remindOn = State(initialValue: habit.remind && !habit.reminders.isEmpty)
+        _times = State(initialValue: habit.reminders.map { DraftTime(id: $0.id, time: Self.date(minute: $0.minuteOfDay), part: nil) })
+        _remindersEdited = State(initialValue: true)
+        _startDate = State(initialValue: cal.startOfDay(for: start))
+        _hasEnd = State(initialValue: habit.endsOn != nil)
+        _endDate = State(initialValue: habit.endsOn.map { $0.date(calendar: cal) } ?? cal.startOfDay(for: start))
+        _alert = State(initialValue: habit.alert)
+        _followUp = State(initialValue: habit.followUpMinutes)
+    }
+
+    private var editing: Bool { original != nil }
+    /// The edited habit as it would be saved, keeping what the form doesn't show.
+    private var edited: Habit? {
+        guard let original else { return nil }
+        var habit = makeHabit()
+        habit.id = original.id
+        habit.createdAt = original.createdAt
+        habit.archived = original.archived
+        // Kept as saved where the form has no row for it: a check's unit ("3 cups"), no start date on older
+        // habits, and the reminder switch of a habit without reminders.
+        if type == .doIt { habit.checkUnit = original.checkUnit }
+        if habit.startsOn == LocalDay(habit.createdAt) && original.startsOn == nil { habit.startsOn = nil }
+        if habit.reminders.isEmpty && original.reminders.isEmpty { habit.remind = original.remind }
+        return habit
+    }
+    private var editChanged: Bool { edited.map { $0 != original } ?? false }
+
     private var trimmedName: String { TextLimit.clean(name, TextLimit.name) }
     private var filledItems: [Step] {
         items.compactMap { item in
@@ -296,7 +368,7 @@ struct HabitForm: View {
         }
     }
     private var remind: Bool { remindOn && !times.isEmpty }
-    private var hasChanges: Bool { !trimmedName.isEmpty || !filledItems.isEmpty }
+    private var hasChanges: Bool { editing ? editChanged : !trimmedName.isEmpty || !filledItems.isEmpty }
     private var isHabit: Bool { type.isBuild || type == .cutBack }
     /// How it's tracked: the type chosen before the form.
     private var kind: ItemType { type }
@@ -375,16 +447,17 @@ struct HabitForm: View {
                 }
                 startEndSection
             }
+            if editing { editOutcomeSection }
         }
         .accessibilityIdentifier("habit-form")
-        .navigationTitle(isHabit && type != .cutBack ? "New Habit" : type.title)
+        .navigationTitle(editing ? (type == .task ? "Edit Task" : "Edit Habit") : isHabit && type != .cutBack ? "New Habit" : type.title)
         .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)
         .navigationBarBackButtonHidden(hasChanges)
         .toolbar {
-            if hasChanges {
+            if hasChanges || editing {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { confirmDiscard = true }
+                    Button("Cancel") { if hasChanges { confirmDiscard = true } else { dismiss() } }
                         .confirmationDialog("Discard this?", isPresented: $confirmDiscard, titleVisibility: .hidden) {
                             Button("Discard Changes", role: .destructive) { dismiss() }
                             Button("Keep Editing", role: .cancel) {}
@@ -392,7 +465,7 @@ struct HabitForm: View {
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
-                Button("Add", action: save).disabled(!canAdd).fontWeight(.semibold)
+                Button(editing ? "Save" : "Add", action: save).disabled(!canAdd || editing && !editChanged).fontWeight(.semibold)
                     .accessibilityIdentifier("add-habit")
             }
             ToolbarItemGroup(placement: .keyboard) {
@@ -430,9 +503,14 @@ struct HabitForm: View {
             // user's colour, cursor and reminders are never reset.
             guard !didSetUp else { return }
             didSetUp = true
-            color = store.suggestedColor()
-            focus = .name
-            if type != .quit { syncReminders(force: true) }
+            if editing {
+                // Each saved reminder belongs to the time of day it falls in, so it stays inside it.
+                times = times.map { var t = $0; t.part = partFor(t.time); return t }
+            } else {
+                color = store.suggestedColor()
+                focus = .name
+                if type != .quit { syncReminders(force: true) }
+            }
             notificationsDenied = await scheduler.isDenied()
             alarmsDenied = scheduler.alarmsDenied()
         }
@@ -978,6 +1056,26 @@ struct HabitForm: View {
         withAnimation { times.removeAll { $0.id == id } }
     }
 
+    /// The chosen time of day a saved reminder falls in (nil for Anytime).
+    private func partFor(_ time: Date) -> String? {
+        let c = Calendar.current.dateComponents([.hour, .minute], from: time)
+        let id = store.section(forMinute: (c.hour ?? 0) * 60 + (c.minute ?? 0)).id
+        return timesOfDay.contains(id) && id != .anytime ? id : nil
+    }
+
+    /// What saving will do, in one line, before Save (spec §8.4).
+    @ViewBuilder private var editOutcomeSection: some View {
+        if let original, let habit = edited, type != .quit {
+            Section {} footer: {
+                Text(type == .task ? "Changes apply from today."
+                     : store.editRestartsStreak(original, habit) ? "Your streak restarts. Your history stays."
+                     : "Changes apply from today. Your history stays as it was.")
+                    .formNote()
+                    .accessibilityIdentifier("edit-outcome")
+            }
+        }
+    }
+
     // MARK: Helpers
 
     private func suggestIcon() {
@@ -1031,6 +1129,13 @@ struct HabitForm: View {
     private func save() {
         guard canAdd else { return }
         focus = nil
+        if let habit = edited {
+            if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
+            store.update(habit)
+            onSaved(habit.id)
+            dismiss()
+            return
+        }
         let habit = makeHabit()
         // Reminders are on by default, so permission is asked when the habit is saved, not before.
         if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
@@ -1414,5 +1519,44 @@ struct UnitPicker: View {
         guard !value.isEmpty else { return }
         unit = value
         dismiss()
+    }
+}
+
+extension ItemType {
+    /// How a saved habit is tracked, for the edit form (fixed after creation, spec §8).
+    init(_ habit: Habit) {
+        switch habit.kind {
+        case .check: self = .doIt
+        case .amount: self = habit.atMost ? .cutBack : .amount
+        case .duration: self = habit.atMost ? .cutBack : .time
+        case .checklist: self = .checklist
+        case .quit: self = .quit
+        case .task: self = .task
+        }
+    }
+}
+
+extension HowOften {
+    /// A saved habit's How often, the choice the form would have made (the reverse of `frequency`).
+    init(_ habit: Habit) {
+        let counts: Bool
+        switch habit.kind {
+        case .amount, .duration: counts = true
+        default: counts = false
+        }
+        switch habit.frequency {
+        case .daily:
+            self = habit.kind == .check && habit.goal > 1 ? .timesADay(Int(habit.goal)) : .everyDay
+        case .weekdays(let days): self = .weekdays(days)
+        case .everyNDays(let n): self = .calendar(CalendarSchedule(unit: .day, interval: n))
+        case .everyNWeeks(let n): self = .everyWeeks(n)
+        case .monthDates(let dates): self = .calendar(CalendarSchedule(unit: .month, interval: 1, dates: dates, pattern: .dates))
+        case .perWeek(let n): self = counts ? .total(.week) : .times(.week, habit.kind == .check ? Int(habit.goal) : n)
+        case .perMonth(let n): self = counts ? .total(.month) : .times(.month, habit.kind == .check ? Int(habit.goal) : n)
+        case .perYear(let n): self = counts ? .total(.year) : .times(.year, habit.kind == .check ? Int(habit.goal) : n)
+        case .flexible(let period, let n): self = counts ? .days(period, n) : .times(period, n)
+        case .calendar(let rule): self = .calendar(rule)
+        case .afterCompletion(let n, let unit): self = .afterDone(n, unit)
+        }
     }
 }

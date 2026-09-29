@@ -42,6 +42,9 @@ final class HabitStore {
     /// Days a habit was skipped ("Skip today"). A skipped day is simply not one of its days: hidden on Today and
     /// neutral in the streak, the ring and every percentage (Feature Ledger C016: "a skipped day is not a missed day").
     private(set) var skips: [UUID: Set<LocalDay>] = [:]
+    /// Goal history: the rules a habit had before it was edited, oldest first. Each applies up to and including
+    /// its `until` day, so past days keep the result they had (spec §8.2).
+    private(set) var rules: [UUID: [HabitRule]] = [:]
     /// Plus unlocks unlimited habits. Set from the store purchase (build-plan: billing, later).
     var isPlus = false
     static let freeHabitLimit = 5
@@ -271,6 +274,7 @@ final class HabitStore {
     /// Unfinished one-time tasks move forward to today. Nothing is due before the start or after the end date.
     func isDue(_ habit: Habit, on day: LocalDay, now: Date = .now) -> Bool {
         if isSkipped(habit, on: day) { return false }
+        let habit = rule(habit, on: day)
         let created = startDay(of: habit)
         if let end = habit.endsOn, day > end, habit.kind != .quit { return false }
         switch habit.kind {
@@ -324,6 +328,7 @@ final class HabitStore {
 
     /// What was logged on one day (a checklist counts its ticked items).
     func dayProgress(of habit: Habit, on day: LocalDay, now: Date = .now) -> Double {
+        let habit = rule(habit, on: day)
         if habit.kind == .checklist {
             let ticked = Set(entries.lazy.filter { $0.habitID == habit.id && $0.day == day }.compactMap(\.stepID))
             return Double(habit.steps.filter { ticked.contains($0.id) }.count)
@@ -351,6 +356,7 @@ final class HabitStore {
     }
 
     func isDayMet(_ habit: Habit, on day: LocalDay) -> Bool {
+        let habit = rule(habit, on: day)
         let p = dayProgress(of: habit, on: day)
         return habit.atMost ? p <= dayGoal(of: habit) : p >= dayGoal(of: habit)
     }
@@ -372,6 +378,7 @@ final class HabitStore {
     /// Shown on the card: daily quantities (including flexible schedules) or aggregate quantities.
     /// Flexible quota progress is shown separately so 15/30 min and 2/4 days cannot be confused.
     func progress(of habit: Habit, on day: LocalDay, now: Date = .now) -> Double {
+        let habit = rule(habit, on: day)
         if !habit.frequency.isFlexible, let range = periodRange(habit, containing: day) {
             return isTotal(habit) ? periodTotal(habit, in: range, now: now) : periodCount(habit, in: range)
         }
@@ -387,6 +394,7 @@ final class HabitStore {
     }
 
     func isDone(_ habit: Habit, on day: LocalDay) -> Bool {
+        let habit = rule(habit, on: day)
         switch habit.kind {
         case .quit: return false
         case .task: return dayProgress(of: habit, on: day) >= 1
@@ -401,6 +409,7 @@ final class HabitStore {
     }
 
     func flexibleProgress(_ habit: Habit, on day: LocalDay) -> Int? {
+        let habit = rule(habit, on: day)
         guard habit.frequency.isFlexible, let range = periodRange(habit, containing: day) else { return nil }
         return Int(periodCount(habit, in: range))
     }
@@ -412,6 +421,7 @@ final class HabitStore {
     }
 
     func isPeriodMet(_ habit: Habit, on day: LocalDay) -> Bool {
+        let habit = rule(habit, on: day)
         if case .flexible(_, let needed) = habit.frequency {
             return (flexibleProgress(habit, on: day) ?? 0) >= needed
         }
@@ -431,11 +441,15 @@ final class HabitStore {
     /// only counts once met, so an unfinished today never breaks the streak.
     func streak(of habit: Habit, asOf day: LocalDay) -> Int {
         guard habit.kind != .quit, habit.kind != .task else { return 0 }
+        let habit = rule(habit, on: day)
         let created = startDay(of: habit)
+        // A change to the kind of period (day, week, month, year) starts the streak again (spec §8.3).
+        let kind = periodKind(habit)
+        func samePeriodKind(_ cursor: LocalDay) -> Bool { periodKind(rule(habit, on: cursor)) == kind }
         if let current = periodRange(habit, containing: day) {
             var count = isPeriodMet(habit, on: day) ? 1 : 0
             var cursor = current.lowerBound.adding(days: -1, calendar: calendar)
-            while cursor >= created, let range = periodRange(habit, containing: cursor), isPeriodMet(habit, on: cursor) {
+            while cursor >= created, samePeriodKind(cursor), let range = periodRange(habit, containing: cursor), isPeriodMet(habit, on: cursor) {
                 count += 1
                 cursor = range.lowerBound.adding(days: -1, calendar: calendar)
             }
@@ -443,7 +457,7 @@ final class HabitStore {
         }
         var count = isDone(habit, on: day) ? 1 : 0
         var cursor = day.adding(days: -1, calendar: calendar)
-        while cursor >= created {
+        while cursor >= created, samePeriodKind(cursor) {
             if isDue(habit, on: cursor) {
                 guard isDayMet(habit, on: cursor) else { break }
                 count += 1
@@ -477,6 +491,7 @@ final class HabitStore {
             var running: [UUID: Date] = [:]
             var runningSlots: [UUID: String] = [:]
             var loadedSkips: [UUID: Set<LocalDay>] = [:]
+            var loadedRules: [UUID: [HabitRule]] = [:]
             var upgradedV1 = false, repaired = false
             for setting in snapshot.settings {
                 switch setting.key {
@@ -489,6 +504,12 @@ final class HabitStore {
                         sections = list
                     }
                 default:
+                    if setting.key.hasPrefix(Keys.rulesPrefix),
+                       let id = UUID(uuidString: String(setting.key.dropFirst(Keys.rulesPrefix.count))),
+                       let list = try? JSONDecoder().decode([HabitRule].self, from: Data(setting.value.utf8)) {
+                        loadedRules[id] = list.sorted { $0.until < $1.until }
+                        continue
+                    }
                     if setting.key.hasPrefix(Keys.skipPrefix),
                        let id = UUID(uuidString: String(setting.key.dropFirst(Keys.skipPrefix.count))) {
                         let days = Set(setting.value.split(separator: ",").compactMap { LocalDay(key: String($0)) })
@@ -508,6 +529,7 @@ final class HabitStore {
             timers = running
             timerSlots = runningSlots
             skips = loadedSkips
+            rules = loadedRules
             isLoaded = true
             if upgradedV1 && !repaired && !triedPlacementUpgrade { triedPlacementUpgrade = true; repairPlacement() }
             onChange?()
@@ -521,6 +543,7 @@ final class HabitStore {
         static let weekStart = "week_start"
         static let timerPrefix = "timer."
         static let skipPrefix = "skip."
+        static let rulesPrefix = "rules."
         static let sections = "day_sections"
         static let placementV1 = "placement_v1"
         static let placementV2 = "placement_v2"
@@ -582,6 +605,56 @@ final class HabitStore {
             try await repository.saveHabit(habit: habit.record(position: habits.count), steps: habit.stepRecords(),
                                            reminders: habit.reminderRecords(), at: Date.now.millis)
             withAnimation { habits.append(habit) }
+        }
+    }
+
+    // MARK: Editing (spec §8)
+
+    /// Saves an edited habit. Changes apply from today: if what judges a day changed (goal, how often, unit,
+    /// checklist steps), the rule it had is kept for every day before today, so past days keep their result.
+    /// Editing twice in a day keeps the rule from before today.
+    func update(_ habit: Habit) {
+        perform { [self] in
+            guard let i = habits.firstIndex(where: { $0.id == habit.id }) else { return }
+            let old = habits[i]
+            let yesterday = today().adding(days: -1, calendar: calendar)
+            var list = rules[habit.id] ?? []
+            if HabitRule(old, until: yesterday).judgesDifferently(from: habit), startDay(of: old) <= yesterday,
+               list.last.map({ $0.until < yesterday }) ?? true {
+                list.append(HabitRule(old, until: yesterday))
+            }
+            try await repository.saveHabit(habit: habit.record(position: i), steps: habit.stepRecords(),
+                                           reminders: habit.reminderRecords(), at: Date.now.millis)
+            if list != (rules[habit.id] ?? []) {
+                let json = String(decoding: try JSONEncoder().encode(list), as: UTF8.self)
+                try await repository.saveSetting(key: Keys.rulesPrefix + habit.id.uuidString, value: json)
+                rules[habit.id] = list
+            }
+            habits[i] = habit
+        }
+    }
+
+    /// What editing would do to the streak, for the line under the edit form (spec §8.4).
+    func editRestartsStreak(_ old: Habit, _ new: Habit) -> Bool {
+        periodKind(old) != periodKind(new) && streak(of: old, asOf: today()) > 0
+    }
+
+    /// The habit as it was on `day`: the goal, how often, unit and steps in force then.
+    func rule(_ habit: Habit, on day: LocalDay) -> Habit {
+        guard let list = rules[habit.id], let rule = list.first(where: { day <= $0.until }) else { return habit }
+        var habit = habit
+        rule.apply(to: &habit)
+        return habit
+    }
+
+    /// The kind of period a habit is judged in: each day, or a week, month or year.
+    func periodKind(_ habit: Habit) -> GoalPeriod {
+        switch habit.frequency {
+        case .perWeek: .week
+        case .perMonth: .month
+        case .perYear: .year
+        case .flexible(let period, _): period
+        default: .day
         }
     }
 

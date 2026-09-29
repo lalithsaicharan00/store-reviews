@@ -260,6 +260,8 @@ All of them use the same Time of Day row, always multi-select (§5). Quit has no
 
 ## 8. Changing a habit later (the edit screen)
 
+> **Built 29 Sep 2026:** long-press a row (or Habit options in the player) → Edit Habit opens this form filled in. Goal history is stored as `rules.<habit id>` in settings (no schema change); every day, streak and progress rule reads the rule in force on that day (`HabitStore.rule(_:on:)`). Checklist: `Docs/Checklists/Edit Habit.md`.
+
 **Decision (user, 27 Sep, following HabitNow):** the edit screen shows **only what can be changed**. What can't be changed isn't shown at all: no greyed-out rows, and no "can't change this" notes.
 
 | Fixed after creation (not shown when editing) | Can be edited |

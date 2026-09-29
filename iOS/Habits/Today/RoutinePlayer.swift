@@ -25,7 +25,8 @@ struct RoutinePlayer: View {
     @State private var showLog = false
     @State private var showHabitOptions = false
     @State private var pendingHabitAction: HabitAction?
-    private enum HabitAction { case log, skip, unskip, undo(UUID), timer }
+    private enum HabitAction { case log, skip, unskip, undo(UUID), timer, edit }
+    @State private var showEdit = false
     @State private var manualEntryIDs: Set<UUID> = []
     /// The timer was running when Add Time opened; it runs again when the sheet closes (Cancel included).
     @State private var resumeAfterLog = false
@@ -155,6 +156,7 @@ struct RoutinePlayer: View {
         .sheet(isPresented: $showHabitOptions, onDismiss: habitOptionsDismissed) {
             if let habit = current { habitOptions(habit) }
         }
+        .sheet(isPresented: $showEdit) { if let habit = current { EditHabitSheet(habit: habit) } }
         .sheet(isPresented: $showLog, onDismiss: manualLogFinished) {
             if let habit = current { LogProgressView(habit: habit, day: session.day) }
         }
@@ -365,9 +367,10 @@ struct RoutinePlayer: View {
                         }
                         Toggle("Show clock", isOn: $showClock)
                     }
-                } else if !isAmount(habit), !skipped(habit),
-                          !(store.canSkip(habit) && !done(habit)), latestEntry(habit) == nil {
-                    Text("No additional actions for this habit.").foregroundStyle(.secondary)
+                }
+                Section {
+                    Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { selectHabitAction(.edit) }
+                        .accessibilityIdentifier("focus-edit-habit")
                 }
             }
             .navigationTitle(habit.name)
@@ -400,6 +403,7 @@ struct RoutinePlayer: View {
         case .unskip: unskip(habit, stay: true)
         case .undo(let id): change("Entry removed", captureUndo: false) { store.undoEntry(id) }
         case .timer: toggleTimer(habit)
+        case .edit: showEdit = true
         }
     }
 

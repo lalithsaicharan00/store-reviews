@@ -122,3 +122,21 @@ Spec (everything decided, in one place): [New Habit Goal and Time of Day.md](<Do
 | 50 | **Time of Day is display only:** the same row with one shared progress in each chosen part; the goal is never changed or split | Built (the flow test checks a goal of 4 stays 4 after picking Morning and Afternoon) |
 | 51 | **Start and end dates:** Starts (Today, any past or future day), Ends (Never or a date, never before the start) on the Repeat screen; Core schema 5 (`starts_on`, `ends_on`) | Built; Core migration test 4→5 passes |
 | 52 | Repeat screen lists every How Often option; Dates is its own section above Reminders; a Remind Me switch shows the reminder sections only when on; switches are green (checked in dark and light) | Built; `NewFlowUITests` passes on the iPhone; installed |
+
+Rounds 7–9 (New Habit form Round 3/4 and the full-screen routine player) are recorded in `Docs/Checklists/` and merged into main on 29 Sep.
+
+## Complete every feature (order set by the user, 29 Sep 2026)
+
+**Goal:** the app isn't being built to release yet. It's built to get every screen and feature right and working (backend only as much as the screens need), so the designs can then go into Figma. No iPhone testing until the features are complete; simulator checks are fine. Work top to bottom, one at a time.
+
+| # | Feature | Status |
+|---|---|---|
+| 53 | **Habit page and Edit habit:** open a habit, edit name, icon, colour, goal, how often, time of day, reminders, dates; edits apply from today and past days keep their goal (the old #47). The page is the home for notes, pause, archive and delete | Edit built 29 Sep (long-press → Edit Habit; goal history); the habit page itself comes with notes (#54) |
+| 54 | **Habit notes** (research first whether notes for the whole day are needed) | Not started |
+| 55 | **Pause a habit** (research pausing tracking across the whole app) | Not started |
+| 56 | **All Habits:** the list behind the top-bar button, with archive and delete | Not started |
+| 57 | **Easy undo after checking or logging** (snackbar or a suitable native presentation) | Not started |
+| 58 | **Completion feedback:** finish the fill or check animation before the row moves below unfinished rows; smooth on repeated goals (the last of three checks) | Not started |
+| 59 | **Section open and close animation** beyond the current fade | Not started |
+| 60 | **Progress and statistics screens** | Not started |
+| 61 | **Settings and account** (the avatar button) | Not started |

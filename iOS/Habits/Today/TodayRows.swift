@@ -60,6 +60,7 @@ struct HabitRow: View {
     /// The New Habit preview: replaces the progress line ("—" before an amount is set).
     var lineOverride: String? = nil
     @State private var showLog = false
+    @State private var showEdit = false
     @Binding var stepsOpen: Bool
     @Environment(HabitStore.self) private var store
 
@@ -82,7 +83,8 @@ struct HabitRow: View {
     @ViewBuilder
     private func row(now: Date) -> some View {
         let progress = store.progress(of: habit, on: day, now: now)
-        let goal = store.goal(of: habit)
+        // Past days show the goal they had (goal history, spec §8.2).
+        let goal = store.goal(of: store.rule(habit, on: day))
         // A cut-back habit is "met" while under its maximum, but never shown as finished.
         let done = slot.map { store.isSlotDone(habit, slot: $0, on: day) } ?? (store.isDone(habit, on: day) && !habit.atMost)
         let streak = store.streak(of: habit, asOf: day)
@@ -129,7 +131,10 @@ struct HabitRow: View {
         .padding(.vertical, 2)
         .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color).overlay(HighlightFlash(on: highlighted, color: habit.color)))
         .sheet(isPresented: $showLog) { LogProgressView(habit: habit, day: day) }
+        .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .contextMenu {
+            // Edit sits with the item's other actions, as in Reminders; a tap on the row logs (spec §8).
+            Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { showEdit = true }
             if case .amount = habit.kind {
                 Button("Log amount manually", systemImage: "square.and.pencil") { showLog = true }.disabled(day > store.today())
                 Button("Undo Last Entry") { store.undoProgress(habit, on: day) }
@@ -246,6 +251,7 @@ struct QuitRow: View {
     let habit: Habit
     var highlighted = false
     @Environment(HabitStore.self) private var store
+    @State private var showEdit = false
     /// Set once, on a whole second, so every quit clock ticks together.
     private static let anchor = Date(timeIntervalSinceReferenceDate: Date.now.timeIntervalSinceReferenceDate.rounded(.down))
 
@@ -270,6 +276,8 @@ struct QuitRow: View {
             .accessibilityElement(children: .combine)
         }
         .listRowBackground(Color(.secondarySystemGroupedBackground).overlay(HighlightFlash(on: highlighted, color: habit.color)))
+        .contextMenu { Button("Edit Habit", systemImage: "pencil") { showEdit = true } }
+        .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
     }
 }
 
@@ -440,6 +448,19 @@ struct FoldedIcons: View {
                     .frame(minWidth: 22, minHeight: 22)
                     .background(RoundedRectangle(cornerRadius: 22 * 0.28, style: .continuous).fill(Color(.tertiarySystemFill)))
             }
+        }
+    }
+}
+
+/// Edit a saved habit: the New Habit form on it, filled in (spec §8). Always the latest saved version.
+struct EditHabitSheet: View {
+    let habit: Habit
+    var onSaved: () -> Void = {}
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        NavigationStack {
+            HabitForm(editing: store.habits.first { $0.id == habit.id } ?? habit, weekStart: store.settings.weekStart) { _ in onSaved() }
         }
     }
 }
