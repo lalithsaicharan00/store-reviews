@@ -167,6 +167,9 @@ struct RoutinePlayer: View {
             Button("OK", role: .cancel) { store.problem = nil }
         } message: { Text(store.problem ?? "") }
         .sensoryFeedback(.success, trigger: feedbackCount)
+        .onPerfCommand { action in
+            if action == .nextHabit { advance() } else if action == .previousHabit { navigate(to: max(0, index - 1)) }
+        }
     }
 
     // MARK: The player: a playlist of habits (round 2, "Focus Player — How It Should Behave" P18–P23)

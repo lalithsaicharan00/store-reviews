@@ -94,6 +94,9 @@ struct CalendarSheet: View {
                 }
                 .padding(.bottom, 8)
             }
+            .onPerfCommand { action in
+                if action == .previousMonth { moveMonth(-1) } else if action == .nextMonth { moveMonth(1) }
+            }
             .navigationTitle("Go to a day")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

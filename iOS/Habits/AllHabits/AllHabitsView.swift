@@ -11,6 +11,8 @@ struct AllHabitsView: View {
     @State private var deleting: [Habit] = []
     @State private var confirmingDelete = false
     @State private var showPlus = false
+    /// Speed runs: a habit page opened by `PerfDriver`.
+    @State private var perfPage: UUID?
 
     struct PauseTargets: Identifiable { let id = UUID(); let habits: [Habit] }
 
@@ -40,6 +42,10 @@ struct AllHabitsView: View {
         }
         .environment(\.editMode, $editMode)
         .navigationTitle("All Habits")
+        .navigationDestination(item: $perfPage) { HabitPageView(id: $0) }
+        .onPerfCommand { action in
+            if case .openHabit(let name) = action { perfPage = store.habits.first { $0.name == name }?.id }
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(editMode.isEditing ? "Done" : "Select") {

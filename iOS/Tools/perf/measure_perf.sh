@@ -1,68 +1,66 @@
 #!/bin/bash
-# Runs each speed test in PerformanceUITests; reads the app's own stall record (MainThreadMeter) for each test's
-# window and samples the app meanwhile (which functions take the time). Writes a Markdown summary.
+# Speed runs (30 Sep 2026). Launches the app on the simulator with NO UI test attached, once per scenario:
+#   -perf-history  a year of history          -perf-meter  record main-thread stalls (MainThreadMeter)
+#   -perf-drive X  the app uses itself: scrolls, taps, switches days and months, types, moves through a routine (PerfDriver)
+# XCTest isn't used here because its screen reading runs on the app's main thread (up to 79 % of it in the first run).
+# `sample` runs during each measured window and names the app's slowest functions. Writes a Markdown summary.
 # Usage (from iOS/): Tools/perf/measure_perf.sh <simulator id> <out dir>
 # Needs a build from `xcodebuild build-for-testing ... -derivedDataPath DerivedData`.
 set -u
 SIM="$1"; OUT="$2"; mkdir -p "$OUT"
 HERE="$(cd "$(dirname "$0")" && pwd)"
-TESTS="${PERF_TESTS:-testScrollToday testTapToday testScrollAllHabits testScrollHabitPage testCalendarMonths testNewHabitForm testRoutinePlayer}"
+BUNDLE=com.lalithsaicharan.habits
+SCENARIOS="${PERF_SCENARIOS:-scroll-today tap-today all-habits habit-page calendar new-habit player}"
 SUMMARY="$OUT/perf-summary.md"
 OPENS="$OUT/opens.txt"; : > "$OPENS"
 
+APP=$(ls -d DerivedData/Build/Products/Debug-iphonesimulator/Habits.app 2>/dev/null | head -1)
+[ -n "$APP" ] || { echo "No Habits.app in DerivedData" > "$SUMMARY"; exit 1; }
+xcrun simctl install "$SIM" "$APP"
+DATA=$(xcrun simctl get_app_container "$SIM" "$BUNDLE" data)
+REC="$DATA/tmp/perf-stalls.txt"
+
 {
-  echo "| Screen | Hitch time (ms/s) | Longest stall | Freezes ≥100 ms | SwiftUI redraw | Most time in the app's own code |"
+  echo "| What | Hitch time (ms/s) | Longest stall | Freezes ≥100 ms | Main thread busy | Most time in the app's own code |"
   echo "|---|---|---|---|---|---|"
 } > "$SUMMARY"
 
-for T in $TESTS; do
-  LOG="$OUT/$T.log"
-  xcodebuild test-without-building -project Habits.xcodeproj -scheme Habits -destination "id=$SIM" \
-    -derivedDataPath DerivedData -only-testing:HabitsUITests/PerformanceUITests/$T > "$LOG" 2>&1 &
-  RUN=$!
-  # Sample once the screen is open (the test prints PERF-READY), or 45 s after the app starts if that never shows.
-  # The app from the previous test may still be closing, so wait for a new process.
-  OLD=$(pgrep -n -f "Habits\.app/Habits( |$)"); PID=""; WAITED=0; SINCE=0
-  while [ $WAITED -lt 300 ]; do
-    NOW=$(pgrep -n -f "Habits\.app/Habits( |$)")
-    [ -n "$NOW" ] && [ "$NOW" != "$OLD" ] && PID=$NOW
-    grep -q "PERF-READY" "$LOG" && break
-    kill -0 $RUN 2>/dev/null || break
-    [ -n "$PID" ] && SINCE=$((SINCE + 1)) && [ $SINCE -ge 45 ] && break
-    sleep 1; WAITED=$((WAITED + 1))
+for S in $SCENARIOS; do
+  xcrun simctl terminate "$SIM" "$BUNDLE" > /dev/null 2>&1
+  sleep 1
+  rm -f "$REC"
+  LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-history -perf-meter -perf-drive "$S" 2>&1)
+  PID=$(echo "$LAUNCH" | sed -n 's/.*: *\([0-9][0-9]*\)$/\1/p' | tail -1)
+  WAITED=0
+  until grep -q "^# MEASURING" "$REC" 2>/dev/null || [ $WAITED -ge 90 ]; do sleep 1; WAITED=$((WAITED + 1)); done
+  [ -n "$PID" ] && sample "$PID" 10 1 -file "$OUT/sample-$S.txt" > /dev/null 2>&1
+  until grep -q "^# DONE" "$REC" 2>/dev/null || [ $WAITED -ge 180 ]; do sleep 1; WAITED=$((WAITED + 1)); done
+  cp "$REC" "$OUT/stalls-$S.txt" 2>/dev/null
+  xcrun simctl terminate "$SIM" "$BUNDLE" > /dev/null 2>&1
+
+  RESULT=$(python3 "$HERE/analyze_stalls.py" "$OUT/stalls-$S.txt")
+  echo "$RESULT" | sed -n 's/^open=/- /p' >> "$OPENS"
+  BUSY=""; TOP=""
+  if [ -s "$OUT/sample-$S.txt" ]; then
+    SAMPLED=$(python3 "$HERE/analyze_sample.py" "$OUT/sample-$S.txt" 4)
+    BUSY="$(echo "$SAMPLED" | sed -n 's/^busy=//p') %"
+    TOP=$(echo "$SAMPLED" | tail -n +3 | sed 's/^ *//' | paste -sd ';' - | sed 's/;/<br>/g')
+  fi
+  WINDOWS=$(echo "$RESULT" | grep '^window=')
+  if [ -z "$WINDOWS" ]; then
+    NOTE=$(echo "$RESULT" | sed -n 's/^note=//p' | paste -sd ' ' -)
+    echo "| $S | not measured (${NOTE:-no record: did the app start?}) | | | | |" >> "$SUMMARY"
+  fi
+  echo "$WINDOWS" | while IFS='|' read -r NAME HITCH LONGEST FREEZES; do
+    [ -n "$NAME" ] && echo "| ${NAME#window=} | $HITCH | $LONGEST ms | $FREEZES | $BUSY | ${TOP:-(none above noise)} |" >> "$SUMMARY"
   done
-  PID=$(pgrep -n -f "Habits\.app/Habits( |$)")
-  if [ -n "$PID" ] && kill -0 $RUN 2>/dev/null; then
-    sleep 2
-    sample "$PID" 15 1 -file "$OUT/sample-$T.txt" > /dev/null 2>&1
-  fi
-  wait $RUN; STATUS=$?
-  # The app's container holds its stall record (the file keeps every test's; each test reads its own window).
-  DATA=$(xcrun simctl get_app_container "$SIM" com.lalithsaicharan.habits data 2>/dev/null)
-  STALLS=$(python3 "$HERE/analyze_stalls.py" "$DATA/tmp/perf-stalls.txt" "$LOG")
-  echo "$STALLS" | sed -n 's/^open=/- /p' >> "$OPENS"
-  HITCH=$(echo "$STALLS" | sed -n 's/^hitch=//p')
-  LONGEST=$(echo "$STALLS" | sed -n 's/^longest=//p')
-  FREEZES=$(echo "$STALLS" | sed -n 's/^freezes=//p')
-  REDRAW=""; TOP=""
-  if [ -s "$OUT/sample-$T.txt" ]; then
-    RESULT=$(python3 "$HERE/analyze_sample.py" "$OUT/sample-$T.txt" 4)
-    REDRAW="$(echo "$RESULT" | sed -n 's/^redraw=//p') %"
-    TOP=$(echo "$RESULT" | tail -n +3 | sed 's/^ *//' | paste -sd ';' - | sed 's/;/<br>/g')
-  fi
-  if [ -n "$HITCH" ]; then
-    echo "| $T | $HITCH | $LONGEST ms | $FREEZES | $REDRAW | ${TOP:-(none above noise)} |" >> "$SUMMARY"
-  else
-    echo "| $T | not measured (test exit $STATUS; see $T.log) | | | | |" >> "$SUMMARY"
-  fi
 done
 
 {
   echo
-  echo "Opening a screen (longest stall between the tap and the screen being there; under 100 ms feels instant):"
+  echo "Opening a screen (longest stall in the 1.5 s after the command; under 100 ms feels instant):"
   echo
   cat "$OPENS"
-  grep -h "PERF-OPEN-FAILED" "$OUT"/test*.log | sed 's/^PERF-OPEN-FAILED /- did not open: /'
 } >> "$SUMMARY"
 
 cat "$SUMMARY"

@@ -45,6 +45,9 @@ struct HabitsApp: App {
             .task {
                 await model.ensureLoaded()
                 guard model.store.isLoaded else { return }
+                #if DEBUG
+                PerfDriver.startIfAsked(store: model.store)
+                #endif
                 model.scheduleRefresh()
                 await model.dailySnapshot()
             }

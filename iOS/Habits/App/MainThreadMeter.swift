@@ -37,6 +37,11 @@ final class MainThreadMeter {
         }
     }
 
+    /// A line for the speed-run script (a window's or opening's times), in the same record.
+    static func mark(_ line: String) {
+        try? shared?.file?.write(contentsOf: Data((line + "\n").utf8))
+    }
+
     private func wentToSleep() {
         guard let start = awake else { return }
         awake = nil

@@ -100,7 +100,7 @@ jobs:
           set -o pipefail
           ONLY=""
           if [ "$TESTS" = "all" ]; then
-            ONLY="-skip-testing:HabitsUITests/PerformanceUITests"
+            ONLY=""
           else
             for t in ${TESTS//,/ }; do ONLY="$ONLY -only-testing:HabitsUITests/$t"; done
           fi

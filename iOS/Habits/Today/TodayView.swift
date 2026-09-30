@@ -32,6 +32,8 @@ struct TodayView: View {
     @State private var visibleRows = VisibleRows()
     @Environment(AppRouter.self) private var router
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// Speed runs only: the New Habit form opened straight away, to measure typing in it.
+    @State private var perfForm = false
 
     var body: some View {
         NavigationStack {
@@ -83,6 +85,8 @@ struct TodayView: View {
         }
         #endif
         .onChange(of: selectedDay) { foldOverrides = [:] }
+        .onPerfCommand(perform)
+        .sheet(isPresented: $perfForm) { NavigationStack { HabitForm(type: .doIt, onSaved: { _ in }) } }
         // Back from the background: Today is drawn for now at once, not at the next minute.
         .onChange(of: scenePhase) { if scenePhase == .active { clock = .now } }
         .onChange(of: router.focusSection) {
@@ -103,6 +107,27 @@ struct TodayView: View {
     }
 
     private var selectedDay: LocalDay { day ?? store.today() }
+
+    /// Speed runs (`PerfDriver`): the same state changes the buttons make.
+    private func perform(_ action: PerfAction) {
+        switch action {
+        case .previousDay: day = selectedDay.adding(days: -1, calendar: store.calendar)
+        case .nextDay:
+            let next = selectedDay.adding(days: 1, calendar: store.calendar)
+            day = next == store.today() ? nil : next
+        case .openAllHabits: showAllHabits = true
+        case .openCalendar: showCalendar = true
+        case .openNewHabit: showNewHabit = true
+        case .openHabitForm: perfForm = true
+        case .startRoutine(let part):
+            let today = store.today()
+            let tracked = store.habits.filter { !$0.archived && $0.kind != .quit && store.startDay(of: $0) <= today && store.isDue($0, on: today) }
+            if let items = rowsBySection(tracked)[part] { start(part: part, items: items, day: today) }
+        case .close:
+            showAllHabits = false; showCalendar = false; showNewHabit = false; perfForm = false; routine = nil
+        default: break
+        }
+    }
 
     /// The note bar for a habit's note or the day's note.
     @ViewBuilder private func noteBar(_ target: HabitStore.NoteTarget) -> some View {
