@@ -55,8 +55,11 @@ struct NoteBar: View {
             if let note = TextLimit.note(text, TextLimit.noteText) { Text(note).font(.caption).foregroundStyle(.secondary) }
         }
         .padding(14)
-        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 22))
-        .shadow(color: .black.opacity(0.12), radius: 12, y: 2)
+        // The shape casts the shadow, not the text field and its typing (30 Sep).
+        .background {
+            RoundedRectangle(cornerRadius: 22).fill(Color(.secondarySystemGroupedBackground))
+                .shadow(color: .black.opacity(0.12), radius: 12, y: 2)
+        }
         .padding(.horizontal, 12)
         .padding(.bottom, 6)
         .onAppear { focused = true }

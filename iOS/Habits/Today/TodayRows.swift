@@ -59,10 +59,15 @@ struct HabitRow: View {
     var highlighted = false
     /// The New Habit preview: replaces the progress line ("—" before an amount is set).
     var lineOverride: String? = nil
-    @State private var showLog = false
-    @State private var showEdit = false
-    @State private var showNotes = false
-    @State private var showPause = false
+    /// One sheet at a time, from one `.sheet`: four sheet modifiers on every row made each row heavier to build as
+    /// it scrolled in (30 Sep).
+    @State private var sheet: RowSheet?
+    private enum RowSheet: Identifiable { case log, edit, notes, pause; var id: Self { self } }
+    private var showLog: Bool {
+        get { sheet == .log }
+        nonmutating set { sheet = newValue ? .log : nil }
+    }
+    private var showPause: Binding<Bool> { Binding(get: { sheet == .pause }, set: { sheet = $0 ? .pause : nil }) }
     @Binding var stepsOpen: Bool
     @Environment(HabitStore.self) private var store
 
@@ -143,10 +148,14 @@ struct HabitRow: View {
         .padding(.vertical, 2)
         .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color)
             .overlay(HighlightFlash(on: highlighted || store.noteTarget == .init(habit: habit.id, day: day), color: habit.color)))
-        .sheet(isPresented: $showLog) { LogProgressView(habit: habit, day: day) }
-        .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
-        .sheet(isPresented: $showNotes) { HabitNotesView(habit: habit) }
-        .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
+        .sheet(item: $sheet) { sheet in
+            switch sheet {
+            case .log: LogProgressView(habit: habit, day: day)
+            case .edit: EditHabitSheet(habit: habit)
+            case .notes: HabitNotesView(habit: habit)
+            case .pause: PauseSheet(habit: habit)
+            }
+        }
         // Swipe left for a note, on any day and whether or not it's done: the standard iOS row gesture (Mail,
         // Reminders), for people who don't long-press. Opens the same field in the row.
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -157,14 +166,14 @@ struct HabitRow: View {
         }
         .contextMenu {
             // Edit sits with the item's other actions, as in Reminders; a tap on the row logs (spec §8).
-            Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { showEdit = true }
+            Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { sheet = .edit }
             // A stretch of days off: travel, illness (pause report, 29 Sep). Skip today stays for one day.
-            PauseMenuItems(habit: habit, showPause: $showPause)
+            PauseMenuItems(habit: habit, showPause: showPause)
             // Any day, done or not, past or today; a note never changes progress (notes report, 29 Sep).
             Button(store.note(of: habit, on: day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") { startWriting() }
                 .disabled(day > store.today())
             if store.hasNotes(habit) {
-                Button("All Notes", systemImage: "list.bullet.rectangle") { showNotes = true }
+                Button("All Notes", systemImage: "list.bullet.rectangle") { sheet = .notes }
             }
             if case .amount = habit.kind {
                 Button("Log amount manually", systemImage: "square.and.pencil") { showLog = true }.disabled(day > store.today())

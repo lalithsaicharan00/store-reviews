@@ -31,6 +31,7 @@ here, with the reason and the date.
 | 7 | **A tap changes the screen at once; the database write follows** (`HabitStore.addLogged`, `removeLogged`, `toggleTimer`). If the write fails the store reloads what's stored and says so. Never make a tap wait for storage | The checkmark waited for a durable SQLite write through the Kotlin core; quick taps landed on the old state (29–30 Sep) |
 | 8 | **`body` stays cheap**: no sorting or filtering of history, no `Calendar` arithmetic in loops (`LocalDay.adding(days:)` and `weekday` are plain arithmetic in the Gregorian calendar; use them), no formatters or big strings built per row that could be built once | Three `Calendar` calls per day stepped were most of a streak's time (30 Sep) |
 | 9 | **In a `List` with a selection, use `NavigationLink { Page() } label: { … }`**, not `NavigationLink(value:)` | The habit page never opened from All Habits: the value link only selected the row (30 Sep) |
+| 10 | **Rows stay light.** A shadow goes on a background *shape*, never on a view with text or one that redraws (and never a `.clear` shadow: it still costs an offscreen pass). One `.sheet(item:)` per row, not one per sheet. No `GeometryReader` in a row just to size a fill (`scaleEffect(x:anchor:)` draws the same) | Every Today row paid for a clear text shadow, four sheet modifiers and a `GeometryReader`; the timer bar re-rendered its whole shadow every second (30 Sep) |
 
 ## Why the mistakes kept coming back
 

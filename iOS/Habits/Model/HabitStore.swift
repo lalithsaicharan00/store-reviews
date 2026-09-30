@@ -754,6 +754,7 @@ final class HabitStore {
             var loadedDayNotes: [LocalDay: String] = [:]
             var loadedDescriptions: [UUID: String] = [:]
             var upgradedV1 = false, repaired = false
+            settingKeys = Set(snapshot.settings.map(\.key))
             for setting in snapshot.settings {
                 switch setting.key {
                 case Keys.placementV1: upgradedV1 = true
@@ -823,6 +824,9 @@ final class HabitStore {
             problem = "Your habits couldn't be read. Nothing has been changed; please restart the app."
         }
     }
+
+    /// The settings saved when last loaded, so a one-time step can check its marker without reading the database again.
+    @ObservationIgnored private var settingKeys: Set<String> = []
 
     private enum Keys {
         static let dayEndHour = "day_end_hour"
@@ -1303,8 +1307,8 @@ final class HabitStore {
     /// (Water) and a timer (Read).
     func addEveryTypeToAnytime() async {
         let key = "test_types_anytime_v1"
-        guard isLoaded, let snapshot = try? await repository.load(),
-              !snapshot.settings.contains(where: { $0.key == key }) else { return }
+        // Checked against the settings already loaded: reading the whole database again cost every debug launch (30 Sep).
+        guard isLoaded, !settingKeys.contains(key) else { return }
         let types = [
             Habit(name: "Take vitamins", symbol: "pills.fill", color: .yellow, kind: .check, remind: false),
             Habit(name: "Drink tea", symbol: "cup.and.saucer.fill", color: .brown, kind: .check, goal: 3, checkUnit: "cups", remind: false),

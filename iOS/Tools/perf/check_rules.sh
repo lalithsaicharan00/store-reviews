@@ -44,5 +44,9 @@ done
 grep -nE 'Timer\.publish|Timer\.scheduledTimer' $SWIFT &&
   fail "Timer in app code" "PERFORMANCE.md rule 3: sleep in a .task until the next moment that matters instead"
 
+# 8. A shadow that's sometimes clear still renders offscreen on every row.
+grep -nE '\.shadow\(color: [^)]*: *\.clear' $SWIFT &&
+  fail "Conditional clear shadow" "PERFORMANCE.md rule 10: apply the shadow only when it shows, on a shape"
+
 if [ $FAIL = 0 ]; then echo "Speed rules: all checks passed"; fi
 exit $FAIL
