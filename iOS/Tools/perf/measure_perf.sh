@@ -48,7 +48,7 @@ for S in $SCENARIOS; do
       rm -f "$REC"
       LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-history -perf-meter -perf-drive "$S" 2>&1)
       PID=$(echo "$LAUNCH" | sed -n 's/.*: *\([0-9][0-9]*\)$/\1/p' | tail -1)
-      case "$S" in day-sheet|log-sheet) SAMPLE_SECONDS=75;; *) SAMPLE_SECONDS=38;; esac
+      case "$S" in day-sheet) SAMPLE_SECONDS=75;; log-sheet) SAMPLE_SECONDS=95;; *) SAMPLE_SECONDS=38;; esac
       if [ -n "$PID" ]; then
         sample "$PID" "$SAMPLE_SECONDS" 1 -file "$OUT/sample-$S.txt" > /dev/null 2>&1 &
         SAMPLER=$!

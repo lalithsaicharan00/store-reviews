@@ -36,7 +36,7 @@ def main(path):
         print("note=the run didn't finish")
 
     def within(a, b):
-        return [ms for start, ms in stalls if a <= start <= b]
+        return [ms for start, ms in stalls if a <= start < b]
 
     for name, a, b in windows:
         spans = within(a, b)

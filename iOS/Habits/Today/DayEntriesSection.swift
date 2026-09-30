@@ -1,4 +1,5 @@
 import SwiftUI
+import Observation
 
 /// The same native entry rows in both sheets. Reads the indexed habit/day bucket, never all history.
 struct DayEntriesSection: View {
@@ -47,34 +48,18 @@ struct EntryEditView: View {
     let entry: Entry
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
-    @State private var amount: String
-    @State private var hours: String
-    @State private var minutes: String
-    @State private var seconds: String
+    @State private var draft: ProgressValueDraft
     @State private var slipTime: Date
     @FocusState private var typing: Bool
 
     init(habit: Habit, entry: Entry) {
         self.habit = habit
         self.entry = entry
-        _amount = State(initialValue: GoalNumber.text(entry.value))
-        _hours = State(initialValue: String(Int(entry.value / 60)))
-        _minutes = State(initialValue: String(Int(entry.value) % 60))
-        _seconds = State(initialValue: GoalNumber.text((entry.value * 60).truncatingRemainder(dividingBy: 60)))
+        _draft = State(initialValue: ProgressValueDraft(kind: habit.kind, value: entry.value))
         _slipTime = State(initialValue: entry.createdAt)
     }
 
-    private var value: Double? {
-        if habit.kind == .quit { return 1 }
-        if habit.kind == .duration {
-            guard let h = GoalNumber.parse(hours, decimals: 0), let m = GoalNumber.parse(minutes, decimals: 0), m < 60,
-                  let s = GoalNumber.parse(seconds), s < 60 else { return nil }
-            let v = h * 60 + m + s / 60
-            return v > 0 && v <= GoalNumber.maximum ? v : nil
-        }
-        guard let v = GoalNumber.parse(amount, decimals: habit.kind == .check ? 0 : 2), v > 0 else { return nil }
-        return v
-    }
+    private var value: Double? { draft.value }
 
     private var validSlipTime: Bool {
         habit.kind != .quit || (store.today(now: slipTime) == entry.day && slipTime <= .now
@@ -89,10 +74,10 @@ struct EntryEditView: View {
                 LabeledContent("Source", value: entry.source?.label ?? "Source not recorded")
             }
             if habit.kind == .duration {
-                DurationInput(hours: $hours, minutes: $minutes)
+                DurationInput(hours: draft.binding(\.hours), minutes: draft.binding(\.minutes))
                 Section {
                     LabeledContent("Seconds") {
-                        TextField("0", text: $seconds).keyboardType(.decimalPad).focused($typing)
+                        TextField("0", text: draft.binding(\.seconds)).keyboardType(.decimalPad).focused($typing)
                             .multilineTextAlignment(.trailing)
                             .accessibilityIdentifier("entry-seconds")
                     }
@@ -104,7 +89,7 @@ struct EntryEditView: View {
             } else {
                 Section {
                     LabeledContent(habit.kind == .check ? "Times" : "Amount") {
-                        TextField("Amount", text: $amount).keyboardType(habit.kind == .check ? .numberPad : .decimalPad)
+                        TextField("Amount", text: draft.binding(\.amount)).keyboardType(habit.kind == .check ? .numberPad : .decimalPad)
                             .multilineTextAlignment(.trailing).focused($typing)
                             .accessibilityIdentifier("entry-amount")
                     }
@@ -119,7 +104,7 @@ struct EntryEditView: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
                     if let value { store.editEntry(entry.id, value: value, at: habit.kind == .quit ? slipTime : nil); dismiss() }
-                }.disabled(value == nil || !validSlipTime)
+                }.disabled(!draft.isValid || !validSlipTime)
             }
             ToolbarItemGroup(placement: .keyboard) { if typing { Spacer(); Button("Done") { typing = false } } }
         }
@@ -131,11 +116,52 @@ struct EntryEditView: View {
         #endif
         .onPerfCommand { action in
             switch action {
-            case .editAmount(let text): amount = text
+            case .editAmount(let text): draft.binding(\.amount).wrappedValue = text
             case .saveEntry: if let value { store.editEntry(entry.id, value: value); dismiss() }
             default: break
             }
         }
+    }
+}
+
+/// Only the native fields read these strings. The Form reads the validation flag, which changes
+/// only when input becomes valid/invalid; metadata and history do not rebuild for every character.
+@Observable final class ProgressValueDraft {
+    let kind: HabitKind
+    var amount: String
+    var hours: String
+    var minutes: String
+    var seconds: String
+    var isValid: Bool
+
+    init(kind: HabitKind, value: Double? = nil) {
+        self.kind = kind
+        amount = value.map(GoalNumber.text) ?? ""
+        hours = String(Int((value ?? 0) / 60))
+        minutes = String(Int(value ?? 0) % 60)
+        seconds = GoalNumber.text(((value ?? 0) * 60).truncatingRemainder(dividingBy: 60))
+        isValid = false
+        isValid = self.value != nil
+    }
+
+    var value: Double? {
+        if kind == .quit { return 1 }
+        if kind == .duration {
+            guard let h = GoalNumber.parse(hours, decimals: 0), let m = GoalNumber.parse(minutes, decimals: 0), m < 60,
+                  let s = GoalNumber.parse(seconds), s < 60 else { return nil }
+            let v = h * 60 + m + s / 60
+            return v > 0 && v <= GoalNumber.maximum ? v : nil
+        }
+        guard let v = GoalNumber.parse(amount, decimals: kind == .check ? 0 : 2), v > 0 else { return nil }
+        return v
+    }
+
+    func binding(_ key: ReferenceWritableKeyPath<ProgressValueDraft, String>) -> Binding<String> {
+        Binding(get: { self[keyPath: key] }, set: { text in
+            self[keyPath: key] = text
+            let valid = self.value != nil
+            if valid != self.isValid { self.isValid = valid }
+        })
     }
 }
 

@@ -80,7 +80,7 @@ final class UndoUITests: XCTestCase {
         XCTAssertTrue(undo.exists)
         shot("undo-routine-persistent")
         undo.tap()
-        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "1 / 2 glasses")
+        XCTAssertEqual(app.staticTexts["focus-progress-circle"].label, "1 / 2 glasses")
         XCTAssertFalse(undo.exists)
     }
 
@@ -114,6 +114,8 @@ final class UndoUITests: XCTestCase {
     func testLogSheetSharesEntryEditingAndStillAdds() {
         daySheet("Drink water")
         app.buttons["day-add-entry"].tap()
+        // Nested sheets expose covered accessibility elements too. Query the frontmost native Form.
+        let entries = app.collectionViews["log-form"].buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'entry-'"))
         XCTAssertTrue(app.navigationBars["Log Amount"].waitForExistence(timeout: 3))
         let keyboardDone = app.toolbars.buttons["Done"].firstMatch
         if keyboardDone.waitForExistence(timeout: 3) { keyboardDone.tap() }
@@ -133,7 +135,7 @@ final class UndoUITests: XCTestCase {
         app.revealAndTap(field); field.typeText("2")
         app.navigationBars["Log Amount"].buttons["Log"].tap()
         XCTAssertTrue(app.staticTexts["2/2 glasses"].waitForExistence(timeout: 3))
-        XCTAssertEqual(entries.count, 1)
+        XCTAssertEqual(self.entries.count, 1) // Log has dismissed; inspect the Day sheet now.
     }
 
     func testInlineUndoSurvivesAndIsExact() {

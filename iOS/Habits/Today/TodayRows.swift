@@ -163,7 +163,7 @@ struct HabitRow: View {
             .overlay(HighlightFlash(on: highlighted || store.noteTarget == .init(habit: habit.id, day: day), color: habit.color)))
         .sheet(item: $sheet) { sheet in
             switch sheet {
-            case .log: LogProgressView(habit: habit, day: day)
+            case .log: LogProgressView(habit: store.rule(habit, on: day), day: day)
             case .edit: EditHabitSheet(habit: habit)
             case .notes: HabitNotesView(habit: habit)
             case .pause: PauseSheet(habit: habit)

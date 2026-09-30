@@ -35,7 +35,7 @@ jobs:
     # Here, not on the workflow: a push that runs nothing must not cancel a run that's going.
     concurrency:
       group: ios-job-${{ github.ref }}
-      cancel-in-progress: true
+      cancel-in-progress: false
     runs-on: macos-26
     timeout-minutes: 60
     env:

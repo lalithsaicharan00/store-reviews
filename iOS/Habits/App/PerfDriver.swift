@@ -8,7 +8,7 @@ enum PerfAction: Equatable {
     case previousMonth, nextMonth
     case previousHabit, nextHabit
     case typeName(String)
-    case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, editAmount(String), saveEntry, logAgain
+    case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, editAmount(String), saveEntry, logAgain, logAmount(String)
 }
 
 extension View {
@@ -23,18 +23,41 @@ extension View {
 
 #if DEBUG
 import UIKit
-import Combine
 
-/// Debug-only delivery does not invalidate every covered screen on each simulated keystroke.
+/// Debug-only delivery has no publisher or observable command state in SwiftUI's view graph.
+/// Covered presenters still receive Close; weak subscriptions release dismissed screens naturally.
 final class PerfRemote {
     static let shared = PerfRemote()
-    let commands = PassthroughSubject<PerfAction, Never>()
+    private var receivers: [UUID: WeakPerfSubscription] = [:]
+
+    func connect(_ subscription: PerfSubscription, handle: @escaping (PerfAction) -> Void) {
+        subscription.handle = handle
+        receivers[subscription.id] = WeakPerfSubscription(subscription)
+    }
+
+    func send(_ action: PerfAction) {
+        for (id, receiver) in Array(receivers) {
+            if let subscription = receiver.value { subscription.handle(action) }
+            else { receivers.removeValue(forKey: id) }
+        }
+    }
+}
+
+final class PerfSubscription {
+    let id = UUID()
+    var handle: (PerfAction) -> Void = { _ in }
+}
+
+private final class WeakPerfSubscription {
+    weak var value: PerfSubscription?
+    init(_ value: PerfSubscription) { self.value = value }
 }
 
 private struct PerfCommandReceiver: ViewModifier {
     let handle: (PerfAction) -> Void
+    @State private var subscription = PerfSubscription()
     func body(content: Content) -> some View {
-        content.onReceive(PerfRemote.shared.commands, perform: handle)
+        content.onAppear { PerfRemote.shared.connect(subscription, handle: handle) }
     }
 }
 
@@ -103,6 +126,11 @@ enum PerfDriver {
             await open("Day sheet (again)") { send(.openDay(today)) }
             if scenario == "log-sheet" {
                 await open("Log sheet") { send(.openLog) }
+                await measure("Log sheet: typing") {
+                    await repeatFor(window) {
+                        for text in ["1", "12", "123", "12", "1"] { send(.logAmount(text)); await pause(0.1) }
+                    }
+                }
                 await measure("Log sheet: entry list scrolling") { await scroll() }
             } else {
                 await measure("Day sheet: entry list scrolling") { await scroll() }
@@ -152,7 +180,7 @@ enum PerfDriver {
         }
     }
 
-    private static func send(_ action: PerfAction) { PerfRemote.shared.commands.send(action) }
+    private static func send(_ action: PerfAction) { PerfRemote.shared.send(action) }
 
     private static func pause(_ seconds: Double) async { try? await Task.sleep(for: .seconds(seconds)) }
 
@@ -179,6 +207,9 @@ enum PerfDriver {
         let start = now
         await work()
         MainThreadMeter.mark("# WINDOW \(name)|\(start)|\(now)")
+        // End this run-loop turn before the next action. Otherwise Save's keyboard/navigation
+        // work can share the last typing turn and be counted as a typing stall.
+        await pause(0.15)
     }
 
     private static func repeatFor(_ seconds: Double, _ step: () async -> Void) async {

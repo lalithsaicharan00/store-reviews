@@ -8,12 +8,17 @@ struct LogProgressView: View {
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @State private var perfEntry: Entry?
-    @State private var amount = ""
-    @State private var hours = "0"
-    @State private var minutes = "0"
+    @State private var draft: ProgressValueDraft
     @State private var saving = false
     @State private var showDay = false
     @FocusState private var typing: Bool
+
+    init(habit: Habit, day: LocalDay, source: EntrySource = .manual) {
+        self.habit = habit
+        self.day = day
+        self.source = source
+        _draft = State(initialValue: ProgressValueDraft(kind: habit.kind))
+    }
 
     private var timed: Bool { habit.kind == .duration }
     private var unit: String { if case .amount(let unit, _) = habit.kind { unit } else { "" } }
@@ -39,11 +44,7 @@ struct LogProgressView: View {
         return "\(HabitCopy.number(progress)) of \(HabitCopy.amount(goal, unit))"
     }
 
-    private var value: Double? {
-        if timed { return GoalDraft(hours: hours, minutes: minutes).duration }
-        guard let n = GoalNumber.parse(amount), n > 0 else { return nil }
-        return n
-    }
+    private var value: Double? { draft.value }
 
     var body: some View {
         NavigationStack {
@@ -61,12 +62,12 @@ struct LogProgressView: View {
                          : "This adds to your progress. You can go beyond your goal.")
                 }
                 if timed {
-                    DurationInput(hours: $hours, minutes: $minutes)
+                    DurationInput(hours: draft.binding(\.hours), minutes: draft.binding(\.minutes))
                 } else {
                     Section {
                         LabeledContent("Amount") {
                             HStack(spacing: 6) {
-                                TextField("0", text: $amount)
+                                TextField("0", text: draft.binding(\.amount))
                                     .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
                                     .font(.body.monospacedDigit().weight(.semibold))
                                     .focused($typing).accessibilityLabel("Amount to add, in \(unit)")
@@ -106,7 +107,7 @@ struct LogProgressView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Log") { if let value { add(value) } }
                         .fontWeight(.semibold)
-                        .disabled(value == nil || saving)
+                        .disabled(!draft.isValid || saving)
                 }
                 ToolbarItemGroup(placement: .keyboard) {
                     if typing { Spacer(); Button("Done") { typing = false } }
@@ -117,6 +118,7 @@ struct LogProgressView: View {
                 case .openEntry: perfEntry = store.entries(of: habit.id, on: day).last
                 case .closeLog: dismiss()
                 case .logAgain: if let lastAmount { add(lastAmount) }
+                case .logAmount(let text): draft.binding(\.amount).wrappedValue = text
                 default: break
                 }
             }

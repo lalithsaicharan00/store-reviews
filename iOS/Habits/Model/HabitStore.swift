@@ -1330,7 +1330,10 @@ final class HabitStore {
         }
         let habitIndex = entriesByHabit?[entry.habitID]?.firstIndex { $0.id == id }
         let dayIndex = entriesByDay?[entry.habitID]?[entry.day]?.firstIndex { $0.id == id }
-        withAnimation { removeEntry(at: index); insertEntry(entry, at: index, habitIndex: habitIndex, dayIndex: dayIndex) }
+        // An edit keeps the same row and position. Animating the entire store also animated the
+        // covered calendar and every native list; only the field value needs to change here.
+        removeEntry(at: index)
+        insertEntry(entry, at: index, habitIndex: habitIndex, dayIndex: dayIndex)
         let updated = entry
         perform { [self] in
             try await repository.editEntry(id: updated.id.uuidString, value: updated.value, createdAt: updated.createdAt.millis)
