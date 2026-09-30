@@ -110,8 +110,8 @@ final class TodayUITests: XCTestCase {
         shot("m02-habits")
         call.tap()
         XCTAssertTrue(app.staticTexts["Call family"].waitForExistence(timeout: 3), "The habit page opens")
-        back()
-        XCTAssertTrue(app.navigationBars["Habits"].waitForExistence(timeout: 3))
+        back(to: "Habits")
+        XCTAssertTrue(app.navigationBars["Habits"].waitForExistence(timeout: 3), "Back on Habits")
         back()
         XCTAssertTrue(menu.waitForExistence(timeout: 3), "Back on Today")
 
@@ -146,9 +146,16 @@ final class TodayUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5), "\(title) opens")
     }
 
-    /// The system Back button, the first button in the navigation bar.
-    private func back() {
-        app.navigationBars.firstMatch.buttons.element(boundBy: 0).tap()
+    /// The system Back button: found by its identifier or its label (the page before, or "Back"), since a page's own
+    /// toolbar buttons can come first in the bar; otherwise the system's swipe from the left edge.
+    private func back(to previous: String = "Back") {
+        let bar = app.navigationBars.firstMatch
+        for name in ["BackButton", previous, "Back"] where bar.buttons[name].exists {
+            bar.buttons[name].tap()
+            return
+        }
+        app.coordinate(withNormalizedOffset: CGVector(dx: 0.01, dy: 0.5))
+            .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)))
     }
 
     /// Back to Today appears only on another day: above the day bar on Today, and at the bottom of the
