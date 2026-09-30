@@ -107,6 +107,15 @@ Source: [Widgets — Tick Without Opening the App](<../Research/Research Reports
 - **Never a stale day:** the file holds today and tomorrow; after the last day ends the widget says "Open Habits to see today".
 - **Basic interactive widgets are free, forever** (C009). Extra designs go in Plus later; never move this one.
 
+## Milestones (built 30 Sep 2026)
+
+Source: [Milestones — Marking Progress Without Noise](<../Research/Research Reports/Day Structure and Organization/Milestones — Marking Progress Without Noise.md>).
+
+- **A milestone is words in the Undo bar** (`UndoOffer.milestone`), shown only by the tap that reached it. Never a pop-up, sheet, confetti, sound, notification or anything that waits before the next tap.
+- **Worked out, never stored:** reached milestones come from the best streak or the quit run (`StreakUnit.isMilestone`, `QuitMilestones`).
+- **Switchable** (Settings → Milestones); streak milestones also follow Show Streaks.
+- **Plain adult words:** "30 days in a row", "All 5 done today". No exclamation marks or praise words.
+
 ## Siri and Shortcuts (built 30 Sep 2026)
 
 Source: [Siri and Shortcuts — Log by Voice and Automation](<../Research/Research Reports/Home Screen and Visual Design/Siri and Shortcuts — Log by Voice and Automation.md>).

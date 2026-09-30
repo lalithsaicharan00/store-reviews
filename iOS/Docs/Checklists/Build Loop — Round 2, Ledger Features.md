@@ -83,3 +83,17 @@ Research: [Siri and Shortcuts — Log by Voice and Automation](<../../../Researc
 | L9.6 | Help answers for the widget and Siri | [x] `HelpView` |
 | L9.7 | Tried on a device | [ ] No Mac in this session |
 
+## Loop 10 — Milestones (C101, with C157, C095)
+
+Research: [Milestones — Marking Progress Without Noise](<../../../Research/Research Reports/Day Structure and Organization/Milestones — Marking Progress Without Noise.md>).
+
+| # | Point | Done |
+|---|---|---|
+| L10.1 | A tap that reaches 7, 30, 100, 365… in a row (4/12/26/52 weeks, 3/6/12 months) says so in the Undo bar | [x] `HabitStore.withUndo`, `StreakUnit.isMilestone`, `UndoBar` |
+| L10.2 | The tap that finishes the day says "All N done today" | [x] `HabitStore.dayTotals` |
+| L10.3 | Habit page: milestones reached (from the best streak) and the next; quit habits by time since the last slip | [x] `HabitPageView.milestones`, `QuitMilestones` |
+| L10.4 | Settings → Milestones, on; streak milestones follow Show Streaks | [x] `DaySettings.milestones` |
+| L10.5 | No pop-up, sound, confetti or notification; Undo removes the milestone with the tap | [x] |
+| L10.6 | Help answer | [x] |
+| L10.7 | Tried on a device | [ ] No Mac in this session |
+

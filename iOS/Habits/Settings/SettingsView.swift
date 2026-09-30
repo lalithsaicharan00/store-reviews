@@ -49,12 +49,12 @@ struct SettingsView: View {
                 Section {
                     Toggle("Show Streaks", isOn: $draft.showStreaks)
                         .accessibilityIdentifier("settings-streaks")
+                    Toggle("Milestones", isOn: $draft.milestones)
+                        .accessibilityIdentifier("settings-milestones")
                 } header: {
                     Text("Today")
                 } footer: {
-                    Text(draft.showStreaks
-                         ? "The flame and number beside each habit."
-                         : "Streaks are hidden on Today. They're still counted, and each habit's page shows them.")
+                    Text(todayFooter)
                 }
                 Section {
                     Toggle("Haptics", isOn: $draft.haptics)
@@ -191,6 +191,16 @@ struct SettingsView: View {
             Text("A backup file holds everything: habits, history, notes and settings. Save it to Files or send it to yourself. Restoring adds what's missing and never changes or removes what's on this iPhone.")
         }
         .disabled(working)
+    }
+
+    private var todayFooter: String {
+        let streaks: String = draft.showStreaks
+            ? "The flame and number beside each habit."
+            : "Streaks are hidden on Today. They're still counted, and each habit's page shows them."
+        let milestones: String = draft.milestones
+            ? "Milestones: a line under what you logged when you reach 7, 30 or 100 in a row, or finish the day."
+            : "Milestones are off: nothing is marked when you reach one."
+        return streaks + " " + milestones
     }
 
     private var dayFooter: String {

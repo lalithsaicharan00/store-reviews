@@ -61,6 +61,12 @@ struct HabitPageView: View {
                 } footer: {
                     if habit.kind != .quit { Text(numbersFooter(habit)) }
                 }
+                // Every milestone reached, kept for good, and the next (report "Milestones", 30 Sep). A streak's
+                // milestones follow Show Streaks; a quit habit's are its time since the last slip.
+                if store.settings.milestones && (habit.kind == .quit || store.settings.showStreaks) {
+                    Section("Milestones") { milestones(habit, today: today) }
+                        .accessibilityIdentifier("habit-milestones")
+                }
             }
             if habit.kind != .quit && habit.kind != .task {
                 Section {
@@ -178,6 +184,24 @@ struct HabitPageView: View {
                 }
                 .accessibilityIdentifier("habit-rates")
             }
+        }
+    }
+
+    @ViewBuilder private func milestones(_ habit: Habit, today: LocalDay) -> some View {
+        if habit.kind == .quit {
+            let run = store.isPaused(habit, on: today) ? 0 : store.quitRuns(of: habit).current
+            let reached = QuitMilestones.reached(run)
+            let next = QuitMilestones.next(run)
+            let left = Double(next) * 86400 - run
+            LabeledContent("This run", value: reached.isEmpty ? "None yet" : ListFormatter.localizedString(byJoining: reached.map(QuitMilestones.label)))
+            LabeledContent("Next", value: QuitMilestones.label(next) + (left < 86400 ? ", within a day" : ", in " + Format.days(left)))
+        } else {
+            let unit = store.rule(habit, on: today).frequency.streakUnit
+            let current = store.streak(of: habit, asOf: today)
+            let reached = unit.milestones(upTo: max(store.bestStreak(of: habit), current))
+            let next = unit.nextMilestone(after: current)
+            LabeledContent("Reached", value: reached.isEmpty ? "None yet" : unit.list(reached))
+            LabeledContent("Next", value: "\(unit.inARow(next)), \(next - current) to go")
         }
     }
 

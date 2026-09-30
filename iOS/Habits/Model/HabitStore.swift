@@ -17,6 +17,10 @@ struct DaySettings: Codable, Hashable, Sendable {
     var haptics = true
     /// A short sound when a habit is done. Off by default (C006: additions are opt-in); some find sounds intrusive.
     var sounds = false
+    /// A line in the Undo bar when a tap reaches a streak milestone or finishes the day, and the Milestones record on
+    /// each habit's page. On by default: it adds no pop-up, sound or screen, only words where the tap already shows
+    /// something (report "Milestones — Marking Progress Without Noise"). A switch, like every encouragement (C157).
+    var milestones = true
 }
 
 /// Holds habits and entries and applies every change. Everything shown is calculated from
@@ -203,6 +207,7 @@ final class HabitStore {
             try await repository.saveSetting(key: Keys.showStreaks, value: new.showStreaks ? "1" : "0")
             try await repository.saveSetting(key: Keys.haptics, value: new.haptics ? "1" : "0")
             try await repository.saveSetting(key: Keys.sounds, value: new.sounds ? "1" : "0")
+            try await repository.saveSetting(key: Keys.milestones, value: new.milestones ? "1" : "0")
             var saved = new
             saved.dayEndHour = dayEnd
             saved.weekStart = weekStart
@@ -635,6 +640,7 @@ final class HabitStore {
                 case Keys.showStreaks: loaded.showStreaks = setting.value != "0"
                 case Keys.haptics: loaded.haptics = setting.value != "0"
                 case Keys.sounds: loaded.sounds = setting.value == "1"
+                case Keys.milestones: loaded.milestones = setting.value != "0"
                 case Keys.sections:
                     if let list = try? JSONDecoder().decode([DaySection].self, from: Data(setting.value.utf8)), !list.isEmpty {
                         sections = list
@@ -706,6 +712,7 @@ final class HabitStore {
         static let showStreaks = "show_streaks"
         static let haptics = "haptics"
         static let sounds = "sounds"
+        static let milestones = "milestones"
         static let timerPrefix = "timer."
         static let skipPrefix = "skip."
         static let pausePrefix = "pause."
@@ -1266,6 +1273,8 @@ final class HabitStore {
         /// "Water: +1 glass", "Read: 12 min logged", "Skincare: Serum done".
         let text: String
         let entries: [UUID]
+        /// "30 days in a row" or "All 5 done today", when this tap reached it (Milestones, 30 Sep).
+        var milestone: String? = nil
     }
     var undoOffer: UndoOffer?
 
@@ -1273,18 +1282,51 @@ final class HabitStore {
     /// nothing (an untick, starting a timer) takes away an offer for the same habit, which would now be out of date.
     func withUndo(_ habit: Habit, on day: LocalDay, _ action: () -> Void) {
         let before = Set(entries.lazy.filter { $0.habitID == habit.id }.map(\.id))
+        let marks = settings.milestones ? MilestoneMarks(streak: streak(of: habit, asOf: today()), day: dayTotals(on: day)) : nil
         action()
         Task { @MainActor in
             await flush()
             let added = entries.filter { $0.habitID == habit.id && !before.contains($0.id) }
+            let reached = added.isEmpty ? nil : marks.flatMap { milestone(habit, on: day, since: $0) }
             withAnimation(.snappy) {
                 if added.isEmpty {
                     if undoOffer?.habit == habit.id { undoOffer = nil }
                 } else {
-                    undoOffer = UndoOffer(habit: habit.id, day: day, text: undoText(habit, added, on: day), entries: added.map(\.id))
+                    undoOffer = UndoOffer(habit: habit.id, day: day, text: undoText(habit, added, on: day), entries: added.map(\.id),
+                                          milestone: reached)
                 }
             }
         }
+    }
+
+    /// The streak and the day's count just before a tap, to see what the tap reached.
+    private struct MilestoneMarks {
+        let streak: Int
+        let day: (done: Int, total: Int)
+    }
+
+    /// What a tap reached: a streak milestone (only while streaks are shown), else the whole day done. Streaks are
+    /// counted as of today, so filling in a past day that joins two runs is marked too.
+    private func milestone(_ habit: Habit, on day: LocalDay, since marks: MilestoneMarks) -> String? {
+        let unit = rule(habit, on: today()).frequency.streakUnit
+        let current = streak(of: habit, asOf: today())
+        if settings.showStreaks, current > marks.streak, unit.isMilestone(current) {
+            return unit.inARow(current)
+        }
+        let now = dayTotals(on: day)
+        if now.total > 1, now.done == now.total, marks.day.done < marks.day.total {
+            return "All \(now.total) done" + (day == today() ? " today" : "")
+        }
+        return nil
+    }
+
+    /// Habits planned on a day (not paused, skipped, quit or limits) and how many are done, as on the widget.
+    func dayTotals(on day: LocalDay) -> (done: Int, total: Int) {
+        let planned = habits.filter { habit in
+            !habit.archived && habit.kind != .quit && !habit.atMost && startDay(of: habit) <= day && isDue(habit, on: day)
+                && !isPaused(habit, on: day) && !isSkipped(habit, on: day)
+        }
+        return (planned.filter { isSatisfied($0, on: day) }.count, planned.count)
     }
 
     /// Takes back what the offer logged, and the "Add note" that came with it.

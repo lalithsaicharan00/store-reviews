@@ -127,6 +127,13 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Your Data: in the phone's backups; Export a Spreadsheet (CSV); Save a Backup File; Restore from a Backup File (adds only what's missing)
 - [ ] Contact Support (waits for a support address)
 
+## Milestones
+
+- [x] The Undo bar says "30 days in a row" or "All 5 done today" when a tap reaches it; no pop-up, sound or confetti
+- [x] Each habit's page: milestones reached and the next one (quit habits: time since the last slip)
+- [x] Settings → Milestones (on); streak milestones follow Show Streaks
+- [ ] A milestone reached by a timer running out; sharing a milestone
+
 ## Widget
 
 - [x] Today widget, free: small, medium and large on the Home Screen; ring, next habit and a line on the Lock Screen

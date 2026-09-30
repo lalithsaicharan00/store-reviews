@@ -34,6 +34,8 @@ struct HelpView: View {
               answer: "After you log, tap Add note in the row. Or swipe the row left, or touch and hold it. A note for the whole day is at the bottom of Today."),
         Topic(id: "How streaks count",
               answer: "A streak counts the days, weeks or months in a row you met the goal: \"23\" is days, \"4 wk\" is weeks. Days that aren't the habit's days, and skipped or paused days, never break it, and today only counts once it's done. You can hide streaks in Settings."),
+        Topic(id: "Milestones",
+              answer: "When a tap reaches 7, 30, 100 or 365 in a row, or finishes the day, the bar under what you logged says so. Each habit's page lists every milestone it has reached and the next one. Turn them off in Settings → Milestones."),
         Topic(id: "How Progress counts",
               answer: "Each day a habit was planned counts once, and a weekly or monthly goal once for its week or month. Skipped and paused days don't count, and today counts once it's done. \"3 times a week\" done three times is 100%."),
         Topic(id: "My day ends after midnight",
