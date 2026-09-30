@@ -53,7 +53,7 @@ enum ProgressCheck {
             let (s, _) = await store()
             let read = Habit(name: "Read", symbol: "book", color: .blue, kind: .check, startsOn: monday)
             await add(s, read)
-            for d in [22, 23, 25] { await tick(s, read, on: day(d)) }
+            for d in [21, 22, 24] { await tick(s, read, on: day(d)) }
             s.setSkipped(read, on: day(23), true); await s.flush()
             let r = row(s, read)
             same(r?.text, "3 of 3 days so far", "G1 row")

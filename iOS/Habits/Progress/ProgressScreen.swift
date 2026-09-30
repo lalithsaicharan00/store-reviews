@@ -190,18 +190,35 @@ struct ProgressScreen: View {
         .padding(.vertical, 4)
     }
 
+    /// A month of rings, one row per week. A plain grid, not a lazy one: a lazy grid inside a list row has no height
+    /// until it's drawn, and the list re-measured the row until UIKit stopped the app (CI, 30 Sep 2026).
     private func monthRings(_ snapshot: ProgressSnapshot) -> some View {
         let calendar = store.calendar
         let first = snapshot.period.lowerBound.date(calendar: calendar)
         let lead = (calendar.component(.weekday, from: first) - calendar.firstWeekday + 7) % 7
         let symbols = calendar.veryShortStandaloneWeekdaySymbols
         let ordered = Array(symbols[(calendar.firstWeekday - 1)...] + symbols[..<(calendar.firstWeekday - 1)])
-        return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 7), spacing: 6) {
-            ForEach(Array(ordered.enumerated()), id: \.offset) {
-                Text($0.element).font(.caption2.weight(.semibold)).foregroundStyle(.secondary).accessibilityHidden(true)
+        let slots: [ProgressDay?] = Array(repeating: nil, count: lead) + snapshot.days.map { Optional($0) }
+        let weeks = stride(from: 0, to: slots.count, by: 7).map { Array(slots[$0..<min($0 + 7, slots.count)]) }
+        return VStack(spacing: 6) {
+            HStack(spacing: 0) {
+                ForEach(0..<7, id: \.self) { i in
+                    Text(ordered[i]).font(.caption2.weight(.semibold)).foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity)
+                        .accessibilityHidden(true)
+                }
             }
-            ForEach(0..<lead, id: \.self) { _ in Color.clear.frame(height: 44).accessibilityHidden(true) }
-            ForEach(snapshot.days) { ring($0) }
+            ForEach(0..<weeks.count, id: \.self) { w in
+                HStack(spacing: 0) {
+                    ForEach(0..<7, id: \.self) { i in
+                        if i < weeks[w].count, let cell = weeks[w][i] {
+                            ring(cell)
+                        } else {
+                            Color.clear.frame(maxWidth: .infinity).frame(height: 44).accessibilityHidden(true)
+                        }
+                    }
+                }
+            }
         }
         .padding(.vertical, 4)
     }
@@ -267,7 +284,7 @@ struct ProgressScreen: View {
                 if snapshot.range == .week && !typeSize.isAccessibilitySize {
                     WeekStripHeader(days: snapshot.days.map(\.day), calendar: store.calendar)
                         .listRowSeparator(.hidden)
-                        .padding(.bottom, -8)
+                        .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 0, trailing: 16))
                 }
                 ForEach(rows) { row in
                     Button { open(row.habit, snapshot) } label: {

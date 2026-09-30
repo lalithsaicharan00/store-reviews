@@ -129,9 +129,11 @@ struct MonthStrip: View {
     let color: Color
 
     var body: some View {
+        // Fixed sizes, so the row's height never depends on its width (a list re-measures rows that do): 31 dots of
+        // 5.5 points with 2.5-point gaps fit the narrowest iPhone.
         HStack(spacing: 2.5) {
             ForEach(marks) { mark in
-                dot(mark).frame(maxWidth: 7, maxHeight: 7).aspectRatio(1, contentMode: .fit)
+                dot(mark).frame(width: 5.5, height: 5.5)
             }
             Spacer(minLength: 0)
         }
