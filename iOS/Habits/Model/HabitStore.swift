@@ -65,10 +65,18 @@ final class HabitStore {
     private(set) var dataVersion = 0
     /// Progress's day scores, kept until the data or the day changes, so going back and forth between periods and
     /// the last-period line reuse days already worked out (speed run, 30 Sep 2026).
-    @ObservationIgnored var progressScores: [LocalDay: DayScore] = [:]
+    /// Kept per group too (nil is All), so switching Progress's group chips reuses days already worked out.
+    @ObservationIgnored var progressScores: [ProgressScoreKey: DayScore] = [:]
     @ObservationIgnored var progressScoresKey = ""
     /// Quit habits: what the habit cost a day, for "Saved so far" (report §10.5, Phase 3). Optional.
     private(set) var costs: [UUID: HabitCost] = [:]
+    /// Groups (Build Plan #68; `Docs/Specs/Groups — What to Build.md`): optional, none until the person makes one, in
+    /// the order they're shown everywhere (A to Z until the person drags one).
+    private(set) var groups: [HabitGroup] = []
+    /// The person dragged the groups into their own order; false means A to Z.
+    private(set) var groupsManual = false
+    /// Each habit's group, rebuilt only when groups change, so filtering is one lookup per habit. One group per habit.
+    private(set) var groupOf: [UUID: UUID] = [:]
     /// The row just logged on Today: it offers "Add note" in place (Way of Life's inline note, notes UX report).
     /// Only one row at a time; nothing pops up by itself.
     var noteOffer: NoteOffer?
@@ -781,6 +789,82 @@ final class HabitStore {
         }
     }
 
+    // MARK: Groups
+
+    /// Adds a group or saves an edited one. Its habits leave any other group: a habit is in one group at a time.
+    func saveGroup(_ group: HabitGroup) {
+        var group = group
+        group.name = TextLimit.clean(group.name, TextLimit.group)
+        guard !group.name.isEmpty else { return }
+        perform { [self] in
+            let members = Set(group.habits)
+            var list = groups
+            for i in list.indices where list[i].id != group.id { list[i].habits.removeAll { members.contains($0) } }
+            if let i = list.firstIndex(where: { $0.id == group.id }) { list[i] = group } else { list.append(group) }
+            try await storeGroups(list, manual: groupsManual)
+        }
+    }
+
+    /// Deletes a group. Its habits stay, with no group, and keep all their history.
+    func deleteGroup(_ id: UUID) {
+        perform { [self] in
+            try await storeGroups(groups.filter { $0.id != id }, manual: groupsManual)
+        }
+    }
+
+    /// Puts a habit in a group, or in none; it leaves the group it was in.
+    func setGroup(_ groupID: UUID?, of habitID: UUID) {
+        perform { [self] in
+            guard groupOf[habitID] != groupID else { return }
+            var list = groups
+            for i in list.indices {
+                list[i].habits.removeAll { $0 == habitID }
+                if list[i].id == groupID { list[i].habits.append(habitID) }
+            }
+            try await storeGroups(list, manual: groupsManual)
+        }
+    }
+
+    /// Dragging a group sets the person's own order ("Your order"), used everywhere groups are listed (report 24).
+    func moveGroups(from: IndexSet, to: Int) {
+        var list = groups
+        list.move(fromOffsets: from, toOffset: to)
+        perform { [self] in try await storeGroups(list, manual: true) }
+    }
+
+    /// Back to A to Z.
+    func sortGroupsAZ() {
+        perform { [self] in try await storeGroups(groups, manual: false) }
+    }
+
+    /// Writes the groups and shows them: A to Z unless the order is the person's own, each habit in one group only.
+    private func storeGroups(_ list: [HabitGroup], manual: Bool) async throws {
+        var seen = Set<UUID>()
+        var cleaned = list.map { group -> HabitGroup in
+            var group = group
+            group.habits = group.habits.filter { seen.insert($0).inserted }
+            return group
+        }
+        if !manual { cleaned = HabitGroup.sortedAZ(cleaned) }
+        if cleaned.isEmpty {
+            try await repository.removeSetting(key: Keys.groups)
+        } else {
+            let json = String(decoding: try JSONEncoder().encode(cleaned), as: UTF8.self)
+            try await repository.saveSetting(key: Keys.groups, value: json)
+        }
+        if manual { try await repository.saveSetting(key: Keys.groupsOrder, value: "manual") }
+        else { try await repository.removeSetting(key: Keys.groupsOrder) }
+        withAnimation { applyGroups(cleaned, manual: manual) }
+    }
+
+    private func applyGroups(_ list: [HabitGroup], manual: Bool) {
+        groups = list
+        groupsManual = manual
+        var map: [UUID: UUID] = [:]
+        for group in list { for id in group.habits where map[id] == nil { map[id] = group.id } }
+        groupOf = map
+    }
+
     // MARK: Loading
 
     /// Reads everything from the database. Rows this version can't read are skipped, never deleted.
@@ -800,6 +884,8 @@ final class HabitStore {
             var loadedDescriptions: [UUID: String] = [:]
             var loadedArchived: [UUID: LocalDay] = [:]
             var loadedCosts: [UUID: HabitCost] = [:]
+            var loadedGroups: [HabitGroup] = []
+            var manualGroups = false
             var upgradedV1 = false, repaired = false
             for setting in snapshot.settings {
                 switch setting.key {
@@ -807,6 +893,9 @@ final class HabitStore {
                 case Keys.placementV2: repaired = true
                 case Keys.dayEndHour: loaded.dayEndHour = Int(setting.value) ?? 0
                 case Keys.weekStart: loaded.weekStart = Int(setting.value) ?? loaded.weekStart
+                case Keys.groups:
+                    loadedGroups = (try? JSONDecoder().decode([HabitGroup].self, from: Data(setting.value.utf8))) ?? []
+                case Keys.groupsOrder: manualGroups = setting.value == "manual"
                 case Keys.sections:
                     if let list = try? JSONDecoder().decode([DaySection].self, from: Data(setting.value.utf8)), !list.isEmpty {
                         sections = list
@@ -874,6 +963,7 @@ final class HabitStore {
             dayNotes = loadedDayNotes
             descriptions = loadedDescriptions
             costs = loadedCosts
+            applyGroups(manualGroups ? loadedGroups : HabitGroup.sortedAZ(loadedGroups), manual: manualGroups)
             // Habits archived before archive dates were kept: the day after their last log (or their first day), so
             // their history stays and nothing after it counts.
             let archivedHabits = habits.filter(\.archived)
@@ -905,6 +995,8 @@ final class HabitStore {
         static let descriptionPrefix = "desc."
         static let archivedPrefix = "archived."
         static let costPrefix = "cost."
+        static let groups = "groups"
+        static let groupsOrder = "groups_order"
         static let sections = "day_sections"
         static let placementV1 = "placement_v1"
         static let placementV2 = "placement_v2"
@@ -1414,6 +1506,20 @@ final class HabitStore {
             settings: [])
         do { try await repository.importAll(snapshot: snapshot) } catch { problem = "Demo data couldn't be saved." }
         await load()
+        let arguments = ProcessInfo.processInfo.arguments
+        if arguments.contains("-groups-demo") {
+            // Groups to test and measure with (groups spec §5): three areas, one empty group, and habits with none.
+            // The speed tests' copies ("Water 2") join their original's group.
+            func members(_ names: [String]) -> [UUID] {
+                habits.filter { habit in names.contains { habit.name == $0 || habit.name.hasPrefix($0 + " ") } }.map(\.id)
+            }
+            saveGroup(HabitGroup(name: "Health", color: .green,
+                                 habits: members(["Water", "Stretch", "Brush teeth", "Meds", "Walk", "Floss", "Skincare"])))
+            saveGroup(HabitGroup(name: "Mind", color: .purple, habits: members(["Read", "Meditate", "No screens", "Plan tomorrow"])))
+            saveGroup(HabitGroup(name: "Home", color: .orange, habits: members(["Call family", "Bed by 23:00", "Smoking"])))
+            saveGroup(HabitGroup(name: "Reading", color: .indigo))
+            await flush()
+        }
         if ProcessInfo.processInfo.arguments.contains("-longtext") {
             // Every section name at its limit, to test layouts.
             let long = ["Before breakfast", "Lunch break walk", "Once kids sleep"] // 16, 16, 15: at the limit

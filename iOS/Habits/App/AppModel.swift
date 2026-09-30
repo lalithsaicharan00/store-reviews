@@ -34,8 +34,9 @@ final class AppModel {
         var opened: Persistence?
         if arguments.contains("-uitest") {
             opened = Persistence.inMemory()
-            // Each UI test starts with Progress's view options as a new person has them.
-            for key in [ProgressOptions.showPercentages, ProgressOptions.showStreaks, ProgressOptions.range, ProgressOptions.fullDay] {
+            // Each UI test starts with Progress's view options and the group filters as a new person has them.
+            for key in [ProgressOptions.showPercentages, ProgressOptions.showStreaks, ProgressOptions.range, ProgressOptions.fullDay,
+                        GroupFilter.today, GroupFilter.progress] {
                 UserDefaults.standard.removeObject(forKey: key)
             }
         } else if let i = arguments.firstIndex(of: "-dbname"), i + 1 < arguments.count {

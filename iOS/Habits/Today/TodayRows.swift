@@ -575,7 +575,7 @@ struct EditHabitSheet: View {
     var body: some View {
         NavigationStack {
             HabitForm(editing: store.habits.first { $0.id == habit.id } ?? habit, weekStart: store.settings.weekStart,
-                      description: store.description(of: habit) ?? "") { _ in onSaved() }
+                      description: store.description(of: habit) ?? "", group: store.groupOf[habit.id]) { _ in onSaved() }
         }
     }
 }

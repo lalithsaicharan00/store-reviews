@@ -4,18 +4,23 @@ import SwiftUI
 /// day, and the day's notes. It never logs; "Show on Today" opens the day on Today, where logging happens.
 struct ProgressDaySheet: View {
     let day: LocalDay
+    /// The group Progress is showing; the sheet shows that group's habits (nil is All).
+    var group: UUID? = nil
     let onShowOnToday: () -> Void
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        let detail = store.progressDayDetail(on: day)
+        let detail = store.progressDayDetail(on: day, group: group)
+        let groupName = group.flatMap { id in store.groups.first { $0.id == id }?.name }
         let calendar = store.calendar
         NavigationStack {
             List {
                 Section {
                     Text(summary(detail)).font(.headline).monospacedDigit()
                         .accessibilityIdentifier("progress-day-summary")
+                } header: {
+                    if let groupName { Text(groupName) }
                 }
                 if let note = detail.dayNote {
                     Section("Note for the Day") { Text(note) }

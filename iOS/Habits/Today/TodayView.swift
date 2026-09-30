@@ -20,6 +20,9 @@ struct TodayView: View {
 
     @State private var showCalendar = false
     @State private var showNewHabit = false
+    @State private var showFilter = false
+    /// The group Today shows ("" is All), remembered when the app reopens (Navigation, Round 3; groups spec §2).
+    @AppStorage(GroupFilter.today) private var groupRaw = ""
     /// The habit just added, revealed once the sheet closes.
     @State private var added: UUID?
     /// A row or header to scroll to, and the row that flashes briefly after Add.
@@ -65,9 +68,14 @@ struct TodayView: View {
                     .onAppear { playerCovering = true }
             }
             .sheet(isPresented: $showSections) { DaySectionsView() }
+            .sheet(isPresented: $showFilter) {
+                FilterSheet(day: selectedDay, selection: $groupRaw)
+                    .presentationBackground(Color(.systemBackground))
+                    .presentationDragIndicator(.visible)
+            }
 
             .sheet(isPresented: $showNewHabit, onDismiss: revealAdded) {
-                NewItemView { added = $0 }
+                NewItemView(group: filterGroup) { added = $0 }
             }
         }
         #if DEBUG && targetEnvironment(simulator)
@@ -98,8 +106,10 @@ struct TodayView: View {
             // A tapped notification opens today's section.
             guard let section = router.focusSection else { return }
             router.focusSection = nil
-            // Back to Today itself first: the menu closes and any page it opened goes.
+            // Back to Today itself first: the menu closes and any page it opened goes. The whole day shows, so the
+            // section's habits aren't hidden by a group filter.
             menu.reset()
+            groupRaw = ""
             Task {
                 if day != nil && day != store.today() { day = nil; try? await Task.sleep(for: .milliseconds(50)) }
                 foldOverrides[section] = true
@@ -114,6 +124,8 @@ struct TodayView: View {
     }
 
     private var selectedDay: LocalDay { day ?? store.today() }
+    /// The group Today is filtered to; nil is All (a deleted group reads as All).
+    private var filterGroup: UUID? { store.existingGroup(groupRaw) }
 
     /// The note bar for a habit's note or the day's note.
     @ViewBuilder private func noteBar(_ target: HabitStore.NoteTarget) -> some View {
@@ -201,6 +213,8 @@ struct TodayView: View {
         Task {
             await store.flush()
             guard let habit = store.habits.first(where: { $0.id == id }) else { return }
+            // Put in another group than the one shown (or none): show everything, so it doesn't seem lost.
+            if !store.isInGroup(habit, filterGroup) { groupRaw = "" }
             let today = store.today()
             if day != nil && day != today {
                 day = nil
@@ -228,7 +242,9 @@ struct TodayView: View {
         let today = store.today(now: now)
         let shown = day ?? today
         let isToday = shown == today
-        let active = store.habits.filter { !$0.archived && store.startDay(of: $0) <= shown }
+        // A group filter shows only that group's habits, in every card (groups spec §2); All shows everything.
+        let group = filterGroup
+        let active = store.habits.filter { !$0.archived && store.startDay(of: $0) <= shown && store.isInGroup($0, group) }
         let quitting = active.filter { $0.kind == .quit && !store.isPaused($0, on: today) }
         // Paused habits leave their cards for one folded card at the bottom, so they're never lost (pause report).
         let paused = active.filter { store.isPaused($0, on: shown) && ($0.kind != .quit || isToday) }
@@ -253,6 +269,44 @@ struct TodayView: View {
             let rows = rowsBySection(tracked)
             ScrollViewReader { proxy in
             List {
+                // The filter is always obvious, and one tap clears it (Day Structure report §2.8: no hidden habits).
+                if let group, let shownGroup = store.groups.first(where: { $0.id == group }) {
+                    Section {
+                        HStack(spacing: 8) {
+                            Button { withAnimation { groupRaw = "" } } label: {
+                                HStack(spacing: 6) {
+                                    Circle().fill(shownGroup.color.color).frame(width: 9, height: 9)
+                                    Text(shownGroup.name).lineLimit(1)
+                                    Image(systemName: "xmark").font(.caption.weight(.bold))
+                                }
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(Color.onInk)
+                                .padding(.horizontal, 12)
+                                .frame(minHeight: 32)
+                                .background(Color.ink, in: Capsule())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Showing \(shownGroup.name) only")
+                            .accessibilityHint("Shows all habits")
+                            .accessibilityIdentifier("group-filter-chip")
+                            Spacer()
+                        }
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4))
+                        if tracked.isEmpty && quitting.isEmpty && paused.isEmpty {
+                            VStack(spacing: 10) {
+                                Text("Nothing from \(shownGroup.name) on this day.")
+                                    .foregroundStyle(.secondary)
+                                    .accessibilityIdentifier("group-empty-day")
+                                Button("Show All") { withAnimation { groupRaw = "" } }
+                                    .buttonStyle(.bordered)
+                                    .accessibilityIdentifier("group-show-all")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 8)
+                        }
+                    }
+                }
                 // The day's note, when there is one: context for the whole day, above its habits (notes report).
                 if shown <= today, let note = store.dayNote(on: shown) {
                     Section {
@@ -425,6 +479,8 @@ struct TodayView: View {
 
     /// From the timer bar: open the timer's section and bring its row into view.
     private func show(_ habit: Habit) {
+        // Its row may be filtered out: show everything so the row is there.
+        if !store.isInGroup(habit, filterGroup) { groupRaw = "" }
         let placements = store.placements(of: habit)
         let slot = store.timerSlots[habit.id]
         guard let section = (placements.first { slot != nil && $0.slot == slot } ?? placements.first)?.section else { return }
@@ -501,7 +557,13 @@ struct TodayView: View {
             .accessibilityIdentifier("menu-button")
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Filter", systemImage: "line.3.horizontal.decrease.circle") {}
+            // Filled while a group is chosen, so a filtered Today never passes for the whole day.
+            let shownGroup = filterGroup.flatMap { id in store.groups.first { $0.id == id } }
+            Button("Filter", systemImage: shownGroup == nil ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill") {
+                showFilter = true
+            }
+            .accessibilityValue(shownGroup?.name ?? "")
+            .accessibilityIdentifier("filter-button")
             Button("New Habit", systemImage: "plus") { showNewHabit = true }
         }
     }

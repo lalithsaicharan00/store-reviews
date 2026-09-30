@@ -101,6 +101,29 @@ struct ProgressQuitRow: Hashable, Identifiable {
     var id: UUID { habit.id }
 }
 
+/// A day score kept for Progress: per day, and per group (nil is All).
+struct ProgressScoreKey: Hashable {
+    let day: LocalDay
+    let group: UUID?
+}
+
+/// One group's bar in the Groups card (report §15): its done of planned for the period.
+struct ProgressGroupBar: Hashable, Identifiable {
+    let group: HabitGroup
+    let tally: ProgressTally
+    var id: UUID { group.id }
+}
+
+/// The Habits card's rows under one heading: a group with its done of planned, or all habits ("Habits").
+struct ProgressRowSection: Hashable, Identifiable {
+    /// Nil: "Habits" (no groups, or one group chosen) or "No Group" (`ungrouped`).
+    let group: HabitGroup?
+    var ungrouped = false
+    let rows: [ProgressHabitRow]
+    var tally: ProgressTally?
+    var id: String { group?.id.uuidString ?? (ungrouped ? "none" : "all") }
+}
+
 /// Everything Progress shows for one range and period, worked out once per change (report §20).
 struct ProgressSnapshot {
     let range: ProgressRange
@@ -123,6 +146,12 @@ struct ProgressSnapshot {
     var yearDots: YearDots? = nil
     /// What counts as a full day (1, 0.8 or 0.6).
     var fullAt: Double = 1
+    /// The group chosen by the chip row; nil is All.
+    var group: UUID? = nil
+    /// With All and groups: one bar per group, in the groups' order (never ranked, report §15).
+    var groupBars: [ProgressGroupBar] = []
+    /// The habit rows under their headings: by group when All is chosen and groups exist, else one "Habits".
+    var sections: [ProgressRowSection] = []
 
     var isRunning: Bool { period.contains(today) }
     /// The overview shows when any day in the period has something planned.
@@ -225,19 +254,24 @@ extension HabitStore {
     /// Everything Progress shows for `range` around `anchor`. Reads the store's own functions only; nothing here
     /// changes data.
     func progressSnapshot(_ range: ProgressRange, containing anchor: LocalDay, today: LocalDay? = nil,
-                          fullAt: Double = 1) -> ProgressSnapshot {
+                          fullAt: Double = 1, group: UUID? = nil) -> ProgressSnapshot {
         let today = today ?? self.today()
         let span = period(range.kind, containing: anchor)
-        let tracked = habits.filter { $0.kind != .task && $0.kind != .quit }
-        // Day scores for Progress's habit list, kept until the data or the day changes.
+        // A group chosen on the chip row: every number is that group's (report §15). A deleted group is All.
+        let group = group.flatMap { id in groups.contains { $0.id == id } ? id : nil }
+        let allTracked = habits.filter { $0.kind != .task && $0.kind != .quit }
+        let tracked = allTracked.filter { isInGroup($0, group) }
+        // Day scores for Progress's habit list (per group), kept until the data or the day changes.
         let cacheKey = "\(dataVersion)|\(today.key)|\(settings.weekStart)|\(settings.dayEndHour)"
         if progressScoresKey != cacheKey { progressScores = [:]; progressScoresKey = cacheKey }
-        func score(_ day: LocalDay) -> DayScore {
-            if let known = progressScores[day] { return known }
-            let made = dayScore(on: day, habits: tracked, today: today)
-            progressScores[day] = made
+        func score(_ day: LocalDay, _ scope: UUID?, _ list: [Habit]) -> DayScore {
+            let key = ProgressScoreKey(day: day, group: scope)
+            if let known = progressScores[key] { return known }
+            let made = dayScore(on: day, habits: list, today: today)
+            progressScores[key] = made
             return made
         }
+        func score(_ day: LocalDay) -> DayScore { score(day, group, tracked) }
         let cells = days(in: span).map { day in
             ProgressDay(day: day, score: score(day), isToday: day == today, isFuture: day > today)
         }
@@ -270,7 +304,8 @@ extension HabitStore {
 
         var quitting: [ProgressQuitRow] = []
         let now = clock()
-        for habit in habits where habit.kind == .quit && !habit.archived && quitStartDay(of: habit) <= min(span.upperBound, today) {
+        for habit in habits where habit.kind == .quit && !habit.archived && isInGroup(habit, group)
+            && quitStartDay(of: habit) <= min(span.upperBound, today) {
             let stats = quitStats(of: habit, in: span, now: now)
             let history = quitHistory(of: habit, now: now)
             let best = history.map { $0.length(now: now) }.max() ?? 0
@@ -293,6 +328,27 @@ extension HabitStore {
             for i in rows.indices { rows[i].yearDots = rowYearDots(rows[i], span) }
             for i in archived.indices { archived[i].yearDots = rowYearDots(archived[i], span) }
         }
+
+        // Groups (report §15): with All, a bar per group and the rows under each group's heading, in the groups' order.
+        var bars: [ProgressGroupBar] = []
+        var sections: [ProgressRowSection] = []
+        if group == nil && !groups.isEmpty {
+            for g in groups {
+                let list = allTracked.filter { groupOf[$0.id] == g.id }
+                guard !list.isEmpty else { continue }
+                let tally = progressTally(days(in: span).map { day in
+                    ProgressDay(day: day, score: score(day, g.id, list), isToday: day == today, isFuture: day > today)
+                }, fullAt: fullAt)
+                bars.append(ProgressGroupBar(group: g, tally: tally))
+                let groupRows = rows.filter { groupOf[$0.habit.id] == g.id }
+                if !groupRows.isEmpty { sections.append(ProgressRowSection(group: g, rows: groupRows, tally: tally)) }
+            }
+            let rest = rows.filter { groupOf[$0.habit.id] == nil }
+            if !rest.isEmpty { sections.append(ProgressRowSection(group: nil, ungrouped: true, rows: rest)) }
+        } else if !rows.isEmpty {
+            sections = [ProgressRowSection(group: nil, rows: rows)]
+        }
+
         return ProgressSnapshot(
             range: range, period: span, today: today, title: periodTitle(range, span, today: today),
             days: cells, tally: progressTally(cells, fullAt: fullAt), goals: goals.total > 0 ? goals : nil, previous: previous,
@@ -300,7 +356,8 @@ extension HabitStore {
             canGoBack: earliest.map { $0 < span.lowerBound } ?? false,
             canGoForward: span.upperBound < today,
             hasHabits: habits.contains { $0.kind != .task },
-            yearDots: range == .year ? overviewYearDots(cells, year: span, fullAt: fullAt) : nil, fullAt: fullAt)
+            yearDots: range == .year ? overviewYearDots(cells, year: span, fullAt: fullAt) : nil, fullAt: fullAt,
+            group: group, groupBars: bars, sections: sections)
     }
 
     static func rank(_ k: GoalPeriod) -> Int {
@@ -589,9 +646,9 @@ extension HabitStore {
 
     /// The Day sheet: every habit planned that day with its mark and value, week goals logged that day, and the
     /// day's notes (report §7.4). Tasks and quit habits aren't in it.
-    func progressDayDetail(on day: LocalDay, today: LocalDay? = nil) -> ProgressDayDetail {
+    func progressDayDetail(on day: LocalDay, today: LocalDay? = nil, group: UUID? = nil) -> ProgressDayDetail {
         let today = today ?? self.today()
-        let tracked = habits.filter { $0.kind != .task && $0.kind != .quit && startDay(of: $0) <= day }
+        let tracked = habits.filter { $0.kind != .task && $0.kind != .quit && startDay(of: $0) <= day && isInGroup($0, group) }
         var rows: [ProgressDayRow] = []
         for habit in tracked {
             if let row = progressDayRow(habit, on: day, today: today) { rows.append(row) }

@@ -83,6 +83,8 @@ enum ItemType: String, CaseIterable, Identifiable {
 /// form. Each question is its own list, pushed in the same sheet, so every step looks and moves
 /// the same way (spec: iOS/Docs/Specs/New Habit Goal and Time of Day.md §1).
 struct NewItemView: View {
+    /// The group Today is filtered to: a habit made while looking at it goes in it.
+    var group: UUID? = nil
     /// Called with the new habit's ID, so Today can show where it went.
     var onAdded: (UUID) -> Void = { _ in }
     @Environment(HabitStore.self) private var store
@@ -152,7 +154,7 @@ struct NewItemView: View {
         if type.isHabit && !store.canAddHabit {
             PlusView()
         } else {
-            HabitForm(type: type, onSaved: { onAdded($0); dismiss() })
+            HabitForm(type: type, group: group, onSaved: { onAdded($0); dismiss() })
         }
     }
 }
@@ -216,6 +218,8 @@ struct HabitForm: View {
 
     let type: ItemType
     let onSaved: (UUID) -> Void
+    /// Editing: the group as saved.
+    private let originalGroup: UUID?
     /// Editing: the habit as saved. The form opens filled in, shows only what can change (how it's tracked is
     /// fixed and never shown, spec §8) and saves with Save.
     private let original: Habit?
@@ -272,16 +276,21 @@ struct HabitForm: View {
     @State private var remindersEdited = false
     @State private var alert: AlertStyle = .notification
     @State private var followUp: Int?
+    /// Its group (Build Plan #68): optional; the row shows once any group exists. A new habit made while Today is
+    /// filtered to a group starts in it (so it doesn't vanish from the list it was added to), and the row says so.
+    @State private var groupID: UUID?
 
     @State private var notificationsDenied = false
     @State private var alarmsDenied = false
     @State private var confirmDiscard = false
     @FocusState private var focus: Field?
 
-    init(type: ItemType, onSaved: @escaping (UUID) -> Void) {
+    init(type: ItemType, group: UUID? = nil, onSaved: @escaping (UUID) -> Void) {
         self.type = type
         self.onSaved = onSaved
         original = nil
+        originalGroup = nil
+        _groupID = State(initialValue: group)
         _color = State(initialValue: .blue)
         _symbol = State(initialValue: type == .quit ? "nosign" : type == .task ? "calendar" : "star.fill")
         // Amounts start empty (left out of the sentence): the right amount depends on the person. How often starts
@@ -297,10 +306,12 @@ struct HabitForm: View {
     }
 
     /// Opens the form on a saved habit, every row as it is now.
-    init(editing habit: Habit, weekStart: Int, description: String = "", onSaved: @escaping (UUID) -> Void) {
+    init(editing habit: Habit, weekStart: Int, description: String = "", group: UUID? = nil, onSaved: @escaping (UUID) -> Void) {
         type = ItemType(habit)
         self.onSaved = onSaved
         original = habit
+        originalGroup = group
+        _groupID = State(initialValue: group)
         originalDescription = description
         _descriptionText = State(initialValue: description)
         _name = State(initialValue: habit.name)
@@ -366,6 +377,7 @@ struct HabitForm: View {
     }
     private var editChanged: Bool {
         (edited.map { $0 != original } ?? false) || TextLimit.clean(descriptionText, TextLimit.descriptionText) != originalDescription
+            || groupID != originalGroup
     }
 
     private var trimmedName: String { TextLimit.clean(name, TextLimit.name) }
@@ -438,11 +450,13 @@ struct HabitForm: View {
             switch type {
             case .quit:
                 quitSection
+                if showsGroup { Section { groupRow } }
             case .task:
                 taskSection
                 if taskRepeats { Section { repeatRow } }
                 Section {
                     timeOfDayRow
+                    if showsGroup { groupRow }
                     remindersRow
                 }
                 if taskRepeats { startEndSection }
@@ -451,6 +465,7 @@ struct HabitForm: View {
                 if type == .amount { tapSection }
                 Section {
                     timeOfDayRow
+                    if showsGroup { groupRow }
                     remindersRow
                 }
                 startEndSection
@@ -589,6 +604,18 @@ struct HabitForm: View {
             }
         }
         .accessibilityLabel("\(title), \(value)")
+    }
+
+    /// Groups are invisible until the person makes one (Day Structure report §2.8: never forced).
+    private var showsGroup: Bool { !store.groups.isEmpty || groupID != nil }
+
+    /// Group: what area of life it's in, beside Time of Day (when). Optional; None by default.
+    private var groupRow: some View {
+        screenRow("Group", value: groupID.flatMap { id in store.groups.first { $0.id == id }?.name } ?? "None") {
+            GroupPicker(selection: $groupID)
+                .onAppear { focus = nil }
+        }
+        .accessibilityIdentifier("group-row")
     }
 
     /// A repeating task's How often: the habit screen without counts, plus "After it's done" (29 Sep).
@@ -1149,6 +1176,7 @@ struct HabitForm: View {
             if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
             store.update(habit)
             store.setDescription(descriptionText, of: habit.id)
+            if groupID != originalGroup { store.setGroup(groupID, of: habit.id) }
             onSaved(habit.id)
             dismiss()
             return
@@ -1158,6 +1186,7 @@ struct HabitForm: View {
         if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
         store.add(habit)
         store.setDescription(descriptionText, of: habit.id)
+        if let groupID, store.groups.contains(where: { $0.id == groupID }) { store.setGroup(groupID, of: habit.id) }
         onSaved(habit.id)
     }
 }

@@ -86,7 +86,7 @@ final class TodayUITests: XCTestCase {
         XCTAssertTrue(menu.waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["All habits"].exists, "All Habits moved into the menu")
         XCTAssertFalse(app.buttons["Settings"].exists, "The avatar became the menu")
-        XCTAssertTrue(app.buttons["Filter"].exists)
+        XCTAssertTrue(app.buttons["filter-button"].exists, "Filter, beside +")
         XCTAssertTrue(app.buttons["New Habit"].exists)
 
         menu.tap()

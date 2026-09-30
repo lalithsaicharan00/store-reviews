@@ -28,7 +28,16 @@ struct AllHabitsView: View {
         List(selection: editMode.isEditing ? $selection : nil) {
             switch kind {
             case .habits:
-                group("Habits", active.filter { $0.kind != .quit })
+                let habits = active.filter { $0.kind != .quit }
+                if store.groups.isEmpty {
+                    group("Habits", habits)
+                } else {
+                    // With groups: one section per group in the groups' order, then the rest (groups spec §2).
+                    ForEach(store.groups) { g in
+                        group(g.name, habits.filter { store.groupOf[$0.id] == g.id }, color: g.color)
+                    }
+                    group("No Group", habits.filter { store.groupOf[$0.id] == nil })
+                }
                 group("Quitting", active.filter { $0.kind == .quit })
             case .tasks:
                 group(nil, active)
@@ -95,7 +104,7 @@ struct AllHabitsView: View {
         deleting.count == 1 ? "Delete \(deleting[0].name)?" : "Delete \(deleting.count) Habits?"
     }
 
-    @ViewBuilder private func group(_ title: String?, _ list: [Habit]) -> some View {
+    @ViewBuilder private func group(_ title: String?, _ list: [Habit], color: HabitColor? = nil) -> some View {
         if !list.isEmpty {
             Section {
                 ForEach(list) { row($0) }
@@ -105,7 +114,12 @@ struct AllHabitsView: View {
                         store.reorder(ids)
                     }
             } header: {
-                if let title { Text(title) }
+                if let title {
+                    HStack(spacing: 6) {
+                        if let color { Circle().fill(color.color).frame(width: 8, height: 8) }
+                        Text(title)
+                    }
+                }
             }
         }
     }

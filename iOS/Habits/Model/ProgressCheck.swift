@@ -368,6 +368,71 @@ enum ProgressCheck {
             runsAgree(s, run, "G16")
         }
 
+        // G18, groups (groups spec §5): one group per habit, the order, and group numbers that add up to All.
+        // A and B in Health, C in Mind, D in none, Zeta empty; all daily from Mon 21. A done Mon–Thu, B Mon, C Mon–Wed.
+        do {
+            let (s, persistence) = await store()
+            let habits = ["A", "B", "C", "D"].map { Habit(name: $0, symbol: "star", color: .blue, kind: .check, startsOn: monday) }
+            for h in habits { await add(s, h) }
+            let (a, b, c, d) = (habits[0], habits[1], habits[2], habits[3])
+            for n in 21...24 { await tick(s, a, on: day(n)) }
+            await tick(s, b, on: monday)
+            for n in 21...23 { await tick(s, c, on: day(n)) }
+            let health = HabitGroup(name: "Health", color: .green, habits: [a.id, b.id])
+            var mind = HabitGroup(name: "Mind", color: .purple, habits: [c.id])
+            let zeta = HabitGroup(name: "Zeta", color: .gray)
+            s.saveGroup(zeta); s.saveGroup(mind); s.saveGroup(health); await s.flush()
+            same(s.groups.map(\.name), ["Health", "Mind", "Zeta"], "G18 A to Z")
+            same(s.groupOf[a.id], health.id, "G18 A in Health")
+            same(s.groupOf[d.id], nil, "G18 D in none")
+            // One group per habit: putting A in Mind takes it out of Health.
+            mind.habits = [c.id, a.id]
+            s.saveGroup(mind); await s.flush()
+            same(s.groupOf[a.id], mind.id, "G18 A moved to Mind")
+            same(s.groups.first { $0.id == health.id }?.habits, [b.id], "G18 A left Health")
+            s.setGroup(health.id, of: a.id); await s.flush()
+            same(s.groupOf[a.id], health.id, "G18 setGroup moves A back")
+            same(s.groups.first { $0.id == mind.id }?.habits, [c.id], "G18 A left Mind")
+            same(s.groupCount(nil, on: friday), 4, "G18 All chip counts today's habits")
+            same(s.groupCount(health.id, on: friday), 2, "G18 Health chip")
+            same(s.groupCount(zeta.id, on: friday), nil, "G18 empty group is –")
+
+            // The numbers: Health 5 of 8, Mind 3 of 4, none 0 of 4, All 8 of 16 (today adds only what's done).
+            let all = s.progressSnapshot(.week, containing: friday)
+            same(all.tally.done, 8, "G18 All done"); same(all.tally.planned, 16, "G18 All planned")
+            same(all.groupBars.map(\.group.name), ["Health", "Mind"], "G18 bars in group order, empty group left out")
+            same(all.groupBars.map { "\($0.tally.done)/\($0.tally.planned)" }, ["5/8", "3/4"], "G18 bar tallies")
+            same(all.sections.map { $0.group?.name ?? ($0.ungrouped ? "No Group" : "Habits") }, ["Health", "Mind", "No Group"], "G18 sections")
+            let sum = all.groupBars.reduce(0) { $0 + $1.tally.planned } + 4
+            same(sum, all.tally.planned, "G18 groups and No Group add up to All")
+            let onlyHealth = s.progressSnapshot(.week, containing: friday, group: health.id)
+            same("\(onlyHealth.tally.done)/\(onlyHealth.tally.planned)", "5/8", "G18 Health chosen")
+            same(onlyHealth.sections.map { $0.rows.map(\.habit.name) }, [["A", "B"]], "G18 Health rows under Habits")
+            expect(onlyHealth.groupBars.isEmpty, "G18 no bars with a group chosen")
+            same(s.progressDayDetail(on: monday, group: mind.id).rows.map(\.habit.name), ["C"], "G18 Day sheet for Mind")
+
+            // Order: dragging sets the person's own order, kept after reopening; Sort A to Z goes back.
+            s.moveGroups(from: [2], to: 0); await s.flush()
+            same(s.groups.map(\.name), ["Zeta", "Health", "Mind"], "G18 dragged order")
+            let reopened = HabitStore(repository: persistence.repository)
+            await reopened.load()
+            same(reopened.groups.map(\.name), ["Zeta", "Health", "Mind"], "G18 order kept after reopening")
+            expect(reopened.groupsManual, "G18 own order remembered")
+            same(reopened.groupOf[a.id], health.id, "G18 membership kept after reopening")
+            s.sortGroupsAZ(); await s.flush()
+            same(s.groups.map(\.name), ["Health", "Mind", "Zeta"], "G18 Sort A to Z")
+
+            // Deleting a group keeps its habits and their history; a deleted group reads as All.
+            s.deleteGroup(health.id); await s.flush()
+            same(s.groups.map(\.name), ["Mind", "Zeta"], "G18 Health deleted")
+            same(s.habits.count, 4, "G18 its habits stay")
+            same(s.groupOf[a.id], nil, "G18 A has no group")
+            same(s.existingGroup(health.id.uuidString), nil, "G18 a deleted group's filter is All")
+            let after = s.progressSnapshot(.week, containing: friday, group: health.id)
+            same(after.tally.done, 8, "G18 deleted group's numbers are All's")
+            same(s.streak(of: a, asOf: day(24)), 4, "G18 A's history untouched")
+        }
+
         return failures
     }
 }
