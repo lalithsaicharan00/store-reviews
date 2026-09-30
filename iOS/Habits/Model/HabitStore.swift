@@ -684,30 +684,75 @@ final class HabitStore {
         pauses[habit.id]?.contains { p in p.from <= range.upperBound && (p.through.map { $0 >= range.lowerBound } ?? true) && (p.through.map { $0 >= p.from } ?? true) } == true
     }
 
-    /// Quit habits: the current run and the best run, from the slip history. A pause ends the run it interrupts
-    /// (kept as a run, not a slip), and turning it back on starts a new one. While paused, there's no current run.
-    func quitRuns(of habit: Habit, now: Date = .now) -> (current: TimeInterval, best: TimeInterval) {
+    /// One run of a quit habit: from a start (its first day, a slip, or turning it back on) to the slip or pause that
+    /// ended it; `end` is nil for the run going on now.
+    struct QuitRun: Hashable, Sendable {
+        enum Ending: Hashable, Sendable { case slip, pause, ongoing }
+        let start: Date
+        let end: Date?
+        let endedBy: Ending
+        func length(now: Date) -> TimeInterval { max(0, (end ?? now).timeIntervalSince(start)) }
+    }
+
+    /// The slips of a quit habit, oldest first: each logged slip's own moment (Build Plan #60d), and a later "Started"
+    /// date counted as one more, as before.
+    func slips(of habit: Habit, now: Date? = nil) -> [Date] {
+        let now = now ?? clock()
         let start = habit.quitSince ?? habit.createdAt
-        var slips = entries(of: habit.id).map(\.createdAt)
+        var slips = entries(of: habit.id).map(\.createdAt).filter { $0 <= now }
         if start > habit.createdAt && !slips.contains(start) { slips.append(start) }
+        return slips.sorted()
+    }
+
+    /// Every run of a quit habit, oldest first (report §16.8). A pause ends the run it interrupts (kept as a run, not
+    /// a slip), and turning it back on starts a new one. While paused, there's no current run.
+    func quitHistory(of habit: Habit, now: Date? = nil) -> [QuitRun] {
+        let now = now ?? clock()
+        let start = habit.quitSince ?? habit.createdAt
         // Each boundary ends the run going on (if any) and may start the next.
-        var edges: [(at: Date, starts: Bool)] = slips.map { ($0, true) }
+        var edges: [(at: Date, starts: Bool, ending: QuitRun.Ending)] = slips(of: habit, now: now).map { ($0, true, .slip) }
         var pausedNow = false
         for p in pauses[habit.id] ?? [] where p.pausedAt <= now {
-            edges.append((p.pausedAt, false))
-            if let back = resumeMoment(p), back <= now { edges.append((back, true)) } else { pausedNow = true }
+            edges.append((p.pausedAt, false, .pause))
+            if let back = resumeMoment(p), back <= now { edges.append((back, true, .pause)) } else { pausedNow = true }
         }
         edges.sort { $0.at < $1.at }
         let origin = min(habit.createdAt, start)
         var runStart: Date? = origin
-        var best: TimeInterval = 0
+        var runs: [QuitRun] = []
         for edge in edges where edge.at > origin {
-            if let s = runStart { best = max(best, edge.at.timeIntervalSince(s)) }
+            if let s = runStart, edge.at > s { runs.append(QuitRun(start: s, end: edge.at, endedBy: edge.ending)) }
             runStart = edge.starts ? edge.at : nil
         }
-        guard !pausedNow, let runStart else { return (0, best) }
-        let current = max(0, now.timeIntervalSince(max(start, runStart)))
-        return (current, max(best, current))
+        if !pausedNow, let runStart { runs.append(QuitRun(start: max(start, runStart), end: nil, endedBy: .ongoing)) }
+        return runs
+    }
+
+    /// Quit habits: the current run and the best run, from `quitHistory`.
+    func quitRuns(of habit: Habit, now: Date = .now) -> (current: TimeInterval, best: TimeInterval) {
+        let history = quitHistory(of: habit, now: now)
+        let current = history.last.map { $0.endedBy == .ongoing ? $0.length(now: now) : 0 } ?? 0
+        return (current, history.map { $0.length(now: now) }.max() ?? 0)
+    }
+
+    /// Records a slip at the moment it happened (Build Plan #60d; report §10.4): an event with its own time, so runs,
+    /// slip counts and the slip list have a history. Editing "Started" stays only for fixing a wrong start. A note, if
+    /// written, is added to that day's note. Returns the entry, for Undo.
+    @discardableResult
+    func logSlip(_ habit: Habit, at moment: Date, note: String = "") -> UUID {
+        let moment = min(moment, clock())
+        let day = today(now: moment)
+        let entry = Entry(habitID: habit.id, day: day, value: 1, createdAt: moment)
+        perform { [self] in
+            try await repository.addEntry(entry: entry.record)
+            withAnimation { entries.append(entry) }
+        }
+        let note = TextLimit.clean(note, TextLimit.noteText)
+        if !note.isEmpty {
+            let existing = self.note(of: habit, on: day)
+            setNote(existing.map { $0 + "\n" + note } ?? note, of: habit, on: day)
+        }
+        return entry.id
     }
 
     // MARK: Loading
@@ -1430,8 +1475,9 @@ final class HabitStore {
             for i in 0..<3 { entries.append(Entry(habitID: call.id, day: today.adding(days: -7 * w + i, calendar: cal), value: 1)) }
         }
         // Smoking: a 45-day best run, a slip 15 days ago, and the current run since 12 days ago.
-        entries.append(Entry(habitID: smoking.id, day: today, value: 1, createdAt: ago(days: 15)))
-        entries.append(Entry(habitID: alcohol.id, day: today, value: 1, createdAt: ago(days: 60 - 13)))
+        // Slips are events on the day they happened (Build Plan #60d).
+        entries.append(Entry(habitID: smoking.id, day: self.today(now: ago(days: 15)), value: 1, createdAt: ago(days: 15)))
+        entries.append(Entry(habitID: alcohol.id, day: self.today(now: ago(days: 60 - 13)), value: 1, createdAt: ago(days: 60 - 13)))
 
         // Today, as in the afternoon design.
         entries.append(Entry(habitID: read.id, day: today, value: 12))

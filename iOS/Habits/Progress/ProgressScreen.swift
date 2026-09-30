@@ -69,7 +69,7 @@ struct ProgressScreen: View {
         }
         .sheet(isPresented: $showExplainer) { ProgressExplainer() }
         .navigationDestination(for: HabitPageLink.self) { link in
-            HabitPageView(id: link.id, overTime: OverTimeStart(range: link.range == .week ? .week : .month, anchor: link.anchor))
+            HabitPageView(id: link.id, overTime: OverTimeStart(range: OverTimeRange(rawValue: link.range.rawValue) ?? .month, anchor: link.anchor))
         }
     }
 
@@ -83,24 +83,17 @@ struct ProgressScreen: View {
                 habitsSection(snapshot.rows, title: "Habits", snapshot: snapshot, footer: nil)
                 if !snapshot.quitting.isEmpty {
                     ProgressGroup(title: "Quitting") {
+                        if snapshot.range == .week && !typeSize.isAccessibilitySize {
+                            WeekStripHeader(days: snapshot.days.map(\.day), calendar: store.calendar)
+                                .padding(.top, 6)
+                        }
                         ForEach(Array(snapshot.quitting.enumerated()), id: \.element.id) { index, row in
                             if index > 0 { Divider().padding(.leading, 44) }
                             Button { open(row.habit, snapshot) } label: {
-                                HStack(spacing: 12) {
-                                    HabitIcon(symbol: row.habit.symbol, color: row.habit.color)
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(row.habit.name).foregroundStyle(.primary).lineLimit(2)
-                                        Text(row.text).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
-                                    }
-                                    Spacer(minLength: 0)
-                                    Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
-                                }
-                                .padding(.vertical, 8)
-                                .contentShape(Rectangle())
+                                ProgressQuitRowView(row: row, range: snapshot.range).padding(.vertical, 8)
                             }
                             .buttonStyle(.plain)
-                            .accessibilityElement(children: .combine)
-                            .accessibilityAddTraits(.isButton)
+                            .accessibilityIdentifier("progress-quit-\(row.habit.name)")
                         }
                     }
                 }
@@ -156,7 +149,11 @@ struct ProgressScreen: View {
         if snapshot.hasPlan || !snapshot.isRunning {
             ProgressGroup {
                 if snapshot.hasPlan {
-                    if snapshot.range == .week { weekRings(snapshot) } else { monthRings(snapshot) }
+                    switch snapshot.range {
+                    case .week: weekRings(snapshot)
+                    case .month: monthRings(snapshot)
+                    case .year: yearOverview(snapshot)
+                    }
                     Divider().padding(.vertical, 6)
                     tiles(snapshot)
                     if showPercentages, let previous = snapshot.previous {
@@ -232,6 +229,21 @@ struct ProgressScreen: View {
             }
         }
         .padding(.vertical, 4)
+    }
+
+    /// The year as dots, each day's share of what was planned (report §7.2). Tapping a month opens it in Month.
+    @ViewBuilder private func yearOverview(_ snapshot: ProgressSnapshot) -> some View {
+        if let dots = snapshot.yearDots {
+            YearGridView(dots: dots, color: .ink, dot: 4, gap: 1.5, labels: true) { first in
+                rangeRaw = ProgressRange.month.rawValue
+                anchor = store.period(.month, containing: first).contains(store.today()) ? nil : first
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 4)
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("\(snapshot.title): \(snapshot.tally.done) of \(snapshot.tally.planned) done")
+            .accessibilityIdentifier("progress-year-grid")
+        }
     }
 
     private func ring(_ cell: ProgressDay) -> some View {
@@ -337,18 +349,25 @@ struct ProgressRowView: View {
         let subtitle = row.text + (percent.map { " · \($0)%" } ?? "")
         // From the accessibility sizes up, strips give way to the numbers, which carry the meaning (report §21).
         let strips = !typeSize.isAccessibilitySize
-        HStack(alignment: .center, spacing: 12) {
-            HabitIcon(symbol: row.habit.symbol, color: row.habit.color)
-            VStack(alignment: .leading, spacing: 3) {
-                Text(row.habit.name).foregroundStyle(.primary).lineLimit(2)
-                Text(subtitle).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
-                if strips && range == .month {
-                    MonthStrip(marks: row.marks, color: row.habit.color.color).padding(.top, 3)
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .center, spacing: 12) {
+                HabitIcon(symbol: row.habit.symbol, color: row.habit.color)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(row.habit.name).foregroundStyle(.primary).lineLimit(2)
+                    Text(subtitle).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
+                    if strips && range == .month {
+                        MonthStrip(marks: row.marks, color: row.habit.color.color).padding(.top, 3)
+                    }
+                }
+                Spacer(minLength: 8)
+                if strips && range == .week {
+                    WeekStrip(marks: row.marks, color: row.habit.color.color)
                 }
             }
-            Spacer(minLength: 8)
-            if strips && range == .week {
-                WeekStrip(marks: row.marks, color: row.habit.color.color)
+            // Year: the habit's own year of dots, the card's full width (report §7.3).
+            if strips && range == .year, let dots = row.yearDots {
+                YearGridView(dots: dots, color: row.habit.color.color, dot: 4, gap: 1.5)
+                    .accessibilityHidden(true)
             }
         }
         .padding(.vertical, 2)
@@ -429,5 +448,56 @@ struct ProgressGroup<Content: View, Header: View>: View {
                 Text(footer).font(.footnote).foregroundStyle(.secondary).padding(.horizontal, 16)
             }
         }
+    }
+}
+
+/// A quit habit's row (report §10.2): the run going on, ticking once a minute (days and hours only; seconds tick only
+/// on its own page), the best run and the slips in the period, and its strip.
+struct ProgressQuitRowView: View {
+    let row: ProgressQuitRow
+    let range: ProgressRange
+    @Environment(\.dynamicTypeSize) private var typeSize
+
+    var body: some View {
+        let strips = !typeSize.isAccessibilitySize
+        let color = row.habit.color.color
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .center, spacing: 12) {
+                HabitIcon(symbol: row.habit.symbol, color: row.habit.color)
+                VStack(alignment: .leading, spacing: 3) {
+                    HStack {
+                        Text(row.habit.name).foregroundStyle(.primary).lineLimit(2)
+                        Spacer(minLength: 8)
+                        if row.paused {
+                            Text("Paused").font(.subheadline).foregroundStyle(.secondary)
+                        } else if let start = row.runStart {
+                            // Only this text ticks, anchored at the run's start (Design Rules: speed).
+                            TimelineView(.periodic(from: start, by: 60)) { context in
+                                Text(ProgressQuitRowView.short(context.date.timeIntervalSince(start)))
+                                    .font(.subheadline.weight(.semibold).monospacedDigit())
+                            }
+                        }
+                    }
+                    Text(row.text).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
+                    if strips && range == .month { MonthStrip(marks: row.marks, color: color).padding(.top, 3) }
+                }
+                if strips && range == .week { WeekStrip(marks: row.marks, color: color) }
+            }
+            if strips && range == .year, let dots = row.yearDots {
+                YearGridView(dots: dots, color: color, dot: 4, gap: 1.5).accessibilityHidden(true)
+            }
+        }
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(row.habit.name + ". " + (row.paused ? "Paused. " : "") + row.text)
+        .accessibilityHint("Opens the habit")
+        .accessibilityAddTraits(.isButton)
+    }
+
+    /// "12 d 4 h", "5 h 20 min".
+    static func short(_ t: TimeInterval) -> String {
+        let minutes = max(0, Int(t / 60))
+        let d = minutes / 1440, h = minutes % 1440 / 60, m = minutes % 60
+        return d > 0 ? "\(d) d \(h) h" : "\(h) h \(m) min"
     }
 }

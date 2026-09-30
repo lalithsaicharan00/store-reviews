@@ -61,8 +61,19 @@ struct HabitPageView: View {
                 Section {
                     HabitMonthView(habit: habit, month: Binding(get: { month ?? Self.firstOfMonth(today, store.calendar) },
                                                                 set: { month = $0 }))
+                        .id("month-calendar")
                 }
                 OverTimeSection(habit: habit, start: overTime)
+                HabitYearSection(habit: habit) { first in
+                    month = first
+                    withAnimation { proxy.scrollTo("month-calendar", anchor: .top) }
+                }
+                // Runs are streaks: Show Streaks off hides them too (report §7.6).
+                if showStreaks { HabitRunsSection(habit: habit) }
+            }
+            if habit.kind == .quit {
+                QuitOverTimeSection(habit: habit)
+                HabitYearSection(habit: habit) { _ in }
             }
             notesSection(habit, today: today)
             Section {
@@ -91,7 +102,7 @@ struct HabitPageView: View {
         }
         .task {
             // From Progress: straight to Over Time, once the list has laid out.
-            guard overTime != nil, habit.kind != .quit, habit.kind != .task else { return }
+            guard overTime != nil, habit.kind != .task else { return }
             try? await Task.sleep(for: .milliseconds(150))
             withAnimation { proxy.scrollTo("over-time", anchor: .top) }
         }
@@ -130,11 +141,8 @@ struct HabitPageView: View {
 
     @ViewBuilder private func numbers(_ habit: Habit) -> some View {
         if habit.kind == .quit {
-            let runs = store.quitRuns(of: habit)
-            HStack(spacing: 0) {
-                stat(store.isPaused(habit, on: store.today()) ? "Paused" : Format.days(runs.current), "This run")
-                stat(Format.days(runs.best), "Best run")
-            }
+            // The live clock, best run, clean days, next milestone and Log a Slip (report §10.3; Build Plan #60d).
+            QuitNumbers(habit: habit)
         } else {
             let unit = habit.frequency.streakUnit
             let today = store.today()

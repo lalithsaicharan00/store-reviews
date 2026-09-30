@@ -112,7 +112,7 @@ final class PerformanceUITests: XCTestCase {
         keepGoing(scrollUpAndDown)
     }
 
-    /// Progress with 30 habits and two years of history (report §20): open it, switch Week and Month, go back and
+    /// Progress with 30 habits and two years of history (report §20): open it, switch Week, Month and Year, go back and
     /// forth, and scroll. Targets: opens in under 300 ms, a switch in under 150 ms.
     func testProgress() {
         relaunch(["-perf-many"])
@@ -122,6 +122,8 @@ final class PerformanceUITests: XCTestCase {
         let previous = app.buttons["progress-previous"], next = app.buttons["progress-next"]
         keepGoing {
             control.buttons["Month"].tap()
+            previous.tap(); next.tap()
+            control.buttons["Year"].tap()
             previous.tap(); next.tap()
             control.buttons["Week"].tap()
             previous.tap(); next.tap()

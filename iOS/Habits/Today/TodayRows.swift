@@ -331,6 +331,9 @@ struct QuitRow: View {
     @Environment(HabitStore.self) private var store
     @State private var showEdit = false
     @State private var showPause = false
+    @State private var showSlip = false
+    /// The slip just logged, offered for Undo for a few seconds.
+    @State private var lastSlip: UUID?
     private var today: LocalDay { store.today() }
     /// Set once, on a whole second, so every quit clock ticks together.
     private static let anchor = Date(timeIntervalSinceReferenceDate: Date.now.timeIntervalSinceReferenceDate.rounded(.down))
@@ -345,6 +348,7 @@ struct QuitRow: View {
                 VStack(alignment: .leading, spacing: 1) {
                     Text(habit.name.capped(HabitRow.nameShown)).font(.body).lineLimit(1).accessibilityLabel(habit.name)
                     Text("Best \(Format.days(runs.best))").font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+                    if let id = lastSlip { SlipUndoLine(id: id) { withAnimation { lastSlip = nil } } }
                     // A craving or a slip, noted for today (quit rows take notes too, 29 Sep).
                     if let note = store.note(of: habit, on: today) {
                         Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
@@ -377,6 +381,8 @@ struct QuitRow: View {
         }
         .contextMenu {
             Button("Edit Habit", systemImage: "pencil") { showEdit = true }
+            // A slip is an event with its own time (Build Plan #60d); editing "Started" is only for fixing a wrong start.
+            Button("Log a Slip…", systemImage: "arrow.uturn.backward.circle") { showSlip = true }
             // Pausing ends this run (kept as a run, not a slip); a new one starts when it's back (the user, 29 Sep).
             PauseMenuItems(habit: habit, showPause: $showPause)
             Button(store.note(of: habit, on: today) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") {
@@ -385,6 +391,7 @@ struct QuitRow: View {
         }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
+        .sheet(isPresented: $showSlip) { LogSlipSheet(habit: habit) { id in withAnimation { lastSlip = id } } }
     }
 }
 

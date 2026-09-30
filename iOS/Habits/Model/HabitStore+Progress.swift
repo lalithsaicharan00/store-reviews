@@ -7,14 +7,18 @@ enum ProgressOptions {
     static let range = "progress.range"
 }
 
-/// Week or Month on Progress. Year comes with Phase 2 (Build Plan #60f).
+/// Week, Month or Year on Progress (Year: Phase 2, Build Plan #60f).
 enum ProgressRange: String, CaseIterable, Identifiable, Hashable, Sendable {
-    case week, month
+    case week, month, year
     var id: Self { self }
-    var title: String { self == .week ? "Week" : "Month" }
+    var title: String { rawValue.capitalized }
     var noun: String { rawValue }
-    var kind: HabitStore.PeriodKind { self == .week ? .week : .month }
-    var goalPeriod: GoalPeriod { self == .week ? .week : .month }
+    var kind: HabitStore.PeriodKind {
+        switch self { case .week: .week; case .month: .month; case .year: .year }
+    }
+    var goalPeriod: GoalPeriod {
+        switch self { case .week: .week; case .month: .month; case .year: .year }
+    }
 }
 
 /// How a habit's numbers are shown: ten shapes cover every type and rule (report §9).
@@ -77,13 +81,21 @@ struct ProgressHabitRow: Hashable, Identifiable {
     let percent: Int?
     /// VoiceOver: the whole row is one element (report §21).
     let accessibility: String
+    /// Year only: the habit's own year of dots.
+    var yearDots: YearDots? = nil
     var id: UUID { habit.id }
 }
 
-/// A quit habit's row: its current run (Phase 1; slips and clean days come with Log a Slip, #60d).
+/// A quit habit's row (report §10.2): the run going on (ticking once a minute on screen), the best run, the slips in
+/// the period, and a strip of clean days and slip days.
 struct ProgressQuitRow: Hashable, Identifiable {
     let habit: Habit
+    /// The start of the run going on now; nil while paused, or in a past period.
+    let runStart: Date?
+    let paused: Bool
     let text: String
+    let marks: [ProgressMark]
+    var yearDots: YearDots? = nil
     var id: UUID { habit.id }
 }
 
@@ -101,6 +113,8 @@ struct ProgressSnapshot {
     let rows: [ProgressHabitRow]
     let archived: [ProgressHabitRow]
     let quitting: [ProgressQuitRow]
+    /// Year only: the overview's grid of days.
+    var yearDots: YearDots? = nil
     let canGoBack: Bool
     let canGoForward: Bool
     /// Any habit that Progress can show (tasks never are).
@@ -232,7 +246,7 @@ extension HabitStore {
             // Tile 3: week (and, on Month, month) goals whose period ends in this range. Limits aren't goals met.
             let rule = rule(habit, on: max(min(span.upperBound, today), startDay(of: habit)))
             let kind = periodKind(rule)
-            guard !rule.atMost, kind == .week || (kind == .month && range == .month) else { continue }
+            guard !rule.atMost, kind != .day, Self.rank(kind) <= Self.rank(range.goalPeriod) else { continue }
             for result in progressPeriodResults(habit, in: span, today: today) {
                 goals.total += 1
                 if result.met == true { goals.met += 1 }
@@ -241,22 +255,47 @@ extension HabitStore {
         }
 
         var quitting: [ProgressQuitRow] = []
-        if span.contains(today) {
-            for habit in habits where habit.kind == .quit && !habit.archived {
-                let runs = quitRuns(of: habit)
-                let text = isPaused(habit, on: today) ? "Paused · best run \(Format.days(runs.best))"
-                    : "\(Format.days(runs.current)) this run · best \(Format.days(runs.best))"
-                quitting.append(ProgressQuitRow(habit: habit, text: text))
+        let now = clock()
+        for habit in habits where habit.kind == .quit && !habit.archived && quitStartDay(of: habit) <= min(span.upperBound, today) {
+            let stats = quitStats(of: habit, in: span, now: now)
+            let history = quitHistory(of: habit, now: now)
+            let best = history.map { $0.length(now: now) }.max() ?? 0
+            let running = span.contains(today)
+            let current = running ? history.last.flatMap { $0.endedBy == .ongoing ? $0.start : nil } : nil
+            let when = running ? "this \(range.noun)" : range == .week ? "that week"
+                : range == .month ? "in " + span.lowerBound.date(calendar: calendar).formatted(.dateTime.month(.wide))
+                : "in \(span.lowerBound.year)"
+            let slips = stats.slips.isEmpty ? "no slips \(when)" : stats.slips.count == 1 ? "1 slip \(when)" : "\(stats.slips.count) slips \(when)"
+            var row = ProgressQuitRow(habit: habit, runStart: current, paused: running && isPaused(habit, on: today),
+                                      text: "Best \(Format.days(best)) · \(slips)", marks: stats.marks)
+            if range == .year {
+                let byDay = Dictionary(uniqueKeysWithValues: stats.marks.map { ($0.day, $0) })
+                row.yearDots = yearDots(span) { byDay[$0] }
             }
+            quitting.append(row)
         }
 
+        if range == .year {
+            for i in rows.indices { rows[i].yearDots = rowYearDots(rows[i], span) }
+            for i in archived.indices { archived[i].yearDots = rowYearDots(archived[i], span) }
+        }
         return ProgressSnapshot(
             range: range, period: span, today: today, title: periodTitle(range, span, today: today),
             days: cells, tally: progressTally(cells), goals: goals.total > 0 ? goals : nil, previous: previous,
             rows: rows, archived: archived, quitting: quitting,
             canGoBack: earliest.map { $0 < span.lowerBound } ?? false,
             canGoForward: span.upperBound < today,
-            hasHabits: habits.contains { $0.kind != .task })
+            hasHabits: habits.contains { $0.kind != .task },
+            yearDots: range == .year ? overviewYearDots(cells, year: span) : nil)
+    }
+
+    static func rank(_ k: GoalPeriod) -> Int {
+        switch k { case .day: 0; case .week: 1; case .month: 2; case .year: 3 }
+    }
+
+    private func rowYearDots(_ row: ProgressHabitRow, _ span: ClosedRange<LocalDay>) -> YearDots {
+        let byDay = Dictionary(uniqueKeysWithValues: row.marks.map { ($0.day, $0) })
+        return yearDots(span) { byDay[$0] }
     }
 
     /// Done of planned up to today: today adds only what's done (report §7.2, §16.4).
@@ -279,6 +318,8 @@ extension HabitStore {
             return weekSpan(period)
         case .month:
             return period.lowerBound.date(calendar: calendar).formatted(.dateTime.month(.wide).year())
+        case .year:
+            return String(period.lowerBound.year)
         }
     }
 
@@ -291,6 +332,8 @@ extension HabitStore {
             let date = period.lowerBound.date(calendar: calendar)
             return period.lowerBound.year == today.year ? date.formatted(.dateTime.month(.wide))
                 : date.formatted(.dateTime.month(.wide).year())
+        case .year:
+            return String(period.lowerBound.year)
         }
     }
 

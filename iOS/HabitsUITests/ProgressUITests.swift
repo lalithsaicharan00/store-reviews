@@ -163,6 +163,61 @@ final class ProgressUITests: XCTestCase {
         XCTAssertTrue(percent.firstMatch.waitForExistence(timeout: 3), "They come back")
     }
 
+    // MARK: Phase 2
+
+    /// Year shows the grid of days; tapping a month opens it in Month (report §7.2).
+    func testYearAndMonthTap() {
+        launch()
+        openProgress()
+        segment("Year").tap()
+        let period = app.staticTexts["progress-period"]
+        XCTAssertEqual(period.label, String(Calendar.current.component(.year, from: .now)))
+        XCTAssertTrue(app.descendants(matching: .any)["progress-year-grid"].waitForExistence(timeout: 5))
+        shot("p06-year")
+        let month = Calendar.current.component(.month, from: .now)
+        let column = app.buttons["year-month-\(month)"]
+        XCTAssertTrue(column.exists)
+        column.tap()
+        XCTAssertTrue(app.segmentedControls["progress-range"].buttons["Month"].isSelected, "The month opens in Month")
+        XCTAssertTrue(period.label.contains(String(Calendar.current.component(.year, from: .now))), period.label)
+    }
+
+    /// A quit habit: Log a Slip… saves a slip with its own time, and Undo takes it back (Build Plan #60d).
+    func testLogSlipAndUndo() {
+        launch()
+        openProgress()
+        let quit = app.buttons["progress-quit-Smoking"]
+        XCTAssertTrue(app.reveal(quit), "The Quitting row")
+        quit.tap()
+        XCTAssertTrue(app.navigationBars["Smoking"].waitForExistence(timeout: 5))
+        let log = app.buttons["habit-log-slip"]
+        XCTAssertTrue(app.reveal(log), "Log a Slip… on the habit page")
+        let before = app.staticTexts["quit-total-line"].label
+        log.tap()
+        XCTAssertTrue(app.navigationBars["Log a Slip"].waitForExistence(timeout: 3))
+        shot("p07-log-slip")
+        app.buttons["slip-save"].tap()
+        let undo = app.buttons["slip-undo"]
+        XCTAssertTrue(undo.waitForExistence(timeout: 3), "Undo right after")
+        XCTAssertNotEqual(app.staticTexts["quit-total-line"].label, before, "The slip is counted")
+        undo.tap()
+        XCTAssertTrue(undo.waitForNonExistence(timeout: 3))
+        XCTAssertEqual(app.staticTexts["quit-total-line"].label, before, "Undo takes it back")
+    }
+
+    /// A habit's page from Progress has its Year grid and Runs (report §8.4, §8.5).
+    func testHabitPageYearAndRuns() {
+        launch()
+        openProgress()
+        app.buttons["progress-row-Read"].tap()
+        XCTAssertTrue(app.navigationBars["Read"].waitForExistence(timeout: 5))
+        let grid = app.descendants(matching: .any)["habit-year-grid"]
+        XCTAssertTrue(app.reveal(grid), "The Year grid")
+        shot("p08-habit-year")
+        let runs = app.descendants(matching: .any)["habit-runs"]
+        XCTAssertTrue(app.reveal(runs), "Runs")
+    }
+
     /// With no habits, the empty state.
     func testEmptyState() {
         launch(["-empty"])

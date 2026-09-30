@@ -80,6 +80,12 @@ struct OverTimeSnapshot {
     /// from 0 to the goal or limit across the period (report §9.3, shapes G and I-period).
     var running: [OverTimePoint] = []
     var paceLine: (start: Date, end: Date, goal: Double)? = nil
+    /// Day-based habits with 28 or more planned days in the range (report §8.6).
+    var weekdays: [WeekdayStat] = []
+    var weekdayCaption: String? = nil
+    var weekdayAverages = false
+    /// All only, day-based habits: the 30-day rate, a point a week (report §16.6).
+    var rate: [RatePoint] = []
 }
 
 struct OverTimePoint: Hashable, Identifiable {
@@ -398,13 +404,19 @@ extension HabitStore {
             }
         }
 
+        let weekdays = showsDays && shape != .limitDay ? byWeekday(habit, in: span, today: today) : []
+        let averagesByDay = shape == .amount || shape == .time
+
         return OverTimeSnapshot(
             range: range, span: span, title: overTimeTitle(range, span, today: today),
             canGoBack: range != .all && start < span.lowerBound,
             canGoForward: range != .all && span.upperBound < today,
             tiles: tiles, pace: pace, change: change, counts: counts, bars: bars, scale: chartScale, bucket: bucket,
             isLimit: rule.atMost, footnotes: footnotes(habit, span: span, today: today), steps: steps,
-            running: runningTotal, paceLine: paceLine)
+            running: runningTotal, paceLine: paceLine,
+            weekdays: weekdays, weekdayCaption: HabitStore.weekdayCaption(weekdays, averages: averagesByDay),
+            weekdayAverages: averagesByDay,
+            rate: range == .all && showsDays && shape != .limitDay ? rate30(habit, today: today) : [])
     }
 
     /// The weeks or months overlapping `span`, holding at least one of `days`.

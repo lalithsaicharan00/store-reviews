@@ -130,6 +130,8 @@ enum ProgressCheck {
             same(s.dayMark(fresh, on: friday), .open, "60b a limit isn't met at the start of the day")
             same(s.streak(of: fresh, asOf: friday), 0, "60b no streak before the day ends")
             same(row(s, coffee)?.text, "Avg 1 cup a day · limit 3 cups", "G4 row")
+            same(s.runs(of: coffee).map(\.length), [2, 1], "G4 runs: Mon–Tue, then Thu")
+            same(s.runs(of: coffee).map(\.isCurrent), [false, true], "G4 current run")
             runsAgree(s, coffee, "G4")
         }
 
@@ -215,8 +217,33 @@ enum ProgressCheck {
             }
             await s.load()
             let runs = s.quitRuns(of: smoking, now: moment(friday))
-            same(Int(runs.best), ((33 * 24 + 13) * 60 + 10) * 60, "G9 best run 33 d 13 h 10 min")
+            let first = ((33 * 24 + 13) * 60 + 10) * 60, second = ((16 * 24 + 9) * 60 + 50) * 60
+            same(Int(runs.best), first, "G9 best run 33 d 13 h 10 min")
             same(Int(runs.current), (5 * 24 + 4) * 3600, "G9 current run 5 d 4 h")
+            let history = s.quitHistory(of: smoking, now: moment(friday))
+            same(history.map { Int($0.length(now: moment(friday))) }, [first, second, (5 * 24 + 4) * 3600], "G9 runs")
+            same(history.map(\.endedBy), [.slip, .slip, .ongoing], "G9 run endings")
+            let september = s.quitStats(of: smoking, in: day(1)...friday, now: moment(friday))
+            same(september.slips.count, 2, "G9 September slips")
+            same(september.cleanDays, 23, "G9 September clean days"); same(september.days, 25, "G9 September days")
+            let all = s.quitStats(of: smoking, in: day(1, 8)...friday, now: moment(friday))
+            same(all.cleanDays, 54, "G9 clean days since 1 Aug")
+            same(all.averageRun.map { Int($0) }, (first + second) / 2, "G9 average run")
+            let line = s.quitTotalLine(of: smoking, now: moment(friday))
+            expect(line.hasPrefix("54 clean days since ") && line.hasSuffix(" · 2 slips"), "G9 total line: \(line)")
+            same(s.nextMilestone(of: smoking, now: moment(friday)), "Next: 7 days · in 2 days", "G9 next milestone")
+            // #60d: a slip logged for an earlier moment starts a new run from then, and Undo removes exactly it.
+            let slip = s.logSlip(smoking, at: moment(day(24), hour: 21, minute: 40), note: "Party")
+            await s.flush()
+            same(Int(s.quitRuns(of: smoking, now: moment(friday)).current), (14 * 60 + 20) * 60, "60d new run from the slip")
+            same(s.note(of: smoking, on: day(24)), "Party", "60d the slip's note")
+            same(s.quitStats(of: smoking, in: day(1)...friday, now: moment(friday)).slips.count, 3, "60d slip counted")
+            s.undoEntry(slip); await s.flush()
+            same(s.quitStats(of: smoking, in: day(1)...friday, now: moment(friday)).slips.count, 2, "60d undo removes the slip")
+            let future = s.logSlip(smoking, at: moment(day(30)))
+            await s.flush()
+            same(s.entries.first { $0.id == future }?.createdAt, moment(friday), "60d a slip is never in the future")
+            s.undoEntry(future); await s.flush()
         }
 
         // G10: Cycle, 60 km a month. 42 km by Fri 25 Sep.
@@ -270,6 +297,18 @@ enum ProgressCheck {
             same(s.overTime(habit, range: .year, anchor: day(1, 6)).counts?.done, 365, "G13 year 2026 done")
             same(s.streak(of: habit, asOf: s.today()), 365, "G13 streak carries into the new year")
             runsAgree(s, habit, "G13")
+            // Phase 2: the year on Progress, its dots, By Weekday and the 30-day rate.
+            let year = s.progressSnapshot(.year, containing: day(1, 6))
+            same(year.title, "2026", "G13 year title")
+            same(year.tally.done, 365, "G13 year done"); same(year.tally.planned, 365, "G13 year planned")
+            same(year.yearDots?.full.count, 365, "G13 year dots")
+            same(year.rows.first?.yearDots?.full.count, 365, "G13 row year dots")
+            same(year.yearDots?.months.count, 12, "G13 month columns")
+            let weekdays = s.byWeekday(habit, in: year.period)
+            same(weekdays.count, 7, "G13 by weekday"); expect(weekdays.allSatisfy { $0.value == 100 }, "G13 every weekday 100%")
+            same(HabitStore.weekdayCaption(weekdays, averages: false), nil, "G13 no caption when every day is the same")
+            same(s.rate30(habit).last?.percent, 100, "G13 30-day rate")
+            same(s.runs(of: habit).map(\.length), [365], "G13 one run")
         }
 
         // G14: Pills, twice a day, from Thu 24. Thu 1 of 2.

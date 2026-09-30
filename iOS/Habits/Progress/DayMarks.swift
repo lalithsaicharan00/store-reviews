@@ -177,3 +177,91 @@ struct DayDetailRow: View {
         .accessibilityLabel("\(row.habit.name), \(row.value)" + (row.note.map { ". Note: \($0)" } ?? ""))
     }
 }
+
+/// Dots at grid cells (column × 7 + row), as one path: a whole year draws as four shapes, not hundreds of views
+/// (report §20). Plain values only, so the shape is safe to draw wherever SwiftUI draws it.
+nonisolated struct DotCells: Shape {
+    let cells: [Int]
+    let dot: CGFloat
+    let gap: CGFloat
+
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        for cell in cells {
+            let x = CGFloat(cell / 7) * (dot + gap), y = CGFloat(cell % 7) * (dot + gap)
+            path.addEllipse(in: CGRect(x: x, y: y, width: dot, height: dot))
+        }
+        return path
+    }
+}
+
+/// A year of round dots (report §7.2, §8.4, §13.3): weeks in columns, weekdays down; month letters above, and
+/// optionally M, W, F on the left. Tapping a month calls `onMonth`. Days with nothing planned have no dot.
+struct YearGridView: View {
+    let dots: YearDots
+    let color: Color
+    var dot: CGFloat = 4.5
+    var gap: CGFloat = 1.5
+    var labels = false
+    var onMonth: ((LocalDay) -> Void)? = nil
+    @Environment(HabitStore.self) private var store
+
+    private var step: CGFloat { dot + gap }
+
+    var body: some View {
+        let width = CGFloat(dots.columns) * step
+        HStack(alignment: .top, spacing: 4) {
+            if labels {
+                // Weekday letters for rows 0, 2 and 4 (M, W, F with a Monday week start).
+                VStack(alignment: .trailing, spacing: 0) {
+                    Color.clear.frame(height: 12)
+                    ForEach(0..<7, id: \.self) { row in
+                        Text(row % 2 == 0 && row < 6 ? letter(row) : "")
+                            .font(.system(size: max(7, step * 0.9))).foregroundStyle(.secondary)
+                            .frame(height: step)
+                    }
+                }
+                .accessibilityHidden(true)
+            }
+            VStack(alignment: .leading, spacing: 2) {
+                ZStack(alignment: .topLeading) {
+                    ForEach(dots.months) { month in
+                        Text(month.first.date(calendar: store.calendar).formatted(.dateTime.month(.narrow)))
+                            .font(.system(size: 9, weight: .semibold)).foregroundStyle(.secondary)
+                            .offset(x: CGFloat(month.column) * step)
+                    }
+                }
+                .frame(width: width, height: 10, alignment: .topLeading)
+                .accessibilityHidden(true)
+                ZStack(alignment: .topLeading) {
+                    DotCells(cells: dots.full, dot: dot, gap: gap).fill(color)
+                    DotCells(cells: dots.high, dot: dot, gap: gap).fill(color.opacity(0.7))
+                    DotCells(cells: dots.low, dot: dot, gap: gap).fill(color.opacity(0.45))
+                    DotCells(cells: dots.ring, dot: dot, gap: gap).stroke(Color.secondary, lineWidth: 0.8)
+                    if let onMonth {
+                        // A month column is the tap target: a dot is too small to tap (report §21).
+                        HStack(spacing: 0) {
+                            ForEach(Array(dots.months.enumerated()), id: \.element.id) { i, month in
+                                let next = i + 1 < dots.months.count ? dots.months[i + 1].column : dots.columns
+                                Button { onMonth(month.first) } label: { Color.clear.contentShape(Rectangle()) }
+                                    .buttonStyle(.plain)
+                                    .frame(width: CGFloat(max(1, next - month.column)) * step)
+                                    .accessibilityLabel(month.first.date(calendar: store.calendar).formatted(.dateTime.month(.wide)))
+                                    .accessibilityHint("Opens the month")
+                                    .accessibilityIdentifier("year-month-\(month.month)")
+                            }
+                        }
+                        .offset(x: CGFloat(dots.months.first?.column ?? 0) * step)
+                    }
+                }
+                .frame(width: width, height: 7 * step, alignment: .topLeading)
+            }
+        }
+    }
+
+    private func letter(_ row: Int) -> String {
+        let calendar = store.calendar
+        let symbols = calendar.veryShortStandaloneWeekdaySymbols
+        return symbols[(calendar.firstWeekday - 1 + row) % 7]
+    }
+}

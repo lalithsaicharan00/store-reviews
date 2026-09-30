@@ -39,6 +39,9 @@ struct OverTimeSection: View {
                     if !snapshot.bars.isEmpty { chart(snapshot) }
                     if !snapshot.running.isEmpty { runningChart(snapshot) }
                     if !snapshot.steps.isEmpty { bySteps(snapshot.steps) }
+                    // Both are percentages for check-offs: hidden with Show Percentages off (report §7.6).
+                    if !snapshot.weekdays.isEmpty && (showPercentages || snapshot.weekdayAverages) { byWeekday(snapshot) }
+                    if !snapshot.rate.isEmpty && showPercentages { rateChart(snapshot.rate) }
                     ForEach(snapshot.footnotes, id: \.self) {
                         Text($0).font(.footnote).foregroundStyle(.secondary)
                     }
@@ -67,6 +70,54 @@ struct OverTimeSection: View {
         self.key = key
         selected = nil
         snapshot = store.overTime(habit, range: key.range, anchor: key.anchor ?? store.today())
+    }
+
+    /// By Weekday (report §8.6): seven bars in the person's week order, and one neutral caption. Never a worst day.
+    private func byWeekday(_ snapshot: OverTimeSnapshot) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("By Weekday").font(.subheadline.weight(.semibold))
+            Chart(snapshot.weekdays) { day in
+                BarMark(x: .value("Weekday", day.name), y: .value(snapshot.weekdayAverages ? "Average" : "Done", day.value))
+                    .foregroundStyle(habit.color.color.opacity(day.days == 0 ? 0.2 : 0.8))
+            }
+            .chartYAxis {
+                AxisMarks { value in
+                    AxisGridLine()
+                    AxisValueLabel {
+                        if let v = value.as(Double.self) {
+                            Text(snapshot.weekdayAverages ? axisLabel(v, snapshot.scale) : "\(Int(v))%")
+                        }
+                    }
+                }
+            }
+            .chartYScale(domain: .automatic(includesZero: true))
+            .frame(height: 120)
+            if let caption = snapshot.weekdayCaption {
+                Text(caption).font(.footnote).foregroundStyle(.secondary)
+            }
+        }
+        .accessibilityIdentifier("over-time-weekdays")
+    }
+
+    /// The 30-day rate (report §16.6): a forgiving measure anyone can check on the calendar.
+    private func rateChart(_ points: [RatePoint]) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("30-day rate").font(.subheadline.weight(.semibold))
+            Chart(points) { point in
+                LineMark(x: .value("Date", point.date), y: .value("Rate", point.percent))
+                    .foregroundStyle(habit.color.color)
+            }
+            .chartYScale(domain: 0...100)
+            .chartYAxis {
+                AxisMarks(values: [0, 50, 100]) { value in
+                    AxisGridLine()
+                    AxisValueLabel { if let v = value.as(Double.self) { Text("\(Int(v))%") } }
+                }
+            }
+            .frame(height: 120)
+            Text("Of the planned days in the last 30 days, how many were done.").font(.footnote).foregroundStyle(.secondary)
+        }
+        .accessibilityIdentifier("over-time-rate")
     }
 
     /// "Floss · 60%", or "12 of 20 days" while percentages are hidden (report §9.2, E).
