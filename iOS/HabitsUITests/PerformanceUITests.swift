@@ -133,9 +133,10 @@ final class PerformanceUITests: XCTestCase {
     func testProgressHabitPage() {
         relaunch(["-perf-many"])
         openProgress()
-        let row = app.buttons["progress-row-Brush teeth"]
+        // The first row, so it's on screen without scrolling; a year or two of daily history.
+        let row = app.buttons["progress-row-Read"]
         XCTAssertTrue(row.waitForExistence(timeout: 10))
-        open("Habit page from Progress", tapping: row, until: app.navigationBars["Brush teeth"])
+        open("Habit page from Progress", tapping: row, until: app.navigationBars["Read"])
         let control = app.segmentedControls["over-time-range"]
         XCTAssertTrue(control.waitForExistence(timeout: 10))
         ready()

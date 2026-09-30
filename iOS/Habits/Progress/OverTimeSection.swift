@@ -46,11 +46,13 @@ struct OverTimeSection: View {
             // On the one row, never on the Section: a Section repeats its modifiers once per row (Design Rules).
             .id("over-time")
             .onAppear {
-                if key == nil, let start {
-                    range = start.range
-                    anchor = start.anchor
+                // Opened from Progress: start on its range and period, once.
+                let first = key == nil ? start : nil
+                if let first {
+                    range = first.range
+                    anchor = first.anchor
                 }
-                load(Key(range: range, anchor: anchor, version: store.dataVersion, habit: habit))
+                load(Key(range: first?.range ?? range, anchor: first?.anchor ?? anchor, version: store.dataVersion, habit: habit))
             }
             .onChange(of: current) { load(current) }
         } header: {

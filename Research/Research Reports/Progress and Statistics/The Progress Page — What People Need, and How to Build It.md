@@ -334,7 +334,7 @@ Users show they want this: "can't tap a day to see which habits were done" (ledg
 
 A short native sheet with a list of plain sentences and the legend. Every number on the screen is explained, so none reads as broken (ledger C217, Certain).
 
-- **Done:** "Each thing you planned and finished. A habit you do 3 times a day counts 3."
+- **Done:** "Each habit you planned and finished that day. A habit you do 3 times a day counts once, when all 3 are done; until then its ring fills part of the way." *(Changed while building, 30 Sep 2026: the overview counts habit-days; see §16.4.)*
 - **Percentage:** "Done out of planned, for days up to today. Today counts once it's done."
 - **Full days:** "Days when everything you planned was done."
 - **Weekly goals met:** "Weeks where you reached a '3 times a week' or '20 km a week' goal. The week in progress counts once it's met."
@@ -778,7 +778,7 @@ func dayScore(on day: LocalDay, habits: [Habit]) -> (done: Int, part: Double, pl
 - **"Done" in the tiles** is the sum of `done` over the period. It never includes part.
 - **"Planned"** is the sum of `planned` over the period, up to today.
 - **The percentage** = done ÷ planned. It is shown only when planned > 0 and done > 0.
-- **Several times a day counts each time** (dayGoal 3 → 3 planned), as the ⓘ sheet says (§7.5). This matches the overall day score a HabitNow reviewer describes (`5f859344-d082-4af9-8a15-d1713f702e6d`).
+- **Each habit counts once a day** (changed while building, 30 Sep 2026; this line first said a habit done 3 times a day counts 3). The overview is the same number as Today's day bar ("2 of 5" habits), and the day bar counts habits, so counting times here would make the two disagree (reasoned from first principles). A habit done 1 of 3 times counts 1 planned and gets part credit (1/3) in the ring. Times are still counted where they belong: in the habit's own row ("18 of 21 times", shape B) and its Over Time. The overall day score a HabitNow reviewer describes (`5f859344-d082-4af9-8a15-d1713f702e6d`) is still met: the ring fills with part credit.
 - **Full days**: days where `planned > 0 && done == planned`.
 - **Quit habits and tasks are never in `habits`.**
 - **Cut-down habits join a day's ring only once that day is over**, as within the limit (done) or over it (not done). Today's ring doesn't show them, because a limit has nothing to fill.
@@ -1044,7 +1044,7 @@ Ledger C171 is Certain (26 apps).
 | **C047** Cumulative totals and total-days counter | Strong · 7 | 15 | "213 days done since…" and totals in units (§8.1, §9.2). |
 | **C048** Flexible units / partial progress | Strong · 25 | 37 | The Part done mark and count. Totals in the person's unit. Over-goal shown (§9, §13). |
 | **C201** User-set "good day" threshold | Strong · 4 | 19 | The partial rings show partial days without a threshold. A **"Full day at 100% / 80% / 60%"** option is Phase 3 (§25). It changes only the Full Days count and the ring's filled colour. |
-| **C143** Tap N times to fill N/N | Strong · 26 | 21 | Several times a day counts each time; the ring shows the fraction (§16.4). |
+| **C143** Tap N times to fill N/N | Strong · 26 | 21 | Each tap fills the day's ring part of the way; the habit's own row counts times (§16.4, §9.1). |
 | **C254** All-habits overview (one tap) | Strong · 8 | 14 | The Progress overview and rows (§7). One tap from Today. Check-off stays on Today (§6.2). |
 | **C019** Quit mode with a relapse record and non-punitive reset | Strong · 30 | 75 | §10. |
 | **C308** Logging a lapse ≠ destroying the count | Moderate · 2 | 8 | "Log a Slip…" as an event. Clean days total never drops (§10.3, §10.4). |
@@ -1338,7 +1338,7 @@ The fixed "now" is **Friday 26 September 2026, 12:00**. Week start is Monday and
 | G11 | G1 with the week starting on Sunday. | The week is Sun 21 – Sat 27. The range title reads "21–27 Sep". |
 | G12 | Day ends at 3:00. Now is Sat 27 Sep 02:00 (this case's own now). A tick at 01:30. | It counts for Fri 26, and Progress's "today" is still Fri 26. |
 | G13 | Year change: a daily habit started 1 Jan 2026, done every day of 2026. Now is 1 Jan 2027 at 12:00, nothing done yet. | Year 2026: 365 of 365 days (from its start). Year 2027 on 1 Jan: tile 1 shows "0", "Done so far", with no percentage. 2026 is reachable with ‹. |
-| G14 | **Pills**, twice a day, starts Thu 25. Thu 1 of 2. | Thu part (0.5). Thu adds 2 planned and 1 done to the overview. Row: "1 of 2 times so far" (shape B counts times, not days). |
+| G14 | **Pills**, twice a day, starts Thu 25. Thu 1 of 2. | Thu part (0.5). Thu adds 1 planned, 0 done and 0.5 part credit to the overview (habit-days, §16.4). Row: "1 of 2 times so far" (shape B counts times, not days). |
 | G15 | **Morning**, a checklist with 5 steps. Thu 3 ticked. | Thu part (0.6). Steps 3 of 5. "By step" shows each step's own share. |
 | G16 | **Run 5 km on 3 days a week**. Mon 5 km, Wed 3 km, Thu 6 km. | "2 of 3 days so far · 14 km". Wed part. No "not done" marks. |
 | G17 | Best never above total | For every case: best ≤ days done in total, and the current run equals `streak(of:asOf: today)`. |
