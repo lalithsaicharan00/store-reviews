@@ -103,6 +103,8 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Archiving keeps all history and frees a free slot
 - [x] Habit page: its sentence and description, streak, best, done this month, a month calendar of its days, notes, Edit, Pause / Resume, Archive, Delete
 - [x] Habit page, Progress Phase 1 (30 Sep 2026): a total line under the numbers ("213 days done since 12 Mar 2025"), tap a calendar day for its value and note, and **Over Time** for every type but quit: Week · Month · Year · All, the type's numbers, a count bar (Done · Part done · Not done · Skipped · Paused), a chart with the goal line, By Step for checklists, a running total against a pace line for week and month totals, footnotes when the goal changed
+- [x] Habit page, Progress Phase 2 (30 Sep 2026): a Year grid (tap a month to open it in the calendar), Runs (the five longest, Show All), By Weekday and the 30-day rate in Over Time
+- [x] Quit habits (30 Sep 2026): **Log a Slip…** (long-press the row, or on its page): when it happened and an optional note, saved as its own event, with Undo; a live clock, best run, "54 clean days since … · 2 slips", the next milestone, Over Time (slips, clean days, longest and average run, a runs chart, the slips list, milestones reached); optional "What It Costs a Day" and "Saved so far"
 - [x] Archiving keeps an archive date: the days after it don't count, and Restore turns the archived stretch into a pause
 
 ## The ≡ menu (final, 30 Sep 2026)
@@ -121,8 +123,9 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] How It's Counted with the legend; view options Show Percentages and Show Streaks (streaks also on Today's rows and the habit page)
 - [x] Nothing is counted against anyone: skipped, paused, archived and not-its-day days are neutral; a weekly goal's empty day is never "not done"; a limit is judged when the day ends
 - [x] Checked in the app with 17 golden cases (`-progresscheck`) and `ProgressUITests`, both in `[ios-ci]`
-- [ ] Phase 2: Year view, Runs, By Weekday, the 30-day rate, quit sections (needs Log a Slip)
-- [ ] Phase 3: full day at 100/80/60%, money saved, a shareable year image, group stats
+- [x] Phase 2 (30 Sep 2026): Year (a grid of day dots; tap a month to open it; each row its own year grid); Quitting rows with the run ticking once a minute, best run, slips in the period and a clean-day strip
+- [x] Phase 3 (30 Sep 2026): View Options → Full Day (All Done, 80%, 60%); Year → Share: a picture of the year
+- [ ] Group stats: wait for groups, which aren't built
 
 ## Routine player (▶ Start on a time of day)
 
@@ -144,7 +147,7 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [ ] Easy undo after checking or logging
 - [ ] Completion animation before a done row moves down
 - [ ] Section open and close animation
-- [ ] Progress Phases 2 and 3 (Phase 1 is built: see Progress above)
+- [ ] Progress group stats (when groups are built)
 - [ ] Settings (export and import, backups on the phone, support, day and week start, theme, restore purchase)
 - [ ] Onboarding (first launch)
 - [ ] Home-screen and lock-screen widgets

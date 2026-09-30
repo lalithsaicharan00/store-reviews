@@ -204,6 +204,17 @@ Sources: [Focus Player — How It Should Behave](<../Research/Research Reports/D
 - **Nothing redraws behind the player, and nothing big redraws every second** (29 Sep; the app-wide rules are in "Speed: every tap answers at once" at the top). Today draws a plain background while the player covers it (`playerCovering`) and returns at the routine's section. Today's list redraws once a minute and at each running timer's goal time (`TodaySchedule`), never every second: a running row and the timer bar tick themselves. A `TimelineView` never switches on and off with Pause (that rebuilt the circle and faded its text) and is never anchored at `.now` (a new schedule on every redraw). A status line that comes and goes keeps its space (the "Paused" line is hidden, not removed). Measured: the main thread was busy ~22% of the time with a timer running, ~2% after.
 - **No permission prompt over the player** (`TimerPresence.playerOpen`); the prompt only follows a ▶ tap on Today. The screen stays awake while a timer runs in the player.
 
+## Progress and quit habits (built 30 Sep 2026)
+
+Report: [The Progress Page — What People Need, and How to Build It](<../Research/Research Reports/Progress and Statistics/The Progress Page — What People Need, and How to Build It.md>). Checklist: `Docs/Checklists/Progress Page — Build.md`.
+
+- **Progress only reads.** Nothing on it logs; the Day sheet's "Show on Today" goes to Today for that.
+- **Every number comes from `HabitStore`** (`dayScore`, `outcome`, `progressSnapshot`, `overTime`, `quitHistory`), worked out once per change (`dataVersion`), never while drawing. Every past day goes through `rule(habit, on:)`.
+- **Nothing counts against anyone:** skipped, paused, archived and not-its-day days are neutral; a weekly goal's empty day is never "not done"; a limit is judged only when its day or period is over. Never red, never "missed", "failed", "relapse" or "reset".
+- **A weekly or monthly goal is done for the day once something is logged that day** (Today's "N left", reminders, the player's segments, the day bar); each ✓ still adds toward the goal.
+- **A slip is an event with its own moment** ("Log a Slip…", with Undo). Editing "Started" is only for fixing a wrong start. A slip never erases the record: runs, clean days and slips are all kept.
+- **The overview counts habits, not ticks**, so it agrees with the day bar; part credit only fills rings.
+
 ## Words the app never uses
 
 - **"Due", "overdue"** anywhere (the user, 29 Sep; copy rule from before). Tasks are "For today" or "Planned for Wed 1 Oct"; habits happen "on its days".
