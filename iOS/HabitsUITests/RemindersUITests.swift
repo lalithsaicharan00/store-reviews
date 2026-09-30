@@ -26,6 +26,15 @@ final class RemindersUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Reminders"].waitForExistence(timeout: 5))
         let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "reminders-saved-and-permissions"; shot.lifetime = .keepAlways; add(shot)
     }
+    func testRealEmptyPageHasNoUnexpectedAlarmErrorOrPermissionPrompt() {
+        let app = XCUIApplication(); app.launchArguments = ["-uitest", "-empty"]
+        app.launch(); open(app)
+        XCTAssertTrue(app.staticTexts["No reminders yet"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.progressIndicators.firstMatch.waitForNonExistence(timeout: 15))
+        XCTAssertFalse(app.staticTexts["Alarms couldn’t be checked. Open Reminders and try scheduling again."].exists)
+        XCTAssertFalse(XCUIApplication(bundleIdentifier: "com.apple.springboard").alerts.firstMatch.exists)
+        let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "reminders-real-empty-permissions"; shot.lifetime = .keepAlways; add(shot)
+    }
     func testDeniedPermissionOffersSettingsAndEmptyState() {
         let app = XCUIApplication(); app.launchArguments = ["-uitest", "-empty", "-reminder-denied"]
         app.launch(); open(app)

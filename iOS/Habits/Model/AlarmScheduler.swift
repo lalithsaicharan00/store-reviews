@@ -38,6 +38,9 @@ final class AlarmScheduler {
     func reconcile(_ alerts: [ReminderScheduler.Alert], keepRinging done: Set<String>, store: HabitStore) async -> Set<String> {
         let wanted = Dictionary(alerts.prefix(Self.limit).map { (Self.alarmID($0.id), $0) }, uniquingKeysWith: { a, _ in a })
         problem = nil
+        // Opening Reminders without ever choosing an alarm is a normal state. Some OS
+        // versions reject reading alarms before authorization; there is nothing to clean up.
+        guard isAuthorized || !records.isEmpty else { return [] }
         guard let existing = try? manager.alarms else {
             problem = "Alarms couldn’t be checked. Open Reminders and try scheduling again."
             return []

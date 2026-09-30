@@ -16,7 +16,7 @@ struct RemindersView: View {
 
     var body: some View {
         Form {
-            Section("On This iPhone") {
+            Section {
                 LabeledContent("Notifications", value: permissionText)
                     .accessibilityIdentifier("reminders-permission")
                 if permission == .notDetermined {
@@ -32,7 +32,7 @@ struct RemindersView: View {
                         else { Button("Allow Alarms") { Task { _ = await scheduler.requestAlarmPermission(); await refresh() } } }
                     }
                 }
-            } footer: {
+            } header: { Text("On This iPhone") } footer: {
                 Text("Notifications respect silent mode, Focus and Scheduled Summary. An alarm is used only when you choose Alarm for that item and allow it on this iPhone.")
             }
             if let problem = scheduler.problem {
@@ -41,16 +41,16 @@ struct RemindersView: View {
                     Button("Try Scheduling Again") { Task { await refresh() } }
                 }
             }
-            Section("With Reminders") {
+            Section {
                 if configured.isEmpty { Text("No reminders yet").foregroundStyle(.secondary) }
                 ForEach(configured) { habit in reminderRow(habit) }
-            } footer: {
+            } header: { Text("With Reminders") } footer: {
                 Text("Only days it’s due are scheduled. Completing it stops that day’s reminders; paused and archived items stay saved without alerting you.")
             }
             if !other.isEmpty {
-                Section("Without Reminders") {
+                Section {
                     ForEach(other) { habit in reminderRow(habit) }
-                } footer: { Text("Tap an item to add a time or turn Remind Me on.") }
+                } header: { Text("Without Reminders") } footer: { Text("Tap an item to add a time or turn Remind Me on.") }
             }
             Section("Scheduled Ahead") {
                 if let through = scheduler.scheduledThrough {
