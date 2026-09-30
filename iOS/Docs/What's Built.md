@@ -94,11 +94,18 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 
 ## All Habits and the habit page
 
-- [x] ☑︎ on Today opens All Habits: Habits, Quitting, Tasks and Archived
+- [x] ☑︎ on Today opens All Habits: Habits, Quitting, Tasks and Archived *(superseded 30 Sep: ≡ → Habits (Habits, Quitting, Archived) and ≡ → Tasks)*
 - [x] Swipe to Archive / Restore or Delete (Delete asks, and offers Archive Instead)
 - [x] Select several to pause, archive or delete; drag to reorder (Today follows)
 - [x] Archiving keeps all history and frees a free slot
 - [x] Habit page: its sentence and description, streak, best, done this month, a month calendar of its days, notes, Edit, Pause / Resume, Archive, Delete
+
+## The ≡ menu (final, 30 Sep 2026)
+
+- [x] ≡ at the top left (replaces the avatar); Today's top bar is ≡ · Filter · +
+- [x] Slides in over Today: opens with ≡ or a swipe from the left edge; closes with a tap on Today, a drag left, or a row
+- [x] Most used first: Today · Progress · Habits · Tasks, then Times of Day · Reminders · Appearance, Backup & Export · Privacy, Plus, Help & Feedback · About
+- [x] Wired: Habits and Tasks (All Habits, split), Times of Day, Plus. Progress and the settings rows open a "coming" page for now
 
 ## Routine player (▶ Start on a time of day)
 
@@ -121,5 +128,8 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [ ] Completion animation before a done row moves down
 - [ ] Section open and close animation
 - [ ] Progress and statistics screens
-- [ ] Settings and account
-- [ ] Sync, backup, widgets, Apple Watch, iPad, Apple Health
+- [ ] Settings (export and import, backups on the phone, support, day and week start, theme, restore purchase)
+- [ ] Onboarding (first launch)
+- [ ] Home-screen and lock-screen widgets
+- [ ] Plus: purchase, account, sync and server backup
+- [ ] Apple Watch, iPad, Apple Health

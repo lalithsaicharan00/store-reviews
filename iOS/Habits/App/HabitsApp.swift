@@ -25,7 +25,8 @@ struct HabitsApp: App {
     }
 
     private var today: some View {
-        TodayView()
+        MenuShell(menu: model.menu) { TodayView() }
+            .environment(model.menu)
             .environment(model.store)
             .environment(model.scheduler)
             .environment(model.router)

@@ -78,6 +78,87 @@ final class TodayUITests: XCTestCase {
         shot("06-new-habit")
     }
 
+    /// The ≡ menu (the user's final decision, 30 Sep 2026; `Docs/Checklists/Sidebar Menu.md`): every row is there,
+    /// most used first; the wired pages open on Today's stack and Back returns to Today; tapping the dimmed Today
+    /// closes it; a swipe from Today's left edge opens it.
+    func testMenu() {
+        let menu = app.buttons["menu-button"]
+        XCTAssertTrue(menu.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["All habits"].exists, "All Habits moved into the menu")
+        XCTAssertFalse(app.buttons["Settings"].exists, "The avatar became the menu")
+        XCTAssertTrue(app.buttons["Filter"].exists)
+        XCTAssertTrue(app.buttons["New Habit"].exists)
+
+        menu.tap()
+        let rows = ["today", "progress", "habits", "tasks", "timesOfDay", "reminders", "appearance",
+                    "backup", "privacy", "plus", "help", "about"]
+        for row in rows { XCTAssertTrue(app.buttons["menu-" + row].waitForExistence(timeout: 3), row) }
+        // Most used first: Today, Progress, Habits, Tasks at the top.
+        let tops = rows.prefix(4).map { app.buttons["menu-" + $0].frame.minY }
+        XCTAssertEqual(tops, tops.sorted(), "Today, Progress, Habits, Tasks in that order")
+        shot("m01-menu")
+
+        // Today closes the menu: the rows are gone and Today's buttons work again.
+        app.buttons["menu-today"].tap()
+        XCTAssertTrue(app.buttons["menu-today"].waitForNonExistence(timeout: 3))
+        XCTAssertTrue(menu.isHittable)
+
+        // Habits: its page, then a habit's own page, then back to Today.
+        openFromMenu("habits", title: "Habits")
+        let call = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Call family'")).firstMatch
+        XCTAssertTrue(call.waitForExistence(timeout: 3))
+        shot("m02-habits")
+        call.tap()
+        // The page's own title bar: the Habits row also shows the name, so text alone can't prove the page opened.
+        XCTAssertTrue(app.navigationBars["Call family"].waitForExistence(timeout: 5), "The habit page opens")
+        back(to: "Habits")
+        XCTAssertTrue(app.navigationBars["Habits"].waitForExistence(timeout: 3), "Back on Habits")
+        back()
+        XCTAssertTrue(menu.waitForExistence(timeout: 3), "Back on Today")
+
+        // The other wired pages, and one that's coming.
+        for (row, title) in [("tasks", "Tasks"), ("timesOfDay", "Times of Day"), ("plus", "Plus"), ("progress", "Progress")] {
+            openFromMenu(row, title: title)
+            shot("m03-" + row)
+            back()
+            XCTAssertTrue(menu.waitForExistence(timeout: 3), "Back on Today from \(title)")
+        }
+
+        // Tapping the dimmed Today closes the menu.
+        menu.tap()
+        XCTAssertTrue(app.buttons["menu-today"].waitForExistence(timeout: 3))
+        app.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        XCTAssertTrue(app.buttons["menu-today"].waitForNonExistence(timeout: 3))
+
+        // A swipe from Today's left edge opens it.
+        let edge = app.coordinate(withNormalizedOffset: CGVector(dx: 0.005, dy: 0.5))
+        edge.press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.75, dy: 0.5)))
+        XCTAssertTrue(app.buttons["menu-today"].waitForExistence(timeout: 3), "Edge swipe opens the menu")
+        shot("m04-edge-swipe")
+        app.buttons["menu-today"].tap()
+        XCTAssertTrue(app.buttons["menu-today"].waitForNonExistence(timeout: 3))
+    }
+
+    private func openFromMenu(_ row: String, title: String) {
+        app.buttons["menu-button"].tap()
+        let button = app.buttons["menu-" + row]
+        XCTAssertTrue(button.waitForExistence(timeout: 3), row)
+        button.tap()
+        XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5), "\(title) opens")
+    }
+
+    /// The system Back button: found by its identifier or its label (the page before, or "Back"), since a page's own
+    /// toolbar buttons can come first in the bar; otherwise the system's swipe from the left edge.
+    private func back(to previous: String = "Back") {
+        let bar = app.navigationBars.firstMatch
+        for name in ["BackButton", previous, "Back"] where bar.buttons[name].exists {
+            bar.buttons[name].tap()
+            return
+        }
+        app.coordinate(withNormalizedOffset: CGVector(dx: 0.01, dy: 0.5))
+            .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)))
+    }
+
     /// Back to Today appears only on another day: above the day bar on Today, and at the bottom of the
     /// calendar. The calendar marks the open day with a circle, like its rings.
     func testBackToToday() {

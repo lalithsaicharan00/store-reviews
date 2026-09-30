@@ -251,3 +251,14 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
   - Cut down's number field could clip typed digits.
 - **Why most failures were in the tests:** they still expected round-2 to round-5 screens; see "Tests retired" above. Two tests also matched text too loosely: "Quit" matched the Quitting header, and a row's line also carries its reminder time ("0/2 items · 9:00 AM").
 - **Run them:** `Research/Temp/ios-device-all.sh` (all) or `Research/Temp/ios-device-some.sh <outdir> <Class/test> …` (some). Keep the phone unlocked and connected.
+
+## ≡ Menu — FINAL (the user, 30 Sep 2026)
+
+**Decided and final. Don't reopen it.** The top-left button is a ≡ menu that slides in from the left over Today. Everything that isn't used every day lives there: **Progress, Habits (All Habits) and Tasks leave Today's top bar**, and every setting goes in too. The user overrode Round 3's suggestions to keep Progress in the top bar and to open ≡ as a sheet. Research: [Navigation, Round 3](<../Research/Research Reports/Home Screen and Visual Design/Navigation Pattern/Navigation, Round 3 — The Menu, Filter and Two Ways In.md>). Checklist: [Sidebar Menu](<Docs/Checklists/Sidebar Menu.md>). Code: `Habits/Menu/`. *Supersedes: the avatar at the top left, the Progress and All habits (☑︎ `checklist`) top-bar buttons, and Round 2's avatar-and-icons top bar.*
+
+- **Today's top bar is ≡ · Filter · +.** Filter's icon is `line.3.horizontal.decrease.circle`, never the bare three lines, which look like ≡.
+- **Menu order, most used first:** Today · Progress · Habits · Tasks | Times of Day · Reminders · Appearance | Backup & Export · Privacy | Plus | Help & Feedback · About. Row names are the pages' titles. Icons are monochrome (colour is for habits only).
+- **Every row pushes its page onto Today's own navigation stack** (`MenuModel.path`), so Back and the edge swipe return to Today. A page that isn't built opens a "coming" page that says what it will hold; wire the real page in `MenuPage`.
+- **One screen per thing, however many ways in:** ≡ → Times of Day and Today's "Edit Times of Day" show the same `TimesOfDayList`; Habits and Tasks are one `AllHabitsView(kind:)`.
+- **Open:** ≡, or a swipe from Today's left edge (only on Today itself: on a pushed page that swipe is Back). **Close:** tap the dimmed Today, drag the menu left, choose a row, or VoiceOver's escape. Reduce Motion fades it instead of sliding.
+- **Speed:** Today never reads `MenuModel.isOpen` or `drag`, so the menu opening, closing or following a finger never redraws Today. Keep it that way; `PerformanceUITests.testMenuOpenClose` measures it.

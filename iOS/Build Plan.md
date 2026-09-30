@@ -140,4 +140,15 @@ Rounds 7–9 (New Habit form Round 3/4 and the full-screen routine player) are r
 | 58 | **Completion feedback:** finish the fill or check animation before the row moves below unfinished rows; smooth on repeated goals (the last of three checks) | Not started |
 | 59 | **Section open and close animation** beyond the current fade | Not started |
 | 60 | **Progress and statistics screens** | Not started |
-| 61 | **Settings and account** (the avatar button) | Not started |
+| 61 | **Settings and account** (the avatar button) | Next (chosen by the user, 30 Sep). Include export and import with on-device snapshots (free users' only backup), a support and contact link, day start and week start, theme, restore purchase, help |
+| 62 | **Onboarding (first launch):** asks day start and week start (decided, Backlog 28 Sep); the user creates their own habits first, no sign-up wall, a skippable tour (ledger C203, C209, C075) | Not started |
+| 63 | **Home-screen and lock-screen widgets:** interactive, free, show every free habit; Plus adds designs and sizes (Backlog 29 Sep; ledger C009, C023, C040) | Not started; best after Progress settles what a widget shows |
+| 64 | **Plus: purchase, account, sync and server backup:** StoreKit purchase and restore, "Continue with Apple / Google" after buying, sync, server backup, Plus Family invites (Architecture 01–06). The Plus screen exists; buying isn't wired up | Not started; the largest remaining piece, and 65–67 depend on it |
+| 65 | **Apple Watch app** (Plus): timer and two-way sync done properly (ledger C022, 19 apps positive, 40 negative) | Not started |
+| 66 | **iPad layout** (Plus) | Not started |
+| 67 | **Apple Health, read-only** (Plus; first update after launch, Backlog 28 Sep) | Not started |
+| 68 | **Smaller, useful but not urgent:** milestones and celebrations (C101), check-off sound and haptic (C069, fits with #58), Siri and Shortcuts (C046), app-icon badge (C226), passcode lock (C017), tags or grouping (C045), mood tracker (C049) | Not started |
+
+State on 30 Sep 2026: undo (#57) is researched and being built in another session; Progress (#60) is being researched in another session. Suggested order after them: 61 Settings → 62 Onboarding → 63 Widgets (every screen a free user sees, before Figma) → 64 Plus, then 65–67.
+
+**≡ menu (the user, 30 Sep 2026, final):** the avatar became a ≡ side menu holding Progress, Habits, Tasks and every setting (Design Rules, "≡ Menu — FINAL"). Built on the `sidebar` branch with the pages that exist wired in (Habits, Tasks, Times of Day, Plus); Progress (#60) and the settings pages (#61) open "coming" pages until they're built, each wired in one place (`MenuPage`). Checklist: `Docs/Checklists/Sidebar Menu.md`.

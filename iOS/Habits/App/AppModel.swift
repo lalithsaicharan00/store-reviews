@@ -20,6 +20,8 @@ final class AppModel {
     /// A running timer on the Lock Screen, and its one "goal reached" notification.
     let timerPresence = TimerPresence()
     let router = AppRouter()
+    /// The ≡ menu and Today's navigation path.
+    let menu = MenuModel()
     private let persistence: Persistence?
     private var loading: Task<Void, Never>?
 

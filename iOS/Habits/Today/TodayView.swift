@@ -20,7 +20,6 @@ struct TodayView: View {
 
     @State private var showCalendar = false
     @State private var showNewHabit = false
-    @State private var showAllHabits = false
     /// The habit just added, revealed once the sheet closes.
     @State private var added: UUID?
     /// A row or header to scroll to, and the row that flashes briefly after Add.
@@ -31,10 +30,13 @@ struct TodayView: View {
     /// not every section (30 Sep).
     @State private var visibleRows = VisibleRows()
     @Environment(AppRouter.self) private var router
+    /// The ≡ menu. Today only writes to it (opening it) and follows its navigation path; it never reads whether the
+    /// menu is open, so the menu sliding over Today doesn't redraw Today (`Docs/Checklists/Sidebar Menu.md`).
+    @Environment(MenuModel.self) private var menu
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: Bindable(menu).path) {
             Group {
                 if covered {
                     Color(.systemGroupedBackground).ignoresSafeArea()
@@ -48,7 +50,8 @@ struct TodayView: View {
                 }
             }
             .toolbar { if !covered { topBar } }
-            .navigationDestination(isPresented: $showAllHabits) { AllHabitsView() }
+            // Every place in the ≡ menu is pushed here, so Back and the edge swipe return to Today.
+            .navigationDestination(for: MenuPlace.self) { MenuPage(place: $0) }
             .toolbar { if !covered && store.isLoaded && !store.habits.isEmpty { dayBar } }
             .sheet(isPresented: $showCalendar) {
                 CalendarSheet(day: selectedDay, today: store.today()) { day = $0 }
@@ -89,6 +92,8 @@ struct TodayView: View {
             // A tapped notification opens today's section.
             guard let section = router.focusSection else { return }
             router.focusSection = nil
+            // Back to Today itself first: the menu closes and any page it opened goes.
+            menu.reset()
             Task {
                 if day != nil && day != store.today() { day = nil; try? await Task.sleep(for: .milliseconds(50)) }
                 foldOverrides[section] = true
@@ -479,28 +484,18 @@ struct TodayView: View {
         .accessibilityLabel("\(label), \(done) of \(total) done. Open calendar")
     }
 
+    /// ≡ · Filter · +. Progress, Habits, Tasks and every setting live in the ≡ menu (the user's final decision,
+    /// 30 Sep 2026). Filter is Apple Mail's circled symbol, so it can't be mistaken for ≡ (Navigation, Round 3).
     @ToolbarContentBuilder
     private var topBar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Button {} label: {
-                Image(systemName: "person.fill")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(Color.onInk)
-                    .frame(width: 30, height: 30)
-                    .background(Circle().fill(Color.ink))
+            Button("Menu", systemImage: "line.3.horizontal") {
+                menu.setOpen(true, reduceMotion: reduceMotion)
             }
-            .accessibilityLabel("Settings")
-        }
-        .hidingSharedBackground()
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Progress", systemImage: "chart.bar.xaxis") {}
-            Button("All habits", systemImage: "checklist") { showAllHabits = true }
-        }
-        if #available(iOS 26, *) {
-            ToolbarSpacer(.fixed, placement: .topBarTrailing)
+            .accessibilityIdentifier("menu-button")
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Filter", systemImage: "line.3.horizontal.decrease") {}
+            Button("Filter", systemImage: "line.3.horizontal.decrease.circle") {}
             Button("New Habit", systemImage: "plus") { showNewHabit = true }
         }
     }
@@ -527,18 +522,6 @@ private struct HiddenTimerBars: View {
         ForEach(timers, id: \.habit.id) { timer in
             TimerBar(habit: timer.habit, start: timer.start) { onShow(timer.habit) }
                 .transition(.move(edge: .bottom).combined(with: .opacity))
-        }
-    }
-}
-
-private extension ToolbarContent {
-    /// iOS 26 groups toolbar items on glass; the avatar sits on its own without it.
-    @ToolbarContentBuilder
-    func hidingSharedBackground() -> some ToolbarContent {
-        if #available(iOS 26, *) {
-            self.sharedBackgroundVisibility(.hidden)
-        } else {
-            self
         }
     }
 }
