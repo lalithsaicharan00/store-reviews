@@ -154,11 +154,24 @@ A single sheet for one habit on one day. The title names the habit and the day (
 - **Future days:** nothing to change, so a tap does nothing.
 - **Not a big dedicated section.** One row is enough; a large editor on the page would compete with the calendar, which the page research ranks first.
 
-### Routine player
+### Routine player (follow-up check, 30 Sep)
 
-- Keep what's built: the Undo in the message, and exact-entry Undo in Habit options.
-- **Add: going back (‹) to a habit completed by mistake restores it, and for a timed habit resumes from the time already logged** (Routinery evidence). Check this works before building anything new.
-- The player's message still hides after a few seconds (it covered a checklist step, found by hand 29 Sep). That's acceptable **because** Habit options keeps the undo; say so in the message's accessibility label.
+31 of the on-topic reviews are about a player: Routinery 15, Apple Fitness 12, Fabulous 3, Morning Habits 1. What they ask for, and where our player already stands:
+
+| Ask | Reviews | Our player |
+|---|---|---|
+| Go back to the habit I completed by mistake | 12 (Routinery, Fabulous) | Built: ‹ goes back; the page shows it done |
+| Keep the time already done when going back, don't reset it | 2 (`fcaa917c-a912-403c-8988-c78898c34b71`, Korean `fc00b12e-1434-40c4-bc90-509ffcb46ea8`) | Built: time is saved as entries; nothing resets |
+| Don't lose the session when I close or swipe by accident | 5 (Routinery, Fabulous, Apple Fitness) | Built: can't be swiped away; Close saves; progress stays |
+| Resume after pressing End by mistake | 5 (Apple Fitness) | Built: End routine goes to the summary, which has "Return to unfinished" |
+| Pressed Complete when I meant Pause | 3 (Routinery) | Doesn't apply: a timer's button is Pause / Resume, never Complete |
+| Ask "Are you sure?" before ending | 3 (Apple Fitness) | Not needed: ending loses nothing. One reviewer found that exact prompt a problem ("I have accidentally not answered, so it continues to track", `10583022272`) |
+
+**So after the undo message goes, the player needs no confirmations.** Every action in it can be taken back: a log (Habit options → "Undo +250 ml" / "Undo check", repeatable one entry at a time), a skip (Undo skip), Next or End (‹ and Return to unfinished).
+
+One change is worth making: **when the page shows a habit this routine completed, show a small "Undo" under the result, visible and with no timer**, the same as the inline Undo on Today. Right now, once the 4-second message has gone, undo is one level down in Habit options. That is the "hidden undo" pattern (58 reviews), and in a player people move fast and notice later. It sits on the page, so it covers nothing (the message is timed because it covered a checklist step, found by hand 29 Sep). Habit options keeps its Undo too.
+
+Unchanged on purpose: Undo in the player only removes entries made in this routine, so an entry from earlier in the day can't be removed by accident (found by hand 29 Sep). Those are fixed from Today (inline Undo, the Log sheet's entries or the Day sheet).
 
 ### Notifications, widgets and quit habits
 
@@ -181,7 +194,7 @@ A single sheet for one habit on one day. The title names the habit and the day (
 | Undo right after a check | Tap again un-checks | No visible Undo; un-check isn't felt differently |
 | Undo right after + or a timer | "Undo Last Entry" in the long-press menu only | Hidden (C223: never gesture-only) |
 | Fix one wrong amount or time | Only the last entry, from the menu | No entry list, no edit |
-| Undo in the routine player | Message with Undo, plus Habit options | Check ‹ restores a completed timed habit with its time |
+| Undo in the routine player | Message with Undo (4 s), plus Habit options; ‹ back keeps logged time | After the message, undo is only inside Habit options |
 | Undo a skip | "Undo skip" in the message and on the page | — |
 | Fix today after leaving Today | Go back to Today; long-press → Undo Last Entry | No Day sheet |
 | Fix an earlier day | Day bar → that day's row | The habit page calendar does nothing on tap |
