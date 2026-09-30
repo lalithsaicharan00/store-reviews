@@ -273,7 +273,8 @@ enum ReminderCheck {
     }
 
     private static func raceChecks(calendar: Calendar) async -> [String] {
-        let store = HabitStore(repository: Persistence.inMemory().repository, calendar: calendar); await store.load()
+        let persistence = Persistence.inMemory()
+        let store = HabitStore(repository: persistence.repository, calendar: calendar); await store.load()
         let day = store.today(), now = ReminderClock.date(on: day, hour: 0, minute: 0, calendar: calendar)!
         var habit = Habit(name: "Race", symbol: "star", color: .blue, kind: .check,
                           reminders: [ReminderTime(hour: 9, minute: 0)], remind: true)
@@ -303,6 +304,15 @@ enum ReminderCheck {
         notes.requests["reminder.keep"] = UNNotificationRequest(identifier: "reminder.keep", content: UNMutableNotificationContent(), trigger: nil)
         store.problem = "Cannot read"; await scheduler.reconcile(store, now: now)
         if notes.requests["reminder.keep"] == nil { failures.append("unavailable database cleared pending alerts") }
+        try? persistence.repository.close()
+        await store.load()
+        if store.isStorageReady || store.problem == nil { failures.append("closed database was treated as readable") }
+        store.problem = nil // acknowledging the message must not make the failed read trustworthy
+        await scheduler.reconcile(store, now: now)
+        if notes.requests["reminder.keep"] == nil { failures.append("acknowledging a storage error cleared saved alerts") }
+        let fallback = HabitStore(repository: Persistence.inMemory().repository, databaseOpened: false)
+        await fallback.load(); await scheduler.reconcile(fallback, now: now)
+        if fallback.isStorageReady || notes.requests["reminder.keep"] == nil { failures.append("failed-open fallback replaced the saved schedule with an empty one") }
         return failures
     }
 

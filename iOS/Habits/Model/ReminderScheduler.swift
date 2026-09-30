@@ -111,7 +111,7 @@ final class ReminderScheduler {
 
     private func reconcileNow(_ store: HabitStore, now: Date) async {
         // A temporarily unavailable database is not an empty database. Keep pending alerts intact.
-        guard store.isLoaded, store.problem == nil else { return }
+        guard store.isLoaded, store.isStorageReady, store.problem == nil else { return }
         problem = nil
         let status = await center.authorizationStatus()
         let planned = plan(store, now: now)

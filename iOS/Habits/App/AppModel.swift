@@ -47,7 +47,7 @@ final class AppModel {
             opened = try? Persistence.onDisk()
         }
         persistence = opened
-        store = HabitStore(repository: (opened ?? Persistence.inMemory()).repository)
+        store = HabitStore(repository: (opened ?? Persistence.inMemory()).repository, databaseOpened: opened != nil)
         if opened == nil {
             store.problem = "Your habits couldn't be opened. Nothing has been changed; please restart the app."
         }
@@ -62,7 +62,7 @@ final class AppModel {
         if let loading { return await loading.value }
         let task = Task { [self] in
             await store.load()
-            guard store.isLoaded else { return }
+            guard store.isLoaded, store.isStorageReady else { return }
             persistence?.markSchemaCurrent()
             #if DEBUG
             if ProcessInfo.processInfo.arguments.contains("-reminder-fixture") { await ReminderFixture.install(in: store) }

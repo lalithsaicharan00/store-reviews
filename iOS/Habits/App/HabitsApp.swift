@@ -31,9 +31,12 @@ struct HabitsApp: App {
             .environment(model.scheduler)
             .environment(model.router)
             .tint(.ink)
+            .onChange(of: model.store.problem) {
+                if model.store.problem == nil && model.store.isStorageReady { model.scheduler.scheduleReconcile(model.store) }
+            }
             .task {
                 await model.ensureLoaded()
-                guard model.store.isLoaded else { return }
+                guard model.store.isLoaded, model.store.isStorageReady else { return }
                 model.scheduleRefresh()
                 await model.dailySnapshot()
             }

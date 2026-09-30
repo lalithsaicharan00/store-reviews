@@ -25,13 +25,17 @@ final class HabitStore {
     @ObservationIgnored private var triedPlacementUpgrade = false
     /// False until the first load finishes; the UI waits rather than flashing an empty screen.
     private(set) var isLoaded = false
+    /// A failed open/read must never look like an empty installation to system delivery.
+    private(set) var isStorageReady = false
+    @ObservationIgnored private let databaseOpened: Bool
     /// Shown to the user when a write fails or the data can't be read.
     var problem: String?
 
     @ObservationIgnored private let suppliedCalendar: Calendar?
-    init(repository: HabitRepository, calendar: Calendar? = nil) {
+    init(repository: HabitRepository, calendar: Calendar? = nil, databaseOpened: Bool = true) {
         self.repository = repository
         suppliedCalendar = calendar
+        self.databaseOpened = databaseOpened
     }
 
     private(set) var habits: [Habit] = []
@@ -695,10 +699,12 @@ final class HabitStore {
             habitNotes = loadedHabitNotes
             dayNotes = loadedDayNotes
             descriptions = loadedDescriptions
+            isStorageReady = databaseOpened
             isLoaded = true
             if upgradedV1 && !repaired && !triedPlacementUpgrade { triedPlacementUpgrade = true; repairPlacement() }
             onChange?()
         } catch {
+            isStorageReady = false
             problem = "Your habits couldn't be read. Nothing has been changed; please restart the app."
         }
     }
@@ -764,7 +770,7 @@ final class HabitStore {
 
     func backupFile(now: Date = .now) async throws -> URL {
         await flush()
-        guard problem == nil else { throw BackupError.pendingSave }
+        guard problem == nil, isStorageReady else { throw BackupError.pendingSave }
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent("Habits-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let url = directory.appendingPathComponent("Habits Backup \(today(now: now).key).db")
@@ -779,7 +785,7 @@ final class HabitStore {
 
     func restore(from file: URL) async throws -> RestoreSummary {
         await flush()
-        guard problem == nil else { throw BackupError.pendingSave }
+        guard problem == nil, isStorageReady else { throw BackupError.pendingSave }
         let scoped = file.startAccessingSecurityScopedResource()
         defer { if scoped { file.stopAccessingSecurityScopedResource() } }
         let copy = FileManager.default.temporaryDirectory.appendingPathComponent("habits-restore-\(UUID().uuidString).db")
@@ -795,17 +801,17 @@ final class HabitStore {
         let version = bytes[60..<64].reduce(UInt32(0)) { ($0 << 8) | UInt32($1) }
         guard version > 0 else { throw BackupError.invalid }
         guard version <= UInt32(HabitRepository.companion.SCHEMA_VERSION) else { throw BackupError.newerVersion }
-        let source = HabitRepository.companion.open(path: copy.path)
+        let source = try HabitRepository.companion.open(path: copy.path)
         let snapshot: Snapshot
         do {
             snapshot = try await source.loadForRestore()
             guard try await source.pragma(name: "quick_check") == "ok" else { throw BackupError.unreadable }
             try Self.validateBackup(snapshot)
         } catch {
-            source.close()
+            try? source.close()
             throw BackupError.unreadable
         }
-        source.close()
+        try? source.close()
         return try await dataOperation { [self] in
             let before = try await repository.load()
             try await repository.mergeAll(snapshot: snapshot)
@@ -825,7 +831,7 @@ final class HabitStore {
         let previous = writeQueue
         let task = Task { @MainActor in
             await previous?.value
-            guard self.problem == nil else { throw BackupError.pendingSave }
+            guard self.problem == nil, self.isStorageReady else { throw BackupError.pendingSave }
             return try await operation()
         }
         writeQueue = Task { @MainActor in _ = try? await task.value }
@@ -862,6 +868,10 @@ final class HabitStore {
                 try? await Task.sleep(for: .seconds(2))
             }
             #endif
+            guard self.isStorageReady else {
+                self.problem = "Your data couldn't be opened. Nothing has been changed; please restart the app."
+                return
+            }
             do {
                 try await change()
                 onChange?()
@@ -1141,7 +1151,7 @@ final class HabitStore {
     /// Delivered alerts are usable only for their current configuration and today or the previous logical day.
     /// An old alert must not reschedule a task, log a paused item or revive anything deleted.
     func canActOnReminder(_ target: ReminderTarget, now: Date = .now) -> Bool {
-        guard problem == nil, isLoaded, let habit = habits.first(where: { $0.id == target.habit }),
+        guard problem == nil, isStorageReady, isLoaded, let habit = habits.first(where: { $0.id == target.habit }),
               !habit.archived, habit.remind, habit.kind != .quit,
               target.day <= today(now: now), target.day >= today(now: now).adding(days: -1, calendar: calendar),
               isDue(habit, on: target.day, now: now),
@@ -1161,7 +1171,7 @@ final class HabitStore {
             guard canActOnReminder(target, now: now), let habit = habits.first(where: { $0.id == habit.id }) else { return }
             let id = eventID ?? UUID()
             let exists = try await repository.hasEntry(id: id.uuidString)
-            guard !exists else { return }
+            guard !exists.boolValue else { return }
             let value: Double
             switch habit.kind {
             case .amount:

@@ -50,6 +50,12 @@ enum BackupCheck {
             try newer.write(to: invalid)
             do { _ = try await target.restore(from: invalid); failures.append("newer schema accepted") }
             catch { expect(error as? HabitStore.BackupError == .newerVersion, "newer schema has a clear error") }
+            var corrupt = try Data(contentsOf: file)
+            corrupt[100] = 255 // valid SQLite header/version, invalid first b-tree page
+            try corrupt.write(to: invalid)
+            do { _ = try await target.restore(from: invalid); failures.append("corrupt SQLite backup accepted") }
+            catch { expect(error as? HabitStore.BackupError == .unreadable, "SQLite read failure reaches Swift recovery") }
+            expect(target.habits.first?.name == "New name", "corrupt backup leaves existing data unchanged")
             let empty = HabitStore(repository: Persistence.inMemory().repository)
             await empty.load()
             let emptyFile = try await empty.backupFile()
