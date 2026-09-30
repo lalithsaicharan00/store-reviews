@@ -53,3 +53,19 @@ Research: [Export and Backup — Keeping Your Own Data](<../../../Research/Resea
 | L7.5 | Tell the person what was added | [x] |
 | L7.6 | Core test for the merge | [x] `mergingABackupAddsOnlyWhatIsMissing` (written; not run: Google Maven blocked here) |
 | L7.7 | Help answers for backup, moving phones, the spreadsheet | [x] |
+
+## Loop 8 — Today widget (C023, C040, C009)
+
+Research: [Widgets — Tick Without Opening the App](<../../../Research/Research Reports/Home Screen and Visual Design/Widgets — Tick Without Opening the App.md>), building on the widget study and Architecture 07.
+
+| # | Point | Done |
+|---|---|---|
+| L8.1 | One free Today widget: small, medium, large; Lock Screen circular, rectangular, inline | [x] `HabitsTodayWidget` |
+| L8.2 | Habits by name in Today's order, what's left first, done ones dimmed below | [x] `WidgetBridge.day` |
+| L8.3 | Tap ✓ / +1 / +amount to log without opening the app, one step per tap; others open the app | [x] `LogHabitFromWidget` |
+| L8.4 | The row updates at once; the day's reminders stop when it's done | [x] (reminder removal from the widget is best-effort; the app replans when it runs) |
+| L8.5 | Taps saved with tap-time entry IDs, applied once by the app before anything else | [x] `WidgetTap`, `WidgetBridge.applyPendingTaps` |
+| L8.6 | Turns over at the person's day start by itself; "Open Habits" instead of a stale day | [x] `TodayProvider`, `WidgetFile.day(at:)` |
+| L8.7 | App Group entitlement for the app and the widget extension | [x] in the project; [ ] turn it on for both App IDs in the developer account |
+| L8.8 | Tried on a device | [ ] No Mac in this session |
+

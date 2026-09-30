@@ -195,6 +195,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/../Core/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)", );
 				OTHER_LDFLAGS = ("$(inherited)", "-framework", Core, );
+				CODE_SIGN_ENTITLEMENTS = Habits.entitlements;
 				INFOPLIST_FILE = "Habits-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Habits;
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -224,6 +225,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/../Core/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)", );
 				OTHER_LDFLAGS = ("$(inherited)", "-framework", Core, );
+				CODE_SIGN_ENTITLEMENTS = Habits.entitlements;
 				INFOPLIST_FILE = "Habits-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Habits;
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -251,6 +253,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5RR56C2WTA;
 				GENERATE_INFOPLIST_FILE = YES;
+				CODE_SIGN_ENTITLEMENTS = HabitsLiveActivity.entitlements;
 				INFOPLIST_FILE = "HabitsLiveActivity-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Habits;
 				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@executable_path/../../Frameworks", );
@@ -270,6 +273,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5RR56C2WTA;
 				GENERATE_INFOPLIST_FILE = YES;
+				CODE_SIGN_ENTITLEMENTS = HabitsLiveActivity.entitlements;
 				INFOPLIST_FILE = "HabitsLiveActivity-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Habits;
 				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@executable_path/../../Frameworks", );

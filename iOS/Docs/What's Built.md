@@ -127,6 +127,14 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Your Data: in the phone's backups; Export a Spreadsheet (CSV); Save a Backup File; Restore from a Backup File (adds only what's missing)
 - [ ] Contact Support (waits for a support address)
 
+## Widget
+
+- [x] Today widget, free: small, medium and large on the Home Screen; ring, next habit and a line on the Lock Screen
+- [x] Today's habits by name, what's left first; done ones dimmed below with a filled ✓
+- [x] ✓, +1 or +amount on each row logs without opening the app, one step per tap; timers, checklists and typed amounts open the app
+- [x] Turns over at the day start by itself; says "Open Habits to see today" rather than show an old day
+- [ ] Week grid, calendar, streak and single-habit designs; Android widgets
+
 ## Under the hood
 
 - [x] Data saved on the phone (SQLite through the Kotlin shared core), survives closing the app
@@ -135,4 +143,4 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 ## Not built yet (Build Plan order)
 
 - [ ] Section open and close animation
-- [ ] Sync, backup, widgets, Apple Watch, iPad, Apple Health
+- [ ] Sync, server backup, Apple Watch, iPad, Apple Health

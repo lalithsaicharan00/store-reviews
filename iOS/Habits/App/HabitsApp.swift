@@ -20,7 +20,13 @@ struct HabitsApp: App {
         }
         .onChange(of: scenePhase) {
             // Re-plan on every return to the app: a new day, a changed time zone, or a changed permission.
-            if scenePhase == .active && model.store.isLoaded { model.scheduler.scheduleReconcile(model.store) }
+            // Widget taps made while away come in first, then the widget and reminders are brought up to date.
+            guard scenePhase == .active && model.store.isLoaded else { return }
+            Task { @MainActor in
+                await WidgetBridge.applyPendingTaps(model.store)
+                WidgetBridge.publish(model.store)
+                model.scheduler.scheduleReconcile(model.store)
+            }
         }
     }
 

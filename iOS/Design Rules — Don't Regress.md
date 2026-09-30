@@ -97,6 +97,16 @@ Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Resear
 - **A note never changes progress**, and can be added on any past day, done or not.
 - **Note sheets are solid** (`presentationBackground`), like the calendar sheet.
 
+## Today widget (built 30 Sep 2026)
+
+Source: [Widgets — Tick Without Opening the App](<../Research/Research Reports/Home Screen and Visual Design/Widgets — Tick Without Opening the App.md>) and Architecture 07 §3.1.
+
+- **The widget draws only what the app wrote** (`WidgetFile` in the App Group). It never computes goals, streaks or what's due. Anything that changes a habit or an entry must be followed by `WidgetBridge.publish` (it runs from `AppModel.onChange`; keep it there).
+- **Never open the database from the widget** (SQLite in a shared container gets the app killed). Widget taps are `WidgetTap` files with an entry ID made at the tap; the app applies them (`WidgetBridge.applyPendingTaps`) before it shows anything, plans reminders or publishes, and deletes the files only after the save succeeds.
+- **One tap adds one step** (✓, +1, +quick amount). Never a tap that completes a whole count, and nothing on a widget that removes: no undo, reset or delete.
+- **Never a stale day:** the file holds today and tomorrow; after the last day ends the widget says "Open Habits to see today".
+- **Basic interactive widgets are free, forever** (C009). Extra designs go in Plus later; never move this one.
+
 ## Your data: export, backup, restore (built 29 Sep 2026)
 
 Source: [Export and Backup — Keeping Your Own Data](<../Research/Research Reports/Data, Sync and Accounts/Export and Backup — Keeping Your Own Data.md>) and the Data Safety report.

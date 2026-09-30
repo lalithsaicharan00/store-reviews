@@ -1156,6 +1156,18 @@ final class HabitStore {
         withAnimation { _ = entries.remove(at: i) }
     }
 
+    /// A tap on the Today widget, added when the app next runs. Its ID was made at the tap, so the same tap added twice
+    /// counts once (the database ignores a repeated entry ID too).
+    func applyWidgetTap(entryID: UUID, habitID: UUID, day: LocalDay, value: Double, at: Date) {
+        guard value.isFinite, value > 0, habits.contains(where: { $0.id == habitID }),
+              !entries.contains(where: { $0.id == entryID }) else { return }
+        perform { [self] in
+            let entry = Entry(id: entryID, habitID: habitID, day: day, value: value, createdAt: at)
+            try await repository.addEntry(entry: entry.record)
+            entries.append(entry)
+        }
+    }
+
     // MARK: Your data: export, backup file, restore (report "Export and Backup — Keeping Your Own Data", 29 Sep)
 
     enum RestoreError: LocalizedError {

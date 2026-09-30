@@ -6,6 +6,7 @@ import WidgetKit
 struct HabitsLiveActivityBundle: WidgetBundle {
     var body: some Widget {
         HabitTimerLiveActivity()
+        HabitsTodayWidget()
     }
 }
 

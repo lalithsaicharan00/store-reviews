@@ -62,11 +62,15 @@ final class AppModel {
                 await store.addEveryTypeToAnytime()
             }
             #endif
+            // Taps on the Today widget while the app wasn't running, before anything is shown or planned.
+            await WidgetBridge.applyPendingTaps(store)
             store.onChange = { [store, scheduler, timerPresence] in
                 scheduler.scheduleReconcile(store)
+                WidgetBridge.publish(store)
                 Task { await timerPresence.sync(store) }
             }
             scheduler.scheduleReconcile(store)
+            WidgetBridge.publish(store)
             // A timer left running (the app was closed, or the phone restarted) gets its Live Activity back.
             await timerPresence.sync(store)
         }
@@ -106,6 +110,8 @@ final class AppModel {
         scheduleRefresh()
         let work = Task { [self] in
             await ensureLoaded()
+            await WidgetBridge.applyPendingTaps(store)
+            WidgetBridge.publish(store)
             await scheduler.reconcile(store)
             task.setTaskCompleted(success: !Task.isCancelled)
         }
