@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// "3/8 glasses", "12/20 min", "2/3 this week", "1/4 items", "0/2 cups max": one format for every habit.
 /// While a timer runs, time is a live clock instead: "7:42/20 min" ("Timing a Habit", 28 Sep).
@@ -62,7 +63,7 @@ struct HabitRow: View {
     /// One sheet at a time, from one `.sheet`: four sheet modifiers on every row made each row heavier to build as
     /// it scrolled in (30 Sep).
     @State private var sheet: RowSheet?
-    private enum RowSheet: Identifiable { case log, edit, notes, pause; var id: Self { self } }
+    private enum RowSheet: Identifiable { case log, edit, notes, pause, day; var id: Self { self } }
     private var showLog: Bool {
         get { sheet == .log }
         nonmutating set { sheet = newValue ? .log : nil }
@@ -121,7 +122,16 @@ struct HabitRow: View {
                         .lineLimit(1)
                         .accessibilityIdentifier("habit-rhythm")
                 }
-                if lineOverride == nil { noteLine }
+                if lineOverride == nil {
+                    HStack(alignment: .firstTextBaseline, spacing: 12) {
+                        noteLine
+                        if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day {
+                            Button(entry.undoLabel(for: habit)) { store.undoEntry(entry.id) }
+                                .buttonStyle(.borderless).font(.caption)
+                                .accessibilityIdentifier("habit-inline-undo")
+                        }
+                    }
+                }
                 if case .flexible(let period, let needed) = habit.frequency,
                    let count = store.flexibleProgress(habit, on: day) {
                     Text(count > needed ? "\(count) days this \(period.noun) · goal reached"
@@ -139,6 +149,9 @@ struct HabitRow: View {
           }
           .contentShape(Rectangle())
           .onTapGesture { if logsNumbers && day <= store.today() { showLog = true } }
+          .accessibilityAction(named: "Undo last log") {
+              if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day { store.undoEntry(entry.id) }
+          }
           .accessibilityAction(named: habit.kind == .duration ? "Log time manually" : "Log amount manually") { if logsNumbers && day <= store.today() { showLog = true } }
             actionButton(done: done)
                 .frame(height: RowBand.height)
@@ -154,6 +167,7 @@ struct HabitRow: View {
             case .edit: EditHabitSheet(habit: habit)
             case .notes: HabitNotesView(habit: habit)
             case .pause: PauseSheet(habit: habit)
+            case .day: DaySheet(habit: habit, day: day)
             }
         }
         // Swipe left for a note, on any day and whether or not it's done: the standard iOS row gesture (Mail,
@@ -165,6 +179,8 @@ struct HabitRow: View {
             }
         }
         .contextMenu {
+            Button(day == store.today() ? "Edit Today's Progress…" : "Edit Progress…", systemImage: "calendar") { sheet = .day }
+                .disabled(day > store.today())
             // Edit sits with the item's other actions, as in Reminders; a tap on the row logs (spec §8).
             Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { sheet = .edit }
             // A stretch of days off: travel, illness (pause report, 29 Sep). Skip today stays for one day.
@@ -264,6 +280,7 @@ struct HabitRow: View {
                 RoundActionButton(symbol: "checkmark", done: done, color: habit.color,
                                   label: done ? "Undo \(habit.name)" : "Mark \(habit.name) done") {
                     if !done { offerNote() }
+                    UIImpactFeedbackGenerator(style: done ? .light : .medium).impactOccurred()
                     withAnimation {
                         if let slot { store.toggleSlot(habit, slot: slot, on: day) } else { store.toggleCheck(habit, on: day) }
                     }
@@ -336,14 +353,16 @@ struct QuitRow: View {
     let habit: Habit
     var highlighted = false
     @Environment(HabitStore.self) private var store
-    @State private var showEdit = false
-    @State private var showPause = false
+    @State private var sheet: QuitSheet?
+    private enum QuitSheet: Identifiable { case edit, pause, day, slip; var id: Self { self } }
+    private var showPause: Binding<Bool> { Binding(get: { sheet == .pause }, set: { sheet = $0 ? .pause : nil }) }
     private var today: LocalDay { store.today() }
     /// Set once, on a whole second, so every quit clock ticks together.
     private static let anchor = Date(timeIntervalSinceReferenceDate: Date.now.timeIntervalSinceReferenceDate.rounded(.down))
 
     var body: some View {
         // A fixed anchor: `.now` gave a new schedule on every redraw, restarting the clock each time (see HabitRow).
+        VStack(alignment: .leading, spacing: 4) {
         TimelineView(.periodic(from: Self.anchor, by: 1)) { context in
             let runs = store.quitRuns(of: habit, now: context.date)
             HStack(alignment: .top, spacing: 12) {
@@ -375,6 +394,15 @@ struct QuitRow: View {
             .padding(.vertical, 2)
             .accessibilityElement(children: .combine)
         }
+        HStack {
+            Button("Slipped") { sheet = .slip }
+                .disabled(store.isPaused(habit, on: today))
+            if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == today {
+                Button("Undo") { store.undoEntry(entry.id) }
+                    .accessibilityIdentifier("habit-inline-undo")
+            }
+        }.buttonStyle(.borderless).font(.caption)
+        }
         .listRowBackground(Color(.secondarySystemGroupedBackground).overlay(HighlightFlash(on: highlighted, color: habit.color)))
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
@@ -383,15 +411,26 @@ struct QuitRow: View {
             .tint(.indigo)
         }
         .contextMenu {
-            Button("Edit Habit", systemImage: "pencil") { showEdit = true }
+            Button("Edit Habit", systemImage: "pencil") { sheet = .edit }
+            Button("Edit Today's Progress…", systemImage: "calendar") { sheet = .day }
             // Pausing ends this run (kept as a run, not a slip); a new one starts when it's back (the user, 29 Sep).
-            PauseMenuItems(habit: habit, showPause: $showPause)
+            PauseMenuItems(habit: habit, showPause: showPause)
             Button(store.note(of: habit, on: today) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") {
                 store.noteTarget = .init(habit: habit.id, day: today)
             }
         }
-        .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
-        .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
+        .sheet(item: $sheet) { sheet in
+            switch sheet {
+            case .edit: EditHabitSheet(habit: habit)
+            case .pause: PauseSheet(habit: habit)
+            case .day: DaySheet(habit: habit, day: today)
+            case .slip:
+                NavigationStack {
+                    SlipEntryView(habit: habit, day: today, source: .today)
+                        .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { self.sheet = nil } } }
+                }
+            }
+        }
     }
 }
 

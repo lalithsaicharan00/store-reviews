@@ -49,7 +49,7 @@ jobs:
             echo "TESTS=${{ github.event.inputs.tests }}" >> "$GITHUB_ENV"
             echo "PERF=${{ github.event.inputs.perf }}" >> "$GITHUB_ENV"
           else
-            case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests,UndoUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
           fi
 
@@ -75,6 +75,11 @@ jobs:
             ~/.gradle/wrapper
             ~/.konan
           key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Core storage and migration tests
+        id: core
+        working-directory: Core
+        run: ./gradlew jvmTest
 
       - name: Pick a simulator
         run: |
@@ -125,6 +130,7 @@ jobs:
             echo "Run: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID} · $(date -u '+%Y-%m-%d %H:%M UTC')"
             echo "Commit: $(git log -1 --format=%s)"
             echo
+            echo "- Core storage and migrations: ${{ steps.core.outcome }}"
             echo "- Build: ${{ steps.build.outcome }}"
             echo "- UI tests ($TESTS): ${{ steps.tests.outcome }}"
             echo "- Speed tests: ${{ steps.perf.outcome }}"
@@ -153,7 +159,8 @@ jobs:
           git init -q
           git remote add origin "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           if git fetch -q --depth 1 origin ci-results; then git checkout -q -b ci-results FETCH_HEAD; else git checkout -q --orphan ci-results; fi
-          mkdir -p runs
+          mkdir -p runs schemas
+          cp "$GITHUB_WORKSPACE/Core/schemas/app.habits.core.HabitDatabase/6.json" schemas/6.json 2>/dev/null || true
           cp "$GITHUB_WORKSPACE/iOS/summary.md" latest.md
           cp latest.md "runs/$(date -u +%Y-%m-%d-%H%M)-${GITHUB_REF_NAME//\//-}-${GITHUB_SHA:0:7}.md"
           git add -A
@@ -165,6 +172,8 @@ jobs:
         with:
           name: ios-results
           path: |
+            Core/schemas
+            Core/build/reports/tests
             iOS/build.log
             iOS/test.log
             iOS/summary.md

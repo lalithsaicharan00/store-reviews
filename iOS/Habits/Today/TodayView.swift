@@ -84,7 +84,10 @@ struct TodayView: View {
             routine = RoutineSession(part: .anytime, day: store.today(), habits: habits)
         }
         #endif
-        .onChange(of: selectedDay) { foldOverrides = [:] }
+        .onChange(of: selectedDay) { foldOverrides = [:]; store.clearLogOffer() }
+        .onChange(of: showAllHabits) { if showAllHabits { store.clearLogOffer() } }
+        .onChange(of: routine?.id) { if routine != nil { store.clearLogOffer() } }
+        .onDisappear { store.clearLogOffer() }
         .onPerfCommand(perform)
         .sheet(isPresented: $perfForm) { NavigationStack { HabitForm(type: .doIt, onSaved: { _ in }) } }
         // Back from the background: Today is drawn for now at once, not at the next minute.
@@ -420,7 +423,7 @@ struct TodayView: View {
             if open {
                 // Done habits sink to the bottom, keeping their order otherwise. The row just logged stays put while it
                 // offers "Add note" (or its note is being written), so the offer is where the person is looking.
-                let held = store.noteOffer.flatMap { $0.day == day ? $0.habit : nil }
+                let held = store.undoOffer.flatMap { $0.day == day ? $0.habitID : nil } ?? store.noteOffer.flatMap { $0.day == day ? $0.habit : nil }
                 let ordered = items.filter { !done.contains($0.habit.id) || $0.habit.id == held }
                     + items.filter { done.contains($0.habit.id) && $0.habit.id != held }
                 ForEach(ordered) { item in

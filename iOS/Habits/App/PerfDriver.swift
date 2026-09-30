@@ -8,6 +8,7 @@ enum PerfAction: Equatable {
     case previousMonth, nextMonth
     case previousHabit, nextHabit
     case typeName(String)
+    case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, editAmount(String), saveEntry, logAgain
 }
 
 extension View {
@@ -93,6 +94,40 @@ enum PerfDriver {
                 await repeatFor(window) {
                     for _ in 0..<3 { send(.previousMonth); await pause(0.3) }
                     for _ in 0..<3 { send(.nextMonth); await pause(0.3) }
+                }
+            }
+        case "day-sheet", "log-sheet":
+            await open("All Habits") { send(.openAllHabits) }
+            await open("Habit page") { send(.openHabit("Water")) }
+            let today = store.today()
+            await open("Day sheet (first)") { send(.openDay(today)) }
+            send(.closeDay)
+            await pause(1.2)
+            await open("Day sheet (again)") { send(.openDay(today)) }
+            if scenario == "log-sheet" {
+                await open("Log sheet") { send(.openLog) }
+                await measure("Log sheet: entry list scrolling") { await scroll() }
+            } else {
+                await measure("Day sheet: entry list scrolling") { await scroll() }
+            }
+            await open("Entry editor") { send(.openEntry) }
+            await measure("Entry editor: typing") {
+                await repeatFor(window) {
+                    for text in ["1", "12", "123", "12", "1"] { send(.editAmount(text)); await pause(0.1) }
+                }
+            }
+            send(.saveEntry)
+            await pause(0.5)
+            if scenario == "log-sheet" { send(.closeLog); await pause(0.5) }
+            await measure("Day sheet: add, edit and exact undo") {
+                guard let water = store.habits.first(where: { $0.name == "Water" }) else { return }
+                await repeatFor(window) {
+                    store.addProgress(water, value: 1, on: today, source: .daySheet)
+                    if let entry = store.entries(of: water.id, on: today).last {
+                        store.editEntry(entry.id, value: 2)
+                        store.undoEntry(entry.id)
+                    }
+                    await pause(0.3)
                 }
             }
         case "new-habit":

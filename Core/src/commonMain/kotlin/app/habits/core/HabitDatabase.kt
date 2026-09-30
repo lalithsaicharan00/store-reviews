@@ -37,6 +37,9 @@ interface HabitDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertEntries(entries: List<EntryRecord>)
 
+    @Query("UPDATE entry SET value = :value, created_at = :createdAt WHERE id = :id AND deleted_at IS NULL")
+    suspend fun editEntry(id: String, value: Double, createdAt: Long)
+
     @Query("UPDATE entry SET deleted_at = :at WHERE id = :id AND deleted_at IS NULL")
     suspend fun tombstoneEntry(id: String, at: Long)
 

@@ -14,6 +14,7 @@ struct HabitPageView: View {
     @State private var confirmingDelete = false
     @State private var month: LocalDay?
     @State private var noteDay: LocalDay?
+    @State private var progressDay: LocalDay?
 
     var body: some View {
         if let habit = store.habits.first(where: { $0.id == id }) {
@@ -54,10 +55,21 @@ struct HabitPageView: View {
             if habit.kind != .task {
                 Section { numbers(habit) }
             }
+            Section {
+                Button { progressDay = today } label: {
+                    HStack {
+                        Text("Today").foregroundStyle(.primary)
+                        Spacer()
+                        Text(store.dayResult(habit, on: today)).foregroundStyle(.secondary)
+                        Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
+                    }
+                }
+                .accessibilityIdentifier("habit-today-progress")
+            }
             if habit.kind != .quit && habit.kind != .task {
                 Section {
                     HabitMonthView(habit: habit, month: Binding(get: { month ?? Self.firstOfMonth(today, store.calendar) },
-                                                                set: { month = $0 }))
+                                                                set: { month = $0 }), onSelect: { progressDay = $0 })
                 }
             }
             notesSection(habit, today: today)
@@ -89,6 +101,10 @@ struct HabitPageView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) { Button("Edit") { showEdit = true } }
+        }
+        .sheet(item: $progressDay) { DaySheet(habit: habit, day: $0) }
+        .onPerfCommand { action in
+            if case .openDay(let day) = action { progressDay = day }
         }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
@@ -127,10 +143,7 @@ struct HabitPageView: View {
         } else {
             let unit = habit.frequency.streakUnit
             let today = store.today()
-            let first = Self.firstOfMonth(today, store.calendar)
-            let done = stride(from: 0, to: today.day, by: 1)
-                .map { first.adding(days: $0, calendar: store.calendar) }
-                .filter { store.dayMark(habit, on: $0) == .done }.count
+            let done = store.doneThisMonth(habit, through: today)
             HStack(spacing: 0) {
                 stat(unit.short(store.streak(of: habit, asOf: today)), "Streak")
                 stat(unit.short(store.bestStreak(of: habit)), "Best")
@@ -212,6 +225,7 @@ struct HabitPageView: View {
 struct HabitMonthView: View {
     let habit: Habit
     @Binding var month: LocalDay
+    var onSelect: (LocalDay) -> Void = { _ in }
     @Environment(HabitStore.self) private var store
 
     var body: some View {
@@ -241,7 +255,11 @@ struct HabitMonthView: View {
                 ForEach(Array(ordered.enumerated()), id: \.offset) { Text($0.element).font(.caption2.weight(.semibold)).foregroundStyle(.secondary) }
                 ForEach(0..<lead, id: \.self) { _ in Color.clear.frame(height: 36) }
                 ForEach(1...count, id: \.self) { d in
-                    cell(LocalDay(year: month.year, month: month.month, day: d), isToday: LocalDay(year: month.year, month: month.month, day: d) == today)
+                    let day = LocalDay(year: month.year, month: month.month, day: d)
+                    Button { onSelect(day) } label: { cell(day, isToday: day == today).frame(minHeight: 44) }
+                        .buttonStyle(.borderless)
+                        .disabled(day > today)
+                        .accessibilityIdentifier("habit-day-\(day.key)")
                 }
             }
             HStack(spacing: 14) {

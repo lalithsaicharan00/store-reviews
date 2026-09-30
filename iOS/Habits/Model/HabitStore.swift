@@ -2,6 +2,7 @@ import Core
 import Foundation
 import Observation
 import SwiftUI
+import UIKit
 
 /// User settings that change how days and weeks are counted (Architecture 05 §4.2–4.3).
 struct DaySettings: Codable, Hashable, Sendable {
@@ -70,6 +71,9 @@ final class HabitStore {
     /// The row just logged on Today: it offers "Add note" in place (Way of Life's inline note, notes UX report).
     /// Only one row at a time; nothing pops up by itself.
     var noteOffer: NoteOffer?
+    /// Exact entry offered for undo on Today. No timeout, and no search through history per row.
+    var undoOffer: Entry?
+    func clearLogOffer() { undoOffer = nil; noteOffer = nil }
     struct NoteOffer: Equatable { let habit: UUID; let day: LocalDay }
     /// The note being written in the note bar: a habit's note (`habit` set) or the day's note (`habit` nil).
     var noteTarget: NoteTarget?
@@ -131,12 +135,14 @@ final class HabitStore {
     private func forget(_ habit: UUID) {
         pastRuns[habit] = nil
         bestRuns[habit] = nil
+        monthCounts[habit] = nil
         summaries = [:]
     }
 
     private func forgetAll() {
         pastRuns = [:]
         bestRuns = [:]
+        monthCounts = [:]
         summaries = [:]
         savedHabits = nil
     }
@@ -159,10 +165,22 @@ final class HabitStore {
     }
 
     /// Adds an entry, keeping the indexes in step; only that habit's remembered numbers are forgotten.
-    private func insertEntry(_ entry: Entry) {
-        entries.append(entry)
-        entriesByHabit?[entry.habitID, default: []].append(entry)
-        entriesByDay?[entry.habitID, default: [:]][entry.day, default: []].append(entry)
+    private func insertEntry(_ entry: Entry, at index: Int? = nil) {
+        if let index {
+            entries.insert(entry, at: index)
+            if entriesByHabit != nil {
+                let position = entriesByHabit?[entry.habitID]?.firstIndex { $0.createdAt > entry.createdAt } ?? (entriesByHabit?[entry.habitID]?.count ?? 0)
+                entriesByHabit?[entry.habitID, default: []].insert(entry, at: position)
+            }
+            if entriesByDay != nil {
+                let position = entriesByDay?[entry.habitID]?[entry.day]?.firstIndex { $0.createdAt > entry.createdAt } ?? (entriesByDay?[entry.habitID]?[entry.day]?.count ?? 0)
+                entriesByDay?[entry.habitID, default: [:]][entry.day, default: []].insert(entry, at: position)
+            }
+        } else {
+            entries.append(entry)
+            entriesByHabit?[entry.habitID, default: []].append(entry)
+            entriesByDay?[entry.habitID, default: [:]][entry.day, default: []].append(entry)
+        }
         forget(entry.habitID)
     }
 
@@ -170,6 +188,7 @@ final class HabitStore {
         let entry = entries.remove(at: index)
         entriesByHabit?[entry.habitID]?.removeAll { $0.id == entry.id }
         entriesByDay?[entry.habitID]?[entry.day]?.removeAll { $0.id == entry.id }
+        if undoOffer?.id == entry.id { undoOffer = nil }
         forget(entry.habitID)
     }
 
@@ -372,7 +391,7 @@ final class HabitStore {
     }
 
     /// One habit's entries, in the order they were logged. Still reads `entries`, so views redraw when it changes.
-    private func entries(of id: UUID) -> [Entry] {
+    func entries(of id: UUID) -> [Entry] {
         guard let index = entriesByHabit else {
             let index = Dictionary(grouping: entries, by: \.habitID)
             entriesByHabit = index
@@ -383,7 +402,7 @@ final class HabitStore {
     }
 
     /// One habit's entries on one day, in the order they were logged.
-    private func entries(of id: UUID, on day: LocalDay) -> [Entry] {
+    func entries(of id: UUID, on day: LocalDay) -> [Entry] {
         guard let index = entriesByDay else {
             let index = Dictionary(grouping: entries, by: \.habitID).mapValues { Dictionary(grouping: $0, by: \.day) }
             entriesByDay = index
@@ -407,12 +426,13 @@ final class HabitStore {
 
     /// Skips (or un-skips) the habit on `day`. Saved like any other change.
     func setSkipped(_ habit: Habit, on day: LocalDay, _ skipped: Bool) {
+        guard day <= today(), canSkip(rule(habit, on: day)) else { return }
+        var days = skips[habit.id] ?? []
+        if skipped { days.insert(day) } else { days.remove(day) }
+        withAnimation { skips[habit.id] = days.isEmpty ? nil : days }
+        let value = days.map(\.key).sorted().joined(separator: ",")
         perform { [self] in
-            var days = skips[habit.id] ?? []
-            if skipped { days.insert(day) } else { days.remove(day) }
-            try await repository.saveSetting(key: Keys.skipPrefix + habit.id.uuidString,
-                                             value: days.map(\.key).sorted().joined(separator: ","))
-            withAnimation { skips[habit.id] = days.isEmpty ? nil : days }
+            try await repository.saveSetting(key: Keys.skipPrefix + habit.id.uuidString, value: value)
         }
     }
 
@@ -744,6 +764,7 @@ final class HabitStore {
             habits = snapshot.habits.compactMap { Habit(record: $0, steps: snapshot.steps, reminders: snapshot.reminders) }
             entries = snapshot.entries.compactMap(Entry.init(record:))
             entriesReplaced()
+            clearLogOffer()
             var loaded = DaySettings()
             var running: [UUID: Date] = [:]
             var runningSlots: [UUID: String] = [:]
@@ -1135,29 +1156,29 @@ final class HabitStore {
     }
 
     /// Yes/no habits: log once, or undo the last log for this period.
-    func toggleCheck(_ habit: Habit, on day: LocalDay) {
-        if habit.kind == .task { return toggleTask(habit, on: day) }
-        if isDone(habit, on: day) { undoLast(habit, on: day) } else { log(habit, value: 1, on: day) }
+    func toggleCheck(_ habit: Habit, on day: LocalDay, source: EntrySource = .today) {
+        if habit.kind == .task { return toggleTask(habit, on: day, source: source) }
+        if isDone(habit, on: day) { undoLast(habit, on: day) } else { log(habit, value: 1, on: day, source: source) }
     }
 
     /// Tasks: done or not. A one-time task wherever it's shown; a repeating one on that day.
-    private func toggleTask(_ habit: Habit, on day: LocalDay) {
+    private func toggleTask(_ habit: Habit, on day: LocalDay, source: EntrySource) {
         if let i = entries.lastIndex(where: { $0.habitID == habit.id && (habit.dueDay != nil || $0.day == day) }) {
             removeLogged(at: i)
         } else {
-            log(habit, value: 1, on: day)
+            log(habit, value: 1, on: day, source: source)
         }
     }
 
     /// Quick counts always add; undo is a separate, explicit action.
-    func increment(_ habit: Habit, on day: LocalDay) {
+    func increment(_ habit: Habit, on day: LocalDay, source: EntrySource = .today) {
         guard let value = habit.quickIncrement else { return }
-        addProgress(habit, value: value, on: day)
+        addProgress(habit, value: value, on: day, source: source)
     }
 
-    func addProgress(_ habit: Habit, value: Double, on day: LocalDay) {
+    func addProgress(_ habit: Habit, value: Double, on day: LocalDay, source: EntrySource = .today) {
         guard value.isFinite, value > 0, value <= GoalNumber.maximum, day <= today() else { return }
-        log(habit, value: value, on: day)
+        log(habit, value: value, on: day, source: source)
     }
 
     func undoProgress(_ habit: Habit, on day: LocalDay) {
@@ -1178,13 +1199,13 @@ final class HabitStore {
             switch habit.kind {
             case .amount:
                 guard let increment = habit.quickIncrement else { return }
-                let entry = Entry(habitID: habit.id, day: day, value: increment, slot: slot.flatMap { slots(of: habit).contains($0) ? $0 : nil })
+                let entry = Entry(habitID: habit.id, day: day, value: increment, slot: slot.flatMap { slots(of: habit).contains($0) ? $0 : nil }, source: .reminder)
                 try await repository.addEntry(entry: entry.record)
                 withAnimation { insertEntry(entry) }
             case .check, .task:
                 if let slot, slots(of: habit).contains(slot) {
                     guard !isSlotDone(habit, slot: slot, on: day) else { return }
-                    let entry = Entry(habitID: habit.id, day: day, value: 1, slot: slot)
+                    let entry = Entry(habitID: habit.id, day: day, value: 1, slot: slot, source: .reminder)
                     try await repository.addEntry(entry: entry.record)
                     withAnimation { insertEntry(entry) }
                 } else {
@@ -1198,19 +1219,19 @@ final class HabitStore {
     }
 
     /// A habit in several sections: tick or untick only this section's row.
-    func toggleSlot(_ habit: Habit, slot: String, on day: LocalDay) {
+    func toggleSlot(_ habit: Habit, slot: String, on day: LocalDay, source: EntrySource = .today) {
         if let i = entries.lastIndex(where: { $0.habitID == habit.id && $0.slot == slot && $0.day == day }) {
             removeLogged(at: i)
         } else {
-            addLogged(Entry(habitID: habit.id, day: day, value: 1, slot: slot))
+            addLogged(Entry(habitID: habit.id, day: day, value: 1, slot: slot, source: source))
         }
     }
 
-    func toggleStep(_ step: Step, of habit: Habit, on day: LocalDay) {
+    func toggleStep(_ step: Step, of habit: Habit, on day: LocalDay, source: EntrySource = .today) {
         if let i = entries.lastIndex(where: { $0.habitID == habit.id && $0.stepID == step.id && $0.day == day }) {
             removeLogged(at: i)
         } else {
-            addLogged(Entry(habitID: habit.id, stepID: step.id, day: day, value: 1))
+            addLogged(Entry(habitID: habit.id, stepID: step.id, day: day, value: 1, source: source))
         }
     }
 
@@ -1234,13 +1255,13 @@ final class HabitStore {
 
     /// An explicit stop is idempotent: navigating/closing cannot accidentally start a timer.
     /// A focus session supplies its tracking day, including when the day rolls over.
-    func stopTimer(_ habit: Habit, on day: LocalDay, through end: Date = .now) {
+    func stopTimer(_ habit: Habit, on day: LocalDay, through end: Date = .now, source: EntrySource = .timer) {
         guard let start = timers[habit.id] else { return }
         let minutes = max(0, end.timeIntervalSince(start)) / 60
         let entry = minutes >= 1 / 60
-            ? Entry(habitID: habit.id, day: day, value: minutes, slot: timerSlots[habit.id]) : nil
+            ? Entry(habitID: habit.id, day: day, value: minutes, slot: timerSlots[habit.id], source: source) : nil
         // Same as starting: the time shows as saved at once; the database write follows in order.
-        if let entry { insertEntry(entry) }
+        if let entry { insertEntry(entry); offerUndo(entry) }
         timers.removeValue(forKey: habit.id)
         timerSlots.removeValue(forKey: habit.id)
         let key = Keys.timerPrefix + habit.id.uuidString
@@ -1249,13 +1270,13 @@ final class HabitStore {
 
     /// Written-first logging, for changes made away from the screen (a notification's Done).
     private func logWritten(_ habit: Habit, value: Double, on day: LocalDay) async throws {
-        let entry = Entry(habitID: habit.id, day: day, value: value)
+        let entry = Entry(habitID: habit.id, day: day, value: value, source: .reminder)
         try await repository.addEntry(entry: entry.record)
         withAnimation { insertEntry(entry) }
     }
 
-    private func log(_ habit: Habit, value: Double, on day: LocalDay) {
-        addLogged(Entry(habitID: habit.id, day: day, value: value))
+    private func log(_ habit: Habit, value: Double, on day: LocalDay, source: EntrySource) {
+        addLogged(Entry(habitID: habit.id, day: day, value: value, source: source))
     }
 
     private func undoLast(_ habit: Habit, on day: LocalDay) {
@@ -1267,7 +1288,7 @@ final class HabitStore {
 
     /// A tap's entry: shown now, written next in the queue.
     private func addLogged(_ entry: Entry) {
-        withAnimation { insertEntry(entry) }
+        withAnimation { insertEntry(entry); offerUndo(entry) }
         perform { [self] in
             #if DEBUG
             // PersistenceUITests: a write that fails must take the tap back off the screen.
@@ -1283,6 +1304,70 @@ final class HabitStore {
         withAnimation { removeEntry(at: index) }
         perform { [self] in try await repository.removeEntry(id: id.uuidString, at: Date.now.millis) }
     }
+
+    private func offerUndo(_ entry: Entry) {
+        guard !TimerPresence.playerOpen, entry.source == .today || entry.source == .manual || entry.source == .timer else { return }
+        undoOffer = entry
+        noteOffer = .init(habit: entry.habitID, day: entry.day)
+        AccessibilityNotification.Announcement("Logged. Undo is available.").post()
+    }
+
+    /// Editing preserves identity, the tracking day, step, slot, time zone and source.
+    /// The UI changes now; the guarded database update follows in the same write queue as add/delete.
+    func editEntry(_ id: UUID, value: Double, at date: Date? = nil) {
+        guard value.isFinite, value > 0, value <= GoalNumber.maximum,
+              let index = entries.firstIndex(where: { $0.id == id }),
+              let habit = habits.first(where: { $0.id == entries[index].habitID }) else { return }
+        var entry = entries[index]
+        let kind = rule(habit, on: entry.day).kind
+        guard entry.day <= today(), entry.stepID == nil, kind != .task else { return }
+        if kind == .check, value.rounded() != value { return }
+        entry.value = value
+        if kind == .quit, let date {
+            guard today(now: date) == entry.day, date <= .now, date >= (habit.quitSince ?? habit.createdAt) else { return }
+            entry.createdAt = date
+        }
+        withAnimation { removeEntry(at: index); insertEntry(entry, at: index) }
+        let updated = entry
+        perform { [self] in
+            try await repository.editEntry(id: updated.id.uuidString, value: updated.value, createdAt: updated.createdAt.millis)
+        }
+    }
+
+    /// Explicit Done / Not done for a day's checks. Never touches another day's entries.
+    func setDayDone(_ done: Bool, of habit: Habit, on day: LocalDay) {
+        guard day <= today() else { return }
+        let rule = rule(habit, on: day)
+        if !done {
+            let ids = rule.kind == .task && rule.dueDay != nil ? entries(of: habit.id).map(\.id) : entries(of: habit.id, on: day).map(\.id)
+            for id in ids { undoEntry(id) }
+        } else if rule.kind == .check {
+            let missing = max(0, dayGoal(of: rule) - dayProgress(of: rule, on: day))
+            if missing > 0 { log(habit, value: missing, on: day, source: .daySheet) }
+        } else if rule.kind == .task, !isDone(rule, on: day) {
+            log(habit, value: 1, on: day, source: .daySheet)
+        }
+    }
+
+    func slip(_ habit: Habit, on day: LocalDay, at date: Date, source: EntrySource = .today) {
+        guard habit.kind == .quit, day <= today(), today(now: date) == day,
+              date <= .now, date >= (habit.quitSince ?? habit.createdAt) else { return }
+        addLogged(Entry(habitID: habit.id, day: day, value: 1, createdAt: date, source: source))
+    }
+
+    /// Kept in the store and remembered, rather than walking the month's days in the page's body.
+    func doneThisMonth(_ habit: Habit, through today: LocalDay) -> Int {
+        readInputs()
+        if let known = monthCounts[habit.id], known.day == today, timers[habit.id] == nil { return known.value }
+        let first = LocalDay(year: today.year, month: today.month, day: 1)
+        var count = 0
+        for offset in 0..<today.day {
+            if dayMark(habit, on: first.adding(days: offset, calendar: calendar)) == .done { count += 1 }
+        }
+        if timers[habit.id] == nil { monthCounts[habit.id] = (today, count) }
+        return count
+    }
+    @ObservationIgnored private var monthCounts: [UUID: (day: LocalDay, value: Int)] = [:]
 
     // MARK: Demo data
 

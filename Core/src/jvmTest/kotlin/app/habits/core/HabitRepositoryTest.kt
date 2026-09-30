@@ -123,4 +123,21 @@ class HabitRepositoryTest {
         assertEquals(listOf("e1", "e2"), snapshot.entries.map { it.id })
         repo.close()
     }
+    @Test fun editingOneEntryPreservesItsIdentityAndSourceAndNeverRevivesADeletion() = runTest {
+        var repo = HabitRepository.open(path)
+        repo.saveHabit(habit(), emptyList(), emptyList(), 1_000)
+        val first = entry("e1").copy(source = "routine", slot = "morning")
+        repo.addEntry(first)
+        repo.addEntry(entry("e2"))
+        repo.editEntry("e1", 3.5, first.createdAt)
+        repo.close()
+        repo = HabitRepository.open(path)
+        assertEquals(first.copy(value = 3.5), repo.load().entries.first { it.id == "e1" })
+        assertEquals(1.0, repo.load().entries.first { it.id == "e2" }.value)
+        repo.removeEntry("e1", 4_000)
+        repo.editEntry("e1", 9.0, 5_000)
+        assertEquals(listOf("e2"), repo.load().entries.map { it.id })
+        repo.close()
+    }
+
 }

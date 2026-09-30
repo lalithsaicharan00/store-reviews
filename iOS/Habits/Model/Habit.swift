@@ -227,6 +227,22 @@ struct Entry: Identifiable, Codable, Hashable, Sendable {
     var timeZone: String = TimeZone.current.identifier
     /// For a habit in several day sections: the section this tick was for.
     var slot: String?
+    /// Nil for old logs whose origin was never recorded.
+    var source: EntrySource?
+}
+
+enum EntrySource: String, Codable, Sendable {
+    case today, manual, routine, reminder, timer, daySheet
+    var label: String {
+        switch self {
+        case .today: "Today"
+        case .manual: "Manual log"
+        case .routine: "Routine player"
+        case .reminder: "Reminder"
+        case .timer: "Timer"
+        case .daySheet: "Day sheet"
+        }
+    }
 }
 
 /// What a streak counts, so its number is never mistaken for days.

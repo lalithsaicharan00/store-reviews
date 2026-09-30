@@ -10,7 +10,7 @@ set -u
 SIM="$1"; OUT="$2"; mkdir -p "$OUT"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 BUNDLE=com.lalithsaicharan.habits
-SCENARIOS="${PERF_SCENARIOS:-scroll-today tap-today all-habits habit-page calendar new-habit player}"
+SCENARIOS="${PERF_SCENARIOS:-scroll-today tap-today all-habits habit-page calendar new-habit player day-sheet log-sheet}"
 SUMMARY="$OUT/perf-summary.md"
 OPENS="$OUT/opens.txt"; : > "$OPENS"
 
@@ -35,7 +35,7 @@ for S in $SCENARIOS; do
   # after launch; the driver waits 8 s before measuring, so that pause never lands in a window (run 9 showed a
   # 3.4 s "stall" that was only the attach).
   # 38 s covers the longest scenario (new-habit, about 33 s); the app stays open until the sampler has written.
-  [ -n "$PID" ] && sample "$PID" 38 1 -file "$OUT/sample-$S.txt" > /dev/null 2>&1 &
+  [ -n "$PID" ] && sample "$PID" 75 1 -file "$OUT/sample-$S.txt" > /dev/null 2>&1 &
   SAMPLER=$!
   WAITED=0
   until grep -q "^# DONE" "$REC" 2>/dev/null || [ $WAITED -ge 180 ]; do sleep 1; WAITED=$((WAITED + 1)); done
