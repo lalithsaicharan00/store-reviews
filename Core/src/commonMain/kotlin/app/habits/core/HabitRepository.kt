@@ -27,6 +27,8 @@ class HabitRepository private constructor(private val database: HabitDatabase) {
 
     suspend fun removeSetting(key: String) = dao.deleteSetting(key)
 
+    suspend fun mergeAll(snapshot: Snapshot) = dao.mergeAll(snapshot)
+
     suspend fun finishTimer(entry: EntryRecord?, key: String) = dao.finishTimer(entry, key)
 
     /** Writes everything in one transaction; rows that already exist are kept as they are. */

@@ -123,4 +123,48 @@ class HabitRepositoryTest {
         assertEquals(listOf("e1", "e2"), snapshot.entries.map { it.id })
         repo.close()
     }
+
+    @Test fun backupRestorePreservesEditsDeletesAndRemovedChildren() = runTest {
+        val repo = HabitRepository.open(path)
+        repo.saveHabit(habit(name = "Edited"), emptyList(), emptyList(), 3_000)
+        repo.addEntry(entry("removed"))
+        repo.removeEntry("removed", 4_000)
+        repo.saveHabit(habit(id = "deleted").copy(deletedAt = 4_000), emptyList(), emptyList(), 4_000)
+        repo.saveSetting("note.h1|2026-09-27", "")
+        repo.saveSetting("week_start", "2")
+        val old = Snapshot(
+            listOf(habit(), habit(id = "deleted"), habit(id = "h2", name = "New")),
+            listOf(StepRecord("old-step", "h1", "Removed", 0, null), StepRecord("new-step", "h2", "Keep", 0, null)),
+            listOf(ReminderRecord("old-reminder", "h1", 9, 0, null), ReminderRecord("new-reminder", "h2", 8, 0, null)),
+            listOf(entry("removed"), entry("missing"), entry("orphan", "deleted"), entry("new", "h2")),
+            listOf(SettingRecord("note.h1|2026-09-27", "Removed note"), SettingRecord("week_start", "1"),
+                   SettingRecord("timer.h2", "1000"), SettingRecord("rules.h1", "old"), SettingRecord("rules.h2", "new"))
+        )
+        repo.mergeAll(old)
+        val first = repo.load()
+        assertEquals(setOf("Edited", "New"), first.habits.map { it.name }.toSet())
+        assertEquals(listOf("new-step"), first.steps.map { it.id })
+        assertEquals(listOf("new-reminder"), first.reminders.map { it.id })
+        assertEquals(setOf("missing", "new"), first.entries.map { it.id }.toSet())
+        assertEquals("", first.settings.single { it.key == "note.h1|2026-09-27" }.value)
+        assertEquals("2", first.settings.single { it.key == "week_start" }.value)
+        assertTrue(first.settings.none { it.key.startsWith("timer.") || it.key == "rules.h1" })
+        assertEquals("new", first.settings.single { it.key == "rules.h2" }.value)
+        repo.mergeAll(old)
+        assertEquals(first, repo.load())
+        repo.close()
+        val reopened = HabitRepository.open(path)
+        assertEquals(first, reopened.load())
+        reopened.close()
+    }
+
+    @Test fun emptyBackupAndUnknownSettingsAreHarmless() = runTest {
+        val repo = HabitRepository.open(path)
+        repo.saveHabit(habit(), emptyList(), emptyList(), 1_000)
+        val before = repo.load()
+        repo.mergeAll(Snapshot(emptyList(), emptyList(), emptyList(), emptyList(),
+                              listOf(SettingRecord("app_lock", "1"), SettingRecord("timer.h1", "1000"))))
+        assertEquals(before, repo.load())
+        repo.close()
+    }
 }

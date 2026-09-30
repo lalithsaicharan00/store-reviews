@@ -9,7 +9,7 @@ struct HabitsApp: App {
     var body: some Scene {
         WindowGroup {
             #if DEBUG
-            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-backupcheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
             } else {
                 today
@@ -47,6 +47,11 @@ private struct PlacementCheckView: View {
     var body: some View {
         Text(result).padding().task {
             let arguments = ProcessInfo.processInfo.arguments
+            if arguments.contains("-backupcheck") {
+                let failures = await BackupCheck.run()
+                result = failures.isEmpty ? "Backup: all checks passed" : "Backup failed: " + failures.joined(separator: "; ")
+                return
+            }
             if arguments.contains("-focuscheck") {
                 let failures = await FocusPlayerCheck.run()
                 result = failures.isEmpty ? "Focus: all checks passed" : "Focus failed: " + failures.joined(separator: "; ")

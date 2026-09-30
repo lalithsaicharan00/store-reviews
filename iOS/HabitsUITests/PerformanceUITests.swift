@@ -84,6 +84,13 @@ final class PerformanceUITests: XCTestCase {
         keepGoing(scrollUpAndDown)
     }
 
+    func testBackupPage() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-backup"])
+        open("Backup & Export", tapping: app.buttons["menu-backup"], until: app.navigationBars["Backup & Export"])
+        ready()
+        keepGoing(scrollUpAndDown)
+    }
+
     /// The ≡ menu opening and closing over a year of history: Today must not redraw under it.
     func testMenuOpenClose() {
         let menu = app.buttons["menu-button"]

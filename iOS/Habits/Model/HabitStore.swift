@@ -623,6 +623,7 @@ final class HabitStore {
             var loadedHabitNotes: [UUID: [LocalDay: String]] = [:]
             var loadedDayNotes: [LocalDay: String] = [:]
             var loadedDescriptions: [UUID: String] = [:]
+            sections = DaySection.defaults
             var upgradedV1 = false, repaired = false
             for setting in snapshot.settings {
                 switch setting.key {
@@ -638,12 +639,12 @@ final class HabitStore {
                     if setting.key.hasPrefix(Keys.notePrefix) {
                         let parts = setting.key.dropFirst(Keys.notePrefix.count).split(separator: "|")
                         if parts.count == 2, let id = UUID(uuidString: String(parts[0])), let day = LocalDay(key: String(parts[1])) {
-                            loadedHabitNotes[id, default: [:]][day] = setting.value
+                            if !setting.value.isEmpty { loadedHabitNotes[id, default: [:]][day] = setting.value }
                         }
                         continue
                     }
                     if setting.key.hasPrefix(Keys.dayNotePrefix), let day = LocalDay(key: String(setting.key.dropFirst(Keys.dayNotePrefix.count))) {
-                        loadedDayNotes[day] = setting.value
+                        if !setting.value.isEmpty { loadedDayNotes[day] = setting.value }
                         continue
                     }
                     if setting.key.hasPrefix(Keys.descriptionPrefix), let id = UUID(uuidString: String(setting.key.dropFirst(Keys.descriptionPrefix.count))) {
@@ -678,6 +679,8 @@ final class HabitStore {
                 }
             }
             settings = loaded
+            settings.dayEndHour = min(max(settings.dayEndHour, 0), 12)
+            settings.weekStart = min(max(settings.weekStart, 1), 7)
             timers = running
             timerSlots = runningSlots
             skips = loadedSkips
@@ -730,6 +733,79 @@ final class HabitStore {
     }
 
     // MARK: Changes
+
+    // MARK: Backup and restore
+
+    struct RestoreSummary {
+        var habits: Int
+        var entries: Int
+        var settings: Int
+        var changed: Bool { habits + entries + settings > 0 }
+    }
+
+    enum BackupError: LocalizedError {
+        case invalid, newerVersion, pendingSave, unreadable
+        var errorDescription: String? {
+            switch self {
+            case .invalid: "Choose a Habits backup file. Your current data has not been changed."
+            case .newerVersion: "This backup was made by a newer version of Habits. Update the app before restoring it."
+            case .pendingSave: "Some changes could not be saved. Resolve the save error before making or restoring a backup."
+            case .unreadable: "The backup could not be read. Your current data has not been changed."
+            }
+        }
+    }
+
+    func backupFile(now: Date = .now) async throws -> URL {
+        await flush()
+        guard problem == nil else { throw BackupError.pendingSave }
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("Habits-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        let url = directory.appendingPathComponent("Habits Backup \(today(now: now).key).db")
+        do { try await repository.snapshot(path: url.path) } catch {
+            try? FileManager.default.removeItem(at: directory)
+            throw error
+        }
+        return url
+    }
+
+    func restore(from file: URL) async throws -> RestoreSummary {
+        await flush()
+        guard problem == nil else { throw BackupError.pendingSave }
+        let scoped = file.startAccessingSecurityScopedResource()
+        defer { if scoped { file.stopAccessingSecurityScopedResource() } }
+        let copy = FileManager.default.temporaryDirectory.appendingPathComponent("habits-restore-\(UUID().uuidString).db")
+        try FileManager.default.copyItem(at: file, to: copy)
+        defer {
+            for suffix in ["", "-wal", "-shm"] { try? FileManager.default.removeItem(atPath: copy.path + suffix) }
+        }
+        // Inspect the original SQLite header before Room can create or migrate anything.
+        let handle = try FileHandle(forReadingFrom: copy)
+        let bytes = try handle.read(upToCount: 100) ?? Data()
+        try handle.close()
+        guard bytes.count == 100, bytes.prefix(16) == Data("SQLite format 3\0".utf8) else { throw BackupError.invalid }
+        let version = bytes[60..<64].reduce(UInt32(0)) { ($0 << 8) | UInt32($1) }
+        guard version > 0 else { throw BackupError.invalid }
+        guard version <= UInt32(HabitRepository.companion.SCHEMA_VERSION) else { throw BackupError.newerVersion }
+        let source = HabitRepository.companion.open(path: copy.path)
+        let snapshot: Snapshot
+        do {
+            snapshot = try await source.load()
+            guard try await source.pragma(name: "quick_check") == "ok" else { throw BackupError.unreadable }
+        } catch {
+            source.close()
+            throw BackupError.unreadable
+        }
+        source.close()
+        let before = try await repository.load()
+        try await repository.mergeAll(snapshot: snapshot)
+        let after = try await repository.load()
+        await load()
+        let habitIDs = Set(before.habits.map(\.id)), entryIDs = Set(before.entries.map(\.id))
+        let keys = Set(before.settings.map(\.key))
+        return RestoreSummary(habits: after.habits.filter { !habitIDs.contains($0.id) }.count,
+                              entries: after.entries.filter { !entryIDs.contains($0.id) }.count,
+                              settings: after.settings.filter { !keys.contains($0.key) }.count)
+    }
 
     /// Called after every change, so reminders stay in step with the data.
     var onChange: (() -> Void)?
@@ -902,7 +978,8 @@ final class HabitStore {
         let text = TextLimit.clean(text, TextLimit.noteText)
         let key = Keys.notePrefix + habit.id.uuidString + "|" + day.key
         perform { [self] in
-            if text.isEmpty { try await repository.removeSetting(key: key) } else { try await repository.saveSetting(key: key, value: text) }
+            // Keep an empty value so restoring an older backup cannot resurrect this removed note.
+            try await repository.saveSetting(key: key, value: text)
             habitNotes[habit.id, default: [:]][day] = text.isEmpty ? nil : text
         }
     }
@@ -911,7 +988,7 @@ final class HabitStore {
         let text = TextLimit.clean(text, TextLimit.noteText)
         let key = Keys.dayNotePrefix + day.key
         perform { [self] in
-            if text.isEmpty { try await repository.removeSetting(key: key) } else { try await repository.saveSetting(key: key, value: text) }
+            try await repository.saveSetting(key: key, value: text)
             dayNotes[day] = text.isEmpty ? nil : text
         }
     }
@@ -921,7 +998,7 @@ final class HabitStore {
         guard text != (descriptions[id] ?? "") else { return }
         let key = Keys.descriptionPrefix + id.uuidString
         perform { [self] in
-            if text.isEmpty { try await repository.removeSetting(key: key) } else { try await repository.saveSetting(key: key, value: text) }
+            try await repository.saveSetting(key: key, value: text)
             descriptions[id] = text.isEmpty ? nil : text
         }
     }

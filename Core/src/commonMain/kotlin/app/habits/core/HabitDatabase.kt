@@ -28,10 +28,40 @@ interface HabitDao {
     @Query("SELECT * FROM setting")
     suspend fun settings(): List<SettingRecord>
 
+    @Query("SELECT id FROM habit")
+    suspend fun allHabitIds(): List<String>
+
     @Upsert suspend fun upsertHabit(habit: HabitRecord)
     @Upsert suspend fun upsertSteps(steps: List<StepRecord>)
     @Upsert suspend fun upsertReminders(reminders: List<ReminderRecord>)
     @Upsert suspend fun upsertSetting(setting: SettingRecord)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertHabitsIfNew(habits: List<HabitRecord>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertStepsIfNew(steps: List<StepRecord>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertRemindersIfNew(reminders: List<ReminderRecord>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertSettingsIfNew(settings: List<SettingRecord>)
+
+    /** Existing habits keep their current configuration, including removed steps and reminders. */
+    @Transaction
+    suspend fun mergeAll(snapshot: Snapshot) {
+        val known = allHabitIds().toSet() // Includes tombstones: a deleted habit must stay deleted.
+        val added = snapshot.habits.filter { it.deletedAt == null && it.id !in known }
+        val newIds = added.map { it.id }.toSet()
+        val live = habits().map { it.id }.toSet() + newIds
+        insertHabitsIfNew(added)
+        insertStepsIfNew(snapshot.steps.filter { it.habitId in newIds })
+        insertRemindersIfNew(snapshot.reminders.filter { it.habitId in newIds })
+        insertEntries(snapshot.entries.filter { it.habitId in live })
+        val globalKeys = setOf("day_end_hour", "week_start", "day_sections", "show_streaks", "haptics", "sounds", "appearance")
+        val habitPrefixes = listOf("rules.", "pause.", "skip.", "desc.", "archived.")
+        insertSettingsIfNew(snapshot.settings.filter { setting ->
+            when {
+                setting.key in globalKeys || setting.key.startsWith("daynote.") -> true
+                setting.key.startsWith("note.") -> setting.key.removePrefix("note.").substringBefore('|') in live
+                else -> habitPrefixes.any { prefix -> setting.key.startsWith(prefix) && setting.key.removePrefix(prefix) in newIds }
+            }
+        })
+    }
 
     /** Ignoring a duplicate ID makes a retried write harmless. */
     @Insert(onConflict = OnConflictStrategy.IGNORE)

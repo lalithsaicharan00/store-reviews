@@ -50,6 +50,8 @@ jobs:
             echo "PERF=${{ github.event.inputs.perf }}" >> "$GITHUB_ENV"
           else
             case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-backup]"*) echo "TESTS=BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-backup]"*) echo "PERF_TESTS=testBackupPage testMenuOpenClose testScrollToday" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
           fi
 
@@ -87,6 +89,12 @@ jobs:
             -destination "id=$SIM" -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
           grep -q "BUILD SUCCEEDED" build.log
 
+      - name: Core storage and migration tests
+        id: core
+        if: contains(env.MESSAGE, '[ios-backup]')
+        working-directory: Core
+        run: ./gradlew jvmTest
+
       - name: UI tests
         id: tests
         if: env.TESTS != 'none' && steps.build.outcome == 'success'
@@ -122,6 +130,7 @@ jobs:
             echo
             echo "- Build: ${{ steps.build.outcome }}"
             echo "- UI tests ($TESTS): ${{ steps.tests.outcome }}"
+            echo "- Core storage/migration tests: ${{ steps.core.outcome }}"
             echo "- Speed tests: ${{ steps.perf.outcome }}"
             if [ -f build.log ] && ! grep -q "BUILD SUCCEEDED" build.log; then
               echo; echo "## Build errors"; echo '```'; grep -E "error:" build.log | sort -u | head -30; echo '```'

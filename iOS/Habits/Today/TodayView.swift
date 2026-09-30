@@ -241,6 +241,8 @@ struct TodayView: View {
                     Text("New Habit").fontWeight(.semibold).foregroundStyle(Color.onInk)
                 }
                 .buttonStyle(.borderedProminent).tint(.ink)
+                Button("Restore from a Backup File") { menu.path.append(MenuPlace.backup) }
+                    .accessibilityIdentifier("empty-restore-backup")
             }
             .background(Color(.systemGroupedBackground))
         } else {
