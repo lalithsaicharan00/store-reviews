@@ -16,8 +16,20 @@ enum ReminderIdentity {
         normalized.createdAt = Date(millis: habit.createdAt.millis)
         normalized.quitSince = habit.quitSince.map { Date(millis: $0.millis) }
         normalized.reminders.sort { ($0.hour, $0.minute, $0.id.uuidString) < ($1.hour, $1.minute, $1.id.uuidString) }
-        let data = (try? encoder.encode(normalized)) ?? Data()
+        let encoded = (try? encoder.encode(normalized)) ?? Data()
+        // Codable encodes Set<Int> as an unordered array. Hashing that order would invalidate
+        // weekday/month-date rules after a cold launch. Habit has no ordered numeric arrays.
+        let object = (try? JSONSerialization.jsonObject(with: encoded)) ?? [String: Any]()
+        let data = (try? JSONSerialization.data(withJSONObject: canonical(object), options: .sortedKeys)) ?? encoded
         return SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+    }
+    private static func canonical(_ value: Any) -> Any {
+        if let dictionary = value as? [String: Any] { return dictionary.mapValues { canonical($0) } }
+        if let values = value as? [Any] {
+            if let numbers = values as? [NSNumber] { return numbers.sorted { $0.doubleValue < $1.doubleValue } }
+            return values.map { canonical($0) }
+        }
+        return value
     }
 }
 

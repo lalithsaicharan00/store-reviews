@@ -54,7 +54,7 @@ struct BackupExportView: View {
         Task { @MainActor in
             defer { working = false }
             await store.flush()
-            guard store.problem == nil else {
+            guard store.problem == nil, store.isStorageReady else {
                 message = BackupMessage(title: "Couldn’t Export", text: HabitStore.BackupError.pendingSave.localizedDescription)
                 return
             }

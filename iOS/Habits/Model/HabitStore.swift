@@ -105,7 +105,9 @@ final class HabitStore {
 
     /// The user's current day, honouring their day end.
     func today(now: Date = .now) -> LocalDay {
+        let calendar = calendar
         let day = LocalDay(now, calendar: calendar)
+        if settings.dayEndHour == 0 { return day }
         let boundary = ReminderClock.date(on: day, hour: settings.dayEndHour, minute: 0, calendar: calendar)!
         return now < boundary ? day.adding(days: -1, calendar: calendar) : day
     }

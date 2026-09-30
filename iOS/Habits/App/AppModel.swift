@@ -85,6 +85,8 @@ final class AppModel {
         }
         loading = task
         await task.value
+        // A read blocked by file protection can succeed after the first unlock.
+        if !store.isStorageReady { loading = nil }
     }
 
     func dailySnapshot() async { await persistence?.dailySnapshotIfNeeded() }
@@ -122,7 +124,7 @@ final class AppModel {
         let work = Task { [self] in
             await ensureLoaded()
             await scheduler.reconcile(store)
-            task.setTaskCompleted(success: !Task.isCancelled)
+            task.setTaskCompleted(success: !Task.isCancelled && store.isStorageReady && scheduler.problem == nil)
         }
         task.expirationHandler = { work.cancel() }
     }
@@ -167,6 +169,10 @@ nonisolated struct ReminderTarget: Codable, Hashable, Sendable {
 /// Sets up what must exist before launch finishes: the notification delegate and the refresh task.
 final class AppDelegate: NSObject, UIApplicationDelegate {
     private let notifications = NotificationHandler()
+
+    func applicationProtectedDataDidBecomeAvailable(_ application: UIApplication) {
+        applicationSignificantTimeChange(application)
+    }
 
     func applicationSignificantTimeChange(_ application: UIApplication) {
         Task {

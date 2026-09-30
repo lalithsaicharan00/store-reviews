@@ -1,4 +1,5 @@
 #if DEBUG
+import Core
 import Foundation
 import UserNotifications
 
@@ -217,10 +218,18 @@ enum ReminderCheck {
         let persistence = Persistence.inMemory(), notes = FakeReminderNotifications()
         let store = HabitStore(repository: persistence.repository, calendar: calendar); await store.load()
         let day = store.today(), now = ReminderClock.date(on: day, hour: 12, minute: 0, calendar: calendar)!
-        var water = Habit(name: "Water", symbol: "drop", color: .blue, kind: .amount(unit: "L", increment: 0.25), goal: 10,
+        var water = Habit(name: "Water", symbol: "drop", color: .blue, kind: .amount(unit: "L", increment: 0.25), goal: 10, frequency: .weekdays(Set(1...7)),
                           reminders: [ReminderTime(hour: 9, minute: 0), ReminderTime(hour: 22, minute: 0)], remind: true,
                           startsOn: day.adding(days: -5))
         store.add(water); await store.flush()
+        var reordered = water
+        reordered.frequency = .weekdays(Set([7,6,5,4,3,2,1]))
+        expect(ReminderIdentity.signature(reordered) == ReminderIdentity.signature(water), "weekday set order does not change identity")
+        var firstCalendar = CalendarSchedule(); firstCalendar.unit = .month; firstCalendar.dates = [1,12,31]; firstCalendar.weekdays = [2,5]
+        var secondCalendar = firstCalendar; secondCalendar.dates = Set([31,12,1]); secondCalendar.weekdays = Set([5,2])
+        var firstRule = water, secondRule = water
+        firstRule.frequency = .calendar(firstCalendar); secondRule.frequency = .calendar(secondCalendar)
+        expect(ReminderIdentity.signature(firstRule) == ReminderIdentity.signature(secondRule), "calendar set order does not change identity")
         let signature = ReminderIdentity.signature(water)
         let first = ReminderIdentity.actionID("event.water.base"), next = ReminderIdentity.actionID("event.water.followup")
         func log(_ id: UUID, day targetDay: LocalDay? = nil, time: UUID? = nil, signature supplied: String? = nil) {
