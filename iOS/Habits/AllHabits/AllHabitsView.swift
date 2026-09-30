@@ -23,7 +23,9 @@ struct AllHabitsView: View {
     private var chosen: [Habit] { shown.filter { selection.contains($0.id) } }
 
     var body: some View {
-        List(selection: $selection) {
+        // Selection only while Select is on. Always on, a tap on a row selected it instead of opening its page (each
+        // row's tag is the same ID its link opens); found by `TodayUITests.testMenu`, 30 Sep.
+        List(selection: editMode.isEditing ? $selection : nil) {
             switch kind {
             case .habits:
                 group("Habits", active.filter { $0.kind != .quit })

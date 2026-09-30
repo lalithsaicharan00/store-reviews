@@ -105,7 +105,9 @@ final class PerformanceUITests: XCTestCase {
         let teeth = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Brush teeth'")).firstMatch
         XCTAssertTrue(teeth.waitForExistence(timeout: 10))
         // A year of daily history: its numbers and best streak are the heaviest page.
-        open("Habit page", tapping: teeth, until: app.staticTexts["Brush teeth"]) // the page heading; All Habits rows read "Brush teeth, 2 min a day"
+        // The page's own title bar: the Habits row shows "Brush teeth" too, so text alone passed without the page
+        // opening (a tap selected the row until 30 Sep).
+        open("Habit page", tapping: teeth, until: app.navigationBars["Brush teeth"])
         ready()
         keepGoing(scrollUpAndDown)
     }

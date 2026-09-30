@@ -109,7 +109,8 @@ final class TodayUITests: XCTestCase {
         XCTAssertTrue(call.waitForExistence(timeout: 3))
         shot("m02-habits")
         call.tap()
-        XCTAssertTrue(app.staticTexts["Call family"].waitForExistence(timeout: 3), "The habit page opens")
+        // The page's own title bar: the Habits row also shows the name, so text alone can't prove the page opened.
+        XCTAssertTrue(app.navigationBars["Call family"].waitForExistence(timeout: 5), "The habit page opens")
         back(to: "Habits")
         XCTAssertTrue(app.navigationBars["Habits"].waitForExistence(timeout: 3), "Back on Habits")
         back()
