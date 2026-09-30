@@ -353,8 +353,15 @@ extension HabitStore {
 
     func weekSpan(_ period: ClosedRange<LocalDay>) -> String {
         let start = period.lowerBound.date(calendar: calendar), end = period.upperBound.date(calendar: calendar)
-        return (start..<end).formatted(.interval.day().month(.abbreviated))
+        return Self.weekSpanFormatter.string(from: start, to: end)
     }
+
+    /// Made once: building an interval format on every title was 5% of Progress's time (speed run, 30 Sep 2026).
+    private static let weekSpanFormatter: DateIntervalFormatter = {
+        let formatter = DateIntervalFormatter()
+        formatter.dateTemplate = "dMMM"
+        return formatter
+    }()
 
     // MARK: A habit's row
 
