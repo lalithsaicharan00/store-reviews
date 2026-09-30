@@ -73,7 +73,8 @@ struct StreakLabel: View {
             .lineLimit(1)
             .fixedSize()
             .foregroundStyle(.primary)
-            .shadow(color: onFill ? Color.card.opacity(0.9) : .clear, radius: 2.5)
+            // Only when the fill is under it: a shadow, even a clear one, costs an offscreen pass per row (30 Sep).
+            .modifier(Halo(on: onFill))
             .frame(minHeight: 44)
             .contentShape(Rectangle())
         }
@@ -85,6 +86,13 @@ struct StreakLabel: View {
                 .presentationCompactAdaptation(.popover)
         }
         .accessibilityLabel("Streak: \(unit.explained(count))")
+    }
+}
+
+private struct Halo: ViewModifier {
+    let on: Bool
+    func body(content: Content) -> some View {
+        if on { content.shadow(color: Color.card.opacity(0.9), radius: 2.5) } else { content }
     }
 }
 
@@ -128,12 +136,12 @@ struct ProgressFill: View {
     @Environment(\.colorScheme) private var scheme
 
     var body: some View {
-        GeometryReader { g in
-            ZStack(alignment: .leading) {
-                Color.card
-                color.color.opacity(scheme == .dark ? 0.26 : 0.15)
-                    .frame(width: g.size.width * min(1, max(0, progress)))
-            }
+        // Scaled from the leading edge rather than measured with a GeometryReader: the same fill, without a layout
+        // pass in every row's background (30 Sep).
+        ZStack {
+            Color.card
+            color.color.opacity(scheme == .dark ? 0.26 : 0.15)
+                .scaleEffect(x: min(1, max(0, progress)), y: 1, anchor: .leading)
         }
     }
 }

@@ -12,11 +12,67 @@ final class PersistenceUITests: XCTestCase {
         super.record(issue)
     }
 
-    private func launch(reset: Bool) -> XCUIApplication {
+    private func launch(reset: Bool, extra: [String] = []) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["-dbname", "uitest-persistence", "-empty"] + (reset ? ["-reset-db"] : [])
+        app.launchArguments = ["-dbname", "uitest-persistence", "-empty"] + (reset ? ["-reset-db"] : []) + extra
         app.launch()
         return app
+    }
+
+    /// New Habit → Build or maintain → Check it off → "Stretch" → Add; returns its tick button.
+    private func addStretch(_ app: XCUIApplication) -> XCUIElement {
+        XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 5), "A fresh database starts empty")
+        app.buttons["New Habit"].firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check it off'")).firstMatch.tap()
+        let name = app.descendants(matching: .any)["name-field"]
+        XCTAssertTrue(name.waitForExistence(timeout: 3))
+        name.tap()
+        name.typeText("Stretch")
+        app.navigationBars["New Habit"].buttons["Add"].tap()
+        let tick = app.buttons["Mark Stretch done"]
+        XCTAssertTrue(tick.waitForExistence(timeout: 5))
+        return tick
+    }
+
+    /// Taps show before they're written (30 Sep). Quick taps, then leaving the app at once: the last state on screen
+    /// is what's stored.
+    func testQuickTapsSurviveLeavingTheApp() {
+        continueAfterFailure = false
+        var app = launch(reset: true)
+        _ = addStretch(app)
+        // Five taps as fast as the test can: done, undone, done, undone, done.
+        for label in ["Mark Stretch done", "Undo Stretch", "Mark Stretch done", "Undo Stretch", "Mark Stretch done"] {
+            let button = app.buttons[label]
+            XCTAssertTrue(button.waitForExistence(timeout: 3), "\(label) is on screen")
+            button.tap()
+        }
+        XCTAssertTrue(app.buttons["Undo Stretch"].waitForExistence(timeout: 3))
+        XCUIDevice.shared.press(.home)
+        sleep(1)
+        app.terminate()
+        app = launch(reset: false)
+        let header = app.buttons["Anytime, All done"]
+        XCTAssertTrue(header.waitForExistence(timeout: 5), "The last tap (done) is stored")
+        header.tap()
+        XCTAssertTrue(app.buttons["Undo Stretch"].waitForExistence(timeout: 3), "The last tap (done) is stored")
+        shot("quick-taps-after-relaunch")
+    }
+
+    /// A write that fails takes the tap back off the screen and says so; the database never has it.
+    func testFailedWriteIsTakenBack() {
+        continueAfterFailure = false
+        var app = launch(reset: true, extra: ["-fail-entry-writes"])
+        addStretch(app).tap()
+        let alert = app.alerts["Something went wrong"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5), "The failed save is reported")
+        shot("failed-write-alert")
+        alert.buttons["OK"].tap()
+        XCTAssertTrue(app.buttons["Mark Stretch done"].waitForExistence(timeout: 3), "The tap is taken back on screen")
+        app.terminate()
+        app = launch(reset: false)
+        XCTAssertTrue(app.buttons["Mark Stretch done"].waitForExistence(timeout: 5), "The database never had the tap")
     }
 
     private func shot(_ name: String) {

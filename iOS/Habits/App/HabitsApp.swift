@@ -21,6 +21,18 @@ struct HabitsApp: App {
         .onChange(of: scenePhase) {
             // Re-plan on every return to the app: a new day, a changed time zone, or a changed permission.
             if scenePhase == .active && model.store.isLoaded { model.scheduler.scheduleReconcile(model.store) }
+            // Taps are shown before they're written. Leaving the app, ask iOS for the time to finish every queued
+            // write, so a tap made just before switching away is never lost (30 Sep).
+            if scenePhase == .background { finishWrites() }
+        }
+    }
+
+    private func finishWrites() {
+        let save = BackgroundSave()
+        save.id = UIApplication.shared.beginBackgroundTask(withName: "Save changes") { save.end() }
+        Task {
+            await model.store.flush()
+            save.end()
         }
     }
 
@@ -33,9 +45,22 @@ struct HabitsApp: App {
             .task {
                 await model.ensureLoaded()
                 guard model.store.isLoaded else { return }
+                #if DEBUG
+                PerfDriver.startIfAsked(store: model.store)
+                #endif
                 model.scheduleRefresh()
                 await model.dailySnapshot()
             }
+    }
+}
+
+/// The background time asked for while queued writes finish; ended once, whichever comes first.
+private final class BackgroundSave {
+    var id = UIBackgroundTaskIdentifier.invalid
+    func end() {
+        guard id != .invalid else { return }
+        UIApplication.shared.endBackgroundTask(id)
+        id = .invalid
     }
 }
 

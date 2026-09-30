@@ -11,6 +11,8 @@ struct AllHabitsView: View {
     @State private var deleting: [Habit] = []
     @State private var confirmingDelete = false
     @State private var showPlus = false
+    /// Speed runs: a habit page opened by `PerfDriver`.
+    @State private var perfPage: UUID?
 
     struct PauseTargets: Identifiable { let id = UUID(); let habits: [Habit] }
 
@@ -40,7 +42,10 @@ struct AllHabitsView: View {
         }
         .environment(\.editMode, $editMode)
         .navigationTitle("All Habits")
-        .navigationDestination(for: UUID.self) { HabitPageView(id: $0) }
+        .navigationDestination(item: $perfPage) { HabitPageView(id: $0) }
+        .onPerfCommand { action in
+            if case .openHabit(let name) = action { perfPage = store.habits.first { $0.name == name }?.id }
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(editMode.isEditing ? "Done" : "Select") {
@@ -93,7 +98,11 @@ struct AllHabitsView: View {
 
     private func row(_ habit: Habit) -> some View {
         let paused = store.isPaused(habit, on: store.today())
-        return NavigationLink(value: habit.id) {
+        // A link with its page, not a value: in a List with a selection, a value link only selected the row and the
+        // page never opened (the speed test on GitHub, 30 Sep).
+        return NavigationLink {
+            HabitPageView(id: habit.id)
+        } label: {
             HStack(spacing: 12) {
                 HabitIcon(symbol: habit.symbol, color: habit.color)
                     .opacity(habit.archived || paused ? 0.5 : 1)

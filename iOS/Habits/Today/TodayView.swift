@@ -32,6 +32,8 @@ struct TodayView: View {
     @State private var visibleRows = VisibleRows()
     @Environment(AppRouter.self) private var router
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// Speed runs only: the New Habit form opened straight away, to measure typing in it.
+    @State private var perfForm = false
 
     var body: some View {
         NavigationStack {
@@ -83,6 +85,8 @@ struct TodayView: View {
         }
         #endif
         .onChange(of: selectedDay) { foldOverrides = [:] }
+        .onPerfCommand(perform)
+        .sheet(isPresented: $perfForm) { NavigationStack { HabitForm(type: .doIt, onSaved: { _ in }) } }
         // Back from the background: Today is drawn for now at once, not at the next minute.
         .onChange(of: scenePhase) { if scenePhase == .active { clock = .now } }
         .onChange(of: router.focusSection) {
@@ -103,6 +107,27 @@ struct TodayView: View {
     }
 
     private var selectedDay: LocalDay { day ?? store.today() }
+
+    /// Speed runs (`PerfDriver`): the same state changes the buttons make.
+    private func perform(_ action: PerfAction) {
+        switch action {
+        case .previousDay: day = selectedDay.adding(days: -1, calendar: store.calendar)
+        case .nextDay:
+            let next = selectedDay.adding(days: 1, calendar: store.calendar)
+            day = next == store.today() ? nil : next
+        case .openAllHabits: showAllHabits = true
+        case .openCalendar: showCalendar = true
+        case .openNewHabit: showNewHabit = true
+        case .openHabitForm: perfForm = true
+        case .startRoutine(let part):
+            let today = store.today()
+            let tracked = store.habits.filter { !$0.archived && $0.kind != .quit && store.startDay(of: $0) <= today && store.isDue($0, on: today) }
+            if let items = rowsBySection(tracked)[part] { start(part: part, items: items, day: today) }
+        case .close:
+            showAllHabits = false; showCalendar = false; showNewHabit = false; perfForm = false; routine = nil
+        default: break
+        }
+    }
 
     /// The note bar for a habit's note or the day's note.
     @ViewBuilder private func noteBar(_ target: HabitStore.NoteTarget) -> some View {
@@ -375,12 +400,14 @@ struct TodayView: View {
     @ViewBuilder
     private func partSection(_ part: String, items: [TodayItem], day: LocalDay, isToday: Bool, isNow: Bool) -> some View {
         let habits = items.map(\.habit)
-        let left = items.filter { !isDone($0, on: day) }.count
+        // Worked out once per row here, not in each of the four places below.
+        let done = Set(items.filter { isDone($0, on: day) }.map(\.habit.id))
+        let left = items.count - done.count
         // Default: the Now part and Anytime are open while anything is left; finished parts fold.
         let open = foldOverrides[part] ?? (left > 0 && (isNow || part == .anytime || !isToday))
         Section {
             PartHeader(title: store.section(part).name, habits: habits, left: left, isNow: isNow, isOpen: open,
-                       onStart: isToday && items.contains(where: { $0.habit.atMost || !isDone($0, on: day) })
+                       onStart: isToday && items.contains(where: { $0.habit.atMost || !done.contains($0.habit.id) })
                            ? { start(part: part, items: items, day: day) } : nil,
                        onToggle: { withAnimation { foldOverrides[part] = !open } })
                 .id(Self.headerKey(part))
@@ -394,8 +421,8 @@ struct TodayView: View {
                 // Done habits sink to the bottom, keeping their order otherwise. The row just logged stays put while it
                 // offers "Add note" (or its note is being written), so the offer is where the person is looking.
                 let held = store.noteOffer.flatMap { $0.day == day ? $0.habit : nil }
-                let ordered = items.filter { !isDone($0, on: day) || $0.habit.id == held }
-                    + items.filter { isDone($0, on: day) && $0.habit.id != held }
+                let ordered = items.filter { !done.contains($0.habit.id) || $0.habit.id == held }
+                    + items.filter { done.contains($0.habit.id) && $0.habit.id != held }
                 ForEach(ordered) { item in
                     let habit = item.habit
                     let key = Self.rowKey(part, habit.id)

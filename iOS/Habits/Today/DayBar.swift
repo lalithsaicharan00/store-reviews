@@ -94,6 +94,9 @@ struct CalendarSheet: View {
                 }
                 .padding(.bottom, 8)
             }
+            .onPerfCommand { action in
+                if action == .previousMonth { moveMonth(-1) } else if action == .nextMonth { moveMonth(1) }
+            }
             .navigationTitle("Go to a day")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -174,8 +177,7 @@ struct BackToTodayButton: View {
                     .foregroundStyle(Color.onInk)
                     .padding(.horizontal, 18)
                     .frame(height: 44)
-                    .background(Capsule().fill(Color.ink))
-                    .shadow(color: .black.opacity(0.15), radius: 6, y: 2)
+                    .background(Capsule().fill(Color.ink).shadow(color: .black.opacity(0.15), radius: 6, y: 2))
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier(id)
