@@ -14,6 +14,10 @@ struct HelpView: View {
     static let topics: [Topic] = [
         Topic(id: "Log a habit",
               answer: "Tap ✓ or + on its row. Tap the row itself to type an amount or a time. ▶ starts a timer right in the row."),
+        Topic(id: "Tick habits from the Home Screen",
+              answer: "Touch and hold the Home Screen, tap Edit, then Add Widget, and choose Habits. Tap ✓ or + on the widget to log without opening the app; it shows what's left first. The Lock Screen has one too."),
+        Topic(id: "Log with Siri or Shortcuts",
+              answer: "Say \"Log Water in Habits\", \"What's left in Habits\" or \"How's Water going in Habits\". In the Shortcuts app, Log a Habit can run from an automation, like tapping an NFC tag or arriving home, or from the Action button. It only ever adds; remove a wrong one on the habit's page."),
         Topic(id: "Undo a wrong tap",
               answer: "Tap Undo in the bar that appears at the bottom after you log. A tick can also be tapped again. For amounts and time, touch and hold the row, then Undo Last Entry."),
         Topic(id: "Fill in a day I forgot",

@@ -96,6 +96,15 @@ struct TodayView: View {
                 scrollTarget = Self.headerKey(section)
             }
         }
+        .onChange(of: router.openHabit, initial: true) {
+            // Siri or Shortcuts "Open a Habit": its page, over Today. A routine in progress or a new habit being
+            // written is left as it is.
+            guard let id = router.openHabit, routine == nil, !showNewHabit else { return }
+            router.openHabit = nil
+            showSettings = false; showCalendar = false; showSections = false
+            showAllHabits = false; showProgress = false
+            pageHabit = id
+        }
         .alert("Something went wrong", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
             Button("OK", role: .cancel) {}
         } message: {

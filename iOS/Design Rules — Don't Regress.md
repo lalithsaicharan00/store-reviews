@@ -107,6 +107,16 @@ Source: [Widgets — Tick Without Opening the App](<../Research/Research Reports
 - **Never a stale day:** the file holds today and tomorrow; after the last day ends the widget says "Open Habits to see today".
 - **Basic interactive widgets are free, forever** (C009). Extra designs go in Plus later; never move this one.
 
+## Siri and Shortcuts (built 30 Sep 2026)
+
+Source: [Siri and Shortcuts — Log by Voice and Automation](<../Research/Research Reports/Home Screen and Visual Design/Siri and Shortcuts — Log by Voice and Automation.md>).
+
+- **Never remove or rename an intent, its parameters or its phrases.** People's automations point at them; removed Siri support is a 1★ review.
+- **Habits are found by ID** (`HabitEntity.id`), never by name.
+- **Log a Habit only adds, one step** (`HabitStore.logFromShortcut`), like the widget and notifications. No undo, reset or delete by voice.
+- **Intents run in the app's process** (not `openAppWhenRun`, except Open a Habit), so automations work with the app closed; after logging they flush, publish the widget and re-plan reminders before returning.
+- **Free.** Siri, Shortcuts and the widget are never Plus.
+
 ## Your data: export, backup, restore (built 29 Sep 2026)
 
 Source: [Export and Backup — Keeping Your Own Data](<../Research/Research Reports/Data, Sync and Accounts/Export and Backup — Keeping Your Own Data.md>) and the Data Safety report.

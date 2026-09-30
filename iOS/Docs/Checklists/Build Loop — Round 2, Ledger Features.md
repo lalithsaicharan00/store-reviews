@@ -69,3 +69,17 @@ Research: [Widgets — Tick Without Opening the App](<../../../Research/Research
 | L8.7 | App Group entitlement for the app and the widget extension | [x] in the project; [ ] turn it on for both App IDs in the developer account |
 | L8.8 | Tried on a device | [ ] No Mac in this session |
 
+## Loop 9 — Siri and Shortcuts (C046)
+
+Research: [Siri and Shortcuts — Log by Voice and Automation](<../../../Research/Research Reports/Home Screen and Visual Design/Siri and Shortcuts — Log by Voice and Automation.md>).
+
+| # | Point | Done |
+|---|---|---|
+| L9.1 | Log a Habit: one step today, only adds; asks for a number when needed; per-section ticks fill the first open one | [x] `LogHabitIntent`, `HabitStore.logFromShortcut` |
+| L9.2 | What's Left Today and Get Habit Progress, spoken and returned as text for shortcuts | [x] `WhatsLeftIntent`, `HabitProgressIntent` |
+| L9.3 | Open a Habit opens its page over Today (not over a running routine or a habit being written) | [x] `OpenHabitIntent`, `AppRouter.openHabit` |
+| L9.4 | Siri phrases with no setup; refreshed when habits are added, renamed or archived | [x] `HabitShortcuts` |
+| L9.5 | Works with the app closed; widget and reminders updated before returning | [x] |
+| L9.6 | Help answers for the widget and Siri | [x] `HelpView` |
+| L9.7 | Tried on a device | [ ] No Mac in this session |
+

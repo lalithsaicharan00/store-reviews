@@ -129,7 +129,7 @@ nonisolated struct WidgetTap: Codable, Sendable {
 /// Done (a wrong tap is undone in the app; C090). The row updates at once, and its reminders for the day stop once it's
 /// done (C039).
 nonisolated struct LogHabitFromWidget: AppIntent {
-    static let title: LocalizedStringResource = "Log a Habit"
+    static let title: LocalizedStringResource = "Log From the Widget"
     static let isDiscoverable = false
 
     @Parameter(title: "Habit") var habitID: String

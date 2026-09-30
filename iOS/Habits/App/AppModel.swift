@@ -8,6 +8,8 @@ import UserNotifications
 final class AppRouter {
     /// A section to open and scroll to on today.
     var focusSection: String?
+    /// A habit page to open (Siri or Shortcuts "Open a Habit").
+    var openHabit: UUID?
 }
 
 /// The app's one store, scheduler and database. Shared, because a notification action, an alarm's
@@ -67,10 +69,12 @@ final class AppModel {
             store.onChange = { [store, scheduler, timerPresence] in
                 scheduler.scheduleReconcile(store)
                 WidgetBridge.publish(store)
+                HabitShortcuts.habitsChanged(store)
                 Task { await timerPresence.sync(store) }
             }
             scheduler.scheduleReconcile(store)
             WidgetBridge.publish(store)
+            HabitShortcuts.habitsChanged(store)
             // A timer left running (the app was closed, or the phone restarted) gets its Live Activity back.
             await timerPresence.sync(store)
         }

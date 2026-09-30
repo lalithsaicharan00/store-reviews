@@ -135,6 +135,13 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Turns over at the day start by itself; says "Open Habits to see today" rather than show an old day
 - [ ] Week grid, calendar, streak and single-habit designs; Android widgets
 
+## Siri and Shortcuts
+
+- [x] "Log Water in Habits", "What's left in Habits", "How's Water going in Habits", "Open Read in Habits", with no setup
+- [x] Shortcuts actions for automations (NFC tag, arriving home, the Action button); work with the app closed
+- [x] One step per log, only adds; asks "How much?" when it needs a number
+- [ ] Start a timer by voice
+
 ## Under the hood
 
 - [x] Data saved on the phone (SQLite through the Kotlin shared core), survives closing the app

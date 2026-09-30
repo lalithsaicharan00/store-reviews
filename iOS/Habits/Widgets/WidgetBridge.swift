@@ -54,7 +54,7 @@ enum WidgetBridge {
         return WidgetDay(day: day.key, starts: starts, rows: rows.filter { !$0.done } + rows.filter(\.done))
     }
 
-    private static func row(_ habit: Habit, on day: LocalDay, store: HabitStore) -> WidgetDay.Row {
+    static func row(_ habit: Habit, on day: LocalDay, store: HabitStore) -> WidgetDay.Row {
         let rule = store.rule(habit, on: day)
         let goal = store.goal(of: rule)
         let period = switch rule.frequency {

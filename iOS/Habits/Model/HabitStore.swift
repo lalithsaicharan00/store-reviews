@@ -1082,6 +1082,46 @@ final class HabitStore {
         }
     }
 
+    /// What "Log a Habit" from Siri or Shortcuts did (report "Siri and Shortcuts", 30 Sep).
+    enum ShortcutLog: Equatable {
+        case logged
+        case alreadyDone
+        /// An amount or time with no quick step: Siri asks how much.
+        case needsAmount
+        /// A checklist or a quit habit: logged in the app.
+        case openApp
+        case paused
+    }
+
+    /// From Siri, Shortcuts or an automation (an NFC tag, the Action button): one step, like a notification's Done.
+    /// Only ever adds. A tick that's already done is left alone; a count adds one; an amount adds what was said, or
+    /// one quick step; time adds the minutes said. A habit ticked per section fills its first unticked section.
+    func logFromShortcut(_ habit: Habit, amount: Double?, on day: LocalDay) -> ShortcutLog {
+        let rule = rule(habit, on: day)
+        if isPaused(habit, on: day) { return .paused }
+        switch rule.kind {
+        case .checklist, .quit:
+            return .openApp
+        case .amount, .duration:
+            guard let value = amount ?? (rule.kind == .duration ? nil : rule.quickIncrement) else { return .needsAmount }
+            guard value.isFinite, value > 0, value <= GoalNumber.maximum else { return .needsAmount }
+            perform { [self] in try await log(habit, value: value, on: day) }
+            return .logged
+        case .check, .task:
+            if let slot = slots(of: habit).first(where: { !isSlotDone(habit, slot: $0, on: day) }) {
+                perform { [self] in
+                    let entry = Entry(habitID: habit.id, day: day, value: 1, slot: slot)
+                    try await repository.addEntry(entry: entry.record)
+                    withAnimation { entries.append(entry) }
+                }
+                return .logged
+            }
+            guard slots(of: habit).isEmpty, !isDone(habit, on: day) else { return .alreadyDone }
+            perform { [self] in try await log(habit, value: 1, on: day) }
+            return .logged
+        }
+    }
+
     /// A habit in several sections: tick or untick only this section's row.
     func toggleSlot(_ habit: Habit, slot: String, on day: LocalDay) {
         perform { [self] in
