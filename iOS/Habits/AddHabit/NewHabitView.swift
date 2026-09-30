@@ -518,7 +518,6 @@ struct HabitForm: View {
             suggestIcon()
         }
         .onChange(of: startDate) { if endDate < startDate { endDate = startDate } }
-        .onPerfCommand { if case .typeName(let text) = $0 { name = text } } // speed runs: typing, a letter at a time
         .task {
             // Runs again when a pushed page pops back; set up only once, so the
             // user's colour, cursor and reminders are never reset.

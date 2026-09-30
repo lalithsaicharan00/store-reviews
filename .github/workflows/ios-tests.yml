@@ -3,6 +3,8 @@
 # Runs only when asked, to stay inside the free Mac minutes (private repo: ~200 Mac minutes a month):
 #   - by hand: GitHub → Actions → "iOS build and tests" → Run workflow (pick the branch, tests and speed), or
 #   - on a push whose commit message contains [ios-ci] (UI tests) and/or [ios-perf] (speed tests).
+#     For changes only to the native typing driver, add [ios-perf-input] alongside [ios-perf]
+#     to measure Habit form, Day sheet and Log sheet; regular speed runs still cover all scenarios.
 #     Other pushes skip the job and use no minutes.
 #
 # Results for Claude (and anyone): a short summary is pushed to the `ci-results` branch after every run —
@@ -51,6 +53,7 @@ jobs:
           else
             case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests,UndoUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-perf-input]"*) echo "PERF_SCENARIOS=new-habit day-sheet log-sheet" >> "$GITHUB_ENV";; esac
           fi
 
       # The speed rules that can be read from the code (iOS/PERFORMANCE.md). Fails the run before any Mac minutes go

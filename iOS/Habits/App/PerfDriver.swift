@@ -7,7 +7,6 @@ enum PerfAction: Equatable {
     case openAllHabits, openHabit(String), openCalendar, openNewHabit, openHabitForm, startRoutine(String), close
     case previousMonth, nextMonth
     case previousHabit, nextHabit
-    case typeName(String)
     case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, saveEntry, logAgain, hideLogKeyboard
 }
 
@@ -240,11 +239,11 @@ enum PerfDriver {
     /// Insert/delete through UIKit's text-input path, as a keyboard does. Replacing a Binding's
     /// string instead makes SwiftUI write text back into UIKit and measures a different path.
     private static func type(_ text: String) {
-        guard let view = frontView(), let field = focusedField(in: view) else {
-            MainThreadMeter.mark("# ERROR no focused native text field")
+        guard let view = frontView(), let field = focusedInput(in: view) else {
+            MainThreadMeter.mark("# ERROR no focused native text input")
             return
         }
-        let old = field.text ?? ""
+        let old = contents(of: field)
         if old == text { return }
         if let selection = field.selectedTextRange, !selection.isEmpty {
             field.insertText(text)
@@ -254,19 +253,24 @@ enum PerfDriver {
             else if prefix == text.count {
                 for _ in prefix..<old.count { field.deleteBackward() }
             } else {
-                field.selectAll(nil)
+                field.selectedTextRange = field.textRange(from: field.beginningOfDocument, to: field.endOfDocument)
                 field.insertText(text)
             }
         }
-        if field.text != text { MainThreadMeter.mark("# ERROR native typing did not produce expected text") }
+        if contents(of: field) != text { MainThreadMeter.mark("# ERROR native typing did not produce expected text") }
     }
 
-    private static func focusedField(in view: UIView) -> UITextField? {
-        if let field = view as? UITextField, field.isFirstResponder { return field }
+    private static func focusedInput(in view: UIView) -> (any UITextInput)? {
+        if view.isFirstResponder, let field = view as? any UITextInput { return field }
         for child in view.subviews {
-            if let field = focusedField(in: child) { return field }
+            if let field = focusedInput(in: child) { return field }
         }
         return nil
+    }
+
+    private static func contents(of input: any UITextInput) -> String {
+        guard let range = input.textRange(from: input.beginningOfDocument, to: input.endOfDocument) else { return "" }
+        return input.text(in: range) ?? ""
     }
 
     private static func frontView() -> UIView? {
