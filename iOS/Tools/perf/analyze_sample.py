@@ -39,8 +39,12 @@ def main(path, top=8):
             shares[name] = shares.get(name, 0) + count
         if first and name.startswith("ViewGraphRootValueUpdater.render"):
             redraw += count
-        if first and name.startswith("__XCTPerformOnMainRunLoop") and not any("__XCTPerformOnMainRunLoop" in n for _, n in stack):
+        in_harness = any("__XCTPerformOnMainRunLoop" in n for _, n in stack)
+        if first and name.startswith("__XCTPerformOnMainRunLoop") and not in_harness:
             harness += count
+        # The test waiting inside its own work is already counted as idle; don't take it off twice.
+        if in_harness and "mach_msg2_trap" in name:
+            harness -= count
         stack.append((depth, name))
 
     busy = 100 * (total - idle - harness) / max(total - harness, 1)

@@ -27,7 +27,13 @@ final class PerformanceUITests: XCTestCase {
     private func open(_ screen: String, tapping button: XCUIElement, until shown: XCUIElement) {
         let start = Date.now
         button.tap()
-        XCTAssertTrue(shown.waitForExistence(timeout: 30), "\(screen) didn't open")
+        guard shown.waitForExistence(timeout: 30) else {
+            // What was on screen instead, so the log says whether the screen is slow, broken or just named differently.
+            print("PERF-OPEN \(screen): didn't open in 30 s")
+            print(app.debugDescription)
+            XCTFail("\(screen) didn't open")
+            return
+        }
         print("PERF-OPEN \(screen): \(String(format: "%.1f", Date.now.timeIntervalSince(start))) s")
     }
 
@@ -77,7 +83,7 @@ final class PerformanceUITests: XCTestCase {
         let teeth = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Brush teeth'")).firstMatch
         XCTAssertTrue(teeth.waitForExistence(timeout: 10))
         // A year of daily history: its numbers and best streak are the heaviest page.
-        open("Habit page", tapping: teeth, until: app.navigationBars.buttons["Edit"])
+        open("Habit page", tapping: teeth, until: app.staticTexts["Brush teeth"]) // the page heading; All Habits rows read "Brush teeth, 2 min a day"
         ready()
         keepGoing(scrollUpAndDown)
     }
