@@ -38,6 +38,7 @@ These rules apply to **every screen**, not just the player:
 | **Never anchor a `TimelineView` at `.now` or `.distantPast`.** Use a fixed date (the timer's start, or one set once) | `.now` makes a new schedule on every redraw; `.distantPast` replays missed ticks and froze the app (28 Sep) |
 | **A line that comes and goes keeps its space** (hide it with opacity, don't remove it), so nothing else jumps | "Paused" appearing pushed the icon and clock up |
 | **Heavy numbers (streaks, period counts) are never worked out every second.** Work them out when the data changes | `streak` and `isDayMet` for every row were the top cost |
+| **Measure speed on GitHub, not the MacBook** (the user's battery, 30 Sep): push with `[ios-perf]` in the commit message; `PerformanceUITests` + `Tools/perf/measure_perf.sh` scroll and tap Today, All Habits, a habit page and the calendar with a year of history, and the table lands in `ci-results/latest.md` (busy %, SwiftUI redraw %, the app's slowest functions, Apple's hitch ratio). Compare with the previous run; a jump in redraw % is a view redrawing too much | The 30 Sep lag showed as redraw 47 % → 3 % after the fix |
 | **Check speed by measuring, not by screenshots.** On the simulator, run `sample <pid> 15 1 -file out.txt` while tapping by hand, and look at how busy the main thread is and which of the app's functions show up. The simulator tool's screenshots lag the tap, so they can't time anything | Screenshots made fixed taps look slow, and slow ones look fine |
 
 ## New flow (+) copy

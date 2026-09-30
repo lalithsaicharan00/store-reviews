@@ -1238,6 +1238,25 @@ final class HabitStore {
         let second = weekStart.adding(days: 1, calendar: cal)
         entries.append(Entry(habitID: call.id, day: weekStart, value: 1))
         entries.append(Entry(habitID: call.id, day: second <= today ? second : weekStart, value: 1))
+
+        if ProcessInfo.processInfo.arguments.contains("-perf-history") {
+            // Speed tests: a year of history on every daily habit, missed about one day in nine, so streaks and
+            // counts are measured on the data of someone who has used the app for a year (30 Sep).
+            let logged = Set(entries.map { $0.habitID.uuidString + $0.day.key })
+            for i in habits.indices where habits[i].kind != .quit && habits[i].frequency.isDayBased {
+                habits[i].createdAt = ago(days: 400)
+                let h = habits[i]
+                for d in 1...365 where d % 9 != 0 {
+                    let day = today.adding(days: -d, calendar: cal)
+                    if logged.contains(h.id.uuidString + day.key) { continue }
+                    if h.kind == .checklist {
+                        for s in h.steps { entries.append(Entry(habitID: h.id, stepID: s.id, day: day, value: 1)) }
+                    } else {
+                        entries.append(Entry(habitID: h.id, day: day, value: h.goal))
+                    }
+                }
+            }
+        }
     }
     #endif
 }
