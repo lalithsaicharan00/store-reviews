@@ -120,3 +120,19 @@ Research: [The First Run — Start in One Tap](<../../../Research/Research Repor
 | L12.3 | Notification permission only when a reminder is turned on | [x] Already true (`ReminderScheduler.requestPermission`) |
 | L12.4 | UI test | [x] `FirstRunUITests` (written; not run: no Mac in this session) |
 
+## Loop 13 — App lock (C017, C096)
+
+Research: [App Lock — Private Without Lock-outs](<../../../Research/Research Reports/Settings and Help/App Lock — Private Without Lock-outs.md>).
+
+Not taken this loop: **#59 section animation** (the motion can only be judged on a simulator, and this session has none) and **a library of ready-made habits in New** (New's first screen follows the user's rule of no examples; for the user to decide where a library goes).
+
+| # | Point | Done |
+|---|---|---|
+| L13.1 | Settings → Privacy → Lock with Face ID / Touch ID; off by default; free | [x] `SettingsView`, `AppLock` |
+| L13.2 | iPhone passcode fallback; switch changes only after Face ID works | [x] `.deviceOwnerAuthentication` |
+| L13.3 | No frame of habits at launch or in the app switcher | [x] `LockCover`, `AppLock.launchKey` |
+| L13.4 | One automatic ask per return, then an Unlock button | [x] `AppLock.appeared` |
+| L13.5 | Widget shows icons and counts without names while locked | [x] `WidgetDay.Row.shownName` |
+| L13.6 | Help answer, including Show Previews for notifications | [x] |
+| L13.7 | Tried on a device | [ ] No Mac in this session |
+

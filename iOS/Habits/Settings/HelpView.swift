@@ -46,6 +46,8 @@ struct HelpView: View {
               answer: "In All Habits (☑︎ on Today) swipe a habit, or open it. Archive stops it and keeps its history, and frees a place on the free plan. Delete removes it and its history for good."),
         Topic(id: "Turn off vibration or sound",
               answer: "In Settings, under When You Log, switch Haptics or Sounds. Sounds are off until you turn them on."),
+        Topic(id: "Lock Habits with Face ID",
+              answer: "In Settings → Privacy, turn on Lock with Face ID (or Touch ID). Habits then asks each time you open it, and your iPhone passcode always works too, so you can't be locked out. While it's on, the widget shows icons and counts, not names. To keep habit names out of notifications on the Lock Screen, set iPhone Settings → Notifications → Show Previews to When Unlocked."),
         Topic(id: "Where my data is",
               answer: "On this iPhone only, and in its own iCloud or computer backups. There's no account and nothing is sent anywhere."),
         Topic(id: "Back up or move to a new phone",

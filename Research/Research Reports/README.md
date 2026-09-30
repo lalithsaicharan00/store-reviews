@@ -152,6 +152,7 @@ What people want to see about how their habits are going, how and where.
 | Report | Author | Date | What it is |
 |---|---|---|---|
 | [Settings — What People Need There](<Settings and Help/Settings — What People Need There.md>) | **Claude** | 29 Sep 2026 | Day end from midnight to noon (576 asks in 70 apps), any week start (181), optional streaks (77), a searchable help screen (482 missing-help reviews, 2.69★), notifications recovery, privacy stated, the free limit shown. |
+| [App Lock — Private Without Lock-outs](<Settings and Help/App Lock — Private Without Lock-outs.md>) | **Claude** | 30 Sep 2026 | C017 and C096 for the iOS app. Keyword scan (229 lock reviews): liked 65 (4.54★), asked for 47, charged for or moved to paid 16 (2.38★), leaks 13, lock-outs and prompt loops; 10 quotes verified. Design: free, off by default; the iPhone's own Face ID with passcode fallback (never a separate code); turns on only after Face ID works; read before the first frame and a cover whenever the app isn't in front; one automatic ask per return; the widget shows icons and counts, not names, while locked. |
 
 ## Data, Sync and Accounts
 

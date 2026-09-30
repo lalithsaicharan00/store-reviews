@@ -22,7 +22,10 @@ nonisolated struct WidgetDay: Codable, Hashable, Sendable {
     nonisolated struct Row: Codable, Hashable, Sendable, Identifiable {
         /// The habit's UUID.
         var id: String
+        /// Empty while the app lock is on: the widget then shows no names.
         var name: String
+
+        var shownName: String { name.isEmpty ? "Habit" : name }
         var symbol: String
         /// `HabitColor` raw value ("blue").
         var color: String

@@ -12,7 +12,10 @@ enum WidgetBridge {
     static func publish(_ store: HabitStore, now: Date = .now) {
         guard store.isLoaded, WidgetShared.snapshotURL != nil else { return }
         let today = store.today(now: now)
-        let file = WidgetFile(days: [day(today, store: store), day(today.adding(days: 1, calendar: store.calendar), store: store)])
+        // With the app lock on, the widget shows icons and counts but no names (App Lock report).
+        let discreet = AppLock.isEnabled
+        let file = WidgetFile(days: [day(today, store: store, discreet: discreet),
+                                     day(today.adding(days: 1, calendar: store.calendar), store: store, discreet: discreet)])
         file.write()
         WidgetCenter.shared.reloadTimelines(ofKind: WidgetShared.kind)
     }
@@ -35,7 +38,7 @@ enum WidgetBridge {
     // MARK: Rows
 
     /// One day of Today: its habits in Today's order, unfinished first.
-    static func day(_ day: LocalDay, store: HabitStore) -> WidgetDay {
+    static func day(_ day: LocalDay, store: HabitStore, discreet: Bool = false) -> WidgetDay {
         let calendar = store.calendar
         let order = store.sections.map(\.id)
         let habits = store.habits.enumerated().filter { _, habit in
@@ -48,13 +51,13 @@ enum WidgetBridge {
             let tb = pb?.times.first.map { store.dayMinute($0.minuteOfDay) } ?? .max
             return ta != tb ? ta < tb : a.offset < b.offset
         }.map(\.element)
-        let rows = habits.map { row($0, on: day, store: store) }
+        let rows = habits.map { row($0, on: day, store: store, discreet: discreet) }
         let starts = calendar.startOfDay(for: day.date(calendar: calendar))
             .addingTimeInterval(Double(store.settings.dayEndHour) * 3600)
         return WidgetDay(day: day.key, starts: starts, rows: rows.filter { !$0.done } + rows.filter(\.done))
     }
 
-    static func row(_ habit: Habit, on day: LocalDay, store: HabitStore) -> WidgetDay.Row {
+    static func row(_ habit: Habit, on day: LocalDay, store: HabitStore, discreet: Bool = false) -> WidgetDay.Row {
         let rule = store.rule(habit, on: day)
         let goal = store.goal(of: rule)
         let period = switch rule.frequency {
@@ -77,7 +80,7 @@ enum WidgetBridge {
         default: nil
         }
         return WidgetDay.Row(
-            id: habit.id.uuidString, name: habit.name, symbol: habit.symbol, color: habit.color.rawValue,
+            id: habit.id.uuidString, name: discreet ? "" : habit.name, symbol: habit.symbol, color: habit.color.rawValue,
             progress: store.progress(of: habit, on: day), goal: goal,
             suffix: (unit.isEmpty ? "" : " " + unit) + period + (habit.atMost ? " max" : ""),
             showsCount: !(rule.kind == .task || rule.kind == .check && rule.frequency.isDayBased && goal <= 1),

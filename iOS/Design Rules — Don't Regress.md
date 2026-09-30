@@ -107,6 +107,16 @@ Source: [Widgets — Tick Without Opening the App](<../Research/Research Reports
 - **Never a stale day:** the file holds today and tomorrow; after the last day ends the widget says "Open Habits to see today".
 - **Basic interactive widgets are free, forever** (C009). Extra designs go in Plus later; never move this one.
 
+## App lock (built 30 Sep 2026)
+
+Source: [App Lock — Private Without Lock-outs](<../Research/Research Reports/Settings and Help/App Lock — Private Without Lock-outs.md>).
+
+- **Only the iPhone's own authentication** (`.deviceOwnerAuthentication`: Face ID or Touch ID, then the passcode). Never an app-only PIN: a forgotten one locks people out.
+- **Never a frame of habits while locked:** the lock is read from `UserDefaults` before the first frame, and `LockCover` covers the app whenever it isn't active.
+- **Ask once per return** (`AppLock.appeared`); a cancelled prompt leaves the Unlock button. A prompt that repeats by itself is a 1★ bug.
+- **Free, forever.** Moving a lock to paid is a "scammed" review.
+- **While on, the widget file has no names** (`WidgetBridge.publish(discreet:)`).
+
 ## First run (built 30 Sep 2026)
 
 Source: [The First Run — Start in One Tap](<../Research/Research Reports/Habit Creation/The First Run — Start in One Tap.md>).

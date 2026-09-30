@@ -70,7 +70,7 @@ struct TodayWidgetView: View {
             case .accessoryRectangular:
                 VStack(alignment: .leading, spacing: 1) {
                     Text("\(day.done) of \(day.total) done").font(.headline).widgetAccentable()
-                    Text(day.next.map { "Next: \($0.name)" } ?? "All done today").lineLimit(1)
+                    Text(day.next.map { "Next: \($0.shownName)" } ?? "All done today").lineLimit(1)
                 }
             case .accessoryInline:
                 Text(day.next == nil ? "All habits done" : "\(day.done) of \(day.total) habits done")
@@ -137,7 +137,7 @@ struct HabitWidgetRow: View {
                 .background(Circle().fill(color.opacity(0.15)))
                 .widgetAccentable()
             VStack(alignment: .leading, spacing: 0) {
-                Text(row.name).font(.subheadline).lineLimit(1)
+                Text(row.shownName).font(.subheadline).lineLimit(1)
                 if !compact && !row.line.isEmpty {
                     Text(row.line).font(.caption).foregroundStyle(.secondary).monospacedDigit().lineLimit(1)
                 }
@@ -155,7 +155,7 @@ struct HabitWidgetRow: View {
                 .foregroundStyle(.white)
                 .frame(width: 30, height: 30)
                 .background(Circle().fill(color))
-                .accessibilityLabel("\(row.name) done")
+                .accessibilityLabel("\(row.shownName) done")
         } else if row.step != nil {
             Button(intent: LogHabitFromWidget(habitID: row.id, day: day)) {
                 Text(row.stepLabel)
@@ -166,7 +166,7 @@ struct HabitWidgetRow: View {
                     .background(Circle().fill(Color.primary.opacity(0.1)))
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(row.stepLabel == "✓" ? "Mark \(row.name) done" : "Add \(row.stepLabel.dropFirst()) to \(row.name)")
+            .accessibilityLabel(row.stepLabel == "✓" ? "Mark \(row.shownName) done" : "Add \(row.stepLabel.dropFirst()) to \(row.shownName)")
         } else {
             // A timer, a checklist or an amount typed each time: the widget opens the app for it.
             Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)

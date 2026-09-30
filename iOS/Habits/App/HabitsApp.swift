@@ -8,17 +8,19 @@ struct HabitsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            #if DEBUG
-            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
-                PlacementCheckView()
-            } else {
-                today
-            }
-            #else
-            today
-            #endif
+            root
+                // While locked, or whenever the app isn't in front (so the app switcher never shows the habits).
+                .overlay {
+                    if model.lock.isLocked || (AppLock.isEnabled && scenePhase != .active) {
+                        LockCover(locked: model.lock.isLocked) { Task { await model.lock.unlock() } }
+                    }
+                }
+                .task { await model.lock.appeared() }
         }
         .onChange(of: scenePhase) {
+            // Leaving locks the app (when the lock is on); coming back asks once.
+            if scenePhase == .background { model.lock.lock() }
+            if scenePhase == .active { Task { await model.lock.appeared() } }
             // Re-plan on every return to the app: a new day, a changed time zone, or a changed permission.
             // Widget taps made while away come in first, then the widget and reminders are brought up to date.
             guard scenePhase == .active && model.store.isLoaded else { return }
@@ -28,6 +30,18 @@ struct HabitsApp: App {
                 model.scheduler.scheduleReconcile(model.store)
             }
         }
+    }
+
+    @ViewBuilder private var root: some View {
+        #if DEBUG
+        if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            PlacementCheckView()
+        } else {
+            today
+        }
+        #else
+        today
+        #endif
     }
 
     private var today: some View {

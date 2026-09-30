@@ -22,6 +22,7 @@ struct SettingsView: View {
     @State private var restoring = false
     @State private var working = false
     @State private var message: DataMessage?
+    @State private var lockOn = AppLock.isEnabled
 
     struct SharedFile: Identifiable { let id = UUID(); let url: URL }
     struct DataMessage: Identifiable { let id = UUID(); let title: String; let text: String }
@@ -79,10 +80,14 @@ struct SettingsView: View {
                 }
                 Section {
                     Label("Your habits stay on this iPhone", systemImage: "lock.fill")
+                    if lockOn || AppLock.isAvailable {
+                        Toggle("Lock with \(AppLock.methodName)", isOn: Binding(get: { lockOn }, set: { setLock($0) }))
+                            .accessibilityIdentifier("settings-lock")
+                    }
                 } header: {
                     Text("Privacy")
                 } footer: {
-                    Text("No account, no ads and no tracking. Nothing leaves your phone unless you share it.")
+                    Text(privacyFooter)
                 }
                 Section {
                     LabeledContent("Version", value: AppInfo.version)
@@ -190,6 +195,24 @@ struct SettingsView: View {
             Text("A backup file holds everything: habits, history, notes and settings. Save it to Files or send it to yourself. Restoring adds what's missing and never changes or removes what's on this iPhone.")
         }
         .disabled(working)
+    }
+
+    private var privacyFooter: String {
+        let base = "No account, no ads and no tracking. Nothing leaves your phone unless you share it."
+        if lockOn {
+            return base + " Habits asks for \(AppLock.methodName), or your iPhone passcode, each time you open it. The widget shows icons and counts, not names."
+        }
+        return AppLock.isAvailable ? base : base + " To lock Habits, set a passcode for this iPhone first."
+    }
+
+    /// The lock goes on or off only after Face ID (or the passcode) works here, so it can never lock someone out.
+    private func setLock(_ on: Bool) {
+        Task { @MainActor in
+            guard await AppLock.authenticate(reason: on ? "Turn on the lock for Habits" : "Turn off the lock for Habits") else { return }
+            AppLock.setEnabled(on)
+            lockOn = on
+            WidgetBridge.publish(store)
+        }
     }
 
     private var todayFooter: String {
