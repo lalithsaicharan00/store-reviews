@@ -215,6 +215,18 @@ Report: [The Progress Page — What People Need, and How to Build It](<../Resear
 - **A slip is an event with its own moment** ("Log a Slip…", with Undo). Editing "Started" is only for fixing a wrong start. A slip never erases the record: runs, clean days and slips are all kept.
 - **The overview counts habits, not ticks**, so it agrees with the day bar; part credit only fills rings.
 
+## Groups (built 30 Sep 2026)
+
+Plan: [Groups — What to Build](<Docs/Specs/Groups — What to Build.md>), from 2,228 group reviews (Day Structure report, Part 2) and the Today top-area reports. Checklist: `Docs/Checklists/Groups.md`.
+
+- **Optional, never forced, invisible until the first one.** No preset groups; the habit form's Group row appears only once a group exists. Forced categorisation drove people away.
+- **A filter, not tabs and not headings on Today.** Day sections already head the list; group headings under them would be two levels. One group at a time; one group per habit.
+- **Never hide a habit without saying so.** All shows everything, habits with no group are in All, the Filter icon fills and a "● Health ✕" chip heads the list while a group is chosen. Anything that would leave a row out of sight (a timer bar, a notification, a habit added to another group) shows All first.
+- **One editor however many ways in** (`GroupForm`, `GroupsView`): Filter's Edit, an empty chip and the picker's New Group all open it. The ≡ menu doesn't repeat Filter.
+- **One order everywhere:** A to Z until the person drags; then "Your order" with Sort A to Z. Progress's bars follow it and are never ranked by rate.
+- **Chip numbers are habits shown on the day open**, empty groups "–" and last. Counts are worked out only while the Filter sheet is open.
+- **Group numbers take a list of habits** (`dayScore(on:habits:)`, `progressSnapshot(…group:)`); day scores are cached per group. Today and Progress remember their own choice.
+
 ## Words the app never uses
 
 - **"Due", "overdue"** anywhere (the user, 29 Sep; copy rule from before). Tasks are "For today" or "Planned for Wed 1 Oct"; habits happen "on its days".

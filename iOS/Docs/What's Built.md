@@ -125,7 +125,17 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Checked in the app with 17 golden cases (`-progresscheck`) and `ProgressUITests`, both in `[ios-ci]`
 - [x] Phase 2 (30 Sep 2026): Year (a grid of day dots; tap a month to open it; each row its own year grid); Quitting rows with the run ticking once a minute, best run, slips in the period and a clean-day strip
 - [x] Phase 3 (30 Sep 2026): View Options → Full Day (All Done, 80%, 60%); Year → Share: a picture of the year
-- [ ] Group stats: wait for groups, which aren't built
+- [x] Group stats (30 Sep 2026): chips under the range control filter every number; with All, a Groups card (a bar per group, in the groups' order) and the habits under their group's heading
+
+## Groups (30 Sep 2026; Build Plan #68)
+
+- [x] Optional and invisible until the first one: Today's Filter (beside +) explains them and has + New Group
+- [x] Filter: chips All · ● Health 5 · ● Mind 0 · ○ Reading – (the number is how many habits it shows on the day open), empty groups last, Edit on the Groups heading
+- [x] Filtered Today: the Filter icon fills, a "● Health ✕" chip at the top clears it, every card (Quitting and Paused too) shows only the group, Start plays only what's shown, "Nothing from Home on this day" with Show All; remembered when the app reopens
+- [x] One editor: rename, recolour, pick habits (one group per habit: "Moves from Mind"), Pause These Habits…, delete (habits stay, with no group); drag for your own order or Sort A to Z
+- [x] Habit form: a Group row beside Time of Day once a group exists, with New Group; a habit added while Today is filtered starts in that group
+- [x] Habits page (≡ → Habits): one section per group, then No Group
+- [x] Checked with golden case G18 (`-progresscheck`) and `GroupsUITests` (in `[ios-ci]`)
 
 ## Routine player (▶ Start on a time of day)
 
@@ -147,7 +157,6 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [ ] Easy undo after checking or logging
 - [ ] Completion animation before a done row moves down
 - [ ] Section open and close animation
-- [ ] Progress group stats (when groups are built)
 - [ ] Settings (export and import, backups on the phone, support, day and week start, theme, restore purchase)
 - [ ] Onboarding (first launch)
 - [ ] Home-screen and lock-screen widgets

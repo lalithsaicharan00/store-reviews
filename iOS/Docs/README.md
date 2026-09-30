@@ -17,6 +17,7 @@ These are the iPhone app's own documents: the specs it was built from and the us
 
 | Spec | Status | Open it when you change |
 |---|---|---|
+| [Groups — What to Build](<Specs/Groups — What to Build.md>) | **Current.** Built 30 Sep: groups in Today's Filter, one editor, the habit form, Habits by group, group stats on Progress | Groups, Today's Filter, Progress's group chips |
 | [Progress — What to Build, in Order](<Specs/Progress — What to Build, in Order.md>) | **Current.** Build Plan #60a–#60g: four fixes first, then Progress in three phases; Progress opens from the ≡ menu | Progress, the habit page's stats, Today's weekly-goal counting, cut-down limits, archive, quit slips |
 | [Routine Player — Design Decisions](<Specs/Routine Player — Design Decisions.md>) | **Current.** Consolidates the routine player hierarchy, spacing, goals and actions with reasons | The full-screen routine player |
 | [New Habit Goal and Time of Day](<Specs/New Habit Goal and Time of Day.md>) | **Current.** Its Schedule and Goal parts are superseded where they conflict with Design Rules' "Schedule and Goal" section | The New Habit form, Goal screen, Time of Day, units, checklists |
@@ -45,4 +46,5 @@ The work order for the whole app is [Build Plan](<../Build Plan.md>).
 | [Edit Habit](<Checklists/Edit Habit.md>) | Built 29 Sep: edit from the row's long-press menu, changes apply from today, goal history keeps past days |
 | [Habit Notes and Day Notes](<Checklists/Habit Notes and Day Notes.md>) | Built 29 Sep: a note per habit per day, a description, and a note for the day |
 | [Sidebar Menu](<Checklists/Sidebar Menu.md>) | **Final** (30 Sep): the ≡ side menu with Progress, Habits, Tasks and every setting; built on the `sidebar` branch |
+| [Groups](<Checklists/Groups.md>) | Built 30 Sep: research put together, plan, groups and group stats |
 | [Progress Page — Research](<Checklists/Progress Page — Research.md>) | Research done 30 Sep: [The Progress Page — What People Need, and How to Build It](<../../Research/Research Reports/Progress and Statistics/The Progress Page — What People Need, and How to Build It.md>); not built yet (Build Plan #60) |
