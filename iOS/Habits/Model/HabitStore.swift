@@ -63,6 +63,10 @@ final class HabitStore {
     /// Goes up by one after every change and every load. Progress keys its numbers on it, so they're worked out once
     /// per change, never while drawing (report §20). Only screens that cache numbers read it.
     private(set) var dataVersion = 0
+    /// Progress's day scores, kept until the data or the day changes, so going back and forth between periods and
+    /// the last-period line reuse days already worked out (speed run, 30 Sep 2026).
+    @ObservationIgnored var progressScores: [LocalDay: DayScore] = [:]
+    @ObservationIgnored var progressScoresKey = ""
     /// Quit habits: what the habit cost a day, for "Saved so far" (report §10.5, Phase 3). Optional.
     private(set) var costs: [UUID: HabitCost] = [:]
     /// The row just logged on Today: it offers "Add note" in place (Way of Life's inline note, notes UX report).

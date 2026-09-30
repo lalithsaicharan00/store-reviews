@@ -229,8 +229,17 @@ extension HabitStore {
         let today = today ?? self.today()
         let span = period(range.kind, containing: anchor)
         let tracked = habits.filter { $0.kind != .task && $0.kind != .quit }
+        // Day scores for Progress's habit list, kept until the data or the day changes.
+        let cacheKey = "\(dataVersion)|\(today.key)|\(settings.weekStart)|\(settings.dayEndHour)"
+        if progressScoresKey != cacheKey { progressScores = [:]; progressScoresKey = cacheKey }
+        func score(_ day: LocalDay) -> DayScore {
+            if let known = progressScores[day] { return known }
+            let made = dayScore(on: day, habits: tracked, today: today)
+            progressScores[day] = made
+            return made
+        }
         let cells = days(in: span).map { day in
-            ProgressDay(day: day, score: dayScore(on: day, habits: tracked, today: today), isToday: day == today, isFuture: day > today)
+            ProgressDay(day: day, score: score(day), isToday: day == today, isFuture: day > today)
         }
         let earliest = earliestProgressDay()
 
@@ -238,7 +247,7 @@ extension HabitStore {
         let before = period(range.kind, containing: span.lowerBound.adding(days: -1, calendar: calendar))
         if let earliest, before.upperBound >= earliest {
             let tally = progressTally(days(in: before).map { day in
-                ProgressDay(day: day, score: dayScore(on: day, habits: tracked, today: today), isToday: day == today, isFuture: day > today)
+                ProgressDay(day: day, score: score(day), isToday: day == today, isFuture: day > today)
             }, fullAt: fullAt)
             if tally.planned > 0 { previous = (previousTitle(range, before, today: today), tally) }
         }
