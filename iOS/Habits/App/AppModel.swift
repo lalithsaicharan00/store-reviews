@@ -56,6 +56,7 @@ final class AppModel {
             guard store.isLoaded else { return }
             persistence?.markSchemaCurrent()
             #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("-task-fixture") { await TaskFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-focus-fixture") {
                 await FocusPlayerFixture.install(in: store, shortTimer: ProcessInfo.processInfo.arguments.contains("-focus-short-timer"))
             }

@@ -17,6 +17,7 @@ final class PerformanceUITests: XCTestCase {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments = ["-uitest", "-perf-history"]
+        if name.contains("testTasksPage") || name.contains("testTaskEdit") { app.launchArguments += ["-perf-tasks"] }
         app.launch()
         XCTAssertTrue(app.collectionViews.firstMatch.waitForExistence(timeout: 15))
     }
@@ -82,6 +83,21 @@ final class PerformanceUITests: XCTestCase {
         openHabits()
         ready()
         keepGoing(scrollUpAndDown)
+    }
+
+    func testTasksPage() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-tasks"])
+        open("Tasks", tapping: app.buttons["menu-tasks"], until: app.navigationBars["Tasks"])
+        ready(); keepGoing(scrollUpAndDown)
+    }
+
+    func testTaskEdit() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-tasks"])
+        open("Tasks", tapping: app.buttons["menu-tasks"], until: app.navigationBars["Tasks"])
+        let task = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Pay the phone bill'")).firstMatch
+        open("Task", tapping: task, until: app.navigationBars["Pay the phone bill"])
+        open("Edit Task", tapping: app.buttons["Edit"], until: app.navigationBars["Edit Task"])
+        ready(); keepGoing(scrollUpAndDown)
     }
 
     func testBackupPage() {

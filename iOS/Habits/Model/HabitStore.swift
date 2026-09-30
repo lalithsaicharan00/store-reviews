@@ -68,8 +68,8 @@ final class HabitStore {
     var isPlus = false
     static let freeHabitLimit = 5
 
-    /// Habits that count toward the free limit: everything not archived, quit habits included.
-    var activeHabitCount: Int { habits.filter { !$0.archived }.count }
+    /// Tasks are always free; only active build and quit habits use a habit slot.
+    var activeHabitCount: Int { habits.filter { !$0.archived && $0.kind != .task }.count }
     var canAddHabit: Bool { isPlus || activeHabitCount < Self.freeHabitLimit }
 
     /// A colour for a new habit: the first one no habit uses yet, so habits stay easy to tell apart.
@@ -909,7 +909,7 @@ final class HabitStore {
     /// Brings an archived habit back, if there's a free slot (or Plus). False when the free limit is reached.
     @discardableResult
     func restore(_ habit: Habit) -> Bool {
-        guard canAddHabit else { return false }
+        guard habit.kind == .task || canAddHabit else { return false }
         perform { [self] in
             guard let i = habits.firstIndex(where: { $0.id == habit.id }) else { return }
             var h = habits[i]
@@ -1323,6 +1323,11 @@ final class HabitStore {
         let meditate = Habit(name: "Meditate", symbol: "figure.mind.and.body", color: .purple, kind: .duration, parts: [.evening], goal: 10, createdAt: ago(days: 30))
         let bed = Habit(name: "Bed by 23:00", symbol: "bed.double.fill", color: .indigo, kind: .check, parts: [.evening], createdAt: ago(days: 10))
         habits = [smoking, alcohol, read, call, water, stretch, skincare, teeth, meds, walk, lunch, meds2, floss, plan, noScreens, meditate, bed]
+        if ProcessInfo.processInfo.arguments.contains("-perf-tasks") {
+            for i in 0..<200 {
+                habits.append(Habit(name: i == 0 ? "Pay the phone bill" : "Task \(i)", symbol: "checkmark", color: .blue, kind: .task, dueDay: today.adding(days: 14), remind: false, createdAt: ago(days: 365)))
+            }
+        }
         if ProcessInfo.processInfo.arguments.contains("-longtext") {
             // Names, units and parts at their limits, to test layouts.
             for i in habits.indices {

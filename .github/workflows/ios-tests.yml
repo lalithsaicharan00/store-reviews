@@ -53,6 +53,7 @@ jobs:
             case "$MESSAGE" in *"[ios-backup]"*) echo "TESTS=BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "PERF_TESTS=testBackupPage testMenuOpenClose testScrollToday" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup-ui]"*) echo "TESTS=BackupUITests" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-tasks]"*) echo "TESTS=TasksUITests,TodayUITests,ScheduleUITests/testCalendarAndPersistenceRules,ScheduleUITests/testTaskAfterCompletion" >> "$GITHUB_ENV"; echo "PERF_TESTS=testTasksPage testTaskEdit testScrollToday" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
           fi
 

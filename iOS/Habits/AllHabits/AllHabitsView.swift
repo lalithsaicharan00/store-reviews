@@ -14,6 +14,7 @@ struct AllHabitsView: View {
     @State private var deleting: [Habit] = []
     @State private var confirmingDelete = false
     @State private var showPlus = false
+    @State private var addingTask = false
 
     struct PauseTargets: Identifiable { let id = UUID(); let habits: [Habit] }
 
@@ -51,7 +52,7 @@ struct AllHabitsView: View {
                 case .habits:
                     ContentUnavailableView("No Habits Yet", systemImage: "checklist", description: Text("Tap + on Today to add one."))
                 case .tasks:
-                    ContentUnavailableView("No Tasks Yet", systemImage: "list.bullet", description: Text("Tap + on Today, then Add a task."))
+                    ContentUnavailableView("No Tasks Yet", systemImage: "list.bullet", description: Text("Tap + to add a task."))
                 }
             }
         }
@@ -59,6 +60,12 @@ struct AllHabitsView: View {
         .navigationTitle(kind == .tasks ? "Tasks" : "Habits")
         .navigationDestination(for: UUID.self) { HabitPageView(id: $0) }
         .toolbar {
+            if kind == .tasks && !editMode.isEditing {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Add Task", systemImage: "plus") { addingTask = true }
+                        .accessibilityIdentifier("tasks-add")
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(editMode.isEditing ? "Done" : "Select") {
                     withAnimation { editMode = editMode.isEditing ? .inactive : .active; selection = [] }
@@ -79,6 +86,9 @@ struct AllHabitsView: View {
             }
         }
         .sheet(item: $pausing, onDismiss: finish) { PauseSheet(habits: $0.habits) }
+        .sheet(isPresented: $addingTask) {
+            NavigationStack { HabitForm(type: .task, onSaved: { _ in addingTask = false }) }
+        }
         .sheet(isPresented: $showPlus) { PlusView() }
         .confirmationDialog(deleteTitle, isPresented: $confirmingDelete, titleVisibility: .visible) {
             Button("Delete", role: .destructive) { store.delete(deleting); finish() }
@@ -86,13 +96,13 @@ struct AllHabitsView: View {
                 Button("Archive Instead") { store.archive(deleting.filter { !$0.archived }); finish() }
             }
         } message: {
-            Text("Their history and notes are deleted too, and this can't be undone. Archiving stops a habit and keeps its history."
+            Text("Their history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history."
                 .replacingOccurrences(of: "Their", with: deleting.count == 1 ? "Its" : "Their"))
         }
     }
 
     private var deleteTitle: String {
-        deleting.count == 1 ? "Delete \(deleting[0].name)?" : "Delete \(deleting.count) Habits?"
+        deleting.count == 1 ? "Delete \(deleting[0].name)?" : "Delete \(deleting.count) \(kind == .tasks ? "Tasks" : "Habits")?"
     }
 
     @ViewBuilder private func group(_ title: String?, _ list: [Habit]) -> some View {

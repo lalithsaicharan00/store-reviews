@@ -6,9 +6,9 @@ The user requested all work on the existing sidebar branch, one step at a time, 
 
 | Step | Requirement | Implementation | Validation |
 |---|---|---|---|
-| 1 | Free CSV export, complete backup and safe restore from Backup & Export | [ ] | [ ] |
-| 1a | Current edits and deleted records survive an older restore; repeating restore is harmless; old versions migrate | [ ] | [ ] |
-| 1b | Explain and protect free users' data across closing, offloading, reinstall and moving phones | [ ] | [ ] |
+| 1 | Free CSV export, complete backup and safe restore from Backup & Export | [x] | [x] |
+| 1a | Current edits and deleted records survive an older restore; repeating restore is harmless; old versions migrate | [x] | [x] |
+| 1b | Explain and protect free users' data across closing, offloading, reinstall and moving phones | [x] | [x] |
 | 2 | Every created task appears in Tasks, including future, completed, repeating and archived tasks | [ ] | [ ] |
 | 2a | Open and edit tasks using the existing native task form; changes persist | [ ] | [ ] |
 | 3 | Complete the Reminders page with existing habit/task reminders and permission recovery | [ ] | [ ] |
@@ -34,3 +34,13 @@ Free users can save a complete backup outside the app with the native share shee
 - Restore now also carries tombstones onto a new installation, checks semantic record validity and newer schemas, serializes alongside writes, preserves default preferences on a populated destination, and groups children once on load. Latest validation pending.
 
 - Second backup run [36767141883](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36767141883): latest Core and Swift restore checks passed, plus Today and timer regression tests. Share test still failed: the accessibility tree shows the remote ActivityListView arrives before its Close button. The test's fallback swipe scrolled the sheet rather than closing it. Follow-up waits for the actual `header.closeButton`, taps it, and checks dismissal before trying another backup.
+
+- Backup validation complete: [36769714504](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36769714504), build + all 3 BackupUITests passed. Complete restoration/integrity golden cases reran. Core storage/migration and Today/timer checks passed on the preceding unchanged implementation (728f208); only share-test waits and CI dependency caching changed in 64c1a26. Uninstall retention itself is a platform limitation, handled with free external files and an explicit warning, not a guarantee.
+
+## Tasks implementation
+
+- Every saved task remains listed, including future, completed, repeating and archived tasks. Existing native task detail/Edit Task form is reused. A + button also creates a task directly from Tasks.
+- Tasks neither consume the free habit limit nor need Plus to leave the archive. Completed tasks say Completed (repeating tasks: Done today).
+- Editing an old one-time task keeps its past date instead of the date picker clamping it to today.
+- Research: `Tasks in the Free Plan — Limit, Count or Plus.md` corroborates the existing “Tasks are always free” design. Current reminder reports and ledger C039/C123/C252 guide the following reliability stage.
+- Validation pending: task fixtures cover all 5 task types, model reload checks, every task opening Edit with no spurious changes, creation from Tasks, edit + terminate/relaunch on a real database, relevant schedule golden/task UI cases, and performance with 200 tasks and a year of history.

@@ -844,6 +844,12 @@ struct HabitForm: View {
         }
     }
 
+    /// Editing an old task must keep its saved date, even when only its name changes.
+    private var earliestTaskDate: Date {
+        let today = Calendar.current.startOfDay(for: .now)
+        return original?.dueDay.map { min(today, Calendar.current.startOfDay(for: $0.date())) } ?? today
+    }
+
     /// A task: once on a date, or on repeat. Never progress or stats (the user's decision).
     private var taskSection: some View {
         Section {
@@ -852,7 +858,7 @@ struct HabitForm: View {
                 Text("On a schedule").tag(true)
             }
             if !taskRepeats {
-                DatePicker("Date", selection: $taskDate, in: Calendar.current.startOfDay(for: .now)..., displayedComponents: .date)
+                DatePicker("Date", selection: $taskDate, in: earliestTaskDate..., displayedComponents: .date)
             }
             Toggle("Time", isOn: $taskHasTime.animation()).tint(.green)
             if taskHasTime {
