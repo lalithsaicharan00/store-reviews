@@ -48,7 +48,7 @@ Every number below says what it counts. Every review ID can be checked in [`Prog
 
 ## 1. The answer on one page
 
-**Build one Progress screen, reached from the chart button already in Today's top bar.** It shows everything together first. Tapping a habit opens that habit's own page, which gets new progress sections. The habit page is the detail view: there is no second detail screen.
+**Build one Progress screen, reached from the Progress row in the ≡ menu** (the user's final navigation decision, 30 Sep 2026; see the update at the top of §6). It shows everything together first. Tapping a habit opens that habit's own page, which gets new progress sections. The habit page is the detail view: there is no second detail screen.
 
 | Question (checklist point) | Answer | Evidence |
 |---|---|---|
@@ -214,12 +214,14 @@ The project rule is to never copy an app because it does something. Each row bel
 
 ## 6. The structure of the page
 
+> **Update, 30 Sep 2026 (the user, final):** Progress opens from the **≡ side menu**, not Today's top bar. The menu is built on the `sidebar` branch (`Docs/Checklists/Sidebar Menu.md`); its Progress row is wired to a "coming" page in `MenuPage` that Progress replaces. Everything else in this report stands. The build order is in `iOS/Docs/Specs/Progress — What to Build, in Order.md`.
+
 ### 6.1 The decision
 
 **One Progress screen, then the habit's own page. Two levels, no more.**
 
 ```
-Today ──(chart button, top bar)──▶ Progress
+Today ──(≡ menu, Progress row)──▶ Progress
                                      ├─ Week · Month · Year     ‹ This week ›
                                      ├─ Overview: day rings + 3 numbers   (tap a day ▶ Day sheet)
                                      ├─ Habits: one row per habit, with its strip   (tap ▶ Habit page)
@@ -240,7 +242,7 @@ Habit page (existing, extended)
 - **Overview first** (users show). An overview is the most-asked-for thing: 697 asks in 63 apps. People say plainly that one habit at a time doesn't motivate (`2622560b-331d-484c-95e2-38164951e723`, `4289afb7-50cb-4dcb-86c0-c361b51d430c`). They want to land on the overview, not on the first habit. A Way of Life reviewer asks for the statistics to open with all habits selected (`5467149849`, German, paraphrased). A HabitBull reviewer wants to land on its "All Habits" overview (`6e034ffb-761f-4d1b-8d99-69e6aede544a`).
 - **Rows with each habit's own strip under the overview** (users show). The weekly "all habits on one page" view is praised in 262 reviews in 42 apps at 4.78★. People also want to see which habit is falling behind without opening each one (`b91388f6-4872-46a8-aabd-5f2645ec6e28`, Spanish, paraphrased).
 - **Detail on the habit's existing page, not a new screen** (reasoned from first principles). The habit page already shows the streak, best, done this month and the month calendar. Its research put charts under #60 on purpose. A second detail screen would repeat those numbers and split one habit's story across two places (checklist P14). So Progress adds sections to that page. Nothing on it is moved or removed, per the rule that a new feature must not remove an old one.
-- **Reached in one tap from Today** (users show). Hard-to-find stats draw 189 reviews in 39 apps. One user deleted an app because its statistics were hidden in the profile (ledger R86). The chart button (`chart.bar.xaxis`, label "Progress") is **already in Today's top bar** with an empty action. Progress is pushed with `navigationDestination`, exactly like All Habits.
+- **Easy to reach from Today** (users show). Hard-to-find stats draw 189 reviews in 39 apps. One user deleted an app because its statistics were hidden in the profile (ledger R86). **Final (the user, 30 Sep 2026):** Progress is the second row of the ≡ side menu, right under Today (`MenuPlace.progress`, built on the `sidebar` branch). The row pushes Progress onto Today's navigation stack, so Back and the edge swipe return to Today. The chart button that was in Today's top bar is gone. The row's place near the top of the menu keeps it two taps away and in plain sight.
 - **Progress never logs** (reasoned from first principles, and users show). Stats screens that change data by accident draw complaints (`e20a0188-4949-445f-97b3-c71778990840`). Logging from the habit page was already rejected. Every tap in Progress opens detail. The day sheet has "Show on Today" for filling in a day.
 
 ---
@@ -322,7 +324,7 @@ A native sheet at medium height, which can be dragged to large. Its title is the
 3. **Weekly and monthly goals with something logged that day:** "Gym · 1 time (2 of 3 this week)".
 4. **Quit habits with a slip that day:** "Smoking · Slip at 21:40".
 5. **Notes:** the day's note, and each habit's note for that day. Notes are read-only here, and each row with a note shows it under the name.
-6. **A "Show on Today" button** at the bottom. It closes Progress and opens Today on that day, where logging happens.
+6. **A "Show on Today" button** at the bottom. It clears the menu's navigation path (`MenuModel.path`), which closes Progress, and sets Today to that day, where logging happens.
 
 The sheet never logs. A day with nothing planned still opens, showing its notes or "Nothing was planned on this day."
 
@@ -781,7 +783,7 @@ func dayScore(on day: LocalDay, habits: [Habit]) -> (done: Int, part: Double, pl
 - **Quit habits and tasks are never in `habits`.**
 - **Cut-down habits join a day's ring only once that day is over**, as within the limit (done) or over it (not done). Today's ring doesn't show them, because a limit has nothing to fill.
 
-> **Change to one existing function.** Today's `daySummary(on:)` counts `perWeek` habits as due every day and not done until their week is met. That is the exact behaviour behind the Habitify 1★ quoted in §5. `daySummary` feeds the Today day bar and the calendar sheet. It should be **replaced by `dayScore`**, so the day bar, the calendar sheet and Progress agree (one definition, as its own comment says). This changes what Today's day bar shows on days when a weekly habit is still open: it stops counting it. **Today must keep its "N left" section counts as they are**, since those are a different number (what's still open today). Say this in the change and update the day-bar UI tests.
+> **Change to one existing function.** Today's `daySummary(on:)` counts `perWeek` habits as due every day and not done until their week is met. That is the exact behaviour behind the Habitify 1★ quoted in §5. `daySummary` feeds the Today day bar and the calendar sheet. It should be **replaced by `dayScore`**, so the day bar, the calendar sheet and Progress agree (one definition, as its own comment says). This changes what Today's day bar shows on days when a weekly habit is still open: it stops counting it. **The same problem is in Today's "N left" and the routine player** (the user, 30 Sep 2026). Both use `isSatisfied`, which for a "3 times a week" habit stays false after today's tick until the week is met, so the row stays "left" and the player's segment stays unfinished. The fix: a weekly or monthly goal is done *for the day* once something is logged that day, or once its period is met. On a day with nothing logged it is still open today, but it never counts against past days. Build Plan #60a; update the day-bar and player UI tests.
 
 ### 16.5 Streaks, best and runs
 
@@ -891,7 +893,7 @@ Plain words, the app's existing vocabulary, and **never** "due", "overdue", "mis
 
 | Where | Text |
 |---|---|
-| Top-bar button (exists) | "Progress" (VoiceOver), `chart.bar.xaxis` |
+| ≡ menu row (exists on `sidebar`) | "Progress", `chart.bar.xaxis` |
 | Screen title | "Progress" |
 | Range picker | "Week", "Month", "Year" (the habit page adds "All") |
 | Period titles | "This week", "Last week", "22–28 Sep", "September 2026", "2026", "All time" |
@@ -1055,7 +1057,7 @@ Ledger C171 is Certain (26 apps).
 | **C016** Skip / holiday / pause without losing history | Strong · 33 | 60 | Skipped and paused days neutral, with their own marks (§13, §18). |
 | **C010** Backfill missed days / edit start date | Strong · 34 | 34 | "Show on Today" from any day (§7.4). Past start dates respected (§18). |
 | **C041** Editing never wipes history | Strong · 7 | 12 | `rule(habit, on:)` everywhere. Goal lines step, with footnotes (§8.3, §18). |
-| **C142** Surface features where users look | Certain · 24 | 21 | The existing top-bar button. Rows open the habit page at Over Time (§6.2, §7.3). |
+| **C142** Surface features where users look | Certain · 24 | 21 | The Progress row near the top of the ≡ menu. Rows open the habit page at Over Time (§6.2, §7.3). |
 | **C207** Let users hide surfaces they don't use | Certain · 9 | 7 | View options (§7.6). Progress never shows on Today by itself. |
 | **C227** Graduated state (keep tracking a mastered habit) | Strong · 8 | 17 | Archived habits keep all their stats and appear for their periods (§7.7, §17.1). A "graduated" state itself belongs to All Habits, not here. |
 | **C303** Latency independent of history | Moderate · 1 | 3 | §20: cache, `Canvas`, performance test with two years of history. |
@@ -1300,7 +1302,7 @@ Each phase is shippable on its own, and no phase removes anything an earlier one
 **Phase 1: the overview and every type's numbers** (what people ask for most)
 
 1. Model: §17.1 (`archivedOn`), §17.2 (limit days judged at the end), §17.3 (`dayScore`), §17.4 (`runs`), §17.6 (`dataVersion`), §17.7 (shared views).
-2. `ProgressScreen`: Week and Month, the overview with its rings and three tiles, the last-period line, the Habits and Archived sections with week and month strips, the Day sheet, the How It's Counted sheet with the legend, view options, and the empty states. The top-bar button is wired up.
+2. `ProgressScreen`: Week and Month, the overview with its rings and three tiles, the last-period line, the Habits and Archived sections with week and month strips, the Day sheet, the How It's Counted sheet with the legend, view options, and the empty states. It replaces the "coming" page in the ≡ menu's `MenuPage`.
 3. Habit page: the total line (§8.1), the calendar popover (§8.2), and Over Time for shapes A–I with Week, Month, Year and All, including cut-down's change line.
 4. Tests (§25.3) and the performance test (§20).
 
@@ -1346,7 +1348,7 @@ The fixed "now" is **Friday 26 September 2026, 12:00**. Week start is Monday and
 - **`-progresscheck`**, like the existing `-copycheck`. This launch argument seeds G1–G17 in an in-memory store with the fixed now, runs every function from §16 and shows "Progress: all checks passed" or the cases that differ. **`ProgressUITests.testProgressChecks`** reads that label.
   - Add `ProgressUITests` to the `[ios-ci]` test list in `.github/workflows/ios-tests.yml`.
 - **UI tests** in `ProgressUITests`:
-  - Today's Progress button opens Progress.
+  - The ≡ menu's Progress row opens Progress, and Back returns to Today.
   - Week, Month and Year switch.
   - ‹ is disabled at the first period.
   - Tapping a ring opens the Day sheet, and "Show on Today" opens Today on that day.

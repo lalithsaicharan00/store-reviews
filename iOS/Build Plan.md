@@ -139,7 +139,14 @@ Rounds 7–9 (New Habit form Round 3/4 and the full-screen routine player) are r
 | 57 | **Easy undo after checking or logging** (snackbar or a suitable native presentation) | Not started |
 | 58 | **Completion feedback:** finish the fill or check animation before the row moves below unfinished rows; smooth on repeated goals (the last of three checks) | Not started |
 | 59 | **Section open and close animation** beyond the current fade | Not started |
-| 60 | **Progress and statistics screens** | Not started |
+| 60 | **Progress and statistics screens** (in the ≡ menu, not Today's top bar) | Research done 30 Sep ([report](<../Research/Research Reports/Progress and Statistics/The Progress Page — What People Need, and How to Build It.md>)); build order in [Progress — What to Build, in Order](<Docs/Specs/Progress — What to Build, in Order.md>). **Start with 60a** |
+| 60a | **Weekly and monthly goals done for the day once logged that day**, on Today ("N left", the section ✓), in the routine player's segments and in the day bar's ring and count (`isSatisfied`, `daySummary` → `dayScore`). Today a 3-times-a-week habit stays "left" after today's tick | Not started; first |
+| 60b | **Daily limits (cut down) judged when the day ends**, not counted as met from the start of the day | Not started |
+| 60c | **Archive date** (`archivedOn`, a small database change) so archived habits stop counting from that day and past numbers never change; Restore saves the gap as a pause | Not started |
+| 60d | **"Log a Slip…" for quit habits:** date, time and an optional note, saved as an event with Undo (today a slip can only be recorded by editing "Started") | Not started; needed before Progress's quit sections |
+| 60e | **Progress, Phase 1:** the Progress page from the ≡ menu (Week and Month overview, habit rows, Day sheet, explanations, view options) and the habit page's Over Time for every type; tests and speed test | Not started; after 60a–60c |
+| 60f | **Progress, Phase 2:** Year views, Runs, By Weekday, the 30-day rate, quit sections | Not started |
+| 60g | **Progress, Phase 3:** full-day threshold, money saved, shareable year image, group stats | Not started |
 | 61 | **Settings and account** (the avatar button) | Next (chosen by the user, 30 Sep). Include export and import with on-device snapshots (free users' only backup), a support and contact link, day start and week start, theme, restore purchase, help |
 | 62 | **Onboarding (first launch):** asks day start and week start (decided, Backlog 28 Sep); the user creates their own habits first, no sign-up wall, a skippable tour (ledger C203, C209, C075) | Not started |
 | 63 | **Home-screen and lock-screen widgets:** interactive, free, show every free habit; Plus adds designs and sizes (Backlog 29 Sep; ledger C009, C023, C040) | Not started; best after Progress settles what a widget shows |
@@ -152,3 +159,5 @@ Rounds 7–9 (New Habit form Round 3/4 and the full-screen routine player) are r
 State on 30 Sep 2026: undo (#57) is researched and being built in another session; Progress (#60) is being researched in another session. Suggested order after them: 61 Settings → 62 Onboarding → 63 Widgets (every screen a free user sees, before Figma) → 64 Plus, then 65–67.
 
 **≡ menu (the user, 30 Sep 2026, final):** the avatar became a ≡ side menu holding Progress, Habits, Tasks and every setting (Design Rules, "≡ Menu — FINAL"). Built on the `sidebar` branch with the pages that exist wired in (Habits, Tasks, Times of Day, Plus); Progress (#60) and the settings pages (#61) open "coming" pages until they're built, each wired in one place (`MenuPage`). Checklist: `Docs/Checklists/Sidebar Menu.md`.
+
+**Progress (#60), 30 Sep 2026:** researched on the `progress-page-research` branch. It opens from the ≡ menu's Progress row (`MenuPage`), per the final menu decision. Four fixes to what's built come first (60a–60d), then Phase 1 (60e). Order and details: `Docs/Specs/Progress — What to Build, in Order.md`.
