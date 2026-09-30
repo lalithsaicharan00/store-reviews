@@ -33,7 +33,10 @@ final class HabitStore {
     }
 
     private(set) var habits: [Habit] = []
-    private(set) var entries: [Entry] = []
+    private(set) var entries: [Entry] = [] { didSet { entriesByHabit = nil } }
+    /// `entries` grouped by habit, built on first use after a change. Every count, streak and "done" reads one
+    /// habit's entries; scanning all of them for each day of a streak made scrolling Today stutter (30 Sep).
+    @ObservationIgnored private var entriesByHabit: [UUID: [Entry]]?
     var settings = DaySettings()
     /// Running timers for duration habits: habit ID → start time.
     private(set) var timers: [UUID: Date] = [:]
@@ -249,11 +252,22 @@ final class HabitStore {
     }
 
     private func periodTotal(_ habit: Habit, in range: ClosedRange<LocalDay>, now: Date = .now) -> Double {
-        var total = entries.lazy.filter { $0.habitID == habit.id && $0.stepID == nil && range.contains($0.day) }.reduce(0) { $0 + $1.value }
+        var total = entries(of: habit.id).lazy.filter { $0.stepID == nil && range.contains($0.day) }.reduce(0) { $0 + $1.value }
         if let start = timers[habit.id], range.contains(today(now: now)) {
             total += max(0, now.timeIntervalSince(start)) / 60
         }
         return total
+    }
+
+    /// One habit's entries, in the order they were logged. Still reads `entries`, so views redraw when it changes.
+    private func entries(of id: UUID) -> [Entry] {
+        guard let index = entriesByHabit else {
+            let index = Dictionary(grouping: entries, by: \.habitID)
+            entriesByHabit = index
+            return index[id] ?? []
+        }
+        access(keyPath: \.entries)
+        return index[id] ?? []
     }
 
     func isSkipped(_ habit: Habit, on day: LocalDay) -> Bool { skips[habit.id]?.contains(day) == true }
@@ -373,7 +387,7 @@ final class HabitStore {
             return rule.matches(day, start: created, calendar: calendar)
         case .afterCompletion(let n, let unit):
             // Read actual completion dates, including late completions; no fabricated history.
-            let completions = entries.filter { $0.habitID == habit.id && $0.day <= day }.map(\.day)
+            let completions = entries(of: habit.id).filter { $0.day <= day }.map(\.day)
             if completions.contains(day) { return true }
             let next: LocalDay
             if let last = completions.max() {
@@ -411,25 +425,25 @@ final class HabitStore {
     func dayProgress(of habit: Habit, on day: LocalDay, now: Date = .now) -> Double {
         let habit = rule(habit, on: day)
         if habit.kind == .checklist {
-            let ticked = Set(entries.lazy.filter { $0.habitID == habit.id && $0.day == day }.compactMap(\.stepID))
+            let ticked = Set(entries(of: habit.id).lazy.filter { $0.day == day }.compactMap(\.stepID))
             return Double(habit.steps.filter { ticked.contains($0.id) }.count)
         }
         if habit.kind == .task {
             // A one-time task is done once; a repeating one each day it's due.
-            if habit.dueDay == nil { return entries.contains { $0.habitID == habit.id && $0.day == day } ? 1 : 0 }
-            return entries.contains { $0.habitID == habit.id } ? 1 : 0
+            if habit.dueDay == nil { return entries(of: habit.id).contains { $0.day == day } ? 1 : 0 }
+            return !entries(of: habit.id).isEmpty ? 1 : 0
         }
         let slots = slots(of: habit)
         if habit.kind == .check && !slots.isEmpty {
             // One per section ticked, plus older ticks without a section, capped at the number of rows.
             // Ticks aren't matched to today's sections, so a section edit that re-files a time can
             // never turn a finished day unfinished.
-            let today = entries.filter { $0.habitID == habit.id && $0.stepID == nil && $0.day == day }
+            let today = entries(of: habit.id).filter { $0.stepID == nil && $0.day == day }
             let ticked = Set(today.compactMap(\.slot)).count
             let loose = today.filter { $0.slot == nil }.reduce(0) { $0 + $1.value }
             return min(Double(slots.count), Double(ticked) + loose)
         }
-        var total = entries.lazy.filter { $0.habitID == habit.id && $0.stepID == nil && $0.day == day }.reduce(0) { $0 + $1.value }
+        var total = entries(of: habit.id).lazy.filter { $0.stepID == nil && $0.day == day }.reduce(0) { $0 + $1.value }
         if let start = timers[habit.id], day == today(now: now) {
             total += max(0, now.timeIntervalSince(start)) / 60
         }
@@ -445,7 +459,7 @@ final class HabitStore {
     /// Completions in the week or month: ticks for "Do it", met days for everything else.
     private func periodCount(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Double {
         if habit.kind == .check, !habit.frequency.isFlexible {
-            return entries.lazy.filter { $0.habitID == habit.id && $0.stepID == nil && range.contains($0.day) }.reduce(0) { $0 + $1.value }
+            return entries(of: habit.id).lazy.filter { $0.stepID == nil && range.contains($0.day) }.reduce(0) { $0 + $1.value }
         }
         var count = 0.0
         var day = range.lowerBound
@@ -511,11 +525,11 @@ final class HabitStore {
 
     /// A habit ticked per section (round 4 data): whether this section's tick is done.
     func isSlotDone(_ habit: Habit, slot: String, on day: LocalDay) -> Bool {
-        entries.contains { $0.habitID == habit.id && $0.slot == slot && $0.day == day }
+        entries(of: habit.id).contains { $0.slot == slot && $0.day == day }
     }
 
     func isStepDone(_ step: Step, of habit: Habit, on day: LocalDay) -> Bool {
-        entries.contains { $0.habitID == habit.id && $0.stepID == step.id && $0.day == day }
+        entries(of: habit.id).contains { $0.stepID == step.id && $0.day == day }
     }
 
     /// Consecutive due days (or weeks, or months) with the goal met, up to `day`. The current one
@@ -557,7 +571,7 @@ final class HabitStore {
     /// (kept as a run, not a slip), and turning it back on starts a new one. While paused, there's no current run.
     func quitRuns(of habit: Habit, now: Date = .now) -> (current: TimeInterval, best: TimeInterval) {
         let start = habit.quitSince ?? habit.createdAt
-        var slips = entries.filter { $0.habitID == habit.id }.map(\.createdAt)
+        var slips = entries(of: habit.id).map(\.createdAt)
         if start > habit.createdAt && !slips.contains(start) { slips.append(start) }
         // Each boundary ends the run going on (if any) and may start the next.
         var edges: [(at: Date, starts: Bool)] = slips.map { ($0, true) }

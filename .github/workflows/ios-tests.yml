@@ -1,0 +1,85 @@
+# Builds the iPhone app and runs UI tests on GitHub's Macs, so the MacBook doesn't have to.
+#
+# Runs only when asked, to stay inside the free Mac minutes (private repo: ~200 Mac minutes a month):
+#   - by hand: GitHub → Actions → "iOS build and tests" → Run workflow (pick the branch and tests), or
+#   - on a push whose commit message contains [ios-ci]. Other pushes skip the job and use no minutes.
+name: iOS build and tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      tests:
+        description: "UI test classes to run, comma-separated (or 'all', or 'none' to only build)"
+        default: "TodayUITests,TimerUITests"
+  push:
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[ios-ci]')
+    runs-on: macos-26
+    timeout-minutes: 45
+    env:
+      TESTS: ${{ github.event.inputs.tests || 'TodayUITests,TimerUITests' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      # The Kotlin core (Core/) is built by a build phase with Gradle 9, which needs Java 17 or newer.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Pick a simulator
+        run: |
+          ID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone')))")
+          echo "SIM=$ID" >> "$GITHUB_ENV"
+          xcrun simctl list devices available | grep "$ID"
+
+      - name: Build
+        working-directory: iOS
+        run: |
+          set -o pipefail
+          xcodebuild build-for-testing -project Habits.xcodeproj -scheme Habits \
+            -destination "id=$SIM" -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
+          grep -q "BUILD SUCCEEDED\|TEST BUILD SUCCEEDED" build.log
+
+      - name: UI tests
+        if: env.TESTS != 'none'
+        working-directory: iOS
+        run: |
+          set -o pipefail
+          ONLY=""
+          if [ "$TESTS" != "all" ]; then
+            for t in ${TESTS//,/ }; do ONLY="$ONLY -only-testing:HabitsUITests/$t"; done
+          fi
+          xcodebuild test-without-building -project Habits.xcodeproj -scheme Habits \
+            -destination "id=$SIM" -derivedDataPath DerivedData -resultBundlePath Results.xcresult $ONLY \
+            | tee test.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
+          grep -q "TEST EXECUTE SUCCEEDED" test.log
+
+      # Logs and the result bundle (with screenshots of failures), downloadable from the run's page.
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-results
+          path: |
+            iOS/build.log
+            iOS/test.log
+            iOS/Results.xcresult
+          retention-days: 7

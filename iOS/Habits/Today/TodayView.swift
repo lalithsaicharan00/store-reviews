@@ -14,6 +14,9 @@ struct TodayView: View {
     /// (found by hand 29 Sep).
     @State private var playerCovering = false
     @State private var returnToPart: String?
+    /// The time Today is drawn for; `tick()` moves it on (a minute, or a timer's goal time).
+    @State private var clock = Date.now
+    @Environment(\.scenePhase) private var scenePhase
 
     @State private var showCalendar = false
     @State private var showNewHabit = false
@@ -24,7 +27,9 @@ struct TodayView: View {
     @State private var scrollTarget: String?
     @State private var highlighted: String?
     /// Rows now on screen, so a running timer whose row is out of sight gets the timer bar.
-    @State private var visibleRows: Set<String> = []
+    /// Kept outside Today's own state: only the timer bars read it, so a row scrolling in or out redraws them,
+    /// not every section (30 Sep).
+    @State private var visibleRows = VisibleRows()
     @Environment(AppRouter.self) private var router
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -36,10 +41,10 @@ struct TodayView: View {
                 } else {
                     // Once a minute (Now moves, a new day starts), and when a running timer reaches its goal so
                     // "N left" and the day bar change on time. A running row ticks its own clock every second;
-                    // redrawing the whole list every second made every tap wait (29 Sep).
-                    TimelineView(TodaySchedule(goalTimes: goalTimes())) { context in
-                        content(now: context.date)
-                    }
+                    // redrawing the whole list every second made every tap wait (29 Sep). A plain clock, not a
+                    // TimelineView: one around the list marked every row changed on every scroll frame (30 Sep).
+                    content(now: clock)
+                        .task(id: goalTimes()) { await tick() }
                 }
             }
             .toolbar { if !covered { topBar } }
@@ -78,6 +83,8 @@ struct TodayView: View {
         }
         #endif
         .onChange(of: selectedDay) { foldOverrides = [:] }
+        // Back from the background: Today is drawn for now at once, not at the next minute.
+        .onChange(of: scenePhase) { if scenePhase == .active { clock = .now } }
         .onChange(of: router.focusSection) {
             // A tapped notification opens today's section.
             guard let section = router.focusSection else { return }
@@ -118,6 +125,19 @@ struct TodayView: View {
     }
     /// Today comes back the moment the player starts closing, so it's drawn while the cover slides away.
     private var covered: Bool { playerCovering && routine != nil }
+
+    /// Moves `clock` on at each of `TodaySchedule`'s moments until Today is covered or the goal times change.
+    private func tick() async {
+        clock = .now
+        while !Task.isCancelled {
+            var moments = TodaySchedule(goalTimes: goalTimes()).entries(from: .now, mode: .normal)
+            _ = moments.next() // the start itself
+            guard let next = moments.next() else { return }
+            try? await Task.sleep(for: .seconds(max(0.05, next.timeIntervalSinceNow)))
+            if Task.isCancelled { return }
+            clock = .now
+        }
+    }
 
     /// When each running timer reaches its goal: the only moments between minutes that Today's counts change.
     private func goalTimes(now: Date = .now) -> [Date] {
@@ -303,10 +323,7 @@ struct TodayView: View {
                     if isToday {
                         // A running timer whose row is scrolled away or folded stays in sight here
                         // ("Timing a Habit — Start, See and Stop"). Timers only run today.
-                        ForEach(hiddenTimers(), id: \.habit.id) { timer in
-                            TimerBar(habit: timer.habit, start: timer.start) { show(timer.habit) }
-                                .transition(.move(edge: .bottom).combined(with: .opacity))
-                        }
+                        HiddenTimerBars(visible: visibleRows) { show($0) }
                     }
                     // On today the button isn't there at all (so VoiceOver can't find an invisible button, found
                     // by the UI tests 29 Sep); an empty space of its height keeps the list from shifting.
@@ -385,23 +402,14 @@ struct TodayView: View {
                     HabitRow(habit: habit, day: day, isToday: isToday, slot: item.placement.slot,
                              time: item.placement.times.first, highlighted: highlighted == key, stepsOpen: stepsBinding(habit))
                         .id(key)
-                        .onAppear { if !visibleRows.contains(key) { visibleRows.insert(key) } }
-                        .onDisappear { if visibleRows.contains(key) { visibleRows.remove(key) } }
+                        .onAppear { visibleRows.show(key) }
+                        .onDisappear { visibleRows.hide(key) }
                     if habit.kind == .checklist && openSteps.contains(habit.id) {
                         ForEach(habit.steps) { StepRow(step: $0, habit: habit, day: day) }
                     }
                 }
             }
         }
-    }
-
-    /// Running timers with no row of theirs on screen, oldest first.
-    private func hiddenTimers() -> [(habit: Habit, start: Date)] {
-        store.timers
-            .compactMap { id, start in store.habits.first { $0.id == id && !$0.archived }.map { ($0, start) } }
-            .filter { timer in !visibleRows.contains { $0.hasSuffix(timer.0.id.uuidString) } }
-            .sorted { $0.1 < $1.1 }
-            .map { (habit: $0.0, start: $0.1) }
     }
 
     /// From the timer bar: open the timer's section and bring its row into view.
@@ -494,6 +502,31 @@ struct TodayView: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
             Button("Filter", systemImage: "line.3.horizontal.decrease") {}
             Button("New Habit", systemImage: "plus") { showNewHabit = true }
+        }
+    }
+}
+
+/// The rows now on screen, so a running timer whose row is out of sight gets the timer bar.
+@Observable final class VisibleRows {
+    private(set) var keys: Set<String> = []
+    func show(_ key: String) { if !keys.contains(key) { keys.insert(key) } }
+    func hide(_ key: String) { if keys.contains(key) { keys.remove(key) } }
+}
+
+/// Running timers with no row of theirs on screen, oldest first, each as a bar above the day bar.
+private struct HiddenTimerBars: View {
+    let visible: VisibleRows
+    let onShow: (Habit) -> Void
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        let timers = store.timers
+            .compactMap { id, start in store.habits.first { $0.id == id && !$0.archived }.map { (habit: $0, start: start) } }
+            .filter { timer in !visible.keys.contains { $0.hasSuffix(timer.habit.id.uuidString) } }
+            .sorted { $0.start < $1.start }
+        ForEach(timers, id: \.habit.id) { timer in
+            TimerBar(habit: timer.habit, start: timer.start) { onShow(timer.habit) }
+                .transition(.move(edge: .bottom).combined(with: .opacity))
         }
     }
 }
