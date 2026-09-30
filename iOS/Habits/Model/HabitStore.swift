@@ -895,6 +895,9 @@ final class HabitStore {
             if reloadWhenWritten && pendingWrites == 1 {
                 reloadWhenWritten = false
                 await load()
+                // A tap made while reloading is on screen but not yet written; the reload may have hidden it. Reload
+                // again after its write, so the screen ends up showing exactly what's stored.
+                if pendingWrites > 1 { reloadWhenWritten = true }
             }
         }
     }
@@ -1265,7 +1268,13 @@ final class HabitStore {
     /// A tap's entry: shown now, written next in the queue.
     private func addLogged(_ entry: Entry) {
         withAnimation { insertEntry(entry) }
-        perform { [self] in try await repository.addEntry(entry: entry.record) }
+        perform { [self] in
+            #if DEBUG
+            // PersistenceUITests: a write that fails must take the tap back off the screen.
+            if ProcessInfo.processInfo.arguments.contains("-fail-entry-writes") { throw CancellationError() }
+            #endif
+            try await repository.addEntry(entry: entry.record)
+        }
     }
 
     /// Undoing a tap: gone from the screen now, the removal written next in the queue.
