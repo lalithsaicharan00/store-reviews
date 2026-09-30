@@ -9,7 +9,7 @@ TESTS="testScrollToday testTapToday testScrollAllHabits testScrollHabitPage test
 SUMMARY="$OUT/perf-summary.md"
 
 {
-  echo "| Screen | Main thread busy | SwiftUI redraw | Most time in the app's own code |"
+  echo "| Screen | App busy (main thread, minus the test) | SwiftUI redraw | Most time in the app's own code |"
   echo "|---|---|---|---|"
 } > "$SUMMARY"
 
@@ -46,14 +46,11 @@ for T in $TESTS; do
   fi
 done
 
-# Apple's scroll hitch ratio: milliseconds of dropped frames per second of scrolling.
-xcodebuild test-without-building -project Habits.xcodeproj -scheme Habits -destination "id=$SIM" \
-  -derivedDataPath DerivedData -only-testing:HabitsUITests/PerformanceUITests/testScrollHitches > "$OUT/testScrollHitches.log" 2>&1
 {
   echo
-  echo "Scroll hitches on Today (Apple's measure; under 5 ms/s is smooth, over 10 is visible stutter):"
+  echo "Time to open (tap until the screen is there, including the test's own checks):"
   echo
-  grep -E "measured \[" "$OUT/testScrollHitches.log" | sed -E 's/.*measured \[([^]]*)\] average: ([0-9.]+).*/- \1: **\2**/' | sort -u
-  grep -q "measured \[" "$OUT/testScrollHitches.log" || echo "- not reported (see testScrollHitches.log)"
+  cat "$OUT"/test*.log | grep -o "PERF-OPEN .*" | sed 's/^PERF-OPEN /- /' | sort -u
 } >> "$SUMMARY"
+
 cat "$SUMMARY"

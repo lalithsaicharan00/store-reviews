@@ -33,10 +33,12 @@ final class HabitStore {
     }
 
     private(set) var habits: [Habit] = []
-    private(set) var entries: [Entry] = [] { didSet { entriesByHabit = nil } }
+    private(set) var entries: [Entry] = [] { didSet { entriesByHabit = nil; entriesByDay = nil } }
     /// `entries` grouped by habit, built on first use after a change. Every count, streak and "done" reads one
     /// habit's entries; scanning all of them for each day of a streak made scrolling Today stutter (30 Sep).
     @ObservationIgnored private var entriesByHabit: [UUID: [Entry]]?
+    /// The same, by habit and day: the calendar asks about ~30 days × every habit on each month (30 Sep).
+    @ObservationIgnored private var entriesByDay: [UUID: [LocalDay: [Entry]]]?
     var settings = DaySettings()
     /// Running timers for duration habits: habit ID → start time.
     private(set) var timers: [UUID: Date] = [:]
@@ -270,6 +272,17 @@ final class HabitStore {
         return index[id] ?? []
     }
 
+    /// One habit's entries on one day, in the order they were logged.
+    private func entries(of id: UUID, on day: LocalDay) -> [Entry] {
+        guard let index = entriesByDay else {
+            let index = Dictionary(grouping: entries, by: \.habitID).mapValues { Dictionary(grouping: $0, by: \.day) }
+            entriesByDay = index
+            return index[id]?[day] ?? []
+        }
+        access(keyPath: \.entries)
+        return index[id]?[day] ?? []
+    }
+
     func isSkipped(_ habit: Habit, on day: LocalDay) -> Bool { skips[habit.id]?.contains(day) == true }
 
     /// Skip today can be offered for habits whose days are counted one by one; a weekly or monthly total, or a
@@ -425,12 +438,12 @@ final class HabitStore {
     func dayProgress(of habit: Habit, on day: LocalDay, now: Date = .now) -> Double {
         let habit = rule(habit, on: day)
         if habit.kind == .checklist {
-            let ticked = Set(entries(of: habit.id).lazy.filter { $0.day == day }.compactMap(\.stepID))
+            let ticked = Set(entries(of: habit.id, on: day).compactMap(\.stepID))
             return Double(habit.steps.filter { ticked.contains($0.id) }.count)
         }
         if habit.kind == .task {
             // A one-time task is done once; a repeating one each day it's due.
-            if habit.dueDay == nil { return entries(of: habit.id).contains { $0.day == day } ? 1 : 0 }
+            if habit.dueDay == nil { return !entries(of: habit.id, on: day).isEmpty ? 1 : 0 }
             return !entries(of: habit.id).isEmpty ? 1 : 0
         }
         let slots = slots(of: habit)
@@ -438,12 +451,12 @@ final class HabitStore {
             // One per section ticked, plus older ticks without a section, capped at the number of rows.
             // Ticks aren't matched to today's sections, so a section edit that re-files a time can
             // never turn a finished day unfinished.
-            let today = entries(of: habit.id).filter { $0.stepID == nil && $0.day == day }
+            let today = entries(of: habit.id, on: day).filter { $0.stepID == nil }
             let ticked = Set(today.compactMap(\.slot)).count
             let loose = today.filter { $0.slot == nil }.reduce(0) { $0 + $1.value }
             return min(Double(slots.count), Double(ticked) + loose)
         }
-        var total = entries(of: habit.id).lazy.filter { $0.stepID == nil && $0.day == day }.reduce(0) { $0 + $1.value }
+        var total = entries(of: habit.id, on: day).lazy.filter { $0.stepID == nil }.reduce(0) { $0 + $1.value }
         if let start = timers[habit.id], day == today(now: now) {
             total += max(0, now.timeIntervalSince(start)) / 60
         }
@@ -525,11 +538,11 @@ final class HabitStore {
 
     /// A habit ticked per section (round 4 data): whether this section's tick is done.
     func isSlotDone(_ habit: Habit, slot: String, on day: LocalDay) -> Bool {
-        entries(of: habit.id).contains { $0.slot == slot && $0.day == day }
+        entries(of: habit.id, on: day).contains { $0.slot == slot }
     }
 
     func isStepDone(_ step: Step, of habit: Habit, on day: LocalDay) -> Bool {
-        entries(of: habit.id).contains { $0.stepID == step.id && $0.day == day }
+        entries(of: habit.id, on: day).contains { $0.stepID == step.id }
     }
 
     /// Consecutive due days (or weeks, or months) with the goal met, up to `day`. The current one

@@ -2,7 +2,8 @@ import XCTest
 
 /// Speed tests (30 Sep 2026): each one opens a screen with a year of history and keeps using it for a while, so
 /// `Tools/perf/measure_perf.sh` can sample the app meanwhile (main thread busy %, and which of the app's functions
-/// take the time). `testScrollHitches` also reports Apple's scroll hitch ratio. Run on GitHub Actions with
+/// take the time). (Apple's scroll hitch ratio needs a real iPhone: the simulator
+/// reports only how long a swipe took, so it isn't measured here.) Run on GitHub Actions with
 /// "[ios-perf]" in a commit message; they check speed, not behaviour, so the normal test runs skip them.
 ///
 /// Each test prints PERF-READY once its screen is open, and the script starts sampling then.
@@ -21,6 +22,14 @@ final class PerformanceUITests: XCTestCase {
     }
 
     private func ready() { print("PERF-READY \(name)") }
+
+    /// Taps, then waits for `shown`; prints how long the screen took to open (the summary lists these).
+    private func open(_ screen: String, tapping button: XCUIElement, until shown: XCUIElement) {
+        let start = Date.now
+        button.tap()
+        XCTAssertTrue(shown.waitForExistence(timeout: 30), "\(screen) didn't open")
+        print("PERF-OPEN \(screen): \(String(format: "%.1f", Date.now.timeIntervalSince(start))) s")
+    }
 
     private func keepGoing(_ step: () -> Void) {
         let end = Date.now.addingTimeInterval(Self.busyFor)
@@ -58,44 +67,29 @@ final class PerformanceUITests: XCTestCase {
     }
 
     func testScrollAllHabits() {
-        app.buttons["All habits"].tap()
-        XCTAssertTrue(app.navigationBars["All Habits"].waitForExistence(timeout: 5))
+        open("All Habits", tapping: app.buttons["All habits"], until: app.navigationBars["All Habits"])
         ready()
         keepGoing(scrollUpAndDown)
     }
 
     func testScrollHabitPage() {
-        app.buttons["All habits"].tap()
+        open("All Habits", tapping: app.buttons["All habits"], until: app.navigationBars["All Habits"])
         let teeth = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Brush teeth'")).firstMatch
-        XCTAssertTrue(teeth.waitForExistence(timeout: 5))
-        teeth.tap()
-        XCTAssertTrue(app.navigationBars["Brush teeth"].waitForExistence(timeout: 5))
+        XCTAssertTrue(teeth.waitForExistence(timeout: 10))
+        // A year of daily history: its numbers and best streak are the heaviest page.
+        open("Habit page", tapping: teeth, until: app.navigationBars.buttons["Edit"])
         ready()
         keepGoing(scrollUpAndDown)
     }
 
     func testCalendarMonths() {
-        app.buttons.matching(NSPredicate(format: "label ENDSWITH 'Open calendar'")).firstMatch.tap()
         let previous = app.buttons["Previous month"]
         let next = app.buttons["Next month"]
-        XCTAssertTrue(previous.waitForExistence(timeout: 5))
+        open("Calendar", tapping: app.buttons.matching(NSPredicate(format: "label ENDSWITH 'Open calendar'")).firstMatch, until: previous)
         ready()
         keepGoing {
             for _ in 0..<3 { previous.tap() }
             for _ in 0..<3 { next.tap() }
-        }
-    }
-
-    /// Apple's own measure of stutter: milliseconds of dropped frames per second of scrolling (under 5 is smooth).
-    func testScrollHitches() {
-        let list = app.collectionViews.firstMatch
-        let options = XCTMeasureOptions()
-        options.iterationCount = 5
-        options.invocationOptions = [.manuallyStop] // only the swipe up is measured; the swipe down resets
-        measure(metrics: [XCTOSSignpostMetric.scrollingAndDecelerationMetric], options: options) {
-            list.swipeUp(velocity: .fast)
-            stopMeasuring()
-            list.swipeDown(velocity: .fast)
         }
     }
 }
