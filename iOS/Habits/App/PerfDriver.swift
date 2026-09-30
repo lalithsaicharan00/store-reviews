@@ -54,7 +54,7 @@ enum PerfDriver {
         guard let flag = arguments.firstIndex(of: "-perf-drive"), flag + 1 < arguments.count else { return }
         let scenario = arguments[flag + 1]
         Task { @MainActor in
-            await pause(3) // launch settles
+            await pause(8) // launch settles, and the script's sampler finishes attaching (it pauses the app)
             MainThreadMeter.mark("# MEASURING") // the script samples from here, so first opens are covered too
             await run(scenario, store: store)
             MainThreadMeter.mark("# DONE")

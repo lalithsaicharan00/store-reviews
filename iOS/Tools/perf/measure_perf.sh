@@ -31,10 +31,15 @@ for S in $SCENARIOS; do
   rm -f "$REC"
   LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-history -perf-meter -perf-drive "$S" 2>&1)
   PID=$(echo "$LAUNCH" | sed -n 's/.*: *\([0-9][0-9]*\)$/\1/p' | tail -1)
+  # `sample` pauses the app for a moment (up to seconds on GitHub's Mac) while it attaches, so it starts right
+  # after launch; the driver waits 8 s before measuring, so that pause never lands in a window (run 9 showed a
+  # 3.4 s "stall" that was only the attach).
+  # 38 s covers the longest scenario (new-habit, about 33 s); the app stays open until the sampler has written.
+  [ -n "$PID" ] && sample "$PID" 38 1 -file "$OUT/sample-$S.txt" > /dev/null 2>&1 &
+  SAMPLER=$!
   WAITED=0
-  until grep -q "^# MEASURING" "$REC" 2>/dev/null || [ $WAITED -ge 90 ]; do sleep 1; WAITED=$((WAITED + 1)); done
-  [ -n "$PID" ] && sample "$PID" 22 1 -file "$OUT/sample-$S.txt" > /dev/null 2>&1
   until grep -q "^# DONE" "$REC" 2>/dev/null || [ $WAITED -ge 180 ]; do sleep 1; WAITED=$((WAITED + 1)); done
+  wait $SAMPLER 2>/dev/null
   cp "$REC" "$OUT/stalls-$S.txt" 2>/dev/null
   xcrun simctl terminate "$SIM" "$BUNDLE" > /dev/null 2>&1
 
