@@ -73,6 +73,28 @@ struct OverTimeSnapshot {
     let bucket: Calendar.Component
     let isLimit: Bool
     let footnotes: [String]
+    /// Checklists: each step and the planned days it was ticked, in the habit's own step order, never sorted worst
+    /// first (report §9.2).
+    var steps: [OverTimeStep] = []
+    /// Totals and limits for a week or month, in their own range: the running total day by day, and a straight line
+    /// from 0 to the goal or limit across the period (report §9.3, shapes G and I-period).
+    var running: [OverTimePoint] = []
+    var paceLine: (start: Date, end: Date, goal: Double)? = nil
+}
+
+struct OverTimePoint: Hashable, Identifiable {
+    let date: Date
+    let total: Double
+    let label: String
+    var id: Date { date }
+}
+
+struct OverTimeStep: Hashable, Identifiable {
+    let id: UUID
+    let name: String
+    let ticked: Int
+    let days: Int
+    var percent: Int? { days > 0 ? Int((Double(ticked) / Double(days) * 100).rounded()) : nil }
 }
 
 extension HabitStore {
@@ -285,6 +307,8 @@ extension HabitStore {
         // The chart (report §9.3): days for a week or month; weeks or months for longer ranges and period goals.
         var bucket: Calendar.Component = .day
         var bars: [OverTimeBar] = []
+        var runningTotal: [OverTimePoint] = []
+        var paceLine: (start: Date, end: Date, goal: Double)?
         let dateText = { (d: LocalDay) in d.date(calendar: self.calendar).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated)) }
         func barDate(_ d: LocalDay) -> Date { calendar.startOfDay(for: d.date(calendar: calendar)) }
         let daily = range == .week || range == .month
@@ -337,7 +361,16 @@ extension HabitStore {
             // Week, month or year goals: each day's log inside one of its periods; each period over longer ranges.
             let periodKindNow = periodKind(rule)
             let ownSize = (periodKindNow == .week && range == .week) || (periodKindNow == .month && range == .month)
-            if ownSize || range == .week {
+            if ownSize && (shape == .periodTotal || shape == .limitPeriod) {
+                var sum = 0.0
+                runningTotal = list.map { d -> OverTimePoint in
+                    sum += d.value
+                    return OverTimePoint(date: barDate(d.day), total: sum, label: "\(value(sum)) by \(dateText(d.day))")
+                }
+                if let focus {
+                    paceLine = (barDate(focus.lowerBound), barDate(focus.upperBound), focusGoal)
+                }
+            } else if ownSize || range == .week {
                 bars = list.filter { $0.value > 0 }.map { d -> OverTimeBar in
                     OverTimeBar(start: barDate(d.day), end: barDate(d.day.adding(days: 1, calendar: calendar)), value: d.value,
                                 goal: shape == .periodDays ? d.goal : nil, light: shape == .periodDays && d.mark == .some, over: false,
@@ -355,12 +388,23 @@ extension HabitStore {
         let chartScale: OverTimeScale = bucket != .day && showsDays && [.once, .times, .checklist].contains(shape) ? .percent
             : (shape == .periodDays && bucket != .day) || shape == .periodTimes ? .amount("") : scale
 
+        // By step (checklists): each step's share of the planned days that count.
+        var steps: [OverTimeStep] = []
+        if shape == .checklist {
+            for step in rule.steps {
+                let days = counted.filter { d in d.rule.steps.contains { $0.id == step.id } }
+                let ticked = days.filter { isStepDone(step, of: habit, on: $0.day) }.count
+                steps.append(OverTimeStep(id: step.id, name: step.name, ticked: ticked, days: days.count))
+            }
+        }
+
         return OverTimeSnapshot(
             range: range, span: span, title: overTimeTitle(range, span, today: today),
             canGoBack: range != .all && start < span.lowerBound,
             canGoForward: range != .all && span.upperBound < today,
             tiles: tiles, pace: pace, change: change, counts: counts, bars: bars, scale: chartScale, bucket: bucket,
-            isLimit: rule.atMost, footnotes: footnotes(habit, span: span, today: today))
+            isLimit: rule.atMost, footnotes: footnotes(habit, span: span, today: today), steps: steps,
+            running: runningTotal, paceLine: paceLine)
     }
 
     /// The weeks or months overlapping `span`, holding at least one of `days`.

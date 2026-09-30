@@ -228,6 +228,8 @@ enum ProgressCheck {
             same(row(s, cycle, .month)?.text, "42 of 60 km so far", "G10 row")
             let over = s.overTime(cycle, range: .month, anchor: friday)
             same(over.pace, "18 km to go · 6 days left", "G10 pace")
+            same(over.running.last?.total, 42, "G10 running total")
+            same(over.paceLine?.goal, 60, "G10 pace line to the goal")
             let snap = s.progressSnapshot(.month, containing: friday)
             same(snap.goals?.caption, "Monthly goals met so far", "G10 caption")
             same(snap.goals?.total, 1, "G10 total"); same(snap.goals?.met, 0, "G10 met")
@@ -289,6 +291,7 @@ enum ProgressCheck {
             for step in steps.prefix(3) { s.toggleStep(step, of: morning, on: day(24)); await s.flush() }
             same(s.outcome(morning, on: day(24)), .part(0.6), "G15 part")
             same(row(s, morning)?.text, "3 of 5 steps so far · 0 full days", "G15 row")
+            same(s.overTime(morning, range: .week, anchor: friday).steps.map(\.ticked), [1, 1, 1, 0, 0], "G15 by step")
         }
 
         // G16: Run 5 km on 3 days a week, from Mon 21. Mon 5, Wed 3, Thu 6.

@@ -37,6 +37,8 @@ struct OverTimeSection: View {
                     if let change = snapshot.change { Text(change).font(.subheadline).foregroundStyle(.secondary) }
                     if let counts = snapshot.counts { CountBar(counts: counts, color: habit.color.color) }
                     if !snapshot.bars.isEmpty { chart(snapshot) }
+                    if !snapshot.running.isEmpty { runningChart(snapshot) }
+                    if !snapshot.steps.isEmpty { bySteps(snapshot.steps) }
                     ForEach(snapshot.footnotes, id: \.self) {
                         Text($0).font(.footnote).foregroundStyle(.secondary)
                     }
@@ -65,6 +67,24 @@ struct OverTimeSection: View {
         self.key = key
         selected = nil
         snapshot = store.overTime(habit, range: key.range, anchor: key.anchor ?? store.today())
+    }
+
+    /// "Floss · 60%", or "12 of 20 days" while percentages are hidden (report §9.2, E).
+    private func bySteps(_ steps: [OverTimeStep]) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("By Step").font(.subheadline.weight(.semibold))
+            ForEach(steps) { step in
+                HStack {
+                    Text(step.name).lineLimit(1)
+                    Spacer(minLength: 8)
+                    Text(showPercentages ? step.percent.map { "\($0)%" } ?? "No days yet" : "\(step.ticked) of \(step.days) days")
+                        .foregroundStyle(.secondary).monospacedDigit()
+                }
+                .font(.subheadline)
+                .accessibilityElement(children: .combine)
+            }
+        }
+        .accessibilityIdentifier("over-time-steps")
     }
 
     private func periodControl(_ snapshot: OverTimeSnapshot) -> some View {
@@ -159,6 +179,45 @@ struct OverTimeSection: View {
         .chartYScale(domain: .automatic(includesZero: true))
         .frame(height: 180)
         .accessibilityIdentifier("over-time-chart")
+    }
+
+    /// A week or month total: the running total, and a straight dashed line from 0 to the goal or limit. Above the
+    /// line is ahead of pace; for a limit, below it is (report §9.3). Neutral colours either way.
+    private func runningChart(_ snapshot: OverTimeSnapshot) -> some View {
+        let calendar = store.calendar
+        let lower = calendar.startOfDay(for: snapshot.span.lowerBound.date(calendar: calendar))
+        let upper = calendar.startOfDay(for: snapshot.span.upperBound.date(calendar: calendar))
+        let color = habit.color.color
+        return Chart {
+            ForEach(snapshot.running) { point in
+                LineMark(x: .value("Date", point.date), y: .value("Total", point.total), series: .value("Line", "Total"))
+                    .foregroundStyle(color.opacity(snapshot.isLimit ? 0.6 : 1))
+                    .interpolationMethod(.stepEnd)
+                AreaMark(x: .value("Date", point.date), y: .value("Total", point.total))
+                    .foregroundStyle(color.opacity(0.12))
+                    .interpolationMethod(.stepEnd)
+            }
+            if let pace = snapshot.paceLine {
+                LineMark(x: .value("Date", pace.start), y: .value("Total", 0.0), series: .value("Line", "Pace"))
+                    .foregroundStyle(Color.secondary)
+                    .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 3]))
+                LineMark(x: .value("Date", pace.end), y: .value("Total", pace.goal), series: .value("Line", "Pace"))
+                    .foregroundStyle(Color.secondary)
+                    .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 3]))
+            }
+        }
+        .chartXScale(domain: lower...max(upper, lower.addingTimeInterval(1)))
+        .chartYAxis {
+            AxisMarks { value in
+                AxisGridLine()
+                AxisValueLabel {
+                    if let v = value.as(Double.self) { Text(axisLabel(v, snapshot.scale)) }
+                }
+            }
+        }
+        .chartLegend(.hidden)
+        .frame(height: 180)
+        .accessibilityIdentifier("over-time-running")
     }
 
     /// The unit's own labels, time always as hours and minutes (report §9.3).
