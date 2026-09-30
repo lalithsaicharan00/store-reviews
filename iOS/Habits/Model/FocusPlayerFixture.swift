@@ -27,8 +27,13 @@ enum FocusPlayerFixture {
             let flexible = Habit(name: "Flexible reading", symbol: "book", color: .purple, kind: .duration, goal: 20, frequency: .flexible(.week, 3))
             for habit in [weekly, monthly, yearly, flexible] { store.add(habit) }
             await store.flush()
-            store.toggleCheck(weekly, on: store.today())
-            store.toggleCheck(weekly, on: store.today())
+            // Ticked earlier in the week, not today: a weekly goal ticked today is done for the day (Build Plan #60a),
+            // so a routine started now would leave it out.
+            let weekStart = store.period(.week, containing: store.today()).lowerBound
+            if weekStart < store.today() {
+                store.toggleCheck(weekly, on: weekStart)
+                store.toggleCheck(weekly, on: weekStart)
+            }
         }
         await store.flush()
         store.increment(water, on: store.today())
