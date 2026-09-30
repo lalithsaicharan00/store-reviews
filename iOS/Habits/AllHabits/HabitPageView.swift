@@ -5,7 +5,10 @@ import SwiftUI
 /// It's never the way to check off: a tap on Today's row keeps logging.
 struct HabitPageView: View {
     let id: UUID
+    /// Opened from Progress: scroll to Over Time, on Progress's range and period (report §7.3).
+    var overTime: OverTimeStart? = nil
     @Environment(HabitStore.self) private var store
+    @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
     @Environment(\.dismiss) private var dismiss
     @State private var showEdit = false
     @State private var showPause = false
@@ -26,7 +29,7 @@ struct HabitPageView: View {
     private func page(_ habit: Habit) -> some View {
         let today = store.today()
         let pause = store.pause(of: habit, on: today)
-        return List {
+        return ScrollViewReader { proxy in List {
             Section {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 12) {
@@ -59,6 +62,7 @@ struct HabitPageView: View {
                     HabitMonthView(habit: habit, month: Binding(get: { month ?? Self.firstOfMonth(today, store.calendar) },
                                                                 set: { month = $0 }))
                 }
+                OverTimeSection(habit: habit, start: overTime)
             }
             notesSection(habit, today: today)
             Section {
@@ -84,6 +88,13 @@ struct HabitPageView: View {
             } footer: {
                 Text("Archive stops it and keeps its history. Delete removes it and its history for good.")
             }
+        }
+        .task {
+            // From Progress: straight to Over Time, once the list has laid out.
+            guard overTime != nil, habit.kind != .quit, habit.kind != .task else { return }
+            try? await Task.sleep(for: .milliseconds(150))
+            withAnimation { proxy.scrollTo("over-time", anchor: .top) }
+        }
         }
         .navigationTitle(habit.name.capped(HabitRow.nameShown))
         .navigationBarTitleDisplayMode(.inline)
@@ -131,10 +142,21 @@ struct HabitPageView: View {
             let done = stride(from: 0, to: today.day, by: 1)
                 .map { first.adding(days: $0, calendar: store.calendar) }
                 .filter { store.dayMark(habit, on: $0) == .done }.count
-            HStack(spacing: 0) {
-                stat(unit.short(store.streak(of: habit, asOf: today)), "Streak")
-                stat(unit.short(store.bestStreak(of: habit)), "Best")
-                stat(done == 1 ? "1 day" : "\(done) days", "Done this month")
+            VStack(spacing: 10) {
+                HStack(spacing: 0) {
+                    // "Show Streaks" off (Progress's view options) hides streaks and bests here too (report §7.6).
+                    if showStreaks {
+                        stat(unit.short(store.streak(of: habit, asOf: today)), "Streak")
+                        stat(unit.short(store.bestStreak(of: habit)), "Best")
+                    }
+                    stat(done == 1 ? "1 day" : "\(done) days", "Done this month")
+                }
+                // A total a break can't take away (report §8.1).
+                if let line = store.totalLine(of: habit, today: today) {
+                    Text(line).font(.footnote).foregroundStyle(.secondary).monospacedDigit()
+                        .frame(maxWidth: .infinity)
+                        .accessibilityIdentifier("habit-total-line")
+                }
             }
         }
     }
@@ -213,6 +235,8 @@ struct HabitMonthView: View {
     let habit: Habit
     @Binding var month: LocalDay
     @Environment(HabitStore.self) private var store
+    /// The day whose popover is open: its mark, value and note, read-only (report §8.2).
+    @State private var shownDay: LocalDay?
 
     var body: some View {
         let calendar = store.calendar
@@ -245,8 +269,8 @@ struct HabitMonthView: View {
                 }
             }
             HStack(spacing: 14) {
-                legend(Circle().fill(habit.color.color), "Done")
-                legend(Circle().strokeBorder(habit.color.color, lineWidth: 2), "Some")
+                legend(Circle().fill(habit.color.color), HabitStore.DayMark.done.words(atMost: habit.atMost))
+                legend(Circle().strokeBorder(habit.color.color, lineWidth: 2), HabitStore.DayMark.some.words(atMost: habit.atMost))
                 legend(Image(systemName: "pause.fill").font(.system(size: 8)).foregroundStyle(.secondary), "Paused")
                 legend(Image(systemName: "forward.fill").font(.system(size: 8)).foregroundStyle(.secondary), "Skipped")
             }
@@ -262,6 +286,32 @@ struct HabitMonthView: View {
     }
 
     private func cell(_ day: LocalDay, isToday: Bool) -> some View {
+        let open = day <= store.today() && day >= store.startDay(of: habit)
+        return Button { shownDay = day } label: { mark(day, isToday: isToday) }
+            .buttonStyle(.plain)
+            .disabled(!open)
+            .popover(isPresented: Binding(get: { shownDay == day }, set: { if !$0 { shownDay = nil } })) {
+                dayPopover(day)
+                    .presentationCompactAdaptation(.popover)
+            }
+    }
+
+    /// The same content as one row of Progress's Day sheet (report §8.2). It never logs.
+    private func dayPopover(_ day: LocalDay) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(day.date(calendar: store.calendar).formatted(.dateTime.weekday(.wide).day().month(.wide)))
+                .font(.subheadline.weight(.semibold))
+            if let row = store.progressDayRow(habit, on: day) {
+                DayDetailRow(row: row)
+            } else {
+                Text(store.dayMark(habit, on: day).words(atMost: habit.atMost)).foregroundStyle(.secondary)
+            }
+        }
+        .padding(14)
+        .frame(minWidth: 220, maxWidth: 300, alignment: .leading)
+    }
+
+    private func mark(_ day: LocalDay, isToday: Bool) -> some View {
         let mark = store.dayMark(habit, on: day)
         let color = habit.color.color
         let faint = [.notItsDay, .before, .paused, .skipped].contains(mark)
@@ -285,22 +335,14 @@ struct HabitMonthView: View {
             }
         }
         .frame(height: 36)
+        .frame(maxWidth: .infinity)
+        .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(day.date(calendar: store.calendar).formatted(.dateTime.weekday(.wide).day().month(.wide))), \(words(mark))")
     }
 
     private func words(_ mark: HabitStore.DayMark) -> String {
-        switch mark {
-        case .done: "done"
-        case .some: "some done"
-        case .missed: "not done"
-        case .open: "not done yet"
-        case .skipped: "skipped"
-        case .paused: "paused"
-        case .notItsDay: "not one of its days"
-        case .upcoming: "coming up"
-        case .before: "before it started"
-        }
+        mark.words(atMost: habit.atMost).lowercased()
     }
 
     private func legend(_ mark: some View, _ label: String) -> some View {

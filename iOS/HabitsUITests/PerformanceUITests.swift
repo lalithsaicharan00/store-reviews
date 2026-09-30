@@ -112,6 +112,52 @@ final class PerformanceUITests: XCTestCase {
         keepGoing(scrollUpAndDown)
     }
 
+    /// Progress with 30 habits and two years of history (report §20): open it, switch Week and Month, go back and
+    /// forth, and scroll. Targets: opens in under 300 ms, a switch in under 150 ms.
+    func testProgress() {
+        relaunch(["-perf-many"])
+        openProgress()
+        ready()
+        let control = app.segmentedControls["progress-range"]
+        let previous = app.buttons["progress-previous"], next = app.buttons["progress-next"]
+        keepGoing {
+            control.buttons["Month"].tap()
+            previous.tap(); next.tap()
+            control.buttons["Week"].tap()
+            previous.tap(); next.tap()
+            scrollUpAndDown()
+        }
+    }
+
+    /// A habit's page from Progress, at Over Time, switching Week, Month, Year and All with two years of history.
+    func testProgressHabitPage() {
+        relaunch(["-perf-many"])
+        openProgress()
+        let row = app.buttons["progress-row-Brush teeth"]
+        XCTAssertTrue(row.waitForExistence(timeout: 10))
+        open("Habit page from Progress", tapping: row, until: app.navigationBars["Brush teeth"])
+        let control = app.segmentedControls["over-time-range"]
+        XCTAssertTrue(control.waitForExistence(timeout: 10))
+        ready()
+        keepGoing {
+            for title in ["Week", "Month", "Year", "All"] { control.buttons[title].tap() }
+            scrollUpAndDown()
+        }
+    }
+
+    private func relaunch(_ extra: [String]) {
+        app.terminate()
+        app.launchArguments = ["-uitest", "-perf-history"] + extra
+        app.launch()
+        XCTAssertTrue(app.collectionViews.firstMatch.waitForExistence(timeout: 30))
+    }
+
+    /// ≡ → Progress.
+    private func openProgress() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-progress"])
+        open("Progress", tapping: app.buttons["menu-progress"], until: app.staticTexts["progress-period"])
+    }
+
     func testCalendarMonths() {
         let previous = app.buttons["Previous month"]
         let next = app.buttons["Next month"]

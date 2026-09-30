@@ -8,6 +8,8 @@ import UserNotifications
 final class AppRouter {
     /// A section to open and scroll to on today.
     var focusSection: String?
+    /// A day to open on Today, from Progress's Day sheet ("Show on Today").
+    var showDay: LocalDay?
 }
 
 /// The app's one store, scheduler and database. Shared, because a notification action, an alarm's
@@ -32,6 +34,10 @@ final class AppModel {
         var opened: Persistence?
         if arguments.contains("-uitest") {
             opened = Persistence.inMemory()
+            // Each UI test starts with Progress's view options as a new person has them.
+            for key in [ProgressOptions.showPercentages, ProgressOptions.showStreaks, ProgressOptions.range] {
+                UserDefaults.standard.removeObject(forKey: key)
+            }
         } else if let i = arguments.firstIndex(of: "-dbname"), i + 1 < arguments.count {
             opened = try? Persistence.onDisk(name: arguments[i + 1], reset: arguments.contains("-reset-db"))
         } else {

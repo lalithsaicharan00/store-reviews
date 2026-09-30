@@ -57,6 +57,12 @@ final class HabitStore {
     private(set) var habitNotes: [UUID: [LocalDay: String]] = [:]
     private(set) var dayNotes: [LocalDay: String] = [:]
     private(set) var descriptions: [UUID: String] = [:]
+    /// The day each archived habit was archived: from that day on it has no days (Build Plan #60c). Kept only while
+    /// it's archived; Restore turns the archived stretch into a pause, so those days are never "not done".
+    private(set) var archivedOn: [UUID: LocalDay] = [:]
+    /// Goes up by one after every change and every load. Progress keys its numbers on it, so they're worked out once
+    /// per change, never while drawing (report §20). Only screens that cache numbers read it.
+    private(set) var dataVersion = 0
     /// The row just logged on Today: it offers "Add note" in place (Way of Life's inline note, notes UX report).
     /// Only one row at a time; nothing pops up by itself.
     var noteOffer: NoteOffer?
@@ -97,18 +103,96 @@ final class HabitStore {
 
     // MARK: Days
 
+    /// "Now" for every calculation that doesn't pass its own moment. Only the in-app checks set a fixed moment
+    /// (`ProgressCheck`); the app never changes it.
+    @ObservationIgnored var clock: () -> Date = { .now }
+
     /// The user's current day, honouring their day end.
-    func today(now: Date = .now) -> LocalDay {
-        LocalDay(now.addingTimeInterval(-Double(settings.dayEndHour) * 3600), calendar: calendar)
+    func today(now: Date? = nil) -> LocalDay {
+        LocalDay((now ?? clock()).addingTimeInterval(-Double(settings.dayEndHour) * 3600), calendar: calendar)
     }
 
-    /// One definition for the day bar and calendar. Count a multi-section habit only once.
+    /// The day bar's "done of planned": what's on Today, so archived habits aren't in it. Built on `dayScore`, the one
+    /// definition shared with the calendar sheet and Progress. A multi-section habit counts once.
     func daySummary(on day: LocalDay) -> (done: Int, total: Int) {
-        let due = habits.filter {
-            !$0.archived && $0.kind != .quit && startDay(of: $0) <= day && isDue($0, on: day)
-                && (!$0.frequency.isFlexible || isDayMet($0, on: day))
+        let score = todayScore(on: day)
+        return (score.done, score.planned)
+    }
+
+    /// The day as Today and its calendar sheet count it: the habits on Today (not archived), tasks included.
+    func todayScore(on day: LocalDay) -> DayScore {
+        dayScore(on: day, habits: habits.filter { !$0.archived })
+    }
+
+    /// One day across a list of habits (report §16.4). Every calculation takes a list, so groups can use it later.
+    struct DayScore: Hashable, Sendable {
+        var done = 0
+        /// The share reached of habits begun but not finished: the ring fills part of the way; never counted as done.
+        var part = 0.0
+        /// How many habits have part credit.
+        var partCount = 0
+        var planned = 0
+        var fraction: Double { planned == 0 ? 0 : min(1, (Double(done) + part) / Double(planned)) }
+        var isFull: Bool { planned > 0 && done == planned }
+    }
+
+    /// How one habit's day counts in the rings and Progress's numbers (report §16.2–16.4).
+    enum DayOutcome: Hashable {
+        case done
+        case part(Double)
+        case notDone
+        /// Today, or a later day: planned, not finished yet. Never counted against anyone.
+        case open
+        /// Not one of its days, or a day that doesn't count (skipped, paused, before it started, archived, a week
+        /// goal's day with nothing logged, a limit's day that isn't over).
+        case neutral
+    }
+
+    func dayScore(on day: LocalDay, habits list: [Habit], today: LocalDay? = nil) -> DayScore {
+        let today = today ?? self.today()
+        var score = DayScore()
+        for habit in list {
+            switch outcome(habit, on: day, today: today) {
+            case .done: score.planned += 1; score.done += 1
+            case .part(let share): score.planned += 1; score.part += share; score.partCount += 1
+            case .notDone, .open: score.planned += 1
+            case .neutral: break
+            }
         }
-        return (due.filter { isDone($0, on: day) }.count, due.count)
+        return score
+    }
+
+    func outcome(_ habit: Habit, on day: LocalDay, today: LocalDay? = nil) -> DayOutcome {
+        guard habit.kind != .quit, day >= startDay(of: habit), isDue(habit, on: day) else { return .neutral }
+        let today = today ?? self.today()
+        let rule = rule(habit, on: day)
+        if rule.kind == .task { return isDone(rule, on: day) ? .done : day < today ? .notDone : .open }
+        // A week, month or year goal: a day counts only once something is logged on it, and then it's done, since
+        // every ✓ counts toward the goal. Today it's open until then; it's never "not done" (Build Plan #60a).
+        // A week or month limit has no day to fill.
+        if !rule.frequency.isDayBased {
+            if rule.atMost { return .neutral }
+            if dayProgress(of: rule, on: day) > 0 { return .done }
+            return day == today && !isPeriodMet(habit, on: day) ? .open : .neutral
+        }
+        // "5 km on 3 days a week": a day with something logged counts, a short one in part; an empty one doesn't.
+        if rule.frequency.isFlexible {
+            if dayProgress(of: rule, on: day) > 0 { return isDayMet(rule, on: day) ? .done : .part(dayFraction(rule, on: day)) }
+            return day == today && !isPeriodMet(habit, on: day) ? .open : .neutral
+        }
+        // A daily limit is judged once the day is over: within it is done, over it isn't (Build Plan #60b).
+        if rule.atMost { return day < today ? (isDayMet(rule, on: day) ? .done : .notDone) : .neutral }
+        if isDayMet(rule, on: day) { return .done }
+        if day > today { return .open }
+        if dayProgress(of: rule, on: day) > 0 { return .part(dayFraction(rule, on: day)) }
+        return day == today ? .open : .notDone
+    }
+
+    /// The share of the day's goal reached, 0...1.
+    func dayFraction(_ habit: Habit, on day: LocalDay) -> Double {
+        let rule = rule(habit, on: day)
+        let goal = dayGoal(of: rule)
+        return goal > 0 ? min(1, max(0, dayProgress(of: rule, on: day) / goal)) : 0
     }
 
     // MARK: Day sections
@@ -226,7 +310,7 @@ final class HabitStore {
         return first...last
     }
 
-    private func periodRange(_ habit: Habit, containing day: LocalDay) -> ClosedRange<LocalDay>? {
+    func periodRange(_ habit: Habit, containing day: LocalDay) -> ClosedRange<LocalDay>? {
         switch habit.frequency {
         case .flexible(let kind, _):
             switch kind { case .week: period(.week, containing: day); case .month: period(.month, containing: day); case .year: period(.year, containing: day); case .day: day...day }
@@ -246,14 +330,14 @@ final class HabitStore {
     }
 
     /// Amounts, minutes and limits on a week or month rule: a total for the whole period.
-    private func isTotal(_ habit: Habit) -> Bool {
+    func isTotal(_ habit: Habit) -> Bool {
         switch habit.kind {
         case .amount, .duration: !habit.frequency.isDayBased
         default: false
         }
     }
 
-    private func periodTotal(_ habit: Habit, in range: ClosedRange<LocalDay>, now: Date = .now) -> Double {
+    func periodTotal(_ habit: Habit, in range: ClosedRange<LocalDay>, now: Date = .now) -> Double {
         var total = entries(of: habit.id).lazy.filter { $0.stepID == nil && range.contains($0.day) }.reduce(0) { $0 + $1.value }
         if let start = timers[habit.id], range.contains(today(now: now)) {
             total += max(0, now.timeIntervalSince(start)) / 60
@@ -310,6 +394,12 @@ final class HabitStore {
 
     /// Whether the habit is paused on `day`. Paused days aren't its days: off Today, no reminders, neutral in the
     /// streak and every count.
+    /// Whether an archived habit had stopped by `day` (Build Plan #60c). Days before its archive day count as usual.
+    func isArchived(_ habit: Habit, on day: LocalDay) -> Bool {
+        guard habit.archived, let from = archivedOn[habit.id] else { return false }
+        return day >= from
+    }
+
     func isPaused(_ habit: Habit, on day: LocalDay) -> Bool {
         pauses[habit.id]?.contains { $0.contains(day) } == true
     }
@@ -381,7 +471,7 @@ final class HabitStore {
     /// Whether the habit belongs on `day`. Days that aren't due are hidden on Today and never break a streak.
     /// Unfinished one-time tasks move forward to today. Nothing is due before the start or after the end date.
     func isDue(_ habit: Habit, on day: LocalDay, now: Date = .now) -> Bool {
-        if isSkipped(habit, on: day) || isPaused(habit, on: day) { return false }
+        if isSkipped(habit, on: day) || isPaused(habit, on: day) || isArchived(habit, on: day) { return false }
         let habit = rule(habit, on: day)
         let created = startDay(of: habit)
         if let end = habit.endsOn, day > end, habit.kind != .quit { return false }
@@ -470,7 +560,7 @@ final class HabitStore {
     }
 
     /// Completions in the week or month: ticks for "Do it", met days for everything else.
-    private func periodCount(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Double {
+    func periodCount(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Double {
         if habit.kind == .check, !habit.frequency.isFlexible {
             return entries(of: habit.id).lazy.filter { $0.stepID == nil && range.contains($0.day) }.reduce(0) { $0 + $1.value }
         }
@@ -522,10 +612,20 @@ final class HabitStore {
         return Int(periodCount(habit, in: range))
     }
 
-    /// The daily action can remain available after a flexible quota is met; reminders and the
-    /// section's remaining count must not imply that extra days are required.
-    func isSatisfied(_ habit: Habit, on day: LocalDay) -> Bool {
+    /// Nothing more is asked for the goal: it's met, or a flexible quota is. The daily action can remain available
+    /// after a flexible quota is met; the routine player's main button moves on.
+    func isComplete(_ habit: Habit, on day: LocalDay) -> Bool {
         isDone(habit, on: day) || (habit.frequency.isFlexible && isPeriodMet(habit, on: day))
+    }
+
+    /// Done for the day: Today's "N left" and ✓, reminders, and the player's segments. A week, month or year goal
+    /// ("Gym 3 times a week") is done for the day once something is logged that day, or once the goal is met; the ✓
+    /// still adds one more each tap (Build Plan #60a). Reminders and the section's remaining count must not imply
+    /// that extra days are required.
+    func isSatisfied(_ habit: Habit, on day: LocalDay) -> Bool {
+        if isComplete(habit, on: day) { return true }
+        let rule = rule(habit, on: day)
+        return !rule.frequency.isDayBased && !rule.atMost && dayProgress(of: rule, on: day) > 0
     }
 
     func isPeriodMet(_ habit: Habit, on day: LocalDay) -> Bool {
@@ -554,8 +654,11 @@ final class HabitStore {
         // A change to the kind of period (day, week, month, year) starts the streak again (spec §8.3).
         let kind = periodKind(habit)
         func samePeriodKind(_ cursor: LocalDay) -> Bool { periodKind(rule(habit, on: cursor)) == kind }
+        let today = today()
         if let current = periodRange(habit, containing: day) {
-            var count = isPeriodMet(habit, on: day) ? 1 : 0
+            // A limit's week or month is judged once it's over (Build Plan #60b).
+            let judged = !(habit.atMost && current.contains(today))
+            var count = judged && isPeriodMet(habit, on: day) ? 1 : 0
             var cursor = current.lowerBound.adding(days: -1, calendar: calendar)
             // A week or month with a paused day can't break the streak; it still counts if it was met.
             while cursor >= created, samePeriodKind(cursor), let range = periodRange(habit, containing: cursor) {
@@ -564,7 +667,8 @@ final class HabitStore {
             }
             return count
         }
-        var count = isDone(habit, on: day) ? 1 : 0
+        // A daily limit is judged once the day is over: today never adds to its streak (Build Plan #60b).
+        var count = isDone(habit, on: day) && !(habit.atMost && day >= today) ? 1 : 0
         var cursor = day.adding(days: -1, calendar: calendar)
         while cursor >= created, samePeriodKind(cursor) {
             if isDue(habit, on: cursor) {
@@ -576,7 +680,7 @@ final class HabitStore {
         return count
     }
 
-    private func hasPause(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Bool {
+    func hasPause(_ habit: Habit, in range: ClosedRange<LocalDay>) -> Bool {
         pauses[habit.id]?.contains { p in p.from <= range.upperBound && (p.through.map { $0 >= range.lowerBound } ?? true) && (p.through.map { $0 >= p.from } ?? true) } == true
     }
 
@@ -623,6 +727,7 @@ final class HabitStore {
             var loadedHabitNotes: [UUID: [LocalDay: String]] = [:]
             var loadedDayNotes: [LocalDay: String] = [:]
             var loadedDescriptions: [UUID: String] = [:]
+            var loadedArchived: [UUID: LocalDay] = [:]
             var upgradedV1 = false, repaired = false
             for setting in snapshot.settings {
                 switch setting.key {
@@ -644,6 +749,11 @@ final class HabitStore {
                     }
                     if setting.key.hasPrefix(Keys.dayNotePrefix), let day = LocalDay(key: String(setting.key.dropFirst(Keys.dayNotePrefix.count))) {
                         loadedDayNotes[day] = setting.value
+                        continue
+                    }
+                    if setting.key.hasPrefix(Keys.archivedPrefix), let id = UUID(uuidString: String(setting.key.dropFirst(Keys.archivedPrefix.count))),
+                       let day = LocalDay(key: setting.value) {
+                        loadedArchived[id] = day
                         continue
                     }
                     if setting.key.hasPrefix(Keys.descriptionPrefix), let id = UUID(uuidString: String(setting.key.dropFirst(Keys.descriptionPrefix.count))) {
@@ -686,7 +796,18 @@ final class HabitStore {
             habitNotes = loadedHabitNotes
             dayNotes = loadedDayNotes
             descriptions = loadedDescriptions
+            // Habits archived before archive dates were kept: the day after their last log (or their first day), so
+            // their history stays and nothing after it counts.
+            let archivedHabits = habits.filter(\.archived)
+            let archivedIDs = Set(archivedHabits.map(\.id))
+            let lastLogged = Dictionary(entries.filter { archivedIDs.contains($0.habitID) }.map { ($0.habitID, $0.day) },
+                                        uniquingKeysWith: { max($0, $1) })
+            for habit in archivedHabits where loadedArchived[habit.id] == nil {
+                loadedArchived[habit.id] = lastLogged[habit.id].map { $0.adding(days: 1, calendar: calendar) } ?? startDay(of: habit)
+            }
+            archivedOn = loadedArchived.filter { archivedIDs.contains($0.key) }
             isLoaded = true
+            dataVersion &+= 1
             if upgradedV1 && !repaired && !triedPlacementUpgrade { triedPlacementUpgrade = true; repairPlacement() }
             onChange?()
         } catch {
@@ -704,6 +825,7 @@ final class HabitStore {
         static let notePrefix = "note."
         static let dayNotePrefix = "daynote."
         static let descriptionPrefix = "desc."
+        static let archivedPrefix = "archived."
         static let sections = "day_sections"
         static let placementV1 = "placement_v1"
         static let placementV2 = "placement_v2"
@@ -749,6 +871,7 @@ final class HabitStore {
             #endif
             do {
                 try await change()
+                dataVersion &+= 1
                 onChange?()
             } catch {
                 problem = "That change couldn't be saved, so it was undone. Please try again."
@@ -775,13 +898,19 @@ final class HabitStore {
     func archive(_ list: [Habit]) {
         for habit in list where timers[habit.id] != nil { stopTimer(habit, on: today()) }
         perform { [self] in
+            let day = today()
             for habit in list {
-                guard let i = habits.firstIndex(where: { $0.id == habit.id }) else { continue }
+                guard let i = habits.firstIndex(where: { $0.id == habit.id }), !habits[i].archived else { continue }
                 var h = habits[i]
                 h.archived = true
+                // The day it stops counting: its history before today stays as it was (Build Plan #60c).
+                try await repository.saveSetting(key: Keys.archivedPrefix + h.id.uuidString, value: day.key)
                 try await repository.saveHabit(habit: h.record(position: i), steps: h.stepRecords(),
                                                reminders: h.reminderRecords(), at: Date.now.millis)
-                withAnimation { habits[i] = h }
+                withAnimation {
+                    archivedOn[h.id] = day
+                    habits[i] = h
+                }
             }
         }
     }
@@ -794,9 +923,24 @@ final class HabitStore {
             guard let i = habits.firstIndex(where: { $0.id == habit.id }) else { return }
             var h = habits[i]
             h.archived = false
+            // The archived stretch becomes a pause, so those days stay neutral: never "not done" (Build Plan #60c).
+            let now = Date.now
+            let yesterday = today(now: now).adding(days: -1, calendar: calendar)
+            var list = pauses[h.id] ?? []
+            if let from = archivedOn[h.id], from <= yesterday {
+                list.append(HabitPause(from: from, through: yesterday, pausedAt: dayStart(from), resumedAt: now))
+                list.sort { $0.from < $1.from }
+                let json = String(decoding: try JSONEncoder().encode(list), as: UTF8.self)
+                try await repository.saveSetting(key: Keys.pausePrefix + h.id.uuidString, value: json)
+            }
+            try await repository.removeSetting(key: Keys.archivedPrefix + h.id.uuidString)
             try await repository.saveHabit(habit: h.record(position: i), steps: h.stepRecords(),
                                            reminders: h.reminderRecords(), at: Date.now.millis)
-            withAnimation { habits[i] = h }
+            withAnimation {
+                archivedOn[h.id] = nil
+                pauses[h.id] = list.isEmpty ? nil : list
+                habits[i] = h
+            }
         }
         return true
     }
@@ -845,42 +989,94 @@ final class HabitStore {
         if isSkipped(habit, on: day) { return .skipped }
         if day > today { return isDue(habit, on: day) ? .upcoming : .notItsDay }
         let rule = rule(habit, on: day)
-        // A week or month goal has no failed day: a day with something logged shows it, others are neutral.
+        // A week or month goal has no failed day: a day with something logged shows it, others are neutral. A
+        // week or month limit's logged day is "some", never "done": a limit is never celebrated.
         if !rule.frequency.isDayBased || rule.frequency.isFlexible {
-            if dayProgress(of: rule, on: day) > 0 { return isDayMet(rule, on: day) || !rule.frequency.isFlexible ? .done : .some }
-            return isDue(habit, on: day) ? .open : .notItsDay
+            if dayProgress(of: rule, on: day) > 0 {
+                if rule.atMost { return .some }
+                return isDayMet(rule, on: day) || !rule.frequency.isFlexible ? .done : .some
+            }
+            return day == today && isDue(habit, on: day) ? .open : .notItsDay
         }
         guard isDue(habit, on: day) else { return .notItsDay }
+        // A daily limit is judged when the day is over (Build Plan #60b): today it's open, or "some" once something
+        // is logged; afterwards within the limit is done, and over it is an empty mark, never a harsh one.
+        if rule.atMost {
+            if day == today { return dayProgress(of: rule, on: day) > 0 ? .some : .open }
+            return isDayMet(rule, on: day) ? .done : .missed
+        }
         if isDayMet(rule, on: day) { return .done }
         if dayProgress(of: rule, on: day) > 0 { return .some }
         return day == today ? .open : .missed
     }
 
-    /// The longest streak so far, counted the same way as `streak`: paused, skipped and other days are neutral.
-    func bestStreak(of habit: Habit) -> Int {
-        guard habit.kind != .quit, habit.kind != .task else { return 0 }
-        let today = today()
-        var best = 0, run = 0
+    /// A run of met days (or weeks, months or years) in a row. `end` is the last day of its last met period, up to
+    /// today.
+    struct Run: Hashable, Sendable {
+        let start: LocalDay
+        let end: LocalDay
+        let length: Int
+        let isCurrent: Bool
+    }
+
+    /// Every run, oldest first, walked the same way as `streak`: paused, skipped and other days are neutral, a week
+    /// or month with a pause can't end a run, and a change to the kind of period ends it (report §16.5). The last one
+    /// is current when nothing has ended it, and then its length is `streak(of:asOf: today)`.
+    func runs(of habit: Habit, today: LocalDay? = nil) -> [Run] {
+        guard habit.kind != .quit, habit.kind != .task else { return [] }
+        let today = today ?? self.today()
+        let kind = periodKind(rule(habit, on: today))
+        var runs: [Run] = []
+        var start: LocalDay?, end: LocalDay?, length = 0
+        func close() {
+            if let start, let end, length > 0 { runs.append(Run(start: start, end: end, length: length, isCurrent: false)) }
+            start = nil; end = nil; length = 0
+        }
+        func extend(_ from: LocalDay, _ to: LocalDay) {
+            if start == nil { start = from }
+            end = to
+            length += 1
+        }
         var day = startDay(of: habit)
-        if periodRange(habit, containing: today) != nil {
+        if kind != .day {
             while day <= today {
-                // Days from before an edit to a weekly goal are stepped over one by one.
-                guard let range = periodRange(rule(habit, on: day), containing: day) else {
-                    day = day.adding(days: 1, calendar: calendar); continue
+                let rule = rule(habit, on: day)
+                guard periodKind(rule) == kind, let range = periodRange(rule, containing: day) else {
+                    close()
+                    day = day.adding(days: 1, calendar: calendar)
+                    continue
                 }
-                if isPeriodMet(habit, on: day) { run += 1; best = max(best, run) }
-                else if range.upperBound < today && !hasPause(habit, in: range) { run = 0 }
+                let running = range.upperBound >= today
+                // A limit's week or month counts once it's over; the one running now never ends a run.
+                if !(rule.atMost && running) && isPeriodMet(habit, on: day) {
+                    extend(max(range.lowerBound, startDay(of: habit)), min(range.upperBound, today))
+                } else if !running && !hasPause(habit, in: range) {
+                    close()
+                }
                 day = range.upperBound.adding(days: 1, calendar: calendar)
             }
-            return best
-        }
-        while day <= today {
-            if isDue(habit, on: day) {
-                if isDayMet(habit, on: day) { run += 1; best = max(best, run) } else if day < today { run = 0 }
+        } else {
+            while day <= today {
+                let rule = rule(habit, on: day)
+                if periodKind(rule) != .day {
+                    close()
+                } else if day == today {
+                    // Today adds once it's done (even on an extra day), and never ends a run; a limit waits for the
+                    // day to end. The same as `streak`.
+                    if !rule.atMost && isDayMet(habit, on: day) { extend(day, day) }
+                } else if isDue(habit, on: day) {
+                    if isDayMet(habit, on: day) { extend(day, day) } else { close() }
+                }
+                day = day.adding(days: 1, calendar: calendar)
             }
-            day = day.adding(days: 1, calendar: calendar)
         }
-        return best
+        if let start, let end, length > 0 { runs.append(Run(start: start, end: end, length: length, isCurrent: true)) }
+        return runs
+    }
+
+    /// The longest streak so far, from `runs`, so the best, the run list and the current streak always agree.
+    func bestStreak(of habit: Habit) -> Int {
+        runs(of: habit).map(\.length).max() ?? 0
     }
 
     // MARK: Notes
@@ -1255,11 +1451,26 @@ final class HabitStore {
         if ProcessInfo.processInfo.arguments.contains("-perf-history") {
             // Speed tests: a year of history on every daily habit, missed about one day in nine, so streaks and
             // counts are measured on the data of someone who has used the app for a year (30 Sep).
+            // With -perf-many (Progress, report §20): 30 habits and two years.
+            let many = ProcessInfo.processInfo.arguments.contains("-perf-many")
+            if many {
+                let daily = habits.filter { $0.kind != .quit && $0.frequency.isDayBased }
+                var n = 0
+                while habits.count < 30 {
+                    var copy = daily[n % daily.count]
+                    copy.id = UUID()
+                    copy.name = String((copy.name + " \(n / daily.count + 2)").prefix(TextLimit.name))
+                    copy.steps = copy.steps.map { Step(name: $0.name) }
+                    habits.append(copy)
+                    n += 1
+                }
+            }
+            let days = many ? 730 : 365
             let logged = Set(entries.map { $0.habitID.uuidString + $0.day.key })
             for i in habits.indices where habits[i].kind != .quit && habits[i].frequency.isDayBased {
-                habits[i].createdAt = ago(days: 400)
+                habits[i].createdAt = ago(days: days + 35)
                 let h = habits[i]
-                for d in 1...365 where d % 9 != 0 {
+                for d in 1...days where d % 9 != 0 {
                     let day = today.adding(days: -d, calendar: cal)
                     if logged.contains(h.id.uuidString + day.key) { continue }
                     if h.kind == .checklist {

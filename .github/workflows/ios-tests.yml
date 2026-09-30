@@ -15,7 +15,7 @@ on:
     inputs:
       tests:
         description: "UI test classes to run, comma-separated (or 'all', or 'none')"
-        default: "TodayUITests,TimerUITests"
+        default: "TodayUITests,TimerUITests,ProgressUITests"
       perf:
         description: "Also run the speed tests (about 8 more minutes)"
         type: boolean
@@ -49,7 +49,7 @@ jobs:
             echo "TESTS=${{ github.event.inputs.tests }}" >> "$GITHUB_ENV"
             echo "PERF=${{ github.event.inputs.perf }}" >> "$GITHUB_ENV"
           else
-            case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests,ProgressUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
           fi
 

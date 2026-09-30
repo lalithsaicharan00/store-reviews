@@ -191,6 +191,7 @@ struct MenuPage: View {
 
     var body: some View {
         switch place {
+        case .progress: ProgressScreen()
         case .habits: AllHabitsView(kind: .habits)
         case .tasks: AllHabitsView(kind: .tasks)
         case .timesOfDay: TimesOfDayList()

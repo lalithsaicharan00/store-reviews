@@ -100,14 +100,13 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     /// What a page that isn't built yet will hold (Build Plan #60, #61), shown on its "coming" page.
     var plan: String? {
         switch self {
-        case .progress: "Your week and month at a glance, with every habit's streak and best run. It's being designed now."
         case .reminders: "Whether notifications and alarms are allowed, and what a new reminder starts as."
         case .appearance: "Light or dark, the app icon, and how a check-off feels."
         case .backup: "Backups on this phone, a copy you can export or import, and moving to a new phone."
         case .privacy: "Lock the app with Face ID, and erase your data."
         case .help: "Answers to common questions, and a way to reach us."
         case .about: "The privacy policy and terms."
-        case .habits, .tasks, .timesOfDay, .plus: nil
+        case .progress, .habits, .tasks, .timesOfDay, .plus: nil
         }
     }
 }

@@ -57,12 +57,20 @@ struct RoutinePlayer: View {
     }
     private var next: Habit? { order.indices.contains(index + 1) ? order[index + 1] : nil }
     private var animation: Animation? { reduceMotion ? nil : .easeInOut(duration: 0.25) }
+    /// Nothing more is asked: the main button moves on. A "3 times a week" habit ticked once today still offers
+    /// "Log one", because every ✓ counts toward the week.
     private func done(_ habit: Habit) -> Bool {
+        !habit.atMost && (store.slots(of: habit).isEmpty ? store.isComplete(habit, on: session.day)
+            : store.isSlotDone(habit, slot: session.part, on: session.day))
+    }
+    /// Done for today: what the progress segments and the queue show. A week or month goal is done for the day once
+    /// something is logged that day (Build Plan #60a).
+    private func doneToday(_ habit: Habit) -> Bool {
         !habit.atMost && (store.slots(of: habit).isEmpty ? store.isSatisfied(habit, on: session.day)
             : store.isSlotDone(habit, slot: session.part, on: session.day))
     }
     private func skipped(_ habit: Habit) -> Bool { store.isSkipped(habit, on: session.day) }
-    private func covered(_ habit: Habit) -> Bool { habit.atMost ? reviewed.contains(habit.id) : done(habit) || skipped(habit) }
+    private func covered(_ habit: Habit) -> Bool { habit.atMost ? reviewed.contains(habit.id) : doneToday(habit) || skipped(habit) }
     private var remaining: [Habit] { order.filter { !covered($0) } }
 
     var body: some View {
@@ -596,7 +604,7 @@ struct RoutinePlayer: View {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(habit.name).foregroundStyle(.primary)
                                     Text(habit.atMost ? (reviewed.contains(habit.id) ? "Checked in" : "Limit check-in")
-                                         : done(habit) ? "Done" : skipped(habit) ? "Skipped for today" : "Not finished")
+                                         : doneToday(habit) ? "Done" : skipped(habit) ? "Skipped for today" : "Not finished")
                                         .font(.caption).foregroundStyle(.secondary)
                                 }
                                 .frame(minHeight: RowBand.height)
@@ -604,7 +612,7 @@ struct RoutinePlayer: View {
                                 Group {
                                     if current?.id == habit.id { Image(systemName: "play.fill").accessibilityLabel("Current habit") }
                                     else if skipped(habit) { Image(systemName: "forward.fill").foregroundStyle(.secondary).accessibilityLabel("Skipped") }
-                                    else if covered(habit) { Image(systemName: "checkmark").accessibilityLabel(done(habit) ? "Done" : "Checked in") }
+                                    else if covered(habit) { Image(systemName: "checkmark").accessibilityLabel(doneToday(habit) ? "Done" : "Checked in") }
                                 }
                                 .frame(height: RowBand.height)
                             }

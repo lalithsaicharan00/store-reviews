@@ -65,6 +65,8 @@ struct HabitRow: View {
     @State private var showPause = false
     @Binding var stepsOpen: Bool
     @Environment(HabitStore.self) private var store
+    /// Progress's view option "Show Streaks" (report §7.6): off hides streaks here too.
+    @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
 
     var body: some View {
         if habit.kind == .duration, isToday, let start = store.timers[habit.id] {
@@ -89,7 +91,7 @@ struct HabitRow: View {
         let goal = store.goal(of: store.rule(habit, on: day))
         // A cut-back habit is "met" while under its maximum, but never shown as finished.
         let done = slot.map { store.isSlotDone(habit, slot: $0, on: day) } ?? (store.isDone(habit, on: day) && !habit.atMost)
-        let streak = store.streak(of: habit, asOf: day)
+        let streak = showStreaks ? store.streak(of: habit, asOf: day) : 0
         // Top-aligned (the user, 29 Sep): icon, streak and button sit in a 44-pt band at the top of the row. Rows
         // of one or two lines look centred; with three or more lines the text runs on below instead of the icon
         // and button drifting to the middle.

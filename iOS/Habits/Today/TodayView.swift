@@ -88,6 +88,12 @@ struct TodayView: View {
         .onChange(of: selectedDay) { foldOverrides = [:] }
         // Back from the background: Today is drawn for now at once, not at the next minute.
         .onChange(of: scenePhase) { if scenePhase == .active { clock = .now } }
+        .onChange(of: router.showDay) {
+            // Progress's Day sheet: "Show on Today" has closed Progress; open that day here, where logging happens.
+            guard let shown = router.showDay else { return }
+            router.showDay = nil
+            day = shown == store.today() ? nil : shown
+        }
         .onChange(of: router.focusSection) {
             // A tapped notification opens today's section.
             guard let section = router.focusSection else { return }

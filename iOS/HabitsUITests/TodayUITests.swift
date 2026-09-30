@@ -116,7 +116,7 @@ final class TodayUITests: XCTestCase {
         back()
         XCTAssertTrue(menu.waitForExistence(timeout: 3), "Back on Today")
 
-        // The other wired pages, and one that's coming.
+        // The other wired pages, Progress among them.
         for (row, title) in [("tasks", "Tasks"), ("timesOfDay", "Times of Day"), ("plus", "Plus"), ("progress", "Progress")] {
             openFromMenu(row, title: title)
             shot("m03-" + row)
