@@ -73,6 +73,9 @@ struct SettingsView: View {
                     if let email = AppInfo.supportEmail, let url = URL(string: "mailto:\(email)") {
                         Button("Contact Support") { openURL(url) }
                     }
+                    if let url = ReviewPrompt.writeReviewURL {
+                        Button("Rate Habits") { openURL(url) }
+                    }
                 }
                 Section {
                     Label("Your habits stay on this iPhone", systemImage: "lock.fill")
@@ -221,6 +224,8 @@ struct SettingsView: View {
 /// The app's name and version, and the support address (set before release; the row hides while it's nil).
 enum AppInfo {
     static let supportEmail: String? = nil
+    /// The number in the App Store link, once the app is listed; Rate Habits shows only then.
+    static let appStoreID: String? = nil
     static var version: String {
         let info = Bundle.main.infoDictionary
         let short = (info?["CFBundleShortVersionString"] as? String) ?? "1.0"

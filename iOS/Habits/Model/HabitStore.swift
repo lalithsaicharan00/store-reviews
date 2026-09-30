@@ -1275,6 +1275,8 @@ final class HabitStore {
         let entries: [UUID]
         /// "30 days in a row" or "All 5 done today", when this tap reached it (Milestones, 30 Sep).
         var milestone: String? = nil
+        /// This tap finished today: a natural pause, where the app may ask for a review (report "Asking for a Review").
+        var finishedDay = false
     }
     var undoOffer: UndoOffer?
 
@@ -1282,18 +1284,20 @@ final class HabitStore {
     /// nothing (an untick, starting a timer) takes away an offer for the same habit, which would now be out of date.
     func withUndo(_ habit: Habit, on day: LocalDay, _ action: () -> Void) {
         let before = Set(entries.lazy.filter { $0.habitID == habit.id }.map(\.id))
-        let marks = settings.milestones ? MilestoneMarks(streak: streak(of: habit, asOf: today()), day: dayTotals(on: day)) : nil
+        let marks = MilestoneMarks(streak: settings.milestones ? streak(of: habit, asOf: today()) : 0, day: dayTotals(on: day))
         action()
         Task { @MainActor in
             await flush()
             let added = entries.filter { $0.habitID == habit.id && !before.contains($0.id) }
-            let reached = added.isEmpty ? nil : marks.flatMap { milestone(habit, on: day, since: $0) }
+            let reached = added.isEmpty || !settings.milestones ? nil : milestone(habit, on: day, since: marks)
+            let after = dayTotals(on: day)
+            let finished = day == today() && after.total > 0 && after.done == after.total && marks.day.done < marks.day.total
             withAnimation(.snappy) {
                 if added.isEmpty {
                     if undoOffer?.habit == habit.id { undoOffer = nil }
                 } else {
                     undoOffer = UndoOffer(habit: habit.id, day: day, text: undoText(habit, added, on: day), entries: added.map(\.id),
-                                          milestone: reached)
+                                          milestone: reached, finishedDay: finished)
                 }
             }
         }

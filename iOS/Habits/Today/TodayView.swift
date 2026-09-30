@@ -1,3 +1,4 @@
+import StoreKit
 import SwiftUI
 
 /// The home screen: today's habits, one card per part of the day.
@@ -31,6 +32,7 @@ struct TodayView: View {
     @State private var visibleRows: Set<String> = []
     @Environment(AppRouter.self) private var router
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.requestReview) private var requestReview
 
     var body: some View {
         NavigationStack {
@@ -94,6 +96,17 @@ struct TodayView: View {
                 if day != nil && day != store.today() { day = nil; try? await Task.sleep(for: .milliseconds(50)) }
                 foldOverrides[section] = true
                 scrollTarget = Self.headerKey(section)
+            }
+        }
+        .onChange(of: store.undoOffer?.id) {
+            // The tap that finishes today is a natural pause: after a week of real use, Apple's own review request
+            // may show once the milestone line has been seen (report "Asking for a Review", 30 Sep).
+            guard let offer = store.undoOffer, offer.finishedDay, ReviewPrompt.shouldAsk(store) else { return }
+            Task {
+                try? await Task.sleep(for: .seconds(2))
+                guard !covered, store.noteTarget == nil, ReviewPrompt.shouldAsk(store) else { return }
+                ReviewPrompt.markAsked()
+                requestReview()
             }
         }
         .onChange(of: router.openHabit, initial: true) {

@@ -107,6 +107,14 @@ Source: [Widgets — Tick Without Opening the App](<../Research/Research Reports
 - **Never a stale day:** the file holds today and tomorrow; after the last day ends the widget says "Open Habits to see today".
 - **Basic interactive widgets are free, forever** (C009). Extra designs go in Plus later; never move this one.
 
+## Asking for a review (built 30 Sep 2026)
+
+Source: [Asking for a Review — When, How Often, Never How](<../Research/Research Reports/Business Model and Monetization/Asking for a Review — When, How Often, Never How.md>).
+
+- **Only `requestReview`, only from `ReviewPrompt.shouldAsk`.** Never at launch, in setup, on an ordinary check-off, after an error, or as our own "Enjoying Habits?" question first.
+- **Never trade anything for a review** (C054), and never ask in a paywall or after a purchase.
+- **Keep the gates:** a week of real use (7 days logged, 10 logs), the tap that finishes today, once per version, 120 days apart.
+
 ## Milestones (built 30 Sep 2026)
 
 Source: [Milestones — Marking Progress Without Noise](<../Research/Research Reports/Day Structure and Organization/Milestones — Marking Progress Without Noise.md>).

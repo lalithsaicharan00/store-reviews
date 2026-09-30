@@ -97,3 +97,15 @@ Research: [Milestones — Marking Progress Without Noise](<../../../Research/Res
 | L10.6 | Help answer | [x] |
 | L10.7 | Tried on a device | [ ] No Mac in this session |
 
+## Loop 11 — Asking for a review (C094, C054, C093)
+
+Research: [Asking for a Review — When, How Often, Never How](<../../../Research/Research Reports/Business Model and Monetization/Asking for a Review — When, How Often, Never How.md>).
+
+| # | Point | Done |
+|---|---|---|
+| L11.1 | Apple's request only; no pre-question, no reward | [x] `ReviewPrompt`, `TodayView` (`requestReview`) |
+| L11.2 | After a week of real use: first habit 7+ days old, 7 days logged, 10 logs | [x] `ReviewPrompt.shouldAsk` |
+| L11.3 | Only on the tap that finishes today, 2 s later, not over a routine or a note | [x] `UndoOffer.finishedDay` |
+| L11.4 | Once per version, 120 days apart; never in UI tests | [x] |
+| L11.5 | Rate Habits in Settings → Help | [ ] Row ready; hidden until `AppInfo.appStoreID` is set |
+
