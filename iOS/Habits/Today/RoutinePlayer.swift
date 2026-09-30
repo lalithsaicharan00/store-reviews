@@ -251,7 +251,9 @@ struct RoutinePlayer: View {
                         hero(habit, diameter: min(max(geometry.size.width - 72, 200), habit.kind == .checklist ? 236 : 272))
                     }
                     if done(habit), let entry = latestEntry(habit) {
-                        Button(entry.undoLabel(for: habit)) { store.undoEntry(entry.id) }
+                        Button { store.undoEntry(entry.id) } label: {
+                            Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44)
+                        }
                             .buttonStyle(.borderless).font(.callout)
                             .accessibilityIdentifier("focus-persistent-undo")
                     }

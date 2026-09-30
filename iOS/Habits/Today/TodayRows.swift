@@ -124,7 +124,9 @@ struct HabitRow: View {
                     HStack(alignment: .firstTextBaseline, spacing: 12) {
                         noteLine
                         if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day {
-                            Button(entry.undoLabel(for: habit)) { store.undoEntry(entry.id) }
+                            Button { store.undoEntry(entry.id) } label: {
+                                Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44, alignment: .leading)
+                            }
                                 .buttonStyle(.borderless).font(.caption)
                                 .accessibilityIdentifier("habit-inline-undo")
                         }
@@ -395,7 +397,9 @@ struct QuitRow: View {
             Button("Slipped") { sheet = .slip }
                 .disabled(store.isPaused(habit, on: today))
             if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == today {
-                Button("Undo") { store.undoEntry(entry.id) }
+                Button { store.undoEntry(entry.id) } label: {
+                    Text("Undo").frame(minWidth: 44, minHeight: 44)
+                }
                     .accessibilityIdentifier("habit-inline-undo")
             }
         }.buttonStyle(.borderless).font(.caption)
@@ -628,7 +632,7 @@ enum RowBand { static let height: CGFloat = 44 }
 /// A fixed timer anchor while running, one initial draw while stopped or covered by its sheet.
 private struct HabitRowClockSchedule: TimelineSchedule {
     let start: Date?
-    func entries(from date: Date, mode: Mode) -> AnySequence<Date> {
+    func entries(from date: Date, mode: TimelineScheduleMode) -> AnySequence<Date> {
         guard let start else { return AnySequence([date]) }
         return AnySequence(PeriodicTimelineSchedule(from: start, by: 1).entries(from: date, mode: mode))
     }

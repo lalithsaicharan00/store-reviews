@@ -91,8 +91,11 @@ struct EntryEditView: View {
             if habit.kind == .duration {
                 DurationInput(hours: $hours, minutes: $minutes)
                 Section {
-                    TextField("Seconds", text: $seconds).keyboardType(.decimalPad).focused($typing)
-                        .accessibilityIdentifier("entry-seconds")
+                    LabeledContent("Seconds") {
+                        TextField("0", text: $seconds).keyboardType(.decimalPad).focused($typing)
+                            .multilineTextAlignment(.trailing)
+                            .accessibilityIdentifier("entry-seconds")
+                    }
                 }
             } else if habit.kind == .quit {
                 let start = store.calendar.startOfDay(for: entry.day.date(calendar: store.calendar)).addingTimeInterval(Double(store.settings.dayEndHour) * 3600)
@@ -120,6 +123,12 @@ struct EntryEditView: View {
             }
             ToolbarItemGroup(placement: .keyboard) { if typing { Spacer(); Button("Done") { typing = false } } }
         }
+        #if DEBUG
+        .task {
+            // Open the real number keyboard before the profiling driver's typing window.
+            if ProcessInfo.processInfo.arguments.contains("-perf-drive"), habit.kind != .duration && habit.kind != .quit { typing = true }
+        }
+        #endif
         .onPerfCommand { action in
             switch action {
             case .editAmount(let text): amount = text

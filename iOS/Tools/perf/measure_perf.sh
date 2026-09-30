@@ -25,6 +25,7 @@ REC="$DATA/tmp/perf-stalls.txt"
   echo "|---|---|---|---|---|---|"
 } > "$SUMMARY"
 
+FAIL=0
 for S in $SCENARIOS; do
   xcrun simctl terminate "$SIM" "$BUNDLE" > /dev/null 2>&1
   sleep 1
@@ -64,8 +65,10 @@ for S in $SCENARIOS; do
       fi
       ;;
   esac
+  if ! grep -q "^# DONE" "$OUT/stalls-$S.txt" 2>/dev/null; then FAIL=1; fi
   WINDOWS=$(echo "$RESULT" | grep '^window=')
   if [ -z "$WINDOWS" ]; then
+    FAIL=1
     NOTE=$(echo "$RESULT" | sed -n 's/^note=//p' | paste -sd ' ' -)
     echo "| $S | not measured (${NOTE:-no record: did the app start?}) | | | | |" >> "$SUMMARY"
   fi
@@ -84,3 +87,4 @@ done
 } >> "$SUMMARY"
 
 cat "$SUMMARY"
+exit "$FAIL"
