@@ -11,6 +11,7 @@ struct LogProgressView: View {
     @State private var draft: ProgressValueDraft
     @State private var saving = false
     @State private var showDay = false
+    @State private var openedInput = false
     @FocusState private var typing: Bool
 
     init(habit: Habit, day: LocalDay, source: EntrySource = .manual) {
@@ -90,14 +91,19 @@ struct LogProgressView: View {
                 }
                 DayEntriesSection(habit: habit, day: day)
                 Section {
-                    Button("Edit This Day's Progress…") { showDay = true }
+                    Button(source == .daySheet ? "Back to This Day's Progress" : "Edit This Day's Progress…") {
+                        if source == .daySheet { dismiss() } else { showDay = true }
+                    }
                 }
             }
             .sheet(isPresented: $showDay) { DaySheet(habit: habit, day: day) }
             .selectsNumbersOnFocus()
             .scrollDismissesKeyboard(.immediately)
             .accessibilityIdentifier("log-form")
-            .task { if !timed { typing = true } }
+            .task {
+                if !openedInput { openedInput = true; if !timed { typing = true } }
+            }
+            .onDisappear { typing = false }
             // "Log", never "Add Time": this records time done by hand; "add time" reads as adding extra (the user, 29 Sep).
             .navigationDestination(item: $perfEntry) { EntryEditView(habit: habit, entry: $0) }
             .navigationTitle(timed ? "Log Time" : "Log Amount")
@@ -115,10 +121,10 @@ struct LogProgressView: View {
             }
             .onPerfCommand { action in
                 switch action {
-                case .openEntry: perfEntry = store.entries(of: habit.id, on: day).last
+                case .openEntry: typing = false; perfEntry = store.entries(of: habit.id, on: day).last
                 case .closeLog: dismiss()
                 case .logAgain: if let lastAmount { add(lastAmount) }
-                case .logAmount(let text): draft.binding(\.amount).wrappedValue = text
+                case .hideLogKeyboard: typing = false
                 default: break
                 }
             }

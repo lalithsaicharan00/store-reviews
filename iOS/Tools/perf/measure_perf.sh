@@ -65,7 +65,10 @@ for S in $SCENARIOS; do
       fi
       ;;
   esac
-  if ! grep -q "^# DONE" "$OUT/stalls-$S.txt" 2>/dev/null; then FAIL=1; fi
+  if ! grep -q "^# DONE" "$OUT/stalls-$S.txt" 2>/dev/null || grep -q "^# ERROR" "$OUT/stalls-$S.txt" 2>/dev/null; then FAIL=1; fi
+  if grep -q "^# ERROR" "$OUT/stalls-$S.txt" 2>/dev/null; then
+    echo "**$S failed:** native keyboard input was unavailable or produced unexpected text; see stalls-$S.txt." >> "$SUMMARY"
+  fi
   WINDOWS=$(echo "$RESULT" | grep '^window=')
   if [ -z "$WINDOWS" ]; then
     FAIL=1

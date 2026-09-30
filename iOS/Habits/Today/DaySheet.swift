@@ -30,8 +30,7 @@ struct DaySheet: View {
                     } else {
                         Text(day.date(calendar: store.calendar).formatted(date: .complete, time: .omitted)).foregroundStyle(.secondary)
                     }
-                    LabeledContent("Result", value: store.dayResult(current, on: day))
-                        .accessibilityIdentifier("day-result")
+                    DayResultRow(habit: current, day: day)
                     if !ruled.frequency.isDayBased && !ruled.frequency.isFlexible {
                         LabeledContent("Goal", value: HabitCopy.capitalized(HabitCopy.plan(ruled, weekStart: store.settings.weekStart)))
                     }
@@ -120,6 +119,18 @@ struct DaySheet: View {
     }
 }
 
+/// Only this native value row observes progress. Changing an entry does not rebuild the Form's
+/// date picker, toolbar and actions along with its independently observed entries Section.
+private struct DayResultRow: View {
+    let habit: Habit
+    let day: LocalDay
+    @Environment(HabitStore.self) private var store
+    var body: some View {
+        LabeledContent("Result", value: store.dayResult(habit, on: day))
+            .accessibilityIdentifier("day-result")
+    }
+}
+
 /// A quit slip uses its actual time, including on a past tracking day.
 struct SlipEntryView: View {
     let habit: Habit
@@ -129,10 +140,9 @@ struct SlipEntryView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var time: Date?
     var body: some View {
-        let start = store.calendar.startOfDay(for: day.date(calendar: store.calendar)).addingTimeInterval(Double(store.settings.dayEndHour) * 3600)
-        let end = store.calendar.date(byAdding: .day, value: 1, to: start)!.addingTimeInterval(-1)
-        let lower = max(start, min(habit.quitSince ?? habit.createdAt, habit.createdAt))
-        let upper = min(end, .now)
+        let bounds = store.dayBounds(day)
+        let lower = max(bounds.lowerBound, min(habit.quitSince ?? habit.createdAt, habit.createdAt))
+        let upper = min(bounds.upperBound, .now)
         Form {
             if lower <= upper {
                 Section {

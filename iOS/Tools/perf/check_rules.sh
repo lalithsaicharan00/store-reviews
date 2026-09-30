@@ -31,9 +31,9 @@ done
 grep -nE '\.id\((UUID\(\)|Date\(\)|\.now)' $SWIFT &&
   fail ".id(UUID()) / .id(Date())" "PERFORMANCE.md rule 6: give views stable identities"
 
-# 5. Entries change only through HabitStore.insertEntry/removeEntry, which keep the indexes and remembered numbers right.
+# 5. Entries change only through HabitStore.insertEntry/removeEntry/replaceEntry, which keep the indexes and remembered numbers right.
 grep -nE '_ = entries\.remove|withAnimation *\{ *entries\.|entries\.removeAll' Habits/Model/HabitStore.swift &&
-  fail "HabitStore changes entries directly" "PERFORMANCE.md rule 5: use insertEntry / removeEntry(at:)"
+  fail "HabitStore changes entries directly" "PERFORMANCE.md rule 5: use insertEntry / removeEntry(at:) / replaceEntry(_:at:)"
 
 # 6. In a List with a selection, NavigationLink(value:) only selects the row: the page never opens (30 Sep).
 for f in $(grep -l 'List(selection:' $SWIFT); do

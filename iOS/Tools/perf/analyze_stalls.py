@@ -29,6 +29,8 @@ def main(path):
             (windows if kind == "WINDOW" else opens).append((name, float(a), float(b)))
         elif line.startswith("# NOTE "):
             print("note=" + line[7:])
+        elif line.startswith("# ERROR "):
+            print("note=ERROR: " + line[8:])
         elif not line.startswith("#") and len(line.split()) == 2:
             start, ms = map(float, line.split())
             stalls.append((start, ms))

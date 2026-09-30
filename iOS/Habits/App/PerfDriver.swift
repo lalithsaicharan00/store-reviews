@@ -8,7 +8,7 @@ enum PerfAction: Equatable {
     case previousMonth, nextMonth
     case previousHabit, nextHabit
     case typeName(String)
-    case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, editAmount(String), saveEntry, logAgain, logAmount(String)
+    case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, saveEntry, logAgain, hideLogKeyboard
 }
 
 extension View {
@@ -128,9 +128,10 @@ enum PerfDriver {
                 await open("Log sheet") { send(.openLog) }
                 await measure("Log sheet: typing") {
                     await repeatFor(window) {
-                        for text in ["1", "12", "123", "12", "1"] { send(.logAmount(text)); await pause(0.1) }
+                        for text in ["1", "12", "123", "12", "1"] { type(text); await pause(0.1) }
                     }
                 }
+                await open("Log keyboard dismissal") { send(.hideLogKeyboard) }
                 await measure("Log sheet: entry list scrolling") { await scroll() }
             } else {
                 await measure("Day sheet: entry list scrolling") { await scroll() }
@@ -138,10 +139,10 @@ enum PerfDriver {
             await open("Entry editor") { send(.openEntry) }
             await measure("Entry editor: typing") {
                 await repeatFor(window) {
-                    for text in ["1", "12", "123", "12", "1"] { send(.editAmount(text)); await pause(0.1) }
+                    for text in ["1", "12", "123", "12", "1"] { type(text); await pause(0.1) }
                 }
             }
-            send(.saveEntry)
+            await open("Save entry") { send(.saveEntry) }
             await pause(0.5)
             if scenario == "log-sheet" { send(.closeLog); await pause(0.5) }
             await measure("Day sheet: add, edit and exact undo") {
@@ -163,8 +164,8 @@ enum PerfDriver {
             let name = "Drink a glass of water"
             await measure("Habit form: typing") {
                 await repeatFor(window) {
-                    for n in 1...name.count { send(.typeName(String(name.prefix(n)))); await pause(0.08) }
-                    for n in stride(from: name.count - 1, through: 0, by: -1) { send(.typeName(String(name.prefix(n)))); await pause(0.05) }
+                    for n in 1...name.count { type(String(name.prefix(n))); await pause(0.08) }
+                    for n in stride(from: name.count - 1, through: 0, by: -1) { type(String(name.prefix(n))); await pause(0.05) }
                 }
             }
         case "player":
@@ -236,11 +237,48 @@ enum PerfDriver {
         }
     }
 
-    /// The biggest scrollable view on the frontmost screen (a presented sheet's, if one is up).
-    private static func frontScrollView() -> UIScrollView? {
+    /// Insert/delete through UIKit's text-input path, as a keyboard does. Replacing a Binding's
+    /// string instead makes SwiftUI write text back into UIKit and measures a different path.
+    private static func type(_ text: String) {
+        guard let view = frontView(), let field = focusedField(in: view) else {
+            MainThreadMeter.mark("# ERROR no focused native text field")
+            return
+        }
+        let old = field.text ?? ""
+        if old == text { return }
+        if let selection = field.selectedTextRange, !selection.isEmpty {
+            field.insertText(text)
+        } else {
+            let prefix = zip(old, text).prefix { $0.0 == $0.1 }.count
+            if prefix == old.count { field.insertText(String(text.dropFirst(prefix))) }
+            else if prefix == text.count {
+                for _ in prefix..<old.count { field.deleteBackward() }
+            } else {
+                field.selectAll(nil)
+                field.insertText(text)
+            }
+        }
+        if field.text != text { MainThreadMeter.mark("# ERROR native typing did not produce expected text") }
+    }
+
+    private static func focusedField(in view: UIView) -> UITextField? {
+        if let field = view as? UITextField, field.isFirstResponder { return field }
+        for child in view.subviews {
+            if let field = focusedField(in: child) { return field }
+        }
+        return nil
+    }
+
+    private static func frontView() -> UIView? {
         let windows = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows)
         guard var top = (windows.first(where: \.isKeyWindow) ?? windows.first)?.rootViewController else { return nil }
         while let presented = top.presentedViewController { top = presented }
+        return top.view
+    }
+
+    /// The biggest scrollable view on the frontmost screen (a presented sheet's, if one is up).
+    private static func frontScrollView() -> UIScrollView? {
+        guard let view = frontView() else { return nil }
         var best: UIScrollView?
         func visit(_ view: UIView) {
             if let scroll = view as? UIScrollView, scroll.window != nil, !scroll.isHidden, scroll.alpha > 0.01,
@@ -250,7 +288,7 @@ enum PerfDriver {
             }
             view.subviews.forEach(visit)
         }
-        visit(top.view)
+        visit(view)
         return best
     }
 }

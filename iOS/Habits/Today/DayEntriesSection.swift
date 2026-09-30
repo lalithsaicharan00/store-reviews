@@ -31,10 +31,16 @@ struct DayEntriesSection: View {
     private func label(_ entry: Entry) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(entry.description(for: habit)).foregroundStyle(.primary)
-            Text(entry.createdAt.formatted(date: .omitted, time: .shortened) + " · " + (entry.source?.label ?? "Source not recorded"))
+            Text(clock(entry) + " · " + (entry.source?.label ?? "Source not recorded"))
                 .font(.caption).foregroundStyle(.secondary)
         }
         .accessibilityElement(children: .combine)
+    }
+
+    private func clock(_ entry: Entry) -> String {
+        let c = store.recordingCalendar(for: entry)
+        let text = entry.createdAt.formatted(Date.FormatStyle(date: .omitted, time: .shortened, calendar: c, timeZone: c.timeZone))
+        return c.timeZone == store.calendar.timeZone ? text : text + " " + (c.timeZone.abbreviation(for: entry.createdAt) ?? entry.timeZone)
     }
 
     private func delete(_ entry: Entry) -> some View {
@@ -62,7 +68,7 @@ struct EntryEditView: View {
     private var value: Double? { draft.value }
 
     private var validSlipTime: Bool {
-        habit.kind != .quit || (store.today(now: slipTime) == entry.day && slipTime <= .now
+        habit.kind != .quit || (store.recordingDay(at: slipTime, for: entry) == entry.day && slipTime <= .now
                                && slipTime >= min(habit.quitSince ?? habit.createdAt, habit.createdAt))
     }
 
@@ -83,9 +89,16 @@ struct EntryEditView: View {
                     }
                 }
             } else if habit.kind == .quit {
-                let start = store.calendar.startOfDay(for: entry.day.date(calendar: store.calendar)).addingTimeInterval(Double(store.settings.dayEndHour) * 3600)
-                let end = store.calendar.date(byAdding: .day, value: 1, to: start)!.addingTimeInterval(-1)
-                Section { DatePicker("Slipped at", selection: $slipTime, in: max(start, min(habit.quitSince ?? habit.createdAt, habit.createdAt))...max(max(start, min(habit.quitSince ?? habit.createdAt, habit.createdAt)), min(end, .now))) }
+                let c = store.recordingCalendar(for: entry)
+                let bounds = store.dayBounds(entry.day, calendar: c)
+                let lower = max(bounds.lowerBound, min(habit.quitSince ?? habit.createdAt, habit.createdAt))
+                Section {
+                    DatePicker("Slipped at", selection: $slipTime, in: lower...max(lower, min(bounds.upperBound, .now)))
+                        .environment(\.calendar, c).environment(\.timeZone, c.timeZone)
+                    if c.timeZone != store.calendar.timeZone {
+                        LabeledContent("Time zone", value: c.timeZone.localizedName(for: .generic, locale: .current) ?? entry.timeZone)
+                    }
+                }
             } else {
                 Section {
                     LabeledContent(habit.kind == .check ? "Times" : "Amount") {
@@ -95,7 +108,7 @@ struct EntryEditView: View {
                     }
                 } footer: { Text("Change this entry only. Other entries stay as they are.") }
             }
-            Section { Button("Delete Entry", role: .destructive) { store.undoEntry(entry.id); dismiss() } }
+            Section { Button("Delete Entry", role: .destructive) { typing = false; store.undoEntry(entry.id); dismiss() } }
         }
         .selectsNumbersOnFocus()
         .navigationTitle("Edit Entry")
@@ -103,7 +116,7 @@ struct EntryEditView: View {
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
-                    if let value { store.editEntry(entry.id, value: value, at: habit.kind == .quit ? slipTime : nil); dismiss() }
+                    if let value { typing = false; store.editEntry(entry.id, value: value, at: habit.kind == .quit ? slipTime : nil); dismiss() }
                 }.disabled(!draft.isValid || !validSlipTime)
             }
             ToolbarItemGroup(placement: .keyboard) { if typing { Spacer(); Button("Done") { typing = false } } }
@@ -116,8 +129,7 @@ struct EntryEditView: View {
         #endif
         .onPerfCommand { action in
             switch action {
-            case .editAmount(let text): draft.binding(\.amount).wrappedValue = text
-            case .saveEntry: if let value { store.editEntry(entry.id, value: value); dismiss() }
+            case .saveEntry: if let value { typing = false; store.editEntry(entry.id, value: value); dismiss() }
             default: break
             }
         }
@@ -137,9 +149,11 @@ struct EntryEditView: View {
     init(kind: HabitKind, value: Double? = nil) {
         self.kind = kind
         amount = value.map(GoalNumber.text) ?? ""
-        hours = String(Int((value ?? 0) / 60))
-        minutes = String(Int(value ?? 0) % 60)
-        seconds = GoalNumber.text(((value ?? 0) * 60).truncatingRemainder(dividingBy: 60))
+        let totalSeconds = ((value ?? 0) * 6000).rounded() / 100
+        let wholeMinutes = Int(totalSeconds / 60)
+        hours = String(wholeMinutes / 60)
+        minutes = String(wholeMinutes % 60)
+        seconds = GoalNumber.text(totalSeconds - Double(wholeMinutes) * 60)
         isValid = false
         isValid = self.value != nil
     }
@@ -158,6 +172,7 @@ struct EntryEditView: View {
 
     func binding(_ key: ReferenceWritableKeyPath<ProgressValueDraft, String>) -> Binding<String> {
         Binding(get: { self[keyPath: key] }, set: { text in
+            guard self[keyPath: key] != text else { return }
             self[keyPath: key] = text
             let valid = self.value != nil
             if valid != self.isValid { self.isValid = valid }

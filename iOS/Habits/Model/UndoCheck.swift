@@ -91,6 +91,36 @@ enum UndoCheck {
         expect(store.quitRuns(of: quit, now: slippedAt.addingTimeInterval(60)).current >= 3660, "Undo slip restores the previous quit run")
         await store.flush()
         expect(store.problem == nil, "All changes reached storage")
+        // Editing after travelling must validate against the entry's saved zone, not today's zone.
+        let traveled = Habit(name: "Quit while travelling", symbol: "nosign", color: .gray, kind: .quit,
+                             quitSince: Date(timeIntervalSince1970: 0), createdAt: Date(timeIntervalSince1970: 0))
+        store.add(traveled); await store.flush()
+        var tokyo = store.calendar
+        tokyo.timeZone = TimeZone(identifier: "Asia/Tokyo")!
+        let recordedAt = tokyo.date(from: DateComponents(year: 2000, month: 1, day: 3, hour: 0, minute: 30))!
+        let recordedDay = LocalDay(recordedAt, calendar: tokyo)
+        let foreign = Entry(habitID: traveled.id, day: recordedDay, value: 1, createdAt: recordedAt,
+                            timeZone: "Asia/Tokyo", source: .daySheet)
+        do {
+            try await persistence.repository.addEntry(entry: foreign.record)
+            await store.load()
+            store.editEntry(foreign.id, value: 1, at: recordedAt.addingTimeInterval(60))
+            await store.flush(); await loaded.load()
+            let edited = loaded.entries(of: traveled.id, on: recordedDay).first
+            expect(edited?.timeZone == foreign.timeZone && edited?.day == recordedDay
+                   && abs((edited?.createdAt ?? .distantPast).timeIntervalSince(recordedAt.addingTimeInterval(60))) < 0.001,
+                   "Slip time can be corrected after travelling without moving its day or zone")
+        } catch { failures.append("Travel fixture could not be saved") }
+        let savedEnd = store.settings.dayEndHour
+        store.settings.dayEndHour = 3
+        var newYork = store.calendar
+        newYork.timeZone = TimeZone(identifier: "America/New_York")!
+        let springDay = LocalDay(year: 2026, month: 3, day: 8)
+        let bounds = store.dayBounds(springDay, calendar: newYork)
+        expect(LocalDay(bounds.upperBound.addingTimeInterval(-3 * 3600), calendar: newYork) == springDay
+               && LocalDay(bounds.upperBound.addingTimeInterval(1 - 3 * 3600), calendar: newYork) == springDay.adding(days: 1),
+               "Past slip picker ends at the tracking-day boundary across daylight saving")
+        store.settings.dayEndHour = savedEnd
         return failures
     }
 }

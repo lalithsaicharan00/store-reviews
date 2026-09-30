@@ -42,7 +42,7 @@ final class HabitStore {
     }
 
     private(set) var habits: [Habit] = [] { didSet { forgetAll() } }
-    /// Changed only through `insertEntry` and `removeEntry(at:)` (or a full load), which keep the indexes below in
+    /// Changed only through `insertEntry`, `removeEntry(at:)` and `replaceEntry` (or a full load), which keep the indexes below in
     /// step. Rebuilding them from every entry after each tap cost a full pass over a year of history (30 Sep).
     private(set) var entries: [Entry] = []
     /// `entries` grouped by habit, built on first use. Every count, streak and "done" reads one
@@ -193,6 +193,22 @@ final class HabitStore {
         forget(entry.habitID)
     }
 
+    /// An edit keeps the same row, indexes and position. Never publish a temporary deletion:
+    /// native lists can flush pending updates synchronously during Observation.willSet.
+    private func replaceEntry(_ entry: Entry, at index: Int) {
+        withTransaction(Transaction(animation: nil)) {
+            if let i = entriesByHabit?[entry.habitID]?.firstIndex(where: { $0.id == entry.id }) {
+                entriesByHabit?[entry.habitID]?[i] = entry
+            }
+            if let i = entriesByDay?[entry.habitID]?[entry.day]?.firstIndex(where: { $0.id == entry.id }) {
+                entriesByDay?[entry.habitID]?[entry.day]?[i] = entry
+            }
+            if undoOffer?.id == entry.id { undoOffer = nil }
+            forget(entry.habitID)
+            entries[index] = entry
+        }
+    }
+
     /// After `entries` is replaced as a whole.
     private func entriesReplaced() {
         entriesByHabit = nil
@@ -205,6 +221,27 @@ final class HabitStore {
     /// The user's current day, honouring their day end.
     func today(now: Date = .now) -> LocalDay {
         LocalDay(now.addingTimeInterval(-Double(settings.dayEndHour) * 3600), calendar: calendar)
+    }
+
+    /// Calendar-time bounds are computed from both midnights, then shifted by the day end.
+    /// Adding one calendar day to a shifted start is wrong when daylight saving changes overnight.
+    func dayBounds(_ day: LocalDay, calendar recordingCalendar: Calendar? = nil) -> ClosedRange<Date> {
+        let c = recordingCalendar ?? calendar
+        let offset = Double(settings.dayEndHour) * 3600
+        let start = c.startOfDay(for: day.date(calendar: c)).addingTimeInterval(offset)
+        let end = c.startOfDay(for: day.adding(days: 1, calendar: c).date(calendar: c)).addingTimeInterval(offset - 1)
+        return start...end
+    }
+
+    /// A saved entry keeps its original tracking day and time zone even after the person travels.
+    func recordingCalendar(for entry: Entry) -> Calendar {
+        var c = calendar
+        c.timeZone = TimeZone(identifier: entry.timeZone) ?? c.timeZone
+        return c
+    }
+
+    func recordingDay(at date: Date, for entry: Entry) -> LocalDay {
+        LocalDay(date.addingTimeInterval(-Double(settings.dayEndHour) * 3600), calendar: recordingCalendar(for: entry))
     }
 
     /// One definition for the day bar and calendar. Count a multi-section habit only once.
@@ -1325,15 +1362,10 @@ final class HabitStore {
         if kind == .check, value.rounded() != value { return }
         entry.value = value
         if kind == .quit, let date {
-            guard today(now: date) == entry.day, date <= .now, date >= min(habit.quitSince ?? habit.createdAt, habit.createdAt) else { return }
+            guard recordingDay(at: date, for: entry) == entry.day, date <= .now, date >= min(habit.quitSince ?? habit.createdAt, habit.createdAt) else { return }
             entry.createdAt = date
         }
-        let habitIndex = entriesByHabit?[entry.habitID]?.firstIndex { $0.id == id }
-        let dayIndex = entriesByDay?[entry.habitID]?[entry.day]?.firstIndex { $0.id == id }
-        // An edit keeps the same row and position. Animating the entire store also animated the
-        // covered calendar and every native list; only the field value needs to change here.
-        removeEntry(at: index)
-        insertEntry(entry, at: index, habitIndex: habitIndex, dayIndex: dayIndex)
+        replaceEntry(entry, at: index)
         let updated = entry
         perform { [self] in
             try await repository.editEntry(id: updated.id.uuidString, value: updated.value, createdAt: updated.createdAt.millis)
