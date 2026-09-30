@@ -21,6 +21,8 @@ struct TodayView: View {
     @State private var showAllHabits = false
     @State private var showProgress = false
     @State private var showSettings = false
+    @State private var restoringBackup = false
+    @State private var showHelp = false
     /// A habit's page, opened from its row's long-press menu (View Habit).
     @State private var pageHabit: UUID?
     /// The habit just added, revealed once the sheet closes.
@@ -237,17 +239,34 @@ struct TodayView: View {
         if !store.isLoaded {
             Color(.systemGroupedBackground).ignoresSafeArea()
         } else if store.habits.isEmpty {
+            // The first run (report "The First Run — Start in One Tap", 30 Sep): no tour, questions, account or
+            // paywall before the first habit. New Habit is the one prominent action; someone who has used Habits
+            // before restores first instead of setting up from scratch, and How It Works is there, never forced.
             ContentUnavailableView {
                 Label("No habits yet", systemImage: "checklist")
             } description: {
-                Text("Add the first thing you want to do every day.")
+                Text("Add the first thing you want to do. You can add more any time.")
             } actions: {
                 Button { showNewHabit = true } label: {
                     Text("New Habit").fontWeight(.semibold).foregroundStyle(Color.onInk)
                 }
                 .buttonStyle(.borderedProminent).tint(.ink)
+                .accessibilityIdentifier("first-new-habit")
+                Button("Restore from a Backup") { restoringBackup = true }
+                    .accessibilityIdentifier("first-restore")
+                Button("How It Works") { showHelp = true }
+                    .accessibilityIdentifier("first-help")
             }
             .background(Color(.systemGroupedBackground))
+            .restoreBackup(isPresented: $restoringBackup)
+            .sheet(isPresented: $showHelp) {
+                NavigationStack {
+                    HelpView()
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) { Button("Done") { showHelp = false }.fontWeight(.semibold) }
+                        }
+                }
+            }
         } else {
             let rows = rowsBySection(tracked)
             ScrollViewReader { proxy in

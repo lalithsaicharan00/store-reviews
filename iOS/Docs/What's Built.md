@@ -104,6 +104,12 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Tap a day in the habit page's calendar to fill it in or change it: Mark as Done / Not Done, times, Log Amount / Time with each entry deletable, checklist steps, Skip, and the day's note
 - [x] Long-press a row on Today → View Habit opens its page
 
+## First run
+
+- [x] Opens on Today: no tour, questions, account, paywall or permission first
+- [x] The empty Today: New Habit, Restore from a Backup (only adds), How It Works
+- [ ] A library of ready-made habits in New
+
 ## Progress and statistics
 
 - [x] Progress, from the chart button on Today: the overall share done with its numbers and the period before, a bar per day, every habit side by side, quit habits' slips

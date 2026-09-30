@@ -102,11 +102,7 @@ struct SettingsView: View {
                 Task { @MainActor in
                     defer { working = false }
                     do {
-                        let added = try await store.restore(from: url)
-                        message = added.habits + added.entries == 0
-                            ? DataMessage(title: "Nothing New", text: "Everything in this backup is already on this iPhone.")
-                            : DataMessage(title: "Restored",
-                                          text: "Added \(added.habits == 1 ? "1 habit" : "\(added.habits) habits") and \(added.entries == 1 ? "1 logged entry" : "\(added.entries) logged entries"). Nothing already here was changed.")
+                        message = RestoreBackup.summary(try await store.restore(from: url))
                     } catch {
                         message = DataMessage(title: "Couldn't Restore", text: error.localizedDescription)
                     }

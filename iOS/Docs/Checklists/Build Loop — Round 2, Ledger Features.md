@@ -109,3 +109,14 @@ Research: [Asking for a Review — When, How Often, Never How](<../../../Researc
 | L11.4 | Once per version, 120 days apart; never in UI tests | [x] |
 | L11.5 | Rate Habits in Settings → Help | [ ] Row ready; hidden until `AppInfo.appStoreID` is set |
 
+## Loop 12 — First run (C075, C159, C209, C235, Data Safety B4)
+
+Research: [The First Run — Start in One Tap](<../../../Research/Research Reports/Habit Creation/The First Run — Start in One Tap.md>).
+
+| # | Point | Done |
+|---|---|---|
+| L12.1 | Opens on Today; nothing before it | [x] Already true; recorded |
+| L12.2 | Empty Today: New Habit, Restore from a Backup, How It Works | [x] `TodayView`, `RestoreBackup` (shared with Settings) |
+| L12.3 | Notification permission only when a reminder is turned on | [x] Already true (`ReminderScheduler.requestPermission`) |
+| L12.4 | UI test | [x] `FirstRunUITests` (written; not run: no Mac in this session) |
+

@@ -107,6 +107,13 @@ Source: [Widgets — Tick Without Opening the App](<../Research/Research Reports
 - **Never a stale day:** the file holds today and tomorrow; after the last day ends the widget says "Open Habits to see today".
 - **Basic interactive widgets are free, forever** (C009). Extra designs go in Plus later; never move this one.
 
+## First run (built 30 Sep 2026)
+
+Source: [The First Run — Start in One Tap](<../Research/Research Reports/Habit Creation/The First Run — Start in One Tap.md>).
+
+- **Nothing before Today:** no tour, questionnaire, account, paywall or permission request at launch. Permissions are asked when a feature needs them.
+- **The empty Today keeps its three actions:** New Habit (the one prominent button), Restore from a Backup, How It Works.
+
 ## Asking for a review (built 30 Sep 2026)
 
 Source: [Asking for a Review — When, How Often, Never How](<../Research/Research Reports/Business Model and Monetization/Asking for a Review — When, How Often, Never How.md>).
