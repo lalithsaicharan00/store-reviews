@@ -5,6 +5,8 @@ enum ProgressOptions {
     static let showPercentages = "progress.showPercentages"
     static let showStreaks = "progress.showStreaks"
     static let range = "progress.range"
+    /// Phase 3: what counts as a full day, in percent: 100 (default), 80 or 60.
+    static let fullDay = "progress.fullDay"
 }
 
 /// Week, Month or Year on Progress (Year: Phase 2, Build Plan #60f).
@@ -115,6 +117,8 @@ struct ProgressSnapshot {
     let quitting: [ProgressQuitRow]
     /// Year only: the overview's grid of days.
     var yearDots: YearDots? = nil
+    /// What counts as a full day (1, 0.8 or 0.6).
+    var fullAt: Double = 1
     let canGoBack: Bool
     let canGoForward: Bool
     /// Any habit that Progress can show (tasks never are).
@@ -220,7 +224,8 @@ extension HabitStore {
 
     /// Everything Progress shows for `range` around `anchor`. Reads the store's own functions only; nothing here
     /// changes data.
-    func progressSnapshot(_ range: ProgressRange, containing anchor: LocalDay, today: LocalDay? = nil) -> ProgressSnapshot {
+    func progressSnapshot(_ range: ProgressRange, containing anchor: LocalDay, today: LocalDay? = nil,
+                          fullAt: Double = 1) -> ProgressSnapshot {
         let today = today ?? self.today()
         let span = period(range.kind, containing: anchor)
         let tracked = habits.filter { $0.kind != .task && $0.kind != .quit }
@@ -234,7 +239,7 @@ extension HabitStore {
         if let earliest, before.upperBound >= earliest {
             let tally = progressTally(days(in: before).map { day in
                 ProgressDay(day: day, score: dayScore(on: day, habits: tracked, today: today), isToday: day == today, isFuture: day > today)
-            })
+            }, fullAt: fullAt)
             if tally.planned > 0 { previous = (previousTitle(range, before, today: today), tally) }
         }
 
@@ -281,12 +286,12 @@ extension HabitStore {
         }
         return ProgressSnapshot(
             range: range, period: span, today: today, title: periodTitle(range, span, today: today),
-            days: cells, tally: progressTally(cells), goals: goals.total > 0 ? goals : nil, previous: previous,
+            days: cells, tally: progressTally(cells, fullAt: fullAt), goals: goals.total > 0 ? goals : nil, previous: previous,
             rows: rows, archived: archived, quitting: quitting,
             canGoBack: earliest.map { $0 < span.lowerBound } ?? false,
             canGoForward: span.upperBound < today,
             hasHabits: habits.contains { $0.kind != .task },
-            yearDots: range == .year ? overviewYearDots(cells, year: span) : nil)
+            yearDots: range == .year ? overviewYearDots(cells, year: span, fullAt: fullAt) : nil, fullAt: fullAt)
     }
 
     static func rank(_ k: GoalPeriod) -> Int {
@@ -299,12 +304,12 @@ extension HabitStore {
     }
 
     /// Done of planned up to today: today adds only what's done (report §7.2, §16.4).
-    func progressTally(_ cells: [ProgressDay]) -> ProgressTally {
+    func progressTally(_ cells: [ProgressDay], fullAt: Double = 1) -> ProgressTally {
         var tally = ProgressTally()
         for cell in cells where !cell.isFuture {
             tally.done += cell.score.done
             tally.planned += cell.isToday ? cell.score.done : cell.score.planned
-            if cell.score.isFull { tally.fullDays += 1 }
+            if cell.score.isFull(at: fullAt) { tally.fullDays += 1 }
         }
         return tally
     }

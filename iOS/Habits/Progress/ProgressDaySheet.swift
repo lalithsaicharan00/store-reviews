@@ -75,7 +75,7 @@ struct ProgressExplainer: View {
                 Section {
                     explain("Done", "Each habit you planned and finished that day. A habit you do 3 times a day counts once, when all 3 are done; until then its ring fills part of the way.")
                     explain("Percentage", "Done out of planned, for days up to today. Today counts once it's done.")
-                    explain("Full days", "Days when everything you planned was done.")
+                    explain("Full days", "Days when everything you planned was done. In View Options you can count a day as full at 80% or 60% done instead.")
                     explain("Weekly goals met", "Weeks where you reached a “3 times a week” or “20 km a week” goal. The week in progress counts once it's met.")
                     explain("Weekly goals, day by day", "A day you log a weekly or monthly goal counts as done. Days you don't log it never count against you.")
                     explain("Limits", "A “no more than” habit counts when the day is over: within the limit is done, over it isn't. Today never counts yet.")

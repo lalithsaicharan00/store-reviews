@@ -132,6 +132,7 @@ struct QuitNumbers: View {
     @Environment(HabitStore.self) private var store
     @State private var showSlip = false
     @State private var lastSlip: UUID?
+    @State private var showCost = false
 
     var body: some View {
         let now = Date.now
@@ -166,6 +167,18 @@ struct QuitNumbers: View {
             if let next = store.nextMilestone(of: habit, now: now) {
                 Text(next).font(.footnote).foregroundStyle(.secondary)
             }
+            // Money saved (report §10.5, Phase 3): optional, set here, never asked for.
+            if let saved = store.moneySaved(of: habit, now: now) {
+                Button(saved) { showCost = true }
+                    .font(.footnote.weight(.semibold))
+                    .buttonStyle(.borderless)
+                    .accessibilityIdentifier("quit-money-saved")
+            } else {
+                Button("What It Costs a Day…") { showCost = true }
+                    .font(.footnote)
+                    .buttonStyle(.borderless)
+                    .accessibilityIdentifier("quit-set-cost")
+            }
             HStack(spacing: 12) {
                 Button("Log a Slip…", systemImage: "arrow.uturn.backward.circle") { showSlip = true }
                     .buttonStyle(.bordered)
@@ -176,6 +189,7 @@ struct QuitNumbers: View {
         }
         .padding(.vertical, 4)
         .sheet(isPresented: $showSlip) { LogSlipSheet(habit: habit) { id in withAnimation { lastSlip = id } } }
+        .sheet(isPresented: $showCost) { QuitCostSheet(habit: habit) }
     }
 
     /// "12 d 4 h 31 min 07 s".
@@ -325,5 +339,75 @@ struct QuitOverTimeSection: View {
         for slip in stats.slips { let day = store.today(now: slip); notes[day] = store.note(of: habit, on: day) }
         data = QuitData(span: span, title: title, stats: stats, runs: runs, average: stats.averageRun, notes: notes,
                     reached: store.reachedMilestones(of: habit, now: now))
+    }
+}
+
+/// What a quit habit cost a day, for "Saved so far" (report §10.5, Phase 3).
+struct QuitCostSheet: View {
+    let habit: Habit
+    @Environment(HabitStore.self) private var store
+    @Environment(\.dismiss) private var dismiss
+    @State private var amount = ""
+    @State private var currency = "$"
+
+    private var currencies: [String] {
+        var list = ["$", "€", "£", "₹"]
+        if let local = Locale.current.currencySymbol, !list.contains(local) { list.insert(local, at: 0) }
+        return list
+    }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    HStack {
+                        TextField("Amount", text: $amount)
+                            .keyboardType(.decimalPad)
+                            .frame(minWidth: 80, maxWidth: 160)
+                            .accessibilityIdentifier("cost-amount")
+                        Picker("Currency", selection: $currency) {
+                            ForEach(currencies, id: \.self) { Text($0).tag($0) }
+                        }
+                        .labelsHidden()
+                        Spacer()
+                        Text("a day").foregroundStyle(.secondary)
+                    }
+                } footer: {
+                    Text("Progress counts what you've saved on clean days.")
+                }
+                if store.costs[habit.id] != nil {
+                    Section {
+                        Button("Remove", role: .destructive) {
+                            store.setCost(nil, of: habit)
+                            dismiss()
+                        }
+                    }
+                }
+            }
+            .selectsNumbersOnFocus()
+            .navigationTitle("What It Costs a Day")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") {
+                        let value = Double(amount.replacingOccurrences(of: ",", with: ".")) ?? 0
+                        store.setCost(HabitCost(amount: value, currency: currency), of: habit)
+                        dismiss()
+                    }
+                    .disabled((Double(amount.replacingOccurrences(of: ",", with: ".")) ?? 0) <= 0)
+                    .accessibilityIdentifier("cost-save")
+                }
+            }
+            .onAppear {
+                if let cost = store.costs[habit.id] {
+                    amount = String(format: "%g", cost.amount)
+                    currency = cost.currency
+                } else {
+                    currency = currencies[0]
+                }
+            }
+        }
+        .presentationDetents([.medium])
     }
 }

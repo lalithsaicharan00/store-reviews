@@ -71,6 +71,26 @@ enum ProgressCheck {
             runsAgree(s, read, "G1")
         }
 
+        // Phase 3: a full day at 100, 80 or 60% of what was planned; only what's done counts.
+        do {
+            let four = HabitStore.DayScore(done: 4, part: 0.5, partCount: 1, planned: 5)
+            expect(!four.isFull(at: 1) && four.isFull(at: 0.8) && four.isFull(at: 0.6), "Full day at 80%: 4 of 5")
+            let three = HabitStore.DayScore(done: 3, part: 0.9, partCount: 1, planned: 5)
+            expect(!three.isFull(at: 0.8) && three.isFull(at: 0.6), "Full day at 60%: 3 of 5; part credit doesn't count")
+        }
+
+        // Phase 3: money saved for a quit habit, from clean days.
+        do {
+            let (s, _) = await store()
+            let smoking = Habit(name: "Smoking", symbol: "nosign", color: .gray, kind: .quit, createdAt: moment(day(16), hour: 9))
+            await add(s, smoking)
+            same(s.moneySaved(of: smoking), nil, "No cost, no money line")
+            s.setCost(HabitCost(amount: 12.5, currency: "£"), of: smoking); await s.flush()
+            same(s.moneySaved(of: smoking), "Saved so far: £125", "10 clean days at £12.50")
+            s.setCost(nil, of: smoking); await s.flush()
+            same(s.moneySaved(of: smoking), nil, "Cost removed")
+        }
+
         // G2 and #60a: Gym, 3 times a week. Done Mon and Wed.
         do {
             let (s, _) = await store()
@@ -309,6 +329,9 @@ enum ProgressCheck {
             same(HabitStore.weekdayCaption(weekdays, averages: false), nil, "G13 no caption when every day is the same")
             same(s.rate30(habit).last?.percent, 100, "G13 30-day rate")
             same(s.runs(of: habit).map(\.length), [365], "G13 one run")
+            // Phase 3: the year's picture draws on 1 January (ledger C032: the year-end crash).
+            expect(s.yearShareItem(year)?.png() != nil, "G13 year picture")
+            same(s.progressSnapshot(.year, containing: day(1, 6), fullAt: 0.8).tally.fullDays, 365, "G13 full days at 80%")
         }
 
         // G14: Pills, twice a day, from Thu 24. Thu 1 of 2.

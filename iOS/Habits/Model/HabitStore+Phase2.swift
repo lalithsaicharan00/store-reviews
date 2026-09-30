@@ -4,7 +4,7 @@ import Foundation
 
 /// A year of days as round dots: weeks run left to right in columns, weekdays top to bottom (report §7.2, §13.3).
 /// Each list holds cell numbers (column × 7 + row) for one shade, so a grid draws as four shapes, not 365 views.
-struct YearDots: Hashable, Sendable {
+nonisolated struct YearDots: Hashable, Sendable {
     var full: [Int] = []
     var high: [Int] = []
     var low: [Int] = []
@@ -17,11 +17,17 @@ struct YearDots: Hashable, Sendable {
     var isEmpty: Bool { full.isEmpty && high.isEmpty && low.isEmpty && ring.isEmpty }
 }
 
-struct YearMonth: Hashable, Sendable, Identifiable {
+nonisolated struct YearMonth: Hashable, Sendable, Identifiable {
     let month: Int
     let column: Int
     let first: LocalDay
     var id: Int { month }
+}
+
+/// What a quit habit cost a day: an amount and a currency sign or code ("£", "$", "CHF"). Phase 3, report §10.5.
+struct HabitCost: Codable, Hashable, Sendable {
+    var amount: Double
+    var currency: String
 }
 
 /// A quit habit's numbers for a range (report §10, §16.8).
@@ -86,12 +92,12 @@ extension HabitStore {
 
     /// The overview's year: each day's share of what was planned, in ink (report §7.2). Days with nothing planned,
     /// and later days, have no dot.
-    func overviewYearDots(_ cells: [ProgressDay], year: ClosedRange<LocalDay>) -> YearDots {
+    func overviewYearDots(_ cells: [ProgressDay], year: ClosedRange<LocalDay>, fullAt: Double = 1) -> YearDots {
         let byDay = Dictionary(uniqueKeysWithValues: cells.map { ($0.day, $0) })
         return yearDots(year) { day in
             guard let cell = byDay[day], !cell.isFuture, cell.score.planned > 0 else { return nil }
             let fraction = cell.score.fraction
-            if cell.score.isFull { return ProgressMark(day: day, mark: .done, fraction: 1, over: false) }
+            if cell.score.isFull(at: fullAt) { return ProgressMark(day: day, mark: .done, fraction: 1, over: false) }
             if fraction > 0 { return ProgressMark(day: day, mark: .some, fraction: fraction, over: false) }
             return cell.isToday ? nil : ProgressMark(day: day, mark: .missed, fraction: 0, over: false)
         }
@@ -188,6 +194,15 @@ extension HabitStore {
         let since = start.date(calendar: calendar).formatted(.dateTime.day().month(.abbreviated).year())
         let slips = stats.slips.count
         return "\(stats.cleanDays == 1 ? "1 clean day" : "\(stats.cleanDays) clean days") since \(since) · \(slips == 1 ? "1 slip" : "\(slips) slips")"
+    }
+
+    /// "Saved so far: £312": clean days since the start times what it cost a day (report §10.5). Nil with no cost.
+    func moneySaved(of habit: Habit, now: Date? = nil) -> String? {
+        guard let cost = costs[habit.id], cost.amount > 0 else { return nil }
+        let now = now ?? clock()
+        let clean = quitStats(of: habit, in: quitStartDay(of: habit)...today(now: now), now: now).cleanDays
+        let saved = (Double(clean) * cost.amount).rounded()
+        return "Saved so far: " + HabitCopy.amount(saved, cost.currency)
     }
 
     // MARK: Runs (report §8.5)

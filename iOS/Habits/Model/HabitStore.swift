@@ -63,6 +63,8 @@ final class HabitStore {
     /// Goes up by one after every change and every load. Progress keys its numbers on it, so they're worked out once
     /// per change, never while drawing (report §20). Only screens that cache numbers read it.
     private(set) var dataVersion = 0
+    /// Quit habits: what the habit cost a day, for "Saved so far" (report §10.5, Phase 3). Optional.
+    private(set) var costs: [UUID: HabitCost] = [:]
     /// The row just logged on Today: it offers "Add note" in place (Way of Life's inline note, notes UX report).
     /// Only one row at a time; nothing pops up by itself.
     var noteOffer: NoteOffer?
@@ -134,6 +136,11 @@ final class HabitStore {
         var planned = 0
         var fraction: Double { planned == 0 ? 0 : min(1, (Double(done) + part) / Double(planned)) }
         var isFull: Bool { planned > 0 && done == planned }
+        /// A full day at a share of what was planned: 1 (all), 0.8 or 0.6 (Progress's "Full Day" option, report §25.1
+        /// Phase 3). Only what's done counts, never part credit.
+        func isFull(at share: Double) -> Bool {
+            share >= 1 ? isFull : planned > 0 && Double(done) / Double(planned) >= share - 0.000_001
+        }
     }
 
     /// How one habit's day counts in the rings and Progress's numbers (report §16.2–16.4).
@@ -755,6 +762,21 @@ final class HabitStore {
         return entry.id
     }
 
+    /// Sets (or, with nil, clears) what a quit habit cost a day.
+    func setCost(_ cost: HabitCost?, of habit: Habit) {
+        let key = Keys.costPrefix + habit.id.uuidString
+        perform { [self] in
+            if let cost, cost.amount > 0 {
+                let json = String(decoding: try JSONEncoder().encode(cost), as: UTF8.self)
+                try await repository.saveSetting(key: key, value: json)
+                costs[habit.id] = cost
+            } else {
+                try await repository.removeSetting(key: key)
+                costs[habit.id] = nil
+            }
+        }
+    }
+
     // MARK: Loading
 
     /// Reads everything from the database. Rows this version can't read are skipped, never deleted.
@@ -773,6 +795,7 @@ final class HabitStore {
             var loadedDayNotes: [LocalDay: String] = [:]
             var loadedDescriptions: [UUID: String] = [:]
             var loadedArchived: [UUID: LocalDay] = [:]
+            var loadedCosts: [UUID: HabitCost] = [:]
             var upgradedV1 = false, repaired = false
             for setting in snapshot.settings {
                 switch setting.key {
@@ -794,6 +817,11 @@ final class HabitStore {
                     }
                     if setting.key.hasPrefix(Keys.dayNotePrefix), let day = LocalDay(key: String(setting.key.dropFirst(Keys.dayNotePrefix.count))) {
                         loadedDayNotes[day] = setting.value
+                        continue
+                    }
+                    if setting.key.hasPrefix(Keys.costPrefix), let id = UUID(uuidString: String(setting.key.dropFirst(Keys.costPrefix.count))),
+                       let cost = try? JSONDecoder().decode(HabitCost.self, from: Data(setting.value.utf8)) {
+                        loadedCosts[id] = cost
                         continue
                     }
                     if setting.key.hasPrefix(Keys.archivedPrefix), let id = UUID(uuidString: String(setting.key.dropFirst(Keys.archivedPrefix.count))),
@@ -841,6 +869,7 @@ final class HabitStore {
             habitNotes = loadedHabitNotes
             dayNotes = loadedDayNotes
             descriptions = loadedDescriptions
+            costs = loadedCosts
             // Habits archived before archive dates were kept: the day after their last log (or their first day), so
             // their history stays and nothing after it counts.
             let archivedHabits = habits.filter(\.archived)
@@ -871,6 +900,7 @@ final class HabitStore {
         static let dayNotePrefix = "daynote."
         static let descriptionPrefix = "desc."
         static let archivedPrefix = "archived."
+        static let costPrefix = "cost."
         static let sections = "day_sections"
         static let placementV1 = "placement_v1"
         static let placementV2 = "placement_v2"

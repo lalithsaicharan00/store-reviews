@@ -14,6 +14,8 @@ struct ProgressScreen: View {
     @AppStorage(ProgressOptions.range) private var rangeRaw = ProgressRange.week.rawValue
     @AppStorage(ProgressOptions.showPercentages) private var showPercentages = true
     @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
+    /// Phase 3: what counts as a full day, in percent (report §25.1, ledger C201).
+    @AppStorage(ProgressOptions.fullDay) private var fullDay = 100
     /// A day in the period on screen; nil means the current one, so the page always opens on it.
     @State private var anchor: LocalDay?
     @State private var model = ProgressModel()
@@ -25,7 +27,7 @@ struct ProgressScreen: View {
     private var range: ProgressRange { ProgressRange(rawValue: rangeRaw) ?? .week }
 
     var body: some View {
-        let key = ProgressModel.Key(range: range, anchor: anchor, version: store.dataVersion)
+        let key = ProgressModel.Key(range: range, anchor: anchor, version: store.dataVersion, fullDay: fullDay)
         Group {
             if let snapshot = model.snapshot {
                 if snapshot.hasHabits {
@@ -49,6 +51,12 @@ struct ProgressScreen: View {
                 Menu {
                     Toggle("Show Percentages", isOn: $showPercentages)
                     Toggle("Show Streaks", isOn: $showStreaks)
+                    Picker("Full Day", selection: $fullDay) {
+                        Text("All Done").tag(100)
+                        Text("80% Done").tag(80)
+                        Text("60% Done").tag(60)
+                    }
+                    .pickerStyle(.menu)
                 } label: {
                     Label("View Options", systemImage: "ellipsis.circle")
                 }
@@ -172,6 +180,16 @@ struct ProgressScreen: View {
                 HStack {
                     Text("Overview")
                     Spacer()
+                    // Year ▶ Share: a picture of the year, drawn only when shared (report §25.1, Phase 3).
+                    if let item = store.yearShareItem(snapshot) {
+                        ShareLink(item: item, preview: SharePreview("Year \(snapshot.title)", image: Image(systemName: "calendar"))) {
+                            Label("Share the Year", systemImage: "square.and.arrow.up")
+                        }
+                        .labelStyle(.iconOnly)
+                        .font(.body)
+                        .frame(minWidth: 44, minHeight: 32)
+                        .accessibilityIdentifier("progress-share-year")
+                    }
                     Button("How It's Counted", systemImage: "info.circle") { showExplainer = true }
                         .labelStyle(.iconOnly)
                         .font(.body)
@@ -254,7 +272,7 @@ struct ProgressScreen: View {
             : "\(score.done) of \(score.planned) done" + (score.partCount > 0 ? ", \(score.partCount) part done" : "")
         return Button { openDay = cell.day } label: {
             DayRing(fraction: score.fraction, planned: score.planned > 0, isFuture: cell.isFuture,
-                    label: String(cell.day.day), bold: cell.isToday, full: score.isFull)
+                    label: String(cell.day.day), bold: cell.isToday, full: score.isFull(at: Double(fullDay) / 100))
                 .frame(maxWidth: .infinity, minHeight: 44)
                 .contentShape(Rectangle())
         }
@@ -277,7 +295,8 @@ struct ProgressScreen: View {
                 tile("\(tally.done) of \(tally.planned)", percent.map { "Done · \($0)%" } ?? "Done", id: "progress-tile-done",
                      spoken: "Done, \(tally.done) of \(tally.planned)" + (percent.map { ", \($0) percent" } ?? ""))
             }
-            tile("\(tally.fullDays)", "Full days", id: "progress-tile-full", spoken: "Full days, \(tally.fullDays)")
+            let fullCaption = fullDay < 100 ? "Full days (\(fullDay)%)" : "Full days"
+            tile("\(tally.fullDays)", fullCaption, id: "progress-tile-full", spoken: "\(fullCaption), \(tally.fullDays)")
             if let goals = snapshot.goals {
                 tile("\(goals.met) of \(goals.total)", goals.caption, id: "progress-tile-goals",
                      spoken: "\(goals.caption), \(goals.met) of \(goals.total)")
@@ -386,6 +405,7 @@ struct ProgressRowView: View {
         let range: ProgressRange
         let anchor: LocalDay?
         let version: Int
+        var fullDay = 100
     }
 
     private(set) var snapshot: ProgressSnapshot?
@@ -399,7 +419,7 @@ struct ProgressRowView: View {
         // Numbers from before a change are never shown again.
         cache = cache.filter { $0.key.version == key.version }
         if cache.count > 30 { cache.removeAll() }
-        let made = store.progressSnapshot(key.range, containing: key.anchor ?? store.today())
+        let made = store.progressSnapshot(key.range, containing: key.anchor ?? store.today(), fullAt: Double(key.fullDay) / 100)
         cache[key] = made
         snapshot = made
     }
