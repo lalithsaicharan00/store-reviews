@@ -167,4 +167,29 @@ class HabitRepositoryTest {
         assertEquals(before, repo.load())
         repo.close()
     }
+
+    @Test fun freshRestoreCarriesTombstonesIntoSubsequentRestores() = runTest {
+        val source = HabitRepository.open(path)
+        source.saveHabit(habit(), emptyList(), emptyList(), 1_000)
+        source.saveHabit(habit(id = "deleted").copy(deletedAt = 3_000), emptyList(), emptyList(), 3_000)
+        source.addEntry(entry("undone"))
+        source.removeEntry("undone", 3_000)
+        val target = HabitRepository.open(File(dir, "target.db").path)
+        target.mergeAll(source.loadForRestore())
+        target.mergeAll(Snapshot(listOf(habit(), habit(id = "deleted")), emptyList(), emptyList(),
+                                 listOf(entry("undone")), emptyList()))
+        assertEquals(listOf("h1"), target.load().habits.map { it.id })
+        assertTrue(target.load().entries.isEmpty())
+        source.close()
+        target.close()
+    }
+    @Test fun restoreDoesNotReplaceUnsavedDefaultPreferencesOnExistingData() = runTest {
+        val repo = HabitRepository.open(path)
+        repo.saveHabit(habit(), emptyList(), emptyList(), 1_000)
+        repo.mergeAll(Snapshot(emptyList(), emptyList(), emptyList(), emptyList(),
+                              listOf(SettingRecord("day_end_hour", "4"), SettingRecord("week_start", "1"))))
+        assertTrue(repo.load().settings.isEmpty())
+        repo.close()
+    }
+
 }

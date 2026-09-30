@@ -612,7 +612,9 @@ final class HabitStore {
     func load() async {
         do {
             let snapshot = try await repository.load()
-            habits = snapshot.habits.compactMap { Habit(record: $0, steps: snapshot.steps, reminders: snapshot.reminders) }
+            let steps = Dictionary(grouping: snapshot.steps, by: \.habitId)
+            let reminders = Dictionary(grouping: snapshot.reminders, by: \.habitId)
+            habits = snapshot.habits.compactMap { Habit(record: $0, steps: steps[$0.id] ?? [], reminders: reminders[$0.id] ?? []) }
             entries = snapshot.entries.compactMap(Entry.init(record:))
             var loaded = DaySettings()
             var running: [UUID: Date] = [:]
@@ -736,21 +738,22 @@ final class HabitStore {
 
     // MARK: Backup and restore
 
-    struct RestoreSummary {
+    struct RestoreSummary: Sendable {
         var habits: Int
         var entries: Int
         var settings: Int
         var changed: Bool { habits + entries + settings > 0 }
     }
 
-    enum BackupError: LocalizedError {
-        case invalid, newerVersion, pendingSave, unreadable
+    enum BackupError: LocalizedError, Equatable {
+        case invalid, newerVersion, pendingSave, unreadable, reloadFailed
         var errorDescription: String? {
             switch self {
             case .invalid: "Choose a Habits backup file. Your current data has not been changed."
             case .newerVersion: "This backup was made by a newer version of Habits. Update the app before restoring it."
             case .pendingSave: "Some changes could not be saved. Resolve the save error before making or restoring a backup."
             case .unreadable: "The backup could not be read. Your current data has not been changed."
+            case .reloadFailed: "The backup was added, but the app couldn’t reload your data. Restart the app before continuing."
             }
         }
     }
@@ -761,7 +764,9 @@ final class HabitStore {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent("Habits-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let url = directory.appendingPathComponent("Habits Backup \(today(now: now).key).db")
-        do { try await repository.snapshot(path: url.path) } catch {
+        do {
+            try await dataOperation { [self] in try await repository.snapshot(path: url.path) }
+        } catch {
             try? FileManager.default.removeItem(at: directory)
             throw error
         }
@@ -789,22 +794,61 @@ final class HabitStore {
         let source = HabitRepository.companion.open(path: copy.path)
         let snapshot: Snapshot
         do {
-            snapshot = try await source.load()
+            snapshot = try await source.loadForRestore()
             guard try await source.pragma(name: "quick_check") == "ok" else { throw BackupError.unreadable }
+            try Self.validateBackup(snapshot)
         } catch {
             source.close()
             throw BackupError.unreadable
         }
         source.close()
-        let before = try await repository.load()
-        try await repository.mergeAll(snapshot: snapshot)
-        let after = try await repository.load()
-        await load()
-        let habitIDs = Set(before.habits.map(\.id)), entryIDs = Set(before.entries.map(\.id))
-        let keys = Set(before.settings.map(\.key))
-        return RestoreSummary(habits: after.habits.filter { !habitIDs.contains($0.id) }.count,
-                              entries: after.entries.filter { !entryIDs.contains($0.id) }.count,
-                              settings: after.settings.filter { !keys.contains($0.key) }.count)
+        return try await dataOperation { [self] in
+            let before = try await repository.load()
+            try await repository.mergeAll(snapshot: snapshot)
+            let after = try await repository.load()
+            await load()
+            guard problem == nil else { throw BackupError.reloadFailed }
+            let habitIDs = Set(before.habits.map(\.id)), entryIDs = Set(before.entries.map(\.id))
+            let keys = Set(before.settings.map(\.key))
+            return RestoreSummary(habits: after.habits.filter { !habitIDs.contains($0.id) }.count,
+                                  entries: after.entries.filter { !entryIDs.contains($0.id) }.count,
+                                  settings: after.settings.filter { !keys.contains($0.key) }.count)
+        }
+    }
+
+    /// Backups and restores share the same queue as taps and notification actions.
+    private func dataOperation<Value: Sendable>(_ operation: @escaping @MainActor () async throws -> Value) async throws -> Value {
+        let previous = writeQueue
+        let task = Task { @MainActor in
+            await previous?.value
+            guard self.problem == nil else { throw BackupError.pendingSave }
+            return try await operation()
+        }
+        writeQueue = Task { @MainActor in _ = try? await task.value }
+        return try await task.value
+    }
+
+    private static func validateBackup(_ snapshot: Snapshot) throws {
+        func validDay(_ key: String?) -> Bool {
+            guard let key else { return true }
+            let parts = key.split(separator: "-").compactMap { Int($0) }
+            guard parts.count == 3, (1...9999).contains(parts[0]), (1...12).contains(parts[1]), (1...31).contains(parts[2]) else { return false }
+            var calendar = Calendar(identifier: .gregorian)
+            calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+            guard let date = calendar.date(from: DateComponents(year: parts[0], month: parts[1], day: parts[2])) else { return false }
+            let actual = calendar.dateComponents([.year, .month, .day], from: date)
+            return actual.year == parts[0] && actual.month == parts[1] && actual.day == parts[2]
+        }
+        let ids = Set(snapshot.habits.map(\.id))
+        guard snapshot.habits.allSatisfy({ r in
+            UUID(uuidString: r.id) != nil && r.goal.isFinite && r.goal >= 0 && r.increment.isFinite && r.increment >= 0
+                && validDay(r.startsOn) && validDay(r.endsOn) && validDay(r.dueDay)
+                && (r.deletedAt != nil || Habit(record: r, steps: [], reminders: []) != nil)
+        }), snapshot.entries.allSatisfy({ r in
+            UUID(uuidString: r.id) != nil && ids.contains(r.habitId) && validDay(r.day) && r.value.isFinite && r.value >= 0
+        }), snapshot.steps.allSatisfy({ UUID(uuidString: $0.id) != nil && ids.contains($0.habitId) }),
+        snapshot.reminders.allSatisfy({ UUID(uuidString: $0.id) != nil && ids.contains($0.habitId) && (0...23).contains(Int($0.hour)) && (0...59).contains(Int($0.minute)) })
+        else { throw BackupError.invalid }
     }
 
     /// Called after every change, so reminders stay in step with the data.

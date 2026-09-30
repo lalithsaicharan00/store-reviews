@@ -41,7 +41,8 @@ final class BackupUITests: XCTestCase {
             || app.buttons["Copy"].exists || app.buttons["Close"].exists, app.debugDescription)
         if app.buttons["Close"].exists { app.buttons["Close"].tap() }
         else { app.swipeDown() }
-        XCTAssertTrue(app.buttons["backup-save"].waitForExistence(timeout: 5))
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "hittable == true"), object: app.buttons["backup-save"])
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 10), .completed, app.debugDescription)
         app.buttons["backup-save"].tap()
         XCTAssertTrue(app.buttons["Close"].waitForExistence(timeout: 10) || app.otherElements["ActivityListView"].exists,
                       app.debugDescription)

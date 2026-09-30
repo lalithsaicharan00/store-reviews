@@ -30,4 +30,5 @@ Free users can save a complete backup outside the app with the native share shee
 
 ## Results
 
-Pending.
+- First backup run: [36764217121](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36764217121), build and Core migrations/storage passed. Seven of eight UI tests passed; share dismissal needed an explicit completion and a hittability wait. Performance probes passed: Backup page main thread busy 4.5%, redraw 0.2%; Menu 3.8%/1.3%; Today 6.1%/1.0%. Open times include XCTest overhead (Backup 2.2s). These are comparative simulator samples, not a device responsiveness guarantee.
+- Restore now also carries tombstones onto a new installation, checks semantic record validity and newer schemas, serializes alongside writes, preserves default preferences on a populated destination, and groups children once on load. Latest validation pending.

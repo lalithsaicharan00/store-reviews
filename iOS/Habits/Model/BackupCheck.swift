@@ -45,6 +45,11 @@ enum BackupCheck {
             try Data("not a backup".utf8).write(to: invalid)
             do { _ = try await target.restore(from: invalid); failures.append("invalid file accepted") } catch {}
             expect(target.habits.first?.name == "New name", "invalid restore leaves data unchanged")
+            var newer = try Data(contentsOf: file)
+            newer.replaceSubrange(60..<64, with: [0, 0, 0, 255])
+            try newer.write(to: invalid)
+            do { _ = try await target.restore(from: invalid); failures.append("newer schema accepted") }
+            catch { expect(error as? HabitStore.BackupError == .newerVersion, "newer schema has a clear error") }
             let empty = HabitStore(repository: Persistence.inMemory().repository)
             await empty.load()
             let emptyFile = try await empty.backupFile()

@@ -39,7 +39,7 @@ struct BackupExportView: View {
         .toolbar {
             if working { ToolbarItem(placement: .topBarTrailing) { ProgressView().accessibilityLabel("Working") } }
         }
-        .sheet(item: $sharing, onDismiss: cleanSharedFile) { ShareFileSheet(url: $0.url) }
+        .sheet(item: $sharing, onDismiss: cleanSharedFile) { ShareFileSheet(url: $0.url, onFinish: { sharing = nil }) }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.database, .data], allowsMultipleSelection: false) { result in
             switch result {
             case .success(let urls): if let url = urls.first { restore(url) }
@@ -107,8 +107,13 @@ struct BackupMessage: Identifiable { let id = UUID(); let title: String; let tex
 
 struct ShareFileSheet: UIViewControllerRepresentable {
     let url: URL
+    let onFinish: @MainActor () -> Void
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        let controller = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        controller.completionWithItemsHandler = { _, _, _, _ in
+            Task { @MainActor in onFinish() }
+        }
+        return controller
     }
     func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
 }

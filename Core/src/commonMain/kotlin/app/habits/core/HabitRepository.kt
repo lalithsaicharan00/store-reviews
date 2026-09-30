@@ -29,6 +29,9 @@ class HabitRepository private constructor(private val database: HabitDatabase) {
 
     suspend fun mergeAll(snapshot: Snapshot) = dao.mergeAll(snapshot)
 
+    /** Unlike launch data, a backup must carry deletion markers to a fresh installation. */
+    suspend fun loadForRestore(): Snapshot = dao.restoreSnapshot()
+
     suspend fun finishTimer(entry: EntryRecord?, key: String) = dao.finishTimer(entry, key)
 
     /** Writes everything in one transaction; rows that already exist are kept as they are. */

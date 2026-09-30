@@ -31,6 +31,14 @@ interface HabitDao {
     @Query("SELECT id FROM habit")
     suspend fun allHabitIds(): List<String>
 
+    @Query("SELECT * FROM habit") suspend fun backupHabits(): List<HabitRecord>
+    @Query("SELECT * FROM step") suspend fun backupSteps(): List<StepRecord>
+    @Query("SELECT * FROM reminder") suspend fun backupReminders(): List<ReminderRecord>
+    @Query("SELECT * FROM entry") suspend fun backupEntries(): List<EntryRecord>
+
+    @Transaction
+    suspend fun restoreSnapshot(): Snapshot = Snapshot(backupHabits(), backupSteps(), backupReminders(), backupEntries(), settings())
+
     @Upsert suspend fun upsertHabit(habit: HabitRecord)
     @Upsert suspend fun upsertSteps(steps: List<StepRecord>)
     @Upsert suspend fun upsertReminders(reminders: List<ReminderRecord>)
@@ -45,9 +53,9 @@ interface HabitDao {
     @Transaction
     suspend fun mergeAll(snapshot: Snapshot) {
         val known = allHabitIds().toSet() // Includes tombstones: a deleted habit must stay deleted.
-        val added = snapshot.habits.filter { it.deletedAt == null && it.id !in known }
+        val added = snapshot.habits.filter { it.id !in known }
         val newIds = added.map { it.id }.toSet()
-        val live = habits().map { it.id }.toSet() + newIds
+        val live = habits().map { it.id }.toSet() + added.filter { it.deletedAt == null }.map { it.id }
         insertHabitsIfNew(added)
         insertStepsIfNew(snapshot.steps.filter { it.habitId in newIds })
         insertRemindersIfNew(snapshot.reminders.filter { it.habitId in newIds })
@@ -56,7 +64,8 @@ interface HabitDao {
         val habitPrefixes = listOf("rules.", "pause.", "skip.", "desc.", "archived.")
         insertSettingsIfNew(snapshot.settings.filter { setting ->
             when {
-                setting.key in globalKeys || setting.key.startsWith("daynote.") -> true
+                setting.key in globalKeys -> known.isEmpty()
+                setting.key.startsWith("daynote.") -> true
                 setting.key.startsWith("note.") -> setting.key.removePrefix("note.").substringBefore('|') in live
                 else -> habitPrefixes.any { prefix -> setting.key.startsWith(prefix) && setting.key.removePrefix(prefix) in newIds }
             }
