@@ -1321,24 +1321,24 @@ Each phase is shippable on its own, and no phase removes anything an earlier one
 
 ### 25.2 Golden cases (exact expected numbers)
 
-The fixed "now" is **Friday 26 September 2026, 12:00**. Week start is Monday and the day ends at 0:00 unless the case says otherwise. The week is Mon 22 – Sun 28 Sep.
+The fixed "now" is **Friday 25 September 2026, 12:00**. Week start is Monday and the day ends at 0:00 unless the case says otherwise. The week is Mon 21 – Sun 27 Sep. *(Corrected 30 Sep 2026 while building: this first said Friday 26, but 26 September 2026 is a Saturday. Every date below moved back one day; the expected numbers are unchanged except where noted. These cases run in the app as `-progresscheck`.)*
 
 | # | Setup | Expected |
 |---|---|---|
-| G1 | **Read**, check once a day, starts Mon 22. Done Mon, Tue, Thu. Wed skipped. Fri nothing yet. | Row: "3 of 3 days so far · 100%". Marks: done, done, skipped, done, open (today), coming up, coming up. Streak 3, best 3. Overview: Read adds 1 planned and 1 done on Mon, Tue and Thu; nothing on Wed or Fri. |
+| G1 | **Read**, check once a day, starts Mon 21. Done Mon, Tue, Thu. Wed skipped. Fri nothing yet. | Row: "3 of 3 days so far · 100%". Marks: done, done, skipped, done, open (today), coming up, coming up. Streak 3, best 3. Overview: Read adds 1 planned and 1 done on Mon, Tue and Thu; nothing on Wed or Fri. |
 | G2 | **Gym**, 3 times a week. Done Mon and Wed. | Row: "2 of 3 so far". No "not done" mark on any day. Overview: +1 planned +1 done on Mon and on Wed only. Tile 3: "0 of 1", caption "Weekly goals met so far". |
 | G3 | **Water**, 8 glasses a day. Thu 5, Fri 6 (today). | Thu: part (0.625); it counts 1 planned, 0 done, and 1 in "Part done". Fri: the ring shows 6/8 progress, but the tiles don't count it until it reaches 8. |
 | G4 | **Coffee**, cut down, limit 3 a day. Wed 4, Thu 0, Fri 2 (today). | Wed: over (▲). Thu: within, and "Days with none: 1". Fri: open ("2 of 3 so far"), not counted. Streak "within the limit": 1 (Thu). |
 | G5 | **Meditate**: 10 min until 14 Sep, 15 min from 15 Sep. Sun 14 Sep 12 min; Tue 16 Sep 12 min. | 14 Sep done; 16 Sep part (0.8). The chart's goal line steps from 10 to 15 on 15 Sep. Footnote: "Goal changed from 10 to 15 min on 15 Sep." |
-| G6 | **Stretch**, created Thu 25 (daily). Done Thu. | Mon–Wed are "Before it started" and appear in no number. Thu counts 1 of 1. The overview for Mon–Wed is unchanged by this habit. |
-| G7 | **Run**, daily, paused Tue–Thu. Done Mon; Fri not yet. | Tue–Thu paused (neutral). Streak kept at 1. Row: "1 of 1 days so far". |
-| G8 | **Journal**, daily, done Mon and Tue, archived Wed 24. | Counts Mon and Tue only (planned days before 24 Sep). Listed under Archived this week. Next week it isn't listed. |
-| G9 | **Smoking**, quit, started 1 Aug 2026 09:00. Slips 3 Sep 22:10 and 20 Sep 08:00. | Runs: 33 d 13 h 10 min · 16 d 9 h 50 min · current 6 d 4 h. Best 33 d. September: 2 slips, 24 of 26 clean days. Clean days since 1 Aug: 55. Average run: 25 days. |
-| G10 | **Cycle**, 60 km a month. 42 km logged by Fri 26 Sep. | "42 of 60 km so far". Pace: "18 km to go · 5 days left". Month tile 3: "0 of 1", caption "Monthly goals met so far". |
-| G11 | G1 with the week starting on Sunday. | The week is Sun 21 – Sat 27. The range title reads "21–27 Sep". |
-| G12 | Day ends at 3:00. Now is Sat 27 Sep 02:00 (this case's own now). A tick at 01:30. | It counts for Fri 26, and Progress's "today" is still Fri 26. |
+| G6 | **Stretch**, created Thu 24 (daily). Done Thu. | Mon–Wed are "Before it started" and appear in no number. Thu counts 1 of 1. The overview for Mon–Wed is unchanged by this habit. |
+| G7 | **Run**, daily, paused Tue–Thu. Done Mon; Fri not yet. | Tue–Thu paused (neutral). Streak kept at 1. Row: "1 of 1 day so far". |
+| G8 | **Journal**, daily, done Mon and Tue, archived Wed 23. | Counts Mon and Tue only (planned days before 23 Sep): "2 of 2 days so far". Listed under Archived this week. Next week it isn't listed. |
+| G9 | **Smoking**, quit, started 1 Aug 2026 09:00. Slips 3 Sep 22:10 and 20 Sep 08:00. | Runs: 33 d 13 h 10 min · 16 d 9 h 50 min · current 5 d 4 h. Best 33 d. September: 2 slips, 23 of 25 clean days. Clean days since 1 Aug: 54. Average run: 25 days. |
+| G10 | **Cycle**, 60 km a month. 42 km logged by Fri 25 Sep. | "42 of 60 km so far". Pace: "18 km to go · 6 days left". Month tile 3: "0 of 1", caption "Monthly goals met so far". |
+| G11 | G1 with the week starting on Sunday. | The week is Sun 20 – Sat 26. The range title reads "20–26 Sep" (or "Sep 20 – 26", as the phone's language writes it). |
+| G12 | Day ends at 3:00. Now is Sat 26 Sep 02:00 (this case's own now). A tick at 01:30. | It counts for Fri 25, and Progress's "today" is still Fri 25. |
 | G13 | Year change: a daily habit started 1 Jan 2026, done every day of 2026. Now is 1 Jan 2027 at 12:00, nothing done yet. | Year 2026: 365 of 365 days (from its start). Year 2027 on 1 Jan: tile 1 shows "0", "Done so far", with no percentage. 2026 is reachable with ‹. |
-| G14 | **Pills**, twice a day, starts Thu 25. Thu 1 of 2. | Thu part (0.5). Thu adds 1 planned, 0 done and 0.5 part credit to the overview (habit-days, §16.4). Row: "1 of 2 times so far" (shape B counts times, not days). |
+| G14 | **Pills**, twice a day, starts Thu 24. Thu 1 of 2. | Thu part (0.5). Thu adds 1 planned, 0 done and 0.5 part credit to the overview (habit-days, §16.4). Row: "1 of 2 times so far" (shape B counts times, not days). |
 | G15 | **Morning**, a checklist with 5 steps. Thu 3 ticked. | Thu part (0.6). Steps 3 of 5. "By step" shows each step's own share. |
 | G16 | **Run 5 km on 3 days a week**. Mon 5 km, Wed 3 km, Thu 6 km. | "2 of 3 days so far · 14 km". Wed part. No "not done" marks. |
 | G17 | Best never above total | For every case: best ≤ days done in total, and the current run equals `streak(of:asOf: today)`. |

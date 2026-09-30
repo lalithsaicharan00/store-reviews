@@ -5,7 +5,7 @@ import SwiftUI
 /// day opens the Day sheet; tapping a habit opens its own page at Over Time. It only reads: nothing here logs.
 ///
 /// Speed (report §20): every number comes from one `ProgressSnapshot`, worked out when the data, the range or the
-/// period changes, never while drawing. Strips are drawn, not built from hundreds of views.
+/// period changes, never while drawing. Month strips are flattened into one layer per row, in a lazy list.
 struct ProgressScreen: View {
     @Environment(HabitStore.self) private var store
     @Environment(MenuModel.self) private var menu

@@ -131,6 +131,11 @@ jobs:
               grep -E "Test Case .*(passed|failed)|: error:|Executed [0-9]+ tests" test.log | sed 's/^.*Test Case/Test Case/' | sort -u | head -60
               echo '```'
             fi
+            # A test that loses the app only says "Lost connection"; the crash report says why.
+            CRASHES=$(python3 Tools/ci/crash_summary.py build.log Habits 2>&1 || true)
+            if [ -n "$CRASHES" ]; then
+              echo; echo "## App crashes"; echo '```'; echo "$CRASHES" | head -120; echo '```'
+            fi
             if [ -f perf/perf-summary.md ]; then
               echo; echo "## Speed (simulator on GitHub's Mac, a year of history; compare runs, not absolute numbers)"; echo
               cat perf/perf-summary.md

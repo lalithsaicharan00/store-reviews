@@ -118,39 +118,36 @@ struct WeekStripHeader: View {
     }
 }
 
-/// A month of dots on one line, drawn in one `Canvas` (hundreds of small views would slow the list; report §20).
-/// Done is filled; part done is lighter by share; not done is an empty ring; today not done yet is dashed; other days
-/// are blank, so the strip shows the person's real plan (§13.3).
+/// A month of dots on one line (report §7.3, §13.3). Done is filled; part done is lighter by share; not done is an
+/// empty ring; today not done yet is dashed; other days are blank, so the strip shows the person's real plan.
+///
+/// Plain shapes flattened into one layer (`drawingGroup`), not a `Canvas`: with a `Canvas` here the app was lost as
+/// soon as the Month range opened (CI, 30 Sep 2026; a `Canvas` renderer closure is main-actor code under Swift 6's
+/// default isolation). Rows are in a lazy list, so only the strips on screen exist.
 struct MonthStrip: View {
     let marks: [ProgressMark]
     let color: Color
 
     var body: some View {
-        Canvas { context, size in
-            let count = CGFloat(max(marks.count, 1))
-            let gap: CGFloat = 2.5
-            let dot = max(3, min(7, (size.width - gap * (count - 1)) / count))
-            let y = (size.height - dot) / 2
-            for (i, mark) in marks.enumerated() {
-                let rect = CGRect(x: CGFloat(i) * (dot + gap), y: y, width: dot, height: dot)
-                let circle = Path(ellipseIn: rect)
-                switch mark.mark {
-                case .done:
-                    context.fill(circle, with: .color(color))
-                case .some:
-                    context.fill(circle, with: .color(color.opacity(mark.fraction >= 0.5 ? 0.7 : 0.45)))
-                case .missed:
-                    context.stroke(Path(ellipseIn: rect.insetBy(dx: 0.5, dy: 0.5)), with: .style(HierarchicalShapeStyle.secondary), lineWidth: 1)
-                case .open:
-                    context.stroke(Path(ellipseIn: rect.insetBy(dx: 0.5, dy: 0.5)), with: .style(HierarchicalShapeStyle.secondary),
-                                   style: StrokeStyle(lineWidth: 1, dash: [1.5, 1.5]))
-                default:
-                    break
-                }
+        HStack(spacing: 2.5) {
+            ForEach(marks) { mark in
+                dot(mark).frame(maxWidth: 7, maxHeight: 7).aspectRatio(1, contentMode: .fit)
             }
+            Spacer(minLength: 0)
         }
         .frame(height: 8)
+        .drawingGroup()
         .accessibilityHidden(true)
+    }
+
+    @ViewBuilder private func dot(_ mark: ProgressMark) -> some View {
+        switch mark.mark {
+        case .done: Circle().fill(color)
+        case .some: Circle().fill(color.opacity(mark.fraction >= 0.5 ? 0.7 : 0.45))
+        case .missed: Circle().strokeBorder(Color.secondary, lineWidth: 1)
+        case .open: Circle().strokeBorder(Color.secondary, style: StrokeStyle(lineWidth: 1, dash: [1.5, 1.5]))
+        default: Color.clear
+        }
     }
 }
 

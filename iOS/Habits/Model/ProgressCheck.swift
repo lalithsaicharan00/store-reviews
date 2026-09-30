@@ -3,7 +3,7 @@ import Core
 import Foundation
 
 /// The golden cases for Progress and the fixes it needs (Build Plan #60a–#60c, #60e; report §25.2), run in the app
-/// against a real in-memory store with a fixed "now": Friday 26 September 2026, 12:00, weeks from Monday, days ending
+/// against a real in-memory store with a fixed "now": Friday 25 September 2026, 12:00 (the report said 26, a Saturday), weeks from Monday, days ending
 /// at midnight unless a case says otherwise. `-progresscheck` shows "Progress: all checks passed" or what differs;
 /// `ProgressUITests.testProgressChecks` reads it.
 enum ProgressCheck {
@@ -16,7 +16,7 @@ enum ProgressCheck {
         func moment(_ d: LocalDay, hour: Int = 12, minute: Int = 0) -> Date {
             Calendar.current.date(from: DateComponents(year: d.year, month: d.month, day: d.day, hour: hour, minute: minute))!
         }
-        let friday = day(26), monday = day(22)
+        let friday = day(25), monday = day(21)
 
         /// A fresh store for one case, with the fixed now.
         func store(weekStart: Int = 2, now: Date? = nil) async -> (HabitStore, Persistence) {
@@ -48,13 +48,13 @@ enum ProgressCheck {
             expect(s.bestStreak(of: h) <= runs.reduce(0) { $0 + $1.length }, "\(name) G17 best ≤ total")
         }
 
-        // G1: Read, once a day from Mon 22. Done Mon, Tue, Thu; Wed skipped; Fri (today) nothing yet.
+        // G1: Read, once a day from Mon 21. Done Mon, Tue, Thu; Wed skipped; Fri (today) nothing yet.
         do {
             let (s, _) = await store()
             let read = Habit(name: "Read", symbol: "book", color: .blue, kind: .check, startsOn: monday)
             await add(s, read)
             for d in [22, 23, 25] { await tick(s, read, on: day(d)) }
-            s.setSkipped(read, on: day(24), true); await s.flush()
+            s.setSkipped(read, on: day(23), true); await s.flush()
             let r = row(s, read)
             same(r?.text, "3 of 3 days so far", "G1 row")
             same(r?.percent, 100, "G1 percent")
@@ -62,7 +62,7 @@ enum ProgressCheck {
             same(s.streak(of: read, asOf: friday), 3, "G1 streak")
             same(s.bestStreak(of: read), 3, "G1 best")
             same(s.dayScore(on: monday, habits: [read]), HabitStore.DayScore(done: 1, part: 0, partCount: 0, planned: 1), "G1 Monday")
-            same(s.dayScore(on: day(24), habits: [read]).planned, 0, "G1 skipped Wednesday not planned")
+            same(s.dayScore(on: day(23), habits: [read]).planned, 0, "G1 skipped Wednesday not planned")
             same(s.outcome(read, on: friday), .open, "G1 today open")
             let snap = s.progressSnapshot(.week, containing: friday)
             same(snap.tally.done, 3, "G1 tally done"); same(snap.tally.planned, 3, "G1 tally planned")
@@ -76,19 +76,19 @@ enum ProgressCheck {
             let (s, _) = await store()
             let gym = Habit(name: "Gym", symbol: "dumbbell", color: .red, kind: .check, frequency: .perWeek(3), startsOn: day(15))
             await add(s, gym)
-            await tick(s, gym, on: monday); await tick(s, gym, on: day(24))
+            await tick(s, gym, on: monday); await tick(s, gym, on: day(23))
             let r = row(s, gym)
             same(r?.text, "2 of 3 so far", "G2 row")
             expect(!(r?.marks.contains { $0.mark == .missed } ?? true), "G2 no not-done marks")
             same(s.outcome(gym, on: monday), .done, "G2 Monday counts done")
-            same(s.outcome(gym, on: day(23)), .neutral, "G2 Tuesday neutral")
+            same(s.outcome(gym, on: day(22)), .neutral, "G2 Tuesday neutral")
             same(s.outcome(gym, on: friday), .open, "G2 today open")
             let snap = s.progressSnapshot(.week, containing: friday)
             same(snap.goals?.total, 1, "G2 goals total"); same(snap.goals?.met, 0, "G2 goals met")
             same(snap.goals?.caption, "Weekly goals met so far", "G2 caption")
             // #60a: done for the day once logged that day; each ✓ still adds toward the week.
             expect(s.isSatisfied(gym, on: monday), "60a logged day is done for the day")
-            expect(!s.isSatisfied(gym, on: day(23)), "60a empty day before the goal is met is still open")
+            expect(!s.isSatisfied(gym, on: day(22)), "60a empty day before the goal is met is still open")
             expect(!s.isComplete(gym, on: monday), "60a the week isn't complete at 2 of 3")
             await tick(s, gym, on: friday)
             expect(s.isSatisfied(gym, on: friday), "60a today done for the day after one tick")
@@ -97,32 +97,32 @@ enum ProgressCheck {
             runsAgree(s, gym, "G2")
         }
 
-        // G3: Water, 8 glasses a day, from Thu 25. Thu 5, Fri 6 (today).
+        // G3: Water, 8 glasses a day, from Thu 24. Thu 5, Fri 6 (today).
         do {
             let (s, _) = await store()
-            let water = Habit(name: "Water", symbol: "drop", color: .blue, kind: .amount(unit: "glasses", increment: 1), goal: 8, startsOn: day(25))
+            let water = Habit(name: "Water", symbol: "drop", color: .blue, kind: .amount(unit: "glasses", increment: 1), goal: 8, startsOn: day(24))
             await add(s, water)
-            await log(s, water, 5, on: day(25)); await log(s, water, 6, on: friday)
-            same(s.outcome(water, on: day(25)), .part(0.625), "G3 Thursday part")
+            await log(s, water, 5, on: day(24)); await log(s, water, 6, on: friday)
+            same(s.outcome(water, on: day(24)), .part(0.625), "G3 Thursday part")
             same(s.outcome(water, on: friday), .part(0.75), "G3 today's ring shows progress")
             let snap = s.progressSnapshot(.week, containing: friday)
             same(snap.tally.planned, 1, "G3 today not counted until done")
             same(snap.tally.done, 0, "G3 done")
-            same(s.dayScore(on: day(25), habits: [water]).partCount, 1, "G3 part done count")
+            same(s.dayScore(on: day(24), habits: [water]).partCount, 1, "G3 part done count")
             same(row(s, water)?.text, "11 glasses · 0 of 1 day so far", "G3 row")
         }
 
-        // G4 and #60b: Coffee, no more than 3 a day, from Mon 22. Wed 4, Thu 0, Fri 2 (today).
+        // G4 and #60b: Coffee, no more than 3 a day, from Mon 21. Wed 4, Thu 0, Fri 2 (today).
         do {
             let (s, _) = await store()
             let coffee = Habit(name: "Coffee", symbol: "mug", color: .brown, kind: .amount(unit: "cups", increment: 1), goal: 3, atMost: true, startsOn: monday)
             await add(s, coffee)
-            await log(s, coffee, 4, on: day(24)); await log(s, coffee, 2, on: friday)
-            same(s.dayMark(coffee, on: day(24)), .missed, "G4 Wednesday over")
-            same(s.dayMark(coffee, on: day(25)), .done, "G4 Thursday within")
+            await log(s, coffee, 4, on: day(23)); await log(s, coffee, 2, on: friday)
+            same(s.dayMark(coffee, on: day(23)), .missed, "G4 Wednesday over")
+            same(s.dayMark(coffee, on: day(24)), .done, "G4 Thursday within")
             same(s.dayMark(coffee, on: friday), .some, "G4 today open, logged")
             same(s.outcome(coffee, on: friday), .neutral, "G4 today not counted")
-            same(s.outcome(coffee, on: day(24)), .notDone, "G4 over counts not done")
+            same(s.outcome(coffee, on: day(23)), .notDone, "G4 over counts not done")
             same(s.streak(of: coffee, asOf: friday), 1, "60b streak doesn't count today")
             same(s.bestStreak(of: coffee), 2, "G4 best (Mon, Tue)")
             let fresh = Habit(name: "Tea", symbol: "cup.and.saucer", color: .brown, kind: .amount(unit: "cups", increment: 1), goal: 2, atMost: true, startsOn: friday)
@@ -153,42 +153,42 @@ enum ProgressCheck {
             runsAgree(s, meditate, "G5")
         }
 
-        // G6: Stretch, daily, from Thu 25. Done Thu.
+        // G6: Stretch, daily, from Thu 24. Done Thu.
         do {
             let (s, _) = await store()
-            let stretch = Habit(name: "Stretch", symbol: "figure.flexibility", color: .teal, kind: .check, startsOn: day(25))
+            let stretch = Habit(name: "Stretch", symbol: "figure.flexibility", color: .teal, kind: .check, startsOn: day(24))
             await add(s, stretch)
-            await tick(s, stretch, on: day(25))
+            await tick(s, stretch, on: day(24))
             same(s.dayMark(stretch, on: monday), .before, "G6 before it started")
             same(s.dayScore(on: monday, habits: [stretch]).planned, 0, "G6 Monday unchanged")
-            same(s.dayScore(on: day(25), habits: [stretch]).done, 1, "G6 Thursday done")
+            same(s.dayScore(on: day(24), habits: [stretch]).done, 1, "G6 Thursday done")
         }
 
-        // G7: Run, daily from Mon 22, paused Tue–Thu, done Mon; Fri not yet.
+        // G7: Run, daily from Mon 21, paused Tue–Thu, done Mon; Fri not yet.
         do {
             let (s, _) = await store()
             let run = Habit(name: "Run", symbol: "figure.run", color: .green, kind: .check, startsOn: monday)
             await add(s, run)
             await tick(s, run, on: monday)
-            s.pause(run, from: day(23), through: day(25), now: moment(day(22))); await s.flush()
-            same(s.dayMark(run, on: day(24)), .paused, "G7 paused")
+            s.pause(run, from: day(22), through: day(24), now: moment(day(21))); await s.flush()
+            same(s.dayMark(run, on: day(23)), .paused, "G7 paused")
             same(s.streak(of: run, asOf: friday), 1, "G7 streak kept")
             same(row(s, run)?.text, "1 of 1 day so far", "G7 row")
             runsAgree(s, run, "G7")
         }
 
-        // G8 and #60c: Journal, daily from Mon 22, done Mon and Tue, archived Wed 24.
+        // G8 and #60c: Journal, daily from Mon 21, done Mon and Tue, archived Wed 23.
         do {
             let (s, p) = await store()
             let journal = Habit(name: "Journal", symbol: "book.closed", color: .indigo, kind: .check, startsOn: monday)
             await add(s, journal)
-            await tick(s, journal, on: monday); await tick(s, journal, on: day(23))
-            s.clock = { moment(day(24), hour: 9) }
+            await tick(s, journal, on: monday); await tick(s, journal, on: day(22))
+            s.clock = { moment(day(23), hour: 9) }
             s.archive([journal]); await s.flush()
             s.clock = { moment(friday) }
             let archived = s.habits.first { $0.id == journal.id }!
-            same(s.archivedOn[journal.id], day(24), "60c archive day saved")
-            expect(!s.isDue(archived, on: day(25)), "60c no days after archiving")
+            same(s.archivedOn[journal.id], day(23), "60c archive day saved")
+            expect(!s.isDue(archived, on: day(24)), "60c no days after archiving")
             let snap = s.progressSnapshot(.week, containing: friday)
             expect(snap.archived.contains { $0.habit.id == journal.id }, "G8 listed under Archived")
             expect(!snap.rows.contains { $0.habit.id == journal.id }, "G8 not under Habits")
@@ -196,11 +196,11 @@ enum ProgressCheck {
             let next = s.progressSnapshot(.week, containing: day(29))
             expect(!next.archived.contains { $0.habit.id == journal.id }, "G8 not listed next week")
             let reload = HabitStore(repository: p.repository); reload.clock = { moment(friday) }; await reload.load()
-            same(reload.archivedOn[journal.id], day(24), "60c archive day survives reload")
+            same(reload.archivedOn[journal.id], day(23), "60c archive day survives reload")
             _ = s.restore(archived); await s.flush()
             let restored = s.habits.first { $0.id == journal.id }!
-            same(s.dayMark(restored, on: day(24)), .paused, "60c archived stretch becomes a pause on restore")
-            same(s.dayMark(restored, on: day(25)), .paused, "60c the whole stretch")
+            same(s.dayMark(restored, on: day(23)), .paused, "60c archived stretch becomes a pause on restore")
+            same(s.dayMark(restored, on: day(24)), .paused, "60c the whole stretch")
             expect(s.archivedOn[journal.id] == nil, "60c restore clears the archive day")
         }
 
@@ -216,10 +216,10 @@ enum ProgressCheck {
             await s.load()
             let runs = s.quitRuns(of: smoking, now: moment(friday))
             same(Int(runs.best), ((33 * 24 + 13) * 60 + 10) * 60, "G9 best run 33 d 13 h 10 min")
-            same(Int(runs.current), (6 * 24 + 4) * 3600, "G9 current run 6 d 4 h")
+            same(Int(runs.current), (5 * 24 + 4) * 3600, "G9 current run 5 d 4 h")
         }
 
-        // G10: Cycle, 60 km a month. 42 km by Fri 26 Sep.
+        // G10: Cycle, 60 km a month. 42 km by Fri 25 Sep.
         do {
             let (s, _) = await store()
             let cycle = Habit(name: "Cycle", symbol: "bicycle", color: .orange, kind: .amount(unit: "km", increment: 5), goal: 60, frequency: .perMonth(1), startsOn: day(1))
@@ -227,7 +227,7 @@ enum ProgressCheck {
             await log(s, cycle, 20, on: day(5)); await log(s, cycle, 22, on: day(20))
             same(row(s, cycle, .month)?.text, "42 of 60 km so far", "G10 row")
             let over = s.overTime(cycle, range: .month, anchor: friday)
-            same(over.pace, "18 km to go · 5 days left", "G10 pace")
+            same(over.pace, "18 km to go · 6 days left", "G10 pace")
             let snap = s.progressSnapshot(.month, containing: friday)
             same(snap.goals?.caption, "Monthly goals met so far", "G10 caption")
             same(snap.goals?.total, 1, "G10 total"); same(snap.goals?.met, 0, "G10 met")
@@ -240,15 +240,15 @@ enum ProgressCheck {
         do {
             let (s, _) = await store(weekStart: 1)
             let week = s.period(.week, containing: friday)
-            same(week.lowerBound, day(21), "G11 week from Sunday")
-            same(week.upperBound, day(27), "G11 week to Saturday")
+            same(week.lowerBound, day(20), "G11 week from Sunday")
+            same(week.upperBound, day(26), "G11 week to Saturday")
             let span = s.weekSpan(week)
-            expect(span.contains("21") && span.contains("27"), "G11 range title: \(span)")
+            expect(span.contains("20") && span.contains("26"), "G11 range title: \(span)")
         }
 
-        // G12: the day ends at 3:00; now is Sat 27 at 02:00.
+        // G12: the day ends at 3:00; now is Sat 26 at 02:00.
         do {
-            let (s, _) = await store(now: moment(day(27), hour: 2))
+            let (s, _) = await store(now: moment(day(26), hour: 2))
             s.settings.dayEndHour = 3
             same(s.today(), friday, "G12 still Friday")
         }
@@ -270,36 +270,36 @@ enum ProgressCheck {
             runsAgree(s, habit, "G13")
         }
 
-        // G14: Pills, twice a day, from Thu 25. Thu 1 of 2.
+        // G14: Pills, twice a day, from Thu 24. Thu 1 of 2.
         do {
             let (s, _) = await store()
-            let pills = Habit(name: "Pills", symbol: "pills", color: .red, kind: .check, goal: 2, startsOn: day(25))
+            let pills = Habit(name: "Pills", symbol: "pills", color: .red, kind: .check, goal: 2, startsOn: day(24))
             await add(s, pills)
-            await tick(s, pills, on: day(25))
-            same(s.outcome(pills, on: day(25)), .part(0.5), "G14 part")
+            await tick(s, pills, on: day(24))
+            same(s.outcome(pills, on: day(24)), .part(0.5), "G14 part")
             same(row(s, pills)?.text, "1 of 2 times so far", "G14 row counts times")
         }
 
-        // G15: Morning, a checklist of 5 steps, from Thu 25. Thu 3 ticked.
+        // G15: Morning, a checklist of 5 steps, from Thu 24. Thu 3 ticked.
         do {
             let (s, _) = await store()
             let steps = (1...5).map { Step(name: "Step \($0)") }
-            let morning = Habit(name: "Morning", symbol: "sun.max", color: .yellow, kind: .checklist, steps: steps, startsOn: day(25))
+            let morning = Habit(name: "Morning", symbol: "sun.max", color: .yellow, kind: .checklist, steps: steps, startsOn: day(24))
             await add(s, morning)
-            for step in steps.prefix(3) { s.toggleStep(step, of: morning, on: day(25)); await s.flush() }
-            same(s.outcome(morning, on: day(25)), .part(0.6), "G15 part")
+            for step in steps.prefix(3) { s.toggleStep(step, of: morning, on: day(24)); await s.flush() }
+            same(s.outcome(morning, on: day(24)), .part(0.6), "G15 part")
             same(row(s, morning)?.text, "3 of 5 steps so far · 0 full days", "G15 row")
         }
 
-        // G16: Run 5 km on 3 days a week, from Mon 22. Mon 5, Wed 3, Thu 6.
+        // G16: Run 5 km on 3 days a week, from Mon 21. Mon 5, Wed 3, Thu 6.
         do {
             let (s, _) = await store()
             let run = Habit(name: "Run", symbol: "figure.run", color: .blue, kind: .amount(unit: "km", increment: 0), goal: 5, frequency: .flexible(.week, 3), startsOn: monday)
             await add(s, run)
-            await log(s, run, 5, on: monday); await log(s, run, 3, on: day(24)); await log(s, run, 6, on: day(25))
+            await log(s, run, 5, on: monday); await log(s, run, 3, on: day(23)); await log(s, run, 6, on: day(24))
             same(row(s, run)?.text, "2 of 3 days so far · 14 km", "G16 row")
             expect(!(row(s, run)?.marks.contains { $0.mark == .missed } ?? true), "G16 no not-done marks")
-            same(s.dayMark(run, on: day(24)), .some, "G16 Wednesday part")
+            same(s.dayMark(run, on: day(23)), .some, "G16 Wednesday part")
             runsAgree(s, run, "G16")
         }
 
