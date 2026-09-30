@@ -3,7 +3,7 @@
 #   -perf-history  a year of history          -perf-meter  record main-thread stalls (MainThreadMeter)
 #   -perf-drive X  the app uses itself: scrolls, taps, switches days and months, types, moves through a routine (PerfDriver)
 # XCTest isn't used here because its screen reading runs on the app's main thread (up to 79 % of it in the first run).
-# `sample` runs during each measured window and names the app's slowest functions. Writes a Markdown summary.
+# `sample` runs through each scenario (opens included) and names the app's slowest functions. Writes a Markdown summary.
 # Usage (from iOS/): Tools/perf/measure_perf.sh <simulator id> <out dir>
 # Needs a build from `xcodebuild build-for-testing ... -derivedDataPath DerivedData`.
 set -u
@@ -33,7 +33,7 @@ for S in $SCENARIOS; do
   PID=$(echo "$LAUNCH" | sed -n 's/.*: *\([0-9][0-9]*\)$/\1/p' | tail -1)
   WAITED=0
   until grep -q "^# MEASURING" "$REC" 2>/dev/null || [ $WAITED -ge 90 ]; do sleep 1; WAITED=$((WAITED + 1)); done
-  [ -n "$PID" ] && sample "$PID" 10 1 -file "$OUT/sample-$S.txt" > /dev/null 2>&1
+  [ -n "$PID" ] && sample "$PID" 22 1 -file "$OUT/sample-$S.txt" > /dev/null 2>&1
   until grep -q "^# DONE" "$REC" 2>/dev/null || [ $WAITED -ge 180 ]; do sleep 1; WAITED=$((WAITED + 1)); done
   cp "$REC" "$OUT/stalls-$S.txt" 2>/dev/null
   xcrun simctl terminate "$SIM" "$BUNDLE" > /dev/null 2>&1

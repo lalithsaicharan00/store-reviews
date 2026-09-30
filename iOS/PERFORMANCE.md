@@ -32,6 +32,7 @@ here, with the reason and the date.
 | 8 | **`body` stays cheap**: no sorting or filtering of history, no `Calendar` arithmetic in loops (`LocalDay.adding(days:)` and `weekday` are plain arithmetic in the Gregorian calendar; use them), no formatters or big strings built per row that could be built once | Three `Calendar` calls per day stepped were most of a streak's time (30 Sep) |
 | 9 | **In a `List` with a selection, use `NavigationLink { Page() } label: { … }`**, not `NavigationLink(value:)` | The habit page never opened from All Habits: the value link only selected the row (30 Sep) |
 | 10 | **Rows stay light.** A shadow goes on a background *shape*, never on a view with text or one that redraws (and never a `.clear` shadow: it still costs an offscreen pass). One `.sheet(item:)` per row, not one per sheet. No `GeometryReader` in a row just to size a fill (`scaleEffect(x:anchor:)` draws the same) | Every Today row paid for a clear text shadow, four sheet modifiers and a `GeometryReader`; the timer bar re-rendered its whole shadow every second (30 Sep) |
+| 11 | **Typing updates only the field.** Anything that follows the text (a preview, a sentence, a suggested icon) catches up when typing pauses (`HabitForm.shownName`, 0.3 s); saving always reads the live text. Never animate something on every keystroke | Every letter in the New Habit name redrew and re-animated the preview row and sentence: 92 % of the main thread and 100–400 ms freezes per letter, the worst screen in the app (30 Sep) |
 
 ## Why the mistakes kept coming back
 

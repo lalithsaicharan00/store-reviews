@@ -55,6 +55,7 @@ enum PerfDriver {
         let scenario = arguments[flag + 1]
         Task { @MainActor in
             await pause(3) // launch settles
+            MainThreadMeter.mark("# MEASURING") // the script samples from here, so first opens are covered too
             await run(scenario, store: store)
             MainThreadMeter.mark("# DONE")
         }
@@ -80,14 +81,14 @@ enum PerfDriver {
                 }
             }
         case "all-habits":
-            await open("All Habits") { send(.openAllHabits) }
+            await openTwice("All Habits") { send(.openAllHabits) }
             await measure("All Habits: scrolling") { await scroll() }
         case "habit-page":
             await open("All Habits") { send(.openAllHabits) }
             await open("Habit page") { send(.openHabit("Brush teeth")) }
             await measure("Habit page: scrolling") { await scroll() }
         case "calendar":
-            await open("Calendar") { send(.openCalendar) }
+            await openTwice("Calendar") { send(.openCalendar) }
             await measure("Calendar: month ‹ ›") {
                 await repeatFor(window) {
                     for _ in 0..<3 { send(.previousMonth); await pause(0.3) }
@@ -95,10 +96,10 @@ enum PerfDriver {
                 }
             }
         case "new-habit":
-            await open("New Habit") { send(.openNewHabit) }
+            await openTwice("New Habit") { send(.openNewHabit) }
             send(.close)
             await pause(1)
-            await open("Habit form") { send(.openHabitForm) }
+            await openTwice("Habit form") { send(.openHabitForm) }
             let name = "Drink a glass of water"
             await measure("Habit form: typing") {
                 await repeatFor(window) {
@@ -107,7 +108,7 @@ enum PerfDriver {
                 }
             }
         case "player":
-            await open("Routine player") { send(.startRoutine(.anytime)) }
+            await openTwice("Routine player") { send(.startRoutine(.anytime)) }
             await measure("Routine player: ‹ ›") {
                 await repeatFor(window) {
                     send(.nextHabit); await pause(0.4)
@@ -133,8 +134,16 @@ enum PerfDriver {
         MainThreadMeter.mark("# OPEN \(name)|\(start)|\(now)")
     }
 
+    /// The first opening pays one-time costs (the keyboard, a screen's first build); the second is what people
+    /// feel every other time. Both are reported.
+    private static func openTwice(_ name: String, _ action: () -> Void) async {
+        await open(name + " (first)", action)
+        send(.close)
+        await pause(1.2)
+        await open(name + " (again)", action)
+    }
+
     private static func measure(_ name: String, _ work: () async -> Void) async {
-        MainThreadMeter.mark("# MEASURING")
         let start = now
         await work()
         MainThreadMeter.mark("# WINDOW \(name)|\(start)|\(now)")

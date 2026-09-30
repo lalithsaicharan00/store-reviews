@@ -104,13 +104,14 @@ enum IconLibrary {
 
 /// Picks an icon from the habit's name, so the choice is optional.
 enum IconSuggester {
+    /// Longest keyword first, so "walk the dog" beats "walk". Sorted once, not on every letter typed (30 Sep).
+    private static let candidates = IconLibrary.keywords.flatMap { symbol, keys in keys.map { ($0, symbol) } }
+        .sorted { $0.0.count > $1.0.count }
+
     static func symbol(for name: String) -> String? {
         let text = name.lowercased()
         guard text.count >= 3 else { return nil }
         let words = Set(text.split(whereSeparator: { !$0.isLetter && $0 != "-" }).map(String.init))
-        // Longest keyword first, so "walk the dog" beats "walk".
-        let candidates = IconLibrary.keywords.flatMap { symbol, keys in keys.map { ($0, symbol) } }
-            .sorted { $0.0.count > $1.0.count }
         for (key, symbol) in candidates {
             if key.contains(" ") ? text.contains(key) : words.contains(key) || words.contains(key + "s") { return symbol }
         }
