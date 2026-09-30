@@ -404,6 +404,14 @@ enum ReminderCheck {
         let overnight = scheduler.fireDate(ReminderTime(hour: 2, minute: 30), on: spring.adding(days: -1, calendar: pacific), store: store)!
         expect(LocalDay(overnight, calendar: pacific) == spring && pacific.component(.hour, from: overnight) == 3,
                "overnight reminder resolves DST on the actual next day")
+        store.settings.dayEndHour = 0
+        let collapsed = Habit(name: "Spring task", symbol: "calendar", color: .blue, kind: .task, dueDay: spring,
+                              reminders: [ReminderTime(hour: 2, minute: 30), ReminderTime(hour: 3, minute: 0)],
+                              remind: true, followUpMinutes: 15, createdAt: spring.adding(days: -10, calendar: pacific).date(calendar: pacific))
+        store.add(collapsed); await store.flush()
+        let springPlan = scheduler.plan(store, now: ReminderClock.date(on: spring, hour: 0, minute: 0, calendar: pacific)!)
+        expect(springPlan.filter { $0.followUp == 0 }.count == 1, "spring times collapsing onto one minute alert once")
+        expect(springPlan.filter { $0.followUp > 0 }.count == 3, "collapsed spring time keeps the remaining follow-ups")
         var india = pacific; india.timeZone = TimeZone(identifier: "Asia/Kolkata")!
         let local = LocalDay(year: 2024, month: 6, day: 1)
         let la = ReminderClock.date(on: local, hour: 9, minute: 0, calendar: pacific)!

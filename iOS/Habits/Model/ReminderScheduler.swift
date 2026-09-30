@@ -171,6 +171,7 @@ final class ReminderScheduler {
             for offset in 0..<Self.horizonDays {
                 let day = today.adding(days: offset, calendar: calendar)
                 guard store.isDue(habit, on: day, now: now) else { continue }
+                var seenFires = Set<Date>()
                 for placement in placements {
                     // A limit is never "not done", so it always reminds. Anything else stops once its row is done;
                     // for week and month rules, once the period's goal is met.
@@ -179,11 +180,17 @@ final class ReminderScheduler {
                         if done { continue }
                     }
                     var seenTimes = Set<Int>()
-                    let times = placement.times.sorted { ($0.minuteOfDay, $0.id.uuidString) < ($1.minuteOfDay, $1.id.uuidString) }
+                    let times: [(time: ReminderTime, fire: Date)] = placement.times.sorted { ($0.minuteOfDay, $0.id.uuidString) < ($1.minuteOfDay, $1.id.uuidString) }
                         .filter { (0...23).contains($0.hour) && (0...59).contains($0.minute) && seenTimes.insert($0.minuteOfDay).inserted }
                         .sorted { store.dayMinute($0.minuteOfDay) < store.dayMinute($1.minuteOfDay) }
-                    for (i, time) in times.enumerated() {
-                        guard let fire = fireDate(time, on: day, store: store) else { continue }
+                        .compactMap { time in
+                            guard let fire = fireDate(time, on: day, store: store), seenFires.insert(fire).inserted else { return nil }
+                            return (time, fire)
+                        }
+                    // Spring-forward times can collapse onto the same actual minute. Keep one
+                    // alert per item, and base follow-ups on the remaining distinct fire times.
+                    for (i, pair) in times.enumerated() {
+                        let time = pair.time, fire = pair.fire
                         let section = store.section(forMinute: time.minuteOfDay)
                         let base = "\(Self.prefix)\(habit.id.uuidString).\(time.id.uuidString).\(day.year)-\(day.month)-\(day.day)"
                         if fire > now {
@@ -193,7 +200,7 @@ final class ReminderScheduler {
                         // and the background refresh roll the window forward. Repeats stop at the row's next
                         // time (it reminds anyway) and at the end of the day.
                         guard let every = habit.followUpMinutes, every > 0, every <= 1440, !habit.atMost, offset <= 1 else { continue }
-                        let stop = i + 1 < times.count ? (fireDate(times[i + 1], on: day, store: store) ?? dayEnd(day, store: store)) : dayEnd(day, store: store)
+                        let stop = i + 1 < times.count ? times[i + 1].fire : dayEnd(day, store: store)
                         for k in 1...Self.maxFollowUps {
                             let repeatAt = fire.addingTimeInterval(Double(k * every * 60))
                             guard repeatAt < stop else { break }
