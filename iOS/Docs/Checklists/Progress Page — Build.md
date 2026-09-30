@@ -29,4 +29,13 @@ Written by Claude (Claude Code), 30 September 2026. Build Plan #60. Branch: `pro
 | 9b3a765 | Progress on grouped cards, not a `List` | **All 12 green** (Today 3, Timer 2, Progress 7) |
 | 111da4d | Progress again, plus routine, calendar, focus player, section headers, schedule, persistence, placement; speed | Progress 7/7, section headers, persistence, placement green; speed tests fine. Focus player (8), routine and calendar (5) and one schedule test failed: tests written for the old player (they look for an "Anytime routine" title and a "Close" button the player no longer has); being checked against `sidebar`, which has none of this work |
 
+| 72cf684 | Phases 2 and 3 (after a one-line build fix) | **All 15 green** (Progress 10: Year, Log a Slip, habit page Year and Runs added); speed: Progress 22% busy while switching Week, Month and Year non-stop, 8.5% of it building Year's numbers |
+| aa1442d | Day scores kept per data change | Speed fine; one Day sheet test hit a screenshot timeout on a slow runner (it passed on every other run) |
+| 15e5746 | Week-title formatter made once | **All 15 green**; the interval formatter was still 7% of Progress's time |
+| aa4e230 | Week titles from month names, no formatter | See the run |
+
+**Phases 2 and 3 (the user, 30 Sep: "if Phase 1 is completed then continue to Phase 2 and then Phase 3"):** built and green on GitHub. Log a Slip (#60d), quit history and sections, Year on Progress and the habit page, Runs, By Weekday, the 30-day rate; Full Day at 100/80/60%, money saved, the shareable year picture. Group stats wait for groups, which aren't built.
+
+**Tests written for the old routine player** (in `FocusPlayerUITests`, `RoutineCalendarUITests` and one in `ScheduleUITests`) fail on this branch. They look for a title and buttons the player hasn't had since 29 Sep, so they aren't caused by this work; the one place 60a touches them (a weekly habit ticked today is done for the day) is fixed in the player's fixture. Bringing those tests up to the current player is its own task.
+
 **Bugs found and fixed while building:** the Month crash and hang (a `List` re-measuring rows forever; Progress now uses grouped cards on a scroll view, and the Design Rules say so); the golden cases' weekday; G1's tick days after the date shift.
