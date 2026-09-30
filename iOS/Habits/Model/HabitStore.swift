@@ -165,17 +165,11 @@ final class HabitStore {
     }
 
     /// Adds an entry, keeping the indexes in step; only that habit's remembered numbers are forgotten.
-    private func insertEntry(_ entry: Entry, at index: Int? = nil) {
+    private func insertEntry(_ entry: Entry, at index: Int? = nil, habitIndex: Int? = nil, dayIndex: Int? = nil) {
         if let index {
             entries.insert(entry, at: index)
-            if entriesByHabit != nil {
-                let position = entriesByHabit?[entry.habitID]?.firstIndex { $0.createdAt > entry.createdAt } ?? (entriesByHabit?[entry.habitID]?.count ?? 0)
-                entriesByHabit?[entry.habitID, default: []].insert(entry, at: position)
-            }
-            if entriesByDay != nil {
-                let position = entriesByDay?[entry.habitID]?[entry.day]?.firstIndex { $0.createdAt > entry.createdAt } ?? (entriesByDay?[entry.habitID]?[entry.day]?.count ?? 0)
-                entriesByDay?[entry.habitID, default: [:]][entry.day, default: []].insert(entry, at: position)
-            }
+            if let habitIndex { entriesByHabit?[entry.habitID, default: []].insert(entry, at: habitIndex) }
+            if let dayIndex { entriesByDay?[entry.habitID, default: [:]][entry.day, default: []].insert(entry, at: dayIndex) }
         } else {
             entries.append(entry)
             entriesByHabit?[entry.habitID, default: []].append(entry)
@@ -1309,7 +1303,7 @@ final class HabitStore {
         guard !TimerPresence.playerOpen, entry.source == .today || entry.source == .manual || entry.source == .timer else { return }
         undoOffer = entry
         noteOffer = .init(habit: entry.habitID, day: entry.day)
-        AccessibilityNotification.Announcement("Logged. Undo is available.").post()
+        if UIAccessibility.isVoiceOverRunning { AccessibilityNotification.Announcement("Logged. Undo is available.").post() }
     }
 
     /// Editing preserves identity, the tracking day, step, slot, time zone and source.
@@ -1327,7 +1321,9 @@ final class HabitStore {
             guard today(now: date) == entry.day, date <= .now, date >= (habit.quitSince ?? habit.createdAt) else { return }
             entry.createdAt = date
         }
-        withAnimation { removeEntry(at: index); insertEntry(entry, at: index) }
+        let habitIndex = entriesByHabit?[entry.habitID]?.firstIndex { $0.id == id }
+        let dayIndex = entriesByDay?[entry.habitID]?[entry.day]?.firstIndex { $0.id == id }
+        withAnimation { removeEntry(at: index); insertEntry(entry, at: index, habitIndex: habitIndex, dayIndex: dayIndex) }
         let updated = entry
         perform { [self] in
             try await repository.editEntry(id: updated.id.uuidString, value: updated.value, createdAt: updated.createdAt.millis)

@@ -641,13 +641,13 @@ struct RoutinePlayer: View {
     private func change(_ message: String?, captureUndo: Bool = true, action: () -> Void) {
         guard !busy, !expired, session.day == store.today() else { return }
         busy = true
-        let before = Set(store.entries.map(\.id))
         let habitID = current?.id
+        let before = Set(habitID.map { store.entries(of: $0, on: session.day).map(\.id) } ?? [])
         action()
         Task { @MainActor in
             await store.flush()
             if store.problem == nil, current?.id == habitID {
-                undoID = captureUndo ? store.entries.last { $0.habitID == habitID && !before.contains($0.id) }?.id : nil
+                undoID = captureUndo ? habitID.flatMap { id in store.entries(of: id, on: session.day).last { !before.contains($0.id) } }?.id : nil
                 withAnimation(animation) { feedback = message }
                 if message != nil { feedbackCount += 1; hideFeedbackSoon() }
             }
@@ -746,14 +746,14 @@ struct RoutinePlayer: View {
             busy = false
             guard store.problem == nil else { return }
             withAnimation(animation) { feedback = nil; undoID = nil }
-            manualEntryIDs = Set(store.entries.map(\.id))
+            manualEntryIDs = Set(current.map { store.entries(of: $0.id, on: session.day).map(\.id) } ?? [])
             showLog = true
         }
     }
     /// After Add Time / Add Amount: show what was saved, and a timer that was running runs again, Cancel included
     /// (it used to stay paused without a word, found by hand 29 Sep). Its earlier time was saved before the sheet.
     private func manualLogFinished() {
-        if let habit = current, let entry = store.entries.last(where: { $0.habitID == habit.id && !manualEntryIDs.contains($0.id) }) {
+        if let habit = current, let entry = store.entries(of: habit.id, on: session.day).last(where: { !manualEntryIDs.contains($0.id) }) {
             undoID = entry.id
             withAnimation(animation) { feedback = habit.kind == .duration ? "Time saved" : "Amount saved" }
             feedbackCount += 1

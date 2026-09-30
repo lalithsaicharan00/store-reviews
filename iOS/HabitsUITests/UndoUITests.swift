@@ -18,24 +18,39 @@ final class UndoUITests: XCTestCase {
         issue.add(shot)
         super.record(issue)
     }
+    private func shot(_ name: String) {
+        let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
     private func daySheet(_ name: String) {
         app.buttons["All habits"].tap()
         app.revealAndTap(app.staticTexts[name])
         let today = app.buttons["habit-today-progress"]
         XCTAssertTrue(today.waitForExistence(timeout: 5))
         today.tap()
-        XCTAssertTrue(app.staticTexts["day-result"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 5))
     }
     private var entries: XCUIElementQuery { app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'entry-'")) }
+
+    func testStoreCorrectionsRecalculateAndPersist() {
+        app.terminate()
+        app.launchArguments = ["-uitest", "-undocheck"]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["Undo: all checks passed"].waitForExistence(timeout: 15))
+    }
 
     func testEditAndDeleteOneEntryInDaySheet() {
         daySheet("Drink water")
         XCTAssertTrue(app.staticTexts["1/2 glasses"].exists)
         XCTAssertEqual(entries.count, 1)
+        shot("undo-day-sheet")
         entries.firstMatch.tap()
         XCTAssertTrue(app.navigationBars["Edit Entry"].waitForExistence(timeout: 3))
         let field = app.textFields["entry-amount"]
         field.tap()
+        shot("undo-entry-editor-keyboard")
         field.typeText("3") // existing number is selected by the app's native number-field behaviour
         app.navigationBars["Edit Entry"].buttons["Save"].tap()
         XCTAssertTrue(app.staticTexts["3/2 glasses"].waitForExistence(timeout: 3))
@@ -51,7 +66,9 @@ final class UndoUITests: XCTestCase {
         app.buttons["day-add-entry"].tap()
         XCTAssertTrue(app.navigationBars["Log Amount"].waitForExistence(timeout: 3))
         XCTAssertEqual(entries.count, 1)
-        entries.firstMatch.tap()
+        app.swipeUp() // dismiss the log keyboard to reveal history
+        shot("undo-log-sheet")
+        app.revealAndTap(entries.firstMatch)
         XCTAssertTrue(app.navigationBars["Edit Entry"].waitForExistence(timeout: 3))
         app.buttons["Delete Entry"].tap()
         XCTAssertTrue(app.staticTexts["No entries yet"].waitForExistence(timeout: 3))
@@ -80,10 +97,12 @@ final class UndoUITests: XCTestCase {
         app.revealAndTap(app.staticTexts["Stretch"])
         let today = app.buttons["habit-today-progress"]
         XCTAssertTrue(today.waitForExistence(timeout: 3))
-        let calendarDay = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-' AND enabled == YES")).firstMatch
+        let calendarDays = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-' AND enabled == YES"))
+        XCTAssertGreaterThan(calendarDays.count, 0)
+        let calendarDay = calendarDays.element(boundBy: calendarDays.count - 1) // last enabled day is today
         XCTAssertTrue(calendarDay.exists)
         calendarDay.tap()
-        XCTAssertTrue(app.staticTexts["day-result"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["No entries yet"].exists, "Opening a calendar day never logs")
         app.switches["day-done"].tap()
         XCTAssertTrue(app.staticTexts["3/3"].waitForExistence(timeout: 3))

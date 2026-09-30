@@ -152,7 +152,7 @@ struct TodayView: View {
         }
     }
     /// Today comes back the moment the player starts closing, so it's drawn while the cover slides away.
-    private var covered: Bool { playerCovering && routine != nil }
+    private var covered: Bool { showAllHabits || (playerCovering && routine != nil) }
 
     /// Moves `clock` on at each of `TodaySchedule`'s moments until Today is covered or the goal times change.
     private func tick() async {

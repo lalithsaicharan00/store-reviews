@@ -68,7 +68,7 @@ struct DaySheet: View {
             .onPerfCommand { action in
                 switch action {
                 case .closeDay: dismiss()
-                case .openEntry: perfEntry = store.entries(of: habit.id, on: day).last
+                case .openEntry: if destination == nil { perfEntry = store.entries(of: habit.id, on: day).last }
                 case .openLog: destination = .log
                 default: break
                 }

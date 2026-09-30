@@ -120,6 +120,14 @@ jobs:
         working-directory: iOS
         run: Tools/perf/measure_perf.sh "$SIM" perf
 
+      - name: Export UI screenshots
+        if: always()
+        working-directory: iOS
+        run: |
+          if [ -d Results.xcresult ]; then
+            xcrun xcresulttool export attachments --path Results.xcresult --output-path screenshots
+          fi
+
       - name: Write the summary
         if: always()
         working-directory: iOS
@@ -178,5 +186,6 @@ jobs:
             iOS/test.log
             iOS/summary.md
             iOS/perf
+            iOS/screenshots
             iOS/Results.xcresult
           retention-days: 7

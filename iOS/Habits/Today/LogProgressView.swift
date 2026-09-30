@@ -94,6 +94,8 @@ struct LogProgressView: View {
             }
             .sheet(isPresented: $showDay) { DaySheet(habit: habit, day: day) }
             .selectsNumbersOnFocus()
+            .scrollDismissesKeyboard(.interactively)
+            .task { if !timed { typing = true } }
             // "Log", never "Add Time": this records time done by hand; "add time" reads as adding extra (the user, 29 Sep).
             .navigationDestination(item: $perfEntry) { EntryEditView(habit: habit, entry: $0) }
             .navigationTitle(timed ? "Log Time" : "Log Amount")

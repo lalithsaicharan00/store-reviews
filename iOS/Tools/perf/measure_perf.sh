@@ -35,7 +35,8 @@ for S in $SCENARIOS; do
   # after launch; the driver waits 8 s before measuring, so that pause never lands in a window (run 9 showed a
   # 3.4 s "stall" that was only the attach).
   # 38 s covers the longest scenario (new-habit, about 33 s); the app stays open until the sampler has written.
-  [ -n "$PID" ] && sample "$PID" 75 1 -file "$OUT/sample-$S.txt" > /dev/null 2>&1 &
+  case "$S" in day-sheet|log-sheet) SAMPLE_SECONDS=75;; *) SAMPLE_SECONDS=38;; esac
+  [ -n "$PID" ] && sample "$PID" "$SAMPLE_SECONDS" 1 -file "$OUT/sample-$S.txt" > /dev/null 2>&1 &
   SAMPLER=$!
   WAITED=0
   until grep -q "^# DONE" "$REC" 2>/dev/null || [ $WAITED -ge 180 ]; do sleep 1; WAITED=$((WAITED + 1)); done
