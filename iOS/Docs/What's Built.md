@@ -48,6 +48,9 @@ This is the short list of what the iPhone app can do today. The reasons behind e
 - [x] Past days can be filled in
 - [x] Edit Times of Day from Today
 - [x] Hidden on days a habit isn't scheduled
+- [x] A "3 times a week" (or monthly) habit counts as done for the day once ticked that day: "N left", the ✓ group, reminders, the routine player's segments and the day bar; each ✓ still adds one toward the week (30 Sep 2026)
+- [x] A daily limit isn't "met" before the day ends; its streak counts today only once the day is over (30 Sep 2026)
+- [x] The day bar and calendar rings give part credit (a 6 of 8 glasses day fills its ring part of the way)
 
 ## Editing a habit
 
@@ -99,13 +102,27 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Select several to pause, archive or delete; drag to reorder (Today follows)
 - [x] Archiving keeps all history and frees a free slot
 - [x] Habit page: its sentence and description, streak, best, done this month, a month calendar of its days, notes, Edit, Pause / Resume, Archive, Delete
+- [x] Habit page, Progress Phase 1 (30 Sep 2026): a total line under the numbers ("213 days done since 12 Mar 2025"), tap a calendar day for its value and note, and **Over Time** for every type but quit: Week · Month · Year · All, the type's numbers, a count bar (Done · Part done · Not done · Skipped · Paused), a chart with the goal line, By Step for checklists, a running total against a pace line for week and month totals, footnotes when the goal changed
+- [x] Archiving keeps an archive date: the days after it don't count, and Restore turns the archived stretch into a pause
 
 ## The ≡ menu (final, 30 Sep 2026)
 
 - [x] ≡ at the top left (replaces the avatar); Today's top bar is ≡ · Filter · +
 - [x] Slides in over Today: opens with ≡ or a swipe from the left edge; closes with a tap on Today, a drag left, or a row
 - [x] Most used first: Today · Progress · Habits · Tasks, then Times of Day · Reminders · Appearance, Backup & Export · Privacy, Plus, Help & Feedback · About
-- [x] Wired: Habits and Tasks (All Habits, split), Times of Day, Plus. Progress and the settings rows open a "coming" page for now
+- [x] Wired: Progress, Habits and Tasks (All Habits, split), Times of Day, Plus. The settings rows open a "coming" page for now
+
+## Progress (≡ → Progress; Phase 1, 30 Sep 2026)
+
+- [x] Week and Month with ‹ ›, opening on the current one; ‹ stops at the first habit's start
+- [x] Overview: a ring per day (planned habits done, with part credit), three numbers (Done of planned, Full days, Weekly or Monthly goals met), and the last period's line
+- [x] A row per habit with its week marks or month dots and its type's own words ("4 of 5 days · 80%", "2 of 3 so far", "46 glasses · 5 of 7 days", "Avg 1 cup a day · limit 3 cups"); Quitting and Archived sections
+- [x] Tap a day: the Day sheet (each habit's mark and value, notes) with Show on Today; tap a habit: its page at Over Time
+- [x] How It's Counted with the legend; view options Show Percentages and Show Streaks (streaks also on Today's rows and the habit page)
+- [x] Nothing is counted against anyone: skipped, paused, archived and not-its-day days are neutral; a weekly goal's empty day is never "not done"; a limit is judged when the day ends
+- [x] Checked in the app with 17 golden cases (`-progresscheck`) and `ProgressUITests`, both in `[ios-ci]`
+- [ ] Phase 2: Year view, Runs, By Weekday, the 30-day rate, quit sections (needs Log a Slip)
+- [ ] Phase 3: full day at 100/80/60%, money saved, a shareable year image, group stats
 
 ## Routine player (▶ Start on a time of day)
 
@@ -127,7 +144,7 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [ ] Easy undo after checking or logging
 - [ ] Completion animation before a done row moves down
 - [ ] Section open and close animation
-- [ ] Progress and statistics screens
+- [ ] Progress Phases 2 and 3 (Phase 1 is built: see Progress above)
 - [ ] Settings (export and import, backups on the phone, support, day and week start, theme, restore purchase)
 - [ ] Onboarding (first launch)
 - [ ] Home-screen and lock-screen widgets
