@@ -939,6 +939,9 @@ private struct FocusProgressCircle<Content: View>: View {
                 .multilineTextAlignment(.center)
         }
         .frame(width: diameter, height: diameter)
+        // A container with its own identifier: without `.contain`, the identifier replaced the children's own
+        // ("focus-quantity", "focus-checklist-progress"), so VoiceOver tools and UI tests couldn't find them.
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("focus-progress-circle")
     }
 }
