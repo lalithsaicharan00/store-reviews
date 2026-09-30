@@ -76,6 +76,11 @@ struct EntryEditView: View {
         return v
     }
 
+    private var validSlipTime: Bool {
+        habit.kind != .quit || (store.today(now: slipTime) == entry.day && slipTime <= .now
+                               && slipTime >= min(habit.quitSince ?? habit.createdAt, habit.createdAt))
+    }
+
     var body: some View {
         Form {
             Section {
@@ -92,7 +97,7 @@ struct EntryEditView: View {
             } else if habit.kind == .quit {
                 let start = store.calendar.startOfDay(for: entry.day.date(calendar: store.calendar)).addingTimeInterval(Double(store.settings.dayEndHour) * 3600)
                 let end = store.calendar.date(byAdding: .day, value: 1, to: start)!.addingTimeInterval(-1)
-                Section { DatePicker("Slipped at", selection: $slipTime, in: max(start, habit.quitSince ?? habit.createdAt)...max(max(start, habit.quitSince ?? habit.createdAt), min(end, .now))) }
+                Section { DatePicker("Slipped at", selection: $slipTime, in: max(start, min(habit.quitSince ?? habit.createdAt, habit.createdAt))...max(max(start, min(habit.quitSince ?? habit.createdAt, habit.createdAt)), min(end, .now))) }
             } else {
                 Section {
                     LabeledContent(habit.kind == .check ? "Times" : "Amount") {
@@ -111,7 +116,7 @@ struct EntryEditView: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") {
                     if let value { store.editEntry(entry.id, value: value, at: habit.kind == .quit ? slipTime : nil); dismiss() }
-                }.disabled(value == nil)
+                }.disabled(value == nil || !validSlipTime)
             }
             ToolbarItemGroup(placement: .keyboard) { if typing { Spacer(); Button("Done") { typing = false } } }
         }

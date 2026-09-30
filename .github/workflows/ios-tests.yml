@@ -189,3 +189,15 @@ jobs:
             iOS/screenshots
             iOS/Results.xcresult
           retention-days: 7
+
+      # Small enough to inspect through the connector; xcresult remains in the full artifact above.
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-review
+          path: |
+            iOS/summary.md
+            iOS/test.log
+            iOS/perf
+            iOS/screenshots
+          retention-days: 7

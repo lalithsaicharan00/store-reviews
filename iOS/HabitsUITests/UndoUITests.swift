@@ -16,6 +16,10 @@ final class UndoUITests: XCTestCase {
         shot.name = name
         shot.lifetime = .keepAlways
         issue.add(shot)
+        let tree = XCTAttachment(string: app?.debugDescription ?? "No app")
+        tree.name = "accessibility-tree"
+        tree.lifetime = .keepAlways
+        issue.add(tree)
         super.record(issue)
     }
     private func shot(_ name: String) {
@@ -33,6 +37,26 @@ final class UndoUITests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 5))
     }
     private var entries: XCUIElementQuery { app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'entry-'")) }
+
+    func testStoppingTimerKeepsDaySheetOpenAndSecondsCanBeEdited() {
+        app.revealAndTap(app.buttons["Start Read a little timer"])
+        let row = app.staticTexts["Read a little"]
+        app.reveal(row)
+        row.press(forDuration: 1.2)
+        app.buttons["Edit Today's Progress…"].tap()
+        XCTAssertTrue(app.buttons["Pause timer and save time"].waitForExistence(timeout: 3))
+        app.buttons["Pause timer and save time"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.exists, "Stopping a timer keeps its sheet open")
+        XCTAssertEqual(entries.count, 1)
+        entries.firstMatch.tap()
+        let seconds = app.textFields["entry-seconds"]
+        app.revealAndTap(seconds)
+        seconds.typeText("30")
+        shot("undo-time-editor-keyboard")
+        app.navigationBars["Edit Entry"].buttons["Save"].tap()
+        XCTAssertTrue(entries.firstMatch.waitForExistence(timeout: 3))
+        XCTAssertTrue(entries.firstMatch.label.contains("30 sec"))
+    }
 
     func testStoreCorrectionsRecalculateAndPersist() {
         app.terminate()
@@ -65,7 +89,13 @@ final class UndoUITests: XCTestCase {
         daySheet("Drink water")
         app.buttons["day-add-entry"].tap()
         XCTAssertTrue(app.navigationBars["Log Amount"].waitForExistence(timeout: 3))
-        app.swipeUp() // dismiss the log keyboard to reveal history
+        let keyboardDone = app.toolbars.buttons["Done"].firstMatch
+        if keyboardDone.waitForExistence(timeout: 3) { keyboardDone.tap() }
+        let logForm = app.collectionViews["log-form"]
+        for _ in 0..<5 {
+            if entries.firstMatch.exists && entries.firstMatch.isHittable { break }
+            logForm.swipeUp()
+        }
         XCTAssertTrue(app.reveal(entries.firstMatch))
         XCTAssertEqual(entries.count, 1)
         shot("undo-log-sheet")
@@ -105,9 +135,9 @@ final class UndoUITests: XCTestCase {
         calendarDay.tap()
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["No entries yet"].exists, "Opening a calendar day never logs")
-        app.switches["day-done"].tap()
+        app.switches["day-done"].coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
         XCTAssertTrue(app.staticTexts["3/3"].waitForExistence(timeout: 3))
-        app.switches["day-done"].tap()
+        app.switches["day-done"].coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
         XCTAssertTrue(app.staticTexts["No entries yet"].waitForExistence(timeout: 3))
         let skip = app.buttons.matching(NSPredicate(format: "label IN {'Skip today','Skip this day'}")).firstMatch
         app.revealAndTap(skip)

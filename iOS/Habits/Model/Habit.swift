@@ -240,7 +240,7 @@ enum EntrySource: String, Codable, Sendable {
         case .routine: "Routine player"
         case .reminder: "Reminder"
         case .timer: "Timer"
-        case .daySheet: "Day sheet"
+        case .daySheet: "History"
         }
     }
 }

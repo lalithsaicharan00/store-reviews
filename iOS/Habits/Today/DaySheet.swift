@@ -24,7 +24,7 @@ struct DaySheet: View {
             Form {
                 Section {
                     Text(current.name).font(.headline)
-                    if store.startDay(of: current) <= store.today() {
+                    if day >= store.startDay(of: current), store.startDay(of: current) <= store.today() {
                         DatePicker("Day", selection: Binding(get: { day.date(calendar: store.calendar) }, set: { day = LocalDay($0, calendar: store.calendar) }),
                                    in: store.startDay(of: current).date(calendar: store.calendar)...store.today().date(calendar: store.calendar), displayedComponents: .date)
                     } else {
@@ -32,6 +32,9 @@ struct DaySheet: View {
                     }
                     LabeledContent("Result", value: store.dayResult(current, on: day))
                         .accessibilityIdentifier("day-result")
+                    if !ruled.frequency.isDayBased && !ruled.frequency.isFlexible {
+                        LabeledContent("Goal", value: HabitCopy.capitalized(HabitCopy.plan(ruled, weekStart: store.settings.weekStart)))
+                    }
                     if ruled.kind == .duration, day == store.today(), store.timers[habit.id] != nil {
                         Button("Pause timer and save time", systemImage: "pause.fill") {
                             store.stopTimer(current, on: day)
@@ -128,7 +131,7 @@ struct SlipEntryView: View {
     var body: some View {
         let start = store.calendar.startOfDay(for: day.date(calendar: store.calendar)).addingTimeInterval(Double(store.settings.dayEndHour) * 3600)
         let end = store.calendar.date(byAdding: .day, value: 1, to: start)!.addingTimeInterval(-1)
-        let lower = max(start, habit.quitSince ?? habit.createdAt)
+        let lower = max(start, min(habit.quitSince ?? habit.createdAt, habit.createdAt))
         let upper = min(end, .now)
         Form {
             if lower <= upper {
@@ -155,6 +158,20 @@ extension HabitStore {
         let rule = rule(habit, on: day)
         let progress = dayProgress(of: rule, on: day)
         let goal = dayGoal(of: rule)
+        // A period total has no invented daily target. This row describes only the selected day;
+        // the saved weekly/monthly/yearly plan is shown separately in the sheet.
+        if !rule.frequency.isDayBased && !rule.frequency.isFlexible {
+            switch rule.kind {
+            case .amount(let unit, _): return HabitCopy.amount(progress, unit) + " logged"
+            case .duration: return Format.minutes(progress) + " logged"
+            case .check: return HabitCopy.amount(progress, rule.checkUnit ?? "times") + " logged"
+            default: break
+            }
+        }
+        if rule.atMost {
+            if rule.kind == .duration { return "\(Format.minutes(progress)) logged · limit \(Format.minutes(goal))" }
+            if case .amount(let unit, _) = rule.kind { return "\(HabitCopy.amount(progress, unit)) logged · limit \(HabitCopy.amount(goal, unit))" }
+        }
         switch rule.kind {
         case .quit: return entries(of: habit.id, on: day).isEmpty ? "No slips" : "Slipped"
         case .task: return progress > 0 ? "Done" : "Not done"

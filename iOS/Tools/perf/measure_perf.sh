@@ -31,27 +31,39 @@ for S in $SCENARIOS; do
   rm -f "$REC"
   LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-history -perf-meter -perf-drive "$S" 2>&1)
   PID=$(echo "$LAUNCH" | sed -n 's/.*: *\([0-9][0-9]*\)$/\1/p' | tail -1)
-  # `sample` pauses the app for a moment (up to seconds on GitHub's Mac) while it attaches, so it starts right
-  # after launch; the driver waits 8 s before measuring, so that pause never lands in a window (run 9 showed a
-  # 3.4 s "stall" that was only the attach).
-  # 38 s covers the longest scenario (new-habit, about 33 s); the app stays open until the sampler has written.
-  case "$S" in day-sheet|log-sheet) SAMPLE_SECONDS=75;; *) SAMPLE_SECONDS=38;; esac
-  [ -n "$PID" ] && sample "$PID" "$SAMPLE_SECONDS" 1 -file "$OUT/sample-$S.txt" > /dev/null 2>&1 &
-  SAMPLER=$!
+  # Measure without a profiler: sample's attach can suspend the app for >8 seconds on a busy
+  # hosted Mac. Profile a separate launch below, so that suspension cannot enter these windows.
   WAITED=0
   until grep -q "^# DONE" "$REC" 2>/dev/null || [ $WAITED -ge 180 ]; do sleep 1; WAITED=$((WAITED + 1)); done
-  wait $SAMPLER 2>/dev/null
   cp "$REC" "$OUT/stalls-$S.txt" 2>/dev/null
   xcrun simctl terminate "$SIM" "$BUNDLE" > /dev/null 2>&1
 
   RESULT=$(python3 "$HERE/analyze_stalls.py" "$OUT/stalls-$S.txt")
   echo "$RESULT" | sed -n 's/^open=/- /p' >> "$OPENS"
   BUSY=""; TOP=""
-  if [ -s "$OUT/sample-$S.txt" ]; then
-    SAMPLED=$(python3 "$HERE/analyze_sample.py" "$OUT/sample-$S.txt" 4)
-    BUSY="$(echo "$SAMPLED" | sed -n 's/^busy=//p') %"
-    TOP=$(echo "$SAMPLED" | tail -n +3 | sed 's/^ *//' | paste -sd ';' - | sed 's/;/<br>/g')
-  fi
+  # Samples diagnose code; they are never mixed into the timing record above.
+  case " ${PERF_PROFILE_SCENARIOS:-scroll-today new-habit day-sheet log-sheet} " in
+    *" $S "*)
+      rm -f "$REC"
+      LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-history -perf-meter -perf-drive "$S" 2>&1)
+      PID=$(echo "$LAUNCH" | sed -n 's/.*: *\([0-9][0-9]*\)$/\1/p' | tail -1)
+      case "$S" in day-sheet|log-sheet) SAMPLE_SECONDS=75;; *) SAMPLE_SECONDS=38;; esac
+      if [ -n "$PID" ]; then
+        sample "$PID" "$SAMPLE_SECONDS" 1 -file "$OUT/sample-$S.txt" > /dev/null 2>&1 &
+        SAMPLER=$!
+        WAITED=0
+        until grep -q "^# DONE" "$REC" 2>/dev/null || [ $WAITED -ge 180 ]; do sleep 1; WAITED=$((WAITED + 1)); done
+        wait "$SAMPLER" 2>/dev/null
+        cp "$REC" "$OUT/profile-stalls-$S.txt" 2>/dev/null
+      fi
+      xcrun simctl terminate "$SIM" "$BUNDLE" > /dev/null 2>&1
+      if [ -s "$OUT/sample-$S.txt" ]; then
+        SAMPLED=$(python3 "$HERE/analyze_sample.py" "$OUT/sample-$S.txt" 4)
+        BUSY="$(echo "$SAMPLED" | sed -n 's/^busy=//p') % (separate profile)"
+        TOP=$(echo "$SAMPLED" | tail -n +3 | sed 's/^ *//' | paste -sd ';' - | sed 's/;/<br>/g')
+      fi
+      ;;
+  esac
   WINDOWS=$(echo "$RESULT" | grep '^window=')
   if [ -z "$WINDOWS" ]; then
     NOTE=$(echo "$RESULT" | sed -n 's/^note=//p' | paste -sd ' ' -)
@@ -63,6 +75,8 @@ for S in $SCENARIOS; do
 done
 
 {
+  echo
+  echo "Timing runs have no profiler attached. Main-thread busy and function names come from separate profiling launches. Command delivery does not invalidate covered screens (30 Sep 2026)."
   echo
   echo "Opening a screen (longest stall in the 1.5 s after the command; under 100 ms feels instant):"
   echo

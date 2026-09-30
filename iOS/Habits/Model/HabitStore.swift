@@ -420,7 +420,7 @@ final class HabitStore {
 
     /// Skips (or un-skips) the habit on `day`. Saved like any other change.
     func setSkipped(_ habit: Habit, on day: LocalDay, _ skipped: Bool) {
-        guard day <= today(), canSkip(rule(habit, on: day)) else { return }
+        guard day <= today(), !skipped || canSkip(rule(habit, on: day)) else { return }
         var days = skips[habit.id] ?? []
         if skipped { days.insert(day) } else { days.remove(day) }
         withAnimation { skips[habit.id] = days.isEmpty ? nil : days }
@@ -1318,7 +1318,7 @@ final class HabitStore {
         if kind == .check, value.rounded() != value { return }
         entry.value = value
         if kind == .quit, let date {
-            guard today(now: date) == entry.day, date <= .now, date >= (habit.quitSince ?? habit.createdAt) else { return }
+            guard today(now: date) == entry.day, date <= .now, date >= min(habit.quitSince ?? habit.createdAt, habit.createdAt) else { return }
             entry.createdAt = date
         }
         let habitIndex = entriesByHabit?[entry.habitID]?.firstIndex { $0.id == id }
@@ -1347,7 +1347,7 @@ final class HabitStore {
 
     func slip(_ habit: Habit, on day: LocalDay, at date: Date, source: EntrySource = .today) {
         guard habit.kind == .quit, day <= today(), today(now: date) == day,
-              date <= .now, date >= (habit.quitSince ?? habit.createdAt) else { return }
+              date <= .now, date >= min(habit.quitSince ?? habit.createdAt, habit.createdAt) else { return }
         addLogged(Entry(habitID: habit.id, day: day, value: 1, createdAt: date, source: source))
     }
 

@@ -23,23 +23,18 @@ extension View {
 
 #if DEBUG
 import UIKit
+import Combine
 
-/// The latest command. Each is new (its own ID), so the same action twice in a row still arrives.
-@Observable final class PerfRemote {
+/// Debug-only delivery does not invalidate every covered screen on each simulated keystroke.
+final class PerfRemote {
     static let shared = PerfRemote()
-    struct Command: Equatable {
-        let id = UUID()
-        let action: PerfAction
-    }
-    var command: Command?
+    let commands = PassthroughSubject<PerfAction, Never>()
 }
 
 private struct PerfCommandReceiver: ViewModifier {
     let handle: (PerfAction) -> Void
     func body(content: Content) -> some View {
-        content.onChange(of: PerfRemote.shared.command) { _, command in
-            if let command { handle(command.action) }
-        }
+        content.onReceive(PerfRemote.shared.commands, perform: handle)
     }
 }
 
@@ -50,9 +45,11 @@ private struct PerfCommandReceiver: ViewModifier {
 /// ("# WINDOW name start end") and each screen opening ("# OPEN name start end") into the stall record, and
 /// "# DONE" at the end.
 enum PerfDriver {
+    private static var started = false
     static func startIfAsked(store: HabitStore) {
         let arguments = ProcessInfo.processInfo.arguments
-        guard let flag = arguments.firstIndex(of: "-perf-drive"), flag + 1 < arguments.count else { return }
+        guard !started, let flag = arguments.firstIndex(of: "-perf-drive"), flag + 1 < arguments.count else { return }
+        started = true
         let scenario = arguments[flag + 1]
         Task { @MainActor in
             await pause(8) // launch settles, and the script's sampler finishes attaching (it pauses the app)
@@ -155,7 +152,7 @@ enum PerfDriver {
         }
     }
 
-    private static func send(_ action: PerfAction) { PerfRemote.shared.command = .init(action: action) }
+    private static func send(_ action: PerfAction) { PerfRemote.shared.commands.send(action) }
 
     private static func pause(_ seconds: Double) async { try? await Task.sleep(for: .seconds(seconds)) }
 

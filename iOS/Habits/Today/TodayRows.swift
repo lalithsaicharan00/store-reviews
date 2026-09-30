@@ -73,12 +73,10 @@ struct HabitRow: View {
     @Environment(HabitStore.self) private var store
 
     var body: some View {
-        if habit.kind == .duration, isToday, let start = store.timers[habit.id] {
-            // A running timer redraws its row every second: the clock ticks and the fill grows, so it's
-            // plain that time is being counted. Anchor it at the timer's own start: `.now` changes the
-            // schedule on every redraw, and `.distantPast` replays every missed tick; both redraw
-            // nonstop and freeze the app (28 Sep).
-            TimelineView(.periodic(from: start, by: 1)) { context in
+        if habit.kind == .duration, isToday {
+            // Keep the same host when a running timer stops. Replacing TimelineView with a plain row
+            // could dismiss a sheet opened from that row; a stopped/covered clock simply has no ticks.
+            TimelineView(HabitRowClockSchedule(start: sheet == nil ? store.timers[habit.id] : nil)) { context in
                 row(now: context.date)
             }
         } else {
@@ -628,3 +626,12 @@ private struct NoteLineLabel: LabelStyle {
 
 /// The band at the top of every row that the icon, streak and button sit in (the row's minimum height).
 enum RowBand { static let height: CGFloat = 44 }
+
+/// A fixed timer anchor while running, one initial draw while stopped or covered by its sheet.
+private struct HabitRowClockSchedule: TimelineSchedule {
+    let start: Date?
+    func entries(from date: Date, mode: Mode) -> AnySequence<Date> {
+        guard let start else { return AnySequence([date]) }
+        return AnySequence(PeriodicTimelineSchedule(from: start, by: 1).entries(from: date, mode: mode))
+    }
+}
