@@ -262,3 +262,11 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
 - **One screen per thing, however many ways in:** ≡ → Times of Day and Today's "Edit Times of Day" show the same `TimesOfDayList`; Habits and Tasks are one `AllHabitsView(kind:)`.
 - **Open:** ≡, or a swipe from Today's left edge (only on Today itself: on a pushed page that swipe is Back). **Close:** tap the dimmed Today, drag the menu left, choose a row, or VoiceOver's escape. Reduce Motion fades it instead of sliding.
 - **Speed:** Today never reads `MenuModel.isOpen` or `drag`, so the menu opening, closing or following a finger never redraws Today. Keep it that way; `PerformanceUITests.testMenuOpenClose` measures it.
+
+## Sidebar data, tasks and reminders — 30 September 2026
+
+- Backup/export/restore are available to free users. Delete App removes the sandbox; explain free external backup and Offload clearly. Never promise local-only uninstall retention. Restore must preserve current edits and tombstones; validate before changing the destination.
+- Tasks lists every saved task, including future/completed/repeating/archived. Tasks do not consume the free habit cap, and unarchiving a task remains free. Use the same native task form; opening an old task must keep its original date.
+- Reminders is a native settings Form over existing rules, with permission recovery and item editing. Opening it does not request authorization. Serialize reconciliation; use saved action event IDs, current target validation and wall-clock dates. Stop outdated alarms, retry/report scheduling errors, and reserve the shared notification budget for timers.
+- The latest queued alert date is not a guarantee for every item. Explain nearest-first capacity and iOS background limits. Physical-device delivery remains a separate check. Reliability details supersede §6 of Pending to Implement.md in its sidebar addendum.
+- Keep Help & Feedback and About blank, as requested by the user.

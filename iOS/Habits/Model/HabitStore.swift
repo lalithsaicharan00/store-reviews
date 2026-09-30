@@ -28,8 +28,10 @@ final class HabitStore {
     /// Shown to the user when a write fails or the data can't be read.
     var problem: String?
 
-    init(repository: HabitRepository) {
+    @ObservationIgnored private let suppliedCalendar: Calendar?
+    init(repository: HabitRepository, calendar: Calendar? = nil) {
         self.repository = repository
+        suppliedCalendar = calendar
     }
 
     private(set) var habits: [Habit] = []
@@ -90,7 +92,7 @@ final class HabitStore {
     }
 
     var calendar: Calendar {
-        var c = Calendar.current
+        var c = suppliedCalendar ?? Calendar.current
         c.firstWeekday = settings.weekStart
         return c
     }
@@ -99,7 +101,9 @@ final class HabitStore {
 
     /// The user's current day, honouring their day end.
     func today(now: Date = .now) -> LocalDay {
-        LocalDay(now.addingTimeInterval(-Double(settings.dayEndHour) * 3600), calendar: calendar)
+        let day = LocalDay(now, calendar: calendar)
+        let boundary = ReminderClock.date(on: day, hour: settings.dayEndHour, minute: 0, calendar: calendar)!
+        return now < boundary ? day.adding(days: -1, calendar: calendar) : day
     }
 
     /// One definition for the day bar and calendar. Count a multi-section habit only once.
@@ -370,7 +374,7 @@ final class HabitStore {
 
     /// The moment a day begins, honouring the user's day end.
     private func dayStart(_ day: LocalDay) -> Date {
-        calendar.startOfDay(for: day.date(calendar: calendar)).addingTimeInterval(Double(settings.dayEndHour) * 3600)
+        ReminderClock.date(on: day, hour: settings.dayEndHour, minute: 0, calendar: calendar)!
     }
 
     /// The first day a habit counts: its start date (past or future), or the day it was made.
@@ -829,23 +833,14 @@ final class HabitStore {
     }
 
     private static func validateBackup(_ snapshot: Snapshot) throws {
-        func validDay(_ key: String?) -> Bool {
-            guard let key else { return true }
-            let parts = key.split(separator: "-").compactMap { Int($0) }
-            guard parts.count == 3, (1...9999).contains(parts[0]), (1...12).contains(parts[1]), (1...31).contains(parts[2]) else { return false }
-            var calendar = Calendar(identifier: .gregorian)
-            calendar.timeZone = TimeZone(secondsFromGMT: 0)!
-            guard let date = calendar.date(from: DateComponents(year: parts[0], month: parts[1], day: parts[2])) else { return false }
-            let actual = calendar.dateComponents([.year, .month, .day], from: date)
-            return actual.year == parts[0] && actual.month == parts[1] && actual.day == parts[2]
-        }
+        func validDay(_ key: String?) -> Bool { key.map { LocalDay(key: $0) != nil } ?? true }
         let ids = Set(snapshot.habits.map(\.id))
         guard snapshot.habits.allSatisfy({ r in
-            UUID(uuidString: r.id) != nil && r.goal.isFinite && r.goal >= 0 && r.increment.isFinite && r.increment >= 0
+            UUID(uuidString: r.id) != nil && r.goal.isFinite && (0...GoalNumber.maximum).contains(r.goal) && r.increment.isFinite && (0...GoalNumber.maximum).contains(r.increment)
                 && validDay(r.startsOn) && validDay(r.endsOn) && validDay(r.dueDay)
                 && (r.deletedAt != nil || Habit(record: r, steps: [], reminders: []) != nil)
         }), snapshot.entries.allSatisfy({ r in
-            UUID(uuidString: r.id) != nil && ids.contains(r.habitId) && validDay(r.day) && r.value.isFinite && r.value >= 0
+            UUID(uuidString: r.id) != nil && ids.contains(r.habitId) && validDay(r.day) && r.value.isFinite && (0...GoalNumber.maximum).contains(r.value)
         }), snapshot.steps.allSatisfy({ UUID(uuidString: $0.id) != nil && ids.contains($0.habitId) }),
         snapshot.reminders.allSatisfy({ UUID(uuidString: $0.id) != nil && ids.contains($0.habitId) && (0...23).contains(Int($0.hour)) && (0...59).contains(Int($0.minute)) })
         else { throw BackupError.invalid }
@@ -1143,30 +1138,41 @@ final class HabitStore {
         }
     }
 
-    /// From a notification or an alarm: only ever adds, never undoes. A row already done is left alone;
-    /// an amount adds one increment.
-    func logFromReminder(_ habit: Habit, slot: String?, on day: LocalDay) {
+    /// Delivered alerts are usable only for their current configuration and today or the previous logical day.
+    /// An old alert must not reschedule a task, log a paused item or revive anything deleted.
+    func canActOnReminder(_ target: ReminderTarget, now: Date = .now) -> Bool {
+        guard problem == nil, isLoaded, let habit = habits.first(where: { $0.id == target.habit }),
+              !habit.archived, habit.remind, habit.kind != .quit,
+              target.day <= today(now: now), target.day >= today(now: now).adding(days: -1, calendar: calendar),
+              isDue(habit, on: target.day, now: now),
+              let time = target.time, habit.reminders.contains(where: { $0.id == time }),
+              placements(of: habit).contains(where: { $0.slot == target.slot && $0.times.contains { $0.id == time } }),
+              target.signature.map({ $0 == ReminderIdentity.signature(habit) }) ?? true else { return false }
+        if habit.atMost { return true }
+        return target.slot.map { !isSlotDone(habit, slot: $0, on: target.day) } ?? !isSatisfied(habit, on: target.day)
+    }
+
+    /// A system action is an event. Its ID is saved before it appears in memory; replay checks
+    /// include tombstones, so duplicate callbacks and retrying after undo are both harmless.
+    func logFromReminder(_ habit: Habit, slot: String?, on day: LocalDay, time: UUID? = nil,
+                         signature: String? = nil, eventID: UUID? = nil, now: Date = .now) {
         perform { [self] in
-            guard let habit = habits.first(where: { $0.id == habit.id }) else { return }
+            let target = ReminderTarget(habit: habit.id, time: time, day: day, slot: slot, section: nil, signature: signature)
+            guard canActOnReminder(target, now: now), let habit = habits.first(where: { $0.id == habit.id }) else { return }
+            let id = eventID ?? UUID()
+            let exists = try await repository.hasEntry(id: id.uuidString)
+            guard !exists else { return }
+            let value: Double
             switch habit.kind {
             case .amount:
-                guard let increment = habit.quickIncrement else { return }
-                let entry = Entry(habitID: habit.id, day: day, value: increment, slot: slot.flatMap { slots(of: habit).contains($0) ? $0 : nil })
-                try await repository.addEntry(entry: entry.record)
-                withAnimation { entries.append(entry) }
-            case .check, .task:
-                if let slot, slots(of: habit).contains(slot) {
-                    guard !isSlotDone(habit, slot: slot, on: day) else { return }
-                    let entry = Entry(habitID: habit.id, day: day, value: 1, slot: slot)
-                    try await repository.addEntry(entry: entry.record)
-                    withAnimation { entries.append(entry) }
-                } else {
-                    guard !isDone(habit, on: day) else { return }
-                    try await log(habit, value: 1, on: day)
-                }
-            default:
-                return
+                guard let increment = habit.quickIncrement, increment.isFinite, increment > 0, increment <= GoalNumber.maximum else { return }
+                value = increment
+            case .check, .task: value = 1
+            default: return
             }
+            let entry = Entry(id: id, habitID: habit.id, day: day, value: value, createdAt: now, slot: slot)
+            try await repository.addEntry(entry: entry.record)
+            withAnimation { entries.append(entry) }
         }
     }
 
@@ -1326,6 +1332,12 @@ final class HabitStore {
         if ProcessInfo.processInfo.arguments.contains("-perf-tasks") {
             for i in 0..<200 {
                 habits.append(Habit(name: i == 0 ? "Pay the phone bill" : "Task \(i)", symbol: "checkmark", color: .blue, kind: .task, dueDay: today.adding(days: 14), remind: false, createdAt: ago(days: 365)))
+            }
+        }
+        if ProcessInfo.processInfo.arguments.contains("-perf-reminders") {
+            for i in 0..<100 {
+                habits.append(Habit(name: "Reminder \(i)", symbol: "bell", color: .blue, kind: .task, frequency: .daily,
+                                    reminders: [ReminderTime(hour: 8 + i / 60, minute: i % 60)], remind: true, createdAt: ago(days: 365)))
             }
         }
         if ProcessInfo.processInfo.arguments.contains("-longtext") {

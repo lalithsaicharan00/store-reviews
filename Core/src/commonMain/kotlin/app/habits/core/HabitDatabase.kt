@@ -72,6 +72,9 @@ interface HabitDao {
         })
     }
 
+    @Query("SELECT EXISTS(SELECT 1 FROM entry WHERE id = :id)")
+    suspend fun hasEntry(id: String): Boolean
+
     /** Ignoring a duplicate ID makes a retried write harmless. */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertEntries(entries: List<EntryRecord>)

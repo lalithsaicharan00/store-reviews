@@ -9,7 +9,7 @@ struct HabitsApp: App {
     var body: some Scene {
         WindowGroup {
             #if DEBUG
-            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-backupcheck", "-taskcheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-backupcheck", "-taskcheck", "-remindercheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
             } else {
                 today
@@ -44,9 +44,19 @@ struct HabitsApp: App {
 /// Shows the placement checks' result for `PlacementUITests`.
 private struct PlacementCheckView: View {
     @State private var result = "Running"
+    @State private var reminderMetric = ""
     var body: some View {
-        Text(result).padding().task {
+        VStack {
+            Text(result)
+            if !reminderMetric.isEmpty { Text(reminderMetric).accessibilityIdentifier("reminder-planning-metric") }
+        }.padding().task {
             let arguments = ProcessInfo.processInfo.arguments
+            if arguments.contains("-remindercheck") {
+                let failures = await ReminderCheck.run()
+                reminderMetric = ReminderCheck.planningSummary
+                result = failures.isEmpty ? "Reminders: all checks passed" : "Reminders failed: " + failures.joined(separator: "; ")
+                return
+            }
             if arguments.contains("-taskcheck") {
                 let failures = await TaskCheck.run()
                 result = failures.isEmpty ? "Tasks: all checks passed" : "Tasks failed: " + failures.joined(separator: "; ")

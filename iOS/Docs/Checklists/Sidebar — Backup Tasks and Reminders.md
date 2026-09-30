@@ -9,8 +9,8 @@ The user requested all work on the existing sidebar branch, one step at a time, 
 | 1 | Free CSV export, complete backup and safe restore from Backup & Export | [x] | [x] |
 | 1a | Current edits and deleted records survive an older restore; repeating restore is harmless; old versions migrate | [x] | [x] |
 | 1b | Explain and protect free users' data across closing, offloading, reinstall and moving phones | [x] | [x] |
-| 2 | Every created task appears in Tasks, including future, completed, repeating and archived tasks | [ ] | [ ] |
-| 2a | Open and edit tasks using the existing native task form; changes persist | [ ] | [ ] |
+| 2 | Every created task appears in Tasks, including future, completed, repeating and archived tasks | [x] | [x] |
+| 2a | Open and edit tasks using the existing native task form; changes persist | [x] | [x] |
 | 3 | Complete the Reminders page with existing habit/task reminders and permission recovery | [ ] | [ ] |
 | 3a | Validate scheduling, suppression, edits, duplicate/grouped times, limits, tasks, pauses, archives, travel and DST | [ ] | [ ] |
 | 4 | Measure relevant screens and report real failures without treating a green measurement job as a performance sign-off | [ ] | [ ] |
@@ -46,3 +46,9 @@ Free users can save a complete backup outside the app with the native share shee
 - Validation pending: task fixtures cover all 5 task types, model reload checks, every task opening Edit with no spurious changes, creation from Tasks, edit + terminate/relaunch on a real database, relevant schedule golden/task UI cases, and performance with 200 tasks and a year of history.
 
 - Tasks run [36771897272](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36771897272): build and 7/8 UI checks passed. The rename and task-edit performance checks wrongly expected the full name in the navigation title, which intentionally caps names at 15 characters; the failure hierarchy shows the edited full name correctly saved on the detail page. Tests now verify the full detail text and the Edit button. Tasks list measured 3.9% main-thread busy / 0.4% redraw; Today 3.7% / 0.7%. Task edit remains unmeasured until the corrected probe passes.
+
+- Tasks validation complete: [36774788090](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36774788090), build and all 3 TasksUITests passed, including real-database edit + terminate/relaunch. Edit Task measured 0.8% main-thread busy / 0.5% redraw. Relevant schedule/Today and Tasks list/Today performance checks passed on the unchanged app implementation in c3c09f2; only incorrect title assertions changed.
+
+## Reminders implementation — validation pending
+
+Native page shows configured and disabled rules, permission status, explicit recovery and item editing. Reliability addendum: Specs/Pending to Implement.md. Controlled services exercise races, failure/retry, authorization states, action replay after undo, alarm ownership, recurrence, budgets, DST and local clocks. Planning fixture contains 100 reminders and >30,000 history entries. Latest run will also rerun backup, task, Today, timer and relevant schedule regressions. Uninstall retention and real-device OS delivery cannot be guaranteed by simulator tests.

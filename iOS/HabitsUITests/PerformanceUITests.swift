@@ -18,6 +18,7 @@ final class PerformanceUITests: XCTestCase {
         app = XCUIApplication()
         app.launchArguments = ["-uitest", "-perf-history"]
         if name.contains("testTasksPage") || name.contains("testTaskEdit") { app.launchArguments += ["-perf-tasks"] }
+        if name.contains("testRemindersPage") { app.launchArguments += ["-perf-reminders", "-reminder-fake"] }
         app.launch()
         XCTAssertTrue(app.collectionViews.firstMatch.waitForExistence(timeout: 15))
     }
@@ -97,6 +98,12 @@ final class PerformanceUITests: XCTestCase {
         let task = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Pay the phone bill'")).firstMatch
         open("Task", tapping: task, until: app.buttons["Edit"])
         open("Edit Task", tapping: app.buttons["Edit"], until: app.navigationBars["Edit Task"])
+        ready(); keepGoing(scrollUpAndDown)
+    }
+
+    func testRemindersPage() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-reminders"])
+        open("Reminders", tapping: app.buttons["menu-reminders"], until: app.navigationBars["Reminders"])
         ready(); keepGoing(scrollUpAndDown)
     }
 

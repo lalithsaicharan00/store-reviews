@@ -56,6 +56,13 @@ enum BackupCheck {
             defer { try? FileManager.default.removeItem(at: emptyFile.deletingLastPathComponent()) }
             let emptyResult = try await target.restore(from: emptyFile)
             expect(!emptyResult.changed && target.habits.count == 1, "valid empty backup is harmless")
+            var oversized = water; oversized.goal = 1e99
+            source.update(oversized); await source.flush()
+            let oversizedFile = try await source.backupFile()
+            defer { try? FileManager.default.removeItem(at: oversizedFile.deletingLastPathComponent()) }
+            do { _ = try await target.restore(from: oversizedFile); failures.append("unsafe numeric backup accepted") } catch {}
+            expect(target.habits.first?.name == "New name" && target.habits.first?.goal == 2, "unsafe backup leaves destination unchanged")
+
         } catch { failures.append("backup operation: \(error.localizedDescription)") }
         return failures
     }

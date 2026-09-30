@@ -196,6 +196,7 @@ struct MenuPage: View {
         case .timesOfDay: TimesOfDayList()
         case .plus: PlusView(fromMenu: true)
         case .backup: BackupExportView()
+        case .reminders: RemindersView()
         case .help, .about: BlankMenuPage(title: place.title)
         default: ComingSoonView(place: place)
         }

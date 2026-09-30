@@ -18,6 +18,9 @@ class HabitRepository private constructor(private val database: HabitDatabase) {
     suspend fun saveHabit(habit: HabitRecord, steps: List<StepRecord>, reminders: List<ReminderRecord>, at: Long) =
         dao.saveHabit(habit, steps, reminders, at)
 
+    /** Includes tombstones, so replaying an undone system action cannot bring it back. */
+    suspend fun hasEntry(id: String): Boolean = dao.hasEntry(id)
+
     suspend fun addEntry(entry: EntryRecord) = dao.insertEntries(listOf(entry))
 
     /** Undo keeps a tombstone rather than deleting the row (Architecture 05 §7). */

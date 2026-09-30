@@ -74,6 +74,8 @@ class HabitRepositoryTest {
         repo.addEntry(entry("e1"))
         repo.removeEntry("e1", 3_000)
         assertTrue(repo.load().entries.isEmpty())
+        assertTrue(repo.hasEntry("e1"))
+        assertTrue(!repo.hasEntry("unknown"))
         // A retried write of the undone tap must not bring it back.
         repo.addEntry(entry("e1"))
         assertTrue(repo.load().entries.isEmpty())
