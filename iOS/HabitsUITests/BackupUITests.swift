@@ -37,14 +37,17 @@ final class BackupUITests: XCTestCase {
         app.buttons["menu-backup"].tap()
         XCTAssertTrue(app.buttons["backup-export-csv"].waitForExistence(timeout: 5))
         app.buttons["backup-export-csv"].tap()
-        XCTAssertTrue(app.otherElements["ActivityListView"].waitForExistence(timeout: 10)
-            || app.buttons["Copy"].exists || app.buttons["Close"].exists, app.debugDescription)
-        if app.buttons["Close"].exists { app.buttons["Close"].tap() }
-        else { app.swipeDown() }
+        // The remote share container appears before its buttons. Wait for Close instead of
+        // swiping the container while its content is still arriving.
+        let close = app.buttons["header.closeButton"]
+        XCTAssertTrue(close.waitForExistence(timeout: 15), app.debugDescription)
+        close.tap()
+        XCTAssertTrue(app.otherElements["ActivityListView"].waitForNonExistence(timeout: 10), app.debugDescription)
         let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "hittable == true"), object: app.buttons["backup-save"])
         XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 10), .completed, app.debugDescription)
         app.buttons["backup-save"].tap()
-        XCTAssertTrue(app.buttons["Close"].waitForExistence(timeout: 10) || app.otherElements["ActivityListView"].exists,
-                      app.debugDescription)
+        XCTAssertTrue(close.waitForExistence(timeout: 15), app.debugDescription)
+        close.tap()
+        XCTAssertTrue(app.otherElements["ActivityListView"].waitForNonExistence(timeout: 10))
     }
 }

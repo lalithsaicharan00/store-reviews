@@ -52,6 +52,7 @@ jobs:
             case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "TESTS=BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "PERF_TESTS=testBackupPage testMenuOpenClose testScrollToday" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-backup-ui]"*) echo "TESTS=BackupUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
           fi
 
@@ -66,6 +67,7 @@ jobs:
           java-version: "21"
 
       - uses: actions/cache@v4
+        id: gradle-cache
         with:
           path: |
             ~/.gradle/caches
@@ -88,6 +90,16 @@ jobs:
           xcodebuild build-for-testing -project Habits.xcodeproj -scheme Habits \
             -destination "id=$SIM" -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
           grep -q "BUILD SUCCEEDED" build.log
+
+      - name: Save successful build dependencies
+        if: always() && steps.build.outcome == 'success' && steps.gradle-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Core storage and migration tests
         id: core
