@@ -10,21 +10,37 @@ import SwiftUI
     /// How far a finger has dragged the menu right (+, opening from Today's edge) or left (−, closing it).
     /// Only the menu layer reads it, so a drag frame redraws nothing else.
     var drag: CGFloat = 0
+    /// Whether the menu's rows exist. They're made as it starts to open and removed once it has finished closing:
+    /// a closed menu does no work, and VoiceOver can't land on rows that are off screen (`accessibilityHidden`
+    /// doesn't reach inside a `List`'s cells; found by `TodayUITests.testMenu`, 30 Sep).
+    var mounted = false
     /// Today's navigation stack. A menu row appends its place; the habit page appends a habit's ID.
     var path = NavigationPath()
 
-    /// Closes the menu and opens `place` on Today's stack, both in one animation.
-    func go(to place: MenuPlace?, reduceMotion: Bool) {
+    /// Opens or closes the menu from wherever a finger left it, and on closing can open `place` on Today's stack in
+    /// the same animation.
+    func setOpen(_ open: Bool, reduceMotion: Bool, then place: MenuPlace? = nil) {
+        if open { mounted = true }
         withAnimation(MenuModel.motion(reduceMotion)) {
-            isOpen = false
+            isOpen = open
             drag = 0
             if let place { path.append(place) }
+        } completion: { [self] in
+            if !isOpen && drag == 0 { mounted = false }
         }
     }
 
-    func setOpen(_ open: Bool, reduceMotion: Bool) {
-        guard open != isOpen else { return }
-        withAnimation(MenuModel.motion(reduceMotion)) { isOpen = open; drag = 0 }
+    /// Closes the menu and opens `place` on Today's stack.
+    func go(to place: MenuPlace, reduceMotion: Bool) {
+        setOpen(false, reduceMotion: reduceMotion, then: place)
+    }
+
+    /// Back to Today itself at once (a tapped notification): the menu closes and any page it opened goes.
+    func reset() {
+        isOpen = false
+        drag = 0
+        mounted = false
+        path = NavigationPath()
     }
 
     /// The system's own spring for a panel sliding in; a short fade with Reduce Motion on.

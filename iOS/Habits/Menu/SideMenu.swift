@@ -43,15 +43,14 @@ private struct EdgeSwipe: View {
                     .gesture(
                         DragGesture(minimumDistance: 10, coordinateSpace: .global)
                             .onChanged { value in
-                                if !reduceMotion { menu.drag = min(width, max(0, value.translation.width)) }
+                                guard !reduceMotion else { return }
+                                if !menu.mounted { menu.mounted = true }
+                                menu.drag = min(width, max(0, value.translation.width))
                             }
                             .onEnded { value in
                                 let open = Swipe.settles(open: true, translation: value.translation.width,
                                                          predicted: value.predictedEndTranslation.width, width: width)
-                                withAnimation(MenuModel.motion(reduceMotion)) {
-                                    menu.isOpen = open
-                                    menu.drag = 0
-                                }
+                                menu.setOpen(open, reduceMotion: reduceMotion)
                             }
                     )
                     .accessibilityHidden(true)
@@ -83,19 +82,22 @@ private struct MenuLayer: View {
                     .onTapGesture { menu.setOpen(false, reduceMotion: reduceMotion) }
                     .gesture(closeDrag(width: width))
                     .accessibilityHidden(true)
-                SideMenu(menu: menu)
-                    .frame(width: width)
-                    .frame(maxHeight: .infinity)
-                    .background(Color(.systemGroupedBackground).ignoresSafeArea())
-                    .compositingGroup()
-                    .shadow(color: .black.opacity(active ? 0.18 : 0), radius: 12, x: 2)
-                    .offset(x: x)
-                    .opacity(reduceMotion ? shown : 1)
-                    .simultaneousGesture(closeDrag(width: width))
-                    .allowsHitTesting(menu.isOpen)
-                    .accessibilityHidden(!menu.isOpen)
-                    .accessibilityAddTraits(.isModal)
-                    .accessibilityAction(.escape) { menu.setOpen(false, reduceMotion: reduceMotion) }
+                // The panel always slides; its rows exist only while it's open or moving (`MenuModel.mounted`).
+                ZStack {
+                    if menu.mounted { SideMenu(menu: menu).transition(.identity) }
+                }
+                .frame(width: width)
+                .frame(maxHeight: .infinity)
+                .background(Color(.systemGroupedBackground).ignoresSafeArea())
+                .compositingGroup()
+                .shadow(color: .black.opacity(active ? 0.18 : 0), radius: 12, x: 2)
+                .offset(x: x)
+                .opacity(reduceMotion ? shown : 1)
+                .simultaneousGesture(closeDrag(width: width))
+                .allowsHitTesting(menu.isOpen)
+                .accessibilityHidden(!menu.isOpen)
+                .accessibilityAddTraits(.isModal)
+                .accessibilityAction(.escape) { menu.setOpen(false, reduceMotion: reduceMotion) }
             }
         }
     }
@@ -112,10 +114,7 @@ private struct MenuLayer: View {
                 guard menu.isOpen, menu.drag != 0 else { return }
                 let open = Swipe.settles(open: false, translation: value.translation.width,
                                          predicted: value.predictedEndTranslation.width, width: width)
-                withAnimation(MenuModel.motion(reduceMotion)) {
-                    menu.isOpen = open
-                    menu.drag = 0
-                }
+                menu.setOpen(open, reduceMotion: reduceMotion)
             }
     }
 }

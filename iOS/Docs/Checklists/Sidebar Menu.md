@@ -52,7 +52,8 @@ Written by Claude (Claude Code), 30 September 2026. Branch: `sidebar`.
 ## Speed
 
 - The menu's open state lives in `MenuModel`, and Today never reads it. Opening, dragging and closing the menu redraw only the menu and the dimming, never Today's list.
-- The drag is a `@GestureState` inside the menu, so a drag frame redraws nothing else.
+- The drag lives in `MenuModel.drag`, which only the menu layer reads, so a drag frame redraws nothing else.
+- The menu's rows exist only while it's open or moving (`MenuModel.mounted`): a closed menu does no work, even when a tap on Today changes the counts it shows.
 - Speed test `testMenuOpenClose` opens and closes the menu for 30 seconds while the app is sampled. `testScrollAllHabits` and `testScrollHabitPage` now reach Habits through the menu.
 
 ## Tests
@@ -63,4 +64,6 @@ Written by Claude (Claude Code), 30 September 2026. Branch: `sidebar`.
 
 ## Test results
 
-(Added after the GitHub Actions run.)
+**Run 1** (`4d12f28`, [run 26](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36695561508)): build passed; TimerUITests (2), `testTodayScreen` and `testBackToToday` passed; all six speed tests ran. **`testMenu` failed** at "Today closes the menu": the rows still existed after closing. The menu *was* closed (off screen), but `accessibilityHidden` doesn't reach inside a `List`'s cells, so VoiceOver could still land on the off-screen rows. **Fixed:** the rows are made as the menu opens and removed once it has closed (`MenuModel.mounted`).
+
+Speed, run 1 (the simulator on GitHub's Mac, a year of history): `testMenuOpenClose` main thread 12.5 % busy with 0.8 % SwiftUI redraw, and none of Today's code among the busiest functions, so **Today doesn't redraw under the menu**. The other screens are in line with earlier runs: Today scroll 3.0 %, Today taps 21.3 %, Habits scroll 7.9 %, habit page 2.3 %, calendar 17.8 %.

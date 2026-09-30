@@ -93,9 +93,7 @@ struct TodayView: View {
             guard let section = router.focusSection else { return }
             router.focusSection = nil
             // Back to Today itself first: the menu closes and any page it opened goes.
-            menu.isOpen = false
-            menu.drag = 0
-            menu.path = NavigationPath()
+            menu.reset()
             Task {
                 if day != nil && day != store.today() { day = nil; try? await Task.sleep(for: .milliseconds(50)) }
                 foldOverrides[section] = true
