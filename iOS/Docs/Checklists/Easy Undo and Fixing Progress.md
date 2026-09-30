@@ -13,4 +13,5 @@ Research: [Undo and Fixing Progress — What People Expect](<../../../Research/R
 | U3 | Undo per log, not generic | [x] Undo removes the exact entry and everything it caused |
 | U4 | A way to fix a log after leaving the screen | [x] One Day sheet (entries, add/change/delete, done/not, skip) |
 | U5 | Anything on the habit page? A dedicated space up front? | [x] A small "Today" row near the top and a tap on any calendar day, both open the Day sheet; not a large section |
-| U6 | Build it | [ ] Waiting for the user's go-ahead |
+| U6 | Routine player: does it need more undo options or confirmations? | [x] No confirmations; everything else already exists. Only change: a small visible "Undo" under a habit this routine completed (30 Sep, agreed with the user) |
+| U7 | Build it | [ ] Waiting for the user's go-ahead |
