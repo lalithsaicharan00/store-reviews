@@ -73,35 +73,44 @@ struct ProgressScreen: View {
         }
     }
 
+    /// A scroll view of grouped cards, not a `List`: switching to Month sent the list's collection view into an
+    /// endless self-sizing loop (it crashed, then hung, on CI, 30 Sep 2026). The habit rows stay lazy.
     private func list(_ snapshot: ProgressSnapshot) -> some View {
-        List {
-            Section { rangeControl(snapshot) }
-            overview(snapshot)
-            habitsSection(snapshot.rows, title: "Habits", snapshot: snapshot, footer: nil)
-            if !snapshot.quitting.isEmpty {
-                Section("Quitting") {
-                    ForEach(snapshot.quitting) { row in
-                        Button { open(row.habit, snapshot) } label: {
-                            HStack(spacing: 12) {
-                                HabitIcon(symbol: row.habit.symbol, color: row.habit.color)
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(row.habit.name).foregroundStyle(.primary).lineLimit(2)
-                                    Text(row.text).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
+        ScrollView {
+            VStack(alignment: .leading, spacing: 22) {
+                ProgressCard { rangeControl(snapshot) }
+                overview(snapshot)
+                habitsSection(snapshot.rows, title: "Habits", snapshot: snapshot, footer: nil)
+                if !snapshot.quitting.isEmpty {
+                    ProgressGroup(title: "Quitting") {
+                        ForEach(Array(snapshot.quitting.enumerated()), id: \.element.id) { index, row in
+                            if index > 0 { Divider().padding(.leading, 44) }
+                            Button { open(row.habit, snapshot) } label: {
+                                HStack(spacing: 12) {
+                                    HabitIcon(symbol: row.habit.symbol, color: row.habit.color)
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(row.habit.name).foregroundStyle(.primary).lineLimit(2)
+                                        Text(row.text).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
+                                    }
+                                    Spacer(minLength: 0)
+                                    Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
                                 }
-                                Spacer(minLength: 0)
+                                .padding(.vertical, 8)
+                                .contentShape(Rectangle())
                             }
-                            .contentShape(Rectangle())
+                            .buttonStyle(.plain)
+                            .accessibilityElement(children: .combine)
+                            .accessibilityAddTraits(.isButton)
                         }
-                        .buttonStyle(.plain)
-                        .accessibilityElement(children: .combine)
-                        .accessibilityAddTraits(.isButton)
                     }
                 }
+                habitsSection(snapshot.archived, title: "Archived", snapshot: snapshot,
+                              footer: "Archived habits count for the days before they were archived.")
             }
-            habitsSection(snapshot.archived, title: "Archived", snapshot: snapshot,
-                          footer: "Archived habits count for the days before they were archived.")
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
         }
-        .listStyle(.insetGrouped)
+        .background(Color(.systemGroupedBackground))
     }
 
     // MARK: Range
@@ -145,14 +154,16 @@ struct ProgressScreen: View {
 
     @ViewBuilder private func overview(_ snapshot: ProgressSnapshot) -> some View {
         if snapshot.hasPlan || !snapshot.isRunning {
-            Section {
+            ProgressGroup {
                 if snapshot.hasPlan {
                     if snapshot.range == .week { weekRings(snapshot) } else { monthRings(snapshot) }
+                    Divider().padding(.vertical, 6)
                     tiles(snapshot)
                     if showPercentages, let previous = snapshot.previous {
                         Text("\(previous.title): \(previous.tally.done) of \(previous.tally.planned)")
                             .font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
                             .frame(maxWidth: .infinity)
+                            .padding(.top, 8)
                             .accessibilityIdentifier("progress-previous-line")
                     }
                 } else {
@@ -279,24 +290,23 @@ struct ProgressScreen: View {
     @ViewBuilder
     private func habitsSection(_ rows: [ProgressHabitRow], title: String, snapshot: ProgressSnapshot, footer: String?) -> some View {
         if !rows.isEmpty {
-            Section {
+            ProgressGroup(title: title, footer: footer) {
                 // The weekday initials over the week strips, once (report §7.3).
                 if snapshot.range == .week && !typeSize.isAccessibilitySize {
                     WeekStripHeader(days: snapshot.days.map(\.day), calendar: store.calendar)
-                        .listRowSeparator(.hidden)
-                        .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 0, trailing: 16))
+                        .padding(.top, 6)
                 }
-                ForEach(rows) { row in
-                    Button { open(row.habit, snapshot) } label: {
-                        ProgressRowView(row: row, range: snapshot.range, showPercentages: showPercentages)
+                LazyVStack(spacing: 0) {
+                    ForEach(Array(rows.enumerated()), id: \.element.id) { index, row in
+                        if index > 0 { Divider().padding(.leading, 44) }
+                        Button { open(row.habit, snapshot) } label: {
+                            ProgressRowView(row: row, range: snapshot.range, showPercentages: showPercentages)
+                                .padding(.vertical, 8)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("progress-row-\(row.habit.name)")
                     }
-                    .buttonStyle(.plain)
-                    .accessibilityIdentifier("progress-row-\(row.habit.name)")
                 }
-            } header: {
-                Text(title)
-            } footer: {
-                if let footer { Text(footer) }
             }
         }
     }
@@ -373,5 +383,51 @@ struct ProgressRowView: View {
         let made = store.progressSnapshot(key.range, containing: key.anchor ?? store.today())
         cache[key] = made
         snapshot = made
+    }
+}
+
+/// A grouped card like an inset-grouped list's section, on a scroll view (no `List`; see `ProgressScreen.list`).
+struct ProgressCard<Content: View>: View {
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) { content }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.card, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
+}
+
+/// A card with a header above it and an optional footer below, as a grouped list section reads.
+struct ProgressGroup<Content: View, Header: View>: View {
+    let header: Header
+    let footer: String?
+    @ViewBuilder let content: Content
+
+    init(title: String, footer: String? = nil, @ViewBuilder content: () -> Content) where Header == Text {
+        header = Text(title)
+        self.footer = footer
+        self.content = content()
+    }
+
+    init(footer: String? = nil, @ViewBuilder content: () -> Content, @ViewBuilder header: () -> Header) {
+        self.header = header()
+        self.footer = footer
+        self.content = content()
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            header
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 16)
+                .accessibilityAddTraits(.isHeader)
+            ProgressCard { content }
+            if let footer {
+                Text(footer).font(.footnote).foregroundStyle(.secondary).padding(.horizontal, 16)
+            }
+        }
     }
 }
