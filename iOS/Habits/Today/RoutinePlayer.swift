@@ -134,7 +134,7 @@ struct RoutinePlayer: View {
         .accessibilityIdentifier("routine-player")
         .interactiveDismissDisabled()
         .task {
-            entriesBefore = Set(store.entries.map(\.id))
+            entriesBefore = Set(session.habits.flatMap { store.entries(of: $0.id, on: session.day).map(\.id) })
             startCurrentTimer()
             #if DEBUG && targetEnvironment(simulator)
             if ProcessInfo.processInfo.arguments.contains("-focus-preview"),

@@ -77,6 +77,13 @@ final class HabitStore {
     struct NoteOffer: Equatable { let habit: UUID; let day: LocalDay }
     /// The note being written in the note bar: a habit's note (`habit` set) or the day's note (`habit` nil).
     var noteTarget: NoteTarget?
+    /// History is hosted by Today, so skipping a day cannot remove the row that owns its sheet.
+    var dayTarget: DayTarget?
+    struct DayTarget: Identifiable {
+        let habitID: UUID
+        let day: LocalDay
+        var id: String { habitID.uuidString + day.key }
+    }
     struct NoteTarget: Equatable { let habit: UUID?; let day: LocalDay }
     /// Plus unlocks unlimited habits. Set from the store purchase (build-plan: billing, later).
     var isPlus = false

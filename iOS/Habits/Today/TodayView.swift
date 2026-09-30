@@ -63,6 +63,11 @@ struct TodayView: View {
                 RoutinePlayer(session: session)
                     .onAppear { playerCovering = true }
             }
+            .sheet(item: Binding(get: { store.dayTarget }, set: { store.dayTarget = $0 })) { target in
+                if let habit = store.habits.first(where: { $0.id == target.habitID }) {
+                    DaySheet(habit: habit, day: target.day)
+                }
+            }
             .sheet(isPresented: $showSections) { DaySectionsView() }
 
             .sheet(isPresented: $showNewHabit, onDismiss: revealAdded) {

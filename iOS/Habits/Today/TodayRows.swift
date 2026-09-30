@@ -63,7 +63,7 @@ struct HabitRow: View {
     /// One sheet at a time, from one `.sheet`: four sheet modifiers on every row made each row heavier to build as
     /// it scrolled in (30 Sep).
     @State private var sheet: RowSheet?
-    private enum RowSheet: Identifiable { case log, edit, notes, pause, day; var id: Self { self } }
+    private enum RowSheet: Identifiable { case log, edit, notes, pause; var id: Self { self } }
     private var showLog: Bool {
         get { sheet == .log }
         nonmutating set { sheet = newValue ? .log : nil }
@@ -76,7 +76,7 @@ struct HabitRow: View {
         if habit.kind == .duration, isToday {
             // Keep the same host when a running timer stops. Replacing TimelineView with a plain row
             // could dismiss a sheet opened from that row; a stopped/covered clock simply has no ticks.
-            TimelineView(HabitRowClockSchedule(start: sheet == nil ? store.timers[habit.id] : nil)) { context in
+            TimelineView(HabitRowClockSchedule(start: sheet == nil && store.dayTarget?.habitID != habit.id ? store.timers[habit.id] : nil)) { context in
                 row(now: context.date)
             }
         } else {
@@ -165,7 +165,6 @@ struct HabitRow: View {
             case .edit: EditHabitSheet(habit: habit)
             case .notes: HabitNotesView(habit: habit)
             case .pause: PauseSheet(habit: habit)
-            case .day: DaySheet(habit: habit, day: day)
             }
         }
         // Swipe left for a note, on any day and whether or not it's done: the standard iOS row gesture (Mail,
@@ -177,7 +176,7 @@ struct HabitRow: View {
             }
         }
         .contextMenu {
-            Button(day == store.today() ? "Edit Today's Progress…" : "Edit Progress…", systemImage: "calendar") { sheet = .day }
+            Button(day == store.today() ? "Edit Today's Progress…" : "Edit Progress…", systemImage: "calendar") { store.dayTarget = .init(habitID: habit.id, day: day) }
                 .disabled(day > store.today())
             // Edit sits with the item's other actions, as in Reminders; a tap on the row logs (spec §8).
             Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { sheet = .edit }
@@ -352,7 +351,7 @@ struct QuitRow: View {
     var highlighted = false
     @Environment(HabitStore.self) private var store
     @State private var sheet: QuitSheet?
-    private enum QuitSheet: Identifiable { case edit, pause, day, slip; var id: Self { self } }
+    private enum QuitSheet: Identifiable { case edit, pause, slip; var id: Self { self } }
     private var showPause: Binding<Bool> { Binding(get: { sheet == .pause }, set: { sheet = $0 ? .pause : nil }) }
     private var today: LocalDay { store.today() }
     /// Set once, on a whole second, so every quit clock ticks together.
@@ -410,7 +409,7 @@ struct QuitRow: View {
         }
         .contextMenu {
             Button("Edit Habit", systemImage: "pencil") { sheet = .edit }
-            Button("Edit Today's Progress…", systemImage: "calendar") { sheet = .day }
+            Button("Edit Today's Progress…", systemImage: "calendar") { store.dayTarget = .init(habitID: habit.id, day: today) }
             // Pausing ends this run (kept as a run, not a slip); a new one starts when it's back (the user, 29 Sep).
             PauseMenuItems(habit: habit, showPause: showPause)
             Button(store.note(of: habit, on: today) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") {
@@ -421,7 +420,6 @@ struct QuitRow: View {
             switch sheet {
             case .edit: EditHabitSheet(habit: habit)
             case .pause: PauseSheet(habit: habit)
-            case .day: DaySheet(habit: habit, day: today)
             case .slip:
                 NavigationStack {
                     SlipEntryView(habit: habit, day: today, source: .today)

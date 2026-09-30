@@ -58,6 +58,32 @@ final class UndoUITests: XCTestCase {
         XCTAssertTrue(entries.firstMatch.label.contains("30 sec"))
     }
 
+    func testSkipFromTodayKeepsHistoryOpenAndCanBeUndone() {
+        let row = app.staticTexts["Stretch"]
+        app.reveal(row)
+        row.press(forDuration: 1.2)
+        app.buttons["Edit Today's Progress…"].tap()
+        app.revealAndTap(app.buttons["Skip today"])
+        XCTAssertTrue(app.buttons["Undo skip"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.exists)
+        app.buttons["Undo skip"].tap()
+        XCTAssertTrue(app.switches["day-done"].isEnabled)
+    }
+
+    func testRoutineUndoStaysVisibleAndLeavesEarlierLogsIntact() {
+        app.buttons["Start Anytime routine"].tap()
+        XCTAssertTrue(app.buttons["focus-primary"].waitForExistence(timeout: 3))
+        app.buttons["focus-primary"].tap()
+        let undo = app.buttons["focus-persistent-undo"]
+        XCTAssertTrue(undo.waitForExistence(timeout: 3))
+        sleep(6)
+        XCTAssertTrue(undo.exists)
+        shot("undo-routine-persistent")
+        undo.tap()
+        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "1 / 2 glasses")
+        XCTAssertFalse(undo.exists)
+    }
+
     func testStoreCorrectionsRecalculateAndPersist() {
         app.terminate()
         app.launchArguments = ["-uitest", "-undocheck"]
