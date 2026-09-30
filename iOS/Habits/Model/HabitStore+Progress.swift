@@ -115,14 +115,14 @@ struct ProgressSnapshot {
     let rows: [ProgressHabitRow]
     let archived: [ProgressHabitRow]
     let quitting: [ProgressQuitRow]
-    /// Year only: the overview's grid of days.
-    var yearDots: YearDots? = nil
-    /// What counts as a full day (1, 0.8 or 0.6).
-    var fullAt: Double = 1
     let canGoBack: Bool
     let canGoForward: Bool
     /// Any habit that Progress can show (tasks never are).
     let hasHabits: Bool
+    /// Year only: the overview's grid of days.
+    var yearDots: YearDots? = nil
+    /// What counts as a full day (1, 0.8 or 0.6).
+    var fullAt: Double = 1
 
     var isRunning: Bool { period.contains(today) }
     /// The overview shows when any day in the period has something planned.
