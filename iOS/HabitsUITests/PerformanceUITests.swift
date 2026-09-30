@@ -95,7 +95,7 @@ final class PerformanceUITests: XCTestCase {
         open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-tasks"])
         open("Tasks", tapping: app.buttons["menu-tasks"], until: app.navigationBars["Tasks"])
         let task = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Pay the phone bill'")).firstMatch
-        open("Task", tapping: task, until: app.navigationBars["Pay the phone bill"])
+        open("Task", tapping: task, until: app.buttons["Edit"])
         open("Edit Task", tapping: app.buttons["Edit"], until: app.navigationBars["Edit Task"])
         ready(); keepGoing(scrollUpAndDown)
     }

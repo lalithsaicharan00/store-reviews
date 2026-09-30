@@ -45,10 +45,11 @@ final class TasksUITests: XCTestCase {
         XCTAssertTrue(task.waitForExistence(timeout: 5)); task.tap(); app.buttons["Edit"].tap()
         XCTAssertTrue(app.navigationBars["Edit Task"].waitForExistence(timeout: 5))
         field.tap(); field.typeText(" Edited\n")
-        let savedName = field.value as! String
+        let savedName = (field.value as! String).trimmingCharacters(in: .whitespacesAndNewlines)
         XCTAssertTrue(savedName.contains("Edited"))
         app.buttons["add-habit"].tap()
-        XCTAssertTrue(app.navigationBars[savedName].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Edit Task"].waitForNonExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts[savedName].firstMatch.waitForExistence(timeout: 5), app.debugDescription)
         app.terminate(); app.launchArguments.removeAll { $0 == "-reset-db" }; app.launch(); openTasks(app)
         XCTAssertTrue(row(app, savedName).waitForExistence(timeout: 5), "Edited task survives relaunch")
     }

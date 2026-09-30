@@ -54,6 +54,7 @@ jobs:
             case "$MESSAGE" in *"[ios-backup]"*) echo "PERF_TESTS=testBackupPage testMenuOpenClose testScrollToday" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup-ui]"*) echo "TESTS=BackupUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-tasks]"*) echo "TESTS=TasksUITests,TodayUITests,ScheduleUITests/testCalendarAndPersistenceRules,ScheduleUITests/testTaskAfterCompletion" >> "$GITHUB_ENV"; echo "PERF_TESTS=testTasksPage testTaskEdit testScrollToday" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-tasks-recheck]"*) echo "TESTS=TasksUITests" >> "$GITHUB_ENV"; echo "PERF_TESTS=testTaskEdit" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
           fi
 
@@ -203,4 +204,16 @@ jobs:
             iOS/summary.md
             iOS/perf
             iOS/Results.xcresult
+          retention-days: 7
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-logs
+          path: |
+            iOS/build.log
+            iOS/test.log
+            iOS/summary.md
+            iOS/perf/*.log
+            iOS/perf/perf-summary.md
           retention-days: 7
