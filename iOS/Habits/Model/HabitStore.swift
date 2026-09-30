@@ -44,7 +44,31 @@ final class HabitStore {
     private(set) var habits: [Habit] = [] { didSet { forgetAll() } }
     /// Changed only through `insertEntry`, `removeEntry(at:)` and `replaceEntry` (or a full load), which keep the indexes below in
     /// step. Rebuilding them from every entry after each tap cost a full pass over a year of history (30 Sep).
-    private(set) var entries: [Entry] = []
+    @ObservationIgnored private var storedEntries: [Entry] = []
+    @ObservationIgnored private var entryChangePending = false
+    private(set) var entries: [Entry] {
+        get { access(keyPath: \.entries); return storedEntries }
+        set { storedEntries = newValue; queueEntryChange() }
+        // Keep Array's in-place mutation: a get/copy/set would copy all history on each tap.
+        _modify {
+            access(keyPath: \.entries)
+            defer { queueEntryChange() }
+            yield &storedEntries
+        }
+    }
+
+    /// Data and indexes change synchronously; SwiftUI observes one update on the next actor turn.
+    /// Publishing each add/edit/delete inside a tap made Observation.willSet flush native list
+    /// updates between the mutations, even when the final membership was unchanged (30 Sep).
+    private func queueEntryChange() {
+        guard !entryChangePending else { return }
+        entryChangePending = true
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            entryChangePending = false
+            withMutation(keyPath: \.entries) {}
+        }
+    }
     /// `entries` grouped by habit, built on first use. Every count, streak and "done" reads one
     /// habit's entries; scanning all of them for each day of a streak made scrolling Today stutter (30 Sep).
     @ObservationIgnored private var entriesByHabit: [UUID: [Entry]]?
@@ -189,24 +213,21 @@ final class HabitStore {
         let entry = entries.remove(at: index)
         entriesByHabit?[entry.habitID]?.removeAll { $0.id == entry.id }
         entriesByDay?[entry.habitID]?[entry.day]?.removeAll { $0.id == entry.id }
-        if undoOffer?.id == entry.id { undoOffer = nil }
         forget(entry.habitID)
+        if undoOffer?.id == entry.id { undoOffer = nil }
     }
 
-    /// An edit keeps the same row, indexes and position. Never publish a temporary deletion:
-    /// native lists can flush pending updates synchronously during Observation.willSet.
+    /// An edit keeps the same row, indexes and position, with one value replacement.
     private func replaceEntry(_ entry: Entry, at index: Int) {
-        withTransaction(Transaction(animation: nil)) {
-            if let i = entriesByHabit?[entry.habitID]?.firstIndex(where: { $0.id == entry.id }) {
-                entriesByHabit?[entry.habitID]?[i] = entry
-            }
-            if let i = entriesByDay?[entry.habitID]?[entry.day]?.firstIndex(where: { $0.id == entry.id }) {
-                entriesByDay?[entry.habitID]?[entry.day]?[i] = entry
-            }
-            if undoOffer?.id == entry.id { undoOffer = nil }
-            forget(entry.habitID)
-            entries[index] = entry
+        entries[index] = entry
+        if let i = entriesByHabit?[entry.habitID]?.firstIndex(where: { $0.id == entry.id }) {
+            entriesByHabit?[entry.habitID]?[i] = entry
         }
+        if let i = entriesByDay?[entry.habitID]?[entry.day]?.firstIndex(where: { $0.id == entry.id }) {
+            entriesByDay?[entry.habitID]?[entry.day]?[i] = entry
+        }
+        forget(entry.habitID)
+        if undoOffer?.id == entry.id { undoOffer = nil }
     }
 
     /// After `entries` is replaced as a whole.

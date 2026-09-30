@@ -34,6 +34,11 @@ here, with the reason and the date.
 | 10 | **Rows stay light.** A shadow goes on a background *shape*, never on a view with text or one that redraws (and never a `.clear` shadow: it still costs an offscreen pass). One `.sheet(item:)` per row, not one per sheet. No `GeometryReader` in a row just to size a fill (`scaleEffect(x:anchor:)` draws the same) | Every Today row paid for a clear text shadow, four sheet modifiers and a `GeometryReader`; the timer bar re-rendered its whole shadow every second (30 Sep) |
 | 11 | **Typing updates only the field.** Anything that follows the text (a preview, a sentence, a suggested icon) catches up when typing pauses (`HabitForm.shownName`, 0.3 s); saving always reads the live text. Never animate something on every keystroke | Every letter in the New Habit name redrew and re-animated the preview row and sentence: 92 % of the main thread and 100–400 ms freezes per letter, the worst screen in the app (30 Sep) |
 
+Entry mutations update memory and indexes immediately, and queue one `entries` observation notification on the
+next main-actor turn (30 Sep 2026). Keep that coalescing and the in-place `_modify` accessor: synchronous
+notifications between add/edit/delete forced native collection-view updates for intermediate states, while a
+get/copy/set accessor would copy the entire history on every mutation. Persistence still queues every write in order.
+
 ## Why the mistakes kept coming back
 
 - The speed rules lived in the middle of a long design document that sessions read "before changing a screen", so
