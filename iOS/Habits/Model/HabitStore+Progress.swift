@@ -351,17 +351,14 @@ extension HabitStore {
         }
     }
 
+    /// "20–26 Sep", or "29 Sep – 5 Oct" across months. Built from the month names, with no date formatter: an
+    /// interval formatter was 5–7% of Progress's time in the speed runs (30 Sep 2026), even made once.
     func weekSpan(_ period: ClosedRange<LocalDay>) -> String {
-        let start = period.lowerBound.date(calendar: calendar), end = period.upperBound.date(calendar: calendar)
-        return Self.weekSpanFormatter.string(from: start, to: end)
+        let a = period.lowerBound, b = period.upperBound
+        let months = calendar.shortStandaloneMonthSymbols
+        if a.month == b.month { return "\(a.day)–\(b.day) \(months[b.month - 1])" }
+        return "\(a.day) \(months[a.month - 1]) – \(b.day) \(months[b.month - 1])"
     }
-
-    /// Made once: building an interval format on every title was 5% of Progress's time (speed run, 30 Sep 2026).
-    private static let weekSpanFormatter: DateIntervalFormatter = {
-        let formatter = DateIntervalFormatter()
-        formatter.dateTemplate = "dMMM"
-        return formatter
-    }()
 
     // MARK: A habit's row
 
