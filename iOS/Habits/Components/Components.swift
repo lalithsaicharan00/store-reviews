@@ -128,12 +128,12 @@ struct ProgressFill: View {
     @Environment(\.colorScheme) private var scheme
 
     var body: some View {
-        GeometryReader { g in
-            ZStack(alignment: .leading) {
-                Color.card
-                color.color.opacity(scheme == .dark ? 0.26 : 0.15)
-                    .frame(width: g.size.width * min(1, max(0, progress)))
-            }
+        // Scaled from the leading edge rather than measured with a GeometryReader: the same fill, without a layout
+        // pass in every row's background (30 Sep).
+        ZStack {
+            Color.card
+            color.color.opacity(scheme == .dark ? 0.26 : 0.15)
+                .scaleEffect(x: min(1, max(0, progress)), y: 1, anchor: .leading)
         }
     }
 }
