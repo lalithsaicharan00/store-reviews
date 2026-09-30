@@ -121,5 +121,8 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [ ] Completion animation before a done row moves down
 - [ ] Section open and close animation
 - [ ] Progress and statistics screens
-- [ ] Settings and account
-- [ ] Sync, backup, widgets, Apple Watch, iPad, Apple Health
+- [ ] Settings (export and import, backups on the phone, support, day and week start, theme, restore purchase)
+- [ ] Onboarding (first launch)
+- [ ] Home-screen and lock-screen widgets
+- [ ] Plus: purchase, account, sync and server backup
+- [ ] Apple Watch, iPad, Apple Health
