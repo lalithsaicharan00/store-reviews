@@ -116,7 +116,7 @@ jobs:
 
       - name: Speed tests
         id: perf
-        if: always() && env.PERF == 'true' && steps.build.outcome == 'success'
+        if: ${{ !cancelled() && env.PERF == 'true' && steps.build.outcome == 'success' }}
         working-directory: iOS
         run: Tools/perf/measure_perf.sh "$SIM" perf
 

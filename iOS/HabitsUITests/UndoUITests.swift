@@ -8,7 +8,7 @@ final class UndoUITests: XCTestCase {
         app = XCUIApplication()
         app.launchArguments = ["-uitest", "-focus-fixture"]
         app.launch()
-        XCTAssertTrue(app.buttons["All habits"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["Add 1 glass to Drink water"].waitForExistence(timeout: 10))
     }
     override func record(_ issue: XCTIssue) {
         var issue = issue
@@ -65,15 +65,16 @@ final class UndoUITests: XCTestCase {
         daySheet("Drink water")
         app.buttons["day-add-entry"].tap()
         XCTAssertTrue(app.navigationBars["Log Amount"].waitForExistence(timeout: 3))
-        XCTAssertEqual(entries.count, 1)
         app.swipeUp() // dismiss the log keyboard to reveal history
+        XCTAssertTrue(app.reveal(entries.firstMatch))
+        XCTAssertEqual(entries.count, 1)
         shot("undo-log-sheet")
         app.revealAndTap(entries.firstMatch)
         XCTAssertTrue(app.navigationBars["Edit Entry"].waitForExistence(timeout: 3))
         app.buttons["Delete Entry"].tap()
         XCTAssertTrue(app.staticTexts["No entries yet"].waitForExistence(timeout: 3))
         let field = app.textFields["log-amount"]
-        field.tap(); field.typeText("2")
+        app.revealAndTap(field); field.typeText("2")
         app.navigationBars["Log Amount"].buttons["Log"].tap()
         XCTAssertTrue(app.staticTexts["2/2 glasses"].waitForExistence(timeout: 3))
         XCTAssertEqual(entries.count, 1)
