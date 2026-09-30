@@ -150,3 +150,5 @@ Rounds 7–9 (New Habit form Round 3/4 and the full-screen routine player) are r
 | 68 | **Smaller, useful but not urgent:** milestones and celebrations (C101), check-off sound and haptic (C069, fits with #58), Siri and Shortcuts (C046), app-icon badge (C226), passcode lock (C017), tags or grouping (C045), mood tracker (C049) | Not started |
 
 State on 30 Sep 2026: undo (#57) is researched and being built in another session; Progress (#60) is being researched in another session. Suggested order after them: 61 Settings → 62 Onboarding → 63 Widgets (every screen a free user sees, before Figma) → 64 Plus, then 65–67.
+
+**≡ menu (the user, 30 Sep 2026, final):** the avatar became a ≡ side menu holding Progress, Habits, Tasks and every setting (Design Rules, "≡ Menu — FINAL"). Built on the `sidebar` branch with the pages that exist wired in (Habits, Tasks, Times of Day, Plus); Progress (#60) and the settings pages (#61) open "coming" pages until they're built, each wired in one place (`MenuPage`). Checklist: `Docs/Checklists/Sidebar Menu.md`.

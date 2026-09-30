@@ -1,9 +1,12 @@
 import SwiftUI
 
-/// Every habit in one place, behind the top-bar ☑︎ button (Build Plan #56). Tap one for its page; swipe to archive
-/// or delete; Select to pause, archive or delete several at once; drag to reorder (Today follows the order).
+/// Every habit in one place (Build Plan #56), reached from the ≡ menu: "Habits" shows habits and quit habits,
+/// "Tasks" shows tasks (the user, 30 Sep 2026; `Docs/Checklists/Sidebar Menu.md`). Tap one for its page; swipe to
+/// archive or delete; Select to pause, archive or delete several at once; drag to reorder (Today follows the order).
 /// Archive keeps all history and frees a free slot (Feature Ledger C016, C219); delete asks first.
 struct AllHabitsView: View {
+    enum Kind { case habits, tasks }
+    var kind: Kind = .habits
     @Environment(HabitStore.self) private var store
     @State private var editMode: EditMode = .inactive
     @State private var selection = Set<UUID>()
@@ -14,39 +17,51 @@ struct AllHabitsView: View {
 
     struct PauseTargets: Identifiable { let id = UUID(); let habits: [Habit] }
 
-    private var active: [Habit] { store.habits.filter { !$0.archived } }
-    private var chosen: [Habit] { store.habits.filter { selection.contains($0.id) } }
+    /// The habits this page lists: habits and quit habits, or tasks.
+    private var shown: [Habit] { store.habits.filter { ($0.kind == .task) == (kind == .tasks) } }
+    private var active: [Habit] { shown.filter { !$0.archived } }
+    private var chosen: [Habit] { shown.filter { selection.contains($0.id) } }
 
     var body: some View {
         List(selection: $selection) {
-            group("Habits", active.filter { $0.kind != .quit && $0.kind != .task })
-            group("Quitting", active.filter { $0.kind == .quit })
-            group("Tasks", active.filter { $0.kind == .task })
-            let archived = store.habits.filter(\.archived)
+            switch kind {
+            case .habits:
+                group("Habits", active.filter { $0.kind != .quit })
+                group("Quitting", active.filter { $0.kind == .quit })
+            case .tasks:
+                group(nil, active)
+            }
+            let archived = shown.filter(\.archived)
             if !archived.isEmpty {
                 Section {
                     ForEach(archived) { row($0) }
                 } header: {
                     Text("Archived")
                 } footer: {
-                    Text("Archived habits keep their history and don't count toward the free limit.")
+                    Text(kind == .tasks ? "Archived tasks keep their history."
+                         : "Archived habits keep their history and don't count toward the free limit.")
                 }
             }
         }
         .overlay {
-            if store.habits.isEmpty {
-                ContentUnavailableView("No Habits Yet", systemImage: "checklist", description: Text("Tap + on Today to add one."))
+            if shown.isEmpty {
+                switch kind {
+                case .habits:
+                    ContentUnavailableView("No Habits Yet", systemImage: "checklist", description: Text("Tap + on Today to add one."))
+                case .tasks:
+                    ContentUnavailableView("No Tasks Yet", systemImage: "list.bullet", description: Text("Tap + on Today, then Add a task."))
+                }
             }
         }
         .environment(\.editMode, $editMode)
-        .navigationTitle("All Habits")
+        .navigationTitle(kind == .tasks ? "Tasks" : "Habits")
         .navigationDestination(for: UUID.self) { HabitPageView(id: $0) }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(editMode.isEditing ? "Done" : "Select") {
                     withAnimation { editMode = editMode.isEditing ? .inactive : .active; selection = [] }
                 }
-                .disabled(store.habits.isEmpty)
+                .disabled(shown.isEmpty)
             }
             if editMode.isEditing {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -78,15 +93,17 @@ struct AllHabitsView: View {
         deleting.count == 1 ? "Delete \(deleting[0].name)?" : "Delete \(deleting.count) Habits?"
     }
 
-    @ViewBuilder private func group(_ title: String, _ list: [Habit]) -> some View {
+    @ViewBuilder private func group(_ title: String?, _ list: [Habit]) -> some View {
         if !list.isEmpty {
-            Section(title) {
+            Section {
                 ForEach(list) { row($0) }
                     .onMove { from, to in
                         var ids = list.map(\.id)
                         ids.move(fromOffsets: from, toOffset: to)
                         store.reorder(ids)
                     }
+            } header: {
+                if let title { Text(title) }
             }
         }
     }

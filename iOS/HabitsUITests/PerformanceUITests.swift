@@ -72,14 +72,36 @@ final class PerformanceUITests: XCTestCase {
         }
     }
 
+    /// ≡ → Habits (All Habits moved into the menu, 30 Sep 2026).
+    private func openHabits() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-habits"])
+        open("Habits", tapping: app.buttons["menu-habits"], until: app.navigationBars["Habits"])
+    }
+
     func testScrollAllHabits() {
-        open("All Habits", tapping: app.buttons["All habits"], until: app.navigationBars["All Habits"])
+        openHabits()
         ready()
         keepGoing(scrollUpAndDown)
     }
 
+    /// The ≡ menu opening and closing over a year of history: Today must not redraw under it.
+    func testMenuOpenClose() {
+        let menu = app.buttons["menu-button"]
+        let today = app.buttons["menu-today"]
+        open("Menu", tapping: menu, until: today)
+        today.tap()
+        _ = today.waitForNonExistence(timeout: 3)
+        ready()
+        keepGoing {
+            menu.tap()
+            _ = today.waitForExistence(timeout: 3)
+            today.tap()
+            _ = today.waitForNonExistence(timeout: 3)
+        }
+    }
+
     func testScrollHabitPage() {
-        open("All Habits", tapping: app.buttons["All habits"], until: app.navigationBars["All Habits"])
+        openHabits()
         let teeth = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Brush teeth'")).firstMatch
         XCTAssertTrue(teeth.waitForExistence(timeout: 10))
         // A year of daily history: its numbers and best streak are the heaviest page.

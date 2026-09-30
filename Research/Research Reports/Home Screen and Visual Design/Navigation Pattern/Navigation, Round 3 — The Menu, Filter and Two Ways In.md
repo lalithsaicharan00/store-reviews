@@ -187,3 +187,15 @@ A second way to reach something is fine when **all four** hold:
 - `scan.py`, the four match files (`DUP.tsv`, `ORG.tsv`, `ICON.tsv`, `FILT.tsv`, 614 reviews);
 - `nav3-classification.py`, with the hand codes for the 120 relevant reviews (0 unknown IDs, 0 duplicates);
 - the Apple guideline text (`hig-*.txt`, fetched 30 Sep 2026).
+
+---
+
+## Addendum (30 Sep 2026): the user's final decision
+
+**Final. This replaces the suggestions above where they differ; the report itself is left as it was.**
+
+- **Progress, Habits (All Habits) and Tasks all go in the ≡ menu,** and leave Today's top bar. The user's reasoning: a menu is not hiding, people will find them, and the most used places sit at the very top of the menu.
+- **Tasks get their own row** (every task the user has made), beside Habits.
+- **≡ slides in from the left over Today** (a side menu), rather than opening a sheet, built from native parts and motion.
+- **Kept from this report:** Filter holds times of day, groups, show completed and reorder; its icon changes so it doesn't look like ≡; one screen per thing however many ways in; settings grouped by topic, with Plus and Help at the bottom.
+- Built on the `sidebar` branch: `iOS/Docs/Checklists/Sidebar Menu.md`.
