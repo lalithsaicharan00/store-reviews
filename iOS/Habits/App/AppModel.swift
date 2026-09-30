@@ -148,6 +148,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     private let notifications = NotificationHandler()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        #if DEBUG
+        MainThreadMeter.startIfAsked()
+        #endif
         UNUserNotificationCenter.current().delegate = notifications
         ReminderScheduler.registerCategories()
         BGTaskScheduler.shared.register(forTaskWithIdentifier: AppModel.refreshTaskID, using: .main) { task in

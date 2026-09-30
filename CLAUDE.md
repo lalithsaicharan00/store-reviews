@@ -1,11 +1,21 @@
 # Monorepo — working conventions
 
+## FIRST: speed rules for the iPhone app (top priority, every session)
+
+The app lagged on the user's iPhone, and the same speed mistakes came back session after session. The rules below
+(imported from [`iOS/PERFORMANCE.md`](iOS/PERFORMANCE.md)) apply to **every** change under `iOS/`: views, the store,
+models, build settings. They come before any design or feature request. Before any push that touches `iOS/`, run
+`iOS/Tools/perf/check_rules.sh`, and measure with `[ios-perf]` when a screen or `HabitStore` changed.
+
+@iOS/PERFORMANCE.md
+
+## Everything else
+
 - `Research/` — all store-review research. Its rules are in [`Research/CLAUDE.md`](Research/CLAUDE.md);
   follow them for any research, report or design-evidence task. Paths in that file are relative to `Research/`.
 - `iOS/` — the iPhone app (SwiftUI, native components only). **Before changing any screen, read
   [`iOS/Design Rules — Don't Regress.md`](<iOS/Design Rules — Don't Regress.md>)**: decided rules that past agents broke.
-  Its "Speed" section (no ticking view around a whole screen, covered screens stop drawing, measure with `sample`)
-  applies to all SwiftUI code, not only screen changes.
+  Speed rules are in `iOS/PERFORMANCE.md` (above), not there.
   The app's specs and the user's checklists are in `iOS/Docs/` ([index](<iOS/Docs/README.md>)): open only the spec for
   the screen you're changing.
 - **Builds and tests run on GitHub Actions, not the user's MacBook** (battery). Cloud sessions run Linux: no Xcode, no

@@ -375,12 +375,14 @@ struct TodayView: View {
     @ViewBuilder
     private func partSection(_ part: String, items: [TodayItem], day: LocalDay, isToday: Bool, isNow: Bool) -> some View {
         let habits = items.map(\.habit)
-        let left = items.filter { !isDone($0, on: day) }.count
+        // Worked out once per row here, not in each of the four places below.
+        let done = Set(items.filter { isDone($0, on: day) }.map(\.habit.id))
+        let left = items.count - done.count
         // Default: the Now part and Anytime are open while anything is left; finished parts fold.
         let open = foldOverrides[part] ?? (left > 0 && (isNow || part == .anytime || !isToday))
         Section {
             PartHeader(title: store.section(part).name, habits: habits, left: left, isNow: isNow, isOpen: open,
-                       onStart: isToday && items.contains(where: { $0.habit.atMost || !isDone($0, on: day) })
+                       onStart: isToday && items.contains(where: { $0.habit.atMost || !done.contains($0.habit.id) })
                            ? { start(part: part, items: items, day: day) } : nil,
                        onToggle: { withAnimation { foldOverrides[part] = !open } })
                 .id(Self.headerKey(part))
@@ -394,8 +396,8 @@ struct TodayView: View {
                 // Done habits sink to the bottom, keeping their order otherwise. The row just logged stays put while it
                 // offers "Add note" (or its note is being written), so the offer is where the person is looking.
                 let held = store.noteOffer.flatMap { $0.day == day ? $0.habit : nil }
-                let ordered = items.filter { !isDone($0, on: day) || $0.habit.id == held }
-                    + items.filter { isDone($0, on: day) && $0.habit.id != held }
+                let ordered = items.filter { !done.contains($0.habit.id) || $0.habit.id == held }
+                    + items.filter { done.contains($0.habit.id) && $0.habit.id != held }
                 ForEach(ordered) { item in
                     let habit = item.habit
                     let key = Self.rowKey(part, habit.id)

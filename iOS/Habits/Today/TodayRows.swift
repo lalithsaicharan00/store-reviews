@@ -163,7 +163,7 @@ struct HabitRow: View {
             // Any day, done or not, past or today; a note never changes progress (notes report, 29 Sep).
             Button(store.note(of: habit, on: day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") { startWriting() }
                 .disabled(day > store.today())
-            if !store.notes(of: habit).isEmpty {
+            if store.hasNotes(habit) {
                 Button("All Notes", systemImage: "list.bullet.rectangle") { showNotes = true }
             }
             if case .amount = habit.kind {

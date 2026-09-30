@@ -53,6 +53,11 @@ jobs:
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
           fi
 
+      # The speed rules that can be read from the code (iOS/PERFORMANCE.md). Fails the run before any Mac minutes go
+      # to building.
+      - name: Speed rules
+        run: iOS/Tools/perf/check_rules.sh
+
       - uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable

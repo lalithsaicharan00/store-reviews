@@ -1,16 +1,18 @@
 #!/bin/bash
-# Runs each speed test in PerformanceUITests and samples the app while it runs; writes a Markdown summary.
+# Runs each speed test in PerformanceUITests; reads the app's own stall record (MainThreadMeter) for each test's
+# window and samples the app meanwhile (which functions take the time). Writes a Markdown summary.
 # Usage (from iOS/): Tools/perf/measure_perf.sh <simulator id> <out dir>
 # Needs a build from `xcodebuild build-for-testing ... -derivedDataPath DerivedData`.
 set -u
 SIM="$1"; OUT="$2"; mkdir -p "$OUT"
 HERE="$(cd "$(dirname "$0")" && pwd)"
-TESTS="testScrollToday testTapToday testScrollAllHabits testScrollHabitPage testCalendarMonths"
+TESTS="${PERF_TESTS:-testScrollToday testTapToday testScrollAllHabits testScrollHabitPage testCalendarMonths testNewHabitForm testRoutinePlayer}"
 SUMMARY="$OUT/perf-summary.md"
+OPENS="$OUT/opens.txt"; : > "$OPENS"
 
 {
-  echo "| Screen | App busy (main thread, minus the test) | SwiftUI redraw | Most time in the app's own code |"
-  echo "|---|---|---|---|"
+  echo "| Screen | Hitch time (ms/s) | Longest stall | Freezes ≥100 ms | SwiftUI redraw | Most time in the app's own code |"
+  echo "|---|---|---|---|---|---|"
 } > "$SUMMARY"
 
 for T in $TESTS; do
@@ -32,25 +34,35 @@ for T in $TESTS; do
   PID=$(pgrep -n -f "Habits\.app/Habits( |$)")
   if [ -n "$PID" ] && kill -0 $RUN 2>/dev/null; then
     sleep 2
-    sample "$PID" 20 1 -file "$OUT/sample-$T.txt" > /dev/null 2>&1
+    sample "$PID" 15 1 -file "$OUT/sample-$T.txt" > /dev/null 2>&1
   fi
   wait $RUN; STATUS=$?
+  # The app's container holds its stall record (the file keeps every test's; each test reads its own window).
+  DATA=$(xcrun simctl get_app_container "$SIM" com.lalithsaicharan.habits data 2>/dev/null)
+  STALLS=$(python3 "$HERE/analyze_stalls.py" "$DATA/tmp/perf-stalls.txt" "$LOG")
+  echo "$STALLS" | sed -n 's/^open=/- /p' >> "$OPENS"
+  HITCH=$(echo "$STALLS" | sed -n 's/^hitch=//p')
+  LONGEST=$(echo "$STALLS" | sed -n 's/^longest=//p')
+  FREEZES=$(echo "$STALLS" | sed -n 's/^freezes=//p')
+  REDRAW=""; TOP=""
   if [ -s "$OUT/sample-$T.txt" ]; then
     RESULT=$(python3 "$HERE/analyze_sample.py" "$OUT/sample-$T.txt" 4)
-    BUSY=$(echo "$RESULT" | sed -n 's/^busy=//p')
-    REDRAW=$(echo "$RESULT" | sed -n 's/^redraw=//p')
+    REDRAW="$(echo "$RESULT" | sed -n 's/^redraw=//p') %"
     TOP=$(echo "$RESULT" | tail -n +3 | sed 's/^ *//' | paste -sd ';' - | sed 's/;/<br>/g')
-    echo "| $T | $BUSY % | $REDRAW % | ${TOP:-(none above noise)} |" >> "$SUMMARY"
+  fi
+  if [ -n "$HITCH" ]; then
+    echo "| $T | $HITCH | $LONGEST ms | $FREEZES | $REDRAW | ${TOP:-(none above noise)} |" >> "$SUMMARY"
   else
-    echo "| $T | not measured (test exit $STATUS; see $T.log) | | |" >> "$SUMMARY"
+    echo "| $T | not measured (test exit $STATUS; see $T.log) | | | | |" >> "$SUMMARY"
   fi
 done
 
 {
   echo
-  echo "Time to open (tap until the screen is there, including the test's own checks):"
+  echo "Opening a screen (longest stall between the tap and the screen being there; under 100 ms feels instant):"
   echo
-  cat "$OUT"/test*.log | grep -o "PERF-OPEN .*" | sed 's/^PERF-OPEN /- /' | sort -u
+  cat "$OPENS"
+  grep -h "PERF-OPEN-FAILED" "$OUT"/test*.log | sed 's/^PERF-OPEN-FAILED /- did not open: /'
 } >> "$SUMMARY"
 
 cat "$SUMMARY"
