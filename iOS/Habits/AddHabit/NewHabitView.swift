@@ -208,6 +208,7 @@ struct ChoiceLabel: View {
 /// (`HabitDefaults`), and the line under the sentence says which ones. Anything needing its own page is
 /// pushed, never a sheet, so the whole flow moves one way.
 struct HabitForm: View {
+    private let fromSuggestion: Bool
     enum Field: Hashable { case name, description, amount, unit, increment, minutes, item(UUID) }
 
     /// One reminder. `part` is the time of day it's for (nil for Anytime); its time stays inside that part.
@@ -296,6 +297,7 @@ struct HabitForm: View {
     /// `idea` (onboarding, or Start From an Idea on an empty Today) fills in the name and how often, and nothing
     /// else: nothing is saved until Add, and amounts stay empty as for every new habit (C203, C292).
     init(type: ItemType, group: UUID? = nil, idea: HabitIdea? = nil, onSaved: @escaping (UUID) -> Void) {
+        fromSuggestion = idea != nil
         self.type = type
         self.onSaved = onSaved
         original = nil
@@ -320,6 +322,7 @@ struct HabitForm: View {
 
     /// Opens the form on a saved habit, every row as it is now.
     init(editing habit: Habit, weekStart: Int, description: String = "", group: UUID? = nil, onSaved: @escaping (UUID) -> Void) {
+        fromSuggestion = false
         type = ItemType(habit)
         self.onSaved = onSaved
         original = habit
@@ -1204,7 +1207,7 @@ struct HabitForm: View {
         let habit = makeHabit(name: trimmedName)
         // Reminders are on by default, so permission is asked when the habit is saved, not before.
         if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
-        store.add(habit, suggestion: idea != nil)
+        store.add(habit, suggestion: fromSuggestion)
         store.setDescription(descriptionText, of: habit.id)
         if let groupID, store.groups.contains(where: { $0.id == groupID }) { store.setGroup(groupID, of: habit.id) }
         onSaved(habit.id)
