@@ -13,7 +13,7 @@ Written by Claude (Claude Code), 30 September 2026. Branch: `progress-page-resea
 | U5 | Build groups in the app once the plan is done | [x] `Habits/Groups/`, `HabitStore+Groups.swift`, Today, the habit form, Habits; commit 54ad3f4 |
 | U6 | A message scheduled 3 h 27 min out to carry on | [x] Scheduled 30 Sep (Routine `trig_01UhQmW97bQ6VEEiHrdsEXap`, fires 1 Oct 02:52 UTC) |
 | U7 | Group stats on Progress | [x] Chips, the Groups card, habits under their group, the Day sheet per group; golden case G18 |
-| U8 | Everything fast (measured on GitHub) | [ ] |
+| U8 | Everything fast (measured on GitHub) | [x] Today, Habits, the habit page and the calendar unchanged (Today taps 12–14% busy, scrolling 6%). Progress, switching group chips, Week, Month and Year non-stop with 30 habits and two years: 16–29% busy on steady runners (59% on a slow one, where every screen was 2–4× higher). Chip counts are worked out only while Filter is open; Today filters with one lookup per habit; group day scores come from the same pass as All's |
 
 ## Results (GitHub, 1 Oct 2026)
 
@@ -22,5 +22,9 @@ Written by Claude (Claude Code), 30 September 2026. Branch: `progress-page-resea
 | 54ad3f4 | First build: Today, Timer, Progress, Groups; speed | Builds. Speed fine (Progress 15.6% busy switching group chips, ranges and periods non-stop). 3 test failures: two Groups tests picked a done habit and scrolled Today's list instead of the group form; Progress's "This week" was kept past midnight |
 | fa95797 | Progress gets new numbers on a new day; the tests fixed | Progress 10/10; Groups 4/5: tapping ✕ on the filter chip didn't clear the filter |
 | 97980f8 | The filter chip in a bar pinned above Today's list | **Groups 5/5, Today 3/3.** A list row holding one button made the whole row that button, so a tap beside the chip did nothing (a person tapping there too); now the chip is its own button and stays in sight while scrolling |
+
+| 97980f8, 30f3116 | Speed only; then All's and every group's day scores in one pass | Progress 28.9% busy (9.2% building numbers for periods and groups not seen yet), then 59% on a slower runner (habit page 25%, calendar 19% on the same run). Progress, Groups green |
+
+**Speed, honestly:** in the first groups run, building Progress's numbers was 0.5% of its time; in later runs 7–10%. The code between them only added the day to the cache key, which can't cause a rebuild, and the runners vary 2–4× between runs, so it isn't settled. The page still answers taps: nothing is worked out while drawing, and each period and group is built once and kept.
 
 **Bugs found and fixed:** the ✕ chip (above); Progress kept "This week" from before midnight until something changed.
