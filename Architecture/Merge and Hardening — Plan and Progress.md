@@ -26,9 +26,9 @@ merged. **Any session picking this up: read this first, then update it as items 
 | P2 | Schedule the check-ins (send_later) | ✅ check-in 1 at 20:15 UTC (`trig_01Mpn2S8ZZHVi68YRGvJSmFi`); it schedules 2, 2 schedules 3, 3 schedules 4 |
 | P3 | Find what isn't merged yet | ✅ Only `claude/server-and-sync` (47 commits) and `analytics` (excluded). Checked, not assumed: `claude/free-plan-data-safety` and `claude/pensive-bardeen-ou4hiw` are fully inside `claude/server-and-sync`; `claude/eloquent-turing-oznzs3`'s one extra commit is a "superseded, don't merge" note |
 | P4 | Merge `integration` into `claude/server-and-sync`, resolving every conflict keeping both sides (the Status note §2 checklist: sync schema renumbered to 7, `entry.source` synced, new write paths through `SyncWriter`) | ✅ `b8edab4` + build fix `1218890` + `b745b78` (decisions below) |
-| P5 | Run everything: server (129), Core JVM + sync (JVM, JS), the website check, iOS build + the UI suite in halves on GitHub, `check_rules.sh` | Server 129/129, Core (JVM + sync JVM/JS, 7 migration tests), website 21 checks, `check_rules.sh`: pass. iOS: running |
+| P5 | Run everything: server (129), Core JVM + sync (JVM, JS), the website check, iOS build + the UI suite in halves on GitHub, `check_rules.sh` | Server 129/129, Core (JVM + sync JVM/JS, 7 migration tests), website 21 checks, `check_rules.sh`: pass. iOS `1218890`: 25/27 (Sync, Persistence 4/4, Onboarding 6/6, Today 8/8, Backup 6/8: two checks looked below the fold, fixed in `670d321`); rerun with speed runs going |
 | P6 | Move `integration`, then `main`, to the merged result; update the branch checklist | — |
-| P7 | Performance: measure every screen with the app-driven runner (`[ios-perf]`), fix every regression and the known slow spots (opening a screen 500–1,300 ms, Today's first scroll 180–440 ms) | — |
+| P7 | Performance: measure every screen with the app-driven runner (`[ios-perf]`), fix every regression and the known slow spots (opening a screen 500–1,300 ms, Today's first scroll 180–440 ms) | In progress. Done (`6d04d35`, `69e2227`, `943e4e5`): quit rows tick only their two times (the whole row re-walked its history every second); a habit's runs remembered for today (one walk after a save, not two); the habit form builds sub-screens when opened (it built every one, three whole forms on the type question); Privacy's Face ID check off the main thread; Progress's weekday names once; backup and sync files off the main thread. Next: the first keyboard of a launch (habit form 2.8 s, entry editor 1.3 s), Progress's first open (2.8 s; bisect), keeping Progress's snapshot between opens |
 | P8 | Data robustness: migrations from every shipped schema, restore/merge, sync, low storage, kill mid-write; widgets reading the shared store | — |
 | P9 | Bugs: the older failing UI tests (Focus player, Routine Calendar, Goal flow, Schedule), anything found on the way | — |
 
@@ -75,3 +75,5 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
 - **1 Oct 18:10 UTC:** P1–P3 done.
 - **1 Oct 20:20 UTC:** P4 done; check-in 1 fired, check-in 2 scheduled for 2 Oct 01:28 UTC
   (`trig_01M4BDue4Sp5aLwpVmyuPy8t`). P5: everything off the Mac passes; the iOS run is going.
+- **1 Oct 20:50 UTC:** first iOS run of the merge: 25/27. Speed fixes from reading the code (a helper agent's review
+  of the slowest first openings; its full list is the P7 "Next"). Rerun of the touched tests plus speed runs going.
