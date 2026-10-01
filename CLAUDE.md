@@ -16,3 +16,6 @@
   table). Details at the top of [`.github/workflows/ios-tests.yml`](.github/workflows/ios-tests.yml).
 - Scratch files go in `Research/Temp/` (gitignored), never `/tmp`.
 - Commit only when asked.
+- **The app is Often Enough (oftenenough.com); its bundle ID is `com.oftenenough.app`.** Every ID (extensions, App
+  Group, purchases, server) is in [`Architecture/App Identity — Name, Domain and IDs.md`](<Architecture/App Identity — Name, Domain and IDs.md>).
+  When merging branches, those IDs win: replace any leftover `com.lalithsaicharan.habits`.
