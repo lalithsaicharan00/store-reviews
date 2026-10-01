@@ -14,3 +14,13 @@ Written by Claude (Claude Code), 30 September 2026. Branch: `progress-page-resea
 | U6 | A message scheduled 3 h 27 min out to carry on | [x] Scheduled 30 Sep (Routine `trig_01UhQmW97bQ6VEEiHrdsEXap`, fires 1 Oct 02:52 UTC) |
 | U7 | Group stats on Progress | [x] Chips, the Groups card, habits under their group, the Day sheet per group; golden case G18 |
 | U8 | Everything fast (measured on GitHub) | [ ] |
+
+## Results (GitHub, 1 Oct 2026)
+
+| Run | What | Result |
+|---|---|---|
+| 54ad3f4 | First build: Today, Timer, Progress, Groups; speed | Builds. Speed fine (Progress 15.6% busy switching group chips, ranges and periods non-stop). 3 test failures: two Groups tests picked a done habit and scrolled Today's list instead of the group form; Progress's "This week" was kept past midnight |
+| fa95797 | Progress gets new numbers on a new day; the tests fixed | Progress 10/10; Groups 4/5: tapping ✕ on the filter chip didn't clear the filter |
+| 97980f8 | The filter chip in a bar pinned above Today's list | **Groups 5/5, Today 3/3.** A list row holding one button made the whole row that button, so a tap beside the chip did nothing (a person tapping there too); now the chip is its own button and stays in sight while scrolling |
+
+**Bugs found and fixed:** the ✕ chip (above); Progress kept "This week" from before midnight until something changed.
