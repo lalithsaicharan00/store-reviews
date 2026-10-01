@@ -87,6 +87,21 @@ struct ContractTests {
         let coveredProperties = coveredDay.outbox.first { $0.event == .features }!.properties
         check(coveredProperties["routine_started_count"] == .number(0), "covered unused feature has an explicit zero denominator")
         check(coveredProperties["year_share_started_count"] == nil && coveredProperties["write_origin_watch"] == nil, "unsupported counters remain unknown")
+        var periodLedger = AnalyticsLedger(now: Date(timeIntervalSince1970: 86400))
+        let oldObservation = AnalyticsDeliveryConfiguration().observation
+        periodLedger.periodObservation = oldObservation
+        periodLedger.foreground = true
+        periodLedger.advance(now: Date(timeIntervalSince1970: 172800), sampled: true)
+        check(periodLedger.outbox.count == 3 && periodLedger.outbox.allSatisfy { $0.observation?.appVersion == oldObservation.appVersion && $0.observation?.sampleRate == oldObservation.sampleRate }, "closed daily records retain collection-period metadata before an upgrade")
+        let consentMirrorFolder = relayFolder.appendingPathComponent("erase-mirror")
+        let mirroredEngine = Analytics(file: nil, consentChanged: { enabled in
+            WidgetAnalyticsRelay.consent(enabled, directory: consentMirrorFolder, rotate: true)
+        })
+        mirroredEngine.setConsent(true)
+        let mirroredTicket = WidgetAnalyticsRelay.ticket(directory: consentMirrorFolder)
+        WidgetAnalyticsRelay.committed(ticket: mirroredTicket, directory: consentMirrorFolder)
+        mirroredEngine.erase()
+        check(WidgetAnalyticsRelay.ticket(directory: consentMirrorFolder) == nil && WidgetAnalyticsRelay.drain(directory: consentMirrorFolder) == 0, "engine erase revokes and purges the extension consent mirror")
         let oldWidgetTicket = cohortEngine.ticket
         cohortEngine.setConsent(false)
         cohortEngine.widgetPages(100, ticket: oldWidgetTicket); cohortEngine.drain()

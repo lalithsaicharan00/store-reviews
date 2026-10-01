@@ -5,7 +5,6 @@ import WidgetKit
 enum WidgetAnalyticsAdapter {
     private static var lastInventoryDay: Int?
     static func consentChanged(_ enabled: Bool) {
-        WidgetAnalyticsRelay.consent(enabled, directory: WidgetDisk.directory, rotate: true)
         lastInventoryDay = nil
         if enabled { refreshInventory() }
     }

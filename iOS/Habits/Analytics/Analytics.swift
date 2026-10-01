@@ -22,7 +22,11 @@ nonisolated final class Analytics: @unchecked Sendable {
         #endif
         let excluded = !perfConsent && (ProcessInfo.processInfo.arguments.contains("-uitest") || ProcessInfo.processInfo.arguments.contains("-perf-drive"))
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
-        let engine = Analytics(file: base?.appendingPathComponent(perfConsent ? "DisposableAnalyticsFixture/state.json" : "DisposableAnalytics/state.json"), configuration: config, disabled: excluded)
+        let engine = Analytics(file: base?.appendingPathComponent(perfConsent ? "DisposableAnalyticsFixture/state.json" : "DisposableAnalytics/state.json"), configuration: config, disabled: excluded, consentChanged: { enabled in
+            #if os(iOS)
+            WidgetAnalyticsRelay.consent(enabled, directory: WidgetDisk.directory, rotate: true)
+            #endif
+        })
         // Explicit synthetic consent exercises real queue/file/touch overhead in native performance runs.
         // DEBUG channel can never send to the production project; fixture state is independent of user consent.
         if perfConsent { engine.setConsent(true) }
@@ -33,6 +37,7 @@ nonisolated final class Analytics: @unchecked Sendable {
     private var generation: UUID?
     private let file: URL?
     private let disabled: Bool
+    private let consentChanged: @Sendable (Bool) -> Void
     private let config: AnalyticsDeliveryConfiguration
     private let transport: any AnalyticsSending
     private var ledger: AnalyticsLedger?
@@ -46,13 +51,14 @@ nonisolated final class Analytics: @unchecked Sendable {
     private var retryAfter = Date.distantPast
     private var failures = 0
 
-    init(file: URL?, configuration: AnalyticsDeliveryConfiguration = .init(), disabled: Bool = false, transport: any AnalyticsSending = AnalyticsTransport()) {
-        self.file = file; self.config = configuration; self.disabled = disabled; self.transport = transport
+    init(file: URL?, configuration: AnalyticsDeliveryConfiguration = .init(), disabled: Bool = false, transport: any AnalyticsSending = AnalyticsTransport(), consentChanged: @escaping @Sendable (Bool) -> Void = { _ in }) {
+        self.file = file; self.config = configuration; self.disabled = disabled; self.transport = transport; self.consentChanged = consentChanged
         // A single bounded launch read, never the database/history. No file or identity is created before consent.
         if !disabled, let file,
            let size = try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize, size <= 512_000,
            let data = try? Data(contentsOf: file), var loaded = try? JSONDecoder().decode(AnalyticsLedger.self, from: data) {
             loaded.prune(now: .now)
+            if loaded.periodObservation == nil { loaded.periodObservation = config.observation; loaded.partial = true }
             if loaded.outbox.count <= AnalyticsLedger.queueLimit, loaded.seen.count <= 1024 {
                 ledger = loaded; generation = UUID()
             }
@@ -71,9 +77,11 @@ nonisolated final class Analytics: @unchecked Sendable {
         generation = enabled && !disabled ? UUID() : nil
         let current = generation
         gate.unlock()
+        consentChanged(current != nil)
         queue.sync { [self] in
             transport.cancel(); sending = false; failures = 0; retryAfter = .distantPast
             ledger = current == nil ? nil : AnalyticsLedger(now: now)
+            ledger?.periodObservation = config.observation
             attention = AnalyticsAttention(); lastWall = nil
             if current == nil { if let file { try? FileManager.default.removeItem(at: file) } }
             else {
@@ -211,8 +219,10 @@ nonisolated final class Analytics: @unchecked Sendable {
         }
     }
     private func advance(now: Date) {
-        let included = sampled
+        let previousPeriod = ledger?.period
+        let included = ledger.map { $0.sampleBucket < ($0.periodObservation?.sampleRate ?? config.sampleRate) } ?? false
         ledger?.advance(now: now, sampled: included)
+        if ledger?.period != previousPeriod { ledger?.periodObservation = config.observation }
     }
     private func markVisit() {
         guard consented, ledger != nil, attention.foreground else { return }
@@ -260,7 +270,7 @@ nonisolated final class Analytics: @unchecked Sendable {
                     self.failures = min(8, self.failures + 1)
                     self.retryAfter = Date.now.addingTimeInterval(min(3600, pow(2, Double(self.failures)) * 30))
                     // No response bodies/raw errors are retained. Invalid records cannot stall the queue forever.
-                    if code == 400 || code == 413 { self.ledger?.outbox.removeAll { ids.contains($0.id) }; self.ledger?.loss += ids.count }
+                    if code == 400 || code == 413 { self.ledger?.outbox.removeAll { ids.contains($0.id) }; self.ledger?.loss = min(100_000, (self.ledger?.loss ?? 0) + ids.count) }
                 }
                 self.save()
                 // Further batches/retries wait for eligible lifecycle/explicit flush, never wake the app.

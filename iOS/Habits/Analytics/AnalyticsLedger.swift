@@ -12,6 +12,7 @@ nonisolated struct AnalyticsRecord: Codable, Sendable {
 nonisolated struct AnalyticsLedger: Codable, Sendable {
     var installation = UUID()
     var sampleBucket = Double.random(in: 0..<1)
+    var periodObservation: AnalyticsObservation? = nil
     var period: Int
     var partial = true
     var foreground = false
@@ -46,7 +47,7 @@ nonisolated struct AnalyticsLedger: Codable, Sendable {
         if seen.count > 1024 { seen.removeFirst(seen.count - 1024) }
         return true
     }
-    mutating func enqueue(_ event: AnalyticsEvent, _ properties: [String: AnalyticsValue], origin: AnalyticsOrigin = .today, now: Date) {
+    mutating func enqueue(_ event: AnalyticsEvent, _ properties: [String: AnalyticsValue], origin: AnalyticsOrigin = .today, now: Date, observation: AnalyticsObservation? = nil) {
         guard AnalyticsContract.valid(event, properties) else { return }
         prune(now: now)
         // Protect against runaway terminal callbacks. Summaries retain loss/coverage even when flows are capped.
@@ -55,7 +56,7 @@ nonisolated struct AnalyticsLedger: Codable, Sendable {
             explicitEvents += 1
         }
         if outbox.count >= Self.queueLimit { outbox.removeFirst(); loss = min(100_000, loss + 1) }
-        outbox.append(AnalyticsRecord(id: UUID(), event: event, created: now, origin: origin, properties: properties))
+        outbox.append(AnalyticsRecord(id: UUID(), event: event, created: now, origin: origin, properties: properties, observation: observation))
     }
     mutating func prune(now: Date) {
         let count = outbox.count
@@ -72,14 +73,14 @@ nonisolated struct AnalyticsLedger: Codable, Sendable {
                 "coverage_complete": .flag(false), "coverage_version": .number(2), "delivery_loss_count": .number(loss)]
             if foreground || external || !counters.isEmpty {
                 let measured = Dictionary(uniqueKeysWithValues: AnalyticsContract.measuredCounterKeys.map { ($0, AnalyticsValue.number(counters[$0] ?? 0)) })
-                enqueue(.features, common.merging(measured) { _, new in new }, now: Date(timeIntervalSince1970: Double(period + 86400)))
+                enqueue(.features, common.merging(measured) { _, new in new }, now: Date(timeIntervalSince1970: Double(period + 86400)), observation: periodObservation)
             }
             if foreground {
                 var engagement = common
                 for (screen, count) in visits { engagement["visits_" + screen] = .number(count) }
                 for (screen, time) in seconds { engagement["active_seconds_" + screen] = .number(min(86400, Int(time))) }
-                enqueue(.screens, engagement, now: Date(timeIntervalSince1970: Double(period + 86400)))
-                enqueue(.configuration, common.merging(configuration) { _, new in new }, now: Date(timeIntervalSince1970: Double(period + 86400)))
+                enqueue(.screens, engagement, now: Date(timeIntervalSince1970: Double(period + 86400)), observation: periodObservation)
+                enqueue(.configuration, common.merging(configuration) { _, new in new }, now: Date(timeIntervalSince1970: Double(period + 86400)), observation: periodObservation)
             }
         }
         counters = [:]; visits = [:]; seconds = [:]; transitions = []; foreground = false; external = false

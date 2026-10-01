@@ -87,13 +87,12 @@ struct OnboardingView: View {
         NavigationStack {
             ZStack {
                 switch page {
-                case 0: NamePage().transition(slide)
-                case 1: FreePage().transition(slide)
-                case 2: DaysPage().transition(slide)
-                default: IdeasPage(ownRow: false, onSomethingElse: { showNew = true }).transition(slide)
+                case 0: NamePage().transition(slide).onAppear { observeStep(0) }
+                case 1: FreePage().transition(slide).onAppear { observeStep(1) }
+                case 2: DaysPage().transition(slide).onAppear { observeStep(2) }
+                default: IdeasPage(ownRow: false, onSomethingElse: { showNew = true }).transition(slide).onAppear { observeStep(3) }
                 }
             }
-            .onAppear { observeStep() }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemGroupedBackground))
             .safeAreaInset(edge: .bottom, spacing: 0) { bottomBar }
@@ -121,7 +120,6 @@ struct OnboardingView: View {
             NewItemView { _ in addedFromNew = true }
         }
         .analyticsScreen(.onboarding)
-        .onAppear { observeStep() }
         .interactiveDismissDisabled()
     }
 
@@ -184,10 +182,9 @@ struct OnboardingView: View {
     private func move(to next: Int) {
         forward = next > page
         withAnimation(reduceMotion ? .easeInOut(duration: 0.2) : .snappy(duration: 0.35)) { page = next }
-        observeStep()
     }
 
-    private func observeStep() {
+    private func observeStep(_ page: Int) {
         guard let ticket = Analytics.shared.ticket, observedPages.insert(page).inserted else { return }
         analyticsStepTicket = ticket
         if !replay { Analytics.shared.cohort("fresh_first_run", ticket: analyticsStepTicket) }

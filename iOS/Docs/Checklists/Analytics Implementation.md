@@ -21,9 +21,9 @@ Written by Codex, 1 October 2026. Continue on `analytics`; PR base is `integrati
 
 ## External dependencies
 
-Owner confirms free/no billing and sole Default production project; published allowance 1M analytics events/month, planning ceiling 700k. Billing scope unavailable; no actual spend-cap verification or paid services. Provider settings update confirmed autocapture/replay/console/performance/web-vitals/surveys/heatmaps off, IP anonymization on. Direct `eu.i.posthog.com` ingestion is network-blocked (CONNECT 403); connector has no capture tool. Production sending remains false pending real provider delivery/privacy and retry-dedup verification. No crash SDK initialization exists, so separate crash consent is disabled; no duplicate collector added.
+Owner confirms free/no billing and sole Default production project; published allowance 1M analytics events/month, planning ceiling 700k. Billing scope unavailable; no actual spend-cap verification or paid services. Provider settings update confirmed autocapture/replay/console/performance/web-vitals/surveys/heatmaps off, IP anonymization on. Direct `eu.i.posthog.com` ingestion is network-blocked (CONNECT 403); connector has no capture tool. Production sending remains false pending native UI/performance acceptance; real synthetic provider delivery/privacy/retry deduplication is verified. No crash SDK initialization exists, so separate crash consent is disabled; no duplicate collector added.
 
-Current integration lacks onboarding/account/sync/purchase/widget targets. Do not merge unfinished branches or fake these outcomes. Contract supports their future semantics, but capability flags false and dashboard notes disclose absent coverage.
+Current integration includes onboarding, Help/About and iPhone Home/Lock widgets (eff1e14). Their adapters are implemented and pending final native acceptance. Account/sync/verified StoreKit purchases remain absent; contract tests reject fabricated outcomes, and capability flags remain false. No unfinished owner branch was merged.
 
 ## Test and PR evidence
 
@@ -59,3 +59,7 @@ Run 36899451178 completed successfully: 71 Foundation checks, core tests, app bu
 ### Compile correction — 18:30 UTC / 00:00 IST (Oct 2)
 
 Run 36903471716 passed 82 native checks and provider smoke but build failed: suggestion provenance referenced the initializer-only `idea` parameter. Latest f0d1b7e run 36904494091 has the same compile failure; neither is UI/performance acceptance. Fix stores only `fromSuggestion: Bool` in both form initializers, never the suggestion name in telemetry. Re-run targeted merged native validation. Three additional provider insights were created (6270561/p9LwxJez onboarding, 6270562/uXP18Y5W seven-day observed first-run outcomes, 6270563/NZ2ShfOs inventory). Final coverage-v2 adoption/reliability SQL updates were temporarily not executed because approval review hit a usage limit; do not claim those updates succeeded.
+
+### Review fixes — 00:12 IST (Oct 2) / 18:42 UTC
+
+Merged app and extension build and targeted UI suites passed in 36907293697; same-build performance runs are executing. Final code review found open daily-summary metadata could be relabelled after an upgrade; collection-period metadata is now frozen separately from queued records. Engine-level consent revocation/erase now purges the extension mirror through an injected callback, including callers outside Privacy. Loss counts saturate at 100,000, and welcome step events observe actual page appearances. Native tests cover period metadata and mirrored erase. Pending final validation of these refinements. Coverage-v2 provider configuration/reliability SQL passed; large UNION queries were too busy, replaced by validated single-scan array/tuple expansions. All four saved insights were updated successfully; three new tiles arranged. Whole-dashboard refresh and final notes still pending.
