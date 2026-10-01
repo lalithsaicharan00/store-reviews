@@ -25,7 +25,9 @@
     // Dev only: extra trusted roots (PEM), e.g. Xcode's StoreKit testing certificate. Empty: Apple's root only.
     "APPLE_EXTRA_ROOTS": "",
     // Dev only: GitHub Actions runs of this repository may use POST /v1/auth/ci (end-to-end tests).
-    "CI_REPOSITORY": "lalithsaicharan00/store-reviews"
+    "CI_REPOSITORY": "lalithsaicharan00/store-reviews",
+    // For the daily report's request numbers (Analytics Engine SQL API). Not a secret.
+    "ACCOUNT_ID": "fd5d7e4921bb3f41c85bedb2fd2fb0eb"
   },
   "secrets": { "required": ["TOKEN_KEY", "TEST_LOGIN_SECRET"] },
   "durable_objects": { "bindings": [{ "name": "ACCOUNT", "class_name": "Account" }] },
@@ -36,6 +38,10 @@
     { "binding": "BACKUPS", "bucket_name": "often-enough-backups-dev" },
     { "binding": "BACKUPS_EU", "bucket_name": "often-enough-backups-dev-eu", "jurisdiction": "eu" }
   ],
+  // Monitoring (src/report.ts): the daily report at 06:00 UTC. Request data points need Analytics Engine, which is
+  // switched on once in the Cloudflare dashboard (Workers → Analytics Engine); then add, here and in production:
+  //   "analytics_engine_datasets": [{ "binding": "METRICS", "dataset": "often_enough_dev" }]   (production: "often_enough")
+  "triggers": { "crons": ["0 6 * * *"] },
   // Rate limits (Architecture 06 §6), per Cloudflare location; namespace IDs are unique per account.
   "ratelimits": [
     // Per account: syncs and backup reads. The app syncs at most every few seconds.
@@ -69,9 +75,11 @@
         // App Review buys with sandbox accounts, so the live server must take Sandbox too (Apple's guidance).
         "APPLE_ENVIRONMENTS": "Production,Sandbox",
         "APPLE_EXTRA_ROOTS": "",
-        "CI_REPOSITORY": ""
+        "CI_REPOSITORY": "",
+        "ACCOUNT_ID": "fd5d7e4921bb3f41c85bedb2fd2fb0eb"
       },
       "secrets": { "required": ["TOKEN_KEY"] },
+      "triggers": { "crons": ["0 6 * * *"] },
       "durable_objects": { "bindings": [{ "name": "ACCOUNT", "class_name": "Account" }] },
       "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Account"] }],
       "r2_buckets": [

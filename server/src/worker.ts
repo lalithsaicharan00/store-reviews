@@ -3,6 +3,7 @@ import { APPLE_ROOT_CA_G3, verifyAppleSigned } from "./apple";
 import { deleteBackups, listBackups, readBackup, storeBackup } from "./backup";
 import { adminRoute } from "./admin";
 import { accountStub } from "./stubs";
+import { dailyReport, recordRequest } from "./report";
 import { deleteSnapshots } from "./snapshots";
 import {
   type Jurisdiction,
@@ -48,8 +49,15 @@ export default {
         response = json({ error: "server_error", message: "Our server is having trouble. Your data is safe on your phone." }, 500);
       }
     }
-    console.log(JSON.stringify({ route: `${request.method} ${url.pathname}`, status: response.status, ms: Date.now() - started }));
+    const ms = Date.now() - started;
+    console.log(JSON.stringify({ route: `${request.method} ${url.pathname}`, status: response.status, ms }));
+    recordRequest(env, request.method, url.pathname, response.status, ms);
     return response;
+  },
+
+  /** The daily report (cron `0 6 * * *`, Architecture 06 §10). */
+  async scheduled(controller, env, ctx): Promise<void> {
+    ctx.waitUntil(dailyReport(env, controller.scheduledTime));
   },
 } satisfies ExportedHandler<Env>;
 

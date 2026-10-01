@@ -5,7 +5,8 @@ moves, so the next session (person or agent) can pick up from it alone.*
 
 ## ▶ Next up, in order
 
-0. ✅ **Backup, sync and accounts (decided and built 1 Oct 2026; what's left is listed under step 3).** Next: item 1.4. Design: [Backup, Sync and Accounts — One Seamless
+0. ✅ **Backup, sync and accounts (decided and built 1 Oct 2026; what's left is listed under step 3).** Next: item 3
+   (website), then whatever in §3 isn't waiting on you. Design: [Backup, Sync and Accounts — One Seamless
    Experience](<../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>);
    server checklist: [Server Cost and Capacity §5](<Server Cost and Capacity — Free Safety Copy vs Plus Sync.md>);
    decisions, Google client IDs and setup left for later: [Backlog](<Backlog.md>). In order:
@@ -31,8 +32,11 @@ moves, so the next session (person or agent) can pick up from it alone.*
       that failed its check). `BackupUITests` (3, one end-to-end with a free account on dev); Sync, Persistence and
       Today UI tests still pass. **Written but off** (`BackupFeatures`) until the Apple Developer account: Sign in with
       Apple and the copy in the person's own iCloud (with its problem cards).
-      **Left for later:** finding the iCloud copy from "I've used this before"; the one notification when the nightly
-      backup finds a problem while the app is closed; "Turn on sync" / "One last step" in the Plus purchase flow
+      **Added the same day:** Settings → Your account (sign-in methods, devices, Sign Out, Delete Account with an
+      export first, Face ID/passcode, and keep-or-erase this iPhone; the server keeps a deleted-accounts list and tells
+      other devices `account_deleted`), and the one notification when a background backup finds a problem while the
+      app is closed (only if notifications are allowed; tapping it opens Backup & Sync).
+      **Left for later:** finding the iCloud copy from "I've used this before"; "Turn on sync" / "One last step" in the Plus purchase flow
       (item 5); Google's sign-in button branding check before publishing the consent screen. Real Google sign-in is
       untested on a device: the consent screen is in Testing (owner's Gmail only), so try it on the iPhone once.
    Rate limiting (1.1 below) was done with step 1.
@@ -59,7 +63,13 @@ moves, so the next session (person or agent) can pick up from it alone.*
       a repeat changed nothing, deleting the account removed its snapshot from R2 (checked in R2). 10 tests in
       `test/snapshots.test.ts`. Deployed to dev and production; production has no `ADMIN_SECRET` yet (support routes
       closed: set one when support first needs it). Repeat the drill monthly (06 §9).
-   4. Monitoring: uptime check on `/v1/status`, alerts, the daily report email (Resend).
+   4. ✅ Monitoring, as far as it goes without new accounts (1 Oct): the daily report (cron 06:00 UTC on dev and
+      production; accounts, purchases, failed snapshots, and requests/errors/free-plan share once Analytics Engine is
+      on; warnings at 1% errors, 50% of the free plan, any failed snapshot), logged daily, readable any time at
+      `GET /v1/admin/report`, emailed through Resend once set up; failed snapshot alarms are recorded (migration 0004).
+      `test/report.test.ts` (7). **Needs you** (server/README.md, "Monitoring"): switch on Analytics Engine in the
+      Cloudflare dashboard, an `ANALYTICS_TOKEN` (Analytics Read only), a Resend key and `REPORT_TO`, a free outside
+      uptime monitor on `https://api.oftenenough.com/v1/status`, and Cloudflare notifications for Worker errors.
 2. **Merge, as soon as `integration` is in `main`:** merge `main` into this branch, follow §2's checklist, run every
    test (§5), then merge this branch into `main`. Until then, don't start work that touches `Core/` or `AppModel`.
 3. **Website on `oftenenough.com`:** privacy policy, support page, account deletion without the app (§3 #5).

@@ -3,6 +3,7 @@ import Foundation
 import Observation
 import StoreKit
 import UIKit
+import UserNotifications
 
 /// Backup on this device: where it goes, whether it's working, moving and restoring
 /// (Backup, Sync and Accounts — One Seamless Experience §4; Architecture 03).
@@ -87,6 +88,7 @@ final class BackupCenter {
         static let iCloudOff = "backup.iCloudCopyOff"
         static let iCloudIdentity = "backup.iCloudIdentity"
         static let iCloudProblem = "backup.iCloudProblem"
+        static let notified = "backup.notifiedIssue"
     }
 
     init(repository: HabitRepository, sync: SyncService, store: HabitStore) {
@@ -135,7 +137,28 @@ final class BackupCenter {
         let iCloudProblem = defaults.string(forKey: Key.iCloudProblem).flatMap(ICloudProblem.init(rawValue:))
         secondCopyNote = place == .account && iCloudCopyOn ? iCloudProblem?.secondCopyNote : nil
         issue = currentIssue(iCloudProblem: iCloudProblem)
+        // Fixed: the next problem, even the same kind, may notify again.
+        if issue == nil { defaults.removeObject(forKey: Key.notified) }
     }
+
+    /// The one notification when a backup finds a problem while the app is closed (§4.4): once per problem, never
+    /// while the app is open (the card is there), and only if notifications are allowed (we never ask for this).
+    /// Tapping it opens Backup & Sync.
+    func notifyIfClosed() async {
+        guard let issue, UIApplication.shared.applicationState != .active, defaults.string(forKey: Key.notified) != issue.id else { return }
+        let center = UNUserNotificationCenter.current()
+        let status = await center.notificationSettings().authorizationStatus
+        guard status == .authorized || status == .provisional else { return }
+        let content = UNMutableNotificationContent()
+        content.title = "Your habits aren't being backed up"
+        content.body = issue.text
+        content.userInfo = [Self.notificationKey: issue.id]
+        try? await center.add(UNNotificationRequest(identifier: "backup-problem", content: content, trigger: nil))
+        defaults.set(issue.id, forKey: Key.notified)
+    }
+
+    /// The user-info key that marks the backup notification, so a tap opens Backup & Sync.
+    nonisolated static let notificationKey = "backupProblem"
 
     private func currentIssue(iCloudProblem: ICloudProblem?) -> Issue? {
         if sync.sessionEnded && !sync.isSignedIn {

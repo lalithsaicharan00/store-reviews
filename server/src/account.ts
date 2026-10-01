@@ -406,8 +406,17 @@ export class Account extends DurableObject<Env> {
 
   /** The nightly alarm. Throwing makes Cloudflare retry it with back-off. */
   async alarm(): Promise<void> {
-    if (this.accountId === undefined) return;
-    await this.writeSnapshot(Date.now());
+    const accountId = this.accountId;
+    if (accountId === undefined) return;
+    try {
+      await this.writeSnapshot(Date.now());
+    } catch (error) {
+      // Counted for the daily report; the rethrow makes Cloudflare retry.
+      const message = error instanceof Error ? error.message : String(error);
+      await this.env.DIRECTORY.prepare("INSERT INTO job_failure (at, kind, account_id, message) VALUES (?, 'snapshot', ?, ?)")
+        .bind(Date.now(), accountId, message.slice(0, 500)).run().catch(() => undefined);
+      throw error;
+    }
   }
 
   /** Support and the restore drill: a snapshot now, outside the nightly schedule. */

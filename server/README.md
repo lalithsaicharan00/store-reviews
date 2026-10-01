@@ -119,6 +119,24 @@ It never overwrites: what's missing or older comes back through the same merge r
 `restore`, and phones receive them on their next sync. The drill (`scripts/restore-drill.mjs`, against dev) restores a
 205-record account into a fresh one and checks a device pulls back every record.
 
+## Monitoring
+
+`src/report.ts`. A cron at 06:00 UTC builds the daily report for the last 24 hours: accounts (open, new, deleted),
+purchases linked, failed nightly snapshots, and (once set up) requests, server errors by route and the share of the free
+plan's 100,000 daily requests used. It warns at 1% server errors, half the free plan, and any failed snapshot. It's
+always written to the logs; read it any time with `GET /v1/admin/report?format=text` (admin secret).
+
+To finish setting it up (each needs you, once per environment):
+- **Analytics Engine:** switch it on in the Cloudflare dashboard (Workers → Analytics Engine), then add the
+  `analytics_engine_datasets` lines shown in `wrangler.jsonc` and deploy. Every request then writes one data point
+  (route name and status only).
+- **`ANALYTICS_TOKEN`** (`wrangler secret put ANALYTICS_TOKEN [--env production]`): a Cloudflare API token with only
+  "Account Analytics: Read", so the report can read those numbers.
+- **Email:** `RESEND_API_KEY` (secret) and `REPORT_TO` (comma-separated), with `oftenenough.com` verified in Resend;
+  `REPORT_FROM` defaults to `Often Enough <reports@oftenenough.com>`.
+- **Outside checks:** a free uptime monitor (UptimeRobot, Better Stack) on `https://api.oftenenough.com/v1/status`
+  every minute, and Cloudflare notifications for Worker errors. Neither can run from inside Cloudflare itself.
+
 **Not built yet:** Google Play purchases and notifications, Sign in with Apple server-to-server notifications and token
-revocation, the purchase email, a WAF rule in front of the Worker, and the daily report. Real Apple and Google sign-in need
+revocation, the purchase email, and a WAF rule in front of the Worker. Real Apple and Google sign-in need
 their keys (the Apple Developer account and a Google Cloud OAuth client); everything else is tested with stand-ins.

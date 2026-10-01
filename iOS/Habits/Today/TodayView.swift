@@ -95,6 +95,11 @@ struct TodayView: View {
         .onChange(of: selectedDay) { foldOverrides = [:] }
         // Back from the background: Today is drawn for now at once, not at the next minute.
         .onChange(of: scenePhase) { if scenePhase == .active { clock = .now } }
+        .onChange(of: router.openBackup, initial: true) { // initial: a tap can launch the app
+            guard router.openBackup else { return }
+            router.openBackup = false
+            showSettings = true
+        }
         .onChange(of: router.focusSection) {
             // A tapped notification opens today's section.
             guard let section = router.focusSection else { return }

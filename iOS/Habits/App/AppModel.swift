@@ -8,6 +8,8 @@ import UserNotifications
 final class AppRouter {
     /// A section to open and scroll to on today.
     var focusSection: String?
+    /// Open Settings → Backup & Sync (the backup-problem notification was tapped).
+    var openBackup = false
 }
 
 /// The app's one store, scheduler and database. Shared, because a notification action, an alarm's
@@ -155,6 +157,7 @@ final class AppModel {
             await scheduler.reconcile(store)
             // The nightly backup, when the app wasn't opened (Backup, Sync and Accounts §4.2).
             await backup?.runIfDue()
+            await backup?.notifyIfClosed()
             task.setTaskCompleted(success: !Task.isCancelled)
         }
         task.expirationHandler = { work.cancel() }
@@ -218,6 +221,8 @@ final class NotificationHandler: NSObject, UNUserNotificationCenterDelegate {
         if action == ReminderScheduler.doneAction || action == ReminderScheduler.addAction {
             // Finish the write before returning, so iOS keeps the app awake until it's saved.
             if let target { await AppModel.shared.logFromReminder(target) }
+        } else if action == UNNotificationDefaultActionIdentifier, info[BackupCenter.notificationKey] != nil {
+            await MainActor.run { AppModel.shared.router.openBackup = true }
         } else if action == UNNotificationDefaultActionIdentifier {
             await AppModel.shared.open(target, section: section)
         }

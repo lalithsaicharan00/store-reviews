@@ -1,5 +1,6 @@
 import { jurisdictionOf } from "./directory";
 import { HttpError, isUuid, json, readJson } from "./http";
+import { buildReport, reportText } from "./report";
 import { type Snapshot, gunzip, snapshotBucket, snapshotPrefix } from "./snapshots";
 import { accountStub } from "./stubs";
 import { bearer, safeEqual } from "./tokens";
@@ -9,6 +10,7 @@ import { bearer, safeEqual } from "./tokens";
  * (at least 32 characters); everywhere else every `/v1/admin/*` path is a plain 404. Driven by
  * `scripts/restore-account.mjs`.
  *
+ * - `GET  /v1/admin/report[?format=text]`: the daily report for the last 24 hours, now.
  * - `POST /v1/admin/snapshot {accountId}`: take a snapshot now.
  * - `GET  /v1/admin/snapshots?account=<id>`: the account's snapshots, newest first.
  * - `POST /v1/admin/restore {from, day, into?, apply?}`: compare snapshot `from`/`day` with account `into` (default:
@@ -26,6 +28,10 @@ export async function adminRoute(request: Request, url: URL, env: Env): Promise<
     const taken = await accountStub(env, account).snapshotNow();
     if (!taken) throw new HttpError(404, "no_account", "That account's data is gone.");
     return json(taken);
+  }
+  if (key === "GET /v1/admin/report") {
+    const report = await buildReport(env);
+    return url.searchParams.get("format") === "text" ? new Response(reportText(report), { headers: { "content-type": "text/plain; charset=utf-8" } }) : json(report);
   }
   if (key === "GET /v1/admin/snapshots") {
     const account = await existing(env, url.searchParams.get("account"));
