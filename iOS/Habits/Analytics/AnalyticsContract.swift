@@ -97,6 +97,14 @@ nonisolated enum AnalyticsContract {
         .union(AnalyticsHabitType.allCases.filter { $0 != .notApplicable }.map { "habit_write_" + $0.rawValue })
         .union(AnalyticsOrigin.allCases.map { "write_origin_" + $0.rawValue })
         .union(["storage", "backup", "sync", "widget", "reminder"].flatMap { ["\($0)_success_count", "\($0)_failure_count"] })
+    // iPhone coverage v2: zero-fill only working adapters. Reserved/unimplemented counters remain absent.
+    static let measuredCounterKeys = Set(AnalyticsCounter.allCases.filter {
+        ![.deleteEntry, .completedFilter, .yearShare].contains($0)
+    }.map(\.rawValue))
+        .union(["tracking_write_count", "task_write_count"])
+        .union(AnalyticsHabitType.allCases.filter { $0 != .notApplicable }.map { "habit_write_" + $0.rawValue })
+        .union(AnalyticsOrigin.allCases.filter { ![.watch, .web].contains($0) }.map { "write_origin_" + $0.rawValue })
+        .union(["storage", "backup", "widget"].flatMap { ["\($0)_success_count", "\($0)_failure_count"] })
     static let screenKeys = Set(AnalyticsScreen.allCases.flatMap { ["visits_" + $0.rawValue, "active_seconds_" + $0.rawValue] })
 
     static func valid(_ event: AnalyticsEvent, _ properties: [String: AnalyticsValue]) -> Bool {

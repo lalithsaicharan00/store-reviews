@@ -16,6 +16,8 @@ nonisolated struct AnalyticsLedger: Codable, Sendable {
     var partial = true
     var foreground = false
     var external = false
+    var widgetInventory: [String: AnalyticsValue]? = nil
+    var widgetInventoryPeriod: Int? = nil
     var cohort: String? = nil
     var activationObserved = false
     var counters: [String: Int] = [:]
@@ -67,9 +69,10 @@ nonisolated struct AnalyticsLedger: Codable, Sendable {
         if sampled, now.timeIntervalSince1970 - Double(period) <= Self.retention {
             let common: [String: AnalyticsValue] = ["period_start_utc": .number(period), "period_end_utc": .number(period + 86400),
                 "collection_started_mid_period": .flag(partial), "foreground_active": .flag(foreground), "external_action_active": .flag(external),
-                "coverage_complete": .flag(false), "coverage_version": .number(1), "delivery_loss_count": .number(loss)]
+                "coverage_complete": .flag(false), "coverage_version": .number(2), "delivery_loss_count": .number(loss)]
             if foreground || external || !counters.isEmpty {
-                enqueue(.features, common.merging(counters.mapValues { .number($0) }) { _, new in new }, now: Date(timeIntervalSince1970: Double(period + 86400)))
+                let measured = Dictionary(uniqueKeysWithValues: AnalyticsContract.measuredCounterKeys.map { ($0, AnalyticsValue.number(counters[$0] ?? 0)) })
+                enqueue(.features, common.merging(measured) { _, new in new }, now: Date(timeIntervalSince1970: Double(period + 86400)))
             }
             if foreground {
                 var engagement = common

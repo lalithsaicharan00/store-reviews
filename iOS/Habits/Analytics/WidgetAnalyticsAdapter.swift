@@ -40,7 +40,7 @@ enum WidgetAnalyticsAdapter {
                     }
                 }
             }
-            Analytics.shared.event(.widgetInventory, properties, ticket: ticket, origin: .widget)
+            Analytics.shared.widgetInventory(properties, ticket: ticket)
         }
     }
 }

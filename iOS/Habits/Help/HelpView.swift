@@ -7,6 +7,7 @@ import UIKit
 /// words. **When a way in changes, change its answer here too.**
 struct HelpView: View {
     @State private var query = ""
+    @State private var observedSearch = false
     @State private var showWelcome = false
     @State private var showAddress = false
     @Environment(\.openURL) private var openURL
@@ -42,7 +43,10 @@ struct HelpView: View {
         }
         .searchable(text: $query, prompt: "Search help")
         .onChange(of: query) {
-            if !query.isEmpty { Analytics.shared.count(.helpSearch, ticket: Analytics.shared.ticket) }
+            if !query.isEmpty && !observedSearch && Analytics.shared.consented {
+                observedSearch = true
+                Analytics.shared.count(.helpSearch, ticket: Analytics.shared.ticket)
+            }
         }
         .navigationTitle("Help & Feedback")
         .navigationBarTitleDisplayMode(.inline)
@@ -103,15 +107,19 @@ enum Support {
 /// One question and its answer, opened in place.
 private struct TopicRow: View {
     let topic: HelpTopic
+    @State private var expanded = false
 
     var body: some View {
-        DisclosureGroup {
+        DisclosureGroup(isExpanded: $expanded) {
             Text(topic.answer)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.vertical, 2)
         } label: {
             Text(topic.question).foregroundStyle(Color.primary)
+        }
+        .onChange(of: expanded) {
+            if expanded { Analytics.shared.count(.faq, ticket: Analytics.shared.ticket) }
         }
         .accessibilityIdentifier("help-topic-" + topic.question)
     }

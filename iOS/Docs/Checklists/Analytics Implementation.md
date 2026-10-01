@@ -51,3 +51,7 @@ Actual EU PostHog reads now show two synthetic development records from macOS ru
 ## Consolidated update — 17:59 UTC
 
 `eff1e14` is merged as `df73109`, including real onboarding/help/widgets and Often Enough IDs. Implemented adapters now cover their observable callbacks; accounts/sync/purchase remain absent. New native tests cover consent-less paging, opt-out/re-opt-in/stale callbacks, at-most-once draining, old-day dropping, observed activation provenance and durable widget retry deduplication. Pending: latest merged-head native build/tests, widget/AppIntent compilation and same-build consent-off/on performance. Earlier 783950a CI is still running; 7332d3f pending. Preserve provider evidence above; do not mistake prior-head results for merged-head acceptance.
+
+### Native success and final coverage refinements — 18:09 UTC
+
+Run 36899451178 completed successfully: 71 Foundation checks, core tests, app build and all 9 targeted UI tests passed. Consent-on perf still missed targets (scroll 39.1ms/s, taps 251.5ms/s, typing 79.4ms/s); this is not acceptance or a causal overhead comparison. New merged run 36903471716 passed extended native contract/provider steps and is building. Further refinements pending: optional welcome → Privacy navigation (no required opt-in), welcome finishes after durable creation flush, once-per-flow observed-step guard, changed widget inventories persistently suppressed/limited to once/day, and coverage-v2 explicit zeroes only for known working feature adapters. Latest full validation will supersede this intermediate head.

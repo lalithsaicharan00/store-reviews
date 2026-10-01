@@ -74,6 +74,19 @@ struct ContractTests {
         cohortEngine.tracking(.check, origin: .widget, ticket: cohortEngine.ticket); cohortEngine.drain()
         check(cohortEngine.inspect()?.outbox.first?.properties["cohort"] == .text("fresh_first_run"), "observed consenting onboarding classifies activation")
         check(cohortEngine.inspect()?.counters["widget_action_accepted_count"] == 1, "widget acceptance counted separately")
+        let inventory: [String: AnalyticsValue] = ["query_supported": .flag(true), "query_result": .text("success"), "host": .text("unknown"), "kind_today_count": .number(1)]
+        cohortEngine.widgetInventory(inventory, ticket: cohortEngine.ticket)
+        cohortEngine.widgetInventory(inventory, ticket: cohortEngine.ticket); cohortEngine.drain()
+        check(cohortEngine.inspect()?.outbox.filter { $0.event == .widgetInventory }.count == 1, "unchanged widget inventory suppressed persistently")
+        var changedInventory = inventory; changedInventory["kind_today_count"] = .number(2)
+        cohortEngine.widgetInventory(changedInventory, ticket: cohortEngine.ticket); cohortEngine.drain()
+        check(cohortEngine.inspect()?.outbox.filter { $0.event == .widgetInventory }.count == 1, "inventory limited to one changed snapshot per UTC day")
+        var coveredDay = AnalyticsLedger(now: Date(timeIntervalSince1970: 86400))
+        coveredDay.foreground = true
+        coveredDay.advance(now: Date(timeIntervalSince1970: 172800), sampled: true)
+        let coveredProperties = coveredDay.outbox.first { $0.event == .features }!.properties
+        check(coveredProperties["routine_started_count"] == .number(0), "covered unused feature has an explicit zero denominator")
+        check(coveredProperties["year_share_started_count"] == nil && coveredProperties["write_origin_watch"] == nil, "unsupported counters remain unknown")
         let oldWidgetTicket = cohortEngine.ticket
         cohortEngine.setConsent(false)
         cohortEngine.widgetPages(100, ticket: oldWidgetTicket); cohortEngine.drain()

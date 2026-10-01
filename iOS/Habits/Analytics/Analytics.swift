@@ -110,6 +110,14 @@ nonisolated final class Analytics: @unchecked Sendable {
             state.enqueue(event, properties, origin: origin, now: .now)
         }
     }
+    func widgetInventory(_ properties: [String: AnalyticsValue], ticket: AnalyticsTicket?) {
+        guard AnalyticsContract.valid(.widgetInventory, properties) else { return }
+        mutate(ticket: ticket) { state in
+            guard state.widgetInventory != properties, state.widgetInventoryPeriod != state.period else { return }
+            state.widgetInventory = properties; state.widgetInventoryPeriod = state.period
+            state.enqueue(.widgetInventory, properties, origin: .widget, now: .now)
+        }
+    }
     func cohort(_ value: String, ticket: AnalyticsTicket?) {
         guard ["fresh_first_run", "restored", "existing"].contains(value) else { return }
         mutate(ticket: ticket) { state in
