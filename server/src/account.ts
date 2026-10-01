@@ -13,7 +13,7 @@ import { newSecret, sha256Hex } from "./tokens";
  * An object with no `account_id` in `meta` is not an account (never set up, or deleted): every call says "gone".
  */
 
-const SCHEMA_VERSION = 3;
+const SCHEMA_VERSION = 4;
 
 /** Sync limits (Architecture 06 §4): a push is at most 500 ops (bigger outboxes come in chunks); a pull at most 1,000. */
 export const MAX_PUSH = 500;
@@ -141,6 +141,11 @@ export class Account extends DurableObject<Env> {
           store TEXT NOT NULL, original_id TEXT NOT NULL, product_id TEXT NOT NULL, grants TEXT NOT NULL,
           environment TEXT NOT NULL, purchased_at INTEGER NOT NULL, revoked_at INTEGER, recorded_at INTEGER NOT NULL,
           PRIMARY KEY (store, original_id))`);
+      }
+      if (current < 4) {
+        // Which sign-in method opened each session, so Apple's "consent revoked" ends only Apple's (01 §3.9).
+        // Sessions from before have none and are left alone.
+        this.sql.exec("ALTER TABLE session ADD COLUMN provider TEXT");
       }
       this.setMeta("schema", String(SCHEMA_VERSION));
     });
@@ -294,10 +299,10 @@ export class Account extends DurableObject<Env> {
       );
       // A new sign-in replaces whatever session this device had.
       this.sql.exec(
-        `INSERT INTO session (device_id, secret_hash, previous_hash, created_at, rotated_at, expires_at) VALUES (?, ?, NULL, ?, ?, ?)
+        `INSERT INTO session (device_id, secret_hash, previous_hash, created_at, rotated_at, expires_at, provider) VALUES (?, ?, NULL, ?, ?, ?, ?)
          ON CONFLICT(device_id) DO UPDATE SET secret_hash = excluded.secret_hash, previous_hash = NULL,
-           created_at = excluded.created_at, rotated_at = excluded.rotated_at, expires_at = excluded.expires_at`,
-        device.id, hash, now, now, now + SESSION_LIFETIME_MS,
+           created_at = excluded.created_at, rotated_at = excluded.rotated_at, expires_at = excluded.expires_at, provider = excluded.provider`,
+        device.id, hash, now, now, now + SESSION_LIFETIME_MS, key.provider,
       );
       if (testPlus !== null) this.setTestPlus(testPlus, now);
     });
@@ -350,6 +355,16 @@ export class Account extends DurableObject<Env> {
   async isSignedIn(deviceId: string): Promise<boolean> {
     if (this.accountId === undefined) return false;
     return this.sql.exec("SELECT 1 FROM session WHERE device_id = ?", deviceId).toArray().length > 0;
+  }
+
+  /** Apple's "consent revoked": every session that sign-in method opened ends; the devices keep their data (01 §3.5). */
+  async endSessionsOpenedWith(provider: string): Promise<number> {
+    return this.sql.exec("DELETE FROM session WHERE provider = ?", provider).rowsWritten;
+  }
+
+  /** Apple's "email disabled/enabled": whether we can still reach this person at their relay address. */
+  async setKeyEmail(provider: string, subject: string, email: string | null, isPrivateEmail: boolean): Promise<void> {
+    this.sql.exec("UPDATE sign_in_key SET email = ?, is_private_email = ? WHERE provider = ? AND subject = ?", email, isPrivateEmail ? 1 : 0, provider, subject);
   }
 
   async endSession(deviceId: string): Promise<void> {

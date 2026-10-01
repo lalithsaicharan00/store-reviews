@@ -85,6 +85,34 @@ export async function verifyIdToken(config: ProviderConfig, idToken: string, raw
   return { provider: config.provider, subject: payload.sub, email, isPrivateEmail };
 }
 
+/** A Sign in with Apple server-to-server event (01 §3.9): someone stopped using Apple sign-in with us, deleted their Apple
+ * Account, or turned email forwarding off or on. */
+export interface AppleEvent {
+  type: "email-disabled" | "email-enabled" | "consent-revoked" | "account-delete" | string;
+  subject: string;
+  email: string | null;
+  isPrivateEmail: boolean;
+}
+
+/** Checks an event Apple signed for our app (`aud` = our bundle ID) and reads it. Apple sends `events` as a JSON string. */
+export async function verifyAppleEvent(token: string, audiences: string[]): Promise<AppleEvent> {
+  if (audiences.length === 0) throw new HttpError(503, "provider_not_configured", "Sign in with Apple isn't set up yet.");
+  const payload = await verifySigned(APPLE, token, audiences);
+  let events: Record<string, unknown>;
+  try {
+    events = (typeof payload.events === "string" ? JSON.parse(payload.events) : payload.events) as Record<string, unknown>;
+  } catch {
+    throw invalid();
+  }
+  if (!events || typeof events.type !== "string" || typeof events.sub !== "string" || events.sub.length === 0) throw invalid();
+  return {
+    type: events.type,
+    subject: events.sub,
+    email: typeof events.email === "string" ? events.email.toLowerCase() : null,
+    isPrivateEmail: events.is_private_email === true || events.is_private_email === "true",
+  };
+}
+
 /**
  * Dev only: proves a request comes from a GitHub Actions run of our own repository (its OIDC token, minted for
  * [audience]), so the iPhone end-to-end tests can sign in without Apple, Google or any stored secret. A fork's

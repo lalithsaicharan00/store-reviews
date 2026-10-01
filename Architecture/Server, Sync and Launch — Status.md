@@ -151,7 +151,8 @@ core most) → this branch → `main` → onboarding and widgets merge `main`.
 | 4 | Backup, sync and accounts for free and Plus users | **built 1 Oct 2026** (item 0 above); iCloud copy and Apple sign-in wait for the developer account |
 | 5 | Purchases in the app: StoreKit 2 buy/restore/launch check, the 5-habit limit from real ownership, sending purchases to `/v1/purchases/verify` | needs the **Plus screen design**; then testable with the `.storekit` file |
 | 6 | Sign-in in the app: ~~Google sign-in~~ (built 1 Oct), Apple button (written, off), "One last step" after purchase, Settings → Account (devices, delete account) | Apple: **the developer account**; "One last step": the Plus screen design |
-| 7 | With the Apple account: register `com.oftenenough.app` (+ `.liveactivity`, App Group `group.com.oftenenough.app`), the three in-app purchases, sandbox purchases, the App Store notification URL (`/v1/hooks/apple`), Sign in with Apple notifications and token revocation | the developer account |
+| 6b | Sign in with Apple server-to-server notifications | **built 1 Oct** (`/v1/hooks/apple-signin`, 5 tests with stand-in Apple keys, deployed); register the URL with Apple with item 7 |
+| 7 | With the Apple account: register `com.oftenenough.app` (+ `.liveactivity`, App Group `group.com.oftenenough.app`), the three in-app purchases, sandbox purchases, the App Store notification URL (`/v1/hooks/apple`), registering the Sign in with Apple notification URL (`/v1/hooks/apple-signin`, built), token revocation | the developer account |
 | 8 | Later: Google Play billing, Android app, Apple Watch | — |
 
 One click in Xcode on the Mac: Product → Scheme → Edit Scheme → Run → Options → StoreKit Configuration →

@@ -19,7 +19,7 @@ import {
   wasDeleted,
 } from "./directory";
 import { HttpError, errorResponse, isUuid, json, readJson, requireString } from "./http";
-import { APPLE, GOOGLE, type VerifiedKey, verifyCiToken, verifyIdToken } from "./providers";
+import { APPLE, GOOGLE, type VerifiedKey, verifyAppleEvent, verifyCiToken, verifyIdToken } from "./providers";
 import {
   type AccessClaims,
   bearer,
@@ -111,6 +111,8 @@ async function route(request: Request, url: URL, env: Env): Promise<Response> {
       return purchases(request, env);
     case "POST /v1/hooks/apple":
       return appleNotification(request, env);
+    case "POST /v1/hooks/apple-signin":
+      return appleSignInEvent(request, env);
   }
   throw new HttpError(404, "not_found", "There's nothing here.");
 }
@@ -275,11 +277,49 @@ async function signOut(request: Request, env: Env): Promise<Response> {
 /** Deletes the account (01 §3.7): first from the directory, so nothing can open it, then its data. Safe to retry. */
 async function remove(request: Request, env: Env): Promise<Response> {
   const claims = await authenticate(request, env);
-  await deleteAccount(env.DIRECTORY, claims.accountId);
-  await accountStub(env, claims).wipe();
-  await deleteBackups(env, claims);
-  await deleteSnapshots(env, claims);
+  await deleteEverything(env, claims);
   return json({ deleted: true, at: Date.now() });
+}
+
+/** Everything of an account, in the order that keeps it safe: the directory, its data, backups, snapshots (09 §7). */
+async function deleteEverything(env: Env, account: { accountId: string; jurisdiction: Jurisdiction }) {
+  await deleteAccount(env.DIRECTORY, account.accountId);
+  await accountStub(env, account).wipe();
+  await deleteBackups(env, account);
+  await deleteSnapshots(env, account);
+}
+
+/**
+ * Sign in with Apple server-to-server notifications (01 §3.9, 09 §7), `{payload: <JWT Apple signed>}`:
+ * - `consent-revoked`: the person stopped using Apple sign-in with us; sessions it opened end, data stays;
+ * - `account-delete`: they deleted their Apple Account; the Apple sign-in goes, and if it was the account's only way
+ *   in, the whole account is deleted (it could never be opened again);
+ * - `email-disabled` / `email-enabled`: whether their relay address still reaches them.
+ * Events for sign-ins we don't know are acknowledged and ignored; repeats are harmless.
+ */
+async function appleSignInEvent(request: Request, env: Env): Promise<Response> {
+  const body = await readJson<{ payload?: unknown }>(request, 16 * 1024);
+  const event = await verifyAppleEvent(requireString(body.payload, "payload", 8192), audiences(env.APPLE_AUDIENCES));
+  const account = await findAccount(env.DIRECTORY, "apple", event.subject);
+  if (!account) return json({ received: true });
+  const stub = accountStub(env, account);
+  if (event.type === "consent-revoked") {
+    await stub.endSessionsOpenedWith("apple");
+  } else if (event.type === "account-delete") {
+    const result = await unlinkKey(env.DIRECTORY, account.accountId, "apple");
+    if (!result.removed && result.reason === "last_key") {
+      await deleteEverything(env, account);
+    } else {
+      await stub.removeKey("apple", event.subject);
+      await stub.endSessionsOpenedWith("apple");
+    }
+  } else if (event.type === "email-disabled") {
+    await stub.setKeyEmail("apple", event.subject, null, event.isPrivateEmail);
+  } else if (event.type === "email-enabled") {
+    await stub.setKeyEmail("apple", event.subject, event.email, event.isPrivateEmail);
+  }
+  console.log(JSON.stringify({ event: "apple_signin_event", type: event.type }));
+  return json({ received: true });
 }
 
 // MARK: Sync

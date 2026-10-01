@@ -82,6 +82,7 @@ Needs `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in the environment.
 | `POST /v1/purchases/verify` | `{jws}` (StoreKit 2 `jwsRepresentation`) → entitlements and a new access token (so a new Plus syncs at once); checked against Apple Root CA - G3, no call to Apple |
 | `GET /v1/purchases` | the account's entitlements (`plus`, `family`, purchases) |
 | `POST /v1/hooks/apple` | App Store Server Notifications V2: refunds and revocations remove Plus; a reversed refund restores it |
+| `POST /v1/hooks/apple-signin` | Sign in with Apple server-to-server notifications `{payload}`: `consent-revoked` ends the sessions Apple sign-in opened; `account-delete` removes the Apple sign-in, or deletes the whole account if it was the only one; `email-disabled`/`-enabled` update the relay email. Register `https://api.oftenenough.com/v1/hooks/apple-signin` with Apple once the developer account exists |
 | `/v1/admin/*` | Support only, with `Authorization: Bearer <ADMIN_SECRET>`; a plain 404 where that secret isn't set. Snapshots and restoring one account (below) |
 
 The app sends `nonce` raw and gives Apple or Google its SHA-256 (hex). `device` is `{id (UUID), platform, name, appVersion}`.
@@ -137,6 +138,5 @@ To finish setting it up (each needs you, once per environment):
 - **Outside checks:** a free uptime monitor (UptimeRobot, Better Stack) on `https://api.oftenenough.com/v1/status`
   every minute, and Cloudflare notifications for Worker errors. Neither can run from inside Cloudflare itself.
 
-**Not built yet:** Google Play purchases and notifications, Sign in with Apple server-to-server notifications and token
-revocation, the purchase email, and a WAF rule in front of the Worker. Real Apple and Google sign-in need
+**Not built yet:** Google Play purchases and notifications, Sign in with Apple token revocation (needs the developer account's key), the purchase email, and a WAF rule in front of the Worker. Real Apple and Google sign-in need
 their keys (the Apple Developer account and a Google Cloud OAuth client); everything else is tested with stand-ins.
