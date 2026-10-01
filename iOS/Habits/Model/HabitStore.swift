@@ -125,6 +125,8 @@ final class HabitStore {
     var noteOffer: NoteOffer?
     /// Exact entry offered for undo on Today. No timeout, and no search through history per row.
     var undoOffer: Entry?
+    /// The moment a tap finished everything planned for today (the review prompt waits for this pause).
+    private(set) var dayFinishedAt: Date?
     func clearLogOffer() { undoOffer = nil; noteOffer = nil }
     struct NoteOffer: Equatable { let habit: UUID; let day: LocalDay }
     /// The note being written in the note bar: a habit's note (`habit` set) or the day's note (`habit` nil).
@@ -1909,7 +1911,12 @@ final class HabitStore {
 
     /// A tap's entry: shown now, written next in the queue.
     private func addLogged(_ entry: Entry) {
+        // Whether this tap finishes today: a natural pause, where the app may ask for a review (`ReviewPrompt`).
+        // Worked out once per tap, never while drawing.
+        let isToday = entry.day == today()
+        let wasFull = isToday && todayScore(on: entry.day).isFull
         withAnimation { insertEntry(entry); offerUndo(entry) }
+        if isToday && !wasFull && todayScore(on: entry.day).isFull { dayFinishedAt = .now }
         perform { [self] in
             #if DEBUG
             // PersistenceUITests: a write that fails must take the tap back off the screen.

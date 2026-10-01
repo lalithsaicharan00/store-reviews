@@ -1,3 +1,4 @@
+import StoreKit
 import SwiftUI
 
 /// The home screen: today's habits, one card per part of the day.
@@ -38,6 +39,7 @@ struct TodayView: View {
     /// menu is open, so the menu sliding over Today doesn't redraw Today (`Docs/Checklists/Sidebar Menu.md`).
     @Environment(MenuModel.self) private var menu
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.requestReview) private var requestReview
     /// Speed runs only: the New Habit form opened straight away, to measure typing in it.
     @State private var perfForm = false
 
@@ -105,6 +107,17 @@ struct TodayView: View {
         .onChange(of: routine?.id) { if routine != nil { store.clearLogOffer() } }
         .onDisappear { store.clearLogOffer() }
         .onPerfCommand(perform)
+        .onChange(of: store.dayFinishedAt) {
+            // The tap that finishes today is a natural pause: after a week of real use, Apple's own review request may
+            // show (report "Asking for a Review — When, How Often, Never How", 30 Sep).
+            guard ReviewPrompt.shouldAsk(store) else { return }
+            Task {
+                try? await Task.sleep(for: .seconds(2))
+                guard !covered, store.noteTarget == nil, ReviewPrompt.shouldAsk(store) else { return }
+                ReviewPrompt.markAsked()
+                requestReview()
+            }
+        }
         .sheet(isPresented: $perfForm) { NavigationStack { HabitForm(type: .doIt, onSaved: { _ in }) } }
         // Back from the background: Today is drawn for now at once, not at the next minute.
         .onChange(of: scenePhase) { if scenePhase == .active { clock = .now } }
