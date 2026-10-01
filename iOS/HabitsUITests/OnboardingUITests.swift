@@ -227,11 +227,14 @@ final class OnboardingUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["onboarding-page-free"].waitForExistence(timeout: 3))
         XCTAssertEqual(app.buttons["onboarding-continue"].label, "Done")
         next()
-        XCTAssertTrue(app.navigationBars["Help & Feedback"].waitForExistence(timeout: 5), "Done returns to Help")
+        // Done returns to Help (its search may still be active from above, which hides the page's title).
+        XCTAssertTrue(app.buttons["help-welcome"].waitForExistence(timeout: 5), "Done returns to Help")
+        XCTAssertFalse(app.staticTexts["onboarding-page-free"].exists)
 
-        // About, from the menu.
-        app.navigationBars["Help & Feedback"].buttons.firstMatch.tap()
-        XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 5))
+        // About, from the menu, in a fresh launch with no welcome.
+        app.terminate()
+        launch(onboarding: false)
+        XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 10))
         app.buttons["menu-button"].tap()
         app.buttons["menu-about"].tap()
         XCTAssertTrue(app.navigationBars["About"].waitForExistence(timeout: 5))
