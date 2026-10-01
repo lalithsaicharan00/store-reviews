@@ -100,13 +100,12 @@ final class BackupUITests: XCTestCase {
         app.launchArguments = ["-dbname", "uitest-delete", "-reset-db", "-ci-sign-in-free", token, subject]
         app.launch()
         XCTAssertTrue(app.buttons["Settings"].firstMatch.waitForExistence(timeout: 20))
+        app.buttons["Settings"].firstMatch.tap()
+        let account = app.descendants(matching: .any)["backup-account"]
+        XCTAssertTrue(account.waitForExistence(timeout: 20), "Signed in (the app made the account), the account row is there")
         // Another device of the same account, signed in before the deletion.
         let other = try call("POST", "/v1/auth/ci", ["idToken": token, "subject": subject, "plus": false, "device": device()])
         let refresh = try XCTUnwrap(other.json["refreshToken"] as? String, "\(other.json)")
-
-        app.buttons["Settings"].firstMatch.tap()
-        let account = app.descendants(matching: .any)["backup-account"]
-        XCTAssertTrue(account.waitForExistence(timeout: 15), "Signed in, the account row is there")
         account.tap()
         XCTAssertTrue(app.navigationBars["Your Account"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS '(this device)'")).firstMatch.waitForExistence(timeout: 10), "This device is listed")
