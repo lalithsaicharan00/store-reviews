@@ -1015,7 +1015,7 @@ struct HabitForm: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(Outcome.reminders(draft, store: store, alarmsAvailable: ReminderScheduler.alarmsAvailable)).formNote()
                         if notificationsDenied {
-                            Text("Notifications are off for Habits, so these won't arrive. Turn them on in Settings.").formNote()
+                            Text("Notifications are off for Often Enough, so these won't arrive. Turn them on in Settings.").formNote()
                             Button("Open Settings") {
                                 if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
                             }

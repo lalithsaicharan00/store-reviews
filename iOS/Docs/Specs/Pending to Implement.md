@@ -230,7 +230,7 @@ Keep the existing cap (60 pending, nearest first). Add a `BGAppRefreshTask` that
 ### 6.4 Alarm (iOS 26+, AlarmKit)
 
 - Wrap it in `if #available(iOS 26, *)`, in a new `AlarmScheduler` next to `ReminderScheduler`, reconciled in the same pass. Alarm-style alerts go to AlarmKit, not to `UNUserNotificationCenter`.
-- Authorization: `AlarmManager.shared.requestAuthorization()` when Alarm is first chosen in the form. Add `NSAlarmKitUsageDescription`: “Habits rings an alarm at your habit's time when you choose Alarm for it.”
+- Authorization: `AlarmManager.shared.requestAuthorization()` when Alarm is first chosen in the form. Add `NSAlarmKitUsageDescription`: “Often Enough rings an alarm at your habit's time when you choose Alarm for it.”
 - Schedule one fixed-date alarm per planned alert and per follow-up. Keep an ID map (a setting key such as `alarm_ids`, JSON of our request ID → AlarmKit UUID) so reconcile can cancel exactly what is no longer wanted: done, edited, deleted, archived, or style changed.
 - Presentation:
   - Title = habit name.

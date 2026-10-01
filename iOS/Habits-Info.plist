@@ -6,13 +6,13 @@
 	     can't be build settings live here. -->
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.lalithsaicharan.habits.refresh</string>
+		<string>com.oftenenough.app.refresh</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
 	</array>
 	<key>NSAlarmKitUsageDescription</key>
-	<string>Habits rings an alarm at your habit's time when you choose Alarm for it.</string>
+	<string>Often Enough rings an alarm at your habit's time when you choose Alarm for it.</string>
 </dict>
 </plist>
