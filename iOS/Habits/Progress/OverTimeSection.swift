@@ -191,21 +191,28 @@ struct OverTimeSection: View {
         let upper = calendar.startOfDay(for: snapshot.span.upperBound.adding(days: 1, calendar: calendar).date(calendar: calendar))
         let color = habit.color.color
         let chosen = selected.flatMap { date in snapshot.bars.first { $0.start <= date && date < $0.end } }
+        // Only what's drawn gets a mark (PERFORMANCE.md, 1 Oct 2026): an annotation on every bar and a goal line per
+        // bar made laying out this chart most of a 1-second freeze when the habit page first scrolled to it.
         return Chart {
             ForEach(snapshot.bars) { bar in
                 BarMark(x: .value("Date", bar.start, unit: snapshot.bucket), y: .value("Value", bar.value))
                     // Lower is better for a limit: a neutral colour, never a celebration (report §11.2). Part done is lighter.
                     .foregroundStyle(color.opacity(snapshot.isLimit ? 0.6 : bar.light ? 0.45 : 1))
+            }
+            // The small ▲ over a limit that went over, on those bars only.
+            ForEach(snapshot.bars.filter(\.over)) { bar in
+                PointMark(x: .value("Date", bar.start, unit: snapshot.bucket), y: .value("Value", bar.value))
+                    .symbolSize(0)
                     .annotation(position: .top, spacing: 1) {
-                        if bar.over {
-                            Image(systemName: "arrowtriangle.up.fill").font(.system(size: 6)).foregroundStyle(.secondary)
-                        }
+                        Image(systemName: "arrowtriangle.up.fill").font(.system(size: 6)).foregroundStyle(.secondary)
                     }
-                if let goal = bar.goal {
-                    RuleMark(xStart: .value("From", bar.start), xEnd: .value("To", bar.end), y: .value("Goal", goal))
-                        .foregroundStyle(Color.secondary)
-                        .lineStyle(StrokeStyle(lineWidth: 1, dash: snapshot.isLimit ? [4, 3] : []))
-                }
+                    .accessibilityHidden(true)
+            }
+            // The goal or limit: one line for each run of bars with the same goal; it steps where the goal changed.
+            ForEach(Self.goalSegments(snapshot.bars)) { segment in
+                RuleMark(xStart: .value("From", segment.start), xEnd: .value("To", segment.end), y: .value("Goal", segment.goal))
+                    .foregroundStyle(Color.secondary)
+                    .lineStyle(StrokeStyle(lineWidth: 1, dash: snapshot.isLimit ? [4, 3] : []))
             }
             if let chosen {
                 RuleMark(x: .value("Chosen", chosen.start, unit: snapshot.bucket))
@@ -230,6 +237,28 @@ struct OverTimeSection: View {
         .chartYScale(domain: .automatic(includesZero: true))
         .frame(height: 180)
         .accessibilityIdentifier("over-time-chart")
+    }
+
+    private struct GoalSegment: Identifiable {
+        let start: Date
+        let end: Date
+        let goal: Double
+        var id: Date { start }
+    }
+
+    /// Bars side by side with the same goal share one line; a gap (a day that isn't its day) or a new goal starts
+    /// another, so the line looks as it did with one per bar.
+    private static func goalSegments(_ bars: [OverTimeBar]) -> [GoalSegment] {
+        var segments: [GoalSegment] = []
+        for bar in bars {
+            guard let goal = bar.goal else { continue }
+            if let last = segments.last, last.goal == goal, last.end == bar.start {
+                segments[segments.count - 1] = GoalSegment(start: last.start, end: bar.end, goal: goal)
+            } else {
+                segments.append(GoalSegment(start: bar.start, end: bar.end, goal: goal))
+            }
+        }
+        return segments
     }
 
     /// A week or month total: the running total, and a straight dashed line from 0 to the goal or limit. Above the
