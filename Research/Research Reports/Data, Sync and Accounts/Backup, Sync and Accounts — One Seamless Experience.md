@@ -264,6 +264,8 @@ After sign-in, nothing else changes on screen. The status line becomes "Backed u
 | Two free devices, then buys Plus and signs in on both | The habits merge by ID with a preview; same-name habits can be combined (07 §7.1) |
 | Turns off backup completely | Allowed in Settings, with a plain line: "If this phone is lost, your habits are lost." |
 | A family member on the same Apple Account | They see "We found your backup in iCloud" on their device. Restoring is always a choice, never automatic, and shows the device name |
+| **iPhone and iPad on different Apple Accounts, no account of ours** | Each device backs up to its own iCloud, and neither can see the other's: an app's iCloud folder belongs to one Apple Account, and with no account of ours there is no link between the two. So no "We found your backup" on the iPad. The way across is **Move to another device** (AirDrop works between different Apple Accounts) or **Import a file** |
+| **Same, but with an account of ours** | Sign in with the **same method** on both. Sign in with Apple uses the device's own Apple Account, so on a device with a different Apple Account it would open a different account; **Google sign-in works on both**. An account can hold both Apple and Google sign-ins ([01](<../../../Architecture/01. Accounts and Identity.md>)), so linking Google on the iPhone first makes the iPad sign-in find the same account |
 
 ---
 
