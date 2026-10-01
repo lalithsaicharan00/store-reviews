@@ -89,6 +89,14 @@ jobs:
           mkdir -p Research/Temp/analytics
           iOS/Tools/analytics/run_contract_tests.sh 2>&1 | tee Research/Temp/analytics/contract.log
 
+      - name: Explicit content-free EU provider integration smoke
+        id: provider
+        if: contains(env.MESSAGE, '[ios-analytics]')
+        continue-on-error: true # Provider access never blocks durable app/native validation.
+        run: |
+          set -o pipefail
+          iOS/Tools/analytics/run_provider_smoke.sh 2>&1 | tee Research/Temp/analytics/provider.log
+
       # The speed rules that can be read from the code (iOS/PERFORMANCE.md). Fails the run before any Mac minutes go
       # to building.
       - name: Speed rules
@@ -217,6 +225,13 @@ jobs:
             if [ -f perf-xctest/perf-summary.md ]; then
               echo; echo "## Speed through XCTest (screens with no PerfDriver scenario yet; XCTest's work inflates these)"; echo
               cat perf-xctest/perf-summary.md
+            fi
+            if [ -f ../Research/Temp/analytics/provider.log ]; then
+              echo
+              echo '## Explicit provider smoke (synthetic development records)'
+              echo '```'
+              tail -30 ../Research/Temp/analytics/provider.log
+              echo '```'
             fi
             if [ -f ../Research/Temp/analytics/contract.log ]; then
               echo

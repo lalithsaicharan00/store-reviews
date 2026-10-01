@@ -2,7 +2,7 @@ Written by Codex, 1 October 2026.
 
 # Often Enough — Product Analytics and Reliability Plan
 
-**Status: proposed implementation plan.** This report creates no tracking code, changes no PostHog settings and does not revise the app's product decisions. Its purpose is to choose useful measurements before implementation.
+**Status: iPhone implementation in progress on `analytics`; production sending gated pending provider verification.** The contract below is the research proposal; the dated implementation audit at the end and analytics handoff record actual code, project changes and test evidence. The pinned branch audit is historical and does not mean unfinished features are consolidated.
 
 ## 1. Recommendation
 
@@ -27,7 +27,7 @@ The audit inventoried **31 remote branch references at 21 distinct tips** on 1 O
 
 The complete pinned inventory is in Appendix A. Other agents are active; later commits can supersede this snapshot. In particular, current main does not contain all feature work.
 
-Important findings:
+Important findings from the pinned research branch audit (not current consolidation):
 
 | Area | Observed state | Consequence for analytics |
 |---|---|---|
@@ -39,7 +39,7 @@ Important findings:
 | Other platforms | Android, watch and web client work is later in server status; iPad support is not established by this audit | Reserve the shared contract; do not claim these clients are shipped |
 | Existing analytics | No PostHog product wrapper or operational crash SDK initialization found in reviewed app source | Treat every event below as proposed, not live |
 
-The PostHog plugin was found **installed and enabled**. No callable PostHog project/query tools were exposed in this session. Consequently, the active project's region, consent settings, event history, billing allowance, retention and current usage were **not inspected**. Official public documentation was available through PostHog's GitHub repositories.
+The PostHog plugin was found **installed and enabled**. No callable PostHog project/query tools were exposed during that initial research session. Consequently, the active project's region, consent settings, event history, billing allowance, retention and current usage were **not inspected at that research stage**. The implementation audit below supersedes these access assumptions. Official public documentation was available through PostHog's GitHub repositories.
 
 This report is reasoned from the product's measurement questions and inspected source. It does not assert new review-corpus counts or a new competitor survey.
 
@@ -406,7 +406,7 @@ Repository links below are pinned to the audited branch tips where feature state
 
 ## Implementation audit — 1 October 2026
 
-The pinned feature-branch audit above is historical, not a claim those branches are consolidated. Analytics merges only `integration`, currently through `173f4f51eab20359a0bd01396b0ffe00d8cba590`. Current app has durable tasks/habits, all six habit subtypes including quit/cut-down, corrections, timers, routines, Progress/charts, notes, reminders, settings, local CSV/backup/merge restore and a disabled Plus page. It has no consolidated onboarding, account/sync/cloud-backup, verified StoreKit purchase/restore or Home/Lock Screen widget targets. Those adapters must follow their owners' eventual implementations. Shared enums reserve future platform semantics; iPhone is the only analytics adapter.
+The pinned feature-branch audit above is historical, not a claim those branches are consolidated. Analytics merges only `integration`, currently through `173f4f51eab20359a0bd01396b0ffe00d8cba590`. Current app has durable tasks/habits, all six habit subtypes including quit/cut-down, corrections, timers, routines, Progress/charts, notes, reminders, settings, local CSV/backup/merge restore and a disabled Plus page. It has no consolidated onboarding, account/sync/cloud-backup, verified StoreKit purchase/restore or Home/Lock Screen widget targets. The passive timer Live Activity exists, but has no action callbacks or conventional configurable Home/Lock widgets; it emits no render/impression telemetry. Those adapters must follow their owners' eventual implementations. Shared enums reserve future platform semantics; iPhone is the only analytics adapter.
 
 The iPhone implementation now enforces optional consent, synchronous revocation and purge, random unlinked installation identity, independent backup-excluded state, scalar property allowlists at capture and wire boundaries, stable whole-installation sampling, operation guards, daily UTC envelopes, bounded retries/retention/queues and explicit daily event caps. Durable creation/tracking/correction callbacks follow successful persistence. Imports/restores do not emit creation or tracking. Estimated screen attention uses an independent monotonic idle cap; no timer clock or observable telemetry state invalidates the main screen. Configuration distinguishes saved choices from defaults and reports missing feature capabilities. Baseline activation provenance stays unknown; onboarding funnel conversion and exact person retention are not claimed.
 
