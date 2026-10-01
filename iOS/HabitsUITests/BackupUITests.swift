@@ -23,7 +23,7 @@ final class BackupUITests: XCTestCase {
         app.buttons["Settings"].firstMatch.tap()
         XCTAssertTrue(app.navigationBars["Backup & Sync"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["Saved only on this iPhone"].exists)
-        XCTAssertTrue(app.staticTexts["This iPhone only"].exists)
+        XCTAssertTrue(shows(app, row: "backup-where", "This iPhone only"))
         XCTAssertTrue(app.staticTexts["Sync is part of Plus. Your devices talk through your account."].exists)
         XCTAssertFalse(app.buttons["Back Up Now"].exists, "Nowhere to back up to without an account")
         app.buttons["Export a File"].tap()
@@ -65,7 +65,7 @@ final class BackupUITests: XCTestCase {
 
         app.buttons["Settings"].firstMatch.tap()
         XCTAssertTrue(app.navigationBars["Backup & Sync"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Your account (our server)"].waitForExistence(timeout: 10), "Signed in: the backup goes to the account")
+        XCTAssertTrue(shows(app, row: "backup-where", "Your account (our server)", within: 10), "Signed in: the backup goes to the account")
         XCTAssertTrue(app.staticTexts["Sync is part of Plus. Your devices talk through your account."].exists, "A free account doesn't sync")
         app.buttons["Back Up Now"].tap()
         let backedUp = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Backed up'")).firstMatch
@@ -91,6 +91,17 @@ final class BackupUITests: XCTestCase {
     }
 
     // MARK: Helpers
+
+    /// A Form row made of a title and a value (`LabeledContent`) is one element: its value holds the text.
+    private func shows(_ app: XCUIApplication, row identifier: String, _ text: String, within seconds: TimeInterval = 3) -> Bool {
+        let row = app.descendants(matching: .any)[identifier]
+        let deadline = Date().addingTimeInterval(seconds)
+        repeat {
+            if row.exists, row.label.contains(text) || (row.value as? String)?.contains(text) == true { return true }
+            Thread.sleep(forTimeInterval: 0.5)
+        } while Date() < deadline
+        return false
+    }
 
     /// This run's GitHub identity token for the dev server. Skips the test outside GitHub Actions.
     private func ciToken() throws -> String {
