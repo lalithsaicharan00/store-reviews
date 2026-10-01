@@ -43,7 +43,7 @@ struct TodayView: View {
     /// Speed runs only: the New Habit form opened straight away, to measure typing in it.
     @State private var perfForm = false
 
-    var body: some View {
+    private var navigation: some View {
         NavigationStack(path: Bindable(menu).path) {
             Group {
                 if covered {
@@ -88,6 +88,10 @@ struct TodayView: View {
                 NewItemView(group: filterGroup) { added = $0 }
             }
         }
+    }
+
+    private var observedNavigation: some View {
+        navigation
         #if DEBUG && targetEnvironment(simulator)
         // Launch the actual player directly for visual review in Simulator, using the isolated fixture.
         .task {
@@ -120,6 +124,10 @@ struct TodayView: View {
             }
         }
         .sheet(isPresented: $perfForm) { NavigationStack { HabitForm(type: .doIt, onSaved: { _ in }) } }
+    }
+
+    var body: some View {
+        observedNavigation
         // Back from the background: Today is drawn for now at once, not at the next minute.
         .onChange(of: scenePhase) { if scenePhase == .active { clock = .now } }
         .onChange(of: router.showDay) {
@@ -131,15 +139,7 @@ struct TodayView: View {
         .onChange(of: router.widgetToday) { routeWidget() }
         .onChange(of: router.widgetItem, initial: true) { routeWidget() }
         .onChange(of: store.isLoaded) { routeWidget() }
-        .onChange(of: router.openHabit, initial: true) {
-            // Siri or Shortcuts "Open a Habit": ≡ → Habits → its page, so Back works as usual. A routine in progress
-            // or a new habit being written is left as it is.
-            guard let id = router.openHabit, routine == nil, !showNewHabit else { return }
-            router.openHabit = nil
-            menu.reset()
-            menu.path.append(MenuPlace.habits)
-            menu.path.append(id)
-        }
+        .onChange(of: router.openHabit, initial: true) { routeShortcut() }
         .onChange(of: router.focusSection) { focusReminderSection() }
         .alert("Something went wrong", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
             Button("OK", role: .cancel) {}
@@ -151,6 +151,14 @@ struct TodayView: View {
     private var selectedDay: LocalDay { day ?? store.today() }
     /// The group Today is filtered to; nil is All (a deleted group reads as All).
     private var filterGroup: UUID? { store.existingGroup(groupRaw) }
+
+    private func routeShortcut() {
+        guard let id = router.openHabit, routine == nil, !showNewHabit else { return }
+        router.openHabit = nil
+        menu.reset()
+        menu.path.append(MenuPlace.habits)
+        menu.path.append(id)
+    }
 
     private func focusReminderSection() {
         guard let section = router.focusSection else { return }
