@@ -190,6 +190,10 @@ final class TodayUITests: XCTestCase {
     /// the middle of a run of taps. Call family, then Water: before the pause Call family is still above Water; after it,
     /// below. (Ticking Water moves "Add note" off Call family, which would otherwise hold it in place.)
     func testDoneRowWaitsForThePause() {
+        // An 8 s pause: GitHub's simulator takes more than 1.5 s between two taps (run 78).
+        app.terminate()
+        app.launchArguments = ["-uitest", "-today.settlePause", "8"]
+        app.launch()
         let call = app.buttons["Mark Call family done"]
         XCTAssertTrue(call.waitForExistence(timeout: 5))
         let water = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Add ' AND label ENDSWITH ' to Water'")).firstMatch
@@ -201,10 +205,10 @@ final class TodayUITests: XCTestCase {
         XCTAssertTrue(done.waitForExistence(timeout: 2))
         XCTAssertLessThan(done.frame.minY, water.frame.minY, "Still in place right after the taps")
         shot("t01-held")
-        // The pause is 1.5 s, then a 0.45 s settle.
+        // Then, after the pause and a 0.45 s settle, below.
         let sunk = NSPredicate { _, _ in done.frame.minY > water.frame.minY }
         expectation(for: sunk, evaluatedWith: nil)
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 15)
         shot("t02-settled")
         done.tap()
     }

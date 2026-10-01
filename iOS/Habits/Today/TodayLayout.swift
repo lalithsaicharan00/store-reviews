@@ -17,7 +17,15 @@ import SwiftUI
 @Observable final class TodayLayout {
     /// How long Today waits after the last log before tidying: long enough for the next tick in a run, short enough
     /// that the list settles while the person is still looking (reasoned; research §2).
-    static let pause: Duration = .milliseconds(1500)
+    static var pause: Duration {
+        #if DEBUG
+        // UI tests on GitHub's slow simulator take longer than 1.5 s between two taps, so they lengthen it
+        // (`-today.settlePause 8`) to check that nothing moves before the pause.
+        let seconds = UserDefaults.standard.double(forKey: "today.settlePause")
+        if seconds > 0 { return .milliseconds(Int(seconds * 1000)) }
+        #endif
+        return .milliseconds(1500)
+    }
 
     @ObservationIgnored private var boxes: [String: FoldBox] = [:]
     /// True from a log until the pause after the last one. Each part reads it, so the settle redraws the parts once.
