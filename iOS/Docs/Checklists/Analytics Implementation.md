@@ -67,3 +67,7 @@ Merged app and extension build and targeted UI suites passed in 36907293697; sam
 ### Final type/privacy coverage — 00:18 IST (Oct 2)
 
 Consolidated forms support timed upper limits as well as amount upper limits: both now classify as cut_down, with durable native checks for a timed suggestion, retries and restore exclusion. Relay consent creation fails closed if backup exclusion cannot be set. Final perf selection adds widget-log and widget-guide to Today scroll/tap and form typing, each with same-build consent-off/on comparison. Current consolidated base is still eff1e14. Both dashboard notes reflect actual feature coverage; adoption dashboard all six saved queries refreshed successfully after single-scan optimization. Flow dashboard final refresh pending.
+
+### Exact baseline failure and native correction — 00:35 IST Oct 2
+
+Completed 36907293697: 86 native checks, core/build and all 14 UI checks passed. Baseline never launched: macOS Bash 3.2 + `set -u` rejected an empty optional array (three 180s waits); fixed with explicit launch arguments, missing-PID fast failure and retained launch logs. Consent-on measured scroll 15.9ms/s /127ms, taps14.4/63ms, typing2.8/36ms; no causal comparison without a working baseline. Final 6634a28 run36909868629 failed native compile because the bounded-loss assignment read `ledger` during optional mutation; fixed by snapshotting previous loss before modifying ledger. Re-run latest final head; do not reuse failed runs as acceptance. Performance lessons updated with evidence and wasted runtime.

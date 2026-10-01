@@ -270,7 +270,11 @@ nonisolated final class Analytics: @unchecked Sendable {
                     self.failures = min(8, self.failures + 1)
                     self.retryAfter = Date.now.addingTimeInterval(min(3600, pow(2, Double(self.failures)) * 30))
                     // No response bodies/raw errors are retained. Invalid records cannot stall the queue forever.
-                    if code == 400 || code == 413 { self.ledger?.outbox.removeAll { ids.contains($0.id) }; self.ledger?.loss = min(100_000, (self.ledger?.loss ?? 0) + ids.count) }
+                    if code == 400 || code == 413 {
+                        let previousLoss = self.ledger?.loss ?? 0
+                        self.ledger?.outbox.removeAll { ids.contains($0.id) }
+                        self.ledger?.loss = min(100_000, previousLoss + ids.count)
+                    }
                 }
                 self.save()
                 // Further batches/retries wait for eligible lifecycle/explicit flush, never wake the app.
