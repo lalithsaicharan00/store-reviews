@@ -35,6 +35,9 @@ final class AppModel {
         } else {
             opened = try? Persistence.onDisk()
         }
+        #if DEBUG
+        if arguments.contains("-simulate-open-failure") { opened = nil } // PersistenceUITests
+        #endif
         persistence = opened
         store = HabitStore(repository: (opened ?? Persistence.inMemory()).repository)
         if opened == nil {
@@ -50,6 +53,9 @@ final class AppModel {
     func ensureLoaded() async {
         if let loading { return await loading.value }
         let task = Task { [self] in
+            // The database couldn't be opened, so the store stands on an empty in-memory one. Loading that would
+            // show "No habits yet" and take changes that vanish on quit; staying unloaded keeps everything read-only.
+            guard persistence != nil else { return }
             await store.load()
             guard store.isLoaded else { return }
             persistence?.markSchemaCurrent()

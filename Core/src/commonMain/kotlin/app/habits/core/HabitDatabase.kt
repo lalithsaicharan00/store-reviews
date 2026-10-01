@@ -37,6 +37,12 @@ interface HabitDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertEntries(entries: List<EntryRecord>)
 
+    // Import only adds: a row that's already here, live or tombstoned, is never replaced.
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertHabitsIfNew(habits: List<HabitRecord>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertStepsIfNew(steps: List<StepRecord>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertRemindersIfNew(reminders: List<ReminderRecord>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertSettingsIfNew(settings: List<SettingRecord>)
+
     @Query("UPDATE entry SET deleted_at = :at WHERE id = :id AND deleted_at IS NULL")
     suspend fun tombstoneEntry(id: String, at: Long)
 
@@ -71,11 +77,11 @@ interface HabitDao {
 
     @Transaction
     suspend fun importAll(snapshot: Snapshot) {
-        snapshot.habits.forEach { upsertHabit(it) }
-        upsertSteps(snapshot.steps)
-        upsertReminders(snapshot.reminders)
+        insertHabitsIfNew(snapshot.habits)
+        insertStepsIfNew(snapshot.steps)
+        insertRemindersIfNew(snapshot.reminders)
         insertEntries(snapshot.entries)
-        snapshot.settings.forEach { upsertSetting(it) }
+        insertSettingsIfNew(snapshot.settings)
     }
 }
 

@@ -68,4 +68,20 @@ final class PersistenceUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Mark Stretch done"].waitForExistence(timeout: 5), "The undo survives a relaunch")
         shot("04-undo-after-relaunch")
     }
+
+    /// When the database can't be opened, the app says so and shows nothing editable: it must never look
+    /// like a fresh, empty app whose changes would vanish on quit.
+    func testUnopenableDatabaseSaysSoAndTakesNoChanges() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["-dbname", "uitest-persistence", "-empty", "-simulate-open-failure"]
+        app.launch()
+        let alert = app.alerts["Something went wrong"]
+        XCTAssertTrue(alert.waitForExistence(timeout: 5), "The failure is reported")
+        XCTAssertTrue(alert.staticTexts.matching(NSPredicate(format: "label CONTAINS 'be opened'")).firstMatch.exists)
+        shot("05-open-failure")
+        alert.buttons["OK"].tap()
+        XCTAssertFalse(app.staticTexts["No habits yet"].waitForExistence(timeout: 2), "An unopened database must not look empty")
+        shot("06-after-dismiss")
+    }
 }

@@ -88,6 +88,8 @@ final class ReminderScheduler {
     }
 
     func reconcile(_ store: HabitStore, now: Date = .now) async {
+        // Unread data looks like "no habits", and planning from it would cancel every reminder.
+        guard store.isLoaded else { return }
         let planned = plan(store, now: now)
         // Alarms go to AlarmKit when it's there and allowed; otherwise they fall back to notifications.
         var notes = planned

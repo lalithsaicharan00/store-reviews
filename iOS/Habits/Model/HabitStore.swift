@@ -737,6 +737,11 @@ final class HabitStore {
     /// Runs changes one at a time, in the order they were made. Each one decides what to do
     /// from the state left by the previous one, writes to the database, and only then updates memory.
     private func perform(_ change: @escaping @MainActor () async throws -> Void) {
+        // Writing before the data has been read could save beside, or over, what's really there.
+        guard isLoaded else {
+            problem = "Your habits haven't loaded, so that change wasn't saved. Please restart the app."
+            return
+        }
         let previous = writeQueue
         writeQueue = Task { @MainActor in
             await previous?.value
