@@ -209,7 +209,7 @@ struct WidgetRenderCheck: View {
             Toggle("Month preview", isOn: $month).accessibilityIdentifier("widget-month")
             Toggle("Dark preview", isOn: $dark).accessibilityIdentifier("widget-dark")
             if let frame {
-                ScrollView(.horizontal) { HStack { ForEach(frame.items.prefix(5)) { item in
+                ScrollView(.horizontal) { HStack { ForEach(Array(frame.items.filter { !$0.isTask }.prefix(5))) { item in
                     Button(item.name) { selected = item.id }.accessibilityIdentifier("select-\(item.name)")
                 } } }
                 PhoneWidgetView(entry: .init(date: .now, frame: frame, plus: plus, selection: selected, month: month), layout: layout)

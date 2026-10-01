@@ -37,6 +37,7 @@ extension HabitStore {
             let items = (ordered + rest).map { habit -> WidgetItem in
                 let rule = rule(habit, on: day)
                 let planned = startDay(of: habit) <= day && !isPaused(habit, on: day) && !isSkipped(habit, on: day)
+                    && (habit.endsOn.map { day <= $0 } ?? true)
                     && (habit.kind == .quit || isDue(habit, on: day, now: max(now, bounds.lowerBound)))
                 let value = progress(of: habit, on: day, now: now)
                 let done = !rule.atMost && habit.kind != .quit && isSatisfied(habit, on: day)

@@ -79,6 +79,7 @@ final class AppModel {
             guard store.isLoaded, store.isStorageReady else { return }
             persistence?.markSchemaCurrent()
             #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("-widget-fixture") { await WidgetFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-reminder-fixture") { await ReminderFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-task-fixture") { await TaskFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-focus-fixture") {
