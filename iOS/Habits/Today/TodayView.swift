@@ -104,7 +104,8 @@ struct TodayView: View {
         }
         #endif
         .onChange(of: selectedDay) { layout.reset(); store.clearLogOffer() }
-        .onChange(of: routine?.id) { if routine != nil { store.clearLogOffer() } }
+        .onChange(of: routine?.id) { if routine != nil { store.clearLogOffer() } else { routeWidget() } }
+        .onChange(of: showNewHabit) { if !showNewHabit { routeWidget() } }
         .onDisappear { store.clearLogOffer() }
         .onPerfCommand(perform)
         .onChange(of: store.dayFinishedAt) {
@@ -127,7 +128,8 @@ struct TodayView: View {
             router.showDay = nil
             day = shown == store.today() ? nil : shown
         }
-         .onChange(of: router.widgetItem, initial: true) { routeWidget() }
+        .onChange(of: router.widgetToday) { routeWidget() }
+        .onChange(of: router.widgetItem, initial: true) { routeWidget() }
         .onChange(of: store.isLoaded) { routeWidget() }
         .onChange(of: router.openHabit, initial: true) {
             // Siri or Shortcuts "Open a Habit": ≡ → Habits → its page, so Back works as usual. A routine in progress
@@ -165,7 +167,9 @@ struct TodayView: View {
 
     /// Speed runs (`PerfDriver`): the same state changes the buttons make.
     private func routeWidget() {
-        guard store.isLoaded, routine == nil, !showNewHabit, let id = router.widgetItem else { return }
+        guard store.isLoaded, routine == nil, !showNewHabit else { return }
+        if router.widgetToday { router.widgetToday = false; menu.reset(); day = nil; groupRaw = "" }
+        guard let id = router.widgetItem else { return }
         router.widgetItem = nil
         guard let habit = store.habits.first(where: { $0.id == id && !$0.archived }) else { menu.reset(); return }
         menu.reset()

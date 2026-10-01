@@ -1,5 +1,6 @@
 import CryptoKit
 import Foundation
+import Observation
 import WidgetKit
 
 extension HabitStore {
@@ -41,7 +42,7 @@ extension HabitStore {
                     && (habit.kind == .quit || isDue(habit, on: day, now: max(now, bounds.lowerBound)))
                 let value = progress(of: habit, on: day, now: now)
                 let done = !rule.atMost && habit.kind != .quit && isSatisfied(habit, on: day)
-                let start = habit.kind == .quit ? quitHistory(of: habit, now: now).last.flatMap { $0.endedBy == .ongoing ? $0.start : nil } : nil
+                let start = habit.kind == .quit && planned ? quitHistory(of: habit, now: max(now, bounds.lowerBound)).last.flatMap { $0.endedBy == .ongoing ? $0.start : nil } : nil
                 let action: String?
                 switch rule.kind {
                 case .check, .task: action = planned && !isDone(habit, on: day) ? "check" : nil
@@ -51,15 +52,20 @@ extension HabitStore {
                 let goal = dayGoal(of: rule)
                 let status: String
                 if done && habit.kind == .task { status = "Done" }
-                else if !planned { status = isPaused(habit, on: day) ? "Paused" : "Not planned today" }
+                else if !planned {
+                    if isPaused(habit, on: day) { status = "Paused" }
+                    else if let date = habit.dueDay, habit.kind == .task, date > day {
+                        status = "Planned for \(date.date(calendar: calendar).formatted(date: .abbreviated, time: .omitted))"
+                    } else { status = "Not planned today" }
+                }
                 else if habit.kind == .quit { status = "Since last slip" }
                 else if habit.kind == .task { status = done ? "Done" : "For today" }
                 else if rule.atMost { status = "\(progressValue(value, rule)) · limit \(progressValue(goal, rule)) · so far" }
                 else if goal > 1 || rule.kind != .check { status = "\(progressValue(value, rule)) / \(progressValue(goal, rule))" }
                 else { status = done ? "Done" : "For today" }
-                return WidgetItem(id: habit.id.uuidString, name: habit.name, symbol: habit.symbol, status: status,
+                return WidgetItem(id: habit.id.uuidString, name: habit.name, symbol: habit.symbol, color: habit.color.rawValue, status: status,
                                   value: value, goal: goal, done: done, planned: planned, ongoing: rule.atMost || habit.kind == .quit,
-                                  isTask: habit.kind == .task, action: action,
+                                  isTask: habit.kind == .task, isQuit: habit.kind == .quit, action: action,
                                   stepLabel: rule.quickIncrement.map { progressValue($0, rule) }, token: UUID().uuidString,
                                   signature: signatures[habit.id] ?? "", counterStart: start,
                                   history: (histories[habit.id] ?? []).filter { $0.id >= day.adding(days: -30, calendar: calendar).key })
@@ -72,8 +78,10 @@ extension HabitStore {
 }
 
 /// Coalesces publication after committed changes. Cancellation never cancels database writes.
-final class WidgetPublisher {
-    private var scheduled: Task<Void, Never>?
+@Observable final class WidgetPublisher {
+    @ObservationIgnored private var scheduled: Task<Void, Never>?
+    @ObservationIgnored private let testDestination: URL?
+    init(file: URL? = nil) { testDestination = file }
     private(set) var problem: String?
     func schedule(_ store: HabitStore) {
         scheduled?.cancel()
@@ -90,7 +98,7 @@ final class WidgetPublisher {
         let snapshot = store.widgetSnapshot(hidden: hidden)
         do {
             // Detached I/O avoids encoding and file coordination on the UI thread.
-            try await WidgetSnapshotWriter.shared.write(snapshot)
+            try await WidgetSnapshotWriter.shared.write(snapshot, to: testDestination ?? WidgetDisk.url)
             problem = nil
             WidgetCenter.shared.reloadAllTimelines()
         } catch { problem = "Widgets couldn't be updated. Open the app and try again." }
@@ -99,5 +107,5 @@ final class WidgetPublisher {
 
 private actor WidgetSnapshotWriter {
     static let shared = WidgetSnapshotWriter()
-    func write(_ snapshot: WidgetSnapshot) throws { try WidgetDisk.write(snapshot) }
+    func write(_ snapshot: WidgetSnapshot, to file: URL?) throws { try WidgetDisk.write(snapshot, to: file) }
 }

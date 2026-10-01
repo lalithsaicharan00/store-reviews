@@ -76,7 +76,25 @@ final class WidgetSystemUITests: XCTestCase {
         customize.tap()
         settings.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.32)).tap()
         save(settings, "lock-widget-picker")
-        // Discovery here is only a capability check. Do not claim interaction is tested from this screenshot.
-        throw XCTSkip("Lock Screen picker inspected; installed inline/circular/rectangular widgets and locked-state actions still require device validation")
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let hosts = [settings, springboard]
+        guard let host = hosts.first(where: { $0.staticTexts["Habits"].firstMatch.exists }) else {
+            save(springboard, "lock-gallery-accessibility")
+            throw XCTSkip("Lock widget gallery does not expose the app; physical-device installation remains required")
+        }
+        host.staticTexts["Habits"].firstMatch.tap()
+        save(host, "lock-app-widgets")
+        let today = host.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Today on Lock Screen")).firstMatch
+        guard today.waitForExistence(timeout: 5) else {
+            save(host, "lock-widget-previews-unavailable")
+            throw XCTSkip("Simulator gallery previews are not accessible; actual Lock Screen widget interaction remains unverified")
+        }
+        today.tap()
+        if host.buttons["Close"].exists { host.buttons["Close"].tap() }
+        if host.buttons["Done"].exists { host.buttons["Done"].tap() }
+        save(host, "lock-summary-installed")
+        XCTAssertTrue(host.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "left today")).firstMatch.waitForExistence(timeout: 10), host.debugDescription)
+        // This validates summary installation. A locked-state quick action and every accessory family
+        // cannot be claimed from it; the report retains those separate device checks.
     }
 }

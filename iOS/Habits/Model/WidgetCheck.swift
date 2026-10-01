@@ -145,6 +145,15 @@ enum WidgetCheck {
         await missing.load()
         missing.logFromWidget(id: cut.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(cut), now: now); await missing.flush()
         expect(missing.entries.isEmpty && !missing.isStorageReady, "Failed database open cannot log")
+        do {
+            try WidgetDisk.write(snapshot, to: file)
+            let publisher = WidgetPublisher(file: file)
+            await publisher.publish(missing)
+            expect(WidgetDisk.read(from: file)?.generated == snapshot.generated, "Unread database preserves last good widget snapshot")
+            let failed = WidgetPublisher(file: directory)
+            await failed.publish(store)
+            expect(failed.problem != nil, "Snapshot publication failure is visible and recoverable")
+        } catch { failures.append("Publication failure fixture: \(error)") }
         return failures
     }
 }

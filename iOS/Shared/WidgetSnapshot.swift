@@ -5,6 +5,7 @@ nonisolated struct WidgetItem: Codable, Identifiable, Sendable {
     var id: String
     var name: String
     var symbol: String
+    var color = "blue"
     var status: String
     var value: Double
     var goal: Double
@@ -12,6 +13,7 @@ nonisolated struct WidgetItem: Codable, Identifiable, Sendable {
     var planned: Bool
     var ongoing: Bool
     var isTask: Bool
+    var isQuit = false
     var action: String?
     var stepLabel: String? = nil
     var token: String

@@ -13,6 +13,7 @@ final class AppRouter {
     /// A habit page to open (Siri or Shortcuts "Open a Habit").
     var openHabit: UUID?
     var widgetItem: UUID?
+    var widgetToday = false
 }
 
 /// The app's one store, scheduler and database. Shared, because a notification action, an alarm's

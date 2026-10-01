@@ -120,6 +120,7 @@ jobs:
           echo "SIM=$ID" >> "$GITHUB_ENV"
           xcrun simctl list devices available | grep "$ID"
           xcrun simctl boot "$ID" || true
+          xcrun simctl bootstatus "$ID" -b
 
       - name: Build
         id: build
@@ -127,7 +128,7 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild build-for-testing -project Habits.xcodeproj -scheme Habits \
-            -destination "id=$SIM" -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
+            -destination "id=$SIM" -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO 2>&1 | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
           grep -q "BUILD SUCCEEDED" build.log
 
       - name: Save available core build dependencies
@@ -154,7 +155,7 @@ jobs:
           fi
           xcodebuild test-without-building -project Habits.xcodeproj -scheme Habits \
             -destination "id=$SIM" -derivedDataPath DerivedData -resultBundlePath Results.xcresult $ONLY \
-            | tee test.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
+            2>&1 | tee test.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
           grep -q "TEST EXECUTE SUCCEEDED" test.log
 
       - name: Speed tests

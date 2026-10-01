@@ -20,6 +20,12 @@ struct WidgetsView: View {
                 Text("If Plus ends, these widgets keep showing a free agenda or item status. Basic tracking stays available.")
                     .font(.footnote).foregroundStyle(.secondary)
             }
+            if let problem = AppModel.shared.widgets.problem {
+                Section("Widget updates") {
+                    Text(problem)
+                    Button("Try again") { Task { await AppModel.shared.widgets.publish(store) } }
+                }
+            }
             Section("Add a widget") {
                 Text("Home Screen: touch and hold an empty area, tap Edit, then Add Widget. Search for this app, choose a size, and tap Add Widget.")
                 Text("Lock Screen: touch and hold your Lock Screen, tap Customize, choose Lock Screen, then tap the widget area. Choose this app and a widget.")

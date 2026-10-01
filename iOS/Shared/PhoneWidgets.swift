@@ -19,8 +19,9 @@ nonisolated struct PhoneWidgetEntry: TimelineEntry {
     var tasksOnly = false
     var month = false
     var page = 0
+    var pageGroup = "agenda"
     var sample = false
-    var pageKey: String { "\(tasksOnly).\(completed)" }
+    var pageKey: String { "\(pageGroup).\(tasksOnly).\(completed)" }
     var rows: [WidgetItem] { (frame?.agenda(completed: completed) ?? []).filter { !tasksOnly || $0.isTask } }
     var selected: WidgetItem? { frame?.items.first { $0.id == selection } }
     static var placeholder: Self {
@@ -49,16 +50,18 @@ nonisolated enum PhoneWidgetTimeline {
     }
 }
 nonisolated struct AgendaWidgetProvider: AppIntentTimelineProvider {
+    var kind = "agenda"
     func placeholder(in context: Context) -> PhoneWidgetEntry { .placeholder }
     func snapshot(for configuration: AgendaWidgetConfiguration, in context: Context) async -> PhoneWidgetEntry {
-        context.isPreview ? .placeholder : configured(configuration).first!
+        context.isPreview ? .placeholder : configured(configuration, family: context.family).first!
     }
     func timeline(for configuration: AgendaWidgetConfiguration, in context: Context) async -> Timeline<PhoneWidgetEntry> {
-        PhoneWidgetTimeline.timeline(configured(configuration))
+        PhoneWidgetTimeline.timeline(configured(configuration, family: context.family))
     }
-    private func configured(_ config: AgendaWidgetConfiguration) -> [PhoneWidgetEntry] {
+    private func configured(_ config: AgendaWidgetConfiguration, family: WidgetFamily) -> [PhoneWidgetEntry] {
         PhoneWidgetTimeline.entries(snapshot: WidgetDisk.read()).map { original in
             var entry = original; entry.completed = config.completed; entry.tasksOnly = config.tasksOnly
+            entry.pageGroup = "\(kind).\(family.rawValue)"
             entry.page = WidgetDisk.page(key: entry.pageKey)
             return entry
         }
@@ -122,7 +125,7 @@ struct LockTodayPhoneWidget: Widget {
 }
 struct IconsPhoneWidget: Widget {
     var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: PhoneWidgetKind.icons, intent: AgendaWidgetConfiguration.self, provider: AgendaWidgetProvider()) {
+        AppIntentConfiguration(kind: PhoneWidgetKind.icons, intent: AgendaWidgetConfiguration.self, provider: AgendaWidgetProvider(kind: "icons")) {
             PhoneWidgetView(entry: $0, layout: .icons)
         }.configurationDisplayName("Icons · Plus").description("Compact named tiles. Free users get the complete Today agenda.")
             .contentMarginsDisabled()
@@ -177,7 +180,7 @@ struct PhoneWidgetView: View {
                 .font(accessory ? .caption : .callout).lineLimit(accessory ? 1 : 3)
         }.accessibilityElement(children: .combine)
     }
-    private var heading: String { entry.tasksOnly ? "Tasks today" : "Today" }
+    private var heading: String { entry.tasksOnly ? "Tasks today" : layout == .icons && !entry.plus && !entry.sample ? "Today · free" : "Today" }
     private var agenda: some View {
         VStack(alignment: .leading, spacing: family == .systemLarge ? 9 : 4) {
             HStack {
@@ -215,11 +218,11 @@ struct PhoneWidgetView: View {
     private var single: some View {
         VStack(alignment: .leading, spacing: 8) {
             if let item = entry.selected {
-                HStack { Image(systemName: item.symbol).font(.title2).widgetAccentable(); Spacer(); control(item, size: 38) }
+                HStack { Image(systemName: item.symbol).font(.title2).foregroundStyle(color(item)).widgetAccentable(); Spacer(); control(item, size: 38) }
                 Text(item.name).font(.headline).lineLimit(2)
                 status(item).font(.callout).lineLimit(3)
                 Spacer(minLength: 0)
-                Text(item.action == nil ? "Open details" : item.action == "add" ? "+ adds \(item.stepLabel ?? "one step")" : "Tap to check off")
+                Text(layout == .history && !entry.plus && !entry.sample ? "History with Plus · status stays free" : item.action == nil ? "Open details" : item.action == "add" ? "+ adds \(item.stepLabel ?? "one step")" : "Tap to check off")
                     .font(.caption2).foregroundStyle(.secondary)
             } else {
                 Image(systemName: "square.and.pencil")
@@ -237,14 +240,14 @@ struct PhoneWidgetView: View {
         if item.action != nil, !entry.sample, let day = entry.frame?.day {
             Button(intent: WidgetLogIntent(item: item, day: day)) {
                 Image(systemName: item.action == "add" ? "plus.circle" : "circle")
-                    .font(.system(size: size * 0.68, weight: .medium)).frame(width: size, height: size)
+                    .foregroundStyle(color(item)).font(.system(size: size * 0.68, weight: .medium)).frame(width: size, height: size)
             }.buttonStyle(.plain).widgetAccentable()
                 .accessibilityLabel("\(item.action == "add" ? "Add \(item.stepLabel ?? "one saved step") to" : "Check off") \(item.name)")
                 .accessibilityValue(item.status)
         } else {
             Link(destination: item.url) {
                 Image(systemName: item.done ? "checkmark.circle.fill" : item.symbol)
-                    .font(.system(size: size * 0.6)).frame(width: size, height: size)
+                    .foregroundStyle(color(item)).font(.system(size: size * 0.6)).frame(width: size, height: size)
             }.widgetAccentable().accessibilityLabel("Open \(item.name), \(item.status)")
         }
     }
@@ -310,7 +313,7 @@ struct PhoneWidgetView: View {
         VStack(alignment: .leading, spacing: 6) {
             if let item = entry.selected {
                 Text(item.name).font(.headline).lineLimit(2)
-                if item.isTask || item.counterStart != nil {
+                if item.isTask || item.isQuit {
                     status(item).font(.callout)
                     Text("History is for tracked habits").font(.caption2)
                 } else {
@@ -320,7 +323,7 @@ struct PhoneWidgetView: View {
                         ForEach(days) { day in
                             VStack(spacing: 2) {
                                 Image(systemName: mark(day.state)).font(.system(size: entry.month && family != .systemLarge ? 9 : 14))
-                                    .foregroundStyle(.primary).widgetAccentable()
+                                    .foregroundStyle(color(item)).widgetAccentable()
                                 if !entry.month || family == .systemLarge { Text(day.label).font(.system(size: 8)) }
                             }.accessibilityElement(children: .ignore)
                                 .accessibilityLabel("\(day.id), \(spoken(day.state)), \(day.value)")
@@ -330,6 +333,24 @@ struct PhoneWidgetView: View {
                 }
                 Spacer(minLength: 0)
             } else { Text("Choose a habit").font(.headline); Text("Edit this widget to choose.").font(.caption) }
+        }
+    }
+    private func color(_ item: WidgetItem) -> Color {
+        guard renderingMode == .fullColor else { return .primary }
+        switch item.color {
+        case "red": return .red
+        case "orange": return .orange
+        case "yellow": return .yellow
+        case "green": return .green
+        case "mint": return .mint
+        case "teal": return .teal
+        case "cyan": return .cyan
+        case "indigo": return .indigo
+        case "purple": return .purple
+        case "pink": return .pink
+        case "brown": return .brown
+        case "gray": return .gray
+        default: return .blue
         }
     }
     private func mark(_ state: String) -> String {
@@ -348,6 +369,7 @@ struct PhoneWidgetView: View {
         case "some": "Part recorded"
         case "paused": "Paused"
         case "skipped": "Skipped"
+        case "missed": "Nothing recorded"
         case "notItsDay", "before", "upcoming": "Not planned"
         default: "Open"
         }

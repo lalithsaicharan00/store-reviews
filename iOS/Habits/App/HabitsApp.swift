@@ -22,6 +22,7 @@ struct HabitsApp: App {
                 .task { await model.lock.appeared() }
                 .onOpenURL { url in
                     guard url.scheme == "oftenenough" else { return }
+                    if url.host == "today" { model.router.widgetToday = true }
                     if url.host == "item", let id = UUID(uuidString: url.lastPathComponent) { model.router.widgetItem = id }
                 }
         }
