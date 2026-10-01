@@ -142,14 +142,6 @@ Evidence folders in this section:
 | [Today Screen Jobs, 49. Row Colours — One Colour per Habit, and How the Fill Should Look](<Home Screen and Visual Design/Today Screen Jobs/49. Row Colours — One Colour per Habit, and How the Fill Should Look.md>) | **Claude** | 26 Sep 2026 | 968 colour reviews read (habit apps, English). Per-habit colour: 364 praise (4.80★), 76 want it and can't (all-one-colour, random, paywalled), 65 want more colours or a picker, 38 colour by group, 8 want greys, 5 against. Fill: 17 complain about tinted/shaded rows (3.00★) — text vanishes, partial vs full look alike; App Store 1 uses the tinted base. No review compares white-base vs tinted-base or asks for a fill setting. Suggests: colour per habit by default, full palette incl. greys and a picker, white row + light tint fill, no fill-style setting. Evidence in `Today Screen Jobs/Today Jobs Evidence/Q49/`. |
 | [Today Screen Top Area, Round 3 — Requirements and Evidence](<Home Screen and Visual Design/Today Screen Top Area/Round 3/01. Evidence and Design Rationale.md>) | Codex | 24 Sep 2026 | Layout vs date, contextual editing/creation, scheduled vs total counts, zero/empty groups and day start. 32 prior reviews verified and all 51 new targeted matches read; rationale written before Figma changes. |
 
-## Progress and Statistics
-
-What people want to see about how their habits are going, how and where.
-
-| Report | Author | Date | What it is |
-|---|---|---|---|
-| [Progress and Statistics — What People Want](<Progress and Statistics/Progress and Statistics — What People Want.md>) | **Claude** | 29 Sep 2026 | 8,801 statistics reviews in 148 trackers (604 requests, 260 praises and 553 in the smaller themes read): the overall share with raw numbers and the week before, daily bars, every habit side by side on its own rhythm, Week / Month / Year, a year grid, totals in the habit's unit; one tap from Today, explained, free. |
-
 ## Settings and Help
 
 | Report | Author | Date | What it is |
@@ -185,6 +177,7 @@ The Progress screen, per-habit statistics, history views, and quit and cut-down 
 | Report | Author | Date | What it is |
 |---|---|---|---|
 | [The Progress Page — What People Need, and How to Build It](<Progress and Statistics/The Progress Page — What People Need, and How to Build It.md>) | **Claude** | 30 Sep 2026 | Build Plan #60. Whole-corpus screen (1,487,223 reviews → 19,382 matches in habit apps); **14,726 read and hand-coded** in 74 batches, 11,870 on topic from 152 apps, 83 quotes and 136 IDs machine-verified; plus **1,604 Feature Ledger cards** read, with all 254 canonical points mapped (96 answered, 158 named as not about this page). Top ask: an all-habits overview (697 asks, 63 apps). Top complaints: wrong numbers (468, 72 apps), too thin (366), paywalled (345, 2.87★), confusing (253), weekly or skipped days counted wrongly (245), lost history (220, 50% 1–2★). 'Design: one Progress screen from the ≡ menu (Week/Month/Year day rings, three plain numbers, a row per habit with its strip, a Day sheet), then the existing habit page extended (Over Time, Year grid, Runs, By Weekday). Also covers every type's numbers and charts (ten shapes), quit (live clock, clean days that never go down, "Log a Slip"), cut-down (lower is better, judged at day end), tasks excluded, group-ready calculations, day marks, exact copy, model changes, 17 golden test cases, speed, accessibility, and all stats free. Evidence in `Progress and Statistics/Progress Evidence/`. |
+| [Progress and Statistics — What People Want](<Progress and Statistics/Progress and Statistics — What People Want.md>) | **Claude** | 29 Sep 2026 | 8,801 statistics reviews in 148 trackers (604 requests, 260 praises and 553 in the smaller themes read): the overall share with raw numbers and the week before, daily bars, every habit side by side on its own rhythm, Week / Month / Year, a year grid, totals in the habit's unit; one tap from Today, explained, free. |
 
 ## Evidence base and scope decisions
 
