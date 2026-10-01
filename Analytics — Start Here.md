@@ -47,3 +47,8 @@ No new coding chat/automation exists. First requested time has passed without a 
 ### Sampling-policy recovery — 01:15 IST Oct 2
 
 Final review found current-config sampling could disagree with the frozen open-period metadata after an app update. Inclusion and flow sampling metadata now retain the open UTC period policy, switching together at the next period; four deterministic upgrade checks cover reductions, expansions and next-day adoption. Final focused contract/Core/Debug/Release job supersedes the pending reliability-only job. Full Release-policy run36911869018 has passed Foundation/Core and both builds; UI/performance remain running. No views or store callbacks changed. Production remains false.
+
+
+### Widget drain transaction — 01:16 IST Oct 2
+
+Final mailbox audit found a failed atomic clear could return a count that remained on disk. Draining now returns counts only after a successful durable clear. Two native checks inject a disk-full clear failure and verify the retry consumes pending counts once. Final focused Foundation/Core/Debug/Release validation covers this utility-only fix; existing full UI/performance run remains valid for unchanged views/store. Final provider read: 12 development records/12 unique IDs/6 synthetic installations, production absent; person-list returned empty. No paid products or automation created.

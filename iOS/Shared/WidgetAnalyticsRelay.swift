@@ -14,9 +14,11 @@ nonisolated enum WidgetAnalyticsRelay {
               state.count >= 0, state.count <= 100_000 else { return nil }
         return state
     }
-    private static func write(_ state: State, to file: URL) {
-        guard let data = try? JSONEncoder().encode(state) else { return }
-        try? data.write(to: file, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+    private static func write(_ state: State, to file: URL, commit: (Data, URL) throws -> Void = {
+        try $0.write(to: $1, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+    }) -> Bool {
+        do { try commit(JSONEncoder().encode(state), file); return true }
+        catch { return false }
     }
     /// App-only consent mirroring. A new opt-in rotates the generation; revocation invalidates pending callbacks.
     static func consent(_ enabled: Bool, directory: URL?, rotate: Bool = false, now: Date = .now) {
@@ -33,7 +35,7 @@ nonisolated enum WidgetAnalyticsRelay {
         var error: NSError?
         coordinator.coordinate(writingItemAt: file, options: .forMerging, error: &error) { target in
             if !enabled { try? FileManager.default.removeItem(at: target) }
-            else if rotate || read(target) == nil { write(State(generation: UUID(), day: day(now), count: 0), to: target) }
+            else if rotate || read(target) == nil { _ = write(State(generation: UUID(), day: day(now), count: 0), to: target) }
         }
     }
     static func ticket(directory: URL?) -> UUID? { directory.flatMap { read(file($0))?.generation } }
@@ -46,20 +48,23 @@ nonisolated enum WidgetAnalyticsRelay {
             guard var state = read(target), state.generation == ticket else { return }
             if state.day != day(now) { state.day = day(now); state.count = 0 }
             state.count = min(100_000, state.count + 1)
-            write(state, to: target)
+            _ = write(state, to: target)
         }
     }
     /// At-most-once mailbox drain: a crash can lose counts, never create extra logging operations.
     /// Older-day paging counts are deliberately dropped rather than attributed to a later day.
-    static func drain(directory: URL?, now: Date = .now) -> Int {
+    static func drain(directory: URL?, now: Date = .now, commit: (Data, URL) throws -> Void = {
+        try $0.write(to: $1, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+    }) -> Int {
         guard let directory else { return 0 }
         let file = file(directory), coordinator = NSFileCoordinator()
         var error: NSError?, count = 0
         coordinator.coordinate(writingItemAt: file, options: .forMerging, error: &error) { target in
             guard var state = read(target) else { return }
-            count = state.day == day(now) ? state.count : 0
+            let pending = state.day == day(now) ? state.count : 0
             state.count = 0; state.day = day(now)
-            write(state, to: target)
+            // Return a count only after its durable removal. A failed clear must not be counted again later.
+            if write(state, to: target, commit: commit) { count = pending }
         }
         return count
     }

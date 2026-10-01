@@ -108,3 +108,8 @@ Global speed targets remain unmet in both modes. Results vary by window and one 
 ### Sampling upgrade consistency — 01:15 IST Oct 2
 
 Final engine review found inclusion used the new config while daily metadata remained frozen to the old policy. Sampling reductions/expansions now start at the next UTC period; explicit flows keep current app metadata and the same period sampling probability/version. Four native checks use a persisted 0.75 bucket to prove reduced/expanded inclusion and next-period adoption. Final focused contract/Core/Debug/Release job supersedes the pending reliability-only check; unchanged view/HabitStore validation remains in the full Release-policy run.
+
+
+### Widget drain transaction — 01:16 IST Oct 2
+
+Final mailbox audit found a failed atomic clear could return a count that remained on disk. Draining now returns counts only after a successful durable clear. Two native checks inject a disk-full clear failure and verify the retry consumes pending counts once. Final focused Foundation/Core/Debug/Release validation covers this utility-only fix; existing full UI/performance run remains valid for unchanged views/store. Final provider read: 12 development records/12 unique IDs/6 synthetic installations, production absent; person-list returned empty. No paid products or automation created.
