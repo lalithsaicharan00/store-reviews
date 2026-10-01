@@ -85,7 +85,6 @@ struct HabitPageView: View {
                     HabitRunsSection(habit: habit)
                     // Every streak milestone reached, kept for good, and the next (report "Milestones", 30 Sep).
                     Section("Milestones") { milestones(habit, today: today) }
-                        .accessibilityIdentifier("habit-milestones")
                 }
             }
             if habit.kind == .quit {
@@ -204,8 +203,11 @@ struct HabitPageView: View {
         let current = store.streak(of: habit, asOf: today)
         let reached = unit.milestones(upTo: max(store.bestStreak(of: habit), current))
         let next = unit.nextMilestone(after: current)
+        // Identifiers on the rows: a Section repeats its modifiers on every row (Design Rules).
         LabeledContent("Reached", value: reached.isEmpty ? "None yet" : unit.list(reached))
+            .accessibilityIdentifier("habit-milestones-reached")
         LabeledContent("Next", value: "\(unit.inARow(next)), \(next - current) to go")
+            .accessibilityIdentifier("habit-milestones-next")
     }
 
     @ViewBuilder private func notesSection(_ habit: Habit, today: LocalDay) -> some View {
@@ -305,6 +307,7 @@ struct HabitMonthView: View {
                     Button { onSelect(day) } label: { cell(day, isToday: day == today).frame(minHeight: 44) }
                         .buttonStyle(.borderless)
                         .disabled(day > today)
+                        .accessibilityLabel(spoken(day))
                         .accessibilityIdentifier("habit-day-\(day.key)")
                 }
             }
@@ -358,8 +361,12 @@ struct HabitMonthView: View {
         .frame(height: 36)
         .frame(maxWidth: .infinity)
         .contentShape(Rectangle())
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(day.date(calendar: store.calendar).formatted(.dateTime.weekday(.wide).day().month(.wide))), \(words(mark))")
+    }
+
+    /// What VoiceOver says for a day: on the day's button, so the button stays a button (merge, 1 Oct 2026: the label on
+    /// the drawing inside it made the drawing its own element, and the button vanished from VoiceOver and the tests).
+    private func spoken(_ day: LocalDay) -> String {
+        "\(day.date(calendar: store.calendar).formatted(.dateTime.weekday(.wide).day().month(.wide))), \(words(store.dayMark(habit, on: day)))"
     }
 
     private func words(_ mark: HabitStore.DayMark) -> String {
