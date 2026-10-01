@@ -212,8 +212,7 @@ struct WidgetRenderCheck: View {
                 ScrollView(.horizontal) { HStack { ForEach(Array(frame.items.filter { !$0.isTask }.prefix(5))) { item in
                     Button(item.name) { selected = item.id }.accessibilityIdentifier("select-\(item.name)")
                 } } }
-                PhoneWidgetView(entry: .init(date: .now, frame: frame, plus: plus, selection: selected, month: month), layout: layout)
-                    .environment(\.widgetFamily, family)
+                PhoneWidgetView(entry: .init(date: .now, frame: frame, plus: plus, selection: selected, month: month), layout: layout, familyOverride: family)
                     .frame(width: size.width, height: size.height)
                     .background(Color(.secondarySystemBackground))
                     .preferredColorScheme(dark ? .dark : .light)

@@ -162,7 +162,11 @@ nonisolated enum PhoneWidgetLayout: String, CaseIterable { case agenda, item, ic
 struct PhoneWidgetView: View {
     let entry: PhoneWidgetEntry
     let layout: PhoneWidgetLayout
-    @Environment(\.widgetFamily) private var family
+    // WidgetKit supplies this read-only environment. The app-hosted screenshot harness
+    // passes a family explicitly while using the same view branches and controls.
+    var familyOverride: WidgetFamily? = nil
+    @Environment(\.widgetFamily) private var systemFamily
+    private var family: WidgetFamily { familyOverride ?? systemFamily }
     @Environment(\.widgetRenderingMode) private var renderingMode
     @Environment(\.dynamicTypeSize) private var textSize
     private var accessory: Bool { [.accessoryInline, .accessoryCircular, .accessoryRectangular].contains(family) }
