@@ -1,11 +1,13 @@
 import { type Account, type DeviceInfo, MAX_PUSH, type PurchaseRecord } from "./account";
 import { APPLE_ROOT_CA_G3, verifyAppleSigned } from "./apple";
+import { deleteBackups, listBackups, readBackup, storeBackup } from "./backup";
 import {
   type Jurisdiction,
   createAccount,
   deleteAccount,
   findAccount,
   jurisdictionFor,
+  jurisdictionOf,
   linkKey,
   linkPurchase,
   purchaseOwner,
@@ -49,6 +51,9 @@ export default {
 
 async function route(request: Request, url: URL, env: Env): Promise<Response> {
   const key = `${request.method} ${url.pathname}`;
+  if (url.pathname.startsWith("/v1/auth/")) await limitByIp(request, env);
+  const copy = /^\/v1\/backup\/([^/]+)\/([^/]+)$/.exec(url.pathname);
+  if (copy && request.method === "GET") return backupFile(request, env, copy[1]!, copy[2]!);
   switch (key) {
     case "GET /v1/status":
       return json({ ok: true, environment: env.ENVIRONMENT, time: Date.now() }, 200, { "cache-control": "public, max-age=30" });
@@ -74,6 +79,12 @@ async function route(request: Request, url: URL, env: Env): Promise<Response> {
       return remove(request, env);
     case "POST /v1/sync":
       return sync(request, env);
+    case "PUT /v1/backup":
+      return backupUpload(request, env);
+    case "GET /v1/backup":
+      return backupList(request, env);
+    case "DELETE /v1/backup":
+      return backupDelete(request, env);
     case "POST /v1/purchases/verify":
       return verifyPurchase(request, env);
     case "GET /v1/purchases":
@@ -97,6 +108,8 @@ interface SignInBody {
   // Test sign-in only:
   secret?: unknown;
   subject?: unknown;
+  /** Test and CI sign-ins only: false makes a free account (default: Plus, so end-to-end tests can sync). */
+  plus?: unknown;
 }
 
 async function signIn(request: Request, env: Env, verify: (body: SignInBody) => Promise<VerifiedKey>): Promise<Response> {
@@ -113,9 +126,10 @@ async function signIn(request: Request, env: Env, verify: (body: SignInBody) => 
     created = true;
   }
   const claims: AccessClaims = { accountId: account.accountId, deviceId: device.id, jurisdiction: account.jurisdiction };
-  const session = await accountStub(env, claims).openSession(account.accountId, key, device);
+  const testPlus = key.provider === "test" || key.provider === "ci" ? body.plus !== false : null;
+  const session = await accountStub(env, claims).openSession(account.accountId, key, device, testPlus);
   if (!session.ok) throw new HttpError(409, "account_unavailable", "This account can't be opened right now. Please try again.");
-  return json({ accountId: account.accountId, created, ...(await tokens(env, claims, session.secret)) }, created ? 201 : 200);
+  return json({ accountId: account.accountId, created, ...(await tokens(env, { ...claims, plus: session.plus }, session.secret)) }, created ? 201 : 200);
 }
 
 /** Dev only: a sign-in that needs no Apple or Google account, for end-to-end tests. It doesn't exist anywhere else. */
@@ -152,9 +166,10 @@ function parseDevice(value: unknown): DeviceInfo {
   };
 }
 
+/** `plus` tells the app whether this account syncs; it's also inside the access token, where the server checks it. */
 async function tokens(env: Env, claims: AccessClaims, secret: string) {
   const access = await issueAccessToken(claims, env.TOKEN_KEY);
-  return { accessToken: access.token, accessTokenExpiresAt: access.expiresAt, refreshToken: composeRefreshToken(claims, secret) };
+  return { accessToken: access.token, accessTokenExpiresAt: access.expiresAt, refreshToken: composeRefreshToken(claims, secret), plus: claims.plus === true };
 }
 
 // MARK: Sessions
@@ -165,7 +180,7 @@ async function refresh(request: Request, env: Env): Promise<Response> {
   if (!parsed || !isUuid(parsed.accountId) || !isUuid(parsed.deviceId)) throw signedOut();
   const result = await accountStub(env, parsed).refresh(parsed.deviceId, parsed.secret);
   if (!result.ok) throw signedOut();
-  return json(await tokens(env, parsed, result.secret));
+  return json(await tokens(env, { ...parsed, plus: result.plus }, result.secret));
 }
 
 /** The app keeps all its data and shows "Sign in again to keep syncing" (01 §3.5). */
@@ -238,14 +253,20 @@ async function remove(request: Request, env: Env): Promise<Response> {
   const claims = await authenticate(request, env);
   await deleteAccount(env.DIRECTORY, claims.accountId);
   await accountStub(env, claims).wipe();
+  await deleteBackups(env, claims);
   return json({ deleted: true, at: Date.now() });
 }
 
 // MARK: Sync
 
-/** `{cursor, ops}` → `{applied, rejected, ops, cursor, more}` (Architecture 05, 06 §4). */
+/**
+ * `{cursor, ops}` → `{applied, rejected, ops, cursor, more}` (Architecture 05, 06 §4). Only Plus syncs: a free
+ * account is answered here, before any Durable Object is called (Server Cost and Capacity §4.2).
+ */
 async function sync(request: Request, env: Env): Promise<Response> {
   const claims = await authenticate(request, env);
+  if (!claims.plus) throw new HttpError(403, "plus_required", "Sync is part of Plus. Your habits stay on this device and in your backup.");
+  await limit(env.SYNC_LIMIT, claims.accountId);
   const body = await readJson<{ cursor?: unknown; ops?: unknown }>(request, 2 * 1024 * 1024);
   const ops = body.ops ?? [];
   if (!Array.isArray(ops)) throw new HttpError(400, "bad_request", '"ops" must be a list.');
@@ -258,6 +279,38 @@ async function sync(request: Request, env: Env): Promise<Response> {
   }
   const { ok: _ok, ...reply } = result;
   return json(reply);
+}
+
+// MARK: Backup (accounts that don't sync; see backup.ts)
+
+/** Checks the account still exists, so nothing is stored for an account deleted in the last hour. */
+async function liveAccount(env: Env, claims: AccessClaims): Promise<AccessClaims> {
+  if ((await jurisdictionOf(env.DIRECTORY, claims.accountId)) === null) throw signedOut();
+  return claims;
+}
+
+async function backupUpload(request: Request, env: Env): Promise<Response> {
+  const claims = await authenticate(request, env);
+  await limit(env.BACKUP_LIMIT, `${claims.accountId}/${claims.deviceId}`);
+  return storeBackup(request, env, await liveAccount(env, claims));
+}
+
+async function backupList(request: Request, env: Env): Promise<Response> {
+  const claims = await authenticate(request, env);
+  await limit(env.SYNC_LIMIT, claims.accountId);
+  return listBackups(env, claims);
+}
+
+async function backupFile(request: Request, env: Env, device: string, slot: string): Promise<Response> {
+  const claims = await authenticate(request, env);
+  await limit(env.SYNC_LIMIT, claims.accountId);
+  return readBackup(env, claims, device, slot);
+}
+
+/** "Keep my backup only in my iCloud" (Backup, Sync and Accounts §4.3): every copy on the server goes. */
+async function backupDelete(request: Request, env: Env): Promise<Response> {
+  const claims = await authenticate(request, env);
+  return json({ deleted: await deleteBackups(env, claims) });
 }
 
 // MARK: Purchases (Architecture 02 §3.11)
@@ -310,7 +363,9 @@ async function verifyPurchase(request: Request, env: Env): Promise<Response> {
   const { appAccountToken: _token, ...record } = purchase;
   const entitlements = await accountStub(env, claims).recordPurchase(record);
   if (!entitlements) throw signedOut();
-  return json(entitlements);
+  // A new access token that says Plus, so sync can start at once without waiting for the next refresh.
+  const access = await issueAccessToken({ ...claims, plus: entitlements.plus }, env.TOKEN_KEY);
+  return json({ ...entitlements, accessToken: access.token, accessTokenExpiresAt: access.expiresAt });
 }
 
 async function purchases(request: Request, env: Env): Promise<Response> {
@@ -342,6 +397,21 @@ async function appleNotification(request: Request, env: Env): Promise<Response> 
 }
 
 // MARK: Helpers
+
+/**
+ * Rate limits (Architecture 06 §6): Cloudflare's rate-limit binding, approximate and per location, so it stops loops
+ * and floods rather than counting exactly. The app backs off on 429 and retries after `Retry-After`.
+ */
+async function limit(limiter: RateLimit, key: string): Promise<void> {
+  const { success } = await limiter.limit({ key });
+  if (!success) throw new HttpError(429, "slow_down", "Too many requests. Your data is safe; we'll try again shortly.");
+}
+
+/** Sign-in and refresh, per IP. Cloudflare always sets the header; a request without one (tests) isn't limited. */
+async function limitByIp(request: Request, env: Env): Promise<void> {
+  const ip = request.headers.get("cf-connecting-ip");
+  if (ip) await limit(env.AUTH_LIMIT, ip);
+}
 
 function accountStub(env: Env, account: { accountId: string; jurisdiction: Jurisdiction }): DurableObjectStub<Account> {
   const namespace = account.jurisdiction === "eu" ? env.ACCOUNT.jurisdiction("eu") : env.ACCOUNT;

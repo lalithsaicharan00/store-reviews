@@ -5,7 +5,7 @@ import intermediatePem from "./fixtures/test-intermediate.pem?raw";
 import leafKeyPem from "./fixtures/test-leaf.pk8?raw";
 import leafPem from "./fixtures/test-leaf.pem?raw";
 import rootPem from "./fixtures/test-root.pem?raw";
-import { call, testSignIn } from "./helpers";
+import { call, freeSignIn } from "./helpers";
 
 /** Signs like the App Store: an ES256 JWS with the certificate chain in its header. */
 const der = (pem: string) => pem.replace(/-----[^-]+-----/g, "").replace(/\s/g, "");
@@ -32,7 +32,7 @@ async function verify(accessToken: string, payload: Record<string, unknown>, cha
 
 describe("verifying App Store purchases", () => {
   it("a genuine Plus purchase unlocks Plus on the account; repeating it changes nothing", async () => {
-    const me = await testSignIn();
+    const me = await freeSignIn();
     const t = transaction({ appAccountToken: me.json.accountId });
     const first = await verify(me.json.accessToken, t);
     expect(first.status).toBe(200);
@@ -42,13 +42,13 @@ describe("verifying App Store purchases", () => {
   });
 
   it("Plus Family unlocks Plus and the family plan", async () => {
-    const me = await testSignIn();
+    const me = await freeSignIn();
     const { json } = await verify(me.json.accessToken, transaction({ productId: "com.oftenenough.app.plusfamily" }));
     expect(json).toMatchObject({ plus: true, family: true });
   });
 
   it("a purchase made while signed out (no account token) can be linked at sign-in", async () => {
-    const me = await testSignIn();
+    const me = await freeSignIn();
     expect((await verify(me.json.accessToken, transaction())).json.plus).toBe(true);
   });
 
@@ -59,7 +59,7 @@ describe("verifying App Store purchases", () => {
     ["for a product we don't sell", () => transaction({ productId: "com.oftenenough.app.coins" }), undefined],
     ["signed in the future", () => transaction({ signedDate: Date.now() + 3_600_000 }), undefined],
   ])("refuses a purchase %s", async (_name, make, chain) => {
-    const me = await testSignIn();
+    const me = await freeSignIn();
     const { status, json } = await verify(me.json.accessToken, make(), chain);
     expect(status).toBe(400);
     expect(json.error).toBe("not_verified");
@@ -67,7 +67,7 @@ describe("verifying App Store purchases", () => {
   });
 
   it("refuses a transaction whose payload was altered after Apple signed it", async () => {
-    const me = await testSignIn();
+    const me = await freeSignIn();
     const [header, , signature] = (await appleSign(transaction())).split(".");
     const forged = btoa(JSON.stringify(transaction({ productId: "com.oftenenough.app.plusfamily" }))).replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_");
     const { status } = await call("POST", "/v1/purchases/verify", { jws: `${header}.${forged}.${signature}` }, me.json.accessToken);
@@ -75,15 +75,15 @@ describe("verifying App Store purchases", () => {
   });
 
   it("refuses a purchase bought for a different account", async () => {
-    const me = await testSignIn();
+    const me = await freeSignIn();
     const { status, json } = await verify(me.json.accessToken, transaction({ appAccountToken: crypto.randomUUID() }));
     expect(status).toBe(409);
     expect(json.error).toBe("purchase_for_another_account");
   });
 
   it("one purchase can't unlock two accounts, until the first is deleted", async () => {
-    const a = await testSignIn();
-    const b = await testSignIn();
+    const a = await freeSignIn();
+    const b = await freeSignIn();
     const t = transaction();
     expect((await verify(a.json.accessToken, t)).status).toBe(200);
     const second = await verify(b.json.accessToken, t);
@@ -94,7 +94,7 @@ describe("verifying App Store purchases", () => {
   });
 
   it("a transaction that's already refunded doesn't unlock Plus", async () => {
-    const me = await testSignIn();
+    const me = await freeSignIn();
     const { json } = await verify(me.json.accessToken, transaction({ revocationDate: Date.now(), revocationReason: 0 }));
     expect(json.plus).toBe(false);
   });
@@ -111,7 +111,7 @@ describe("App Store Server Notifications", () => {
   }
 
   it("a refund removes Plus everywhere; a reversed refund gives it back; repeats are harmless", async () => {
-    const me = await testSignIn();
+    const me = await freeSignIn();
     const t = transaction();
     await verify(me.json.accessToken, t);
     expect((await notify("REFUND", { ...t, revocationDate: Date.now(), revocationReason: 0 })).status).toBe(200);
@@ -124,7 +124,7 @@ describe("App Store Server Notifications", () => {
   });
 
   it("a verify after a refund doesn't bring Plus back", async () => {
-    const me = await testSignIn();
+    const me = await freeSignIn();
     const t = transaction();
     await verify(me.json.accessToken, t);
     await notify("REVOKE", { ...t, revocationDate: Date.now(), revocationReason: 1 });

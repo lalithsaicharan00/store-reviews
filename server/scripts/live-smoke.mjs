@@ -49,3 +49,35 @@ check("Apple sign-in refuses a fake token", apple.status === 401, apple.json.err
   check("sync: the other device receives it exactly once", pull.status === 200 && pull.json.ops.length === 1 && pull.json.ops[0].fields.name === "Live sync ☕");
   await call("POST", "/v1/account/delete", {}, phone.json.accessToken);
 }
+
+// Only Plus syncs; accounts that don't sync back up to R2 (Backup, Sync and Accounts; Server Cost and Capacity §4–5).
+{
+  const sha256 = async (bytes) => [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map((b) => b.toString(16).padStart(2, "0")).join("");
+  for (const country of ["USA", "DEU"]) {
+    const subject = `smoke-backup-${country}-${crypto.randomUUID()}`;
+    const device = dev();
+    const free = await call("POST", "/v1/auth/test", { secret: TEST_LOGIN_SECRET, subject, create: true, device, country, plus: false });
+    const refused = await call("POST", "/v1/sync", { cursor: 0, ops: [] }, free.json.accessToken);
+    check(`${country}: a free account can't sync`, free.json.plus === false && refused.status === 403 && refused.json.error === "plus_required");
+    const bytes = new TextEncoder().encode(`smoke backup ${crypto.randomUUID()}`);
+    const hash = await sha256(bytes);
+    const put = await fetch(`${base}/v1/backup`, {
+      method: "PUT",
+      headers: {
+        authorization: `Bearer ${free.json.accessToken}`, "content-type": "application/zip", "x-backup-sha256": hash,
+        "x-backup-device-name": encodeURIComponent("Smoke test’s iPhone"), "x-backup-platform": "ios", "x-backup-app-version": "0.0",
+        "x-backup-format": "1", "x-backup-created-at": String(Date.now()), "x-backup-habits": "1", "x-backup-entries": "2", "x-backup-records": "3",
+      },
+      body: bytes,
+    });
+    const stored = await put.json();
+    check(`${country}: backup stored and checked`, put.status === 201 && stored.sha256 === hash, `${put.status} ${stored.error ?? ""}`);
+    const list = await call("GET", "/v1/backup", undefined, free.json.accessToken);
+    check(`${country}: backup listed`, list.status === 200 && list.json.copies?.length === 1 && list.json.copies[0].deviceName === "Smoke test’s iPhone");
+    const file = await fetch(`${base}/v1/backup/${device.id}/${stored.slot}`, { headers: { authorization: `Bearer ${free.json.accessToken}` } });
+    check(`${country}: backup comes back byte for byte`, file.status === 200 && (await sha256(await file.arrayBuffer())) === hash);
+    await call("POST", "/v1/account/delete", {}, free.json.accessToken);
+    const after = await call("GET", "/v1/backup", undefined, free.json.accessToken);
+    check(`${country}: deleting the account deletes its backups`, after.status === 200 && after.json.copies.length === 0);
+  }
+}

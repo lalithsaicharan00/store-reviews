@@ -3,7 +3,8 @@ import type { Jurisdiction } from "./directory";
 
 /**
  * Our own tokens (Architecture 06 §5, 01 §3.5):
- * - an access token: a signed JWT for one hour, holding the account and device, checked without a database read;
+ * - an access token: a signed JWT for one hour, holding the account, the device and whether the account has Plus,
+ *   checked without a database read (so a free account's sync stops in the Worker, Server Cost and Capacity §4.2);
  * - a refresh token: `rt1.<j>.<account>.<device>.<secret>` (j: `d` default, `e` EU storage), rotated on every use.
  *   Only a hash of the secret is stored, in the account's Durable Object; the rest only says where to look.
  */
@@ -16,6 +17,8 @@ export interface AccessClaims {
   accountId: string;
   deviceId: string;
   jurisdiction: Jurisdiction;
+  /** The account had Plus when the token was issued. Refreshed with the token, so a refund takes it away within an hour. */
+  plus?: boolean;
 }
 
 function signingKey(secret: string): Uint8Array {
@@ -26,7 +29,7 @@ function signingKey(secret: string): Uint8Array {
 export async function issueAccessToken(claims: AccessClaims, secret: string, now = Date.now()) {
   const issuedAt = Math.floor(now / 1000);
   const expiresAt = issuedAt + ACCESS_TOKEN_SECONDS;
-  const token = await new SignJWT({ did: claims.deviceId, jur: claims.jurisdiction })
+  const token = await new SignJWT({ did: claims.deviceId, jur: claims.jurisdiction, plus: claims.plus === true })
     .setProtectedHeader({ alg: "HS256", typ: "JWT" })
     .setSubject(claims.accountId)
     .setIssuer(ISSUER)
@@ -44,7 +47,7 @@ export async function verifyAccessToken(token: string, secret: string, previous?
     try {
       const { payload } = await jwtVerify(token, signingKey(key), { issuer: ISSUER, audience: AUDIENCE, algorithms: ["HS256"] });
       if (typeof payload.sub !== "string" || typeof payload.did !== "string") return null;
-      return { accountId: payload.sub, deviceId: payload.did, jurisdiction: payload.jur === "eu" ? "eu" : "default" };
+      return { accountId: payload.sub, deviceId: payload.did, jurisdiction: payload.jur === "eu" ? "eu" : "default", plus: payload.plus === true };
     } catch (error) {
       if (error instanceof errors.JWTExpired) return null; // expired with the right key: no point trying another
     }

@@ -15,7 +15,7 @@ export function json(body: unknown, status = 200, headers: HeadersInit = {}): Re
 }
 
 export function errorResponse(error: HttpError): Response {
-  return json({ error: error.code, message: error.message }, error.status);
+  return json({ error: error.code, message: error.message }, error.status, error.status === 429 ? { "retry-after": "60" } : {});
 }
 
 /** Request bodies here are small (tokens, device details); anything bigger is refused before it's read. */

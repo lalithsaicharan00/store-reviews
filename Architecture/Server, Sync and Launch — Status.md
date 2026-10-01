@@ -9,17 +9,22 @@ moves, so the next session (person or agent) can pick up from it alone.*
    Experience](<../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>);
    server checklist: [Server Cost and Capacity §5](<Server Cost and Capacity — Free Safety Copy vs Plus Sync.md>);
    decisions, Google client IDs and setup left for later: [Backlog](<Backlog.md>). In order:
-   1. Server: only Plus can sync (`plus` claim in the access token; `/v1/sync` answers `403 plus_required` before the
-      Durable Object), `device.last_seen` at most hourly, nightly backup to R2 for free accounts (EU bucket for EU
-      accounts, 365-day lifecycle), `GOOGLE_AUDIENCES` = the iOS and web client IDs (in the Backlog). Tests, deploy to dev.
+   1. ✅ **Server (done 1 Oct, deployed to dev):** only Plus can sync (`plus` claim in the access token, also returned
+      with every token; `/v1/sync` answers `403 plus_required` in the Worker; buying Plus returns a new token that
+      syncs at once; a refund takes it away at the next refresh), `device.last_seen` at most hourly, backups of
+      accounts that don't sync in R2 (`PUT/GET/DELETE /v1/backup`: 7 weekday copies per device, a shrink guard,
+      checked by SHA-256, EU bucket for EU accounts, 365-day lifecycle, deleted with the account), rate limits (1.1),
+      `GOOGLE_AUDIENCES` = the iOS and web client IDs. 88 server tests; 27 live checks against dev. Dev test and CI
+      sign-ins are Plus unless they send `plus: false`.
    2. Shared core: the checked backup file and restore (preview, Replace/Merge, undo), Architecture 03 §3.2, §3.6.
    3. iPhone: Settings → Backup & Sync, problem cards (§4.4 of the design), "I've used this before", Move to another
       device / Import, Google sign-in (Apple sign-in and iCloud backup are written but switch on only when the Apple
       Developer account arrives). Keep `[ios-ci]` runs few.
-   Rate limiting (1.1 below) fits naturally with step 1.
+   Rate limiting (1.1 below) was done with step 1.
 
 1. **Server readiness (can start now).** Do these one at a time, each with tests and a deploy to dev:
-   1. Rate limiting: per account on `/v1/sync`, per IP on `/v1/auth/*` (details in §4).
+   1. ✅ Rate limiting (1 Oct): 60/min per account on sync and backup reads, 30/min per IP on `/v1/auth/*`, 2/min per
+      device on backup uploads; `429` with `Retry-After`. Still to do: the WAF rule in front of the Worker (§4).
    2. Production environment: `env.production` in `server/wrangler.jsonc`, `api.oftenenough.com`, its own D1 and secrets.
    3. Nightly backups to R2 + a restore script, then one practice restore.
    4. Monitoring: uptime check on `/v1/status`, alerts, the daily report email (Resend).
@@ -34,7 +39,7 @@ moves, so the next session (person or agent) can pick up from it alone.*
 - `git fetch origin && git checkout claude/server-and-sync && git pull`
 - Check whether `integration` has reached `main`: `git log --oneline origin/main | head` (if yes, step 2 comes first).
 - Cloudflare needs `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in the environment (both are set in the cloud environment).
-- The dev test secret lived only in the 1 Oct session. For `scripts/live-smoke.mjs` or `LiveSyncTest`, upload a new one:
+- The dev test secret lives only in the session that uploaded it (last: 1 Oct, second session). For `scripts/live-smoke.mjs` or `LiveSyncTest`, upload a new one:
   `cd server && openssl rand -base64 48 | tr -d '\n' > /tmp/t && npx wrangler secret put TEST_LOGIN_SECRET < /tmp/t`,
   then run with `TEST_LOGIN_SECRET=$(cat /tmp/t)`. (GitHub's `SyncUITests` don't need it: they use GitHub's identity token.)
 
@@ -44,7 +49,7 @@ moves, so the next session (person or agent) can pick up from it alone.*
 |---|---|---|
 | Phone storage | stress tests; import never overwrites; an unreadable database stays read-only; reminders never re-planned from unread data; Swift-facing core functions throw instead of crashing | `Core` JVM tests (DurabilityTest), PersistenceUITests |
 | Identity | app "Often Enough", bundle `com.oftenenough.app` (+ `.liveactivity`, `.uitests`, `.refresh`, Keychain `.sync`) | iOS build on GitHub |
-| Server (`server/`) | Worker + one Durable Object per account + D1 directory, at `https://api-dev.oftenenough.com`; Apple/Google sign-in, sessions, link/unlink, sign-out, deletion, EU storage | 66 tests in the Workers runtime; `scripts/live-smoke.mjs` against dev |
+| Server (`server/`) | Worker + one Durable Object per account + D1 directory + R2 backups, at `https://api-dev.oftenenough.com`; Apple/Google sign-in, sessions, link/unlink, sign-out, deletion, EU storage; only Plus syncs; backups for accounts that don't sync; rate limits | 88 tests in the Workers runtime; `scripts/live-smoke.mjs` against dev |
 | Sync | shared Kotlin rules (`Core/sync`, also compiled to JS for the server); outbox and merge on the phone (schema 6 here; becomes 7, see §2); iPhone `SyncService` | sync tests on JVM, JS and server; LiveSyncTest; SyncUITests on GitHub's Simulator |
 | Purchases (server) | StoreKit 2 transactions verified against Apple Root CA - G3; entitlements; refund notifications | purchases tests |
 | Purchases (app) | `iOS/OftenEnough.storekit` (Plus, Plus Family, upgrade; placeholder prices) | — |

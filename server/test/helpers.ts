@@ -98,3 +98,8 @@ export async function call(method: string, path: string, body?: unknown, accessT
 export async function testSignIn(subject = crypto.randomUUID(), dev = device(), extra: Record<string, unknown> = {}) {
   return call("POST", "/v1/auth/test", { secret: TEST_LOGIN_SECRET, subject, create: true, device: dev, ...extra });
 }
+
+/** A free account (no Plus): what most people who make an account have. */
+export async function freeSignIn(subject = crypto.randomUUID(), dev = device(), extra: Record<string, unknown> = {}) {
+  return testSignIn(subject, dev, { plus: false, ...extra });
+}

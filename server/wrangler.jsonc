@@ -15,8 +15,9 @@
     "ENVIRONMENT": "dev",
     // The app's bundle ID: what Apple puts in an ID token's audience.
     "APPLE_AUDIENCES": "com.oftenenough.app",
-    // Google OAuth client IDs, comma-separated. Empty until the Google Cloud project exists: Google sign-in is off.
-    "GOOGLE_AUDIENCES": "",
+    // Google OAuth client IDs, comma-separated: the iOS client and the web client (Architecture/Backlog.md, 1 Oct 2026).
+    // Public values; the web client's secret is never used: the server only checks Google's signature.
+    "GOOGLE_AUDIENCES": "367584981284-c8q0v1eqmtbng2nu75k3abjuih4s5b8k.apps.googleusercontent.com,367584981284-i2afctg5t1d702fch3300d4vacp3teod.apps.googleusercontent.com",
     // App Store purchases: the app's bundle ID, and which App Store environments this server accepts.
     // Dev takes Xcode's local StoreKit testing and the sandbox; production will take Production and Sandbox (App Review).
     "APPLE_BUNDLE_ID": "com.oftenenough.app",
@@ -29,6 +30,21 @@
   "secrets": { "required": ["TOKEN_KEY", "TEST_LOGIN_SECRET"] },
   "durable_objects": { "bindings": [{ "name": "ACCOUNT", "class_name": "Account" }] },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Account"] }],
+  // Backups of accounts that don't sync (src/backup.ts). EU accounts' copies stay in the EU. Both buckets have a
+  // lifecycle rule deleting copies 365 days after upload (server/README.md, "Deploy dev").
+  "r2_buckets": [
+    { "binding": "BACKUPS", "bucket_name": "often-enough-backups-dev" },
+    { "binding": "BACKUPS_EU", "bucket_name": "often-enough-backups-dev-eu", "jurisdiction": "eu" }
+  ],
+  // Rate limits (Architecture 06 §6), per Cloudflare location; namespace IDs are unique per account.
+  "ratelimits": [
+    // Per account: syncs and backup reads. The app syncs at most every few seconds.
+    { "name": "SYNC_LIMIT", "namespace_id": "1001", "simple": { "limit": 60, "period": 60 } },
+    // Per IP: sign-in and refresh.
+    { "name": "AUTH_LIMIT", "namespace_id": "1002", "simple": { "limit": 30, "period": 60 } },
+    // Per device: backup uploads (the app uploads at most a few times a day; this only stops loops).
+    { "name": "BACKUP_LIMIT", "namespace_id": "1003", "simple": { "limit": 2, "period": 60 } }
+  ],
   "d1_databases": [
     {
       "binding": "DIRECTORY",

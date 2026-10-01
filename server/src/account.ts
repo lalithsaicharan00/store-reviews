@@ -18,6 +18,8 @@ export const MAX_PUSH = 500;
 export const MAX_PULL = 1000;
 const SESSION_LIFETIME_MS = 365 * 24 * 60 * 60 * 1000; // slides on every refresh, so active devices never expire
 const RETRY_GRACE_MS = 2 * 60 * 1000;
+/** `device.last_seen` only needs hour precision; writing it on every sync would be a quarter of all rows written. */
+const LAST_SEEN_PRECISION_MS = 60 * 60 * 1000;
 
 /** Compares two SHA-256 hex digests in constant time, without awaiting (see `refresh`). */
 function sameHash(a: string, b: string): boolean {
@@ -34,7 +36,8 @@ export interface DeviceInfo {
   appVersion: string;
 }
 
-export type SessionResult = { ok: true; secret: string } | { ok: false; reason: "gone" | "invalid" | "reused" | "expired" };
+/** `plus` goes into the new access token: only Plus accounts may sync (Server Cost and Capacity §4.2). */
+export type SessionResult = { ok: true; secret: string; plus: boolean } | { ok: false; reason: "gone" | "invalid" | "reused" | "expired" };
 
 export interface SyncRequest {
   /** The last `cursor` this device received; 0 the first time. */
@@ -59,7 +62,8 @@ export type SyncResult =
 
 /** A verified store purchase (Architecture 02 §3.3). */
 export interface PurchaseRecord {
-  store: "apple" | "google";
+  /** "test": dev only, the Plus that test and CI sign-ins get so end-to-end tests can sync. */
+  store: "apple" | "google" | "test";
   originalId: string;
   productId: string;
   /** What it unlocks: "plus" or "family" (Plus Family, which includes Plus). */
@@ -148,10 +152,27 @@ export class Account extends DurableObject<Env> {
     this.sql.exec("UPDATE purchase SET revoked_at = ? WHERE store = ? AND original_id = ?", revokedAt, store, originalId);
   }
 
+  /** Dev only (test and CI sign-ins): gives or takes away a test Plus, so end-to-end tests can be free or Plus. */
+  private setTestPlus(on: boolean, now: number) {
+    if (!on) {
+      this.sql.exec("DELETE FROM purchase WHERE store = 'test'");
+      return;
+    }
+    this.sql.exec(
+      `INSERT INTO purchase (store, original_id, product_id, grants, environment, purchased_at, revoked_at, recorded_at)
+       VALUES ('test', 'test', 'test.plus', 'plus', 'Test', ?, NULL, ?) ON CONFLICT(store, original_id) DO NOTHING`,
+      now, now,
+    );
+  }
+
+  private hasPlus(): boolean {
+    return this.sql.exec("SELECT 1 FROM purchase WHERE revoked_at IS NULL LIMIT 1").toArray().length > 0;
+  }
+
   async entitlements(): Promise<Entitlements | null> {
     if (this.accountId === undefined) return null;
     const purchases = this.sql
-      .exec<{ store: "apple" | "google"; original_id: string; product_id: string; grants: "plus" | "family"; environment: string; purchased_at: number; revoked_at: number | null }>(
+      .exec<{ store: PurchaseRecord["store"]; original_id: string; product_id: string; grants: "plus" | "family"; environment: string; purchased_at: number; revoked_at: number | null }>(
         "SELECT store, original_id, product_id, grants, environment, purchased_at, revoked_at FROM purchase ORDER BY purchased_at",
       )
       .toArray()
@@ -201,7 +222,8 @@ export class Account extends DurableObject<Env> {
         );
         this.sql.exec("INSERT INTO op_log (op_id, device_id, op, received_at) VALUES (?, ?, ?, ?)", op.id, deviceId, op.json, now);
       }
-      this.sql.exec("UPDATE device SET last_seen = ? WHERE id = ?", now, deviceId);
+      // At most once an hour: an UPDATE that matches no row writes nothing.
+      this.sql.exec("UPDATE device SET last_seen = ? WHERE id = ? AND last_seen <= ?", now, deviceId, now - LAST_SEEN_PRECISION_MS);
     });
 
     // Pull: scan forward from the cursor, skipping this device's own ops (it has them), and move the cursor past
@@ -233,8 +255,11 @@ export class Account extends DurableObject<Env> {
     return this.meta("account_id");
   }
 
-  /** Signs a device in: sets the account up if it's new, records the key and device, and starts a fresh session. */
-  async openSession(accountId: string, key: VerifiedKey, device: DeviceInfo, now = Date.now()): Promise<SessionResult> {
+  /**
+   * Signs a device in: sets the account up if it's new, records the key and device, and starts a fresh session.
+   * `testPlus` (dev-only test and CI sign-ins, else null) gives or takes away a test Plus first.
+   */
+  async openSession(accountId: string, key: VerifiedKey, device: DeviceInfo, testPlus: boolean | null = null, now = Date.now()): Promise<SessionResult> {
     const secret = newSecret();
     const hash = await sha256Hex(secret);
     // From here on nothing awaits, so no other request can run in between (the read and the writes are one step).
@@ -259,8 +284,9 @@ export class Account extends DurableObject<Env> {
            created_at = excluded.created_at, rotated_at = excluded.rotated_at, expires_at = excluded.expires_at`,
         device.id, hash, now, now, now + SESSION_LIFETIME_MS,
       );
+      if (testPlus !== null) this.setTestPlus(testPlus, now);
     });
-    return { ok: true, secret };
+    return { ok: true, secret, plus: this.hasPlus() };
   }
 
   /**
@@ -302,7 +328,7 @@ export class Account extends DurableObject<Env> {
       );
       this.sql.exec("UPDATE device SET last_seen = ? WHERE id = ?", now, deviceId);
     });
-    return { ok: true, secret: next };
+    return { ok: true, secret: next, plus: this.hasPlus() };
   }
 
   /** True if this device still has a session: a signed-out or stolen-token device can't keep using old access tokens for long. */
