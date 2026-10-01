@@ -16,7 +16,12 @@ moves, so the next session (person or agent) can pick up from it alone.*
       checked by SHA-256, EU bucket for EU accounts, 365-day lifecycle, deleted with the account), rate limits (1.1),
       `GOOGLE_AUDIENCES` = the iOS and web client IDs. 88 server tests; 27 live checks against dev. Dev test and CI
       sign-ins are Plus unless they send `plus: false`.
-   2. Shared core: the checked backup file and restore (preview, Replace/Merge, undo), Architecture 03 §3.2, §3.6.
+   2. ✅ **Shared core (done 1 Oct):** the checked backup file ([format](<../Core/Backup File Format.md>): a stored zip
+      with `manifest.json`, `data.json` with deleted rows, readable CSVs; zip CRCs, SHA-256 and counts checked before
+      anything changes) and restore: `checkBackup` (preview of both choices), `restore` Replace or Merge in one
+      transaction through `SyncWriter`, returning the undo file. Replace brings back rows deleted here under IDs
+      derived from the old ones, so it's repeatable. `BackupTest` (14 tests, incl. a format-1 sample read on every run).
+      Not yet compiled for iOS here (Linux): the step 3 `[ios-ci]` run is the first iOS build.
    3. iPhone: Settings → Backup & Sync, problem cards (§4.4 of the design), "I've used this before", Move to another
       device / Import, Google sign-in (Apple sign-in and iCloud backup are written but switch on only when the Apple
       Developer account arrives). Keep `[ios-ci]` runs few.

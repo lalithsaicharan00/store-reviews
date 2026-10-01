@@ -95,6 +95,61 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
         if (dao.settingByKey(key) != null) sync.change(SyncCodec.SETTING, key, mapOf("value" to JsonNull))
     }
 
+    // MARK: Backup and restore (Architecture 03 §3.2, §3.6). The platform stores and sends the file; see BackupFile.
+
+    /** Unlike launch data, a backup must carry deletion markers to a fresh installation. */
+    @Throws(Exception::class)
+    suspend fun loadForRestore(): Snapshot = dao.restoreSnapshot()
+
+    /** The checked backup file of everything on this device, deleted rows included. */
+    @Throws(Exception::class)
+    suspend fun backupFile(info: BackupInfo): BackupFileData = BackupFile.write(dao.restoreSnapshot(), info, clock())
+
+    /**
+     * Checks a backup file (base64) and says what restoring it would change, both ways. Never throws for a bad file:
+     * `problem` says why it can't be used, and nothing is changed.
+     */
+    @Throws(Exception::class)
+    suspend fun checkBackup(file: String): BackupCheck {
+        val contents = try {
+            BackupFile.read(file)
+        } catch (problem: BackupProblem) {
+            return BackupCheck(problem.reason, null)
+        }
+        val (phone, known) = dao.restoreState()
+        val now = clock()
+        val live = { s: Snapshot -> s.habits.count { it.deletedAt == null } to s.entries.count { it.deletedAt == null } }
+        val (fileHabits, fileEntries) = live(contents.snapshot)
+        val (phoneHabits, phoneEntries) = live(phone)
+        return BackupCheck(
+            problem = null,
+            preview = RestorePreview(
+                createdAt = contents.createdAt, deviceName = contents.deviceName, platform = contents.platform, appVersion = contents.appVersion,
+                fileHabits = fileHabits, fileEntries = fileEntries, phoneHabits = phoneHabits, phoneEntries = phoneEntries,
+                replace = RestorePlanner.plan(phone, known, contents.snapshot, RestoreMode.REPLACE, now).counts,
+                merge = RestorePlanner.plan(phone, known, contents.snapshot, RestoreMode.MERGE, now).counts,
+            ),
+        )
+    }
+
+    /**
+     * Restores a backup file (base64) in one transaction, after checking it again. The result carries the undo file:
+     * this device exactly as it was just before (03 §3.6 step 3). Restoring that with [RestoreMode.REPLACE] undoes it.
+     * Throws [BackupProblem] for a bad file, before anything is changed.
+     */
+    @Throws(Exception::class)
+    suspend fun restore(file: String, mode: RestoreMode, info: BackupInfo): RestoreResult {
+        val contents = BackupFile.read(file)
+        val now = clock()
+        return dao.synced(now) { sync ->
+            val phone = dao.restoreSnapshot()
+            val undo = BackupFile.write(phone, info, now)
+            val plan = RestorePlanner.plan(phone, dao.knownSettingKeys().toSet(), contents.snapshot, mode, now)
+            plan.changes.forEach { sync.change(it.table, it.row, it.fields) }
+            RestoreResult(plan.counts, undo)
+        }
+    }
+
     // MARK: Sync with the server (Architecture 05, 06 §4). The platform sends the request and hands back the reply.
 
     /** Starts syncing this device's data with [accountId], right after sign-in. See [SyncWriter.bind]. */

@@ -28,6 +28,20 @@ interface HabitDao {
     @Query("SELECT * FROM setting")
     suspend fun settings(): List<SettingRecord>
 
+    @Query("SELECT * FROM habit") suspend fun backupHabits(): List<HabitRecord>
+    @Query("SELECT * FROM step") suspend fun backupSteps(): List<StepRecord>
+    @Query("SELECT * FROM reminder") suspend fun backupReminders(): List<ReminderRecord>
+    @Query("SELECT * FROM entry") suspend fun backupEntries(): List<EntryRecord>
+
+    @Transaction
+    suspend fun restoreSnapshot(): Snapshot = Snapshot(backupHabits(), backupSteps(), backupReminders(), backupEntries(), settings())
+
+    @Query("SELECT row_id FROM sync_meta WHERE table_name = 'setting'") suspend fun knownSettingKeys(): List<String>
+
+    /** Everything a restore compares against, read in one transaction. */
+    @Transaction
+    suspend fun restoreState(): Pair<Snapshot, Set<String>> = restoreSnapshot() to knownSettingKeys().toSet()
+
     @Upsert suspend fun upsertHabit(habit: HabitRecord)
     @Upsert suspend fun upsertSteps(steps: List<StepRecord>)
     @Upsert suspend fun upsertReminders(reminders: List<ReminderRecord>)
