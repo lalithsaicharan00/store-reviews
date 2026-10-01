@@ -42,6 +42,17 @@ Compared with the last pre-merge runs (`undo-research`), measured with the app d
 
 Lessons are in `PERFORMANCE.md` (rules 6, 8, 11 and the new 12).
 
+## Temporary branches to delete (for any agent or person reading this)
+
+Made only for testing on 1 Oct 2026; nothing in them needs keeping, and nothing should be merged from them. This
+environment can't delete branches on GitHub, so delete them there (GitHub → Branches) or with
+`git push origin --delete <name>` from a machine that can:
+
+| Branch | What it was |
+|---|---|
+| `claude/integration-check-b` | A copy of `integration` at `c47a1c4`, so two halves of the tests could run at once |
+| `claude/perf-bisect-habit-page` | Scratch: the habit page with one section or chart part left out per speed scenario (`PerfBisect`), to find the 1–2.7 s freeze. Never merge it |
+
 ## Not done, and why
 
 - **Today widget:** needs an App Group on the app and its widget extension, in the Apple Developer account and Xcode. Without it registered, Xcode can refuse to install the app on the phone. Another session is renaming the app (`com.oftenenough.app`), and the group's name must match. Research: `Research/Research Reports/Home Screen and Visual Design/Widgets — Tick Without Opening the App.md`.
