@@ -19,6 +19,12 @@ final class WidgetSystemUITests: XCTestCase {
         app.launchArguments = ["-empty", "-widget-fixture", "-free", "-dbname", "habits", "-reset-db"]
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 15))
+        // Disarm the destructive setup arguments before any system-triggered restart.
+        // A hosted intent may reuse a previously recorded launch configuration.
+        app.terminate()
+        app.launchArguments = ["-empty", "-free", "-dbname", "habits"]
+        app.launch()
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 15))
         // The app's background handler waits for durable writes and the shared snapshot.
         XCUIDevice.shared.press(.home)
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
