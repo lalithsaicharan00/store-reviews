@@ -232,10 +232,11 @@ struct ProgressScreen: View {
 
     private func weekRings(_ snapshot: ProgressSnapshot) -> some View {
         let calendar = store.calendar
+        let names = store.weekdayNames.veryShort
         return HStack(spacing: 0) {
             ForEach(snapshot.days) { cell in
                 VStack(spacing: 4) {
-                    Text(calendar.veryShortStandaloneWeekdaySymbols[calendar.component(.weekday, from: cell.day.date(calendar: calendar)) - 1])
+                    Text(names[cell.day.weekday(calendar: calendar) - 1])
                         .font(.caption2.weight(.semibold)).foregroundStyle(.secondary)
                         .accessibilityHidden(true)
                     ring(cell)

@@ -540,8 +540,8 @@ extension HabitStore {
 
         var spoken = habit.name + ". " + text + "."
         if range == .week {
-            let names = calendar.weekdaySymbols
-            spoken += " " + marks.map { names[calendar.component(.weekday, from: $0.day.date(calendar: calendar)) - 1] + " " + $0.mark.words(atMost: rule.atMost).lowercased() }
+            let names = weekdayNames.full
+            spoken += " " + marks.map { names[$0.day.weekday(calendar: calendar) - 1] + " " + $0.mark.words(atMost: rule.atMost).lowercased() }
                 .joined(separator: ", ") + "."
         }
         return ProgressHabitRow(habit: habit, marks: marks, text: text, percent: percent, accessibility: spoken)

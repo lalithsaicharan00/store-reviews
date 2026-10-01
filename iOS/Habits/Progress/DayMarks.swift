@@ -106,10 +106,11 @@ struct WeekStripHeader: View {
     let calendar: Calendar
 
     var body: some View {
+        let names = calendar.veryShortStandaloneWeekdaySymbols
         HStack(spacing: 0) {
             Spacer(minLength: 0)
             ForEach(days, id: \.self) { day in
-                Text(calendar.veryShortStandaloneWeekdaySymbols[calendar.component(.weekday, from: day.date(calendar: calendar)) - 1])
+                Text(names[day.weekday(calendar: calendar) - 1])
                     .font(.caption2.weight(.semibold)).foregroundStyle(.secondary)
                     .frame(width: WeekStrip.column)
             }

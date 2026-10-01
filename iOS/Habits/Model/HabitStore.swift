@@ -185,8 +185,20 @@ final class HabitStore {
     }
     @ObservationIgnored private var cachedCalendar: Calendar?
 
+    /// The weekday names, Sunday first (index `LocalDay.weekday - 1`): the calendar builds a new array on each ask,
+    /// and Progress asked once per day cell and per VoiceOver line (PERFORMANCE.md rule 8).
+    var weekdayNames: (full: [String], veryShort: [String]) {
+        let calendar = calendar
+        if let cachedWeekdayNames { return cachedWeekdayNames }
+        let names = (calendar.weekdaySymbols, calendar.veryShortStandaloneWeekdaySymbols)
+        cachedWeekdayNames = names
+        return names
+    }
+    @ObservationIgnored private var cachedWeekdayNames: (full: [String], veryShort: [String])?
+
     private func calendarChanged() {
         cachedCalendar = nil
+        cachedWeekdayNames = nil
         startDays = [:]
         forgetAll()
         withMutation(keyPath: \.settings) {} // every screen showing days draws them again
