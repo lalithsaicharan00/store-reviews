@@ -495,7 +495,8 @@ final class NewHabitUITests: XCTestCase {
         shot("14-time-of-day-on-today")
         play.tap()
         XCTAssertTrue(app.navigationBars["Before work routine"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.collectionViews["routine-list"].buttons["Mark Pack lunch done"].exists)
+        // The focus player (29 Sep) shows one habit at a time; the routine list it replaced is gone.
+        XCTAssertEqual(app.buttons["focus-primary"].label, "Mark Pack lunch done")
         app.buttons["Close"].tap()
     }
 

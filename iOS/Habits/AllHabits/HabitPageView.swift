@@ -300,15 +300,18 @@ struct HabitMonthView: View {
             }
             .buttonStyle(.borderless)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 7), spacing: 6) {
-                ForEach(Array(ordered.enumerated()), id: \.offset) { Text($0.element).font(.caption2.weight(.semibold)).foregroundStyle(.secondary) }
-                ForEach(0..<lead, id: \.self) { _ in Color.clear.frame(height: 36) }
-                ForEach(1...count, id: \.self) { d in
-                    let day = LocalDay(year: month.year, month: month.month, day: d)
-                    Button { onSelect(day) } label: { cell(day, isToday: day == today).frame(minHeight: 44) }
-                        .buttonStyle(.borderless)
-                        .disabled(day > today)
-                        .accessibilityLabel(spoken(day))
-                        .accessibilityIdentifier("habit-day-\(day.key)")
+                ForEach(MonthGridCell.month(leading: lead, days: count), id: \.self) { item in
+                    switch item {
+                    case .weekday(let i): Text(ordered[i]).font(.caption2.weight(.semibold)).foregroundStyle(.secondary)
+                    case .blank: Color.clear.frame(height: 36)
+                    case .day(let d):
+                        let day = LocalDay(year: month.year, month: month.month, day: d)
+                        Button { onSelect(day) } label: { cell(day, isToday: day == today).frame(minHeight: 44) }
+                            .buttonStyle(.borderless)
+                            .disabled(day > today)
+                            .accessibilityLabel(spoken(day))
+                            .accessibilityIdentifier("habit-day-\(day.key)")
+                    }
                 }
             }
             HStack(spacing: 14) {

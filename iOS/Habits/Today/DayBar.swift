@@ -24,6 +24,21 @@ struct DayLabel: View {
     }
 }
 
+/// One cell of a month grid: the weekday letters, the blanks around the month, and its days, in one lazy grid.
+/// One identity space for all of them: with plain numbers, weekday 1 and day 1 were the same cell to the grid, which
+/// kept one, so days 1–6 never drew (seen 1 Oct 2026 on the habit page; the same in Today's calendar's first row).
+enum MonthGridCell: Hashable {
+    case weekday(Int), blank(Int), day(Int)
+
+    static func month(leading: Int, days: Int, trailing: Int = 0) -> [MonthGridCell] {
+        var cells: [MonthGridCell] = (0..<7).map(weekday)
+        cells += (0..<leading).map(blank)
+        cells += (1...max(days, 1)).map(day)
+        cells += (0..<max(trailing, 0)).map { blank(leading + $0) }
+        return cells
+    }
+}
+
 /// A native SwiftUI month grid with the same completion totals as the bottom bar.
 struct CalendarSheet: View {
     let selected: LocalDay
@@ -61,17 +76,15 @@ struct CalendarSheet: View {
                             .labelStyle(.iconOnly).frame(width: 44, height: 44)
                     }
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 7), spacing: 8) {
-                        ForEach(0..<7, id: \.self) { offset in
-                            let weekday = (calendar.firstWeekday - 1 + offset) % 7
-                            Text(calendar.veryShortStandaloneWeekdaySymbols[weekday])
-                                .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
-                                .frame(maxWidth: .infinity).accessibilityHidden(true)
-                        }
-                        ForEach(0..<cells, id: \.self) { cell in
-                            let number = cell - leading + 1
-                            if number > 0 && number <= days {
-                                dayButton(LocalDay(year: month.year, month: month.month, day: number))
-                            } else { Color.clear.frame(height: 44).accessibilityHidden(true) }
+                        ForEach(MonthGridCell.month(leading: leading, days: days, trailing: cells - leading - days), id: \.self) { cell in
+                            switch cell {
+                            case .weekday(let offset):
+                                Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + offset) % 7])
+                                    .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                                    .frame(maxWidth: .infinity).accessibilityHidden(true)
+                            case .blank: Color.clear.frame(height: 44).accessibilityHidden(true)
+                            case .day(let number): dayButton(LocalDay(year: month.year, month: month.month, day: number))
+                            }
                         }
                     }
                     Text("Tap any day to open it. Past days can be logged, with no limit on how far back. Later days open as a preview.")
