@@ -198,3 +198,7 @@ The Feature Ledger files carry no "Written by Claude" line, because each rebuild
 
 - [Full-screen Focus Player — One Thing at a Time](<Day Structure and Organization/Full-screen Focus Player — One Thing at a Time.md>) — Codex, 29 Sep 2026. Review evidence, native focus-player design, mixed habit types and the decision against a competing whole-routine countdown.
 - [Focus Player — How It Should Behave](<Day Structure and Organization/Focus Player — How It Should Behave.md>) — Claude, 29 Sep 2026. 2,271 routine/timer reviews screened in ten themes; pause that doesn't hold is the top bug elsewhere; 17 numbered behaviours the manual bug hunt checks.
+
+## iPhone widget implementation
+
+- [iPhone Widgets — Research and Implementation](<Home Screen and Visual Design/Home Screen Cards and Widgets/iPhone Widgets — Research and Implementation.md>) — Codex, 1 Oct 2026. Review evidence, widget catalogue, free/Plus boundary, reliability architecture and acceptance matrix.
