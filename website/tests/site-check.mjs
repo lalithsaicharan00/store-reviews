@@ -94,6 +94,9 @@ const refresh = async (token) => {
   check("Google is given SHA-256 of the nonce the server gets", nonceOk);
   check("the page says which account it found", (await page.textContent("#who")) === "drill@example.com");
   check("Delete stays off until the box is ticked", await page.isDisabled("#delete"));
+  const [download] = await Promise.all([page.waitForEvent("download"), page.click("#download")]);
+  const copy = JSON.parse(await (await import("node:fs/promises")).readFile(await download.path(), "utf8"));
+  check("a copy of the account's data downloads first", copy.account?.accountId === seen.reply.accountId && /^often-enough-account-/.test(download.suggestedFilename()), download.suggestedFilename());
   await page.check("#understand");
   await page.click("#delete");
   await page.waitForSelector("#step-done:not([hidden])", { timeout: 15000 });

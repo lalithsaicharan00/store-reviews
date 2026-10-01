@@ -20,13 +20,13 @@ prefer one, create it in the dashboard and upload `public/`.
 ```sh
 cd website
 npx --prefix ../server wrangler deploy
-TEST_LOGIN_SECRET=… NODE_PATH=$(npm root -g) node tests/site-check.mjs     # 20 checks in Chromium
+TEST_LOGIN_SECRET=… NODE_PATH=$(npm root -g) node tests/site-check.mjs     # 21 checks in Chromium
 ```
 
 `tests/site-check.mjs` loads every page in light and dark mode at phone width (no errors, no security-policy
 violations, nothing wider than the screen), then runs the delete page end to end against the dev API: Google's
 script is replaced by a stand-in, its answer becomes a real dev account, and the page's own calls must really delete it
-(or, after Cancel, sign out). Behind a TLS-inspecting proxy, set `CHROMIUM_TRUST_SPKI` to the proxy CA's key hash.
+(or, after Cancel, sign out), after downloading a copy of its data. Behind a TLS-inspecting proxy, set `CHROMIUM_TRUST_SPKI` to the proxy CA's key hash.
 
 **How the delete page works:** Sign in with Google (Google Identity Services, the web OAuth client) → `POST
 /v1/auth/google` (never `create`) → "Signed in as …" and a confirmation box → `POST /v1/account/delete`. Cancel calls

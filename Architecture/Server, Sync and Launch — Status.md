@@ -76,7 +76,7 @@ moves, so the next session (person or agent) can pick up from it alone.*
    updated for optional accounts), terms, support, and delete-your-account without the app (Google sign-in on the
    web, then the same API; the API allows only the site's origins, on three routes). Static assets only, no Worker
    script (free, unlimited; the user asked for no request cost; a classic Pages project couldn't be created through
-   the API). Live at `https://site-dev.oftenenough.com`; `tests/site-check.mjs` passes 20 checks in Chromium (every
+   the API). Live at `https://site-dev.oftenenough.com`; `tests/site-check.mjs` passes 21 checks in Chromium (every
    page light/dark at phone width, and the delete page end to end against dev). **Needs you before it's at
    `oftenenough.com`:** delete the parked Hostinger DNS records, add the site's origins to the Google web client,
    turn off Cloudflare Web Analytics injection, set up `support@oftenenough.com`, and read the privacy policy
