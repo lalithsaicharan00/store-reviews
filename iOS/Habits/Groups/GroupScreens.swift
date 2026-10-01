@@ -264,6 +264,7 @@ struct GroupForm: View {
                 }
             }
         }
+        .accessibilityIdentifier("group-form")
         .navigationTitle(original == nil ? "New Group" : "Edit Group")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(original == nil || changed)

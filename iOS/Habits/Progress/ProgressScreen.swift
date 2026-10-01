@@ -30,7 +30,7 @@ struct ProgressScreen: View {
 
     var body: some View {
         let key = ProgressModel.Key(range: range, anchor: anchor, version: store.dataVersion, fullDay: fullDay,
-                                    group: store.existingGroup(groupRaw))
+                                    group: store.existingGroup(groupRaw), today: store.today())
         Group {
             if let snapshot = model.snapshot {
                 if snapshot.hasHabits {
@@ -465,6 +465,8 @@ struct ProgressRowView: View {
         var fullDay = 100
         /// The group chip chosen; nil is All.
         var group: UUID? = nil
+        /// A new day makes new numbers: "This week" kept from before midnight would be last week (CI, 1 Oct 2026).
+        var today: LocalDay? = nil
     }
 
     private(set) var snapshot: ProgressSnapshot?
@@ -478,7 +480,8 @@ struct ProgressRowView: View {
         // Numbers from before a change are never shown again.
         cache = cache.filter { $0.key.version == key.version }
         if cache.count > 30 { cache.removeAll() }
-        let made = store.progressSnapshot(key.range, containing: key.anchor ?? store.today(), fullAt: Double(key.fullDay) / 100,
+        let today = key.today ?? store.today()
+        let made = store.progressSnapshot(key.range, containing: key.anchor ?? today, today: today, fullAt: Double(key.fullDay) / 100,
                                           group: key.group)
         cache[key] = made
         snapshot = made
