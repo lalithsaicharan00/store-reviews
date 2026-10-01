@@ -12,6 +12,37 @@
 	<array>
 		<string>fetch</string>
 	</array>
+	<!-- Google sign-in returns to the app on its iOS client ID, reversed (Architecture/Backlog.md, 1 Oct 2026). -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>Google sign-in</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.367584981284-c8q0v1eqmtbng2nu75k3abjuih4s5b8k</string>
+			</array>
+		</dict>
+	</array>
+	<!-- A backup file (a .zip) can be opened in the app from AirDrop, Files or Mail. "Alternate": the app is offered,
+	     never made the default for zip files. -->
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Often Enough backup</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.zip-archive</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<false/>
 	<key>NSAlarmKitUsageDescription</key>
 	<string>Often Enough rings an alarm at your habit's time when you choose Alarm for it.</string>
 </dict>

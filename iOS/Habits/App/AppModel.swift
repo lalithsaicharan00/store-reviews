@@ -22,6 +22,8 @@ final class AppModel {
     let router = AppRouter()
     /// Keeps this device in step with the account's other devices once someone signs in (Plus). Nil without a database.
     let sync: SyncService?
+    /// Where the backup goes, whether it works, moving and restoring (Backup, Sync and Accounts). Nil without a database.
+    let backup: BackupCenter?
     private let persistence: Persistence?
     private var loading: Task<Void, Never>?
 
@@ -51,6 +53,11 @@ final class AppModel {
         #endif
         let storeName = arguments.firstIndex(of: "-dbname").flatMap { $0 + 1 < arguments.count ? arguments[$0 + 1] : nil } ?? "habits"
         sync = opened.map { SyncService(repository: $0.repository, storeName: storeName, api: api, reset: arguments.contains("-reset-db")) }
+        if let opened, let sync {
+            backup = BackupCenter(repository: opened.repository, sync: sync, store: store)
+        } else {
+            backup = nil
+        }
         if opened == nil {
             store.problem = "Your habits couldn't be opened. Nothing has been changed; please restart the app."
         }
@@ -79,20 +86,27 @@ final class AppModel {
                 await store.addEveryTypeToAnytime()
             }
             #endif
-            store.onChange = { [store, scheduler, timerPresence, sync] in
+            store.onChange = { [store, scheduler, timerPresence, sync, backup] in
                 scheduler.scheduleReconcile(store)
                 Task { await timerPresence.sync(store) }
                 sync?.scheduleSoon()
+                backup?.dataChanged()
             }
             sync?.onRemoteChanges = { [store] in store.reloadAfterSync() }
+            sync?.onAccountChange = { [backup] in backup?.refresh() }
             #if DEBUG
             // End-to-end tests on GitHub Actions sign in with the run's identity token (server: POST /v1/auth/ci).
             let arguments = ProcessInfo.processInfo.arguments
             if let i = arguments.firstIndex(of: "-ci-sign-in"), i + 2 < arguments.count {
                 try? await sync?.signIn(path: "/v1/auth/ci", body: ["idToken": arguments[i + 1], "subject": arguments[i + 2], "create": true])
             }
+            // The same, as a free account (BackupUITests): backups go to the server, nothing syncs.
+            if let i = arguments.firstIndex(of: "-ci-sign-in-free"), i + 2 < arguments.count {
+                try? await sync?.signIn(path: "/v1/auth/ci", body: ["idToken": arguments[i + 1], "subject": arguments[i + 2], "create": true, "plus": false])
+            }
             #endif
             sync?.appBecameActive()
+            Task { [backup] in await backup?.runIfDue() }
             scheduler.scheduleReconcile(store)
             // A timer left running (the app was closed, or the phone restarted) gets its Live Activity back.
             await timerPresence.sync(store)
@@ -134,6 +148,8 @@ final class AppModel {
         let work = Task { [self] in
             await ensureLoaded()
             await scheduler.reconcile(store)
+            // The nightly backup, when the app wasn't opened (Backup, Sync and Accounts §4.2).
+            await backup?.runIfDue()
             task.setTaskCompleted(success: !Task.isCancelled)
         }
         task.expirationHandler = { work.cancel() }

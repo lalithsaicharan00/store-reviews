@@ -23,11 +23,28 @@ struct HabitsApp: App {
             if scenePhase == .active && model.store.isLoaded { model.scheduler.scheduleReconcile(model.store) }
             // Pull on every return to the app (another device may have changed something), and stop polling when away.
             if scenePhase == .active && model.store.isLoaded { model.sync?.appBecameActive() }
+            // Every open re-checks the backup, so a problem is told as soon as we know (§4.4).
+            if scenePhase == .active && model.store.isLoaded { Task { await model.backup?.runIfDue() } }
             if scenePhase == .background { model.sync?.appWentToBackground() }
         }
     }
 
-    private var today: some View {
+    @ViewBuilder private var today: some View {
+        if let backup = model.backup {
+            todayView
+                .environment(backup)
+                .modifier(IncomingBackupSheet(backup: backup))
+                // A backup file opened from AirDrop, Files or Mail (Backup, Sync and Accounts §4.8).
+                .onOpenURL { url in
+                    guard url.isFileURL else { return }
+                    Task { await backup.open(url) }
+                }
+        } else {
+            todayView
+        }
+    }
+
+    private var todayView: some View {
         TodayView()
             .environment(model.store)
             .environment(model.scheduler)
@@ -39,6 +56,19 @@ struct HabitsApp: App {
                 model.scheduleRefresh()
                 await model.dailySnapshot()
             }
+    }
+}
+
+/// The restore preview for a file opened from another app. Only this modifier reads `incoming`, so Today never
+/// redraws for it.
+private struct IncomingBackupSheet: ViewModifier {
+    @Bindable var backup: BackupCenter
+
+    func body(content: Content) -> some View {
+        content.sheet(item: $backup.incoming) { pending in
+            NavigationStack { RestorePreviewView(pending: pending) }
+                .environment(backup)
+        }
     }
 }
 

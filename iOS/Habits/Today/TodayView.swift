@@ -21,6 +21,9 @@ struct TodayView: View {
     @State private var showCalendar = false
     @State private var showNewHabit = false
     @State private var showAllHabits = false
+    @State private var showSettings = false
+    /// "I've used this before" from the empty first screen (Backup, Sync and Accounts §4.1).
+    @State private var showRestore = false
     /// The habit just added, revealed once the sheet closes.
     @State private var added: UUID?
     /// A row or header to scroll to, and the row that flashes briefly after Add.
@@ -62,6 +65,13 @@ struct TodayView: View {
                     .onAppear { playerCovering = true }
             }
             .sheet(isPresented: $showSections) { DaySectionsView() }
+            .sheet(isPresented: $showSettings) {
+                // Settings → Backup & Sync for now; the side menu (integration branch) takes this over at the merge.
+                if AppModel.shared.backup != nil {
+                    NavigationStack { BackupSyncView().toolbar { closeButton { showSettings = false } } }
+                }
+            }
+            .sheet(isPresented: $showRestore) { NavigationStack { RestoreStartView() } }
 
             .sheet(isPresented: $showNewHabit, onDismiss: revealAdded) {
                 NewItemView { added = $0 }
@@ -236,12 +246,17 @@ struct TodayView: View {
                     Text("New Habit").fontWeight(.semibold).foregroundStyle(Color.onInk)
                 }
                 .buttonStyle(.borderedProminent).tint(.ink)
+                if AppModel.shared.backup != nil {
+                    Button("I've Used This Before") { showRestore = true }
+                        .accessibilityIdentifier("used-before")
+                }
             }
             .background(Color(.systemGroupedBackground))
         } else {
             let rows = rowsBySection(tracked)
             ScrollViewReader { proxy in
             List {
+                if isToday && AppModel.shared.backup != nil { BackupIssueSection() }
                 // The day's note, when there is one: context for the whole day, above its habits (notes report).
                 if shown <= today, let note = store.dayNote(on: shown) {
                     Section {
@@ -480,9 +495,14 @@ struct TodayView: View {
     }
 
     @ToolbarContentBuilder
+    private func closeButton(_ close: @escaping () -> Void) -> some ToolbarContent {
+        ToolbarItem(placement: .cancellationAction) { Button("Close", action: close) }
+    }
+
+    @ToolbarContentBuilder
     private var topBar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Button {} label: {
+            Button { showSettings = true } label: {
                 Image(systemName: "person.fill")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(Color.onInk)
