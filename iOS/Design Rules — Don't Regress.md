@@ -308,4 +308,16 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
 - Tasks lists every saved task, including future/completed/repeating/archived. Tasks do not consume the free habit cap, and unarchiving a task remains free. Use the same native task form; opening an old task must keep its original date.
 - Reminders is a native settings Form over existing rules, with permission recovery and item editing. Opening it does not request authorization. Serialize reconciliation; use saved action event IDs, current target validation and wall-clock dates. Stop outdated alarms, retry/report scheduling errors, and reserve the shared notification budget for timers.
 - The latest queued alert date is not a guarantee for every item. Explain nearest-first capacity and iOS background limits. Physical-device delivery remains a separate check. Reliability details supersede §6 of Pending to Implement.md in its sidebar addendum.
-- Keep Help & Feedback and About blank, as requested by the user.
+- ~~Keep Help & Feedback and About blank, as requested by the user.~~ *Superseded 1 Oct 2026: the user asked for the help content; see "Onboarding, empty Today and Help" below.*
+
+## Onboarding, empty Today and Help (built 1 Oct 2026)
+
+Research: [Onboarding — The Name, What's Free, and a First Habit](<../Research/Research Reports/Habit Creation/Onboarding — The Name, What's Free, and a First Habit.md>). Checklist: `Docs/Checklists/Onboarding and Help.md`.
+
+- **Four screens, once, on a fresh install, every one skippable:** Often Enough (the name) · Free, with no account · Your days and weeks · What's one habit to start with? Skip (screens 1–3), Not Now (screen 4) and Restore from a Backup File (screen 1) each end it in one tap. **Never add a question the app can't act on**, a goals survey, a score, a pledge, a sign-up, a permission request or a paywall to it (C111, C283, C160, C209).
+- **The name screen says only what the app does:** you choose how often; streaks count your goal (3 times a week, every week, is a streak; unplanned days never break it); skipped and paused days never count against you. **Never claim a missed day doesn't matter**: a daily habit's streak does end on a missed, unskipped day.
+- **What's free is said before any effort** (C236): up to 5 habits free forever, no account, no ads, data on this iPhone with how to back it up, and Plus as "one payment, not a subscription" (C305), with no buy button. **List only what this build has** (C218): add widgets to the free line when they're merged.
+- **An idea only fills in the form** (name, type, how often); nothing is saved until Add, and amounts stay empty (C292, C203). Never preselect or auto-add a habit.
+- **Not shown** in UI or speed tests (`-uitest`, `-dbname`) unless `-onboarding`, nor to anyone who already has habits, nor over a storage problem.
+- **The empty Today is never a dead end and never says "every day":** New Habit, Start From an Idea, Restore from a Backup File, How It Works.
+- **Help & Feedback:** Contact Us and Show the Welcome Again first, then How It Works, searchable. **Every answer names the exact button**; when a way in or a label changes, change its answer in `HelpTopics` in the same change. Contact Us sends no habit data. About lists the open-source libraries with their licences; no links to pages that don't exist yet.
