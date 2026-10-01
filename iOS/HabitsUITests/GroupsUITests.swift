@@ -115,9 +115,12 @@ final class GroupsUITests: XCTestCase {
         shot("g04-today-filtered")
 
         active.tap()
-        XCTAssertTrue(text("Water").waitForExistence(timeout: 3), "✕ shows everything again")
-        XCTAssertTrue(text("Smoking").exists)
-        XCTAssertFalse(active.exists)
+        XCTAssertTrue(active.waitForNonExistence(timeout: 3), "✕ clears the filter")
+        XCTAssertTrue(text("Smoking").waitForExistence(timeout: 3), "Quitting is back")
+        // Water is done, so it sits at the end of Anytime, below the fold on a small screen.
+        app.reveal(text("Water"))
+        shot("g04b-today-all")
+        XCTAssertTrue(text("Water").exists, "✕ shows everything again")
     }
 
     /// Chip numbers and the empty group: Mind filters Today; the empty Reading chip is last and opens its editor, where
