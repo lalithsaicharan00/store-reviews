@@ -71,7 +71,8 @@ for S in $SCENARIOS; do
     echo "**$S failed:** native keyboard input was unavailable or produced unexpected text; see stalls-$S.txt." >> "$SUMMARY"
   fi
   WINDOWS=$(echo "$RESULT" | grep '^window=')
-  if [ -z "$WINDOWS" ]; then
+  # A scenario that only opens screens (menu-pages, habit-edit) has no window: its opens are listed below the table.
+  if [ -z "$WINDOWS" ] && ! echo "$RESULT" | grep -q '^open='; then
     FAIL=1
     NOTE=$(echo "$RESULT" | sed -n 's/^note=//p' | paste -sd ' ' -)
     echo "| $S | not measured (${NOTE:-no record: did the app start?}) | | | | |" >> "$SUMMARY"
