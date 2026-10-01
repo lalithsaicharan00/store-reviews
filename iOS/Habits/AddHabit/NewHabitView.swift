@@ -228,10 +228,13 @@ struct HabitForm: View {
     @Environment(ReminderScheduler.self) private var scheduler
     @Environment(\.dismiss) private var dismiss
 
-    @State private var name = ""
+    /// The name as typed. Only the name field reads its text while drawing (`TypedName`), so a letter redraws the
+    /// field and nothing else (PERFORMANCE.md rule 11): when the form read it, every letter rebuilt the whole form
+    /// and its preview row (profile, 1 Oct 2026). Saving always reads it live, so nothing typed is ever lost.
+    @State private var typed = TypedName("")
+    private var name: String { typed.text }
     /// The name as the previews show it: the preview row, the sentence and the icon suggestion catch up when typing
     /// pauses. Redrawing and re-animating them on every letter kept the main thread 92 % busy while typing (30 Sep).
-    /// Saving always uses `name`, so nothing typed is ever lost.
     @State private var shownName = ""
     /// What counts, how to do it, why it matters: optional, shown in the routine player (notes report, 29 Sep).
     @State private var descriptionText = ""
@@ -318,7 +321,7 @@ struct HabitForm: View {
         _groupID = State(initialValue: group)
         originalDescription = description
         _descriptionText = State(initialValue: description)
-        _name = State(initialValue: habit.name)
+        _typed = State(initialValue: TypedName(habit.name))
         _shownName = State(initialValue: habit.name)
         _symbol = State(initialValue: habit.symbol)
         _pickedSymbol = State(initialValue: true)
@@ -367,9 +370,9 @@ struct HabitForm: View {
 
     private var editing: Bool { original != nil }
     /// The edited habit as it would be saved, keeping what the form doesn't show.
-    private var edited: Habit? {
+    private func edited(name: String) -> Habit? {
         guard let original else { return nil }
-        var habit = makeHabit()
+        var habit = makeHabit(name: name)
         habit.id = original.id
         habit.createdAt = original.createdAt
         habit.archived = original.archived
@@ -381,7 +384,8 @@ struct HabitForm: View {
         return habit
     }
     private var editChanged: Bool {
-        (edited.map { $0 != original } ?? false) || TextLimit.clean(descriptionText, TextLimit.descriptionText) != originalDescription
+        // The saved name here, and the name field's own "changed": the typed text is never read while drawing.
+        (edited(name: original?.name ?? "").map { $0 != original } ?? false) || typed.isChanged || TextLimit.clean(descriptionText, TextLimit.descriptionText) != originalDescription
             || groupID != originalGroup
     }
 
@@ -394,7 +398,7 @@ struct HabitForm: View {
         }
     }
     private var remind: Bool { remindOn && !times.isEmpty }
-    private var hasChanges: Bool { editing ? editChanged : !trimmedName.isEmpty || !filledItems.isEmpty }
+    private var hasChanges: Bool { editing ? editChanged : typed.isFilled || !filledItems.isEmpty }
     private var isHabit: Bool { type.isBuild || type == .cutBack }
     /// How it's tracked: the type chosen before the form.
     private var kind: ItemType { type }
@@ -425,7 +429,7 @@ struct HabitForm: View {
     }
     private var weekStart: Int { store.settings.weekStart }
     private var canAdd: Bool {
-        guard !trimmedName.isEmpty else { return false }
+        guard typed.isFilled else { return false }
         if hasAmount && amountValue == nil { return false }
         if type == .checklist && filledItems.isEmpty { return false }
         if isHabit, case .weekdays(let days) = plan.often, days.isEmpty { return false }
@@ -521,18 +525,7 @@ struct HabitForm: View {
             }
             .presentationDetents([.height(260)])
         }
-        .onChange(of: name) { old, new in
-            // A wrapping field puts Return into the text; treat it as Done instead.
-            if name.contains("\n") { name = name.replacingOccurrences(of: "\n", with: ""); focus = nil }
-        }
-        .task(id: name) {
-            guard shownName != name else { return }
-            try? await Task.sleep(for: .milliseconds(300)) // a new letter cancels this and starts again
-            guard !Task.isCancelled else { return }
-            shownName = name
-            suggestIcon()
-        }
-        // The pause above is cancelled when a screen opens over the form, so the previews catch up at once when the
+        // The name field's typing pause (in `NameField`) is cancelled when a screen opens over the form, so the previews catch up at once when the
         // form is back, or when the name field is left: never "Enter a habit name" under a typed name (merge, 1 Oct).
         .onAppear { catchUpName() }
         .onChange(of: focus) { if focus != .name { catchUpName() } }
@@ -560,16 +553,7 @@ struct HabitForm: View {
     /// The name on its own row; icon and colour side by side below it, each opening a quick pick.
     private var nameSection: some View {
         Section {
-            TextField(type.namePlaceholder, text: $name, axis: .vertical)
-                .lineLimit(1...2)
-                .font(.body.weight(.semibold))
-                .focused($focus, equals: .name)
-                .limitText($name, to: TextLimit.name)
-                .submitLabel(.done)
-                .onSubmit { focus = nil }
-                .accessibilityLabel("Name")
-                .accessibilityIdentifier("name-field")
-                .frame(minHeight: 36)
+            NameField(typed: typed, placeholder: type.namePlaceholder, focus: $focus, onPause: catchUpName)
             HStack(spacing: 0) {
                 Button { focus = nil; showAppearance = true } label: {
                     HStack(spacing: 10) {
@@ -602,8 +586,7 @@ struct HabitForm: View {
                     .accessibilityIdentifier("description-field")
             }
         } footer: {
-            if let note = TextLimit.note(name, TextLimit.name) { Text(note).formNote() }
-            else if focus == .description { Text("What counts, or how to do it. Shown while you do it.").formNote() }
+            NameFooter(typed: typed, describing: focus == .description)
         }
     }
 
@@ -925,7 +908,7 @@ struct HabitForm: View {
     // MARK: Time of day, reminders
 
     /// The habit as it would be saved, so the form's sentences use the same rules as Today.
-    private var draft: Habit { makeHabit() }
+    private var draft: Habit { makeHabit(name: shownTrimmedName) }
 
     /// Tapping a time of day: the parts of the day always combine; Anytime stands alone.
     private func choose(_ id: String) {
@@ -1137,7 +1120,7 @@ struct HabitForm: View {
 
     /// What saving will do, in one line, before Save (spec §8.4).
     @ViewBuilder private var editOutcomeSection: some View {
-        if let original, let habit = edited, type != .quit {
+        if let original, let habit = edited(name: original.name), type != .quit {
             Section {} footer: {
                 Text(type == .task ? "Changes apply from today."
                      : store.editRestartsStreak(original, habit) ? "Your streak restarts. Your history stays."
@@ -1156,8 +1139,8 @@ struct HabitForm: View {
     }
 
     /// The habit as chosen. Used for the live sentences too, so the form and Today always agree.
-    private func makeHabit() -> Habit {
-        var habit = Habit(name: trimmedName, symbol: symbol, color: color, kind: .check)
+    private func makeHabit(name: String) -> Habit {
+        var habit = Habit(name: name, symbol: symbol, color: color, kind: .check)
         let cal = Calendar.current
         switch type {
         case .doIt, .amount, .time, .checklist, .cutBack:
@@ -1201,7 +1184,7 @@ struct HabitForm: View {
     private func save() {
         guard canAdd else { return }
         focus = nil
-        if let habit = edited {
+        if let habit = edited(name: trimmedName) {
             if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
             store.update(habit)
             store.setDescription(descriptionText, of: habit.id)
@@ -1210,13 +1193,83 @@ struct HabitForm: View {
             dismiss()
             return
         }
-        let habit = makeHabit()
+        let habit = makeHabit(name: trimmedName)
         // Reminders are on by default, so permission is asked when the habit is saved, not before.
         if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
         store.add(habit)
         store.setDescription(descriptionText, of: habit.id)
         if let groupID, store.groups.contains(where: { $0.id == groupID }) { store.setGroup(groupID, of: habit.id) }
         onSaved(habit.id)
+    }
+}
+
+// MARK: - Name
+
+/// The name being typed. Only the name field and its note read `text` while drawing; the form reads `isFilled` and
+/// `isChanged`, which change only when the name becomes empty or not, or returns to what was saved
+/// (PERFORMANCE.md rule 11, 1 Oct 2026).
+@Observable final class TypedName {
+    var text: String { didSet { if text != oldValue { settle() } } }
+    private(set) var isFilled: Bool
+    private(set) var isChanged = false
+    @ObservationIgnored private let saved: String
+
+    init(_ text: String) {
+        self.text = text
+        saved = TextLimit.clean(text, TextLimit.name)
+        isFilled = !saved.isEmpty
+    }
+
+    private func settle() {
+        let clean = TextLimit.clean(text, TextLimit.name)
+        if isFilled == clean.isEmpty { isFilled = !clean.isEmpty }
+        if isChanged != (clean != saved) { isChanged = clean != saved }
+    }
+}
+
+/// The name field on its own, so typing redraws only it. When typing pauses for 0.3 s it tells the form, and the
+/// previews catch up (`HabitForm.shownName`).
+private struct NameField: View {
+    let typed: TypedName
+    let placeholder: String
+    var focus: FocusState<HabitForm.Field?>.Binding
+    let onPause: () -> Void
+
+    var body: some View {
+        @Bindable var typed = typed
+        TextField(placeholder, text: $typed.text, axis: .vertical)
+            .lineLimit(1...2)
+            .font(.body.weight(.semibold))
+            .focused(focus, equals: .name)
+            .limitText($typed.text, to: TextLimit.name)
+            .submitLabel(.done)
+            .onSubmit { focus.wrappedValue = nil }
+            .accessibilityLabel("Name")
+            .accessibilityIdentifier("name-field")
+            .frame(minHeight: 36)
+            .onChange(of: typed.text) {
+                // A wrapping field puts Return into the text; treat it as Done instead.
+                if typed.text.contains("\n") {
+                    typed.text = typed.text.replacingOccurrences(of: "\n", with: "")
+                    focus.wrappedValue = nil
+                }
+            }
+            .task(id: typed.text) {
+                try? await Task.sleep(for: .milliseconds(300)) // a new letter cancels this and starts again
+                guard !Task.isCancelled else { return }
+                onPause()
+            }
+    }
+}
+
+/// Under the name: its length note at the limit, or what the description is for while it's being typed.
+private struct NameFooter: View {
+    let typed: TypedName
+    let describing: Bool
+
+    var body: some View {
+        if let note = TextLimit.note(typed.text, TextLimit.name) { Text(note).formNote() }
+        else if describing { Text("What counts, or how to do it. Shown while you do it.").formNote() }
     }
 }
 

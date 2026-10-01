@@ -224,12 +224,21 @@ enum Format {
         return h > 0 ? String(format: "%d:%02d:%02d", h, m, s) : String(format: "%d:%02d", m, s)
     }
 
+    /// One formatter per number of places, made once (PERFORMANCE.md rule 8): a new `NumberFormatter` for each
+    /// number was nearly all of a Today row's own time, and of the New Habit preview's (profile, 1 Oct 2026).
+    /// `autoupdatingCurrent` follows a change of region while the app runs.
+    private static var trimmers: [Int: NumberFormatter] = [:]
+
     private static func trimmed(_ v: Double, places: Int) -> String {
-        let f = NumberFormatter()
-        f.minimumFractionDigits = 0
-        f.maximumFractionDigits = places
-        f.usesGroupingSeparator = false
-        f.locale = .current
+        let f = trimmers[places] ?? {
+            let f = NumberFormatter()
+            f.minimumFractionDigits = 0
+            f.maximumFractionDigits = places
+            f.usesGroupingSeparator = false
+            f.locale = .autoupdatingCurrent
+            trimmers[places] = f
+            return f
+        }()
         return f.string(from: NSNumber(value: v)) ?? String(v)
     }
 

@@ -239,7 +239,9 @@ enum PerfDriver {
     /// Insert/delete through UIKit's text-input path, as a keyboard does. Replacing a Binding's
     /// string instead makes SwiftUI write text back into UIKit and measures a different path.
     private static func type(_ text: String) {
-        guard let view = frontView(), let field = focusedInput(in: view) else {
+        // Nothing focused yet (the form's own focus didn't land in one launch, 1 Oct 2026): focus the screen's first
+        // text field, as a tap on it would, so the typing is still measured.
+        guard let view = frontView(), let field = focusedInput(in: view) ?? focusFirstInput(in: view) else {
             MainThreadMeter.mark("# ERROR no focused native text input")
             return
         }
@@ -264,6 +266,20 @@ enum PerfDriver {
         if view.isFirstResponder, let field = view as? any UITextInput { return field }
         for child in view.subviews {
             if let field = focusedInput(in: child) { return field }
+        }
+        return nil
+    }
+
+    private static func focusFirstInput(in view: UIView) -> (any UITextInput)? {
+        if let field = view as? UIView & UITextInput, field.window != nil, !field.isHidden,
+           (field as? UITextField)?.isEnabled ?? (field as? UITextView)?.isEditable ?? false {
+            if field.becomeFirstResponder() {
+                MainThreadMeter.mark("# FOCUSED the first text field")
+                return field
+            }
+        }
+        for child in view.subviews {
+            if let field = focusFirstInput(in: child) { return field }
         }
         return nil
     }
