@@ -92,7 +92,7 @@ should be merged from them.
 | `claude/gracious-newton-exo5ow` | The rename, now in `main`; also inside `claude/server-and-sync` |
 | `claude/integration-check-b` | Temporary: a copy of `integration` so two halves of the tests could run at once |
 | `claude/perf-bisect-habit-page` | Scratch: the habit page with one part left out per speed scenario (`PerfBisect`). Never merge it |
-| `claude/server-and-sync` | **Safe to delete:** every commit is in `main` (third round, T3, 1 Oct) |
+| `claude/server-and-sync` | Every commit is in `main` (third round, T3, 1 Oct). The hardening session still pushes there first and moves `main` after each tested step: **safe to delete whenever it's level with `main`** (`git log main..claude/server-and-sync` prints nothing) |
 | `claude/serene-wright-mcvmrx` | Nothing beyond `main` (a session's starting branch) |
 | `integration` | Once nobody works on it: `main` is the same |
 
