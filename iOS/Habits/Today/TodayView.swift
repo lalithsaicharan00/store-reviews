@@ -140,20 +140,7 @@ struct TodayView: View {
             menu.path.append(MenuPlace.habits)
             menu.path.append(id)
         }
-        .onChange(of: router.focusSection) {
-            // A tapped notification opens today's section.
-            guard let section = router.focusSection else { return }
-            router.focusSection = nil
-            // Back to Today itself first: the menu closes and any page it opened goes. The whole day shows, so the
-            // section's habits aren't hidden by a group filter.
-            menu.reset()
-            groupRaw = ""
-            Task {
-                if day != nil && day != store.today() { day = nil; try? await Task.sleep(for: .milliseconds(50)) }
-                layout.open(section)
-                scrollTarget = Self.headerKey(section)
-            }
-        }
+        .onChange(of: router.focusSection) { focusReminderSection() }
         .alert("Something went wrong", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -164,6 +151,20 @@ struct TodayView: View {
     private var selectedDay: LocalDay { day ?? store.today() }
     /// The group Today is filtered to; nil is All (a deleted group reads as All).
     private var filterGroup: UUID? { store.existingGroup(groupRaw) }
+
+    private func focusReminderSection() {
+        guard let section = router.focusSection else { return }
+        router.focusSection = nil
+        menu.reset(); groupRaw = ""
+        Task {
+            if let shown = day, shown != store.today() {
+                day = nil
+                try? await Task.sleep(for: .milliseconds(50))
+            }
+            layout.open(section)
+            scrollTarget = Self.headerKey(section)
+        }
+    }
 
     /// Speed runs (`PerfDriver`): the same state changes the buttons make.
     private func routeWidget() {
