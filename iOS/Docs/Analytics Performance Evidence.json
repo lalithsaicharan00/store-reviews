@@ -41,5 +41,83 @@
       "off_longest_stall_ms": 56,
       "on_longest_stall_ms": 145
     }
-  ]
+  ],
+  "latest_full_run": 36911869018,
+  "followup_runs": [
+    {
+      "run": 36911869018,
+      "commit": "7b05a66",
+      "runner": "macos-26; iPhone simulator",
+      "sampling": "consent off then on, same Debug optimized build; timing without profiler, separate on profiles",
+      "result": "all measurement windows completed; global speed targets not met; one ordered comparison does not prove causal overhead",
+      "native_checks_passed": 92,
+      "targeted_ui_tests_passed": 14,
+      "debug_and_release_simulator_app_widget_builds": "passed",
+      "production_gate_enabled": false,
+      "windows": [
+        {
+          "scenario": "Today scroll",
+          "off_hitch_ms_per_second": 28.2,
+          "on_hitch_ms_per_second": 16.7,
+          "off_longest_stall_ms": 166,
+          "on_longest_stall_ms": 101
+        },
+        {
+          "scenario": "Today taps/day changes",
+          "off_hitch_ms_per_second": 89.3,
+          "on_hitch_ms_per_second": 136.6,
+          "off_longest_stall_ms": 114,
+          "on_longest_stall_ms": 246
+        },
+        {
+          "scenario": "Habit form typing",
+          "off_hitch_ms_per_second": 17.1,
+          "on_hitch_ms_per_second": 30.3,
+          "off_longest_stall_ms": 83,
+          "on_longest_stall_ms": 104
+        },
+        {
+          "scenario": "Widget durable log/publication",
+          "off_hitch_ms_per_second": 15.9,
+          "on_hitch_ms_per_second": 15.6,
+          "off_longest_stall_ms": 37,
+          "on_longest_stall_ms": 44
+        },
+        {
+          "scenario": "Widget guide scroll",
+          "off_hitch_ms_per_second": 0.0,
+          "on_hitch_ms_per_second": 0.0,
+          "off_longest_stall_ms": 0,
+          "on_longest_stall_ms": 0
+        }
+      ],
+      "open_longest_stalls_ms": {
+        "New Habit first": {
+          "off": 527,
+          "on": 434
+        },
+        "New Habit again": {
+          "off": 147,
+          "on": 223
+        },
+        "Habit form first": {
+          "off": 1195,
+          "on": 1244
+        },
+        "Habit form again": {
+          "off": 398,
+          "on": 395
+        },
+        "Widgets guide first": {
+          "off": 476,
+          "on": 568
+        },
+        "Widgets guide again": {
+          "off": 183,
+          "on": 148
+        }
+      }
+    }
+  ],
+  "interpretation": "Both runs completed valid windows. Large inter-run variation and mixed off/on differences prevent causal overhead or speed acceptance claims. No physical-device acceptance; production remains disabled."
 }

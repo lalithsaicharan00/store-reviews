@@ -113,3 +113,20 @@ Final engine review found inclusion used the new config while daily metadata rem
 ### Widget drain transaction — 01:16 IST Oct 2
 
 Final mailbox audit found a failed atomic clear could return a count that remained on disk. Draining now returns counts only after a successful durable clear. Two native checks inject a disk-full clear failure and verify the retry consumes pending counts once. Final focused Foundation/Core/Debug/Release validation covers this utility-only fix; existing full UI/performance run remains valid for unchanged views/store. Final provider read: 12 development records/12 unique IDs/6 synthetic installations, production absent; person-list returned empty. No paid products or automation created.
+
+
+### Full Release-policy verification — 01:33 IST Oct 2 / 20:03 UTC Oct 1
+
+Run [36911869018](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36911869018), 7b05a66: **92 native checks**, Core storage/migrations, Debug and Release simulator app/widget builds, all **14 UI tests**, provider smoke and five off/on timing windows passed. CI summary and step results confirm these checks; workflow artifact upload is finishing. Latest af72c61 focused job36916716569 is next, verifying the final utility-only refinements.
+
+| Window | Consent off ms/s | Consent on ms/s | Off/on longest stall |
+|---|---:|---:|---|
+| Today scroll | 28.2 | 16.7 | 166/101ms |
+| Today taps/day changes | 89.3 | 136.6 | 114/246ms |
+| Habit form typing | 17.1 | 30.3 | 83/104ms |
+| Widget durable log/publication | 15.9 | 15.6 | 37/44ms |
+| Widget guide scroll | 0.0 | 0.0 | 0/0ms |
+
+Opening stalls also miss targets: form first1195/1244ms off/on, guide first476/568ms. Both runs' exact windows/opens are preserved in machine-readable evidence. Large inter-run variation and mixed within-run directions do not prove causal telemetry overhead; no physical-device acceptance. Earlier widget-log below6ms/s was specific to 7aa5c02; the repeat exceeds that target in both modes. Production stays false. Top separate profiles report app/PerfDriver thunks, loading and widget publication rather than analytics methods; this is limited profiling evidence, not proof of no cost.
+
+Both EU dashboards refreshed again: all14 saved queries without errors/warnings; stored signal12 synthetic records, production empty and profiles0. Source JSON updated. No paid service or automation created.
