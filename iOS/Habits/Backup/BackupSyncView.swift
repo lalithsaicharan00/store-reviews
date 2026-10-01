@@ -12,6 +12,7 @@ struct BackupSyncView: View {
     @State private var sharing: URL?
     @State private var message: BackupAlert?
     @State private var confirmUndo = false
+    @State private var confirmErase = false
 
     var body: some View {
         Form {
@@ -61,6 +62,15 @@ struct BackupSyncView: View {
                 Text("Sync keeps the same habits on all your devices.")
             }
 
+            if !backup.isSignedIn {
+                Section {
+                    Button("Erase All My Data…", role: .destructive) { confirmErase = true }
+                        .accessibilityIdentifier("backup-erase")
+                } footer: {
+                    Text("Removes your habits, check-ins, notes and settings from this iPhone, with its backup copies. Copies in your iCloud and files you exported stay yours.")
+                }
+            }
+
             Section("Account") {
                 if backup.isSignedIn {
                     NavigationLink { AccountView() } label: {
@@ -82,6 +92,13 @@ struct BackupSyncView: View {
             BackupShareSheet(url: item.url)
         }
         .alert(item: $message) { Alert(title: Text($0.title), message: Text($0.text)) }
+        .confirmationDialog("Erase everything on this iPhone?", isPresented: $confirmErase, titleVisibility: .visible) {
+            Button("Export a File First") { Task { await share() } }
+            Button("Erase Everything", role: .destructive) { Task { await erase() } }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Your habits and their history can't be brought back after this, unless you have a backup or an exported file.")
+        }
         .confirmationDialog("Undo the last restore?", isPresented: $confirmUndo, titleVisibility: .visible) {
             Button("Undo Restore") { Task { await undo() } }
         } message: {
@@ -143,6 +160,15 @@ struct BackupSyncView: View {
     private func share() async {
         do { sharing = try await backup.makeFile() } catch {
             message = BackupAlert(title: "Couldn't Make the File", text: "Your habits are safe on this iPhone. Please try again.")
+        }
+    }
+
+    private func erase() async {
+        do {
+            try await backup.eraseThisDevice()
+            message = BackupAlert(title: "Erased", text: "Everything on this iPhone is gone. You're starting fresh.")
+        } catch {
+            message = BackupAlert(title: "Couldn't Erase", text: "Nothing was changed. Please try again.")
         }
     }
 

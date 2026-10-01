@@ -415,6 +415,17 @@ final class BackupCenter {
         return Date.now.addingTimeInterval(30 * 86_400)
     }
 
+    /// "Erase all my data" without an account (09 §7): this iPhone's habits and its own copies. Copies in their iCloud and
+    /// files they exported stay theirs. With an account, deleting the account (and erasing this iPhone) is the way.
+    func eraseThisDevice() async throws {
+        await store.flush()
+        try await repository.eraseAllData()
+        Self.eraseLocalCopies()
+        for key in [Key.lastGood, Key.failingSince, Key.checkFailures, Key.lastAttempt, Key.dirty, Key.notified] { defaults.removeObject(forKey: key) }
+        store.reloadAfterSync()
+        refresh()
+    }
+
     /// The daily copies (`Persistence`) and restore-undo files: with the data erased, no copy of it stays behind.
     private static func eraseLocalCopies() {
         guard let support = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else { return }

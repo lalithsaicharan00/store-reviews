@@ -31,6 +31,28 @@ final class BackupUITests: XCTestCase {
         XCTAssertTrue(shared, "The share sheet opens with the backup file")
     }
 
+    /// Without an account, "Erase All My Data" leaves the app as on first launch.
+    func testErasingEverythingWithoutAnAccount() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-uitest"]
+        app.launch()
+        XCTAssertTrue(app.buttons["Settings"].firstMatch.waitForExistence(timeout: 10))
+        XCTAssertFalse(app.staticTexts["No habits yet"].exists, "The demo habits are there to start with")
+        app.buttons["Settings"].firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["Backup & Sync"].waitForExistence(timeout: 5))
+        let erase = app.buttons["backup-erase"]
+        for _ in 0..<4 where !erase.isHittable { app.swipeUp() }
+        erase.tap()
+        let confirm = app.buttons["Erase Everything"]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 5), "It asks first, and offers an export")
+        XCTAssertTrue(app.buttons["Export a File First"].exists)
+        confirm.tap()
+        XCTAssertTrue(app.alerts["Erased"].waitForExistence(timeout: 10))
+        app.alerts["Erased"].buttons.firstMatch.tap()
+        app.buttons["Close"].firstMatch.tap()
+        XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 10), "Everything on this iPhone is gone")
+    }
+
     /// "I've used this before" is offered on the empty first screen, and opens the restore choices.
     func testTheEmptyFirstScreenOffersRestore() throws {
         let app = XCUIApplication()
