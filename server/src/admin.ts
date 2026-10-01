@@ -25,7 +25,7 @@ export async function adminRoute(request: Request, url: URL, env: Env): Promise<
   if (key === "POST /v1/admin/snapshot") {
     const body = await readJson<{ accountId?: unknown }>(request);
     const account = await existing(env, body.accountId);
-    const taken = await accountStub(env, account).snapshotNow();
+    const taken = await accountStub(env, account).snapshotNow(account.jurisdiction);
     if (!taken) throw new HttpError(404, "no_account", "That account's data is gone.");
     return json(taken);
   }

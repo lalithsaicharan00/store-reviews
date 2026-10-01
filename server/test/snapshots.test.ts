@@ -102,6 +102,20 @@ describe("the nightly snapshot", () => {
     }
   });
 
+  it("support's snapshot of an EU account that never synced a change still goes to the EU bucket", async () => {
+    const asked = vi.spyOn(env.ACCOUNT, "jurisdiction").mockImplementation(() => env.ACCOUNT);
+    try {
+      const me = await testSignIn(undefined, device(), { country: "ITA", plus: false });
+      expect((await admin("POST", "/v1/admin/snapshot", { accountId: me.json.accountId })).status).toBe(200);
+      expect((await env.BACKUPS_EU.list({ prefix: `snapshots/${me.json.accountId}/` })).objects).toHaveLength(1);
+      expect((await env.BACKUPS.list({ prefix: `snapshots/${me.json.accountId}/` })).objects).toHaveLength(0);
+      await call("POST", "/v1/account/delete", {}, me.json.accessToken);
+      expect((await env.BACKUPS_EU.list({ prefix: `snapshots/${me.json.accountId}/` })).objects).toHaveLength(0);
+    } finally {
+      asked.mockRestore();
+    }
+  });
+
   it("deleting the account deletes its snapshots and its alarm", async () => {
     const me = await testSignIn();
     await call("POST", "/v1/sync", { cursor: 0, ops: [habit(crypto.randomUUID(), "Read")] }, me.json.accessToken);

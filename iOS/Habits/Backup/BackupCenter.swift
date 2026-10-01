@@ -245,7 +245,7 @@ final class BackupCenter {
         let headers = [
             "content-type": "application/zip",
             "x-backup-sha256": file.sha256,
-            "x-backup-device-name": UIDevice.current.name.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? "iPhone",
+            "x-backup-device-name": Self.headerSafe(UIDevice.current.name),
             "x-backup-platform": SyncService.platform,
             "x-backup-app-version": SyncService.appVersion,
             "x-backup-format": String(file.format),
@@ -270,6 +270,13 @@ final class BackupCenter {
         }
         if date(Key.failingSince) == nil { setDate(Key.failingSince, .now) }
         return false
+    }
+
+    /// Percent-encodes everything but plain ASCII letters and digits (`CharacterSet.alphanumerics` also lets "é" or "中"
+    /// through, which a header can't carry), so the server's `decodeURIComponent` gets the name back exactly.
+    nonisolated static func headerSafe(_ text: String) -> String {
+        let plain = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
+        return text.addingPercentEncoding(withAllowedCharacters: plain) ?? "iPhone"
     }
 
     /// Plus: backed up = the server acknowledged everything (05 §11.2).

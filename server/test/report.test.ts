@@ -91,6 +91,20 @@ describe("the daily report", () => {
     expect(logs.some((l) => l.includes('"event":"daily_report"'))).toBe(true);
   });
 
+  it("a failing email retry never costs the day's report", async () => {
+    const logs: string[] = [];
+    vi.spyOn(console, "log").mockImplementation((line: string) => { logs.push(line); });
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const broken = { ...env, DIRECTORY: new Proxy(env.DIRECTORY, { get(target, prop) {
+      if (prop === "prepare") return (sql: string) => { if (sql.includes("purchase_email SET status = 'failed', reason = 'expired'")) throw new Error("D1 down"); return target.prepare(sql); };
+      return Reflect.get(target, prop);
+    } }) } as unknown as Env;
+    const ctx = createExecutionContext();
+    await worker.scheduled!(createScheduledController({ scheduledTime: Date.now(), cron: "0 6 * * *" }), broken, ctx);
+    await waitOnExecutionContext(ctx);
+    expect(logs.some((l) => l.includes('"event":"daily_report"'))).toBe(true);
+  });
+
   it("support can read it now, as text", async () => {
     const response = await exports.default.fetch("https://api-dev.oftenenough.com/v1/admin/report?format=text", {
       headers: { authorization: "Bearer test-admin-secret-0123456789abcdef012345" },

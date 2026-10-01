@@ -100,7 +100,9 @@ export async function processConfirmation(env: Env, store: string, originalId: s
   const purchase = (await stub.entitlements())?.purchases.find((p) => p.store === store && p.originalId === originalId);
   if (!purchase) { await finish("cancelled", "no_account"); return "cancelled:no_account"; }
   if (purchase.revokedAt !== null) { await finish("cancelled", "refunded"); return "cancelled:refunded"; }
-  const address = (await stub.summary())?.keys.find((k) => k.email)?.email;
+  const summary = await stub.summary();
+  if (!summary) { await finish("cancelled", "no_account"); return "cancelled:no_account"; } // deleted while we checked
+  const address = summary.keys.find((k) => k.email)?.email;
   if (!address) { await finish("cancelled", "no_address"); return "cancelled:no_address"; }
   const e = env as EmailEnv;
   if (!e.RESEND_API_KEY) return "waiting";

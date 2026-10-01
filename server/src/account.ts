@@ -447,8 +447,10 @@ export class Account extends DurableObject<Env> {
   }
 
   /** Support and the restore drill: a snapshot now, outside the nightly schedule. */
-  async snapshotNow(now = Date.now()): Promise<{ key: string; records: number; cursor: number } | null> {
+  async snapshotNow(jurisdiction: Jurisdiction, now = Date.now()): Promise<{ key: string; records: number; cursor: number } | null> {
     if (this.accountId === undefined) return null;
+    // From the directory: an account that never synced a change since snapshots began doesn't have it stored yet.
+    if (this.meta("jurisdiction") !== jurisdiction) this.setMeta("jurisdiction", jurisdiction);
     return this.writeSnapshot(now);
   }
 

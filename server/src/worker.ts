@@ -66,7 +66,14 @@ export default {
 
   /** The daily report (cron `0 6 * * *`, Architecture 06 §10). */
   async scheduled(controller, env, ctx): Promise<void> {
-    ctx.waitUntil(retryConfirmations(env, controller.scheduledTime).then(() => dailyReport(env, controller.scheduledTime)));
+    // Independent: a failing email retry must never cost the day's report.
+    const failed = (job: string) => (error: unknown) => console.error(JSON.stringify({ event: "cron_failed", job, error: String(error) }));
+    ctx.waitUntil(
+      retryConfirmations(env, controller.scheduledTime)
+        .catch(failed("purchase_emails"))
+        .then(() => dailyReport(env, controller.scheduledTime))
+        .catch(failed("daily_report")),
+    );
   },
 } satisfies ExportedHandler<Env>;
 
