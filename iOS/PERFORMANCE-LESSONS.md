@@ -30,6 +30,8 @@ here the same day, with its numbers.
 | L14 | **Making a tap wait for storage** | Quick taps landed on the old state while the database wrote (29–30 Sep) | Change the screen at once; the write follows; on failure reload and say so | Speed run "Today: +1" |
 | L15 | **A redraw that touches the whole screen for something small** (each row's `onAppear` updating shared state) | Every row appearing rebuilt every section of Today (30 Sep) | State that changes while scrolling lives in its own small object read only by who needs it | Profile: one screen's body during scrolling |
 | L16 | **An environment value or observed property read by every row, when only a few need it** | Pausing Today's clocks through a value every row read made every row redraw on each menu page opening (1 Oct, found reviewing the fix itself) | Read it in the smallest view that uses it (`RowClock`); a row without a clock never sees it | Review: who reads a value is who redraws when it changes |
+| L17 | **Writing to `UserDefaults` on every data change** (a "changed since the last backup" flag, set after each tap) | The Day sheet's add, edit and undo: 535 ms/s of hitches and 36 freezes, against 134 and 2 without it (same hour, same scenario, 1 Oct). Every Today row has an `@AppStorage`, and a defaults write makes them check again | Write only when the value changes (`if !flag { set }`), or keep it in memory and save it when leaving the app | Speed run "Day sheet: add, edit and exact undo"; review: no `UserDefaults.set` in `onChange` paths |
+| L18 | **The first keyboard of a launch** | Opening the entry editor (the launch's first text field) stalls 3.3–6.7 s on the hosted simulator; the habit form's first open 1.4–2.8 s; later keyboards cost a fraction (1 Oct) | Not fixed yet: measure warming the text system after launch has settled, and focusing a field only after its sheet has finished appearing | Speed runs "Entry editor", "Habit form (first)" |
 
 ## How to find a slow spot (what worked, and what misled)
 
@@ -55,4 +57,4 @@ here the same day, with its numbers.
 
 - Opening a screen stalls 0.5–1.3 s (target under 0.1 s); slow before the merge too (1 Oct).
 - Today's first scroll has one 180–440 ms freeze (1 Oct).
-- Saving an entry and opening the entry editor stall about 1 s (1 Oct).
+- Saving an entry stalls 0.6–0.8 s; opening the entry editor, the launch's first keyboard, 3–7 s on the hosted simulator (L18, 1 Oct).

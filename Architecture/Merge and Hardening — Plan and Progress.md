@@ -80,3 +80,9 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
 - **1 Oct 21:50 UTC:** `670d321`: Backup 8/8, New Habit 19/19, Progress 10/10, Habit Creation 5/6 (`testBigNumbers`:
   the test runner timed out reading the screen; passed twice on `integration`; the whole run was slow, rerun alone).
   The job hit GitHub's 60-minute limit before Today, Undo and the speed runs: now run separately (speed first).
+- **1 Oct 23:10 UTC:** speed run of `9da8d2c` against `integration`'s last: Progress first open 2818 → 746 ms, habit
+  form first open 2789 → 1441 ms (typing hitches 64 → 17 ms/s), All Habits first 1397 → 256 ms, Privacy 666 → 208 ms,
+  New Habit 630 → 304 ms. One regression from the merge, confirmed side by side in the same hour: the Day sheet's add,
+  edit and undo, 535 ms/s and 36 freezes against 134 and 2. Cause: the backup's "changed" flag written to
+  `UserDefaults` after every change; fixed (`d0a116d`): 64 ms/s, no freezes. Lesson L17. The quit page's open (1.4–2 s)
+  is the same on both. `testBigNumbers` passed alone. Today, Undo, Timer and Groups running.
