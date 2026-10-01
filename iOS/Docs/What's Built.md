@@ -35,7 +35,7 @@ This is the short list of what the iPhone app can do today. The reasons behind e
 - [x] Remind Again if not done (every 15, 30 or 60 min, up to 3 more)
 - [x] Actions in the notification: Done, "+1 glass"
 - [x] A reminder stops once the habit is done
-- [x] Native Reminders page: saved rules, item editing, permission status and recovery without an opening prompt (sidebar validation tracked in the checklist)
+- [x] Native Reminders page: saved rules, item editing, permission status and recovery without an opening prompt (sidebar: Actions build, 15 UI checks and performance probe passed; see the checklist)
 - [x] Serialized scheduling, nearest-first capacity, notification fallback for failed alarms, idempotent actions, wall-clock/DST handling and visible scheduling errors
 
 ## Today

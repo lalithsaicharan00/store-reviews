@@ -8,18 +8,39 @@ The user requested all work on the existing sidebar branch, one step at a time, 
 |---|---|---|---|
 | 1 | Free CSV export, complete backup and safe restore from Backup & Export | [x] | [x] |
 | 1a | Current edits and deleted records survive an older restore; repeating restore is harmless; old versions migrate | [x] | [x] |
-| 1b | Explain and protect free users' data across closing, offloading, reinstall and moving phones | [x] | [x] |
+| 1b | Retain local-only data through Delete App and reinstall, as originally requested | iOS platform limit | Cannot be guaranteed |
+| 1c | Explain that limit and provide free external backup/restore, including an empty installation | [x] | [x] |
 | 2 | Every created task appears in Tasks, including future, completed, repeating and archived tasks | [x] | [x] |
 | 2a | Open and edit tasks using the existing native task form; changes persist | [x] | [x] |
-| 3 | Complete the Reminders page with existing habit/task reminders and permission recovery | [ ] | [ ] |
-| 3a | Validate scheduling, suppression, edits, duplicate/grouped times, limits, tasks, pauses, archives, travel and DST | [ ] | [ ] |
-| 4 | Measure relevant screens and report real failures without treating a green measurement job as a performance sign-off | [ ] | [ ] |
+| 3 | Complete the Reminders page with existing habit/task reminders and permission recovery | [x] | [x] |
+| 3a | Validate scheduling, suppression, edits, duplicate/grouped times, limits, tasks, pauses, archives, travel and DST | [x] | [x] |
+| 4 | Measure relevant screens and report real failures without treating a green measurement job as a performance sign-off | [x] | [x] |
+
+## Final verification — 1 October 2026
+
+All implementable feature steps above are complete and pushed on `sidebar`. App implementation: `8c3cbd1`. No changes were merged from the independently developed Progress branch. Help & Feedback and About remain blank.
+
+- **Final Actions run [36794175681](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36794175681): success.** Build, all 15 UI tests (4 Reminders, 3 Backup, 3 Tasks, 3 Today, 2 timers), and the Reminders performance probe passed. The final run confirms deletion + reload, action replay after undo/relaunch, current configuration validation, failures/retries, serialized races, permission recovery, clock/DST rules, grouped alerts, nearest-first selection and timer capacity.
+- Core storage/migrations and the 2 selected calendar tests passed in [36791675200](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36791675200). Core has not changed since that run; its two failing reminder checks were corrected and passed in the final run above.
+- Latest Reminders scrolling: **4.8% main-thread busy, 0.4% redraw**. With 100 rules / 38,094 entries, planning median **222.5 ms**, cold **222.5 ms**, kept-request content construction **97.3 ms**. Only the nearest 60 requests construct their content. Reminders opened in 2.2s including XCTest overhead; that is not a physical tap-latency measurement.
+- Backup performance: **4.5% / 0.2%** busy/redraw; Tasks list latest full-run measurement **7.5% / 0.6%**, Edit Task **0.8% / 0.5%**, Today **6.1% / 0.8%**. Main-thread samples vary between shared simulator hosts; there is no observed ongoing view-redraw hotspot. The phone checks below remain outstanding.
+- Saved-rule and real-service empty-page screenshots were reviewed at iPhone 17 Pro simulator size. Broad physical responsiveness and native OS delivery are not claimed as validated.
 
 ## Platform limit: uninstall and reinstall
 
 Deleting an iOS app deletes its sandbox, including its database and local recovery snapshots. Offloading retains Documents and Data. Ordinary reinstall does not restore that data automatically, and inclusion in a device backup does not establish that the user has made a device backup. Keychain retention and App Groups cannot guarantee retention of an app's full database through uninstall. This app will not claim that they can.
 
 Free users can save a complete backup outside the app with the native share sheet and restore it without an account or purchase. Restoring is offered on an empty installation. The Backup page explains the difference before a person deletes the app. Exported copies in Files remain under the person's control; saving into the app's own folder is not protection against uninstall.
+
+## Physical validation still pending
+
+The user deferred broad app responsiveness checks. This Linux cloud session has no connected iPhone; native OS delivery below also needs a physical-device pass.
+
+- [ ] Physical scrolling/tap responsiveness and typing with the keyboard visible.
+- [ ] Actual notification/alarm sound with silent mode, Focus, Scheduled Summary and a locked phone.
+- [ ] Reboot/first unlock, permission changes, force-quit, prolonged background delivery and travel while the app remains closed. Fixed-date alarms refresh after reopening; iOS background refresh is not guaranteed.
+
+Actions exercises deterministic planning, actions, retries, capacity, ownership metadata, races and clock rules with controlled delivery services. A real-service empty-page test verifies that opening Reminders causes neither an unexpected AlarmKit error nor a permission prompt. Simulator success cannot establish native alarm sound or every OS delivery condition above.
 
 ## Research and implementation choices
 
@@ -49,19 +70,19 @@ Free users can save a complete backup outside the app with the native share shee
 
 - Tasks validation complete: [36774788090](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36774788090), build and all 3 TasksUITests passed, including real-database edit + terminate/relaunch. Edit Task measured 0.8% main-thread busy / 0.5% redraw. Relevant schedule/Today and Tasks list/Today performance checks passed on the unchanged app implementation in c3c09f2; only incorrect title assertions changed.
 
-## Reminders implementation — validation pending
+## Reminders implementation and validation
 
-Native page shows configured and disabled rules, permission status, explicit recovery and item editing. Reliability addendum: Specs/Pending to Implement.md. Controlled services exercise races, failure/retry, authorization states, action replay after undo, alarm ownership, recurrence, budgets, DST and local clocks. Planning fixture contains 100 reminders and >30,000 history entries. Latest run will also rerun backup, task, Today, timer and relevant schedule regressions. Uninstall retention and real-device OS delivery cannot be guaranteed by simulator tests.
+Native page shows configured and disabled rules, permission status, explicit recovery and item editing. Reliability addendum: Specs/Pending to Implement.md. Controlled services exercise races, failure/retry, authorization states, action replay after undo, alarm ownership, recurrence, budgets, DST and local clocks. Planning fixture contains 100 reminders and >30,000 history entries. Actions reran Backup, Tasks, Today and timers; the preceding run also passed the selected calendar regressions. Uninstall retention and real-device OS delivery cannot be guaranteed by simulator tests.
 
 - First reminder build [36777003676](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36777003676) found the new suspend Boolean is exported as KotlinBoolean; use its boolValue. No runtime checks ran on that build. Follow-up also exports repository exceptions to Swift, retains a separate storage-ready state after an open/read failure, and re-plans after a recoverable error is acknowledged. Added actual corrupt-SQLite restore and closed-database checks; dismissing the error cannot authorize clearing saved alerts.
 
-- Second reminder build [36777680943](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36777680943): storage error bridge and app code compile; the new closed-database check needed `import Core` to call close. Fixed that test import. Reminder configuration hashes now canonicalize numeric sets (weekday/month-date order) as well as reminder IDs and millisecond timestamps, with cold-load checks. Default midnight day boundaries keep the inexpensive local-day path. Native protected-data availability retries a previously blocked read. Latest complete validation pending.
+- Second reminder build [36777680943](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36777680943): storage error bridge and app code compile; the new closed-database check needed `import Core` to call close. Fixed that test import. Reminder configuration hashes now canonicalize numeric sets (weekday/month-date order) as well as reminder IDs and millisecond timestamps, with cold-load checks. Default midnight day boundaries keep the inexpensive local-day path. Native protected-data availability retries a previously blocked read. Runtime validation is recorded in the later runs below.
 
-- [36778842612](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36778842612) superseded at simulator setup to include a DST collision fix before spending build/test minutes. Distinct clock choices can resolve to one actual fire date during spring-forward; keep one base alert per item/day and preserve its follow-ups. Added that scenario to the clock golden checks. The next run covers the complete latest implementation.
+- [36778842612](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36778842612) superseded at simulator setup to include a DST collision fix before spending build/test minutes. Distinct clock choices can resolve to one actual fire date during spring-forward; keep one base alert per item/day and preserve its follow-ups. Added that scenario to the clock golden checks. The follow-up builds carry that fix.
 
 - Reminder build [36779227104](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36779227104) found the SwiftUI title-plus-footer Section overload is unavailable; use explicit header closures. No runtime checks ran. Follow-up also avoids querying AlarmKit before authorization when there are no owned alarms, with a real-service empty-page UI check for errors or unsolicited prompts.
 
-- Performance follow-up: choose the nearest request buckets before constructing notification content/configuration hashes, so a 3,000-alert plan only encodes its 60 kept requests. Added nearest-first, grouped capacity, zero-capacity and content timing checks. The existing full regression run will finish before a focused Reminders/Today/timer and Reminders-performance recheck; Core is unchanged. The later deletion/read fix below requires Backup and Tasks regression checks again.
+- Performance follow-up: choose the nearest request buckets before constructing notification content/configuration hashes, so a 3,000-alert plan only encodes its 60 kept requests. Added nearest-first, grouped capacity, zero-capacity and content timing checks. The full regression run finished before the focused follow-up. Core remained unchanged; the shared deletion/read fix below required Backup and Tasks regression checks again.
 
 - Timer capacity follow-up: reserve already-pending non-reminder alerts plus running timers that do not yet have a pending alert. Counting their maximum alone under-reserved when unrelated alerts and new timers coexist. Golden checks cover missing timer slots and avoiding double-counts once a timer alert is pending.
 
