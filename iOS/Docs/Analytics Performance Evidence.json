@@ -1,0 +1,45 @@
+{
+  "run": 36911212496,
+  "commit": "7aa5c02",
+  "runner": "macos-26; iPhone simulator",
+  "sampling": "consent off then on, same Debug optimized build; timing without profiler, separate on profiles",
+  "result": "all measurement windows completed; global speed targets not met; one ordered comparison does not prove causal overhead",
+  "production_gate_enabled": false,
+  "windows": [
+    {
+      "scenario": "Today scroll",
+      "off_hitch_ms_per_second": 15.9,
+      "on_hitch_ms_per_second": 17.2,
+      "off_longest_stall_ms": 108,
+      "on_longest_stall_ms": 137
+    },
+    {
+      "scenario": "Today taps/day changes",
+      "off_hitch_ms_per_second": 47.0,
+      "on_hitch_ms_per_second": 31.1,
+      "off_longest_stall_ms": 198,
+      "on_longest_stall_ms": 140
+    },
+    {
+      "scenario": "Habit form typing",
+      "off_hitch_ms_per_second": 31.2,
+      "on_hitch_ms_per_second": 36.6,
+      "off_longest_stall_ms": 431,
+      "on_longest_stall_ms": 509
+    },
+    {
+      "scenario": "Widget durable log/publication",
+      "off_hitch_ms_per_second": 0.6,
+      "on_hitch_ms_per_second": 1.0,
+      "off_longest_stall_ms": 22,
+      "on_longest_stall_ms": 24
+    },
+    {
+      "scenario": "Widget guide scroll",
+      "off_hitch_ms_per_second": 2.6,
+      "on_hitch_ms_per_second": 8.5,
+      "off_longest_stall_ms": 56,
+      "on_longest_stall_ms": 145
+    }
+  ]
+}

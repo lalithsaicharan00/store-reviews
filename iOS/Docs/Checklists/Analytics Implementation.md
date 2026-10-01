@@ -89,3 +89,17 @@ Latest provider read: 10 stored development rows/10 unique IDs/5 synthetic insta
 ### Reliability retry semantics — 01:05 IST Oct 2
 
 Terminal reliability outcomes now guard the operation ticket/subsystem, so duplicate callbacks do not inflate attempts or report conflicting success. A genuinely new retry ticket may recover; native tests assert all three cases. The `[ios-contract-only]` final job runs the full Foundation contract plus Core, Debug and Release builds without repeating unchanged-view UI, provider smoke or performance. Current full 7b05a66 job still verifies the UI/performance/release policy; prior 7aa5c02 run36911212496 fully passed 88 Foundation checks and all14 UI tests plus five working off/on windows. No new HabitStore/view changes accompany the reliability guard. CI summary now includes Release and baseline outcomes explicitly.
+
+## Complete same-build performance evidence
+
+Run [36911212496](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36911212496), 7aa5c02, completed successfully: 88 native checks, core tests, app/widget build, all14 UI tests, provider smoke and five valid consent-off/on windows. Timing used no profiler; on profiles were separate launches.
+
+| Window | Consent off ms/s | Consent on ms/s | Off/on longest stall |
+|---|---:|---:|---|
+| Today scroll | 15.9 | 17.2 | 108/137ms |
+| Today taps/day changes | 47.0 | 31.1 | 198/140ms |
+| Habit form typing | 31.2 | 36.6 | 431/509ms |
+| Widget durable log/publication | 0.6 | 1.0 | 22/24ms |
+| Widget guide scroll | 2.6 | 8.5 | 56/145ms |
+
+Global speed targets remain unmet in both modes. Results vary by window and one ordered run cannot establish causal overhead. Widget durable logging stays below 6ms/s with 22/24ms longest stalls. Preserve production gate false and the exact numbers; no unqualified speed acceptance or real-device claim. Machine-readable evidence: `iOS/Docs/Analytics Performance Evidence.json`. Latest full Release-policy run36911869018 and focused reliability-contract run remain pending.
