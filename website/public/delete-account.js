@@ -75,6 +75,26 @@
     }
   });
 
+  // A copy of everything first (09 §7: offer an export before deleting).
+  $("download").addEventListener("click", async () => {
+    showError("");
+    try {
+      const response = await fetch(API + "/v1/account/export", { headers: { authorization: `Bearer ${accessToken}` } });
+      if (!response.ok) return showError("Couldn't make the copy. Please try again.");
+      const blob = await response.blob();
+      const name = /filename="([^"]+)"/.exec(response.headers.get("content-disposition") || "")?.[1] || "often-enough-account.json";
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = name;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(link.href), 10000);
+    } catch {
+      showError("Couldn't reach our server. Check your connection and try again.");
+    }
+  });
+
   // Cancel leaves no session behind.
   $("cancel").addEventListener("click", async () => {
     const token = accessToken;

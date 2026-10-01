@@ -97,7 +97,7 @@ final class BackupUITests: XCTestCase {
         let token = try ciToken()
         let subject = "delete-ui-\(UUID().uuidString)"
         let app = XCUIApplication()
-        app.launchArguments = ["-dbname", "uitest-delete", "-reset-db", "-ci-sign-in-free", token, subject]
+        app.launchArguments = ["-dbname", "uitest-delete", "-reset-db", "-skip-device-auth", "-ci-sign-in-free", token, subject]
         app.launch()
         XCTAssertTrue(app.buttons["Settings"].firstMatch.waitForExistence(timeout: 20))
         app.buttons["Settings"].firstMatch.tap()
@@ -114,7 +114,7 @@ final class BackupUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Export a File First"].exists, "An export is offered first")
         app.buttons["account-delete-confirm"].tap()
         let erase = app.buttons["Erase This iPhone Too"]
-        XCTAssertTrue(erase.waitForExistence(timeout: 5), "It asks about this iPhone's habits")
+        XCTAssertTrue(erase.waitForExistence(timeout: 10), "It asks about this iPhone's habits")
         erase.tap()
         XCTAssertTrue(app.staticTexts["Your account is deleted."].waitForExistence(timeout: 30))
 

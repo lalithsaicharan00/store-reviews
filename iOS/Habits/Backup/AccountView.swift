@@ -140,6 +140,10 @@ struct DeleteAccountView: View {
 
     /// Face ID, Touch ID or the passcode. A device with no lock at all has nothing to check with, so it goes on.
     private func confirm() async {
+        #if DEBUG
+        // UI tests can't answer Face ID or a passcode (BackupUITests); real builds always ask.
+        if ProcessInfo.processInfo.arguments.contains("-skip-device-auth") { askErase = true; return }
+        #endif
         let context = LAContext()
         var error: NSError?
         if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {

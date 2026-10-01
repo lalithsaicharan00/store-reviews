@@ -257,6 +257,18 @@ export class Account extends DurableObject<Env> {
     return { ok: true, applied, rejected, ops, cursor: last ? last.seq : cursor, more: rows.length === MAX_PULL };
   }
 
+  /** Everything this object holds about the person, for `/v1/account/export` (09 §8): synced records as plain fields. */
+  async exportData(): Promise<{ summary: AccountSummary; entitlements: Entitlements; records: { table: string; row: string; fields: Record<string, string | number | boolean | null> }[] } | null> {
+    const summary = await this.summary();
+    const entitlements = await this.entitlements();
+    if (!summary || !entitlements) return null;
+    const records = this.sql
+      .exec<{ table_name: string; row_id: string; data: string }>("SELECT table_name, row_id, data FROM record ORDER BY table_name, row_id")
+      .toArray()
+      .map((r) => ({ table: r.table_name, row: r.row_id, fields: (JSON.parse(r.data) as { fields: Record<string, string | number | boolean | null> }).fields }));
+    return { summary, entitlements, records };
+  }
+
   /** For support and tests: the merged record, as the server holds it. */
   async record(table: string, row: string): Promise<unknown> {
     const data = this.sql.exec<{ data: string }>("SELECT data FROM record WHERE table_name = ? AND row_id = ?", table, row).toArray()[0]?.data;

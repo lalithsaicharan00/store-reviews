@@ -98,9 +98,10 @@ describe("the purchase confirmation", () => {
     const t = transaction();
     await verify(me.json.accessToken, t);
     await stub(me.json.accountId).setRevoked("apple", t.originalTransactionId, Date.now());
-    expect(await processConfirmation(withResend, "apple", t.originalTransactionId)).toBe("cancelled:refunded");
+    // Whichever run gets there first (this one, or the one the purchase started), the job ends cancelled.
+    await processConfirmation(withResend, "apple", t.originalTransactionId);
     expect(sent).toHaveLength(0);
-    expect((await job(t))?.reason).toBe("refunded");
+    expect(await job(t)).toMatchObject({ status: "cancelled", reason: "refunded" });
   });
 
   it("no address on the account: cancelled; account deleted first: cancelled", async () => {
@@ -108,13 +109,15 @@ describe("the purchase confirmation", () => {
     const silent = await buyer(null);
     const t1 = transaction();
     await verify(silent.json.accessToken, t1);
-    expect(await processConfirmation(withResend, "apple", t1.originalTransactionId)).toBe("cancelled:no_address");
+    await processConfirmation(withResend, "apple", t1.originalTransactionId);
+    expect(await job(t1)).toMatchObject({ status: "cancelled", reason: "no_address" });
 
     const gone = await buyer();
     const t2 = transaction();
     await verify(gone.json.accessToken, t2);
     await call("POST", "/v1/account/delete", {}, gone.json.accessToken);
-    expect(await processConfirmation(withResend, "apple", t2.originalTransactionId)).toBe("cancelled:no_account");
+    await processConfirmation(withResend, "apple", t2.originalTransactionId);
+    expect(await job(t2)).toMatchObject({ status: "cancelled", reason: "no_account" });
     expect(sent).toHaveLength(0);
   });
 

@@ -55,6 +55,7 @@ export default {
     if (origin) {
       response = new Response(response.body, response);
       response.headers.set("access-control-allow-origin", origin);
+      response.headers.set("access-control-expose-headers", "content-disposition");
       response.headers.append("vary", "Origin");
     }
     const ms = Date.now() - started;
@@ -90,6 +91,8 @@ async function route(request: Request, url: URL, env: Env, ctx: ExecutionContext
       return refresh(request, env);
     case "GET /v1/account":
       return accountSummary(request, env);
+    case "GET /v1/account/export":
+      return exportAccount(request, env);
     case "POST /v1/account/link":
       return link(request, env);
     case "POST /v1/account/unlink":
@@ -229,6 +232,27 @@ async function accountSummary(request: Request, env: Env): Promise<Response> {
   const summary = await accountStub(env, claims).summary();
   if (!summary) throw signedOut();
   return json(summary);
+}
+
+/**
+ * A copy of everything the server holds for this account (09 §8, the right of access and portability): sign-ins,
+ * devices, purchases, every synced record, and the account's backup copies (each downloadable from
+ * `/v1/backup/{device}/{slot}`). Returned as a file to save.
+ */
+async function exportAccount(request: Request, env: Env): Promise<Response> {
+  const claims = await authenticate(request, env);
+  await limit(env.SYNC_LIMIT, claims.accountId);
+  const data = await accountStub(env, claims).exportData();
+  if (!data) throw signedOut();
+  const backups = (await (await listBackups(env, claims)).json()) as { copies: unknown[] };
+  const body = { format: 1, exportedAt: new Date().toISOString(), account: data.summary, purchases: data.entitlements, records: data.records, backups: backups.copies };
+  return new Response(JSON.stringify(body, null, 2), {
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "content-disposition": `attachment; filename="often-enough-account-${new Date().toISOString().slice(0, 10)}.json"`,
+      "cache-control": "no-store",
+    },
+  });
 }
 
 async function link(request: Request, env: Env): Promise<Response> {
@@ -472,7 +496,7 @@ async function appleNotification(request: Request, env: Env): Promise<Response> 
  * The website (oftenenough.com) deletes accounts without the app (09 §7): it may call only these routes, and only from
  * the origins in `WEB_ORIGINS` (`*.` allows that host's subdomains, for Cloudflare Pages previews on dev).
  */
-const WEB_ROUTES = new Set(["/v1/auth/google", "/v1/account/delete", "/v1/account/signout"]);
+const WEB_ROUTES = new Set(["/v1/auth/google", "/v1/account/delete", "/v1/account/signout", "/v1/account/export"]);
 
 function webOrigin(request: Request, url: URL, env: Env): string | null {
   const origin = request.headers.get("origin");
@@ -487,7 +511,7 @@ function preflight(origin: string): Response {
     status: 204,
     headers: {
       "access-control-allow-origin": origin,
-      "access-control-allow-methods": "POST",
+      "access-control-allow-methods": "GET, POST",
       "access-control-allow-headers": "content-type, authorization",
       "access-control-max-age": "86400",
       vary: "Origin",

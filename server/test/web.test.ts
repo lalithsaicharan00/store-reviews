@@ -2,7 +2,7 @@ import { createExecutionContext } from "cloudflare:test";
 import { env, exports } from "cloudflare:workers";
 import { describe, expect, it } from "vitest";
 import worker from "../src/worker";
-import { device, testSignIn } from "./helpers";
+import { call, device, testSignIn } from "./helpers";
 
 /** The website deletes accounts without the app (09 §7): only its origins, and only three routes. */
 
@@ -50,5 +50,22 @@ describe("the website's calls", () => {
     expect(preview.headers.get("access-control-allow-origin")).toBeNull();
     const site = await worker.fetch(new Request("https://api.oftenenough.com/v1/account/delete", { method: "OPTIONS", headers: { origin: "https://oftenenough.com" } }), production, createExecutionContext());
     expect(site.status).toBe(204);
+  });
+
+  it("export: everything the server holds, as a file the website can download", async () => {
+    const me = await testSignIn(undefined, device({ name: "Lalith's iPhone" }));
+    const row = crypto.randomUUID();
+    await call("POST", "/v1/sync", { cursor: 0, ops: [{ id: crypto.randomUUID(), table: "habit", row, fields: { name: "Read ☕", deleted_at: null }, hlc: `${String(Date.now()).padStart(18, "0")}-00000-x`, schema: 6 }] }, me.json.accessToken);
+    const response = await fetchFrom("https://oftenenough.com", "GET", "/v1/account/export", { headers: { authorization: `Bearer ${me.json.accessToken}` } });
+    expect(response.status).toBe(200);
+    expect(response.headers.get("access-control-allow-origin")).toBe("https://oftenenough.com");
+    expect(response.headers.get("content-disposition")).toMatch(/^attachment; filename="often-enough-account-\d{4}-\d{2}-\d{2}\.json"$/);
+    const body = (await response.json()) as any;
+    expect(body.account.accountId).toBe(me.json.accountId);
+    expect(body.account.devices[0].name).toBe("Lalith's iPhone");
+    expect(body.purchases.plus).toBe(true);
+    expect(body.records).toEqual([{ table: "habit", row, fields: { name: "Read ☕", deleted_at: null } }]);
+    expect(body.backups).toEqual([]);
+    expect((await fetchFrom("https://oftenenough.com", "GET", "/v1/account/export")).status).toBe(401);
   });
 });
