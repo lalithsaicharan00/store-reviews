@@ -14,6 +14,12 @@ Standalone research and decision documents, grouped by topic.
 
 ---
 
+## Product Analytics and Reliability
+
+| Report | Author | Date | What it is |
+|---|---|---|---|
+| [Often Enough — Product Analytics and Reliability Plan](<Product Analytics and Reliability/Often Enough — Product Analytics and Reliability Plan.md>) | Codex | 1 Oct 2026 | Proposed content-free PostHog event plan across 31 branch references: feature and screen summaries, habit/task creation, onboarding, backup/account choices, widgets and platform coverage, consent limits, free-tier budget, reliability and implementation acceptance tests. No tracking code or provider settings changed. |
+
 ## Day Structure and Organization
 
 Time-of-day sections, groups, guided routines, sub-habits, ordering and notes.
