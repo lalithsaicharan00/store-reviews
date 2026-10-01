@@ -57,8 +57,9 @@ enum AnalyticsCheck {
         expect(telemetry.inspect()?.counters["habit_write_amount"] == 1, "amount separate")
         expect(telemetry.inspect()?.counters["task_write_count"] == 1, "task type")
         expect(telemetry.inspect()?.outbox.filter { $0.event == .activation }.count == 1, "one first observed activation")
+        expect(telemetry.inspect()?.counters["note_saved_count"] == 1, "durable quit-slip note adoption without text")
         store.setNote(sentinel, of: cutDown, on: store.today()); await store.flush(); telemetry.drain()
-        expect(telemetry.inspect()?.counters["note_saved_count"] == 1, "note adoption without text")
+        expect(telemetry.inspect()?.counters["note_saved_count"] == 2, "second durable note adoption without text")
         let before = telemetry.inspect()!.counters["tracking_write_count"]
         let file = try? await store.backupFile()
         if let file {
