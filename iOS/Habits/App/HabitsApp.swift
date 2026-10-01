@@ -20,10 +20,17 @@ struct HabitsApp: App {
                     }
                 }
                 .task { await model.lock.appeared() }
+                .onOpenURL { url in
+                    guard url.scheme == "oftenenough" else { return }
+                    if url.host == "item", let id = UUID(uuidString: url.lastPathComponent) { model.router.widgetItem = id }
+                }
         }
         .onChange(of: scenePhase) {
             // Re-plan on every return to the app: a new day, a changed time zone, or a changed permission.
-            if scenePhase == .active && model.store.isLoaded { model.scheduler.scheduleReconcile(model.store) }
+            if scenePhase == .active && model.store.isLoaded {
+                model.scheduler.scheduleReconcile(model.store)
+                model.widgets.schedule(model.store)
+            }
             // Taps are shown before they're written. Leaving the app, ask iOS for the time to finish every queued
             // write, so a tap made just before switching away is never lost (30 Sep).
             if scenePhase == .background { finishWrites() }
@@ -35,8 +42,10 @@ struct HabitsApp: App {
 
     @ViewBuilder private var root: some View {
             #if DEBUG
-            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-widgetcheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
+            } else if ProcessInfo.processInfo.arguments.contains("-widget-render") {
+                WidgetRenderCheck()
             } else {
                 today
             }
@@ -50,6 +59,7 @@ struct HabitsApp: App {
         save.id = UIApplication.shared.beginBackgroundTask(withName: "Save changes") { save.end() }
         Task {
             await model.store.flush()
+            await model.widgets.publish(model.store)
             save.end()
         }
     }
@@ -99,6 +109,11 @@ private struct PlacementCheckView: View {
             if !reminderMetric.isEmpty { Text(reminderMetric).accessibilityIdentifier("reminder-planning-metric") }
         }.padding().task {
             let arguments = ProcessInfo.processInfo.arguments
+            if arguments.contains("-widgetcheck") {
+                let failures = await WidgetCheck.run()
+                result = failures.isEmpty ? "Widgets: all checks passed" : "Widgets failed: " + failures.joined(separator: "; ")
+                return
+            }
             if arguments.contains("-remindercheck") {
                 let failures = await ReminderCheck.run()
                 reminderMetric = ReminderCheck.planningSummary

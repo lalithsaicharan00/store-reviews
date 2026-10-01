@@ -1,0 +1,167 @@
+#if DEBUG
+import Foundation
+import SwiftUI
+import WidgetKit
+
+/// Runs inside the actual iPhone app against the Kotlin repository, not a mock log implementation.
+enum WidgetFixture {
+    static func install(in store: HabitStore) async {
+        guard store.habits.isEmpty else { return }
+        let start = store.today().adding(days: -40, calendar: store.calendar)
+        let items = [
+            Habit(name: "Widget check", symbol: "checkmark", color: .blue, kind: .check, startsOn: start),
+            Habit(name: "Widget water", symbol: "drop", color: .blue, kind: .amount(unit: "glasses", increment: 1), goal: 8, startsOn: start),
+            Habit(name: "Widget cut down", symbol: "cup.and.saucer", color: .orange, kind: .amount(unit: "cups", increment: 1), goal: 3, atMost: true, startsOn: start),
+            Habit(name: "Widget quit", symbol: "leaf", color: .green, kind: .quit, startsOn: start),
+            Habit(name: "Widget timer", symbol: "timer", color: .blue, kind: .duration, goal: 10, startsOn: start)
+        ]
+        for item in items { store.add(item) }
+        for i in 1...24 { store.add(Habit(name: "Widget task \(i)", symbol: "checkmark", color: .blue, kind: .task, dueDay: store.today(), startsOn: start)) }
+        await store.flush()
+    }
+}
+enum WidgetCheck {
+    static func run() async -> [String] {
+        var failures: [String] = []
+        func expect(_ value: Bool, _ name: String) { if !value { failures.append(name) } }
+        let persistence = Persistence.inMemory()
+        let store = HabitStore(repository: persistence.repository)
+        await store.load(); await WidgetFixture.install(in: store)
+        let now = Date.now, day = store.today(now: now)
+        func item(_ name: String) -> Habit { store.habits.first { $0.name == name }! }
+        func row(_ name: String) -> WidgetItem { store.widgetSnapshot(now: now).frames.first!.items.first { $0.name == name }! }
+        let snapshot = store.widgetSnapshot(now: now)
+        expect(snapshot.frames.count == 7, "Seven logical days precomputed")
+        expect(snapshot.frames.first?.items.filter(\.isTask).count == 24, "All unlimited tasks survive snapshot")
+        expect(store.activeHabitCount == 5 && !store.canAddHabit, "Quit and cut down share five habit cap; tasks excluded")
+        expect(row("Widget quit").action == nil && row("Widget quit").counterStart != nil, "Quit has a counter and no destructive action")
+        expect(row("Widget timer").action == nil, "Duration opens existing controls")
+        expect(row("Widget cut down").ongoing && row("Widget cut down").status.contains("so far"), "Limit remains ongoing, no premature success")
+        expect(row("Widget task 1").history.isEmpty, "Tasks have no habit history")
+        expect(row("Widget water").history.count == 31, "Habit history bounded to 31 days")
+        let water = item("Widget water"), event = UUID(), signature = HabitStore.widgetSignature(water)
+        for _ in 0..<3 { store.logFromWidget(id: water.id, day: day, event: event, signature: signature, now: now) }
+        await store.flush()
+        expect(store.dayProgress(of: water, on: day) == 1, "Replayed rendered event logs only once")
+        let loaded = HabitStore(repository: persistence.repository); await loaded.load()
+        expect(loaded.dayProgress(of: water, on: day) == 1 && loaded.entries(of: water.id).first?.source == .widget, "Widget entry persists with source")
+        loaded.logFromWidget(id: water.id, day: day, event: event, signature: signature, now: now); await loaded.flush()
+        expect(loaded.dayProgress(of: water, on: day) == 1, "Cold repository reopen deduplicates callback")
+        store.undoEntry(event); await store.flush()
+        store.logFromWidget(id: water.id, day: day, event: event, signature: signature, now: now); await store.flush()
+        expect(store.dayProgress(of: water, on: day) == 0, "Tombstone prevents replay after undo")
+        for _ in 0..<3 { store.logFromWidget(id: water.id, day: day, event: UUID(), signature: signature, now: now) }
+        store.addProgress(water, value: 1, on: day, source: .today)
+        await store.flush()
+        expect(store.dayProgress(of: water, on: day) == 4, "Concurrent queued app/widget additions retain all entries")
+        let check = item("Widget check")
+        for _ in 0..<3 { store.logFromWidget(id: check.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(check), now: now) }
+        await store.flush()
+        expect(store.dayProgress(of: check, on: day) == 1, "Completed check does not toggle or duplicate")
+        expect(!store.widgetSnapshot(now: now).frames.first!.agenda(completed: false).contains { $0.id == check.id.uuidString }, "Remaining agenda hides completed")
+        expect(store.widgetSnapshot(now: now).frames.first!.agenda(completed: true).contains { $0.id == check.id.uuidString }, "Configured agenda keeps completed")
+        let cut = item("Widget cut down")
+        for _ in 0..<4 { store.logFromWidget(id: cut.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(cut), now: now) }
+        await store.flush()
+        expect(store.dayProgress(of: cut, on: day) == 4 && row("Widget cut down").action != nil, "Limit keeps recording above threshold")
+        let before = store.dayProgress(of: water, on: day)
+        store.logFromWidget(id: water.id, day: day.adding(days: -1), event: UUID(), signature: signature, now: now); await store.flush()
+        expect(store.dayProgress(of: water, on: day) == before && store.problem != nil, "Old-day action rejected without writing")
+        store.problem = nil
+        var edited = water; edited.name = "Renamed water"; store.update(edited); await store.flush()
+        store.logFromWidget(id: water.id, day: day, event: UUID(), signature: signature, now: now); await store.flush()
+        expect(store.dayProgress(of: edited, on: day) == before && store.problem != nil, "Edited item rejects stale configuration")
+        store.problem = nil
+        store.setSkipped(edited, on: day, true); await store.flush()
+        store.logFromWidget(id: edited.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(edited), now: now); await store.flush()
+        expect(store.dayProgress(of: edited, on: day) == before, "Skipped item cannot be revived")
+        store.problem = nil
+        UserDefaults.standard.set(true, forKey: WidgetDisk.privacyKey)
+        store.logFromWidget(id: cut.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(cut), now: now); await store.flush()
+        expect(store.dayProgress(of: cut, on: day) == 4, "Privacy disables widget logging")
+        UserDefaults.standard.removeObject(forKey: WidgetDisk.privacyKey); store.problem = nil
+        expect(store.widgetSnapshot(now: now, hidden: true).frames.allSatisfy { $0.items.isEmpty }, "Private snapshot contains no names or progress")
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("WidgetCheck-" + UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let file = directory.appendingPathComponent("snapshot.json")
+        do {
+            try WidgetDisk.write(snapshot, to: file)
+            expect(WidgetDisk.read(from: file)?.frames.first?.items.count == snapshot.frames.first?.items.count, "Atomic disk round trip")
+            try Data("{".utf8).write(to: file, options: .atomic)
+            expect(WidgetDisk.read(from: file) == nil, "Corrupt snapshot gives unavailable")
+            var future = snapshot; future.version = 999
+            expect(WidgetDisk.decode(try JSONEncoder().encode(future)) == nil, "Unknown schema rejected")
+        } catch { failures.append("Disk round trip: \(error)") }
+        expect(WidgetDisk.decode(Data(repeating: 0, count: WidgetDisk.maximumBytes + 1)) == nil, "Oversized snapshot rejected")
+        expect(snapshot.frame(at: now, timeZone: "invalid") == nil, "Travel invalidates old timezone snapshot")
+        expect(snapshot.frame(at: snapshot.frames.last!.end) == nil, "Expired outlook never carries old data")
+        let timeline = PhoneWidgetTimeline.entries(snapshot: snapshot, now: now)
+        expect(timeline.count == 8 && timeline.last?.frame == nil, "Timeline includes explicit expired state")
+        expect(zip(timeline, timeline.dropFirst()).allSatisfy { $0.date < $1.date }, "Timeline dates strictly increase")
+        for (month, date) in [(3, 8), (11, 1)] {
+            var calendar = Calendar(identifier: .gregorian); calendar.timeZone = TimeZone(identifier: "America/New_York")!
+            let dstStore = HabitStore(repository: Persistence.inMemory().repository, calendar: calendar)
+            await dstStore.load(); dstStore.settings.dayEndHour = 4
+            let dst = LocalDay(year: 2026, month: month, day: date)
+            let bounds = dstStore.dayBounds(dst)
+            expect(calendar.component(.hour, from: bounds.lowerBound) == 4 && calendar.component(.hour, from: bounds.upperBound.addingTimeInterval(1)) == 4,
+                   "04:00 wall-clock boundaries across DST \(month)")
+            expect(dstStore.today(now: bounds.lowerBound) == dst && dstStore.today(now: bounds.lowerBound.addingTimeInterval(-1)) == dst.adding(days: -1), "Custom day starts exactly at boundary \(month)")
+        }
+        let missing = HabitStore(repository: Persistence.inMemory().repository, databaseOpened: false)
+        await missing.load()
+        missing.logFromWidget(id: cut.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(cut), now: now); await missing.flush()
+        expect(missing.entries.isEmpty && !missing.isStorageReady, "Failed database open cannot log")
+        return failures
+    }
+}
+
+/// Uses exactly the views shipped in the extension; this is a rendering test, not WidgetKit host validation.
+struct WidgetRenderCheck: View {
+    @State private var frame: WidgetFrame?
+    @State private var selected: String?
+    @State private var family = WidgetFamily.systemSmall
+    @State private var layout = PhoneWidgetLayout.item
+    @State private var plus = false
+    @State private var dark = false
+    private let families: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryCircular, .accessoryRectangular]
+    var body: some View {
+        VStack(spacing: 8) {
+            ScrollView(.horizontal) {
+                HStack { ForEach(families, id: \.rawValue) { value in
+                    Button(String(describing: value)) { family = value }.accessibilityIdentifier("family-\(String(describing: value))")
+                } }
+            }
+            HStack { ForEach(PhoneWidgetLayout.allCases, id: \.rawValue) { value in Button(value.rawValue) { layout = value } } }
+            Toggle("Plus preview", isOn: $plus).accessibilityIdentifier("widget-plus")
+            Toggle("Dark preview", isOn: $dark).accessibilityIdentifier("widget-dark")
+            if let frame {
+                ScrollView(.horizontal) { HStack { ForEach(frame.items.prefix(5)) { item in
+                    Button(item.name) { selected = item.id }.accessibilityIdentifier("select-\(item.name)")
+                } } }
+                PhoneWidgetView(entry: .init(date: .now, frame: frame, plus: plus, selection: selected), layout: layout)
+                    .environment(\.widgetFamily, family)
+                    .frame(width: size.width, height: size.height)
+                    .background(Color(.secondarySystemBackground))
+                    .preferredColorScheme(dark ? .dark : .light)
+                    .accessibilityIdentifier("widget-render")
+            }
+            Spacer()
+        }.padding().task {
+            await AppModel.shared.ensureLoaded()
+            let snapshot = AppModel.shared.store.widgetSnapshot()
+            frame = snapshot.frames.first; selected = frame?.items.first?.id
+        }
+    }
+    private var size: CGSize {
+        switch family {
+        case .systemSmall: .init(width: 155, height: 155)
+        case .systemMedium: .init(width: 329, height: 155)
+        case .systemLarge: .init(width: 329, height: 345)
+        case .accessoryInline: .init(width: 230, height: 26)
+        case .accessoryCircular: .init(width: 62, height: 62)
+        default: .init(width: 160, height: 62)
+        }
+    }
+}
+#endif

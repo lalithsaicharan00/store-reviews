@@ -234,7 +234,7 @@ struct Entry: Identifiable, Codable, Hashable, Sendable {
 enum EntrySource: String, Codable, Sendable {
     case today, manual, routine, reminder, timer, daySheet
     /// Siri, Shortcuts, Spotlight or the Action button (1 Oct 2026).
-    case shortcut
+    case shortcut, widget
     var label: String {
         switch self {
         case .today: "Today"
@@ -244,6 +244,7 @@ enum EntrySource: String, Codable, Sendable {
         case .timer: "Timer"
         case .daySheet: "History"
         case .shortcut: "Siri or Shortcuts"
+        case .widget: "Widget"
         }
     }
 }

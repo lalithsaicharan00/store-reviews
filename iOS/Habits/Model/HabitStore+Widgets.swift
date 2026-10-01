@@ -1,0 +1,90 @@
+import CryptoKit
+import Foundation
+import WidgetKit
+
+extension HabitStore {
+    static func widgetSignature(_ habit: Habit) -> String {
+        let encoder = JSONEncoder(); encoder.outputFormatting = .sortedKeys
+        return (try? encoder.encode(habit)).map { SHA256.hash(data: $0).map { String(format: "%02x", $0) }.joined() } ?? ""
+    }
+
+    func widgetSnapshot(now: Date = .now, hidden: Bool = false) -> WidgetSnapshot {
+        let first = today(now: now)
+        var histories: [UUID: [WidgetDay]] = [:]
+        // At most a month per habit; tasks never get fabricated habit statistics.
+        for habit in habits where !habit.archived && habit.kind != .task && habit.kind != .quit {
+            histories[habit.id] = (-30...0).map { offset in
+                let day = first.adding(days: offset, calendar: calendar)
+                return WidgetDay(id: day.key, label: String(day.day), state: String(describing: dayMark(habit, on: day)),
+                                 value: progressValue(dayProgress(of: rule(habit, on: day), on: day), rule(habit, on: day)))
+            }
+        }
+        let frames = (0..<7).map { offset -> WidgetFrame in
+            let day = first.adding(days: offset, calendar: calendar)
+            let bounds = dayBounds(day)
+            let ordered = shortcutDay(day).map(\.habit)
+            let active = habits.filter { !$0.archived }
+            let rest = active.filter { h in !ordered.contains { $0.id == h.id } }
+            let items = (ordered + rest).map { habit -> WidgetItem in
+                let rule = rule(habit, on: day)
+                let planned = startDay(of: habit) <= day && !isPaused(habit, on: day) && !isSkipped(habit, on: day)
+                    && (habit.kind == .quit || isDue(habit, on: day, now: max(now, bounds.lowerBound)))
+                let value = progress(of: habit, on: day, now: now)
+                let done = !rule.atMost && habit.kind != .quit && isSatisfied(habit, on: day)
+                let start = habit.kind == .quit ? quitHistory(of: habit, now: now).last.flatMap { $0.endedBy == .ongoing ? $0.start : nil } : nil
+                let action: String?
+                switch rule.kind {
+                case .check, .task: action = planned && !done ? "check" : nil
+                case .amount: action = planned && (rule.atMost || !done) && rule.quickIncrement != nil ? "add" : nil
+                default: action = nil
+                }
+                let goal = dayGoal(of: rule)
+                let status: String
+                if !planned { status = isPaused(habit, on: day) ? "Paused" : "Not planned today" }
+                else if habit.kind == .quit { status = "Since last slip" }
+                else if habit.kind == .task { status = done ? "Done" : "For today" }
+                else if rule.atMost { status = "\(progressValue(value, rule)) · limit \(progressValue(goal, rule)) · so far" }
+                else if goal > 1 || rule.kind != .check { status = "\(progressValue(value, rule)) / \(progressValue(goal, rule))" }
+                else { status = done ? "Done" : "For today" }
+                return WidgetItem(id: habit.id.uuidString, name: habit.name, symbol: habit.symbol, status: status,
+                                  value: value, goal: goal, done: done, planned: planned, ongoing: rule.atMost || habit.kind == .quit,
+                                  isTask: habit.kind == .task, action: action, token: UUID().uuidString,
+                                  signature: Self.widgetSignature(habit), counterStart: start, history: histories[habit.id] ?? [])
+            }
+            return WidgetFrame(day: day.key, start: bounds.lowerBound, end: bounds.upperBound.addingTimeInterval(1), items: hidden ? [] : items)
+        }
+        return WidgetSnapshot(generated: now, timeZone: calendar.timeZone.identifier, locale: Locale.current.identifier,
+                              plus: isPlus, hidden: hidden, frames: frames)
+    }
+}
+
+/// Coalesces publication after committed changes. Cancellation never cancels database writes.
+final class WidgetPublisher {
+    private var scheduled: Task<Void, Never>?
+    private(set) var problem: String?
+    func schedule(_ store: HabitStore) {
+        scheduled?.cancel()
+        scheduled = Task {
+            try? await Task.sleep(for: .milliseconds(180))
+            guard !Task.isCancelled else { return }
+            await publish(store)
+        }
+    }
+    func publish(_ store: HabitStore) async {
+        await store.flush()
+        guard store.isLoaded, store.isStorageReady, store.problem == nil, !Task.isCancelled else { return }
+        let hidden = UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey) || AppLock.isEnabled
+        let snapshot = store.widgetSnapshot(hidden: hidden)
+        do {
+            // Detached I/O avoids encoding and file coordination on the UI thread.
+            try await WidgetSnapshotWriter.shared.write(snapshot)
+            problem = nil
+            WidgetCenter.shared.reloadAllTimelines()
+        } catch { problem = "Widgets couldn't be updated. Open the app and try again." }
+    }
+}
+
+private actor WidgetSnapshotWriter {
+    static let shared = WidgetSnapshotWriter()
+    func write(_ snapshot: WidgetSnapshot) throws { try WidgetDisk.write(snapshot) }
+}

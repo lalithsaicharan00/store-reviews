@@ -127,6 +127,8 @@ struct TodayView: View {
             router.showDay = nil
             day = shown == store.today() ? nil : shown
         }
+         .onChange(of: router.widgetItem, initial: true) { routeWidget() }
+        .onChange(of: store.isLoaded) { routeWidget() }
         .onChange(of: router.openHabit, initial: true) {
             // Siri or Shortcuts "Open a Habit": ≡ → Habits → its page, so Back works as usual. A routine in progress
             // or a new habit being written is left as it is.
@@ -162,6 +164,14 @@ struct TodayView: View {
     private var filterGroup: UUID? { store.existingGroup(groupRaw) }
 
     /// Speed runs (`PerfDriver`): the same state changes the buttons make.
+    private func routeWidget() {
+        guard store.isLoaded, routine == nil, !showNewHabit, let id = router.widgetItem else { return }
+        router.widgetItem = nil
+        guard let habit = store.habits.first(where: { $0.id == id && !$0.archived }) else { menu.reset(); return }
+        menu.reset()
+        store.dayTarget = .init(habitID: habit.id, day: store.today())
+    }
+
     private func perform(_ action: PerfAction) {
         switch action {
         case .previousDay: day = selectedDay.adding(days: -1, calendar: store.calendar)

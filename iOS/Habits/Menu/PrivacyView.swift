@@ -33,6 +33,7 @@ struct PrivacyView: View {
             guard await AppLock.authenticate(reason: on ? "Turn on the lock for Habits" : "Turn off the lock for Habits") else { return }
             AppLock.setEnabled(on)
             lockOn = on
+            await AppModel.shared.widgets.publish(AppModel.shared.store)
         }
     }
 }
