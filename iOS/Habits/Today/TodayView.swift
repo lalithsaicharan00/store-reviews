@@ -127,6 +127,15 @@ struct TodayView: View {
             router.showDay = nil
             day = shown == store.today() ? nil : shown
         }
+        .onChange(of: router.openHabit, initial: true) {
+            // Siri or Shortcuts "Open a Habit": ≡ → Habits → its page, so Back works as usual. A routine in progress
+            // or a new habit being written is left as it is.
+            guard let id = router.openHabit, routine == nil, !showNewHabit else { return }
+            router.openHabit = nil
+            menu.reset()
+            menu.path.append(MenuPlace.habits)
+            menu.path.append(id)
+        }
         .onChange(of: router.focusSection) {
             // A tapped notification opens today's section.
             guard let section = router.focusSection else { return }

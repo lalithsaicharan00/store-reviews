@@ -10,6 +10,8 @@ final class AppRouter {
     var focusSection: String?
     /// A day to open on Today, from Progress's Day sheet ("Show on Today").
     var showDay: LocalDay?
+    /// A habit page to open (Siri or Shortcuts "Open a Habit").
+    var openHabit: UUID?
 }
 
 /// The app's one store, scheduler and database. Shared, because a notification action, an alarm's
@@ -86,9 +88,12 @@ final class AppModel {
             #endif
             store.onChange = { [store, scheduler, timerPresence] in
                 scheduler.scheduleReconcile(store)
+                // Siri's phrases name each habit: refreshed when one is added, renamed or archived (cheap otherwise).
+                HabitShortcuts.habitsChanged(store)
                 Task { await timerPresence.sync(store) }
             }
             scheduler.scheduleReconcile(store)
+            HabitShortcuts.habitsChanged(store)
             // A timer left running (the app was closed, or the phone restarted) gets its Live Activity back.
             await timerPresence.sync(store)
         }
