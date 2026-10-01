@@ -59,7 +59,7 @@ struct LogHabitIntent: AppIntent {
 
     nonisolated init() {}
 
-    func perform() async throws -> some IntentResult & ReturnsValue<String> & ProvidesDialog {
+    @MainActor func perform() async throws -> some IntentResult & ReturnsValue<String> & ProvidesDialog {
         let model = AppModel.shared
         await model.ensureLoaded()
         let store = model.store
@@ -96,7 +96,7 @@ struct WhatsLeftIntent: AppIntent {
 
     nonisolated init() {}
 
-    func perform() async throws -> some IntentResult & ReturnsValue<String> & ProvidesDialog {
+    @MainActor func perform() async throws -> some IntentResult & ReturnsValue<String> & ProvidesDialog {
         let store = await HabitShortcuts.loadedStore()
         let rows = store.shortcutDay(store.today())
         // Limits are check-ins, never "still to do".
@@ -129,7 +129,7 @@ struct HabitProgressIntent: AppIntent {
 
     nonisolated init() {}
 
-    func perform() async throws -> some IntentResult & ReturnsValue<String> & ProvidesDialog {
+    @MainActor func perform() async throws -> some IntentResult & ReturnsValue<String> & ProvidesDialog {
         let store = await HabitShortcuts.loadedStore()
         guard let found = store.habits.first(where: { $0.id == habit.id }) else {
             throw HabitShortcuts.Problem.habitGone
@@ -148,7 +148,7 @@ struct OpenHabitIntent: OpenIntent {
 
     nonisolated init() {}
 
-    func perform() async throws -> some IntentResult {
+    @MainActor func perform() async throws -> some IntentResult {
         AppModel.shared.router.openHabit = target.id
         return .result()
     }
@@ -172,7 +172,7 @@ nonisolated struct HabitShortcuts: AppShortcutsProvider {
             "Check \(\.$habit) in \(.applicationName)",
         ], shortTitle: "Habit Progress", systemImageName: "chart.bar")
         AppShortcut(intent: OpenHabitIntent(), phrases: [
-            "Open \(\.$habit) in \(.applicationName)",
+            "Open \(\.$target) in \(.applicationName)",
         ], shortTitle: "Open a Habit", systemImageName: "arrow.up.forward.app")
     }
 
