@@ -9,7 +9,7 @@ Written by Claude (Claude Code), 1 October 2026. Branch: `integration` (from `an
 | M1 | Find which branches are real and which are dummies | [x] Real: `animations-and-settings`, `progress-page-research`, `sidebar`, `claude/undo-research`, `claude/habit-tracker-features-igxafl`. Already contained elsewhere: `claude/adoring-dijkstra-3rixv2`, `perf-smooth-app`. Nothing beyond `main`: `claude/vigilant-brown-kqro5t`, `perf-scrolling-and-ci`. `ci-results` is CI's own and is never merged |
 | M2 | Lose nothing | [x] Every branch tip saved as `archive/<name>-2026-10-01` on GitHub before any merge (branches, since this environment can't push tags) |
 | M3 | Merge the real branches | [x] `progress-page-research`, `sidebar` and `undo-research` merged into `integration`; every conflict resolved keeping both sides' behaviour (below) |
-| M4 | The old feature branch (29–30 Sep) | [x] Not merged whole: its Progress, Settings, backup and Undo bar were rebuilt differently since. Its 12 research reports copied; app lock, the review prompt, Siri and Shortcuts, and milestones rebuilt on the current app; its first run already existed. **The Today widget waits** (below) |
+| M4 | The old feature branch (29–30 Sep) | [x] Not merged whole: its Progress, Settings, backup and Undo bar were rebuilt differently since. Its 12 research reports copied; app lock, the review prompt, Siri and Shortcuts, and milestones rebuilt on the current app; its first run already existed. **Widgets are implemented separately on `codex/iphone-widgets`; device provisioning still waits** (below) |
 | M5 | Test before touching `main` | [ ] Running on GitHub (results below) |
 | M6 | Move `main` and delete merged branches | [ ] After the tests, with the user |
 
@@ -27,7 +27,7 @@ Written by Claude (Claude Code), 1 October 2026. Branch: `integration` (from `an
 
 ## Not done, and why
 
-- **Today widget:** needs an App Group on the app and its widget extension, in the Apple Developer account and Xcode. Without it registered, Xcode can refuse to install the app on the phone. Another session is renaming the app (`com.oftenenough.app`), and the group's name must match. Research: `Research/Research Reports/Home Screen and Visual Design/Widgets — Tick Without Opening the App.md`.
+- **Widgets — update by Codex, 1 Oct 2026:** the separate `codex/iphone-widgets` branch now contains Home/Lock widgets and matching App Group entitlements. See [widget integration and release checks](<../iPhone Widgets.md>) for macOS results and unverified device checks. The original provisioning requirement remains: a widget needs an App Group on the app and its widget extension, in the Apple Developer account and Xcode. Without it registered, Xcode can refuse to install the app on the phone. Another session is renaming the app (`com.oftenenough.app`), and the group's name must match. Research: `Research/Research Reports/Home Screen and Visual Design/Widgets — Tick Without Opening the App.md`.
 - **Old tests that predate the merge:** `FocusPlayerUITests` (8 of 12), `RoutineCalendarUITests` (4 of 7), `GoalFlowUITests` (2 of 6) and one `ScheduleUITests` fail the same way on the pre-merge branch (`archive/animations-and-settings-2026-10-01`, run of 1 Oct 06:09): written for the old routine player and form.
 
 ## Results (GitHub, 1 Oct 2026)
