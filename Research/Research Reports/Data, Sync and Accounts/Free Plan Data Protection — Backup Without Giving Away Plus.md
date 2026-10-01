@@ -1,5 +1,7 @@
 # Free Plan Data Protection — Backup Without Giving Away Plus
 
+> **Superseded in part (1 Oct 2026):** the recommendation in §4 (an encrypted copy on our server without an account) was dropped: without an account, nothing goes to our server. The design that replaces it is [Backup, Sync and Accounts — One Seamless Experience](<Backup, Sync and Accounts — One Seamless Experience.md>). The evidence in §2–§3 still stands.
+
 *Written by Claude (Claude Code), 1 Oct 2026. Research, not a decision. It revisits the 27 Sep 2026 choice "free = local only, no off-phone backup" ([Architecture 03 §6](<../../../Architecture/03. Backup and Restore.md>), [Backlog](<../../../Architecture/Backlog.md>)).*
 
 **The user's question (1 Oct):**

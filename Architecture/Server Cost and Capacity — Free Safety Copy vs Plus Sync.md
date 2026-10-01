@@ -1,5 +1,7 @@
 # Server Cost and Capacity — Free Safety Copy vs Plus Sync
 
+> **Updated 1 Oct 2026:** the anonymous free "safety copy" was dropped ([Backup, Sync and Accounts — One Seamless Experience](<../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>)). The free lane below now serves **free accounts only**: nightly backup to R2 for people who chose an account. Users without an account cost us nothing. The prices and the Plus lane are unchanged.
+
 *Written by Claude (Claude Code), 1 Oct 2026. A plan, not a decision. It prices two things on Cloudflare: the free "safety copy" proposed in [Free Plan Data Protection](<../Research/Research Reports/Data, Sync and Accounts/Free Plan Data Protection — Backup Without Giving Away Plus.md>), and Plus sync as it is being built on branch `claude/server-and-sync` (commit `7a2f9d3`). Prices are from Cloudflare's docs on 1 Oct 2026.*
 
 **The user's ask (1 Oct):** How much will it cost, and how many free users can we handle? Paid users need sync, so they should get more requests. Free users should use very few resources. The data must stay safe.
