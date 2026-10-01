@@ -63,6 +63,7 @@ struct RemindersView: View {
                     .foregroundStyle(.secondary)
             }
         }
+        .analyticsScreen(.reminders)
         .navigationTitle("Reminders").navigationBarTitleDisplayMode(.inline)
         .toolbar { if loading { ToolbarItem(placement: .topBarTrailing) { ProgressView() } } }
         .sheet(item: $editing, onDismiss: { Task { await refresh() } }) { EditHabitSheet(habit: $0) }

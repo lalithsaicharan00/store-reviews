@@ -60,6 +60,7 @@ struct TodayView: View {
             }
             .toolbar { if !covered { topBar } }
             // Every place in the ≡ menu is pushed here, so Back and the edge swipe return to Today.
+            .analyticsScreen(.today)
             .navigationDestination(for: MenuPlace.self) { MenuPage(place: $0) }
             .toolbar { if !covered && store.isLoaded && !store.habits.isEmpty { dayBar } }
             .sheet(isPresented: $showCalendar) {

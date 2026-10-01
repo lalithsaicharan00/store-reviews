@@ -5,6 +5,9 @@ import SwiftUI
 /// (or the passcode) works here, so it can never lock someone out.
 struct PrivacyView: View {
     @State private var lockOn = AppLock.isEnabled
+    @State private var usageOn = Analytics.shared.consented
+    // Consent remains separate; no crash collector is present in this consolidated app.
+    @State private var crashOn = UserDefaults.standard.bool(forKey: "privacy.crashConsent")
 
     var body: some View {
         Form {
@@ -16,12 +19,26 @@ struct PrivacyView: View {
             } footer: {
                 Text(footer)
             }
+            Section("Help Improve Often Enough") {
+                Toggle("Share Usage", isOn: $usageOn)
+                    .accessibilityIdentifier("privacy-usage")
+                    .onChange(of: usageOn) {
+                        Analytics.shared.setConsent(usageOn)
+                        if usageOn { AnalyticsInteractionObserver.install() }
+                    }
+                Toggle("Share Crash Diagnostics", isOn: $crashOn)
+                    .disabled(true)
+                    .accessibilityIdentifier("privacy-crashes")
+            } footer: {
+                Text("Usage sharing is optional. It sends feature counts and estimated screen time with a random installation identifier. Habit and task names, notes, goals, logged values and account details are never sent. Turning it off deletes pending usage data. Crash sharing is separate and is not available yet.")
+            }
         }
+        .analyticsScreen(.privacy)
         .navigationTitle("Privacy")
     }
 
     private var footer: String {
-        let base = "No account, no ads and no tracking. Nothing leaves your phone unless you share it."
+        let base = "Your habit content stays on this phone unless you share it. Usage sharing is optional."
         if lockOn {
             return base + " Habits asks for \(AppLock.methodName), or your iPhone passcode, each time you open it."
         }

@@ -25,6 +25,7 @@ struct DaySettings: Codable, Hashable, Sendable {
 @Observable
 final class HabitStore {
     @ObservationIgnored private let repository: HabitRepository
+    @ObservationIgnored let analytics: Analytics
     @ObservationIgnored private var writeQueue: Task<Void, Never>?
     /// Tried once per launch, so a failing write can't loop through reloads.
     @ObservationIgnored private var triedPlacementUpgrade = false
@@ -37,8 +38,9 @@ final class HabitStore {
     var problem: String?
 
     @ObservationIgnored private let suppliedCalendar: Calendar?
-    init(repository: HabitRepository, calendar: Calendar? = nil, databaseOpened: Bool = true) {
+    init(repository: HabitRepository, calendar: Calendar? = nil, databaseOpened: Bool = true, analytics: Analytics = .shared) {
         self.repository = repository
+        self.analytics = analytics
         suppliedCalendar = calendar
         self.databaseOpened = databaseOpened
         // A new time zone or region can change the calendar, and with it every day and week.
@@ -518,7 +520,7 @@ final class HabitStore {
         }
         if let last = cleaned.indices.last, !cleaned[last].isAnytime, cleaned[last].end == nil { cleaned[last].end = 24 * 60 }
         let removed = Set(sections.map(\.id)).subtracting(cleaned.map(\.id))
-        perform { [self] in
+        perform { [self] telemetry in
             let json = String(decoding: try JSONEncoder().encode(cleaned), as: UTF8.self)
             try await repository.saveSetting(key: Keys.sections, value: json)
             for i in habits.indices where !removed.isDisjoint(with: habits[i].parts) {
@@ -622,7 +624,7 @@ final class HabitStore {
         if skipped { days.insert(day) } else { days.remove(day) }
         withAnimation { skips[habit.id] = days.isEmpty ? nil : days }
         let value = days.map(\.key).sorted().joined(separator: ",")
-        perform { [self] in
+        perform { [self] telemetry in
             try await repository.saveSetting(key: Keys.skipPrefix + habit.id.uuidString, value: value)
         }
     }
@@ -662,7 +664,7 @@ final class HabitStore {
         }
         list.removeAll { p in habit.kind != .quit && p.through.map { $0 < p.from } == true }
         list.append(HabitPause(from: from, through: through, pausedAt: now))
-        savePauses(list, of: habit)
+        savePauses(list, of: habit, counter: .paused)
     }
 
     /// Turns the habit back on today: a pause running now ends yesterday, one still to come is dropped. Nothing is
@@ -677,14 +679,15 @@ final class HabitStore {
         }
         // A pause that began and ended today leaves nothing behind, except a quit habit's run boundary.
         list.removeAll { p in habit.kind != .quit && p.through.map { $0 < p.from } == true }
-        savePauses(list, of: habit)
+        savePauses(list, of: habit, counter: .resumed)
     }
 
-    private func savePauses(_ list: [HabitPause], of habit: Habit) {
-        perform { [self] in
+    private func savePauses(_ list: [HabitPause], of habit: Habit, counter: AnalyticsCounter) {
+        perform { [self] telemetry in
             let json = String(decoding: try JSONEncoder().encode(list), as: UTF8.self)
             try await repository.saveSetting(key: Keys.pausePrefix + habit.id.uuidString, value: json)
             withAnimation { pauses[habit.id] = list.isEmpty ? nil : list }
+            analytics.count(counter, ticket: telemetry)
         }
     }
 
@@ -715,7 +718,7 @@ final class HabitStore {
         guard hour != settings.dayEndHour else { return }
         settings.dayEndHour = hour
         progressScores = [:]
-        perform { [repository] in
+        perform { [repository] _ in
             if hour == 0 { try await repository.removeSetting(key: Keys.dayEndHour) }
             else { try await repository.saveSetting(key: Keys.dayEndHour, value: String(hour)) }
         }
@@ -730,7 +733,7 @@ final class HabitStore {
         settings.weekStart = resolved
         settings.weekStartChosen = chosen != nil
         progressScores = [:]
-        perform { [repository] in
+        perform { [repository] _ in
             if let chosen { try await repository.saveSetting(key: Keys.weekStart, value: String(chosen)) }
             else { try await repository.removeSetting(key: Keys.weekStart) }
         }
@@ -1035,8 +1038,9 @@ final class HabitStore {
         let moment = min(moment, clock())
         let day = today(now: moment)
         let entry = Entry(habitID: habit.id, day: day, value: 1, createdAt: moment)
-        perform { [self] in
+        perform { [self] telemetry in
             try await repository.addEntry(entry: entry.record)
+            analyticsTracked(entry, ticket: telemetry)
             withAnimation { insertEntry(entry) }
         }
         let note = TextLimit.clean(note, TextLimit.noteText)
@@ -1050,7 +1054,7 @@ final class HabitStore {
     /// Sets (or, with nil, clears) what a quit habit cost a day.
     func setCost(_ cost: HabitCost?, of habit: Habit) {
         let key = Keys.costPrefix + habit.id.uuidString
-        perform { [self] in
+        perform { [self] telemetry in
             if let cost, cost.amount > 0 {
                 let json = String(decoding: try JSONEncoder().encode(cost), as: UTF8.self)
                 try await repository.saveSetting(key: key, value: json)
@@ -1069,25 +1073,27 @@ final class HabitStore {
         var group = group
         group.name = TextLimit.clean(group.name, TextLimit.group)
         guard !group.name.isEmpty else { return }
-        perform { [self] in
+        perform { [self] telemetry in
+            let newGroup = !groups.contains { $0.id == group.id }
             let members = Set(group.habits)
             var list = groups
             for i in list.indices where list[i].id != group.id { list[i].habits.removeAll { members.contains($0) } }
             if let i = list.firstIndex(where: { $0.id == group.id }) { list[i] = group } else { list.append(group) }
             try await storeGroups(list, manual: groupsManual)
+            if newGroup { analytics.count(.groupCreated, ticket: telemetry) }
         }
     }
 
     /// Deletes a group. Its habits stay, with no group, and keep all their history.
     func deleteGroup(_ id: UUID) {
-        perform { [self] in
+        perform { [self] telemetry in
             try await storeGroups(groups.filter { $0.id != id }, manual: groupsManual)
         }
     }
 
     /// Puts a habit in a group, or in none; it leaves the group it was in.
     func setGroup(_ groupID: UUID?, of habitID: UUID) {
-        perform { [self] in
+        perform { [self] telemetry in
             guard groupOf[habitID] != groupID else { return }
             var list = groups
             for i in list.indices {
@@ -1095,6 +1101,7 @@ final class HabitStore {
                 if list[i].id == groupID { list[i].habits.append(habitID) }
             }
             try await storeGroups(list, manual: groupsManual)
+            analytics.count(.groupAssigned, ticket: telemetry)
         }
     }
 
@@ -1102,12 +1109,12 @@ final class HabitStore {
     func moveGroups(from: IndexSet, to: Int) {
         var list = groups
         list.move(fromOffsets: from, toOffset: to)
-        perform { [self] in try await storeGroups(list, manual: true) }
+        perform { [self] telemetry in try await storeGroups(list, manual: true) }
     }
 
     /// Back to A to Z.
     func sortGroupsAZ() {
-        perform { [self] in try await storeGroups(groups, manual: false) }
+        perform { [self] telemetry in try await storeGroups(groups, manual: false) }
     }
 
     /// Writes the groups and shows them: A to Z unless the order is the person's own, each habit in one group only.
@@ -1296,7 +1303,7 @@ final class HabitStore {
     /// Once: development builds briefly let times place habits, and turned a habit in several times
     /// of day into one with a silent time in each. Put those back in their times of day.
     private func repairPlacement() {
-        perform { [self] in
+        perform { [self] telemetry in
             for i in habits.indices where !habits[i].remind && habits[i].reminders.count >= 2 && habits[i].parts.count == 1 {
                 var seen = Set<String>()
                 let parts = habits[i].reminders.map { section(forMinute: $0.minuteOfDay).id }.filter { seen.insert($0).inserted }
@@ -1426,7 +1433,8 @@ final class HabitStore {
 
     /// Runs database writes one at a time, in the order they were made. A logging tap has already changed memory
     /// (`addLogged`, `removeLogged`); other changes write first and update memory after.
-    private func perform(_ change: @escaping @MainActor () async throws -> Void) {
+    private func perform(_ change: @escaping @MainActor (AnalyticsTicket?) async throws -> Void) {
+        let telemetryTicket = analytics.ticket
         let previous = writeQueue
         pendingWrites += 1
         writeQueue = Task { @MainActor in
@@ -1444,10 +1452,12 @@ final class HabitStore {
                 return
             }
             do {
-                try await change()
+                try await change(telemetryTicket)
+                analytics.reliability("storage", succeeded: true, ticket: telemetryTicket)
                 dataVersion &+= 1
                 onChange?()
             } catch {
+                analytics.reliability("storage", succeeded: false, ticket: telemetryTicket)
                 problem = "That change couldn't be saved, so it was undone. Please try again."
                 reloadWhenWritten = true
             }
@@ -1468,11 +1478,13 @@ final class HabitStore {
     /// Waits for every pending change to reach the database.
     func flush() async { await writeQueue?.value }
 
-    func add(_ habit: Habit) {
-        perform { [self] in
+    func add(_ habit: Habit, suggestion: Bool = false) {
+        perform { [self] telemetry in
+            guard !habits.contains(where: { $0.id == habit.id }) else { return }
             try await repository.saveHabit(habit: habit.record(position: habits.count), steps: habit.stepRecords(),
                                            reminders: habit.reminderRecords(), at: Date.now.millis)
             withAnimation { habits.append(habit) }
+            analytics.created(habit.analyticsType, suggestion: suggestion, ticket: telemetry)
         }
     }
 
@@ -1482,7 +1494,7 @@ final class HabitStore {
     /// archive, and lose everything). An archived habit frees its free slot (C219). A running timer is saved first.
     func archive(_ list: [Habit]) {
         for habit in list where timers[habit.id] != nil { stopTimer(habit, on: today()) }
-        perform { [self] in
+        perform { [self] telemetry in
             let day = today()
             for habit in list {
                 guard let i = habits.firstIndex(where: { $0.id == habit.id }), !habits[i].archived else { continue }
@@ -1496,6 +1508,7 @@ final class HabitStore {
                     archivedOn[h.id] = day
                     habits[i] = h
                 }
+                analytics.count(.archived, ticket: telemetry)
             }
         }
     }
@@ -1504,7 +1517,7 @@ final class HabitStore {
     @discardableResult
     func restore(_ habit: Habit) -> Bool {
         guard habit.kind == .task || canAddHabit else { return false }
-        perform { [self] in
+        perform { [self] telemetry in
             guard let i = habits.firstIndex(where: { $0.id == habit.id }) else { return }
             var h = habits[i]
             h.archived = false
@@ -1534,12 +1547,13 @@ final class HabitStore {
     /// bring it back); nothing of it shows again.
     func delete(_ list: [Habit]) {
         for habit in list where timers[habit.id] != nil { stopTimer(habit, on: today()) }
-        perform { [self] in
+        perform { [self] telemetry in
             for habit in list {
                 guard let i = habits.firstIndex(where: { $0.id == habit.id }) else { continue }
                 try await repository.saveHabit(habit: habits[i].record(position: i, deleted: true), steps: [],
                                                reminders: [], at: Date.now.millis)
                 withAnimation {
+                    analytics.count(habit.kind == .task ? .taskDeleted : .deleted, ticket: telemetry)
                     habits.remove(at: i)
                     for i in entries.indices.reversed() where entries[i].habitID == habit.id { removeEntry(at: i) }
                     habitNotes.removeValue(forKey: habit.id)
@@ -1556,7 +1570,7 @@ final class HabitStore {
 
     /// Puts `ids` (one group in All Habits) in this order, keeping every other habit where it is. Today follows it.
     func reorder(_ ids: [UUID]) {
-        perform { [self] in
+        perform { [self] telemetry in
             let slots = habits.indices.filter { ids.contains(habits[$0].id) }
             var next = habits
             for (slot, id) in zip(slots, ids) { if let h = habits.first(where: { $0.id == id }) { next[slot] = h } }
@@ -1565,6 +1579,7 @@ final class HabitStore {
                                                reminders: next[i].reminderRecords(), at: Date.now.millis)
             }
             withAnimation { habits = next }
+            analytics.count(.reorder, ticket: telemetry)
         }
     }
 
@@ -1709,19 +1724,21 @@ final class HabitStore {
     func setNote(_ text: String, of habit: Habit, on day: LocalDay) {
         let text = TextLimit.clean(text, TextLimit.noteText)
         let key = Keys.notePrefix + habit.id.uuidString + "|" + day.key
-        perform { [self] in
+        perform { [self] telemetry in
             // Keep an empty value so restoring an older backup cannot resurrect this removed note.
             try await repository.saveSetting(key: key, value: text)
             habitNotes[habit.id, default: [:]][day] = text.isEmpty ? nil : text
+            analytics.count(.noteSaved, ticket: telemetry)
         }
     }
 
     func setDayNote(_ text: String, on day: LocalDay) {
         let text = TextLimit.clean(text, TextLimit.noteText)
         let key = Keys.dayNotePrefix + day.key
-        perform { [self] in
+        perform { [self] telemetry in
             try await repository.saveSetting(key: key, value: text)
             dayNotes[day] = text.isEmpty ? nil : text
+            analytics.count(.noteSaved, ticket: telemetry)
         }
     }
 
@@ -1729,9 +1746,10 @@ final class HabitStore {
         let text = TextLimit.clean(text, TextLimit.descriptionText)
         guard text != (descriptions[id] ?? "") else { return }
         let key = Keys.descriptionPrefix + id.uuidString
-        perform { [self] in
+        perform { [self] telemetry in
             try await repository.saveSetting(key: key, value: text)
             descriptions[id] = text.isEmpty ? nil : text
+            analytics.count(.noteSaved, ticket: telemetry)
         }
     }
 
@@ -1741,7 +1759,7 @@ final class HabitStore {
     /// checklist steps), the rule it had is kept for every day before today, so past days keep their result.
     /// Editing twice in a day keeps the rule from before today.
     func update(_ habit: Habit) {
-        perform { [self] in
+        perform { [self] telemetry in
             guard let i = habits.firstIndex(where: { $0.id == habit.id }) else { return }
             let old = habits[i]
             let yesterday = today().adding(days: -1, calendar: calendar)
@@ -1758,6 +1776,9 @@ final class HabitStore {
                 rules[habit.id] = list
             }
             habits[i] = habit
+            if old.frequency != habit.frequency { analytics.count(.scheduleEdited, ticket: telemetry) }
+            if old.goal != habit.goal || old.atMost != habit.atMost { analytics.count(.goalEdited, ticket: telemetry) }
+            if old.reminders != habit.reminders || old.remind != habit.remind { analytics.count(.reminderEdited, ticket: telemetry) }
         }
     }
 
@@ -1839,7 +1860,7 @@ final class HabitStore {
     /// include tombstones, so duplicate callbacks and retrying after undo are both harmless.
     func logFromReminder(_ habit: Habit, slot: String?, on day: LocalDay, time: UUID? = nil,
                          signature: String? = nil, eventID: UUID? = nil, now: Date = .now) {
-        perform { [self] in
+        perform { [self] telemetry in
             let target = ReminderTarget(habit: habit.id, time: time, day: day, slot: slot, section: nil, signature: signature)
             guard canActOnReminder(target, now: now), let habit = habits.first(where: { $0.id == habit.id }) else { return }
             let id = eventID ?? UUID()
@@ -1855,6 +1876,7 @@ final class HabitStore {
             }
             let entry = Entry(id: id, habitID: habit.id, day: day, value: value, createdAt: now, slot: slot, source: .reminder)
             try await repository.addEntry(entry: entry.record)
+            analyticsTracked(entry, ticket: telemetry)
             withAnimation { insertEntry(entry) }
         }
     }
@@ -1891,7 +1913,10 @@ final class HabitStore {
         timerSlots[habit.id] = slot
         let key = Keys.timerPrefix + habit.id.uuidString
         let value = String(now.millis) + (slot.map { "|" + $0 } ?? "")
-        perform { [self] in try await repository.saveSetting(key: key, value: value) }
+        perform { [self] telemetry in
+            try await repository.saveSetting(key: key, value: value)
+            analytics.count(.timerStarted, ticket: telemetry)
+        }
     }
 
     /// An explicit stop is idempotent: navigating/closing cannot accidentally start a timer.
@@ -1906,13 +1931,19 @@ final class HabitStore {
         timers.removeValue(forKey: habit.id)
         timerSlots.removeValue(forKey: habit.id)
         let key = Keys.timerPrefix + habit.id.uuidString
-        perform { [self] in try await repository.finishTimer(entry: entry?.record, key: key) }
+        perform { [self] telemetry in
+            try await repository.finishTimer(entry: entry?.record, key: key)
+            analytics.count(.timerStopped, ticket: telemetry)
+            if let entry { analyticsTracked(entry, ticket: telemetry) }
+        }
     }
 
     /// Written-first logging, for changes made away from the screen (a notification's Done).
     private func logWritten(_ habit: Habit, value: Double, on day: LocalDay) async throws {
+        let telemetry = analytics.ticket
         let entry = Entry(habitID: habit.id, day: day, value: value, source: .reminder)
         try await repository.addEntry(entry: entry.record)
+            analyticsTracked(entry, ticket: telemetry)
         withAnimation { insertEntry(entry) }
     }
 
@@ -1954,20 +1985,26 @@ final class HabitStore {
         if let mark = milestoneOffer, UIAccessibility.isVoiceOverRunning {
             AccessibilityNotification.Announcement(mark.text).post()
         }
-        perform { [self] in
+        perform { [self] telemetry in
             #if DEBUG
             // PersistenceUITests: a write that fails must take the tap back off the screen.
             if ProcessInfo.processInfo.arguments.contains("-fail-entry-writes") { throw CancellationError() }
             #endif
             try await repository.addEntry(entry: entry.record)
+            analyticsTracked(entry, ticket: telemetry)
         }
     }
 
     /// Undoing a tap: gone from the screen now, the removal written next in the queue.
     private func removeLogged(at index: Int) {
         let id = entries[index].id
+        let task = habits.first { $0.id == entries[index].habitID }?.kind == .task
         withAnimation { removeEntry(at: index) }
-        perform { [self] in try await repository.removeEntry(id: id.uuidString, at: Date.now.millis) }
+        perform { [self] telemetry in
+            try await repository.removeEntry(id: id.uuidString, at: Date.now.millis)
+            analytics.count(.undo, ticket: telemetry)
+            if task { analytics.count(.taskReopened, ticket: telemetry) }
+        }
     }
 
     private func offerUndo(_ entry: Entry) {
@@ -1994,8 +2031,9 @@ final class HabitStore {
         }
         replaceEntry(entry, at: index)
         let updated = entry
-        perform { [self] in
+        perform { [self] telemetry in
             try await repository.editEntry(id: updated.id.uuidString, value: updated.value, createdAt: updated.createdAt.millis)
+            analytics.count(.editEntry, ticket: telemetry)
         }
     }
 
@@ -2097,7 +2135,7 @@ final class HabitStore {
             Habit(name: "Yoga", symbol: "figure.yoga", color: .purple, kind: .duration, goal: 20, frequency: .flexible(.week, 3), remind: false),
         ]
         for habit in types { add(habit) }
-        perform { [self] in try await repository.saveSetting(key: key, value: "1") }
+        perform { [self] telemetry in try await repository.saveSetting(key: key, value: "1") }
         await flush()
     }
 

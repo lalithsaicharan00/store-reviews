@@ -139,6 +139,7 @@ struct RoutinePlayer: View {
         // A keyboard left open in the New Habit form reserved a blank band at the bottom and pushed the controls
         // up (found by the user on the iPhone, 29 Sep).
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .analyticsScreen(.routinePlayer)
         .accessibilityIdentifier("routine-player")
         .interactiveDismissDisabled()
         .task {

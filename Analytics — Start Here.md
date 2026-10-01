@@ -22,3 +22,9 @@ Only documentation has been added: analytics tracking is not implemented and Pos
 Continue analytics implementation on **this `analytics` branch**. First update it from the consolidated app after the integration, server/sync, onboarding and widget work is merged by their owners. Recheck the report's pinned branch snapshot against current source; branches have advanced since the research audit, including the backup/account client implementation.
 
 Use the report as a proposed contract, verify the actual PostHog project and consent configuration, then implement and validate the content-free tracking described there.
+
+## Active implementation handoff (1 October 2026)
+
+Read [Analytics Implementation checklist](<iOS/Docs/Checklists/Analytics Implementation.md>) for progress, dependencies and test/PR evidence. Task is **in progress**, not completed. Prompt receipt: 2026-10-01 16:04:41 UTC / 21:34:41 IST. Scheduling tools cannot verify a same-Codex-chat/workspace wake; no automation was created. Do not replace this with a generic reminder or create a parallel coding run.
+
+The analytics branch now contains only a merge from consolidated integration at `873265d71485574063ba934d6f1b5e92b392d77f`; feature-owner branches have not been independently merged. Successful provider reads established EU project 290602 and no recently observed events. Billing access is blocked by missing `billing:read`; sending remains gated until free allowance and zero-spend settings are verified. No credentials are in this handoff.

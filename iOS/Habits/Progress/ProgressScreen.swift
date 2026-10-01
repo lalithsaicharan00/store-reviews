@@ -47,6 +47,7 @@ struct ProgressScreen: View {
                 Color(.systemGroupedBackground).ignoresSafeArea()
             }
         }
+        .analyticsScreen(.progress)
         .navigationTitle("Progress")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

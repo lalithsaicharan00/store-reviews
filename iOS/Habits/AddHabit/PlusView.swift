@@ -33,6 +33,7 @@ struct PlusView: View {
                 }
             }
         .padding(24)
+        .analyticsScreen(.plus)
         .navigationTitle("Plus")
         .navigationBarTitleDisplayMode(.inline)
     }

@@ -53,6 +53,7 @@ struct DaySheet: View {
                 }
             }
             .navigationDestination(item: $perfEntry) { EntryEditView(habit: habit, entry: $0) }
+            .analyticsScreen(.historyDay)
             .navigationTitle(NoteSheet.dayText(day, today: store.today(), calendar: store.calendar) + " · " + current.name)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }

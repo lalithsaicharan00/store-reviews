@@ -123,6 +123,7 @@ struct HabitPageView: View {
             withAnimation { proxy.scrollTo("over-time", anchor: .top) }
         }
         }
+        .analyticsScreen(.habitDetail)
         .navigationTitle(habit.name.capped(HabitRow.nameShown))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

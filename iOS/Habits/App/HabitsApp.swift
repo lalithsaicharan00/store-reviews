@@ -19,9 +19,21 @@ struct HabitsApp: App {
                         LockCover(locked: model.lock.isLocked) { Task { await model.lock.unlock() } }
                     }
                 }
-                .task { await model.lock.appeared() }
+                .task {
+                    await model.lock.appeared()
+                    Analytics.shared.lifecycle(active: scenePhase == .active, locked: model.lock.isLocked)
+                    AnalyticsInteractionObserver.install()
+                }
+                .onChange(of: model.lock.isLocked) {
+                    Analytics.shared.lifecycle(active: scenePhase == .active, locked: model.lock.isLocked)
+                }
         }
         .onChange(of: scenePhase) {
+            Analytics.shared.lifecycle(active: scenePhase == .active, locked: model.lock.isLocked)
+            if scenePhase == .active {
+                model.store.analyticsConfiguration()
+                AnalyticsInteractionObserver.install()
+            }
             // Re-plan on every return to the app: a new day, a changed time zone, or a changed permission.
             if scenePhase == .active && model.store.isLoaded { model.scheduler.scheduleReconcile(model.store) }
             // Taps are shown before they're written. Leaving the app, ask iOS for the time to finish every queued
@@ -35,7 +47,7 @@ struct HabitsApp: App {
 
     @ViewBuilder private var root: some View {
             #if DEBUG
-            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
             } else {
                 today
@@ -99,6 +111,11 @@ private struct PlacementCheckView: View {
             if !reminderMetric.isEmpty { Text(reminderMetric).accessibilityIdentifier("reminder-planning-metric") }
         }.padding().task {
             let arguments = ProcessInfo.processInfo.arguments
+            if arguments.contains("-analyticscheck") {
+                let failures = await AnalyticsCheck.run()
+                result = failures.isEmpty ? "Analytics: all checks passed" : "Analytics failed: " + failures.joined(separator: "; ")
+                return
+            }
             if arguments.contains("-remindercheck") {
                 let failures = await ReminderCheck.run()
                 reminderMetric = ReminderCheck.planningSummary

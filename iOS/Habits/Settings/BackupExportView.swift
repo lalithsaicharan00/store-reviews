@@ -34,6 +34,7 @@ struct BackupExportView: View {
                     .foregroundStyle(.secondary)
             }
         }
+        .analyticsScreen(.backupSync)
         .navigationTitle("Backup & Export")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

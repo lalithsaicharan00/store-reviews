@@ -49,6 +49,7 @@ struct AppearanceView: View {
                 Text("A light tap as you log, and a chime when a habit is done. The chime follows your iPhone's silent switch.")
             }
         }
+        .analyticsScreen(.appearance)
         .navigationTitle("Appearance")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: theme) { Theme.apply(theme) }
