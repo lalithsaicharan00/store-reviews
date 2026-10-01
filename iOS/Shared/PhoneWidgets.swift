@@ -313,7 +313,8 @@ struct PhoneWidgetView: View {
         }.accessibilityElement(children: .contain)
     }
     private var icons: some View {
-        let capacity = family == .systemLarge ? 12 : 6
+        let larger = textSize >= .xLarge
+        let capacity = family == .systemLarge ? (larger ? 6 : 12) : (larger ? 3 : 6)
         let page = clampedPage(capacity)
         return VStack(spacing: 4) {
             HStack { Text(heading).font(.headline); Spacer(); Text("Icons · Plus").font(.caption2).foregroundStyle(.secondary) }
@@ -321,8 +322,8 @@ struct PhoneWidgetView: View {
                 ForEach(Array(entry.rows.dropFirst(page * capacity).prefix(capacity))) { item in
                     VStack(spacing: 0) {
                         control(item, size: family == .systemLarge ? 34 : 25)
-                        Text(item.name).font(.system(size: family == .systemLarge ? 12 : 10)).lineLimit(1)
-                        status(item).font(.system(size: family == .systemLarge ? 10 : 8)).lineLimit(1).foregroundStyle(.secondary)
+                        Text(item.name).font(larger ? .caption2 : .system(size: family == .systemLarge ? 12 : 10)).lineLimit(1)
+                        status(item).font(larger ? .caption2 : .system(size: family == .systemLarge ? 10 : 8)).lineLimit(1).foregroundStyle(.secondary)
                     }.frame(maxWidth: .infinity)
                 }
             }

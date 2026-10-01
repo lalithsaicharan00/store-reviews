@@ -118,6 +118,15 @@ enum WidgetCheck {
         }
         expect(PhoneWidgetTimeline.itemEntries(snapshot: bounded, selection: quitID, now: late).first?.selected == nil,
                "Known quit pause or end stops the extended counter")
+        let quit = item("Widget quit")
+        var endingQuit = quit; endingQuit.endsOn = day.adding(days: 1)
+        store.update(endingQuit); await store.flush()
+        let endedSnapshot = store.widgetSnapshot(now: now)
+        expect(endedSnapshot.frames[2].items.first { $0.id == quitID }?.planned == false,
+               "Quit end date removes the counter from future agendas")
+        expect(endedSnapshot.frames.first?.items.first { $0.id == quitID }?.counterValidUntil == store.dayBounds(day.adding(days: 1)).upperBound.addingTimeInterval(1),
+               "Quit counter ends at the saved wall-clock boundary")
+        store.update(quit); await store.flush()
         let timeline = PhoneWidgetTimeline.entries(snapshot: snapshot, now: now)
         expect(timeline.count == 8 && timeline.last?.frame == nil, "Timeline includes explicit expired state")
         expect(zip(timeline, timeline.dropFirst()).allSatisfy { $0.date < $1.date }, "Timeline dates strictly increase")
@@ -183,6 +192,22 @@ enum WidgetCheck {
         await sharedPublisher.publish(store)
         expect(sharedPublisher.problem == nil && WidgetDisk.read()?.frames.first?.items.count == store.habits.filter { !$0.archived }.count,
                "Actual app App Group publishes a readable shared snapshot")
+        // A real closed repository exercises the failed commit path, rather than a mock callback.
+        let failingPersistence = Persistence.inMemory()
+        let failingStore = HabitStore(repository: failingPersistence.repository)
+        await failingStore.load(); await WidgetFixture.install(in: failingStore)
+        let failedHabit = failingStore.habits.first { $0.name == "Widget water" }!
+        do {
+            let prior = failingStore.widgetSnapshot(now: now)
+            try WidgetDisk.write(prior, to: file)
+            try failingPersistence.repository.close()
+            failingStore.logFromWidget(id: failedHabit.id, day: failingStore.today(now: now), event: UUID(),
+                                       signature: HabitStore.widgetSignature(failedHabit), now: now)
+            await failingStore.flush()
+            expect(failingStore.problem != nil && failingStore.entries.isEmpty, "Failed database write never displays a successful widget check")
+            await WidgetPublisher(file: file).publish(failingStore)
+            expect(WidgetDisk.read(from: file)?.generated == prior.generated, "Failed commit preserves last durable snapshot")
+        } catch { failures.append("Failed-write fixture: \(error)") }
         return failures
     }
 }
