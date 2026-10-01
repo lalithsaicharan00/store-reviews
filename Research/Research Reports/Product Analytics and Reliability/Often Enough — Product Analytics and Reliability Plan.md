@@ -2,7 +2,7 @@ Written by Codex, 1 October 2026.
 
 # Often Enough — Product Analytics and Reliability Plan
 
-**Status: iPhone implementation in progress on `analytics`; production sending gated pending final native UI/performance acceptance; synthetic EU provider acceptance verified.** The contract below is the research proposal; the dated implementation audit at the end and analytics handoff record actual code, project changes and test evidence. The pinned branch audit is historical and does not mean unfinished features are consolidated.
+**Status: consolidated iPhone analytics implemented on `analytics`; final Release/native verification and PR readiness in progress. Production sending remains disabled because performance/rollout acceptance is unresolved; synthetic EU provider acceptance and all 14 dashboard queries are verified.** The contract below is the research proposal; the dated implementation audit at the end and analytics handoff record actual code, project changes and test evidence. The pinned branch audit is historical and does not mean unfinished features are consolidated.
 
 ## 1. Recommendation
 
@@ -404,7 +404,7 @@ Repository links below are pinned to the audited branch tips where feature state
 - [Apple: Widgets on iPad](https://support.apple.com/guide/ipad/add-edit-and-remove-widgets-ipadcfe2bfb9/ipados) and [WidgetKit platform guidance](https://developer.apple.com/documentation/widgetkit): platform references for later implementation, not evidence that this app supports iPad. These Apple pages were not retrieved in this restricted session.
 
 
-## Implementation audit — 1 October 2026
+## Historical implementation audit — 1 October 2026 (before eff1e14 consolidation)
 
 The pinned feature-branch audit above is historical, not a claim those branches are consolidated. Analytics merges only `integration`, currently through `173f4f51eab20359a0bd01396b0ffe00d8cba590`. Current app has durable tasks/habits, all six habit subtypes including quit/cut-down, corrections, timers, routines, Progress/charts, notes, reminders, settings, local CSV/backup/merge restore and a disabled Plus page. It has no consolidated onboarding, account/sync/cloud-backup, verified StoreKit purchase/restore or Home/Lock Screen widget targets. The passive timer Live Activity exists, but has no action callbacks or conventional configurable Home/Lock widgets; it emits no render/impression telemetry. Those adapters must follow their owners' eventual implementations. Shared enums reserve future platform semantics; iPhone is the only analytics adapter.
 
@@ -435,3 +435,6 @@ Native run 36899451178 passed 71 contract checks, core storage/migrations, app b
 Provider follow-up at 00:30 IST Oct 2: all fourteen saved queries executed successfully in both refreshed dashboards. Coverage-v2 adoption/screen queries now use single event scans after the larger UNION form exceeded provider query resources. Notes and layouts disclose actual widget/onboarding coverage, post-consent bias, incomplete delivery and noncanonical catalog status. The monthly stored-row signal is eight synthetic development records; production remains empty, and stored deduplicated rows are not billing usage. Final code 6634a28 adds timed duration cut-down classification, frozen open-period metadata and engine-level relay revocation/fail-closed backup exclusion. Native intermediate build/UI passed; same-build baseline measurement failed and final tagged validation is pending.
 
 Native follow-up at 01:05 IST Oct 2: run36911212496 fully passed 88 contract checks, Core, Debug app/widget build, all14 targeted UI tests, provider smoke and five valid off/on windows. Same-build scroll15.9→17.2ms/s, taps47.0→31.1, typing31.2→36.6, widget log0.6→1.0 and guide2.6→8.5. Global speed targets remain unmet in both modes; no causal or physical-device acceptance claim. Exact machine-readable evidence is saved in the iOS docs. Production remains gated false while Release-policy and final reliability-contract validations finish.
+
+
+Final review at 01:17 IST Oct 2: reliability terminal callbacks deduplicate per operation/subsystem; sampling policy changes start together for flows and summaries at the next UTC period; widget drain counts are returned only after successful durable removal. Tests exercise duplicate/conflicting callbacks, sampling reductions/expansions after upgrade and disk-full relay clear/retry. Full Release-policy run36911869018 passed Debug and Release simulator app/widget builds. Latest focused af72c61 native/Core/both-build validation remains pending. Actual provider now contains 12 deduplicated synthetic development rows and no production rows; person-list is empty. No billing/analytics-retention API verification, real-user population or physical-device acceptance is invented.

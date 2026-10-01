@@ -15,7 +15,7 @@ Written by Codex, 1 October 2026. Continue on `analytics`; PR base is `integrati
 - [x] Bounded independent queues, daily envelopes, stable sampling, retry record identity, failure/recovery suppression.
 - [x] Screen visits and monotonic 30s idle-capped attention with foreground/cover/lock handling; no observable clock.
 - [x] Existing local backup/restore outcomes and configuration states, defaults vs saved user choices. Onboarding, Help and observable iPhone widget adapters added after consolidation. Account/purchase/entitlement restore adapters remain unavailable (no synthetic successes).
-- [ ] Complete latest-head native payload/consent/offline/retry/upgrade tests, targeted app callback/UI tests and consent-on native performance evidence. Expanded prior native delivery/persistence tests passed; latest run pending.
+- [ ] Complete latest-head native payload/consent/offline/retry/upgrade tests, targeted app callback/UI tests and consent-on native performance evidence. Completed 7aa5c02 run passed 88 native checks, Core/Debug build, all14 UI checks and five off/on windows; full Release-policy and final focused 101-check jobs remain running/pending.
 - [x] Useful provider dashboards with consent/platform/sampling/coverage labels; actual provider delivery evidence when permitted.
 - [ ] Refresh report assumptions, privacy manifest and handoff; commit/push analytics and open PR; never merge/release.
 
@@ -23,7 +23,7 @@ Written by Codex, 1 October 2026. Continue on `analytics`; PR base is `integrati
 
 Owner confirms free/no billing and sole Default production project; published allowance 1M analytics events/month, planning ceiling 700k. Billing scope unavailable; no actual spend-cap verification or paid services. Provider settings update confirmed autocapture/replay/console/performance/web-vitals/surveys/heatmaps off, IP anonymization on. Direct `eu.i.posthog.com` ingestion is network-blocked (CONNECT 403); connector has no capture tool. Production sending remains false pending native UI/performance acceptance; real synthetic provider delivery/privacy/retry deduplication is verified. No crash SDK initialization exists, so separate crash consent is disabled; no duplicate collector added.
 
-Current integration includes onboarding, Help/About and iPhone Home/Lock widgets (eff1e14). Their adapters are implemented and pending final native acceptance. Account/sync/verified StoreKit purchases remain absent; contract tests reject fabricated outcomes, and capability flags remain false. No unfinished owner branch was merged.
+Current integration includes onboarding, Help/About and iPhone Home/Lock widgets (eff1e14). Their adapters passed all14 targeted UI tests; latest Release-policy repeat is running. Account/sync/verified StoreKit purchases remain absent; contract tests reject fabricated outcomes, and capability flags remain false. No unfinished owner branch was merged.
 
 ## Test and PR evidence
 
@@ -78,13 +78,13 @@ Added explicit release-channel configuration and fail-closed policy: Debug is de
 
 ## Remaining launch dependencies (exact boundaries)
 
-- Production gate stays false until native performance acceptance. Current implementation and PR can be reviewed with this explicit gate; shipping/release remains outside the request. Latest tagged validation 7b05a66 compiles both Debug and Release, runs fixed-payload/consent/native UI checks and five same-build off/on performance scenarios.
+- Production gate stays false until native performance acceptance. Current implementation and PR can be reviewed with this explicit gate; shipping/release remains outside the request. Release-policy validation 7b05a66 passed both Debug and Release simulator builds; UI/performance remain running. Final focused af72c61 verifies 101 contract checks and both builds without repeating unchanged-view UI/performance.
 - Account, server/sync, cloud backup and verified StoreKit purchase/entitlement-restore code must first land in integration. Existing typed semantics/rejection tests cannot substitute for real durable/provider-verified outcomes.
 - Architecture selects Sentry, but consolidated source has no SDK initialization, DSN, project or symbol-upload configuration. Crash coverage is zero; separate crash sharing is disabled. Its owner must supply project/DSN, independent consent/scrubbing and native symbolication/coverage evidence. No second collector was added.
 - Billing/spend-limit and analytics retention configuration are not exposed by current project access. Owner confirms free/no billing; official free allowance is 1M/month with 700k planning ceiling. Project read exposes only disabled replay retention (30d), which is not analytics retention. No billing/personal API key or paid product was configured.
 - Catalog permissions are unavailable; the fourteen executed dashboard definitions are labelled noncanonical. Real production population, physical-device performance and future-platform coverage are unverified; no metric invents them.
 
-Latest provider read: 10 stored development rows/10 unique IDs/5 synthetic installations, production absent, zero person profiles. These are deduplicated stored rows, not authoritative ingress/billing. Both dashboards’ 14 saved queries executed successfully.
+Latest provider read: 12 stored development rows/12 unique IDs/6 synthetic installations, production absent, zero person profiles. These are deduplicated stored rows, not authoritative ingress/billing. Both dashboards’ 14 saved queries executed successfully.
 
 ### Reliability retry semantics — 01:05 IST Oct 2
 
