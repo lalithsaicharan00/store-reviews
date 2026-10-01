@@ -23,6 +23,12 @@ nonisolated struct AnalyticsDeliveryConfiguration: Sendable {
     var osMajor = 0
     var sampleRate = 1.0
     var samplingVersion = 1
+    static func channel(debugBuild: Bool, sandboxReceipt: Bool, configured: String?) -> String {
+        if debugBuild { return "development" }
+        if sandboxReceipt { return "beta" }
+        guard let configured, ["production", "beta", "development"].contains(configured) else { return "development" }
+        return configured
+    }
     var eligible: Bool { productionEnabled && releaseChannel == "production" && projectToken.hasPrefix("phc_") && sampleRate.isFinite && sampleRate > 0 && sampleRate <= 1 && (1...100_000).contains(samplingVersion) }
     var observation: AnalyticsObservation {
         AnalyticsObservation(appVersion: safeVersion(appVersion), appBuild: safeVersion(appBuild), osMajor: max(0, min(100, osMajor)),

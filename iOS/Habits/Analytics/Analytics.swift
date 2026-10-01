@@ -10,7 +10,9 @@ nonisolated final class Analytics: @unchecked Sendable {
         config.projectToken = bundle.object(forInfoDictionaryKey: "AnalyticsProjectToken") as? String ?? ""
         config.productionEnabled = bundle.object(forInfoDictionaryKey: "AnalyticsProductionEnabled") as? Bool ?? false
         #if !DEBUG
-        config.releaseChannel = "production"
+        config.releaseChannel = AnalyticsDeliveryConfiguration.channel(debugBuild: false,
+            sandboxReceipt: bundle.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt",
+            configured: bundle.object(forInfoDictionaryKey: "AnalyticsReleaseChannel") as? String)
         #endif
         config.appVersion = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0"
         config.appBuild = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"

@@ -71,3 +71,7 @@ Consolidated forms support timed upper limits as well as amount upper limits: bo
 ### Exact baseline failure and native correction — 00:35 IST Oct 2
 
 Completed 36907293697: 86 native checks, core/build and all 14 UI checks passed. Baseline never launched: macOS Bash 3.2 + `set -u` rejected an empty optional array (three 180s waits); fixed with explicit launch arguments, missing-PID fast failure and retained launch logs. Consent-on measured scroll 15.9ms/s /127ms, taps14.4/63ms, typing2.8/36ms; no causal comparison without a working baseline. Final 6634a28 run36909868629 failed native compile because the bounded-loss assignment read `ledger` during optional mutation; fixed by snapshotting previous loss before modifying ledger. Re-run latest final head; do not reuse failed runs as acceptance. Performance lessons updated with evidence and wasted runtime.
+
+### Release-path verification — 00:40 IST Oct 2
+
+Added explicit release-channel configuration and fail-closed policy: Debug is development; TestFlight sandbox receipts force beta; missing/invalid configuration is development. Only controlled channel/Boolean receipt provenance is used, never receipt content, account data or paths in telemetry. Production remains false. Native policy tests cover these paths, and tagged analytics validation now compiles Release as well as the existing Debug app/widget builds before running UI/performance. Latest 7aa5c02 run36911212496 is testing prior fixes; latest Release-policy run supersedes it when queued.

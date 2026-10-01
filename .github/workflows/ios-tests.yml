@@ -148,6 +148,16 @@ jobs:
             -sdk iphonesimulator -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedData ARCHS=arm64 CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
           grep -q "BUILD SUCCEEDED" build.log
 
+      - name: Build Release with production gate closed
+        id: releasebuild
+        if: contains(env.MESSAGE, '[ios-analytics]') || github.event_name == 'workflow_dispatch'
+        working-directory: iOS
+        run: |
+          set -o pipefail
+          xcodebuild build -project Habits.xcodeproj -scheme Habits -configuration Release \
+            -sdk iphonesimulator -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedData ARCHS=arm64 CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 | tee release-build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
+          grep -q "BUILD SUCCEEDED" release-build.log
+
       - name: Save available core build dependencies
         if: always() && steps.core.outcome == 'success' && steps.gradle-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
@@ -258,7 +268,12 @@ jobs:
               echo '```'
             fi
             # A test that loses the app only says "Lost connection"; the crash report says why.
-            CRASHES=$(python3 Tools/ci/crash_summary.py build.log Habits 2>&1 || true)
+            if [ -f release-build.log ]; then
+            echo; echo "## Release build"; echo '```'
+            grep -E "error:|BUILD (SUCCEEDED|FAILED)" release-build.log | head -30
+            echo '```'
+          fi
+          CRASHES=$(python3 Tools/ci/crash_summary.py build.log Habits 2>&1 || true)
             if [ -n "$CRASHES" ]; then
               echo; echo "## App crashes"; echo '```'; echo "$CRASHES" | head -120; echo '```'
             fi
@@ -325,6 +340,7 @@ jobs:
             Core/schemas
             Core/build/reports/tests
             iOS/build.log
+            iOS/release-build.log
             iOS/simulator-destinations.log
             iOS/simulator-startup.log
             iOS/test.log
@@ -342,6 +358,7 @@ jobs:
           name: ios-logs
           path: |
             iOS/build.log
+            iOS/release-build.log
             iOS/simulator-destinations.log
             iOS/test.log
             iOS/summary.md

@@ -17,6 +17,8 @@
 	     Keep release sending gated until real provider ingestion/privacy verification is recorded. -->
 	<key>AnalyticsProjectToken</key>
 	<string>phc_wwVdJeLuFoZV76M974mkwQmZmQwkVjzcBhaVLmJxpuoK</string>
+	<key>AnalyticsReleaseChannel</key>
+	<string>production</string>
 	<key>AnalyticsProductionEnabled</key>
 	<false/>
 	<key>NSFaceIDUsageDescription</key>
