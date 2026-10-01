@@ -70,6 +70,7 @@ struct HabitRow: View {
     /// Today's layout: a log holds the rows in place until the person pauses (#58). Nil in the New Habit preview.
     @Environment(TodayLayout.self) private var layout: TodayLayout?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.clocksPaused) private var clocksPaused
     /// Progress's view option "Show Streaks" (report §7.6): off hides streaks here too.
     @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
 
@@ -77,7 +78,7 @@ struct HabitRow: View {
         if habit.kind == .duration, isToday {
             // Keep the same host when a running timer stops. Replacing TimelineView with a plain row
             // could dismiss a sheet opened from that row; a stopped/covered clock simply has no ticks.
-            TimelineView(HabitRowClockSchedule(start: !(showLog || showEdit || showNotes || showPause) && store.dayTarget?.habitID != habit.id ? store.timers[habit.id] : nil)) { context in
+            TimelineView(HabitRowClockSchedule(start: !clocksPaused && !(showLog || showEdit || showNotes || showPause) && store.dayTarget?.habitID != habit.id ? store.timers[habit.id] : nil)) { context in
                 row(now: context.date)
             }
         } else {
@@ -390,6 +391,7 @@ struct QuitRow: View {
     let habit: Habit
     var highlighted = false
     @Environment(HabitStore.self) private var store
+    @Environment(\.clocksPaused) private var clocksPaused
     @State private var showEdit = false
     @State private var showPause = false
     @State private var showSlip = false
@@ -402,7 +404,8 @@ struct QuitRow: View {
     var body: some View {
         // A fixed anchor: `.now` gave a new schedule on every redraw, restarting the clock each time (see HabitRow).
         VStack(alignment: .leading, spacing: 4) {
-        TimelineView(.periodic(from: Self.anchor, by: 1)) { context in
+        // Stopped (a schedule with no ticks, never a different view) while a menu page covers Today.
+        TimelineView(HabitRowClockSchedule(start: clocksPaused ? nil : Self.anchor)) { context in
             let runs = store.quitRuns(of: habit, now: context.date)
             HStack(alignment: .top, spacing: 12) {
                 HabitIcon(symbol: habit.symbol, color: habit.color)
@@ -671,6 +674,20 @@ private struct NoteLineLabel: LabelStyle {
 enum RowBand { static let height: CGFloat = 44 }
 
 /// A fixed timer anchor while running, one initial draw while stopped or covered by its sheet.
+/// Today's clocks stop while a page from the ≡ menu covers Today (PERFORMANCE.md rule 6): the quit clocks and a
+/// running row's clock otherwise redrew every second under All Habits, a habit page or Progress (profile, 1 Oct
+/// 2026). They pick up the right time as soon as Today shows again.
+private nonisolated struct ClocksPausedKey: EnvironmentKey {
+    static let defaultValue = false
+}
+
+extension EnvironmentValues {
+    nonisolated var clocksPaused: Bool {
+        get { self[ClocksPausedKey.self] }
+        set { self[ClocksPausedKey.self] = newValue }
+    }
+}
+
 private struct HabitRowClockSchedule: TimelineSchedule {
     let start: Date?
     func entries(from date: Date, mode: TimelineScheduleMode) -> AnySequence<Date> {

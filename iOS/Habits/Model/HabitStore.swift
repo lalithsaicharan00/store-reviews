@@ -193,6 +193,7 @@ final class HabitStore {
     // depend on changes: an entry of that habit, or any habit, skip, pause, goal history or setting.
     @ObservationIgnored private var pastRuns: [UUID: [LocalDay: Int]] = [:]
     @ObservationIgnored private var bestRuns: [UUID: (today: LocalDay, value: Int)] = [:]
+    @ObservationIgnored private var totalLines: [UUID: (today: LocalDay, line: String?)] = [:]
     @ObservationIgnored private var summaries: [LocalDay: (done: Int, total: Int)] = [:]
     @ObservationIgnored private var savedHabits: [UUID: Habit]?
     @ObservationIgnored private var startDays: [UUID: (createdAt: Date, day: LocalDay)] = [:]
@@ -200,6 +201,7 @@ final class HabitStore {
     private func forget(_ habit: UUID) {
         pastRuns[habit] = nil
         bestRuns[habit] = nil
+        totalLines[habit] = nil
         monthCounts[habit] = nil
         summaries = [:]
     }
@@ -207,6 +209,7 @@ final class HabitStore {
     private func forgetAll() {
         pastRuns = [:]
         bestRuns = [:]
+        totalLines = [:]
         monthCounts = [:]
         summaries = [:]
         savedHabits = nil
@@ -1672,6 +1675,18 @@ final class HabitStore {
         let best = runs(of: habit, today: today).map(\.length).max() ?? 0
         if remember { bestRuns[habit.id] = (today, best) }
         return best
+    }
+
+    /// "Goal met 12 weeks since 3 Mar 2026", "1,240 glasses in all since …": the habit page's total, which walks the
+    /// habit's whole history, so it's remembered like the best streak (PERFORMANCE.md rule 5). The page asked for it
+    /// in `body`, so every redraw (a month changed in its calendar) walked the history again (1 Oct 2026).
+    func totalLine(of habit: Habit, today: LocalDay? = nil) -> String? {
+        let today = today ?? self.today()
+        let remember = isSaved(habit) && timers[habit.id] == nil
+        if remember, let known = totalLines[habit.id], known.today == today { readInputs(); return known.line }
+        let line = workOutTotalLine(of: habit, today: today)
+        if remember { totalLines[habit.id] = (today, line) }
+        return line
     }
 
     // MARK: Notes

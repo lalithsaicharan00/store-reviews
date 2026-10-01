@@ -106,9 +106,9 @@ struct OverTimeStep: Hashable, Identifiable {
 extension HabitStore {
     /// "213 days done since 12 Mar 2025", "1,204 km in all since 12 Mar 2025", "Goal met 31 weeks since …" (§8.1): a
     /// number a break can't take away.
-    func totalLine(of habit: Habit, today: LocalDay? = nil) -> String? {
+    /// Works out `totalLine` (remembered by `HabitStore.totalLine`): it walks the habit's whole history.
+    func workOutTotalLine(of habit: Habit, today: LocalDay) -> String? {
         guard habit.kind != .quit, habit.kind != .task else { return nil }
-        let today = today ?? self.today()
         let start = startDay(of: habit)
         guard start <= today else { return nil }
         let since = " since " + start.date(calendar: calendar).formatted(.dateTime.day().month(.abbreviated).year())

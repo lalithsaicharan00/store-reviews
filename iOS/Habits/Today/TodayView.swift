@@ -55,6 +55,7 @@ struct TodayView: View {
                     // TimelineView: one around the list marked every row changed on every scroll frame (30 Sep).
                     content(now: clock)
                         .task(id: goalTimes()) { await tick() }
+                        .modifier(ClocksPausedUnderMenu(menu: menu))
                 }
             }
             .toolbar { if !covered { topBar } }
@@ -647,5 +648,15 @@ struct TodaySchedule: TimelineSchedule {
             defer { minute += 60 }
             return minute
         }
+    }
+}
+
+/// Pauses Today's per-second clocks while a page from the ≡ menu is pushed over it (PERFORMANCE.md rule 6). Only
+/// this modifier reads the menu's path, so a push or pop doesn't redraw Today; only the clocks see the change.
+private struct ClocksPausedUnderMenu: ViewModifier {
+    let menu: MenuModel
+
+    func body(content: Content) -> some View {
+        content.environment(\.clocksPaused, !menu.path.isEmpty)
     }
 }
