@@ -50,8 +50,20 @@ final class WidgetSystemUITests: XCTestCase {
         save(springboard, "home-gallery-results")
         // Remote gallery labels can report an unavailable hit point while their visible row is tappable.
         appRow.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
-        // Today is first after the existing Live Activity; choose the medium page before adding.
-        springboard.swipeLeft()
+        // Check the real system gallery's complete Home catalogue, not just app-rendered views.
+        let previews = [("Today", "Small"), ("Today", "Medium"), ("Today", "Large"),
+                        ("One item", "Small"), ("Icons · Plus", "Medium"), ("Icons · Plus", "Large"),
+                        ("History · Plus", "Small"), ("History · Plus", "Medium"), ("History · Plus", "Large")]
+        for (index, expected) in previews.enumerated() {
+            if index > 0 { springboard.swipeLeft() }
+            let preview = springboard.buttons["Habits, " + expected.0].firstMatch
+            XCTAssertTrue(preview.waitForExistence(timeout: 8), springboard.debugDescription)
+            XCTAssertTrue((preview.value as? String)?.contains(expected.1) == true, springboard.debugDescription)
+            save(springboard, "home-gallery-\(index)-\(expected.1)")
+        }
+        // Return from page nine to the medium Today page and install it.
+        for _ in 0..<7 { springboard.swipeRight() }
+        XCTAssertTrue((springboard.buttons["Habits, Today"].firstMatch.value as? String)?.contains("Medium") == true)
         let confirm = springboard.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Add Widget")).firstMatch
         guard confirm.waitForExistence(timeout: 5) else {
             save(springboard, "home-widget-add-missing"); XCTFail("Widget gallery has no Add Widget button"); return

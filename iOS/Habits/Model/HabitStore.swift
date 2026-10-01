@@ -84,7 +84,13 @@ final class HabitStore {
     @ObservationIgnored private var entriesByDay: [UUID: [LocalDay: [Entry]]]?
     var settings = DaySettings() { didSet { cachedCalendar = nil; placementCache = [:]; startDays = [:]; forgetAll() } }
     /// Running timers for duration habits: habit ID → start time.
-    private(set) var timers: [UUID: Date] = [:] { didSet { forgetAll() } }
+    private(set) var timers: [UUID: Date] = [:] {
+        didSet {
+            for id in Set(oldValue.keys).union(timers.keys) where oldValue[id] != timers[id] {
+                widgetProjectionCache[id] = nil
+            }
+        }
+    }
     /// For a timed habit spread over times of day: the part a running timer is for.
     private(set) var timerSlots: [UUID: String] = [:]
     /// Days a habit was skipped ("Skip today"). A skipped day is simply not one of its days: hidden on Today and

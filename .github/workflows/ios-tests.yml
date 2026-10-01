@@ -71,6 +71,9 @@ jobs:
             case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests,ProgressUITests,GroupsUITests,UndoUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets]"*) echo "TESTS=WidgetUITests,WidgetSystemUITests,UndoUITests/testStoreCorrectionsRecalculateAndPersist,TimerUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets-recheck]"*) echo "TESTS=WidgetUITests,WidgetSystemUITests" >> "$GITHUB_ENV";; esac
+            # A targeted regression pass after family screenshots already passed: real storage,
+            # actual cold Home intent and existing timer UI, retaining all widget/Today timing scenarios.
+            case "$MESSAGE" in *"[ios-widgets-validation]"*) echo "TESTS=WidgetUITests/testStorageActionsDayBoundariesPrivacyAndUnlimitedTasks,WidgetSystemUITests/testHomeScreenInstallTapAndColdPersistence,TimerUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets-build]"*) echo "TESTS=none" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "TESTS=BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "PERF_TESTS=testBackupPage testMenuOpenClose testScrollToday" >> "$GITHUB_ENV";; esac
