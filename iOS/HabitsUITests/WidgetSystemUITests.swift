@@ -41,8 +41,8 @@ final class WidgetSystemUITests: XCTestCase {
             save(springboard, "home-widget-search-unavailable")
             throw XCTSkip("Widget gallery search is not available through this simulator's system accessibility tree")
         }
-        search.tap(); search.typeText("Habits")
-        let appRow = springboard.staticTexts["Habits"].firstMatch
+        search.tap(); search.typeText("Often Enough")
+        let appRow = springboard.staticTexts["Often Enough"].firstMatch
         guard appRow.waitForExistence(timeout: 8) else {
             save(springboard, "home-widget-extension-unlisted")
             XCTFail("Built app's extension is missing from the real widget gallery"); return
@@ -56,14 +56,14 @@ final class WidgetSystemUITests: XCTestCase {
                         ("History · Plus", "Small"), ("History · Plus", "Medium"), ("History · Plus", "Large")]
         for (index, expected) in previews.enumerated() {
             if index > 0 { springboard.swipeLeft() }
-            let preview = springboard.buttons["Habits, " + expected.0].firstMatch
+            let preview = springboard.buttons["Often Enough, " + expected.0].firstMatch
             XCTAssertTrue(preview.waitForExistence(timeout: 8), springboard.debugDescription)
             XCTAssertTrue((preview.value as? String)?.contains(expected.1) == true, springboard.debugDescription)
             save(springboard, "home-gallery-\(index)-\(expected.1)")
         }
         // Return from page nine to the medium Today page and install it.
         for _ in 0..<7 { springboard.swipeRight() }
-        XCTAssertTrue((springboard.buttons["Habits, Today"].firstMatch.value as? String)?.contains("Medium") == true)
+        XCTAssertTrue((springboard.buttons["Often Enough, Today"].firstMatch.value as? String)?.contains("Medium") == true)
         let confirm = springboard.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Add Widget")).firstMatch
         guard confirm.waitForExistence(timeout: 5) else {
             save(springboard, "home-widget-add-missing"); XCTFail("Widget gallery has no Add Widget button"); return
@@ -126,11 +126,11 @@ final class WidgetSystemUITests: XCTestCase {
         save(editor, "lock-widget-picker")
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         let hosts = [settings, springboard]
-        guard let host = hosts.first(where: { $0.staticTexts["Habits"].firstMatch.exists }) else {
+        guard let host = hosts.first(where: { $0.staticTexts["Often Enough"].firstMatch.exists }) else {
             save(springboard, "lock-gallery-accessibility")
             throw XCTSkip("Lock widget gallery does not expose the app; physical-device installation remains required")
         }
-        host.staticTexts["Habits"].firstMatch.tap()
+        host.staticTexts["Often Enough"].firstMatch.tap()
         save(host, "lock-app-widgets")
         let today = host.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Today on Lock Screen")).firstMatch
         guard today.waitForExistence(timeout: 5) else {

@@ -43,34 +43,54 @@ Compared with the last pre-merge runs (`undo-research`), measured with the app d
 
 Lessons are in `PERFORMANCE.md` (rules 6, 8, 11 and the new 12).
 
-## Branches safe to delete now (for any agent or person reading this)
+## Second round (1 Oct, evening): onboarding, widgets and the app's name
 
-`main` holds everything from these, and each tip is also kept as `archive/<name>-2026-10-01`. This environment can't
-delete branches on GitHub; delete them there or with `git push origin --delete <name>`:
-`animations-and-settings`, `progress-page-research`, `sidebar`, `claude/undo-research`,
-`claude/habit-tracker-features-igxafl`, `claude/adoring-dijkstra-3rixv2`, `perf-smooth-app`,
-`claude/vigilant-brown-kqro5t`, `perf-scrolling-and-ci`, and `integration` itself once nobody works on it.
+The user's words, tidied: most of the in-between branches are dummies, made by chats that didn't know what to name a
+branch. Onboarding and widgets are finished; analytics and server-sync are still being worked on. The app is
+**Often Enough**, its domain **oftenenough.com**, and its IDs follow how production apps name theirs.
 
-**Keep:** `main`, `ci-results` (CI writes its results there), the `archive/…` branches, and the branches other
-agents were still working on when `main` moved: `onboarding-and-help`, `claude/server-and-sync`,
-`codex/iphone-widgets`, `claude/eloquent-turing-oznzs3`, `claude/gracious-newton-exo5ow`. Each of those should
-merge `main` into itself before it's merged: `codex/iphone-widgets` conflicts only in `AppLock.swift`;
-`claude/server-and-sync` in its database files, `AppModel`, `HabitsApp` and `ReminderScheduler`.
+| # | Point | Done |
+|---|---|---|
+| R1 | Back up every branch merged or marked for deletion | [x] `archive/onboarding-and-help-2026-10-01`, `archive/iphone-widgets-2026-10-01`, `archive/free-plan-data-safety-2026-10-01`, `archive/pensive-bardeen-ou4hiw-2026-10-01`, `archive/eloquent-turing-oznzs3-2026-10-01`, `archive/gracious-newton-exo5ow-2026-10-01` |
+| R2 | Merge `onboarding-and-help` | [x] No conflicts |
+| R3 | Merge `codex/iphone-widgets` | [x] App code merged cleanly; three documents (Build Plan #62/#63, What's Built, this checklist) kept both sides |
+| R4 | The app's name and IDs | [x] Merged from `claude/gracious-newton-exo5ow` (also inside `claude/server-and-sync`), using server-sync's final IDs: **`com.oftenenough.app`**, `com.oftenenough.app.liveactivity`, `com.oftenenough.app.uitests`, background task `com.oftenenough.app.refresh`, App Group **`group.com.oftenenough.app`** (widgets). Home-screen name **Often Enough**. The speed script and the widget gallery test use the new ID and name |
+| R5 | Tests and speed on the merged code | [ ] Running on GitHub (results below) |
+| R6 | Move `main` | [ ] When R5 passes |
 
-## Temporary branches to delete (for any agent or person reading this)
+**On the iPhone:** a new bundle ID installs as a new app beside the old "Habits" one; the old app's habits stay in the
+old app. Export a backup from the old app (Settings → Backup) and restore it in Often Enough, then delete the old app.
+Xcode registers the App Group `group.com.oftenenough.app` on the first install (Signing & Capabilities → App Groups if
+it asks).
 
-Made only for testing on 1 Oct 2026; nothing in them needs keeping, and nothing should be merged from them. This
-environment can't delete branches on GitHub, so delete them there (GitHub → Branches) or with
-`git push origin --delete <name>` from a machine that can:
+## Branches to delete (for any agent or person reading this)
 
-| Branch | What it was |
+This environment can't delete branches on GitHub; delete them there (GitHub → Branches) or with
+`git push origin --delete <name>` from a machine that can. Every one is in `main` or kept under `archive/…`, and nothing
+should be merged from them.
+
+| Branch | Why it can go |
 |---|---|
-| `claude/integration-check-b` | A copy of `integration` at `c47a1c4`, so two halves of the tests could run at once |
-| `claude/perf-bisect-habit-page` | Scratch: the habit page with one section or chart part left out per speed scenario (`PerfBisect`), to find the 1–2.7 s freeze. Never merge it |
+| `animations-and-settings`, `progress-page-research`, `sidebar`, `claude/undo-research` | Merged into `main` (first round) |
+| `claude/habit-tracker-features-igxafl` | Its features rebuilt into `main` (first round, M4) |
+| `claude/adoring-dijkstra-3rixv2`, `perf-smooth-app`, `claude/vigilant-brown-kqro5t`, `perf-scrolling-and-ci` | Nothing beyond what `main` already has |
+| `onboarding-and-help`, `codex/iphone-widgets` | Merged into `main` (second round) |
+| `claude/eloquent-turing-oznzs3` | Superseded by onboarding: its work is in `onboarding-and-help` |
+| `claude/free-plan-data-safety` | Research only; every commit is also on `claude/server-and-sync`, whose later edits supersede it (checked 1 Oct) |
+| `claude/pensive-bardeen-ou4hiw` | Its one commit is the first of `claude/free-plan-data-safety` (and on server-sync) |
+| `claude/gracious-newton-exo5ow` | The rename, now in `main`; also inside `claude/server-and-sync` |
+| `claude/integration-check-b` | Temporary: a copy of `integration` so two halves of the tests could run at once |
+| `claude/perf-bisect-habit-page` | Scratch: the habit page with one part left out per speed scenario (`PerfBisect`). Never merge it |
+| `integration` | Once nobody works on it: `main` is the same |
+
+**Keep:** `main`, `ci-results` (CI writes its results there), every `archive/…` branch, and the two still being worked
+on: **`analytics`** (from `integration`, ahead of it) and **`claude/server-and-sync`**. Each should merge `main` into
+itself before it's merged. server-sync conflicts with `main` in its database files, `AppModel`, `HabitsApp` and
+`ReminderScheduler` (the app's name and IDs already match).
 
 ## Not done, and why
 
-- **Widgets — update by Codex, 1 Oct 2026:** the separate `codex/iphone-widgets` branch now contains Home/Lock widgets and matching App Group entitlements. See [widget integration and release checks](<../iPhone Widgets.md>) for macOS results and unverified device checks. The original provisioning requirement remains: a widget needs an App Group on the app and its widget extension, in the Apple Developer account and Xcode. Without it registered, Xcode can refuse to install the app on the phone. Another session is renaming the app (`com.oftenenough.app`), and the group's name must match. Research: `Research/Research Reports/Home Screen and Visual Design/Widgets — Tick Without Opening the App.md`.
+- **Widgets:** merged in the second round (R3), with the App Group matching the app's new ID (R4). Checks that need a real iPhone are listed in the widget report. See [widget integration and release checks](<../iPhone Widgets.md>) for macOS results and unverified device checks. The original provisioning requirement remains: a widget needs an App Group on the app and its widget extension, in the Apple Developer account and Xcode. Without it registered, Xcode can refuse to install the app on the phone. Another session is renaming the app (`com.oftenenough.app`), and the group's name must match. Research: `Research/Research Reports/Home Screen and Visual Design/Widgets — Tick Without Opening the App.md`.
 - **Old tests that predate the merge:** `FocusPlayerUITests` (8 of 12), `RoutineCalendarUITests` (4 of 7), `GoalFlowUITests` (2 of 6) and one `ScheduleUITests` fail the same way on the pre-merge branch (`archive/animations-and-settings-2026-10-01`, run of 1 Oct 06:09): written for the old routine player and form.
 
 ## Results (GitHub, 1 Oct 2026)
