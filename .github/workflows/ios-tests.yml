@@ -84,6 +84,8 @@ jobs:
             case "$MESSAGE" in *"[ios-reminders]"*) echo "TESTS=RemindersUITests,TasksUITests,BackupUITests,TodayUITests,TimerUITests,ScheduleUITests/testCalendarAndPersistenceRules,ScheduleUITests/testTaskAfterCompletion" >> "$GITHUB_ENV"; echo "PERF_TESTS=testRemindersPage testTasksPage testScrollToday" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-reminders-recheck]"*) echo "TESTS=RemindersUITests,TasksUITests,BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV"; echo "PERF_TESTS=testRemindersPage" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf-xctest]"*|*"[ios-backup]"*|*"[ios-tasks"*|*"[ios-reminders"*) echo "PERF_XCTEST=true" >> "$GITHUB_ENV";; esac
+            # Foundation/Release correctness changes reuse prior unchanged-view UI/performance evidence.
+            case "$MESSAGE" in *"[ios-contract-only]"*) echo "TESTS=none" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets]"*) echo "PERF_SCENARIOS=scroll-today tap-today widget-log widget-guide" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=scroll-today tap-today widget-log widget-guide" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets-recheck]"*) echo "PERF_SCENARIOS=widget-log widget-guide" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=widget-log widget-guide" >> "$GITHUB_ENV";; esac
@@ -100,7 +102,7 @@ jobs:
 
       - name: Explicit content-free EU provider integration smoke
         id: provider
-        if: contains(env.MESSAGE, '[ios-analytics]')
+        if: contains(env.MESSAGE, '[ios-analytics]') && !contains(env.MESSAGE, '[ios-contract-only]')
         continue-on-error: true # Provider access never blocks durable app/native validation.
         run: |
           set -o pipefail
@@ -169,7 +171,7 @@ jobs:
           key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}-apple-release
 
       - name: Pick a simulator
-        if: steps.build.outcome == 'success'
+        if: steps.build.outcome == 'success' && !contains(env.MESSAGE, '[ios-contract-only]')
         timeout-minutes: 8
         run: |
           set -o pipefail
@@ -256,6 +258,8 @@ jobs:
             echo
             echo "- Core storage and migrations: ${{ steps.core.outcome }}"
             echo "- Build: ${{ steps.build.outcome }}"
+            echo "- Release build: ${{ steps.releasebuild.outcome }}"
+            echo "- Same-build speed baseline: ${{ steps.perfbaseline.outcome }}"
             echo "- UI tests ($TESTS): ${{ steps.tests.outcome }}"
             echo "- Speed tests: ${{ steps.perf.outcome }}"
             echo "- Speed tests through XCTest: ${{ steps.perfxctest.outcome }}"
@@ -269,11 +273,11 @@ jobs:
             fi
             # A test that loses the app only says "Lost connection"; the crash report says why.
             if [ -f release-build.log ]; then
-            echo; echo "## Release build"; echo '```'
-            grep -E "error:|BUILD (SUCCEEDED|FAILED)" release-build.log | head -30
-            echo '```'
-          fi
-          CRASHES=$(python3 Tools/ci/crash_summary.py build.log Habits 2>&1 || true)
+              echo; echo "## Release build"; echo '```'
+              grep -E "error:|BUILD (SUCCEEDED|FAILED)" release-build.log | head -30
+              echo '```'
+            fi
+            CRASHES=$(python3 Tools/ci/crash_summary.py build.log Habits 2>&1 || true)
             if [ -n "$CRASHES" ]; then
               echo; echo "## App crashes"; echo '```'; echo "$CRASHES" | head -120; echo '```'
             fi

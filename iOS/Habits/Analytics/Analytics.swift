@@ -173,8 +173,9 @@ nonisolated final class Analytics: @unchecked Sendable {
         }
     }
     func reliability(_ subsystem: String, succeeded: Bool, ticket: AnalyticsTicket?) {
-        guard ["storage", "backup", "sync", "widget", "reminder"].contains(subsystem) else { return }
+        guard let ticket, ["storage", "backup", "sync", "widget", "reminder"].contains(subsystem) else { return }
         mutate(ticket: ticket) { state in
+            guard state.once(ticket.operation.uuidString + subsystem + "reliability") else { return }
             state.increment(subsystem + (succeeded ? "_success_count" : "_failure_count"))
             let wasDegraded = state.degraded.contains(subsystem)
             if succeeded { state.degraded.remove(subsystem) } else { state.degraded.insert(subsystem) }

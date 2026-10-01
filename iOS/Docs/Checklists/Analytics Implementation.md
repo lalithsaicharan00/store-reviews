@@ -85,3 +85,7 @@ Added explicit release-channel configuration and fail-closed policy: Debug is de
 - Catalog permissions are unavailable; the fourteen executed dashboard definitions are labelled noncanonical. Real production population, physical-device performance and future-platform coverage are unverified; no metric invents them.
 
 Latest provider read: 10 stored development rows/10 unique IDs/5 synthetic installations, production absent, zero person profiles. These are deduplicated stored rows, not authoritative ingress/billing. Both dashboards’ 14 saved queries executed successfully.
+
+### Reliability retry semantics — 01:05 IST Oct 2
+
+Terminal reliability outcomes now guard the operation ticket/subsystem, so duplicate callbacks do not inflate attempts or report conflicting success. A genuinely new retry ticket may recover; native tests assert all three cases. The `[ios-contract-only]` final job runs the full Foundation contract plus Core, Debug and Release builds without repeating unchanged-view UI, provider smoke or performance. Current full 7b05a66 job still verifies the UI/performance/release policy; prior 7aa5c02 run36911212496 fully passed 88 Foundation checks and all14 UI tests plus five working off/on windows. No new HabitStore/view changes accompany the reliability guard. CI summary now includes Release and baseline outcomes explicitly.
