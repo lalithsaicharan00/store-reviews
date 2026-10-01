@@ -51,15 +51,6 @@ struct BackupSyncView: View {
                 Text(backupFooter)
             }
 
-            if backup.place == .phone {
-                Section("Before You Delete the App") {
-                    Text("Deleting Often Enough removes its data from this iPhone. Reinstalling alone does not bring it back.")
-                    Text("Sign in, or save a backup file somewhere outside the app (Files, AirDrop, Mail), first. After reinstalling, choose Restore.")
-                    Text("Offload App in iPhone Settings keeps your data. Delete App removes it.")
-                        .foregroundStyle(.secondary)
-                }
-            }
-
             Section {
                 if backup.isPlus {
                     LabeledContent("Sync", value: "On")
@@ -93,6 +84,15 @@ struct BackupSyncView: View {
                 } else {
                     Button("Sign In to Back Up to Your Account") { showSignIn = true }
                         .accessibilityIdentifier("backup-sign-in")
+                }
+            }
+
+            if backup.place == .phone {
+                Section("Before You Delete the App") {
+                    Text("Deleting Often Enough removes its data from this iPhone. Reinstalling alone does not bring it back.")
+                    Text("Sign in, or save a backup file somewhere outside the app (Files, AirDrop, Mail), first. After reinstalling, choose Restore.")
+                    Text("Offload App in iPhone Settings keeps your data. Delete App removes it.")
+                        .foregroundStyle(.secondary)
                 }
             }
         }

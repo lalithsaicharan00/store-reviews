@@ -73,9 +73,9 @@ final class BackupUITests: XCTestCase {
         openBackup(app)
         XCTAssertTrue(app.staticTexts["Saved only on this iPhone"].exists)
         XCTAssertTrue(shows(app, row: "backup-where", "This iPhone only"))
-        XCTAssertTrue(app.staticTexts["Sync is part of Plus. Your devices talk through your account."].exists)
         XCTAssertFalse(app.buttons["Back Up Now"].exists, "Nowhere to back up to without an account")
-        app.buttons["Save a Backup File"].tap()
+        XCTAssertTrue(app.reveal(app.staticTexts["Sync is part of Plus. Your devices talk through your account."]))
+        app.revealAndTap(app.buttons["Save a Backup File"])
         let shared = app.otherElements["ActivityListView"].waitForExistence(timeout: 10) || app.buttons["Save to Files"].waitForExistence(timeout: 2)
         XCTAssertTrue(shared, "The share sheet opens with the backup file")
     }
@@ -137,7 +137,7 @@ final class BackupUITests: XCTestCase {
 
         openBackup(app)
         XCTAssertTrue(shows(app, row: "backup-where", "Your account (our server)", within: 10), "Signed in: the backup goes to the account")
-        XCTAssertTrue(app.staticTexts["Sync is part of Plus. Your devices talk through your account."].exists, "A free account doesn't sync")
+        XCTAssertTrue(app.reveal(app.staticTexts["Sync is part of Plus. Your devices talk through your account."]), "A free account doesn't sync")
         app.buttons["Back Up Now"].tap()
         let backedUp = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Backed up'")).firstMatch
         XCTAssertTrue(backedUp.waitForExistence(timeout: 30), "The backup is confirmed by the server's checksum")
@@ -194,7 +194,8 @@ final class BackupUITests: XCTestCase {
         XCTAssertEqual(after.json["error"] as? String, "account_deleted", "The other device is told the account is gone")
 
         app.buttons["Done"].tap()
-        XCTAssertTrue(app.buttons["Sign In to Back Up to Your Account"].waitForExistence(timeout: 10), "Signed out here")
+        XCTAssertTrue(app.navigationBars["Backup & Export"].waitForExistence(timeout: 10), "Back on Backup & Export")
+        XCTAssertTrue(app.reveal(app.buttons["Sign In to Back Up to Your Account"]), "Signed out here")
         app.navigationBars["Backup & Export"].buttons.firstMatch.tap()
         XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 10), "This iPhone was erased")
     }
