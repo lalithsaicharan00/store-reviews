@@ -17,7 +17,7 @@ final class AnalyticsUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest", "-empty"]
         app.launch()
-        app.buttons["menu-open"].tap()
+        app.buttons["menu-button"].tap()
         app.buttons["Privacy"].tap()
         let usage = app.switches["privacy-usage"]
         XCTAssertTrue(usage.waitForExistence(timeout: 5))

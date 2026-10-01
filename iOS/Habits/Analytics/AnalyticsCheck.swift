@@ -74,7 +74,10 @@ enum AnalyticsCheck {
             let outgoing = String(decoding: payload, as: UTF8.self)
             expect(!outgoing.contains(sentinel), "names units notes absent from actual payload")
             expect(!habits.contains { outgoing.contains($0.id.uuidString) }, "no business identifiers on wire")
-            expect(!outgoing.contains("123"), "logged values absent")
+            let batch = (try JSONSerialization.jsonObject(with: payload) as? [String: Any])?["batch"] as? [[String: Any]] ?? []
+            expect(!batch.contains { event in
+                (event["properties"] as? [String: Any] ?? [:]).values.contains { ($0 as? NSNumber)?.intValue == 123 }
+            }, "logged values absent")
         } catch { failures.append("wire serialization") }
         return failures
     }

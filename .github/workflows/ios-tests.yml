@@ -68,7 +68,7 @@ jobs:
             fi
           else
             case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests,ProgressUITests,GroupsUITests,UndoUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
-            case "$MESSAGE" in *"[ios-analytics]"*) echo "TESTS=AnalyticsUITests,PersistenceUITests,BackupUITests" >> "$GITHUB_ENV"; echo "PERF_SCENARIOS=menu-open scroll-today new-habit" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=menu-open scroll-today new-habit" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-analytics]"*) echo "TESTS=AnalyticsUITests,PersistenceUITests,BackupUITests" >> "$GITHUB_ENV"; echo "PERF_SCENARIOS=scroll-today tap-today new-habit" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=scroll-today tap-today new-habit" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "TESTS=BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "PERF_TESTS=testBackupPage testMenuOpenClose testScrollToday" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup-ui]"*) echo "TESTS=BackupUITests" >> "$GITHUB_ENV";; esac
@@ -82,8 +82,12 @@ jobs:
           fi
 
       - name: Native analytics contract and outgoing payload checks
+        id: analytics
         if: contains(env.MESSAGE, '[ios-analytics]') || github.event_name == 'workflow_dispatch'
-        run: iOS/Tools/analytics/run_contract_tests.sh
+        run: |
+          set -o pipefail
+          mkdir -p Research/Temp/analytics
+          iOS/Tools/analytics/run_contract_tests.sh 2>&1 | tee Research/Temp/analytics/contract.log
 
       # The speed rules that can be read from the code (iOS/PERFORMANCE.md). Fails the run before any Mac minutes go
       # to building.
@@ -213,6 +217,13 @@ jobs:
             if [ -f perf-xctest/perf-summary.md ]; then
               echo; echo "## Speed through XCTest (screens with no PerfDriver scenario yet; XCTest's work inflates these)"; echo
               cat perf-xctest/perf-summary.md
+            fi
+            if [ -f ../Research/Temp/analytics/contract.log ]; then
+              echo
+              echo '## Native analytics checks'
+              echo '```'
+              tail -100 ../Research/Temp/analytics/contract.log
+              echo '```'
             fi
           } > summary.md
           cat summary.md
