@@ -47,8 +47,10 @@ extension HabitStore {
         if hidden { return widgetSnapshot(now: now, hidden: true) }
         prepareWidgetContext(now: now)
         let first = today(now: now)
-        for habit in habits where !habit.archived {
-            if Task.isCancelled { break }
+        for id in habits.filter({ !$0.archived }).map(\.id) {
+            if Task.isCancelled { return widgetSnapshot(now: now, hidden: true) }
+            // A previous yield may have allowed an edit or deletion; project the current rule.
+            guard let habit = habits.first(where: { $0.id == id && !$0.archived }) else { continue }
             if widgetProjectionCache[habit.id] == nil || timers[habit.id] != nil {
                 widgetProjectionCache[habit.id] = widgetItems(habit, first: first, now: now)
                 await Task.yield()
@@ -125,20 +127,39 @@ extension HabitStore {
         await store.flush()
         guard store.isLoaded, store.isStorageReady, store.problem == nil, !Task.isCancelled else { return }
         let hidden = UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey) || AppLock.isEnabled
-        let snapshot = await store.preparedWidgetSnapshot(hidden: hidden)
+        let ticket = WidgetPublicationOrder.next()
+        var snapshot = await store.preparedWidgetSnapshot(hidden: hidden)
         guard !Task.isCancelled else { return }
+        let currentHidden = UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey) || AppLock.isEnabled
+        if currentHidden != hidden { snapshot = store.widgetSnapshot(hidden: currentHidden) }
         do {
             // Detached I/O avoids encoding and file coordination on the UI thread.
-            try await WidgetSnapshotWriter.shared.write(snapshot, to: testDestination ?? WidgetDisk.url)
+            try await WidgetSnapshotWriter.shared.write(snapshot, to: testDestination ?? WidgetDisk.url, ticket: ticket)
             problem = nil
         } catch { problem = "Widgets couldn't be updated. Open the app and try again." }
     }
 }
 
+@MainActor private enum WidgetPublicationOrder {
+    static var value: UInt64 = 0
+    static func next() -> UInt64 { value &+= 1; return value }
+}
+
 private actor WidgetSnapshotWriter {
     static let shared = WidgetSnapshotWriter()
-    func write(_ snapshot: WidgetSnapshot, to file: URL?) async throws {
+    private var latest: [URL: UInt64] = [:]
+    func write(_ original: WidgetSnapshot, to file: URL?, ticket: UInt64) async throws {
+        guard let file else { throw CocoaError(.fileNoSuchFile) }
+        guard ticket >= (latest[file] ?? 0) else { return }
+        var snapshot = original
+        // A preparation that started before privacy was enabled cannot republish names afterward.
+        let locked = !ProcessInfo.processInfo.arguments.contains("-uitest") && UserDefaults.standard.bool(forKey: "app_lock")
+        if locked || UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey) {
+            snapshot.hidden = true
+            snapshot.frames = snapshot.frames.map { frame in var hidden = frame; hidden.items = []; return hidden }
+        }
         try WidgetDisk.write(snapshot, to: file)
+        latest[file] = ticket
         // Uninstalled widgets need the snapshot for gallery configuration, but no timeline invalidation.
         let reload = await withCheckedContinuation { continuation in
             WidgetCenter.shared.getCurrentConfigurations { result in

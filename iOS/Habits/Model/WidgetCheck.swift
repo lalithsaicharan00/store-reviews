@@ -204,6 +204,26 @@ enum WidgetCheck {
         await sharedPublisher.publish(store)
         expect(sharedPublisher.problem == nil && WidgetDisk.read()?.frames.first?.items.count == store.habits.filter { !$0.archived }.count,
                "Actual app App Group publishes a readable shared snapshot")
+        // Privacy can change while preparation yields to the UI. Both publications must finish
+        // without an older visible projection replacing the newer redacted projection.
+        do {
+            let racingStore = HabitStore(repository: Persistence.inMemory().repository)
+            await racingStore.load(); await WidgetFixture.install(in: racingStore)
+            let visiblePublisher = WidgetPublisher(file: file)
+            let older = Task { await visiblePublisher.publish(racingStore) }
+            await Task.yield()
+            UserDefaults.standard.set(true, forKey: WidgetDisk.privacyKey)
+            await WidgetPublisher(file: file).publish(racingStore)
+            await older.value
+            let privateSnapshot = WidgetDisk.read(from: file)
+            expect(privateSnapshot?.hidden == true && privateSnapshot?.frames.allSatisfy { $0.items.isEmpty } == true,
+                   "Privacy during asynchronous preparation never republishes names")
+            UserDefaults.standard.removeObject(forKey: WidgetDisk.privacyKey)
+            let preserved = privateSnapshot?.generated
+            let cancelled = Task { await visiblePublisher.publish(racingStore) }
+            cancelled.cancel(); await cancelled.value
+            expect(WidgetDisk.read(from: file)?.generated == preserved, "Cancelled publication preserves the last durable snapshot")
+        }
         // A real closed repository exercises the failed commit path, rather than a mock callback.
         let failingPersistence = Persistence.inMemory()
         let failingStore = HabitStore(repository: failingPersistence.repository)

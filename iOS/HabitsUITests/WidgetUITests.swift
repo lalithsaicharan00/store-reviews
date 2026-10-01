@@ -31,7 +31,15 @@ final class WidgetUITests: XCTestCase {
                 let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-free-\(layout)-\(family)"; shot.lifetime = .keepAlways; add(shot)
             }
         }
-        app.switches["widget-plus"].tap()
+        func enable(_ id: String) {
+            let toggle = app.switches[id]
+            if toggle.value as? String != "1" {
+                toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
+            }
+            expectation(for: NSPredicate(format: "value == '1'"), evaluatedWith: toggle)
+            waitForExpectations(timeout: 5)
+        }
+        enable("widget-plus")
         for (layout, families) in pairs.filter({ ["icons", "history"].contains($0.0) }) {
             app.buttons[layout].tap()
             if layout == "history" { app.buttons["select-Widget water"].tap() }
@@ -40,12 +48,12 @@ final class WidgetUITests: XCTestCase {
                 let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-plus-\(layout)-\(family)"; shot.lifetime = .keepAlways; add(shot)
             }
         }
-        app.switches["widget-month"].tap()
+        enable("widget-month")
         for family in ["systemSmall", "systemMedium", "systemLarge"] {
             choose(family)
             let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-plus-month-\(family)"; shot.lifetime = .keepAlways; add(shot)
         }
-        app.switches["widget-dark"].tap()
+        enable("widget-dark")
         let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-dark-history"; shot.lifetime = .keepAlways; add(shot)
     }
     func testGuideAndPrivacyAreFree() {

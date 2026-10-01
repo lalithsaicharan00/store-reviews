@@ -41,10 +41,11 @@ final class WidgetSystemUITests: XCTestCase {
         appRow.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
         // Today is first after the existing Live Activity; choose the medium page before adding.
         springboard.swipeLeft()
-        guard springboard.buttons["Add Widget"].waitForExistence(timeout: 5) else {
+        let confirm = springboard.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Add Widget")).firstMatch
+        guard confirm.waitForExistence(timeout: 5) else {
             save(springboard, "home-widget-add-missing"); XCTFail("Widget gallery has no Add Widget button"); return
         }
-        springboard.buttons["Add Widget"].tap()
+        confirm.tap()
         if springboard.buttons["Done"].waitForExistence(timeout: 5) { springboard.buttons["Done"].tap() }
         save(springboard, "home-widget-installed")
         // Kill the app before tapping: LiveActivityIntent must start the app process in the background.
@@ -64,21 +65,29 @@ final class WidgetSystemUITests: XCTestCase {
     func testLockScreenWidgetPickerAvailability() throws {
         let settings = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
         settings.launch()
-        let wallpaper = settings.cells["Wallpaper"]
-        if !wallpaper.exists { settings.swipeUp() }
-        guard wallpaper.waitForExistence(timeout: 5) else {
+        let wallpaper = settings.buttons["Wallpaper"]
+        for _ in 0..<3 where !wallpaper.isHittable { settings.swipeUp() }
+        var editor = settings
+        if wallpaper.isHittable {
+            wallpaper.tap()
+        } else {
             save(settings, "lock-wallpaper-unavailable")
-            throw XCTSkip("Simulator Wallpaper editor unavailable; actual Lock Screen family installation and interaction need a device")
+            // Some simulator Settings builds omit Wallpaper. Try the real Notification Center
+            // wallpaper editor before reporting the system-host limitation.
+            XCUIDevice.shared.press(.home)
+            editor = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+            editor.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.01))
+                .press(forDuration: 0.1, thenDragTo: editor.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.75)))
+            editor.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.55)).press(forDuration: 2)
         }
-        wallpaper.tap()
-        let customize = settings.buttons["Customize"].firstMatch
+        let customize = editor.buttons["Customize"].firstMatch
         guard customize.waitForExistence(timeout: 5) else {
-            save(settings, "lock-customization-unavailable")
+            save(editor, "lock-customization-unavailable")
             throw XCTSkip("Simulator cannot customize the actual Lock Screen through system accessibility")
         }
         customize.tap()
-        settings.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.32)).tap()
-        save(settings, "lock-widget-picker")
+        editor.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.32)).tap()
+        save(editor, "lock-widget-picker")
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         let hosts = [settings, springboard]
         guard let host = hosts.first(where: { $0.staticTexts["Habits"].firstMatch.exists }) else {

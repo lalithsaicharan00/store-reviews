@@ -80,7 +80,7 @@ jobs:
             case "$MESSAGE" in *"[ios-reminders-recheck]"*) echo "TESTS=RemindersUITests,TasksUITests,BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV"; echo "PERF_TESTS=testRemindersPage" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf-xctest]"*|*"[ios-backup]"*|*"[ios-tasks"*|*"[ios-reminders"*) echo "PERF_XCTEST=true" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
-            case "$MESSAGE" in *"[ios-widgets]"*) echo "PERF_SCENARIOS=scroll-today tap-today widget-log widget-guide" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=widget-log widget-guide" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-widgets]"*) echo "PERF_SCENARIOS=scroll-today tap-today widget-log widget-guide" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=scroll-today tap-today widget-log widget-guide" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf-input]"*) echo "PERF_SCENARIOS=new-habit day-sheet log-sheet" >> "$GITHUB_ENV";; esac
           fi
 
@@ -299,6 +299,7 @@ jobs:
             iOS/test.log
             iOS/summary.md
             iOS/perf/*.log
+            iOS/perf/*.txt
             iOS/perf/perf-summary.md
             iOS/perf-xctest/*.log
             iOS/perf-xctest/perf-summary.md
