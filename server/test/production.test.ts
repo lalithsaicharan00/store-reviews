@@ -1,3 +1,4 @@
+import { createExecutionContext } from "cloudflare:test";
 import { env } from "cloudflare:workers";
 import { CompactSign, importPKCS8 } from "jose";
 import { describe, expect, it } from "vitest";
@@ -27,6 +28,7 @@ async function call(path: string, body: unknown, token?: string) {
   const response = await worker.fetch(
     new Request(`https://api.oftenenough.com${path}`, { method: "POST", headers, body: JSON.stringify(body) }),
     production,
+    createExecutionContext(),
   );
   return { status: response.status, json: (await response.json()) as Record<string, unknown> };
 }
@@ -43,7 +45,7 @@ describe("production", () => {
   });
 
   it("answers its status as production", async () => {
-    const response = await worker.fetch(new Request("https://api.oftenenough.com/v1/status"), production);
+    const response = await worker.fetch(new Request("https://api.oftenenough.com/v1/status"), production, createExecutionContext());
     expect(((await response.json()) as { environment: string }).environment).toBe("production");
   });
 

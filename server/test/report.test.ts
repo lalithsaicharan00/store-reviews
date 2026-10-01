@@ -24,7 +24,7 @@ describe("request metrics", () => {
 
   it("are written for every request, and a broken metrics binding never fails one", async () => {
     const write = vi.fn(() => { throw new Error("dataset down"); });
-    const response = await worker.fetch(new Request("https://api-dev.oftenenough.com/v1/status"), { ...env, METRICS: { writeDataPoint: write } } as unknown as Env);
+    const response = await worker.fetch(new Request("https://api-dev.oftenenough.com/v1/status"), { ...env, METRICS: { writeDataPoint: write } } as unknown as Env, createExecutionContext());
     expect(response.status).toBe(200);
     expect(write).toHaveBeenCalledWith({ blobs: ["GET /v1/status", "200"], doubles: [expect.any(Number)], indexes: ["dev"] });
   });

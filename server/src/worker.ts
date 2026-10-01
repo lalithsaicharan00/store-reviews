@@ -4,6 +4,7 @@ import { deleteBackups, listBackups, readBackup, storeBackup } from "./backup";
 import { adminRoute } from "./admin";
 import { accountStub } from "./stubs";
 import { dailyReport, recordRequest } from "./report";
+import { processConfirmation, retryConfirmations, scheduleConfirmation } from "./email";
 import { deleteSnapshots } from "./snapshots";
 import {
   type Jurisdiction,
@@ -34,14 +35,14 @@ export { Account } from "./account";
 
 /** The Often Enough API (Architecture 06). Every route is under /v1 and answers JSON. */
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const started = Date.now();
     const url = new URL(request.url);
     let response: Response;
     const origin = webOrigin(request, url, env);
     if (request.method === "OPTIONS" && origin) return preflight(origin);
     try {
-      response = await route(request, url, env);
+      response = await route(request, url, env, ctx);
     } catch (error) {
       if (error instanceof HttpError) {
         response = errorResponse(error);
@@ -64,11 +65,11 @@ export default {
 
   /** The daily report (cron `0 6 * * *`, Architecture 06 §10). */
   async scheduled(controller, env, ctx): Promise<void> {
-    ctx.waitUntil(dailyReport(env, controller.scheduledTime));
+    ctx.waitUntil(retryConfirmations(env, controller.scheduledTime).then(() => dailyReport(env, controller.scheduledTime)));
   },
 } satisfies ExportedHandler<Env>;
 
-async function route(request: Request, url: URL, env: Env): Promise<Response> {
+async function route(request: Request, url: URL, env: Env, ctx: ExecutionContext): Promise<Response> {
   const key = `${request.method} ${url.pathname}`;
   if (url.pathname.startsWith("/v1/auth/")) await limitByIp(request, env);
   if (url.pathname.startsWith("/v1/admin/")) return adminRoute(request, url, env);
@@ -106,7 +107,7 @@ async function route(request: Request, url: URL, env: Env): Promise<Response> {
     case "DELETE /v1/backup":
       return backupDelete(request, env);
     case "POST /v1/purchases/verify":
-      return verifyPurchase(request, env);
+      return verifyPurchase(request, env, ctx);
     case "GET /v1/purchases":
       return purchases(request, env);
     case "POST /v1/hooks/apple":
@@ -415,7 +416,7 @@ async function applePurchase(jws: string, env: Env): Promise<PurchaseRecord & { 
 }
 
 /** `{jws}` (Transaction.jwsRepresentation) → the account's entitlements. Safe to repeat. */
-async function verifyPurchase(request: Request, env: Env): Promise<Response> {
+async function verifyPurchase(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const claims = await authenticate(request, env);
   const body = await readJson<{ jws?: unknown }>(request, 64 * 1024);
   const purchase = await applePurchase(requireString(body.jws, "jws", 32 * 1024), env);
@@ -428,6 +429,10 @@ async function verifyPurchase(request: Request, env: Env): Promise<Response> {
   const { appAccountToken: _token, ...record } = purchase;
   const entitlements = await accountStub(env, claims).recordPurchase(record);
   if (!entitlements) throw signedOut();
+  // The one email (Email Delivery Decision): once per purchase, ever, after the answer; it never holds Plus up.
+  if (await scheduleConfirmation(env, record)) {
+    ctx.waitUntil(processConfirmation(env, record.store, record.originalId).catch((error) => console.error(JSON.stringify({ event: "purchase_email_error", error: String(error) }))));
+  }
   // A new access token that says Plus, so sync can start at once without waiting for the next refresh.
   const access = await issueAccessToken({ ...claims, plus: entitlements.plus }, env.TOKEN_KEY);
   return json({ ...entitlements, accessToken: access.token, accessTokenExpiresAt: access.expiresAt });

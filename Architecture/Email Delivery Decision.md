@@ -1,6 +1,6 @@
 # The one email: purchase confirmation
 
-**Accepted 26 Sep 2026; narrowed 27 Sep 2026.** Documentation only; not implemented.
+**Accepted 26 Sep 2026; narrowed 27 Sep 2026. Built 1 Oct 2026** (`server/src/email.ts`, tests in `server/test/email.test.ts`, all §5 checks except real delivery). Sending waits for the Resend key and the verified domain (server/README.md, "The purchase email").
 - **We send exactly one kind of email:** the purchase confirmation, once, to a Plus or Plus Family buyer who has an account.
 - **Removed on 27 Sep 2026:**
   - **Email sign-in (one-time codes).** Accounts are Plus-only, and Plus buyers sign in with Apple or Google ([Accounts §1](<01. Accounts and Identity.md>)).

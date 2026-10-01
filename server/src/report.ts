@@ -39,7 +39,7 @@ export interface DailyReport {
   day: string;
   accounts: { total: number; new: number; deleted: number };
   purchases: { linked: number; new: number };
-  jobs: { snapshotFailures: number };
+  jobs: { snapshotFailures: number; emailsSent: number; emailsFailed: number; emailsWaiting: number };
   requests: null | { total: number; errors: number; errorRate: number; freePlanShare: number; byRoute: { route: string; total: number; errors: number }[] };
   /** Things to look at (snapshot failures, errors above 1%, half the free plan used). */
   warnings: string[];
@@ -64,11 +64,17 @@ export async function buildReport(env: Env, now = Date.now()): Promise<DailyRepo
       linked: await one("SELECT count(*) AS n FROM purchase"),
       new: await one("SELECT count(*) AS n FROM purchase WHERE created_at >= ?", since),
     },
-    jobs: { snapshotFailures: await one("SELECT count(*) AS n FROM job_failure WHERE kind = 'snapshot' AND at >= ?", since) },
+    jobs: {
+      snapshotFailures: await one("SELECT count(*) AS n FROM job_failure WHERE kind = 'snapshot' AND at >= ?", since),
+      emailsSent: await one("SELECT count(*) AS n FROM purchase_email WHERE status = 'sent' AND updated_at >= ?", since),
+      emailsFailed: await one("SELECT count(*) AS n FROM purchase_email WHERE status = 'failed' AND updated_at >= ?", since),
+      emailsWaiting: await one("SELECT count(*) AS n FROM purchase_email WHERE status = 'pending'"),
+    },
     requests: await requestCounts(env as MonitoringEnv),
     warnings: [],
     notes: [],
   };
+  if (report.jobs.emailsFailed > 0) report.warnings.push(`${report.jobs.emailsFailed} purchase confirmation emails couldn't be sent.`);
   if (report.jobs.snapshotFailures > 0) report.warnings.push(`${report.jobs.snapshotFailures} nightly snapshot attempts failed (retried automatically; check the logs).`);
   if (report.requests && report.requests.errorRate > 0.01) report.warnings.push(`Server errors: ${(report.requests.errorRate * 100).toFixed(1)}% of requests (alert level 1%).`);
   if (report.requests && report.requests.freePlanShare >= 0.5) report.warnings.push(`${Math.round(report.requests.freePlanShare * 100)}% of the free plan's daily requests: time for Workers Paid.`);
@@ -109,6 +115,7 @@ export function reportText(r: DailyReport): string {
     `Accounts: ${r.accounts.total} (new and still open ${r.accounts.new}, deleted ${r.accounts.deleted})`,
     `Purchases linked: ${r.purchases.linked} (new ${r.purchases.new})`,
     `Nightly snapshot failures: ${r.jobs.snapshotFailures}`,
+    `Purchase emails: sent ${r.jobs.emailsSent}, failed ${r.jobs.emailsFailed}, waiting ${r.jobs.emailsWaiting}`,
   ];
   if (r.notes.length) lines.push("", ...r.notes);
   if (r.requests) {

@@ -124,6 +124,18 @@ It never overwrites: what's missing or older comes back through the same merge r
 `restore`, and phones receive them on their next sync. The drill (`scripts/restore-drill.mjs`, against dev) restores a
 205-record account into a fresh one and checks a device pulls back every record.
 
+## The purchase email
+
+The one email we send (Architecture/Email Delivery Decision.md), `src/email.ts`: after `/v1/purchases/verify` records a
+purchase under 30 days old, a job is written once per store + purchase ID (`purchase_email`, no account or address in
+it), then sent after the reply. Before sending it rechecks that the account exists, the purchase isn't refunded and
+there's an address; failures retry with the daily cron for 7 days (5 tries). Restores, new accounts and repeated
+verifications find the row and send nothing. Until `RESEND_API_KEY` is set, jobs wait.
+
+To switch it on (needs you): verify `oftenenough.com` in Resend (SPF, DKIM), register the sending domain with Apple's
+Private Email Relay, `wrangler secret put RESEND_API_KEY [--env production]`, optionally `EMAIL_FROM` (default
+`Often Enough <hello@oftenenough.com>`), and send a real purchase to Gmail, Outlook and an Apple relay address.
+
 ## Monitoring
 
 `src/report.ts`. A cron at 06:00 UTC builds the daily report for the last 24 hours: accounts (open, new, deleted),
@@ -142,5 +154,5 @@ To finish setting it up (each needs you, once per environment):
 - **Outside checks:** a free uptime monitor (UptimeRobot, Better Stack) on `https://api.oftenenough.com/v1/status`
   every minute, and Cloudflare notifications for Worker errors. Neither can run from inside Cloudflare itself.
 
-**Not built yet:** Google Play purchases and notifications, Sign in with Apple token revocation (needs the developer account's key), the purchase email, and a WAF rule in front of the Worker. Real Apple and Google sign-in need
+**Not built yet:** Google Play purchases and notifications, Sign in with Apple token revocation (needs the developer account's key), and a WAF rule in front of the Worker. Real Apple and Google sign-in need
 their keys (the Apple Developer account and a Google Cloud OAuth client); everything else is tested with stand-ins.

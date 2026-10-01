@@ -1,3 +1,4 @@
+import { createExecutionContext } from "cloudflare:test";
 import { env, exports } from "cloudflare:workers";
 import { describe, expect, it } from "vitest";
 import worker from "../src/worker";
@@ -45,9 +46,9 @@ describe("the website's calls", () => {
 
   it("production allows only oftenenough.com, never a preview", async () => {
     const production = { ...env, ENVIRONMENT: "production", WEB_ORIGINS: "https://oftenenough.com,https://www.oftenenough.com" } as unknown as Env;
-    const preview = await worker.fetch(new Request("https://api.oftenenough.com/v1/account/delete", { method: "OPTIONS", headers: { origin: "https://3f2a1b.oftenenough.pages.dev" } }), production);
+    const preview = await worker.fetch(new Request("https://api.oftenenough.com/v1/account/delete", { method: "OPTIONS", headers: { origin: "https://3f2a1b.oftenenough.pages.dev" } }), production, createExecutionContext());
     expect(preview.headers.get("access-control-allow-origin")).toBeNull();
-    const site = await worker.fetch(new Request("https://api.oftenenough.com/v1/account/delete", { method: "OPTIONS", headers: { origin: "https://oftenenough.com" } }), production);
+    const site = await worker.fetch(new Request("https://api.oftenenough.com/v1/account/delete", { method: "OPTIONS", headers: { origin: "https://oftenenough.com" } }), production, createExecutionContext());
     expect(site.status).toBe(204);
   });
 });

@@ -167,8 +167,9 @@ One click in Xcode on the Mac: Product → Scheme → Edit Scheme → Run → Op
 | **Backups** | Durable Objects keep 30 days of point-in-time recovery; R2 nightlies cover longer and our own bugs (06 §9) | A cron trigger: for each account changed that day, write its records to R2 (an EU-jurisdiction bucket for EU accounts); keep 90 nightlies then monthly for a year. A support script restores one account into a new object, compares, and merges missing records back as ops. One practice restore, recorded here |
 | **Monitoring** | Know before users do (06 §10) | An outside uptime check on `/v1/status` every minute; alerts on 5xx above 1%; a daily report email through Resend (requests, syncs, new accounts, % of the daily limit, failures). Logs never contain habit content or tokens |
 
-Also before launch: gradual deploys (5% → 25% → 100%), the purchase confirmation email (Resend, with the domain set up
-for Apple's private relay), and `/v1/hooks/apple` tested with Apple's sandbox.
+Also before launch: ~~gradual deploys~~ (done 1 Oct, `npm run release:production`), ~~the purchase confirmation email~~
+(built 1 Oct, `server/src/email.ts`; sending waits for the Resend key, the verified domain and Apple's private relay
+registration), and `/v1/hooks/apple` tested with Apple's sandbox.
 
 ## 5. Running the tests
 
