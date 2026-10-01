@@ -1,0 +1,31 @@
+// The Often Enough API (Architecture/06. Server on Cloudflare.md).
+// Top level = dev (api-dev.oftenenough.com). Production is added as `env.production` when it goes live.
+// Secrets (never in this file): TOKEN_KEY (signs access tokens), TEST_LOGIN_SECRET (dev only: the test sign-in).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "often-enough-api-dev",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "api-dev.oftenenough.com", "custom_domain": true }],
+  "observability": { "enabled": true, "traces": { "enabled": true } },
+  "vars": {
+    "ENVIRONMENT": "dev",
+    // The app's bundle ID: what Apple puts in an ID token's audience.
+    "APPLE_AUDIENCES": "com.oftenenough.app",
+    // Google OAuth client IDs, comma-separated. Empty until the Google Cloud project exists: Google sign-in is off.
+    "GOOGLE_AUDIENCES": ""
+  },
+  "secrets": { "required": ["TOKEN_KEY", "TEST_LOGIN_SECRET"] },
+  "durable_objects": { "bindings": [{ "name": "ACCOUNT", "class_name": "Account" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Account"] }],
+  "d1_databases": [
+    {
+      "binding": "DIRECTORY",
+      "database_name": "often-enough-directory-dev",
+      "database_id": "c1d8f6e8-0169-4918-b99e-40c4bbaf9a47",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

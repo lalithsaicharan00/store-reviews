@@ -1,0 +1,21 @@
+{
+  "name": "often-enough-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "wrangler types --check && tsc --noEmit",
+    "types": "wrangler types",
+    "deploy:dev": "wrangler deploy",
+    "migrate:dev": "wrangler d1 migrations apply DIRECTORY --remote"
+  },
+  "dependencies": {
+    "jose": "^6.2.12"
+  },
+  "devDependencies": {
+    "wrangler": "^4.145.0",
+    "@cloudflare/vitest-plugin": "^1.3.4",
+    "vitest": "^4.1.0",
+    "typescript": "^5.9.0"
+  }
+}
