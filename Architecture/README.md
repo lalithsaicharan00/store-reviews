@@ -31,6 +31,8 @@ SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one a
 
 ## Related work
 
+- **Server, sync and launch: start here:** [what's built and what's next](<Server, Sync and Launch — Status.md>) (branch `claude/server-and-sync`).
+
 - **Parked decisions:** [Backlog.md](Backlog.md).
 
 - **Accepted email behavior:** [The one email: purchase confirmation](<Email Delivery Decision.md>). Decided 26 Sep 2026, narrowed 27 Sep 2026; sent through Resend.

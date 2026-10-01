@@ -1,5 +1,7 @@
 # Often Enough API
 
+> **Picking this up?** Start with [Architecture/Server, Sync and Launch — Status.md](<../Architecture/Server, Sync and Launch — Status.md>): what's next, in order.
+
 The server for Plus accounts: a Cloudflare Worker, one Durable Object per account, and a small D1 directory.
 Design: [Architecture/06. Server on Cloudflare.md](<../Architecture/06. Server on Cloudflare.md>) and
 [01. Accounts and Identity.md](<../Architecture/01. Accounts and Identity.md>).
