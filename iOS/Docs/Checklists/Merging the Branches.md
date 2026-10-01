@@ -63,6 +63,17 @@ old app. Export a backup from the old app (Settings → Backup) and restore it i
 Xcode registers the App Group `group.com.oftenenough.app` on the first install (Signing & Capabilities → App Groups if
 it asks).
 
+## Third round (1 Oct, night): backup, sync and accounts
+
+The user's words, tidied: merge everything except `analytics` (Codex is still on it) into `integration` and `main`,
+so the branches can go; keep this list current. Plan and progress: [Merge and Hardening](<../../../Architecture/Merge and Hardening — Plan and Progress.md>).
+
+| # | Point | Done |
+|---|---|---|
+| T1 | Merge `integration` into `claude/server-and-sync`, keeping both sides | [x] `b8edab4` (decisions in the plan note: one Backup & Export page, one backup file format, schema 7) |
+| T2 | Tests | [x] Server 129, Core (7 migration tests), website, `check_rules.sh`. [ ] iOS: Backup, Sync, Persistence, Onboarding, Today on GitHub |
+| T3 | Move `integration`, then `main`, to the result (fast-forward) | [ ] When T2 passes |
+
 ## Branches to delete (for any agent or person reading this)
 
 This environment can't delete branches on GitHub; delete them there (GitHub → Branches) or with
@@ -81,12 +92,13 @@ should be merged from them.
 | `claude/gracious-newton-exo5ow` | The rename, now in `main`; also inside `claude/server-and-sync` |
 | `claude/integration-check-b` | Temporary: a copy of `integration` so two halves of the tests could run at once |
 | `claude/perf-bisect-habit-page` | Scratch: the habit page with one part left out per speed scenario (`PerfBisect`). Never merge it |
+| `claude/server-and-sync` | Once `main` has it (third round, T3): every commit is in `main` |
+| `claude/serene-wright-mcvmrx` | Nothing beyond `main` (a session's starting branch) |
 | `integration` | Once nobody works on it: `main` is the same |
 
-**Keep:** `main`, `ci-results` (CI writes its results there), every `archive/…` branch, and the two still being worked
-on: **`analytics`** (from `integration`, ahead of it) and **`claude/server-and-sync`**. Each should merge `main` into
-itself before it's merged. server-sync conflicts with `main` in its database files, `AppModel`, `HabitsApp` and
-`ReminderScheduler` (the app's name and IDs already match).
+**Keep:** `main`, `ci-results` (CI writes its results there), every `archive/…` branch, and **`analytics`** (Codex,
+still being worked on). It should merge `main` into itself before it's merged: `main` now has backup, sync and
+accounts (database schema 7, `AppModel`, `HabitsApp`, ≡ → Backup & Export).
 
 ## Not done, and why
 
