@@ -8,6 +8,7 @@ struct BackupExportView: View {
     @State private var sharedDirectory: URL?
     @State private var importing = false
     @State private var importTicket: AnalyticsTicket?
+    @State private var importSurface = UUID()
     @State private var message: BackupMessage?
 
     var body: some View {
@@ -51,6 +52,8 @@ struct BackupExportView: View {
                 if !cancelled { message = BackupMessage(title: "Couldn’t Open the File", text: error.localizedDescription) }
             }
         }
+        .onChange(of: importing) { store.analytics.surface(importSurface, screen: nil, appeared: importing) }
+        .onDisappear { store.analytics.surface(importSurface, screen: nil, appeared: false) }
         .alert(item: $message) { Alert(title: Text($0.title), message: Text($0.text)) }
     }
 

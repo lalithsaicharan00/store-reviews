@@ -169,6 +169,12 @@ jobs:
             | tee test.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
           grep -q "TEST EXECUTE SUCCEEDED" test.log
 
+      - name: Same-build consent-off performance baseline
+        id: perfbaseline
+        if: ${{ !cancelled() && env.PERF == 'true' && contains(env.MESSAGE, '[ios-analytics]') && steps.build.outcome == 'success' }}
+        working-directory: iOS
+        run: PERF_ANALYTICS=0 PERF_PROFILE_SCENARIOS=none Tools/perf/measure_perf_driver.sh "$SIM" perf-baseline
+
       - name: Speed tests
         id: perf
         if: ${{ !cancelled() && env.PERF == 'true' && steps.build.outcome == 'success' }}
@@ -217,6 +223,10 @@ jobs:
             CRASHES=$(python3 Tools/ci/crash_summary.py build.log Habits 2>&1 || true)
             if [ -n "$CRASHES" ]; then
               echo; echo "## App crashes"; echo '```'; echo "$CRASHES" | head -120; echo '```'
+            fi
+            if [ -f perf-baseline/perf-summary.md ]; then
+              echo; echo "## Speed baseline (same build, consent off; no profiler)"; echo
+              cat perf-baseline/perf-summary.md
             fi
             if [ -f perf/perf-summary.md ]; then
               echo; echo "## Speed (the app drives itself, no XCTest attached; compare runs, not absolute numbers)"; echo
@@ -280,6 +290,7 @@ jobs:
             iOS/test.log
             iOS/summary.md
             iOS/perf
+            iOS/perf-baseline
             iOS/perf-xctest
             iOS/screenshots
             iOS/Results.xcresult
@@ -306,6 +317,7 @@ jobs:
             iOS/summary.md
             iOS/test.log
             iOS/perf
+            iOS/perf-baseline
             iOS/perf-xctest
             iOS/screenshots
           retention-days: 7
