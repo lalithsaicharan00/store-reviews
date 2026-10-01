@@ -200,6 +200,7 @@ struct MenuPage: View {
         case .plus: PlusView(fromMenu: true)
         case .backup: BackupExportView()
         case .reminders: RemindersView()
+        case .privacy: PrivacyView()
         case .help, .about: BlankMenuPage(title: place.title)
         default: ComingSoonView(place: place)
         }

@@ -24,6 +24,8 @@ final class AppModel {
     let router = AppRouter()
     /// The ≡ menu and Today's navigation path.
     let menu = MenuModel()
+    /// Lock with Face ID (≡ → Privacy). Off unless turned on.
+    let lock = AppLock()
     private let persistence: Persistence?
     private var loading: Task<Void, Never>?
 

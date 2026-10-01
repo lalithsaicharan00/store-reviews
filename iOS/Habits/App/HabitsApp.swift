@@ -12,6 +12,28 @@ struct HabitsApp: App {
 
     var body: some Scene {
         WindowGroup {
+            root
+                // While locked, or whenever the app isn't in front (so the app switcher never shows the habits).
+                .overlay {
+                    if model.lock.isLocked || (AppLock.isEnabled && scenePhase != .active) {
+                        LockCover(locked: model.lock.isLocked) { Task { await model.lock.unlock() } }
+                    }
+                }
+                .task { await model.lock.appeared() }
+        }
+        .onChange(of: scenePhase) {
+            // Re-plan on every return to the app: a new day, a changed time zone, or a changed permission.
+            if scenePhase == .active && model.store.isLoaded { model.scheduler.scheduleReconcile(model.store) }
+            // Taps are shown before they're written. Leaving the app, ask iOS for the time to finish every queued
+            // write, so a tap made just before switching away is never lost (30 Sep).
+            if scenePhase == .background { finishWrites() }
+            // Leaving locks the app (when the lock is on); coming back asks once.
+            if scenePhase == .background { model.lock.lock() }
+            if scenePhase == .active { Task { await model.lock.appeared() } }
+        }
+    }
+
+    @ViewBuilder private var root: some View {
             #if DEBUG
             if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
@@ -21,14 +43,6 @@ struct HabitsApp: App {
             #else
             today
             #endif
-        }
-        .onChange(of: scenePhase) {
-            // Re-plan on every return to the app: a new day, a changed time zone, or a changed permission.
-            if scenePhase == .active && model.store.isLoaded { model.scheduler.scheduleReconcile(model.store) }
-            // Taps are shown before they're written. Leaving the app, ask iOS for the time to finish every queued
-            // write, so a tap made just before switching away is never lost (30 Sep).
-            if scenePhase == .background { finishWrites() }
-        }
     }
 
     private func finishWrites() {
