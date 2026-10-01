@@ -62,7 +62,7 @@ From 264 reviews read (187 on topic, 33 apps).
 | of those, name their own cloud (Drive, iCloud, Dropbox) | 33 | | | Default to their own cloud when there is no account |
 | of those, name a Google account or "login" | 23 | | | An account is a natural place for those who want one |
 | **Ask to *choose* where the backup goes** | **2** | 2 | 4.00 | No choice screen; the choice lives in Settings |
-| Import or move to a new device failed or was confusing | 21 | 11 | **2.38** | Foolproof move and import (§4.7) |
+| Import or move to a new device failed or was confusing | 21 | 11 | **2.38** | Foolproof move and import (§4.8) |
 | Ask how to move to a new phone or tablet | 15 | 11 | 3.87 | "Move to another device" in Settings; "I've used this before" at first launch |
 | Use backups as manual sync, and hate it | 12 | 7 | 4.08 | Say plainly that backup ≠ sync; never make backup look like sync |
 | Want sync through iCloud or Dropbox | 11 | 3 | 4.18 | Sync only through our server; their cloud is for backup |
@@ -149,7 +149,7 @@ From 264 reviews read (187 on topic, 33 apps).
 **iPhone and iPad without an account:**
 - Every night (and after big changes, at most every few hours) the app writes the checked backup file to **its own hidden folder in the user's iCloud Drive**. That is their storage; we can't see it.
 - No question is asked. The app has its own switch in the iPhone's iCloud settings, so people stay in control there.
-- If iCloud is signed out, off for our app, or full, the backup stays on the phone. Settings shows "Backed up only on this phone" with the exact fix ("iCloud is full: free up space"). No pop-up.
+- If iCloud is signed out, off for our app, or full, the backup stays on the phone, and the user is told plainly (§4.4).
 
 **Android without an account:**
 - **Android's own backup** (Google) includes our data automatically if the user's Google backup is on. That is the default on most phones. We can't confirm it ran, so Settings words it as "Your phone's Google backup includes Often Enough (if it's on)".
@@ -182,16 +182,32 @@ SYNC — the same habits on all your devices
 - **"Where" lists only what exists for this person:**
   - with an account: Your account (our server) · Your iCloud / Google Drive only · This phone only;
   - without one: Your iCloud / Google Drive · This phone only · [Sign in to back up to your account].
-- **Switching to "iCloud / Google Drive only" with an account** says what happens: "Your habits will be removed from our server and kept only in your iCloud. Sync can't work without the server (§4.6). [Switch] [Cancel]".
-- The status uses plain words and real times, and turns red only for real failures (full storage, 3 nights with no good backup).
+- **Switching to "iCloud / Google Drive only" with an account** says what happens: "Your habits will be removed from our server and kept only in your iCloud. Sync can't work without the server (§4.7). [Switch] [Cancel]".
+- The status uses plain words and real times, and turns red only for real failures (§4.4).
 
-### 4.4 Making an account (optional, free)
+### 4.4 When a backup can't be saved (storage full, iCloud off)
+
+**Rule (first principles, and 03 rule 8: alerts only for real failures):** a backup that isn't happening is never hidden. Settings always says so, and the user hears about it once, calmly.
+
+| What fails | What the user sees |
+|---|---|
+| **Their main backup:** iCloud or Google Drive full, iCloud off for our app, Drive access removed | **Settings → Backup & Sync** turns red at once: "**Not backed up since 28 Sep · Your iCloud is full.** Your habits are safe on this phone, but not anywhere else." with [How to free up space] and [Back up to your account instead].<br>**After 2 nights in a row with no good backup**, one card at the top of Today (not a pop-up): "**Your habits haven't been backed up for 2 days. Your iCloud is full.** [Fix it] · [Not now]". "Fix it" opens the Settings screen above. "Not now" hides the card; it comes back only if the backup is still failing **30 days** later. The red status in Settings stays until it's fixed |
+| **Their second copy only** (an account backs up to our server, and the extra iCloud copy is full) | Only a grey line in Settings: "Copy in your iCloud: paused, iCloud is full". No card, because their main backup is fine |
+| **Our server** (an account's main backup) | Our server doesn't fill up for one person: a copy is a few hundred KB. If it fails anyway (outage, no internet for days), the same red status and the same one card after 2 nights. Short outages never show anything |
+| **The phone itself is full** | "Your phone is full. Changes can't be saved." at once, because new check-ins could be lost ([03 §3.7](<../../../Architecture/03. Backup and Restore.md>)) |
+| **Android's own Google backup is off** | We can't see it (no API), so nothing is shown. The Drive copy, if turned on, is checked like any other |
+
+- **The fix offered matches what failed:** for a full iCloud, Apple's steps to free space or buy more; for a removed Drive permission, [Reconnect Google Drive].
+- **[Back up to your account instead]** is offered only here, where it solves a real problem. It is never an upsell: a free account is enough.
+- **When it works again,** the red status turns back to "Backed up · just now" and the card disappears. No "success" pop-up.
+
+### 4.5 Making an account (optional, free)
 
 **Offered only where it helps, never as a nudge:**
 - in Settings → Backup & Sync ("Sign in to back up to your account");
 - on "I've used this before" (§4.1);
-- when they add a second device (§4.5);
-- in the Plus purchase flow (§4.6).
+- when they add a second device (§4.6);
+- in the Plus purchase flow (§4.7).
 
 **What the sign-in sheet says (one screen):**
 - "Sign in with Apple / Google. Your habits are backed up to your account every night, so a new phone just needs a sign-in. Sync between devices comes with Plus."
@@ -200,16 +216,16 @@ SYNC — the same habits on all your devices
 
 After sign-in, nothing else changes on screen. The status line becomes "Backed up · your account".
 
-### 4.5 A second device on the free plan
+### 4.6 A second device on the free plan
 
 | Case | What the second device shows |
 |---|---|
 | **No account, iPhone → iPad on the same Apple Account** | First launch, "I've used this before": **"Copy your iPhone's habits here once? They won't stay in sync: on the free plan each device keeps its own habits. [Copy once] [Start fresh] · Same habits on both, kept in sync: Plus"** |
-| **No account, any other pair** (Android tablet, a different Apple Account) | "I've used this before → Import a file". On the old device, Settings → **Move to another device** sends the file (§4.7) |
+| **No account, any other pair** (Android tablet, a different Apple Account) | "I've used this before → Import a file". On the old device, Settings → **Move to another device** sends the file (§4.8) |
 | **Free account, signs in on the second device** | **"Your account is on the free plan, so your devices don't sync. [Copy my habits here once] (from last night's backup) [Start fresh] · Same habits on both, kept in sync: Plus"** |
 | After that, ticking on one device | The other device doesn't change. Settings → Sync says "Sync is part of Plus". Nothing pops up |
 
-### 4.6 Buying Plus: no "do you want sync?"
+### 4.7 Buying Plus: no "do you want sync?"
 
 | Situation at purchase | What happens after "Purchase complete" |
 |---|---|
@@ -218,7 +234,7 @@ After sign-in, nothing else changes on screen. The status line becomes "Backed u
 | **Has an account but chose "iCloud / Google Drive only"** | One honest line under the celebration, because they made this choice themselves: **"Sync needs your habits on our server, and you chose iCloud only. Plus works fully on this phone and your Watch. [Turn on sync] · Keep iCloud only"** |
 | **Phone + Watch only** | Works in every case. The Watch syncs through the phone, no server needed ([07 §4](<../../../Architecture/07. Other Surfaces.md>)) |
 
-### 4.7 Moving without an account
+### 4.8 Moving without an account
 
 **Settings → Backup & Sync → Move to another device:**
 1. **"Is the new device using the same Apple Account?"** If it is an iPhone or iPad on the same account: "Nothing to do: open Often Enough there and choose 'I've used this before'. Your iCloud backup is waiting."
@@ -231,7 +247,7 @@ After sign-in, nothing else changes on screen. The status line becomes "Backed u
 - it shows what's inside before changing anything; Replace or Merge; undo for 30 days (03 §3.6);
 - an import that adds nothing says why, never "success" with an empty screen (`P3#14530`).
 
-### 4.8 Reinstall, new phone, lost phone
+### 4.9 Reinstall, new phone, lost phone
 
 | Situation | No account | With an account |
 |---|---|---|
@@ -257,10 +273,10 @@ After sign-in, nothing else changes on screen. The status line becomes "Backed u
 
 | Case | Behaviour |
 |---|---|
-| iCloud is full | The phone keeps snapshots; Settings shows "Backed up only on this phone · iCloud is full". No pop-up |
+| iCloud or Drive is full | Red status in Settings at once; one card on Today after 2 nights; again only after 30 days if still failing (§4.4) |
 | Signs in on the first device while the iCloud copy is on | Both run. The status names both |
 | Free account, deletes the account | Server data deleted (09 §7). The iCloud or Drive copy stays theirs |
-| Plus with "iCloud only", later adds an iPad | The iPad sign-in shows the line from §4.6 with [Turn on sync] |
+| Plus with "iCloud only", later adds an iPad | The iPad sign-in shows the line from §4.7 with [Turn on sync] |
 | Two free devices, then buys Plus and signs in on both | The habits merge by ID with a preview; same-name habits can be combined (07 §7.1) |
 | Turns off backup completely | Allowed in Settings, with a plain line: "If this phone is lost, your habits are lost." |
 | A family member on the same Apple Account | They see "We found your backup in iCloud" on their device. Restoring is always a choice, never automatic, and shows the device name |
