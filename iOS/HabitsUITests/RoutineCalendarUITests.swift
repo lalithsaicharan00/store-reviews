@@ -186,7 +186,8 @@ final class RoutineCalendarUITests: XCTestCase {
         app.buttons["Start Anytime routine"].tap()
         app.buttons["focus-primary"].tap()
         XCTAssertTrue(app.buttons["focus-undo"].waitForExistence(timeout: 3))
-        app.buttons["Finish routine"].tap()
+        // The up-next pill and the main button both say "Finish routine": tap the main one.
+        app.buttons["focus-primary"].tap()
         app.buttons["Done"].tap()
         XCTAssertFalse(app.buttons["Start Anytime routine"].exists)
         openCalendar()

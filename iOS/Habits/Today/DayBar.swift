@@ -94,6 +94,9 @@ struct CalendarSheet: View {
                 }
                 .padding(.bottom, 8)
             }
+            .onPerfCommand { action in
+                if action == .previousMonth { moveMonth(-1) } else if action == .nextMonth { moveMonth(1) }
+            }
             .navigationTitle("Go to a day")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -103,39 +106,20 @@ struct CalendarSheet: View {
     }
 
     private func dayButton(_ day: LocalDay) -> some View {
-        let summary = store.daySummary(on: day)
+        let score = store.todayScore(on: day)
+        let summary = (done: score.done, total: score.planned)
         let future = day > today
-        let progress = summary.total == 0 ? 0 : Double(summary.done) / Double(summary.total)
+        // Part credit fills the ring part of the way (a 6 of 8 glasses day), as on Progress (report §16.4).
+        let progress = score.fraction
         return Button { pick(day) } label: {
-            ZStack {
-                // A circle, like the rings: every shape on this screen is round.
-                Circle()
-                    .fill(day == selected ? Color(.secondarySystemFill) : .clear)
-                if summary.total > 0 {
-                    Circle().stroke(Color.ink.opacity(future ? 0.07 : 0.12), lineWidth: 3)
-                    if !future && progress > 0 {
-                        Circle().trim(from: 0, to: progress)
-                            .stroke(Color.ink, style: StrokeStyle(lineWidth: 3, lineCap: .round))
-                            .rotationEffect(.degrees(-90))
-                    }
-                }
-                Text(String(day.day)).font(.callout.weight(day == today || day == selected ? .bold : .medium))
-                    .foregroundStyle(future ? Color.secondary : Color.ink)
-            }
-            .frame(width: 38, height: 38)
+            DayRing(fraction: progress, planned: summary.total > 0, isFuture: future, label: String(day.day),
+                    bold: day == today || day == selected, selected: day == selected,
+                    full: summary.total > 0 && summary.done == summary.total)
             // A dot under days with a note, so notes can be found again (users show: Habit Hub's shading).
             .overlay(alignment: .bottom) {
                 if store.hasNotes(on: day) {
                     Circle().fill(Color.secondary).frame(width: 4, height: 4).offset(y: 6)
                         .accessibilityHidden(true)
-                }
-            }
-            .overlay(alignment: .topTrailing) {
-                if summary.total > 0 && summary.done == summary.total && !future {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 11, weight: .bold)).foregroundStyle(Color.ink)
-                        .background(Circle().fill(Color(.systemBackground)))
-                        .offset(x: 2, y: -2)
                 }
             }
             .frame(maxWidth: .infinity, minHeight: 44)
@@ -174,8 +158,7 @@ struct BackToTodayButton: View {
                     .foregroundStyle(Color.onInk)
                     .padding(.horizontal, 18)
                     .frame(height: 44)
-                    .background(Capsule().fill(Color.ink))
-                    .shadow(color: .black.opacity(0.15), radius: 6, y: 2)
+                    .background(Capsule().fill(Color.ink).shadow(color: .black.opacity(0.15), radius: 6, y: 2))
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier(id)

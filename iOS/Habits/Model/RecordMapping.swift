@@ -7,9 +7,13 @@ extension LocalDay {
     nonisolated var key: String { String(format: "%04d-%02d-%02d", year, month, day) }
 
     nonisolated init?(key: String) {
-        let parts = key.split(separator: "-").compactMap { Int($0) }
-        guard parts.count == 3 else { return nil }
-        self.init(year: parts[0], month: parts[1], day: parts[2])
+        let parts = key.split(separator: "-", omittingEmptySubsequences: false)
+        guard parts.count == 3, parts.allSatisfy({ !$0.isEmpty && $0.utf8.allSatisfy { (48...57).contains($0) } }), let year = Int(parts[0]), let month = Int(parts[1]), let day = Int(parts[2]),
+              (1...9999).contains(year), (1...12).contains(month) else { return nil }
+        let leap = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)
+        let days = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        guard (1...days[month - 1]).contains(day) else { return nil }
+        self.init(year: year, month: month, day: day)
     }
 }
 
@@ -117,13 +121,13 @@ extension Habit {
 extension Entry {
     var record: EntryRecord {
         EntryRecord(id: id.uuidString, habitId: habitID.uuidString, stepId: stepID?.uuidString, day: day.key,
-                    value: value, createdAt: createdAt.millis, timeZone: timeZone, deletedAt: nil, slot: slot)
+                    value: value, createdAt: createdAt.millis, timeZone: timeZone, deletedAt: nil, slot: slot, source: source?.rawValue)
     }
 
     init?(record r: EntryRecord) {
         guard let id = UUID(uuidString: r.id), let habit = UUID(uuidString: r.habitId), let day = LocalDay(key: r.day) else { return nil }
         self.init(id: id, habitID: habit, stepID: r.stepId.flatMap(UUID.init(uuidString:)), day: day,
-                  value: r.value, createdAt: Date(millis: r.createdAt), timeZone: r.timeZone, slot: r.slot)
+                  value: r.value, createdAt: Date(millis: r.createdAt), timeZone: r.timeZone, slot: r.slot, source: r.source.flatMap(EntrySource.init(rawValue:)))
     }
 }
 

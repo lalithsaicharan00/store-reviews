@@ -31,10 +31,12 @@ This is the short list of what the iPhone app can do today. The reasons behind e
 ## Reminders
 
 - [x] Off by default; one per chosen time of day, more can be added
-- [x] Notification or Alarm (AlarmKit, iOS 26+; the alarm has a Done button)
+- [x] Notification or Alarm (AlarmKit, iOS 26+; checks/tasks offer Done, amounts offer their saved increment; timers/checklists have no misleading Done action)
 - [x] Remind Again if not done (every 15, 30 or 60 min, up to 3 more)
 - [x] Actions in the notification: Done, "+1 glass"
 - [x] A reminder stops once the habit is done
+- [x] Native Reminders page: saved rules, item editing, permission status and recovery without an opening prompt (sidebar: Actions build, 15 UI checks and performance probe passed; see the checklist)
+- [x] Serialized scheduling, nearest-first capacity, notification fallback for failed alarms, idempotent actions, wall-clock/DST handling and visible scheduling errors
 
 ## Today
 
@@ -48,6 +50,9 @@ This is the short list of what the iPhone app can do today. The reasons behind e
 - [x] Past days can be filled in
 - [x] Edit Times of Day from Today
 - [x] Hidden on days a habit isn't scheduled
+- [x] A "3 times a week" (or monthly) habit counts as done for the day once ticked that day: "N left", the ✓ group, reminders, the routine player's segments and the day bar; each ✓ still adds one toward the week (30 Sep 2026)
+- [x] A daily limit isn't "met" before the day ends; its streak counts today only once the day is over (30 Sep 2026)
+- [x] The day bar and calendar rings give part credit (a 6 of 8 glasses day fills its ring part of the way)
 
 ## Editing a habit
 
@@ -94,11 +99,52 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 
 ## All Habits and the habit page
 
-- [x] ☑︎ on Today opens All Habits: Habits, Quitting, Tasks and Archived
+- [x] ☑︎ on Today opens All Habits: Habits, Quitting, Tasks and Archived *(superseded 30 Sep: ≡ → Habits (Habits, Quitting, Archived) and ≡ → Tasks)*
 - [x] Swipe to Archive / Restore or Delete (Delete asks, and offers Archive Instead)
 - [x] Select several to pause, archive or delete; drag to reorder (Today follows)
 - [x] Archiving keeps all history and frees a free slot
 - [x] Habit page: its sentence and description, streak, best, done this month, a month calendar of its days, notes, Edit, Pause / Resume, Archive, Delete
+- [x] Habit page, Progress Phase 1 (30 Sep 2026): a total line under the numbers ("213 days done since 12 Mar 2025"), tap a calendar day for its value and note, and **Over Time** for every type but quit: Week · Month · Year · All, the type's numbers, a count bar (Done · Part done · Not done · Skipped · Paused), a chart with the goal line, By Step for checklists, a running total against a pace line for week and month totals, footnotes when the goal changed
+- [x] Habit page, Progress Phase 2 (30 Sep 2026): a Year grid (tap a month to open it in the calendar), Runs (the five longest, Show All), By Weekday and the 30-day rate in Over Time
+- [x] Quit habits (30 Sep 2026): **Log a Slip…** (long-press the row, or on its page): when it happened and an optional note, saved as its own event, with Undo; a live clock, best run, "54 clean days since … · 2 slips", the next milestone, Over Time (slips, clean days, longest and average run, a runs chart, the slips list, milestones reached); optional "What It Costs a Day" and "Saved so far"
+- [x] Archiving keeps an archive date: the days after it don't count, and Restore turns the archived stretch into a pause
+
+## The ≡ menu (final, 30 Sep 2026)
+
+- [x] ≡ at the top left (replaces the avatar); Today's top bar is ≡ · Filter · +
+- [x] Slides in over Today: opens with ≡ or a swipe from the left edge; closes with a tap on Today, a drag left, or a row
+- [x] Most used first: Today · Progress · Habits · Tasks, then Times of Day · Reminders · Appearance, Backup & Export · Privacy, Plus, Help & Feedback · About
+- [x] Wired: Progress, Habits, all saved Tasks with creation and editing, Times of Day, Day and Week, Appearance, Reminders, Backup & Export, Plus. Help & Feedback and About are blank as requested
+
+## Progress (≡ → Progress; Phase 1, 30 Sep 2026)
+
+- [x] Week and Month with ‹ ›, opening on the current one; ‹ stops at the first habit's start
+- [x] Overview: a ring per day (planned habits done, with part credit), three numbers (Done of planned, Full days, Weekly or Monthly goals met), and the last period's line
+- [x] A row per habit with its week marks or month dots and its type's own words ("4 of 5 days · 80%", "2 of 3 so far", "46 glasses · 5 of 7 days", "Avg 1 cup a day · limit 3 cups"); Quitting and Archived sections
+- [x] Tap a day: the Day sheet (each habit's mark and value, notes) with Show on Today; tap a habit: its page at Over Time
+- [x] How It's Counted with the legend; view options Show Percentages and Show Streaks (streaks also on Today's rows and the habit page)
+- [x] Nothing is counted against anyone: skipped, paused, archived and not-its-day days are neutral; a weekly goal's empty day is never "not done"; a limit is judged when the day ends
+- [x] Checked in the app with 17 golden cases (`-progresscheck`) and `ProgressUITests`, both in `[ios-ci]`
+- [x] Phase 2 (30 Sep 2026): Year (a grid of day dots; tap a month to open it; each row its own year grid); Quitting rows with the run ticking once a minute, best run, slips in the period and a clean-day strip
+- [x] Phase 3 (30 Sep 2026): View Options → Full Day (All Done, 80%, 60%); Year → Share: a picture of the year
+- [x] Group stats (30 Sep 2026): chips under the range control filter every number; with All, a Groups card (a bar per group, in the groups' order) and the habits under their group's heading
+
+## Groups (30 Sep 2026; Build Plan #68)
+
+- [x] Optional and invisible until the first one: Today's Filter (beside +) explains them and has + New Group
+- [x] Filter: chips All · ● Health 5 · ● Mind 0 · ○ Reading – (the number is how many habits it shows on the day open), empty groups last, Edit on the Groups heading
+- [x] Filtered Today: the Filter icon fills, a "● Health ✕" chip at the top clears it, every card (Quitting and Paused too) shows only the group, Start plays only what's shown, "Nothing from Home on this day" with Show All; remembered when the app reopens
+- [x] One editor: rename, recolour, pick habits (one group per habit: "Moves from Mind"), Pause These Habits…, delete (habits stay, with no group); drag for your own order or Sort A to Z
+- [x] Habit form: a Group row beside Time of Day once a group exists, with New Group; a habit added while Today is filtered starts in that group
+- [x] Habits page (≡ → Habits): one section per group, then No Group
+- [x] Checked with golden case G18 (`-progresscheck`) and `GroupsUITests` (in `[ios-ci]`)
+
+## Backup & Export (free)
+
+- [x] Native CSV and complete SQLite backup sharing, including tasks, archived history, notes and settings
+- [x] Restore on an empty or existing installation; current edits/deletions win and repeated restore adds nothing twice
+- [x] Validate files before merging, reject corrupt/newer/invalid data and keep timers stopped on restore
+- [x] External backup/restore is free; Delete App removes local data, while Offload keeps Documents & Data
 
 ## Routine player (▶ Start on a time of day)
 
@@ -110,6 +156,29 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Summary at the end
 - [x] Fast: Today stops drawing behind the player
 
+## Ticking off and folding (1 Oct 2026, branch `animations-and-settings`)
+
+- [x] A tick answers at once in the button: it fills, the ✓ pops, the row's colour sweeps across (#58)
+- [x] Haptics: a light tap per log, a "success" when a habit is done; only from the tap, never from changing the day
+- [x] Done rows stay where they were tapped and sink below the rest once you pause (1.5 s), all together; a finished time of day folds then too, not under your finger
+- [x] Time of day folds and opens in one short spring; folding one part redraws only that part (#59)
+- [x] Reduce Motion: no pop, no sweep, no slide; changes fade
+
+## Settings (1 Oct 2026, branch `animations-and-settings`)
+
+- [x] ≡ → Appearance: Theme (Automatic, Light, Dark); Done Habits (Move to Bottom, Stay in Place); Haptics (on); Sound When Done (off, a soft chime that follows the silent switch)
+- [x] ≡ → Day and Week: New Day Starts At (Midnight to Noon); Week Starts On (Automatic or any day)
+- [x] 12/24-hour clock follows the iPhone everywhere (no app setting); daylight saving and travel need no setting: "today" is worked out on the wall clock (fixed an hour-off on the nights the clocks change)
+
+## From the earlier feature branch (rebuilt on the current app, 1 Oct 2026)
+
+- [x] Lock with Face ID (≡ → Privacy): the iPhone's own Face ID, Touch ID or passcode, never a separate code; a cover whenever the app isn't in front; the switch changes only after Face ID works
+- [x] Siri and Shortcuts: Log a Habit, What's Left Today, Get Habit Progress, Open a Habit; found by ID, so renaming a habit keeps a shortcut working
+- [x] Milestones: "30 days in a row" or "All 5 done today" beside the row's Undo when a tap reaches it, and a Milestones card on the habit page (Show Streaks off hides them); never a pop-up
+- [x] Asking for a review: only Apple's own request, after a week of use, at the tap that finishes today, once per version and 120 days apart
+- [x] First run: the empty Today offers New Habit and Restore from a Backup File
+- [x] Checked with golden cases G19 and G20 (`-progresscheck`)
+
 ## Under the hood
 
 - [x] Data saved on the phone (SQLite through the Kotlin shared core), survives closing the app
@@ -117,9 +186,7 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 
 ## Not built yet (Build Plan order)
 
-- [ ] Easy undo after checking or logging
-- [ ] Completion animation before a done row moves down
-- [ ] Section open and close animation
-- [ ] Progress and statistics screens
-- [ ] Settings and account
-- [ ] Sync, backup, widgets, Apple Watch, iPad, Apple Health
+- [ ] Settings still to build: support and About content, restore purchase, Erase All Data in Privacy (theme, day start, week start, free export, backup and restore, Reminders and the app lock are built)
+- [ ] Home-screen and lock-screen widgets (waits for the App Group and the app's new name; see `Docs/Checklists/Merging the Branches.md`)
+- [ ] Plus: purchase, account, sync and server backup
+- [ ] Apple Watch, iPad, Apple Health

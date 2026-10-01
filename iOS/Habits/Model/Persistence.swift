@@ -47,7 +47,7 @@ final class Persistence {
         if fm.fileExists(atPath: database.path), stored < current {
             try copyAside(database, to: backupsDir, name: "before-schema-\(current)-\(Self.stamp())")
         }
-        return Persistence(repository: HabitRepository.companion.open(path: database.path), backups: backupsDir)
+        return Persistence(repository: try HabitRepository.companion.open(path: database.path), backups: backupsDir)
     }
 
     /// Call after the first successful load: the schema on disk is now current.

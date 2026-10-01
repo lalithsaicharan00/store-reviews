@@ -1,0 +1,30 @@
+# Groups
+
+Written by Claude (Claude Code), 30 September 2026. Branch: `progress-page-research`. Plan: [Groups — What to Build](<../Specs/Groups — What to Build.md>).
+
+**Context (the user's words, tidied):** build the groups feature. Research how groups should work; there are probably research reports already, and if not, research what people expect, praise and complain about, where in the app groups belong, and whether they're in several places and how. Write a detailed plan, then build it. Schedule a message 3 hours 27 minutes out to carry on. Then build the group stats on Progress. Make everything fast.
+
+| # | Point | Done |
+|---|---|---|
+| U1 | Research how groups should work: use the existing reports first, new research only if something is missing | [x] The reports already cover it (2,228 group reviews hand-coded, plus the Filter, counts, order and navigation reports); put together in the plan's §1–2, no new mining needed |
+| U2 | What people expect, what they praise, what they complain about | [x] Plan §1: 933 asks, 668 praise, 474 friction (can't edit 110, colours 83, order 70, caps 70, bugs 66, forced presets 48), the two risks, filter vs tabs vs headings, group stats |
+| U3 | Where groups live in the app; if in several places, how each place works | [x] Plan §2: Today's Filter (home), filtered Today, the one editor, the habit form, Habits by group, Progress; not the ≡ menu |
+| U4 | A detailed plan, written before building | [x] [Groups — What to Build](<../Specs/Groups — What to Build.md>) |
+| U5 | Build groups in the app once the plan is done | [x] `Habits/Groups/`, `HabitStore+Groups.swift`, Today, the habit form, Habits; commit 54ad3f4 |
+| U6 | A message scheduled 3 h 27 min out to carry on | [x] Scheduled 30 Sep (Routine `trig_01UhQmW97bQ6VEEiHrdsEXap`, fires 1 Oct 02:52 UTC) |
+| U7 | Group stats on Progress | [x] Chips, the Groups card, habits under their group, the Day sheet per group; golden case G18 |
+| U8 | Everything fast (measured on GitHub) | [x] Today, Habits, the habit page and the calendar unchanged (Today taps 12–14% busy, scrolling 6%). Progress, switching group chips, Week, Month and Year non-stop with 30 habits and two years: 16–29% busy on steady runners (59% on a slow one, where every screen was 2–4× higher). Chip counts are worked out only while Filter is open; Today filters with one lookup per habit; group day scores come from the same pass as All's |
+
+## Results (GitHub, 1 Oct 2026)
+
+| Run | What | Result |
+|---|---|---|
+| 54ad3f4 | First build: Today, Timer, Progress, Groups; speed | Builds. Speed fine (Progress 15.6% busy switching group chips, ranges and periods non-stop). 3 test failures: two Groups tests picked a done habit and scrolled Today's list instead of the group form; Progress's "This week" was kept past midnight |
+| fa95797 | Progress gets new numbers on a new day; the tests fixed | Progress 10/10; Groups 4/5: tapping ✕ on the filter chip didn't clear the filter |
+| 97980f8 | The filter chip in a bar pinned above Today's list | **Groups 5/5, Today 3/3.** A list row holding one button made the whole row that button, so a tap beside the chip did nothing (a person tapping there too); now the chip is its own button and stays in sight while scrolling |
+
+| 97980f8, 30f3116 | Speed only; then All's and every group's day scores in one pass | Progress 28.9% busy (9.2% building numbers for periods and groups not seen yet), then 59% on a slower runner (habit page 25%, calendar 19% on the same run). Progress, Groups green |
+
+**Speed, honestly:** in the first groups run, building Progress's numbers was 0.5% of its time; in later runs 7–10%. The code between them only added the day to the cache key, which can't cause a rebuild, and the runners vary 2–4× between runs, so it isn't settled. The page still answers taps: nothing is worked out while drawing, and each period and group is built once and kept.
+
+**Bugs found and fixed:** the ✕ chip (above); Progress kept "This week" from before midnight until something changed.

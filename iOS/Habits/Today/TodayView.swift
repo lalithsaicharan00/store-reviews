@@ -1,13 +1,15 @@
+import StoreKit
 import SwiftUI
 
 /// The home screen: today's habits, one card per part of the day.
 struct TodayView: View {
     @Environment(HabitStore.self) private var store
     @State private var day: LocalDay?
-    /// Parts the user folded or opened by hand; others follow the default rule.
-    @State private var foldOverrides: [String: Bool] = [:]
+    /// Parts and checklists the person opened or folded, and done rows held in place until a pause (#58, #59).
+    /// One box per part, so folding one part redraws only that part.
+    @State private var layout = TodayLayout()
+    @AppStorage(Preferences.doneOrder) private var doneOrder = DoneOrder.bottom.rawValue
     @State private var showSections = false
-    @State private var openSteps: Set<UUID> = []
     @State private var routine: RoutineSession?
     /// The routine player has finished opening over Today. Until it closes, Today draws nothing: its rows,
     /// streaks and toolbar were recalculated behind the player on every tap and tick, which made the player lag
@@ -20,7 +22,9 @@ struct TodayView: View {
 
     @State private var showCalendar = false
     @State private var showNewHabit = false
-    @State private var showAllHabits = false
+    @State private var showFilter = false
+    /// The group Today shows ("" is All), remembered when the app reopens (Navigation, Round 3; groups spec §2).
+    @AppStorage(GroupFilter.today) private var groupRaw = ""
     /// The habit just added, revealed once the sheet closes.
     @State private var added: UUID?
     /// A row or header to scroll to, and the row that flashes briefly after Add.
@@ -31,10 +35,16 @@ struct TodayView: View {
     /// not every section (30 Sep).
     @State private var visibleRows = VisibleRows()
     @Environment(AppRouter.self) private var router
+    /// The ≡ menu. Today only writes to it (opening it) and follows its navigation path; it never reads whether the
+    /// menu is open, so the menu sliding over Today doesn't redraw Today (`Docs/Checklists/Sidebar Menu.md`).
+    @Environment(MenuModel.self) private var menu
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.requestReview) private var requestReview
+    /// Speed runs only: the New Habit form opened straight away, to measure typing in it.
+    @State private var perfForm = false
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: Bindable(menu).path) {
             Group {
                 if covered {
                     Color(.systemGroupedBackground).ignoresSafeArea()
@@ -48,7 +58,8 @@ struct TodayView: View {
                 }
             }
             .toolbar { if !covered { topBar } }
-            .navigationDestination(isPresented: $showAllHabits) { AllHabitsView() }
+            // Every place in the ≡ menu is pushed here, so Back and the edge swipe return to Today.
+            .navigationDestination(for: MenuPlace.self) { MenuPage(place: $0) }
             .toolbar { if !covered && store.isLoaded && !store.habits.isEmpty { dayBar } }
             .sheet(isPresented: $showCalendar) {
                 CalendarSheet(day: selectedDay, today: store.today()) { day = $0 }
@@ -61,10 +72,20 @@ struct TodayView: View {
                 RoutinePlayer(session: session)
                     .onAppear { playerCovering = true }
             }
+            .sheet(item: Binding(get: { store.dayTarget }, set: { store.dayTarget = $0 })) { target in
+                if let habit = store.habits.first(where: { $0.id == target.habitID }) {
+                    DaySheet(habit: habit, day: target.day)
+                }
+            }
             .sheet(isPresented: $showSections) { DaySectionsView() }
+            .sheet(isPresented: $showFilter) {
+                FilterSheet(day: selectedDay, selection: $groupRaw)
+                    .presentationBackground(Color(.systemBackground))
+                    .presentationDragIndicator(.visible)
+            }
 
             .sheet(isPresented: $showNewHabit, onDismiss: revealAdded) {
-                NewItemView { added = $0 }
+                NewItemView(group: filterGroup) { added = $0 }
             }
         }
         #if DEBUG && targetEnvironment(simulator)
@@ -82,16 +103,50 @@ struct TodayView: View {
             routine = RoutineSession(part: .anytime, day: store.today(), habits: habits)
         }
         #endif
-        .onChange(of: selectedDay) { foldOverrides = [:] }
+        .onChange(of: selectedDay) { layout.reset(); store.clearLogOffer() }
+        .onChange(of: routine?.id) { if routine != nil { store.clearLogOffer() } }
+        .onDisappear { store.clearLogOffer() }
+        .onPerfCommand(perform)
+        .onChange(of: store.dayFinishedAt) {
+            // The tap that finishes today is a natural pause: after a week of real use, Apple's own review request may
+            // show (report "Asking for a Review — When, How Often, Never How", 30 Sep).
+            guard ReviewPrompt.shouldAsk(store) else { return }
+            Task {
+                try? await Task.sleep(for: .seconds(2))
+                guard !covered, store.noteTarget == nil, ReviewPrompt.shouldAsk(store) else { return }
+                ReviewPrompt.markAsked()
+                requestReview()
+            }
+        }
+        .sheet(isPresented: $perfForm) { NavigationStack { HabitForm(type: .doIt, onSaved: { _ in }) } }
         // Back from the background: Today is drawn for now at once, not at the next minute.
         .onChange(of: scenePhase) { if scenePhase == .active { clock = .now } }
+        .onChange(of: router.showDay) {
+            // Progress's Day sheet: "Show on Today" has closed Progress; open that day here, where logging happens.
+            guard let shown = router.showDay else { return }
+            router.showDay = nil
+            day = shown == store.today() ? nil : shown
+        }
+        .onChange(of: router.openHabit, initial: true) {
+            // Siri or Shortcuts "Open a Habit": ≡ → Habits → its page, so Back works as usual. A routine in progress
+            // or a new habit being written is left as it is.
+            guard let id = router.openHabit, routine == nil, !showNewHabit else { return }
+            router.openHabit = nil
+            menu.reset()
+            menu.path.append(MenuPlace.habits)
+            menu.path.append(id)
+        }
         .onChange(of: router.focusSection) {
             // A tapped notification opens today's section.
             guard let section = router.focusSection else { return }
             router.focusSection = nil
+            // Back to Today itself first: the menu closes and any page it opened goes. The whole day shows, so the
+            // section's habits aren't hidden by a group filter.
+            menu.reset()
+            groupRaw = ""
             Task {
                 if day != nil && day != store.today() { day = nil; try? await Task.sleep(for: .milliseconds(50)) }
-                foldOverrides[section] = true
+                layout.open(section)
                 scrollTarget = Self.headerKey(section)
             }
         }
@@ -103,6 +158,29 @@ struct TodayView: View {
     }
 
     private var selectedDay: LocalDay { day ?? store.today() }
+    /// The group Today is filtered to; nil is All (a deleted group reads as All).
+    private var filterGroup: UUID? { store.existingGroup(groupRaw) }
+
+    /// Speed runs (`PerfDriver`): the same state changes the buttons make.
+    private func perform(_ action: PerfAction) {
+        switch action {
+        case .previousDay: day = selectedDay.adding(days: -1, calendar: store.calendar)
+        case .nextDay:
+            let next = selectedDay.adding(days: 1, calendar: store.calendar)
+            day = next == store.today() ? nil : next
+        case .openAllHabits: menu.path.append(MenuPlace.habits) // Habits lives in the ≡ menu now
+        case .openCalendar: showCalendar = true
+        case .openNewHabit: showNewHabit = true
+        case .openHabitForm: perfForm = true
+        case .startRoutine(let part):
+            let today = store.today()
+            let tracked = store.habits.filter { !$0.archived && $0.kind != .quit && store.startDay(of: $0) <= today && store.isDue($0, on: today) }
+            if let items = rowsBySection(tracked)[part] { start(part: part, items: items, day: today) }
+        case .close:
+            menu.reset(); showCalendar = false; showNewHabit = false; perfForm = false; routine = nil
+        default: break
+        }
+    }
 
     /// The note bar for a habit's note or the day's note.
     @ViewBuilder private func noteBar(_ target: HabitStore.NoteTarget) -> some View {
@@ -160,8 +238,8 @@ struct TodayView: View {
         var id: UUID { habit.id }
     }
 
-    private static func rowKey(_ section: String, _ habit: UUID) -> String { "row-\(section)-\(habit.uuidString)" }
-    private static func headerKey(_ section: String) -> String { "header-\(section)" }
+    static func rowKey(_ section: String, _ habit: UUID) -> String { "row-\(section)-\(habit.uuidString)" }
+    static func headerKey(_ section: String) -> String { "header-\(section)" }
 
     /// Each section's rows: timed rows by their earliest time there, then untimed rows in saved order.
     private func rowsBySection(_ habits: [Habit]) -> [String: [TodayItem]] {
@@ -190,6 +268,8 @@ struct TodayView: View {
         Task {
             await store.flush()
             guard let habit = store.habits.first(where: { $0.id == id }) else { return }
+            // Put in another group than the one shown (or none): show everything, so it doesn't seem lost.
+            if !store.isInGroup(habit, filterGroup) { groupRaw = "" }
             let today = store.today()
             if day != nil && day != today {
                 day = nil
@@ -197,11 +277,11 @@ struct TodayView: View {
             }
             let key: String
             if habit.kind == .quit {
-                foldOverrides[Self.quitting] = true
+                layout.open(Self.quitting)
                 key = Self.rowKey(Self.quitting, id)
             } else {
                 guard store.isDue(habit, on: today), let first = store.placements(of: habit).first else { return }
-                foldOverrides[first.section] = true
+                layout.open(first.section)
                 key = Self.rowKey(first.section, id)
             }
             try? await Task.sleep(for: .milliseconds(250)) // the sheet finishes closing and the row exists
@@ -217,7 +297,9 @@ struct TodayView: View {
         let today = store.today(now: now)
         let shown = day ?? today
         let isToday = shown == today
-        let active = store.habits.filter { !$0.archived && store.startDay(of: $0) <= shown }
+        // A group filter shows only that group's habits, in every card (groups spec §2); All shows everything.
+        let group = filterGroup
+        let active = store.habits.filter { !$0.archived && store.startDay(of: $0) <= shown && store.isInGroup($0, group) }
         let quitting = active.filter { $0.kind == .quit && !store.isPaused($0, on: today) }
         // Paused habits leave their cards for one folded card at the bottom, so they're never lost (pause report).
         let paused = active.filter { store.isPaused($0, on: shown) && ($0.kind != .quit || isToday) }
@@ -236,12 +318,30 @@ struct TodayView: View {
                     Text("New Habit").fontWeight(.semibold).foregroundStyle(Color.onInk)
                 }
                 .buttonStyle(.borderedProminent).tint(.ink)
+                Button("Restore from a Backup File") { menu.path.append(MenuPlace.backup) }
+                    .accessibilityIdentifier("empty-restore-backup")
             }
             .background(Color(.systemGroupedBackground))
         } else {
             let rows = rowsBySection(tracked)
             ScrollViewReader { proxy in
             List {
+                // Filtered to a group with nothing on this day: say so, with the way back (report 18).
+                if let group, let shownGroup = store.groups.first(where: { $0.id == group }),
+                   tracked.isEmpty && quitting.isEmpty && paused.isEmpty {
+                    Section {
+                        VStack(spacing: 10) {
+                            Text("Nothing from \(shownGroup.name) on this day.")
+                                .foregroundStyle(.secondary)
+                                .accessibilityIdentifier("group-empty-day")
+                            Button("Show All") { withAnimation { groupRaw = "" } }
+                                .buttonStyle(.bordered)
+                                .accessibilityIdentifier("group-show-all")
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                    }
+                }
                 // The day's note, when there is one: context for the whole day, above its habits (notes report).
                 if shown <= today, let note = store.dayNote(on: shown) {
                     Section {
@@ -255,10 +355,10 @@ struct TodayView: View {
                 }
                 if isToday && !quitting.isEmpty {
                     // Quitting folds like the other cards, and starts open.
-                    let open = foldOverrides[Self.quitting] ?? true
+                    let open = layout.box(Self.quitting).open ?? true
                     Section {
                         PartHeader(title: "Quitting", habits: quitting, left: nil, isNow: false, isOpen: open, onStart: nil,
-                                   onToggle: { withAnimation { foldOverrides[Self.quitting] = !open } })
+                                   onToggle: { layout.setOpen(Self.quitting, !open, reduceMotion: reduceMotion) })
                         if open {
                             ForEach(quitting) { habit in
                                 QuitRow(habit: habit, highlighted: highlighted == Self.rowKey(Self.quitting, habit.id))
@@ -274,10 +374,10 @@ struct TodayView: View {
                     }
                 }
                 if !paused.isEmpty {
-                    let open = foldOverrides[Self.pausedCard] ?? false
+                    let open = layout.box(Self.pausedCard).open ?? false
                     Section {
                         PartHeader(title: "Paused", habits: paused, left: nil, isNow: false, isOpen: open, onStart: nil,
-                                   onToggle: { withAnimation { foldOverrides[Self.pausedCard] = !open } })
+                                   onToggle: { layout.setOpen(Self.pausedCard, !open, reduceMotion: reduceMotion) })
                             .accessibilityIdentifier("paused-card")
                         if open {
                             ForEach(paused) { habit in
@@ -307,6 +407,16 @@ struct TodayView: View {
                 }
             }
             .listStyle(.insetGrouped)
+            // Rows hold their place after a log, and read their checklist's open state, through this (#58, #59).
+            .environment(layout)
+            // The filter is always obvious, and one tap clears it (Day Structure report §2.8: no hidden habits). Pinned
+            // above the list, so it stays in sight while scrolling. Not a list row: a row holding one button made the
+            // whole row that button, so a tap beside the chip did nothing (GroupsUITests on CI, 1 Oct 2026).
+            .safeAreaInset(edge: .top, spacing: 0) {
+                if let group, let shownGroup = store.groups.first(where: { $0.id == group }) {
+                    GroupFilterBar(group: shownGroup) { withAnimation { groupRaw = "" } }
+                }
+            }
             .listSectionSpacing(14)
             .environment(\.defaultMinListRowHeight, 44)
             .contentMargins(.top, 4, for: .scrollContent)
@@ -367,72 +477,32 @@ struct TodayView: View {
         }
     }
 
-    private func isDone(_ item: TodayItem, on day: LocalDay) -> Bool {
-        // A habit ticked per section is done here once this section's tick is.
-        item.placement.slot.map { store.isSlotDone(item.habit, slot: $0, on: day) } ?? store.isSatisfied(item.habit, on: day)
-    }
-
     @ViewBuilder
     private func partSection(_ part: String, items: [TodayItem], day: LocalDay, isToday: Bool, isNow: Bool) -> some View {
-        let habits = items.map(\.habit)
-        let left = items.filter { !isDone($0, on: day) }.count
-        // Default: the Now part and Anytime are open while anything is left; finished parts fold.
-        let open = foldOverrides[part] ?? (left > 0 && (isNow || part == .anytime || !isToday))
-        Section {
-            PartHeader(title: store.section(part).name, habits: habits, left: left, isNow: isNow, isOpen: open,
-                       onStart: isToday && items.contains(where: { $0.habit.atMost || !isDone($0, on: day) })
-                           ? { start(part: part, items: items, day: day) } : nil,
-                       onToggle: { withAnimation { foldOverrides[part] = !open } })
-                .id(Self.headerKey(part))
-                .contextMenu {
-                    Button("Edit Times of Day…", systemImage: "rectangle.split.3x1") { showSections = true }
-                    Button(open ? "Fold" : "Open", systemImage: open ? "chevron.up" : "chevron.down") {
-                        withAnimation { foldOverrides[part] = !open }
-                    }
-                }
-            if open {
-                // Done habits sink to the bottom, keeping their order otherwise. The row just logged stays put while it
-                // offers "Add note" (or its note is being written), so the offer is where the person is looking.
-                let held = store.noteOffer.flatMap { $0.day == day ? $0.habit : nil }
-                let ordered = items.filter { !isDone($0, on: day) || $0.habit.id == held }
-                    + items.filter { isDone($0, on: day) && $0.habit.id != held }
-                ForEach(ordered) { item in
-                    let habit = item.habit
-                    let key = Self.rowKey(part, habit.id)
-                    HabitRow(habit: habit, day: day, isToday: isToday, slot: item.placement.slot,
-                             time: item.placement.times.first, highlighted: highlighted == key, stepsOpen: stepsBinding(habit))
-                        .id(key)
-                        .onAppear { visibleRows.show(key) }
-                        .onDisappear { visibleRows.hide(key) }
-                    if habit.kind == .checklist && openSteps.contains(habit.id) {
-                        ForEach(habit.steps) { StepRow(step: $0, habit: habit, day: day) }
-                    }
-                }
-            }
-        }
+        PartSection(part: part, title: store.section(part).name, items: items, day: day, isToday: isToday, isNow: isNow,
+                    doneLast: doneOrder != DoneOrder.inPlace.rawValue, highlighted: highlighted,
+                    onStart: { start(part: part, items: items, day: day) }, onEditSections: { showSections = true },
+                    visibleRows: visibleRows)
     }
 
     /// From the timer bar: open the timer's section and bring its row into view.
     private func show(_ habit: Habit) {
+        // Its row may be filtered out: show everything so the row is there.
+        if !store.isInGroup(habit, filterGroup) { groupRaw = "" }
         let placements = store.placements(of: habit)
         let slot = store.timerSlots[habit.id]
         guard let section = (placements.first { slot != nil && $0.slot == slot } ?? placements.first)?.section else { return }
-        withAnimation { foldOverrides[section] = true }
+        layout.setOpen(section, true, reduceMotion: reduceMotion)
         Task {
             try? await Task.sleep(for: .milliseconds(100)) // the section opens and the row exists
             scrollTarget = Self.rowKey(section, habit.id)
         }
     }
 
-    private func stepsBinding(_ habit: Habit) -> Binding<Bool> {
-        Binding(get: { openSteps.contains(habit.id) },
-                set: { if $0 { openSteps.insert(habit.id) } else { openSteps.remove(habit.id) } })
-    }
-
     private func start(part: String, items: [TodayItem], day: LocalDay) {
         guard day == store.today() else { return }
         // Limits are check-ins, not completed goals. Include them even with nothing logged.
-        let pending = items.filter { $0.habit.atMost || !isDone($0, on: day) }.map(\.habit)
+        let pending = items.filter { $0.habit.atMost || !PartSection.isDone($0, on: day, store: store) }.map(\.habit)
         guard !pending.isEmpty else { return }
         returnToPart = part
         // Close any keyboard still open from a form, so the player doesn't open with its space reserved.
@@ -479,30 +549,58 @@ struct TodayView: View {
         .accessibilityLabel("\(label), \(done) of \(total) done. Open calendar")
     }
 
+    /// ≡ · Filter · +. Progress, Habits, Tasks and every setting live in the ≡ menu (the user's final decision,
+    /// 30 Sep 2026). Filter is Apple Mail's circled symbol, so it can't be mistaken for ≡ (Navigation, Round 3).
     @ToolbarContentBuilder
     private var topBar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Button {} label: {
-                Image(systemName: "person.fill")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(Color.onInk)
-                    .frame(width: 30, height: 30)
-                    .background(Circle().fill(Color.ink))
+            Button("Menu", systemImage: "line.3.horizontal") {
+                menu.setOpen(true, reduceMotion: reduceMotion)
             }
-            .accessibilityLabel("Settings")
-        }
-        .hidingSharedBackground()
-        ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Progress", systemImage: "chart.bar.xaxis") {}
-            Button("All habits", systemImage: "checklist") { showAllHabits = true }
-        }
-        if #available(iOS 26, *) {
-            ToolbarSpacer(.fixed, placement: .topBarTrailing)
+            .accessibilityIdentifier("menu-button")
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
-            Button("Filter", systemImage: "line.3.horizontal.decrease") {}
+            // Filled while a group is chosen, so a filtered Today never passes for the whole day.
+            let shownGroup = filterGroup.flatMap { id in store.groups.first { $0.id == id } }
+            Button("Filter", systemImage: shownGroup == nil ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill") {
+                showFilter = true
+            }
+            .accessibilityValue(shownGroup?.name ?? "")
+            .accessibilityIdentifier("filter-button")
             Button("New Habit", systemImage: "plus") { showNewHabit = true }
         }
+    }
+}
+
+/// "● Health ✕" above Today's list while a group is chosen: tap to show everything again.
+private struct GroupFilterBar: View {
+    let group: HabitGroup
+    let onClear: () -> Void
+
+    var body: some View {
+        HStack {
+            Button(action: onClear) {
+                HStack(spacing: 6) {
+                    Circle().fill(group.color.color).frame(width: 9, height: 9)
+                    Text(group.name).lineLimit(1)
+                    Image(systemName: "xmark").font(.caption.weight(.bold))
+                }
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Color.onInk)
+                .padding(.horizontal, 12)
+                .frame(minHeight: 32)
+                .background(Color.ink, in: Capsule())
+                .contentShape(Capsule())
+            }
+            .buttonStyle(.plain)
+            .frame(minHeight: 44)
+            .accessibilityLabel("Showing \(group.name) only")
+            .accessibilityHint("Shows all habits")
+            .accessibilityIdentifier("group-filter-chip")
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 20)
+        .background(Color(.systemGroupedBackground))
     }
 }
 
@@ -527,18 +625,6 @@ private struct HiddenTimerBars: View {
         ForEach(timers, id: \.habit.id) { timer in
             TimerBar(habit: timer.habit, start: timer.start) { onShow(timer.habit) }
                 .transition(.move(edge: .bottom).combined(with: .opacity))
-        }
-    }
-}
-
-private extension ToolbarContent {
-    /// iOS 26 groups toolbar items on glass; the avatar sits on its own without it.
-    @ToolbarContentBuilder
-    func hidingSharedBackground() -> some ToolbarContent {
-        if #available(iOS 26, *) {
-            self.sharedBackgroundVisibility(.hidden)
-        } else {
-            self
         }
     }
 }

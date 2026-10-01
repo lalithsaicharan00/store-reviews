@@ -83,6 +83,8 @@ enum ItemType: String, CaseIterable, Identifiable {
 /// form. Each question is its own list, pushed in the same sheet, so every step looks and moves
 /// the same way (spec: iOS/Docs/Specs/New Habit Goal and Time of Day.md §1).
 struct NewItemView: View {
+    /// The group Today is filtered to: a habit made while looking at it goes in it.
+    var group: UUID? = nil
     /// Called with the new habit's ID, so Today can show where it went.
     var onAdded: (UUID) -> Void = { _ in }
     @Environment(HabitStore.self) private var store
@@ -152,7 +154,7 @@ struct NewItemView: View {
         if type.isHabit && !store.canAddHabit {
             PlusView()
         } else {
-            HabitForm(type: type, onSaved: { onAdded($0); dismiss() })
+            HabitForm(type: type, group: group, onSaved: { onAdded($0); dismiss() })
         }
     }
 }
@@ -216,6 +218,8 @@ struct HabitForm: View {
 
     let type: ItemType
     let onSaved: (UUID) -> Void
+    /// Editing: the group as saved.
+    private let originalGroup: UUID?
     /// Editing: the habit as saved. The form opens filled in, shows only what can change (how it's tracked is
     /// fixed and never shown, spec §8) and saves with Save.
     private let original: Habit?
@@ -225,6 +229,10 @@ struct HabitForm: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var name = ""
+    /// The name as the previews show it: the preview row, the sentence and the icon suggestion catch up when typing
+    /// pauses. Redrawing and re-animating them on every letter kept the main thread 92 % busy while typing (30 Sep).
+    /// Saving always uses `name`, so nothing typed is ever lost.
+    @State private var shownName = ""
     /// What counts, how to do it, why it matters: optional, shown in the routine player (notes report, 29 Sep).
     @State private var descriptionText = ""
     /// The description as saved, when editing.
@@ -272,16 +280,21 @@ struct HabitForm: View {
     @State private var remindersEdited = false
     @State private var alert: AlertStyle = .notification
     @State private var followUp: Int?
+    /// Its group (Build Plan #68): optional; the row shows once any group exists. A new habit made while Today is
+    /// filtered to a group starts in it (so it doesn't vanish from the list it was added to), and the row says so.
+    @State private var groupID: UUID?
 
     @State private var notificationsDenied = false
     @State private var alarmsDenied = false
     @State private var confirmDiscard = false
     @FocusState private var focus: Field?
 
-    init(type: ItemType, onSaved: @escaping (UUID) -> Void) {
+    init(type: ItemType, group: UUID? = nil, onSaved: @escaping (UUID) -> Void) {
         self.type = type
         self.onSaved = onSaved
         original = nil
+        originalGroup = nil
+        _groupID = State(initialValue: group)
         _color = State(initialValue: .blue)
         _symbol = State(initialValue: type == .quit ? "nosign" : type == .task ? "calendar" : "star.fill")
         // Amounts start empty (left out of the sentence): the right amount depends on the person. How often starts
@@ -297,13 +310,16 @@ struct HabitForm: View {
     }
 
     /// Opens the form on a saved habit, every row as it is now.
-    init(editing habit: Habit, weekStart: Int, description: String = "", onSaved: @escaping (UUID) -> Void) {
+    init(editing habit: Habit, weekStart: Int, description: String = "", group: UUID? = nil, onSaved: @escaping (UUID) -> Void) {
         type = ItemType(habit)
         self.onSaved = onSaved
         original = habit
+        originalGroup = group
+        _groupID = State(initialValue: group)
         originalDescription = description
         _descriptionText = State(initialValue: description)
         _name = State(initialValue: habit.name)
+        _shownName = State(initialValue: habit.name)
         _symbol = State(initialValue: habit.symbol)
         _pickedSymbol = State(initialValue: true)
         _color = State(initialValue: habit.color)
@@ -366,9 +382,11 @@ struct HabitForm: View {
     }
     private var editChanged: Bool {
         (edited.map { $0 != original } ?? false) || TextLimit.clean(descriptionText, TextLimit.descriptionText) != originalDescription
+            || groupID != originalGroup
     }
 
     private var trimmedName: String { TextLimit.clean(name, TextLimit.name) }
+    private var shownTrimmedName: String { TextLimit.clean(shownName, TextLimit.name) }
     private var filledItems: [Step] {
         items.compactMap { item in
             let name = TextLimit.clean(item.name, TextLimit.checklistPart)
@@ -438,11 +456,13 @@ struct HabitForm: View {
             switch type {
             case .quit:
                 quitSection
+                if showsGroup { Section { groupRow } }
             case .task:
                 taskSection
                 if taskRepeats { Section { repeatRow } }
                 Section {
                     timeOfDayRow
+                    if showsGroup { groupRow }
                     remindersRow
                 }
                 if taskRepeats { startEndSection }
@@ -451,6 +471,7 @@ struct HabitForm: View {
                 if type == .amount { tapSection }
                 Section {
                     timeOfDayRow
+                    if showsGroup { groupRow }
                     remindersRow
                 }
                 startEndSection
@@ -503,8 +524,18 @@ struct HabitForm: View {
         .onChange(of: name) { old, new in
             // A wrapping field puts Return into the text; treat it as Done instead.
             if name.contains("\n") { name = name.replacingOccurrences(of: "\n", with: ""); focus = nil }
+        }
+        .task(id: name) {
+            guard shownName != name else { return }
+            try? await Task.sleep(for: .milliseconds(300)) // a new letter cancels this and starts again
+            guard !Task.isCancelled else { return }
+            shownName = name
             suggestIcon()
         }
+        // The pause above is cancelled when a screen opens over the form, so the previews catch up at once when the
+        // form is back, or when the name field is left: never "Enter a habit name" under a typed name (merge, 1 Oct).
+        .onAppear { catchUpName() }
+        .onChange(of: focus) { if focus != .name { catchUpName() } }
         .onChange(of: startDate) { if endDate < startDate { endDate = startDate } }
         .task {
             // Runs again when a pushed page pops back; set up only once, so the
@@ -591,6 +622,18 @@ struct HabitForm: View {
         .accessibilityLabel("\(title), \(value)")
     }
 
+    /// Groups are invisible until the person makes one (Day Structure report §2.8: never forced).
+    private var showsGroup: Bool { !store.groups.isEmpty || groupID != nil }
+
+    /// Group: what area of life it's in, beside Time of Day (when). Optional; None by default.
+    private var groupRow: some View {
+        screenRow("Group", value: groupID.flatMap { id in store.groups.first { $0.id == id }?.name } ?? "None") {
+            GroupPicker(selection: $groupID)
+                .onAppear { focus = nil }
+        }
+        .accessibilityIdentifier("group-row")
+    }
+
     /// A repeating task's How often: the habit screen without counts, plus "After it's done" (29 Sep).
     private var repeatRow: some View {
         screenRow("How often", value: often.often(hasAmount: false).label(hasAmount: false, weekStart: weekStart)) {
@@ -625,7 +668,7 @@ struct HabitForm: View {
     }
 
     private var screenText: String {
-        guard !trimmedName.isEmpty else {
+        guard !shownTrimmedName.isEmpty else {
             // No amount yet either: just the rhythm, as the How often row says it.
             if hasAmount && amountValue == nil {
                 return plan.often.label(hasAmount: true, weekStart: weekStart)
@@ -656,6 +699,7 @@ struct HabitForm: View {
     /// the row already has its +, ▶ or ✓.
     private var previewHabit: Habit {
         var habit = draft
+        habit.name = shownTrimmedName
         if habit.name.isEmpty { habit.name = type == .task ? "Your task" : "Your habit" }
         if hasAmount && amountValue == nil {
             var stand = plan
@@ -670,7 +714,7 @@ struct HabitForm: View {
     private var previewSection: some View {
         Section {
             HabitRow(habit: previewHabit, day: LocalDay(.now), isToday: true, time: remind ? previewHabit.reminders.first : nil,
-                     lineOverride: amountStandIn == nil ? nil : "", stepsOpen: .constant(false))
+                     lineOverride: amountStandIn == nil ? nil : "")
                 .allowsHitTesting(false)
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Preview on Today")
@@ -681,7 +725,7 @@ struct HabitForm: View {
         } footer: {
             // The text preview, right under the card: the whole habit once it has a name.
             Group {
-                if trimmedName.isEmpty {
+                if shownTrimmedName.isEmpty {
                     Text(type == .task ? "Enter a task name to see the preview." : "Enter a habit name to see the preview.")
                         .font(.callout).foregroundStyle(.secondary)
                 } else {
@@ -844,6 +888,18 @@ struct HabitForm: View {
         }
     }
 
+    private func catchUpName() {
+        guard shownName != name else { return }
+        shownName = name
+        suggestIcon()
+    }
+
+    /// Editing an old task must keep its saved date, even when only its name changes.
+    private var earliestTaskDate: Date {
+        let today = Calendar.current.startOfDay(for: .now)
+        return original?.dueDay.map { min(today, Calendar.current.startOfDay(for: $0.date())) } ?? today
+    }
+
     /// A task: once on a date, or on repeat. Never progress or stats (the user's decision).
     private var taskSection: some View {
         Section {
@@ -852,7 +908,7 @@ struct HabitForm: View {
                 Text("On a schedule").tag(true)
             }
             if !taskRepeats {
-                DatePicker("Date", selection: $taskDate, in: Calendar.current.startOfDay(for: .now)..., displayedComponents: .date)
+                DatePicker("Date", selection: $taskDate, in: earliestTaskDate..., displayedComponents: .date)
             }
             Toggle("Time", isOn: $taskHasTime.animation()).tint(.green)
             if taskHasTime {
@@ -1149,6 +1205,7 @@ struct HabitForm: View {
             if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
             store.update(habit)
             store.setDescription(descriptionText, of: habit.id)
+            if groupID != originalGroup { store.setGroup(groupID, of: habit.id) }
             onSaved(habit.id)
             dismiss()
             return
@@ -1158,6 +1215,7 @@ struct HabitForm: View {
         if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
         store.add(habit)
         store.setDescription(descriptionText, of: habit.id)
+        if let groupID, store.groups.contains(where: { $0.id == groupID }) { store.setGroup(groupID, of: habit.id) }
         onSaved(habit.id)
     }
 }

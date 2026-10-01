@@ -73,7 +73,8 @@ struct StreakLabel: View {
             .lineLimit(1)
             .fixedSize()
             .foregroundStyle(.primary)
-            .shadow(color: onFill ? Color.card.opacity(0.9) : .clear, radius: 2.5)
+            // Only when the fill is under it: a shadow, even a clear one, costs an offscreen pass per row (30 Sep).
+            .modifier(Halo(on: onFill))
             .frame(minHeight: 44)
             .contentShape(Rectangle())
         }
@@ -88,6 +89,13 @@ struct StreakLabel: View {
     }
 }
 
+private struct Halo: ViewModifier {
+    let on: Bool
+    func body(content: Content) -> some View {
+        if on { content.shadow(color: Color.card.opacity(0.9), radius: 2.5) } else { content }
+    }
+}
+
 /// The one round button every row ends with. Solid in the habit's colour once done.
 struct RoundActionButton: View {
     let symbol: String
@@ -97,43 +105,63 @@ struct RoundActionButton: View {
     var keepSymbolWhenDone = false
     /// Text instead of the symbol, e.g. "+1", so the button says what one tap adds.
     var text: String? = nil
+    /// A tap that logs pops the button (a checklist's open/close chevron doesn't).
+    var popsOnTap = true
     let action: () -> Void
+    /// Taps that logged, so the pop plays once per tap and never on a redraw (another day, an undo elsewhere).
+    @State private var pops = 0
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            // Ticking a done check undoes it: no pop for that. "+" keeps popping past the goal.
+            if popsOnTap && !reduceMotion && (!done || keepSymbolWhenDone) { pops &+= 1 }
+            action()
+        } label: {
             Group {
                 if let text {
                     Text(text).font(.system(size: 13, weight: .bold).monospacedDigit()).lineLimit(1).minimumScaleFactor(0.7)
                 } else {
                     Image(systemName: done && !keepSymbolWhenDone ? "checkmark" : symbol)
                         .font(.system(size: 14, weight: .bold))
+                        .contentTransition(.symbolEffect(.replace))
                 }
             }
                 .foregroundStyle(done ? Color.white : Color.ink)
                 .frame(width: 34, height: 34)
                 .background(Circle().fill(done ? AnyShapeStyle(color.color) : AnyShapeStyle(Color(.tertiarySystemFill))))
+                // The tick (research "Ticking Off…", §1): a quick press-in and spring back, about a third of a second,
+                // on this 34-pt circle only. A transform, so nothing around it is laid out again.
+                .keyframeAnimator(initialValue: 1.0, trigger: pops) { content, scale in
+                    content.scaleEffect(scale)
+                } keyframes: { _ in
+                    KeyframeTrack {
+                        CubicKeyframe(0.84, duration: 0.07)
+                        SpringKeyframe(1.1, duration: 0.13, spring: .snappy)
+                        SpringKeyframe(1.0, duration: 0.18, spring: .smooth)
+                    }
+                }
                 .frame(width: 44, height: 44)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel(label)
-        .sensoryFeedback(.success, trigger: done) { old, new in !old && new }
     }
 }
 
 /// A row background that fills from the left with the habit's colour as progress grows.
+///
+/// The colour layer is the row's full width, scaled from the leading edge: a change in progress is a transform the GPU
+/// animates (the sweep after a tick), not a new layout or a geometry read on every row.
 struct ProgressFill: View {
     let progress: Double
     let color: HabitColor
     @Environment(\.colorScheme) private var scheme
 
     var body: some View {
-        GeometryReader { g in
-            ZStack(alignment: .leading) {
-                Color.card
-                color.color.opacity(scheme == .dark ? 0.26 : 0.15)
-                    .frame(width: g.size.width * min(1, max(0, progress)))
-            }
+        Color.card.overlay {
+            color.color.opacity(scheme == .dark ? 0.26 : 0.15)
+                .scaleEffect(x: min(1, max(0, progress)), y: 1, anchor: .leading)
         }
     }
 }

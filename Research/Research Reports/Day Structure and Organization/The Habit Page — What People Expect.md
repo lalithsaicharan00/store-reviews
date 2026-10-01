@@ -33,7 +33,7 @@ Opened from All Habits (#56). Native parts only:
 
 - **Top:** icon, name, and the habit's sentence ("Drink 8 glasses of water every day, morning"). A paused habit says when it's back, with Resume.
 - **Numbers:** current streak and best (a quit habit shows its current and best run), and done this month.
-- **Calendar:** one month at a time, ‹ ›, with the same marks as the rest of the app. Tapping a day does nothing yet: logging stays on Today.
+- **Calendar:** one month at a time, ‹ ›, with the same marks as the rest of the app. Tapping a day does nothing yet: logging stays on Today. *(Superseded 29 Sep: a tap opens that day to fill in or change it, [Filling In a Past Day From the Habit Page](<Filling In a Past Day From the Habit Page.md>).)*
 - **Description, then notes:** the newest few notes, and All Notes.
 - **Actions:** Edit in the toolbar, then Pause / Resume, Archive and Delete in a list at the bottom. Delete asks first and says the history goes too. Archive says the history stays.
 

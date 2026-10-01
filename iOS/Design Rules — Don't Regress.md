@@ -21,7 +21,7 @@ Written by Claude (Claude Code), 28 September 2026. **Read this before changing 
 | **Run UI tests on the real iPhone before saying done:** `Research/Temp/ios-device-all.sh` (all) or `ios-device-test.sh <Class>` | Simulator-only checks missed keyboard overlap |
 | **Commit only when asked.** Never touch another agent's untracked files; leave them and say so | Two agents worked in the repo at once |
 
-## Speed: every tap answers at once (whole app)
+## Speed: moved to [`PERFORMANCE.md`](PERFORMANCE.md) (30 Sep 2026)
 
 **The bug (29 Sep 2026):** in the routine player, Pause, ‹ ›, and "Anytime ⌄" lagged, and Pause showed a strange fade. The buttons were native; the cause was **redrawing**. Today, hidden behind the full-screen player, sat inside one `TimelineView` that ticked every second while any timer ran, so every row, streak and the toolbar were recalculated every second and on every tap. Taps waited behind that work, and the pressed (half-faded) button stayed on screen until they were handled. Measured with `sample`: main thread ~22% busy before, ~2% after. Full write-up: `Docs/Checklists/Focus Player — Speed and Responsiveness.md`.
 
@@ -38,8 +38,11 @@ These rules apply to **every screen**, not just the player:
 | **Never anchor a `TimelineView` at `.now` or `.distantPast`.** Use a fixed date (the timer's start, or one set once) | `.now` makes a new schedule on every redraw; `.distantPast` replays missed ticks and froze the app (28 Sep) |
 | **A line that comes and goes keeps its space** (hide it with opacity, don't remove it), so nothing else jumps | "Paused" appearing pushed the icon and clock up |
 | **Heavy numbers (streaks, period counts) are never worked out every second.** Work them out when the data changes | `streak` and `isDayMet` for every row were the top cost |
-| **Measure speed on GitHub, not the MacBook** (the user's battery, 30 Sep): push with `[ios-perf]` in the commit message; `PerformanceUITests` + `Tools/perf/measure_perf.sh` scroll and tap Today, All Habits, a habit page and the calendar with a year of history, and the table lands in `ci-results/latest.md` (app busy % minus the test's own work, SwiftUI redraw %, the app's slowest functions, time to open each screen). Compare with the previous run; a jump in redraw % is a view redrawing too much | The 30 Sep lag showed as redraw 47 % → 3 % after the fix |
+| **Measure speed on GitHub, not the MacBook** (the user's battery, 30 Sep): push with `[ios-perf]`; the app drives itself with no XCTest attached (`PerfDriver`, `Tools/perf/measure_perf_driver.sh`, rules in `PERFORMANCE.md`), and the table lands in `ci-results/latest.md`. `[ios-perf-xctest]` runs the older XCTest speed tests (`PerformanceUITests`, `Tools/perf/measure_perf.sh`), kept only for screens with no `PerfDriver` scenario yet (Progress, Groups, Backup, Tasks, Reminders); XCTest's own screen reading inflates those numbers, so compare them only with each other | The 30 Sep lag showed as redraw 47 % → 3 % after the fix; XCTest's screen reading was up to 79 % of the main thread (merge, 1 Oct 2026) |
+| **A screen whose rows change size a lot at once (Progress's Week ↔ Month) is a `ScrollView` of grouped cards with a `LazyVStack`, not a `List`.** Never put a lazy grid inside a `List` row, and give strips fixed sizes | Switching Progress to Month sent the `List`'s collection view into an endless self-sizing loop: it crashed with a layout assertion, then hung (CI, 30 Sep 2026) |
 | **Check speed by measuring, not by screenshots.** On the simulator, run `sample <pid> 15 1 -file out.txt` while tapping by hand, and look at how busy the main thread is and which of the app's functions show up. The simulator tool's screenshots lag the tap, so they can't time anything | Screenshots made fixed taps look slow, and slow ones look fine |
+
+More speed rules (what's remembered, taps before writes, the optimised phone build, the app-driven speed runs) are in [`PERFORMANCE.md`](PERFORMANCE.md), from the undo and speed work of 30 Sep. Both apply to the whole app.
 
 ## New flow (+) copy
 
@@ -200,8 +203,44 @@ Sources: [Focus Player — How It Should Behave](<../Research/Research Reports/D
 - **Spacing and goal context** (29 Sep, follow-up): progress segments have a 24-point top gap scaled with Dynamic Type (capped at 36); the centred CTA uses a 240-point baseline width (capped at 320) and a similarly scaled gap above bottom navigation. No Tick each step instruction or reserved CTA row for unfinished checklists. One goal-context line sits below the habit title, above the circle: Today for daily quantities, This week/month/year for period totals, the saved plan (e.g. 20 min on 3 days a week) for flexible goals. This supersedes period labels and flexible day-count text inside the circle. Flexible day-count progress lives in Habit options; the ring still tracks today's quantity. Reasons: `Docs/Checklists/Focus Player — Spacing and Goal Clarity.md`.
 - **Next, previous and queue navigation never wait for storage.** Stop the old timer, change the page and start the new timer immediately; the store serializes persistence. Save errors still surface in the player.
 - **Pause/Resume is instant and never blocked by a save**: the store changes its state at once and queues the write. Only the clock ticks (its own `TimelineView`, only while running); a timeline around the whole player made the buttons flicker. The main button never animates its label.
-- **Nothing redraws behind the player, and nothing big redraws every second** (29 Sep; the app-wide rules are in "Speed: every tap answers at once" at the top). Today draws a plain background while the player covers it (`playerCovering`) and returns at the routine's section. Today's list redraws once a minute and at each running timer's goal time (`TodaySchedule`), never every second: a running row and the timer bar tick themselves. A `TimelineView` never switches on and off with Pause (that rebuilt the circle and faded its text) and is never anchored at `.now` (a new schedule on every redraw). A status line that comes and goes keeps its space (the "Paused" line is hidden, not removed). Measured: the main thread was busy ~22% of the time with a timer running, ~2% after.
+- **Nothing redraws behind the player, and nothing big redraws every second** (29 Sep; the app-wide rules are in `PERFORMANCE.md`). Today draws a plain background while the player covers it (`playerCovering`) and returns at the routine's section. Today's list redraws once a minute and at each running timer's goal time (`TodaySchedule`), never every second: a running row and the timer bar tick themselves. A `TimelineView` never switches on and off with Pause (that rebuilt the circle and faded its text) and is never anchored at `.now` (a new schedule on every redraw). A status line that comes and goes keeps its space (the "Paused" line is hidden, not removed). Measured: the main thread was busy ~22% of the time with a timer running, ~2% after.
 - **No permission prompt over the player** (`TimerPresence.playerOpen`); the prompt only follows a ▶ tap on Today. The screen stays awake while a timer runs in the player.
+
+## Progress and quit habits (built 30 Sep 2026)
+
+Report: [The Progress Page — What People Need, and How to Build It](<../Research/Research Reports/Progress and Statistics/The Progress Page — What People Need, and How to Build It.md>). Checklist: `Docs/Checklists/Progress Page — Build.md`.
+
+- **Progress only reads.** Nothing on it logs; the Day sheet's "Show on Today" goes to Today for that.
+- **Every number comes from `HabitStore`** (`dayScore`, `outcome`, `progressSnapshot`, `overTime`, `quitHistory`), worked out once per change (`dataVersion`), never while drawing. Every past day goes through `rule(habit, on:)`.
+- **Nothing counts against anyone:** skipped, paused, archived and not-its-day days are neutral; a weekly goal's empty day is never "not done"; a limit is judged only when its day or period is over. Never red, never "missed", "failed", "relapse" or "reset".
+- **A weekly or monthly goal is done for the day once something is logged that day** (Today's "N left", reminders, the player's segments, the day bar); each ✓ still adds toward the goal.
+- **A slip is an event with its own moment** ("Log a Slip…", with Undo). Editing "Started" is only for fixing a wrong start. A slip never erases the record: runs, clean days and slips are all kept.
+- **The overview counts habits, not ticks**, so it agrees with the day bar; part credit only fills rings.
+
+## Groups (built 30 Sep 2026)
+
+Plan: [Groups — What to Build](<Docs/Specs/Groups — What to Build.md>), from 2,228 group reviews (Day Structure report, Part 2) and the Today top-area reports. Checklist: `Docs/Checklists/Groups.md`.
+
+- **Optional, never forced, invisible until the first one.** No preset groups; the habit form's Group row appears only once a group exists. Forced categorisation drove people away.
+- **A filter, not tabs and not headings on Today.** Day sections already head the list; group headings under them would be two levels. One group at a time; one group per habit.
+- **Never hide a habit without saying so.** All shows everything, habits with no group are in All, the Filter icon fills and a "● Health ✕" chip heads the list while a group is chosen. Anything that would leave a row out of sight (a timer bar, a notification, a habit added to another group) shows All first.
+- **One editor however many ways in** (`GroupForm`, `GroupsView`): Filter's Edit, an empty chip and the picker's New Group all open it. The ≡ menu doesn't repeat Filter.
+- **One order everywhere:** A to Z until the person drags; then "Your order" with Sort A to Z. Progress's bars follow it and are never ranked by rate.
+- **Chip numbers are habits shown on the day open**, empty groups "–" and last. Counts are worked out only while the Filter sheet is open.
+- **Group numbers take a list of habits** (`dayScore(on:habits:)`, `progressSnapshot(…group:)`); day scores are cached per group. Today and Progress remember their own choice.
+
+## Ticking off, folding and settings (1 Oct 2026)
+
+Source: [Ticking Off, Folding and Small Settings — What People Need](<../Research/Research Reports/Home Screen and Visual Design/Ticking Off, Folding and Small Settings — What People Need.md>). Checklist: `Docs/Checklists/Animations and Settings.md`.
+
+- **Nothing on Today moves in the middle of a run of taps.** Every log (✓, +, a timer stopped, a step, a sheet closed after logging, an undo) calls `TodayLayout.hold` before changing data. Order and folds stay as shown until 1.5 s after the last log; then done rows sink and finished parts fold together (`Motion.settle`). Never sort or fold straight from a tap. The row offering "Add note" still keeps its place (Notes rule).
+- **Feedback comes from the tap, never from a redraw** (`TickFeedback`): no `sensoryFeedback(trigger: done)` on a row or button, since changing the day flips `done` and buzzed. Haptics on by default, sound off; both switchable in ≡ → Appearance. No confetti or celebration screens.
+- **Tick motion is a transform on the 34-pt button and the row fill** (`keyframeAnimator` scale, `ProgressFill` scaled from the leading edge). Don't animate a row's layout, and never block the next tap.
+- **Each time of day is its own view (`PartSection`) reading only its own `FoldBox`.** Folding one part must not redraw Today's other rows. Don't put fold state back into `TodayView`'s `@State`, and don't pass a fresh `Binding` into `HabitRow` (it made every row redraw on every Today redraw).
+- **Reduce Motion:** no pop, sweep or slide; folds and settles fade (`Motion`).
+- **Day start and week start apply everywhere or not at all.** Read the day through `store.today()` / `store.calendar`; never subtract hours from a moment (it was an hour off on daylight-saving nights). Changing either clears Progress's cached scores.
+- **No setting for 12/24-hour time, daylight saving or time zones.** Times use the iPhone's format (`DaySection.clock`, `.formatted`); logs keep their `LocalDay`. A second clock switch could disagree with the iPhone's.
+- **The theme is set on the window** (`Theme.apply`), so sheets and alerts follow it at once.
 
 ## Words the app never uses
 
@@ -251,3 +290,22 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
   - Cut down's number field could clip typed digits.
 - **Why most failures were in the tests:** they still expected round-2 to round-5 screens; see "Tests retired" above. Two tests also matched text too loosely: "Quit" matched the Quitting header, and a row's line also carries its reminder time ("0/2 items · 9:00 AM").
 - **Run them:** `Research/Temp/ios-device-all.sh` (all) or `Research/Temp/ios-device-some.sh <outdir> <Class/test> …` (some). Keep the phone unlocked and connected.
+
+## ≡ Menu — FINAL (the user, 30 Sep 2026)
+
+**Decided and final. Don't reopen it.** The top-left button is a ≡ menu that slides in from the left over Today. Everything that isn't used every day lives there: **Progress, Habits (All Habits) and Tasks leave Today's top bar**, and every setting goes in too. The user overrode Round 3's suggestions to keep Progress in the top bar and to open ≡ as a sheet. Research: [Navigation, Round 3](<../Research/Research Reports/Home Screen and Visual Design/Navigation Pattern/Navigation, Round 3 — The Menu, Filter and Two Ways In.md>). Checklist: [Sidebar Menu](<Docs/Checklists/Sidebar Menu.md>). Code: `Habits/Menu/`. *Supersedes: the avatar at the top left, the Progress and All habits (☑︎ `checklist`) top-bar buttons, and Round 2's avatar-and-icons top bar.*
+
+- **Today's top bar is ≡ · Filter · +.** Filter's icon is `line.3.horizontal.decrease.circle`, never the bare three lines, which look like ≡.
+- **Menu order, most used first:** Today · Progress · Habits · Tasks | Times of Day · Reminders · Appearance | Backup & Export · Privacy | Plus | Help & Feedback · About. Row names are the pages' titles. Icons are monochrome (colour is for habits only).
+- **Every row pushes its page onto Today's own navigation stack** (`MenuModel.path`), so Back and the edge swipe return to Today. A page that isn't built opens a "coming" page that says what it will hold; wire the real page in `MenuPage`.
+- **One screen per thing, however many ways in:** ≡ → Times of Day and Today's "Edit Times of Day" show the same `TimesOfDayList`; Habits and Tasks are one `AllHabitsView(kind:)`.
+- **Open:** ≡, or a swipe from Today's left edge (only on Today itself: on a pushed page that swipe is Back). **Close:** tap the dimmed Today, drag the menu left, choose a row, or VoiceOver's escape. Reduce Motion fades it instead of sliding.
+- **Speed:** Today never reads `MenuModel.isOpen` or `drag`, so the menu opening, closing or following a finger never redraws Today. Keep it that way; `PerformanceUITests.testMenuOpenClose` measures it.
+
+## Sidebar data, tasks and reminders — 30 September 2026
+
+- Backup/export/restore are available to free users. Delete App removes the sandbox; explain free external backup and Offload clearly. Never promise local-only uninstall retention. Restore must preserve current edits and tombstones; validate before changing the destination.
+- Tasks lists every saved task, including future/completed/repeating/archived. Tasks do not consume the free habit cap, and unarchiving a task remains free. Use the same native task form; opening an old task must keep its original date.
+- Reminders is a native settings Form over existing rules, with permission recovery and item editing. Opening it does not request authorization. Serialize reconciliation; use saved action event IDs, current target validation and wall-clock dates. Stop outdated alarms, retry/report scheduling errors, and reserve the shared notification budget for timers.
+- The latest queued alert date is not a guarantee for every item. Explain nearest-first capacity and iOS background limits. Physical-device delivery remains a separate check. Reliability details supersede §6 of Pending to Implement.md in its sidebar addendum.
+- Keep Help & Feedback and About blank, as requested by the user.

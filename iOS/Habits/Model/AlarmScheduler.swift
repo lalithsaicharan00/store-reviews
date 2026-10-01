@@ -1,14 +1,13 @@
 import ActivityKit
 import AlarmKit
 import AppIntents
-import CryptoKit
 import SwiftUI
 
 /// Alarm-style reminders through AlarmKit (iOS 26): they ring on silent and in a Focus, full screen,
 /// until stopped. Reconciled in the same pass as notifications (`ReminderScheduler.reconcile`).
 ///
 /// Each alarm's ID is derived from the reminder's own ID, so a reconcile can cancel exactly what is
-/// no longer wanted (done, edited, deleted, archived or switched to Notification) with nothing stored.
+/// no longer wanted (done, edited, deleted, archived or switched to Notification) using locally saved ownership metadata.
 @available(iOS 26, *)
 final class AlarmScheduler {
     static let shared = AlarmScheduler()
@@ -16,6 +15,8 @@ final class AlarmScheduler {
     /// AlarmKit refuses more than a per-app maximum (it throws `maximumLimitReached`; the number isn't
     /// published). Keep the nearest ones well below any plausible limit.
     private static let limit = 30
+    private var records: [UUID: AlarmReminderRecord] = AlarmReminderRecord.load()
+    var problem: String?
 
     var isAuthorized: Bool { manager.authorizationState == .authorized }
     var isDenied: Bool { manager.authorizationState == .denied }
@@ -33,48 +34,84 @@ final class AlarmScheduler {
         (try? await AlarmManager.shared.requestAuthorization()) ?? .denied
     }
 
-    /// - Parameter keepRinging: ID prefixes of rows done today. An alarm that is ringing is left alone
-    ///   (its time has passed, so it's no longer "wanted"), unless its row has since been done.
-    func reconcile(_ alerts: [ReminderScheduler.Alert], keepRinging done: Set<String>, store: HabitStore) async {
+    /// A ringing alarm keeps its ownership record and stays only while its target remains current.
+    func reconcile(_ alerts: [ReminderScheduler.Alert], keepRinging done: Set<String>, store: HabitStore) async -> Set<String> {
         let wanted = Dictionary(alerts.prefix(Self.limit).map { (Self.alarmID($0.id), $0) }, uniquingKeysWith: { a, _ in a })
-        let existing = (try? manager.alarms) ?? []
-        for alarm in existing {
-            if let alert = wanted[alarm.id], alarm.schedule == .fixed(alert.fire) { continue }
-            if alarm.state == .alerting && !Self.ringingRowIsDone(alarm, done: done) { continue }
-            try? manager.cancel(id: alarm.id)
+        problem = nil
+        // Opening Reminders without ever choosing an alarm is a normal state. Some OS
+        // versions reject reading alarms before authorization; there is nothing to clean up.
+        guard isAuthorized || !records.isEmpty else { return [] }
+        guard let existing = try? manager.alarms else {
+            problem = "Alarms couldn’t be checked. Open Reminders and try scheduling again."
+            return []
         }
-        let kept = Set(((try? manager.alarms) ?? []).map(\.id))
+        var kept = Set(existing.map(\.id))
+        for alarm in existing {
+            if let alert = wanted[alarm.id], alarm.schedule == .fixed(alert.fire), records[alarm.id]?.matches(alert) == true { continue }
+            // A ringing alert is retained only while its saved target still matches today's item.
+            // Unknown, deleted, paused, completed or edited alarms cannot ring forever.
+            if alarm.state == .alerting, let record = records[alarm.id], record.isCurrent(in: store) { continue }
+            do {
+                do { try manager.cancel(id: alarm.id) }
+                catch { try manager.cancel(id: alarm.id) }
+                records.removeValue(forKey: alarm.id)
+                kept.remove(alarm.id)
+            } catch {
+                problem = "An old alarm couldn’t be cancelled. Check your alarms and try scheduling again."
+            }
+        }
         for (id, alert) in wanted.sorted(by: { $0.value.fire < $1.value.fire }) where !kept.contains(id) {
+            // Persist ownership before the system call; a process ending during schedule still
+            // leaves enough information to cancel the alarm safely on the next launch.
+            records[id] = AlarmReminderRecord(alert)
+            AlarmReminderRecord.save(records)
             do {
                 let title = alert.followUp > 0 ? "\(alert.habit.name) · not done yet" : alert.habit.name
-                try await Self.schedule(id: id, title: title, tint: alert.habit.color.color, fire: alert.fire, target: alert.target)
+                try await Self.schedule(id: id, title: title, action: Self.actionLabel(alert.habit), tint: alert.habit.color.color, fire: alert.fire, target: alert.target)
             } catch AlarmManager.AlarmError.maximumLimitReached {
+                records.removeValue(forKey: id)
                 break
             } catch {
+                records.removeValue(forKey: id)
                 continue
             }
         }
+        guard let actual = try? manager.alarms else {
+            problem = "iPhone couldn’t confirm the scheduled alarms. Try scheduling again."
+            AlarmReminderRecord.save(records)
+            return Set(wanted.compactMap { id, alert in records[id]?.matches(alert) == true ? alert.id : nil })
+        }
+        let actualIDs = Set(actual.map(\.id))
+        records = records.filter { actualIDs.contains($0.key) }
+        AlarmReminderRecord.save(records)
+        return Set(wanted.compactMap { id, alert in
+            guard actual.contains(where: { $0.id == id && $0.schedule == .fixed(alert.fire) }), records[id]?.matches(alert) == true else { return nil }
+            return alert.id
+        })
     }
 
-    private static func ringingRowIsDone(_ alarm: Alarm, done: Set<String>) -> Bool {
-        // The alarm's ID can't be turned back into a reminder ID, so check each done row's IDs for today.
-        let today = AppModel.shared.store.today()
-        return done.contains { prefix in
-            let base = prefix + "\(today.year)-\(today.month)-\(today.day)"
-            return ([base] + (1...ReminderScheduler.maxFollowUps).map { base + ".f\($0)" }).contains { alarmID($0) == alarm.id }
+    static func actionLabel(_ habit: Habit) -> String? {
+        switch habit.kind {
+        case .check, .task: return "Done"
+        case .amount(let unit, _): return habit.quickIncrement.map { "+" + HabitCopy.amount($0, unit) }
+        default: return nil // timers and checklists require the app; no misleading Done button
         }
     }
 
     /// One fixed-date alarm: the habit's name, Stop, and Done (which marks the row done; Stop doesn't).
-    nonisolated private static func schedule(id: UUID, title: String, tint: Color, fire: Date, target: ReminderTarget) async throws {
+    nonisolated private static func schedule(id: UUID, title: String, action: String?, tint: Color, fire: Date, target: ReminderTarget) async throws {
         let name = LocalizedStringResource(stringLiteral: title)
-        let done = AlarmButton(text: "Done", textColor: .white, systemImageName: "checkmark")
+        let done = action.map { AlarmButton(text: LocalizedStringResource(stringLiteral: $0), textColor: .white, systemImageName: "checkmark") }
         let alert: AlarmPresentation.Alert
-        if #available(iOS 26.1, *) {
+        if let done, #available(iOS 26.1, *) {
             alert = AlarmPresentation.Alert(title: name, secondaryButton: done, secondaryButtonBehavior: .custom)
-        } else {
+        } else if let done {
             alert = AlarmPresentation.Alert(title: name, stopButton: AlarmButton(text: "Stop", textColor: .white, systemImageName: "stop.fill"),
                                             secondaryButton: done, secondaryButtonBehavior: .custom)
+        } else if #available(iOS 26.1, *) {
+            alert = AlarmPresentation.Alert(title: name)
+        } else {
+            alert = AlarmPresentation.Alert(title: name, stopButton: AlarmButton(text: "Stop", textColor: .white, systemImageName: "stop.fill"))
         }
         let attributes = AlarmAttributes<HabitAlarmData>(presentation: AlarmPresentation(alert: alert),
                                                          metadata: HabitAlarmData(habit: target.habit.uuidString), tintColor: tint)
@@ -85,11 +122,7 @@ final class AlarmScheduler {
 
     /// A stable UUID from a reminder's ID (the first 16 bytes of its SHA-256, marked as version 5).
     nonisolated static func alarmID(_ reminderID: String) -> UUID {
-        var bytes = Array(SHA256.hash(data: Data(reminderID.utf8)).prefix(16))
-        bytes[6] = (bytes[6] & 0x0F) | 0x50
-        bytes[8] = (bytes[8] & 0x3F) | 0x80
-        return UUID(uuid: (bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7],
-                           bytes[8], bytes[9], bytes[10], bytes[11], bytes[12], bytes[13], bytes[14], bytes[15]))
+        ReminderIdentity.actionID(reminderID)
     }
 }
 
@@ -108,6 +141,8 @@ struct MarkHabitDoneIntent: LiveActivityIntent {
     @Parameter(title: "Time") var time: String?
     @Parameter(title: "Day") var day: String
     @Parameter(title: "Section") var slot: String?
+    @Parameter(title: "Configuration") var signature: String?
+    @Parameter(title: "Event") var event: String?
 
     nonisolated init() {}
 
@@ -116,11 +151,12 @@ struct MarkHabitDoneIntent: LiveActivityIntent {
         time = target.time?.uuidString
         day = target.day.key
         slot = target.slot
+        signature = target.signature; event = target.event
     }
 
     func perform() async throws -> some IntentResult {
         if let id = UUID(uuidString: habit), let day = LocalDay(key: day) {
-            await AppModel.shared.logFromReminder(ReminderTarget(habit: id, time: time.flatMap(UUID.init(uuidString:)), day: day, slot: slot, section: nil))
+            await AppModel.shared.logFromReminder(ReminderTarget(habit: id, time: time.flatMap(UUID.init(uuidString:)), day: day, slot: slot, section: nil, signature: signature, event: event))
         }
         return .result()
     }

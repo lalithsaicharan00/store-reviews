@@ -5,7 +5,10 @@ import SwiftUI
 /// It's never the way to check off: a tap on Today's row keeps logging.
 struct HabitPageView: View {
     let id: UUID
+    /// Opened from Progress: scroll to Over Time, on Progress's range and period (report §7.3).
+    var overTime: OverTimeStart? = nil
     @Environment(HabitStore.self) private var store
+    @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
     @Environment(\.dismiss) private var dismiss
     @State private var showEdit = false
     @State private var showPause = false
@@ -14,6 +17,7 @@ struct HabitPageView: View {
     @State private var confirmingDelete = false
     @State private var month: LocalDay?
     @State private var noteDay: LocalDay?
+    @State private var progressDay: LocalDay?
 
     var body: some View {
         if let habit = store.habits.first(where: { $0.id == id }) {
@@ -26,7 +30,7 @@ struct HabitPageView: View {
     private func page(_ habit: Habit) -> some View {
         let today = store.today()
         let pause = store.pause(of: habit, on: today)
-        return List {
+        return ScrollViewReader { proxy in List {
             Section {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 12) {
@@ -54,11 +58,39 @@ struct HabitPageView: View {
             if habit.kind != .task {
                 Section { numbers(habit) }
             }
+            Section {
+                Button { progressDay = today } label: {
+                    HStack {
+                        Text("Today").foregroundStyle(.primary)
+                        Spacer()
+                        Text(store.dayResult(habit, on: today)).foregroundStyle(.secondary)
+                        Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
+                    }
+                }
+                .accessibilityIdentifier("habit-today-progress")
+            }
             if habit.kind != .quit && habit.kind != .task {
                 Section {
                     HabitMonthView(habit: habit, month: Binding(get: { month ?? Self.firstOfMonth(today, store.calendar) },
-                                                                set: { month = $0 }))
+                                                                set: { month = $0 }), onSelect: { progressDay = $0 })
+                        .id("month-calendar")
                 }
+                OverTimeSection(habit: habit, start: overTime)
+                HabitYearSection(habit: habit) { first in
+                    month = first
+                    withAnimation { proxy.scrollTo("month-calendar", anchor: .top) }
+                }
+                // Runs are streaks: Show Streaks off hides them too (report §7.6).
+                if showStreaks {
+                    HabitRunsSection(habit: habit)
+                    // Every streak milestone reached, kept for good, and the next (report "Milestones", 30 Sep).
+                    Section("Milestones") { milestones(habit, today: today) }
+                        .accessibilityIdentifier("habit-milestones")
+                }
+            }
+            if habit.kind == .quit {
+                QuitOverTimeSection(habit: habit)
+                HabitYearSection(habit: habit) { _ in }
             }
             notesSection(habit, today: today)
             Section {
@@ -85,10 +117,21 @@ struct HabitPageView: View {
                 Text("Archive stops it and keeps its history. Delete removes it and its history for good.")
             }
         }
+        .task {
+            // From Progress: straight to Over Time, once the list has laid out.
+            guard overTime != nil, habit.kind != .task else { return }
+            try? await Task.sleep(for: .milliseconds(150))
+            withAnimation { proxy.scrollTo("over-time", anchor: .top) }
+        }
+        }
         .navigationTitle(habit.name.capped(HabitRow.nameShown))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) { Button("Edit") { showEdit = true } }
+        }
+        .sheet(item: $progressDay) { DaySheet(habit: habit, day: $0) }
+        .onPerfCommand { action in
+            if case .openDay(let day) = action { progressDay = day }
         }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
@@ -119,22 +162,27 @@ struct HabitPageView: View {
 
     @ViewBuilder private func numbers(_ habit: Habit) -> some View {
         if habit.kind == .quit {
-            let runs = store.quitRuns(of: habit)
-            HStack(spacing: 0) {
-                stat(store.isPaused(habit, on: store.today()) ? "Paused" : Format.days(runs.current), "This run")
-                stat(Format.days(runs.best), "Best run")
-            }
+            // The live clock, best run, clean days, next milestone and Log a Slip (report §10.3; Build Plan #60d).
+            QuitNumbers(habit: habit)
         } else {
             let unit = habit.frequency.streakUnit
             let today = store.today()
-            let first = Self.firstOfMonth(today, store.calendar)
-            let done = stride(from: 0, to: today.day, by: 1)
-                .map { first.adding(days: $0, calendar: store.calendar) }
-                .filter { store.dayMark(habit, on: $0) == .done }.count
-            HStack(spacing: 0) {
-                stat(unit.short(store.streak(of: habit, asOf: today)), "Streak")
-                stat(unit.short(store.bestStreak(of: habit)), "Best")
-                stat(done == 1 ? "1 day" : "\(done) days", "Done this month")
+            let done = store.doneThisMonth(habit, through: today)
+            VStack(spacing: 10) {
+                HStack(spacing: 0) {
+                    // "Show Streaks" off (Progress's view options) hides streaks and bests here too (report §7.6).
+                    if showStreaks {
+                        stat(unit.short(store.streak(of: habit, asOf: today)), "Streak")
+                        stat(unit.short(store.bestStreak(of: habit)), "Best")
+                    }
+                    stat(done == 1 ? "1 day" : "\(done) days", "Done this month")
+                }
+                // A total a break can't take away (report §8.1).
+                if let line = store.totalLine(of: habit, today: today) {
+                    Text(line).font(.footnote).foregroundStyle(.secondary).monospacedDigit()
+                        .frame(maxWidth: .infinity)
+                        .accessibilityIdentifier("habit-total-line")
+                }
             }
         }
     }
@@ -149,6 +197,16 @@ struct HabitPageView: View {
     }
 
     // MARK: Notes
+
+    /// "Reached: 7 and 30 days", "Next: 100 days in a row, 64 to go". From the streak and the best, never stored.
+    @ViewBuilder private func milestones(_ habit: Habit, today: LocalDay) -> some View {
+        let unit = store.rule(habit, on: today).frequency.streakUnit
+        let current = store.streak(of: habit, asOf: today)
+        let reached = unit.milestones(upTo: max(store.bestStreak(of: habit), current))
+        let next = unit.nextMilestone(after: current)
+        LabeledContent("Reached", value: reached.isEmpty ? "None yet" : unit.list(reached))
+        LabeledContent("Next", value: "\(unit.inARow(next)), \(next - current) to go")
+    }
 
     @ViewBuilder private func notesSection(_ habit: Habit, today: LocalDay) -> some View {
         let notes = store.notes(of: habit)
@@ -192,6 +250,7 @@ struct HabitPageView: View {
         let today = store.today()
         if let pause = store.pause(of: habit, on: today), pause.contains(today) { return pausedText(pause, store: store) }
         if habit.kind == .quit { return "Best run \(Format.days(store.quitRuns(of: habit).best))" }
+        if habit.kind == .task, store.isDone(habit, on: today) { return habit.dueDay == nil ? "Done today" : "Completed" }
         if habit.kind == .task, let due = habit.dueDay { return "Planned for \(PauseSheet.short(due, calendar: store.calendar))" }
         return HabitCopy.capitalized(HabitCopy.plan(habit, weekStart: store.settings.weekStart, short: true))
     }
@@ -212,6 +271,7 @@ struct HabitPageView: View {
 struct HabitMonthView: View {
     let habit: Habit
     @Binding var month: LocalDay
+    var onSelect: (LocalDay) -> Void = { _ in }
     @Environment(HabitStore.self) private var store
 
     var body: some View {
@@ -241,12 +301,16 @@ struct HabitMonthView: View {
                 ForEach(Array(ordered.enumerated()), id: \.offset) { Text($0.element).font(.caption2.weight(.semibold)).foregroundStyle(.secondary) }
                 ForEach(0..<lead, id: \.self) { _ in Color.clear.frame(height: 36) }
                 ForEach(1...count, id: \.self) { d in
-                    cell(LocalDay(year: month.year, month: month.month, day: d), isToday: LocalDay(year: month.year, month: month.month, day: d) == today)
+                    let day = LocalDay(year: month.year, month: month.month, day: d)
+                    Button { onSelect(day) } label: { cell(day, isToday: day == today).frame(minHeight: 44) }
+                        .buttonStyle(.borderless)
+                        .disabled(day > today)
+                        .accessibilityIdentifier("habit-day-\(day.key)")
                 }
             }
             HStack(spacing: 14) {
-                legend(Circle().fill(habit.color.color), "Done")
-                legend(Circle().strokeBorder(habit.color.color, lineWidth: 2), "Some")
+                legend(Circle().fill(habit.color.color), HabitStore.DayMark.done.words(atMost: habit.atMost))
+                legend(Circle().strokeBorder(habit.color.color, lineWidth: 2), HabitStore.DayMark.some.words(atMost: habit.atMost))
                 legend(Image(systemName: "pause.fill").font(.system(size: 8)).foregroundStyle(.secondary), "Paused")
                 legend(Image(systemName: "forward.fill").font(.system(size: 8)).foregroundStyle(.secondary), "Skipped")
             }
@@ -262,6 +326,13 @@ struct HabitMonthView: View {
     }
 
     private func cell(_ day: LocalDay, isToday: Bool) -> some View {
+        // The day's button (in the grid) opens the day's sheet: its result, its entries, and filling in or fixing it
+        // (Build Plan #57). It replaces the read-only popover (Progress report §8.2), which showed less and sat inside
+        // the same button, so one of the two never received the tap (merge, 1 Oct 2026).
+        mark(day, isToday: isToday)
+    }
+
+    private func mark(_ day: LocalDay, isToday: Bool) -> some View {
         let mark = store.dayMark(habit, on: day)
         let color = habit.color.color
         let faint = [.notItsDay, .before, .paused, .skipped].contains(mark)
@@ -285,22 +356,14 @@ struct HabitMonthView: View {
             }
         }
         .frame(height: 36)
+        .frame(maxWidth: .infinity)
+        .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(day.date(calendar: store.calendar).formatted(.dateTime.weekday(.wide).day().month(.wide))), \(words(mark))")
     }
 
     private func words(_ mark: HabitStore.DayMark) -> String {
-        switch mark {
-        case .done: "done"
-        case .some: "some done"
-        case .missed: "not done"
-        case .open: "not done yet"
-        case .skipped: "skipped"
-        case .paused: "paused"
-        case .notItsDay: "not one of its days"
-        case .upcoming: "coming up"
-        case .before: "before it started"
-        }
+        mark.words(atMost: habit.atMost).lowercased()
     }
 
     private func legend(_ mark: some View, _ label: String) -> some View {

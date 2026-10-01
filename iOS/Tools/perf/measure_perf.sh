@@ -1,11 +1,14 @@
 #!/bin/bash
+# The older XCTest speed tests, kept for screens with no PerfDriver scenario yet ([ios-perf-xctest]); XCTest's own
+# screen reading inflates these numbers. The main speed runs are measure_perf_driver.sh ([ios-perf], PERFORMANCE.md).
 # Runs each speed test in PerformanceUITests and samples the app while it runs; writes a Markdown summary.
 # Usage (from iOS/): Tools/perf/measure_perf.sh <simulator id> <out dir>
 # Needs a build from `xcodebuild build-for-testing ... -derivedDataPath DerivedData`.
 set -u
 SIM="$1"; OUT="$2"; mkdir -p "$OUT"
 HERE="$(cd "$(dirname "$0")" && pwd)"
-TESTS="testScrollToday testTapToday testScrollAllHabits testScrollHabitPage testCalendarMonths"
+TESTS="${PERF_TESTS:-testScrollToday testTapToday testTickRun testFoldToday testMenuOpenClose testScrollAllHabits testScrollHabitPage testCalendarMonths testProgress testProgressHabitPage}"
+FAILED=0
 SUMMARY="$OUT/perf-summary.md"
 
 {
@@ -35,6 +38,7 @@ for T in $TESTS; do
     sample "$PID" 20 1 -file "$OUT/sample-$T.txt" > /dev/null 2>&1
   fi
   wait $RUN; STATUS=$?
+  [ "$STATUS" -eq 0 ] || FAILED=1
   if [ -s "$OUT/sample-$T.txt" ]; then
     RESULT=$(python3 "$HERE/analyze_sample.py" "$OUT/sample-$T.txt" 4)
     BUSY=$(echo "$RESULT" | sed -n 's/^busy=//p')
@@ -42,6 +46,7 @@ for T in $TESTS; do
     TOP=$(echo "$RESULT" | tail -n +3 | sed 's/^ *//' | paste -sd ';' - | sed 's/;/<br>/g')
     echo "| $T | $BUSY % | $REDRAW % | ${TOP:-(none above noise)} |" >> "$SUMMARY"
   else
+    FAILED=1
     echo "| $T | not measured (test exit $STATUS; see $T.log) | | |" >> "$SUMMARY"
   fi
 done
@@ -54,3 +59,4 @@ done
 } >> "$SUMMARY"
 
 cat "$SUMMARY"
+exit "$FAILED"

@@ -17,6 +17,8 @@ final class PerformanceUITests: XCTestCase {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments = ["-uitest", "-perf-history"]
+        if name.contains("testTasksPage") || name.contains("testTaskEdit") { app.launchArguments += ["-perf-tasks"] }
+        if name.contains("testRemindersPage") { app.launchArguments += ["-perf-reminders", "-reminder-fake"] }
         app.launch()
         XCTAssertTrue(app.collectionViews.firstMatch.waitForExistence(timeout: 15))
     }
@@ -72,20 +74,149 @@ final class PerformanceUITests: XCTestCase {
         }
     }
 
+    /// Folding and opening Today's parts (#59): each part reads only its own fold, so this should redraw one part, not
+    /// every row.
+    func testFoldToday() {
+        ready()
+        let folds = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Fold ' OR label BEGINSWITH 'Open '"))
+        keepGoing {
+            for i in 0..<min(3, folds.count) {
+                let fold = folds.element(boundBy: i)
+                if fold.exists && fold.isHittable { fold.tap() }
+            }
+        }
+    }
+
+    /// A run of ticks, then a pause (#58): the button pop, the fill sweep, and done rows settling once per pause.
+    func testTickRun() {
+        ready()
+        let checks = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Mark ' OR label BEGINSWITH 'Undo ' OR label BEGINSWITH 'Add '"))
+        keepGoing {
+            for i in 0..<3 {
+                let check = checks.element(boundBy: i)
+                if check.exists && check.isHittable { check.tap() }
+            }
+            Thread.sleep(forTimeInterval: 2) // the pause, then the settle
+        }
+    }
+
+    /// ≡ → Habits (All Habits moved into the menu, 30 Sep 2026).
+    private func openHabits() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-habits"])
+        open("Habits", tapping: app.buttons["menu-habits"], until: app.navigationBars["Habits"])
+    }
+
     func testScrollAllHabits() {
-        open("All Habits", tapping: app.buttons["All habits"], until: app.navigationBars["All Habits"])
+        openHabits()
         ready()
         keepGoing(scrollUpAndDown)
     }
 
+    func testTasksPage() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-tasks"])
+        open("Tasks", tapping: app.buttons["menu-tasks"], until: app.navigationBars["Tasks"])
+        ready(); keepGoing(scrollUpAndDown)
+    }
+
+    func testTaskEdit() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-tasks"])
+        open("Tasks", tapping: app.buttons["menu-tasks"], until: app.navigationBars["Tasks"])
+        let task = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Pay the phone bill'")).firstMatch
+        open("Task", tapping: task, until: app.buttons["Edit"])
+        open("Edit Task", tapping: app.buttons["Edit"], until: app.navigationBars["Edit Task"])
+        ready(); keepGoing(scrollUpAndDown)
+    }
+
+    func testRemindersPage() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-reminders"])
+        open("Reminders", tapping: app.buttons["menu-reminders"], until: app.navigationBars["Reminders"])
+        ready(); keepGoing(scrollUpAndDown)
+    }
+
+    func testBackupPage() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-backup"])
+        open("Backup & Export", tapping: app.buttons["menu-backup"], until: app.navigationBars["Backup & Export"])
+        ready()
+        keepGoing(scrollUpAndDown)
+    }
+
+    /// The ≡ menu opening and closing over a year of history: Today must not redraw under it.
+    func testMenuOpenClose() {
+        let menu = app.buttons["menu-button"]
+        let today = app.buttons["menu-today"]
+        open("Menu", tapping: menu, until: today)
+        today.tap()
+        _ = today.waitForNonExistence(timeout: 3)
+        ready()
+        keepGoing {
+            menu.tap()
+            _ = today.waitForExistence(timeout: 3)
+            today.tap()
+            _ = today.waitForNonExistence(timeout: 3)
+        }
+    }
+
     func testScrollHabitPage() {
-        open("All Habits", tapping: app.buttons["All habits"], until: app.navigationBars["All Habits"])
+        openHabits()
         let teeth = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Brush teeth'")).firstMatch
         XCTAssertTrue(teeth.waitForExistence(timeout: 10))
         // A year of daily history: its numbers and best streak are the heaviest page.
-        open("Habit page", tapping: teeth, until: app.staticTexts["Brush teeth"]) // the page heading; All Habits rows read "Brush teeth, 2 min a day"
+        // The page's own title bar: the Habits row shows "Brush teeth" too, so text alone passed without the page
+        // opening (a tap selected the row until 30 Sep).
+        open("Habit page", tapping: teeth, until: app.navigationBars["Brush teeth"])
         ready()
         keepGoing(scrollUpAndDown)
+    }
+
+    /// Progress with 30 habits and two years of history (report §20): open it, switch Week, Month and Year, go back and
+    /// forth, and scroll. Targets: opens in under 300 ms, a switch in under 150 ms.
+    func testProgress() {
+        // With four groups (Build Plan #68): the chips are switched too, and All shows the Groups card.
+        relaunch(["-perf-many", "-groups-demo"])
+        openProgress()
+        ready()
+        let control = app.segmentedControls["progress-range"]
+        let previous = app.buttons["progress-previous"], next = app.buttons["progress-next"]
+        keepGoing {
+            for chip in ["group-chip-Health", "group-chip-Mind", "group-chip-all"] { app.buttons[chip].tap() }
+            control.buttons["Month"].tap()
+            previous.tap(); next.tap()
+            control.buttons["Year"].tap()
+            previous.tap(); next.tap()
+            control.buttons["Week"].tap()
+            previous.tap(); next.tap()
+            scrollUpAndDown()
+        }
+    }
+
+    /// A habit's page from Progress, at Over Time, switching Week, Month, Year and All with two years of history.
+    func testProgressHabitPage() {
+        relaunch(["-perf-many"])
+        openProgress()
+        // The first row, so it's on screen without scrolling; a year or two of daily history.
+        let row = app.buttons["progress-row-Read"]
+        XCTAssertTrue(row.waitForExistence(timeout: 10))
+        open("Habit page from Progress", tapping: row, until: app.navigationBars["Read"])
+        let control = app.segmentedControls["over-time-range"]
+        XCTAssertTrue(control.waitForExistence(timeout: 10))
+        ready()
+        keepGoing {
+            for title in ["Week", "Month", "Year", "All"] { control.buttons[title].tap() }
+            scrollUpAndDown()
+        }
+    }
+
+    private func relaunch(_ extra: [String]) {
+        app.terminate()
+        app.launchArguments = ["-uitest", "-perf-history"] + extra
+        app.launch()
+        XCTAssertTrue(app.collectionViews.firstMatch.waitForExistence(timeout: 30))
+    }
+
+    /// ≡ → Progress.
+    private func openProgress() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-progress"])
+        open("Progress", tapping: app.buttons["menu-progress"], until: app.staticTexts["progress-period"])
     }
 
     func testCalendarMonths() {

@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// "3/8 glasses", "12/20 min", "2/3 this week", "1/4 items", "0/2 cups max": one format for every habit.
 /// While a timer runs, time is a live clock instead: "7:42/20 min" ("Timing a Habit", 28 Sep).
@@ -63,16 +64,20 @@ struct HabitRow: View {
     @State private var showEdit = false
     @State private var showNotes = false
     @State private var showPause = false
-    @Binding var stepsOpen: Bool
+    /// A checklist's steps shown under it on Today (`TodayLayout`); nil elsewhere (the New Habit preview).
+    var steps: FoldBox? = nil
     @Environment(HabitStore.self) private var store
+    /// Today's layout: a log holds the rows in place until the person pauses (#58). Nil in the New Habit preview.
+    @Environment(TodayLayout.self) private var layout: TodayLayout?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// Progress's view option "Show Streaks" (report §7.6): off hides streaks here too.
+    @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
 
     var body: some View {
-        if habit.kind == .duration, isToday, let start = store.timers[habit.id] {
-            // A running timer redraws its row every second: the clock ticks and the fill grows, so it's
-            // plain that time is being counted. Anchor it at the timer's own start: `.now` changes the
-            // schedule on every redraw, and `.distantPast` replays every missed tick; both redraw
-            // nonstop and freeze the app (28 Sep).
-            TimelineView(.periodic(from: start, by: 1)) { context in
+        if habit.kind == .duration, isToday {
+            // Keep the same host when a running timer stops. Replacing TimelineView with a plain row
+            // could dismiss a sheet opened from that row; a stopped/covered clock simply has no ticks.
+            TimelineView(HabitRowClockSchedule(start: !(showLog || showEdit || showNotes || showPause) && store.dayTarget?.habitID != habit.id ? store.timers[habit.id] : nil)) { context in
                 row(now: context.date)
             }
         } else {
@@ -89,7 +94,7 @@ struct HabitRow: View {
         let goal = store.goal(of: store.rule(habit, on: day))
         // A cut-back habit is "met" while under its maximum, but never shown as finished.
         let done = slot.map { store.isSlotDone(habit, slot: $0, on: day) } ?? (store.isDone(habit, on: day) && !habit.atMost)
-        let streak = store.streak(of: habit, asOf: day)
+        let streak = showStreaks ? store.streak(of: habit, asOf: day) : 0
         // Top-aligned (the user, 29 Sep): icon, streak and button sit in a 44-pt band at the top of the row. Rows
         // of one or two lines look centred; with three or more lines the text runs on below instead of the icon
         // and button drifting to the middle.
@@ -116,7 +121,28 @@ struct HabitRow: View {
                         .lineLimit(1)
                         .accessibilityIdentifier("habit-rhythm")
                 }
-                if lineOverride == nil { noteLine }
+                if lineOverride == nil {
+                    HStack(alignment: .firstTextBaseline, spacing: 12) {
+                        noteLine
+                        // A milestone this tap reached, beside its Undo and only while that lasts: words, never a
+                        // pop-up (report "Milestones — Marking Progress Without Noise").
+                        if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day,
+                           let mark = store.milestoneOffer, mark.entry == entry.id {
+                            Label(mark.text, systemImage: "checkmark.seal.fill")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(habit.color.color)
+                                .lineLimit(1)
+                                .accessibilityIdentifier("today-milestone")
+                        }
+                        if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day {
+                            Button { store.undoEntry(entry.id) } label: {
+                                Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44, alignment: .leading)
+                            }
+                                .buttonStyle(.borderless).font(.caption)
+                                .accessibilityIdentifier("habit-inline-undo")
+                        }
+                    }
+                }
                 if case .flexible(let period, let needed) = habit.frequency,
                    let count = store.flexibleProgress(habit, on: day) {
                     Text(count > needed ? "\(count) days this \(period.noun) · goal reached"
@@ -134,8 +160,11 @@ struct HabitRow: View {
           }
           .contentShape(Rectangle())
           .onTapGesture { if logsNumbers && day <= store.today() { showLog = true } }
+          .accessibilityAction(named: "Undo last log") {
+              if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day { store.undoEntry(entry.id) }
+          }
           .accessibilityAction(named: habit.kind == .duration ? "Log time manually" : "Log amount manually") { if logsNumbers && day <= store.today() { showLog = true } }
-            actionButton(done: done)
+            actionButton(done: done, progress: progress, goal: goal)
                 .frame(height: RowBand.height)
                 .disabled(habit.kind != .checklist && day > store.today())
         }
@@ -143,7 +172,9 @@ struct HabitRow: View {
         .padding(.vertical, 2)
         .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color)
             .overlay(HighlightFlash(on: highlighted || store.noteTarget == .init(habit: habit.id, day: day), color: habit.color)))
-        .sheet(isPresented: $showLog) { LogProgressView(habit: habit, day: day) }
+        // Logged from the sheet: the row stays where it is until the person pauses, as after a tap (#58). The day's own
+        // rule, so a past day is logged against the goal it had then.
+        .sheet(isPresented: $showLog, onDismiss: { layout?.hold(reduceMotion: reduceMotion) }) { LogProgressView(habit: store.rule(habit, on: day), day: day) }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .sheet(isPresented: $showNotes) { HabitNotesView(habit: habit) }
         .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
@@ -156,6 +187,8 @@ struct HabitRow: View {
             }
         }
         .contextMenu {
+            Button(day == store.today() ? "Edit Today's Progress…" : "Edit Progress…", systemImage: "calendar") { store.dayTarget = .init(habitID: habit.id, day: day) }
+                .disabled(day > store.today())
             // Edit sits with the item's other actions, as in Reminders; a tap on the row logs (spec §8).
             Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { showEdit = true }
             // A stretch of days off: travel, illness (pause report, 29 Sep). Skip today stays for one day.
@@ -163,20 +196,34 @@ struct HabitRow: View {
             // Any day, done or not, past or today; a note never changes progress (notes report, 29 Sep).
             Button(store.note(of: habit, on: day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") { startWriting() }
                 .disabled(day > store.today())
-            if !store.notes(of: habit).isEmpty {
+            if store.hasNotes(habit) {
                 Button("All Notes", systemImage: "list.bullet.rectangle") { showNotes = true }
             }
             if case .amount = habit.kind {
                 Button("Log amount manually", systemImage: "square.and.pencil") { showLog = true }.disabled(day > store.today())
-                Button("Undo Last Entry") { store.undoProgress(habit, on: day) }
+                Button("Undo Last Entry") { undoLast() }
                     .disabled(progress <= 0 || day > store.today())
             }
             if habit.kind == .duration {
                 Button("Log time manually", systemImage: "square.and.pencil") { showLog = true }.disabled(day > store.today())
-                Button("Undo Last Entry") { store.undoProgress(habit, on: day) }
+                Button("Undo Last Entry") { undoLast() }
                     .disabled(progress <= 0 || day > store.today())
             }
         }
+    }
+
+    private func undoLast() {
+        layout?.hold(reduceMotion: reduceMotion)
+        TickFeedback.undone()
+        withAnimation(Motion.tick(reduceMotion)) { store.undoProgress(habit, on: day) }
+    }
+
+    /// Every log from the row's button: hold Today's order, answer the tap (haptic, chime), then change the data inside
+    /// the tick animation so the button fills and the row's colour sweeps across (research §1).
+    private func log(finished: Bool, undo: Bool = false, _ change: () -> Void) {
+        layout?.hold(reduceMotion: reduceMotion)
+        if undo { TickFeedback.undone() } else { TickFeedback.logged(finished: finished) }
+        withAnimation(Motion.tick(reduceMotion)) { change() }
     }
 
     // MARK: The note, in place
@@ -242,12 +289,13 @@ struct HabitRow: View {
     }
 
     @ViewBuilder
-    private func actionButton(done: Bool) -> some View {
+    private func actionButton(done: Bool, progress: Double, goal: Double) -> some View {
         if habit.kind == .checklist {
             // The button opens and closes the items; the checklist is done when every item is.
-            RoundActionButton(symbol: stepsOpen ? "chevron.up" : "chevron.down", done: done, color: habit.color,
-                              label: stepsOpen ? "Hide \(habit.name) steps" : "Show \(habit.name) steps") {
-                withAnimation { stepsOpen.toggle() }
+            let open = steps?.open == true
+            RoundActionButton(symbol: open ? "chevron.up" : "chevron.down", done: done, color: habit.color,
+                              label: open ? "Hide \(habit.name) steps" : "Show \(habit.name) steps", popsOnTap: false) {
+                withAnimation(Motion.fold(reduceMotion)) { steps?.open = !open }
             }
         } else {
             switch habit.kind {
@@ -255,7 +303,8 @@ struct HabitRow: View {
                 RoundActionButton(symbol: "checkmark", done: done, color: habit.color,
                                   label: done ? "Undo \(habit.name)" : "Mark \(habit.name) done") {
                     if !done { offerNote() }
-                    withAnimation {
+                    // A habit ticked several times a day is done on its last tick; a per-section tick on its own.
+                    log(finished: !done && (slot != nil || progress + 1 >= goal), undo: done) {
                         if let slot { store.toggleSlot(habit, slot: slot, on: day) } else { store.toggleCheck(habit, on: day) }
                     }
                 }
@@ -268,7 +317,7 @@ struct HabitRow: View {
                                       keepSymbolWhenDone: true,
                                       text: "+" + Format.amount(step)) {
                         offerNote()
-                        withAnimation { store.increment(habit, on: day) }
+                        log(finished: !habit.atMost && progress < goal && progress + step >= goal) { store.increment(habit, on: day) }
                     }
                 } else {
                     RoundActionButton(symbol: "plus", done: done, color: habit.color,
@@ -281,8 +330,15 @@ struct HabitRow: View {
                 let running = store.timers[habit.id] != nil
                 RoundActionButton(symbol: running ? "pause.fill" : "play.fill", done: done && !running, color: habit.color,
                                   label: running ? "Stop \(habit.name) timer" : "Start \(habit.name) timer") {
-                    if store.timers[habit.id] == nil { TimerPresence.askOnNextSync = true } else { offerNote() }
-                    withAnimation { store.toggleTimer(habit, slot: slot) }
+                    if store.timers[habit.id] == nil {
+                        TimerPresence.askOnNextSync = true
+                        TickFeedback.started()
+                        withAnimation(Motion.tick(reduceMotion)) { store.toggleTimer(habit, slot: slot) }
+                    } else {
+                        // Stopping saves the time: a log like any other.
+                        offerNote()
+                        log(finished: !done && progress >= goal) { store.toggleTimer(habit, slot: slot) }
+                    }
                 }
                 .disabled(!isToday)
             case .quit, .checklist:
@@ -297,6 +353,8 @@ struct StepRow: View {
     let habit: Habit
     let day: LocalDay
     @Environment(HabitStore.self) private var store
+    @Environment(TodayLayout.self) private var layout: TodayLayout?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         let done = store.isStepDone(step, of: habit, on: day)
@@ -307,7 +365,12 @@ struct StepRow: View {
             RoundActionButton(symbol: "checkmark", done: done, color: habit.color,
                               label: done ? "Undo \(step.name)" : "Mark \(step.name) done") {
                 if !done { store.noteOffer = .init(habit: habit.id, day: day) }
-                withAnimation { store.toggleStep(step, of: habit, on: day) }
+                layout?.hold(reduceMotion: reduceMotion)
+                if done { TickFeedback.undone() } else {
+                    // The last step makes the checklist done.
+                    TickFeedback.logged(finished: habit.steps.allSatisfy { $0.id == step.id || store.isStepDone($0, of: habit, on: day) })
+                }
+                withAnimation(Motion.tick(reduceMotion)) { store.toggleStep(step, of: habit, on: day) }
             }
         }
         .disabled(day > store.today())
@@ -329,12 +392,16 @@ struct QuitRow: View {
     @Environment(HabitStore.self) private var store
     @State private var showEdit = false
     @State private var showPause = false
+    @State private var showSlip = false
+    /// The slip just logged, offered for Undo for a few seconds.
+    @State private var lastSlip: UUID?
     private var today: LocalDay { store.today() }
     /// Set once, on a whole second, so every quit clock ticks together.
     private static let anchor = Date(timeIntervalSinceReferenceDate: Date.now.timeIntervalSinceReferenceDate.rounded(.down))
 
     var body: some View {
         // A fixed anchor: `.now` gave a new schedule on every redraw, restarting the clock each time (see HabitRow).
+        VStack(alignment: .leading, spacing: 4) {
         TimelineView(.periodic(from: Self.anchor, by: 1)) { context in
             let runs = store.quitRuns(of: habit, now: context.date)
             HStack(alignment: .top, spacing: 12) {
@@ -343,6 +410,7 @@ struct QuitRow: View {
                 VStack(alignment: .leading, spacing: 1) {
                     Text(habit.name.capped(HabitRow.nameShown)).font(.body).lineLimit(1).accessibilityLabel(habit.name)
                     Text("Best \(Format.days(runs.best))").font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+                    if let id = lastSlip { SlipUndoLine(id: id) { withAnimation { lastSlip = nil } } }
                     // A craving or a slip, noted for today (quit rows take notes too, 29 Sep).
                     if let note = store.note(of: habit, on: today) {
                         Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
@@ -366,6 +434,17 @@ struct QuitRow: View {
             .padding(.vertical, 2)
             .accessibilityElement(children: .combine)
         }
+        HStack {
+            Button("Slipped") { showSlip = true }
+                .disabled(store.isPaused(habit, on: today))
+            if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == today {
+                Button { store.undoEntry(entry.id) } label: {
+                    Text("Undo").frame(minWidth: 44, minHeight: 44)
+                }
+                    .accessibilityIdentifier("habit-inline-undo")
+            }
+        }.buttonStyle(.borderless).font(.caption)
+        }
         .listRowBackground(Color(.secondarySystemGroupedBackground).overlay(HighlightFlash(on: highlighted, color: habit.color)))
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
@@ -375,6 +454,9 @@ struct QuitRow: View {
         }
         .contextMenu {
             Button("Edit Habit", systemImage: "pencil") { showEdit = true }
+            // A slip is an event with its own time (Build Plan #60d); editing "Started" is only for fixing a wrong start.
+            Button("Log a Slip…", systemImage: "arrow.uturn.backward.circle") { showSlip = true }
+            Button("Edit Today's Progress…", systemImage: "calendar") { store.dayTarget = .init(habitID: habit.id, day: today) }
             // Pausing ends this run (kept as a run, not a slip); a new one starts when it's back (the user, 29 Sep).
             PauseMenuItems(habit: habit, showPause: $showPause)
             Button(store.note(of: habit, on: today) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") {
@@ -383,6 +465,7 @@ struct QuitRow: View {
         }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
+        .sheet(isPresented: $showSlip) { LogSlipSheet(habit: habit) { id in withAnimation { lastSlip = id } } }
     }
 }
 
@@ -447,7 +530,11 @@ struct PartHeader: View {
                             .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { titleWidth = $0 }
                     }
                 if isNow { NowChip().fixedSize() }
-                if let count = iconCount { FoldedIcons(habits: habits, max: count).fixedSize().padding(.leading, 2) }
+                if let count = iconCount {
+                    // Folding: the icons fade in from the name's side as the rows go back under the header (#59).
+                    FoldedIcons(habits: habits, max: count).fixedSize().padding(.leading, 2)
+                        .transition(.opacity.combined(with: .scale(scale: 0.9, anchor: .leading)))
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { room = $0 }
@@ -471,6 +558,8 @@ struct PartHeader: View {
                         .font(.system(size: 18))
                         .foregroundStyle(.secondary)
                         .accessibilityHidden(true)
+                        // The last habit of the part: the ✓ grows in with the row's own tick (#58).
+                        .transition(.scale(scale: 0.4).combined(with: .opacity))
                 } else if let status {
                     Text(status).font(.subheadline).monospacedDigit().foregroundStyle(.secondary).accessibilityHidden(true)
                 }
@@ -566,7 +655,7 @@ struct EditHabitSheet: View {
     var body: some View {
         NavigationStack {
             HabitForm(editing: store.habits.first { $0.id == habit.id } ?? habit, weekStart: store.settings.weekStart,
-                      description: store.description(of: habit) ?? "") { _ in onSaved() }
+                      description: store.description(of: habit) ?? "", group: store.groupOf[habit.id]) { _ in onSaved() }
         }
     }
 }
@@ -580,3 +669,12 @@ private struct NoteLineLabel: LabelStyle {
 
 /// The band at the top of every row that the icon, streak and button sit in (the row's minimum height).
 enum RowBand { static let height: CGFloat = 44 }
+
+/// A fixed timer anchor while running, one initial draw while stopped or covered by its sheet.
+private struct HabitRowClockSchedule: TimelineSchedule {
+    let start: Date?
+    func entries(from date: Date, mode: TimelineScheduleMode) -> AnySequence<Date> {
+        guard let start else { return AnySequence([date]) }
+        return AnySequence(PeriodicTimelineSchedule(from: start, by: 1).entries(from: date, mode: mode))
+    }
+}
