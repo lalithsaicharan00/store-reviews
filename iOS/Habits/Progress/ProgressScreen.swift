@@ -20,7 +20,9 @@ struct ProgressScreen: View {
     @AppStorage(GroupFilter.progress) private var groupRaw = ""
     /// A day in the period on screen; nil means the current one, so the page always opens on it.
     @State private var anchor: LocalDay?
-    @State private var model = ProgressModel()
+    /// Kept between openings (one for the app): reopening Progress with nothing changed shows the numbers already
+    /// worked out instead of working them out again (PERFORMANCE.md rule 5).
+    @State private var model = ProgressModel.shared
     @State private var openDay: LocalDay?
     /// The day "Show on Today" asked for, opened once the Day sheet has gone.
     @State private var showOnToday: LocalDay?
@@ -471,6 +473,8 @@ struct ProgressRowView: View {
 /// Holds Progress's numbers: one snapshot per range, period and data version, worked out once and kept, so going back
 /// to a period is instant (report §20).
 @Observable final class ProgressModel {
+    static let shared = ProgressModel()
+
     struct Key: Hashable {
         let range: ProgressRange
         let anchor: LocalDay?
