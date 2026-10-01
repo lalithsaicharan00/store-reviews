@@ -120,8 +120,20 @@ final class BackupUITests: XCTestCase {
         ["id": UUID().uuidString.lowercased(), "platform": "ipados", "name": "UI test iPad", "appVersion": "test"]
     }
 
+    /// One retry when the runner's network times out (seen once on GitHub's Mac, 1 Oct: the server answered in under
+    /// a second from elsewhere). Any reply from the server, error or not, is returned as is.
     private func call(_ method: String, _ path: String, _ body: [String: Any]?, token: String? = nil) throws -> (status: Int, json: [String: Any]) {
-        var request = URLRequest(url: URL(string: api + path)!, timeoutInterval: 30)
+        do {
+            return try callOnce(method, path, body, token: token)
+        } catch let error as URLError where error.code == .timedOut {
+            return try callOnce(method, path, body, token: token)
+        } catch {
+            throw NSError(domain: "BackupUITests", code: 1, userInfo: [NSLocalizedDescriptionKey: "\(method) \(path): \(error)"])
+        }
+    }
+
+    private func callOnce(_ method: String, _ path: String, _ body: [String: Any]?, token: String? = nil) throws -> (status: Int, json: [String: Any]) {
+        var request = URLRequest(url: URL(string: api + path)!, timeoutInterval: 60)
         request.httpMethod = method
         if let body {
             request.httpBody = try JSONSerialization.data(withJSONObject: body)
