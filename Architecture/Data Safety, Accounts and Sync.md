@@ -3,7 +3,7 @@
 *Written by Claude, 26 Sep 2026. A proposal: nothing here is built yet.*
 
 *Updated 27 Sep 2026:*
-- *Free is one phone and 5 habits, local-only, with no account.*
+- *Free is one device (phone or tablet, since 1 Oct 2026) and 5 habits, local-only, with no account and no sync.*
 - *Plus (lifetime) adds every device, sync and server backup through an account created right after purchase (Apple or Google).*
 - *No copies in iCloud or Google Drive, and no email sign-in. One email ever: the purchase confirmation.*
 

@@ -9,7 +9,7 @@ How the app works under the hood, on every platform: iPhone, Android, Watch, and
 
 The system diagram in Figma (page "App Architecture") comes **last**, once every topic below is settled.
 
-**Product shape (decided 27 Sep 2026):** free is one phone, 5 habits, local-only, with no account. Plus (one-time, lifetime) adds every device, Watch, sync and server backup, through an account created right after purchase (Apple or Google). We make no copies in iCloud or Google Drive, and send one email ever: the purchase confirmation.
+**Product shape (decided 27 Sep 2026; updated 1 Oct 2026):** free is any one device (a phone or a tablet), 5 habits, no sync, with no account. Plus (one-time, lifetime) adds every device, Watch, sync and server backup, through an account created right after purchase (Apple or Google). We make no copies in iCloud or Google Drive, and send one email ever: the purchase confirmation.
 
 **Starting point:** [Data Safety, Accounts and Sync.md](<Data Safety, Accounts and Sync.md>) is the overall proposal: local-first
 SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one at a time.

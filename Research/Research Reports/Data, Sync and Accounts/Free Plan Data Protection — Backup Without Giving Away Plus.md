@@ -215,7 +215,7 @@ In this study, 74 of the 120 reinstall-or-delete stories are from iPhone.
 - **One owner device:** the copy belongs to the install that last created or restored it.
 - **When another device restores it,** ownership moves there. The old device's next upload is refused, and it shows one honest line: **"Your safety copy moved to your iPad on 3 Oct. To use both, get Plus."** This is the only Plus mention, and it appears at the exact moment someone wants two devices. That is the highest-intent moment in the evidence (§2.1), and it is not a fear message.
 - **Restore-only, once a night:** there is no merging between devices and no upload after every change. Using it as manual sync would be slow and would overwrite. (Users show "backup file used as sync" is a chore: 23 reviews in [Backlog 4](<Sign-in Prompts and the Backup Guarantee — Backlog 4.md>).)
-- **iPad on the same Apple Account** will find the iPhone's key. Its first screen asks: "Restore here (moves your safety copy to this iPad)" or "Start fresh on this iPad". This keeps "free iPad works standalone" (decided 27 Sep).
+- **iPad on the same Apple Account** will find the iPhone's key. Since 1 Oct 2026 a tablet on its own is free, so its first screen offers "Copy my iPhone's habits here once" or "Start fresh"; after that each device keeps its own safety copy and they don't sync ([07 §7.1](<../../../Architecture/07. Other Surfaces.md>)). Taking over a copy (moving ownership, as above) is only for a reinstall or a device that replaces the old one.
 
 ### 4.5 When a free user buys Plus
 
