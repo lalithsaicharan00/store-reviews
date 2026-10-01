@@ -49,7 +49,7 @@ extension HabitStore {
                 case .amount: action = planned && (rule.atMost || !isDone(habit, on: day)) && rule.quickIncrement != nil ? "add" : nil
                 default: action = nil
                 }
-                let goal = dayGoal(of: rule)
+                let goal = goal(of: rule)
                 let status: String
                 if done && habit.kind == .task { status = "Done" }
                 else if !planned {
@@ -60,8 +60,8 @@ extension HabitStore {
                 }
                 else if habit.kind == .quit { status = "Since last slip" }
                 else if habit.kind == .task { status = done ? "Done" : "For today" }
-                else if rule.atMost { status = "\(progressValue(value, rule)) · limit \(progressValue(goal, rule)) · so far" }
-                else if goal > 1 || rule.kind != .check { status = "\(progressValue(value, rule)) / \(progressValue(goal, rule))" }
+                else if rule.atMost { status = goalLine(rule, progress: value, goal: goal) + " · so far" }
+                else if goal > 1 || rule.kind != .check { status = goalLine(rule, progress: value, goal: goal) }
                 else { status = done ? "Done" : "For today" }
                 return WidgetItem(id: habit.id.uuidString, name: habit.name, symbol: habit.symbol, color: habit.color.rawValue, status: status,
                                   value: value, goal: goal, done: done, planned: planned, ongoing: rule.atMost || habit.kind == .quit,

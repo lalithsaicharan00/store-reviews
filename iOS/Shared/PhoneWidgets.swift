@@ -148,6 +148,7 @@ struct PhoneWidgetView: View {
     let layout: PhoneWidgetLayout
     @Environment(\.widgetFamily) private var family
     @Environment(\.widgetRenderingMode) private var renderingMode
+    @Environment(\.dynamicTypeSize) private var textSize
     private var accessory: Bool { [.accessoryInline, .accessoryCircular, .accessoryRectangular].contains(family) }
     private var effective: PhoneWidgetLayout {
         if !entry.plus && !entry.sample && layout == .icons { return .agenda }
@@ -194,7 +195,7 @@ struct PhoneWidgetView: View {
                 if let first = entry.rows.first { Text(first.name).font(.caption).lineLimit(2) }
                 Spacer(minLength: 0)
             } else {
-                let capacity = family == .systemLarge ? 6 : 3
+                let capacity = family == .systemLarge ? (textSize.isAccessibilitySize ? 4 : 6) : (textSize >= .xLarge ? 2 : 3)
                 let page = clampedPage(capacity)
                 let rows = Array(entry.rows.dropFirst(page * capacity).prefix(capacity))
                 if rows.isEmpty { Text("Nothing left to check off").font(.callout); Spacer(minLength: 0) }
@@ -312,7 +313,7 @@ struct PhoneWidgetView: View {
     private var history: some View {
         VStack(alignment: .leading, spacing: 6) {
             if let item = entry.selected {
-                Text(item.name).font(.headline).lineLimit(2)
+                Text(item.name).font(family == .systemSmall && entry.month ? .caption.weight(.semibold) : .headline).lineLimit(1)
                 if item.isTask || item.isQuit {
                     status(item).font(.callout)
                     Text("History is for tracked habits").font(.caption2)
@@ -329,7 +330,9 @@ struct PhoneWidgetView: View {
                                 .accessibilityLabel("\(day.id), \(spoken(day.state)), \(day.value)")
                         }
                     }
-                    Text("Filled: done · ring: open · pause: paused").font(.system(size: 9)).foregroundStyle(.secondary).lineLimit(2)
+                    if family == .systemLarge || !entry.month {
+                        Text("Filled: done · ring: open · pause: paused").font(.system(size: 9)).foregroundStyle(.secondary).lineLimit(2)
+                    }
                 }
                 Spacer(minLength: 0)
             } else { Text("Choose a habit").font(.headline); Text("Edit this widget to choose.").font(.caption) }

@@ -122,6 +122,8 @@ enum WidgetCheck {
         for _ in 0..<2 { store.logFromWidget(id: weekly.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(weekly), now: now) }
         await store.flush()
         expect(store.dayProgress(of: weekly, on: day) == 2 && store.isSatisfied(weekly, on: day), "Weekly extra ticks remain additive after daily satisfaction")
+        let weeklyRow = store.widgetSnapshot(now: now).frames.first!.items.first { $0.id == weekly.id.uuidString }!
+        expect(weeklyRow.goal == 3 && weeklyRow.status.contains("this week"), "Weekly widget uses the period goal and names its period")
         let list = Habit(name: "Checklist", symbol: "checklist", color: .blue, kind: .checklist, steps: [Step(name: "One"), Step(name: "Two")], startsOn: day)
         store.add(list); await store.flush()
         expect(store.widgetSnapshot(now: now).frames.first!.items.first { $0.id == list.id.uuidString }?.action == nil, "Checklist has no complete-all shortcut")

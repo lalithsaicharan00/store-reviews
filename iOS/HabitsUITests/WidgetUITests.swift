@@ -58,5 +58,23 @@ final class WidgetUITests: XCTestCase {
         app.revealAndTap(app.switches["widgets-hide"])
         XCTAssertEqual(app.switches["widgets-hide"].value as? String, "1")
         app.switches["widgets-hide"].tap()
+    }    func testLargerTextCountersAndCutDownAreReadable() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-uitest", "-empty", "-widget-fixture", "-widget-render", "-free",
+                               "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryXXXL"]
+        app.launch()
+        XCTAssertTrue(app.buttons["select-Widget quit"].waitForExistence(timeout: 15))
+        for name in ["Widget quit", "Widget cut down", "Widget water"] {
+            let select = app.buttons["select-\(name)"]
+            if !select.isHittable { app.scrollViews.element(boundBy: 1).swipeLeft() }
+            XCTAssertTrue(select.isHittable); select.tap()
+            let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-larger-text-\(name)"; shot.lifetime = .keepAlways; add(shot)
+        }
+        app.buttons["agenda"].tap()
+        let medium = app.buttons["family-systemMedium"]
+        app.scrollViews.firstMatch.swipeRight()
+        XCTAssertTrue(medium.isHittable); medium.tap()
+        let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-larger-text-agenda"; shot.lifetime = .keepAlways; add(shot)
     }
+
 }

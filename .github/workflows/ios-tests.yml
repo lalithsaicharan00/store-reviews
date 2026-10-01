@@ -114,21 +114,13 @@ jobs:
         working-directory: Core
         run: ./gradlew jvmTest
 
-      - name: Pick a simulator
-        run: |
-          ID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone')))")
-          echo "SIM=$ID" >> "$GITHUB_ENV"
-          xcrun simctl list devices available | grep "$ID"
-          xcrun simctl boot "$ID" || true
-          xcrun simctl bootstatus "$ID" -b
-
       - name: Build
         id: build
         working-directory: iOS
         run: |
           set -o pipefail
           xcodebuild build-for-testing -project Habits.xcodeproj -scheme Habits \
-            -destination "id=$SIM" -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO 2>&1 | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
+            -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedData ARCHS=arm64 CODE_SIGNING_ALLOWED=NO 2>&1 | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
           grep -q "BUILD SUCCEEDED" build.log
 
       - name: Save available core build dependencies
@@ -140,6 +132,20 @@ jobs:
             ~/.gradle/wrapper
             ~/.konan
           key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Pick a simulator
+        if: steps.build.outcome == 'success'
+        run: |
+          sudo xcodebuild -runFirstLaunch
+          xcodebuild -version
+          xcrun simctl list runtimes
+          open -a Simulator
+          ID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone')))")
+          echo "SIM=$ID" >> "$GITHUB_ENV"
+          xcrun simctl boot "$ID" || true
+          xcrun simctl bootstatus "$ID" -b
+          xcrun simctl list devices booted
+          xcodebuild -showdestinations -project iOS/Habits.xcodeproj -scheme Habits 2>&1 | tee iOS/simulator-destinations.log
 
       - name: UI tests
         id: tests
@@ -252,6 +258,7 @@ jobs:
             Core/schemas
             Core/build/reports/tests
             iOS/build.log
+            iOS/simulator-destinations.log
             iOS/test.log
             iOS/summary.md
             iOS/perf
@@ -266,6 +273,7 @@ jobs:
           name: ios-logs
           path: |
             iOS/build.log
+            iOS/simulator-destinations.log
             iOS/test.log
             iOS/summary.md
             iOS/perf/*.log
