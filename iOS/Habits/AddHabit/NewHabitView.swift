@@ -303,7 +303,7 @@ struct HabitForm: View {
         _color = State(initialValue: .blue)
         let plainSymbol = type == .quit ? "nosign" : type == .task ? "calendar" : "star.fill"
         _symbol = State(initialValue: idea.flatMap { IconSuggester.symbol(for: $0.name) } ?? idea?.symbol ?? plainSymbol)
-        _name = State(initialValue: idea?.name ?? "")
+        _typed = State(initialValue: TypedName(idea?.name ?? ""))
         _shownName = State(initialValue: idea?.name ?? "")
         // Amounts start empty (left out of the sentence): the right amount depends on the person. How often starts
         // as every day and Time of Day as Anytime (the user, 29 Sep).
