@@ -110,6 +110,27 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Summary at the end
 - [x] Fast: Today stops drawing behind the player
 
+## Backup, sync and accounts (1 Oct 2026, branch `claude/server-and-sync`)
+
+Design: [Backup, Sync and Accounts — One Seamless Experience](<../../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>).
+
+- [x] **Settings → Backup & Sync** (the avatar on Today): where the backup is and when it last worked, Back Up Now,
+      Restore, Move to Another Device, Export a File, Undo Last Restore (30 days); Sync ("part of Plus" when free);
+      sign in or out
+- [x] **Accounts are optional and free:** Google sign-in (the system web sheet, no SDK); an unknown sign-in asks
+      before creating an account. Sign in with Apple is written but off until the Apple Developer account
+- [x] **A free account backs up to our server** once on each day something changed, confirmed by the server's checksum;
+      **only Plus syncs**
+- [x] **Restore** from the account's copies (any of its devices: "copy my habits here once") or a file, also opened
+      from AirDrop, Files or Mail; a preview, then Replace or Merge; an import that adds nothing says so
+- [x] **"I've Used This Before"** on the empty first screen
+- [x] **A card on Today only when the main backup has a problem** (signed out, the server unreachable for 2 days, a copy
+      that failed its check), with the fix; Not Now hides it for 7 days. Nothing about backup on Today otherwise
+- [ ] The copy in the user's own iCloud (written, off until the Apple Developer account), and finding it from
+      "I've used this before"
+- [ ] A notification when the nightly backup finds a problem while the app is closed
+- [ ] The Plus purchase flow's "One last step" and "Turn on sync" lines (waits for the Plus screen design)
+
 ## Under the hood
 
 - [x] Data saved on the phone (SQLite through the Kotlin shared core), survives closing the app
