@@ -27,7 +27,9 @@
     // Dev only: GitHub Actions runs of this repository may use POST /v1/auth/ci (end-to-end tests).
     "CI_REPOSITORY": "lalithsaicharan00/store-reviews",
     // For the daily report's request numbers (Analytics Engine SQL API). Not a secret.
-    "ACCOUNT_ID": "fd5d7e4921bb3f41c85bedb2fd2fb0eb"
+    "ACCOUNT_ID": "fd5d7e4921bb3f41c85bedb2fd2fb0eb",
+    // The website may call sign-in, sign-out and delete from these origins (account deletion without the app).
+    "WEB_ORIGINS": "https://oftenenough.com,https://www.oftenenough.com,https://site-dev.oftenenough.com,https://oftenenough.pages.dev,https://*.oftenenough.pages.dev"
   },
   "secrets": { "required": ["TOKEN_KEY", "TEST_LOGIN_SECRET"] },
   "durable_objects": { "bindings": [{ "name": "ACCOUNT", "class_name": "Account" }] },
@@ -76,7 +78,8 @@
         "APPLE_ENVIRONMENTS": "Production,Sandbox",
         "APPLE_EXTRA_ROOTS": "",
         "CI_REPOSITORY": "",
-        "ACCOUNT_ID": "fd5d7e4921bb3f41c85bedb2fd2fb0eb"
+        "ACCOUNT_ID": "fd5d7e4921bb3f41c85bedb2fd2fb0eb",
+        "WEB_ORIGINS": "https://oftenenough.com,https://www.oftenenough.com"
       },
       "secrets": { "required": ["TOKEN_KEY"] },
       "triggers": { "crons": ["0 6 * * *"] },

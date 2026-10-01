@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delete your account · Often Enough</title>
+<meta name="description" content="Delete your Often Enough account and everything on our server, without the app.">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<header>
+  <a class="brand" href="/">Often Enough</a>
+  <nav aria-label="Site">
+    <a href="/support">Support</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+    <a href="/delete-account" aria-current="page">Delete account</a>
+  </nav>
+</header>
+<main>
+
+<h1>Delete your account</h1>
+<p>This deletes your Often Enough account and everything we keep for it: your backups, your synced habits, your devices
+and your sign-ins. What's on our server goes at once; every copy is gone within 30 days.</p>
+<p>The habits on your phone stay there unless you delete the app. You can also do this in the app: Settings →
+Backup &amp; Sync → Your account → Delete Account.</p>
+
+<div class="card" id="step-sign-in">
+  <p><strong>First, sign in</strong> with the account you use in Often Enough, so we know it's yours.</p>
+  <div id="google-button" aria-live="polite"></div>
+  <p class="muted" id="google-loading">Loading Google sign-in…</p>
+  <p class="muted">Signed in with Apple? Delete your account in the app, or write to
+    <a href="mailto:support@oftenenough.com">support@oftenenough.com</a> from the address on your account.</p>
+</div>
+
+<div class="card" id="step-confirm" hidden>
+  <p>Signed in as <strong id="who"></strong>.</p>
+  <label><input type="checkbox" id="understand"> <span>I understand this deletes my account and everything on the
+    server. It can't be undone. Plus stays mine and can be restored from the store.</span></label>
+  <p><button class="button danger" id="delete" disabled>Delete My Account</button>
+     <button class="button" id="cancel" type="button">Cancel</button></p>
+</div>
+
+<div class="card" id="step-done" hidden>
+  <p class="ok"><strong>Your account is deleted.</strong></p>
+  <p>Everything on our server is gone now. Every copy, backups included, is gone by <strong id="gone-by"></strong>.</p>
+</div>
+
+<p class="error" id="error" role="alert" hidden></p>
+</main>
+<footer>
+  <p>Often Enough · <a href="mailto:support@oftenenough.com">support@oftenenough.com</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
+</footer>
+<script src="/delete-account.js" defer></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</body>
+</html>

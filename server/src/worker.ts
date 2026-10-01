@@ -38,6 +38,8 @@ export default {
     const started = Date.now();
     const url = new URL(request.url);
     let response: Response;
+    const origin = webOrigin(request, url, env);
+    if (request.method === "OPTIONS" && origin) return preflight(origin);
     try {
       response = await route(request, url, env);
     } catch (error) {
@@ -48,6 +50,11 @@ export default {
         console.error(JSON.stringify({ message: "unhandled error", path: url.pathname, error: error instanceof Error ? error.message : String(error) }));
         response = json({ error: "server_error", message: "Our server is having trouble. Your data is safe on your phone." }, 500);
       }
+    }
+    if (origin) {
+      response = new Response(response.body, response);
+      response.headers.set("access-control-allow-origin", origin);
+      response.headers.append("vary", "Origin");
     }
     const ms = Date.now() - started;
     console.log(JSON.stringify({ route: `${request.method} ${url.pathname}`, status: response.status, ms }));
@@ -415,6 +422,33 @@ async function appleNotification(request: Request, env: Env): Promise<Response> 
 }
 
 // MARK: Helpers
+
+/**
+ * The website (oftenenough.com) deletes accounts without the app (09 §7): it may call only these routes, and only from
+ * the origins in `WEB_ORIGINS` (`*.` allows that host's subdomains, for Cloudflare Pages previews on dev).
+ */
+const WEB_ROUTES = new Set(["/v1/auth/google", "/v1/account/delete", "/v1/account/signout"]);
+
+function webOrigin(request: Request, url: URL, env: Env): string | null {
+  const origin = request.headers.get("origin");
+  if (!origin || !WEB_ROUTES.has(url.pathname)) return null;
+  const allowed = (env.WEB_ORIGINS ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  const ok = allowed.some((a) => a === origin || (a.startsWith("https://*.") && origin.startsWith("https://") && origin.endsWith(a.slice("https://*".length))));
+  return ok ? origin : null;
+}
+
+function preflight(origin: string): Response {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "access-control-allow-origin": origin,
+      "access-control-allow-methods": "POST",
+      "access-control-allow-headers": "content-type, authorization",
+      "access-control-max-age": "86400",
+      vary: "Origin",
+    },
+  });
+}
 
 /**
  * Rate limits (Architecture 06 §6): Cloudflare's rate-limit binding, approximate and per location, so it stops loops

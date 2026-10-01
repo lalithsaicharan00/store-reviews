@@ -43,10 +43,10 @@ What was skipped or left empty while setting things up, so nothing is forgotten.
 
 | What | Where | Status / what's needed |
 |---|---|---|
-| **Privacy policy page** `https://oftenenough.com/privacy` | Website (`oftenenough.com` repo); Google consent screen → Branding | **Needed before publishing** the Google consent screen to production, and for both stores. Draft from [09 Privacy](<09. Privacy and Account Deletion.md>) §3, §8 |
+| **Privacy policy page** `https://oftenenough.com/privacy` | Website (`website/` in this repo; the `oftenenough.com` repo is the old Flutter app); Google consent screen → Branding | **Written 1 Oct** from 09 §3, §8; live at `https://site-dev.oftenenough.com/privacy`. Goes to `oftenenough.com` once the parked DNS records are removed ([website/README](<../website/README.md>)). Read it against the shipped app before publishing the consent screen |
 | **Terms page** `https://oftenenough.com/terms` | Website; Google Branding (optional) | Optional for Google; useful for the stores |
 | **Home page** `https://oftenenough.com` | Website; Google Branding | Needed for Google Branding and the store listings |
-| **Account deletion page** (delete without the app) | Website | Google Play requires it ([09 §7](<09. Privacy and Account Deletion.md>)) |
+| **Account deletion page** (delete without the app) | Website | **Built 1 Oct** (`/delete-account`, Google sign-in on the web). Needs the site's origins added to the **web OAuth client's Authorized JavaScript origins** |
 | **Authorized domain** `oftenenough.com` | Google consent screen → Branding | Google may ask us to prove we own the domain (Search Console) when publishing |
 | **Google consent screen: publish to production** | Google Auth Platform → Audience | In **Testing** now: only listed test users (the owner's Gmail added 1 Oct), and sign-ins expire after 7 days. Publish once the privacy page is live |
 | **App logo** on the consent screen | Google Branding | Left empty: adding one starts Google's brand review. Add when the logo is final |

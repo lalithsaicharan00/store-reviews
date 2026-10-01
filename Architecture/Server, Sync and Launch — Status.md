@@ -5,8 +5,8 @@ moves, so the next session (person or agent) can pick up from it alone.*
 
 ## ▶ Next up, in order
 
-0. ✅ **Backup, sync and accounts (decided and built 1 Oct 2026; what's left is listed under step 3).** Next: item 3
-   (website), then whatever in §3 isn't waiting on you. Design: [Backup, Sync and Accounts — One Seamless
+0. ✅ **Backup, sync and accounts (decided and built 1 Oct 2026; what's left is listed under step 3).** Next: whatever
+   in §3 isn't waiting on you. Design: [Backup, Sync and Accounts — One Seamless
    Experience](<../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>);
    server checklist: [Server Cost and Capacity §5](<Server Cost and Capacity — Free Safety Copy vs Plus Sync.md>);
    decisions, Google client IDs and setup left for later: [Backlog](<Backlog.md>). In order:
@@ -72,7 +72,15 @@ moves, so the next session (person or agent) can pick up from it alone.*
       uptime monitor on `https://api.oftenenough.com/v1/status`, and Cloudflare notifications for Worker errors.
 2. **Merge, as soon as `integration` is in `main`:** merge `main` into this branch, follow §2's checklist, run every
    test (§5), then merge this branch into `main`. Until then, don't start work that touches `Core/` or `AppModel`.
-3. **Website on `oftenenough.com`:** privacy policy, support page, account deletion without the app (§3 #5).
+3. ✅ **Website (1 Oct; `website/`, [README](<../website/README.md>)):** home, privacy policy (from 09's data map,
+   updated for optional accounts), terms, support, and delete-your-account without the app (Google sign-in on the
+   web, then the same API; the API allows only the site's origins, on three routes). Static assets only, no Worker
+   script (free, unlimited; the user asked for no request cost; a classic Pages project couldn't be created through
+   the API). Live at `https://site-dev.oftenenough.com`; `tests/site-check.mjs` passes 20 checks in Chromium (every
+   page light/dark at phone width, and the delete page end to end against dev). **Needs you before it's at
+   `oftenenough.com`:** delete the parked Hostinger DNS records, add the site's origins to the Google web client,
+   turn off Cloudflare Web Analytics injection, set up `support@oftenenough.com`, and read the privacy policy
+   against the shipped app (README "To go live").
 4. **Waiting on decisions or accounts** (don't start until they arrive): the Plus screen design (purchases in the
    app), the Apple Developer account (Sign in with Apple, registering IDs
    and in-app purchases). See §3.
@@ -139,7 +147,7 @@ core most) → this branch → `main` → onboarding and widgets merge `main`.
 |---|---|---|
 | 1 | Server readiness (§4) | **next**; possible now |
 | 2 | Merging (§2) | waits for `integration` → `main` |
-| 3 | Website on `oftenenough.com`: privacy policy, support page, account deletion without the app (Google requires it) | possible now |
+| 3 | Website on `oftenenough.com`: privacy policy, support page, account deletion without the app (Google requires it) | **built 1 Oct** (`website/`, live at site-dev); going live at the real address needs the DNS and Google steps in its README |
 | 4 | Backup, sync and accounts for free and Plus users | **built 1 Oct 2026** (item 0 above); iCloud copy and Apple sign-in wait for the developer account |
 | 5 | Purchases in the app: StoreKit 2 buy/restore/launch check, the 5-habit limit from real ownership, sending purchases to `/v1/purchases/verify` | needs the **Plus screen design**; then testable with the `.storekit` file |
 | 6 | Sign-in in the app: ~~Google sign-in~~ (built 1 Oct), Apple button (written, off), "One last step" after purchase, Settings → Account (devices, delete account) | Apple: **the developer account**; "One last step": the Plus screen design |

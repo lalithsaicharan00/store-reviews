@@ -1,0 +1,20 @@
+// The website (oftenenough.com): static files only. There is no Worker script, so every request is served as a
+// static asset: free, unlimited, and never counted against the API's request limits
+// (https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/).
+// Deploy from this folder: `npx wrangler deploy` (website/README.md).
+{
+  "$schema": "../server/node_modules/wrangler/config-schema.json",
+  "name": "oftenenough-site",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./public",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "workers_dev": false,
+  "preview_urls": false,
+  // site-dev: a test address (its delete page talks to api-dev). To go live: delete the parked Hostinger A/AAAA
+  // records for oftenenough.com (and any for www) in Cloudflare DNS, then add here and deploy (website/README.md):
+  //   { "pattern": "oftenenough.com", "custom_domain": true }, { "pattern": "www.oftenenough.com", "custom_domain": true }
+  "routes": [{ "pattern": "site-dev.oftenenough.com", "custom_domain": true }]
+}
