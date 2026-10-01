@@ -23,9 +23,11 @@ nonisolated enum WidgetAnalyticsRelay {
         guard let directory else { return }
         let file = file(directory)
         if enabled {
-            try? FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
-            var excluded = URLResourceValues(); excluded.isExcludedFromBackup = true
-            var folder = file.deletingLastPathComponent(); try? folder.setResourceValues(excluded)
+            do {
+                try FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
+                var excluded = URLResourceValues(); excluded.isExcludedFromBackup = true
+                var folder = file.deletingLastPathComponent(); try folder.setResourceValues(excluded)
+            } catch { return } // A telemetry mailbox must not become eligible for device backup.
         }
         let coordinator = NSFileCoordinator()
         var error: NSError?

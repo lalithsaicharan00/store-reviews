@@ -4,7 +4,9 @@ import UIKit
 extension Habit {
     var analyticsType: AnalyticsHabitType {
         if kind == .task { return .notApplicable }
-        if case .amount = kind, atMost { return .cutDown }
+        if atMost {
+            switch kind { case .amount, .duration: return .cutDown; default: break }
+        }
         switch kind {
         case .check: return .check
         case .amount: return .amount

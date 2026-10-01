@@ -39,10 +39,13 @@ enum AnalyticsCheck {
         }
         var cutDown = Habit(name: sentinel, symbol: "star", color: .blue, kind: .amount(unit: sentinel, increment: 2))
         cutDown.atMost = true; habits.append(cutDown); store.add(cutDown)
+        var timedCutDown = Habit(name: sentinel, symbol: "star", color: .blue, kind: .duration)
+        timedCutDown.atMost = true; habits.append(timedCutDown); store.add(timedCutDown, suggestion: true)
         await store.flush(); telemetry.drain()
-        expect(telemetry.inspect()?.outbox.filter { $0.event == .entityCreated }.count == 7, "every type created durably")
+        expect(telemetry.inspect()?.outbox.filter { $0.event == .entityCreated }.count == 8, "every type created durably")
+        expect(telemetry.inspect()?.outbox.contains { $0.event == .entityCreated && $0.properties["habit_type"] == .text("cut_down") && $0.properties["creation_origin"] == .text("suggestion") } == true, "timed cut-down suggestion classified without name or unit")
         store.add(cutDown); await store.flush(); telemetry.drain()
-        expect(telemetry.inspect()?.outbox.filter { $0.event == .entityCreated }.count == 7, "retry same creation is idempotent")
+        expect(telemetry.inspect()?.outbox.filter { $0.event == .entityCreated }.count == 8, "retry same creation is idempotent")
         for habit in habits {
             switch habit.kind {
             case .check, .task: store.toggleCheck(habit, on: store.today())
@@ -52,8 +55,8 @@ enum AnalyticsCheck {
             }
         }
         await store.flush(); telemetry.drain()
-        expect(telemetry.inspect()?.counters["tracking_write_count"] == 7, "seven durable writes")
-        expect(telemetry.inspect()?.counters["habit_write_cut_down"] == 1, "cut-down type")
+        expect(telemetry.inspect()?.counters["tracking_write_count"] == 8, "eight durable writes")
+        expect(telemetry.inspect()?.counters["habit_write_cut_down"] == 2, "cut-down type")
         expect(telemetry.inspect()?.counters["habit_write_amount"] == 1, "amount separate")
         expect(telemetry.inspect()?.counters["task_write_count"] == 1, "task type")
         expect(telemetry.inspect()?.outbox.filter { $0.event == .activation }.count == 1, "one first observed activation")
@@ -64,7 +67,7 @@ enum AnalyticsCheck {
         let widgetSignature = HabitStore.widgetSignature(preconsent)
         store.logFromWidget(id: preconsent.id, day: store.today(), event: widgetEvent, signature: widgetSignature)
         await store.flush(); telemetry.drain()
-        expect(telemetry.inspect()?.counters["tracking_write_count"] == 8, "widget counts only a committed database log")
+        expect(telemetry.inspect()?.counters["tracking_write_count"] == 9, "widget counts only a committed database log")
         expect(telemetry.inspect()?.counters["widget_action_accepted_count"] == 1, "durable widget accepted action")
         store.logFromWidget(id: preconsent.id, day: store.today(), event: widgetEvent, signature: widgetSignature)
         await store.flush(); telemetry.drain()
@@ -75,7 +78,7 @@ enum AnalyticsCheck {
             _ = try? await store.restore(from: file)
             telemetry.drain()
             expect(telemetry.inspect()?.counters["tracking_write_count"] == before, "restoration does not adopt or log")
-            expect(telemetry.inspect()?.outbox.filter { $0.event == .entityCreated }.count == 7, "restoration does not create")
+            expect(telemetry.inspect()?.outbox.filter { $0.event == .entityCreated }.count == 8, "restoration does not create")
             try? FileManager.default.removeItem(at: file.deletingLastPathComponent())
         } else { failures.append("test backup unavailable") }
         do {

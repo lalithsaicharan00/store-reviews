@@ -69,7 +69,7 @@ jobs:
             fi
           else
             case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests,ProgressUITests,GroupsUITests,UndoUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
-            case "$MESSAGE" in *"[ios-analytics]"*) echo "TESTS=AnalyticsUITests,PersistenceUITests,BackupUITests,OnboardingUITests/testWelcomeToFirstHabit,OnboardingUITests/testRestoreFromTheWelcome,OnboardingUITests/testNotNowAndHelp,WidgetUITests/testStorageActionsDayBoundariesPrivacyAndUnlimitedTasks" >> "$GITHUB_ENV"; echo "PERF_ANALYTICS=1" >> "$GITHUB_ENV"; echo "PERF_SCENARIOS=scroll-today tap-today new-habit" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=scroll-today tap-today new-habit" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-analytics]"*) echo "TESTS=AnalyticsUITests,PersistenceUITests,BackupUITests,OnboardingUITests/testWelcomeToFirstHabit,OnboardingUITests/testRestoreFromTheWelcome,OnboardingUITests/testNotNowAndHelp,WidgetUITests/testStorageActionsDayBoundariesPrivacyAndUnlimitedTasks" >> "$GITHUB_ENV"; echo "PERF_ANALYTICS=1" >> "$GITHUB_ENV"; echo "PERF_SCENARIOS=scroll-today tap-today new-habit widget-log widget-guide" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=scroll-today tap-today new-habit widget-log widget-guide" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets]"*) echo "TESTS=WidgetUITests,WidgetSystemUITests,UndoUITests/testStoreCorrectionsRecalculateAndPersist,TimerUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets-recheck]"*) echo "TESTS=WidgetUITests,WidgetSystemUITests" >> "$GITHUB_ENV";; esac
             # A targeted regression pass after family screenshots already passed: real storage,
