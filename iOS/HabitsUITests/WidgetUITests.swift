@@ -58,7 +58,9 @@ final class WidgetUITests: XCTestCase {
         app.revealAndTap(app.switches["widgets-hide"])
         XCTAssertEqual(app.switches["widgets-hide"].value as? String, "1")
         app.switches["widgets-hide"].tap()
-    }    func testLargerTextCountersAndCutDownAreReadable() {
+    }
+
+    func testLargerTextCountersAndCutDownAreReadable() {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest", "-empty", "-widget-fixture", "-widget-render", "-free",
                                "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryXXXL"]
