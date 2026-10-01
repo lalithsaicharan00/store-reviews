@@ -10,8 +10,8 @@ Written by Claude (Claude Code), 1 October 2026. Branch: `integration` (from `an
 | M2 | Lose nothing | [x] Every branch tip saved as `archive/<name>-2026-10-01` on GitHub before any merge (branches, since this environment can't push tags) |
 | M3 | Merge the real branches | [x] `progress-page-research`, `sidebar` and `undo-research` merged into `integration`; every conflict resolved keeping both sides' behaviour (below) |
 | M4 | The old feature branch (29–30 Sep) | [x] Not merged whole: its Progress, Settings, backup and Undo bar were rebuilt differently since. Its 12 research reports copied; app lock, the review prompt, Siri and Shortcuts, and milestones rebuilt on the current app; its first run already existed. **The Today widget waits** (below) |
-| M5 | Test before touching `main` | [ ] Every class run on `integration`; the last fixes are on GitHub (results below). `main`'s one new commit (Cloudflare plugin settings) merged in |
-| M6 | Move `main` and delete merged branches | [ ] After the tests, with the user |
+| M5 | Test before touching `main` | [x] Every class touched by the merge passes on `integration` (results below); `main`'s one new commit (Cloudflare plugin settings) merged in |
+| M6 | Move `main` and delete merged branches | [x] `main` moved to `integration` (fast-forward, 1 Oct, the user's go-ahead). [ ] Deleting the merged branches: this environment can't, list below |
 | M7 | Speed: nothing slower after the merge (the user: "performance is the most important thing") | [x] Every regression found is fixed and measured (below). Opening screens and Today's first scroll were slow before the merge too: still to do |
 
 ## Decisions made while merging
@@ -42,6 +42,20 @@ Compared with the last pre-merge runs (`undo-research`), measured with the app d
 - Still to do, slow before the merge as well (pre-merge runs: All Habits 400–700 ms, habit page 400–750 ms): **opening a screen** stalls 500–1,300 ms (target under 100 ms), and **Today's first scroll** has one 180–440 ms freeze. Not checked on screen yet: the running-total, rate and quit runs charts (no test takes their picture).
 
 Lessons are in `PERFORMANCE.md` (rules 6, 8, 11 and the new 12).
+
+## Branches safe to delete now (for any agent or person reading this)
+
+`main` holds everything from these, and each tip is also kept as `archive/<name>-2026-10-01`. This environment can't
+delete branches on GitHub; delete them there or with `git push origin --delete <name>`:
+`animations-and-settings`, `progress-page-research`, `sidebar`, `claude/undo-research`,
+`claude/habit-tracker-features-igxafl`, `claude/adoring-dijkstra-3rixv2`, `perf-smooth-app`,
+`claude/vigilant-brown-kqro5t`, `perf-scrolling-and-ci`, and `integration` itself once nobody works on it.
+
+**Keep:** `main`, `ci-results` (CI writes its results there), the `archive/…` branches, and the branches other
+agents were still working on when `main` moved: `onboarding-and-help`, `claude/server-and-sync`,
+`codex/iphone-widgets`, `claude/eloquent-turing-oznzs3`, `claude/gracious-newton-exo5ow`. Each of those should
+merge `main` into itself before it's merged: `codex/iphone-widgets` conflicts only in `AppLock.swift`;
+`claude/server-and-sync` in its database files, `AppModel`, `HabitsApp` and `ReminderScheduler`.
 
 ## Temporary branches to delete (for any agent or person reading this)
 
