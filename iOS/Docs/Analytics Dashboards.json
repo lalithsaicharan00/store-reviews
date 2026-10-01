@@ -5,7 +5,7 @@
     989702,
     989704
   ],
-  "state": "prelaunch; no production delivery verified",
+  "state": "prelaunch; synthetic EU acceptance/propertyless/geoip/dedup verified; production cohort empty",
   "noncanonical": true,
   "insights": [
     {
@@ -97,11 +97,27 @@
     {
       "dashboard": 989704,
       "name": "Monthly project ingestion — budget watch",
-      "description": "Raw project received events this UTC month, including retry duplicates and any other emitter. 700k planning ceiling; published free analytics allowance 1M/month. This is not authoritative organization billing usage; billing:read unavailable. Owner confirms no billing configured.",
+      "description": "Stored project events this UTC month after provider deduplication; ingress/billing can differ. 700k planning ceiling, published free analytics allowance 1M/month. Not authoritative organization billing usage: billing:read unavailable. Owner confirms free/no billing. Includes synthetic development validation records.",
       "query": "SELECT count() AS received_project_events, uniq(properties.analytics_record_id) AS distinct_contract_records, 700000 AS app_planning_ceiling, 1000000 AS published_free_allowance FROM events WHERE timestamp >= toStartOfMonth(now())",
       "id": 6269279,
       "short_id": "RFSX54Nc",
       "error": false
     }
-  ]
+  ],
+  "provider_validation": {
+    "date_utc": "2026-10-01T17:31:00Z",
+    "ci_run": 36899451178,
+    "installation": "FBD69B0C-82BB-4A6F-84D4-A26DF42F0D80",
+    "records": [
+      "3DC035EE-7B06-44D9-80A5-EFDF399E796A",
+      "1D2A60CE-CE0B-4416-BAC6-C8A01A9C2261"
+    ],
+    "channel": "development",
+    "transmissions": 2,
+    "rows_per_record": 1,
+    "person_mode": "propertyless",
+    "profile_collection": false,
+    "geoip_collection": false,
+    "user_content": false
+  }
 }
