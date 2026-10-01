@@ -1,12 +1,10 @@
-import CryptoKit
 import Foundation
 import Observation
 import WidgetKit
 
 extension HabitStore {
     static func widgetSignature(_ habit: Habit) -> String {
-        let encoder = JSONEncoder(); encoder.outputFormatting = .sortedKeys
-        return (try? encoder.encode(habit)).map { SHA256.hash(data: $0).map { String(format: "%02x", $0) }.joined() } ?? ""
+        ReminderIdentity.signature(habit)
     }
 
     func widgetSnapshot(now: Date = .now, hidden: Bool = false) -> WidgetSnapshot {
