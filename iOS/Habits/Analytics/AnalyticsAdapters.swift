@@ -34,19 +34,28 @@ extension HabitStore {
         guard let habit = habits.first(where: { $0.id == entry.habitID }) else { return }
         analytics.tracking(rule(habit, on: entry.day).analyticsType, origin: (entry.source ?? .manual).analyticsOrigin, ticket: ticket)
     }
-    func analyticsConfiguration() {
+    func analyticsConfiguration(reminderPermission: String? = nil) {
         let defaults = UserDefaults.standard
-        analytics.configuration([
+        let persisted = Bundle.main.bundleIdentifier.flatMap { defaults.persistentDomain(forName: $0) }
+        func source(_ key: String) -> AnalyticsValue {
+            guard let persisted else { return .text("unknown") }
+            return .text(persisted[key] == nil ? "default" : "user_selected")
+        }
+        var properties: [String: AnalyticsValue] = [
             "account_state": .text("no_account"), "account_provider": .text("not_applicable"), "sync_state": .text("no_account"),
             "backup_primary": .text("local_only"), "primary_source": .text("automatic"), "secondary_copy": .text("disabled"),
             "effective_backup_status": .text("unknown"), "onboarding_state": .text("unknown"),
             "theme": .text(Theme(rawValue: defaults.string(forKey: Preferences.theme) ?? "automatic")?.rawValue ?? "automatic"),
+            "theme_source": source(Preferences.theme), "haptics_source": source(Preferences.haptics),
+            "sound_source": source(Preferences.sound), "streaks_source": source(ProgressOptions.showStreaks), "app_lock_source": source(AppLock.launchKey),
             "haptics": .flag(defaults.object(forKey: Preferences.haptics) as? Bool ?? true), "sound": .flag(defaults.bool(forKey: Preferences.sound)),
             "streaks": .flag(defaults.object(forKey: ProgressOptions.showStreaks) as? Bool ?? true), "app_lock": .flag(AppLock.isEnabled),
             "capability_set_version": .number(1), "capability_account": .flag(false), "capability_purchase": .flag(false),
             "capability_sync": .flag(false), "capability_widgets": .flag(false), "capability_onboarding": .flag(false),
-            "capability_progress": .flag(true), "capability_alarm": .flag(true)
-        ])
+            "capability_progress": .flag(true), "capability_alarm": .flag(ReminderScheduler.alarmsAvailable)
+        ]
+        if let reminderPermission { properties["reminder_permission"] = .text(reminderPermission) }
+        analytics.configuration(properties)
     }
 }
 

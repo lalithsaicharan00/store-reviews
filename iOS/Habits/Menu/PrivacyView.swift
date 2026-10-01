@@ -20,7 +20,7 @@ struct PrivacyView: View {
             } footer: {
                 Text(footer)
             }
-            Section("Help Improve Often Enough") {
+            Section {
                 Toggle("Share Usage", isOn: $usageOn)
                     .accessibilityIdentifier("privacy-usage")
                     .onChange(of: usageOn) {
@@ -30,6 +30,8 @@ struct PrivacyView: View {
                 Toggle("Share Crash Diagnostics", isOn: $crashOn)
                     .disabled(true)
                     .accessibilityIdentifier("privacy-crashes")
+            } header: {
+                Text("Help Improve Often Enough")
             } footer: {
                 Text("Usage sharing is optional. It sends feature counts and estimated screen time with a random installation identifier. Habit and task names, notes, goals, logged values and account details are never sent. Turning it off deletes pending usage data. Crash sharing is separate and is not available yet.")
             }
@@ -51,6 +53,7 @@ struct PrivacyView: View {
             guard await AppLock.authenticate(reason: on ? "Turn on the lock for Habits" : "Turn off the lock for Habits") else { return }
             AppLock.setEnabled(on)
             lockOn = on
+            store.analyticsConfiguration()
         }
     }
 }

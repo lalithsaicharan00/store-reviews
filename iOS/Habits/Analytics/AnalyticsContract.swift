@@ -72,6 +72,8 @@ nonisolated enum AnalyticsContract {
         "secondary_copy": ["icloud", "google_drive", "disabled", "unknown"],
         "effective_backup_status": ["verified_recent", "problem", "never_verified", "os_managed_unobservable", "unknown"],
         "sync_state": ["enabled", "disabled", "not_entitled", "no_account", "unknown"], "onboarding_state": ["not_started", "in_progress", "completed", "skipped", "unknown"],
+        "theme_source": ["default", "user_selected", "unknown"], "haptics_source": ["default", "user_selected", "unknown"],
+        "sound_source": ["default", "user_selected", "unknown"], "streaks_source": ["default", "user_selected", "unknown"], "app_lock_source": ["default", "user_selected", "unknown"],
         "theme": ["automatic", "light", "dark"], "reminder_permission": ["authorized", "denied", "not_determined", "unknown"],
         "reminder_mode": ["notification", "alarm", "disabled", "unknown"], "widget_privacy": ["hidden", "visible", "unknown"],
         "setting": ["backup_primary", "secondary_copy", "reminder_mode", "widget_privacy", "theme", "feedback", "streaks"],
@@ -85,7 +87,7 @@ nonisolated enum AnalyticsContract {
         .purchase: ["product_tier", "result", "verification", "failure_code"], .purchaseRestore: ["result", "verification", "failure_code"],
         .backup: ["operation", "provider", "format", "restore_mode", "result", "failure_code"],
         .reliability: ["subsystem", "state", "failure_code"], .preference: ["setting", "value"],
-        .configuration: ["account_state", "account_provider", "backup_primary", "primary_source", "secondary_copy", "effective_backup_status", "sync_state", "onboarding_state", "theme", "reminder_permission", "reminder_mode", "widget_privacy", "haptics", "sound", "streaks", "app_lock", "capability_set_version", "capability_account", "capability_purchase", "capability_sync", "capability_widgets", "capability_onboarding", "capability_progress", "capability_alarm"],
+        .configuration: ["account_state", "account_provider", "backup_primary", "primary_source", "secondary_copy", "effective_backup_status", "sync_state", "onboarding_state", "theme", "theme_source", "haptics_source", "sound_source", "streaks_source", "app_lock_source", "reminder_permission", "reminder_mode", "widget_privacy", "haptics", "sound", "streaks", "app_lock", "capability_set_version", "capability_account", "capability_purchase", "capability_sync", "capability_widgets", "capability_onboarding", "capability_progress", "capability_alarm"],
         .widgetInventory: ["query_supported", "query_result", "host"]
     ]
     static let daily = Set(["period_start_utc", "period_end_utc", "collection_started_mid_period", "foreground_active", "external_action_active", "coverage_complete", "coverage_version", "delivery_loss_count"])

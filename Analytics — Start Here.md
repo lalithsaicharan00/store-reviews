@@ -8,23 +8,22 @@ This branch was created directly from **`integration`**, at commit
 `4cfa11118531c43bca6d56432e8d8fc120dd20b8`, rather than from the older `main`.
 It inherits that integration snapshot. Other feature branches were reviewed for the analytics plan but were not merged into this branch.
 
-## Analytics work completed
+## Current implementation handoff (1 October 2026)
 
-Reviewed 31 branch references at 21 distinct tips, relevant app/architecture documents, and official PostHog documentation. Created the proposed event, privacy, free-plan budget, dashboard and testing plan:
+Task is **in progress**. Preserve the implementation; do not restart from the original research snapshot. Read [Analytics Implementation checklist](<iOS/Docs/Checklists/Analytics Implementation.md>), [shared contract](<iOS/Docs/Analytics Contract.md>) and the [research plan](<Research/Research Reports/Product Analytics and Reliability/Often Enough — Product Analytics and Reliability Plan.md>).
 
-[Often Enough — Product Analytics and Reliability Plan](<Research/Research Reports/Product Analytics and Reliability/Often Enough — Product Analytics and Reliability Plan.md>).
+Consolidated `integration` was merged through `173f4f51eab20359a0bd01396b0ffe00d8cba590`. No unfinished feature-owner branch was merged. It has tracking, local backups, Progress, reminders and disabled Plus UI, but no onboarding/account/sync/purchase/widget implementations. Shared semantics reserve these adapters without claiming their coverage.
 
-The report is also listed in the [research index](<Research/Research Reports/README.md#product-analytics-and-reliability>).
-Only documentation has been added: analytics tracking is not implemented and PostHog settings have not been changed. The PostHog plugin is enabled, but project-query tools were unavailable, so actual project settings and usage remain unverified.
+Consent-gated content-free iPhone analytics, durable callbacks, bounded independent queues, daily summaries, screen timing, local backup outcomes and native checks are implemented. Commits pushed: `6a6d19f`, `5631cad`, `1910242`. macOS run [36893196823](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36893196823) passed native analytics, speed rules and core storage/migrations; app build failed on a Privacy Section initializer; corrected for the next run, UI/performance were skipped. Earlier contract runs exposed a Swift exclusivity error that `1910242` fixes; those failures are not acceptance evidence.
 
-## Next agent
+Successful PostHog reads established sole EU Default project **290602**, currently empty (30-day SQL query returned no events). Owner confirms free plan with no billing configured; current published analytics allowance is 1M/month. `billing:read` remains unavailable, so actual billing/spend cap is not verified. Confirmed project updates disabled unwanted automatic capture. Two dashboards were created: [Adoption & Attention](https://eu.posthog.com/project/290602/dashboard/989702), [Flows, Reliability & Coverage](https://eu.posthog.com/project/290602/dashboard/989704). Dashboard query validation and filling are underway. No paid product was enabled.
 
-Continue analytics implementation on **this `analytics` branch**. First update it from the consolidated app after the integration, server/sync, onboarding and widget work is merged by their owners. Recheck the report's pinned branch snapshot against current source; branches have advanced since the research audit, including the backup/account client implementation.
+The public capture-only project key is configured; production sending remains gated off until real provider delivery/privacy verification. Direct EU ingestion is blocked by this environment's network policy (CONNECT 403), and the connector exposes no capture tool. Payload and deterministic transport tests are independent evidence, not real provider acceptance. No crash SDK is active; separate crash consent stays unavailable.
 
-Use the report as a proposed contract, verify the actual PostHog project and consent configuration, then implement and validate the content-free tracking described there.
+## Requested scheduled continuation attempts
 
-## Active implementation handoff (1 October 2026)
+Main prompt receipt: **2026-10-01 16:04:41 UTC** / 21:34:41 IST. First requested target: **2026-10-01 18:49:41 UTC** / October 2 00:19:41 IST. Scheduling tools expose cloud automations without a verified same-Codex-chat/repository wake target; harmless automation read succeeded, but no compatible wake was available. **No automation was created.** Do not create a generic reminder or duplicate coding run. If a genuine first scheduled message arrives, check completion before creating a second/final one-time continuation exactly 5h20m after its receipt; no third.
 
-Read [Analytics Implementation checklist](<iOS/Docs/Checklists/Analytics Implementation.md>) for progress, dependencies and test/PR evidence. Task is **in progress**, not completed. Prompt receipt: 2026-10-01 16:04:41 UTC / 21:34:41 IST. Scheduling tools cannot verify a same-Codex-chat/workspace wake; no automation was created. Do not replace this with a generic reminder or create a parallel coding run.
+Required continuation instruction: “Continue and complete the analytics implementation task on the existing `analytics` branch if it is not completed. Read `Analytics — Start Here.md` and the analytics implementation checklist to recover current progress. Preserve completed work, verify actual remaining work, and continue implementation, testing and PR preparation under the original task’s constraints. If completed, do not restart it.”
 
-The analytics branch now contains only a merge from consolidated integration at `873265d71485574063ba934d6f1b5e92b392d77f`; feature-owner branches have not been independently merged. Successful provider reads established EU project 290602 and no recently observed events. Billing access is blocked by missing `billing:read`; sending remains gated until free allowance and zero-spend settings are verified. No credentials are in this handoff.
+Remaining independent work: finish dashboard validation, new offline/transport checks, targeted app builds/tests, report status and checklist; recheck integration; commit/push and open reviewable PR against integration. Never merge/release. External gate: real provider ingestion/dedup/privacy validation on an authorized network; missing feature adapters wait for owners' consolidation.

@@ -98,7 +98,7 @@ struct HabitRunsSection: View {
                 }
             }
             .padding(.vertical, 4)
-            .onAppear { load() }
+            .onAppear { load(); store.analytics.count(.runsChart, ticket: store.analytics.ticket) }
             .onChange(of: store.dataVersion) { load() }
             .accessibilityIdentifier("habit-runs")
             .sheet(isPresented: $showAll) {
@@ -106,6 +106,7 @@ struct HabitRunsSection: View {
                     List(runs.reversed(), id: \.self) { run in
                         Text(store.runText(run, unit: unit)).monospacedDigit()
                     }
+                    .analyticsScreen(nil)
                     .navigationTitle("Runs")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showAll = false } } }
@@ -188,7 +189,8 @@ struct QuitNumbers: View {
         }
         .padding(.vertical, 4)
         .sheet(isPresented: $showSlip) { LogSlipSheet(habit: habit) { id in withAnimation { lastSlip = id } } }
-        .sheet(isPresented: $showCost) { QuitCostSheet(habit: habit) }
+        .sheet(isPresented: $showCost) { QuitCostSheet(habit: habit).analyticsScreen(nil)
+            .onAppear { store.analytics.count(.moneyView, ticket: store.analytics.ticket) } }
     }
 
     /// "12 d 4 h 31 min 07 s".
@@ -311,6 +313,7 @@ struct QuitOverTimeSection: View {
             .frame(height: 140)
         }
         .accessibilityIdentifier("quit-runs-chart")
+        .onAppear { store.analytics.count(.runsChart, ticket: store.analytics.ticket) }
     }
 
     private func move(_ span: ClosedRange<LocalDay>, _ kind: HabitStore.PeriodKind, _ step: Int) {

@@ -75,6 +75,10 @@ struct ProgressScreen: View {
         // Worked out before the first frame and again only when the key changes (report §20).
         .onAppear { model.load(key, store: store); analyticsRange() }
         .onChange(of: rangeRaw) { analyticsRange() }
+        .onChange(of: showStreaks) {
+            store.analytics.event(.preference, ["setting": .text("streaks"), "value": .text(showStreaks ? "enabled" : "disabled")], ticket: store.analytics.ticket)
+            store.analyticsConfiguration()
+        }
         .onChange(of: groupRaw) { store.analytics.count(.progressGroup, ticket: store.analytics.ticket) }
         .onChange(of: key) { model.load(key, store: store) }
         .sheet(item: $openDay, onDismiss: {
@@ -86,7 +90,7 @@ struct ProgressScreen: View {
         }) { day in
             ProgressDaySheet(day: day, group: model.snapshot?.group) { showOnToday = day }
         }
-        .sheet(isPresented: $showExplainer) { ProgressExplainer() }
+        .sheet(isPresented: $showExplainer) { ProgressExplainer().analyticsScreen(nil) }
         .navigationDestination(for: HabitPageLink.self) { link in
             HabitPageView(id: link.id, overTime: OverTimeStart(range: OverTimeRange(rawValue: link.range.rawValue) ?? .month, anchor: link.anchor))
         }

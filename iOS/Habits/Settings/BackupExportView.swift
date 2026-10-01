@@ -7,6 +7,7 @@ struct BackupExportView: View {
     @State private var sharing: SharedFile?
     @State private var sharedDirectory: URL?
     @State private var importing = false
+    @State private var importTicket: AnalyticsTicket?
     @State private var message: BackupMessage?
 
     var body: some View {
@@ -21,7 +22,7 @@ struct BackupExportView: View {
                     .accessibilityIdentifier("backup-export-csv")
                 Button("Save a Backup File") { backup() }
                     .accessibilityIdentifier("backup-save")
-                Button("Restore from a Backup File…") { importing = true }
+                Button("Restore from a Backup File…") { importTicket = store.analytics.ticket; importing = true }
                     .accessibilityIdentifier("backup-restore")
             } footer: {
                 Text("A spreadsheet is for reading your history. A backup holds your habits, tasks, logs, notes and settings. Restoring adds missing data and keeps anything already here. All three are free.")
@@ -40,11 +41,14 @@ struct BackupExportView: View {
         .toolbar {
             if working { ToolbarItem(placement: .topBarTrailing) { ProgressView().accessibilityLabel("Working") } }
         }
-        .sheet(item: $sharing, onDismiss: cleanSharedFile) { ShareFileSheet(url: $0.url, onFinish: { sharing = nil }) }
+        .sheet(item: $sharing, onDismiss: cleanSharedFile) { ShareFileSheet(url: $0.url, onFinish: { sharing = nil }).analyticsScreen(nil) }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.database, .data], allowsMultipleSelection: false) { result in
             switch result {
-            case .success(let urls): if let url = urls.first { restore(url) }
-            case .failure(let error): message = BackupMessage(title: "Couldn’t Open the File", text: error.localizedDescription)
+            case .success(let urls): if let url = urls.first { restore(url, ticket: importTicket) }
+            case .failure(let error):
+                let cancelled = (error as NSError).code == NSUserCancelledError
+                store.analytics.event(.backup, ["operation": .text("restore"), "provider": .text("local"), "format": .text("unknown"), "restore_mode": .text("merge"), "result": .text(cancelled ? "cancelled" : "failed"), "failure_code": .text(cancelled ? "none" : "unknown")], ticket: importTicket)
+                if !cancelled { message = BackupMessage(title: "Couldn’t Open the File", text: error.localizedDescription) }
             }
         }
         .alert(item: $message) { Alert(title: Text($0.title), message: Text($0.text)) }
@@ -86,8 +90,7 @@ struct BackupExportView: View {
         }
     }
 
-    private func restore(_ url: URL) {
-        let telemetry = store.analytics.ticket
+    private func restore(_ url: URL, ticket telemetry: AnalyticsTicket?) {
         working = true
         Task { @MainActor in
             defer { working = false }
@@ -147,6 +150,7 @@ struct BlankMenuPage: View {
     let title: String
     var body: some View {
         Color(.systemGroupedBackground).ignoresSafeArea()
+            .analyticsScreen(title == "About" ? .about : .help)
             .navigationTitle(title).navigationBarTitleDisplayMode(.inline)
     }
 }

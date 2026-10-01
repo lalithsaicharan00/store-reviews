@@ -64,6 +64,7 @@ struct PauseSheet: View {
                     Text(summary).font(.callout)
                 }
             }
+            .analyticsScreen(nil)
             .navigationTitle(habits.count == 1 ? "Pause \(habit.name.capped(HabitRow.nameShown))" : "Pause \(habits.count) Habits")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

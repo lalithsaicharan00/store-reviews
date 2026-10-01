@@ -25,7 +25,7 @@ nonisolated final class Analytics: @unchecked Sendable {
     private let file: URL?
     private let disabled: Bool
     private let config: AnalyticsDeliveryConfiguration
-    private let transport = AnalyticsTransport()
+    private let transport: any AnalyticsSending
     private var ledger: AnalyticsLedger?
     private var attention = AnalyticsAttention()
     private var surfaces: [(UUID, AnalyticsScreen?)] = []
@@ -37,8 +37,8 @@ nonisolated final class Analytics: @unchecked Sendable {
     private var retryAfter = Date.distantPast
     private var failures = 0
 
-    init(file: URL?, configuration: AnalyticsDeliveryConfiguration = .init(), disabled: Bool = false) {
-        self.file = file; self.config = configuration; self.disabled = disabled
+    init(file: URL?, configuration: AnalyticsDeliveryConfiguration = .init(), disabled: Bool = false, transport: any AnalyticsSending = AnalyticsTransport()) {
+        self.file = file; self.config = configuration; self.disabled = disabled; self.transport = transport
         // A single bounded launch read, never the database/history. No file or identity is created before consent.
         if !disabled, let file,
            let size = try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize, size <= 512_000,
@@ -143,7 +143,7 @@ nonisolated final class Analytics: @unchecked Sendable {
     }
     func configuration(_ properties: [String: AnalyticsValue]) {
         guard AnalyticsContract.valid(.configuration, properties) else { return }
-        mutate(ticket: ticket) { $0.configuration = properties }
+        mutate(ticket: ticket) { $0.configuration.merge(properties) { _, new in new } }
     }
     // Lifecycle state is kept without collecting telemetry before consent, so an opt-in can observe only the
     // currently visible screen. Tokens never leave memory or enter a payload.
@@ -250,5 +250,6 @@ nonisolated final class Analytics: @unchecked Sendable {
     /// Native tests inspect the exact ledger/payload; never enabled by a production event or remote flag.
     func inspect() -> AnalyticsLedger? { queue.sync { ledger } }
     func drain() { queue.sync {} }
+    func retryForTesting() { queue.sync { retryAfter = .distantPast; flushOnQueue() } }
     #endif
 }

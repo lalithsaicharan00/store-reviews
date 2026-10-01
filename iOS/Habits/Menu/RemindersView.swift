@@ -110,6 +110,14 @@ struct RemindersView: View {
     private func refresh() async {
         loading = true
         permission = await scheduler.notificationStatus()
+        let status: String
+        switch permission {
+        case .authorized, .provisional, .ephemeral: status = "authorized"
+        case .denied: status = "denied"
+        case .notDetermined: status = "not_determined"
+        @unknown default: status = "unknown"
+        }
+        store.analyticsConfiguration(reminderPermission: status)
         await scheduler.reconcile(store)
         loading = false
     }

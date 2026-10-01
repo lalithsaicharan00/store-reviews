@@ -106,6 +106,7 @@ struct LogProgressView: View {
             .onDisappear { typing = false }
             // "Log", never "Add Time": this records time done by hand; "add time" reads as adding extra (the user, 29 Sep).
             .navigationDestination(item: $perfEntry) { EntryEditView(habit: habit, entry: $0) }
+            .analyticsScreen(nil)
             .navigationTitle(timed ? "Log Time" : "Log Amount")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

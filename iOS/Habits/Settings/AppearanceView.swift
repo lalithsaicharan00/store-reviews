@@ -3,6 +3,7 @@ import SwiftUI
 /// ≡ → Appearance (Build Plan #61): the theme, where done habits go on Today, and how a tick feels.
 /// Research: "Ticking Off, Folding and Small Settings — What People Need" (1 Oct 2026). Everything here is free.
 struct AppearanceView: View {
+    @Environment(HabitStore.self) private var store
     @AppStorage(Preferences.theme) private var theme = Theme.automatic.rawValue
     @AppStorage(Preferences.doneOrder) private var doneOrder = DoneOrder.bottom.rawValue
     @AppStorage(Preferences.haptics) private var haptics = true
@@ -52,6 +53,12 @@ struct AppearanceView: View {
         .analyticsScreen(.appearance)
         .navigationTitle("Appearance")
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: theme) { Theme.apply(theme) }
+         .onChange(of: theme) {
+            Theme.apply(theme)
+            store.analytics.event(.preference, ["setting": .text("theme"), "value": .text(Theme(rawValue: theme)?.rawValue ?? "automatic")], ticket: store.analytics.ticket)
+            store.analyticsConfiguration()
+        }
+        .onChange(of: haptics) { store.analyticsConfiguration() }
+        .onChange(of: sound) { store.analyticsConfiguration() }
     }
 }

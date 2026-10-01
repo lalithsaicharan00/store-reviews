@@ -37,7 +37,12 @@ nonisolated struct AnalyticsDeliveryConfiguration: Sendable {
 
 /// Explicit HTTP events only: no SDK initialization, autocapture, replay, profiles, flags, surveys,
 /// crash handler, device metadata, URL/referrer capture or tracing headers. No account credentials.
-nonisolated final class AnalyticsTransport: @unchecked Sendable {
+nonisolated protocol AnalyticsSending: Sendable {
+    func send(_ data: Data, completion: @escaping @Sendable (Bool, Int?) -> Void)
+    func cancel()
+}
+
+nonisolated final class AnalyticsTransport: AnalyticsSending, @unchecked Sendable {
     private var session: URLSession?
     private var task: URLSessionDataTask?
     func send(_ data: Data, completion: @escaping @Sendable (Bool, Int?) -> Void) {

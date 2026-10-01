@@ -29,6 +29,7 @@ struct LogSlipSheet: View {
                         .accessibilityIdentifier("slip-note")
                 }
             }
+            .analyticsScreen(nil)
             .navigationTitle("Log a Slip")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

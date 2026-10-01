@@ -42,6 +42,7 @@ struct NoteSheet: View {
                     }
                 }
             }
+            .analyticsScreen(nil)
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -91,6 +92,7 @@ struct HabitNotesView: View {
                     }
                 }
             }
+            .analyticsScreen(nil)
             .navigationTitle("\(habit.name) Notes")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }

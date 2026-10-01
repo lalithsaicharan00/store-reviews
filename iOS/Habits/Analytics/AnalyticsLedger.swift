@@ -25,6 +25,8 @@ nonisolated struct AnalyticsLedger: Codable, Sendable {
     var transitions: Set<String> = []
     var degraded: Set<String> = []
     var loss = 0
+    var explicitEvents = 0
+    static let explicitDailyLimit = 100
     static let queueLimit = 256
     static let retention: TimeInterval = 7 * 86400
     static func day(_ date: Date) -> Int { Int(floor(date.timeIntervalSince1970 / 86400)) * 86400 }
@@ -43,6 +45,11 @@ nonisolated struct AnalyticsLedger: Codable, Sendable {
     mutating func enqueue(_ event: AnalyticsEvent, _ properties: [String: AnalyticsValue], origin: AnalyticsOrigin = .today, now: Date) {
         guard AnalyticsContract.valid(event, properties) else { return }
         prune(now: now)
+        // Protect against runaway terminal callbacks. Summaries retain loss/coverage even when flows are capped.
+        if ![.features, .screens, .configuration].contains(event) {
+            guard explicitEvents < Self.explicitDailyLimit else { loss = min(100_000, loss + 1); return }
+            explicitEvents += 1
+        }
         if outbox.count >= Self.queueLimit { outbox.removeFirst(); loss = min(100_000, loss + 1) }
         outbox.append(AnalyticsRecord(id: UUID(), event: event, created: now, origin: origin, properties: properties))
     }
@@ -71,6 +78,7 @@ nonisolated struct AnalyticsLedger: Codable, Sendable {
             }
         }
         counters = [:]; visits = [:]; seconds = [:]; transitions = []; foreground = false; external = false
+        explicitEvents = 0
         period = next; partial = false // false for a continuously consented installation
         prune(now: now)
     }

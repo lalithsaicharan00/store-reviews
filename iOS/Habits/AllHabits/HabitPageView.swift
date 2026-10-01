@@ -74,6 +74,7 @@ struct HabitPageView: View {
                     HabitMonthView(habit: habit, month: Binding(get: { month ?? Self.firstOfMonth(today, store.calendar) },
                                                                 set: { month = $0 }), onSelect: { progressDay = $0 })
                         .id("month-calendar")
+                        .onAppear { store.analytics.count(.habitCalendar, ticket: store.analytics.ticket) }
                 }
                 OverTimeSection(habit: habit, start: overTime)
                 HabitYearSection(habit: habit) { first in
@@ -207,6 +208,7 @@ struct HabitPageView: View {
         // Identifiers on the rows: a Section repeats its modifiers on every row (Design Rules).
         LabeledContent("Reached", value: reached.isEmpty ? "None yet" : unit.list(reached))
             .accessibilityIdentifier("habit-milestones-reached")
+            .onAppear { store.analytics.count(.milestones, ticket: store.analytics.ticket) }
         LabeledContent("Next", value: "\(unit.inARow(next)), \(next - current) to go")
             .accessibilityIdentifier("habit-milestones-next")
     }
