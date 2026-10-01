@@ -26,11 +26,12 @@ on:
         default: false
       xctest:
         description: "Also run the older XCTest speed tests (screens with no PerfDriver scenario yet)"
-      scenarios:
-        description: "Speed runs: only these PerfDriver scenarios, timed and profiled (e.g. habit-page); empty for all"
-        default: ""
         type: boolean
         default: false
+      scenarios:
+        description: "Speed runs: only these PerfDriver scenarios, timed and profiled (e.g. habit-page); empty for all"
+        type: string
+        default: ""
   push:
     branches-ignore: [ci-results]
 
