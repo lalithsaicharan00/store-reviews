@@ -30,7 +30,7 @@ struct AboutView: View {
                 Text("A habit doesn't need a perfect record. It needs to happen often enough.")
             }
             Section("Privacy") {
-                Text("No account, no ads and no tracking. Your habits stay on this iPhone; nothing leaves it unless you share it.")
+                Text("No ads and no tracking. An account is optional: without one, your habits stay on this iPhone and nothing leaves it unless you share it.")
             }
             Section {
                 ForEach(Self.libraries, id: \.name) { library in

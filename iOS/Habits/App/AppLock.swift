@@ -74,6 +74,24 @@ final class AppLock {
         }
     }
 
+    /// Whether this iPhone can lock the app, and with what, asked off the main thread.
+    nonisolated struct Ability: Sendable { let available: Bool; let method: String }
+
+    static func ability() async -> Ability {
+        await Task.detached(priority: .userInitiated) {
+            let context = LAContext()
+            let available = context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
+            _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+            let method = switch context.biometryType {
+            case .faceID: "Face ID"
+            case .touchID: "Touch ID"
+            case .opticID: "Optic ID"
+            default: "Passcode"
+            }
+            return Ability(available: available, method: method)
+        }.value
+    }
+
     static func authenticate(reason: String) async -> Bool {
         (try? await LAContext().evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason)) ?? false
     }

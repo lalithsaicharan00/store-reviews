@@ -390,7 +390,6 @@ struct QuitRow: View {
     let habit: Habit
     var highlighted = false
     @Environment(HabitStore.self) private var store
-    @Environment(\.clocksPaused) private var clocksPaused
     @State private var showEdit = false
     @State private var showPause = false
     @State private var showSlip = false
@@ -401,17 +400,24 @@ struct QuitRow: View {
     private static let anchor = Date(timeIntervalSinceReferenceDate: Date.now.timeIntervalSinceReferenceDate.rounded(.down))
 
     var body: some View {
+        // The history is walked when the row's data changes, never per second: only the two times below tick
+        // (PERFORMANCE.md rule 3). The whole row used to sit in the clock, rebuilt and re-walked every second (1 Oct).
+        let history = store.quitHistory(of: habit)
+        let ongoing = history.last.flatMap { $0.endedBy == .ongoing ? $0.start : nil }
+        let pastBest = history.dropLast(ongoing == nil ? 0 : 1).map { $0.length(now: .now) }.max() ?? 0
+        let current = { (now: Date) in ongoing.map { max(0, now.timeIntervalSince($0)) } ?? 0 }
         // A fixed anchor: `.now` gave a new schedule on every redraw, restarting the clock each time (see HabitRow).
+        // No ongoing run (paused): nothing ticks.
+        let tick = ongoing == nil ? nil : Self.anchor
         VStack(alignment: .leading, spacing: 4) {
-        // Stopped (a schedule with no ticks, never a different view) while a menu page covers Today.
-        TimelineView(HabitRowClockSchedule(start: clocksPaused ? nil : Self.anchor)) { context in
-            let runs = store.quitRuns(of: habit, now: context.date)
             HStack(alignment: .top, spacing: 12) {
                 HabitIcon(symbol: habit.symbol, color: habit.color)
                     .frame(height: RowBand.height)
                 VStack(alignment: .leading, spacing: 1) {
                     Text(habit.name.capped(HabitRow.nameShown)).font(.body).lineLimit(1).accessibilityLabel(habit.name)
-                    Text("Best \(Format.days(runs.best))").font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+                    RowClock(start: tick) { now in
+                        Text("Best \(Format.days(max(pastBest, current(now))))").font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+                    }
                     if let id = lastSlip { SlipUndoLine(id: id) { withAnimation { lastSlip = nil } } }
                     // A craving or a slip, noted for today (quit rows take notes too, 29 Sep).
                     if let note = store.note(of: habit, on: today) {
@@ -426,16 +432,17 @@ struct QuitRow: View {
                 }
                 .frame(minHeight: RowBand.height)
                 Spacer(minLength: 8)
-                Text(Format.elapsed(runs.current))
-                    .font(.body.monospacedDigit().weight(.semibold))
-                    .foregroundStyle(.primary)
-                    .lineLimit(1)
-                    .fixedSize()
-                    .frame(height: RowBand.height)
+                RowClock(start: tick) { now in
+                    Text(Format.elapsed(current(now)))
+                        .font(.body.monospacedDigit().weight(.semibold))
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+                        .fixedSize()
+                }
+                .frame(height: RowBand.height)
             }
             .padding(.vertical, 2)
             .accessibilityElement(children: .combine)
-        }
         HStack {
             Button("Slipped") { showSlip = true }
                 .disabled(store.isPaused(habit, on: today))

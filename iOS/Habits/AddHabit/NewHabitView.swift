@@ -103,7 +103,7 @@ struct NewItemView: View {
                         ChoiceLabel(icon: "chart.line.downtrend.xyaxis", title: "Quit or cut down", detail: "A habit you want to stop or do less.")
                     }
                     NavigationLink {
-                        form(.task)
+                        BuiltWhenShown { form(.task) }
                     } label: {
                         ChoiceLabel(icon: ItemType.task.icon, title: "Add a task", detail: "Something to get done, once or on repeat. No habit progress, streaks or stats.")
                     }
@@ -136,7 +136,7 @@ struct NewItemView: View {
             Section {
                 ForEach(types) { type in
                     NavigationLink {
-                        form(type)
+                        BuiltWhenShown { form(type) }
                     } label: {
                         ChoiceLabel(icon: type.icon, title: type.title, detail: type.summary, example: type.example)
                     }
@@ -600,8 +600,10 @@ struct HabitForm: View {
 
     /// A row that opens its own full screen: the setting on the left, the choice on the right.
     private func screenRow<Destination: View>(_ title: String, value: String, @ViewBuilder destination: @escaping () -> Destination) -> some View {
+        // Built when opened, not with the form: a link's destination is otherwise made on every redraw of the form,
+        // reminders, date pickers and summaries included (Edit habit's first open, 701 ms, 1 Oct).
         NavigationLink {
-            destination()
+            BuiltWhenShown(destination)
         } label: {
             LabeledContent(title) {
                 Text(value).foregroundStyle(.secondary).multilineTextAlignment(.trailing)
@@ -1694,4 +1696,12 @@ extension HowOften {
         case .afterCompletion(let n, let unit): self = .afterDone(n, unit)
         }
     }
+}
+
+/// A screen made only when it's shown. `NavigationLink { … }` builds its destination with the link, so every redraw of
+/// the screen holding the link built every screen it could open (PERFORMANCE.md rule 8).
+struct BuiltWhenShown<Content: View>: View {
+    private let build: () -> Content
+    init(_ build: @escaping () -> Content) { self.build = build }
+    var body: some View { build() }
 }

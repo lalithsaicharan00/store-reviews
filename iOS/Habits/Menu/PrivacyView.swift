@@ -4,28 +4,33 @@ import SwiftUI
 /// the iPhone's own Face ID, Touch ID or passcode, never a separate code to forget; the switch only changes after Face ID
 /// (or the passcode) works here, so it can never lock someone out.
 struct PrivacyView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @State private var lockOn = AppLock.isEnabled
+    /// What this iPhone can lock with. Asking the system (`LAContext`) is slow on the main thread, so it's asked once
+    /// off it when the page opens, and again on coming back (a passcode may have been set meanwhile).
+    @State private var lock: AppLock.Ability?
 
     var body: some View {
         Form {
             Section {
-                if lockOn || AppLock.isAvailable {
-                    Toggle("Lock with \(AppLock.methodName)", isOn: Binding(get: { lockOn }, set: { setLock($0) }))
+                if let lock, lockOn || lock.available {
+                    Toggle("Lock with \(lock.method)", isOn: Binding(get: { lockOn }, set: { setLock($0) }))
                         .accessibilityIdentifier("privacy-lock")
                 }
             } footer: {
-                Text(footer)
+                if let lock { Text(footer(lock)) }
             }
         }
         .navigationTitle("Privacy")
+        .task(id: scenePhase == .active) { if scenePhase == .active { lock = await AppLock.ability() } }
     }
 
-    private var footer: String {
-        let base = "No account, no ads and no tracking. Nothing leaves your phone unless you share it."
+    private func footer(_ lock: AppLock.Ability) -> String {
+        let base = "No ads and no tracking. An account is optional; without one, nothing leaves your phone unless you share it."
         if lockOn {
-            return base + " Habits asks for \(AppLock.methodName), or your iPhone passcode, each time you open it."
+            return base + " Habits asks for \(lock.method), or your iPhone passcode, each time you open it."
         }
-        return AppLock.isAvailable ? base : base + " To lock Habits, set a passcode for this iPhone first."
+        return lock.available ? base : base + " To lock Habits, set a passcode for this iPhone first."
     }
 
     private func setLock(_ on: Bool) {

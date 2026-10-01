@@ -198,7 +198,9 @@ final class HabitStore {
     // redraw, one tap on Today recalculated every row's streak (30 Sep). They're remembered until something they
     // depend on changes: an entry of that habit, or any habit, skip, pause, goal history or setting.
     @ObservationIgnored private var pastRuns: [UUID: [LocalDay: Int]] = [:]
-    @ObservationIgnored private var bestRuns: [UUID: (today: LocalDay, value: Int)] = [:]
+    /// Every run of a habit (`runs(of:)`), for today: the best streak, the habit page's run list and Over Time all read
+    /// it, and walking it again after each saved entry stalled the habit page under the Day sheet (1 Oct).
+    @ObservationIgnored private var runLists: [UUID: (today: LocalDay, runs: [Run])] = [:]
     @ObservationIgnored private var totalLines: [UUID: (today: LocalDay, line: String?)] = [:]
     @ObservationIgnored private var summaries: [LocalDay: (done: Int, total: Int)] = [:]
     @ObservationIgnored private var savedHabits: [UUID: Habit]?
@@ -209,7 +211,7 @@ final class HabitStore {
 
     private func forget(_ habit: UUID) {
         pastRuns[habit] = nil
-        bestRuns[habit] = nil
+        runLists[habit] = nil
         totalLines[habit] = nil
         monthCounts[habit] = nil
         widgetProjectionCache[habit] = nil
@@ -218,7 +220,7 @@ final class HabitStore {
 
     private func forgetAll() {
         pastRuns = [:]
-        bestRuns = [:]
+        runLists = [:]
         totalLines = [:]
         monthCounts = [:]
         summaries = [:]
@@ -1641,7 +1643,17 @@ final class HabitStore {
     /// is current when nothing has ended it, and then its length is `streak(of:asOf: today)`.
     func runs(of habit: Habit, today: LocalDay? = nil) -> [Run] {
         guard habit.kind != .quit, habit.kind != .task else { return [] }
-        let today = today ?? self.today()
+        let now = self.today()
+        let today = today ?? now
+        // Remembered for today, unless a running timer can still finish today (as the best streak always was).
+        let remember = today == now && isSaved(habit) && timers[habit.id] == nil
+        if remember, let known = runLists[habit.id], known.today == today { readInputs(); return known.runs }
+        let runs = walkRuns(of: habit, today: today)
+        if remember { runLists[habit.id] = (today, runs) }
+        return runs
+    }
+
+    private func walkRuns(of habit: Habit, today: LocalDay) -> [Run] {
         let kind = periodKind(rule(habit, on: today))
         var runs: [Run] = []
         var start: LocalDay?, end: LocalDay?, length = 0
@@ -1695,12 +1707,7 @@ final class HabitStore {
     /// Remembered for today, unless a running timer can still finish today.
     func bestStreak(of habit: Habit) -> Int {
         guard habit.kind != .quit, habit.kind != .task else { return 0 }
-        let today = today()
-        let remember = isSaved(habit) && timers[habit.id] == nil
-        if remember, let known = bestRuns[habit.id], known.today == today { readInputs(); return known.value }
-        let best = runs(of: habit, today: today).map(\.length).max() ?? 0
-        if remember { bestRuns[habit.id] = (today, best) }
-        return best
+        return runs(of: habit).map(\.length).max() ?? 0
     }
 
     /// "Goal met 12 weeks since 3 Mar 2026", "1,240 glasses in all since …": the habit page's total, which walks the
