@@ -8,6 +8,8 @@ enum PerfAction: Equatable {
     case previousMonth, nextMonth
     case previousHabit, nextHabit
     case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, saveEntry, logAgain, hideLogKeyboard
+    /// A page from the ≡ menu; the menu itself; Today's group filter; Progress's range; the habit page's Edit.
+    case openPlace(MenuPlace), toggleMenu, nextGroup, nextRange, openEdit
 }
 
 extension View {
@@ -122,6 +124,39 @@ enum PerfDriver {
                     await pause(0.35)
                 }
             }
+        case "progress":
+            await openTwice("Progress") { send(.openPlace(.progress)) }
+            await measure("Progress: scrolling") { await scroll() }
+            await measure("Progress: period ‹ › and range") {
+                await repeatFor(window) {
+                    send(.previousMonth); await pause(0.4)
+                    send(.nextMonth); await pause(0.4)
+                    send(.nextRange); await pause(0.4)
+                }
+            }
+        case "menu":
+            await measure("Menu: open and close") {
+                await repeatFor(window) { send(.toggleMenu); await pause(0.6) }
+            }
+        case "groups":
+            await measure("Today: group filter") {
+                await repeatFor(window) { send(.nextGroup); await pause(0.4) }
+            }
+            send(.close)
+        case "menu-pages":
+            // Every other page in the ≡ menu: how long each takes to open.
+            for place in [MenuPlace.tasks, .timesOfDay, .dayAndWeek, .reminders, .appearance, .backup, .privacy, .plus, .help, .about] {
+                await open(place.title) { send(.openPlace(place)) }
+                send(.close)
+                await pause(1)
+            }
+        case "habit-edit":
+            await open("All Habits") { send(.openAllHabits) }
+            await open("Habit page") { send(.openHabit("Water")) }
+            await open("Edit habit (first)") { send(.openEdit) }
+            send(.closeDay) // the habit page closes its sheets
+            await pause(1.2)
+            await open("Edit habit (again)") { send(.openEdit) }
         case "all-habits":
             await openTwice("All Habits") { send(.openAllHabits) }
             await measure("All Habits: scrolling") { await scroll() }

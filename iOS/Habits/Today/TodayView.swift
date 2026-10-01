@@ -199,6 +199,12 @@ struct TodayView: View {
             day = next == store.today() ? nil : next
         case .openAllHabits: menu.path.append(MenuPlace.habits) // Habits lives in the ≡ menu now
         case .openWidgets: menu.path.append(MenuPlace.widgets)
+        case .openPlace(let place): menu.path.append(place)
+        case .toggleMenu: menu.setOpen(!menu.isOpen, reduceMotion: false)
+        case .nextGroup:
+            // All, then each group in turn.
+            let ids = [""] + store.groups.map(\.id.uuidString)
+            groupRaw = ids[((ids.firstIndex(of: groupRaw) ?? 0) + 1) % ids.count]
         case .openCalendar: showCalendar = true
         case .openNewHabit: showNewHabit = true
         case .openHabitForm: perfForm = true
@@ -207,7 +213,7 @@ struct TodayView: View {
             let tracked = store.habits.filter { !$0.archived && $0.kind != .quit && store.startDay(of: $0) <= today && store.isDue($0, on: today) }
             if let items = rowsBySection(tracked)[part] { start(part: part, items: items, day: today) }
         case .close:
-            menu.reset(); showCalendar = false; showNewHabit = false; perfForm = false; routine = nil
+            menu.reset(); showCalendar = false; showNewHabit = false; perfForm = false; routine = nil; groupRaw = ""
         default: break
         }
     }

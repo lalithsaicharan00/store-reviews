@@ -130,7 +130,12 @@ struct HabitPageView: View {
         }
         .sheet(item: $progressDay) { DaySheet(habit: habit, day: $0) }
         .onPerfCommand { action in
-            if case .openDay(let day) = action { progressDay = day }
+            switch action {
+            case .openDay(let day): progressDay = day
+            case .openEdit: showEdit = true
+            case .closeDay: progressDay = nil; showEdit = false
+            default: break
+            }
         }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
