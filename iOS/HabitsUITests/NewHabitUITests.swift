@@ -494,8 +494,10 @@ final class NewHabitUITests: XCTestCase {
         XCTAssertTrue(play.waitForExistence(timeout: 2), "An open section has ▶ Start")
         shot("14-time-of-day-on-today")
         play.tap()
-        XCTAssertTrue(app.navigationBars["Before work routine"].waitForExistence(timeout: 3))
-        // The focus player (29 Sep) shows one habit at a time; the routine list it replaced is gone.
+        // The focus player (29 Sep): its title is the queue button, and it shows one habit at a time.
+        let queue = app.buttons["routine-queue"]
+        XCTAssertTrue(queue.waitForExistence(timeout: 3))
+        XCTAssertTrue(queue.label.hasPrefix("Before work routine"))
         XCTAssertEqual(app.buttons["focus-primary"].label, "Mark Pack lunch done")
         app.buttons["Close"].tap()
     }

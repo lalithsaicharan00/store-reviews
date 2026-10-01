@@ -24,18 +24,16 @@ struct DayLabel: View {
     }
 }
 
-/// One cell of a month grid: the weekday letters, the blanks around the month, and its days, in one lazy grid.
-/// One identity space for all of them: with plain numbers, weekday 1 and day 1 were the same cell to the grid, which
-/// kept one, so days 1–6 never drew (seen 1 Oct 2026 on the habit page; the same in Today's calendar's first row).
+/// One cell of a month grid: a weekday letter, or a place in the grid (a day, or a blank around the month).
+/// Weekday letters and places need different identities in the one lazy grid: with plain numbers for both, weekday 1
+/// and place 1 were the same cell to the grid, which kept one, so the month's first row never drew (seen 1 Oct 2026).
+/// A place keeps its identity from month to month, so changing the month changes what the cells show and never slides
+/// them across the grid.
 enum MonthGridCell: Hashable {
-    case weekday(Int), blank(Int), day(Int)
+    case weekday(Int), place(Int)
 
-    static func month(leading: Int, days: Int, trailing: Int = 0) -> [MonthGridCell] {
-        var cells: [MonthGridCell] = (0..<7).map(weekday)
-        cells += (0..<leading).map(blank)
-        cells += (1...max(days, 1)).map(day)
-        cells += (0..<max(trailing, 0)).map { blank(leading + $0) }
-        return cells
+    static func month(places: Int) -> [MonthGridCell] {
+        (0..<7).map(weekday) + (0..<max(places, 0)).map(place)
     }
 }
 
@@ -76,14 +74,17 @@ struct CalendarSheet: View {
                             .labelStyle(.iconOnly).frame(width: 44, height: 44)
                     }
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 7), spacing: 8) {
-                        ForEach(MonthGridCell.month(leading: leading, days: days, trailing: cells - leading - days), id: \.self) { cell in
+                        ForEach(MonthGridCell.month(places: cells), id: \.self) { cell in
                             switch cell {
                             case .weekday(let offset):
                                 Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + offset) % 7])
                                     .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
                                     .frame(maxWidth: .infinity).accessibilityHidden(true)
-                            case .blank: Color.clear.frame(height: 44).accessibilityHidden(true)
-                            case .day(let number): dayButton(LocalDay(year: month.year, month: month.month, day: number))
+                            case .place(let place):
+                                let number = place - leading + 1
+                                if number > 0 && number <= days {
+                                    dayButton(LocalDay(year: month.year, month: month.month, day: number))
+                                } else { Color.clear.frame(height: 44).accessibilityHidden(true) }
                             }
                         }
                     }

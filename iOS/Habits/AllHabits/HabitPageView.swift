@@ -300,12 +300,12 @@ struct HabitMonthView: View {
             }
             .buttonStyle(.borderless)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 7), spacing: 6) {
-                ForEach(MonthGridCell.month(leading: lead, days: count), id: \.self) { item in
+                ForEach(MonthGridCell.month(places: lead + count), id: \.self) { item in
                     switch item {
                     case .weekday(let i): Text(ordered[i]).font(.caption2.weight(.semibold)).foregroundStyle(.secondary)
-                    case .blank: Color.clear.frame(height: 36)
-                    case .day(let d):
-                        let day = LocalDay(year: month.year, month: month.month, day: d)
+                    case .place(let place) where place < lead: Color.clear.frame(height: 36)
+                    case .place(let place):
+                        let day = LocalDay(year: month.year, month: month.month, day: place - lead + 1)
                         Button { onSelect(day) } label: { cell(day, isToday: day == today).frame(minHeight: 44) }
                             .buttonStyle(.borderless)
                             .disabled(day > today)
