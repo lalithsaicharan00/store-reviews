@@ -81,7 +81,12 @@ struct HabitPageView: View {
                     withAnimation { proxy.scrollTo("month-calendar", anchor: .top) }
                 }
                 // Runs are streaks: Show Streaks off hides them too (report §7.6).
-                if showStreaks { HabitRunsSection(habit: habit) }
+                if showStreaks {
+                    HabitRunsSection(habit: habit)
+                    // Every streak milestone reached, kept for good, and the next (report "Milestones", 30 Sep).
+                    Section("Milestones") { milestones(habit, today: today) }
+                        .accessibilityIdentifier("habit-milestones")
+                }
             }
             if habit.kind == .quit {
                 QuitOverTimeSection(habit: habit)
@@ -192,6 +197,16 @@ struct HabitPageView: View {
     }
 
     // MARK: Notes
+
+    /// "Reached: 7 and 30 days", "Next: 100 days in a row, 64 to go". From the streak and the best, never stored.
+    @ViewBuilder private func milestones(_ habit: Habit, today: LocalDay) -> some View {
+        let unit = store.rule(habit, on: today).frequency.streakUnit
+        let current = store.streak(of: habit, asOf: today)
+        let reached = unit.milestones(upTo: max(store.bestStreak(of: habit), current))
+        let next = unit.nextMilestone(after: current)
+        LabeledContent("Reached", value: reached.isEmpty ? "None yet" : unit.list(reached))
+        LabeledContent("Next", value: "\(unit.inARow(next)), \(next - current) to go")
+    }
 
     @ViewBuilder private func notesSection(_ habit: Habit, today: LocalDay) -> some View {
         let notes = store.notes(of: habit)

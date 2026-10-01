@@ -55,9 +55,15 @@ final class WidgetUITests: XCTestCase {
         app.buttons["menu-button"].tap(); app.buttons["menu-widgets"].tap()
         XCTAssertTrue(app.navigationBars["Widgets"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["Today agenda · small, medium and large"].exists)
-        app.revealAndTap(app.switches["widgets-hide"])
-        XCTAssertEqual(app.switches["widgets-hide"].value as? String, "1")
-        app.switches["widgets-hide"].tap()
+        let privacy = app.switches["widgets-hide"]
+        for _ in 0..<6 where !privacy.isHittable || privacy.frame.maxY > app.frame.maxY - 100 { app.swipeUp() }
+        XCTAssertTrue(privacy.isHittable, app.debugDescription)
+        let before = privacy.value as? String
+        // SwiftUI exposes the full labelled Toggle row; tap the actual trailing switch.
+        privacy.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
+        let changed = NSPredicate(format: "value == %@", before == "1" ? "0" : "1")
+        expectation(for: changed, evaluatedWith: privacy); waitForExpectations(timeout: 5)
+        if privacy.value as? String == "1" { privacy.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap() }
     }
 
     func testLargerTextCountersAndCutDownAreReadable() {
@@ -68,8 +74,9 @@ final class WidgetUITests: XCTestCase {
         XCTAssertTrue(app.buttons["select-Widget quit"].waitForExistence(timeout: 15))
         for name in ["Widget quit", "Widget cut down", "Widget water"] {
             let select = app.buttons["select-\(name)"]
-            if !select.isHittable { app.scrollViews.element(boundBy: 1).swipeLeft() }
-            XCTAssertTrue(select.isHittable); select.tap()
+            app.scrollViews.element(boundBy: 1).swipeRight(); app.scrollViews.element(boundBy: 1).swipeRight()
+            for _ in 0..<3 where !select.isHittable { app.scrollViews.element(boundBy: 1).swipeLeft() }
+            XCTAssertTrue(select.isHittable, app.debugDescription); select.tap()
             let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-larger-text-\(name)"; shot.lifetime = .keepAlways; add(shot)
         }
         app.buttons["agenda"].tap()

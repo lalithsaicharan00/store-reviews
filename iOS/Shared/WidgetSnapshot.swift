@@ -90,7 +90,9 @@ nonisolated enum WidgetDisk {
         coordinator.coordinate(writingItemAt: file, options: .forMerging, error: &error) { file in
             let size = (try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
             var pages = size <= 64 * 1024 ? (try? Data(contentsOf: file)).flatMap { try? JSONDecoder().decode([String: Int].self, from: $0) } ?? [:] : [:]
-            result = max(0, min(100_000, set ?? ((pages[key] ?? 0) + delta)))
+            let stored = max(0, min(100_000, pages[key] ?? 0))
+            let shift = max(-100_000, min(100_000, delta))
+            result = max(0, min(100_000, set ?? (stored + shift)))
             if delta != 0 || set != nil {
                 pages[key] = result
                 if let data = try? JSONEncoder().encode(pages) { try? data.write(to: file, options: .atomic) }

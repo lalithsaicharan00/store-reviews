@@ -532,6 +532,10 @@ struct HabitForm: View {
             shownName = name
             suggestIcon()
         }
+        // The pause above is cancelled when a screen opens over the form, so the previews catch up at once when the
+        // form is back, or when the name field is left: never "Enter a habit name" under a typed name (merge, 1 Oct).
+        .onAppear { catchUpName() }
+        .onChange(of: focus) { if focus != .name { catchUpName() } }
         .onChange(of: startDate) { if endDate < startDate { endDate = startDate } }
         .task {
             // Runs again when a pushed page pops back; set up only once, so the
@@ -882,6 +886,12 @@ struct HabitForm: View {
         } footer: {
             Text("The counter runs from here. It shows at the top of Today under Quitting, counting up.").formNote()
         }
+    }
+
+    private func catchUpName() {
+        guard shownName != name else { return }
+        shownName = name
+        suggestIcon()
     }
 
     /// Editing an old task must keep its saved date, even when only its name changes.

@@ -211,8 +211,11 @@ struct PhoneWidgetView: View {
                 Text("\(entry.rows.filter { !$0.done && !$0.ongoing }.count) left").font(.caption).foregroundStyle(.secondary)
             }
             if family == .systemSmall {
-                Text("\(entry.rows.count)").font(.largeTitle.bold()).monospacedDigit()
-                Text(entry.rows.isEmpty ? "Nothing planned" : "Open today's list").font(.caption)
+                let remaining = entry.rows.filter { !$0.done && !$0.ongoing }.count
+                let ongoing = entry.rows.filter(\.ongoing).count
+                Text("\(remaining)").font(.largeTitle.bold()).monospacedDigit()
+                Text(entry.rows.isEmpty ? "Nothing planned" : "left today").font(.caption)
+                if ongoing > 0 { Text("\(ongoing) ongoing").font(.caption2).foregroundStyle(.secondary) }
                 if let first = entry.rows.first { Text(first.name).font(.caption).lineLimit(2) }
                 Spacer(minLength: 0)
             } else {
@@ -256,6 +259,7 @@ struct PhoneWidgetView: View {
     @ViewBuilder private func status(_ item: WidgetItem) -> some View {
         if let start = item.counterStart {
             Text(start, style: .relative).monospacedDigit().accessibilityLabel("\(item.name), time since last slip")
+                .accessibilityValue(Text(start, style: .relative))
         } else { Text(item.status) }
     }
     @ViewBuilder private func control(_ item: WidgetItem, size: CGFloat) -> some View {

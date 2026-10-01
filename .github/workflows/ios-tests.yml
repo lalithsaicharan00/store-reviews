@@ -80,7 +80,7 @@ jobs:
             case "$MESSAGE" in *"[ios-reminders-recheck]"*) echo "TESTS=RemindersUITests,TasksUITests,BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV"; echo "PERF_TESTS=testRemindersPage" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf-xctest]"*|*"[ios-backup]"*|*"[ios-tasks"*|*"[ios-reminders"*) echo "PERF_XCTEST=true" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
-            case "$MESSAGE" in *"[ios-widgets]"*) echo "PERF_SCENARIOS=scroll-today tap-today widget-log widget-guide" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=widget-log" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-widgets]"*) echo "PERF_SCENARIOS=scroll-today tap-today widget-log widget-guide" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=widget-log widget-guide" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf-input]"*) echo "PERF_SCENARIOS=new-habit day-sheet log-sheet" >> "$GITHUB_ENV";; esac
           fi
 
@@ -194,6 +194,17 @@ jobs:
           if [ -d Results.xcresult ]; then
             xcrun xcresulttool export attachments --path Results.xcresult --output-path screenshots || true
           fi
+          # Screen recordings make a single artifact too large to inspect from the cloud.
+          # Keep PNGs and text/JSON diagnostics separately; recordings remain in the full result bundle.
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil
+          for source in Path('screenshots').rglob('*'):
+              if source.is_file() and source.suffix.lower() in {'.png', '.jpg', '.jpeg', '.txt', '.json'}:
+                  target = Path('widget-images') / source.relative_to('screenshots')
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copyfile(source, target)
+          PY
 
       - name: Write the summary
         if: always()
@@ -256,7 +267,7 @@ jobs:
         if: always()
         with:
           name: ios-screenshots
-          path: iOS/screenshots
+          path: iOS/widget-images
           retention-days: 7
           if-no-files-found: ignore
 

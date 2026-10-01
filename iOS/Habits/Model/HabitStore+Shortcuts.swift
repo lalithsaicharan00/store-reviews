@@ -43,13 +43,16 @@ extension HabitStore {
     func shortcutDay(_ day: LocalDay) -> [(habit: Habit, done: Bool)] {
         let order = Dictionary(uniqueKeysWithValues: sections.enumerated().map { ($1.id, $0) })
         return habits.enumerated()
-            .filter { !$1.archived && $1.kind != .quit && startDay(of: $1) <= day && isDue($1, on: day) }
+            .filter { item in
+                let habit = item.element
+                return !habit.archived && habit.kind != .quit && startDay(of: habit) <= day && isDue(habit, on: day)
+            }
             .sorted { a, b in
                 let sa = placements(of: a.element).first.flatMap { order[$0.section] } ?? 0
                 let sb = placements(of: b.element).first.flatMap { order[$0.section] } ?? 0
                 return sa != sb ? sa < sb : a.offset < b.offset
             }
-            .map { ($0.element, isSatisfied($0.element, on: day)) }
+            .map { (habit: $0.element, done: isSatisfied($0.element, on: day)) }
     }
 
     /// "Water: 3 of 8 glasses today. 5 in a row." / "Stretch is done today." Streaks only while they're shown.
@@ -62,7 +65,9 @@ extension HabitStore {
         let measured: Bool = switch rule.kind { case .amount, .duration: true; default: false }
         if measured || goal > 1 {
             let when = rule.frequency.isDayBased ? " today" : ""
-            text = "\(habit.name): \(progressValue(progress(of: habit, on: day), rule)) of \(progressValue(goal, rule))\(when)."
+            let logged = progress(of: habit, on: day)
+            let amount = rule.kind == .duration ? HabitCopy.minutes(logged) : HabitCopy.number(logged)
+            text = "\(habit.name): \(amount) of \(progressValue(goal, rule))\(when)."
             if done { text += " Done." }
         } else {
             text = done ? "\(habit.name) is done today." : "\(habit.name) isn't done yet today."

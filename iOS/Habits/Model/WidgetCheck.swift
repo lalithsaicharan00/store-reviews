@@ -13,7 +13,7 @@ enum WidgetFixture {
             Habit(name: "Widget check", symbol: "checkmark", color: .blue, kind: .check, startsOn: start),
             Habit(name: "Widget water", symbol: "drop", color: .blue, kind: .amount(unit: "glasses", increment: 1), goal: 8, startsOn: start),
             Habit(name: "Widget cut down", symbol: "cup.and.saucer", color: .orange, kind: .amount(unit: "cups", increment: 1), goal: 3, atMost: true, startsOn: start),
-            Habit(name: "Widget quit", symbol: "leaf", color: .green, kind: .quit, startsOn: start),
+            Habit(name: "Widget quit", symbol: "leaf", color: .green, kind: .quit, startsOn: start, quitSince: start.date(calendar: store.calendar)),
             Habit(name: "Widget timer", symbol: "timer", color: .blue, kind: .duration, goal: 10, startsOn: start)
         ]
         for item in items { store.add(item) }
@@ -34,6 +34,8 @@ enum WidgetCheck {
         let snapshot = store.widgetSnapshot(now: now)
         expect(snapshot.frames.count == 7, "Seven logical days precomputed")
         expect(snapshot.frames.first?.items.filter(\.isTask).count == 24, "All unlimited tasks survive snapshot")
+        expect(snapshot.frames.first?.agenda(completed: false).prefix(5).allSatisfy { !$0.isTask } == true,
+               "All free habits stay together ahead of a long task list")
         expect(store.activeHabitCount == 5 && !store.canAddHabit, "Quit and cut down share five habit cap; tasks excluded")
         expect(row("Widget quit").action == nil && row("Widget quit").counterStart != nil, "Quit has a counter and no destructive action")
         expect(row("Widget timer").action == nil, "Duration opens existing controls")
@@ -44,6 +46,11 @@ enum WidgetCheck {
         for _ in 0..<3 { store.logFromWidget(id: water.id, day: day, event: event, signature: signature, now: now) }
         await store.flush()
         expect(store.dayProgress(of: water, on: day) == 1, "Replayed rendered event logs only once")
+        let freshRows = store.widgetSnapshot(now: now).frames.first!.items
+        expect(freshRows.first { $0.id == water.id.uuidString }?.value == 1 && freshRows.first { $0.id == water.id.uuidString }?.token != snapshot.frames.first?.items.first { $0.id == water.id.uuidString }?.token,
+               "Changed habit invalidates projection and receives a fresh action token")
+        expect(freshRows.first { $0.name == "Widget check" }?.token == snapshot.frames.first?.items.first { $0.name == "Widget check" }?.token,
+               "An unrelated entry preserves cached item projections")
         let loaded = HabitStore(repository: persistence.repository); await loaded.load()
         let persistedWater = loaded.habits.first { $0.id == water.id }!
         expect(HabitStore.widgetSignature(persistedWater) == signature, "Database timestamp precision preserves action signature")

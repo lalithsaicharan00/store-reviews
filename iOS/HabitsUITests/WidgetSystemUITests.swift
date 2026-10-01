@@ -7,6 +7,7 @@ final class WidgetSystemUITests: XCTestCase {
     private func save(_ app: XCUIApplication, _ name: String) {
         let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = name; shot.lifetime = .keepAlways; add(shot)
         let tree = XCTAttachment(string: app.debugDescription); tree.name = name + "-accessibility"; tree.lifetime = .keepAlways; add(tree)
+        print("Widget system \(name):\n" + app.debugDescription)
     }
     func testHomeScreenInstallTapAndColdPersistence() throws {
         let app = XCUIApplication()
@@ -35,7 +36,9 @@ final class WidgetSystemUITests: XCTestCase {
             save(springboard, "home-widget-extension-unlisted")
             XCTFail("Built app's extension is missing from the real widget gallery"); return
         }
-        appRow.tap()
+        save(springboard, "home-gallery-results")
+        // Remote gallery labels can report an unavailable hit point while their visible row is tappable.
+        appRow.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
         // Today is first after the existing Live Activity; choose the medium page before adding.
         springboard.swipeLeft()
         guard springboard.buttons["Add Widget"].waitForExistence(timeout: 5) else {

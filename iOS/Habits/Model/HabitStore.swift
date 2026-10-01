@@ -84,7 +84,7 @@ final class HabitStore {
     @ObservationIgnored private var entriesByDay: [UUID: [LocalDay: [Entry]]]?
     var settings = DaySettings() { didSet { cachedCalendar = nil; placementCache = [:]; startDays = [:]; forgetAll() } }
     /// Running timers for duration habits: habit ID → start time.
-    private(set) var timers: [UUID: Date] = [:]
+    private(set) var timers: [UUID: Date] = [:] { didSet { forgetAll() } }
     /// For a timed habit spread over times of day: the part a running timer is for.
     private(set) var timerSlots: [UUID: String] = [:]
     /// Days a habit was skipped ("Skip today"). A skipped day is simply not one of its days: hidden on Today and
@@ -127,6 +127,9 @@ final class HabitStore {
     var undoOffer: Entry?
     /// The moment a tap finished everything planned for today (the review prompt waits for this pause).
     private(set) var dayFinishedAt: Date?
+    /// What the last tap reached: "30 days in a row", "All 5 done today". Shown beside that row's Undo while it lasts.
+    private(set) var milestoneOffer: MilestoneOffer?
+    struct MilestoneOffer: Equatable { let entry: UUID; let habit: UUID; let day: LocalDay; let text: String }
     func clearLogOffer() { undoOffer = nil; noteOffer = nil }
     struct NoteOffer: Equatable { let habit: UUID; let day: LocalDay }
     /// The note being written in the note bar: a habit's note (`habit` set) or the day's note (`habit` nil).
@@ -193,11 +196,15 @@ final class HabitStore {
     @ObservationIgnored private var summaries: [LocalDay: (done: Int, total: Int)] = [:]
     @ObservationIgnored private var savedHabits: [UUID: Habit]?
     @ObservationIgnored private var startDays: [UUID: (createdAt: Date, day: LocalDay)] = [:]
+    /// Widget projections reuse the same per-item invalidation as the app's remembered numbers.
+    @ObservationIgnored var widgetProjectionContext: String?
+    @ObservationIgnored var widgetProjectionCache: [UUID: [WidgetItem]] = [:]
 
     private func forget(_ habit: UUID) {
         pastRuns[habit] = nil
         bestRuns[habit] = nil
         monthCounts[habit] = nil
+        widgetProjectionCache[habit] = nil
         summaries = [:]
     }
 
@@ -207,6 +214,8 @@ final class HabitStore {
         monthCounts = [:]
         summaries = [:]
         savedHabits = nil
+        widgetProjectionCache = [:]
+        widgetProjectionContext = nil
     }
 
     /// Only a saved habit's numbers are remembered, never a form's draft (which shares its ID while being edited).
@@ -1946,8 +1955,27 @@ final class HabitStore {
         // Worked out once per tap, never while drawing.
         let isToday = entry.day == today()
         let wasFull = isToday && todayScore(on: entry.day).isFull
+        // Milestones (report "Milestones — Marking Progress Without Noise"): a streak's, while streaks are shown.
+        let showStreaks = (UserDefaults.standard.object(forKey: ProgressOptions.showStreaks) as? Bool) ?? true
+        let habit = habits.first { $0.id == entry.habitID }
+        let streakBefore = showStreaks ? habit.map { streak(of: $0, asOf: today()) } : nil
         withAnimation { insertEntry(entry); offerUndo(entry) }
-        if isToday && !wasFull && todayScore(on: entry.day).isFull { dayFinishedAt = .now }
+        let score = isToday ? todayScore(on: entry.day) : nil
+        if let score, !wasFull, score.isFull { dayFinishedAt = .now }
+        milestoneOffer = nil
+        if let habit, let before = streakBefore, habit.kind != .quit, habit.kind != .task {
+            let unit = rule(habit, on: today()).frequency.streakUnit
+            let now = streak(of: habit, asOf: today())
+            if now > before, unit.isMilestone(now) {
+                milestoneOffer = MilestoneOffer(entry: entry.id, habit: habit.id, day: entry.day, text: unit.inARow(now))
+            }
+        }
+        if milestoneOffer == nil, let score, !wasFull, score.isFull, score.planned > 1 {
+            milestoneOffer = MilestoneOffer(entry: entry.id, habit: entry.habitID, day: entry.day, text: "All \(score.planned) done today")
+        }
+        if let mark = milestoneOffer, UIAccessibility.isVoiceOverRunning {
+            AccessibilityNotification.Announcement(mark.text).post()
+        }
         perform { [self] in
             #if DEBUG
             // PersistenceUITests: a write that fails must take the tap back off the screen.
