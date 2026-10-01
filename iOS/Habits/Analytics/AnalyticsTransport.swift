@@ -3,6 +3,15 @@ import Foundation
 import FoundationNetworking
 #endif
 
+nonisolated struct AnalyticsObservation: Codable, Sendable {
+    let appVersion: String
+    let appBuild: String
+    let osMajor: Int
+    let releaseChannel: String
+    let sampleRate: Double
+    let samplingVersion: Int
+}
+
 nonisolated struct AnalyticsDeliveryConfiguration: Sendable {
     var projectToken = ""
     /// Explicit release gate; no-billing account confirmed by owner, published free allowance checked.
@@ -14,15 +23,20 @@ nonisolated struct AnalyticsDeliveryConfiguration: Sendable {
     var osMajor = 0
     var sampleRate = 1.0
     var samplingVersion = 1
-    var eligible: Bool { productionEnabled && releaseChannel == "production" && projectToken.hasPrefix("phc_") }
+    var eligible: Bool { productionEnabled && releaseChannel == "production" && projectToken.hasPrefix("phc_") && sampleRate.isFinite && sampleRate > 0 && sampleRate <= 1 && (1...100_000).contains(samplingVersion) }
+    var observation: AnalyticsObservation {
+        AnalyticsObservation(appVersion: safeVersion(appVersion), appBuild: safeVersion(appBuild), osMajor: max(0, min(100, osMajor)),
+            releaseChannel: ["production", "beta", "development"].contains(releaseChannel) ? releaseChannel : "development", sampleRate: sampleRate, samplingVersion: samplingVersion)
+    }
 
     func payload(_ records: [AnalyticsRecord], installation: UUID) throws -> Data {
-        guard records.allSatisfy({ AnalyticsContract.valid($0.event, $0.properties) }) else { throw CocoaError(.coderInvalidValue) }
+        guard sampleRate.isFinite, sampleRate >= 0, sampleRate <= 1, records.allSatisfy({ AnalyticsContract.valid($0.event, $0.properties) && ($0.observation?.sampleRate.isFinite ?? true) && (0...1).contains($0.observation?.sampleRate ?? sampleRate) }) else { throw CocoaError(.coderInvalidValue) }
         let events = records.map { record -> [String: Any] in
+            let captured = record.observation ?? observation
             var properties = record.properties.mapValues(\.json)
-            properties.merge(["schema_version": 1, "platform": "ios", "form_factor": "phone", "app_version": safeVersion(appVersion),
-                "app_build": safeVersion(appBuild), "os_major": max(0, min(100, osMajor)), "release_channel": ["production", "beta", "development"].contains(releaseChannel) ? releaseChannel : "development",
-                "origin_surface": record.origin.surface, "plan": "unknown", "sample_rate": sampleRate, "sampling_version": samplingVersion,
+            properties.merge(["schema_version": 1, "platform": "ios", "form_factor": "phone", "app_version": safeVersion(captured.appVersion),
+                "app_build": safeVersion(captured.appBuild), "os_major": max(0, min(100, captured.osMajor)), "release_channel": ["production", "beta", "development"].contains(captured.releaseChannel) ? captured.releaseChannel : "development",
+                "origin_surface": record.origin.surface, "plan": "unknown", "sample_rate": captured.sampleRate, "sampling_version": max(1, min(100_000, captured.samplingVersion)),
                 "analytics_record_id": record.id.uuidString, "$process_person_profile": false, "$geoip_disable": true,
                 "$ip": "0.0.0.0"]) { _, new in new }
             return ["uuid": record.id.uuidString, "event": record.event.rawValue, "distinct_id": installation.uuidString,

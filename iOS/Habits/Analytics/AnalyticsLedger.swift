@@ -7,6 +7,7 @@ nonisolated struct AnalyticsRecord: Codable, Sendable {
     let created: Date
     let origin: AnalyticsOrigin
     let properties: [String: AnalyticsValue]
+    var observation: AnalyticsObservation? = nil
 }
 nonisolated struct AnalyticsLedger: Codable, Sendable {
     var installation = UUID()

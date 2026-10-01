@@ -59,7 +59,14 @@ struct ContractTests {
         check(resumed.consented && resumed.inspect()?.installation == beforeRestart.installation, "consented installation survives restart independently")
         check(resumed.inspect()?.outbox.map(\.id) == beforeRestart.outbox.map(\.id), "offline frozen records survive restart with stable ids")
         check((try? storageFolder.resourceValues(forKeys: [.isExcludedFromBackupKey]).isExcludedFromBackup) == true, "telemetry folder excluded from device backup")
+        var release = AnalyticsDeliveryConfiguration()
+        release.projectToken = "phc_test_capture_only"; release.releaseChannel = "production"; release.productionEnabled = true
+        let releaseNetwork = TestTransport()
+        let releaseResume = Analytics(file: storageFile, configuration: release, transport: releaseNetwork)
+        releaseResume.flush(); releaseResume.drain()
+        check(releaseNetwork.bodies.isEmpty && releaseResume.inspect()?.outbox.isEmpty == true, "release upgrade never forwards development records to production project")
         resumed.erase()
+        releaseResume.erase()
         check(!FileManager.default.fileExists(atPath: storageFile.path), "opt out removes persisted offline state")
         persisted.erase()
 
@@ -144,6 +151,11 @@ struct ContractTests {
         delivery.created(.check, ticket: delivery.ticket)
         delivery.drain(); delivery.flush(); delivery.drain()
         let original = network.bodies.last!
+        let frozenRecord = delivery.inspect()!.outbox[0]
+        var upgraded = config; upgraded.appVersion = "99"; upgraded.sampleRate = 0.5
+        let upgradePayload = try JSONSerialization.jsonObject(with: upgraded.payload([frozenRecord], installation: delivery.inspect()!.installation)) as! [String: Any]
+        let upgradeProperties = (upgradePayload["batch"] as! [[String: Any]])[0]["properties"] as! [String: Any]
+        check(upgradeProperties["app_version"] as? String == config.appVersion && upgradeProperties["sample_rate"] as? Double == 1, "queued metadata retains observation version and sampling across upgrade")
         network.complete(false, 503); delivery.drain()
         check(delivery.inspect()?.outbox.count == 1, "offline/server failure retains queue")
         delivery.flush(); delivery.drain()

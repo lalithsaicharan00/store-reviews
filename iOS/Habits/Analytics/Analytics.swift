@@ -205,7 +205,15 @@ nonisolated final class Analytics: @unchecked Sendable {
     }
     func flush() { queue.async { [self] in settle(now: .now, uptime: ProcessInfo.processInfo.systemUptime); save(); flushOnQueue() } }
     private func flushOnQueue() {
-        guard consented, config.eligible, !sending, Date.now >= retryAfter, let ledger, !ledger.outbox.isEmpty,
+        guard consented, config.eligible else { return }
+        // A development/beta ledger must never be forwarded to the sole production project after upgrading.
+        if let count = ledger?.outbox.count {
+            ledger?.outbox.removeAll { $0.observation?.releaseChannel != "production" }
+            let retained = ledger?.outbox.count ?? 0
+            let loss = ledger?.loss ?? 0
+            ledger?.loss = min(100_000, loss + count - retained)
+        }
+        guard !sending, Date.now >= retryAfter, let ledger, !ledger.outbox.isEmpty,
               let ticket, let data = try? config.payload(Array(ledger.outbox.prefix(20)), installation: ledger.installation) else { return }
         let ids = Set(ledger.outbox.prefix(20).map(\.id))
         sending = true
@@ -227,6 +235,12 @@ nonisolated final class Analytics: @unchecked Sendable {
         }
     }
     private func save() {
+        // Freeze metadata at observation, not at a later upload after an app/OS/sampling update.
+        if let count = ledger?.outbox.count {
+            for index in 0..<count where ledger?.outbox[index].observation == nil {
+                ledger?.outbox[index].observation = config.observation
+            }
+        }
         guard !saving, file != nil else { return }
         saving = true
         queue.asyncAfter(deadline: .now() + 0.5) { [self] in
