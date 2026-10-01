@@ -20,7 +20,7 @@ Other sessions are working at the same time: Progress on `progress-page-research
 | 4d | Research: daylight saving: does it need a setting or handling? | [x] handling, no setting | [x] wall-clock `today()` fix | [x] `SettingsCheck` D3, D4 |
 | 4e | Go through the ledger cards for small but important things people need in settings, and build them too | [x] C069, C080, C170, C038, C171, C226, C255 | [x] Done Habits, Haptics, Sound | [x] `testDoneRowStaysInPlace`, defaults checked |
 | 5 | Schedule a message to continue in 3 hours if not finished | — | [x] fires 03:00 UTC, 1 Oct | — |
-| 6 | Test everything thoroughly for speed and reliability | — | — | [x] runs 78, 2, 3 (one open speed question below) |
+| 6 | Test everything thoroughly for speed and reliability | — | — | [x] runs 78, 2, 3 |
 
 ## Notes as the work goes
 
@@ -42,3 +42,5 @@ Speed baseline to compare with (`progress-page-research` `aa4e230`, 30 Sep): Tod
 **Run 3** (`d9bb44f`, after merging `progress-page-research` up to `97980f8`, [run](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36801814679)): **build passed; all 40 UI tests passed** (TodayUITests 8, TimerUITests 2, ProgressUITests 10, GroupsUITests 5, and the rest of the run's 25), so the Groups failures from run 78 are fixed by the merged progress commits. Speed: Today taps 11.5 % busy, 1.5 % redraw; tick run 8.2 % / 1.5 %; folding 17.5 % / 0.9 % (system list work, no app function above 0.1 %); menu 3.0 %; Progress 25.5 % / 5.3 %; calendar 16.9 %.
 
 **Open speed question:** Progress measured 29.5 % and 25.5 % on this branch, against 8.2 % and 15.6 % on two `progress-page-research` runs, with its code unchanged here (no diff in `Progress/` or `HabitStore+Progress.swift`, and its cache key is untouched). Other screens swing as much between runs (Today scroll 0.4–8.6 %, habit page from Progress 1.3–10.3 %), so this may be the runner, but it isn't shown yet. Next step: compare with the next speed run on `progress-page-research` (same Progress code); if that one is low, profile Progress on this branch.
+
+**Answered (3-hour check-in, 1 Oct 03:00):** not from this branch. `progress-page-research` measured Progress at **28.9 %** on its own run of `97980f8`, the very commit merged here (this branch: 25.5 %), and **59.3 %** on its next commit `30f3116`. The rise comes with the Progress session's own changes after `54ad3f4`; the calendar swung 7.1 %–19.3 % on that branch alone, so it is runner variance. Nothing left open on this checklist.
