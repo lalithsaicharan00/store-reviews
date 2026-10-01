@@ -19,7 +19,7 @@ struct HelpView: View {
                         HelpRowLabel(title: "Contact Us", detail: Support.email, symbol: "envelope")
                     }
                     .accessibilityIdentifier("help-contact")
-                    Button { showWelcome = true } label: {
+                    Button { Analytics.shared.count(.welcomeReplay, ticket: Analytics.shared.ticket); showWelcome = true } label: {
                         HelpRowLabel(title: "Show the Welcome Again", detail: "What \(Onboarding.appName) means, and what's free", symbol: "hand.wave")
                     }
                     .accessibilityIdentifier("help-welcome")
@@ -41,6 +41,9 @@ struct HelpView: View {
             if !trimmedQuery.isEmpty && matches.isEmpty { ContentUnavailableView.search(text: trimmedQuery) }
         }
         .searchable(text: $query, prompt: "Search help")
+        .onChange(of: query) {
+            if !query.isEmpty { Analytics.shared.count(.helpSearch, ticket: Analytics.shared.ticket) }
+        }
         .navigationTitle("Help & Feedback")
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $showWelcome) {
@@ -65,6 +68,7 @@ struct HelpView: View {
 
     /// The phone's mail app with the versions filled in; with no mail app, the address to copy.
     private func contact() {
+        Analytics.shared.count(.contactSupport, ticket: Analytics.shared.ticket)
         guard let url = Support.mailURL() else { showAddress = true; return }
         openURL(url) { opened in
             if !opened { showAddress = true }

@@ -6,6 +6,7 @@ import SwiftUI
 enum Onboarding {
     /// Set once the welcome is finished, skipped or left for a restore. Kept in UserDefaults: it's about this phone.
     static let doneKey = "onboarding.done"
+    static let outcomeKey = "onboarding.outcome"
 
     /// The app's name as people see it in the welcome and help. The home-screen name changes with the bundle ID on
     /// `claude/server-and-sync` (Architecture "App Identity"); these words already use it.
@@ -74,6 +75,9 @@ struct OnboardingView: View {
     @State private var forward = true
     @State private var showNew = false
     @State private var addedFromNew = false
+    @State private var analyticsStepTicket: AnalyticsTicket?
+    @State private var analyticsFinished = false
+    @State private var observedPages: Set<Int> = []
 
     private var pageCount: Int { replay ? 2 : 4 }
     private var isLast: Bool { page == pageCount - 1 }
@@ -100,7 +104,7 @@ struct OnboardingView: View {
                 }
                 if !replay && !isLast {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Skip") { finish() }
+                        Button("Skip") { finish(skipped: true) }
                             .accessibilityIdentifier("onboarding-skip")
                     }
                 }
@@ -114,6 +118,8 @@ struct OnboardingView: View {
         .sheet(isPresented: $showNew, onDismiss: { if addedFromNew { finish() } }) {
             NewItemView { _ in addedFromNew = true }
         }
+        .analyticsScreen(.onboarding)
+        .onAppear { observeStep() }
         .interactiveDismissDisabled()
     }
 
@@ -171,10 +177,26 @@ struct OnboardingView: View {
     private func move(to next: Int) {
         forward = next > page
         withAnimation(reduceMotion ? .easeInOut(duration: 0.2) : .snappy(duration: 0.35)) { page = next }
+        observeStep()
     }
 
-    private func finish(restore: Bool = false) {
-        if !replay { Onboarding.markDone() }
+    private func observeStep() {
+        guard observedPages.insert(page).inserted else { return }
+        analyticsStepTicket = Analytics.shared.ticket
+        if !replay { Analytics.shared.cohort("fresh_first_run", ticket: analyticsStepTicket) }
+        Analytics.shared.event(.onboardingStep, ["flow_mode": .text(replay ? "replay" : "first_run"),
+            "step": .text(["welcome", "free_plan", "day_week", "first_item"][page])], ticket: analyticsStepTicket)
+    }
+
+    private func finish(restore: Bool = false, skipped: Bool = false) {
+        guard !analyticsFinished else { return }
+        analyticsFinished = true
+        if !replay {
+            Onboarding.markDone()
+            UserDefaults.standard.set(skipped ? "skipped" : "completed", forKey: Onboarding.outcomeKey)
+        }
+        Analytics.shared.event(.onboardingFinished, ["flow_mode": .text(replay ? "replay" : "first_run"),
+            "outcome": .text(restore ? "restore_handoff" : skipped ? "skipped" : "completed")], ticket: analyticsStepTicket)
         onFinish(restore)
     }
 }

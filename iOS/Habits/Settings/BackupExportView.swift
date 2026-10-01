@@ -116,6 +116,7 @@ struct BackupExportView: View {
         store.analytics.event(.backup, ["operation": .text(operation), "provider": .text("local"), "format": .text(format),
             "restore_mode": .text(operation == "restore" ? "merge" : "not_applicable"), "result": .text(succeeded ? "success" : "failed"),
             "failure_code": .text(succeeded ? "none" : "unknown")], ticket: ticket)
+        if operation == "restore" && succeeded { store.analytics.cohort("restored", ticket: ticket) }
         store.analytics.reliability("backup", succeeded: succeeded, ticket: ticket)
     }
 

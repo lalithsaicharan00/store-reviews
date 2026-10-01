@@ -1898,7 +1898,7 @@ final class HabitStore {
 
     /// Widget callbacks are additive events, committed before they are reflected in shared snapshots.
     func logFromWidget(id: UUID, day: LocalDay, event: UUID, signature: String, now: Date = .now) {
-        perform { [self] in
+        perform { [self] telemetry in
             guard problem == nil, !AppLock.isEnabled, !UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey),
                   day == today(now: now), let habit = habits.first(where: { $0.id == id }),
                   !habit.archived, !isPaused(habit, on: day), !isSkipped(habit, on: day),
@@ -1920,6 +1920,7 @@ final class HabitStore {
             let slot = slots(of: habit).first { !isSlotDone(habit, slot: $0, on: day) }
             let entry = Entry(id: event, habitID: id, day: day, value: value, createdAt: now, slot: slot, source: .widget)
             try await repository.addEntry(entry: entry.record)
+            analyticsTracked(entry, ticket: telemetry)
             insertEntry(entry)
         }
     }

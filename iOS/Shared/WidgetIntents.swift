@@ -90,7 +90,13 @@ struct WidgetPageIntent: AppIntent {
     init() {}
     init(key: String, page: Int) { self.key = key; self.page = page }
     @MainActor func perform() async throws -> some IntentResult {
-        _ = WidgetDisk.page(key: key, set: page)
+        let directory = WidgetDisk.directory
+        let telemetry = WidgetAnalyticsRelay.ticket(directory: directory)
+        _ = WidgetDisk.page(key: key, set: page) {
+            DispatchQueue.global(qos: .utility).async {
+                WidgetAnalyticsRelay.committed(ticket: telemetry, directory: directory)
+            }
+        }
         WidgetCenter.shared.reloadAllTimelines()
         return .result()
     }

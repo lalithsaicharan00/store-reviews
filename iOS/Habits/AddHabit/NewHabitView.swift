@@ -1204,7 +1204,7 @@ struct HabitForm: View {
         let habit = makeHabit(name: trimmedName)
         // Reminders are on by default, so permission is asked when the habit is saved, not before.
         if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
-        store.add(habit)
+        store.add(habit, suggestion: idea != nil)
         store.setDescription(descriptionText, of: habit.id)
         if let groupID, store.groups.contains(where: { $0.id == groupID }) { store.setGroup(groupID, of: habit.id) }
         onSaved(habit.id)

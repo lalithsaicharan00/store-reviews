@@ -16,6 +16,7 @@ nonisolated struct AnalyticsLedger: Codable, Sendable {
     var partial = true
     var foreground = false
     var external = false
+    var cohort: String? = nil
     var activationObserved = false
     var counters: [String: Int] = [:]
     var visits: [String: Int] = [:]

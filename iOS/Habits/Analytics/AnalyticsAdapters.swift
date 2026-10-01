@@ -25,6 +25,7 @@ extension EntrySource {
         case .timer: return .timer
         case .daySheet: return .history
         case .shortcut: return .shortcut
+        case .widget: return .widget
         }
     }
 }
@@ -45,14 +46,14 @@ extension HabitStore {
         var properties: [String: AnalyticsValue] = [
             "account_state": .text("no_account"), "account_provider": .text("not_applicable"), "sync_state": .text("no_account"),
             "backup_primary": .text("local_only"), "primary_source": .text("automatic"), "secondary_copy": .text("disabled"),
-            "effective_backup_status": .text("unknown"), "onboarding_state": .text("unknown"),
+            "effective_backup_status": .text("unknown"), "widget_privacy": .text(AppLock.isEnabled || defaults.bool(forKey: WidgetDisk.privacyKey) ? "hidden" : "visible"), "onboarding_state": .text(defaults.string(forKey: Onboarding.outcomeKey) ?? (defaults.bool(forKey: Onboarding.doneKey) ? "unknown" : "not_started")),
             "theme": .text(Theme(rawValue: defaults.string(forKey: Preferences.theme) ?? "automatic")?.rawValue ?? "automatic"),
-            "theme_source": source(Preferences.theme), "haptics_source": source(Preferences.haptics),
+            "widget_privacy_source": source(WidgetDisk.privacyKey), "theme_source": source(Preferences.theme), "haptics_source": source(Preferences.haptics),
             "sound_source": source(Preferences.sound), "streaks_source": source(ProgressOptions.showStreaks), "app_lock_source": source(AppLock.launchKey),
             "haptics": .flag(defaults.object(forKey: Preferences.haptics) as? Bool ?? true), "sound": .flag(defaults.bool(forKey: Preferences.sound)),
             "streaks": .flag(defaults.object(forKey: ProgressOptions.showStreaks) as? Bool ?? true), "app_lock": .flag(AppLock.isEnabled),
-            "capability_set_version": .number(1), "capability_account": .flag(false), "capability_purchase": .flag(false),
-            "capability_sync": .flag(false), "capability_widgets": .flag(false), "capability_onboarding": .flag(false),
+            "capability_set_version": .number(2), "capability_account": .flag(false), "capability_purchase": .flag(false),
+            "capability_sync": .flag(false), "capability_widgets": .flag(true), "capability_onboarding": .flag(true),
             "capability_progress": .flag(true), "capability_alarm": .flag(ReminderScheduler.alarmsAvailable)
         ]
         if let reminderPermission { properties["reminder_permission"] = .text(reminderPermission) }

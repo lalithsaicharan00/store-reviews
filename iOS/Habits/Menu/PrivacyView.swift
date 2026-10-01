@@ -25,6 +25,7 @@ struct PrivacyView: View {
                     .accessibilityIdentifier("privacy-usage")
                     .onChange(of: usageOn) {
                         Analytics.shared.setConsent(usageOn)
+                        WidgetAnalyticsAdapter.consentChanged(usageOn)
                         if usageOn { AnalyticsInteractionObserver.install(); store.analyticsConfiguration() }
                     }
                 Toggle("Share Crash Diagnostics", isOn: $crashOn)

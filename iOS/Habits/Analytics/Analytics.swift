@@ -110,6 +110,22 @@ nonisolated final class Analytics: @unchecked Sendable {
             state.enqueue(event, properties, origin: origin, now: .now)
         }
     }
+    func cohort(_ value: String, ticket: AnalyticsTicket?) {
+        guard ["fresh_first_run", "restored", "existing"].contains(value) else { return }
+        mutate(ticket: ticket) { state in
+            if state.cohort == nil || value == "restored" { state.cohort = value }
+        }
+    }
+    /// Counts a bounded, content-free relay only for today's UTC period; older paging counts are discarded.
+    func widgetPages(_ count: Int, ticket: AnalyticsTicket?) {
+        guard count > 0, let ticket else { return }
+        mutate(ticket: ticket) { state in
+            guard state.once(ticket.operation.uuidString + "widget_pages") else { return }
+            state.external = true
+            let key = AnalyticsCounter.widgetPage.rawValue
+            state.counters[key] = min(AnalyticsContract.maximumCount, (state.counters[key] ?? 0) + min(count, 100_000))
+        }
+    }
     func created(_ type: AnalyticsHabitType, suggestion: Bool = false, ticket: AnalyticsTicket?) {
         event(.entityCreated, ["entity_type": .text(type.entity), "habit_type": .text(type.rawValue), "creation_origin": .text(suggestion ? "suggestion" : "manual")], ticket: ticket)
     }
@@ -127,7 +143,7 @@ nonisolated final class Analytics: @unchecked Sendable {
             if origin.surface != "app" { state.external = true }
             if !state.activationObserved {
                 state.activationObserved = true
-                state.enqueue(.activation, ["milestone": .text("first_observed_tracking_write"), "entity_type": .text(type.entity), "habit_type": .text(type.rawValue), "cohort": .text("unknown")], origin: origin, now: .now)
+                state.enqueue(.activation, ["milestone": .text("first_observed_tracking_write"), "entity_type": .text(type.entity), "habit_type": .text(type.rawValue), "cohort": .text(state.cohort ?? "unknown")], origin: origin, now: .now)
             }
         }
     }

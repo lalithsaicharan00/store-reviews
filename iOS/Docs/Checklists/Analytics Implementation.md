@@ -46,3 +46,8 @@ Current integration lacks onboarding/account/sync/purchase/widget targets. Do no
 ## Provider verification — 17:35 UTC
 
 Actual EU PostHog reads now show two synthetic development records from macOS run 36899451178. Creation UUID `3DC035EE-7B06-44D9-80A5-EFDF399E796A`; daily-feature UUID `1D2A60CE-CE0B-4416-BAC6-C8A01A9C2261`; synthetic installation `FBD69B0C-82BB-4A6F-84D4-A26DF42F0D80`. Sent twice with identical IDs; one physical row per UUID and matching analytics_record_id observed. Both person modes are propertyless; actual complete properties retain profile=false/geoip_disable=true and no IP, geoip, SDK/device-detail, account or user-content fields. These are test records, not users. Production cohort remains empty. Dashboard notes and quota interpretation updated: stored rows after deduplication can differ from ingress/billing. No paid service enabled. Production gate remains false until final native UI/performance acceptance.
+
+
+## Consolidated update — 17:59 UTC
+
+`eff1e14` is merged as `df73109`, including real onboarding/help/widgets and Often Enough IDs. Implemented adapters now cover their observable callbacks; accounts/sync/purchase remain absent. New native tests cover consent-less paging, opt-out/re-opt-in/stale callbacks, at-most-once draining, old-day dropping, observed activation provenance and durable widget retry deduplication. Pending: latest merged-head native build/tests, widget/AppIntent compilation and same-build consent-off/on performance. Earlier 783950a CI is still running; 7332d3f pending. Preserve provider evidence above; do not mistake prior-head results for merged-head acceptance.

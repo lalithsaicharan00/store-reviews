@@ -40,10 +40,11 @@ nonisolated struct AnalyticsDeliveryConfiguration: Sendable {
                 "analytics_record_id": record.id.uuidString, "$process_person_profile": false, "$geoip_disable": true,
                 "$ip": "0.0.0.0"]) { _, new in new }
             return ["uuid": record.id.uuidString, "event": record.event.rawValue, "distinct_id": installation.uuidString,
-                    "timestamp": ISO8601DateFormatter().string(from: record.created), "properties": properties]
+                    "timestamp": Self.timestampFormat.format(record.created), "properties": properties]
         }
         return try JSONSerialization.data(withJSONObject: ["api_key": projectToken, "batch": events], options: [.sortedKeys])
     }
+    private static let timestampFormat = Date.ISO8601FormatStyle()
     private func safeVersion(_ raw: String) -> String {
         raw.count <= 32 && raw.range(of: "^[0-9]+([.][0-9]+)*$", options: .regularExpression) != nil ? raw : "0"
     }

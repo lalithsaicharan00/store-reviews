@@ -7,6 +7,7 @@ swiftc -swift-version 6 -D DEBUG -O \
   iOS/Habits/Analytics/AnalyticsLedger.swift \
   iOS/Habits/Analytics/AnalyticsTransport.swift \
   iOS/Habits/Analytics/Analytics.swift \
+  iOS/Shared/WidgetAnalyticsRelay.swift \
   iOS/Tools/analytics/ContractTests.swift \
   -o Research/Temp/analytics/contract_tests
 Research/Temp/analytics/contract_tests

@@ -25,20 +25,22 @@ struct HabitsApp: App {
                     await model.lock.appeared()
                     Analytics.shared.lifecycle(active: scenePhase == .active, locked: model.lock.isLocked)
                     AnalyticsInteractionObserver.install()
+                    WidgetAnalyticsAdapter.foreground()
                 }
                 .onChange(of: model.lock.isLocked) {
                     Analytics.shared.lifecycle(active: scenePhase == .active, locked: model.lock.isLocked)
                 }
                 .onOpenURL { url in
                     guard url.scheme == "oftenenough" else { return }
-                    if url.host == "today" { model.router.widgetToday = true }
-                    if url.host == "item", let id = UUID(uuidString: url.lastPathComponent) { model.router.widgetItem = id }
+                    if url.host == "today" { Analytics.shared.count(.widgetOpen, ticket: Analytics.shared.ticket); model.router.widgetToday = true }
+                    if url.host == "item", let id = UUID(uuidString: url.lastPathComponent) { Analytics.shared.count(.widgetOpen, ticket: Analytics.shared.ticket); model.router.widgetItem = id }
                 }
         }
         .onChange(of: scenePhase) {
             Analytics.shared.lifecycle(active: scenePhase == .active, locked: model.lock.isLocked)
             if scenePhase == .active {
                 model.store.analyticsConfiguration()
+                WidgetAnalyticsAdapter.foreground()
                 AnalyticsInteractionObserver.install()
             }
             // Re-plan on every return to the app: a new day, a changed time zone, or a changed permission.

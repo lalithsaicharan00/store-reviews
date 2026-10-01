@@ -41,7 +41,13 @@ struct WidgetsView: View {
           }.padding()
         }.background(Color(.systemGroupedBackground))
             .navigationTitle("Widgets")
-            .onChange(of: hidden) { Task { await AppModel.shared.widgets.publish(store) } }
+            .analyticsScreen(.widgetsSettings)
+            .task { WidgetAnalyticsAdapter.refreshInventory() }
+            .onChange(of: hidden) {
+                Analytics.shared.event(.preference, ["setting": .text("widget_privacy"), "value": .text(hidden ? "hidden" : "visible")], ticket: Analytics.shared.ticket)
+                store.analyticsConfiguration()
+                Task { await AppModel.shared.widgets.publish(store) }
+            }
     }
 
     private func guideSection<Content: View>(_ title: LocalizedStringKey, @ViewBuilder content: () -> Content) -> some View {
