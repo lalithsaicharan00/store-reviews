@@ -25,8 +25,8 @@ merged. **Any session picking this up: read this first, then update it as items 
 | P1 | Note everything down (this file) | ✅ 1 Oct |
 | P2 | Schedule the check-ins (send_later) | ✅ check-in 1 at 20:15 UTC (`trig_01Mpn2S8ZZHVi68YRGvJSmFi`); it schedules 2, 2 schedules 3, 3 schedules 4 |
 | P3 | Find what isn't merged yet | ✅ Only `claude/server-and-sync` (47 commits) and `analytics` (excluded). Checked, not assumed: `claude/free-plan-data-safety` and `claude/pensive-bardeen-ou4hiw` are fully inside `claude/server-and-sync`; `claude/eloquent-turing-oznzs3`'s one extra commit is a "superseded, don't merge" note |
-| P4 | Merge `integration` into `claude/server-and-sync`, resolving every conflict keeping both sides (the Status note §2 checklist: sync schema renumbered to 7, `entry.source` synced, new write paths through `SyncWriter`) | — |
-| P5 | Run everything: server (129), Core JVM + sync (JVM, JS), the website check, iOS build + the UI suite in halves on GitHub, `check_rules.sh` | — |
+| P4 | Merge `integration` into `claude/server-and-sync`, resolving every conflict keeping both sides (the Status note §2 checklist: sync schema renumbered to 7, `entry.source` synced, new write paths through `SyncWriter`) | ✅ `b8edab4` + build fix `1218890` + `b745b78` (decisions below) |
+| P5 | Run everything: server (129), Core JVM + sync (JVM, JS), the website check, iOS build + the UI suite in halves on GitHub, `check_rules.sh` | Server 129/129, Core (JVM + sync JVM/JS, 7 migration tests), website 21 checks, `check_rules.sh`: pass. iOS: running |
 | P6 | Move `integration`, then `main`, to the merged result; update the branch checklist | — |
 | P7 | Performance: measure every screen with the app-driven runner (`[ios-perf]`), fix every regression and the known slow spots (opening a screen 500–1,300 ms, Today's first scroll 180–440 ms) | — |
 | P8 | Data robustness: migrations from every shipped schema, restore/merge, sync, low storage, kill mid-write; widgets reading the shared store | — |
@@ -50,6 +50,28 @@ removing the parked DNS records for `oftenenough.com`; `support@oftenenough.com`
 Cloudflare account and Workers Paid; the Plus and Plus Family screen designs; reading the privacy policy and terms;
 a WAF rule. Details and where each is done: the Status note's "What needs you".
 
+## Decisions made in the merge (1 Oct)
+
+- **One backup page:** ≡ → **Backup & Export** (the menu's name stays, per the Design Rules' menu order) is now the
+  account-aware screen from `claude/server-and-sync`: status, where the backup goes, Back Up Now, Restore (account
+  copies, iCloud, a file; preview, Replace or Merge, Undo for 30 days), Move to Another Device, **Save a Backup File**,
+  **Export a Spreadsheet (CSV)** (from integration), "Before You Delete the App" (shown with no account), Sync, the
+  account, Erase. Integration's identifiers (`backup-save`, `backup-export-csv`, `backup-restore`) kept, so its tests
+  and speed scenario still find them. The temporary avatar and its settings sheet are gone; the empty Today's and the
+  welcome's "Restore from a Backup File" open this page; the backup-problem notification opens it on Today's stack.
+- **One backup file format:** the documented `.zip` (format 1, also what the server keeps). Restore still accepts the
+  `.db` files integration's page made (they're merged in: only what's missing is added), so no file is ever orphaned.
+- **Copy:** Plus is "unlimited habits, iPad, Apple Watch and sync" (Help, the welcome, the Plus screen); automatic backup
+  is free with an account, so it's no longer listed as Plus. Help explains the free account backup. *The user may
+  want to word the Plus screen differently: its design is still theirs to give.*
+- **Data:** schema 7 = sync tables; a database from a pre-merge server-sync test build (its "6" had the sync tables
+  and no `entry.source`) gets the column and opens (test `serverSyncTestBuildVersion6StillOpens`).
+- **Found by the merge:** Info.plist had two `CFBundleURLTypes` keys (the second silently replaces the first, so the
+  widgets' `oftenenough://` links would have stopped opening the app): now one key with both schemes. The type name
+  `BackupCheck` existed twice (Core's and integration's debug check runner): Core's is qualified.
+
 ## Progress log
 
 - **1 Oct 18:10 UTC:** P1–P3 done.
+- **1 Oct 20:20 UTC:** P4 done; check-in 1 fired, check-in 2 scheduled for 2 Oct 01:28 UTC
+  (`trig_01M4BDue4Sp5aLwpVmyuPy8t`). P5: everything off the Mac passes; the iOS run is going.

@@ -6,6 +6,7 @@ import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import androidx.sqlite.execSQL
 import app.habits.sync.SyncRules
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonNull
@@ -137,6 +138,13 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
         if (dao.settingByKey(key) != null) sync.change(SyncCodec.SETTING, key, mapOf("value" to JsonNull))
     }
 
+    /**
+     * Swift calls these on the main thread, and a suspend function runs there until its first database call. Building,
+     * checking or parsing a file of a year's history takes long enough to stall the screen (PERFORMANCE.md rule 7), so
+     * that work runs on the database's background dispatcher.
+     */
+    private suspend fun <T> offMain(work: suspend () -> T): T = withContext(databaseDispatcher) { work() }
+
     // MARK: Backup and restore (Architecture 03 §3.2, §3.6). The platform stores and sends the file; see BackupFile.
 
     /** Unlike launch data, a backup must carry deletion markers to a fresh installation. */
@@ -145,25 +153,25 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
 
     /** The checked backup file of everything on this device, deleted rows included. */
     @Throws(Exception::class)
-    suspend fun backupFile(info: BackupInfo): BackupFileData = BackupFile.write(dao.restoreSnapshot(), info, clock())
+    suspend fun backupFile(info: BackupInfo): BackupFileData = offMain { BackupFile.write(dao.restoreSnapshot(), info, clock()) }
 
     /**
      * Checks a backup file (base64) and says what restoring it would change, both ways. Never throws for a bad file:
      * `problem` says why it can't be used, and nothing is changed.
      */
     @Throws(Exception::class)
-    suspend fun checkBackup(file: String): BackupCheck {
+    suspend fun checkBackup(file: String): BackupCheck = offMain {
         val contents = try {
             BackupFile.read(file)
         } catch (problem: BackupProblem) {
-            return BackupCheck(problem.reason, null)
+            return@offMain BackupCheck(problem.reason, null)
         }
         val (phone, known) = dao.restoreState()
         val now = clock()
         val live = { s: Snapshot -> s.habits.count { it.deletedAt == null } to s.entries.count { it.deletedAt == null } }
         val (fileHabits, fileEntries) = live(contents.snapshot)
         val (phoneHabits, phoneEntries) = live(phone)
-        return BackupCheck(
+        BackupCheck(
             problem = null,
             preview = RestorePreview(
                 createdAt = contents.createdAt, deviceName = contents.deviceName, platform = contents.platform, appVersion = contents.appVersion,
@@ -180,10 +188,10 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
      * Throws [BackupProblem] for a bad file, before anything is changed.
      */
     @Throws(Exception::class)
-    suspend fun restore(file: String, mode: RestoreMode, info: BackupInfo): RestoreResult {
+    suspend fun restore(file: String, mode: RestoreMode, info: BackupInfo): RestoreResult = offMain {
         val contents = BackupFile.read(file)
         val now = clock()
-        return dao.synced(now) { sync ->
+        dao.synced(now) { sync ->
             val phone = dao.restoreSnapshot()
             val undo = BackupFile.write(phone, info, now)
             val plan = RestorePlanner.plan(phone, dao.knownSettingKeys().toSet(), contents.snapshot, mode, now)
@@ -208,10 +216,10 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
 
     /** The next request for `POST /v1/sync`: the cursor and up to [maxOps] unsent changes, oldest first. */
     @Throws(Exception::class)
-    suspend fun syncRequest(maxOps: Int = 500): String {
+    suspend fun syncRequest(maxOps: Int = 500): String = offMain {
         val cursor = dao.state(SyncWriter.CURSOR)?.toLongOrNull() ?: 0
         val ops = dao.outbox(maxOps).map { Json.parseToJsonElement(it.op) }
-        return JsonObject(mapOf("cursor" to JsonPrimitive(cursor), "ops" to JsonArray(ops))).toString()
+        JsonObject(mapOf("cursor" to JsonPrimitive(cursor), "ops" to JsonArray(ops))).toString()
     }
 
     /**
@@ -221,7 +229,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
      * recognises, and pulls from the old cursor again.
      */
     @Throws(Exception::class)
-    suspend fun acceptSyncReply(reply: String): Boolean {
+    suspend fun acceptSyncReply(reply: String): Boolean = offMain {
         val o = Json.parseToJsonElement(reply).jsonObject
         val applied = o["applied"]?.jsonArray?.map { it.jsonPrimitive.content } ?: emptyList()
         val rejected = o["rejected"]?.jsonArray?.mapNotNull { r ->
@@ -232,7 +240,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
         val cursor = o.getValue("cursor").jsonPrimitive.long
         val more = o["more"]?.jsonPrimitive?.booleanOrNull ?: false
         val now = clock()
-        return dao.synced(now) { sync ->
+        dao.synced(now) { sync ->
             applied.chunked(500).forEach { dao.deleteOutbox(it) }
             rejected.forEach { (id, problem) -> dao.markOutboxProblem(id, problem) }
             ops.filter { SyncRules.problem(it) == null }.forEach { sync.receive(it) }
