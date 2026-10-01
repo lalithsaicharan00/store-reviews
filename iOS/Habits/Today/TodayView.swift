@@ -183,6 +183,7 @@ struct TodayView: View {
             let next = selectedDay.adding(days: 1, calendar: store.calendar)
             day = next == store.today() ? nil : next
         case .openAllHabits: menu.path.append(MenuPlace.habits) // Habits lives in the ≡ menu now
+        case .openWidgets: menu.path.append(MenuPlace.widgets)
         case .openCalendar: showCalendar = true
         case .openNewHabit: showNewHabit = true
         case .openHabitForm: perfForm = true
