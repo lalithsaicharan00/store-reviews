@@ -16,12 +16,13 @@ nonisolated struct WidgetItem: Codable, Identifiable, Sendable {
     var isQuit = false
     var action: String?
     var stepLabel: String? = nil
+    var unit: String? = nil
     var token: String
     var signature: String
     var counterStart: Date?
     var counterValidUntil: Date? = nil
     var history: [WidgetDay]
-    var url: URL { URL(string: "oftenenough://item/" + id)! }
+    var url: URL { URL(string: "oftenenough://item/" + id) ?? URL(string: "oftenenough://today")! }
 }
 nonisolated struct WidgetDay: Codable, Identifiable, Sendable {
     var id: String
@@ -64,7 +65,13 @@ nonisolated enum WidgetDisk {
     static func decode(_ data: Data) -> WidgetSnapshot? {
         guard data.count <= maximumBytes, let snapshot = try? JSONDecoder().decode(WidgetSnapshot.self, from: data),
               snapshot.version == WidgetSnapshot.version, snapshot.frames.count <= 8,
-              snapshot.frames.allSatisfy({ $0.start < $0.end && $0.items.allSatisfy { $0.value.isFinite && $0.goal.isFinite } }),
+              snapshot.frames.allSatisfy({ frame in
+                  frame.start < frame.end && Set(frame.items.map(\.id)).count == frame.items.count
+                      && frame.items.allSatisfy { item in
+                          UUID(uuidString: item.id) != nil && item.value.isFinite && item.goal.isFinite
+                              && (item.action == nil || (["check", "add"].contains(item.action!) && UUID(uuidString: item.token) != nil))
+                      }
+              }),
               zip(snapshot.frames, snapshot.frames.dropFirst()).allSatisfy({ $0.end == $1.start }) else { return nil }
         return snapshot
     }

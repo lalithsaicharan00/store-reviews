@@ -238,6 +238,7 @@ struct PhoneWidgetView: View {
                     status(item).font(.caption2).foregroundStyle(.secondary).lineLimit(1)
                 }.frame(maxWidth: .infinity, alignment: .leading)
             }.accessibilityLabel("\(item.name), \(item.status). Open details")
+                .accessibilityValue(item.counterStart.map { Text($0, style: .relative) } ?? Text(item.status))
         }
     }
     private var single: some View {
@@ -247,7 +248,7 @@ struct PhoneWidgetView: View {
                 Text(item.name).font(.headline).lineLimit(2)
                 status(item).font(.callout).lineLimit(3)
                 Spacer(minLength: 0)
-                Text(layout == .history && !entry.plus && !entry.sample ? "History with Plus · status stays free" : item.action == nil ? "Open details" : item.action == "add" ? "+ adds \(item.stepLabel ?? "one step")" : "Tap to check off")
+                Text(layout == .history && !entry.plus && !entry.sample ? "History with Plus" : item.action == nil ? "Open details" : item.action == "add" ? "+ adds \(item.stepLabel ?? "one step")" : "Tap to check off")
                     .font(.caption2).foregroundStyle(.secondary)
             } else {
                 Image(systemName: "square.and.pencil")
@@ -275,6 +276,7 @@ struct PhoneWidgetView: View {
                 Image(systemName: item.done ? "checkmark.circle.fill" : item.symbol)
                     .foregroundStyle(color(item)).font(.system(size: size * 0.6)).frame(width: size, height: size)
             }.widgetAccentable().accessibilityLabel("Open \(item.name), \(item.status)")
+                .accessibilityValue(item.counterStart.map { Text($0, style: .relative) } ?? Text(item.status))
         }
     }
     private var lockContent: some View {
@@ -328,12 +330,20 @@ struct PhoneWidgetView: View {
                     VStack(spacing: 0) {
                         control(item, size: family == .systemLarge ? 34 : 25)
                         Text(item.name).font(larger ? .caption2 : .system(size: family == .systemLarge ? 12 : 10)).lineLimit(1)
-                        status(item).font(larger ? .caption2 : .system(size: family == .systemLarge ? 10 : 8)).lineLimit(1).foregroundStyle(.secondary)
+                        compactStatus(item).font(larger ? .caption2 : .system(size: family == .systemLarge ? 10 : 8)).lineLimit(1).foregroundStyle(.secondary)
                     }.frame(maxWidth: .infinity)
                 }
             }
             Spacer(minLength: 0)
             footer(capacity)
+        }
+    }
+    @ViewBuilder private func compactStatus(_ item: WidgetItem) -> some View {
+        if item.counterStart != nil || item.isTask { status(item) }
+        else {
+            let number = FloatingPointFormatStyle<Double>.number.precision(.fractionLength(0...1))
+            Text("\(item.value.formatted(number))/\(item.goal.formatted(number))\(item.ongoing ? " limit" : "")\(item.unit.map { " " + $0 } ?? "")")
+                .accessibilityLabel(item.status)
         }
     }
     private var history: some View {

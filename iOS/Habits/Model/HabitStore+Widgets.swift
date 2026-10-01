@@ -60,10 +60,15 @@ extension HabitStore {
     }
 
     private func widgetItems(_ habit: Habit, first: LocalDay, now: Date) -> [WidgetItem] {
-        let history: [WidgetDay] = habit.kind == .task || habit.kind == .quit ? [] : (-30...0).map { offset in
+        // Each future frame needs a full rolling window, with that frame's day still open and
+        // earlier days evaluated as past. Compute two marks per shared day, not 31 × 7 marks.
+        let history: [(current: WidgetDay, past: WidgetDay)] = habit.kind == .task || habit.kind == .quit ? [] : (-30...6).map { offset in
             let day = first.adding(days: offset, calendar: calendar), historical = rule(habit, on: day)
-            return WidgetDay(id: day.key, label: String(day.day), state: String(describing: dayMark(habit, on: day)),
-                             value: progressValue(dayProgress(of: historical, on: day), historical))
+            let current = WidgetDay(id: day.key, label: String(day.day), state: String(describing: dayMark(habit, on: day, relativeTo: day)),
+                                    value: progressValue(dayProgress(of: historical, on: day), historical))
+            var past = current
+            past.state = String(describing: dayMark(habit, on: day, relativeTo: day.adding(days: 1)))
+            return (current, past)
         }
         let signature = Self.widgetSignature(habit)
         return (0..<7).map { offset in
@@ -85,6 +90,13 @@ extension HabitStore {
             default: action = nil
             }
             let goal = goal(of: rule)
+            let unit: String?
+            switch rule.kind {
+            case .amount(let name, _): unit = name.isEmpty ? nil : name
+            case .duration: unit = "min"
+            case .check: unit = rule.checkUnit
+            default: unit = nil
+            }
             let status: String
             if done && habit.kind == .task { status = "Done" }
             else if !planned {
@@ -101,9 +113,9 @@ extension HabitStore {
             return WidgetItem(id: habit.id.uuidString, name: habit.name, symbol: habit.symbol, color: habit.color.rawValue, status: status,
                               value: value, goal: goal, done: done, planned: planned, ongoing: rule.atMost || habit.kind == .quit,
                               isTask: habit.kind == .task, isQuit: habit.kind == .quit, action: action,
-                              stepLabel: rule.quickIncrement.map { progressValue($0, rule) }, token: UUID().uuidString,
+                              stepLabel: rule.quickIncrement.map { progressValue($0, rule) }, unit: unit, token: UUID().uuidString,
                               signature: signature, counterStart: start, counterValidUntil: counterUntil,
-                              history: history.filter { $0.id >= day.adding(days: -30, calendar: calendar).key })
+                              history: history.isEmpty ? [] : history[offset..<(offset + 31)].map { $0.current.id == day.key ? $0.current : $0.past })
         }
     }
 

@@ -94,4 +94,18 @@ final class WidgetUITests: XCTestCase {
         let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-larger-text-agenda"; shot.lifetime = .keepAlways; add(shot)
     }
 
+    func testLongNamesAndUnitsKeepQuickActionVisible() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-uitest", "-empty", "-widget-fixture", "-widget-render", "-widget-long-labels", "-free",
+                               "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryXXXL"]
+        app.launch()
+        let water = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "select-Widget water")).firstMatch
+        XCTAssertTrue(water.waitForExistence(timeout: 15))
+        water.coordinate(withNormalizedOffset: CGVector(dx: 0.05, dy: 0.5)).tap()
+        let action = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Add 1 large glasses of water to")).firstMatch
+        XCTAssertTrue(action.exists && action.isHittable, app.debugDescription)
+        XCTAssertFalse(action.frame.isEmpty)
+        let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-long-name-unit-larger-text"; shot.lifetime = .keepAlways; add(shot)
+    }
+
 }

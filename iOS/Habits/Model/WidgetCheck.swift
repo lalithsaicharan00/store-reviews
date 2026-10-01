@@ -9,9 +9,11 @@ enum WidgetFixture {
     static func install(in store: HabitStore) async {
         guard store.habits.isEmpty else { return }
         let start = store.today().adding(days: -40, calendar: store.calendar)
+        let longLabels = ProcessInfo.processInfo.arguments.contains("-widget-long-labels")
         let items = [
             Habit(name: "Widget check", symbol: "checkmark", color: .blue, kind: .check, startsOn: start),
-            Habit(name: "Widget water", symbol: "drop", color: .blue, kind: .amount(unit: "glasses", increment: 1), goal: 8, startsOn: start),
+            Habit(name: longLabels ? "Widget water with a longer personal habit name" : "Widget water", symbol: "drop", color: .blue,
+                  kind: .amount(unit: longLabels ? "large glasses of water" : "glasses", increment: 1), goal: 8, startsOn: start),
             Habit(name: "Widget cut down", symbol: "cup.and.saucer", color: .orange, kind: .amount(unit: "cups", increment: 1), goal: 3, atMost: true, startsOn: start),
             Habit(name: "Widget quit", symbol: "leaf", color: .green, kind: .quit, startsOn: start, quitSince: start.date(calendar: store.calendar)),
             Habit(name: "Widget timer", symbol: "timer", color: .blue, kind: .duration, goal: 10, startsOn: start)
@@ -42,6 +44,12 @@ enum WidgetCheck {
         expect(row("Widget cut down").ongoing && row("Widget cut down").status.contains("so far"), "Limit remains ongoing, no premature success")
         expect(row("Widget task 1").history.isEmpty, "Tasks have no habit history")
         expect(row("Widget water").history.count == 31, "Habit history bounded to 31 days")
+        expect(snapshot.frames.allSatisfy { frame in
+            let history = frame.items.first { $0.name == "Widget water" }!.history
+            return history.count == 31 && history.last?.id == frame.day && history.last?.state == "open"
+        }, "Every future timeline day retains a full recent-history window")
+        expect(snapshot.frames[1].items.first { $0.name == "Widget water" }?.history.first { $0.id == day.key }?.state == "missed",
+               "Unlogged days change from open to past when the timeline advances")
         let water = item("Widget water"), event = UUID(), signature = HabitStore.widgetSignature(water)
         for _ in 0..<3 { store.logFromWidget(id: water.id, day: day, event: event, signature: signature, now: now) }
         await store.flush()
@@ -110,6 +118,12 @@ enum WidgetCheck {
             expect(WidgetDisk.read(from: file) == nil, "Corrupt snapshot gives unavailable")
             var future = snapshot; future.version = 999
             expect(WidgetDisk.decode(try JSONEncoder().encode(future)) == nil, "Unknown schema rejected")
+            var invalid = snapshot; invalid.frames[0].items[0].id = "invalid\nitem"
+            expect(WidgetDisk.decode(try JSONEncoder().encode(invalid)) == nil, "Malformed item identities cannot crash URL rendering")
+            var duplicate = snapshot; duplicate.frames[0].items.append(duplicate.frames[0].items[0])
+            expect(WidgetDisk.decode(try JSONEncoder().encode(duplicate)) == nil, "Duplicate snapshot rows are rejected")
+            var badAction = snapshot; badAction.frames[0].items[0].token = "invalid-event"
+            expect(WidgetDisk.decode(try JSONEncoder().encode(badAction)) == nil, "Malformed action event is rejected before display")
         } catch { failures.append("Disk round trip: \(error)") }
         expect(WidgetDisk.decode(Data(repeating: 0, count: WidgetDisk.maximumBytes + 1)) == nil, "Oversized snapshot rejected")
         expect(snapshot.frame(at: now, timeZone: "invalid") == nil, "Travel invalidates old timezone snapshot")

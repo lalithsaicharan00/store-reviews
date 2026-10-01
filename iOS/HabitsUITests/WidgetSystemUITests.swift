@@ -10,8 +10,13 @@ final class WidgetSystemUITests: XCTestCase {
         print("Widget system \(name):\n" + app.debugDescription)
     }
     func testHomeScreenInstallTapAndColdPersistence() throws {
+        #if !targetEnvironment(simulator)
+        throw XCTSkip("Cold widget fixture uses the erased CI simulator's default database; never reset a device user's database")
+        #endif
         let app = XCUIApplication()
-        app.launchArguments = ["-empty", "-widget-fixture", "-free", "-dbname", "widget-system", "-reset-db"]
+        // SpringBoard starts a cold intent without XCTest's -dbname argument. Use the erased
+        // simulator's real default database so that restart exercises the production path.
+        app.launchArguments = ["-empty", "-widget-fixture", "-free", "-dbname", "habits", "-reset-db"]
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 15))
         // The app's background handler waits for durable writes and the shared snapshot.
@@ -54,7 +59,7 @@ final class WidgetSystemUITests: XCTestCase {
         XCTAssertTrue(check.waitForExistence(timeout: 15), springboard.debugDescription)
         check.tap()
         save(springboard, "home-widget-after-cold-check")
-        app.launchArguments = ["-empty", "-free", "-dbname", "widget-system"]
+        app.launchArguments = ["-empty", "-free", "-dbname", "habits"]
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 15))
         app.buttons["menu-button"].tap(); app.buttons["menu-widgets"].tap()

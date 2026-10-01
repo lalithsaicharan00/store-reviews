@@ -1579,8 +1579,8 @@ final class HabitStore {
     /// How one day reads in a habit's calendar. Never a harsh mark for a miss (C095): a missed day is just the number.
     enum DayMark { case done, some, missed, open, skipped, paused, notItsDay, upcoming, before }
 
-    func dayMark(_ habit: Habit, on day: LocalDay) -> DayMark {
-        let today = today()
+    func dayMark(_ habit: Habit, on day: LocalDay, relativeTo reference: LocalDay? = nil) -> DayMark {
+        let today = reference ?? self.today()
         if day < startDay(of: habit) { return .before }
         if isPaused(habit, on: day) { return .paused }
         if isSkipped(habit, on: day) { return .skipped }
