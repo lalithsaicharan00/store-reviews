@@ -9,7 +9,7 @@ import { sha256Hex } from "./tokens";
  */
 
 export interface VerifiedKey {
-  provider: "apple" | "google" | "test";
+  provider: "apple" | "google" | "test" | "ci";
   subject: string;
   email: string | null;
   /** Apple "Hide My Email" relay address. */
@@ -17,7 +17,7 @@ export interface VerifiedKey {
 }
 
 interface ProviderConfig {
-  provider: "apple" | "google";
+  provider: "apple" | "google" | "ci";
   jwksUrl: string;
   issuers: string[];
 }
@@ -32,6 +32,13 @@ export const GOOGLE: ProviderConfig = {
   provider: "google",
   jwksUrl: "https://www.googleapis.com/oauth2/v3/certs",
   issuers: ["https://accounts.google.com", "accounts.google.com"],
+};
+
+/** GitHub Actions' identity tokens: what the dev-only CI sign-in accepts (see `verifyCiToken`). */
+export const GITHUB_ACTIONS: ProviderConfig = {
+  provider: "ci",
+  jwksUrl: "https://token.actions.githubusercontent.com/.well-known/jwks",
+  issuers: ["https://token.actions.githubusercontent.com"],
 };
 
 // The providers' public keys, shared by every request in this isolate (not request state).
@@ -69,38 +76,48 @@ export async function verifyIdToken(config: ProviderConfig, idToken: string, raw
   if (audiences.length === 0) {
     throw new HttpError(503, "provider_not_configured", `Sign in with ${config.provider === "apple" ? "Apple" : "Google"} isn't set up yet.`);
   }
+  const payload = await verifySigned(config, idToken, audiences);
+  if (typeof payload.sub !== "string" || payload.sub.length === 0) throw invalid();
+  if (typeof payload.nonce !== "string" || payload.nonce !== (await sha256Hex(rawNonce))) throw invalid();
+  const emailVerified = payload.email_verified === true || payload.email_verified === "true";
+  const email = typeof payload.email === "string" && emailVerified ? payload.email.toLowerCase() : null;
+  const isPrivateEmail = payload.is_private_email === true || payload.is_private_email === "true";
+  return { provider: config.provider, subject: payload.sub, email, isPrivateEmail };
+}
+
+/**
+ * Dev only: proves a request comes from a GitHub Actions run of our own repository (its OIDC token, minted for
+ * [audience]), so the iPhone end-to-end tests can sign in without Apple, Google or any stored secret. A fork's
+ * runs carry their own repository name and are refused. The test chooses `subject`, so several simulated devices
+ * can share one account.
+ */
+export async function verifyCiToken(idToken: string, audience: string, repository: string, subject: string): Promise<VerifiedKey> {
+  const payload = await verifySigned(GITHUB_ACTIONS, idToken, [audience]);
+  if (payload.repository !== repository) throw invalid();
+  return { provider: "ci", subject, email: null, isPrivateEmail: false };
+}
+
+async function verifySigned(config: ProviderConfig, token: string, audiences: string[]) {
   const verify = async (forceRefresh: boolean) =>
-    jwtVerify(idToken, createLocalJWKSet(await providerKeys(config.jwksUrl, forceRefresh)), {
+    jwtVerify(token, createLocalJWKSet(await providerKeys(config.jwksUrl, forceRefresh)), {
       issuer: config.issuers,
       audience: audiences,
       algorithms: ["RS256"],
       clockTolerance: 60,
     });
-  let payload;
   try {
-    payload = (await verify(false)).payload;
+    return (await verify(false)).payload;
   } catch (error) {
-    if (error instanceof errors.JWKSNoMatchingKey) {
-      // The provider may have rotated its keys since we cached them.
-      try {
-        payload = (await verify(true)).payload;
-      } catch {
-        throw invalid();
-      }
-    } else if (error instanceof HttpError) {
-      throw error;
-    } else {
-      throw invalid();
-    }
+    if (error instanceof HttpError) throw error;
+    if (!(error instanceof errors.JWKSNoMatchingKey)) throw invalid();
   }
-  if (typeof payload.sub !== "string" || payload.sub.length === 0) throw invalid();
-  if (typeof payload.nonce !== "string" || payload.nonce !== (await sha256Hex(rawNonce))) {
-    throw new HttpError(401, "invalid_token", "The sign-in couldn't be checked. Please try again.");
+  // The provider may have rotated its keys since we cached them.
+  try {
+    return (await verify(true)).payload;
+  } catch (error) {
+    if (error instanceof HttpError) throw error;
+    throw invalid();
   }
-  const emailVerified = payload.email_verified === true || payload.email_verified === "true";
-  const email = typeof payload.email === "string" && emailVerified ? payload.email.toLowerCase() : null;
-  const isPrivateEmail = payload.is_private_email === true || payload.is_private_email === "true";
-  return { provider: config.provider, subject: payload.sub, email, isPrivateEmail };
 }
 
 function invalid() {

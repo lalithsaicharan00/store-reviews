@@ -9,7 +9,7 @@ import {
   unlinkKey,
 } from "./directory";
 import { HttpError, errorResponse, isUuid, json, readJson, requireString } from "./http";
-import { APPLE, GOOGLE, type VerifiedKey, verifyIdToken } from "./providers";
+import { APPLE, GOOGLE, type VerifiedKey, verifyCiToken, verifyIdToken } from "./providers";
 import {
   type AccessClaims,
   bearer,
@@ -55,6 +55,8 @@ async function route(request: Request, url: URL, env: Env): Promise<Response> {
       return signIn(request, env, (body) => verifyIdToken(GOOGLE, requireString(body.idToken, "idToken", 8192), requireString(body.nonce, "nonce", 256), audiences(env.GOOGLE_AUDIENCES)));
     case "POST /v1/auth/test":
       return signIn(request, env, (body) => verifyTestKey(body, env));
+    case "POST /v1/auth/ci":
+      return signIn(request, env, (body) => verifyCiKey(body, env));
     case "POST /v1/auth/refresh":
       return refresh(request, env);
     case "GET /v1/account":
@@ -115,6 +117,17 @@ async function verifyTestKey(body: SignInBody, env: Env): Promise<VerifiedKey> {
   if (!(await safeEqual(secret, env.TEST_LOGIN_SECRET))) throw new HttpError(401, "invalid_token", "The sign-in couldn't be checked.");
   return { provider: "test", subject: requireString(body.subject, "subject", 200), email: null, isPrivateEmail: false };
 }
+
+/** Dev only: a sign-in for our GitHub Actions runs (end-to-end tests on the iPhone Simulator). */
+async function verifyCiKey(body: SignInBody, env: Env): Promise<VerifiedKey> {
+  const repository: string = env.CI_REPOSITORY;
+  if (env.ENVIRONMENT !== "dev" || !repository) throw new HttpError(404, "not_found", "There's nothing here.");
+  const subject = requireString(body.subject, "subject", 200);
+  return verifyCiToken(requireString(body.idToken, "idToken", 8192), CI_AUDIENCE, repository, `${repository}:${subject}`);
+}
+
+/** The audience our workflow asks GitHub to mint its identity token for. */
+export const CI_AUDIENCE = "oftenenough-api-dev";
 
 const PLATFORMS = new Set(["ios", "ipados", "watchos", "android", "wearos", "web", "mac", "windows"]);
 

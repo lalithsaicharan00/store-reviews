@@ -20,8 +20,13 @@ final class AppModel {
     /// A running timer on the Lock Screen, and its one "goal reached" notification.
     let timerPresence = TimerPresence()
     let router = AppRouter()
+    /// Keeps this device in step with the account's other devices once someone signs in (Plus). Nil without a database.
+    let sync: SyncService?
     private let persistence: Persistence?
     private var loading: Task<Void, Never>?
+
+    /// Dev until the production server exists; launch with `-api <url>` to point a debug build elsewhere.
+    private static let apiBase = URL(string: "https://api-dev.oftenenough.com")!
 
     static let refreshTaskID = "com.oftenenough.app.refresh"
 
@@ -40,6 +45,12 @@ final class AppModel {
         #endif
         persistence = opened
         store = HabitStore(repository: (opened ?? Persistence.inMemory()).repository)
+        var api = Self.apiBase
+        #if DEBUG
+        if let i = arguments.firstIndex(of: "-api"), i + 1 < arguments.count, let url = URL(string: arguments[i + 1]) { api = url }
+        #endif
+        let storeName = arguments.firstIndex(of: "-dbname").flatMap { $0 + 1 < arguments.count ? arguments[$0 + 1] : nil } ?? "habits"
+        sync = opened.map { SyncService(repository: $0.repository, storeName: storeName, api: api, reset: arguments.contains("-reset-db")) }
         if opened == nil {
             store.problem = "Your habits couldn't be opened. Nothing has been changed; please restart the app."
         }
@@ -68,10 +79,20 @@ final class AppModel {
                 await store.addEveryTypeToAnytime()
             }
             #endif
-            store.onChange = { [store, scheduler, timerPresence] in
+            store.onChange = { [store, scheduler, timerPresence, sync] in
                 scheduler.scheduleReconcile(store)
                 Task { await timerPresence.sync(store) }
+                sync?.scheduleSoon()
             }
+            sync?.onRemoteChanges = { [store] in store.reloadAfterSync() }
+            #if DEBUG
+            // End-to-end tests on GitHub Actions sign in with the run's identity token (server: POST /v1/auth/ci).
+            let arguments = ProcessInfo.processInfo.arguments
+            if let i = arguments.firstIndex(of: "-ci-sign-in"), i + 2 < arguments.count {
+                try? await sync?.signIn(path: "/v1/auth/ci", body: ["idToken": arguments[i + 1], "subject": arguments[i + 2], "create": true])
+            }
+            #endif
+            sync?.appBecameActive()
             scheduler.scheduleReconcile(store)
             // A timer left running (the app was closed, or the phone restarted) gets its Live Activity back.
             await timerPresence.sync(store)

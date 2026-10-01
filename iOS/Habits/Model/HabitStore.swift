@@ -765,6 +765,12 @@ final class HabitStore {
     /// Waits for every pending change to reach the database.
     func flush() async { await writeQueue?.value }
 
+    /// Re-reads everything after sync merged in other devices' changes. It waits its turn behind local changes,
+    /// so a change being saved right now is neither lost nor shown twice.
+    func reloadAfterSync() {
+        perform { [self] in await load() }
+    }
+
     func add(_ habit: Habit) {
         perform { [self] in
             try await repository.saveHabit(habit: habit.record(position: habits.count), steps: habit.stepRecords(),

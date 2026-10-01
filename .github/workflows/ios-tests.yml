@@ -25,6 +25,7 @@ on:
 
 permissions:
   contents: write  # to push the summary to the ci-results branch
+  id-token: write  # SyncUITests sign in to the dev server with this run's GitHub identity token (server: POST /v1/auth/ci)
 
 jobs:
   test:
@@ -99,6 +100,9 @@ jobs:
           else
             for t in ${TESTS//,/ }; do ONLY="$ONLY -only-testing:HabitsUITests/$t"; done
           fi
+          # Lets SyncUITests ask GitHub for this run's identity token (TEST_RUNNER_ variables reach the test runner).
+          export TEST_RUNNER_ACTIONS_ID_TOKEN_REQUEST_URL="$ACTIONS_ID_TOKEN_REQUEST_URL"
+          export TEST_RUNNER_ACTIONS_ID_TOKEN_REQUEST_TOKEN="$ACTIONS_ID_TOKEN_REQUEST_TOKEN"
           xcodebuild test-without-building -project Habits.xcodeproj -scheme Habits \
             -destination "id=$SIM" -derivedDataPath DerivedData -resultBundlePath Results.xcresult $ONLY \
             | tee test.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true

@@ -21,6 +21,9 @@ struct HabitsApp: App {
         .onChange(of: scenePhase) {
             // Re-plan on every return to the app: a new day, a changed time zone, or a changed permission.
             if scenePhase == .active && model.store.isLoaded { model.scheduler.scheduleReconcile(model.store) }
+            // Pull on every return to the app (another device may have changed something), and stop polling when away.
+            if scenePhase == .active && model.store.isLoaded { model.sync?.appBecameActive() }
+            if scenePhase == .background { model.sync?.appWentToBackground() }
         }
     }
 

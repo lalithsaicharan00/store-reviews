@@ -9,6 +9,7 @@ import { vi } from "vitest";
 
 export const APPLE_KEYS_URL = "https://appleid.apple.com/auth/keys";
 export const GOOGLE_KEYS_URL = "https://www.googleapis.com/oauth2/v3/certs";
+export const GITHUB_KEYS_URL = "https://token.actions.githubusercontent.com/.well-known/jwks";
 export const APPLE_AUDIENCE = "com.oftenenough.app";
 export const GOOGLE_AUDIENCE = "test-google-client.apps.googleusercontent.com";
 export const TEST_LOGIN_SECRET = "test-login-secret-0123456789abcdef01234";
@@ -25,8 +26,8 @@ export async function newSigningKey(kid: string): Promise<SigningKey> {
 }
 
 /** Which keys each provider currently publishes, and how many times its key URL was fetched. */
-export const published: Record<string, SigningKey[]> = { [APPLE_KEYS_URL]: [], [GOOGLE_KEYS_URL]: [] };
-export const keyFetches: Record<string, number> = { [APPLE_KEYS_URL]: 0, [GOOGLE_KEYS_URL]: 0 };
+export const published: Record<string, SigningKey[]> = { [APPLE_KEYS_URL]: [], [GOOGLE_KEYS_URL]: [], [GITHUB_KEYS_URL]: [] };
+export const keyFetches: Record<string, number> = { [APPLE_KEYS_URL]: 0, [GOOGLE_KEYS_URL]: 0, [GITHUB_KEYS_URL]: 0 };
 
 export function mockProviderKeys() {
   const realFetch = globalThis.fetch;
@@ -46,6 +47,7 @@ export async function sha256Hex(text: string): Promise<string> {
 }
 
 export interface IdTokenOptions {
+  claims?: Record<string, unknown>;
   key: SigningKey;
   issuer: string;
   audience: string;
@@ -64,6 +66,7 @@ export async function idToken(o: IdTokenOptions): Promise<string> {
   if (o.email !== undefined) claims.email = o.email;
   if (o.emailVerified !== undefined) claims.email_verified = o.emailVerified;
   if (o.isPrivateEmail !== undefined) claims.is_private_email = o.isPrivateEmail;
+  Object.assign(claims, o.claims ?? {});
   return new SignJWT(claims)
     .setProtectedHeader({ alg: "RS256", kid: o.key.kid })
     .setIssuer(o.issuer)

@@ -15,7 +15,9 @@
     // The app's bundle ID: what Apple puts in an ID token's audience.
     "APPLE_AUDIENCES": "com.oftenenough.app",
     // Google OAuth client IDs, comma-separated. Empty until the Google Cloud project exists: Google sign-in is off.
-    "GOOGLE_AUDIENCES": ""
+    "GOOGLE_AUDIENCES": "",
+    // Dev only: GitHub Actions runs of this repository may use POST /v1/auth/ci (end-to-end tests).
+    "CI_REPOSITORY": "lalithsaicharan00/store-reviews"
   },
   "secrets": { "required": ["TOKEN_KEY", "TEST_LOGIN_SECRET"] },
   "durable_objects": { "bindings": [{ "name": "ACCOUNT", "class_name": "Account" }] },

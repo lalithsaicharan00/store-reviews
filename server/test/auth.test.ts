@@ -8,6 +8,7 @@ import {
   APPLE_AUDIENCE,
   APPLE_KEYS_URL,
   GOOGLE_AUDIENCE,
+  GITHUB_KEYS_URL,
   GOOGLE_KEYS_URL,
   TEST_LOGIN_SECRET,
   call,
@@ -31,6 +32,7 @@ beforeAll(async () => {
 beforeEach(() => {
   published[APPLE_KEYS_URL] = [apple];
   published[GOOGLE_KEYS_URL] = [google];
+  published[GITHUB_KEYS_URL] = [];
   clearProviderKeyCache();
   mockProviderKeys();
 });
@@ -181,6 +183,30 @@ describe("the test sign-in (dev only)", () => {
     const { status, json } = await call("POST", "/v1/auth/test", { secret: TEST_LOGIN_SECRET, subject: "t-ok", create: true, device: device() });
     expect(status).toBe(201);
     expect(json.accessToken).toBeTruthy();
+  });
+});
+
+describe("the CI sign-in (dev only, for GitHub Actions end-to-end tests)", () => {
+  async function ciToken(repository: string, audience = "oftenenough-api-dev") {
+    const key = await newSigningKey("github-1");
+    published[GITHUB_KEYS_URL] = [key];
+    return idToken({ key, issuer: "https://token.actions.githubusercontent.com", audience, subject: "repo:x:ref:refs/heads/main", nonce: "unused", claims: { repository } });
+  }
+
+  it("accepts our repository's runs, and two devices with one subject share an account", async () => {
+    const token = await ciToken("lalithsaicharan00/store-reviews");
+    const a = await call("POST", "/v1/auth/ci", { idToken: token, subject: "run-1", create: true, device: device() });
+    const b = await call("POST", "/v1/auth/ci", { idToken: token, subject: "run-1", device: device() });
+    expect(a.status).toBe(201);
+    expect(b.status).toBe(200);
+    expect(b.json.accountId).toBe(a.json.accountId);
+  });
+
+  it("refuses a fork's runs and tokens minted for something else", async () => {
+    const fork = await call("POST", "/v1/auth/ci", { idToken: await ciToken("someone/store-reviews"), subject: "s", create: true, device: device() });
+    expect(fork.status).toBe(401);
+    const other = await call("POST", "/v1/auth/ci", { idToken: await ciToken("lalithsaicharan00/store-reviews", "sts.amazonaws.com"), subject: "s", create: true, device: device() });
+    expect(other.status).toBe(401);
   });
 });
 
