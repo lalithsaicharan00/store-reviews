@@ -102,19 +102,14 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
             ~/.konan
-          key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
+          key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}-apple-release
+          restore-keys: |
+            gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Core storage and migration tests
         id: core
         working-directory: Core
         run: ./gradlew jvmTest
-
-      - name: Pick a simulator
-        run: |
-          ID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone')))")
-          echo "SIM=$ID" >> "$GITHUB_ENV"
-          xcrun simctl list devices available | grep "$ID"
-          xcrun simctl boot "$ID" || true
 
       - name: Build
         id: build
@@ -122,18 +117,39 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild build-for-testing -project Habits.xcodeproj -scheme Habits \
-            -destination "id=$SIM" -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
+            -sdk iphonesimulator -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedData ARCHS=arm64 CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
           grep -q "BUILD SUCCEEDED" build.log
 
-      - name: Save successful build dependencies
-        if: always() && steps.build.outcome == 'success' && steps.gradle-cache.outputs.cache-hit != 'true'
+      - name: Save available core build dependencies
+        if: always() && steps.core.outcome == 'success' && steps.gradle-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
             ~/.konan
-          key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
+          key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}-apple-release
+
+      - name: Pick a simulator
+        if: steps.build.outcome == 'success'
+        timeout-minutes: 8
+        run: |
+          set -o pipefail
+          {
+            sudo xcodebuild -runFirstLaunch
+            xcodebuild -version
+            xcrun simctl list runtimes
+            # A Simulator.app launch can boot its remembered device as well as our selected one.
+            # Use one clean headless device to avoid parallel migration and stale image data.
+            xcrun simctl shutdown all || true
+            ID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone')))")
+            echo "SIM=$ID" >> "$GITHUB_ENV"
+            xcrun simctl erase "$ID"
+            xcrun simctl boot "$ID" || true
+            xcrun simctl bootstatus "$ID" -b
+            xcrun simctl list devices booted
+            xcodebuild -showdestinations -sdk iphonesimulator -project iOS/Habits.xcodeproj -scheme Habits 2>&1 | tee iOS/simulator-destinations.log
+          } 2>&1 | tee iOS/simulator-startup.log
 
       - name: UI tests
         id: tests
@@ -148,8 +164,8 @@ jobs:
             for t in ${TESTS//,/ }; do ONLY="$ONLY -only-testing:HabitsUITests/$t"; done
           fi
           xcodebuild test-without-building -project Habits.xcodeproj -scheme Habits \
-            -destination "id=$SIM" -derivedDataPath DerivedData -resultBundlePath Results.xcresult $ONLY \
-            | tee test.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
+            -sdk iphonesimulator -destination "id=$SIM" -derivedDataPath DerivedData -resultBundlePath Results.xcresult $ONLY \
+            2>&1 | tee test.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
           grep -q "TEST EXECUTE SUCCEEDED" test.log
 
       - name: Speed tests
