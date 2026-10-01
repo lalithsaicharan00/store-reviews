@@ -48,11 +48,11 @@ What was skipped or left empty while setting things up, so nothing is forgotten.
 | **Home page** `https://oftenenough.com` | Website; Google Branding | Needed for Google Branding and the store listings |
 | **Account deletion page** (delete without the app) | Website | Google Play requires it ([09 §7](<09. Privacy and Account Deletion.md>)) |
 | **Authorized domain** `oftenenough.com` | Google consent screen → Branding | Google may ask us to prove we own the domain (Search Console) when publishing |
-| **Google consent screen: publish to production** | Google Auth Platform → Audience | In **Testing** now: only listed test users (add your Gmail), and sign-ins expire after 7 days. Publish once the privacy page is live |
+| **Google consent screen: publish to production** | Google Auth Platform → Audience | In **Testing** now: only listed test users (the owner's Gmail added 1 Oct), and sign-ins expire after 7 days. Publish once the privacy page is live |
 | **App logo** on the consent screen | Google Branding | Left empty: adding one starts Google's brand review. Add when the logo is final |
 | **User support email** on the consent screen | Google Branding | Set to the owner's Gmail for now (Google allows only your own account or a Google Group you manage). Change to a support address (a Google Group or the shared mailbox, [08](<08. Release Safety and Operations.md>)) later |
-| **Scopes** `openid`, `userinfo.email`, `userinfo.profile`, `drive.appdata` | Google Auth Platform → Data Access | All non-sensitive (basic checks only). Confirm they're added |
-| **Google Drive API** turned on | APIs & Services → Library | Needed for the Drive backup |
+| **Scopes** `openid`, `userinfo.email`, `userinfo.profile`, `drive.appdata` | Google Auth Platform → Data Access | **Done 1 Oct.** All non-sensitive (basic checks only) |
+| **Google Drive API** turned on | APIs & Services → Library | **Done 1 Oct** |
 | **iOS OAuth client**: App Store ID and Team ID | Google Cloud → Clients | Left empty; fill in when the Apple Developer account and App Store listing exist |
 | **Android OAuth client** (package `com.oftenenough.app` + signing fingerprint) | Google Cloud → Clients | Later, when the Android app exists |
 | **"Used by an AI agent" option** on the OAuth client | Google Cloud → Clients | Left unchecked: our sign-in is a person signing in themselves |
