@@ -27,10 +27,12 @@ class SyncWriter internal constructor(private val dao: HabitDao, private val now
     private var sending = false
 
     internal suspend fun begin() {
-        val node = dao.state(NODE) ?: newNode().also { dao.setState(LocalStateRecord(NODE, it)) }
-        clock = HlcClock(node, dao.state(CLOCK)?.let(Hlc::parse))
-        sending = dao.state(ACCOUNT) != null
-        if (dao.state(STAMPED) == null) stampExistingRows()
+        // One query for the four, not four: every write on the device starts here (speed run, 1 Oct).
+        val state = dao.states(listOf(NODE, CLOCK, ACCOUNT, STAMPED)).associate { it.key to it.value }
+        val node = state[NODE] ?: newNode().also { dao.setState(LocalStateRecord(NODE, it)) }
+        clock = HlcClock(node, state[CLOCK]?.let(Hlc::parse))
+        sending = state[ACCOUNT] != null
+        if (state[STAMPED] == null) stampExistingRows()
     }
 
     internal suspend fun end() {

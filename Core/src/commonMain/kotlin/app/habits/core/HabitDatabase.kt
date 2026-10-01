@@ -99,6 +99,7 @@ interface HabitDao {
     @Upsert suspend fun upsertSyncMeta(meta: SyncMetaRecord)
 
     @Query("SELECT value FROM local_state WHERE `key` = :key") suspend fun state(key: String): String?
+    @Query("SELECT * FROM local_state WHERE `key` IN (:keys)") suspend fun states(keys: List<String>): List<LocalStateRecord>
     @Upsert suspend fun setState(state: LocalStateRecord)
 
     @Insert suspend fun insertOutbox(op: OutboxRecord)
