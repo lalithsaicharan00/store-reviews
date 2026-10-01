@@ -57,6 +57,14 @@ final class GroupsUITests: XCTestCase {
         element.tap()
     }
 
+    /// The group form sits in a sheet over Today: scroll the form itself, not Today's list, until the row can be tapped.
+    private func tapInForm(_ element: XCUIElement) {
+        let form = app.collectionViews["group-form"]
+        XCTAssertTrue(form.waitForExistence(timeout: 3))
+        for _ in 0..<10 where !(element.exists && element.isHittable) { form.swipeUp(velocity: .slow) }
+        element.tap()
+    }
+
     /// Clears a text field and types, with the cursor put at the end first.
     private func retype(_ field: XCUIElement, _ text: String) {
         XCTAssertTrue(field.waitForExistence(timeout: 3))
@@ -71,6 +79,7 @@ final class GroupsUITests: XCTestCase {
         launch()
         XCTAssertTrue(text("Water").waitForExistence(timeout: 5))
         XCTAssertTrue(text("Read").exists)
+        XCTAssertTrue(text("Smoking").exists)
         XCTAssertFalse(app.buttons["group-filter-chip"].exists, "No filter to begin with")
         openFilter()
         XCTAssertTrue(text("Group habits by area, like Health or Work, then filter by them here.").exists)
@@ -82,8 +91,9 @@ final class GroupsUITests: XCTestCase {
         XCTAssertTrue(field.waitForExistence(timeout: 3))
         field.tap()
         field.typeText("Health\n")
-        app.revealAndTap(app.buttons["group-habit-Water"])
-        app.revealAndTap(app.buttons["group-habit-Walk"])
+        // Read isn't done yet today, so Anytime stays open with it (a card with everything done folds).
+        tapInForm(app.buttons["group-habit-Read"])
+        tapInForm(app.buttons["group-habit-Walk"])
         shot("g02-new-group")
         app.navigationBars["New Group"].buttons["group-save"].tap()
 
@@ -99,15 +109,18 @@ final class GroupsUITests: XCTestCase {
         let active = app.buttons["group-filter-chip"]
         XCTAssertTrue(active.waitForExistence(timeout: 3), "The active filter is obvious")
         XCTAssertEqual(active.label, "Showing Health only")
-        XCTAssertTrue(text("Water").exists)
-        XCTAssertFalse(text("Read").exists, "Read has no group")
+        XCTAssertTrue(text("Read").exists)
+        XCTAssertFalse(text("Water").exists, "Water has no group")
         XCTAssertFalse(text("Smoking").exists, "Quitting shows only the group")
         shot("g04-today-filtered")
 
         active.tap()
-        XCTAssertTrue(text("Read").waitForExistence(timeout: 3), "✕ shows everything again")
-        XCTAssertTrue(text("Smoking").exists)
-        XCTAssertFalse(active.exists)
+        XCTAssertTrue(active.waitForNonExistence(timeout: 3), "✕ clears the filter")
+        XCTAssertTrue(text("Smoking").waitForExistence(timeout: 3), "Quitting is back")
+        // Water is done, so it sits at the end of Anytime, below the fold on a small screen.
+        app.reveal(text("Water"))
+        shot("g04b-today-all")
+        XCTAssertTrue(text("Water").exists, "✕ shows everything again")
     }
 
     /// Chip numbers and the empty group: Mind filters Today; the empty Reading chip is last and opens its editor, where
@@ -126,8 +139,7 @@ final class GroupsUITests: XCTestCase {
 
         tapChip("Reading")
         XCTAssertTrue(app.navigationBars["Edit Group"].waitForExistence(timeout: 3), "An empty group opens to add habits")
-        let read = app.buttons["group-habit-Read"]
-        app.revealAndTap(read)
+        tapInForm(app.buttons["group-habit-Read"])
         XCTAssertTrue(text("Moves from Mind").exists)
         shot("g06-move-read")
         app.navigationBars["Edit Group"].buttons["group-save"].tap()
@@ -166,7 +178,7 @@ final class GroupsUITests: XCTestCase {
         // Home, the filter, loses all its habits.
         app.descendants(matching: .any)["groups-row-Home"].firstMatch.tap()
         XCTAssertTrue(app.navigationBars["Edit Group"].waitForExistence(timeout: 3))
-        for name in ["Call family", "Bed by 23:00", "Smoking"] { app.revealAndTap(app.buttons["group-habit-\(name)"]) }
+        for name in ["Smoking", "Call family", "Bed by 23:00"] { tapInForm(app.buttons["group-habit-\(name)"]) }
         shot("g07-home-emptied")
         app.navigationBars["Edit Group"].buttons["group-save"].tap()
         XCTAssertTrue(app.navigationBars["Groups"].waitForExistence(timeout: 3))
