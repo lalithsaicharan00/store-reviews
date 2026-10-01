@@ -32,3 +32,7 @@ Other sessions are working at the same time: Progress on `progress-page-research
 - **Tests:** `TodayUITests` `testDoneRowWaitsForThePause`, `testDoneRowStaysInPlace`, `testFoldAndOpen`, `testDayWeekAndAppearance`, `testSettingsChecks` (`-settingscheck`: daylight-saving nights in New York, week starts, saving); `testMenu` now expects the Day and Week row. Speed: `PerformanceUITests` `testTickRun`, `testFoldToday`.
 
 ## Test results
+
+**Run 78** (`4192beb`, [run](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36796303885)): **build passed.** New checks passed: `testSettingsChecks` (both daylight-saving nights, week starts, saving), `testDayWeekAndAppearance`, `testDoneRowStaysInPlace`, `testFoldAndOpen`, and `testMenu` with the new Day and Week row; `testTodayScreen`, `testBackToToday`, both TimerUITests and all 10 ProgressUITests passed too. **`testDoneRowWaitsForThePause` failed** on timing: GitHub's simulator took more than 1.5 s between the two taps, so the rows had already settled when the test looked. Fixed in the test (a debug-only `-today.settlePause 8`), not by changing the app's 1.5 s. Two GroupsUITests failed (`testFirstGroupFromFilter`, `testEditRenameDeleteAndEmptyDay`) exactly as on `progress-page-research` `54ad3f4`, the commit this branch started from; the Progress session is fixing them there.
+
+Speed baseline to compare with (`progress-page-research` `aa4e230`, 30 Sep): Today taps 19.2 % main thread busy, 2.4 % redraw.
