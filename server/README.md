@@ -11,7 +11,7 @@ Design: [Architecture/06. Server on Cloudflare.md](<../Architecture/06. Server o
 | | |
 |---|---|
 | Dev | `https://api-dev.oftenenough.com` (Worker `often-enough-api-dev`, D1 `often-enough-directory-dev`, R2 `often-enough-backups-dev` and `often-enough-backups-dev-eu`) |
-| Production | not created yet; it gets its own `env.production` block, Worker, D1 and secrets |
+| Production | `https://api.oftenenough.com` (Worker `often-enough-api`, D1 `often-enough-directory`, R2 `often-enough-backups` and `often-enough-backups-eu`): `env.production` in `wrangler.jsonc`. No test or CI sign-in, Apple's root only, purchases from Production and Sandbox. Release builds of the app use it; debug builds use dev |
 
 ## Run the tests
 
@@ -34,7 +34,19 @@ npx wrangler deploy
 TEST_LOGIN_SECRET=... node scripts/live-smoke.mjs     # live check
 ```
 
-The backup buckets were made once (1 Oct 2026); a new environment needs the same, with its own names:
+## Deploy production
+
+```sh
+npm run migrate:production                     # only when migrations/ changed
+npm run deploy:production
+node scripts/live-production.mjs               # live check, no secret needed
+```
+
+Its only secret is its own `TOKEN_KEY` (`npx wrangler secret put TOKEN_KEY --env production`; random, kept nowhere
+else: losing it only makes every device refresh once). Test production's settings locally with `test/production.test.ts`.
+Apple's App Store Server Notifications URL, once the Apple account exists: `https://api.oftenenough.com/v1/hooks/apple`.
+
+The backup buckets were made once (1 Oct 2026, dev and production); a new environment needs the same, with its own names:
 
 ```sh
 npx wrangler r2 bucket create often-enough-backups-dev

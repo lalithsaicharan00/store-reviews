@@ -7,7 +7,9 @@
     "typecheck": "wrangler types --check && tsc --noEmit",
     "types": "wrangler types",
     "deploy:dev": "wrangler deploy",
-    "migrate:dev": "wrangler d1 migrations apply DIRECTORY --remote"
+    "migrate:dev": "wrangler d1 migrations apply DIRECTORY --remote",
+    "deploy:production": "wrangler deploy --env production",
+    "migrate:production": "wrangler d1 migrations apply DIRECTORY --remote --env production"
   },
   "dependencies": {
     "jose": "^6.2.12"

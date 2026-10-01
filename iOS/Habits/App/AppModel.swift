@@ -27,8 +27,13 @@ final class AppModel {
     private let persistence: Persistence?
     private var loading: Task<Void, Never>?
 
-    /// Dev until the production server exists; launch with `-api <url>` to point a debug build elsewhere.
+    /// Debug builds (Xcode, GitHub's UI tests) use dev; release builds (TestFlight, the App Store) use production, which
+    /// has no test sign-ins. Launch a debug build with `-api <url>` to point it elsewhere.
+    #if DEBUG
     private static let apiBase = URL(string: "https://api-dev.oftenenough.com")!
+    #else
+    private static let apiBase = URL(string: "https://api.oftenenough.com")!
+    #endif
 
     static let refreshTaskID = "com.oftenenough.app.refresh"
 

@@ -5,7 +5,7 @@ moves, so the next session (person or agent) can pick up from it alone.*
 
 ## ▶ Next up, in order
 
-0. ✅ **Backup, sync and accounts (decided and built 1 Oct 2026; what's left is listed under step 3).** Next: item 1.2. Design: [Backup, Sync and Accounts — One Seamless
+0. ✅ **Backup, sync and accounts (decided and built 1 Oct 2026; what's left is listed under step 3).** Next: item 1.3. Design: [Backup, Sync and Accounts — One Seamless
    Experience](<../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>);
    server checklist: [Server Cost and Capacity §5](<Server Cost and Capacity — Free Safety Copy vs Plus Sync.md>);
    decisions, Google client IDs and setup left for later: [Backlog](<Backlog.md>). In order:
@@ -40,7 +40,16 @@ moves, so the next session (person or agent) can pick up from it alone.*
 1. **Server readiness (can start now).** Do these one at a time, each with tests and a deploy to dev:
    1. ✅ Rate limiting (1 Oct): 60/min per account on sync and backup reads, 30/min per IP on `/v1/auth/*`, 2/min per
       device on backup uploads; `429` with `Retry-After`. Still to do: the WAF rule in front of the Worker (§4).
-   2. Production environment: `env.production` in `server/wrangler.jsonc`, `api.oftenenough.com`, its own D1 and secrets.
+   2. ✅ Production environment (1 Oct): `env.production` in `server/wrangler.jsonc`, live at `https://api.oftenenough.com`
+      (Worker `often-enough-api`, D1 `often-enough-directory`, R2 `often-enough-backups` + `-eu` with the 365-day
+      rule, its own `TOKEN_KEY` and rate-limit counters). No test or CI sign-in, no extra roots, purchases from
+      Production and Sandbox. Release builds of the app point at it (`AppModel.apiBase`); debug builds stay on dev.
+      Checked by `test/production.test.ts` (production's settings on the real Worker) and `scripts/live-production.mjs`
+      (8 live checks). **Not done:** a separate Cloudflare account for production (06 §8 asks for one; it needs you
+      to create the account, then the same steps there), gradual deploys (5% → 25% → 100%: use
+      `wrangler versions upload` + `versions deploy` once there are real users), and moving to Workers Paid ($5/month,
+      needed before about 1,900 Plus users, Server Cost and Capacity §1). Real Apple/Google sign-in on production
+      is untested until a phone tries it.
    3. Nightly backups to R2 + a restore script, then one practice restore.
    4. Monitoring: uptime check on `/v1/status`, alerts, the daily report email (Resend).
 2. **Merge, as soon as `integration` is in `main`:** merge `main` into this branch, follow §2's checklist, run every
@@ -142,5 +151,6 @@ for Apple's private relay), and `/v1/hooks/apple` tested with Apple's sandbox.
 | Phone core | `cd Core && ./gradlew jvmTest` | Java 21 |
 | Two phones through dev | `cd Core && TEST_LOGIN_SECRET=… ./gradlew jvmTest --tests '*LiveSyncTest*'` | the dev test secret |
 | Live server checks | `cd server && TEST_LOGIN_SECRET=… node scripts/live-smoke.mjs` | the dev test secret |
+| Live production checks | `cd server && node scripts/live-production.mjs` | — |
 | iPhone (GitHub) | push with `[ios-ci]`, or run the "iOS build and tests" workflow with tests `BackupUITests,SyncUITests,PersistenceUITests,TodayUITests` | — |
 | After changing `Core/sync` | `server/scripts/build-core.sh`, then the server tests | Java 21 |

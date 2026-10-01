@@ -1,6 +1,6 @@
 // The Often Enough API (Architecture/06. Server on Cloudflare.md).
-// Top level = dev (api-dev.oftenenough.com). Production is added as `env.production` when it goes live.
-// Secrets (never in this file): TOKEN_KEY (signs access tokens), TEST_LOGIN_SECRET (dev only: the test sign-in).
+// Top level = dev (api-dev.oftenenough.com). `env.production` = real users (api.oftenenough.com): `--env production`.
+// Secrets (never in this file): TOKEN_KEY (signs access tokens; each environment its own), TEST_LOGIN_SECRET (dev only).
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "often-enough-api-dev",
@@ -52,5 +52,45 @@
       "database_id": "c1d8f6e8-0169-4918-b99e-40c4bbaf9a47",
       "migrations_dir": "migrations"
     }
-  ]
+  ],
+  // Production: real users only. Nothing that exists for testing is here: no test or CI sign-in (TEST_LOGIN_SECRET,
+  // CI_REPOSITORY), no extra trusted roots, no Xcode StoreKit purchases. Its own directory, buckets, token key and
+  // rate-limit counters. Bindings and vars are not inherited from the top level, so every one is repeated here.
+  // Deploy: `npm run deploy:production` (server/README.md, "Production").
+  "env": {
+    "production": {
+      "name": "often-enough-api",
+      "routes": [{ "pattern": "api.oftenenough.com", "custom_domain": true }],
+      "vars": {
+        "ENVIRONMENT": "production",
+        "APPLE_AUDIENCES": "com.oftenenough.app",
+        "GOOGLE_AUDIENCES": "367584981284-c8q0v1eqmtbng2nu75k3abjuih4s5b8k.apps.googleusercontent.com,367584981284-i2afctg5t1d702fch3300d4vacp3teod.apps.googleusercontent.com",
+        "APPLE_BUNDLE_ID": "com.oftenenough.app",
+        // App Review buys with sandbox accounts, so the live server must take Sandbox too (Apple's guidance).
+        "APPLE_ENVIRONMENTS": "Production,Sandbox",
+        "APPLE_EXTRA_ROOTS": "",
+        "CI_REPOSITORY": ""
+      },
+      "secrets": { "required": ["TOKEN_KEY"] },
+      "durable_objects": { "bindings": [{ "name": "ACCOUNT", "class_name": "Account" }] },
+      "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Account"] }],
+      "r2_buckets": [
+        { "binding": "BACKUPS", "bucket_name": "often-enough-backups" },
+        { "binding": "BACKUPS_EU", "bucket_name": "often-enough-backups-eu", "jurisdiction": "eu" }
+      ],
+      "ratelimits": [
+        { "name": "SYNC_LIMIT", "namespace_id": "2001", "simple": { "limit": 60, "period": 60 } },
+        { "name": "AUTH_LIMIT", "namespace_id": "2002", "simple": { "limit": 30, "period": 60 } },
+        { "name": "BACKUP_LIMIT", "namespace_id": "2003", "simple": { "limit": 2, "period": 60 } }
+      ],
+      "d1_databases": [
+        {
+          "binding": "DIRECTORY",
+          "database_name": "often-enough-directory",
+          "database_id": "4db69eb1-103a-4831-acf4-7a7e3a3139b6",
+          "migrations_dir": "migrations"
+        }
+      ]
+    }
+  }
 }
