@@ -22,6 +22,8 @@ struct TodayView: View {
 
     @State private var showCalendar = false
     @State private var showNewHabit = false
+    /// Start From an Idea, on an empty Today.
+    @State private var showIdeas = false
     @State private var showFilter = false
     /// The group Today shows ("" is All), remembered when the app reopens (Navigation, Round 3; groups spec §2).
     @AppStorage(GroupFilter.today) private var groupRaw = ""
@@ -86,6 +88,9 @@ struct TodayView: View {
 
             .sheet(isPresented: $showNewHabit, onDismiss: revealAdded) {
                 NewItemView(group: filterGroup) { added = $0 }
+            }
+            .sheet(isPresented: $showIdeas, onDismiss: revealAdded) {
+                IdeasSheet { added = $0 }
             }
         }
         #if DEBUG && targetEnvironment(simulator)
@@ -309,17 +314,23 @@ struct TodayView: View {
         if !store.isLoaded {
             Color(.systemGroupedBackground).ignoresSafeArea()
         } else if store.habits.isEmpty {
+            // Never a dead end, never a push (onboarding report §4): one clear action, an idea to start from, the
+            // way back for someone with a backup, and the help.
             ContentUnavailableView {
                 Label("No habits yet", systemImage: "checklist")
             } description: {
-                Text("Add the first thing you want to do every day.")
+                Text("Add something you'd like to do often enough, or start from an idea.")
             } actions: {
                 Button { showNewHabit = true } label: {
                     Text("New Habit").fontWeight(.semibold).foregroundStyle(Color.onInk)
                 }
                 .buttonStyle(.borderedProminent).tint(.ink)
+                Button("Start From an Idea") { showIdeas = true }
+                    .accessibilityIdentifier("empty-ideas")
                 Button("Restore from a Backup File") { menu.path.append(MenuPlace.backup) }
                     .accessibilityIdentifier("empty-restore-backup")
+                Button("How It Works") { menu.path.append(MenuPlace.help) }
+                    .accessibilityIdentifier("empty-help")
             }
             .background(Color(.systemGroupedBackground))
         } else {

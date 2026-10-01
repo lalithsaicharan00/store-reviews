@@ -5,6 +5,8 @@ struct HabitsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let model = AppModel.shared
     @Environment(\.scenePhase) private var scenePhase
+    /// The welcome, on a fresh install only (`Onboarding.shouldShow`).
+    @State private var showOnboarding = false
 
     init() {
         Preferences.register()
@@ -64,11 +66,29 @@ struct HabitsApp: App {
             .onChange(of: model.store.problem) {
                 if model.store.problem == nil && model.store.isStorageReady { model.scheduler.scheduleReconcile(model.store) }
             }
+            .fullScreenCover(isPresented: $showOnboarding) {
+                OnboardingView { restore in
+                    showOnboarding = false
+                    // Coming back from another phone: straight to the restore, on Today's stack so Back is Today.
+                    if restore { model.menu.path.append(MenuPlace.backup) }
+                }
+                .environment(model.store)
+                .environment(model.scheduler)
+                .environment(model.menu)
+                .environment(model.router)
+                .tint(.ink)
+            }
             .task {
                 // The theme is set on the window itself, so it reaches sheets and alerts too (≡ → Appearance).
                 Theme.apply(UserDefaults.standard.string(forKey: Preferences.theme) ?? Theme.automatic.rawValue)
                 await model.ensureLoaded()
                 guard model.store.isLoaded, model.store.isStorageReady else { return }
+                if Onboarding.shouldShow(model.store) {
+                    // Already there when the app opens, not sliding up over an empty Today.
+                    var instant = Transaction()
+                    instant.disablesAnimations = true
+                    withTransaction(instant) { showOnboarding = true }
+                }
                 #if DEBUG
                 PerfDriver.startIfAsked(store: model.store)
                 #endif

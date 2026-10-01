@@ -201,7 +201,8 @@ struct MenuPage: View {
         case .backup: BackupExportView()
         case .reminders: RemindersView()
         case .privacy: PrivacyView()
-        case .help, .about: BlankMenuPage(title: place.title)
+        case .help: HelpView()
+        case .about: AboutView()
         default: ComingSoonView(place: place)
         }
     }
