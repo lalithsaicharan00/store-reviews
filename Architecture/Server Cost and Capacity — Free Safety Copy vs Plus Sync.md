@@ -138,9 +138,9 @@ Plus phone ── POST /v1/sync ───────────────►
 *That branch is another agent's; nothing there was changed. Its status note lists "Backup and restore for free users: another agent is planning it; coordinate before touching restore". These are the coordination points.*
 
 - [ ] Move to **Workers Paid** before real users (the Free plan's 100,000 rows written a day is about 1,900 Plus users).
-- [ ] **`plus` claim in the access token,** and `403 plus_required` on `/v1/sync` before the Durable Object call (§4.2).
-- [ ] **`last_seen` at most once an hour** (§4.3).
-- [ ] **Safety-copy routes** (free lane, no account): `PUT /v1/copy/{id}/{weekday}`, `GET /v1/copy/{id}` (metadata for the 7 copies), `GET /v1/copy/{id}/{weekday}`, `DELETE /v1/copy/{id}`. The ID is a hash of a secret derived from the phone's key. An R2 bucket `safety-copies` (plus `eu`) with a 365-day lifecycle rule. Attestation on first create. Rate limits per copy ID and per IP.
+- [x] **`plus` claim in the access token,** (done 1 Oct 2026) and `403 plus_required` on `/v1/sync` before the Durable Object call (§4.2).
+- [x] **`last_seen` at most once an hour** (§4.3). (done 1 Oct 2026)
+- [x] **Done differently (1 Oct 2026): backups of free accounts, not anonymous copies.** `PUT/GET/DELETE /v1/backup` on a signed-in account, 7 weekday copies per device, shrink guard, EU bucket, 365-day lifecycle (server/README.md). The anonymous design below was dropped. ~~**Safety-copy routes** (free lane, no account): `PUT /v1/copy/{id}/{weekday}`, `GET /v1/copy/{id}` (metadata for the 7 copies), `GET /v1/copy/{id}/{weekday}`, `DELETE /v1/copy/{id}`. The ID is a hash of a secret derived from the phone's key. An R2 bucket `safety-copies` (plus `eu`) with a 365-day lifecycle rule. Attestation on first create. Rate limits per copy ID and per IP.~~
 - [ ] Add the free-lane numbers to the daily report and cost alerts (§4.5).
 
 ---

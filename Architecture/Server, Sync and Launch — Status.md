@@ -5,7 +5,7 @@ moves, so the next session (person or agent) can pick up from it alone.*
 
 ## ▶ Next up, in order
 
-0. **Backup, sync and accounts (decided 1 Oct 2026; start here).** Design: [Backup, Sync and Accounts — One Seamless
+0. ✅ **Backup, sync and accounts (decided and built 1 Oct 2026; what's left is listed under step 3).** Next: item 1.2. Design: [Backup, Sync and Accounts — One Seamless
    Experience](<../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>);
    server checklist: [Server Cost and Capacity §5](<Server Cost and Capacity — Free Safety Copy vs Plus Sync.md>);
    decisions, Google client IDs and setup left for later: [Backlog](<Backlog.md>). In order:
@@ -21,10 +21,20 @@ moves, so the next session (person or agent) can pick up from it alone.*
       anything changes) and restore: `checkBackup` (preview of both choices), `restore` Replace or Merge in one
       transaction through `SyncWriter`, returning the undo file. Replace brings back rows deleted here under IDs
       derived from the old ones, so it's repeatable. `BackupTest` (14 tests, incl. a format-1 sample read on every run).
-      Not yet compiled for iOS here (Linux): the step 3 `[ios-ci]` run is the first iOS build.
-   3. iPhone: Settings → Backup & Sync, problem cards (§4.4 of the design), "I've used this before", Move to another
-      device / Import, Google sign-in (Apple sign-in and iCloud backup are written but switch on only when the Apple
-      Developer account arrives). Keep `[ios-ci]` runs few.
+      Builds for iOS on GitHub (run 36881841127).
+   3. ✅ **iPhone (done 1 Oct; `iOS/Habits/Backup/`):** Settings → Backup & Sync (the avatar on Today), sign-in sheet
+      (Google through the system web sheet with PKCE, no SDK; an unknown sign-in asks before creating an account),
+      a free account's daily backup to the server (confirmed by checksum), only Plus syncs (`SyncService` reads `plus`
+      from every token), Restore (the account's copies of any device, or a file, also opened from AirDrop/Files) with
+      the preview, Replace/Merge and Undo Last Restore (30 days), Move to Another Device / Export, "I've Used This
+      Before" on the empty first screen, and Today's problem card (§4.4; signed out, server unreachable 2 days, a copy
+      that failed its check). `BackupUITests` (3, one end-to-end with a free account on dev); Sync, Persistence and
+      Today UI tests still pass. **Written but off** (`BackupFeatures`) until the Apple Developer account: Sign in with
+      Apple and the copy in the person's own iCloud (with its problem cards).
+      **Left for later:** finding the iCloud copy from "I've used this before"; the one notification when the nightly
+      backup finds a problem while the app is closed; "Turn on sync" / "One last step" in the Plus purchase flow
+      (item 5); Google's sign-in button branding check before publishing the consent screen. Real Google sign-in is
+      untested on a device: the consent screen is in Testing (owner's Gmail only), so try it on the iPhone once.
    Rate limiting (1.1 below) was done with step 1.
 
 1. **Server readiness (can start now).** Do these one at a time, each with tests and a deploy to dev:
@@ -88,7 +98,12 @@ core most) → this branch → `main` → onboarding and widgets merge `main`.
       `HabitRepository.kt` (`@Throws` is already on both sides), `MigrationTest.kt`.
 - [ ] After the rename reaches `main`: update `iOS/Tools/perf/measure_perf_driver.sh` (launches the old ID) and the
       checklists that name it.
-- [ ] Run everything in §5, including `SyncUITests`, before merging into `main`.
+- [ ] **Backup & Sync meets the side menu:** `integration` has a side menu whose Backup page is `BackupExportView`
+      (a SQLite `.db` backup file, merge-only restore). Point the menu's Backup page at `BackupSyncView`, keep
+      "Export a Spreadsheet (CSV)" from `BackupExportView` there, and retire its `.db` backup in favour of the checked
+      file (keep reading `.db` files for import: people may have saved one). Remove the avatar → sheet added here.
+      `HabitDao.backupHabits()`…`restoreSnapshot()` and `loadForRestore()` are the same lines on both sides.
+- [ ] Run everything in §5, including `SyncUITests` and `BackupUITests`, before merging into `main`.
 
 ## 3. Everything still to do
 
@@ -97,9 +112,9 @@ core most) → this branch → `main` → onboarding and widgets merge `main`.
 | 1 | Server readiness (§4) | **next**; possible now |
 | 2 | Merging (§2) | waits for `integration` → `main` |
 | 3 | Website on `oftenenough.com`: privacy policy, support page, account deletion without the app (Google requires it) | possible now |
-| 4 | Backup, sync and accounts for free and Plus users | **designed 1 Oct 2026**; next up, item 0 above |
+| 4 | Backup, sync and accounts for free and Plus users | **built 1 Oct 2026** (item 0 above); iCloud copy and Apple sign-in wait for the developer account |
 | 5 | Purchases in the app: StoreKit 2 buy/restore/launch check, the 5-habit limit from real ownership, sending purchases to `/v1/purchases/verify` | needs the **Plus screen design**; then testable with the `.storekit` file |
-| 6 | Sign-in in the app: Apple button, Google sign-in, "One last step" after purchase, Settings → Account (sync status, devices, delete) | Google: **an OAuth client ID** (free, possible now). Apple: **the developer account** (in verification) |
+| 6 | Sign-in in the app: ~~Google sign-in~~ (built 1 Oct), Apple button (written, off), "One last step" after purchase, Settings → Account (devices, delete account) | Apple: **the developer account**; "One last step": the Plus screen design |
 | 7 | With the Apple account: register `com.oftenenough.app` (+ `.liveactivity`, App Group `group.com.oftenenough.app`), the three in-app purchases, sandbox purchases, the App Store notification URL (`/v1/hooks/apple`), Sign in with Apple notifications and token revocation | the developer account |
 | 8 | Later: Google Play billing, Android app, Apple Watch | — |
 
@@ -127,5 +142,5 @@ for Apple's private relay), and `/v1/hooks/apple` tested with Apple's sandbox.
 | Phone core | `cd Core && ./gradlew jvmTest` | Java 21 |
 | Two phones through dev | `cd Core && TEST_LOGIN_SECRET=… ./gradlew jvmTest --tests '*LiveSyncTest*'` | the dev test secret |
 | Live server checks | `cd server && TEST_LOGIN_SECRET=… node scripts/live-smoke.mjs` | the dev test secret |
-| iPhone (GitHub) | push with `[ios-ci]`, or run the "iOS build and tests" workflow with tests `SyncUITests,PersistenceUITests,TodayUITests` | — |
+| iPhone (GitHub) | push with `[ios-ci]`, or run the "iOS build and tests" workflow with tests `BackupUITests,SyncUITests,PersistenceUITests,TodayUITests` | — |
 | After changing `Core/sync` | `server/scripts/build-core.sh`, then the server tests | Java 21 |
