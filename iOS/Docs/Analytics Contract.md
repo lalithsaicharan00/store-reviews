@@ -26,7 +26,7 @@ All events and envelopes share one stable random installation sampling bucket an
 
 ## Release verification
 
-`Habits-Info.plist` selects EU Default project 290602; `AnalyticsProductionEnabled=false` keeps sending gated pending actual provider acceptance/deduplication verification. Debug, UI-test and performance fixtures never send to this sole production project. Share Usage may exercise local collection while delivery is gated; production rollout requires the gate plus explicit consent. Dashboards are prepared and their SQL validated against the empty project, which is not proof of delivery.
+`Habits-Info.plist` selects EU Default project 290602; `AnalyticsProductionEnabled=false` keeps sending gated pending actual provider acceptance/deduplication verification. Debug, UI-test and performance fixtures never send to this sole production project. `[ios-analytics]` performance runs simulate consent in a separate backup-excluded fixture directory, exercising real queues, file persistence and native touch overhead while DEBUG delivery stays disabled. Share Usage may exercise local collection while delivery is gated; production rollout requires the gate plus explicit consent. Dashboards are prepared and their SQL validated against the empty project, which is not proof of delivery.
 
 The environment receives HTTP CONNECT 403 for `eu.i.posthog.com`; the connector has no ingestion tool. Complete real consented release-device upload and provider row inspection in an authorized network, verify retry UUID behavior and profile/geoip suppression, then set the release gate true in a reviewed commit. Do not substitute a success claim based on a serialized payload or an empty dashboard.
 

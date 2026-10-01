@@ -26,12 +26,14 @@ REC="$DATA/tmp/perf-stalls.txt"
   echo "|---|---|---|---|---|---|"
 } > "$SUMMARY"
 
+ANALYTICS_ARGS=()
+if [ "${PERF_ANALYTICS:-0}" = "1" ]; then ANALYTICS_ARGS=(-perf-analytics); fi
 FAIL=0
 for S in $SCENARIOS; do
   xcrun simctl terminate "$SIM" "$BUNDLE" > /dev/null 2>&1
   sleep 1
   rm -f "$REC"
-  LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-history -perf-meter -perf-drive "$S" 2>&1)
+  LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-history -perf-meter -perf-drive "$S" "${ANALYTICS_ARGS[@]}" 2>&1)
   PID=$(echo "$LAUNCH" | sed -n 's/.*: *\([0-9][0-9]*\)$/\1/p' | tail -1)
   # Measure without a profiler: sample's attach can suspend the app for >8 seconds on a busy
   # hosted Mac. Profile a separate launch below, so that suspension cannot enter these windows.
@@ -47,7 +49,7 @@ for S in $SCENARIOS; do
   case " ${PERF_PROFILE_SCENARIOS:-scroll-today new-habit day-sheet log-sheet} " in
     *" $S "*)
       rm -f "$REC"
-      LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-history -perf-meter -perf-drive "$S" 2>&1)
+      LAUNCH=$(xcrun simctl launch "$SIM" "$BUNDLE" -uitest -perf-history -perf-meter -perf-drive "$S" "${ANALYTICS_ARGS[@]}" 2>&1)
       PID=$(echo "$LAUNCH" | sed -n 's/.*: *\([0-9][0-9]*\)$/\1/p' | tail -1)
       case "$S" in day-sheet) SAMPLE_SECONDS=75;; log-sheet) SAMPLE_SECONDS=95;; *) SAMPLE_SECONDS=38;; esac
       if [ -n "$PID" ]; then
@@ -83,6 +85,10 @@ done
 
 {
   echo
+  if [ "${PERF_ANALYTICS:-0}" = "1" ]; then
+    echo "Analytics: synthetic optional consent enabled; real bounded queue, file persistence and native touch observer exercised. DEBUG delivery cannot reach the production project."
+    echo
+  fi
   echo "Timing runs have no profiler attached. Main-thread busy and function names come from separate profiling launches. Command delivery does not invalidate covered screens (30 Sep 2026)."
   echo
   echo "Opening a screen (longest stall in the 1.5 s after the command; under 100 ms feels instant):"

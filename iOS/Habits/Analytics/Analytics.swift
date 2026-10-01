@@ -15,9 +15,18 @@ nonisolated final class Analytics: @unchecked Sendable {
         config.appVersion = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0"
         config.appBuild = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "0"
         config.osMajor = ProcessInfo.processInfo.operatingSystemVersion.majorVersion
-        let excluded = ProcessInfo.processInfo.arguments.contains("-uitest") || ProcessInfo.processInfo.arguments.contains("-perf-driver")
+        #if DEBUG
+        let perfConsent = ProcessInfo.processInfo.arguments.contains("-perf-analytics")
+        #else
+        let perfConsent = false
+        #endif
+        let excluded = !perfConsent && (ProcessInfo.processInfo.arguments.contains("-uitest") || ProcessInfo.processInfo.arguments.contains("-perf-drive"))
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
-        return Analytics(file: base?.appendingPathComponent("DisposableAnalytics/state.json"), configuration: config, disabled: excluded)
+        let engine = Analytics(file: base?.appendingPathComponent(perfConsent ? "DisposableAnalyticsFixture/state.json" : "DisposableAnalytics/state.json"), configuration: config, disabled: excluded)
+        // Explicit synthetic consent exercises real queue/file/touch overhead in native performance runs.
+        // DEBUG channel can never send to the production project; fixture state is independent of user consent.
+        if perfConsent { engine.setConsent(true) }
+        return engine
     }()
     private let queue = DispatchQueue(label: "app.analytics", qos: .utility)
     private let gate = NSLock()
