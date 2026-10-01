@@ -29,6 +29,7 @@ here the same day, with its numbers.
 | L13 | **Heavy rows** (a shadow on text, a `.clear` shadow, a sheet modifier per sheet, a `GeometryReader` per row) | Every Today row paid for an offscreen pass, four sheets and a geometry pass; the timer bar re-rendered its shadow every second (30 Sep) | Shadow on a background shape only; one `.sheet(item:)` per row; `scaleEffect` instead of `GeometryReader` for a fill | `check_rules.sh` (clear shadows) |
 | L14 | **Making a tap wait for storage** | Quick taps landed on the old state while the database wrote (29–30 Sep) | Change the screen at once; the write follows; on failure reload and say so | Speed run "Today: +1" |
 | L15 | **A redraw that touches the whole screen for something small** (each row's `onAppear` updating shared state) | Every row appearing rebuilt every section of Today (30 Sep) | State that changes while scrolling lives in its own small object read only by who needs it | Profile: one screen's body during scrolling |
+| L16 | **An environment value or observed property read by every row, when only a few need it** | Pausing Today's clocks through a value every row read made every row redraw on each menu page opening (1 Oct, found reviewing the fix itself) | Read it in the smallest view that uses it (`RowClock`); a row without a clock never sees it | Review: who reads a value is who redraws when it changes |
 
 ## How to find a slow spot (what worked, and what misled)
 
