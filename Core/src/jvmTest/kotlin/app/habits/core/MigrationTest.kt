@@ -148,6 +148,33 @@ class MigrationTest {
         assertTrue(repo.syncRequest().contains("\"source\":\"reminder\""), "the entry's source syncs")
         repo.close()
     }
+    /**
+     * A database from a test build of `claude/server-and-sync` before the 1 Oct merge: its "6" was the sync tables,
+     * with no `entry.source`. It opens, keeps everything, and what was waiting to sync still waits.
+     */
+    @Test fun serverSyncTestBuildVersion6StillOpens() = runTest {
+        val connection = createSchema(5)
+        connection.execSQL("CREATE TABLE IF NOT EXISTS `outbox` (`seq` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `op_id` TEXT NOT NULL, `op` TEXT NOT NULL, `problem` TEXT)")
+        connection.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_outbox_op_id` ON `outbox` (`op_id`)")
+        connection.execSQL("CREATE TABLE IF NOT EXISTS `sync_meta` (`table_name` TEXT NOT NULL, `row_id` TEXT NOT NULL, `hlc` TEXT NOT NULL, `clocks` TEXT, `extra` TEXT, `pending` INTEGER NOT NULL, PRIMARY KEY(`table_name`, `row_id`))")
+        connection.execSQL("CREATE TABLE IF NOT EXISTS `local_state` (`key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`key`))")
+        connection.execSQL("INSERT INTO entry VALUES ('e1', 'h1', NULL, '2026-09-27', 2.5, 2000, 'Europe/London', NULL, 'morning')")
+        connection.execSQL("INSERT INTO outbox (op_id, op, problem) VALUES ('op-1', '{}', NULL)")
+        connection.execSQL("PRAGMA user_version = 6")
+        connection.close()
+        val repo = HabitRepository.open(path)
+        val entry = repo.load().entries.single()
+        assertEquals("e1", entry.id)
+        assertEquals("morning", entry.slot)
+        assertEquals(null, entry.source)
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        repo.close()
+        val after = BundledSQLiteDriver().open(path)
+        val waiting = after.prepare("SELECT count(*) FROM outbox").use { it.step(); it.getLong(0) }
+        after.close()
+        assertEquals(1L, waiting, "the change waiting to sync is still there")
+    }
+
     @Test fun version5KeepsOldEntriesWithoutInventingASource() = runTest {
         val connection = createSchema(5)
         connection.execSQL("INSERT INTO entry VALUES ('e1', 'h1', NULL, '2026-09-27', 2.5, 2000, 'Europe/London', NULL, 'morning')")

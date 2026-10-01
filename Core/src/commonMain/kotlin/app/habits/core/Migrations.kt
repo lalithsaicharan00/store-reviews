@@ -59,13 +59,24 @@ internal object Migrations {
         }
     }
 
-    /** Schema 7: sync bookkeeping (outbox, per-row stamps, device state). Existing rows get their stamps on first open. */
+    /**
+     * Schema 7: sync bookkeeping (outbox, per-row stamps, device state). Existing rows get their stamps on first open.
+     * Test builds of `claude/server-and-sync` (before the 1 Oct merge) called the sync tables "6" and had no
+     * `entry.source`: such a database gets the column here, so it opens instead of failing Room's schema check.
+     */
     val v6ToV7 = object : Migration(6, 7) {
         override suspend fun migrate(connection: SQLiteConnection) {
+            if (!connection.hasColumn("entry", "source")) connection.execSQL("ALTER TABLE entry ADD COLUMN source TEXT")
             connection.execSQL("CREATE TABLE IF NOT EXISTS `outbox` (`seq` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `op_id` TEXT NOT NULL, `op` TEXT NOT NULL, `problem` TEXT)")
             connection.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_outbox_op_id` ON `outbox` (`op_id`)")
             connection.execSQL("CREATE TABLE IF NOT EXISTS `sync_meta` (`table_name` TEXT NOT NULL, `row_id` TEXT NOT NULL, `hlc` TEXT NOT NULL, `clocks` TEXT, `extra` TEXT, `pending` INTEGER NOT NULL, PRIMARY KEY(`table_name`, `row_id`))")
             connection.execSQL("CREATE TABLE IF NOT EXISTS `local_state` (`key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`key`))")
         }
     }
+
+    private fun SQLiteConnection.hasColumn(table: String, column: String): Boolean =
+        prepare("PRAGMA table_info(`$table`)").use { statement ->
+            while (statement.step()) if (statement.getText(1) == column) return@use true
+            false
+        }
 }
