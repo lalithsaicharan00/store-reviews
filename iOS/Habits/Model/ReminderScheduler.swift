@@ -128,7 +128,9 @@ final class ReminderScheduler {
         let pending = allPending.filter { $0.identifier.hasPrefix(Self.prefix) }
         // Timer goal alerts share iOS's 64 slots. Reserve for already-pending and running timers.
         let others = allPending.count - pending.count
-        let budget = min(Self.limit, max(0, 64 - max(others, store.timers.count)))
+        let pendingIDs = Set(allPending.map(\.identifier))
+        let missingTimers = store.timers.keys.filter { !pendingIDs.contains(TimerPresence.prefix + $0.uuidString) }.count
+        let budget = min(Self.limit, max(0, 64 - others - missingTimers))
         let wanted = Self.accepts(status) ? requests(for: notes, store: store, limit: budget) : []
         let wantedIDs = Set(wanted.map(\.identifier))
         center.removePending(pending.map(\.identifier).filter { !wantedIDs.contains($0) })
@@ -232,14 +234,17 @@ final class ReminderScheduler {
     /// Same-minute alerts share one notification ("Morning · Meds, Stretch +2"); one on its own keeps
     /// its own, with Done or +1. Repeats are never grouped, so each stops on its own tick.
     func requests(for alerts: [Alert], store: HabitStore, limit: Int = 60) -> [UNNotificationRequest] {
-        var singles: [Alert] = alerts.filter { $0.followUp > 0 }
-        var groups: [[Alert]] = []
+        guard limit > 0 else { return [] }
+        var buckets: [[Alert]] = alerts.filter { $0.followUp > 0 }.map { [$0] }
         for (_, bucket) in Dictionary(grouping: alerts.filter { $0.followUp == 0 }, by: \.fire) {
-            if bucket.count == 1 { singles.append(bucket[0]) } else { groups.append(bucket) }
+            buckets.append(bucket)
         }
-        var requests: [(Date, UNNotificationRequest)] = singles.map { ($0.fire, single($0, store: store)) }
-        requests += groups.map { ($0[0].fire, group($0, store: store)) }
-        return requests.sorted { ($0.0, $0.1.identifier) < ($1.0, $1.1.identifier) }.prefix(max(0, limit)).map(\.1)
+        // Select the nearest requests before encoding content and configuration hashes. A
+        // large plan can contain thousands of alerts, but iOS keeps at most 60 of ours.
+        let nearest = buckets.map { bucket in
+            (bucket: bucket, id: bucket.count == 1 ? bucket[0].id : groupID(bucket[0]))
+        }.sorted { ($0.bucket[0].fire, $0.id) < ($1.bucket[0].fire, $1.id) }.prefix(limit)
+        return nearest.map { $0.bucket.count == 1 ? single($0.bucket[0], store: store) : group($0.bucket, store: store) }
     }
 
     private func single(_ alert: Alert, store: HabitStore) -> UNNotificationRequest {
@@ -269,9 +274,12 @@ final class ReminderScheduler {
         content.categoryIdentifier = Self.groupCategory
         content.userInfo = ["section": first.section.id, "day": first.day.key,
                             "habits": bucket.map(\.habit.id.uuidString).joined(separator: ",")]
+        return UNNotificationRequest(identifier: groupID(first), content: content, trigger: trigger(first.fire, store: store))
+    }
+
+    private func groupID(_ first: Alert) -> String {
         let hhmm = String(format: "%02d%02d", first.time.hour, first.time.minute)
-        let id = "\(Self.prefix)group.\(first.day.year)-\(first.day.month)-\(first.day.day).\(hhmm)"
-        return UNNotificationRequest(identifier: id, content: content, trigger: trigger(first.fire, store: store))
+        return "\(Self.prefix)group.\(first.day.year)-\(first.day.month)-\(first.day.day).\(hhmm)"
     }
 
     private func trigger(_ fire: Date, store: HabitStore) -> UNCalendarNotificationTrigger {

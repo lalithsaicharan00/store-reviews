@@ -625,7 +625,11 @@ final class HabitStore {
             let steps = Dictionary(grouping: snapshot.steps, by: \.habitId)
             let reminders = Dictionary(grouping: snapshot.reminders, by: \.habitId)
             habits = snapshot.habits.compactMap { Habit(record: $0, steps: steps[$0.id] ?? [], reminders: reminders[$0.id] ?? []) }
-            entries = snapshot.entries.compactMap(Entry.init(record:))
+            let liveHabitIDs = Set(habits.map(\.id))
+            entries = snapshot.entries.compactMap { record in
+                guard let entry = Entry(record: record), liveHabitIDs.contains(entry.habitID) else { return nil }
+                return entry
+            }
             var loaded = DaySettings()
             var running: [UUID: Date] = [:]
             var runningSlots: [UUID: String] = [:]
@@ -939,6 +943,12 @@ final class HabitStore {
                                                reminders: [], at: Date.now.millis)
                 withAnimation {
                     habits.remove(at: i)
+                    entries.removeAll { $0.habitID == habit.id }
+                    habitNotes.removeValue(forKey: habit.id)
+                    descriptions.removeValue(forKey: habit.id)
+                    rules.removeValue(forKey: habit.id)
+                    pauses.removeValue(forKey: habit.id)
+                    skips.removeValue(forKey: habit.id)
                     if noteOffer?.habit == habit.id { noteOffer = nil }
                     if noteTarget?.habit == habit.id { noteTarget = nil }
                 }

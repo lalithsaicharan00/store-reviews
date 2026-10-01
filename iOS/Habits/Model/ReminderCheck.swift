@@ -123,6 +123,9 @@ enum ReminderCheck {
         var requests = scheduler.requests(for: scheduler.plan(store, now: now), store: store)
         expect(requests.count == 30 && requests.allSatisfy { $0.identifier.contains("group") }, "same-minute habits use one notification per day")
         expect(requests.allSatisfy { $0.content.categoryIdentifier == "habit.group" }, "grouped alerts have no ambiguous Done action")
+        let groupedPlan = scheduler.plan(store, now: now)
+        expect(scheduler.requests(for: groupedPlan, store: store, limit: 2).map(\.identifier) == Array(requests.prefix(2)).map(\.identifier), "capacity keeps the earliest grouped requests")
+        expect(scheduler.requests(for: groupedPlan, store: store, limit: 0).isEmpty, "zero capacity constructs no requests")
         amount.reminders = [ReminderTime(hour: 10, minute: 0)]; amount.followUpMinutes = 15
         store.update(amount); await store.flush(); await scheduler.reconcile(store, now: now)
         expect(notes.requests.count == 60, "nearest reminders stay inside 60 slots")
@@ -181,6 +184,19 @@ enum ReminderCheck {
         for i in 0..<10 { notes.requests["foreign.\(i)"] = UNNotificationRequest(identifier: "foreign.\(i)", content: UNMutableNotificationContent(), trigger: nil) }
         await scheduler.reconcile(store, now: now)
         expect(notes.requests.count <= 64, "pending budget includes unrelated app alerts")
+        var runningTimers: [Habit] = []
+        for i in 0..<3 {
+            let timer = Habit(name: "Budget timer \(i)", symbol: "timer", color: .blue, kind: .duration, remind: false)
+            store.add(timer); await store.flush(); store.toggleTimer(timer); runningTimers.append(timer)
+        }
+        await store.flush(); await scheduler.reconcile(store, now: now)
+        expect(notes.requests.count + store.timers.count <= 64, "unrelated alerts and unscheduled timers both reserve slots")
+        let timerID = TimerPresence.prefix + runningTimers[0].id.uuidString
+        notes.requests[timerID] = UNNotificationRequest(identifier: timerID, content: UNMutableNotificationContent(), trigger: nil)
+        await scheduler.reconcile(store, now: now)
+        expect(notes.requests.count + store.timers.count - 1 == 64 && notes.requests[timerID] != nil, "already-pending timer counted once and preserved")
+        for timer in runningTimers { store.stopTimer(timer, on: day) }
+        await store.flush(); notes.removePending([timerID])
         var alarmHabit = habit; alarmHabit.alert = .alarm; store.update(alarmHabit); await store.flush()
         alarms.isAuthorized = true; await scheduler.reconcile(store, now: now)
         expect(!alarms.latest.isEmpty && !notes.requests.values.contains { ($0.content.userInfo["habit"] as? String) == habit.id.uuidString }, "authorized alarms avoid duplicate notifications")
@@ -262,6 +278,8 @@ enum ReminderCheck {
         expect(store.entries.count == 1, "turned-off reminder action is ignored")
         store.delete([water]); await store.flush(); log(ReminderIdentity.actionID("deleted")); await store.flush()
         expect(store.habits.isEmpty && store.entries.isEmpty, "deleted action cannot revive a habit")
+        let afterDelete = HabitStore(repository: persistence.repository, calendar: calendar); await afterDelete.load()
+        expect(afterDelete.habits.isEmpty && afterDelete.entries.isEmpty, "deleted history stays hidden after relaunch")
         expect(LocalDay(key: "2024-02-29") != nil && LocalDay(key: "2025-02-29") == nil, "leap day keys validated")
         for key in ["2026-00-01", "2026-13-01", "2026-02-31", "2026-x-9-30", "-2026-09-30", "999999-01-01"] {
             expect(LocalDay(key: key) == nil, "malformed action day rejected: \(key)")
@@ -340,10 +358,15 @@ enum ReminderCheck {
             durations.append(Date.now.timeIntervalSince(start))
         }
         let median = durations.sorted()[1]
-        planningSummary = String(format: "100 rules / %d entries: plan median %.1f ms, cold %.1f ms", store.entries.count, median * 1000, durations[0] * 1000)
+        let contentStart = Date.now
+        let requests = scheduler.requests(for: alerts, store: store)
+        let contentDuration = Date.now.timeIntervalSince(contentStart)
+        planningSummary = String(format: "100 rules / %d entries: plan median %.1f ms, cold %.1f ms, content %.1f ms", store.entries.count, median * 1000, durations[0] * 1000, contentDuration * 1000)
         var failures: [String] = []
         if alerts.count < 3000 { failures.append("large fixture lost future reminder days") }
-        if scheduler.requests(for: alerts, store: store).count != 60 { failures.append("large fixture exceeds pending budget or omits nearest alerts") }
+        if requests.count != 60 { failures.append("large fixture exceeds pending budget or omits nearest alerts") }
+        if requests.map(\.identifier) != Array(alerts.prefix(60)).map(\.id) { failures.append("large fixture lost nearest-first order") }
+        if contentDuration > 1 { failures.append("constructing the nearest requests blocks the main actor for over one second: " + planningSummary) }
         if median > 1 { failures.append("planning 100 rules blocks the main actor for over one second: " + planningSummary) }
         return failures
     }

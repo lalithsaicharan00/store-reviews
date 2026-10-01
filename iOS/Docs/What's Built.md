@@ -31,10 +31,12 @@ This is the short list of what the iPhone app can do today. The reasons behind e
 ## Reminders
 
 - [x] Off by default; one per chosen time of day, more can be added
-- [x] Notification or Alarm (AlarmKit, iOS 26+; the alarm has a Done button)
+- [x] Notification or Alarm (AlarmKit, iOS 26+; checks/tasks offer Done, amounts offer their saved increment; timers/checklists have no misleading Done action)
 - [x] Remind Again if not done (every 15, 30 or 60 min, up to 3 more)
 - [x] Actions in the notification: Done, "+1 glass"
 - [x] A reminder stops once the habit is done
+- [x] Native Reminders page: saved rules, item editing, permission status and recovery without an opening prompt (sidebar validation tracked in the checklist)
+- [x] Serialized scheduling, nearest-first capacity, notification fallback for failed alarms, idempotent actions, wall-clock/DST handling and visible scheduling errors
 
 ## Today
 
@@ -105,7 +107,14 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] ≡ at the top left (replaces the avatar); Today's top bar is ≡ · Filter · +
 - [x] Slides in over Today: opens with ≡ or a swipe from the left edge; closes with a tap on Today, a drag left, or a row
 - [x] Most used first: Today · Progress · Habits · Tasks, then Times of Day · Reminders · Appearance, Backup & Export · Privacy, Plus, Help & Feedback · About
-- [x] Wired: Habits and Tasks (All Habits, split), Times of Day, Plus. Progress and the settings rows open a "coming" page for now
+- [x] Wired: Habits, all saved Tasks with creation/editing, Times of Day, Reminders, Backup & Export, Plus. Help & Feedback and About are blank as requested. Progress, Appearance and Privacy remain placeholders on this branch
+
+## Backup & Export (free)
+
+- [x] Native CSV and complete SQLite backup sharing, including tasks, archived history, notes and settings
+- [x] Restore on an empty or existing installation; current edits/deletions win and repeated restore adds nothing twice
+- [x] Validate files before merging, reject corrupt/newer/invalid data and keep timers stopped on restore
+- [x] External backup/restore is free; Delete App removes local data, while Offload keeps Documents & Data
 
 ## Routine player (▶ Start on a time of day)
 
@@ -128,7 +137,7 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [ ] Completion animation before a done row moves down
 - [ ] Section open and close animation
 - [ ] Progress and statistics screens
-- [ ] Settings (export and import, backups on the phone, support, day and week start, theme, restore purchase)
+- [ ] Remaining settings: Appearance/Privacy, support/About content, day and week start, restore purchase (free export/backup/restore and Reminders are built)
 - [ ] Onboarding (first launch)
 - [ ] Home-screen and lock-screen widgets
 - [ ] Plus: purchase, account, sync and server backup

@@ -45,7 +45,7 @@ struct RemindersView: View {
                 if configured.isEmpty { Text("No reminders yet").foregroundStyle(.secondary) }
                 ForEach(configured) { habit in reminderRow(habit) }
             } header: { Text("With Reminders") } footer: {
-                Text("Only days it’s due are scheduled. Completing it stops that day’s reminders; paused and archived items stay saved without alerting you.")
+                Text("Only planned days are scheduled. Completing it stops that day’s reminders; paused and archived items stay saved without alerting you.")
             }
             if !other.isEmpty {
                 Section {

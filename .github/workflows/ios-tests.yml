@@ -56,6 +56,7 @@ jobs:
             case "$MESSAGE" in *"[ios-tasks]"*) echo "TESTS=TasksUITests,TodayUITests,ScheduleUITests/testCalendarAndPersistenceRules,ScheduleUITests/testTaskAfterCompletion" >> "$GITHUB_ENV"; echo "PERF_TESTS=testTasksPage testTaskEdit testScrollToday" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-tasks-recheck]"*) echo "TESTS=TasksUITests" >> "$GITHUB_ENV"; echo "PERF_TESTS=testTaskEdit" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-reminders]"*) echo "TESTS=RemindersUITests,TasksUITests,BackupUITests,TodayUITests,TimerUITests,ScheduleUITests/testCalendarAndPersistenceRules,ScheduleUITests/testTaskAfterCompletion" >> "$GITHUB_ENV"; echo "PERF_TESTS=testRemindersPage testTasksPage testScrollToday" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-reminders-recheck]"*) echo "TESTS=RemindersUITests,TasksUITests,BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV"; echo "PERF_TESTS=testRemindersPage" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
           fi
 

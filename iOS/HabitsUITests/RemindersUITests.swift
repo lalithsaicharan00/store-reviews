@@ -38,7 +38,9 @@ final class RemindersUITests: XCTestCase {
     func testDeniedPermissionOffersSettingsAndEmptyState() {
         let app = XCUIApplication(); app.launchArguments = ["-uitest", "-empty", "-reminder-denied"]
         app.launch(); open(app)
-        XCTAssertTrue(app.staticTexts["Off in iPhone Settings"].waitForExistence(timeout: 5))
+        let permission = app.staticTexts["reminders-permission"]
+        let denied = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label CONTAINS %@", "Off in iPhone Settings"), object: permission)
+        XCTAssertEqual(XCTWaiter.wait(for: [denied], timeout: 5), .completed, app.debugDescription)
         XCTAssertTrue(app.buttons["Open iPhone Settings"].firstMatch.exists)
         XCTAssertFalse(app.buttons["reminders-allow"].exists)
         XCTAssertTrue(app.staticTexts["No reminders yet"].exists)
