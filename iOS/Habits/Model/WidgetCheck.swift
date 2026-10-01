@@ -95,6 +95,18 @@ enum WidgetCheck {
         expect(WidgetDisk.decode(Data(repeating: 0, count: WidgetDisk.maximumBytes + 1)) == nil, "Oversized snapshot rejected")
         expect(snapshot.frame(at: now, timeZone: "invalid") == nil, "Travel invalidates old timezone snapshot")
         expect(snapshot.frame(at: snapshot.frames.last!.end) == nil, "Expired outlook never carries old data")
+        let quitID = item("Widget quit").id.uuidString
+        let late = now.addingTimeInterval(30 * 86400)
+        expect(PhoneWidgetTimeline.itemEntries(snapshot: snapshot, selection: quitID, now: late).first?.selected?.counterStart != nil,
+               "Stable quit clock keeps running after agenda outlook expires")
+        var bounded = snapshot
+        for i in bounded.frames.indices {
+            if let j = bounded.frames[i].items.firstIndex(where: { $0.id == quitID }) {
+                bounded.frames[i].items[j].counterValidUntil = now.addingTimeInterval(10 * 86400)
+            }
+        }
+        expect(PhoneWidgetTimeline.itemEntries(snapshot: bounded, selection: quitID, now: late).first?.selected == nil,
+               "Known quit pause or end stops the extended counter")
         let timeline = PhoneWidgetTimeline.entries(snapshot: snapshot, now: now)
         expect(timeline.count == 8 && timeline.last?.frame == nil, "Timeline includes explicit expired state")
         expect(zip(timeline, timeline.dropFirst()).allSatisfy { $0.date < $1.date }, "Timeline dates strictly increase")
@@ -156,6 +168,10 @@ enum WidgetCheck {
             await failed.publish(store)
             expect(failed.problem != nil, "Snapshot publication failure is visible and recoverable")
         } catch { failures.append("Publication failure fixture: \(error)") }
+        let sharedPublisher = WidgetPublisher()
+        await sharedPublisher.publish(store)
+        expect(sharedPublisher.problem == nil && WidgetDisk.read()?.frames.first?.items.count == store.habits.filter { !$0.archived }.count,
+               "Actual app App Group publishes a readable shared snapshot")
         return failures
     }
 }

@@ -45,20 +45,38 @@ nonisolated enum PhoneWidgetTimeline {
         if let last = snapshot.frames.last { entries.append(.init(date: last.end, frame: nil)) }
         return entries
     }
+    static func itemEntries(snapshot: WidgetSnapshot?, selection: String?, now: Date = .now) -> [PhoneWidgetEntry] {
+        var result = entries(snapshot: snapshot, now: now).map { original in
+            var entry = original; entry.selection = selection
+            // A saved quit start is a stable fact: its system-rendered clock needs no daily refresh.
+            // Only extend it up to the next known pause/end; never extend actionable agenda rows.
+            if entry.frame == nil, !entry.hidden, snapshot?.timeZone == TimeZone.current.identifier,
+               let item = snapshot?.frames.last?.items.first(where: { $0.id == selection }),
+               item.isQuit, item.counterStart != nil, let until = item.counterValidUntil, entry.date < until {
+                entry.frame = .init(day: "counter", start: entry.date, end: until, items: [item])
+            }
+            return entry
+        }
+        if let last = result.last, let frame = last.frame, frame.day == "counter", frame.end < .distantFuture {
+            result.append(.init(date: frame.end, frame: nil))
+        }
+        return result
+    }
     static func timeline(_ entries: [PhoneWidgetEntry]) -> Timeline<PhoneWidgetEntry> {
-        Timeline(entries: entries, policy: .after(entries.last?.date ?? Date.now.addingTimeInterval(3600)))
+        let forever = entries.last?.frame.map { $0.day == "counter" && $0.end == .distantFuture } ?? false
+        return Timeline(entries: entries, policy: forever ? .never : .after(max(entries.last?.date ?? .now, Date.now.addingTimeInterval(3600))))
     }
 }
 nonisolated struct AgendaWidgetProvider: AppIntentTimelineProvider {
     var kind = "agenda"
     func placeholder(in context: Context) -> PhoneWidgetEntry { .placeholder }
     func snapshot(for configuration: AgendaWidgetConfiguration, in context: Context) async -> PhoneWidgetEntry {
-        context.isPreview ? .placeholder : configured(configuration, family: context.family).first!
+        context.isPreview ? .placeholder : await configured(configuration, family: context.family).first!
     }
     func timeline(for configuration: AgendaWidgetConfiguration, in context: Context) async -> Timeline<PhoneWidgetEntry> {
-        PhoneWidgetTimeline.timeline(configured(configuration, family: context.family))
+        PhoneWidgetTimeline.timeline(await configured(configuration, family: context.family))
     }
-    private func configured(_ config: AgendaWidgetConfiguration, family: WidgetFamily) -> [PhoneWidgetEntry] {
+    @MainActor private func configured(_ config: AgendaWidgetConfiguration, family: WidgetFamily) -> [PhoneWidgetEntry] {
         PhoneWidgetTimeline.entries(snapshot: WidgetDisk.read()).map { original in
             var entry = original; entry.completed = config.completed; entry.tasksOnly = config.tasksOnly
             entry.pageGroup = "\(kind).\(family.rawValue)"
@@ -70,26 +88,24 @@ nonisolated struct AgendaWidgetProvider: AppIntentTimelineProvider {
 nonisolated struct ItemWidgetProvider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> PhoneWidgetEntry { .placeholder }
     func snapshot(for configuration: ItemWidgetConfiguration, in context: Context) async -> PhoneWidgetEntry {
-        context.isPreview ? .placeholder : configured(configuration).first!
+        context.isPreview ? .placeholder : await configured(configuration).first!
     }
     func timeline(for configuration: ItemWidgetConfiguration, in context: Context) async -> Timeline<PhoneWidgetEntry> {
-        PhoneWidgetTimeline.timeline(configured(configuration))
+        PhoneWidgetTimeline.timeline(await configured(configuration))
     }
-    private func configured(_ config: ItemWidgetConfiguration) -> [PhoneWidgetEntry] {
-        PhoneWidgetTimeline.entries(snapshot: WidgetDisk.read()).map { original in
-            var entry = original; entry.selection = config.item?.id; return entry
-        }
+    @MainActor private func configured(_ config: ItemWidgetConfiguration) -> [PhoneWidgetEntry] {
+        PhoneWidgetTimeline.itemEntries(snapshot: WidgetDisk.read(), selection: config.item?.id)
     }
 }
 nonisolated struct HistoryWidgetProvider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> PhoneWidgetEntry { .placeholder }
     func snapshot(for configuration: HistoryWidgetConfiguration, in context: Context) async -> PhoneWidgetEntry {
-        context.isPreview ? .placeholder : configured(configuration).first!
+        context.isPreview ? .placeholder : await configured(configuration).first!
     }
     func timeline(for configuration: HistoryWidgetConfiguration, in context: Context) async -> Timeline<PhoneWidgetEntry> {
-        PhoneWidgetTimeline.timeline(configured(configuration))
+        PhoneWidgetTimeline.timeline(await configured(configuration))
     }
-    private func configured(_ config: HistoryWidgetConfiguration) -> [PhoneWidgetEntry] {
+    @MainActor private func configured(_ config: HistoryWidgetConfiguration) -> [PhoneWidgetEntry] {
         PhoneWidgetTimeline.entries(snapshot: WidgetDisk.read()).map { original in
             var entry = original; entry.selection = config.item?.id; entry.month = config.range == .month; return entry
         }

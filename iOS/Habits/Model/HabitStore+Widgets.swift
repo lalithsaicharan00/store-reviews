@@ -43,6 +43,9 @@ extension HabitStore {
                 let value = progress(of: habit, on: day, now: now)
                 let done = !rule.atMost && habit.kind != .quit && isSatisfied(habit, on: day)
                 let start = habit.kind == .quit && planned ? quitHistory(of: habit, now: max(now, bounds.lowerBound)).last.flatMap { $0.endedBy == .ongoing ? $0.start : nil } : nil
+                let nextPause = (pauses[habit.id] ?? []).filter { $0.from > day }.map { dayBounds($0.from).lowerBound }.min()
+                let ending = habit.endsOn.map { dayBounds($0).upperBound.addingTimeInterval(1) }
+                let counterUntil = habit.kind == .quit && start != nil ? min(nextPause ?? .distantFuture, ending ?? .distantFuture) : nil
                 let action: String?
                 switch rule.kind {
                 case .check, .task: action = planned && !isDone(habit, on: day) ? "check" : nil
@@ -67,7 +70,7 @@ extension HabitStore {
                                   value: value, goal: goal, done: done, planned: planned, ongoing: rule.atMost || habit.kind == .quit,
                                   isTask: habit.kind == .task, isQuit: habit.kind == .quit, action: action,
                                   stepLabel: rule.quickIncrement.map { progressValue($0, rule) }, token: UUID().uuidString,
-                                  signature: signatures[habit.id] ?? "", counterStart: start,
+                                  signature: signatures[habit.id] ?? "", counterStart: start, counterValidUntil: counterUntil,
                                   history: (histories[habit.id] ?? []).filter { $0.id >= day.adding(days: -30, calendar: calendar).key })
             }
             return WidgetFrame(day: day.key, start: bounds.lowerBound, end: bounds.upperBound.addingTimeInterval(1), items: hidden ? [] : items)

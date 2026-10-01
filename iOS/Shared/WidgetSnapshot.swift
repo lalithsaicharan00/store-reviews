@@ -19,6 +19,7 @@ nonisolated struct WidgetItem: Codable, Identifiable, Sendable {
     var token: String
     var signature: String
     var counterStart: Date?
+    var counterValidUntil: Date? = nil
     var history: [WidgetDay]
     var url: URL { URL(string: "oftenenough://item/" + id)! }
 }
