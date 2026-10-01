@@ -170,6 +170,15 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] ≡ → Day and Week: New Day Starts At (Midnight to Noon); Week Starts On (Automatic or any day)
 - [x] 12/24-hour clock follows the iPhone everywhere (no app setting); daylight saving and travel need no setting: "today" is worked out on the wall clock (fixed an hour-off on the nights the clocks change)
 
+## From the earlier feature branch (rebuilt on the current app, 1 Oct 2026)
+
+- [x] Lock with Face ID (≡ → Privacy): the iPhone's own Face ID, Touch ID or passcode, never a separate code; a cover whenever the app isn't in front; the switch changes only after Face ID works
+- [x] Siri and Shortcuts: Log a Habit, What's Left Today, Get Habit Progress, Open a Habit; found by ID, so renaming a habit keeps a shortcut working
+- [x] Milestones: "30 days in a row" or "All 5 done today" beside the row's Undo when a tap reaches it, and a Milestones card on the habit page (Show Streaks off hides them); never a pop-up
+- [x] Asking for a review: only Apple's own request, after a week of use, at the tap that finishes today, once per version and 120 days apart
+- [x] First run: the empty Today offers New Habit and Restore from a Backup File
+- [x] Checked with golden cases G19 and G20 (`-progresscheck`)
+
 ## Under the hood
 
 - [x] Data saved on the phone (SQLite through the Kotlin shared core), survives closing the app
@@ -177,9 +186,7 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 
 ## Not built yet (Build Plan order)
 
-- [ ] Easy undo after checking or logging
-- [ ] Settings still to build: Privacy, support and About content, restore purchase (theme, day start, week start, free export, backup and restore, and Reminders are built)
-- [ ] Onboarding (first launch)
-- [ ] Home-screen and lock-screen widgets
+- [ ] Settings still to build: support and About content, restore purchase, Erase All Data in Privacy (theme, day start, week start, free export, backup and restore, Reminders and the app lock are built)
+- [ ] Home-screen and lock-screen widgets (waits for the App Group and the app's new name; see `Docs/Checklists/Merging the Branches.md`)
 - [ ] Plus: purchase, account, sync and server backup
 - [ ] Apple Watch, iPad, Apple Health
