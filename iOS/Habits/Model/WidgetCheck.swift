@@ -225,6 +225,22 @@ enum WidgetCheck {
             await failed.publish(store)
             expect(failed.problem != nil, "Snapshot publication failure is visible and recoverable")
         } catch { failures.append("Publication failure fixture: \(error)") }
+        // An earlier successful publication can still be awaiting host invalidation when
+        // the newest write fails. Its completion must not clear that newer visible error.
+        do {
+            let errorFile = directory.appendingPathComponent("ordered-publication-error.json")
+            let publisher = WidgetPublisher(file: errorFile)
+            let earlier = Task { await publisher.publish(store) }
+            for _ in 0..<100 {
+                if FileManager.default.fileExists(atPath: errorFile.path) { break }
+                try? await Task.sleep(for: .milliseconds(5))
+            }
+            try FileManager.default.removeItem(at: errorFile)
+            try FileManager.default.createDirectory(at: errorFile, withIntermediateDirectories: true)
+            await publisher.publish(store)
+            await earlier.value
+            expect(publisher.problem != nil, "Older publication completion preserves a newer write error")
+        } catch { failures.append("Publication ordering fixture: \(error)") }
         let sharedPublisher = WidgetPublisher()
         await sharedPublisher.publish(store)
         expect(sharedPublisher.problem == nil && WidgetDisk.read()?.frames.first?.items.count == store.habits.filter { !$0.archived }.count,

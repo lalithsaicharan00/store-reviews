@@ -124,6 +124,7 @@ extension HabitStore {
 /// Coalesces publication after committed changes. Cancellation never cancels database writes.
 @Observable final class WidgetPublisher {
     @ObservationIgnored private var scheduled: Task<Void, Never>?
+    @ObservationIgnored private var latestTicket: UInt64 = 0
     @ObservationIgnored private let testDestination: URL?
     init(file: URL? = nil) { testDestination = file }
     private(set) var problem: String?
@@ -146,6 +147,7 @@ extension HabitStore {
         guard store.isLoaded, store.isStorageReady, store.problem == nil, !Task.isCancelled else { return }
         let hidden = UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey) || AppLock.isEnabled
         let ticket = WidgetPublicationOrder.next()
+        latestTicket = ticket
         var snapshot = await store.preparedWidgetSnapshot(hidden: hidden)
         guard !Task.isCancelled else { return }
         let currentHidden = UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey) || AppLock.isEnabled
@@ -153,8 +155,10 @@ extension HabitStore {
         do {
             // Detached I/O avoids encoding and file coordination on the UI thread.
             try await WidgetSnapshotWriter.shared.write(snapshot, to: testDestination ?? WidgetDisk.url, ticket: ticket)
-            problem = nil
-        } catch { problem = "Widgets couldn't be updated. Open the app and try again." }
+            if ticket == latestTicket { problem = nil }
+        } catch {
+            if ticket == latestTicket { problem = "Widgets couldn't be updated. Open the app and try again." }
+        }
     }
 }
 
@@ -166,6 +170,8 @@ extension HabitStore {
 private actor WidgetSnapshotWriter {
     static let shared = WidgetSnapshotWriter()
     private var latest: [URL: UInt64] = [:]
+    private var reloadTask: Task<Void, Never>?
+    private var reloadGeneration: UInt64 = 0
     func write(_ original: WidgetSnapshot, to file: URL?, ticket: UInt64) async throws {
         guard let file else { throw CocoaError(.fileNoSuchFile) }
         guard ticket >= (latest[file] ?? 0) else { return }
@@ -178,6 +184,25 @@ private actor WidgetSnapshotWriter {
         }
         try WidgetDisk.write(snapshot, to: file)
         latest[file] = ticket
+        // Commit every snapshot immediately; coalesce closely spaced native host invalidations.
+        // Await the surviving reload so a background intent cannot finish before it is requested.
+        reloadTask?.cancel()
+        reloadGeneration &+= 1
+        var waitingFor = reloadGeneration
+        var task = Task {
+            try? await Task.sleep(for: .milliseconds(250))
+            guard !Task.isCancelled else { return }
+            await self.reloadInstalledWidgets()
+        }
+        reloadTask = task
+        while true {
+            await task.value
+            guard waitingFor != reloadGeneration, let newest = reloadTask else { break }
+            waitingFor = reloadGeneration
+            task = newest
+        }
+    }
+    private func reloadInstalledWidgets() async {
         // Uninstalled widgets need the snapshot for gallery configuration, but no timeline invalidation.
         let reload = await withCheckedContinuation { continuation in
             WidgetCenter.shared.getCurrentConfigurations { result in
@@ -188,6 +213,6 @@ private actor WidgetSnapshotWriter {
                 }
             }
         }
-        if reload { WidgetCenter.shared.reloadAllTimelines() }
+        if reload && !Task.isCancelled { WidgetCenter.shared.reloadAllTimelines() }
     }
 }
