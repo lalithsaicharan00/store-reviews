@@ -192,7 +192,10 @@ final class BackupCenter {
     // MARK: Backing up
 
     /// After every change: the next backup has something new to keep.
-    func dataChanged() { defaults.set(true, forKey: Key.dirty) }
+    func dataChanged() {
+        // Called after every change: write the flag only when it flips, not on every tap.
+        if !defaults.bool(forKey: Key.dirty) { defaults.set(true, forKey: Key.dirty) }
+    }
 
     /// At every open and background refresh: backs up when due, and re-checks for problems.
     func runIfDue() async {
