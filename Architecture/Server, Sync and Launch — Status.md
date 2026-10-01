@@ -3,6 +3,22 @@
 *Branch **`claude/server-and-sync`**. Written by Claude (Claude Code), 1 Oct 2026. Update this file whenever an item
 moves, so the next session (person or agent) can pick up from it alone.*
 
+## ⚑ What needs you (everything else that could be built here is built)
+
+| # | What | Where | Unblocks |
+|---|---|---|---|
+| 1 | **Apple Developer account** | Apple | Sign in with Apple, the iCloud copy (both written, off: `BackupFeatures`), in-app purchases, App Attest, registering `/v1/hooks/apple` and `/v1/hooks/apple-signin`, Sign in with Apple token revocation |
+| 2 | **Try Google sign-in once on your iPhone** (consent screen is in Testing: your Gmail only) | the app, debug build | confirms real Google sign-in end to end |
+| 3 | **Google web client → Authorized JavaScript origins:** `https://oftenenough.com`, `https://www.oftenenough.com`, `https://site-dev.oftenenough.com` | Google Cloud → Clients | the website's delete page |
+| 4 | **Cloudflare DNS:** delete the parked Hostinger records for `oftenenough.com` (and `www`), then add the two routes in `website/wrangler.jsonc` and deploy | Cloudflare dashboard | the website at the real address; then publish the Google consent screen with `/privacy` and `/terms` |
+| 5 | **`support@oftenenough.com`** (Cloudflare Email Routing to your inbox) | Cloudflare | the address on every page and in the email |
+| 6 | **Resend:** verify `oftenenough.com`, register it with Apple's private relay, `RESEND_API_KEY` (and `REPORT_TO` for the daily report) | Resend, `wrangler secret put` | the purchase email and the emailed report |
+| 7 | **Monitoring:** switch on Analytics Engine, an `ANALYTICS_TOKEN` (Analytics Read only), an outside uptime monitor on `https://api.oftenenough.com/v1/status`, Cloudflare notifications for Worker errors; turn off Cloudflare Web Analytics injection for the zone | Cloudflare, UptimeRobot | request numbers in the report, alerts |
+| 8 | **A separate Cloudflare account for production**, and **Workers Paid** ($5/month) before about 1,900 Plus users | Cloudflare | 06 §8, Server Cost §1 |
+| 9 | **The Plus screen design** | you | purchases in the app, "One last step", "Turn on sync" |
+| 10 | **Read the privacy policy and terms** against the shipped app (they include analytics and crash reports, not built yet) | `website/public/` | publishing them |
+| 11 | **A WAF rule** in front of the API (this token can't edit zone security) | Cloudflare → Security | floods never reach the Worker |
+
 ## ▶ Next up, in order
 
 0. ✅ **Backup, sync and accounts (decided and built 1 Oct 2026; what's left is listed under step 3).** Next: whatever
@@ -185,3 +201,5 @@ registration), and `/v1/hooks/apple` tested with Apple's sandbox.
 | Live production checks | `cd server && node scripts/live-production.mjs` | — |
 | iPhone (GitHub) | push with `[ios-ci]`, or run the "iOS build and tests" workflow with tests `BackupUITests,SyncUITests,PersistenceUITests,TodayUITests` | — |
 | After changing `Core/sync` | `server/scripts/build-core.sh`, then the server tests | Java 21 |
+| Website | `cd website && TEST_LOGIN_SECRET=… NODE_PATH=$(npm root -g) node tests/site-check.mjs` | the dev test secret, Chromium |
+| Restore drill (monthly) | `cd server && TEST_LOGIN_SECRET=… ADMIN_SECRET=… node scripts/restore-drill.mjs` | dev secrets |
