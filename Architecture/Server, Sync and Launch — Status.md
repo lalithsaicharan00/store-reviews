@@ -36,7 +36,9 @@ moves, so the next session (person or agent) can pick up from it alone.*
       export first, Face ID/passcode, and keep-or-erase this iPhone; the server keeps a deleted-accounts list and tells
       other devices `account_deleted`), and the one notification when a background backup finds a problem while the
       app is closed (only if notifications are allowed; tapping it opens Backup & Sync).
-      **Left for later:** finding the iCloud copy from "I've used this before"; "Turn on sync" / "One last step" in the Plus purchase flow
+      **Also added:** Erase All My Data (no account), and finding the iCloud copy from "I've used this before"
+      (written, off with the rest of the iCloud copy).
+      **Left for later:** "Turn on sync" / "One last step" in the Plus purchase flow
       (item 5); Google's sign-in button branding check before publishing the consent screen. Real Google sign-in is
       untested on a device: the consent screen is in Testing (owner's Gmail only), so try it on the iPhone once.
    Rate limiting (1.1 below) was done with step 1.

@@ -126,9 +126,13 @@ Design: [Backup, Sync and Accounts — One Seamless Experience](<../../Research/
 - [x] **"I've Used This Before"** on the empty first screen
 - [x] **A card on Today only when the main backup has a problem** (signed out, the server unreachable for 2 days, a copy
       that failed its check), with the fix; Not Now hides it for 7 days. Nothing about backup on Today otherwise
-- [ ] The copy in the user's own iCloud (written, off until the Apple Developer account), and finding it from
-      "I've used this before"
-- [ ] A notification when the nightly backup finds a problem while the app is closed
+- [x] **Your account:** sign-in methods, devices, Sign Out, **Delete Account** (export offered first, Face ID or
+      passcode, then keep or erase this iPhone's habits); another device of a deleted account just signs out
+- [x] **Erase All My Data** without an account (asks first, offers an export)
+- [x] **One notification** when a background backup finds a problem while the app is closed (only if notifications are
+      allowed); tapping it opens Backup & Sync
+- [ ] The copy in the user's own iCloud, and finding it from "I've used this before" (both written; off until the
+      Apple Developer account)
 - [ ] The Plus purchase flow's "One last step" and "Turn on sync" lines (waits for the Plus screen design)
 
 ## Under the hood
