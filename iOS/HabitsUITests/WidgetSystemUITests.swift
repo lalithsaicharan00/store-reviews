@@ -81,6 +81,15 @@ final class WidgetSystemUITests: XCTestCase {
         let completed = NSPredicate(format: "exists == false")
         _ = XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: completed, object: check)], timeout: 30)
         save(springboard, "home-widget-after-cold-check")
+        // Paging is an extension-side intent and must work while the app remains closed.
+        let water = springboard.staticTexts["Widget water"].firstMatch
+        XCTAssertTrue(water.waitForExistence(timeout: 10))
+        springboard.buttons["Next page"].tap()
+        XCTAssertEqual(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: water)], timeout: 20), .completed)
+        save(springboard, "home-widget-next-page")
+        springboard.buttons["Previous page"].tap()
+        XCTAssertTrue(water.waitForExistence(timeout: 20), springboard.debugDescription)
+        save(springboard, "home-widget-previous-page")
         app.launchArguments = ["-empty", "-free", "-dbname", "habits"]
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 15))
