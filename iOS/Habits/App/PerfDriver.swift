@@ -107,6 +107,16 @@ enum PerfDriver {
             await open("All Habits") { send(.openAllHabits) }
             await open("Habit page") { send(.openHabit("Brush teeth")) }
             await measure("Habit page: scrolling") { await scroll() }
+        case "habit-page-total":
+            // A weekly total (15 km a week): its page has the running-total chart.
+            await open("All Habits") { send(.openAllHabits) }
+            await open("Habit page (weekly total)") { send(.openHabit("Run")) }
+            await measure("Habit page (weekly total): scrolling") { await scroll() }
+        case "habit-page-quit":
+            // A quit habit: its page has the live clock, the slips and the runs chart.
+            await open("All Habits") { send(.openAllHabits) }
+            await open("Habit page (quit)") { send(.openHabit("Smoking")) }
+            await measure("Habit page (quit): scrolling") { await scroll() }
         case "calendar":
             await openTwice("Calendar") { send(.openCalendar) }
             await measure("Calendar: month ‹ ›") {

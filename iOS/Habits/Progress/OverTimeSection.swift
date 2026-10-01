@@ -12,7 +12,8 @@ struct OverTimeSection: View {
     @State private var anchor: LocalDay?
     @State private var snapshot: OverTimeSnapshot?
     @State private var key: Key?
-    @State private var selected: Date?
+    /// The tapped bar in the chart, by its place.
+    @State private var selected: Int?
 
     private struct Key: Hashable {
         let range: OverTimeRange
@@ -76,21 +77,18 @@ struct OverTimeSection: View {
     private func byWeekday(_ snapshot: OverTimeSnapshot) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("By Weekday").font(.subheadline.weight(.semibold))
-            Chart(snapshot.weekdays) { day in
-                BarMark(x: .value("Weekday", day.name), y: .value(snapshot.weekdayAverages ? "Average" : "Done", day.value))
-                    .foregroundStyle(habit.color.color.opacity(day.days == 0 ? 0.2 : 0.8))
-            }
-            .chartYAxis {
-                AxisMarks { value in
-                    AxisGridLine()
-                    AxisValueLabel {
-                        if let v = value.as(Double.self) {
-                            Text(snapshot.weekdayAverages ? axisLabel(v, snapshot.scale) : "\(Int(v))%")
-                        }
-                    }
-                }
-            }
-            .chartYScale(domain: .automatic(includesZero: true))
+            let count = Double(max(snapshot.weekdays.count, 1))
+            LightBarChart(title: "By Weekday",
+                          bars: snapshot.weekdays.enumerated().map { i, day in
+                              LightBarChart.Bar(id: i, from: Double(i) / count + 0.1 / count, to: Double(i + 1) / count - 0.1 / count,
+                                                value: day.value, opacity: day.days == 0 ? 0.2 : 0.8, over: false,
+                                                label: "\(day.name), \(snapshot.weekdayAverages ? axisLabel(day.value, snapshot.scale) : "\(Int(day.value))%")")
+                          },
+                          xLabels: snapshot.weekdays.enumerated().map { i, day in
+                              LightBarChart.XLabel(at: (Double(i) + 0.5) / count, text: day.name)
+                          },
+                          color: habit.color.color,
+                          yLabel: { snapshot.weekdayAverages ? axisLabel($0, snapshot.scale) : "\(Int($0))%" })
             .frame(height: 120)
             if let caption = snapshot.weekdayCaption {
                 Text(caption).font(.footnote).foregroundStyle(.secondary)
@@ -189,54 +187,64 @@ struct OverTimeSection: View {
         let calendar = store.calendar
         let lower = calendar.startOfDay(for: snapshot.span.lowerBound.date(calendar: calendar))
         let upper = calendar.startOfDay(for: snapshot.span.upperBound.adding(days: 1, calendar: calendar).date(calendar: calendar))
-        let color = habit.color.color
-        let chosen = selected.flatMap { date in snapshot.bars.first { $0.start <= date && date < $0.end } }
-        // Only what's drawn gets a mark (PERFORMANCE.md, 1 Oct 2026): an annotation on every bar and a goal line per
-        // bar made laying out this chart most of a 1-second freeze when the habit page first scrolled to it.
-        return Chart {
-            ForEach(snapshot.bars) { bar in
-                BarMark(x: .value("Date", bar.start, unit: snapshot.bucket), y: .value("Value", bar.value))
-                    // Lower is better for a limit: a neutral colour, never a celebration (report §11.2). Part done is lighter.
-                    .foregroundStyle(color.opacity(snapshot.isLimit ? 0.6 : bar.light ? 0.45 : 1))
-            }
-            // The small ▲ over a limit that went over, on those bars only.
-            ForEach(snapshot.bars.filter(\.over)) { bar in
-                PointMark(x: .value("Date", bar.start, unit: snapshot.bucket), y: .value("Value", bar.value))
-                    .symbolSize(0)
-                    .annotation(position: .top, spacing: 1) {
-                        Image(systemName: "arrowtriangle.up.fill").font(.system(size: 6)).foregroundStyle(.secondary)
-                    }
-                    .accessibilityHidden(true)
-            }
-            // The goal or limit: one line for each run of bars with the same goal; it steps where the goal changed.
-            ForEach(Self.goalSegments(snapshot.bars)) { segment in
-                RuleMark(xStart: .value("From", segment.start), xEnd: .value("To", segment.end), y: .value("Goal", segment.goal))
-                    .foregroundStyle(Color.secondary)
-                    .lineStyle(StrokeStyle(lineWidth: 1, dash: snapshot.isLimit ? [4, 3] : []))
-            }
-            if let chosen {
-                RuleMark(x: .value("Chosen", chosen.start, unit: snapshot.bucket))
-                    .foregroundStyle(Color.secondary.opacity(0.3))
-                    .annotation(position: .top, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {
-                        Text(chosen.label).font(.caption.weight(.semibold))
-                            .padding(.horizontal, 8).padding(.vertical, 4)
-                            .background(RoundedRectangle(cornerRadius: 6).fill(Color(.secondarySystemGroupedBackground)))
-                    }
-            }
+        let length = max(upper.timeIntervalSince(lower), 1)
+        let at = { (date: Date) in min(1, max(0, date.timeIntervalSince(lower) / length)) }
+        // Lower is better for a limit: a neutral colour, never a celebration (report §11.2). Part done is lighter.
+        let bars = snapshot.bars.enumerated().map { i, bar in
+            LightBarChart.Bar(id: i, from: at(bar.start), to: at(bar.end), value: bar.value,
+                              opacity: snapshot.isLimit ? 0.6 : bar.light ? 0.45 : 1, over: bar.over, label: bar.label)
         }
-        .chartXScale(domain: lower...upper)
-        .chartXSelection(value: $selected)
-        .chartYAxis {
-            AxisMarks { value in
-                AxisGridLine()
-                AxisValueLabel {
-                    if let v = value.as(Double.self) { Text(axisLabel(v, snapshot.scale)) }
+        // The goal or limit: one line for each run of bars with the same goal; it steps where the goal changed.
+        let goals = Self.goalSegments(snapshot.bars).map { LightBarChart.GoalLine(from: at($0.start), to: at($0.end), value: $0.goal) }
+        return LightBarChart(title: "Over Time, \(snapshot.title)", bars: bars, goals: goals, dashedGoals: snapshot.isLimit,
+                             xLabels: xLabels(snapshot, at: at), color: habit.color.color,
+                             yLabel: { axisLabel($0, snapshot.scale) }, chosen: $selected)
+            .frame(height: 180)
+            .accessibilityIdentifier("over-time-chart")
+    }
+
+    /// Dates under the chart, as Swift Charts chose them: each week's first day for a month of days, months for a year,
+    /// at most six, so they never crowd.
+    private func xLabels(_ snapshot: OverTimeSnapshot, at: (Date) -> Double) -> [LightBarChart.XLabel] {
+        let calendar = store.calendar
+        var marks: [(day: LocalDay, text: String)] = []
+        let unit: Calendar.Component
+        switch snapshot.bucket {
+        case .day:
+            unit = .day
+            var day = snapshot.span.lowerBound
+            while day <= snapshot.span.upperBound {
+                if snapshot.range == .week || day.weekday(calendar: calendar) == calendar.firstWeekday {
+                    let date = day.date(calendar: calendar)
+                    marks.append((day, snapshot.range == .week ? date.formatted(.dateTime.weekday(.narrow))
+                                  : date.formatted(.dateTime.month(.abbreviated).day())))
                 }
+                day = day.adding(days: 1, calendar: calendar)
+            }
+        case .year:
+            unit = .year
+            for year in snapshot.span.lowerBound.year...snapshot.span.upperBound.year {
+                marks.append((LocalDay(year: year, month: 1, day: 1), String(year)))
+            }
+        default:
+            unit = .month
+            var month = LocalDay(year: snapshot.span.lowerBound.year, month: snapshot.span.lowerBound.month, day: 1)
+            let multiYear = snapshot.span.lowerBound.year != snapshot.span.upperBound.year
+            while month <= snapshot.span.upperBound {
+                let date = month.date(calendar: calendar)
+                if month >= snapshot.span.lowerBound {
+                    marks.append((month, multiYear && month.month == 1 ? String(month.year) : date.formatted(.dateTime.month(.abbreviated))))
+                }
+                month = LocalDay(year: month.month == 12 ? month.year + 1 : month.year, month: month.month % 12 + 1, day: 1)
             }
         }
-        .chartYScale(domain: .automatic(includesZero: true))
-        .frame(height: 180)
-        .accessibilityIdentifier("over-time-chart")
+        let every = max(1, Int((Double(marks.count) / 6).rounded(.up)))
+        return marks.enumerated().compactMap { i, mark in
+            guard i % every == 0 else { return nil }
+            let start = mark.day.date(calendar: calendar)
+            let end = calendar.date(byAdding: unit, value: 1, to: start) ?? start
+            return LightBarChart.XLabel(at: (at(start) + at(end)) / 2, text: mark.text)
+        }
     }
 
     private struct GoalSegment: Identifiable {
