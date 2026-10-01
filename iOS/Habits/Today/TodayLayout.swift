@@ -47,6 +47,7 @@ import SwiftUI
     /// The person opened or folded a part by hand.
     func setOpen(_ key: String, _ open: Bool, reduceMotion: Bool) {
         withAnimation(Motion.fold(reduceMotion)) { box(key).open = open }
+        Analytics.shared.count(.sectionFold, ticket: Analytics.shared.ticket)
     }
 
     /// Opens a part at once, without animation (revealing a new habit, a tapped notification).

@@ -112,8 +112,8 @@ struct ContractTests {
         check(payload["$process_person_profile"] as? Bool == false && payload["$geoip_disable"] as? Bool == true, "no profiles or geoip")
         check(!String(decoding: data, as: UTF8.self).contains(sentinel), "no sensitive content in wire body")
         check(!config.eligible, "production is fail-closed")
-        config.releaseChannel = "production"; config.productionVerified = true
-        check(config.eligible, "explicit verified production configuration")
+        config.releaseChannel = "production"; config.productionEnabled = true
+        check(config.eligible, "explicit production configuration")
         config.releaseChannel = "development"
         check(!config.eligible, "development never reaches sole production project")
         print("Analytics contract: \(checks) checks passed; inspected \(batch.count) outgoing envelopes. No network requests.")

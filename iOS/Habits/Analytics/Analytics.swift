@@ -8,7 +8,7 @@ nonisolated final class Analytics: @unchecked Sendable {
         let bundle = Bundle.main
         var config = AnalyticsDeliveryConfiguration()
         config.projectToken = bundle.object(forInfoDictionaryKey: "AnalyticsProjectToken") as? String ?? ""
-        config.productionVerified = bundle.object(forInfoDictionaryKey: "AnalyticsProductionVerified") as? Bool ?? false
+        config.productionEnabled = bundle.object(forInfoDictionaryKey: "AnalyticsProductionEnabled") as? Bool ?? false
         #if !DEBUG
         config.releaseChannel = "production"
         #endif
@@ -89,7 +89,7 @@ nonisolated final class Analytics: @unchecked Sendable {
         queue.async { [self] in
             guard valid(ticket), ledger != nil else { return }
             settle(now: now, uptime: ProcessInfo.processInfo.systemUptime)
-            ledger?.advance(now: now, sampled: sampled)
+            advance(now: now)
             if sampled { body(&ledger!) }
             save()
         }
@@ -177,6 +177,10 @@ nonisolated final class Analytics: @unchecked Sendable {
             save()
         }
     }
+    private func advance(now: Date) {
+        let included = sampled
+        ledger?.advance(now: now, sampled: included)
+    }
     private func markVisit() {
         guard consented, ledger != nil, attention.foreground else { return }
         ledger?.foreground = true
@@ -194,9 +198,9 @@ nonisolated final class Analytics: @unchecked Sendable {
             let midnight = Double(AnalyticsLedger.day(now))
             let before = min(duration, max(0, midnight - lastWall.timeIntervalSince1970))
             if before > 0 { ledger?.seconds[screen.rawValue, default: 0] += before }
-            ledger?.advance(now: now, sampled: sampled)
+            advance(now: now)
             ledger?.seconds[screen.rawValue, default: 0] += duration - before
-        } else { ledger?.advance(now: now, sampled: sampled) }
+        } else { advance(now: now) }
         if attention.foreground { ledger?.foreground = true }
     }
     func flush() { queue.async { [self] in settle(now: .now, uptime: ProcessInfo.processInfo.systemUptime); save(); flushOnQueue() } }

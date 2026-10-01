@@ -122,6 +122,7 @@ struct NewItemView: View {
                 case .bad: question("What do you want to do?", [.quit, .cutBack])
                 }
             }
+            .analyticsScreen(.newHabit)
             .navigationTitle("New")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -483,6 +484,7 @@ struct HabitForm: View {
             if editing { editOutcomeSection }
         }
         .accessibilityIdentifier("habit-form")
+        .analyticsScreen(editing ? .habitDetail : type == .task ? .newTask : .newHabit)
         .navigationTitle(editing ? (type == .task ? "Edit Task" : "Edit Habit") : isHabit && type != .cutBack ? "New Habit" : type.title)
         .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)

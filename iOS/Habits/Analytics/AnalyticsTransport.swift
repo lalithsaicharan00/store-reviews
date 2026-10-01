@@ -5,21 +5,23 @@ import FoundationNetworking
 
 nonisolated struct AnalyticsDeliveryConfiguration: Sendable {
     var projectToken = ""
-    /// Set only after allowance, organization usage, zero paid limit, retention and payload review are verified.
-    var productionVerified = false
+    /// Explicit release gate; no-billing account confirmed by owner, published free allowance checked.
+    /// Billing API verification remains separately documented; this flag never enables paid services.
+    var productionEnabled = false
     var releaseChannel = "development"
     var appVersion = "0"
     var appBuild = "0"
     var osMajor = 0
     var sampleRate = 1.0
     var samplingVersion = 1
-    var eligible: Bool { productionVerified && releaseChannel == "production" && projectToken.hasPrefix("phc_") }
+    var eligible: Bool { productionEnabled && releaseChannel == "production" && projectToken.hasPrefix("phc_") }
 
     func payload(_ records: [AnalyticsRecord], installation: UUID) throws -> Data {
+        guard records.allSatisfy({ AnalyticsContract.valid($0.event, $0.properties) }) else { throw CocoaError(.coderInvalidValue) }
         let events = records.map { record -> [String: Any] in
             var properties = record.properties.mapValues(\.json)
             properties.merge(["schema_version": 1, "platform": "ios", "form_factor": "phone", "app_version": safeVersion(appVersion),
-                "app_build": safeVersion(appBuild), "os_major": max(0, min(100, osMajor)), "release_channel": releaseChannel,
+                "app_build": safeVersion(appBuild), "os_major": max(0, min(100, osMajor)), "release_channel": ["production", "beta", "development"].contains(releaseChannel) ? releaseChannel : "development",
                 "origin_surface": record.origin.surface, "plan": "unknown", "sample_rate": sampleRate, "sampling_version": samplingVersion,
                 "analytics_record_id": record.id.uuidString, "$process_person_profile": false, "$geoip_disable": true,
                 "$ip": "0.0.0.0"]) { _, new in new }

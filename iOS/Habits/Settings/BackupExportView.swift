@@ -51,11 +51,13 @@ struct BackupExportView: View {
     }
 
     private func export() {
+        let telemetry = store.analytics.ticket
         working = true
         Task { @MainActor in
             defer { working = false }
             await store.flush()
             guard store.problem == nil, store.isStorageReady else {
+                analyticsResult(operation: "export", format: "csv", succeeded: false, ticket: telemetry)
                 message = BackupMessage(title: "Couldn’t Export", text: HabitStore.BackupError.pendingSave.localizedDescription)
                 return
             }
@@ -63,31 +65,52 @@ struct BackupExportView: View {
             do {
                 let url = try await Task.detached { try DataExport.file(rows: rows, day: day) }.value
                 share(url)
-            } catch { message = BackupMessage(title: "Couldn’t Export", text: error.localizedDescription) }
+                analyticsResult(operation: "export", format: "csv", succeeded: true, ticket: telemetry)
+            } catch {
+                analyticsResult(operation: "export", format: "csv", succeeded: false, ticket: telemetry)
+                message = BackupMessage(title: "Couldn’t Export", text: error.localizedDescription) }
         }
     }
 
     private func backup() {
+        let telemetry = store.analytics.ticket
         working = true
         Task { @MainActor in
             defer { working = false }
-            do { share(try await store.backupFile()) }
-            catch { message = BackupMessage(title: "Couldn’t Make a Backup", text: error.localizedDescription) }
+            do {
+                share(try await store.backupFile())
+                analyticsResult(operation: "manual_backup", format: "legacy", succeeded: true, ticket: telemetry)
+            } catch {
+                analyticsResult(operation: "manual_backup", format: "legacy", succeeded: false, ticket: telemetry)
+                message = BackupMessage(title: "Couldn’t Make a Backup", text: error.localizedDescription) }
         }
     }
 
     private func restore(_ url: URL) {
+        let telemetry = store.analytics.ticket
         working = true
         Task { @MainActor in
             defer { working = false }
             do {
                 let added = try await store.restore(from: url)
+                analyticsResult(operation: "restore", format: "legacy", succeeded: true, ticket: telemetry)
                 message = BackupMessage(title: added.changed ? "Backup Restored" : "Nothing New",
                     text: added.changed
                         ? "Added \(added.habits) habits or tasks, \(added.entries) logged entries and \(added.settings) notes or settings. Anything already here was kept."
                         : "Everything in this backup is already here. Nothing was changed.")
-            } catch { message = BackupMessage(title: "Couldn’t Restore", text: error.localizedDescription) }
+            } catch {
+                analyticsResult(operation: "restore", format: "legacy", succeeded: false, ticket: telemetry)
+                message = BackupMessage(title: "Couldn’t Restore", text: error.localizedDescription)
+            }
         }
+    }
+
+    /// Success means local file generation or durable merge, never proof of an external cloud copy.
+    private func analyticsResult(operation: String, format: String, succeeded: Bool, ticket: AnalyticsTicket?) {
+        store.analytics.event(.backup, ["operation": .text(operation), "provider": .text("local"), "format": .text(format),
+            "restore_mode": .text(operation == "restore" ? "merge" : "not_applicable"), "result": .text(succeeded ? "success" : "failed"),
+            "failure_code": .text(succeeded ? "none" : "unknown")], ticket: ticket)
+        store.analytics.reliability("backup", succeeded: succeeded, ticket: ticket)
     }
 
     private func cleanSharedFile() {

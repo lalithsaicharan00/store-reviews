@@ -71,7 +71,7 @@ nonisolated struct AnalyticsLedger: Codable, Sendable {
             }
         }
         counters = [:]; visits = [:]; seconds = [:]; transitions = []; foreground = false; external = false
-        period = next; partial = next != Self.day(now) // false for a continuously consented installation
+        period = next; partial = false // false for a continuously consented installation
         prune(now: now)
     }
 }

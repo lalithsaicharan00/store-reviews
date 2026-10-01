@@ -98,6 +98,8 @@ nonisolated enum AnalyticsContract {
     static let screenKeys = Set(AnalyticsScreen.allCases.flatMap { ["visits_" + $0.rawValue, "active_seconds_" + $0.rawValue] })
 
     static func valid(_ event: AnalyticsEvent, _ properties: [String: AnalyticsValue]) -> Bool {
+        if let required = fields[event], ![.configuration, .widgetInventory].contains(event),
+           !required.isSubset(of: Set(properties.keys)) { return false }
         var allowed = fields[event] ?? []
         if event == .features { allowed.formUnion(counterKeys) }
         if event == .screens { allowed.formUnion(screenKeys) }
@@ -116,6 +118,10 @@ nonisolated enum AnalyticsContract {
         if let entity = properties["entity_type"]?.text, let type = properties["habit_type"]?.text {
             if (entity == "task") != (type == "not_applicable") { return false }
         }
+        if event == .purchase, !["verified", "pending", "cancelled", "failed"].contains(properties["result"]?.text ?? "") { return false }
+        if event == .purchaseRestore, !["restored", "no_entitlement", "cancelled", "failed"].contains(properties["result"]?.text ?? "") { return false }
+        if [.account, .backup].contains(event), !["success", "cancelled", "failed"].contains(properties["result"]?.text ?? "") { return false }
+        if event == .account, properties["new_account"]?.text == "true", properties["result"]?.text != "success" { return false }
         return true
     }
 }

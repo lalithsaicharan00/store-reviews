@@ -6,6 +6,7 @@ struct PlusView: View {
     /// Opened from ≡ → Plus, not at the free limit: the heading says where the person stands instead.
     var fromMenu = false
     @Environment(HabitStore.self) private var store
+    @State private var analyticsFlow = Analytics.shared.ticket
 
     private var heading: String {
         guard fromMenu else { return "You're using all 5 free habits" }
@@ -34,6 +35,9 @@ struct PlusView: View {
             }
         .padding(24)
         .analyticsScreen(.plus)
+        .onAppear {
+            Analytics.shared.event(.paywall, ["entry_point": .text(fromMenu ? "menu" : "habit_limit")], ticket: analyticsFlow)
+        }
         .navigationTitle("Plus")
         .navigationBarTitleDisplayMode(.inline)
     }

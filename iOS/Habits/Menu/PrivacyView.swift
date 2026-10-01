@@ -4,6 +4,7 @@ import SwiftUI
 /// the iPhone's own Face ID, Touch ID or passcode, never a separate code to forget; the switch only changes after Face ID
 /// (or the passcode) works here, so it can never lock someone out.
 struct PrivacyView: View {
+    @Environment(HabitStore.self) private var store
     @State private var lockOn = AppLock.isEnabled
     @State private var usageOn = Analytics.shared.consented
     // Consent remains separate; no crash collector is present in this consolidated app.
@@ -24,7 +25,7 @@ struct PrivacyView: View {
                     .accessibilityIdentifier("privacy-usage")
                     .onChange(of: usageOn) {
                         Analytics.shared.setConsent(usageOn)
-                        if usageOn { AnalyticsInteractionObserver.install() }
+                        if usageOn { AnalyticsInteractionObserver.install(); store.analyticsConfiguration() }
                     }
                 Toggle("Share Crash Diagnostics", isOn: $crashOn)
                     .disabled(true)
