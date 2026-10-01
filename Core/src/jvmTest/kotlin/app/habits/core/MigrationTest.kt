@@ -115,7 +115,31 @@ class MigrationTest {
         assertEquals(null, habit.startsOn)
         assertEquals(null, habit.endsOn)
         assertEquals(true, habit.remind)
-        assertEquals("5", repo.pragma("user_version"))
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        repo.close()
+    }
+
+    /** Schema 6 adds sync. Existing data is kept, gets its first stamps, and is all queued once the person signs in. */
+    @Test fun version5UpgradesAndEverythingSyncsOnFirstSignIn() = runTest {
+        val connection = createSchema(5)
+        connection.execSQL(
+            "INSERT INTO habit VALUES ('h1', 'Read', 'book', 'orange', 'duration', NULL, 1.0, 'anytime', 20.0, 'day', " +
+                "NULL, 'daily', NULL, NULL, 0, NULL, 0, 1000, 1000, NULL, NULL, 1, 'notification', NULL, '2026-09-01', NULL)"
+        )
+        connection.execSQL("INSERT INTO entry VALUES ('e1', 'h1', NULL, '2026-09-27', 20.0, 2000, 'Europe/London', NULL, NULL)")
+        connection.execSQL("INSERT INTO setting VALUES ('week_start', '2')")
+        connection.execSQL("INSERT INTO setting VALUES ('placement_v2', '1')")
+        connection.close()
+
+        val repo = HabitRepository.open(path)
+        val snapshot = repo.load()
+        assertEquals("2026-09-01", snapshot.habits.single().startsOn)
+        assertEquals(listOf("e1"), snapshot.entries.map { it.id })
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        assertEquals(0, repo.syncStatus().waiting, "nothing is queued before there's an account")
+        repo.bindAccount("account-1")
+        // The habit, the tick and the synced setting; the local-only placement marker stays on this phone.
+        assertEquals(3, repo.syncStatus().waiting)
         repo.close()
     }
 }

@@ -13,3 +13,5 @@ internal actual fun inMemoryDatabaseBuilder(): RoomDatabase.Builder<HabitDatabas
     Room.inMemoryDatabaseBuilder<HabitDatabase>()
 
 internal actual val databaseDispatcher: CoroutineContext = Dispatchers.IO
+
+internal actual fun currentTimeMillis(): Long = System.currentTimeMillis()

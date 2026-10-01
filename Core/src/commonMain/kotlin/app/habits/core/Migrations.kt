@@ -51,4 +51,14 @@ internal object Migrations {
             connection.execSQL("ALTER TABLE habit ADD COLUMN ends_on TEXT")
         }
     }
+
+    /** Schema 6: sync bookkeeping (outbox, per-row stamps, device state). Existing rows get their stamps on first open. */
+    val v5ToV6 = object : Migration(5, 6) {
+        override suspend fun migrate(connection: SQLiteConnection) {
+            connection.execSQL("CREATE TABLE IF NOT EXISTS `outbox` (`seq` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `op_id` TEXT NOT NULL, `op` TEXT NOT NULL, `problem` TEXT)")
+            connection.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_outbox_op_id` ON `outbox` (`op_id`)")
+            connection.execSQL("CREATE TABLE IF NOT EXISTS `sync_meta` (`table_name` TEXT NOT NULL, `row_id` TEXT NOT NULL, `hlc` TEXT NOT NULL, `clocks` TEXT, `extra` TEXT, `pending` INTEGER NOT NULL, PRIMARY KEY(`table_name`, `row_id`))")
+            connection.execSQL("CREATE TABLE IF NOT EXISTS `local_state` (`key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`key`))")
+        }
+    }
 }

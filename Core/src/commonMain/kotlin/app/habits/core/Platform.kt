@@ -9,3 +9,6 @@ internal expect fun inMemoryDatabaseBuilder(): RoomDatabase.Builder<HabitDatabas
 
 /** Database work runs off the main thread. */
 internal expect val databaseDispatcher: CoroutineContext
+
+/** Wall-clock time in epoch milliseconds (the sync clock's physical part). */
+internal expect fun currentTimeMillis(): Long

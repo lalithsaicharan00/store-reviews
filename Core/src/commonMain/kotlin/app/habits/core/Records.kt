@@ -102,3 +102,44 @@ data class Snapshot(
     val entries: List<EntryRecord>,
     val settings: List<SettingRecord>,
 )
+
+// Sync (schema 6). Local bookkeeping only: none of these rows are synced themselves.
+
+/**
+ * A change waiting for the server (Architecture 05 §5). Written in the same transaction as the change itself and
+ * removed only when the server acknowledges it, so a crash or a dead network never loses one. `problem` is set when
+ * the server can never accept the op; it's then kept aside instead of being retried forever.
+ */
+@Entity(tableName = "outbox", indices = [Index("op_id", unique = true)])
+data class OutboxRecord(
+    @PrimaryKey(autoGenerate = true) val seq: Long = 0,
+    @ColumnInfo(name = "op_id") val opId: String,
+    /** The op as JSON, exactly as it will be sent. */
+    val op: String,
+    val problem: String? = null,
+)
+
+/**
+ * How sync sees one row: the stamp of the change that set each field, and any fields this app version doesn't know
+ * (kept and passed on, 05 §12). Most rows have one stamp for every field, so only the exceptions are listed.
+ */
+@Entity(tableName = "sync_meta", primaryKeys = ["table_name", "row_id"])
+data class SyncMetaRecord(
+    @ColumnInfo(name = "table_name") val tableName: String,
+    @ColumnInfo(name = "row_id") val rowId: String,
+    /** The stamp most fields share. */
+    val hlc: String,
+    /** JSON `{field: stamp}` for fields whose stamp differs from `hlc`, or null. */
+    val clocks: String?,
+    /** JSON `{field: value}` for fields this version doesn't store in the row, or null. */
+    val extra: String?,
+    /** True when the row can't be built yet (a change arrived before the record was complete); all fields are in `extra`. */
+    val pending: Boolean,
+)
+
+/** This device's sync state: its clock, its node ID, the account it syncs with, and the server cursor. */
+@Entity(tableName = "local_state")
+data class LocalStateRecord(
+    @PrimaryKey val key: String,
+    val value: String,
+)
