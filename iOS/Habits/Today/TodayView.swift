@@ -284,8 +284,12 @@ struct TodayView: View {
                                 .padding(.horizontal, 12)
                                 .frame(minHeight: 32)
                                 .background(Color.ink, in: Capsule())
+                                .contentShape(Capsule())
                             }
-                            .buttonStyle(.plain)
+                            // Borderless: the style for a button inside a list row. With .plain the tap never reached
+                            // it, so ✕ didn't clear the filter (GroupsUITests on CI, 1 Oct 2026).
+                            .buttonStyle(.borderless)
+                            .frame(minHeight: 44)
                             .accessibilityLabel("Showing \(shownGroup.name) only")
                             .accessibilityHint("Shows all habits")
                             .accessibilityIdentifier("group-filter-chip")
