@@ -16,7 +16,7 @@ Written by Codex, 1 October 2026. Continue on `analytics`; PR base is `integrati
 - [x] Screen visits and monotonic 30s idle-capped attention with foreground/cover/lock handling; no observable clock.
 - [ ] Existing backup flows and configuration states, automatic vs selected choices; verified purchase/account results only when supported.
 - [ ] Payload/consent/offline/retry/native callback tests, meaningful macOS targeted tests and performance evidence.
-- [ ] Useful provider dashboards with consent/platform/sampling/coverage labels; actual provider delivery evidence when permitted.
+- [x] Useful provider dashboards with consent/platform/sampling/coverage labels; actual provider delivery evidence when permitted.
 - [ ] Refresh report assumptions, privacy manifest and handoff; commit/push analytics and open PR; never merge/release.
 
 ## External dependencies
@@ -30,5 +30,6 @@ Current integration lacks onboarding/account/sync/purchase/widget targets. Do no
 - Pushed `6a6d19f`, `5631cad`, `1910242`. Early native failures diagnosed as Swift overlapping optional-ledger access; helper snapshots sampling before mutation.
 - [36893196823](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36893196823): native contract/payload checks, speed rules and core storage/migrations passed; app build failed on Privacy Section initializer; corrected for next run. UI/performance skipped.
 - New deterministic transport retry/ack/invalid-batch/opt-out tests, per-day terminal-event cap and privacy manifest are staged for the next targeted run.
-- Dashboards [989702](https://eu.posthog.com/project/290602/dashboard/989702) and [989704](https://eu.posthog.com/project/290602/dashboard/989704) created. Eleven derived queries validated against empty actual project (screen aggregate alias corrected and revalidated). Definitions in `iOS/Docs/Analytics Dashboards.json`. Filling/whole-dashboard validation pending. Metrics catalog access unavailable; definitions marked noncanonical.
-- PR not yet created. No merge/release.
+- Dashboards [989702](https://eu.posthog.com/project/290602/dashboard/989702) and [989704](https://eu.posthog.com/project/290602/dashboard/989704) created. Eleven derived queries validated against empty actual project (screen aggregate alias corrected and revalidated). Definitions in `iOS/Docs/Analytics Dashboards.json`. Both dashboards filled and whole-dashboard execution succeeded with no query errors, empty/null results and zero ingestion. Metrics catalog access unavailable; definitions marked noncanonical.
+- [Draft PR #3](https://github.com/lalithsaicharan00/store-reviews/pull/3) opened against integration and attached to this chat. No merge/release.
+- Pushed through `3ab56ab` (latest engine/metadata implementation `0265a1c`). [36896347493](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36896347493) passed expanded native offline/retry/persistence checks and core storage; app build running. Latest-head targeted validation queued (supersedes intermediate pending commit).
