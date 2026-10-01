@@ -34,3 +34,18 @@ const wrong = await call("POST", "/v1/auth/test", { secret: "nope", subject: "x"
 check("test sign-in refuses a wrong secret", wrong.status === 401);
 const apple = await call("POST", "/v1/auth/apple", { idToken: "not.a.token", nonce: "n", device: dev() });
 check("Apple sign-in refuses a fake token", apple.status === 401, apple.json.error);
+
+// Sync: two devices on one account, through the live server.
+{
+  const subject = `smoke-sync-${crypto.randomUUID()}`;
+  const phone = await call("POST", "/v1/auth/test", { secret: TEST_LOGIN_SECRET, subject, create: true, device: dev() });
+  const ipad = await call("POST", "/v1/auth/test", { secret: TEST_LOGIN_SECRET, subject, device: dev() });
+  const hlc = (ms, node) => `${String(ms).padStart(18, "0")}-00000-${node}`;
+  const op = { id: crypto.randomUUID(), table: "habit", row: crypto.randomUUID(), fields: { name: "Live sync ☕", deleted_at: null }, hlc: hlc(Date.now(), "phone"), schema: 6 };
+  const push = await call("POST", "/v1/sync", { cursor: 0, ops: [op] }, phone.json.accessToken);
+  const retry = await call("POST", "/v1/sync", { cursor: 0, ops: [op] }, phone.json.accessToken);
+  check("sync: push, and the same push again", push.status === 200 && push.json.applied[0] === op.id && retry.json.applied[0] === op.id);
+  const pull = await call("POST", "/v1/sync", { cursor: 0, ops: [] }, ipad.json.accessToken);
+  check("sync: the other device receives it exactly once", pull.status === 200 && pull.json.ops.length === 1 && pull.json.ops[0].fields.name === "Live sync ☕");
+  await call("POST", "/v1/account/delete", {}, phone.json.accessToken);
+}

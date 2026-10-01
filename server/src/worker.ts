@@ -1,4 +1,4 @@
-import type { Account, DeviceInfo } from "./account";
+import { type Account, type DeviceInfo, MAX_PUSH } from "./account";
 import {
   type Jurisdiction,
   createAccount,
@@ -67,6 +67,8 @@ async function route(request: Request, url: URL, env: Env): Promise<Response> {
       return signOut(request, env);
     case "POST /v1/account/delete":
       return remove(request, env);
+    case "POST /v1/sync":
+      return sync(request, env);
   }
   throw new HttpError(404, "not_found", "There's nothing here.");
 }
@@ -215,6 +217,25 @@ async function remove(request: Request, env: Env): Promise<Response> {
   await deleteAccount(env.DIRECTORY, claims.accountId);
   await accountStub(env, claims).wipe();
   return json({ deleted: true, at: Date.now() });
+}
+
+// MARK: Sync
+
+/** `{cursor, ops}` → `{applied, rejected, ops, cursor, more}` (Architecture 05, 06 §4). */
+async function sync(request: Request, env: Env): Promise<Response> {
+  const claims = await authenticate(request, env);
+  const body = await readJson<{ cursor?: unknown; ops?: unknown }>(request, 2 * 1024 * 1024);
+  const ops = body.ops ?? [];
+  if (!Array.isArray(ops)) throw new HttpError(400, "bad_request", '"ops" must be a list.');
+  if (ops.length > MAX_PUSH) throw new HttpError(413, "too_many_ops", `Send at most ${MAX_PUSH} ops at a time.`);
+  const cursor = typeof body.cursor === "number" ? body.cursor : 0;
+  const result = await accountStub(env, claims).sync(claims.deviceId, { cursor, ops });
+  if (!result.ok) {
+    if (result.reason === "too_many_ops") throw new HttpError(413, "too_many_ops", `Send at most ${MAX_PUSH} ops at a time.`);
+    throw signedOut();
+  }
+  const { ok: _ok, ...reply } = result;
+  return json(reply);
 }
 
 // MARK: Helpers

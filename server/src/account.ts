@@ -1,16 +1,21 @@
 import { DurableObject } from "cloudflare:workers";
+import { syncMerge, syncProblem } from "../core/Core-sync.mjs";
 import type { VerifiedKey } from "./providers";
 import { newSecret, sha256Hex } from "./tokens";
 
 /**
  * One Durable Object per account, named by account ID (Architecture 06 §4). Its own SQLite database holds the
- * account's devices, sessions and sign-in keys; habit data and the sync log are added with sync (topic 5).
+ * account's devices, sessions and sign-in keys, and its synced data: every record, and the log of every op applied.
  *
  * Every method returns a result instead of throwing, because errors lose their type crossing the RPC boundary.
  * An object with no `account_id` in `meta` is not an account (never set up, or deleted): every call says "gone".
  */
 
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
+
+/** Sync limits (Architecture 06 §4): a push is at most 500 ops (bigger outboxes come in chunks); a pull at most 1,000. */
+export const MAX_PUSH = 500;
+export const MAX_PULL = 1000;
 const SESSION_LIFETIME_MS = 365 * 24 * 60 * 60 * 1000; // slides on every refresh, so active devices never expire
 const RETRY_GRACE_MS = 2 * 60 * 1000;
 
@@ -30,6 +35,27 @@ export interface DeviceInfo {
 }
 
 export type SessionResult = { ok: true; secret: string } | { ok: false; reason: "gone" | "invalid" | "reused" | "expired" };
+
+export interface SyncRequest {
+  /** The last `cursor` this device received; 0 the first time. */
+  cursor: number;
+  ops: unknown[];
+}
+
+export type SyncResult =
+  | {
+      ok: true;
+      /** Every op ID this device can now forget: applied now, or already applied before (a retry). */
+      applied: string[];
+      /** Ops that can never be applied, with why. The device should keep them aside, not retry them forever. */
+      rejected: { id: string | null; problem: string }[];
+      /** Other devices' ops since `cursor`, in the order they were applied here. */
+      ops: unknown[];
+      cursor: number;
+      /** More ops are waiting: sync again straight away with the new cursor. */
+      more: boolean;
+    }
+  | { ok: false; reason: "gone" | "signed_out" | "too_many_ops" };
 
 export interface AccountSummary {
   accountId: string;
@@ -65,8 +91,79 @@ export class Account extends DurableObject<Env> {
           provider TEXT NOT NULL, subject TEXT NOT NULL, email TEXT, is_private_email INTEGER NOT NULL,
           added_at INTEGER NOT NULL, PRIMARY KEY (provider, subject))`);
       }
+      if (current < 2) {
+        // Every synced record, stored as sync sees it (fields + a stamp per field), whatever its table: the server
+        // never needs to know the apps' schema, so it can store fields from app versions newer than itself (05 §12).
+        this.sql.exec(`CREATE TABLE record (
+          table_name TEXT NOT NULL, row_id TEXT NOT NULL, data TEXT NOT NULL, PRIMARY KEY (table_name, row_id))`);
+        // Every op applied, in order. `seq` is the cursor devices pull from; `op_id` makes a retried op a no-op.
+        this.sql.exec(`CREATE TABLE op_log (
+          seq INTEGER PRIMARY KEY AUTOINCREMENT, op_id TEXT NOT NULL UNIQUE, device_id TEXT NOT NULL,
+          op TEXT NOT NULL, received_at INTEGER NOT NULL)`);
+      }
       this.setMeta("schema", String(SCHEMA_VERSION));
     });
+  }
+
+  /**
+   * One sync round (Architecture 06 §4): apply this device's ops in one transaction (skipping any already applied),
+   * then return other devices' ops after `cursor`. A crash before the reply is harmless: the device sends the same
+   * ops again, and they're recognised by ID.
+   */
+  async sync(deviceId: string, request: SyncRequest, now = Date.now()): Promise<SyncResult> {
+    if (this.accountId === undefined) return { ok: false, reason: "gone" };
+    if (this.sql.exec("SELECT 1 FROM session WHERE device_id = ?", deviceId).toArray().length === 0) {
+      return { ok: false, reason: "signed_out" };
+    }
+    if (request.ops.length > MAX_PUSH) return { ok: false, reason: "too_many_ops" };
+
+    const applied: string[] = [];
+    const rejected: { id: string | null; problem: string }[] = [];
+    const valid: { id: string; table: string; row: string; json: string }[] = [];
+    for (const op of request.ops) {
+      const json = JSON.stringify(op);
+      const problem = typeof op === "object" && op !== null ? syncProblem(json) : "not an op";
+      const id = typeof (op as { id?: unknown })?.id === "string" ? (op as { id: string }).id : null;
+      if (problem || id === null) {
+        rejected.push({ id, problem: problem ?? "not an op" });
+      } else {
+        const { table, row } = op as { table: string; row: string };
+        valid.push({ id, table, row, json });
+      }
+    }
+
+    this.ctx.storage.transactionSync(() => {
+      for (const op of valid) {
+        applied.push(op.id);
+        if (this.sql.exec("SELECT 1 FROM op_log WHERE op_id = ?", op.id).toArray().length > 0) continue;
+        const current = this.sql
+          .exec<{ data: string }>("SELECT data FROM record WHERE table_name = ? AND row_id = ?", op.table, op.row)
+          .toArray()[0]?.data;
+        const merged = syncMerge(current ?? null, op.json);
+        this.sql.exec(
+          "INSERT INTO record (table_name, row_id, data) VALUES (?, ?, ?) ON CONFLICT(table_name, row_id) DO UPDATE SET data = excluded.data",
+          op.table, op.row, merged,
+        );
+        this.sql.exec("INSERT INTO op_log (op_id, device_id, op, received_at) VALUES (?, ?, ?, ?)", op.id, deviceId, op.json, now);
+      }
+      this.sql.exec("UPDATE device SET last_seen = ? WHERE id = ?", now, deviceId);
+    });
+
+    // Pull: scan forward from the cursor, skipping this device's own ops (it has them), and move the cursor past
+    // everything scanned so its own ops are never scanned again.
+    const cursor = Number.isSafeInteger(request.cursor) && request.cursor > 0 ? request.cursor : 0;
+    const rows = this.sql
+      .exec<{ seq: number; device_id: string; op: string }>("SELECT seq, device_id, op FROM op_log WHERE seq > ? ORDER BY seq LIMIT ?", cursor, MAX_PULL)
+      .toArray();
+    const ops = rows.filter((r) => r.device_id !== deviceId).map((r) => JSON.parse(r.op) as unknown);
+    const last = rows.at(-1);
+    return { ok: true, applied, rejected, ops, cursor: last ? last.seq : cursor, more: rows.length === MAX_PULL };
+  }
+
+  /** For support and tests: the merged record, as the server holds it. */
+  async record(table: string, row: string): Promise<unknown> {
+    const data = this.sql.exec<{ data: string }>("SELECT data FROM record WHERE table_name = ? AND row_id = ?", table, row).toArray()[0]?.data;
+    return data ? (JSON.parse(data) as unknown) : null;
   }
 
   private meta(key: string): string | undefined {

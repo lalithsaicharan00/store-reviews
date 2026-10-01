@@ -13,11 +13,13 @@ kotlin {
         target.binaries.framework {
             baseName = "Core"
             isStatic = true
+            export(project(":sync"))
         }
     }
 
     sourceSets {
         commonMain.dependencies {
+            api(project(":sync"))
             implementation("androidx.room3:room3-runtime:3.0.3")
             implementation("androidx.sqlite:sqlite-bundled:2.7.1")
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
