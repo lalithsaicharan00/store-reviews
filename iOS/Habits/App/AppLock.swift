@@ -6,7 +6,7 @@ import SwiftUI
 /// Users show the three ways a lock fails: a forgotten app passcode locks people out of their own history (1★), the
 /// list shows for an instant before the lock or in the app switcher, and the widget shows it anyway. So: the iPhone's
 /// own Face ID, Touch ID or passcode (never a separate code to forget); a cover whenever the app isn't in front, from
-/// the very first frame; and, once a widget exists, it shows icons and counts without names while the lock is on.
+/// the very first frame; and the installed widgets publish a content-hidden state while the lock is enabled.
 /// Ported from the 29–30 Sep feature branch on 1 Oct 2026, with the Face ID usage text it was missing (without it
 /// iOS ends the app the moment Face ID is asked for).
 @Observable

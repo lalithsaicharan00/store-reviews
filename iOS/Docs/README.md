@@ -22,6 +22,7 @@ These are the iPhone app's own documents: the specs it was built from and the us
 | [Progress — What to Build, in Order](<Specs/Progress — What to Build, in Order.md>) | **Current.** Build Plan #60a–#60g: four fixes first, then Progress in three phases; Progress opens from the ≡ menu | Progress, the habit page's stats, Today's weekly-goal counting, cut-down limits, archive, quit slips |
 | [Routine Player — Design Decisions](<Specs/Routine Player — Design Decisions.md>) | **Current.** Consolidates the routine player hierarchy, spacing, goals and actions with reasons | The full-screen routine player |
 | [New Habit Goal and Time of Day](<Specs/New Habit Goal and Time of Day.md>) | **Current.** Its Schedule and Goal parts are superseded where they conflict with Design Rules' "Schedule and Goal" section | The New Habit form, Goal screen, Time of Day, units, checklists |
+| [iPhone Widgets](<iPhone Widgets.md>) | iPhone widget kinds, App Group, logging/privacy contract, account and entitlement merge hooks; physical-device release matrix | Home/Lock widgets, widget publication, integration |
 | [Pending to Implement](<Specs/Pending to Implement.md>) | **Partly superseded.** §6 and its sidebar reliability addendum cover reminder scheduling, alarms and notification actions | Reminders, alarms, Remind Again |
 | [Today Improvements](<Specs/Today Improvements.md>) | **Partly superseded** by the Section Header research (28 Sep) | Today's sections, routine play, the day bar |
 
@@ -54,3 +55,4 @@ The work order for the whole app is [Build Plan](<../Build Plan.md>).
 | [Progress Page — Research](<Checklists/Progress Page — Research.md>) | Research done 30 Sep: [The Progress Page — What People Need, and How to Build It](<../../Research/Research Reports/Progress and Statistics/The Progress Page — What People Need, and How to Build It.md>); not built yet (Build Plan #60) |
 | [Sidebar — Backup Tasks and Reminders](<Checklists/Sidebar — Backup Tasks and Reminders.md>) | Free backup/export/restore, every saved task with editing, reminder reliability and Actions/performance evidence |
 | [App Speed — Round 2](<Checklists/App Speed — Round 2.md>) | 30 Sep: optimised phone build, remembered streaks, instant taps, stall meter; rules in `iOS/PERFORMANCE.md` |
+| [iPhone Widgets](<Checklists/iPhone Widgets.md>) | Research and implementation on `codex/iphone-widgets`; macOS results and device release checks are recorded in the research report |

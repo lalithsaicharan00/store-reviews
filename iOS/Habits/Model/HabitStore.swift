@@ -84,7 +84,13 @@ final class HabitStore {
     @ObservationIgnored private var entriesByDay: [UUID: [LocalDay: [Entry]]]?
     var settings = DaySettings() { didSet { cachedCalendar = nil; placementCache = [:]; startDays = [:]; forgetAll() } }
     /// Running timers for duration habits: habit ID → start time.
-    private(set) var timers: [UUID: Date] = [:]
+    private(set) var timers: [UUID: Date] = [:] {
+        didSet {
+            for id in Set(oldValue.keys).union(timers.keys) where oldValue[id] != timers[id] {
+                widgetProjectionCache[id] = nil
+            }
+        }
+    }
     /// For a timed habit spread over times of day: the part a running timer is for.
     private(set) var timerSlots: [UUID: String] = [:]
     /// Days a habit was skipped ("Skip today"). A skipped day is simply not one of its days: hidden on Today and
@@ -143,7 +149,7 @@ final class HabitStore {
     }
     struct NoteTarget: Equatable { let habit: UUID?; let day: LocalDay }
     /// Plus unlocks unlimited habits. Set from the store purchase (build-plan: billing, later).
-    var isPlus = false
+    var isPlus = false { didSet { if oldValue != isPlus { onChange?() } } }
     static let freeHabitLimit = 5
 
     /// Tasks are always free; only active build and quit habits use a habit slot.
@@ -197,12 +203,16 @@ final class HabitStore {
     @ObservationIgnored private var summaries: [LocalDay: (done: Int, total: Int)] = [:]
     @ObservationIgnored private var savedHabits: [UUID: Habit]?
     @ObservationIgnored private var startDays: [UUID: (createdAt: Date, day: LocalDay)] = [:]
+    /// Widget projections reuse the same per-item invalidation as the app's remembered numbers.
+    @ObservationIgnored var widgetProjectionContext: String?
+    @ObservationIgnored var widgetProjectionCache: [UUID: [WidgetItem]] = [:]
 
     private func forget(_ habit: UUID) {
         pastRuns[habit] = nil
         bestRuns[habit] = nil
         totalLines[habit] = nil
         monthCounts[habit] = nil
+        widgetProjectionCache[habit] = nil
         summaries = [:]
     }
 
@@ -213,6 +223,8 @@ final class HabitStore {
         monthCounts = [:]
         summaries = [:]
         savedHabits = nil
+        widgetProjectionCache = [:]
+        widgetProjectionContext = nil
     }
 
     /// Only a saved habit's numbers are remembered, never a form's draft (which shares its ID while being edited).
@@ -301,9 +313,10 @@ final class HabitStore {
     /// Adding one calendar day to a shifted start is wrong when daylight saving changes overnight.
     func dayBounds(_ day: LocalDay, calendar recordingCalendar: Calendar? = nil) -> ClosedRange<Date> {
         let c = recordingCalendar ?? calendar
-        let offset = Double(settings.dayEndHour) * 3600
-        let start = c.startOfDay(for: day.date(calendar: c)).addingTimeInterval(offset)
-        let end = c.startOfDay(for: day.adding(days: 1, calendar: c).date(calendar: c)).addingTimeInterval(offset - 1)
+        // Wall-clock boundaries: a 04:00 day starts at 04:00 even on a DST transition.
+        let start = c.date(bySettingHour: settings.dayEndHour, minute: 0, second: 0, of: day.date(calendar: c))!
+        let end = c.date(bySettingHour: settings.dayEndHour, minute: 0, second: 0,
+                         of: day.adding(days: 1, calendar: c).date(calendar: c))!.addingTimeInterval(-1)
         return start...end
     }
 
@@ -1466,7 +1479,9 @@ final class HabitStore {
     @ObservationIgnored private var reloadWhenWritten = false
 
     /// Waits for every pending change to reach the database.
-    func flush() async { await writeQueue?.value }
+    func flush() async {
+        repeat { await writeQueue?.value } while pendingWrites > 0
+    }
 
     func add(_ habit: Habit) {
         perform { [self] in
@@ -1573,8 +1588,8 @@ final class HabitStore {
     /// How one day reads in a habit's calendar. Never a harsh mark for a miss (C095): a missed day is just the number.
     enum DayMark { case done, some, missed, open, skipped, paused, notItsDay, upcoming, before }
 
-    func dayMark(_ habit: Habit, on day: LocalDay) -> DayMark {
-        let today = today()
+    func dayMark(_ habit: Habit, on day: LocalDay, relativeTo reference: LocalDay? = nil) -> DayMark {
+        let today = reference ?? self.today()
         if day < startDay(of: habit) { return .before }
         if isPaused(habit, on: day) { return .paused }
         if isSkipped(habit, on: day) { return .skipped }
@@ -1856,6 +1871,34 @@ final class HabitStore {
             let entry = Entry(id: id, habitID: habit.id, day: day, value: value, createdAt: now, slot: slot, source: .reminder)
             try await repository.addEntry(entry: entry.record)
             withAnimation { insertEntry(entry) }
+        }
+    }
+
+    /// Widget callbacks are additive events, committed before they are reflected in shared snapshots.
+    func logFromWidget(id: UUID, day: LocalDay, event: UUID, signature: String, now: Date = .now) {
+        perform { [self] in
+            guard problem == nil, !AppLock.isEnabled, !UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey),
+                  day == today(now: now), let habit = habits.first(where: { $0.id == id }),
+                  !habit.archived, !isPaused(habit, on: day), !isSkipped(habit, on: day),
+                  startDay(of: habit) <= day, isDue(habit, on: day, now: now),
+                  signature == Self.widgetSignature(habit) else { throw WidgetActionError.stale }
+            guard !(try await repository.hasEntry(id: event.uuidString)).boolValue else { return }
+            let rule = rule(habit, on: day)
+            if !rule.atMost && isDone(habit, on: day) { return }
+            let value: Double
+            switch rule.kind {
+            case .check, .task: value = 1
+            case .amount:
+                guard let step = rule.quickIncrement, step.isFinite, step > 0, step <= GoalNumber.maximum else {
+                    throw WidgetActionError.openApp
+                }
+                value = step
+            default: throw WidgetActionError.openApp
+            }
+            let slot = slots(of: habit).first { !isSlotDone(habit, slot: $0, on: day) }
+            let entry = Entry(id: event, habitID: id, day: day, value: value, createdAt: now, slot: slot, source: .widget)
+            try await repository.addEntry(entry: entry.record)
+            insertEntry(entry)
         }
     }
 

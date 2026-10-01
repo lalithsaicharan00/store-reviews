@@ -70,7 +70,7 @@ environment can't delete branches on GitHub, so delete them there (GitHub → Br
 
 ## Not done, and why
 
-- **Today widget:** needs an App Group on the app and its widget extension, in the Apple Developer account and Xcode. Without it registered, Xcode can refuse to install the app on the phone. Another session is renaming the app (`com.oftenenough.app`), and the group's name must match. Research: `Research/Research Reports/Home Screen and Visual Design/Widgets — Tick Without Opening the App.md`.
+- **Widgets — update by Codex, 1 Oct 2026:** the separate `codex/iphone-widgets` branch now contains Home/Lock widgets and matching App Group entitlements. See [widget integration and release checks](<../iPhone Widgets.md>) for macOS results and unverified device checks. The original provisioning requirement remains: a widget needs an App Group on the app and its widget extension, in the Apple Developer account and Xcode. Without it registered, Xcode can refuse to install the app on the phone. Another session is renaming the app (`com.oftenenough.app`), and the group's name must match. Research: `Research/Research Reports/Home Screen and Visual Design/Widgets — Tick Without Opening the App.md`.
 - **Old tests that predate the merge:** `FocusPlayerUITests` (8 of 12), `RoutineCalendarUITests` (4 of 7), `GoalFlowUITests` (2 of 6) and one `ScheduleUITests` fail the same way on the pre-merge branch (`archive/animations-and-settings-2026-10-01`, run of 1 Oct 06:09): written for the old routine player and form.
 
 ## Results (GitHub, 1 Oct 2026)

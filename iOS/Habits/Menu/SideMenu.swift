@@ -197,6 +197,7 @@ struct MenuPage: View {
         case .timesOfDay: TimesOfDayList()
         case .dayAndWeek: DayAndWeekView()
         case .appearance: AppearanceView()
+        case .widgets: WidgetsView()
         case .plus: PlusView(fromMenu: true)
         case .backup: BackupExportView()
         case .reminders: RemindersView()

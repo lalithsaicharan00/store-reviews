@@ -197,6 +197,6 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 ## Not built yet (Build Plan order)
 
 - [ ] Settings still to build: restore purchase, Erase All Data in Privacy (help, About, theme, day start, week start, free export, backup and restore, Reminders and the app lock are built)
-- [ ] Home-screen and lock-screen widgets (waits for the App Group and the app's new name; see `Docs/Checklists/Merging the Branches.md`)
+- [x] iPhone Home-screen and Lock-screen widget (merged into `main` 1 Oct, from `codex/iphone-widgets`): free Today, One Item and Lock summaries; Plus Icons and History; shared App Group, durable additive actions and privacy. [Validation and release checks](<iPhone Widgets.md>) retain unverified system/device checks separately.
 - [ ] Plus: purchase, account, sync and server backup
 - [ ] Apple Watch, iPad, Apple Health

@@ -4,7 +4,7 @@ import SwiftUI
 /// `.onPerfCommand`; in release builds that modifier does nothing.
 enum PerfAction: Equatable {
     case previousDay, nextDay
-    case openAllHabits, openHabit(String), openCalendar, openNewHabit, openHabitForm, startRoutine(String), close
+    case openAllHabits, openWidgets, openHabit(String), openCalendar, openNewHabit, openHabitForm, startRoutine(String), close
     case previousMonth, nextMonth
     case previousHabit, nextHabit
     case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, saveEntry, logAgain, hideLogKeyboard
@@ -97,6 +97,28 @@ enum PerfDriver {
                     send(.previousDay)
                     await pause(0.35)
                     send(.nextDay)
+                    await pause(0.35)
+                }
+            }
+        case "widget-guide":
+            await openTwice("Widgets guide") { send(.openWidgets) }
+            await measure("Widgets guide: scrolling") { await scroll() }
+        case "widget-log":
+            guard let water = store.habits.first(where: { $0.name == "Water" }) else { return MainThreadMeter.mark("# ERROR no Water") }
+            let day = store.today()
+            for entry in store.entries(of: water.id, on: day) { store.undoEntry(entry.id) }
+            await store.flush()
+            await measure("Widget: durable amount log and publication") {
+                await repeatFor(window) {
+                    let event = UUID()
+                    do {
+                        try await AppModel.shared.logFromWidget(item: water.id.uuidString, day: day.key,
+                                                               event: event.uuidString, signature: HabitStore.widgetSignature(water))
+                        guard store.entries(of: water.id).contains(where: { $0.id == event }) else {
+                            MainThreadMeter.mark("# ERROR widget log did not persist"); return
+                        }
+                    } catch { MainThreadMeter.mark("# ERROR widget log: \(error)"); return }
+                    store.undoEntry(event); await store.flush()
                     await pause(0.35)
                 }
             }

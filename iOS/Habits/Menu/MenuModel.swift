@@ -53,7 +53,7 @@ import SwiftUI
 /// say the same thing.
 enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     case progress, habits, tasks
-    case timesOfDay, dayAndWeek, reminders, appearance
+    case timesOfDay, dayAndWeek, reminders, appearance, widgets
     case backup, privacy
     case plus
     case help, about
@@ -61,7 +61,7 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     var id: String { rawValue }
 
     /// The menu's groups, separated by a gap like the iPhone's own Settings.
-    static let groups: [[MenuPlace]] = [[.progress, .habits, .tasks], [.timesOfDay, .dayAndWeek, .reminders, .appearance],
+    static let groups: [[MenuPlace]] = [[.progress, .habits, .tasks], [.timesOfDay, .dayAndWeek, .reminders, .appearance, .widgets],
                                         [.backup, .privacy], [.plus], [.help, .about]]
 
     var title: String {
@@ -73,6 +73,7 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
         case .dayAndWeek: "Day and Week"
         case .reminders: "Reminders"
         case .appearance: "Appearance"
+        case .widgets: "Widgets"
         case .backup: "Backup & Export"
         case .privacy: "Privacy"
         case .plus: "Plus"
@@ -91,6 +92,7 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
         case .dayAndWeek: "calendar"
         case .reminders: "bell"
         case .appearance: "circle.lefthalf.filled"
+        case .widgets: "rectangle.on.rectangle"
         case .backup: "externaldrive"
         case .privacy: "hand.raised"
         case .plus: "plus.circle"
@@ -107,7 +109,7 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
         case .privacy: "Lock the app with Face ID, and erase your data."
         case .help: "Answers to common questions, and a way to reach us."
         case .about: "The privacy policy and terms."
-        case .progress, .habits, .tasks, .timesOfDay, .dayAndWeek, .appearance, .plus: nil
+        case .progress, .habits, .tasks, .timesOfDay, .dayAndWeek, .appearance, .widgets, .plus: nil
         }
     }
 }
