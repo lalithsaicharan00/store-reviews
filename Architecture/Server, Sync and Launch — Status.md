@@ -5,7 +5,7 @@ moves, so the next session (person or agent) can pick up from it alone.*
 
 ## ▶ Next up, in order
 
-0. ✅ **Backup, sync and accounts (decided and built 1 Oct 2026; what's left is listed under step 3).** Next: item 1.3. Design: [Backup, Sync and Accounts — One Seamless
+0. ✅ **Backup, sync and accounts (decided and built 1 Oct 2026; what's left is listed under step 3).** Next: item 1.4. Design: [Backup, Sync and Accounts — One Seamless
    Experience](<../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>);
    server checklist: [Server Cost and Capacity §5](<Server Cost and Capacity — Free Safety Copy vs Plus Sync.md>);
    decisions, Google client IDs and setup left for later: [Backlog](<Backlog.md>). In order:
@@ -50,7 +50,15 @@ moves, so the next session (person or agent) can pick up from it alone.*
       `wrangler versions upload` + `versions deploy` once there are real users), and moving to Workers Paid ($5/month,
       needed before about 1,900 Plus users, Server Cost and Capacity §1). Real Apple/Google sign-in on production
       is untested until a phone tries it.
-   3. Nightly backups to R2 + a restore script, then one practice restore.
+   3. ✅ Nightly backups to R2 + a restore script + a practice restore (1 Oct). Each synced account's object sets an
+      alarm on its day's first change and writes a gzipped snapshot at 02:00 UTC (EU bucket for EU accounts; 90
+      nightlies, then monthly, for a year; deleted with the account). Support restores with `/v1/admin/*` +
+      `scripts/restore-account.mjs` (check, then restore; merges back only what's missing or older, as ops phones
+      pull). **Practice restore, 1 Oct 2026, dev:** `scripts/restore-drill.mjs`: 205 records (5 habits, 200 logs, 5
+      undone) snapshotted, restored into a fresh account, all 205 pulled back by a device, undone logs still undone,
+      a repeat changed nothing, deleting the account removed its snapshot from R2 (checked in R2). 10 tests in
+      `test/snapshots.test.ts`. Deployed to dev and production; production has no `ADMIN_SECRET` yet (support routes
+      closed: set one when support first needs it). Repeat the drill monthly (06 §9).
    4. Monitoring: uptime check on `/v1/status`, alerts, the daily report email (Resend).
 2. **Merge, as soon as `integration` is in `main`:** merge `main` into this branch, follow §2's checklist, run every
    test (§5), then merge this branch into `main`. Until then, don't start work that touches `Core/` or `AppModel`.
@@ -63,7 +71,8 @@ moves, so the next session (person or agent) can pick up from it alone.*
 - `git fetch origin && git checkout claude/server-and-sync && git pull`
 - Check whether `integration` has reached `main`: `git log --oneline origin/main | head` (if yes, step 2 comes first).
 - Cloudflare needs `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in the environment (both are set in the cloud environment).
-- The dev test secret lives only in the session that uploaded it (last: 1 Oct, second session). For `scripts/live-smoke.mjs` or `LiveSyncTest`, upload a new one:
+- The dev test secret and dev `ADMIN_SECRET` live only in the session that uploaded them (last: 1 Oct, second
+  session). Upload new ones the same way (`wrangler secret put ADMIN_SECRET`) when needed. For `scripts/live-smoke.mjs` or `LiveSyncTest`, upload a new one:
   `cd server && openssl rand -base64 48 | tr -d '\n' > /tmp/t && npx wrangler secret put TEST_LOGIN_SECRET < /tmp/t`,
   then run with `TEST_LOGIN_SECRET=$(cat /tmp/t)`. (GitHub's `SyncUITests` don't need it: they use GitHub's identity token.)
 

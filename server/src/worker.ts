@@ -1,6 +1,9 @@
 import { type Account, type DeviceInfo, MAX_PUSH, type PurchaseRecord } from "./account";
 import { APPLE_ROOT_CA_G3, verifyAppleSigned } from "./apple";
 import { deleteBackups, listBackups, readBackup, storeBackup } from "./backup";
+import { adminRoute } from "./admin";
+import { accountStub } from "./stubs";
+import { deleteSnapshots } from "./snapshots";
 import {
   type Jurisdiction,
   createAccount,
@@ -52,6 +55,7 @@ export default {
 async function route(request: Request, url: URL, env: Env): Promise<Response> {
   const key = `${request.method} ${url.pathname}`;
   if (url.pathname.startsWith("/v1/auth/")) await limitByIp(request, env);
+  if (url.pathname.startsWith("/v1/admin/")) return adminRoute(request, url, env);
   const copy = /^\/v1\/backup\/([^/]+)\/([^/]+)$/.exec(url.pathname);
   if (copy && request.method === "GET") return backupFile(request, env, copy[1]!, copy[2]!);
   switch (key) {
@@ -134,10 +138,10 @@ async function signIn(request: Request, env: Env, verify: (body: SignInBody) => 
 
 /** Dev only: a sign-in that needs no Apple or Google account, for end-to-end tests. It doesn't exist anywhere else. */
 async function verifyTestKey(body: SignInBody, env: Env): Promise<VerifiedKey> {
-  const enabled = env.ENVIRONMENT === "dev" && typeof env.TEST_LOGIN_SECRET === "string" && env.TEST_LOGIN_SECRET.length >= 32;
-  if (!enabled) throw new HttpError(404, "not_found", "There's nothing here.");
+  const expected = env.TEST_LOGIN_SECRET;
+  if (env.ENVIRONMENT !== "dev" || typeof expected !== "string" || expected.length < 32) throw new HttpError(404, "not_found", "There's nothing here.");
   const secret = typeof body.secret === "string" ? body.secret : "";
-  if (!(await safeEqual(secret, env.TEST_LOGIN_SECRET))) throw new HttpError(401, "invalid_token", "The sign-in couldn't be checked.");
+  if (!(await safeEqual(secret, expected))) throw new HttpError(401, "invalid_token", "The sign-in couldn't be checked.");
   return { provider: "test", subject: requireString(body.subject, "subject", 200), email: null, isPrivateEmail: false };
 }
 
@@ -254,6 +258,7 @@ async function remove(request: Request, env: Env): Promise<Response> {
   await deleteAccount(env.DIRECTORY, claims.accountId);
   await accountStub(env, claims).wipe();
   await deleteBackups(env, claims);
+  await deleteSnapshots(env, claims);
   return json({ deleted: true, at: Date.now() });
 }
 
@@ -272,7 +277,7 @@ async function sync(request: Request, env: Env): Promise<Response> {
   if (!Array.isArray(ops)) throw new HttpError(400, "bad_request", '"ops" must be a list.');
   if (ops.length > MAX_PUSH) throw new HttpError(413, "too_many_ops", `Send at most ${MAX_PUSH} ops at a time.`);
   const cursor = typeof body.cursor === "number" ? body.cursor : 0;
-  const result = await accountStub(env, claims).sync(claims.deviceId, { cursor, ops });
+  const result = await accountStub(env, claims).sync(claims.deviceId, { cursor, ops, jurisdiction: claims.jurisdiction });
   if (!result.ok) {
     if (result.reason === "too_many_ops") throw new HttpError(413, "too_many_ops", `Send at most ${MAX_PUSH} ops at a time.`);
     throw signedOut();
@@ -413,10 +418,6 @@ async function limitByIp(request: Request, env: Env): Promise<void> {
   if (ip) await limit(env.AUTH_LIMIT, ip);
 }
 
-function accountStub(env: Env, account: { accountId: string; jurisdiction: Jurisdiction }): DurableObjectStub<Account> {
-  const namespace = account.jurisdiction === "eu" ? env.ACCOUNT.jurisdiction("eu") : env.ACCOUNT;
-  return namespace.get(namespace.idFromName(account.accountId)) as DurableObjectStub<Account>;
-}
 
 function audiences(list: string): string[] {
   return list.split(",").map((s) => s.trim()).filter(Boolean);

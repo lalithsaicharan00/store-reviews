@@ -82,6 +82,7 @@ Needs `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in the environment.
 | `POST /v1/purchases/verify` | `{jws}` (StoreKit 2 `jwsRepresentation`) → entitlements and a new access token (so a new Plus syncs at once); checked against Apple Root CA - G3, no call to Apple |
 | `GET /v1/purchases` | the account's entitlements (`plus`, `family`, purchases) |
 | `POST /v1/hooks/apple` | App Store Server Notifications V2: refunds and revocations remove Plus; a reversed refund restores it |
+| `/v1/admin/*` | Support only, with `Authorization: Bearer <ADMIN_SECRET>`; a plain 404 where that secret isn't set. Snapshots and restoring one account (below) |
 
 The app sends `nonce` raw and gives Apple or Google its SHA-256 (hex). `device` is `{id (UUID), platform, name, appVersion}`.
 `country` (the store country, alpha-2 or alpha-3) decides at creation whether the account is stored in the EU, and its
@@ -97,7 +98,27 @@ with `Retry-After: 60`. `device.last_seen` is written at most once an hour.
 
 `core/` is the shared Kotlin sync code compiled to JavaScript. After changing `Core/sync`, run `scripts/build-core.sh`.
 
+## Nightly snapshots and restoring one account
+
+Synced accounts are copied to R2 every night they changed (`src/snapshots.ts`): the day's first change sets the account
+object's alarm for 02:00 UTC, which writes `snapshots/<account>/<day>.json.gz` (every record with its field stamps)
+to the account's bucket (EU accounts: the EU bucket). 90 nightlies are kept, then each month's 1st, for 365 days.
+Deleting an account deletes its snapshots. Durable Objects' own 30-day point-in-time recovery is the other net; it
+restores a whole object to a moment, so it's for emergencies only (it would drop the user's newer edits).
+
+Restoring one account (`scripts/restore-account.mjs`, needs that environment's `ADMIN_SECRET`; production has none
+until support needs it: `npx wrangler secret put ADMIN_SECRET --env production`):
+
+```sh
+ADMIN_SECRET=… node scripts/restore-account.mjs list <account>
+ADMIN_SECRET=… node scripts/restore-account.mjs check <account> 2026-10-01          # counts only
+ADMIN_SECRET=… node scripts/restore-account.mjs restore <account> 2026-10-01        # merges back what's missing
+```
+
+It never overwrites: what's missing or older comes back through the same merge rules, as ops from the device
+`restore`, and phones receive them on their next sync. The drill (`scripts/restore-drill.mjs`, against dev) restores a
+205-record account into a fresh one and checks a device pulls back every record.
+
 **Not built yet:** Google Play purchases and notifications, Sign in with Apple server-to-server notifications and token
-revocation, the purchase email, a WAF rule in front of the Worker, the daily report and nightly R2 snapshots of Plus
-accounts' Durable Objects. Real Apple and Google sign-in need
+revocation, the purchase email, a WAF rule in front of the Worker, and the daily report. Real Apple and Google sign-in need
 their keys (the Apple Developer account and a Google Cloud OAuth client); everything else is tested with stand-ins.

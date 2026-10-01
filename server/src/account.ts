@@ -1,6 +1,8 @@
 import { DurableObject } from "cloudflare:workers";
 import { syncMerge, syncProblem } from "../core/Core-sync.mjs";
+import type { Jurisdiction } from "./directory";
 import type { VerifiedKey } from "./providers";
+import { SNAPSHOT_FORMAT, type Snapshot, type SnapshotRecord, gzip, nextNight, prunable, snapshotBucket, snapshotKey, snapshotPrefix } from "./snapshots";
 import { newSecret, sha256Hex } from "./tokens";
 
 /**
@@ -43,6 +45,16 @@ export interface SyncRequest {
   /** The last `cursor` this device received; 0 the first time. */
   cursor: number;
   ops: unknown[];
+  /** Where this account's data lives (from the access token): which bucket its nightly snapshots go to. */
+  jurisdiction?: Jurisdiction;
+}
+
+/** What restoring a snapshot into an account found, per table, and whether it was applied. */
+export interface RestoreReport {
+  applied: boolean;
+  tables: Record<string, { inSnapshot: number; missing: number; older: number; same: number }>;
+  /** Ops written to the op log (phones receive them through ordinary sync). 0 when not applied. */
+  ops: number;
 }
 
 export type SyncResult =
@@ -208,10 +220,12 @@ export class Account extends DurableObject<Env> {
       }
     }
 
+    let changed = false;
     this.ctx.storage.transactionSync(() => {
       for (const op of valid) {
         applied.push(op.id);
         if (this.sql.exec("SELECT 1 FROM op_log WHERE op_id = ?", op.id).toArray().length > 0) continue;
+        changed = true;
         const current = this.sql
           .exec<{ data: string }>("SELECT data FROM record WHERE table_name = ? AND row_id = ?", op.table, op.row)
           .toArray()[0]?.data;
@@ -225,6 +239,7 @@ export class Account extends DurableObject<Env> {
       // At most once an hour: an UPDATE that matches no row writes nothing.
       this.sql.exec("UPDATE device SET last_seen = ? WHERE id = ? AND last_seen <= ?", now, deviceId, now - LAST_SEEN_PRECISION_MS);
     });
+    if (changed) await this.scheduleSnapshot(now, request.jurisdiction);
 
     // Pull: scan forward from the cursor, skipping this device's own ops (it has them), and move the cursor past
     // everything scanned so its own ops are never scanned again.
@@ -372,8 +387,99 @@ export class Account extends DurableObject<Env> {
 
   /** Account deletion: everything this object holds is removed. The empty object then reports "gone". */
   async wipe(): Promise<void> {
+    await this.ctx.storage.deleteAlarm();
     await this.ctx.storage.deleteAll();
     this.migrate();
+  }
+
+  // MARK: Nightly snapshots (Architecture 06 §9, snapshots.ts)
+
+  private get jurisdiction(): Jurisdiction {
+    return this.meta("jurisdiction") === "eu" ? "eu" : "default";
+  }
+
+  /** The day's first change sets the alarm for the coming night; later changes find it already set. */
+  private async scheduleSnapshot(now: number, jurisdiction?: Jurisdiction) {
+    if (jurisdiction && this.meta("jurisdiction") !== jurisdiction) this.setMeta("jurisdiction", jurisdiction);
+    if ((await this.ctx.storage.getAlarm()) === null) await this.ctx.storage.setAlarm(nextNight(now));
+  }
+
+  /** The nightly alarm. Throwing makes Cloudflare retry it with back-off. */
+  async alarm(): Promise<void> {
+    if (this.accountId === undefined) return;
+    await this.writeSnapshot(Date.now());
+  }
+
+  /** Support and the restore drill: a snapshot now, outside the nightly schedule. */
+  async snapshotNow(now = Date.now()): Promise<{ key: string; records: number; cursor: number } | null> {
+    if (this.accountId === undefined) return null;
+    return this.writeSnapshot(now);
+  }
+
+  private async writeSnapshot(now: number): Promise<{ key: string; records: number; cursor: number }> {
+    const accountId = this.accountId!;
+    const records: SnapshotRecord[] = this.sql
+      .exec<{ table_name: string; row_id: string; data: string }>("SELECT table_name, row_id, data FROM record ORDER BY table_name, row_id")
+      .toArray()
+      .map((r) => ({ table: r.table_name, row: r.row_id, data: r.data }));
+    const cursor = Number(this.sql.exec<{ seq: number | null }>("SELECT max(seq) AS seq FROM op_log").one().seq ?? 0);
+    const snapshot: Snapshot = { format: SNAPSHOT_FORMAT, accountId, takenAt: now, cursor, records };
+    const bucket = snapshotBucket(this.env, this.jurisdiction);
+    const key = snapshotKey(accountId, now);
+    await bucket.put(key, await gzip(JSON.stringify(snapshot)), {
+      httpMetadata: { contentType: "application/gzip" },
+      customMetadata: { records: String(records.length), cursor: String(cursor), takenAt: String(now) },
+    });
+    const old = prunable((await bucket.list({ prefix: snapshotPrefix(accountId) })).objects.map((o) => o.key), now);
+    if (old.length > 0) await bucket.delete(old);
+    this.setMeta("last_snapshot", String(now));
+    console.log(JSON.stringify({ event: "snapshot", records: records.length, pruned: old.length }));
+    return { key, records: records.length, cursor };
+  }
+
+  /**
+   * Support: merges a snapshot's records into this account (06 §9 "Restoring one account"). Only what's missing here,
+   * or older here field by field, changes; everything newer here is kept, because the same merge rules decide. Each
+   * change is written as ops from the device "restore", so phones receive them through ordinary sync. With
+   * `apply: false` it only reports.
+   */
+  async restoreRecords(records: SnapshotRecord[], apply: boolean, now = Date.now()): Promise<RestoreReport | null> {
+    if (this.accountId === undefined) return null;
+    const tables: RestoreReport["tables"] = {};
+    let written = 0;
+    const work = () => {
+      for (const record of records) {
+        const stats = (tables[record.table] ??= { inSnapshot: 0, missing: 0, older: 0, same: 0 });
+        stats.inSnapshot++;
+        const current = this.sql
+          .exec<{ data: string }>("SELECT data FROM record WHERE table_name = ? AND row_id = ?", record.table, record.row)
+          .toArray()[0]?.data ?? null;
+        // One op per stamp, so every field keeps the stamp it really has (as a phone does when it binds).
+        const { fields, clocks } = JSON.parse(record.data) as { fields: Record<string, unknown>; clocks: Record<string, string> };
+        const byStamp = new Map<string, Record<string, unknown>>();
+        for (const [name, value] of Object.entries(fields)) {
+          const stamp = clocks[name];
+          if (stamp) byStamp.set(stamp, { ...(byStamp.get(stamp) ?? {}), [name]: value });
+        }
+        const ops = [...byStamp].map(([hlc, f]) => JSON.stringify({ id: crypto.randomUUID(), table: record.table, row: record.row, fields: f, hlc, schema: 0 }));
+        let merged = current;
+        for (const op of ops) merged = syncMerge(merged, op);
+        if (merged === current) { stats.same++; continue; }
+        if (current === null) stats.missing++; else stats.older++;
+        if (!apply) continue;
+        this.sql.exec(
+          "INSERT INTO record (table_name, row_id, data) VALUES (?, ?, ?) ON CONFLICT(table_name, row_id) DO UPDATE SET data = excluded.data",
+          record.table, record.row, merged,
+        );
+        for (const op of ops) {
+          this.sql.exec("INSERT INTO op_log (op_id, device_id, op, received_at) VALUES (?, 'restore', ?, ?)", JSON.parse(op).id, op, now);
+          written++;
+        }
+      }
+    };
+    if (apply) this.ctx.storage.transactionSync(work);
+    else work();
+    return { applied: apply, tables, ops: written };
   }
 
   private recordKey(key: VerifiedKey, now: number) {

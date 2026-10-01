@@ -12,6 +12,7 @@ export default defineConfig({
         bindings: {
           TOKEN_KEY: "test-token-key-0123456789abcdef0123456789",
           TEST_LOGIN_SECRET: "test-login-secret-0123456789abcdef01234",
+          ADMIN_SECRET: "test-admin-secret-0123456789abcdef012345",
           GOOGLE_AUDIENCES: "test-google-client.apps.googleusercontent.com",
           TEST_MIGRATIONS: await readD1Migrations(path.join(__dirname, "migrations")),
           // A test-only root that imitates Apple's (test/fixtures/README.md).

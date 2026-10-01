@@ -24,3 +24,5 @@ const backup = await call("GET", "/v1/backup");
 check("backups need a sign-in", backup.status === 401, backup.json.error);
 const forged = await call("GET", "/v1/backup", undefined, { authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ4In0.x" });
 check("a forged token is refused", forged.status === 401, forged.json.error);
+const support = await call("GET", "/v1/admin/snapshots?account=x", undefined, { authorization: "Bearer guess" });
+check("support routes are closed", support.status === 404, support.json.error);
