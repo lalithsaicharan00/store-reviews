@@ -42,9 +42,20 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
             reminders.forEach { sync.change(SyncCodec.REMINDER, it.id, SyncCodec.reminder(it)) }
         }
 
+    /** Includes tombstones, so replaying an undone system action cannot bring it back. */
+    @Throws(Exception::class)
+    suspend fun hasEntry(id: String): Boolean = dao.hasEntry(id)
+
     /** The ID is made at the tap: saving the same tap again (a retry) changes nothing. */
     @Throws(Exception::class)
     suspend fun addEntry(entry: EntryRecord) = dao.synced(clock()) { sync -> addEntry(sync, entry) }
+
+    /** Correct one live entry without changing its ID, provenance or deletion state. Synced like any edit. */
+    @Throws(Exception::class)
+    suspend fun editEntry(id: String, value: Double, createdAt: Long) = dao.synced(clock()) { sync ->
+        val entry = dao.entryById(id)?.takeIf { it.deletedAt == null } ?: return@synced
+        sync.change(SyncCodec.ENTRY, id, SyncCodec.entry(entry.copy(value = value, createdAt = createdAt)))
+    }
 
     /** Undo keeps a tombstone rather than deleting the row (Architecture 05 §7). */
     @Throws(Exception::class)
@@ -67,6 +78,37 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     suspend fun finishTimer(entry: EntryRecord?, key: String) = dao.synced(clock()) { sync ->
         if (entry != null) addEntry(sync, entry)
         removeSetting(sync, key)
+    }
+
+    /**
+     * Restores an old `.db` backup by adding what's missing (the Backup & Export screen's restore, before the checked
+     * backup file): existing habits keep their configuration, a deleted habit stays deleted, and global settings are
+     * only taken on an empty device. Every row goes through [SyncWriter], so a synced device sends it on.
+     */
+    @Throws(Exception::class)
+    suspend fun mergeAll(snapshot: Snapshot) = dao.synced(clock()) { sync ->
+        val known = dao.allHabitIds().toSet() // Includes tombstones: a deleted habit must stay deleted.
+        val added = snapshot.habits.filter { it.id !in known }
+        val newIds = added.map { it.id }.toSet()
+        val live = dao.habits().map { it.id }.toSet() + added.filter { it.deletedAt == null }.map { it.id }
+        added.forEach { sync.change(SyncCodec.HABIT, it.id, SyncCodec.habit(it)) }
+        snapshot.steps.filter { it.habitId in newIds && !sync.exists(SyncCodec.STEP, it.id) }.forEach { sync.change(SyncCodec.STEP, it.id, SyncCodec.step(it)) }
+        snapshot.reminders.filter { it.habitId in newIds && !sync.exists(SyncCodec.REMINDER, it.id) }.forEach { sync.change(SyncCodec.REMINDER, it.id, SyncCodec.reminder(it)) }
+        snapshot.entries.filter { it.habitId in live }.forEach { addEntry(sync, it) }
+        val globalKeys = setOf("day_end_hour", "week_start", "day_sections", "show_streaks", "haptics", "sounds", "appearance")
+        val habitPrefixes = listOf("rules.", "pause.", "skip.", "desc.", "archived.")
+        val wanted = snapshot.settings.filter { setting ->
+            when {
+                setting.key in globalKeys -> known.isEmpty()
+                setting.key.startsWith("daynote.") -> true
+                setting.key.startsWith("note.") -> setting.key.removePrefix("note.").substringBefore('|') in live
+                else -> habitPrefixes.any { prefix -> setting.key.startsWith(prefix) && setting.key.removePrefix(prefix) in newIds }
+            }
+        }
+        for (setting in wanted) {
+            if (SyncCodec.isLocalSetting(setting.key)) dao.insertSettingsIfNew(listOf(setting))
+            else if (dao.settingByKey(setting.key) == null && !sync.exists(SyncCodec.SETTING, setting.key)) sync.change(SyncCodec.SETTING, setting.key, SyncCodec.setting(setting))
+        }
     }
 
     /** Adds everything in one transaction; rows that already exist (live or deleted) are kept as they are. */
@@ -234,7 +276,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
 
     companion object {
         /** Bump with every schema change, and add a migration plus a migration test. */
-        const val SCHEMA_VERSION = 6
+        const val SCHEMA_VERSION = 7
 
         @Throws(Exception::class)
         fun open(path: String): HabitRepository = HabitRepository(configure(databaseBuilder(path)), ::currentTimeMillis)
@@ -249,7 +291,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
             builder
                 .setDriver(BundledSQLiteDriver())
                 .setQueryCoroutineContext(databaseDispatcher)
-                .addMigrations(Migrations.v1ToV2, Migrations.v2ToV3, Migrations.v3ToV4, Migrations.v4ToV5, Migrations.v5ToV6)
+                .addMigrations(Migrations.v1ToV2, Migrations.v2ToV3, Migrations.v3ToV4, Migrations.v4ToV5, Migrations.v5ToV6, Migrations.v6ToV7)
                 .addCallback(Durability)
                 .build()
     }

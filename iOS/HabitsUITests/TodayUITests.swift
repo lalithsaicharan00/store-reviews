@@ -78,6 +78,92 @@ final class TodayUITests: XCTestCase {
         shot("06-new-habit")
     }
 
+    /// The ≡ menu (the user's final decision, 30 Sep 2026; `Docs/Checklists/Sidebar Menu.md`): every row is there,
+    /// most used first; the wired pages open on Today's stack and Back returns to Today; tapping the dimmed Today
+    /// closes it; a swipe from Today's left edge opens it.
+    func testMenu() {
+        let menu = app.buttons["menu-button"]
+        XCTAssertTrue(menu.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["All habits"].exists, "All Habits moved into the menu")
+        XCTAssertFalse(app.buttons["Settings"].exists, "The avatar became the menu")
+        XCTAssertTrue(app.buttons["filter-button"].exists, "Filter, beside +")
+        XCTAssertTrue(app.buttons["New Habit"].exists)
+
+        menu.tap()
+        let rows = ["today", "progress", "habits", "tasks", "timesOfDay", "dayAndWeek", "reminders", "appearance",
+                    "backup", "privacy", "plus", "help", "about"]
+        for row in rows {
+            // The last rows can sit below a small screen's edge: scroll the menu (not Today) to reach them.
+            if !app.buttons["menu-" + row].waitForExistence(timeout: 3) { app.buttons["menu-appearance"].swipeUp() }
+            XCTAssertTrue(app.buttons["menu-" + row].waitForExistence(timeout: 3), row)
+        }
+        if !app.buttons["menu-today"].isHittable { app.buttons["menu-appearance"].swipeDown() }
+        // Most used first: Today, Progress, Habits, Tasks at the top.
+        let tops = rows.prefix(4).map { app.buttons["menu-" + $0].frame.minY }
+        XCTAssertEqual(tops, tops.sorted(), "Today, Progress, Habits, Tasks in that order")
+        shot("m01-menu")
+
+        // Today closes the menu: the rows are gone and Today's buttons work again.
+        app.buttons["menu-today"].tap()
+        XCTAssertTrue(app.buttons["menu-today"].waitForNonExistence(timeout: 3))
+        XCTAssertTrue(menu.isHittable)
+
+        // Habits: its page, then a habit's own page, then back to Today.
+        openFromMenu("habits", title: "Habits")
+        let call = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Call family'")).firstMatch
+        XCTAssertTrue(call.waitForExistence(timeout: 3))
+        shot("m02-habits")
+        call.tap()
+        // The page's own title bar: the Habits row also shows the name, so text alone can't prove the page opened.
+        XCTAssertTrue(app.navigationBars["Call family"].waitForExistence(timeout: 5), "The habit page opens")
+        back(to: "Habits")
+        XCTAssertTrue(app.navigationBars["Habits"].waitForExistence(timeout: 3), "Back on Habits")
+        back()
+        XCTAssertTrue(menu.waitForExistence(timeout: 3), "Back on Today")
+
+        // The other wired pages, Progress among them.
+        for (row, title) in [("tasks", "Tasks"), ("timesOfDay", "Times of Day"), ("plus", "Plus"), ("progress", "Progress")] {
+            openFromMenu(row, title: title)
+            shot("m03-" + row)
+            back()
+            XCTAssertTrue(menu.waitForExistence(timeout: 3), "Back on Today from \(title)")
+        }
+
+        // Tapping the dimmed Today closes the menu.
+        menu.tap()
+        XCTAssertTrue(app.buttons["menu-today"].waitForExistence(timeout: 3))
+        app.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        XCTAssertTrue(app.buttons["menu-today"].waitForNonExistence(timeout: 3))
+
+        // A swipe from Today's left edge opens it.
+        let edge = app.coordinate(withNormalizedOffset: CGVector(dx: 0.005, dy: 0.5))
+        edge.press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.75, dy: 0.5)))
+        XCTAssertTrue(app.buttons["menu-today"].waitForExistence(timeout: 3), "Edge swipe opens the menu")
+        shot("m04-edge-swipe")
+        app.buttons["menu-today"].tap()
+        XCTAssertTrue(app.buttons["menu-today"].waitForNonExistence(timeout: 3))
+    }
+
+    private func openFromMenu(_ row: String, title: String) {
+        app.buttons["menu-button"].tap()
+        let button = app.buttons["menu-" + row]
+        XCTAssertTrue(button.waitForExistence(timeout: 3), row)
+        button.tap()
+        XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5), "\(title) opens")
+    }
+
+    /// The system Back button: found by its identifier or its label (the page before, or "Back"), since a page's own
+    /// toolbar buttons can come first in the bar; otherwise the system's swipe from the left edge.
+    private func back(to previous: String = "Back") {
+        let bar = app.navigationBars.firstMatch
+        for name in ["BackButton", previous, "Back"] where bar.buttons[name].exists {
+            bar.buttons[name].tap()
+            return
+        }
+        app.coordinate(withNormalizedOffset: CGVector(dx: 0.01, dy: 0.5))
+            .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)))
+    }
+
     /// Back to Today appears only on another day: above the day bar on Today, and at the bottom of the
     /// calendar. The calendar marks the open day with a circle, like its rings.
     func testBackToToday() {
@@ -97,5 +183,112 @@ final class TodayUITests: XCTestCase {
         back.tap()
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Today,'")).firstMatch.waitForExistence(timeout: 3))
         XCTAssertFalse(app.buttons["back-to-today"].waitForExistence(timeout: 1), "Gone once back on today")
+    }
+    // MARK: Build Plan #58, #59, #61 (`Docs/Checklists/Animations and Settings.md`)
+
+    /// Ticking off (#58): a done row finishes in place and sinks below the rest only once the person pauses, never in
+    /// the middle of a run of taps. Call family, then Water: before the pause Call family is still above Water; after it,
+    /// below. (Ticking Water moves "Add note" off Call family, which would otherwise hold it in place.)
+    func testDoneRowWaitsForThePause() {
+        // An 8 s pause: GitHub's simulator takes more than 1.5 s between two taps (run 78).
+        app.terminate()
+        app.launchArguments = ["-uitest", "-today.settlePause", "8"]
+        app.launch()
+        let call = app.buttons["Mark Call family done"]
+        XCTAssertTrue(call.waitForExistence(timeout: 5))
+        let water = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Add ' AND label ENDSWITH ' to Water'")).firstMatch
+        XCTAssertTrue(water.exists)
+        XCTAssertLessThan(call.frame.minY, water.frame.minY, "Call family starts above Water")
+        call.tap()
+        water.tap()
+        let done = app.buttons["Undo Call family"]
+        XCTAssertTrue(done.waitForExistence(timeout: 2))
+        XCTAssertLessThan(done.frame.minY, water.frame.minY, "Still in place right after the taps")
+        shot("t01-held")
+        // Then, after the pause and a 0.45 s settle, below.
+        let sunk = NSPredicate { _, _ in done.frame.minY > water.frame.minY }
+        expectation(for: sunk, evaluatedWith: nil)
+        waitForExpectations(timeout: 15)
+        shot("t02-settled")
+        done.tap()
+    }
+
+    /// ≡ → Appearance → Done Habits → Stay in Place: a done row keeps its place after the pause too.
+    func testDoneRowStaysInPlace() {
+        app.terminate()
+        app.launchArguments = ["-uitest", "-today.doneOrder", "inPlace"]
+        app.launch()
+        let call = app.buttons["Mark Call family done"]
+        XCTAssertTrue(call.waitForExistence(timeout: 5))
+        let water = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Add ' AND label ENDSWITH ' to Water'")).firstMatch
+        call.tap()
+        water.tap()
+        let done = app.buttons["Undo Call family"]
+        XCTAssertTrue(done.waitForExistence(timeout: 2))
+        Thread.sleep(forTimeInterval: 3)
+        XCTAssertLessThan(done.frame.minY, water.frame.minY, "Stays above Water")
+    }
+
+    /// Folding (#59): a part folds and opens from its header; its rows go and come back, and "N left" stays.
+    func testFoldAndOpen() {
+        let water = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Add ' AND label ENDSWITH ' to Water'")).firstMatch
+        XCTAssertTrue(water.waitForExistence(timeout: 5))
+        let fold = app.buttons["Fold Anytime"]
+        XCTAssertTrue(fold.exists)
+        fold.tap()
+        XCTAssertTrue(water.waitForNonExistence(timeout: 3), "Folded: the rows go")
+        XCTAssertTrue(app.buttons["Open Anytime"].exists)
+        shot("f01-folded")
+        app.buttons["Open Anytime"].tap()
+        XCTAssertTrue(water.waitForExistence(timeout: 3), "Open: the rows come back")
+    }
+
+    /// ≡ → Day and Week and ≡ → Appearance (#61): every choice is there and takes effect.
+    func testDayWeekAndAppearance() {
+        openFromMenu("dayAndWeek", title: "Day and Week")
+        let dayStart = app.buttons["day-start-picker"]
+        XCTAssertTrue(dayStart.waitForExistence(timeout: 3))
+        XCTAssertTrue(dayStart.label.contains("Midnight"), "Midnight by default: \(dayStart.label)")
+        dayStart.tap()
+        let three = app.buttons.matching(NSPredicate(format: "label BEGINSWITH '3:00' OR label BEGINSWITH '03:00'")).firstMatch
+        XCTAssertTrue(three.waitForExistence(timeout: 3))
+        three.tap()
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'counts for the day before'")).firstMatch.waitForExistence(timeout: 3))
+        let weekStart = app.buttons["week-start-picker"]
+        XCTAssertTrue(weekStart.label.contains("Automatic"), "Automatic by default: \(weekStart.label)")
+        weekStart.tap()
+        let monday = app.buttons["Monday"]
+        XCTAssertTrue(monday.waitForExistence(timeout: 3))
+        monday.tap()
+        XCTAssertTrue(app.buttons["week-start-picker"].label.contains("Monday"))
+        shot("s01-day-and-week")
+        back()
+
+        openFromMenu("appearance", title: "Appearance")
+        for name in ["Automatic", "Light", "Dark"] {
+            XCTAssertTrue(app.buttons[name].waitForExistence(timeout: 3), name)
+        }
+        for id in ["appearance-haptics", "appearance-sound"] {
+            XCTAssertTrue(app.switches[id].exists, id)
+        }
+        XCTAssertEqual(app.switches["appearance-haptics"].value as? String, "1", "Haptics on by default")
+        XCTAssertEqual(app.switches["appearance-sound"].value as? String, "0", "Sound off by default")
+        app.buttons["Dark"].tap()
+        shot("s02-appearance-dark")
+        // Put it back: this phone keeps the choice for the next test.
+        app.buttons["Automatic"].tap()
+        back()
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 3), "Back on Today")
+    }
+
+    /// The day-and-week golden cases (daylight saving in New York, week starts, saving): `SettingsCheck`.
+    func testSettingsChecks() {
+        app.terminate()
+        app.launchArguments = ["-settingscheck"]
+        app.launch()
+        let passed = app.staticTexts["Settings: all checks passed"]
+        if !passed.waitForExistence(timeout: 30) {
+            XCTFail(app.staticTexts.firstMatch.label)
+        }
     }
 }

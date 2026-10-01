@@ -3,10 +3,12 @@ import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
 
-/// Settings → Backup & Sync (Backup, Sync and Accounts §4.3): one screen, two clearly separate parts. Backup is "a copy
-/// so you never lose your habits"; sync is "the same habits on all your devices". The two words are never mixed.
+/// ≡ → Backup & Export (Backup, Sync and Accounts §4.3; the menu's name, Design Rules "Sidebar"): one screen, two
+/// clearly separate parts. Backup is "a copy so you never lose your habits"; sync is "the same habits on all your
+/// devices". The two words are never mixed. Free, with or without an account: a backup file, a spreadsheet, restore.
 struct BackupSyncView: View {
     @Environment(BackupCenter.self) private var backup
+    @Environment(HabitStore.self) private var store
     @State private var showSignIn = false
     @State private var showRestore = false
     @State private var sharing: URL?
@@ -35,8 +37,10 @@ struct BackupSyncView: View {
                     .accessibilityIdentifier("backup-restore")
                 Button("Move to Another Device") { Task { await share() } }
                     .accessibilityIdentifier("backup-move")
-                Button("Export a File") { Task { await share() } }
-                    .accessibilityIdentifier("backup-export")
+                Button("Save a Backup File") { Task { await share() } }
+                    .accessibilityIdentifier("backup-save")
+                Button("Export a Spreadsheet (CSV)") { Task { await exportSpreadsheet() } }
+                    .accessibilityIdentifier("backup-export-csv")
                 if backup.undoFile != nil {
                     Button("Undo Last Restore") { confirmUndo = true }
                         .accessibilityIdentifier("backup-undo")
@@ -45,6 +49,15 @@ struct BackupSyncView: View {
                 Text("Backup")
             } footer: {
                 Text(backupFooter)
+            }
+
+            if backup.place == .phone {
+                Section("Before You Delete the App") {
+                    Text("Deleting Often Enough removes its data from this iPhone. Reinstalling alone does not bring it back.")
+                    Text("Sign in, or save a backup file somewhere outside the app (Files, AirDrop, Mail), first. After reinstalling, choose Restore.")
+                    Text("Offload App in iPhone Settings keeps your data. Delete App removes it.")
+                        .foregroundStyle(.secondary)
+                }
             }
 
             Section {
@@ -83,17 +96,17 @@ struct BackupSyncView: View {
                 }
             }
         }
-        .navigationTitle("Backup & Sync")
+        .navigationTitle("Backup & Export")
         .navigationBarTitleDisplayMode(.inline)
         .task { await backup.runIfDue() }
         .sheet(isPresented: $showSignIn) { SignInSheet() }
         .sheet(isPresented: $showRestore) { NavigationStack { RestoreStartView() } }
         .sheet(item: Binding(get: { sharing.map(SharedBackup.init) }, set: { sharing = $0?.url })) { item in
-            BackupShareSheet(url: item.url)
+            ShareFileSheet(url: item.url, onFinish: { sharing = nil })
         }
         .alert(item: $message) { Alert(title: Text($0.title), message: Text($0.text)) }
         .confirmationDialog("Erase everything on this iPhone?", isPresented: $confirmErase, titleVisibility: .visible) {
-            Button("Export a File First") { Task { await share() } }
+            Button("Save a Backup File First") { Task { await share() } }
             Button("Erase Everything", role: .destructive) { Task { await erase() } }
             Button("Cancel", role: .cancel) {}
         } message: {
@@ -163,6 +176,21 @@ struct BackupSyncView: View {
         }
     }
 
+    /// A spreadsheet for reading the history (not for restoring): one row per day's entry or note.
+    private func exportSpreadsheet() async {
+        await store.flush()
+        guard store.problem == nil, store.isStorageReady else {
+            message = BackupAlert(title: "Couldn't Export", text: HabitStore.BackupError.pendingSave.localizedDescription)
+            return
+        }
+        let rows = DataExport.rows(from: store), day = store.today().key
+        do {
+            sharing = try await Task.detached { try DataExport.file(rows: rows, day: day) }.value
+        } catch {
+            message = BackupAlert(title: "Couldn't Export", text: "Your habits are safe on this iPhone. Please try again.")
+        }
+    }
+
     private func erase() async {
         do {
             try await backup.eraseThisDevice()
@@ -188,15 +216,4 @@ struct BackupAlert: Identifiable {
 private struct SharedBackup: Identifiable {
     let url: URL
     var id: URL { url }
-}
-
-/// The system share sheet for a backup file: AirDrop, Files, Mail, Google Drive (§4.8).
-struct BackupShareSheet: UIViewControllerRepresentable {
-    let url: URL
-
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: [url], applicationActivities: nil)
-    }
-
-    func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
 }

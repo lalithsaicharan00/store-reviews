@@ -1,7 +1,7 @@
 import XCTest
 
-/// Settings → Backup & Sync, and a free account's backup on the real dev server (Backup, Sync and Accounts — One
-/// Seamless Experience). The end-to-end test signs in with this GitHub Actions run's identity token as a free account
+/// ≡ → Backup & Export: the free backup file, spreadsheet and restore, and a free account's backup on the real dev
+/// server (Backup, Sync and Accounts — One Seamless Experience). The end-to-end test signs in with this GitHub Actions run's identity token as a free account
 /// (server: POST /v1/auth/ci with plus: false), so it only runs on GitHub Actions.
 final class BackupUITests: XCTestCase {
     private let api = "https://api-dev.oftenenough.com"
@@ -15,18 +15,67 @@ final class BackupUITests: XCTestCase {
         super.record(issue)
     }
 
+    override func setUp() { continueAfterFailure = false }
+
+    func testBackupIntegrityChecks() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-uitest", "-backupcheck"]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["Backup: all checks passed"].waitForExistence(timeout: 30), app.debugDescription)
+    }
+
+    func testFreeBackupPageAndReinstallWarning() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-uitest", "-free", "-empty"]
+        app.launch()
+        let restore = app.buttons["empty-restore-backup"]
+        XCTAssertTrue(restore.waitForExistence(timeout: 10))
+        restore.tap()
+        XCTAssertTrue(app.navigationBars["Backup & Export"].waitForExistence(timeout: 5))
+        for id in ["backup-export-csv", "backup-save", "backup-restore"] {
+            XCTAssertTrue(app.buttons[id].exists, id)
+        }
+        let warning = app.staticTexts["Deleting Often Enough removes its data from this iPhone. Reinstalling alone does not bring it back."]
+        app.reveal(warning)
+        XCTAssertTrue(warning.exists)
+        let shot = XCTAttachment(screenshot: app.screenshot())
+        shot.name = "backup-free-page"; shot.lifetime = .keepAlways; add(shot)
+    }
+
+    func testExportAndBackupOpenNativeShareSheet() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-uitest", "-free"]
+        app.launch()
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
+        app.buttons["menu-button"].tap()
+        app.buttons["menu-backup"].tap()
+        XCTAssertTrue(app.buttons["backup-export-csv"].waitForExistence(timeout: 5))
+        app.buttons["backup-export-csv"].tap()
+        // The remote share container appears before its buttons. Wait for Close instead of
+        // swiping the container while its content is still arriving.
+        let close = app.buttons["header.closeButton"]
+        XCTAssertTrue(close.waitForExistence(timeout: 15), app.debugDescription)
+        close.tap()
+        XCTAssertTrue(app.otherElements["ActivityListView"].waitForNonExistence(timeout: 10), app.debugDescription)
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "hittable == true"), object: app.buttons["backup-save"])
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 10), .completed, app.debugDescription)
+        app.buttons["backup-save"].tap()
+        XCTAssertTrue(close.waitForExistence(timeout: 15), app.debugDescription)
+        close.tap()
+        XCTAssertTrue(app.otherElements["ActivityListView"].waitForNonExistence(timeout: 10))
+    }
+
     /// No account: the screen says the habits are only on this iPhone, sync is Plus, and a file can be made.
     func testWithoutAnAccountEverythingStaysOnThePhone() throws {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest"]
         app.launch()
-        app.buttons["Settings"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["Backup & Sync"].waitForExistence(timeout: 5))
+        openBackup(app)
         XCTAssertTrue(app.staticTexts["Saved only on this iPhone"].exists)
         XCTAssertTrue(shows(app, row: "backup-where", "This iPhone only"))
         XCTAssertTrue(app.staticTexts["Sync is part of Plus. Your devices talk through your account."].exists)
         XCTAssertFalse(app.buttons["Back Up Now"].exists, "Nowhere to back up to without an account")
-        app.buttons["Export a File"].tap()
+        app.buttons["Save a Backup File"].tap()
         let shared = app.otherElements["ActivityListView"].waitForExistence(timeout: 10) || app.buttons["Save to Files"].waitForExistence(timeout: 2)
         XCTAssertTrue(shared, "The share sheet opens with the backup file")
     }
@@ -36,30 +85,31 @@ final class BackupUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest"]
         app.launch()
-        XCTAssertTrue(app.buttons["Settings"].firstMatch.waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
         XCTAssertFalse(app.staticTexts["No habits yet"].exists, "The demo habits are there to start with")
-        app.buttons["Settings"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["Backup & Sync"].waitForExistence(timeout: 5))
+        openBackup(app)
         let erase = app.buttons["backup-erase"]
         for _ in 0..<4 where !erase.isHittable { app.swipeUp() }
         erase.tap()
         let confirm = app.buttons["Erase Everything"]
         XCTAssertTrue(confirm.waitForExistence(timeout: 5), "It asks first, and offers an export")
-        XCTAssertTrue(app.buttons["Export a File First"].exists)
+        XCTAssertTrue(app.buttons["Save a Backup File First"].exists)
         confirm.tap()
         XCTAssertTrue(app.alerts["Erased"].waitForExistence(timeout: 10))
         app.alerts["Erased"].buttons.firstMatch.tap()
-        app.buttons["Close"].firstMatch.tap()
+        app.navigationBars["Backup & Export"].buttons.firstMatch.tap()
         XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 10), "Everything on this iPhone is gone")
     }
 
-    /// "I've used this before" is offered on the empty first screen, and opens the restore choices.
+    /// Restore is offered on the empty first screen, and opens the restore choices: the account and a file.
     func testTheEmptyFirstScreenOffersRestore() throws {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest", "-empty"]
         app.launch()
         XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 10))
-        app.buttons["I've Used This Before"].tap()
+        app.buttons["empty-restore-backup"].tap()
+        XCTAssertTrue(app.navigationBars["Backup & Export"].waitForExistence(timeout: 5))
+        app.buttons["backup-restore"].tap()
         XCTAssertTrue(app.navigationBars["Restore Your Habits"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["Sign In"].exists)
         XCTAssertTrue(app.buttons["Import a File"].exists)
@@ -85,8 +135,7 @@ final class BackupUITests: XCTestCase {
         app.navigationBars["New Habit"].buttons["Add"].tap()
         XCTAssertTrue(app.buttons["Mark Backed up walk done"].waitForExistence(timeout: 5))
 
-        app.buttons["Settings"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["Backup & Sync"].waitForExistence(timeout: 5))
+        openBackup(app)
         XCTAssertTrue(shows(app, row: "backup-where", "Your account (our server)", within: 10), "Signed in: the backup goes to the account")
         XCTAssertTrue(app.staticTexts["Sync is part of Plus. Your devices talk through your account."].exists, "A free account doesn't sync")
         app.buttons["Back Up Now"].tap()
@@ -121,8 +170,8 @@ final class BackupUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["-dbname", "uitest-delete", "-reset-db", "-skip-device-auth", "-ci-sign-in-free", token, subject]
         app.launch()
-        XCTAssertTrue(app.buttons["Settings"].firstMatch.waitForExistence(timeout: 20))
-        app.buttons["Settings"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 20))
+        openBackup(app)
         let account = app.descendants(matching: .any)["backup-account"]
         XCTAssertTrue(account.waitForExistence(timeout: 20), "Signed in (the app made the account), the account row is there")
         // Another device of the same account, signed in before the deletion.
@@ -133,7 +182,7 @@ final class BackupUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS '(this device)'")).firstMatch.waitForExistence(timeout: 10), "This device is listed")
         app.buttons["Delete Account…"].tap()
         XCTAssertTrue(app.navigationBars["Delete Account"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.buttons["Export a File First"].exists, "An export is offered first")
+        XCTAssertTrue(app.buttons["Save a Backup File First"].exists, "An export is offered first")
         app.buttons["account-delete-confirm"].tap()
         let erase = app.buttons["Erase This iPhone Too"]
         XCTAssertTrue(erase.waitForExistence(timeout: 10), "It asks about this iPhone's habits")
@@ -146,11 +195,20 @@ final class BackupUITests: XCTestCase {
 
         app.buttons["Done"].tap()
         XCTAssertTrue(app.buttons["Sign In to Back Up to Your Account"].waitForExistence(timeout: 10), "Signed out here")
-        app.buttons["Close"].firstMatch.tap()
+        app.navigationBars["Backup & Export"].buttons.firstMatch.tap()
         XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 10), "This iPhone was erased")
     }
 
     // MARK: Helpers
+
+    /// ≡ → Backup & Export.
+    private func openBackup(_ app: XCUIApplication) {
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
+        app.buttons["menu-button"].tap()
+        XCTAssertTrue(app.buttons["menu-backup"].waitForExistence(timeout: 5))
+        app.buttons["menu-backup"].tap()
+        XCTAssertTrue(app.navigationBars["Backup & Export"].waitForExistence(timeout: 5))
+    }
 
     /// A Form row made of a title and a value (`LabeledContent`) is one element: its value holds the text.
     private func shows(_ app: XCUIApplication, row identifier: String, _ text: String, within seconds: TimeInterval = 3) -> Bool {

@@ -21,8 +21,45 @@ nonisolated struct LocalDay: Hashable, Comparable, Codable, Sendable {
         calendar.date(from: DateComponents(year: year, month: month, day: day, hour: 12))!
     }
 
+    /// In the Gregorian calendar (almost every phone), plain arithmetic on the day number: streaks and counts step
+    /// through a year of days, and three `Calendar` calls per step were most of their time (30 Sep).
     func adding(days: Int, calendar: Calendar = .current) -> LocalDay {
-        LocalDay(calendar.date(byAdding: .day, value: days, to: date(calendar: calendar))!, calendar: calendar)
+        if calendar.identifier == .gregorian { return LocalDay(dayNumber: dayNumber + days) }
+        return LocalDay(calendar.date(byAdding: .day, value: days, to: date(calendar: calendar))!, calendar: calendar)
+    }
+
+    /// Days from `self` to `other` (positive when `other` is later).
+    func days(to other: LocalDay, calendar: Calendar = .current) -> Int {
+        if calendar.identifier == .gregorian { return other.dayNumber - dayNumber }
+        return calendar.dateComponents([.day], from: date(calendar: calendar), to: other.date(calendar: calendar)).day ?? 0
+    }
+
+    /// 1 = Sunday … 7 = Saturday, as `Calendar.component(.weekday, …)`.
+    func weekday(calendar: Calendar = .current) -> Int {
+        if calendar.identifier == .gregorian { return ((dayNumber % 7 + 7 + 4) % 7) + 1 } // 1 Jan 1970 was a Thursday (5)
+        return calendar.component(.weekday, from: date(calendar: calendar))
+    }
+
+    /// Days since 1 January 1970 in the Gregorian calendar (H. Hinnant's `days_from_civil`).
+    var dayNumber: Int {
+        let y = month <= 2 ? year - 1 : year
+        let era = (y >= 0 ? y : y - 399) / 400
+        let yearOfEra = y - era * 400
+        let dayOfYear = (153 * ((month + 9) % 12) + 2) / 5 + day - 1
+        let dayOfEra = yearOfEra * 365 + yearOfEra / 4 - yearOfEra / 100 + dayOfYear
+        return era * 146_097 + dayOfEra - 719_468
+    }
+
+    /// The Gregorian day `dayNumber` days after 1 January 1970 (`civil_from_days`).
+    init(dayNumber: Int) {
+        let z = dayNumber + 719_468
+        let era = (z >= 0 ? z : z - 146_096) / 146_097
+        let dayOfEra = z - era * 146_097
+        let yearOfEra = (dayOfEra - dayOfEra / 1460 + dayOfEra / 36524 - dayOfEra / 146_096) / 365
+        let dayOfYear = dayOfEra - (365 * yearOfEra + yearOfEra / 4 - yearOfEra / 100)
+        let mp = (5 * dayOfYear + 2) / 153
+        let month = mp < 10 ? mp + 3 : mp - 9
+        self.init(year: yearOfEra + era * 400 + (month <= 2 ? 1 : 0), month: month, day: dayOfYear - (153 * mp + 2) / 5 + 1)
     }
 
     static func < (a: LocalDay, b: LocalDay) -> Bool {
@@ -190,6 +227,26 @@ struct Entry: Identifiable, Codable, Hashable, Sendable {
     var timeZone: String = TimeZone.current.identifier
     /// For a habit in several day sections: the section this tick was for.
     var slot: String?
+    /// Nil for old logs whose origin was never recorded.
+    var source: EntrySource?
+}
+
+enum EntrySource: String, Codable, Sendable {
+    case today, manual, routine, reminder, timer, daySheet
+    /// Siri, Shortcuts, Spotlight or the Action button (1 Oct 2026).
+    case shortcut, widget
+    var label: String {
+        switch self {
+        case .today: "Today"
+        case .manual: "Manual log"
+        case .routine: "Routine player"
+        case .reminder: "Reminder"
+        case .timer: "Timer"
+        case .daySheet: "History"
+        case .shortcut: "Siri or Shortcuts"
+        case .widget: "Widget"
+        }
+    }
 }
 
 /// What a streak counts, so its number is never mistaken for days.
@@ -251,6 +308,7 @@ enum TextLimit {
     static let unit = 12       // "tablespoons" 11, "cigarettes" 10
     static let noteText = 1000       // a habit's or a day's note: a few lines, never an essay editor
     static let descriptionText = 200 // a habit's standing description: what counts, why it matters
+    static let group = 24            // group names: the same as habit names ("Morning medicines" 17)
 
     /// "3 characters left", only in the last 5, so the limit is never a surprise.
     static func note(_ text: String, _ limit: Int) -> String? {

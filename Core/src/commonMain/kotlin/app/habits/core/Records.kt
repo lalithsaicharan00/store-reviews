@@ -86,6 +86,8 @@ data class EntryRecord(
     @ColumnInfo(name = "deleted_at") val deletedAt: Long?,
     /** Schema 3: the day section a tick belongs to, for a habit done once in each of several sections. */
     val slot: String?,
+    /** Unknown for logs saved before schema 6. */
+    val source: String? = null,
 )
 
 @Entity(tableName = "setting")

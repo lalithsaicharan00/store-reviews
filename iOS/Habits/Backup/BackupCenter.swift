@@ -143,7 +143,7 @@ final class BackupCenter {
 
     /// The one notification when a backup finds a problem while the app is closed (§4.4): once per problem, never
     /// while the app is open (the card is there), and only if notifications are allowed (we never ask for this).
-    /// Tapping it opens Backup & Sync.
+    /// Tapping it opens Backup & Export.
     func notifyIfClosed() async {
         guard let issue, UIApplication.shared.applicationState != .active, defaults.string(forKey: Key.notified) != issue.id else { return }
         let center = UNUserNotificationCenter.current()
@@ -157,7 +157,7 @@ final class BackupCenter {
         defaults.set(issue.id, forKey: Key.notified)
     }
 
-    /// The user-info key that marks the backup notification, so a tap opens Backup & Sync.
+    /// The user-info key that marks the backup notification, so a tap opens Backup & Export.
     nonisolated static let notificationKey = "backupProblem"
 
     private func currentIssue(iCloudProblem: ICloudProblem?) -> Issue? {
@@ -474,6 +474,23 @@ final class BackupCenter {
         incoming = await check(data)
     }
 
+    /// A backup file from before the current format: a copy of the database itself (Backup & Export, until 1 Oct 2026).
+    static func isOlderBackupFile(_ data: Data) -> Bool {
+        data.starts(with: Data("SQLite format 3\0".utf8))
+    }
+
+    /// Adds what an older backup file has and this iPhone doesn't; never removes or overwrites anything. Checked on a
+    /// copy before anything changes (`HabitStore.restore(from:)`).
+    func importOlderFile(_ url: URL) async throws -> HabitStore.RestoreSummary {
+        let added = try await store.restore(from: url)
+        if added.changed {
+            dataChanged()
+            store.onChange?() // reminders, widgets, Siri's phrases and sync follow the restored habits
+        }
+        refresh()
+        return added
+    }
+
     /// Restores, keeps the undo file, and shows the result. On a synced device the change syncs like any edit.
     func restore(_ pending: Pending, mode: RestoreMode) async throws -> RestoreChanges {
         await store.flush()
@@ -606,10 +623,10 @@ final class BackupCenter {
         return newest?.0
     }
 
-    private static func stamp(_ date: Date) -> String {
-        let f = DateFormatter()
-        f.locale = Locale(identifier: "en_US_POSIX")
-        f.dateFormat = "yyyy-MM-dd HHmm"
-        return f.string(from: date)
-    }
+    private static let stampFormat = Date.VerbatimFormatStyle(
+        format: "\(year: .defaultDigits)-\(month: .twoDigits)-\(day: .twoDigits) \(hour: .twoDigits(clock: .twentyFourHour, hourCycle: .zeroBased))\(minute: .twoDigits)",
+        timeZone: .current, calendar: Calendar(identifier: .gregorian))
+
+    /// "2026-10-01 1814" in local time, for a file name.
+    private static func stamp(_ date: Date) -> String { date.formatted(stampFormat) }
 }

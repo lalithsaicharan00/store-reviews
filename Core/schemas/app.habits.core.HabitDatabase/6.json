@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "380154bff1cb12ef9919df31f7ec2d54",
+    "identityHash": "3bb0c6d94b5ac85bece3cae4224f846d",
     "entities": [
       {
         "tableName": "habit",
@@ -271,7 +271,7 @@
       },
       {
         "tableName": "entry",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `habit_id` TEXT NOT NULL, `step_id` TEXT, `day` TEXT NOT NULL, `value` REAL NOT NULL, `created_at` INTEGER NOT NULL, `time_zone` TEXT NOT NULL, `deleted_at` INTEGER, `slot` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `habit_id` TEXT NOT NULL, `step_id` TEXT, `day` TEXT NOT NULL, `value` REAL NOT NULL, `created_at` INTEGER NOT NULL, `time_zone` TEXT NOT NULL, `deleted_at` INTEGER, `slot` TEXT, `source` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -323,6 +323,11 @@
             "fieldPath": "slot",
             "columnName": "slot",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -367,128 +372,11 @@
             "key"
           ]
         }
-      },
-      {
-        "tableName": "outbox",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`seq` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `op_id` TEXT NOT NULL, `op` TEXT NOT NULL, `problem` TEXT)",
-        "fields": [
-          {
-            "fieldPath": "seq",
-            "columnName": "seq",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "opId",
-            "columnName": "op_id",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "op",
-            "columnName": "op",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "problem",
-            "columnName": "problem",
-            "affinity": "TEXT"
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": true,
-          "columnNames": [
-            "seq"
-          ]
-        },
-        "indices": [
-          {
-            "name": "index_outbox_op_id",
-            "unique": true,
-            "columnNames": [
-              "op_id"
-            ],
-            "orders": [],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_outbox_op_id` ON `${TABLE_NAME}` (`op_id`)"
-          }
-        ]
-      },
-      {
-        "tableName": "sync_meta",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`table_name` TEXT NOT NULL, `row_id` TEXT NOT NULL, `hlc` TEXT NOT NULL, `clocks` TEXT, `extra` TEXT, `pending` INTEGER NOT NULL, PRIMARY KEY(`table_name`, `row_id`))",
-        "fields": [
-          {
-            "fieldPath": "tableName",
-            "columnName": "table_name",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "rowId",
-            "columnName": "row_id",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "hlc",
-            "columnName": "hlc",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "clocks",
-            "columnName": "clocks",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "extra",
-            "columnName": "extra",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "pending",
-            "columnName": "pending",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "table_name",
-            "row_id"
-          ]
-        }
-      },
-      {
-        "tableName": "local_state",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`key`))",
-        "fields": [
-          {
-            "fieldPath": "key",
-            "columnName": "key",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "value",
-            "columnName": "value",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "key"
-          ]
-        }
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '380154bff1cb12ef9919df31f7ec2d54')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3bb0c6d94b5ac85bece3cae4224f846d')"
     ]
   }
 }

@@ -52,8 +52,15 @@ internal object Migrations {
         }
     }
 
-    /** Schema 6: sync bookkeeping (outbox, per-row stamps, device state). Existing rows get their stamps on first open. */
+    /** Schema 6: keep the origin of a log; never guess the origin of old entries. */
     val v5ToV6 = object : Migration(5, 6) {
+        override suspend fun migrate(connection: SQLiteConnection) {
+            connection.execSQL("ALTER TABLE entry ADD COLUMN source TEXT")
+        }
+    }
+
+    /** Schema 7: sync bookkeeping (outbox, per-row stamps, device state). Existing rows get their stamps on first open. */
+    val v6ToV7 = object : Migration(6, 7) {
         override suspend fun migrate(connection: SQLiteConnection) {
             connection.execSQL("CREATE TABLE IF NOT EXISTS `outbox` (`seq` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `op_id` TEXT NOT NULL, `op` TEXT NOT NULL, `problem` TEXT)")
             connection.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_outbox_op_id` ON `outbox` (`op_id`)")

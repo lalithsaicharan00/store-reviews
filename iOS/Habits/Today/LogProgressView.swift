@@ -4,13 +4,22 @@ import SwiftUI
 struct LogProgressView: View {
     let habit: Habit
     let day: LocalDay
+    var source: EntrySource = .manual
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
-    @State private var amount = ""
-    @State private var hours = "0"
-    @State private var minutes = "0"
+    @State private var perfEntry: Entry?
+    @State private var draft: ProgressValueDraft
     @State private var saving = false
+    @State private var showDay = false
+    @State private var openedInput = false
     @FocusState private var typing: Bool
+
+    init(habit: Habit, day: LocalDay, source: EntrySource = .manual) {
+        self.habit = habit
+        self.day = day
+        self.source = source
+        _draft = State(initialValue: ProgressValueDraft(kind: habit.kind))
+    }
 
     private var timed: Bool { habit.kind == .duration }
     private var unit: String { if case .amount(let unit, _) = habit.kind { unit } else { "" } }
@@ -20,7 +29,7 @@ struct LogProgressView: View {
         // For time, a whole minute or more: a few seconds between Pause and Resume isn't an amount to repeat
         // ("Add 0 min again", found by hand 29 Sep).
         let smallest: Double = timed ? 1 : 0.0001
-        let entry = store.entries.last { (e: Entry) -> Bool in e.habitID == habit.id && e.stepID == nil && e.value >= smallest }
+        let entry = store.entries(of: habit.id).last { (e: Entry) -> Bool in e.stepID == nil && e.value >= smallest }
         guard let value = entry?.value else { return nil }
         return timed ? value.rounded() : value
     }
@@ -36,11 +45,7 @@ struct LogProgressView: View {
         return "\(HabitCopy.number(progress)) of \(HabitCopy.amount(goal, unit))"
     }
 
-    private var value: Double? {
-        if timed { return GoalDraft(hours: hours, minutes: minutes).duration }
-        guard let n = GoalNumber.parse(amount), n > 0 else { return nil }
-        return n
-    }
+    private var value: Double? { draft.value }
 
     var body: some View {
         NavigationStack {
@@ -58,12 +63,12 @@ struct LogProgressView: View {
                          : "This adds to your progress. You can go beyond your goal.")
                 }
                 if timed {
-                    DurationInput(hours: $hours, minutes: $minutes)
+                    DurationInput(hours: draft.binding(\.hours), minutes: draft.binding(\.minutes))
                 } else {
                     Section {
                         LabeledContent("Amount") {
                             HStack(spacing: 6) {
-                                TextField("0", text: $amount)
+                                TextField("0", text: draft.binding(\.amount))
                                     .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
                                     .font(.body.monospacedDigit().weight(.semibold))
                                     .focused($typing).accessibilityLabel("Amount to add, in \(unit)")
@@ -84,9 +89,23 @@ struct LogProgressView: View {
                         Text("The same as last time, in one tap.")
                     }
                 }
+                DayEntriesSection(habit: habit, day: day)
+                Section {
+                    Button(source == .daySheet ? "Back to This Day's Progress" : "Edit This Day's Progress…") {
+                        if source == .daySheet { dismiss() } else { showDay = true }
+                    }
+                }
             }
+            .sheet(isPresented: $showDay) { DaySheet(habit: habit, day: day) }
             .selectsNumbersOnFocus()
+            .scrollDismissesKeyboard(.immediately)
+            .accessibilityIdentifier("log-form")
+            .task {
+                if !openedInput { openedInput = true; if !timed { typing = true } }
+            }
+            .onDisappear { typing = false }
             // "Log", never "Add Time": this records time done by hand; "add time" reads as adding extra (the user, 29 Sep).
+            .navigationDestination(item: $perfEntry) { EntryEditView(habit: habit, entry: $0) }
             .navigationTitle(timed ? "Log Time" : "Log Amount")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -94,16 +113,24 @@ struct LogProgressView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Log") { if let value { add(value) } }
                         .fontWeight(.semibold)
-                        .disabled(value == nil || saving)
+                        .disabled(!draft.isValid || saving)
                 }
                 ToolbarItemGroup(placement: .keyboard) {
                     if typing { Spacer(); Button("Done") { typing = false } }
                 }
             }
-            .task { if !timed { typing = true } }
+            .onPerfCommand { action in
+                switch action {
+                case .openEntry: typing = false; perfEntry = store.entries(of: habit.id, on: day).last
+                case .closeLog: dismiss()
+                case .logAgain: if let lastAmount { add(lastAmount) }
+                case .hideLogKeyboard: typing = false
+                default: break
+                }
+            }
             // Time needs the wheels, the Scroll/Type switch and "again" in view at once: open it at full height
             // (at half height the wheels were cut off and had to be dragged up, found by hand 29 Sep).
-            .presentationDetents(timed ? [.large] : [.medium, .large])
+            .presentationDetents([.large])
             .alert("Couldn't save progress", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
                 Button("OK") { store.problem = nil }
             } message: { Text(store.problem ?? "") }
@@ -113,7 +140,7 @@ struct LogProgressView: View {
 
     private func add(_ value: Double) {
         saving = true
-        store.addProgress(habit, value: value, on: day)
+        store.addProgress(habit, value: value, on: day, source: source)
         Task { @MainActor in
             await store.flush()
             saving = false

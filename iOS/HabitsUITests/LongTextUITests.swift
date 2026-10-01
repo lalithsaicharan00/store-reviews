@@ -79,7 +79,8 @@ final class LongTextUITests: XCTestCase {
         XCTAssertGreaterThanOrEqual(start.frame.width, 44, "Play keeps its accessible tap target")
         // Bring the Now card to the middle of the screen for the picture.
         let middle = app.windows.firstMatch.frame.midY
-        if start.frame.midY > middle { app.windows.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8)).press(forDuration: 0.05, thenDragTo: app.windows.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8 - (start.frame.midY - middle) / app.windows.firstMatch.frame.height))) }
+        // Only a real drag: a few points is a tap, and it lands on the row under the finger (1 Oct: it opened Log Amount).
+        if start.frame.midY > middle + 40 { app.windows.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8)).press(forDuration: 0.05, thenDragTo: app.windows.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8 - (start.frame.midY - middle) / app.windows.firstMatch.frame.height))) }
         sleep(1)
         shot("03-today-now-open")
         // Quitting starts open and folds like the other cards.
@@ -161,7 +162,13 @@ final class LongTextUITests: XCTestCase {
         shot("12-form-long-section")
         // The whole sentence still reads as one, with the longest name and unit.
         let sentence = app.descendants(matching: .any)["habit-sentence"]
-        app.reveal(sentence)
+        // Back to the top of the form with short drags. Not `reveal`: under the sheet it follows Today's list, which
+        // never moves, so it stops after one drag.
+        let window = app.windows.firstMatch
+        for _ in 0..<6 where !(sentence.exists && sentence.isHittable) {
+            window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.35))
+                .press(forDuration: 0.05, thenDragTo: window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.7)))
+        }
         XCTAssertEqual(sentence.label, "Read one more chapter of 12 tablespoons a day, Lunch break walk")
         app.navigationBars["New Habit"].buttons["Add"].tap()
         let allow = XCUIApplication(bundleIdentifier: "com.apple.springboard").buttons["Allow"]

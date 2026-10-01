@@ -36,6 +36,7 @@ SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one a
 - **Parked decisions:** [Backlog.md](Backlog.md).
 
 - **Cost and capacity, free vs Plus:** [Server Cost and Capacity — Free Safety Copy vs Plus Sync](<Server Cost and Capacity — Free Safety Copy vs Plus Sync.md>) — 1 Oct 2026, a plan: two lanes (free = Worker + R2, Plus = Durable Objects), prices, and checks for `claude/server-and-sync`.
+- **App identity:** [Often Enough, oftenenough.com, and every bundle and product ID](<App Identity — Name, Domain and IDs.md>) — decided 1 Oct 2026. Set once, before anything is registered with Apple or Google.
 
 - **Accepted email behavior:** [The one email: purchase confirmation](<Email Delivery Decision.md>). Decided 26 Sep 2026, narrowed 27 Sep 2026; sent through Resend.
 

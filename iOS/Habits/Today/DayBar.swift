@@ -24,6 +24,19 @@ struct DayLabel: View {
     }
 }
 
+/// One cell of a month grid: a weekday letter, or a place in the grid (a day, or a blank around the month).
+/// Weekday letters and places need different identities in the one lazy grid: with plain numbers for both, weekday 1
+/// and place 1 were the same cell to the grid, which kept one, so the month's first row never drew (seen 1 Oct 2026).
+/// A place keeps its identity from month to month, so changing the month changes what the cells show and never slides
+/// them across the grid.
+enum MonthGridCell: Hashable {
+    case weekday(Int), place(Int)
+
+    static func month(places: Int) -> [MonthGridCell] {
+        (0..<7).map(weekday) + (0..<max(places, 0)).map(place)
+    }
+}
+
 /// A native SwiftUI month grid with the same completion totals as the bottom bar.
 struct CalendarSheet: View {
     let selected: LocalDay
@@ -61,17 +74,18 @@ struct CalendarSheet: View {
                             .labelStyle(.iconOnly).frame(width: 44, height: 44)
                     }
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 7), spacing: 8) {
-                        ForEach(0..<7, id: \.self) { offset in
-                            let weekday = (calendar.firstWeekday - 1 + offset) % 7
-                            Text(calendar.veryShortStandaloneWeekdaySymbols[weekday])
-                                .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
-                                .frame(maxWidth: .infinity).accessibilityHidden(true)
-                        }
-                        ForEach(0..<cells, id: \.self) { cell in
-                            let number = cell - leading + 1
-                            if number > 0 && number <= days {
-                                dayButton(LocalDay(year: month.year, month: month.month, day: number))
-                            } else { Color.clear.frame(height: 44).accessibilityHidden(true) }
+                        ForEach(MonthGridCell.month(places: cells), id: \.self) { cell in
+                            switch cell {
+                            case .weekday(let offset):
+                                Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + offset) % 7])
+                                    .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                                    .frame(maxWidth: .infinity).accessibilityHidden(true)
+                            case .place(let place):
+                                let number = place - leading + 1
+                                if number > 0 && number <= days {
+                                    dayButton(LocalDay(year: month.year, month: month.month, day: number))
+                                } else { Color.clear.frame(height: 44).accessibilityHidden(true) }
+                            }
                         }
                     }
                     Text("Tap any day to open it. Past days can be logged, with no limit on how far back. Later days open as a preview.")
@@ -94,6 +108,9 @@ struct CalendarSheet: View {
                 }
                 .padding(.bottom, 8)
             }
+            .onPerfCommand { action in
+                if action == .previousMonth { moveMonth(-1) } else if action == .nextMonth { moveMonth(1) }
+            }
             .navigationTitle("Go to a day")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -103,39 +120,20 @@ struct CalendarSheet: View {
     }
 
     private func dayButton(_ day: LocalDay) -> some View {
-        let summary = store.daySummary(on: day)
+        let score = store.todayScore(on: day)
+        let summary = (done: score.done, total: score.planned)
         let future = day > today
-        let progress = summary.total == 0 ? 0 : Double(summary.done) / Double(summary.total)
+        // Part credit fills the ring part of the way (a 6 of 8 glasses day), as on Progress (report §16.4).
+        let progress = score.fraction
         return Button { pick(day) } label: {
-            ZStack {
-                // A circle, like the rings: every shape on this screen is round.
-                Circle()
-                    .fill(day == selected ? Color(.secondarySystemFill) : .clear)
-                if summary.total > 0 {
-                    Circle().stroke(Color.ink.opacity(future ? 0.07 : 0.12), lineWidth: 3)
-                    if !future && progress > 0 {
-                        Circle().trim(from: 0, to: progress)
-                            .stroke(Color.ink, style: StrokeStyle(lineWidth: 3, lineCap: .round))
-                            .rotationEffect(.degrees(-90))
-                    }
-                }
-                Text(String(day.day)).font(.callout.weight(day == today || day == selected ? .bold : .medium))
-                    .foregroundStyle(future ? Color.secondary : Color.ink)
-            }
-            .frame(width: 38, height: 38)
+            DayRing(fraction: progress, planned: summary.total > 0, isFuture: future, label: String(day.day),
+                    bold: day == today || day == selected, selected: day == selected,
+                    full: summary.total > 0 && summary.done == summary.total)
             // A dot under days with a note, so notes can be found again (users show: Habit Hub's shading).
             .overlay(alignment: .bottom) {
                 if store.hasNotes(on: day) {
                     Circle().fill(Color.secondary).frame(width: 4, height: 4).offset(y: 6)
                         .accessibilityHidden(true)
-                }
-            }
-            .overlay(alignment: .topTrailing) {
-                if summary.total > 0 && summary.done == summary.total && !future {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 11, weight: .bold)).foregroundStyle(Color.ink)
-                        .background(Circle().fill(Color(.systemBackground)))
-                        .offset(x: 2, y: -2)
                 }
             }
             .frame(maxWidth: .infinity, minHeight: 44)
@@ -174,8 +172,7 @@ struct BackToTodayButton: View {
                     .foregroundStyle(Color.onInk)
                     .padding(.horizontal, 18)
                     .frame(height: 44)
-                    .background(Capsule().fill(Color.ink))
-                    .shadow(color: .black.opacity(0.15), radius: 6, y: 2)
+                    .background(Capsule().fill(Color.ink).shadow(color: .black.opacity(0.15), radius: 6, y: 2))
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier(id)

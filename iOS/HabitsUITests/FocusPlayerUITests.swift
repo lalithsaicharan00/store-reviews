@@ -215,7 +215,8 @@ final class FocusPlayerUITests: XCTestCase {
         XCTAssertEqual(app.staticTexts["focus-quantity"].label, "2 / 3")
         shot("compact-02-daily-check")
         jump("Call family")
-        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "2 / 3")
+        // 2 / 3 from earlier in the week, or 0 / 3 when the week starts today.
+        XCTAssertTrue(["2 / 3", "0 / 3"].contains(app.staticTexts["focus-quantity"].label))
         XCTAssertEqual(app.staticTexts["focus-progress-period"].label, "This week")
         shot("compact-03-weekly-check")
         jump("Read a little")

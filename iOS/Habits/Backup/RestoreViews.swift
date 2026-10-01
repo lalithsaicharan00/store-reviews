@@ -2,7 +2,7 @@ import Core
 import SwiftUI
 import UniformTypeIdentifiers
 
-/// "I've used this before", and Settings → Backup & Sync → Restore (Backup, Sync and Accounts §4.1, §4.6, §4.8):
+/// ≡ → Backup & Export → Restore, also from the welcome and the empty Today (Backup, Sync and Accounts §4.1, §4.6, §4.8):
 /// whatever applies, most likely first. The account's copies (any of its devices), sign-in, and a file.
 struct RestoreStartView: View {
     @Environment(BackupCenter.self) private var backup
@@ -15,6 +15,8 @@ struct RestoreStartView: View {
     @State private var importing = false
     @State private var pending: BackupCenter.Pending?
     @State private var failure: String?
+    /// The result of importing an older backup file (one saved from Backup & Export before 1 Oct 2026).
+    @State private var imported: String?
 
     var body: some View {
         Form {
@@ -71,7 +73,10 @@ struct RestoreStartView: View {
                 Button("Import a File") { importing = true }
                     .accessibilityIdentifier("restore-import")
             } footer: {
-                Text("A file from \"Move to Another Device\" or \"Export a File\", on this iPhone, in Files, or from AirDrop.")
+                Text("A file from \"Move to Another Device\" or \"Save a Backup File\", on this iPhone, in Files, or from AirDrop.")
+            }
+            if let imported {
+                Section { Text(imported).accessibilityIdentifier("restore-imported") }
             }
             if let failure {
                 Section { Text(failure).foregroundStyle(.red) }
@@ -133,6 +138,19 @@ struct RestoreStartView: View {
         let scoped = url.startAccessingSecurityScopedResource()
         defer { if scoped { url.stopAccessingSecurityScopedResource() } }
         guard let data = try? Data(contentsOf: url) else { failure = "Couldn't open the file."; return }
+        imported = nil
+        if BackupCenter.isOlderBackupFile(data) {
+            // The earlier "Save a Backup File" made a copy of the database itself. It only ever adds what's missing.
+            do {
+                let added = try await backup.importOlderFile(url)
+                imported = added.changed
+                    ? "Added \(added.habits) habits or tasks, \(added.entries) check-ins and \(added.settings) notes or settings. Everything already here was kept."
+                    : "Everything in this file is already here. Nothing was changed."
+            } catch {
+                failure = error.localizedDescription
+            }
+            return
+        }
         pending = await backup.check(data)
     }
 }
@@ -201,7 +219,7 @@ struct RestorePreviewView: View {
         }
         if done == nil {
             Section {
-                Text("You can undo a restore for 30 days in Backup & Sync.").font(.footnote).foregroundStyle(.secondary)
+                Text("You can undo a restore for 30 days in Backup & Export.").font(.footnote).foregroundStyle(.secondary)
             }
         }
     }

@@ -12,7 +12,8 @@
 	<array>
 		<string>fetch</string>
 	</array>
-	<!-- Google sign-in returns to the app on its iOS client ID, reversed (Architecture/Backlog.md, 1 Oct 2026). -->
+	<!-- Google sign-in returns to the app on its iOS client ID, reversed (Architecture/Backlog.md, 1 Oct 2026); widgets on
+	     oftenenough://. One CFBundleURLTypes key only: a second one would silently replace the first. -->
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -21,6 +22,13 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.367584981284-c8q0v1eqmtbng2nu75k3abjuih4s5b8k</string>
+			</array>
+		</dict>
+		<!-- Widgets open the app on oftenenough://today and oftenenough://item/<id>. -->
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>oftenenough</string>
 			</array>
 		</dict>
 	</array>
@@ -43,6 +51,8 @@
 	</array>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<false/>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Habits uses Face ID to unlock when you turn on the lock in Privacy.</string>
 	<key>NSAlarmKitUsageDescription</key>
 	<string>Often Enough rings an alarm at your habit's time when you choose Alarm for it.</string>
 </dict>

@@ -2,49 +2,58 @@ import SwiftUI
 
 /// "Day sections": Anytime plus the named parts of the user's day, in time order
 /// (Today reports 8, 16 and 25). Reached from the end of Today, a section's long-press menu,
-/// and "New Section…" in the habit form.
+/// and "New Section…" in the habit form, as a sheet; and from ≡ → Times of Day, pushed. Both show the one list
+/// (`TimesOfDayList`), so every way in opens the same screen (Navigation, Round 3, rule 2).
 struct DaySectionsView: View {
-    @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            TimesOfDayList()
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
+                }
+        }
+    }
+}
+
+/// The Times of Day list, with its editor pushed on the same stack.
+struct TimesOfDayList: View {
+    @Environment(HabitStore.self) private var store
     @State private var editing: DaySection?
     @State private var adding = false
 
     var body: some View {
-        NavigationStack {
-            List {
-                Section {
-                    ForEach(store.sections) { section in
-                        Button {
-                            if !section.isAnytime { editing = section }
-                        } label: {
-                            HStack {
-                                Text(section.name).foregroundStyle(Color.primary).lineLimit(1)
-                                Spacer(minLength: 16)
-                                Text(timeRange(section)).foregroundStyle(.secondary).monospacedDigit().lineLimit(1).fixedSize()
-                                if !section.isAnytime {
-                                    Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
-                                }
+        List {
+            Section {
+                ForEach(store.sections) { section in
+                    Button {
+                        if !section.isAnytime { editing = section }
+                    } label: {
+                        HStack {
+                            Text(section.name).foregroundStyle(Color.primary).lineLimit(1)
+                            Spacer(minLength: 16)
+                            Text(timeRange(section)).foregroundStyle(.secondary).monospacedDigit().lineLimit(1).fixedSize()
+                            if !section.isAnytime {
+                                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
                             }
                         }
-                        .disabled(section.isAnytime)
                     }
-                    AddRow(title: "Add Time of Day") { adding = true }
-                } footer: {
-                    Text("Morning, Evening, or your own, like Before work. Each one ends when the next one starts.")
+                    .disabled(section.isAnytime)
                 }
+                AddRow(title: "Add Time of Day") { adding = true }
+            } footer: {
+                Text("Morning, Evening, or your own, like Before work. Each one ends when the next one starts.")
             }
-            .navigationTitle("Times of Day")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
-            }
-            // Pushed, like the pages in the New flow.
-            .navigationDestination(item: $editing) { section in
-                SectionEditor(existing: section) { _ in }
-            }
-            .navigationDestination(isPresented: $adding) {
-                SectionEditor(existing: nil) { _ in }
-            }
+        }
+        .navigationTitle("Times of Day")
+        .navigationBarTitleDisplayMode(.inline)
+        // Pushed, like the pages in the New flow.
+        .navigationDestination(item: $editing) { section in
+            SectionEditor(existing: section) { _ in }
+        }
+        .navigationDestination(isPresented: $adding) {
+            SectionEditor(existing: nil) { _ in }
         }
     }
 

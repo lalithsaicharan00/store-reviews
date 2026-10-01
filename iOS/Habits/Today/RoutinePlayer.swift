@@ -57,12 +57,20 @@ struct RoutinePlayer: View {
     }
     private var next: Habit? { order.indices.contains(index + 1) ? order[index + 1] : nil }
     private var animation: Animation? { reduceMotion ? nil : .easeInOut(duration: 0.25) }
+    /// Nothing more is asked: the main button moves on. A "3 times a week" habit ticked once today still offers
+    /// "Log one", because every ✓ counts toward the week.
     private func done(_ habit: Habit) -> Bool {
+        !habit.atMost && (store.slots(of: habit).isEmpty ? store.isComplete(habit, on: session.day)
+            : store.isSlotDone(habit, slot: session.part, on: session.day))
+    }
+    /// Done for today: what the progress segments and the queue show. A week or month goal is done for the day once
+    /// something is logged that day (Build Plan #60a).
+    private func doneToday(_ habit: Habit) -> Bool {
         !habit.atMost && (store.slots(of: habit).isEmpty ? store.isSatisfied(habit, on: session.day)
             : store.isSlotDone(habit, slot: session.part, on: session.day))
     }
     private func skipped(_ habit: Habit) -> Bool { store.isSkipped(habit, on: session.day) }
-    private func covered(_ habit: Habit) -> Bool { habit.atMost ? reviewed.contains(habit.id) : done(habit) || skipped(habit) }
+    private func covered(_ habit: Habit) -> Bool { habit.atMost ? reviewed.contains(habit.id) : doneToday(habit) || skipped(habit) }
     private var remaining: [Habit] { order.filter { !covered($0) } }
 
     var body: some View {
@@ -134,7 +142,7 @@ struct RoutinePlayer: View {
         .accessibilityIdentifier("routine-player")
         .interactiveDismissDisabled()
         .task {
-            entriesBefore = Set(store.entries.map(\.id))
+            entriesBefore = Set(session.habits.flatMap { store.entries(of: $0.id, on: session.day).map(\.id) })
             startCurrentTimer()
             #if DEBUG && targetEnvironment(simulator)
             if ProcessInfo.processInfo.arguments.contains("-focus-preview"),
@@ -161,12 +169,15 @@ struct RoutinePlayer: View {
         }
         .sheet(isPresented: $showEdit) { if let habit = current { EditHabitSheet(habit: habit) } }
         .sheet(isPresented: $showLog, onDismiss: manualLogFinished) {
-            if let habit = current { LogProgressView(habit: habit, day: session.day) }
+            if let habit = current { LogProgressView(habit: habit, day: session.day, source: .routine) }
         }
         .alert("Couldn't save progress", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
             Button("OK", role: .cancel) { store.problem = nil }
         } message: { Text(store.problem ?? "") }
-        .sensoryFeedback(.success, trigger: feedbackCount)
+        .sensoryFeedback(.success, trigger: feedbackCount) { _, _ in TickFeedback.hapticsOn } // ≡ → Appearance → Haptics
+        .onPerfCommand { action in
+            if action == .nextHabit { advance() } else if action == .previousHabit { navigate(to: max(0, index - 1)) }
+        }
     }
 
     // MARK: The player: a playlist of habits (round 2, "Focus Player — How It Should Behave" P18–P23)
@@ -247,6 +258,13 @@ struct RoutinePlayer: View {
                         }
                         hero(habit, diameter: min(max(geometry.size.width - 72, 200), habit.kind == .checklist ? 236 : 272))
                     }
+                    if done(habit), let entry = latestEntry(habit) {
+                        Button { store.undoEntry(entry.id) } label: {
+                            Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44)
+                        }
+                            .buttonStyle(.borderless).font(.callout)
+                            .accessibilityIdentifier("focus-persistent-undo")
+                    }
                     if habit.kind == .checklist { checklist(habit) }
                     Spacer(minLength: 48) // room for transient save/undo feedback
                 }
@@ -302,7 +320,7 @@ struct RoutinePlayer: View {
                 let checked = store.isStepDone(step, of: habit, on: session.day)
                 Button {
                     change(checked ? "Step unchecked" : "Step saved", captureUndo: !checked) {
-                        store.toggleStep(step, of: habit, on: session.day)
+                        store.toggleStep(step, of: habit, on: session.day, source: .routine)
                     }
                 } label: {
                     HStack(spacing: 14) {
@@ -504,7 +522,7 @@ struct RoutinePlayer: View {
         } else if habit.atMost {
             // Cut down: log what happened; it never becomes "done" (P23).
             Button {
-                if habit.quickIncrement != nil { change("Logged") { store.increment(habit, on: session.day) } } else { openLog() }
+                if habit.quickIncrement != nil { change("Logged") { store.increment(habit, on: session.day, source: .routine) } } else { openLog() }
             } label: {
                 Label(habit.quickIncrement.map { "Log " + HabitCopy.amount($0, amountUnit(habit)) } ?? "Log amount manually", systemImage: "plus")
             }
@@ -517,13 +535,13 @@ struct RoutinePlayer: View {
             switch habit.kind {
             case .check, .task:
                 Button {
-                    change("Saved") { store.toggleCheck(habit, on: session.day) }
+                    change("Saved") { store.toggleCheck(habit, on: session.day, source: .routine) }
                 } label: {
                     Label(store.goal(of: habit) > 1 ? "Log one" : "Mark done", systemImage: "checkmark")
                 }.accessibilityLabel("Mark \(habit.name) done")
             case .amount:
                 Button {
-                    if habit.quickIncrement != nil { change("Saved") { store.increment(habit, on: session.day) } }
+                    if habit.quickIncrement != nil { change("Saved") { store.increment(habit, on: session.day, source: .routine) } }
                     else { openLog() }
                 } label: {
                     Label(habit.quickIncrement.map { "Log " + HabitCopy.amount($0, amountUnit(habit)) } ?? "Log manually", systemImage: "plus")
@@ -596,7 +614,7 @@ struct RoutinePlayer: View {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(habit.name).foregroundStyle(.primary)
                                     Text(habit.atMost ? (reviewed.contains(habit.id) ? "Checked in" : "Limit check-in")
-                                         : done(habit) ? "Done" : skipped(habit) ? "Skipped for today" : "Not finished")
+                                         : doneToday(habit) ? "Done" : skipped(habit) ? "Skipped for today" : "Not finished")
                                         .font(.caption).foregroundStyle(.secondary)
                                 }
                                 .frame(minHeight: RowBand.height)
@@ -604,7 +622,7 @@ struct RoutinePlayer: View {
                                 Group {
                                     if current?.id == habit.id { Image(systemName: "play.fill").accessibilityLabel("Current habit") }
                                     else if skipped(habit) { Image(systemName: "forward.fill").foregroundStyle(.secondary).accessibilityLabel("Skipped") }
-                                    else if covered(habit) { Image(systemName: "checkmark").accessibilityLabel(done(habit) ? "Done" : "Checked in") }
+                                    else if covered(habit) { Image(systemName: "checkmark").accessibilityLabel(doneToday(habit) ? "Done" : "Checked in") }
                                 }
                                 .frame(height: RowBand.height)
                             }
@@ -633,13 +651,13 @@ struct RoutinePlayer: View {
     private func change(_ message: String?, captureUndo: Bool = true, action: () -> Void) {
         guard !busy, !expired, session.day == store.today() else { return }
         busy = true
-        let before = Set(store.entries.map(\.id))
         let habitID = current?.id
+        let before = Set(habitID.map { store.entries(of: $0, on: session.day).map(\.id) } ?? [])
         action()
         Task { @MainActor in
             await store.flush()
             if store.problem == nil, current?.id == habitID {
-                undoID = captureUndo ? store.entries.last { $0.habitID == habitID && !before.contains($0.id) }?.id : nil
+                undoID = captureUndo ? habitID.flatMap { id in store.entries(of: id, on: session.day).last { !before.contains($0.id) } }?.id : nil
                 withAnimation(animation) { feedback = message }
                 if message != nil { feedbackCount += 1; hideFeedbackSoon() }
             }
@@ -652,7 +670,7 @@ struct RoutinePlayer: View {
     private func toggleTimer(_ habit: Habit) {
         // Instant, never blocked by a save in progress: each tap flips the state the person sees.
         guard !expired, session.day == store.today() else { return }
-        if store.timers[habit.id] != nil { store.stopTimer(habit, on: session.day) } else { store.toggleTimer(habit) }
+        if store.timers[habit.id] != nil { store.stopTimer(habit, on: session.day, source: .routine) } else { store.toggleTimer(habit) }
         withAnimation(animation) { feedback = nil; undoID = nil; undoSkipID = nil }
     }
 
@@ -690,7 +708,7 @@ struct RoutinePlayer: View {
         // Timer mutations are immediate in memory and persisted in order by HabitStore. Navigation must
         // never wait for disk writes (or reject a tap while an earlier habit's write is finishing).
         if let habit = current, store.timers[habit.id] != nil {
-            store.stopTimer(habit, on: session.day)
+            store.stopTimer(habit, on: session.day, source: .routine)
         }
         if let id { reviewed.insert(id) }
         feedback = nil; undoID = nil; undoSkipID = nil
@@ -705,7 +723,7 @@ struct RoutinePlayer: View {
         busy = true
         Task { @MainActor in
             if let habit = current, store.timers[habit.id] != nil {
-                store.stopTimer(habit, on: session.day)
+                store.stopTimer(habit, on: session.day, source: .routine)
             }
             await store.flush()
             busy = false
@@ -720,7 +738,7 @@ struct RoutinePlayer: View {
             // A routine stays on its tracking day. Do not count background time after its day ends.
             let nextDay = session.day.adding(days: 1, calendar: store.calendar).date(calendar: store.calendar)
             let end = store.calendar.date(bySettingHour: store.settings.dayEndHour, minute: 0, second: 0, of: nextDay) ?? nextDay
-            store.stopTimer(habit, on: session.day, through: end)
+            store.stopTimer(habit, on: session.day, through: end, source: .routine)
         }
     }
 
@@ -731,21 +749,21 @@ struct RoutinePlayer: View {
             // Manual time and a live timer must not count the same interval twice.
             resumeAfterLog = false
             if let habit = current, habit.kind == .duration, store.timers[habit.id] != nil {
-                store.stopTimer(habit, on: session.day)
+                store.stopTimer(habit, on: session.day, source: .routine)
                 await store.flush()
                 resumeAfterLog = true
             }
             busy = false
             guard store.problem == nil else { return }
             withAnimation(animation) { feedback = nil; undoID = nil }
-            manualEntryIDs = Set(store.entries.map(\.id))
+            manualEntryIDs = Set(current.map { store.entries(of: $0.id, on: session.day).map(\.id) } ?? [])
             showLog = true
         }
     }
     /// After Add Time / Add Amount: show what was saved, and a timer that was running runs again, Cancel included
     /// (it used to stay paused without a word, found by hand 29 Sep). Its earlier time was saved before the sheet.
     private func manualLogFinished() {
-        if let habit = current, let entry = store.entries.last(where: { $0.habitID == habit.id && !manualEntryIDs.contains($0.id) }) {
+        if let habit = current, let entry = store.entries(of: habit.id, on: session.day).last(where: { !manualEntryIDs.contains($0.id) }) {
             undoID = entry.id
             withAnimation(animation) { feedback = habit.kind == .duration ? "Time saved" : "Amount saved" }
             feedbackCount += 1
@@ -760,7 +778,7 @@ struct RoutinePlayer: View {
     private func latestEntry(_ habit: Habit) -> Entry? {
         // Only what was logged in this routine: an entry from earlier in the day (or another day) is never
         // removed from here by accident (found by hand 29 Sep: it offered to delete the morning's 5,200 steps).
-        store.entries.last { $0.habitID == habit.id && $0.day == session.day && !entriesBefore.contains($0.id) }
+        store.entries(of: habit.id, on: session.day).last { !entriesBefore.contains($0.id) && $0.source == .routine }
     }
 
     /// "+1,000 steps", "12 min", "check": what Undo removes, in words.
@@ -931,6 +949,9 @@ private struct FocusProgressCircle<Content: View>: View {
                 .multilineTextAlignment(.center)
         }
         .frame(width: diameter, height: diameter)
+        // A container with its own identifier: without `.contain`, the identifier replaced the children's own
+        // ("focus-quantity", "focus-checklist-progress"), so VoiceOver tools and UI tests couldn't find them.
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("focus-progress-circle")
     }
 }

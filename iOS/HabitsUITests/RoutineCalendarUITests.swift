@@ -164,7 +164,11 @@ final class RoutineCalendarUITests: XCTestCase {
         XCTAssertNotEqual(app.buttons[dayID(Date())].value as? String, before)
         let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
         if Calendar.current.component(.month, from: yesterday) != Calendar.current.component(.month, from: Date()) { app.buttons["Previous month"].tap() }
-        app.buttons[dayID(yesterday)].tap()
+        // A tap where the day is drawn: XCUITest calls the calendar's last row "not hittable" (1 Oct 2026, nothing
+        // covers it on screen), and the next line fails if anything really took the tap.
+        let day = app.buttons[dayID(yesterday)]
+        XCTAssertTrue(day.waitForExistence(timeout: 3))
+        day.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Yesterday,'")).firstMatch.waitForExistence(timeout: 3))
         XCTAssertFalse(app.buttons["Start Anytime routine"].exists)
         app.buttons["Next day"].tap()
@@ -186,7 +190,8 @@ final class RoutineCalendarUITests: XCTestCase {
         app.buttons["Start Anytime routine"].tap()
         app.buttons["focus-primary"].tap()
         XCTAssertTrue(app.buttons["focus-undo"].waitForExistence(timeout: 3))
-        app.buttons["Finish routine"].tap()
+        // The up-next pill and the main button both say "Finish routine": tap the main one.
+        app.buttons["focus-primary"].tap()
         app.buttons["Done"].tap()
         XCTAssertFalse(app.buttons["Start Anytime routine"].exists)
         openCalendar()

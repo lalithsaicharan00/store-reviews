@@ -6,6 +6,7 @@ import java.io.File
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import kotlinx.coroutines.test.runTest
 
 /** Builds a real schema-1 database from the exported schema, then opens it with the current code. */
@@ -119,14 +120,17 @@ class MigrationTest {
         repo.close()
     }
 
-    /** Schema 6 adds sync. Existing data is kept, gets its first stamps, and is all queued once the person signs in. */
-    @Test fun version5UpgradesAndEverythingSyncsOnFirstSignIn() = runTest {
-        val connection = createSchema(5)
+    /**
+     * Schema 7 adds sync, on top of the schema 6 that shipped to phones (`entry.source`). Existing data is kept, gets
+     * its first stamps, and is all queued once the person signs in, the entry's source included.
+     */
+    @Test fun version6UpgradesAndEverythingSyncsOnFirstSignIn() = runTest {
+        val connection = createSchema(6)
         connection.execSQL(
             "INSERT INTO habit VALUES ('h1', 'Read', 'book', 'orange', 'duration', NULL, 1.0, 'anytime', 20.0, 'day', " +
                 "NULL, 'daily', NULL, NULL, 0, NULL, 0, 1000, 1000, NULL, NULL, 1, 'notification', NULL, '2026-09-01', NULL)"
         )
-        connection.execSQL("INSERT INTO entry VALUES ('e1', 'h1', NULL, '2026-09-27', 20.0, 2000, 'Europe/London', NULL, NULL)")
+        connection.execSQL("INSERT INTO entry VALUES ('e1', 'h1', NULL, '2026-09-27', 20.0, 2000, 'Europe/London', NULL, NULL, 'reminder')")
         connection.execSQL("INSERT INTO setting VALUES ('week_start', '2')")
         connection.execSQL("INSERT INTO setting VALUES ('placement_v2', '1')")
         connection.close()
@@ -135,11 +139,27 @@ class MigrationTest {
         val snapshot = repo.load()
         assertEquals("2026-09-01", snapshot.habits.single().startsOn)
         assertEquals(listOf("e1"), snapshot.entries.map { it.id })
+        assertEquals("reminder", snapshot.entries.single().source)
         assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
         assertEquals(0, repo.syncStatus().waiting, "nothing is queued before there's an account")
         repo.bindAccount("account-1")
         // The habit, the tick and the synced setting; the local-only placement marker stays on this phone.
         assertEquals(3, repo.syncStatus().waiting)
+        assertTrue(repo.syncRequest().contains("\"source\":\"reminder\""), "the entry's source syncs")
         repo.close()
     }
+    @Test fun version5KeepsOldEntriesWithoutInventingASource() = runTest {
+        val connection = createSchema(5)
+        connection.execSQL("INSERT INTO entry VALUES ('e1', 'h1', NULL, '2026-09-27', 2.5, 2000, 'Europe/London', NULL, 'morning')")
+        connection.close()
+        val repo = HabitRepository.open(path)
+        val entry = repo.load().entries.single()
+        assertEquals("e1", entry.id)
+        assertEquals(2.5, entry.value)
+        assertEquals("morning", entry.slot)
+        assertEquals(null, entry.source)
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        repo.close()
+    }
+
 }

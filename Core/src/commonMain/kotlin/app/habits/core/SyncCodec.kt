@@ -47,6 +47,7 @@ internal object SyncCodec {
     fun entry(x: EntryRecord): Map<String, JsonElement> = mapOf(
         "habit_id" to s(x.habitId), "step_id" to s(x.stepId), "day" to s(x.day), "value" to n(x.value),
         "created_at" to n(x.createdAt), "time_zone" to s(x.timeZone), "deleted_at" to n(x.deletedAt), "slot" to s(x.slot),
+        "source" to s(x.source),
     )
 
     fun setting(x: SettingRecord): Map<String, JsonElement> = mapOf("value" to s(x.value))
@@ -100,6 +101,7 @@ internal object SyncCodec {
         EntryRecord(
             id = id, habitId = f.str("habit_id"), stepId = f.optStr("step_id"), day = f.str("day"), value = f.dbl("value"),
             createdAt = f.lng("created_at"), timeZone = f.str("time_zone"), deletedAt = f.optLng("deleted_at"), slot = f.optStr("slot"),
+            source = f.optStr("source"),
         )
     }
 }

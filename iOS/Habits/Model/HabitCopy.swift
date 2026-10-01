@@ -268,14 +268,22 @@ enum HabitCopy {
 
     /// The whole number, grouped, as people read it: "10,000", "2.5", "0.25".
     static func number(_ value: Double) -> String {
-        let formatter = NumberFormatter()
-        formatter.locale = locale
-        formatter.numberStyle = .decimal
-        formatter.usesGroupingSeparator = true
-        formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 2
+        // Made once per locale (PERFORMANCE.md rule 8): a new formatter for each number cost every sentence and row.
+        let formatter: NumberFormatter
+        if let made = numberFormatter, made.locale == locale {
+            formatter = made
+        } else {
+            formatter = NumberFormatter()
+            formatter.locale = locale
+            formatter.numberStyle = .decimal
+            formatter.usesGroupingSeparator = true
+            formatter.minimumFractionDigits = 0
+            formatter.maximumFractionDigits = 2
+            numberFormatter = formatter
+        }
         return formatter.string(from: NSNumber(value: value)) ?? String(value)
     }
+    private static var numberFormatter: NumberFormatter?
 
     /// "8 glasses", "1 glass", "2,000 ml", "$100", "8" (no unit).
     static func amount(_ value: Double, _ unit: String) -> String {

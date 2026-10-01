@@ -28,6 +28,9 @@ interface HabitDao {
     @Query("SELECT * FROM setting")
     suspend fun settings(): List<SettingRecord>
 
+    @Query("SELECT id FROM habit")
+    suspend fun allHabitIds(): List<String>
+
     @Query("SELECT * FROM habit") suspend fun backupHabits(): List<HabitRecord>
     @Query("SELECT * FROM step") suspend fun backupSteps(): List<StepRecord>
     @Query("SELECT * FROM reminder") suspend fun backupReminders(): List<ReminderRecord>
@@ -66,6 +69,10 @@ interface HabitDao {
 
     // Import only adds: a local-only setting that's already here is never replaced.
     @Insert(onConflict = OnConflictStrategy.IGNORE) suspend fun insertSettingsIfNew(settings: List<SettingRecord>)
+
+    /** Includes tombstones (an undone tick still "exists"), so replaying an undone action can't bring it back. */
+    @Query("SELECT EXISTS(SELECT 1 FROM entry WHERE id = :id)")
+    suspend fun hasEntry(id: String): Boolean
 
     @Query("DELETE FROM setting WHERE `key` = :key")
     suspend fun deleteSetting(key: String)

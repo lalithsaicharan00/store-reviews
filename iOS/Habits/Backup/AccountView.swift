@@ -1,7 +1,7 @@
 import LocalAuthentication
 import SwiftUI
 
-/// Settings → Backup & Sync → Your account: how you sign in, your devices, signing out and deleting the account
+/// ≡ → Backup & Export → Your account: how you sign in, your devices, signing out and deleting the account
 /// (Architecture 01 §3.7, 09 §7).
 struct AccountView: View {
     @Environment(BackupCenter.self) private var backup
@@ -105,7 +105,7 @@ struct DeleteAccountView: View {
                     }
                 }
                 Section {
-                    Button("Export a File First") { Task { await export() } }
+                    Button("Save a Backup File First") { Task { await export() } }
                 } footer: {
                     Text("A copy of your habits to keep. You can import it later, with or without an account.")
                 }
@@ -134,7 +134,7 @@ struct DeleteAccountView: View {
             Text("If you keep them, Often Enough keeps working on this iPhone without an account.")
         }
         .sheet(item: Binding(get: { sharing.map(SharedFileItem.init) }, set: { sharing = $0?.url })) { item in
-            BackupShareSheet(url: item.url)
+            ShareFileSheet(url: item.url, onFinish: { sharing = nil })
         }
     }
 
@@ -165,7 +165,7 @@ struct DeleteAccountView: View {
         } catch {
             failure = backup.isSignedIn
                 ? "Couldn't delete the account. Check your connection and try again; nothing was changed."
-                : "Your account is deleted, but this iPhone's habits couldn't all be erased. Please try again from Backup & Sync."
+                : "Your account is deleted, but this iPhone's habits couldn't all be erased. Please try again from Backup & Export."
         }
     }
 
