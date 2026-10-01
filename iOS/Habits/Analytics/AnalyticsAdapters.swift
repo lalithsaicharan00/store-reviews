@@ -31,10 +31,11 @@ extension EntrySource {
 extension HabitStore {
     /// Effective historical rule is resolved before extracting only enums; no Entry or Habit enters telemetry.
     func analyticsTracked(_ entry: Entry, ticket: AnalyticsTicket?) {
-        guard let habit = habits.first(where: { $0.id == entry.habitID }) else { return }
+        guard ticket != nil, let habit = habits.first(where: { $0.id == entry.habitID }) else { return }
         analytics.tracking(rule(habit, on: entry.day).analyticsType, origin: (entry.source ?? .manual).analyticsOrigin, ticket: ticket)
     }
     func analyticsConfiguration(reminderPermission: String? = nil) {
+        guard analytics.consented else { return }
         let defaults = UserDefaults.standard
         let persisted = Bundle.main.bundleIdentifier.flatMap { defaults.persistentDomain(forName: $0) }
         func source(_ key: String) -> AnalyticsValue {
