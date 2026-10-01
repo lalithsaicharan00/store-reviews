@@ -264,12 +264,35 @@ extension HabitStore {
         // Day scores for Progress's habit list (per group), kept until the data or the day changes.
         let cacheKey = "\(dataVersion)|\(today.key)|\(settings.weekStart)|\(settings.dayEndHour)"
         if progressScoresKey != cacheKey { progressScores = [:]; progressScoresKey = cacheKey }
+        func add(_ outcome: DayOutcome, to score: inout DayScore) {
+            switch outcome {
+            case .done: score.planned += 1; score.done += 1
+            case .part(let share): score.planned += 1; score.part += share; score.partCount += 1
+            case .notDone, .open: score.planned += 1
+            case .neutral: break
+            }
+        }
         func score(_ day: LocalDay, _ scope: UUID?, _ list: [Habit]) -> DayScore {
             let key = ProgressScoreKey(day: day, group: scope)
             if let known = progressScores[key] { return known }
-            let made = dayScore(on: day, habits: list, today: today)
-            progressScores[key] = made
-            return made
+            guard scope == nil, !groups.isEmpty else {
+                let made = dayScore(on: day, habits: list, today: today)
+                progressScores[key] = made
+                return made
+            }
+            // All, with groups: one pass over the habits fills All and every group's score for the day (scores add up
+            // habit by habit), so the Groups card and the group chips never work a habit's day out twice (speed run,
+            // 1 Oct 2026).
+            var all = DayScore()
+            var byGroup = Dictionary(uniqueKeysWithValues: groups.map { ($0.id, DayScore()) })
+            for habit in allTracked {
+                let result = outcome(habit, on: day, today: today)
+                add(result, to: &all)
+                if let g = groupOf[habit.id], byGroup[g] != nil { add(result, to: &byGroup[g]!) }
+            }
+            progressScores[key] = all
+            for (g, made) in byGroup { progressScores[ProgressScoreKey(day: day, group: g)] = made }
+            return all
         }
         func score(_ day: LocalDay) -> DayScore { score(day, group, tracked) }
         let cells = days(in: span).map { day in
