@@ -28,8 +28,18 @@ final class UndoUITests: XCTestCase {
         attachment.lifetime = .keepAlways
         add(attachment)
     }
+    /// ≡ → Habits: All Habits moved into the menu (the user's final decision, 30 Sep 2026).
+    private func openHabits() {
+        let menu = app.buttons["menu-button"]
+        XCTAssertTrue(menu.waitForExistence(timeout: 5))
+        menu.tap()
+        let row = app.buttons["menu-habits"]
+        XCTAssertTrue(row.waitForExistence(timeout: 3))
+        row.tap()
+    }
+
     private func daySheet(_ name: String) {
-        app.buttons["All habits"].tap()
+        openHabits()
         app.revealAndTap(app.staticTexts[name])
         let today = app.buttons["habit-today-progress"]
         XCTAssertTrue(today.waitForExistence(timeout: 5))
@@ -80,7 +90,9 @@ final class UndoUITests: XCTestCase {
         XCTAssertTrue(undo.exists)
         shot("undo-routine-persistent")
         undo.tap()
-        XCTAssertEqual(app.staticTexts["focus-progress-circle"].label, "1 / 2 glasses")
+        // The circle is a container (its children keep their identifiers), and the player keeps the pages beside the
+        // current one loaded, so look for the number with this value.
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "identifier == 'focus-quantity' AND label == '1 / 2 glasses'")).firstMatch.waitForExistence(timeout: 3))
         XCTAssertFalse(undo.exists)
     }
 
@@ -152,7 +164,7 @@ final class UndoUITests: XCTestCase {
     }
 
     func testDayControlsAndCalendarOpeningAreExplicit() {
-        app.buttons["All habits"].tap()
+        openHabits()
         app.revealAndTap(app.staticTexts["Stretch"])
         let today = app.buttons["habit-today-progress"]
         XCTAssertTrue(today.waitForExistence(timeout: 3))

@@ -26,6 +26,9 @@ on:
         default: false
       xctest:
         description: "Also run the older XCTest speed tests (screens with no PerfDriver scenario yet)"
+      scenarios:
+        description: "Speed runs: only these PerfDriver scenarios, timed and profiled (e.g. habit-page); empty for all"
+        default: ""
         type: boolean
         default: false
   push:
@@ -58,6 +61,10 @@ jobs:
             echo "TESTS=${{ github.event.inputs.tests }}" >> "$GITHUB_ENV"
             echo "PERF=${{ github.event.inputs.perf }}" >> "$GITHUB_ENV"
             echo "PERF_XCTEST=${{ github.event.inputs.xctest }}" >> "$GITHUB_ENV"
+            if [ -n "${{ github.event.inputs.scenarios }}" ]; then
+              echo "PERF_SCENARIOS=${{ github.event.inputs.scenarios }}" >> "$GITHUB_ENV"
+              echo "PERF_PROFILE_SCENARIOS=${{ github.event.inputs.scenarios }}" >> "$GITHUB_ENV"
+            fi
           else
             case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests,ProgressUITests,GroupsUITests,UndoUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "TESTS=BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV";; esac
