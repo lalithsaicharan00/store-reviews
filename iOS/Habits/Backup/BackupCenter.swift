@@ -514,6 +514,49 @@ final class BackupCenter {
         return await check(body)
     }
 
+    /// A copy in the person's own iCloud (§4.1 "We found your backup in iCloud"), one per device of their Apple Account.
+    struct ICloudCopy: Identifiable, Hashable {
+        let url: URL
+        let modified: Date
+        let isThisDevice: Bool
+        var id: URL { url }
+    }
+
+    /// The copies in the app's hidden iCloud folder, newest first. Copies not yet on this device are asked for; they
+    /// show once iCloud has brought them (`downloading` > 0 means try again shortly).
+    func iCloudCopies() async -> (copies: [ICloudCopy], downloading: Int) {
+        guard BackupFeatures.iCloudBackup, FileManager.default.ubiquityIdentityToken != nil else { return ([], 0) }
+        let me = sync.deviceID
+        let (found, downloading): ([(URL, Date)], Int) = await Task.detached {
+            guard let container = FileManager.default.url(forUbiquityContainerIdentifier: nil) else { return ([], 0) }
+            let folder = container.appending(path: "Backups", directoryHint: .isDirectory)
+            let files = (try? FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: [.contentModificationDateKey])) ?? []
+            var found: [(URL, Date)] = []
+            var downloading = 0
+            for file in files {
+                let name = file.lastPathComponent
+                if name.hasPrefix("."), name.hasSuffix(".zip.icloud") {
+                    // Not on this device yet: iCloud keeps a placeholder named ".<name>.icloud".
+                    let real = folder.appending(path: String(name.dropFirst().dropLast(".icloud".count)))
+                    try? FileManager.default.startDownloadingUbiquitousItem(at: real)
+                    downloading += 1
+                } else if name.hasSuffix(".zip") {
+                    found.append((file, (try? file.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast))
+                }
+            }
+            return (found, downloading)
+        }.value
+        let copies = found.map { ICloudCopy(url: $0.0, modified: $0.1, isThisDevice: $0.0.lastPathComponent == "\(me).zip") }
+        return (copies.sorted { $0.modified > $1.modified }, downloading)
+    }
+
+    /// Reads an iCloud copy and prepares its preview.
+    func open(_ copy: ICloudCopy) async -> Pending? {
+        let url = copy.url
+        guard let data = await Task.detached(operation: { try? Data(contentsOf: url) }).value else { return nil }
+        return await check(data)
+    }
+
     /// The person's words for a file that can't be used. Nothing was changed.
     static func words(for problem: String) -> String {
         switch problem {

@@ -8,6 +8,8 @@ struct RestoreStartView: View {
     @Environment(BackupCenter.self) private var backup
     @Environment(\.dismiss) private var dismiss
     @State private var copies: [BackupCenter.ServerCopy] = []
+    @State private var iCloud: [BackupCenter.ICloudCopy] = []
+    @State private var iCloudDownloading = 0
     @State private var loading = false
     @State private var showSignIn = false
     @State private var importing = false
@@ -16,6 +18,24 @@ struct RestoreStartView: View {
 
     var body: some View {
         Form {
+            if BackupFeatures.iCloudBackup && (!iCloud.isEmpty || iCloudDownloading > 0) {
+                Section {
+                    ForEach(iCloud) { copy in
+                        Button { Task { await openICloud(copy) } } label: {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(copy.isThisDevice ? "This device's backup" : "Another device's backup").foregroundStyle(Color.primary)
+                                Text(BackupSyncView.when(copy.modified)).font(.footnote).foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                    if iCloudDownloading > 0 {
+                        Label("Getting \(iCloudDownloading == 1 ? "a backup" : "\(iCloudDownloading) backups") from iCloud…", systemImage: "icloud.and.arrow.down")
+                            .foregroundStyle(.secondary)
+                    }
+                } header: {
+                    Text("We found your backup in iCloud")
+                }
+            }
             if backup.isSignedIn {
                 Section {
                     if loading && copies.isEmpty {
@@ -61,6 +81,7 @@ struct RestoreStartView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } } }
         .task(id: backup.isSignedIn) { await loadCopies() }
+        .task { await loadICloud() }
         .sheet(isPresented: $showSignIn) { SignInSheet() }
         .sheet(item: $pending) { pending in
             NavigationStack { RestorePreviewView(pending: pending) { dismiss() } }
@@ -80,6 +101,21 @@ struct RestoreStartView: View {
         loading = true
         defer { loading = false }
         copies = (try? await backup.serverCopies()) ?? []
+    }
+
+    /// iCloud brings copies that aren't on this device yet; look again until they're here (at most a minute).
+    private func loadICloud() async {
+        for _ in 0..<20 {
+            (iCloud, iCloudDownloading) = await backup.iCloudCopies()
+            if iCloudDownloading == 0 { return }
+            try? await Task.sleep(for: .seconds(3))
+        }
+    }
+
+    private func openICloud(_ copy: BackupCenter.ICloudCopy) async {
+        failure = nil
+        pending = await backup.open(copy)
+        if pending == nil { failure = "Couldn't read this backup from iCloud. Please try again." }
     }
 
     private func open(_ copy: BackupCenter.ServerCopy) async {
