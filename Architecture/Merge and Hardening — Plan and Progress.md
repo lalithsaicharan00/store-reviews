@@ -77,3 +77,6 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
   (`trig_01M4BDue4Sp5aLwpVmyuPy8t`). P5: everything off the Mac passes; the iOS run is going.
 - **1 Oct 20:50 UTC:** first iOS run of the merge: 25/27. Speed fixes from reading the code (a helper agent's review
   of the slowest first openings; its full list is the P7 "Next"). Rerun of the touched tests plus speed runs going.
+- **1 Oct 21:50 UTC:** `670d321`: Backup 8/8, New Habit 19/19, Progress 10/10, Habit Creation 5/6 (`testBigNumbers`:
+  the test runner timed out reading the screen; passed twice on `integration`; the whole run was slow, rerun alone).
+  The job hit GitHub's 60-minute limit before Today, Undo and the speed runs: now run separately (speed first).
