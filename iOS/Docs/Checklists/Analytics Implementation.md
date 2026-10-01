@@ -7,14 +7,14 @@ Written by Codex, 1 October 2026. Continue on `analytics`; PR base is `integrati
 - [x] Record prompt receipt: 2026-10-01 16:04:41 UTC (21:34:41 Asia/Calcutta).
 - [x] Inspect scheduler: only cloud automations exposed; no supported same-Codex-chat/workspace wake target. No reminder or duplicate coding run created. First requested target would be 2026-10-01 18:49:41 UTC (October 2 00:19:41 IST). Second must only be scheduled if a genuine first message fires and task remains unfinished, at receipt + 5h20m; no third.
 - [x] Read handoff, research contract and repository speed/design rules.
-- [x] Fetch existing analytics and integration; merge only consolidated integration through `173f4f51eab20359a0bd01396b0ffe00d8cba590`.
-- [x] Successful PostHog projects-get/project-get/read-data-schema/generate-app-url calls: sole Default project 290602, EU URL; no recently seen events. Billing tools unavailable without billing:read. Owner confirms free/no billing, published 1M/month; billing API remains unverified. Production delivery gate remains off pending real ingestion/privacy validation.
-- [x] Recheck integration at PR creation: still `173f4f5`; feature-owner branches unmerged. Recheck once more at completion. Onboarding/widgets/account/purchases require owners’ consolidation, not independent merges.
+- [x] Fetch existing analytics and integration; merge only consolidated integration through `eff1e14ce0503ce255800fcc58f75a32415cef6b` (df73109).
+- [x] Successful PostHog projects-get/project-get/read-data-schema/generate-app-url calls: sole Default project 290602, EU URL; no recently seen events. Billing tools unavailable without billing:read. Owner confirms free/no billing, published 1M/month; billing API remains unverified. Synthetic EU delivery, propertyless processing and retry deduplication are verified. Production gate remains off pending performance acceptance.
+- [x] Recheck integration at completion: `eff1e14` remains latest; onboarding/Help/widgets/identity are consolidated and merged. Account/sync/purchases still await owners; no independent owner-branch merge.
 - [x] Content-free versioned contract, durable creation/tracking/correction/adoption hooks, cut_down classification.
 - [x] Optional usage consent, separate crash preference, zero pre-consent collection, purge opt-out and erase; exclude identity from exports/backups/accounts.
 - [x] Bounded independent queues, daily envelopes, stable sampling, retry record identity, failure/recovery suppression.
 - [x] Screen visits and monotonic 30s idle-capped attention with foreground/cover/lock handling; no observable clock.
-- [x] Existing local backup/restore outcomes and configuration states, defaults vs saved user choices. Account/purchase/entitlement restore and widget/onboarding adapters remain unavailable in consolidated source (no synthetic successes).
+- [x] Existing local backup/restore outcomes and configuration states, defaults vs saved user choices. Onboarding, Help and observable iPhone widget adapters added after consolidation. Account/purchase/entitlement restore adapters remain unavailable (no synthetic successes).
 - [ ] Complete latest-head native payload/consent/offline/retry/upgrade tests, targeted app callback/UI tests and consent-on native performance evidence. Expanded prior native delivery/persistence tests passed; latest run pending.
 - [x] Useful provider dashboards with consent/platform/sampling/coverage labels; actual provider delivery evidence when permitted.
 - [ ] Refresh report assumptions, privacy manifest and handoff; commit/push analytics and open PR; never merge/release.
@@ -75,3 +75,13 @@ Completed 36907293697: 86 native checks, core/build and all 14 UI checks passed.
 ### Release-path verification — 00:40 IST Oct 2
 
 Added explicit release-channel configuration and fail-closed policy: Debug is development; TestFlight sandbox receipts force beta; missing/invalid configuration is development. Only controlled channel/Boolean receipt provenance is used, never receipt content, account data or paths in telemetry. Production remains false. Native policy tests cover these paths, and tagged analytics validation now compiles Release as well as the existing Debug app/widget builds before running UI/performance. Latest 7aa5c02 run36911212496 is testing prior fixes; latest Release-policy run supersedes it when queued.
+
+## Remaining launch dependencies (exact boundaries)
+
+- Production gate stays false until native performance acceptance. Current implementation and PR can be reviewed with this explicit gate; shipping/release remains outside the request. Latest tagged validation 7b05a66 compiles both Debug and Release, runs fixed-payload/consent/native UI checks and five same-build off/on performance scenarios.
+- Account, server/sync, cloud backup and verified StoreKit purchase/entitlement-restore code must first land in integration. Existing typed semantics/rejection tests cannot substitute for real durable/provider-verified outcomes.
+- Architecture selects Sentry, but consolidated source has no SDK initialization, DSN, project or symbol-upload configuration. Crash coverage is zero; separate crash sharing is disabled. Its owner must supply project/DSN, independent consent/scrubbing and native symbolication/coverage evidence. No second collector was added.
+- Billing/spend-limit and analytics retention configuration are not exposed by current project access. Owner confirms free/no billing; official free allowance is 1M/month with 700k planning ceiling. Project read exposes only disabled replay retention (30d), which is not analytics retention. No billing/personal API key or paid product was configured.
+- Catalog permissions are unavailable; the fourteen executed dashboard definitions are labelled noncanonical. Real production population, physical-device performance and future-platform coverage are unverified; no metric invents them.
+
+Latest provider read: 10 stored development rows/10 unique IDs/5 synthetic installations, production absent, zero person profiles. These are deduplicated stored rows, not authoritative ingress/billing. Both dashboards’ 14 saved queries executed successfully.
