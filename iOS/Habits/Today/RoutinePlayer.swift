@@ -174,7 +174,7 @@ struct RoutinePlayer: View {
         .alert("Couldn't save progress", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
             Button("OK", role: .cancel) { store.problem = nil }
         } message: { Text(store.problem ?? "") }
-        .sensoryFeedback(.success, trigger: feedbackCount)
+        .sensoryFeedback(.success, trigger: feedbackCount) { _, _ in TickFeedback.hapticsOn } // ≡ → Appearance → Haptics
     }
 
     // MARK: The player: a playlist of habits (round 2, "Focus Player — How It Should Behave" P18–P23)

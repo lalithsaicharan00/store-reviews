@@ -72,6 +72,32 @@ final class PerformanceUITests: XCTestCase {
         }
     }
 
+    /// Folding and opening Today's parts (#59): each part reads only its own fold, so this should redraw one part, not
+    /// every row.
+    func testFoldToday() {
+        ready()
+        let folds = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Fold ' OR label BEGINSWITH 'Open '"))
+        keepGoing {
+            for i in 0..<min(3, folds.count) {
+                let fold = folds.element(boundBy: i)
+                if fold.exists && fold.isHittable { fold.tap() }
+            }
+        }
+    }
+
+    /// A run of ticks, then a pause (#58): the button pop, the fill sweep, and done rows settling once per pause.
+    func testTickRun() {
+        ready()
+        let checks = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Mark ' OR label BEGINSWITH 'Undo ' OR label BEGINSWITH 'Add '"))
+        keepGoing {
+            for i in 0..<3 {
+                let check = checks.element(boundBy: i)
+                if check.exists && check.isHittable { check.tap() }
+            }
+            Thread.sleep(forTimeInterval: 2) // the pause, then the settle
+        }
+    }
+
     /// ≡ → Habits (All Habits moved into the menu, 30 Sep 2026).
     private func openHabits() {
         open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-habits"])

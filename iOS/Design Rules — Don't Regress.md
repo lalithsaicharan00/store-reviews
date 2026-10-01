@@ -227,6 +227,19 @@ Plan: [Groups — What to Build](<Docs/Specs/Groups — What to Build.md>), from
 - **Chip numbers are habits shown on the day open**, empty groups "–" and last. Counts are worked out only while the Filter sheet is open.
 - **Group numbers take a list of habits** (`dayScore(on:habits:)`, `progressSnapshot(…group:)`); day scores are cached per group. Today and Progress remember their own choice.
 
+## Ticking off, folding and settings (1 Oct 2026)
+
+Source: [Ticking Off, Folding and Small Settings — What People Need](<../Research/Research Reports/Home Screen and Visual Design/Ticking Off, Folding and Small Settings — What People Need.md>). Checklist: `Docs/Checklists/Animations and Settings.md`.
+
+- **Nothing on Today moves in the middle of a run of taps.** Every log (✓, +, a timer stopped, a step, a sheet closed after logging, an undo) calls `TodayLayout.hold` before changing data. Order and folds stay as shown until 1.5 s after the last log; then done rows sink and finished parts fold together (`Motion.settle`). Never sort or fold straight from a tap. The row offering "Add note" still keeps its place (Notes rule).
+- **Feedback comes from the tap, never from a redraw** (`TickFeedback`): no `sensoryFeedback(trigger: done)` on a row or button, since changing the day flips `done` and buzzed. Haptics on by default, sound off; both switchable in ≡ → Appearance. No confetti or celebration screens.
+- **Tick motion is a transform on the 34-pt button and the row fill** (`keyframeAnimator` scale, `ProgressFill` scaled from the leading edge). Don't animate a row's layout, and never block the next tap.
+- **Each time of day is its own view (`PartSection`) reading only its own `FoldBox`.** Folding one part must not redraw Today's other rows. Don't put fold state back into `TodayView`'s `@State`, and don't pass a fresh `Binding` into `HabitRow` (it made every row redraw on every Today redraw).
+- **Reduce Motion:** no pop, sweep or slide; folds and settles fade (`Motion`).
+- **Day start and week start apply everywhere or not at all.** Read the day through `store.today()` / `store.calendar`; never subtract hours from a moment (it was an hour off on daylight-saving nights). Changing either clears Progress's cached scores.
+- **No setting for 12/24-hour time, daylight saving or time zones.** Times use the iPhone's format (`DaySection.clock`, `.formatted`); logs keep their `LocalDay`. A second clock switch could disagree with the iPhone's.
+- **The theme is set on the window** (`Theme.apply`), so sheets and alerts follow it at once.
+
 ## Words the app never uses
 
 - **"Due", "overdue"** anywhere (the user, 29 Sep; copy rule from before). Tasks are "For today" or "Planned for Wed 1 Oct"; habits happen "on its days".

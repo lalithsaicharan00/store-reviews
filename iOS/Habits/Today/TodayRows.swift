@@ -63,8 +63,12 @@ struct HabitRow: View {
     @State private var showEdit = false
     @State private var showNotes = false
     @State private var showPause = false
-    @Binding var stepsOpen: Bool
+    /// A checklist's steps shown under it on Today (`TodayLayout`); nil elsewhere (the New Habit preview).
+    var steps: FoldBox? = nil
     @Environment(HabitStore.self) private var store
+    /// Today's layout: a log holds the rows in place until the person pauses (#58). Nil in the New Habit preview.
+    @Environment(TodayLayout.self) private var layout: TodayLayout?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     /// Progress's view option "Show Streaks" (report §7.6): off hides streaks here too.
     @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
 
@@ -137,7 +141,7 @@ struct HabitRow: View {
           .contentShape(Rectangle())
           .onTapGesture { if logsNumbers && day <= store.today() { showLog = true } }
           .accessibilityAction(named: habit.kind == .duration ? "Log time manually" : "Log amount manually") { if logsNumbers && day <= store.today() { showLog = true } }
-            actionButton(done: done)
+            actionButton(done: done, progress: progress, goal: goal)
                 .frame(height: RowBand.height)
                 .disabled(habit.kind != .checklist && day > store.today())
         }
@@ -145,7 +149,8 @@ struct HabitRow: View {
         .padding(.vertical, 2)
         .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color)
             .overlay(HighlightFlash(on: highlighted || store.noteTarget == .init(habit: habit.id, day: day), color: habit.color)))
-        .sheet(isPresented: $showLog) { LogProgressView(habit: habit, day: day) }
+        // Logged from the sheet: the row stays where it is until the person pauses, as after a tap (#58).
+        .sheet(isPresented: $showLog, onDismiss: { layout?.hold(reduceMotion: reduceMotion) }) { LogProgressView(habit: habit, day: day) }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .sheet(isPresented: $showNotes) { HabitNotesView(habit: habit) }
         .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
@@ -170,15 +175,29 @@ struct HabitRow: View {
             }
             if case .amount = habit.kind {
                 Button("Log amount manually", systemImage: "square.and.pencil") { showLog = true }.disabled(day > store.today())
-                Button("Undo Last Entry") { store.undoProgress(habit, on: day) }
+                Button("Undo Last Entry") { undoLast() }
                     .disabled(progress <= 0 || day > store.today())
             }
             if habit.kind == .duration {
                 Button("Log time manually", systemImage: "square.and.pencil") { showLog = true }.disabled(day > store.today())
-                Button("Undo Last Entry") { store.undoProgress(habit, on: day) }
+                Button("Undo Last Entry") { undoLast() }
                     .disabled(progress <= 0 || day > store.today())
             }
         }
+    }
+
+    private func undoLast() {
+        layout?.hold(reduceMotion: reduceMotion)
+        TickFeedback.undone()
+        withAnimation(Motion.tick(reduceMotion)) { store.undoProgress(habit, on: day) }
+    }
+
+    /// Every log from the row's button: hold Today's order, answer the tap (haptic, chime), then change the data inside
+    /// the tick animation so the button fills and the row's colour sweeps across (research §1).
+    private func log(finished: Bool, undo: Bool = false, _ change: () -> Void) {
+        layout?.hold(reduceMotion: reduceMotion)
+        if undo { TickFeedback.undone() } else { TickFeedback.logged(finished: finished) }
+        withAnimation(Motion.tick(reduceMotion)) { change() }
     }
 
     // MARK: The note, in place
@@ -244,12 +263,13 @@ struct HabitRow: View {
     }
 
     @ViewBuilder
-    private func actionButton(done: Bool) -> some View {
+    private func actionButton(done: Bool, progress: Double, goal: Double) -> some View {
         if habit.kind == .checklist {
             // The button opens and closes the items; the checklist is done when every item is.
-            RoundActionButton(symbol: stepsOpen ? "chevron.up" : "chevron.down", done: done, color: habit.color,
-                              label: stepsOpen ? "Hide \(habit.name) steps" : "Show \(habit.name) steps") {
-                withAnimation { stepsOpen.toggle() }
+            let open = steps?.open == true
+            RoundActionButton(symbol: open ? "chevron.up" : "chevron.down", done: done, color: habit.color,
+                              label: open ? "Hide \(habit.name) steps" : "Show \(habit.name) steps", popsOnTap: false) {
+                withAnimation(Motion.fold(reduceMotion)) { steps?.open = !open }
             }
         } else {
             switch habit.kind {
@@ -257,7 +277,8 @@ struct HabitRow: View {
                 RoundActionButton(symbol: "checkmark", done: done, color: habit.color,
                                   label: done ? "Undo \(habit.name)" : "Mark \(habit.name) done") {
                     if !done { offerNote() }
-                    withAnimation {
+                    // A habit ticked several times a day is done on its last tick; a per-section tick on its own.
+                    log(finished: !done && (slot != nil || progress + 1 >= goal), undo: done) {
                         if let slot { store.toggleSlot(habit, slot: slot, on: day) } else { store.toggleCheck(habit, on: day) }
                     }
                 }
@@ -270,7 +291,7 @@ struct HabitRow: View {
                                       keepSymbolWhenDone: true,
                                       text: "+" + Format.amount(step)) {
                         offerNote()
-                        withAnimation { store.increment(habit, on: day) }
+                        log(finished: !habit.atMost && progress < goal && progress + step >= goal) { store.increment(habit, on: day) }
                     }
                 } else {
                     RoundActionButton(symbol: "plus", done: done, color: habit.color,
@@ -283,8 +304,15 @@ struct HabitRow: View {
                 let running = store.timers[habit.id] != nil
                 RoundActionButton(symbol: running ? "pause.fill" : "play.fill", done: done && !running, color: habit.color,
                                   label: running ? "Stop \(habit.name) timer" : "Start \(habit.name) timer") {
-                    if store.timers[habit.id] == nil { TimerPresence.askOnNextSync = true } else { offerNote() }
-                    withAnimation { store.toggleTimer(habit, slot: slot) }
+                    if store.timers[habit.id] == nil {
+                        TimerPresence.askOnNextSync = true
+                        TickFeedback.started()
+                        withAnimation(Motion.tick(reduceMotion)) { store.toggleTimer(habit, slot: slot) }
+                    } else {
+                        // Stopping saves the time: a log like any other.
+                        offerNote()
+                        log(finished: !done && progress >= goal) { store.toggleTimer(habit, slot: slot) }
+                    }
                 }
                 .disabled(!isToday)
             case .quit, .checklist:
@@ -299,6 +327,8 @@ struct StepRow: View {
     let habit: Habit
     let day: LocalDay
     @Environment(HabitStore.self) private var store
+    @Environment(TodayLayout.self) private var layout: TodayLayout?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         let done = store.isStepDone(step, of: habit, on: day)
@@ -309,7 +339,12 @@ struct StepRow: View {
             RoundActionButton(symbol: "checkmark", done: done, color: habit.color,
                               label: done ? "Undo \(step.name)" : "Mark \(step.name) done") {
                 if !done { store.noteOffer = .init(habit: habit.id, day: day) }
-                withAnimation { store.toggleStep(step, of: habit, on: day) }
+                layout?.hold(reduceMotion: reduceMotion)
+                if done { TickFeedback.undone() } else {
+                    // The last step makes the checklist done.
+                    TickFeedback.logged(finished: habit.steps.allSatisfy { $0.id == step.id || store.isStepDone($0, of: habit, on: day) })
+                }
+                withAnimation(Motion.tick(reduceMotion)) { store.toggleStep(step, of: habit, on: day) }
             }
         }
         .disabled(day > store.today())
@@ -456,7 +491,11 @@ struct PartHeader: View {
                             .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { titleWidth = $0 }
                     }
                 if isNow { NowChip().fixedSize() }
-                if let count = iconCount { FoldedIcons(habits: habits, max: count).fixedSize().padding(.leading, 2) }
+                if let count = iconCount {
+                    // Folding: the icons fade in from the name's side as the rows go back under the header (#59).
+                    FoldedIcons(habits: habits, max: count).fixedSize().padding(.leading, 2)
+                        .transition(.opacity.combined(with: .scale(scale: 0.9, anchor: .leading)))
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { room = $0 }
@@ -480,6 +519,8 @@ struct PartHeader: View {
                         .font(.system(size: 18))
                         .foregroundStyle(.secondary)
                         .accessibilityHidden(true)
+                        // The last habit of the part: the ✓ grows in with the row's own tick (#58).
+                        .transition(.scale(scale: 0.4).combined(with: .opacity))
                 } else if let status {
                     Text(status).font(.subheadline).monospacedDigit().foregroundStyle(.secondary).accessibilityHidden(true)
                 }

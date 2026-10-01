@@ -5,7 +5,7 @@
 set -u
 SIM="$1"; OUT="$2"; mkdir -p "$OUT"
 HERE="$(cd "$(dirname "$0")" && pwd)"
-TESTS="testScrollToday testTapToday testMenuOpenClose testScrollAllHabits testScrollHabitPage testCalendarMonths testProgress testProgressHabitPage"
+TESTS="testScrollToday testTapToday testTickRun testFoldToday testMenuOpenClose testScrollAllHabits testScrollHabitPage testCalendarMonths testProgress testProgressHabitPage"
 SUMMARY="$OUT/perf-summary.md"
 
 {

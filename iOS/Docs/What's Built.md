@@ -147,6 +147,20 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Summary at the end
 - [x] Fast: Today stops drawing behind the player
 
+## Ticking off and folding (1 Oct 2026, branch `animations-and-settings`)
+
+- [x] A tick answers at once in the button: it fills, the ✓ pops, the row's colour sweeps across (#58)
+- [x] Haptics: a light tap per log, a "success" when a habit is done; only from the tap, never from changing the day
+- [x] Done rows stay where they were tapped and sink below the rest once you pause (1.5 s), all together; a finished time of day folds then too, not under your finger
+- [x] Time of day folds and opens in one short spring; folding one part redraws only that part (#59)
+- [x] Reduce Motion: no pop, no sweep, no slide; changes fade
+
+## Settings (1 Oct 2026, branch `animations-and-settings`)
+
+- [x] ≡ → Appearance: Theme (Automatic, Light, Dark); Done Habits (Move to Bottom, Stay in Place); Haptics (on); Sound When Done (off, a soft chime that follows the silent switch)
+- [x] ≡ → Day and Week: New Day Starts At (Midnight to Noon); Week Starts On (Automatic or any day)
+- [x] 12/24-hour clock follows the iPhone everywhere (no app setting); daylight saving and travel need no setting: "today" is worked out on the wall clock (fixed an hour-off on the nights the clocks change)
+
 ## Under the hood
 
 - [x] Data saved on the phone (SQLite through the Kotlin shared core), survives closing the app
@@ -155,9 +169,7 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 ## Not built yet (Build Plan order)
 
 - [ ] Easy undo after checking or logging
-- [ ] Completion animation before a done row moves down
-- [ ] Section open and close animation
-- [ ] Settings (export and import, backups on the phone, support, day and week start, theme, restore purchase)
+- [ ] Settings still to build: export and import, backups on the phone, support, restore purchase (theme, day start and week start are built)
 - [ ] Onboarding (first launch)
 - [ ] Home-screen and lock-screen widgets
 - [ ] Plus: purchase, account, sync and server backup

@@ -697,7 +697,7 @@ struct HabitForm: View {
     private var previewSection: some View {
         Section {
             HabitRow(habit: previewHabit, day: LocalDay(.now), isToday: true, time: remind ? previewHabit.reminders.first : nil,
-                     lineOverride: amountStandIn == nil ? nil : "", stepsOpen: .constant(false))
+                     lineOverride: amountStandIn == nil ? nil : "")
                 .allowsHitTesting(false)
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Preview on Today")

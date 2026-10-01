@@ -4,10 +4,11 @@ import SwiftUI
 struct TodayView: View {
     @Environment(HabitStore.self) private var store
     @State private var day: LocalDay?
-    /// Parts the user folded or opened by hand; others follow the default rule.
-    @State private var foldOverrides: [String: Bool] = [:]
+    /// Parts and checklists the person opened or folded, and done rows held in place until a pause (#58, #59).
+    /// One box per part, so folding one part redraws only that part.
+    @State private var layout = TodayLayout()
+    @AppStorage(Preferences.doneOrder) private var doneOrder = DoneOrder.bottom.rawValue
     @State private var showSections = false
-    @State private var openSteps: Set<UUID> = []
     @State private var routine: RoutineSession?
     /// The routine player has finished opening over Today. Until it closes, Today draws nothing: its rows,
     /// streaks and toolbar were recalculated behind the player on every tap and tick, which made the player lag
@@ -93,7 +94,7 @@ struct TodayView: View {
             routine = RoutineSession(part: .anytime, day: store.today(), habits: habits)
         }
         #endif
-        .onChange(of: selectedDay) { foldOverrides = [:] }
+        .onChange(of: selectedDay) { layout.reset() }
         // Back from the background: Today is drawn for now at once, not at the next minute.
         .onChange(of: scenePhase) { if scenePhase == .active { clock = .now } }
         .onChange(of: router.showDay) {
@@ -112,7 +113,7 @@ struct TodayView: View {
             groupRaw = ""
             Task {
                 if day != nil && day != store.today() { day = nil; try? await Task.sleep(for: .milliseconds(50)) }
-                foldOverrides[section] = true
+                layout.open(section)
                 scrollTarget = Self.headerKey(section)
             }
         }
@@ -183,8 +184,8 @@ struct TodayView: View {
         var id: UUID { habit.id }
     }
 
-    private static func rowKey(_ section: String, _ habit: UUID) -> String { "row-\(section)-\(habit.uuidString)" }
-    private static func headerKey(_ section: String) -> String { "header-\(section)" }
+    static func rowKey(_ section: String, _ habit: UUID) -> String { "row-\(section)-\(habit.uuidString)" }
+    static func headerKey(_ section: String) -> String { "header-\(section)" }
 
     /// Each section's rows: timed rows by their earliest time there, then untimed rows in saved order.
     private func rowsBySection(_ habits: [Habit]) -> [String: [TodayItem]] {
@@ -222,11 +223,11 @@ struct TodayView: View {
             }
             let key: String
             if habit.kind == .quit {
-                foldOverrides[Self.quitting] = true
+                layout.open(Self.quitting)
                 key = Self.rowKey(Self.quitting, id)
             } else {
                 guard store.isDue(habit, on: today), let first = store.placements(of: habit).first else { return }
-                foldOverrides[first.section] = true
+                layout.open(first.section)
                 key = Self.rowKey(first.section, id)
             }
             try? await Task.sleep(for: .milliseconds(250)) // the sheet finishes closing and the row exists
@@ -320,10 +321,10 @@ struct TodayView: View {
                 }
                 if isToday && !quitting.isEmpty {
                     // Quitting folds like the other cards, and starts open.
-                    let open = foldOverrides[Self.quitting] ?? true
+                    let open = layout.box(Self.quitting).open ?? true
                     Section {
                         PartHeader(title: "Quitting", habits: quitting, left: nil, isNow: false, isOpen: open, onStart: nil,
-                                   onToggle: { withAnimation { foldOverrides[Self.quitting] = !open } })
+                                   onToggle: { layout.setOpen(Self.quitting, !open, reduceMotion: reduceMotion) })
                         if open {
                             ForEach(quitting) { habit in
                                 QuitRow(habit: habit, highlighted: highlighted == Self.rowKey(Self.quitting, habit.id))
@@ -339,10 +340,10 @@ struct TodayView: View {
                     }
                 }
                 if !paused.isEmpty {
-                    let open = foldOverrides[Self.pausedCard] ?? false
+                    let open = layout.box(Self.pausedCard).open ?? false
                     Section {
                         PartHeader(title: "Paused", habits: paused, left: nil, isNow: false, isOpen: open, onStart: nil,
-                                   onToggle: { withAnimation { foldOverrides[Self.pausedCard] = !open } })
+                                   onToggle: { layout.setOpen(Self.pausedCard, !open, reduceMotion: reduceMotion) })
                             .accessibilityIdentifier("paused-card")
                         if open {
                             ForEach(paused) { habit in
@@ -372,6 +373,8 @@ struct TodayView: View {
                 }
             }
             .listStyle(.insetGrouped)
+            // Rows hold their place after a log, and read their checklist's open state, through this (#58, #59).
+            .environment(layout)
             .listSectionSpacing(14)
             .environment(\.defaultMinListRowHeight, 44)
             .contentMargins(.top, 4, for: .scrollContent)
@@ -432,49 +435,12 @@ struct TodayView: View {
         }
     }
 
-    private func isDone(_ item: TodayItem, on day: LocalDay) -> Bool {
-        // A habit ticked per section is done here once this section's tick is.
-        item.placement.slot.map { store.isSlotDone(item.habit, slot: $0, on: day) } ?? store.isSatisfied(item.habit, on: day)
-    }
-
     @ViewBuilder
     private func partSection(_ part: String, items: [TodayItem], day: LocalDay, isToday: Bool, isNow: Bool) -> some View {
-        let habits = items.map(\.habit)
-        let left = items.filter { !isDone($0, on: day) }.count
-        // Default: the Now part and Anytime are open while anything is left; finished parts fold.
-        let open = foldOverrides[part] ?? (left > 0 && (isNow || part == .anytime || !isToday))
-        Section {
-            PartHeader(title: store.section(part).name, habits: habits, left: left, isNow: isNow, isOpen: open,
-                       onStart: isToday && items.contains(where: { $0.habit.atMost || !isDone($0, on: day) })
-                           ? { start(part: part, items: items, day: day) } : nil,
-                       onToggle: { withAnimation { foldOverrides[part] = !open } })
-                .id(Self.headerKey(part))
-                .contextMenu {
-                    Button("Edit Times of Day…", systemImage: "rectangle.split.3x1") { showSections = true }
-                    Button(open ? "Fold" : "Open", systemImage: open ? "chevron.up" : "chevron.down") {
-                        withAnimation { foldOverrides[part] = !open }
-                    }
-                }
-            if open {
-                // Done habits sink to the bottom, keeping their order otherwise. The row just logged stays put while it
-                // offers "Add note" (or its note is being written), so the offer is where the person is looking.
-                let held = store.noteOffer.flatMap { $0.day == day ? $0.habit : nil }
-                let ordered = items.filter { !isDone($0, on: day) || $0.habit.id == held }
-                    + items.filter { isDone($0, on: day) && $0.habit.id != held }
-                ForEach(ordered) { item in
-                    let habit = item.habit
-                    let key = Self.rowKey(part, habit.id)
-                    HabitRow(habit: habit, day: day, isToday: isToday, slot: item.placement.slot,
-                             time: item.placement.times.first, highlighted: highlighted == key, stepsOpen: stepsBinding(habit))
-                        .id(key)
-                        .onAppear { visibleRows.show(key) }
-                        .onDisappear { visibleRows.hide(key) }
-                    if habit.kind == .checklist && openSteps.contains(habit.id) {
-                        ForEach(habit.steps) { StepRow(step: $0, habit: habit, day: day) }
-                    }
-                }
-            }
-        }
+        PartSection(part: part, title: store.section(part).name, items: items, day: day, isToday: isToday, isNow: isNow,
+                    doneLast: doneOrder != DoneOrder.inPlace.rawValue, highlighted: highlighted,
+                    onStart: { start(part: part, items: items, day: day) }, onEditSections: { showSections = true },
+                    visibleRows: visibleRows)
     }
 
     /// From the timer bar: open the timer's section and bring its row into view.
@@ -484,22 +450,17 @@ struct TodayView: View {
         let placements = store.placements(of: habit)
         let slot = store.timerSlots[habit.id]
         guard let section = (placements.first { slot != nil && $0.slot == slot } ?? placements.first)?.section else { return }
-        withAnimation { foldOverrides[section] = true }
+        layout.setOpen(section, true, reduceMotion: reduceMotion)
         Task {
             try? await Task.sleep(for: .milliseconds(100)) // the section opens and the row exists
             scrollTarget = Self.rowKey(section, habit.id)
         }
     }
 
-    private func stepsBinding(_ habit: Habit) -> Binding<Bool> {
-        Binding(get: { openSteps.contains(habit.id) },
-                set: { if $0 { openSteps.insert(habit.id) } else { openSteps.remove(habit.id) } })
-    }
-
     private func start(part: String, items: [TodayItem], day: LocalDay) {
         guard day == store.today() else { return }
         // Limits are check-ins, not completed goals. Include them even with nothing logged.
-        let pending = items.filter { $0.habit.atMost || !isDone($0, on: day) }.map(\.habit)
+        let pending = items.filter { $0.habit.atMost || !PartSection.isDone($0, on: day, store: store) }.map(\.habit)
         guard !pending.isEmpty else { return }
         returnToPart = part
         // Close any keyboard still open from a form, so the player doesn't open with its space reserved.

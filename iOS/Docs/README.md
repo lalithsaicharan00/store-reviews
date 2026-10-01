@@ -45,6 +45,7 @@ The work order for the whole app is [Build Plan](<../Build Plan.md>).
 | [Focus Player — Speed and Responsiveness](<Checklists/Focus Player — Speed and Responsiveness.md>) | Lag and the Pause fade measured and fixed 29 Sep (Today no longer redraws behind the player) |
 | [Edit Habit](<Checklists/Edit Habit.md>) | Built 29 Sep: edit from the row's long-press menu, changes apply from today, goal history keeps past days |
 | [Habit Notes and Day Notes](<Checklists/Habit Notes and Day Notes.md>) | Built 29 Sep: a note per habit per day, a description, and a note for the day |
+| [Animations and Settings](<Checklists/Animations and Settings.md>) | Built 1 Oct on `animations-and-settings`: tick feedback and done rows that wait for a pause (#58), folding (#59), Appearance and Day and Week settings (#61) |
 | [Sidebar Menu](<Checklists/Sidebar Menu.md>) | **Final** (30 Sep): the ≡ side menu with Progress, Habits, Tasks and every setting; built on the `sidebar` branch |
 | [Groups](<Checklists/Groups.md>) | Built 30 Sep: research put together, plan, groups and group stats |
 | [Progress Page — Research](<Checklists/Progress Page — Research.md>) | Research done 30 Sep: [The Progress Page — What People Need, and How to Build It](<../../Research/Research Reports/Progress and Statistics/The Progress Page — What People Need, and How to Build It.md>); not built yet (Build Plan #60) |

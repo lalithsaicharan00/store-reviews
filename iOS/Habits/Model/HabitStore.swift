@@ -9,6 +9,8 @@ struct DaySettings: Codable, Hashable, Sendable {
     var dayEndHour: Int = 0
     /// 1 = Sunday … 7 = Saturday, as in `Calendar.firstWeekday`.
     var weekStart: Int = Calendar.current.firstWeekday
+    /// False: the week follows the iPhone's region (Automatic, the default); true: the person picked a day.
+    var weekStartChosen = false
 }
 
 /// Holds habits and entries and applies every change. Everything shown is calculated from
@@ -112,8 +114,13 @@ final class HabitStore {
     var calendar: Calendar {
         var c = Calendar.current
         c.firstWeekday = settings.weekStart
+        if let fixedTimeZone { c.timeZone = fixedTimeZone }
         return c
     }
+
+    /// Only the in-app checks set it (`SettingsCheck`: a fixed place for the daylight-saving cases). The app always
+    /// follows the phone's own time zone, so travelling needs no setting.
+    @ObservationIgnored var fixedTimeZone: TimeZone?
 
     // MARK: Days
 
@@ -122,8 +129,16 @@ final class HabitStore {
     @ObservationIgnored var clock: () -> Date = { .now }
 
     /// The user's current day, honouring their day end.
+    ///
+    /// Worked out on the wall clock, not by subtracting hours from the moment: on the nights the clocks change, "3 AM"
+    /// is three hours after midnight on the clock but two or four in real time, and the new day must still start
+    /// when the clock says 3:00 (Build Plan #61; the old subtraction was an hour off twice a year).
     func today(now: Date? = nil) -> LocalDay {
-        LocalDay((now ?? clock()).addingTimeInterval(-Double(settings.dayEndHour) * 3600), calendar: calendar)
+        let now = now ?? clock()
+        let cal = calendar
+        let day = LocalDay(now, calendar: cal)
+        guard settings.dayEndHour > 0 else { return day }
+        return cal.component(.hour, from: now) < settings.dayEndHour ? day.adding(days: -1, calendar: cal) : day
     }
 
     /// The day bar's "done of planned": what's on Today, so archived habits aren't in it. Built on `dayScore`, the one
@@ -479,7 +494,43 @@ final class HabitStore {
 
     /// The moment a day begins, honouring the user's day end.
     private func dayStart(_ day: LocalDay) -> Date {
-        calendar.startOfDay(for: day.date(calendar: calendar)).addingTimeInterval(Double(settings.dayEndHour) * 3600)
+        // On the clock, like `today`: a skipped hour (spring forward) gives the next moment that exists.
+        let cal = calendar
+        let midnight = cal.startOfDay(for: day.date(calendar: cal))
+        guard settings.dayEndHour > 0 else { return midnight }
+        return cal.date(bySettingHour: settings.dayEndHour, minute: 0, second: 0, of: midnight)
+            ?? midnight.addingTimeInterval(Double(settings.dayEndHour) * 3600)
+    }
+
+    // MARK: Day and week (Build Plan #61; research "Ticking Off, Folding and Small Settings", §4)
+
+    /// The hour a new day starts: 0 (midnight) to 12 (noon). Logs before it count for the day before. Logs already
+    /// saved keep their day; Today, streaks, Progress, the player and reminders follow at once (reviews: a day-start
+    /// setting that doesn't apply everywhere is the worst complaint).
+    func setDayEnd(_ hour: Int) {
+        let hour = min(12, max(0, hour))
+        guard hour != settings.dayEndHour else { return }
+        settings.dayEndHour = hour
+        progressScores = [:]
+        perform { [repository] in
+            if hour == 0 { try await repository.removeSetting(key: Keys.dayEndHour) }
+            else { try await repository.saveSetting(key: Keys.dayEndHour, value: String(hour)) }
+        }
+    }
+
+    /// The first day of the week, 1 = Sunday … 7 = Saturday, or nil to follow the iPhone's region (Automatic).
+    /// Weekly goals, week streaks, the calendar and Progress all count in the new weeks, past weeks too.
+    func setWeekStart(_ day: Int?) {
+        let chosen = day.map { min(7, max(1, $0)) }
+        let resolved = chosen ?? Calendar.autoupdatingCurrent.firstWeekday
+        guard resolved != settings.weekStart || (chosen != nil) != settings.weekStartChosen else { return }
+        settings.weekStart = resolved
+        settings.weekStartChosen = chosen != nil
+        progressScores = [:]
+        perform { [repository] in
+            if let chosen { try await repository.saveSetting(key: Keys.weekStart, value: String(chosen)) }
+            else { try await repository.removeSetting(key: Keys.weekStart) }
+        }
     }
 
     /// The first day a habit counts: its start date (past or future), or the day it was made.
@@ -891,8 +942,9 @@ final class HabitStore {
                 switch setting.key {
                 case Keys.placementV1: upgradedV1 = true
                 case Keys.placementV2: repaired = true
-                case Keys.dayEndHour: loaded.dayEndHour = Int(setting.value) ?? 0
-                case Keys.weekStart: loaded.weekStart = Int(setting.value) ?? loaded.weekStart
+                case Keys.dayEndHour: loaded.dayEndHour = min(12, max(0, Int(setting.value) ?? 0))
+                case Keys.weekStart:
+                    if let day = Int(setting.value), (1...7).contains(day) { loaded.weekStart = day; loaded.weekStartChosen = true }
                 case Keys.groups:
                     loadedGroups = (try? JSONDecoder().decode([HabitGroup].self, from: Data(setting.value.utf8))) ?? []
                 case Keys.groupsOrder: manualGroups = setting.value == "manual"

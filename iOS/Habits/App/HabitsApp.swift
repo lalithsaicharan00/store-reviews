@@ -6,10 +6,14 @@ struct HabitsApp: App {
     private let model = AppModel.shared
     @Environment(\.scenePhase) private var scenePhase
 
+    init() {
+        Preferences.register()
+    }
+
     var body: some Scene {
         WindowGroup {
             #if DEBUG
-            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
             } else {
                 today
@@ -32,6 +36,8 @@ struct HabitsApp: App {
             .environment(model.router)
             .tint(.ink)
             .task {
+                // The theme is set on the window itself, so it reaches sheets and alerts too (≡ → Appearance).
+                Theme.apply(UserDefaults.standard.string(forKey: Preferences.theme) ?? Theme.automatic.rawValue)
                 await model.ensureLoaded()
                 guard model.store.isLoaded else { return }
                 model.scheduleRefresh()
@@ -55,6 +61,11 @@ private struct PlacementCheckView: View {
             if arguments.contains("-progresscheck") {
                 let failures = await ProgressCheck.run()
                 result = failures.isEmpty ? "Progress: all checks passed" : "Progress failed (\(failures.count)): " + failures.prefix(20).joined(separator: "; ")
+                return
+            }
+            if arguments.contains("-settingscheck") {
+                let failures = await SettingsCheck.run()
+                result = failures.isEmpty ? "Settings: all checks passed" : "Settings failed (\(failures.count)): " + failures.joined(separator: "; ")
                 return
             }
             if arguments.contains("-copycheck") {

@@ -195,6 +195,8 @@ struct MenuPage: View {
         case .habits: AllHabitsView(kind: .habits)
         case .tasks: AllHabitsView(kind: .tasks)
         case .timesOfDay: TimesOfDayList()
+        case .dayAndWeek: DayAndWeekView()
+        case .appearance: AppearanceView()
         case .plus: PlusView(fromMenu: true)
         default: ComingSoonView(place: place)
         }

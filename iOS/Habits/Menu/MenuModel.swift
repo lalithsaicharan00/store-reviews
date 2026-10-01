@@ -53,7 +53,7 @@ import SwiftUI
 /// say the same thing.
 enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     case progress, habits, tasks
-    case timesOfDay, reminders, appearance
+    case timesOfDay, dayAndWeek, reminders, appearance
     case backup, privacy
     case plus
     case help, about
@@ -61,7 +61,7 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     var id: String { rawValue }
 
     /// The menu's groups, separated by a gap like the iPhone's own Settings.
-    static let groups: [[MenuPlace]] = [[.progress, .habits, .tasks], [.timesOfDay, .reminders, .appearance],
+    static let groups: [[MenuPlace]] = [[.progress, .habits, .tasks], [.timesOfDay, .dayAndWeek, .reminders, .appearance],
                                         [.backup, .privacy], [.plus], [.help, .about]]
 
     var title: String {
@@ -70,6 +70,7 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
         case .habits: "Habits"
         case .tasks: "Tasks"
         case .timesOfDay: "Times of Day"
+        case .dayAndWeek: "Day and Week"
         case .reminders: "Reminders"
         case .appearance: "Appearance"
         case .backup: "Backup & Export"
@@ -87,6 +88,7 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
         case .habits: "checklist"
         case .tasks: "list.bullet"
         case .timesOfDay: "rectangle.split.3x1"
+        case .dayAndWeek: "calendar"
         case .reminders: "bell"
         case .appearance: "circle.lefthalf.filled"
         case .backup: "externaldrive"
@@ -101,12 +103,11 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     var plan: String? {
         switch self {
         case .reminders: "Whether notifications and alarms are allowed, and what a new reminder starts as."
-        case .appearance: "Light or dark, the app icon, and how a check-off feels."
         case .backup: "Backups on this phone, a copy you can export or import, and moving to a new phone."
         case .privacy: "Lock the app with Face ID, and erase your data."
         case .help: "Answers to common questions, and a way to reach us."
         case .about: "The privacy policy and terms."
-        case .progress, .habits, .tasks, .timesOfDay, .plus: nil
+        case .progress, .habits, .tasks, .timesOfDay, .dayAndWeek, .appearance, .plus: nil
         }
     }
 }
