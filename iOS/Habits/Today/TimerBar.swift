@@ -39,8 +39,12 @@ struct TimerBar: View {
             .padding(.leading, 12)
             .padding(.trailing, 4)
             .padding(.vertical, 4)
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
+            // The shadow is the shape's, not the whole bar's: this redraws every second, and a shadow over text and
+            // material is an offscreen pass each time (30 Sep).
+            .background {
+                RoundedRectangle(cornerRadius: 20, style: .continuous).fill(.regularMaterial)
+                    .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
+            }
             .padding(.horizontal, 16)
         }
     }

@@ -115,7 +115,21 @@ class MigrationTest {
         assertEquals(null, habit.startsOn)
         assertEquals(null, habit.endsOn)
         assertEquals(true, habit.remind)
-        assertEquals("5", repo.pragma("user_version"))
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
         repo.close()
     }
+    @Test fun version5KeepsOldEntriesWithoutInventingASource() = runTest {
+        val connection = createSchema(5)
+        connection.execSQL("INSERT INTO entry VALUES ('e1', 'h1', NULL, '2026-09-27', 2.5, 2000, 'Europe/London', NULL, 'morning')")
+        connection.close()
+        val repo = HabitRepository.open(path)
+        val entry = repo.load().entries.single()
+        assertEquals("e1", entry.id)
+        assertEquals(2.5, entry.value)
+        assertEquals("morning", entry.slot)
+        assertEquals(null, entry.source)
+        assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"))
+        repo.close()
+    }
+
 }

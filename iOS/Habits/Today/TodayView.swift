@@ -38,6 +38,8 @@ struct TodayView: View {
     /// menu is open, so the menu sliding over Today doesn't redraw Today (`Docs/Checklists/Sidebar Menu.md`).
     @Environment(MenuModel.self) private var menu
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// Speed runs only: the New Habit form opened straight away, to measure typing in it.
+    @State private var perfForm = false
 
     var body: some View {
         NavigationStack(path: Bindable(menu).path) {
@@ -68,6 +70,11 @@ struct TodayView: View {
                 RoutinePlayer(session: session)
                     .onAppear { playerCovering = true }
             }
+            .sheet(item: Binding(get: { store.dayTarget }, set: { store.dayTarget = $0 })) { target in
+                if let habit = store.habits.first(where: { $0.id == target.habitID }) {
+                    DaySheet(habit: habit, day: target.day)
+                }
+            }
             .sheet(isPresented: $showSections) { DaySectionsView() }
             .sheet(isPresented: $showFilter) {
                 FilterSheet(day: selectedDay, selection: $groupRaw)
@@ -94,7 +101,11 @@ struct TodayView: View {
             routine = RoutineSession(part: .anytime, day: store.today(), habits: habits)
         }
         #endif
-        .onChange(of: selectedDay) { layout.reset() }
+        .onChange(of: selectedDay) { layout.reset(); store.clearLogOffer() }
+        .onChange(of: routine?.id) { if routine != nil { store.clearLogOffer() } }
+        .onDisappear { store.clearLogOffer() }
+        .onPerfCommand(perform)
+        .sheet(isPresented: $perfForm) { NavigationStack { HabitForm(type: .doIt, onSaved: { _ in }) } }
         // Back from the background: Today is drawn for now at once, not at the next minute.
         .onChange(of: scenePhase) { if scenePhase == .active { clock = .now } }
         .onChange(of: router.showDay) {
@@ -127,6 +138,27 @@ struct TodayView: View {
     private var selectedDay: LocalDay { day ?? store.today() }
     /// The group Today is filtered to; nil is All (a deleted group reads as All).
     private var filterGroup: UUID? { store.existingGroup(groupRaw) }
+
+    /// Speed runs (`PerfDriver`): the same state changes the buttons make.
+    private func perform(_ action: PerfAction) {
+        switch action {
+        case .previousDay: day = selectedDay.adding(days: -1, calendar: store.calendar)
+        case .nextDay:
+            let next = selectedDay.adding(days: 1, calendar: store.calendar)
+            day = next == store.today() ? nil : next
+        case .openAllHabits: menu.path.append(MenuPlace.habits) // Habits lives in the ≡ menu now
+        case .openCalendar: showCalendar = true
+        case .openNewHabit: showNewHabit = true
+        case .openHabitForm: perfForm = true
+        case .startRoutine(let part):
+            let today = store.today()
+            let tracked = store.habits.filter { !$0.archived && $0.kind != .quit && store.startDay(of: $0) <= today && store.isDue($0, on: today) }
+            if let items = rowsBySection(tracked)[part] { start(part: part, items: items, day: today) }
+        case .close:
+            menu.reset(); showCalendar = false; showNewHabit = false; perfForm = false; routine = nil
+        default: break
+        }
+    }
 
     /// The note bar for a habit's note or the day's note.
     @ViewBuilder private func noteBar(_ target: HabitStore.NoteTarget) -> some View {

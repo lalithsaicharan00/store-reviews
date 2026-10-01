@@ -27,6 +27,9 @@ class HabitRepository private constructor(private val database: HabitDatabase) {
     @Throws(Exception::class)
     suspend fun addEntry(entry: EntryRecord) = dao.insertEntries(listOf(entry))
 
+    /** Correct one live entry without changing its ID, provenance or deletion state. */
+    suspend fun editEntry(id: String, value: Double, createdAt: Long) = dao.editEntry(id, value, createdAt)
+
     /** Undo keeps a tombstone rather than deleting the row (Architecture 05 §7). */
     @Throws(Exception::class)
     suspend fun removeEntry(id: String, at: Long) = dao.tombstoneEntry(id, at)
@@ -76,7 +79,7 @@ class HabitRepository private constructor(private val database: HabitDatabase) {
 
     companion object {
         /** Bump with every schema change, and add a migration plus a migration test. */
-        const val SCHEMA_VERSION = 5
+        const val SCHEMA_VERSION = 6
 
         @Throws(Exception::class)
         fun open(path: String): HabitRepository = HabitRepository(configure(databaseBuilder(path)))
@@ -88,7 +91,7 @@ class HabitRepository private constructor(private val database: HabitDatabase) {
             builder
                 .setDriver(BundledSQLiteDriver())
                 .setQueryCoroutineContext(databaseDispatcher)
-                .addMigrations(Migrations.v1ToV2, Migrations.v2ToV3, Migrations.v3ToV4, Migrations.v4ToV5)
+                .addMigrations(Migrations.v1ToV2, Migrations.v2ToV3, Migrations.v3ToV4, Migrations.v4ToV5, Migrations.v5ToV6)
                 .addCallback(Durability)
                 .build()
     }

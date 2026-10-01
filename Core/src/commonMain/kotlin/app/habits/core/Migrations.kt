@@ -51,4 +51,11 @@ internal object Migrations {
             connection.execSQL("ALTER TABLE habit ADD COLUMN ends_on TEXT")
         }
     }
+    /** Schema 6: keep the origin of a log; never guess the origin of old entries. */
+    val v5ToV6 = object : Migration(5, 6) {
+        override suspend fun migrate(connection: SQLiteConnection) {
+            connection.execSQL("ALTER TABLE entry ADD COLUMN source TEXT")
+        }
+    }
+
 }

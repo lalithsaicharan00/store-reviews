@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// "3/8 glasses", "12/20 min", "2/3 this week", "1/4 items", "0/2 cups max": one format for every habit.
 /// While a timer runs, time is a live clock instead: "7:42/20 min" ("Timing a Habit", 28 Sep).
@@ -73,12 +74,10 @@ struct HabitRow: View {
     @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
 
     var body: some View {
-        if habit.kind == .duration, isToday, let start = store.timers[habit.id] {
-            // A running timer redraws its row every second: the clock ticks and the fill grows, so it's
-            // plain that time is being counted. Anchor it at the timer's own start: `.now` changes the
-            // schedule on every redraw, and `.distantPast` replays every missed tick; both redraw
-            // nonstop and freeze the app (28 Sep).
-            TimelineView(.periodic(from: start, by: 1)) { context in
+        if habit.kind == .duration, isToday {
+            // Keep the same host when a running timer stops. Replacing TimelineView with a plain row
+            // could dismiss a sheet opened from that row; a stopped/covered clock simply has no ticks.
+            TimelineView(HabitRowClockSchedule(start: !(showLog || showEdit || showNotes || showPause) && store.dayTarget?.habitID != habit.id ? store.timers[habit.id] : nil)) { context in
                 row(now: context.date)
             }
         } else {
@@ -122,7 +121,18 @@ struct HabitRow: View {
                         .lineLimit(1)
                         .accessibilityIdentifier("habit-rhythm")
                 }
-                if lineOverride == nil { noteLine }
+                if lineOverride == nil {
+                    HStack(alignment: .firstTextBaseline, spacing: 12) {
+                        noteLine
+                        if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day {
+                            Button { store.undoEntry(entry.id) } label: {
+                                Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44, alignment: .leading)
+                            }
+                                .buttonStyle(.borderless).font(.caption)
+                                .accessibilityIdentifier("habit-inline-undo")
+                        }
+                    }
+                }
                 if case .flexible(let period, let needed) = habit.frequency,
                    let count = store.flexibleProgress(habit, on: day) {
                     Text(count > needed ? "\(count) days this \(period.noun) · goal reached"
@@ -140,6 +150,9 @@ struct HabitRow: View {
           }
           .contentShape(Rectangle())
           .onTapGesture { if logsNumbers && day <= store.today() { showLog = true } }
+          .accessibilityAction(named: "Undo last log") {
+              if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day { store.undoEntry(entry.id) }
+          }
           .accessibilityAction(named: habit.kind == .duration ? "Log time manually" : "Log amount manually") { if logsNumbers && day <= store.today() { showLog = true } }
             actionButton(done: done, progress: progress, goal: goal)
                 .frame(height: RowBand.height)
@@ -149,8 +162,9 @@ struct HabitRow: View {
         .padding(.vertical, 2)
         .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color)
             .overlay(HighlightFlash(on: highlighted || store.noteTarget == .init(habit: habit.id, day: day), color: habit.color)))
-        // Logged from the sheet: the row stays where it is until the person pauses, as after a tap (#58).
-        .sheet(isPresented: $showLog, onDismiss: { layout?.hold(reduceMotion: reduceMotion) }) { LogProgressView(habit: habit, day: day) }
+        // Logged from the sheet: the row stays where it is until the person pauses, as after a tap (#58). The day's own
+        // rule, so a past day is logged against the goal it had then.
+        .sheet(isPresented: $showLog, onDismiss: { layout?.hold(reduceMotion: reduceMotion) }) { LogProgressView(habit: store.rule(habit, on: day), day: day) }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .sheet(isPresented: $showNotes) { HabitNotesView(habit: habit) }
         .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
@@ -163,6 +177,8 @@ struct HabitRow: View {
             }
         }
         .contextMenu {
+            Button(day == store.today() ? "Edit Today's Progress…" : "Edit Progress…", systemImage: "calendar") { store.dayTarget = .init(habitID: habit.id, day: day) }
+                .disabled(day > store.today())
             // Edit sits with the item's other actions, as in Reminders; a tap on the row logs (spec §8).
             Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { showEdit = true }
             // A stretch of days off: travel, illness (pause report, 29 Sep). Skip today stays for one day.
@@ -170,7 +186,7 @@ struct HabitRow: View {
             // Any day, done or not, past or today; a note never changes progress (notes report, 29 Sep).
             Button(store.note(of: habit, on: day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") { startWriting() }
                 .disabled(day > store.today())
-            if !store.notes(of: habit).isEmpty {
+            if store.hasNotes(habit) {
                 Button("All Notes", systemImage: "list.bullet.rectangle") { showNotes = true }
             }
             if case .amount = habit.kind {
@@ -375,6 +391,7 @@ struct QuitRow: View {
 
     var body: some View {
         // A fixed anchor: `.now` gave a new schedule on every redraw, restarting the clock each time (see HabitRow).
+        VStack(alignment: .leading, spacing: 4) {
         TimelineView(.periodic(from: Self.anchor, by: 1)) { context in
             let runs = store.quitRuns(of: habit, now: context.date)
             HStack(alignment: .top, spacing: 12) {
@@ -407,6 +424,17 @@ struct QuitRow: View {
             .padding(.vertical, 2)
             .accessibilityElement(children: .combine)
         }
+        HStack {
+            Button("Slipped") { showSlip = true }
+                .disabled(store.isPaused(habit, on: today))
+            if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == today {
+                Button { store.undoEntry(entry.id) } label: {
+                    Text("Undo").frame(minWidth: 44, minHeight: 44)
+                }
+                    .accessibilityIdentifier("habit-inline-undo")
+            }
+        }.buttonStyle(.borderless).font(.caption)
+        }
         .listRowBackground(Color(.secondarySystemGroupedBackground).overlay(HighlightFlash(on: highlighted, color: habit.color)))
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
@@ -418,6 +446,7 @@ struct QuitRow: View {
             Button("Edit Habit", systemImage: "pencil") { showEdit = true }
             // A slip is an event with its own time (Build Plan #60d); editing "Started" is only for fixing a wrong start.
             Button("Log a Slip…", systemImage: "arrow.uturn.backward.circle") { showSlip = true }
+            Button("Edit Today's Progress…", systemImage: "calendar") { store.dayTarget = .init(habitID: habit.id, day: today) }
             // Pausing ends this run (kept as a run, not a slip); a new one starts when it's back (the user, 29 Sep).
             PauseMenuItems(habit: habit, showPause: $showPause)
             Button(store.note(of: habit, on: today) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") {
@@ -630,3 +659,12 @@ private struct NoteLineLabel: LabelStyle {
 
 /// The band at the top of every row that the icon, streak and button sit in (the row's minimum height).
 enum RowBand { static let height: CGFloat = 44 }
+
+/// A fixed timer anchor while running, one initial draw while stopped or covered by its sheet.
+private struct HabitRowClockSchedule: TimelineSchedule {
+    let start: Date?
+    func entries(from date: Date, mode: TimelineScheduleMode) -> AnySequence<Date> {
+        guard let start else { return AnySequence([date]) }
+        return AnySequence(PeriodicTimelineSchedule(from: start, by: 1).entries(from: date, mode: mode))
+    }
+}

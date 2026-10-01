@@ -1,4 +1,6 @@
 #!/bin/bash
+# The older XCTest speed tests, kept for screens with no PerfDriver scenario yet ([ios-perf-xctest]); XCTest's own
+# screen reading inflates these numbers. The main speed runs are measure_perf_driver.sh ([ios-perf], PERFORMANCE.md).
 # Runs each speed test in PerformanceUITests and samples the app while it runs; writes a Markdown summary.
 # Usage (from iOS/): Tools/perf/measure_perf.sh <simulator id> <out dir>
 # Needs a build from `xcodebuild build-for-testing ... -derivedDataPath DerivedData`.

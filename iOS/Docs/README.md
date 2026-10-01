@@ -8,6 +8,7 @@ These are the iPhone app's own documents: the specs it was built from and the us
 
 ## How to use these without reading them all
 
+0. **Speed first: [PERFORMANCE.md](<../PERFORMANCE.md>)** applies to every change (loaded by the root `CLAUDE.md`).
 1. **Always read [Design Rules — Don't Regress](<../Design Rules — Don't Regress.md>) first.** It is the short version of everything below: each rule the app must keep, and the research behind it. For most changes it is enough.
 2. **Before changing a screen, open only the spec for that screen** (table below). Read a research report only when a rule's reason is unclear or you need to change the rule.
 3. **When the user asks for a change**, write every point they made into a new checklist in `Checklists/` before starting, and tick it as you go.
@@ -44,9 +45,11 @@ The work order for the whole app is [Build Plan](<../Build Plan.md>).
 | [Focus Player — Spacing and Goal Clarity](<Checklists/Focus Player — Spacing and Goal Clarity.md>) | Adaptive spacing, centred CTA, no checklist instruction, saved goal context |
 | [Focus Player — Speed and Responsiveness](<Checklists/Focus Player — Speed and Responsiveness.md>) | Lag and the Pause fade measured and fixed 29 Sep (Today no longer redraws behind the player) |
 | [Edit Habit](<Checklists/Edit Habit.md>) | Built 29 Sep: edit from the row's long-press menu, changes apply from today, goal history keeps past days |
+| [Easy Undo and Fixing Progress](<Checklists/Easy Undo and Fixing Progress.md>) | Research done 30 Sep; build waits for the user |
 | [Habit Notes and Day Notes](<Checklists/Habit Notes and Day Notes.md>) | Built 29 Sep: a note per habit per day, a description, and a note for the day |
 | [Animations and Settings](<Checklists/Animations and Settings.md>) | Built 1 Oct on `animations-and-settings`: tick feedback and done rows that wait for a pause (#58), folding (#59), Appearance and Day and Week settings (#61) |
 | [Sidebar Menu](<Checklists/Sidebar Menu.md>) | **Final** (30 Sep): the ≡ side menu with Progress, Habits, Tasks and every setting; built on the `sidebar` branch |
 | [Groups](<Checklists/Groups.md>) | Built 30 Sep: research put together, plan, groups and group stats |
 | [Progress Page — Research](<Checklists/Progress Page — Research.md>) | Research done 30 Sep: [The Progress Page — What People Need, and How to Build It](<../../Research/Research Reports/Progress and Statistics/The Progress Page — What People Need, and How to Build It.md>); not built yet (Build Plan #60) |
 | [Sidebar — Backup Tasks and Reminders](<Checklists/Sidebar — Backup Tasks and Reminders.md>) | Free backup/export/restore, every saved task with editing, reminder reliability and Actions/performance evidence |
+| [App Speed — Round 2](<Checklists/App Speed — Round 2.md>) | 30 Sep: optimised phone build, remembered streaks, instant taps, stall meter; rules in `iOS/PERFORMANCE.md` |

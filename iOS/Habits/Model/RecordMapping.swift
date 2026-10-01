@@ -121,13 +121,13 @@ extension Habit {
 extension Entry {
     var record: EntryRecord {
         EntryRecord(id: id.uuidString, habitId: habitID.uuidString, stepId: stepID?.uuidString, day: day.key,
-                    value: value, createdAt: createdAt.millis, timeZone: timeZone, deletedAt: nil, slot: slot)
+                    value: value, createdAt: createdAt.millis, timeZone: timeZone, deletedAt: nil, slot: slot, source: source?.rawValue)
     }
 
     init?(record r: EntryRecord) {
         guard let id = UUID(uuidString: r.id), let habit = UUID(uuidString: r.habitId), let day = LocalDay(key: r.day) else { return nil }
         self.init(id: id, habitID: habit, stepID: r.stepId.flatMap(UUID.init(uuidString:)), day: day,
-                  value: r.value, createdAt: Date(millis: r.createdAt), timeZone: r.timeZone, slot: r.slot)
+                  value: r.value, createdAt: Date(millis: r.createdAt), timeZone: r.timeZone, slot: r.slot, source: r.source.flatMap(EntrySource.init(rawValue:)))
     }
 }
 

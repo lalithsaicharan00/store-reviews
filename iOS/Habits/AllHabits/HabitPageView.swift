@@ -17,6 +17,7 @@ struct HabitPageView: View {
     @State private var confirmingDelete = false
     @State private var month: LocalDay?
     @State private var noteDay: LocalDay?
+    @State private var progressDay: LocalDay?
 
     var body: some View {
         if let habit = store.habits.first(where: { $0.id == id }) {
@@ -57,10 +58,21 @@ struct HabitPageView: View {
             if habit.kind != .task {
                 Section { numbers(habit) }
             }
+            Section {
+                Button { progressDay = today } label: {
+                    HStack {
+                        Text("Today").foregroundStyle(.primary)
+                        Spacer()
+                        Text(store.dayResult(habit, on: today)).foregroundStyle(.secondary)
+                        Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
+                    }
+                }
+                .accessibilityIdentifier("habit-today-progress")
+            }
             if habit.kind != .quit && habit.kind != .task {
                 Section {
                     HabitMonthView(habit: habit, month: Binding(get: { month ?? Self.firstOfMonth(today, store.calendar) },
-                                                                set: { month = $0 }))
+                                                                set: { month = $0 }), onSelect: { progressDay = $0 })
                         .id("month-calendar")
                 }
                 OverTimeSection(habit: habit, start: overTime)
@@ -112,6 +124,10 @@ struct HabitPageView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) { Button("Edit") { showEdit = true } }
         }
+        .sheet(item: $progressDay) { DaySheet(habit: habit, day: $0) }
+        .onPerfCommand { action in
+            if case .openDay(let day) = action { progressDay = day }
+        }
         .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
         .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
         .sheet(isPresented: $showNotes) { HabitNotesView(habit: habit) }
@@ -146,10 +162,7 @@ struct HabitPageView: View {
         } else {
             let unit = habit.frequency.streakUnit
             let today = store.today()
-            let first = Self.firstOfMonth(today, store.calendar)
-            let done = stride(from: 0, to: today.day, by: 1)
-                .map { first.adding(days: $0, calendar: store.calendar) }
-                .filter { store.dayMark(habit, on: $0) == .done }.count
+            let done = store.doneThisMonth(habit, through: today)
             VStack(spacing: 10) {
                 HStack(spacing: 0) {
                     // "Show Streaks" off (Progress's view options) hides streaks and bests here too (report §7.6).
@@ -243,9 +256,8 @@ struct HabitPageView: View {
 struct HabitMonthView: View {
     let habit: Habit
     @Binding var month: LocalDay
+    var onSelect: (LocalDay) -> Void = { _ in }
     @Environment(HabitStore.self) private var store
-    /// The day whose popover is open: its mark, value and note, read-only (report §8.2).
-    @State private var shownDay: LocalDay?
 
     var body: some View {
         let calendar = store.calendar
@@ -274,7 +286,11 @@ struct HabitMonthView: View {
                 ForEach(Array(ordered.enumerated()), id: \.offset) { Text($0.element).font(.caption2.weight(.semibold)).foregroundStyle(.secondary) }
                 ForEach(0..<lead, id: \.self) { _ in Color.clear.frame(height: 36) }
                 ForEach(1...count, id: \.self) { d in
-                    cell(LocalDay(year: month.year, month: month.month, day: d), isToday: LocalDay(year: month.year, month: month.month, day: d) == today)
+                    let day = LocalDay(year: month.year, month: month.month, day: d)
+                    Button { onSelect(day) } label: { cell(day, isToday: day == today).frame(minHeight: 44) }
+                        .buttonStyle(.borderless)
+                        .disabled(day > today)
+                        .accessibilityIdentifier("habit-day-\(day.key)")
                 }
             }
             HStack(spacing: 14) {
@@ -295,29 +311,10 @@ struct HabitMonthView: View {
     }
 
     private func cell(_ day: LocalDay, isToday: Bool) -> some View {
-        let open = day <= store.today() && day >= store.startDay(of: habit)
-        return Button { shownDay = day } label: { mark(day, isToday: isToday) }
-            .buttonStyle(.plain)
-            .disabled(!open)
-            .popover(isPresented: Binding(get: { shownDay == day }, set: { if !$0 { shownDay = nil } })) {
-                dayPopover(day)
-                    .presentationCompactAdaptation(.popover)
-            }
-    }
-
-    /// The same content as one row of Progress's Day sheet (report §8.2). It never logs.
-    private func dayPopover(_ day: LocalDay) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(day.date(calendar: store.calendar).formatted(.dateTime.weekday(.wide).day().month(.wide)))
-                .font(.subheadline.weight(.semibold))
-            if let row = store.progressDayRow(habit, on: day) {
-                DayDetailRow(row: row)
-            } else {
-                Text(store.dayMark(habit, on: day).words(atMost: habit.atMost)).foregroundStyle(.secondary)
-            }
-        }
-        .padding(14)
-        .frame(minWidth: 220, maxWidth: 300, alignment: .leading)
+        // The day's button (in the grid) opens the day's sheet: its result, its entries, and filling in or fixing it
+        // (Build Plan #57). It replaces the read-only popover (Progress report §8.2), which showed less and sat inside
+        // the same button, so one of the two never received the tap (merge, 1 Oct 2026).
+        mark(day, isToday: isToday)
     }
 
     private func mark(_ day: LocalDay, isToday: Bool) -> some View {

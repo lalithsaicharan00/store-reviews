@@ -3,6 +3,10 @@
 # Runs only when asked, to stay inside the free Mac minutes (private repo: ~200 Mac minutes a month):
 #   - by hand: GitHub → Actions → "iOS build and tests" → Run workflow (pick the branch, tests and speed), or
 #   - on a push whose commit message contains [ios-ci] (UI tests) and/or [ios-perf] (speed tests).
+#     [ios-perf] runs the speed runs: the app drives itself with no XCTest attached (measure_perf_driver.sh,
+#     PERFORMANCE.md rule 2); [ios-perf-input] alongside it runs only the typing scenarios. [ios-perf-xctest] runs the
+#     older XCTest speed tests (measure_perf.sh), kept only for screens with no PerfDriver scenario yet (Progress,
+#     Groups, Backup, Tasks, Reminders); XCTest's own screen reading inflates those numbers.
 #     Other pushes skip the job and use no minutes.
 #
 # Results for Claude (and anyone): a short summary is pushed to the `ci-results` branch after every run —
@@ -15,9 +19,13 @@ on:
     inputs:
       tests:
         description: "UI test classes to run, comma-separated (or 'all', or 'none')"
-        default: "TodayUITests,TimerUITests,ProgressUITests,GroupsUITests"
+        default: "TodayUITests,TimerUITests,ProgressUITests,GroupsUITests,UndoUITests"
       perf:
         description: "Also run the speed tests (about 8 more minutes)"
+        type: boolean
+        default: false
+      xctest:
+        description: "Also run the older XCTest speed tests (screens with no PerfDriver scenario yet)"
         type: boolean
         default: false
   push:
@@ -31,11 +39,12 @@ jobs:
     if: >-
       github.event_name == 'workflow_dispatch' ||
       contains(github.event.head_commit.message, '[ios-ci]') ||
-      contains(github.event.head_commit.message, '[ios-perf]')
+      contains(github.event.head_commit.message, '[ios-perf]') ||
+      contains(github.event.head_commit.message, '[ios-perf-xctest]')
     # Here, not on the workflow: a push that runs nothing must not cancel a run that's going.
     concurrency:
       group: ios-job-${{ github.ref }}
-      cancel-in-progress: true
+      cancel-in-progress: false
     runs-on: macos-26
     timeout-minutes: 60
     env:
@@ -48,8 +57,9 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "TESTS=${{ github.event.inputs.tests }}" >> "$GITHUB_ENV"
             echo "PERF=${{ github.event.inputs.perf }}" >> "$GITHUB_ENV"
+            echo "PERF_XCTEST=${{ github.event.inputs.xctest }}" >> "$GITHUB_ENV"
           else
-            case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests,ProgressUITests,GroupsUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests,ProgressUITests,GroupsUITests,UndoUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "TESTS=BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "PERF_TESTS=testBackupPage testMenuOpenClose testScrollToday" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup-ui]"*) echo "TESTS=BackupUITests" >> "$GITHUB_ENV";; esac
@@ -57,8 +67,15 @@ jobs:
             case "$MESSAGE" in *"[ios-tasks-recheck]"*) echo "TESTS=TasksUITests" >> "$GITHUB_ENV"; echo "PERF_TESTS=testTaskEdit" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-reminders]"*) echo "TESTS=RemindersUITests,TasksUITests,BackupUITests,TodayUITests,TimerUITests,ScheduleUITests/testCalendarAndPersistenceRules,ScheduleUITests/testTaskAfterCompletion" >> "$GITHUB_ENV"; echo "PERF_TESTS=testRemindersPage testTasksPage testScrollToday" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-reminders-recheck]"*) echo "TESTS=RemindersUITests,TasksUITests,BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV"; echo "PERF_TESTS=testRemindersPage" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-perf-xctest]"*|*"[ios-backup]"*|*"[ios-tasks"*|*"[ios-reminders"*) echo "PERF_XCTEST=true" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-perf-input]"*) echo "PERF_SCENARIOS=new-habit day-sheet log-sheet" >> "$GITHUB_ENV";; esac
           fi
+
+      # The speed rules that can be read from the code (iOS/PERFORMANCE.md). Fails the run before any Mac minutes go
+      # to building.
+      - name: Speed rules
+        run: iOS/Tools/perf/check_rules.sh
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -78,6 +95,11 @@ jobs:
             ~/.gradle/wrapper
             ~/.konan
           key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Core storage and migration tests
+        id: core
+        working-directory: Core
+        run: ./gradlew jvmTest
 
       - name: Pick a simulator
         run: |
@@ -119,7 +141,7 @@ jobs:
           set -o pipefail
           ONLY=""
           if [ "$TESTS" = "all" ]; then
-            ONLY="-skip-testing:HabitsUITests/PerformanceUITests"
+            ONLY=""
           else
             for t in ${TESTS//,/ }; do ONLY="$ONLY -only-testing:HabitsUITests/$t"; done
           fi
@@ -130,9 +152,16 @@ jobs:
 
       - name: Speed tests
         id: perf
-        if: always() && env.PERF == 'true' && steps.build.outcome == 'success'
+        if: ${{ !cancelled() && env.PERF == 'true' && steps.build.outcome == 'success' }}
         working-directory: iOS
-        run: Tools/perf/measure_perf.sh "$SIM" perf
+        run: Tools/perf/measure_perf_driver.sh "$SIM" perf
+
+      # The older XCTest speed tests, for screens with no PerfDriver scenario yet; XCTest inflates their numbers.
+      - name: Speed tests through XCTest
+        id: perfxctest
+        if: ${{ !cancelled() && env.PERF_XCTEST == 'true' && steps.build.outcome == 'success' }}
+        working-directory: iOS
+        run: Tools/perf/measure_perf.sh "$SIM" perf-xctest
 
       - name: Export screenshots
         if: always() && steps.build.outcome == 'success'
@@ -152,10 +181,11 @@ jobs:
             echo "Run: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID} · $(date -u '+%Y-%m-%d %H:%M UTC')"
             echo "Commit: $(git log -1 --format=%s)"
             echo
+            echo "- Core storage and migrations: ${{ steps.core.outcome }}"
             echo "- Build: ${{ steps.build.outcome }}"
             echo "- UI tests ($TESTS): ${{ steps.tests.outcome }}"
-            echo "- Core storage/migration tests: ${{ steps.core.outcome }}"
             echo "- Speed tests: ${{ steps.perf.outcome }}"
+            echo "- Speed tests through XCTest: ${{ steps.perfxctest.outcome }}"
             if [ -f build.log ] && ! grep -q "BUILD SUCCEEDED" build.log; then
               echo; echo "## Build errors"; echo '```'; grep -E "error:" build.log | sort -u | head -30; echo '```'
             fi
@@ -170,8 +200,12 @@ jobs:
               echo; echo "## App crashes"; echo '```'; echo "$CRASHES" | head -120; echo '```'
             fi
             if [ -f perf/perf-summary.md ]; then
-              echo; echo "## Speed (simulator on GitHub's Mac, a year of history; compare runs, not absolute numbers)"; echo
+              echo; echo "## Speed (the app drives itself, no XCTest attached; compare runs, not absolute numbers)"; echo
               cat perf/perf-summary.md
+            fi
+            if [ -f perf-xctest/perf-summary.md ]; then
+              echo; echo "## Speed through XCTest (screens with no PerfDriver scenario yet; XCTest's work inflates these)"; echo
+              cat perf-xctest/perf-summary.md
             fi
           } > summary.md
           cat summary.md
@@ -186,7 +220,8 @@ jobs:
           git init -q
           git remote add origin "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           if git fetch -q --depth 1 origin ci-results; then git checkout -q -b ci-results FETCH_HEAD; else git checkout -q --orphan ci-results; fi
-          mkdir -p runs
+          mkdir -p runs schemas
+          cp "$GITHUB_WORKSPACE/Core/schemas/app.habits.core.HabitDatabase/6.json" schemas/6.json 2>/dev/null || true
           cp "$GITHUB_WORKSPACE/iOS/summary.md" latest.md
           cp latest.md "runs/$(date -u +%Y-%m-%d-%H%M)-${GITHUB_REF_NAME//\//-}-${GITHUB_SHA:0:7}.md"
           git add -A
@@ -206,10 +241,14 @@ jobs:
         with:
           name: ios-results
           path: |
+            Core/schemas
+            Core/build/reports/tests
             iOS/build.log
             iOS/test.log
             iOS/summary.md
             iOS/perf
+            iOS/perf-xctest
+            iOS/screenshots
             iOS/Results.xcresult
           retention-days: 7
 
@@ -223,4 +262,17 @@ jobs:
             iOS/summary.md
             iOS/perf/*.log
             iOS/perf/perf-summary.md
+            iOS/perf-xctest/*.log
+            iOS/perf-xctest/perf-summary.md
+      # Small enough to inspect through the connector; xcresult remains in the full artifact above.
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-review
+          path: |
+            iOS/summary.md
+            iOS/test.log
+            iOS/perf
+            iOS/perf-xctest
+            iOS/screenshots
           retention-days: 7

@@ -229,6 +229,10 @@ struct HabitForm: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var name = ""
+    /// The name as the previews show it: the preview row, the sentence and the icon suggestion catch up when typing
+    /// pauses. Redrawing and re-animating them on every letter kept the main thread 92 % busy while typing (30 Sep).
+    /// Saving always uses `name`, so nothing typed is ever lost.
+    @State private var shownName = ""
     /// What counts, how to do it, why it matters: optional, shown in the routine player (notes report, 29 Sep).
     @State private var descriptionText = ""
     /// The description as saved, when editing.
@@ -315,6 +319,7 @@ struct HabitForm: View {
         originalDescription = description
         _descriptionText = State(initialValue: description)
         _name = State(initialValue: habit.name)
+        _shownName = State(initialValue: habit.name)
         _symbol = State(initialValue: habit.symbol)
         _pickedSymbol = State(initialValue: true)
         _color = State(initialValue: habit.color)
@@ -381,6 +386,7 @@ struct HabitForm: View {
     }
 
     private var trimmedName: String { TextLimit.clean(name, TextLimit.name) }
+    private var shownTrimmedName: String { TextLimit.clean(shownName, TextLimit.name) }
     private var filledItems: [Step] {
         items.compactMap { item in
             let name = TextLimit.clean(item.name, TextLimit.checklistPart)
@@ -518,6 +524,12 @@ struct HabitForm: View {
         .onChange(of: name) { old, new in
             // A wrapping field puts Return into the text; treat it as Done instead.
             if name.contains("\n") { name = name.replacingOccurrences(of: "\n", with: ""); focus = nil }
+        }
+        .task(id: name) {
+            guard shownName != name else { return }
+            try? await Task.sleep(for: .milliseconds(300)) // a new letter cancels this and starts again
+            guard !Task.isCancelled else { return }
+            shownName = name
             suggestIcon()
         }
         .onChange(of: startDate) { if endDate < startDate { endDate = startDate } }
@@ -652,7 +664,7 @@ struct HabitForm: View {
     }
 
     private var screenText: String {
-        guard !trimmedName.isEmpty else {
+        guard !shownTrimmedName.isEmpty else {
             // No amount yet either: just the rhythm, as the How often row says it.
             if hasAmount && amountValue == nil {
                 return plan.often.label(hasAmount: true, weekStart: weekStart)
@@ -683,6 +695,7 @@ struct HabitForm: View {
     /// the row already has its +, ▶ or ✓.
     private var previewHabit: Habit {
         var habit = draft
+        habit.name = shownTrimmedName
         if habit.name.isEmpty { habit.name = type == .task ? "Your task" : "Your habit" }
         if hasAmount && amountValue == nil {
             var stand = plan
@@ -708,7 +721,7 @@ struct HabitForm: View {
         } footer: {
             // The text preview, right under the card: the whole habit once it has a name.
             Group {
-                if trimmedName.isEmpty {
+                if shownTrimmedName.isEmpty {
                     Text(type == .task ? "Enter a task name to see the preview." : "Enter a habit name to see the preview.")
                         .font(.callout).foregroundStyle(.secondary)
                 } else {
