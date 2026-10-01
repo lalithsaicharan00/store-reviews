@@ -145,9 +145,12 @@ jobs:
             sudo xcodebuild -runFirstLaunch
             xcodebuild -version
             xcrun simctl list runtimes
-            open -a Simulator
+            # A Simulator.app launch can boot its remembered device as well as our selected one.
+            # Use one clean headless device to avoid parallel migration and stale image data.
+            xcrun simctl shutdown all || true
             ID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone')))")
             echo "SIM=$ID" >> "$GITHUB_ENV"
+            xcrun simctl erase "$ID"
             xcrun simctl boot "$ID" || true
             xcrun simctl bootstatus "$ID" -b
             xcrun simctl list devices booted
