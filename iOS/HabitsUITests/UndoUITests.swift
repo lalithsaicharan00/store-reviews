@@ -169,6 +169,8 @@ final class UndoUITests: XCTestCase {
         let today = app.buttons["habit-today-progress"]
         XCTAssertTrue(today.waitForExistence(timeout: 3))
         let calendarDays = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-' AND enabled == YES"))
+        // The habit page has Progress's numbers above the calendar: scroll until its days are built.
+        for _ in 0..<6 where calendarDays.count == 0 { app.swipeUp(velocity: .slow) }
         XCTAssertGreaterThan(calendarDays.count, 0)
         let calendarDay = calendarDays.element(boundBy: calendarDays.count - 1) // last enabled day is today
         XCTAssertTrue(calendarDay.exists)
