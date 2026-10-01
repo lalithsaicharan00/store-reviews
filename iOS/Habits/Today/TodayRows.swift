@@ -124,6 +124,16 @@ struct HabitRow: View {
                 if lineOverride == nil {
                     HStack(alignment: .firstTextBaseline, spacing: 12) {
                         noteLine
+                        // A milestone this tap reached, beside its Undo and only while that lasts: words, never a
+                        // pop-up (report "Milestones — Marking Progress Without Noise").
+                        if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day,
+                           let mark = store.milestoneOffer, mark.entry == entry.id {
+                            Label(mark.text, systemImage: "checkmark.seal.fill")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(habit.color.color)
+                                .lineLimit(1)
+                                .accessibilityIdentifier("today-milestone")
+                        }
                         if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day {
                             Button { store.undoEntry(entry.id) } label: {
                                 Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44, alignment: .leading)
