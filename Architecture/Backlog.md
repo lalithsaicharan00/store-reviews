@@ -57,7 +57,7 @@ What was skipped or left empty while setting things up, so nothing is forgotten.
 | **Android OAuth client** (package `com.oftenenough.app` + signing fingerprint) | Google Cloud → Clients | Later, when the Android app exists |
 | **"Used by an AI agent" option** on the OAuth client | Google Cloud → Clients | Left unchecked: our sign-in is a person signing in themselves |
 | **Firebase App Check** | Google Cloud → Clients | Left off; see open question 32 |
-| **Client IDs in the code** (iOS client ID, iOS URL scheme, Web client ID) | `server/wrangler.jsonc` `GOOGLE_AUDIENCES`; iPhone `Info.plist` | Waiting for the IDs. Public values, kept in the repo, not environment variables |
+| **Client IDs in the code** (iOS client ID, iOS URL scheme, Web client ID) | `server/wrangler.jsonc` `GOOGLE_AUDIENCES`; iPhone `Info.plist` (`GIDClientID`, URL type) | Public values, kept in the repo, not environment variables.<br>**iOS client ID (1 Oct):** `367584981284-c8q0v1eqmtbng2nu75k3abjuih4s5b8k.apps.googleusercontent.com`<br>**iOS URL scheme** (the client ID reversed): `com.googleusercontent.apps.367584981284-c8q0v1eqmtbng2nu75k3abjuih4s5b8k`<br>**Web client ID:** waiting. Not yet in the code; added when work moves to `claude/server-and-sync` |
 | **Apple Developer account** | Apple | Pending, not expected soon. Blocks Sign in with Apple, iCloud backup on a real iPhone, App Attest, in-app purchases in the sandbox and the App Store listing |
 | **Cloudflare credentials** (`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`) | Cloud environment settings | Added 1 Oct; a new session picks them up. Needed to deploy to dev and create the R2 backup bucket |
 
