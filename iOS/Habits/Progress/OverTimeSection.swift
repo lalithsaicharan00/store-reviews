@@ -1,4 +1,3 @@
-import Charts
 import SwiftUI
 
 /// The habit page's Over Time (report §8.3): Week · Month · Year · All, the numbers for the habit's type, the count
@@ -101,17 +100,20 @@ struct OverTimeSection: View {
     private func rateChart(_ points: [RatePoint]) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("30-day rate").font(.subheadline.weight(.semibold))
-            Chart(points) { point in
-                LineMark(x: .value("Date", point.date), y: .value("Rate", point.percent))
-                    .foregroundStyle(habit.color.color)
-            }
-            .chartYScale(domain: 0...100)
-            .chartYAxis {
-                AxisMarks(values: [0, 50, 100]) { value in
-                    AxisGridLine()
-                    AxisValueLabel { if let v = value.as(Double.self) { Text("\(Int(v))%") } }
-                }
-            }
+            let first = points.first?.date ?? .now
+            let length = max((points.last?.date ?? first).timeIntervalSince(first), 1)
+            LightLineChart(title: "30-day rate",
+                           points: points.enumerated().map { i, point in
+                               LightLineChart.Point(id: i, at: point.date.timeIntervalSince(first) / length, value: point.percent,
+                                                    label: "\(point.date.formatted(.dateTime.day().month(.abbreviated).year())), \(Int(point.percent))%")
+                           },
+                           fixed: (top: 100, ticks: [0, 50, 100]),
+                           // The first, middle and last weeks' dates under the line.
+                           xLabels: [0, points.count / 2, points.count - 1].filter { points.indices.contains($0) }.map { i in
+                               LightBarChart.XLabel(at: points[i].date.timeIntervalSince(first) / length,
+                                                    text: points[i].date.formatted(.dateTime.month(.abbreviated).year(.twoDigits)))
+                           },
+                           color: habit.color.color, yLabel: { "\(Int($0))%" })
             .frame(height: 120)
             Text("Of the planned days in the last 30 days, how many were done.").font(.footnote).foregroundStyle(.secondary)
         }
@@ -203,8 +205,8 @@ struct OverTimeSection: View {
             .accessibilityIdentifier("over-time-chart")
     }
 
-    /// Dates under the chart, as Swift Charts chose them: each week's first day for a month of days, months for a year,
-    /// at most six, so they never crowd.
+    /// Dates under the chart, as Swift Charts chose them: each day of a week, each week's first day for a month of
+    /// days, months for a year; at most seven, so they never crowd.
     private func xLabels(_ snapshot: OverTimeSnapshot, at: (Date) -> Double) -> [LightBarChart.XLabel] {
         let calendar = store.calendar
         var marks: [(day: LocalDay, text: String)] = []
@@ -238,7 +240,7 @@ struct OverTimeSection: View {
                 month = LocalDay(year: month.month == 12 ? month.year + 1 : month.year, month: month.month % 12 + 1, day: 1)
             }
         }
-        let every = max(1, Int((Double(marks.count) / 6).rounded(.up)))
+        let every = max(1, Int((Double(marks.count) / 7).rounded(.up))) // a week's seven days all fit
         return marks.enumerated().compactMap { i, mark in
             guard i % every == 0 else { return nil }
             let start = mark.day.date(calendar: calendar)
@@ -275,37 +277,18 @@ struct OverTimeSection: View {
         let calendar = store.calendar
         let lower = calendar.startOfDay(for: snapshot.span.lowerBound.date(calendar: calendar))
         let upper = calendar.startOfDay(for: snapshot.span.upperBound.date(calendar: calendar))
-        let color = habit.color.color
-        return Chart {
-            ForEach(snapshot.running) { point in
-                LineMark(x: .value("Date", point.date), y: .value("Total", point.total), series: .value("Line", "Total"))
-                    .foregroundStyle(color.opacity(snapshot.isLimit ? 0.6 : 1))
-                    .interpolationMethod(.stepEnd)
-                AreaMark(x: .value("Date", point.date), y: .value("Total", point.total))
-                    .foregroundStyle(color.opacity(0.12))
-                    .interpolationMethod(.stepEnd)
-            }
-            if let pace = snapshot.paceLine {
-                LineMark(x: .value("Date", pace.start), y: .value("Total", 0.0), series: .value("Line", "Pace"))
-                    .foregroundStyle(Color.secondary)
-                    .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 3]))
-                LineMark(x: .value("Date", pace.end), y: .value("Total", pace.goal), series: .value("Line", "Pace"))
-                    .foregroundStyle(Color.secondary)
-                    .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 3]))
-            }
-        }
-        .chartXScale(domain: lower...max(upper, lower.addingTimeInterval(1)))
-        .chartYAxis {
-            AxisMarks { value in
-                AxisGridLine()
-                AxisValueLabel {
-                    if let v = value.as(Double.self) { Text(axisLabel(v, snapshot.scale)) }
-                }
-            }
-        }
-        .chartLegend(.hidden)
-        .frame(height: 180)
-        .accessibilityIdentifier("over-time-running")
+        let length = max(upper.timeIntervalSince(lower), 1)
+        let at = { (date: Date) in min(1, max(0, date.timeIntervalSince(lower) / length)) }
+        return LightLineChart(title: "Running total",
+                              points: snapshot.running.enumerated().map { i, point in
+                                  LightLineChart.Point(id: i, at: at(point.date), value: point.total, label: point.label)
+                              },
+                              stepped: true, area: true,
+                              guide: snapshot.paceLine.map { .init(from: (at($0.start), 0), to: (at($0.end), $0.goal)) },
+                              xLabels: xLabels(snapshot, at: at), color: habit.color.color, lineOpacity: snapshot.isLimit ? 0.6 : 1,
+                              yLabel: { axisLabel($0, snapshot.scale) })
+            .frame(height: 180)
+            .accessibilityIdentifier("over-time-running")
     }
 
     /// The unit's own labels, time always as hours and minutes (report §9.3).
