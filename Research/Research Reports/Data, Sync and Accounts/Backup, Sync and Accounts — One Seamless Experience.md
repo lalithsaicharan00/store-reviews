@@ -184,6 +184,11 @@ SYNC — the same habits on all your devices
   - without one: Your iCloud / Google Drive · This phone only · [Sign in to back up to your account].
 - **Switching to "iCloud / Google Drive only" with an account** says what happens: "Your habits will be removed from our server and kept only in your iCloud. Sync can't work without the server (§4.7). [Switch] [Cancel]".
 - The status uses plain words and real times, and turns red only for real failures (§4.4).
+- **Nothing about backup or sync on Today while everything works:** no "Last synced" line, no sync button, for free or Plus. Status lives here in Settings.
+  - **Users show:** a visible sync button teaches people that sync is manual, and they resent pressing it: 11 of 15 reviews that mention a sync button or manual sync complain about having to press it every time ("I have to hit sync every time in all the devices", `P24#14698`; "not having to push the sync button everytime I use it", `P10#6880`).
+  - Today shows something only when there's a problem: the §4.4 card, or for Plus the "Offline · saved on this phone" and "Couldn't sync, tap to retry" notes ([05 §11.2](<../../../Architecture/05. Sync Engine.md>)).
+  - **Plus can still force a sync without a button:** pull down on Today (05 §11.1). Settings has [Sync now] and [Back up now] for people who look for them.
+  - The word "sync" never appears for a free user outside Settings → Sync ("Sync is part of Plus").
 
 ### 4.4 When something goes wrong with their backup
 
@@ -333,7 +338,7 @@ After sign-in, nothing else changes on screen. The status line becomes "Backed u
 ## Appendix — reviews cited
 
 <!-- APPENDIX -->
-21 reviews cited. Ref = store letter + app number + line index in that app's `reviews.jsonl`. All 264 coded reviews: [`coded.json`](<Backup Experience Evidence/coded.json>).
+23 reviews cited. Ref = store letter + app number + line index in that app's `reviews.jsonl`. All 264 coded reviews: [`coded.json`](<Backup Experience Evidence/coded.json>).
 
 | Ref | Review ID | Store | App | Date | Stars | Codes |
 |---|---|---|---|---|---|---|
@@ -358,3 +363,5 @@ After sign-in, nothing else changes on screen. The status line becomes "Backed u
 | `P69#245` | `a9b336b2-8f13-4228-a367-f958e56dd2a9` | Play Store (en) | 69. EZ Habit - simple habit tracker | 2022-06-23 | 5★ | AUTO_BACKUP_WANT, OWN_CLOUD_NAMED |
 | `P70#174` | `e5bc4555-7d2b-43d4-b66c-9fb3ccbe261f` | Play Store (en) | 70. everyday Habit Tracker | 2025-01-13 | 3★ | AUTO_SYNC_PRAISE |
 | `P110#1454` | `2b76a608-28c2-43ca-9698-1e08502f4fef` | Play Store (en) | 110. Habit Tracker Unlimited | 2024-09-07 | 4★ | AUTO_BACKUP_WANT, OWN_CLOUD_NAMED, CHOOSE_WHERE |
+| `P10#6880` | `ccf66d6b-a8e2-4aef-8a29-de126ab7ec6f` | Play Store (en) | 10. Habit Tracker - Habit Diary | 2024-09-30 | 2★ | MANUAL_SYNC_BURDEN (keyword check, §4.3) |
+| `P24#14698` | `664ed4ee-34eb-43c4-a524-1be80b7d7f0d` | Play Store (en) | 24. Habit Tracker | 2015-08-06 | 3★ | MANUAL_SYNC_BURDEN (keyword check, §4.3) |
