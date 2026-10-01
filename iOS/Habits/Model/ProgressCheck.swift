@@ -433,6 +433,44 @@ enum ProgressCheck {
             same(s.streak(of: a, asOf: day(24)), 4, "G18 A's history untouched")
         }
 
+        // G19, milestones and the finishing tap (ported 1 Oct 2026): the 7th day in a row is marked beside its Undo;
+        // finishing every habit today is marked when the streak isn't a milestone; never for a habit that isn't today.
+        do {
+            let (s, _) = await store()
+            let walk = Habit(name: "Walk", symbol: "figure.walk", color: .green, kind: .check, startsOn: day(19))
+            let read = Habit(name: "Read", symbol: "book", color: .blue, kind: .check, startsOn: day(19))
+            await add(s, walk); await add(s, read)
+            for n in 19...24 { await tick(s, walk, on: day(n)) }
+            same(s.streak(of: walk, asOf: friday), 6, "G19 six days before the tap")
+            await tick(s, walk, on: friday)
+            same(s.milestoneOffer?.text, "7 days in a row", "G19 the 7th day is a milestone")
+            same(s.milestoneOffer?.entry, s.undoOffer?.id, "G19 shown with the tap's own Undo")
+            await tick(s, read, on: friday)
+            same(s.milestoneOffer?.text, "All 2 done today", "G19 finishing the day")
+            expect(s.dayFinishedAt != nil, "G19 the finishing tap is noted for the review prompt")
+            same(StreakUnit.days.milestones(upTo: 400), [7, 30, 100, 365], "G19 day milestones")
+            same(StreakUnit.weeks.nextMilestone(after: 4), 12, "G19 next week milestone")
+        }
+
+        // G20, Siri and Shortcuts (ported 1 Oct 2026): logs like a tap, never twice, and asks how much when it must.
+        do {
+            let (s, _) = await store()
+            let stretch = Habit(name: "Stretch", symbol: "figure.flexibility", color: .teal, kind: .check, startsOn: monday)
+            let water = Habit(name: "Water", symbol: "drop", color: .blue, kind: .amount(unit: "glasses", increment: 1), goal: 8, startsOn: monday)
+            let pages = Habit(name: "Pages", symbol: "book", color: .indigo, kind: .amount(unit: "pages", increment: 0), goal: 20, startsOn: monday)
+            for h in [stretch, water, pages] { await add(s, h) }
+            same(s.logFromShortcut(stretch, amount: nil, on: friday), .logged, "G20 tick")
+            await s.flush()
+            same(s.logFromShortcut(stretch, amount: nil, on: friday), .alreadyDone, "G20 a tick done stays done")
+            same(s.logFromShortcut(water, amount: nil, on: friday), .logged, "G20 one quick step")
+            same(s.logFromShortcut(water, amount: 2, on: friday), .logged, "G20 an amount said")
+            await s.flush()
+            same(s.progress(of: water, on: friday), 3, "G20 1 + 2 glasses")
+            same(s.logFromShortcut(pages, amount: nil, on: friday), .needsAmount, "G20 no quick step: asks how much")
+            same(s.shortcutStatus(water, on: friday), "Water: 3 of 8 glasses today.", "G20 status")
+            same(s.entries.filter { $0.habitID == water.id }.compactMap(\.source), [.shortcut, .shortcut], "G20 marked as Siri or Shortcuts")
+        }
+
         return failures
     }
 }
