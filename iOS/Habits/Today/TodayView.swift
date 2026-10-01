@@ -269,46 +269,20 @@ struct TodayView: View {
             let rows = rowsBySection(tracked)
             ScrollViewReader { proxy in
             List {
-                // The filter is always obvious, and one tap clears it (Day Structure report §2.8: no hidden habits).
-                if let group, let shownGroup = store.groups.first(where: { $0.id == group }) {
+                // Filtered to a group with nothing on this day: say so, with the way back (report 18).
+                if let group, let shownGroup = store.groups.first(where: { $0.id == group }),
+                   tracked.isEmpty && quitting.isEmpty && paused.isEmpty {
                     Section {
-                        HStack(spacing: 8) {
-                            Button { withAnimation { groupRaw = "" } } label: {
-                                HStack(spacing: 6) {
-                                    Circle().fill(shownGroup.color.color).frame(width: 9, height: 9)
-                                    Text(shownGroup.name).lineLimit(1)
-                                    Image(systemName: "xmark").font(.caption.weight(.bold))
-                                }
-                                .font(.subheadline.weight(.semibold))
-                                .foregroundStyle(Color.onInk)
-                                .padding(.horizontal, 12)
-                                .frame(minHeight: 32)
-                                .background(Color.ink, in: Capsule())
-                                .contentShape(Capsule())
-                            }
-                            // Borderless: the style for a button inside a list row. With .plain the tap never reached
-                            // it, so ✕ didn't clear the filter (GroupsUITests on CI, 1 Oct 2026).
-                            .buttonStyle(.borderless)
-                            .frame(minHeight: 44)
-                            .accessibilityLabel("Showing \(shownGroup.name) only")
-                            .accessibilityHint("Shows all habits")
-                            .accessibilityIdentifier("group-filter-chip")
-                            Spacer()
+                        VStack(spacing: 10) {
+                            Text("Nothing from \(shownGroup.name) on this day.")
+                                .foregroundStyle(.secondary)
+                                .accessibilityIdentifier("group-empty-day")
+                            Button("Show All") { withAnimation { groupRaw = "" } }
+                                .buttonStyle(.bordered)
+                                .accessibilityIdentifier("group-show-all")
                         }
-                        .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4))
-                        if tracked.isEmpty && quitting.isEmpty && paused.isEmpty {
-                            VStack(spacing: 10) {
-                                Text("Nothing from \(shownGroup.name) on this day.")
-                                    .foregroundStyle(.secondary)
-                                    .accessibilityIdentifier("group-empty-day")
-                                Button("Show All") { withAnimation { groupRaw = "" } }
-                                    .buttonStyle(.bordered)
-                                    .accessibilityIdentifier("group-show-all")
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 8)
-                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
                     }
                 }
                 // The day's note, when there is one: context for the whole day, above its habits (notes report).
@@ -376,6 +350,14 @@ struct TodayView: View {
                 }
             }
             .listStyle(.insetGrouped)
+            // The filter is always obvious, and one tap clears it (Day Structure report §2.8: no hidden habits). Pinned
+            // above the list, so it stays in sight while scrolling. Not a list row: a row holding one button made the
+            // whole row that button, so a tap beside the chip did nothing (GroupsUITests on CI, 1 Oct 2026).
+            .safeAreaInset(edge: .top, spacing: 0) {
+                if let group, let shownGroup = store.groups.first(where: { $0.id == group }) {
+                    GroupFilterBar(group: shownGroup) { withAnimation { groupRaw = "" } }
+                }
+            }
             .listSectionSpacing(14)
             .environment(\.defaultMinListRowHeight, 44)
             .contentMargins(.top, 4, for: .scrollContent)
@@ -570,6 +552,38 @@ struct TodayView: View {
             .accessibilityIdentifier("filter-button")
             Button("New Habit", systemImage: "plus") { showNewHabit = true }
         }
+    }
+}
+
+/// "● Health ✕" above Today's list while a group is chosen: tap to show everything again.
+private struct GroupFilterBar: View {
+    let group: HabitGroup
+    let onClear: () -> Void
+
+    var body: some View {
+        HStack {
+            Button(action: onClear) {
+                HStack(spacing: 6) {
+                    Circle().fill(group.color.color).frame(width: 9, height: 9)
+                    Text(group.name).lineLimit(1)
+                    Image(systemName: "xmark").font(.caption.weight(.bold))
+                }
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Color.onInk)
+                .padding(.horizontal, 12)
+                .frame(minHeight: 32)
+                .background(Color.ink, in: Capsule())
+                .contentShape(Capsule())
+            }
+            .buttonStyle(.plain)
+            .frame(minHeight: 44)
+            .accessibilityLabel("Showing \(group.name) only")
+            .accessibilityHint("Shows all habits")
+            .accessibilityIdentifier("group-filter-chip")
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 20)
+        .background(Color(.systemGroupedBackground))
     }
 }
 
