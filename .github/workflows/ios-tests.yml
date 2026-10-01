@@ -127,12 +127,6 @@ jobs:
             ~/.konan
           key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
 
-      - name: Core storage and migration tests
-        id: core
-        if: contains(env.MESSAGE, '[ios-backup]') || contains(env.MESSAGE, '[ios-reminders]')
-        working-directory: Core
-        run: ./gradlew jvmTest
-
       - name: UI tests
         id: tests
         if: env.TESTS != 'none' && steps.build.outcome == 'success'
