@@ -44,6 +44,11 @@ merged. **Any session picking this up: read this first, then update it as items 
 
 ## Still to do that needs the user (from the Status note, 1 Oct)
 
+**GitHub Mac minutes (new, 1 Oct night):** CLAUDE.md budgets about 200 free Mac minutes a month. This work used
+about 300 on 1 Oct (nine runs), and `analytics` ran many more the same day. Either the month's free minutes are gone
+(runs then bill or stop, depending on the account's spending limit: GitHub → Settings → Billing), or the account
+has more. Until the user says, the hardening runs only what a change needs, one run at a time.
+
 The Apple Developer account; trying Google sign-in on the iPhone; the website's origins on the Google web client;
 removing the parked DNS records for `oftenenough.com`; `support@oftenenough.com`; Resend; monitoring set-up
 (Analytics Engine, token, uptime monitor, alerts, turning off Web Analytics injection); a separate production
@@ -86,3 +91,11 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
   edit and undo, 535 ms/s and 36 freezes against 134 and 2. Cause: the backup's "changed" flag written to
   `UserDefaults` after every change; fixed (`d0a116d`): 64 ms/s, no freezes. Lesson L17. The quit page's open (1.4–2 s)
   is the same on both. `testBigNumbers` passed alone. Today, Undo, Timer and Groups running.
+- **1 Oct 23:45 UTC:** Today 8/8, Undo, Timer 2/2, Groups 5/5 pass. **P6 done:** `integration` and `main`
+  fast-forwarded to the merged branch (`2beaaec`, then `94748f4`). The speed job had read "failure" on every run
+  because two scenarios only open screens; fixed (`cb73f0c`). Paused Mac runs (minutes, above).
+  **Next speed work, in order of daily use:** Today's first scroll (one 250–310 ms freeze), Today's +1 and day
+  switch (137 ms/s), Progress's period and range switch (1.1 s, 7 freezes), the habit page's first scroll (1 s),
+  saving an entry (0.6–0.8 s), the quit page's open (1.4–2 s, also before the merge), menu pages' opens (200–600 ms).
+  The first keyboard of a launch (L18) needs the real iPhone first: on the simulator it's 3–7 s, on phones usually far
+  less. Every one of these was the same or worse before the merge.
