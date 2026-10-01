@@ -176,8 +176,18 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Siri and Shortcuts: Log a Habit, What's Left Today, Get Habit Progress, Open a Habit; found by ID, so renaming a habit keeps a shortcut working
 - [x] Milestones: "30 days in a row" or "All 5 done today" beside the row's Undo when a tap reaches it, and a Milestones card on the habit page (Show Streaks off hides them); never a pop-up
 - [x] Asking for a review: only Apple's own request, after a week of use, at the tap that finishes today, once per version and 120 days apart
-- [x] First run: the empty Today offers New Habit and Restore from a Backup File
+- [x] First run: the empty Today offers New Habit and Restore from a Backup File *(1 Oct: now also Start From an Idea and How It Works; see Onboarding below)*
 - [x] Checked with golden cases G19 and G20 (`-progresscheck`)
+
+## Onboarding and Help (1 Oct 2026, branch `onboarding-and-help`)
+
+- [x] A welcome on a fresh install, four screens, each skippable: **Often Enough** (you choose how often; streaks count your goal; skipped and paused days never count against you), **Free, with no account** (up to 5 habits free forever, no ads, data on this iPhone and how to back it up, Plus as one payment), **Your days and weeks** (new day start, week start), **What's one habit to start with?** (eight ideas)
+- [x] An idea fills in the New Habit form (name, how it's tracked, how often); nothing is added until Add
+- [x] Restore from a Backup File on the first screen; Skip and Not Now go straight to Today
+- [x] The empty Today: New Habit, Start From an Idea, Restore from a Backup File, How It Works
+- [x] ≡ → Help & Feedback: Contact Us (email with the app and iOS versions, or the address to copy), Show the Welcome Again, How It Works (33 answers, searchable)
+- [x] ≡ → About: version, the name, privacy, open-source acknowledgements
+- [x] Checked with `OnboardingUITests`
 
 ## Under the hood
 
@@ -186,7 +196,7 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 
 ## Not built yet (Build Plan order)
 
-- [ ] Settings still to build: support and About content, restore purchase, Erase All Data in Privacy (theme, day start, week start, free export, backup and restore, Reminders and the app lock are built)
+- [ ] Settings still to build: restore purchase, Erase All Data in Privacy (help, About, theme, day start, week start, free export, backup and restore, Reminders and the app lock are built)
 - [ ] Home-screen and lock-screen widgets (waits for the App Group and the app's new name; see `Docs/Checklists/Merging the Branches.md`)
 - [ ] Plus: purchase, account, sync and server backup
 - [ ] Apple Watch, iPad, Apple Health
