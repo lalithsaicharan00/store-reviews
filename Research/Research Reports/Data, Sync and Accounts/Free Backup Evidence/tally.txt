@@ -1,0 +1,115 @@
+
+== main set (710 read; on topic 323)
+code                          n  apps  mean   1★%
+NR                          387    66  2.41    50
+SYNC_PAID                    92    19  2.80    33
+SYNC_PAID_FAIL               72    18  2.17    46
+BKPW_COMPLAIN                69    18  2.30    35
+BK_PAID_FAIL                 33    13  1.64    61
+HOSTAGE_DATA                 23    12  1.91    57
+FREE_BK_PRAISE               22    13  4.77     0
+BK_PAID_FOR_SAFETY           21     8  2.76    38
+BKPW_LOSS                    17     7  2.24    29
+SYNC_PW_COMPLAIN             15     8  2.33    40
+WANT_FREE_BK                 14     8  4.29     7
+BKPW_LEFT                    14     7  2.00    43
+BKPW_ACCEPT                  14     6  4.64     0
+WOULD_PAY_SYNC               10     8  3.80     0
+RESTORE_PW_SURPRISE           9     1  2.44    11
+WOULD_PAY_BK                  7     5  4.43     0
+DATA_LOCK_AFTER_TRIAL         5     3  1.20    80
+CHOSE_FOR_FREE_BK             4     4  3.50     0
+NOBK_LOSS                     4     3  3.25     0
+SYNC_PW_ACCEPT                4     2  4.50     0
+DATA_ACCESS_PW                3     3  2.67    33
+EXPORT_PW                     2     2  4.50     0
+NO_EXPORT                     2     2  2.50    50
+WANT_FREE_SYNC                2     2  4.50     0
+PAID_FOR_CAP                  2     1  1.50    50
+PREFER_GATE_SYNC_OVER_CAP     2     2  2.00    50
+OS_BACKUP_MISSED              2     2  2.50    50
+CLOUD_JUSTIFIES_PAY           2     2  3.50     0
+CAP_AS_DATA_TRAP              1     1  1.00   100
+PAID_BK_WORRY                 1     1  5.00     0
+BKPW_PAID_RESENT              1     1  2.00     0
+WOULD_PAY_ONETIME_BK          1     1  2.00     0
+LOCAL_PRAISE                  1     1  5.00     0
+NO_BK_COMPLAIN                1     1  1.00   100
+FORCED_CLOUD_REFUSE           1     1  2.00     0
+NOBK_LEFT                     1     1  2.00     0
+
+== loss stories (643 read; on topic 562)
+code                          n  apps  mean   1★%
+L_APP_BUG                   282    39  1.76    63
+X_PAID                      131    20  1.67    64
+L_CRASH_REINSTALL            96    26  2.16    46
+L_NEWPHONE                   92    24  2.66    32
+O_LEFT                       82    28  1.56    71
+NR                           81    25  2.81    28
+FEAR                         46    17  3.04    24
+L_DELETE                     24    10  3.17    17
+O_DEMOTIVATED                17    10  2.24    24
+L_ACCOUNT                    15     8  2.47    33
+L_OTHER                      11     7  1.36    73
+MANUAL_FORGOT                 9     4  2.89    33
+BKPW                          9     5  2.44    33
+ICLOUD_FULL                   3     2  2.33    67
+OS_BACKUP_MISSED              2     2  2.00    50
+LOCAL_SNAPSHOT_SAVED          2     1  3.50     0
+WOULD_PAY_BK                  2     2  4.00     0
+DATA_LOCK_AFTER_TRIAL         2     1  1.00   100
+LOST_SALE                     1     1  1.00   100
+SELF_BLAME_FREE               1     1  3.00     0
+
+loss stories with a cause: 516
+all: n=516 mean=2.07 1★=52% offphone-preventable=212 (41%) app-bug=282 (55%) left=81 (16%) demotivated=17
+no paid mention: n=390 mean=2.21 1★=47% offphone-preventable=152 (39%) app-bug=221 (57%) left=66 (17%) demotivated=17
+L_APP_BUG            n= 282 mean=1.76 1★=63% left=57 paid=61
+L_CRASH_REINSTALL    n=  96 mean=2.16 1★=46% left=6 paid=31
+L_NEWPHONE           n=  92 mean=2.66 1★=32% left=7 paid=27
+L_DELETE             n=  24 mean=3.17 1★=17% left=3 paid=2
+L_ACCOUNT            n=  15 mean=2.47 1★=33% left=3 paid=2
+L_OTHER              n=  11 mean=1.36 1★=73% left=5 paid=4
+
+== per app: backup-paywall reactions
+84. Tasks - To Do List & Reminders         against= 30 accept/paid/would-pay= 11  paid_for_safety=5 paid_fail=0 sync_paid=13
+12. Fabulous Daily Routine Planner         against= 10 accept/paid/would-pay=  3  paid_for_safety=2 paid_fail=2 sync_paid=0
+24. Habit Tracker                          against= 10 accept/paid/would-pay=  7  paid_for_safety=5 paid_fail=15 sync_paid=30
+20. Habit — Daily Tracker - Crush your g   against=  2 accept/paid/would-pay=  5  paid_for_safety=4 paid_fail=1 sync_paid=0
+2. HabitNow Daily Routine Planner          against=  0 accept/paid/would-pay=  6  paid_for_safety=2 paid_fail=3 sync_paid=2
+91. Habit Check Calendar                   against=  3 accept/paid/would-pay=  1  paid_for_safety=0 paid_fail=0 sync_paid=0
+106. Habit Tracker n Pets - HabitYou       against=  3 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=0
+130. Way of Life - habit tracker           against=  2 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=0
+3. Days Since - Quit Habit Tracker - Sob   against=  2 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=1
+48. Strides - Habit Tracker + Goals - Go   against=  1 accept/paid/would-pay=  2  paid_for_safety=0 paid_fail=0 sync_paid=2
+74. Habit Check Calendar - Track habits    against=  2 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=0
+122. Hevy - Gym Log Workout Tracker        against=  2 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=0
+3. Loop Habit Tracker                      against=  0 accept/paid/would-pay=  3  paid_for_safety=0 paid_fail=0 sync_paid=0
+30. Habit Tracker - Routine & Goals        against=  2 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=0
+98. Rabit - Habit Tracker & Planner        against=  2 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=2
+111. My Study Life - School Planner        against=  1 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=0
+15. Habit Tracker - HabitGenius            against=  1 accept/paid/would-pay=  1  paid_for_safety=1 paid_fail=0 sync_paid=0
+22. Disciplined - Habit Tracker            against=  1 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=1
+89. Check Calendar - Habit Tracker - Che   against=  1 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=0
+9. Habit Tracker - HabitKit                against=  2 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=0
+1. Habit Tracker - Goal Tracker & ADHD P   against=  0 accept/paid/would-pay=  1  paid_for_safety=1 paid_fail=0 sync_paid=12
+10. Habit Tracker - Habit Diary            against=  1 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=1
+100. To Do List - Daily Task Planner       against=  1 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=0
+13. Productive - Habit Tracker - Daily R   against=  1 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=9
+145. Habit Rabbit - Habit Tracker          against=  1 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=0
+19. TheFor - Habit Tracker                 against=  1 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=0 sync_paid=0
+33. Productive - Habit tracker             against=  1 accept/paid/would-pay=  0  paid_for_safety=0 paid_fail=1 sync_paid=0
+38. Roubit -Daily Life Routine Care        against=  0 accept/paid/would-pay=  1  paid_for_safety=0 paid_fail=0 sync_paid=0
+43. Habit Hub - Routine Tracker - Daily    against=  0 accept/paid/would-pay=  1  paid_for_safety=0 paid_fail=0 sync_paid=0
+76. Way of Life - Habit Tracker - Build    against=  0 accept/paid/would-pay=  1  paid_for_safety=1 paid_fail=1 sync_paid=0
+
+AGAINST backup paywall (any of neg): n=83 mean=2.39 1★=35% apps=24
+ACCEPT/PAID/WOULD PAY for backup: n=43 mean=3.63 1★=19% apps=13
+  of which accepted only: n=14 mean=4.64 1★=0% apps=6
+PAID for sync/multi-device: n=92 mean=2.80 1★=33% apps=19
+PAID for backup/safety: n=21 mean=2.76 1★=38% apps=8
+  paid for safety AND it failed: 9
+Paid backup failed (any): n=33 mean=1.64 1★=61% apps=13
+Free backup praise / chose app for it: n=24 mean=4.58 1★=0% apps=14
+Want backup free: n=16 mean=4.31 1★=6% apps=10
+Left because backup paid (BKPW_LEFT + loss BKPW O_LEFT counted separately)

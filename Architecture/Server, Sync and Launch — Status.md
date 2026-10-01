@@ -5,6 +5,19 @@ moves, so the next session (person or agent) can pick up from it alone.*
 
 ## ▶ Next up, in order
 
+0. **Backup, sync and accounts (decided 1 Oct 2026; start here).** Design: [Backup, Sync and Accounts — One Seamless
+   Experience](<../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>);
+   server checklist: [Server Cost and Capacity §5](<Server Cost and Capacity — Free Safety Copy vs Plus Sync.md>);
+   decisions, Google client IDs and setup left for later: [Backlog](<Backlog.md>). In order:
+   1. Server: only Plus can sync (`plus` claim in the access token; `/v1/sync` answers `403 plus_required` before the
+      Durable Object), `device.last_seen` at most hourly, nightly backup to R2 for free accounts (EU bucket for EU
+      accounts, 365-day lifecycle), `GOOGLE_AUDIENCES` = the iOS and web client IDs (in the Backlog). Tests, deploy to dev.
+   2. Shared core: the checked backup file and restore (preview, Replace/Merge, undo), Architecture 03 §3.2, §3.6.
+   3. iPhone: Settings → Backup & Sync, problem cards (§4.4 of the design), "I've used this before", Move to another
+      device / Import, Google sign-in (Apple sign-in and iCloud backup are written but switch on only when the Apple
+      Developer account arrives). Keep `[ios-ci]` runs few.
+   Rate limiting (1.1 below) fits naturally with step 1.
+
 1. **Server readiness (can start now).** Do these one at a time, each with tests and a deploy to dev:
    1. Rate limiting: per account on `/v1/sync`, per IP on `/v1/auth/*` (details in §4).
    2. Production environment: `env.production` in `server/wrangler.jsonc`, `api.oftenenough.com`, its own D1 and secrets.
@@ -14,7 +27,7 @@ moves, so the next session (person or agent) can pick up from it alone.*
    test (§5), then merge this branch into `main`. Until then, don't start work that touches `Core/` or `AppModel`.
 3. **Website on `oftenenough.com`:** privacy policy, support page, account deletion without the app (§3 #5).
 4. **Waiting on decisions or accounts** (don't start until they arrive): the Plus screen design (purchases in the
-   app), a Google OAuth client ID (Google sign-in), the Apple Developer account (Sign in with Apple, registering IDs
+   app), the Apple Developer account (Sign in with Apple, registering IDs
    and in-app purchases). See §3.
 
 **Before you begin in a new session:**
@@ -74,7 +87,7 @@ core most) → this branch → `main` → onboarding and widgets merge `main`.
 | 1 | Server readiness (§4) | **next**; possible now |
 | 2 | Merging (§2) | waits for `integration` → `main` |
 | 3 | Website on `oftenenough.com`: privacy policy, support page, account deletion without the app (Google requires it) | possible now |
-| 4 | Backup and restore for free users (Architecture 03) | another agent is planning it; coordinate before touching restore |
+| 4 | Backup, sync and accounts for free and Plus users | **designed 1 Oct 2026**; next up, item 0 above |
 | 5 | Purchases in the app: StoreKit 2 buy/restore/launch check, the 5-habit limit from real ownership, sending purchases to `/v1/purchases/verify` | needs the **Plus screen design**; then testable with the `.storekit` file |
 | 6 | Sign-in in the app: Apple button, Google sign-in, "One last step" after purchase, Settings → Account (sync status, devices, delete) | Google: **an OAuth client ID** (free, possible now). Apple: **the developer account** (in verification) |
 | 7 | With the Apple account: register `com.oftenenough.app` (+ `.liveactivity`, App Group `group.com.oftenenough.app`), the three in-app purchases, sandbox purchases, the App Store notification URL (`/v1/hooks/apple`), Sign in with Apple notifications and token revocation | the developer account |

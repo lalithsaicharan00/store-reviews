@@ -1,0 +1,7 @@
+screened 1238784 {'A': 337331, 'P': 901453}; candidates 1353
+mode                  n  apps      A      P    1★%  mean  paid%
+BK_PAYWALL          207    54    100    107   35.7  2.73   67.6
+HOSTAGE             141    36     68     73   57.4  2.09   48.9
+PAID_FOR_BK         287    50    151    136   43.9  2.53   92.3
+FREE_BK_PRAISE      122    40     31     91   20.5  3.44   30.3
+LOSS                667    61    440    227   47.1  2.22   31.0

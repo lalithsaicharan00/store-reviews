@@ -9,7 +9,7 @@ How the app works under the hood, on every platform: iPhone, Android, Watch, and
 
 The system diagram in Figma (page "App Architecture") comes **last**, once every topic below is settled.
 
-**Product shape (decided 27 Sep 2026):** free is one phone, 5 habits, local-only, with no account. Plus (one-time, lifetime) adds every device, Watch, sync and server backup, through an account created right after purchase (Apple or Google). We make no copies in iCloud or Google Drive, and send one email ever: the purchase confirmation.
+**Product shape (decided 27 Sep 2026; updated 1 Oct 2026):** free is any one device (a phone or a tablet), 5 habits, no sync, with no account. Plus (one-time, lifetime) adds every device, Watch and sync. Accounts (Apple or Google) are optional for everyone since 1 Oct 2026: a free account backs up to our server but never syncs. Without an account nothing goes to our server; backup goes to the user's own iCloud or Google backup ([Backup, Sync and Accounts](<../Research/Research Reports/Data, Sync and Accounts/Backup, Sync and Accounts — One Seamless Experience.md>)). One email ever: the purchase confirmation.
 
 **Starting point:** [Data Safety, Accounts and Sync.md](<Data Safety, Accounts and Sync.md>) is the overall proposal: local-first
 SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one at a time.
@@ -34,6 +34,8 @@ SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one a
 - **Server, sync and launch: start here:** [what's built and what's next](<Server, Sync and Launch — Status.md>) (branch `claude/server-and-sync`).
 
 - **Parked decisions:** [Backlog.md](Backlog.md).
+
+- **Cost and capacity, free vs Plus:** [Server Cost and Capacity — Free Safety Copy vs Plus Sync](<Server Cost and Capacity — Free Safety Copy vs Plus Sync.md>) — 1 Oct 2026, a plan: two lanes (free = Worker + R2, Plus = Durable Objects), prices, and checks for `claude/server-and-sync`.
 
 - **Accepted email behavior:** [The one email: purchase confirmation](<Email Delivery Decision.md>). Decided 26 Sep 2026, narrowed 27 Sep 2026; sent through Resend.
 
