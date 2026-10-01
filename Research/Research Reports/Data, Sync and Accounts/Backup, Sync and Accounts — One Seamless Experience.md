@@ -149,7 +149,7 @@ From 264 reviews read (187 on topic, 33 apps).
 **iPhone and iPad without an account:**
 - Every night (and after big changes, at most every few hours) the app writes the checked backup file to **its own hidden folder in the user's iCloud Drive**. That is their storage; we can't see it.
 - No question is asked. The app has its own switch in the iPhone's iCloud settings, so people stay in control there.
-- If iCloud is signed out, off for our app, or full, the backup stays on the phone, and the user is told plainly (§4.4).
+- If iCloud is signed out, off for our app, or full, the backup stays on the phone, and the user is told at once (§4.4).
 
 **Android without an account:**
 - **Android's own backup** (Google) includes our data automatically if the user's Google backup is on. That is the default on most phones. We can't confirm it ran, so Settings words it as "Your phone's Google backup includes Often Enough (if it's on)".
@@ -185,21 +185,35 @@ SYNC — the same habits on all your devices
 - **Switching to "iCloud / Google Drive only" with an account** says what happens: "Your habits will be removed from our server and kept only in your iCloud. Sync can't work without the server (§4.7). [Switch] [Cancel]".
 - The status uses plain words and real times, and turns red only for real failures (§4.4).
 
-### 4.4 When a backup can't be saved (storage full, iCloud off)
+### 4.4 When something goes wrong with their backup
 
-**Rule (first principles, and 03 rule 8: alerts only for real failures):** a backup that isn't happening is never hidden. Settings always says so, and the user hears about it once, calmly.
+**Rule (the user's, 1 Oct):** whenever their backup can't work, we tell them **as soon as we know**, say plainly what happened, and offer the fix. A backup that isn't happening is never hidden.
 
-| What fails | What the user sees |
-|---|---|
-| **Their main backup:** iCloud or Google Drive full, iCloud off for our app, Drive access removed | **Settings → Backup & Sync** turns red at once: "**Not backed up since 28 Sep · Your iCloud is full.** Your habits are safe on this phone, but not anywhere else." with [How to free up space] and [Back up to your account instead].<br>**After 2 nights in a row with no good backup**, one card at the top of Today (not a pop-up): "**Your habits haven't been backed up for 2 days. Your iCloud is full.** [Fix it] · [Not now]". "Fix it" opens the Settings screen above. "Not now" hides the card; it comes back only if the backup is still failing **30 days** later. The red status in Settings stays until it's fixed |
-| **Their second copy only** (an account backs up to our server, and the extra iCloud copy is full) | Only a grey line in Settings: "Copy in your iCloud: paused, iCloud is full". No card, because their main backup is fine |
-| **Our server** (an account's main backup) | Our server doesn't fill up for one person: a copy is a few hundred KB. If it fails anyway (outage, no internet for days), the same red status and the same one card after 2 nights. Short outages never show anything |
-| **The phone itself is full** | "Your phone is full. Changes can't be saved." at once, because new check-ins could be lost ([03 §3.7](<../../../Architecture/03. Backup and Restore.md>)) |
-| **Android's own Google backup is off** | We can't see it (no API), so nothing is shown. The Drive copy, if turned on, is checked like any other |
+**When we know:** the app checks at every backup attempt (nightly, and after changes) **and every time it opens**. So "as soon as we know" means the next app open or the next backup, whichever comes first.
 
-- **The fix offered matches what failed:** for a full iCloud, Apple's steps to free space or buy more; for a removed Drive permission, [Reconnect Google Drive].
-- **[Back up to your account instead]** is offered only here, where it solves a real problem. It is never an upsell: a free account is enough.
-- **When it works again,** the red status turns back to "Backed up · just now" and the card disappears. No "success" pop-up.
+**How we tell them, for a problem we're sure about** (the table below):
+1. **Settings → Backup & Sync turns red at once,** and stays red until it's fixed.
+2. **A card at the top of Today** the next time they open the app (not a pop-up): what happened, and [Fix it]. "Not now" hides it for **7 days**; it returns if it's still broken.
+3. **If the app is closed when the nightly backup finds it, one notification,** once per problem: "Your habits aren't being backed up: your iCloud is full." Tapping it opens the fix.
+
+| Problem (with their own cloud or our server) | How the app knows | What it says | Fix button |
+|---|---|---|---|
+| **iCloud is full** | The write fails with "out of space" | "Your habits can't be backed up: your iCloud is full." | [How to free up space] · [Back up to your account instead] |
+| **Signed out of iCloud, or iCloud Drive turned off** | iOS reports no iCloud account for the app (the identity changes or is missing) | "Your habits aren't being backed up: this iPhone isn't signed in to iCloud (or iCloud Drive is off)." | [Open Settings] · [Back up to your account instead] |
+| **iCloud turned off for our app only** | Same signal, while the phone is signed in | "Backup to iCloud is turned off for Often Enough in your iPhone's iCloud settings." | [Open Settings] |
+| **Signed in to a different Apple Account** | The iCloud identity changed since the last backup | "This iPhone now uses a different Apple Account, so your backup moved to a new iCloud. Your old backup is still in the other account." | [Back up now] |
+| **Google Drive access removed** (in Google's settings, or the Google account removed from the phone) | Google refuses our access at the next upload or open | "Your habits can't be backed up: Google Drive access was removed." | [Reconnect Google Drive] |
+| **Google Drive is full** | Google reports its storage quota exceeded | "Your habits can't be backed up: your Google storage is full." | [Manage Google storage] · [Back up to your account instead] |
+| **Signed out of our account, or the session ended** | The server refuses the session | "You're signed out, so your habits aren't being backed up to your account." Everything stays on the phone (01 §3.5) | [Sign in] |
+| **Our server can't be reached** (no internet, an outage) | Uploads fail | Nothing for the first 2 nights, because short gaps are normal. After that: "Your habits haven't been backed up for 2 days: we can't reach our server." | [Try now] |
+| **The phone itself is full** | Saving on the phone fails | At once: "Your phone is full. Changes can't be saved." ([03 §3.7](<../../../Architecture/03. Backup and Restore.md>)) | [How to free up space] |
+| **A backup was saved but fails its check** (corrupt) | The read-back after writing doesn't match | "Last night's backup didn't save correctly. We'll try again tonight; the one before is safe." Shown only if it fails twice | [Back up now] |
+| **Android's own Google backup is off** | Android gives apps no way to tell | Nothing; we can't know. The Drive copy, if on, is checked like everything above | – |
+
+- **Second copies get a quieter message.** If their main backup works (for example our server), a problem with the extra iCloud copy is only a grey line in Settings: "Copy in your iCloud: paused, iCloud is full". No card, no notification.
+- **[Back up to your account instead]** appears only where it solves the problem. It is never an upsell: a free account is enough.
+- **When it works again,** the status returns to "Backed up · just now", the card disappears, and nothing pops up.
+- **Words:** say what happened and what is still safe ("your habits are safe on this phone"). Never "Error", never a code number, never blame the user.
 
 ### 4.5 Making an account (optional, free)
 
@@ -273,7 +287,7 @@ After sign-in, nothing else changes on screen. The status line becomes "Backed u
 
 | Case | Behaviour |
 |---|---|
-| iCloud or Drive is full | Red status in Settings at once; one card on Today after 2 nights; again only after 30 days if still failing (§4.4) |
+| iCloud or Drive is full, access removed, signed out | Red status in Settings at once; a card on Today at the next open; one notification if the app was closed (§4.4) |
 | Signs in on the first device while the iCloud copy is on | Both run. The status names both |
 | Free account, deletes the account | Server data deleted (09 §7). The iCloud or Drive copy stays theirs |
 | Plus with "iCloud only", later adds an iPad | The iPad sign-in shows the line from §4.7 with [Turn on sync] |
