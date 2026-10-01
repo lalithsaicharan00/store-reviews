@@ -55,7 +55,7 @@ enum WidgetCheck {
         expect(snapshot.frames[1].items.first { $0.name == "Widget water" }?.history.first { $0.id == day.key }?.state == "missed",
                "Unlogged days change from open to past when the timeline advances")
         let timer = item("Widget timer"), unchanged = row("Widget water").token
-        store.startTimer(timer); await store.flush()
+        store.toggleTimer(timer); await store.flush()
         let timerStart = store.timers[timer.id]!
         expect(row("Widget water").token == unchanged, "Starting a timer preserves unrelated widget projections")
         store.stopTimer(timer, on: day, through: timerStart.addingTimeInterval(60)); await store.flush()
