@@ -192,25 +192,33 @@ nonisolated struct ServerError: Error, CustomStringConvertible {
 }
 
 /// Small Keychain wrapper: items readable after the first unlock (so background refresh works), on this device only.
-private struct Keychain {
+/// Values are also kept in memory, so a Keychain write that fails (an unsigned simulator build, a full or locked
+/// Keychain) can't make a fresh sign-in look signed out; it then only lasts until the app quits.
+private final class Keychain {
     enum Item: String { case refreshToken = "refresh-token", deviceID = "device-id" }
 
     let service: String
+    private var memory: [Item: String?] = [:]
+
+    init(service: String) { self.service = service }
 
     private func query(_ item: Item) -> [String: Any] {
         [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: item.rawValue]
     }
 
     func read(_ item: Item) -> String? {
+        if let cached = memory[item] { return cached }
         var q = query(item)
         q[kSecReturnData as String] = true
         q[kSecMatchLimit as String] = kSecMatchLimitOne
         var result: AnyObject?
-        guard SecItemCopyMatching(q as CFDictionary, &result) == errSecSuccess, let data = result as? Data else { return nil }
-        return String(data: data, encoding: .utf8)
+        let value = SecItemCopyMatching(q as CFDictionary, &result) == errSecSuccess ? (result as? Data).flatMap { String(data: $0, encoding: .utf8) } : nil
+        memory[item] = .some(value)
+        return value
     }
 
     func write(_ item: Item, _ value: String?) {
+        memory[item] = .some(value)
         SecItemDelete(query(item) as CFDictionary)
         guard let value else { return }
         var q = query(item)
@@ -220,6 +228,7 @@ private struct Keychain {
     }
 
     func removeAll() {
+        memory.removeAll()
         SecItemDelete([kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service] as CFDictionary)
     }
 }
