@@ -35,6 +35,31 @@ working through the topics are added at the bottom, with the topic they came fro
 | 27 | **Figma "App Architecture" diagram** (topic 10) | [README](README.md) | Draw now, or skip | Waiting for your go-ahead |
 | 28 | **Free vs Plus comparison on the store page** (a screenshot or not, and what it shows) | 02 Billing §3.1 | Research first | Research later |
 | 29 | **Plus and Plus Family prices,** with regional pricing | 02 Billing §3.7 | Research first | Later; building features comes first |
+| 32 | **Firebase App Check on the Google OAuth client** ("protect your OAuth client from abuse") | Google Cloud setup, 1 Oct 2026 | Turn it on, or rely on our server's checks | **Left off (1 Oct).** It needs Firebase in the app and, on iPhone, Apple's App Attest (Team ID), so it waits for the Apple Developer account. Our server already verifies every Google sign-in. Decide once the Apple account arrives |
+
+## Setup left for later (Google Cloud, website, Apple)
+
+What was skipped or left empty while setting things up, so nothing is forgotten. Started 1 Oct 2026 while creating the Google Cloud project.
+
+| What | Where | Status / what's needed |
+|---|---|---|
+| **Privacy policy page** `https://oftenenough.com/privacy` | Website (`oftenenough.com` repo); Google consent screen → Branding | **Needed before publishing** the Google consent screen to production, and for both stores. Draft from [09 Privacy](<09. Privacy and Account Deletion.md>) §3, §8 |
+| **Terms page** `https://oftenenough.com/terms` | Website; Google Branding (optional) | Optional for Google; useful for the stores |
+| **Home page** `https://oftenenough.com` | Website; Google Branding | Needed for Google Branding and the store listings |
+| **Account deletion page** (delete without the app) | Website | Google Play requires it ([09 §7](<09. Privacy and Account Deletion.md>)) |
+| **Authorized domain** `oftenenough.com` | Google consent screen → Branding | Google may ask us to prove we own the domain (Search Console) when publishing |
+| **Google consent screen: publish to production** | Google Auth Platform → Audience | In **Testing** now: only listed test users (add your Gmail), and sign-ins expire after 7 days. Publish once the privacy page is live |
+| **App logo** on the consent screen | Google Branding | Left empty: adding one starts Google's brand review. Add when the logo is final |
+| **User support email** on the consent screen | Google Branding | Set to the owner's Gmail for now (Google allows only your own account or a Google Group you manage). Change to a support address (a Google Group or the shared mailbox, [08](<08. Release Safety and Operations.md>)) later |
+| **Scopes** `openid`, `userinfo.email`, `userinfo.profile`, `drive.appdata` | Google Auth Platform → Data Access | All non-sensitive (basic checks only). Confirm they're added |
+| **Google Drive API** turned on | APIs & Services → Library | Needed for the Drive backup |
+| **iOS OAuth client**: App Store ID and Team ID | Google Cloud → Clients | Left empty; fill in when the Apple Developer account and App Store listing exist |
+| **Android OAuth client** (package `com.oftenenough.app` + signing fingerprint) | Google Cloud → Clients | Later, when the Android app exists |
+| **"Used by an AI agent" option** on the OAuth client | Google Cloud → Clients | Left unchecked: our sign-in is a person signing in themselves |
+| **Firebase App Check** | Google Cloud → Clients | Left off; see open question 32 |
+| **Client IDs in the code** (iOS client ID, iOS URL scheme, Web client ID) | `server/wrangler.jsonc` `GOOGLE_AUDIENCES`; iPhone `Info.plist` | Waiting for the IDs. Public values, kept in the repo, not environment variables |
+| **Apple Developer account** | Apple | Pending, not expected soon. Blocks Sign in with Apple, iCloud backup on a real iPhone, App Attest, in-app purchases in the sandbox and the App Store listing |
+| **Cloudflare credentials** (`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`) | Cloud environment settings | Added 1 Oct; a new session picks them up. Needed to deploy to dev and create the R2 backup bucket |
 
 ## Contradictions found while building (27 Sep 2026)
 
