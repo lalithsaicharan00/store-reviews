@@ -49,5 +49,17 @@ grep -nE 'Timer\.publish|Timer\.scheduledTimer' $SWIFT &&
 grep -nE '\.shadow\(color: .*: *\.clear' $SWIFT &&
   fail "Conditional clear shadow" "PERFORMANCE.md rule 10: apply the shadow only when it shows, on a shape"
 
+# 9. Swift Charts' first layout froze the habit page for 1–2.7 s when it scrolled to a chart (1 Oct 2026).
+grep -nE '^import Charts' $SWIFT &&
+  fail "import Charts" "PERFORMANCE.md rule 12: draw charts with LightBarChart / LightLineChart (one Canvas pass)"
+
+# 10. A formatter built on every call was nearly all of a Today row's own time (1 Oct 2026). A formatter is made once:
+# in a static, filling a cache (?? {), or with a "made once" comment just above saying where it's kept.
+for hit in $(grep -nE '(Number|Date|DateComponents|Measurement|ByteCount|List|RelativeDateTime|PersonNameComponents|DateInterval|ISO8601Date)Formatter\(\)' $SWIFT | cut -d: -f1,2); do
+  f=${hit%%:*}; n=${hit##*:}
+  sed -n "$((n > 6 ? n - 6 : 1)),${n}p" "$f" | grep -qiE 'static (let|var)|\?\? \{|made once' ||
+    fail "A formatter made on every call ($f:$n)" "PERFORMANCE.md rule 8: make it once (a static, or a cache) and keep it"
+done
+
 if [ $FAIL = 0 ]; then echo "Speed rules: all checks passed"; fi
 exit $FAIL

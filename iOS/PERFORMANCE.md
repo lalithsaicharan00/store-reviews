@@ -6,6 +6,9 @@ same kinds of mistakes came back session after session, and rules kept in the lo
 request: a change that makes the app slower is not finished, however it looks.** If a rule has to change, change it
 here, with the reason and the date.
 
+The mistakes behind these rules, what each cost and how to find a slow spot, are in
+[`PERFORMANCE-LESSONS.md`](PERFORMANCE-LESSONS.md). Every new finding goes there too, the same day.
+
 ## Before you push anything under `iOS/`
 
 1. Run `iOS/Tools/perf/check_rules.sh` (a second, works on Linux). It fails on the mistakes below that can be read
