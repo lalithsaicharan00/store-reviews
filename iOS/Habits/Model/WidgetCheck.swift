@@ -33,6 +33,10 @@ enum WidgetCheck {
         let now = Date.now, day = store.today(now: now)
         func item(_ name: String) -> Habit { store.habits.first { $0.name == name }! }
         func row(_ name: String) -> WidgetItem { store.widgetSnapshot(now: now).frames.first!.items.first { $0.name == name }! }
+        var tiny = row("Widget water")
+        tiny.value = 0.01; tiny.goal = 0.05
+        expect(tiny.displayedValue == 0.01.formatted(.number.precision(.fractionLength(0...2)))
+               && tiny.compactProgress.hasPrefix(tiny.displayedValue + "/"), "Compact widgets preserve hundredths instead of showing zero")
         let snapshot = store.widgetSnapshot(now: now)
         expect(snapshot.frames.count == 7, "Seven logical days precomputed")
         expect(snapshot.frames.first?.items.filter(\.isTask).count == 24, "All unlimited tasks survive snapshot")

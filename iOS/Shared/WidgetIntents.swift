@@ -59,8 +59,24 @@ struct WidgetLogIntent: LiveActivityIntent {
     }
     @MainActor func perform() async throws -> some IntentResult {
         #if HABITS_APP
-        try await AppModel.shared.logFromWidget(item: item, day: day, event: event, signature: signature)
+        #if DEBUG
+        WidgetDisk.diagnose("app intent started")
+        #endif
+        do {
+            try await AppModel.shared.logFromWidget(item: item, day: day, event: event, signature: signature)
+            #if DEBUG
+            WidgetDisk.diagnose("app intent committed")
+            #endif
+        } catch {
+            #if DEBUG
+            WidgetDisk.diagnose("app intent failed: \(error)")
+            #endif
+            throw error
+        }
         #else
+        #if DEBUG
+        WidgetDisk.diagnose("extension intent invoked")
+        #endif
         throw WidgetActionError.openApp
         #endif
         return .result()

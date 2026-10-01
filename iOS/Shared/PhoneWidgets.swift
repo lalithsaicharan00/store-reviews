@@ -290,7 +290,7 @@ struct PhoneWidgetView: View {
                     VStack(spacing: 0) {
                         control(item, size: 28)
                         if let start = item.counterStart { Text(start, style: .relative).font(.system(size: 9)).lineLimit(1) }
-                        else { Text(item.done ? "Done" : item.value.formatted(.number.precision(.fractionLength(0...1))))
+                        else { Text(item.done ? "Done" : item.displayedValue)
                             .font(.caption2).lineLimit(1) }
                     }
                 default:
@@ -341,8 +341,7 @@ struct PhoneWidgetView: View {
     @ViewBuilder private func compactStatus(_ item: WidgetItem) -> some View {
         if item.counterStart != nil || item.isTask { status(item) }
         else {
-            let number = FloatingPointFormatStyle<Double>.number.precision(.fractionLength(0...1))
-            Text("\(item.value.formatted(number))/\(item.goal.formatted(number))\(item.ongoing ? " limit" : "")\(item.unit.map { " " + $0 } ?? "")")
+            Text(item.compactProgress)
                 .accessibilityLabel(item.status)
         }
     }

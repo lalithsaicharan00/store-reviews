@@ -58,6 +58,10 @@ final class WidgetSystemUITests: XCTestCase {
         let check = springboard.buttons["Check off Widget check"]
         XCTAssertTrue(check.waitForExistence(timeout: 15), springboard.debugDescription)
         check.tap()
+        // Intent execution and WidgetKit reload are asynchronous. Wait for the completed row
+        // to leave the default unfinished-only agenda before launching another app process.
+        let completed = NSPredicate(format: "exists == false")
+        _ = XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: completed, object: check)], timeout: 30)
         save(springboard, "home-widget-after-cold-check")
         app.launchArguments = ["-empty", "-free", "-dbname", "habits"]
         app.launch()

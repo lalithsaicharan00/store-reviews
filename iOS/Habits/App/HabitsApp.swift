@@ -116,7 +116,7 @@ private struct PlacementCheckView: View {
                 if let habit = store.habits.first(where: { $0.name == "Widget check" }),
                    store.entries(of: habit.id).contains(where: { $0.source == .widget }) {
                     result = "Widget system: persisted check"
-                } else { result = "Widget system: no durable widget check" }
+                } else { result = "Widget system: no durable widget check · " + WidgetDisk.diagnostic }
                 return
             }
             if arguments.contains("-widgetcheck") {

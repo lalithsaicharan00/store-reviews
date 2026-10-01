@@ -22,6 +22,11 @@ nonisolated struct WidgetItem: Codable, Identifiable, Sendable {
     var counterStart: Date?
     var counterValidUntil: Date? = nil
     var history: [WidgetDay]
+    var displayedValue: String { value.formatted(.number.precision(.fractionLength(0...2))) }
+    var compactProgress: String {
+        let number = FloatingPointFormatStyle<Double>.number.precision(.fractionLength(0...2))
+        return "\(value.formatted(number))/\(goal.formatted(number))\(ongoing ? " limit" : "")\(unit.map { " " + $0 } ?? "")"
+    }
     var url: URL { URL(string: "oftenenough://item/" + id) ?? URL(string: "oftenenough://today")! }
 }
 nonisolated struct WidgetDay: Codable, Identifiable, Sendable {
@@ -61,6 +66,16 @@ nonisolated enum WidgetDisk {
     static let maximumBytes = 16 * 1024 * 1024
     static var directory: URL? { FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: group) }
     static var url: URL? { directory?.appendingPathComponent("widget-snapshot-v1.json") }
+
+    #if DEBUG
+    // No names or identifiers: retained only to diagnose actual system-host intent dispatch in CI.
+    static var diagnosticURL: URL? { directory?.appendingPathComponent("widget-intent-diagnostic.txt") }
+    static func diagnose(_ stage: String) {
+        guard let file = diagnosticURL else { return }
+        try? Data(stage.utf8).write(to: file, options: .atomic)
+    }
+    static var diagnostic: String { diagnosticURL.flatMap { try? String(contentsOf: $0, encoding: .utf8) } ?? "intent not dispatched" }
+    #endif
 
     static func decode(_ data: Data) -> WidgetSnapshot? {
         guard data.count <= maximumBytes, let snapshot = try? JSONDecoder().decode(WidgetSnapshot.self, from: data),

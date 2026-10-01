@@ -132,10 +132,16 @@ extension HabitStore {
         scheduled = Task {
             try? await Task.sleep(for: .milliseconds(180))
             guard !Task.isCancelled else { return }
-            await publish(store)
+            await publishNow(store)
         }
     }
     func publish(_ store: HabitStore) async {
+        // Explicit flushes supersede the delayed update queued by the same committed change.
+        scheduled?.cancel()
+        scheduled = nil
+        await publishNow(store)
+    }
+    private func publishNow(_ store: HabitStore) async {
         await store.flush()
         guard store.isLoaded, store.isStorageReady, store.problem == nil, !Task.isCancelled else { return }
         let hidden = UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey) || AppLock.isEnabled
