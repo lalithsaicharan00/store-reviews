@@ -26,8 +26,8 @@ merged. **Any session picking this up: read this first, then update it as items 
 | P2 | Schedule the check-ins (send_later) | ✅ check-in 1 at 20:15 UTC (`trig_01Mpn2S8ZZHVi68YRGvJSmFi`); it schedules 2, 2 schedules 3, 3 schedules 4 |
 | P3 | Find what isn't merged yet | ✅ Only `claude/server-and-sync` (47 commits) and `analytics` (excluded). Checked, not assumed: `claude/free-plan-data-safety` and `claude/pensive-bardeen-ou4hiw` are fully inside `claude/server-and-sync`; `claude/eloquent-turing-oznzs3`'s one extra commit is a "superseded, don't merge" note |
 | P4 | Merge `integration` into `claude/server-and-sync`, resolving every conflict keeping both sides (the Status note §2 checklist: sync schema renumbered to 7, `entry.source` synced, new write paths through `SyncWriter`) | ✅ `b8edab4` + build fix `1218890` + `b745b78` (decisions below) |
-| P5 | Run everything: server (129), Core JVM + sync (JVM, JS), the website check, iOS build + the UI suite in halves on GitHub, `check_rules.sh` | Server 129/129, Core (JVM + sync JVM/JS, 7 migration tests), website 21 checks, `check_rules.sh`: pass. iOS `1218890`: 25/27 (Sync, Persistence 4/4, Onboarding 6/6, Today 8/8, Backup 6/8: two checks looked below the fold, fixed in `670d321`); rerun with speed runs going |
-| P6 | Move `integration`, then `main`, to the merged result; update the branch checklist | — |
+| P5 | Run everything: server (129), Core JVM + sync (JVM, JS), the website check, iOS build + the UI suite in halves on GitHub, `check_rules.sh` | ✅ Server 129/129, Core, website, rules; iOS: every class the merge touched passes (Backup 8/8, Sync, Persistence 4/4, Onboarding 6/6, Today 8/8, Progress 10/10, New Habit 19/19, Habit Creation 6/6, Undo, Timer 2/2, Groups 5/5) |
+| P6 | Move `integration`, then `main`, to the merged result; update the branch checklist | ✅ 1 Oct 23:45 UTC, fast-forward; checklist says which branches are safe to delete |
 | P7 | Performance: measure every screen with the app-driven runner (`[ios-perf]`), fix every regression and the known slow spots (opening a screen 500–1,300 ms, Today's first scroll 180–440 ms) | In progress. Done (`6d04d35`, `69e2227`, `943e4e5`): quit rows tick only their two times (the whole row re-walked its history every second); a habit's runs remembered for today (one walk after a save, not two); the habit form builds sub-screens when opened (it built every one, three whole forms on the type question); Privacy's Face ID check off the main thread; Progress's weekday names once; backup and sync files off the main thread. Next: the first keyboard of a launch (habit form 2.8 s, entry editor 1.3 s), Progress's first open (2.8 s; bisect), keeping Progress's snapshot between opens |
 | P8 | Data robustness: migrations from every shipped schema, restore/merge, sync, low storage, kill mid-write; widgets reading the shared store | — |
 | P9 | Bugs: the older failing UI tests (Focus player, Routine Calendar, Goal flow, Schedule), anything found on the way | — |
@@ -36,9 +36,9 @@ merged. **Any session picking this up: read this first, then update it as items 
 
 | Branch | State | Safe to delete? |
 |---|---|---|
-| `claude/server-and-sync` | Being merged (P4) | After P6 |
+| `claude/server-and-sync` | In `main` (P6) | **Yes** |
 | `claude/serene-wright-mcvmrx` | Nothing beyond `main` (this session's starting branch) | **Yes** |
-| `claude/free-plan-data-safety`, `claude/pensive-bardeen-ou4hiw` | Fully inside `claude/server-and-sync` (checked 1 Oct) | **Yes** once server-sync is in `main` |
+| `claude/free-plan-data-safety`, `claude/pensive-bardeen-ou4hiw` | Fully inside `claude/server-and-sync`, now in `main` | **Yes** |
 | `analytics` | Codex, still being worked on | **No**: it merges `main` itself when ready |
 | Everything else | See [Merging the Branches](<../iOS/Docs/Checklists/Merging the Branches.md>) "Branches to delete" | As listed there |
 
