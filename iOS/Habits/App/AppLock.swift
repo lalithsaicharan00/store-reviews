@@ -22,8 +22,9 @@ final class AppLock {
     private var promptWhenActive: Bool
 
     init() {
-        isLocked = Self.isEnabled
-        promptWhenActive = isLocked
+        let on = Self.isEnabled
+        isLocked = on
+        promptWhenActive = on
     }
 
     /// Never in UI tests, so a lock left on in the simulator can't block them.
