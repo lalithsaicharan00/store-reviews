@@ -62,8 +62,8 @@ extension HabitStore {
         let measured: Bool = switch rule.kind { case .amount, .duration: true; default: false }
         if measured || goal > 1 {
             let when = rule.frequency.isDayBased ? " today" : ""
-            let done = progress(of: habit, on: day)
-            let amount = rule.kind == .duration ? HabitCopy.minutes(done) : HabitCopy.number(done)
+            let logged = progress(of: habit, on: day)
+            let amount = rule.kind == .duration ? HabitCopy.minutes(logged) : HabitCopy.number(logged)
             text = "\(habit.name): \(amount) of \(progressValue(goal, rule))\(when)."
             if done { text += " Done." }
         } else {
