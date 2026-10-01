@@ -33,6 +33,8 @@ SQLite, Cloudflare sync, and five safety nets. The topics below go deeper, one a
 
 - **Parked decisions:** [Backlog.md](Backlog.md).
 
+- **Cost and capacity, free vs Plus:** [Server Cost and Capacity — Free Safety Copy vs Plus Sync](<Server Cost and Capacity — Free Safety Copy vs Plus Sync.md>) — 1 Oct 2026, a plan: two lanes (free = Worker + R2, Plus = Durable Objects), prices, and checks for `claude/server-and-sync`.
+
 - **Accepted email behavior:** [The one email: purchase confirmation](<Email Delivery Decision.md>). Decided 26 Sep 2026, narrowed 27 Sep 2026; sent through Resend.
 
 - **Accepted shared-core decision:** [Kotlin Multiplatform + native UI + documented rules + shared tests](<Shared Core Decision.md>) — finalized 26 Sep 2026; resolves Backlog #15. [Research, production examples and support routes](<Shared Core Research.md>).
