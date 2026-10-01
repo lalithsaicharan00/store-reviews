@@ -28,7 +28,7 @@ nonisolated struct AnalyticsDeliveryConfiguration: Sendable {
             return ["uuid": record.id.uuidString, "event": record.event.rawValue, "distinct_id": installation.uuidString,
                     "timestamp": ISO8601DateFormatter().string(from: record.created), "properties": properties]
         }
-        return try JSONSerialization.data(withJSONObject: ["api_key": projectToken, "batch": events])
+        return try JSONSerialization.data(withJSONObject: ["api_key": projectToken, "batch": events], options: [.sortedKeys])
     }
     private func safeVersion(_ raw: String) -> String {
         raw.count <= 32 && raw.range(of: "^[0-9]+([.][0-9]+)*$", options: .regularExpression) != nil ? raw : "0"
