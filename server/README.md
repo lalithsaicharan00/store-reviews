@@ -48,9 +48,17 @@ Needs `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in the environment.
 | `GET /v1/account` | keys and devices |
 | `POST /v1/account/link`, `/unlink` | add or remove a sign-in method (never the last one) |
 | `POST /v1/account/signout`, `/delete` | end this device's session; delete the account (directory first, then its data) |
+| `POST /v1/auth/ci` | dev only: GitHub Actions runs of this repository sign in with the run's identity token (iPhone end-to-end tests) |
+| `POST /v1/sync` | `{cursor, ops}` → `{applied, rejected, ops, cursor, more}`; merges with the shared Kotlin rules in `core/` |
+| `POST /v1/purchases/verify` | `{jws}` (StoreKit 2 `jwsRepresentation`) → entitlements; checked against Apple Root CA - G3, no call to Apple |
+| `GET /v1/purchases` | the account's entitlements (`plus`, `family`, purchases) |
+| `POST /v1/hooks/apple` | App Store Server Notifications V2: refunds and revocations remove Plus; a reversed refund restores it |
 
 The app sends `nonce` raw and gives Apple or Google its SHA-256 (hex). `device` is `{id (UUID), platform, name, appVersion}`.
 `country` (the store country, alpha-2 or alpha-3) decides at creation whether the account is stored in the EU.
 
-**Not built yet:** sync (step 3), purchases (step 5), rate limiting, Apple server notifications and token revocation
-(need the Apple Developer account), the daily report and R2 snapshots.
+`core/` is the shared Kotlin sync code compiled to JavaScript. After changing `Core/sync`, run `scripts/build-core.sh`.
+
+**Not built yet:** Google Play purchases and notifications, Sign in with Apple server-to-server notifications and token
+revocation, the purchase email, rate limiting, the daily report and R2 snapshots. Real Apple and Google sign-in need
+their keys (the Apple Developer account and a Google Cloud OAuth client); everything else is tested with stand-ins.

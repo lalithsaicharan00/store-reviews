@@ -6,6 +6,7 @@
   "name": "often-enough-api-dev",
   "main": "src/worker.ts",
   "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
   "workers_dev": false,
   "preview_urls": false,
   "routes": [{ "pattern": "api-dev.oftenenough.com", "custom_domain": true }],
@@ -16,6 +17,12 @@
     "APPLE_AUDIENCES": "com.oftenenough.app",
     // Google OAuth client IDs, comma-separated. Empty until the Google Cloud project exists: Google sign-in is off.
     "GOOGLE_AUDIENCES": "",
+    // App Store purchases: the app's bundle ID, and which App Store environments this server accepts.
+    // Dev takes Xcode's local StoreKit testing and the sandbox; production will take Production and Sandbox (App Review).
+    "APPLE_BUNDLE_ID": "com.oftenenough.app",
+    "APPLE_ENVIRONMENTS": "Production,Sandbox,Xcode",
+    // Dev only: extra trusted roots (PEM), e.g. Xcode's StoreKit testing certificate. Empty: Apple's root only.
+    "APPLE_EXTRA_ROOTS": "",
     // Dev only: GitHub Actions runs of this repository may use POST /v1/auth/ci (end-to-end tests).
     "CI_REPOSITORY": "lalithsaicharan00/store-reviews"
   },

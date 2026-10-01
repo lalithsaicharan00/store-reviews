@@ -1,4 +1,5 @@
-import { type Account, type DeviceInfo, MAX_PUSH } from "./account";
+import { type Account, type DeviceInfo, MAX_PUSH, type PurchaseRecord } from "./account";
+import { APPLE_ROOT_CA_G3, verifyAppleSigned } from "./apple";
 import {
   type Jurisdiction,
   createAccount,
@@ -6,6 +7,8 @@ import {
   findAccount,
   jurisdictionFor,
   linkKey,
+  linkPurchase,
+  purchaseOwner,
   unlinkKey,
 } from "./directory";
 import { HttpError, errorResponse, isUuid, json, readJson, requireString } from "./http";
@@ -71,6 +74,12 @@ async function route(request: Request, url: URL, env: Env): Promise<Response> {
       return remove(request, env);
     case "POST /v1/sync":
       return sync(request, env);
+    case "POST /v1/purchases/verify":
+      return verifyPurchase(request, env);
+    case "GET /v1/purchases":
+      return purchases(request, env);
+    case "POST /v1/hooks/apple":
+      return appleNotification(request, env);
   }
   throw new HttpError(404, "not_found", "There's nothing here.");
 }
@@ -249,6 +258,87 @@ async function sync(request: Request, env: Env): Promise<Response> {
   }
   const { ok: _ok, ...reply } = result;
   return json(reply);
+}
+
+// MARK: Purchases (Architecture 02 §3.11)
+
+/** What each App Store product unlocks. Plus Family includes Plus. */
+const APPLE_PRODUCTS: Record<string, "plus" | "family"> = {
+  "com.oftenenough.app.plus": "plus",
+  "com.oftenenough.app.plusfamily": "family",
+  "com.oftenenough.app.plusfamily.upgrade": "family",
+};
+
+function appleRoots(env: Env): string[] {
+  // Dev may also trust a test root (unit tests, Xcode's StoreKit testing certificate). Production: Apple's alone.
+  const extra = env.ENVIRONMENT === "dev" ? (env.APPLE_EXTRA_ROOTS ?? "").split(/(?=-----BEGIN CERTIFICATE-----)/).filter((p) => p.includes("BEGIN")) : [];
+  return [APPLE_ROOT_CA_G3, ...extra];
+}
+
+/** Checks a signed StoreKit 2 transaction and turns it into a purchase record. */
+async function applePurchase(jws: string, env: Env): Promise<PurchaseRecord & { appAccountToken: string | null }> {
+  const t = await verifyAppleSigned(jws, appleRoots(env));
+  const grants = typeof t.productId === "string" ? APPLE_PRODUCTS[t.productId] : undefined;
+  const environments = env.APPLE_ENVIRONMENTS.split(",").map((e) => e.trim());
+  if (t.bundleId !== env.APPLE_BUNDLE_ID || !grants || typeof t.originalTransactionId !== "string" || typeof t.environment !== "string") {
+    throw new HttpError(400, "not_verified", "This purchase isn't one of ours.");
+  }
+  if (!environments.includes(t.environment)) throw new HttpError(400, "not_verified", "This purchase is from a test store this server doesn't accept.");
+  return {
+    store: "apple",
+    originalId: t.originalTransactionId,
+    productId: t.productId as string,
+    grants,
+    environment: t.environment,
+    purchasedAt: typeof t.originalPurchaseDate === "number" ? t.originalPurchaseDate : typeof t.purchaseDate === "number" ? t.purchaseDate : Date.now(),
+    revokedAt: typeof t.revocationDate === "number" ? t.revocationDate : null,
+    appAccountToken: typeof t.appAccountToken === "string" ? t.appAccountToken.toLowerCase() : null,
+  };
+}
+
+/** `{jws}` (Transaction.jwsRepresentation) → the account's entitlements. Safe to repeat. */
+async function verifyPurchase(request: Request, env: Env): Promise<Response> {
+  const claims = await authenticate(request, env);
+  const body = await readJson<{ jws?: unknown }>(request, 64 * 1024);
+  const purchase = await applePurchase(requireString(body.jws, "jws", 32 * 1024), env);
+  if (purchase.appAccountToken && purchase.appAccountToken !== claims.accountId.toLowerCase()) {
+    throw new HttpError(409, "purchase_for_another_account", "This purchase was made for a different account.");
+  }
+  if ((await linkPurchase(env.DIRECTORY, purchase.store, purchase.originalId, claims.accountId)) === "linked_elsewhere") {
+    throw new HttpError(409, "purchase_linked_elsewhere", "This purchase already unlocks another account. Contact us and we'll move it.");
+  }
+  const { appAccountToken: _token, ...record } = purchase;
+  const entitlements = await accountStub(env, claims).recordPurchase(record);
+  if (!entitlements) throw signedOut();
+  return json(entitlements);
+}
+
+async function purchases(request: Request, env: Env): Promise<Response> {
+  const claims = await authenticate(request, env);
+  const entitlements = await accountStub(env, claims).entitlements();
+  if (!entitlements) throw signedOut();
+  return json(entitlements);
+}
+
+/**
+ * App Store Server Notifications V2: Apple tells us about refunds and revocations. Only those change an account,
+ * and only for a purchase we know; everything else is acknowledged and ignored. Repeats are harmless.
+ */
+async function appleNotification(request: Request, env: Env): Promise<Response> {
+  const body = await readJson<{ signedPayload?: unknown }>(request, 64 * 1024);
+  const notification = await verifyAppleSigned(requireString(body.signedPayload, "signedPayload", 60 * 1024), appleRoots(env));
+  const type = notification.notificationType;
+  const data = (notification.data ?? {}) as { bundleId?: unknown; signedTransactionInfo?: unknown };
+  if (data.bundleId !== env.APPLE_BUNDLE_ID) throw new HttpError(400, "not_verified", "Not our app.");
+  if ((type === "REFUND" || type === "REVOKE" || type === "REFUND_REVERSED") && typeof data.signedTransactionInfo === "string") {
+    const purchase = await applePurchase(data.signedTransactionInfo, env);
+    const owner = await purchaseOwner(env.DIRECTORY, purchase.store, purchase.originalId);
+    if (owner) {
+      const revokedAt = type === "REFUND_REVERSED" ? null : (purchase.revokedAt ?? Date.now());
+      await accountStub(env, owner).setRevoked(purchase.store, purchase.originalId, revokedAt);
+    }
+  }
+  return json({ received: true });
 }
 
 // MARK: Helpers

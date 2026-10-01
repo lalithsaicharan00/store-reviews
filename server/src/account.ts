@@ -11,7 +11,7 @@ import { newSecret, sha256Hex } from "./tokens";
  * An object with no `account_id` in `meta` is not an account (never set up, or deleted): every call says "gone".
  */
 
-const SCHEMA_VERSION = 2;
+const SCHEMA_VERSION = 3;
 
 /** Sync limits (Architecture 06 §4): a push is at most 500 ops (bigger outboxes come in chunks); a pull at most 1,000. */
 export const MAX_PUSH = 500;
@@ -57,6 +57,24 @@ export type SyncResult =
     }
   | { ok: false; reason: "gone" | "signed_out" | "too_many_ops" };
 
+/** A verified store purchase (Architecture 02 §3.3). */
+export interface PurchaseRecord {
+  store: "apple" | "google";
+  originalId: string;
+  productId: string;
+  /** What it unlocks: "plus" or "family" (Plus Family, which includes Plus). */
+  grants: "plus" | "family";
+  environment: string;
+  purchasedAt: number;
+  revokedAt: number | null;
+}
+
+export interface Entitlements {
+  plus: boolean;
+  family: boolean;
+  purchases: PurchaseRecord[];
+}
+
 export interface AccountSummary {
   accountId: string;
   createdAt: number;
@@ -101,8 +119,45 @@ export class Account extends DurableObject<Env> {
           seq INTEGER PRIMARY KEY AUTOINCREMENT, op_id TEXT NOT NULL UNIQUE, device_id TEXT NOT NULL,
           op TEXT NOT NULL, received_at INTEGER NOT NULL)`);
       }
+      if (current < 3) {
+        // Verified store purchases. A refund or revocation sets revoked_at; nothing else removes Plus (02 §3.3).
+        this.sql.exec(`CREATE TABLE purchase (
+          store TEXT NOT NULL, original_id TEXT NOT NULL, product_id TEXT NOT NULL, grants TEXT NOT NULL,
+          environment TEXT NOT NULL, purchased_at INTEGER NOT NULL, revoked_at INTEGER, recorded_at INTEGER NOT NULL,
+          PRIMARY KEY (store, original_id))`);
+      }
       this.setMeta("schema", String(SCHEMA_VERSION));
     });
+  }
+
+  /** Records a verified purchase. Recording it again changes nothing; a refund already recorded stays recorded. */
+  async recordPurchase(purchase: PurchaseRecord, now = Date.now()): Promise<Entitlements | null> {
+    if (this.accountId === undefined) return null;
+    this.sql.exec(
+      `INSERT INTO purchase (store, original_id, product_id, grants, environment, purchased_at, revoked_at, recorded_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT(store, original_id) DO UPDATE SET revoked_at = COALESCE(purchase.revoked_at, excluded.revoked_at)`,
+      purchase.store, purchase.originalId, purchase.productId, purchase.grants, purchase.environment,
+      purchase.purchasedAt, purchase.revokedAt, now,
+    );
+    return this.entitlements();
+  }
+
+  /** A refund or revocation confirmed by the store (02 §3.11). `revokedAt: null` undoes it (Apple REFUND_REVERSED). */
+  async setRevoked(store: string, originalId: string, revokedAt: number | null): Promise<void> {
+    this.sql.exec("UPDATE purchase SET revoked_at = ? WHERE store = ? AND original_id = ?", revokedAt, store, originalId);
+  }
+
+  async entitlements(): Promise<Entitlements | null> {
+    if (this.accountId === undefined) return null;
+    const purchases = this.sql
+      .exec<{ store: "apple" | "google"; original_id: string; product_id: string; grants: "plus" | "family"; environment: string; purchased_at: number; revoked_at: number | null }>(
+        "SELECT store, original_id, product_id, grants, environment, purchased_at, revoked_at FROM purchase ORDER BY purchased_at",
+      )
+      .toArray()
+      .map((p) => ({ store: p.store, originalId: p.original_id, productId: p.product_id, grants: p.grants, environment: p.environment, purchasedAt: p.purchased_at, revokedAt: p.revoked_at }));
+    const live = purchases.filter((p) => p.revokedAt === null);
+    return { plus: live.length > 0, family: live.some((p) => p.grants === "family"), purchases };
   }
 
   /**

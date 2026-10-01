@@ -92,6 +92,7 @@ export async function jurisdictionOf(db: D1Database, accountId: string): Promise
 export async function deleteAccount(db: D1Database, accountId: string): Promise<void> {
   await db.batch([
     db.prepare("DELETE FROM account_key WHERE account_id = ?").bind(accountId),
+    db.prepare("DELETE FROM purchase WHERE account_id = ?").bind(accountId),
     db.prepare("DELETE FROM account WHERE id = ?").bind(accountId),
   ]);
 }
@@ -106,4 +107,28 @@ const EEA = new Set([
 
 export function jurisdictionFor(country: unknown): Jurisdiction {
   return typeof country === "string" && EEA.has(country.toUpperCase()) ? "eu" : "default";
+}
+
+export type LinkPurchaseResult = "linked" | "linked_elsewhere";
+
+/** Links a store purchase to an account. Repeating it is fine; another account already holding it is refused. */
+export async function linkPurchase(db: D1Database, store: string, originalId: string, accountId: string, now = Date.now()): Promise<LinkPurchaseResult> {
+  await db
+    .prepare("INSERT INTO purchase (store, original_id, account_id, created_at) VALUES (?, ?, ?, ?) ON CONFLICT DO NOTHING")
+    .bind(store, originalId, accountId, now)
+    .run();
+  const owner = await db.prepare("SELECT account_id FROM purchase WHERE store = ? AND original_id = ?").bind(store, originalId).first<{ account_id: string }>();
+  return owner?.account_id === accountId ? "linked" : "linked_elsewhere";
+}
+
+export async function purchaseOwner(db: D1Database, store: string, originalId: string): Promise<AccountRef | null> {
+  return (
+    (await db
+      .prepare(
+        `SELECT a.id AS accountId, a.jurisdiction AS jurisdiction FROM purchase p JOIN account a ON a.id = p.account_id
+         WHERE p.store = ? AND p.original_id = ?`,
+      )
+      .bind(store, originalId)
+      .first<AccountRef>()) ?? null
+  );
 }

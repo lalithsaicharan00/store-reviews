@@ -1,0 +1,65 @@
+{
+  "identifier" : "4F1D9C2E",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "14.99",
+      "familyShareable" : false,
+      "internalID" : "6740000001",
+      "localizations" : [
+        {
+          "description" : "Every device, sync and backup, unlimited habits. Yours for good.",
+          "displayName" : "Often Enough Plus",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.oftenenough.app.plus",
+      "referenceName" : "Plus",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "29.99",
+      "familyShareable" : false,
+      "internalID" : "6740000002",
+      "localizations" : [
+        {
+          "description" : "Plus for you and up to 5 people you invite, on any phone. Yours for good.",
+          "displayName" : "Often Enough Plus Family",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.oftenenough.app.plusfamily",
+      "referenceName" : "Plus Family",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "14.99",
+      "familyShareable" : false,
+      "internalID" : "6740000003",
+      "localizations" : [
+        {
+          "description" : "Turns your Plus into Plus Family.",
+          "displayName" : "Upgrade to Plus Family",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.oftenenough.app.plusfamily.upgrade",
+      "referenceName" : "Plus Family upgrade",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA"
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
