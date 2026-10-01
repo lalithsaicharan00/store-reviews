@@ -51,6 +51,7 @@ nonisolated enum PhoneWidgetTimeline {
             // A saved quit start is a stable fact: its system-rendered clock needs no daily refresh.
             // Only extend it up to the next known pause/end; never extend actionable agenda rows.
             if entry.frame == nil, !entry.hidden, snapshot?.timeZone == TimeZone.current.identifier,
+               snapshot?.locale == Locale.current.identifier,
                let item = snapshot?.frames.last?.items.first(where: { $0.id == selection }),
                item.isQuit, item.counterStart != nil, let until = item.counterValidUntil, entry.date < until {
                 entry.frame = .init(day: "counter", start: entry.date, end: until, items: [item])

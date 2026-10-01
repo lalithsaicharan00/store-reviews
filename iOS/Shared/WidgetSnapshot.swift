@@ -48,8 +48,8 @@ nonisolated struct WidgetSnapshot: Codable, Sendable {
     var plus: Bool
     var hidden: Bool
     var frames: [WidgetFrame]
-    func frame(at now: Date, timeZone: String = TimeZone.current.identifier) -> WidgetFrame? {
-        guard version == Self.version, self.timeZone == timeZone, !hidden else { return nil }
+    func frame(at now: Date, timeZone: String = TimeZone.current.identifier, locale: String = Locale.current.identifier) -> WidgetFrame? {
+        guard version == Self.version, self.timeZone == timeZone, self.locale == locale, !hidden else { return nil }
         return frames.first { $0.start <= now && now < $0.end }
     }
 }

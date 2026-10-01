@@ -1,4 +1,5 @@
 #if DEBUG
+import Core
 import Foundation
 import SwiftUI
 import WidgetKit
@@ -105,6 +106,10 @@ enum WidgetCheck {
         } catch { failures.append("Disk round trip: \(error)") }
         expect(WidgetDisk.decode(Data(repeating: 0, count: WidgetDisk.maximumBytes + 1)) == nil, "Oversized snapshot rejected")
         expect(snapshot.frame(at: now, timeZone: "invalid") == nil, "Travel invalidates old timezone snapshot")
+        expect(snapshot.frame(at: now, locale: "invalid") == nil, "Locale change invalidates old formatted values")
+        let pagingKey = "widget-check." + UUID().uuidString
+        expect(WidgetDisk.page(key: pagingKey, set: 100_001) == 100_000 && WidgetDisk.page(key: pagingKey, set: -1) == 0,
+               "Shared pagination clamps invalid values")
         expect(snapshot.frame(at: snapshot.frames.last!.end) == nil, "Expired outlook never carries old data")
         let quitID = item("Widget quit").id.uuidString
         let late = now.addingTimeInterval(30 * 86400)
