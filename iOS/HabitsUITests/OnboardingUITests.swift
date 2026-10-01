@@ -145,6 +145,18 @@ final class OnboardingUITests: XCTestCase {
         let field = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(field.waitForExistence(timeout: 5))
         XCTAssertEqual(field.value as? String, "Drink water")
+        // Amounts are never filled in (Design Rules), so Add waits for one, as for any amount habit.
+        XCTAssertFalse(app.buttons["add-habit"].isEnabled, "An amount habit needs its amount before Add")
+        let howMuch = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'How much'")).firstMatch
+        app.reveal(howMuch)
+        howMuch.tap()
+        let number = app.textFields["much-number"]
+        XCTAssertTrue(number.waitForExistence(timeout: 3))
+        number.tap()
+        number.typeText("8")
+        app.navigationBars.buttons["BackButton"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["add-habit"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons["add-habit"].isEnabled, "Add works once the amount is set")
         app.buttons["add-habit"].tap()
         XCTAssertTrue(app.navigationBars.buttons["New Habit"].waitForExistence(timeout: 5), "Today's toolbar is back")
         XCTAssertTrue(text(containing: "Drink water").waitForExistence(timeout: 5), "The idea's habit is on Today")
@@ -158,6 +170,14 @@ final class OnboardingUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["onboarding-page-name"].waitForExistence(timeout: 10))
         next(); next(); next()
         let notNow = app.buttons["onboarding-not-now"]
+        XCTAssertTrue(notNow.waitForExistence(timeout: 3))
+
+        // Make Your Own opens the usual New, and Cancel comes back to the ideas with nothing added.
+        let own = app.buttons["onboarding-make-own"]
+        XCTAssertTrue(own.isHittable, "Make Your Own is always in view, not under the ideas")
+        own.tap()
+        XCTAssertTrue(app.staticTexts["What do you want to do?"].waitForExistence(timeout: 3))
+        app.navigationBars["New"].buttons["Cancel"].tap()
         XCTAssertTrue(notNow.waitForExistence(timeout: 3))
         notNow.tap()
         XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 5))
@@ -180,7 +200,8 @@ final class OnboardingUITests: XCTestCase {
         XCTAssertTrue(text(containing: "your best run and your history are kept").waitForExistence(timeout: 3),
                       "The answer opens in place")
         shot("02-help-search")
-        app.buttons["Cancel"].firstMatch.tap() // leaves the search
+        // Empty the search (iOS 26 has a ✕ where Cancel was): the full page, Contact Us first, comes back.
+        search.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 4))
 
         // The simulator has no mail app: the address is offered instead, to copy.
         XCTAssertTrue(app.buttons["help-contact"].waitForExistence(timeout: 3))

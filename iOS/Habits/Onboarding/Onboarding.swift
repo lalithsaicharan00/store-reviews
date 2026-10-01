@@ -85,7 +85,7 @@ struct OnboardingView: View {
                 case 0: NamePage().transition(slide)
                 case 1: FreePage().transition(slide)
                 case 2: DaysPage().transition(slide)
-                default: IdeasPage(onSomethingElse: { showNew = true }).transition(slide)
+                default: IdeasPage(ownRow: false, onSomethingElse: { showNew = true }).transition(slide)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -141,9 +141,17 @@ struct OnboardingView: View {
                     .accessibilityIdentifier("onboarding-restore")
             }
             if isLast && !replay {
+                Button { showNew = true } label: {
+                    Text("Make Your Own")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                }
+                .buttonStyle(.bordered)
+                .tint(.ink)
+                .accessibilityIdentifier("onboarding-make-own")
                 Button("Not Now") { finish() }
                     .font(.body.weight(.semibold))
-                    .frame(maxWidth: .infinity, minHeight: 50)
+                    .frame(maxWidth: .infinity, minHeight: 44)
                     .accessibilityIdentifier("onboarding-not-now")
             }
             PageDots(count: pageCount, current: page)
@@ -218,6 +226,9 @@ private struct DaysPage: View {
     var body: some View {
         Form {
             Section {
+                PageHeading(title: "Your days and weeks", lead: "Both are set to the usual answer. Change them only if they don't fit.")
+            }
+            Section {
                 Picker("A New Day Starts At", selection: Binding(get: { store.settings.dayEndHour },
                                                                   set: { store.setDayEnd($0) })) {
                     ForEach(0...12, id: \.self) { hour in
@@ -225,9 +236,6 @@ private struct DaysPage: View {
                     }
                 }
                 .accessibilityIdentifier("onboarding-day-start")
-            } header: {
-                PageHeading(title: "Your days and weeks", lead: "Both are set to the usual answer. Change them only if they don't fit.")
-                    .accessibilityIdentifier("onboarding-page-days")
             } footer: {
                 Text("Up late or working nights? Pick a later hour: what you log before then counts for the day before.")
             }
@@ -252,10 +260,16 @@ private struct DaysPage: View {
 /// Screen 4 and Start From an Idea: a few ideas that fill in the form, or anything else (research §4). An idea is
 /// pushed onto the stack the page is in, whose `navigationDestination` opens `IdeaForm`.
 struct IdeasPage: View {
+    /// The welcome has its own Make Your Own button in the bar below; the sheet shows it as the last row.
+    var ownRow = true
     var onSomethingElse: () -> Void
 
     var body: some View {
         List {
+            Section {
+                PageHeading(title: "What's one habit to start with?",
+                            lead: "Pick an idea or make your own. You can change everything before adding it.")
+            }
             Section {
                 ForEach(HabitIdea.all) { idea in
                     NavigationLink(value: idea) {
@@ -263,19 +277,17 @@ struct IdeasPage: View {
                     }
                     .accessibilityIdentifier("idea-" + idea.name)
                 }
-            } header: {
-                PageHeading(title: "What's one habit to start with?",
-                            lead: "Pick an idea or make your own. You can change everything before adding it.")
-                    .accessibilityIdentifier("onboarding-page-ideas")
             } footer: {
                 Text("An idea only fills in the form. Nothing is added until you tap Add.").formNote()
             }
-            Section {
-                Button(action: onSomethingElse) {
-                    ChoiceLabel(icon: "plus", title: "Something Else…", detail: "A habit of your own, something to quit, or a task.")
+            if ownRow {
+                Section {
+                    Button(action: onSomethingElse) {
+                        ChoiceLabel(icon: "plus", title: "Something Else…", detail: "A habit of your own, something to quit, or a task.")
+                    }
+                    .foregroundStyle(Color.primary)
+                    .accessibilityIdentifier("idea-something-else")
                 }
-                .foregroundStyle(Color.primary)
-                .accessibilityIdentifier("idea-something-else")
             }
         }
         .scrollContentBackground(.hidden)
@@ -361,7 +373,8 @@ private struct WelcomePage<Content: View>: View {
     }
 }
 
-/// The heading of a page that is a list: the same title and sentence as the other pages.
+/// The heading of a page that is a list: the same title and sentence as the other pages, as a row with no card (a
+/// section header fades its text).
 private struct PageHeading: View {
     let title: String
     let lead: String
@@ -376,11 +389,10 @@ private struct PageHeading: View {
                 .font(.title3)
                 .foregroundStyle(.secondary)
         }
-        .textCase(nil)
         .fixedSize(horizontal: false, vertical: true)
         .padding(.top, 8)
-        .padding(.bottom, 12)
         .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4))
+        .listRowBackground(Color.clear)
     }
 }
 
