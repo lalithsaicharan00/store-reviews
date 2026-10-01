@@ -22,7 +22,8 @@ struct ProviderSmoke {
                 properties: ["period_start_utc": .number(end - 86400), "period_end_utc": .number(end),
                     "collection_started_mid_period": .flag(true), "foreground_active": .flag(true),
                     "external_action_active": .flag(false), "coverage_complete": .flag(false),
-                    "coverage_version": .number(1), "delivery_loss_count": .number(0), "tracking_write_count": .number(1)])
+                    "coverage_version": .number(1), "delivery_loss_count": .number(0), "tracking_write_count": .number(1),
+                    "habit_write_check": .number(1), "write_origin_manual": .number(1)])
         ]
         let payload = try config.payload(records, installation: installation)
         let metadata: [String: Any] = ["installation": installation.uuidString, "record_ids": records.map { $0.id.uuidString },
