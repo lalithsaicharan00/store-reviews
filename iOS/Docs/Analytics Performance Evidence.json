@@ -119,5 +119,15 @@
       }
     }
   ],
-  "interpretation": "Both runs completed valid windows. Large inter-run variation and mixed off/on differences prevent causal overhead or speed acceptance claims. No physical-device acceptance; production remains disabled."
+  "interpretation": "Both runs completed valid windows. Large inter-run variation and mixed off/on differences prevent causal overhead or speed acceptance claims. No physical-device acceptance; production remains disabled.",
+  "final_contract_verification": {
+    "run": 36916716569,
+    "commit": "af72c61",
+    "workflow_result": "success",
+    "native_checks_passed": 101,
+    "outgoing_envelopes_inspected": 3,
+    "core_storage_migrations": "passed",
+    "debug_and_release_simulator_app_widget_builds": "passed",
+    "ui_and_performance": "deliberately skipped for utility-only changes; passed unchanged-view evidence in full runs"
+  }
 }

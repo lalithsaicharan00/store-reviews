@@ -2,7 +2,7 @@ Written by Codex, 1 October 2026.
 
 # Often Enough — Product Analytics and Reliability Plan
 
-**Status: consolidated iPhone analytics implemented on `analytics`; final Release/native verification and PR readiness in progress. Production sending remains disabled because performance/rollout acceptance is unresolved; synthetic EU provider acceptance and all 14 dashboard queries are verified.** The contract below is the research proposal; the dated implementation audit at the end and analytics handoff record actual code, project changes and test evidence. The pinned branch audit is historical and does not mean unfinished features are consolidated.
+**Status: implementation, independent testing and PR preparation complete for consolidated iPhone features on `analytics`; PR #3 ready for review. Production sending remains disabled because performance/rollout acceptance is unresolved. Synthetic EU provider acceptance and all14 saved dashboard queries are verified; unavailable features/providers are not claimed as covered.** The contract below is the research proposal; the dated implementation audit at the end and analytics handoff record actual code, project changes and test evidence. The pinned branch audit is historical and does not mean unfinished features are consolidated.
 
 ## 1. Recommendation
 
@@ -438,3 +438,6 @@ Native follow-up at 01:05 IST Oct 2: run36911212496 fully passed 88 contract che
 
 
 Final review at 01:17 IST Oct 2: reliability terminal callbacks deduplicate per operation/subsystem; sampling policy changes start together for flows and summaries at the next UTC period; widget drain counts are returned only after successful durable removal. Tests exercise duplicate/conflicting callbacks, sampling reductions/expansions after upgrade and disk-full relay clear/retry. Full Release-policy run36911869018 passed Debug and Release simulator app/widget builds. Latest focused af72c61 native/Core/both-build validation remains pending. Actual provider now contains 12 deduplicated synthetic development rows and no production rows; person-list is empty. No billing/analytics-retention API verification, real-user population or physical-device acceptance is invented.
+
+
+Completion at 01:47 IST Oct2 / 20:17 UTC Oct1: final af72c61 run36916716569 completed101 native consent/content/offline/retry/sampling/reliability/widget-clear checks, three inspected envelopes, Core and Debug/Release simulator app/widget builds. Full7b05a66 run36911869018 completed92 native checks, Core/both builds, all14 targeted UI tests, provider smoke and five same-build off/on windows. Both full timing reports preserve unmet speed/open targets and substantial variation; production remains false. All14 provider queries refreshed without errors/warnings, production empty and person profiles0. PR #3 successfully marked ready for review against unchanged consolidated eff1e14; no merge or release. Billing/spend-cap/analytics-retention access, real-device/performance acceptance and absent feature/crash-provider owners remain explicit rollout dependencies; independent implementation work is complete.

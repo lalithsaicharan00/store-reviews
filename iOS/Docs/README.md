@@ -23,6 +23,7 @@ These are the iPhone app's own documents: the specs it was built from and the us
 | [Routine Player — Design Decisions](<Specs/Routine Player — Design Decisions.md>) | **Current.** Consolidates the routine player hierarchy, spacing, goals and actions with reasons | The full-screen routine player |
 | [New Habit Goal and Time of Day](<Specs/New Habit Goal and Time of Day.md>) | **Current.** Its Schedule and Goal parts are superseded where they conflict with Design Rules' "Schedule and Goal" section | The New Habit form, Goal screen, Time of Day, units, checklists |
 | [iPhone Widgets](<iPhone Widgets.md>) | iPhone widget kinds, App Group, logging/privacy contract, account and entitlement merge hooks; physical-device release matrix | Home/Lock widgets, widget publication, integration |
+| [Analytics Contract](<Analytics Contract.md>) | Optional content-free iPhone collection; production sending gated off; future-client vocabulary is not coverage | Durable analytics callbacks, consent, daily summaries, screen attention and widget relays |
 | [Pending to Implement](<Specs/Pending to Implement.md>) | **Partly superseded.** §6 and its sidebar reliability addendum cover reminder scheduling, alarms and notification actions | Reminders, alarms, Remind Again |
 | [Today Improvements](<Specs/Today Improvements.md>) | **Partly superseded** by the Section Header research (28 Sep) | Today's sections, routine play, the day bar |
 
@@ -56,3 +57,6 @@ The work order for the whole app is [Build Plan](<../Build Plan.md>).
 | [Sidebar — Backup Tasks and Reminders](<Checklists/Sidebar — Backup Tasks and Reminders.md>) | Free backup/export/restore, every saved task with editing, reminder reliability and Actions/performance evidence |
 | [App Speed — Round 2](<Checklists/App Speed — Round 2.md>) | 30 Sep: optimised phone build, remembered streaks, instant taps, stall meter; rules in `iOS/PERFORMANCE.md` |
 | [iPhone Widgets](<Checklists/iPhone Widgets.md>) | Research and implementation on `codex/iphone-widgets`; macOS results and device release checks are recorded in the research report |
+| [Analytics Implementation](<Checklists/Analytics Implementation.md>) | Implemented on `analytics`; macOS native/UI/build/provider evidence and exact production rollout dependencies |
+
+Analytics recovery starts at [Analytics — Start Here](<../../Analytics — Start Here.md>). Saved provider definitions and verification are in [Analytics Dashboards.json](<Analytics Dashboards.json>); exact consent-off/on measurements are in [Analytics Performance Evidence.json](<Analytics Performance Evidence.json>).

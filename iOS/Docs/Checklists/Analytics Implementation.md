@@ -15,9 +15,9 @@ Written by Codex, 1 October 2026. Continue on `analytics`; PR base is `integrati
 - [x] Bounded independent queues, daily envelopes, stable sampling, retry record identity, failure/recovery suppression.
 - [x] Screen visits and monotonic 30s idle-capped attention with foreground/cover/lock handling; no observable clock.
 - [x] Existing local backup/restore outcomes and configuration states, defaults vs saved user choices. Onboarding, Help and observable iPhone widget adapters added after consolidation. Account/purchase/entitlement restore adapters remain unavailable (no synthetic successes).
-- [ ] Complete latest-head native payload/consent/offline/retry/upgrade tests, targeted app callback/UI tests and consent-on native performance evidence. Completed 7aa5c02 run passed 88 native checks, Core/Debug build, all14 UI checks and five off/on windows; full Release-policy and final focused 101-check jobs remain running/pending.
+- [x] Complete final native payload/consent/offline/retry/upgrade tests and targeted UI/performance evidence: final af72c61 run36916716569 passed101 checks/Core/Debug+Release builds; full7b05a66 run36911869018 passed all14 UI tests and five off/on windows. Performance acceptance remains gated.
 - [x] Useful provider dashboards with consent/platform/sampling/coverage labels; actual provider delivery evidence when permitted.
-- [ ] Refresh report assumptions, privacy manifest and handoff; commit/push analytics and open PR; never merge/release.
+- [x] Refresh report assumptions, both privacy manifests, indexed docs and handoff; commit/push analytics and prepare PR #3 against integration. Successfully marked ready for review; no merge/release.
 
 ## External dependencies
 
@@ -78,7 +78,7 @@ Added explicit release-channel configuration and fail-closed policy: Debug is de
 
 ## Remaining launch dependencies (exact boundaries)
 
-- Production gate stays false until native performance acceptance. Current implementation and PR can be reviewed with this explicit gate; shipping/release remains outside the request. Release-policy validation 7b05a66 passed both Debug and Release simulator builds; UI/performance remain running. Final focused af72c61 verifies 101 contract checks and both builds without repeating unchanged-view UI/performance.
+- Production gate stays false until native performance acceptance. Current implementation and PR can be reviewed with this explicit gate; shipping/release remains outside the request. Release-policy validation7b05a66 completed both builds, all14 UI checks and five off/on windows. Final focused af72c61 completed101 checks, Core and both builds without repeating unchanged-view UI/performance.
 - Account, server/sync, cloud backup and verified StoreKit purchase/entitlement-restore code must first land in integration. Existing typed semantics/rejection tests cannot substitute for real durable/provider-verified outcomes.
 - Architecture selects Sentry, but consolidated source has no SDK initialization, DSN, project or symbol-upload configuration. Crash coverage is zero; separate crash sharing is disabled. Its owner must supply project/DSN, independent consent/scrubbing and native symbolication/coverage evidence. No second collector was added.
 - Billing/spend-limit and analytics retention configuration are not exposed by current project access. Owner confirms free/no billing; official free allowance is 1M/month with 700k planning ceiling. Project read exposes only disabled replay retention (30d), which is not analytics retention. No billing/personal API key or paid product was configured.
@@ -130,3 +130,10 @@ Run [36911869018](https://github.com/lalithsaicharan00/store-reviews/actions/run
 Opening stalls also miss targets: form first1195/1244ms off/on, guide first476/568ms. Both runs' exact windows/opens are preserved in machine-readable evidence. Large inter-run variation and mixed within-run directions do not prove causal telemetry overhead; no physical-device acceptance. Earlier widget-log below6ms/s was specific to 7aa5c02; the repeat exceeds that target in both modes. Production stays false. Top separate profiles report app/PerfDriver thunks, loading and widget publication rather than analytics methods; this is limited profiling evidence, not proof of no cost.
 
 Both EU dashboards refreshed again: all14 saved queries without errors/warnings; stored signal12 synthetic records, production empty and profiles0. Source JSON updated. No paid service or automation created.
+
+
+## Final completion for review — 01:47 IST Oct 2
+
+**All independent implementation/testing/provider/dashboard/PR work is complete for integration eff1e14.** Final focused [36916716569](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36916716569), af72c61, completed success: **101 checks**, three inspected envelopes, Core, Debug and Release simulator app/widget builds. Full Release-policy [36911869018](https://github.com/lalithsaicharan00/store-reviews/actions/runs/36911869018) completed success:92 checks, Core/both builds, all14 UI tests, provider smoke and five valid off/on windows. Earlier complete run36911212496 supplies the second measured comparison. UI/performance skipping in the focused job was deliberate for utility-only changes.
+
+[PR #3](https://github.com/lalithsaicharan00/store-reviews/pull/3) is ready for review, not merged. Final base recheck20:11UTC:eff1e14 unchanged. Tests and provider evidence do not enable production or establish speed/physical-device acceptance. Remaining launch dependencies above are exact unavailable/acceptance boundaries, not hidden unfinished adapters. Production false; no paid services, release, automation or invented second continuation. A continuation reading this completed state must not restart implementation.
