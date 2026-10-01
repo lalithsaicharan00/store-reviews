@@ -50,6 +50,13 @@ jobs:
             echo "PERF=${{ github.event.inputs.perf }}" >> "$GITHUB_ENV"
           else
             case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests,ProgressUITests,GroupsUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-backup]"*) echo "TESTS=BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-backup]"*) echo "PERF_TESTS=testBackupPage testMenuOpenClose testScrollToday" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-backup-ui]"*) echo "TESTS=BackupUITests" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-tasks]"*) echo "TESTS=TasksUITests,TodayUITests,ScheduleUITests/testCalendarAndPersistenceRules,ScheduleUITests/testTaskAfterCompletion" >> "$GITHUB_ENV"; echo "PERF_TESTS=testTasksPage testTaskEdit testScrollToday" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-tasks-recheck]"*) echo "TESTS=TasksUITests" >> "$GITHUB_ENV"; echo "PERF_TESTS=testTaskEdit" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-reminders]"*) echo "TESTS=RemindersUITests,TasksUITests,BackupUITests,TodayUITests,TimerUITests,ScheduleUITests/testCalendarAndPersistenceRules,ScheduleUITests/testTaskAfterCompletion" >> "$GITHUB_ENV"; echo "PERF_TESTS=testRemindersPage testTasksPage testScrollToday" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-reminders-recheck]"*) echo "TESTS=RemindersUITests,TasksUITests,BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV"; echo "PERF_TESTS=testRemindersPage" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
           fi
 
@@ -64,6 +71,7 @@ jobs:
           java-version: "21"
 
       - uses: actions/cache@v4
+        id: gradle-cache
         with:
           path: |
             ~/.gradle/caches
@@ -86,6 +94,22 @@ jobs:
           xcodebuild build-for-testing -project Habits.xcodeproj -scheme Habits \
             -destination "id=$SIM" -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
           grep -q "BUILD SUCCEEDED" build.log
+
+      - name: Save successful build dependencies
+        if: always() && steps.build.outcome == 'success' && steps.gradle-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Core storage and migration tests
+        id: core
+        if: contains(env.MESSAGE, '[ios-backup]') || contains(env.MESSAGE, '[ios-reminders]')
+        working-directory: Core
+        run: ./gradlew jvmTest
 
       - name: UI tests
         id: tests
@@ -110,6 +134,14 @@ jobs:
         working-directory: iOS
         run: Tools/perf/measure_perf.sh "$SIM" perf
 
+      - name: Export screenshots
+        if: always() && steps.build.outcome == 'success'
+        working-directory: iOS
+        run: |
+          if [ -d Results.xcresult ]; then
+            xcrun xcresulttool export attachments --path Results.xcresult --output-path screenshots || true
+          fi
+
       - name: Write the summary
         if: always()
         working-directory: iOS
@@ -122,6 +154,7 @@ jobs:
             echo
             echo "- Build: ${{ steps.build.outcome }}"
             echo "- UI tests ($TESTS): ${{ steps.tests.outcome }}"
+            echo "- Core storage/migration tests: ${{ steps.core.outcome }}"
             echo "- Speed tests: ${{ steps.perf.outcome }}"
             if [ -f build.log ] && ! grep -q "BUILD SUCCEEDED" build.log; then
               echo; echo "## Build errors"; echo '```'; grep -E "error:" build.log | sort -u | head -30; echo '```'
@@ -163,6 +196,14 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
+          name: ios-screenshots
+          path: iOS/screenshots
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
           name: ios-results
           path: |
             iOS/build.log
@@ -170,4 +211,16 @@ jobs:
             iOS/summary.md
             iOS/perf
             iOS/Results.xcresult
+          retention-days: 7
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-logs
+          path: |
+            iOS/build.log
+            iOS/test.log
+            iOS/summary.md
+            iOS/perf/*.log
+            iOS/perf/perf-summary.md
           retention-days: 7

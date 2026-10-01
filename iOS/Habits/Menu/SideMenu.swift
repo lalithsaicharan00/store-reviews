@@ -198,6 +198,9 @@ struct MenuPage: View {
         case .dayAndWeek: DayAndWeekView()
         case .appearance: AppearanceView()
         case .plus: PlusView(fromMenu: true)
+        case .backup: BackupExportView()
+        case .reminders: RemindersView()
+        case .help, .about: BlankMenuPage(title: place.title)
         default: ComingSoonView(place: place)
         }
     }

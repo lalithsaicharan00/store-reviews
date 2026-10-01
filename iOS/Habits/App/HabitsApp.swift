@@ -13,7 +13,7 @@ struct HabitsApp: App {
     var body: some Scene {
         WindowGroup {
             #if DEBUG
-            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
             } else {
                 today
@@ -35,11 +35,14 @@ struct HabitsApp: App {
             .environment(model.scheduler)
             .environment(model.router)
             .tint(.ink)
+            .onChange(of: model.store.problem) {
+                if model.store.problem == nil && model.store.isStorageReady { model.scheduler.scheduleReconcile(model.store) }
+            }
             .task {
                 // The theme is set on the window itself, so it reaches sheets and alerts too (≡ → Appearance).
                 Theme.apply(UserDefaults.standard.string(forKey: Preferences.theme) ?? Theme.automatic.rawValue)
                 await model.ensureLoaded()
-                guard model.store.isLoaded else { return }
+                guard model.store.isLoaded, model.store.isStorageReady else { return }
                 model.scheduleRefresh()
                 await model.dailySnapshot()
             }
@@ -50,9 +53,29 @@ struct HabitsApp: App {
 /// Shows the placement checks' result for `PlacementUITests`.
 private struct PlacementCheckView: View {
     @State private var result = "Running"
+    @State private var reminderMetric = ""
     var body: some View {
-        Text(result).padding().task {
+        VStack {
+            Text(result)
+            if !reminderMetric.isEmpty { Text(reminderMetric).accessibilityIdentifier("reminder-planning-metric") }
+        }.padding().task {
             let arguments = ProcessInfo.processInfo.arguments
+            if arguments.contains("-remindercheck") {
+                let failures = await ReminderCheck.run()
+                reminderMetric = ReminderCheck.planningSummary
+                result = failures.isEmpty ? "Reminders: all checks passed" : "Reminders failed: " + failures.joined(separator: "; ")
+                return
+            }
+            if arguments.contains("-taskcheck") {
+                let failures = await TaskCheck.run()
+                result = failures.isEmpty ? "Tasks: all checks passed" : "Tasks failed: " + failures.joined(separator: "; ")
+                return
+            }
+            if arguments.contains("-backupcheck") {
+                let failures = await BackupCheck.run()
+                result = failures.isEmpty ? "Backup: all checks passed" : "Backup failed: " + failures.joined(separator: "; ")
+                return
+            }
             if arguments.contains("-focuscheck") {
                 let failures = await FocusPlayerCheck.run()
                 result = failures.isEmpty ? "Focus: all checks passed" : "Focus failed: " + failures.joined(separator: "; ")

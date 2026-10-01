@@ -17,6 +17,8 @@ final class PerformanceUITests: XCTestCase {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments = ["-uitest", "-perf-history"]
+        if name.contains("testTasksPage") || name.contains("testTaskEdit") { app.launchArguments += ["-perf-tasks"] }
+        if name.contains("testRemindersPage") { app.launchArguments += ["-perf-reminders", "-reminder-fake"] }
         app.launch()
         XCTAssertTrue(app.collectionViews.firstMatch.waitForExistence(timeout: 15))
     }
@@ -106,6 +108,34 @@ final class PerformanceUITests: XCTestCase {
 
     func testScrollAllHabits() {
         openHabits()
+        ready()
+        keepGoing(scrollUpAndDown)
+    }
+
+    func testTasksPage() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-tasks"])
+        open("Tasks", tapping: app.buttons["menu-tasks"], until: app.navigationBars["Tasks"])
+        ready(); keepGoing(scrollUpAndDown)
+    }
+
+    func testTaskEdit() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-tasks"])
+        open("Tasks", tapping: app.buttons["menu-tasks"], until: app.navigationBars["Tasks"])
+        let task = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Pay the phone bill'")).firstMatch
+        open("Task", tapping: task, until: app.buttons["Edit"])
+        open("Edit Task", tapping: app.buttons["Edit"], until: app.navigationBars["Edit Task"])
+        ready(); keepGoing(scrollUpAndDown)
+    }
+
+    func testRemindersPage() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-reminders"])
+        open("Reminders", tapping: app.buttons["menu-reminders"], until: app.navigationBars["Reminders"])
+        ready(); keepGoing(scrollUpAndDown)
+    }
+
+    func testBackupPage() {
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-backup"])
+        open("Backup & Export", tapping: app.buttons["menu-backup"], until: app.navigationBars["Backup & Export"])
         ready()
         keepGoing(scrollUpAndDown)
     }

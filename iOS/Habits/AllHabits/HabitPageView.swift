@@ -222,6 +222,7 @@ struct HabitPageView: View {
         let today = store.today()
         if let pause = store.pause(of: habit, on: today), pause.contains(today) { return pausedText(pause, store: store) }
         if habit.kind == .quit { return "Best run \(Format.days(store.quitRuns(of: habit).best))" }
+        if habit.kind == .task, store.isDone(habit, on: today) { return habit.dueDay == nil ? "Done today" : "Completed" }
         if habit.kind == .task, let due = habit.dueDay { return "Planned for \(PauseSheet.short(due, calendar: store.calendar))" }
         return HabitCopy.capitalized(HabitCopy.plan(habit, weekStart: store.settings.weekStart, short: true))
     }

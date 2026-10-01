@@ -27,11 +27,17 @@ final class HabitStore {
     @ObservationIgnored private var triedPlacementUpgrade = false
     /// False until the first load finishes; the UI waits rather than flashing an empty screen.
     private(set) var isLoaded = false
+    /// A failed open/read must never look like an empty installation to system delivery.
+    private(set) var isStorageReady = false
+    @ObservationIgnored private let databaseOpened: Bool
     /// Shown to the user when a write fails or the data can't be read.
     var problem: String?
 
-    init(repository: HabitRepository) {
+    @ObservationIgnored private let suppliedCalendar: Calendar?
+    init(repository: HabitRepository, calendar: Calendar? = nil, databaseOpened: Bool = true) {
         self.repository = repository
+        suppliedCalendar = calendar
+        self.databaseOpened = databaseOpened
     }
 
     private(set) var habits: [Habit] = []
@@ -90,8 +96,8 @@ final class HabitStore {
     var isPlus = false
     static let freeHabitLimit = 5
 
-    /// Habits that count toward the free limit: everything not archived, quit habits included.
-    var activeHabitCount: Int { habits.filter { !$0.archived }.count }
+    /// Tasks are always free; only active build and quit habits use a habit slot.
+    var activeHabitCount: Int { habits.filter { !$0.archived && $0.kind != .task }.count }
     var canAddHabit: Bool { isPlus || activeHabitCount < Self.freeHabitLimit }
 
     /// A colour for a new habit: the first one no habit uses yet, so habits stay easy to tell apart.
@@ -112,7 +118,7 @@ final class HabitStore {
     }
 
     var calendar: Calendar {
-        var c = Calendar.current
+        var c = suppliedCalendar ?? Calendar.current
         c.firstWeekday = settings.weekStart
         if let fixedTimeZone { c.timeZone = fixedTimeZone }
         return c
@@ -922,8 +928,14 @@ final class HabitStore {
     func load() async {
         do {
             let snapshot = try await repository.load()
-            habits = snapshot.habits.compactMap { Habit(record: $0, steps: snapshot.steps, reminders: snapshot.reminders) }
-            entries = snapshot.entries.compactMap(Entry.init(record:))
+            let steps = Dictionary(grouping: snapshot.steps, by: \.habitId)
+            let reminders = Dictionary(grouping: snapshot.reminders, by: \.habitId)
+            habits = snapshot.habits.compactMap { Habit(record: $0, steps: steps[$0.id] ?? [], reminders: reminders[$0.id] ?? []) }
+            let liveHabitIDs = Set(habits.map(\.id))
+            entries = snapshot.entries.compactMap { record in
+                guard let entry = Entry(record: record), liveHabitIDs.contains(entry.habitID) else { return nil }
+                return entry
+            }
             var loaded = DaySettings()
             var running: [UUID: Date] = [:]
             var runningSlots: [UUID: String] = [:]
@@ -937,6 +949,7 @@ final class HabitStore {
             var loadedCosts: [UUID: HabitCost] = [:]
             var loadedGroups: [HabitGroup] = []
             var manualGroups = false
+            sections = DaySection.defaults
             var upgradedV1 = false, repaired = false
             for setting in snapshot.settings {
                 switch setting.key {
@@ -956,12 +969,12 @@ final class HabitStore {
                     if setting.key.hasPrefix(Keys.notePrefix) {
                         let parts = setting.key.dropFirst(Keys.notePrefix.count).split(separator: "|")
                         if parts.count == 2, let id = UUID(uuidString: String(parts[0])), let day = LocalDay(key: String(parts[1])) {
-                            loadedHabitNotes[id, default: [:]][day] = setting.value
+                            if !setting.value.isEmpty { loadedHabitNotes[id, default: [:]][day] = setting.value }
                         }
                         continue
                     }
                     if setting.key.hasPrefix(Keys.dayNotePrefix), let day = LocalDay(key: String(setting.key.dropFirst(Keys.dayNotePrefix.count))) {
-                        loadedDayNotes[day] = setting.value
+                        if !setting.value.isEmpty { loadedDayNotes[day] = setting.value }
                         continue
                     }
                     if setting.key.hasPrefix(Keys.costPrefix), let id = UUID(uuidString: String(setting.key.dropFirst(Keys.costPrefix.count))),
@@ -1006,6 +1019,8 @@ final class HabitStore {
                 }
             }
             settings = loaded
+            settings.dayEndHour = min(max(settings.dayEndHour, 0), 12)
+            settings.weekStart = min(max(settings.weekStart, 1), 7)
             timers = running
             timerSlots = runningSlots
             skips = loadedSkips
@@ -1026,11 +1041,13 @@ final class HabitStore {
                 loadedArchived[habit.id] = lastLogged[habit.id].map { $0.adding(days: 1, calendar: calendar) } ?? startDay(of: habit)
             }
             archivedOn = loadedArchived.filter { archivedIDs.contains($0.key) }
+            isStorageReady = databaseOpened
             isLoaded = true
             dataVersion &+= 1
             if upgradedV1 && !repaired && !triedPlacementUpgrade { triedPlacementUpgrade = true; repairPlacement() }
             onChange?()
         } catch {
+            isStorageReady = false
             problem = "Your habits couldn't be read. Nothing has been changed; please restart the app."
         }
     }
@@ -1076,6 +1093,112 @@ final class HabitStore {
 
     // MARK: Changes
 
+    // MARK: Backup and restore
+
+    struct RestoreSummary: Sendable {
+        var habits: Int
+        var entries: Int
+        var settings: Int
+        var changed: Bool { habits + entries + settings > 0 }
+    }
+
+    enum BackupError: LocalizedError, Equatable {
+        case invalid, newerVersion, pendingSave, unreadable, reloadFailed
+        var errorDescription: String? {
+            switch self {
+            case .invalid: "Choose a Habits backup file. Your current data has not been changed."
+            case .newerVersion: "This backup was made by a newer version of Habits. Update the app before restoring it."
+            case .pendingSave: "Some changes could not be saved. Resolve the save error before making or restoring a backup."
+            case .unreadable: "The backup could not be read. Your current data has not been changed."
+            case .reloadFailed: "The backup was added, but the app couldn’t reload your data. Restart the app before continuing."
+            }
+        }
+    }
+
+    func backupFile(now: Date = .now) async throws -> URL {
+        await flush()
+        guard problem == nil, isStorageReady else { throw BackupError.pendingSave }
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("Habits-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        let url = directory.appendingPathComponent("Habits Backup \(today(now: now).key).db")
+        do {
+            try await dataOperation { [self] in try await repository.snapshot(path: url.path) }
+        } catch {
+            try? FileManager.default.removeItem(at: directory)
+            throw error
+        }
+        return url
+    }
+
+    func restore(from file: URL) async throws -> RestoreSummary {
+        await flush()
+        guard problem == nil, isStorageReady else { throw BackupError.pendingSave }
+        let scoped = file.startAccessingSecurityScopedResource()
+        defer { if scoped { file.stopAccessingSecurityScopedResource() } }
+        let copy = FileManager.default.temporaryDirectory.appendingPathComponent("habits-restore-\(UUID().uuidString).db")
+        try FileManager.default.copyItem(at: file, to: copy)
+        defer {
+            for suffix in ["", "-wal", "-shm"] { try? FileManager.default.removeItem(atPath: copy.path + suffix) }
+        }
+        // Inspect the original SQLite header before Room can create or migrate anything.
+        let handle = try FileHandle(forReadingFrom: copy)
+        let bytes = try handle.read(upToCount: 100) ?? Data()
+        try handle.close()
+        guard bytes.count == 100, bytes.prefix(16) == Data("SQLite format 3\0".utf8) else { throw BackupError.invalid }
+        let version = bytes[60..<64].reduce(UInt32(0)) { ($0 << 8) | UInt32($1) }
+        guard version > 0 else { throw BackupError.invalid }
+        guard version <= UInt32(HabitRepository.companion.SCHEMA_VERSION) else { throw BackupError.newerVersion }
+        let source = try HabitRepository.companion.open(path: copy.path)
+        let snapshot: Snapshot
+        do {
+            snapshot = try await source.loadForRestore()
+            guard try await source.pragma(name: "quick_check") == "ok" else { throw BackupError.unreadable }
+            try Self.validateBackup(snapshot)
+        } catch {
+            try? source.close()
+            throw BackupError.unreadable
+        }
+        try? source.close()
+        return try await dataOperation { [self] in
+            let before = try await repository.load()
+            try await repository.mergeAll(snapshot: snapshot)
+            let after = try await repository.load()
+            await load()
+            guard problem == nil else { throw BackupError.reloadFailed }
+            let habitIDs = Set(before.habits.map(\.id)), entryIDs = Set(before.entries.map(\.id))
+            let keys = Set(before.settings.map(\.key))
+            return RestoreSummary(habits: after.habits.filter { !habitIDs.contains($0.id) }.count,
+                                  entries: after.entries.filter { !entryIDs.contains($0.id) }.count,
+                                  settings: after.settings.filter { !keys.contains($0.key) }.count)
+        }
+    }
+
+    /// Backups and restores share the same queue as taps and notification actions.
+    private func dataOperation<Value: Sendable>(_ operation: @escaping @MainActor () async throws -> Value) async throws -> Value {
+        let previous = writeQueue
+        let task = Task { @MainActor in
+            await previous?.value
+            guard self.problem == nil, self.isStorageReady else { throw BackupError.pendingSave }
+            return try await operation()
+        }
+        writeQueue = Task { @MainActor in _ = try? await task.value }
+        return try await task.value
+    }
+
+    private static func validateBackup(_ snapshot: Snapshot) throws {
+        func validDay(_ key: String?) -> Bool { key.map { LocalDay(key: $0) != nil } ?? true }
+        let ids = Set(snapshot.habits.map(\.id))
+        guard snapshot.habits.allSatisfy({ r in
+            UUID(uuidString: r.id) != nil && r.goal.isFinite && (0...GoalNumber.maximum).contains(r.goal) && r.increment.isFinite && (0...GoalNumber.maximum).contains(r.increment)
+                && validDay(r.startsOn) && validDay(r.endsOn) && validDay(r.dueDay)
+                && (r.deletedAt != nil || Habit(record: r, steps: [], reminders: []) != nil)
+        }), snapshot.entries.allSatisfy({ r in
+            UUID(uuidString: r.id) != nil && ids.contains(r.habitId) && validDay(r.day) && r.value.isFinite && (0...GoalNumber.maximum).contains(r.value)
+        }), snapshot.steps.allSatisfy({ UUID(uuidString: $0.id) != nil && ids.contains($0.habitId) }),
+        snapshot.reminders.allSatisfy({ UUID(uuidString: $0.id) != nil && ids.contains($0.habitId) && (0...23).contains(Int($0.hour)) && (0...59).contains(Int($0.minute)) })
+        else { throw BackupError.invalid }
+    }
+
     /// Called after every change, so reminders stay in step with the data.
     var onChange: (() -> Void)?
 
@@ -1092,6 +1215,10 @@ final class HabitStore {
                 try? await Task.sleep(for: .seconds(2))
             }
             #endif
+            guard self.isStorageReady else {
+                self.problem = "Your data couldn't be opened. Nothing has been changed; please restart the app."
+                return
+            }
             do {
                 try await change()
                 dataVersion &+= 1
@@ -1141,7 +1268,7 @@ final class HabitStore {
     /// Brings an archived habit back, if there's a free slot (or Plus). False when the free limit is reached.
     @discardableResult
     func restore(_ habit: Habit) -> Bool {
-        guard canAddHabit else { return false }
+        guard habit.kind == .task || canAddHabit else { return false }
         perform { [self] in
             guard let i = habits.firstIndex(where: { $0.id == habit.id }) else { return }
             var h = habits[i]
@@ -1179,6 +1306,12 @@ final class HabitStore {
                                                reminders: [], at: Date.now.millis)
                 withAnimation {
                     habits.remove(at: i)
+                    entries.removeAll { $0.habitID == habit.id }
+                    habitNotes.removeValue(forKey: habit.id)
+                    descriptions.removeValue(forKey: habit.id)
+                    rules.removeValue(forKey: habit.id)
+                    pauses.removeValue(forKey: habit.id)
+                    skips.removeValue(forKey: habit.id)
                     if noteOffer?.habit == habit.id { noteOffer = nil }
                     if noteTarget?.habit == habit.id { noteTarget = nil }
                 }
@@ -1321,7 +1454,8 @@ final class HabitStore {
         let text = TextLimit.clean(text, TextLimit.noteText)
         let key = Keys.notePrefix + habit.id.uuidString + "|" + day.key
         perform { [self] in
-            if text.isEmpty { try await repository.removeSetting(key: key) } else { try await repository.saveSetting(key: key, value: text) }
+            // Keep an empty value so restoring an older backup cannot resurrect this removed note.
+            try await repository.saveSetting(key: key, value: text)
             habitNotes[habit.id, default: [:]][day] = text.isEmpty ? nil : text
         }
     }
@@ -1330,7 +1464,7 @@ final class HabitStore {
         let text = TextLimit.clean(text, TextLimit.noteText)
         let key = Keys.dayNotePrefix + day.key
         perform { [self] in
-            if text.isEmpty { try await repository.removeSetting(key: key) } else { try await repository.saveSetting(key: key, value: text) }
+            try await repository.saveSetting(key: key, value: text)
             dayNotes[day] = text.isEmpty ? nil : text
         }
     }
@@ -1340,7 +1474,7 @@ final class HabitStore {
         guard text != (descriptions[id] ?? "") else { return }
         let key = Keys.descriptionPrefix + id.uuidString
         perform { [self] in
-            if text.isEmpty { try await repository.removeSetting(key: key) } else { try await repository.saveSetting(key: key, value: text) }
+            try await repository.saveSetting(key: key, value: text)
             descriptions[id] = text.isEmpty ? nil : text
         }
     }
@@ -1441,30 +1575,41 @@ final class HabitStore {
         }
     }
 
-    /// From a notification or an alarm: only ever adds, never undoes. A row already done is left alone;
-    /// an amount adds one increment.
-    func logFromReminder(_ habit: Habit, slot: String?, on day: LocalDay) {
+    /// Delivered alerts are usable only for their current configuration and today or the previous logical day.
+    /// An old alert must not reschedule a task, log a paused item or revive anything deleted.
+    func canActOnReminder(_ target: ReminderTarget, now: Date = .now) -> Bool {
+        guard problem == nil, isStorageReady, isLoaded, let habit = habits.first(where: { $0.id == target.habit }),
+              !habit.archived, habit.remind, habit.kind != .quit,
+              target.day <= today(now: now), target.day >= today(now: now).adding(days: -1, calendar: calendar),
+              isDue(habit, on: target.day, now: now),
+              let time = target.time, habit.reminders.contains(where: { $0.id == time }),
+              placements(of: habit).contains(where: { $0.slot == target.slot && $0.times.contains { $0.id == time } }),
+              target.signature.map({ $0 == ReminderIdentity.signature(habit) }) ?? true else { return false }
+        if habit.atMost { return true }
+        return target.slot.map { !isSlotDone(habit, slot: $0, on: target.day) } ?? !isSatisfied(habit, on: target.day)
+    }
+
+    /// A system action is an event. Its ID is saved before it appears in memory; replay checks
+    /// include tombstones, so duplicate callbacks and retrying after undo are both harmless.
+    func logFromReminder(_ habit: Habit, slot: String?, on day: LocalDay, time: UUID? = nil,
+                         signature: String? = nil, eventID: UUID? = nil, now: Date = .now) {
         perform { [self] in
-            guard let habit = habits.first(where: { $0.id == habit.id }) else { return }
+            let target = ReminderTarget(habit: habit.id, time: time, day: day, slot: slot, section: nil, signature: signature)
+            guard canActOnReminder(target, now: now), let habit = habits.first(where: { $0.id == habit.id }) else { return }
+            let id = eventID ?? UUID()
+            let exists = try await repository.hasEntry(id: id.uuidString)
+            guard !exists.boolValue else { return }
+            let value: Double
             switch habit.kind {
             case .amount:
-                guard let increment = habit.quickIncrement else { return }
-                let entry = Entry(habitID: habit.id, day: day, value: increment, slot: slot.flatMap { slots(of: habit).contains($0) ? $0 : nil })
-                try await repository.addEntry(entry: entry.record)
-                withAnimation { entries.append(entry) }
-            case .check, .task:
-                if let slot, slots(of: habit).contains(slot) {
-                    guard !isSlotDone(habit, slot: slot, on: day) else { return }
-                    let entry = Entry(habitID: habit.id, day: day, value: 1, slot: slot)
-                    try await repository.addEntry(entry: entry.record)
-                    withAnimation { entries.append(entry) }
-                } else {
-                    guard !isDone(habit, on: day) else { return }
-                    try await log(habit, value: 1, on: day)
-                }
-            default:
-                return
+                guard let increment = habit.quickIncrement, increment.isFinite, increment > 0, increment <= GoalNumber.maximum else { return }
+                value = increment
+            case .check, .task: value = 1
+            default: return
             }
+            let entry = Entry(id: id, habitID: habit.id, day: day, value: value, createdAt: now, slot: slot)
+            try await repository.addEntry(entry: entry.record)
+            withAnimation { entries.append(entry) }
         }
     }
 
@@ -1635,6 +1780,17 @@ final class HabitStore {
         let meditate = Habit(name: "Meditate", symbol: "figure.mind.and.body", color: .purple, kind: .duration, parts: [.evening], goal: 10, createdAt: ago(days: 30))
         let bed = Habit(name: "Bed by 23:00", symbol: "bed.double.fill", color: .indigo, kind: .check, parts: [.evening], createdAt: ago(days: 10))
         habits = [smoking, alcohol, read, call, water, stretch, skincare, teeth, meds, walk, lunch, meds2, floss, plan, noScreens, meditate, bed]
+        if ProcessInfo.processInfo.arguments.contains("-perf-tasks") {
+            for i in 0..<200 {
+                habits.append(Habit(name: i == 0 ? "Pay the phone bill" : "Task \(i)", symbol: "checkmark", color: .blue, kind: .task, dueDay: today.adding(days: 14), remind: false, createdAt: ago(days: 365)))
+            }
+        }
+        if ProcessInfo.processInfo.arguments.contains("-perf-reminders") {
+            for i in 0..<100 {
+                habits.append(Habit(name: "Reminder \(i)", symbol: "bell", color: .blue, kind: .task, frequency: .daily,
+                                    reminders: [ReminderTime(hour: 8 + i / 60, minute: i % 60)], remind: true, createdAt: ago(days: 365)))
+            }
+        }
         if ProcessInfo.processInfo.arguments.contains("-longtext") {
             // Names, units and parts at their limits, to test layouts.
             for i in habits.indices {
