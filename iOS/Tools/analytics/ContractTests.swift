@@ -127,6 +127,35 @@ struct ContractTests {
         let storageFolder = URL(fileURLWithPath: "Research/Temp/analytics/" + UUID().uuidString)
         let storageFile = storageFolder.appendingPathComponent("state.json")
         defer { try? FileManager.default.removeItem(at: storageFolder) }
+        let samplingFolder = storageFolder.appendingPathComponent("sampling")
+        try FileManager.default.createDirectory(at: samplingFolder, withIntermediateDirectories: true)
+        var nextPolicy = AnalyticsDeliveryConfiguration()
+        nextPolicy.appVersion = "99"; nextPolicy.sampleRate = 0.5; nextPolicy.samplingVersion = 2
+        var previousPolicy = AnalyticsDeliveryConfiguration()
+        let samplingFile = samplingFolder.appendingPathComponent("state.json")
+        var samplingState = AnalyticsLedger(now: .now)
+        samplingState.sampleBucket = 0.75; samplingState.periodObservation = previousPolicy.observation
+        try JSONEncoder().encode(samplingState).write(to: samplingFile, options: .atomic)
+        let reducedSampling = Analytics(file: samplingFile, configuration: nextPolicy)
+        reducedSampling.created(.check, ticket: reducedSampling.ticket); reducedSampling.drain()
+        check(reducedSampling.inspect()?.outbox.count == 1, "sampling reduction keeps open-period inclusion after upgrade")
+        let reducedRecord = reducedSampling.inspect()!.outbox[0]
+        check(reducedRecord.observation?.sampleRate == 1 && reducedRecord.observation?.samplingVersion == 1 && reducedRecord.observation?.appVersion == "99", "new flows retain period sampling policy with current app metadata")
+        reducedSampling.erase()
+        previousPolicy.sampleRate = 0.5
+        samplingState.periodObservation = previousPolicy.observation
+        nextPolicy.sampleRate = 1
+        try JSONEncoder().encode(samplingState).write(to: samplingFile, options: .atomic)
+        let expandedSampling = Analytics(file: samplingFile, configuration: nextPolicy)
+        expandedSampling.created(.check, ticket: expandedSampling.ticket); expandedSampling.drain()
+        check(expandedSampling.inspect()?.outbox.isEmpty == true, "sampling expansion cannot admit unobserved open-period flows")
+        expandedSampling.erase()
+        samplingState.period = AnalyticsLedger.day(.now) - 86400
+        try JSONEncoder().encode(samplingState).write(to: samplingFile, options: .atomic)
+        let nextPeriodSampling = Analytics(file: samplingFile, configuration: nextPolicy)
+        nextPeriodSampling.created(.check, ticket: nextPeriodSampling.ticket); nextPeriodSampling.drain()
+        check(nextPeriodSampling.inspect()?.outbox.count == 1 && nextPeriodSampling.inspect()?.outbox.first?.observation?.sampleRate == 1 && nextPeriodSampling.inspect()?.outbox.first?.observation?.samplingVersion == 2, "new UTC period adopts new inclusion and sampling metadata together")
+        nextPeriodSampling.erase()
         let persisted = Analytics(file: storageFile)
         persisted.created(.check, ticket: persisted.ticket); persisted.drain()
         check(!FileManager.default.fileExists(atPath: storageFile.path), "no telemetry file before consent")

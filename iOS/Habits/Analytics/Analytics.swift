@@ -102,7 +102,16 @@ nonisolated final class Analytics: @unchecked Sendable {
         gate.lock(); defer { gate.unlock() }
         return generation == ticket.generation
     }
-    private var sampled: Bool { ledger.map { $0.sampleBucket < max(0, min(1, config.sampleRate)) } ?? false }
+    // A rollout change starts on the next UTC collection period. Flows and summaries in the open
+    // period keep one inclusion policy, including across a restart into a different app configuration.
+    private var sampled: Bool { ledger.map { $0.sampleBucket < max(0, min(1, $0.periodObservation?.sampleRate ?? config.sampleRate)) } ?? false }
+    private var collectionObservation: AnalyticsObservation {
+        let current = config.observation
+        let period = ledger?.periodObservation ?? current
+        return AnalyticsObservation(appVersion: current.appVersion, appBuild: current.appBuild,
+            osMajor: current.osMajor, releaseChannel: current.releaseChannel,
+            sampleRate: period.sampleRate, samplingVersion: period.samplingVersion)
+    }
     private func mutate(ticket: AnalyticsTicket?, now: Date = .now, _ body: @escaping @Sendable (inout AnalyticsLedger) -> Void) {
         guard valid(ticket) else { return }
         queue.async { [self] in
@@ -286,9 +295,10 @@ nonisolated final class Analytics: @unchecked Sendable {
     }
     private func save() {
         // Freeze metadata at observation, not at a later upload after an app/OS/sampling update.
+        let captured = collectionObservation
         if let count = ledger?.outbox.count {
             for index in 0..<count where ledger?.outbox[index].observation == nil {
-                ledger?.outbox[index].observation = config.observation
+                ledger?.outbox[index].observation = captured
             }
         }
         guard !saving, file != nil else { return }

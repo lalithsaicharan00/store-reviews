@@ -103,3 +103,8 @@ Run [36911212496](https://github.com/lalithsaicharan00/store-reviews/actions/run
 | Widget guide scroll | 2.6 | 8.5 | 56/145ms |
 
 Global speed targets remain unmet in both modes. Results vary by window and one ordered run cannot establish causal overhead. Widget durable logging stays below 6ms/s with 22/24ms longest stalls. Preserve production gate false and the exact numbers; no unqualified speed acceptance or real-device claim. Machine-readable evidence: `iOS/Docs/Analytics Performance Evidence.json`. Latest full Release-policy run36911869018 and focused reliability-contract run remain pending.
+
+
+### Sampling upgrade consistency — 01:15 IST Oct 2
+
+Final engine review found inclusion used the new config while daily metadata remained frozen to the old policy. Sampling reductions/expansions now start at the next UTC period; explicit flows keep current app metadata and the same period sampling probability/version. Four native checks use a persisted 0.75 bucket to prove reduced/expanded inclusion and next-period adoption. Final focused contract/Core/Debug/Release job supersedes the pending reliability-only check; unchanged view/HabitStore validation remains in the full Release-policy run.
