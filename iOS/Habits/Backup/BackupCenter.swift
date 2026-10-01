@@ -53,7 +53,7 @@ final class BackupCenter {
     struct Pending: Identifiable {
         let id = UUID()
         let base64: String
-        let check: BackupCheck
+        let check: Core.BackupCheck
     }
 
     @ObservationIgnored private let repository: HabitRepository
