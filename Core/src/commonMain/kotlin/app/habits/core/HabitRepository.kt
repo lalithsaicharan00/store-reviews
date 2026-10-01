@@ -25,10 +25,12 @@ import kotlinx.serialization.json.long
 class HabitRepository private constructor(private val database: HabitDatabase, private val clock: () -> Long) {
     private val dao = database.dao()
 
+    @Throws(Exception::class)
     suspend fun load(): Snapshot = dao.snapshot()
 
     // Every write below is one transaction that also records the change for sync (SyncWriter).
 
+    @Throws(Exception::class)
     suspend fun saveHabit(habit: HabitRecord, steps: List<StepRecord>, reminders: List<ReminderRecord>, at: Long) =
         dao.synced(clock()) { sync ->
             sync.change(SyncCodec.HABIT, habit.id, SyncCodec.habit(habit))
@@ -41,28 +43,34 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
         }
 
     /** The ID is made at the tap: saving the same tap again (a retry) changes nothing. */
+    @Throws(Exception::class)
     suspend fun addEntry(entry: EntryRecord) = dao.synced(clock()) { sync -> addEntry(sync, entry) }
 
     /** Undo keeps a tombstone rather than deleting the row (Architecture 05 §7). */
+    @Throws(Exception::class)
     suspend fun removeEntry(id: String, at: Long) = dao.synced(clock()) { sync -> removeEntry(sync, id, at) }
 
+    @Throws(Exception::class)
     suspend fun saveSetting(key: String, value: String) {
         if (SyncCodec.isLocalSetting(key)) return dao.upsertSetting(SettingRecord(key, value))
         dao.synced(clock()) { sync -> sync.change(SyncCodec.SETTING, key, mapOf("value" to JsonPrimitive(value))) }
     }
 
+    @Throws(Exception::class)
     suspend fun removeSetting(key: String) {
         if (SyncCodec.isLocalSetting(key)) return dao.deleteSetting(key)
         dao.synced(clock()) { sync -> removeSetting(sync, key) }
     }
 
     /** Stopping a timer must never save elapsed time without removing its running marker. */
+    @Throws(Exception::class)
     suspend fun finishTimer(entry: EntryRecord?, key: String) = dao.synced(clock()) { sync ->
         if (entry != null) addEntry(sync, entry)
         removeSetting(sync, key)
     }
 
     /** Adds everything in one transaction; rows that already exist (live or deleted) are kept as they are. */
+    @Throws(Exception::class)
     suspend fun importAll(snapshot: Snapshot) = dao.synced(clock()) { sync ->
         snapshot.habits.filterNot { sync.exists(SyncCodec.HABIT, it.id) }.forEach { sync.change(SyncCodec.HABIT, it.id, SyncCodec.habit(it)) }
         snapshot.steps.filterNot { sync.exists(SyncCodec.STEP, it.id) }.forEach { sync.change(SyncCodec.STEP, it.id, SyncCodec.step(it)) }
@@ -90,9 +98,11 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     // MARK: Sync with the server (Architecture 05, 06 §4). The platform sends the request and hands back the reply.
 
     /** Starts syncing this device's data with [accountId], right after sign-in. See [SyncWriter.bind]. */
+    @Throws(Exception::class)
     suspend fun bindAccount(accountId: String) = dao.synced(clock()) { it.bind(accountId) }
 
     /** The next request for `POST /v1/sync`: the cursor and up to [maxOps] unsent changes, oldest first. */
+    @Throws(Exception::class)
     suspend fun syncRequest(maxOps: Int = 500): String {
         val cursor = dao.state(SyncWriter.CURSOR)?.toLongOrNull() ?: 0
         val ops = dao.outbox(maxOps).map { Json.parseToJsonElement(it.op) }
@@ -105,6 +115,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
      * If the app dies before this commits, nothing is lost: the next round resends the same ops, which the server
      * recognises, and pulls from the old cursor again.
      */
+    @Throws(Exception::class)
     suspend fun acceptSyncReply(reply: String): Boolean {
         val o = Json.parseToJsonElement(reply).jsonObject
         val applied = o["applied"]?.jsonArray?.map { it.jsonPrimitive.content } ?: emptyList()
@@ -127,6 +138,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     }
 
     /** For Settings → Account & backup: "Synced 2 min ago", or how many changes are waiting. */
+    @Throws(Exception::class)
     suspend fun syncStatus(): SyncStatus = SyncStatus(
         accountId = dao.state(SyncWriter.ACCOUNT),
         waiting = dao.outboxCount(),
@@ -135,6 +147,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     )
 
     /** A consistent copy of the whole database to `path` (SQLite `VACUUM INTO`), for local snapshots. */
+    @Throws(Exception::class)
     suspend fun snapshot(path: String) {
         database.useWriterConnection { transactor ->
             transactor.usePrepared("VACUUM INTO ?") { statement ->
@@ -145,6 +158,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
     }
 
     /** For tests and diagnostics: the value of a PRAGMA on the writer connection. */
+    @Throws(Exception::class)
     suspend fun pragma(name: String): String =
         database.useWriterConnection { transactor ->
             transactor.usePrepared("PRAGMA $name") { statement ->
@@ -152,12 +166,14 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
             }
         }
 
+    @Throws(Exception::class)
     fun close() = database.close()
 
     companion object {
         /** Bump with every schema change, and add a migration plus a migration test. */
         const val SCHEMA_VERSION = 6
 
+        @Throws(Exception::class)
         fun open(path: String): HabitRepository = HabitRepository(configure(databaseBuilder(path)), ::currentTimeMillis)
 
         /** A throwaway database, for UI tests. */
