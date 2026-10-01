@@ -10,7 +10,7 @@ Written by Claude (Claude Code), 1 October 2026. Branch: `integration` (from `an
 | M2 | Lose nothing | [x] Every branch tip saved as `archive/<name>-2026-10-01` on GitHub before any merge (branches, since this environment can't push tags) |
 | M3 | Merge the real branches | [x] `progress-page-research`, `sidebar` and `undo-research` merged into `integration`; every conflict resolved keeping both sides' behaviour (below) |
 | M4 | The old feature branch (29–30 Sep) | [x] Not merged whole: its Progress, Settings, backup and Undo bar were rebuilt differently since. Its 12 research reports copied; app lock, the review prompt, Siri and Shortcuts, and milestones rebuilt on the current app; its first run already existed. **The Today widget waits** (below) |
-| M5 | Test before touching `main` | [ ] Running on GitHub (results below) |
+| M5 | Test before touching `main` | [ ] Every class run on `integration`; the last fixes are on GitHub (results below). `main`'s one new commit (Cloudflare plugin settings) merged in |
 | M6 | Move `main` and delete merged branches | [ ] After the tests, with the user |
 
 ## Decisions made while merging
@@ -23,6 +23,8 @@ Written by Claude (Claude Code), 1 October 2026. Branch: `integration` (from `an
 - **Quit rows:** one way to log a slip, "Log a Slip…" with its time and Undo; `undo-research`'s visible Slipped button opens the same sheet. "Edit Today's Progress…" added from `undo-research`.
 - **The New Habit form:** `undo-research`'s typing pause (the previews catch up 300 ms after the last letter) kept; the previews now also catch up when the form is back from a screen it opened, or the name field is left. Found by `HabitCreationUITests`: the pause was cancelled by the pushed screen, so "Enter a habit name" stayed under a typed name.
 - **CI:** one Core storage step (both branches added one); `[ios-ci]` runs Today, Timer, Progress, Groups and Undo tests.
+- **Month calendars (found by the merge tests on 1 Oct, not caused by the merge):** the habit page's and Today's calendars kept the weekday letters and the days in one lazy grid with plain numbers as identities, so weekday 1 and day 1 were the same cell and **days 1–6 of every month never drew** (Today's calendar lost its first row). Each cell now has its own kind of identity (`MonthGridCell`). Tests only noticed it on the 1st–6th, when the only tappable days were the missing ones.
+- **Old test assertions brought up to date:** New Habit's time-of-day test looked for the routine list the focus player replaced on 29 Sep; LongText's drag became a tap on a row when the distance was a few points, and its form test scrolled Today's list (behind the sheet) instead of the form.
 - **App lock:** the Face ID usage text was missing on the old branch; iOS ends an app that asks for Face ID without it. Added.
 
 ## Not done, and why
@@ -37,3 +39,8 @@ Written by Claude (Claude Code), 1 October 2026. Branch: `integration` (from `an
 | 6fa7949 | Whole suite + speed | Builds; Core storage tests pass. The UI job hit GitHub's 60-minute limit after six classes |
 | archive base | Focus player, goal flow, habit creation on the pre-merge branch | Same failures as above in Focus player and goal flow (old tests); habit creation 6/6 |
 | 3d928ad | Second half of the suite + app-driven speed | Timer, Today, Tasks, Section Header pass; Undo tests still used the old "All habits" button (fixed); habit page scrolling had one 1.5 s stall (being profiled) |
+| e753ec6 | Undo, Today, Progress, Groups, Habit Creation + speed | 36 of 37 pass (Undo's calendar test: the missing days, above). Habit page scrolling: longest stall 193 ms (was 1.5 s); opening All Habits 197 ms, the habit page 349 ms |
+| 416a8f7 | Undo, Habit Scenario, LongText, New Flow, Placement | Habit Scenario, New Flow, Placement pass; LongText 2 fail (tests, above) |
+| 5b8205c | Undo, New Habit, Persistence, Reminders, Backup | Persistence, Reminders, Backup pass; Undo 18/19 and New Habit 36/37 (both fixed above) |
+| archive base | LongText on the pre-merge branch | Its form test fails there too (the keyboard's first-use tip covered the field) |
+| 4dbd57a | The fixed tests, LongText, Routine Calendar, Today + speed | Running |
