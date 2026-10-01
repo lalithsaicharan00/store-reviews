@@ -4,10 +4,12 @@ import SwiftUI
 /// `.onPerfCommand`; in release builds that modifier does nothing.
 enum PerfAction: Equatable {
     case previousDay, nextDay
-    case openAllHabits, openHabit(String), openCalendar, openNewHabit, openHabitForm, startRoutine(String), close
+    case openAllHabits, openWidgets, openHabit(String), openCalendar, openNewHabit, openHabitForm, startRoutine(String), close
     case previousMonth, nextMonth
     case previousHabit, nextHabit
     case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, saveEntry, logAgain, hideLogKeyboard
+    /// A page from the ≡ menu; the menu itself; Today's group filter; Progress's range; the habit page's Edit.
+    case openPlace(MenuPlace), toggleMenu, nextGroup, nextRange, openEdit
 }
 
 extension View {
@@ -100,6 +102,61 @@ enum PerfDriver {
                     await pause(0.35)
                 }
             }
+        case "widget-guide":
+            await openTwice("Widgets guide") { send(.openWidgets) }
+            await measure("Widgets guide: scrolling") { await scroll() }
+        case "widget-log":
+            guard let water = store.habits.first(where: { $0.name == "Water" }) else { return MainThreadMeter.mark("# ERROR no Water") }
+            let day = store.today()
+            for entry in store.entries(of: water.id, on: day) { store.undoEntry(entry.id) }
+            await store.flush()
+            await measure("Widget: durable amount log and publication") {
+                await repeatFor(window) {
+                    let event = UUID()
+                    do {
+                        try await AppModel.shared.logFromWidget(item: water.id.uuidString, day: day.key,
+                                                               event: event.uuidString, signature: HabitStore.widgetSignature(water))
+                        guard store.entries(of: water.id).contains(where: { $0.id == event }) else {
+                            MainThreadMeter.mark("# ERROR widget log did not persist"); return
+                        }
+                    } catch { MainThreadMeter.mark("# ERROR widget log: \(error)"); return }
+                    store.undoEntry(event); await store.flush()
+                    await pause(0.35)
+                }
+            }
+        case "progress":
+            await openTwice("Progress") { send(.openPlace(.progress)) }
+            await measure("Progress: scrolling") { await scroll() }
+            await measure("Progress: period ‹ › and range") {
+                await repeatFor(window) {
+                    send(.previousMonth); await pause(0.4)
+                    send(.nextMonth); await pause(0.4)
+                    send(.nextRange); await pause(0.4)
+                }
+            }
+        case "menu":
+            await measure("Menu: open and close") {
+                await repeatFor(window) { send(.toggleMenu); await pause(0.6) }
+            }
+        case "groups":
+            await measure("Today: group filter") {
+                await repeatFor(window) { send(.nextGroup); await pause(0.4) }
+            }
+            send(.close)
+        case "menu-pages":
+            // Every other page in the ≡ menu: how long each takes to open.
+            for place in [MenuPlace.tasks, .timesOfDay, .dayAndWeek, .reminders, .appearance, .backup, .privacy, .plus, .help, .about] {
+                await open(place.title) { send(.openPlace(place)) }
+                send(.close)
+                await pause(1)
+            }
+        case "habit-edit":
+            await open("All Habits") { send(.openAllHabits) }
+            await open("Habit page") { send(.openHabit("Water")) }
+            await open("Edit habit (first)") { send(.openEdit) }
+            send(.closeDay) // the habit page closes its sheets
+            await pause(1.2)
+            await open("Edit habit (again)") { send(.openEdit) }
         case "all-habits":
             await openTwice("All Habits") { send(.openAllHabits) }
             await measure("All Habits: scrolling") { await scroll() }

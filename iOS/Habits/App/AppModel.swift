@@ -12,6 +12,8 @@ final class AppRouter {
     var showDay: LocalDay?
     /// A habit page to open (Siri or Shortcuts "Open a Habit").
     var openHabit: UUID?
+    var widgetItem: UUID?
+    var widgetToday = false
 }
 
 /// The app's one store, scheduler and database. Shared, because a notification action, an alarm's
@@ -24,6 +26,7 @@ final class AppModel {
     /// A running timer on the Lock Screen, and its one "goal reached" notification.
     let timerPresence = TimerPresence()
     let router = AppRouter()
+    let widgets = WidgetPublisher()
     /// The ≡ menu and Today's navigation path.
     let menu = MenuModel()
     /// Lock with Face ID (≡ → Privacy). Off unless turned on.
@@ -31,7 +34,7 @@ final class AppModel {
     private let persistence: Persistence?
     private var loading: Task<Void, Never>?
 
-    static let refreshTaskID = "com.lalithsaicharan.habits.refresh"
+    static let refreshTaskID = "com.oftenenough.app.refresh"
 
     private init() {
         let arguments = ProcessInfo.processInfo.arguments
@@ -76,6 +79,7 @@ final class AppModel {
             guard store.isLoaded, store.isStorageReady else { return }
             persistence?.markSchemaCurrent()
             #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("-widget-fixture") { await WidgetFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-reminder-fixture") { await ReminderFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-task-fixture") { await TaskFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-focus-fixture") {
@@ -86,8 +90,9 @@ final class AppModel {
                 await store.addEveryTypeToAnytime()
             }
             #endif
-            store.onChange = { [store, scheduler, timerPresence] in
+            store.onChange = { [store, scheduler, timerPresence, widgets] in
                 scheduler.scheduleReconcile(store)
+                widgets.schedule(store)
                 // Siri's phrases name each habit: refreshed when one is added, renamed or archived (cheap otherwise).
                 HabitShortcuts.habitsChanged(store)
                 Task { await timerPresence.sync(store) }
@@ -96,6 +101,7 @@ final class AppModel {
             HabitShortcuts.habitsChanged(store)
             // A timer left running (the app was closed, or the phone restarted) gets its Live Activity back.
             await timerPresence.sync(store)
+            await widgets.publish(store)
         }
         loading = task
         await task.value
@@ -124,6 +130,20 @@ final class AppModel {
         router.focusSection = section ?? target?.section
     }
 
+    func logFromWidget(item: String, day: String, event: String, signature: String) async throws {
+        await ensureLoaded()
+        guard store.isLoaded, store.isStorageReady, store.problem == nil,
+              let id = UUID(uuidString: item), let day = LocalDay(key: day), let event = UUID(uuidString: event) else {
+            throw WidgetActionError.openApp
+        }
+        store.logFromWidget(id: id, day: day, event: event, signature: signature)
+        await store.flush()
+        guard store.problem == nil else { throw WidgetActionError.save }
+        await widgets.publish(store)
+        guard widgets.problem == nil else { throw WidgetActionError.save }
+        await scheduler.reconcile(store)
+    }
+
     // MARK: Background refresh
 
     /// Keeps the next days' reminders planned even when the app isn't opened for a while.
@@ -138,6 +158,7 @@ final class AppModel {
         let work = Task { [self] in
             await ensureLoaded()
             await scheduler.reconcile(store)
+            await widgets.publish(store)
             task.setTaskCompleted(success: !Task.isCancelled && store.isStorageReady && scheduler.problem == nil)
         }
         task.expirationHandler = { work.cancel() }
@@ -193,6 +214,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
             let model = AppModel.shared
             await model.ensureLoaded()
             await model.scheduler.reconcile(model.store)
+            await model.widgets.publish(model.store)
         }
     }
 

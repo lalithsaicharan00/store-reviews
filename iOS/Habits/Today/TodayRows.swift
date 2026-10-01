@@ -70,7 +70,6 @@ struct HabitRow: View {
     /// Today's layout: a log holds the rows in place until the person pauses (#58). Nil in the New Habit preview.
     @Environment(TodayLayout.self) private var layout: TodayLayout?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @Environment(\.clocksPaused) private var clocksPaused
     /// Progress's view option "Show Streaks" (report §7.6): off hides streaks here too.
     @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
 
@@ -78,8 +77,8 @@ struct HabitRow: View {
         if habit.kind == .duration, isToday {
             // Keep the same host when a running timer stops. Replacing TimelineView with a plain row
             // could dismiss a sheet opened from that row; a stopped/covered clock simply has no ticks.
-            TimelineView(HabitRowClockSchedule(start: !clocksPaused && !(showLog || showEdit || showNotes || showPause) && store.dayTarget?.habitID != habit.id ? store.timers[habit.id] : nil)) { context in
-                row(now: context.date)
+            RowClock(start: !(showLog || showEdit || showNotes || showPause) && store.dayTarget?.habitID != habit.id ? store.timers[habit.id] : nil) { now in
+                row(now: now)
             }
         } else {
             row(now: .now)
@@ -685,6 +684,20 @@ extension EnvironmentValues {
     nonisolated var clocksPaused: Bool {
         get { self[ClocksPausedKey.self] }
         set { self[ClocksPausedKey.self] = newValue }
+    }
+}
+
+/// A running row's clock: the only part of a Today row that reads `clocksPaused`. When the row read it, every row on
+/// Today redrew each time a menu page opened or closed, not only the rows with a clock (1 Oct 2026).
+private struct RowClock<Content: View>: View {
+    let start: Date?
+    @ViewBuilder let content: (Date) -> Content
+    @Environment(\.clocksPaused) private var clocksPaused
+
+    var body: some View {
+        TimelineView(HabitRowClockSchedule(start: clocksPaused ? nil : start)) { context in
+            content(context.date)
+        }
     }
 }
 

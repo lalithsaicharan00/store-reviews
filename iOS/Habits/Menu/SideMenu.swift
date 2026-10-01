@@ -197,11 +197,13 @@ struct MenuPage: View {
         case .timesOfDay: TimesOfDayList()
         case .dayAndWeek: DayAndWeekView()
         case .appearance: AppearanceView()
+        case .widgets: WidgetsView()
         case .plus: PlusView(fromMenu: true)
         case .backup: BackupExportView()
         case .reminders: RemindersView()
         case .privacy: PrivacyView()
-        case .help, .about: BlankMenuPage(title: place.title).analyticsScreen(place == .help ? .help : .about)
+        case .help: HelpView().analyticsScreen(.help)
+        case .about: AboutView().analyticsScreen(.about)
         default: ComingSoonView(place: place)
         }
     }

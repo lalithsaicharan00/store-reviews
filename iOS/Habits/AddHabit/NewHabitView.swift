@@ -293,14 +293,19 @@ struct HabitForm: View {
     @State private var confirmDiscard = false
     @FocusState private var focus: Field?
 
-    init(type: ItemType, group: UUID? = nil, onSaved: @escaping (UUID) -> Void) {
+    /// `idea` (onboarding, or Start From an Idea on an empty Today) fills in the name and how often, and nothing
+    /// else: nothing is saved until Add, and amounts stay empty as for every new habit (C203, C292).
+    init(type: ItemType, group: UUID? = nil, idea: HabitIdea? = nil, onSaved: @escaping (UUID) -> Void) {
         self.type = type
         self.onSaved = onSaved
         original = nil
         originalGroup = nil
         _groupID = State(initialValue: group)
         _color = State(initialValue: .blue)
-        _symbol = State(initialValue: type == .quit ? "nosign" : type == .task ? "calendar" : "star.fill")
+        let plainSymbol = type == .quit ? "nosign" : type == .task ? "calendar" : "star.fill"
+        _symbol = State(initialValue: idea.flatMap { IconSuggester.symbol(for: $0.name) } ?? idea?.symbol ?? plainSymbol)
+        _typed = State(initialValue: TypedName(idea?.name ?? ""))
+        _shownName = State(initialValue: idea?.name ?? "")
         // Amounts start empty (left out of the sentence): the right amount depends on the person. How often starts
         // as every day and Time of Day as Anytime (the user, 29 Sep).
         let start = HabitDefaults.suggest(type, name: "")
@@ -309,7 +314,7 @@ struct HabitForm: View {
         _hours = State(initialValue: "0")
         _minutes = State(initialValue: "0")
         var draft = OftenDraft()
-        draft.choose(start.often)
+        draft.choose(idea?.often ?? start.often)
         _often = State(initialValue: draft)
     }
 
@@ -542,7 +547,8 @@ struct HabitForm: View {
                 times = times.map { var t = $0; t.part = partFor(t.time); return t }
             } else {
                 color = store.suggestedColor()
-                focus = .name
+                // An idea arrives named: show the whole form first instead of the keyboard.
+                if name.isEmpty { focus = .name }
                 if type != .quit { syncReminders(force: true) }
             }
             notificationsDenied = await scheduler.isDenied()
@@ -1056,7 +1062,7 @@ struct HabitForm: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text(Outcome.reminders(draft, store: store, alarmsAvailable: ReminderScheduler.alarmsAvailable)).formNote()
                         if notificationsDenied {
-                            Text("Notifications are off for Habits, so these won't arrive. Turn them on in Settings.").formNote()
+                            Text("Notifications are off for Often Enough, so these won't arrive. Turn them on in Settings.").formNote()
                             Button("Open Settings") {
                                 if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
                             }

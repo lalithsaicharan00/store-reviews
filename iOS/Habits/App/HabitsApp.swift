@@ -5,6 +5,8 @@ struct HabitsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let model = AppModel.shared
     @Environment(\.scenePhase) private var scenePhase
+    /// The welcome, on a fresh install only (`Onboarding.shouldShow`).
+    @State private var showOnboarding = false
 
     init() {
         Preferences.register()
@@ -27,6 +29,11 @@ struct HabitsApp: App {
                 .onChange(of: model.lock.isLocked) {
                     Analytics.shared.lifecycle(active: scenePhase == .active, locked: model.lock.isLocked)
                 }
+                .onOpenURL { url in
+                    guard url.scheme == "oftenenough" else { return }
+                    if url.host == "today" { model.router.widgetToday = true }
+                    if url.host == "item", let id = UUID(uuidString: url.lastPathComponent) { model.router.widgetItem = id }
+                }
         }
         .onChange(of: scenePhase) {
             Analytics.shared.lifecycle(active: scenePhase == .active, locked: model.lock.isLocked)
@@ -35,7 +42,10 @@ struct HabitsApp: App {
                 AnalyticsInteractionObserver.install()
             }
             // Re-plan on every return to the app: a new day, a changed time zone, or a changed permission.
-            if scenePhase == .active && model.store.isLoaded { model.scheduler.scheduleReconcile(model.store) }
+            if scenePhase == .active && model.store.isLoaded {
+                model.scheduler.scheduleReconcile(model.store)
+                model.widgets.schedule(model.store)
+            }
             // Taps are shown before they're written. Leaving the app, ask iOS for the time to finish every queued
             // write, so a tap made just before switching away is never lost (30 Sep).
             if scenePhase == .background { finishWrites() }
@@ -47,8 +57,10 @@ struct HabitsApp: App {
 
     @ViewBuilder private var root: some View {
             #if DEBUG
-            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-widgetcheck", "-widget-system-verify"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
+            } else if ProcessInfo.processInfo.arguments.contains("-widget-render") {
+                WidgetRenderCheck()
             } else {
                 today
             }
@@ -62,6 +74,7 @@ struct HabitsApp: App {
         save.id = UIApplication.shared.beginBackgroundTask(withName: "Save changes") { save.end() }
         Task {
             await model.store.flush()
+            await model.widgets.publish(model.store)
             save.end()
         }
     }
@@ -76,11 +89,29 @@ struct HabitsApp: App {
             .onChange(of: model.store.problem) {
                 if model.store.problem == nil && model.store.isStorageReady { model.scheduler.scheduleReconcile(model.store) }
             }
+            .fullScreenCover(isPresented: $showOnboarding) {
+                OnboardingView { restore in
+                    showOnboarding = false
+                    // Coming back from another phone: straight to the restore, on Today's stack so Back is Today.
+                    if restore { model.menu.path.append(MenuPlace.backup) }
+                }
+                .environment(model.store)
+                .environment(model.scheduler)
+                .environment(model.menu)
+                .environment(model.router)
+                .tint(.ink)
+            }
             .task {
                 // The theme is set on the window itself, so it reaches sheets and alerts too (≡ → Appearance).
                 Theme.apply(UserDefaults.standard.string(forKey: Preferences.theme) ?? Theme.automatic.rawValue)
                 await model.ensureLoaded()
                 guard model.store.isLoaded, model.store.isStorageReady else { return }
+                if Onboarding.shouldShow(model.store) {
+                    // Already there when the app opens, not sliding up over an empty Today.
+                    var instant = Transaction()
+                    instant.disablesAnimations = true
+                    withTransaction(instant) { showOnboarding = true }
+                }
                 #if DEBUG
                 PerfDriver.startIfAsked(store: model.store)
                 #endif
@@ -114,6 +145,20 @@ private struct PlacementCheckView: View {
             if arguments.contains("-analyticscheck") {
                 let failures = await AnalyticsCheck.run()
                 result = failures.isEmpty ? "Analytics: all checks passed" : "Analytics failed: " + failures.joined(separator: "; ")
+                return
+            }
+            if arguments.contains("-widget-system-verify") {
+                await AppModel.shared.ensureLoaded()
+                let store = AppModel.shared.store
+                if let habit = store.habits.first(where: { $0.name == "Widget check" }),
+                   store.entries(of: habit.id).contains(where: { $0.source == .widget }) {
+                    result = "Widget system: persisted check"
+                } else { result = "Widget system: no durable widget check · " + WidgetDisk.diagnostic }
+                return
+            }
+            if arguments.contains("-widgetcheck") {
+                let failures = await WidgetCheck.run()
+                result = failures.isEmpty ? "Widgets: all checks passed" : "Widgets failed: " + failures.joined(separator: "; ")
                 return
             }
             if arguments.contains("-remindercheck") {

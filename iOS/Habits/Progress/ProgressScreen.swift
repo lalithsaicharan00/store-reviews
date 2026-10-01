@@ -54,6 +54,18 @@ struct ProgressScreen: View {
         }
         .analyticsScreen(.progress)
         .navigationTitle("Progress")
+        .onPerfCommand { action in
+            guard let snapshot = model.snapshot else { return }
+            switch action {
+            case .previousMonth: move(snapshot, by: -1)
+            case .nextMonth: move(snapshot, by: 1)
+            case .nextRange:
+                let all = ProgressRange.allCases
+                rangeRaw = all[((all.firstIndex(of: range) ?? 0) + 1) % all.count].rawValue
+                anchor = nil
+            default: break
+            }
+        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

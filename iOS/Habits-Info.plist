@@ -2,11 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>CFBundleURLTypes</key><array><dict><key>CFBundleURLSchemes</key><array><string>oftenenough</string></array></dict></array>
 	<!-- Merged with the keys Xcode generates from build settings (GENERATE_INFOPLIST_FILE). Only keys that
 	     can't be build settings live here. -->
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.lalithsaicharan.habits.refresh</string>
+		<string>com.oftenenough.app.refresh</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -21,6 +22,6 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Habits uses Face ID to unlock when you turn on the lock in Privacy.</string>
 	<key>NSAlarmKitUsageDescription</key>
-	<string>Habits rings an alarm at your habit's time when you choose Alarm for it.</string>
+	<string>Often Enough rings an alarm at your habit's time when you choose Alarm for it.</string>
 </dict>
 </plist>

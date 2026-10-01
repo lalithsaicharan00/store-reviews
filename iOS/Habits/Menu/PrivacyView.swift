@@ -54,6 +54,7 @@ struct PrivacyView: View {
             AppLock.setEnabled(on)
             lockOn = on
             store.analyticsConfiguration()
+            await AppModel.shared.widgets.publish(AppModel.shared.store)
         }
     }
 }

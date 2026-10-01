@@ -164,10 +164,15 @@ struct ScheduleDraft {
             }
         }
     }
+    /// "1st", "22nd". One formatter, made once (PERFORMANCE.md rule 8).
     static func ordinal(_ n: Int) -> String {
-        let formatter = NumberFormatter(); formatter.numberStyle = .ordinal
-        return formatter.string(from: NSNumber(value: n)) ?? String(n)
+        ordinalFormatter.string(from: NSNumber(value: n)) ?? String(n)
     }
+    private static let ordinalFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .ordinal
+        return formatter
+    }()
     static func ordinalName(_ n: Int) -> String {
         switch n { case 1: "First"; case 2: "Second"; case 3: "Third"; case 4: "Fourth"; case 5: "Fifth"; default: "Last" }
     }
