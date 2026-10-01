@@ -28,7 +28,7 @@ final class SyncService {
     init(repository: HabitRepository, storeName: String, api: URL, reset: Bool = false) {
         self.repository = repository
         self.api = api
-        keychain = Keychain(service: "app.oftenenough.sync.\(storeName)")
+        keychain = Keychain(service: "com.oftenenough.app.sync.\(storeName)")
         if reset { keychain.removeAll() }
     }
 
