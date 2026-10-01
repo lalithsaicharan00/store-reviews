@@ -1,4 +1,3 @@
-import Charts
 import SwiftUI
 
 // The habit page's Phase 2 sections (Build Plan #60f; report §8.4, §8.5, §10.3). Each works its numbers out when the
@@ -297,21 +296,18 @@ struct QuitOverTimeSection: View {
         let color = habit.color.color
         return VStack(alignment: .leading, spacing: 6) {
             Text("Runs").font(.subheadline.weight(.semibold))
-            Chart {
-                ForEach(Array(data.runs.enumerated()), id: \.offset) { i, run in
-                    BarMark(x: .value("Run", i + 1), y: .value("Days", run.length(now: now) / 86400))
-                        .foregroundStyle(run.endedBy == .ongoing ? color : color.opacity(0.4))
-                        .annotation(position: .top) {
-                            if run.endedBy == .ongoing { Text("Now").font(.caption2).foregroundStyle(.secondary) }
-                        }
-                }
-                if let average = data.average {
-                    RuleMark(y: .value("Average", average / 86400))
-                        .foregroundStyle(Color.secondary)
-                        .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 3]))
-                }
-            }
-            .chartXAxis(.hidden)
+            let count = Double(max(data.runs.count, 1))
+            LightBarChart(title: "Runs",
+                          bars: data.runs.enumerated().map { i, run in
+                              let days = run.length(now: now) / 86400
+                              let ongoing = run.endedBy == .ongoing
+                              return LightBarChart.Bar(id: i, from: Double(i) / count, to: Double(i + 1) / count, value: days,
+                                                       opacity: ongoing ? 1 : 0.4, over: false,
+                                                       label: (ongoing ? "Now, " : "Run \(i + 1), ") + Format.days(run.length(now: now)),
+                                                       note: ongoing ? "Now" : nil)
+                          },
+                          goals: data.average.map { [LightBarChart.GoalLine(from: 0, to: 1, value: $0 / 86400)] } ?? [],
+                          dashedGoals: true, color: color, yLabel: { Format.amount($0) })
             .frame(height: 140)
         }
         .accessibilityIdentifier("quit-runs-chart")
