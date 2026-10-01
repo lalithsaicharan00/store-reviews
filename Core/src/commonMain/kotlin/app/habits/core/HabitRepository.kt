@@ -150,6 +150,14 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
         }
     }
 
+    /**
+     * "Also erase this iPhone's data" after deleting the account, and "Erase all my data" (Architecture 09 §7): every
+     * row, deletion markers and sync state included, so nothing is left and nothing syncs. Not undoable; the app offers
+     * an export first. Not routed through sync on purpose: other devices keep their own copy.
+     */
+    @Throws(Exception::class)
+    suspend fun eraseAllData() = dao.eraseAll()
+
     // MARK: Sync with the server (Architecture 05, 06 §4). The platform sends the request and hands back the reply.
 
     /** Starts syncing this device's data with [accountId], right after sign-in. See [SyncWriter.bind]. */

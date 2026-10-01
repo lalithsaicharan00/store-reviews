@@ -364,7 +364,10 @@ describe("deleting an account", () => {
     expect((await call("POST", "/v1/account/delete", {}, created.json.accessToken)).status).toBe(200);
 
     expect((await call("GET", "/v1/account", undefined, created.json.accessToken)).json.error).toBe("signed_out");
-    expect((await call("POST", "/v1/auth/refresh", { refreshToken: created.json.refreshToken })).status).toBe(401);
+    // Other devices are told the account is gone, not asked to sign in again.
+    const refreshed = await call("POST", "/v1/auth/refresh", { refreshToken: created.json.refreshToken });
+    expect(refreshed.status).toBe(401);
+    expect(refreshed.json.error).toBe("account_deleted");
     expect((await appleSignIn("apple-delete", { create: false })).json.error).toBe("unknown_key");
     const rows = await env.DIRECTORY.prepare("SELECT (SELECT count(*) FROM account WHERE id = ?1) + (SELECT count(*) FROM account_key WHERE account_id = ?1) AS n").bind(accountId).first<{ n: number }>();
     expect(rows?.n).toBe(0);
@@ -373,6 +376,20 @@ describe("deleting an account", () => {
       state.storage.sql.exec("SELECT (SELECT count(*) FROM sign_in_key) + (SELECT count(*) FROM device) + (SELECT count(*) FROM session) AS n").one().n,
     );
     expect(left).toBe(0);
+  });
+
+  it("a deleted account stays deleted even if an older copy of the directory comes back", async () => {
+    const created = await appleSignIn("apple-time-travel");
+    const accountId = created.json.accountId as string;
+    await call("POST", "/v1/account/delete", {}, created.json.accessToken);
+    // As if the directory were restored to a moment before the deletion (D1 Time Travel).
+    await env.DIRECTORY.batch([
+      env.DIRECTORY.prepare("INSERT INTO account (id, created_at, jurisdiction) VALUES (?, 0, 'default')").bind(accountId),
+      env.DIRECTORY.prepare("INSERT INTO account_key (provider, subject, account_id, created_at) VALUES ('apple', 'apple-time-travel', ?, 0)").bind(accountId),
+    ]);
+    expect((await appleSignIn("apple-time-travel", { create: false })).json.error).toBe("unknown_key");
+    const fresh = await appleSignIn("apple-time-travel");
+    expect(fresh.json.accountId).not.toBe(accountId);
   });
 
   it("a deleted person can start a fresh account with the same Apple ID", async () => {

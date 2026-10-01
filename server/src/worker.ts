@@ -15,6 +15,7 @@ import {
   linkPurchase,
   purchaseOwner,
   unlinkKey,
+  wasDeleted,
 } from "./directory";
 import { HttpError, errorResponse, isUuid, json, readJson, requireString } from "./http";
 import { APPLE, GOOGLE, type VerifiedKey, verifyCiToken, verifyIdToken } from "./providers";
@@ -183,6 +184,10 @@ async function refresh(request: Request, env: Env): Promise<Response> {
   const parsed = parseRefreshToken(body.refreshToken);
   if (!parsed || !isUuid(parsed.accountId) || !isUuid(parsed.deviceId)) throw signedOut();
   const result = await accountStub(env, parsed).refresh(parsed.deviceId, parsed.secret);
+  // A deleted account says so, so its other devices don't ask the person to sign in again (09 §7).
+  if (!result.ok && result.reason === "gone" && (await wasDeleted(env.DIRECTORY, parsed.accountId))) {
+    throw new HttpError(401, "account_deleted", "This account was deleted. Everything on this device is kept.");
+  }
   if (!result.ok) throw signedOut();
   return json(await tokens(env, { ...parsed, plus: result.plus }, result.secret));
 }

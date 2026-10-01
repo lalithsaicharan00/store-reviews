@@ -98,6 +98,27 @@ final class SyncService {
     /// Signs this device out, on purpose. Everything stays on the phone; only the session ends (01 §3.5).
     func signOut() async {
         if isSignedIn { _ = try? await send("POST", "/v1/account/signout", body: Data("{}".utf8), authorized: true) }
+        forgetAccount()
+    }
+
+    /// Deletes the account on the server (Architecture 09 §7): directory first, then its data, backups and snapshots.
+    /// Then this device forgets the account; what's on the phone is the caller's choice.
+    func deleteAccount() async throws {
+        let (status, data) = try await send("POST", "/v1/account/delete", body: Data("{}".utf8), authorized: true)
+        guard status == 200 else { throw ServerError(status: status, code: Self.errorCode(data)) }
+        forgetAccount()
+    }
+
+    /// The account's sign-in methods and devices, for Settings → Account.
+    func accountSummary() async throws -> [String: Any] {
+        let (status, data) = try await send("GET", "/v1/account", body: nil, authorized: true)
+        guard status == 200, let json = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any] else {
+            throw ServerError(status: status, code: Self.errorCode(data))
+        }
+        return json
+    }
+
+    private func forgetAccount() {
         keychain.write(.refreshToken, nil)
         accessToken = nil
         poll?.cancel()
@@ -213,7 +234,8 @@ final class SyncService {
         let (data, response) = try await URLSession.shared.data(for: request)
         let status = (response as? HTTPURLResponse)?.statusCode ?? 0
         if authorized && status == 401 && !retried {
-            if Self.errorCode(data) == "signed_out" { signedOut(); throw ServerError(status: 401, code: "signed_out") }
+            let code = Self.errorCode(data)
+            if code == "signed_out" || code == "account_deleted" { signedOut(deleted: code == "account_deleted"); throw ServerError(status: 401, code: code) }
             accessToken = nil
             return try await send(method, path, body: body, authorized: true, headers: headers, retried: true)
         }
@@ -223,7 +245,11 @@ final class SyncService {
     private func refresh() async throws {
         guard let token = keychain.read(.refreshToken) else { throw ServerError(status: 401, code: "signed_out") }
         let (status, json) = try await post("/v1/auth/refresh", json: ["refreshToken": token], authorized: false)
-        if status == 401 { signedOut(); throw ServerError(status: 401, code: "signed_out") }
+        if status == 401 {
+            let deleted = json["error"] as? String == "account_deleted"
+            signedOut(deleted: deleted)
+            throw ServerError(status: 401, code: deleted ? "account_deleted" : "signed_out")
+        }
         guard status == 200, let access = json["accessToken"] as? String, let next = json["refreshToken"] as? String else {
             throw ServerError(status: status, code: json["error"] as? String ?? "unexpected")
         }
@@ -233,8 +259,14 @@ final class SyncService {
         try await setPlus(json["plus"] as? Bool ?? false)
     }
 
-    /// The session is over (signed out elsewhere, or deleted). Everything on this device is kept; only the tokens go.
-    private func signedOut() {
+    /// The session is over: signed out elsewhere, or the account deleted (from another device or the website).
+    /// Everything on this device is kept; only the tokens go. A deleted account isn't a problem to fix, so only an
+    /// ended session asks the person to sign in again (Backup, Sync and Accounts §4.4).
+    private func signedOut(deleted: Bool = false) {
+        if deleted {
+            forgetAccount()
+            return
+        }
         keychain.write(.refreshToken, nil)
         accessToken = nil
         poll?.cancel()

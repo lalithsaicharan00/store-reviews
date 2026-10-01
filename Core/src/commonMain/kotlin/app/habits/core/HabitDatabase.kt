@@ -38,6 +38,22 @@ interface HabitDao {
 
     @Query("SELECT row_id FROM sync_meta WHERE table_name = 'setting'") suspend fun knownSettingKeys(): List<String>
 
+    @Query("DELETE FROM habit") suspend fun eraseHabits()
+    @Query("DELETE FROM step") suspend fun eraseSteps()
+    @Query("DELETE FROM reminder") suspend fun eraseReminders()
+    @Query("DELETE FROM entry") suspend fun eraseEntries()
+    @Query("DELETE FROM setting") suspend fun eraseSettings()
+    @Query("DELETE FROM outbox") suspend fun eraseOutbox()
+    @Query("DELETE FROM sync_meta") suspend fun eraseSyncMeta()
+    @Query("DELETE FROM local_state") suspend fun eraseLocalState()
+
+    /** Every row of every table, in one transaction: the database is as on first launch. */
+    @Transaction
+    suspend fun eraseAll() {
+        eraseHabits(); eraseSteps(); eraseReminders(); eraseEntries(); eraseSettings()
+        eraseOutbox(); eraseSyncMeta(); eraseLocalState()
+    }
+
     /** Everything a restore compares against, read in one transaction. */
     @Transaction
     suspend fun restoreState(): Pair<Snapshot, Set<String>> = restoreSnapshot() to knownSettingKeys().toSet()

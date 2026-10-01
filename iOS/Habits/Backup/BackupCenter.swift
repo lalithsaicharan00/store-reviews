@@ -352,6 +352,57 @@ final class BackupCenter {
         refresh()
     }
 
+    /// The account's sign-in methods and devices (Settings → Account).
+    struct AccountDetails {
+        struct SignIn: Identifiable { let provider: String; let email: String?; let isPrivateEmail: Bool; var id: String { provider } }
+        struct Device: Identifiable { let id: String; let name: String; let platform: String; let lastSeen: Date; let signedIn: Bool; let isThis: Bool }
+        let signIns: [SignIn]
+        let devices: [Device]
+    }
+
+    func accountDetails() async throws -> AccountDetails {
+        let json = try await sync.accountSummary()
+        let me = sync.deviceID
+        let signIns = (json["keys"] as? [[String: Any]] ?? []).compactMap { k -> AccountDetails.SignIn? in
+            guard let provider = k["provider"] as? String else { return nil }
+            return .init(provider: provider, email: k["email"] as? String, isPrivateEmail: k["isPrivateEmail"] as? Bool ?? false)
+        }
+        let devices = (json["devices"] as? [[String: Any]] ?? []).compactMap { d -> AccountDetails.Device? in
+            guard let id = d["id"] as? String else { return nil }
+            return .init(id: id, name: d["name"] as? String ?? "", platform: d["platform"] as? String ?? "",
+                         lastSeen: Date(timeIntervalSince1970: (d["lastSeen"] as? Double ?? 0) / 1000),
+                         signedIn: d["signedIn"] as? Bool ?? false, isThis: id == me)
+        }
+        return AccountDetails(signIns: signIns, devices: devices)
+    }
+
+    /// Deletes the account and everything on our server (Architecture 09 §7). With `eraseThisDevice`, this iPhone's
+    /// habits and its local copies go too; otherwise it keeps working as a local-only app. Returns the date by which
+    /// every copy (point-in-time recovery included) is gone.
+    func deleteAccount(eraseThisDevice: Bool) async throws -> Date {
+        await store.flush()
+        try await sync.deleteAccount()
+        for key in [Key.lastGood, Key.failingSince, Key.checkFailures, Key.lastAttempt] { defaults.removeObject(forKey: key) }
+        if eraseThisDevice {
+            try await repository.eraseAllData()
+            Self.eraseLocalCopies()
+            store.reloadAfterSync()
+        }
+        refresh()
+        return Date.now.addingTimeInterval(30 * 86_400)
+    }
+
+    /// The daily copies (`Persistence`) and restore-undo files: with the data erased, no copy of it stays behind.
+    private static func eraseLocalCopies() {
+        guard let support = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else { return }
+        for folder in ["Backups", "Restore Undo"] {
+            let url = support.appending(path: folder, directoryHint: .isDirectory)
+            for file in (try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)) ?? [] {
+                try? FileManager.default.removeItem(at: file)
+            }
+        }
+    }
+
     // MARK: Moving and restoring
 
     /// The checked backup file, written for sharing ("Move to another device", "Export a file"), read back first.

@@ -13,7 +13,7 @@ export async function findAccount(db: D1Database, provider: string, subject: str
   const row = await db
     .prepare(
       `SELECT a.id AS accountId, a.jurisdiction AS jurisdiction FROM account_key k JOIN account a ON a.id = k.account_id
-       WHERE k.provider = ? AND k.subject = ?`,
+       WHERE k.provider = ? AND k.subject = ? AND a.id NOT IN (SELECT id FROM deleted_account)`,
     )
     .bind(provider, subject)
     .first<AccountRef>();
@@ -84,13 +84,21 @@ export async function unlinkKey(db: D1Database, accountId: string, provider: str
 }
 
 export async function jurisdictionOf(db: D1Database, accountId: string): Promise<Jurisdiction | null> {
-  const row = await db.prepare("SELECT jurisdiction FROM account WHERE id = ?").bind(accountId).first<{ jurisdiction: Jurisdiction }>();
+  const row = await db
+    .prepare("SELECT jurisdiction FROM account WHERE id = ? AND id NOT IN (SELECT id FROM deleted_account)")
+    .bind(accountId)
+    .first<{ jurisdiction: Jurisdiction }>();
   return row?.jurisdiction ?? null;
 }
 
-/** Removes the account from the directory, so no key can open it again. Safe to repeat. */
-export async function deleteAccount(db: D1Database, accountId: string): Promise<void> {
+export async function wasDeleted(db: D1Database, accountId: string): Promise<boolean> {
+  return (await db.prepare("SELECT 1 FROM deleted_account WHERE id = ?").bind(accountId).first()) !== null;
+}
+
+/** Removes the account from the directory, so no key can open it again, and lists its ID as deleted. Safe to repeat. */
+export async function deleteAccount(db: D1Database, accountId: string, now = Date.now()): Promise<void> {
   await db.batch([
+    db.prepare("INSERT INTO deleted_account (id, deleted_at) VALUES (?, ?) ON CONFLICT DO NOTHING").bind(accountId, now),
     db.prepare("DELETE FROM account_key WHERE account_id = ?").bind(accountId),
     db.prepare("DELETE FROM purchase WHERE account_id = ?").bind(accountId),
     db.prepare("DELETE FROM account WHERE id = ?").bind(accountId),

@@ -311,6 +311,20 @@ class BackupTest {
         assertEquals(2, ipad.load().habits.size)
     }
 
+    // MARK: Erasing
+
+    @Test fun eraseLeavesNothingAndTheDeviceStartsAfresh() = runBlocking {
+        val phone = repo("phone").apply { bindAccount("acct"); fill() }
+        phone.eraseAllData()
+        assertEquals(Snapshot(emptyList(), emptyList(), emptyList(), emptyList(), emptyList()), phone.loadForRestore())
+        val status = phone.syncStatus()
+        assertEquals(null to 0, status.accountId to status.waiting) // no account, nothing waiting to go anywhere
+        // It works as on first launch, and nothing reaches the old account.
+        phone.saveHabit(habit("new", "Fresh start"), emptyList(), emptyList(), 1)
+        assertEquals(listOf("Fresh start"), phone.load().habits.map { it.name })
+        assertTrue(Json.parseToJsonElement(phone.syncRequest()).jsonObject.getValue("ops").toString() == "[]")
+    }
+
     // MARK: Helpers
 
     /** Rewrites a backup's entries and zips it again the way BackupFile does (stored, fresh CRCs). */

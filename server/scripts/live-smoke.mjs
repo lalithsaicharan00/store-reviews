@@ -29,6 +29,8 @@ for (const country of ["USA", "DEU"]) {
   const del = await call("POST", "/v1/account/delete", {}, retry.json.accessToken);
   const gone = await call("POST", "/v1/auth/test", { secret: TEST_LOGIN_SECRET, subject, device: dev() });
   check(`${country}: delete`, del.status === 200 && gone.status === 404);
+  const afterDelete = await call("POST", "/v1/auth/refresh", { refreshToken: r1.json.refreshToken });
+  check(`${country}: other devices are told the account was deleted`, afterDelete.status === 401 && afterDelete.json.error === "account_deleted", afterDelete.json.error);
 }
 const wrong = await call("POST", "/v1/auth/test", { secret: "nope", subject: "x", create: true, device: dev() });
 check("test sign-in refuses a wrong secret", wrong.status === 401);

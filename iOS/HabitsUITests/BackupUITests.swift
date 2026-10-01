@@ -90,6 +90,45 @@ final class BackupUITests: XCTestCase {
         _ = try? call("POST", "/v1/account/delete", [:], token: access)
     }
 
+    /// Deleting the account from the app: the server says so to the account's other devices, and "Erase This iPhone
+    /// Too" leaves the app as on first launch.
+    func testDeletingTheAccountAndErasingThisPhone() throws {
+        continueAfterFailure = false
+        let token = try ciToken()
+        let subject = "delete-ui-\(UUID().uuidString)"
+        let app = XCUIApplication()
+        app.launchArguments = ["-dbname", "uitest-delete", "-reset-db", "-ci-sign-in-free", token, subject]
+        app.launch()
+        XCTAssertTrue(app.buttons["Settings"].firstMatch.waitForExistence(timeout: 20))
+        // Another device of the same account, signed in before the deletion.
+        let other = try call("POST", "/v1/auth/ci", ["idToken": token, "subject": subject, "plus": false, "device": device()])
+        let refresh = try XCTUnwrap(other.json["refreshToken"] as? String, "\(other.json)")
+
+        app.buttons["Settings"].firstMatch.tap()
+        let account = app.descendants(matching: .any)["backup-account"]
+        XCTAssertTrue(account.waitForExistence(timeout: 15), "Signed in, the account row is there")
+        account.tap()
+        XCTAssertTrue(app.navigationBars["Your Account"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS '(this device)'")).firstMatch.waitForExistence(timeout: 10), "This device is listed")
+        app.buttons["Delete Account…"].tap()
+        XCTAssertTrue(app.navigationBars["Delete Account"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Export a File First"].exists, "An export is offered first")
+        app.buttons["account-delete-confirm"].tap()
+        let erase = app.buttons["Erase This iPhone Too"]
+        XCTAssertTrue(erase.waitForExistence(timeout: 5), "It asks about this iPhone's habits")
+        erase.tap()
+        XCTAssertTrue(app.staticTexts["Your account is deleted."].waitForExistence(timeout: 30))
+
+        let after = try call("POST", "/v1/auth/refresh", ["refreshToken": refresh])
+        XCTAssertEqual(after.status, 401)
+        XCTAssertEqual(after.json["error"] as? String, "account_deleted", "The other device is told the account is gone")
+
+        app.buttons["Done"].tap()
+        XCTAssertTrue(app.buttons["Sign In to Back Up to Your Account"].waitForExistence(timeout: 10), "Signed out here")
+        app.buttons["Close"].firstMatch.tap()
+        XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 10), "This iPhone was erased")
+    }
+
     // MARK: Helpers
 
     /// A Form row made of a title and a value (`LabeledContent`) is one element: its value holds the text.

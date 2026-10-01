@@ -11,7 +11,6 @@ struct BackupSyncView: View {
     @State private var showRestore = false
     @State private var sharing: URL?
     @State private var message: BackupAlert?
-    @State private var confirmSignOut = false
     @State private var confirmUndo = false
 
     var body: some View {
@@ -64,8 +63,10 @@ struct BackupSyncView: View {
 
             Section("Account") {
                 if backup.isSignedIn {
-                    LabeledContent("Signed in", value: backup.isPlus ? "Plus" : "Free")
-                    Button("Sign Out", role: .destructive) { confirmSignOut = true }
+                    NavigationLink { AccountView() } label: {
+                        LabeledContent("Your account", value: backup.isPlus ? "Plus" : "Free")
+                    }
+                    .accessibilityIdentifier("backup-account")
                 } else {
                     Button("Sign In to Back Up to Your Account") { showSignIn = true }
                         .accessibilityIdentifier("backup-sign-in")
@@ -81,11 +82,6 @@ struct BackupSyncView: View {
             BackupShareSheet(url: item.url)
         }
         .alert(item: $message) { Alert(title: Text($0.title), message: Text($0.text)) }
-        .confirmationDialog("Sign out?", isPresented: $confirmSignOut, titleVisibility: .visible) {
-            Button("Sign Out", role: .destructive) { Task { await backup.signOut() } }
-        } message: {
-            Text("Your habits stay on this iPhone. They won't be backed up to your account until you sign in again.")
-        }
         .confirmationDialog("Undo the last restore?", isPresented: $confirmUndo, titleVisibility: .visible) {
             Button("Undo Restore") { Task { await undo() } }
         } message: {
