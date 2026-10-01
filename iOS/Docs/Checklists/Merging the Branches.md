@@ -12,7 +12,7 @@ Written by Claude (Claude Code), 1 October 2026. Branch: `integration` (from `an
 | M4 | The old feature branch (29–30 Sep) | [x] Not merged whole: its Progress, Settings, backup and Undo bar were rebuilt differently since. Its 12 research reports copied; app lock, the review prompt, Siri and Shortcuts, and milestones rebuilt on the current app; its first run already existed. **The Today widget waits** (below) |
 | M5 | Test before touching `main` | [ ] Every class run on `integration`; the last fixes are on GitHub (results below). `main`'s one new commit (Cloudflare plugin settings) merged in |
 | M6 | Move `main` and delete merged branches | [ ] After the tests, with the user |
-| M7 | Speed: nothing slower after the merge (the user: "performance is the most important thing") | [ ] Fixed below; the last measurement is running |
+| M7 | Speed: nothing slower after the merge (the user: "performance is the most important thing") | [x] Every regression found is fixed and measured (below). Opening screens and Today's first scroll were slow before the merge too: still to do |
 
 ## Decisions made while merging
 
@@ -38,7 +38,8 @@ Compared with the last pre-merge runs (`undo-research`), measured with the app d
 - **Today's clocks ticked under every page from the ≡ menu**: paused while a page covers Today.
 - **The habit page's total line walked all history on each redraw**: remembered in the store.
 - **Calendars dropped days 1–6** (weekday letters and days shared identities in one grid): fixed for the habit page and Today's calendar.
-- Still to look at, not caused by the merge: Today's first scroll has one 180–440 ms freeze on every branch; the running-total, 30-day rate and quit runs charts still use Swift Charts (now measured by `habit-page-total` and `habit-page-quit`).
+- **Every chart is drawn in one pass now** (`LightBarChart`, `LightLineChart`): the running total, the 30-day rate and the quit runs chart too. The app no longer uses Swift Charts.
+- Still to do, slow before the merge as well (pre-merge runs: All Habits 400–700 ms, habit page 400–750 ms): **opening a screen** stalls 500–1,300 ms (target under 100 ms), and **Today's first scroll** has one 180–440 ms freeze. Not checked on screen yet: the running-total, rate and quit runs charts (no test takes their picture).
 
 Lessons are in `PERFORMANCE.md` (rules 6, 8, 11 and the new 12).
 
@@ -71,4 +72,5 @@ environment can't delete branches on GitHub, so delete them there (GitHub → Br
 | archive base | LongText on the pre-merge branch | Its form test fails there too (the keyboard's first-use tip covered the field) |
 | 4dbd57a | The fixed tests, LongText, Routine Calendar, Today + speed | LongText 3/3, Today 8/8, Undo calendar fixed; Routine Calendar's day tap and the focus player's title still failing (fixed next) |
 | c47a1c4 | Every class touched today, in two halves, + speed | **All pass**: New Habit, Today, LongText, Undo, Habit Creation, Progress, Groups, the calendar's day tap |
-| 593c376 | Progress tests + the habit pages' speed with `LightBarChart` | Running |
+| 593c376 | Progress tests + the habit pages' speed with `LightBarChart` | Progress 10/10. Habit page scrolling: longest freeze 294 ms (was 1–2.7 s); the weekly-total page 465 ms and opening the quit page 1.2 s, both still on Swift Charts |
+| dbb0d3a | The same, with every chart drawn in one pass | Progress 10/10. Scrolling: habit page 210 ms (hitch 15 ms/s, was 108–205), weekly total 45 ms, quit 31 ms |
