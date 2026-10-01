@@ -7,7 +7,7 @@
 	     can't be build settings live here. -->
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.lalithsaicharan.habits.refresh</string>
+		<string>com.oftenenough.app.refresh</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -16,6 +16,6 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Habits uses Face ID to unlock when you turn on the lock in Privacy.</string>
 	<key>NSAlarmKitUsageDescription</key>
-	<string>Habits rings an alarm at your habit's time when you choose Alarm for it.</string>
+	<string>Often Enough rings an alarm at your habit's time when you choose Alarm for it.</string>
 </dict>
 </plist>

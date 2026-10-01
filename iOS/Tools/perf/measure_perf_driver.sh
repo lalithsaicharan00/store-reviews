@@ -10,7 +10,7 @@
 set -u
 SIM="$1"; OUT="$2"; mkdir -p "$OUT"
 HERE="$(cd "$(dirname "$0")" && pwd)"
-BUNDLE=com.lalithsaicharan.habits
+BUNDLE=com.oftenenough.app
 SCENARIOS="${PERF_SCENARIOS:-scroll-today tap-today all-habits habit-page habit-page-total habit-page-quit calendar new-habit player day-sheet log-sheet}"
 SUMMARY="$OUT/perf-summary.md"
 OPENS="$OUT/opens.txt"; : > "$OPENS"

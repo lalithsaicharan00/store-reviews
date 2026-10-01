@@ -279,7 +279,7 @@ This is the "prove it" part of C030.
 **Why it can't cost users their data:**
 - **The phone is the source of truth.** Cloudflare only holds a copy and relays changes. If it vanished overnight,
   every phone still has all its data and keeps working offline.
-- **The sync API runs on our own domain** (`api.<ourapp>.com`), never a Cloudflare URL. Moving providers is a DNS
+- **The sync API runs on our own domain** (`api.oftenenough.com`), never a Cloudflare URL. Moving providers is a DNS
   change, not an app update.
 - **The protocol is ours.** It is two plain HTTPS endpoints (push and pull). All Cloudflare-specific code stays in
   one thin storage layer.

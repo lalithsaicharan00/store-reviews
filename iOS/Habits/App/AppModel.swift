@@ -34,7 +34,7 @@ final class AppModel {
     private let persistence: Persistence?
     private var loading: Task<Void, Never>?
 
-    static let refreshTaskID = "com.lalithsaicharan.habits.refresh"
+    static let refreshTaskID = "com.oftenenough.app.refresh"
 
     private init() {
         let arguments = ProcessInfo.processInfo.arguments
