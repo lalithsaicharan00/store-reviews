@@ -42,7 +42,7 @@ struct HabitsApp: App {
 
     @ViewBuilder private var root: some View {
             #if DEBUG
-            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-widgetcheck"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-widgetcheck", "-widget-system-verify"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
             } else if ProcessInfo.processInfo.arguments.contains("-widget-render") {
                 WidgetRenderCheck()
@@ -109,6 +109,15 @@ private struct PlacementCheckView: View {
             if !reminderMetric.isEmpty { Text(reminderMetric).accessibilityIdentifier("reminder-planning-metric") }
         }.padding().task {
             let arguments = ProcessInfo.processInfo.arguments
+            if arguments.contains("-widget-system-verify") {
+                await AppModel.shared.ensureLoaded()
+                let store = AppModel.shared.store
+                if let habit = store.habits.first(where: { $0.name == "Widget check" }),
+                   store.entries(of: habit.id).contains(where: { $0.source == .widget }) {
+                    result = "Widget system: persisted check"
+                } else { result = "Widget system: no durable widget check" }
+                return
+            }
             if arguments.contains("-widgetcheck") {
                 let failures = await WidgetCheck.run()
                 result = failures.isEmpty ? "Widgets: all checks passed" : "Widgets failed: " + failures.joined(separator: "; ")

@@ -10,6 +10,14 @@ extension HabitStore {
 
     func widgetSnapshot(now: Date = .now, hidden: Bool = false) -> WidgetSnapshot {
         let first = today(now: now)
+        if hidden {
+            let frames = (0..<7).map { offset in
+                let day = first.adding(days: offset, calendar: calendar), bounds = dayBounds(day)
+                return WidgetFrame(day: day.key, start: bounds.lowerBound, end: bounds.upperBound.addingTimeInterval(1), items: [])
+            }
+            return WidgetSnapshot(generated: now, timeZone: calendar.timeZone.identifier, locale: Locale.current.identifier,
+                                  plus: isPlus, hidden: true, frames: frames)
+        }
         var histories: [UUID: [WidgetDay]] = [:]
         // At most a month per habit; tasks never get fabricated habit statistics.
         for habit in habits where !habit.archived && habit.kind != .task && habit.kind != .quit {
@@ -19,12 +27,14 @@ extension HabitStore {
                                  value: progressValue(dayProgress(of: rule(habit, on: day), on: day), rule(habit, on: day)))
             }
         }
+        let signatures = Dictionary(uniqueKeysWithValues: habits.filter { !$0.archived }.map { ($0.id, Self.widgetSignature($0)) })
         let frames = (0..<7).map { offset -> WidgetFrame in
             let day = first.adding(days: offset, calendar: calendar)
             let bounds = dayBounds(day)
             let ordered = shortcutDay(day).map(\.habit)
             let active = habits.filter { !$0.archived }
-            let rest = active.filter { h in !ordered.contains { $0.id == h.id } }
+            let orderedIDs = Set(ordered.map(\.id))
+            let rest = active.filter { !orderedIDs.contains($0.id) }
             let items = (ordered + rest).map { habit -> WidgetItem in
                 let rule = rule(habit, on: day)
                 let planned = startDay(of: habit) <= day && !isPaused(habit, on: day) && !isSkipped(habit, on: day)
@@ -34,13 +44,14 @@ extension HabitStore {
                 let start = habit.kind == .quit ? quitHistory(of: habit, now: now).last.flatMap { $0.endedBy == .ongoing ? $0.start : nil } : nil
                 let action: String?
                 switch rule.kind {
-                case .check, .task: action = planned && !done ? "check" : nil
-                case .amount: action = planned && (rule.atMost || !done) && rule.quickIncrement != nil ? "add" : nil
+                case .check, .task: action = planned && !isDone(habit, on: day) ? "check" : nil
+                case .amount: action = planned && (rule.atMost || !isDone(habit, on: day)) && rule.quickIncrement != nil ? "add" : nil
                 default: action = nil
                 }
                 let goal = dayGoal(of: rule)
                 let status: String
-                if !planned { status = isPaused(habit, on: day) ? "Paused" : "Not planned today" }
+                if done && habit.kind == .task { status = "Done" }
+                else if !planned { status = isPaused(habit, on: day) ? "Paused" : "Not planned today" }
                 else if habit.kind == .quit { status = "Since last slip" }
                 else if habit.kind == .task { status = done ? "Done" : "For today" }
                 else if rule.atMost { status = "\(progressValue(value, rule)) · limit \(progressValue(goal, rule)) · so far" }
@@ -48,8 +59,10 @@ extension HabitStore {
                 else { status = done ? "Done" : "For today" }
                 return WidgetItem(id: habit.id.uuidString, name: habit.name, symbol: habit.symbol, status: status,
                                   value: value, goal: goal, done: done, planned: planned, ongoing: rule.atMost || habit.kind == .quit,
-                                  isTask: habit.kind == .task, action: action, token: UUID().uuidString,
-                                  signature: Self.widgetSignature(habit), counterStart: start, history: histories[habit.id] ?? [])
+                                  isTask: habit.kind == .task, action: action,
+                                  stepLabel: rule.quickIncrement.map { progressValue($0, rule) }, token: UUID().uuidString,
+                                  signature: signatures[habit.id] ?? "", counterStart: start,
+                                  history: (histories[habit.id] ?? []).filter { $0.id >= day.adding(days: -30, calendar: calendar).key })
             }
             return WidgetFrame(day: day.key, start: bounds.lowerBound, end: bounds.upperBound.addingTimeInterval(1), items: hidden ? [] : items)
         }

@@ -108,6 +108,39 @@ enum WidgetCheck {
                    "04:00 wall-clock boundaries across DST \(month)")
             expect(dstStore.today(now: bounds.lowerBound) == dst && dstStore.today(now: bounds.lowerBound.addingTimeInterval(-1)) == dst.adding(days: -1), "Custom day starts exactly at boundary \(month)")
         }
+        let repeating = Habit(name: "Repeating widget task", symbol: "checkmark", color: .blue, kind: .task,
+                              frequency: .afterCompletion(2, .day), startsOn: day.adding(days: -5))
+        store.add(repeating); await store.flush()
+        store.logFromWidget(id: repeating.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(repeating), now: now); await store.flush()
+        expect(!store.isDue(repeating, on: day.adding(days: 1)) && store.isDue(repeating, on: day.adding(days: 2)), "Task repeats from actual widget completion")
+        let triple = Habit(name: "Three checks", symbol: "star", color: .blue, kind: .check, goal: 3, startsOn: day)
+        store.add(triple); await store.flush()
+        store.logFromWidget(id: triple.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(triple), now: now); await store.flush()
+        expect(store.dayProgress(of: triple, on: day) == 1 && !store.isDone(triple, on: day), "One repeated-goal tap adds one, never completes whole goal")
+        let weekly = Habit(name: "Weekly checks", symbol: "star", color: .blue, kind: .check, frequency: .perWeek(3), startsOn: day)
+        store.add(weekly); await store.flush()
+        for _ in 0..<2 { store.logFromWidget(id: weekly.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(weekly), now: now) }
+        await store.flush()
+        expect(store.dayProgress(of: weekly, on: day) == 2 && store.isSatisfied(weekly, on: day), "Weekly extra ticks remain additive after daily satisfaction")
+        let list = Habit(name: "Checklist", symbol: "checklist", color: .blue, kind: .checklist, steps: [Step(name: "One"), Step(name: "Two")], startsOn: day)
+        store.add(list); await store.flush()
+        expect(store.widgetSnapshot(now: now).frames.first!.items.first { $0.id == list.id.uuidString }?.action == nil, "Checklist has no complete-all shortcut")
+        store.pause(triple, from: day, through: nil, now: now); await store.flush()
+        store.logFromWidget(id: triple.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(triple), now: now); await store.flush()
+        expect(store.dayProgress(of: triple, on: day) == 1, "Paused habit rejects a cached action")
+        store.problem = nil
+        store.archive([weekly]); await store.flush()
+        store.logFromWidget(id: weekly.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(weekly), now: now); await store.flush()
+        expect(store.dayProgress(of: weekly, on: day) == 2, "Archived habit rejects old action")
+        store.problem = nil
+        store.delete([list]); await store.flush()
+        store.logFromWidget(id: list.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(list), now: now); await store.flush()
+        expect(!store.habits.contains { $0.id == list.id }, "Deleted item cannot be revived by widget")
+        store.problem = nil
+        store.isPlus = true
+        expect(store.widgetSnapshot(now: now).plus, "Verified entitlement input enables extra layouts")
+        store.isPlus = false
+        expect(!store.widgetSnapshot(now: now).plus, "Entitlement loss restores free fallback")
         let missing = HabitStore(repository: Persistence.inMemory().repository, databaseOpened: false)
         await missing.load()
         missing.logFromWidget(id: cut.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(cut), now: now); await missing.flush()
@@ -124,6 +157,7 @@ struct WidgetRenderCheck: View {
     @State private var layout = PhoneWidgetLayout.item
     @State private var plus = false
     @State private var dark = false
+    @State private var month = false
     private let families: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryCircular, .accessoryRectangular]
     var body: some View {
         VStack(spacing: 8) {
@@ -134,12 +168,13 @@ struct WidgetRenderCheck: View {
             }
             HStack { ForEach(PhoneWidgetLayout.allCases, id: \.rawValue) { value in Button(value.rawValue) { layout = value } } }
             Toggle("Plus preview", isOn: $plus).accessibilityIdentifier("widget-plus")
+            Toggle("Month preview", isOn: $month).accessibilityIdentifier("widget-month")
             Toggle("Dark preview", isOn: $dark).accessibilityIdentifier("widget-dark")
             if let frame {
                 ScrollView(.horizontal) { HStack { ForEach(frame.items.prefix(5)) { item in
                     Button(item.name) { selected = item.id }.accessibilityIdentifier("select-\(item.name)")
                 } } }
-                PhoneWidgetView(entry: .init(date: .now, frame: frame, plus: plus, selection: selected), layout: layout)
+                PhoneWidgetView(entry: .init(date: .now, frame: frame, plus: plus, selection: selected, month: month), layout: layout)
                     .environment(\.widgetFamily, family)
                     .frame(width: size.width, height: size.height)
                     .background(Color(.secondarySystemBackground))

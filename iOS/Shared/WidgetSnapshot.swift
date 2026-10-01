@@ -13,6 +13,7 @@ nonisolated struct WidgetItem: Codable, Identifiable, Sendable {
     var ongoing: Bool
     var isTask: Bool
     var action: String?
+    var stepLabel: String? = nil
     var token: String
     var signature: String
     var counterStart: Date?
@@ -60,7 +61,8 @@ nonisolated enum WidgetDisk {
     static func decode(_ data: Data) -> WidgetSnapshot? {
         guard data.count <= maximumBytes, let snapshot = try? JSONDecoder().decode(WidgetSnapshot.self, from: data),
               snapshot.version == WidgetSnapshot.version, snapshot.frames.count <= 8,
-              snapshot.frames.allSatisfy({ $0.start < $0.end && $0.items.allSatisfy { $0.value.isFinite && $0.goal.isFinite } }) else { return nil }
+              snapshot.frames.allSatisfy({ $0.start < $0.end && $0.items.allSatisfy { $0.value.isFinite && $0.goal.isFinite } }),
+              zip(snapshot.frames, snapshot.frames.dropFirst()).allSatisfy({ $0.end == $1.start }) else { return nil }
         return snapshot
     }
     static func read(from file: URL? = url) -> WidgetSnapshot? {
@@ -76,7 +78,7 @@ nonisolated enum WidgetDisk {
         try data.write(to: file, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
     }
     /// Coordinated read-modify-write: paging is display state, never a log or database lock.
-    static func page(key: String, delta: Int = 0) -> Int {
+    static func page(key: String, delta: Int = 0, set: Int? = nil) -> Int {
         guard let directory else { return 0 }
         let file = directory.appendingPathComponent("widget-pages.json")
         let coordinator = NSFileCoordinator()
@@ -84,8 +86,8 @@ nonisolated enum WidgetDisk {
         var result = 0
         coordinator.coordinate(writingItemAt: file, options: .forMerging, error: &error) { file in
             var pages = (try? Data(contentsOf: file)).flatMap { try? JSONDecoder().decode([String: Int].self, from: $0) } ?? [:]
-            result = max(0, min(100_000, (pages[key] ?? 0) + delta))
-            if delta != 0 {
+            result = max(0, min(100_000, set ?? ((pages[key] ?? 0) + delta)))
+            if delta != 0 || set != nil {
                 pages[key] = result
                 if let data = try? JSONEncoder().encode(pages) { try? data.write(to: file, options: .atomic) }
             }

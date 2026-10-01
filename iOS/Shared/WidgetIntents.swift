@@ -23,12 +23,12 @@ nonisolated struct WidgetSelectionQuery: EntityStringQuery {
         (WidgetDisk.read()?.frames.first?.items ?? []).map { WidgetSelection(id: $0.id, name: $0.name) }
     }
 }
-struct ItemWidgetConfiguration: WidgetConfigurationIntent {
+nonisolated struct ItemWidgetConfiguration: WidgetConfigurationIntent {
     static let title: LocalizedStringResource = "Choose an item"
     static let description = IntentDescription("Choose a habit or unlimited task. Quit counters never have a reset button.")
     @Parameter(title: "Habit or task") var item: WidgetSelection?
 }
-struct AgendaWidgetConfiguration: WidgetConfigurationIntent {
+nonisolated struct AgendaWidgetConfiguration: WidgetConfigurationIntent {
     static let title: LocalizedStringResource = "Today"
     @Parameter(title: "Show completed", default: false) var completed: Bool
     @Parameter(title: "Tasks only", default: false) var tasksOnly: Bool
@@ -38,7 +38,7 @@ nonisolated enum WidgetHistoryRange: String, AppEnum {
     static let typeDisplayRepresentation: TypeDisplayRepresentation = "History"
     static let caseDisplayRepresentations: [Self: DisplayRepresentation] = [.week: "Last 7 days", .month: "Last 31 days"]
 }
-struct HistoryWidgetConfiguration: WidgetConfigurationIntent {
+nonisolated struct HistoryWidgetConfiguration: WidgetConfigurationIntent {
     static let title: LocalizedStringResource = "Habit history · Plus"
     @Parameter(title: "Habit") var item: WidgetSelection?
     @Parameter(title: "Range", default: .week) var range: WidgetHistoryRange
@@ -46,7 +46,7 @@ struct HistoryWidgetConfiguration: WidgetConfigurationIntent {
 
 /// Implemented in BOTH app and extension. LiveActivityIntent dispatches to the app process;
 /// the extension has no SQLite/Kotlin access and must never report a successful local write.
-struct WidgetLogIntent: LiveActivityIntent {
+nonisolated struct WidgetLogIntent: LiveActivityIntent {
     static let title: LocalizedStringResource = "Log one step"
     static var isDiscoverable: Bool { false }
     @Parameter(title: "Item") var item: String
@@ -66,15 +66,15 @@ struct WidgetLogIntent: LiveActivityIntent {
         return .result()
     }
 }
-struct WidgetPageIntent: AppIntent {
+nonisolated struct WidgetPageIntent: AppIntent {
     static let title: LocalizedStringResource = "Change widget page"
     static var isDiscoverable: Bool { false }
     @Parameter(title: "View") var key: String
-    @Parameter(title: "Direction") var delta: Int
+    @Parameter(title: "Page") var page: Int
     init() {}
-    init(key: String, delta: Int) { self.key = key; self.delta = delta }
+    init(key: String, page: Int) { self.key = key; self.page = page }
     func perform() async throws -> some IntentResult {
-        _ = WidgetDisk.page(key: key, delta: delta)
+        _ = WidgetDisk.page(key: key, set: page)
         WidgetCenter.shared.reloadAllTimelines()
         return .result()
     }

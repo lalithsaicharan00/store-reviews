@@ -26,7 +26,9 @@ nonisolated struct PhoneWidgetEntry: TimelineEntry {
     static var placeholder: Self {
         let item = WidgetItem(id: "preview", name: "Drink water", symbol: "drop", status: "3 glasses / 8 glasses", value: 3, goal: 8,
                               done: false, planned: true, ongoing: false, isTask: false, action: nil,
-                              token: "", signature: "", counterStart: nil, history: [])
+                              token: "", signature: "", counterStart: nil,
+                              history: (1...31).map { WidgetDay(id: "preview-\($0)", label: String($0),
+                                                             state: $0 % 4 == 0 ? "some" : "done", value: "3 glasses") })
         return Self(date: .now, frame: .init(day: "Preview", start: .distantPast, end: .distantFuture, items: [item]),
                     selection: item.id, sample: true)
     }
@@ -96,6 +98,7 @@ struct TodayPhoneWidget: Widget {
         AppIntentConfiguration(kind: PhoneWidgetKind.agenda, intent: AgendaWidgetConfiguration.self, provider: AgendaWidgetProvider()) {
             PhoneWidgetView(entry: $0, layout: .agenda)
         }.configurationDisplayName("Today").description("Habits and unlimited tasks, with checks and saved amount increments.")
+            .contentMarginsDisabled()
             .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
@@ -104,6 +107,7 @@ struct ItemPhoneWidget: Widget {
         AppIntentConfiguration(kind: PhoneWidgetKind.item, intent: ItemWidgetConfiguration.self, provider: ItemWidgetProvider()) {
             PhoneWidgetView(entry: $0, layout: .item)
         }.configurationDisplayName("One item").description("A habit, task, limit or quit counter. Choose your item by editing the widget.")
+            .contentMarginsDisabled()
             .supportedFamilies([.systemSmall, .accessoryInline, .accessoryCircular, .accessoryRectangular])
     }
 }
@@ -112,6 +116,7 @@ struct LockTodayPhoneWidget: Widget {
         AppIntentConfiguration(kind: PhoneWidgetKind.lock, intent: AgendaWidgetConfiguration.self, provider: AgendaWidgetProvider()) {
             PhoneWidgetView(entry: $0, layout: .agenda)
         }.configurationDisplayName("Today on Lock Screen").description("What's left today, without opening the app.")
+            .contentMarginsDisabled()
             .supportedFamilies([.accessoryInline, .accessoryCircular, .accessoryRectangular])
     }
 }
@@ -120,6 +125,7 @@ struct IconsPhoneWidget: Widget {
         AppIntentConfiguration(kind: PhoneWidgetKind.icons, intent: AgendaWidgetConfiguration.self, provider: AgendaWidgetProvider()) {
             PhoneWidgetView(entry: $0, layout: .icons)
         }.configurationDisplayName("Icons · Plus").description("Compact named tiles. Free users get the complete Today agenda.")
+            .contentMarginsDisabled()
             .supportedFamilies([.systemMedium, .systemLarge])
     }
 }
@@ -128,6 +134,7 @@ struct HistoryPhoneWidget: Widget {
         AppIntentConfiguration(kind: PhoneWidgetKind.history, intent: HistoryWidgetConfiguration.self, provider: HistoryWidgetProvider()) {
             PhoneWidgetView(entry: $0, layout: .history)
         }.configurationDisplayName("History · Plus").description("A habit's recent week or month. Free users get the selected item's status.")
+            .contentMarginsDisabled()
             .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
@@ -140,8 +147,8 @@ struct PhoneWidgetView: View {
     @Environment(\.widgetRenderingMode) private var renderingMode
     private var accessory: Bool { [.accessoryInline, .accessoryCircular, .accessoryRectangular].contains(family) }
     private var effective: PhoneWidgetLayout {
-        if !entry.plus && layout == .icons { return .agenda }
-        if !entry.plus && layout == .history { return .item }
+        if !entry.plus && !entry.sample && layout == .icons { return .agenda }
+        if !entry.plus && !entry.sample && layout == .history { return .item }
         return layout
     }
     var body: some View {
@@ -157,6 +164,7 @@ struct PhoneWidgetView: View {
                 }
             }
         }
+        .padding(accessory ? 0 : 10)
         .foregroundStyle(.primary)
         .containerBackground(.background, for: .widget)
         .widgetURL(effective == .item || effective == .history ? entry.selected?.url ?? Self.todayURL : Self.todayURL)
@@ -175,7 +183,7 @@ struct PhoneWidgetView: View {
             HStack {
                 Text(heading).font(.headline)
                 Spacer()
-                Text("\(entry.frame?.remaining ?? 0) left").font(.caption).foregroundStyle(.secondary)
+                Text("\(entry.rows.filter { !$0.done && !$0.ongoing }.count) left").font(.caption).foregroundStyle(.secondary)
             }
             if family == .systemSmall {
                 Text("\(entry.rows.count)").font(.largeTitle.bold()).monospacedDigit()
@@ -195,7 +203,7 @@ struct PhoneWidgetView: View {
     }
     private func row(_ item: WidgetItem) -> some View {
         HStack(spacing: 7) {
-            control(item, size: 30)
+            control(item, size: family == .systemMedium ? 27 : 30)
             Link(destination: item.url) {
                 VStack(alignment: .leading, spacing: 1) {
                     Text(item.name).font(.caption.weight(.semibold)).lineLimit(1)
@@ -211,7 +219,7 @@ struct PhoneWidgetView: View {
                 Text(item.name).font(.headline).lineLimit(2)
                 status(item).font(.callout).lineLimit(3)
                 Spacer(minLength: 0)
-                Text(item.action == nil ? "Open details" : item.action == "add" ? "Tap + to add one step" : "Tap to check off")
+                Text(item.action == nil ? "Open details" : item.action == "add" ? "+ adds \(item.stepLabel ?? "one step")" : "Tap to check off")
                     .font(.caption2).foregroundStyle(.secondary)
             } else {
                 Image(systemName: "square.and.pencil")
@@ -231,7 +239,7 @@ struct PhoneWidgetView: View {
                 Image(systemName: item.action == "add" ? "plus.circle" : "circle")
                     .font(.system(size: size * 0.68, weight: .medium)).frame(width: size, height: size)
             }.buttonStyle(.plain).widgetAccentable()
-                .accessibilityLabel("\(item.action == "add" ? "Add one saved step to" : "Check off") \(item.name)")
+                .accessibilityLabel("\(item.action == "add" ? "Add \(item.stepLabel ?? "one saved step") to" : "Check off") \(item.name)")
                 .accessibilityValue(item.status)
         } else {
             Link(destination: item.url) {
@@ -244,7 +252,9 @@ struct PhoneWidgetView: View {
         Group {
             if effective == .item, let item = entry.selected {
                 switch family {
-                case .accessoryInline: Text("\(item.name): \(item.status)")
+                case .accessoryInline:
+                    if let start = item.counterStart { Text(item.name + ": ") + Text(start, style: .relative) }
+                    else { Text("\(item.name): \(item.status)") }
                 case .accessoryCircular:
                     VStack(spacing: 0) {
                         control(item, size: 28)
@@ -286,8 +296,9 @@ struct PhoneWidgetView: View {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4), count: 3), spacing: 4) {
                 ForEach(Array(entry.rows.dropFirst(page * capacity).prefix(capacity))) { item in
                     VStack(spacing: 0) {
-                        control(item, size: family == .systemLarge ? 34 : 27)
-                        Text(item.name).font(.caption2).lineLimit(1)
+                        control(item, size: family == .systemLarge ? 34 : 25)
+                        Text(item.name).font(.system(size: family == .systemLarge ? 12 : 10)).lineLimit(1)
+                        status(item).font(.system(size: family == .systemLarge ? 10 : 8)).lineLimit(1).foregroundStyle(.secondary)
                     }.frame(maxWidth: .infinity)
                 }
             }
@@ -308,9 +319,9 @@ struct PhoneWidgetView: View {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 3), count: 7), spacing: 5) {
                         ForEach(days) { day in
                             VStack(spacing: 2) {
-                                Image(systemName: mark(day.state)).font(.system(size: family == .systemSmall ? 10 : 14))
+                                Image(systemName: mark(day.state)).font(.system(size: entry.month && family != .systemLarge ? 9 : 14))
                                     .foregroundStyle(.primary).widgetAccentable()
-                                Text(day.label).font(.system(size: 8))
+                                if !entry.month || family == .systemLarge { Text(day.label).font(.system(size: 8)) }
                             }.accessibilityElement(children: .ignore)
                                 .accessibilityLabel("\(day.id), \(spoken(day.state)), \(day.value)")
                         }
@@ -347,10 +358,10 @@ struct PhoneWidgetView: View {
         let page = clampedPage(capacity)
         return HStack(spacing: 8) {
             if pages > 1 {
-                Button(intent: WidgetPageIntent(key: entry.pageKey, delta: page > 0 ? -1 : 0)) { Image(systemName: "chevron.left") }
+                Button(intent: WidgetPageIntent(key: entry.pageKey, page: max(0, page - 1))) { Image(systemName: "chevron.left") }
                     .disabled(page == 0).accessibilityLabel("Previous page")
                 Text("\(page + 1)/\(pages)").font(.caption2).monospacedDigit()
-                Button(intent: WidgetPageIntent(key: entry.pageKey, delta: page + 1 < pages ? 1 : 0)) { Image(systemName: "chevron.right") }
+                Button(intent: WidgetPageIntent(key: entry.pageKey, page: min(pages - 1, page + 1))) { Image(systemName: "chevron.right") }
                     .disabled(page + 1 == pages).accessibilityLabel("Next page")
             }
             Spacer(minLength: 0)

@@ -68,7 +68,7 @@ jobs:
             fi
           else
             case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests,ProgressUITests,GroupsUITests,UndoUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
-            case "$MESSAGE" in *"[ios-widgets]"*) echo "TESTS=WidgetUITests,UndoUITests/testStoreCorrectionsRecalculateAndPersist,TimerUITests" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-widgets]"*) echo "TESTS=WidgetUITests,WidgetSystemUITests,UndoUITests/testStoreCorrectionsRecalculateAndPersist,TimerUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets-build]"*) echo "TESTS=none" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "TESTS=BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-backup]"*) echo "PERF_TESTS=testBackupPage testMenuOpenClose testScrollToday" >> "$GITHUB_ENV";; esac
@@ -79,13 +79,16 @@ jobs:
             case "$MESSAGE" in *"[ios-reminders-recheck]"*) echo "TESTS=RemindersUITests,TasksUITests,BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV"; echo "PERF_TESTS=testRemindersPage" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf-xctest]"*|*"[ios-backup]"*|*"[ios-tasks"*|*"[ios-reminders"*) echo "PERF_XCTEST=true" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-widgets]"*) echo "PERF_SCENARIOS=scroll-today tap-today" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=tap-today" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf-input]"*) echo "PERF_SCENARIOS=new-habit day-sheet log-sheet" >> "$GITHUB_ENV";; esac
           fi
 
       # The speed rules that can be read from the code (iOS/PERFORMANCE.md). Fails the run before any Mac minutes go
       # to building.
       - name: Speed rules
-        run: iOS/Tools/perf/check_rules.sh
+        run: |
+          iOS/Tools/perf/check_rules.sh
+          python3 iOS/Tools/ci/verify_widget_evidence.py
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -127,8 +130,8 @@ jobs:
             -destination "id=$SIM" -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
           grep -q "BUILD SUCCEEDED" build.log
 
-      - name: Save successful build dependencies
-        if: always() && steps.build.outcome == 'success' && steps.gradle-cache.outputs.cache-hit != 'true'
+      - name: Save available core build dependencies
+        if: always() && steps.core.outcome == 'success' && steps.gradle-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |

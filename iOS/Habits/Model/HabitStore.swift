@@ -1854,7 +1854,7 @@ final class HabitStore {
                   signature == Self.widgetSignature(habit) else { throw WidgetActionError.stale }
             guard !(try await repository.hasEntry(id: event.uuidString)).boolValue else { return }
             let rule = rule(habit, on: day)
-            if !rule.atMost && isSatisfied(habit, on: day) { return }
+            if !rule.atMost && isDone(habit, on: day) { return }
             let value: Double
             switch rule.kind {
             case .check, .task: value = 1

@@ -10,25 +10,40 @@ final class WidgetUITests: XCTestCase {
     func testEveryFamilyAndLayoutAtIPhoneSizes() {
         let app = XCUIApplication(); app.launchArguments = ["-uitest", "-empty", "-widget-fixture", "-widget-render", "-free"]
         app.launch()
-        XCTAssertTrue(app.otherElements["widget-render"].waitForExistence(timeout: 15), app.debugDescription)
-        for layout in ["agenda", "item", "icons", "history"] {
+        XCTAssertTrue(app.descendants(matching: .any)["widget-render"].waitForExistence(timeout: 15), app.debugDescription)
+        func choose(_ family: String) {
+            let button = app.buttons["family-\(family)"]
+            app.scrollViews.firstMatch.swipeRight(); app.scrollViews.firstMatch.swipeRight()
+            for _ in 0..<3 where !button.isHittable { app.scrollViews.firstMatch.swipeLeft() }
+            XCTAssertTrue(button.exists && button.isHittable, "Missing widget family \(family)")
+            button.tap()
+        }
+        let pairs: [(String, [String])] = [
+            ("agenda", ["systemSmall", "systemMedium", "systemLarge", "accessoryInline", "accessoryCircular", "accessoryRectangular"]),
+            ("item", ["systemSmall", "accessoryInline", "accessoryCircular", "accessoryRectangular"]),
+            ("icons", ["systemMedium", "systemLarge"]),
+            ("history", ["systemSmall", "systemMedium", "systemLarge"])
+        ]
+        for (layout, families) in pairs {
             app.buttons[layout].tap()
-            for family in ["systemSmall", "systemMedium", "systemLarge", "accessoryInline", "accessoryCircular", "accessoryRectangular"] {
-                let button = app.buttons["family-\(family)"]
-                if !button.isHittable { app.scrollViews.firstMatch.swipeLeft() }
-                XCTAssertTrue(button.exists && button.isHittable, "Missing widget family \(family)"); button.tap()
-                let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-free-\(layout)-family-\(family)"; shot.lifetime = .keepAlways; add(shot)
+            for family in families {
+                choose(family)
+                let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-free-\(layout)-\(family)"; shot.lifetime = .keepAlways; add(shot)
             }
         }
         app.switches["widget-plus"].tap()
-        for layout in ["icons", "history"] {
+        for (layout, families) in pairs.filter({ ["icons", "history"].contains($0.0) }) {
             app.buttons[layout].tap()
-            for family in ["systemMedium", "systemLarge"] {
-                let button = app.buttons["family-\(family)"]
-                if !button.isHittable { app.scrollViews.firstMatch.swipeRight() }
-                button.tap()
-                let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-plus-\(layout)-family-\(family)"; shot.lifetime = .keepAlways; add(shot)
+            if layout == "history" { app.buttons["select-Widget water"].tap() }
+            for family in families {
+                choose(family)
+                let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-plus-\(layout)-\(family)"; shot.lifetime = .keepAlways; add(shot)
             }
+        }
+        app.switches["widget-month"].tap()
+        for family in ["systemSmall", "systemMedium", "systemLarge"] {
+            choose(family)
+            let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-plus-month-\(family)"; shot.lifetime = .keepAlways; add(shot)
         }
         app.switches["widget-dark"].tap()
         let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-dark-history"; shot.lifetime = .keepAlways; add(shot)
