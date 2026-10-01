@@ -50,8 +50,8 @@ moves, so the next session (person or agent) can pick up from it alone.*
       Production and Sandbox. Release builds of the app point at it (`AppModel.apiBase`); debug builds stay on dev.
       Checked by `test/production.test.ts` (production's settings on the real Worker) and `scripts/live-production.mjs`
       (8 live checks). **Not done:** a separate Cloudflare account for production (06 §8 asks for one; it needs you
-      to create the account, then the same steps there), gradual deploys (5% → 25% → 100%: use
-      `wrangler versions upload` + `versions deploy` once there are real users), and moving to Workers Paid ($5/month,
+      to create the account, then the same steps there), ~~gradual deploys~~ (done 1 Oct:
+      `npm run release:production`, 5% → 25% → 100% with live checks and automatic rollback; both drilled), and moving to Workers Paid ($5/month,
       needed before about 1,900 Plus users, Server Cost and Capacity §1). Real Apple/Google sign-in on production
       is untested until a phone tries it.
    3. ✅ Nightly backups to R2 + a restore script + a practice restore (1 Oct). Each synced account's object sets an

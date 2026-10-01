@@ -38,9 +38,13 @@ TEST_LOGIN_SECRET=... node scripts/live-smoke.mjs     # live check
 
 ```sh
 npm run migrate:production                     # only when migrations/ changed
-npm run deploy:production
+npm run release:production                     # tests, then 5% → 25% → 100%, live checks each step, rollback on failure
 node scripts/live-production.mjs               # live check, no secret needed
 ```
+
+`release:production` waits 20 minutes at 5% and at 25% (`-- --step-minutes N` to change). A release that changes
+Durable Object classes can't go out gradually (Cloudflare's rule): use `npm run deploy:production` for that one.
+Drilled 1 Oct 2026: a full 5/25/100 release, and `-- --drill-rollback` (rolled back from 25%).
 
 Its only secret is its own `TOKEN_KEY` (`npx wrangler secret put TOKEN_KEY --env production`; random, kept nowhere
 else: losing it only makes every device refresh once). Test production's settings locally with `test/production.test.ts`.
