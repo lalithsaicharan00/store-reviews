@@ -9,6 +9,7 @@ Prints, for each measured window:
     longest the longest single stall, ms
     freezes stalls of 100 ms or more (a visible freeze)
 and for each screen opening: open=<name>: longest stall <ms> ms. Notes come out as note=<text>.
+Timed work ("# TIME name|ms", MainThreadMeter.time) comes out as time=<name>|<count>|<total ms>|<longest ms>.
 """
 import sys
 
@@ -22,7 +23,12 @@ def main(path):
         print("note=no record from the app")
         return
     stalls, windows, opens = [], [], []
+    timed = {}
     for line in lines:
+        if line.startswith("# TIME "):
+            name, ms = line[7:].rsplit("|", 1)
+            timed.setdefault(name, []).append(float(ms))
+            continue
         if line.startswith("# WINDOW ") or line.startswith("# OPEN "):
             kind, rest = line[2:].split(" ", 1)
             name, a, b = rest.rsplit("|", 2)
@@ -46,6 +52,8 @@ def main(path):
         print(f"window={name}|{hitch:.1f}|{max(spans, default=0):.0f}|{sum(ms >= 100 for ms in spans)}")
     for name, a, b in opens:
         print(f"open={name}: longest stall {max(within(a - 0.05, b), default=0):.0f} ms")
+    for name, values in sorted(timed.items(), key=lambda kv: -sum(kv[1])):
+        print(f"time={name}|{len(values)}|{sum(values):.0f}|{max(values):.1f}")
 
 
 if __name__ == "__main__":

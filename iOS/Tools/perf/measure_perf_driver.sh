@@ -14,6 +14,7 @@ BUNDLE=com.oftenenough.app
 SCENARIOS="${PERF_SCENARIOS:-scroll-today tap-today groups menu menu-pages all-habits habit-page habit-page-total habit-page-quit habit-edit progress calendar new-habit player day-sheet log-sheet widget-guide widget-log}"
 SUMMARY="$OUT/perf-summary.md"
 OPENS="$OUT/opens.txt"; : > "$OPENS"
+TIMED="$OUT/timed.txt"; : > "$TIMED"
 
 APP=$(ls -d DerivedData/Build/Products/Debug-iphonesimulator/Habits.app 2>/dev/null | head -1)
 [ -n "$APP" ] || { echo "No Habits.app in DerivedData" > "$SUMMARY"; exit 1; }
@@ -42,6 +43,9 @@ for S in $SCENARIOS; do
 
   RESULT=$(python3 "$HERE/analyze_stalls.py" "$OUT/stalls-$S.txt")
   echo "$RESULT" | sed -n 's/^open=/- /p' >> "$OPENS"
+  echo "$RESULT" | sed -n 's/^time=//p' | while IFS='|' read -r NAME COUNT TOTAL LONGEST; do
+    echo "| $S | $NAME | $COUNT | $TOTAL ms | $LONGEST ms |" >> "$TIMED"
+  done
   BUSY=""; TOP=""
   # Samples diagnose code; they are never mixed into the timing record above.
   case " ${PERF_PROFILE_SCENARIOS:-scroll-today new-habit day-sheet log-sheet} " in
@@ -89,6 +93,14 @@ done
   echo "Opening a screen (longest stall in the 1.5 s after the command; under 100 ms feels instant):"
   echo
   cat "$OPENS"
+  if [ -s "$TIMED" ]; then
+    echo
+    echo "Timed work on the main thread (MainThreadMeter.time; the slowest first within each scenario):"
+    echo
+    echo "| Scenario | What | Times | Total | Longest |"
+    echo "|---|---|---|---|---|"
+    cat "$TIMED"
+  fi
 } >> "$SUMMARY"
 
 cat "$SUMMARY"

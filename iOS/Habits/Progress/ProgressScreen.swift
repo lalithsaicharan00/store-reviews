@@ -499,8 +499,10 @@ struct ProgressRowView: View {
         // Ranges × periods × groups: room for every group's week, month and year and the ones before them.
         if cache.count > 80 { cache.removeAll() }
         let today = key.today ?? store.today()
-        let made = store.progressSnapshot(key.range, containing: key.anchor ?? today, today: today, fullAt: Double(key.fullDay) / 100,
-                                          group: key.group)
+        let made = perfTimed("Progress \(key.range): whole snapshot") {
+            store.progressSnapshot(key.range, containing: key.anchor ?? today, today: today, fullAt: Double(key.fullDay) / 100,
+                                   group: key.group)
+        }
         cache[key] = made
         snapshot = made
     }

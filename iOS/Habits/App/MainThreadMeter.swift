@@ -42,6 +42,17 @@ final class MainThreadMeter {
         try? shared?.file?.write(contentsOf: Data((line + "\n").utf8))
     }
 
+    /// Times a piece of work during a speed run ("# TIME name|ms"); the script lists count, total and longest per name,
+    /// so one run says which part of a slow moment costs what, without a profiler (PERFORMANCE-LESSONS, 2 Oct).
+    /// Off speed runs it only runs `work`.
+    @discardableResult
+    static func time<T>(_ name: @autoclosure () -> String, _ work: () throws -> T) rethrows -> T {
+        guard shared != nil else { return try work() }
+        let start = CFAbsoluteTimeGetCurrent()
+        defer { mark(String(format: "# TIME %@|%.2f", name(), (CFAbsoluteTimeGetCurrent() - start) * 1000)) }
+        return try work()
+    }
+
     private func wentToSleep() {
         guard let start = awake else { return }
         awake = nil
@@ -52,3 +63,13 @@ final class MainThreadMeter {
     }
 }
 #endif
+
+/// Times `work` in speed runs (`MainThreadMeter.time`); in release builds it only runs `work`.
+@inline(__always)
+func perfTimed<T>(_ name: @autoclosure () -> String, _ work: () throws -> T) rethrows -> T {
+    #if DEBUG
+    return try MainThreadMeter.time(name(), work)
+    #else
+    return try work()
+    #endif
+}

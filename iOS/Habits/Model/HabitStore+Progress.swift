@@ -295,30 +295,32 @@ extension HabitStore {
             return all
         }
         func score(_ day: LocalDay) -> DayScore { score(day, group, tracked) }
-        let cells = days(in: span).map { day in
-            ProgressDay(day: day, score: score(day), isToday: day == today, isFuture: day > today)
+        let cells = perfTimed("Progress \(range): day scores") {
+            days(in: span).map { day in
+                ProgressDay(day: day, score: score(day), isToday: day == today, isFuture: day > today)
+            }
         }
-        let earliest = earliestProgressDay()
+        let earliest = perfTimed("Progress: earliest day") { earliestProgressDay() }
 
         var previous: (title: String, tally: ProgressTally)?
         let before = period(range.kind, containing: span.lowerBound.adding(days: -1, calendar: calendar))
         if let earliest, before.upperBound >= earliest {
-            let tally = progressTally(days(in: before).map { day in
+            let tally = perfTimed("Progress \(range): previous period") { progressTally(days(in: before).map { day in
                 ProgressDay(day: day, score: score(day), isToday: day == today, isFuture: day > today)
-            }, fullAt: fullAt)
+            }, fullAt: fullAt) }
             if tally.planned > 0 { previous = (previousTitle(range, before, today: today), tally) }
         }
 
         var rows: [ProgressHabitRow] = [], archived: [ProgressHabitRow] = []
         var goals = ProgressGoals(running: span.contains(today))
         for habit in tracked {
-            guard let row = progressRow(habit, in: span, range: range, today: today) else { continue }
+            guard let row = perfTimed("Progress \(range): one habit's row", { progressRow(habit, in: span, range: range, today: today) }) else { continue }
             if habit.archived { archived.append(row) } else { rows.append(row) }
             // Tile 3: week (and, on Month, month) goals whose period ends in this range. Limits aren't goals met.
             let rule = rule(habit, on: max(min(span.upperBound, today), startDay(of: habit)))
             let kind = periodKind(rule)
             guard !rule.atMost, kind != .day, Self.rank(kind) <= Self.rank(range.goalPeriod) else { continue }
-            for result in progressPeriodResults(habit, in: span, today: today) {
+            for result in perfTimed("Progress \(range): one habit's goals", { progressPeriodResults(habit, in: span, today: today) }) {
                 goals.total += 1
                 if result.met == true { goals.met += 1 }
                 goals.kinds.insert(kind)
@@ -329,7 +331,7 @@ extension HabitStore {
         let now = clock()
         for habit in habits where habit.kind == .quit && !habit.archived && isInGroup(habit, group)
             && quitStartDay(of: habit) <= min(span.upperBound, today) {
-            let stats = quitStats(of: habit, in: span, now: now)
+            let stats = perfTimed("Progress \(range): one quit row") { quitStats(of: habit, in: span, now: now) }
             let history = quitHistory(of: habit, now: now)
             let best = history.map { $0.length(now: now) }.max() ?? 0
             let running = span.contains(today)
@@ -348,8 +350,10 @@ extension HabitStore {
         }
 
         if range == .year {
-            for i in rows.indices { rows[i].yearDots = rowYearDots(rows[i], span) }
-            for i in archived.indices { archived[i].yearDots = rowYearDots(archived[i], span) }
+            perfTimed("Progress year: row dots") {
+                for i in rows.indices { rows[i].yearDots = rowYearDots(rows[i], span) }
+                for i in archived.indices { archived[i].yearDots = rowYearDots(archived[i], span) }
+            }
         }
 
         // Groups (report §15): with All, a bar per group and the rows under each group's heading, in the groups' order.
