@@ -44,10 +44,8 @@ merged. **Any session picking this up: read this first, then update it as items 
 
 ## Still to do that needs the user (from the Status note, 1 Oct)
 
-**GitHub Mac minutes (new, 1 Oct night):** CLAUDE.md budgets about 200 free Mac minutes a month. This work used
-about 300 on 1 Oct (nine runs), and `analytics` ran many more the same day. Either the month's free minutes are gone
-(runs then bill or stop, depending on the account's spending limit: GitHub → Settings → Billing), or the account
-has more. Until the user says, the hardening runs only what a change needs, one run at a time.
+**GitHub Mac minutes: no limit** (the user, 2 Oct 2026): the repository is public, so Actions minutes are free and
+unlimited. Run whatever a change needs; only GitHub's 60-minute job limit applies (split long suites).
 
 The Apple Developer account; trying Google sign-in on the iPhone; the website's origins on the Google web client;
 removing the parked DNS records for `oftenenough.com`; `support@oftenenough.com`; Resend; monitoring set-up
@@ -93,7 +91,7 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
   is the same on both. `testBigNumbers` passed alone. Today, Undo, Timer and Groups running.
 - **1 Oct 23:45 UTC:** Today 8/8, Undo, Timer 2/2, Groups 5/5 pass. **P6 done:** `integration` and `main`
   fast-forwarded to the merged branch (`2beaaec`, then `94748f4`). The speed job had read "failure" on every run
-  because two scenarios only open screens; fixed (`cb73f0c`). Paused Mac runs (minutes, above).
+  because two scenarios only open screens; fixed (`cb73f0c`). 
   **Next speed work, in order of daily use:** Today's first scroll (one 250–310 ms freeze), Today's +1 and day
   switch (137 ms/s), Progress's period and range switch (1.1 s, 7 freezes), the habit page's first scroll (1 s),
   saving an entry (0.6–0.8 s), the quit page's open (1.4–2 s, also before the merge), menu pages' opens (200–600 ms).

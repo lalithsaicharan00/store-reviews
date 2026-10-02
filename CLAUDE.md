@@ -29,7 +29,9 @@ new finding there the same day, with its numbers:
   TodayUITests + TimerUITests + ProgressUITests + GroupsUITests + UndoUITests, `[ios-perf]` for the speed runs (both can go in one
   message; `[ios-perf-xctest]` adds the older XCTest speed tests for Progress, Groups, Backup, Tasks and Reminders); other
   pushes run nothing.
-  About 200 free Mac minutes a month, so don't run the whole suite by default. A few minutes after the run, read the
+  **The repository is public, so GitHub Actions minutes (Mac runners included) are free and unlimited** (the user,
+  2 Oct 2026): run whatever tests and speed runs a change needs, the whole suite included. A job still stops at 60
+  minutes, so split a long suite across runs. A few minutes after the run, read the
   result: `git fetch origin ci-results && git show origin/ci-results:latest.md` (build errors, failed tests, speed
   table). Details at the top of [`.github/workflows/ios-tests.yml`](.github/workflows/ios-tests.yml).
 - Scratch files go in `Research/Temp/` (gitignored), never `/tmp`.

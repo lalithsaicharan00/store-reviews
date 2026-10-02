@@ -1,6 +1,7 @@
 # Builds the iPhone app and runs UI tests and speed tests on GitHub's Macs, so the MacBook doesn't have to.
 #
-# Runs only when asked, to stay inside the free Mac minutes (private repo: ~200 Mac minutes a month):
+# The repository is public, so Actions minutes (Mac runners included) are free and unlimited (2 Oct 2026). It still runs
+# only when asked, so a push of docs doesn't tie up a Mac:
 #   - by hand: GitHub → Actions → "iOS build and tests" → Run workflow (pick the branch, tests and speed), or
 #   - on a push whose commit message contains [ios-ci] (UI tests) and/or [ios-perf] (speed tests).
 #     [ios-perf] runs the speed runs: the app drives itself with no XCTest attached (measure_perf_driver.sh,
@@ -90,7 +91,7 @@ jobs:
             case "$MESSAGE" in *"[ios-perf-input]"*) echo "PERF_SCENARIOS=new-habit day-sheet log-sheet" >> "$GITHUB_ENV";; esac
           fi
 
-      # The speed rules that can be read from the code (iOS/PERFORMANCE.md). Fails the run before any Mac minutes go
+      # The speed rules that can be read from the code (iOS/PERFORMANCE.md). Fails the run before any Mac time goes
       # to building.
       - name: Speed rules
         run: |
