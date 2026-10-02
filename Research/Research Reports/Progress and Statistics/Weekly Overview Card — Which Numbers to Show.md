@@ -21,38 +21,50 @@ words people use about one combined figure or a weekly summary. §8 has the meth
 
 ## 1. The answer
 
-**Stop adding unlike things into one number.** "53 of 55" counts *habit-days*: one per habit per day it was due. Nobody
-thinks in that unit. It also blends weekly goals in a way that can only push the number up, and it leaves quit habits
-out without saying so. The fix is not a better formula. It is **one plain figure per kind of habit, each in the unit
-people already use for it**, plus the one thing the current card never says: **which habits need attention.**
+> **Revised the same day, after the user's review.** The first version kept weekly goals and quit habits out of the
+> big number and gave each its own line. The user's point: the overview is the summary of *everything listed below
+> it*, so a number that leaves some of those habits out has no job. That's right. This version makes one number that
+> covers every habit on the page, built so each kind of habit is judged by its own goal.
+
+**One number that sums up the habit rows beneath it: the average of every habit's own week score.** Each habit gets
+a score for the week, from 0 to 100%, against *its own* goal: a daily habit by its days, "3 times a week" by its
+three, a quit habit by its clean days. The overview is the plain average of those scores, so **each habit counts
+once**, whatever its type. Every row shows its score, so anyone can check the big number against the list. Under the
+number, the card names the habits pulling it down.
+
+"53 of 55" counts *habit-days* (one per habit per day it was due). That unit is invisible, it lets a daily habit
+weigh seven times a weekly one, weekly goals can only push it up, and quit habits are silently left out (§2).
 
 ```
-This week · Sun–Fri so far                               ⓘ
-96%  of daily habits done
-     Last week 81%
+This week · Sun–Fri so far                                   ⓘ
+89%  of your plan this week
+     every habit counts once, by its own goal · Last week 84%
  S    M    T    W    T    F    S
-(27) (28) (29) (30) ( 1) ( 2)  3          ← unchanged: each ring is that day's share
-───────────────────────────────────────
-3 of 5 days        1 of 2 weekly goals     Quit: no slips
-everything done    met so far              2 of 2 habits
-───────────────────────────────────────
+(27) (28) (29) (30) ( 1) ( 2)  3            ← unchanged: each ring is that day's share
+───────────────────────────────────────────
 Needs attention
- 🏋  Gym              1 of 3 this week · 2 days left
- 📖  Read             4 of 5 days
+ 🏋  Gym        0 of 3 · 2 days left           0%
+ 🚭  Smoking    1 slip · 4 of 5 days clean     80%
+ 📖  Read       4 of 5 days, 1 part done       90%
+9 habits fully on plan
 ```
+
+Worked example (Friday, 12 habits): nine daily habits done every day so far (100% each), Read 4 days done and one half
+done (90%), Gym "3 times a week" with nothing logged and two days left, so one session was already due (0%), Smoking
+with one slip in five days (80%). (9 × 100 + 90 + 0 + 80) ÷ 12 = **89%**. Today's card would read about 98% for the same
+week: Gym can't lower it and Smoking isn't counted.
 
 | # | Element | What it answers | Evidence |
 |---|---|---|---|
-| 1 | **A percentage of the day-by-day habits** ("96% of daily habits done") | "How did my week go?" | Users show: the most-asked combined figure. 302 reviews in 47 apps ask for an overall percentage or a day's share (§3) |
-| 2 | **Last week in the same unit** ("Last week 81%") | "Am I improving?" | Users show: 22 asks in 13 apps. Today's "Last week · 46 of 57" can't be compared with "53 of 55" at a glance; reasoned from first principles |
-| 3 | **The seven day rings** (kept) | "Which days went well?" | Users show: "on Monday you did 8/10, on Tuesday 9/10". Kept as decided |
-| 4 | **Full days as a share of days** ("3 of 5 days everything done") | "How many perfect days?" | Users show: perfect days are loved (59 praise) when weekly goals and skips can't break them (35 complaints) |
-| 5 | **Weekly goals counted by goals** ("1 of 2 weekly goals met so far") | "Are my 3-times-a-week habits on course?" | Users show: weekly goals miscounted is the costliest complaint here (37 reviews, 3.30★) |
-| 6 | **Quit habits counted by slips** ("Quit: no slips · 2 of 2 habits") | "Did I stay clean?" | Users show: quit is judged by slips and runs, never a share. Earlier report §10 |
-| 7 | **Needs attention**: up to three habits by name, each with its own number | "What do I do about it?" | Users show: 143 asks in 35 apps for "which habits need attention" (§3). The current card has nothing for this |
+| 1 | **Average of every habit's own week score** ("89% of your plan this week") | "How did my week go, all of it?" | Users show: the most-asked combined figure (302 reviews in 47 apps ask for an overall % or a day's share), and **13 reviewers ask for exactly this: the average of each habit's own percentage** (§4.1) |
+| 2 | **Last week, same number** ("Last week 84%") | "Am I improving?" | Users show: 22 asks in 13 apps; "46 of 57" can't be compared with "53 of 55" at a glance |
+| 3 | **The seven day rings** (kept) | "Which days went well?" | Users show: "on Monday you did 8/10, on Tuesday 9/10" |
+| 4 | **Needs attention**: the habits under 100%, lowest first, at most three, each with its own number and score | "What's pulling it down, and what do I do?" | Users show: 143 asks in 35 apps for "which habits need attention"; a single % "doesn't explain the story" |
+| 5 | **A score on every habit row** (most rows have one today; amount, time, limit, week-goal and quit rows don't yet) | "Where does 89% come from?" | Reasoned from first principles: a summary you can't trace reads as broken (54 complaints at 2.96★, §2.2) |
 
-**Remove:** the "53 of 55" sum as the headline, and "Last week · 46 of 57". Raw numbers stay one tap away, per day in
-the Day sheet and in the ⓘ sheet, where they mean something ("Tuesday: 9 of 10 habits").
+**Remove:** the "53 of 55" sum, the "Full days", "Weekly goals met" tiles as headline numbers (their information is now
+inside the score and in Needs attention), and "Last week · 46 of 57". Full days can stay as one small line if wanted
+(§4.5).
 
 ---
 
@@ -106,20 +118,20 @@ for having it, "Complaints" are about it done badly. Full counts: [`theme_counts
 
 | What they want | Reviews | Apps | Mean ★ | Praise · Ask · Complain | Used for |
 |---|---|---|---|---|---|
-| **One overall percentage** across habits | 276 | 50 | 4.27 | 67 · 191 · 16 | Element 1 |
+| **One overall percentage** across habits | 276 | 50 | 4.27 | 67 · 191 · 16 | The number (§4.1) |
 | **One combined graph over time** | 271 | 40 | 4.29 | 11 · 258 · 1 | Month/Year, not this card (§6) |
 | **All habits × days at a glance** (the week grid) | 256 | 49 | 4.36 | 98 · 147 · 0 | Already the habit rows under the card |
-| **Which habits are strong, which need attention** | 201 | 41 | 4.36 | 60 · 143 · 0 | Element 7 |
-| **Each day's share** ("8 of 10 on Monday") | 174 | 41 | 4.34 | 35 · 130 · 3 | Element 3, Day sheet |
+| **Which habits are strong, which need attention** | 201 | 41 | 4.36 | 60 · 143 · 0 | Needs attention (§4.4) |
+| **Each day's share** ("8 of 10 on Monday") | 174 | 41 | 4.34 | 35 · 130 · 3 | Day rings, Day sheet |
 | **A weekly / monthly report** as such | 172 | 38 | 4.34 | 57 · 103 · 3 | The card *is* this |
-| **Perfect / full days** | 142 | 26 | 4.20 | 59 · 18 · 35 | Element 4 |
-| **Weekly or flexible goals counted wrongly** | 73 | 25 | 3.68 | 13 · 19 · 37 | Elements 1, 5 |
-| **Totals** (time spent, counts) | 59 | 29 | 4.27 | 7 · 49 · 1 | Optional line (§4.6) |
-| **Quit habits in the overview** | 36 | 11 | 4.50 | 16 · 11 · 2 | Element 6 |
-| **Compared with last week** | 31 | 17 | 4.42 | 8 · 22 · 0 | Element 2 |
-| **A forgiving measure** (one miss doesn't wipe it) | 24 | 13 | **4.92** | 22 · 2 · 0 | Elements 1, 4 |
+| **Perfect / full days** | 142 | 26 | 4.20 | 59 · 18 · 35 | Optional line (§4.5) |
+| **Weekly or flexible goals counted wrongly** | 73 | 25 | 3.68 | 13 · 19 · 37 | Week-goal rule (§4.2) |
+| **Totals** (time spent, counts) | 59 | 29 | 4.27 | 7 · 49 · 1 | Optional line (§4.5) |
+| **Quit habits in the overview** | 36 | 11 | 4.50 | 16 · 11 · 2 | Clean days in the number (§4.2) |
+| **Compared with last week** | 31 | 17 | 4.42 | 8 · 22 · 0 | Last week (§4.3) |
+| **A forgiving measure** (one miss doesn't wipe it) | 24 | 13 | **4.92** | 22 · 2 · 0 | Shares, not pass/fail (§4.2) |
 | **By category / group** | 33 | 15 | 4.33 | 1 · 31 · 0 | Group chips already filter the card |
-| **Shame / pressure from the number** | 11 | 9 | 3.09 | — | Tone (§5) |
+| **Shame / pressure from the number** | 11 | 9 | 3.09 | — | Tone (§4.4) |
 
 Three things stand out:
 
@@ -136,7 +148,7 @@ Three things stand out:
    `4289afb7-50cb-4dcb-86c0-c361b51d430c`); a list running from neglected to well-done habits (Loop, 5★,
    `702167f5-450e-4acc-b71f-67920f2ce235`). A percentage alone hides this: "Seeing a single 75% ring doesn't explain the
    story" (Habit Tracker, 5★, `6087594649`).
-3. **Weekly goals need their own progress, not a daily share.** "it would be great to have a week view where you can
+3. **Weekly goals are judged by their own goal, not as if they were daily.** "it would be great to have a week view where you can
    see … how much you have left to do that week" (HabitNow, 4★, `53d05a77-686c-4e45-b4f1-c3682066bd3e`); "So i can see
    easily 'D'oh.. i have to do it at least two times more this week'" (HabitBull, 4★,
    `074b9e99-2679-4d2b-acdb-23742c20ecbf`); "tracks per week progress/completion based on the set frequency … knowing
@@ -148,138 +160,148 @@ Three things stand out:
 
 ## 4. The card, element by element
 
-### 4.1 The headline: a percentage of the day-by-day habits
+### 4.1 The number: every habit's own week score, averaged
 
-- **Text:** "96%" large. Under it, "of daily habits done". When a group chip is chosen, "of Health habits done".
-- **What counts:** every habit judged day by day (check-off, amount, time, checklist, specific days, every N days,
-  daily limits once the day is over), once per planned day, up to today. Today counts only what's done. Skipped,
-  paused, not-yet-started and archived days don't count. All of this is unchanged.
-- **What changes:** **weekly, monthly and flexible ("N days a week") goals leave this number** and get their own line
-  (§4.4). Then 0-of-3 gym can no longer hide behind a 96%, and weekly logs can no longer inflate it.
-- **"Daily habits"** is the wording because it's what these habits are to the person. The ⓘ sheet says exactly what is
-  in it.
-- **Why a percentage and not "53 of 55"** (users show + outside evidence): people ask in percentages (§3). Natural
-  frequencies ("9 of 10") beat percentages only when the counted thing is natural: a person or a day, not a habit-day
-  ([Gigerenzer & Hoffrage, 1995](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2015.00642/full)).
-  So natural fractions go where they are natural: per day (rings, Day sheet), in days (§4.3) and in goals (§4.4).
+**Each habit counts once.** Users show this is how people think about "overall": "habit a has 90%, habit b has 70%,
+my overall habit strength is, let's say 80%" (Loop, 4★, `3ba719b4-b3c3-47fa-82e4-eac69b1d5cc9`); "Each habit will be
+calculated by percentage … The average of all percentage score will be the score of the day" (HabitNow, 4★,
+`5f859344-d082-4af9-8a15-d1713f702e6d`); "a total cumulative percentage score (all percentages averaged)" (Strides,
+5★, `1298693623`); "the average completion rate of all habits so you can tell if you are making progress overall with
+one number" (HabitNow, 3★, `d861fc22-27ea-41e3-8aa7-142061e2b53d`); "No ability to see an average score across all
+habits. Deal breaker." (2★, `c461b6a5-5ad0-4e89-82ff-652dd61aa80b`). Also `4f121790-692f-4361-bd58-1c41a10d03d2`,
+`074a0b59-dce4-4f50-99cb-b39642d8714f`, `0f1157c7-2aac-4edf-9ac8-f47f0912152e`, `61f4f69b-9e97-4941-9621-20f09bdcbfdf`,
+`a6363b89-850a-47b6-af2e-f3899d547a44` (Russian), `127b60ea-505e-4e03-ab29-9637061224ed` (Portuguese), `779435004`,
+`994bd795-72d4-4a66-ab51-76c083192eca`: 13 in all, nobody asking for the opposite.
+
+**Why an average of habits and not a pooled count** (reasoned from first principles): pooling habit-days makes a daily
+habit weigh seven times a "once a week" one and thirty times a monthly one, so the habits people most often fall behind
+on barely register. An average of habits is also the only combined number a person can check by looking at the rows
+below it, which answers the user's own test: the overview should be "a combination of everything below".
+
+**Converting each kind to a share of its own goal** is how Apple's Activity rings put calories, minutes and hours side
+by side: each ring is the share of its own goal ([Apple](https://www.apple.com/watch/close-your-rings/)). Reviewers
+point to the Apple Watch rings as the model for habits (`10204139203`, `6087594649`). Ticks, kilometres and minutes are never
+added to each other; only each habit's share of its own goal is.
+
+### 4.2 Each kind of habit's week score
+
+"So far" means up to today. **Today never counts against anyone**: a day habit counts today only once it's done, and
+a goal counts the days still left, today included, as days you can still use.
+
+| Kind | Week score | Example |
+|---|---|---|
+| Check-off, daily or on set days, every N days | Share of its planned days done so far | 4 of 5 days → 80% |
+| Amount or time with a daily goal; checklist | Each planned day counts its share of the day's goal (capped at 100%), averaged | 4 full days + one half day → 90% |
+| **"N times a week" / "N days a week"** | Done ÷ what's already due. What's due is the part that no longer fits in the days left: goal − days left (today included), never below 0. Once the week ends: done ÷ goal. Capped at 100% | 3 a week, Friday, 2 days left: 1 due. Nothing done → 0%. 1 done → 100% |
+| **Week amount or time goal** ("20 km a week") | Done ÷ an even pace over the finished days (goal × finished days ÷ 7). 100% on the first day. Once the week ends: done ÷ goal. Capped | Friday, 5 days finished: 14.3 km due; 12 km done → 84% |
+| Monthly and yearly goals | The same two rules over their own month or year | 2 a month, 3 days left in the month, none done → 0% |
+| Daily limit (cut down) | Share of finished days within the limit | 4 of 5 days within → 80% |
+| Week limit | 100% while within; once over: limit ÷ used | 4 drinks against a limit of 3 → 75% |
+| **Quit** | Share of days so far without a slip (today counts once it's over, or at once if there's a slip today) | 1 slip in 5 days → 80% |
+| Tasks | Not in it (decided earlier) | — |
+
+- **Skipped, paused, not-yet-started and archived days** don't count, as now. A habit with nothing that counts this week
+  (paused all week, starts tomorrow) is left out of the average, never counted as 0 or 100.
+- **Doing more than the goal** shows on the row ("4 of 3 · met") but the score stays 100%, so one overachieved habit can't
+  hide another that's behind. Users show both halves: they want extra sessions recorded (Productive, 3★, `2530726777`;
+  `554b5f67-3ed8-4097-b887-111f0dbc7991`; `f3326a1b-7b14-4210-8e57-2fe8052408ae`), and they want to see which habit
+  "needs more attention".
+- **Why weekly goals use "what's already due"** (users show): "this habit will count against my success scores if
+  they're not completed … even though I have the rest of the week to get those 3 workouts in" (HabitMinder, 4★,
+  `3638140023`); "it will break my streak even if … I still have time to get in my 16 a month" (Loop, 3★,
+  `836746ac-98e7-46f5-a9df-8bd654c68ca1`). Dropping them instead earns a 1★ (`8d7173ed-c152-4692-a20c-3060362fa3f9`).
+  "What's already due" is the fairest honest rule for counts and days: nothing is late until it can no longer fit. For
+  amounts there is no "one per day", so an even pace over finished days is used. Strides users praise exactly that
+  ("works well to keep on pace for daily/weekly goals", 5★, `5366122746`;
+  [Strides FAQ](https://www.stridesapp.com/faq.html)).
+- **Why quit habits are in it, as clean days** (users show + first principles): the user asked for every kind of habit
+  in the overview. A share of clean days is a count of days, not a grade, and a slip lowers it by one day's worth, not
+  to zero: "If I slip in one area I am encouraged by success in the other areas" (Days Since, 5★, `9511554988`). The
+  run clock and best run stay in the Quitting section. A slip costs a day, never the week; that is the lesson of the
+  abstinence violation effect ([Marlatt](https://www.mayo.edu/research/documents/relapse-prevention-mdash-moran/DOC-20003018)).
 - **Why it stays forgiving** (users show): "If I break a streak I don't feel so defeated since I can see the total
   completion rate" (everyday, 5★, `11397647494`); "it gives you an overall percentage, which I find really helps
-  motivate me even if a streak is broken" (HabitBull, 5★, `051607de-1ae0-44ea-94b0-71b1b1a37a4d`). One miss costs a
-  few points, not the week. Outside evidence agrees: missing one day did not materially affect habit formation
-  ([Lally et al., 2010](https://bps.org.uk/research-digest/how-form-habit)), while all-or-nothing framing after one
-  lapse leads people to drop the goal (the "what-the-hell" effect, [summary](https://more.efpsa.org/rpblog/?p=1172)).
-- **Shown when** at least one daily habit had a planned day this week. Never "0 of 0", never 0% (as now).
+  motivate me even if a streak is broken" (HabitBull, 5★, `051607de-1ae0-44ea-94b0-71b1b1a37a4d`). A missed day costs a
+  few points. Missing once did not materially affect habit formation
+  ([Lally et al., 2010](https://bps.org.uk/research-digest/how-form-habit)).
 
-### 4.2 Last week, in the same unit
+**Shown when** at least one habit has something that counts this week. Never "0 of 0", never a bare 0% on the first
+morning (every habit is still on plan then, so it reads 100% with "so far").
 
-- "Last week 81%". Plain text, no arrow, no colour, hidden while percentages are hidden (the View Options rule). In
-  Month, "August 74%".
-- Users show: "I want to see how disciplined I've become since last week … last week 75% … this week done only 71%"
-  (Loop, 4★, `f9aa4227-c189-4278-87f7-8caa9f2a9b38`); "Or like how I was this week compared to last week" (Awesome Habits, 5★, `7229548903`). A week is also the natural fresh start: commitments rise right after Mondays
-  ([Dai, Milkman & Riis, 2014](https://knowledge.wharton.upenn.edu/article/need-fresh-start-heres-begin/)). So each
-  week starts clean and is compared with the last, not with all time.
-- **Mid-week fairness** (reasoned from first principles): a running week has fewer days than last week, but a
-  percentage of planned days is already fair to that. Say "so far" in the period line, not in every caption.
+**When percentages are hidden** (View Options): the big number becomes "9 of 12 habits fully on plan" and the list
+keeps each habit's own words ("0 of 3 · 2 days left") without scores.
 
-### 4.3 Full days, as a share of days
+### 4.3 Last week, the same number
 
-- "3 of 5 days" with "everything done" under it, instead of a bare "3". The denominator is the number of days so far
-  that had something planned. The existing 80% / 60% threshold from View Options stays.
-- Users show it motivates: "I'm always looking to see what little things I can do to increase my percentage or have a
-  perfect day" (Habit Tracker, 5★, `8994676845`); Productive's perfect days carry 59 praise reviews. It goes wrong only when weekly
-  goals, skips or pauses break a day: "If I set something to be done 4 times a week … it always marks the days as not
-  perfect" (Productive, 4★, `2395740335`), 35 complaints at 3.31★. The app already keeps weekly goals and skipped days
-  out of a full day. Keep it that way.
-- It is a secondary number, never the headline: an all-or-nothing day means "If you complete 9/10 task the app will record you do nothing" (Eden, 3★,
-  `12251741381`) and means "completing six feels the same as one" (Productive, 4★, `1565906427`).
+"Last week 84%". Plain text, no arrow, no colour. In Month, "August 78%". Users show: "I want to see how disciplined
+I've become since last week … last week 75% … this week done only 71%" (Loop, 4★, `f9aa4227-c189-4278-87f7-8caa9f2a9b38`);
+"Or like how I was this week compared to last week" (Awesome Habits, 5★, `7229548903`). A week is a natural fresh start
+([Dai, Milkman & Riis, 2014](https://knowledge.wharton.upenn.edu/article/need-fresh-start-heres-begin/)), so each week
+is compared with the last, not with all time.
 
-### 4.4 Weekly goals, counted as goals
+### 4.4 Needs attention: the habits pulling the number down
 
-- "1 of 2 weekly goals met so far". Shown only when the person has week goals. Mostly unchanged; the difference is that
-  these habits now live *only* here and in §4.5, not inside the percentage.
-- **Flexible "N days a week" habits join this count** (they're judged by the week, like "3 times a week"). Week limits
-  ("at most 3 drinks a week") count as met once the week ends within the limit, and appear in §4.5 when over it.
-- Monthly and yearly goals stay off the Week card. They are on the Month card and in their own rows.
+| Rule | Detail |
+|---|---|
+| Who | Habits with a week score under 100% |
+| Order | Lowest score first; ties: the goal with the fewest days left first |
+| How many | At most three, then "and 2 more", which scrolls to the habit rows. Under the list: "9 habits fully on plan". When none: "Every habit on plan so far" |
+| Text | The habit's own words, then its score: "0 of 3 · 2 days left · 0%", "1 slip · 4 of 5 days clean · 80%", "4 of 5 days · 80%", "Over on 2 days · 60%" |
+| Tap | Opens the habit's page. Progress never logs |
+| Tone | No red, no "missed", no "failed", no grade (decided earlier). Users show what goes wrong: "Always opens to bad news ... Overall percentage failure" (HabitBull, 3★, `83a077dc-1175-4280-8983-ac7cb330d5bd`) |
 
-### 4.5 Needs attention: the habits behind their own plan, by name
+Users show this is the practical half of an overview: "which one you are acing and which one need improvement"
+(HabitNow, 5★, `221e4dc8-d0d1-4e9a-8d1f-3e884aaa34f0`); "at a glance which habits are lagging or not meeting my goal
+quota's" (HabitBull, 4★, `1296985275`); "Seeing a single 75% ring doesn't explain the story" (Habit Tracker, 5★,
+`6087594649`).
 
-The current card has no answer to the most practical question. Add a short list under the numbers.
+### 4.5 Kept or optional
 
-| Habit kind | Listed when | Text |
-|---|---|---|
-| Daily, specific days, every N days | At least one planned day before today was not done | "Read · 4 of 5 days" |
-| Daily amount or time | Same, counting part days as not done | "Water · 3 of 5 days" |
-| Weekly goal / N days a week | Not met yet | "Gym · 1 of 3 · 2 days left"; past week: "Gym · 1 of 3" |
-| Daily or weekly limit | Over the limit on a day / the week | "Coffee · over on 2 days" |
-| Quit | Never here (§4.6) | — |
+- **Day rings:** kept exactly. They answer a different question (each day), so they keep their own rule (that day's
+  share of the habits due that day). The ⓘ sheet says so in one line.
+- **Full days:** optional small line, "3 of 5 days everything done". Loved (59 praise) as long as weekly goals and skips
+  can't break a day (35 complaints when they do). It is no longer a headline tile.
+- **Time on timed habits** ("4 h 10 min"): optional, off by default (§3: 49 asks for totals; calm-card asks against).
 
-- **Order:** weekly goals with the least room first (the most still needed for the days left), then day habits by
-  fewest days done. **At most three**, then "and 2 more" which scrolls to the habit rows below. When nothing qualifies:
-  one line, "Every habit on plan so far".
-- **Tone** (decided earlier and kept): no red, no "missed", no "failed", no grade. Just the habit's own number. Users show
-  what goes wrong: "Always opens to bad news ... Overall percentage failure" (HabitBull, 3★,
-  `83a077dc-1175-4280-8983-ac7cb330d5bd`).
-- **Why not a "10 of 12 habits on track" headline instead** (reasoned from first principles): for a daily habit, one
-  missed day would make it "not on track" for the rest of the week. Users show where that leads: "once you've broken a
-  streak, that week is lost, isn't it? Tempting not to bother till the next Monday" (HabitBull, 4★,
-  `6e034ffb-761f-4d1b-8d99-69e6aede544a`). Naming the habits with their numbers gives the same information without
-  turning a week into pass/fail.
-- **Tapping** a name opens that habit's page, as the rows already do. Progress never logs.
+### 4.6 The ⓘ sheet, rewritten
 
-### 4.6 Quit habits, counted by slips
-
-- One line when the person has quit habits: "Quit: no slips · 2 of 2 habits", or "Quit: 1 slip this week". Tapping
-  scrolls to the Quitting section, which already shows each current run.
-- **Never inside the percentage**, and never a score (earlier report §10). Users show both sides: seeing all quit
-  counters together helps ("If I slip in one area I am encouraged by success in the other areas", Days Since, 5★,
-  `9511554988`), and counting slips keeps people honest ("I used to think, oh I only smoked like one night this week…
-  nope think again, more like 3!", Way of Life, 5★, `1453443526`). But a slip should cost a line, not the week. That is the
-  relapse-prevention point about all-or-nothing thinking after a lapse
-  ([abstinence violation effect](https://www.mayo.edu/research/documents/relapse-prevention-mdash-moran/DOC-20003018)).
-
-### 4.7 Optional, not by default: time on timed habits
-
-- "4 h 10 min on timed habits" when two or more habits are measured in time. Minutes add up honestly; kilometres,
-  glasses and ticks don't, so nothing else is summed.
-- Users show a modest ask (49 reviews in 24 apps for totals; "how much productive time I had today … I have to count
-  the time myself", HabitNow, 3★, `ead6336e-4dc8-4098-be4e-d6b66b2ef1b7`). Behind the View Options switch, off by
-  default, because users also ask for a calm card ("Now it have lot of data, that's cool but, the simplicity and general resume of
-  your habits is gone", Habitify, 3★, `0f6507c6-7cc0-4d02-8928-d25305087b74`).
-
-### 4.8 The ⓘ sheet, rewritten
-
-"**Daily habits:** each habit counts once on each day it was planned. Today counts what's done. Skipped and paused days
-don't count. **Weekly goals** count once, when met. **Quit habits** count slips, not days. **Full days** are days
-everything planned was done." Users ask for exactly this: a box that explains how the percentages are calculated
-(Habitify, 4★, `3159218172`, Spanish, paraphrased).
+"**This week's number** is the average of every habit's own score, each habit counted once. A daily habit scores the
+share of its days done so far. A weekly goal ('3 times a week') counts only what's already due: what no longer fits in
+the days left. A weekly amount ('20 km') is compared with an even pace. A quit habit scores its days without a slip. A
+limit scores its days within the limit. Today never counts against you, and skipped or paused days don't count. **The
+rings** show each day: how many of that day's habits were done." Users ask for exactly this kind of box: one that
+explains how the percentages are calculated (Habitify, 4★, `3159218172`, Spanish, paraphrased).
 
 ---
 
-## 5. Every kind of habit, and where it shows
+## 5. Every kind of habit in the number
 
-| Kind | Headline % | Rings | Full days | Weekly goals line | Quit line | Needs attention |
-|---|---|---|---|---|---|---|
-| Check-off, daily or on set days | ✓ per planned day | ✓ | ✓ | — | — | days not done |
-| Amount / time, daily goal | ✓ when met | ✓ part fill | ✓ when met | — | — | days not met |
-| Checklist | ✓ when its rule is met | ✓ part fill | ✓ | — | — | days not met |
-| Every N days | ✓ per due day | ✓ | ✓ | — | — | due days not done |
-| N days a week (flexible) | — (moved) | logged days show | — | ✓ | — | still needed |
-| N times a week / week amount | — (as now, but no longer +1/+1) | logged days show | — | ✓ | — | still needed |
-| Monthly, yearly goals | — | logged days show | — | — (Month card) | — | — |
-| Daily limit (cut down) | ✓ once the day is over | ✓ after the day | ✓ | — | — | days over |
-| Weekly limit | — | — | — | ✓ at week end | — | when over |
-| Quit | — | — | — | — | ✓ slips | — |
-| Task | — | — | — | — | — | — (as decided) |
+Every habit listed on the page is in the number, except tasks (excluded from Progress earlier). Each kind is scored by
+§4.2, every row shows that score, and the overview is their average. The day rings keep their per-day rule.
+
+| Kind | In the big number | Row shows | In Needs attention when |
+|---|---|---|---|
+| Check-off (daily, set days, every N days) | ✓ days done ÷ planned | "4 of 5 days · 80%" | a planned day wasn't done |
+| Amount / time, daily goal | ✓ day shares, averaged | "1 h 52 min · 4 of 5 days · 90%" | any day short |
+| Checklist | ✓ step shares, averaged | "18 of 20 steps · 90%" | any day short |
+| N times / N days a week | ✓ done ÷ already due | "1 of 3 · 2 days left · 100%" | something due isn't done |
+| Week amount / time | ✓ done ÷ even pace | "12 of 20 km · 84%" | behind pace |
+| Monthly, yearly goals | ✓ same rules over its period | "1 of 2 this month · 100%" | something due isn't done |
+| Daily limit | ✓ days within ÷ finished days | "Within on 4 of 5 days · 80%" | over on a day |
+| Week limit | ✓ 100% within, else limit ÷ used | "2 of 3 this week · 100%" | over |
+| Quit | ✓ clean days ÷ days so far | "1 slip · 4 of 5 days clean · 80%" | a slip this week |
+| Task | — | — | — |
 
 ---
 
 ## 6. What not to put on this card
 
 - **A sum of habit-days** ("53 of 55"). An invisible unit (§2).
-- **A single score** that blends kinds, weights, points or "strength". 54 complaints at 2.96★ about combined numbers
-  being wrong or opaque, and specific complaints about Loop's, Productive's and HabitBull's scores (§2.2). Two
-  reviewers ask for weights (`d1fb6a31-09e1-4478-827d-8428bfb6b0df` among them). Weights need setting and explaining,
-  which is too much for a card meant to be glanced at.
+- **An opaque score**: points, weights, a "strength" formula or a smoothed curve that can't be traced to the rows.
+  54 complaints at 2.96★ about combined numbers being wrong or opaque, with specific complaints about Loop's,
+  Productive's and HabitBull's scores (§2.2). The recommended number differs on purpose: it is only the average of
+  scores printed on the rows. Two reviewers ask for weights (`d1fb6a31-09e1-4478-827d-8428bfb6b0df` among them).
+  Weights need setting and explaining, which is too much for a card meant to be glanced at; every habit counts once.
 - **Different units added together** (miles + ticks + minutes).
 - **A combined graph over time** (271 reviews, mostly Loop users asking for a chart across months). That belongs in
   Month and Year, which already have it. A week is seven rings.
@@ -294,9 +316,9 @@ everything planned was done." Users ask for exactly this: a box that explains ho
 | Finding | Source | Used for |
 |---|---|---|
 | Monitoring progress raises goal attainment (138 studies, d = 0.40), more when the progress is recorded | [Harkin et al., 2016, *Psychological Bulletin*](https://eprints.whiterose.ac.uk/91437/) | Why the card earns its place |
-| Natural frequencies are understood far better than percentages, when the counted thing is natural | [Gigerenzer & Hoffrage, 1995](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2015.00642/full) | Fractions in days, goals and per day; a % over habit-days |
+| Natural frequencies are understood far better than percentages, when the counted thing is natural | [Gigerenzer & Hoffrage, 1995](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2015.00642/full) | The rows keep plain fractions ("4 of 5 days", "1 of 3"); the % summarises them, never a fraction of habit-days |
 | Missing one day did not materially affect habit formation | [Lally et al., 2010](https://bps.org.uk/research-digest/how-form-habit) | A forgiving headline |
-| One lapse under all-or-nothing rules leads people to abandon the goal | ["What-the-hell" effect](https://more.efpsa.org/rpblog/?p=1172); [abstinence violation effect](https://www.mayo.edu/research/documents/relapse-prevention-mdash-moran/DOC-20003018) | No pass/fail week; quit counts slips |
+| One lapse under all-or-nothing rules leads people to abandon the goal | ["What-the-hell" effect](https://more.efpsa.org/rpblog/?p=1172); [abstinence violation effect](https://www.mayo.edu/research/documents/relapse-prevention-mdash-moran/DOC-20003018) | A slip or a miss costs a day's share, never the week |
 | Goal-pursuit rises after temporal landmarks such as Mondays | [Dai, Milkman & Riis, 2014](https://knowledge.wharton.upenn.edu/article/need-fresh-start-heres-begin/) | Each week starts clean; compare with last week |
 | Habitify's weekly report shows success, failed, skipped and total per habit, plus a comparison with the previous range | [Habitify help](https://intercom.help/habitify-app/en/articles/9728009-how-to-track-a-weekly-habit) | Checked only. Its own reviews ask for raw numbers and complain that weekly goals left its score (§2.2) |
 
