@@ -6,13 +6,13 @@ import SwiftUI
 //   five steps      up to a third, up to two thirds, more, the goal met (the habit's own colour), more than the goal
 //   dashed outline  nothing asked that day: not scheduled, skipped or paused (Week and Month show the sign)
 //   nothing         before the habit began, or a day still to come
-// Research behind it (Research/Temp, 2 Oct 2026): heat maps are the most praised way to show days across 1.2 million
+// Research behind it (report "Day Marks — Heat Map, Rule and Palette", 2 Oct 2026): heat maps are the most praised way to show days across 1.2 million
 // reviews in every language; people want the whole year at once, dates, skips that aren't failures, and shades by
 // amount. Squares and the grid are drawn from the store's numbers only (PERFORMANCE.md rules 5, 8 and 12).
 
 /// Grey and the five steps of every habit colour, light and dark. Each step sits at one OKLCH lightness for every hue
 /// (light: 0.855, 0.78, 0.71, 0.64 = the habit's own colour, 0.52; dark: 0.415, 0.49, 0.565, 0.64, 0.76), so no colour's
-/// steps look stronger than another's. Measured (Research/Temp/palette/make.py): neighbouring steps differ by at least
+/// steps look stronger than another's. Measured (the report's `Day Marks Evidence/scripts/make.py`): neighbouring steps differ by at least
 /// 0.07 in OKLab, about 3.5 times the smallest visible difference, and by at least 0.043 under every colour-vision
 /// deficiency; numbers on a square reach 4.3:1. "Gray" habits get a cool slate tint so their steps never read as the
 /// not-done grey.
