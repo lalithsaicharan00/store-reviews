@@ -471,6 +471,52 @@ enum ProgressCheck {
             same(s.entries.filter { $0.habitID == water.id }.compactMap(\.source), [.shortcut, .shortcut], "G20 marked as Siri or Shortcuts")
         }
 
+        // Week cards (2 Oct 2026, report "Weekly Habit Cards — What Each Card Shows" §5): the headline on each goal's
+        // own clock, one different fact or none, and each day's own value.
+        do {
+            let (s, _) = await store()
+            let read = Habit(name: "Read", symbol: "book", color: .blue, kind: .check, startsOn: monday)
+            let gym = Habit(name: "Gym", symbol: "dumbbell", color: .red, kind: .check, frequency: .perWeek(3), startsOn: day(15))
+            let water = Habit(name: "Water", symbol: "drop", color: .blue, kind: .amount(unit: "glasses", increment: 1), goal: 8, startsOn: day(24))
+            let coffee = Habit(name: "Coffee", symbol: "mug", color: .brown, kind: .amount(unit: "cups", increment: 1), goal: 3, atMost: true, startsOn: monday)
+            let smoking = Habit(name: "Smoking", symbol: "nosign", color: .gray, kind: .quit, createdAt: moment(day(16), hour: 9))
+            for h in [read, gym, water, coffee, smoking] { await add(s, h) }
+            for d in [21, 22, 24] { await tick(s, read, on: day(d)) }
+            s.setSkipped(read, on: day(23), true); await s.flush()
+            await tick(s, gym, on: monday); await tick(s, gym, on: day(23))
+            await log(s, water, 5, on: day(24)); await log(s, water, 6, on: friday)
+            await log(s, coffee, 4, on: day(23)); await log(s, coffee, 2, on: friday)
+            let snap = s.progressSnapshot(.week, containing: friday, weekCards: true)
+            func card(_ h: Habit) -> ProgressWeekCard? { (snap.cards + snap.archivedCards).first { $0.habit.id == h.id } }
+            same(snap.title, "21–27 Sep", "W title: the dates")
+            same(snap.caption, "This week", "W caption")
+            same(snap.columns.count, 7, "W seven columns")
+            expect(snap.rows.isEmpty && snap.goals == nil && snap.groupBars.isEmpty, "W no rows, overview or group numbers")
+            same(card(read)?.headline, "3 of 3 days so far", "W1 daily headline")
+            same(card(read)?.detail, nil, "W1 nothing more to say")
+            same(card(read)?.days.map(\.mark), [.done, .done, .skipped, .done, .open, .upcoming, .upcoming], "W1 marks")
+            same(card(gym)?.headline, "2 of 3 this week", "W2 week goal headline")
+            same(card(gym)?.detail, "1 to go · 3 days left", "W2 what's left")
+            expect(!(card(gym)?.days.contains { $0.mark == .missed } ?? true), "W2 no not-done marks")
+            same(card(water)?.headline, "Reached on 0 of 1 day so far", "W3 amount headline")
+            same(card(water)?.detail, "11 glasses this week", "W3 total in the unit")
+            same(card(water)?.days.map(\.value), ["", "", "", "5", "6", "", ""], "W3 each day's value")
+            same(card(coffee)?.headline, "Within limit on 3 of 4 days", "W4 daily limit, today not judged")
+            same(card(coffee)?.detail, "6 cups this week", "W4 total")
+            same(card(coffee)?.days.map(\.over), [false, false, true, false, false, false, false], "W4 Wednesday over")
+            same(card(smoking)?.headline, "Current run 9 d 3 h", "W5 quit: the run")
+            same(card(smoking)?.detail, "No slips this week", "W5 quit: this week's slips")
+            same(card(smoking)?.isQuit, true, "W5 quit card")
+            same(snap.legend, [.done, .part, .open, .over, .skipped, .notDue, .comingUp], "W legend: only the marks shown (no day was simply not done)")
+            same(HabitStore.compactNumber(9100), "9.1k", "W value 9.1k")
+            same(HabitStore.compactNumber(8000), "8k", "W value 8k")
+            same(HabitStore.compactNumber(6.5), "6.5", "W value 6.5")
+            same(HabitStore.compactNumber(123_456), "123k", "W value 123k")
+            same(HabitStore.compactMinutes(25), "25m", "W minutes 25m")
+            same(HabitStore.compactMinutes(65), "1h05", "W minutes 1h05")
+            same(HabitStore.compactMinutes(120), "2h", "W minutes 2h")
+        }
+
         return failures
     }
 }

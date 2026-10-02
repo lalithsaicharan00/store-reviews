@@ -217,6 +217,18 @@ Report: [The Progress Page — What People Need, and How to Build It](<../Resear
 - **A slip is an event with its own moment** ("Log a Slip…", with Undo). Editing "Started" is only for fixing a wrong start. A slip never erases the record: runs, clean days and slips are all kept.
 - **The overview counts habits, not ticks**, so it agrees with the day bar; part credit only fills rings.
 
+## Progress Week: habit cards (2 Oct 2026)
+
+Report: [Weekly Habit Cards — What Each Card Shows](<../Research/Research Reports/Progress and Statistics/Weekly Habit Cards — What Each Card Shows.md>). Checklist: `Docs/Checklists/Progress Week — Habit Cards Build.md`.
+
+- **No combined numbers on Week, and no day rings anywhere but Today's bottom bar** (the user, 2 Oct): no overview, no done-of-planned rings (Progress or the calendar sheet), no group numbers or Groups card. A blended number isn't a fact once a habit is weekly, monthly, every few days or a quit habit.
+- **A card says each fact once:** the goal in words, a headline on the goal's own clock, at most one different fact, and the strip with each day's own value. No percentages, no "Today ·" line.
+- **Names on one line** with "…"; the goal line too.
+- **Only the dates bar sticks** (one 44-pt row): tabs, chips and the key scroll away. Don't pin more; every pinned point is taken from the cards.
+- **Spacing is `WeekSpacing`'s scale (2, 4, 8, 16, 24)**, space inside a group smaller than around it. Don't add one-off paddings.
+- **Checks are white where white reaches 3:1, else a deep shade of the habit's colour (`checkInk`), never black.**
+- **Week cards are worked out in the store** (`progressSnapshot(…, weekCards: true)`), never in a body.
+
 ## Groups (built 30 Sep 2026)
 
 Plan: [Groups — What to Build](<Docs/Specs/Groups — What to Build.md>), from 2,228 group reviews (Day Structure report, Part 2) and the Today top-area reports. Checklist: `Docs/Checklists/Groups.md`.

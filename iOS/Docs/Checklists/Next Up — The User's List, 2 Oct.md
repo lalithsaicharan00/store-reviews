@@ -16,6 +16,9 @@ tick each when it's done and link what was built or written. Every change under 
   - Status: research prompt given to a research agent (branch `claude/progress-week-research`, report
     `Research/Research Reports/Progress and Statistics/Progress Week — Visual Options.md`, checklist
     `Progress Week — Visual Redesign.md`). Then the user picks an option and an implementation agent builds it.
+  - **Week built, 2 Oct** (branch `claude/progress-week-cards`, not compiled yet): the user chose cards, removed the
+    overview, the rings (Progress and Today's calendar sheet) and the group numbers. See
+    [Progress Week — Habit Cards Build](<Progress Week — Habit Cards Build.md>). Month and Year next.
 
 ## Next, one after the other
 

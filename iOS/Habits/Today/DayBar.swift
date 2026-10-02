@@ -37,7 +37,24 @@ enum MonthGridCell: Hashable {
     }
 }
 
-/// A native SwiftUI month grid with the same completion totals as the bottom bar.
+/// One date in the calendar sheet: its number, in a circle (every shape in a calendar is round, Design Rules).
+struct CalendarDate: View {
+    let label: String
+    var bold = false
+    var selected = false
+    var isFuture = false
+
+    var body: some View {
+        ZStack {
+            Circle().fill(selected ? Color(.secondarySystemFill) : .clear)
+            Text(label).font(.callout.weight(bold ? .bold : .regular))
+                .foregroundStyle(isFuture ? Color.secondary : Color.ink)
+        }
+        .frame(width: 38, height: 38)
+    }
+}
+
+/// A native SwiftUI month grid of plain dates. Today's own ring stays in the bottom bar (`DayLabel`).
 struct CalendarSheet: View {
     let selected: LocalDay
     let today: LocalDay
@@ -119,16 +136,13 @@ struct CalendarSheet: View {
         }
     }
 
+    /// A plain date: no ring (the user, 2 Oct 2026: a combined done-of-planned ring isn't a fact once a habit is weekly,
+    /// monthly or every few days). Today and the open day are bold, the open day has a fill, later days are lighter.
     private func dayButton(_ day: LocalDay) -> some View {
-        let score = store.todayScore(on: day)
-        let summary = (done: score.done, total: score.planned)
         let future = day > today
-        // Part credit fills the ring part of the way (a 6 of 8 glasses day), as on Progress (report §16.4).
-        let progress = score.fraction
         return Button { pick(day) } label: {
-            DayRing(fraction: progress, planned: summary.total > 0, isFuture: future, label: String(day.day),
-                    bold: day == today || day == selected, selected: day == selected,
-                    full: summary.total > 0 && summary.done == summary.total)
+            CalendarDate(label: String(day.day), bold: day == today || day == selected, selected: day == selected,
+                         isFuture: future)
             // A dot under days with a note, so notes can be found again (users show: Habit Hub's shading).
             .overlay(alignment: .bottom) {
                 if store.hasNotes(on: day) {
@@ -141,7 +155,7 @@ struct CalendarSheet: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(day.date(calendar: calendar).formatted(date: .complete, time: .omitted))
-        .accessibilityValue((day == today ? "Today. " : "") + (summary.total == 0 ? "No habits scheduled" : future ? "Preview, \(summary.total) habits scheduled" : "\(summary.done) of \(summary.total) done"))
+        .accessibilityValue(day == today ? "Today" : future ? "Preview" : "")
         .accessibilityAddTraits(day == selected ? [.isSelected] : [])
         .accessibilityIdentifier("calendar-day-\(day.year)-\(day.month)-\(day.day)")
     }

@@ -152,6 +152,13 @@ struct ProgressSnapshot {
     var groupBars: [ProgressGroupBar] = []
     /// The habit rows under their headings: by group when All is chosen and groups exist, else one "Habits".
     var sections: [ProgressRowSection] = []
+    /// Week only (the user, 2 Oct 2026): one card per habit, the week's columns, the marks the week shows, and
+    /// "This week" or "Last week" under the dates. No overview, group bars or group numbers.
+    var cards: [ProgressWeekCard] = []
+    var archivedCards: [ProgressWeekCard] = []
+    var columns: [WeekColumn] = []
+    var legend: [WeekLegendKind] = []
+    var caption: String? = nil
 
     var isRunning: Bool { period.contains(today) }
     /// The overview shows when any day in the period has something planned.
@@ -253,14 +260,19 @@ extension HabitStore {
 
     /// Everything Progress shows for `range` around `anchor`. Reads the store's own functions only; nothing here
     /// changes data.
+    /// `weekCards`: the Week view's cards instead of the rows, overview and group numbers (the screen asks for them;
+    /// the checks in `ProgressCheck` read the rows).
     func progressSnapshot(_ range: ProgressRange, containing anchor: LocalDay, today: LocalDay? = nil,
-                          fullAt: Double = 1, group: UUID? = nil) -> ProgressSnapshot {
+                          fullAt: Double = 1, group: UUID? = nil, weekCards: Bool = false) -> ProgressSnapshot {
         let today = today ?? self.today()
         let span = period(range.kind, containing: anchor)
         // A group chosen on the chip row: every number is that group's (report §15). A deleted group is All.
         let group = group.flatMap { id in groups.contains { $0.id == id } ? id : nil }
         let allTracked = habits.filter { $0.kind != .task && $0.kind != .quit }
         let tracked = allTracked.filter { isInGroup($0, group) }
+        if weekCards && range == .week {
+            return progressWeekSnapshot(span, today: today, tracked: tracked, group: group, fullAt: fullAt)
+        }
         // Day scores for Progress's habit list (per group), kept until the data or the day changes.
         let cacheKey = "\(dataVersion)|\(today.key)|\(settings.weekStart)|\(settings.dayEndHour)"
         if progressScoresKey != cacheKey { progressScores = [:]; progressScoresKey = cacheKey }
@@ -385,6 +397,27 @@ extension HabitStore {
             hasHabits: habits.contains { $0.kind != .task },
             yearDots: range == .year ? overviewYearDots(cells, year: span, fullAt: fullAt) : nil, fullAt: fullAt,
             group: group, groupBars: bars, sections: sections)
+    }
+
+    /// The Week view: cards only. No day scores are worked out, since nothing on the page shows a day's total.
+    private func progressWeekSnapshot(_ span: ClosedRange<LocalDay>, today: LocalDay, tracked: [Habit], group: UUID?,
+                                      fullAt: Double) -> ProgressSnapshot {
+        let quitters = habits.filter { $0.kind == .quit && !$0.archived && isInGroup($0, group)
+            && quitStartDay(of: $0) <= min(span.upperBound, today) }
+        let made = perfTimed("Progress week: cards") { progressWeekCards(tracked, quitting: quitters, in: span, today: today) }
+        let earliest = earliestProgressDay()
+        var snapshot = ProgressSnapshot(
+            range: .week, period: span, today: today, title: weekTitle(span, today: today), days: [],
+            tally: ProgressTally(), goals: nil, previous: nil, rows: [], archived: [], quitting: [],
+            canGoBack: earliest.map { $0 < span.lowerBound } ?? false,
+            canGoForward: span.upperBound < today,
+            hasHabits: habits.contains { $0.kind != .task }, fullAt: fullAt, group: group)
+        snapshot.cards = made.cards
+        snapshot.archivedCards = made.archived
+        snapshot.columns = weekColumns(span, today: today)
+        snapshot.legend = weekLegend(made.cards + made.archived)
+        snapshot.caption = weekCaption(span, today: today)
+        return snapshot
     }
 
     static func rank(_ k: GoalPeriod) -> Int {

@@ -95,6 +95,8 @@ should be merged from them.
 | `claude/perf-bisect-habit-page` | Scratch: the habit page with one part left out per speed scenario (`PerfBisect`). Never merge it |
 | `claude/server-and-sync` | Every commit is in `main` (third round, T3, 1 Oct). The hardening session still pushes there first and moves `main` after each tested step: **safe to delete whenever it's level with `main`** (`git log main..claude/server-and-sync` prints nothing) |
 | `claude/serene-wright-mcvmrx` | Nothing beyond `main` (a session's starting branch) |
+| `claude/weekly-overview-stats-ly55gk` | **Safe to delete** (2 Oct): research only (the weekly overview and weekly cards reports), all three commits copied to `claude/progress-week-cards`; its branch note says so |
+| `claude/progress-week-cards` | Week's habit cards (2 Oct), from `claude/server-and-sync`. Merge after its tests; then it can go. What it holds: `Docs/Checklists/Progress Week — Habit Cards Build.md` |
 | `analytics` | **Safe to delete:** fully in `main` (third round, T4, 2 Oct) |
 | `integration` | Once nobody works on it: `main` is the same |
 

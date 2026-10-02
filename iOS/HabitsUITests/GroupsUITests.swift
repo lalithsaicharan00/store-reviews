@@ -255,6 +255,8 @@ final class GroupsUITests: XCTestCase {
         app.buttons["menu-button"].tap()
         app.buttons["menu-progress"].tap()
         XCTAssertTrue(app.navigationBars["Progress"].waitForExistence(timeout: 5))
+        // The Groups card is Month and Year's; Week has cards only (2 Oct 2026).
+        app.segmentedControls["progress-range"].buttons["Month"].tap()
         let healthBar = app.buttons["progress-group-Health"]
         XCTAssertTrue(healthBar.waitForExistence(timeout: 5), "A bar per group")
         XCTAssertTrue(app.buttons["progress-group-Mind"].exists)

@@ -1,8 +1,10 @@
 import SwiftUI
 
 /// Progress, opened from the ≡ menu (Build Plan #60; report "The Progress Page — What People Need, and How to Build
-/// It", §7). Week or Month: an overview of day rings and three numbers, then a row per habit with its strip. Tapping a
-/// day opens the Day sheet; tapping a habit opens its own page at Over Time. It only reads: nothing here logs.
+/// It", §7). Week (2 Oct 2026, report "Weekly Habit Cards — What Each Card Shows"): the dates of the week, pinned at the
+/// top, then a card per habit, each on its own goal's clock; no overview, no day rings, no group numbers. Month and
+/// Year: an overview of day rings and three numbers, then a row per habit with its strip; tapping a day opens the Day
+/// sheet. Tapping a habit opens its own page at Over Time. It only reads: nothing here logs.
 ///
 /// Speed (report §20): every number comes from one `ProgressSnapshot`, worked out when the data, the range or the
 /// period changes, never while drawing. Month strips are flattened into one layer per row, in a lazy list.
@@ -41,7 +43,7 @@ struct ProgressScreen: View {
         Group {
             if let snapshot = model.snapshot {
                 if snapshot.hasHabits {
-                    list(snapshot)
+                    if snapshot.range == .week { weekList(snapshot) } else { list(snapshot) }
                 } else {
                     ContentUnavailableView {
                         Label("No Progress Yet", systemImage: "chart.bar.xaxis")
@@ -163,15 +165,93 @@ struct ProgressScreen: View {
         .background(Color(.systemGroupedBackground))
     }
 
+    // MARK: Week
+
+    /// The Week view. Week | Month | Year and the group chips scroll away; the dates stay pinned at the top while the
+    /// cards scroll, so it's always clear which week they show and ‹ › are one tap away (report §3; NN/g: a sticky
+    /// header should be small and hold only what's needed while scrolling). A lazy stack of cards in a scroll view,
+    /// never a `List` (Design Rules).
+    private func weekList(_ snapshot: ProgressSnapshot) -> some View {
+        let all = snapshot.cards + snapshot.archivedCards
+        let hasQuit = all.contains { $0.isQuit }
+        let hasOthers = all.contains { !$0.isQuit }
+        return ScrollView {
+            LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
+                rangePicker
+                    .padding(.horizontal, 16)
+                    .padding(.top, WeekSpacing.tight)
+                    .padding(.bottom, WeekSpacing.tight)
+                Section {
+                    VStack(alignment: .leading, spacing: WeekSpacing.card) {
+                        // Groups (report §15): the chips choose which habits' cards show; nothing shows until a group exists.
+                        if !store.groups.isEmpty {
+                            GroupChipRow(selection: snapshot.group) { groupRaw = $0?.uuidString ?? "" }
+                        }
+                        if !snapshot.legend.isEmpty {
+                            WeekLegend(kinds: snapshot.legend, hasQuit: hasQuit, hasOthers: hasOthers)
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.top, WeekSpacing.tight)
+                    .padding(.bottom, WeekSpacing.section)
+                    if snapshot.group != nil && all.isEmpty {
+                        Text("No habits in this group yet. Add them in Filter on Today, or in a habit's Group.")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 16)
+                            .accessibilityIdentifier("progress-group-empty")
+                    }
+                    ForEach(snapshot.cards) { card in
+                        weekCardButton(card, snapshot)
+                    }
+                    if !snapshot.archivedCards.isEmpty {
+                        Text("Archived")
+                            .font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
+                            .padding(.horizontal, 32)
+                            .padding(.top, WeekSpacing.tight)
+                            .padding(.bottom, WeekSpacing.tight)
+                            .accessibilityAddTraits(.isHeader)
+                        ForEach(snapshot.archivedCards) { card in
+                            weekCardButton(card, snapshot)
+                        }
+                        Text("Archived habits count for the days before they were archived.")
+                            .font(.footnote).foregroundStyle(.secondary)
+                            .padding(.horizontal, 32)
+                    }
+                } header: {
+                    WeekPeriodBar(title: snapshot.title, caption: snapshot.caption, canGoBack: snapshot.canGoBack,
+                                  canGoForward: snapshot.canGoForward) { move(snapshot, by: $0) }
+                }
+            }
+            .padding(.bottom, WeekSpacing.section)
+        }
+        .background(Color(.systemGroupedBackground))
+    }
+
+    private func weekCardButton(_ card: ProgressWeekCard, _ snapshot: ProgressSnapshot) -> some View {
+        Button { open(card.habit, snapshot) } label: {
+            WeekCardView(card: card, columns: snapshot.columns)
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 16)
+        .padding(.bottom, WeekSpacing.card)
+        .accessibilityIdentifier(card.isQuit ? "progress-quit-\(card.habit.name)" : "progress-row-\(card.habit.name)")
+    }
+
     // MARK: Range
+
+    private var rangePicker: some View {
+        Picker("Range", selection: $rangeRaw) {
+            ForEach(ProgressRange.allCases) { Text($0.title).tag($0.rawValue) }
+        }
+        .pickerStyle(.segmented)
+        .accessibilityIdentifier("progress-range")
+    }
 
     private func rangeControl(_ snapshot: ProgressSnapshot) -> some View {
         VStack(spacing: 10) {
-            Picker("Range", selection: $rangeRaw) {
-                ForEach(ProgressRange.allCases) { Text($0.title).tag($0.rawValue) }
-            }
-            .pickerStyle(.segmented)
-            .accessibilityIdentifier("progress-range")
+            rangePicker
             HStack {
                 Button("Previous \(range.noun)", systemImage: "chevron.left") { move(snapshot, by: -1) }
                     .labelStyle(.iconOnly)
@@ -518,7 +598,7 @@ struct ProgressRowView: View {
         let today = key.today ?? store.today()
         let made = perfTimed("Progress \(key.range): whole snapshot") {
             store.progressSnapshot(key.range, containing: key.anchor ?? today, today: today, fullAt: Double(key.fullDay) / 100,
-                                   group: key.group)
+                                   group: key.group, weekCards: key.range == .week)
         }
         cache[key] = made
         snapshot = made
@@ -619,6 +699,20 @@ struct ProgressQuitRowView: View {
         let minutes = max(0, Int(t / 60))
         let d = minutes / 1440, h = minutes % 1440 / 60, m = minutes % 60
         return d > 0 ? "\(d) d \(h) h" : "\(h) h \(m) min"
+    }
+}
+
+/// A quit card's headline: the run going on now, "12 d 11 h current run". Only this text ticks, once a minute,
+/// anchored at the run's start (PERFORMANCE.md rules 3 and 4).
+struct QuitRunClock: View {
+    let start: Date
+
+    var body: some View {
+        TimelineView(.periodic(from: start, by: 60)) { context in
+            Text(ProgressQuitRowView.short(context.date.timeIntervalSince(start)))
+                .font(.title3.weight(.semibold)).monospacedDigit()
+            + Text(" current run").font(.subheadline).foregroundStyle(.secondary)
+        }
     }
 }
 

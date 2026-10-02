@@ -65,14 +65,17 @@ final class ProgressUITests: XCTestCase {
     }
 
     /// The menu's Progress row opens it; Week and Month switch; ‹ › move; Back returns to Today.
+    /// Week (2 Oct 2026): the dates with "This week" under them, a card per habit, no overview.
     func testOpenSwitchAndBack() {
         launch()
         openProgress()
         let period = app.staticTexts["progress-period"]
         XCTAssertTrue(period.waitForExistence(timeout: 5))
-        XCTAssertEqual(period.label, "This week")
+        XCTAssertTrue(period.label.contains("–"), "Week title is the dates: \(period.label)")
+        XCTAssertEqual(app.staticTexts["progress-period-caption"].label, "This week")
         XCTAssertFalse(app.buttons["progress-next"].isEnabled, "No future weeks")
-        XCTAssertTrue(app.descendants(matching: .any)["progress-tile-done"].exists, "The overview's numbers")
+        XCTAssertFalse(app.descendants(matching: .any)["progress-tile-done"].exists, "No overview on Week")
+        XCTAssertTrue(app.buttons["progress-row-Read"].exists, "A card per habit")
         shot("p01-week")
 
         segment("Month").tap()
@@ -85,7 +88,8 @@ final class ProgressUITests: XCTestCase {
         app.buttons["progress-next"].tap()
         XCTAssertEqual(period.label, month)
         segment("Week").tap()
-        XCTAssertEqual(period.label, "This week")
+        XCTAssertTrue(app.staticTexts["progress-period-caption"].waitForExistence(timeout: 3))
+        XCTAssertEqual(app.staticTexts["progress-period-caption"].label, "This week")
 
         back()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 3), "Back on Today")

@@ -1,0 +1,150 @@
+# Progress Week — Habit Cards Build
+
+Written by Claude (Claude Code), 2 October 2026. Branch: **`claude/progress-week-cards`**, made from
+`claude/server-and-sync` at `5457ec2` (the newest tested code that day: `main` plus five speed and data-safety
+commits; `integration` was level with `main`). **Built on Linux, not compiled or run yet:** another agent tests it
+(the user: "complete the task, don't test; another agent tests"). A first GitHub build was started with the push (see
+"Results" below).
+
+**Why this exists (the user's words, tidied):** the overview card ("Done so far 53 of 55 · 96%") and the day rings
+don't state facts once a habit is weekly, monthly, every few days, several times a day or a quit habit. Remove the
+overview and the calendar rings, from Progress and from the calendar opened on Today, but keep the ring on Today's
+bottom bar. Remove the group numbers too. Build Week as one card per habit (the Figma frame, node 238-355), with
+facts only and nothing said twice, a date range at the top, a key for what each mark means, a clear spacing
+hierarchy, one-line names, and legible checkmarks. Only Week for now.
+
+Research behind it: [Weekly Habit Cards — What Each Card Shows](<../../../Research/Research Reports/Progress and Statistics/Weekly Habit Cards — What Each Card Shows.md>)
+(2,994 reviews hand-coded; the framework for every habit type is its §5).
+
+## The user's points
+
+| # | Point | Done |
+|---|---|---|
+| U1 | Take the work from the newest tested branch, not from scratch | [x] `claude/server-and-sync` (above). The research commits copied over by cherry-pick |
+| U2 | The old research branch: a note saying why it exists, marked safe to delete | [x] `BRANCH NOTE — Research, Safe to Delete.md` on `claude/weekly-overview-stats-ly55gk`; listed in [Merging the Branches](<Merging the Branches.md>) |
+| U3 | Remove the overview (Week) | [x] No overview card, day rings, tiles, "Last week: 31 of 42" or Groups card on Week. Month and Year unchanged until they're redesigned |
+| U4 | Remove the calendar rings on Today's calendar sheet; keep the bottom bar's ring | [x] `CalendarSheet` shows plain dates (`CalendarDate`); `DayLabel`'s ring untouched |
+| U5 | Remove group numbers and group headers (Week) | [x] Week is one list of cards in the habits' order; the group chips still choose which cards show. No "● Health · 24 of 30 · 80%", no Groups card |
+| U6 | A card per habit, facts only, never the same fact twice | [x] `ProgressWeekCard`: goal in words · headline on the goal's own clock · at most one different fact · Sun–Sat strip with each day's value. No percentages, no "Today ·" line (today's value is under today) |
+| U7 | A date range at the top instead of "This week" | [x] "27 Sep – 3 Oct" (or "21–27 Sep"), "This week" / "Last week" small under it; year added for other years |
+| U8 | Weekday names only on the cards, no dates | [x] "Sun Mon Tue…", today semibold and underlined; VoiceOver says the full date |
+| U9 | Sticky or not: research it, keep the scroll area large | [x] Only the dates bar is pinned (one 44-pt row). Week/Month/Year, the chips and the key scroll away. Below |
+| U10 | Under the group chips, what each mark means | [x] `WeekLegend`: only the marks this week shows, each with its word |
+| U11 | Spacing hierarchy from proper rules; nothing squeezed | [x] 8-point scale, space inside a group smaller than around it. Below |
+| U12 | A long name stays on one line with "…" | [x] `lineLimit(1)`, tail truncation; goal line also one line |
+| U13 | Checkmarks: legible and good-looking, no black checks | [x] White check on the habit's colour where it reaches 3:1; on the six light colours a deep shade of the same colour. Below |
+| U14 | Follow every speed rule and keep data safe | [x] Below. `check_rules.sh` passes. Progress only reads; no storage or model changes |
+| U15 | A document explaining the branch, for merging | [x] This file |
+
+## Decisions, with reasons
+
+**Sticky header: only the dates bar.** Nielsen Norman Group's guidance on sticky headers: keep them as small as
+possible (the content-to-chrome ratio), and only make sticky what's needed "often or at any point" while scrolling.
+On Week the one thing needed anywhere in the list is *which week these cards show* and ‹ › to change it. Week |
+Month | Year is chosen once per visit and replaces the whole page, and the chips filter once, so both scroll away
+with the key. Result: one 44-point row (~52 pt with padding), about 8% of a small iPhone's screen, against 23–30% if
+the tabs and chips stuck too. It's a `LazyVStack` section header (`pinnedViews: [.sectionHeaders]`): it scrolls up
+with the page until it reaches the top, then stays, on the page's own background so cards slide under it.
+Sources: [NN/g, Sticky Headers: 5 Ways to Make Them Better](https://www.nngroup.com/articles/sticky-headers/).
+
+**Spacing (`WeekSpacing` in `WeekCards.swift`).** An 8-point scale with the internal ≤ external rule (space inside a
+group never larger than the space around it; Gestalt proximity), from
+[Cieden's spacing best practices](https://cieden.com/book/sub-atomic/spacing/spacing-best-practices):
+
+| Space | Points | Where |
+|---|---|---|
+| label | 2 | name ↔ goal line (one label) |
+| pair | 4 | headline ↔ second line; a mark ↔ its value |
+| tight | 8 | tabs ↔ dates bar; weekday ↔ mark; key rows |
+| card | 16 | card padding; gap between cards; header ↔ numbers; numbers ↔ strip; chips ↔ key |
+| section | 24 | the controls above ↔ the first card |
+
+Type, largest information first: headline `title3` semibold (the week's fact), name `headline`, goal and second line
+`subheadline` secondary, weekdays `caption`, values `caption2`. Icon 40 pt (two lines of text tall), marks 28 pt,
+card corners 16.
+
+**Checkmarks (`HabitColor.checkInk`).** WCAG 1.4.11 asks 3:1 for a graphic against what's next to it. White on the
+system colours: red, pink, purple, indigo, blue, brown and gray reach about 3.3–5:1, so they keep a white check.
+Yellow, orange, green, mint, teal and cyan fall to 1.6–2.6:1, so they get the same colour mixed 62% toward black
+(≈4–5:1). That is legible without the black check the user found poor.
+
+**The marks** (`WeekMark`): filled + check (done; quit: clean day), part ring (part done), grey ring (not done), dashed
+ring (still open today), ring with ▲ (over the limit), ring with × (quit slip), ▶▶ or ❙❙ on a grey disc (skipped,
+paused), small dot (not due), faint ring in the habit's colour (due later this week), nothing (before it started).
+Never red; every state differs by shape.
+
+## What each card says
+
+From the report's §5; the code is `HabitStore+WeekCards.swift`.
+
+| Habit | Headline | Second line (only if it adds something) |
+|---|---|---|
+| Once a day / set days / every N days | `4 of 5 days so far` | `+1 extra day` (done on a day it wasn't due) |
+| Several times a day | `Full on 4 of 5 days so far` | `42 glasses this week` |
+| Amount, time | `Reached on 4 of 5 days so far` | `47,200 steps this week` |
+| Checklist | `Every step on 6 of 6 days so far` | `22 of 24 steps · SPF missed twice` (only if a step was missed) |
+| N times a week | `2 of 3 this week` | `1 to go · 3 days left`, or `+1 extra` |
+| N days a week (amount each) | `2 of 3 days this week` | `13.4 km this week` / to go / extra |
+| Total a week | `6 h 20 min of 10 h` | `on 4 days` |
+| Month / year goal | `October: 1 of 2` | `1 time this week` |
+| Daily limit | `Within limit on 3 of 4 days` (today waits) | `6 cups this week` |
+| Weekly limit | `7 of 10 this week` | `2 over · on 4 days` |
+| Quit | `12 d 11 h current run` (live, once a minute) | `No slips this week` |
+| Nothing to count yet | `Due Sat` / `Due today` / `Started today` / `Not due this week` + `Next due 12 Oct` / `Starts 5 Oct` / the pause text | — |
+
+## Speed and data safety
+
+- Every card is worked out once per week, group and data version in `HabitStore` (`progressSnapshot(…, weekCards:
+  true)`), kept in `ProgressModel`'s cache, never in a view's `body` (rules 5, 8). The Week snapshot no longer works
+  out day scores, tallies, goals or group bars, so it does less than before.
+- No formatter is made per call: values use `compactNumber` / `compactMinutes` (plain arithmetic) and the store's
+  cached `HabitCopy.number`. Weekday and month names come from the calendar once per snapshot.
+- Only the quit card's run text ticks (`QuitRunClock`, a `TimelineView` anchored at the run's start, once a minute;
+  rules 3, 4). It lives in `ProgressScreen.swift`, already allowed in `check_rules.sh`.
+- No `List`, no lazy grid; a `LazyVStack` of cards in a `ScrollView` (Design Rules). No shadows. Stable identities
+  (habit IDs). The key's `FlowLayout` is a plain `Layout`.
+- The calendar sheet no longer works out a score for each of 42 days when it opens.
+- Data: Progress only reads. No model, storage, sync or backup change.
+
+## Files
+
+| File | What |
+|---|---|
+| `Habits/Model/HabitStore+WeekCards.swift` | New: `ProgressWeekCard`, `WeekCardDay`, `WeekColumn`, `WeekLegendKind`; the cards' text per type; quit card; titles |
+| `Habits/Progress/WeekCards.swift` | New: `WeekPeriodBar`, `WeekLegend`, `WeekCardView`, `WeekCardStrip`, `WeekMark`, `HabitColor.checkInk`, `FlowLayout`, `WeekSpacing` |
+| `Habits/Model/HabitStore+Progress.swift` | `progressSnapshot(…, weekCards:)`; the snapshot's week fields; `progressWeekSnapshot` |
+| `Habits/Progress/ProgressScreen.swift` | Week uses `weekList`; `rangePicker` shared; `QuitRunClock` |
+| `Habits/Today/DayBar.swift` | `CalendarSheet` cells are plain dates (`CalendarDate`); no rings, no per-day scores |
+| `Habits/Model/ProgressCheck.swift` | Golden checks W (week cards: daily, weekly goal, amount, daily limit, quit, key, value formats) |
+| `HabitsUITests/ProgressUITests.swift`, `GroupsUITests.swift` | Week has no tiles and its title is the dates; the Groups card test moves to Month |
+
+## To check (for the testing agent)
+
+- [ ] Build (`[ios-ci]`): the code was written without a compiler.
+- [ ] `ProgressUITests.testProgressChecks` (the W checks), `testOpenSwitchAndBack`, `GroupsUITests.testProgressAndHabitsByGroup`.
+- [ ] Screenshots of Week, light and dark, with the demo data: long names truncate; the key matches the marks; the
+      dates bar pins under the navigation bar while scrolling; chips and tabs scroll away.
+- [ ] Checks on every colour: white checks on red…gray, deep checks on yellow…cyan, in light and dark mode.
+- [ ] Largest text sizes: strips give way to the words.
+- [ ] Speed (`[ios-perf]`, scenario `progress`): opening Progress on Week and scrolling, against the last run.
+- [ ] Today's calendar sheet: plain dates, today bold, the open day filled, note dots still there.
+
+## Not done (on purpose)
+
+- **Month and Year** keep their overview, rings, Groups card and group numbers until they're redesigned (the user:
+  "only build it for week").
+- **The Day sheet** is reached from Month's rings only now (Week has no rings).
+- **View Options** (percentages, streaks, full day) still apply to Month and Year; Week has no percentages.
+
+## Branches (safe to delete, with reasons)
+
+| Branch | State |
+|---|---|
+| `claude/weekly-overview-stats-ly55gk` | **Safe to delete.** Research only (two reports and their evidence), all three commits copied here; the branch note on it says so |
+| `claude/progress-week-cards` | This branch. Merge it, then it can go |
+
+## Results (GitHub)
+
+| Run | What | Result |
+|---|---|---|
+| (first push) | Build + Progress/Groups UI tests + speed | Waiting; the testing agent reads `ci-results` |
