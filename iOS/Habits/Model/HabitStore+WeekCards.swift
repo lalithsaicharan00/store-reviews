@@ -162,6 +162,8 @@ extension HabitStore {
             let dayRule = self.rule(habit, on: day)
             let amount = day >= start && day <= today ? dayProgress(of: dayRule, on: day) : 0
             amounts[day] = amount
+            // A week, month or year goal names no day, so a day still to come isn't "due later": nothing is asked of it.
+            if mark == .upcoming && (!dayRule.frequency.isDayBased || dayRule.frequency.isFlexible) { mark = .notItsDay }
             var extra = false
             if mark == .notItsDay && amount > 0 && dayRule.frequency.isDayBased && !dayRule.frequency.isFlexible && !dayRule.atMost {
                 extra = true
@@ -297,12 +299,12 @@ extension HabitStore {
             let results = progressPeriodResults(habit, in: span, today: today)
             let met = results.filter { $0.met == true }.count
             let judged = results.filter { $0.met != nil }.count
-            let weeks = kind == .week ? "weeks" : "months"
+            func periods(_ n: Int) -> String { kind == .week ? (n == 1 ? "week" : "weeks") : (n == 1 ? "month" : "months") }
             let head: String
             if shape == .limitPeriod {
-                head = "Within the limit \(met) of \(judged) \(weeks)"
+                head = "Within the limit \(met) of \(judged) \(periods(judged))"
             } else {
-                head = "Met \(met) of \(results.count) \(weeks)" + (running ? " so far" : "")
+                head = "Met \(met) of \(results.count) \(periods(results.count))" + (running ? " so far" : "")
             }
             let done: String?
             switch shape {
