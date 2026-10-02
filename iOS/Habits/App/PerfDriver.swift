@@ -170,7 +170,9 @@ enum PerfDriver {
             send(.close)
             await pause(1)
             for place in [MenuPlace.tasks, .timesOfDay, .dayAndWeek, .reminders, .appearance, .backup, .privacy, .plus, .help, .about] {
-                await open(place.title) { send(.openPlace(place)) }
+                // Twice: the first pays one-time costs (a launch's first form, picker, search bar); the second is
+                // what every later opening costs.
+                await openTwice(place.title) { send(.openPlace(place)) }
                 send(.close)
                 await pause(1)
             }
