@@ -1,7 +1,9 @@
 # Builds the iPhone app and runs UI tests and speed tests on GitHub's Macs, so the MacBook doesn't have to.
 #
 # The repository is public, so Actions minutes (Mac runners included) are free and unlimited (2 Oct 2026). It still runs
-# only when asked, so a push of docs doesn't tie up a Mac:
+# only when asked, so a push of docs doesn't tie up a Mac. One job per branch at a time, and only one waits: starting a
+# third run on the same branch cancels the waiting one (GitHub concurrency groups). Runs on different branches go side
+# by side:
 #   - by hand: GitHub → Actions → "iOS build and tests" → Run workflow (pick the branch, tests and speed), or
 #   - on a push whose commit message contains [ios-ci] (UI tests) and/or [ios-perf] (speed tests).
 #     [ios-perf] runs the speed runs: the app drives itself with no XCTest attached (measure_perf_driver.sh,

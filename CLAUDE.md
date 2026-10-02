@@ -31,7 +31,8 @@ new finding there the same day, with its numbers:
   pushes run nothing.
   **The repository is public, so GitHub Actions minutes (Mac runners included) are free and unlimited** (the user,
   2 Oct 2026): run whatever tests and speed runs a change needs, the whole suite included. A job still stops at 60
-  minutes, so split a long suite across runs. A few minutes after the run, read the
+  minutes, so split a long suite across runs. One branch runs one job at a time and keeps only **one** waiting: a
+  third run on the same branch cancels the waiting one, so wait for it (or use another branch) before starting more. A few minutes after the run, read the
   result: `git fetch origin ci-results && git show origin/ci-results:latest.md` (build errors, failed tests, speed
   table). Details at the top of [`.github/workflows/ios-tests.yml`](.github/workflows/ios-tests.yml).
 - Scratch files go in `Research/Temp/` (gitignored), never `/tmp`.
