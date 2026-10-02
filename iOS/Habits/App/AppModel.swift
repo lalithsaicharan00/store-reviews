@@ -81,10 +81,14 @@ final class AppModel {
         #if DEBUG
         if let i = arguments.firstIndex(of: "-api"), i + 1 < arguments.count, let url = URL(string: arguments[i + 1]) { api = url }
         #endif
-        let storeName = arguments.firstIndex(of: "-dbname").flatMap { $0 + 1 < arguments.count ? arguments[$0 + 1] : nil } ?? "habits"
+        // A test launch on its in-memory database never uses the app's own sign-in (its keychain and account keys are
+        // named after the store): on a real iPhone it could otherwise sync its demo habits into the person's account.
+        let testLaunch = arguments.contains("-uitest")
+        let storeName = arguments.firstIndex(of: "-dbname").flatMap { $0 + 1 < arguments.count ? arguments[$0 + 1] : nil }
+            ?? (testLaunch ? "uitest" : "habits")
         sync = opened.map { SyncService(repository: $0.repository, storeName: storeName, api: api, reset: arguments.contains("-reset-db")) }
         if let opened, let sync {
-            backup = BackupCenter(repository: opened.repository, sync: sync, store: store)
+            backup = BackupCenter(repository: opened.repository, sync: sync, store: store, sandboxed: testLaunch)
         } else {
             backup = nil
         }

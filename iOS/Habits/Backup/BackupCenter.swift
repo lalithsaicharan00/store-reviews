@@ -59,7 +59,11 @@ final class BackupCenter {
     @ObservationIgnored private let repository: HabitRepository
     @ObservationIgnored private let sync: SyncService
     @ObservationIgnored private let store: HabitStore
-    @ObservationIgnored private let defaults = UserDefaults.standard
+    @ObservationIgnored private let defaults: UserDefaults
+    /// A test launch (`-uitest`, an in-memory database): its backup state, folders and iCloud are kept apart from the
+    /// app's own, so a test run on a real iPhone can't back its demo habits up over the person's backups, offer them as
+    /// an undo, or erase the person's local copies (2 Oct 2026). iCloud counts as absent, as on the simulator.
+    @ObservationIgnored private let sandboxed: Bool
 
     private(set) var isSignedIn = false
     private(set) var isPlus = false
@@ -91,10 +95,13 @@ final class BackupCenter {
         static let notified = "backup.notifiedIssue"
     }
 
-    init(repository: HabitRepository, sync: SyncService, store: HabitStore) {
+    init(repository: HabitRepository, sync: SyncService, store: HabitStore, sandboxed: Bool = false) {
         self.repository = repository
         self.sync = sync
         self.store = store
+        self.sandboxed = sandboxed
+        defaults = sandboxed ? UserDefaults(suiteName: "com.oftenenough.app.uitest") ?? .standard : .standard
+        if sandboxed { Self.sandboxFolder = FileManager.default.temporaryDirectory.appending(path: "uitest", directoryHint: .isDirectory) }
         if let id = defaults.string(forKey: Key.hiddenID) {
             hidden = (id, Date(timeIntervalSince1970: defaults.double(forKey: Key.hiddenUntil)))
         }
@@ -109,7 +116,7 @@ final class BackupCenter {
     /// never had iCloud keeps its habits on the phone (and says so); one whose iCloud worked before and has gone away
     /// stays on iCloud, so the "isn't signed in to iCloud" card says what's wrong (found on GitHub's simulator, 2 Oct).
     var iCloudCopyOn: Bool {
-        guard BackupFeatures.iCloudBackup, !defaults.bool(forKey: Key.iCloudOff) else { return false }
+        guard BackupFeatures.iCloudBackup, !sandboxed, !defaults.bool(forKey: Key.iCloudOff) else { return false }
         return FileManager.default.ubiquityIdentityToken != nil || defaults.data(forKey: Key.iCloudIdentity) != nil
             || defaults.string(forKey: Key.iCloudProblem) != nil
     }
@@ -445,7 +452,7 @@ final class BackupCenter {
 
     /// The daily copies (`Persistence`) and restore-undo files: with the data erased, no copy of it stays behind.
     private static func eraseLocalCopies() {
-        guard let support = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else { return }
+        guard let support = supportFolder(create: false) else { return }
         for folder in ["Backups", "Restore Undo"] {
             let url = support.appending(path: folder, directoryHint: .isDirectory)
             for file in (try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)) ?? [] {
@@ -594,7 +601,7 @@ final class BackupCenter {
     /// The copies in the app's hidden iCloud folder, newest first. Copies not yet on this device are asked for; they
     /// show once iCloud has brought them (`downloading` > 0 means try again shortly).
     func iCloudCopies() async -> (copies: [ICloudCopy], downloading: Int) {
-        guard BackupFeatures.iCloudBackup, FileManager.default.ubiquityIdentityToken != nil else { return ([], 0) }
+        guard BackupFeatures.iCloudBackup, !sandboxed, FileManager.default.ubiquityIdentityToken != nil else { return ([], 0) }
         let me = sync.deviceID
         let (found, downloading): ([(URL, Date)], Int) = await Task.detached {
             guard let container = FileManager.default.url(forUbiquityContainerIdentifier: nil) else { return ([], 0) }
@@ -638,8 +645,19 @@ final class BackupCenter {
 
     // MARK: Files
 
+    /// Set for a test launch (`sandboxed`): its own folder instead of Application Support.
+    private static var sandboxFolder: URL?
+
+    private static func supportFolder(create: Bool) -> URL? {
+        if let sandboxFolder {
+            try? FileManager.default.createDirectory(at: sandboxFolder, withIntermediateDirectories: true)
+            return sandboxFolder
+        }
+        return try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: create)
+    }
+
     private static var undoFolder: URL? {
-        guard let support = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true) else { return nil }
+        guard let support = supportFolder(create: true) else { return nil }
         let folder = support.appending(path: "Restore Undo", directoryHint: .isDirectory)
         try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         var values = URLResourceValues()
