@@ -52,11 +52,11 @@ extension HabitStore {
             // A previous yield may have allowed an edit or deletion; project the current rule.
             guard let habit = habits.first(where: { $0.id == id && !$0.archived }) else { continue }
             if widgetProjectionCache[habit.id] == nil || timers[habit.id] != nil {
-                widgetProjectionCache[habit.id] = widgetItems(habit, first: first, now: now)
+                widgetProjectionCache[habit.id] = perfTimed("Widgets: one habit's month") { widgetItems(habit, first: first, now: now) }
                 await Task.yield()
             }
         }
-        return widgetSnapshot(now: now)
+        return perfTimed("Widgets: the snapshot") { widgetSnapshot(now: now) }
     }
 
     private func widgetItems(_ habit: Habit, first: LocalDay, now: Date) -> [WidgetItem] {

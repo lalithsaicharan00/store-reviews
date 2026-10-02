@@ -114,7 +114,7 @@ final class ReminderScheduler {
         guard store.isLoaded, store.isStorageReady, store.problem == nil else { return }
         problem = nil
         let status = await center.authorizationStatus()
-        let planned = plan(store, now: now)
+        let planned = perfTimed("Reminders: plan every alert") { plan(store, now: now) }
         let ring = alarmDelivery.isAuthorized ? planned.filter { $0.habit.alert == .alarm } : []
         let alarmIDs = await alarmDelivery.reconcile(ring, keepRinging: doneTimeIDs(store, now: now), store: store)
         // Failed or excess alarms get a standard notification instead of silently disappearing.
@@ -131,7 +131,7 @@ final class ReminderScheduler {
         let pendingIDs = Set(allPending.map(\.identifier))
         let missingTimers = store.timers.keys.filter { !pendingIDs.contains(TimerPresence.prefix + $0.uuidString) }.count
         let budget = min(Self.limit, max(0, 64 - others - missingTimers))
-        let wanted = Self.accepts(status) ? requests(for: notes, store: store, limit: budget) : []
+        let wanted = Self.accepts(status) ? perfTimed("Reminders: build requests") { requests(for: notes, store: store, limit: budget) } : []
         let wantedIDs = Set(wanted.map(\.identifier))
         center.removePending(pending.map(\.identifier).filter { !wantedIDs.contains($0) })
         let current = Dictionary(pending.map { ($0.identifier, $0) }, uniquingKeysWith: { a, _ in a })
