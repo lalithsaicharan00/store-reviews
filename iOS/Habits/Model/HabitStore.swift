@@ -75,7 +75,33 @@ final class HabitStore {
             guard let self else { return }
             entryChangePending = false
             withMutation(keyPath: \.entries) {}
+            // Then each changed habit's own mark. A change that didn't say which habit (a reload, the demo data) marks
+            // every habit, so no view can miss one.
+            let changed = changedHabits
+            changedHabits = []
+            let all = replacedAllEntries
+            replacedAllEntries = false
+            if all || changed.isEmpty {
+                for revision in entryRevisions.values { revision.count &+= 1 }
+            } else {
+                for id in changed { entryRevisions[id]?.count &+= 1 }
+            }
         }
+    }
+
+    /// One habit's entries changed: a mark per habit, so a view showing one habit (a Today row) redraws for its own
+    /// habit's taps, not for every tap on Today (PERFORMANCE.md rule 6; the +1 speed run, 2 Oct 2026). Whole-history
+    /// readers still observe `entries`.
+    @Observable final class EntryRevision { var count = 0 }
+    @ObservationIgnored private var entryRevisions: [UUID: EntryRevision] = [:]
+    @ObservationIgnored private var changedHabits: Set<UUID> = []
+
+    /// Reads one habit's mark, so the calling view redraws when that habit's entries change.
+    private func observeEntries(of id: UUID) {
+        if let revision = entryRevisions[id] { _ = revision.count; return }
+        let revision = EntryRevision()
+        entryRevisions[id] = revision
+        _ = revision.count
     }
     /// `entries` grouped by habit, built on first use. Every count, streak and "done" reads one
     /// habit's entries; scanning all of them for each day of a streak made scrolling Today stutter (30 Sep).
@@ -253,6 +279,15 @@ final class HabitStore {
 
     /// A remembered number is read without working it out, so this reads what it depends on: a view showing it
     /// still redraws when any of that changes.
+    private func readInputs(of habit: UUID) {
+        observeEntries(of: habit)
+        access(keyPath: \.habits)
+        access(keyPath: \.skips)
+        access(keyPath: \.pauses)
+        access(keyPath: \.rules)
+        access(keyPath: \.settings)
+    }
+
     private func readInputs() {
         access(keyPath: \.entries)
         access(keyPath: \.habits)
@@ -273,6 +308,7 @@ final class HabitStore {
             entriesByHabit?[entry.habitID, default: []].append(entry)
             entriesByDay?[entry.habitID, default: [:]][entry.day, default: []].append(entry)
         }
+        changedHabits.insert(entry.habitID)
         forget(entry.habitID)
     }
 
@@ -280,6 +316,7 @@ final class HabitStore {
         let entry = entries.remove(at: index)
         entriesByHabit?[entry.habitID]?.removeAll { $0.id == entry.id }
         entriesByDay?[entry.habitID]?[entry.day]?.removeAll { $0.id == entry.id }
+        changedHabits.insert(entry.habitID)
         forget(entry.habitID)
         if undoOffer?.id == entry.id { undoOffer = nil }
     }
@@ -293,6 +330,7 @@ final class HabitStore {
         if let i = entriesByDay?[entry.habitID]?[entry.day]?.firstIndex(where: { $0.id == entry.id }) {
             entriesByDay?[entry.habitID]?[entry.day]?[i] = entry
         }
+        changedHabits.insert(entry.habitID)
         forget(entry.habitID)
         if undoOffer?.id == entry.id { undoOffer = nil }
     }
@@ -301,8 +339,12 @@ final class HabitStore {
     private func entriesReplaced() {
         entriesByHabit = nil
         entriesByDay = nil
+        // Every habit may have changed: an empty set marks them all when the change is published.
+        changedHabits = []
+        replacedAllEntries = true
         forgetAll()
     }
+    @ObservationIgnored private var replacedAllEntries = false
 
     /// Only the in-app checks set it (`SettingsCheck`: a fixed place for the daylight-saving cases). The app always
     /// follows the phone's own time zone, so travelling needs no setting.
@@ -614,23 +656,23 @@ final class HabitStore {
 
     /// One habit's entries, in the order they were logged. Still reads `entries`, so views redraw when it changes.
     func entries(of id: UUID) -> [Entry] {
+        observeEntries(of: id)
         guard let index = entriesByHabit else {
-            let index = Dictionary(grouping: entries, by: \.habitID)
+            let index = Dictionary(grouping: storedEntries, by: \.habitID)
             entriesByHabit = index
             return index[id] ?? []
         }
-        access(keyPath: \.entries)
         return index[id] ?? []
     }
 
     /// One habit's entries on one day, in the order they were logged.
     func entries(of id: UUID, on day: LocalDay) -> [Entry] {
+        observeEntries(of: id)
         guard let index = entriesByDay else {
-            let index = Dictionary(grouping: entries, by: \.habitID).mapValues { Dictionary(grouping: $0, by: \.day) }
+            let index = Dictionary(grouping: storedEntries, by: \.habitID).mapValues { Dictionary(grouping: $0, by: \.day) }
             entriesByDay = index
             return index[id]?[day] ?? []
         }
-        access(keyPath: \.entries)
         return index[id]?[day] ?? []
     }
 
@@ -966,7 +1008,7 @@ final class HabitStore {
             ?? (isDone(ruled, on: day) && !(ruled.atMost && day >= today))
         let remember = isSaved(habit) && day <= today
         if remember, let run = pastRuns[habit.id]?[day] {
-            readInputs()
+            readInputs(of: habit.id)
             return (current ? 1 : 0) + run
         }
         let run = runBefore(day, of: ruled)
@@ -1663,7 +1705,7 @@ final class HabitStore {
         let today = today ?? now
         // Remembered for today, unless a running timer can still finish today (as the best streak always was).
         let remember = today == now && isSaved(habit) && timers[habit.id] == nil
-        if remember, let known = runLists[habit.id], known.today == today { readInputs(); return known.runs }
+        if remember, let known = runLists[habit.id], known.today == today { readInputs(of: habit.id); return known.runs }
         let runs = walkRuns(of: habit, today: today)
         if remember { runLists[habit.id] = (today, runs) }
         return runs
@@ -1732,7 +1774,7 @@ final class HabitStore {
     func totalLine(of habit: Habit, today: LocalDay? = nil) -> String? {
         let today = today ?? self.today()
         let remember = isSaved(habit) && timers[habit.id] == nil
-        if remember, let known = totalLines[habit.id], known.today == today { readInputs(); return known.line }
+        if remember, let known = totalLines[habit.id], known.today == today { readInputs(of: habit.id); return known.line }
         let line = workOutTotalLine(of: habit, today: today)
         if remember { totalLines[habit.id] = (today, line) }
         return line
@@ -2099,7 +2141,7 @@ final class HabitStore {
 
     /// Kept in the store and remembered, rather than walking the month's days in the page's body.
     func doneThisMonth(_ habit: Habit, through today: LocalDay) -> Int {
-        readInputs()
+        readInputs(of: habit.id)
         if let known = monthCounts[habit.id], known.day == today, timers[habit.id] == nil { return known.value }
         let first = LocalDay(year: today.year, month: today.month, day: 1)
         var count = 0
