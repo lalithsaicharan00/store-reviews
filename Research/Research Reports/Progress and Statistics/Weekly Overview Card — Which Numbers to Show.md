@@ -5,6 +5,11 @@ of the habits together, what statistics do users actually expect? … Right now,
 96%' doesn't make sense even for me … we have different types of habits, quit habits and all. Combining everything in
 an overview, what are the most useful statistics for a user in a week?"
 
+> **Superseded, 2 October 2026.** After reading this report, the user decided to remove the overview card and the
+> calendar rings entirely, because no combined number is accurate across weekly, monthly, every-N-days and quit habits.
+> The follow-up is [Weekly Habit Cards — What Each Card Shows](<Weekly Habit Cards — What Each Card Shows.md>). This
+> report is kept for its findings on why "53 of 55" confused.
+
 **Status:** research and a recommendation. Nothing in the app was changed. Like every report in this folder, this is
 not a decision record. It builds on [The Progress Page — What People Need, and How to Build It](<The Progress Page — What People Need, and How to Build It.md>)
 (§7.2 and §16.4 defined today's card) and does not repeat its general findings. Visual layout is covered separately in
