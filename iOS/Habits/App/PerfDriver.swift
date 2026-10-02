@@ -10,6 +10,26 @@ enum PerfAction: Equatable {
     case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, saveEntry, logAgain, hideLogKeyboard
     /// A page from the ≡ menu; the menu itself; Today's group filter; Progress's range; the habit page's Edit.
     case openPlace(MenuPlace), toggleMenu, nextGroup, nextRange, openEdit
+    /// A page with nothing on it, pushed like a menu page (`PerfBlankPage`).
+    case openBlank
+}
+
+/// The control for "opening a screen" (2 Oct 2026): a page with nothing on it, pushed on Today's stack exactly like a
+/// menu page. If it stalls as long as the real pages, the cost is the push itself, not what the pages draw.
+struct PerfBlankPage: Hashable {}
+
+extension View {
+    func perfBlankDestination() -> some View {
+        #if DEBUG
+        navigationDestination(for: PerfBlankPage.self) { _ in
+            Color(.systemGroupedBackground).ignoresSafeArea()
+                .navigationTitle("Blank")
+                .navigationBarTitleDisplayMode(.inline)
+        }
+        #else
+        self
+        #endif
+    }
 }
 
 extension View {
@@ -144,12 +164,19 @@ enum PerfDriver {
             }
             send(.close)
         case "menu-pages":
-            // Every other page in the ≡ menu: how long each takes to open.
+            // Every other page in the ≡ menu: how long each takes to open, between two blank pages pushed the same
+            // way (the control: what a push alone costs).
+            await open("Blank page (control, first)") { send(.openBlank) }
+            send(.close)
+            await pause(1)
             for place in [MenuPlace.tasks, .timesOfDay, .dayAndWeek, .reminders, .appearance, .backup, .privacy, .plus, .help, .about] {
                 await open(place.title) { send(.openPlace(place)) }
                 send(.close)
                 await pause(1)
             }
+            await open("Blank page (control, again)") { send(.openBlank) }
+            send(.close)
+            await pause(1)
         case "habit-edit":
             await open("All Habits") { send(.openAllHabits) }
             await open("Habit page") { send(.openHabit("Water")) }

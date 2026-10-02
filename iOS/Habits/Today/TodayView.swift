@@ -64,6 +64,7 @@ struct TodayView: View {
             // Every place in the ≡ menu is pushed here, so Back and the edge swipe return to Today.
             .analyticsScreen(.today)
             .navigationDestination(for: MenuPlace.self) { MenuPage(place: $0) }
+            .perfBlankDestination()
             .toolbar { if !covered && store.isLoaded && !store.habits.isEmpty { dayBar } }
             .sheet(isPresented: $showCalendar) {
                 CalendarSheet(day: selectedDay, today: store.today()) { day = $0 }
@@ -204,6 +205,7 @@ struct TodayView: View {
         case .openAllHabits: menu.path.append(MenuPlace.habits) // Habits lives in the ≡ menu now
         case .openWidgets: menu.path.append(MenuPlace.widgets)
         case .openPlace(let place): menu.path.append(place)
+        case .openBlank: menu.path.append(PerfBlankPage())
         case .toggleMenu: menu.setOpen(!menu.isOpen, reduceMotion: false)
         case .nextGroup:
             // All, then each group in turn.

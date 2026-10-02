@@ -123,3 +123,7 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
   then deleting the account, removed Often Enough from the Apple ID's Sign in with Apple list. (The first try failed
   only because the account had been signed in by the older app, which never sent Apple's code.) The `.p8` is kept by
   the user outside the repo.
+- **2 Oct 08:30 UTC:** the user checked on the iPhone: habit pages open from Progress and Habits (no crash), switches
+  are green, Select's circles blue. Progress's View Options menu fixed (`5e2c7c5`, the green switch style had reached
+  its toggles), tests running. Speed work continues, slowly and measured (the user: "take your time"): first, why
+  every screen's opening stalls 150–280 ms, with a blank page pushed the same way as the control.
