@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-02",
+  "file_key": "Ncccsm1l2O62GJ5xLSInqk",
+  "page_id": "234:2",
+  "board_id": "238:2",
+  "url": "https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=238-2",
+  "method": "Figma MCP use_figma and upload_assets; no computer-use insertion",
+  "sections": 17,
+  "image_filled_nodes": 113,
+  "unfilled_image_slots": 0,
+  "caption_font": "Inter",
+  "layout_overflow_frames": 0,
+  "contents": "2 genuine app baseline screenshots; 51 App Store images; 12 Play Store captures including alternate resolutions; 3 Apple support images; 45 own option/close-up images; linked design/HIG sources",
+  "third_party_repo_images": 0,
+  "validation": "MCP structural read-back and composition screenshot, plus source-card screenshot after final reference addition; screenshots kept only in Research/Temp"
+}

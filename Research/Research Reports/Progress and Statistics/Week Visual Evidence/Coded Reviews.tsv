@@ -1,0 +1,663 @@
+row	review_id	store	app_folder	rating	date	codes	source_line	retrieval_pass
+0	9735835097	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2023-03-21T07:57:13Z	ASK_WEEK	234	focused
+1	10824308874	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-01-15T10:43:54Z	P_WEEK,P_OVERVIEW	440	focused
+2	10488633695	App	1. Habit Tracker - Goal Tracker & ADHD Planner	1	2023-10-18T14:53:55Z	NA	1988	focused
+3	10204139203	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2023-07-31T16:49:57Z	ASK_WEEK	2035	focused
+4	6087594649	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2020-06-17T14:39:39Z	ASK_WEEK	2449	focused
+5	9196907071	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-10-18T12:01:52Z	X_DENSITY	2517	focused
+6	10875852409	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-01-29T02:36:33Z	P_WEEK	3507	focused
+7	7961452365	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-10-28T04:49:53Z	P_WEEK	23766	focused
+8	10177962947	App	1. Habit Tracker - Goal Tracker & ADHD Planner	4	2023-07-24T22:06:35Z	X_MARK	45059	focused
+9	12025704546	App	1. Habit Tracker - Goal Tracker & ADHD Planner	4	2024-12-04T19:20:07Z	ASK_WEEK	45329	focused
+10	10910387642	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-02-07T01:11:47Z	NA	47020	focused
+11	9870690248	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2023-04-28T16:07:01Z	P_CLARITY	47218	focused
+12	8658812263	App	1. Habit Tracker - Goal Tracker & ADHD Planner	4	2022-05-11T04:52:00Z	NA	47764	focused
+13	12249588346	App	1. Habit Tracker - Goal Tracker & ADHD Planner	4	2025-01-30T17:10:15Z	X_MARK,X_SCORE	49315	focused
+14	13613527476	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2026-01-09T15:52:38Z	NA	51281	focused
+15	10759676665	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2023-12-29T18:08:24Z	P_CLARITY	53079	focused
+16	8705264340	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-05-25T03:53:57Z	NA	55066	focused
+17	13807008435	App	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	5	2026-03-02T20:03:54Z	NA	3342	focused
+18	8055966889	App	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	5	2021-11-23T21:41:21Z	P_CLARITY	7454	focused
+19	8256100885	App	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	5	2022-01-18T23:28:22Z	P_CLARITY	8427	focused
+20	11782395121	App	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	5	2024-09-30T18:37:49Z	P_CLARITY	18114	focused
+21	13458284625	App	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	4	2025-11-30T11:33:55Z	NA	27580	focused
+22	9468998757	App	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	5	2023-01-04T05:46:47Z	NA	55893	focused
+23	8800413738	App	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	5	2022-06-22T21:34:54Z	NA	61023	focused
+24	8456836129	App	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	4	2022-03-15T03:44:38Z	NA	67635	focused
+25	8233222614	App	10. Finch - Self-Care Pet - Daily Journal & Habit Tracker	5	2022-01-12T19:48:50Z	P_CLARITY	69365	focused
+26	9332848196	App	11. Daily Habits - Streak Tracker - Morning Routine & Goal Planner	5	2022-11-27T01:39:06Z	ASK_WEEK	10	focused
+27	5178355247	App	13. Productive - Habit Tracker - Daily Routine & Goals Planner	5	2019-11-21T22:56:05Z	ASK_WEEK	5573	focused
+28	1791276259	App	13. Productive - Habit Tracker - Daily Routine & Goals Planner	3	2017-09-15T14:33:55Z	ASK_WEEK	16379	focused
+29	1530522209	App	13. Productive - Habit Tracker - Daily Routine & Goals Planner	5	2017-01-26T00:46:25Z	ASK_WEEK	17132	focused
+30	4690039855	App	20. Habit — Daily Tracker - Crush your goals like a boss	2	2019-08-29T12:21:35Z	X_SCORE	1332	focused
+31	6017806209	App	20. Habit — Daily Tracker - Crush your goals like a boss	5	2020-05-31T13:42:18Z	P_WEEK	1691	focused
+32	5404856752	App	20. Habit — Daily Tracker - Crush your goals like a boss	5	2020-01-15T03:23:45Z	P_OVERVIEW	3620	focused
+33	3888773714	App	20. Habit — Daily Tracker - Crush your goals like a boss	5	2019-03-16T15:41:44Z	P_WEEK	3974	focused
+34	4435616598	App	23. Streaks - The habit-forming to-do list	4	2019-07-09T22:05:21Z	X_MARK	4074	focused
+35	12551640529	App	23. Streaks - The habit-forming to-do list	3	2025-04-16T22:53:53Z	X_DENSITY	4191	focused
+36	10709565816	App	23. Streaks - The habit-forming to-do list	3	2023-12-17T23:10:06Z	X_MARK,X_DENSITY,X_SCORE	4402	focused
+37	7081085174	App	23. Streaks - The habit-forming to-do list	5	2021-03-08T22:45:17Z	NA	4870	focused
+38	4918592076	App	23. Streaks - The habit-forming to-do list	4	2019-10-10T14:18:26Z	X_MARK	5179	focused
+39	4013137782	App	23. Streaks - The habit-forming to-do list	3	2019-04-14T21:11:06Z	X_MARK	5234	focused
+40	3554375156	App	23. Streaks - The habit-forming to-do list	4	2018-12-21T05:27:36Z	X_MARK	5307	focused
+41	1899479737	App	23. Streaks - The habit-forming to-do list	3	2017-11-05T15:42:25Z	X_DENSITY	5490	focused
+42	1710066347	App	23. Streaks - The habit-forming to-do list	5	2017-08-02T21:44:44Z	P_CLARITY	5699	focused
+43	1300783555	App	23. Streaks - The habit-forming to-do list	5	2015-12-15T04:38:43Z	P_CLARITY	6787	focused
+44	12859918104	App	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	3	2025-07-06T16:29:59Z	NA	25480	focused
+45	11526146653	App	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	5	2024-07-23T15:54:27Z	P_QUIT	7547	focused
+46	7620460035	App	3. Days Since - Quit Habit Tracker - Sober Streak Day Counter	4	2021-07-26T15:18:54Z	P_QUIT	10356	focused
+47	9014504320	App	31. Do Habits - Get It Done - Daily Routine & Goal Planner	2	2022-08-25T07:38:23Z	P_CLARITY	36	focused
+48	2283332022	App	31. Do Habits - Get It Done - Daily Routine & Goal Planner	5	2018-03-08T08:36:33Z	P_WEEK	2391	focused
+49	11121493895	App	31. Do Habits - Get It Done - Daily Routine & Goal Planner	5	2024-04-04T18:13:20Z	P_CLARITY	2664	focused
+50	10839216758	App	31. Do Habits - Get It Done - Daily Routine & Goal Planner	4	2024-01-19T12:22:19Z	ASK_WEEK,P_CLARITY	2731	focused
+51	4173454628	App	31. Do Habits - Get It Done - Daily Routine & Goal Planner	4	2019-05-19T05:11:02Z	X_DENSITY,ASK_WEEK	4858	focused
+52	3582038140	App	31. Do Habits - Get It Done - Daily Routine & Goal Planner	3	2018-12-28T03:11:21Z	X_MARK	4931	focused
+53	3339226158	App	31. Do Habits - Get It Done - Daily Routine & Goal Planner	4	2018-10-24T18:52:33Z	ASK_WEEK	4959	focused
+54	9841087824	App	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	5	2023-04-20T09:31:02Z	NA	970	focused
+55	6384513032	App	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	5	2020-09-01T16:41:10Z	NA	2424	focused
+56	13574501337	App	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	4	2025-12-30T22:11:03Z	ASK_WEEK	2739	focused
+57	12995454579	App	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	3	2025-08-09T15:26:50Z	X_DENSITY	3004	focused
+58	12071958008	App	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	4	2024-12-17T00:45:09Z	X_MARK	3274	focused
+59	8132383485	App	34. Habit Tracker - Evoday - Daily Streaks Calendar & Goals	5	2021-12-15T12:09:46Z	P_CLARITY	629	focused
+60	10798882228	App	4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker	4	2024-01-08T14:54:30Z	NA	16435	focused
+61	9127587231	App	41. Awesome Habits - Habit Tracker - Streaks, days since & goals	5	2022-09-27T17:37:16Z	ASK_WEEK	753	focused
+62	12386402047	App	46. everyday - Habit Tracker - Daily Routine Checklist	5	2025-03-05T23:07:00Z	P_OVERVIEW	888	focused
+63	9952382181	App	46. everyday - Habit Tracker - Daily Routine Checklist	4	2023-05-22T02:39:16Z	P_OVERVIEW,ASK_WEEK	1926	focused
+64	6186141665	App	46. everyday - Habit Tracker - Daily Routine Checklist	5	2020-07-11T18:06:22Z	P_OVERVIEW	2093	focused
+65	1567241399	App	48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist	5	2017-03-18T15:54:17Z	P_CLARITY	3525	focused
+66	996935041	App	48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist	3	2014-05-22T13:31:27Z	P_CLARITY	4243	focused
+67	945529655	App	48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist	5	2014-02-18T01:09:48Z	X_MARK	4290	focused
+68	6663385367	App	5. Routine Planner, Habit Tracker - Daily Time Management for ADHD	5	2020-11-19T17:50:44Z	X_MARK	3283	focused
+69	6809731245	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2020-12-30T08:30:18Z	P_WEEK	11222	focused
+70	8253504398	App	53. HabitMinder • Habit Tracker - Daily Reminders & Routines	5	2022-01-18T06:41:18Z	ASK_WEEK	714	focused
+71	5920346163	App	53. HabitMinder • Habit Tracker - Daily Reminders & Routines	4	2020-05-08T19:04:28Z	P_CLARITY	1022	focused
+72	3395705944	App	53. HabitMinder • Habit Tracker - Daily Reminders & Routines	3	2018-11-08T20:05:30Z	NA	1587	focused
+73	5357485025	App	55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker	5	2020-01-04T00:31:37Z	P_WEEK	223	focused
+74	2462727208	App	55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker	5	2018-04-24T16:49:46Z	P_WEEK,P_OVERVIEW	1439	focused
+75	12908286661	App	57. Habit Tracker - DayStamp - Daily Routine, Streak & Widget	3	2025-07-18T22:13:16Z	NA	28	focused
+76	14453647912	App	62. Streaks – Daily Habit Tracker - Atomic Goals & Accountability	4	2026-08-21T06:11:33Z	NA	10	focused
+77	11749828583	App	67. Habio - Daily Habit Tracker - Routine planner & To do list	5	2024-09-21T21:16:41Z	NA	1461	focused
+78	8926202218	App	68. Ultiself - Self-Improvement - Biohacker Routine Planner App	3	2022-07-30T06:01:09Z	NA	4361	focused
+79	11762845723	App	7. Habit Tracker - HabitKit - Streaks & Accountability	5	2024-09-25T12:53:29Z	NA	563	focused
+80	13989061268	App	7. Habit Tracker - HabitKit - Streaks & Accountability	4	2026-04-23T16:19:54Z	NA	691	focused
+81	3520578395	App	76. Way of Life - Habit Tracker - Build a better, stronger you	5	2018-12-11T23:36:07Z	P_CLARITY	129	focused
+82	3276080846	App	76. Way of Life - Habit Tracker - Build a better, stronger you	5	2018-10-08T01:05:50Z	P_WEEK	134	focused
+83	1035276458	App	76. Way of Life - Habit Tracker - Build a better, stronger you	4	2014-07-26T13:34:41Z	NA	241	focused
+84	1454322577	App	76. Way of Life - Habit Tracker - Build a better, stronger you	5	2016-09-23T06:43:55Z	NA	2336	focused
+85	731906569	App	76. Way of Life - Habit Tracker - Build a better, stronger you	5	2013-01-19T03:22:36Z	P_WEEK	3045	focused
+86	12738522904	App	76. Way of Life - Habit Tracker - Build a better, stronger you	5	2025-06-05T12:18:03Z	P_WEEK	4812	focused
+87	1349119521	App	76. Way of Life - Habit Tracker - Build a better, stronger you	5	2016-03-17T10:09:12Z	P_WEEK	6070	focused
+88	925057163	App	76. Way of Life - Habit Tracker - Build a better, stronger you	5	2014-01-14T02:58:44Z	NA	6825	focused
+89	13724827992	App	8. Onrise - Habit Tracker & Focus - Build habits, focus & journal	5	2026-02-07T23:47:37Z	NA	672	focused
+90	1734640664	App	85. Habitica - Gamified Taskmanager - Stay motivated and organized	3	2017-08-19T16:06:39Z	X_MARK	440	focused
+91	14122289462	App	85. Habitica - Gamified Taskmanager - Stay motivated and organized	5	2026-05-30T06:36:45Z	NA	916	focused
+92	1282833909	App	85. Habitica - Gamified Taskmanager - Stay motivated and organized	5	2015-11-06T17:33:27Z	NA	1219	focused
+93	6836557962	App	85. Habitica - Gamified Taskmanager - Stay motivated and organized	5	2021-01-06T06:42:43Z	NA	2380	focused
+94	3493496861	App	86. Today Habit tracker - For to-dos, routines & goals	5	2018-12-04T20:15:39Z	NA	573	focused
+95	195be0e3-60dd-4846-9048-e58083faecba	Play	10. Habit Tracker - Habit Diary	5	2025-01-05T07:44:21Z	P_CLARITY	6608	focused
+96	67031ad3-9e55-47bf-90aa-96f34f802dd6	Play	10. Habit Tracker - Habit Diary	4	2021-07-10T02:46:39Z	P_CLARITY	12147	focused
+97	40d01ac1-176e-49c7-af3e-b87c9c412710	Play	105. Avocation Goal & Habit Tracker	5	2021-07-12T16:11:22Z	P_WEEK	96	focused
+98	4834e201-c357-4060-a0c4-d7929e46505c	Play	105. Avocation Goal & Habit Tracker	3	2023-03-19T01:48:09Z	NA	323	focused
+99	826464fc-c2cd-4b09-bd7e-24c4860a5c36	Play	105. Avocation Goal & Habit Tracker	3	2021-06-02T17:40:24Z	X_MARK	520	focused
+100	cdf7450c-a0c1-4cb9-b454-a109fcd9fe3c	Play	105. Avocation Goal & Habit Tracker	3	2021-05-22T15:52:59Z	NA	523	focused
+101	19c1cf02-108e-4d1c-b256-6775d69d4eef	Play	111. My Study Life - School Planner	4	2019-10-05T10:01:53Z	NA	3122	focused
+102	3c6a85cc-8dc2-4017-93d7-221e1fe0ab31	Play	111. My Study Life - School Planner	4	2016-02-03T05:07:30Z	NA	8712	focused
+103	82d0f307-409f-4683-b35e-e37db182b621	Play	12. Fabulous Daily Routine Planner	4	2021-02-08T23:38:09Z	NA	42461	focused
+104	8b4a91cd-88c1-4a06-98b1-64cc3a051f2c	Play	12. Fabulous Daily Routine Planner	1	2018-07-13T18:33:45Z	NA	148828	focused
+105	c7c506d3-38c7-4e1d-8fdf-79501140ffa5	Play	122. Hevy - Gym Log Workout Tracker	5	2023-01-25T23:30:45Z	NA	18397	focused
+106	4de90710-35bd-4eab-bebb-e3363548f315	Play	122. Hevy - Gym Log Workout Tracker	5	2022-03-08T22:36:34Z	NA	20196	focused
+107	3f02a540-79b3-4a0a-95ef-7a29d5fd0347	Play	126. To Do List	3	2023-04-11T11:48:33Z	NA	10030	focused
+108	614fcb44-9cb3-4d88-90b5-b1b615ced1c7	Play	126. To Do List	4	2018-03-25T09:42:14Z	NA	12457	focused
+109	dbbaa957-ec93-4f11-a90c-3521292d082c	Play	126. To Do List	4	2020-10-14T21:34:06Z	NA	100866	focused
+110	ee59255c-d898-486d-b71b-7a372d9d9105	Play	126. To Do List	5	2018-01-04T23:20:16Z	NA	113509	focused
+111	d1a16056-b6ad-43cb-9dc5-532a49844fff	Play	130. Way of Life - habit tracker	3	2018-08-14T10:18:28Z	X_MARK	327	focused
+112	5ef6acab-ac85-4c4b-bd93-9c436d579cf5	Play	130. Way of Life - habit tracker	5	2017-06-03T18:49:22Z	P_WEEK	353	focused
+113	ba8c2b7b-4c0a-4c35-ad54-a3228e7138e9	Play	14. Habit Pixel - Streak Tracker	5	2025-09-19T21:36:24Z	NA	266	focused
+114	8c5f78aa-be1e-4ea1-98da-a26ff66501f6	Play	14. Habit Pixel - Streak Tracker	5	2025-08-02T07:49:00Z	P_OVERVIEW,P_CLARITY	432	focused
+115	0a07cc54-1ce9-4923-b771-569b0eda85b3	Play	19. TheFor - Habit Tracker	5	2024-02-08T14:03:43Z	P_WEEK	424	focused
+116	b5b4ba98-5b37-4dc1-914f-00586925b982	Play	2. HabitNow Daily Routine Planner	5	2025-07-30T03:55:06Z	NA	2571	focused
+117	55ee9e8b-4c4d-4cbb-bbae-176b6a61893e	Play	2. HabitNow Daily Routine Planner	5	2022-02-19T08:12:14Z	ASK_WEEK	10251	focused
+118	eea5f874-1e8b-4986-9441-3d91e02cd911	Play	2. HabitNow Daily Routine Planner	4	2021-01-21T06:26:26Z	ASK_WEEK	11996	focused
+119	c26b1667-759b-4abd-be6b-22ec1472c3b8	Play	2. HabitNow Daily Routine Planner	4	2023-02-10T18:15:13Z	NA	16513	focused
+120	f5b8b419-8b36-4a02-81a7-2ad46adf6611	Play	2. HabitNow Daily Routine Planner	5	2023-04-30T13:37:08Z	P_CLARITY	25737	focused
+121	074b9e99-2679-4d2b-acdb-23742c20ecbf	Play	24. Habit Tracker	4	2017-02-08T16:16:46Z	NA	808	focused
+122	0a20fc33-fd48-43f0-a4ea-587ae8360c71	Play	24. Habit Tracker	5	2023-11-27T01:24:49Z	NA	1520	focused
+123	8e50318c-d161-443f-9a6d-7efcc70efa83	Play	24. Habit Tracker	4	2019-11-14T19:30:50Z	P_WEEK	4349	focused
+124	3f8019de-ca10-4750-938c-53c7ac2ec0c7	Play	24. Habit Tracker	5	2017-12-05T09:24:57Z	P_WEEK	9847	focused
+125	25ddebfd-6ae7-4d85-b4db-404312f894a4	Play	24. Habit Tracker	4	2016-11-09T07:31:48Z	NA	11822	focused
+126	43e53705-075c-4a0f-8a85-2cc28583464b	Play	24. Habit Tracker	5	2016-04-23T14:10:03Z	P_WEEK	12750	focused
+127	8eabdb14-1c61-4ff4-b713-fe70d6f63dc9	Play	24. Habit Tracker	5	2015-03-09T12:59:31Z	NA	15752	focused
+128	f48b8a81-c4e9-4ed6-8ec6-ebdb5c406dfe	Play	24. Habit Tracker	5	2014-08-28T18:17:44Z	P_WEEK,P_OVERVIEW	16261	focused
+129	27e9e77c-7a15-49d0-952d-6803dedf56b8	Play	24. Habit Tracker	5	2014-07-30T19:53:24Z	P_WEEK	16325	focused
+130	6c390b3c-0145-4ddd-8924-57bd885a6ac0	Play	24. Habit Tracker	5	2020-04-30T15:05:08Z	P_WEEK	17160	focused
+131	8a854ffa-fb0a-4af6-ac3c-7a0224f950a7	Play	3. Loop Habit Tracker	5	2024-07-31T00:54:53Z	NA	3870	focused
+132	fb613ec4-13e2-4a48-abc8-14708055c996	Play	3. Loop Habit Tracker	4	2023-09-20T18:50:01Z	NA	4882	focused
+133	5c572366-113b-4d6c-8143-c6afbafeb87a	Play	3. Loop Habit Tracker	5	2023-02-23T15:03:54Z	NA	5601	focused
+134	090da880-2df4-4980-b0e2-3c9d800bb0d1	Play	3. Loop Habit Tracker	3	2021-10-05T08:00:53Z	ASK_WEEK	7415	focused
+135	8f658cc8-b367-48f7-b987-7c6d4a435d0d	Play	3. Loop Habit Tracker	5	2021-08-11T20:52:16Z	ASK_WEEK	7630	focused
+136	dd9d8dbb-0332-4907-a481-5aacc6eb0038	Play	3. Loop Habit Tracker	4	2021-06-16T06:01:15Z	P_CLARITY	7867	focused
+137	ad1f390e-ff02-4508-a85a-727688bc2c5f	Play	3. Loop Habit Tracker	5	2021-05-26T04:15:34Z	ASK_WEEK	7936	focused
+138	cd806c4d-fb23-4cf6-8c29-c47668504a17	Play	3. Loop Habit Tracker	4	2021-01-04T00:03:50Z	ASK_WEEK	8552	focused
+139	93577923-1417-4c29-9b6f-709dd4a503f1	Play	3. Loop Habit Tracker	5	2020-08-25T01:54:26Z	ASK_WEEK	9118	focused
+140	66798549-5aa8-4e43-b079-6777c260165f	Play	3. Loop Habit Tracker	3	2020-04-07T14:02:25Z	ASK_WEEK	10006	focused
+141	a0fbad34-4d15-4e85-828f-9438762e40df	Play	3. Loop Habit Tracker	5	2020-02-12T16:08:24Z	NA	10243	focused
+142	2779a477-de43-42cd-99d3-02684f2660b4	Play	3. Loop Habit Tracker	4	2019-09-25T04:07:36Z	ASK_WEEK	10883	focused
+143	0616c7af-5125-4066-a13b-121a26d9a4b8	Play	3. Loop Habit Tracker	4	2019-07-26T09:39:48Z	ASK_WEEK	11133	focused
+144	1fe21e13-b9bf-4f7a-bd40-4052b51cd0a0	Play	3. Loop Habit Tracker	5	2019-03-24T17:27:06Z	X_SCORE	11690	focused
+145	5a4f82d0-fece-4827-a42e-9f0bd746f21e	Play	3. Loop Habit Tracker	4	2018-10-15T00:41:45Z	X_SCORE	12439	focused
+146	478f1166-6893-417e-ad4f-7f27ae3cd7f4	Play	3. Loop Habit Tracker	4	2017-08-05T02:12:37Z	X_MARK	14286	focused
+147	a9b9a917-4d0e-44da-a56b-653ddf8f2e9e	Play	3. Loop Habit Tracker	5	2016-12-24T13:54:57Z	NA	15442	focused
+148	657013b1-8002-44e5-a044-9461a5ed623b	Play	3. Loop Habit Tracker	5	2016-10-21T01:24:48Z	NA	15671	focused
+149	bc9fc26d-f95e-47a4-ba4b-831eee7e78f7	Play	3. Loop Habit Tracker	5	2016-06-07T08:04:56Z	ASK_WEEK	16193	focused
+150	69f47aed-de00-4e90-b5d2-9ce2c208004b	Play	3. Loop Habit Tracker	4	2016-06-06T01:07:54Z	ASK_WEEK	16200	focused
+151	3533c1c8-6414-4f29-bef8-deec50682186	Play	3. Loop Habit Tracker	5	2026-07-09T19:26:13Z	P_CLARITY	16442	focused
+152	00e4ed28-32c6-49d8-9f9d-bf644be0cbea	Play	3. Loop Habit Tracker	5	2024-01-05T17:48:12Z	P_CLARITY	16737	focused
+153	07c065cf-126c-4b02-88a5-6679e83ebfb2	Play	30. Habit Tracker - Routine & Goals	2	2024-09-19T01:45:26Z	ASK_WEEK	4447	focused
+154	ed8ab417-63ef-4af4-a4f9-7a9d0867af96	Play	32. Daily Habits - AI Habit Tracker	5	2025-01-27T05:16:59Z	P_CLARITY	630	focused
+155	e4e99654-bdf2-4e9b-a9d1-7e78bd523223	Play	36. Fun Habit - Habit Tracker	5	2021-06-23T19:41:26Z	P_CLARITY	161	focused
+156	63fffdd0-b72a-4dd2-9b76-6064701832ae	Play	4. Me+ Lifestyle Routine	4	2024-02-15T22:49:50Z	NA	63996	focused
+157	f0a748ed-3d40-4097-90ca-3d085248b4e3	Play	4. Me+ Lifestyle Routine	2	2024-01-15T19:24:33Z	NA	65920	focused
+158	94361ad7-d47c-4d69-9305-56f76a9135fd	Play	40. Habit Eazy - Habit & To Do Pal	5	2025-03-08T07:54:01Z	ASK_WEEK	116	focused
+159	c7cf7a40-ad93-4c6b-a6fc-f7184a458dc8	Play	49. RoutineFlow - Routine for ADHD	4	2023-01-26T19:00:08Z	NA	3685	focused
+160	cdec6353-c013-4187-85fa-386c015c6118	Play	65. Goal & Habit Tracker Calendar	5	2025-05-19T13:52:54Z	P_WEEK	2685	focused
+161	ab5ec03f-523d-4517-8603-3fa952ef7c4d	Play	65. Goal & Habit Tracker Calendar	5	2023-08-08T22:12:25Z	P_WEEK	3233	focused
+162	a6ec7c58-d48c-4bff-9499-81f428873dd9	Play	65. Goal & Habit Tracker Calendar	5	2021-12-08T04:28:22Z	P_WEEK	3945	focused
+163	55499fa1-af82-47fd-933e-a434b7aa2485	Play	65. Goal & Habit Tracker Calendar	4	2021-06-18T16:39:35Z	P_WEEK	4286	focused
+164	3b86f611-bcf6-4194-8e41-d63a9ac82646	Play	65. Goal & Habit Tracker Calendar	5	2021-05-31T14:34:30Z	P_CLARITY	4338	focused
+165	333eb9b0-0c75-475b-b1d2-aabdfc6bd5f5	Play	65. Goal & Habit Tracker Calendar	5	2021-05-16T02:04:24Z	P_CLARITY	4376	focused
+166	13c31b64-8d37-42a9-936e-e91cda94d935	Play	65. Goal & Habit Tracker Calendar	5	2020-04-09T20:52:56Z	P_WEEK	5557	focused
+167	01f09436-588f-48ab-84d9-10df20660ffc	Play	65. Goal & Habit Tracker Calendar	5	2019-08-04T15:35:36Z	P_WEEK	6338	focused
+168	b5ece5a6-8b96-4fe6-a174-ddd2dc1d2a39	Play	65. Goal & Habit Tracker Calendar	4	2019-05-27T04:46:44Z	X_DENSITY,ASK_WEEK	6547	focused
+169	5c960334-7da4-48aa-a46d-eb5b947863c9	Play	65. Goal & Habit Tracker Calendar	4	2016-05-11T11:00:50Z	P_WEEK	9466	focused
+170	e1b26c84-a559-4edb-8ef0-dd0f1803448e	Play	65. Goal & Habit Tracker Calendar	5	2019-12-21T09:19:41Z	P_WEEK	16868	focused
+171	ef38a67d-2614-43ae-b7fe-8d9dcc4a58b4	Play	69. EZ Habit - simple habit tracker	4	2022-08-26T09:17:11Z	X_SCORE,ASK_WEEK	201	focused
+172	1baa0cc9-44ad-46b5-a487-61a88aeb478e	Play	81. Goal Tracker - Routine Planner	5	2025-03-27T04:13:29Z	ASK_WEEK	50	focused
+173	180eadfd-dd08-4773-8a9f-e5d21763d965	Play	84. Tasks - To Do List & Reminders	5	2023-02-04T11:03:04Z	NA	2451	focused
+174	514a1053-9ba2-4ac8-b120-bf31954e2e35	Play	84. Tasks - To Do List & Reminders	5	2022-12-04T10:55:16Z	NA	2509	focused
+175	3653fec3-8481-4c63-84df-06b7d1db2b49	Play	84. Tasks - To Do List & Reminders	5	2020-11-21T12:34:48Z	NA	18812	focused
+176	251112c9-545c-4a29-8c34-098063a9f331	Play	84. Tasks - To Do List & Reminders	4	2019-09-10T00:19:17Z	NA	36577	focused
+177	55bdd3e6-8060-4af4-8a61-fd9a568353fa	Play	9. Habit Tracker - HabitKit	5	2023-10-10T04:45:58Z	X_MARK	1246	focused
+178	2dbdb8b9-8bf5-4bfc-a0bd-deae032ed521	Play	98. Rabit - Habit Tracker & Planner	4	2021-02-02T21:08:31Z	NA	2823	focused
+179	9224331888	Native	1. Reminders - Don’t forget. Use Reminders	3	2022-10-26T16:36:30Z	NA	6025	focused
+180	10460220594	Native	1. Reminders - Don’t forget. Use Reminders	4	2023-10-10T19:40:47Z	NA	12872	focused
+181	10881859814	Native	1. Reminders - Don’t forget. Use Reminders	3	2024-01-30T18:23:13Z	N_MARK	23452	focused
+182	5083588117	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	5	2019-11-04T07:13:27Z	NA	933	focused
+183	2533060625	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	4	2018-05-11T15:52:48Z	NA	2638	focused
+184	1593590512	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	1	2017-04-20T20:32:03Z	N_DENSITY	2669	focused
+185	6065820891	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	4	2020-06-12T06:54:01Z	NA	2880	focused
+186	6665325246	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	4	2020-11-20T08:03:24Z	NA	4139	focused
+187	3998881965	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	5	2019-04-11T13:53:48Z	N_PRAISE	5405	focused
+188	8597968797	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	4	2022-04-23T14:04:44Z	NA	7170	focused
+189	4027410298	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	3	2019-04-18T08:36:11Z	NA	8074	focused
+190	1786833621	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	5	2017-09-12T15:51:31Z	NA	14697	focused
+191	9613598364	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	4	2023-02-13T13:33:25Z	NA	19442	focused
+192	5665298516	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	5	2020-03-15T19:25:50Z	N_DENSITY	21852	focused
+193	1652951915	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	4	2017-06-22T04:23:39Z	NA	23135	focused
+194	10456656947	Native	2. Calendar	3	2023-10-09T18:41:11Z	N_DENSITY	209	focused
+195	9911379323	Native	2. Calendar	3	2023-05-10T07:05:10Z	N_DENSITY	234	focused
+196	9894661317	Native	2. Calendar	3	2023-05-05T10:28:20Z	N_DENSITY	237	focused
+197	9414022514	Native	2. Calendar	1	2022-12-19T21:49:22Z	N_DENSITY	284	focused
+198	8988802064	Native	2. Calendar	2	2022-08-17T18:19:56Z	N_DENSITY	295	focused
+199	8548109895	Native	2. Calendar	2	2022-04-09T10:05:10Z	N_MARK	297	focused
+200	11897836991	Native	2. Calendar	5	2024-11-01T02:09:21Z	NA	389	focused
+201	11147742013	Native	2. Calendar	1	2024-04-12T00:13:32Z	N_MARK	1741	focused
+202	9891591700	Native	2. Calendar	4	2023-05-04T12:43:26Z	NA	2033	focused
+203	8117058098	Native	2. Calendar	1	2021-12-11T03:19:21Z	N_MARK	2465	focused
+204	9872736280	Native	2. Calendar	5	2023-04-29T06:17:10Z	N_PRAISE	2601	focused
+205	9078913848	Native	2. Calendar	1	2022-09-12T23:08:06Z	N_MARK	2705	focused
+206	10465029798	Native	2. Calendar	1	2023-10-12T07:24:22Z	N_MARK	5025	focused
+207	9918051419	Native	2. Calendar	1	2023-05-12T06:41:24Z	N_MARK	5040	focused
+208	8772768150	Native	2. Calendar	1	2022-06-14T11:16:06Z	N_MARK	5096	focused
+209	11548066596	Native	2. Calendar	1	2024-07-29T12:48:53Z	N_MARK	5407	focused
+210	11523402142	Native	2. Calendar	3	2024-07-22T22:28:49Z	N_MARK	5410	focused
+211	10989806854	Native	2. Calendar	4	2024-02-28T19:44:39Z	N_DENSITY	5479	focused
+212	10851337095	Native	2. Calendar	2	2024-01-22T14:30:40Z	N_DENSITY	5503	focused
+213	10284434672	Native	2. Calendar	2	2023-08-21T19:41:11Z	NA	5570	focused
+214	10129330723	Native	2. Calendar	2	2023-07-11T18:57:06Z	N_DENSITY	5578	focused
+215	9923653130	Native	2. Calendar	4	2023-05-13T19:51:25Z	N_DENSITY	5716	focused
+216	9880519403	Native	2. Calendar	3	2023-05-01T09:35:27Z	NA	5895	focused
+217	9861134332	Native	2. Calendar	2	2023-04-25T22:35:39Z	N_DENSITY	5974	focused
+218	9858638540	Native	2. Calendar	3	2023-04-25T06:53:15Z	N_DENSITY	5997	focused
+219	9813439696	Native	2. Calendar	4	2023-04-12T10:52:36Z	N_DENSITY	6144	focused
+220	9695123902	Native	2. Calendar	1	2023-03-09T13:07:04Z	N_DENSITY	6347	focused
+221	9503059067	Native	2. Calendar	3	2023-01-13T15:24:30Z	N_DENSITY	6360	focused
+222	9243089930	Native	2. Calendar	1	2022-11-01T07:57:07Z	N_MARK,N_DENSITY	6390	focused
+223	8689261405	Native	2. Calendar	1	2022-05-20T09:35:33Z	N_DENSITY	6457	focused
+224	8189058864	Native	2. Calendar	1	2021-12-31T17:20:32Z	N_DENSITY	6557	focused
+225	7976235780	Native	2. Calendar	1	2021-11-01T05:18:37Z	N_DENSITY	6597	focused
+226	10924239733	Native	2. Calendar	1	2024-02-10T18:18:54Z	N_MARK	7001	focused
+227	11400095023	Native	2. Calendar	2	2024-06-19T19:23:57Z	N_MARK	8992	focused
+228	11334874025	Native	2. Calendar	4	2024-06-02T12:55:30Z	N_MARK	8997	focused
+229	9422696734	Native	2. Calendar	1	2022-12-22T10:26:01Z	N_MARK	9769	focused
+230	9317764533	Native	2. Calendar	2	2022-11-22T19:56:08Z	N_MARK	9777	focused
+231	8654571193	Native	2. Calendar	1	2022-05-09T21:32:11Z	N_MARK	9829	focused
+232	11984889677	Native	2. Calendar	3	2024-11-24T02:42:53Z	NA	10025	focused
+233	10441282838	Native	2. Calendar	3	2023-10-05T12:35:15Z	NA	13327	focused
+234	8516193478	Native	2. Calendar	1	2022-03-31T15:17:03Z	N_MARK	15378	focused
+235	12343948220	Native	2. Calendar	3	2025-02-23T03:20:36Z	NA	17034	focused
+236	11738136380	Native	2. Calendar	1	2024-09-18T17:02:53Z	N_DENSITY	17347	focused
+237	11646711801	Native	2. Calendar	1	2024-08-24T09:42:02Z	N_DENSITY	17378	focused
+238	11313069714	Native	2. Calendar	2	2024-05-27T14:46:29Z	N_MARK	17494	focused
+239	10454622179	Native	2. Calendar	2	2023-10-09T05:37:37Z	N_DENSITY	17840	focused
+240	10410425866	Native	2. Calendar	1	2023-09-26T21:44:06Z	N_MARK	17859	focused
+241	10219171493	Native	2. Calendar	3	2023-08-04T15:19:28Z	N_MARK	17930	focused
+242	9940920531	Native	2. Calendar	5	2023-05-18T20:35:08Z	N_MARK	18413	focused
+243	9930691893	Native	2. Calendar	2	2023-05-15T21:21:11Z	N_MARK	18651	focused
+244	9889661219	Native	2. Calendar	3	2023-05-03T21:49:46Z	N_MARK	19850	focused
+245	9882130243	Native	2. Calendar	1	2023-05-01T18:39:43Z	N_MARK	20230	focused
+246	9881270190	Native	2. Calendar	1	2023-05-01T13:53:59Z	N_MARK	20306	focused
+247	9853138645	Native	2. Calendar	3	2023-04-23T16:19:52Z	N_MARK	21536	focused
+248	9849560301	Native	2. Calendar	1	2023-04-22T16:36:19Z	N_MARK	21619	focused
+249	9846029679	Native	2. Calendar	1	2023-04-21T17:11:21Z	N_MARK	21722	focused
+250	9814614307	Native	2. Calendar	1	2023-04-12T17:25:54Z	N_MARK	22388	focused
+251	9803842445	Native	2. Calendar	1	2023-04-09T15:00:21Z	N_MARK	22568	focused
+252	9671796491	Native	2. Calendar	3	2023-03-02T17:02:20Z	N_MARK	23324	focused
+253	9594913449	Native	2. Calendar	1	2023-02-08T04:56:17Z	N_MARK	23361	focused
+254	8516863885	Native	2. Calendar	1	2022-03-31T19:17:46Z	N_MARK	23801	focused
+255	8417855516	Native	2. Calendar	1	2022-03-04T03:23:29Z	N_DENSITY	23852	focused
+256	8269493187	Native	2. Calendar	1	2022-01-22T13:16:04Z	N_MARK	23910	focused
+257	8159738491	Native	2. Calendar	3	2021-12-23T09:07:58Z	NA	24346	focused
+258	12543340384	Native	4. Apple Health	3	2025-04-14T18:45:31Z	NA	8324	focused
+259	12121485818	Native	5. Apple Fitness - Fitness and Fitness+	1	2024-12-29T23:36:37Z	N_SUMMARY	282	focused
+260	9825649889	Native	5. Apple Fitness - Fitness and Fitness+	1	2023-04-15T19:30:01Z	NA	1550	focused
+261	9369839083	Native	5. Apple Fitness - Fitness and Fitness+	2	2022-12-07T10:18:58Z	NA	3708	focused
+262	8346520889	Native	5. Apple Fitness - Fitness and Fitness+	3	2022-02-12T08:57:25Z	NA	3896	focused
+263	10657713042	Native	5. Apple Fitness - Fitness and Fitness+	3	2023-12-04T21:14:19Z	N_SUMMARY	5929	focused
+264	9612889186	Native	5. Apple Fitness - Fitness and Fitness+	4	2023-02-13T08:42:01Z	N_SUMMARY	9325	focused
+265	12777270078	Native	5. Apple Fitness - Fitness and Fitness+	3	2025-06-15T13:25:15Z	NA	9355	focused
+266	11392927408	Native	5. Apple Fitness - Fitness and Fitness+	1	2024-06-17T21:47:25Z	N_SUMMARY	13883	focused
+267	11379157981	Native	5. Apple Fitness - Fitness and Fitness+	1	2024-06-14T06:07:06Z	NA	13902	focused
+268	11307525894	Native	5. Apple Fitness - Fitness and Fitness+	2	2024-05-26T01:53:16Z	N_MARK	13968	focused
+269	10631306533	Native	5. Apple Fitness - Fitness and Fitness+	3	2023-11-27T14:07:20Z	N_SUMMARY	14682	focused
+270	10402974259	Native	5. Apple Fitness - Fitness and Fitness+	2	2023-09-24T17:09:48Z	N_SUMMARY	14896	focused
+271	9630522122	Native	5. Apple Fitness - Fitness and Fitness+	1	2023-02-18T15:19:35Z	NA	15609	focused
+272	9095391597	Native	5. Apple Fitness - Fitness and Fitness+	3	2022-09-17T23:59:10Z	NA	16213	focused
+273	7874086968	Native	5. Apple Fitness - Fitness and Fitness+	2	2021-10-03T18:23:02Z	N_MARK,N_SUMMARY	16882	focused
+274	13353700707	Native	6. Google Tasks- Get Things Done - Plan, Organize & Schedule Work	5	2025-11-04T02:59:09Z	NA	1103	focused
+275	3946477758	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2019-03-30T13:27:46Z	NA	658	focused
+276	1572228956	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2017-03-25T09:36:47Z	NA	917	focused
+277	5436343604	Native	8. Google Calendar- Get Organized - Easily plan & schedule	2	2020-01-22T22:07:26Z	NA	3118	focused
+278	1216332024	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2015-06-22T22:17:46Z	NA	4101	focused
+279	1202044119	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2015-05-24T15:26:43Z	NA	4105	focused
+280	2630909981	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2018-06-02T11:02:14Z	N_DENSITY	4254	focused
+281	5514118305	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2020-02-10T21:08:21Z	N_DENSITY	5616	focused
+282	2227681931	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2018-02-20T06:56:28Z	NA	5869	focused
+283	1811548527	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2017-09-26T20:14:06Z	NA	5905	focused
+284	1379191927	Native	8. Google Calendar- Get Organized - Easily plan & schedule	2	2016-05-15T19:18:41Z	N_DENSITY	6101	focused
+285	1167282079	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2015-03-13T11:13:00Z	NA	6252	focused
+286	2486863248	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2018-04-30T08:46:15Z	NA	7363	focused
+287	14523108155	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2026-09-07T22:33:01Z	NA	8552	focused
+288	2538953538	Native	8. Google Calendar- Get Organized - Easily plan & schedule	2	2018-05-12T23:11:22Z	N_DENSITY	9231	focused
+289	1264867363	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2015-09-30T12:19:52Z	N_DENSITY	10425	focused
+290	1167527650	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2015-03-13T23:50:45Z	NA	10437	focused
+291	10848430930	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2024-01-21T19:20:42Z	N_PRAISE	12667	focused
+292	1647219004	Native	8. Google Calendar- Get Organized - Easily plan & schedule	5	2017-06-17T04:59:18Z	NA	14438	focused
+293	1196979415	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2015-05-14T04:00:34Z	NA	15103	focused
+294	1429514775	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2016-08-09T01:27:42Z	NA	15877	focused
+295	1369059840	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2016-04-26T11:08:46Z	NA	17260	focused
+296	1169201729	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2015-03-17T07:04:43Z	NA	17338	focused
+297	1166289766	Native	8. Google Calendar- Get Organized - Easily plan & schedule	5	2015-03-10T22:10:45Z	NA	17360	focused
+298	1426063976	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2016-08-04T00:21:50Z	NA	17551	focused
+299	1465995665	Native	8. Google Calendar- Get Organized - Easily plan & schedule	5	2016-10-13T12:41:28Z	N_PRAISE	18072	focused
+300	1166576623	Native	8. Google Calendar- Get Organized - Easily plan & schedule	2	2015-03-11T22:42:31Z	NA	20086	focused
+301	8005697700	Native	8. Google Calendar- Get Organized - Easily plan & schedule	2	2021-11-09T15:13:16Z	NA	20126	focused
+302	13369757323	Native	8. Google Calendar- Get Organized - Easily plan & schedule	2	2025-11-07T23:43:57Z	NA	22793	focused
+303	12678828220	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2025-05-20T23:03:50Z	N_DENSITY	22978	focused
+304	12668484431	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2025-05-18T03:31:15Z	NA	22981	focused
+305	8686784113	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2022-05-19T14:21:32Z	NA	24650	focused
+306	8214496910	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2022-01-07T15:02:20Z	NA	24786	focused
+307	6725685188	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2020-12-07T03:28:27Z	NA	25208	focused
+308	4378321466	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2019-06-27T20:31:07Z	NA	26434	focused
+309	4368021062	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2019-06-25T14:21:44Z	NA	26437	focused
+310	4071645435	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2019-04-28T12:08:48Z	NA	26556	focused
+311	3763757688	Native	8. Google Calendar- Get Organized - Easily plan & schedule	5	2019-02-13T04:06:11Z	NA	26754	focused
+312	3540184234	Native	8. Google Calendar- Get Organized - Easily plan & schedule	5	2018-12-17T07:14:49Z	N_PRAISE	26955	focused
+313	3224727861	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2018-09-24T11:00:37Z	NA	27645	focused
+314	2236639608	Native	8. Google Calendar- Get Organized - Easily plan & schedule	2	2018-02-22T23:48:34Z	NA	30088	focused
+315	1762131996	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2017-08-30T18:13:59Z	NA	30746	focused
+316	1699063174	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2017-07-26T12:18:38Z	N_PRAISE	31090	focused
+317	1460537542	Native	8. Google Calendar- Get Organized - Easily plan & schedule	2	2016-10-03T23:58:19Z	N_DENSITY	32663	focused
+318	1456753240	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2016-09-27T13:54:56Z	N_DENSITY	32726	focused
+319	1443295469	Native	8. Google Calendar- Get Organized - Easily plan & schedule	5	2016-09-02T12:12:39Z	N_PRAISE	32944	focused
+320	1427238953	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2016-08-05T12:15:48Z	N_DENSITY	33185	focused
+321	1394262852	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2016-06-14T13:10:13Z	N_MARK,N_DENSITY	33516	focused
+322	1371421750	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2016-04-30T21:36:58Z	N_DENSITY	33810	focused
+323	1363916084	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2016-04-15T16:09:09Z	N_DENSITY	33933	focused
+324	1333772815	Native	8. Google Calendar- Get Organized - Easily plan & schedule	2	2016-02-16T08:53:57Z	NA	34185	focused
+325	1325074153	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2016-01-30T19:09:24Z	NA	34332	focused
+326	1293643371	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2015-11-30T01:09:13Z	N_DENSITY	34664	focused
+327	1291289442	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2015-11-25T03:44:03Z	NA	34733	focused
+328	1272254496	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2015-10-16T03:00:02Z	NA	34919	focused
+329	1255323212	Native	8. Google Calendar- Get Organized - Easily plan & schedule	5	2015-09-09T19:20:05Z	N_PRAISE	35125	focused
+330	1252327827	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2015-09-03T03:17:04Z	N_DENSITY	35141	focused
+331	1248107778	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2015-08-25T00:22:02Z	NA	35172	focused
+332	1235076636	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2015-07-29T20:13:10Z	NA	35274	focused
+333	1227094791	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2015-07-14T11:33:12Z	N_DENSITY	35372	focused
+334	1219797551	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2015-06-29T23:08:09Z	N_MARK	35430	focused
+335	1209930758	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2015-06-09T23:57:53Z	NA	35486	focused
+336	1196918735	Native	8. Google Calendar- Get Organized - Easily plan & schedule	1	2015-05-14T00:52:06Z	NA	35534	focused
+337	1190344449	Native	8. Google Calendar- Get Organized - Easily plan & schedule	2	2015-04-30T18:36:26Z	NA	35569	focused
+338	1167512476	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2015-03-13T23:05:27Z	NA	35751	focused
+339	11264641334	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-05-14T00:07:29Z	P_WEEK	374	language_expansion
+340	13812869815	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2026-03-04T13:49:08Z	P_WEEK	2694	language_expansion
+341	13651344795	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2026-01-19T12:22:45Z	P_WEEK	2739	language_expansion
+342	13611508633	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2026-01-09T02:43:19Z	X_MARK	2748	language_expansion
+343	13597812966	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2026-01-05T14:27:39Z	NA	2754	language_expansion
+344	13596778086	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2026-01-05T08:12:29Z	P_WEEK	2755	language_expansion
+345	13495911391	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2025-12-10T03:10:11Z	NA	2769	language_expansion
+346	12713861961	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2025-05-30T02:29:47Z	P_WEEK	2874	language_expansion
+347	12706308568	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2025-05-28T03:12:04Z	P_WEEK	2875	language_expansion
+348	12484724332	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2025-03-31T00:47:11Z	P_WEEK	2914	language_expansion
+349	12461799977	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2025-03-25T07:32:19Z	P_WEEK	2919	language_expansion
+350	12445736970	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2025-03-21T09:09:17Z	P_WEEK	2925	language_expansion
+351	12430080587	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2025-03-17T05:04:48Z	P_WEEK	2931	language_expansion
+352	12206545751	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2025-01-20T05:47:54Z	P_WEEK	2996	language_expansion
+353	12068581708	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-12-16T02:44:08Z	NA	3043	language_expansion
+354	11989045971	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-11-25T04:42:05Z	P_WEEK	3052	language_expansion
+355	11962763912	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-11-18T03:54:20Z	P_WEEK	3059	language_expansion
+356	11921881278	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-11-07T08:34:38Z	P_WEEK	3065	language_expansion
+357	11716305030	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-09-12T14:14:49Z	P_WEEK	3133	language_expansion
+358	11510244781	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-07-19T10:04:02Z	P_WEEK	3194	language_expansion
+359	11137747747	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-04-09T05:42:52Z	P_WEEK	3333	language_expansion
+360	11134476869	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-04-08T07:40:17Z	P_WEEK	3334	language_expansion
+361	11111885309	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-04-02T03:20:43Z	P_WEEK	3354	language_expansion
+362	11010088626	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-03-05T09:12:26Z	NA	3421	language_expansion
+363	10976785771	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-02-25T03:36:06Z	NA	3472	language_expansion
+364	10897444629	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-02-03T16:43:28Z	P_WEEK	3495	language_expansion
+365	10888071520	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-02-01T09:59:22Z	P_WEEK	3500	language_expansion
+366	10823050175	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-01-15T01:13:39Z	P_WEEK	3544	language_expansion
+367	10797987018	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-01-08T09:37:37Z	P_WEEK,SOLICITED	3557	language_expansion
+368	10797852931	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2024-01-08T08:36:41Z	NA	3558	language_expansion
+369	10655720221	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2023-12-04T08:26:13Z	P_WEEK	3596	language_expansion
+370	10083682566	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2023-06-29T03:13:38Z	P_WEEK	3688	language_expansion
+371	10014012078	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2023-06-09T02:12:33Z	NA	3700	language_expansion
+372	9899125570	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2023-05-06T16:06:17Z	NA	3728	language_expansion
+373	9715057807	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2023-03-15T08:16:01Z	P_WEEK	3778	language_expansion
+374	9136952341	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-09-30T15:56:57Z	P_WEEK	4402	language_expansion
+375	9031557996	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-08-29T22:56:11Z	NA	5826	language_expansion
+376	9000689573	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-08-21T07:02:35Z	NA	6219	language_expansion
+377	8994270774	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-08-19T10:28:50Z	P_WEEK	6301	language_expansion
+378	8839927780	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-07-04T14:59:03Z	NA	8997	language_expansion
+379	8779837436	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-06-16T14:43:27Z	P_WEEK	9902	language_expansion
+380	8752023989	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-06-08T01:47:46Z	P_WEEK	10305	language_expansion
+381	8703228166	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-05-24T13:00:01Z	P_WEEK	11000	language_expansion
+382	8655743039	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-05-10T07:02:37Z	NA	11869	language_expansion
+383	8654120186	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-05-09T18:02:31Z	P_WEEK	11908	language_expansion
+384	8650259486	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-05-08T14:42:43Z	P_WEEK	12044	language_expansion
+385	8611007045	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-04-27T10:10:53Z	P_WEEK	12876	language_expansion
+386	8606682798	App	1. Habit Tracker - Goal Tracker & ADHD Planner	4	2022-04-26T02:32:16Z	P_WEEK	12962	language_expansion
+387	8603016434	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-04-25T00:11:17Z	P_WEEK	13055	language_expansion
+388	8564799469	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-04-14T02:30:01Z	X_DENSITY	13892	language_expansion
+389	8533462914	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-04-05T06:53:51Z	P_WEEK	14576	language_expansion
+390	8411316879	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-03-02T05:52:03Z	P_WEEK	16980	language_expansion
+391	8356907891	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-02-15T03:39:34Z	NA	18199	language_expansion
+392	8342541997	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-02-11T06:34:08Z	P_WEEK	18461	language_expansion
+393	8284410391	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-01-26T11:32:01Z	P_WEEK	19361	language_expansion
+394	8188155902	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-12-31T12:34:05Z	P_WEEK	20892	language_expansion
+395	8187867996	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-12-31T10:46:18Z	P_WEEK	20896	language_expansion
+396	8122409390	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-12-12T14:03:18Z	NA	21700	language_expansion
+397	8103179231	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-12-07T02:42:10Z	NA	21917	language_expansion
+398	8094265405	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-12-04T14:38:52Z	P_WEEK	22047	language_expansion
+399	7872072049	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-10-03T07:08:46Z	P_WEEK	24850	language_expansion
+400	7832297977	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-09-22T07:57:11Z	P_WEEK	25291	language_expansion
+401	7749950858	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-08-30T02:20:26Z	P_WEEK	26336	language_expansion
+402	7695354573	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-08-15T11:50:13Z	P_WEEK	27113	language_expansion
+403	7694501794	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-08-15T06:17:31Z	P_WEEK	27132	language_expansion
+404	7660901042	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-08-06T08:48:37Z	NA	27731	language_expansion
+405	7658347089	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-08-05T15:27:18Z	NA	27760	language_expansion
+406	7575008445	App	1. Habit Tracker - Goal Tracker & ADHD Planner	4	2021-07-14T10:20:56Z	NA	29240	language_expansion
+407	7538908452	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-07-04T16:38:22Z	P_WEEK	29855	language_expansion
+408	7511018775	App	1. Habit Tracker - Goal Tracker & ADHD Planner	4	2021-06-27T08:24:39Z	P_WEEK	30376	language_expansion
+409	7499935214	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-06-24T08:42:35Z	P_WEEK	30538	language_expansion
+410	7435210753	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-06-07T00:13:11Z	P_WEEK	31290	language_expansion
+411	7391021938	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-05-26T15:39:41Z	NA	31812	language_expansion
+412	7245568247	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-04-21T02:14:31Z	NA	33625	language_expansion
+413	7113045002	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2021-03-17T13:26:57Z	P_WEEK	35056	language_expansion
+414	6535252062	App	1. Habit Tracker - Goal Tracker & ADHD Planner	3	2020-10-14T19:28:36Z	NA	36334	language_expansion
+415	5570550517	App	1. Habit Tracker - Goal Tracker & ADHD Planner	1	2020-02-23T16:00:06Z	X_MARK	36764	language_expansion
+416	5559986124	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2020-02-21T08:24:46Z	NA	36766	language_expansion
+417	5475080380	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2020-02-01T16:06:13Z	NA	37463	language_expansion
+418	5285628799	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2019-12-18T04:13:14Z	NA	38155	language_expansion
+419	5168468580	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2019-11-19T13:09:14Z	NA	38998	language_expansion
+420	5028892862	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2019-10-27T03:41:44Z	NA	39904	language_expansion
+421	4131845089	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2019-05-11T04:46:10Z	NA	41237	language_expansion
+422	4035516487	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2019-04-20T04:38:04Z	NA	41776	language_expansion
+423	3931848086	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2019-03-27T06:27:20Z	NA	42030	language_expansion
+424	8344731606	App	1. Habit Tracker - Goal Tracker & ADHD Planner	4	2022-02-11T20:10:41Z	NA	47935	language_expansion
+425	12189518026	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2025-01-16T02:22:32Z	NA	50562	language_expansion
+426	9155845718	App	1. Habit Tracker - Goal Tracker & ADHD Planner	5	2022-10-06T04:43:21Z	P_WEEK	54788	language_expansion
+427	6193575055	App	13. Productive - Habit Tracker - Daily Routine & Goals Planner	2	2020-07-13T16:40:00Z	NA	3225	language_expansion
+428	6588176920	App	13. Productive - Habit Tracker - Daily Routine & Goals Planner	1	2020-10-30T00:02:43Z	NA	7695	language_expansion
+429	1539169670	App	13. Productive - Habit Tracker - Daily Routine & Goals Planner	4	2017-02-07T11:06:45Z	NA	10492	language_expansion
+430	1718646162	App	23. Streaks - The habit-forming to-do list	4	2017-08-08T13:50:22Z	NA	1128	language_expansion
+431	1707887424	App	23. Streaks - The habit-forming to-do list	5	2017-08-01T12:15:10Z	P_WEEK	1144	language_expansion
+432	11879098634	App	23. Streaks - The habit-forming to-do list	3	2024-10-27T01:40:50Z	NA	3357	language_expansion
+433	1836760306	App	23. Streaks - The habit-forming to-do list	2	2017-10-09T08:38:19Z	NA	3846	language_expansion
+434	1271313333	App	23. Streaks - The habit-forming to-do list	5	2015-10-14T04:59:16Z	NA	3867	language_expansion
+435	12200271651	App	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	1	2025-01-18T18:15:59Z	NA	9335	language_expansion
+436	5054563804	App	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	1	2019-10-31T08:06:54Z	NA	9650	language_expansion
+437	8313326946	App	24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help	1	2022-02-03T07:22:06Z	NA	19440	language_expansion
+438	5670938737	App	31. Do Habits - Get It Done - Daily Routine & Goal Planner	5	2020-03-17T03:34:57Z	NA	1879	language_expansion
+439	5981035792	App	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	5	2020-05-22T23:01:34Z	NA	530	language_expansion
+440	6653849743	App	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	4	2020-11-17T02:31:02Z	X_MARK	1705	language_expansion
+441	5964082097	App	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	5	2020-05-19T04:58:27Z	NA	1782	language_expansion
+442	5775951762	App	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	5	2020-04-07T13:38:18Z	NA	1797	language_expansion
+443	3295388458	App	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	4	2018-10-13T04:03:39Z	NA	1950	language_expansion
+444	1493382231	App	33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks	5	2016-11-30T11:52:35Z	NA	2024	language_expansion
+445	11190606798	App	46. everyday - Habit Tracker - Daily Routine Checklist	5	2024-04-23T04:42:06Z	NA	333	language_expansion
+446	6532683083	App	47. Habit Streak Tracker - DotHabit - Daily Routine, Goals & Planner	5	2020-10-14T02:06:20Z	NA	392	language_expansion
+447	6935182870	App	5. Routine Planner, Habit Tracker - Daily Time Management for ADHD	5	2021-01-31T06:35:45Z	ASK_WEEK	1601	language_expansion
+448	14013195183	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2026-04-30T15:49:48Z	P_WEEK	710	language_expansion
+449	13992537486	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2026-04-24T16:56:10Z	NA	733	language_expansion
+450	13953142946	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2026-04-13T10:41:51Z	NA	779	language_expansion
+451	13443047924	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2025-11-26T13:21:13Z	ASK_WEEK	1562	language_expansion
+452	13044940261	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2025-08-21T22:54:40Z	P_WEEK	2250	language_expansion
+453	11366204200	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2024-06-10T18:21:43Z	X_DENSITY	5103	language_expansion
+454	9237727623	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2022-10-30T15:48:45Z	ASK_WEEK	7048	language_expansion
+455	8158860072	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	4	2021-12-23T02:15:24Z	ASK_WEEK	8378	language_expansion
+456	7899275709	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2021-10-10T14:24:41Z	NA	8691	language_expansion
+457	7776488110	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2021-09-06T07:05:09Z	NA	8817	language_expansion
+458	7240151453	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	4	2021-04-19T14:37:39Z	NA	9762	language_expansion
+459	7234588624	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2021-04-18T02:53:04Z	NA	9776	language_expansion
+460	7202744810	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2021-04-09T16:33:34Z	NA	9841	language_expansion
+461	7181738635	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2021-04-04T07:20:09Z	NA	9895	language_expansion
+462	7036458952	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2021-02-25T11:17:02Z	NA	10384	language_expansion
+463	6867719470	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	4	2021-01-14T07:03:03Z	NA	10972	language_expansion
+464	6809283111	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2020-12-30T04:57:01Z	ASK_WEEK	11224	language_expansion
+465	6734798004	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2020-12-09T17:38:00Z	NA	11465	language_expansion
+466	6709637494	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2020-12-02T14:38:47Z	ASK_WEEK	11560	language_expansion
+467	6572012646	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	3	2020-10-25T10:10:13Z	NA	12091	language_expansion
+468	6550994410	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2020-10-19T10:29:15Z	NA	12171	language_expansion
+469	6529981417	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2020-10-13T07:58:27Z	NA	12263	language_expansion
+470	6394455585	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	4	2020-09-04T14:31:59Z	ASK_WEEK	12572	language_expansion
+471	5775808056	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2020-04-07T13:02:15Z	NA	13129	language_expansion
+472	5590112906	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2020-02-28T03:40:03Z	NA	13525	language_expansion
+473	5520918231	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2020-02-12T11:22:52Z	NA	13770	language_expansion
+474	5234243491	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2019-12-05T01:30:37Z	P_WEEK	13991	language_expansion
+475	4862504754	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2019-09-30T00:24:19Z	NA	14234	language_expansion
+476	3876119805	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2019-03-13T10:28:09Z	ASK_WEEK	14879	language_expansion
+477	2690976777	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	4	2018-06-14T04:46:03Z	NA	16252	language_expansion
+478	2622023880	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2018-05-31T14:19:54Z	NA	16344	language_expansion
+479	2454810720	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	3	2018-04-22T17:05:34Z	NA	16568	language_expansion
+480	2416454483	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	3	2018-04-13T07:06:04Z	NA	16636	language_expansion
+481	2359583277	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2018-03-29T14:06:13Z	NA	16762	language_expansion
+482	2335822805	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2018-03-23T03:41:18Z	NA	16809	language_expansion
+483	2304355895	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2018-03-14T07:30:13Z	ASK_WEEK	16864	language_expansion
+484	2280904016	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	4	2018-03-07T15:40:08Z	NA	16899	language_expansion
+485	2025380711	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	4	2017-12-25T07:06:14Z	NA	17151	language_expansion
+486	1989444228	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2017-12-12T02:35:29Z	NA	17338	language_expansion
+487	1957466843	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	4	2017-11-29T13:57:47Z	NA	17966	language_expansion
+488	1887946665	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	4	2017-10-31T16:04:53Z	NA	19026	language_expansion
+489	1881377741	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	5	2017-10-28T17:13:54Z	NA	19114	language_expansion
+490	1836974823	App	52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus	4	2017-10-09T11:09:38Z	NA	19547	language_expansion
+491	2404315226	App	53. HabitMinder • Habit Tracker - Daily Reminders & Routines	4	2018-04-10T03:49:46Z	ASK_WEEK	423	language_expansion
+492	1936949148	App	53. HabitMinder • Habit Tracker - Daily Reminders & Routines	5	2017-11-21T11:02:56Z	NA	455	language_expansion
+493	9000393264	App	53. HabitMinder • Habit Tracker - Daily Reminders & Routines	3	2022-08-21T04:44:50Z	X_SCORE	465	language_expansion
+494	13574542005	App	57. Habit Tracker - DayStamp - Daily Routine, Streak & Widget	4	2025-12-30T22:25:36Z	X_MARK	703	language_expansion
+495	9967046220	App	59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule	5	2023-05-26T12:35:46Z	NA	2700	language_expansion
+496	7147170630	App	59. Tappsk - ToDo & Habit Tracker - Task Manager & Daily schedule	5	2021-03-26T15:33:39Z	NA	2729	language_expansion
+497	14184519058	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2026-06-15T06:06:01Z	NA	52	language_expansion
+498	13431743275	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2025-11-23T13:50:52Z	NA	101	language_expansion
+499	13268948120	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2025-10-15T10:18:23Z	NA	113	language_expansion
+500	12170317546	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2025-01-11T08:02:37Z	NA	209	language_expansion
+501	9666451736	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2023-03-01T03:22:02Z	NA	406	language_expansion
+502	5990169073	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2020-05-25T02:43:59Z	NA	923	language_expansion
+503	3466153444	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2018-11-27T12:47:15Z	NA	1513	language_expansion
+504	3432730876	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2018-11-18T16:12:58Z	NA	1524	language_expansion
+505	3370937446	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2018-11-02T04:49:26Z	NA	1553	language_expansion
+506	3297545954	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2018-10-13T16:07:15Z	NA	1586	language_expansion
+507	2472058607	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2018-04-26T22:11:37Z	NA	1868	language_expansion
+508	2463956475	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2018-04-25T00:51:48Z	NA	1872	language_expansion
+509	2459590554	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2018-04-23T21:18:24Z	NA	1875	language_expansion
+510	1730382371	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2017-08-16T14:39:08Z	NA	2165	language_expansion
+511	1686173125	App	70. Habit - Daily routine tracker - Goal planner & Streaks	4	2017-07-17T15:11:54Z	NA	2183	language_expansion
+512	1613764460	App	70. Habit - Daily routine tracker - Goal planner & Streaks	5	2017-05-14T15:01:52Z	NA	2215	language_expansion
+513	11419110433	App	74. Habit Check Calendar - Track habits with a calendar!	4	2024-06-24T21:28:40Z	NA	105	language_expansion
+514	3819880323	App	76. Way of Life - Habit Tracker - Build a better, stronger you	4	2019-02-27T08:54:50Z	NA	1068	language_expansion
+515	1316377585	App	76. Way of Life - Habit Tracker - Build a better, stronger you	5	2016-01-14T15:42:31Z	NA	1187	language_expansion
+516	1108121932	App	76. Way of Life - Habit Tracker - Build a better, stronger you	4	2014-12-05T07:12:07Z	NA	1338	language_expansion
+517	10762897692	App	76. Way of Life - Habit Tracker - Build a better, stronger you	4	2023-12-30T14:19:18Z	NA	1818	language_expansion
+518	1023228719	App	76. Way of Life - Habit Tracker - Build a better, stronger you	4	2014-07-06T11:31:38Z	NA	2916	language_expansion
+519	866755955	App	76. Way of Life - Habit Tracker - Build a better, stronger you	5	2013-09-07T12:31:47Z	P_WEEK	2947	language_expansion
+520	835998116	App	76. Way of Life - Habit Tracker - Build a better, stronger you	4	2013-07-13T15:25:40Z	P_WEEK	2957	language_expansion
+521	13005489701	App	89. Check Calendar - Habit Tracker - Check your habit calendar!	1	2025-08-12T04:44:58Z	NA	109	language_expansion
+522	10815980713	App	89. Check Calendar - Habit Tracker - Check your habit calendar!	3	2024-01-13T06:03:47Z	NA	132	language_expansion
+523	cdfa70e8-dac7-461a-a3c3-4fe1c63c79b3	Play	10. Habit Tracker - Habit Diary	5	2024-05-16T02:40:21Z	NA	25091	language_expansion
+524	1700427f-305f-40b2-837e-f58c14b7bcca	Play	11. Dear Me - Daily Routine Tracker	4	2025-06-06T11:32:08Z	ASK_WEEK	7906	language_expansion
+525	3bd762c7-6839-4fda-8af6-a21cc7e59176	Play	12. Fabulous Daily Routine Planner	1	2023-08-20T23:15:02Z	NA	7455	language_expansion
+526	ace4e4d1-dbba-4184-b7c8-d6fb59de4dac	Play	12. Fabulous Daily Routine Planner	5	2021-04-20T22:49:36Z	NA	7551	language_expansion
+527	893dcf20-2be8-4d46-8f01-b02037411947	Play	12. Fabulous Daily Routine Planner	1	2022-09-19T19:05:15Z	NA	22332	language_expansion
+528	7e8fd590-34ad-418b-a60a-07bfdfb08ab5	Play	12. Fabulous Daily Routine Planner	5	2026-07-07T02:49:05Z	NA	67960	language_expansion
+529	ab9d021d-c1d0-4738-b2fa-6a85482aaab6	Play	12. Fabulous Daily Routine Planner	3	2024-03-28T11:53:41Z	NA	69804	language_expansion
+530	6882aabe-11de-47aa-953e-0d85cf764034	Play	12. Fabulous Daily Routine Planner	2	2023-05-24T17:19:00Z	NA	72798	language_expansion
+531	709db834-b225-44a0-ae1b-20dbad5da980	Play	12. Fabulous Daily Routine Planner	5	2022-12-05T11:03:46Z	NA	75376	language_expansion
+532	8e274cf7-c522-4424-916c-2e6bc2fe117b	Play	12. Fabulous Daily Routine Planner	5	2022-07-22T02:05:13Z	NA	77061	language_expansion
+533	9cd20cb2-def0-4435-9bff-d5ec3334c28b	Play	12. Fabulous Daily Routine Planner	5	2021-05-27T05:55:16Z	NA	81152	language_expansion
+534	bfadde1e-d20b-4dd9-b63a-fa2c7e80cc6d	Play	12. Fabulous Daily Routine Planner	5	2020-09-24T11:39:03Z	NA	84310	language_expansion
+535	abbee84c-f893-4caa-b4f8-d3ec600bc4ab	Play	12. Fabulous Daily Routine Planner	1	2020-02-12T14:54:20Z	NA	86217	language_expansion
+536	259b81ba-6bf6-440d-b32e-8697d66f7ce5	Play	12. Fabulous Daily Routine Planner	5	2019-10-27T06:48:38Z	NA	87040	language_expansion
+537	3bc85dc9-1b45-4e1e-bc48-e4f5b79fc89c	Play	12. Fabulous Daily Routine Planner	1	2019-04-27T10:33:55Z	NA	90465	language_expansion
+538	c50ed754-568c-4b9b-93bd-60b23f9b14fb	Play	12. Fabulous Daily Routine Planner	1	2019-04-14T19:05:29Z	NA	90679	language_expansion
+539	659bc306-7fa0-4a4f-93fd-1698cea8e832	Play	12. Fabulous Daily Routine Planner	1	2019-04-05T17:54:17Z	NA	90812	language_expansion
+540	66fd4b3e-f9b8-4dc8-a98f-17c3becf7d61	Play	12. Fabulous Daily Routine Planner	1	2019-03-24T13:36:10Z	NA	91008	language_expansion
+541	baa3d670-bbd9-467a-89fa-0a10cec69a07	Play	12. Fabulous Daily Routine Planner	1	2018-01-11T13:42:47Z	NA	94263	language_expansion
+542	365ff243-56d0-4a09-8532-7f12bd384de2	Play	12. Fabulous Daily Routine Planner	5	2016-04-05T11:06:04Z	NA	118120	language_expansion
+543	4275e2d6-8ec9-440d-8faa-1926afde68e9	Play	12. Fabulous Daily Routine Planner	4	2024-10-05T11:35:57Z	NA	120202	language_expansion
+544	efd048d3-f8e8-4c8d-8a2e-4dca5db15b8d	Play	12. Fabulous Daily Routine Planner	5	2022-05-15T16:03:39Z	NA	128873	language_expansion
+545	f1cc2c0b-1e9a-4bec-b193-486a5c13a5e8	Play	12. Fabulous Daily Routine Planner	5	2021-12-03T11:11:31Z	NA	131680	language_expansion
+546	ab268525-1251-4ea2-9106-c2ab4baa66b9	Play	12. Fabulous Daily Routine Planner	5	2019-06-27T16:53:46Z	NA	143555	language_expansion
+547	e75dcfd6-bb61-4059-9064-4a9463ab2bf2	Play	122. Hevy - Gym Log Workout Tracker	5	2025-09-08T14:11:28Z	NA	31505	language_expansion
+548	a0f14297-02c8-42dd-82f4-3f53364733f3	Play	123. Rise - Habit List	4	2025-08-18T02:49:04Z	P_WEEK	1183	language_expansion
+549	eb2c78a5-63fe-4bc1-8c53-665711a7825f	Play	124. Habit Streak Tracker - DotHabit	4	2020-01-15T06:36:37Z	NA	824	language_expansion
+550	f7db1373-e45b-4240-92cc-9abb91e90e85	Play	124. Habit Streak Tracker - DotHabit	5	2022-02-15T03:08:52Z	NA	1543	language_expansion
+551	f55886d3-651f-4280-a400-7571e7d7c9a7	Play	124. Habit Streak Tracker - DotHabit	5	2019-03-22T08:52:19Z	NA	1856	language_expansion
+552	e1acacb3-7792-4b9f-b707-73740f60e423	Play	126. To Do List	5	2021-04-12T11:34:12Z	NA	96041	language_expansion
+553	1f199d99-7309-4d2a-a50f-f0213fc0b6a6	Play	126. To Do List	4	2017-10-06T07:04:50Z	NA	134134	language_expansion
+554	17344a25-2b59-4bd8-bc6b-8e5e50c97a5a	Play	126. To Do List	5	2017-02-20T19:52:44Z	NA	134378	language_expansion
+555	ccc36745-ea45-47cd-ae53-8868f5ccac87	Play	126. To Do List	5	2022-10-19T04:48:46Z	NA	137690	language_expansion
+556	fe648d4f-c731-417e-9679-abfadac4573a	Play	126. To Do List	5	2022-09-19T19:57:48Z	NA	137760	language_expansion
+557	7ccbef0e-5fa0-403a-ac3c-f04df2c3500f	Play	126. To Do List	5	2017-07-02T01:21:55Z	NA	141405	language_expansion
+558	ed5e8a2c-f9ce-4d1e-b87e-9c9edeb6b0fd	Play	126. To Do List	5	2017-01-26T13:50:11Z	NA	141652	language_expansion
+559	664fac8e-76b0-4d23-aa3a-13a2e2bef5ba	Play	134. Habit Fantasy - ToDo&Habit RPG	5	2026-06-22T14:47:31Z	NA	24	language_expansion
+560	3ae6c670-b843-4899-be66-52d1608dc2b6	Play	19. TheFor - Habit Tracker	4	2024-08-27T18:30:20Z	P_WEEK	661	language_expansion
+561	1de1fa89-9ac8-4658-8fa8-e4014f93257a	Play	19. TheFor - Habit Tracker	5	2024-01-13T15:41:54Z	P_WEEK	746	language_expansion
+562	f97078f8-d95c-4b81-88d7-c69669299af3	Play	19. TheFor - Habit Tracker	5	2024-02-05T00:44:17Z	P_WEEK	1117	language_expansion
+563	c2032775-6b14-46f6-b337-a3ec44485972	Play	2. HabitNow Daily Routine Planner	4	2023-06-27T22:35:52Z	P_WEEK	16080	language_expansion
+564	e3a9357a-af73-4d55-86a1-54f507022037	Play	2. HabitNow Daily Routine Planner	5	2019-11-18T14:10:13Z	NA	20302	language_expansion
+565	d1a574d2-0ce6-4210-b275-a78853255f58	Play	2. HabitNow Daily Routine Planner	4	2019-10-09T16:22:48Z	ASK_WEEK	20374	language_expansion
+566	0ffe1c0c-ce7a-4ca4-b232-99a7a947922d	Play	2. HabitNow Daily Routine Planner	5	2025-10-10T05:36:30Z	NA	22289	language_expansion
+567	8474b6de-f35d-4a47-ae04-879f6661935d	Play	2. HabitNow Daily Routine Planner	4	2025-09-02T04:31:39Z	NA	22292	language_expansion
+568	c9ae0713-899a-4297-8db0-e6c20b839fad	Play	20. MyRoutine - Routine Habit Goal	4	2025-12-20T22:29:15Z	NA	523	language_expansion
+569	06fdd42b-5153-49e3-affc-ec3daf1c1c83	Play	20. MyRoutine - Routine Habit Goal	5	2022-02-07T18:23:47Z	NA	2899	language_expansion
+570	66324847-77f2-45c1-aca6-0b986ca6e1c6	Play	20. MyRoutine - Routine Habit Goal	5	2021-11-16T01:08:44Z	P_WEEK	3152	language_expansion
+571	5fee0b43-0752-4c81-89cb-dba0ebd3c6c6	Play	24. Habit Tracker	4	2018-10-04T00:27:49Z	X_DENSITY	18261	language_expansion
+572	965f8a8f-c8c1-4263-a8f1-baf909464a35	Play	24. Habit Tracker	4	2018-03-05T07:55:51Z	NA	23310	language_expansion
+573	175009a3-bd29-4815-8c3e-f58f58ede29b	Play	3. Loop Habit Tracker	4	2020-07-23T16:49:50Z	P_WEEK,X_SCORE	17179	language_expansion
+574	23a51cea-186d-4468-8627-38c0009021dd	Play	3. Loop Habit Tracker	5	2025-12-29T00:04:26Z	NA	19272	language_expansion
+575	581c8fc1-55d3-4bf6-a7bf-ff3f53a86512	Play	3. Loop Habit Tracker	5	2020-12-28T06:16:19Z	NA	19368	language_expansion
+576	fec924fc-d6a3-4895-b351-54406cf537e4	Play	3. Loop Habit Tracker	5	2017-09-15T05:05:14Z	NA	21855	language_expansion
+577	d7cd9e88-59e5-40f6-b471-7cf1479bf369	Play	3. Loop Habit Tracker	3	2017-09-09T18:49:22Z	P_WEEK,X_MARK,ASK_WEEK	21864	language_expansion
+578	2b0c68c3-f85e-4429-9ae4-4ae88562ee0e	Play	3. Loop Habit Tracker	5	2025-09-03T05:05:09Z	ASK_WEEK	26262	language_expansion
+579	f1deda17-e651-4254-8dba-f7926fe95d33	Play	3. Loop Habit Tracker	5	2021-05-30T08:17:38Z	P_WEEK,X_DENSITY	26951	language_expansion
+580	db3d1094-d2f2-481d-abd3-21d619ebd1bb	Play	33. Productive - Habit tracker	2	2020-03-24T07:45:10Z	X_MARK,X_SCORE	4424	language_expansion
+581	a4e63604-2134-41c3-9c2e-6f8ff9dddd7f	Play	36. Fun Habit - Habit Tracker	5	2023-01-04T00:34:29Z	NA	480	language_expansion
+582	9cee7832-b8f0-4fc7-b56d-76f0a6a97e0a	Play	37. Habitify - Habit Tracker	4	2022-05-10T15:23:48Z	NA	1425	language_expansion
+583	58b960e9-f9a9-4ced-ad98-d1e8b289f6b7	Play	38. Roubit -Daily Life Routine Care	4	2024-08-01T01:25:47Z	NA	2719	language_expansion
+584	d90ab939-f4d8-4d57-a708-89adf6739758	Play	38. Roubit -Daily Life Routine Care	5	2021-12-16T06:32:16Z	X_DENSITY	3495	language_expansion
+585	6ccd3f8f-9514-4f31-88a0-a2c31e46fadc	Play	4. Me+ Lifestyle Routine	4	2024-10-14T12:54:47Z	NA	53170	language_expansion
+586	fbcf0ebc-d67b-42a8-a4d3-5ef7a6c6b3a2	Play	4. Me+ Lifestyle Routine	5	2024-09-27T15:42:30Z	NA	53885	language_expansion
+587	b4cb14c9-69b5-4196-b82c-f52476463ba0	Play	4. Me+ Lifestyle Routine	4	2024-08-07T08:19:52Z	NA	56704	language_expansion
+588	5fe8dd8d-73bb-44d0-b8b0-b7f2a5901ccf	Play	4. Me+ Lifestyle Routine	5	2024-02-26T11:55:38Z	NA	63384	language_expansion
+589	a29b09fc-ddb2-4a0e-a50e-bf617813729d	Play	4. Me+ Lifestyle Routine	1	2024-01-29T23:40:36Z	NA	64899	language_expansion
+590	dfbd66d3-da89-4024-94ea-619fab8d229a	Play	4. Me+ Lifestyle Routine	5	2024-01-22T18:20:26Z	NA	65485	language_expansion
+591	f87d7eb0-a3ee-4acf-aa6e-21c01d4fbfd6	Play	4. Me+ Lifestyle Routine	4	2025-08-24T11:34:09Z	NA	79209	language_expansion
+592	7814bcbd-04c6-420e-a082-5ffbe94cd8e2	Play	4. Me+ Lifestyle Routine	5	2024-12-03T00:04:02Z	NA	85865	language_expansion
+593	8f9c4e7b-97fa-4da4-8bdb-96e9ea797174	Play	4. Me+ Lifestyle Routine	2	2024-11-10T23:03:26Z	X_DENSITY	86173	language_expansion
+594	fdeb6687-7c2b-4264-ac6d-047fbe68971d	Play	4. Me+ Lifestyle Routine	5	2024-08-27T00:34:38Z	NA	88198	language_expansion
+595	75bdc04f-2954-4e32-a5ef-74f401a3f227	Play	4. Me+ Lifestyle Routine	5	2024-03-09T13:53:42Z	NA	94361	language_expansion
+596	ad4c7f7d-c964-485a-89c4-a2a5abc55530	Play	4. Me+ Lifestyle Routine	2	2023-10-12T05:09:10Z	NA	98898	language_expansion
+597	e1cd197a-4cb6-472e-807e-68db7ad1fb1f	Play	65. Goal & Habit Tracker Calendar	5	2016-09-09T11:33:11Z	X_DENSITY	1290	language_expansion
+598	86a66246-e332-4d4f-9152-f5a6bfd80faf	Play	66. Habit Slayer - Habit Tracker	5	2025-06-30T21:52:36Z	NA	44	language_expansion
+599	00465f0e-39a7-4fc7-be00-347f6ba5cfd7	Play	7. Habit Tracker - Habit Streak	5	2025-07-19T05:45:26Z	NA	403	language_expansion
+600	97b4a10e-2dc8-472a-b686-4add013bd33c	Play	70. everyday Habit Tracker	4	2021-01-07T21:20:27Z	P_WEEK	605	language_expansion
+601	ae4d753a-c903-44e0-812c-3da49a3dc3fe	Play	79. Habit Tracker - IsleGrow	5	2026-01-30T21:15:06Z	NA	42	language_expansion
+602	b5e23fa0-f92d-4952-85e0-8d2c3ea3836e	Play	8. Habitica - Gamify Your Tasks	5	2022-10-21T13:42:23Z	NA	11067	language_expansion
+603	44d8d80a-3233-4aa2-af6e-cee52b2a093d	Play	84. Tasks - To Do List & Reminders	5	2022-12-11T15:53:34Z	NA	42712	language_expansion
+604	318b2749-687a-40af-ade9-363a1a4cb2b2	Play	84. Tasks - To Do List & Reminders	5	2024-02-17T05:41:52Z	NA	58076	language_expansion
+605	607a3757-a4a6-4f0c-ad73-34d42037223b	Play	84. Tasks - To Do List & Reminders	5	2019-01-19T17:17:05Z	NA	58526	language_expansion
+606	8ff221f7-7792-48dc-81ae-e62e9ad4b48d	Play	91. Habit Check Calendar	5	2024-11-08T10:35:56Z	P_WEEK	927	language_expansion
+607	73d2ff80-a006-45c0-a705-9ae95d1c2900	Play	94. Pixel Habit Tracker	5	2026-07-20T10:13:37Z	P_WEEK	28	language_expansion
+608	a89ecd23-741e-41b2-9c60-50a1a88313ec	Play	97. To-do list - tasks planner	4	2023-02-11T17:50:00Z	NA	1394	language_expansion
+609	c7cfdca1-04a0-4b69-84da-e4aeddc950c6	Play	97. To-do list - tasks planner	5	2025-01-25T11:59:36Z	NA	5687	language_expansion
+610	3679564f-af84-4ba2-abc2-1fd9655e69af	Play	97. To-do list - tasks planner	5	2026-05-08T12:13:34Z	NA	23752	language_expansion
+611	5c14ac4c-8010-4015-b23c-7d8778c118e8	Play	98. Rabit - Habit Tracker & Planner	3	2021-12-15T19:13:12Z	NA	2155	language_expansion
+612	b7d4c6ff-c8d8-4145-925b-54298e452cd4	Play	98. Rabit - Habit Tracker & Planner	3	2021-01-21T18:43:50Z	NA	2919	language_expansion
+613	e7e76737-bb00-4b85-b99d-1372362b6d9d	Play	98. Rabit - Habit Tracker & Planner	3	2022-01-09T21:38:53Z	NA	3349	language_expansion
+614	341f166d-d47d-43d7-a5fa-dd4e20487c4f	Play	98. Rabit - Habit Tracker & Planner	5	2021-05-24T02:07:19Z	NA	5417	language_expansion
+615	11502022717	Native	1. Reminders - Don’t forget. Use Reminders	5	2024-07-17T04:09:28Z	NA	3912	language_expansion
+616	10996173022	Native	1. Reminders - Don’t forget. Use Reminders	5	2024-03-01T14:25:47Z	NA	4044	language_expansion
+617	14297249226	Native	1. Reminders - Don’t forget. Use Reminders	1	2026-07-13T08:33:04Z	NA	9276	language_expansion
+618	2273941489	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	4	2018-03-05T15:31:55Z	NA	1779	language_expansion
+619	11119439137	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	4	2024-04-04T05:30:21Z	N_SUMMARY	3310	language_expansion
+620	9163862440	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	5	2022-10-08T14:07:01Z	NA	3535	language_expansion
+621	7186246847	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	5	2021-04-05T11:52:13Z	NA	3889	language_expansion
+622	7140920974	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	5	2021-03-24T23:29:57Z	NA	3908	language_expansion
+623	6694330276	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	3	2020-11-28T08:13:26Z	N_DENSITY	8856	language_expansion
+624	12332324516	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	3	2025-02-20T06:10:53Z	NA	12157	language_expansion
+625	6363042594	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	5	2020-08-26T13:50:53Z	NA	12418	language_expansion
+626	10367206311	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	3	2023-09-14T12:31:36Z	NA	14269	language_expansion
+627	5588689514	Native	10. Microsoft To Do - Capture Tasks & Set Reminders	5	2020-02-27T19:38:50Z	NA	14408	language_expansion
+628	9859730765	Native	2. Calendar	4	2023-04-25T13:55:38Z	N_DENSITY	1381	language_expansion
+629	10455593072	Native	2. Calendar	4	2023-10-09T12:50:18Z	NA	6673	language_expansion
+630	9840745098	Native	2. Calendar	2	2023-04-20T06:51:27Z	NA	7345	language_expansion
+631	12401018522	Native	2. Calendar	5	2025-03-09T16:01:53Z	NA	11403	language_expansion
+632	10292982985	Native	2. Calendar	2	2023-08-24T05:47:15Z	NA	11558	language_expansion
+633	9801505572	Native	2. Calendar	4	2023-04-08T22:29:38Z	NA	12063	language_expansion
+634	13294051313	Native	2. Calendar	1	2025-10-21T06:18:20Z	N_DENSITY	13232	language_expansion
+635	13151519414	Native	2. Calendar	2	2025-09-18T06:37:09Z	NA	13653	language_expansion
+636	9952929584	Native	2. Calendar	4	2023-05-22T07:23:54Z	NA	13686	language_expansion
+637	9908823304	Native	2. Calendar	4	2023-05-09T12:51:04Z	N_PRAISE	13708	language_expansion
+638	9766864970	Native	2. Calendar	3	2023-03-30T06:07:57Z	N_DENSITY	13778	language_expansion
+639	9866756072	Native	2. Calendar	2	2023-04-27T13:52:37Z	NA	15192	language_expansion
+640	9969529616	Native	2. Calendar	2	2023-05-27T05:31:45Z	NA	15386	language_expansion
+641	10430851446	Native	4. Apple Health	1	2023-10-02T14:52:20Z	NA	1976	language_expansion
+642	12987928015	Native	5. Apple Fitness - Fitness and Fitness+	2	2025-08-07T17:34:18Z	NA	701	language_expansion
+643	7933148326	Native	6. Google Tasks- Get Things Done - Plan, Organize & Schedule Work	5	2021-10-20T02:22:19Z	NA	2909	language_expansion
+644	4757661378	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2019-09-10T16:01:51Z	N_DENSITY	1893	language_expansion
+645	5910412518	Native	8. Google Calendar- Get Organized - Easily plan & schedule	5	2020-05-06T13:59:34Z	NA	4556	language_expansion
+646	1519999973	Native	8. Google Calendar- Get Organized - Easily plan & schedule	5	2017-01-11T18:04:20Z	NA	4730	language_expansion
+647	1223729419	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2015-07-07T22:22:58Z	N_DENSITY	7270	language_expansion
+648	9843584053	Native	8. Google Calendar- Get Organized - Easily plan & schedule	5	2023-04-21T00:55:30Z	N_PRAISE	12752	language_expansion
+649	3584830049	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2018-12-28T19:53:34Z	N_MARK	13618	language_expansion
+650	2091615009	Native	8. Google Calendar- Get Organized - Easily plan & schedule	2	2018-01-15T13:45:12Z	N_DENSITY	14238	language_expansion
+651	1328619241	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2016-02-06T08:25:53Z	N_PRAISE	14930	language_expansion
+652	1217506100	Native	8. Google Calendar- Get Organized - Easily plan & schedule	5	2015-06-25T07:01:04Z	N_PRAISE	15090	language_expansion
+653	1166439702	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2015-03-11T06:39:32Z	NA	15154	language_expansion
+654	3533400853	Native	8. Google Calendar- Get Organized - Easily plan & schedule	5	2018-12-15T13:01:10Z	NA	16953	language_expansion
+655	1538300229	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2017-02-06T06:37:13Z	N_DENSITY	17193	language_expansion
+656	1198829648	Native	8. Google Calendar- Get Organized - Easily plan & schedule	3	2015-05-17T18:47:58Z	NA	17328	language_expansion
+657	1196122154	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2015-05-12T07:42:36Z	NA	17332	language_expansion
+658	1168753128	Native	8. Google Calendar- Get Organized - Easily plan & schedule	5	2015-03-16T10:22:45Z	NA	17339	language_expansion
+659	1166564558	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2015-03-11T22:03:08Z	NA	17352	language_expansion
+660	1166460264	Native	8. Google Calendar- Get Organized - Easily plan & schedule	2	2015-03-11T07:57:20Z	NA	17356	language_expansion
+661	13444115183	Native	8. Google Calendar- Get Organized - Easily plan & schedule	4	2025-11-26T18:47:23Z	NA	17486	language_expansion

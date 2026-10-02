@@ -1,0 +1,264 @@
+{
+  "date": "2026-10-02",
+  "week_start": "Sunday",
+  "habits": [
+    {
+      "name": "Read",
+      "symbol": "book.fill",
+      "color": "orange",
+      "goal": "20 min a day",
+      "metric": "1 h 52 min this week",
+      "context": "5 of 5 days so far",
+      "marks": [
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "part",
+        "later"
+      ],
+      "detail": "Today \u00b7 12 of 20 min",
+      "fraction": 0.6
+    },
+    {
+      "name": "Call family",
+      "symbol": "phone.fill",
+      "color": "green",
+      "goal": "3 times a week",
+      "metric": "2 of 3 so far",
+      "context": "1 more this week",
+      "marks": [
+        "blank",
+        "blank",
+        "blank",
+        "done",
+        "done",
+        "today",
+        "later"
+      ],
+      "detail": "Empty days do not count against this goal."
+    },
+    {
+      "name": "Water",
+      "symbol": "drop.fill",
+      "color": "blue",
+      "goal": "8 glasses a day",
+      "metric": "48 glasses this week",
+      "context": "6 of 6 days so far",
+      "marks": [
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "later"
+      ]
+    },
+    {
+      "name": "Stretch",
+      "symbol": "figure.flexibility",
+      "color": "teal",
+      "goal": "10 min a day",
+      "metric": "50 min this week",
+      "context": "5 of 5 days so far",
+      "marks": [
+        "skip",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "later"
+      ],
+      "detail": "Sun skipped \u00b7 does not count"
+    },
+    {
+      "name": "Morning skincare routine with SPF",
+      "symbol": "sparkles",
+      "color": "purple",
+      "goal": "4 steps a day",
+      "metric": "24 of 24 steps so far",
+      "context": "6 full days \u00b7 100%",
+      "marks": [
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "later"
+      ]
+    },
+    {
+      "name": "Brush teeth",
+      "symbol": "mouth.fill",
+      "color": "mint",
+      "goal": "2 min a day",
+      "metric": "12 min this week",
+      "context": "6 of 6 days so far",
+      "marks": [
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "later"
+      ]
+    },
+    {
+      "name": "Walk",
+      "symbol": "figure.walk",
+      "color": "green",
+      "goal": "8,000 steps a day",
+      "metric": "45,200 steps this week",
+      "context": "5 of 5 days so far",
+      "marks": [
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "part",
+        "later"
+      ],
+      "detail": "Today \u00b7 5,200 of 8,000 steps",
+      "fraction": 0.65
+    },
+    {
+      "name": "Lunch away from the desk",
+      "symbol": "fork.knife",
+      "color": "orange",
+      "goal": "Every day",
+      "metric": "5 of 5 days so far \u00b7 100%",
+      "context": "",
+      "marks": [
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "today",
+        "later"
+      ]
+    },
+    {
+      "name": "Floss",
+      "symbol": "mouth",
+      "color": "cyan",
+      "goal": "Every day",
+      "metric": "Paused through 4 Oct",
+      "context": "Paused days do not count",
+      "marks": [
+        "pause",
+        "pause",
+        "pause",
+        "pause",
+        "pause",
+        "pause",
+        "pause"
+      ]
+    },
+    {
+      "name": "Plan tomorrow",
+      "symbol": "checklist",
+      "color": "indigo",
+      "goal": "Every day",
+      "metric": "4 of 5 days so far \u00b7 80%",
+      "context": "",
+      "marks": [
+        "empty",
+        "done",
+        "done",
+        "done",
+        "done",
+        "today",
+        "later"
+      ]
+    },
+    {
+      "name": "Bed by 23:00",
+      "symbol": "bed.double.fill",
+      "color": "indigo",
+      "goal": "Every day",
+      "metric": "5 of 5 days so far \u00b7 100%",
+      "context": "",
+      "marks": [
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "today",
+        "later"
+      ]
+    },
+    {
+      "name": "Coffee",
+      "symbol": "cup.and.saucer.fill",
+      "color": "brown",
+      "goal": "No more than 3 cups a day",
+      "metric": "Avg 2.2 cups a day",
+      "context": "Limit 3 cups \u00b7 ended days only",
+      "marks": [
+        "done",
+        "over",
+        "done",
+        "done",
+        "done",
+        "today",
+        "later"
+      ],
+      "detail": "Today \u00b7 2 of 3 cups so far"
+    }
+  ],
+  "quitting": [
+    {
+      "name": "Smoking, social ones too",
+      "symbol": "nosign",
+      "color": "gray",
+      "run": "12 d 11 h",
+      "best": "45 days",
+      "marks": [
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "later"
+      ]
+    },
+    {
+      "name": "Alcohol",
+      "symbol": "wineglass",
+      "color": "gray",
+      "run": "47 d 2 h",
+      "best": "47 days",
+      "marks": [
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "done",
+        "later"
+      ]
+    }
+  ],
+  "overview": {
+    "done": 53,
+    "planned": 55,
+    "full_days": 3,
+    "weekly_goals_met": 0,
+    "weekly_goals_total": 1
+  },
+  "notes": [
+    "Real demo identities and colours except Coffee, an explicitly added limit stress fixture.",
+    "Long names from -longtext for skincare, lunch and Smoking. Water keeps original 8-glass demo.",
+    "Stretch skipped Sunday and Floss paused all week are explicit stress states.",
+    "Meds and Meds 14:00 omitted to honour no-red instruction; No screens and Meditate omitted for 14 total."
+  ]
+}
