@@ -131,7 +131,11 @@ extension HabitStore {
     func schedule(_ store: HabitStore) {
         scheduled?.cancel()
         scheduled = Task {
-            try? await Task.sleep(for: .milliseconds(180))
+            // Two seconds after the last change, not 180 ms (2 Oct 2026): widgets can't be seen while the app is in
+            // front, and going to the background publishes at once (`HabitsApp.finishWrites`). Each publication
+            // projects the changed habit's month on the main thread (6 ms on average, up to 118 ms on the hosted
+            // simulator), so a run of taps now pays for one, after the taps, instead of one per tap.
+            try? await Task.sleep(for: .seconds(2))
             guard !Task.isCancelled else { return }
             await publishNow(store)
         }
