@@ -41,7 +41,8 @@ struct DayRing: View {
 }
 
 /// One day's mark in a habit's strip or a list (report §13.1). Every state differs by shape, not only colour: filled,
-/// part-filled ring, empty ring, dashed ring, a sign, or nothing. Never red.
+/// part-filled ring, empty ring (an over-limit day's in the habit's colour, with ▲), dashed ring, a sign, or nothing.
+/// Never red.
 struct DayMarkView: View {
     let mark: HabitStore.DayMark
     var fraction: Double = 0
@@ -61,9 +62,10 @@ struct DayMarkView: View {
                     .stroke(color, style: StrokeStyle(lineWidth: 2, lineCap: .round))
                     .rotationEffect(.degrees(-90))
             case .missed:
-                Circle().strokeBorder(Color.secondary, lineWidth: 1)
+                // Over a limit: a ring and ▲ in the habit's colour, never the solid circle of a day within it (2 Oct 2026).
+                Circle().strokeBorder(over ? color : Color.secondary, lineWidth: 1)
                 if over {
-                    Image(systemName: "arrowtriangle.up.fill").font(.system(size: size * 0.4)).foregroundStyle(.secondary)
+                    Image(systemName: "arrowtriangle.up.fill").font(.system(size: size * 0.4)).foregroundStyle(color)
                 }
             case .open:
                 Circle().strokeBorder(Color.secondary, style: StrokeStyle(lineWidth: 1, dash: [2, 2]))
@@ -135,12 +137,12 @@ struct MonthStrip: View {
     nonisolated static let dot: CGFloat = 5.5, gap: CGFloat = 2.5
 
     var body: some View {
-        var done: [Int] = [], strong: [Int] = [], light: [Int] = [], missed: [Int] = [], open: [Int] = []
+        var done: [Int] = [], strong: [Int] = [], light: [Int] = [], missed: [Int] = [], over: [Int] = [], open: [Int] = []
         for (i, mark) in marks.enumerated() {
             switch mark.mark {
             case .done: done.append(i)
             case .some: if mark.fraction >= 0.5 { strong.append(i) } else { light.append(i) }
-            case .missed: missed.append(i)
+            case .missed: if mark.over { over.append(i) } else { missed.append(i) }
             case .open: open.append(i)
             default: break
             }
@@ -151,6 +153,8 @@ struct MonthStrip: View {
             StripDots(cells: light).fill(color.opacity(0.45))
             // Inset by half the line, as `strokeBorder` drew them.
             StripDots(cells: missed, inset: 0.5).stroke(Color.secondary, lineWidth: 1)
+            // Over a limit: a ring in the habit's colour (2 Oct 2026).
+            StripDots(cells: over, inset: 0.5).stroke(color, lineWidth: 1)
             StripDots(cells: open, inset: 0.5).stroke(Color.secondary, style: StrokeStyle(lineWidth: 1, dash: [1.5, 1.5]))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -183,7 +187,7 @@ struct DayDetailRow: View {
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             DayMarkView(mark: row.mark, fraction: row.fraction, over: row.atMost && row.mark == .missed,
-                        color: row.habit.color.color, size: 16)
+                        color: row.habit.color.mark, size: 16)
                 .frame(width: 22, height: 22)
             VStack(alignment: .leading, spacing: 2) {
                 Text(row.habit.name).lineLimit(2)

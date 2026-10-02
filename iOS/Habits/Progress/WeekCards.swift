@@ -253,10 +253,9 @@ struct WeekMark: View {
     var slip = false
     let color: HabitColor
     var size: CGFloat = 28
-    @Environment(\.colorScheme) private var scheme
 
     var body: some View {
-        let tint = color.color
+        let tint = color.mark
         let line = max(1.5, size / 14)
         ZStack {
             if slip {
@@ -265,8 +264,8 @@ struct WeekMark: View {
             } else {
                 switch mark {
                 case .done:
-                    // One check everywhere: white, on the habit's colour deepened just enough for it (`markFill`).
-                    Circle().fill(color.markFill(dark: scheme == .dark))
+                    // One check everywhere: white, on the habit's colour at the shared lightness (`mark`).
+                    Circle().fill(tint)
                     Image(systemName: "checkmark").font(.system(size: size * 0.44, weight: .bold))
                         .foregroundStyle(.white)
                 case .some:
@@ -276,10 +275,13 @@ struct WeekMark: View {
                         .rotationEffect(.degrees(-90))
                         .padding(line * 0.75)
                 case .missed:
-                    Circle().strokeBorder(Color.secondary.opacity(0.6), lineWidth: line)
                     if over {
-                        Image(systemName: "arrowtriangle.up.fill").font(.system(size: size * 0.32))
-                            .foregroundStyle(.secondary)
+                        // Over a "no more than" limit: the habit's own colour, warm rather than grey, but a ring, never
+                        // the solid circle of a day within the limit (the user chose this, 2 Oct 2026). Never red.
+                        Circle().strokeBorder(tint, lineWidth: line)
+                        Image(systemName: "arrowtriangle.up.fill").font(.system(size: size * 0.34)).foregroundStyle(tint)
+                    } else {
+                        Circle().strokeBorder(Color.secondary.opacity(0.6), lineWidth: line)
                     }
                 case .open:
                     Circle().strokeBorder(Color.secondary, style: StrokeStyle(lineWidth: line, dash: [size / 9, size / 9]))
@@ -306,21 +308,22 @@ struct WeekMark: View {
 }
 
 extension HabitColor {
-    /// The fill under a check: the habit's colour, deepened only as far as a white check needs to stand out from it
-    /// (3:1, WCAG 1.4.11). The check is white on every colour (the user, 2 Oct 2026: one check colour everywhere,
-    /// never black). Red, pink, purple, indigo, blue, brown and gray already reach 3:1 and stay as they are; the light
-    /// colours are deepened by the least that reaches it, measured on the system colours in light and dark mode
-    /// (orange 15/18 %, yellow 30/32 %, green 15/19 %, mint 17/30 %, teal 8/19 %, cyan 9/25 %, plus 2 points).
-    func markFill(dark: Bool) -> Color {
-        let deepen: Double = switch self {
-        case .red, .pink, .purple, .indigo, .blue, .brown, .gray: 0
-        case .orange: dark ? 0.20 : 0.17
-        case .yellow: dark ? 0.34 : 0.32
-        case .green: dark ? 0.21 : 0.17
-        case .mint: dark ? 0.32 : 0.19
-        case .teal: dark ? 0.21 : 0.10
-        case .cyan: dark ? 0.27 : 0.11
-        }
-        return deepen == 0 ? color : color.mix(with: .black, by: deepen, in: .device)
+    /// The habit's colour for marks and icons, all at one lightness (the user, 2 Oct 2026: every colour should feel
+    /// equally strong; orange and green looked darker than purple). Each system colour is moved to OKLCH lightness 0.64,
+    /// keeping its hue and as much of its saturation as fits the screen, so none turns muddy (mixing in black did).
+    /// 0.64 is the lightest level at which a white check still reaches 3:1 (WCAG 1.4.11) on every colour; light and
+    /// dark mode land on nearly the same values, so one table serves both. Worked out once (Research/Temp, 2 Oct 2026),
+    /// never while drawing. Yellow at this lightness is a mustard: that's yellow at the same strength as the rest.
+    var mark: Color { Self.marks[self] ?? color }
+
+    private static let marks: [HabitColor: Color] = [
+        .red: hex(0xFA352B), .orange: hex(0xC97505), .yellow: hex(0xAA8809), .green: hex(0x07A941),
+        .mint: hex(0x09A19A), .teal: hex(0x079DB4), .cyan: hex(0x0698D0), .blue: hex(0x3289FF),
+        .indigo: hex(0x7679FC), .purple: hex(0xB75AE7), .pink: hex(0xFB2852), .brown: hex(0xA48660),
+        .gray: hex(0x8B8B90),
+    ]
+
+    private static func hex(_ v: Int) -> Color {
+        Color(.sRGB, red: Double(v >> 16 & 0xFF) / 255, green: Double(v >> 8 & 0xFF) / 255, blue: Double(v & 0xFF) / 255)
     }
 }

@@ -49,7 +49,8 @@ struct HabitIcon: View {
             .font(.system(size: size * 0.48, weight: .semibold))
             .foregroundStyle(.white)
             .frame(width: size, height: size)
-            .background(RoundedRectangle(cornerRadius: size * 0.28, style: .continuous).fill(color.color.gradient))
+            // The shared-lightness colour (`HabitColor.mark`), so a white symbol reads on every colour (2 Oct 2026).
+            .background(RoundedRectangle(cornerRadius: size * 0.28, style: .continuous).fill(color.mark.gradient))
             .accessibilityHidden(true)
     }
 }

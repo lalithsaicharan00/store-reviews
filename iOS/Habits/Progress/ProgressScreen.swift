@@ -541,17 +541,17 @@ struct ProgressRowView: View {
                     Text(row.habit.name).foregroundStyle(.primary).lineLimit(2)
                     Text(subtitle).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
                     if strips && range == .month {
-                        MonthStrip(marks: row.marks, color: row.habit.color.color).padding(.top, 3)
+                        MonthStrip(marks: row.marks, color: row.habit.color.mark).padding(.top, 3)
                     }
                 }
                 Spacer(minLength: 8)
                 if strips && range == .week {
-                    WeekStrip(marks: row.marks, color: row.habit.color.color)
+                    WeekStrip(marks: row.marks, color: row.habit.color.mark)
                 }
             }
             // Year: the habit's own year of dots, the card's full width (report §7.3).
             if strips && range == .year, let dots = row.yearDots {
-                YearGridView(dots: dots, color: row.habit.color.color, dot: 4, gap: 1.5)
+                YearGridView(dots: dots, color: row.habit.color.mark, dot: 4, gap: 1.5)
                     .accessibilityHidden(true)
             }
         }
@@ -657,7 +657,7 @@ struct ProgressQuitRowView: View {
 
     var body: some View {
         let strips = !typeSize.isAccessibilitySize
-        let color = row.habit.color.color
+        let color = row.habit.color.mark
         VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .center, spacing: 12) {
                 HabitIcon(symbol: row.habit.symbol, color: row.habit.color)

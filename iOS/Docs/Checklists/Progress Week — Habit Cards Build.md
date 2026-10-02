@@ -31,7 +31,8 @@ Research behind it: [Weekly Habit Cards — What Each Card Shows](<../../../Rese
 | U9 | Sticky or not: research it, keep the scroll area large | [x] Only the dates bar is pinned (one 44-pt row). Week/Month/Year, the chips and the key scroll away. Below |
 | U10 | Under the group chips, what each mark means | [x] `WeekKey`: one quiet row, "What the marks mean ⌄"; tapping opens **every** mark (not only this week's) with its name and one sentence, and "Show less" folds it. Revised after the user saw the first version (2 Oct): the always-open key was too much, and "Part done", "Not due" and "Coming up" were unclear |
 | U16 | Clearer words and symbols for the marks | [x] **Partial** (was Part done), **Not done**, **Today, still open**, **Due later this week** (was Coming up; now a small ring, so it can't look like Not done), **Not scheduled** (was Not due; now a short dash), **Skipped**, **Paused**, **Over the limit**, **Before it started**; quit: **Clean day**, **Slip**. The same words in VoiceOver, the habit page and How It's Counted |
-| U17 | One check colour everywhere | [x] White on every colour; the fill under it is the habit's colour, deepened only on the light colours, and only as far as white needs for 3:1 (`markFill`) |
+| U17 | One check colour everywhere | [x] White on every colour. Revised (2 Oct, the user: the deepened colours looked darker than purple): every habit colour for marks **and icons** now sits at one shared lightness (`HabitColor.mark`) |
+| U18 | Over the limit not grey | [x] The user chose option A: a ring and ▲ in the habit's own colour, never solid (a solid circle is a day within the limit). On the Week cards, Month strips and the day sheet |
 | U11 | Spacing hierarchy from proper rules; nothing squeezed | [x] 8-point scale, space inside a group smaller than around it. Below |
 | U12 | A long name stays on one line with "…" | [x] `lineLimit(1)`, tail truncation; goal line also one line |
 | U13 | Checkmarks: legible and good-looking, no black checks | [x] White check on the habit's colour where it reaches 3:1; on the six light colours a deep shade of the same colour. Below |
@@ -65,12 +66,13 @@ Type, largest information first: headline `title3` semibold (the week's fact), n
 `subheadline` secondary, weekdays `caption`, values `caption2`. Icon 40 pt (two lines of text tall), marks 28 pt,
 card corners 16.
 
-**Checkmarks (`HabitColor.markFill`).** One check colour everywhere: white (the user saw white on some colours and a
-dark check on others in the first build, and found the mix odd). WCAG 1.4.11 asks 3:1 for a graphic against what's
-next to it. White on the system colours: red, pink, purple, indigo, blue, brown and gray already reach 3.1–5.7:1 and
-keep their colour. Orange, yellow, green, mint, teal and cyan fall to 1.4–2.6:1, so the fill under the check is the
-same colour deepened by the least amount that reaches 3:1, measured separately for light and dark mode (8–34 %, plus
-2 points). The habit's icon and the partial rings keep the plain colour.
+**Colours and checks (`HabitColor.mark`).** One check colour everywhere: white. Every habit colour used for marks and
+icons sits at one perceived lightness, OKLCH 0.64, keeping its hue and as much saturation as the screen allows. 0.64
+is the lightest level where white reaches 3:1 (WCAG 1.4.11) on all thirteen colours (3.1–3.8:1). Light and dark mode
+land on nearly the same values, so one table serves both. The first try (mixing the light colours with black) reached
+the same lightness but drained their saturation, so orange and yellow looked muddy and darker than purple; equal
+lightness with saturation kept fixes that. Yellow becomes a mustard (#AA8809) at this strength. Charts and Today's row
+fills keep the plain colours for now.
 
 **The key (`WeekKey`).** Progressive disclosure (NN/g): the meanings are one tap away, right where the marks first
 appear, and the page stays clean until someone asks. It lists every mark, not only this week's, so nothing new appears
@@ -80,7 +82,8 @@ no two names can describe the same day.
 **The marks** (`WeekMark`): filled + white check (done; quit: clean day), part ring (partial), grey ring (not done),
 dashed ring (today, still open), ring with ▲ (over the limit), ring with × (quit slip), ▶▶ or ❙❙ on a grey disc
 (skipped, paused), small ring in the habit's colour (due later this week), short dash (not scheduled), nothing (before
-it started). Never red; every state differs by shape.
+it started). Over the limit is a ring and ▲ in the habit's own colour (not grey, never solid). Never red; every state
+differs by shape.
 
 ## What each card says
 

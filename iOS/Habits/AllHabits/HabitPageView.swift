@@ -334,8 +334,8 @@ struct HabitMonthView: View {
                 }
             }
             HStack(spacing: 14) {
-                legend(Circle().fill(habit.color.color), HabitStore.DayMark.done.words(atMost: habit.atMost))
-                legend(Circle().strokeBorder(habit.color.color, lineWidth: 2), HabitStore.DayMark.some.words(atMost: habit.atMost))
+                legend(Circle().fill(habit.color.mark), HabitStore.DayMark.done.words(atMost: habit.atMost))
+                legend(Circle().strokeBorder(habit.color.mark, lineWidth: 2), HabitStore.DayMark.some.words(atMost: habit.atMost))
                 legend(Image(systemName: "pause.fill").font(.system(size: 8)).foregroundStyle(.secondary), "Paused")
                 legend(Image(systemName: "forward.fill").font(.system(size: 8)).foregroundStyle(.secondary), "Skipped")
             }
@@ -359,7 +359,7 @@ struct HabitMonthView: View {
 
     private func mark(_ day: LocalDay, isToday: Bool) -> some View {
         let mark = store.dayMark(habit, on: day)
-        let color = habit.color.color
+        let color = habit.color.mark
         let faint = [.notItsDay, .before, .paused, .skipped].contains(mark)
         return ZStack {
             switch mark {

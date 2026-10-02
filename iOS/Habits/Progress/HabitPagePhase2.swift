@@ -34,7 +34,7 @@ struct HabitYearSection: View {
                 if let dots {
                     ScrollViewReader { proxy in
                         ScrollView(.horizontal, showsIndicators: false) {
-                            YearGridView(dots: dots, color: habit.color.color, dot: 8, gap: 2, labels: true, onMonth: onMonth)
+                            YearGridView(dots: dots, color: habit.color.mark, dot: 8, gap: 2, labels: true, onMonth: onMonth)
                                 .padding(.vertical, 2)
                                 .id("grid")
                         }
