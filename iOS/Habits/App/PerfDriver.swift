@@ -14,6 +14,14 @@ enum PerfAction: Equatable {
     case openBlank
 }
 
+/// Speed runs only: switches a scenario flips to take one part out of a screen and see what it cost (the bisect
+/// method, PERFORMANCE-LESSONS.md). Outside the speed runs they never change.
+enum PerfSwitches {
+    /// False opens the habit form without putting the cursor in its name field, to tell the form's own opening from
+    /// the keyboard's (2 Oct 2026).
+    static var focusFormName = true
+}
+
 /// The control for "opening a screen" (2 Oct 2026): a page with nothing on it, pushed on Today's stack exactly like a
 /// menu page. If it stalls as long as the real pages, the cost is the push itself, not what the pages draw.
 struct PerfBlankPage: Hashable {}
@@ -263,6 +271,20 @@ enum PerfDriver {
                     for n in stride(from: name.count - 1, through: 0, by: -1) { type(String(name.prefix(n))); await pause(0.05) }
                 }
             }
+        case "form-parts":
+            // The habit form's opening split in two (2 Oct 2026): the form alone, then the launch's first keyboard,
+            // then a later keyboard. The first opening without the keyboard still pays the form's one-time costs.
+            PerfSwitches.focusFormName = false
+            await openTwice("Habit form, no keyboard") { send(.openHabitForm) }
+            send(.close)
+            await pause(1.2)
+            PerfSwitches.focusFormName = true
+            await open("Habit form, the launch's first keyboard") { send(.openHabitForm) }
+            send(.close)
+            await pause(1.2)
+            await open("Habit form, keyboard again") { send(.openHabitForm) }
+            send(.close)
+            await pause(1)
         case "player":
             await openTwice("Routine player") { send(.startRoutine(.anytime)) }
             await measure("Routine player: ‹ ›") {

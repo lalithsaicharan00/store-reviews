@@ -551,7 +551,7 @@ struct HabitForm: View {
             } else {
                 color = store.suggestedColor()
                 // An idea arrives named: show the whole form first instead of the keyboard.
-                if name.isEmpty { focus = .name }
+                if name.isEmpty && PerfSwitches.focusFormName { focus = .name }
                 if type != .quit { syncReminders(force: true) }
             }
             notificationsDenied = await scheduler.isDenied()
