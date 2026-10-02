@@ -74,6 +74,7 @@ struct HabitRow: View {
     @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
 
     var body: some View {
+        let _ = perfTimed("Count: a Today row drawn") { () }
         if habit.kind == .duration {
             // Keep the same host when a running timer stops, and on every day: replacing TimelineView with a plain row
             // could dismiss a sheet opened from that row, and switching the day rebuilt every duration row twice

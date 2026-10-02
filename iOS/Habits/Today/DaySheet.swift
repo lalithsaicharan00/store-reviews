@@ -20,6 +20,7 @@ struct DaySheet: View {
     private var editable: Bool { day <= store.today() && day >= store.startDay(of: current) }
 
     var body: some View {
+        let _ = perfTimed("Count: the Day sheet drawn") { () }
         NavigationStack {
             Form {
                 Section {

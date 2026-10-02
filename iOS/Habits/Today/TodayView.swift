@@ -337,6 +337,7 @@ struct TodayView: View {
 
     @ViewBuilder
     private func content(now: Date) -> some View {
+        let _ = perfTimed("Count: Today's list drawn") { () }
         let today = store.today(now: now)
         let shown = day ?? today
         let isToday = shown == today

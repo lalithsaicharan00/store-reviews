@@ -8,6 +8,7 @@ struct DayEntriesSection: View {
     @Environment(HabitStore.self) private var store
 
     var body: some View {
+        let _ = perfTimed("Count: the Day sheet's entries drawn") { () }
         let entries = store.entries(of: habit.id, on: day)
         Section(day == store.today() ? "Today's Entries" : "Entries") {
             if entries.isEmpty {
