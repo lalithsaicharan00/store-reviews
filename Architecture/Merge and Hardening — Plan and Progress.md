@@ -107,3 +107,6 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
     unchanged (~141 ms/s; the helper's next steps: per-habit entry observation, the row's offer lines in a small view).
   - Found and fixed: the demo data put a Call family call inside this week on some weekdays, so on a Friday the row
     started ticked and three Today tests failed on `main` too (seen in the failure screen dump). Today 8/8 again.
+- **2 Oct 04:00 UTC:** the user: `analytics` is finished, merge it too. Merged (`5c895cd`, details in Merging the
+  Branches T4); testing on `integration` (Analytics, Backup, Persistence, Onboarding, Sync) and on this branch (Today,
+  Undo, Timer, Groups + speed; then Progress, New Habit, Tasks, Placement, Widgets, Reminders). `main` moves when all pass.
