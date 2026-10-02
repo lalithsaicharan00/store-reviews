@@ -119,3 +119,7 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
   - Sign in with Apple token revocation built (`3618736`; App Review 5.1.1(v)): live on dev, 29/29 live checks.
     Production release and the `APPLE_SIGNIN_KEY` secret wait on the user.
   `main` moves to these once their runs pass. Check-in 4 at 11:51 UTC (`trig_01TfDDShWjY3WHZiNZMzJNa5`), the last.
+- **2 Oct 07:55 UTC:** Apple token revocation is live in production and checked on the iPhone: a fresh Apple sign-in,
+  then deleting the account, removed Often Enough from the Apple ID's Sign in with Apple list. (The first try failed
+  only because the account had been signed in by the older app, which never sent Apple's code.) The `.p8` is kept by
+  the user outside the repo.
