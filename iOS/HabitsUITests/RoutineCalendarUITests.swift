@@ -30,6 +30,28 @@ final class RoutineCalendarUITests: XCTestCase {
         XCTAssertTrue(app.reveal(element, clear: true))
     }
 
+    /// The player names its routine on its title button ("Afternoon routine, habit 1 of 2"); it has no
+    /// navigation title of its own.
+    private func playerShows(_ part: String) -> Bool {
+        let title = app.buttons["routine-queue"]
+        return title.waitForExistence(timeout: 3) && title.label.hasPrefix("\(part) routine")
+    }
+
+    /// Only the Now part and Anytime start open; another part is folded, with no ▶, until it's opened.
+    private func openSection(_ title: String) {
+        let chevron = app.buttons.matching(NSPredicate(format: "label == %@ OR label == %@", "Open \(title)", "Fold \(title)")).firstMatch
+        reveal(chevron)
+        if chevron.label == "Open \(title)" { chevron.tap() }
+    }
+
+    /// The player's main button once its habit is done; on the last habit it finishes the routine.
+    private func tapFinish() {
+        let finish = app.buttons["focus-primary"]
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label == 'Finish routine'"), object: finish)
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 3), .completed, "The main button finishes the routine")
+        finish.tap()
+    }
+
     private func openCalendar() {
         let label = app.buttons.matching(NSPredicate(format: "label CONTAINS 'Open calendar'")).firstMatch
         XCTAssertTrue(label.waitForExistence(timeout: 3))
@@ -49,7 +71,7 @@ final class RoutineCalendarUITests: XCTestCase {
         XCTAssertTrue(play.isHittable, "An open section has Start")
         XCTAssertGreaterThanOrEqual(play.frame.height, 44)
         play.tap()
-        XCTAssertTrue(app.navigationBars["Anytime routine"].waitForExistence(timeout: 3))
+        XCTAssertTrue(playerShows("Anytime"))
         XCTAssertTrue(app.buttons["Stop Read timer"].waitForExistence(timeout: 3))
         shot("routine-timer")
         app.buttons["Close"].tap()
@@ -67,33 +89,40 @@ final class RoutineCalendarUITests: XCTestCase {
 
     func testNonTimedRoutineAndSkipDoNotFalselyComplete() {
         let play = app.buttons["Start Afternoon routine"]
+        openSection("Afternoon")
         reveal(play)
         play.tap()
-        XCTAssertTrue(app.navigationBars["Afternoon routine"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.buttons["Add 1,000 steps to Walk"].exists, "+ says its step")
-        XCTAssertFalse(app.buttons["Next habit"].exists)
-        app.buttons["Skip for now"].tap()
+        XCTAssertTrue(playerShows("Afternoon"))
+        XCTAssertTrue(app.buttons["Add 1,000 steps to Walk"].waitForExistence(timeout: 3), "+ says its step")
+        // Moving on is the › chevron, which names the next habit and logs nothing ("Skip today" is another thing:
+        // it sets the habit aside for the day).
+        let upNext = app.buttons["focus-up-next"]
+        XCTAssertEqual(upNext.label, "Next habit: Lunch, no phone")
+        upNext.tap()
         XCTAssertTrue(app.buttons["Mark Lunch, no phone done"].waitForExistence(timeout: 3))
         app.buttons["focus-primary"].tap()
         XCTAssertTrue(app.buttons["focus-undo"].waitForExistence(timeout: 3))
-        app.buttons["Finish routine"].tap()
+        tapFinish()
         XCTAssertTrue(app.staticTexts["1 left for later. Your progress is saved."].waitForExistence(timeout: 3))
         shot("routine-skipped")
         app.buttons["Done"].tap()
         reveal(play)
         play.tap()
-        // + adds its step (1,000 steps); tapping the row types any other amount, inside the routine too.
-        let walk = app.buttons["Add Amount…"].firstMatch
-        XCTAssertTrue(walk.waitForExistence(timeout: 3))
-        XCTAssertTrue(app.staticTexts["Habit 1 of 1"].exists, "Resume includes only unfinished habits")
-        walk.tap()
+        XCTAssertTrue(playerShows("Afternoon"))
+        XCTAssertTrue(app.buttons["routine-queue"].label.hasSuffix("habit 1 of 1"), "Resume includes only unfinished habits")
+        // + adds its step (1,000 steps); any other amount is typed from Habit options, inside the routine too.
+        XCTAssertTrue(app.buttons["Add 1,000 steps to Walk"].waitForExistence(timeout: 3))
+        app.buttons["focus-habit-options"].tap()
+        let manual = app.buttons["focus-log-manually"]
+        XCTAssertTrue(manual.waitForExistence(timeout: 3))
+        manual.tap()
         let amount = app.textFields["log-amount"]
-        XCTAssertTrue(amount.waitForExistence(timeout: 3), "The row opens Add Amount")
+        XCTAssertTrue(amount.waitForExistence(timeout: 3), "Habit options open Log Amount")
         sleep(1); amount.typeText("3000")
-        app.navigationBars["Add Amount"].buttons["Add"].tap()
+        app.navigationBars["Log Amount"].buttons["Log"].tap()
         sleep(2)
         shot("routine-walk-added")
-        app.buttons["Finish routine"].tap()
+        tapFinish() // 5,200 + 3,000 of 8,000 steps: done
         XCTAssertTrue(app.staticTexts["All habits in this routine are done."].waitForExistence(timeout: 3))
         app.buttons["Done"].tap()
         XCTAssertFalse(play.exists)
@@ -115,11 +144,13 @@ final class RoutineCalendarUITests: XCTestCase {
         app.reveal(play)
         play.tap()
         XCTAssertTrue(app.buttons["Mark Cleanser done"].waitForExistence(timeout: 3))
-        XCTAssertFalse(app.buttons["Finish routine"].isEnabled)
+        // Moving on (›) never marks anything done; the main button, the one that finishes, only appears once
+        // every step is done.
+        XCTAssertFalse(app.buttons["focus-primary"].exists, "An unfinished checklist can't be finished")
         app.buttons["focus-step-Cleanser"].tap()
         XCTAssertTrue(app.buttons["Undo Cleanser"].waitForExistence(timeout: 3))
         shot("routine-checklist")
-        app.buttons["Finish routine"].tap()
+        tapFinish()
         XCTAssertTrue(app.staticTexts["All habits in this routine are done."].waitForExistence(timeout: 3))
     }
 

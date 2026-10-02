@@ -89,7 +89,7 @@ final class GoalFlowUITests: XCTestCase {
     private var sentence: String { app.descendants(matching: .any)["habit-sentence"].label }
 
     /// Typing the way a person does: one key at a time on the number pad, checking the field after each key
-    /// (the user reported typed amounts not showing). Then Add Amount on Today, key by key too.
+    /// (the user reported typed amounts not showing). Then Log Amount on Today, key by key too.
     func testTypingKeyByKey() {
         newHabit(name: "Keys")
         openHowMuch()
@@ -121,9 +121,9 @@ final class GoalFlowUITests: XCTestCase {
         XCTAssertTrue(log.waitForExistence(timeout: 3))
         sleep(1)
         for key in ["3", "5", "0"] { app.keys[key].tap(); usleep(400_000) }
-        XCTAssertEqual(log.value as? String, "350", "Add Amount shows what's typed")
+        XCTAssertEqual(log.value as? String, "350", "Log Amount shows what's typed")
         shot("k03-add-amount-350")
-        app.navigationBars["Add Amount"].buttons["Add"].tap(); sleep(2)
+        app.navigationBars["Log Amount"].buttons["Log"].tap(); sleep(2)
         shot("k04-today-350")
     }
 
@@ -147,7 +147,7 @@ final class GoalFlowUITests: XCTestCase {
     }
 
     /// One rule for logging an amount: + adds the step written on it, the same for every amount; the row
-    /// opens Add Amount for anything else. A step the person types is kept.
+    /// opens Log Amount for anything else. A step the person types is kept.
     func testButtonAddsItsStepAndRowOpensAddAmount() {
         newHabit(name: "Glasses")
         openHowMuch()
@@ -165,10 +165,10 @@ final class GoalFlowUITests: XCTestCase {
         plus.tap(); sleep(1)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '1/8 glasses'")).firstMatch.exists, "+ adds one glass")
         app.staticTexts["Glasses"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["Add Amount"].waitForExistence(timeout: 3), "The row opens Add Amount")
+        XCTAssertTrue(app.navigationBars["Log Amount"].waitForExistence(timeout: 3), "The row opens Log Amount")
         sleep(1)
         app.textFields["log-amount"].typeText("3")
-        app.navigationBars["Add Amount"].buttons["Add"].tap(); sleep(2)
+        app.navigationBars["Log Amount"].buttons["Log"].tap(); sleep(2)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '4/8 glasses'")).firstMatch.exists, "The typed amount adds up")
         shot("l03-today-4-of-8")
     }

@@ -53,7 +53,9 @@ final class ScheduleUITests: XCTestCase {
         shot("often-every-3-days")
         app.revealAndTap(app.buttons["often-everyWeeks"])
         XCTAssertEqual(summary, "Jog every other week, anytime", "No days needed")
+        // "On set days" sits below Every 2 weeks, under the fold: the list builds it only once scrolled to.
         let days = app.switches["often-weeks-days"]
+        XCTAssertTrue(app.reveal(days), "On set days is offered for every few weeks")
         XCTAssertEqual(days.value as? String, "0", "Set days are off until wanted")
         days.switches.firstMatch.tap()
         let today = Calendar.current.standaloneWeekdaySymbols[Calendar.current.component(.weekday, from: .now) - 1]
