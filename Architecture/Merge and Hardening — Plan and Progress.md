@@ -110,3 +110,12 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
 - **2 Oct 04:00 UTC:** the user: `analytics` is finished, merge it too. Merged (`5c895cd`, details in Merging the
   Branches T4); testing on `integration` (Analytics, Backup, Persistence, Onboarding, Sync) and on this branch (Today,
   Undo, Timer, Groups + speed; then Progress, New Habit, Tasks, Placement, Widgets, Reminders). `main` moves when all pass.
+- **2 Oct 04:30–06:45 UTC:** every app test class passed on the merged code (Analytics' 101 native checks included);
+  `main` moved to `976439e`. The user's Apple Developer account is ready (team `MHTC4C9P8F`); the app was signed and
+  installed on the iPhone. The iPhone found three bugs the simulator never showed:
+  - opening a habit's page from Progress or All Habits crashed (a lazy grid inside a List row; lesson L19): fixed
+    with plain Grids (`1452369`), tests running;
+  - "on" switches and Select's circles were near-white: now the system green and blue (`951f3e8`), tests running.
+  - Sign in with Apple token revocation built (`3618736`; App Review 5.1.1(v)): live on dev, 29/29 live checks.
+    Production release and the `APPLE_SIGNIN_KEY` secret wait on the user.
+  `main` moves to these once their runs pass. Check-in 4 at 11:51 UTC (`trig_01TfDDShWjY3WHZiNZMzJNa5`), the last.
