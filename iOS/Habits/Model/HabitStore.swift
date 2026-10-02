@@ -2371,7 +2371,12 @@ final class HabitStore {
                              goal: 20, frequency: .weekdays([2, 3, 4, 5, 6, 7]), remind: false, createdAt: ago(days: 400))
             let coffee = Habit(name: "Coffee", symbol: "mug.fill", color: .brown, kind: .amount(unit: "cups", increment: 1),
                                goal: 2, atMost: true, remind: false, createdAt: ago(days: 400))
-            habits.insert(contentsOf: [swim, coffee], at: 0)
+            // Running, three times a week on any days; Cycle, 70 km a week in all: the two week goals.
+            let running = Habit(name: "Running", symbol: "figure.run", color: .green, kind: .check, frequency: .perWeek(3),
+                                remind: false, createdAt: ago(days: 400))
+            let cycle = Habit(name: "Cycle", symbol: "bicycle", color: .teal, kind: .amount(unit: "km", increment: 0), goal: 70,
+                              frequency: .perWeek(1), remind: false, createdAt: ago(days: 400))
+            habits.insert(contentsOf: [swim, running, cycle, coffee], at: 0)
             for d in 1...400 {
                 let day = today.adding(days: -d, calendar: cal)
                 let laps: Double
@@ -2384,6 +2389,11 @@ final class HabitStore {
                 else { laps = 20 }
                 if laps > 0 { entries.append(Entry(habitID: swim.id, day: day, value: laps)) }
                 entries.append(Entry(habitID: coffee.id, day: day, value: d % 6 == 0 ? 3 : d % 4 == 0 ? 2 : 1))
+                let weekday = day.weekday(calendar: cal)
+                if [3, 5, 7].contains(weekday) && d % 10 != 0 || weekday == 1 && d % 4 == 0 {
+                    entries.append(Entry(habitID: running.id, day: day, value: 1))
+                }
+                if d % 3 != 1 { entries.append(Entry(habitID: cycle.id, day: day, value: Double([4, 6, 9, 10, 12, 15, 22][d % 7]))) }
             }
         }
         if ProcessInfo.processInfo.arguments.contains("-perf-history") {

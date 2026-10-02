@@ -3,7 +3,7 @@ import SwiftUI
 /// Progress, opened from the ≡ menu (Build Plan #60; report "The Progress Page — What People Need, and How to Build
 /// It", §7). Week (2 Oct 2026, report "Weekly Habit Cards — What Each Card Shows"): the dates of the week, pinned at the
 /// top, then a card per habit, each on its own goal's clock; no overview, no day rings, no group numbers. Month is
-/// built the same way with a month of marks, and Year with the year as a heat map (`YearHeatMap`, 2 Oct 2026). Tapping
+/// built the same way with a month of marks, and Year with the year as a heat map (`HeatMap.swift`, 2 Oct 2026). Tapping
 /// a habit opens its own page at Over Time. It only reads: nothing here logs. (`list` and the overview below are the
 /// old Month and Year views, no longer shown; kept until the branches are merged, then to be removed.)
 ///
@@ -186,8 +186,8 @@ struct ProgressScreen: View {
                         if !store.groups.isEmpty {
                             GroupChipRow(selection: snapshot.group) { groupRaw = $0?.uuidString ?? "" }
                         }
-                        // What each mark means: folded until asked (the user, 2 Oct 2026).
-                        WeekKey(year: snapshot.range == .year)
+                        // What the squares mean, always shown at the top (the user, 2 Oct 2026).
+                        HeatKey()
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, WeekSpacing.tight)

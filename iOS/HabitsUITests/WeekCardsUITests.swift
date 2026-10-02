@@ -43,22 +43,11 @@ final class WeekCardsUITests: XCTestCase {
         sleep(1)
     }
 
-    /// Top, the key opened and folded again, then a screen at a time down to the end; then back to the top.
+    /// The key at the top, then a screen at a time down to the end; then back to the top.
     private func walk(_ prefix: String) {
+        XCTAssertTrue(app.descendants(matching: .any)["progress-key"].waitForExistence(timeout: 3), "What the squares mean")
         shot("\(prefix)-1-top")
-        let key = app.buttons["progress-key"]
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "What the marks mean")
-        key.tap()
-        sleep(1)
-        shot("\(prefix)-1a-key-open")
-        app.swipeUp(velocity: .slow)
-        sleep(1)
-        shot("\(prefix)-1b-key-open-scrolled")
-        for _ in 0..<4 { app.swipeDown(velocity: .fast) }
-        sleep(1)
-        key.tap()
-        sleep(1)
-        for i in 2...7 {
+        for i in 2...8 {
             app.swipeUp(velocity: .slow)
             sleep(1)
             shot("\(prefix)-\(i)-scrolled")
@@ -70,8 +59,8 @@ final class WeekCardsUITests: XCTestCase {
     /// The app's own Appearance setting decides light or dark (a test before may have left it on Light), so each
     /// pass sets it at launch.
     func testWeekCardsLight() {
-        openWeek(["-appearance.theme", "light"])
-        XCTAssertTrue(app.buttons["progress-row-Read"].exists, "A card per habit")
+        openWeek(["-year-demo", "-appearance.theme", "light"])
+        XCTAssertTrue(app.buttons["progress-row-Swim"].exists, "A card per habit")
         walk("w-light")
         // Last week: the caption says so, and nothing is "so far".
         app.buttons["progress-previous"].tap()
@@ -80,13 +69,13 @@ final class WeekCardsUITests: XCTestCase {
     }
 
     func testWeekCardsDark() {
-        openWeek(["-appearance.theme", "dark"])
+        openWeek(["-year-demo", "-appearance.theme", "dark"])
         walk("w-dark")
     }
 
     /// Month (2 Oct 2026): the same cards with a month of marks, light and dark.
     func testMonthCards() {
-        openWeek(["-appearance.theme", "light"])
+        openWeek(["-year-demo", "-appearance.theme", "light"])
         app.segmentedControls["progress-range"].buttons["Month"].tap()
         XCTAssertTrue(app.staticTexts["progress-period-caption"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["progress-period-caption"].label, "This month")
@@ -100,7 +89,7 @@ final class WeekCardsUITests: XCTestCase {
     }
 
     func testMonthCardsDark() {
-        openWeek(["-appearance.theme", "dark"])
+        openWeek(["-year-demo", "-appearance.theme", "dark"])
         app.segmentedControls["progress-range"].buttons["Month"].tap()
         XCTAssertTrue(app.staticTexts["progress-period-caption"].waitForExistence(timeout: 5))
         sleep(1)
@@ -110,8 +99,7 @@ final class WeekCardsUITests: XCTestCase {
         shot("m-dark-2-scrolled")
     }
 
-    /// Year (2 Oct 2026): each habit's year as a heat map. Swim (`-year-demo`) has every kind of square; its grid opens
-    /// on the latest weeks and scrolls back sideways while the weekday letters stay.
+    /// Year (2 Oct 2026): each habit's whole year as a heat map, sized to the card. The year demo has every habit type.
     func testYearCards() { year("y-light", theme: "light") }
     func testYearCardsDark() { year("y-dark", theme: "dark") }
 
@@ -124,31 +112,13 @@ final class WeekCardsUITests: XCTestCase {
         XCTAssertTrue(swim.waitForExistence(timeout: 5), "Swim's card")
         sleep(1)
         shot("\(prefix)-1-top")
-        // Earlier in the year: the squares scroll, the weekday letters don't.
-        swim.swipeRight(velocity: .slow)
-        sleep(1)
-        shot("\(prefix)-2-swim-earlier")
-        swim.swipeRight(velocity: .fast)
-        swim.swipeRight(velocity: .fast)
-        sleep(1)
-        shot("\(prefix)-3-swim-january")
-        let key = app.buttons["progress-key"]
-        XCTAssertTrue(key.exists)
-        key.tap()
-        sleep(1)
-        shot("\(prefix)-4-key-open")
-        app.swipeUp(velocity: .slow)
-        sleep(1)
-        shot("\(prefix)-5-key-scrolled")
-        guard theme == "light" else { return }
-        for _ in 0..<4 { app.swipeDown(velocity: .fast) }
-        key.tap()
-        sleep(1)
-        for i in 6...9 {
+        XCTAssertTrue(app.descendants(matching: .any)["progress-key"].exists, "What the squares mean")
+        for i in 2...(theme == "light" ? 8 : 4) {
             app.swipeUp(velocity: .slow)
             sleep(1)
             shot("\(prefix)-\(i)-scrolled")
         }
+        guard theme == "light" else { return }
         // Last year: every day drawn, December at the end.
         for _ in 0..<8 { app.swipeDown(velocity: .fast) }
         app.buttons["progress-previous"].tap()

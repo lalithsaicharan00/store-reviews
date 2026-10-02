@@ -32,10 +32,35 @@ struct WeekCardDay: Hashable, Identifiable {
     let slip: Bool
     /// The day's own number under the mark ("8.2k", "25m", "3"); empty for none.
     let value: String
-    /// Year: done, and more than the day's goal (shown with ▲, the user, 2 Oct 2026).
+    /// Done, and more than the day's goal.
     var more = false
+    /// The day's square in the heat map (the user, 2 Oct 2026): worked out here, once, never while drawing.
+    var heat: HeatCell = .blank
     var id: LocalDay { day }
 }
+
+/// One day's square in Week, Month and Year (the user, 2 Oct 2026; report "Day Marks — What People Like", Temp
+/// research). One rule for every habit type: colour strength is how much of what the day asked for was done.
+///   blank   before the habit began, or a day still to come: nothing is drawn
+///   off     nothing was asked that day (not scheduled, skipped, paused, a weekly goal's other days): dashed, never a failure
+///   level 0 asked and not done (grey); today stays 0 until something is logged
+///   level 1–3  part of the day's goal: up to a third, up to two thirds, more than that
+///   level 4 the day's goal met: the habit's own colour; a limit kept, a clean day of a quit habit
+///   level 5 more than the day's goal
+enum HeatCell: Hashable {
+    case blank
+    case off(HeatOff)
+    case level(Int)
+
+    /// The step for a share of the day's goal: 0, then three part steps, then met.
+    static func share(_ fraction: Double) -> HeatCell {
+        if fraction <= 0 { return .level(0) }
+        if fraction >= 1 { return .level(4) }
+        return .level(fraction <= 1.0 / 3 ? 1 : fraction <= 2.0 / 3 ? 2 : 3)
+    }
+}
+
+enum HeatOff: Hashable { case notScheduled, skipped, paused }
 
 /// How a year sits in its heat map (the user, 2 Oct 2026: GitHub's contribution grid). Weeks run left to right in
 /// columns, weekdays top to bottom in the person's order; the last column holds today, and no day after it is drawn.
@@ -209,6 +234,8 @@ extension HabitStore {
         // Each day: its mark, its value, and whether it was an extra day (done on a day it wasn't due).
         var strip: [WeekCardDay] = []
         var amounts: [LocalDay: Double] = [:]
+        // A week or month limit: the period's running total, per period start, for the heat map.
+        var limitTotals: [LocalDay: (through: LocalDay, total: Double)] = [:]
         for day in dayList {
             var mark = dayMark(habit, on: day, relativeTo: today)
             let dayRule = self.rule(habit, on: day)
@@ -223,12 +250,14 @@ extension HabitStore {
             }
             let goal = dayGoal(of: dayRule)
             let fraction = mark == .done ? 1 : mark == .some ? min(1, amount / max(goal, 1)) : 0
-            // More than a day goal asks (Year's ▲): counted day goals only, never a limit or a checklist.
-            let more = range == .year && mark == .done && !dayRule.atMost && dayRule.kind != .checklist
+            // More than a day goal asks: counted day goals only, never a limit or a checklist.
+            let more = mark == .done && !dayRule.atMost && dayRule.kind != .checklist
                 && dayRule.frequency.isDayBased && !dayRule.frequency.isFlexible && goal > 0 && amount > goal
-            strip.append(WeekCardDay(day: day, mark: mark, fraction: fraction, over: mark == .missed && dayRule.atMost,
-                                    extra: extra, slip: false, value: range == .week ? weekValue(amount, dayRule, shape: shape, mark: mark) : "",
-                                    more: more))
+            var item = WeekCardDay(day: day, mark: mark, fraction: fraction, over: mark == .missed && dayRule.atMost,
+                                   extra: extra, slip: false, value: range == .week ? weekValue(amount, dayRule, shape: shape, mark: mark) : "",
+                                   more: more)
+            item.heat = heatCell(item, rule: dayRule, amount: amount, today: today, limitTotals: &limitTotals)
+            strip.append(item)
         }
 
         // Days that count for a day goal: done (not extra) any day up to today; part done or not done once it's over.
@@ -300,6 +329,67 @@ extension HabitStore {
                                 accessibility: weekSpoken(habit.name, headline: headline, detail: detail,
                                                           days: range == .week ? strip : [], atMost: rule.atMost))
     }
+
+    /// The day's square, from its mark (report §… and the user, 2 Oct 2026). A week or month total colours a day by its
+    /// share of a fair day's part (70 km a week: 10 km fills a day); a week or month limit stays full while the period's
+    /// running total is within it, and turns grey from the day it went over.
+    private func heatCell(_ day: WeekCardDay, rule: Habit, amount: Double, today: LocalDay,
+                          limitTotals: inout [LocalDay: (through: LocalDay, total: Double)]) -> HeatCell {
+        if day.day > today { return .blank }
+        switch day.mark {
+        case .before: return .blank
+        case .skipped: return .off(.skipped)
+        case .paused: return .off(.paused)
+        case .upcoming: return .blank
+        case .notItsDay:
+            if rule.atMost && !rule.frequency.isDayBased { break }
+            return .off(.notScheduled)
+        case .open:
+            // Today, still open. A week or month goal asks nothing of one day, so its today is not a grey "not done".
+            let periodGoal = (!rule.frequency.isDayBased || rule.frequency.isFlexible) && !rule.atMost
+            return periodGoal ? .off(.notScheduled) : .level(0)
+        default: break
+        }
+        // A week or month limit: every day of the period is asked to stay within it.
+        if rule.atMost && !rule.frequency.isDayBased {
+            guard day.day < today else { return .level(0) }
+            guard let period = periodRange(rule, containing: day.day) else { return .off(.notScheduled) }
+            var known = limitTotals[period.lowerBound] ?? (period.lowerBound.adding(days: -1, calendar: calendar), 0)
+            while known.through < day.day {
+                let next = known.through.adding(days: 1, calendar: calendar)
+                known = (next, known.total + dayProgress(of: self.rule(habit(of: rule), on: next), on: next))
+            }
+            limitTotals[period.lowerBound] = known
+            return known.total <= rule.goal ? .level(4) : .level(0)
+        }
+        switch day.mark {
+        case .done:
+            if rule.atMost { return .level(4) }
+            if progressShape(rule) == .periodTotal, let share = fairShare(rule), share > 0 {
+                return HeatCell.share(amount / share)
+            }
+            return .level(day.more ? 5 : 4)
+        case .some:
+            // A daily limit's day is judged when it's over: today stays grey until then.
+            if rule.atMost { return .level(0) }
+            return HeatCell.share(day.fraction)
+        case .missed: return .level(0)
+        default: return .level(0)
+        }
+    }
+
+    /// A week or month total's fair day: the goal spread over the period's days.
+    private func fairShare(_ rule: Habit) -> Double? {
+        switch periodKind(rule) {
+        case .week: return rule.goal / 7
+        case .month: return rule.goal / 30.4
+        case .year: return rule.goal / 365
+        case .day: return nil
+        }
+    }
+
+    /// The habit a rule belongs to (a rule is the habit as it was on a day; same id).
+    private func habit(of rule: Habit) -> Habit { habits.first { $0.id == rule.id } ?? rule }
 
     /// Week, month and year goals (shapes F, G, H and I-period) seen in a week.
     private func weekPeriodText(_ habit: Habit, rule: Habit, shape: ProgressShape, span: ClosedRange<LocalDay>,
@@ -520,8 +610,12 @@ extension HabitStore {
             let n = perDay[mark.day] ?? 0
             // A day still to come is "due later this week" for a quit habit too (every day counts), not "not scheduled".
             let shown: DayMark = mark.day > today && mark.mark == .notItsDay ? .upcoming : mark.mark
-            return WeekCardDay(day: mark.day, mark: shown, fraction: mark.fraction, over: false, extra: false,
-                               slip: n > 0, value: n > 1 && range == .week ? "\(n)×" : "")
+            var item = WeekCardDay(day: mark.day, mark: shown, fraction: mark.fraction, over: false, extra: false,
+                                   slip: n > 0, value: n > 1 && range == .week ? "\(n)×" : "")
+            // Quit: a clean day is the habit's colour, a slip day is grey, a paused day nothing asked.
+            item.heat = mark.day > today || shown == .before ? .blank : shown == .paused ? .off(.paused)
+                : n > 0 || shown == .missed ? .level(0) : shown == .done ? .level(4) : .blank
+            return item
         }
         let count = stats.slips.count
         let when = running ? "this \(range.noun)" : "that \(range.noun)"
