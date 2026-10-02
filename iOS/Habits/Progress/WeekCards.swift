@@ -224,8 +224,8 @@ struct MonthLayout: Hashable {
 }
 
 /// A month on a card (the user, 2 Oct 2026: for seeing patterns). The weekday letters once at the top, then one mark
-/// per day in week rows, with no values under them so the card stays short. Today has a short line under its mark,
-/// as Week underlines its name. Plain stacks of fixed-size cells, never a lazy grid (Design Rules).
+/// per day in week rows, with no values under them so the card stays short. Today's weekday letter is underlined, as
+/// Week underlines its name. Plain stacks of fixed-size cells, never a lazy grid (Design Rules).
 struct MonthCardGrid: View {
     let layout: MonthLayout
     let columns: [WeekColumn]
@@ -234,11 +234,16 @@ struct MonthCardGrid: View {
 
     var body: some View {
         let rows = (layout.lead + days.count + 6) / 7
+        // Today's weekday letter is bold and underlined, as Week marks "Fri" (the user, 2 Oct 2026); no mark is.
+        let todayColumn = columns.firstIndex { $0.isToday }.map { (layout.lead + $0) % 7 }
         VStack(spacing: MonthCardGrid.rowGap) {
             HStack(spacing: 0) {
                 ForEach(0..<7, id: \.self) { i in
+                    let isToday = i == todayColumn
                     Text(i < layout.letters.count ? layout.letters[i] : "")
-                        .font(.caption.weight(.medium)).foregroundStyle(.secondary)
+                        .font(.caption.weight(isToday ? .semibold : .medium))
+                        .foregroundStyle(isToday ? Color.primary : Color.secondary)
+                        .underline(isToday)
                         .frame(maxWidth: .infinity)
                 }
             }
@@ -259,11 +264,6 @@ struct MonthCardGrid: View {
             let day = days[index]
             WeekMark(mark: day.mark, fraction: day.fraction, over: day.over, slip: day.slip, color: color,
                      size: MonthCardGrid.mark)
-                .overlay(alignment: .bottom) {
-                    if columns[index].isToday {
-                        Capsule().fill(Color.primary).frame(width: 10, height: 2).offset(y: 5)
-                    }
-                }
                 .frame(maxWidth: .infinity)
         } else {
             Color.clear.frame(maxWidth: .infinity).frame(height: MonthCardGrid.mark)

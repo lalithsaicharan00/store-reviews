@@ -230,7 +230,7 @@ Report: [Weekly Habit Cards — What Each Card Shows](<../Research/Research Repo
 - **Over the limit is a ring and ▲ in the habit's colour**, never grey, never solid (solid is a day within the limit), never red.
 - **The marks' key is folded until asked ("What the marks mean ⌄") and lists every mark.** Names: Done, Partial, Not done, Today still open, Due later this week, Not scheduled, Skipped, Paused, Over the limit, Before it started; quit: Clean day, Slip. A day still to come is a small ring and a day not scheduled a dash, so neither looks like a day that ended undone.
 - **Week and Month cards are worked out in the store** (`progressSnapshot(…, weekCards: true)`), never in a body.
-- **Month cards show a month of marks with no values under them** (patterns, not numbers; the user, 2 Oct 2026): weekday letters once, 22-pt marks, today underlined, plain stacks (never a lazy grid).
+- **Month cards show a month of marks with no values under them** (patterns, not numbers; the user, 2 Oct 2026): weekday letters once (today's underlined), 22-pt marks, plain stacks (never a lazy grid).
 
 ## Groups (built 30 Sep 2026)
 
