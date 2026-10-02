@@ -19,7 +19,9 @@ The mistakes behind these rules, what each cost and how to find a slow spot, are
    (`git show origin/ci-results:runs/…`). A screen that got worse is a bug in your change.
 3. Targets (the simulator on GitHub's Mac, a year of history): **hitch time under 5 ms/s** while scrolling, tapping
    or typing; **no freezes of 100 ms or more**; **opening a screen: longest stall under 100 ms**. Above that, find the
-   cause in the table's "most time in the app's own code" column and fix it before moving on.
+   cause in the table's "most time in the app's own code" column and fix it before moving on. On the hosted
+   simulator even a blank page's push stalls 120–200 ms (2 Oct 2026), so judge an opening against the blank page in
+   the same run (`menu-pages` brackets its pages with one): a page should add under 50 ms to it.
 
 ## The rules
 

@@ -51,12 +51,20 @@ here the same day, with its numbers.
   the first time, and that's what people feel. Measure first opens and first scrolls on their own.
 - **A screen with no scenario has no speed.** The quit habit's page and the weekly-total page were never measured
   until 1 Oct, and both froze. Every screen and interaction gets a `PerfDriver` scenario when it's built.
+- **Measure a control in the same run.** "Every screen stalls 150–400 ms on opening" (1–2 Oct) was mostly the push
+  itself: a blank page pushed the same way stalled 118–197 ms, and each menu page opened a second time stalled
+  107–236 ms, the same within noise; only a few first openings (Help's search bar, Appearance, Day and Week) added
+  ~150 ms once per launch (2 Oct). Without the control, those numbers would have sent us optimising pages that cost
+  nothing.
 - **Test with a year of history.** Work that grows with history is fast with a new install's week of data and slow
   with a year of it.
 
 ## Open, not yet fixed (update as they're done)
 
-- Opening a screen stalls 0.5–1.3 s (target under 0.1 s); slow before the merge too (1 Oct).
+- Opening a screen stalls 0.5–1.3 s (target under 0.1 s); slow before the merge too (1 Oct). **2 Oct:** menu pages
+  now open within noise of a blank page's push (above); the first openings of Help, Appearance and Day and Week add
+  ~150 ms once per launch. Still to measure against the control: Progress, All Habits, the habit page, the habit form
+  and the Day sheet.
 - Today's first scroll has one 180–440 ms freeze (1 Oct).
 - Saving an entry stalls 0.6–0.8 s; opening the entry editor, the launch's first keyboard, 3–7 s on the hosted simulator (L18, 1 Oct).
 
