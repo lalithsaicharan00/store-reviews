@@ -72,8 +72,13 @@ struct ProgressScreen: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
-                    Toggle("Show Percentages", isOn: $showPercentages)
-                    Toggle("Show Streaks", isOn: $showStreaks)
+                    // Menu items with a check, not switches: the app's green switch style (HabitsApp) must not reach
+                    // a menu, where a switch-styled toggle stopped responding to taps (testHidePercentages, 2 Oct).
+                    Group {
+                        Toggle("Show Percentages", isOn: $showPercentages)
+                        Toggle("Show Streaks", isOn: $showStreaks)
+                    }
+                    .toggleStyle(.automatic)
                     Picker("Full Day", selection: $fullDay) {
                         Text("All Done").tag(100)
                         Text("80% Done").tag(80)

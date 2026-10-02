@@ -16,7 +16,8 @@ struct HabitsApp: App {
         WindowGroup {
             root
                 // Switches in the iPhone's own green: the app's ink tint is near-white in dark mode, where an "on"
-                // switch couldn't be told from "off" (the user, on the iPhone, 2 Oct 2026).
+                // switch couldn't be told from "off" (the user, on the iPhone, 2 Oct 2026). A Toggle inside a Menu
+                // sets `.toggleStyle(.automatic)` so it stays a menu item with a check (ProgressScreen).
                 .toggleStyle(SwitchToggleStyle(tint: Color(.systemGreen)))
                 // While locked, or whenever the app isn't in front (so the app switcher never shows the habits).
                 .overlay {
