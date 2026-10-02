@@ -73,7 +73,7 @@ so the branches can go; keep this list current. Plan and progress: [Merge and Ha
 | T1 | Merge `integration` into `claude/server-and-sync`, keeping both sides | [x] `b8edab4` (decisions in the plan note: one Backup & Export page, one backup file format, schema 7) |
 | T2 | Tests | [x] Server 129, Core (7 migration tests), website, `check_rules.sh`. iOS on GitHub, every class the merge touched: Backup 8/8, Sync, Persistence 4/4, Onboarding 6/6, Today 8/8, Progress 10/10, New Habit 19/19, Habit Creation 6/6, Undo, Timer 2/2, Groups 5/5. Speed: better than `integration` everywhere it was measured, after one fix (lesson L17) |
 | T3 | Move `integration`, then `main`, to the result (fast-forward) | [x] 1 Oct, 23:45 UTC |
-| T4 | Merge `analytics` (finished, the user, 2 Oct) | [x] `5c895cd`: Info.plist, Privacy, `HabitStore.perform`, the workflow and the lessons kept both sides; the backup events now come from the new Backup & Export page. [ ] Tests, then `main` |
+| T4 | Merge `analytics` (finished, the user, 2 Oct) | [x] `5c895cd`: Info.plist, Privacy, `HabitStore.perform`, the workflow and the lessons kept both sides; the backup events now come from the new Backup & Export page. [x] Tests (Analytics, Backup, Persistence, Onboarding, Sync 23/23; Today, Undo, Timer, Groups 23/23; Release build; analytics contract 101 checks), then `main` (`aca91eb`, 2 Oct 05:00 UTC) |
 
 ## Branches to delete (for any agent or person reading this)
 
@@ -95,7 +95,7 @@ should be merged from them.
 | `claude/perf-bisect-habit-page` | Scratch: the habit page with one part left out per speed scenario (`PerfBisect`). Never merge it |
 | `claude/server-and-sync` | Every commit is in `main` (third round, T3, 1 Oct). The hardening session still pushes there first and moves `main` after each tested step: **safe to delete whenever it's level with `main`** (`git log main..claude/server-and-sync` prints nothing) |
 | `claude/serene-wright-mcvmrx` | Nothing beyond `main` (a session's starting branch) |
-| `analytics` | Merged (third round, T4); **safe to delete once `main` has `5c895cd`** |
+| `analytics` | **Safe to delete:** fully in `main` (third round, T4, 2 Oct) |
 | `integration` | Once nobody works on it: `main` is the same |
 
 **Keep:** `main`, `ci-results` (CI writes its results there) and every `archive/…` branch. Everything else is in
