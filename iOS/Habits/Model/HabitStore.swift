@@ -2223,13 +2223,14 @@ final class HabitStore {
             await flush()
         }
         if arguments.contains("-year-demo"), let swim = habits.first(where: { $0.name == "Swim" }) {
-            // Year's pictures (2 Oct 2026): a few skipped days and a two-week pause in Swim's year.
+            // Year's pictures (2 Oct 2026): a few skipped days and a week's pause in Swim's year, both in the latest
+            // weeks, so the card's first view (which opens on them) shows every kind of square.
             let today = today()
-            for d in [17, 46, 88, 150, 230, 300] {
+            for d in [10, 46, 88, 150, 230, 300] {
                 let day = today.adding(days: -d, calendar: calendar)
                 if isDue(swim, on: day) { setSkipped(swim, on: day, true) }
             }
-            pause(swim, from: today.adding(days: -125, calendar: calendar), through: today.adding(days: -112, calendar: calendar))
+            pause(swim, from: today.adding(days: -30, calendar: calendar), through: today.adding(days: -24, calendar: calendar))
             await flush()
         }
         if ProcessInfo.processInfo.arguments.contains("-longtext") {
@@ -2364,7 +2365,7 @@ final class HabitStore {
         if ProcessInfo.processInfo.arguments.contains("-year-demo") {
             // Year's pictures (the user, 2 Oct 2026: every kind of square in one habit). Swim, 20 laps Monday to
             // Saturday, for 400 days: done, part done at each of the three steps, not done, more than the goal, an
-            // extra Sunday now and then (Sundays otherwise not scheduled); skipped days and a pause are added once
+            // extra Sunday now and then (Sundays otherwise not scheduled); skipped days and a week's pause are added once
             // saved (`seedDemo`); today is still open. Coffee, at most 2 cups a day, goes over on some days.
             let swim = Habit(name: "Swim", symbol: "figure.pool.swim", color: .green, kind: .amount(unit: "laps", increment: 0),
                              goal: 20, frequency: .weekdays([2, 3, 4, 5, 6, 7]), remind: false, createdAt: ago(days: 400))

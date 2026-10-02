@@ -133,7 +133,7 @@ From the report's §5; the code is `HabitStore+WeekCards.swift`.
 | `HabitsUITests/ProgressUITests.swift`, `GroupsUITests.swift` | Week has no tiles and its title is the dates. Year (2 Oct): `testYearAndMonthTap` checks Year's title, caption and cards; `testHidePercentages` checks the habit page (Progress has no percentages); the Groups test checks the chips filter the cards (no Groups card anywhere) |
 | `Habits/Progress/YearHeatMap.swift` | New (Year): `YearCellStyle`, `YearGrid` (measures and the one drawing function), `YearHeatMap`, `YearKeyCell`, `YearKeyEntry`, `HabitColor.yearShade` (palette from `Research/Temp/year_palette.py`) |
 | `Habits/Model/HabitStore+WeekCards.swift` (Year) | `YearLayout`, `YearMonthLabel`, `yearLayout`, `yearCaption`; `WeekCardDay.more` (done above the day's goal) |
-| `Habits/Model/HabitStore.swift` | Debug demo `-year-demo`: Swim (every square in one habit: done, three partial steps, not done, more, Sundays not scheduled with an extra now and then, skipped days, a two-week pause, today open) and Coffee (a daily limit, over on some days) |
+| `Habits/Model/HabitStore.swift` | Debug demo `-year-demo`: Swim (every square in one habit: done, three partial steps, not done, more, Sundays not scheduled with an extra now and then, skipped days, a week's pause in the latest weeks, today open) and Coffee (a daily limit, over on some days) |
 | `HabitsUITests/WeekCardsUITests.swift` | `testYearCards`, `testYearCardsDark`: pictures of Year, Swim scrolled back, the key, last year |
 
 ## To check (for the testing agent)
