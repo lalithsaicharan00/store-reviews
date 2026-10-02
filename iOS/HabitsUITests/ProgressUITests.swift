@@ -171,7 +171,9 @@ final class ProgressUITests: XCTestCase {
         XCTAssertTrue(column.exists)
         column.tap()
         XCTAssertTrue(app.segmentedControls["progress-range"].buttons["Month"].isSelected, "The month opens in Month")
-        XCTAssertTrue(period.label.contains(String(Calendar.current.component(.year, from: .now))), period.label)
+        // Month's title is the month's name; the year shows only for another year (2 Oct 2026).
+        XCTAssertTrue(app.staticTexts["progress-period-caption"].waitForExistence(timeout: 3))
+        XCTAssertEqual(app.staticTexts["progress-period-caption"].label, "This month", period.label)
     }
 
     /// A quit habit: Log a Slip… saves a slip with its own time, and Undo takes it back (Build Plan #60d).
