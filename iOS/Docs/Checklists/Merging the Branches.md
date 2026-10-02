@@ -94,8 +94,11 @@ should be merged from them.
 | `claude/integration-check-b` | Temporary: a copy of `integration` so two halves of the tests could run at once |
 | `claude/perf-bisect-habit-page` | Scratch: the habit page with one part left out per speed scenario (`PerfBisect`). Never merge it |
 | `claude/server-and-sync` | Every commit is in `main` (third round, T3, 1 Oct). The hardening session still pushes there first and moves `main` after each tested step: **safe to delete whenever it's level with `main`** (`git log main..claude/server-and-sync` prints nothing) |
-| `claude/serene-wright-mcvmrx` | Nothing beyond `main` (a session's starting branch) |
-| `analytics` | **Safe to delete:** fully in `main` (third round, T4, 2 Oct) |
+| `claude/serene-wright-mcvmrx` | Nothing beyond `main` (a session's starting branch); already deleted |
+| `analytics` | Fully in `main` (third round, T4, 2 Oct); already deleted (gone from GitHub by 2 Oct 12:00) |
+| `claude/progress-week-research` | **Keep: in progress.** The Week visual research and five options (2 Oct); not in `main` |
+| `claude/progress-week-cards` | **Keep: in progress.** A Week build ("a card per habit, dates bar pinned, no overview or rings") plus the overview and card research; not in `main`, waiting on the user's choice |
+| `claude/weekly-overview-stats-ly55gk` | Its own note says research only, copied to `claude/progress-week-cards`: **safe to delete once that branch keeps it** |
 | `integration` | Once nobody works on it: `main` is the same |
 
 **Keep:** `main`, `ci-results` (CI writes its results there) and every `archive/…` branch. Everything else is in

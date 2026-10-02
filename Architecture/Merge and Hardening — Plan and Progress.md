@@ -134,3 +134,8 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
   habits over the person's (`5ec0547`). Backup 8/8, Sync, Persistence, Onboarding, Today pass. Next: the speed run on
   the iPhone (`Tools/perf/measure_perf_device.sh`). **Open:** `testDeletingTheAccountAndErasingThisPhone` sometimes
   hangs ~74 s right after launching with a CI sign-in (4 of 13 runs, 1-2 Oct), before any step; passes on rerun.
+- **2 Oct 11:55 UTC (check-in 4, the last):** `main` at `5457ec2`, every test class green on today's code. First
+  speed run on the user's iPhone 16: no freeze of 100 ms anywhere; the first keyboard 136 ms (L18 is a simulator
+  artifact); what's left is a few per-action hitches (lessons file). Widget tests queued on the latest code (last run
+  04:05). Branch checklist updated with the Progress agents' new branches. Next, without check-ins: the typing
+  control and Today's split, the widget results, then the per-action hitches.
