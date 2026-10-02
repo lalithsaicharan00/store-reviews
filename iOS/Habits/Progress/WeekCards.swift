@@ -104,7 +104,11 @@ private struct WeekLegendMark: View {
     let kind: WeekLegendKind
 
     var body: some View {
-        let day: (HabitStore.DayMark, Double, Bool, Bool) = switch kind {
+        WeekMark(mark: look.mark, fraction: look.fraction, over: look.over, slip: look.slip, color: .gray, size: 16)
+    }
+
+    private var look: (mark: HabitStore.DayMark, fraction: Double, over: Bool, slip: Bool) {
+        switch kind {
         case .done: (.done, 1, false, false)
         case .part: (.some, 0.5, false, false)
         case .notDone: (.missed, 0, false, false)
@@ -116,7 +120,6 @@ private struct WeekLegendMark: View {
         case .notDue: (.notItsDay, 0, false, false)
         case .comingUp: (.upcoming, 0, false, false)
         }
-        WeekMark(mark: day.0, fraction: day.1, over: day.2, slip: day.3, color: .gray, size: 16)
     }
 }
 
