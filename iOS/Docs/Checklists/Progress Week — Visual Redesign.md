@@ -25,7 +25,7 @@ Written by Claude (Claude Code), 2 October 2026. Research and design only; imple
 - [x] Save report/images at requested paths; add report to research index.
 - [x] Verify cited IDs, image layout, checklist and performance rules; no app code changes.
 - [x] Add all researched inspirations, screenshots and source links to the supplied Figma Inspiration page using Figma MCP.
-- [ ] Commit and push research deliverables only to `claude/progress-week-research`.
+- [x] Commit and push research deliverables only to `claude/progress-week-research`. Research commit `fc51157` pushed successfully; this checklist records delivery.
 - [x] Prepare final delivery with options/images, recommendation and the user’s next decision.
 
 Verification: all 662 source records and 42 cited review IDs checked against all three canonical stores; no duplicates/unassigned records/count mismatches. Fifteen render variants are 1179 × 2556 pixels with 14 cards and no horizontal overflow. Speed rules pass. Figma MCP read-back confirms 113 image-filled nodes, no empty slots, no layout overflow; native captions/source links and five option galleries are present. No app code changed. Large-text images are simulations; native accessibility/VoiceOver verification follows implementation.

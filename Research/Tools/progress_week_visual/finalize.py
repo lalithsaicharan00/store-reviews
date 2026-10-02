@@ -18,6 +18,6 @@ for i in range(len(b)):c[len(a)+i]=[k for k,v in m.items() if i in v] or ['NA']
 assert len(c)==len(rs) and all(c.values());assert len({(r['store'],r['folder'],r['id']) for r in rs})==len(rs)
 (O/'all_classification.json').write_text(json.dumps(c,indent=2));(O/'all_hits.jsonl').write_text(''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in rs))
 with (O/'all_coded_reviews.tsv').open('w') as f:
- w=csv.writer(f,delimiter='\t');w.writerow(['row','review_id','store','app_folder','rating','date','codes','source_line','retrieval_pass'])
+ w=csv.writer(f,delimiter='\t',lineterminator='\n');w.writerow(['row','review_id','store','app_folder','rating','date','codes','source_line','retrieval_pass'])
  for i,r in enumerate(rs):w.writerow([i,r['id'],r['store'],r['folder'],r['rating'],r['date'],','.join(c[i]),r['line'],'focused' if i<339 else 'language_expansion'])
 print(len(rs),'assigned; no duplicates or unknown classification rows.')
