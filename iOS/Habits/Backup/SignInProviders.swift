@@ -4,12 +4,12 @@ import Foundation
 import Security
 import UIKit
 
-/// What's switched on. Apple sign-in and the iCloud copy are written but wait for the Apple Developer account
-/// (Architecture/Backlog.md, "Setup left for later"): both need entitlements only that account can sign.
+/// What's switched on. Apple sign-in and the iCloud copy need entitlements only the Apple Developer account can sign:
+/// on since 2 Oct 2026, with the paid team `MHTC4C9P8F` (Habits.entitlements).
 nonisolated enum BackupFeatures {
     static let googleSignIn = true
-    static let appleSignIn = false
-    static let iCloudBackup = false
+    static let appleSignIn = true
+    static let iCloudBackup = true
 }
 
 /// A provider's proof of who someone is, for `POST /v1/auth/apple|google`. The server gets `nonce` raw; the provider
