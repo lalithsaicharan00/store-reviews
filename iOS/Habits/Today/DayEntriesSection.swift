@@ -73,6 +73,8 @@ struct EntryEditView: View {
     }
 
     var body: some View {
+        // Speed runs count how often the whole editor is drawn: once per letter typed would be the rule 11 mistake.
+        let _ = perfTimed("Entry editor: whole editor drawn") { () }
         Form {
             Section {
                 Text(habit.name).font(.headline)
@@ -83,7 +85,7 @@ struct EntryEditView: View {
                 DurationInput(hours: draft.binding(\.hours), minutes: draft.binding(\.minutes))
                 Section {
                     LabeledContent("Seconds") {
-                        TextField("0", text: draft.binding(\.seconds)).keyboardType(.decimalPad).focused($typing)
+                        DraftTextField(draft: draft, key: \.seconds, placeholder: "0", keyboard: .decimalPad).focused($typing)
                             .multilineTextAlignment(.trailing)
                             .accessibilityIdentifier("entry-seconds")
                     }
@@ -102,7 +104,7 @@ struct EntryEditView: View {
             } else {
                 Section {
                     LabeledContent(habit.kind == .check ? "Times" : "Amount") {
-                        TextField("Amount", text: draft.binding(\.amount)).keyboardType(habit.kind == .check ? .numberPad : .decimalPad)
+                        DraftTextField(draft: draft, key: \.amount, placeholder: "Amount", keyboard: habit.kind == .check ? .numberPad : .decimalPad)
                             .multilineTextAlignment(.trailing).focused($typing)
                             .accessibilityIdentifier("entry-amount")
                     }
@@ -134,6 +136,20 @@ struct EntryEditView: View {
             default: break
             }
         }
+    }
+}
+
+/// One of a draft's text fields in its own view (2 Oct 2026). The binding is made, and the typed text read, here, so a
+/// keystroke redraws this field, never the editor around it (PERFORMANCE.md rule 11). Modifiers put on it (focus,
+/// alignment, accessibility) reach the field inside.
+struct DraftTextField: View {
+    let draft: ProgressValueDraft
+    let key: ReferenceWritableKeyPath<ProgressValueDraft, String>
+    let placeholder: String
+    let keyboard: UIKeyboardType
+
+    var body: some View {
+        TextField(placeholder, text: draft.binding(key)).keyboardType(keyboard)
     }
 }
 
