@@ -35,12 +35,6 @@ struct WeekCardDay: Hashable, Identifiable {
     var id: LocalDay { day }
 }
 
-/// What a mark on the strip means, for the legend under the group chips. Only the kinds the week shows are listed.
-enum WeekLegendKind: Int, CaseIterable, Hashable, Identifiable {
-    case done, part, notDone, open, over, slip, skipped, paused, notDue, comingUp
-    var id: Int { rawValue }
-}
-
 /// One habit's card for a week.
 struct ProgressWeekCard: Hashable, Identifiable {
     let habit: Habit
@@ -108,29 +102,6 @@ extension HabitStore {
             cards.append(perfTimed("Progress week: one quit card") { weekQuitCard(habit, in: span, today: today, now: now) })
         }
         return (cards, archived)
-    }
-
-    /// The marks the week's cards show, in the legend's order.
-    func weekLegend(_ cards: [ProgressWeekCard]) -> [WeekLegendKind] {
-        var seen = Set<WeekLegendKind>()
-        for card in cards {
-            for day in card.days {
-                if day.slip { seen.insert(.slip); continue }
-                if day.over { seen.insert(.over); continue }
-                switch day.mark {
-                case .done: seen.insert(.done)
-                case .some: seen.insert(.part)
-                case .missed: seen.insert(.notDone)
-                case .open: seen.insert(.open)
-                case .skipped: seen.insert(.skipped)
-                case .paused: seen.insert(.paused)
-                case .notItsDay: seen.insert(.notDue)
-                case .upcoming: seen.insert(.comingUp)
-                case .before: break
-                }
-            }
-        }
-        return WeekLegendKind.allCases.filter { seen.contains($0) }
     }
 
     // MARK: One habit

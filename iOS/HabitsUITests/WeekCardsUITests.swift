@@ -43,9 +43,21 @@ final class WeekCardsUITests: XCTestCase {
         sleep(1)
     }
 
-    /// Top, then a screen at a time down to the end; then back to the top.
+    /// Top, the key opened and folded again, then a screen at a time down to the end; then back to the top.
     private func walk(_ prefix: String) {
         shot("\(prefix)-1-top")
+        let key = app.buttons["progress-key"]
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "What the marks mean")
+        key.tap()
+        sleep(1)
+        shot("\(prefix)-1a-key-open")
+        app.swipeUp(velocity: .slow)
+        sleep(1)
+        shot("\(prefix)-1b-key-open-scrolled")
+        for _ in 0..<4 { app.swipeDown(velocity: .fast) }
+        sleep(1)
+        key.tap()
+        sleep(1)
         for i in 2...7 {
             app.swipeUp(velocity: .slow)
             sleep(1)

@@ -173,8 +173,6 @@ struct ProgressScreen: View {
     /// never a `List` (Design Rules).
     private func weekList(_ snapshot: ProgressSnapshot) -> some View {
         let all = snapshot.cards + snapshot.archivedCards
-        let hasQuit = all.contains { $0.isQuit }
-        let hasOthers = all.contains { !$0.isQuit }
         return ScrollView {
             LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
                 rangePicker
@@ -187,9 +185,8 @@ struct ProgressScreen: View {
                         if !store.groups.isEmpty {
                             GroupChipRow(selection: snapshot.group) { groupRaw = $0?.uuidString ?? "" }
                         }
-                        if !snapshot.legend.isEmpty {
-                            WeekLegend(kinds: snapshot.legend, hasQuit: hasQuit, hasOthers: hasOthers)
-                        }
+                        // What each mark means: folded until asked (the user, 2 Oct 2026).
+                        WeekKey()
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, WeekSpacing.tight)

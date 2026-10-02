@@ -152,12 +152,11 @@ struct ProgressSnapshot {
     var groupBars: [ProgressGroupBar] = []
     /// The habit rows under their headings: by group when All is chosen and groups exist, else one "Habits".
     var sections: [ProgressRowSection] = []
-    /// Week only (the user, 2 Oct 2026): one card per habit, the week's columns, the marks the week shows, and
-    /// "This week" or "Last week" under the dates. No overview, group bars or group numbers.
+    /// Week only (the user, 2 Oct 2026): one card per habit, the week's columns, and "This week" or "Last week"
+    /// under the dates. No overview, group bars or group numbers.
     var cards: [ProgressWeekCard] = []
     var archivedCards: [ProgressWeekCard] = []
     var columns: [WeekColumn] = []
-    var legend: [WeekLegendKind] = []
     var caption: String? = nil
 
     var isRunning: Bool { period.contains(today) }
@@ -208,13 +207,13 @@ extension HabitStore.DayMark {
     func words(atMost: Bool = false) -> String {
         switch self {
         case .done: atMost ? "Within the limit" : "Done"
-        case .some: atMost ? "Logged" : "Part done"
+        case .some: atMost ? "Logged" : "Partial"
         case .missed: atMost ? "Over the limit" : "Not done"
-        case .open: "Not done yet"
+        case .open: "Today, still open"
         case .skipped: "Skipped"
         case .paused: "Paused"
-        case .notItsDay: "Not one of its days"
-        case .upcoming: "Coming up"
+        case .notItsDay: "Not scheduled"
+        case .upcoming: "Due later this week"
         case .before: "Before it started"
         }
     }
@@ -415,7 +414,6 @@ extension HabitStore {
         snapshot.cards = made.cards
         snapshot.archivedCards = made.archived
         snapshot.columns = weekColumns(span, today: today)
-        snapshot.legend = weekLegend(made.cards + made.archived)
         snapshot.caption = weekCaption(span, today: today)
         return snapshot
     }

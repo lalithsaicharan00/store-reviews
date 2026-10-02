@@ -226,7 +226,8 @@ Report: [Weekly Habit Cards — What Each Card Shows](<../Research/Research Repo
 - **Names on one line** with "…"; the goal line too.
 - **Only the dates bar sticks** (one 44-pt row): tabs, chips and the key scroll away. Don't pin more; every pinned point is taken from the cards.
 - **Spacing is `WeekSpacing`'s scale (2, 4, 8, 16, 24)**, space inside a group smaller than around it. Don't add one-off paddings.
-- **Checks are white where white reaches 3:1, else a deep shade of the habit's colour (`checkInk`), never black.**
+- **Checks are white on every colour; on the light colours the fill under them is deepened just enough for 3:1 (`markFill`).** Never a dark or black check, never two check colours.
+- **The marks' key is folded until asked ("What the marks mean ⌄") and lists every mark.** Names: Done, Partial, Not done, Today still open, Due later this week, Not scheduled, Skipped, Paused, Over the limit, Before it started; quit: Clean day, Slip. A day still to come is a small ring and a day not scheduled a dash, so neither looks like a day that ended undone.
 - **Week cards are worked out in the store** (`progressSnapshot(…, weekCards: true)`), never in a body.
 
 ## Groups (built 30 Sep 2026)

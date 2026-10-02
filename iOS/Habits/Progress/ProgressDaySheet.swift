@@ -85,18 +85,18 @@ struct ProgressExplainer: View {
                     explain("Weekly goals, day by day", "A day you log a weekly or monthly goal counts as done. Days you don't log it never count against you.")
                     explain("Limits", "A “no more than” habit counts when the day is over: within the limit is done, over it isn't. Today never counts yet.")
                     explain("What isn't counted", "Days that aren't one of a habit's days, skipped days, paused days, days before a habit started or after it was archived. None of these count for or against you.")
-                    explain("Part done", "Some of the goal was reached. The ring fills part of the way; it isn't counted as done.")
+                    explain("Partial", "Some of the goal was reached. The ring fills part of the way; it isn't counted as done.")
                 }
                 Section("Marks") {
                     legend(.done, "Done")
-                    legend(.some, "Part done", fraction: 0.5)
+                    legend(.some, "Partial", fraction: 0.5)
                     legend(.missed, "Not done")
-                    legend(.open, "Not done yet (today)")
+                    legend(.open, "Today, still open")
                     legend(.missed, "Over the limit", over: true)
                     legend(.skipped, "Skipped")
                     legend(.paused, "Paused")
-                    legend(.upcoming, "Coming up")
-                    Text("Blank: not one of its days, or before it started").foregroundStyle(.secondary)
+                    legend(.upcoming, "Due later this week")
+                    Text("Blank: not scheduled, or before it started").foregroundStyle(.secondary)
                 }
             }
             .navigationTitle("How It's Counted")

@@ -60,67 +60,103 @@ struct WeekPeriodBar: View {
     }
 }
 
-/// What each mark means, for the marks this week shows (the user: "maintain what each status means").
-struct WeekLegend: View {
-    let kinds: [WeekLegendKind]
-    /// Quit habits' filled mark is a clean day; others' is done.
-    let hasQuit: Bool
-    let hasOthers: Bool
+/// What each mark means (the user, 2 Oct 2026: there when wanted, not shown until asked). One quiet row under the group
+/// chips, "What the marks mean ⌄"; tapping it opens every mark with its name and one plain sentence, and "Show less"
+/// folds it again (progressive disclosure: the page stays clean, the meaning is one tap away and never hidden in a
+/// menu). Every state is listed, not only this week's, so a mark that appears next week is already explained.
+struct WeekKey: View {
+    @State private var open = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        FlowLayout(spacing: WeekSpacing.card, lineSpacing: WeekSpacing.tight) {
-            ForEach(kinds) { kind in
-                HStack(spacing: 6) {
-                    WeekLegendMark(kind: kind).frame(width: 16, height: 16)
-                    Text(words(kind)).font(.footnote).foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: WeekSpacing.tight) {
+            Button {
+                if reduceMotion { open.toggle() } else { withAnimation(.easeInOut(duration: 0.2)) { open.toggle() } }
+            } label: {
+                HStack(spacing: WeekSpacing.tight) {
+                    Image(systemName: "info.circle")
+                    Text("What the marks mean")
+                    Spacer(minLength: WeekSpacing.tight)
+                    Text(open ? "Show less" : "Show")
+                    Image(systemName: "chevron.down").font(.footnote.weight(.semibold))
+                        .rotationEffect(.degrees(open ? 180 : 0))
                 }
-                .accessibilityElement(children: .combine)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
             }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel("Key")
-        .accessibilityIdentifier("progress-legend")
-    }
-
-    private func words(_ kind: WeekLegendKind) -> String {
-        switch kind {
-        case .done: hasQuit && !hasOthers ? "Clean day" : hasQuit ? "Done or clean" : "Done"
-        case .part: "Part done"
-        case .notDone: "Not done"
-        case .open: "Still open today"
-        case .over: "Over the limit"
-        case .slip: "Slip"
-        case .skipped: "Skipped"
-        case .paused: "Paused"
-        case .notDue: "Not due"
-        case .comingUp: "Coming up"
+            .buttonStyle(.plain)
+            .accessibilityLabel("What the marks mean")
+            .accessibilityValue(open ? "Shown" : "Hidden")
+            .accessibilityHint(open ? "Hides the key" : "Shows what each mark on the cards means")
+            .accessibilityIdentifier("progress-key")
+            if open {
+                VStack(alignment: .leading, spacing: WeekSpacing.card) {
+                    ForEach(WeekKeyEntry.habits) { KeyRow(entry: $0) }
+                    Text("Quit habits").font(.footnote.weight(.semibold)).foregroundStyle(.secondary)
+                        .padding(.top, WeekSpacing.pair)
+                        .accessibilityAddTraits(.isHeader)
+                    ForEach(WeekKeyEntry.quit) { KeyRow(entry: $0) }
+                }
+                .padding(WeekSpacing.card)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .transition(.opacity)
+                .accessibilityIdentifier("progress-key-list")
+            }
         }
     }
 }
 
-/// A legend's mark: the same drawing as the strip's, smaller and in a neutral colour.
-private struct WeekLegendMark: View {
-    let kind: WeekLegendKind
+/// One row of the key: the mark as the cards draw it, its name, and what it means.
+private struct KeyRow: View {
+    let entry: WeekKeyEntry
 
     var body: some View {
-        WeekMark(mark: look.mark, fraction: look.fraction, over: look.over, slip: look.slip, color: .gray, size: 16)
-    }
-
-    private var look: (mark: HabitStore.DayMark, fraction: Double, over: Bool, slip: Bool) {
-        switch kind {
-        case .done: (.done, 1, false, false)
-        case .part: (.some, 0.5, false, false)
-        case .notDone: (.missed, 0, false, false)
-        case .open: (.open, 0, false, false)
-        case .over: (.missed, 0, true, false)
-        case .slip: (.missed, 0, false, true)
-        case .skipped: (.skipped, 0, false, false)
-        case .paused: (.paused, 0, false, false)
-        case .notDue: (.notItsDay, 0, false, false)
-        case .comingUp: (.upcoming, 0, false, false)
+        HStack(alignment: .top, spacing: 12) {
+            WeekMark(mark: entry.mark, fraction: entry.fraction, over: entry.over, slip: entry.slip, color: .gray, size: 22)
+                .frame(width: 28, height: 22)
+            VStack(alignment: .leading, spacing: WeekSpacing.label) {
+                Text(entry.name).font(.subheadline.weight(.semibold))
+                Text(entry.meaning).font(.footnote).foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
+        .accessibilityElement(children: .combine)
     }
+}
+
+/// The key's entries, in the order people meet them. Words chosen to say what happened, never judge it: no "missed",
+/// "failed" or "relapse" (Design Rules), and no two names that could mean the same day.
+struct WeekKeyEntry: Identifiable {
+    let name: String
+    let meaning: String
+    var mark: HabitStore.DayMark
+    var fraction: Double = 0
+    var over = false
+    var slip = false
+    var id: String { name }
+
+    static let habits: [WeekKeyEntry] = [
+        WeekKeyEntry(name: "Done", meaning: "The day's goal was reached.", mark: .done),
+        WeekKeyEntry(name: "Partial", meaning: "Some of the day's goal was done. The ring fills to show how much.",
+                     mark: .some, fraction: 0.6),
+        WeekKeyEntry(name: "Not done", meaning: "A day it was due has ended without the goal reached.", mark: .missed),
+        WeekKeyEntry(name: "Today, still open", meaning: "Today isn't over yet, so it doesn't count either way.", mark: .open),
+        WeekKeyEntry(name: "Due later this week", meaning: "A day still to come when it's due.", mark: .upcoming),
+        WeekKeyEntry(name: "Not scheduled", meaning: "Not one of its days, or nothing logged that day toward a weekly or monthly goal. Never counts against it.",
+                     mark: .notItsDay),
+        WeekKeyEntry(name: "Skipped", meaning: "You skipped it that day. Doesn't count either way.", mark: .skipped),
+        WeekKeyEntry(name: "Paused", meaning: "The habit was paused. Doesn't count either way.", mark: .paused),
+        WeekKeyEntry(name: "Over the limit", meaning: "A finished day that went above a “no more than” limit.", mark: .missed, over: true),
+        WeekKeyEntry(name: "Before it started", meaning: "A blank space: days before the habit began.", mark: .before),
+    ]
+    static let quit: [WeekKeyEntry] = [
+        WeekKeyEntry(name: "Clean day", meaning: "No slip was logged that day.", mark: .done),
+        WeekKeyEntry(name: "Slip", meaning: "A slip was logged that day. A number under it shows when there was more than one.",
+                     mark: .missed, slip: true),
+    ]
 }
 
 /// One habit's card: icon, name on one line, the goal; the headline and at most one more fact; the week's strip.
@@ -207,8 +243,9 @@ struct WeekCardStrip: View {
     }
 }
 
-/// One day's mark. Every state differs by shape, not only colour (report §4.4): a filled circle with a check, a part
-/// ring, an empty ring, a dashed ring, a sign on a grey disc, a small dot, a faint ring, or nothing. Never red.
+/// One day's mark. Every state differs by shape, not only colour (report §4.4): a filled circle with a white check, a
+/// part ring, an empty ring, a dashed ring, a ring with ▲ or ×, a sign on a grey disc, a small ring (later this week),
+/// a short dash (not scheduled), or nothing (before it started). Never red. `WeekKey` explains each one.
 struct WeekMark: View {
     let mark: HabitStore.DayMark
     var fraction: Double = 0
@@ -216,6 +253,7 @@ struct WeekMark: View {
     var slip = false
     let color: HabitColor
     var size: CGFloat = 28
+    @Environment(\.colorScheme) private var scheme
 
     var body: some View {
         let tint = color.color
@@ -227,9 +265,10 @@ struct WeekMark: View {
             } else {
                 switch mark {
                 case .done:
-                    Circle().fill(tint)
+                    // One check everywhere: white, on the habit's colour deepened just enough for it (`markFill`).
+                    Circle().fill(color.markFill(dark: scheme == .dark))
                     Image(systemName: "checkmark").font(.system(size: size * 0.44, weight: .bold))
-                        .foregroundStyle(color.checkInk)
+                        .foregroundStyle(.white)
                 case .some:
                     Circle().stroke(tint.opacity(0.25), lineWidth: line * 1.5).padding(line * 0.75)
                     Circle().trim(from: 0, to: max(0.08, min(1, fraction)))
@@ -251,9 +290,11 @@ struct WeekMark: View {
                     Circle().fill(Color(.tertiarySystemFill))
                     Image(systemName: "pause.fill").font(.system(size: size * 0.32)).foregroundStyle(.secondary)
                 case .notItsDay:
-                    Circle().fill(Color.secondary.opacity(0.5)).frame(width: max(4, size / 7), height: max(4, size / 7))
+                    // A short dash: "nothing asked of this day", unlike any ring, which is a day that counts.
+                    Capsule().fill(Color.secondary.opacity(0.55)).frame(width: max(6, size * 0.3), height: max(1.5, size / 14))
                 case .upcoming:
-                    Circle().strokeBorder(tint.opacity(0.4), lineWidth: line)
+                    // Smaller than a day's ring, so a day still to come never looks like a day that ended undone.
+                    Circle().strokeBorder(tint.opacity(0.6), lineWidth: line).frame(width: size * 0.45, height: size * 0.45)
                 case .before:
                     Color.clear
                 }
@@ -265,44 +306,21 @@ struct WeekMark: View {
 }
 
 extension HabitColor {
-    /// The check on a filled mark: white where white stands out from the colour (3:1 or more, WCAG 1.4.11);
-    /// on the light colours (yellow, orange, green, mint, teal, cyan), where white falls to 1.6–2.6:1, a deep shade of
-    /// the same colour instead, never black (the user, 2 Oct 2026: black checks look poor). The deep shades reach about
-    /// 4:1 or more against their fill.
-    var checkInk: Color {
-        switch self {
-        case .red, .pink, .purple, .indigo, .blue, .brown, .gray: .white
-        case .orange, .yellow, .green, .mint, .teal, .cyan: color.mix(with: .black, by: 0.62)
+    /// The fill under a check: the habit's colour, deepened only as far as a white check needs to stand out from it
+    /// (3:1, WCAG 1.4.11). The check is white on every colour (the user, 2 Oct 2026: one check colour everywhere,
+    /// never black). Red, pink, purple, indigo, blue, brown and gray already reach 3:1 and stay as they are; the light
+    /// colours are deepened by the least that reaches it, measured on the system colours in light and dark mode
+    /// (orange 15/18 %, yellow 30/32 %, green 15/19 %, mint 17/30 %, teal 8/19 %, cyan 9/25 %, plus 2 points).
+    func markFill(dark: Bool) -> Color {
+        let deepen: Double = switch self {
+        case .red, .pink, .purple, .indigo, .blue, .brown, .gray: 0
+        case .orange: dark ? 0.20 : 0.17
+        case .yellow: dark ? 0.34 : 0.32
+        case .green: dark ? 0.21 : 0.17
+        case .mint: dark ? 0.32 : 0.19
+        case .teal: dark ? 0.21 : 0.10
+        case .cyan: dark ? 0.27 : 0.11
         }
-    }
-}
-
-/// Lays its children out in rows, wrapping to the next line when a row is full: the legend's items.
-struct FlowLayout: Layout {
-    var spacing: CGFloat = 8
-    var lineSpacing: CGFloat = 8
-
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let width = proposal.width ?? .infinity
-        var x: CGFloat = 0, y: CGFloat = 0, line: CGFloat = 0, widest: CGFloat = 0
-        for view in subviews {
-            let size = view.sizeThatFits(.unspecified)
-            if x > 0 && x + size.width > width { y += line + lineSpacing; x = 0; line = 0 }
-            x += size.width + spacing
-            line = max(line, size.height)
-            widest = max(widest, x - spacing)
-        }
-        return CGSize(width: min(widest, width), height: y + line)
-    }
-
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        var x = bounds.minX, y = bounds.minY, line: CGFloat = 0
-        for view in subviews {
-            let size = view.sizeThatFits(.unspecified)
-            if x > bounds.minX && x + size.width > bounds.maxX { y += line + lineSpacing; x = bounds.minX; line = 0 }
-            view.place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(size))
-            x += size.width + spacing
-            line = max(line, size.height)
-        }
+        return deepen == 0 ? color : color.mix(with: .black, by: deepen, in: .device)
     }
 }

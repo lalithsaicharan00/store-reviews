@@ -507,7 +507,6 @@ enum ProgressCheck {
             same(card(smoking)?.headline, "Current run 9 d 3 h", "W5 quit: the run")
             same(card(smoking)?.detail, "No slips this week", "W5 quit: this week's slips")
             same(card(smoking)?.isQuit, true, "W5 quit card")
-            same(snap.legend, [.done, .part, .open, .over, .skipped, .notDue, .comingUp], "W legend: only the marks shown (no day was simply not done)")
             same(HabitStore.compactNumber(9100), "9.1k", "W value 9.1k")
             same(HabitStore.compactNumber(8000), "8k", "W value 8k")
             same(HabitStore.compactNumber(6.5), "6.5", "W value 6.5")

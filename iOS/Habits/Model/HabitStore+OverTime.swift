@@ -226,7 +226,7 @@ extension HabitStore {
             tiles.append(OverTimeTile(value: "\(HabitCopy.number(done)) of \(HabitCopy.number(planned))\(unit)",
                                       caption: shape == .checklist ? "Steps" : "Done", percent: percentOn(done, planned)))
             tiles.append(OverTimeTile(value: "\(doneDays.count) of \(counted.count)", caption: "Full days"))
-            tiles.append(OverTimeTile(value: "\(counts?.part ?? 0)", caption: "Part done"))
+            tiles.append(OverTimeTile(value: "\(counts?.part ?? 0)", caption: "Partial"))
         case .amount, .time:
             let total = list.reduce(0.0) { $0 + $1.value }
             tiles.append(OverTimeTile(value: value(total), caption: "Total"))
