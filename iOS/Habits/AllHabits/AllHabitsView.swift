@@ -68,6 +68,8 @@ struct AllHabitsView: View {
             }
         }
         .environment(\.editMode, $editMode)
+        // Select's circles in the iPhone's own blue: with the ink tint they were near-white on gray in dark mode.
+        .tint(editMode.isEditing ? Color(.systemBlue) : nil)
         .analyticsScreen(kind == .tasks ? .myTasks : .allHabits)
         .navigationTitle(kind == .tasks ? "Tasks" : "Habits")
         .navigationDestination(for: UUID.self) { HabitPageView(id: $0) }

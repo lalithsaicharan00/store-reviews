@@ -15,6 +15,9 @@ struct HabitsApp: App {
     var body: some Scene {
         WindowGroup {
             root
+                // Switches in the iPhone's own green: the app's ink tint is near-white in dark mode, where an "on"
+                // switch couldn't be told from "off" (the user, on the iPhone, 2 Oct 2026).
+                .toggleStyle(SwitchToggleStyle(tint: Color(.systemGreen)))
                 // While locked, or whenever the app isn't in front (so the app switcher never shows the habits).
                 .overlay {
                     if model.lock.isLocked || (AppLock.isEnabled && scenePhase != .active) {
