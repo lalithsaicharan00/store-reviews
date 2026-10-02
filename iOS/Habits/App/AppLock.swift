@@ -111,7 +111,7 @@ struct LockCover: View {
                     .font(.system(size: 40, weight: .semibold))
                     .foregroundStyle(.secondary)
                     .accessibilityHidden(true)
-                Text("Habits is locked").font(.title3.weight(.semibold))
+                Text("Often Enough is locked").font(.title3.weight(.semibold))
                 if locked {
                     Button { onUnlock() } label: {
                         Text("Unlock").fontWeight(.semibold).foregroundStyle(Color.onInk).frame(minWidth: 120)

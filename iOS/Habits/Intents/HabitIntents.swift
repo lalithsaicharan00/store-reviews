@@ -43,7 +43,7 @@ nonisolated struct HabitQuery: EntityStringQuery {
     }
 }
 
-/// "Log Water in Habits": one step today, the same as a notification's Done. Only ever adds (a wrong one is removed on
+/// "Log Water in Often Enough": one step today, the same as a notification's Done. Only ever adds (a wrong one is removed on
 /// the habit's page). Works from an automation too: an NFC tag, a time, arriving somewhere.
 struct LogHabitIntent: AppIntent {
     static let title: LocalizedStringResource = "Log a Habit"
@@ -73,7 +73,7 @@ struct LogHabitIntent: AppIntent {
             let ask: IntentDialog = found.kind == .duration ? "How many minutes?" : "How much?"
             throw $amount.needsValueError(ask)
         case .openApp:
-            text = found.kind == .quit ? "Log a slip for \(found.name) in Habits." : "Tick \(found.name)'s steps in Habits."
+            text = found.kind == .quit ? "Log a slip for \(found.name) in Often Enough." : "Tick \(found.name)'s steps in Often Enough."
         case .paused:
             text = "\(found.name) is paused."
         case .alreadyDone:
@@ -89,7 +89,7 @@ struct LogHabitIntent: AppIntent {
     }
 }
 
-/// "What's left in Habits": how many are done, and what's still to do, in Today's order.
+/// "What's left in Often Enough": how many are done, and what's still to do, in Today's order.
 struct WhatsLeftIntent: AppIntent {
     static let title: LocalizedStringResource = "What's Left Today"
     static let description = IntentDescription("Says how many of today's habits are done and which are still to do.")
@@ -116,7 +116,7 @@ struct WhatsLeftIntent: AppIntent {
     }
 }
 
-/// "How's Water going in Habits": today's progress and the streak.
+/// "How's Water going in Often Enough": today's progress and the streak.
 struct HabitProgressIntent: AppIntent {
     static let title: LocalizedStringResource = "Get Habit Progress"
     static let description = IntentDescription("Says how far along a habit is today, and its streak.")
@@ -139,7 +139,7 @@ struct HabitProgressIntent: AppIntent {
     }
 }
 
-/// "Open Water in Habits": its page, with its calendar, notes and numbers.
+/// "Open Water in Often Enough": its page, with its calendar, notes and numbers.
 struct OpenHabitIntent: OpenIntent {
     static let title: LocalizedStringResource = "Open a Habit"
     static let description = IntentDescription("Opens a habit's page.")
@@ -182,8 +182,8 @@ nonisolated struct HabitShortcuts: AppShortcutsProvider {
 
         var localizedStringResource: LocalizedStringResource {
             switch self {
-            case .habitGone: "That habit isn't in Habits any more."
-            case .notSaved: "That couldn't be saved. Open Habits and try again."
+            case .habitGone: "That habit isn't in Often Enough any more."
+            case .notSaved: "That couldn't be saved. Open Often Enough and try again."
             }
         }
     }

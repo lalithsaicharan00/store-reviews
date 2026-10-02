@@ -57,9 +57,9 @@ struct RemindersView: View {
                     Text("Latest scheduled alert: \(through.formatted(date: .abbreviated, time: .shortened)).")
                         .accessibilityIdentifier("reminders-through")
                 } else { Text(loading ? "Checking…" : "No upcoming alerts are scheduled.").foregroundStyle(.secondary) }
-                Text("iPhone limits how many alerts an app can schedule. Habits schedules the nearest ones first. Some items may have fewer days scheduled when the limit is reached. Opening Habits refreshes the schedule. iOS decides when background refresh can run; open Habits periodically to extend the dates shown here.")
+                Text("iPhone limits how many alerts an app can schedule. Often Enough schedules the nearest ones first. Some items may have fewer days scheduled when the limit is reached. Opening Often Enough refreshes the schedule. iOS decides when background refresh can run; open Often Enough periodically to extend the dates shown here.")
                     .foregroundStyle(.secondary)
-                Text("If an alarm can’t be added, Habits tries a notification instead. With notification permission off, that fallback can’t alert you.")
+                Text("If an alarm can’t be added, Often Enough tries a notification instead. With notification permission off, that fallback can’t alert you.")
                     .foregroundStyle(.secondary)
             }
         }

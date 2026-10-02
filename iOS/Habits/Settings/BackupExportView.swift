@@ -30,8 +30,8 @@ struct BackupExportView: View {
             }
             .disabled(working)
             Section("Before You Delete the App") {
-                Text("Deleting Habits removes its data and recovery copies from this iPhone. Reinstalling alone does not bring them back.")
-                Text("Save a Backup File to a folder outside Habits in Files first. After reinstalling, use Restore from a Backup File. A file saved inside Habits’ own folder is deleted with the app.")
+                Text("Deleting Often Enough removes its data and recovery copies from this iPhone. Reinstalling alone does not bring them back.")
+                Text("Save a Backup File to a folder outside Often Enough in Files first. After reinstalling, use Restore from a Backup File. A file saved inside Often Enough’s own folder is deleted with the app.")
                 Text("Offload App in iPhone Settings keeps Documents & Data. Delete App removes them.")
                     .foregroundStyle(.secondary)
             }

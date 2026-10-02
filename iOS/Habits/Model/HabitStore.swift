@@ -1408,8 +1408,8 @@ final class HabitStore {
         case invalid, newerVersion, pendingSave, unreadable, reloadFailed
         var errorDescription: String? {
             switch self {
-            case .invalid: "Choose a Habits backup file. Your current data has not been changed."
-            case .newerVersion: "This backup was made by a newer version of Habits. Update the app before restoring it."
+            case .invalid: "Choose an Often Enough backup file. Your current data has not been changed."
+            case .newerVersion: "This backup was made by a newer version of Often Enough. Update the app before restoring it."
             case .pendingSave: "Some changes could not be saved. Resolve the save error before making or restoring a backup."
             case .unreadable: "The backup could not be read. Your current data has not been changed."
             case .reloadFailed: "The backup was added, but the app couldn’t reload your data. Restart the app before continuing."
@@ -1422,7 +1422,7 @@ final class HabitStore {
         guard problem == nil, isStorageReady else { throw BackupError.pendingSave }
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent("Habits-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        let url = directory.appendingPathComponent("Habits Backup \(today(now: now).key).db")
+        let url = directory.appendingPathComponent("Often Enough Backup \(today(now: now).key).db")
         do {
             try await dataOperation { [self] in try await repository.snapshot(path: url.path) }
         } catch {

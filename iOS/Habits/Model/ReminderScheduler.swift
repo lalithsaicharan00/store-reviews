@@ -120,7 +120,7 @@ final class ReminderScheduler {
         // Failed or excess alarms get a standard notification instead of silently disappearing.
         let notes = planned.filter { !alarmIDs.contains($0.id) }
         if ring.contains(where: { !alarmIDs.contains($0.id) }) {
-            problem = "Some alarms couldn’t be added. Habits is using notifications for them when allowed."
+            problem = "Some alarms couldn’t be added. Often Enough is using notifications for them when allowed."
         }
         if let alarmProblem = alarmDelivery.problem { problem = alarmProblem }
         center.categories(Self.categories(for: store.habits))

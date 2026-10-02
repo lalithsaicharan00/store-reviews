@@ -57,7 +57,7 @@ extension HabitStore {
 
     /// "Water: 3 of 8 glasses today. 5 in a row." / "Stretch is done today." Streaks only while they're shown.
     func shortcutStatus(_ habit: Habit, on day: LocalDay) -> String {
-        if habit.kind == .quit { return "\(habit.name): log slips in Habits." }
+        if habit.kind == .quit { return "\(habit.name): log slips in Often Enough." }
         let rule = rule(habit, on: day)
         let done = isSatisfied(habit, on: day)
         var text: String

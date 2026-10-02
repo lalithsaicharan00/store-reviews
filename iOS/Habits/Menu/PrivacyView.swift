@@ -49,14 +49,14 @@ struct PrivacyView: View {
     private func footer(_ lock: AppLock.Ability) -> String {
         let base = "No ads. An account is optional; without one, your habits stay on this phone unless you share them. Usage sharing is optional."
         if lockOn {
-            return base + " Habits asks for \(lock.method), or your iPhone passcode, each time you open it."
+            return base + " Often Enough asks for \(lock.method), or your iPhone passcode, each time you open it."
         }
-        return lock.available ? base : base + " To lock Habits, set a passcode for this iPhone first."
+        return lock.available ? base : base + " To lock Often Enough, set a passcode for this iPhone first."
     }
 
     private func setLock(_ on: Bool) {
         Task { @MainActor in
-            guard await AppLock.authenticate(reason: on ? "Turn on the lock for Habits" : "Turn off the lock for Habits") else { return }
+            guard await AppLock.authenticate(reason: on ? "Turn on the lock for Often Enough" : "Turn off the lock for Often Enough") else { return }
             AppLock.setEnabled(on)
             lockOn = on
             store.analyticsConfiguration()
