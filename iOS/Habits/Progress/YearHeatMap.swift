@@ -128,6 +128,9 @@ struct YearHeatMap: View {
             }
             .scrollIndicators(.hidden)
             .defaultScrollAnchor(.trailing)
+            // Another year starts again at its latest weeks: the card keeps its identity (the habit's), and without this
+            // its squares stayed where the last year was left, January of a year the habit hadn't begun (2 Oct 2026).
+            .id(layout)
         }
         .accessibilityHidden(true)
     }
