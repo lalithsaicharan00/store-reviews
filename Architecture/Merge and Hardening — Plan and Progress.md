@@ -99,3 +99,13 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
   saving an entry (0.6–0.8 s), the quit page's open (1.4–2 s, also before the merge), menu pages' opens (200–600 ms).
   The first keyboard of a launch (L18) needs the real iPhone first: on the simulator it's 3–7 s, on phones usually far
   less. Every one of these was the same or worse before the merge.
+- **2 Oct 01:30–03:20 UTC (check-in 2; check-in 3 at 06:40, `trig_01R434hhycafwGKY6qa9QpFA`):**
+  - Speed runs now time the app's own suspect work (`perfTimed`, a "Timed work" table): Progress's numbers take at
+    most 48 ms for a year, so its slow period and range switch is drawing, not counting.
+  - Progress: month strips drawn as up to five shapes instead of 31 views and an offscreen pass per row: the
+    switch's longest freeze 1,320 → 236 ms (more, smaller freezes: 24 of 100–236 ms; total hitch ~unchanged, next).
+  - Today: one sheet per row again (rule 10 had regressed), duration rows keep one clock host across days (rule 4),
+    the day's 6/15 redraws alone, offers cleared only when set. Scrolling hitch 46–70 → 21 ms/s; +1 and day switch
+    unchanged (~141 ms/s; the helper's next steps: per-habit entry observation, the row's offer lines in a small view).
+  - Found and fixed: the demo data put a Call family call inside this week on some weekdays, so on a Friday the row
+    started ticked and three Today tests failed on `main` too (seen in the failure screen dump). Today 8/8 again.
