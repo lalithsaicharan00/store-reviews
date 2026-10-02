@@ -122,35 +122,56 @@ struct WeekStripHeader: View {
 /// A month of dots on one line (report §7.3, §13.3). Done is filled; part done is lighter by share; not done is an
 /// empty ring; today not done yet is dashed; other days are blank, so the strip shows the person's real plan.
 ///
-/// Plain shapes flattened into one layer (`drawingGroup`), not a `Canvas`: with a `Canvas` here the app was lost as
-/// soon as the Month range opened (CI, 30 Sep 2026; a `Canvas` renderer closure is main-actor code under Swift 6's
-/// default isolation). Rows are in a lazy list, so only the strips on screen exist.
+/// A month of dots in a habit's row, drawn as at most five shapes (one per kind of mark), like the year grid: not 31
+/// views flattened by `drawingGroup`, which built 31 views and an offscreen pass per row on every period or range
+/// change (2 Oct 2026). Not a `Canvas`: with one here the app was lost as soon as the Month range opened (CI, 30 Sep
+/// 2026; a `Canvas` renderer closure is main-actor code under Swift 6's default isolation). Plain values only.
 struct MonthStrip: View {
     let marks: [ProgressMark]
     let color: Color
 
+    /// Fixed sizes, so the row's height never depends on its width (a list re-measures rows that do): 31 dots of
+    /// 5.5 points with 2.5-point gaps fit the narrowest iPhone.
+    nonisolated static let dot: CGFloat = 5.5, gap: CGFloat = 2.5
+
     var body: some View {
-        // Fixed sizes, so the row's height never depends on its width (a list re-measures rows that do): 31 dots of
-        // 5.5 points with 2.5-point gaps fit the narrowest iPhone.
-        HStack(spacing: 2.5) {
-            ForEach(marks) { mark in
-                dot(mark).frame(width: 5.5, height: 5.5)
+        var done: [Int] = [], strong: [Int] = [], light: [Int] = [], missed: [Int] = [], open: [Int] = []
+        for (i, mark) in marks.enumerated() {
+            switch mark.mark {
+            case .done: done.append(i)
+            case .some: if mark.fraction >= 0.5 { strong.append(i) } else { light.append(i) }
+            case .missed: missed.append(i)
+            case .open: open.append(i)
+            default: break
             }
-            Spacer(minLength: 0)
         }
+        return ZStack(alignment: .leading) {
+            StripDots(cells: done).fill(color)
+            StripDots(cells: strong).fill(color.opacity(0.7))
+            StripDots(cells: light).fill(color.opacity(0.45))
+            // Inset by half the line, as `strokeBorder` drew them.
+            StripDots(cells: missed, inset: 0.5).stroke(Color.secondary, lineWidth: 1)
+            StripDots(cells: open, inset: 0.5).stroke(Color.secondary, style: StrokeStyle(lineWidth: 1, dash: [1.5, 1.5]))
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .frame(height: 8)
-        .drawingGroup()
         .accessibilityHidden(true)
     }
+}
 
-    @ViewBuilder private func dot(_ mark: ProgressMark) -> some View {
-        switch mark.mark {
-        case .done: Circle().fill(color)
-        case .some: Circle().fill(color.opacity(mark.fraction >= 0.5 ? 0.7 : 0.45))
-        case .missed: Circle().strokeBorder(Color.secondary, lineWidth: 1)
-        case .open: Circle().strokeBorder(Color.secondary, style: StrokeStyle(lineWidth: 1, dash: [1.5, 1.5]))
-        default: Color.clear
+/// Dots in one row at positions `cells` (0 = the first day), as one path.
+nonisolated struct StripDots: Shape {
+    let cells: [Int]
+    var inset: CGFloat = 0
+
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let dot = MonthStrip.dot, step = MonthStrip.dot + MonthStrip.gap
+        let y = (rect.height - dot) / 2
+        for cell in cells {
+            path.addEllipse(in: CGRect(x: CGFloat(cell) * step, y: y, width: dot, height: dot).insetBy(dx: inset, dy: inset))
         }
+        return path
     }
 }
 
