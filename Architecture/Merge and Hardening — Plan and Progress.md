@@ -127,3 +127,10 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
   are green, Select's circles blue. Progress's View Options menu fixed (`5e2c7c5`, the green switch style had reached
   its toggles), tests running. Speed work continues, slowly and measured (the user: "take your time"): first, why
   every screen's opening stalls 150–280 ms, with a blank page pushed the same way as the control.
+- **2 Oct 11:30 UTC:** `main` and `integration` at `5457ec2`. Speed findings: menu pages open within noise of a blank
+  page's push (lesson in PERFORMANCE-LESSONS); the habit form's 1.3 s first opening is the launch's first keyboard
+  (2.1 s on the simulator; the form alone 562 ms once, then ~240 ms). **Data safety fixed:** `-uitest` launches used
+  the app's own sign-in, backup state, iCloud and folders: on a real iPhone a test run could sync or back up demo
+  habits over the person's (`5ec0547`). Backup 8/8, Sync, Persistence, Onboarding, Today pass. Next: the speed run on
+  the iPhone (`Tools/perf/measure_perf_device.sh`). **Open:** `testDeletingTheAccountAndErasingThisPhone` sometimes
+  hangs ~74 s right after launching with a CI sign-in (4 of 13 runs, 1-2 Oct), before any step; passes on rerun.
