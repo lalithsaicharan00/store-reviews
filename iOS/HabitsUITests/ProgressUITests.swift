@@ -79,7 +79,10 @@ final class ProgressUITests: XCTestCase {
         shot("p01-week")
 
         segment("Month").tap()
-        XCTAssertTrue(period.label.contains(String(Calendar.current.component(.year, from: .now))), "Month title: \(period.label)")
+        // Month (2 Oct 2026): the month's name, "This month" under it, and a card per habit.
+        XCTAssertTrue(app.staticTexts["progress-period-caption"].waitForExistence(timeout: 3))
+        XCTAssertEqual(app.staticTexts["progress-period-caption"].label, "This month")
+        XCTAssertTrue(app.buttons["progress-row-Read"].exists, "A card per habit on Month")
         shot("p02-month")
         let month = period.label
         app.buttons["progress-previous"].tap()
@@ -106,28 +109,8 @@ final class ProgressUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["progress-period"].exists)
     }
 
-    /// A ring opens the Day sheet; "Show on Today" closes Progress and opens that day on Today.
-    func testDaySheetShowsOnToday() {
-        launch()
-        openProgress()
-        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: .now)!
-        let c = Calendar.current.dateComponents([.year, .month, .day], from: yesterday)
-        var ring = app.buttons["progress-day-\(c.year!)-\(c.month!)-\(c.day!)"]
-        if !ring.exists {
-            // Yesterday was in last week: use the month instead.
-            segment("Month").tap()
-            if !app.buttons["progress-day-\(c.year!)-\(c.month!)-\(c.day!)"].exists { app.buttons["progress-previous"].tap() }
-            ring = app.buttons["progress-day-\(c.year!)-\(c.month!)-\(c.day!)"]
-        }
-        XCTAssertTrue(ring.waitForExistence(timeout: 3))
-        ring.tap()
-        XCTAssertTrue(app.staticTexts["progress-day-summary"].waitForExistence(timeout: 3), "The Day sheet opens")
-        shot("p03-day-sheet")
-        app.buttons["progress-show-on-today"].tap()
-        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Yesterday,'")).firstMatch.waitForExistence(timeout: 5),
-                      "Today opens on that day")
-        XCTAssertFalse(app.navigationBars["Progress"].exists, "Progress closed")
-    }
+    // The Day sheet test (a day ring opened it) was retired on 2 Oct 2026: Week and Month no longer have day rings
+    // (the user removed them), so nothing on Progress opens the Day sheet. Today's calendar opens any day instead.
 
     /// A habit's row opens its own page at Over Time.
     func testRowOpensHabitPageAtOverTime() {
@@ -152,11 +135,11 @@ final class ProgressUITests: XCTestCase {
     func testHidePercentages() {
         launch()
         openProgress()
-        // Week has no percentages (2 Oct 2026): its cards state counts. Month and Year still have them. Wait for the
+        // Week and Month have no percentages (2 Oct 2026): their cards state counts. Year still has them. Wait for the
         // tabs first: a tap before they appear was lost and the test stayed on Week (run 37010612231).
         XCTAssertTrue(app.segmentedControls["progress-range"].waitForExistence(timeout: 10), "Week | Month | Year")
-        segment("Month").tap()
-        XCTAssertTrue(app.descendants(matching: .any)["progress-tile-done"].waitForExistence(timeout: 10), "Month's overview")
+        segment("Year").tap()
+        XCTAssertTrue(app.descendants(matching: .any)["progress-tile-done"].waitForExistence(timeout: 10), "Year's overview")
         let percent = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS ' percent'"))
         XCTAssertTrue(percent.firstMatch.waitForExistence(timeout: 5), "Percentages show by default")
         func toggle() {

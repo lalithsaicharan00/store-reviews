@@ -32,6 +32,7 @@ Research behind it: [Weekly Habit Cards — What Each Card Shows](<../../../Rese
 | U10 | Under the group chips, what each mark means | [x] `WeekKey`: one quiet row, "What the marks mean ⌄"; tapping opens **every** mark (not only this week's) with its name and one sentence, and "Show less" folds it. Revised after the user saw the first version (2 Oct): the always-open key was too much, and "Part done", "Not due" and "Coming up" were unclear |
 | U16 | Clearer words and symbols for the marks | [x] **Partial** (was Part done), **Not done**, **Today, still open**, **Due later this week** (was Coming up; now a small ring, so it can't look like Not done), **Not scheduled** (was Not due; now a short dash), **Skipped**, **Paused**, **Over the limit**, **Before it started**; quit: **Clean day**, **Slip**. The same words in VoiceOver, the habit page and How It's Counted |
 | U17 | One check colour everywhere | [x] White on every colour. Revised (2 Oct, the user: the deepened colours looked darker than purple): every habit colour for marks **and icons** now sits at one shared lightness (`HabitColor.mark`) |
+| U19 | Month the same as Week | [x] Month uses the same cards (2 Oct): the month's name pinned at the top ("October", "This month" under it), the chips, the folded key, then a card per habit with its headline on the goal's own clock for the month and a small calendar of marks (weekday letters once, one 22-pt mark per day, today underlined). **No values under the marks** (the user: Month is for seeing patterns; values would make cards tall). A week goal on Month says how many of its weeks were met ("Met 3 of 4 weeks"). Year is unchanged |
 | U18 | Over the limit not grey | [x] The user chose option A: a ring and ▲ in the habit's own colour, never solid (a solid circle is a day within the limit). On the Week cards, Month strips and the day sheet |
 | U11 | Spacing hierarchy from proper rules; nothing squeezed | [x] 8-point scale, space inside a group smaller than around it. Below |
 | U12 | A long name stays on one line with "…" | [x] `lineLimit(1)`, tail truncation; goal line also one line |
@@ -143,9 +144,11 @@ From the report's §5; the code is `HabitStore+WeekCards.swift`.
 
 ## Not done (on purpose)
 
-- **Month and Year** keep their overview, rings, Groups card and group numbers until they're redesigned (the user:
-  "only build it for week").
-- **The Day sheet** is reached from Month's rings only now (Week has no rings).
+- **Year** keeps its overview, Groups card and group numbers until it's redesigned. Month was built on 2 Oct.
+- **The Day sheet** is no longer reachable from Progress: it opened from Week's and Month's day rings, which the user
+  removed. Today's calendar opens any day. `ProgressDaySheet` stays in the code for now; `testDaySheetShowsOnToday`
+  was retired with a note. Year still has its overview, rings code paths (`weekRings`, `monthRings`) are unused
+  until Year is redesigned.
 - **View Options** (percentages, streaks, full day) still apply to Month and Year; Week has no percentages.
 
 ## Branches (safe to delete, with reasons)

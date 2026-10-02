@@ -43,7 +43,7 @@ struct ProgressScreen: View {
         Group {
             if let snapshot = model.snapshot {
                 if snapshot.hasHabits {
-                    if snapshot.range == .week { weekList(snapshot) } else { list(snapshot) }
+                    if snapshot.range != .year { weekList(snapshot) } else { list(snapshot) }
                 } else {
                     ContentUnavailableView {
                         Label("No Progress Yet", systemImage: "chart.bar.xaxis")
@@ -165,9 +165,9 @@ struct ProgressScreen: View {
         .background(Color(.systemGroupedBackground))
     }
 
-    // MARK: Week
+    // MARK: Week and Month
 
-    /// The Week view. Week | Month | Year and the group chips scroll away; the dates stay pinned at the top while the
+    /// The Week and Month views (Month built the same way, 2 Oct 2026). Week | Month | Year and the group chips scroll away; the dates stay pinned at the top while the
     /// cards scroll, so it's always clear which week they show and ‹ › are one tap away (report §3; NN/g: a sticky
     /// header should be small and hold only what's needed while scrolling). A lazy stack of cards in a scroll view,
     /// never a `List` (Design Rules).
@@ -217,8 +217,8 @@ struct ProgressScreen: View {
                             .padding(.horizontal, 32)
                     }
                 } header: {
-                    WeekPeriodBar(title: snapshot.title, caption: snapshot.caption, canGoBack: snapshot.canGoBack,
-                                  canGoForward: snapshot.canGoForward) { move(snapshot, by: $0) }
+                    WeekPeriodBar(title: snapshot.title, caption: snapshot.caption, noun: snapshot.range.noun,
+                                  canGoBack: snapshot.canGoBack, canGoForward: snapshot.canGoForward) { move(snapshot, by: $0) }
                 }
             }
             .padding(.bottom, WeekSpacing.section)
@@ -228,7 +228,8 @@ struct ProgressScreen: View {
 
     private func weekCardButton(_ card: ProgressWeekCard, _ snapshot: ProgressSnapshot) -> some View {
         Button { open(card.habit, snapshot) } label: {
-            WeekCardView(card: card, columns: snapshot.columns)
+            WeekCardView(card: card, columns: snapshot.columns,
+                         month: snapshot.range == .month ? MonthLayout(lead: snapshot.monthLead, letters: snapshot.letters) : nil)
         }
         .buttonStyle(.plain)
         .padding(.horizontal, 16)
@@ -595,7 +596,7 @@ struct ProgressRowView: View {
         let today = key.today ?? store.today()
         let made = perfTimed("Progress \(key.range): whole snapshot") {
             store.progressSnapshot(key.range, containing: key.anchor ?? today, today: today, fullAt: Double(key.fullDay) / 100,
-                                   group: key.group, weekCards: key.range == .week)
+                                   group: key.group, weekCards: key.range != .year)
         }
         cache[key] = made
         snapshot = made

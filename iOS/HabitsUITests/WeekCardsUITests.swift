@@ -84,6 +84,32 @@ final class WeekCardsUITests: XCTestCase {
         walk("w-dark")
     }
 
+    /// Month (2 Oct 2026): the same cards with a month of marks, light and dark.
+    func testMonthCards() {
+        openWeek(["-appearance.theme", "light"])
+        app.segmentedControls["progress-range"].buttons["Month"].tap()
+        XCTAssertTrue(app.staticTexts["progress-period-caption"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["progress-period-caption"].label, "This month")
+        sleep(1)
+        shot("m-light-1-top")
+        for i in 2...6 {
+            app.swipeUp(velocity: .slow)
+            sleep(1)
+            shot("m-light-\(i)-scrolled")
+        }
+    }
+
+    func testMonthCardsDark() {
+        openWeek(["-appearance.theme", "dark"])
+        app.segmentedControls["progress-range"].buttons["Month"].tap()
+        XCTAssertTrue(app.staticTexts["progress-period-caption"].waitForExistence(timeout: 5))
+        sleep(1)
+        shot("m-dark-1-top")
+        app.swipeUp(velocity: .slow)
+        sleep(1)
+        shot("m-dark-2-scrolled")
+    }
+
     func testWeekCardsWithGroups() {
         openWeek(["-groups-demo", "-appearance.theme", "light"])
         shot("wg-1-top-groups")

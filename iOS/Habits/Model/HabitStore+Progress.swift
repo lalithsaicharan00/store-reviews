@@ -158,6 +158,9 @@ struct ProgressSnapshot {
     var archivedCards: [ProgressWeekCard] = []
     var columns: [WeekColumn] = []
     var caption: String? = nil
+    /// Month only: the grid's empty places before the 1st, and the weekday letters in the person's order.
+    var monthLead = 0
+    var letters: [String] = []
 
     var isRunning: Bool { period.contains(today) }
     /// The overview shows when any day in the period has something planned.
@@ -213,7 +216,7 @@ extension HabitStore.DayMark {
         case .skipped: "Skipped"
         case .paused: "Paused"
         case .notItsDay: "Not scheduled"
-        case .upcoming: "Due later this week"
+        case .upcoming: "Due later"
         case .before: "Before it started"
         }
     }
@@ -259,7 +262,7 @@ extension HabitStore {
 
     /// Everything Progress shows for `range` around `anchor`. Reads the store's own functions only; nothing here
     /// changes data.
-    /// `weekCards`: the Week view's cards instead of the rows, overview and group numbers (the screen asks for them;
+    /// `weekCards`: the Week and Month views' cards instead of the rows, overview and group numbers (the screen asks for them;
     /// the checks in `ProgressCheck` read the rows).
     func progressSnapshot(_ range: ProgressRange, containing anchor: LocalDay, today: LocalDay? = nil,
                           fullAt: Double = 1, group: UUID? = nil, weekCards: Bool = false) -> ProgressSnapshot {
@@ -269,8 +272,8 @@ extension HabitStore {
         let group = group.flatMap { id in groups.contains { $0.id == id } ? id : nil }
         let allTracked = habits.filter { $0.kind != .task && $0.kind != .quit }
         let tracked = allTracked.filter { isInGroup($0, group) }
-        if weekCards && range == .week {
-            return progressWeekSnapshot(span, today: today, tracked: tracked, group: group, fullAt: fullAt)
+        if weekCards && range != .year {
+            return progressWeekSnapshot(span, range: range, today: today, tracked: tracked, group: group, fullAt: fullAt)
         }
         // Day scores for Progress's habit list (per group), kept until the data or the day changes.
         let cacheKey = "\(dataVersion)|\(today.key)|\(settings.weekStart)|\(settings.dayEndHour)"
@@ -398,15 +401,18 @@ extension HabitStore {
             group: group, groupBars: bars, sections: sections)
     }
 
-    /// The Week view: cards only. No day scores are worked out, since nothing on the page shows a day's total.
-    private func progressWeekSnapshot(_ span: ClosedRange<LocalDay>, today: LocalDay, tracked: [Habit], group: UUID?,
-                                      fullAt: Double) -> ProgressSnapshot {
+    /// The Week and Month views: cards only. No day scores are worked out, since nothing on the page shows a day's total.
+    private func progressWeekSnapshot(_ span: ClosedRange<LocalDay>, range: ProgressRange, today: LocalDay, tracked: [Habit],
+                                      group: UUID?, fullAt: Double) -> ProgressSnapshot {
         let quitters = habits.filter { $0.kind == .quit && !$0.archived && isInGroup($0, group)
             && quitStartDay(of: $0) <= min(span.upperBound, today) }
-        let made = perfTimed("Progress week: cards") { progressWeekCards(tracked, quitting: quitters, in: span, today: today) }
+        let made = perfTimed("Progress \(range): cards") {
+            progressWeekCards(tracked, quitting: quitters, in: span, range: range, today: today)
+        }
         let earliest = earliestProgressDay()
         var snapshot = ProgressSnapshot(
-            range: .week, period: span, today: today, title: weekTitle(span, today: today), days: [],
+            range: range, period: span, today: today,
+            title: range == .week ? weekTitle(span, today: today) : monthTitle(span, today: today), days: [],
             tally: ProgressTally(), goals: nil, previous: nil, rows: [], archived: [], quitting: [],
             canGoBack: earliest.map { $0 < span.lowerBound } ?? false,
             canGoForward: span.upperBound < today,
@@ -414,7 +420,11 @@ extension HabitStore {
         snapshot.cards = made.cards
         snapshot.archivedCards = made.archived
         snapshot.columns = weekColumns(span, today: today)
-        snapshot.caption = weekCaption(span, today: today)
+        snapshot.caption = range == .week ? weekCaption(span, today: today) : monthCaption(span, today: today)
+        if range == .month {
+            snapshot.monthLead = monthLead(span)
+            snapshot.letters = orderedWeekdayLetters()
+        }
         return snapshot
     }
 

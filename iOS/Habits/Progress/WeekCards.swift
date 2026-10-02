@@ -17,19 +17,20 @@ enum WeekSpacing {
     static let mark: CGFloat = 28
 }
 
-/// The dates of the week, with ‹ and ›. The one part of the page that stays at the top while the cards scroll: the
+/// The dates of the week (or the month), with ‹ and ›. The one part of the page that stays at the top while the cards scroll: the
 /// dates say which week every card shows, and ‹ › are how weeks are compared (report §3). Week, Month, Year and the
 /// group chips scroll away, so the bar is one 44-point row (NN/g: keep a sticky header small).
 struct WeekPeriodBar: View {
     let title: String
     let caption: String?
+    var noun = "week"
     let canGoBack: Bool
     let canGoForward: Bool
     let move: (Int) -> Void
 
     var body: some View {
         HStack(spacing: 0) {
-            Button("Previous week", systemImage: "chevron.left") { move(-1) }
+            Button("Previous \(noun)", systemImage: "chevron.left") { move(-1) }
                 .labelStyle(.iconOnly)
                 .frame(width: 44, height: 44)
                 .disabled(!canGoBack)
@@ -44,7 +45,7 @@ struct WeekPeriodBar: View {
                 }
             }
             Spacer(minLength: WeekSpacing.tight)
-            Button("Next week", systemImage: "chevron.right") { move(1) }
+            Button("Next \(noun)", systemImage: "chevron.right") { move(1) }
                 .labelStyle(.iconOnly)
                 .frame(width: 44, height: 44)
                 .disabled(!canGoForward)
@@ -144,7 +145,7 @@ struct WeekKeyEntry: Identifiable {
                      mark: .some, fraction: 0.6),
         WeekKeyEntry(name: "Not done", meaning: "A day it was due has ended without the goal reached.", mark: .missed),
         WeekKeyEntry(name: "Today, still open", meaning: "Today isn't over yet, so it doesn't count either way.", mark: .open),
-        WeekKeyEntry(name: "Due later this week", meaning: "A day still to come when it's due.", mark: .upcoming),
+        WeekKeyEntry(name: "Due later", meaning: "A day still to come when it's due.", mark: .upcoming),
         WeekKeyEntry(name: "Not scheduled", meaning: "Not one of its days, or nothing logged that day toward a weekly or monthly goal. Never counts against it.",
                      mark: .notItsDay),
         WeekKeyEntry(name: "Skipped", meaning: "You skipped it that day. Doesn't count either way.", mark: .skipped),
@@ -163,6 +164,8 @@ struct WeekKeyEntry: Identifiable {
 struct WeekCardView: View {
     let card: ProgressWeekCard
     let columns: [WeekColumn]
+    /// Month: the grid's layout; nil on Week.
+    var month: MonthLayout? = nil
     @Environment(\.dynamicTypeSize) private var typeSize
 
     var body: some View {
@@ -194,8 +197,13 @@ struct WeekCardView: View {
             .padding(.top, WeekSpacing.card)
             // From the accessibility sizes up, the strip gives way to the words, which carry the meaning (report §9).
             if !typeSize.isAccessibilitySize && columns.count == card.days.count {
-                WeekCardStrip(columns: columns, days: card.days, color: card.habit.color)
-                    .padding(.top, WeekSpacing.card)
+                if let month {
+                    MonthCardGrid(layout: month, columns: columns, days: card.days, color: card.habit.color)
+                        .padding(.top, WeekSpacing.card)
+                } else {
+                    WeekCardStrip(columns: columns, days: card.days, color: card.habit.color)
+                        .padding(.top, WeekSpacing.card)
+                }
             }
         }
         .padding(WeekSpacing.card)
@@ -207,6 +215,64 @@ struct WeekCardView: View {
         .accessibilityHint("Opens the habit")
         .accessibilityAddTraits(.isButton)
     }
+}
+
+/// How a month sits in its grid: the empty places before the 1st, and the weekday letters in the person's order.
+struct MonthLayout: Hashable {
+    let lead: Int
+    let letters: [String]
+}
+
+/// A month on a card (the user, 2 Oct 2026: for seeing patterns). The weekday letters once at the top, then one mark
+/// per day in week rows, with no values under them so the card stays short. Today has a short line under its mark,
+/// as Week underlines its name. Plain stacks of fixed-size cells, never a lazy grid (Design Rules).
+struct MonthCardGrid: View {
+    let layout: MonthLayout
+    let columns: [WeekColumn]
+    let days: [WeekCardDay]
+    let color: HabitColor
+
+    var body: some View {
+        let rows = (layout.lead + days.count + 6) / 7
+        VStack(spacing: MonthCardGrid.rowGap) {
+            HStack(spacing: 0) {
+                ForEach(0..<7, id: \.self) { i in
+                    Text(i < layout.letters.count ? layout.letters[i] : "")
+                        .font(.caption.weight(.medium)).foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity)
+                }
+            }
+            .padding(.bottom, WeekSpacing.pair)
+            ForEach(0..<rows, id: \.self) { row in
+                HStack(spacing: 0) {
+                    ForEach(0..<7, id: \.self) { column in
+                        cell(row * 7 + column - layout.lead)
+                    }
+                }
+            }
+        }
+        .accessibilityHidden(true)
+    }
+
+    @ViewBuilder private func cell(_ index: Int) -> some View {
+        if index >= 0 && index < days.count {
+            let day = days[index]
+            WeekMark(mark: day.mark, fraction: day.fraction, over: day.over, slip: day.slip, color: color,
+                     size: MonthCardGrid.mark)
+                .overlay(alignment: .bottom) {
+                    if columns[index].isToday {
+                        Capsule().fill(Color.primary).frame(width: 10, height: 2).offset(y: 5)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+        } else {
+            Color.clear.frame(maxWidth: .infinity).frame(height: MonthCardGrid.mark)
+        }
+    }
+
+    /// A day's mark: small enough for five or six rows to stay compact, large enough to read its shape.
+    static let mark: CGFloat = 22
+    static let rowGap: CGFloat = 6
 }
 
 /// Sun–Sat (in the person's order): the weekday, the day's mark, and the day's own number under it when there is one.

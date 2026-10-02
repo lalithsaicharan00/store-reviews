@@ -82,6 +82,31 @@ extension HabitStore {
         return "\(a.day) \(months[a.month - 1]) – \(b.day) \(months[b.month - 1])\(year)"
     }
 
+    /// "October", or "October 2025" in another year.
+    func monthTitle(_ span: ClosedRange<LocalDay>, today: LocalDay) -> String {
+        let name = calendar.standaloneMonthSymbols[span.lowerBound.month - 1]
+        return span.lowerBound.year == today.year ? name : "\(name) \(span.lowerBound.year)"
+    }
+
+    /// "This month", "Last month", or nil for older months.
+    func monthCaption(_ span: ClosedRange<LocalDay>, today: LocalDay) -> String? {
+        if span.contains(today) { return "This month" }
+        let lastMonth = period(.month, containing: today).lowerBound.adding(days: -1, calendar: calendar)
+        return span.contains(lastMonth) ? "Last month" : nil
+    }
+
+    /// The month grid's empty places before the 1st, in the person's week order.
+    func monthLead(_ span: ClosedRange<LocalDay>) -> Int {
+        (span.lowerBound.weekday(calendar: calendar) - calendar.firstWeekday + 7) % 7
+    }
+
+    /// The weekday letters in the person's week order: "S M T W T F S".
+    func orderedWeekdayLetters() -> [String] {
+        let letters = weekdayNames.veryShort
+        let first = calendar.firstWeekday - 1
+        return (0..<7).map { letters[(first + $0) % 7] }
+    }
+
     /// "This week", "Last week", or nil for older weeks (the dates say it).
     func weekCaption(_ span: ClosedRange<LocalDay>, today: LocalDay) -> String? {
         if span.contains(today) { return "This week" }
@@ -90,16 +115,16 @@ extension HabitStore {
     }
 
     /// Every card for the week: the habits in their order, then quit habits, and archived habits apart.
-    func progressWeekCards(_ tracked: [Habit], quitting: [Habit], in span: ClosedRange<LocalDay>,
+    func progressWeekCards(_ tracked: [Habit], quitting: [Habit], in span: ClosedRange<LocalDay>, range: ProgressRange = .week,
                            today: LocalDay) -> (cards: [ProgressWeekCard], archived: [ProgressWeekCard]) {
         var cards: [ProgressWeekCard] = [], archived: [ProgressWeekCard] = []
         for habit in tracked {
-            guard let card = perfTimed("Progress week: one card", { weekCard(habit, in: span, today: today) }) else { continue }
+            guard let card = perfTimed("Progress \(range): one card", { weekCard(habit, in: span, range: range, today: today) }) else { continue }
             if habit.archived { archived.append(card) } else { cards.append(card) }
         }
         let now = clock()
         for habit in quitting {
-            cards.append(perfTimed("Progress week: one quit card") { weekQuitCard(habit, in: span, today: today, now: now) })
+            cards.append(perfTimed("Progress \(range): one quit card") { weekQuitCard(habit, in: span, range: range, today: today, now: now) })
         }
         return (cards, archived)
     }
@@ -108,7 +133,10 @@ extension HabitStore {
 
     /// One habit's card, or nil when the week has nothing to say about it (a past week before it began, or an archived
     /// habit with nothing that week).
-    func weekCard(_ habit: Habit, in span: ClosedRange<LocalDay>, today: LocalDay) -> ProgressWeekCard? {
+    /// Week or Month (the user, 2 Oct 2026: Month the same as Week, for seeing patterns). Month cards carry no values
+    /// under the marks; their headlines count the month on the goal's own clock.
+    func weekCard(_ habit: Habit, in span: ClosedRange<LocalDay>, range: ProgressRange = .week, today: LocalDay) -> ProgressWeekCard? {
+        let noun = range.noun
         let start = startDay(of: habit)
         let running = span.contains(today)
         let dayList = days(in: span)
@@ -141,7 +169,7 @@ extension HabitStore {
             }
             let fraction = mark == .done ? 1 : mark == .some ? min(1, amount / max(dayGoal(of: dayRule), 1)) : 0
             strip.append(WeekCardDay(day: day, mark: mark, fraction: fraction, over: mark == .missed && dayRule.atMost,
-                                    extra: extra, slip: false, value: weekValue(amount, dayRule, shape: shape, mark: mark)))
+                                    extra: extra, slip: false, value: range == .week ? weekValue(amount, dayRule, shape: shape, mark: mark) : ""))
         }
 
         // Days that count for a day goal: done (not extra) any day up to today; part done or not done once it's over.
@@ -149,7 +177,7 @@ extension HabitStore {
         let doneDays = counted.filter { $0.mark == .done }.count
         let extraDays = strip.filter { $0.extra && $0.mark == .done }.count
         let soFar = running ? " so far" : ""
-        let when = running ? "this week" : "that week"
+        let when = running ? "this \(noun)" : "that \(noun)"
         let total = strip.reduce(0.0) { $0 + (amounts[$1.day] ?? 0) }
         func dayCount(_ n: Int) -> String { n == 1 ? "1 day" : "\(n) days" }
         func of(_ done: Int, _ all: Int) -> String { "\(done) of \(dayCount(all))\(soFar)" }
@@ -177,13 +205,13 @@ extension HabitStore {
             if judged.isEmpty {
                 let now = amounts[today] ?? 0
                 headline = running ? "\(progressValue(now, rule)) of \(progressValue(rule.goal, rule)) so far today"
-                    : "Nothing judged that week"
+                    : "Nothing judged that \(noun)"
             } else {
                 headline = "Within limit on \(within) of \(dayCount(judged.count))"
             }
             detail = total > 0 && !judged.isEmpty ? progressValue(total, rule) + " " + when : nil
         case .periodTimes, .periodTotal, .periodDays, .limitPeriod:
-            (headline, detail) = weekPeriodText(habit, rule: rule, shape: shape, span: span, today: today, strip: strip,
+            (headline, detail) = weekPeriodText(habit, rule: rule, shape: shape, span: span, range: range, today: today, strip: strip,
                                                 amounts: amounts, total: total)
         }
 
@@ -193,9 +221,11 @@ extension HabitStore {
             if start == today && running {
                 headline = "Started today"
             } else if let next {
-                headline = next.day == today ? "Due today" : "Due " + weekdayNames.full[next.day.weekday(calendar: calendar) - 1]
+                headline = next.day == today ? "Due today"
+                    : range == .week ? "Due " + weekdayNames.full[next.day.weekday(calendar: calendar) - 1]
+                    : "Due " + PauseSheet.short(next.day, calendar: calendar)
             } else {
-                headline = running ? "Not due this week" : "Not due that week"
+                headline = running ? "Not due this \(noun)" : "Not due that \(noun)"
                 if extraDays == 0 && total == 0 { detail = running ? nextDueText(habit, after: span.upperBound) : nil }
             }
         }
@@ -208,16 +238,19 @@ extension HabitStore {
         if habit.archived && !anything && total == 0 { return nil }
 
         return ProgressWeekCard(habit: habit, goal: weekGoalText(rule), headline: headline, detail: detail, days: strip,
-                                accessibility: weekSpoken(habit.name, headline: headline, detail: detail, days: strip,
-                                                          atMost: rule.atMost))
+                                accessibility: weekSpoken(habit.name, headline: headline, detail: detail,
+                                                          days: range == .week ? strip : [], atMost: rule.atMost))
     }
 
     /// Week, month and year goals (shapes F, G, H and I-period) seen in a week.
     private func weekPeriodText(_ habit: Habit, rule: Habit, shape: ProgressShape, span: ClosedRange<LocalDay>,
-                                today: LocalDay, strip: [WeekCardDay], amounts: [LocalDay: Double],
+                                range: ProgressRange, today: LocalDay, strip: [WeekCardDay], amounts: [LocalDay: Double],
                                 total: Double) -> (String, String?) {
         let running = span.contains(today)
         let kind = periodKind(rule)
+        let noun = range.noun
+        let this = running ? " this \(noun)" : ""
+        let thisOrThat = running ? " this \(noun)" : " that \(noun)"
         let loggedDays = strip.filter { (amounts[$0.day] ?? 0) > 0 }.count
         func count(_ v: Double) -> String { HabitCopy.number(v) }
         func onDays(_ n: Int) -> String? { n == 0 ? nil : n == 1 ? "on 1 day" : "on \(n) days" }
@@ -227,9 +260,9 @@ extension HabitStore {
         default: isAmount = false
         }
 
-        if kind == .week {
+        if kind == range.goalPeriod {
             guard let result = progressPeriodResults(habit, in: span, today: today).last else {
-                return (running ? "Nothing yet this week" : "Nothing that week", nil)
+                return (running ? "Nothing yet this \(noun)" : "Nothing that \(noun)", nil)
             }
             let v = result.value, g = result.goal
             let daysLeft = running ? today.days(to: span.upperBound, calendar: calendar) + 1 : 0
@@ -239,31 +272,58 @@ extension HabitStore {
             }
             switch shape {
             case .limitPeriod:
-                let head = "\(progressValue(v, rule)) of \(progressValue(g, rule))" + (running ? " this week" : "")
+                let head = "\(progressValue(v, rule)) of \(progressValue(g, rule))" + this
                 let over = v > g ? progressValue(v - g, rule) + " over" : nil
                 return (head, [over, onDays(loggedDays)].compactMap { $0 }.joined(separator: " · ").nilIfEmpty)
             case .periodTotal:
                 return ("\(progressValue(v, rule)) of \(progressValue(g, rule))", onDays(loggedDays))
             case .periodDays:
-                let head = "\(count(min(v, g))) of \(count(g)) days" + (running ? " this week" : "")
-                if isAmount && total > 0 { return (head, progressValue(total, rule) + (running ? " this week" : " that week")) }
+                let head = "\(count(min(v, g))) of \(count(g)) days" + this
+                if isAmount && total > 0 { return (head, progressValue(total, rule) + thisOrThat) }
                 if v > g { return (head, v - g == 1 ? "+1 extra day" : "+\(count(v - g)) extra days") }
                 if running && v < g { return (head, toGo(g - v, "to go")) }
                 return (head, nil)
             default: // .periodTimes
-                let head = "\(count(min(v, g))) of \(count(g))" + (running ? " this week" : "")
+                let head = "\(count(min(v, g))) of \(count(g))" + this
                 if v > g { return (head, "+\(count(v - g)) extra") }
                 if running && v < g { return (head, toGo(g - v, "to go")) }
                 return (head, nil)
             }
         }
 
-        // A month or year goal: the period that holds today (or, for a past week, its last day), named.
+        // A shorter goal seen over a longer view (a week goal on Month): how many of its weeks were met, and what was
+        // done in all. The week still running counts once it's met.
+        if Self.rank(kind) < Self.rank(range.goalPeriod) {
+            let results = progressPeriodResults(habit, in: span, today: today)
+            let met = results.filter { $0.met == true }.count
+            let judged = results.filter { $0.met != nil }.count
+            let weeks = kind == .week ? "weeks" : "months"
+            let head: String
+            if shape == .limitPeriod {
+                head = "Within the limit \(met) of \(judged) \(weeks)"
+            } else {
+                head = "Met \(met) of \(results.count) \(weeks)" + (running ? " so far" : "")
+            }
+            let done: String?
+            switch shape {
+            case .periodTotal, .limitPeriod: done = total > 0 ? progressValue(total, rule) + thisOrThat : nil
+            case .periodDays:
+                done = isAmount && total > 0 ? progressValue(total, rule) + thisOrThat
+                    : loggedDays == 0 ? nil : (loggedDays == 1 ? "1 day" : "\(loggedDays) days") + thisOrThat
+            default:
+                let times = periodCount(rule, in: span)
+                done = times == 0 ? nil : (times == 1 ? "1 time" : "\(count(times)) times") + thisOrThat
+            }
+            return (results.isEmpty ? (running ? "Nothing yet this \(noun)" : "Nothing that \(noun)") : head, done)
+        }
+
+        // A longer goal (a month or year goal on Week, a year goal on Month): the period that holds today (or, for a
+        // past view, its last day), named.
         let anchor = running ? today : span.upperBound
         let periodSpan = period(kind == .year ? .year : .month, containing: anchor)
         let name = kind == .year ? String(periodSpan.lowerBound.year)
             : calendar.standaloneMonthSymbols[periodSpan.lowerBound.month - 1]
-        let week = running ? " this week" : " that week"
+        let week = thisOrThat
         let detail: String?
         switch shape {
         case .periodTimes:
@@ -375,6 +435,8 @@ extension HabitStore {
         let full = weekdayNames.full
         var spoken = name + ". " + headline + "."
         if let detail { spoken += " " + detail + "." }
+        // Month cards say their numbers only: thirty-one days read aloud is noise.
+        guard !days.isEmpty else { return spoken }
         spoken += " " + days.compactMap { day -> String? in
             guard day.mark != .before else { return nil }
             var words = full[day.day.weekday(calendar: calendar) - 1] + " " + (day.extra ? "extra, " : "")
@@ -389,7 +451,8 @@ extension HabitStore {
 
     /// A quit habit's card: the run going on now, and this week's slips (report §5 row 15). Best and average runs stay
     /// on the habit's page.
-    func weekQuitCard(_ habit: Habit, in span: ClosedRange<LocalDay>, today: LocalDay, now: Date) -> ProgressWeekCard {
+    func weekQuitCard(_ habit: Habit, in span: ClosedRange<LocalDay>, range: ProgressRange = .week, today: LocalDay,
+                      now: Date) -> ProgressWeekCard {
         let stats = quitStats(of: habit, in: span, now: now)
         let running = span.contains(today)
         var perDay: [LocalDay: Int] = [:]
@@ -399,10 +462,10 @@ extension HabitStore {
             // A day still to come is "due later this week" for a quit habit too (every day counts), not "not scheduled".
             let shown: DayMark = mark.day > today && mark.mark == .notItsDay ? .upcoming : mark.mark
             return WeekCardDay(day: mark.day, mark: shown, fraction: mark.fraction, over: false, extra: false,
-                               slip: n > 0, value: n > 1 ? "\(n)×" : "")
+                               slip: n > 0, value: n > 1 && range == .week ? "\(n)×" : "")
         }
         let count = stats.slips.count
-        let when = running ? "this week" : "that week"
+        let when = running ? "this \(range.noun)" : "that \(range.noun)"
         let slips = count == 0 ? "No slips \(when)" : count == 1 ? "1 slip \(when)" : "\(count) slips \(when)"
         let paused = running && isPaused(habit, on: today)
         var card: ProgressWeekCard
@@ -412,13 +475,14 @@ extension HabitStore {
             card = ProgressWeekCard(habit: habit, goal: quitGoalText(habit), headline: headline,
                                     detail: current == nil ? nil : slips, days: strip,
                                     accessibility: weekSpoken(habit.name, headline: headline, detail: current == nil ? nil : slips,
-                                                              days: strip, atMost: false))
+                                                              days: range == .week ? strip : [], atMost: false))
             card.runStart = current
         } else {
             let headline = paused ? "Paused" : slips
             let detail = paused ? slips : nil
             card = ProgressWeekCard(habit: habit, goal: quitGoalText(habit), headline: headline, detail: detail, days: strip,
-                                    accessibility: weekSpoken(habit.name, headline: headline, detail: detail, days: strip, atMost: false))
+                                    accessibility: weekSpoken(habit.name, headline: headline, detail: detail,
+                                                              days: range == .week ? strip : [], atMost: false))
         }
         card.isQuit = true
         return card
