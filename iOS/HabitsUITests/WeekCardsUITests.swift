@@ -110,6 +110,52 @@ final class WeekCardsUITests: XCTestCase {
         shot("m-dark-2-scrolled")
     }
 
+    /// Year (2 Oct 2026): each habit's year as a heat map. Swim (`-year-demo`) has every kind of square; its grid opens
+    /// on the latest weeks and scrolls back sideways while the weekday letters stay.
+    func testYearCards() { year("y-light", theme: "light") }
+    func testYearCardsDark() { year("y-dark", theme: "dark") }
+
+    private func year(_ prefix: String, theme: String) {
+        openWeek(["-year-demo", "-appearance.theme", theme])
+        app.segmentedControls["progress-range"].buttons["Year"].tap()
+        XCTAssertTrue(app.staticTexts["progress-period-caption"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["progress-period-caption"].label, "This year")
+        let swim = app.buttons["progress-row-Swim"]
+        XCTAssertTrue(swim.waitForExistence(timeout: 5), "Swim's card")
+        sleep(1)
+        shot("\(prefix)-1-top")
+        // Earlier in the year: the squares scroll, the weekday letters don't.
+        swim.swipeRight(velocity: .slow)
+        sleep(1)
+        shot("\(prefix)-2-swim-earlier")
+        swim.swipeRight(velocity: .fast)
+        swim.swipeRight(velocity: .fast)
+        sleep(1)
+        shot("\(prefix)-3-swim-january")
+        let key = app.buttons["progress-key"]
+        XCTAssertTrue(key.exists)
+        key.tap()
+        sleep(1)
+        shot("\(prefix)-4-key-open")
+        app.swipeUp(velocity: .slow)
+        sleep(1)
+        shot("\(prefix)-5-key-scrolled")
+        guard theme == "light" else { return }
+        for _ in 0..<4 { app.swipeDown(velocity: .fast) }
+        key.tap()
+        sleep(1)
+        for i in 6...9 {
+            app.swipeUp(velocity: .slow)
+            sleep(1)
+            shot("\(prefix)-\(i)-scrolled")
+        }
+        // Last year: every day drawn, December at the end.
+        for _ in 0..<8 { app.swipeDown(velocity: .fast) }
+        app.buttons["progress-previous"].tap()
+        sleep(1)
+        shot("\(prefix)-10-last-year")
+    }
+
     func testWeekCardsWithGroups() {
         openWeek(["-groups-demo", "-appearance.theme", "light"])
         shot("wg-1-top-groups")

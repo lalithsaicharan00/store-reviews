@@ -66,6 +66,8 @@ struct WeekPeriodBar: View {
 /// folds it again (progressive disclosure: the page stays clean, the meaning is one tap away and never hidden in a
 /// menu). Every state is listed, not only this week's, so a mark that appears next week is already explained.
 struct WeekKey: View {
+    /// Year's squares instead of Week's and Month's round marks.
+    var year = false
     @State private var open = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -94,11 +96,19 @@ struct WeekKey: View {
             .accessibilityIdentifier("progress-key")
             if open {
                 VStack(alignment: .leading, spacing: WeekSpacing.card) {
-                    ForEach(WeekKeyEntry.habits) { KeyRow(entry: $0) }
+                    if year {
+                        ForEach(YearKeyEntry.habits) { YearKeyRow(entry: $0) }
+                    } else {
+                        ForEach(WeekKeyEntry.habits) { KeyRow(entry: $0) }
+                    }
                     Text("Quit habits").font(.footnote.weight(.semibold)).foregroundStyle(.secondary)
                         .padding(.top, WeekSpacing.pair)
                         .accessibilityAddTraits(.isHeader)
-                    ForEach(WeekKeyEntry.quit) { KeyRow(entry: $0) }
+                    if year {
+                        ForEach(YearKeyEntry.quit) { YearKeyRow(entry: $0) }
+                    } else {
+                        ForEach(WeekKeyEntry.quit) { KeyRow(entry: $0) }
+                    }
                 }
                 .padding(WeekSpacing.card)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -166,6 +176,8 @@ struct WeekCardView: View {
     let columns: [WeekColumn]
     /// Month: the grid's layout; nil on Week.
     var month: MonthLayout? = nil
+    /// Year: the heat map's layout; nil on Week and Month.
+    var year: YearLayout? = nil
     @Environment(\.dynamicTypeSize) private var typeSize
 
     var body: some View {
@@ -196,7 +208,10 @@ struct WeekCardView: View {
             }
             .padding(.top, WeekSpacing.card)
             // From the accessibility sizes up, the strip gives way to the words, which carry the meaning (report §9).
-            if !typeSize.isAccessibilitySize && columns.count == card.days.count {
+            if let year, !typeSize.isAccessibilitySize, card.days.count >= year.shown {
+                YearHeatMap(layout: year, days: card.days, color: card.habit.color)
+                    .padding(.top, WeekSpacing.card)
+            } else if !typeSize.isAccessibilitySize && columns.count == card.days.count {
                 if let month {
                     MonthCardGrid(layout: month, columns: columns, days: card.days, color: card.habit.color)
                         .padding(.top, WeekSpacing.card)

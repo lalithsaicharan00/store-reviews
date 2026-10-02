@@ -131,49 +131,61 @@ final class ProgressUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Progress"].waitForExistence(timeout: 3), "Back on Progress")
     }
 
-    /// Show Percentages off hides every percentage on Progress; on brings them back.
+    /// Show Percentages off hides the habit page's percentages; on brings them back. Progress's cards state counts and
+    /// have no percentages (Week, Month and Year, 2 Oct 2026), so the check opens a check-off habit from its card.
     func testHidePercentages() {
         launch()
         openProgress()
-        // Week and Month have no percentages (2 Oct 2026): their cards state counts. Year still has them. Wait for the
-        // tabs first: a tap before they appear was lost and the test stayed on Week (run 37010612231).
         XCTAssertTrue(app.segmentedControls["progress-range"].waitForExistence(timeout: 10), "Week | Month | Year")
-        segment("Year").tap()
-        XCTAssertTrue(app.descendants(matching: .any)["progress-tile-done"].waitForExistence(timeout: 10), "Year's overview")
         let percent = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS ' percent'"))
-        XCTAssertTrue(percent.firstMatch.waitForExistence(timeout: 5), "Percentages show by default")
+        func openFloss() {
+            let card = app.buttons["progress-row-Floss"]
+            for _ in 0..<12 where !(card.exists && card.isHittable) { app.swipeUp(velocity: .slow) }
+            XCTAssertTrue(card.exists && card.isHittable, "Floss's card")
+            card.tap()
+            XCTAssertTrue(app.navigationBars["Floss"].waitForExistence(timeout: 5), "The habit page")
+            XCTAssertTrue(app.segmentedControls["over-time-range"].waitForExistence(timeout: 5), "At Over Time")
+        }
         func toggle() {
             app.buttons["progress-options"].tap()
             let item = app.descendants(matching: .any).matching(NSPredicate(format: "label == 'Show Percentages'")).firstMatch
             XCTAssertTrue(item.waitForExistence(timeout: 3))
             item.tap()
         }
+        openFloss()
+        XCTAssertTrue(percent.firstMatch.waitForExistence(timeout: 5), "Percentages show by default")
+        back()
+        XCTAssertTrue(app.navigationBars["Progress"].waitForExistence(timeout: 5))
         toggle()
-        XCTAssertTrue(percent.firstMatch.waitForNonExistence(timeout: 3), "Every percentage is hidden")
+        openFloss()
+        XCTAssertTrue(app.staticTexts["over-time-period"].waitForExistence(timeout: 5))
+        XCTAssertFalse(percent.firstMatch.exists, "Every percentage is hidden")
         shot("p05-no-percentages")
+        back()
+        XCTAssertTrue(app.navigationBars["Progress"].waitForExistence(timeout: 5))
         toggle()
-        XCTAssertTrue(percent.firstMatch.waitForExistence(timeout: 3), "They come back")
+        openFloss()
+        XCTAssertTrue(percent.firstMatch.waitForExistence(timeout: 5), "They come back")
     }
 
     // MARK: Phase 2
 
-    /// Year shows the grid of days; tapping a month opens it in Month (report §7.2).
+    /// Year: a card per habit with its year as a heat map (the user, 2 Oct 2026); the year's number on top, "This
+    /// year" under it. Tapping a card opens the habit.
     func testYearAndMonthTap() {
         launch()
         openProgress()
+        XCTAssertTrue(app.segmentedControls["progress-range"].waitForExistence(timeout: 10))
         segment("Year").tap()
         let period = app.staticTexts["progress-period"]
-        XCTAssertEqual(period.label, String(Calendar.current.component(.year, from: .now)))
-        XCTAssertTrue(app.descendants(matching: .any)["progress-year-grid"].waitForExistence(timeout: 5))
+        let year = Calendar.current.component(.year, from: .now)
+        XCTAssertTrue(app.staticTexts["progress-period-caption"].waitForExistence(timeout: 5))
+        XCTAssertEqual(period.label, String(year))
+        XCTAssertEqual(app.staticTexts["progress-period-caption"].label, "This year")
+        XCTAssertTrue(app.buttons["progress-row-Read"].waitForExistence(timeout: 5), "A card per habit")
         shot("p06-year")
-        let month = Calendar.current.component(.month, from: .now)
-        let column = app.buttons["year-month-\(month)"]
-        XCTAssertTrue(column.exists)
-        column.tap()
-        XCTAssertTrue(app.segmentedControls["progress-range"].buttons["Month"].isSelected, "The month opens in Month")
-        // Month's title is the month's name; the year shows only for another year (2 Oct 2026).
-        XCTAssertTrue(app.staticTexts["progress-period-caption"].waitForExistence(timeout: 3))
-        XCTAssertEqual(app.staticTexts["progress-period-caption"].label, "This month", period.label)
+        app.buttons["progress-row-Read"].tap()
+        XCTAssertTrue(app.navigationBars["Read"].waitForExistence(timeout: 5), "The habit page opens")
     }
 
     /// A quit habit: Log a Slip… saves a slip with its own time, and Undo takes it back (Build Plan #60d).

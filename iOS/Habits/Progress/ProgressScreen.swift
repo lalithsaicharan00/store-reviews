@@ -2,9 +2,10 @@ import SwiftUI
 
 /// Progress, opened from the ≡ menu (Build Plan #60; report "The Progress Page — What People Need, and How to Build
 /// It", §7). Week (2 Oct 2026, report "Weekly Habit Cards — What Each Card Shows"): the dates of the week, pinned at the
-/// top, then a card per habit, each on its own goal's clock; no overview, no day rings, no group numbers. Month and
-/// Year: an overview of day rings and three numbers, then a row per habit with its strip; tapping a day opens the Day
-/// sheet. Tapping a habit opens its own page at Over Time. It only reads: nothing here logs.
+/// top, then a card per habit, each on its own goal's clock; no overview, no day rings, no group numbers. Month is
+/// built the same way with a month of marks, and Year with the year as a heat map (`YearHeatMap`, 2 Oct 2026). Tapping
+/// a habit opens its own page at Over Time. It only reads: nothing here logs. (`list` and the overview below are the
+/// old Month and Year views, no longer shown; kept until the branches are merged, then to be removed.)
 ///
 /// Speed (report §20): every number comes from one `ProgressSnapshot`, worked out when the data, the range or the
 /// period changes, never while drawing. Month strips are flattened into one layer per row, in a lazy list.
@@ -43,7 +44,7 @@ struct ProgressScreen: View {
         Group {
             if let snapshot = model.snapshot {
                 if snapshot.hasHabits {
-                    if snapshot.range != .year { weekList(snapshot) } else { list(snapshot) }
+                    weekList(snapshot)
                 } else {
                     ContentUnavailableView {
                         Label("No Progress Yet", systemImage: "chart.bar.xaxis")
@@ -186,7 +187,7 @@ struct ProgressScreen: View {
                             GroupChipRow(selection: snapshot.group) { groupRaw = $0?.uuidString ?? "" }
                         }
                         // What each mark means: folded until asked (the user, 2 Oct 2026).
-                        WeekKey()
+                        WeekKey(year: snapshot.range == .year)
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, WeekSpacing.tight)
@@ -229,7 +230,8 @@ struct ProgressScreen: View {
     private func weekCardButton(_ card: ProgressWeekCard, _ snapshot: ProgressSnapshot) -> some View {
         Button { open(card.habit, snapshot) } label: {
             WeekCardView(card: card, columns: snapshot.columns,
-                         month: snapshot.range == .month ? MonthLayout(lead: snapshot.monthLead, letters: snapshot.letters) : nil)
+                         month: snapshot.range == .month ? MonthLayout(lead: snapshot.monthLead, letters: snapshot.letters) : nil,
+                         year: snapshot.year)
         }
         .buttonStyle(.plain)
         .padding(.horizontal, 16)
@@ -596,7 +598,7 @@ struct ProgressRowView: View {
         let today = key.today ?? store.today()
         let made = perfTimed("Progress \(key.range): whole snapshot") {
             store.progressSnapshot(key.range, containing: key.anchor ?? today, today: today, fullAt: Double(key.fullDay) / 100,
-                                   group: key.group, weekCards: key.range != .year)
+                                   group: key.group, weekCards: true)
         }
         cache[key] = made
         snapshot = made

@@ -162,6 +162,14 @@ enum PerfDriver {
                     send(.nextRange); await pause(0.4)
                 }
             }
+        case "progress-year":
+            // Year (2 Oct 2026): a heat map per habit, a year of squares each. Opened on Year (set before opening, so
+            // the scenario never depends on the range a run before left), then its cards scrolled; Week afterwards.
+            UserDefaults.standard.set(ProgressRange.year.rawValue, forKey: ProgressOptions.range)
+            await openTwice("Progress Year") { send(.openPlace(.progress)) }
+            await measure("Progress Year: scrolling") { await scroll() }
+            send(.close)
+            UserDefaults.standard.set(ProgressRange.week.rawValue, forKey: ProgressOptions.range)
         case "menu":
             await measure("Menu: open and close") {
                 await repeatFor(window) { send(.toggleMenu); await pause(0.6) }

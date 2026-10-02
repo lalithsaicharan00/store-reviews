@@ -248,33 +248,26 @@ final class GroupsUITests: XCTestCase {
         XCTAssertFalse(app.buttons["group-filter-chip"].exists)
     }
 
-    /// Progress: a Groups card with a bar per group, habits under their group's heading, and chips that filter it all.
-    /// Habits (≡) lists habits by group.
+    /// Progress: the chips choose which habits' cards show (Week, Month and Year are cards only since 2 Oct 2026, with no
+    /// Groups card or group numbers). Habits (≡) lists habits by group.
     func testProgressAndHabitsByGroup() {
         launch(["-groups-demo"])
         app.buttons["menu-button"].tap()
         app.buttons["menu-progress"].tap()
         XCTAssertTrue(app.navigationBars["Progress"].waitForExistence(timeout: 5))
-        // The Groups card is Year's; Week and Month have cards only (2 Oct 2026).
-        app.segmentedControls["progress-range"].buttons["Year"].tap()
-        let healthBar = app.buttons["progress-group-Health"]
-        XCTAssertTrue(healthBar.waitForExistence(timeout: 5), "A bar per group")
-        XCTAssertTrue(app.buttons["progress-group-Mind"].exists)
-        XCTAssertFalse(app.buttons["progress-group-Reading"].exists, "An empty group has no bar")
+        XCTAssertTrue(app.buttons["progress-row-Water"].waitForExistence(timeout: 5), "Every habit's card under All")
         shot("g10-progress-all")
 
         tapChip("Mind")
         XCTAssertTrue(app.buttons["progress-row-Read"].waitForExistence(timeout: 3))
         XCTAssertFalse(app.buttons["progress-row-Water"].exists, "Only Mind's habits")
-        XCTAssertFalse(healthBar.exists, "No Groups card with one group chosen")
         shot("g11-progress-mind")
 
-        tapChip("all")
-        XCTAssertTrue(healthBar.waitForExistence(timeout: 3))
-        healthBar.tap()
-        XCTAssertTrue(chip("Health").isSelected, "Tapping a bar chooses its group")
+        tapChip("Health")
+        XCTAssertTrue(chip("Health").isSelected)
         XCTAssertTrue(app.buttons["progress-row-Water"].waitForExistence(timeout: 3))
         XCTAssertFalse(app.buttons["progress-row-Read"].exists)
+        tapChip("all")
 
         // Habits, by group.
         app.navigationBars["Progress"].buttons.element(boundBy: 0).tap()

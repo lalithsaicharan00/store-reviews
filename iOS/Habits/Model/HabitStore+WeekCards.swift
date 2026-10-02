@@ -32,7 +32,30 @@ struct WeekCardDay: Hashable, Identifiable {
     let slip: Bool
     /// The day's own number under the mark ("8.2k", "25m", "3"); empty for none.
     let value: String
+    /// Year: done, and more than the day's goal (shown with ▲, the user, 2 Oct 2026).
+    var more = false
     var id: LocalDay { day }
+}
+
+/// How a year sits in its heat map (the user, 2 Oct 2026: GitHub's contribution grid). Weeks run left to right in
+/// columns, weekdays top to bottom in the person's order; the last column holds today, and no day after it is drawn.
+struct YearLayout: Hashable {
+    /// Empty places before the first day, in the first column.
+    let lead: Int
+    /// The weekday letters down the side, in the person's order: "S M T W T F S".
+    let letters: [String]
+    /// Days drawn, from the first: through today in the current year, every day in a past one.
+    let shown: Int
+    /// Today's row, for its weekday letter; nil in another year.
+    let todayRow: Int?
+    /// "Jan", "Feb" … over the first column that is wholly in that month.
+    let months: [YearMonthLabel]
+    var columns: Int { (lead + shown + 6) / 7 }
+}
+
+struct YearMonthLabel: Hashable {
+    let column: Int
+    let name: String
 }
 
 /// One habit's card for a week.
@@ -98,6 +121,35 @@ extension HabitStore {
     /// The month grid's empty places before the 1st, in the person's week order.
     func monthLead(_ span: ClosedRange<LocalDay>) -> Int {
         (span.lowerBound.weekday(calendar: calendar) - calendar.firstWeekday + 7) % 7
+    }
+
+    /// The year's heat map layout: worked out once per snapshot, from day numbers only.
+    func yearLayout(_ span: ClosedRange<LocalDay>, today: LocalDay) -> YearLayout {
+        let lead = monthLead(span)
+        let first = span.lowerBound
+        let total = first.days(to: span.upperBound, calendar: calendar) + 1
+        let shown = span.contains(today) ? first.days(to: today, calendar: calendar) + 1 : today < first ? 0 : total
+        let columns = (lead + shown + 6) / 7
+        let names = calendar.shortStandaloneMonthSymbols
+        var months: [YearMonthLabel] = []
+        for month in 1...12 {
+            let index = first.days(to: LocalDay(year: first.year, month: month, day: 1), calendar: calendar)
+            guard index >= 0, index < shown else { continue }
+            let place = lead + index
+            // As GitHub: over the first week wholly in the month; the month just begun, over the week that holds its 1st.
+            var column = place % 7 == 0 ? place / 7 : place / 7 + 1
+            if column >= columns { column = place / 7 }
+            if let last = months.last, column - last.column < 2 { continue }
+            months.append(YearMonthLabel(column: column, name: names[month - 1]))
+        }
+        return YearLayout(lead: lead, letters: orderedWeekdayLetters(), shown: shown,
+                          todayRow: span.contains(today) ? (lead + shown - 1) % 7 : nil, months: months)
+    }
+
+    /// "This year", "Last year", or nil for older years.
+    func yearCaption(_ span: ClosedRange<LocalDay>, today: LocalDay) -> String? {
+        if span.contains(today) { return "This year" }
+        return span.lowerBound.year == today.year - 1 ? "Last year" : nil
     }
 
     /// The weekday letters in the person's week order: "S M T W T F S".
@@ -169,9 +221,14 @@ extension HabitStore {
                 extra = true
                 mark = isDayMet(dayRule, on: day) ? .done : .some
             }
-            let fraction = mark == .done ? 1 : mark == .some ? min(1, amount / max(dayGoal(of: dayRule), 1)) : 0
+            let goal = dayGoal(of: dayRule)
+            let fraction = mark == .done ? 1 : mark == .some ? min(1, amount / max(goal, 1)) : 0
+            // More than a day goal asks (Year's ▲): counted day goals only, never a limit or a checklist.
+            let more = range == .year && mark == .done && !dayRule.atMost && dayRule.kind != .checklist
+                && dayRule.frequency.isDayBased && !dayRule.frequency.isFlexible && goal > 0 && amount > goal
             strip.append(WeekCardDay(day: day, mark: mark, fraction: fraction, over: mark == .missed && dayRule.atMost,
-                                    extra: extra, slip: false, value: range == .week ? weekValue(amount, dayRule, shape: shape, mark: mark) : ""))
+                                    extra: extra, slip: false, value: range == .week ? weekValue(amount, dayRule, shape: shape, mark: mark) : "",
+                                    more: more))
         }
 
         // Days that count for a day goal: done (not extra) any day up to today; part done or not done once it's over.

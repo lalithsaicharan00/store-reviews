@@ -152,7 +152,7 @@ struct ProgressSnapshot {
     var groupBars: [ProgressGroupBar] = []
     /// The habit rows under their headings: by group when All is chosen and groups exist, else one "Habits".
     var sections: [ProgressRowSection] = []
-    /// Week only (the user, 2 Oct 2026): one card per habit, the week's columns, and "This week" or "Last week"
+    /// Week, Month and Year (the user, 2 Oct 2026): one card per habit, the week's columns, and "This week" or "Last week"
     /// under the dates. No overview, group bars or group numbers.
     var cards: [ProgressWeekCard] = []
     var archivedCards: [ProgressWeekCard] = []
@@ -161,6 +161,8 @@ struct ProgressSnapshot {
     /// Month only: the grid's empty places before the 1st, and the weekday letters in the person's order.
     var monthLead = 0
     var letters: [String] = []
+    /// Year only (the user, 2 Oct 2026): the heat map's layout, shared by every card.
+    var year: YearLayout? = nil
 
     var isRunning: Bool { period.contains(today) }
     /// The overview shows when any day in the period has something planned.
@@ -272,7 +274,7 @@ extension HabitStore {
         let group = group.flatMap { id in groups.contains { $0.id == id } ? id : nil }
         let allTracked = habits.filter { $0.kind != .task && $0.kind != .quit }
         let tracked = allTracked.filter { isInGroup($0, group) }
-        if weekCards && range != .year {
+        if weekCards {
             return progressWeekSnapshot(span, range: range, today: today, tracked: tracked, group: group, fullAt: fullAt)
         }
         // Day scores for Progress's habit list (per group), kept until the data or the day changes.
@@ -412,15 +414,25 @@ extension HabitStore {
         let earliest = earliestProgressDay()
         var snapshot = ProgressSnapshot(
             range: range, period: span, today: today,
-            title: range == .week ? weekTitle(span, today: today) : monthTitle(span, today: today), days: [],
+            title: range == .week ? weekTitle(span, today: today) : range == .month ? monthTitle(span, today: today)
+                : String(span.lowerBound.year), days: [],
             tally: ProgressTally(), goals: nil, previous: nil, rows: [], archived: [], quitting: [],
             canGoBack: earliest.map { $0 < span.lowerBound } ?? false,
             canGoForward: span.upperBound < today,
             hasHabits: habits.contains { $0.kind != .task }, fullAt: fullAt, group: group)
         snapshot.cards = made.cards
         snapshot.archivedCards = made.archived
-        snapshot.columns = weekColumns(span, today: today)
-        snapshot.caption = range == .week ? weekCaption(span, today: today) : monthCaption(span, today: today)
+        switch range {
+        case .week: snapshot.caption = weekCaption(span, today: today)
+        case .month: snapshot.caption = monthCaption(span, today: today)
+        case .year: snapshot.caption = yearCaption(span, today: today)
+        }
+        if range == .year {
+            // The heat map draws from day numbers; 365 named columns would be built for nothing.
+            snapshot.year = yearLayout(span, today: today)
+        } else {
+            snapshot.columns = weekColumns(span, today: today)
+        }
         if range == .month {
             snapshot.monthLead = monthLead(span)
             snapshot.letters = orderedWeekdayLetters()

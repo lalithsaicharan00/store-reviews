@@ -2222,6 +2222,16 @@ final class HabitStore {
             saveGroup(HabitGroup(name: "Reading", color: .indigo))
             await flush()
         }
+        if arguments.contains("-year-demo"), let swim = habits.first(where: { $0.name == "Swim" }) {
+            // Year's pictures (2 Oct 2026): a few skipped days and a two-week pause in Swim's year.
+            let today = today()
+            for d in [17, 46, 88, 150, 230, 300] {
+                let day = today.adding(days: -d, calendar: calendar)
+                if isDue(swim, on: day) { setSkipped(swim, on: day, true) }
+            }
+            pause(swim, from: today.adding(days: -125, calendar: calendar), through: today.adding(days: -112, calendar: calendar))
+            await flush()
+        }
         if ProcessInfo.processInfo.arguments.contains("-longtext") {
             // Every section name at its limit, to test layouts.
             let long = ["Before breakfast", "Lunch break walk", "Once kids sleep"] // 16, 16, 15: at the limit
@@ -2351,6 +2361,30 @@ final class HabitStore {
         entries.append(Entry(habitID: walk.id, day: today, value: 5200))
         entries.append(Entry(habitID: meds2.id, day: today, value: 1))
 
+        if ProcessInfo.processInfo.arguments.contains("-year-demo") {
+            // Year's pictures (the user, 2 Oct 2026: every kind of square in one habit). Swim, 20 laps Monday to
+            // Saturday, for 400 days: done, part done at each of the three steps, not done, more than the goal, an
+            // extra Sunday now and then (Sundays otherwise not scheduled); skipped days and a pause are added once
+            // saved (`seedDemo`); today is still open. Coffee, at most 2 cups a day, goes over on some days.
+            let swim = Habit(name: "Swim", symbol: "figure.pool.swim", color: .green, kind: .amount(unit: "laps", increment: 0),
+                             goal: 20, frequency: .weekdays([2, 3, 4, 5, 6, 7]), remind: false, createdAt: ago(days: 400))
+            let coffee = Habit(name: "Coffee", symbol: "mug.fill", color: .brown, kind: .amount(unit: "cups", increment: 1),
+                               goal: 2, atMost: true, remind: false, createdAt: ago(days: 400))
+            habits.insert(contentsOf: [swim, coffee], at: 0)
+            for d in 1...400 {
+                let day = today.adding(days: -d, calendar: cal)
+                let laps: Double
+                if day.weekday(calendar: cal) == 1 { laps = d % 3 == 0 ? 20 : 0 }
+                else if d % 13 == 0 { laps = 0 }
+                else if d % 11 == 0 { laps = 5 }
+                else if d % 7 == 3 { laps = 10 }
+                else if d % 9 == 4 { laps = 16 }
+                else if d % 5 == 0 { laps = 26 }
+                else { laps = 20 }
+                if laps > 0 { entries.append(Entry(habitID: swim.id, day: day, value: laps)) }
+                entries.append(Entry(habitID: coffee.id, day: day, value: d % 6 == 0 ? 3 : d % 4 == 0 ? 2 : 1))
+            }
+        }
         if ProcessInfo.processInfo.arguments.contains("-perf-history") {
             // Speed tests: a year of history on every daily habit, missed about one day in nine, so streaks and
             // counts are measured on the data of someone who has used the app for a year (30 Sep).

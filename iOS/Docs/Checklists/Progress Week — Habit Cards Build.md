@@ -33,6 +33,7 @@ Research behind it: [Weekly Habit Cards — What Each Card Shows](<../../../Rese
 | U16 | Clearer words and symbols for the marks | [x] **Partial** (was Part done), **Not done**, **Today, still open**, **Due later this week** (was Coming up; now a small ring, so it can't look like Not done), **Not scheduled** (was Not due; now a short dash), **Skipped**, **Paused**, **Over the limit**, **Before it started**; quit: **Clean day**, **Slip**. The same words in VoiceOver, the habit page and How It's Counted |
 | U17 | One check colour everywhere | [x] White on every colour. Revised (2 Oct, the user: the deepened colours looked darker than purple): every habit colour for marks **and icons** now sits at one shared lightness (`HabitColor.mark`) |
 | U19 | Month the same as Week | [x] Month uses the same cards (2 Oct): the month's name pinned at the top ("October", "This month" under it), the chips, the folded key, then a card per habit with its headline on the goal's own clock for the month and a small calendar of marks (weekday letters once, one 22-pt mark per day, today's weekday letter underlined). **No values under the marks** (the user: Month is for seeing patterns; values would make cards tall). A week goal on Month says how many of its weeks were met ("Met 3 of 4 weeks"). Year is unchanged |
+| U20 | Year as GitHub's heat map | [x] Year uses the same cards (2 Oct): "2026 · This year" pinned, chips, the folded key, then a card per habit with its year on the goal's own clock ("Reached on 212 of 270 days so far", "Met 38 of 52 weeks") and the year as a grid of **rounded squares** (18 pt, 4-pt gaps): weeks as columns, weekdays as rows with their letters fixed on the left (today's bold and underlined), months on top. The last column holds today; nothing after it is drawn. Only the squares scroll sideways, opening on the latest weeks. Every day a grey square until filled: done = colour; partial = three lighter OKLCH steps (`HabitColor.yearShade`, one lightness per step for every hue, deeper in dark mode); more than the goal, or a limit's day over it = colour with a white ▲; not scheduled = dashed outline; skipped / paused = grey with the sign; slip = grey with ×; today = grey until logged. The key lists every square, with Partial's three steps side by side. No group numbers, percentages, Groups card or share button on Progress any more |
 | U18 | Over the limit not grey | [x] The user chose option A: a ring and ▲ in the habit's own colour, never solid (a solid circle is a day within the limit). On the Week cards, Month strips and the day sheet |
 | U11 | Spacing hierarchy from proper rules; nothing squeezed | [x] 8-point scale, space inside a group smaller than around it. Below |
 | U12 | A long name stays on one line with "…" | [x] `lineLimit(1)`, tail truncation; goal line also one line |
@@ -129,7 +130,11 @@ From the report's §5; the code is `HabitStore+WeekCards.swift`.
 | `Habits/Progress/ProgressScreen.swift` | Week uses `weekList`; `rangePicker` shared; `QuitRunClock` |
 | `Habits/Today/DayBar.swift` | `CalendarSheet` cells are plain dates (`CalendarDate`); no rings, no per-day scores |
 | `Habits/Model/ProgressCheck.swift` | Golden checks W (week cards: daily, weekly goal, amount, daily limit, quit, key, value formats) |
-| `HabitsUITests/ProgressUITests.swift`, `GroupsUITests.swift` | Week has no tiles and its title is the dates; the Groups card test moves to Month |
+| `HabitsUITests/ProgressUITests.swift`, `GroupsUITests.swift` | Week has no tiles and its title is the dates. Year (2 Oct): `testYearAndMonthTap` checks Year's title, caption and cards; `testHidePercentages` checks the habit page (Progress has no percentages); the Groups test checks the chips filter the cards (no Groups card anywhere) |
+| `Habits/Progress/YearHeatMap.swift` | New (Year): `YearCellStyle`, `YearGrid` (measures and the one drawing function), `YearHeatMap`, `YearKeyCell`, `YearKeyEntry`, `HabitColor.yearShade` (palette from `Research/Temp/year_palette.py`) |
+| `Habits/Model/HabitStore+WeekCards.swift` (Year) | `YearLayout`, `YearMonthLabel`, `yearLayout`, `yearCaption`; `WeekCardDay.more` (done above the day's goal) |
+| `Habits/Model/HabitStore.swift` | Debug demo `-year-demo`: Swim (every square in one habit: done, three partial steps, not done, more, Sundays not scheduled with an extra now and then, skipped days, a two-week pause, today open) and Coffee (a daily limit, over on some days) |
+| `HabitsUITests/WeekCardsUITests.swift` | `testYearCards`, `testYearCardsDark`: pictures of Year, Swim scrolled back, the key, last year |
 
 ## To check (for the testing agent)
 
@@ -141,15 +146,22 @@ From the report's §5; the code is `HabitStore+WeekCards.swift`.
 - [ ] Largest text sizes: strips give way to the words.
 - [ ] Speed (`[ios-perf]`, scenario `progress`): opening Progress on Week and scrolling, against the last run.
 - [ ] Today's calendar sheet: plain dates, today bold, the open day filled, note dots still there.
+- [ ] Year (`WeekCardsUITests.testYearCards*`, `-year-demo`): Swim shows every square; the letters stay while the
+      squares scroll; the last column ends today; dark mode's partial steps sit between the grey and the colour.
+- [ ] Speed (`[ios-perf]`, `progress` cycles Week → Month → Year): switching to Year and scrolling its cards.
 
 ## Not done (on purpose)
 
-- **Year** keeps its overview, Groups card and group numbers until it's redesigned. Month was built on 2 Oct.
+- **Year's old overview** (rings, tiles, Groups card, Share the Year, How It's Counted) is no longer shown: Year is cards
+  (2 Oct). The old views (`ProgressScreen.list`, `overview`, `tiles`, `groupBars`, the rows) and `yearShareItem` are
+  unused; remove them after the merge, or bring Share back on its own if the user wants it.
+- **Tapping a month in Year** no longer opens it in Month: the card opens the habit, and the habit page has its own
+  year grid with months to tap.
 - **The Day sheet** is no longer reachable from Progress: it opened from Week's and Month's day rings, which the user
   removed. Today's calendar opens any day. `ProgressDaySheet` stays in the code for now; `testDaySheetShowsOnToday`
   was retired with a note. Year still has its overview, rings code paths (`weekRings`, `monthRings`) are unused
   until Year is redesigned.
-- **View Options** (percentages, streaks, full day) still apply to Month and Year; Week has no percentages.
+- **View Options**: Progress itself shows no percentages now; Show Percentages still governs the habit page.
 
 ## Branches (safe to delete, with reasons)
 
