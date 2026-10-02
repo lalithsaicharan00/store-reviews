@@ -21,3 +21,5 @@ iOS/**/.build/
 # Claude Code session lock (pid/session id, not a project artifact)
 .claude/scheduled_tasks.lock
 __pycache__/
+# Local device builds (xcodebuild -derivedDataPath build-device)
+iOS/build-device/
