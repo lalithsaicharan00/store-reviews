@@ -58,5 +58,6 @@ The work order for the whole app is [Build Plan](<../Build Plan.md>).
 | [App Speed — Round 2](<Checklists/App Speed — Round 2.md>) | 30 Sep: optimised phone build, remembered streaks, instant taps, stall meter; rules in `iOS/PERFORMANCE.md` |
 | [iPhone Widgets](<Checklists/iPhone Widgets.md>) | Research and implementation on `codex/iphone-widgets`; macOS results and device release checks are recorded in the research report |
 | [Analytics Implementation](<Checklists/Analytics Implementation.md>) | Implemented on `analytics`; macOS native/UI/build/provider evidence and exact production rollout dependencies |
+| [Next Up — The User's List, 2 Oct](<Checklists/Next Up — The User's List, 2 Oct.md>) | **Open.** The user's ten next items, in order: Progress overhaul (Week first, under way), habit page, account out of Backup, past entries, Filter, Today's bottom row, row subtext, swipe actions, widgets, testing groups |
 
 Analytics recovery starts at [Analytics — Start Here](<../../Analytics — Start Here.md>). Saved provider definitions and verification are in [Analytics Dashboards.json](<Analytics Dashboards.json>); exact consent-off/on measurements are in [Analytics Performance Evidence.json](<Analytics Performance Evidence.json>).
