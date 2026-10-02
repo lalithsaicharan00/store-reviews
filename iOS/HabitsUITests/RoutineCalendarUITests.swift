@@ -257,7 +257,8 @@ final class RoutineCalendarUITests: XCTestCase {
                 XCTAssertTrue(button.isHittable)
                 shot("calendar-six-weeks-large-text")
                 button.tap()
-                XCTAssertFalse(app.navigationBars["Go to a day"].exists)
+                // The sheet closes with an animation: wait for it, rather than reading the screen mid-slide.
+                XCTAssertTrue(app.navigationBars["Go to a day"].waitForNonExistence(timeout: 3), "Choosing a day closes the calendar")
                 return
             }
             app.buttons["Next month"].tap()
