@@ -1,6 +1,7 @@
 // The Often Enough API (Architecture/06. Server on Cloudflare.md).
 // Top level = dev (api-dev.oftenenough.com). `env.production` = real users (api.oftenenough.com): `--env production`.
-// Secrets (never in this file): TOKEN_KEY (signs access tokens; each environment its own), TEST_LOGIN_SECRET (dev only).
+// Secrets (never in this file): TOKEN_KEY (signs access tokens; each environment its own), TEST_LOGIN_SECRET (dev only),
+// APPLE_SIGNIN_KEY (the Sign in with Apple key's .p8, for token revocation; optional until set).
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "often-enough-api-dev",
@@ -24,6 +25,10 @@
     "APPLE_ENVIRONMENTS": "Production,Sandbox,Xcode",
     // Dev only: extra trusted roots (PEM), e.g. Xcode's StoreKit testing certificate. Empty: Apple's root only.
     "APPLE_EXTRA_ROOTS": "",
+    // Sign in with Apple token revocation (src/appleTokens.ts): the developer team and the Sign in with Apple key's ID.
+    // Public values; the key itself is the secret APPLE_SIGNIN_KEY. Until that secret is set, nothing is revoked.
+    "APPLE_TEAM_ID": "MHTC4C9P8F",
+    "APPLE_SIGNIN_KEY_ID": "S2D594VDJH",
     // Dev only: GitHub Actions runs of this repository may use POST /v1/auth/ci (end-to-end tests).
     "CI_REPOSITORY": "lalithsaicharan00/store-reviews",
     // For the daily report's request numbers (Analytics Engine SQL API). Not a secret.
@@ -77,6 +82,8 @@
         // App Review buys with sandbox accounts, so the live server must take Sandbox too (Apple's guidance).
         "APPLE_ENVIRONMENTS": "Production,Sandbox",
         "APPLE_EXTRA_ROOTS": "",
+        "APPLE_TEAM_ID": "MHTC4C9P8F",
+        "APPLE_SIGNIN_KEY_ID": "S2D594VDJH",
         "CI_REPOSITORY": "",
         "ACCOUNT_ID": "fd5d7e4921bb3f41c85bedb2fd2fb0eb",
         "WEB_ORIGINS": "https://oftenenough.com,https://www.oftenenough.com"

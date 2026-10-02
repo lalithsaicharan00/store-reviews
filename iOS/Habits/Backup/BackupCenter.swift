@@ -374,6 +374,7 @@ final class BackupCenter {
     /// someone who used Apple before isn't silently given a second account through Google (01 §3.3).
     func signIn(with token: ProviderToken, create: Bool) async throws {
         var body: [String: Any] = ["idToken": token.idToken, "nonce": token.nonce]
+        if let code = token.authorizationCode { body["authorizationCode"] = code }
         if create {
             body["create"] = true
             if let country = await Storefront.current?.countryCode { body["country"] = country }

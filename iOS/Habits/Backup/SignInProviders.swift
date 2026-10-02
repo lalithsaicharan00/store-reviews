@@ -18,6 +18,9 @@ struct ProviderToken {
     let path: String
     let idToken: String
     let nonce: String
+    /// Apple only: the credential's one-time code. The server swaps it for a token it revokes at Apple when the
+    /// account is deleted (App Review 5.1.1(v); server/src/appleTokens.ts).
+    var authorizationCode: String? = nil
 }
 
 nonisolated enum SignInNonce {
@@ -136,7 +139,8 @@ extension AppleSignIn: @preconcurrency ASAuthorizationControllerDelegate, @preco
             continuation = nil
             return
         }
-        continuation?.resume(returning: ProviderToken(path: "/v1/auth/apple", idToken: token, nonce: nonce))
+        let code = credential.authorizationCode.flatMap { String(data: $0, encoding: .utf8) }
+        continuation?.resume(returning: ProviderToken(path: "/v1/auth/apple", idToken: token, nonce: nonce, authorizationCode: code))
         continuation = nil
     }
 

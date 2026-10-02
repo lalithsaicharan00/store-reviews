@@ -1,5 +1,6 @@
 import { type Account, type DeviceInfo, MAX_PUSH, type PurchaseRecord } from "./account";
 import { APPLE_ROOT_CA_G3, verifyAppleSigned } from "./apple";
+import { exchangeAppleCode, revokeAppleToken } from "./appleTokens";
 import { deleteBackups, listBackups, readBackup, storeBackup } from "./backup";
 import { adminRoute } from "./admin";
 import { accountStub } from "./stubs";
@@ -87,7 +88,7 @@ async function route(request: Request, url: URL, env: Env, ctx: ExecutionContext
     case "GET /v1/status":
       return json({ ok: true, environment: env.ENVIRONMENT, time: Date.now() }, 200, { "cache-control": "public, max-age=30" });
     case "POST /v1/auth/apple":
-      return signIn(request, env, (body) => verifyIdToken(APPLE, requireString(body.idToken, "idToken", 8192), requireString(body.nonce, "nonce", 256), audiences(env.APPLE_AUDIENCES)));
+      return signIn(request, env, (body) => verifyIdToken(APPLE, requireString(body.idToken, "idToken", 8192), requireString(body.nonce, "nonce", 256), audiences(env.APPLE_AUDIENCES)), ctx);
     case "POST /v1/auth/google":
       return signIn(request, env, (body) => verifyIdToken(GOOGLE, requireString(body.idToken, "idToken", 8192), requireString(body.nonce, "nonce", 256), audiences(env.GOOGLE_AUDIENCES)));
     case "POST /v1/auth/test":
@@ -101,7 +102,7 @@ async function route(request: Request, url: URL, env: Env, ctx: ExecutionContext
     case "GET /v1/account/export":
       return exportAccount(request, env);
     case "POST /v1/account/link":
-      return link(request, env);
+      return link(request, env, ctx);
     case "POST /v1/account/unlink":
       return unlink(request, env);
     case "POST /v1/account/signout":
@@ -143,9 +144,11 @@ interface SignInBody {
   subject?: unknown;
   /** Test and CI sign-ins only: false makes a free account (default: Plus, so end-to-end tests can sync). */
   plus?: unknown;
+  /** Apple only: the credential's one-time code, exchanged for a token we can revoke on deletion (appleTokens.ts). */
+  authorizationCode?: unknown;
 }
 
-async function signIn(request: Request, env: Env, verify: (body: SignInBody) => Promise<VerifiedKey>): Promise<Response> {
+async function signIn(request: Request, env: Env, verify: (body: SignInBody) => Promise<VerifiedKey>, ctx?: ExecutionContext): Promise<Response> {
   const body = await readJson<SignInBody>(request);
   const device = parseDevice(body.device);
   const key = await verify(body);
@@ -162,7 +165,21 @@ async function signIn(request: Request, env: Env, verify: (body: SignInBody) => 
   const testPlus = key.provider === "test" || key.provider === "ci" ? body.plus !== false : null;
   const session = await accountStub(env, claims).openSession(account.accountId, key, device, testPlus);
   if (!session.ok) throw new HttpError(409, "account_unavailable", "This account can't be opened right now. Please try again.");
+  if (ctx) keepAppleToken(env, ctx, account, key, body.authorizationCode);
   return json({ accountId: account.accountId, created, ...(await tokens(env, { ...claims, plus: session.plus }, session.secret)) }, created ? 201 : 200);
+}
+
+/**
+ * After an Apple sign-in or link: exchanges the one-time code for a revocable token, after the reply, so signing in
+ * never waits on it. A code that's missing or fails leaves the key without one; the next sign-in tries again.
+ */
+function keepAppleToken(env: Env, ctx: ExecutionContext, account: { accountId: string; jurisdiction: Jurisdiction }, key: VerifiedKey, code: unknown) {
+  if (key.provider !== "apple" || typeof code !== "string" || code.length === 0 || code.length > 1024) return;
+  ctx.waitUntil(
+    exchangeAppleCode(env, code, key.subject).then(async (token) => {
+      if (token) await accountStub(env, account).setRevokeToken("apple", key.subject, token);
+    }),
+  );
 }
 
 /** Dev only: a sign-in that needs no Apple or Google account, for end-to-end tests. It doesn't exist anywhere else. */
@@ -262,7 +279,7 @@ async function exportAccount(request: Request, env: Env): Promise<Response> {
   });
 }
 
-async function link(request: Request, env: Env): Promise<Response> {
+async function link(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const claims = await authenticate(request, env);
   const body = await readJson<SignInBody & { provider?: unknown }>(request);
   const key =
@@ -284,6 +301,7 @@ async function link(request: Request, env: Env): Promise<Response> {
     throw new HttpError(409, "provider_already_linked", "This account already has a sign-in from that provider.");
   }
   await stub.addKey(key);
+  keepAppleToken(env, ctx, claims, key, body.authorizationCode);
   return json({ linked: true });
 }
 
@@ -296,7 +314,8 @@ async function unlink(request: Request, env: Env): Promise<Response> {
     if (result.reason === "last_key") throw new HttpError(409, "last_key", "This is the only way to sign in, so it can't be removed.");
     throw new HttpError(404, "not_linked", "That sign-in isn't linked to this account.");
   }
-  await accountStub(env, claims).removeKey(provider, result.subject);
+  const token = await accountStub(env, claims).removeKey(provider, result.subject);
+  if (provider === "apple" && token) await revokeAppleToken(env, token);
   return json({ removed: true });
 }
 
@@ -313,12 +332,18 @@ async function remove(request: Request, env: Env): Promise<Response> {
   return json({ deleted: true, at: Date.now() });
 }
 
-/** Everything of an account, in the order that keeps it safe: the directory, its data, backups, snapshots (09 §7). */
+/**
+ * Everything of an account, in the order that keeps it safe: the directory, its data, backups, snapshots (09 §7).
+ * Then its Apple sign-in is revoked at Apple (appleTokens.ts); the tokens are read first, as the wipe removes them.
+ */
 async function deleteEverything(env: Env, account: { accountId: string; jurisdiction: Jurisdiction }) {
+  const stub = accountStub(env, account);
+  const appleTokens = await stub.revokeTokens();
   await deleteAccount(env.DIRECTORY, account.accountId);
-  await accountStub(env, account).wipe();
+  await stub.wipe();
   await deleteBackups(env, account);
   await deleteSnapshots(env, account);
+  for (const token of appleTokens) await revokeAppleToken(env, token);
 }
 
 /**

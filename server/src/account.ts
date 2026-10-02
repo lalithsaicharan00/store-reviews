@@ -13,7 +13,7 @@ import { newSecret, sha256Hex } from "./tokens";
  * An object with no `account_id` in `meta` is not an account (never set up, or deleted): every call says "gone".
  */
 
-const SCHEMA_VERSION = 4;
+const SCHEMA_VERSION = 5;
 
 /** Sync limits (Architecture 06 §4): a push is at most 500 ops (bigger outboxes come in chunks); a pull at most 1,000. */
 export const MAX_PUSH = 500;
@@ -146,6 +146,11 @@ export class Account extends DurableObject<Env> {
         // Which sign-in method opened each session, so Apple's "consent revoked" ends only Apple's (01 §3.9).
         // Sessions from before have none and are left alone.
         this.sql.exec("ALTER TABLE session ADD COLUMN provider TEXT");
+      }
+      if (current < 5) {
+        // Apple's refresh token for an Apple sign-in, kept only to revoke it when the account is deleted or the
+        // sign-in removed (appleTokens.ts). Never returned by any route, export included.
+        this.sql.exec("ALTER TABLE sign_in_key ADD COLUMN revoke_token TEXT");
       }
       this.setMeta("schema", String(SCHEMA_VERSION));
     });
@@ -389,8 +394,27 @@ export class Account extends DurableObject<Env> {
     return true;
   }
 
-  async removeKey(provider: string, subject: string): Promise<void> {
+  /** Removes a sign-in method. Returns the token to revoke at the provider, if one was kept (appleTokens.ts). */
+  async removeKey(provider: string, subject: string): Promise<string | null> {
+    const token = this.sql
+      .exec<{ revoke_token: string | null }>("SELECT revoke_token FROM sign_in_key WHERE provider = ? AND subject = ?", provider, subject)
+      .toArray()[0]?.revoke_token ?? null;
     this.sql.exec("DELETE FROM sign_in_key WHERE provider = ? AND subject = ?", provider, subject);
+    return token;
+  }
+
+  /** Keeps Apple's refresh token for this sign-in, replacing an older one. False if the key isn't on this account. */
+  async setRevokeToken(provider: string, subject: string, token: string): Promise<boolean> {
+    if (this.accountId === undefined) return false;
+    return this.sql.exec("UPDATE sign_in_key SET revoke_token = ? WHERE provider = ? AND subject = ?", token, provider, subject).rowsWritten > 0;
+  }
+
+  /** Every token to revoke at the providers, read just before the account is wiped. */
+  async revokeTokens(): Promise<string[]> {
+    return this.sql
+      .exec<{ revoke_token: string }>("SELECT revoke_token FROM sign_in_key WHERE revoke_token IS NOT NULL")
+      .toArray()
+      .map((r) => r.revoke_token);
   }
 
   async summary(): Promise<AccountSummary | null> {

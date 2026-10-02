@@ -65,18 +65,22 @@ Needs `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in the environment.
 - `TOKEN_KEY`: signs access tokens (at least 32 characters). Changing it makes every access token refresh once.
 - `TEST_LOGIN_SECRET`: dev only. Unlocks `POST /v1/auth/test`, a sign-in without Apple or Google for automated
   end-to-end tests. If it's lost, upload a new random one.
+- `APPLE_SIGNIN_KEY`: the Sign in with Apple key's `.p8` file (Key ID `S2D594VDJH`, team `MHTC4C9P8F`, both vars in
+  `wrangler.jsonc`), for token revocation (`src/appleTokens.ts`). Set it in both environments, pasting the whole file:
+  `npx wrangler secret put APPLE_SIGNIN_KEY < AuthKey_S2D594VDJH.p8` (add `--env production` for production). Until it
+  is set, sign-in works and nothing is revoked. A new key: put the new file and change `APPLE_SIGNIN_KEY_ID`.
 
 ## API (v1)
 
 | Route | Does |
 |---|---|
 | `GET /v1/status` | health check, no sign-in |
-| `POST /v1/auth/apple`, `/v1/auth/google` | `{idToken, nonce, create?, device, country?}` → tokens and `plus`. An unknown key answers `404 unknown_key` unless `create: true` |
+| `POST /v1/auth/apple`, `/v1/auth/google` | `{idToken, nonce, create?, device, country?}` → tokens and `plus`. An unknown key answers `404 unknown_key` unless `create: true`. Apple also takes `authorizationCode`: after the reply, the server swaps it at Apple for a refresh token, kept with the key only to revoke it |
 | `POST /v1/auth/test` | dev only: `{secret, subject, create?, device, plus?}`. Plus unless `plus: false` (a free account) |
 | `POST /v1/auth/refresh` | `{refreshToken}` → new tokens and `plus`. The old one may be retried for 2 minutes (lost replies); later reuse signs that device out |
 | `GET /v1/account` | keys and devices |
 | `POST /v1/account/link`, `/unlink` | add or remove a sign-in method (never the last one) |
-| `POST /v1/account/signout`, `/delete` | end this device's session; delete the account (directory first, then its data) |
+| `POST /v1/account/signout`, `/delete` | end this device's session; delete the account (directory first, then its data, then its Apple sign-in is revoked at Apple). Unlinking Apple revokes it too |
 | `POST /v1/auth/ci` | dev only: GitHub Actions runs of this repository sign in with the run's identity token (iPhone end-to-end tests); Plus unless `plus: false` |
 | `POST /v1/sync` | **Plus only.** `{cursor, ops}` → `{applied, rejected, ops, cursor, more}`; merges with the shared Kotlin rules in `core/`. A free account gets `403 plus_required` from the Worker, before any Durable Object |
 | `PUT /v1/backup` | The body is the backup file (at most 5 MB). Headers: `x-backup-sha256` (hex), `x-backup-device-name` (URL-encoded), `x-backup-platform`, `x-backup-app-version`, `x-backup-format`, `x-backup-created-at` (ms), `x-backup-habits`, `x-backup-entries`, `x-backup-records`. → `201` with the copy's details and the `sha256` R2 stored. One copy per device per weekday (UTC); a copy with under half the records of the newest one first keeps the newest aside as `before-shrink` |
@@ -154,5 +158,5 @@ To finish setting it up (each needs you, once per environment):
 - **Outside checks:** a free uptime monitor (UptimeRobot, Better Stack) on `https://api.oftenenough.com/v1/status`
   every minute, and Cloudflare notifications for Worker errors. Neither can run from inside Cloudflare itself.
 
-**Not built yet:** Google Play purchases and notifications, Sign in with Apple token revocation (needs the developer account's key), and a WAF rule in front of the Worker. Real Apple and Google sign-in need
+**Not built yet:** Google Play purchases and notifications, and a WAF rule in front of the Worker. Real Apple and Google sign-in need
 their keys (the Apple Developer account and a Google Cloud OAuth client); everything else is tested with stand-ins.

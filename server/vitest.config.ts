@@ -17,6 +17,9 @@ export default defineConfig({
           TEST_MIGRATIONS: await readD1Migrations(path.join(__dirname, "migrations")),
           // A test-only root that imitates Apple's (test/fixtures/README.md).
           APPLE_EXTRA_ROOTS: readFileSync(path.join(__dirname, "test/fixtures/test-root.pem"), "utf8"),
+          // A test-only Sign in with Apple key (test/fixtures/README.md); Apple's token endpoints are stand-ins too.
+          APPLE_SIGNIN_KEY: readFileSync(path.join(__dirname, "test/fixtures/apple-signin-test-key.p8"), "utf8"),
+          APPLE_SIGNIN_TEST_PUBLIC_KEY: readFileSync(path.join(__dirname, "test/fixtures/apple-signin-test-key.pub.pem"), "utf8"),
         },
       },
     })),
