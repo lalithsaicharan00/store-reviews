@@ -60,10 +60,10 @@ struct HabitRow: View {
     var highlighted = false
     /// The New Habit preview: replaces the progress line ("—" before an amount is set).
     var lineOverride: String? = nil
-    @State private var showLog = false
-    @State private var showEdit = false
-    @State private var showNotes = false
-    @State private var showPause = false
+    /// The one sheet a row can show: one `.sheet(item:)`, never one modifier per sheet (PERFORMANCE.md rule 10).
+    @State private var sheet: RowSheet?
+    /// The log sheet was the one shown: when it closes, the row holds its place as after a tap (#58).
+    @State private var logged = false
     /// A checklist's steps shown under it on Today (`TodayLayout`); nil elsewhere (the New Habit preview).
     var steps: FoldBox? = nil
     @Environment(HabitStore.self) private var store
@@ -74,15 +74,20 @@ struct HabitRow: View {
     @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
 
     var body: some View {
-        if habit.kind == .duration, isToday {
-            // Keep the same host when a running timer stops. Replacing TimelineView with a plain row
-            // could dismiss a sheet opened from that row; a stopped/covered clock simply has no ticks.
-            RowClock(start: !(showLog || showEdit || showNotes || showPause) && store.dayTarget?.habitID != habit.id ? store.timers[habit.id] : nil) { now in
+        if habit.kind == .duration {
+            // Keep the same host when a running timer stops, and on every day: replacing TimelineView with a plain row
+            // could dismiss a sheet opened from that row, and switching the day rebuilt every duration row twice
+            // (rule 4). A stopped, covered or other day's clock simply has no ticks.
+            RowClock(start: isToday && sheet == nil && store.dayTarget?.habitID != habit.id ? store.timers[habit.id] : nil) { now in
                 row(now: now)
             }
         } else {
             row(now: .now)
         }
+    }
+
+    private func showing(_ kind: RowSheet) -> Binding<Bool> {
+        Binding(get: { sheet == kind }, set: { if $0 { sheet = kind } else if sheet == kind { sheet = nil } })
     }
 
     private var isRunning: Bool { isToday && store.timers[habit.id] != nil }
@@ -159,11 +164,11 @@ struct HabitRow: View {
             }
           }
           .contentShape(Rectangle())
-          .onTapGesture { if logsNumbers && day <= store.today() { showLog = true } }
+          .onTapGesture { if logsNumbers && day <= store.today() { sheet = .log } }
           .accessibilityAction(named: "Undo last log") {
               if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day { store.undoEntry(entry.id) }
           }
-          .accessibilityAction(named: habit.kind == .duration ? "Log time manually" : "Log amount manually") { if logsNumbers && day <= store.today() { showLog = true } }
+          .accessibilityAction(named: habit.kind == .duration ? "Log time manually" : "Log amount manually") { if logsNumbers && day <= store.today() { sheet = .log } }
             actionButton(done: done, progress: progress, goal: goal)
                 .frame(height: RowBand.height)
                 .disabled(habit.kind != .checklist && day > store.today())
@@ -174,10 +179,16 @@ struct HabitRow: View {
             .overlay(HighlightFlash(on: highlighted || store.noteTarget == .init(habit: habit.id, day: day), color: habit.color)))
         // Logged from the sheet: the row stays where it is until the person pauses, as after a tap (#58). The day's own
         // rule, so a past day is logged against the goal it had then.
-        .sheet(isPresented: $showLog, onDismiss: { layout?.hold(reduceMotion: reduceMotion) }) { LogProgressView(habit: store.rule(habit, on: day), day: day) }
-        .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
-        .sheet(isPresented: $showNotes) { HabitNotesView(habit: habit) }
-        .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
+        .sheet(item: $sheet, onDismiss: {
+            if logged { logged = false; layout?.hold(reduceMotion: reduceMotion) }
+        }) { shown in
+            switch shown {
+            case .log: LogProgressView(habit: store.rule(habit, on: day), day: day).onAppear { logged = true }
+            case .edit: EditHabitSheet(habit: habit)
+            case .notes: HabitNotesView(habit: habit)
+            case .pause: PauseSheet(habit: habit)
+            }
+        }
         // Swipe left for a note, on any day and whether or not it's done: the standard iOS row gesture (Mail,
         // Reminders), for people who don't long-press. Opens the same field in the row.
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -190,22 +201,22 @@ struct HabitRow: View {
             Button(day == store.today() ? "Edit Today's Progress…" : "Edit Progress…", systemImage: "calendar") { store.dayTarget = .init(habitID: habit.id, day: day) }
                 .disabled(day > store.today())
             // Edit sits with the item's other actions, as in Reminders; a tap on the row logs (spec §8).
-            Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { showEdit = true }
+            Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { sheet = .edit }
             // A stretch of days off: travel, illness (pause report, 29 Sep). Skip today stays for one day.
-            PauseMenuItems(habit: habit, showPause: $showPause)
+            PauseMenuItems(habit: habit, showPause: showing(.pause))
             // Any day, done or not, past or today; a note never changes progress (notes report, 29 Sep).
             Button(store.note(of: habit, on: day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") { startWriting() }
                 .disabled(day > store.today())
             if store.hasNotes(habit) {
-                Button("All Notes", systemImage: "list.bullet.rectangle") { showNotes = true }
+                Button("All Notes", systemImage: "list.bullet.rectangle") { sheet = .notes }
             }
             if case .amount = habit.kind {
-                Button("Log amount manually", systemImage: "square.and.pencil") { showLog = true }.disabled(day > store.today())
+                Button("Log amount manually", systemImage: "square.and.pencil") { sheet = .log }.disabled(day > store.today())
                 Button("Undo Last Entry") { undoLast() }
                     .disabled(progress <= 0 || day > store.today())
             }
             if habit.kind == .duration {
-                Button("Log time manually", systemImage: "square.and.pencil") { showLog = true }.disabled(day > store.today())
+                Button("Log time manually", systemImage: "square.and.pencil") { sheet = .log }.disabled(day > store.today())
                 Button("Undo Last Entry") { undoLast() }
                     .disabled(progress <= 0 || day > store.today())
             }
@@ -323,7 +334,7 @@ struct HabitRow: View {
                     RoundActionButton(symbol: "plus", done: done, color: habit.color,
                                       label: "Add an amount to \(habit.name)",
                                       keepSymbolWhenDone: true) {
-                        showLog = true
+                        sheet = .log
                     }
                 }
             case .duration:
@@ -390,9 +401,8 @@ struct QuitRow: View {
     let habit: Habit
     var highlighted = false
     @Environment(HabitStore.self) private var store
-    @State private var showEdit = false
-    @State private var showPause = false
-    @State private var showSlip = false
+    /// One `.sheet(item:)` for the row's three sheets (PERFORMANCE.md rule 10).
+    @State private var sheet: QuitSheet?
     /// The slip just logged, offered for Undo for a few seconds.
     @State private var lastSlip: UUID?
     private var today: LocalDay { store.today() }
@@ -444,7 +454,7 @@ struct QuitRow: View {
             .padding(.vertical, 2)
             .accessibilityElement(children: .combine)
         HStack {
-            Button("Slipped") { showSlip = true }
+            Button("Slipped") { sheet = .slip }
                 .disabled(store.isPaused(habit, on: today))
             if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == today {
                 Button { store.undoEntry(entry.id) } label: {
@@ -462,19 +472,23 @@ struct QuitRow: View {
             .tint(.indigo)
         }
         .contextMenu {
-            Button("Edit Habit", systemImage: "pencil") { showEdit = true }
+            Button("Edit Habit", systemImage: "pencil") { sheet = .edit }
             // A slip is an event with its own time (Build Plan #60d); editing "Started" is only for fixing a wrong start.
-            Button("Log a Slip…", systemImage: "arrow.uturn.backward.circle") { showSlip = true }
+            Button("Log a Slip…", systemImage: "arrow.uturn.backward.circle") { sheet = .slip }
             Button("Edit Today's Progress…", systemImage: "calendar") { store.dayTarget = .init(habitID: habit.id, day: today) }
             // Pausing ends this run (kept as a run, not a slip); a new one starts when it's back (the user, 29 Sep).
-            PauseMenuItems(habit: habit, showPause: $showPause)
+            PauseMenuItems(habit: habit, showPause: Binding(get: { sheet == .pause }, set: { sheet = $0 ? .pause : (sheet == .pause ? nil : sheet) }))
             Button(store.note(of: habit, on: today) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") {
                 store.noteTarget = .init(habit: habit.id, day: today)
             }
         }
-        .sheet(isPresented: $showEdit) { EditHabitSheet(habit: habit) }
-        .sheet(isPresented: $showPause) { PauseSheet(habit: habit) }
-        .sheet(isPresented: $showSlip) { LogSlipSheet(habit: habit) { id in withAnimation { lastSlip = id } } }
+        .sheet(item: $sheet) { shown in
+            switch shown {
+            case .edit: EditHabitSheet(habit: habit)
+            case .pause: PauseSheet(habit: habit)
+            case .slip: LogSlipSheet(habit: habit) { id in withAnimation { lastSlip = id } }
+            }
+        }
     }
 }
 
@@ -714,4 +728,16 @@ private struct HabitRowClockSchedule: TimelineSchedule {
         guard let start else { return AnySequence([date]) }
         return AnySequence(PeriodicTimelineSchedule(from: start, by: 1).entries(from: date, mode: mode))
     }
+}
+
+/// The sheets a Today row can open, one at a time.
+enum RowSheet: String, Identifiable {
+    case log, edit, notes, pause
+    var id: String { rawValue }
+}
+
+/// The sheets a quit row can open, one at a time.
+enum QuitSheet: String, Identifiable {
+    case edit, pause, slip
+    var id: String { rawValue }
 }

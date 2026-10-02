@@ -136,7 +136,11 @@ final class HabitStore {
     /// What the last tap reached: "30 days in a row", "All 5 done today". Shown beside that row's Undo while it lasts.
     private(set) var milestoneOffer: MilestoneOffer?
     struct MilestoneOffer: Equatable { let entry: UUID; let habit: UUID; let day: LocalDay; let text: String }
-    func clearLogOffer() { undoOffer = nil; noteOffer = nil }
+    /// Only writes what changes: every row reads these, and an observed write redraws them even when it's nil to nil.
+    func clearLogOffer() {
+        if undoOffer != nil { undoOffer = nil }
+        if noteOffer != nil { noteOffer = nil }
+    }
     struct NoteOffer: Equatable { let habit: UUID; let day: LocalDay }
     /// The note being written in the note bar: a habit's note (`habit` set) or the day's note (`habit` nil).
     var noteTarget: NoteTarget?

@@ -568,29 +568,22 @@ struct TodayView: View {
     private var dayBar: some ToolbarContent {
         let today = store.today()
         let shown = day ?? today
-        let summary = store.daySummary(on: shown)
         let label = dayLabel(shown, today: today)
         ToolbarItem(placement: .bottomBar) {
             Button("Previous day", systemImage: "chevron.left") { day = shown.adding(days: -1, calendar: store.calendar) }
         }
         if #available(iOS 26, *) {
             ToolbarSpacer(.flexible, placement: .bottomBar)
-            ToolbarItem(placement: .bottomBar) { dayLabelButton(label, done: summary.done, total: summary.total) }
+            ToolbarItem(placement: .bottomBar) { DayCountButton(label: label, day: shown) { showCalendar = true } }
             ToolbarSpacer(.flexible, placement: .bottomBar)
         } else {
-            ToolbarItem(placement: .status) { dayLabelButton(label, done: summary.done, total: summary.total) }
+            ToolbarItem(placement: .status) { DayCountButton(label: label, day: shown) { showCalendar = true } }
         }
         ToolbarItem(placement: .bottomBar) {
             Button("Next day", systemImage: "chevron.right") { day = shown.adding(days: 1, calendar: store.calendar) }
         }
     }
 
-    private func dayLabelButton(_ label: String, done: Int, total: Int) -> some View {
-        Button { showCalendar = true } label: {
-            DayLabel(label: label, done: done, total: total)
-        }
-        .accessibilityLabel("\(label), \(done) of \(total) done. Open calendar")
-    }
 
     /// ≡ · Filter · +. Progress, Habits, Tasks and every setting live in the ≡ menu (the user's final decision,
     /// 30 Sep 2026). Filter is Apple Mail's circled symbol, so it can't be mistaken for ≡ (Navigation, Round 3).
@@ -700,5 +693,22 @@ private struct ClocksPausedUnderMenu: ViewModifier {
 
     func body(content: Content) -> some View {
         content.environment(\.clocksPaused, !menu.path.isEmpty)
+    }
+}
+
+/// The day's "6/15" in the bottom bar. It reads the day's entries itself, so a tap on Today redraws this button, not
+/// the whole of Today (the count was worked out in Today's body, which then re-ran on every log; speed run, 2 Oct).
+private struct DayCountButton: View {
+    let label: String
+    let day: LocalDay
+    let open: () -> Void
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        let summary = store.daySummary(on: day)
+        Button(action: open) {
+            DayLabel(label: label, done: summary.done, total: summary.total)
+        }
+        .accessibilityLabel("\(label), \(summary.done) of \(summary.total) done. Open calendar")
     }
 }
