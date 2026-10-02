@@ -31,7 +31,7 @@ here the same day, with its numbers.
 | L15 | **A redraw that touches the whole screen for something small** (each row's `onAppear` updating shared state) | Every row appearing rebuilt every section of Today (30 Sep) | State that changes while scrolling lives in its own small object read only by who needs it | Profile: one screen's body during scrolling |
 | L16 | **An environment value or observed property read by every row, when only a few need it** | Pausing Today's clocks through a value every row read made every row redraw on each menu page opening (1 Oct, found reviewing the fix itself) | Read it in the smallest view that uses it (`RowClock`); a row without a clock never sees it | Review: who reads a value is who redraws when it changes |
 | L17 | **Writing to `UserDefaults` on every data change** (a "changed since the last backup" flag, set after each tap) | The Day sheet's add, edit and undo: 535 ms/s of hitches and 36 freezes, against 134 and 2 without it (same hour, same scenario, 1 Oct). Every Today row has an `@AppStorage`, and a defaults write makes them check again | Write only when the value changes (`if !flag { set }`), or keep it in memory and save it when leaving the app | Speed run "Day sheet: add, edit and exact undo"; review: no `UserDefaults.set` in `onChange` paths |
-| L18 | **The first keyboard of a launch** | Opening the entry editor (the launch's first text field) stalls 3.3–6.7 s on the hosted simulator; the habit form's first open 1.4–2.8 s; later keyboards cost a fraction (1 Oct) | Not fixed yet: measure warming the text system after launch has settled, and focusing a field only after its sheet has finished appearing | Speed runs "Entry editor", "Habit form (first)" |
+| L18 | **The first keyboard of a launch** | Opening the entry editor (the launch's first text field) stalls 3.3–6.7 s on the hosted simulator; the habit form's first open 1.4–2.8 s; later keyboards cost a fraction (1 Oct) | **Not a phone problem (2 Oct):** on the iPhone 16 the launch's first keyboard cost 136 ms, a later one 127 ms (`form-parts`), against 2.1 s on the hosted simulator. Don't pre-load the keyboard; judge keyboards on the phone | Speed runs "Habit form, the launch's first keyboard" on the iPhone (`measure_perf_device.sh`) |
 | L19 | **A lazy grid inside a `List` or `Form` row** (the habit page's month calendar and number tiles; the form's colour and date pickers) | On the iPhone (iOS 26.6) opening any habit's page crashed the app: the list's collection view re-laid out its visible cells 100 deep and asserted (crash report, 2 Oct). GitHub's simulator never showed it | A plain `Grid` with `GridRow`s, sized up front; lazy grids only in a `ScrollView` | `check_rules.sh` (lazy grids only in listed files); test on the real iPhone |
 
 ## How to find a slow spot (what worked, and what misled)
@@ -56,10 +56,19 @@ here the same day, with its numbers.
   107–236 ms, the same within noise; only a few first openings (Help's search bar, Appearance, Day and Week) added
   ~150 ms once per launch (2 Oct). Without the control, those numbers would have sent us optimising pages that cost
   nothing.
+- **The phone has the final word** (`Tools/perf/measure_perf_device.sh`, 2 Oct). The hosted simulator inflates some
+  costs 15× (the first keyboard) and every push 2–3× (a blank page 120–200 ms there, 45–85 ms on the iPhone 16). Use
+  GitHub's runs to compare before and after; check what people feel on the phone.
 - **Test with a year of history.** Work that grows with history is fast with a new install's week of data and slow
   with a year of it.
 
 ## Open, not yet fixed (update as they're done)
+
+**On the iPhone 16 (2 Oct, `5457ec2`, a year of history, `measure_perf_device.sh`): no freeze of 100 ms anywhere.**
+Scrolling: Today 4.8 ms/s (47 ms longest), Progress 0.7, All Habits 1.1, the habit page 5.7. Openings 46–170 ms
+against a blank page's 45–85 ms. Still above the 5 ms/s target, repeating the action quickly: Progress's period and
+range switch 110 ms/s (95 ms longest, ~45 ms a switch), the entry editor's typing 63 ms/s, the Day sheet's add, edit
+and undo 53 ms/s, Today's +1 and day switch 40 ms/s. The items below are the simulator's figures from before.
 
 - Opening a screen stalls 0.5–1.3 s (target under 0.1 s); slow before the merge too (1 Oct). **2 Oct:** menu pages
   now open within noise of a blank page's push (above); the first openings of Help, Appearance and Day and Week add
