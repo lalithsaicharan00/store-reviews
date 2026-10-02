@@ -59,6 +59,12 @@ here the same day, with its numbers.
 - **The phone has the final word** (`Tools/perf/measure_perf_device.sh`, 2 Oct). The hosted simulator inflates some
   costs 15× (the first keyboard) and every push 2–3× (a blank page 120–200 ms there, 45–85 ms on the iPhone 16). Use
   GitHub's runs to compare before and after; check what people feel on the phone.
+- **Time and count before changing anything** (`perfTimed`, 2 Oct). The Day sheet's ~50 ms/s of add, edit and undo
+  was blamed on the store until the timed table showed the widgets' month projection: 60 runs, 362 ms, up to 118 ms,
+  one per change, 180 ms after it (fix: widgets publish 2 s after the last change; going to the background still
+  publishes at once): 17 runs, 93 ms. Redraw counts ("Count: …" in the timed table) then showed each screen redraws
+  only what changed (one row per +1; the whole list only on a day switch), so what's left is the list machinery's own
+  per-change cost, about 6 ms a change on the iPhone.
 - **Test with a year of history.** Work that grows with history is fast with a new install's week of data and slow
   with a year of it.
 

@@ -139,3 +139,8 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
   artifact); what's left is a few per-action hitches (lessons file). Widget tests queued on the latest code (last run
   04:05). Branch checklist updated with the Progress agents' new branches. Next, without check-ins: the typing
   control and Today's split, the widget results, then the per-action hitches.
+- **2 Oct 13:30 UTC:** speed, measured on the phone and fixed with timed tables: entry-editor and log-sheet typing
+  (the field's binding in its own view, 23.6 → 2–6 ms/s); widgets publish 2 s after the last change (362 → 93 ms of
+  projections in the Day sheet test). Redraw counts show each screen redraws only what changed. Widget tests green
+  (Lock Screen skipped by design on the simulator). Speed work at diminishing returns; the Progress redesign carries
+  the last big one (period switch, 110 ms/s on the phone).
