@@ -396,7 +396,9 @@ extension HabitStore {
         for slip in stats.slips { perDay[self.today(now: slip), default: 0] += 1 }
         let strip = stats.marks.map { mark -> WeekCardDay in
             let n = perDay[mark.day] ?? 0
-            return WeekCardDay(day: mark.day, mark: mark.mark, fraction: mark.fraction, over: false, extra: false,
+            // A day still to come is "due later this week" for a quit habit too (every day counts), not "not scheduled".
+            let shown: DayMark = mark.day > today && mark.mark == .notItsDay ? .upcoming : mark.mark
+            return WeekCardDay(day: mark.day, mark: shown, fraction: mark.fraction, over: false, extra: false,
                                slip: n > 0, value: n > 1 ? "\(n)×" : "")
         }
         let count = stats.slips.count
