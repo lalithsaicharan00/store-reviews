@@ -174,4 +174,5 @@ From the report's §5; the code is `HabitStore+WeekCards.swift`.
 
 | Run | What | Result |
 |---|---|---|
+| [37035760133](https://github.com/lalithsaicharan00/store-reviews/actions/runs/37035760133) (`9b267aa`, Year) | Build, Release build; WeekCards, Progress and Groups UI tests (21); speed `progress`, `progress-year` | All passed. Year scrolling 39.2 ms/s, longest 134 ms, 1 freeze; Progress Year opening 532 ms first, 222 ms again (the blank-page push alone is 120–200 ms on this Mac); Year's snapshot 43 ms (30 cards, 1.4 ms each on average). Week scrolling 21.1 ms/s. ‹ › and range switching 196 ms/s, 258 ms longest (was 183–217 ms/s before Year): still over the target, open |
 | (first push) | Build + Progress/Groups UI tests + speed | Waiting; the testing agent reads `ci-results` |
