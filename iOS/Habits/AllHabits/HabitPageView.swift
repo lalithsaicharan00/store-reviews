@@ -307,18 +307,29 @@ struct HabitMonthView: View {
                     .disabled(month > latest)
             }
             .buttonStyle(.borderless)
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 2), count: 7), spacing: 6) {
-                ForEach(MonthGridCell.month(places: lead + count), id: \.self) { item in
-                    switch item {
-                    case .weekday(let i): Text(ordered[i]).font(.caption2.weight(.semibold)).foregroundStyle(.secondary)
-                    case .place(let place) where place < lead: Color.clear.frame(height: 36)
-                    case .place(let place):
-                        let day = LocalDay(year: month.year, month: month.month, day: place - lead + 1)
-                        Button { onSelect(day) } label: { cell(day, isToday: day == today).frame(minHeight: 44) }
-                            .buttonStyle(.borderless)
-                            .disabled(day > today)
-                            .accessibilityLabel(spoken(day))
-                            .accessibilityIdentifier("habit-day-\(day.key)")
+            // A plain Grid, never a lazy one, inside a List row: a LazyVGrid here sent the list into an endless
+            // self-sizing loop on the iPhone and the app was lost on opening any habit (crash report, 2 Oct 2026;
+            // Design Rules: never put a lazy grid inside a List row).
+            let cells = MonthGridCell.month(places: lead + count)
+            Grid(horizontalSpacing: 2, verticalSpacing: 6) {
+                ForEach(Array(stride(from: 0, to: cells.count, by: 7)), id: \.self) { start in
+                    GridRow {
+                        ForEach(cells[start..<min(start + 7, cells.count)], id: \.self) { item in
+                            Group {
+                                switch item {
+                                case .weekday(let i): Text(ordered[i]).font(.caption2.weight(.semibold)).foregroundStyle(.secondary)
+                                case .place(let place) where place < lead: Color.clear.frame(height: 36)
+                                case .place(let place):
+                                    let day = LocalDay(year: month.year, month: month.month, day: place - lead + 1)
+                                    Button { onSelect(day) } label: { cell(day, isToday: day == today).frame(minHeight: 44) }
+                                        .buttonStyle(.borderless)
+                                        .disabled(day > today)
+                                        .accessibilityLabel(spoken(day))
+                                        .accessibilityIdentifier("habit-day-\(day.key)")
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
                     }
                 }
             }

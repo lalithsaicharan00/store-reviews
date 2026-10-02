@@ -168,20 +168,30 @@ struct OverTimeSection: View {
         anchor = store.period(kind, containing: day).contains(store.today()) ? nil : day
     }
 
+    /// Two tiles a row in a plain Grid: a LazyVGrid inside a List row sent the list into an endless self-sizing loop on
+    /// the iPhone (crash report, 2 Oct 2026; Design Rules: never put a lazy grid inside a List row).
     private func tiles(_ snapshot: OverTimeSnapshot) -> some View {
-        LazyVGrid(columns: [GridItem(.flexible(), alignment: .top), GridItem(.flexible(), alignment: .top)], spacing: 12) {
-            ForEach(snapshot.tiles) { tile in
-                let percent = showPercentages ? tile.percent : nil
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(tile.value + (percent.map { " · \($0)%" } ?? ""))
-                        .font(.headline.monospacedDigit()).lineLimit(2).minimumScaleFactor(0.8)
-                    Text(tile.caption).font(.caption).foregroundStyle(.secondary)
+        let tiles = snapshot.tiles
+        return Grid(alignment: .topLeading, horizontalSpacing: 12, verticalSpacing: 12) {
+            ForEach(Array(stride(from: 0, to: tiles.count, by: 2)), id: \.self) { start in
+                GridRow {
+                    tileView(tiles[start])
+                    if start + 1 < tiles.count { tileView(tiles[start + 1]) } else { Color.clear.gridCellUnsizedAxes([.horizontal, .vertical]) }
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(tile.caption), \(tile.value)" + (percent.map { ", \($0) percent" } ?? ""))
             }
         }
+    }
+
+    private func tileView(_ tile: OverTimeTile) -> some View {
+        let percent = showPercentages ? tile.percent : nil
+        return VStack(alignment: .leading, spacing: 2) {
+            Text(tile.value + (percent.map { " · \($0)%" } ?? ""))
+                .font(.headline.monospacedDigit()).lineLimit(2).minimumScaleFactor(0.8)
+            Text(tile.caption).font(.caption).foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(tile.caption), \(tile.value)" + (percent.map { ", \($0) percent" } ?? ""))
     }
 
     // MARK: Chart

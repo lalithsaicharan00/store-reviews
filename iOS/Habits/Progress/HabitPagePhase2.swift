@@ -247,11 +247,16 @@ struct QuitOverTimeSection: View {
                         }
                     }
                     .buttonStyle(.borderless)
-                    LazyVGrid(columns: [GridItem(.flexible(), alignment: .top), GridItem(.flexible(), alignment: .top)], spacing: 12) {
-                        tile("\(data.stats.slips.count)", "Slips")
-                        tile("\(data.stats.cleanDays) of \(data.stats.days)", "Clean days")
-                        tile(Format.days(data.stats.longestRun), "Longest run")
-                        if range == .all, let average = data.average { tile(Format.days(average), "Average run") }
+                    // A plain Grid inside a List row, never a lazy one (the self-sizing loop, 2 Oct 2026).
+                    Grid(alignment: .topLeading, horizontalSpacing: 12, verticalSpacing: 12) {
+                        GridRow {
+                            tile("\(data.stats.slips.count)", "Slips")
+                            tile("\(data.stats.cleanDays) of \(data.stats.days)", "Clean days")
+                        }
+                        GridRow {
+                            tile(Format.days(data.stats.longestRun), "Longest run")
+                            if range == .all, let average = data.average { tile(Format.days(average), "Average run") } else { Color.clear.gridCellUnsizedAxes([.horizontal, .vertical]) }
+                        }
                     }
                     if !data.runs.isEmpty { runsChart(data) }
                     if !data.stats.slips.isEmpty {

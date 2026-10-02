@@ -1459,8 +1459,21 @@ struct ColorGrid: View {
     @Binding var selection: HabitColor
 
     var body: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 7), spacing: 12) {
-            ForEach(HabitColor.allCases, id: \.self) { c in
+        // A plain Grid inside the form's row, never a lazy one (the List self-sizing loop, 2 Oct 2026).
+        let colors = HabitColor.allCases
+        Grid(horizontalSpacing: 10, verticalSpacing: 12) {
+            ForEach(Array(stride(from: 0, to: colors.count, by: 7)), id: \.self) { start in
+                GridRow {
+                    ForEach(colors[start..<min(start + 7, colors.count)], id: \.self) { c in
+                        swatch(c).frame(maxWidth: .infinity)
+                    }
+                }
+            }
+        }
+        .padding(.vertical, 6)
+    }
+
+    private func swatch(_ c: HabitColor) -> some View {
                 Button { selection = c } label: {
                     Circle().fill(c.color.gradient)
                         .frame(width: 34, height: 34)
@@ -1474,9 +1487,6 @@ struct ColorGrid: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel(c.name)
                 .accessibilityAddTraits(c == selection ? .isSelected : [])
-            }
-        }
-        .padding(.vertical, 6)
     }
 }
 
@@ -1519,13 +1529,28 @@ struct WeekdayPicker: View {
 /// 1–31, like the Calendar app's monthly repeat.
 struct MonthDatePicker: View {
     @Binding var selection: Set<Int>
-    @ScaledMetric(relativeTo: .body) private var cellSize = 44.0
+    @Environment(\.dynamicTypeSize) private var dynamicType
 
     var body: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: cellSize), spacing: 2)], spacing: 6) {
-            ForEach(1...31, id: \.self) { date in
+        // Seven a row like the Calendar app (four at the accessibility sizes), in a plain Grid: an adaptive lazy grid's
+        // column count follows the row's width, which can send the form's list into an endless self-sizing loop
+        // (2 Oct 2026; Design Rules: never put a lazy grid inside a List row).
+        let perRow = dynamicType.isAccessibilitySize ? 4 : 7
+        Grid(horizontalSpacing: 2, verticalSpacing: 6) {
+            ForEach(Array(stride(from: 1, through: 31, by: perRow)), id: \.self) { start in
+                GridRow {
+                    ForEach(start...min(start + perRow - 1, 31), id: \.self) { date in
+                        dateButton(date)
+                    }
+                }
+            }
+        }
+        .padding(.vertical, 4)
+    }
+
+    private func dateButton(_ date: Int) -> some View {
                 let on = selection.contains(date)
-                Button {
+                return Button {
                     if on { if selection.count > 1 { selection.remove(date) } } else { selection.insert(date) }
                 } label: {
                     Text("\(date)")
@@ -1540,9 +1565,6 @@ struct MonthDatePicker: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel("Day \(date)")
                 .accessibilityAddTraits(on ? .isSelected : [])
-            }
-        }
-        .padding(.vertical, 4)
     }
 }
 

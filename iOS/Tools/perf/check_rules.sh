@@ -61,5 +61,16 @@ for hit in $(grep -nE '(Number|Date|DateComponents|Measurement|ByteCount|List|Re
     fail "A formatter made on every call ($f:$n)" "PERFORMANCE.md rule 8: make it once (a static, or a cache) and keep it"
 done
 
+# 11. A lazy grid inside a List or Form row sends the list into an endless self-sizing loop: on the iPhone the app was
+# lost whenever a habit's page opened (crash report, 2 Oct 2026). Lazy grids live only in a ScrollView; these files
+# have one there. Anything inside a List or Form uses a plain Grid.
+# Widgets are drawn once by WidgetKit, never inside a List.
+LAZY_OK="Habits/AddHabit/Appearance.swift Habits/Today/DayBar.swift Shared/PhoneWidgets.swift"
+for f in $(grep -lE 'Lazy[VH]Grid *\(' $SWIFT); do
+  case " $LAZY_OK " in *" $f "*) ;; *)
+    fail "A lazy grid in $f" "Design Rules: never put a lazy grid inside a List row (a plain Grid). If it's in a ScrollView, add the file to LAZY_OK";;
+  esac
+done
+
 if [ $FAIL = 0 ]; then echo "Speed rules: all checks passed"; fi
 exit $FAIL
