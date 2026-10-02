@@ -94,6 +94,7 @@ struct OverTimeSection: View {
             }
         }
         .accessibilityIdentifier("over-time-weekdays")
+        .onAppear { store.analytics.count(.weekdayChart, ticket: store.analytics.ticket) }
     }
 
     /// The 30-day rate (report §16.6): a forgiving measure anyone can check on the calendar.

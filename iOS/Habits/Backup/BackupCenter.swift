@@ -451,6 +451,18 @@ final class BackupCenter {
 
     /// The checked backup file, written for sharing ("Move to another device", "Export a file"), read back first.
     func makeFile() async throws -> URL {
+        let ticket = store.analytics.ticket
+        do {
+            let url = try await writeFile()
+            recordBackup("manual_backup", format: "checked_backup", succeeded: true, ticket: ticket)
+            return url
+        } catch {
+            recordBackup("manual_backup", format: "checked_backup", succeeded: false, ticket: ticket)
+            throw error
+        }
+    }
+
+    private func writeFile() async throws -> URL {
         await store.flush()
         let file = try await repository.backupFile(info: Self.info)
         guard let data = Data(base64Encoded: file.base64) else { throw CocoaError(.fileWriteUnknown) }
@@ -485,7 +497,13 @@ final class BackupCenter {
     /// Adds what an older backup file has and this iPhone doesn't; never removes or overwrites anything. Checked on a
     /// copy before anything changes (`HabitStore.restore(from:)`).
     func importOlderFile(_ url: URL) async throws -> HabitStore.RestoreSummary {
-        let added = try await store.restore(from: url)
+        let ticket = store.analytics.ticket
+        let added: HabitStore.RestoreSummary
+        do { added = try await store.restore(from: url) } catch {
+            recordBackup("restore", format: "legacy", mode: "merge", succeeded: false, ticket: ticket)
+            throw error
+        }
+        recordBackup("restore", format: "legacy", mode: "merge", succeeded: true, ticket: ticket)
         if added.changed {
             dataChanged()
             store.onChange?() // reminders, widgets, Siri's phrases and sync follow the restored habits
@@ -496,13 +514,30 @@ final class BackupCenter {
 
     /// Restores, keeps the undo file, and shows the result. On a synced device the change syncs like any edit.
     func restore(_ pending: Pending, mode: RestoreMode) async throws -> RestoreChanges {
+        let ticket = store.analytics.ticket
+        let restoreMode = mode == .replace ? "replace" : "merge"
         await store.flush()
-        let result = try await repository.restore(file: pending.base64, mode: mode, info: Self.info)
+        let result: RestoreResult
+        do { result = try await repository.restore(file: pending.base64, mode: mode, info: Self.info) } catch {
+            recordBackup("restore", provider: "unknown", format: "checked_backup", mode: restoreMode, succeeded: false, ticket: ticket)
+            throw error
+        }
+        recordBackup("restore", provider: "unknown", format: "checked_backup", mode: restoreMode, succeeded: true, ticket: ticket)
         if let data = Data(base64Encoded: result.undo.base64) { Self.saveUndo(data) }
         store.reloadAfterSync()
         dataChanged()
         refresh()
         return result.changes
+    }
+
+    /// Usage sharing (optional, content-free; `AnalyticsContract`): what a backup action did. Never names or values.
+    func recordBackup(_ operation: String, provider: String = "local", format: String, mode: String = "not_applicable",
+                      succeeded: Bool, ticket: AnalyticsTicket?) {
+        store.analytics.event(.backup, ["operation": .text(operation), "provider": .text(provider), "format": .text(format),
+            "restore_mode": .text(mode), "result": .text(succeeded ? "success" : "failed"),
+            "failure_code": .text(succeeded ? "none" : "unknown")], ticket: ticket)
+        if operation == "restore" && succeeded { store.analytics.cohort("restored", ticket: ticket) }
+        store.analytics.reliability("backup", succeeded: succeeded, ticket: ticket)
     }
 
     /// Puts this device back exactly as it was before the last restore.

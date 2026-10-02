@@ -96,6 +96,7 @@ struct BackupSyncView: View {
                 }
             }
         }
+        .analyticsScreen(.backupSync)
         .navigationTitle("Backup & Export")
         .navigationBarTitleDisplayMode(.inline)
         .task { await backup.runIfDue() }
@@ -178,15 +179,19 @@ struct BackupSyncView: View {
 
     /// A spreadsheet for reading the history (not for restoring): one row per day's entry or note.
     private func exportSpreadsheet() async {
+        let ticket = store.analytics.ticket
         await store.flush()
         guard store.problem == nil, store.isStorageReady else {
+            backup.recordBackup("export", format: "csv", succeeded: false, ticket: ticket)
             message = BackupAlert(title: "Couldn't Export", text: HabitStore.BackupError.pendingSave.localizedDescription)
             return
         }
         let rows = DataExport.rows(from: store), day = store.today().key
         do {
             sharing = try await Task.detached { try DataExport.file(rows: rows, day: day) }.value
+            backup.recordBackup("export", format: "csv", succeeded: true, ticket: ticket)
         } catch {
+            backup.recordBackup("export", format: "csv", succeeded: false, ticket: ticket)
             message = BackupAlert(title: "Couldn't Export", text: "Your habits are safe on this iPhone. Please try again.")
         }
     }

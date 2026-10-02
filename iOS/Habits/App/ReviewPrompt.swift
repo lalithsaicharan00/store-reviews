@@ -33,6 +33,7 @@ enum ReviewPrompt {
     static func markAsked(now: Date = .now, defaults: UserDefaults = .standard) {
         defaults.set(now, forKey: askedKey)
         defaults.set(version, forKey: versionKey)
+        Analytics.shared.count(.reviewRequested, ticket: Analytics.shared.ticket)
     }
 
 }

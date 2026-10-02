@@ -46,6 +46,7 @@ struct TimesOfDayList: View {
                 Text("Morning, Evening, or your own, like Before work. Each one ends when the next one starts.")
             }
         }
+        .analyticsScreen(.timesOfDay)
         .navigationTitle("Times of Day")
         .navigationBarTitleDisplayMode(.inline)
         // Pushed, like the pages in the New flow.

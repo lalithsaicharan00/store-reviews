@@ -204,8 +204,8 @@ struct MenuPage: View {
             if let backup = AppModel.shared.backup { BackupSyncView().environment(backup) } else { BackupExportView() }
         case .reminders: RemindersView()
         case .privacy: PrivacyView()
-        case .help: HelpView()
-        case .about: AboutView()
+        case .help: HelpView().analyticsScreen(.help)
+        case .about: AboutView().analyticsScreen(.about)
         default: ComingSoonView(place: place)
         }
     }

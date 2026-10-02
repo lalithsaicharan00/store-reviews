@@ -6,6 +6,7 @@ import SwiftUI
 enum Onboarding {
     /// Set once the welcome is finished, skipped or left for a restore. Kept in UserDefaults: it's about this phone.
     static let doneKey = "onboarding.done"
+    static let outcomeKey = "onboarding.outcome"
 
     /// The app's name as people see it in the welcome and help. The home-screen name changes with the bundle ID on
     /// `claude/server-and-sync` (Architecture "App Identity"); these words already use it.
@@ -69,11 +70,15 @@ struct OnboardingView: View {
     /// Called once, however it ends: finished, skipped, a habit added, or Restore chosen (`restore` true).
     var onFinish: (_ restore: Bool) -> Void
 
+    @Environment(HabitStore.self) private var store
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var page = 0
     @State private var forward = true
     @State private var showNew = false
     @State private var addedFromNew = false
+    @State private var analyticsStepTicket: AnalyticsTicket?
+    @State private var analyticsFinished = false
+    @State private var observedPages: Set<Int> = []
 
     private var pageCount: Int { replay ? 2 : 4 }
     private var isLast: Bool { page == pageCount - 1 }
@@ -82,10 +87,10 @@ struct OnboardingView: View {
         NavigationStack {
             ZStack {
                 switch page {
-                case 0: NamePage().transition(slide)
-                case 1: FreePage().transition(slide)
-                case 2: DaysPage().transition(slide)
-                default: IdeasPage(ownRow: false, onSomethingElse: { showNew = true }).transition(slide)
+                case 0: NamePage().transition(slide).onAppear { observeStep(0) }
+                case 1: FreePage().transition(slide).onAppear { observeStep(1) }
+                case 2: DaysPage().transition(slide).onAppear { observeStep(2) }
+                default: IdeasPage(ownRow: false, onSomethingElse: { showNew = true }).transition(slide).onAppear { observeStep(3) }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -100,20 +105,21 @@ struct OnboardingView: View {
                 }
                 if !replay && !isLast {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Skip") { finish() }
+                        Button("Skip") { finish(skipped: true) }
                             .accessibilityIdentifier("onboarding-skip")
                     }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: HabitIdea.self) { idea in
-                IdeaForm(idea: idea) { _ in finish() }
+                IdeaForm(idea: idea) { _ in finishAfterSave() }
             }
         }
         // New closes itself after Add; the welcome ends once it has gone, never while it's still closing.
-        .sheet(isPresented: $showNew, onDismiss: { if addedFromNew { finish() } }) {
+        .sheet(isPresented: $showNew, onDismiss: { if addedFromNew { finishAfterSave() } }) {
             NewItemView { _ in addedFromNew = true }
         }
+        .analyticsScreen(.onboarding)
         .interactiveDismissDisabled()
     }
 
@@ -154,6 +160,11 @@ struct OnboardingView: View {
                     .frame(maxWidth: .infinity, minHeight: 44)
                     .accessibilityIdentifier("onboarding-not-now")
             }
+            if page == 0 && !replay {
+                NavigationLink("Privacy & Optional Usage Sharing") { PrivacyView() }
+                    .font(.footnote)
+                    .accessibilityIdentifier("onboarding-privacy")
+            }
             PageDots(count: pageCount, current: page)
         }
         .padding(.horizontal, 24)
@@ -173,8 +184,31 @@ struct OnboardingView: View {
         withAnimation(reduceMotion ? .easeInOut(duration: 0.2) : .snappy(duration: 0.35)) { page = next }
     }
 
-    private func finish(restore: Bool = false) {
-        if !replay { Onboarding.markDone() }
+    private func observeStep(_ page: Int) {
+        guard let ticket = Analytics.shared.ticket, observedPages.insert(page).inserted else { return }
+        analyticsStepTicket = ticket
+        if !replay { Analytics.shared.cohort("fresh_first_run", ticket: analyticsStepTicket) }
+        Analytics.shared.event(.onboardingStep, ["flow_mode": .text(replay ? "replay" : "first_run"),
+            "step": .text(["welcome", "free_plan", "day_week", "first_item"][page])], ticket: analyticsStepTicket)
+    }
+
+    private func finishAfterSave() {
+        Task { @MainActor in
+            await store.flush()
+            guard store.problem == nil else { return }
+            finish()
+        }
+    }
+
+    private func finish(restore: Bool = false, skipped: Bool = false) {
+        guard !analyticsFinished else { return }
+        analyticsFinished = true
+        if !replay {
+            Onboarding.markDone()
+            UserDefaults.standard.set(skipped ? "skipped" : "completed", forKey: Onboarding.outcomeKey)
+        }
+        Analytics.shared.event(.onboardingFinished, ["flow_mode": .text(replay ? "replay" : "first_run"),
+            "outcome": .text(restore ? "restore_handoff" : skipped ? "skipped" : "completed")], ticket: analyticsStepTicket)
         onFinish(restore)
     }
 }

@@ -43,6 +43,7 @@ struct DayAndWeekView: View {
             .font(.subheadline)
             .foregroundStyle(.secondary)
         }
+        .analyticsScreen(.dayAndWeek)
         .navigationTitle("Day and Week")
         .navigationBarTitleDisplayMode(.inline)
     }

@@ -111,7 +111,8 @@ struct EntryEditView: View {
             Section { Button("Delete Entry", role: .destructive) { typing = false; store.undoEntry(entry.id); dismiss() } }
         }
         .selectsNumbersOnFocus()
-        .navigationTitle("Edit Entry")
+        .analyticsScreen(nil)
+            .navigationTitle("Edit Entry")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {

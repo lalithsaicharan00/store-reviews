@@ -68,6 +68,7 @@ struct AllHabitsView: View {
             }
         }
         .environment(\.editMode, $editMode)
+        .analyticsScreen(kind == .tasks ? .myTasks : .allHabits)
         .navigationTitle(kind == .tasks ? "Tasks" : "Habits")
         .navigationDestination(for: UUID.self) { HabitPageView(id: $0) }
         .navigationDestination(item: $perfPage) { HabitPageView(id: $0) }

@@ -6,7 +6,10 @@ import SwiftUI
 /// Today never reads `isOpen`: opening, dragging and closing the menu redraw only the menu and its dimming, never
 /// Today's list ("Speed: every tap answers at once" in the Design Rules).
 @Observable final class MenuModel {
-    var isOpen = false
+    var isOpen = false { didSet {
+        if oldValue != isOpen { Analytics.shared.surface(analyticsMenuToken, screen: .menu, appeared: isOpen) }
+    } }
+    @ObservationIgnored private let analyticsMenuToken = UUID()
     /// How far a finger has dragged the menu right (+, opening from Today's edge) or left (−, closing it).
     /// Only the menu layer reads it, so a drag frame redraws nothing else.
     var drag: CGFloat = 0

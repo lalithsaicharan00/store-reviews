@@ -103,7 +103,7 @@ nonisolated enum WidgetDisk {
         try data.write(to: file, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
     }
     /// Coordinated read-modify-write: paging is display state, never a log or database lock.
-    static func page(key: String, delta: Int = 0, set: Int? = nil) -> Int {
+    static func page(key: String, delta: Int = 0, set: Int? = nil, onCommitted: (() -> Void)? = nil) -> Int {
         guard let directory else { return 0 }
         let file = directory.appendingPathComponent("widget-pages.json")
         let coordinator = NSFileCoordinator()
@@ -117,7 +117,9 @@ nonisolated enum WidgetDisk {
             result = max(0, min(100_000, set ?? (stored + shift)))
             if delta != 0 || set != nil {
                 pages[key] = result
-                if let data = try? JSONEncoder().encode(pages) { try? data.write(to: file, options: .atomic) }
+                if let data = try? JSONEncoder().encode(pages) {
+                    do { try data.write(to: file, options: .atomic); onCommitted?() } catch {}
+                }
             }
         }
         return result

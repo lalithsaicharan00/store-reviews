@@ -58,3 +58,14 @@ here the same day, with its numbers.
 - Opening a screen stalls 0.5–1.3 s (target under 0.1 s); slow before the merge too (1 Oct).
 - Today's first scroll has one 180–440 ms freeze (1 Oct).
 - Saving an entry stalls 0.6–0.8 s; opening the entry editor, the launch's first keyboard, 3–7 s on the hosted simulator (L18, 1 Oct).
+
+## Analytics validation lesson — 2 October 2026 (IST)
+
+macOS ships Bash 3.2. With `set -u`, expanding a defined empty array (`ANALYTICS_ARGS[@]`) failed before `simctl launch`. The consent-off baseline in run 36907293697 waited 180 seconds per missing record: all three windows were unmeasured, wasting about ten Mac minutes. Consent-on launches used a nonempty array and succeeded. Use explicit argument lists for optional fixture modes, fail promptly on a missing launch PID, and preserve launch diagnostics. A failed/unlaunched baseline is not evidence of an app stall or telemetry overhead.
+
+That run passed 86 native analytics checks and all 14 targeted UI tests. Consent-on windows were scroll 15.9ms/s (127ms longest), taps 14.4ms/s (63ms), typing 2.8ms/s (36ms), compared with 39.1/251.5/79.4ms/s on an earlier hosted run. Hosted noise and consolidated app changes prevent causal comparisons across those runs. Compare off/on in the same build; do not declare full speed acceptance while targets or first-open stalls remain unresolved. All telemetry mutation/persistence stays on its utility queue; type/configuration classification skips work without consent.
+
+With the launcher corrected (run36911212496), five same-build off/on windows completed: scroll15.9→17.2ms/s, taps47.0→31.1, typing31.2→36.6, widget log0.6→1.0, widget guide2.6→8.5. Longest widget log stall22→24ms. Variation has both signs, and a single ordered pair does not prove causal overhead or full acceptance. Global targets are still missed; production telemetry remains gated. Exact source/evidence is in `Docs/Analytics Performance Evidence.json`.
+
+
+Analytics repeat (1 Oct UTC / 2 Oct IST): run36911869018, same Debug build off→on, scroll28.2→16.7ms/s (166→101ms), taps89.3→136.6 (114→246ms), typing17.1→30.3 (83→104ms), widget-log15.9→15.6 (37→44ms), guide0→0. Form first-open1195/1244ms and guide476/568ms both miss targets. These differ greatly from run36911212496 despite unchanged view/store code. Keep both reports, mixed direction and ordering visible; neither is causal overhead or device acceptance. Production gate stays closed. Final utility-only checks reuse these measured views rather than paying for an unchanged full performance repeat.

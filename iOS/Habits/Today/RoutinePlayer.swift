@@ -17,6 +17,7 @@ struct RoutinePlayer: View {
     @ScaledMetric(relativeTo: .title) private var numberSize = 36.0
     @ScaledMetric(relativeTo: .body) private var breathingRoom = 24.0
     @ScaledMetric(relativeTo: .body) private var actionWidth = 240.0
+    @State private var analyticsFlow = Analytics.shared.ticket
     @State private var order: [Habit]
     @State private var index = 0
     @State private var busy = false
@@ -139,6 +140,7 @@ struct RoutinePlayer: View {
         // A keyboard left open in the New Habit form reserved a blank band at the bottom and pushed the controls
         // up (found by the user on the iPhone, 29 Sep).
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .analyticsScreen(.routinePlayer)
         .accessibilityIdentifier("routine-player")
         .interactiveDismissDisabled()
         .task {
@@ -160,12 +162,15 @@ struct RoutinePlayer: View {
         }
         // No permission prompt over the player; the screen stays awake while a timer runs in it (research P13:
         // "Keep Screen On" is valued by routine-app users).
-        .onAppear { TimerPresence.playerOpen = true; updateScreenAwake() }
+        .onAppear {
+            TimerPresence.playerOpen = true; updateScreenAwake()
+            store.analytics.count(.routineStarted, ticket: analyticsFlow)
+        }
         .onDisappear { TimerPresence.playerOpen = false; UIApplication.shared.isIdleTimerDisabled = false }
         .onChange(of: store.timers.count) { updateScreenAwake() }
-        .sheet(isPresented: $showQueue) { queue }
+        .sheet(isPresented: $showQueue) { queue.analyticsScreen(nil) }
         .sheet(isPresented: $showHabitOptions, onDismiss: habitOptionsDismissed) {
-            if let habit = current { habitOptions(habit) }
+            if let habit = current { habitOptions(habit).analyticsScreen(nil) }
         }
         .sheet(isPresented: $showEdit) { if let habit = current { EditHabitSheet(habit: habit) } }
         .sheet(isPresented: $showLog, onDismiss: manualLogFinished) {
@@ -727,7 +732,10 @@ struct RoutinePlayer: View {
             }
             await store.flush()
             busy = false
-            if store.problem == nil { dismiss() }
+            if store.problem == nil {
+                store.analytics.count(remaining.isEmpty && index >= order.count ? .routineFinished : .routineCancelled, ticket: analyticsFlow)
+                dismiss()
+            }
         }
     }
 

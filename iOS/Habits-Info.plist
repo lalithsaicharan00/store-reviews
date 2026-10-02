@@ -51,6 +51,14 @@
 	</array>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<false/>
+	<!-- Public project capture key, never a personal/admin API key. EU Default project 290602.
+	     Keep release sending gated until real provider ingestion/privacy verification is recorded. -->
+	<key>AnalyticsProjectToken</key>
+	<string>phc_wwVdJeLuFoZV76M974mkwQmZmQwkVjzcBhaVLmJxpuoK</string>
+	<key>AnalyticsReleaseChannel</key>
+	<string>production</string>
+	<key>AnalyticsProductionEnabled</key>
+	<false/>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Habits uses Face ID to unlock when you turn on the lock in Privacy.</string>
 	<key>NSAlarmKitUsageDescription</key>

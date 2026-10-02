@@ -73,6 +73,7 @@ jobs:
             fi
           else
             case "$MESSAGE" in *"[ios-ci]"*) echo "TESTS=TodayUITests,TimerUITests,ProgressUITests,GroupsUITests,UndoUITests" >> "$GITHUB_ENV";; *) echo "TESTS=none" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-analytics]"*) echo "TESTS=AnalyticsUITests,PersistenceUITests,BackupUITests,OnboardingUITests/testWelcomeToFirstHabit,OnboardingUITests/testRestoreFromTheWelcome,OnboardingUITests/testNotNowAndHelp,WidgetUITests/testStorageActionsDayBoundariesPrivacyAndUnlimitedTasks" >> "$GITHUB_ENV"; echo "PERF_ANALYTICS=1" >> "$GITHUB_ENV"; echo "PERF_SCENARIOS=scroll-today tap-today new-habit widget-log widget-guide" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=scroll-today tap-today new-habit widget-log widget-guide" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets]"*) echo "TESTS=WidgetUITests,WidgetSystemUITests,UndoUITests/testStoreCorrectionsRecalculateAndPersist,TimerUITests" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets-recheck]"*) echo "TESTS=WidgetUITests,WidgetSystemUITests" >> "$GITHUB_ENV";; esac
             # A targeted regression pass after family screenshots already passed: real storage,
@@ -87,11 +88,29 @@ jobs:
             case "$MESSAGE" in *"[ios-reminders]"*) echo "TESTS=RemindersUITests,TasksUITests,BackupUITests,TodayUITests,TimerUITests,ScheduleUITests/testCalendarAndPersistenceRules,ScheduleUITests/testTaskAfterCompletion" >> "$GITHUB_ENV"; echo "PERF_TESTS=testRemindersPage testTasksPage testScrollToday" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-reminders-recheck]"*) echo "TESTS=RemindersUITests,TasksUITests,BackupUITests,TodayUITests,TimerUITests" >> "$GITHUB_ENV"; echo "PERF_TESTS=testRemindersPage" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf-xctest]"*|*"[ios-backup]"*|*"[ios-tasks"*|*"[ios-reminders"*) echo "PERF_XCTEST=true" >> "$GITHUB_ENV";; esac
+            # Foundation/Release correctness changes reuse prior unchanged-view UI/performance evidence.
+            case "$MESSAGE" in *"[ios-contract-only]"*) echo "TESTS=none" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets]"*) echo "PERF_SCENARIOS=scroll-today tap-today widget-log widget-guide" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=scroll-today tap-today widget-log widget-guide" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets-recheck]"*) echo "PERF_SCENARIOS=widget-log widget-guide" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=widget-log widget-guide" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-perf-input]"*) echo "PERF_SCENARIOS=new-habit day-sheet log-sheet" >> "$GITHUB_ENV";; esac
           fi
+
+      - name: Native analytics contract and outgoing payload checks
+        id: analytics
+        if: contains(env.MESSAGE, '[ios-analytics]') || github.event_name == 'workflow_dispatch'
+        run: |
+          set -o pipefail
+          mkdir -p Research/Temp/analytics
+          iOS/Tools/analytics/run_contract_tests.sh 2>&1 | tee Research/Temp/analytics/contract.log
+
+      - name: Explicit content-free EU provider integration smoke
+        id: provider
+        if: contains(env.MESSAGE, '[ios-analytics]') && !contains(env.MESSAGE, '[ios-contract-only]')
+        continue-on-error: true # Provider access never blocks durable app/native validation.
+        run: |
+          set -o pipefail
+          iOS/Tools/analytics/run_provider_smoke.sh 2>&1 | tee Research/Temp/analytics/provider.log
 
       # The speed rules that can be read from the code (iOS/PERFORMANCE.md). Fails the run before any Mac time goes
       # to building.
@@ -135,6 +154,16 @@ jobs:
             -sdk iphonesimulator -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedData ARCHS=arm64 CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 | tee build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
           grep -q "BUILD SUCCEEDED" build.log
 
+      - name: Build Release with production gate closed
+        id: releasebuild
+        if: contains(env.MESSAGE, '[ios-analytics]') || github.event_name == 'workflow_dispatch'
+        working-directory: iOS
+        run: |
+          set -o pipefail
+          xcodebuild build -project Habits.xcodeproj -scheme Habits -configuration Release \
+            -sdk iphonesimulator -destination "generic/platform=iOS Simulator" -derivedDataPath DerivedData ARCHS=arm64 CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM="" 2>&1 | tee release-build.log | grep -E "error:|warning: .*Habits/|BUILD" || true
+          grep -q "BUILD SUCCEEDED" release-build.log
+
       - name: Save available core build dependencies
         if: always() && steps.core.outcome == 'success' && steps.gradle-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
@@ -146,7 +175,7 @@ jobs:
           key: gradle-${{ runner.os }}-${{ hashFiles('Core/**/*.kts', 'Core/gradle/wrapper/gradle-wrapper.properties') }}-apple-release
 
       - name: Pick a simulator
-        if: steps.build.outcome == 'success'
+        if: steps.build.outcome == 'success' && !contains(env.MESSAGE, '[ios-contract-only]')
         timeout-minutes: 8
         run: |
           set -o pipefail
@@ -185,6 +214,12 @@ jobs:
             -sdk iphonesimulator -destination "id=$SIM" -derivedDataPath DerivedData -resultBundlePath Results.xcresult $ONLY \
             2>&1 | tee test.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
           grep -q "TEST EXECUTE SUCCEEDED" test.log
+
+      - name: Same-build consent-off performance baseline
+        id: perfbaseline
+        if: ${{ !cancelled() && env.PERF == 'true' && contains(env.MESSAGE, '[ios-analytics]') && steps.build.outcome == 'success' }}
+        working-directory: iOS
+        run: PERF_ANALYTICS=0 PERF_PROFILE_SCENARIOS=none Tools/perf/measure_perf_driver.sh "$SIM" perf-baseline
 
       - name: Speed tests
         id: perf
@@ -230,6 +265,8 @@ jobs:
             echo
             echo "- Core storage and migrations: ${{ steps.core.outcome }}"
             echo "- Build: ${{ steps.build.outcome }}"
+            echo "- Release build: ${{ steps.releasebuild.outcome }}"
+            echo "- Same-build speed baseline: ${{ steps.perfbaseline.outcome }}"
             echo "- UI tests ($TESTS): ${{ steps.tests.outcome }}"
             echo "- Speed tests: ${{ steps.perf.outcome }}"
             echo "- Speed tests through XCTest: ${{ steps.perfxctest.outcome }}"
@@ -242,9 +279,18 @@ jobs:
               echo '```'
             fi
             # A test that loses the app only says "Lost connection"; the crash report says why.
+            if [ -f release-build.log ]; then
+              echo; echo "## Release build"; echo '```'
+              grep -E "error:|BUILD (SUCCEEDED|FAILED)" release-build.log | head -30
+              echo '```'
+            fi
             CRASHES=$(python3 Tools/ci/crash_summary.py build.log Habits 2>&1 || true)
             if [ -n "$CRASHES" ]; then
               echo; echo "## App crashes"; echo '```'; echo "$CRASHES" | head -120; echo '```'
+            fi
+            if [ -f perf-baseline/perf-summary.md ]; then
+              echo; echo "## Speed baseline (same build, consent off; no profiler)"; echo
+              cat perf-baseline/perf-summary.md
             fi
             if [ -f perf/perf-summary.md ]; then
               echo; echo "## Speed (the app drives itself, no XCTest attached; compare runs, not absolute numbers)"; echo
@@ -253,6 +299,20 @@ jobs:
             if [ -f perf-xctest/perf-summary.md ]; then
               echo; echo "## Speed through XCTest (screens with no PerfDriver scenario yet; XCTest's work inflates these)"; echo
               cat perf-xctest/perf-summary.md
+            fi
+            if [ -f ../Research/Temp/analytics/provider.log ]; then
+              echo
+              echo '## Explicit provider smoke (synthetic development records)'
+              echo '```'
+              tail -30 ../Research/Temp/analytics/provider.log
+              echo '```'
+            fi
+            if [ -f ../Research/Temp/analytics/contract.log ]; then
+              echo
+              echo '## Native analytics checks'
+              echo '```'
+              tail -100 ../Research/Temp/analytics/contract.log
+              echo '```'
             fi
           } > summary.md
           cat summary.md
@@ -291,11 +351,13 @@ jobs:
             Core/schemas
             Core/build/reports/tests
             iOS/build.log
+            iOS/release-build.log
             iOS/simulator-destinations.log
             iOS/simulator-startup.log
             iOS/test.log
             iOS/summary.md
             iOS/perf
+            iOS/perf-baseline
             iOS/perf-xctest
             iOS/screenshots
             iOS/Results.xcresult
@@ -307,6 +369,7 @@ jobs:
           name: ios-logs
           path: |
             iOS/build.log
+            iOS/release-build.log
             iOS/simulator-destinations.log
             iOS/test.log
             iOS/summary.md
@@ -324,6 +387,7 @@ jobs:
             iOS/summary.md
             iOS/test.log
             iOS/perf
+            iOS/perf-baseline
             iOS/perf-xctest
             iOS/screenshots
           retention-days: 7

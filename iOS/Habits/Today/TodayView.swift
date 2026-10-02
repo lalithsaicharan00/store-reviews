@@ -62,10 +62,12 @@ struct TodayView: View {
             }
             .toolbar { if !covered { topBar } }
             // Every place in the ≡ menu is pushed here, so Back and the edge swipe return to Today.
+            .analyticsScreen(.today)
             .navigationDestination(for: MenuPlace.self) { MenuPage(place: $0) }
             .toolbar { if !covered && store.isLoaded && !store.habits.isEmpty { dayBar } }
             .sheet(isPresented: $showCalendar) {
                 CalendarSheet(day: selectedDay, today: store.today()) { day = $0 }
+                    .analyticsScreen(.historyDay)
                     // Sized to the calendar and solid, so nothing shows through or gets cut off.
                     .presentationDetents([.height(540), .large])
                     .presentationBackground(Color(.systemBackground))
@@ -80,13 +82,15 @@ struct TodayView: View {
                     DaySheet(habit: habit, day: target.day)
                 }
             }
-            .sheet(isPresented: $showSections) { DaySectionsView() }
+            .sheet(isPresented: $showSections) { DaySectionsView().analyticsScreen(.timesOfDay) }
             .sheet(isPresented: $showFilter) {
                 FilterSheet(day: selectedDay, selection: $groupRaw)
+                    .analyticsScreen(nil)
                     .presentationBackground(Color(.systemBackground))
                     .presentationDragIndicator(.visible)
             }
 
+            .onChange(of: groupRaw) { store.analytics.count(.filterUsed, ticket: store.analytics.ticket) }
             .sheet(isPresented: $showNewHabit, onDismiss: revealAdded) {
                 NewItemView(group: filterGroup) { added = $0 }
             }

@@ -30,6 +30,11 @@ struct ProgressScreen: View {
 
     private var range: ProgressRange { ProgressRange(rawValue: rangeRaw) ?? .week }
 
+    private func analyticsRange() {
+        let counter: AnalyticsCounter = switch range { case .week: .progressWeek; case .month: .progressMonth; case .year: .progressYear }
+        store.analytics.count(counter, ticket: store.analytics.ticket)
+    }
+
     var body: some View {
         let key = ProgressModel.Key(range: range, anchor: anchor, version: store.dataVersion, fullDay: fullDay,
                                     group: store.existingGroup(groupRaw), today: store.today())
@@ -49,6 +54,7 @@ struct ProgressScreen: View {
                 Color(.systemGroupedBackground).ignoresSafeArea()
             }
         }
+        .analyticsScreen(.progress)
         .navigationTitle("Progress")
         .onPerfCommand { action in
             guard let snapshot = model.snapshot else { return }
@@ -81,7 +87,13 @@ struct ProgressScreen: View {
             }
         }
         // Worked out before the first frame and again only when the key changes (report §20).
-        .onAppear { model.load(key, store: store) }
+        .onAppear { model.load(key, store: store); analyticsRange() }
+        .onChange(of: rangeRaw) { analyticsRange() }
+        .onChange(of: showStreaks) {
+            store.analytics.event(.preference, ["setting": .text("streaks"), "value": .text(showStreaks ? "enabled" : "disabled")], ticket: store.analytics.ticket)
+            store.analyticsConfiguration()
+        }
+        .onChange(of: groupRaw) { store.analytics.count(.progressGroup, ticket: store.analytics.ticket) }
         .onChange(of: key) { model.load(key, store: store) }
         .sheet(item: $openDay, onDismiss: {
             // "Show on Today": close Progress and open that day on Today, where logging happens (report §7.4).
@@ -92,7 +104,7 @@ struct ProgressScreen: View {
         }) { day in
             ProgressDaySheet(day: day, group: model.snapshot?.group) { showOnToday = day }
         }
-        .sheet(isPresented: $showExplainer) { ProgressExplainer() }
+        .sheet(isPresented: $showExplainer) { ProgressExplainer().analyticsScreen(nil) }
         .navigationDestination(for: HabitPageLink.self) { link in
             HabitPageView(id: link.id, overTime: OverTimeStart(range: OverTimeRange(rawValue: link.range.rawValue) ?? .month, anchor: link.anchor))
         }

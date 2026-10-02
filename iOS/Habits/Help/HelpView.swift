@@ -7,6 +7,7 @@ import UIKit
 /// words. **When a way in changes, change its answer here too.**
 struct HelpView: View {
     @State private var query = ""
+    @State private var observedSearch = false
     @State private var showWelcome = false
     @State private var showAddress = false
     @Environment(\.openURL) private var openURL
@@ -19,7 +20,7 @@ struct HelpView: View {
                         HelpRowLabel(title: "Contact Us", detail: Support.email, symbol: "envelope")
                     }
                     .accessibilityIdentifier("help-contact")
-                    Button { showWelcome = true } label: {
+                    Button { Analytics.shared.count(.welcomeReplay, ticket: Analytics.shared.ticket); showWelcome = true } label: {
                         HelpRowLabel(title: "Show the Welcome Again", detail: "What \(Onboarding.appName) means, and what's free", symbol: "hand.wave")
                     }
                     .accessibilityIdentifier("help-welcome")
@@ -41,6 +42,12 @@ struct HelpView: View {
             if !trimmedQuery.isEmpty && matches.isEmpty { ContentUnavailableView.search(text: trimmedQuery) }
         }
         .searchable(text: $query, prompt: "Search help")
+        .onChange(of: query) {
+            if !query.isEmpty && !observedSearch && Analytics.shared.consented {
+                observedSearch = true
+                Analytics.shared.count(.helpSearch, ticket: Analytics.shared.ticket)
+            }
+        }
         .navigationTitle("Help & Feedback")
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $showWelcome) {
@@ -65,6 +72,7 @@ struct HelpView: View {
 
     /// The phone's mail app with the versions filled in; with no mail app, the address to copy.
     private func contact() {
+        Analytics.shared.count(.contactSupport, ticket: Analytics.shared.ticket)
         guard let url = Support.mailURL() else { showAddress = true; return }
         openURL(url) { opened in
             if !opened { showAddress = true }
@@ -99,15 +107,19 @@ enum Support {
 /// One question and its answer, opened in place.
 private struct TopicRow: View {
     let topic: HelpTopic
+    @State private var expanded = false
 
     var body: some View {
-        DisclosureGroup {
+        DisclosureGroup(isExpanded: $expanded) {
             Text(topic.answer)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.vertical, 2)
         } label: {
             Text(topic.question).foregroundStyle(Color.primary)
+        }
+        .onChange(of: expanded) {
+            if expanded { Analytics.shared.count(.faq, ticket: Analytics.shared.ticket) }
         }
         .accessibilityIdentifier("help-topic-" + topic.question)
     }

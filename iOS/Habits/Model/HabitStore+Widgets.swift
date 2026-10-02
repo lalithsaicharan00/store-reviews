@@ -145,6 +145,7 @@ extension HabitStore {
     private func publishNow(_ store: HabitStore) async {
         await store.flush()
         guard store.isLoaded, store.isStorageReady, store.problem == nil, !Task.isCancelled else { return }
+        let telemetry = store.analytics.ticket
         let hidden = UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey) || AppLock.isEnabled
         let ticket = WidgetPublicationOrder.next()
         latestTicket = ticket
@@ -155,8 +156,10 @@ extension HabitStore {
         do {
             // Detached I/O avoids encoding and file coordination on the UI thread.
             try await WidgetSnapshotWriter.shared.write(snapshot, to: testDestination ?? WidgetDisk.url, ticket: ticket)
+            store.analytics.reliability("widget", succeeded: true, ticket: telemetry)
             if ticket == latestTicket { problem = nil }
         } catch {
+            store.analytics.reliability("widget", succeeded: false, ticket: telemetry)
             if ticket == latestTicket { problem = "Widgets couldn't be updated. Open the app and try again." }
         }
     }
