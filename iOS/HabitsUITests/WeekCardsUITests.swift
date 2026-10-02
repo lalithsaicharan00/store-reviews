@@ -19,10 +19,6 @@ final class WeekCardsUITests: XCTestCase {
         app = XCUIApplication()
     }
 
-    override func tearDown() {
-        XCUIDevice.shared.appearance = .light
-    }
-
     private func shot(_ name: String) {
         let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
         attachment.name = name
@@ -59,26 +55,25 @@ final class WeekCardsUITests: XCTestCase {
         sleep(1)
     }
 
-    func testWeekCardsLightAndDark() {
-        openWeek()
+    /// The app's own Appearance setting decides light or dark (a test before may have left it on Light), so each
+    /// pass sets it at launch.
+    func testWeekCardsLight() {
+        openWeek(["-appearance.theme", "light"])
         XCTAssertTrue(app.buttons["progress-row-Read"].exists, "A card per habit")
-        XCUIDevice.shared.appearance = .light
-        sleep(1)
         walk("w-light")
-        XCUIDevice.shared.appearance = .dark
-        sleep(1)
-        walk("w-dark")
         // Last week: the caption says so, and nothing is "so far".
-        XCUIDevice.shared.appearance = .light
         app.buttons["progress-previous"].tap()
         sleep(1)
         shot("w-last-week")
     }
 
+    func testWeekCardsDark() {
+        openWeek(["-appearance.theme", "dark"])
+        walk("w-dark")
+    }
+
     func testWeekCardsWithGroups() {
-        openWeek(["-groups-demo"])
-        XCUIDevice.shared.appearance = .light
-        sleep(1)
+        openWeek(["-groups-demo", "-appearance.theme", "light"])
         shot("wg-1-top-groups")
         app.swipeUp(velocity: .slow)
         sleep(1)

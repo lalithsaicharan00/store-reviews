@@ -152,6 +152,8 @@ final class ProgressUITests: XCTestCase {
     func testHidePercentages() {
         launch()
         openProgress()
+        // Week has no percentages (2 Oct 2026): its cards state counts. Month and Year still have them.
+        segment("Month").tap()
         let percent = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS ' percent'"))
         XCTAssertTrue(percent.firstMatch.waitForExistence(timeout: 5), "Percentages show by default")
         func toggle() {
@@ -190,8 +192,10 @@ final class ProgressUITests: XCTestCase {
     func testLogSlipAndUndo() {
         launch()
         openProgress()
+        // Week is a scroll view of cards (no list for `reveal` to scroll): swipe to the quit card, near the end.
         let quit = app.buttons["progress-quit-Smoking"]
-        XCTAssertTrue(app.reveal(quit), "The Quitting row")
+        for _ in 0..<10 where !(quit.exists && quit.isHittable) { app.swipeUp(velocity: .slow) }
+        XCTAssertTrue(quit.exists && quit.isHittable, "The quit card")
         quit.tap()
         XCTAssertTrue(app.navigationBars["Smoking"].waitForExistence(timeout: 5))
         let log = app.buttons["habit-log-slip"]
