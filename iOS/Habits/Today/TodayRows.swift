@@ -126,28 +126,9 @@ struct HabitRow: View {
                         .lineLimit(1)
                         .accessibilityIdentifier("habit-rhythm")
                 }
-                if lineOverride == nil {
-                    HStack(alignment: .firstTextBaseline, spacing: 12) {
-                        noteLine
-                        // A milestone this tap reached, beside its Undo and only while that lasts: words, never a
-                        // pop-up (report "Milestones — Marking Progress Without Noise").
-                        if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day,
-                           let mark = store.milestoneOffer, mark.entry == entry.id {
-                            Label(mark.text, systemImage: "checkmark.seal.fill")
-                                .font(.caption.weight(.semibold))
-                                .foregroundStyle(habit.color.color)
-                                .lineLimit(1)
-                                .accessibilityIdentifier("today-milestone")
-                        }
-                        if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day {
-                            Button { store.undoEntry(entry.id) } label: {
-                                Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44, alignment: .leading)
-                            }
-                                .buttonStyle(.borderless).font(.caption)
-                                .accessibilityIdentifier("habit-inline-undo")
-                        }
-                    }
-                }
+                // The note, "Add note", a milestone and Undo: in their own small view, so a tap that offers them redraws
+                // that line, not every row on Today (lesson L16, 2 Oct).
+                if lineOverride == nil { RowOfferLine(habit: habit, day: day) }
                 if case .flexible(let period, let needed) = habit.frequency,
                    let count = store.flexibleProgress(habit, on: day) {
                     Text(count > needed ? "\(count) days this \(period.noun) · goal reached"
@@ -176,7 +157,7 @@ struct HabitRow: View {
         // The same spacing as the Quitting rows.
         .padding(.vertical, 2)
         .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color)
-            .overlay(HighlightFlash(on: highlighted || store.noteTarget == .init(habit: habit.id, day: day), color: habit.color)))
+            .overlay(NoteTargetFlash(habit: habit, day: day, highlighted: highlighted)))
         // Logged from the sheet: the row stays where it is until the person pauses, as after a tap (#58). The day's own
         // rule, so a past day is logged against the goal it had then.
         .sheet(item: $sheet, onDismiss: {
@@ -238,34 +219,6 @@ struct HabitRow: View {
     }
 
     // MARK: The note, in place
-
-    /// The note line: the note (tap to change it); or, right after logging, a small "Add note". Nothing when
-    /// there's no note and nothing was just logged. Writing happens in the note bar above the keyboard, never in
-    /// the row (research: typing in the card was hidden by the keyboard and too cramped, 29 Sep).
-    @ViewBuilder private var noteLine: some View {
-        if let note = store.note(of: habit, on: day) {
-            Button { startWriting() } label: {
-                Label(note, systemImage: "note.text")
-                    .font(.caption).foregroundStyle(.secondary)
-                    .lineLimit(2).multilineTextAlignment(.leading)
-                    .labelStyle(NoteLineLabel())
-            }
-            .buttonStyle(.borderless)
-            .accessibilityLabel("Note: \(note)")
-            .accessibilityHint("Edit the note")
-            .accessibilityIdentifier("habit-note-line")
-        } else if store.noteOffer == .init(habit: habit.id, day: day) && store.note(of: habit, on: day) == nil {
-            Button { startWriting() } label: {
-                Label("Add note", systemImage: "square.and.pencil")
-                    .font(.caption.weight(.medium))
-                    .labelStyle(NoteLineLabel())
-            }
-            .buttonStyle(.borderless)
-            .tint(.secondary)
-            .transition(.opacity)
-            .accessibilityIdentifier("habit-add-note")
-        }
-    }
 
     /// After a check, an amount or a stopped timer: this row offers "Add note" (and no other row does).
     private func offerNote() {
@@ -740,4 +693,81 @@ enum RowSheet: String, Identifiable {
 enum QuitSheet: String, Identifiable {
     case edit, pause, slip
     var id: String { rawValue }
+}
+
+/// A row's note line, "Add note", the milestone a tap reached and its Undo. Only this reads the store's offers, so a
+/// log (which sets them on every tap) redraws this line, not each row's whole body (lesson L16, 2 Oct 2026).
+struct RowOfferLine: View {
+    let habit: Habit
+    let day: LocalDay
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
+            noteLine
+            // A milestone this tap reached, beside its Undo and only while that lasts: words, never a
+            // pop-up (report "Milestones — Marking Progress Without Noise").
+            if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day,
+               let mark = store.milestoneOffer, mark.entry == entry.id {
+                Label(mark.text, systemImage: "checkmark.seal.fill")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(habit.color.color)
+                    .lineLimit(1)
+                    .accessibilityIdentifier("today-milestone")
+            }
+            if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day {
+                Button { store.undoEntry(entry.id) } label: {
+                    Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44, alignment: .leading)
+                }
+                    .buttonStyle(.borderless).font(.caption)
+                    .accessibilityIdentifier("habit-inline-undo")
+            }
+        }
+    }
+
+    /// The note line: the note (tap to change it); or, right after logging, a small "Add note". Nothing when
+    /// there's no note and nothing was just logged. Writing happens in the note bar above the keyboard, never in
+    /// the row (research: typing in the card was hidden by the keyboard and too cramped, 29 Sep).
+    @ViewBuilder private var noteLine: some View {
+        if let note = store.note(of: habit, on: day) {
+            Button { startWriting() } label: {
+                Label(note, systemImage: "note.text")
+                    .font(.caption).foregroundStyle(.secondary)
+                    .lineLimit(2).multilineTextAlignment(.leading)
+                    .labelStyle(NoteLineLabel())
+            }
+            .buttonStyle(.borderless)
+            .accessibilityLabel("Note: \(note)")
+            .accessibilityHint("Edit the note")
+            .accessibilityIdentifier("habit-note-line")
+        } else if store.noteOffer == .init(habit: habit.id, day: day) && store.note(of: habit, on: day) == nil {
+            Button { startWriting() } label: {
+                Label("Add note", systemImage: "square.and.pencil")
+                    .font(.caption.weight(.medium))
+                    .labelStyle(NoteLineLabel())
+            }
+            .buttonStyle(.borderless)
+            .tint(.secondary)
+            .transition(.opacity)
+            .accessibilityIdentifier("habit-add-note")
+        }
+    }
+
+    /// Opens the note bar for this habit and day (as the row's own swipe and menu do).
+    private func startWriting() {
+        store.noteOffer = .init(habit: habit.id, day: day)
+        withAnimation(.snappy) { store.noteTarget = .init(habit: habit.id, day: day) }
+    }
+}
+
+/// The row's brief tint while its note is being written. Only this reads `noteTarget`.
+struct NoteTargetFlash: View {
+    let habit: Habit
+    let day: LocalDay
+    let highlighted: Bool
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        HighlightFlash(on: highlighted || store.noteTarget == .init(habit: habit.id, day: day), color: habit.color)
+    }
 }
