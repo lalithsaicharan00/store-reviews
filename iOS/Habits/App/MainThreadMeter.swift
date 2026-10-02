@@ -21,6 +21,8 @@ final class MainThreadMeter {
 
     private init() {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("perf-stalls.txt")
+        // A speed run starts its own record: on an iPhone the script can't delete the last run's (2 Oct 2026).
+        if ProcessInfo.processInfo.arguments.contains("-perf-drive") { try? FileManager.default.removeItem(at: url) }
         if !FileManager.default.fileExists(atPath: url.path) { FileManager.default.createFile(atPath: url.path, contents: nil) }
         file = try? FileHandle(forWritingTo: url)
         _ = try? file?.seekToEnd()

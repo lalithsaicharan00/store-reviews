@@ -16,5 +16,6 @@ The iPhone app (SwiftUI, native components only). Apple Watch and widget extensi
   -allowProvisioningUpdates -allowProvisioningDeviceRegistration build`, then `xcrun devicectl device install app`
   (first done 2 Oct 2026 on the iPhone 16, iOS 26.6: the App IDs, App Group and iCloud container were created then).
 - **Test device:** iPhone 16 (Developer Mode on). Run the UI tests on it with `Research/Temp/ios-device-test.sh <TestClass> <folder>` (scratch script; screenshots land in `Research/Temp/ios-shots/`).
+- **Speed on the iPhone:** `Tools/perf/measure_perf_device.sh <device id> <out dir>` after a Debug device build (phone unlocked, screen on). Test launches run on an in-memory database, signed out, with their own backup state; they never touch the person's habits, account or backups (2 Oct 2026).
 - **Debug builds** save the demo habits from the design into an empty database once, and act as Plus. Launch arguments: `-empty` (no demo), `-free` (free limit), `-uitest` (in-memory database, for UI tests), `-longtext` (demo names, units and sections at their length limits), `-placementcheck` (runs the placement-rule checks instead of Today). Release builds start empty and free.
 - **Info.plist:** generated from build settings, plus `Habits-Info.plist` for the keys that can't be settings (background refresh, AlarmKit usage text).
