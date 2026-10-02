@@ -105,8 +105,14 @@ final class BackupCenter {
 
     var place: Place { isSignedIn ? .account : (iCloudCopyOn ? .iCloud : .phone) }
 
-    /// The copy in their own iCloud: on by default where it exists (§4.2), turned off only in Settings.
-    var iCloudCopyOn: Bool { BackupFeatures.iCloudBackup && !defaults.bool(forKey: Key.iCloudOff) }
+    /// The copy in their own iCloud: on by default where it exists (§4.2), turned off only in Settings. A phone that has
+    /// never had iCloud keeps its habits on the phone (and says so); one whose iCloud worked before and has gone away
+    /// stays on iCloud, so the "isn't signed in to iCloud" card says what's wrong (found on GitHub's simulator, 2 Oct).
+    var iCloudCopyOn: Bool {
+        guard BackupFeatures.iCloudBackup, !defaults.bool(forKey: Key.iCloudOff) else { return false }
+        return FileManager.default.ubiquityIdentityToken != nil || defaults.data(forKey: Key.iCloudIdentity) != nil
+            || defaults.string(forKey: Key.iCloudProblem) != nil
+    }
 
     func setICloudCopy(_ on: Bool) {
         defaults.set(!on, forKey: Key.iCloudOff)
