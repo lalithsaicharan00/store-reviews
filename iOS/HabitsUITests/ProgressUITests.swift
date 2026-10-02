@@ -152,8 +152,11 @@ final class ProgressUITests: XCTestCase {
     func testHidePercentages() {
         launch()
         openProgress()
-        // Week has no percentages (2 Oct 2026): its cards state counts. Month and Year still have them.
+        // Week has no percentages (2 Oct 2026): its cards state counts. Month and Year still have them. Wait for the
+        // tabs first: a tap before they appear was lost and the test stayed on Week (run 37010612231).
+        XCTAssertTrue(app.segmentedControls["progress-range"].waitForExistence(timeout: 10), "Week | Month | Year")
         segment("Month").tap()
+        XCTAssertTrue(app.descendants(matching: .any)["progress-tile-done"].waitForExistence(timeout: 10), "Month's overview")
         let percent = app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS ' percent'"))
         XCTAssertTrue(percent.firstMatch.waitForExistence(timeout: 5), "Percentages show by default")
         func toggle() {
