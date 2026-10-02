@@ -2243,8 +2243,17 @@ final class HabitStore {
         for d in 1...12 {
             for s in skincare.steps { entries.append(Entry(habitID: skincare.id, stepID: s.id, day: today.adding(days: -d, calendar: cal), value: 1)) }
         }
+        // Call family: each of the 4 weeks before this one met (3 calls); this week, up to 2 calls on days before today,
+        // so on any weekday it's still to do today. Counting from today instead put a call inside this week on some
+        // weekdays: 3 of 3 by Friday, and Today's tests found the row already ticked (2 Oct 2026).
+        let callWeek = period(.week, containing: today).lowerBound
         for w in 1...4 {
-            for i in 0..<3 { entries.append(Entry(habitID: call.id, day: today.adding(days: -7 * w + i, calendar: cal), value: 1)) }
+            for i in 0..<3 { entries.append(Entry(habitID: call.id, day: callWeek.adding(days: -7 * w + i, calendar: cal), value: 1)) }
+        }
+        var callDay = today.adding(days: -1, calendar: cal)
+        for _ in 0..<2 where callDay >= callWeek {
+            entries.append(Entry(habitID: call.id, day: callDay, value: 1))
+            callDay = callDay.adding(days: -1, calendar: cal)
         }
         // Smoking: a 45-day best run, a slip 15 days ago, and the current run since 12 days ago.
         // Slips are events on the day they happened (Build Plan #60d).
@@ -2260,11 +2269,6 @@ final class HabitStore {
         entries.append(Entry(habitID: meds.id, day: today, value: 1))
         entries.append(Entry(habitID: walk.id, day: today, value: 5200))
         entries.append(Entry(habitID: meds2.id, day: today, value: 1))
-        let weekStart = period(.week, containing: today).lowerBound
-        // Call family: 2 of 3 this week.
-        let second = weekStart.adding(days: 1, calendar: cal)
-        entries.append(Entry(habitID: call.id, day: weekStart, value: 1))
-        entries.append(Entry(habitID: call.id, day: second <= today ? second : weekStart, value: 1))
 
         if ProcessInfo.processInfo.arguments.contains("-perf-history") {
             // Speed tests: a year of history on every daily habit, missed about one day in nine, so streaks and
