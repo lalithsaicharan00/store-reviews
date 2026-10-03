@@ -124,7 +124,7 @@ tick each when it's done and link what was built or written. Every item follows
   week, month and year reports, and item 12's Year in Pixels is for mood. Use the same pixel grid for both.
 
 - [ ] **21. Done habits sinking to the bottom of Today: discuss before changing** (added 3 Oct 2026). Today, ticking
-  - *Decided and built 3 Oct 2026, testing:* the user chose "stay in place"; Move to Bottom stays in Appearance (the earlier evidence: 90 of 243 want sinking). Same checklist.
+  - *Decided 3 Oct 2026:* the user first chose "stay in place", then, the same day, **done habits move down** (final). Move to Bottom is the default again; Stay in Place stays in Appearance. Checklist "Today — Row Layout, Subtext, Notes and the Task Sheet" L1.
   a habit plays the sound and, once Today settles (1.5 s after the last tap, U4), moves the row below the rest of its
   time of day. But the order is now the person's own (Rulebook U13, from Arrange Your Day, `claude/today-edit-mode`,
   merged 3 Oct): a new habit goes to the end of its section and nothing reorders itself. Moving a done habit to the

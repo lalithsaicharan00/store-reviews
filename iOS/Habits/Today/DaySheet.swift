@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// One habit on one day: the sheet a habit's row opens (the user, 3 Oct 2026), the habit page's day rows open, and every
+/// One habit (or task) on one day: the sheet a row on Today opens (the user, 3 Oct 2026), the habit page's day rows open, and every
 /// "fix a day" path uses. Opening it never changes anything; its controls do. One shape for every habit (report
 /// "Today's Rows — Tap, Swipe, the Day Sheet and Delete"): who and which day, that day's result and its own control,
 /// that day's entries, that day's actions, then the habit's. The day is shown by the same ‹ day › control as Today's
@@ -83,6 +83,7 @@ struct DaySheet: View {
                 }
                 // The day, as Today's bottom bar shows it: ‹ the date ›. Moving it changes the whole sheet.
                 ToolbarItemGroup(placement: .bottomBar) {
+                  if pagesDays {
                     Button("Previous Day", systemImage: "chevron.left") { day = day.adding(days: -1, calendar: store.calendar) }
                         .disabled(day <= store.startDay(of: current))
                         .accessibilityIdentifier("day-previous")
@@ -97,6 +98,7 @@ struct DaySheet: View {
                     Button("Next Day", systemImage: "chevron.right") { day = day.adding(days: 1, calendar: store.calendar) }
                         .disabled(day >= store.today())
                         .accessibilityIdentifier("day-next")
+                  }
                 }
             }
             .sheet(item: $destination) { destination in
@@ -142,7 +144,12 @@ struct DaySheet: View {
         let skipped = store.isSkipped(current, on: day)
         Section {
             switch ruled.kind {
-            case .check, .task:
+            case .task:
+                // A task is done or not, wherever it's shown (a one-time task carried forward is done once).
+                Toggle("Done", isOn: Binding(get: { store.isDone(current, on: day) },
+                                             set: { if $0 != store.isDone(current, on: day) { store.toggleCheck(current, on: day, source: .daySheet) } }))
+                    .accessibilityIdentifier("day-done")
+            case .check:
                 // The day done or not: on fills it (every tick a several-a-day habit needs), off clears it.
                 Toggle("Done", isOn: Binding(get: { store.isDayMet(ruled, on: day) }, set: { store.setDayDone($0, of: current, on: day) }))
                     .disabled(paused || skipped)
@@ -195,7 +202,7 @@ struct DaySheet: View {
     @ViewBuilder private var dayActions: some View {
         let paused = store.isPaused(current, on: day)
         Section(day == store.today() ? "Today" : "This Day") {
-            if editable && current.kind != .quit {
+            if editable && current.kind != .quit && current.kind != .task {
                 if store.isSkipped(current, on: day) {
                     Button("Undo skip", systemImage: "arrow.uturn.backward") { store.setSkipped(current, on: day, false) }
                 } else if store.canSkip(ruled) && !paused {
@@ -210,9 +217,33 @@ struct DaySheet: View {
         }
     }
 
+    /// Moves a one-time task to another day. Only the task's date changes; its entries stay where they are.
+    private func moveTask(to newDay: LocalDay) {
+        guard var task = store.habits.first(where: { $0.id == habit.id }), task.dueDay != newDay else { return }
+        task.dueDay = newDay
+        store.update(task)
+    }
+
+    /// A one-time task has its own date (in the sheet), so the sheet doesn't page through days.
+    private var pagesDays: Bool { !(current.kind == .task && current.dueDay != nil) }
+
     /// The habit itself: its page, its settings, a break from it.
     @ViewBuilder private var habitActions: some View {
         Section(current.kind == .task ? "Task" : "Habit") {
+            if current.kind == .task, let due = current.dueDay, !store.isDone(current, on: day) {
+                // A one-time task's own date, and the most common change to it, one tap away (the user, 3 Oct 2026:
+                // "any actions that can be taken for that task easily from the home screen").
+                let today = store.today()
+                DatePicker("Date", selection: Binding(get: { due.date(calendar: store.calendar) },
+                                                      set: { moveTask(to: LocalDay($0, calendar: store.calendar)) }),
+                           in: today.date(calendar: store.calendar)..., displayedComponents: .date)
+                    .accessibilityIdentifier("day-task-date")
+                Button("Do Tomorrow", systemImage: "arrow.turn.up.right") {
+                    moveTask(to: today.adding(days: 1, calendar: store.calendar))
+                    dismiss()
+                }
+                .accessibilityIdentifier("day-do-tomorrow")
+            }
             if pageLink && current.kind != .task {
                 NavigationLink {
                     HabitPageView(id: current.id)

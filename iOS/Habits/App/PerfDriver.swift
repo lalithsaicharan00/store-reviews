@@ -166,6 +166,16 @@ enum PerfDriver {
             await measure("Today: Day sheet scrolling") { await scroll() }
             send(.closeDay)
             await pause(1.0)
+            // A task's row opens its Day sheet too, and Add Note opens the note sheet (3 Oct 2026, report "Today's Rows —
+            // The Line Under the Name"; Rulebook T4).
+            if let task = store.habits.first(where: { $0.kind == .task && !$0.archived }) {
+                await open("Today: a task's Day sheet") { store.dayTarget = .init(habitID: task.id, day: store.today()) }
+                send(.closeDay)
+                await pause(1.0)
+            }
+            await open("Today: the note sheet") { store.noteTarget = .init(habit: water.id, day: store.today()) }
+            store.noteTarget = nil
+            await pause(1.0)
         case "typing-control":
             await open("Typing control") { send(.openTypingControl) }
             await pause(1)

@@ -156,26 +156,24 @@ struct PausedRow: View {
         let today = store.today()
         let pause = store.pause(of: habit, on: day)
         let running = store.pause(of: habit, on: today)?.contains(today) == true
-        HStack(alignment: .top, spacing: 12) {
+        // The same shape as every Today row: icon, name and one line centred on the 44-pt band (RowSpace).
+        HStack(alignment: .center, spacing: RowSpace.iconToText) {
             HabitIcon(symbol: habit.symbol, color: habit.color)
                 .opacity(0.5)
-                .frame(height: RowBand.height)
-            VStack(alignment: .leading, spacing: 1) {
-                Text(habit.name.capped(HabitRow.nameShown)).font(.body).foregroundStyle(.secondary).lineLimit(1)
-                    .accessibilityLabel(habit.name)
+            VStack(alignment: .leading, spacing: RowSpace.nameToLine) {
+                Text(habit.name).font(.body).foregroundStyle(.secondary).lineLimit(1)
                 Text(detail(pause)).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
             }
-            .frame(minHeight: RowBand.height)
-            Spacer(minLength: 8)
+            Spacer(minLength: RowSpace.textToTrailing)
             if running {
                 Button("Resume") { store.resume(habit) }
                     .buttonStyle(.bordered)
                     .tint(habit.color.color)
-                    .frame(height: RowBand.height)
                     .accessibilityLabel("Resume \(habit.name)")
             }
         }
-        .padding(.vertical, 2)
+        .frame(minHeight: RowBand.height)
+        .padding(.vertical, RowSpace.rowPadding)
         .contextMenu {
             if running { Button("Resume", systemImage: "play.circle") { store.resume(habit) } }
             Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { showEdit = true }

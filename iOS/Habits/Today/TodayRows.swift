@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-/// "3/8 glasses", "12/20 min", "2/3 this week", "1/4 items", "0/2 cups max": one format for every habit.
+/// "3/8 glasses", "12/20 min", "2/3 this week", "1/4 steps", "1/3 times", "0/2 cups max": one format for every habit.
 /// While a timer runs, time is a live clock instead: "7:42/20 min" ("Timing a Habit", 28 Sep).
 func goalLine(_ habit: Habit, progress: Double, goal: Double, running: Bool = false) -> String {
     let period = switch habit.frequency {
@@ -10,12 +10,8 @@ func goalLine(_ habit: Habit, progress: Double, goal: Double, running: Bool = fa
     case .perYear: " this year"
     default: ""
     }
-    if habit.atMost {
-        let unit: String
-        if case .amount(let text, _) = habit.kind { unit = text.isEmpty ? "" : " " + text } else { unit = "" }
-        return "\(Format.amount(progress))\(unit) logged\(period.isEmpty ? " today" : period) · limit \(Format.amount(goal))"
-    }
-    let max = ""
+    // A limit reads like any count, with "max" after it (as the player says it): "1/2 cups max" (3 Oct 2026).
+    let max = habit.atMost ? " max" : ""
     switch habit.kind {
     case .duration:
         // Time is always hours and minutes: "12 min/1 h 30 min".
@@ -28,14 +24,18 @@ func goalLine(_ habit: Habit, progress: Double, goal: Double, running: Bool = fa
         return "\(Format.amount(progress))/\(Format.amount(goal)) steps\(period)"
     case .check where habit.checkUnit != nil:
         return "\(Format.amount(progress))/\(Format.amount(goal)) \(habit.checkUnit!)\(period)"
-    case .check, .quit, .task:
+    case .check:
+        // Counted with no unit of its own: "1/3 times", so the number never stands alone.
+        return "\(Format.amount(progress))/\(Format.amount(goal))\(habit.frequency.isDayBased ? " times" : "")\(max)\(period)"
+    case .quit, .task:
         return "\(Format.amount(progress))/\(Format.amount(goal))\(max)\(period)"
     }
 }
 
-/// One-time tasks: the time if set, and where it came from if it moved forward.
+/// A task's line always says it's a task (report "Today's Rows — The Line Under the Name": people want tasks and habits
+/// told apart), then its time if set, or where it came from if it moved forward: "Task", "Task · 5:00 PM".
 func taskLine(_ habit: Habit, shownOn day: LocalDay, calendar: Calendar) -> String {
-    var parts: [String] = []
+    var parts = ["Task"]
     if let due = habit.dueDay, due < day {
         parts.append("From " + due.date(calendar: calendar).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated)))
     }
@@ -43,11 +43,12 @@ func taskLine(_ habit: Habit, shownOn day: LocalDay, calendar: Calendar) -> Stri
         let time = calendar.date(bySettingHour: minute / 60, minute: minute % 60, second: 0, of: .now)!
         parts.append(time.formatted(date: .omitted, time: .shortened))
     }
-    return parts.isEmpty ? "Task" : parts.joined(separator: " · ")
+    return parts.joined(separator: " · ")
 }
 
 struct HabitRow: View {
-    /// Names on Today show this many characters, then "…", so every row stays on one line.
+    /// Names in tight places (the timer bar, a sheet's title) show this many characters, then "…". Rows use their
+    /// width instead, ending in "…" only when they run out (report "Today's Rows — The Line Under the Name").
     static let nameShown = 15
     let habit: Habit
     let day: LocalDay
@@ -103,65 +104,47 @@ struct HabitRow: View {
         // A cut-back habit is "met" while under its maximum, but never shown as finished.
         let done = slot.map { store.isSlotDone(habit, slot: $0, on: day) } ?? (store.isDone(habit, on: day) && !habit.atMost)
         let streak = showStreaks ? store.streak(of: habit, asOf: day) : 0
-        // Top-aligned (the user, 29 Sep): icon, streak and button sit in a 44-pt band at the top of the row. Rows
-        // of one or two lines look centred; with three or more lines the text runs on below instead of the icon
-        // and button drifting to the middle.
-        HStack(alignment: .top, spacing: 12) {
-          // The row itself opens Add Amount / Add Time for any count or timed habit: one place to type a
-          // number, for every habit (research: "Logging a Count — One Tap or Type", 28 Sep).
-          HStack(alignment: .top, spacing: 12) {
-            HabitIcon(symbol: habit.symbol, color: habit.color)
-                .frame(height: RowBand.height)
-            VStack(alignment: .leading, spacing: 1) {
-                // One line always: names show 15 characters, then "…".
-                Text(habit.name.capped(HabitRow.nameShown)).font(.body).foregroundStyle(done ? .secondary : .primary).lineLimit(1)
-                    .accessibilityLabel(habit.name) // VoiceOver reads it in full
-                let line = lineOverride ?? subtitle(progress: progress, goal: goal)
-                if !line.isEmpty { Text(line)
-                    .font(.subheadline).foregroundStyle(isRunning ? .primary : .secondary)
-                    .monospacedDigit()
-                    .lineLimit(habit.atMost ? 2 : 1) }
-                // How often, in words, for rules that name days: "Every Mon and Wed", "On the 1st of every month".
-                let rhythm = HabitCopy.todayCaption(habit, weekStart: store.settings.weekStart)
-                if !rhythm.isEmpty {
-                    Text(rhythm)
-                        .font(.caption).foregroundStyle(.secondary)
-                        .lineLimit(1)
-                        .accessibilityIdentifier("habit-rhythm")
-                }
-                // The note, "Add note", a milestone and Undo: in their own small view, so a tap that offers them redraws
-                // that line, not every row on Today (lesson L16, 2 Oct).
-                if lineOverride == nil { RowOfferLine(habit: habit, day: day) }
-                if case .flexible(let period, let needed) = habit.frequency,
-                   let count = store.flexibleProgress(habit, on: day) {
-                    Text(count > needed ? "\(count) days this \(period.noun) · goal reached"
-                         : "\(count) of \(needed) \(needed == 1 ? "day" : "days") this \(period.noun)\(count == needed ? " ✓" : "")")
-                        .font(.caption).foregroundStyle(.secondary)
-                        .accessibilityIdentifier("flexible-progress")
-                }
+        // One shape for every row (report "Today's Rows — The Line Under the Name", 3 Oct 2026): the icon, the name with
+        // its one line, the streak and the button centred on one 44-pt band; after a log, one line of small buttons
+        // under the text. Nothing else stacks up, so no row runs past three lines and icons line up down the list.
+        VStack(alignment: .leading, spacing: 0) {
+          HStack(alignment: .center, spacing: RowSpace.iconToText) {
+            HStack(alignment: .center, spacing: RowSpace.iconToText) {
+              HabitIcon(symbol: habit.symbol, color: habit.color)
+              VStack(alignment: .leading, spacing: RowSpace.nameToLine) {
+                  // One line: the name uses the row's width and ends in "…" only when it runs out (U6 allows 24).
+                  Text(habit.name).font(.body).foregroundStyle(done ? .secondary : .primary).lineLimit(1)
+                  // What today asks of it, the same kind of fact on every row: how much and how far along, or how
+                  // often; then its time. Exactly one line.
+                  Text(lineOverride ?? rowLine(progress: progress, goal: goal))
+                      .font(.subheadline).foregroundStyle(isRunning ? .primary : .secondary)
+                      .monospacedDigit()
+                      .lineLimit(1)
+                      .accessibilityIdentifier("habit-line")
+              }
+              Spacer(minLength: RowSpace.textToTrailing)
+              if streak > 0 {
+                  StreakLabel(count: streak, unit: habit.frequency.streakUnit, onFill: progress / max(goal, 1) >= 0.7)
+              }
             }
-            .frame(minHeight: RowBand.height)
-            Spacer(minLength: 8)
-            if streak > 0 {
-                StreakLabel(count: streak, unit: habit.frequency.streakUnit, onFill: progress / max(goal, 1) >= 0.7)
-                    .frame(height: RowBand.height)
+            .contentShape(Rectangle())
+            // The row opens its Day sheet for the day Today shows; the round button logs (the user, 3 Oct 2026; report
+            // "Today's Rows": Reminders, Mail and Health open the item from its row and act from its control). An
+            // action, not a button trait: a trait on this container would turn every text in it into a button.
+            .onTapGesture { openDay() }
+            .accessibilityAction { openDay() }
+            .accessibilityHint(lineOverride == nil ? "Shows this day's entries and options" : "")
+            .accessibilityAction(named: "Undo last log") {
+                if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day { store.undoEntry(entry.id) }
             }
-          }
-          .contentShape(Rectangle())
-          // The row opens its Day sheet for the day Today shows; the round button logs (the user, 3 Oct 2026; report
-          // "Today's Rows": Reminders, Mail and Health open the item from its row and act from its control).
-          .onTapGesture { openDay() }
-          .accessibilityAddTraits(lineOverride == nil && habit.kind != .task ? .isButton : [])
-          .accessibilityHint(lineOverride == nil && habit.kind != .task ? "Shows this day's entries and options" : "")
-          .accessibilityAction(named: "Undo last log") {
-              if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day { store.undoEntry(entry.id) }
-          }
             actionButton(done: done, progress: progress, goal: goal)
-                .frame(height: RowBand.height)
                 .disabled(habit.kind != .checklist && day > store.today())
+          }
+          .frame(minHeight: RowBand.height)
+          // Undo and Add Note after a log, in their own small view so a tap redraws that line, not every row (L16).
+          if lineOverride == nil { RowAfterLog(habit: habit, day: day) }
         }
-        // The same spacing as the Quitting rows.
-        .padding(.vertical, 2)
+        .padding(.vertical, RowSpace.rowPadding)
         .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color)
             .overlay(NoteTargetFlash(habit: habit, day: day, highlighted: highlighted)))
         // Logged from the sheet: the row stays where it is until the person pauses, as after a tap (#58). The day's own
@@ -228,9 +211,10 @@ struct HabitRow: View {
         }
     }
 
-    /// The Day sheet for this habit on the day Today shows (one sheet for every habit; tasks keep their tick only).
+    /// The Day sheet for this habit or task on the day Today shows (one sheet for every row; a task's is shaped for a
+    /// task: the user, 3 Oct 2026).
     private func openDay() {
-        guard lineOverride == nil, habit.kind != .task else { return }
+        guard lineOverride == nil else { return }
         store.dayTarget = .init(habitID: habit.id, day: day)
     }
 
@@ -249,7 +233,7 @@ struct HabitRow: View {
         withAnimation(Motion.tick(reduceMotion)) { change() }
     }
 
-    // MARK: The note, in place
+    // MARK: The note
 
     /// After a check, an amount or a stopped timer: this row offers "Add note" (and no other row does).
     private func offerNote() {
@@ -257,22 +241,29 @@ struct HabitRow: View {
         withAnimation(.easeOut(duration: 0.2)) { store.noteOffer = .init(habit: habit.id, day: day) }
     }
 
-    /// Opens the note bar for this habit and day. The row is held in place (and marked) while the note is written.
+    /// Opens the note sheet for this habit and day (never typed in the row: the user, 3 Oct 2026). The row is marked
+    /// while the sheet is up.
     private func startWriting() {
-        store.noteOffer = .init(habit: habit.id, day: day)
-        withAnimation(.snappy) { store.noteTarget = .init(habit: habit.id, day: day) }
+        store.noteTarget = .init(habit: habit.id, day: day)
     }
 
-    /// "3/8 glasses", "1/3", "12 min/20 min"; a once-a-day tick shows no "0/1", only its time if it has one.
-    private func subtitle(progress: Double, goal: Double) -> String {
-        let time = self.time.map { DaySection.clock($0.minuteOfDay) }
+    /// The line under the name (report "Today's Rows — The Line Under the Name", 3 Oct 2026): what today asks of this
+    /// habit, the same kind of fact on every row. Counted: how much and how far along ("3/8 glasses", "2/3 this week",
+    /// "1/4 steps", "1/2 cups max"). A single tick: how often ("Every day", "Every Mon, Wed and Fri"), since the ✓ is
+    /// its done-or-not and "0/1" says nothing. Then its time. A task says it's a task; a skipped day says so.
+    private func rowLine(progress: Double, goal: Double) -> String {
         if habit.kind == .task { return taskLine(habit, shownOn: day, calendar: store.calendar) }
-        // A once-a-day tick, or one part's tick of a habit done in several times of day, is a single
-        // tick: no "0/1" or "0/2", just its time if it has one.
-        if habit.kind == .check && habit.frequency.isDayBased && (slot != nil || goal <= 1) {
-            return time ?? ""
+        let time = self.time.map { " · " + DaySection.clock($0.minuteOfDay) } ?? ""
+        if store.isSkipped(habit, on: day) { return (day == store.today() ? "Skipped today" : "Skipped") + time }
+        if case .flexible(let period, let needed) = habit.frequency, let count = store.flexibleProgress(habit, on: day) {
+            let days = "\(count)/\(needed) \(needed == 1 ? "day" : "days") this \(period.noun)"
+            // A tick on some days a week: the days are the progress. An amount or a time: today's, then the days.
+            return (habit.kind == .check ? days : goalLine(habit, progress: progress, goal: goal, running: isRunning) + " · " + days) + time
         }
-        return goalLine(habit, progress: progress, goal: goal, running: isRunning) + (time.map { " · " + $0 } ?? "")
+        if habit.kind == .check && habit.frequency.isDayBased && (slot != nil || goal <= 1) {
+            return HabitCopy.capitalized(HabitCopy.rhythm(habit.frequency, weekStart: store.settings.weekStart, short: true)) + time
+        }
+        return goalLine(habit, progress: progress, goal: goal, running: isRunning) + time
     }
 
     @ViewBuilder
@@ -356,8 +347,7 @@ struct StepRow: View {
     var body: some View {
         let done = store.isStepDone(step, of: habit, on: day)
         HStack(spacing: 12) {
-            Text(step.name.capped(HabitRow.nameShown)).font(.subheadline).foregroundStyle(done ? .secondary : .primary).lineLimit(1)
-                .accessibilityLabel(step.name)
+            Text(step.name).font(.subheadline).foregroundStyle(done ? .secondary : .primary).lineLimit(1)
             Spacer(minLength: 8)
             RoundActionButton(symbol: "checkmark", done: done, color: habit.color,
                               label: done ? "Undo \(step.name)" : "Mark \(step.name) done") {
@@ -371,7 +361,8 @@ struct StepRow: View {
             }
         }
         .disabled(day > store.today())
-        .padding(.leading, 44)
+        // Step names start where row names do; a step has no line of its own (it's part of the row above).
+        .padding(.leading, RowSpace.textLeading)
         .padding(.vertical, -6)
     }
 }
@@ -392,6 +383,8 @@ struct QuitRow: View {
     @State private var sheet: QuitSheet?
     /// The slip just logged, offered for Undo for a few seconds.
     @State private var lastSlip: UUID?
+    /// Progress's "Show Streaks": off hides the best run too (report "Today's Rows — The Line Under the Name").
+    @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
     private var today: LocalDay { store.today() }
     /// Set once, on a whole second, so every quit clock ticks together.
     private static let anchor = Date(timeIntervalSinceReferenceDate: Date.now.timeIntervalSinceReferenceDate.rounded(.down))
@@ -406,29 +399,28 @@ struct QuitRow: View {
         // A fixed anchor: `.now` gave a new schedule on every redraw, restarting the clock each time (see HabitRow).
         // No ongoing run (paused): nothing ticks.
         let tick = ongoing == nil ? nil : Self.anchor
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(alignment: .top, spacing: 12) {
+        // The same shape as every habit row (report "Today's Rows — The Line Under the Name", 3 Oct 2026): icon, name,
+        // one line (the best run, the one other fact people value), and the live count where other rows have their
+        // button. No "Slipped" line under everything: a slip is logged from the row's sheet, a swipe or the menu.
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(alignment: .center, spacing: RowSpace.iconToText) {
                 HabitIcon(symbol: habit.symbol, color: habit.color)
-                    .frame(height: RowBand.height)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(habit.name.capped(HabitRow.nameShown)).font(.body).lineLimit(1).accessibilityLabel(habit.name)
-                    RowClock(start: tick) { now in
-                        Text("Best \(Format.days(max(pastBest, current(now))))").font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
-                    }
-                    if let id = lastSlip { SlipUndoLine(id: id) { withAnimation { lastSlip = nil } } }
-                    // A craving or a slip, noted for today (quit rows take notes too, 29 Sep).
-                    if let note = store.note(of: habit, on: today) {
-                        Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
-                            Label(note, systemImage: "note.text")
-                                .font(.caption).foregroundStyle(.secondary)
-                                .lineLimit(2).multilineTextAlignment(.leading)
-                                .labelStyle(NoteLineLabel())
+                VStack(alignment: .leading, spacing: RowSpace.nameToLine) {
+                    Text(habit.name).font(.body).lineLimit(1)
+                    if showStreaks {
+                        RowClock(start: tick) { now in
+                            Text("Best \(Format.days(max(pastBest, current(now))))")
+                                .font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+                                .accessibilityIdentifier("habit-line")
                         }
-                        .buttonStyle(.borderless)
+                    } else {
+                        // Streaks hidden (Progress → Show Streaks): no record to compare with, just when this run began.
+                        Text(ongoing.map { "Since " + $0.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated)) } ?? "Paused")
+                            .font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+                            .accessibilityIdentifier("habit-line")
                     }
                 }
-                .frame(minHeight: RowBand.height)
-                Spacer(minLength: 8)
+                Spacer(minLength: RowSpace.textToTrailing)
                 RowClock(start: tick) { now in
                     Text(Format.elapsed(current(now)))
                         .font(.body.monospacedDigit().weight(.semibold))
@@ -436,32 +428,31 @@ struct QuitRow: View {
                         .lineLimit(1)
                         .fixedSize()
                 }
-                .frame(height: RowBand.height)
             }
-            .padding(.vertical, 2)
+            .frame(minHeight: RowBand.height)
             .contentShape(Rectangle())
             // The row opens its Day sheet, as every habit row does (report "Today's Rows").
             .onTapGesture { store.dayTarget = .init(habitID: habit.id, day: today) }
-            .accessibilityElement(children: .combine)
-            .accessibilityAddTraits(.isButton)
+            // An action, not a button trait: the trait would turn the name and the count into buttons (CI, 3 Oct).
+            .accessibilityAction { store.dayTarget = .init(habitID: habit.id, day: today) }
             .accessibilityHint("Shows today's slips and options")
-        HStack {
-            Button("Slipped") { sheet = .slip }
-                .disabled(store.isPaused(habit, on: today))
-            if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == today {
-                Button { store.undoEntry(entry.id) } label: {
-                    Text("Undo").frame(minWidth: 44, minHeight: 44)
-                }
-                    .accessibilityIdentifier("habit-inline-undo")
+            // After a slip: the same small buttons as every row, Undo Slip and the note.
+            if let id = lastSlip {
+                QuitAfterSlip(habit: habit, day: today, slip: id) { withAnimation { lastSlip = nil } }
             }
-        }.buttonStyle(.borderless).font(.caption)
         }
+        .padding(.vertical, RowSpace.rowPadding)
         .listRowBackground(Color(.secondarySystemGroupedBackground).overlay(HighlightFlash(on: highlighted, color: habit.color)))
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
                 Label(store.note(of: habit, on: today) == nil ? "Note" : "Edit Note", systemImage: "note.text")
             }
             .tint(.indigo)
+            // Where the "Slipped" button was (U5): one swipe away, opening Log a Slip, never logging unseen.
+            Button { sheet = .slip } label: { Label("Log Slip", systemImage: "arrow.uturn.backward.circle") }
+                .tint(.gray)
+                .disabled(store.isPaused(habit, on: today))
+                .accessibilityIdentifier("row-swipe-slip")
             RowPauseButton(habit: habit, showPause: Binding(get: { sheet == .pause }, set: { sheet = $0 ? .pause : (sheet == .pause ? nil : sheet) }))
         }
         .contextMenu {
@@ -686,14 +677,7 @@ struct EditHabitSheet: View {
     }
 }
 
-/// The note line's small icon, tight to the text.
-private struct NoteLineLabel: LabelStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        HStack(spacing: 4) { configuration.icon.imageScale(.small); configuration.title }
-    }
-}
-
-/// The band at the top of every row that the icon, streak and button sit in (the row's minimum height).
+/// The band every row's icon, name and line, streak and button are centred on (the row's minimum height).
 enum RowBand { static let height: CGFloat = 44 }
 
 /// A fixed timer anchor while running, one initial draw while stopped or covered by its sheet.
@@ -745,68 +729,138 @@ enum QuitSheet: String, Identifiable {
     var id: String { rawValue }
 }
 
-/// A row's note line, "Add note", the milestone a tap reached and its Undo. Only this reads the store's offers, so a
-/// log (which sets them on every tap) redraws this line, not each row's whole body (lesson L16, 2 Oct 2026).
-struct RowOfferLine: View {
+/// Today's row spacing, one set of numbers for every row (report "Today's Rows — The Line Under the Name", 3 Oct
+/// 2026): space inside a group smaller than around it, and no number used for two jobs.
+enum RowSpace {
+    /// Between a name and its line.
+    static let nameToLine: CGFloat = 2
+    /// Between the icon and the text, and between the text block and the round button.
+    static let iconToText: CGFloat = 12
+    /// At least this between the text and the streak or count on the right.
+    static let textToTrailing: CGFloat = 8
+    /// From the 44-pt band to the after-log buttons.
+    static let afterBand: CGFloat = 6
+    /// Between the after-log buttons.
+    static let betweenButtons: CGFloat = 8
+    /// Above and below each row, inside the list's own row spacing.
+    static let rowPadding: CGFloat = 2
+    /// Where text starts: the icon's width plus its gap, so the after-log buttons and step rows line up with names.
+    static let textLeading: CGFloat = 32 + iconToText
+}
+
+/// After a log on this row: the named Undo, the note (Add Note, or Edit Note once there is one) and a milestone the
+/// tap reached, as small capsule buttons on one line under the text (the user, 3 Oct 2026: nothing wraps, even
+/// spacing, never typed in the row). Only while the offer lasts. Only this reads the store's offers, so a log redraws
+/// this line, not each row's whole body (lesson L16, 2 Oct 2026).
+struct RowAfterLog: View {
     let habit: Habit
     let day: LocalDay
     @Environment(HabitStore.self) private var store
 
     var body: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 12) {
-            noteLine
-            // A milestone this tap reached, beside its Undo and only while that lasts: words, never a
-            // pop-up (report "Milestones — Marking Progress Without Noise").
-            if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day,
-               let mark = store.milestoneOffer, mark.entry == entry.id {
-                Label(mark.text, systemImage: "checkmark.seal.fill")
+        let undo = store.undoOffer.flatMap { $0.habitID == habit.id && $0.day == day ? $0 : nil }
+        let offered = undo != nil || store.noteOffer == .init(habit: habit.id, day: day)
+        if offered {
+            let mark = undo.flatMap { entry in store.milestoneOffer.flatMap { $0.entry == entry.id ? $0 : nil } }
+            let note = store.note(of: habit, on: day) != nil
+            // The widest that fits: everything, then without the milestone, then the buttons as icons (the largest
+            // text sizes). Never a second line.
+            ViewThatFits(in: .horizontal) {
+                buttons(undo: undo, note: note, mark: mark?.text, icons: false)
+                buttons(undo: undo, note: note, mark: nil, icons: false)
+                buttons(undo: undo, note: note, mark: nil, icons: true)
+            }
+            .padding(.leading, RowSpace.textLeading)
+            .padding(.top, RowSpace.afterBand)
+            .transition(.opacity)
+        }
+    }
+
+    private func buttons(undo: Entry?, note: Bool, mark: String?, icons: Bool) -> some View {
+        HStack(spacing: RowSpace.betweenButtons) {
+            if let undo {
+                Button { store.undoEntry(undo.id) } label: {
+                    Label(undo.undoLabel(for: habit), systemImage: "arrow.uturn.backward")
+                }
+                .accessibilityIdentifier("habit-inline-undo")
+            }
+            if day <= store.today() {
+                Button { writeNote() } label: {
+                    Label(note ? "Edit Note" : "Add Note", systemImage: note ? "note.text" : "square.and.pencil")
+                }
+                .accessibilityIdentifier(note ? "habit-edit-note" : "habit-add-note")
+            }
+            if let mark {
+                // A milestone this tap reached, beside its Undo and only while that lasts: words, never a pop-up
+                // (report "Milestones — Marking Progress Without Noise").
+                Label(mark, systemImage: "checkmark.seal.fill")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(habit.color.color)
                     .lineLimit(1)
                     .accessibilityIdentifier("today-milestone")
             }
-            if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day {
-                Button { store.undoEntry(entry.id) } label: {
-                    Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44, alignment: .leading)
-                }
-                    .buttonStyle(.borderless).font(.caption)
-                    .accessibilityIdentifier("habit-inline-undo")
-            }
         }
+        .labelStyle(AfterLogLabel(iconOnly: icons))
+        .buttonStyle(.bordered)
+        .buttonBorderShape(.capsule)
+        .controlSize(.small)
+        .tint(.secondary)
+        .font(.caption.weight(.medium))
+        .lineLimit(1)
+        .fixedSize()
     }
 
-    /// The note line: the note (tap to change it); or, right after logging, a small "Add note". Nothing when
-    /// there's no note and nothing was just logged. Writing happens in the note bar above the keyboard, never in
-    /// the row (research: typing in the card was hidden by the keyboard and too cramped, 29 Sep).
-    @ViewBuilder private var noteLine: some View {
-        if let note = store.note(of: habit, on: day) {
-            Button { startWriting() } label: {
-                Label(note, systemImage: "note.text")
-                    .font(.caption).foregroundStyle(.secondary)
-                    .lineLimit(2).multilineTextAlignment(.leading)
-                    .labelStyle(NoteLineLabel())
+    /// Opens the note sheet for this habit and day (as the row's swipe and menu do).
+    private func writeNote() {
+        store.noteTarget = .init(habit: habit.id, day: day)
+    }
+}
+
+/// After a slip on a quit row: Undo Slip and the note, the same small buttons as every row; gone after 8 seconds.
+struct QuitAfterSlip: View {
+    let habit: Habit
+    let day: LocalDay
+    let slip: UUID
+    let onDone: () -> Void
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        let note = store.note(of: habit, on: day) != nil
+        HStack(spacing: RowSpace.betweenButtons) {
+            Button { store.undoEntry(slip); onDone() } label: { Label("Undo Slip", systemImage: "arrow.uturn.backward") }
+                .accessibilityIdentifier("habit-inline-undo")
+            Button { store.noteTarget = .init(habit: habit.id, day: day) } label: {
+                Label(note ? "Edit Note" : "Add Note", systemImage: note ? "note.text" : "square.and.pencil")
             }
-            .buttonStyle(.borderless)
-            .accessibilityLabel("Note: \(note)")
-            .accessibilityHint("Edit the note")
-            .accessibilityIdentifier("habit-note-line")
-        } else if store.noteOffer == .init(habit: habit.id, day: day) && store.note(of: habit, on: day) == nil {
-            Button { startWriting() } label: {
-                Label("Add note", systemImage: "square.and.pencil")
-                    .font(.caption.weight(.medium))
-                    .labelStyle(NoteLineLabel())
-            }
-            .buttonStyle(.borderless)
-            .tint(.secondary)
-            .transition(.opacity)
-            .accessibilityIdentifier("habit-add-note")
+            .accessibilityIdentifier(note ? "habit-edit-note" : "habit-add-note")
+        }
+        .labelStyle(AfterLogLabel(iconOnly: false))
+        .buttonStyle(.bordered)
+        .buttonBorderShape(.capsule)
+        .controlSize(.small)
+        .tint(.secondary)
+        .font(.caption.weight(.medium))
+        .lineLimit(1)
+        .fixedSize()
+        .padding(.leading, RowSpace.textLeading)
+        .padding(.top, RowSpace.afterBand)
+        .task(id: slip) {
+            try? await Task.sleep(for: .seconds(8))
+            onDone()
         }
     }
+}
 
-    /// Opens the note bar for this habit and day (as the row's own swipe and menu do).
-    private func startWriting() {
-        store.noteOffer = .init(habit: habit.id, day: day)
-        withAnimation(.snappy) { store.noteTarget = .init(habit: habit.id, day: day) }
+/// The after-log buttons' labels: the words with a small icon, or the icon alone when the words don't fit (the
+/// accessibility label keeps the words).
+private struct AfterLogLabel: LabelStyle {
+    let iconOnly: Bool
+    @ViewBuilder func makeBody(configuration: Configuration) -> some View {
+        if iconOnly {
+            configuration.icon
+        } else {
+            HStack(spacing: 4) { configuration.icon.imageScale(.small); configuration.title }
+        }
     }
 }
 

@@ -20,7 +20,7 @@ enum Preferences {
 
     static func register() {
         UserDefaults.standard.register(defaults: [theme: Theme.automatic.rawValue, haptics: true, sound: false,
-                                                  doneOrder: DoneOrder.inPlace.rawValue])
+                                                  doneOrder: DoneOrder.bottom.rawValue])
     }
 }
 
@@ -56,11 +56,10 @@ enum Theme: String, CaseIterable, Identifiable {
     }
 }
 
-/// Where a habit goes on Today once it's done. It stays where the person put it by default (the user, 3 Oct 2026:
-/// order is the person's own, Rulebook U13); Move to Bottom is one tap away in Appearance for the many who want it
-/// (research "Ticking Off, Folding and Small Settings" §2: 90 of 243 reviews want done ones below, 7 kept in place).
+/// Where a habit goes on Today once it's done. Most people want done habits below the rest; some keep their own
+/// order (research §2: 90 and 7 of 243 reviews read).
 enum DoneOrder: String, CaseIterable, Identifiable {
-    case inPlace, bottom
+    case bottom, inPlace
     var id: String { rawValue }
 
     var title: String {

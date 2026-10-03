@@ -1,0 +1,518 @@
+{
+ "quit_elapsed": {
+  "reviews": 85,
+  "apps": 5,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.92,
+  "ids": [
+   "8667970216",
+   "11330972360",
+   "14488216584",
+   "13155067518",
+   "12366174100",
+   "9962579018",
+   "12366423619",
+   "13980463925"
+  ]
+ },
+ "extras_crowd_list": {
+  "reviews": 42,
+  "apps": 6,
+  "native_or_list_apps": 1,
+  "mean_rating": 2.43,
+  "ids": [
+   "11766242787",
+   "9896110395",
+   "9882038196",
+   "5356100045",
+   "5303610660",
+   "12379069814",
+   "10919828653",
+   "9821200003"
+  ]
+ },
+ "note_lost": {
+  "reviews": 40,
+  "apps": 7,
+  "native_or_list_apps": 34,
+  "mean_rating": 1.93,
+  "ids": [
+   "1023368205",
+   "2887854107",
+   "9505128799",
+   "12512899466",
+   "10827993637",
+   "34b906e2-773c-429e-a524-c93ef0b382d6",
+   "6542510578",
+   "13295713983"
+  ]
+ },
+ "streak_on_row": {
+  "reviews": 20,
+  "apps": 10,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.05,
+  "ids": [
+   "2105405612",
+   "2569675595",
+   "13728994466",
+   "9559403535",
+   "9586795328",
+   "9557519480",
+   "1965927f-d70d-499b-95ff-9677666d8171",
+   "315c3656-315d-49fa-8886-5e8dd66905ac"
+  ]
+ },
+ "task_habit_apart": {
+  "reviews": 15,
+  "apps": 5,
+  "native_or_list_apps": 2,
+  "mean_rating": 4.0,
+  "ids": [
+   "25716885-5e61-4e44-a7b1-c423a5b70b63",
+   "8787913d-2b60-4b87-bcb2-0e9eca50776e",
+   "14318290117",
+   "1351283479",
+   "8265532671",
+   "51b6fe7f-da93-4cea-8f68-f17fc4a4f16b",
+   "f64274b9-bfd5-4afc-9b15-3f6b0655d01c",
+   "059fcc0c-4f68-4c17-8c30-5a00b6e67739"
+  ]
+ },
+ "long_list": {
+  "reviews": 15,
+  "apps": 11,
+  "native_or_list_apps": 1,
+  "mean_rating": 3.33,
+  "ids": [
+   "10382962220",
+   "1255013122",
+   "9417080767",
+   "5748623490",
+   "2900324109",
+   "14047899312",
+   "3940095679",
+   "f7bfc0fd-af62-49be-8273-a438fb0c5316"
+  ]
+ },
+ "words_over_symbols": {
+  "reviews": 13,
+  "apps": 2,
+  "native_or_list_apps": 13,
+  "mean_rating": 1.62,
+  "ids": [
+   "10924239733",
+   "11817798609",
+   "10751032281",
+   "10410425866",
+   "10392246899",
+   "10385004233",
+   "9913081918",
+   "9904055770"
+  ]
+ },
+ "progress_on_row": {
+  "reviews": 8,
+  "apps": 7,
+  "native_or_list_apps": 2,
+  "mean_rating": 3.88,
+  "ids": [
+   "1591156461",
+   "0fd41694-6da9-4f39-8943-3377a3db7164",
+   "10954445994",
+   "10630173892",
+   "11507981724",
+   "1296985275",
+   "76fc3a7b-23e2-4e57-93c0-262c4233448b",
+   "c3c67f14-e16c-48e9-81c1-ed877222cc27"
+  ]
+ },
+ "done_vs_left": {
+  "reviews": 7,
+  "apps": 4,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.71,
+  "ids": [
+   "8306546765",
+   "11725650343",
+   "1300554578",
+   "bf35109a-cfff-4fa5-9f16-9fdbbba09cfc",
+   "5ea5d12a-f99e-4766-8f62-6a73d435c934",
+   "e793d222-4051-449f-9173-d67dfad2a8e6",
+   "cccf07d7-db0b-484c-9708-7d6bfb295fa8"
+  ]
+ },
+ "name_cut_off": {
+  "reviews": 7,
+  "apps": 4,
+  "native_or_list_apps": 3,
+  "mean_rating": 2.71,
+  "ids": [
+   "7565435937",
+   "13969274929",
+   "1484200659",
+   "dec68578-8ee0-4309-9256-db30f6373c0b",
+   "1166219994",
+   "1558299234",
+   "1371421750"
+  ]
+ },
+ "quit_best": {
+  "reviews": 7,
+  "apps": 2,
+  "native_or_list_apps": 0,
+  "mean_rating": 5.0,
+  "ids": [
+   "8603872369",
+   "13778028781",
+   "9117076358",
+   "13464844134",
+   "13091581867",
+   "9213999735",
+   "24456db4-560e-4f95-a9f7-5490f5610251"
+  ]
+ },
+ "quit_units": {
+  "reviews": 6,
+  "apps": 2,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.83,
+  "ids": [
+   "5949eb8a-94b2-48b0-aa63-f769cf9b35a9",
+   "8815792825",
+   "5663848542",
+   "12716849945",
+   "9649217076",
+   "12151534213"
+  ]
+ },
+ "kinds_apart": {
+  "reviews": 5,
+  "apps": 2,
+  "native_or_list_apps": 5,
+  "mean_rating": 2.2,
+  "ids": [
+   "7859457470",
+   "10932583068",
+   "9943313987",
+   "9814614307",
+   "12668484431"
+  ]
+ },
+ "done_sink": {
+  "reviews": 5,
+  "apps": 4,
+  "native_or_list_apps": 3,
+  "mean_rating": 3.2,
+  "ids": [
+   "59e136d2-06d4-4fab-ab61-de013df29b3c",
+   "1328292724",
+   "5824389735",
+   "5340218105",
+   "13044206297"
+  ]
+ },
+ "not_today_clutter": {
+  "reviews": 5,
+  "apps": 4,
+  "native_or_list_apps": 2,
+  "mean_rating": 3.4,
+  "ids": [
+   "1430631367",
+   "2267b1c6-9447-4150-b675-88f591d0e9c4",
+   "69560eb3-476b-4e72-a643-cd5960d24841",
+   "13994952198",
+   "6911564724"
+  ]
+ },
+ "quit_slip_neutral": {
+  "reviews": 5,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.2,
+  "ids": [
+   "13091581867",
+   "12814260035",
+   "9961748143",
+   "9976059748",
+   "8873062491"
+  ]
+ },
+ "note_hidden": {
+  "reviews": 4,
+  "apps": 3,
+  "native_or_list_apps": 3,
+  "mean_rating": 2.75,
+  "ids": [
+   "5402526794",
+   "13830296051",
+   "13515904170",
+   "14510483677"
+  ]
+ },
+ "quit_money": {
+  "reviews": 4,
+  "apps": 2,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.25,
+  "ids": [
+   "11649306726",
+   "12278860013",
+   "9937826681",
+   "f78a8420-d9a5-4bcc-8670-42c413cb31c1"
+  ]
+ },
+ "time_on_row": {
+  "reviews": 3,
+  "apps": 3,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.0,
+  "ids": [
+   "6390933328",
+   "8645074790",
+   "99b14f95-a53b-448d-b573-3437af200031"
+  ]
+ },
+ "one_model": {
+  "reviews": 3,
+  "apps": 2,
+  "native_or_list_apps": 0,
+  "mean_rating": 3.33,
+  "ids": [
+   "3554375156",
+   "5414901550",
+   "7800629578"
+  ]
+ },
+ "too_big": {
+  "reviews": 3,
+  "apps": 3,
+  "native_or_list_apps": 2,
+  "mean_rating": 2.67,
+  "ids": [
+   "7033948134",
+   "3366329822",
+   "1593467269"
+  ]
+ },
+ "text_clutter": {
+  "reviews": 3,
+  "apps": 3,
+  "native_or_list_apps": 0,
+  "mean_rating": 2.0,
+  "ids": [
+   "4841dbb5-92ee-4bc8-b2a7-487f7bb1c797",
+   "5341561913",
+   "5449095933"
+  ]
+ },
+ "overlap": {
+  "reviews": 3,
+  "apps": 2,
+  "native_or_list_apps": 2,
+  "mean_rating": 2.0,
+  "ids": [
+   "938cd640-f018-4248-a90a-1e27548c0625",
+   "6644883648",
+   "6598012742"
+  ]
+ },
+ "spacing": {
+  "reviews": 3,
+  "apps": 2,
+  "native_or_list_apps": 2,
+  "mean_rating": 2.33,
+  "ids": [
+   "6528849766",
+   "1598445436",
+   "12079206553"
+  ]
+ },
+ "name_wrap_wanted": {
+  "reviews": 3,
+  "apps": 2,
+  "native_or_list_apps": 2,
+  "mean_rating": 3.33,
+  "ids": [
+   "5300744763",
+   "8393885470",
+   "7791112692"
+  ]
+ },
+ "note_room": {
+  "reviews": 3,
+  "apps": 3,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.33,
+  "ids": [
+   "1354502577",
+   "1023368205",
+   "3844009364"
+  ]
+ },
+ "note_per_day": {
+  "reviews": 3,
+  "apps": 3,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.33,
+  "ids": [
+   "3879964840",
+   "7331584690",
+   "1619182679"
+  ]
+ },
+ "frequency_on_row": {
+  "reviews": 2,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.5,
+  "ids": [
+   "42ee056a-baf0-4e5c-9d9e-0697e86bc4d0",
+   "3c403a57-d7fa-404c-8712-de22790a0bcd"
+  ]
+ },
+ "amount_on_row": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 5.0,
+  "ids": [
+   "99b14f95-a53b-448d-b573-3437af200031"
+  ]
+ },
+ "time_on_row_wrong": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 1.0,
+  "ids": [
+   "a25d4684-9254-4836-ac50-3c3a8143a742"
+  ]
+ },
+ "weekly_done_today": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.0,
+  "ids": [
+   "4e05a98c-6e56-4c56-a265-02ba8907e521"
+  ]
+ },
+ "nagging_subtitle": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 3.0,
+  "ids": [
+   "13912782700"
+  ]
+ },
+ "task_on_list": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 5.0,
+  "ids": [
+   "7d1d1590-87d9-43ec-85d2-f08dcbe868fc"
+  ]
+ },
+ "streak_hides_today": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.0,
+  "ids": [
+   "d4b8ab93-51cc-403e-a730-40985b6d2bf9"
+  ]
+ },
+ "time_since_on_row": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.0,
+  "ids": [
+   "11796900049"
+  ]
+ },
+ "repeated_label_clutter": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 1,
+  "mean_rating": 2.0,
+  "ids": [
+   "5742976469"
+  ]
+ },
+ "second_line_spacing": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 1,
+  "mean_rating": 3.0,
+  "ids": [
+   "7285346916"
+  ]
+ },
+ "fewer_lines": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.0,
+  "ids": [
+   "796d493f-8d11-4879-be0d-6cb7d3cbd99c"
+  ]
+ },
+ "dynamic_type_cut": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 1,
+  "mean_rating": 2.0,
+  "ids": [
+   "9668087387"
+  ]
+ },
+ "quit_one_fact": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 5.0,
+  "ids": [
+   "9725862564"
+  ]
+ },
+ "quit_best_hurts": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 2.0,
+  "ids": [
+   "8404418658"
+  ]
+ },
+ "limit_left": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.0,
+  "ids": [
+   "de0a9484-5b7a-4ede-b836-1e5578c01fa4"
+  ]
+ },
+ "task_habit_same": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 2.0,
+  "ids": [
+   "62478d78-2efd-470d-9537-09a3ca2af630"
+  ]
+ },
+ "note_on_row": {
+  "reviews": 1,
+  "apps": 1,
+  "native_or_list_apps": 0,
+  "mean_rating": 4.0,
+  "ids": [
+   "9459776897"
+  ]
+ }
+}

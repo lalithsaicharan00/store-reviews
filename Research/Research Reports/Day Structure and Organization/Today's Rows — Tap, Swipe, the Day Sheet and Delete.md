@@ -18,13 +18,13 @@ The user's rule for all of it: use the mental models people already have, never 
 
 ## Answer in one screen
 
-1. **Done habits stay where they are: the user's decision (3 Oct 2026), against most of the review evidence.**
+1. **Done habits move below the rest after the pause, as most people ask (the user's final call, 3 Oct 2026).**
    - The earlier report [Ticking Off, Folding and Small Settings](<../Home Screen and Visual Design/Ticking Off, Folding and Small Settings — What People Need.md>) read 243 reviews about rows moving after a tick:
      - 90 want done items to sink (3.87★);
      - 7 want them kept in place;
      - 9 ask for a setting.
-   - The user's reasons: order is the person's own (Rulebook U13, report 27), and a habit that moves is lost from where they put it.
-   - So "Stay in Place" becomes the default and "Move to Bottom" stays in Appearance, one tap away for the many who prefer it. Reopen this if the iPhone trial says otherwise.
+   - The user first chose "stay in place" (order is the person's own, Rulebook U13), built that morning; after trying it, they reversed it the same day: done habits should move down.
+   - So "Move to Bottom" is the default again, settling only after the pause (U4), and "Stay in Place" stays in Appearance for the 7.
 2. **A tap on a habit's row opens its Day sheet for the day Today is showing. The round button keeps logging in one tap.**
    - This is the iPhone's own split: in Reminders and Mail, the circle acts and the row opens. Health works the same way: tap a row, see its data.
    - Users show they expect a tap to open the habit's details (16 reviews, 9 apps). They complain when a tap does the wrong thing (8 reviews, 2.38★) or opens the edit form instead of the habit (4).
@@ -173,7 +173,7 @@ There's a little evidence each way, read along the way:
 - **For staying put:** "Erledigte nach unten schieben bringt die Reihenfolge am Folge Tag durcheinander" (moving done ones down muddles the next day's order; Me+, `0c078e89-344e-4a5e-bda7-a46a5164cd18`); "I have to find where that task went" (HabitNow, `7cf3f154-1467-43b3-a0a6-cdf27da0d7bf`); "they were kept in order" (Microsoft To Do, `5970171590`).
 - **For sinking:** "Wish finished tasks MOVES TO THE BOTTOM" (To Do List, `9c09d5db-2f0f-454f-b7f6-2a1cad6934e1`).
 
-This scan adds little to the earlier, larger reading: of 243 reviews, 90 want done items to sink, 7 want them kept, 9 want a setting. The default here follows the user's decision and the person's own order (report 27, Rulebook U13), against that majority, so the Move to Bottom setting matters: it is what those 90 would choose.
+This scan adds little to the earlier, larger reading: of 243 reviews, 90 want done items to sink, 7 want them kept, 9 want a setting. The default follows that majority (the user's final call, 3 Oct 2026); Stay in Place is the setting for the few who keep their order.
 
 ## The design (reasoned from first principles on top of the evidence)
 

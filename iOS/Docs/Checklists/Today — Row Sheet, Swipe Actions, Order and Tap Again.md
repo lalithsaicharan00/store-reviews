@@ -37,7 +37,7 @@ Research: [Today's Rows — Tap, Swipe, the Day Sheet and Delete](<../../../Rese
 
 | Point | Decision, and where it's built |
 |---|---|
-| R1 | Done habits stay where they are by default (`DoneOrder.inPlace`); Appearance → Done Habits → Move to Bottom remains. **Note for the user:** the earlier report found 90 of 243 reviews want done items to sink, 7 to stay; the default follows the user's decision and U13 |
+| R1 | Built as "stay in place" by default, then **reversed by the user the same day**: done habits move down (`DoneOrder.bottom`, the default again), Stay in Place in Appearance. See the next checklist's L1 |
 | R2–R4 | A tap on a row (not the button) sets `store.dayTarget`: the Day sheet for the day Today shows. The sheet's day is the bottom bar's ‹ date ›, the same control as Today's bar; its title is "Yesterday · Water" when opened from yesterday |
 | R5 | Sheet sections: who (icon, name, plan) and Result → the habit's control and Add Entry → that day's entries (editable) → Today/This Day (Skip, Note) → Habit (Open Habit Page, Edit Habit, Pause/Resume) |
 | R6 | Delete is in the sheet's ⋯ menu with Archive; Delete asks first with "Archive Instead". Never on a swipe, never in the long-press menu, never a red button in view |

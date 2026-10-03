@@ -193,7 +193,8 @@ final class HabitScenarioUITests: XCTestCase {
         newHabit("Run", type: "Track an amount"); setAmount("5", unit: "km"); openOften(); chooseDays([2, 4, 6])
         XCTAssertTrue(summary.localizedCaseInsensitiveContains("5 km every Monday, Wednesday and Friday"), summary)
         back()
-        check("Run 5 km every Monday, Wednesday and Friday", today: "Every Mon, Wed and Fri", due: [2, 4, 6].contains(today), shotName: "s10-amount-mwf")
+        // Counted: the line is how far along today (one line per row; it's only on Today on its days).
+        check("Run 5 km every Monday, Wednesday and Friday", today: "0/5 km", due: [2, 4, 6].contains(today), shotName: "s10-amount-mwf")
     }
 
     // MARK: Dates of the month
