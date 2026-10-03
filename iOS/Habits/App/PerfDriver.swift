@@ -269,19 +269,33 @@ enum PerfDriver {
             await openTwice("All Habits") { send(.openAllHabits) }
             await measure("All Habits: scrolling") { await scroll() }
         case "habit-page":
+            // The habit page (3 Oct 2026): History opens first, then Notes and Progress, each switched to and scrolled.
             await open("All Habits") { send(.openAllHabits) }
             await open("Habit page") { send(.openHabit("Brush teeth")) }
-            await measure("Habit page: scrolling") { await scroll() }
+            await measure("Habit page: History scrolling") { await scroll() }
+            await open("Habit page: Notes") { send(.habitTab(1)) }
+            await open("Habit page: Progress") { send(.habitTab(2)) }
+            await measure("Habit page: Progress scrolling") { await scroll() }
+            await measure("Habit page: switching tabs") {
+                await repeatFor(window) {
+                    send(.habitTab(0)); await pause(0.5)
+                    send(.habitTab(2)); await pause(0.5)
+                }
+            }
         case "habit-page-total":
-            // A weekly total (15 km a week): its page has the running-total chart.
+            // A weekly total (15 km a week): its Progress has the week's total against its goal.
             await open("All Habits") { send(.openAllHabits) }
             await open("Habit page (weekly total)") { send(.openHabit("Run")) }
-            await measure("Habit page (weekly total): scrolling") { await scroll() }
+            await measure("Habit page (weekly total): History scrolling") { await scroll() }
+            await open("Habit page (weekly total): Progress") { send(.habitTab(2)) }
+            await measure("Habit page (weekly total): Progress scrolling") { await scroll() }
         case "habit-page-quit":
-            // A quit habit: its page has the live clock, the slips and the runs chart.
+            // A quit habit: its Progress has the live clock and the time since the last slip.
             await open("All Habits") { send(.openAllHabits) }
             await open("Habit page (quit)") { send(.openHabit("Smoking")) }
-            await measure("Habit page (quit): scrolling") { await scroll() }
+            await measure("Habit page (quit): History scrolling") { await scroll() }
+            await open("Habit page (quit): Progress") { send(.habitTab(2)) }
+            await measure("Habit page (quit): Progress scrolling") { await scroll() }
         case "calendar":
             await openTwice("Calendar") { send(.openCalendar) }
             await measure("Calendar: month ‹ ›") {
