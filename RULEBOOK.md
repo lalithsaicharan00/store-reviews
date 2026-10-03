@@ -20,10 +20,11 @@ How it works:
 - **Learned something new** (a mistake, a measurement, a near miss)? Add or sharpen the rule here **the same day**,
   and put the numbers in the evidence file.
 
-## Before every push: the checklist
+## Before a piece of work is done: the checklist
 
-1. `iOS/Tools/perf/check_rules.sh` passes (a second, works on Linux). Never loosen it to get past it.
-2. The tests for what changed have run and passed (T1–T3). A screen or `HabitStore` change also gets a speed run (S2).
+1. `iOS/Tools/perf/check_rules.sh` passes (a second, works on Linux; run it before every push). Never loosen it.
+2. The tests for what changed have run and passed, **once, at the end of the piece of work** (T7). A screen or
+   `HabitStore` change also gets a speed run (S2).
 3. Anything that stores, sends, deletes or moves data meets every D rule.
 4. A visual or layout change has been looked at on the real iPhone before it's called done (U9).
 5. What you learned is written down: rules here, numbers in the evidence, the user's points ticked in their checklist.
@@ -120,6 +121,7 @@ research behind each) · `Research/Research Reports/` (the research, [index](<Re
 | T3 | **When a label changes, update the UI tests that tap it in the same change.** Test typing key by key, at the real iPhone size, with the keyboard up | Tests that passed while people saw nothing |
 | T4 | **Every new screen or interaction gets a `PerfDriver` scenario** when it's built (S2) | A screen with no scenario has no speed: two froze unseen |
 | T5 | **On the iPhone:** speed with `iOS/Tools/perf/measure_perf_device.sh`; UI tests only with test launches (D8) | The phone is where people feel it |
+| T7 | **Test once per piece of work, not after every change** (the user, 3 Oct 2026). While building, push without `[ios-ci]`; when the item is done, run the test classes it touches (and a speed run if it changed a screen or `HabitStore`) in one go, fix what fails, and only then move `main` | Runs after every small change cost hours of waiting for little |
 | T6 | **The server:** `npm test` and `npm run typecheck` pass; deploy to dev and run the live checks; production only through `npm run release:production` (gradual, checked, rolls back), with the user's go-ahead | — |
 
 *Evidence:* [.github/workflows/ios-tests.yml](.github/workflows/ios-tests.yml) (the header explains every option) ·
