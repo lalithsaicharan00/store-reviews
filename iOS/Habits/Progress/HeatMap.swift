@@ -397,7 +397,9 @@ struct HeatKeySection: View {
                     Text("What the squares mean").font(.subheadline.weight(.semibold)).foregroundStyle(.primary)
                     Spacer(minLength: WeekSpacing.tight)
                     Image(systemName: "chevron.down").font(.footnote.weight(.semibold)).foregroundStyle(.secondary)
-                        .rotationEffect(.degrees(open ? 0 : -90))
+                        // An accordion's chevron (the user, 3 Oct 2026): down while folded, up while open. Never pointing
+                        // right: next to the dates' ‹ › that would read as a page to go to.
+                        .rotationEffect(.degrees(open ? 180 : 0))
                 }
                 .frame(minHeight: 28)
                 .contentShape(Rectangle())
