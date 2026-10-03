@@ -67,7 +67,9 @@ struct NoteMonth: Hashable, Identifiable {
     let first: LocalDay
     let title: String
     let notes: [Note]
-    var id: LocalDay { first }
+    /// Never the same as a History month's id: both tabs share one lazy stack, and equal ids there showed History's
+    /// card under Notes (3 Oct 2026; lesson L11).
+    var id: String { "notes-" + first.key }
 
     static func group(_ notes: [(day: LocalDay, text: String)], calendar: Calendar) -> [NoteMonth] {
         let names = calendar.standaloneMonthSymbols

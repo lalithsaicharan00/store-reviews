@@ -47,6 +47,12 @@ final class UndoUITests: XCTestCase {
         today.tap()
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 5))
     }
+    /// The Day sheet's own Result row says `text` ("Result, 1/2 glasses"). It used to be matched on the habit page's
+    /// Today row behind the sheet, which the page no longer has (3 Oct 2026: History · Notes · Progress).
+    private func resultShows(_ text: String, wait: TimeInterval = 3) -> Bool {
+        let row = app.staticTexts.matching(NSPredicate(format: "identifier == 'day-result' AND label ENDSWITH %@", ", " + text)).firstMatch
+        return row.waitForExistence(timeout: wait)
+    }
     private var entries: XCUIElementQuery { app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'entry-'")) }
 
     func testStoppingTimerKeepsDaySheetOpenAndSecondsCanBeEdited() {
@@ -106,7 +112,7 @@ final class UndoUITests: XCTestCase {
 
     func testEditAndDeleteOneEntryInDaySheet() {
         daySheet("Drink water")
-        XCTAssertTrue(app.staticTexts["1/2 glasses"].exists)
+        XCTAssertTrue(resultShows("1/2 glasses", wait: 1))
         XCTAssertEqual(entries.count, 1)
         shot("undo-day-sheet")
         entries.firstMatch.tap()
@@ -116,12 +122,12 @@ final class UndoUITests: XCTestCase {
         shot("undo-entry-editor-keyboard")
         field.typeText("3") // existing number is selected by the app's native number-field behaviour
         app.navigationBars["Edit Entry"].buttons["Save"].tap()
-        XCTAssertTrue(app.staticTexts["3/2 glasses"].waitForExistence(timeout: 3))
+        XCTAssertTrue(resultShows("3/2 glasses"))
         XCTAssertEqual(entries.count, 1, "Editing replaces the entry rather than adding another")
         entries.firstMatch.tap()
         app.revealAndTap(app.buttons["Delete Entry"])
         XCTAssertTrue(app.staticTexts["No entries yet"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.staticTexts["0/2 glasses"].exists)
+        XCTAssertTrue(resultShows("0/2 glasses", wait: 1))
     }
 
     func testLogSheetSharesEntryEditingAndStillAdds() {
@@ -147,7 +153,7 @@ final class UndoUITests: XCTestCase {
         let field = app.textFields["log-amount"]
         app.revealAndTap(field); field.typeText("2")
         app.navigationBars["Add Entry"].buttons["add-entry-save"].tap()
-        XCTAssertTrue(app.staticTexts["2/2 glasses"].waitForExistence(timeout: 3))
+        XCTAssertTrue(resultShows("2/2 glasses"))
         XCTAssertEqual(self.entries.count, 1) // Log has dismissed; inspect the Day sheet now.
     }
 
@@ -160,7 +166,7 @@ final class UndoUITests: XCTestCase {
         XCTAssertTrue(undo.exists, "Undo has no timer")
         undo.tap()
         daySheet("Drink water")
-        XCTAssertTrue(app.staticTexts["1/2 glasses"].exists, "Only the new log was removed")
+        XCTAssertTrue(resultShows("1/2 glasses", wait: 1), "Only the new log was removed")
         XCTAssertEqual(entries.count, 1)
     }
 
@@ -177,13 +183,13 @@ final class UndoUITests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["No entries yet"].exists, "Opening a calendar day never logs")
         app.switches["day-done"].coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
-        XCTAssertTrue(app.staticTexts["3/3"].waitForExistence(timeout: 3))
+        XCTAssertTrue(resultShows("3/3"))
         app.switches["day-done"].coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
         XCTAssertTrue(app.staticTexts["No entries yet"].waitForExistence(timeout: 3))
         let skip = app.buttons.matching(NSPredicate(format: "label IN {'Skip today','Skip this day'}")).firstMatch
         app.revealAndTap(skip)
         XCTAssertTrue(app.buttons["Undo skip"].waitForExistence(timeout: 3))
         app.buttons["Undo skip"].tap()
-        XCTAssertTrue(app.staticTexts["0/3"].waitForExistence(timeout: 3))
+        XCTAssertTrue(resultShows("0/3"))
     }
 }

@@ -29,7 +29,8 @@ struct HistoryMonth: Hashable, Identifiable {
     let summary: String
     /// Newest first.
     let days: [HistoryDay]
-    var id: LocalDay { first }
+    /// Unique across the page's tabs, which share one lazy stack (lesson L11).
+    var id: String { "history-" + first.key }
 }
 
 /// The Overall record card: the accumulated record since the habit began (research Progress revised, Overall record).
