@@ -21,7 +21,7 @@ final class TasksUITests: XCTestCase {
         for name in ["Old task", "Future task", "Completed task", "Repeating task", "Archived task"] {
             app.revealAndTap(row(app, name))
             XCTAssertTrue(app.navigationBars[name].waitForExistence(timeout: 5))
-            app.buttons["Edit"].tap()
+            app.buttons["habit-menu"].tap(); app.buttons["Edit Task"].tap()
             XCTAssertTrue(app.navigationBars["Edit Task"].waitForExistence(timeout: 5))
             XCTAssertFalse(app.buttons["add-habit"].isEnabled, "Opening \(name) must not change its date or other fields")
             app.buttons["Cancel"].firstMatch.tap()
@@ -42,7 +42,7 @@ final class TasksUITests: XCTestCase {
         XCTAssertTrue(field.waitForExistence(timeout: 5)); field.tap(); field.typeText("Book appointment\n")
         app.buttons["add-habit"].tap()
         let task = row(app, "Book appointment")
-        XCTAssertTrue(task.waitForExistence(timeout: 5)); task.tap(); app.buttons["Edit"].tap()
+        XCTAssertTrue(task.waitForExistence(timeout: 5)); task.tap(); app.buttons["habit-menu"].tap(); app.buttons["Edit Task"].tap()
         XCTAssertTrue(app.navigationBars["Edit Task"].waitForExistence(timeout: 5))
         field.tap(); field.typeText(" Edited\n")
         let savedName = (field.value as! String).trimmingCharacters(in: .whitespacesAndNewlines)

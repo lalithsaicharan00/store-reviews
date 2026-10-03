@@ -41,7 +41,8 @@ final class UndoUITests: XCTestCase {
     private func daySheet(_ name: String) {
         openHabits()
         app.revealAndTap(app.staticTexts[name])
-        let today = app.buttons["habit-today-progress"]
+        // The habit page opens on History: its first row is today (newest first, this month open).
+        let today = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-'")).firstMatch
         XCTAssertTrue(today.waitForExistence(timeout: 5))
         today.tap()
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 5))
@@ -128,7 +129,7 @@ final class UndoUITests: XCTestCase {
         app.buttons["day-add-entry"].tap()
         // Nested sheets expose covered accessibility elements too. Query the frontmost native Form.
         let entries = app.collectionViews["log-form"].buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'entry-'"))
-        XCTAssertTrue(app.navigationBars["Log Amount"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["Add Entry"].waitForExistence(timeout: 3))
         let keyboardDone = app.toolbars.buttons["Done"].firstMatch
         if keyboardDone.waitForExistence(timeout: 3) { keyboardDone.tap() }
         let logForm = app.collectionViews["log-form"]
@@ -145,7 +146,7 @@ final class UndoUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["No entries yet"].waitForExistence(timeout: 3))
         let field = app.textFields["log-amount"]
         app.revealAndTap(field); field.typeText("2")
-        app.navigationBars["Log Amount"].buttons["Log"].tap()
+        app.navigationBars["Add Entry"].buttons["add-entry-save"].tap()
         XCTAssertTrue(app.staticTexts["2/2 glasses"].waitForExistence(timeout: 3))
         XCTAssertEqual(self.entries.count, 1) // Log has dismissed; inspect the Day sheet now.
     }
@@ -166,13 +167,10 @@ final class UndoUITests: XCTestCase {
     func testDayControlsAndCalendarOpeningAreExplicit() {
         openHabits()
         app.revealAndTap(app.staticTexts["Stretch"])
-        let today = app.buttons["habit-today-progress"]
-        XCTAssertTrue(today.waitForExistence(timeout: 3))
         let calendarDays = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-' AND enabled == YES"))
-        // The habit page has Progress's numbers above the calendar: scroll until its days are built.
-        for _ in 0..<6 where calendarDays.count == 0 { app.swipeUp(velocity: .slow) }
-        XCTAssertGreaterThan(calendarDays.count, 0)
-        let calendarDay = calendarDays.element(boundBy: calendarDays.count - 1) // last enabled day is today
+        // History, newest first: the first day row is today.
+        XCTAssertTrue(calendarDays.firstMatch.waitForExistence(timeout: 5))
+        let calendarDay = calendarDays.element(boundBy: 0)
         XCTAssertTrue(calendarDay.exists)
         // The key's section sits above the calendar (3 Oct 2026): today's square can still be below the screen's edge.
         app.revealAndTap(calendarDay, clear: true)

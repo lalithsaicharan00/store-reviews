@@ -197,11 +197,11 @@ final class PerformanceUITests: XCTestCase {
         let row = app.buttons["progress-row-Read"]
         XCTAssertTrue(row.waitForExistence(timeout: 10))
         open("Habit page from Progress", tapping: row, until: app.navigationBars["Read"])
-        let control = app.segmentedControls["over-time-range"]
+        let control = app.segmentedControls["habit-tabs"]
         XCTAssertTrue(control.waitForExistence(timeout: 10))
         ready()
         keepGoing {
-            for title in ["Week", "Month", "Year", "All"] { control.buttons[title].tap() }
+            for title in ["History", "Notes", "Progress"] { control.buttons[title].tap() }
             scrollUpAndDown()
         }
     }

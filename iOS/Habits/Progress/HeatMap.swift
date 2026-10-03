@@ -513,3 +513,82 @@ private struct HeatYearSquares: View, Equatable {
         .frame(width: width, height: height)
     }
 }
+
+/// Year in Pixels (the user, 3 Oct 2026: "year is really important … a beautiful thing"; research Progress: twelve month
+/// columns by 31 day rows, the whole year at once). Squares are always `HeatSize.year`: only the gap between columns
+/// adjusts so twelve fit every iPhone. Days a month doesn't have (30 February) stay empty. A tap selects a day; it never
+/// logs anything. One `Canvas`.
+struct HeatYearPixels: View, Equatable {
+    /// Every day of the year, from 1 January.
+    let cells: [HeatCell]
+    /// Each month's 1st, as an index into `cells`, and its length.
+    let monthStarts: [Int]
+    let monthLengths: [Int]
+    /// "Jan", "Feb"…
+    let monthNames: [String]
+    let todayIndex: Int?
+    let selected: Int?
+    let color: HabitColor
+    let select: (Int) -> Void
+    @Environment(\.colorScheme) private var scheme
+    @State private var width: CGFloat = 0
+
+    static func == (a: Self, b: Self) -> Bool {
+        a.cells == b.cells && a.monthStarts == b.monthStarts && a.todayIndex == b.todayIndex && a.selected == b.selected
+            && a.color == b.color && a.monthNames == b.monthNames
+    }
+
+    static let gutter: CGFloat = 20
+    static let header: CGFloat = 22
+    static let rowGap: CGFloat = 3
+    static var height: CGFloat { header + 31 * HeatSize.year + 30 * rowGap + HeatDraw.outline }
+    static func columnGap(for width: CGFloat) -> CGFloat { min(4, max(1, (width - gutter - 12 * HeatSize.year) / 11)) }
+
+    var body: some View {
+        let dark = scheme == .dark
+        Canvas { context, size in
+            let gap = Self.columnGap(for: size.width)
+            let pitchX = HeatSize.year + gap, pitchY = HeatSize.year + Self.rowGap
+            let label = dark ? Color(white: 0.62) : Color(white: 0.4)
+            for m in 0..<min(12, monthNames.count) {
+                context.draw(Text(monthNames[m]).font(.caption2.weight(.semibold)).foregroundColor(label),
+                             at: CGPoint(x: Self.gutter + CGFloat(m) * pitchX + HeatSize.year / 2, y: Self.header / 2), anchor: .center)
+            }
+            for d in [1, 5, 10, 15, 20, 25, 30] {
+                context.draw(Text("\(d)").font(.caption2.monospacedDigit()).foregroundColor(label),
+                             at: CGPoint(x: Self.gutter / 2 - 2, y: Self.header + CGFloat(d - 1) * pitchY + HeatSize.year / 2), anchor: .center)
+            }
+            var draw = HeatDraw(size: HeatSize.year)
+            var picked: CGRect?
+            for m in 0..<min(12, monthStarts.count) {
+                for d in 0..<monthLengths[m] {
+                    let i = monthStarts[m] + d
+                    guard i < cells.count else { continue }
+                    let rect = CGRect(x: Self.gutter + CGFloat(m) * pitchX, y: Self.header + CGFloat(d) * pitchY,
+                                      width: HeatSize.year, height: HeatSize.year)
+                    draw.add(cells[i], in: rect, isToday: i == todayIndex)
+                    if i == selected { picked = rect }
+                }
+            }
+            draw.draw(in: context, color: color, dark: dark)
+            if let picked {
+                let ring = picked.insetBy(dx: -2, dy: -2)
+                context.stroke(Path(roundedRect: ring, cornerRadius: HeatSize.year * 0.22 + 2, style: .continuous),
+                               with: .color(dark ? .white : .black), lineWidth: 2)
+            }
+        }
+        .frame(height: Self.height)
+        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width = $0 }
+        .contentShape(Rectangle())
+        .onTapGesture(coordinateSpace: .local) { location in
+            // The same geometry as the drawing: which column (month) and row (day) the finger is in.
+            let gap = Self.columnGap(for: width)
+            let column = Int(floor((location.x - Self.gutter + gap / 2) / (HeatSize.year + gap)))
+            let row = Int(floor((location.y - Self.header + Self.rowGap / 2) / (HeatSize.year + Self.rowGap)))
+            guard column >= 0, column < min(12, monthStarts.count), row >= 0, row < monthLengths[column] else { return }
+            let index = monthStarts[column] + row
+            if index < cells.count { select(index) }
+        }
+        .accessibilityHidden(true)
+    }
+}

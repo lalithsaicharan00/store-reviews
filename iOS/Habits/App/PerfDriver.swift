@@ -14,6 +14,8 @@ enum PerfAction: Equatable {
     case toggleHeatKey
     /// A page with nothing on it, pushed like a menu page (`PerfBlankPage`); one with only a number field.
     case openBlank, openTypingControl
+    /// The habit page's History · Notes · Progress, by position (3 Oct 2026).
+    case habitTab(Int)
     /// Today's Edit: Arrange Your Day (3 Oct 2026).
     case openArrange
 }

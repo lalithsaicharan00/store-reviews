@@ -7,11 +7,12 @@ import Foundation
 /// milestone can't be lost or disagree with the numbers. Ported from the 30 Sep feature branch on 1 Oct 2026 (quit
 /// habits' milestones were already on their page, from Progress Phase 2).
 extension StreakUnit {
-    /// The streak lengths worth marking: a week, a month, a hundred, a year, then each year.
+    /// The streak lengths worth marking (report "Milestones on the Habit Page", 3 Oct 2026: the lengths people write
+    /// most are 3 and 7 days, then 30 and 100): 3, 7, 14, 30, 50, 100, 200, 365, 500, 1,000, then each year.
     func isMilestone(_ n: Int) -> Bool {
         switch self {
-        case .days, .times: [7, 30, 100, 365, 500, 1000].contains(n) || (n > 365 && n % 365 == 0)
-        case .weeks: [4, 12, 26, 52].contains(n) || (n > 52 && n % 52 == 0)
+        case .days, .times: [3, 7, 14, 30, 50, 100, 200, 365, 500, 1000].contains(n) || (n > 365 && n % 365 == 0)
+        case .weeks: [2, 4, 8, 12, 26, 52].contains(n) || (n > 52 && n % 52 == 0)
         case .months: [3, 6, 12].contains(n) || (n > 12 && n % 12 == 0)
         case .years: n >= 2
         }

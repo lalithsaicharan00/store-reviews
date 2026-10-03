@@ -112,21 +112,23 @@ final class ProgressUITests: XCTestCase {
     // The Day sheet test (a day ring opened it) was retired on 2 Oct 2026: Week and Month no longer have day rings
     // (the user removed them), so nothing on Progress opens the Day sheet. Today's calendar opens any day instead.
 
-    /// A habit's row opens its own page at Over Time.
-    func testRowOpensHabitPageAtOverTime() {
+    /// A habit's card opens its own page on Progress (3 Oct 2026: History · Notes · Progress); the other tabs are there.
+    func testRowOpensHabitPageAtProgress() {
         launch()
         openProgress()
         let row = app.buttons["progress-row-Read"]
         XCTAssertTrue(row.waitForExistence(timeout: 5))
         row.tap()
         XCTAssertTrue(app.navigationBars["Read"].waitForExistence(timeout: 5), "The habit page opens")
-        XCTAssertTrue(app.segmentedControls["over-time-range"].waitForExistence(timeout: 5), "At Over Time")
-        XCTAssertTrue(app.staticTexts["over-time-period"].exists)
-        shot("p04-over-time")
-        for title in ["Year", "All", "Month"] {
-            app.segmentedControls["over-time-range"].buttons[title].tap()
-            XCTAssertTrue(app.staticTexts["over-time-period"].exists, title)
-        }
+        let tabs = app.segmentedControls["habit-tabs"]
+        XCTAssertTrue(tabs.waitForExistence(timeout: 5), "History · Notes · Progress")
+        XCTAssertTrue(tabs.buttons["Progress"].isSelected, "Opened from Progress, on Progress")
+        XCTAssertTrue(app.descendants(matching: .any)["habit-progress-record"].waitForExistence(timeout: 5), "Overall record")
+        shot("p04-habit-progress")
+        tabs.buttons["History"].tap()
+        XCTAssertTrue(app.buttons["history-add-entry"].waitForExistence(timeout: 5), "History")
+        tabs.buttons["Notes"].tap()
+        XCTAssertTrue(app.buttons["notes-add"].waitForExistence(timeout: 5), "Notes")
         back()
         XCTAssertTrue(app.navigationBars["Progress"].waitForExistence(timeout: 3), "Back on Progress")
     }
@@ -144,7 +146,7 @@ final class ProgressUITests: XCTestCase {
             XCTAssertTrue(card.exists && card.isHittable, "Floss's card")
             card.tap()
             XCTAssertTrue(app.navigationBars["Floss"].waitForExistence(timeout: 5), "The habit page")
-            XCTAssertTrue(app.segmentedControls["over-time-range"].waitForExistence(timeout: 5), "At Over Time")
+            XCTAssertTrue(app.descendants(matching: .any)["habit-progress-record"].waitForExistence(timeout: 5), "On Progress")
         }
         func toggle() {
             app.buttons["progress-options"].tap()
@@ -158,7 +160,7 @@ final class ProgressUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Progress"].waitForExistence(timeout: 5))
         toggle()
         openFloss()
-        XCTAssertTrue(app.staticTexts["over-time-period"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.descendants(matching: .any)["habit-progress-record"].waitForExistence(timeout: 5))
         XCTAssertFalse(percent.firstMatch.exists, "Every percentage is hidden")
         shot("p05-no-percentages")
         back()
@@ -213,17 +215,19 @@ final class ProgressUITests: XCTestCase {
         XCTAssertEqual(app.staticTexts["quit-total-line"].label, before, "Undo takes it back")
     }
 
-    /// A habit's page from Progress has its Year grid and Runs (report §8.4, §8.5).
-    func testHabitPageYearAndRuns() {
+    /// A habit's page from Progress has its Milestones and Year in Pixels (3 Oct 2026).
+    func testHabitPageYearAndMilestones() {
         launch()
         openProgress()
         app.buttons["progress-row-Read"].tap()
         XCTAssertTrue(app.navigationBars["Read"].waitForExistence(timeout: 5))
+        let milestones = app.descendants(matching: .any)["habit-milestones"]
+        for _ in 0..<6 where !(milestones.exists && milestones.isHittable) { app.swipeUp(velocity: .slow) }
+        XCTAssertTrue(milestones.exists, "Milestones")
         let grid = app.descendants(matching: .any)["habit-year-grid"]
-        XCTAssertTrue(app.reveal(grid), "The Year grid")
+        for _ in 0..<10 where !(grid.exists && grid.isHittable) { app.swipeUp(velocity: .slow) }
+        XCTAssertTrue(grid.exists, "Year in Pixels")
         shot("p08-habit-year")
-        let runs = app.descendants(matching: .any)["habit-runs"]
-        XCTAssertTrue(app.reveal(runs), "Runs")
     }
 
     /// With no habits, the empty state.

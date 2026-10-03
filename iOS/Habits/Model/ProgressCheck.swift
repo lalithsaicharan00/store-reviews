@@ -448,8 +448,8 @@ enum ProgressCheck {
             await tick(s, read, on: friday)
             same(s.milestoneOffer?.text, "All 2 done today", "G19 finishing the day")
             expect(s.dayFinishedAt != nil, "G19 the finishing tap is noted for the review prompt")
-            same(StreakUnit.days.milestones(upTo: 400), [7, 30, 100, 365], "G19 day milestones")
-            same(StreakUnit.weeks.nextMilestone(after: 4), 12, "G19 next week milestone")
+            same(StreakUnit.days.milestones(upTo: 400), [3, 7, 14, 30, 50, 100, 200, 365], "G19 day milestones (3 Oct 2026 ladder)")
+            same(StreakUnit.weeks.nextMilestone(after: 4), 8, "G19 next week milestone")
         }
 
         // G20, Siri and Shortcuts (ported 1 Oct 2026): logs like a tap, never twice, and asks how much when it must.

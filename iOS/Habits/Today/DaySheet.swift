@@ -8,7 +8,7 @@ struct DaySheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var perfEntry: Entry?
     @State private var destination: Destination?
-    private enum Destination: String, Identifiable { case log, note; var id: Self { self } }
+    private enum Destination: String, Identifiable { case log, add, note; var id: Self { self } }
 
     init(habit: Habit, day: LocalDay) {
         self.habit = habit
@@ -57,10 +57,23 @@ struct DaySheet: View {
             .analyticsScreen(.historyDay)
             .navigationTitle(NoteSheet.dayText(day, today: store.today(), calendar: store.calendar) + " · " + current.name)
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
+                // The day before or after, for fixing nearby days without going back to the list (research History B).
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button("Previous Day", systemImage: "chevron.left") { day = day.adding(days: -1, calendar: store.calendar) }
+                        .disabled(day <= store.startDay(of: current))
+                        .accessibilityIdentifier("day-previous")
+                    Spacer()
+                    Button("Next Day", systemImage: "chevron.right") { day = day.adding(days: 1, calendar: store.calendar) }
+                        .disabled(day >= store.today())
+                        .accessibilityIdentifier("day-next")
+                }
+            }
             .sheet(item: $destination) { destination in
                 switch destination {
                 case .log: LogProgressView(habit: ruled, day: day, source: .daySheet)
+                case .add: AddEntryView(habit: current, day: day)
                 case .note:
                     NoteSheet(title: "Note", subtitle: current.name + " · " + NoteSheet.dayText(day, today: store.today(), calendar: store.calendar),
                               initial: store.note(of: current, on: day) ?? "") { store.setNote($0, of: current, on: day) }
@@ -86,18 +99,17 @@ struct DaySheet: View {
         let paused = store.isPaused(current, on: day)
         let skipped = store.isSkipped(current, on: day)
         Section {
+            // One way to add an entry, the same for every habit (the user, 3 Oct 2026).
+            Button("Add Entry", systemImage: "plus") { destination = .add }
+                .disabled(ruled.kind == .quit && paused)
+                .accessibilityIdentifier("day-add-entry")
             switch ruled.kind {
-            case .amount, .duration:
-                Button(ruled.kind == .duration ? "Log time manually" : "Log amount manually", systemImage: "plus") { destination = .log }
-                    .accessibilityIdentifier("day-add-entry")
+            case .amount, .duration, .quit:
+                EmptyView()
             case .check, .task:
                 Toggle("Done", isOn: Binding(get: { store.isDayMet(ruled, on: day) }, set: { store.setDayDone($0, of: current, on: day) }))
                     .disabled(paused || skipped)
                     .accessibilityIdentifier("day-done")
-                if ruled.kind == .check, store.dayGoal(of: ruled) > 1 {
-                    Button("Log one more", systemImage: "plus") { store.addProgress(ruled, value: 1, on: day, source: .daySheet) }
-                        .disabled(paused || skipped)
-                }
             case .checklist:
                 ForEach(ruled.steps) { step in
                     Toggle(step.name, isOn: Binding(get: { store.isStepDone(step, of: ruled, on: day) }, set: { checked in
@@ -105,9 +117,6 @@ struct DaySheet: View {
                     }))
                     .disabled(paused || skipped)
                 }
-            case .quit:
-                NavigationLink("Record a slip") { SlipEntryView(habit: current, day: day) }
-                    .disabled(paused)
             }
             if skipped {
                 Button("Undo skip", systemImage: "arrow.uturn.backward") { store.setSkipped(current, on: day, false) }
