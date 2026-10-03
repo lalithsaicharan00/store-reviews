@@ -242,8 +242,10 @@ final class RoutineCalendarUITests: XCTestCase {
         if open.waitForExistence(timeout: 1) { open.tap() }
         app.buttons["Undo Practice"].tap()
         XCTAssertTrue(app.buttons["Start Anytime routine"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Today, 0 of 1 done'")).firstMatch.exists,
+                      "The day bar takes the undo back")
         openCalendar()
-        XCTAssertEqual(app.buttons[dayID(Date())].value as? String, "Today. 0 of 1 done")
+        XCTAssertEqual(app.buttons[dayID(Date())].value as? String, "Today")
     }
 
     func testCalendarSixWeekMonthAtLargeTextSize() {

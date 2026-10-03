@@ -27,6 +27,8 @@ struct HabitProgressTab: View {
             }
             .pageCard()
             .pageItem()
+            // A container keeps its children's own ids; without it this id replaced Log a Slip's (3 Oct 2026).
+            .accessibilityElement(children: .contain)
             .accessibilityIdentifier("habit-progress-record")
         } else if let record = model.record {
             HabitRecordCard(record: record, showPercentages: showPercentages)

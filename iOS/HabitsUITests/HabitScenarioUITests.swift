@@ -306,9 +306,14 @@ final class HabitScenarioUITests: XCTestCase {
     func testStartsAndEnds() {
         newHabit("Floss")
         let starts = row("Starts")
-        // Ends is the row under Starts: with Starts at the screen's edge, the form hadn't built Ends yet (3 Oct 2026).
-        app.reveal(row("Ends"))
-        app.reveal(starts, clear: true)
+        app.reveal(starts)
+        // Ends is the row under Starts, below the screen's edge and not built yet. `reveal` scrolls the first list it
+        // finds, which is Today's behind the sheet, so drag the form itself, from the Starts row (3 Oct 2026).
+        if !(row("Ends").exists && row("Ends").isHittable) {
+            starts.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+                .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45)))
+            sleep(1)
+        }
         XCTAssertTrue(row("Starts, Today").exists)
         XCTAssertTrue(row("Ends, Never").exists)
         shot("r4-10-starts-ends")
