@@ -1,6 +1,8 @@
 # Design Rules — Don't Regress
 
-Written by Claude (Claude Code), 28 September 2026. **Read this before changing any screen in the app.** Every rule below exists because an agent broke it once and the user had to catch it. Each rule links to the research behind it. If a rule has to change, change it here too, with the reason.
+Written by Claude (Claude Code), 28 September 2026. **The rules for every change are in [the Rulebook](../RULEBOOK.md)
+(3 Oct 2026); read it first.** This file keeps each screen's decisions: read a screen's section before changing that
+screen. Every rule below exists because an agent broke it once and the user had to catch it. Each rule links to the research behind it. If a rule has to change, change it here too, with the reason.
 
 ## How to work
 
@@ -268,6 +270,24 @@ Source: [Ticking Off, Folding and Small Settings — What People Need](<../Resea
 - **Day start and week start apply everywhere or not at all.** Read the day through `store.today()` / `store.calendar`; never subtract hours from a moment (it was an hour off on daylight-saving nights). Changing either clears Progress's cached scores.
 - **No setting for 12/24-hour time, daylight saving or time zones.** Times use the iPhone's format (`DaySection.clock`, `.formatted`); logs keep their `LocalDay`. A second clock switch could disagree with the iPhone's.
 - **The theme is set on the window** (`Theme.apply`), so sheets and alerts follow it at once.
+
+## Checked on the iPhone (2 Oct 2026)
+
+The first signed build on the user's iPhone 16 (iOS 26.6) found three bugs GitHub's simulator never showed. **Check
+every visual or layout change on the real iPhone before calling it done.**
+
+- **Switches are the iPhone's green; Select's circles its blue.** The app's ink tint is near-white in dark mode, where
+  an "on" switch and a selected row's check couldn't be read. `HabitsApp` sets
+  `.toggleStyle(SwitchToggleStyle(tint: Color(.systemGreen)))` on the root; lists in edit mode tint
+  `Color(.systemBlue)` (`AllHabitsView`).
+- **A `Toggle` inside a `Menu` sets `.toggleStyle(.automatic)`** (`ProgressScreen`'s View Options). The root's switch
+  style reached the menu's toggles and they stopped responding: Show Percentages could no longer be turned off
+  (`testHidePercentages`, 2 Oct). A toggle in a list or form stays a green switch.
+- **Never a lazy grid inside a `List` or `Form` row.** Opening any habit's page crashed the app on the phone (the
+  list re-laid out its cells 100 deep and asserted). Plain `Grid`s now; `check_rules.sh` fails on a lazy grid outside
+  the files that host one in a `ScrollView` (`PERFORMANCE-LESSONS.md` L19).
+- **A test launch never touches the person's data** (`-uitest`: its own signed-out store, backup state and folder, no
+  iCloud). Rule 16 in the Data Safety report; keep it for anything new that stores or sends data.
 
 ## Words the app never uses
 

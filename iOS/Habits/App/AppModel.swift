@@ -127,7 +127,7 @@ final class AppModel {
                 scheduler.scheduleReconcile(store)
                 widgets.schedule(store)
                 // Siri's phrases name each habit: refreshed when one is added, renamed or archived (cheap otherwise).
-                HabitShortcuts.habitsChanged(store)
+                perfTimed("Change: Siri's habit names") { HabitShortcuts.habitsChanged(store) }
                 Task { await timerPresence.sync(store) }
                 sync?.scheduleSoon()
                 backup?.dataChanged()

@@ -8,7 +8,8 @@ These are the iPhone app's own documents: the specs it was built from and the us
 
 ## How to use these without reading them all
 
-0. **Speed first: [PERFORMANCE.md](<../PERFORMANCE.md>)** applies to every change (loaded by the root `CLAUDE.md`).
+0. **The Rulebook first: [RULEBOOK.md](<../../RULEBOOK.md>)** holds every rule for every change: speed, data safety,
+   design, testing and how we work (loaded by the root `CLAUDE.md`).
 1. **Always read [Design Rules — Don't Regress](<../Design Rules — Don't Regress.md>) first.** It is the short version of everything below: each rule the app must keep, and the research behind it. For most changes it is enough.
 2. **Before changing a screen, open only the spec for that screen** (table below). Read a research report only when a rule's reason is unclear or you need to change the rule.
 3. **When the user asks for a change**, write every point they made into a new checklist in `Checklists/` before starting, and tick it as you go.

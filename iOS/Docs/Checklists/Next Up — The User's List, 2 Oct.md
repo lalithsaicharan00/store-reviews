@@ -2,8 +2,8 @@
 
 Written by Claude (Claude Code), 2 October 2026, from the user's own list: "These are the things that I want to
 update, but not exactly right now. We will update them one after the other." Work them **in order, one at a time**;
-tick each when it's done and link what was built or written. Every change under `iOS/` still follows
-`iOS/PERFORMANCE.md` and `Design Rules — Don't Regress.md`.
+tick each when it's done and link what was built or written. Every item follows
+[the Rulebook](<../../../RULEBOOK.md>), and a screen's section in `Design Rules — Don't Regress.md`.
 
 ## Now
 
@@ -51,6 +51,14 @@ tick each when it's done and link what was built or written. Every change under 
 - [ ] **10. Groups: test them properly.** Making a group seems to work, but groups and their statistics (group
   chips on Progress, group numbers, the Filter's group choice, editing and ordering groups) were never really
   tested, on the simulator or the iPhone.
+
+- [ ] **11. Bug: the app sometimes stops responding for ~74 s right after launching signed in** (added 2 Oct, from the
+  test runs). `BackupUITests.testDeletingTheAccountAndErasingThisPhone` launches with a test sign-in to the dev server;
+  in 4 of 13 runs (1–2 Oct) the app didn't respond for about 74 s right after launch, before the test's first step
+  (opening the ≡ menu), and the test failed; it passes on a rerun. Not caused by a test step: it happens before any.
+  Suspects to check: something blocking the main thread during the sign-in at launch (the keychain, a network call
+  waited on, the first backup or sync). Logs: run 36995529935 (`ios-logs` artifact, the test's lines at
+  t = 24.86 s → 98.74 s). Find the cause, fix it, and make the test show where the time goes if it happens again.
 
 ## Done from this list
 

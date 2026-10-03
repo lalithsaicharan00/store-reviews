@@ -15,7 +15,7 @@ set -u
 DEV="$1"; OUT="$2"; mkdir -p "$OUT"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 BUNDLE=com.oftenenough.app
-SCENARIOS="${PERF_SCENARIOS:-form-parts new-habit menu-pages progress all-habits habit-page day-sheet scroll-today tap-today}"
+SCENARIOS="${PERF_SCENARIOS:-form-parts new-habit menu-pages progress all-habits habit-page day-sheet typing-control scroll-today tap-today}"
 APP="${PERF_APP:-build-device/Build/Products/Debug-iphoneos/Habits.app}"
 SUMMARY="$OUT/perf-summary-device.md"
 [ -d "$APP" ] || { echo "No app at $APP: build first (iOS/README.md)"; exit 1; }

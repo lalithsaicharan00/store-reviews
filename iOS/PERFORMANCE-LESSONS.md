@@ -5,8 +5,8 @@ snappy, fast, the best possible experience. Note down everything found, so no ag
 any other app, ever repeats these mistakes."
 
 **Every agent reads this before changing any app code**, in this project or another. The rules this project enforces
-are in [`PERFORMANCE.md`](PERFORMANCE.md) (loaded into every session; `Tools/perf/check_rules.sh` fails on the ones
-code can show). This file is the why behind them, written so any SwiftUI app can use it: each lesson is a mistake
+are in section S of [the Rulebook](../RULEBOOK.md) (loaded into every session; `Tools/perf/check_rules.sh` fails on
+the ones code can show). This file is the evidence behind them, written so any SwiftUI app can use it: each lesson is a mistake
 that was actually made here, what it cost (measured, not guessed), the fix, and how to catch it. Add every new finding
 here the same day, with its numbers.
 
@@ -21,7 +21,7 @@ here the same day, with its numbers.
 | L5 | **A `TimelineView` anchored at `.now`/`.distantPast`, or switched with a plain view** | The app froze; the player's circle faded on Pause (28–29 Sep) | Anchor at a fixed date; pause with a schedule that never ticks | `check_rules.sh` |
 | L6 | **Walking history in a view's `body`** (streaks, totals, counts) | One tap recalculated every row's streak over a year (30 Sep); the habit page's "Goal met … since" walked all history on every redraw (1 Oct) | Work it out once in the store, remember it, forget it only when what it reads changes | Review: anything that loops over days or entries in a view is a bug |
 | L7 | **Building a formatter on every call** (`NumberFormatter()`, `DateFormatter()` …) | Nearly all of a Today row's own time (1 Oct) | Make it once (a `static`, or a cache per locale/places) | `check_rules.sh` |
-| L8 | **A form reading the typed text while drawing** | Every letter rebuilt the whole New Habit form and its preview: 68.8 % of the main thread while typing (1 Oct); before that, previews redrawn per letter, 92 % and 100–400 ms freezes (30 Sep) | The text lives in a small `@Observable` read only by the field; the form reads only "is there a name" and "did it change"; previews catch up when typing pauses (0.3 s) | Speed run "Habit form: typing" |
+| L8 | **A form reading the typed text while drawing** | Every letter rebuilt the whole New Habit form and its preview: 68.8 % of the main thread while typing (1 Oct); before that, previews redrawn per letter, 92 % and 100–400 ms freezes (30 Sep) | The text lives in a small `@Observable` read only by the field; the form reads only "is there a name" and "did it change"; previews catch up when typing pauses (0.3 s). **The binding too is made in the field's own view** (`DraftTextField`): the entry editor made it in its body and cost 23.6 ms/s typing against a bare field's 0 (63 on the iPhone); in its own view 2.3–5.6, the log sheet 37.8 → 15.3 (2 Oct) | Speed runs "Habit form: typing", "Entry editor: typing" against "Control: typing in a bare number field"; the timed count "Entry editor: whole editor drawn" |
 | L9 | **A covered screen that keeps drawing** | Today redrew behind the full-screen player on every tap (29 Sep); its per-second clocks ticked under every page pushed from the menu (1 Oct) | Stop the covered screen's clocks and work (an environment flag; a schedule with no ticks) | Profile shows the covered screen's views while another is on top |
 | L10 | **Swift Charts in a screen that scrolls** | Its first layout was most of a 1–2.7 s freeze the first time the habit page scrolled to a chart; trimming marks didn't help, and no single option was to blame (1 Oct) | Draw charts in one `Canvas` pass (`LightBarChart`, `LightLineChart`), with every bar for VoiceOver and a chart descriptor for Audio Graphs | `check_rules.sh` (no `import Charts`) |
 | L11 | **Several `ForEach`es with plain numbers as ids in one lazy grid** (weekday letters 0–6, days 1–31) | The grid treats equal ids as one cell: days 1–6 of every month were never drawn (found 1 Oct) | One id type for every cell in the grid (an enum: `.weekday(i)`, `.place(i)`) | A screenshot at the start of a month; tests that tap the first days |
@@ -31,7 +31,7 @@ here the same day, with its numbers.
 | L15 | **A redraw that touches the whole screen for something small** (each row's `onAppear` updating shared state) | Every row appearing rebuilt every section of Today (30 Sep) | State that changes while scrolling lives in its own small object read only by who needs it | Profile: one screen's body during scrolling |
 | L16 | **An environment value or observed property read by every row, when only a few need it** | Pausing Today's clocks through a value every row read made every row redraw on each menu page opening (1 Oct, found reviewing the fix itself) | Read it in the smallest view that uses it (`RowClock`); a row without a clock never sees it | Review: who reads a value is who redraws when it changes |
 | L17 | **Writing to `UserDefaults` on every data change** (a "changed since the last backup" flag, set after each tap) | The Day sheet's add, edit and undo: 535 ms/s of hitches and 36 freezes, against 134 and 2 without it (same hour, same scenario, 1 Oct). Every Today row has an `@AppStorage`, and a defaults write makes them check again | Write only when the value changes (`if !flag { set }`), or keep it in memory and save it when leaving the app | Speed run "Day sheet: add, edit and exact undo"; review: no `UserDefaults.set` in `onChange` paths |
-| L18 | **The first keyboard of a launch** | Opening the entry editor (the launch's first text field) stalls 3.3–6.7 s on the hosted simulator; the habit form's first open 1.4–2.8 s; later keyboards cost a fraction (1 Oct) | Not fixed yet: measure warming the text system after launch has settled, and focusing a field only after its sheet has finished appearing | Speed runs "Entry editor", "Habit form (first)" |
+| L18 | **The first keyboard of a launch** | Opening the entry editor (the launch's first text field) stalls 3.3–6.7 s on the hosted simulator; the habit form's first open 1.4–2.8 s; later keyboards cost a fraction (1 Oct) | **Not a phone problem (2 Oct):** on the iPhone 16 the launch's first keyboard cost 136 ms, a later one 127 ms (`form-parts`), against 2.1 s on the hosted simulator. Don't pre-load the keyboard; judge keyboards on the phone | Speed runs "Habit form, the launch's first keyboard" on the iPhone (`measure_perf_device.sh`) |
 | L19 | **A lazy grid inside a `List` or `Form` row** (the habit page's month calendar and number tiles; the form's colour and date pickers) | On the iPhone (iOS 26.6) opening any habit's page crashed the app: the list's collection view re-laid out its visible cells 100 deep and asserted (crash report, 2 Oct). GitHub's simulator never showed it | A plain `Grid` with `GridRow`s, sized up front; lazy grids only in a `ScrollView` | `check_rules.sh` (lazy grids only in listed files); test on the real iPhone |
 | L20 | **Drawing many small shapes one call at a time in a `Canvas`** (a year of squares, each its own fill, plus a resolved symbol per sign) | The scrolling Year heat map: 39.2 ms/s while scrolling, 134 ms longest (run 37035760133, 2 Oct). The same 24-pt scrolling year drawn as one path per look (six fills, one stroke per kind of sign) and rendered off the main thread: 11.2 ms/s, 44 ms longest, no freezes (run 37096111790, 3 Oct; different runs, so hosted noise applies) | Batch: one `Path` per colour or stroke style, filled or stroked once (`HeatDraw`); signs as paths, not text or images; `Canvas(rendersAsynchronously: true)` for a wide canvas in a scroll view | Speed run "Progress Year: scrolling" |
 
@@ -57,10 +57,25 @@ here the same day, with its numbers.
   107–236 ms, the same within noise; only a few first openings (Help's search bar, Appearance, Day and Week) added
   ~150 ms once per launch (2 Oct). Without the control, those numbers would have sent us optimising pages that cost
   nothing.
+- **The phone has the final word** (`Tools/perf/measure_perf_device.sh`, 2 Oct). The hosted simulator inflates some
+  costs 15× (the first keyboard) and every push 2–3× (a blank page 120–200 ms there, 45–85 ms on the iPhone 16). Use
+  GitHub's runs to compare before and after; check what people feel on the phone.
+- **Time and count before changing anything** (`perfTimed`, 2 Oct). The Day sheet's ~50 ms/s of add, edit and undo
+  was blamed on the store until the timed table showed the widgets' month projection: 60 runs, 362 ms, up to 118 ms,
+  one per change, 180 ms after it (fix: widgets publish 2 s after the last change; going to the background still
+  publishes at once): 17 runs, 93 ms. Redraw counts ("Count: …" in the timed table) then showed each screen redraws
+  only what changed (one row per +1; the whole list only on a day switch), so what's left is the list machinery's own
+  per-change cost, about 6 ms a change on the iPhone.
 - **Test with a year of history.** Work that grows with history is fast with a new install's week of data and slow
   with a year of it.
 
 ## Open, not yet fixed (update as they're done)
+
+**On the iPhone 16 (2 Oct, `5457ec2`, a year of history, `measure_perf_device.sh`): no freeze of 100 ms anywhere.**
+Scrolling: Today 4.8 ms/s (47 ms longest), Progress 0.7, All Habits 1.1, the habit page 5.7. Openings 46–170 ms
+against a blank page's 45–85 ms. Still above the 5 ms/s target, repeating the action quickly: Progress's period and
+range switch 110 ms/s (95 ms longest, ~45 ms a switch), the entry editor's typing 63 ms/s, the Day sheet's add, edit
+and undo 53 ms/s, Today's +1 and day switch 40 ms/s. The items below are the simulator's figures from before.
 
 - Opening a screen stalls 0.5–1.3 s (target under 0.1 s); slow before the merge too (1 Oct). **2 Oct:** menu pages
   now open within noise of a blank page's push (above); the first openings of Help, Appearance and Day and Week add

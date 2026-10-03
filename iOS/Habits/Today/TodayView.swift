@@ -206,6 +206,7 @@ struct TodayView: View {
         case .openWidgets: menu.path.append(MenuPlace.widgets)
         case .openPlace(let place): menu.path.append(place)
         case .openBlank: menu.path.append(PerfBlankPage())
+        case .openTypingControl: menu.path.append(PerfTypingPage())
         case .toggleMenu: menu.setOpen(!menu.isOpen, reduceMotion: false)
         case .nextGroup:
             // All, then each group in turn.
@@ -336,6 +337,7 @@ struct TodayView: View {
 
     @ViewBuilder
     private func content(now: Date) -> some View {
+        let _ = perfTimed("Count: Today's list drawn") { () }
         let today = store.today(now: now)
         let shown = day ?? today
         let isToday = shown == today

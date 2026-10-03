@@ -68,8 +68,8 @@ struct LogProgressView: View {
                     Section {
                         LabeledContent("Amount") {
                             HStack(spacing: 6) {
-                                TextField("0", text: draft.binding(\.amount))
-                                    .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
+                                DraftTextField(draft: draft, key: \.amount, placeholder: "0", keyboard: .decimalPad)
+                                    .multilineTextAlignment(.trailing)
                                     .font(.body.monospacedDigit().weight(.semibold))
                                     .focused($typing).accessibilityLabel("Amount to add, in \(unit)")
                                     .accessibilityIdentifier("log-amount")

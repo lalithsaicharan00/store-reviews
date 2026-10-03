@@ -10,8 +10,8 @@ enum PerfAction: Equatable {
     case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, saveEntry, logAgain, hideLogKeyboard
     /// A page from the ≡ menu; the menu itself; Today's group filter; Progress's range; the habit page's Edit.
     case openPlace(MenuPlace), toggleMenu, nextGroup, nextRange, openEdit
-    /// A page with nothing on it, pushed like a menu page (`PerfBlankPage`).
-    case openBlank
+    /// A page with nothing on it, pushed like a menu page (`PerfBlankPage`); one with only a number field.
+    case openBlank, openTypingControl
 }
 
 /// Speed runs only: switches a scenario flips to take one part out of a screen and see what it cost (the bisect
@@ -26,6 +26,11 @@ enum PerfSwitches {
 /// menu page. If it stalls as long as the real pages, the cost is the push itself, not what the pages draw.
 struct PerfBlankPage: Hashable {}
 
+/// The control for typing (2 Oct 2026): a bare number field, typed into exactly like the entry editor. On the iPhone
+/// the editor cost ~6 ms a keystroke with nothing of the app's running per letter; this shows what iOS's own text
+/// input costs.
+struct PerfTypingPage: Hashable {}
+
 extension View {
     func perfBlankDestination() -> some View {
         #if DEBUG
@@ -34,6 +39,7 @@ extension View {
                 .navigationTitle("Blank")
                 .navigationBarTitleDisplayMode(.inline)
         }
+        .navigationDestination(for: PerfTypingPage.self) { _ in PerfTypingView() }
         #else
         self
         #endif
@@ -130,6 +136,30 @@ enum PerfDriver {
                     await pause(0.35)
                 }
             }
+            // The same two actions apart (2 Oct 2026), to tell which one costs what.
+            await measure("Today: +1 alone") {
+                await repeatFor(window) {
+                    withAnimation { store.increment(water, on: store.today()) }
+                    await pause(0.35)
+                }
+            }
+            await measure("Today: day ‹ › alone") {
+                await repeatFor(window) {
+                    send(.previousDay)
+                    await pause(0.35)
+                    send(.nextDay)
+                    await pause(0.35)
+                }
+            }
+        case "typing-control":
+            await open("Typing control") { send(.openTypingControl) }
+            await pause(1)
+            await measure("Control: typing in a bare number field") {
+                await repeatFor(window) {
+                    for text in ["1", "12", "123", "12", "1"] { type(text); await pause(0.1) }
+                }
+            }
+            send(.close)
         case "widget-guide":
             await openTwice("Widgets guide") { send(.openWidgets) }
             await measure("Widgets guide: scrolling") { await scroll() }
@@ -436,6 +466,19 @@ enum PerfDriver {
         }
         visit(view)
         return best
+    }
+}
+
+/// A bare number field for the typing control (`PerfTypingPage`), focused as it opens.
+private struct PerfTypingView: View {
+    @State private var text = ""
+    @FocusState private var focused: Bool
+
+    var body: some View {
+        Form { TextField("0", text: $text).keyboardType(.decimalPad).focused($focused) }
+            .navigationTitle("Typing control")
+            .navigationBarTitleDisplayMode(.inline)
+            .task { focused = true }
     }
 }
 #endif

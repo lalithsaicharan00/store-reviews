@@ -52,11 +52,11 @@ extension HabitStore {
             // A previous yield may have allowed an edit or deletion; project the current rule.
             guard let habit = habits.first(where: { $0.id == id && !$0.archived }) else { continue }
             if widgetProjectionCache[habit.id] == nil || timers[habit.id] != nil {
-                widgetProjectionCache[habit.id] = widgetItems(habit, first: first, now: now)
+                widgetProjectionCache[habit.id] = perfTimed("Widgets: one habit's month") { widgetItems(habit, first: first, now: now) }
                 await Task.yield()
             }
         }
-        return widgetSnapshot(now: now)
+        return perfTimed("Widgets: the snapshot") { widgetSnapshot(now: now) }
     }
 
     private func widgetItems(_ habit: Habit, first: LocalDay, now: Date) -> [WidgetItem] {
@@ -131,7 +131,11 @@ extension HabitStore {
     func schedule(_ store: HabitStore) {
         scheduled?.cancel()
         scheduled = Task {
-            try? await Task.sleep(for: .milliseconds(180))
+            // Two seconds after the last change, not 180 ms (2 Oct 2026): widgets can't be seen while the app is in
+            // front, and going to the background publishes at once (`HabitsApp.finishWrites`). Each publication
+            // projects the changed habit's month on the main thread (6 ms on average, up to 118 ms on the hosted
+            // simulator), so a run of taps now pays for one, after the taps, instead of one per tap.
+            try? await Task.sleep(for: .seconds(2))
             guard !Task.isCancelled else { return }
             await publishNow(store)
         }

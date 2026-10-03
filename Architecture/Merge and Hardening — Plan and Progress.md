@@ -127,3 +127,20 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
   are green, Select's circles blue. Progress's View Options menu fixed (`5e2c7c5`, the green switch style had reached
   its toggles), tests running. Speed work continues, slowly and measured (the user: "take your time"): first, why
   every screen's opening stalls 150–280 ms, with a blank page pushed the same way as the control.
+- **2 Oct 11:30 UTC:** `main` and `integration` at `5457ec2`. Speed findings: menu pages open within noise of a blank
+  page's push (lesson in PERFORMANCE-LESSONS); the habit form's 1.3 s first opening is the launch's first keyboard
+  (2.1 s on the simulator; the form alone 562 ms once, then ~240 ms). **Data safety fixed:** `-uitest` launches used
+  the app's own sign-in, backup state, iCloud and folders: on a real iPhone a test run could sync or back up demo
+  habits over the person's (`5ec0547`). Backup 8/8, Sync, Persistence, Onboarding, Today pass. Next: the speed run on
+  the iPhone (`Tools/perf/measure_perf_device.sh`). **Open:** `testDeletingTheAccountAndErasingThisPhone` sometimes
+  hangs ~74 s right after launching with a CI sign-in (4 of 13 runs, 1-2 Oct), before any step; passes on rerun.
+- **2 Oct 11:55 UTC (check-in 4, the last):** `main` at `5457ec2`, every test class green on today's code. First
+  speed run on the user's iPhone 16: no freeze of 100 ms anywhere; the first keyboard 136 ms (L18 is a simulator
+  artifact); what's left is a few per-action hitches (lessons file). Widget tests queued on the latest code (last run
+  04:05). Branch checklist updated with the Progress agents' new branches. Next, without check-ins: the typing
+  control and Today's split, the widget results, then the per-action hitches.
+- **2 Oct 13:30 UTC:** speed, measured on the phone and fixed with timed tables: entry-editor and log-sheet typing
+  (the field's binding in its own view, 23.6 → 2–6 ms/s); widgets publish 2 s after the last change (362 → 93 ms of
+  projections in the Day sheet test). Redraw counts show each screen redraws only what changed. Widget tests green
+  (Lock Screen skipped by design on the simulator). Speed work at diminishing returns; the Progress redesign carries
+  the last big one (period switch, 110 ms/s on the phone).
