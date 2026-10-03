@@ -98,6 +98,8 @@ should be merged from them.
 | `analytics` | Fully in `main` (third round, T4, 2 Oct); already deleted (gone from GitHub by 2 Oct 12:00) |
 | `claude/progress-week-research` | **Keep: in progress.** The Week visual research and five options (2 Oct); not in `main` |
 | `claude/progress-week-cards` | **Keep: in progress.** A Week build ("a card per habit, dates bar pinned, no overview or rings") plus the overview and card research; not in `main`, waiting on the user's choice |
+| `claude/today-arrange-research` | Report 27 and its checklist (3 Oct); inside `claude/today-edit-mode`, so in `main` with it: **safe to delete** |
+| `claude/today-edit-mode` | Arrange Your Day (item 5), tested and merged into `main` (fast-forward, 3 Oct): **safe to delete** once the user has looked at it on the iPhone |
 | `claude/weekly-overview-stats-ly55gk` | Its own note says research only, copied to `claude/progress-week-cards`: **safe to delete once that branch keeps it** |
 | `integration` | Once nobody works on it: `main` is the same |
 

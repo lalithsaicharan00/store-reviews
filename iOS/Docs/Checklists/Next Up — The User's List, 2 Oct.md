@@ -30,7 +30,7 @@ tick each when it's done and link what was built or written. Every item follows
   decided). Start from what exists: `Docs/Checklists/Easy Undo and Fixing Progress.md` (research done 30 Sep, its
   build waiting) and the Day sheet, which already edits one day's entries; find how reachable past days are.
 - [x] **5. The Filter becomes the place to arrange Today.** *Built 3 Oct 2026 on `claude/today-edit-mode`, tests
-  running; the user changed the plan after research (report 27): Filter only shows less, and Edit on Today becomes
+  passed, merged to `main` 3 Oct; waiting for the user's look on the iPhone (U9); the user changed the plan after research (report 27): Filter only shows less, and Edit on Today becomes
   "Arrange Your Day". Build checklist: `Today — Arrange Your Day (item 5 build).md`.* Original point: From Filter (beside +) people should also edit the times
   of day (sections), groups, and the order of habits: whatever arranging Today needs. Existing research:
   `Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/17. The View Sheet — Filter, Edit

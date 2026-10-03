@@ -75,5 +75,8 @@ as it is (folding sections, icons and "N left" when folded, no heading); only th
   and Quitting moving; the bottom of Today).
 - [x] A `PerfDriver` scenario for Arrange Your Day (T4).
 - [x] UI tests updated for every changed label (T3), and new ones for the arrange view, the split and the filter.
-- [ ] `check_rules.sh` passes; the touched tests and a speed run, once, at the end (T7).
+- [x] `check_rules.sh` passes; the touched tests and a speed run, once, at the end (T7). *3 Oct: every touched class
+  passed (Arrange, Today, Groups, Long Text, Section Headers, Tasks, Placement, New Habit, Habit Creation, Form
+  Walkthrough, New Flow); speed run in `PERFORMANCE-LESSONS.md`. The runs found a real bug, fixed: a fast-typed or
+  pasted name showed more than the 24 letters kept (Rulebook U6).*
 - [ ] Looked at on the real iPhone by the user (U9).
