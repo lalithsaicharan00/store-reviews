@@ -94,10 +94,11 @@ should be merged from them.
 | `claude/integration-check-b` | Temporary: a copy of `integration` so two halves of the tests could run at once |
 | `claude/perf-bisect-habit-page` | Scratch: the habit page with one part left out per speed scenario (`PerfBisect`). Never merge it |
 | `claude/server-and-sync` | Every commit is in `main` (third round, T3, 1 Oct). The hardening session still pushes there first and moves `main` after each tested step: **safe to delete whenever it's level with `main`** (`git log main..claude/server-and-sync` prints nothing) |
-| `claude/serene-wright-mcvmrx` | Nothing beyond `main` (a session's starting branch) |
-| `claude/weekly-overview-stats-ly55gk` | **Safe to delete** (2 Oct): research only (the weekly overview and weekly cards reports), all three commits copied to `claude/progress-week-cards`; its branch note says so |
-| `claude/progress-week-cards` | Week's habit cards (2 Oct), from `claude/server-and-sync`. Merge after its tests; then it can go. What it holds: `Docs/Checklists/Progress Week — Habit Cards Build.md` |
-| `analytics` | **Safe to delete:** fully in `main` (third round, T4, 2 Oct) |
+| `claude/serene-wright-mcvmrx` | Nothing beyond `main` (a session's starting branch); already deleted |
+| `analytics` | Fully in `main` (third round, T4, 2 Oct); already deleted (gone from GitHub by 2 Oct 12:00) |
+| `claude/progress-week-research` | **Keep: in progress.** The Week visual research and five options (2 Oct); not in `main` |
+| `claude/progress-week-cards` | **Needs merging into `main`** (checked 3 Oct, 08:30 UTC). Progress's Week, Month and Year as one heat map (signs, no dates; ✓ only when the goal is met; grey for every due day; 24-pt squares; Year scrolls sideways), the same squares on the habit's page, the collapsible key, and the research reports behind them. 31 commits not in `main`; `main` has 15 newer: merge `main` into it first, run `check_rules.sh` and the UI tests (WeekCards, Progress, Undo, Today, Groups), then move `main`. **Delete it after that merge.** What it holds and every CI run: `Docs/Checklists/Progress Week — Habit Cards Build.md` |
+| `claude/weekly-overview-stats-ly55gk` | **Safe to delete** (verified 3 Oct with `git cherry`): research only; its three commits (the weekly overview and weekly cards reports) are all on `claude/progress-week-cards`; the only one that isn't is its own branch note saying so |
 | `integration` | Once nobody works on it: `main` is the same |
 
 **Keep:** `main`, `ci-results` (CI writes its results there) and every `archive/…` branch. Everything else is in

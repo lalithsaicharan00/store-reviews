@@ -1,5 +1,10 @@
 # Progress Week — Habit Cards Build
 
+> **Branch status (3 Oct 2026, 08:30 UTC):** `claude/progress-week-cards` **needs merging into `main`**: everything
+> below is built and tested on GitHub (every UI test passes; see "Results"). `main` has moved on since, so merge `main`
+> into it first and re-run the tests, then move `main`; delete the branch after that. `claude/weekly-overview-stats-ly55gk`
+> is **safe to delete** (its research is all here). Both are in [Merging the Branches](<Merging the Branches.md>).
+
 Written by Claude (Claude Code), 2 October 2026. Branch: **`claude/progress-week-cards`**, made from
 `claude/server-and-sync` at `5457ec2` (the newest tested code that day: `main` plus five speed and data-safety
 commits; `integration` was level with `main`). **Built on Linux, not compiled or run yet:** another agent tests it
