@@ -116,14 +116,15 @@ final class GoalFlowUITests: XCTestCase {
         XCTAssertTrue(row("How much, 7 ml").waitForExistence(timeout: 3))
         XCTAssertEqual(sentence, "Keys 7 ml a day, anytime")
         addHabit()
-        app.staticTexts["Keys"].firstMatch.tap()
+        // + with no step set asks how much (Add Entry); a tap on the row opens the Day sheet (3 Oct 2026).
+        rowButton("Add an amount to Keys").tap()
         let log = app.textFields["log-amount"]
         XCTAssertTrue(log.waitForExistence(timeout: 3))
         sleep(1)
         for key in ["3", "5", "0"] { app.keys[key].tap(); usleep(400_000) }
-        XCTAssertEqual(log.value as? String, "350", "Log Amount shows what's typed")
+        XCTAssertEqual(log.value as? String, "350", "Add Entry shows what's typed")
         shot("k03-add-amount-350")
-        app.navigationBars["Log Amount"].buttons["Log"].tap(); sleep(2)
+        app.navigationBars["Add Entry"].buttons["add-entry-save"].tap(); sleep(2)
         shot("k04-today-350")
     }
 
@@ -164,11 +165,16 @@ final class GoalFlowUITests: XCTestCase {
         shot("l01-plus-step-button")
         plus.tap(); sleep(1)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '1/8 glasses'")).firstMatch.exists, "+ adds one glass")
+        // Any other amount: the row opens its Day sheet, and Add Entry there takes it (3 Oct 2026).
         app.staticTexts["Glasses"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["Log Amount"].waitForExistence(timeout: 3), "The row opens Log Amount")
+        XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 3), "The row opens its Day sheet")
+        app.buttons["day-add-entry"].tap()
+        XCTAssertTrue(app.navigationBars["Add Entry"].waitForExistence(timeout: 3))
         sleep(1)
-        app.textFields["log-amount"].typeText("3")
-        app.navigationBars["Log Amount"].buttons["Log"].tap(); sleep(2)
+        let typed = app.textFields["log-amount"]
+        typed.typeText("3")
+        app.navigationBars["Add Entry"].buttons["add-entry-save"].tap(); sleep(2)
+        app.navigationBars.buttons["Done"].firstMatch.tap(); sleep(1)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '4/8 glasses'")).firstMatch.exists, "The typed amount adds up")
         shot("l03-today-4-of-8")
     }

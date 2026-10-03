@@ -115,6 +115,18 @@ enum ProgressCheck {
             same(s.progress(of: gym, on: friday), 3, "60a every tick counts")
             same(s.daySummary(on: friday).done, 1, "60a day bar counts today's tick")
             runsAgree(s, gym, "G2")
+            // One rule for the round button (3 Oct 2026, report "Today's Rows"): a weekly count's ✓ is that day's tick,
+            // toggled on that day only, even once the week is met; a habit ticked several times a day counts up.
+            expect(!s.isTicked(gym, on: day(24)), "Tap rule: Thursday has no tick though the week is met")
+            s.toggleCheck(gym, on: day(24)); await s.flush()
+            same(s.progress(of: gym, on: day(24)), 4, "Tap rule: a tap on Thursday adds that day's tick")
+            expect(s.isTicked(gym, on: day(24)), "Tap rule: Thursday is ticked")
+            s.toggleCheck(gym, on: day(24)); await s.flush()
+            same(s.progress(of: gym, on: day(24)), 3, "Tap rule: a second tap takes back Thursday's tick, nothing else")
+            expect(!s.countsUp(gym, on: friday), "Tap rule: a weekly count toggles")
+            let pills = Habit(name: "Pills", symbol: "pills.fill", color: .red, kind: .check, goal: 3, startsOn: day(15))
+            await add(s, pills)
+            expect(s.countsUp(pills, on: friday), "Tap rule: three times a day counts up")
         }
 
         // G3: Water, 8 glasses a day, from Thu 24. Thu 5, Fri 6 (today).

@@ -9,7 +9,7 @@ struct TodayView: View {
     /// Parts and checklists the person opened or folded, and done rows held in place until a pause (#58, #59).
     /// One box per part, so folding one part redraws only that part.
     @State private var layout = TodayLayout()
-    @AppStorage(Preferences.doneOrder) private var doneOrder = DoneOrder.bottom.rawValue
+    @AppStorage(Preferences.doneOrder) private var doneOrder = DoneOrder.inPlace.rawValue
     @AppStorage(Preferences.hideDoneHabits) private var hideDoneHabits = false
     @AppStorage(Preferences.hideDoneTasks) private var hideDoneTasks = false
     /// Edit: Today becomes Arrange Your Day (`ArrangeDayView`) until Done (the user, 3 Oct 2026).
@@ -71,6 +71,8 @@ struct TodayView: View {
             // Every place in the ≡ menu is pushed here, so Back and the edge swipe return to Today.
             .analyticsScreen(.today)
             .navigationDestination(for: MenuPlace.self) { MenuPage(place: $0) }
+            // Open Habit Page from a row's touch-and-hold menu: the page on Today's own stack, Back returns to Today.
+            .navigationDestination(for: HabitPageRoute.self) { HabitPageView(id: $0.id) }
             .perfBlankDestination()
             .toolbar { if !covered && !arranging && store.isLoaded && !store.habits.isEmpty { dayBar } }
             .sheet(isPresented: $showCalendar) {
@@ -87,7 +89,7 @@ struct TodayView: View {
             }
             .sheet(item: Binding(get: { store.dayTarget }, set: { store.dayTarget = $0 })) { target in
                 if let habit = store.habits.first(where: { $0.id == target.habitID }) {
-                    DaySheet(habit: habit, day: target.day)
+                    DaySheet(habit: habit, day: target.day, pageLink: true)
                 }
             }
             .sheet(isPresented: $showFilter) {

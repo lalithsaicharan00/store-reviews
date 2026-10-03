@@ -211,11 +211,18 @@ extension Entry {
         case .checklist: return "Step checked"
         }
     }
+    /// Says what Undo takes back, before it's tapped (the user, 3 Oct 2026; report "Today's Rows"): always this one
+    /// entry, never the day. "Undo +1 glass", "Undo 20 min", "Undo +1", "Undo Done", "Undo Slip", "Undo Cleanser".
     func undoLabel(for habit: Habit) -> String {
+        if let stepID { return "Undo " + (habit.steps.first { $0.id == stepID }?.name ?? "Step") }
         switch habit.kind {
         case .amount: return "Undo +" + description(for: habit)
         case .duration: return "Undo " + description(for: habit)
-        default: return "Undo"
+        case .check where habit.frequency.isDayBased && habit.goal > 1:
+            return "Undo +" + (habit.checkUnit.map { HabitCopy.amount(value, $0) } ?? HabitCopy.number(value))
+        case .check, .task: return "Undo Done"
+        case .quit: return "Undo Slip"
+        case .checklist: return "Undo"
         }
     }
 }

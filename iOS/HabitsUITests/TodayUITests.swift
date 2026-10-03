@@ -190,9 +190,10 @@ final class TodayUITests: XCTestCase {
     /// the middle of a run of taps. Call family, then Water: before the pause Call family is still above Water; after it,
     /// below. (Ticking Water moves "Add note" off Call family, which would otherwise hold it in place.)
     func testDoneRowWaitsForThePause() {
-        // An 8 s pause: GitHub's simulator takes more than 1.5 s between two taps (run 78).
+        // An 8 s pause: GitHub's simulator takes more than 1.5 s between two taps (run 78). Move to Bottom is the
+        // Appearance option since 3 Oct 2026 (done rows stay in place by default).
         app.terminate()
-        app.launchArguments = ["-uitest", "-today.settlePause", "8"]
+        app.launchArguments = ["-uitest", "-today.settlePause", "8", "-today.doneOrder", "bottom"]
         app.launch()
         let call = app.buttons["Mark Call family done"]
         XCTAssertTrue(call.waitForExistence(timeout: 5))
@@ -213,10 +214,11 @@ final class TodayUITests: XCTestCase {
         done.tap()
     }
 
-    /// ≡ → Appearance → Done Habits → Stay in Place: a done row keeps its place after the pause too.
+    /// Done habits stay where the person put them, the default since 3 Oct 2026 (the user; Rulebook U13): a done row
+    /// keeps its place after the pause too.
     func testDoneRowStaysInPlace() {
         app.terminate()
-        app.launchArguments = ["-uitest", "-today.doneOrder", "inPlace"]
+        app.launchArguments = ["-uitest"]
         app.launch()
         let call = app.buttons["Mark Call family done"]
         XCTAssertTrue(call.waitForExistence(timeout: 5))

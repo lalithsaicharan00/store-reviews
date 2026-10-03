@@ -65,6 +65,7 @@ final class AppModel {
             // on and failed before turning it off hid the habits the next tests tap (3 Oct 2026, merge check).
             UserDefaults.standard.removeObject(forKey: Preferences.hideDoneHabits)
             UserDefaults.standard.removeObject(forKey: Preferences.hideDoneTasks)
+            UserDefaults.standard.removeObject(forKey: Preferences.doneOrder)
         }
         if arguments.contains("-uitest") {
             opened = Persistence.inMemory()

@@ -59,8 +59,8 @@ final class UndoUITests: XCTestCase {
         app.revealAndTap(app.buttons["Start Read a little timer"])
         let row = app.staticTexts["Read a little"]
         app.reveal(row)
-        row.press(forDuration: 1.2)
-        app.buttons["Edit Today's Progress…"].tap()
+        // A tap on the row opens its Day sheet (3 Oct 2026; it replaced the menu's "Edit Today's Progress…").
+        row.tap()
         XCTAssertTrue(app.buttons["Pause timer and save time"].waitForExistence(timeout: 3))
         app.buttons["Pause timer and save time"].tap()
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.exists, "Stopping a timer keeps its sheet open")
@@ -78,8 +78,7 @@ final class UndoUITests: XCTestCase {
     func testSkipFromTodayKeepsHistoryOpenAndCanBeUndone() {
         let row = app.staticTexts["Stretch"]
         app.reveal(row)
-        row.press(forDuration: 1.2)
-        app.buttons["Edit Today's Progress…"].tap()
+        row.tap()
         app.revealAndTap(app.buttons["Skip today"])
         XCTAssertTrue(app.buttons["Undo skip"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.exists)

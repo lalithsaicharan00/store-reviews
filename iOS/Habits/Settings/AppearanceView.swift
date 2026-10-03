@@ -5,7 +5,7 @@ import SwiftUI
 struct AppearanceView: View {
     @Environment(HabitStore.self) private var store
     @AppStorage(Preferences.theme) private var theme = Theme.automatic.rawValue
-    @AppStorage(Preferences.doneOrder) private var doneOrder = DoneOrder.bottom.rawValue
+    @AppStorage(Preferences.doneOrder) private var doneOrder = DoneOrder.inPlace.rawValue
     @AppStorage(Preferences.haptics) private var haptics = true
     @AppStorage(Preferences.sound) private var sound = false
 

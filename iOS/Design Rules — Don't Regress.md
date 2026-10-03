@@ -134,7 +134,7 @@ Source: [Logging a Count — One Tap or Type](<../Research/Research Reports/Habi
 - **What + does is the person's choice on the form, in its own section "When you tap +"** (Track an amount only; 29 Sep): **Add a set amount** (default; "Each tap adds [1] glass" under it) or **Type the amount each time** (saved as a step of 0; Today shows a plain "+" that opens Add Amount with the number pad; the reminder has no "+" action). Evidence: 13 Loop reviews want one tap; "tapping +1 80 times for an 80m run is exhausting"; Round 3 §1.3 (19 type the odd amount, 13 want their own step). Visible and chosen, so it's no hidden rule.
 - **+ always adds the step saved with the habit and says it** ("+1", "+250", "+1k" on the button; "Add 250 ml to Water" for VoiceOver). *Supersedes "No 'Each tap adds' question" and "+1 adds one; + opens Add Amount": `CountLogging` and its goal-size rule are gone.*
 - **The step is a row on the form, "Each + adds", filled in for the person, never a question.** Suggested: the amount itself when it's per day on some days; a glass for drinks (250 ml, 8 oz, 0.25 L); 1 for whole counts up to 20; 1 km or mile; otherwise a round tenth of the goal (10,000 steps → 1,000). The person's own step is kept.
-- **Tapping the habit row always opens Add Amount / Add Time** for amounts and timed habits (unchanged), with "Add … again" and Undo Last Entry on touch-and-hold.
+- *Superseded 3 Oct 2026 (U14):* tapping the habit row opens its **Day sheet**, which has Add Entry for typing an amount or time; + with no step opens Add Entry; touch and hold has Add Entry… and the named Undo ("Undo +1 glass").
 - **Don't** make every + open the input, and **don't** make the input full screen. Units never read "1 glasses".
 
 ## Timing a habit
@@ -151,7 +151,7 @@ Source: [Timing a Habit — Start, See and Stop](<../Research/Research Reports/H
 - **One notification when the goal is reached, never repeats or per-second pings.** The timer keeps counting past the goal.
 - **The Live Activity ends the moment the timer stops.** One left behind looks like time still counting.
 - **Time is counted from the saved start time, never by ticking.** So it survives closing the app and restarting the phone.
-- **A timer is never the only way.** Tapping the row opens Add Time. ⏸ saves what was done; sessions add up.
+- **A timer is never the only way.** The Day sheet (a tap on the row) has Start Timer and Add Entry for typing time. ⏸ saves what was done; sessions add up.
 - The clock counts up, with the goal beside it. The row's fill shows what's left.
 
 ## Today section headers
@@ -272,11 +272,22 @@ Research: [27. Arranging and Filtering Today](<../Research/Research Reports/Home
 - **New or changed times split what they overlap** (`SectionPlan`): the form shows "Your day" with every section's new times, and a dialog lists them before anything is split. Covering a whole section is refused; nothing is ever deleted by a split. `ArrangeCheck` (`-arrangecheck`) covers every direction.
 - **One tip, on Edit, at the right moment** (`ArrangeTip`): only once some section has two or more habits and Today has been opened on three different days; once; gone when Edit is used; never in test launches.
 
+## A row's tap, swipes, menu and Day sheet (3 Oct 2026)
+
+Source: [Today's Rows — Tap, Swipe, the Day Sheet and Delete](<../Research/Research Reports/Day Structure and Organization/Today's Rows — Tap, Swipe, the Day Sheet and Delete.md>). Checklist: `Docs/Checklists/Today — Row Sheet, Swipe Actions, Order and Tap Again.md`. Rulebook U14.
+
+- **Tap the row → its Day sheet** for the day Today shows (`store.dayTarget`, one sheet on Today, never one per row). Tasks keep only their tick. The round button never opens anything but Add Entry (+ with no step).
+- **The round button: ✓ toggles that day's tick** (`isTicked`: a weekly count's day, not the week); **+ adds** (`countsUp`: a check counted several times a day shows +1 like an amount); ▶/⏸; ⌄ for a checklist's steps. A tap never takes back part of a count.
+- **Swipes reveal labelled buttons.** Left: Note (full swipe), Skip / Undo Skip, Pause / Resume. Right: "Undo +1 glass" (the day's last entry, named), no full swipe. Nothing destructive on a swipe.
+- **Touch and hold = the sheet's actions:** Open Habit Page (pushed on Today's stack, `HabitPageRoute`), Edit Habit, Add Entry…, Note, Skip, Pause…, the named Undo, All Notes. No Delete, no "Edit Today's Progress…" (the tap does it).
+- **The Day sheet, one shape for every habit:** icon, name and plan → Result → the habit's own control (Done switch, Add 1, +step, Start Timer, steps, Log a Slip) and Add Entry → that day's entries → Today/This Day (Skip, Note) → Habit (Open Habit Page from Today, Edit, Pause). The day is the bottom bar's ‹ date ›, as on Today. **Archive and Delete only in the ⋯ menu**, Delete confirmed with "Archive Instead".
+- **Undo names what it takes back** (`Entry.undoLabel`): "Undo +1 glass", "Undo 20 min", "Undo +1", "Undo Done", "Undo Slip", "Undo Cleanser".
+
 ## Ticking off, folding and settings (1 Oct 2026)
 
 Source: [Ticking Off, Folding and Small Settings — What People Need](<../Research/Research Reports/Home Screen and Visual Design/Ticking Off, Folding and Small Settings — What People Need.md>). Checklist: `Docs/Checklists/Animations and Settings.md`.
 
-- **Nothing on Today moves in the middle of a run of taps.** Every log (✓, +, a timer stopped, a step, a sheet closed after logging, an undo) calls `TodayLayout.hold` before changing data. Order and folds stay as shown until 1.5 s after the last log; then done rows sink and finished parts fold together (`Motion.settle`). Never sort or fold straight from a tap. The row offering "Add note" still keeps its place (Notes rule).
+- **Nothing on Today moves in the middle of a run of taps.** Every log (✓, +, a timer stopped, a step, a sheet closed after logging, an undo) calls `TodayLayout.hold` before changing data. Order and folds stay as shown until 1.5 s after the last log; then finished parts fold (and, only with Appearance → Done Habits → Move to Bottom, done rows sink) together (`Motion.settle`). **By default done habits stay where they are** (the user, 3 Oct 2026; Rulebook U13). Never sort or fold straight from a tap. The row offering "Add note" still keeps its place (Notes rule).
 - **Feedback comes from the tap, never from a redraw** (`TickFeedback`): no `sensoryFeedback(trigger: done)` on a row or button, since changing the day flips `done` and buzzed. Haptics on by default, sound off; both switchable in ≡ → Appearance. No confetti or celebration screens.
 - **Tick motion is a transform on the 34-pt button and the row fill** (`keyframeAnimator` scale, `ProgressFill` scaled from the leading edge). Don't animate a row's layout, and never block the next tap.
 - **Each time of day is its own view (`PartSection`) reading only its own `FoldBox`.** Folding one part must not redraw Today's other rows. Don't put fold state back into `TodayView`'s `@State`, and don't pass a fresh `Binding` into `HabitRow` (it made every row redraw on every Today redraw).
@@ -327,7 +338,7 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
 | The first screen lists every type ("Count an amount", "Set a limit", "To-do") | Two questions: Build or maintain / Quit or cut down / Add a task, then the type |
 | Goal stepper, "Each tap adds", "Add 1k to Walk" | Typed goal; the automatic + rule (Walk's 8,000 steps asks how much) |
 | The type screen (Check it off · Track an amount · Time it · Checklist); the Goal and Schedule screens; "Goal counts over", "A number of days", the "Use 1 day a week?" and "Use Any Day?" alerts (29 Sep) | One form: How much and How often (`GoalFlowUITests`, `ScheduleUITests` and `NewHabitUITests` rewritten to it) |
-| + adds 1 or asks how much, by goal size ("Add amount to Walk") (29 Sep) | + adds its saved step ("Add 1,000 steps to Walk"); the row opens Add Amount |
+| + adds 1 or asks how much, by goal size ("Add amount to Walk") (29 Sep) | + adds its saved step ("Add 1,000 steps to Walk"); the row opens its Day sheet (3 Oct) |
 | "Items", "Add Item" for a checklist (29 Sep) | "Steps", "Add Step"; Today reads "0/2 steps" |
 
 ## Test status

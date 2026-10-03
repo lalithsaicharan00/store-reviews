@@ -2029,7 +2029,23 @@ final class HabitStore {
     /// Yes/no habits: log once, or undo the last log for this period.
     func toggleCheck(_ habit: Habit, on day: LocalDay, source: EntrySource = .today) {
         if habit.kind == .task { return toggleTask(habit, on: day, source: source) }
-        if isDone(habit, on: day) { undoLast(habit, on: day) } else { log(habit, value: 1, on: day, source: source) }
+        if isTicked(habit, on: day) { undoLast(habit, on: day) } else { log(habit, value: 1, on: day, source: source) }
+    }
+
+    /// A check habit's ✓ for one day (the user, 3 Oct 2026: one mental model on every row). A habit ticked once a day is
+    /// ticked when that day is done; one with a weekly or monthly count is ticked when that day has its tick, not
+    /// when the week is met (a week's tick on another day isn't this day's to take back). Report "Today's Rows".
+    func isTicked(_ habit: Habit, on day: LocalDay) -> Bool {
+        let rule = rule(habit, on: day)
+        if rule.frequency.isDayBased || rule.frequency.isFlexible { return isDone(habit, on: day) }
+        return dayProgress(of: rule, on: day) > 0
+    }
+
+    /// A check habit ticked several times a day counts up, like an amount: its button adds one each tap and never
+    /// takes one back (Undo, named, does that). Report "Today's Rows — Tap, Swipe, the Day Sheet and Delete".
+    func countsUp(_ habit: Habit, on day: LocalDay) -> Bool {
+        let rule = rule(habit, on: day)
+        return rule.kind == .check && rule.frequency.isDayBased && dayGoal(of: rule) > 1
     }
 
     /// Tasks: done or not. A one-time task wherever it's shown; a repeating one on that day.

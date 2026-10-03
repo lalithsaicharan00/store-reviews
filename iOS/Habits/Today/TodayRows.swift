@@ -70,6 +70,8 @@ struct HabitRow: View {
     /// Today's layout: a log holds the rows in place until the person pauses (#58). Nil in the New Habit preview.
     @Environment(TodayLayout.self) private var layout: TodayLayout?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    /// Today's navigation stack, for Open Habit Page from the touch-and-hold menu. Nil in the New Habit preview.
+    @Environment(MenuModel.self) private var menu: MenuModel?
     /// Progress's view option "Show Streaks" (report §7.6): off hides streaks here too.
     @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
 
@@ -146,11 +148,14 @@ struct HabitRow: View {
             }
           }
           .contentShape(Rectangle())
-          .onTapGesture { if logsNumbers && day <= store.today() { sheet = .log } }
+          // The row opens its Day sheet for the day Today shows; the round button logs (the user, 3 Oct 2026; report
+          // "Today's Rows": Reminders, Mail and Health open the item from its row and act from its control).
+          .onTapGesture { openDay() }
+          .accessibilityAddTraits(lineOverride == nil && habit.kind != .task ? .isButton : [])
+          .accessibilityHint(lineOverride == nil && habit.kind != .task ? "Shows this day's entries and options" : "")
           .accessibilityAction(named: "Undo last log") {
               if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day { store.undoEntry(entry.id) }
           }
-          .accessibilityAction(named: habit.kind == .duration ? "Log time manually" : "Log amount manually") { if logsNumbers && day <= store.today() { sheet = .log } }
             actionButton(done: done, progress: progress, goal: goal)
                 .frame(height: RowBand.height)
                 .disabled(habit.kind != .checklist && day > store.today())
@@ -165,50 +170,75 @@ struct HabitRow: View {
             if logged { logged = false; layout?.hold(reduceMotion: reduceMotion) }
         }) { shown in
             switch shown {
-            case .log: LogProgressView(habit: store.rule(habit, on: day), day: day).onAppear { logged = true }
+            case .log: AddEntryView(habit: habit, day: day).onAppear { logged = true }
             case .edit: EditHabitSheet(habit: habit)
             case .notes: HabitNotesView(habit: habit)
             case .pause: PauseSheet(habit: habit)
             }
         }
-        // Swipe left for a note, on any day and whether or not it's done: the standard iOS row gesture (Mail,
-        // Reminders), for people who don't long-press. Opens the same field in the row.
+        // Swipe left: a note (the full swipe, harmless), Skip and Pause, each a labelled button the swipe reveals; never an
+        // action performed unseen (report "Today's Rows": accidental skips and "which way is which" came from swipes
+        // that act on their own).
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            if day <= store.today() {
+            if day <= store.today() && lineOverride == nil {
                 Button { startWriting() } label: { Label(store.note(of: habit, on: day) == nil ? "Note" : "Edit Note", systemImage: "note.text") }
                     .tint(.indigo)
+                if habit.kind != .task { RowSkipButton(habit: habit, day: day) }
+                if habit.kind != .task { RowPauseButton(habit: habit, showPause: showing(.pause)) }
+            }
+        }
+        // Swipe right: Undo, saying what it takes back ("Undo +1 glass"), when this day has an entry. No full swipe.
+        .swipeActions(edge: .leading, allowsFullSwipe: false) {
+            if lineOverride == nil, day <= store.today(), let entry = store.entries(of: habit.id, on: day).last {
+                Button { undo(entry) } label: { Label(entry.undoLabel(for: store.rule(habit, on: day)), systemImage: "arrow.uturn.backward") }
+                    .tint(.gray)
+                    .accessibilityIdentifier("row-swipe-undo")
             }
         }
         .contextMenu {
-            Button(day == store.today() ? "Edit Today's Progress…" : "Edit Progress…", systemImage: "calendar") { store.dayTarget = .init(habitID: habit.id, day: day) }
-                .disabled(day > store.today())
-            // Edit sits with the item's other actions, as in Reminders; a tap on the row logs (spec §8).
-            Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { sheet = .edit }
-            // A stretch of days off: travel, illness (pause report, 29 Sep). Skip today stays for one day.
-            PauseMenuItems(habit: habit, showPause: showing(.pause))
-            // Any day, done or not, past or today; a note never changes progress (notes report, 29 Sep).
-            Button(store.note(of: habit, on: day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") { startWriting() }
-                .disabled(day > store.today())
-            if store.hasNotes(habit) {
-                Button("All Notes", systemImage: "list.bullet.rectangle") { sheet = .notes }
-            }
-            if case .amount = habit.kind {
-                Button("Log amount manually", systemImage: "square.and.pencil") { sheet = .log }.disabled(day > store.today())
-                Button("Undo Last Entry") { undoLast() }
-                    .disabled(progress <= 0 || day > store.today())
-            }
-            if habit.kind == .duration {
-                Button("Log time manually", systemImage: "square.and.pencil") { sheet = .log }.disabled(day > store.today())
-                Button("Undo Last Entry") { undoLast() }
-                    .disabled(progress <= 0 || day > store.today())
+            if lineOverride == nil {
+                // The same actions as the Day sheet, for people who touch and hold (report "Today's Rows"). No Delete:
+                // it lives in the sheet's ⋯ menu, asking first.
+                if habit.kind != .task, let menu {
+                    Button("Open Habit Page", systemImage: "chart.bar.doc.horizontal") { menu.path.append(HabitPageRoute(id: habit.id)) }
+                }
+                Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { sheet = .edit }
+                if habit.kind != .task && habit.kind != .checklist {
+                    Button("Add Entry…", systemImage: "plus") { sheet = .log }.disabled(day > store.today())
+                }
+                // Any day, done or not, past or today; a note never changes progress (notes report, 29 Sep).
+                Button(store.note(of: habit, on: day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") { startWriting() }
+                    .disabled(day > store.today())
+                if habit.kind != .task {
+                    if store.isSkipped(habit, on: day) {
+                        Button("Undo Skip", systemImage: "arrow.uturn.backward") { store.setSkipped(habit, on: day, false) }
+                    } else if store.canSkip(store.rule(habit, on: day)) && !store.isPaused(habit, on: day) && day <= store.today() {
+                        Button(day == store.today() ? "Skip Today" : "Skip This Day", systemImage: "forward") { store.setSkipped(habit, on: day, true) }
+                    }
+                    // A stretch of days off: travel, illness (pause report, 29 Sep).
+                    PauseMenuItems(habit: habit, showPause: showing(.pause))
+                }
+                if day <= store.today(), let entry = store.entries(of: habit.id, on: day).last {
+                    Button(entry.undoLabel(for: store.rule(habit, on: day)), systemImage: "arrow.uturn.backward") { undo(entry) }
+                }
+                if store.hasNotes(habit) {
+                    Button("All Notes", systemImage: "list.bullet.rectangle") { sheet = .notes }
+                }
             }
         }
     }
 
-    private func undoLast() {
+    /// The Day sheet for this habit on the day Today shows (one sheet for every habit; tasks keep their tick only).
+    private func openDay() {
+        guard lineOverride == nil, habit.kind != .task else { return }
+        store.dayTarget = .init(habitID: habit.id, day: day)
+    }
+
+    /// Takes back exactly this entry, holding Today's order as any log does.
+    private func undo(_ entry: Entry) {
         layout?.hold(reduceMotion: reduceMotion)
         TickFeedback.undone()
-        withAnimation(Motion.tick(reduceMotion)) { store.undoProgress(habit, on: day) }
+        withAnimation(Motion.tick(reduceMotion)) { store.undoEntry(entry.id) }
     }
 
     /// Every log from the row's button: hold Today's order, answer the tap (haptic, chime), then change the data inside
@@ -231,14 +261,6 @@ struct HabitRow: View {
     private func startWriting() {
         store.noteOffer = .init(habit: habit.id, day: day)
         withAnimation(.snappy) { store.noteTarget = .init(habit: habit.id, day: day) }
-    }
-
-    /// Counts and timed habits take a typed number from the row (Add Amount / Add Time).
-    private var logsNumbers: Bool {
-        switch habit.kind {
-        case .amount, .duration: true
-        default: false
-        }
     }
 
     /// "3/8 glasses", "1/3", "12 min/20 min"; a once-a-day tick shows no "0/1", only its time if it has one.
@@ -264,12 +286,22 @@ struct HabitRow: View {
             }
         } else {
             switch habit.kind {
+            case .check where slot == nil && store.countsUp(habit, on: day):
+                // Ticked several times a day: + adds one each tap, like an amount, and never takes one back; the named
+                // Undo does that (the user, 3 Oct 2026: one mental model, "✓ toggles, + adds"; report "Today's Rows").
+                RoundActionButton(symbol: "plus", done: done, color: habit.color,
+                                  label: "Add 1 to \(habit.name)", keepSymbolWhenDone: true, text: "+1") {
+                    offerNote()
+                    log(finished: progress < goal && progress + 1 >= goal) { store.addProgress(habit, value: 1, on: day) }
+                }
             case .check, .task:
-                RoundActionButton(symbol: "checkmark", done: done, color: habit.color,
-                                  label: done ? "Undo \(habit.name)" : "Mark \(habit.name) done") {
-                    if !done { offerNote() }
-                    // A habit ticked several times a day is done on its last tick; a per-section tick on its own.
-                    log(finished: !done && (slot != nil || progress + 1 >= goal), undo: done) {
+                // A once-a-day tick toggles that day's tick; a weekly count's day too, judged on this day only.
+                let ticked = slot.map { store.isSlotDone(habit, slot: $0, on: day) }
+                    ?? (habit.kind == .task ? done : store.isTicked(habit, on: day))
+                RoundActionButton(symbol: "checkmark", done: ticked, color: habit.color,
+                                  label: ticked ? "Undo \(habit.name)" : "Mark \(habit.name) done") {
+                    if !ticked { offerNote() }
+                    log(finished: !ticked && (slot != nil || progress + 1 >= goal), undo: ticked) {
                         if let slot { store.toggleSlot(habit, slot: slot, on: day) } else { store.toggleCheck(habit, on: day) }
                     }
                 }
@@ -355,6 +387,7 @@ struct QuitRow: View {
     let habit: Habit
     var highlighted = false
     @Environment(HabitStore.self) private var store
+    @Environment(MenuModel.self) private var menu: MenuModel?
     /// One `.sheet(item:)` for the row's three sheets (PERFORMANCE.md rule 10).
     @State private var sheet: QuitSheet?
     /// The slip just logged, offered for Undo for a few seconds.
@@ -406,7 +439,12 @@ struct QuitRow: View {
                 .frame(height: RowBand.height)
             }
             .padding(.vertical, 2)
+            .contentShape(Rectangle())
+            // The row opens its Day sheet, as every habit row does (report "Today's Rows").
+            .onTapGesture { store.dayTarget = .init(habitID: habit.id, day: today) }
             .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(.isButton)
+            .accessibilityHint("Shows today's slips and options")
         HStack {
             Button("Slipped") { sheet = .slip }
                 .disabled(store.isPaused(habit, on: today))
@@ -424,12 +462,15 @@ struct QuitRow: View {
                 Label(store.note(of: habit, on: today) == nil ? "Note" : "Edit Note", systemImage: "note.text")
             }
             .tint(.indigo)
+            RowPauseButton(habit: habit, showPause: Binding(get: { sheet == .pause }, set: { sheet = $0 ? .pause : (sheet == .pause ? nil : sheet) }))
         }
         .contextMenu {
+            if let menu {
+                Button("Open Habit Page", systemImage: "chart.bar.doc.horizontal") { menu.path.append(HabitPageRoute(id: habit.id)) }
+            }
             Button("Edit Habit", systemImage: "pencil") { sheet = .edit }
             // A slip is an event with its own time (Build Plan #60d); editing "Started" is only for fixing a wrong start.
             Button("Log a Slip…", systemImage: "arrow.uturn.backward.circle") { sheet = .slip }
-            Button("Edit Today's Progress…", systemImage: "calendar") { store.dayTarget = .init(habitID: habit.id, day: today) }
             // Pausing ends this run (kept as a run, not a slip); a new one starts when it's back (the user, 29 Sep).
             PauseMenuItems(habit: habit, showPause: Binding(get: { sheet == .pause }, set: { sheet = $0 ? .pause : (sheet == .pause ? nil : sheet) }))
             Button(store.note(of: habit, on: today) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") {
@@ -778,5 +819,46 @@ struct NoteTargetFlash: View {
 
     var body: some View {
         HighlightFlash(on: highlighted || store.noteTarget == .init(habit: habit.id, day: day), color: habit.color)
+    }
+}
+
+
+/// A habit's page pushed on Today's own stack (Open Habit Page in a row's touch-and-hold menu).
+struct HabitPageRoute: Hashable { let id: UUID }
+
+/// Swipe left → Skip or Undo Skip, for the day the row shows. Reads only that habit's day, so other rows don't redraw.
+struct RowSkipButton: View {
+    let habit: Habit
+    let day: LocalDay
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        if store.isSkipped(habit, on: day) {
+            Button { store.setSkipped(habit, on: day, false) } label: { Label("Undo Skip", systemImage: "arrow.uturn.backward") }
+                .tint(.gray)
+        } else if store.canSkip(store.rule(habit, on: day)) && !store.isPaused(habit, on: day) {
+            Button { store.setSkipped(habit, on: day, true) } label: { Label("Skip", systemImage: "forward") }
+                .tint(.gray)
+                .accessibilityIdentifier("row-swipe-skip")
+        }
+    }
+}
+
+/// Swipe left → Pause… or Resume.
+struct RowPauseButton: View {
+    let habit: Habit
+    @Binding var showPause: Bool
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        let today = store.today()
+        if let pause = store.pause(of: habit, on: today), pause.contains(today) {
+            Button { store.resume(habit) } label: { Label("Resume", systemImage: "play.circle") }
+                .tint(.teal)
+        } else if store.canPause(habit) && store.pause(of: habit, on: today) == nil {
+            Button { showPause = true } label: { Label("Pause", systemImage: "pause.circle") }
+                .tint(.teal)
+                .accessibilityIdentifier("row-swipe-pause")
+        }
     }
 }

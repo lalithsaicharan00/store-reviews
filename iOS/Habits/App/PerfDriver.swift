@@ -157,6 +157,15 @@ enum PerfDriver {
                     await pause(0.35)
                 }
             }
+            // A tap on a row opens its Day sheet (3 Oct 2026, report "Today's Rows"): its first and second opening, and
+            // scrolling inside it (Rulebook T4).
+            await open("Today: a row's Day sheet (first)") { store.dayTarget = .init(habitID: water.id, day: store.today()) }
+            send(.closeDay)
+            await pause(1.2)
+            await open("Today: a row's Day sheet (again)") { store.dayTarget = .init(habitID: water.id, day: store.today()) }
+            await measure("Today: Day sheet scrolling") { await scroll() }
+            send(.closeDay)
+            await pause(1.0)
         case "typing-control":
             await open("Typing control") { send(.openTypingControl) }
             await pause(1)
