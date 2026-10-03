@@ -130,8 +130,9 @@ final class LongTextUITests: XCTestCase {
         name.typeText(String(repeating: "Read one more chapter of the book on the nightstand ", count: 3))
         // The cap is applied as each change lands, so wait for the last one before reading.
         let capped = expectation(for: NSPredicate { el, _ in ((el as? XCUIElement)?.value as? String ?? "").count <= 24 }, evaluatedWith: name)
-        wait(for: [capped], timeout: 3)
+        let result = XCTWaiter().wait(for: [capped], timeout: 3)
         shot("09-form-long-name")
+        XCTAssertEqual(result, .completed, "The name is cut to 24 letters; the field holds \"\(name.value as? String ?? "nil")\"")
         app.toolbars.buttons["Done"].firstMatch.tap()
 
         // How much: 12 of a long unit of your own (units stop at 12 characters).
