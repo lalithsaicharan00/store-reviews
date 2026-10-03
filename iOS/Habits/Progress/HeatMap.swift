@@ -310,19 +310,23 @@ struct HeatMonth: View, Equatable {
 struct HeatKey: View {
     /// On its own card (Progress); false inside a list row (the habit's page, under its month).
     var boxed = true
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     var body: some View {
         VStack(alignment: .leading, spacing: WeekSpacing.card) {
             VStack(alignment: .leading, spacing: WeekSpacing.tight) {
                 heading("Progress", note: "Shown in green; each habit uses its own colour")
-                HStack(alignment: .top, spacing: 4) {
-                    ForEach(1..<6, id: \.self) { n in
-                        VStack(spacing: WeekSpacing.pair) {
-                            HeatSquare(cell: .level(n), color: .green, size: HeatSize.smallest)
-                            Text(Self.steps[n - 1]).font(.caption2).foregroundStyle(.secondary)
+                // The five steps in one drawing, their names under them in the same columns (3 Oct 2026: the key
+                // rebuilt on every scroll back into the habit page; one `Canvas` instead of five).
+                VStack(spacing: WeekSpacing.pair) {
+                    HeatRow(cells: Self.stepCells, todayIndex: nil, color: .green, size: HeatSize.smallest)
+                        .equatable()
+                    HStack(alignment: .top, spacing: 0) {
+                        ForEach(0..<5, id: \.self) { n in
+                            Text(Self.steps[n]).font(.caption2).foregroundStyle(.secondary)
                                 .multilineTextAlignment(.center).lineLimit(2).fixedSize()
+                                .frame(maxWidth: .infinity)
                         }
-                        .frame(maxWidth: .infinity)
                     }
                 }
             }
@@ -359,14 +363,16 @@ struct HeatKey: View {
         }
     }
 
-    /// One line when it fits; at large text sizes, one entry per line.
-    private func row(@ViewBuilder _ entries: () -> some View) -> some View {
-        let entries = entries()
-        return ViewThatFits(in: .horizontal) {
-            HStack(spacing: WeekSpacing.card) { entries }
-            VStack(alignment: .leading, spacing: WeekSpacing.tight) { entries }
+    /// One line; from the accessibility text sizes up, one entry per line. Chosen by the text size, not by measuring
+    /// both layouts (`ViewThatFits` laid the row out twice each time the key came back into view).
+    @ViewBuilder private func row(@ViewBuilder _ entries: () -> some View) -> some View {
+        if typeSize.isAccessibilitySize {
+            VStack(alignment: .leading, spacing: WeekSpacing.tight) { entries() }
+                .font(.caption).foregroundStyle(.secondary)
+        } else {
+            HStack(spacing: WeekSpacing.card) { entries() }
+                .font(.caption).foregroundStyle(.secondary)
         }
-        .font(.caption).foregroundStyle(.secondary)
     }
 
     private func entry(_ cell: HeatCell, _ title: String, isToday: Bool = false) -> some View {
@@ -379,6 +385,7 @@ struct HeatKey: View {
     }
 
     static let steps = ["1–33%", "34–66%", "67–99%", "Goal met\n100%", "More\nover 100%"]
+    static let stepCells: [HeatCell] = (1...5).map { .level($0) }
 }
 
 /// The key, folded or open (the user, 3 Oct 2026: a separate, collapsible section). Open until the person folds it;
