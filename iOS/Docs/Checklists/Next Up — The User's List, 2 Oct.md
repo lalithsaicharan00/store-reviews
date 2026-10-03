@@ -24,6 +24,8 @@ tick each when it's done and link what was built or written. Every item follows
 
 - [ ] **2. The habit page needs a serious visual revamp** (the page a habit opens to from Progress or Habits). Again
   not the data: how everything is presented.
+  - **Being built, 3 Oct** (branch `claude/progress-week-cards`): History · Notes · Progress tabs, Add Entry, Year in
+    Pixels, milestones as cards. Checklist: [Habit Details Page — Build](<Habit Details Page — Build.md>).
 - [ ] **3. Account out of Backup & Export.** Backup & Export holds only backup and export (the backup account it
   uses can stay there). Making an account, signing in and deleting the account are not backup things.
   - Account up front: the ≡ sidebar shows the account state, at the bottom or wherever fits, e.g. "No account"
@@ -32,6 +34,8 @@ tick each when it's done and link what was built or written. Every item follows
   including from Habits → a habit's page. The user's idea: tabs inside each habit's page (to be researched, not
   decided). Start from what exists: `Docs/Checklists/Easy Undo and Fixing Progress.md` (research done 30 Sep, its
   build waiting) and the Day sheet, which already edits one day's entries; find how reachable past days are.
+  - *3 Oct:* mostly answered by item 2's habit page: its History tab lists every past day, each opens the Day sheet
+    (Add Entry, edit any entry, the day before or after), and Go to Date reaches any day. Check what's left once it's merged.
 - [x] **5. The Filter becomes the place to arrange Today.** *Built 3 Oct 2026 on `claude/today-edit-mode`, tests
   passed, merged to `main` 3 Oct; waiting for the user's look on the iPhone (U9); the user changed the plan after research (report 27): Filter only shows less, and Edit on Today becomes
   "Arrange Your Day". Build checklist: `Today — Arrange Your Day (item 5 build).md`.* Original point: From Filter (beside +) people should also edit the times
@@ -116,6 +120,20 @@ tick each when it's done and link what was built or written. Every item follows
   Future; the user decides later). On a habit's own page: its year as one square per day, coloured by how that day
   went, which people can export and share as an image. This is for **one habit**; item 19 is the Progress page's
   week, month and year reports, and item 12's Year in Pixels is for mood. Use the same pixel grid for both.
+
+- [ ] **21. Done habits sinking to the bottom of Today: discuss before changing** (added 3 Oct 2026). Today, ticking
+  a habit plays the sound and, once Today settles (1.5 s after the last tap, U4), moves the row below the rest of its
+  time of day. But the order is now the person's own (Rulebook U13, from Arrange Your Day, `claude/today-edit-mode`,
+  merged 3 Oct): a new habit goes to the end of its section and nothing reorders itself. Moving a done habit to the
+  bottom works against that: the habit should most likely stay where the person put it.
+  - **What exists:** ≡ → Appearance → Today → **Done Habits**: "Move to Bottom" (the default) or "Keep in Place"
+    (`DoneOrder`, `PartSection.doneLast`). U13 currently allows it ("only done rows settle"), and Design Rules'
+    Today section says "done rows sink". Hide Completed Habits (the Filter) is a separate thing and stays.
+  - **To discuss with the user first** (a short discussion, not a research report): should done habits keep their
+    place by default; does "Move to Bottom" stay as an option or go; how a done row then looks finished without
+    moving (it's already tinted and ticked); and whether finished times of day still fold. Then update U13, Design
+    Rules and the setting together, and the tests that expect done rows below (U4's hold stays either way).
+  - The sound itself is item 18 (completion feedback for every kind of habit).
 
 ## Future (after release; not to start now)
 
