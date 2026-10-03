@@ -1,0 +1,24 @@
+{
+  "author": "Codex",
+  "date": "2026-10-03",
+  "scope": "Individual habit Progress/statistics; no application implementation",
+  "selection": "Original IDs cited in prior progress report habit-type sections, plus targeted contrary evidence on actual quantities, schedules, percentages, clutter, streaks and year views. Purposive verification, not fresh whole-corpus coding.",
+  "originals_read": 87,
+  "originals_verified": 87,
+  "missing": 0,
+  "review_date_span": [
+    "2014-05-22",
+    "2026-09-04"
+  ],
+  "app_store_datasets": 28,
+  "cards_read": 14,
+  "prior_coding_unique_reviews": 14726,
+  "prior_coding_on_topic": 11870,
+  "theme_counts": "Recomputed from prior TSV, not independently recoded. Themes overlap; app IDs include separate store datasets. Not market prevalence or feature ranking.",
+  "limits": [
+    "No live competitor device walkthrough; official documentation and supplied screenshots inspected.",
+    "Some prior codes omit relevant originals or conflate adjacent features.",
+    "Cached Git refs inspected; live merge/CI state not confirmed.",
+    "Recommendations and mockups are proposals, not user-tested decisions."
+  ]
+}

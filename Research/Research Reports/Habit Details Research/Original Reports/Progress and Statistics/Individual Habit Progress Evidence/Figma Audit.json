@@ -1,0 +1,18 @@
+{
+  "figma_board": "345:306",
+  "components": "346:331",
+  "examples": [
+    "346:348",
+    "346:585",
+    "346:728",
+    "346:1645",
+    "346:2478",
+    "346:2627"
+  ],
+  "zero_font_mismatches": true,
+  "zero_overflow": true,
+  "bound_cell_states": 11,
+  "sample_data": "Illustrative; month/year/share generated from one dataset",
+  "live_merge_status": "Not confirmed",
+  "wired_prototype": false
+}
