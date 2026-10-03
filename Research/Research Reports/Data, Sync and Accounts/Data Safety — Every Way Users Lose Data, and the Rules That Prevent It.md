@@ -572,6 +572,23 @@ Already covered by [`Architecture/Data Safety, Accounts and Sync.md`](<../../../
 14. **Performance budget for 10 years of data** (G).
 15. **Incident communication: in-app banner and status page** (H).
 
+**Added from building and testing (2 Oct 2026):**
+
+16. **A test launch never touches the person's data.** Found while preparing a speed run on the user's iPhone: a
+    `-uitest` launch ran on an in-memory database but still used the app's own sign-in (the "habits" keychain and
+    account keys), backup state (standard `UserDefaults`), iCloud copy and Application Support folders. Harmless on
+    CI's erased simulator; on a real phone a test run could have synced demo habits into the person's account, backed
+    them up over their iCloud copy, left them as a restore "undo", or erased their local copies. Now a test launch
+    signs in as its own store ("uitest", signed out), keeps its backup state in its own defaults suite and folder, and
+    sees no iCloud (`AppModel`, `BackupCenter`, commit `5ec0547`). Any new place that stores or sends data must follow
+    the same rule: a test launch gets its own, or none. Still shared, harmless and restored on the next normal
+    launch: the widgets' snapshot file, Siri's habit names, Progress's view options and the group filter.
+17. **Deleting the account revokes Sign in with Apple** (App Review 5.1.1(v)): the app sends Apple's one-time code at
+    sign-in; the server keeps Apple's refresh token with the key (never returned by any route, export included) and
+    revokes it when the account is deleted or the Apple sign-in removed (`server/src/appleTokens.ts`). Checked on the
+    iPhone on 2 Oct: Often Enough leaves Settings → Apple Account → Sign in with Apple. Accounts signed in by an app
+    older than this have no token and can't be revoked by the server.
+
 ---
 
 ## Limits of this report

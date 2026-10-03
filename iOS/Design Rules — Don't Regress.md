@@ -242,6 +242,24 @@ Source: [Ticking Off, Folding and Small Settings — What People Need](<../Resea
 - **No setting for 12/24-hour time, daylight saving or time zones.** Times use the iPhone's format (`DaySection.clock`, `.formatted`); logs keep their `LocalDay`. A second clock switch could disagree with the iPhone's.
 - **The theme is set on the window** (`Theme.apply`), so sheets and alerts follow it at once.
 
+## Checked on the iPhone (2 Oct 2026)
+
+The first signed build on the user's iPhone 16 (iOS 26.6) found three bugs GitHub's simulator never showed. **Check
+every visual or layout change on the real iPhone before calling it done.**
+
+- **Switches are the iPhone's green; Select's circles its blue.** The app's ink tint is near-white in dark mode, where
+  an "on" switch and a selected row's check couldn't be read. `HabitsApp` sets
+  `.toggleStyle(SwitchToggleStyle(tint: Color(.systemGreen)))` on the root; lists in edit mode tint
+  `Color(.systemBlue)` (`AllHabitsView`).
+- **A `Toggle` inside a `Menu` sets `.toggleStyle(.automatic)`** (`ProgressScreen`'s View Options). The root's switch
+  style reached the menu's toggles and they stopped responding: Show Percentages could no longer be turned off
+  (`testHidePercentages`, 2 Oct). A toggle in a list or form stays a green switch.
+- **Never a lazy grid inside a `List` or `Form` row.** Opening any habit's page crashed the app on the phone (the
+  list re-laid out its cells 100 deep and asserted). Plain `Grid`s now; `check_rules.sh` fails on a lazy grid outside
+  the files that host one in a `ScrollView` (`PERFORMANCE-LESSONS.md` L19).
+- **A test launch never touches the person's data** (`-uitest`: its own signed-out store, backup state and folder, no
+  iCloud). Rule 16 in the Data Safety report; keep it for anything new that stores or sends data.
+
 ## Words the app never uses
 
 - **"Due", "overdue"** anywhere (the user, 29 Sep; copy rule from before). Tasks are "For today" or "Planned for Wed 1 Oct"; habits happen "on its days".
