@@ -1,0 +1,22 @@
+{
+  "scanned": 1238784,
+  "selected_BF_DAYD": 207,
+  "requested_ids": 468,
+  "missing": [],
+  "horizon_candidates": 646,
+  "retrieved_unique": 1104,
+  "cards_read": 137,
+  "primary_reviews_read": 139,
+  "primary_ids_missing": [],
+  "primary_date_min": "2013-12-27T20:55:04Z",
+  "primary_date_max": "2026-09-06T04:10:41Z",
+  "diagnostic_cards_read": 16,
+  "canonical_points_read": [
+    "C010",
+    "C223",
+    "C262",
+    "C264"
+  ],
+  "horizon_candidates_hand_coded": false,
+  "scope_note": "The English keyword scan is discovery only. Its 646 candidates are not a hand-coded census and do not support temporal-frequency claims. Prior focused report counts are attributed secondary findings, not freshly replicated."
+}
