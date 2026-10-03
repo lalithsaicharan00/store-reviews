@@ -30,7 +30,7 @@ enum HabitTab: String, CaseIterable, Identifiable, Hashable {
     }
 
     private(set) var history: [HistoryMonth] = []
-    private(set) var record: HabitRecord?
+    private(set) var record: HabitOverall?
     private(set) var tracks: [MilestoneTrack] = []
     private(set) var notes: [NoteMonth] = []
     @ObservationIgnored private var historyKey: Key?

@@ -33,7 +33,7 @@ struct HistoryMonth: Hashable, Identifiable {
 }
 
 /// The Overall record card: the accumulated record since the habit began (research Progress revised, Overall record).
-struct HabitRecord: Hashable {
+struct HabitOverall: Hashable {
     /// The main fact: "84 h 45 min recorded", "Done on 196 days".
     let headline: String
     /// The goal result with its denominator: "Goal met on 196 of 249 planned days"; nil when it would repeat the
@@ -171,14 +171,14 @@ extension HabitStore {
     // MARK: Overall record
 
     /// The habit's accumulated record since it began, walked once per data change.
-    func habitRecord(of habit: Habit, today: LocalDay) -> HabitRecord {
+    func habitRecord(of habit: Habit, today: LocalDay) -> HabitOverall {
         let start = startDay(of: habit)
         let since = "Since " + start.date(calendar: calendar).formatted(.dateTime.day().month(.abbreviated).year())
         let now = rule(habit, on: today)
         let shape = progressShape(now)
         let kind = periodKind(now)
         guard start <= today else {
-            return HabitRecord(headline: "Not started yet", detail: nil, met: 0, eligible: 0, since: since, best: nil,
+            return HabitOverall(headline: "Not started yet", detail: nil, met: 0, eligible: 0, since: since, best: nil,
                                metDates: [], unit: "days")
         }
         var total = 0.0
@@ -252,7 +252,7 @@ extension HabitStore {
             best = "Best day " + progressValue(bestValue, rule(habit, on: bestDay)) + " · "
                 + bestDay.date(calendar: calendar).formatted(.dateTime.day().month(.abbreviated))
         }
-        return HabitRecord(headline: headline, detail: detail, met: met, eligible: eligible, since: since, best: best,
+        return HabitOverall(headline: headline, detail: detail, met: met, eligible: eligible, since: since, best: best,
                            metDates: metDates, unit: unit)
     }
 
@@ -331,7 +331,7 @@ extension HabitStore {
 
     /// The milestone tracks for a habit (report "Milestones on the Habit Page", 3 Oct 2026): in a row, from the runs;
     /// in total, from the goals met; for a quit habit, time since the last slip. Every date comes from the records.
-    func milestoneTracks(of habit: Habit, record: HabitRecord, today: LocalDay) -> [MilestoneTrack] {
+    func milestoneTracks(of habit: Habit, record: HabitOverall, today: LocalDay) -> [MilestoneTrack] {
         if habit.kind == .quit {
             let now = clock()
             let history = quitHistory(of: habit, now: now)

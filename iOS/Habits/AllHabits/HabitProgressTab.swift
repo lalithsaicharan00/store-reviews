@@ -50,7 +50,7 @@ struct HabitProgressTab: View {
 
 /// What's been recorded since the habit began, and how many goals were met out of how many there were.
 private struct HabitRecordCard: View {
-    let record: HabitRecord
+    let record: HabitOverall
     let showPercentages: Bool
 
     var body: some View {
