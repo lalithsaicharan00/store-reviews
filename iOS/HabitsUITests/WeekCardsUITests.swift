@@ -143,6 +143,11 @@ final class WeekCardsUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Swim"].waitForExistence(timeout: 5), "The card still opens the habit")
         sleep(1)
         shot("hp-1-top")
+        // The page opens at Over Time; its month calendar is just above.
+        let calendar = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-'")).firstMatch
+        for _ in 0..<4 where !(calendar.exists && calendar.isHittable) { app.swipeDown(velocity: .slow) }
+        sleep(1)
+        shot("hp-0-month")
         for i in 2...7 {
             app.swipeUp(velocity: .slow)
             sleep(1)
@@ -156,6 +161,10 @@ final class WeekCardsUITests: XCTestCase {
         XCTAssertTrue(swim.waitForExistence(timeout: 5), "Swim's card")
         swim.tap()
         XCTAssertTrue(app.navigationBars["Swim"].waitForExistence(timeout: 5))
+        let calendar = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-'")).firstMatch
+        for _ in 0..<4 where !(calendar.exists && calendar.isHittable) { app.swipeDown(velocity: .slow) }
+        sleep(1)
+        shot("hp-dark-0-month")
         for i in 1...5 {
             app.swipeUp(velocity: .slow)
             sleep(1)

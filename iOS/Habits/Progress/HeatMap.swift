@@ -309,7 +309,8 @@ struct HeatKey: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(boxed ? Color.card : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Key. Grey with a cross: not done. Lighter to darker: up to 33, 66 and 99 percent of the goal. A check: goal met. Darkest with a bold check: more than the goal. Plain grey: still to come. An outline: today. Dashed: not scheduled; with a skip or pause sign: skipped or paused.")
+        // "%", not the word: the key names the steps; it isn't a progress percentage, which Show Percentages hides.
+        .accessibilityLabel("Key. Grey with a cross: not done. Lighter to darker: up to 33%, 66% and 99% of the goal. A check: goal met. Darkest with a bold check: more than the goal. Plain grey: still to come. An outline: today. Dashed: not scheduled; with a skip or pause sign: skipped or paused.")
         .accessibilityIdentifier("progress-key")
     }
 
@@ -322,6 +323,8 @@ struct HeatKey: View {
     private func entry(_ cell: HeatCell, _ title: String, isToday: Bool = false) -> some View {
         HStack(spacing: 6) {
             HeatSquare(cell: cell, color: .green, size: HeatSize.smallest, isToday: isToday)
+                // Today's outline sits outside the square: room for it before the words.
+                .padding(.horizontal, isToday ? HeatDraw.outline : 0)
             Text(title).lineLimit(1).fixedSize()
         }
     }
