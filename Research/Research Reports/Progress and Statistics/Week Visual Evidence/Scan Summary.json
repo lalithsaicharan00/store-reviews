@@ -1,0 +1,31 @@
+{
+  "denominators": {
+    "App": 337331,
+    "Play": 901453,
+    "Native": 248439
+  },
+  "initial_focused_candidates": 339,
+  "initial_by_store": {
+    "App": 95,
+    "Play": 84,
+    "Native": 160
+  },
+  "language_expansion_broad_matches": 1409,
+  "language_expansion_focused_candidates": 323,
+  "final_individually_read_candidates": 662,
+  "final_by_store": {
+    "App": 279,
+    "Play": 176,
+    "Native": 207
+  },
+  "coded_period": [
+    "2013-01-19T03:22:36Z",
+    "2026-09-07T22:33:01Z"
+  ],
+  "language_codes_with_keyword_pairs": 72,
+  "limitations": [
+    "Counts describe retrieved, hand-read candidates, not all users or all records.",
+    "Broad expansion matches outside the 323 focused records were not individually read.",
+    "App Store metadata country is not text language."
+  ]
+}

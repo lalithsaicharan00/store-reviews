@@ -54,6 +54,7 @@ The work order for the whole app is [Build Plan](<../Build Plan.md>).
 | [Sidebar Menu](<Checklists/Sidebar Menu.md>) | **Final** (30 Sep): the ≡ side menu with Progress, Habits, Tasks and every setting; built on the `sidebar` branch |
 | [Merging the Branches](<Checklists/Merging the Branches.md>) | 1 Oct: every branch saved, the real ones merged into `integration`, the decisions made while merging, and what waits |
 | [Groups](<Checklists/Groups.md>) | Built 30 Sep: research put together, plan, groups and group stats |
+| [Progress Week — Visual Redesign](<Checklists/Progress Week — Visual Redesign.md>) | Research and five visual options done; user choice precedes implementation. Genuine light baseline captured; dark/accessibility/quit-scroll before captures unavailable. |
 | [Progress Page — Research](<Checklists/Progress Page — Research.md>) | Research done 30 Sep: [The Progress Page — What People Need, and How to Build It](<../../Research/Research Reports/Progress and Statistics/The Progress Page — What People Need, and How to Build It.md>); not built yet (Build Plan #60) |
 | [Sidebar — Backup Tasks and Reminders](<Checklists/Sidebar — Backup Tasks and Reminders.md>) | Free backup/export/restore, every saved task with editing, reminder reliability and Actions/performance evidence |
 | [App Speed — Round 2](<Checklists/App Speed — Round 2.md>) | 30 Sep: optimised phone build, remembered streaks, instant taps, stall meter; rules in `iOS/PERFORMANCE.md` |
