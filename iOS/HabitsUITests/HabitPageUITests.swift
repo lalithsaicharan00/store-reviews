@@ -33,14 +33,22 @@ final class HabitPageUITests: XCTestCase {
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
     }
 
-    /// ≡ → Habits → the habit's row.
+    /// ≡ → Habits → the habit's row. Asserts each step, so a menu that didn't open fails here instead of tapping the
+    /// habit's row on Today (3 Oct 2026: a tap during the year demo's first seconds opened Today's row instead).
     private func open(_ name: String) {
         let bar = app.navigationBars.firstMatch
-        if !app.buttons["menu-habits"].exists && !app.navigationBars["Habits"].exists {
+        if !app.navigationBars["Habits"].exists {
             if bar.buttons["BackButton"].exists { bar.buttons["BackButton"].tap() }
-            app.buttons["menu-button"].tap()
+            let habits = app.buttons["menu-habits"]
+            if !habits.exists {
+                app.buttons["menu-button"].tap()
+                // The first tap can land while the year demo is still being saved: try the ≡ once more.
+                if !habits.waitForExistence(timeout: 5) { app.buttons["menu-button"].tap() }
+            }
+            XCTAssertTrue(habits.waitForExistence(timeout: 10), "The ≡ menu opens")
+            habits.tap()
         }
-        if app.buttons["menu-habits"].waitForExistence(timeout: 3) { app.buttons["menu-habits"].tap() }
+        XCTAssertTrue(app.navigationBars["Habits"].waitForExistence(timeout: 5), "The Habits list")
         let row = app.staticTexts[name].firstMatch
         app.revealAndTap(row)
         XCTAssertTrue(app.segmentedControls["habit-tabs"].waitForExistence(timeout: 5), "\(name)'s page")
