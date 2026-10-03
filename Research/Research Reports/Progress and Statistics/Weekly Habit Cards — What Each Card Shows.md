@@ -7,6 +7,8 @@ information that we can present … we should just present the facts, user will 
 need to figure out a framework … it always shows a meaningful data to the user, data shouldn't be redundant in any
 card … also I'm thinking at the very top instead of saying just this week, like a date range."
 
+> **Copy note (3 Oct 2026):** the app never says "due" or "missed" (Rulebook U3; Design Rules' "Words the app never uses"). The examples below that use them shipped as "Planned for Wednesday", "Not planned this week", "Next planned for Mon 12 Oct" and "SPF not done twice".
+
 **Status:** research and a recommendation. Nothing in the app was changed. Like every report in this folder, this is
 not a decision record. It **replaces** [Weekly Overview Card — Which Numbers to Show](<Weekly Overview Card — Which Numbers to Show.md>)
 (the overview it designed is being removed) and builds on the per-type work in

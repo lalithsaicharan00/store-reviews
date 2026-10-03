@@ -10,6 +10,8 @@ enum PerfAction: Equatable {
     case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, saveEntry, logAgain, hideLogKeyboard
     /// A page from the ≡ menu; the menu itself; Today's group filter; Progress's range; the habit page's Edit.
     case openPlace(MenuPlace), toggleMenu, nextGroup, nextRange, openEdit
+    /// Progress's "What the squares mean": fold or open it (`HeatKeySection`, 3 Oct 2026).
+    case toggleHeatKey
     /// A page with nothing on it, pushed like a menu page (`PerfBlankPage`); one with only a number field.
     case openBlank, openTypingControl
 }
@@ -192,11 +194,18 @@ enum PerfDriver {
                     send(.nextRange); await pause(0.4)
                 }
             }
+            // The key folds and opens (3 Oct 2026); left open for the runs after.
+            await measure("Progress: key fold and open") {
+                await repeatFor(window) { send(.toggleHeatKey); await pause(0.6) }
+            }
+            UserDefaults.standard.set(true, forKey: "heatKey.open")
         case "progress-year":
             // Year (2 Oct 2026): a heat map per habit, a year of squares each. Opened on Year (set before opening, so
             // the scenario never depends on the range a run before left), then its cards scrolled; Week afterwards.
             UserDefaults.standard.set(ProgressRange.year.rawValue, forKey: ProgressOptions.range)
             await openTwice("Progress Year") { send(.openPlace(.progress)) }
+            // A year scrolls sideways inside its card (3 Oct 2026): the first year on screen, back and forth.
+            await measure("Progress Year: sideways") { await scrollSideways() }
             await measure("Progress Year: scrolling") { await scroll() }
             send(.close)
             UserDefaults.standard.set(ProgressRange.week.rawValue, forKey: ProgressOptions.range)
@@ -450,6 +459,37 @@ enum PerfDriver {
         guard var top = (windows.first(where: \.isKeyWindow) ?? windows.first)?.rootViewController else { return nil }
         while let presented = top.presentedViewController { top = presented }
         return top.view
+    }
+
+    /// The first view on screen that scrolls sideways (a year in its card), moved back and forth like a finger would.
+    private static func scrollSideways() async {
+        guard let view = frontView() else { return }
+        var found: UIScrollView?
+        func visit(_ view: UIView) {
+            guard found == nil else { return }
+            if let scroll = view as? UIScrollView, scroll.window != nil, !scroll.isHidden,
+               scroll.contentSize.width > scroll.bounds.width + 40, scroll.contentSize.height <= scroll.bounds.height + 1,
+               let window = scroll.window, window.bounds.intersects(scroll.convert(scroll.bounds, to: window)) {
+                found = scroll
+            }
+            view.subviews.forEach(visit)
+        }
+        visit(view)
+        guard let row = found else { return MainThreadMeter.mark("# NOTE no sideways scroll view") }
+        let speed: CGFloat = 900
+        var back = true
+        var last = CACurrentMediaTime()
+        let end = Date.now.addingTimeInterval(window)
+        while Date.now < end {
+            try? await Task.sleep(for: .milliseconds(16))
+            let time = CACurrentMediaTime()
+            let left = -row.adjustedContentInset.left
+            let right = max(left, row.contentSize.width + row.adjustedContentInset.right - row.bounds.width)
+            var x = row.contentOffset.x + (back ? -speed : speed) * CGFloat(time - last)
+            last = time
+            if x <= left { x = left; back = false } else if x >= right { x = right; back = true }
+            row.contentOffset.x = x
+        }
     }
 
     /// The biggest scrollable view on the frontmost screen (a presented sheet's, if one is up).

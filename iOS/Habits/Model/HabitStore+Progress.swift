@@ -218,7 +218,7 @@ extension HabitStore.DayMark {
         case .skipped: "Skipped"
         case .paused: "Paused"
         case .notItsDay: "Not scheduled"
-        case .upcoming: "Due later"
+        case .upcoming: "Coming up"
         case .before: "Before it started"
         }
     }

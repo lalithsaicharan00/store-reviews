@@ -327,7 +327,7 @@ struct HeatKey: View {
                 }
             }
             VStack(alignment: .leading, spacing: WeekSpacing.tight) {
-                heading("Due that day")
+                heading("Planned that day")
                 row {
                     entry(.level(0), "Not done")
                     entry(.off(.skipped), "Skipped")
@@ -348,7 +348,7 @@ struct HeatKey: View {
         .background(boxed ? Color.card : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .accessibilityElement(children: .ignore)
         // "%", not the word: the key names the steps; it isn't a progress percentage, which Show Percentages hides.
-        .accessibilityLabel("Key. Progress, lighter to darker in the habit's colour: 1 to 33%, 34 to 66%, 67 to 99%, goal met with a check, more than the goal with a check. Due that day, grey: not done with a cross, skipped, paused. Other days: plain grey still to come, dashed not scheduled, an outline for today.")
+        .accessibilityLabel("Key. Progress, lighter to darker in the habit's colour: 1 to 33%, 34 to 66%, 67 to 99%, goal met with a check, more than the goal with a check. Planned that day, grey: not done with a cross, skipped, paused. Other days: plain grey still to come, dashed not scheduled, an outline for today.")
         .accessibilityIdentifier("progress-key")
     }
 
@@ -417,6 +417,9 @@ struct HeatKeySection: View {
         .padding(boxed ? WeekSpacing.card : 0)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(boxed ? Color.card : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .onPerfCommand { action in
+            if action == .toggleHeatKey { withAnimation(.snappy(duration: 0.25)) { open.toggle() } }
+        }
     }
 }
 

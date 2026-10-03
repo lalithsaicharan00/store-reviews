@@ -254,7 +254,7 @@ extension HabitStore {
             let dayRule = self.rule(habit, on: day)
             let amount = day >= start && day <= today ? dayProgress(of: dayRule, on: day) : 0
             amounts[day] = amount
-            // A week, month or year goal names no day, so a day still to come isn't "due later": nothing is asked of it.
+            // A week, month or year goal names no day, so a day still to come isn't "coming up": nothing is asked of it.
             if mark == .upcoming && (!dayRule.frequency.isDayBased || dayRule.frequency.isFlexible) { mark = .notItsDay }
             var extra = false
             if mark == .notItsDay && amount > 0 && dayRule.frequency.isDayBased && !dayRule.frequency.isFlexible && !dayRule.atMost {
@@ -322,11 +322,11 @@ extension HabitStore {
             if start == today && running {
                 headline = "Started today"
             } else if let next {
-                headline = next.day == today ? "Due today"
-                    : range == .week ? "Due " + weekdayNames.full[next.day.weekday(calendar: calendar) - 1]
-                    : "Due " + PauseSheet.short(next.day, calendar: calendar)
+                headline = next.day == today ? "Planned for today"
+                    : range == .week ? "Planned for " + weekdayNames.full[next.day.weekday(calendar: calendar) - 1]
+                    : "Planned for " + PauseSheet.short(next.day, calendar: calendar)
             } else {
-                headline = running ? "Not due this \(noun)" : "Not due that \(noun)"
+                headline = running ? "Not planned this \(noun)" : "Not planned that \(noun)"
                 if extraDays == 0 && total == 0 { detail = running ? nextDueText(habit, after: span.upperBound) : nil }
             }
         }
@@ -520,7 +520,7 @@ extension HabitStore {
         return ("\(name): \(value) of \(goal)", detail)
     }
 
-    /// "22 of 24 steps · SPF missed twice"; nil when every step was done on every counted day.
+    /// "22 of 24 steps · SPF not done twice"; nil when every step was done on every counted day.
     private func checklistDetail(_ habit: Habit, counted: [LocalDay]) -> String? {
         var done = 0, planned = 0
         var missed: [UUID: Int] = [:]
@@ -541,14 +541,14 @@ extension HabitStore {
         // The step missed most; the first in the list when several are missed as often.
         guard let most = missed.values.max(), let first = order.first(where: { missed[$0] == most }),
               let name = names[first], !name.isEmpty else { return steps }
-        return "\(steps) · \(name) missed " + (most == 1 ? "once" : most == 2 ? "twice" : "\(most) times")
+        return "\(steps) · \(name) not done " + (most == 1 ? "once" : most == 2 ? "twice" : "\(most) times")
     }
 
-    /// "Next due Mon 12 Oct" for a schedule whose next due day is after this week; nil when none within four months.
+    /// "Next planned for Mon 12 Oct" for a schedule whose next planned day is after this week; nil when none within four months.
     private func nextDueText(_ habit: Habit, after day: LocalDay) -> String? {
         var cursor = day.adding(days: 1, calendar: calendar)
         for _ in 0..<124 {
-            if isDue(habit, on: cursor) { return "Next due " + PauseSheet.short(cursor, calendar: calendar) }
+            if isDue(habit, on: cursor) { return "Next planned for " + PauseSheet.short(cursor, calendar: calendar) }
             cursor = cursor.adding(days: 1, calendar: calendar)
         }
         return nil
@@ -631,7 +631,7 @@ extension HabitStore {
         for slip in stats.slips { perDay[self.today(now: slip), default: 0] += 1 }
         let strip = stats.marks.map { mark -> WeekCardDay in
             let n = perDay[mark.day] ?? 0
-            // A day still to come is "due later this week" for a quit habit too (every day counts), not "not scheduled".
+            // A day still to come is "coming up" for a quit habit too (every day counts), not "not scheduled".
             let shown: DayMark = mark.day > today && mark.mark == .notItsDay ? .upcoming : mark.mark
             var item = WeekCardDay(day: mark.day, mark: shown, fraction: mark.fraction, over: false, extra: false,
                                    slip: n > 0, value: n > 1 && range == .week ? "\(n)×" : "")

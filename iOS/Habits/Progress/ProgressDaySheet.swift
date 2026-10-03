@@ -95,7 +95,7 @@ struct ProgressExplainer: View {
                     legend(.missed, "Over the limit", over: true)
                     legend(.skipped, "Skipped")
                     legend(.paused, "Paused")
-                    legend(.upcoming, "Due later")
+                    legend(.upcoming, "Coming up")
                     Text("Blank: not scheduled, or before it started").foregroundStyle(.secondary)
                 }
             }
