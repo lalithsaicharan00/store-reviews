@@ -201,7 +201,9 @@ final class ProgressUITests: XCTestCase {
         quit.tap()
         XCTAssertTrue(app.navigationBars["Smoking"].waitForExistence(timeout: 5))
         let log = app.buttons["habit-log-slip"]
-        XCTAssertTrue(app.reveal(log), "Log a Slip… on the habit page")
+        // The page opens on Progress and builds its cards as it appears; the page is a scroll view, which `reveal`
+        // can't scroll, so wait for the button rather than read the page before it's filled (3 Oct 2026).
+        XCTAssertTrue(log.waitForExistence(timeout: 5) && app.reveal(log), "Log a Slip… on the habit page")
         let before = app.staticTexts["quit-total-line"].label
         log.tap()
         XCTAssertTrue(app.navigationBars["Log a Slip"].waitForExistence(timeout: 3))

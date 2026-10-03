@@ -191,6 +191,10 @@ jobs:
             xcrun simctl erase "$ID"
             xcrun simctl boot "$ID" || true
             xcrun simctl bootstatus "$ID" -b
+            # The first keyboard on a fresh simulator shows an animated "slide to type" tip; while it plays, UI queries
+            # time out (HabitPageUITests, 3 Oct 2026). Mark it as seen, as a person who has used the keyboard has.
+            xcrun simctl spawn "$ID" defaults write com.apple.keyboard.preferences DidShowContinuousPathIntroduction -bool true || true
+            xcrun simctl spawn "$ID" defaults write com.apple.keyboard.preferences KeyboardDidShowProductivityTutorial -bool true || true
             xcrun simctl list devices booted
             xcodebuild -showdestinations -sdk iphonesimulator -project iOS/Habits.xcodeproj -scheme Habits 2>&1 | tee iOS/simulator-destinations.log
           } 2>&1 | tee iOS/simulator-startup.log
