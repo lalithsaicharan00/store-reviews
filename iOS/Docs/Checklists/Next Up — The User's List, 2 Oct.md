@@ -40,6 +40,8 @@ tick each when it's done and link what was built or written. Every item follows
   gets squeezed onto two lines. One option per row, or another layout that never wraps.
 - [ ] **7. Today's subtext: decide what each habit row says under its name.** Right now it feels random. Needs
   research and one rule per kind of habit (check-off, weekly goal, amount, timed, limit, quit, task).
+  - *Added 3 Oct:* today it's inconsistent: some rows say "3/3 steps" or "3/3 cups", others "25 cups left today".
+    Goals differ, but the wording must follow one mental model everywhere (Today, the sheets, widgets, the habit page).
 - [ ] **8. Swipe actions on Today's rows: research.** Swiping a row left offers only Add note. The frequent actions
   (edit habit, skip, pause, …) should be there too, possibly using the right swipe as well. Research which actions,
   which side and in what order.
@@ -84,6 +86,21 @@ tick each when it's done and link what was built or written. Every item follows
   - **Research before building:** what the sheet shows per kind (check-off, amount, timed, limit, checklist, task,
     quit), how it relates to the existing Day sheet ("Edit Today's Progress") and the log sheet so there's one sheet,
     not three, and which actions go in it (with item 8, swipe actions, so the two agree).
+
+- [ ] **14. Cut-down habits (limits): where do they belong?** (added 3 Oct 2026) Keeping them inside the times of day
+  feels weird. The user's thought: show them in the Quitting section instead. Research how people think of a limit
+  ("cut down on coffee") next to quitting and next to build habits, then decide.
+- [ ] **15. Timed habits: what should tapping ▶ do?** (added 3 Oct 2026) Today ▶ starts an inline timer on the row.
+  Research whether that's what people expect, or whether ▶ should open a full-screen timer, or both (and which is
+  the default).
+- [ ] **16. Timers and the Dynamic Island / Live Activity.** (added 3 Oct 2026) Starting a timer sometimes goes
+  straight into the Dynamic Island. Keep it, but make it behave the way people expect, reliably, and add a way to
+  turn it off. Research when it should appear, then fix.
+- [ ] **17. Bug: the routine player's bottom spacing is wrong.** (added 3 Oct 2026) Fix the spacing at the bottom of
+  the routine (focus) player's screen; check on the iPhone (U9).
+- [ ] **18. Completion feedback for every kind of habit.** (added 3 Oct 2026) A check-off plays the sound (and haptic)
+  when it's done, which is nice; timed habits, amounts, checklists and others don't. Decide when each kind counts
+  as "done" for feedback (goal reached, timer reaches its goal, last step ticked) and make it consistent.
 
 ## Future (after release; not to start now)
 
