@@ -21,10 +21,10 @@ struct ArrangeTip: Tip {
 
     var options: [any TipOption] { [Tips.MaxDisplayCount(1)] }
 
-    private static var testLaunch = false
+    @MainActor private static var testLaunch = false
 
     /// Once at launch. Test launches and speed runs keep their own empty tip store and never show it (Rulebook D8).
-    static func configure() {
+    @MainActor static func configure() {
         let arguments = ProcessInfo.processInfo.arguments
         let test = arguments.contains("-uitest") || arguments.contains("-perf-drive") || arguments.contains { $0.hasSuffix("check") }
         testLaunch = test
@@ -40,7 +40,7 @@ struct ArrangeTip: Tip {
 
     /// Today was opened on `day`: donated at most once a day (the last day kept in memory and UserDefaults, written
     /// only when the day changes, Rulebook S15).
-    static func noteOpened(on day: LocalDay) {
+    @MainActor static func noteOpened(on day: LocalDay) {
         guard !testLaunch else { return }
         let key = "tip.arrange.lastDay"
         guard UserDefaults.standard.string(forKey: key) != day.key else { return }
@@ -49,13 +49,13 @@ struct ArrangeTip: Tip {
     }
 
     /// Whether any time of day holds two or more habits; written only when it turns true.
-    static func update(_ store: HabitStore) {
+    @MainActor static func update(_ store: HabitStore) {
         guard !hasOrderToChoose else { return }
         if store.cardMembers().values.contains(where: { $0.count >= 2 }) { hasOrderToChoose = true }
     }
 
     /// Edit was used: the tip's job is done.
-    static func used() {
+    @MainActor static func used() {
         ArrangeTip().invalidate(reason: .actionPerformed)
     }
 }
