@@ -12,7 +12,8 @@ struct DayEntriesSection: View {
         let entries = store.entries(of: habit.id, on: day)
         Section(day == store.today() ? "Today's Entries" : "Entries") {
             if entries.isEmpty {
-                Text("No entries yet").foregroundStyle(.secondary)
+                // "Yet" only while the day can still change; a past day with nothing says so plainly (research History D).
+                Text(day < store.today() ? "No entries recorded" : "No entries yet").foregroundStyle(.secondary)
             }
             ForEach(entries.reversed()) { entry in
                 if entry.stepID == nil && habit.kind != .task {
