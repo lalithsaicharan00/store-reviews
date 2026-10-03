@@ -157,7 +157,7 @@ private struct ArrangeCard: View {
             Button("Change Time", systemImage: "clock") { onRetime(section) }
         }
         if habits.count > 1 {
-            Section("Sort habits") {
+            Section("Sort") {
                 if store.hasReminderTimes(inCard: card) {
                     Button("By Reminder Time", systemImage: "bell") { withAnimation { store.sortCard(card, by: .reminderTime) } }
                 }

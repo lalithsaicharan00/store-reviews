@@ -21,10 +21,13 @@ struct ArrangeTip: Tip {
 
     var options: [any TipOption] { [Tips.MaxDisplayCount(1)] }
 
+    private static var testLaunch = false
+
     /// Once at launch. Test launches and speed runs keep their own empty tip store and never show it (Rulebook D8).
     static func configure() {
         let arguments = ProcessInfo.processInfo.arguments
         let test = arguments.contains("-uitest") || arguments.contains("-perf-drive") || arguments.contains { $0.hasSuffix("check") }
+        testLaunch = test
         if test {
             Tips.hideAllTipsForTesting()
             let folder = FileManager.default.temporaryDirectory.appendingPathComponent("uitest-tips", isDirectory: true)
@@ -38,6 +41,7 @@ struct ArrangeTip: Tip {
     /// Today was opened on `day`: donated at most once a day (the last day kept in memory and UserDefaults, written
     /// only when the day changes, Rulebook S15).
     static func noteOpened(on day: LocalDay) {
+        guard !testLaunch else { return }
         let key = "tip.arrange.lastDay"
         guard UserDefaults.standard.string(forKey: key) != day.key else { return }
         UserDefaults.standard.set(day.key, forKey: key)
