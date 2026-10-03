@@ -23,34 +23,34 @@ yeah, in overall, take care of that prompt really well. Each and every detail is
 | H2 | Bring main's Habit Details research (reports and images) into this branch | [x] merged 3 Oct |
 | H3 | Read every research file; treat the mockups as a basic idea, not final (some are near final, most are not) | [x] README, IA, History, Notes, Progress original + revised, milestones; mockups used as ideas only (decisions below) |
 | H4 | Before building: research how a native iPhone app would do it; decide placement (add note, edit note, add entry…) for native UX | [x] decisions N1–N12 below |
-| H5 | The habit page has three sections: **History** (logs), **Notes**, **Progress** | [ ] |
-| H6 | Steps in order, not rushed: overall layout → History → Notes → Progress | [ ] |
-| H7 | History: logs of all the past; a row for each day that was scheduled or had something logged | [ ] |
-| H8 | History: each month is its own card (October a card, September a card…), days as rows inside | [ ] |
-| H9 | History: every month card is collapsible (the mockups keep everything open up front: not good) | [ ] |
-| H10 | History: go to any specific date | [ ] |
-| H11 | History: add an entry for today (and other days) | [ ] |
-| H12 | A new **Add Entry** screen, built from the research and the existing Edit Entry screen | [ ] |
-| H13 | Add Entry changes with the habit type (check, count, amount, time, checklist, quit, limit…) | [ ] |
-| H14 | Add Entry has one mental model from any habit page, aligned with everything else | [ ] |
-| H15 | Inspect one day | [ ] |
-| H16 | Change one particular value (edit an entry) | [ ] |
-| H17 | An unlogged past day: how it looks and what it offers | [ ] |
-| H18 | Notes: the notes added on one habit (browse, read, add, edit), placed natively | [ ] |
-| H19 | Progress: first the overall record | [ ] |
-| H20 | Progress: statistics for the week, the month, and Year in Pixels | [ ] |
-| H21 | Progress: each of Week, Month, Year and Milestones is one section, one card ("everything related to week in one section in card") | [ ] |
-| H22 | Year matters a lot ("a beautiful thing"): make it really good | [ ] |
-| H23 | Squares follow our heat-map style (signs, ✓ only on goal met, grey for due days…), consistent across the app for week, month and year; not the mockups' checkmark colours | [ ] |
-| H24 | Statistics change with the habit type: implement each type's logic and goals correctly | [ ] |
+| H5 | The habit page has three sections: **History** (logs), **Notes**, **Progress** | [x] segmented History · Notes · Progress, pinned under the header |
+| H6 | Steps in order, not rushed: overall layout → History → Notes → Progress | [x] built in that order (3 Oct) |
+| H7 | History: logs of all the past; a row for each day that was scheduled or had something logged | [x] a row for every scheduled day up to today and every day with an entry, skip or note (quit: slips and notes) |
+| H8 | History: each month is its own card (October a card, September a card…), days as rows inside | [x] one card per month, newest first |
+| H9 | History: every month card is collapsible (the mockups keep everything open up front: not good) | [x] every month folds; this month and last open (`hp-flow-5-month-folded`) |
+| H10 | History: go to any specific date | [x] Go to Date: graphical picker from the start to today, opens that day |
+| H11 | History: add an entry for today (and other days) | [x] Add Entry at the top of History (today) and in every Day sheet (that day) |
+| H12 | A new **Add Entry** screen, built from the research and the existing Edit Entry screen | [x] `AddEntryView` (`hp-flow-1-add-entry`) |
+| H13 | Add Entry changes with the habit type (check, count, amount, time, checklist, quit, limit…) | [x] amount, time, times, once a day, checklist steps, slip time; limits as amounts |
+| H14 | Add Entry has one mental model from any habit page, aligned with everything else | [x] the same screen from History and from any Day sheet; the Day sheet's old per-type log buttons removed |
+| H15 | Inspect one day | [x] the Day sheet: result, Add Entry, entries, note, the day before/after |
+| H16 | Change one particular value (edit an entry) | [x] each entry opens Edit Entry (UndoUITests) |
+| H17 | An unlogged past day: how it looks and what it offers | [x] a past day with nothing: "No entries recorded", Add Entry, Skip this day, Add Note (3 Oct) |
+| H18 | Notes: the notes added on one habit (browse, read, add, edit), placed natively | [x] search, Add Note, notes by month, reader with View Day, Edit and Delete |
+| H19 | Progress: first the overall record | [x] Overall record first (quit: the live run, best, clean days) |
+| H20 | Progress: statistics for the week, the month, and Year in Pixels | [x] Week, Month and Year in Pixels cards, each with ‹ ›, its facts and the comparison |
+| H21 | Progress: each of Week, Month, Year and Milestones is one section, one card ("everything related to week in one section in card") | [x] one card each: Milestones, Week, Month, Year in Pixels |
+| H22 | Year matters a lot ("a beautiful thing"): make it really good | [~] built: 12 months × 31 days, 24-pt squares, tap a day, Open Day. Waiting for the user's look on the iPhone (U9) |
+| H23 | Squares follow our heat-map style (signs, ✓ only on goal met, grey for due days…), consistent across the app for week, month and year; not the mockups' checkmark colours | [x] `HeatDraw` squares everywhere, the same key |
+| H24 | Statistics change with the habit type: implement each type's logic and goals correctly | [x] reviewed for all nine types in light and dark (3 Oct): totals in the unit, "Within limit" for limits, weeks for weekly goals, steps for checklists, runs and slips for quit |
 | H25 | Milestones: research what milestones to have at first launch | [x] report "Milestones on the Habit Page — What to Mark and How to Show It" (3 Oct): 3, 7, 14, 30, 50, 100, 200, 365, 500, 1,000 in a row + In total 10–1,000 |
-| H26 | Milestones: redesigned, card-like, look good, not gamified, not just text | [ ] |
-| H27 | Milestones: show the ones achieved and the ones about to come | [ ] |
-| H28 | UX first; UI clean; proper spacing rules and hierarchy everywhere (said many times: it's what makes it look good) | [ ] |
-| H29 | Overall information architecture and hierarchy are right | [ ] |
-| H30 | Follow the Rulebook's main rules while building (speed, data safety, design), so less testing later | [ ] |
-| H31 | Test every habit type and goal: statistics correct, everything looks right | [ ] |
-| H32 | After the build: performance tests and the rest of testing | [ ] |
+| H26 | Milestones: redesigned, card-like, look good, not gamified, not just text | [x] squares like the heat map: reached filled with date, next outlined and filling, later grey; no badges or confetti |
+| H27 | Milestones: show the ones achieved and the ones about to come | [x] reached and upcoming on each track, "Next: … · N to go" |
+| H28 | UX first; UI clean; proper spacing rules and hierarchy everywhere (said many times: it's what makes it look good) | [x] one spacing scale (`WeekSpacing`); title → main fact → supporting line → squares → comparison → actions in every card |
+| H29 | Overall information architecture and hierarchy are right | [x] header, tabs, then cards; actions where the eye is (Add Entry, Go to Date, Add Note) |
+| H30 | Follow the Rulebook's main rules while building (speed, data safety, design), so less testing later | [x] `check_rules.sh` passes; history work in the store (S5); no lazy grid in a List (S13); unique ids (S14) |
+| H31 | Test every habit type and goal: statistics correct, everything looks right | [x] pictures of every type (Swim, Water, Read, Floss, Skincare, Running, Cycle, Coffee, Smoking) and dark (Swim, Smoking), reviewed 3 Oct |
+| H32 | After the build: performance tests and the rest of testing | [x] speed run 3 Oct (29490af): History scrolling 5.3 ms/s, longest 96 ms; Progress tab and Year no stalls; tests running |
 | H33 | Screenshots for each habit type, Progress especially, and everything else | [ ] |
 | H34 | Complete the whole task, slowly and steadily | [ ] |
 

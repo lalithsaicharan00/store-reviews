@@ -471,10 +471,17 @@ extension HabitStore {
             let judged = results.filter { $0.met != nil }.count
             func periods(_ n: Int) -> String { kind == .week ? (n == 1 ? "week" : "weeks") : (n == 1 ? "month" : "months") }
             let head: String
+            // Only weeks that have ended or been met are counted: the week still open isn't "not met" yet (U3; the
+            // habit page showed "Met 0 of 1 week" on the 3rd of a month, 3 Oct 2026). With only that week, its progress.
+            let open = results.last.flatMap { $0.met == nil && $0.period.contains(today) ? $0 : nil }
             if shape == .limitPeriod {
                 head = "Within the limit \(met) of \(judged) \(periods(judged))"
+            } else if judged == 0, let open {
+                head = (shape == .periodTotal
+                    ? "\(progressValue(open.value, rule)) of \(progressValue(open.goal, rule))"
+                    : "\(count(min(open.value, open.goal))) of \(count(open.goal))") + " this \(periods(1))"
             } else {
-                head = "Met \(met) of \(results.count) \(periods(results.count))" + (running ? " so far" : "")
+                head = "Met \(met) of \(judged) \(periods(judged))" + (running ? " so far" : "")
             }
             let done: String?
             switch shape {

@@ -516,7 +516,7 @@ enum ProgressCheck {
             same(month.monthLead, 1, "M 1 September is a Tuesday; weeks start on Monday")
             same(month.letters.first, s.weekdayNames.veryShort[1], "M letters start on Monday")
             same(monthCard(read)?.headline, "3 of 3 days so far", "M1 daily headline")
-            same(monthCard(gym)?.headline, "Met 0 of 2 weeks so far", "M2 week goal over a month")
+            same(monthCard(gym)?.headline, "Met 0 of 1 week so far", "M2 week goal over a month: the open week isn't counted until it's met or over")
             same(monthCard(gym)?.detail, "2 times this month", "M2 what was done")
             same(monthCard(water)?.detail, "11 glasses this month", "M3 total in the unit")
             expect(month.cards.allSatisfy { $0.days.allSatisfy { $0.value.isEmpty } }, "M no values under the marks")

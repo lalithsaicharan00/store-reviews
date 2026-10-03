@@ -277,7 +277,10 @@ extension HabitStore {
         if previousFull.lowerBound < start {
             return PeriodComparison(title: "Compared with the \(noun) before", thisLabel: thisLabel, previousLabel: previousLabel,
                                     thisText: "", previousText: "", thisValue: nil, previousValue: nil,
-                                    note: "No earlier \(noun) to compare")
+                                    note: start <= previousFull.upperBound
+                                        // Began partway through it: say so, rather than "no earlier month" with September there.
+                                        ? "Started on \(start.date(calendar: calendar).formatted(.dateTime.day().month(.abbreviated))), partway through \(noun == "week" ? previousLabel.lowercased() : previousLabel)"
+                                        : "No earlier \(noun) to compare")
         }
         guard completed > 0 else {
             return PeriodComparison(title: "Compared with last \(noun)", thisLabel: thisLabel, previousLabel: previousLabel,
