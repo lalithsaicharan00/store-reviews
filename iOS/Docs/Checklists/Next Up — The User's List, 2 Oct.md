@@ -32,14 +32,19 @@ tick each when it's done and link what was built or written. Every item follows
   including from Habits → a habit's page. The user's idea: tabs inside each habit's page (to be researched, not
   decided). Start from what exists: `Docs/Checklists/Easy Undo and Fixing Progress.md` (research done 30 Sep, its
   build waiting) and the Day sheet, which already edits one day's entries; find how reachable past days are.
-- [ ] **5. The Filter becomes the place to arrange Today.** From Filter (beside +) people should also edit the times
+- [x] **5. The Filter becomes the place to arrange Today.** *Built 3 Oct 2026 on `claude/today-edit-mode`, tests
+  passed, merged to `main` 3 Oct; waiting for the user's look on the iPhone (U9); the user changed the plan after research (report 27): Filter only shows less, and Edit on Today becomes
+  "Arrange Your Day". Build checklist: `Today — Arrange Your Day (item 5 build).md`.* Original point: From Filter (beside +) people should also edit the times
   of day (sections), groups, and the order of habits: whatever arranging Today needs. Existing research:
   `Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/17. The View Sheet — Filter, Edit
   and Add in One Place.md`; check it against what's built.
-- [ ] **6. The bottom of Today: "Note for the day" and "Edit times of day" share one row**, and "Edit times of day"
+- [x] **6. The bottom of Today: "Note for the day" and "Edit times of day" share one row** *(Done with item 5, 3 Oct:
+  "Edit Times of Day" left the bottom; "Note for the Day" is alone there for now, and item 12 decides where it goes.)*, and "Edit times of day"
   gets squeezed onto two lines. One option per row, or another layout that never wraps.
 - [ ] **7. Today's subtext: decide what each habit row says under its name.** Right now it feels random. Needs
   research and one rule per kind of habit (check-off, weekly goal, amount, timed, limit, quit, task).
+  - *Added 3 Oct:* today it's inconsistent: some rows say "3/3 steps" or "3/3 cups", others "25 cups left today".
+    Goals differ, but the wording must follow one mental model everywhere (Today, the sheets, widgets, the habit page).
 - [ ] **8. Swipe actions on Today's rows: research.** Swiping a row left offers only Add note. The frequent actions
   (edit habit, skip, pause, …) should be there too, possibly using the right swipe as well. Research which actions,
   which side and in what order.
@@ -59,6 +64,70 @@ tick each when it's done and link what was built or written. Every item follows
   Suspects to check: something blocking the main thread during the sign-in at launch (the keychain, a network call
   waited on, the first backup or sync). Logs: run 36995529935 (`ios-logs` artifact, the test's lines at
   t = 24.86 s → 98.74 s). Find the cause, fix it, and make the test show where the time goes if it happens again.
+
+- [ ] **12. Daily Reflection: research first, then build** (added 3 Oct 2026; maybe the next build, not decided). The
+  first **dedicated tracker** (see "Future" below): a mood tracker combined with journaling, a separate thing from
+  habits, with its own statistics, completely different from a habit's.
+  - **Year in Pixels:** each day of the year one square, coloured by that day's mood (popular on Pinterest and
+    YouTube). The main way the mood history is shown.
+  - **Not made with +.** It isn't a habit; it's built into the app (how it's turned on is part of the research; a
+    Library is a later idea, below).
+  - **"Note for the Day" leaves the bottom of Today.** The daily note probably becomes part of Daily Reflection;
+    where it goes, and what replaces it on Today, is decided by the research. Nothing changes until then.
+  - **Research:** how people see mood tracking and Year in Pixels (reviews of mood and journaling apps, and of habit
+    apps that have them), what a day's entry holds (a mood scale, a few words, tags?), where it lives (on Today, its
+    own place in ≡, Progress?), how it's reminded, and its stats. Then a design for the user to decide, then build.
+
+- [ ] **13. Tapping any habit on Today opens the same sheet** (added 3 Oct 2026; after the Progress work, or alongside
+  it as separate work). One mental model, whatever the kind of habit.
+  - **Today it's inconsistent:** tapping a row's body opens a bottom sheet only for amounts and timed habits (the
+    "Log amount / Log time manually" sheet, `HabitRow` `.onTapGesture` when `logsNumbers`). Check-offs, checklists,
+    tasks and quit habits open nothing; their options are only in the touch-and-hold menu, which people may not find.
+  - **The sheet, for every kind:** today's progress (and changing it), plus quick options: Edit Habit, Pause, Skip,
+    Add Note, and a way to the habit's own page (details and history). The ✓, + and ▶ buttons keep logging in one
+    tap; the sheet is for the row itself.
+  - **Research before building:** what the sheet shows per kind (check-off, amount, timed, limit, checklist, task,
+    quit), how it relates to the existing Day sheet ("Edit Today's Progress") and the log sheet so there's one sheet,
+    not three, and which actions go in it (with item 8, swipe actions, so the two agree).
+
+- [ ] **14. Cut-down habits (limits): where do they belong?** (added 3 Oct 2026) Keeping them inside the times of day
+  feels weird. The user's thought: show them in the Quitting section instead. Research how people think of a limit
+  ("cut down on coffee") next to quitting and next to build habits, then decide.
+- [ ] **15. Timed habits: what should tapping ▶ do?** (added 3 Oct 2026) Today ▶ starts an inline timer on the row.
+  Research whether that's what people expect, or whether ▶ should open a full-screen timer, or both (and which is
+  the default).
+- [ ] **16. Timers and the Dynamic Island / Live Activity.** (added 3 Oct 2026) Starting a timer sometimes goes
+  straight into the Dynamic Island. Keep it, but make it behave the way people expect, reliably, and add a way to
+  turn it off. Research when it should appear, then fix.
+- [ ] **17. Bug: the routine player's bottom spacing is wrong.** (added 3 Oct 2026) Fix the spacing at the bottom of
+  the routine (focus) player's screen; check on the iPhone (U9).
+- [ ] **18. Completion feedback for every kind of habit.** (added 3 Oct 2026) A check-off plays the sound (and haptic)
+  when it's done, which is nice; timed habits, amounts, checklists and others don't. Decide when each kind counts
+  as "done" for feedback (goal reached, timer reaches its goal, last step ticked) and make it consistent.
+
+- [ ] **19. Exportable progress reports, for the Progress page** (added 3 Oct 2026; build now if it fits, otherwise it moves to Future; the
+  user decides later). A report of progress people can export and share (a PDF or image of a week, month or year),
+  as the Progress research suggests. Different from Backup & Export's data file. Start from the Progress research:
+  "Progress and Statistics — What People Want" (export and reports by email) and "The Progress Page — What People
+  Need" (Export: ledger C020, Strong, 35 apps; it said export lives outside the Progress screen), then decide what a
+  report holds and where it's made, after the Progress redesign is merged.
+
+- [ ] **20. Each habit's Year in Pixels, exportable** (added 3 Oct 2026; build now if it fits, otherwise it moves to
+  Future; the user decides later). On a habit's own page: its year as one square per day, coloured by how that day
+  went, which people can export and share as an image. This is for **one habit**; item 19 is the Progress page's
+  week, month and year reports, and item 12's Year in Pixels is for mood. Use the same pixel grid for both.
+
+## Future (after release; not to start now)
+
+- [ ] **Dedicated trackers** (added 3 Oct 2026): ready-made trackers with their own screens and stats, which can't be
+  made from +. Examples to research: sleep, and other trackers that are popular with people; Daily Reflection (item
+  12) is the first.
+- [ ] **Guided habits:** habits that come with guidance, added the same way.
+- [ ] **Exportable progress reports** (the same as item 19): if it isn't built before release, it's built after.
+- [ ] **Each habit's exportable Year in Pixels** (the same as item 20): if it isn't built before release, it's built
+  after.
+- [ ] **A Library** to add dedicated trackers and guided habits from (or wherever research says they belong). Only
+  after release.
 
 ## Done from this list
 

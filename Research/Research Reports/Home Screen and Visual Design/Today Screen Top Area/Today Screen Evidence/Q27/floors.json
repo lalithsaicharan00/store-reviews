@@ -1,0 +1,93 @@
+{
+ "ORDER.drag_manual_custom": {
+  "habit": 882,
+  "todo": 960,
+  "other": 215
+ },
+ "ORDER.alphabetical": {
+  "habit": 68,
+  "todo": 384,
+  "other": 47
+ },
+ "ORDER.by_time": {
+  "habit": 110,
+  "todo": 53,
+  "other": 13
+ },
+ "ORDER.by_reminder": {
+  "habit": 13,
+  "todo": 35,
+  "other": 1
+ },
+ "ORDER.priority": {
+  "habit": 89,
+  "todo": 344,
+  "other": 11
+ },
+ "ORDER.done_to_bottom": {
+  "habit": 14,
+  "todo": 47
+ },
+ "ORDER.new_item_position": {
+  "habit": 18,
+  "other": 1,
+  "todo": 51
+ },
+ "ORDER.order_changes_itself": {
+  "habit": 61,
+  "todo": 76,
+  "other": 38
+ },
+ "ORDER.cant_reorder": {
+  "habit": 151,
+  "todo": 123,
+  "other": 27
+ },
+ "FILTER.filter_by_group": {
+  "habit": 90,
+  "other": 56,
+  "todo": 190
+ },
+ "FILTER.filter_by_time_of_day": {
+  "habit": 9
+ },
+ "FILTER.hide_completed": {
+  "habit": 42,
+  "todo": 76,
+  "other": 5
+ },
+ "FILTER.keep_completed_visible": {
+  "habit": 3,
+  "todo": 9
+ },
+ "FILTER.only_today_due": {
+  "habit": 11,
+  "todo": 13,
+  "other": 13
+ },
+ "DISC.group_category_tag": {
+  "habit": 51,
+  "other": 13,
+  "todo": 66
+ },
+ "DISC.section_time_of_day": {
+  "habit": 48,
+  "todo": 16,
+  "other": 3
+ },
+ "DISC.delete": {
+  "habit": 44,
+  "todo": 100,
+  "other": 6
+ },
+ "DISC.rename_edit": {
+  "habit": 64,
+  "todo": 71,
+  "other": 9
+ },
+ "DISC.add_create": {
+  "habit": 110,
+  "todo": 135,
+  "other": 14
+ }
+}

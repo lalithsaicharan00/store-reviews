@@ -100,7 +100,7 @@ final class GroupsUITests: XCTestCase {
         let health = chip("Health")
         XCTAssertTrue(health.waitForExistence(timeout: 3), "The new group's chip")
         XCTAssertTrue(health.label.hasPrefix("Health, "), health.label)
-        XCTAssertTrue(app.buttons["groups-edit"].exists, "Edit sits on the Groups heading once a group exists")
+        XCTAssertTrue(app.buttons["groups-edit"].exists, "Edit Groups shows once a group exists")
         tapChip("Health")
         XCTAssertTrue(health.isSelected)
         shot("g03-filter")
@@ -128,7 +128,7 @@ final class GroupsUITests: XCTestCase {
     func testChipsAndEmptyGroup() {
         launch(["-groups-demo"])
         openFilter()
-        XCTAssertTrue(chip("all").label.hasPrefix("All, "), chip("all").label)
+        XCTAssertTrue(chip("all").label.hasPrefix("All Habits, "), chip("all").label)
         let reading = chip("Reading")
         XCTAssertTrue(reading.waitForExistence(timeout: 3))
         XCTAssertEqual(reading.label, "Reading, no habits yet")

@@ -99,13 +99,14 @@ results, what's still open) · `iOS/Tools/perf/` (scripts) · the speed tables o
 | U3 | **Nothing counts against anyone.** Never red; never "missed", "failed", "relapse", "reset", "due" or "overdue". Skipped, paused and not-its-day days are neutral | Shame language drives people away |
 | U4 | **Nothing on Today moves during a run of taps** (`TodayLayout.hold`; things settle 1.5 s after the last tap); feedback comes from the tap, never from a redraw | Rows jumped under people's fingers |
 | U5 | **A new feature never removes an old one** without listing what the old view showed and keeping each item, or saying why it goes | Adding ▶ deleted "N left" |
-| U6 | **Text:** names and checklist items 24 characters, times of day 16, units 12 (`TextLimit`); never `.fixedSize()` a text field; every typing field stays above the keyboard | Clipped and hidden fields |
+| U6 | **Text:** names and checklist items 24 characters, times of day 16, units 12 (`TextLimit`, `limitText`); never `.fixedSize()` a text field; every typing field stays above the keyboard. A value cut back while a field is changing is put back on the next turn, or the field keeps showing what wasn't kept | Clipped and hidden fields; a name field showed 39 letters while 24 were kept (3 Oct) |
 | U7 | **Never put `.toolbar`, `.onChange` or `.task` on a Form `Section`** (it repeats per row); a pushed screen keeps its own `@FocusState` | Four Next buttons on one keyboard |
 | U8 | **One app, one set of IDs:** Often Enough, `com.oftenenough.app` ([App Identity](<Architecture/App Identity — Name, Domain and IDs.md>)); replace any leftover `com.lalithsaicharan.habits` | Mixed IDs break signing, widgets and purchases |
 | U9 | **Check every visual or layout change on the real iPhone before calling it done** | The habit-page crash and the unreadable switches never showed on the simulator (2 Oct) |
 | U10 | **Progress only reads; its overview counts habits, not ticks** | It must agree with Today's day bar |
 | U11 | **Words:** say it the way people do ("Log time manually", "For today", "Planned for Wed 1 Oct"); see Design Rules' "Words the app never uses" | Copy that confused people |
 | U12 | **Before changing a screen, read its section in Design Rules and its spec** | Per-screen decisions that agents undid |
+| U13 | **Order is the person's own.** Nothing reorders itself: not reminder times, a new day, a sync or an edit. New habits and tasks go to the end of their section; sorting is a one-off action; only done rows settle (U4). Timed sections follow their times; Anytime and Quitting are placed by the person (the user, 3 Oct 2026) | 35 of 179 order reviews: "the app reshuffles my list" (report 27) |
 
 *Evidence:* [Design Rules — Don't Regress](<iOS/Design Rules — Don't Regress.md>) (every screen's decisions, with the
 research behind each) · `Research/Research Reports/` (the research, [index](<Research/Research Reports/README.md>)).

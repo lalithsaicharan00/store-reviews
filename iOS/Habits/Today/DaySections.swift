@@ -1,23 +1,8 @@
 import SwiftUI
 
-/// "Day sections": Anytime plus the named parts of the user's day, in time order
-/// (Today reports 8, 16 and 25). Reached from the end of Today, a section's long-press menu,
-/// and "New Section…" in the habit form, as a sheet; and from ≡ → Times of Day, pushed. Both show the one list
-/// (`TimesOfDayList`), so every way in opens the same screen (Navigation, Round 3, rule 2).
-struct DaySectionsView: View {
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        NavigationStack {
-            TimesOfDayList()
-                .toolbar {
-                    ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
-                }
-        }
-    }
-}
-
-/// The Times of Day list, with its editor pushed on the same stack.
+/// ≡ → Times of Day: Anytime plus the named parts of the user's day, in time order (Today reports 8, 16 and 25), with
+/// the editor pushed on the same stack. On Today, times of day are arranged in Edit (`ArrangeDayView`), which opens the
+/// same editor (`SectionEditor`).
 struct TimesOfDayList: View {
     @Environment(HabitStore.self) private var store
     @State private var editing: DaySection?
@@ -65,7 +50,8 @@ struct TimesOfDayList: View {
     }
 }
 
-/// Add or edit one section: a name and a start time; the latest section also has an end.
+/// Add or edit one time of day: a name, when it starts and when it ends. Times that overlap other times of day split
+/// them (the user, 3 Oct 2026): the form shows how the whole day will look, and asks before splitting (`SectionPlan`).
 struct SectionEditor: View {
     let existing: DaySection?
     /// Called with the saved section's ID.
@@ -77,15 +63,19 @@ struct SectionEditor: View {
     @State private var start: Date
     @State private var end: Date
     @State private var confirmDelete = false
+    @State private var confirmSplit = false
+    @State private var newID = UUID().uuidString
     @FocusState private var nameFocused: Bool
 
     init(existing: DaySection?, onSaved: @escaping (String) -> Void) {
         self.existing = existing
         self.onSaved = onSaved
         _name = State(initialValue: existing?.name ?? "")
-        let startMinute = existing?.start ?? 7 * 60
+        // A new one: the next whole hour, for two hours.
+        let hour = Calendar.current.component(.hour, from: .now)
+        let startMinute = existing?.start ?? ((hour + 1) % 24) * 60
         _start = State(initialValue: Self.date(startMinute))
-        _end = State(initialValue: Self.date(existing?.end ?? 22 * 60))
+        _end = State(initialValue: Self.date(existing.map { _ in startMinute + 60 } ?? startMinute + 120))
     }
 
     private static func date(_ minutes: Int) -> Date {
@@ -97,18 +87,15 @@ struct SectionEditor: View {
         return (c.hour ?? 0) * 60 + (c.minute ?? 0)
     }
 
-    private var others: [DaySection] { store.sections.filter { !$0.isAnytime && $0.id != existing?.id } }
-    /// The latest section is the only one with its own end.
-    private var isLatest: Bool { others.allSatisfy { ($0.start ?? 0) < minutes(start) } }
     private var trimmed: String { TextLimit.clean(name, TextLimit.section) }
-    private var problem: String? {
-        if trimmed.isEmpty { return nil }
-        if others.contains(where: { $0.start == minutes(start) }) { return "Another time of day already starts at \(DaySection.clock(minutes(start)))." }
-        if isLatest && minutes(end) <= minutes(start) && minutes(end) > store.settings.dayEndHour * 60 { return "It must end after it starts." }
-        return nil
+    private var plan: SectionPlan {
+        let subject = DaySection(id: existing?.id ?? newID, name: trimmed.isEmpty ? "New time of day" : trimmed, start: nil, end: nil)
+        return SectionPlan.make(sections: store.sections, subject: subject, start: minutes(start), end: minutes(end),
+                                defaultEnd: 24 * 60 + store.settings.dayEndHour * 60)
     }
 
     var body: some View {
+        let plan = plan
             Form {
                 Section {
                     TextField("e.g. Before work", text: $name)
@@ -116,26 +103,27 @@ struct SectionEditor: View {
                         .limitText($name, to: TextLimit.section)
                         .submitLabel(.done)
                         .accessibilityLabel("Name")
+                        .accessibilityIdentifier("section-name-field")
+                } footer: {
+                    if let note = TextLimit.note(name, TextLimit.section) { Text(note) }
                 }
                 Section {
                     DatePicker("Starts", selection: $start, displayedComponents: .hourAndMinute)
-                    if isLatest {
-                        DatePicker("Ends", selection: $end, displayedComponents: .hourAndMinute)
-                    } else if let next = others.filter({ ($0.start ?? 0) > minutes(start) }).min(by: { $0.start! < $1.start! }) {
-                        HStack(spacing: 16) {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("Ends")
-                                Text("When \(next.name) starts").font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
-                            }
-                            Spacer(minLength: 0)
-                            Text(DaySection.clock(next.start!)).foregroundStyle(.secondary).fixedSize()
-                        }
-                        .accessibilityElement(children: .combine)
-                    }
+                    DatePicker("Ends", selection: $end, displayedComponents: .hourAndMinute)
                 } footer: {
-                    if let problem { Text(problem).foregroundStyle(.red) }
-                    else if let note = TextLimit.note(name, TextLimit.section) { Text(note) }
+                    if let problem = plan.problem { Text(problem).foregroundStyle(.red) }
                     else { Text("Habits can still be ticked at any time; the time of day only orders Today and marks what's Now.") }
+                }
+                Section {
+                    ForEach(plan.rows) { row in
+                        PlanRow(row: row)
+                    }
+                } header: {
+                    Text("Your day")
+                } footer: {
+                    if !plan.split.isEmpty {
+                        Text("Times of day that overlap are split, so each part of the day is in one only.")
+                    }
                 }
                 if existing != nil {
                     Section {
@@ -148,8 +136,21 @@ struct SectionEditor: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save", action: save).fontWeight(.semibold).disabled(trimmed.isEmpty || problem != nil)
+                    Button(existing == nil ? "Add" : "Save") {
+                        if plan.split.isEmpty { save(plan) } else { confirmSplit = true }
+                    }
+                    .fontWeight(.semibold)
+                    .disabled(trimmed.isEmpty || plan.problem != nil)
+                    .accessibilityIdentifier("section-save")
                 }
+            }
+            // Before splitting: every time of day that changes, with its new times (the user, 3 Oct 2026).
+            .confirmationDialog("Split \(HabitCopy.join(plan.split.map(\.name)))?", isPresented: $confirmSplit, titleVisibility: .visible) {
+                Button(existing == nil ? "Split and Add \(trimmed)" : "Split and Save") { save(plan) }
+                    .accessibilityIdentifier("section-split-confirm")
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text(plan.rows.filter { $0.isSubject || $0.changed }.map { "\($0.name): \($0.range)" }.joined(separator: "\n"))
             }
             .confirmationDialog("Delete \(existing?.name ?? "")?", isPresented: $confirmDelete, titleVisibility: .visible) {
                 Button("Delete Time of Day", role: .destructive) {
@@ -163,15 +164,34 @@ struct SectionEditor: View {
             .navigationBarBackButtonHidden()
     }
 
-    private func save() {
-        var section = existing ?? DaySection(id: UUID().uuidString, name: "", start: nil, end: nil)
-        section.name = trimmed
-        section.start = minutes(start)
-        var endMinute = minutes(end)
-        if endMinute <= minutes(start) { endMinute += 24 * 60 } // ends after midnight
-        section.end = isLatest ? endMinute : nil
-        store.saveSections(store.sections.filter { $0.id != section.id } + [section])
-        onSaved(section.id)
+    private func save(_ plan: SectionPlan) {
+        guard plan.problem == nil, !trimmed.isEmpty else { return }
+        store.saveSections(plan.sections)
+        onSaved(existing?.id ?? newID)
         dismiss()
+    }
+}
+
+/// One time of day in the form's "Your day": its new times, and what they were if they change.
+private struct PlanRow: View {
+    let row: SectionPlan.Row
+
+    var body: some View {
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 1) {
+                Text(row.name).fontWeight(row.isSubject ? .semibold : .regular).lineLimit(1)
+                if row.isSubject {
+                    Text(row.oldRange == nil ? "New" : row.changed ? "Was \(row.oldRange!)" : "No change")
+                        .font(.footnote).foregroundStyle(.secondary)
+                } else if row.changed, let old = row.oldRange {
+                    Text("Was \(old)").font(.footnote).foregroundStyle(.secondary)
+                }
+            }
+            Spacer(minLength: 8)
+            Text(row.range).monospacedDigit().foregroundStyle(row.isSubject || row.changed ? Color.primary : .secondary)
+                .lineLimit(1).fixedSize()
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("plan-row-\(row.name)")
     }
 }

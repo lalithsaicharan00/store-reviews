@@ -101,6 +101,8 @@ extension String {
     static let morning = "morning"
     static let afternoon = "afternoon"
     static let evening = "evening"
+    /// Today's Quitting card in `HabitStore.todayCards` (not a time of day).
+    static let quittingCard = "quitting"
 }
 
 /// What a habit measures. One mental model: every habit shows "amount/goal unit".

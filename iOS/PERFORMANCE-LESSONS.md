@@ -83,6 +83,12 @@ and undo 53 ms/s, Today's +1 and day switch 40 ms/s. The items below are the sim
   and the Day sheet.
 - Today's first scroll has one 180–440 ms freeze (1 Oct).
 - Saving an entry stalls 0.6–0.8 s; opening the entry editor, the launch's first keyboard, 3–7 s on the hosted simulator (L18, 1 Oct).
+- **Arrange Your Day (3 Oct, simulator, `365242d`, `arrange` scenario):** scrolling it 0.0 ms/s; moving Anytime and
+  sorting a card 2.0 ms/s (29 ms longest); opening it 138 ms the first time and 121 ms after (it replaces Today in
+  place; the hosted simulator's blank push is 120–200 ms); working out every card's habits 0.1 ms at most. Today's
+  scrolling 2.6 and +1 0.0 in the same run. **Open:** turning Hide Completed on and off every 0.5 s costs 26.4 ms/s
+  (48 ms longest, no freeze), about 13 ms a switch, because every card gets the new setting and redraws; people
+  switch it once, so it waits for the iPhone's number before any change.
 
 ## Analytics validation lesson — 2 October 2026 (IST)
 

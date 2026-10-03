@@ -14,6 +14,8 @@ enum PerfAction: Equatable {
     case toggleHeatKey
     /// A page with nothing on it, pushed like a menu page (`PerfBlankPage`); one with only a number field.
     case openBlank, openTypingControl
+    /// Today's Edit: Arrange Your Day (3 Oct 2026).
+    case openArrange
 }
 
 /// Speed runs only: switches a scenario flips to take one part out of a screen and see what it cost (the bisect
@@ -209,6 +211,26 @@ enum PerfDriver {
             await measure("Progress Year: scrolling") { await scroll() }
             send(.close)
             UserDefaults.standard.set(ProgressRange.week.rawValue, forKey: ProgressOptions.range)
+        case "arrange":
+            // Today's Edit (3 Oct 2026): opening Arrange Your Day, scrolling every habit in it, moving Anytime, sorting a
+            // card, and hiding completed habits back on Today.
+            await openTwice("Arrange Your Day") { send(.openArrange) }
+            await measure("Arrange Your Day: scrolling") { await scroll() }
+            await measure("Arrange Your Day: move Anytime and sort") {
+                await repeatFor(window) {
+                    store.moveCard(.anytime, .bottom); await pause(0.4)
+                    store.moveCard(.anytime, .top); await pause(0.4)
+                    store.sortCard(.morning, by: .name); await pause(0.4)
+                }
+            }
+            send(.close)
+            await pause(1)
+            await measure("Today: hide completed on and off") {
+                await repeatFor(window) {
+                    UserDefaults.standard.set(true, forKey: Preferences.hideDoneHabits); await pause(0.5)
+                    UserDefaults.standard.set(false, forKey: Preferences.hideDoneHabits); await pause(0.5)
+                }
+            }
         case "menu":
             await measure("Menu: open and close") {
                 await repeatFor(window) { send(.toggleMenu); await pause(0.6) }

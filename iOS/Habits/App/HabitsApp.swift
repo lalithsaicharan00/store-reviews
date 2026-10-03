@@ -10,6 +10,7 @@ struct HabitsApp: App {
 
     init() {
         Preferences.register()
+        ArrangeTip.configure()
     }
 
     var body: some Scene {
@@ -71,7 +72,7 @@ struct HabitsApp: App {
 
     @ViewBuilder private var root: some View {
             #if DEBUG
-            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-widgetcheck", "-widget-system-verify"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-arrangecheck", "-widgetcheck", "-widget-system-verify"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
             } else if ProcessInfo.processInfo.arguments.contains("-widget-render") {
                 WidgetRenderCheck()
@@ -202,6 +203,11 @@ private struct PlacementCheckView: View {
                 let failures = await ReminderCheck.run()
                 reminderMetric = ReminderCheck.planningSummary
                 result = failures.isEmpty ? "Reminders: all checks passed" : "Reminders failed: " + failures.joined(separator: "; ")
+                return
+            }
+            if arguments.contains("-arrangecheck") {
+                let failures = await ArrangeCheck.run()
+                result = failures.isEmpty ? "Arrange: all checks passed" : "Arrange failed (\(failures.count)): " + failures.joined(separator: "; ")
                 return
             }
             if arguments.contains("-taskcheck") {

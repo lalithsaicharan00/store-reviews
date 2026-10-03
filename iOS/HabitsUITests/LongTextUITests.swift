@@ -99,16 +99,19 @@ final class LongTextUITests: XCTestCase {
         shot("04-today-folded")
         app.swipeUp()
         shot("05-today-folded-scrolled")
-        let edit = app.buttons["Edit Times of Day"]
+        // Times of day are arranged in Edit now (3 Oct 2026); a long name keeps its whole time line and ··· menu.
+        let edit = app.buttons["arrange-button"]
         XCTAssertTrue(edit.waitForExistence(timeout: 3))
         edit.tap()
-        XCTAssertTrue(app.navigationBars["Times of Day"].waitForExistence(timeout: 3))
-        shot("06-times-of-day")
-        // The row in the sheet, not the Today header behind it: its label carries the hours.
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Before breakfast' AND label CONTAINS '–'")).firstMatch.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["arrange-heading"].waitForExistence(timeout: 3))
+        shot("06-arrange-your-day")
+        let options = app.buttons["arrange-menu-Before breakfast"]
+        app.reveal(options)
+        options.tap()
+        app.buttons["Change Time"].tap()
         XCTAssertTrue(app.navigationBars["Edit Time of Day"].waitForExistence(timeout: 3))
         shot("07-section-editor")
-        let field = app.textFields["Name"]
+        let field = app.textFields["section-name-field"]
         field.tap()
         field.typeText(" and a lot more words")
         let atLimit = expectation(for: NSPredicate { el, _ in ((el as? XCUIElement)?.value as? String ?? "").count <= 16 }, evaluatedWith: field)
@@ -127,8 +130,9 @@ final class LongTextUITests: XCTestCase {
         name.typeText(String(repeating: "Read one more chapter of the book on the nightstand ", count: 3))
         // The cap is applied as each change lands, so wait for the last one before reading.
         let capped = expectation(for: NSPredicate { el, _ in ((el as? XCUIElement)?.value as? String ?? "").count <= 24 }, evaluatedWith: name)
-        wait(for: [capped], timeout: 3)
+        let result = XCTWaiter().wait(for: [capped], timeout: 3)
         shot("09-form-long-name")
+        XCTAssertEqual(result, .completed, "The name is cut to 24 letters; the field holds \"\(name.value as? String ?? "nil")\"")
         app.toolbars.buttons["Done"].firstMatch.tap()
 
         // How much: 12 of a long unit of your own (units stop at 12 characters).

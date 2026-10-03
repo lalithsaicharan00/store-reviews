@@ -65,6 +65,8 @@ struct GroupChipRow: View {
     let selection: UUID?
     /// Each group's count for the chips ("5", "0"); nil hides the numbers. A group missing from it is empty ("–").
     var counts: [UUID?: Int]?
+    /// "All" on Progress; "All Habits" in Today's Filter.
+    var allTitle = "All"
     var showNew = false
     let onSelect: (UUID?) -> Void
     var onEmpty: ((HabitGroup) -> Void)?
@@ -77,8 +79,8 @@ struct GroupChipRow: View {
         let empty = counts == nil ? [] : groups.filter { counts?[$0.id] == nil }
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                GroupChip(title: "All", count: counts?[UUID?.none].map(String.init), selected: selection == nil) { onSelect(nil) }
-                    .accessibilityLabel(counts?[UUID?.none].map { "All, \($0) " + ($0 == 1 ? "habit" : "habits") } ?? "All")
+                GroupChip(title: allTitle, count: counts?[UUID?.none].map(String.init), selected: selection == nil) { onSelect(nil) }
+                    .accessibilityLabel(counts?[UUID?.none].map { "\(allTitle), \($0) " + ($0 == 1 ? "habit" : "habits") } ?? allTitle)
                     .accessibilityIdentifier("group-chip-all")
                 ForEach(full) { group in
                     let n = counts?[group.id]

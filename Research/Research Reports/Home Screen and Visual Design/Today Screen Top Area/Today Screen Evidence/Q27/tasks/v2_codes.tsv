@@ -1,0 +1,255 @@
+# cite	set	relevant	codes	note   (hand-read by the 2nd pass, 3 Oct 2026)
+A13#13534	MIX	0	H_TIME	habits only: wants habit list auto-sorted by time; manual swapping laborious
+P8#996	MIX	1	CONFUSE	can't tell repeating tasks from habits
+A53#662	MIX	0	X	
+P3#4879	MIX	0	X	
+P8#11779	MIX	1	SEP+,T_AUTO	likes habits/dailies/to-dos divided; wants to-dos sorted by due date, due on top
+A53#1442	MIX	0	X	uses habit list as to-do list
+A13#14898	MIX	0	X	
+P3#9796	MIX	0	H_TIME	habits by notification time
+A25#919	MIX	0	X	
+P10#12932	MIX	0	X	
+A13#13651	MIX	0	SECTIONS	wants whole day in one list, not split pages by time of day (habits only)
+A1#217	MIX	0	X	
+A85#1504	MIX	0	X	to-do folders
+P12#85406	MIX	0	X	
+P63#353	MIX	0	X	
+P8#8801	MIX	0	X	tip
+A24#39610	MIX	0	X	
+P2#26009	MIX	1	MIX_OWN,T_MAN	can't easily change the order of tasks and habits
+P2#11494	MIX	1	T_MAN	wants manual sorting in to-do section to set priority
+P8#6788	MIX	0	X	
+A10#31907	MIX	0	X	
+P15#854	MIX	0	H_MAN	habit order only
+A10#171	MIX	0	X	
+P8#9664	MIX	0	X	
+A10#52167	MIX	0	X	
+P2#12461	MIX	1	ONE+,MIX_TIME	likes habits and tasks in one app; wants a time so tasks and habits sort by time of day
+A54#30	MIX	0	H_MAN	habit reorder only
+A20#3333	MIX	0	X	
+A59#2614	MIX	0	X	
+P8#5348	MIX	0	X	
+P12#56506	MIX	0	X	
+P10#9168	MIX	0	H_MAN	
+A28#215	MIX	0	X	
+P2#1866	MIX	0	AMBIG	"custom list rather than sort by category" (unclear if order)
+P8#8267	MIX	1	T_MAN	drag to reorder habits, dailies, to-dos fails (bug) — expects drag for all kinds
+A1#2380	MIX	0	H_MAN	
+A4#13197	MIX	0	H_MAN,NEWPOS	routine items: manual sort resets daily; new all-day items land on top then must drag (recurring items)
+P10#5324	MIX	0	H_TIME,H_MAN	habits only, chronological
+A13#6445	MIX	0	X	
+A10#35648	MIX	0	X	
+P2#7618	MIX	1	MIX_SORTOPT	day list (habits+tasks) sort keys: wants time, then priority, then category
+A85#2852	MIX	0	X	
+P8#4118	MIX	0	X	
+A23#197	MIX	0	X	
+A13#16331	MIX	1	SEP_WANT	wants a second tab for to-dos in habit app
+A23#2565	MIX	0	H_MAN	
+A48#1165	MIX	0	X	
+A13#15255	MIX	0	X	
+A10#40334	MIX	0	X	
+A43#133	MIX	1	ONE+,MIX_OWN	recurring habits and to-dos in one blended display; reorders items inside time windows
+P2#8658	MIX	1	MIX_SORTOPT	wants filter and sort for the tasks/habit list
+P2#16291	MIX	0	X	
+A85#2203	MIX	0	X	
+A1#52388	MIX	0	X	
+A55#1594	MIX	0	H_TIME,H_MAN	habits only
+A13#18987	MIX	0	X	
+A55#2010	MIX	0	X	
+P2#9629	MIX	0	SUB_MAN	reorder checklist items inside a habit or task
+P8#10677	MIX	0	X	
+A24#36897	MIX	0	X	
+P2#12836	MIX	1	MIX_TIME	tasks and habits should sort by time; 12pm after 3am etc.
+P5#2972	MIX	0	X	
+A24#27712	MIX	0	X	
+P8#11397	MIX	0	X	
+P10#16519	MIX	0	X	
+P2#11778	MIX	1	MIX_OWN,T_MAN	"I want to sort tasks and habit manually"
+A26#2697	MIX	1	SEP_WANT,CLUTTER	school to-dos kept in separate app so habits space not cluttered
+A50#125	MIX	0	X	
+A24#6935	MIX	1	TODO_WANT	wants to-do lists in habit app
+A10#32345	MIX	0	X	
+A85#76	MIX	1	SEP+	values habits, dailies, to-dos as distinct kinds
+P2#6586	MIX	0	X	
+P8#797	MIX	0	X	
+P8#7538	MIX	1	T_AUTO	wants to-dos sorted by day (date), habits all in one list
+P8#9986	MIX	0	X	
+A10#40807	MIX	0	X	
+A10#26843	MIX	0	X	
+P8#1988	MIX	1	CLUTTER	one long list of many habits and tasks overwhelming; wants named folders
+P61#397	MIX	1	T_MAN	can't reorder the tasks as wished
+A20#3477	MIX	0	X	
+A1#53807	MIX	0	X	"to dos" used loosely for habits
+A24#17732	MIX	0	X	
+A85#2525	MIX	1	SEP+	loves separation between habits, to-dos, dailies
+A23#4826	MIX	0	X	
+P41#112	MIX	1	ONE+	likes how the screen shows habits and pending tasks
+P10#19664	MIX	1	SEP_WANT,CLUTTER	one-time activities appear in the all-habits section; has to search through them; wants them apart
+P12#45613	MIX	0	X	
+A85#2058	MIX	0	X	
+A24#40552	MIX	0	X	
+A13#14736	MIX	1	SEP_WANT	wants to-dos in the habit app as a separate feature
+A10#19806	MIX	0	X	
+A24#15432	MIX	0	X	
+P8#5718	MIX	1	T_PLAN	wants to-dos split "today" and "later"
+A59#15049	MIX	1	SEP+,T_MAN	divides tasks and habits; can move things around
+P61#262	MIX	1	ONE+	habits, appointments, events all in one place
+A10#45093	MIX	0	X	
+A85#2011	MIX	0	X	
+A24#28972	MIX	0	X	
+A86#1180	MIX	0	X	
+A33#932	MIX	0	X	
+A11#5	EXP	0	X	
+A13#6092	EXP	0	SECTIONS	wanted morning/afternoon/evening/all-day in one list, not side-scrolling pages (habits only)
+A13#12249	EXP	1	KIND+	likes that habits and reminders are told apart
+A13#13002	EXP	1	ONE+	daily habits with one-time tasks all in one list
+A13#16379	EXP	1	CLUTTER,SEP+	habits clutter a to-do list; likes them clearly separated (separate apps)
+A13#17181	EXP	1	CLUTTER	mixture of habit tasks and work tasks in one task manager overwhelming
+A18#2010	EXP	1	ONE+,MIX_OWN,LOST	one page with habits and to-dos; adjusting the order to plan the day chronologically; update removed it -> 1 star
+A20#1333	EXP	1	SEP+	moved habits out of daily to-do list into separate app
+A23#1733	EXP	0	X	
+A23#4540	EXP	0	X	
+A24#26879	EXP	0	X	
+A41#576	EXP	1	CLUTTER	habits shouldn't clutter your to-do app
+A48#2627	EXP	1	CLUTTER	many habits cluttered Reminders list
+A5#3133	EXP	0	X	
+A55#1961	EXP	0	X	
+A59#1030	EXP	1	ONE+	tasks and habits in one screen useful
+A59#1955	EXP	1	ONE+	habits and to-do lists on the same page
+A59#4050	EXP	1	KIND+	needed an app that distinguishes habits and tasks
+A59#14696	EXP	1	ONE+	habits and tasks on the same page
+P130#322	EXP	0	X	
+P2#4160	EXP	1	KIND+	can separate one-time tasks, recurring tasks and habits (kinds)
+P2#4749	EXP	1	KIND+	separates one-time tasks and habits
+P2#7839	EXP	1	ONE+	tasks alongside habits; one list for the day
+P2#8000	EXP	1	KIND+	separates habits from one-time tasks
+P2#10397	EXP	1	KIND+	separate habits and tasks
+P2#11946	EXP	0	X	
+P2#12587	EXP	1	ONE+	habits and tasks in one screen
+P24#14421	EXP	0	X	
+P61#276	EXP	1	ONE_WANT	wants habits list and to-do list together in one list or same page
+A65#477	EXP	0	X	
+A85#2265	EXP	0	X	
+P2#4196	EXP	1	ONE+	daily tasks on top of (in addition to) recurring habits
+P2#8533	EXP	0	X	subtasks
+P2#11124	EXP	1	MIX_OWN,MIX_TYPE	wants manual order; pin reminders at top, daily habits after, scheduled dailies, weekly below
+P36#34	EXP	0	X	
+P49#2702	EXP	1	TODO_WANT	wants a daily to-do list for filling spaces between routines
+P55#123	EXP	0	X	
+P84#17735	EXP	0	X	
+N6#2305	EXP	0	X	
+A13#6834	EXP	1	CLUTTER	recurring tasks clutter the task list; moved them to a habit app
+A24#40658	EXP	1	CLUTTER	keeps routine from cluttering to-do list
+A4#18349	EXP	0	X	
+A48#891	EXP	1	CLUTTER	routine without crowding to-do lists
+A23#1487	EXP	0	X	
+P2#2712	EXP	0	X	
+A1#48478	EXP	0	X	
+A1#54671	EXP	0	X	
+A13#13744	EXP	0	SECTIONS	wants anytime habits on the same page as the time-of-day habits (habits only)
+A20#3641	EXP	0	X	
+A23#1380	EXP	0	X	
+A23#4439	EXP	0	X	habits only: wants one screen of what's due today
+A24#37996	EXP	0	X	
+A76#2435	EXP	0	X	
+A86#765	EXP	0	X	
+A86#1309	EXP	0	X	
+P106#170	EXP	0	X	
+P12#23369	EXP	0	X	
+P2#7375	EXP	0	X	
+P2#11125	EXP	0	X	
+P3#3436	EXP	0	X	
+P3#10183	EXP	0	X	
+P3#16335	EXP	0	X	
+P8#1609	EXP	1	ONE+	one-page screen of tasks and habits is clear
+P8#8610	EXP	1	ONE_WANT	wants everything to do today on a single page
+P126#191555	Q2	1	T_MAN	wants to change the order of tasks added
+P84#41458	Q2	1	T_AUTO	wants tasks sortable by due date
+N6#5076	Q2	1	T_AUTO	wants sort by due date (and priority groups)
+P84#46972	Q2	1	T_MAN+	praises reordering tasks and subtasks
+N3#13400	Q2	0	X	notes, not tasks
+N1#11580	Q2	1	T_MAN	reorders in Today; wants the same in Scheduled
+N1#23873	Q2	1	T_PLAN	wants a Tomorrow list to plan
+N1#5878	Q2	1	T_AUTO	wants alphabetical sort back for shopping list
+N1#4358	Q2	1	T_BUG	tomorrow's items mixed into Today; order messy
+N3#3614	Q2	0	X	
+P126#28295	Q2	1	T_MAN	wants to drag and reorder tasks; doesn't want times, but wants an order; looking elsewhere
+N10#3292	Q2	0	X	
+N1#14791	Q2	1	T_AUTO	wants sort by tags
+P126#193414	Q2	1	T_MAN	1 star: list sorted alphabetically instead of the order the user set
+N6#960	Q2	0	LIST_ORDER	order of lists (categories), not tasks
+P97#17568	Q2	0	X	
+N7#11565	Q2	0	X	notes
+N7#12347	Q2	0	X	notes
+P84#2250	Q2	1	DONE_DOWN	likes completed tasks sorted away
+P126#174574	Q2	1	T_MAN	doesn't stay in order
+P84#29883	Q2	1	T_MAN	wants drag and drop
+N1#12527	Q2	0	X	
+N3#28332	Q2	0	X	
+N10#21193	Q2	1	T_MAN	1 star: cannot manually move tasks; creation/alphabetical order "worthless"
+P84#26041	Q2	1	T_MAN+	praises drag-to-reorder
+P97#7524	Q2	0	X	
+N6#1302	Q2	1	T_AUTO,DRAGDATE	date-sorted view; wants drag to move to another date
+P126#155030	Q2	1	T_ADDED	auto-sort by name unwanted; wants order added
+P126#12058	Q2	1	T_AUTO+	likes alphabetical sort
+N6#353	Q2	1	NEWPOS	new task pushes earlier ones down; wants insertion order
+N1#9099	Q2	1	T_MAN	drag and drop broke after update; expects to drag items
+P126#113331	Q2	0	X	
+P126#199981	Q2	1	DONE_DOWN	likes completed tasks sorted into a separate folder
+N10#19855	Q2	0	X	sort feature broken (no detail)
+N1#11406	Q2	1	T_MAN	can't swap the order; inconvenient
+P126#44812	Q2	1	T_AUTO	wants sort-by options
+P126#20553	Q2	1	T_MAN	can't tap and drag tasks to reorder; people need to prioritise manually
+N10#21117	Q2	1	T_AUTO+	likes upcoming tasks grouped by day
+N10#7331	Q2	1	T_MAN	dragging tasks in My Day is fiddly (snaps back) — expects drag to work
+N6#2680	Q2	1	T_AUTO	wants sort by text
+P97#24135	Q2	1	T_MAN	wants to change task order by dragging
+P84#40377	Q2	0	X	
+N6#2745	Q2	0	LIST_ORDER	category order
+N6#415	Q2	1	T_MAN	wants to reorder items in lists, not only add at the end
+N7#42	Q2	0	X	notes
+P126#121083	Q2	0	X	
+N1#4984	Q2	1	T_MAN+	loves drag and drop; wants to place the 'Other' column itself
+P126#202429	Q2	1	T_AUTO+	likes tasks ordered by time from now
+N3#23265	Q2	0	X	notes
+N3#9440	Q2	0	X	notes
+N6#5544	Q2	1	T_MAN+	quick re-ordering and prioritising
+N10#20989	Q2	0	SUB_MAN	subtasks manual sort
+N1#411	Q2	1	T_AUTO	wants alphabetical sort
+P126#87668	Q2	0	X	
+P97#12684	Q2	1	T_MAN	wants to change to-do order to check them in order of work
+N10#21927	Q2	1	T_MAN	1 star: need to move tasks up and down by dragging
+P84#4897	Q2	1	T_MAN+	loves moving tasks easily
+P126#52364	Q2	1	T_MAN	wants manual order to prioritise by own system
+N6#1229	Q2	0	LIST_ORDER	
+P126#47935	Q2	1	T_MAN	1 star: add rearrange-task option
+A85#3282	Q2H	1	T_MAN	still needs a way to re-order tasks
+P8#8098	Q2H	1	T_MAN	rearranging tasks doesn't work consistently
+A59#9437	Q2H	0	X	
+A59#11488	Q2H	1	T_MAN+	tasks easy to drag within a day or to the next day by holding
+A59#12861	Q2H	0	X	
+P2#280	Q2H	1	MIX_OWN,T_MAN	wanted tasks/habits sortable by drag and drop (later added)
+A59#10313	Q2H	1	T_TIME	timed tasks stay in entry order, not time order; inconvenient
+A59#13109	Q2H	0	SUB_MAN	subtasks keep user order
+P8#8821	Q2H	1	T_AUTO	wants sort by difficulty, today, alphabetical
+A59#13344	Q2H	1	T_TIME	home tasks should sort by reminder time, morning first
+P8#3277	Q2H	1	T_AUTO	filter to today / sort to-dos by due date
+P2#11866	Q2H	0	SUB_MAN	manual sort of subtasks instead of alphabetical when no time
+A59#5281	Q2H	1	T_MAN	moving tasks snaps back; needs tasks in a specific order
+P2#26934	Q2H	0	H_MAN	habit list in the order they will be done through the day (habits)
+A59#9188	Q2H	0	X	
+A85#2276	Q2H	1	T_MAN+,KIND+	repeating and one-time tasks kept separate; rearranging is a breeze
+A85#463	Q2H	1	T_MAN	wants to rearrange tasks and to-dos
+P2#18847	Q2H	1	T_MAN,NEWPOS	new task lands above the first; wants to order tasks manually one by one, by hour through the day
+A59#9176	Q2H	0	X	drag to nest
+A59#8837	Q2H	1	T_TIME	timed tasks within a day should auto-sort early to late; now must do by hand
+P2#13182	Q2H	1	T_MAN	wants to re-order tasks rather than entry order
+P2#13549	Q2H	0	H_TIME	habits by importance vs daily order (habits)
+P8#13293	Q2H	1	T_BUG	tasks/habits/dailies jump around on open
+P8#5423	Q2H	1	T_AUTO	alphabetical sort of daily tasks (dailies)
+A59#10439	Q2H	1	T_TIME	wants auto sort by time; now new go to end or start
+A59#1348	Q2H	1	T_AUTO	sort on start screen by time or list
+P8#13187	Q2H	1	T_AUTO	to-dos stuck in added order; due-soon items sit lower; wants priority/deadline
+P2#787	Q2H	1	T_MAN	wants to set the order of tasks
+P2#18132	Q2H	1	T_TIME,T_MAN	order tasks by time, or let me modify the order of urgency
+A85#3089	Q2H	1	T_MAN	switching the order of tasks gets messed up

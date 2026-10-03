@@ -272,7 +272,11 @@ extension View {
     func limitText(_ text: Binding<String>, to limit: Int) -> some View {
         onChange(of: text.wrappedValue) { old, new in
             guard new.count > limit else { return }
-            text.wrappedValue = old.count == limit ? old : String(new.prefix(limit))
+            let kept = old.count == limit ? old : String(new.prefix(limit))
+            // Put back on the next turn, not inside this change. Set in the same turn, the value ends where the field
+            // was last drawn, so SwiftUI sees no change and never redraws the field: typing fast (or a paste) left the
+            // field showing 39 letters while 24 were kept (LongTextUITests, 3 Oct 2026).
+            Task { @MainActor in if text.wrappedValue.count > limit { text.wrappedValue = kept } }
         }
     }
 }
