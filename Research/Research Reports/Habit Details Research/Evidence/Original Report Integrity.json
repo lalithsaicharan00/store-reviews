@@ -1,0 +1,37 @@
+{
+  "author": "Codex",
+  "date": "2026-10-03",
+  "preservation": "Six report/evidence documents copied byte-for-byte; hashes match original files at packaging time. Original evidence directories also copied without changes.",
+  "files": [
+    {
+      "original_repository_path": "Research/Research Reports/Day Structure and Organization/Habit Details \u2014 Information Architecture Research.md",
+      "package_path": "Original Reports/Day Structure and Organization/Habit Details \u2014 Information Architecture Research.md",
+      "sha256": "87cb5534c602e7adb181aa1ce03b52897f58e1e178e971d05fd9452f12190a6d"
+    },
+    {
+      "original_repository_path": "Research/Research Reports/Day Structure and Organization/Habit Details \u2014 Verified Evidence.md",
+      "package_path": "Original Reports/Day Structure and Organization/Habit Details \u2014 Verified Evidence.md",
+      "sha256": "93d1e6d3b65d15fd0d37c7bffa391bf2b575500666d0b1b36180c8bd15b0fe30"
+    },
+    {
+      "original_repository_path": "Research/Research Reports/Day Structure and Organization/Habit History \u2014 Research and Recommended Layout.md",
+      "package_path": "Original Reports/Day Structure and Organization/Habit History \u2014 Research and Recommended Layout.md",
+      "sha256": "f9e7fa954282c17fb28d536ae61c9f7b4e9f93a5ef4ac1f4765b808792e873f1"
+    },
+    {
+      "original_repository_path": "Research/Research Reports/Day Structure and Organization/Habit Notes \u2014 Research and Recommended Experience.md",
+      "package_path": "Original Reports/Day Structure and Organization/Habit Notes \u2014 Research and Recommended Experience.md",
+      "sha256": "aeb887b05d499cf502d43e734889d44d72de0fce4a54deaa990158e157c44d1b"
+    },
+    {
+      "original_repository_path": "Research/Research Reports/Progress and Statistics/Individual Habit Progress \u2014 Research and Recommended Experience.md",
+      "package_path": "Original Reports/Progress and Statistics/Individual Habit Progress \u2014 Research and Recommended Experience.md",
+      "sha256": "62e25aa565c41dc8febea467f9745714cffa1f5a08edb5a8554d355df5ccba75"
+    },
+    {
+      "original_repository_path": "Research/Research Reports/Progress and Statistics/Individual Habit Progress \u2014 Visibility, Comparisons and Milestones.md",
+      "package_path": "Original Reports/Progress and Statistics/Individual Habit Progress \u2014 Visibility, Comparisons and Milestones.md",
+      "sha256": "9df036f63bcc91c2d59d54b8ff9e9d74c0bc9490f898eead5fc5936909061645"
+    }
+  ]
+}

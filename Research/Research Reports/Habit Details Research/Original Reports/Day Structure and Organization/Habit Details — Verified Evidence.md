@@ -1,0 +1,57 @@
+# Habit Details — Verified Evidence
+
+Written by Codex, 3 October 2026. Purposive source verification; ee list prevalence sample kaadu. Original JSONL records read-only. Reviews original language/text lo read chesam; below review identity and retrieval path only.
+
+Selected: 49; found: 49; missing: 0.
+
+| Review ID | App | Date | Rating | Original source |
+|---|---|---|---|---|
+| `0d6ead65-b7e1-430d-a4fe-23776569c1bd` | Me+ Lifestyle Routine | 2023-12-25 | 4 | [JSONL line 101621](</Users/lalith/Desktop/store reviews/Research/Play Store Reviews/4. Me+ Lifestyle Routine/reviews.jsonl:101621>) |
+| `1001797283` | Way of Life - Habit Tracker | 2014-05-31 | 5 | [JSONL line 2468](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:2468>) |
+| `10569299689` | Habit Tracker - Evoday | 2023-11-10 | 4 | [JSONL line 584](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/34. Habit Tracker - Evoday - Daily Streaks Calendar & Goals/reviews.jsonl:584>) |
+| `1070132554` | Way of Life - Habit Tracker | 2014-09-25 | 4 | [JSONL line 6606](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:6606>) |
+| `11346385680` | Goal Streak: Habit Tracker | 2024-06-05 | 5 | [JSONL line 131](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/27. Goal Streak - Habit Tracker - Build a growth mindset, daily/reviews.jsonl:131>) |
+| `11400095925` | Habit Tracker - Evoday | 2024-06-19 | 4 | [JSONL line 356](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/34. Habit Tracker - Evoday - Daily Streaks Calendar & Goals/reviews.jsonl:356>) |
+| `11472660208` | Habitify: Habit Tracker | 2024-07-09 | 4 | [JSONL line 2977](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks/reviews.jsonl:2977>) |
+| `1155362058` | Way of Life - Habit Tracker | 2015-02-21 | 4 | [JSONL line 6457](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:6457>) |
+| `11693755507` | Habit Tracker | 2024-09-06 | 4 | [JSONL line 47811](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/1. Habit Tracker - Goal Tracker & ADHD Planner/reviews.jsonl:47811>) |
+| `11762845723` | Habit Tracker - HabitKit | 2024-09-25 | 5 | [JSONL line 563](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/7. Habit Tracker - HabitKit - Streaks & Accountability/reviews.jsonl:563>) |
+| `11802252737` | MyRoutine: Organize your day | 2024-10-06 | 5 | [JSONL line 939](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/18. MyRoutine - Organize your day - Built around your real life/reviews.jsonl:939>) |
+| `1188558106` | Way of Life - Habit Tracker | 2015-04-26 | 3 | [JSONL line 4171](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:4171>) |
+| `12010228356` | Me+ Lifestyle Routine | 2024-11-30 | 4 | [JSONL line 2541](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker/reviews.jsonl:2541>) |
+| `12024794472` | MyRoutine: Organize your day | 2024-12-04 | 5 | [JSONL line 862](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/18. MyRoutine - Organize your day - Built around your real life/reviews.jsonl:862>) |
+| `12729490999` | Days Since: Quit Habit Tracker | 2025-06-03 | 5 | [JSONL line 4292](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/3. Days Since - Quit Habit Tracker - Sober Streak Day Counter/reviews.jsonl:4292>) |
+| `13025306978` | Strides: Habit Tracker + Goals | 2025-08-17 | 2 | [JSONL line 1929](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist/reviews.jsonl:1929>) |
+| `13280430575` | Habit Hub: Routine Tracker | 2025-10-18 | 2 | [JSONL line 234](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/43. Habit Hub - Routine Tracker - Daily Todo, Goals & Schedule/reviews.jsonl:234>) |
+| `1330827919` | Way of Life - Habit Tracker | 2016-02-10 | 5 | [JSONL line 3198](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:3198>) |
+| `13309723170` | MyRoutine: Organize your day | 2025-10-24 | 5 | [JSONL line 577](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/18. MyRoutine - Organize your day - Built around your real life/reviews.jsonl:577>) |
+| `1341847030` | Way of Life - Habit Tracker | 2016-03-03 | 5 | [JSONL line 6111](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:6111>) |
+| `13665455992` | Habitify: Habit Tracker | 2026-01-23 | 2 | [JSONL line 3184](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks/reviews.jsonl:3184>) |
+| `13689426510` | Finch: Self-Care Pet | 2026-01-29 | 3 | [JSONL line 3473](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/10. Finch - Self-Care Pet - Daily Journal & Habit Tracker/reviews.jsonl:3473>) |
+| `13727064808` | Way of Life - Habit Tracker | 2026-02-08 | 4 | [JSONL line 4760](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:4760>) |
+| `13775876385` | Way of Life - Habit Tracker | 2026-02-22 | 5 | [JSONL line 4701](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:4701>) |
+| `1504131990` | Way of Life - Habit Tracker | 2016-12-18 | 3 | [JSONL line 1125](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:1125>) |
+| `1539540172` | Habit-Bull: Daily Goal Planner | 2017-02-08 | 5 | [JSONL line 1649](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/55. Habit-Bull - Daily Goal Planner - Best To Do List Streak Tracker/reviews.jsonl:1649>) |
+| `1946127158` | Streaks | 2017-11-24 | 1 | [JSONL line 5483](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/23. Streaks - The habit-forming to-do list/reviews.jsonl:5483>) |
+| `2049264808` | Productive - Habit Tracker | 2018-01-02 | 4 | [JSONL line 6451](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/13. Productive - Habit Tracker - Daily Routine & Goals Planner/reviews.jsonl:6451>) |
+| `2085529972` | Productive - Habit Tracker | 2018-01-13 | 5 | [JSONL line 16184](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/13. Productive - Habit Tracker - Daily Routine & Goals Planner/reviews.jsonl:16184>) |
+| `2387610106` | Way of Life - Habit Tracker | 2018-04-05 | 4 | [JSONL line 5523](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:5523>) |
+| `248c15c6-ba3b-463d-b794-e77df6d0abcb` | Habitify: Habit Tracker | 2022-10-07 | 3 | [JSONL line 638](</Users/lalith/Desktop/store reviews/Research/Play Store Reviews/37. Habitify - Habit Tracker/reviews.jsonl:638>) |
+| `3520578395` | Way of Life - Habit Tracker | 2018-12-11 | 5 | [JSONL line 129](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:129>) |
+| `3901553792` | Do Habits: Get It Done | 2019-03-19 | 3 | [JSONL line 4882](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/31. Do Habits - Get It Done - Daily Routine & Goal Planner/reviews.jsonl:4882>) |
+| `4340672521` | HabitMinder • Habit Tracker | 2019-06-19 | 5 | [JSONL line 783](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/53. HabitMinder • Habit Tracker - Daily Reminders & Routines/reviews.jsonl:783>) |
+| `5402526794` | Productive - Habit Tracker | 2020-01-14 | 4 | [JSONL line 13494](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/13. Productive - Habit Tracker - Daily Routine & Goals Planner/reviews.jsonl:13494>) |
+| `5621438686` | Way of Life - Habit Tracker | 2020-03-06 | 2 | [JSONL line 5240](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:5240>) |
+| `5995182767` | Way of Life - Habit Tracker | 2020-05-26 | 5 | [JSONL line 4326](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:4326>) |
+| `718390142` | Way of Life - Habit Tracker | 2012-12-29 | 5 | [JSONL line 3667](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:3667>) |
+| `7654198659` | Fabulous: Daily Habit Tracker | 2021-08-04 | 1 | [JSONL line 34667](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help/reviews.jsonl:34667>) |
+| `770122833` | Way of Life - Habit Tracker | 2013-03-15 | 4 | [JSONL line 7040](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:7040>) |
+| `8114041656` | Habit Hub: Routine Tracker | 2021-12-10 | 3 | [JSONL line 138](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/43. Habit Hub - Routine Tracker - Daily Todo, Goals & Schedule/reviews.jsonl:138>) |
+| `837839996` | Way of Life - Habit Tracker | 2013-07-17 | 5 | [JSONL line 6918](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl:6918>) |
+| `8e8f85ab-ceb8-4077-9bdf-8a975d61879e` | Loop Habit Tracker | 2021-01-06 | 5 | [JSONL line 8540](</Users/lalith/Desktop/store reviews/Research/Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl:8540>) |
+| `9070770527` | Habit Tracker | 2022-09-10 | 4 | [JSONL line 50052](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/1. Habit Tracker - Goal Tracker & ADHD Planner/reviews.jsonl:50052>) |
+| `9562235582` | Habit Tracker - DayStamp | 2023-01-30 | 4 | [JSONL line 13](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/57. Habit Tracker - DayStamp - Daily Routine, Streak & Widget/reviews.jsonl:13>) |
+| `9774376446` | MyRoutine: Organize your day | 2023-04-01 | 5 | [JSONL line 1414](</Users/lalith/Desktop/store reviews/Research/App Store Reviews/18. MyRoutine - Organize your day - Built around your real life/reviews.jsonl:1414>) |
+| `cece2a48-af57-458b-b27f-0862d9a3ec10` | everyday Habit Tracker | 2024-06-18 | 4 | [JSONL line 217](</Users/lalith/Desktop/store reviews/Research/Play Store Reviews/70. everyday Habit Tracker/reviews.jsonl:217>) |
+| `d116ca92-55ee-4566-b91b-260f02dfb4d0` | Habit Tracker | 2019-02-11 | 4 | [JSONL line 6514](</Users/lalith/Desktop/store reviews/Research/Play Store Reviews/24. Habit Tracker/reviews.jsonl:6514>) |
+| `e20a0188-4949-445f-97b3-c71778990840` | Habit Tracker: Routine & Goals | 2023-12-12 | 4 | [JSONL line 3583](</Users/lalith/Desktop/store reviews/Research/Play Store Reviews/30. Habit Tracker - Routine & Goals/reviews.jsonl:3583>) |

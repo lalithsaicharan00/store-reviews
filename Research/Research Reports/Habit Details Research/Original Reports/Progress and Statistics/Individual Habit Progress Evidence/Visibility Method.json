@@ -1,0 +1,19 @@
+{
+  "author": "Codex",
+  "date": "2026-10-03",
+  "scope": "Focused follow-up on core visibility, previous-period comparison and milestones",
+  "read": 20,
+  "re_read_from_previous_set": 9,
+  "further_read": 11,
+  "source_verified": 20,
+  "date_span": [
+    "2016-08-23",
+    "2025-06-03"
+  ],
+  "selection": "Purposive requests and counter-evidence; two mood requests are outside scope. Not a preference census.",
+  "limitations": [
+    "No usability test",
+    "Core-content ordering is a recommendation",
+    "Broad PAT code is not previous-period comparison demand"
+  ]
+}

@@ -1,0 +1,1416 @@
+{
+  "summary": {
+    "as_of": "2026-09-30 end of habit day",
+    "week": {
+      "recorded_minutes": 45,
+      "goal_met": 2,
+      "eligible_ended": 2,
+      "unrecorded": 0
+    },
+    "previous_week_same_days": {
+      "recorded_minutes": 55,
+      "goal_met": 2,
+      "eligible_ended": 3,
+      "unrecorded": 1
+    },
+    "previous_week_full": {
+      "recorded_minutes": 130,
+      "goal_met": 5,
+      "eligible_ended": 7,
+      "unrecorded": 1
+    },
+    "month": {
+      "recorded_minutes": 565,
+      "goal_met": 22,
+      "eligible_ended": 27,
+      "unrecorded": 2
+    },
+    "previous_month": {
+      "recorded_minutes": 600,
+      "goal_met": 23,
+      "eligible_ended": 28,
+      "unrecorded": 3
+    },
+    "overall": {
+      "recorded_minutes": 5085,
+      "goal_met": 196,
+      "eligible_ended": 249,
+      "unrecorded": 23
+    },
+    "streak": {
+      "current": 5,
+      "best": 10,
+      "first7": "2026-01-08",
+      "next_unreached": 14,
+      "remaining": 9,
+      "policy": "skip/pause excluded; other non-met eligible days break run"
+    }
+  },
+  "daily": [
+    {
+      "day": "2026-01-01",
+      "state": "Paused",
+      "minutes": 0
+    },
+    {
+      "day": "2026-01-02",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-01-03",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-01-04",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-01-05",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-01-06",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-01-07",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-01-08",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-01-09",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-01-10",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-01-11",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-01-12",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-01-13",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-01-14",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-01-15",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-01-16",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-01-17",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-01-18",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-01-19",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-01-20",
+      "state": "Zero",
+      "minutes": 0
+    },
+    {
+      "day": "2026-01-21",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-01-22",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-01-23",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-01-24",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-01-25",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-01-26",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-01-27",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-01-28",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-01-29",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-01-30",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-01-31",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-02-01",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-02-02",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-02-03",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-02-04",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-02-05",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-02-06",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-02-07",
+      "state": "Paused",
+      "minutes": 0
+    },
+    {
+      "day": "2026-02-08",
+      "state": "Zero",
+      "minutes": 0
+    },
+    {
+      "day": "2026-02-09",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-02-10",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-02-11",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-02-12",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-02-13",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-02-14",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-02-15",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-02-16",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-02-17",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-02-18",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-02-19",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-02-20",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-02-21",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-02-22",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-02-23",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-02-24",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-02-25",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-02-26",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-02-27",
+      "state": "Zero",
+      "minutes": 0
+    },
+    {
+      "day": "2026-02-28",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-03-01",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-03-02",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-03-03",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-03-04",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-03-05",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-03-06",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-03-07",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-03-08",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-03-09",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-03-10",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-03-11",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-03-12",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-03-13",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-03-14",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-03-15",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-03-16",
+      "state": "Paused",
+      "minutes": 0
+    },
+    {
+      "day": "2026-03-17",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-03-18",
+      "state": "Zero",
+      "minutes": 0
+    },
+    {
+      "day": "2026-03-19",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-03-20",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-03-21",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-03-22",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-03-23",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-03-24",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-03-25",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-03-26",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-03-27",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-03-28",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-03-29",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-03-30",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-03-31",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-04-01",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-04-02",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-04-03",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-04-04",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-04-05",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-04-06",
+      "state": "Zero",
+      "minutes": 0
+    },
+    {
+      "day": "2026-04-07",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-04-08",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-04-09",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-04-10",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-04-11",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-04-12",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-04-13",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-04-14",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-04-15",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-04-16",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-04-17",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-04-18",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-04-19",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-04-20",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-04-21",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-04-22",
+      "state": "Paused",
+      "minutes": 0
+    },
+    {
+      "day": "2026-04-23",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-04-24",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-04-25",
+      "state": "Zero",
+      "minutes": 0
+    },
+    {
+      "day": "2026-04-26",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-04-27",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-04-28",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-04-29",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-04-30",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-05-01",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-05-02",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-05-03",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-05-04",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-05-05",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-05-06",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-05-07",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-05-08",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-05-09",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-05-10",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-05-11",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-05-12",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-05-13",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-05-14",
+      "state": "Zero",
+      "minutes": 0
+    },
+    {
+      "day": "2026-05-15",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-05-16",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-05-17",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-05-18",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-05-19",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-05-20",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-05-21",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-05-22",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-05-23",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-05-24",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-05-25",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-05-26",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-05-27",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-05-28",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-05-29",
+      "state": "Paused",
+      "minutes": 0
+    },
+    {
+      "day": "2026-05-30",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-05-31",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-06-01",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-06-02",
+      "state": "Zero",
+      "minutes": 0
+    },
+    {
+      "day": "2026-06-03",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-06-04",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-06-05",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-06-06",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-06-07",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-06-08",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-06-09",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-06-10",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-06-11",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-06-12",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-06-13",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-06-14",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-06-15",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-06-16",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-06-17",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-06-18",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-06-19",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-06-20",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-06-21",
+      "state": "Zero",
+      "minutes": 0
+    },
+    {
+      "day": "2026-06-22",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-06-23",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-06-24",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-06-25",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-06-26",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-06-27",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-06-28",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-06-29",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-06-30",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-07-01",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-07-02",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-07-03",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-07-04",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-07-05",
+      "state": "Paused",
+      "minutes": 0
+    },
+    {
+      "day": "2026-07-06",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-07-07",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-07-08",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-07-09",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-07-10",
+      "state": "Zero",
+      "minutes": 0
+    },
+    {
+      "day": "2026-07-11",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-07-12",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-07-13",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-07-14",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-07-15",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-07-16",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-07-17",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-07-18",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-07-19",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-07-20",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-07-21",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-07-22",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-07-23",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-07-24",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-07-25",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-07-26",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-07-27",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-07-28",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-07-29",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-07-30",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-07-31",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-08-01",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-08-02",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-08-03",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-08-04",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-08-05",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-08-06",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-08-07",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-08-08",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-08-09",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-08-10",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-08-11",
+      "state": "Paused",
+      "minutes": 0
+    },
+    {
+      "day": "2026-08-12",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-08-13",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-08-14",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-08-15",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-08-16",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-08-17",
+      "state": "Zero",
+      "minutes": 0
+    },
+    {
+      "day": "2026-08-18",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-08-19",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-08-20",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-08-21",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-08-22",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-08-23",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-08-24",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-08-25",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-08-26",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-08-27",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-08-28",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-08-29",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-08-30",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-08-31",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-09-01",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-09-02",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-09-03",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-09-04",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-09-05",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-09-06",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-09-07",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-09-08",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-09-09",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-09-10",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-09-11",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-09-12",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-09-13",
+      "state": "Skipped",
+      "minutes": 0
+    },
+    {
+      "day": "2026-09-14",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-09-15",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-09-16",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-09-17",
+      "state": "Paused",
+      "minutes": 0
+    },
+    {
+      "day": "2026-09-18",
+      "state": "Partial2",
+      "minutes": 10
+    },
+    {
+      "day": "2026-09-19",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-09-20",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-09-21",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-09-22",
+      "state": "Unrecorded",
+      "minutes": 0
+    },
+    {
+      "day": "2026-09-23",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-09-24",
+      "state": "Zero",
+      "minutes": 0
+    },
+    {
+      "day": "2026-09-25",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-09-26",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-09-27",
+      "state": "More",
+      "minutes": 30
+    },
+    {
+      "day": "2026-09-28",
+      "state": "Met",
+      "minutes": 20
+    },
+    {
+      "day": "2026-09-29",
+      "state": "More",
+      "minutes": 25
+    },
+    {
+      "day": "2026-09-30",
+      "state": "Skipped",
+      "minutes": 0
+    }
+  ]
+}
