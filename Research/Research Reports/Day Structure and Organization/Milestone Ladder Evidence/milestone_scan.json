@@ -1,0 +1,984 @@
+{
+ "reviews": 1238784,
+ "keyword_reviews": 10054,
+ "numbers_with_streak_words": [
+  [
+   "3 day",
+   135
+  ],
+  [
+   "7 day",
+   97
+  ],
+  [
+   "30 day",
+   86
+  ],
+  [
+   "5 day",
+   78
+  ],
+  [
+   "2 day",
+   70
+  ],
+  [
+   "100 day",
+   59
+  ],
+  [
+   "4 day",
+   52
+  ],
+  [
+   "2 year",
+   51
+  ],
+  [
+   "10 day",
+   42
+  ],
+  [
+   "3 year",
+   41
+  ],
+  [
+   "3 month",
+   40
+  ],
+  [
+   "2 month",
+   38
+  ],
+  [
+   "2 week",
+   36
+  ],
+  [
+   "1 day",
+   34
+  ],
+  [
+   "90 day",
+   30
+  ],
+  [
+   "6 month",
+   29
+  ],
+  [
+   "6 day",
+   27
+  ],
+  [
+   "200 day",
+   26
+  ],
+  [
+   "20 day",
+   26
+  ],
+  [
+   "1 year",
+   25
+  ],
+  [
+   "21 day",
+   22
+  ],
+  [
+   "14 day",
+   21
+  ],
+  [
+   "50 day",
+   19
+  ],
+  [
+   "300 day",
+   16
+  ],
+  [
+   "1 week",
+   15
+  ],
+  [
+   "1 month",
+   15
+  ],
+  [
+   "4 month",
+   15
+  ],
+  [
+   "8 day",
+   14
+  ],
+  [
+   "4 year",
+   14
+  ],
+  [
+   "5 year",
+   13
+  ],
+  [
+   "25 day",
+   13
+  ],
+  [
+   "365 day",
+   13
+  ],
+  [
+   "3 week",
+   13
+  ],
+  [
+   "40 day",
+   12
+  ],
+  [
+   "70 day",
+   12
+  ],
+  [
+   "15 day",
+   11
+  ],
+  [
+   "500 day",
+   10
+  ],
+  [
+   "5 month",
+   10
+  ],
+  [
+   "32 day",
+   9
+  ],
+  [
+   "45 day",
+   9
+  ],
+  [
+   "60 day",
+   9
+  ],
+  [
+   "66 day",
+   9
+  ],
+  [
+   "13 day",
+   9
+  ],
+  [
+   "11 day",
+   9
+  ],
+  [
+   "31 day",
+   8
+  ],
+  [
+   "9 day",
+   8
+  ],
+  [
+   "9 month",
+   8
+  ],
+  [
+   "80 day",
+   8
+  ],
+  [
+   "8 month",
+   8
+  ],
+  [
+   "10 year",
+   7
+  ],
+  [
+   "1000 day",
+   7
+  ],
+  [
+   "15 year",
+   7
+  ],
+  [
+   "18 month",
+   7
+  ],
+  [
+   "600 day",
+   6
+  ],
+  [
+   "28 day",
+   6
+  ],
+  [
+   "7 month",
+   6
+  ],
+  [
+   "109 day",
+   6
+  ],
+  [
+   "75 day",
+   6
+  ],
+  [
+   "400 day",
+   6
+  ],
+  [
+   "22 day",
+   6
+  ]
+ ],
+ "numbers_with_milestone_words": [
+  [
+   "7 day",
+   18
+  ],
+  [
+   "30 day",
+   17
+  ],
+  [
+   "2 month",
+   12
+  ],
+  [
+   "2 year",
+   12
+  ],
+  [
+   "3 day",
+   11
+  ],
+  [
+   "3 month",
+   10
+  ],
+  [
+   "5 day",
+   9
+  ],
+  [
+   "4 day",
+   8
+  ],
+  [
+   "2 week",
+   8
+  ],
+  [
+   "2 day",
+   8
+  ],
+  [
+   "1 month",
+   8
+  ],
+  [
+   "100 day",
+   8
+  ],
+  [
+   "10 day",
+   7
+  ],
+  [
+   "90 day",
+   6
+  ],
+  [
+   "6 month",
+   6
+  ],
+  [
+   "21 day",
+   6
+  ],
+  [
+   "1 week",
+   5
+  ],
+  [
+   "20 day",
+   5
+  ],
+  [
+   "3 year",
+   4
+  ],
+  [
+   "5 year",
+   4
+  ],
+  [
+   "12 month",
+   4
+  ],
+  [
+   "14 day",
+   4
+  ],
+  [
+   "1 year",
+   3
+  ],
+  [
+   "50 day",
+   3
+  ],
+  [
+   "18 month",
+   3
+  ],
+  [
+   "1 day",
+   3
+  ],
+  [
+   "66 day",
+   3
+  ],
+  [
+   "199 day",
+   2
+  ],
+  [
+   "45 day",
+   2
+  ],
+  [
+   "6 day",
+   2
+  ],
+  [
+   "365 day",
+   2
+  ],
+  [
+   "126 day",
+   2
+  ],
+  [
+   "15 day",
+   2
+  ],
+  [
+   "5 month",
+   2
+  ],
+  [
+   "40 day",
+   1
+  ],
+  [
+   "32 day",
+   1
+  ],
+  [
+   "9 day",
+   1
+  ],
+  [
+   "27 year",
+   1
+  ],
+  [
+   "137 day",
+   1
+  ],
+  [
+   "562 day",
+   1
+  ],
+  [
+   "11 year",
+   1
+  ],
+  [
+   "300 day",
+   1
+  ],
+  [
+   "9 month",
+   1
+  ],
+  [
+   "9 week",
+   1
+  ],
+  [
+   "75 day",
+   1
+  ],
+  [
+   "80 day",
+   1
+  ],
+  [
+   "18 year",
+   1
+  ],
+  [
+   "8 month",
+   1
+  ],
+  [
+   "8 week",
+   1
+  ],
+  [
+   "20 year",
+   1
+  ],
+  [
+   "4 year",
+   1
+  ],
+  [
+   "12 year",
+   1
+  ],
+  [
+   "145 day",
+   1
+  ],
+  [
+   "556 day",
+   1
+  ],
+  [
+   "92 day",
+   1
+  ],
+  [
+   "37 day",
+   1
+  ],
+  [
+   "14 month",
+   1
+  ],
+  [
+   "303 day",
+   1
+  ],
+  [
+   "123 day",
+   1
+  ],
+  [
+   "25 day",
+   1
+  ]
+ ],
+ "totals_with_milestone_words": [
+  [
+   3,
+   9
+  ],
+  [
+   5,
+   5
+  ],
+  [
+   4,
+   4
+  ],
+  [
+   6,
+   4
+  ],
+  [
+   24,
+   3
+  ],
+  [
+   10,
+   2
+  ],
+  [
+   15,
+   1
+  ],
+  [
+   21,
+   1
+  ],
+  [
+   50,
+   1
+  ],
+  [
+   45,
+   1
+  ]
+ ],
+ "display": {
+  "collection/list of badges": {
+   "reviews": 11,
+   "mean_stars": 4.27
+  },
+  "see what is next / progress to next": {
+   "reviews": 59,
+   "mean_stars": 4.05
+  },
+  "reached ones kept/saved": {
+   "reviews": 24,
+   "mean_stars": 3.62
+  },
+  "beautiful/nice design of badges": {
+   "reviews": 3,
+   "mean_stars": 3.67
+  },
+  "childish/gamified/annoying": {
+   "reviews": 102,
+   "mean_stars": 3.32
+  },
+  "share milestone": {
+   "reviews": 6,
+   "mean_stars": 4.83
+  },
+  "total/lifetime survives a break": {
+   "reviews": 18,
+   "mean_stars": 4.44
+  }
+ },
+ "examples": {
+  "see what is next / progress to next": [
+   [
+    "Habitify: Habit Tracker",
+    4,
+    "3279596488",
+    "Good The 3 free habits are enough to tackle at once. Good app, would be 5 stars if it had facility to go back and edit achievement from previous days"
+   ],
+   [
+    "Habitify: Habit Tracker",
+    2,
+    "11976954207",
+    "Not adapted for apple watch In the apple whatch when i selected to show the habits by current time of day or a specific area created in the widgets, the moment i tap to get in the app it doesnt show me that specific area, it takes me the general screen where there is all the divisions for the habits"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    4,
+    "11673920771",
+    "Certainly made a difference I’ve been using this app for 9 days now and I absolutely love it. I am 27 years old and suffer with chronic nerve pain which is worsened by any movement so, ofcourse, it’s easy for me to want to avoid moving altogether. My pain is so intense that I live on morphine and, b"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    2,
+    "14263816049",
+    "I’m Done With This App It runs slow on my iPhone 5s which is weird because Geometry Dash a game that looks better in graphics can run really well on my iPhone and this is mainly just a check list app and I just realized I can save my time and storage (because my iPhone is 16GB which is too low but I"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    4,
+    "13856381963",
+    "I love my mango I thought this was going to be one of those free to download pay to use but is is completely free unless you want to upgrade this helps me stay organized eat healthy and stay active this changed my life and I will never be the same without it. Only thing I would change is that there "
+   ],
+   [
+    "Finch: Self-Care Pet",
+    4,
+    "12023590128",
+    "IT WORKS!!! *But needs a couple tweaks* I have only had this app for ONE day and it has helped me accomplish EVERYTHING! My ADHD is severe, even with medication. I was losing hope and have felt so overwhelmed non-stop. But this is a game changer.   I want to add a couple things that would take this "
+   ],
+   [
+    "Finch: Self-Care Pet",
+    5,
+    "10080295566",
+    "Amazing. This app is amazing. It makes you feel happy and peaceful. It helps me with my goals and processing my hard days. I have severe ptsd, ocd, depression and anxiety. It doesn’t fix them by any means but it brings me a bit of peace and relief. It also helps me keep on track with some goals! The"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    4,
+    "10027898598",
+    "Charming, but not for kids! Salutations! If your looking for a self-care app, this is the way to go. Finch is SO cute and there are so many ways this app is amazing and it has so much variety! I use this app alongside self-wellness doctor appointments. I’m not going give you many details about my pr"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    5,
+    "9902895784",
+    "I love this app This app is literally so cute and good for your health, it motivates you to get out of bed, drink water, and many other stuff!! you can also customize your finch pet with clothe. The way the app motivates you is by making you do simple easy task and your pet gets to go on a adventure"
+   ],
+   [
+    "Habit Tracker",
+    5,
+    "9668611235",
+    "Best Habit App Ever Just what you need to track habits, no more, no less. Highly customizable in how you set up the habits but the interface is so simple that it takes 2 seconds to check it off and even if I forget to check it off one day, it’s easy to go back and do so. Thanks to this app, I have h"
+   ],
+   [
+    "Habit Tracker",
+    5,
+    "11109879531",
+    "Very good app, suggestion I have been using this app for quite some time and its really good ! Maybe you can add a challenge section, where people can create their goals or select preset goals like : Study X hour this week or complete X workout. So that progress toward one habit is also taken in acc"
+   ],
+   [
+    "Productive - Habit Tracker",
+    5,
+    "11025723055",
+    "Well-Done, developers! I tried a few of the habit-tracking apps, and really like this one enough to go past the trial session and pay the company for the 1 year license.  I have 30-ish tiny habits I want to do every day (or weekly or monthly), so this app is NOT limited to 3-6 like a few other apps "
+   ]
+  ],
+  "childish/gamified/annoying": [
+   [
+    "Finch: Self-Care Pet",
+    5,
+    "13473897738",
+    "The only app I can commit to using I have adhd and this app helps me commit to a daily routine better than anything I’ve tried in the past. It gamifies to-do lists but in a way that’s actually enjoyable, not cumbersome, and shame/guilt-free (the pet doesn’t shame you for missing milestones or neglec"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    5,
+    "11809866895",
+    "THE BEST!!! Finch is SUCH an awesome app, it’s good for all ages, it’s cute, and it makes you actually WANT to do stuff because there’s rewards. There are SO MANY amazing features, but since I can’t list them all, I’ll just say a few of my favourites. (I will definitely forget some but oh well.) Fri"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    5,
+    "8665045106",
+    "Fantastic App I love the gamification of self care. There’s a touch of nostalgia for the 90s kid in me who loved my tamagotchi like crazy.   Also, one of the easier apps I’ve used to make goals, track them easily, and feel like I’m keeping up with them.   So many wonderful things woven into one: cop"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    5,
+    "12178589289",
+    "It feels silly but actually makes a difference The idea of playing a game to get things done. Well I kinda dismissed it as childish and silly. When I first started I hid the notifications cringing as the little motivational prompts. However I’m now on a 32 day streak. It gives me a little boost of d"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    5,
+    "9506174110",
+    "the best way to take care of yourself when nothing seems to be worth doing i&#39;m clinically depressed. taking care of myself on even the most basic of levels can get hard very frequently. gamification helps sometimes. but what this app does that sets it apart from my usual methods to get things do"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    2,
+    "14263816049",
+    "I’m Done With This App It runs slow on my iPhone 5s which is weird because Geometry Dash a game that looks better in graphics can run really well on my iPhone and this is mainly just a check list app and I just realized I can save my time and storage (because my iPhone is 16GB which is too low but I"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    4,
+    "13619815550",
+    "Love it but could use some improvement I had this app years ago and it was so so helpful. When I recently downloaded the app again, I thought I would be able to access my precious birb I spent over 3 years with. Sadly I didn’t realize it doesn’t automatically save data like many apps do. I had to st"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    4,
+    "13615758163",
+    "Feature Request: option to turn off rewards or milestones for consistent progress in self-care areas Finch is a fun interface to check off habits that I want to incorporate into my day-to-day.   At this point I find that I have so many habits logged in the app that I accomplish each day, I am accumu"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    1,
+    "12809793791",
+    "I’m still going to use the app but I can’t with the devs I loved this app. I still do. I’ve used it almost 300 days straight.   But they caved.   The devs seem to be removing all of the new features because they’re caving to people who need their hands held to tie their shoes.   Stop caving to those"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    1,
+    "12778041860",
+    "Without Journey Tracking the App has lost its purpose. They removed journeys which were intended to track long term goals or habits over a longer period of a time for a system that only tracks for the week and then restarts your progress.  It’s a depressing system that is less focused on self care a"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    2,
+    "12717371857",
+    "Claim, Claim, Claim is Lame, Lame, Lame This app is all right I guess. I’m not miraculously healed from all my probs but it does help. The thing that chaps my hide is when you go to claim items from the Quests tabs. You have to claim every item at least three times, once to claim it, then the chest "
+   ],
+   [
+    "Finch: Self-Care Pet",
+    3,
+    "12592541646",
+    "This app misses the mark, it could be so much better. Most users want their lives to change, not the outfit on a penguin. The app functions likes its set up for toddlers, not successful thriving adults. Finch has invested a lot of time and money into developing an app that features in game events, n"
+   ]
+  ],
+  "reached ones kept/saved": [
+   [
+    "Finch: Self-Care Pet",
+    5,
+    "13901453722",
+    "Loved it for a year Loved it so far but since the last update it won’t find the right day which is just frustrating and doesn’t fill the purpose anymore. Goals &amp; daily achievements just disappear every time I close the app. Please fix it."
+   ],
+   [
+    "Finch: Self-Care Pet",
+    4,
+    "14299934656",
+    "Why are long term goals & milestones disappearing It is really disappointing that long term goals and milestones are being taken away. This app has been awesome for me and clients and only 1 of 2 apps I actually recommend to my clients-all adults with ADHD, like myself. The daily tasks are great AND"
+   ],
+   [
+    "Productive - Habit Tracker",
+    3,
+    "1605944675",
+    "badge bug Great app, however, there is a bug where the badge disappears on the app icon despite remaining items. Tried restarting phone and restarting app, however, bug still present."
+   ],
+   [
+    "Productive - Habit Tracker",
+    2,
+    "5313175795",
+    "App good, support terrible I like the app functions and design - it offers exactly what I need. However, almost every update messes with my habit settings somehow (e.g. old and new habits are not showing up in daily schedule, habits stats for previous achievements are reset etc). Support team only a"
+   ],
+   [
+    "Productive - Habit Tracker",
+    4,
+    "1608424969",
+    "A bug The icon badges may disappear some time when back to the home screen."
+   ],
+   [
+    "Productive - Habit Tracker",
+    3,
+    "5762593522",
+    "Badge icon With this new update I lost my badge number count for my habits"
+   ],
+   [
+    "Productive - Habit Tracker",
+    1,
+    "3141816014",
+    "Badge icons gone! I used to love Productive, but now the badges (red circles with numbers telling me how many habits I have due) have stopped working! Without that feature it loses a lot of the usefulness that I originally purchased the app for. Super bummed, since this app used to be perfect for me"
+   ],
+   [
+    "Productive - Habit Tracker",
+    4,
+    "1638795553",
+    "Nice app, but could be better Wow, I just got his yesterday and it&#39;s already helping me form some habits! I really like it so far and I&#39;ll likely buy the full version in a couple weeks if the app helps me. I like the overall design and how it doesn&#39;t overwhelm you with all of your tasks "
+   ],
+   [
+    "Productive - Habit Tracker",
+    4,
+    "1623216823",
+    "Great app, badges need fixing This app is fantastic. Minimal design. Easy to use. Fast to setup a habit and check it off. A great way to see what&#39;s due when and in what order. However, there&#39;s a bug with the badge icons so that sometimes after you open the app, the badge icon with the number"
+   ],
+   [
+    "Productive - Habit Tracker",
+    3,
+    "1511631290",
+    "Badge icon keeps disappearing I like the app but the number on the badge icon keeps disappearing. I have 4 items on my evening todo list, it&#39;s 7:20pm, when I exit the app the badge icon briefly shows a number 4 before disappearing. I therefore have no idea how many outstanding tasks I have unles"
+   ],
+   [
+    "Awesome Habits: Habit Tracker",
+    5,
+    "8435023786",
+    "Best of 2 dozen apps I’ve tried I’ve tried maybe 2 dozen habit-tracking apps and this is probably the best one. Before this I was using Habit, which is a close contender, but their goal data tracking is confusing and contradictory, especially when skipping goals.   That said, here are some things th"
+   ],
+   [
+    "Fabulous: Daily Habit Tracker",
+    3,
+    "4538876386",
+    "some bugs I just started to use the app, super excited! however, I noticed a couple of bugs I want to report: 1) badge icon won’t disappear from the app logo (I checked all the tasks and have no clue how to get rid of it 2) if you are in Manage Subscriptions page (Sphere tab) you can’t go back from "
+   ]
+  ],
+  "share milestone": [
+   [
+    "Finch: Self-Care Pet",
+    5,
+    "13414641698",
+    "Great app I love this app! It has helped me to build routines, reflect on how I am feeling and share achievements with my friends who use the app. I would like to see the app allow to purchase items you want from the catalog instead of waiting through the daily items. Like you order and it will be t"
+   ],
+   [
+    "Habit Tracker",
+    5,
+    "10971798131",
+    "Habit I’ve been using this habit-tracking app for a few months now, and it has significantly impacted my daily routines and overall productivity. Here’s why I recommend it:  \t•\tUser-Friendly Interface: The app boasts a clean, intuitive interface that makes it easy to navigate and manage my habits. A"
+   ],
+   [
+    "Daily Habits - Habit Tracker",
+    4,
+    "1912367535",
+    "Not perfect, but it's versatile I like many of the features the creator put into this app. Being able to share progress is kinda cool, and the actual connection process works easily. I wish habit notifications were a little louder and more persistent in the lock screen. The way it is, I always worry"
+   ],
+   [
+    "Days Since: Quit Habit Tracker",
+    5,
+    "13803790668",
+    "Helpful It is helpful and encouraging to see my progress quickly and to be able to share my milestones with my loved ones."
+   ],
+   [
+    "Days Since: Quit Habit Tracker",
+    5,
+    "13147527588",
+    "Sleek Design and Great Functionality The app is pretty straightforward and has a nice, clean design to share milestones. It helps me keep track of things I’ve started as far as projects, personal goals, and even keeping up with medication start dates. Time goes by so quickly, that it’s easy to forge"
+   ],
+   [
+    "Atoms - from Atomic Habits",
+    5,
+    "11715418924",
+    "I really like it, but It doesn’t have a habit scorecard feature.  That wouldnbe a cool feature to have, because right now its just an implementation intention app. Also it should somehow allow you to integrate beliefes.  I have made a list of what the habit scorecard festure should have (looked arou"
+   ]
+  ],
+  "total/lifetime survives a break": [
+   [
+    "Finch: Self-Care Pet",
+    1,
+    "12596071096",
+    "Developers Not Listening to Users I’ve been absolutely loving this app for nine months now, and a large part of that is the Journey feature, which is being forcibly removed in mid-May, and replaced with Self-Care Areas.  Many, many users have been deeply unhappy with this change, for numerous reason"
+   ],
+   [
+    "Finch: Self-Care Pet",
+    5,
+    "12224721380",
+    "Streak Reset I love this app and its focus on healthy habits, but I find it discouraging to lose my entire streak for missing just one day. It would be great if the app could offer options like grace periods, streak recovery, or focusing on total progress rather than penalizing users. A more support"
+   ],
+   [
+    "Habit Tracker - HabitKit",
+    5,
+    "12313286063",
+    "Best habit tracker ever! I’ve tried a bunch of habit trackers (both free &amp; paid). While most of them were decent, this one is a LITERAL HIDDEN GEM!   The best part of Habitkit: 1. Colour coded grid view (single best feature of this app) 2. Simplicity to the max  3. Unlimited trackable habits (pr"
+   ],
+   [
+    "Fabulous: Daily Habit Tracker",
+    4,
+    "7274159485",
+    "Overall a great app I have recommended this app to multiple people as it has been a great way for me to track my progress and receive consistent accountability. I love how customizable the routines are, and while there is guidance from the app, you’re ultimately in control of your experience. As far"
+   ],
+   [
+    "Today Habit tracker",
+    5,
+    "7645092267",
+    "What Habit Will You Start Today? If you want to create a new habit, there is no shortage of apps on the App Store to help you reach your goal. Today eschews the typical list-of-habits interface and instead shows each goal or habit on its own screen, complete with gorgeous background. Swipe left and "
+   ],
+   [
+    "Way of Life - Habit Tracker",
+    5,
+    "1065171792",
+    "Very good, but need improve it. There are some advice that my friends and I hope to you take and then improve the app. 1.A function that can tracks your personal best (longest streak) and total completions. 2.More Flexible scheduling. Like Specific Days, Non-specific Days, or Intervals. For instance"
+   ],
+   [
+    "Way of Life - Habit Tracker",
+    5,
+    "925057163",
+    "Great app with a few things missing I love this app, it&#39;s fantastic and I wholeheartedly give it 5 stars. But I&#39;m disappointed and that&#39;s my fault for not paying enough attention before I bought it, but the reason I purchased was I thought it had a certain feature and it does not. I love"
+   ],
+   [
+    "Days Since: Quit Habit Tracker",
+    5,
+    "8511030089",
+    "Great and Simple Days since is an easy to use and user friendly app, there are no ads or micro transactions or subscription trash you’ve got to pay for, just straight up simple counters.   The counters show hours, days, weeks, months and years, has reset features and a stat log with how many resets "
+   ],
+   [
+    "Days Since: Quit Habit Tracker",
+    5,
+    "9038865452",
+    "Exactly What I Need Been using Days Since for almost a month now and have found it incredibly helpful in tracking and cutting down my alcohol, caffeine, and cannabis use. I love the ability to take down a note of my feelings or the circumstances whenever I reset my counter. Looking at my failures as"
+   ],
+   [
+    "Habit — Daily Tracker",
+    5,
+    "4584654416",
+    "Simple and functional It works flawlessly and does exactly what I need with no glitches. My main goal is to get out of the habit of eating snacks after dinner. I like that I can miss a day due to life or going out or whatever and still show that I’ve made overall progress and built up the habit thro"
+   ],
+   [
+    "Habit — Daily Tracker",
+    5,
+    "3873731047",
+    "Couldn’t email I really like this app. I lack the native email app and Instagram so it won’t let me contact you. All I’ll add is that a total streak counter would be awesome. Like total days on current streak. Other than that this is my favorite habit counter so far."
+   ],
+   [
+    "Do Habits: Get It Done",
+    5,
+    "4020707377",
+    "Great app First time I’ve written a review, as most apps I buy and forget about the day after but this ones great! I like the way you can stack habits, and remind yourself with gentle messages at multiple times through out the day.  One suggestion, can you add run streaks to the front end especially"
+   ]
+  ],
+  "collection/list of badges": [
+   [
+    "Productive - Habit Tracker",
+    4,
+    "7928601434",
+    "Super Useful App I’ve been using the Productive app for a few months now and I’m enjoying it so far. It’s nice to see you progress on habits and for me it’s an opportunity to recognize what I accomplished today. I can be a little hard on myself sometimes so it’s nice to spend some time looking at wh"
+   ],
+   [
+    "Habio - Daily Habit Tracker",
+    5,
+    "11798929798",
+    "Н I&#39;m visually oriented, so the calendar view in Habio is perfect for me. Seeing a full month of checkmarks really boosts my satisfaction and motivates me to keep those streaks going. It&#39;s like having a visual trophy case of my achievements."
+   ],
+   [
+    "Strides: Habit Tracker + Goals",
+    3,
+    "1647723891",
+    "Amazing App. Still could use some work. First off, a huge thanks to the developer who took the time to respond to my last review. That is a sign of good customer service. And now, on with my updated review: I&#39;ve tried several apps like this one, and Strides is by far the best. It does almost eve"
+   ],
+   [
+    "Days Since: Quit Habit Tracker",
+    4,
+    "12162590100",
+    "Tracks all my milestones I have been using this for years and tracking longer term things like how long I lived in a city or the time I have been in remission from cancer. Not sure it’s specifically for that purpose, but it works well for me. Would recommend"
+   ],
+   [
+    "Days Since: Quit Habit Tracker",
+    5,
+    "14506145493",
+    "Love Days Since Milestones and data are incredibly important and meaningful to me &amp; Days Since helps me keep track of all my milestones in one place. I love being able to celebrate myself and loved ones for our consistency and hard work in life. One of my favorite things Days Since tracks is min"
+   ],
+   [
+    "Streaks",
+    5,
+    "1523739770",
+    "Very Helpful but Missing One Thing I do wish the app gave &#39;rewards&#39; to work towards.  Adding badges to earn for certain landmark streaks would create extra motivation. A badge for 5 days, 10 days, etc. to fill a virtual &#39;trophy shelf&#39;. Similar to what a lot of other apps are doing."
+   ],
+   [
+    "Streaks",
+    4,
+    "1303958312",
+    "A little trophy case I love feeling like I&#39;ve accomplished stuff (even if it&#39;s little stuff) and this app lets me congratulate myself on the reg. I wish, though, that I could set the schedule to complete a task a number of times a week without setting specific days. Ex. I want to run a mile "
+   ],
+   [
+    "Loop Habit Tracker",
+    5,
+    "58159782-a3a8-4529-96a5-7b0296235166",
+    " the app is top, one peoblem is i suggest for the team: 1- add option to add an account to save all the achievements 2- add more coulors 3- Give the option to archive a task history, not delete it. --A question! if i want to transfer all the data to a new phone and paste this data into the new devic"
+   ],
+   [
+    "HabitNow Daily Routine Planner",
+    5,
+    "9a61f4a0-1ecb-4f37-ad13-7071d72c2252",
+    " It would have been much better if you guys could add goals and milestone listnas well"
+   ],
+   [
+    "Fabulous Daily Routine Planner",
+    3,
+    "f7819f55-e674-4da2-810a-6b33a8a83c16",
+    " I love this app, unfortunately after I restored my phone I lost all the datas and had to restart the journey, it would be great to.have a backup to not lose all the achievements :)"
+   ],
+   [
+    "Fabulous Daily Routine Planner",
+    4,
+    "1c74f771-ed78-43e9-87da-f29f988b0df7",
+    " add profile save option!!! i was using this beautiful app for over 2 months and i loved it - it really worked! but i had to reset my phone and my profile didn't save - all my achievements, journeys are gone and now i don't really think i want to start again..."
+   ]
+  ],
+  "beautiful/nice design of badges": [
+   [
+    "Today Habit tracker",
+    4,
+    "1366301730",
+    "A good app to keep track I&#39;ve been using this app for the last 30 days. It&#39;s a pretty good one to keep you motivated to work out or stay in shape. Great design. Nice badge reward system."
+   ],
+   [
+    "Me+ Lifestyle Routine",
+    3,
+    "10905831477",
+    "Used to be great but new update made it way worse Been using this app for about 6 months. Used to be great and you could track individual task and it would let you know your streaks and give you data on habits.  Right now the data doesn’t track your streaks or anything aside from times completed whe"
+   ],
+   [
+    "Habit Tracker n Pets: HabitYou",
+    4,
+    "71e7528d-15c3-4fb5-ae3a-f732a653b0dc",
+    " looks very powerful habit tracker & I love it but the menu & design have so much unnecessary details, making it hard to use. some options should be moved to the settings! &... what's the point of mentioning the app name on top of the first page! there should be an option to choose start day of the "
+   ]
+  ]
+ }
+}
