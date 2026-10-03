@@ -1,0 +1,16 @@
+{
+  "author": "Codex",
+  "date": "2026-10-03",
+  "status": "passed",
+  "markdown_links_checked": 708,
+  "embedded_image_files": 29,
+  "png_exports": 29,
+  "unchanged_original_documents": 6,
+  "unchanged_evidence_files": 17,
+  "packaged_jsonl_source_ids_verified_against_main": 270,
+  "historical_absolute_links_preserved": 299,
+  "portable_source_index": "Evidence/Source Index.md",
+  "visual_check": "All five full-board PNGs inspected; individual screen exports are native PNGs at their source dimensions.",
+  "scope": "Documentation integrity, not app or usability tests.",
+  "errors": []
+}

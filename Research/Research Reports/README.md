@@ -14,6 +14,19 @@ Standalone research and decision documents, grouped by topic.
 
 ---
 
+## Individual Habit Details
+
+Information architecture, History/logs, Notes and per-habit statistics are collected in one package. Start with its version map; revised History and revised visible-content Progress are the current directions. All visuals are schematic and need final polish.
+
+| Report | Author | Date | What it is |
+|---|---|---|---|
+| [Habit Details Research — Start Here](<Habit Details Research/README.md>) | **Codex** | 3 Oct 2026 | Six unchanged original report/evidence documents, five illustrated companion reports, original review/ledger evidence, 29 local Figma PNGs and source/export integrity manifests. Clear old/revised precedence, portable source index and dummy-layout/final-polish caveats. |
+| [Information Architecture — Research With Mockups](<Habit Details Research/Illustrated Reports/Information Architecture — Research With Mockups.md>) | **Codex** | 3 Oct 2026 | Accepted three jobs, common context and management menu; all four initial screens retained with focused-study precedence. |
+| [History — Original and Revised Mockups](<Habit Details Research/Illustrated Reports/History — Original and Revised Mockups.md>) | **Codex** | 3 Oct 2026 | Original calendar-first version plus current chronological History, day/entry correction, empty-date access and four type panels. |
+| [Notes — Research With Mockups](<Habit Details Research/Illustrated Reports/Notes — Research With Mockups.md>) | **Codex** | 3 Oct 2026 | Dated browse/read/edit flow, three screen exports, draft/recovery/independent-note contracts. |
+| [Progress — Original Research With Mockups](<Habit Details Research/Illustrated Reports/Progress — Original Research With Mockups.md>) | **Codex** | 3 Oct 2026 | Six archived original statistics examples; preserve type, historical-rule, coverage and share contracts; layout superseded. |
+| [Progress — Revised Research With Mockups](<Habit Details Research/Illustrated Reports/Progress — Revised Research With Mockups.md>) | **Codex** | 3 Oct 2026 | Current open Week/Month/Year layout, visible accumulated record/milestones, actual inline charts and fair-cutoff comparisons. |
+
 ## Product Analytics and Reliability
 
 | Report | Author | Date | What it is |
