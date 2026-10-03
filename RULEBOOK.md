@@ -121,8 +121,8 @@ research behind each) · `Research/Research Reports/` (the research, [index](<Re
 | T3 | **When a label changes, update the UI tests that tap it in the same change.** Test typing key by key, at the real iPhone size, with the keyboard up | Tests that passed while people saw nothing |
 | T4 | **Every new screen or interaction gets a `PerfDriver` scenario** when it's built (S2) | A screen with no scenario has no speed: two froze unseen |
 | T5 | **On the iPhone:** speed with `iOS/Tools/perf/measure_perf_device.sh`; UI tests only with test launches (D8) | The phone is where people feel it |
-| T7 | **Test once per piece of work, not after every change** (the user, 3 Oct 2026). While building, push without `[ios-ci]`; when the item is done, run the test classes it touches (and a speed run if it changed a screen or `HabitStore`) in one go, fix what fails, and only then move `main` | Runs after every small change cost hours of waiting for little |
 | T6 | **The server:** `npm test` and `npm run typecheck` pass; deploy to dev and run the live checks; production only through `npm run release:production` (gradual, checked, rolls back), with the user's go-ahead | — |
+| T7 | **Test once per piece of work, not after every change** (the user, 3 Oct 2026). While building, push without `[ios-ci]`; when the item is done, run the test classes it touches (and a speed run if it changed a screen or `HabitStore`) in one go, fix what fails, and only then move `main` | Runs after every small change cost hours of waiting for little |
 
 *Evidence:* [.github/workflows/ios-tests.yml](.github/workflows/ios-tests.yml) (the header explains every option) ·
 [iOS/README.md](iOS/README.md) (building, signing, the iPhone) · [server/README.md](server/README.md).
