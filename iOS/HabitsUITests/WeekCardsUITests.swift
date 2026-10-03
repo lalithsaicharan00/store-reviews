@@ -126,6 +126,43 @@ final class WeekCardsUITests: XCTestCase {
         shot("\(prefix)-10-last-year")
     }
 
+    /// Year scrolls sideways inside its card (older weeks to the left) and the card still opens the habit; the habit's
+    /// page shows its month and its year in the same squares (the user, 3 Oct 2026).
+    func testYearScrollAndHabitPage() {
+        openWeek(["-year-demo", "-appearance.theme", "light"])
+        app.segmentedControls["progress-range"].buttons["Year"].tap()
+        let swim = app.buttons["progress-row-Swim"]
+        XCTAssertTrue(swim.waitForExistence(timeout: 5), "Swim's card")
+        sleep(1)
+        swim.coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: 0.82))
+            .press(forDuration: 0.05, thenDragTo: swim.coordinate(withNormalizedOffset: CGVector(dx: 0.98, dy: 0.82)))
+        sleep(1)
+        shot("ys-1-older-weeks")
+        XCTAssertFalse(app.navigationBars["Swim"].exists, "Dragging the year doesn't open the habit")
+        swim.tap()
+        XCTAssertTrue(app.navigationBars["Swim"].waitForExistence(timeout: 5), "The card still opens the habit")
+        sleep(1)
+        shot("hp-1-top")
+        for i in 2...7 {
+            app.swipeUp(velocity: .slow)
+            sleep(1)
+            shot("hp-\(i)-scrolled")
+        }
+    }
+
+    func testHabitPageDark() {
+        openWeek(["-year-demo", "-appearance.theme", "dark"])
+        let swim = app.buttons["progress-row-Swim"]
+        XCTAssertTrue(swim.waitForExistence(timeout: 5), "Swim's card")
+        swim.tap()
+        XCTAssertTrue(app.navigationBars["Swim"].waitForExistence(timeout: 5))
+        for i in 1...5 {
+            app.swipeUp(velocity: .slow)
+            sleep(1)
+            shot("hp-dark-\(i)")
+        }
+    }
+
     func testWeekCardsWithGroups() {
         openWeek(["-groups-demo", "-appearance.theme", "light"])
         shot("wg-1-top-groups")

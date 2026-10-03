@@ -13,8 +13,6 @@ enum WeekSpacing {
     static let tight: CGFloat = 8
     static let card: CGFloat = 16
     static let section: CGFloat = 24
-    /// A day's square on Week's strip: large enough for the day's number.
-    static let mark: CGFloat = 40
 }
 
 /// The dates of the week (or the month), with ‹ and ›. The one part of the page that stays at the top while the cards scroll: the
@@ -100,7 +98,7 @@ struct WeekCardView: View {
             .padding(.top, WeekSpacing.card)
             // From the accessibility sizes up, the strip gives way to the words, which carry the meaning (report §9).
             if let year, !typeSize.isAccessibilitySize, card.days.count >= year.shown {
-                HeatYearGrid(layout: year, cells: card.days.prefix(year.shown).map(\.heat), color: card.habit.color)
+                HeatYear(layout: year, cells: card.days.prefix(year.shown).map(\.heat), color: card.habit.color)
                     .padding(.top, WeekSpacing.card)
             } else if !typeSize.isAccessibilitySize && columns.count == card.days.count {
                 if let month {
@@ -129,9 +127,9 @@ struct MonthLayout: Hashable {
     let letters: [String]
 }
 
-/// A month on a card (the user, 2 Oct 2026: for seeing patterns): a calendar of squares with the date in each, the
-/// weekday letters once at the top (today's underlined). Plain stacks of fixed-size cells, never a lazy grid (Design
-/// Rules).
+/// A month on a card (the user, 2 Oct 2026: for seeing patterns): rows of squares under the weekday letters (today's
+/// underlined). No dates inside (the user, 3 Oct 2026): the sign says what happened; the habit's page has the dated
+/// calendar. One `Canvas`, never a lazy grid (Design Rules).
 struct MonthCardGrid: View {
     let layout: MonthLayout
     let columns: [WeekColumn]
@@ -139,9 +137,9 @@ struct MonthCardGrid: View {
     let color: HabitColor
 
     var body: some View {
-        let rows = (layout.lead + days.count + 6) / 7
-        let todayColumn = columns.firstIndex { $0.isToday }.map { (layout.lead + $0) % 7 }
-        VStack(spacing: MonthCardGrid.rowGap) {
+        let todayIndex = columns.firstIndex { $0.isToday }
+        let todayColumn = todayIndex.map { (layout.lead + $0) % 7 }
+        VStack(spacing: WeekSpacing.tight) {
             HStack(spacing: 0) {
                 ForEach(0..<7, id: \.self) { i in
                     let isToday = i == todayColumn
@@ -152,60 +150,34 @@ struct MonthCardGrid: View {
                         .frame(maxWidth: .infinity)
                 }
             }
-            .padding(.bottom, WeekSpacing.pair)
-            ForEach(0..<rows, id: \.self) { row in
-                HStack(spacing: 0) {
-                    ForEach(0..<7, id: \.self) { column in
-                        cell(row * 7 + column - layout.lead)
-                    }
-                }
-            }
+            HeatMonth(lead: layout.lead, cells: days.map(\.heat), todayIndex: todayIndex, color: color)
+                .equatable()
         }
         .accessibilityHidden(true)
     }
-
-    @ViewBuilder private func cell(_ index: Int) -> some View {
-        if index >= 0 && index < days.count {
-            let day = days[index]
-            ZStack {
-                if case .blank = day.heat {
-                    // A day still to come: its date only, so the month still reads as a calendar.
-                    Text("\(day.day.day)").font(.system(size: 11, weight: .medium)).foregroundStyle(.tertiary)
-                } else {
-                    HeatSquare(cell: day.heat, color: color, size: MonthCardGrid.square, text: "\(day.day.day)",
-                               isToday: index < columns.count && columns[index].isToday)
-                }
-            }
-            .frame(maxWidth: .infinity).frame(height: MonthCardGrid.square)
-        } else {
-            Color.clear.frame(maxWidth: .infinity).frame(height: MonthCardGrid.square)
-        }
-    }
-
-    static let square: CGFloat = 32
-    static let rowGap: CGFloat = 7
 }
 
-/// Sun–Sat (in the person's order): the weekday, then the day's square with its own number inside ("8", "25m", "3/4").
+/// Sun–Sat (in the person's order): the weekday, then the day's square. The day's own amount is in the card's words
+/// and the habit's page, not on the square (the user, 3 Oct 2026).
 struct WeekCardStrip: View {
     let columns: [WeekColumn]
     let days: [WeekCardDay]
     let color: HabitColor
 
     var body: some View {
-        HStack(alignment: .top, spacing: 0) {
-            ForEach(Array(days.enumerated()), id: \.element.id) { index, day in
-                let column = columns[index]
-                VStack(spacing: WeekSpacing.tight) {
+        VStack(spacing: WeekSpacing.tight) {
+            HStack(spacing: 0) {
+                ForEach(columns) { column in
                     Text(column.short)
                         .font(.caption.weight(column.isToday ? .semibold : .regular))
                         .foregroundStyle(column.isToday ? Color.primary : Color.secondary)
                         .underline(column.isToday)
                         .lineLimit(1).minimumScaleFactor(0.8)
-                    HeatSquare(cell: day.heat, color: color, size: WeekSpacing.mark, text: day.value, isToday: column.isToday)
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
             }
+            HeatRow(cells: days.map(\.heat), todayIndex: columns.firstIndex { $0.isToday }, color: color)
+                .equatable()
         }
         .accessibilityHidden(true)
     }

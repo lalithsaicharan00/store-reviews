@@ -3,21 +3,23 @@ import SwiftUI
 // The habit page's Phase 2 sections (Build Plan #60f; report §8.4, §8.5, §10.3). Each works its numbers out when the
 // data or its own choice changes, never while drawing.
 
-/// A year of this habit's days as dots (report §8.4), with ‹ year ›. Tapping a month opens it in the calendar above.
+/// A year of this habit's days in Progress's squares (the user, 3 Oct 2026: the same squares everywhere, never too
+/// small to read), with ‹ year ›. It scrolls sideways and opens on the latest weeks; tapping a week opens its month in
+/// the calendar above.
 struct HabitYearSection: View {
     let habit: Habit
     let onMonth: (LocalDay) -> Void
     @Environment(HabitStore.self) private var store
     @State private var year: Int?
-    @State private var dots: YearDots?
+    @State private var heat: (layout: YearLayout, cells: [HeatCell], first: LocalDay)?
     @State private var key: Key?
 
-    private struct Key: Hashable { let year: Int; let version: Int; let habit: Habit }
+    private struct Key: Hashable { let year: Int; let version: Int; let habit: Habit; let today: LocalDay }
 
     var body: some View {
         let today = store.today()
         let shown = year ?? today.year
-        let current = Key(year: shown, version: store.dataVersion, habit: habit)
+        let current = Key(year: shown, version: store.dataVersion, habit: habit, today: today)
         let first = habit.kind == .quit ? store.quitStartDay(of: habit).year : store.startDay(of: habit).year
         Section {
             VStack(spacing: 10) {
@@ -31,15 +33,13 @@ struct HabitYearSection: View {
                         .labelStyle(.iconOnly).disabled(shown >= today.year)
                 }
                 .buttonStyle(.borderless)
-                if let dots {
-                    ScrollViewReader { proxy in
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            YearGridView(dots: dots, color: habit.color.mark, dot: 8, gap: 2, labels: true, onMonth: onMonth)
-                                .padding(.vertical, 2)
-                                .id("grid")
-                        }
-                        .onAppear { if shown == today.year { proxy.scrollTo("grid", anchor: .trailing) } }
+                if let heat {
+                    HeatYear(layout: heat.layout, cells: heat.cells, color: habit.color) { index in
+                        let day = heat.first.adding(days: index, calendar: store.calendar)
+                        onMonth(HabitPageView.firstOfMonth(day, store.calendar))
                     }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Year \(shown)")
                     .accessibilityIdentifier("habit-year-grid")
                 }
             }
@@ -55,20 +55,9 @@ struct HabitYearSection: View {
         guard key != self.key else { return }
         self.key = key
         let span = store.period(.year, containing: LocalDay(year: key.year, month: 6, day: 1))
-        if habit.kind == .quit {
-            let marks = store.quitStats(of: habit, in: span).marks
-            let byDay = Dictionary(uniqueKeysWithValues: marks.map { ($0.day, $0) })
-            dots = store.yearDots(span) { byDay[$0] }
-        } else {
-            let today = store.today()
-            dots = store.yearDots(span) { day in
-                guard day <= today else { return nil }
-                let mark = store.dayMark(habit, on: day)
-                // Only planned days get a dot; today counts once it's done (report §13.3).
-                guard mark == .done || (day < today && (mark == .some || mark == .missed)) else { return nil }
-                return ProgressMark(day: day, mark: mark, fraction: mark == .some ? store.dayFraction(habit, on: day) : 1, over: false)
-            }
-        }
+        let layout = store.yearLayout(span, today: key.today)
+        let cells = store.heatCells(habit, in: span, range: .year, today: key.today)
+        heat = (layout, Array(cells.prefix(layout.shown)), span.lowerBound)
     }
 }
 

@@ -275,14 +275,20 @@ struct HabitPageView: View {
     }
 }
 
-/// One month of a habit's days. Every shape is round (Design Rules: calendar). Done is filled in the habit's colour,
-/// some progress is a ring, a missed day is just its number (never a harsh mark, C095), and days that aren't its
-/// days, paused or skipped are faint, with a small sign for paused and skipped.
+/// One month of a habit's days, in the same squares as Progress (the user, 3 Oct 2026: square cells everywhere, signs
+/// easy to read): ✓ goal met, lighter steps for part done, grey ✕ not done, dashed when nothing was asked (⏩ skipped,
+/// ⏸ paused), plain grey still to come. The date sits under each square, since this is the calendar where a day is
+/// picked; the square itself carries only its sign, as everywhere. The month's squares are worked out once per month
+/// and data change (`HabitStore.heatCells`), never per cell while drawing.
 struct HabitMonthView: View {
     let habit: Habit
     @Binding var month: LocalDay
     var onSelect: (LocalDay) -> Void = { _ in }
     @Environment(HabitStore.self) private var store
+    @State private var cells: [HeatCell] = []
+    @State private var key: Key?
+
+    private struct Key: Hashable { let month: LocalDay; let version: Int; let habit: Habit; let today: LocalDay }
 
     var body: some View {
         let calendar = store.calendar
@@ -294,6 +300,7 @@ struct HabitMonthView: View {
         let today = store.today()
         let earliest = HabitPageView.firstOfMonth(store.startDay(of: habit), calendar)
         let latest = HabitPageView.firstOfMonth(today, calendar)
+        let current = Key(month: month, version: store.dataVersion, habit: habit, today: today)
         VStack(spacing: 10) {
             HStack {
                 Button("Previous month", systemImage: "chevron.left") { month = shift(-1) }
@@ -310,22 +317,25 @@ struct HabitMonthView: View {
             // A plain Grid, never a lazy one, inside a List row: a LazyVGrid here sent the list into an endless
             // self-sizing loop on the iPhone and the app was lost on opening any habit (crash report, 2 Oct 2026;
             // Design Rules: never put a lazy grid inside a List row).
-            let cells = MonthGridCell.month(places: lead + count)
+            let places = MonthGridCell.month(places: lead + count)
             Grid(horizontalSpacing: 2, verticalSpacing: 6) {
-                ForEach(Array(stride(from: 0, to: cells.count, by: 7)), id: \.self) { start in
+                ForEach(Array(stride(from: 0, to: places.count, by: 7)), id: \.self) { start in
                     GridRow {
-                        ForEach(cells[start..<min(start + 7, cells.count)], id: \.self) { item in
+                        ForEach(places[start..<min(start + 7, places.count)], id: \.self) { item in
                             Group {
                                 switch item {
                                 case .weekday(let i): Text(ordered[i]).font(.caption2.weight(.semibold)).foregroundStyle(.secondary)
-                                case .place(let place) where place < lead: Color.clear.frame(height: 36)
+                                case .place(let place) where place < lead: Color.clear.frame(height: 50)
                                 case .place(let place):
-                                    let day = LocalDay(year: month.year, month: month.month, day: place - lead + 1)
-                                    Button { onSelect(day) } label: { cell(day, isToday: day == today).frame(minHeight: 44) }
-                                        .buttonStyle(.borderless)
-                                        .disabled(day > today)
-                                        .accessibilityLabel(spoken(day))
-                                        .accessibilityIdentifier("habit-day-\(day.key)")
+                                    let index = place - lead
+                                    let day = LocalDay(year: month.year, month: month.month, day: index + 1)
+                                    Button { onSelect(day) } label: {
+                                        cell(index < cells.count ? cells[index] : .blank, day: day, isToday: day == today)
+                                    }
+                                    .buttonStyle(.borderless)
+                                    .disabled(day > today)
+                                    .accessibilityLabel(spoken(day))
+                                    .accessibilityIdentifier("habit-day-\(day.key)")
                                 }
                             }
                             .frame(maxWidth: .infinity)
@@ -333,16 +343,19 @@ struct HabitMonthView: View {
                     }
                 }
             }
-            HStack(spacing: 14) {
-                legend(Circle().fill(habit.color.mark), HabitStore.DayMark.done.words(atMost: habit.atMost))
-                legend(Circle().strokeBorder(habit.color.mark, lineWidth: 2), HabitStore.DayMark.some.words(atMost: habit.atMost))
-                legend(Image(systemName: "pause.fill").font(.system(size: 8)).foregroundStyle(.secondary), "Paused")
-                legend(Image(systemName: "forward.fill").font(.system(size: 8)).foregroundStyle(.secondary), "Skipped")
-            }
-            .font(.caption2)
-            .foregroundStyle(.secondary)
+            HeatKey(boxed: false)
         }
         .padding(.vertical, 4)
+        .onAppear { load(current, count: count) }
+        .onChange(of: current) { load(current, count: count) }
+    }
+
+    private func load(_ key: Key, count: Int) {
+        guard key != self.key else { return }
+        self.key = key
+        let first = key.month
+        let last = first.adding(days: count - 1, calendar: store.calendar)
+        cells = store.heatCells(habit, in: first...last, range: .month, today: key.today)
     }
 
     private func shift(_ months: Int) -> LocalDay {
@@ -350,38 +363,17 @@ struct HabitMonthView: View {
         return HabitPageView.firstOfMonth(LocalDay(d, calendar: store.calendar), store.calendar)
     }
 
-    private func cell(_ day: LocalDay, isToday: Bool) -> some View {
-        // The day's button (in the grid) opens the day's sheet: its result, its entries, and filling in or fixing it
-        // (Build Plan #57). It replaces the read-only popover (Progress report §8.2), which showed less and sat inside
-        // the same button, so one of the two never received the tap (merge, 1 Oct 2026).
-        mark(day, isToday: isToday)
-    }
-
-    private func mark(_ day: LocalDay, isToday: Bool) -> some View {
-        let mark = store.dayMark(habit, on: day)
-        let color = habit.color.mark
-        let faint = [.notItsDay, .before, .paused, .skipped].contains(mark)
-        return ZStack {
-            switch mark {
-            case .done: Circle().fill(color)
-            case .some: Circle().strokeBorder(color, lineWidth: 2)
-            default: if isToday { Circle().strokeBorder(Color.secondary.opacity(0.5), lineWidth: 1) }
-            }
+    /// The day's button (in the grid) opens the day's sheet: its result, its entries, and filling in or fixing it
+    /// (Build Plan #57).
+    private func cell(_ heat: HeatCell, day: LocalDay, isToday: Bool) -> some View {
+        VStack(spacing: 3) {
+            HeatSquare(cell: heat, color: habit.color, size: HeatSize.month, isToday: isToday)
+                .equatable()
             Text("\(day.day)")
-                .font(.callout.monospacedDigit().weight(isToday ? .bold : .regular))
-                .foregroundStyle(mark == .done ? AnyShapeStyle(.white) : faint ? AnyShapeStyle(.tertiary) : AnyShapeStyle(.primary))
+                .font(.caption2.monospacedDigit().weight(isToday ? .bold : .regular))
+                .foregroundStyle(isToday ? Color.primary : Color.secondary)
         }
-        .frame(width: 34, height: 34)
-        .overlay(alignment: .bottom) {
-            switch mark {
-            case .paused: Image(systemName: "pause.fill").font(.system(size: 6)).foregroundStyle(.secondary).offset(y: 5)
-            case .skipped: Image(systemName: "forward.fill").font(.system(size: 6)).foregroundStyle(.secondary).offset(y: 5)
-            case .upcoming: Circle().fill(color.opacity(0.6)).frame(width: 4, height: 4).offset(y: 4)
-            default: EmptyView()
-            }
-        }
-        .frame(height: 36)
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, minHeight: 50)
         .contentShape(Rectangle())
     }
 
@@ -394,11 +386,5 @@ struct HabitMonthView: View {
     private func words(_ mark: HabitStore.DayMark) -> String {
         mark.words(atMost: habit.atMost).lowercased()
     }
-
-    private func legend(_ mark: some View, _ label: String) -> some View {
-        HStack(spacing: 4) {
-            mark.frame(width: 9, height: 9)
-            Text(label)
-        }
-    }
 }
+
