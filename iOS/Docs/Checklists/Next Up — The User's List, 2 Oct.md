@@ -102,12 +102,20 @@ tick each when it's done and link what was built or written. Every item follows
   when it's done, which is nice; timed habits, amounts, checklists and others don't. Decide when each kind counts
   as "done" for feedback (goal reached, timer reaches its goal, last step ticked) and make it consistent.
 
+- [ ] **19. Exportable progress reports** (added 3 Oct 2026; build now if it fits, otherwise it moves to Future; the
+  user decides later). A report of progress people can export and share (a PDF or image of a week, month or year),
+  as the Progress research suggests. Different from Backup & Export's data file. Start from the Progress research:
+  "Progress and Statistics — What People Want" (export and reports by email) and "The Progress Page — What People
+  Need" (Export: ledger C020, Strong, 35 apps; it said export lives outside the Progress screen), then decide what a
+  report holds and where it's made, after the Progress redesign is merged.
+
 ## Future (after release; not to start now)
 
 - [ ] **Dedicated trackers** (added 3 Oct 2026): ready-made trackers with their own screens and stats, which can't be
   made from +. Examples to research: sleep, and other trackers that are popular with people; Daily Reflection (item
   12) is the first.
 - [ ] **Guided habits:** habits that come with guidance, added the same way.
+- [ ] **Exportable progress reports** (the same as item 19): if it isn't built before release, it's built after.
 - [ ] **A Library** to add dedicated trackers and guided habits from (or wherever research says they belong). Only
   after release.
 
