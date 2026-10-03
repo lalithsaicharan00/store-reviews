@@ -117,7 +117,7 @@ final class ArrangeUITests: XCTestCase {
         XCTAssertTrue(any("plan-row-Mid Morning").waitForExistence(timeout: 2), "The new one in Your day")
         shot("a06-new-time-of-day")
         app.navigationBars["New Time of Day"].buttons["section-save"].tap()
-        let split = app.buttons["section-split-confirm"]
+        let split = app.buttons["section-split-confirm"].firstMatch
         if split.waitForExistence(timeout: 2) {
             shot("a07-split-confirm")
             split.tap()
@@ -159,14 +159,15 @@ final class ArrangeUITests: XCTestCase {
     /// The habit form shows Group before any group exists, with New Group in it.
     func testGroupRowBeforeAnyGroup() {
         launch()
-        app.buttons["New Habit"].tap()
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Track an amount'")).firstMatch.tap()
+        app.navigationBars.buttons["New Habit"].firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain,'")).firstMatch.tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check it off,'")).firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["New Habit"].waitForExistence(timeout: 3))
         let group = app.buttons["group-row"]
-        let form = app.collectionViews.firstMatch
-        XCTAssertTrue(form.waitForExistence(timeout: 3))
-        for _ in 0..<8 where !(group.exists && group.isHittable) { form.swipeUp(velocity: .slow) }
+        app.reveal(group)
         XCTAssertTrue(group.exists, "Group row with no groups yet")
+        XCTAssertEqual(group.label, "Group, None")
         group.tap()
         XCTAssertTrue(app.buttons["group-picker-new"].waitForExistence(timeout: 3), "New Group from the form")
         shot("a11-group-picker")

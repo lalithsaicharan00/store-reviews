@@ -480,7 +480,10 @@ final class NewHabitUITests: XCTestCase {
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.typeText("Before work")
         shot("13-new-time-of-day")
-        app.navigationBars["New Time of Day"].buttons["Save"].tap()
+        // "Add" now (3 Oct 2026); if its default times overlap another time of day, it asks before splitting it.
+        app.navigationBars["New Time of Day"].buttons["section-save"].tap()
+        let split = app.buttons["section-split-confirm"].firstMatch
+        if split.waitForExistence(timeout: 2) { split.tap() }
         XCTAssertTrue(app.buttons["Before work"].waitForExistence(timeout: 3))
         back()
         XCTAssertTrue(row("Time of Day, Before work").exists, "The new time of day is chosen")
