@@ -306,7 +306,9 @@ final class HabitScenarioUITests: XCTestCase {
     func testStartsAndEnds() {
         newHabit("Floss")
         let starts = row("Starts")
-        app.reveal(starts)
+        // Ends is the row under Starts: with Starts at the screen's edge, the form hadn't built Ends yet (3 Oct 2026).
+        app.reveal(row("Ends"))
+        app.reveal(starts, clear: true)
         XCTAssertTrue(row("Starts, Today").exists)
         XCTAssertTrue(row("Ends, Never").exists)
         shot("r4-10-starts-ends")
