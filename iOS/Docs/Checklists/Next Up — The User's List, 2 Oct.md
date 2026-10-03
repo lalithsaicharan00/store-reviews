@@ -73,6 +73,18 @@ tick each when it's done and link what was built or written. Every item follows
     apps that have them), what a day's entry holds (a mood scale, a few words, tags?), where it lives (on Today, its
     own place in ≡, Progress?), how it's reminded, and its stats. Then a design for the user to decide, then build.
 
+- [ ] **13. Tapping any habit on Today opens the same sheet** (added 3 Oct 2026; after the Progress work, or alongside
+  it as separate work). One mental model, whatever the kind of habit.
+  - **Today it's inconsistent:** tapping a row's body opens a bottom sheet only for amounts and timed habits (the
+    "Log amount / Log time manually" sheet, `HabitRow` `.onTapGesture` when `logsNumbers`). Check-offs, checklists,
+    tasks and quit habits open nothing; their options are only in the touch-and-hold menu, which people may not find.
+  - **The sheet, for every kind:** today's progress (and changing it), plus quick options: Edit Habit, Pause, Skip,
+    Add Note, and a way to the habit's own page (details and history). The ✓, + and ▶ buttons keep logging in one
+    tap; the sheet is for the row itself.
+  - **Research before building:** what the sheet shows per kind (check-off, amount, timed, limit, checklist, task,
+    quit), how it relates to the existing Day sheet ("Edit Today's Progress") and the log sheet so there's one sheet,
+    not three, and which actions go in it (with item 8, swipe actions, so the two agree).
+
 ## Future (after release; not to start now)
 
 - [ ] **Dedicated trackers** (added 3 Oct 2026): ready-made trackers with their own screens and stats, which can't be
