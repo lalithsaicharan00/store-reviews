@@ -3,14 +3,15 @@ import SwiftUI
 // Progress's heat map (the user, 2–3 Oct 2026): one square per day, the same in Week, Month, Year and on the habit's
 // page; only the size changes, and never below `HeatSize.smallest`. No dates or numbers inside: the colour says how
 // much, the sign says what happened (`HeatCell`, worked out in the store):
-//   grey with ✕         asked and not done, once the day is over
-//   three lighter steps up to 33 %, up to 66 %, up to 99 % of the day's goal: no sign (✓ means done; a part day isn't)
+//   three lighter steps 1–33 %, 34–66 %, 67–99 % of the day's goal: no sign (✓ means done; a part day isn't)
 //   colour with ✓       the goal met (the habit's own colour)
-//   darkest with a bold ✓  more than the goal
-//   plain grey          asked, not over yet: today before anything is logged, a due day still to come
-//   dashed outline      nothing asked: not scheduled; with ⏩ skipped, with ⏸ paused
+//   darkest with ✓      more than the goal: the same ✓, only the colour is deeper
+//   grey with ✕ ⏩ ⏸     the day had something asked of it: not done, skipped, paused (grey = the day was due)
+//   plain grey          due, not over yet: today before anything is logged, a due day still to come
+//   dashed outline      nothing asked that day: not scheduled (the only dashed square)
 //   thin grey outline   today (square, like every cell; light, so it never outweighs the day itself)
 //   nothing             before the habit began
+// Every sign is one size everywhere (`HeatDraw.sign`), whatever the square's size or step (the user, 3 Oct 2026).
 // Research behind it (report "Day Marks — Heat Map, Rule and Palette", 2 Oct 2026): heat maps are the most praised way
 // to show days across 1.2 million reviews in every language. Every square is drawn by `HeatDraw` from the store's
 // numbers only, batched into one fill or stroke per look (PERFORMANCE.md rules 5, 8 and 12).
@@ -101,8 +102,12 @@ struct HeatDraw {
     private var crosses = Path()
     private var signs = Path()
     private var checks = Path()
-    private var boldChecks = Path()
+    private var moreChecks = Path()
     private var today = Path()
+
+    /// Every sign's size and line, the same on every square (the user, 3 Oct 2026): ✓ 12 pt with a 2.4-pt line, ✕ 9.5 pt
+    /// with a 2-pt line, ⏩ and ⏸ 11 pt. Half of Year's 24-pt square; clear on Month's 32 and Week's 40.
+    static let sign: CGFloat = 12
 
     init(size: CGFloat) { self.size = size }
 
@@ -122,13 +127,15 @@ struct HeatDraw {
             fills[step, default: Path()].addRoundedRect(in: rect, cornerSize: corner, style: .continuous)
             if step == 0 { cross(rect) }
             if step == 4 { Self.check(rect, into: &checks) }
-            if step == 5 { Self.check(rect, into: &boldChecks) }
-        case .off(let why):
+            if step == 5 { Self.check(rect, into: &moreChecks) }
+        case .off(.notScheduled):
             let inset = dashWidth / 2
             dashes.addRoundedRect(in: rect.insetBy(dx: inset, dy: inset),
                                   cornerSize: CGSize(width: radius - inset, height: radius - inset), style: .continuous)
-            if why == .skipped { skip(rect) }
-            if why == .paused { pause(rect) }
+        case .off(let why):
+            // Skipped and paused days were due: grey, like not done, with their sign.
+            fills[0, default: Path()].addRoundedRect(in: rect, cornerSize: corner, style: .continuous)
+            if why == .skipped { skip(rect) } else { pause(rect) }
         }
         if isToday {
             let ring = rect.insetBy(dx: -2.5, dy: -2.5)
@@ -141,43 +148,48 @@ struct HeatDraw {
         context.stroke(dashes, with: .color(HeatPalette.dash(dark)),
                        style: StrokeStyle(lineWidth: dashWidth, dash: [size * 0.12, size * 0.09]))
         let rounded = { (width: CGFloat) in StrokeStyle(lineWidth: width, lineCap: .round, lineJoin: .round) }
-        context.stroke(crosses, with: .color(HeatPalette.sign(dark)), style: rounded(size * 0.085))
+        context.stroke(crosses, with: .color(HeatPalette.sign(dark)), style: rounded(2))
         context.fill(signs, with: .color(HeatPalette.sign(dark)))
-        context.stroke(checks, with: .color(HeatPalette.check(4, dark: dark)), style: rounded(size * 0.1))
-        context.stroke(boldChecks, with: .color(HeatPalette.check(5, dark: dark)), style: rounded(size * 0.14))
+        context.stroke(checks, with: .color(HeatPalette.check(4, dark: dark)), style: rounded(2.4))
+        context.stroke(moreChecks, with: .color(HeatPalette.check(5, dark: dark)), style: rounded(2.4))
         context.stroke(today, with: .color(HeatPalette.today(dark)), lineWidth: 1.5)
     }
 
     private var dashWidth: CGFloat { max(1.2, size * 0.045) }
 
-    private static func point(_ rect: CGRect, _ x: CGFloat, _ y: CGFloat) -> CGPoint {
-        CGPoint(x: rect.minX + x * rect.width, y: rect.minY + y * rect.height)
+    /// A point in a sign's box of `side` points, centred on the square.
+    private static func point(_ rect: CGRect, _ side: CGFloat, _ x: CGFloat, _ y: CGFloat) -> CGPoint {
+        CGPoint(x: rect.midX + (x - 0.5) * side, y: rect.midY + (y - 0.5) * side)
     }
 
     private static func check(_ rect: CGRect, into path: inout Path) {
-        path.move(to: Self.point(rect, 0.28, 0.52))
-        path.addLine(to: Self.point(rect, 0.43, 0.67))
-        path.addLine(to: Self.point(rect, 0.73, 0.35))
+        let side = sign
+        path.move(to: point(rect, side, 0.04, 0.54))
+        path.addLine(to: point(rect, side, 0.37, 0.86))
+        path.addLine(to: point(rect, side, 0.96, 0.16))
     }
 
     private mutating func cross(_ rect: CGRect) {
-        crosses.move(to: Self.point(rect, 0.35, 0.35)); crosses.addLine(to: Self.point(rect, 0.65, 0.65))
-        crosses.move(to: Self.point(rect, 0.65, 0.35)); crosses.addLine(to: Self.point(rect, 0.35, 0.65))
+        let side: CGFloat = 9.5
+        crosses.move(to: Self.point(rect, side, 0, 0)); crosses.addLine(to: Self.point(rect, side, 1, 1))
+        crosses.move(to: Self.point(rect, side, 1, 0)); crosses.addLine(to: Self.point(rect, side, 0, 1))
     }
 
     private mutating func skip(_ rect: CGRect) {
-        for x in [0.26, 0.5] as [CGFloat] {
-            signs.move(to: Self.point(rect, x, 0.33))
-            signs.addLine(to: Self.point(rect, x + 0.24, 0.5))
-            signs.addLine(to: Self.point(rect, x, 0.67))
+        let side: CGFloat = 11
+        for x in [0, 0.5] as [CGFloat] {
+            signs.move(to: Self.point(rect, side, x, 0.18))
+            signs.addLine(to: Self.point(rect, side, x + 0.5, 0.5))
+            signs.addLine(to: Self.point(rect, side, x, 0.82))
             signs.closeSubpath()
         }
     }
 
     private mutating func pause(_ rect: CGRect) {
-        for x in [0.35, 0.55] as [CGFloat] {
-            let bar = CGRect(origin: Self.point(rect, x, 0.32), size: CGSize(width: rect.width * 0.1, height: rect.height * 0.36))
-            signs.addRoundedRect(in: bar, cornerSize: CGSize(width: rect.width * 0.03, height: rect.width * 0.03))
+        let side: CGFloat = 11
+        for x in [0.16, 0.6] as [CGFloat] {
+            let bar = CGRect(origin: Self.point(rect, side, x, 0.08), size: CGSize(width: side * 0.24, height: side * 0.84))
+            signs.addRoundedRect(in: bar, cornerSize: CGSize(width: 0.8, height: 0.8))
         }
     }
 }
@@ -274,50 +286,69 @@ struct HeatMonth: View, Equatable {
     }
 }
 
-/// What the squares mean, always at the top of the page, so no square needs explaining (the user, 2–3 Oct 2026):
-/// the scale with each step named in per cent, then the other looks in words. The squares are the real ones.
+/// What the squares mean, always at the top of Progress and under the habit page's month (the user, 2–3 Oct 2026),
+/// in three rows: how much was done (the habit's colour), days that were due with nothing done (grey), and the other
+/// days. The squares are the real ones, in green as the example; each habit uses its own colour.
 struct HeatKey: View {
     /// On its own card (Progress); false inside a list row (the habit's page, under its month).
     var boxed = true
 
     var body: some View {
         VStack(alignment: .leading, spacing: WeekSpacing.card) {
-            HStack(alignment: .top, spacing: 4) {
-                ForEach(0..<6, id: \.self) { n in
-                    VStack(spacing: WeekSpacing.pair) {
-                        HeatSquare(cell: .level(n), color: .green, size: HeatSize.smallest)
-                        Text(Self.steps[n]).font(.caption2).foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center).lineLimit(2).fixedSize()
+            VStack(alignment: .leading, spacing: WeekSpacing.tight) {
+                heading("Progress", note: "Shown in green; each habit uses its own colour")
+                HStack(alignment: .top, spacing: 4) {
+                    ForEach(1..<6, id: \.self) { n in
+                        VStack(spacing: WeekSpacing.pair) {
+                            HeatSquare(cell: .level(n), color: .green, size: HeatSize.smallest)
+                            Text(Self.steps[n - 1]).font(.caption2).foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center).lineLimit(2).fixedSize()
+                        }
+                        .frame(maxWidth: .infinity)
                     }
-                    .frame(maxWidth: .infinity)
                 }
             }
             VStack(alignment: .leading, spacing: WeekSpacing.tight) {
-                HStack(spacing: WeekSpacing.card) {
-                    entry(.upcoming, "Still to come")
-                    entry(.upcoming, "Today", isToday: true)
-                }
-                // One line when it fits; at large text sizes, one entry per line.
-                ViewThatFits(in: .horizontal) {
-                    HStack(spacing: WeekSpacing.card) { dashedEntries }
-                    VStack(alignment: .leading, spacing: WeekSpacing.tight) { dashedEntries }
+                heading("Due that day")
+                row {
+                    entry(.level(0), "Not done")
+                    entry(.off(.skipped), "Skipped")
+                    entry(.off(.paused), "Paused")
                 }
             }
-            .font(.caption).foregroundStyle(.secondary)
+            VStack(alignment: .leading, spacing: WeekSpacing.tight) {
+                heading("Other days")
+                row {
+                    entry(.upcoming, "Still to come")
+                    entry(.off(.notScheduled), "Not scheduled")
+                    entry(.upcoming, "Today", isToday: true)
+                }
+            }
         }
         .padding(boxed ? WeekSpacing.card : 0)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(boxed ? Color.card : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .accessibilityElement(children: .ignore)
         // "%", not the word: the key names the steps; it isn't a progress percentage, which Show Percentages hides.
-        .accessibilityLabel("Key. Grey with a cross: not done. Lighter to darker: up to 33%, 66% and 99% of the goal. A check: goal met. Darkest with a bold check: more than the goal. Plain grey: still to come. An outline: today. Dashed: not scheduled; with a skip or pause sign: skipped or paused.")
+        .accessibilityLabel("Key. Progress, lighter to darker in the habit's colour: 1 to 33%, 34 to 66%, 67 to 99%, goal met with a check, more than the goal with a check. Due that day, grey: not done with a cross, skipped, paused. Other days: plain grey still to come, dashed not scheduled, an outline for today.")
         .accessibilityIdentifier("progress-key")
     }
 
-    @ViewBuilder private var dashedEntries: some View {
-        entry(.off(.notScheduled), "Not scheduled")
-        entry(.off(.skipped), "Skipped")
-        entry(.off(.paused), "Paused")
+    private func heading(_ title: String, note: String? = nil) -> some View {
+        VStack(alignment: .leading, spacing: WeekSpacing.label) {
+            Text(title).font(.footnote.weight(.semibold)).foregroundStyle(.primary)
+            if let note { Text(note).font(.caption2).foregroundStyle(.secondary) }
+        }
+    }
+
+    /// One line when it fits; at large text sizes, one entry per line.
+    private func row(@ViewBuilder _ entries: () -> some View) -> some View {
+        let entries = entries()
+        return ViewThatFits(in: .horizontal) {
+            HStack(spacing: WeekSpacing.card) { entries }
+            VStack(alignment: .leading, spacing: WeekSpacing.tight) { entries }
+        }
+        .font(.caption).foregroundStyle(.secondary)
     }
 
     private func entry(_ cell: HeatCell, _ title: String, isToday: Bool = false) -> some View {
@@ -329,7 +360,7 @@ struct HeatKey: View {
         }
     }
 
-    static let steps = ["Not\ndone", "Up to\n33%", "Up to\n66%", "Up to\n99%", "Goal\n100%", "More\n100%+"]
+    static let steps = ["1–33%", "34–66%", "67–99%", "Goal met\n100%", "More\nover 100%"]
 }
 
 /// A habit's year as GitHub's grid (the user, 2–3 Oct 2026): weeks left to right, weekdays top to bottom, months on

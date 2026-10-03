@@ -43,7 +43,7 @@ struct WeekCardDay: Hashable, Identifiable {
 /// research). One rule for every habit type: colour strength is how much of what the day asked for was done.
 ///   blank     before the habit began (and Year's days still to come): nothing is drawn
 ///   upcoming  asked, but not over yet: today before anything is logged, a due day still to come; plain grey
-///   off       nothing was asked that day (not scheduled, skipped, paused, a weekly goal's other days): dashed, never a failure
+///   off       not scheduled (a weekly goal's other days too): dashed; skipped or paused: grey with ⏩ / ⏸. Never a failure
 ///   level 0   asked and not done, once the day is over: grey with ✕
 ///   level 1–3  part of the day's goal: up to a third, up to two thirds, more than that
 ///   level 4 the day's goal met: the habit's own colour; a limit kept, a clean day of a quit habit

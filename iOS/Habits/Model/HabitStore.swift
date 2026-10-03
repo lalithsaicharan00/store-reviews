@@ -2367,12 +2367,12 @@ final class HabitStore {
             // Saturday, for 400 days: done, part done at each of the three steps, not done, more than the goal, an
             // extra Sunday now and then (Sundays otherwise not scheduled); skipped days and a week's pause are added once
             // saved (`seedDemo`); today is still open. Coffee, at most 2 cups a day, goes over on some days.
-            let swim = Habit(name: "Swim", symbol: "figure.pool.swim", color: .green, kind: .amount(unit: "laps", increment: 0),
+            let swim = Habit(name: "Swim", symbol: "figure.pool.swim", color: .blue, kind: .amount(unit: "laps", increment: 0),
                              goal: 20, frequency: .weekdays([2, 3, 4, 5, 6, 7]), remind: false, createdAt: ago(days: 400))
             let coffee = Habit(name: "Coffee", symbol: "mug.fill", color: .brown, kind: .amount(unit: "cups", increment: 1),
                                goal: 2, atMost: true, remind: false, createdAt: ago(days: 400))
             // Running, three times a week on any days; Cycle, 70 km a week in all: the two week goals.
-            let running = Habit(name: "Running", symbol: "figure.run", color: .green, kind: .check, frequency: .perWeek(3),
+            let running = Habit(name: "Running", symbol: "figure.run", color: .orange, kind: .check, frequency: .perWeek(3),
                                 remind: false, createdAt: ago(days: 400))
             let cycle = Habit(name: "Cycle", symbol: "bicycle", color: .teal, kind: .amount(unit: "km", increment: 0), goal: 70,
                               frequency: .perWeek(1), remind: false, createdAt: ago(days: 400))

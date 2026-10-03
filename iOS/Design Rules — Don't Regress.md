@@ -230,18 +230,18 @@ Report: [Weekly Habit Cards — What Each Card Shows](<../Research/Research Repo
 - **Week, Month, Year and the habit's page are one heat map** (the user, 2–3 Oct 2026; report [Day Marks — Heat Map, Rule and Palette](<../Research/Research Reports/Progress and Statistics/Day Marks — Heat Map, Rule and Palette.md>): heat maps are the most praised day view in 1.2 million reviews, every language). One rounded **square** per day everywhere (never circles or rings), only the size changes (`HeatSize`): Week 40 pt, Month 32 pt, Year 24 pt. **No dates or numbers inside a square**: the colour says how much, the sign says what happened. The habit page's month puts the date *under* each square (it's where a day is picked). Every square is drawn by `HeatDraw` (batched paths in one `Canvas`), so a square looks the same at every size.
 - **Never shrink a square below 24 pt to fit** (the user, 3 Oct 2026: "if they can't read it, there is no meaning to it"). Signs must be easy to read and scan at every size, Year included. Year scrolls sideways instead (about three months on a phone), opens on the latest weeks, and keeps its weekday letters fixed on the left (`HeatYear`).
 - **One rule for every habit type: colour strength = how much of what that day asked for was done** (`HeatCell`, worked out in the store, never in a view):
-  - grey with ✕ = asked and not done, once the day is over;
-  - three lighter steps, **no sign** = up to 33 %, 66 %, 99 % (✓ means done; a part day never gets one);
+  - three lighter steps, **no sign** = 1–33 %, 34–66 %, 67–99 % (✓ means done; a part day never gets one);
   - the habit's colour with a white ✓ = goal met (100 %);
-  - the darkest step with a bold ✓ = more than the goal;
-  - plain grey = asked but not over yet (today before anything is logged, due days still to come);
-  - dashed outline = nothing asked (not scheduled, a week goal's other days), with ⏩ skipped or ⏸ paused;
+  - the darkest step with **the same ✓** = more than the goal. Every sign is one size and weight everywhere (`HeatDraw.sign`), in every view and on every step: only the colour deepens (the user, 3 Oct 2026);
+  - **grey = the day was due**: grey with ✕ = not done (once the day is over), grey with ⏩ = skipped, grey with ⏸ = paused;
+  - plain grey = due but not over yet (today before anything is logged, due days still to come);
+  - dashed outline = nothing asked that day (not scheduled, a week goal's other days). **The only dashed square**;
   - a thin light-grey square outline = today (never a heavy ring);
   - nothing = before the start.
 
   A week or month total colours a day by its share of a fair day (70 km a week: 10 km fills a day). A limit kept = full colour with ✓, over = grey ✕, today = plain grey until the day is over. Quit: clean = colour ✓, slip = grey ✕. Streaks are a number in the headline, never the colour.
 - **The palette is `HeatPalette`** (grey + 5 steps for every habit colour, light and dark): each step at one OKLCH lightness for every hue, so every colour's steps look equally strong; neighbours ≥ 0.07 apart in OKLab (≥ 0.043 under colour-vision deficiencies). Regenerate with `Day Marks Evidence/scripts/make.py` (in the report's folder); never pick shades by eye. Light mode darkens toward "more"; dark mode brightens. **Sign contrast, measured on all 13 colours (WCAG 1.4.11, 3:1):** white ✓ ≥ 3.11:1 on the goal step and ≥ 5.14:1 on light mode's "more"; dark mode's "more" is its brightest step (white would be 2:1), so its ✓ is near-black, ≥ 7.4:1. ✕, ⏩, ⏸ grey ≥ 4.4:1; dashed outline ≥ 3.2:1 on the card.
-- **The key is always at the top of Progress (`HeatKey`)**, and under the habit page's month: the real squares, the steps named in per cent, then still to come, today, not scheduled, skipped and paused. Never folded away.
+- **The key is always at the top of Progress (`HeatKey`)**, and under the habit page's month, in three rows: **Progress** (1–33 %, 34–66 %, 67–99 %, goal met 100 %, more), shown in green with "each habit uses its own colour"; **Due that day** (not done, skipped, paused); **Other days** (still to come, not scheduled, today). The real squares; never folded away.
 - **Week and Month cards are worked out in the store** (`progressSnapshot(…, weekCards: true)`), never in a body. Year's layout (`YearLayout`) is made once per snapshot and shared by every card.
 
 ## Groups (built 30 Sep 2026)
