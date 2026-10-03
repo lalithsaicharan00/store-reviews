@@ -160,7 +160,10 @@ final class RoutineCalendarUITests: XCTestCase {
         openCalendar()
         let today = app.buttons[dayID(Date())]
         XCTAssertTrue(today.isSelected)
-        XCTAssertEqual(today.value as? String, "Today. " + count)
+        // The calendar's dates are plain since 2 Oct 2026 (the user: no done-of-planned ring); the day's count is the
+        // bottom bar's.
+        XCTAssertEqual(today.value as? String, "Today")
+        XCTAssertTrue(count.hasSuffix(" done"), "The day bar still counts the day: \(count)")
         shot("calendar-progress")
         app.buttons["Next month"].tap()
         let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: Date())!
@@ -175,7 +178,7 @@ final class RoutineCalendarUITests: XCTestCase {
         for _ in 0..<6 { app.buttons["Previous month"].tap() }
         let old = Calendar.current.date(byAdding: .month, value: -5, to: Date())!
         let oldDay = app.buttons[dayID(old)]
-        XCTAssertEqual(oldDay.value as? String, "No habits scheduled")
+        XCTAssertEqual(oldDay.value as? String ?? "", "", "A past date is a plain date")
         shot("calendar-no-habits")
         oldDay.tap()
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label CONTAINS '0 of 0 done'")).firstMatch.waitForExistence(timeout: 3))
@@ -185,14 +188,17 @@ final class RoutineCalendarUITests: XCTestCase {
     }
 
     func testCalendarUpdatesAfterLoggingAndPastNavigation() {
+        // The day's count moved from the calendar's rings to the bottom bar (2 Oct 2026): logging updates the bar.
+        let bar = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Today,'")).firstMatch
+        let before = bar.label
         openCalendar()
         let today = app.buttons[dayID(Date())]
-        let before = today.value as! String
+        XCTAssertEqual(today.value as? String, "Today")
         today.tap()
         app.buttons["Mark Call family done"].tap()
         XCTAssertTrue(app.buttons["Undo Call family"].waitForExistence(timeout: 3))
+        XCTAssertNotEqual(bar.label, before, "The day bar counts the new tick")
         openCalendar()
-        XCTAssertNotEqual(app.buttons[dayID(Date())].value as? String, before)
         let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
         if Calendar.current.component(.month, from: yesterday) != Calendar.current.component(.month, from: Date()) { app.buttons["Previous month"].tap() }
         // A tap where the day is drawn: XCUITest calls the calendar's last row "not hittable" (1 Oct 2026, nothing
@@ -225,8 +231,10 @@ final class RoutineCalendarUITests: XCTestCase {
         app.buttons["focus-primary"].tap()
         app.buttons["Done"].tap()
         XCTAssertFalse(app.buttons["Start Anytime routine"].exists)
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Today, 1 of 1 done'")).firstMatch.exists,
+                      "The day bar counts the finished day")
         openCalendar()
-        XCTAssertEqual(app.buttons[dayID(Date())].value as? String, "Today. 1 of 1 done")
+        XCTAssertEqual(app.buttons[dayID(Date())].value as? String, "Today")
         shot("calendar-complete")
         app.navigationBars["Go to a day"].buttons["Done"].tap()
         // Just added, Anytime stays open after it's finished; open it if it folded.
