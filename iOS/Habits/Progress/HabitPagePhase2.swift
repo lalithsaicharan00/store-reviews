@@ -128,33 +128,31 @@ struct QuitNumbers: View {
         let history = store.quitHistory(of: habit, now: now)
         let current = history.last.flatMap { $0.endedBy == .ongoing ? $0 : nil }
         let best = history.map { $0.length(now: now) }.max() ?? 0
-        VStack(spacing: 10) {
-            HStack(spacing: 0) {
-                VStack(spacing: 2) {
-                    if let current {
-                        // Ticks every second inside this tile only, anchored at the run's start (Design Rules).
-                        TimelineView(.periodic(from: current.start, by: 1)) { context in
-                            Text(Self.clock(context.date.timeIntervalSince(current.start)))
-                                .font(.title3.weight(.semibold).monospacedDigit()).lineLimit(1).minimumScaleFactor(0.6)
-                        }
-                    } else {
-                        Text("Paused").font(.title3.weight(.semibold))
+        // The habit page's Overall record card (3 Oct 2026): the run going on now first, then the best run and a total
+        // a slip can't take away, then Log a Slip. The next milestone is in the Milestones card.
+        VStack(alignment: .leading, spacing: WeekSpacing.card) {
+            VStack(alignment: .leading, spacing: WeekSpacing.pair) {
+                if let current {
+                    // Ticks every second inside this text only, anchored at the run's start (Design Rules).
+                    TimelineView(.periodic(from: current.start, by: 1)) { context in
+                        Text(Self.clock(context.date.timeIntervalSince(current.start)))
+                            .font(.title2.weight(.semibold).monospacedDigit()).lineLimit(1).minimumScaleFactor(0.6)
                     }
-                    Text("This run").font(.caption).foregroundStyle(.secondary)
+                    .accessibilityLabel("This run")
+                } else {
+                    Text("Paused").font(.title2.weight(.semibold))
                 }
-                .frame(maxWidth: .infinity)
-                .accessibilityElement(children: .combine)
-                VStack(spacing: 2) {
-                    Text(Format.days(best)).font(.title3.weight(.semibold).monospacedDigit())
-                    Text("Best run").font(.caption).foregroundStyle(.secondary)
-                }
-                .frame(maxWidth: .infinity)
-                .accessibilityElement(children: .combine)
+                Text((current == nil ? "" : "This run · ") + "best " + Format.days(best))
+                    .font(.subheadline).foregroundStyle(.secondary)
+                Text(store.quitTotalLine(of: habit, now: now)).font(.subheadline).foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("quit-total-line")
             }
-            Text(store.quitTotalLine(of: habit, now: now)).font(.footnote).foregroundStyle(.secondary)
-                .accessibilityIdentifier("quit-total-line")
-            if let next = store.nextMilestone(of: habit, now: now) {
-                Text(next).font(.footnote).foregroundStyle(.secondary)
+            HStack(spacing: 12) {
+                Button("Log a Slip…", systemImage: "arrow.uturn.backward.circle") { showSlip = true }
+                    .buttonStyle(.bordered)
+                    .accessibilityIdentifier("habit-log-slip")
+                if let id = lastSlip { SlipUndoLine(id: id) { withAnimation { lastSlip = nil } } }
             }
             // Money saved (report §10.5, Phase 3): optional, set here, never asked for.
             if let saved = store.moneySaved(of: habit, now: now) {
@@ -168,15 +166,8 @@ struct QuitNumbers: View {
                     .buttonStyle(.borderless)
                     .accessibilityIdentifier("quit-set-cost")
             }
-            HStack(spacing: 12) {
-                Button("Log a Slip…", systemImage: "arrow.uturn.backward.circle") { showSlip = true }
-                    .buttonStyle(.bordered)
-                    .tint(habit.color.color)
-                    .accessibilityIdentifier("habit-log-slip")
-                if let id = lastSlip { SlipUndoLine(id: id) { withAnimation { lastSlip = nil } } }
-            }
         }
-        .padding(.vertical, 4)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .sheet(isPresented: $showSlip) { LogSlipSheet(habit: habit) { id in withAnimation { lastSlip = id } } }
         .sheet(isPresented: $showCost) { QuitCostSheet(habit: habit).analyticsScreen(nil)
             .onAppear { store.analytics.count(.moneyView, ticket: store.analytics.ticket) } }

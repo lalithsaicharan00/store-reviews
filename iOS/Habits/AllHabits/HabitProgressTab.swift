@@ -19,7 +19,8 @@ struct HabitProgressTab: View {
             .pageItem()
         if habit.kind == .quit {
             VStack(alignment: .leading, spacing: WeekSpacing.card) {
-                CardTitle(title: "Overall record", subtitle: "Since " + store.quitStartDay(of: habit).date(calendar: store.calendar)
+                // "Tracking since": the header's "Quitting since" is the run going on now, which can be later.
+                CardTitle(title: "Overall record", subtitle: "Tracking since " + store.quitStartDay(of: habit).date(calendar: store.calendar)
                     .formatted(.dateTime.day().month(.abbreviated).year()))
                 // The live run, the best run, clean days and slips, and Log a Slip (report §10.3).
                 QuitNumbers(habit: habit)

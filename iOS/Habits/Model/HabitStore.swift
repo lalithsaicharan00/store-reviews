@@ -2522,7 +2522,7 @@ final class HabitStore {
                 if [3, 5, 7].contains(weekday) && d % 10 != 0 || weekday == 1 && d % 4 == 0 {
                     entries.append(Entry(habitID: running.id, day: day, value: 1))
                 }
-                if d % 3 != 1 { entries.append(Entry(habitID: cycle.id, day: day, value: Double([4, 6, 9, 10, 12, 15, 22][d % 7]))) }
+                if d % 3 != 1 { entries.append(Entry(habitID: cycle.id, day: day, value: Double([8, 11, 14, 16, 18, 21, 26][d % 7]))) }
             }
         }
         if ProcessInfo.processInfo.arguments.contains("-perf-history") {

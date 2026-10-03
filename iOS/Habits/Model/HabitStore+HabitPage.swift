@@ -233,8 +233,8 @@ extension HabitStore {
             headline = doneDays == 1 ? "Done on 1 day" : "Done on \(doneDays) days"
             detail = eligible > 0 ? "Goal met on \(met) of \(plannedDays(eligible))" : nil
         case .checklist:
-            headline = met == 1 ? "Every step on 1 day" : "Every step on \(met) days"
-            detail = HabitCopy.amount(total, "steps") + " done in all"
+            headline = HabitCopy.amount(total, "steps") + " done"
+            detail = eligible > 0 ? "Every step on \(met) of \(plannedDays(eligible))" : nil
         case .times, .amount, .time:
             headline = progressValue(total, now) + " recorded"
             detail = eligible > 0 ? "Goal met on \(met) of \(plannedDays(eligible))" : nil
@@ -249,7 +249,10 @@ extension HabitStore {
             detail = eligible > 0 ? "Within the limit in \(met) of \(periods(eligible))" : nil
         }
         var best: String?
-        if let bestDay, shape != .once, shape != .checklist, !now.atMost, bestValue > 0 {
+        // A best day means something only where a day can hold more than one: amounts, time, several checks a day.
+        let countsAmounts = now.kind == .duration || { if case .amount = now.kind { return true }; return false }()
+            || (now.kind == .check && dayGoal(of: now) > 1)
+        if let bestDay, countsAmounts, !now.atMost, bestValue > 0 {
             best = "Best day " + progressValue(bestValue, rule(habit, on: bestDay)) + " · "
                 + bestDay.date(calendar: calendar).formatted(.dateTime.day().month(.abbreviated))
         }
@@ -364,7 +367,9 @@ extension HabitStore {
         let totalSteps = totalLadder.map { n in
             MilestoneStep(value: n, reached: n <= record.metDates.count ? record.metDates[n - 1] : nil)
         }
-        tracks.append(MilestoneTrack(kind: .inTotal, title: "In total", unit: record.unit == "days" ? "times" : record.unit,
+        // Goals met in all: "times" for day goals ("goal met 50 times"), days for a limit (days within it), else the period.
+        let totalUnit = record.unit == "days" ? (habit.atMost ? "days" : "times") : record.unit
+        tracks.append(MilestoneTrack(kind: .inTotal, title: "In total", unit: totalUnit,
                                      current: record.met, best: nil, steps: totalSteps))
         return tracks
     }
