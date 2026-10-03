@@ -1,7 +1,7 @@
 # Today — Filter, Times of Day and Order (item 5): research first
 
 Written by Claude (Claude Code), 3 October 2026, from the user's own points (item 5 of
-[Next Up](<Next Up — The User's List, 2 Oct.md>)). **Research only until the user approves a design.** Then the build
+[Next Up](<Next Up — The User's List, 2 Oct.md>)). **Research done 3 Oct: [27. Arranging and Filtering Today — What People Expect](<../../../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/27. Arranging and Filtering Today — What People Expect.md>). Nothing is built until the user decides.** Then the build
 gets its own checklist.
 
 ## The user's points
@@ -15,21 +15,21 @@ gets its own checklist.
 - [ ] **Order inside a time of day: not "by time" by default.** Most people don't add reminders; they just put a habit
   in a time of day. Sorting by reminder time only fits habits that have one. Find what people expect: the order they
   added them, the order they'd do them, A to Z, their own order…
-- [ ] **Check the existing sorting research; if there isn't any, research it.** (Checked 3 Oct: there's no dedicated
+- [x] **Check the existing sorting research; if there isn't any, research it.** (Checked 3 Oct: there's no dedicated
   report; "Times, Day Sections and Reminders" has a few lines, from 2 of 4 reviewers in one report.)
-- [ ] **Design from the user's mental model.** Before suggesting anything: how do people think about this, what do
+- [x] **Design from the user's mental model.** Before suggesting anything: how do people think about this, what do
   they expect, how do they think it should work. Research that, then design on it.
 - [ ] **Very intuitive, never over-complicated.** The fewest controls and ideas that cover it.
 
 ## The research
 
-- [ ] Review corpora (App Store, Play, native apps): ordering, sorting, reordering and drag; finding how to edit,
+- [x] Review corpora (App Store, Play, native apps): ordering, sorting, reordering and drag; finding how to edit,
   rename, add or delete sections and categories; filtering by category. Counts, a hand-read sample per theme, every
   quote and ID verified (Research/CLAUDE.md).
-- [ ] Reuse the Day Structure whole-corpus coding (8,439 hand-coded reviews) for times of day and groups.
-- [ ] Platform conventions: how the iPhone's own apps and Apple's guidance teach filtering, sorting, editing sections
+- [x] Reuse the Day Structure whole-corpus coding (8,439 hand-coded reviews) for times of day and groups.
+- [x] Platform conventions: how the iPhone's own apps and Apple's guidance teach filtering, sorting, editing sections
   and reordering, and what people already know from them.
-- [ ] Re-check the earlier reports (Today Top Area 5, 8, 13, 17, 18, 21, 23, 24, 25; Day Structure) against the
+- [x] Re-check the earlier reports (Today Top Area 5, 8, 13, 17, 18, 21, 23, 24, 25; Day Structure) against the
   findings.
-- [ ] Report: what people expect, one recommended design with reasons, what it leaves out to stay simple.
-- [ ] Mockup images of Today, the menus and reordering, so the user can see it before deciding.
+- [x] Report: what people expect, one recommended design with reasons, what it leaves out to stay simple.
+- [x] Mockup images of Today, the menus and reordering, so the user can see it before deciding.
