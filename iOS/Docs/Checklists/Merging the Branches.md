@@ -93,16 +93,16 @@ should be merged from them.
 | `claude/gracious-newton-exo5ow` | The rename, now in `main`; also inside `claude/server-and-sync` |
 | `claude/integration-check-b` | Temporary: a copy of `integration` so two halves of the tests could run at once |
 | `claude/perf-bisect-habit-page` | Scratch: the habit page with one part left out per speed scenario (`PerfBisect`). Never merge it |
-| `claude/server-and-sync` | Every commit is in `main` (third round, T3, 1 Oct). The hardening session still pushes there first and moves `main` after each tested step: **safe to delete whenever it's level with `main`** (`git log main..claude/server-and-sync` prints nothing) |
+| `claude/server-and-sync` | **Level with `main`, checked 3 Oct** (0 commits ahead). Every commit is in `main` (third round, T3, 1 Oct). The hardening session still pushes there first and moves `main` after each tested step: **safe to delete whenever it's level with `main`** (`git log main..claude/server-and-sync` prints nothing) |
 | `claude/serene-wright-mcvmrx` | Nothing beyond `main` (a session's starting branch); already deleted |
 | `analytics` | Fully in `main` (third round, T4, 2 Oct); already deleted (gone from GitHub by 2 Oct 12:00) |
-| `claude/progress-week-research` | **Keep: in progress.** The Week visual research and five options (2 Oct); not in `main` |
+| `claude/progress-week-research` | **Safe to delete** (3 Oct): its two research commits (the Week visual research and five options, 2 Oct) were merged into `claude/progress-week-cards` and go to `main` with it |
 | `claude/progress-week-cards` | **Needs merging into `main`** (checked 3 Oct, 08:30 UTC). Progress's Week, Month and Year as one heat map (signs, no dates; ✓ only when the goal is met; grey for every due day; 24-pt squares; Year scrolls sideways), the same squares on the habit's page, the collapsible key, and the research reports behind them. 31 commits not in `main`; `main` has 15 newer: merge `main` into it first, run `check_rules.sh` and the UI tests (WeekCards, Progress, Undo, Today, Groups), then move `main`. **Delete it after that merge.** What it holds and every CI run: `Docs/Checklists/Progress Week — Habit Cards Build.md` |
 | `claude/progress-week-cards-merge-check`, `claude/habit-details-ci`, `claude/habit-details-ci-2`, `claude/habit-details-perf` | **Safe to delete** (3 Oct): temporary copies of `claude/progress-week-cards` so its tests and speed runs could run at once (one branch keeps only one waiting run). Nothing was ever committed on them alone |
-| `claude/weekly-overview-stats-ly55gk` | **Safe to delete** (verified 3 Oct with `git cherry`): research only; its three commits (the weekly overview and weekly cards reports) are all on `claude/progress-week-cards`; the only one that isn't is its own branch note saying so |
+| `claude/weekly-overview-stats-ly55gk` | **Already deleted** (gone from GitHub by 3 Oct, 15:30 UTC). Was safe to delete (verified 3 Oct with `git cherry`): research only; its three commits (the weekly overview and weekly cards reports) are all on `claude/progress-week-cards`; the only one that isn't is its own branch note saying so |
 | `claude/today-arrange-research` | Report 27 and its checklist (3 Oct); inside `claude/today-edit-mode`, so in `main` with it: **safe to delete** |
 | `claude/today-edit-mode` | Arrange Your Day (item 5), tested and merged into `main` (fast-forward, 3 Oct): **safe to delete** once the user has looked at it on the iPhone |
-| `integration` | Once nobody works on it: `main` is the same |
+| `integration` | **Safe to delete** (checked 3 Oct): nothing in it that `main` lacks (0 commits ahead) |
 
 **Keep:** `main`, `ci-results` (CI writes its results there) and every `archive/…` branch. Everything else is in
 `main` once T4 is done: `analytics` included (its pull request #3 shows as merged then).
