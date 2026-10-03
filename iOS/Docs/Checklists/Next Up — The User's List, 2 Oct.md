@@ -22,20 +22,23 @@ tick each when it's done and link what was built or written. Every item follows
 
 ## Next, one after the other
 
-- [ ] **2. The habit page needs a serious visual revamp** (the page a habit opens to from Progress or Habits). Again
+- [x] **2. The habit page needs a serious visual revamp** (the page a habit opens to from Progress or Habits). Again
   not the data: how everything is presented.
-  - **Being built, 3 Oct** (branch `claude/progress-week-cards`): History · Notes · Progress tabs, Add Entry, Year in
-    Pixels, milestones as cards. Checklist: [Habit Details Page — Build](<Habit Details Page — Build.md>).
+  - **Done and merged into `main`, 3 Oct 2026 (18:55 UTC, `4da8999`)** after every UI test class passed: History ·
+    Notes · Progress tabs, Add Entry, Year in Pixels, milestones as cards. Checklist: [Habit Details Page — Build](<Habit Details Page — Build.md>).
+    Still yours: a look on the iPhone (U9), mainly the Year in Pixels (H22).
 - [ ] **3. Account out of Backup & Export.** Backup & Export holds only backup and export (the backup account it
   uses can stay there). Making an account, signing in and deleting the account are not backup things.
   - Account up front: the ≡ sidebar shows the account state, at the bottom or wherever fits, e.g. "No account"
     with a clear "Create an account". Research where it goes and what it says.
-- [ ] **4. Editing past entries: research.** People must be able to edit entries of past days, not only today's,
+- [x] **4. Editing past entries: research.** People must be able to edit entries of past days, not only today's,
   including from Habits → a habit's page. The user's idea: tabs inside each habit's page (to be researched, not
   decided). Start from what exists: `Docs/Checklists/Easy Undo and Fixing Progress.md` (research done 30 Sep, its
   build waiting) and the Day sheet, which already edits one day's entries; find how reachable past days are.
   - *3 Oct:* mostly answered by item 2's habit page: its History tab lists every past day, each opens the Day sheet
     (Add Entry, edit any entry, the day before or after), and Go to Date reaches any day. Check what's left once it's merged.
+  - *Done 3 Oct 2026:* merged into `main` with item 2. Every past day is reachable (History, Go to Date, the Day sheet's
+    ‹ day ›) and every entry can be added, edited or taken back there. Nothing left.
 - [x] **5. The Filter becomes the place to arrange Today.** *Built 3 Oct 2026 on `claude/today-edit-mode`, tests
   passed, merged to `main` 3 Oct; waiting for the user's look on the iPhone (U9); the user changed the plan after research (report 27): Filter only shows less, and Edit on Today becomes
   "Arrange Your Day". Build checklist: `Today — Arrange Your Day (item 5 build).md`.* Original point: From Filter (beside +) people should also edit the times
@@ -49,6 +52,10 @@ tick each when it's done and link what was built or written. Every item follows
   research and one rule per kind of habit (check-off, weekly goal, amount, timed, limit, quit, task).
   - *Added 3 Oct:* today it's inconsistent: some rows say "3/3 steps" or "3/3 cups", others "25 cups left today".
     Goals differ, but the wording must follow one mental model everywhere (Today, the sheets, widgets, the habit page).
+  - *Researched and built 3 Oct 2026, testing:* one line under every name saying what today asks (how far along when
+    counted, how often when a single tick, then the time; tasks say "Task"; quit rows their best run). Report [Today's
+    Rows — The Line Under the Name, Notes and Spacing](<../../../Research/Research Reports/Day Structure and Organization/Today's Rows — The Line Under the Name, Notes and Spacing.md>);
+    checklist [Today — Row Layout, Subtext, Notes and the Task Sheet](<Today — Row Layout, Subtext, Notes and the Task Sheet.md>).
 - [ ] **8. Swipe actions on Today's rows: research.** Swiping a row left offers only Add note. The frequent actions
   - *Built 3 Oct 2026, testing:* swipe left Note/Skip/Pause, swipe right a named Undo. See [Today — Row Sheet, Swipe Actions, Order and Tap Again](<Today — Row Sheet, Swipe Actions, Order and Tap Again.md>).
   (edit habit, skip, pause, …) should be there too, possibly using the right swipe as well. Research which actions,
@@ -84,7 +91,7 @@ tick each when it's done and link what was built or written. Every item follows
     own place in ≡, Progress?), how it's reminded, and its stats. Then a design for the user to decide, then build.
 
 - [ ] **13. Tapping any habit on Today opens the same sheet** (added 3 Oct 2026; after the Progress work, or alongside
-  - *Built 3 Oct 2026, testing:* the row opens its Day sheet (every habit kind, tasks excepted), one shape for all; Delete in its ⋯ menu. Same checklist.
+  - *Built 3 Oct 2026, testing:* the row opens its Day sheet (every habit kind, and tasks too since the user's next request: Done, date, Do Tomorrow), one shape for all; Delete in its ⋯ menu. Same checklist.
   it as separate work). One mental model, whatever the kind of habit.
   - **Today it's inconsistent:** tapping a row's body opens a bottom sheet only for amounts and timed habits (the
     "Log amount / Log time manually" sheet, `HabitRow` `.onTapGesture` when `logsNumbers`). Check-offs, checklists,

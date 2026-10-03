@@ -28,4 +28,18 @@ Next Up items this covers: **7** (what each row says under its name), **13** (th
 
 ## Decisions and progress
 
-(Filled in as the research and the build go.)
+Research: [Today's Rows — The Line Under the Name, Notes and Spacing](<../../../Research/Research Reports/Day Structure and Organization/Today's Rows — The Line Under the Name, Notes and Spacing.md>)
+(3 Oct 2026: 1,537 reviews read by hand, 330 on topic). Design Rules' new section "A row's shape". Built in `c751e33`.
+
+| Point | Decision, and where it's built |
+|---|---|
+| L1 | `DoneOrder.bottom` is the default again (Preferences, Today, Appearance); Stay in Place stays in Appearance. U13, Design Rules, the report and Next Up 21 say so |
+| L2 | A task's row opens its Day sheet: Done, its date and **Do Tomorrow** (one-time task), the note, Edit Task; Archive and Delete in ⋯; no day paging for a one-time task (`DaySheet`) |
+| L3, L5, L10 | After a log: `RowAfterLog`, small capsule buttons on one line under the text (named Undo, Add Note/Edit Note, a milestone), 8 pt apart, aligned with the name; `ViewThatFits` drops the milestone, then the words, before anything wraps |
+| L4 | Notes in their own sheet from Today (`NoteSheet` via `store.noteTarget`): Cancel, Save, Delete Note; Add Note becomes **Edit Note**; the note's text isn't shown in the row |
+| L6 | A row is at most three lines: name, its line, the after-log buttons (and those only while the offer lasts) |
+| L7, L8 | One line under every name (`HabitRow.rowLine`): how far along when counted (`3/8 glasses`, `1/3 times`, `2/3 this week`, `1/4 steps`, `1/2 cups max`), how often when a single tick (`Every day`, `Every Mon, Wed and Fri`), then the time. Tasks: `Task · 5:00 PM`. Steps: no line. Skipped: `Skipped today` |
+| L9 | `RowSpace`: 2 name→line, 12 icon→text, 6 band→buttons, 8 between buttons; rows centred on the 44-pt band |
+| L10 | Icon, text pair, streak and button centred on one band, so icons line up whatever the row holds; names use the row's width |
+| L11 | Quit row: one line (`Best 12 days`, or "Since …" with streaks hidden), live count on the right; no "Slipped" button line; Log Slip on its swipe, menu and Day sheet; Undo Slip and Add Note after a slip |
+| L12 | Tests: `TodayRowLayoutUITests` (one line on every kind; after-log buttons on one line; the note sheet and Edit Note; the task sheet and Do Tomorrow; the quit swipe), updated scenario test; speed: the task sheet and note sheet in `tap-today` |
