@@ -462,6 +462,9 @@ struct PartHeader: View {
     let isOpen: Bool
     let onStart: (() -> Void)?
     let onToggle: () -> Void
+    /// "Starts 6 AM" under a timed section's name, folded or open; nil for Anytime, Quitting and Paused. On its own
+    /// line, so it never takes room from the folded icons or "N left" (the user, 3 Oct 2026).
+    var subtitle: String? = nil
 
     /// The width for the name, Now and the icons, and the name's full one-line width.
     @State private var room: CGFloat = 0
@@ -500,6 +503,7 @@ struct PartHeader: View {
     }
 
     private var titleArea: some View {
+        VStack(alignment: .leading, spacing: 1) {
             HStack(spacing: 8) {
                 Text(shownTitle).font(.headline).lineLimit(1)
                     .background {
@@ -513,11 +517,15 @@ struct PartHeader: View {
                         .transition(.opacity.combined(with: .scale(scale: 0.9, anchor: .leading)))
                 }
             }
+            if let subtitle {
+                Text(subtitle).font(.footnote).foregroundStyle(.secondary).lineLimit(1)
+            }
+        }
             .frame(maxWidth: .infinity, alignment: .leading)
             .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { room = $0 }
             // VoiceOver reads the header as one button; Start stays its own button.
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel([title, isNow ? "Now" : nil, status ?? "\(habits.count) habits"].compactMap { $0 }.joined(separator: ", "))
+            .accessibilityLabel([title, subtitle, isNow ? "Now" : nil, status ?? "\(habits.count) habits"].compactMap { $0 }.joined(separator: ", "))
             .accessibilityValue(isOpen ? "Open" : "Folded")
             .accessibilityAddTraits(.isButton)
             .accessibilityHint(isOpen ? "Folds this part" : "Opens this part")

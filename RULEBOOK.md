@@ -106,6 +106,7 @@ results, what's still open) · `iOS/Tools/perf/` (scripts) · the speed tables o
 | U10 | **Progress only reads; its overview counts habits, not ticks** | It must agree with Today's day bar |
 | U11 | **Words:** say it the way people do ("Log time manually", "For today", "Planned for Wed 1 Oct"); see Design Rules' "Words the app never uses" | Copy that confused people |
 | U12 | **Before changing a screen, read its section in Design Rules and its spec** | Per-screen decisions that agents undid |
+| U13 | **Order is the person's own.** Nothing reorders itself: not reminder times, a new day, a sync or an edit. New habits and tasks go to the end of their section; sorting is a one-off action; only done rows settle (U4). Timed sections follow their times; Anytime and Quitting are placed by the person (the user, 3 Oct 2026) | 35 of 179 order reviews: "the app reshuffles my list" (report 27) |
 
 *Evidence:* [Design Rules — Don't Regress](<iOS/Design Rules — Don't Regress.md>) (every screen's decisions, with the
 research behind each) · `Research/Research Reports/` (the research, [index](<Research/Research Reports/README.md>)).

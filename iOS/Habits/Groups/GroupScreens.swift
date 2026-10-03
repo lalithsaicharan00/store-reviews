@@ -22,16 +22,20 @@ extension View {
     }
 }
 
-/// Today's Filter (the button beside +): the home of groups (Navigation, Round 3; Today reports 13, 17, 18). Groups
-/// has Edit on its heading line; each chip's number is how many habits it shows on the day open on Today.
+/// Today's Filter (the button beside +): what Today shows, and the home of groups (Navigation, Round 3; Today reports 13,
+/// 17, 18, 27). Show: All Habits or one group, each chip's number being how many habits it shows on the day open on
+/// Today. Then New Group and Edit Groups, always in sight; then Hide Completed Habits and Hide Completed Tasks, each its
+/// own switch (the user, 3 Oct 2026). Only "show less" lives here; arranging the day is Today's Edit.
 struct FilterSheet: View {
     let day: LocalDay
     /// The chosen group's ID, or "" for All. Remembered when the app reopens.
     @Binding var selection: String
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
+    @AppStorage(Preferences.hideDoneHabits) private var hideDoneHabits = false
+    @AppStorage(Preferences.hideDoneTasks) private var hideDoneTasks = false
     @State private var path = NavigationPath()
-    /// Half height for choosing a chip (Today stays in view behind it), full height once a group screen opens.
+    /// Half height for choosing (Today stays in view behind it), full height once a group screen opens.
     @State private var detent = PresentationDetent.medium
 
     var body: some View {
@@ -40,32 +44,43 @@ struct FilterSheet: View {
             List {
                 Section {
                     if store.groups.isEmpty {
+                        GroupChip(title: "All Habits", selected: true) {}
+                            .accessibilityIdentifier("group-chip-all")
                         // The first group: this is where people find groups (report 17).
                         Text("Group habits by area, like Health or Work, then filter by them here.")
                             .foregroundStyle(.secondary)
                             .accessibilityIdentifier("groups-first-line")
-                        NewGroupChip { path.append(GroupPage.new) }
                     } else {
-                        GroupChipRow(selection: current, counts: counts(), showNew: true,
+                        GroupChipRow(selection: current, counts: counts(), allTitle: "All Habits",
                                      onSelect: { selection = $0?.uuidString ?? "" },
-                                     onEmpty: { path.append(GroupPage.edit($0.id)) },
-                                     onNew: { path.append(GroupPage.new) })
+                                     onEmpty: { path.append(GroupPage.edit($0.id)) })
                     }
                 } header: {
-                    HStack {
-                        Text("Groups")
-                        Spacer()
-                        if !store.groups.isEmpty {
-                            Button("Edit") { path.append(GroupPage.list) }
-                                .font(.subheadline.weight(.semibold))
-                                .textCase(nil)
-                                .accessibilityIdentifier("groups-edit")
-                        }
-                    }
+                    Text("Show")
                 } footer: {
-                    if !store.groups.isEmpty {
-                        Text("Numbers show habits on \(dayText).")
+                    if !store.groups.isEmpty { Text("Numbers show habits on \(dayText).") }
+                }
+                Section {
+                    Button { path.append(GroupPage.new) } label: {
+                        Label("New Group", systemImage: "plus")
                     }
+                    .accessibilityIdentifier("group-new")
+                    if !store.groups.isEmpty {
+                        NavigationLink(value: GroupPage.list) {
+                            Label("Edit Groups", systemImage: "pencil")
+                        }
+                        .accessibilityIdentifier("groups-edit")
+                    }
+                } header: {
+                    Text("Groups")
+                }
+                Section {
+                    Toggle("Hide Completed Habits", isOn: $hideDoneHabits)
+                        .accessibilityIdentifier("hide-done-habits")
+                    Toggle("Hide Completed Tasks", isOn: $hideDoneTasks)
+                        .accessibilityIdentifier("hide-done-tasks")
+                } footer: {
+                    Text("Completed ones leave Today a moment after the last tick, and come back when these are off.")
                 }
             }
             .navigationTitle("Filter")

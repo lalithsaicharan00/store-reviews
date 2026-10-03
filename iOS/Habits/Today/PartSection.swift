@@ -14,9 +14,14 @@ struct PartSection: View {
     let isNow: Bool
     /// Done habits go below the rest (≡ → Appearance → Done Habits; the default).
     let doneLast: Bool
+    /// The Filter's "Hide Completed Habits" and "Hide Completed Tasks" (the user, 3 Oct 2026). Done rows go only when
+    /// Today settles, like done rows sinking, so nothing vanishes under a finger (Rulebook U4).
+    let hideDoneHabits: Bool
+    let hideDoneTasks: Bool
     let highlighted: String?
     let onStart: () -> Void
-    let onEditSections: () -> Void
+    /// Opens Arrange Your Day (touch and hold on the header: a shortcut, never the only way in).
+    let onArrange: () -> Void
     let visibleRows: VisibleRows
     @Environment(HabitStore.self) private var store
     @Environment(TodayLayout.self) private var layout
@@ -35,17 +40,22 @@ struct PartSection: View {
         // Done habits sink to the bottom, keeping their order otherwise. The row just logged stays put while it offers
         // "Add note" (or its note is being written), so the offer is where the person is looking.
         let held = store.noteOffer.flatMap { $0.day == day ? $0.habit : nil }
+        let hides = hideDoneHabits || hideDoneTasks
+        let shown = !hides || layout.holding ? items : items.filter { item in
+            done[item.id] != true || item.habit.id == held || !(item.habit.kind == .task ? hideDoneTasks : hideDoneHabits)
+        }
         let fresh = doneLast
-            ? items.filter { done[$0.id] != true || $0.habit.id == held } + items.filter { done[$0.id] == true && $0.habit.id != held }
-            : items
+            ? shown.filter { done[$0.id] != true || $0.habit.id == held } + shown.filter { done[$0.id] == true && $0.habit.id != held }
+            : shown
         let ordered = layout.order(part, fresh: fresh)
         Section {
             PartHeader(title: title, habits: items.map(\.habit), left: left, isNow: isNow, isOpen: open,
                        onStart: isToday && items.contains(where: { $0.habit.atMost || done[$0.id] != true }) ? onStart : nil,
-                       onToggle: { layout.setOpen(part, !open, reduceMotion: reduceMotion) })
+                       onToggle: { layout.setOpen(part, !open, reduceMotion: reduceMotion) },
+                       subtitle: store.section(part).start.map(DaySection.startsText))
                 .id(TodayView.headerKey(part))
                 .contextMenu {
-                    Button("Edit Times of Day…", systemImage: "rectangle.split.3x1", action: onEditSections)
+                    Button("Arrange Your Day", systemImage: "arrow.up.arrow.down", action: onArrange)
                     Button(open ? "Fold" : "Open", systemImage: open ? "chevron.up" : "chevron.down") {
                         layout.setOpen(part, !open, reduceMotion: reduceMotion)
                     }

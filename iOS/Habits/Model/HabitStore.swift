@@ -29,6 +29,7 @@ final class HabitStore {
     @ObservationIgnored private var writeQueue: Task<Void, Never>?
     /// Tried once per launch, so a failing write can't loop through reloads.
     @ObservationIgnored private var triedPlacementUpgrade = false
+    @ObservationIgnored private var triedOrderUpgrade = false
     /// False until the first load finishes; the UI waits rather than flashing an empty screen.
     private(set) var isLoaded = false
     /// A failed open/read must never look like an empty installation to system delivery.
@@ -603,6 +604,120 @@ final class HabitStore {
                                                reminders: habits[i].reminderRecords(), at: Date.now.millis)
             }
             withAnimation { sections = cleaned }
+        }
+    }
+
+    // MARK: Arranging Today (Arrange Your Day, 3 Oct 2026)
+
+    /// Where Anytime and Quitting sit among the times of day, as last saved (empty: the default, both at the top).
+    /// Read through `todayCards`, which puts the timed sections in time order around them.
+    private(set) var cardOrder: [String] = []
+
+    /// Today's cards from top to bottom: section IDs and `.quittingCard`. Timed sections always follow their times;
+    /// only Anytime and Quitting are placed by the person (the user, 3 Oct 2026). A handful of strings, so it's simply
+    /// worked out when asked.
+    var todayCards: [String] {
+        let timed = sections.filter { !$0.isAnytime }.map(\.id)
+        let known = Set(timed)
+        var slots = cardOrder.filter { $0 == .anytime || $0 == .quittingCard || known.contains($0) }
+        for card in [String.quittingCard, .anytime].reversed() where !slots.contains(card) { slots.insert(card, at: 0) }
+        // A time of day added since: its place goes just after the one before it in time (or before the first).
+        for (i, id) in timed.enumerated() where !slots.contains(id) {
+            if i > 0, let after = slots.firstIndex(of: timed[i - 1]) { slots.insert(id, at: after + 1) }
+            else if let first = slots.firstIndex(where: { known.contains($0) }) { slots.insert(id, at: first) }
+            else { slots.append(id) }
+        }
+        var next = timed.makeIterator()
+        return slots.map { known.contains($0) ? next.next()! : $0 }
+    }
+
+    enum CardMove { case up, down, top, bottom }
+
+    /// Moves Anytime or Quitting among the cards. The timed sections keep their time order around it.
+    func moveCard(_ id: String, _ move: CardMove) {
+        guard id == .anytime || id == .quittingCard else { return }
+        var cards = todayCards
+        guard let from = cards.firstIndex(of: id) else { return }
+        let to: Int = switch move {
+        case .up: max(0, from - 1)
+        case .down: min(cards.count - 1, from + 1)
+        case .top: 0
+        case .bottom: cards.count - 1
+        }
+        guard to != from else { return }
+        cards.remove(at: from)
+        cards.insert(id, at: to)
+        perform { [self] _ in
+            let json = String(decoding: try JSONEncoder().encode(cards), as: UTF8.self)
+            try await repository.saveSetting(key: Keys.cardOrder, value: json)
+            withAnimation(.snappy) { cardOrder = cards }
+        }
+    }
+
+    /// Every habit and task each card holds, whatever the day: Arrange Your Day shows them all (the user, 3 Oct 2026).
+    /// Not archived, and not one-time tasks already done. In the person's own order, habits and tasks together (tasks
+    /// research, 3 Oct 2026: people want one order for the day and to drag one-time tasks too; nobody asked for habits
+    /// or tasks first). One pass over the habits for every card.
+    func cardMembers() -> [String: [Habit]] {
+        var cards: [String: [Habit]] = [:]
+        for habit in habits where !habit.archived {
+            if habit.kind == .quit { cards[.quittingCard, default: []].append(habit); continue }
+            if habit.kind == .task, let due = habit.dueDay, isDone(habit, on: due) { continue }
+            var seen = Set<String>()
+            for placement in placements(of: habit) where seen.insert(placement.section).inserted {
+                cards[placement.section, default: []].append(habit)
+            }
+        }
+        return cards
+    }
+
+    func members(ofCard card: String) -> [Habit] { cardMembers()[card] ?? [] }
+
+    enum SectionSort { case reminderTime, name }
+
+    /// "Sort by Reminder Time" or "Sort A to Z" for one card, once: it rewrites that card's order, and dragging carries
+    /// on from there. Habits without a reminder keep their order, after the timed ones.
+    func sortCard(_ card: String, by sort: SectionSort) {
+        let list = members(ofCard: card)
+        let sorted: [Habit]
+        switch sort {
+        case .name:
+            sorted = list.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+        case .reminderTime:
+            func first(_ habit: Habit) -> Int {
+                let times = placements(of: habit).first { $0.section == card }?.times ?? []
+                return times.first.map { dayMinute($0.minuteOfDay) } ?? .max
+            }
+            sorted = list.enumerated().sorted { a, b in
+                let (ta, tb) = (first(a.element), first(b.element))
+                return ta != tb ? ta < tb : a.offset < b.offset
+            }.map(\.element)
+        }
+        reorder(sorted.map(\.id))
+    }
+
+    /// Whether any habit in this card has a reminder time there, so "Sort by Reminder Time" means something.
+    func hasReminderTimes(inCard card: String) -> Bool {
+        members(ofCard: card).contains { habit in placements(of: habit).contains { $0.section == card && !$0.times.isEmpty } }
+    }
+
+    /// Once, on the first launch with the new rules: the order Today showed (timed rows by reminder time, then the
+    /// rest) becomes the saved order, so moving to "your own order" changes nothing on screen (report 27, D6).
+    private func keepShownOrder() {
+        perform { [self] _ in
+            let time: [UUID: Int] = Dictionary(uniqueKeysWithValues: habits.map { habit in
+                (habit.id, placements(of: habit).first?.times.first.map { dayMinute($0.minuteOfDay) } ?? .max)
+            })
+            let next = habits.enumerated().sorted { a, b in
+                let (ta, tb) = (time[a.element.id]!, time[b.element.id]!)
+                return ta != tb ? ta < tb : a.offset < b.offset
+            }.map(\.element)
+            for i in next.indices where next[i].id != habits[i].id {
+                try await repository.saveHabit(habit: next[i].record(position: i), steps: next[i].stepRecords(),
+                                               reminders: next[i].reminderRecords(), at: Date.now.millis)
+            }
+            try await repository.saveSetting(key: Keys.orderV1, value: "1")
+            if next.map(\.id) != habits.map(\.id) { habits = next }
         }
     }
 
@@ -1247,6 +1362,7 @@ final class HabitStore {
             var loadedCosts: [UUID: HabitCost] = [:]
             var loadedGroups: [HabitGroup] = []
             var manualGroups = false
+            var loadedCards: [String] = []
             sections = DaySection.defaults
             var upgradedV1 = false, repaired = false
             settingKeys = Set(snapshot.settings.map(\.key))
@@ -1260,6 +1376,8 @@ final class HabitStore {
                 case Keys.groups:
                     loadedGroups = (try? JSONDecoder().decode([HabitGroup].self, from: Data(setting.value.utf8))) ?? []
                 case Keys.groupsOrder: manualGroups = setting.value == "manual"
+                case Keys.cardOrder:
+                    loadedCards = (try? JSONDecoder().decode([String].self, from: Data(setting.value.utf8))) ?? []
                 case Keys.sections:
                     if let list = try? JSONDecoder().decode([DaySection].self, from: Data(setting.value.utf8)), !list.isEmpty {
                         sections = list
@@ -1329,6 +1447,7 @@ final class HabitStore {
             dayNotes = loadedDayNotes
             descriptions = loadedDescriptions
             costs = loadedCosts
+            cardOrder = loadedCards
             applyGroups(manualGroups ? loadedGroups : HabitGroup.sortedAZ(loadedGroups), manual: manualGroups)
             // Habits archived before archive dates were kept: the day after their last log (or their first day), so
             // their history stays and nothing after it counts.
@@ -1344,6 +1463,7 @@ final class HabitStore {
             isLoaded = true
             dataVersion &+= 1
             if upgradedV1 && !repaired && !triedPlacementUpgrade { triedPlacementUpgrade = true; repairPlacement() }
+            if !settingKeys.contains(Keys.orderV1) && !triedOrderUpgrade { triedOrderUpgrade = true; keepShownOrder() }
             onChange?()
         } catch {
             isStorageReady = false
@@ -1371,6 +1491,10 @@ final class HabitStore {
         static let sections = "day_sections"
         static let placementV1 = "placement_v1"
         static let placementV2 = "placement_v2"
+        /// Where Anytime and Quitting sit among the times of day on Today (`todayCards`).
+        static let cardOrder = "today_order"
+        /// Once: the order Today showed (timed rows by reminder time) became the saved order (`keepShownOrder`).
+        static let orderV1 = "order_v1"
     }
 
     /// Once: development builds briefly let times place habits, and turned a habit in several times
@@ -1654,17 +1778,22 @@ final class HabitStore {
         }
     }
 
-    /// Puts `ids` (one group in All Habits) in this order, keeping every other habit where it is. Today follows it.
+    /// Puts `ids` (one group in All Habits, or one card on Today) in this order, keeping every other habit where it is.
+    /// Today follows it. The list changes at once, so a dragged row stays where it was dropped; the write follows
+    /// (Rulebook S7), saving each moved habit as it is when the write runs.
     func reorder(_ ids: [UUID]) {
+        let wanted = Set(ids)
+        let slots = habits.indices.filter { wanted.contains(habits[$0].id) }
+        var next = habits
+        for (slot, id) in zip(slots, ids) { if let h = habits.first(where: { $0.id == id }) { next[slot] = h } }
+        let moved = Set(next.indices.filter { next[$0].id != habits[$0].id }.map { next[$0].id })
+        guard !moved.isEmpty else { return }
+        habits = next
         perform { [self] telemetry in
-            let slots = habits.indices.filter { ids.contains(habits[$0].id) }
-            var next = habits
-            for (slot, id) in zip(slots, ids) { if let h = habits.first(where: { $0.id == id }) { next[slot] = h } }
-            for i in next.indices where next[i].id != habits[i].id {
-                try await repository.saveHabit(habit: next[i].record(position: i), steps: next[i].stepRecords(),
-                                               reminders: next[i].reminderRecords(), at: Date.now.millis)
+            for i in habits.indices where moved.contains(habits[i].id) {
+                try await repository.saveHabit(habit: habits[i].record(position: i), steps: habits[i].stepRecords(),
+                                               reminders: habits[i].reminderRecords(), at: Date.now.millis)
             }
-            withAnimation { habits = next }
             analytics.count(.reorder, ticket: telemetry)
         }
     }

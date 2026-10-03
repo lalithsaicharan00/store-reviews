@@ -223,13 +223,27 @@ Report: [The Progress Page — What People Need, and How to Build It](<../Resear
 
 Plan: [Groups — What to Build](<Docs/Specs/Groups — What to Build.md>), from 2,228 group reviews (Day Structure report, Part 2) and the Today top-area reports. Checklist: `Docs/Checklists/Groups.md`.
 
-- **Optional, never forced, invisible until the first one.** No preset groups; the habit form's Group row appears only once a group exists. Forced categorisation drove people away.
+- **Optional, never forced.** No preset groups. *Changed 3 Oct 2026 (the user):* the habit form always shows its Group row (None by default, with New Group), so a group can be made there as well as from the Filter. Forced categorisation drove people away: never require one.
 - **A filter, not tabs and not headings on Today.** Day sections already head the list; group headings under them would be two levels. One group at a time; one group per habit.
 - **Never hide a habit without saying so.** All shows everything, habits with no group are in All, the Filter icon fills and a "● Health ✕" chip heads the list while a group is chosen. Anything that would leave a row out of sight (a timer bar, a notification, a habit added to another group) shows All first.
 - **One editor however many ways in** (`GroupForm`, `GroupsView`): Filter's Edit, an empty chip and the picker's New Group all open it. The ≡ menu doesn't repeat Filter.
-- **One order everywhere:** A to Z until the person drags; then "Your order" with Sort A to Z. Progress's bars follow it and are never ranked by rate.
+- **Groups' order:** A to Z until the person drags; then "Your order" with Sort A to Z. Progress's bars follow it and are never ranked by rate. (Habits' order is in "Arrange Your Day" below.)
+- **The Filter only shows less** (report 27): Show (All Habits or one group), New Group and Edit Groups always in sight, then Hide Completed Habits and Hide Completed Tasks as two separate switches. While anything is hidden the Filter icon fills and a chip heads Today ("Completed hidden ✕"), one tap back. Hidden done rows leave only when Today settles (`TodayLayout.hold`), never under a finger.
 - **Chip numbers are habits shown on the day open**, empty groups "–" and last. Counts are worked out only while the Filter sheet is open.
 - **Group numbers take a list of habits** (`dayScore(on:habits:)`, `progressSnapshot(…group:)`); day scores are cached per group. Today and Progress remember their own choice.
+
+## Arrange Your Day: Edit on Today (built 3 Oct 2026)
+
+Research: [27. Arranging and Filtering Today](<../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/27. Arranging and Filtering Today — What People Expect.md>). The user's points: [checklist](<Docs/Checklists/Today — Arrange Your Day (item 5 build).md>).
+
+- **Today's normal layout doesn't change beyond these points** (the user: "don't change anything drastically"). No heading on Today. The bottom keeps only "Note for the Day"; "Edit Times of Day" is gone from it.
+- **Each timed section says when it starts, under its name: "Starts 6 AM"** (start only; ":00" dropped on the hour), folded or open, on its own line so it never takes room from the folded icons or "N left". Anytime, Quitting and Paused have none.
+- **Edit turns Today into "Arrange Your Day"** (never "Edit Today"), with one plain line saying what can be done. It lists **every habit** in each card, not only today's (one-time tasks already done are left out), Anytime and Quitting included.
+- **Habits' order is the person's own.** A new habit or task goes to the end of its section; reminder times never reorder Today. Habits and tasks share one order in each section, and both can be dragged (tasks research, report 27). Sorting is a one-off action (··· → By Reminder Time / A to Z); dragging carries on from it. *Supersedes "timed rows by their earliest time".*
+- **Timed sections follow their times; only Anytime and Quitting move** (··· → Move Up / Down / to Top / to Bottom). Paused stays last.
+- **Each card's ··· menu, short names:** Rename, Change Time (timed only), Sort habits, Move (Anytime and Quitting only), Delete (timed only; its habits move to Anytime, and the dialog says so).
+- **New or changed times split what they overlap** (`SectionPlan`): the form shows "Your day" with every section's new times, and a dialog lists them before anything is split. Covering a whole section is refused; nothing is ever deleted by a split. `ArrangeCheck` (`-arrangecheck`) covers every direction.
+- **One tip, on Edit, at the right moment** (`ArrangeTip`): only once some section has two or more habits and Today has been opened on three different days; once; gone when Edit is used; never in test launches.
 
 ## Ticking off, folding and settings (1 Oct 2026)
 
@@ -315,10 +329,10 @@ These UI-test checks described behaviour the spec replaced. They were rewritten 
 
 **Decided and final. Don't reopen it.** The top-left button is a ≡ menu that slides in from the left over Today. Everything that isn't used every day lives there: **Progress, Habits (All Habits) and Tasks leave Today's top bar**, and every setting goes in too. The user overrode Round 3's suggestions to keep Progress in the top bar and to open ≡ as a sheet. Research: [Navigation, Round 3](<../Research/Research Reports/Home Screen and Visual Design/Navigation Pattern/Navigation, Round 3 — The Menu, Filter and Two Ways In.md>). Checklist: [Sidebar Menu](<Docs/Checklists/Sidebar Menu.md>). Code: `Habits/Menu/`. *Supersedes: the avatar at the top left, the Progress and All habits (☑︎ `checklist`) top-bar buttons, and Round 2's avatar-and-icons top bar.*
 
-- **Today's top bar is ≡ · Filter · +.** Filter's icon is `line.3.horizontal.decrease.circle`, never the bare three lines, which look like ≡.
+- **Today's top bar is ≡ · Edit · (Filter +)** (3 Oct 2026). Edit is a word in its own capsule (Apple: keep text-labelled actions apart from symbol ones); Filter and + share one. While arranging: only Done. Filter's icon is `line.3.horizontal.decrease.circle`, never the bare three lines, which look like ≡.
 - **Menu order, most used first:** Today · Progress · Habits · Tasks | Times of Day · Reminders · Appearance | Backup & Export · Privacy | Plus | Help & Feedback · About. Row names are the pages' titles. Icons are monochrome (colour is for habits only).
 - **Every row pushes its page onto Today's own navigation stack** (`MenuModel.path`), so Back and the edge swipe return to Today. A page that isn't built opens a "coming" page that says what it will hold; wire the real page in `MenuPage`.
-- **One screen per thing, however many ways in:** ≡ → Times of Day and Today's "Edit Times of Day" show the same `TimesOfDayList`; Habits and Tasks are one `AllHabitsView(kind:)`.
+- **One screen per thing, however many ways in:** ≡ → Times of Day (`TimesOfDayList`) and Today's Edit (`ArrangeDayView`) open the same `SectionEditor` for a time of day; Habits and Tasks are one `AllHabitsView(kind:)`.
 - **Open:** ≡, or a swipe from Today's left edge (only on Today itself: on a pushed page that swipe is Back). **Close:** tap the dimmed Today, drag the menu left, choose a row, or VoiceOver's escape. Reduce Motion fades it instead of sliding.
 - **Speed:** Today never reads `MenuModel.isOpen` or `drag`, so the menu opening, closing or following a finger never redraws Today. Keep it that way; `PerformanceUITests.testMenuOpenClose` measures it.
 

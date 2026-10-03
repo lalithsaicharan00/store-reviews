@@ -469,13 +469,13 @@ struct HabitForm: View {
             switch type {
             case .quit:
                 quitSection
-                if showsGroup { Section { groupRow } }
+                Section { groupRow }
             case .task:
                 taskSection
                 if taskRepeats { Section { repeatRow } }
                 Section {
                     timeOfDayRow
-                    if showsGroup { groupRow }
+                    groupRow
                     remindersRow
                 }
                 if taskRepeats { startEndSection }
@@ -484,7 +484,7 @@ struct HabitForm: View {
                 if type == .amount { tapSection }
                 Section {
                     timeOfDayRow
-                    if showsGroup { groupRow }
+                    groupRow
                     remindersRow
                 }
                 startEndSection
@@ -618,10 +618,8 @@ struct HabitForm: View {
         .accessibilityLabel("\(title), \(value)")
     }
 
-    /// Groups are invisible until the person makes one (Day Structure report §2.8: never forced).
-    private var showsGroup: Bool { !store.groups.isEmpty || groupID != nil }
-
-    /// Group: what area of life it's in, beside Time of Day (when). Optional; None by default.
+    /// Group: what area of life it's in, beside Time of Day (when). Optional; None by default, never forced. Always
+    /// shown, so a group can be made here as well as from Today's Filter, before any exists (the user, 3 Oct 2026).
     private var groupRow: some View {
         screenRow("Group", value: groupID.flatMap { id in store.groups.first { $0.id == id }?.name } ?? "None") {
             GroupPicker(selection: $groupID)
