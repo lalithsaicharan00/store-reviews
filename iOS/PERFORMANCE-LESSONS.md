@@ -5,8 +5,8 @@ snappy, fast, the best possible experience. Note down everything found, so no ag
 any other app, ever repeats these mistakes."
 
 **Every agent reads this before changing any app code**, in this project or another. The rules this project enforces
-are in [`PERFORMANCE.md`](PERFORMANCE.md) (loaded into every session; `Tools/perf/check_rules.sh` fails on the ones
-code can show). This file is the why behind them, written so any SwiftUI app can use it: each lesson is a mistake
+are in section S of [the Rulebook](../RULEBOOK.md) (loaded into every session; `Tools/perf/check_rules.sh` fails on
+the ones code can show). This file is the evidence behind them, written so any SwiftUI app can use it: each lesson is a mistake
 that was actually made here, what it cost (measured, not guessed), the fix, and how to catch it. Add every new finding
 here the same day, with its numbers.
 

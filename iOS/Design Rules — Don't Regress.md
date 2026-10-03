@@ -1,6 +1,8 @@
 # Design Rules — Don't Regress
 
-Written by Claude (Claude Code), 28 September 2026. **Read this before changing any screen in the app.** Every rule below exists because an agent broke it once and the user had to catch it. Each rule links to the research behind it. If a rule has to change, change it here too, with the reason.
+Written by Claude (Claude Code), 28 September 2026. **The rules for every change are in [the Rulebook](../RULEBOOK.md)
+(3 Oct 2026); read it first.** This file keeps each screen's decisions: read a screen's section before changing that
+screen. Every rule below exists because an agent broke it once and the user had to catch it. Each rule links to the research behind it. If a rule has to change, change it here too, with the reason.
 
 ## How to work
 

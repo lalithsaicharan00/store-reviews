@@ -1,5 +1,5 @@
 #!/bin/bash
-# Checks the speed rules in iOS/PERFORMANCE.md that can be checked by reading the code. Runs anywhere (Linux cloud
+# Checks the speed rules in the Rulebook (RULEBOOK.md, section S) that can be checked by reading the code. Runs anywhere (Linux cloud
 # sessions too) in a second: run it before every push that touches iOS/. CI runs it before building.
 # Usage (from the repo root or iOS/): iOS/Tools/perf/check_rules.sh
 cd "$(dirname "$0")/../.." || exit 2
@@ -9,32 +9,32 @@ fail() { echo "SPEED RULE BROKEN: $1"; echo "    $2"; FAIL=1; }
 # 1. The phone build is optimised (the user installs the Debug configuration from Xcode).
 P=Habits.xcodeproj/project.pbxproj
 grep -q 'SWIFT_OPTIMIZATION_LEVEL = "-Onone"' "$P" &&
-  fail "Debug builds Swift with -Onone" "PERFORMANCE.md rule 1: the phone runs Debug; keep SWIFT_OPTIMIZATION_LEVEL = \"-O\""
+  fail "Debug builds Swift with -Onone" "Rulebook S1: the phone runs Debug; keep SWIFT_OPTIMIZATION_LEVEL = \"-O\""
 [ "$(grep -c 'KOTLIN_FRAMEWORK_BUILD_TYPE = release' "$P")" -ge 2 ] ||
-  fail "The Kotlin core isn't built as release in both configurations" "PERFORMANCE.md rule 1"
+  fail "The Kotlin core isn't built as release in both configurations" "Rulebook S1"
 
 SWIFT=$(find Habits HabitsLiveActivity Shared -name '*.swift')
 
 # 2. A TimelineView anchored at .now or .distantPast redraws nonstop (froze the app, 28 Sep).
 grep -nE 'periodic\(from: *(\.now|\.distantPast|Date\(\))' $SWIFT &&
-  fail "TimelineView anchored at .now/.distantPast" "PERFORMANCE.md rule 4: anchor it at a fixed date"
+  fail "TimelineView anchored at .now/.distantPast" "Rulebook S4: anchor it at a fixed date"
 
 # 3. Only small views tick. Each file allowed a TimelineView is listed here with what ticks in it.
 # Progress's quit row (a once-a-minute clock in one Text) and the habit page's "This run" tile (one Text) tick alone.
 ALLOWED="Habits/Today/TodayRows.swift Habits/Today/TimerBar.swift Habits/Today/RoutinePlayer.swift HabitsLiveActivity/HabitTimerLiveActivity.swift Habits/Progress/ProgressScreen.swift Habits/Progress/HabitPagePhase2.swift"
 for f in $(grep -lE '^[^/]*TimelineView *\(' $SWIFT); do
   case " $ALLOWED " in *" $f "*) ;; *)
-    fail "New TimelineView in $f" "PERFORMANCE.md rule 3: only the small view showing the time may tick; never a screen or list. If it is one row's clock, add the file to ALLOWED in this script";;
+    fail "New TimelineView in $f" "Rulebook S3: only the small view showing the time may tick; never a screen or list. If it is one row's clock, add the file to ALLOWED in this script";;
   esac
 done
 
 # 4. A new identity on every redraw rebuilds the view and its whole subtree each time.
 grep -nE '\.id\((UUID\(\)|Date\(\)|\.now)' $SWIFT &&
-  fail ".id(UUID()) / .id(Date())" "PERFORMANCE.md rule 6: give views stable identities"
+  fail ".id(UUID()) / .id(Date())" "Rulebook S6: give views stable identities"
 
 # 5. Entries change only through HabitStore.insertEntry/removeEntry/replaceEntry, which keep the indexes and remembered numbers right.
 grep -nE '_ = entries\.remove|withAnimation *\{ *entries\.|entries\.removeAll' Habits/Model/HabitStore.swift &&
-  fail "HabitStore changes entries directly" "PERFORMANCE.md rule 5: use insertEntry / removeEntry(at:) / replaceEntry(_:at:)"
+  fail "HabitStore changes entries directly" "Rulebook S5: use insertEntry / removeEntry(at:) / replaceEntry(_:at:)"
 
 # 6. In a List with a selection, NavigationLink(value:) only selects the row: the page never opens (30 Sep).
 for f in $(grep -l 'List(selection:' $SWIFT); do
@@ -43,22 +43,22 @@ done
 
 # 7. Timers in views: a ticking publisher redraws its screen every tick.
 grep -nE 'Timer\.publish|Timer\.scheduledTimer' $SWIFT &&
-  fail "Timer in app code" "PERFORMANCE.md rule 3: sleep in a .task until the next moment that matters instead"
+  fail "Timer in app code" "Rulebook S3: sleep in a .task until the next moment that matters instead"
 
 # 8. A shadow that's sometimes clear still renders offscreen on every row.
 grep -nE '\.shadow\(color: .*: *\.clear' $SWIFT &&
-  fail "Conditional clear shadow" "PERFORMANCE.md rule 10: apply the shadow only when it shows, on a shape"
+  fail "Conditional clear shadow" "Rulebook S10: apply the shadow only when it shows, on a shape"
 
 # 9. Swift Charts' first layout froze the habit page for 1–2.7 s when it scrolled to a chart (1 Oct 2026).
 grep -nE '^import Charts' $SWIFT &&
-  fail "import Charts" "PERFORMANCE.md rule 12: draw charts with LightBarChart / LightLineChart (one Canvas pass)"
+  fail "import Charts" "Rulebook S12: draw charts with LightBarChart / LightLineChart (one Canvas pass)"
 
 # 10. A formatter built on every call was nearly all of a Today row's own time (1 Oct 2026). A formatter is made once:
 # in a static, filling a cache (?? {), or with a "made once" comment just above saying where it's kept.
 for hit in $(grep -nE '(Number|Date|DateComponents|Measurement|ByteCount|List|RelativeDateTime|PersonNameComponents|DateInterval|ISO8601Date)Formatter\(\)' $SWIFT | cut -d: -f1,2); do
   f=${hit%%:*}; n=${hit##*:}
   sed -n "$((n > 6 ? n - 6 : 1)),${n}p" "$f" | grep -qiE 'static (let|var)|\?\? \{|made once' ||
-    fail "A formatter made on every call ($f:$n)" "PERFORMANCE.md rule 8: make it once (a static, or a cache) and keep it"
+    fail "A formatter made on every call ($f:$n)" "Rulebook S8: make it once (a static, or a cache) and keep it"
 done
 
 # 11. A lazy grid inside a List or Form row sends the list into an endless self-sizing loop: on the iPhone the app was
@@ -68,7 +68,7 @@ done
 LAZY_OK="Habits/AddHabit/Appearance.swift Habits/Today/DayBar.swift Shared/PhoneWidgets.swift"
 for f in $(grep -lE 'Lazy[VH]Grid *\(' $SWIFT); do
   case " $LAZY_OK " in *" $f "*) ;; *)
-    fail "A lazy grid in $f" "Design Rules: never put a lazy grid inside a List row (a plain Grid). If it's in a ScrollView, add the file to LAZY_OK";;
+    fail "A lazy grid in $f" "Rulebook S13: never put a lazy grid inside a List or Form row (a plain Grid). If it's in a ScrollView, add the file to LAZY_OK";;
   esac
 done
 

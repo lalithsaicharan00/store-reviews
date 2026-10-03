@@ -2,8 +2,8 @@
 
 Written by Claude (Claude Code), 2 October 2026, from the user's own list: "These are the things that I want to
 update, but not exactly right now. We will update them one after the other." Work them **in order, one at a time**;
-tick each when it's done and link what was built or written. Every change under `iOS/` still follows
-`iOS/PERFORMANCE.md` and `Design Rules — Don't Regress.md`.
+tick each when it's done and link what was built or written. Every item follows
+[the Rulebook](<../../../RULEBOOK.md>), and a screen's section in `Design Rules — Don't Regress.md`.
 
 ## Now
 
