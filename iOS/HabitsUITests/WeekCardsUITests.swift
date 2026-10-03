@@ -62,6 +62,16 @@ final class WeekCardsUITests: XCTestCase {
         openWeek(["-year-demo", "-appearance.theme", "light"])
         XCTAssertTrue(app.buttons["progress-row-Swim"].exists, "A card per habit")
         walk("w-light")
+        // The key folds and opens again (left open for the tests after).
+        let key = app.descendants(matching: .any)["progress-key"]
+        let toggle = app.buttons["heat-key-toggle"]
+        XCTAssertTrue(toggle.waitForExistence(timeout: 3), "The key's header")
+        toggle.tap()
+        XCTAssertTrue(key.waitForNonExistence(timeout: 3), "Folded")
+        sleep(1)
+        shot("w-key-folded")
+        toggle.tap()
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Open again")
         // Last week: the caption says so, and nothing is "so far".
         app.buttons["progress-previous"].tap()
         sleep(1)

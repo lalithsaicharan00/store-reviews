@@ -186,8 +186,8 @@ struct ProgressScreen: View {
                         if !store.groups.isEmpty {
                             GroupChipRow(selection: snapshot.group) { groupRaw = $0?.uuidString ?? "" }
                         }
-                        // What the squares mean, always shown at the top (the user, 2 Oct 2026).
-                        HeatKey()
+                        // What the squares mean, at the top, folded or open (the user, 2–3 Oct 2026).
+                        HeatKeySection()
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, WeekSpacing.tight)

@@ -33,9 +33,10 @@ enum HeatSize {
 /// `Day Marks Evidence/scripts/make.py`): neighbouring steps differ by at least 0.07 in OKLab, about 3.5 times the
 /// smallest visible difference, and by at least 0.043 under every colour-vision deficiency. "Gray" habits get a cool
 /// slate tint so their steps never read as the not-done grey.
-/// Signs, measured on every colour (3 Oct 2026; WCAG 1.4.11 asks 3:1): ✓ is white on the goal step (≥ 3.11:1) and on
-/// light mode's darkest step (≥ 5.14:1); dark mode's "more" step is its brightest, where white is 2:1, so its ✓ is
-/// near-black (≥ 7.4:1). ✕, ⏩ and ⏸ are a grey at ≥ 4.4:1 on the grey square and the card; the dashed outline
+/// Signs, measured on every colour (3 Oct 2026; WCAG 1.4.11 asks 3:1). The ✓ is one colour on both ✓ steps in a mode
+/// (the user, 3 Oct 2026: never black on one and white on the other): white in light mode (≥ 3.11:1 on the goal step,
+/// ≥ 5.14:1 on "more"); in dark mode, where "more" is the brightest step and white reaches only 2:1, a deep shade of the
+/// habit's own colour (OKLCH 0.24, chroma 0.05, the step's hue): ≥ 4.41:1 on the goal step, ≥ 7.27:1 on "more". ✕, ⏩ and ⏸ are a grey at ≥ 4.4:1 on the grey square and the card; the dashed outline
 /// ≥ 3.2:1 on the card.
 enum HeatPalette {
     static func color(_ level: Int, _ habit: HabitColor, dark: Bool) -> Color {
@@ -49,8 +50,28 @@ enum HeatPalette {
     static func sign(_ dark: Bool) -> Color { dark ? signDark : signLight }
     static func dash(_ dark: Bool) -> Color { dark ? dashDark : dashLight }
     static func today(_ dark: Bool) -> Color { dark ? todayDark : todayLight }
-    /// The ✓ on the goal step and the "more" step.
-    static func check(_ level: Int, dark: Bool) -> Color { dark && level >= 5 ? Color(white: 0.11) : .white }
+    /// The ✓, the same on the goal step and the "more" step.
+    static func check(_ habit: HabitColor, dark: Bool) -> Color {
+        guard dark else { return .white }
+        return hex(darkChecks[habit] ?? darkChecks[.green]!)
+    }
+
+    /// Dark mode's ✓ per colour, with its contrast on the goal step / the "more" step.
+    private static let darkChecks: [HabitColor: Int] = [
+        .red: 0x331511,     // 4.47 / 7.37
+        .orange: 0x301903,  // 4.76 / 7.53
+        .yellow: 0x281E00,  // 4.89 / 7.63
+        .green: 0x0C2611,   // 5.20 / 8.00
+        .mint: 0x002523,    // 5.10 / 7.88
+        .teal: 0x00242B,    // 5.04 / 7.84
+        .cyan: 0x002333,    // 4.97 / 7.77
+        .blue: 0x0F1F37,    // 4.84 / 7.69
+        .indigo: 0x1A1C36,  // 4.68 / 7.54
+        .purple: 0x271830,  // 4.47 / 7.27
+        .pink: 0x331416,    // 4.41 / 7.37
+        .brown: 0x2D1B01,   // 4.85 / 7.65
+        .gray: 0x131E37,    // 4.90 / 7.73
+    ]
 
     private static let greyLight = hex(0xEBEBF0), greyDark = hex(0x2C2C2E)
     private static let signLight = hex(0x6C6C70), signDark = hex(0x98989F)
@@ -102,7 +123,6 @@ struct HeatDraw {
     private var crosses = Path()
     private var signs = Path()
     private var checks = Path()
-    private var moreChecks = Path()
     private var today = Path()
 
     /// Every sign's size and line, the same on every square (the user, 3 Oct 2026): ✓ 12 pt with a 2.4-pt line, ✕ 9.5 pt
@@ -126,8 +146,7 @@ struct HeatDraw {
             let step = max(0, min(5, n))
             fills[step, default: Path()].addRoundedRect(in: rect, cornerSize: corner, style: .continuous)
             if step == 0 { cross(rect) }
-            if step == 4 { Self.check(rect, into: &checks) }
-            if step == 5 { Self.check(rect, into: &moreChecks) }
+            if step >= 4 { Self.check(rect, into: &checks) }
         case .off(.notScheduled):
             let inset = dashWidth / 2
             dashes.addRoundedRect(in: rect.insetBy(dx: inset, dy: inset),
@@ -150,8 +169,7 @@ struct HeatDraw {
         let rounded = { (width: CGFloat) in StrokeStyle(lineWidth: width, lineCap: .round, lineJoin: .round) }
         context.stroke(crosses, with: .color(HeatPalette.sign(dark)), style: rounded(2))
         context.fill(signs, with: .color(HeatPalette.sign(dark)))
-        context.stroke(checks, with: .color(HeatPalette.check(4, dark: dark)), style: rounded(2.4))
-        context.stroke(moreChecks, with: .color(HeatPalette.check(5, dark: dark)), style: rounded(2.4))
+        context.stroke(checks, with: .color(HeatPalette.check(color, dark: dark)), style: rounded(2.4))
         context.stroke(today, with: .color(HeatPalette.today(dark)), lineWidth: 1.5)
     }
 
@@ -361,6 +379,43 @@ struct HeatKey: View {
     }
 
     static let steps = ["1–33%", "34–66%", "67–99%", "Goal met\n100%", "More\nover 100%"]
+}
+
+/// The key, folded or open (the user, 3 Oct 2026: a separate, collapsible section). Open until the person folds it;
+/// the choice is kept and shared by Progress and every habit's page. `boxed` gives it its own card (Progress); inside a
+/// list section (the habit's page) it draws plainly.
+struct HeatKeySection: View {
+    var boxed = true
+    @AppStorage("heatKey.open") private var open = true
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: WeekSpacing.card) {
+            Button {
+                withAnimation(.snappy(duration: 0.25)) { open.toggle() }
+            } label: {
+                HStack {
+                    Text("What the squares mean").font(.subheadline.weight(.semibold)).foregroundStyle(.primary)
+                    Spacer(minLength: WeekSpacing.tight)
+                    Image(systemName: "chevron.down").font(.footnote.weight(.semibold)).foregroundStyle(.secondary)
+                        .rotationEffect(.degrees(open ? 0 : -90))
+                }
+                .frame(minHeight: 28)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("What the squares mean")
+            .accessibilityValue(open ? "Shown" : "Hidden")
+            .accessibilityHint(open ? "Hides the key" : "Shows the key")
+            .accessibilityIdentifier("heat-key-toggle")
+            if open {
+                HeatKey(boxed: false)
+                    .transition(.opacity)
+            }
+        }
+        .padding(boxed ? WeekSpacing.card : 0)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(boxed ? Color.card : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
 }
 
 /// A habit's year as GitHub's grid (the user, 2–3 Oct 2026): weeks left to right, weekdays top to bottom, months on

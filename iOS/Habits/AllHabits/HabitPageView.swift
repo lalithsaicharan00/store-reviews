@@ -69,6 +69,10 @@ struct HabitPageView: View {
                 }
                 .accessibilityIdentifier("habit-today-progress")
             }
+            // What the squares mean: its own section, folded or open, above the first squares (the user, 3 Oct 2026).
+            if habit.kind != .task {
+                Section { HeatKeySection(boxed: false) }
+            }
             if habit.kind != .quit && habit.kind != .task {
                 Section {
                     HabitMonthView(habit: habit, month: Binding(get: { month ?? Self.firstOfMonth(today, store.calendar) },
@@ -343,7 +347,6 @@ struct HabitMonthView: View {
                     }
                 }
             }
-            HeatKey(boxed: false)
         }
         .padding(.vertical, 4)
         .onAppear { load(current, count: count) }
