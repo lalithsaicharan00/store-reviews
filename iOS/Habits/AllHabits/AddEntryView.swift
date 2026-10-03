@@ -191,10 +191,9 @@ struct AddEntryView: View {
             let bounds = slipBounds
             store.slip(current, on: day, at: min(max(slipTime, bounds.lowerBound), bounds.upperBound), source: .manual)
         }
-        Task { @MainActor in
-            await store.flush()
-            saving = false
-            if store.problem == nil { dismiss() }
-        }
+        // The entry is on screen at once and the write follows (Rulebook S7): waiting for the database kept the sheet
+        // open for seconds behind a busy write queue (a year of demo history, CI 3 Oct 2026). A failed write reloads
+        // and says so on the screen underneath (Today's and the Day sheet's alert).
+        dismiss()
     }
 }
