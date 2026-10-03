@@ -131,7 +131,9 @@ final class ArrangeUITests: XCTestCase {
     /// Filter: All Habits, New Group and the two Hide switches. Hide Completed Habits takes a done habit off Today once
     /// it settles, says so at the top, and one tap brings it back.
     func testHideCompleted() {
-        launch()
+        // Water is done already, so it's hidden until a tap holds Today; on a slow simulator the 1.5 s hold ended before
+        // the test reached Water (3 Oct 2026). A longer pause keeps the test about the rule, not the simulator's speed.
+        launch(["-today.settlePause", "4"])
         app.buttons["filter-button"].tap()
         XCTAssertTrue(app.navigationBars["Filter"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.buttons["group-new"].exists, "New Group, up front")
@@ -149,7 +151,7 @@ final class ArrangeUITests: XCTestCase {
         // Logging Water moves "Add note" off Call family, which would otherwise keep it in place.
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Add ' AND label ENDSWITH ' to Water'")).firstMatch.tap()
         let done = app.buttons["Undo Call family"]
-        XCTAssertTrue(done.waitForNonExistence(timeout: 8), "Gone once Today settles")
+        XCTAssertTrue(done.waitForNonExistence(timeout: 12), "Gone once Today settles")
         shot("a10-hidden")
         app.buttons["hide-done-chip"].tap()
         XCTAssertTrue(app.buttons["Undo Call family"].waitForExistence(timeout: 3), "Back with one tap")

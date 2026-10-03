@@ -60,6 +60,12 @@ final class AppModel {
         scheduler = ReminderScheduler()
         #endif
         var opened: Persistence?
+        if arguments.contains("-uitest") || arguments.contains("-dbname") {
+            // Every UI test starts with Today showing completed habits and tasks: a test that turned "Hide Completed"
+            // on and failed before turning it off hid the habits the next tests tap (3 Oct 2026, merge check).
+            UserDefaults.standard.removeObject(forKey: Preferences.hideDoneHabits)
+            UserDefaults.standard.removeObject(forKey: Preferences.hideDoneTasks)
+        }
         if arguments.contains("-uitest") {
             opened = Persistence.inMemory()
             // Each UI test starts with Progress's view options and the group filters as a new person has them.
