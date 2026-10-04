@@ -10,15 +10,15 @@ roadmap and original implementation rounds are in [Product Roadmap](<../../Produ
 feature work planned until the user starts it. The issues below are recorded reports or validation gaps; an unchecked
 box is not proof that a bug still reproduces on the current build.
 
-**Local commits authorized; remote sync on hold (the user, 4 October 2026):** save documentation changes in local
-commits. Do not push or synchronize with the remote repository until the user explicitly authorizes it. This
-supersedes the earlier hold on committing; the user reports tests are running on `main`. Recording an issue does
-not authorize implementing it or starting another test run.
+**Documentation commit and push authorized (the user, 4 October 2026):** commit the collected documentation and
+push it to `main`. This supersedes the earlier local-only and remote-sync holds for these changes. Use ordinary
+documentation commit messages without test/performance trigger tags or the widget cancellation tag while the
+existing tests run. Recording an issue does not authorize implementing it or starting another test run.
 
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 23).
+  still resolve; give new items the next unused number (currently 33).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item only when its required validation is complete, with the date and relevant commit, test or device
@@ -35,7 +35,9 @@ retain their original order; the issues and validation section comes first under
 
 Item 22 is the user's first issue in the current feedback round and is listed first. Items 11 and 17 are reported
 bugs. Item 16 combines reliability work with a product decision; item 18 is a consistency gap; item 10 is validation
-work. Preserve those distinctions when recording findings.
+work. Preserve those distinctions when recording findings. New feedback items 23–32 (4 October) are recorded
+below as independent tasks: functional/readability issues here, layout and research work under Planned improvements.
+Their placement records scope and priority; implementation has not started.
 
 - [ ] **22. Today row sheet: make logging and wording natural for each habit type, especially check-based habits
   and tasks.** Added 4 October 2026; **issue 1 of the user's current feedback round**. Status: documented from the
@@ -58,6 +60,11 @@ work. Preserve those distinctions when recording findings.
   - **Quantity-based tracking:** adding an individual record does make sense for quantities. Preserve the ability
     to log amounts and inspect or correct individual logs. Differentiate this legitimate logging model from binary
     completion; avoid removing useful logging controls merely to make every sheet look identical.
+  - **History versus Today (clarified by the user, 4 October):** adding an entry from a habit's History tab does
+    make sense. The concern about unnecessary entry controls is specifically the Today sheet for check-based /
+    checklist-based tracking. Review both binary checks and multi-step checklists as applicable; do not remove the
+    History action as a blanket fix for the Today wording problem. History action readability and placement are
+    separate items 26 and 27.
   - **Wording:** review “Add entry,” “Today's entries,” and related headings and actions throughout this sheet.
     “Add entry” itself is confusing, not only its placement on a check-based habit. Choose words that make the
     action clear for each type. No replacement wording has been chosen by the user yet. If the person is viewing a
@@ -91,6 +98,43 @@ work. Preserve those distinctions when recording findings.
     [Today — Row Sheet, Swipe Actions, Order and Tap Again](<Today — Row Sheet, Swipe Actions, Order and Tap Again.md>)
     and [Today — Row Layout, Subtext, Notes and the Task Sheet](<Today — Row Layout, Subtext, Notes and the Task Sheet.md>).
 
+- [ ] **23. Restore streaks on the habit details page.** Added 4 October 2026; a standalone task, not a subtask of
+  the header, Overall Record or milestone redesign.
+  - The user reports streaks used to be visible on this page and were removed during the redesign. Check the earlier
+    presentation and current code, then restore a clear, visible streak presentation.
+  - Preserve the correct meaning for each supported habit and frequency; do not silently label weekly/monthly
+    success as a daily streak. Record what was restored and verify its values against the existing streak logic.
+  - This remains open even if another design item touches the same screen. Documentation does not confirm the
+    regression has been reproduced or fixed.
+
+- [ ] **25. “What the squares mean”: expand automatically only on the first visit to each explanation context.**
+  Added 4 October 2026; a standalone behavior task covering both the habit details page and the main Progress page.
+  - **First visit:** the accordion must already be open when the person first opens the particular habit's details
+    page and reaches its explanation, so the meaning of the squares is visible without discovering an extra tap.
+  - **Main Progress:** apply the same behavior to the first visit to Week, Month, Year, and any other relevant view
+    with this explanation. Seeing Week's explanation must not incorrectly suppress a first-time explanation in
+    Month or Year; seeing one habit's explanation must not consume another habit's first visit.
+  - **Later visits:** once the person has seen that explanation, start it collapsed on subsequent visits. They can
+    manually expand it whenever they want. Leaving it open once must not make it default to open forever.
+  - Record first-view state across normal navigation and app relaunches. Switching dates/periods or rebuilding a
+    view is not a new first visit. Do not automatically collapse it immediately during the first visit; the request
+    is to change the default on the next visit.
+  - Use the exact context of the explanation when implementing this: the applicable habit page or Progress view.
+    Cover every instance of this accordion, and document the state scope so it does not repeat unexpectedly or
+    stay closed for a context the person has never seen. Reset/reinstall and cross-device state policy was not
+    specified by the user.
+  - Verify first visit open → next visit closed → manual reopening works, independently for the relevant habits
+    and Progress ranges. This task must remain separate from card padding and other visual redesigns.
+
+- [ ] **26. History: fix the unreadable Add Entry button.** Added 4 October 2026; a readability issue independent of
+  the action-placement research in item 27.
+  - The user observes a white/light-gray button background with white text, making Add Entry illegible. Verify the
+    current rendered appearance and fix the contrast in the actual button states.
+  - Check light and dark mode and the real iPhone; the label must stay readable. Preserve the action's function.
+    Moving the button to another location alone does not fix its text/background contrast.
+  - Add Entry is appropriate in History; the user explicitly distinguishes this from the Today sheet problem in
+    item 22. Do not solve this by removing History's Add Entry action.
+
 - [ ] **11. Bug: the app sometimes stops responding for ~74 s right after launching signed in** (added 2 Oct, from the
   test runs). `BackupUITests.testDeletingTheAccountAndErasingThisPhone` launches with a test sign-in to the dev server;
   in 4 of 13 runs (1–2 Oct) the app didn't respond for about 74 s right after launch, before the test's first step
@@ -115,6 +159,67 @@ work. Preserve those distinctions when recording findings.
   tested, on the simulator or the iPhone.
 
 ## Planned improvements — build later
+
+- [ ] **24. Habit details: redesign the area above History · Notes · Progress tabs.** Added 4 October 2026.
+  - The requested scope is a modest layout change to the header/content above the tabs on every habit details page.
+    The current arrangement needs a new layout; this request is not a redesign of all three tabs.
+  - Work out a clean hierarchy, alignment and spacing for that area while preserving its existing useful
+    information and actions. Check how the same layout adapts across habit types and longer content.
+  - Keep restoring streaks (item 23) independently tracked; do not hide it inside this layout task. No final header
+    layout or mockup was chosen in this request.
+
+- [ ] **27. History: research where Add Entry and Go to Date should live.** Added 4 October 2026.
+  - Today both buttons are at the very top of the History tab. Research whether to keep them there or move the
+    actions to a persistent/sticky bottom area. The bottom placement is a proposal to evaluate, not a decided layout.
+  - Compare discoverability, reachability, scrolling, native iPhone conventions and whether the controls cover
+    history content. Preserve both adding an entry and navigating to a specific date.
+  - Record the reasoning and design choice before implementation. The Add Entry contrast problem must be fixed
+    independently (item 26), wherever the buttons end up.
+
+- [ ] **28. Notes: research the Add Note button's placement.** Added 4 October 2026; separate from History actions.
+  - In the habit details Notes tab, Add Note is currently near the top beside the search field, in the upper area
+    the user describes as just below the progress bar. Assess whether it should stay there or move to a sticky
+    bottom action instead.
+  - Research a native, discoverable and easy-to-reach arrangement that preserves search and note browsing. Check
+    scrolling, safe-area spacing and keyboard behavior; a bottom action must not obscure notes or search results.
+  - Record the recommended placement before implementing it. The user has asked for research rather than deciding
+    that both History and Notes must use bottom controls.
+
+- [ ] **29. Redesign the Overall Record card.** Added 4 October 2026.
+  - The Overall Record card in the habit details Progress tab does not look good to the user; improve its visual
+    hierarchy and presentation. Record any applicable equivalent in the main Progress page when assessing scope.
+  - Make the information feel deliberately designed, with clear grouping, spacing and readable numbers/labels.
+    Preserve the useful record/statistics content and correctness for each habit type.
+  - This is independent of restoring streaks (item 23), Milestones (item 30) and period-card padding (item 31).
+
+- [ ] **30. Improve the Milestones design — later work.** Added 4 October 2026; explicitly noted by the user as
+  something to work on later, but definitely needed.
+  - The current Milestones presentation looks basic and dull. Improve the card/section design and hierarchy so
+    milestones feel meaningful and visually considered, consistent with the app's style.
+  - Preserve the existing achieved/upcoming milestone information and its meaning; do not treat the visual
+    criticism as a request to change milestone rules. Review any relevant Milestones presentation in Progress and
+    the habit details Progress tab.
+  - Keep this a separate open task. Do not mark it done because Overall Record or Week/Month/Year spacing was fixed.
+
+- [ ] **31. Improve Week, Month and Year card padding and spacing.** Added 4 October 2026; review the main Progress
+  page and the habit details Progress tab wherever these period cards appear.
+  - **Week:** the “Week” heading is almost against the card's top edge; the top padding is too small and looks poor.
+    Increase the breathing room above the heading and improve spacing between the card's internal elements.
+  - **Month:** the same top-edge/padding concern applies. Review both heading inset and the spacing of the content.
+  - **Year / Year in Pixels:** improve spacing and hierarchy here too, so the card/grid and its labels feel balanced.
+  - Apply consistent spacing rules across the period cards, adapted to their content. Check card boundaries,
+    heading-to-content gaps and internal alignment, not only one top padding value. Preserve statistics and square
+    meanings. Verify on the iPhone, including larger text and light/dark mode.
+  - Keep the accordion behavior (item 25), all-date labels (item 32), Overall Record and Milestones separately tracked.
+
+- [ ] **32. Year in Pixels: show every day-number label from 1 through 31.** Added 4 October 2026.
+  - Currently only selected numbers such as 1, 5, 10, 15, 20, 25 and 30 are shown. The user wants all day numbers
+    visible: 1, 2, 3 … 31, including the currently omitted dates and 31 itself.
+  - Keep the labels aligned with the correct day rows/squares and readable. Coordinate the layout with the spacing
+    work in item 31; do not satisfy it by crowding or overlapping labels.
+  - Preserve the correct treatment of shorter months and leap years; showing row labels 1–31 does not make an
+    invalid date a recorded day. Review every relevant Year in Pixels instance in Progress and habit details.
+  - Verify all 31 labels are present and that existing values, square meanings and accessibility remain correct.
 
 - [ ] **1. Progress page: a big visual overhaul of Week, Month and Year.** Not the data (it's right and complete) but
   how it's presented: today it reads "okay, not good", too dense, rows squeezed. **Week first** (overview card →
