@@ -481,3 +481,8 @@ Completed work retains its original evidence and any outstanding user review.
   - Verified 11 local Markdown files and 31 PNGs, with all 31 images referenced; `git diff --check` and
     `iOS/Tools/perf/check_rules.sh` passed. Documentation commits `70522494` and `1bb612e6` were pushed to `main`
     without CI trigger tags (T10). Day-details and editor **app implementation** remain open as items 22/36.
+
+- [x] **40. Decide task-note treatment and complete the task Day-details wireframes.** Completed 4 October 2026.
+  - [Task-specific review and code audit](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/Task Notes in Day Details — Evidence and Decision.md>) support keeping an optional, secondary note surface. The current note is keyed to task and selected day; moving a one-time task does not move the note (D7/U5).
+  - The [Day-details wireframe page](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/Day Details Wireframes.md>) now shows task undone/empty-note, undone/saved-note and done states. Figma's unused centered-header comparison and its PNG were removed; the leading-aligned identity is the sole proposed pattern. These remain representative mockups, not native implementation (U1/U9).
+  - Verified the old Figma node is absent and the new saved-note node exists; all 31 Markdown image links and the new local report links resolve. `git diff --check` and `iOS/Tools/perf/check_rules.sh` passed. No iOS app code or device state was changed.

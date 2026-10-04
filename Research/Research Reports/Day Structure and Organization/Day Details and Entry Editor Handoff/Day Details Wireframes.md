@@ -101,7 +101,7 @@ Keep the live timer's start/pause state legible without letting every part of th
 
 ![One-time task not done](Images/day-10-one-time-task.png)
 
-The task has one Mark done/Undo done state, its planned date and its note. It has no habit-page link or per-task entry list; Edit Task belongs to the task's native management action. [Figma state](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=371-2324).
+The task has one Mark done/Undo done state, its planned date and an optional note. The empty note is a low-emphasis entry point to the existing note editor, not a completion button. It has no habit-page link, Skip control or per-task entry list; Edit Task belongs to the task's native management action. [Task-note evidence and date-scoped storage caveat](<Task Notes in Day Details — Evidence and Decision.md>) · [Figma state](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=371-2324).
 
 ### 11. Selected past day
 
@@ -115,17 +115,17 @@ The toolbar identifies the actual selected date; labels and log heading refer to
 
 The image illustrates the grouping and order of **View Habit / Edit / Pause / Archive / Delete**, with destructive actions last. Implement a native SwiftUI `Menu`, native actions and system iconography; the mock menu geometry is not a custom menu specification. Preserve the identity row's direct path to the habit page and confirm Delete with Archive Instead (U14). [Figma state](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=371-2386).
 
-### 16. Centered identity exploration
+### 16. One-time task with a saved note
 
-![Centered habit identity alternative](Images/day-16-centered-identity-exploration.png)
+![One-time task with a saved note](Images/day-16-task-with-note.png)
 
-This is an **exploration**, not a separate required final layout. It tests the user's centered icon/name idea against the compact leading-aligned identity used in the other variants. The latter is the handoff baseline because long names, two-line plans and the page chevron gain a stable scan edge; confirm on a small iPhone and at accessibility text sizes before finalizing. [Figma state](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=374-2129).
+The saved day note is readable and directly editable, without competing with **Mark done**. It remains a note for the selected day under the current storage model; moving a one-time task does not currently carry that note to its new date. The task identity uses the same leading alignment as the other Day-details states, without a misleading habit-page chevron. The unused centered-header comparison was removed from Figma and this handoff. [Decision and review evidence](<Task Notes in Day Details — Evidence and Decision.md>) · [Figma state](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=421-2073).
 
 ### 20. One-time task, done
 
 ![One-time task done](Images/day-20-task-done.png)
 
-The task's state changes to Done and its direct control becomes Undo done. The note remains accessible; the screen does not invent a task log editor. [Figma state](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=376-2157).
+The task's state changes to Done and its direct control becomes Undo done. The optional note remains accessible after completion; the screen does not invent a task log editor. [Figma state](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=376-2157).
 
 ## Skipped and paused states
 
