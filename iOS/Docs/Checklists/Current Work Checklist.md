@@ -274,8 +274,18 @@ Their placement records scope and priority; implementation has not started.
   - [x] UI tests updated for the changed labels (T3: `TodayRowSheetUITests`, `TodayRowLayoutUITests`, `UndoUITests`,
     `HabitPageUITests`, `GoalFlowUITests`), plus new `DayDetailsUITests` covering every kind, skip with logs and note,
     Edit Log discard/delete, a multi-check record, a quit slip's edit and delete, and dark-mode screenshots.
-  - [ ] Test thoroughly: the touched UI test classes and a `day-sheet` speed run on GitHub Actions (T7/T10), then the
-    real iPhone in light/dark, large text and VoiceOver (U9).
+  - [x] Test on GitHub Actions (T7/T10), 4 Oct 2026. Run `37202400309` (`4ebea87`): build and Release passed; 33/36
+    UI tests passed; 3 test-step failures fixed. The speed run found Edit Log typing at 26–40 ms/s against 1–11 before,
+    because a "changed" flag redrew the editor each keystroke; it was made sticky, and run `37205960716` (`b5492ee`)
+    measured 5.7–7.4 ms/s, with 48/49 UI tests passing (one launch wait too short: the failure screenshot showed the
+    sheet open). Run `37209334247` (`91e0e29`): all 31 screenshot states and DayDetails, HabitPage and GoalFlow
+    tests passed. It hit the 60-minute job limit during TodayRowLayoutUITests (2 of 4 run, both passed);
+    TodayRowSheetUITests and UndoUITests passed on `b5492ee`/`4ebea87`, and the last commit only changed the
+    editor's unit word and the Day-details source label. "Day sheet: add, edit and exact undo" varies run to run
+    (118–360 ms/s here; 130–250 on the earlier `habit-details-perf` runs); keep watching it on the phone.
+  - [x] Screenshots of all 31 wireframe states as built, side by side with the wireframes (`DayDetailsScreenshotUITests`,
+    `DayDetailsFixture`).
+  - [ ] The real iPhone in light/dark, large text and VoiceOver; check the spacing rhythm (U9/U17).
   - Not done, by design: a slip's **date** stays read-only until the store, repository and sync can move one record
     to another day atomically (D7; handoff). The bottom ‹ day › pager is gone (handoff; past days open from Today or
     History). A multi-check habit lost its whole-day Done switch (research matrix "Avoid"); History's Add Entry
