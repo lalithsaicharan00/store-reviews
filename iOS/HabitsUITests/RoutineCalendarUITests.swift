@@ -165,8 +165,14 @@ final class RoutineCalendarUITests: XCTestCase {
         XCTAssertEqual(today.value as? String, "Today")
         XCTAssertTrue(count.hasSuffix(" done"), "The day bar still counts the day: \(count)")
         shot("calendar-progress")
-        app.buttons["Next month"].tap()
+        // Tap › only once the sheet has settled (a tap while it was still sliding up did nothing, CI 4 Oct 2026).
+        let next = app.buttons["Next month"]
+        expectation(for: NSPredicate(format: "hittable == true"), evaluatedWith: next)
+        waitForExpectations(timeout: 5)
+        next.tap()
         let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: Date())!
+        let title = nextMonth.formatted(.dateTime.month(.wide).year())
+        XCTAssertTrue(app.staticTexts[title].waitForExistence(timeout: 3), "› shows \(title)")
         let future = app.buttons[dayID(nextMonth)]
         XCTAssertTrue((future.value as? String ?? "").contains("Preview"))
         future.tap()
