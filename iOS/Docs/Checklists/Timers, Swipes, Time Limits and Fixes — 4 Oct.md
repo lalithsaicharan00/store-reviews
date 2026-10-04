@@ -16,11 +16,11 @@ reviews, then implement it properly and test it thoroughly."
 
 | # | Point | Done |
 |---|---|---|
-| T1 | Fresh research, not a reuse of 28 Sep's: what people expect when they tap ▶ (in the row, a full-screen timer, something else) | [ ] |
-| T2 | The Dynamic Island / Lock Screen: do people expect it, when should it appear, how should it behave, and a way to turn it off | [ ] |
-| T3 | The bar at the bottom of Today above the day bar: does it belong, and how | [ ] |
-| T4 | The row filling up while it runs: expected or not | [ ] |
-| T5 | Implement what the research shows; test it thoroughly (UI tests, speed run, the iPhone) | [ ] |
+| T1 | Fresh research, not a reuse of 28 Sep's: what people expect when they tap ▶ (in the row, a full-screen timer, something else) | [x] Report "Timers — What People Expect When They Tap ▶": 281 timer reviews read on four questions; a big timer is wanted (≈12), a trap isn't (5) |
+| T2 | The Dynamic Island / Lock Screen: do people expect it, when should it appear, how should it behave, and a way to turn it off | [x] Wanted (≈41); it ends the moment the timer stops, gets Pause and opens that timer; ≡ → Appearance → Timers → Show on Lock Screen turns it off |
+| T3 | The bar at the bottom of Today above the day bar: does it belong, and how | [x] Kept as a Now Playing bar: only while the row is out of sight; tapping it opens the timer full screen |
+| T4 | The row filling up while it runs: expected or not | [x] Kept: filling bars help (3 reviews); ▶ now also opens the timer full screen, which a swipe puts away while it runs |
+| T5 | Implement what the research shows; test it thoroughly (UI tests, speed run, the iPhone) | [x] TimerUITests (5), Undo, FocusPlayer, RoutineCalendar, Today passed; speed: the timer screen's clock 5.6 ms/s, no freeze; +1 and day ‹ › 75.8 vs `main` 97.4. Found on the way: the player dropped a tap made during a save, Undo included (fixed, S7). **Still yours: the iPhone (U9)** |
 
 ## 2. Swipe actions (item 35)
 
@@ -31,8 +31,8 @@ from other resources on the internet, and implement swipe actions properly."
 
 | # | Point | Done |
 |---|---|---|
-| W1 | Research: how swipes work natively on the iPhone with two or three actions, and what reviews show | [ ] |
-| W2 | Implement it (the user's idea: a swipe only reveals; the research decides) | [ ] |
+| W1 | Research: how swipes work natively on the iPhone with two or three actions, and what reviews show | [x] Report "Swipe Actions — Reveal, Never Act": 947 swipe reviews; ≈15 swipes that acted on their own, one person who quit over three buttons behind one swipe |
+| W2 | Implement it (the user's idea: a swipe only reveals; the research decides) | [x] A swipe only reveals, however far; left Skip then Note, right a named Undo; Pause in the long-press menu. U14 updated. TodayRowSheet and TodayRowLayout passed. **Still yours: the iPhone (U9)** |
 
 ## 3. Time limits (item 37)
 
@@ -42,13 +42,17 @@ real need for a timer in cut down; if yes, implement what the research says and 
 
 | # | Point | Done |
 |---|---|---|
-| L1 | Research: is a time limit ("social media 30 min max") a real need, and where it belongs | [ ] |
-| L2 | Implement the result; an existing timed limit stays editable and its data safe either way | [ ] |
+| L1 | Research: is a time limit ("social media 30 min max") a real need, and where it belongs | [x] Report "Time Limits — Should Cut Down Allow Time": a genuine need (≈7 explicit asks across TV, Netflix, Instagram, phone time); Screen Time integration recorded as Current Work 44 |
+| L2 | Implement the result; an existing timed limit stays editable and its data safe either way | [x] A Limit can be in minutes; an existing limit is editable and keeps its unit side (D6). `testLimitCanBeTimeAndStaysEditable` passed |
 
 ## 4. Then, in order
 
 | # | Item | Done |
 |---|---|---|
-| H1 | 38: a folded time of day's icons, a scaled gap from the title, centred on the whole header | [ ] |
-| H2 | 10: groups, tested properly | [ ] |
-| H3 | 11: the ~74 s freeze after a signed-in launch | [ ] |
+| H1 | 38: a folded time of day's icons, a scaled gap from the title, centred on the whole header | [x] Built; SectionHeader passed; Today scrolling 19.6 ms/s (in the recent 16–37 range). **Still yours: the iPhone (U9)** |
+| H2 | 10: groups, tested properly | [x] Four new tests: deleting a full group keeps its habits, your order and the chips follow, Today and Progress keep their own choice, Start plays only what's shown, names unique, a group pauses. Groups 9/9 passed |
+| H3 | 11: the ~74 s freeze after a signed-in launch | [x] Likely cause fixed: the sign-in wrote the Keychain on the main thread; all Keychain calls now run off it. Each launch step's time goes to the system log, saved by CI as `app.log`. Backup and Sync passed; it was intermittent (4 of 13), so it's confirmed only as runs keep passing |
+
+**Tests (4 Oct 2026, GitHub):** `95310e2` Today 8/8; `6918c8d` FocusPlayer, Timer, RoutineCalendar, Undo (33),
+TodayRowLayout, SectionHeader, Groups (9), Backup; `4b603dc` NewHabit (20), TodayRowSheet, Sync. Everything these
+items touch passed. One lesson recorded in Rulebook T1 (a cancelled run still counts until it shows completed).

@@ -185,6 +185,8 @@ Their placement records scope and priority; implementation has not started.
   - **Then:** the user decides; update U14 and Design Rules' row section with the date and reason, then the swipe
     code, `TodayRowSheetUITests`' swipe tests (T3) and a `PerfDriver` check if the swipe changes (T4). Check on the
     iPhone (U9).
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): a swipe only reveals, never acts; left Skip then Note, right a named Undo; Pause in the long-press menu (U14). Report "Swipe Actions — Reveal, Never Act". Still yours: the iPhone (U9).
 
 - [ ] **37. Time limits ("Social media: 30 min max"): can't be edited, and should they exist? Decide, then add or
   remove them properly.** Added 4 October 2026, from the user.
@@ -206,6 +208,8 @@ Their placement records scope and priority; implementation has not started.
   - **Then, either way, nothing half-done:** if kept, offer time properly when making and editing a limit (and its
     logging, timer and wording); if removed, existing timed limits must keep working and stay editable, and their data
     is never lost (D2, D6). The user decides from the research.
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): a Limit can be in minutes; an existing timed limit is editable and keeps minutes (D6). Report "Time Limits — Should Cut Down Allow Time"; Screen Time is item 44.
 
 - [ ] **38. Today: a folded time of day's habit icons sit on the title's line, too close to it.** Added 4 October 2026,
   from the user.
@@ -220,6 +224,8 @@ Their placement records scope and priority; implementation has not started.
     them a clear gap from the title that scales with Dynamic Type (`@ScaledMetric`, around 12 to 16 points); keep how
     many icons fit (`FoldedIcons.fitting` counts the gap) and the fade-in when folding. Read Design Rules' "Today
     section headers" first (U12); `SectionHeaderUITests` covers the header. Check on the iPhone (U9).
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): the icons sit beside the whole name block, centred, with a scaled gap (~14 pt). Still yours: the iPhone (U9).
 
 - [ ] **11. Bug: the app sometimes stops responding for ~74 s right after launching signed in** (added 2 Oct, from the
   test runs). `BackupUITests.testDeletingTheAccountAndErasingThisPhone` launches with a test sign-in to the dev server;
@@ -228,6 +234,8 @@ Their placement records scope and priority; implementation has not started.
   Suspects to check: something blocking the main thread during the sign-in at launch (the keychain, a network call
   waited on, the first backup or sync). Logs: run 36995529935 (`ios-logs` artifact, the test's lines at
   t = 24.86 s → 98.74 s). Find the cause, fix it, and make the test show where the time goes if it happens again.
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): Keychain calls moved off the main thread (the likely cause); launch steps timed into `app.log` in CI. Backup and Sync passed; confirmed only as runs keep passing.
 
 - [ ] **17. Bug: the routine player's bottom spacing is wrong.** (added 3 Oct 2026) Fix the spacing at the bottom of
   the routine (focus) player's screen; check on the iPhone (U9).
@@ -244,6 +252,8 @@ Their placement records scope and priority; implementation has not started.
 - [ ] **16. Timers and the Dynamic Island / Live Activity.** (added 3 Oct 2026) Starting a timer sometimes goes
   straight into the Dynamic Island. Keep it, but make it behave the way people expect, reliably, and add a way to
   turn it off. Research when it should appear, then fix.
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): the Live Activity ends the moment the timer stops, has Pause and opens that timer; ≡ → Appearance → Timers turns it off. Report "Timers — What People Expect When They Tap ▶". Still yours: the iPhone (U9).
 
 - [ ] **18. Completion feedback for every kind of habit.** (added 3 Oct 2026) A check-off plays the sound (and haptic)
   when it's done, which is nice; timed habits, amounts, checklists and others don't. Decide when each kind counts
@@ -252,6 +262,8 @@ Their placement records scope and priority; implementation has not started.
 - [ ] **10. Groups: test them properly.** Making a group seems to work, but groups and their statistics (group
   chips on Progress, group numbers, the Filter's group choice, editing and ordering groups) were never really
   tested, on the simulator or the iPhone.
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): four new GroupsUITests (order, deleting a full group, own choices and Start, names and Pause); 9/9 passed.
 
 ## Planned improvements — build later
 
@@ -360,6 +372,8 @@ Their placement records scope and priority; implementation has not started.
 - [ ] **15. Timed habits: what should tapping ▶ do?** (added 3 Oct 2026) Today ▶ starts an inline timer on the row.
   Research whether that's what people expect, or whether ▶ should open a full-screen timer, or both (and which is
   the default).
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): ▶ starts the timer and opens it full screen; a swipe puts it away while it keeps running; the bar opens it. Still yours: the iPhone (U9).
 
 - [ ] **19. Exportable progress reports, for the Progress page** (added 3 Oct 2026; build now if it fits, otherwise it moves to Future; the
   user decides later). A report of progress people can export and share (a PDF or image of a week, month or year),
