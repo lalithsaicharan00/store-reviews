@@ -113,12 +113,12 @@ tick each when it's done and link what was built or written. Every item follows
 - [ ] **16. Timers and the Dynamic Island / Live Activity.** (added 3 Oct 2026) Starting a timer sometimes goes
   straight into the Dynamic Island. Keep it, but make it behave the way people expect, reliably, and add a way to
   turn it off. Research when it should appear, then fix.
-- [ ] **17. Bug: the routine player's bottom spacing is wrong.** (added 3 Oct 2026) Fix the spacing at the bottom of
+- [x] **17. Bug: the routine player's bottom spacing is wrong.** (added 3 Oct 2026) Fix the spacing at the bottom of
   the routine (focus) player's screen; check on the iPhone (U9).
   - *4 Oct 2026, the user's details:* treat ‹ · Habit options · › as a bottom navigation, about 40 points from the
     screen's bottom edge, ample room around it against misclicks, and **no layout shift** of the main button or the
     row whatever changes on the screen. Checklist: [Routine Player — Bottom Row, Options Sheet and Switches](<Routine Player — Bottom Row, Options Sheet and Switches.md>). Built on
-    `claude/weekly-overview-stats-ly55gk`, tests running.
+    `claude/weekly-overview-stats-ly55gk`; tests passed 4 Oct (`b6bd7d1`). Still yours: a look on the iPhone (U9).
 - [ ] **18. Completion feedback for every kind of habit.** (added 3 Oct 2026) A check-off plays the sound (and haptic)
   when it's done, which is nice; timed habits, amounts, checklists and others don't. Decide when each kind counts
   as "done" for feedback (goal reached, timer reaches its goal, last step ticked) and make it consistent.
@@ -150,10 +150,10 @@ tick each when it's done and link what was built or written. Every item follows
     Rules and the setting together, and the tests that expect done rows below (U4's hold stays either way).
   - The sound itself is item 18 (completion feedback for every kind of habit).
 
-- [ ] **22. Bug: Habit options in the routine player hid its last options** (added 4 Oct 2026). For Read it showed Log
+- [x] **22. Bug: Habit options in the routine player hid its last options** (added 4 Oct 2026). For Read it showed Log
   time manually, Skip today, Undo, Show clock and Add Note; Edit Habit was only there after scrolling. Same checklist as
   item 17 (P5): the sheet now fits its options.
-- [ ] **23. Bug: the routine player's Show clock switch was white in dark mode** (added 4 Oct 2026; the switches were
+- [x] **23. Bug: the routine player's Show clock switch was white in dark mode** (added 4 Oct 2026; the switches were
   meant to be green everywhere since 2 Oct). Same checklist (P6, P7): every switch now uses one green style, checked by
   `check_rules.sh`; a group's habit picker uses Select's blue circles.
 
