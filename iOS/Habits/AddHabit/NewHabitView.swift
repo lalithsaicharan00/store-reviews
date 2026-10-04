@@ -748,7 +748,8 @@ struct HabitForm: View {
             case .amount, .cutBack:
                 screenRow(type == .cutBack ? "Limit" : "How much", value: amountValue == nil ? "Set" : plan.howMuchLabel) {
                     HowMuchEditor(mode: type == .cutBack ? .limit : .amount, amount: $amountText, unit: $unit, hours: $hours,
-                                  minutes: $minutes, usedUnits: store.usedUnits, period: amountPeriod, sentence: screenText, hint: amountHint)
+                                  minutes: $minutes, usedUnits: store.usedUnits, period: amountPeriod, sentence: screenText, hint: amountHint,
+                                  limitInMinutes: type == .cutBack ? original.map { if case .duration = $0.kind { true } else { false } } : nil)
                         .onAppear { focus = nil }
                 }
                 .accessibilityIdentifier("how-much-row")
@@ -1577,6 +1578,9 @@ struct UnitPicker: View {
     var mode: Mode = .amount
     /// Track an amount: the unit is optional, so "No Unit" is a choice too.
     var allowsNone = false
+    /// A limit can be time ("Social media: at most 30 min a day"): users show time limits for screens, TV and games are
+    /// a real need (report "Time Limits — Should Cut Down Allow Time?", 4 Oct 2026). Not when editing a counted limit.
+    var allowsTime = false
     @Environment(\.dismiss) private var dismiss
     @State private var creating = false
     @State private var custom = ""
@@ -1609,7 +1613,10 @@ struct UnitPicker: View {
                 ("Everyday", ["times", "meals", "servings", "sessions", "pills"]),
                 ("Money", Self.money),
             ]
-            if mode == .limit { list.insert(("Cutting down", ["cigarettes", "drinks", "coffees", "snacks"]), at: 0) }
+            if mode == .limit {
+                list.insert(("Cutting down", ["cigarettes", "drinks", "coffees", "snacks"]), at: 0)
+                if allowsTime { list.insert(("Time", [HabitPlan.timeUnit]), at: 1) }
+            }
             return list
         }
     }
@@ -1669,7 +1676,7 @@ struct UnitPicker: View {
             dismiss()
         } label: {
             HStack {
-                Text(value == HabitPlan.timeUnit ? "Hours and minutes" : value).foregroundStyle(Color.primary).lineLimit(1)
+                Text(value).foregroundStyle(Color.primary).lineLimit(1)
                 Spacer(minLength: 16)
                 if value == unit { Image(systemName: "checkmark").foregroundStyle(Color.ink).fontWeight(.semibold) }
             }

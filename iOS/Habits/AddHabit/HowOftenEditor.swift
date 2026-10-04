@@ -400,6 +400,9 @@ struct HowMuchEditor: View {
     var sentence: String? = nil
     /// What the name suggests, as the field's hint ("e.g. 10000 steps"); never a value.
     var hint: String? = nil
+    /// A limit being edited: true if it's in minutes, false if it counts something; nil when it's new. Its unit stays on
+    /// that side, so past minutes never turn into counts or back (Rulebook D6; report "Time Limits", 4 Oct 2026).
+    var limitInMinutes: Bool? = nil
     @FocusState private var typing: Bool
 
     private var limit: Bool { mode == .limit }
@@ -457,7 +460,9 @@ struct HowMuchEditor: View {
                 } header: {
                     Text(limit ? "Limit" : "Amount")
                 } footer: {
-                    Text(entryError ?? "The unit is optional. Up to 2 decimal places.").formNote()
+                    Text(entryError ?? (limit && unit == HabitPlan.timeUnit
+                        ? "In minutes: 90 is 1 h 30 min. Time it with ▶ on Today, or type the minutes." + (limitInMinutes == true ? " A limit in minutes stays in minutes, so its past days keep their meaning." : "")
+                        : "The unit is optional. Up to 2 decimal places.")).formNote()
                 }
             }
         }
@@ -477,16 +482,22 @@ struct HowMuchEditor: View {
         .task { if mode != .time { typing = true } }
     }
 
-    private var unitLink: some View {
-        NavigationLink {
-            UnitPicker(unit: $unit, used: usedUnits, mode: limit ? .limit : .amount, allowsNone: true)
-        } label: {
-            LabeledContent("Unit") {
-                Text(unit.isEmpty ? "Optional" : unit)
-                    .foregroundStyle(unit.isEmpty ? .tertiary : .secondary)
+    @ViewBuilder private var unitLink: some View {
+        if limit && limitInMinutes == true {
+            LabeledContent("Unit", value: HabitPlan.timeUnit)
+                .accessibilityIdentifier("much-unit")
+        } else {
+            NavigationLink {
+                UnitPicker(unit: $unit, used: usedUnits, mode: limit ? .limit : .amount, allowsNone: true,
+                           allowsTime: limit && limitInMinutes == nil)
+            } label: {
+                LabeledContent("Unit") {
+                    Text(unit.isEmpty ? "Optional" : unit)
+                        .foregroundStyle(unit.isEmpty ? .tertiary : .secondary)
+                }
             }
+            .accessibilityIdentifier("much-unit")
         }
-        .accessibilityIdentifier("much-unit")
     }
 
     private var entryError: String? {

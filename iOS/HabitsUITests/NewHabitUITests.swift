@@ -326,6 +326,45 @@ final class NewHabitUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Cut down"].buttons["Add"].isEnabled)
     }
 
+    /// Cut down in time (4 Oct 2026, report "Time Limits — Should Cut Down Allow Time?"): "Social media: at most 30 min
+    /// a day" is made from the Limit's units, times with ▶ on Today, and stays editable, its unit kept in minutes so its
+    /// past days keep their meaning (D6).
+    func testLimitCanBeTimeAndStaysEditable() {
+        open("Quit or cut down", "Cut down", title: "Cut down")
+        type(name: "Social media")
+        row("Limit").tap()
+        replace(app.textFields["much-number"], with: "30")
+        app.buttons["much-unit"].tap()
+        let minutes = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'minutes'")).firstMatch
+        XCTAssertTrue(minutes.waitForExistence(timeout: 3), "A limit can be in minutes")
+        shot("09c-limit-units-time")
+        minutes.tap()
+        back()
+        XCTAssertTrue(sentence.localizedCaseInsensitiveContains("at most 30 min a day"), sentence)
+        app.navigationBars["Cut down"].buttons["Add"].tap()
+        let play = app.buttons["Start Social media timer"]
+        revealOnToday(play)
+        XCTAssertTrue(play.exists, "A time limit times with ▶")
+
+        // Edit it: the limit changes, the unit stays minutes.
+        let name = app.staticTexts["Social media"].firstMatch
+        name.press(forDuration: 1.0)
+        let edit = app.buttons["Edit Habit"].firstMatch
+        XCTAssertTrue(edit.waitForExistence(timeout: 3))
+        edit.tap()
+        XCTAssertTrue(app.navigationBars["Edit Habit"].waitForExistence(timeout: 3))
+        row("Limit").tap()
+        XCTAssertTrue(app.descendants(matching: .any)["much-unit"].firstMatch.label.contains("minutes"), "Its unit is minutes")
+        replace(app.textFields["much-number"], with: "45")
+        shot("09d-limit-time-edit")
+        back()
+        XCTAssertTrue(sentence.localizedCaseInsensitiveContains("at most 45 min a day"), sentence)
+        app.navigationBars["Edit Habit"].buttons["Save"].tap()
+        XCTAssertTrue(app.navigationBars["Edit Habit"].waitForNonExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS '45 min'")).firstMatch.waitForExistence(timeout: 3),
+                      "Today shows the new limit")
+    }
+
     /// Two parts of the day: the same row in each, with one shared progress (spec §5).
     func testCheckOffInTwoTimesOfDay() {
         open("Build or maintain", "Check it off", title: "New Habit")

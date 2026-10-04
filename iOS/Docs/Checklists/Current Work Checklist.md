@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 40).
+  still resolve; give new items the next unused number (currently 45).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item only when its required validation is complete, with the date and relevant commit, test or device
@@ -372,6 +372,12 @@ Their placement records scope and priority; implementation has not started.
   Future; the user decides later). On a habit's own page: its year as one square per day, coloured by how that day
   went, which people can export and share as an image. This is for **one habit**; item 19 is the Progress page's
   week, month and year reports, and item 12's Year in Pixels is for mood. Use the same pixel grid for both.
+
+- [ ] **44. Screen Time: read a time limit from the iPhone instead of typing it.** Added 4 October 2026 from item 37's
+  research ([Time Limits — Should Cut Down Allow Time](<../../../Research/Research Reports/Habit Creation/Time Limits — Should Cut Down Allow Time.md>)):
+  about seven reviews want social media or screen time filled in automatically. Needs Apple's Screen Time API (Family
+  Controls and Device Activity, with the person's permission), whose reports stay inside their own extension. Research
+  what can be read and shown, then decide.
 
 ## Future (after release; not to start now)
 
