@@ -40,7 +40,9 @@ final class DayDetailsScreenshotUITests: XCTestCase {
         if yesterday { arguments += ["-open-day-offset", "-1"] }
         app.launchArguments = arguments
         app.launch()
-        XCTAssertTrue(result.waitForExistence(timeout: 15), "\(name)'s Day details open")
+        // 30 s: the sheet opens once the app has loaded, which took longer than 15 s on one hosted run (4 Oct 2026; its
+        // failure screenshot showed the sheet open just after).
+        XCTAssertTrue(result.waitForExistence(timeout: 30), "\(name)'s Day details open")
     }
 
     private func tap(_ id: String, times: Int = 1) {

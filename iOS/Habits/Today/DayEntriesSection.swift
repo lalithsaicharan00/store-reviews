@@ -202,7 +202,9 @@ struct EntryEditView: View {
             }
         default:
             let check = habit.kind == .check
-            let unit = check ? (habit.checkUnit ?? "times") : HabitCopy.unit(of: habit)
+            // The unit as this log's saved value reads it ("1 glass", "2 times"): set once, never per keystroke.
+            let raw = check ? (habit.checkUnit ?? "times") : HabitCopy.unit(of: habit)
+            let unit = raw.isEmpty ? "" : HabitCopy.unitWord(entry.value, raw)
             Section {
                 LabeledContent(check ? "Checks in this log" : "Amount logged") {
                     HStack(spacing: 6) {

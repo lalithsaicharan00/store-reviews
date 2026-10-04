@@ -215,7 +215,7 @@ final class DayDetailsUITests: XCTestCase {
         links.firstMatch.tap()
         XCTAssertTrue(app.navigationBars["Edit Log"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["Amount logged"].exists, "The log's own value first")
-        XCTAssertTrue(app.textFields["entry-amount"].label.contains("glasses"), "with its unit")
+        XCTAssertTrue(app.textFields["entry-amount"].label.contains("glass"), "with its unit")
         XCTAssertFalse(app.keyboards.firstMatch.exists, "No keyboard until a value is tapped")
         shot("dd-10-edit-log")
         let field = app.textFields["entry-amount"]

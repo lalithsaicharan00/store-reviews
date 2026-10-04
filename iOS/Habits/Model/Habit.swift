@@ -244,7 +244,8 @@ enum EntrySource: String, Codable, Sendable {
         case .routine: "Routine player"
         case .reminder: "Reminder"
         case .timer: "Timer"
-        case .daySheet: "History"
+        // Logged with a Day details button (the sheet a row or a History day opens), 4 Oct 2026; was "History".
+        case .daySheet: "Day details"
         case .shortcut: "Siri or Shortcuts"
         case .widget: "Widget"
         }
