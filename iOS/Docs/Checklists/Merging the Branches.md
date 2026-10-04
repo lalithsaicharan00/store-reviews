@@ -102,6 +102,7 @@ should be merged from them.
 | `claude/weekly-overview-stats-ly55gk` | **Already deleted** (gone from GitHub by 3 Oct, 15:30 UTC). Was safe to delete (verified 3 Oct with `git cherry`): research only; its three commits (the weekly overview and weekly cards reports) are all on `claude/progress-week-cards`; the only one that isn't is its own branch note saying so |
 | `claude/today-arrange-research` | Report 27 and its checklist (3 Oct); inside `claude/today-edit-mode`, so in `main` with it: **safe to delete** |
 | `claude/today-edit-mode` | Arrange Your Day (item 5), tested and merged into `main` (fast-forward, 3 Oct): **safe to delete** once the user has looked at it on the iPhone |
+| `claude/weekly-overview-stats-ly55gk` | **Merged into `main` (fast-forward, 4 Oct 2026, `c2ca452`)** after every class it touches passed: FocusPlayer, Schedule, RoutineCalendar, Groups (`b6bd7d1`), Today, TodayRowLayout, NewHabit, Backup, Progress (`2e16d24`) and Arrange (`c2ca452`). The routine player's bottom row, options sheet and green switches (Current Work 17, 33, 34) and checklist items 35–38. Level with `main`: safe to delete, or keep for the next piece of work |
 | `integration` | **Safe to delete** (checked 3 Oct): nothing in it that `main` lacks (0 commits ahead) |
 
 **Keep:** `main`, `ci-results` (CI writes its results there) and every `archive/…` branch. Everything else is in
