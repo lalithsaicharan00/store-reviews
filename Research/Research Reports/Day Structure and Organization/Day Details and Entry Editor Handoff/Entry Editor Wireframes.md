@@ -2,11 +2,11 @@
 
 Written by Codex (OpenAI), 4 October 2026. [Handoff index](README.md) · [editor research](<Editing One Habit Log — Scope, Fields and Recovery.md>) · [decision history](<Decision History — Why the Layout Changed.md>) · [editable Figma board](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=408-2071).
 
-**These are pop-up wireframes showing the correction layout, fields and interaction states—not final iOS designs.** Implement real SwiftUI navigation, text fields, native keyboard, compact `DatePicker`, controls and alerts. The drawn status bar, keyboard, focus ring, chevrons, buttons, dividers and exact heights are only visual representations. Follow Rulebook U1/U6/U9/U19 and the [native implementation contract](<Native Implementation Contract.md>).
+**These are pop-up wireframes showing the correction layout, fields and interaction states—not final iOS designs.** Implement real SwiftUI navigation, text fields, native keyboard, compact `DatePicker`, controls and alerts. The drawn status bar, keyboard, focus ring, chevrons, buttons and exact heights are only visual representations. Follow Rulebook U1/U6/U9/U19 and the [native implementation contract](<Native Implementation Contract.md>).
 
 ## Scope and common structure
 
-Tapping an **editable saved record** from Day details opens **Edit log** for an amount, duration or multi-check count, or **Edit slip** for a quit occurrence. The first editable item is the fact that this *one* record owns. Habit name/icon, tracked day, source and time zone provide context without replacing the field. Save changes only this record, preserves its ID and other records, and returns to the relevant Day details state. Back discards the draft; if the user changed it, provide an appropriate discard decision before losing work. The separated **Delete this log / Delete this slip** action names exactly what will be deleted and confirms until there is a reliable one-record Undo (U19).
+Tapping an **editable saved record** from Day details opens **Edit log** for an amount, duration or multi-check count, or **Edit slip** for a quit occurrence. The first editable item is the fact that this *one* record owns. Habit name/icon, tracked day, source and time zone provide context without replacing the field. Save changes only this record, preserves its ID and other records, and returns to the relevant Day details state. Back discards the draft; if the user changed it, provide an appropriate discard decision before losing work. A full-width, native bordered **Delete this log / Delete this slip** button sits near the bottom safe area, separated by open space from the editable field and Save. There is **no divider above it**. Tapping Delete opens a native confirmation alert; no record is removed until the person chooses its destructive action (U19). In the keyboard-focused state, the keyboard covers the bottom area; dismiss it to reach Delete rather than floating a destructive control beside the keyboard.
 
 No generic editor opens for a one-time task, checklist step, once-daily binary check, single check toward a weekly/monthly goal, or individual one-check record. Those correct with their named controls in Day details. A multi-check *record whose integer value can change* does need the count editor. Do not leave a chevron pointing to a removed screen.
 
@@ -16,7 +16,7 @@ No generic editor opens for a one-time task, checklist step, once-daily binary c
 
 ![Water amount record editor](Images/entry-01-water-amount.png)
 
-Show this saved record's amount and **glass** unit together; the whole-day 8-glass target is context, not an editable field here. Use a native numeric field with locale-aware decimal handling and validation; Save affects only this one log. The destructive action is separated from the value and Save. [Figma state](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=408-2077).
+Show this saved record's amount and **glass** unit together; the whole-day 8-glass target is context, not an editable field here. Use a native numeric field with locale-aware decimal handling and validation; Save affects only this one log. The distinct bottom Delete button opens the confirmation shown in state 07. [Figma state](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=408-2077).
 
 ### 02. Coffee — at-most amount log
 
@@ -74,7 +74,7 @@ The edited draft shows a changed Date and Time and tells the person that Save mo
 
 ![Confirmation for deleting exactly one Water log](Images/entry-07-delete-confirmation.png)
 
-The confirmation must identify **one selected record** and its day; Cancel leaves it untouched. Deleting one log must preserve other logs, the day note and skip flag, then recalculate the day. Use a native `confirmationDialog`/alert appropriate to the iOS context; the mockup's drawn overlay is illustrative. Revisit confirmation only after a durable and discoverable one-record Undo exists (U14/U19). [Figma state](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=408-2302).
+Tapping the bottom **Delete this log** button presents this confirmation **before** removal. The pop-up identifies **one selected record** and its day; **Cancel** leaves it untouched and the destructive **Delete log** removes only that record. Other logs, the day note and skip flag stay; then the day recalculates. Use a native SwiftUI alert with a cancel action and a destructive role, not a hand-drawn overlay or immediate deletion. The mockup's drawn alert is illustrative. Apply the same pattern to **Delete this slip**, naming the slip and its occurrence; revisit confirmation only after a durable, discoverable one-record Undo exists (U19). [Figma state](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=408-2302).
 
 ## Validation before implementation is called done
 
