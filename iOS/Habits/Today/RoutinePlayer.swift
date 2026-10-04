@@ -590,7 +590,15 @@ struct RoutinePlayer: View {
             switch habit.kind {
             case .check, .task:
                 Button {
-                    change("Saved") { store.toggleCheck(habit, on: session.day, source: .routine) }
+                    // "Log one" adds one, as it says: a ✓ toggles its day (Rulebook U14), so a second "Log one" for a
+                    // 3-times-a-week habit took the first one back (found by ScheduleCheck, 4 Oct 2026).
+                    change("Saved") {
+                        if habit.kind == .check && store.goal(of: habit) > 1 {
+                            store.addProgress(habit, value: 1, on: session.day, source: .routine)
+                        } else {
+                            store.toggleCheck(habit, on: session.day, source: .routine)
+                        }
+                    }
                 } label: {
                     Label(store.goal(of: habit) > 1 ? "Log one" : "Mark done", systemImage: "checkmark")
                 }.accessibilityLabel("Mark \(habit.name) done")

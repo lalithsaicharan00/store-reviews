@@ -87,8 +87,13 @@ enum ScheduleCheck {
         expect(reload.entries.count == store.entries.count, "Repository preserves logs")
         habit = Habit(name: "Sessions", symbol: "star", color: .blue, kind: .check, goal: 3, frequency: .perWeek(3), startsOn: start)
         store.add(habit); await store.flush()
-        for _ in 0..<2 { store.toggleCheck(habit, on: start); await store.flush() }
+        // Two logs on one day (the player's "Log one", Add Entry's Times) both count. Today's ✓ is that day's tick
+        // (Rulebook U14, 3 Oct 2026): a second ✓ takes the first back.
+        for _ in 0..<2 { store.addProgress(habit, value: 1, on: start, source: .routine); await store.flush() }
         expect(store.progress(of: habit, on: start) == 2, "Legacy aggregate checks count same-day repetitions")
+        store.toggleCheck(habit, on: start); await store.flush()
+        expect(store.progress(of: habit, on: start) == 1, "A ✓ on a ticked day takes back one, never the day")
+        store.addProgress(habit, value: 1, on: start, source: .routine); await store.flush()
         let legacy = Habit(record: habit.record(position: 0), steps: [], reminders: [])!
         expect(legacy.frequency == .perWeek(3), "Legacy period semantics remain unchanged")
         var total = HabitPlan(amount: 100, unit: "pages", often: .total(.week))
