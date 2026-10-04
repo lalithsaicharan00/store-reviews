@@ -35,7 +35,7 @@ Research: [Today's Rows — The Line Under the Name, Notes and Spacing](<../../.
 |---|---|
 | L1 | `DoneOrder.bottom` is the default again (Preferences, Today, Appearance); Stay in Place stays in Appearance. U13, Design Rules, the report and Next Up 21 say so |
 | L2 | A task's row opens its Day sheet: Done, its date and **Do Tomorrow** (one-time task), the note, Edit Task; Archive and Delete in ⋯; no day paging for a one-time task (`DaySheet`) |
-| L3, L5, L10 | After a log: `RowAfterLog`, small capsule buttons on one line under the text (named Undo, Add Note/Edit Note, a milestone), 8 pt apart, aligned with the name; `ViewThatFits` drops the milestone, then the words, before anything wraps |
+| L3, L5, L10 | After a log: `RowAfterLog`, small capsule buttons on one line under the text (named Undo, Add Note/Edit Note, a milestone), 8 pt apart, aligned with the name; the milestone shortens with "…"; icons only at the accessibility text sizes (no `ViewThatFits`: it doubled the cost of changing days) |
 | L4 | Notes in their own sheet from Today (`NoteSheet` via `store.noteTarget`): Cancel, Save, Delete Note; Add Note becomes **Edit Note**; the note's text isn't shown in the row |
 | L6 | A row is at most three lines: name, its line, the after-log buttons (and those only while the offer lasts) |
 | L7, L8 | One line under every name (`HabitRow.rowLine`): how far along when counted (`3/8 glasses`, `1/3 times`, `2/3 this week`, `1/4 steps`, `1/2 cups max`), how often when a single tick (`Every day`, `Every Mon, Wed and Fri`), then the time. Tasks: `Task · 5:00 PM`. Steps: no line. Skipped: `Skipped today` |

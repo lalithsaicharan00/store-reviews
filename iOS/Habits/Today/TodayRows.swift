@@ -755,6 +755,7 @@ struct RowAfterLog: View {
     let habit: Habit
     let day: LocalDay
     @Environment(HabitStore.self) private var store
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     var body: some View {
         let undo = store.undoOffer.flatMap { $0.habitID == habit.id && $0.day == day ? $0 : nil }
@@ -762,16 +763,12 @@ struct RowAfterLog: View {
         if offered {
             let mark = undo.flatMap { entry in store.milestoneOffer.flatMap { $0.entry == entry.id ? $0 : nil } }
             let note = store.note(of: habit, on: day) != nil
-            // The widest that fits: everything, then without the milestone, then the buttons as icons (the largest
-            // text sizes). Never a second line.
-            ViewThatFits(in: .horizontal) {
-                buttons(undo: undo, note: note, mark: mark?.text, icons: false)
-                buttons(undo: undo, note: note, mark: nil, icons: false)
-                buttons(undo: undo, note: note, mark: nil, icons: true)
-            }
-            .padding(.leading, RowSpace.textLeading)
-            .padding(.top, RowSpace.afterBand)
-            .transition(.opacity)
+            // One layout, never measured twice: at the accessibility text sizes the buttons show their icons (their
+            // words stay for VoiceOver); a milestone shortens with "…" before anything wraps. `ViewThatFits` measured
+            // three layouts each time the line appeared and doubled the cost of changing days (speed bisect, 4 Oct 2026).
+            buttons(undo: undo, note: note, mark: mark?.text, icons: typeSize.isAccessibilitySize)
+                .padding(.leading, RowSpace.textLeading)
+                .padding(.top, RowSpace.afterBand)
         }
     }
 
@@ -781,12 +778,14 @@ struct RowAfterLog: View {
                 Button { store.undoEntry(undo.id) } label: {
                     Label(undo.undoLabel(for: habit), systemImage: "arrow.uturn.backward")
                 }
+                .fixedSize()
                 .accessibilityIdentifier("habit-inline-undo")
             }
             if day <= store.today() {
                 Button { writeNote() } label: {
                     Label(note ? "Edit Note" : "Add Note", systemImage: note ? "note.text" : "square.and.pencil")
                 }
+                .fixedSize()
                 .accessibilityIdentifier(note ? "habit-edit-note" : "habit-add-note")
             }
             if let mark {
@@ -806,7 +805,6 @@ struct RowAfterLog: View {
         .tint(.secondary)
         .font(.caption.weight(.medium))
         .lineLimit(1)
-        .fixedSize()
     }
 
     /// Opens the note sheet for this habit and day (as the row's swipe and menu do).
