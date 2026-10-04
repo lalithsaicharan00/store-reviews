@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 39).
+  still resolve; give new items the next unused number (currently 40).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item only when its required validation is complete, with the date and relevant commit, test or device
@@ -264,6 +264,9 @@ Their placement records scope and priority; implementation has not started.
     slip), list what each shows, then design it so it reads well and matches Add Entry ("same mental model for adding
     an entry", 3 Oct). Keep everything it does now (U5): editing one entry only, Delete Entry, the time zone line for
     slips. Research first if the design question is open (W2); check on the iPhone (U9).
+  - **Research and wireframe handoff, 4 October:** the [report and ten Markdown-renderable states](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/README.md>) document why a separate editor is useful for amount, duration, multi-check and quit-slip records, while a single check, checklist step or task is corrected in Day details. This preserves the one-record mental model without forcing the same field on unrelated types. The user's later review led to direct tap-to-type Hours/Minutes/decimal Seconds and native Date **and** Time pickers for a slip. The mockups represent hierarchy and behavior, **not final iOS visuals**; all controls must be native (U1/U19).
+  - **Implementation gap:** a slip date change must atomically move the same record ID to its new tracked day, update `entry.day` and `createdAt`, day indexes, persisted/synced values, quit run and affected day summaries, then show the destination Day sheet. The current app rejects a cross-day slip edit, so keep its date read-only until that path works (D7/U19). Preserve other logs, note, skip flag, source and saved time zone; retain Delete-this-one-record with confirmation until durable Undo exists.
+  - **Status:** research and Figma proposal completed; native app implementation, tests, speed checks and real-iPhone validation remain open (U9/S2/T3/T4).
 
 - [ ] **24. Habit details: redesign the area above History · Notes · Progress tabs.** Added 4 October 2026.
   - The requested scope is a modest layout change to the header/content above the tabs on every habit details page.
@@ -281,25 +284,7 @@ Their placement records scope and priority; implementation has not started.
   - Record the reasoning and design choice before implementation. The Add Entry contrast problem must be fixed
     independently (item 26), wherever the buttons end up.
 
-- [ ] **35. Redesign the individual record editor opened from a Day-sheet log.** Added 4 October 2026.
-  - Research and ten editable Figma variants completed 4 October: [report](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/Editing One Habit Log — Scope, Fields and Recovery.md>) · [Figma board](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=408-2071). The time interaction is now explicit: tap a duration part to type with the number/decimal pad; for a quit slip, change the date or time with native compact pickers.
-  - Audit the current `EntryEditView`, its five supplied Figma screenshots and every habit kind. Decide which kinds
-    actually need a separate editable record screen; keep binary checks, checklist steps and one-time tasks in their
-    simpler day controls where a one-record editor adds no useful choice.
-  - For applicable kinds, make the record's value, date/time, source, Save/Cancel and Delete easy to scan and
-    understand. Preserve correction of **one** saved record without changing other records or the day's total by
-    accident; preserve fractional seconds for a duration. A slip edits **when it happened**, including date and time;
-    implementing a changed date needs an atomic same-ID update of `entry.day` and `createdAt`, day-bucket movement,
-    quit-run recalculation and navigation to the destination Day sheet. The saved time zone and the old day's note stay
-    attached to their own records. Keep the app's current date read-only until this storage path works (D7/U5).
-  - Research native iOS editing, form hierarchy and destructive-action placement, then update editable Figma
-    mockups and a linked research report. Different record kinds can have different fields while the editor's
-    overall purpose and interaction stay consistent. Distinguish build amounts from at-most limits in copy and
-    emphasis; avoid presenting a check or slip as progress toward a positive target.
-  - This is separate from item 22's Day-sheet redesign and items 26–27's History Add Entry button. App implementation,
-    tests, speed checks and real-iPhone validation remain pending until the design is agreed (U1/U3/U5/U9/U11/U14).
-
-- [ ] **36. Publish the Day-details and Entry-editor research/wireframe handoff to `main`.** Added 4 October 2026
+- [ ] **39. Publish the Day-details and Entry-editor research/wireframe handoff to `main`.** Added 4 October 2026
   from the user's documentation request; documentation work is complete, final push verification remains open.
   - [x] Consolidate both research reports, including every later change and its reason, in the
     [dedicated handoff folder](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/README.md>).
@@ -310,7 +295,7 @@ Their placement records scope and priority; implementation has not started.
     preview, pickers and keyboard must be native iOS controls. Record this in the reports, wireframe pages and
     [native implementation contract](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/Native Implementation Contract.md>).
   - [ ] Verify Markdown links/images and the documentation gate, then commit and push the verified handoff to `main`
-    without CI trigger tags (W3/T10). Day-details and editor **app implementation** remain items 22/35.
+    without CI trigger tags (W3/T10). Day-details and editor **app implementation** remain items 22/36.
 
 - [ ] **28. Notes: research the Add Note button's placement.** Added 4 October 2026; separate from History actions.
   - In the habit details Notes tab, Add Note is currently near the top beside the search field, in the upper area

@@ -25,7 +25,7 @@ The [original Day-sheet screenshots](https://www.figma.com/design/Ncccsm1l2O62GJ
 - **Day details** is reached by tapping the *body* of a habit or task row for the selected day; the row's main CTA still logs directly. It emphasizes inspecting and correcting the selected day, then the note and habit management.
 - **Edit log / Edit slip** opens only when an individual saved record has an independent fact to correct. Simple binary, checklist and one-time-task corrections stay in Day details.
 - The native app must preserve other records, the note, skip state and source-of-truth day rules. Changing a slip's date across a tracked day is **proposed**, not supported by current `HabitStore.editEntry`; implement the atomic same-ID move before enabling that picker (D7/U19).
-- No app code was changed by this design study. The current checklist owns implementation status: [item 22 and item 35](<../../../../iOS/Docs/Checklists/Current Work Checklist.md>).
+- No app code was changed by this design study. The current checklist owns implementation status: [item 22 and item 36](<../../../../iOS/Docs/Checklists/Current Work Checklist.md>); this documentation handoff is item 39.
 
 ## Rules and evidence
 
