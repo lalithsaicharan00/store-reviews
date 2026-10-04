@@ -72,7 +72,9 @@ final class TimerUITests: XCTestCase {
         XCTAssertTrue(bar.waitForExistence(timeout: 3))
         bar.tap()
         XCTAssertTrue(app.staticTexts["timer-screen-name"].waitForExistence(timeout: 3), "The bar opens the timer")
-        app.staticTexts["timer-screen-name"].swipeDown(velocity: .fast)
+        // A finger's drag down from the top of the sheet, as a person puts a sheet away.
+        let top = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.12))
+        top.press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.95)))
         XCTAssertTrue(app.staticTexts["timer-screen-name"].waitForNonExistence(timeout: 3), "A swipe down puts it away")
         XCTAssertTrue(bar.waitForExistence(timeout: 3), "…and it keeps running")
         app.descendants(matching: .any)["timer-bar-stop"].tap()

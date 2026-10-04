@@ -711,21 +711,17 @@ struct RoutinePlayer: View {
         .disabled(busy || expired)
     }
 
+    /// The screen changes at once and the write follows in order (Rulebook S7). Waiting for the save first showed Undo
+    /// late and dropped a tap made while it ran, Undo included (FocusPlayerUITests on GitHub, 4 Oct 2026). A failed save
+    /// reloads what's stored and says so (the alert).
     private func change(_ message: String?, captureUndo: Bool = true, action: () -> Void) {
-        guard !busy, !expired, session.day == store.today() else { return }
-        busy = true
+        guard !expired, session.day == store.today() else { return }
         let habitID = current?.id
         let before = Set(habitID.map { store.entries(of: $0, on: session.day).map(\.id) } ?? [])
         action()
-        Task { @MainActor in
-            await store.flush()
-            if store.problem == nil, current?.id == habitID {
-                undoID = captureUndo ? habitID.flatMap { id in store.entries(of: id, on: session.day).last { !before.contains($0.id) } }?.id : nil
-                withAnimation(animation) { feedback = message }
-                if message != nil { feedbackCount += 1; hideFeedbackSoon() }
-            }
-            busy = false
-        }
+        undoID = captureUndo ? habitID.flatMap { id in store.entries(of: id, on: session.day).last { !before.contains($0.id) } }?.id : nil
+        withAnimation(animation) { feedback = message }
+        if message != nil { feedbackCount += 1; hideFeedbackSoon() }
     }
 
     /// Pause and Resume: no message and no Undo. "Paused · time saved" under the clock says what happened, and an
@@ -743,12 +739,10 @@ struct RoutinePlayer: View {
         store.setSkipped(habit, on: session.day, true)
         let skippedID = habit.id
         navigate(to: index + 1)
-        Task { @MainActor in
-            await store.flush()
-            withAnimation(animation) { feedback = "Skipped for today"; undoID = nil; undoSkipID = skippedID }
-            feedbackCount += 1
-            hideFeedbackSoon()
-        }
+        // At once, like every other change (S7); the write follows in order.
+        withAnimation(animation) { feedback = "Skipped for today"; undoID = nil; undoSkipID = skippedID }
+        feedbackCount += 1
+        hideFeedbackSoon()
     }
 
     /// Undo a skip: from its page (stay) or from the message after moving on (go back to it).
