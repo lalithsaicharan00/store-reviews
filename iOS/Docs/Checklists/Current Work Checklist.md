@@ -41,7 +41,19 @@ Their placement records scope and priority; implementation has not started.
 
 - [ ] **22. Today row sheet: make logging and wording natural for each habit type, especially check-based habits
   and tasks.** Added 4 October 2026; **issue 1 of the user's current feedback round**. Status: documented from the
-  user's observation; implementation, current-code verification and validation are pending.
+  user's observation; current-code and screenshot audit plus research proposal recorded on 4 October in
+  [The Habit Day Sheet — Wording, Hierarchy and Actions](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/The Habit Day Sheet — Wording, Hierarchy and Actions.md>).
+  Implementation and device validation remain pending.
+  - **Research and Figma mockups revised, 4 October:** [21 editable variants](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=370-2031) cover the main tracking types, past day, monthly goal, skipped binary and amount days (including saved logs/note), paused state, limit over threshold, running timer, slip correction and light mode. The user's latest placement and Skip feedback is represented; implementation and device validation remain pending.
+  - **Latest user review incorporated, 4 October:** use native regular-size logging controls. Where quick and manual logging coexist, keep equal height and width, but use style for priority: prominent quick actions for positive goals (Mark done, Add 1 glass, Start timer), bordered logging on limits and for slips (U16). The day note is a full-width labelled text-area-like preview after activity, opens the separate note editor, and remains usable while skipped. Skip is a full-width bordered button below it, not a navigation row. **The same button changes to Undo skip in the same position**; primary/manual new-log controls remain visible but disabled, and saved logs and notes remain visible (U15). Remove the bottom date pager from this proposal because the earlier report supplied a consistency inference, not evidence of intra-sheet paging; selected date remains in the toolbar, and Today/habit calendar still open past-day sheets (U5). Figma and the research report now reflect this; code and device validation remain pending. Current `DaySheet.swift` still allows its generic Add Entry path while skipped, so implementation must disable that path too.
+  - **Spacing review incorporated, 4 October:** all 21 Figma states now group the selected-day status, its logging control(s) and any saved logs with smaller internal gaps, then give that whole activity larger top and bottom margins. The note field and Skip/Undo skip have a larger gap because they perform different jobs. The [research report](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/The Habit Day Sheet — Wording, Hierarchy and Actions.md#spacing-and-grouping-4-october>) records the Figma spacing rhythm and the proximity/layout guidance behind it. These are gaps between elements, not extra card padding; adapt them to native SwiftUI and Dynamic Type when implementing (U1/U9/U17).
+  - **Close-control review, 4 October:** the [21 Figma variants](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=370-2031) now use an icon-only `xmark` proxy instead of the word Close. Both trailing Close and leading ⋯ have 44 pt hit regions, keeping the day title centred. In the iOS implementation use the standard SF Symbol `xmark` with accessible name **Close**; keep Cancel/Save/Done text for editors with draft or completion semantics (U1/U18). The [research report](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/The Habit Day Sheet — Wording, Hierarchy and Actions.md#close-icon-in-the-day-sheet-4-october>) records the Apple toolbar/sheet rationale. App code and device validation remain pending.
+  - **4 October design brief:** rename the sheet's visible header to the selected day; remove the duplicate habit name;
+    make current state and correction visually dominant; compare centered versus leading-aligned habit identity;
+    make the identity/chevron an explicit path to the habit page; show note text when one exists; group Edit,
+    Pause/Resume, Archive and Delete in the native ⋯ menu with destructive actions last. Mock up all major habit
+    types, selected past days, skipped/paused states and the menu before implementation. Research supports using
+    checks/steps for completion and logs for amount/time; validate the proposed copy with users.
   - **Where it happens:** Home → Today → tap the body of a habit or task row → the bottom-up sheet. It brings together
     that day's progress and the row's options. The recent implementation uses a shared presentation across habit
     types to maintain one mental model (completed item 13). The user's concern is that the same entry-oriented
@@ -268,6 +280,37 @@ Their placement records scope and priority; implementation has not started.
     history content. Preserve both adding an entry and navigating to a specific date.
   - Record the reasoning and design choice before implementation. The Add Entry contrast problem must be fixed
     independently (item 26), wherever the buttons end up.
+
+- [ ] **35. Redesign the individual record editor opened from a Day-sheet log.** Added 4 October 2026.
+  - Research and ten editable Figma variants completed 4 October: [report](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/Editing One Habit Log — Scope, Fields and Recovery.md>) · [Figma board](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=408-2071). The time interaction is now explicit: tap a duration part to type with the number/decimal pad; for a quit slip, change the date or time with native compact pickers.
+  - Audit the current `EntryEditView`, its five supplied Figma screenshots and every habit kind. Decide which kinds
+    actually need a separate editable record screen; keep binary checks, checklist steps and one-time tasks in their
+    simpler day controls where a one-record editor adds no useful choice.
+  - For applicable kinds, make the record's value, date/time, source, Save/Cancel and Delete easy to scan and
+    understand. Preserve correction of **one** saved record without changing other records or the day's total by
+    accident; preserve fractional seconds for a duration. A slip edits **when it happened**, including date and time;
+    implementing a changed date needs an atomic same-ID update of `entry.day` and `createdAt`, day-bucket movement,
+    quit-run recalculation and navigation to the destination Day sheet. The saved time zone and the old day's note stay
+    attached to their own records. Keep the app's current date read-only until this storage path works (D7/U5).
+  - Research native iOS editing, form hierarchy and destructive-action placement, then update editable Figma
+    mockups and a linked research report. Different record kinds can have different fields while the editor's
+    overall purpose and interaction stay consistent. Distinguish build amounts from at-most limits in copy and
+    emphasis; avoid presenting a check or slip as progress toward a positive target.
+  - This is separate from item 22's Day-sheet redesign and items 26–27's History Add Entry button. App implementation,
+    tests, speed checks and real-iPhone validation remain pending until the design is agreed (U1/U3/U5/U9/U11/U14).
+
+- [ ] **36. Publish the Day-details and Entry-editor research/wireframe handoff to `main`.** Added 4 October 2026
+  from the user's documentation request; documentation work is complete, final push verification remains open.
+  - [x] Consolidate both research reports, including every later change and its reason, in the
+    [dedicated handoff folder](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/README.md>).
+  - [x] Export all 21 Day-details and 10 Entry-editor wireframes as PNGs and embed/describe them in
+    [Day Details Wireframes](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/Day Details Wireframes.md>)
+    and [Entry Editor Wireframes](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/Entry Editor Wireframes.md>).
+  - [x] State clearly that these are representative pop-ups, not final visuals: `⋯`, `xmark`, buttons, the day-note
+    preview, pickers and keyboard must be native iOS controls. Record this in the reports, wireframe pages and
+    [native implementation contract](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/Native Implementation Contract.md>).
+  - [ ] Verify Markdown links/images and the documentation gate, then commit and push the verified handoff to `main`
+    without CI trigger tags (W3/T10). Day-details and editor **app implementation** remain items 22/35.
 
 - [ ] **28. Notes: research the Add Note button's placement.** Added 4 October 2026; separate from History actions.
   - In the habit details Notes tab, Add Note is currently near the top beside the search field, in the upper area
