@@ -284,7 +284,7 @@ Source: [Today's Rows — The Line Under the Name, Notes and Spacing](<../Resear
 - **One set of spacing numbers** (`RowSpace`): 2 between a name and its line, 12 between icon and text, 6 from the band to the after-log buttons, 8 between those buttons. Icon, text pair, streak and button are **centred** on the 44-pt band (`RowBand`), so icons line up down the list whatever the row holds.
 - **Names use the row's width**, ending in "…" only when they run out (never cut at a fixed 15 characters in a row).
 - **Every row's tap opens its Day sheet, tasks included.** A task's sheet holds Done, its date and **Do Tomorrow** (a one-time task), the note and Edit Task; Archive and Delete in ⋯; no day paging for a one-time task.
-- **Accessibility:** the row's open is an accessibility *action*, never `.accessibilityAddTraits(.isButton)` on the row's container (the trait passes to every text inside, which then reads, and tests find, as buttons: CI, 3 Oct 2026).
+- **Accessibility:** the row's open is a *named* accessibility action ("Show Day"), never a button trait, default action or hint on the row's container: each merged the row's texts into one element, so names stopped reading (and tests stopped finding them) as text (CI, 3 Oct 2026).
 
 ## A row's tap, swipes, menu and Day sheet (3 Oct 2026)
 

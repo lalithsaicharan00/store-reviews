@@ -144,7 +144,8 @@ final class HabitCreationUITests: XCTestCase {
 
         start("Check it off", name: "Brush teeth")                                 // F03
         often("timesADay")
-        finish("Brush teeth twice a day, anytime", today: "Mark Brush teeth done", label: "F03-twice-a-day")
+        // Several times a day is a +1 counter on Today (Rulebook U14: ✓ toggles, + adds).
+        finish("Brush teeth twice a day, anytime", today: "Add 1 to Brush teeth", label: "F03-twice-a-day")
 
         start("Time it", name: "Meditate")                                         // time
         tap(row("How long"))

@@ -129,11 +129,11 @@ struct HabitRow: View {
             }
             .contentShape(Rectangle())
             // The row opens its Day sheet for the day Today shows; the round button logs (the user, 3 Oct 2026; report
-            // "Today's Rows": Reminders, Mail and Health open the item from its row and act from its control). An
-            // action, not a button trait: a trait on this container would turn every text in it into a button.
+            // "Today's Rows": Reminders, Mail and Health open the item from its row and act from its control). A named
+            // action only: a button trait, a default action or a hint on this container merges its texts into one
+            // element, so names stop reading as text (CI, 3 Oct 2026; Rulebook T9).
             .onTapGesture { openDay() }
-            .accessibilityAction { openDay() }
-            .accessibilityHint(lineOverride == nil ? "Shows this day's entries and options" : "")
+            .accessibilityAction(named: "Show Day") { openDay() }
             .accessibilityAction(named: "Undo last log") {
                 if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day { store.undoEntry(entry.id) }
             }
@@ -433,9 +433,8 @@ struct QuitRow: View {
             .contentShape(Rectangle())
             // The row opens its Day sheet, as every habit row does (report "Today's Rows").
             .onTapGesture { store.dayTarget = .init(habitID: habit.id, day: today) }
-            // An action, not a button trait: the trait would turn the name and the count into buttons (CI, 3 Oct).
-            .accessibilityAction { store.dayTarget = .init(habitID: habit.id, day: today) }
-            .accessibilityHint("Shows today's slips and options")
+            // A named action only, never a trait, default action or hint here (they merge the texts: Rulebook T9).
+            .accessibilityAction(named: "Show Day") { store.dayTarget = .init(habitID: habit.id, day: today) }
             // After a slip: the same small buttons as every row, Undo Slip and the note.
             if let id = lastSlip {
                 QuitAfterSlip(habit: habit, day: today, slip: id) { withAnimation { lastSlip = nil } }
