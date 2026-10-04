@@ -1,7 +1,8 @@
 # Routine Player — Bottom Row, Options Sheet and Switches
 
-Written by Claude (Claude Code), 4 October 2026, from the user's own words. Next Up item 17 (the player's bottom
-spacing), with two new bugs found the same day. Follows [the Rulebook](<../../../RULEBOOK.md>) and the player's
+Written by Claude (Claude Code), 4 October 2026, from the user's own words. Current Work Checklist item 17 (the
+player's bottom spacing), with two new bugs found the same day (items 33 and 34; 22 and 23 on the branch before the
+list was renamed). Follows [the Rulebook](<../../../RULEBOOK.md>) and the player's
 sections in `Design Rules — Don't Regress.md`.
 
 **The user's words, tidied:** "The spacing feels uneven sometimes. Habit options and the chevrons: we should treat it
@@ -20,7 +21,7 @@ content, the circle or anything else that changes on the screen."
 | P5 | **Habit options showed only part of its list** (Read: Log time manually, Skip today, Undo 1 min, Show clock, Add Note… and Edit Habit was below the fold until you scrolled). If that isn't what people expect, fix it | [x] Not how iOS's own action sheets behave (they show every action): the sheet now fits its list; the test checks Edit Habit shows without scrolling |
 | P6 | **The Show clock switch was white in dark mode** (unreadable). Switches are the iPhone's green everywhere (Rulebook U2) | [x] `AppSwitchStyle` puts the green on the switch itself; `check_rules.sh` fails on any other switch style |
 | P7 | **Check marks:** selection checks are the iPhone's blue (already so in Habits' Select); make the rest match | [x] A group's habit picker uses Select's blue circles; single-choice ticks stay monochrome (U2), readable in dark mode |
-| P8 | Next Up: item 1 (Progress: Week, Month and Year) is done, the previous agent didn't tick it. Add these bugs to the list and tick them when done | [x] Item 1 ticked; bugs 22 and 23 added and ticked |
+| P8 | Current Work Checklist: item 1 (Progress: Week, Month and Year) is done, the previous agent didn't tick it. Add these bugs to the list and tick them when done | [x] Item 1 moved to Completed (the user, 4 Oct); bugs added (33, 34) with 17; those three stay open only for your iPhone look |
 
 **Tests (4 Oct 2026, `b6bd7d1`):** FocusPlayer (13, with the new layout test), Schedule, RoutineCalendar (7) and Groups
 (5) all passed, 31 tests. Speed, the player's ‹ ›: 14.8 ms/s, no freeze (`main` 66.0 in an earlier window); opening

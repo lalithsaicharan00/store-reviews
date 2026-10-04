@@ -1,6 +1,6 @@
 # New Habit Round 4 — Checklists, Streaks and Times a Day
 
-> **Written by Claude (Claude Code)**, 27 September 2026. Round 4 items 20–30 ([iOS/Build Plan.md](<../../../iOS/Build Plan.md>)). Updates [New Habit Words and Units](<New Habit Words and Units.md>). Authorship of every report is listed in the [Research Reports index](<../README.md>).
+> **Written by Claude (Claude Code)**, 27 September 2026. Round 4 items 20–30 ([iOS/Product Roadmap.md](<../../../iOS/Product Roadmap.md>)). Updates [New Habit Words and Units](<New Habit Words and Units.md>). Authorship of every report is listed in the [Research Reports index](<../README.md>).
 
 **The questions.**
 1. What should a checklist's example be, and what are the things inside it called? ("Parts" felt wrong; skincare isn't for everyone.)

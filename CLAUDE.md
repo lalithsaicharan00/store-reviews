@@ -16,4 +16,7 @@ its rule numbers, and add to it the same day you learn something.
   [`iOS/Design Rules — Don't Regress.md`](<iOS/Design Rules — Don't Regress.md>)**: decided rules that past agents broke.
   The app's specs and the user's checklists are in `iOS/Docs/` ([index](<iOS/Docs/README.md>)): open only the spec for
   the screen you're changing.
-- Builds, tests, speed runs and CI: Rulebook T1–T6. Scratch, commits and branches: W1–W5. IDs: U8.
+- Builds, tests, speed runs and CI: Rulebook T1–T10. **Before every push/test dispatch, follow T10:** ordinary
+  pushes have no trigger tags; intentionally starting tests waits for other agents' active/queued runs to finish;
+  do not use the widget cancellation tag without explicit authorization. Check live status without relying on a
+  user reminder. This applies to all agents. Scratch, commits and branches: W1–W5. IDs: U8.

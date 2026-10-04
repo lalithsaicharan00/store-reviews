@@ -1,9 +1,22 @@
-# iOS build plan
+# Product Roadmap
 
-Set by the user on 27 Sep 2026. Work one task at a time, in order. Build, install and test each task on the
-connected iPhone 16 before ticking it. Take a one-minute break between tasks. Record only very important
-decisions and contradictions in [Architecture/Backlog.md](<../Architecture/Backlog.md>); everything else is decided
-here, the production way: robust (data is never lost), with no complexity that isn't needed.
+Set by the user on 27 September 2026. Renamed by Codex, 4 October 2026; formerly “Build Plan”.
+
+This is the broad roadmap for the app: capabilities, original implementation rounds and longer-term feature work.
+Its numbered tasks and dated decisions are preserved as history. Some older status lines have not been reconciled
+against the current code; do not treat an old “Not started” or “Done” as a verified current result.
+
+**Recent feedback and current priorities:** [Current Work Checklist](<Docs/Checklists/Current Work Checklist.md>).
+That checklist owns the current status of overlapping items. Fix issues in existing functionality before starting
+later feature work (the user, 4 October 2026).
+
+**Maintenance:** add broad capabilities here; keep recent feedback and issues in the current checklist. For an item
+tracked in both, link to its current checklist entry and keep the dated history here. Record the date and evidence
+when a roadmap-only task is verified or completed. Stable task numbers and previous decisions stay intact.
+
+The instructions below belong to their dated rounds; current working and validation rules are in
+[the Rulebook](<../RULEBOOK.md>). Record significant decisions and contradictions in
+[Architecture/Backlog.md](<../Architecture/Backlog.md>).
 
 **Product rules to respect** (from the architecture notes): free = one phone, 5 habits, local-only, **no account**;
 Plus = sync and server backup through an account created after purchase. Native SwiftUI components only.

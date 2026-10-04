@@ -2,7 +2,7 @@
 
 Written by Claude (Claude Code), 29 September 2026. **Keep this up to date:** when a feature is finished, tick it here in the same change.
 
-This is the short list of what the iPhone app can do today. The reasons behind each choice are in [Design Rules — Don't Regress](<../Design Rules — Don't Regress.md>) and the checklists in `Checklists/`. Work order: [Build Plan](<../Build Plan.md>).
+This is the short list of what the iPhone app can do today. The reasons behind each choice are in [Design Rules — Don't Regress](<../Design Rules — Don't Regress.md>) and the checklists in `Checklists/`. Current priorities: [Current Work Checklist](<Checklists/Current Work Checklist.md>). Broader features and build history: [Product Roadmap](<../Product Roadmap.md>).
 
 ## Creating a habit (+)
 

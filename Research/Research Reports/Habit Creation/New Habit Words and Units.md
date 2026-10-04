@@ -2,7 +2,7 @@
 
 > **Updated by [Round 4](<New Habit Round 4 — Checklists, Streaks and Times a Day.md>)**: the checklist example is now a workout, its contents are "items", "Times each day" is replaced by several day sections, and amounts can be weekly or monthly totals.
 >
-> **Written by Claude (Claude Code)**, 27 September 2026. Round 2 fixes, items 6–10 ([iOS/Build Plan.md](<../../../iOS/Build Plan.md>)). Authorship of every report is listed in the [Research Reports index](<../README.md>).
+> **Written by Claude (Claude Code)**, 27 September 2026. Round 2 fixes, items 6–10 ([iOS/Product Roadmap.md](<../../../iOS/Product Roadmap.md>)). Authorship of every report is listed in the [Research Reports index](<../README.md>).
 
 **The questions.**
 1. What do people call each kind of habit? The "New" list should use their words, not ours ("Do it", "Reach an amount").

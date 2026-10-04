@@ -28,7 +28,17 @@ These are the iPhone app's own documents: the specs it was built from and the us
 | [Pending to Implement](<Specs/Pending to Implement.md>) | **Partly superseded.** §6 and its sidebar reliability addendum cover reminder scheduling, alarms and notification actions | Reminders, alarms, Remind Again |
 | [Today Improvements](<Specs/Today Improvements.md>) | **Partly superseded** by the Section Header research (28 Sep) | Today's sections, routine play, the day bar |
 
-The work order for the whole app is [Build Plan](<../Build Plan.md>).
+## Planning and current work
+
+| Document | Purpose | Maintain here |
+|---|---|---|
+| [Product Roadmap](<../Product Roadmap.md>) | The whole app's capabilities, original build rounds and longer-term feature work; formerly Build Plan | Broad features and dated implementation history |
+| [Current Work Checklist](<Checklists/Current Work Checklist.md>) | Recent user feedback, current issues, planned improvements and completed follow-ups; formerly Next Up | Current priority, progress and validation evidence |
+
+Fix issues in existing functionality first (the user, 4 Oct 2026). Planned improvements stay in their recorded order
+until the user starts them. When an item appears in both documents, the current checklist owns its current status;
+the roadmap links to it and preserves the older history. Screen-specific checklists retain detailed requirements
+and evidence. An unchecked item must be verified against current code before being described as a reproducible bug.
 
 ## Checklists (the user's points, round by round)
 
@@ -60,7 +70,7 @@ The work order for the whole app is [Build Plan](<../Build Plan.md>).
 | [App Speed — Round 2](<Checklists/App Speed — Round 2.md>) | 30 Sep: optimised phone build, remembered streaks, instant taps, stall meter; rules in `iOS/PERFORMANCE.md` |
 | [iPhone Widgets](<Checklists/iPhone Widgets.md>) | Research and implementation on `codex/iphone-widgets`; macOS results and device release checks are recorded in the research report |
 | [Analytics Implementation](<Checklists/Analytics Implementation.md>) | Implemented on `analytics`; macOS native/UI/build/provider evidence and exact production rollout dependencies |
-| [Next Up — The User's List, 2 Oct](<Checklists/Next Up — The User's List, 2 Oct.md>) | **Open.** The user's ten next items, in order: Progress overhaul (Week first, under way), habit page, account out of Backup, past entries, Filter, Today's bottom row, row subtext, swipe actions, widgets, testing groups |
+| [Current Work Checklist](<Checklists/Current Work Checklist.md>) | **Open.** Existing issues and validation first; planned improvements, future ideas and completed feedback retain their original item numbers and evidence |
 | [Progress Week — Habit Cards Build](<Checklists/Progress Week — Habit Cards Build.md>) | Built 2 Oct on `claude/progress-week-cards` (not compiled yet): Week as one card per habit, dates bar pinned, key, no overview or rings |
 
 Analytics recovery starts at [Analytics — Start Here](<../../Analytics — Start Here.md>). Saved provider definitions and verification are in [Analytics Dashboards.json](<Analytics Dashboards.json>); exact consent-off/on measurements are in [Analytics Performance Evidence.json](<Analytics Performance Evidence.json>).
