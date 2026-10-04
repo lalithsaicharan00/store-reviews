@@ -1,7 +1,7 @@
 # Today — Filter, Times of Day and Order (item 5): research first
 
 Written by Claude (Claude Code), 3 October 2026, from the user's own points (item 5 of
-[Next Up](<Next Up — The User's List, 2 Oct.md>)). **Research done 3 Oct: [27. Arranging and Filtering Today — What People Expect](<../../../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/27. Arranging and Filtering Today — What People Expect.md>). Nothing is built until the user decides.** Then the build
+[Next Up](<Current Work Checklist.md>)). **Research done 3 Oct: [27. Arranging and Filtering Today — What People Expect](<../../../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/27. Arranging and Filtering Today — What People Expect.md>). Nothing is built until the user decides.** Then the build
 gets its own checklist.
 
 ## The user's points

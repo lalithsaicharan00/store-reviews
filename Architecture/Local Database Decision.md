@@ -1,6 +1,6 @@
 # Local database: SQLite through Room 3, inside the Kotlin core
 
-*Written by Claude (Claude Code), 27 Sep 2026. Build-plan task 4 ([iOS/Build Plan.md](<../iOS/Build Plan.md>)). Settles Backlog contradiction C2.*
+*Written by Claude (Claude Code), 27 Sep 2026. Product Roadmap task 4 ([iOS/Product Roadmap.md](<../iOS/Product Roadmap.md>)). Settles Backlog contradiction C2.*
 
 **The question.** Which local database do we use, given that it must:
 - run on iPhone, Android, Mac, Windows and the web;

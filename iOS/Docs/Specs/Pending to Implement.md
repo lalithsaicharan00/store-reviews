@@ -1,13 +1,13 @@
 # Pending to Implement — Times Place Habits; Reminders, Alarms and Remind Again
 
-> **Partly superseded (27 Sep 2026, round 5b):** time of day, not reminder times, now decides where a habit shows; reminders are a separate switch, off by default. See Build Plan.md round 5b, "Time of Day and Reminders — What Users Want", and the decided design in [New Habit Goal and Time of Day.md](<New Habit Goal and Time of Day.md>). The scheduler, alarm and notification-action parts (§6) still apply.
+> **Partly superseded (27 Sep 2026, round 5b):** time of day, not reminder times, now decides where a habit shows; reminders are a separate switch, off by default. See Product Roadmap.md round 5b, "Time of Day and Reminders — What Users Want", and the decided design in [New Habit Goal and Time of Day.md](<New Habit Goal and Time of Day.md>). The scheduler, alarm and notification-action parts (§6) still apply.
 
 Written by Claude (Claude Code), 27 September 2026, for the session that implements it.
 **Why:** [Times, Day Sections and Reminders — Can People Predict What Happens?](<../../../Research/Research Reports/Habit Creation/Times, Day Sections and Reminders — Can People Predict What Happens.md>).
 Read that report's §3 before starting. This file is the build spec; the report is the reasoning.
 
-Work the way [Build Plan.md](<../../Build Plan.md>) says: one step at a time, build and test each step on the iPhone 16, native SwiftUI only, data never lost.
-When a step is done, add it to Build Plan.md as a new round and tick it here.
+Work the way [Product Roadmap.md](<../../Product Roadmap.md>) says: one step at a time, build and test each step on the iPhone 16, native SwiftUI only, data never lost.
+When a step is done, add it to Product Roadmap.md as a new round and tick it here.
 
 ---
 
@@ -259,7 +259,7 @@ Keep the existing cap (60 pending, nearest first). Add a `BGAppRefreshTask` that
 A one-time pass on load, guarded by a setting key `placement_v1`:
 - **A habit with several `parts` and no times** (round 4 multi-section): give it one time per part at that section's start + 60 min, `remind = false`, and `parts = [first part]`. It keeps its rows, silently.
 - **A habit with times and a `part` that disagrees:** nothing to do. The times now decide, which is the intended fix.
-- If this is judged unnecessary because there are no real users yet, skip it and note that in Build Plan.md.
+- If this is judged unnecessary because there are no real users yet, skip it and note that in Product Roadmap.md.
 
 ## 9. Don't
 
@@ -280,7 +280,7 @@ A one-time pass on load, guarded by a setting key `placement_v1`:
   - Three habits at 8:00 give one grouped notification.
   - An Alarm rings on silent (iOS 26).
   - Editing Morning's start moves a timed habit.
-- [ ] Build Plan.md has the new round with its status. This file's steps are ticked.
+- [ ] Product Roadmap.md has the new round with its status. This file's steps are ticked.
 
 ## Routine player: redesign pending (noted 28 Sep 2026)
 

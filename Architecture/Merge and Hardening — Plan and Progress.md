@@ -75,6 +75,13 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
 
 ## Progress log
 
+- **4 Oct 2026 (Codex, documentation organization):** renamed `iOS/Build Plan.md` to
+  [Product Roadmap](<../iOS/Product Roadmap.md>) and “Next Up” to
+  [Current Work Checklist](<../iOS/Docs/Checklists/Current Work Checklist.md>). The roadmap retains broad capabilities
+  and dated build history; the current checklist owns recent feedback and overlapping current status. Existing
+  issues and validation come first under the user's latest priority, with planned improvements and completed work
+  separate. All 21 checklist entries, original item numbers and evidence were preserved; document links checked.
+  No app issue was marked fixed by this documentation change.
 - **1 Oct 18:10 UTC:** P1–P3 done.
 - **1 Oct 20:20 UTC:** P4 done; check-in 1 fired, check-in 2 scheduled for 2 Oct 01:28 UTC
   (`trig_01M4BDue4Sp5aLwpVmyuPy8t`). P5: everything off the Mac passes; the iOS run is going.

@@ -2,7 +2,7 @@
 
 > **Superseded in part by [round 2](<New Habit Screen, Round 2 — Types, Frequency, One-Time Tasks.md>)** (types, frequency, checklists, one-time tasks, numbers, reminders, icons).
 >
-> **Written by Claude (Claude Code)**, 27 September 2026. Build-plan task 2 ([iOS/Build Plan.md](<../../../iOS/Build Plan.md>)). Authorship of every report is listed in the [Research Reports index](<../README.md>).
+> **Written by Claude (Claude Code)**, 27 September 2026. Build-plan task 2 ([iOS/Product Roadmap.md](<../../../iOS/Product Roadmap.md>)). Authorship of every report is listed in the [Research Reports index](<../README.md>).
 
 **The question.** What should the screen behind **+** look like, so it feels like Apple's own apps (Reminders, Calendar, Health) while covering our habit types, icons, colours and reminders?
 
