@@ -119,7 +119,9 @@ final class AppModel {
             // The database couldn't be opened, so the store stands on an empty in-memory one. Loading that would
             // show "No habits yet" and take changes that vanish on quit; staying unloaded keeps everything read-only.
             guard persistence != nil else { return }
+            let loadStarted = Date.now
             await store.load()
+            LaunchLog.took("Store: load", since: loadStarted)
             guard store.isLoaded, store.isStorageReady else { return }
             persistence?.markSchemaCurrent()
             #if DEBUG
@@ -149,20 +151,37 @@ final class AppModel {
             // End-to-end tests on GitHub Actions sign in with the run's identity token (server: POST /v1/auth/ci).
             let arguments = ProcessInfo.processInfo.arguments
             if let i = arguments.firstIndex(of: "-ci-sign-in"), i + 2 < arguments.count {
+                let started = Date.now
                 try? await sync?.signIn(path: "/v1/auth/ci", body: ["idToken": arguments[i + 1], "subject": arguments[i + 2], "create": true])
+                LaunchLog.took("CI sign-in", since: started)
             }
             // The same, as a free account (BackupUITests): backups go to the server, nothing syncs.
             if let i = arguments.firstIndex(of: "-ci-sign-in-free"), i + 2 < arguments.count {
+                let started = Date.now
                 try? await sync?.signIn(path: "/v1/auth/ci", body: ["idToken": arguments[i + 1], "subject": arguments[i + 2], "create": true, "plus": false])
+                LaunchLog.took("CI sign-in (free)", since: started)
             }
             #endif
+            // Each step's time goes to the system log (`LaunchLog`), which CI saves as app.log (Current Work 11).
+            var started = Date.now
             sync?.appBecameActive()
-            Task { [backup] in await backup?.runIfDue() }
+            LaunchLog.took("Sync: app became active", since: started)
+            Task { [backup] in
+                let started = Date.now
+                await backup?.runIfDue()
+                LaunchLog.took("Backup: run if due", since: started)
+            }
+            started = .now
             scheduler.scheduleReconcile(store)
             HabitShortcuts.habitsChanged(store)
+            LaunchLog.took("Reminders and Siri names", since: started)
             // A timer left running (the app was closed, or the phone restarted) gets its Live Activity back.
+            started = .now
             await timerPresence.sync(store)
+            LaunchLog.took("Timers: Live Activities", since: started)
+            started = .now
             await widgets.publish(store)
+            LaunchLog.took("Widgets: publish", since: started)
         }
         loading = task
         await task.value

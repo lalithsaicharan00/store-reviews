@@ -219,6 +219,15 @@ jobs:
             2>&1 | tee test.log | grep -E "Test Case .*(passed|failed)|error:|Executed" || true
           grep -q "TEST EXECUTE SUCCEEDED" test.log
 
+      # The app's own launch timings (`LaunchLog`, Current Work 11): if it stops answering after a launch, this names the
+      # step. Only the app's "launch" category, so it stays small.
+      - name: Save the app's launch log
+        if: always() && env.TESTS != 'none' && env.SIM != ''
+        run: |
+          xcrun simctl spawn "$SIM" log show --style compact --info --debug --last 3h \
+            --predicate 'subsystem == "com.oftenenough.app" AND category == "launch"' > iOS/app.log 2>&1 || true
+          echo "Slow launch steps:"; grep -c "SLOW" iOS/app.log || true
+
       - name: Same-build consent-off performance baseline
         id: perfbaseline
         if: ${{ !cancelled() && env.PERF == 'true' && contains(env.MESSAGE, '[ios-analytics]') && steps.build.outcome == 'success' }}
@@ -376,6 +385,7 @@ jobs:
             iOS/release-build.log
             iOS/simulator-destinations.log
             iOS/test.log
+            iOS/app.log
             iOS/summary.md
             iOS/perf/*.log
             iOS/perf/*.txt
