@@ -252,6 +252,7 @@ struct HabitRow: View {
     /// "1/4 steps", "1/2 cups max"). A single tick: how often ("Every day", "Every Mon, Wed and Fri"), since the ✓ is
     /// its done-or-not and "0/1" says nothing. Then its time. A task says it's a task; a skipped day says so.
     private func rowLine(progress: Double, goal: Double) -> String {
+        if habit.kind != .task { return goalLine(habit, progress: progress, goal: goal, running: isRunning) }
         if habit.kind == .task { return taskLine(habit, shownOn: day, calendar: store.calendar) }
         let time = self.time.map { " · " + DaySection.clock($0.minuteOfDay) } ?? ""
         if store.isSkipped(habit, on: day) { return (day == store.today() ? "Skipped today" : "Skipped") + time }
