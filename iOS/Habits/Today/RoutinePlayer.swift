@@ -22,6 +22,10 @@ struct RoutinePlayer: View {
     /// Fitted to the options sheet's own list, so every option shows without scrolling (the user, 4 Oct 2026).
     @State private var optionsHeight: CGFloat = 0
     @State private var optionsDetent: PresentationDetent = .medium
+    /// The window's bottom safe area (the home indicator), read once when the player opens.
+    @State private var homeIndicator: CGFloat = Self.windowBottomInset()
+    /// The habit the manual-entry sheet is for, fixed when it opens: the sheet never changes habit under the person.
+    @State private var logHabitID: UUID?
     @State private var analyticsFlow = Analytics.shared.ticket
     @State private var order: [Habit]
     @State private var index = 0
@@ -189,7 +193,9 @@ struct RoutinePlayer: View {
             }
         }
         .sheet(isPresented: $showLog, onDismiss: manualLogFinished) {
-            if let habit = current { LogProgressView(habit: habit, day: session.day, source: .routine) }
+            if let habit = store.habits.first(where: { $0.id == logHabitID }) ?? current {
+                LogProgressView(habit: habit, day: session.day, source: .routine)
+            }
         }
         .alert("Couldn't save progress", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
             Button("OK", role: .cancel) { store.problem = nil }
@@ -205,24 +211,23 @@ struct RoutinePlayer: View {
     /// Swipe between habits, or use ‹ and Up next. The finish screen is the last page.
     private var pager: some View {
         // The bottom row is a bottom navigation (the user, 4 Oct 2026): pinned to the bottom, a fixed distance from
-        // the screen's edge, whatever the device's safe area. Nothing else ever takes its place.
-        GeometryReader { proxy in
-            VStack(spacing: 0) {
-                header
-                TabView(selection: $page) {
-                    ForEach(Array(order.enumerated()), id: \.element.id) { position, habit in
-                        habitPage(store.habits.first { $0.id == habit.id } ?? habit).tag(position)
-                    }
-                    summary.tag(order.count)
+        // the screen's edge. Nothing else ever takes its place. The distance comes from the window's home indicator,
+        // read once: a GeometryReader's safe area grew with a sheet's keyboard, squeezed the pager, and the pager
+        // jumped back to the first habit (FocusPlayerUITests, 4 Oct 2026).
+        VStack(spacing: 0) {
+            header
+            TabView(selection: $page) {
+                ForEach(Array(order.enumerated()), id: \.element.id) { position, habit in
+                    habitPage(store.habits.first { $0.id == habit.id } ?? habit).tag(position)
                 }
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                // The save message floats over the bottom of the page, so nothing above it jumps when it appears.
-                .overlay(alignment: .bottom) { feedbackBanner }
-                if let habit = current {
-                    controls(habit).padding(.bottom, Self.bottomClearance(safeArea: proxy.safeAreaInsets.bottom))
-                }
+                summary.tag(order.count)
             }
-            .ignoresSafeArea(.container, edges: .bottom)
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            // The save message floats over the bottom of the page, so nothing above it jumps when it appears.
+            .overlay(alignment: .bottom) { feedbackBanner }
+            if let habit = current {
+                controls(habit).padding(.bottom, Self.bottomClearance(safeArea: homeIndicator) - homeIndicator)
+            }
         }
         // Not .disabled(busy): that greyed the whole player for each save and turned the Pause/Resume button
         // dark (found by hand 29 Sep). Every action already ignores taps while a save is in progress.
@@ -235,6 +240,10 @@ struct RoutinePlayer: View {
 
     /// From the bottom row to the screen's bottom edge: 40 points, or 8 above the home indicator if that's more.
     static func bottomClearance(safeArea: CGFloat) -> CGFloat { max(40, safeArea + 8) }
+
+    private static func windowBottomInset() -> CGFloat {
+        UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow }.first?.safeAreaInsets.bottom ?? 0
+    }
 
     /// The compact toolbar already carries position and queue access; only the progress segments live here.
     private var header: some View {
@@ -794,6 +803,7 @@ struct RoutinePlayer: View {
     private func openLog() {
         guard !busy, !expired, session.day == store.today() else { return }
         busy = true
+        logHabitID = current?.id
         Task { @MainActor in
             // Manual time and a live timer must not count the same interval twice.
             resumeAfterLog = false
