@@ -342,6 +342,12 @@ every visual or layout change on the real iPhone before calling it done.**
 - **"Due", "overdue"** anywhere (the user, 29 Sep; copy rule from before). Tasks are "For today" or "Planned for Wed 1 Oct"; habits happen "on its days".
 - **"Add Time" / "Add Amount"** for logging by hand: say "Log time manually" / "Log amount manually" (sheet titles "Log Time" / "Log Amount").
 
+## Habit details: 4 October research handoff (design proposal, not built)
+
+The [Final UX Pass](<../Research/Research Reports/Habit Details Research/Final UX Pass/README.md>) and its [20 individual mockups](<../Research/Research Reports/Habit Details Research/Final UX Pass/Wireframes.md>) are the current design handoff for the habit-details header, History actions, record creation and Notes. They supersede the earlier top-of-History Add Entry/Go to Date layout and side-by-side Notes search/Add Note control. They do **not** replace the History month/day chronology, Progress design, accepted Day-details sheet or single-record editor. Rulebook U20 records the cross-surface naming and action model.
+
+The navigation title names **Habit details**; icon/name/goal and time section center beneath it, with current/best streak or quit-run facts immediately below when Show Streaks is enabled. A task has no streak. History retains direct access to an exact old or empty date; its creation action uses habit-specific language and separates date selection from logging. Notes has full-width search above its dated list, a separate Add note action, and a note reader whose **Open day details** link opens that note's exact date. Deleting a note is a scoped, confirmed action in the note's More menu. Keep all of these native and verify them on a real iPhone before treating the design as implemented (U1/U9/U20).
+
 ## Where the rest is
 
 - Everything decided about creating and editing a habit: [New Habit Goal and Time of Day.md](<Docs/Specs/New Habit Goal and Time of Day.md>) (its §1 screen 2 and §3 are replaced by Round 3, above).
