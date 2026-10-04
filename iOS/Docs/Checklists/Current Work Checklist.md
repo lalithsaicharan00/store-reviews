@@ -298,7 +298,7 @@ Their placement records scope and priority; implementation has not started.
       like skips (synced and backed up; added to the core's merge-restore list). `HabitStore.moveOccurrence`,
       `rescheduleRange`, `canReschedule`; `isDue` follows moves.
     - [x] No Skip for tasks.
-    - [ ] Test on GitHub Actions: `DayDetailsUITests.testTasksReschedule`, `TodayRowLayoutUITests`, Core storage tests.
+    - [x] Tested on GitHub Actions run `37220482604` (`5363659`), 4 Oct 2026: Core storage and migrations, build, Release build and 28/28 UI tests passed (DayDetails incl. `testTasksReschedule`, TodayRowLayout, TodayRowSheet, Undo, and the three task screenshot states). Screenshots: a weekly task's calendar offers only the days before next week's occurrence; a daily task and a done task show no Reschedule.
   - Not done, by design: a slip's **date** stays read-only until the store, repository and sync can move one record
     to another day atomically (D7; handoff). The bottom ‹ day › pager is gone (handoff; past days open from Today or
     History). A multi-check habit lost its whole-day Done switch (research matrix "Avoid"); History's Add Entry
