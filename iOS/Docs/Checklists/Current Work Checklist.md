@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 38).
+  still resolve; give new items the next unused number (currently 39).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item only when its required validation is complete, with the date and relevant commit, test or device
@@ -194,6 +194,20 @@ Their placement records scope and priority; implementation has not started.
   - **Then, either way, nothing half-done:** if kept, offer time properly when making and editing a limit (and its
     logging, timer and wording); if removed, existing timed limits must keep working and stay editable, and their data
     is never lost (D2, D6). The user decides from the research.
+
+- [ ] **38. Today: a folded time of day's habit icons sit on the title's line, too close to it.** Added 4 October 2026,
+  from the user.
+  - **The user's words, tidied:** "When a time of day section is closed, the icons we show are aligned with the title of
+    that section; that isn't right. There should be a good amount of space between the title and the icons (something
+    like 8, 12 or 16 points, as a relative unit, not exact pixels), and the icons should be centred vertically in the
+    card, not to the title, because that looks weird."
+  - **What's built (`TodayRows.swift`, the section header's `titleArea`):** the folded icons (`FoldedIcons`) are in the
+    same row as the name, 10 points after it, so they line up with the name and not with the name plus its "Starts
+    6 AM" line.
+  - **To do:** put the icons beside the whole title block (name and its line), centred vertically on the header; give
+    them a clear gap from the title that scales with Dynamic Type (`@ScaledMetric`, around 12 to 16 points); keep how
+    many icons fit (`FoldedIcons.fitting` counts the gap) and the fade-in when folding. Read Design Rules' "Today
+    section headers" first (U12); `SectionHeaderUITests` covers the header. Check on the iPhone (U9).
 
 - [ ] **11. Bug: the app sometimes stops responding for ~74 s right after launching signed in** (added 2 Oct, from the
   test runs). `BackupUITests.testDeletingTheAccountAndErasingThisPhone` launches with a test sign-in to the dev server;
