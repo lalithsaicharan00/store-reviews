@@ -9,7 +9,7 @@ struct TodayView: View {
     /// Parts and checklists the person opened or folded, and done rows held in place until a pause (#58, #59).
     /// One box per part, so folding one part redraws only that part.
     @State private var layout = TodayLayout()
-    @AppStorage(Preferences.doneOrder) private var doneOrder = DoneOrder.bottom.rawValue
+    @AppStorage(Preferences.doneOrder) private var doneOrder = DoneOrder.inPlace.rawValue
     @AppStorage(Preferences.hideDoneHabits) private var hideDoneHabits = false
     @AppStorage(Preferences.hideDoneTasks) private var hideDoneTasks = false
     /// Edit: Today becomes Arrange Your Day (`ArrangeDayView`) until Done (the user, 3 Oct 2026).

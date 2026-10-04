@@ -20,7 +20,7 @@ enum Preferences {
 
     static func register() {
         UserDefaults.standard.register(defaults: [theme: Theme.automatic.rawValue, haptics: true, sound: false,
-                                                  doneOrder: DoneOrder.bottom.rawValue])
+                                                  doneOrder: DoneOrder.inPlace.rawValue])
     }
 }
 
