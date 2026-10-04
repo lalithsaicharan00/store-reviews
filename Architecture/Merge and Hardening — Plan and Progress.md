@@ -75,6 +75,12 @@ a WAF rule. Details and where each is done: the Status note's "What needs you".
 
 ## Progress log
 
+- **4 Oct 2026 (Codex, shared CI policy and documentation sync):** Rulebook T10 and both root agent entry points
+  now require ordinary pushes without trigger tags, live repository-wide checks before starting validation, and
+  waiting for other agents' tests without cancelling them. The widget cancellation tag needs explicit authorization.
+  Remote main was already current; imported the routine-player requirements from `e657641` as documentation only.
+  Its old checklist items 22/23 map to Current Work Checklist 33/34; implementation and completion claims remain
+  pending verification. No app code was merged by this sync.
 - **4 Oct 2026 (Codex, documentation organization):** renamed `iOS/Build Plan.md` to
   [Product Roadmap](<../iOS/Product Roadmap.md>) and “Next Up” to
   [Current Work Checklist](<../iOS/Docs/Checklists/Current Work Checklist.md>). The roadmap retains broad capabilities

@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 33).
+  still resolve; give new items the next unused number (currently 35).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item only when its required validation is complete, with the date and relevant commit, test or device
@@ -135,6 +135,20 @@ Their placement records scope and priority; implementation has not started.
   - Add Entry is appropriate in History; the user explicitly distinguishes this from the Today sheet problem in
     item 22. Do not solve this by removing History's Add Entry action.
 
+- [ ] **33. Routine player: Habit options hides its last actions.** Documented on 4 October 2026 by the other
+  agent on `claude/weekly-overview-stats-ly55gk` (`e657641`); formerly item 22 on that branch.
+  - For Read, the sheet shows Log time manually, Skip today, Undo, Show clock and Add Note, but Edit Habit is only
+    reachable after scrolling. Review whether the sheet should fit the complete options list; preserve every action.
+  - The source branch reports a fix. It is not yet merged into main; verify the applicable build and required
+    checks before marking this complete. Detailed requirement: routine-player checklist P5.
+
+- [ ] **34. Routine player: Show clock switch is white/unreadable in dark mode.** Documented on 4 October 2026 by
+  the other agent on `claude/weekly-overview-stats-ly55gk` (`e657641`); formerly item 23 on that branch.
+  - Switches should use the system green style; selection checks use system blue. The branch reports a shared
+    switch style and a correction to the group's habit picker selection controls; integration and verification on
+    main remain pending. Detailed requirements: routine-player checklist P6–P7.
+  - Keep this separate from item 22's Today-sheet green-checkmark concern: these are different controls and reports.
+
 - [ ] **11. Bug: the app sometimes stops responding for ~74 s right after launching signed in** (added 2 Oct, from the
   test runs). `BackupUITests.testDeletingTheAccountAndErasingThisPhone` launches with a test sign-in to the dev server;
   in 4 of 13 runs (1–2 Oct) the app didn't respond for about 74 s right after launch, before the test's first step
@@ -145,6 +159,11 @@ Their placement records scope and priority; implementation has not started.
 
 - [ ] **17. Bug: the routine player's bottom spacing is wrong.** (added 3 Oct 2026) Fix the spacing at the bottom of
   the routine (focus) player's screen; check on the iPhone (U9).
+  - **Details imported from `e657641`, 4 October:** treat ‹ · Habit options · › as bottom navigation, roughly
+    40 points from the bottom edge with ample space against misclicks. The main button and navigation must not
+    shift with habit state, circle/content changes, Undo, save messages or note entry. The branch reports an
+    implementation; current-main integration and iPhone validation remain pending. Requirements:
+    [Routine Player — Bottom Row, Options Sheet and Switches](<Routine Player — Bottom Row, Options Sheet and Switches.md>).
 
 - [ ] **16. Timers and the Dynamic Island / Live Activity.** (added 3 Oct 2026) Starting a timer sometimes goes
   straight into the Dynamic Island. Keep it, but make it behave the way people expect, reliably, and add a way to
@@ -233,6 +252,10 @@ Their placement records scope and priority; implementation has not started.
   - **Week built, 2 Oct** (branch `claude/progress-week-cards`, not compiled yet): the user chose cards, removed the
     overview, the rings (Progress and Today's calendar sheet) and the group numbers. See
     [Progress Week — Habit Cards Build](<Progress Week — Habit Cards Build.md>). Month and Year next.
+  - **Status claim to reconcile (4 October):** `e657641` on the other agent's branch changes this item to complete,
+    saying Week, Month and Year are already built in main and the tick was missed. This documentation sync preserves
+    the claim, but does not mark the full visual overhaul complete without checking the current implementation and
+    validation against the original scope. New spacing feedback remains independently open as item 31.
 
 - [ ] **3. Account out of Backup & Export.** Backup & Export holds only backup and export (the backup account it
   uses can stay there). Making an account, signing in and deleting the account are not backup things.
