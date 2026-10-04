@@ -41,6 +41,7 @@ struct HabitsApp: App {
                     guard url.scheme == "oftenenough" else { return }
                     if url.host == "today" { Analytics.shared.count(.widgetOpen, ticket: Analytics.shared.ticket); model.router.widgetToday = true }
                     if url.host == "item", let id = UUID(uuidString: url.lastPathComponent) { Analytics.shared.count(.widgetOpen, ticket: Analytics.shared.ticket); model.router.widgetItem = id }
+                    if url.host == "timer", let id = UUID(uuidString: url.lastPathComponent) { model.router.timerHabit = id }
                 }
         }
         .onChange(of: scenePhase) {

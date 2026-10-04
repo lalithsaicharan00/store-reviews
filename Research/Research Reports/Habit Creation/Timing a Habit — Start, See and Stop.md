@@ -1,5 +1,7 @@
 Written by Claude (Claude Code), 28 September 2026.
 
+> **4 Oct 2026:** one decision here is superseded: ▶ now also opens the timer full screen (dismissible, it keeps running). See [Timers — What People Expect When They Tap ▶](<Timers — What People Expect When They Tap ▶.md>).
+
 # Timing a Habit — Start, See and Stop
 
 **The user's question (28 Sep):**

@@ -87,6 +87,11 @@ struct TodayView: View {
                 RoutinePlayer(session: session)
                     .onAppear { playerCovering = true }
             }
+            // One habit's timer, full screen until swiped away (it keeps running). A large sheet, so the swipe that puts
+            // it away is the iPhone's own.
+            .sheet(isPresented: Binding(get: { store.timerScreen != nil }, set: { if !$0 { store.timerScreen = nil } })) {
+                if let id = store.timerScreen { TimerScreen(habitID: id) }
+            }
             .sheet(item: Binding(get: { store.dayTarget }, set: { store.dayTarget = $0 })) { target in
                 if let habit = store.habits.first(where: { $0.id == target.habitID }) {
                     DaySheet(habit: habit, day: target.day, pageLink: true)
@@ -174,7 +179,8 @@ struct TodayView: View {
         }
         .onChange(of: router.widgetToday) { routeWidget() }
         .onChange(of: router.widgetItem, initial: true) { routeWidget() }
-        .onChange(of: store.isLoaded) { routeWidget() }
+        .onChange(of: router.timerHabit, initial: true) { routeTimer() }
+        .onChange(of: store.isLoaded) { routeWidget(); routeTimer() }
         .onChange(of: router.openHabit, initial: true) { routeShortcut() }
         .onChange(of: router.focusSection) { focusReminderSection() }
         .alert("Something went wrong", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
@@ -208,6 +214,15 @@ struct TodayView: View {
             layout.open(section)
             scrollTarget = Self.headerKey(section)
         }
+    }
+
+    /// A tapped Live Activity: back on today, with that habit's timer open (only if it's still a habit).
+    private func routeTimer() {
+        guard store.isLoaded, routine == nil, let id = router.timerHabit else { return }
+        router.timerHabit = nil
+        guard store.habits.contains(where: { $0.id == id && !$0.archived }) else { return }
+        menu.reset(); day = nil
+        store.timerScreen = id
     }
 
     /// Speed runs (`PerfDriver`): the same state changes the buttons make.
@@ -486,9 +501,10 @@ struct TodayView: View {
             .safeAreaInset(edge: .bottom) {
                 VStack(spacing: 8) {
                     if isToday {
-                        // A running timer whose row is scrolled away or folded stays in sight here
-                        // ("Timing a Habit — Start, See and Stop"). Timers only run today.
-                        HiddenTimerBars(visible: visibleRows) { show($0) }
+                        // A running timer whose row is scrolled away or folded stays in sight here, like the iPhone's
+                        // Now Playing bar: tapping it opens the timer full screen (report "Timers — What People Expect
+                        // When They Tap ▶", 4 Oct 2026). Timers only run today.
+                        HiddenTimerBars(visible: visibleRows) { store.timerScreen = $0.id }
                     }
                     // On today the button isn't there at all (so VoiceOver can't find an invisible button, found
                     // by the UI tests 29 Sep); an empty space of its height keeps the list from shifting.
@@ -556,19 +572,6 @@ struct TodayView: View {
         if reduceMotion { arranging = on } else { withAnimation(.snappy) { arranging = on } }
     }
 
-    /// From the timer bar: open the timer's section and bring its row into view.
-    private func show(_ habit: Habit) {
-        // Its row may be filtered out: show everything so the row is there.
-        if !store.isInGroup(habit, filterGroup) { groupRaw = "" }
-        let placements = store.placements(of: habit)
-        let slot = store.timerSlots[habit.id]
-        guard let section = (placements.first { slot != nil && $0.slot == slot } ?? placements.first)?.section else { return }
-        layout.setOpen(section, true, reduceMotion: reduceMotion)
-        Task {
-            try? await Task.sleep(for: .milliseconds(100)) // the section opens and the row exists
-            scrollTarget = Self.rowKey(section, habit.id)
-        }
-    }
 
     private func start(part: String, items: [TodayItem], day: LocalDay) {
         guard day == store.today() else { return }

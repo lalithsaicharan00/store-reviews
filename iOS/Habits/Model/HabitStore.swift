@@ -175,6 +175,8 @@ final class HabitStore {
     var noteTarget: NoteTarget?
     /// History is hosted by Today, so skipping a day cannot remove the row that owns its sheet.
     var dayTarget: DayTarget?
+    /// The habit whose full-screen timer is open (`TimerScreen`), from ▶, the timer bar or the Live Activity.
+    var timerScreen: UUID?
     struct DayTarget: Identifiable {
         let habitID: UUID
         let day: LocalDay

@@ -41,7 +41,8 @@ final class TimerPresence {
         guard enabled else { return }
         let running = runningTimers(store, now: now)
         await syncNotifications(running, day: store.today(now: now))
-        await Self.syncActivities(running)
+        // ≡ → Appearance → Timers → Show on Lock Screen, read here on the main actor.
+        await Self.syncActivities(running, shown: UserDefaults.standard.bool(forKey: Preferences.timerLiveActivity))
     }
 
     private func runningTimers(_ store: HabitStore, now: Date) -> [Running] {
@@ -126,14 +127,16 @@ final class TimerPresence {
     // MARK: Live Activities
 
     /// Off the main actor, so the system's activity objects never cross actors.
-    nonisolated private static func syncActivities(_ running: [Running]) async {
+    nonisolated private static func syncActivities(_ running: [Running], shown: Bool) async {
         let activities = Activity<HabitTimerAttributes>.activities
         let wanted = Dictionary(running.map { ($0.attributes.habitID, $0) }, uniquingKeysWith: { a, _ in a })
+        // `shown` off (≡ → Appearance → Timers): none at all (users show a few want it gone; Apple: give people control
+        // over Live Activities). iOS's own Settings switch is checked below.
         // A stopped timer's activity goes at once: one left behind looks like time still counting.
-        for activity in activities where wanted[activity.attributes.habitID] == nil {
+        for activity in activities where !shown || wanted[activity.attributes.habitID] == nil {
             await activity.end(nil, dismissalPolicy: .immediate)
         }
-        guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
+        guard shown, ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         for timer in running {
             let content = ActivityContent(state: timer.state, staleDate: nil)
             let live = activities.first {

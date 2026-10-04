@@ -322,6 +322,8 @@ struct HabitRow: View {
                         TimerPresence.askOnNextSync = true
                         TickFeedback.started()
                         withAnimation(Motion.tick(reduceMotion)) { store.toggleTimer(habit, slot: slot) }
+                        // And its timer opens full screen, which a swipe puts away while it keeps running (4 Oct 2026).
+                        if UserDefaults.standard.bool(forKey: Preferences.timerScreen) { store.timerScreen = habit.id }
                     } else {
                         // Stopping saves the time: a log like any other.
                         offerNote()

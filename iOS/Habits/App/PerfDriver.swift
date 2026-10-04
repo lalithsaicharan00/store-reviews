@@ -176,6 +176,16 @@ enum PerfDriver {
             await open("Today: the note sheet") { store.noteTarget = .init(habit: water.id, day: store.today()) }
             store.noteTarget = nil
             await pause(1.0)
+            // ▶ opens the timer full screen (4 Oct 2026, report "Timers — What People Expect When They Tap ▶"; T4): its
+            // opening, and its clock ticking with Today underneath.
+            if let timed = store.habits.first(where: { $0.kind == .duration && !$0.atMost && !$0.archived }) {
+                if store.timers[timed.id] == nil { store.toggleTimer(timed) }
+                await open("Today: the timer screen") { store.timerScreen = timed.id }
+                await measure("Timer screen: a running clock") { await pause(window) }
+                store.timerScreen = nil
+                await pause(1.0)
+                if store.timers[timed.id] != nil { store.toggleTimer(timed) }
+            }
         case "typing-control":
             await open("Typing control") { send(.openTypingControl) }
             await pause(1)

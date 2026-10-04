@@ -879,7 +879,7 @@ struct RoutinePlayer: View {
 
 /// The player's main button: the system's prominent button, large, in ink, full width of its slot. Native press
 /// feedback and shape; the label keeps the on-ink colour so it reads in dark mode too.
-private struct FocusPrimaryButton: ViewModifier {
+struct FocusPrimaryButton: ViewModifier {
     func body(content: Content) -> some View {
         content
             .labelStyle(FocusPrimaryLabel())
@@ -891,7 +891,7 @@ private struct FocusPrimaryButton: ViewModifier {
 }
 
 /// Icon and title filling the button's width, so every main button is the same size.
-private struct FocusPrimaryLabel: LabelStyle {
+struct FocusPrimaryLabel: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         // One line always, so the button keeps its height from habit to habit.
         HStack(spacing: 8) { configuration.icon; configuration.title.lineLimit(1).minimumScaleFactor(0.75) }
@@ -903,7 +903,7 @@ private struct FocusPrimaryLabel: LabelStyle {
 
 /// The timed habit's clock, status and bar. Only this ticks, once a second, and only while its timer runs;
 /// the rest of the player stays still (a full-screen timeline made the buttons flicker, found by hand 29 Sep).
-private struct FocusClock: View {
+struct FocusClock: View {
     let habit: Habit
     let day: LocalDay
     let showClock: Bool
@@ -960,7 +960,7 @@ private struct FocusClock: View {
 }
 
 /// The goal context sits above the circle; VoiceOver also reads the current value’s period.
-private struct FocusProgressValue: View {
+struct FocusProgressValue: View {
     let value: String
     let target: String
     let period: String
@@ -994,7 +994,7 @@ private struct FocusProgressValue: View {
 }
 
 /// The ring encodes exactly the same current/target shown inside it, across every tracking type.
-private struct FocusProgressCircle<Content: View>: View {
+struct FocusProgressCircle<Content: View>: View {
     let progress: Double
     let goal: Double
     let color: Color

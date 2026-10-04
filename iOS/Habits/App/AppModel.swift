@@ -14,6 +14,8 @@ final class AppRouter {
     var openHabit: UUID?
     var widgetItem: UUID?
     var widgetToday = false
+    /// A running timer's Live Activity was tapped: open that habit's timer screen.
+    var timerHabit: UUID?
 }
 
 /// The app's one store, scheduler and database. Shared, because a notification action, an alarm's
@@ -66,6 +68,8 @@ final class AppModel {
             UserDefaults.standard.removeObject(forKey: Preferences.hideDoneHabits)
             UserDefaults.standard.removeObject(forKey: Preferences.hideDoneTasks)
             UserDefaults.standard.removeObject(forKey: Preferences.doneOrder)
+            UserDefaults.standard.removeObject(forKey: Preferences.timerScreen)
+            UserDefaults.standard.removeObject(forKey: Preferences.timerLiveActivity)
         }
         if arguments.contains("-uitest") {
             opened = Persistence.inMemory()
@@ -180,6 +184,18 @@ final class AppModel {
                               eventID: ReminderIdentity.actionID("action:" + token))
         await store.flush()
         await scheduler.reconcile(store)
+    }
+
+    /// The Live Activity's Pause: stops the timer and saves its time, as ⏸ in the app does. It only stops; it never starts.
+    func stopTimerFromLiveActivity(_ habitID: UUID) async {
+        await ensureLoaded()
+        guard let habit = store.habits.first(where: { $0.id == habitID }), store.timers[habitID] != nil else {
+            await timerPresence.sync(store)
+            return
+        }
+        store.toggleTimer(habit)
+        await store.flush()
+        await timerPresence.sync(store)
     }
 
     /// A tapped notification opens today's section.

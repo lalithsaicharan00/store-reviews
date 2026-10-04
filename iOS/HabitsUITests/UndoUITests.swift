@@ -57,6 +57,8 @@ final class UndoUITests: XCTestCase {
 
     func testStoppingTimerKeepsDaySheetOpenAndSecondsCanBeEdited() {
         app.revealAndTap(app.buttons["Start Read a little timer"])
+        // ▶ opens the timer full screen (4 Oct 2026); put it away, the timer keeps running.
+        if app.buttons["timer-screen-close"].waitForExistence(timeout: 3) { app.buttons["timer-screen-close"].tap() }
         let row = app.staticTexts["Read a little"]
         app.reveal(row)
         // A tap on the row opens its Day sheet (3 Oct 2026; it replaced the menu's "Edit Today's Progress…").

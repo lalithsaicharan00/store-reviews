@@ -1,9 +1,9 @@
 import SwiftUI
 
 /// A running timer whose row isn't on screen (scrolled away, or in a folded section): its icon, name
-/// and live clock, pinned at the bottom of Today. Tapping it shows the row; ⏸ stops and saves.
-/// Research: "Timing a Habit — Start, See and Stop" (28 Sep): people want to see the timer while
-/// they do other things, and the row alone can be out of sight.
+/// and live clock, pinned at the bottom of Today like the iPhone's Now Playing bar. Tapping it opens the timer full
+/// screen (`TimerScreen`); ⏸ stops and saves. Research: "Timing a Habit — Start, See and Stop" (28 Sep) and "Timers —
+/// What People Expect When They Tap ▶" (4 Oct): people want to see the timer while they do other things.
 struct TimerBar: View {
     let habit: Habit
     let start: Date
@@ -29,7 +29,7 @@ struct TimerBar: View {
                 .buttonStyle(.plain)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("\(habit.name) timer, \(line)")
-                .accessibilityHint("Shows the habit")
+                .accessibilityHint("Opens the timer")
                 .accessibilityIdentifier("timer-bar")
                 RoundActionButton(symbol: "pause.fill", done: false, color: habit.color, label: "Stop \(habit.name) timer") {
                     withAnimation { store.toggleTimer(habit) }

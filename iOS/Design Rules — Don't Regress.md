@@ -140,13 +140,13 @@ Source: [Logging a Count — One Tap or Type](<../Research/Research Reports/Habi
 
 ## Timing a habit
 
-Source: [Timing a Habit — Start, See and Stop](<../Research/Research Reports/Habit Creation/Timing a Habit — Start, See and Stop.md>).
+Source: [Timing a Habit — Start, See and Stop](<../Research/Research Reports/Habit Creation/Timing a Habit — Start, See and Stop.md>) and [Timers — What People Expect When They Tap ▶](<../Research/Research Reports/Habit Creation/Timers — What People Expect When They Tap ▶.md>) (4 Oct 2026).
 
-- **▶ starts the timer in place, for any goal length.** Never open a full-screen timer for one habit: full screen belongs only to the routine player (Start on a section). Being sent to a timer screen is a top complaint.
+- **▶ starts the timer at once, for any goal length, and opens it full screen** (`TimerScreen`; the user, 4 Oct 2026: "it just runs in the row… it isn't intuitive"; supersedes 28 Sep's "never full screen for one habit"). **Never a trap:** ⌄ or a swipe down puts it away and the timer keeps running; closing never stops it or loses time. Users show both: a big timer to focus on is asked for (≈12), a timer screen you can't leave is a complaint (5). ≡ → Appearance → Timers → Open Timer Full Screen (on by default) turns it off; ▶ then starts it in the row only.
 - **A running timer must be visible**:
   - The row's line is a live clock, redrawn every second: "7:42/20 min" (`goalLine(running:)`).
-  - When the row is off screen or folded, a timer bar sits at the bottom of Today (`TimerBar`).
-  - Outside the app, a Live Activity shows it (`TimerPresence`; the `HabitsLiveActivity` extension).
+  - When the row is off screen or folded, a timer bar sits at the bottom of Today (`TimerBar`), like the iPhone's Now Playing bar: **tapping it opens the timer** full screen; ⏸ stops it.
+  - Outside the app, a Live Activity shows it (`TimerPresence`; the `HabitsLiveActivity` extension), with **Pause** (`StopTimerIntent`: stops and saves, never starts) and a tap that opens that habit's timer (`oftenenough://timer/<id>`). ≡ → Appearance → Timers → Show on Lock Screen (on by default) turns it off, besides iOS's own switch.
   - Never show only ▶ turning into ⏸.
 - **Keep the `TimelineView` inside the timed row itself.** A `TimelineView` higher up doesn't reliably redraw child rows whose inputs didn't change. And whole minutes hide a running timer for its first minute. Together these caused the "nothing moves" report (28 Sep).
 - **One notification when the goal is reached, never repeats or per-second pings.** The timer keeps counting past the goal.
