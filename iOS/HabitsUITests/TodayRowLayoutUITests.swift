@@ -121,6 +121,7 @@ final class TodayRowLayoutUITests: XCTestCase {
         smoking.swipeLeft()
         let slip = app.buttons["row-swipe-slip"]
         XCTAssertTrue(slip.waitForExistence(timeout: 3), "Swipe left: Log Slip")
+        XCTAssertTrue(app.buttons["row-swipe-note"].exists, "…and Note beside it (4 Oct 2026: two buttons, no full swipe)")
         shot("l06-quit-swipe")
         slip.tap()
         XCTAssertTrue(app.navigationBars["Log a Slip"].waitForExistence(timeout: 3), "Log Slip opens Log a Slip")

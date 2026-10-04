@@ -159,15 +159,15 @@ struct HabitRow: View {
             case .pause: PauseSheet(habit: habit)
             }
         }
-        // Swipe left: a note (the full swipe, harmless), Skip and Pause, each a labelled button the swipe reveals; never an
-        // action performed unseen (report "Today's Rows": accidental skips and "which way is which" came from swipes
-        // that act on their own).
-        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+        // Swipe left reveals Skip (at the edge) and Note; a swipe never acts by itself, however far it goes (the user,
+        // 4 Oct 2026: a long swipe opened Note; report "Swipe Actions — Reveal, Never Act"). Two buttons, so both are easy
+        // to reach; Pause lives in the long-press menu and the Day sheet.
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if day <= store.today() && lineOverride == nil {
+                if habit.kind != .task { RowSkipButton(habit: habit, day: day) }
                 Button { startWriting() } label: { Label(store.note(of: habit, on: day) == nil ? "Note" : "Edit Note", systemImage: "note.text") }
                     .tint(.indigo)
-                if habit.kind != .task { RowSkipButton(habit: habit, day: day) }
-                if habit.kind != .task { RowPauseButton(habit: habit, showPause: showing(.pause)) }
+                    .accessibilityIdentifier("row-swipe-note")
             }
         }
         // Swipe right: Undo, saying what it takes back ("Undo +1 glass"), when this day has an entry. No full swipe.
@@ -444,17 +444,18 @@ struct QuitRow: View {
         }
         .padding(.vertical, RowSpace.rowPadding)
         .listRowBackground(Color(.secondarySystemGroupedBackground).overlay(HighlightFlash(on: highlighted, color: habit.color)))
-        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
-                Label(store.note(of: habit, on: today) == nil ? "Note" : "Edit Note", systemImage: "note.text")
-            }
-            .tint(.indigo)
-            // Where the "Slipped" button was (U5): one swipe away, opening Log a Slip, never logging unseen.
+        // Swipe left reveals Log Slip (at the edge, where the "Slipped" button was: U5) and Note; it never acts by itself
+        // (4 Oct 2026). Pause is in the long-press menu.
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             Button { sheet = .slip } label: { Label("Log Slip", systemImage: "arrow.uturn.backward.circle") }
                 .tint(.gray)
                 .disabled(store.isPaused(habit, on: today))
                 .accessibilityIdentifier("row-swipe-slip")
-            RowPauseButton(habit: habit, showPause: Binding(get: { sheet == .pause }, set: { sheet = $0 ? .pause : (sheet == .pause ? nil : sheet) }))
+            Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
+                Label(store.note(of: habit, on: today) == nil ? "Note" : "Edit Note", systemImage: "note.text")
+            }
+            .tint(.indigo)
+            .accessibilityIdentifier("row-swipe-note")
         }
         .contextMenu {
             if let menu {
@@ -897,21 +898,3 @@ struct RowSkipButton: View {
     }
 }
 
-/// Swipe left → Pause… or Resume.
-struct RowPauseButton: View {
-    let habit: Habit
-    @Binding var showPause: Bool
-    @Environment(HabitStore.self) private var store
-
-    var body: some View {
-        let today = store.today()
-        if let pause = store.pause(of: habit, on: today), pause.contains(today) {
-            Button { store.resume(habit) } label: { Label("Resume", systemImage: "play.circle") }
-                .tint(.teal)
-        } else if store.canPause(habit) && store.pause(of: habit, on: today) == nil {
-            Button { showPause = true } label: { Label("Pause", systemImage: "pause.circle") }
-                .tint(.teal)
-                .accessibilityIdentifier("row-swipe-pause")
-        }
-    }
-}

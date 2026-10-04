@@ -46,9 +46,9 @@ final class TodayRowSheetUITests: XCTestCase {
 
     /// Swipes a row a fixed 220 pt from its name: XCUITest sizes a swipe to the element, and a name is too narrow for
     /// a real swipe (the short drag landed as a tap and opened the Day sheet, CI 4 Oct 2026).
-    private func swipe(_ element: XCUIElement, right: Bool) {
+    private func swipe(_ element: XCUIElement, right: Bool, distance: CGFloat = 220) {
         let start = element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
-        start.press(forDuration: 0.05, thenDragTo: start.withOffset(CGVector(dx: right ? 220 : -220, dy: 0)))
+        start.press(forDuration: 0.05, thenDragTo: start.withOffset(CGVector(dx: right ? distance : -distance, dy: 0)))
     }
 
     private func closeSheet() {
@@ -123,8 +123,8 @@ final class TodayRowSheetUITests: XCTestCase {
         closeSheet()
     }
 
-    /// Swipe right: Undo, naming what it takes back, removes exactly one entry. Swipe left: Note, Skip and Pause,
-    /// revealed with their labels; Skip turns into Undo Skip.
+    /// Swipe right: Undo, naming what it takes back, removes exactly one entry. Swipe left: Skip and Note, revealed with
+    /// their labels, never performed by the swipe however far it goes (4 Oct 2026); Skip turns into Undo Skip.
     func testSwipeActions() {
         launch()
         let water = app.staticTexts["Water"].firstMatch
@@ -139,10 +139,15 @@ final class TodayRowSheetUITests: XCTestCase {
         undo.tap()
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '7/8 glasses'")).firstMatch.waitForExistence(timeout: 3),
                       "Exactly one glass taken back")
-        swipe(water, right: false)
+        // A swipe all the way across only reveals: it never opens the note (the user, 4 Oct 2026).
+        swipe(water, right: false, distance: 360)
         XCTAssertTrue(app.buttons["row-swipe-skip"].waitForExistence(timeout: 3), "Swipe left: Skip")
-        XCTAssertTrue(app.buttons["row-swipe-pause"].exists, "Swipe left: Pause")
-        XCTAssertTrue(app.buttons["Note"].exists, "Swipe left: Note")
+        XCTAssertTrue(app.buttons["row-swipe-note"].exists, "Swipe left: Note")
+        XCTAssertFalse(app.buttons["row-swipe-pause"].exists, "Pause is in the long-press menu and the Day sheet, not the swipe")
+        XCTAssertFalse(app.descendants(matching: .any)["note-field"].firstMatch.waitForExistence(timeout: 1.5), "A long swipe doesn't open the note sheet")
+        let skip = app.buttons["row-swipe-skip"].frame, note = app.buttons["row-swipe-note"].frame
+        XCTAssertGreaterThan(skip.minX, note.minX, "Skip sits at the edge, Note beside it")
+        XCTAssertGreaterThanOrEqual(min(skip.width, note.width), 60, "Both buttons are big enough to hit")
         shot("r08-swipe-left")
         app.buttons["row-swipe-skip"].tap()
         sleep(1)
