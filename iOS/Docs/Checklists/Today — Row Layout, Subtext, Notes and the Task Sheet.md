@@ -13,23 +13,23 @@ Next Up items this covers: **7** (what each row says under its name), **13** (th
 
 | # | Point | Done |
 |---|---|---|
-| L1 | **Done habits move down** (the user's final call, 3 Oct 2026): Move to Bottom is the default again; Stay in Place stays in Appearance | [ ] |
-| L2 | **Tapping a task opens a sheet too**, with what's useful for a task: its actions, easy from Today | [ ] |
-| L3 | **The row's layout is consistent**: nothing wraps onto a second line (Undo, Add note…), spacing is even | [ ] |
-| L4 | **A note is never typed in the row.** Add Note opens a sheet (or full screen) with Save; once there's a note, the button says Edit Note | [ ] |
-| L5 | **Add note and Undo look right**: aligned, evenly spaced, never squeezed | [ ] |
-| L6 | **No row runs to four lines**: name, one line under it, and the after-log actions at most | [ ] |
-| L7 | **Research what the line under the name shows** for every habit type and goal, then one mental model: the same kind of fact in the same place on every row; the data differs, the idea doesn't | [ ] |
-| L8 | Every row has that line, exactly one: some have two, some none today. A checklist's **step rows have none** (they have no icon); **a task's line says it's a task** | [ ] |
-| L9 | **Spacing rules with hierarchy**: not squished, not excessive; harmonious | [ ] |
-| L10 | **Alignment**: the icon sits right against the text; Add note and Undo line up | [ ] |
-| L11 | **Quit habits** follow the same model: no stray "Slipped" or "last logged" text under everything | [ ] |
-| L12 | Research first (L7), then build, test, screenshots | [ ] |
+| L1 | **Done habits move down** (the user's final call, 3 Oct 2026): Move to Bottom is the default again; Stay in Place stays in Appearance | [x] |
+| L2 | **Tapping a task opens a sheet too**, with what's useful for a task: its actions, easy from Today | [x] |
+| L3 | **The row's layout is consistent**: nothing wraps onto a second line (Undo, Add note…), spacing is even | [x] |
+| L4 | **A note is never typed in the row.** Add Note opens a sheet (or full screen) with Save; once there's a note, the button says Edit Note | [x] |
+| L5 | **Add note and Undo look right**: aligned, evenly spaced, never squeezed | [x] |
+| L6 | **No row runs to four lines**: name, one line under it, and the after-log actions at most | [x] |
+| L7 | **Research what the line under the name shows** for every habit type and goal, then one mental model: the same kind of fact in the same place on every row; the data differs, the idea doesn't | [x] |
+| L8 | Every row has that line, exactly one: some have two, some none today. A checklist's **step rows have none** (they have no icon); **a task's line says it's a task** | [x] |
+| L9 | **Spacing rules with hierarchy**: not squished, not excessive; harmonious | [x] |
+| L10 | **Alignment**: the icon sits right against the text; Add note and Undo line up | [x] |
+| L11 | **Quit habits** follow the same model: no stray "Slipped" or "last logged" text under everything | [x] |
+| L12 | Research first (L7), then build, test, screenshots | [x] |
 
 ## Decisions and progress
 
 Research: [Today's Rows — The Line Under the Name, Notes and Spacing](<../../../Research/Research Reports/Day Structure and Organization/Today's Rows — The Line Under the Name, Notes and Spacing.md>)
-(3 Oct 2026: 1,537 reviews read by hand, 330 on topic). Design Rules' new section "A row's shape". Built in `c751e33`.
+(3 Oct 2026: 1,537 reviews read by hand, 330 on topic). Design Rules' new section "A row's shape". Built in `c751e33`; merged into `main` 4 Oct 2026 (`396c40e`). Still yours: a look on the iPhone (U9).
 
 | Point | Decision, and where it's built |
 |---|---|

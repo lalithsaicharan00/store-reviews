@@ -14,20 +14,20 @@ Every point follows [the Rulebook](<../../../RULEBOOK.md>) and Today's section o
 
 | # | Point | Done |
 |---|---|---|
-| R1 | **Done habits stay where they are** on Today: no moving down when completed. Order is how they were added or how the person arranged them (Next Up 21; Rulebook U13) | [ ] |
-| R2 | **Tapping a habit row on Today opens a bottom sheet** (every habit; not tasks for now) | [ ] |
-| R3 | The sheet holds **that day's entries**, and they can be **edited** | [ ] |
-| R4 | It makes clear **through the UI and UX, not words**, that the entries are the day being viewed: Today shows today's, yesterday shows yesterday's | [ ] |
-| R5 | The sheet's actions: **Edit Habit, open the habit's page, Pause, Skip**: from it the person can go anywhere and do the major things | [ ] |
-| R6 | **Delete: research** whether it belongs in the sheet; never a red button that's always in view. Decide and implement | [ ] |
-| R7 | **The sheet changes with the habit type** (check, times, amount, time, checklist, limit, weekly goals, quit), properly for every one | [ ] |
-| R8 | **Swipe actions: research** how the iPhone does them natively and what people expect in habit apps (skip, pause, undo, note…); which actions, which side (left or right swipe); implement | [ ] |
-| R9 | **Undo says what it undoes before it's done**: the last entry, or the whole day's progress? Obvious for a check habit; must be clear for amounts, time and several entries a day | [ ] |
-| R10 | **The long-press menu** brought up to date with the habit page and the sheet | [ ] |
-| R11 | **Tapping a completed habit's button: research** whether it should undo. Today an amount at its goal undoes its last entry on a tap, then the next tap adds again: one mental model for completing and undoing, the same for every habit on the row | [ ] |
-| R12 | **Existing mental models, never new ones**, for every mechanism and everything shown: intuitive and easy to understand | [ ] |
-| R13 | Research first where asked (R6, R8, R9, R11), then build, then test (UI tests, a speed run, screenshots) | [ ] |
-| R14 | Tick Next Up items 8, 13, 18 (its mental-model part) and 21 when done | [ ] |
+| R1 | **Done habits stay where they are** on Today: no moving down when completed. Order is how they were added or how the person arranged them (Next Up 21; Rulebook U13) | [x] |
+| R2 | **Tapping a habit row on Today opens a bottom sheet** (every habit; not tasks for now) | [x] |
+| R3 | The sheet holds **that day's entries**, and they can be **edited** | [x] |
+| R4 | It makes clear **through the UI and UX, not words**, that the entries are the day being viewed: Today shows today's, yesterday shows yesterday's | [x] |
+| R5 | The sheet's actions: **Edit Habit, open the habit's page, Pause, Skip**: from it the person can go anywhere and do the major things | [x] |
+| R6 | **Delete: research** whether it belongs in the sheet; never a red button that's always in view. Decide and implement | [x] |
+| R7 | **The sheet changes with the habit type** (check, times, amount, time, checklist, limit, weekly goals, quit), properly for every one | [x] |
+| R8 | **Swipe actions: research** how the iPhone does them natively and what people expect in habit apps (skip, pause, undo, note…); which actions, which side (left or right swipe); implement | [x] |
+| R9 | **Undo says what it undoes before it's done**: the last entry, or the whole day's progress? Obvious for a check habit; must be clear for amounts, time and several entries a day | [x] |
+| R10 | **The long-press menu** brought up to date with the habit page and the sheet | [x] |
+| R11 | **Tapping a completed habit's button: research** whether it should undo. Today an amount at its goal undoes its last entry on a tap, then the next tap adds again: one mental model for completing and undoing, the same for every habit on the row | [x] |
+| R12 | **Existing mental models, never new ones**, for every mechanism and everything shown: intuitive and easy to understand | [x] |
+| R13 | Research first where asked (R6, R8, R9, R11), then build, then test (UI tests, a speed run, screenshots) | [x] |
+| R14 | Tick Next Up items 8, 13, 18 (its mental-model part) and 21 when done | [x] |
 
 ## Decisions and progress
 

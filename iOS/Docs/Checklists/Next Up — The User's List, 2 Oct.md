@@ -48,16 +48,16 @@ tick each when it's done and link what was built or written. Every item follows
 - [x] **6. The bottom of Today: "Note for the day" and "Edit times of day" share one row** *(Done with item 5, 3 Oct:
   "Edit Times of Day" left the bottom; "Note for the Day" is alone there for now, and item 12 decides where it goes.)*, and "Edit times of day"
   gets squeezed onto two lines. One option per row, or another layout that never wraps.
-- [ ] **7. Today's subtext: decide what each habit row says under its name.** Right now it feels random. Needs
+- [x] **7. Today's subtext: decide what each habit row says under its name.** Right now it feels random. Needs
   research and one rule per kind of habit (check-off, weekly goal, amount, timed, limit, quit, task).
   - *Added 3 Oct:* today it's inconsistent: some rows say "3/3 steps" or "3/3 cups", others "25 cups left today".
     Goals differ, but the wording must follow one mental model everywhere (Today, the sheets, widgets, the habit page).
-  - *Researched and built 3 Oct 2026, testing:* one line under every name saying what today asks (how far along when
+  - *Done and merged into `main` 4 Oct 2026 (`396c40e`):* one line under every name saying what today asks (how far along when
     counted, how often when a single tick, then the time; tasks say "Task"; quit rows their best run). Report [Today's
     Rows — The Line Under the Name, Notes and Spacing](<../../../Research/Research Reports/Day Structure and Organization/Today's Rows — The Line Under the Name, Notes and Spacing.md>);
     checklist [Today — Row Layout, Subtext, Notes and the Task Sheet](<Today — Row Layout, Subtext, Notes and the Task Sheet.md>).
-- [ ] **8. Swipe actions on Today's rows: research.** Swiping a row left offers only Add note. The frequent actions
-  - *Built 3 Oct 2026, testing:* swipe left Note/Skip/Pause, swipe right a named Undo. See [Today — Row Sheet, Swipe Actions, Order and Tap Again](<Today — Row Sheet, Swipe Actions, Order and Tap Again.md>).
+- [x] **8. Swipe actions on Today's rows: research.** Swiping a row left offers only Add note. The frequent actions
+  - *Done and merged into `main` 4 Oct 2026:* swipe left Note/Skip/Pause (Log Slip on quit rows), swipe right a named Undo. See [Today — Row Sheet, Swipe Actions, Order and Tap Again](<Today — Row Sheet, Swipe Actions, Order and Tap Again.md>).
   (edit habit, skip, pause, …) should be there too, possibly using the right swipe as well. Research which actions,
   which side and in what order.
 - [ ] **9. Widgets: choose the habit, one widget per habit, and a visual overhaul.** Widgets work (free and Plus
@@ -90,8 +90,8 @@ tick each when it's done and link what was built or written. Every item follows
     apps that have them), what a day's entry holds (a mood scale, a few words, tags?), where it lives (on Today, its
     own place in ≡, Progress?), how it's reminded, and its stats. Then a design for the user to decide, then build.
 
-- [ ] **13. Tapping any habit on Today opens the same sheet** (added 3 Oct 2026; after the Progress work, or alongside
-  - *Built 3 Oct 2026, testing:* the row opens its Day sheet (every habit kind, and tasks too since the user's next request: Done, date, Do Tomorrow), one shape for all; Delete in its ⋯ menu. Same checklist.
+- [x] **13. Tapping any habit on Today opens the same sheet** (added 3 Oct 2026; after the Progress work, or alongside
+  - *Done and merged into `main` 4 Oct 2026:* the row opens its Day sheet (every habit kind, and tasks too since the user's next request: Done, date, Do Tomorrow), one shape for all; Delete in its ⋯ menu. Same checklist.
   it as separate work). One mental model, whatever the kind of habit.
   - **Today it's inconsistent:** tapping a row's body opens a bottom sheet only for amounts and timed habits (the
     "Log amount / Log time manually" sheet, `HabitRow` `.onTapGesture` when `logsNumbers`). Check-offs, checklists,
@@ -130,8 +130,8 @@ tick each when it's done and link what was built or written. Every item follows
   went, which people can export and share as an image. This is for **one habit**; item 19 is the Progress page's
   week, month and year reports, and item 12's Year in Pixels is for mood. Use the same pixel grid for both.
 
-- [ ] **21. Done habits sinking to the bottom of Today: discuss before changing** (added 3 Oct 2026). Today, ticking
-  - *Decided 3 Oct 2026:* the user first chose "stay in place", then, the same day, **done habits move down** (final). Move to Bottom is the default again; Stay in Place stays in Appearance. Checklist "Today — Row Layout, Subtext, Notes and the Task Sheet" L1.
+- [x] **21. Done habits sinking to the bottom of Today: discuss before changing** (added 3 Oct 2026). Today, ticking
+  - *Done and merged 4 Oct 2026.* The user first chose "stay in place", then, the same day, **done habits move down** (final). Move to Bottom is the default again; Stay in Place stays in Appearance. Checklist "Today — Row Layout, Subtext, Notes and the Task Sheet" L1.
   a habit plays the sound and, once Today settles (1.5 s after the last tap, U4), moves the row below the rest of its
   time of day. But the order is now the person's own (Rulebook U13, from Arrange Your Day, `claude/today-edit-mode`,
   merged 3 Oct): a new habit goes to the end of its section and nothing reorders itself. Moving a done habit to the
