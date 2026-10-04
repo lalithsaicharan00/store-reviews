@@ -16,7 +16,7 @@ struct DayEntriesSection: View {
                 Text(day < store.today() ? "No entries recorded" : "No entries yet").foregroundStyle(.secondary)
             }
             ForEach(entries.reversed()) { entry in
-                if entry.stepID == nil && habit.kind != .task {
+                if entry.opensEditor(for: habit) {
                     NavigationLink {
                         EntryEditView(habit: habit, entry: entry)
                     } label: { label(entry) }
@@ -33,16 +33,10 @@ struct DayEntriesSection: View {
     private func label(_ entry: Entry) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(entry.description(for: habit)).foregroundStyle(.primary)
-            Text(clock(entry) + " · " + (entry.source?.label ?? "Source not recorded"))
+            Text(store.clockText(of: entry) + " · " + (entry.source?.label ?? "Source not recorded"))
                 .font(.caption).foregroundStyle(.secondary)
         }
         .accessibilityElement(children: .combine)
-    }
-
-    private func clock(_ entry: Entry) -> String {
-        let c = store.recordingCalendar(for: entry)
-        let text = entry.createdAt.formatted(Date.FormatStyle(date: .omitted, time: .shortened, calendar: c, timeZone: c.timeZone))
-        return c.timeZone == store.calendar.timeZone ? text : text + " " + (c.timeZone.abbreviation(for: entry.createdAt) ?? entry.timeZone)
     }
 
     private func delete(_ entry: Entry) -> some View {
@@ -50,7 +44,15 @@ struct DayEntriesSection: View {
     }
 }
 
-/// Editing one entry replaces its value, never the day total. All controls are standard Form controls.
+/// Edit Log / Edit Slip: one saved record, corrected on its own (Rulebook U19; handoff "Editing One Habit Log").
+/// The record's own fact comes first (an amount and its unit, a session's hours, minutes and seconds, a multi-check
+/// record's count, a slip's time), the habit and the record's day and source as context, Save in the toolbar, and
+/// Delete at the bottom, which asks first. Only this record changes: other logs, the note and a skip stay.
+///
+/// Native throughout (the user, 4 Oct 2026): the system back chevron with no title, Form rows and fields, a red-text
+/// destructive row for Delete, as Apple's own Contacts and Calendar end an editor; a filled red button would make
+/// the rare destructive action the loudest thing on the screen (Apple HIG, Buttons: use the destructive role for its
+/// colour; reserve prominence for the likely action). A draft with changes asks before Back throws it away.
 struct EntryEditView: View {
     let habit: Habit
     let entry: Entry
@@ -58,7 +60,10 @@ struct EntryEditView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var draft: ProgressValueDraft
     @State private var slipTime: Date
-    @FocusState private var typing: Bool
+    @State private var confirmingDelete = false
+    @State private var confirmingDiscard = false
+    @FocusState private var focus: Field?
+    private enum Field: Hashable { case amount, hours, minutes, seconds }
 
     init(habit: Habit, entry: Entry) {
         self.habit = habit
@@ -68,10 +73,13 @@ struct EntryEditView: View {
     }
 
     private var value: Double? { draft.value }
+    private var isSlip: Bool { habit.kind == .quit }
+    private var noun: String { isSlip ? "slip" : "log" }
+    private var changed: Bool { draft.isChanged || slipTime != entry.createdAt }
 
     private var validSlipTime: Bool {
-        habit.kind != .quit || (store.recordingDay(at: slipTime, for: entry) == entry.day && slipTime <= .now
-                               && slipTime >= min(habit.quitSince ?? habit.createdAt, habit.createdAt))
+        !isSlip || (store.recordingDay(at: slipTime, for: entry) == entry.day && slipTime <= .now
+                   && slipTime >= min(habit.quitSince ?? habit.createdAt, habit.createdAt))
     }
 
     var body: some View {
@@ -79,65 +87,170 @@ struct EntryEditView: View {
         let _ = perfTimed("Entry editor: whole editor drawn") { () }
         Form {
             Section {
-                Text(habit.name).font(.headline)
-                Text(entry.day.date(calendar: store.calendar).formatted(date: .complete, time: .omitted)).foregroundStyle(.secondary)
-                LabeledContent("Source", value: entry.source?.label ?? "Source not recorded")
+                DayIdentityRow(habit: habit)
+            } footer: {
+                Text(contextLine)
             }
-            if habit.kind == .duration {
-                DurationInput(hours: draft.binding(\.hours), minutes: draft.binding(\.minutes))
-                Section {
-                    LabeledContent("Seconds") {
-                        DraftTextField(draft: draft, key: \.seconds, placeholder: "0", keyboard: .decimalPad).focused($typing)
-                            .multilineTextAlignment(.trailing)
-                            .accessibilityIdentifier("entry-seconds")
-                    }
+            valueSection
+            Section {
+                Button(role: .destructive) {
+                    focus = nil
+                    confirmingDelete = true
+                } label: {
+                    Text("Delete this \(noun)").frame(maxWidth: .infinity)
                 }
-            } else if habit.kind == .quit {
-                let c = store.recordingCalendar(for: entry)
-                let bounds = store.dayBounds(entry.day, calendar: c)
-                let lower = max(bounds.lowerBound, min(habit.quitSince ?? habit.createdAt, habit.createdAt))
-                Section {
-                    DatePicker("Slipped at", selection: $slipTime, in: lower...max(lower, min(bounds.upperBound, .now)))
-                        .environment(\.calendar, c).environment(\.timeZone, c.timeZone)
-                    if c.timeZone != store.calendar.timeZone {
-                        LabeledContent("Time zone", value: c.timeZone.localizedName(for: .generic, locale: .current) ?? entry.timeZone)
-                    }
-                }
-            } else {
-                Section {
-                    LabeledContent(habit.kind == .check ? "Times" : "Amount") {
-                        DraftTextField(draft: draft, key: \.amount, placeholder: "Amount", keyboard: habit.kind == .check ? .numberPad : .decimalPad)
-                            .multilineTextAlignment(.trailing).focused($typing)
-                            .accessibilityIdentifier("entry-amount")
-                    }
-                } footer: { Text("Change this entry only. Other entries stay as they are.") }
+                .accessibilityIdentifier("entry-delete")
             }
-            Section { Button("Delete Entry", role: .destructive) { typing = false; store.undoEntry(entry.id); dismiss() } }
         }
         .selectsNumbersOnFocus()
+        .scrollDismissesKeyboard(.interactively)
         .analyticsScreen(nil)
-            .navigationTitle("Edit Entry")
+        .navigationTitle(isSlip ? "Edit Slip" : "Edit Log")
         .navigationBarTitleDisplayMode(.inline)
+        // The back control is the chevron alone, as iOS draws it (the user, 4 Oct 2026).
+        .toolbarRole(.editor)
+        .navigationBarBackButtonHidden(changed)
+        .interactiveDismissDisabled(changed)
         .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Save") {
-                    if let value { typing = false; store.editEntry(entry.id, value: value, at: habit.kind == .quit ? slipTime : nil); dismiss() }
-                }.disabled(!draft.isValid || !validSlipTime)
+            if changed {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Back", systemImage: "chevron.backward") { focus = nil; confirmingDiscard = true }
+                        .accessibilityIdentifier("entry-back")
+                }
             }
-            ToolbarItemGroup(placement: .keyboard) { if typing { Spacer(); Button("Done") { typing = false } } }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Save") { save() }
+                    .disabled(!draft.isValid || !validSlipTime)
+                    .accessibilityIdentifier("entry-save")
+            }
+            ToolbarItemGroup(placement: .keyboard) {
+                if let field = focus {
+                    Spacer()
+                    if field == .hours || field == .minutes {
+                        Button("Next") { focus = field == .hours ? .minutes : .seconds }
+                    } else {
+                        Button("Done") { focus = nil }
+                    }
+                }
+            }
+        }
+        .alert(isSlip ? "Delete this slip?" : "Delete this log?", isPresented: $confirmingDelete) {
+            Button("Cancel", role: .cancel) {}
+            Button(isSlip ? "Delete Slip" : "Delete Log", role: .destructive) {
+                store.undoEntry(entry.id)
+                dismiss()
+            }
+        } message: {
+            Text(deleteMessage)
+        }
+        .confirmationDialog("Discard your changes to this \(noun)?", isPresented: $confirmingDiscard, titleVisibility: .visible) {
+            Button("Discard Changes", role: .destructive) { dismiss() }
+            Button("Keep Editing", role: .cancel) {}
         }
         #if DEBUG
         .task {
             // Open the real number keyboard before the profiling driver's typing window.
-            if ProcessInfo.processInfo.arguments.contains("-perf-drive"), habit.kind != .duration && habit.kind != .quit { typing = true }
+            if ProcessInfo.processInfo.arguments.contains("-perf-drive"), habit.kind != .duration && !isSlip { focus = .amount }
         }
         #endif
         .onPerfCommand { action in
             switch action {
-            case .saveEntry: if let value { typing = false; store.editEntry(entry.id, value: value); dismiss() }
+            case .saveEntry: if let value { focus = nil; store.editEntry(entry.id, value: value); dismiss() }
             default: break
             }
         }
+    }
+
+    // MARK: The record's own fact
+
+    @ViewBuilder private var valueSection: some View {
+        switch habit.kind {
+        case .duration:
+            // Hours, minutes and seconds together: tap one to replace it (the keyboard stays closed until then), Next
+            // moves on, fractional seconds are kept ("1.23 sec"). Each field is its own small view (Rulebook S11).
+            Section {
+                timeField("Hours", key: \.hours, field: .hours, keyboard: .numberPad, id: "entry-hours")
+                timeField("Minutes", key: \.minutes, field: .minutes, keyboard: .numberPad, id: "entry-minutes")
+                timeField("Seconds", key: \.seconds, field: .seconds, keyboard: .decimalPad, id: "entry-seconds")
+            } header: {
+                Text("Time in this session")
+            } footer: {
+                Text(draft.problem ?? "Tap a value to type. Only this session changes.")
+            }
+        case .quit:
+            let c = store.recordingCalendar(for: entry)
+            let bounds = store.dayBounds(entry.day, calendar: c)
+            let lower = max(bounds.lowerBound, min(habit.quitSince ?? habit.createdAt, habit.createdAt))
+            Section {
+                // The day stays as recorded: moving a slip to another day needs the same record moved between days in
+                // storage and sync at once, which doesn't exist yet (handoff; D7). A picker that couldn't save would lie.
+                LabeledContent("Date", value: entry.day.date(calendar: store.calendar).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated).year()))
+                DatePicker("Time", selection: $slipTime, in: lower...max(lower, min(bounds.upperBound, .now)), displayedComponents: .hourAndMinute)
+                    .environment(\.calendar, c).environment(\.timeZone, c.timeZone)
+                    .accessibilityIdentifier("entry-slip-time")
+                LabeledContent("Time zone", value: c.timeZone.localizedName(for: .generic, locale: .current) ?? entry.timeZone)
+            } header: {
+                Text("When it happened")
+            } footer: {
+                Text("Changing the time updates your quit run.")
+            }
+        default:
+            let check = habit.kind == .check
+            let unit = check ? (habit.checkUnit ?? "times") : HabitCopy.unit(of: habit)
+            Section {
+                LabeledContent(check ? "Checks in this log" : "Amount logged") {
+                    HStack(spacing: 6) {
+                        DraftTextField(draft: draft, key: \.amount, placeholder: "0", keyboard: check ? .numberPad : .decimalPad)
+                            .multilineTextAlignment(.trailing)
+                            .font(.body.monospacedDigit().weight(.semibold))
+                            .focused($focus, equals: .amount)
+                            .accessibilityLabel(unit.isEmpty ? "Amount" : "Amount, in \(unit)")
+                            .accessibilityIdentifier("entry-amount")
+                        if !unit.isEmpty { Text(unit).foregroundStyle(.secondary) }
+                    }
+                }
+            } header: {
+                Text("Correct this log")
+            } footer: {
+                Text(draft.problem ?? (check ? "Other checks for this day stay as they are." : "Only this log changes. Other logs stay as they are."))
+            }
+        }
+    }
+
+    private func timeField(_ title: String, key: ReferenceWritableKeyPath<ProgressValueDraft, String>, field: Field,
+                           keyboard: UIKeyboardType, id: String) -> some View {
+        LabeledContent(title) {
+            DraftTextField(draft: draft, key: key, placeholder: "0", keyboard: keyboard)
+                .multilineTextAlignment(.trailing)
+                .font(.body.monospacedDigit().weight(.semibold))
+                .focused($focus, equals: field)
+                .accessibilityLabel(title)
+                .accessibilityIdentifier(id)
+        }
+    }
+
+    // MARK: Words
+
+    /// "Sat, 4 Oct 2026 · Manual log": which record this is, never a control.
+    private var contextLine: String {
+        let day = entry.day.date(calendar: store.calendar).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated).year())
+        return day + " · " + (entry.source?.label ?? "Source not recorded")
+    }
+
+    /// Names the one record and its day, and says what stays (U19).
+    private var deleteMessage: String {
+        let day = PauseSheet.short(entry.day, calendar: store.calendar)
+        if isSlip { return "The slip at \(store.clockText(of: entry)) on \(day) will be removed, and your quit run worked out again." }
+        let what = entry.description(for: habit)
+        return what + " will be removed from \(day). Other logs stay."
+    }
+
+    private func save() {
+        focus = nil
+        guard changed else { dismiss(); return }
+        guard let value else { return }
+        store.editEntry(entry.id, value: value, at: isSlip ? slipTime : nil)
+        dismiss()
     }
 }
 
@@ -155,8 +268,8 @@ struct DraftTextField: View {
     }
 }
 
-/// Only the native fields read these strings. The Form reads the validation flag, which changes
-/// only when input becomes valid/invalid; metadata and history do not rebuild for every character.
+/// Only the native fields read these strings. The Form reads the validation flag, the problem and whether anything
+/// changed, each set only when it changes; metadata and history do not rebuild for every character.
 @Observable final class ProgressValueDraft {
     let kind: HabitKind
     var amount: String
@@ -164,6 +277,12 @@ struct DraftTextField: View {
     var minutes: String
     var seconds: String
     var isValid: Bool
+    /// Why the text can't be saved, said near the field (never silently clamped or rounded); nil when it can, or
+    /// while a field is simply empty.
+    var problem: String?
+    /// Whether any field differs from what the draft opened with (an editor asks before Back throws it away).
+    var isChanged = false
+    @ObservationIgnored private var opened: [String] = []
 
     init(kind: HabitKind, value: Double? = nil) {
         self.kind = kind
@@ -175,26 +294,42 @@ struct DraftTextField: View {
         seconds = GoalNumber.text(totalSeconds - Double(wholeMinutes) * 60)
         isValid = false
         isValid = self.value != nil
+        opened = [amount, hours, minutes, seconds]
     }
 
-    var value: Double? {
-        if kind == .quit { return 1 }
+    var value: Double? { check().value }
+
+    private func check() -> (value: Double?, problem: String?) {
+        if kind == .quit { return (1, nil) }
         if kind == .duration {
-            guard let h = GoalNumber.parse(hours, decimals: 0), let m = GoalNumber.parse(minutes, decimals: 0), m < 60,
-                  let s = GoalNumber.parse(seconds), s < 60 else { return nil }
+            if [hours, minutes, seconds].contains(where: { $0.trimmingCharacters(in: .whitespaces).isEmpty }) { return (nil, nil) }
+            guard let h = GoalNumber.parse(hours, decimals: 0) else { return (nil, "Hours are a whole number.") }
+            guard let m = GoalNumber.parse(minutes, decimals: 0) else { return (nil, "Minutes are a whole number.") }
+            guard m < 60 else { return (nil, "Minutes go up to 59.") }
+            guard let s = GoalNumber.parse(seconds) else { return (nil, "Seconds take up to 2 decimal places.") }
+            guard s < 60 else { return (nil, "Seconds go up to 59.99.") }
             let v = h * 60 + m + s / 60
-            return v > 0 && v <= GoalNumber.maximum ? v : nil
+            guard v > 0 else { return (nil, "A session is longer than zero.") }
+            return v <= GoalNumber.maximum ? (v, nil) : (nil, "That's longer than a log can hold.")
         }
-        guard let v = GoalNumber.parse(amount, decimals: kind == .check ? 0 : 2), v > 0 else { return nil }
-        return v
+        if amount.trimmingCharacters(in: .whitespaces).isEmpty { return (nil, nil) }
+        let whole = kind == .check
+        guard let v = GoalNumber.parse(amount, decimals: whole ? 0 : 2) else {
+            return (nil, whole ? "Checks are a whole number." : "Use a number with up to 2 decimal places.")
+        }
+        return v > 0 ? (v, nil) : (nil, "Enter more than zero.")
     }
 
     func binding(_ key: ReferenceWritableKeyPath<ProgressValueDraft, String>) -> Binding<String> {
         Binding(get: { self[keyPath: key] }, set: { text in
             guard self[keyPath: key] != text else { return }
             self[keyPath: key] = text
-            let valid = self.value != nil
+            let (value, problem) = self.check()
+            let valid = value != nil
             if valid != self.isValid { self.isValid = valid }
+            if problem != self.problem { self.problem = problem }
+            let changed = [self.amount, self.hours, self.minutes, self.seconds] != self.opened
+            if changed != self.isChanged { self.isChanged = changed }
         })
     }
 }

@@ -51,8 +51,11 @@ final class TodayRowSheetUITests: XCTestCase {
         start.press(forDuration: 0.05, thenDragTo: start.withOffset(CGVector(dx: right ? 220 : -220, dy: 0)))
     }
 
+    /// The sheet's Close icon (xmark, spoken "Close"; Rulebook U18).
     private func closeSheet() {
-        app.navigationBars.buttons["Done"].firstMatch.tap()
+        let close = app.buttons["day-close"]
+        XCTAssertEqual(close.label, "Close", "The Close icon is named Close for VoiceOver")
+        close.tap()
         XCTAssertTrue(result.waitForNonExistence(timeout: 5))
     }
 
@@ -62,14 +65,26 @@ final class TodayRowSheetUITests: XCTestCase {
         for _ in 0..<6 where !(element.exists && element.isHittable) { form.swipeUp(velocity: .slow) }
     }
 
-    /// Every kind of habit opens the same sheet, titled with the day: an amount, a time, a weekly count, a quit habit.
+    /// Every kind of habit opens the same Day details, titled with the day alone (the habit's name is in its identity
+    /// row, once), with ⋯ and Close and no bottom ‹ day › pager (handoff, 4 Oct 2026): an amount, a time, a weekly
+    /// count, a quit habit. Each says what that day holds and offers its own actions.
     func testRowOpensDaySheetForEveryKind() {
         launch()
-        for (name, key) in [("Water", "amount"), ("Read", "time"), ("Call family", "weekly"), ("Smoking", "quit")] {
+        let expected: [(String, String, [String])] = [
+            ("Water", "amount", ["day-add-step", "day-add-entry"]),
+            ("Read", "time", ["day-start-timer", "day-add-entry"]),
+            ("Call family", "weekly", ["day-done"]),
+            ("Smoking", "quit", ["day-add-entry"]),
+        ]
+        for (name, key, actions) in expected {
             openSheet(name)
-            XCTAssertTrue(app.navigationBars["Today · \(name)"].exists, "Titled with the day: Today · \(name)")
-            XCTAssertTrue(app.descendants(matching: .any)["day-picker"].firstMatch.exists, "The day control, as on Today's bar")
-            XCTAssertTrue(app.buttons["day-previous"].exists && app.buttons["day-next"].exists)
+            XCTAssertTrue(app.navigationBars["Today"].exists, "Titled with the day: Today")
+            XCTAssertFalse(app.navigationBars["Today · \(name)"].exists, "Never the habit's name twice")
+            XCTAssertTrue(app.buttons["day-open-page"].exists, "The identity row opens the habit page")
+            XCTAssertTrue(app.buttons["day-more"].exists, "⋯ holds the habit's actions")
+            XCTAssertFalse(app.buttons["day-previous"].exists || app.buttons["day-next"].exists, "No bottom pager")
+            for id in actions { XCTAssertTrue(app.buttons[id].exists, "\(name): \(id)") }
+            XCTAssertFalse(app.staticTexts["No entries yet"].exists, "No empty entries card")
             shot("r01-sheet-\(key)")
             closeSheet()
         }
@@ -84,23 +99,24 @@ final class TodayRowSheetUITests: XCTestCase {
         let open = app.buttons["Open Anytime"]
         if open.waitForExistence(timeout: 3) { open.tap(); sleep(1) }
         openSheet("Water")
-        XCTAssertTrue(app.navigationBars["Yesterday · Water"].exists, "Opened from yesterday, it's yesterday")
+        XCTAssertTrue(app.navigationBars["Yesterday"].exists, "Opened from yesterday, it's yesterday")
+        let skip = app.buttons["Skip this day"]
+        revealInSheet(skip)
+        XCTAssertTrue(skip.exists, "Its words are this day's: Skip this day")
+        XCTAssertFalse(app.buttons["Skip today"].exists, "Never \"today\" on yesterday's sheet")
         shot("r02-yesterday")
-        app.buttons["day-next"].tap()
-        XCTAssertTrue(app.navigationBars["Today · Water"].waitForExistence(timeout: 3), "› moves the sheet to today")
         closeSheet()
     }
 
-    /// From the sheet: the habit's page, Edit Habit and Pause; Archive and Delete only in the ⋯ menu, and Delete asks
-    /// first, offering Archive instead.
+    /// From the sheet: the identity row opens the habit's page; ⋯ holds View Habit, Edit Habit and Pause, then Archive
+    /// and Delete, last; Delete asks first, offering Archive instead (U14).
     func testSheetActionsAndDeleteInTheMenu() {
         launch()
         openSheet("Call family")
         XCTAssertFalse(app.buttons["Delete Habit…"].exists, "No Delete in view")
+        XCTAssertFalse(app.buttons["day-edit-habit"].exists, "Edit Habit is in ⋯, not in view")
         let page = app.buttons["day-open-page"]
         revealInSheet(page)
-        XCTAssertTrue(app.buttons["day-edit-habit"].exists, "Edit Habit")
-        XCTAssertTrue(app.buttons["Pause…"].exists, "Pause")
         shot("r03-sheet-actions")
         page.tap()
         XCTAssertTrue(app.segmentedControls["habit-tabs"].waitForExistence(timeout: 5), "Open Habit Page")
@@ -108,9 +124,13 @@ final class TodayRowSheetUITests: XCTestCase {
         app.navigationBars.buttons.element(boundBy: 0).tap()
         XCTAssertTrue(result.waitForExistence(timeout: 3), "Back to the sheet")
         app.buttons["day-more"].tap()
-        XCTAssertTrue(app.buttons["Archive"].waitForExistence(timeout: 3), "Archive in the ⋯ menu")
+        XCTAssertTrue(app.buttons["View Habit"].waitForExistence(timeout: 3), "View Habit in the ⋯ menu")
+        XCTAssertTrue(app.buttons["day-edit-habit"].exists, "Edit Habit in the ⋯ menu")
+        XCTAssertTrue(app.buttons["Pause…"].exists, "Pause in the ⋯ menu")
+        XCTAssertTrue(app.buttons["Archive"].exists, "Archive in the ⋯ menu")
         let delete = app.buttons["Delete Habit…"]
         XCTAssertTrue(delete.exists, "Delete in the ⋯ menu")
+        XCTAssertLessThan(app.buttons["Archive"].frame.minY, delete.frame.minY, "Delete last")
         shot("r05-more-menu")
         delete.tap()
         XCTAssertTrue(app.buttons["Archive Instead"].waitForExistence(timeout: 3), "Delete asks first and offers Archive")
@@ -119,7 +139,7 @@ final class TodayRowSheetUITests: XCTestCase {
         let cancel = app.buttons["Cancel"].firstMatch
         if cancel.exists { cancel.tap() } else { app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.62)).tap() }
         XCTAssertTrue(app.buttons["Archive Instead"].waitForNonExistence(timeout: 3), "The question closes")
-        XCTAssertTrue(app.navigationBars["Today · Call family"].waitForExistence(timeout: 3), "Nothing deleted")
+        XCTAssertTrue(app.navigationBars["Today"].waitForExistence(timeout: 3) && page.exists, "Nothing deleted")
         closeSheet()
     }
 

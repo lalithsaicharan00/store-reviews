@@ -98,17 +98,39 @@ final class TodayRowLayoutUITests: XCTestCase {
                       + app.staticTexts.matching(identifier: "habit-line").allElementsBoundByIndex.map(\.label).joined(separator: " | "))
         shot("l05a-task-row")
         task.tap()
-        XCTAssertTrue(app.navigationBars["Today · Old task"].waitForExistence(timeout: 5), "The task's sheet")
-        XCTAssertTrue(app.switches["day-done"].exists, "Done")
+        XCTAssertTrue(app.navigationBars["Today"].waitForExistence(timeout: 5), "The task's sheet, titled with the day")
+        XCTAssertTrue(app.staticTexts["Old task"].exists, "The task's name, once, in its identity row")
+        let done = app.buttons["day-done"]
+        XCTAssertTrue(done.exists, "Mark done")
+        XCTAssertEqual(done.label, "Mark done")
+        XCTAssertFalse(app.buttons["day-open-page"].exists, "A task has no habit page to open")
+        XCTAssertFalse(app.buttons["day-skip"].exists, "A task has no Skip")
+        XCTAssertTrue(app.buttons["day-add-note"].exists, "Its note for the day")
         XCTAssertTrue(app.descendants(matching: .any)["day-task-date"].firstMatch.exists, "Its date")
         XCTAssertFalse(app.buttons["day-previous"].exists, "A one-time task doesn't page through days")
         let tomorrow = app.buttons["day-do-tomorrow"]
         let form = app.collectionViews["day-form"]
         for _ in 0..<4 where !(tomorrow.exists && tomorrow.isHittable) { form.swipeUp(velocity: .slow) }
-        XCTAssertTrue(app.buttons["day-edit-habit"].exists, "Edit Task")
         shot("l05-task-sheet")
+        // Edit Task is in ⋯ with Archive and Delete.
+        app.buttons["day-more"].tap()
+        XCTAssertTrue(app.buttons["day-edit-habit"].waitForExistence(timeout: 3), "Edit Task in ⋯")
+        XCTAssertEqual(app.buttons["day-edit-habit"].label, "Edit Task")
+        XCTAssertTrue(app.buttons["Delete Task…"].exists, "Delete Task in ⋯")
+        shot("l05b-task-menu")
+        // A tap outside a menu closes it without acting.
+        app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.08)).tap()
+        XCTAssertTrue(app.buttons["Delete Task…"].waitForNonExistence(timeout: 3), "The menu closes")
+        // Mark done and back: the same button, in the same place, says what it does.
+        done.tap()
+        XCTAssertTrue(app.buttons["Undo done"].waitForExistence(timeout: 3), "Mark done turns into Undo done")
+        XCTAssertTrue(app.buttons["day-add-note"].exists, "The note stays after the task is done")
+        shot("l05c-task-done")
+        app.buttons["Undo done"].tap()
+        XCTAssertTrue(app.buttons["Mark done"].waitForExistence(timeout: 3), "Undo done takes it back")
+        for _ in 0..<4 where !(tomorrow.exists && tomorrow.isHittable) { form.swipeUp(velocity: .slow) }
         tomorrow.tap()
-        XCTAssertTrue(app.navigationBars["Today · Old task"].waitForNonExistence(timeout: 3), "Do Tomorrow closes it")
+        XCTAssertTrue(app.buttons["day-close"].waitForNonExistence(timeout: 3), "Do Tomorrow closes it")
         XCTAssertTrue(app.staticTexts["Old task"].waitForNonExistence(timeout: 5), "The task moved to tomorrow")
     }
 

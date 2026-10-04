@@ -47,13 +47,24 @@ final class UndoUITests: XCTestCase {
         today.tap()
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 5))
     }
-    /// The Day sheet's own Result row says `text` ("Result, 1/2 glasses"). It used to be matched on the habit page's
-    /// Today row behind the sheet, which the page no longer has (3 Oct 2026: History · Notes · Progress).
+    /// The Day sheet's status says `text` ("1 of 2 glasses", Day details 4 Oct 2026). It used to be matched on the habit
+    /// page's Today row behind the sheet, which the page no longer has (3 Oct 2026: History · Notes · Progress).
     private func resultShows(_ text: String, wait: TimeInterval = 3) -> Bool {
-        let row = app.staticTexts.matching(NSPredicate(format: "identifier == 'day-result' AND label ENDSWITH %@", ", " + text)).firstMatch
+        let row = app.staticTexts.matching(NSPredicate(format: "identifier == 'day-result' AND label == %@", text)).firstMatch
         return row.waitForExistence(timeout: wait)
     }
-    private var entries: XCUIElementQuery { app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'entry-'")) }
+    /// The saved logs that open Edit Log (links, so buttons) and single checks' named Undo buttons.
+    private var entries: XCUIElementQuery { app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'entry-' AND NOT identifier IN {'entry-delete','entry-save','entry-back'}")) }
+    private var checkUndos: XCUIElementQuery { app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'undo-entry-'")) }
+
+    /// Delete this log asks first; nothing goes until the alert's Delete Log (Rulebook U19).
+    private func deleteThisLog() {
+        app.revealAndTap(app.buttons["entry-delete"])
+        let confirm = app.alerts.buttons["Delete Log"]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 3), "Delete asks first")
+        shot("undo-delete-asks")
+        confirm.tap()
+    }
 
     func testStoppingTimerKeepsDaySheetOpenAndSecondsCanBeEdited() {
         app.revealAndTap(app.buttons["Start Read a little timer"])
@@ -70,7 +81,7 @@ final class UndoUITests: XCTestCase {
         app.revealAndTap(seconds)
         seconds.typeText("30")
         shot("undo-time-editor-keyboard")
-        app.navigationBars["Edit Entry"].buttons["Save"].tap()
+        app.navigationBars["Edit Log"].buttons["Save"].tap()
         XCTAssertTrue(entries.firstMatch.waitForExistence(timeout: 3))
         XCTAssertTrue(entries.firstMatch.label.contains("30 sec"))
     }
@@ -80,10 +91,13 @@ final class UndoUITests: XCTestCase {
         app.reveal(row)
         row.tap()
         app.revealAndTap(app.buttons["Skip today"])
-        XCTAssertTrue(app.buttons["Undo skip"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.exists)
+        XCTAssertTrue(app.buttons["Undo skip"].waitForExistence(timeout: 3), "Skip turns into Undo skip")
+        XCTAssertTrue(resultShows("Skipped"))
+        XCTAssertFalse(app.buttons["day-add-one"].isEnabled, "Skipped: Add a check stays in place, disabled (U15)")
+        shot("undo-skipped-day")
         app.buttons["Undo skip"].tap()
-        XCTAssertTrue(app.switches["day-done"].isEnabled)
+        XCTAssertTrue(app.buttons["Skip today"].waitForExistence(timeout: 3), "Undo skip turns back into Skip today")
+        XCTAssertTrue(app.buttons["day-add-one"].isEnabled)
     }
 
     func testRoutineUndoStaysVisibleAndLeavesEarlierLogsIntact() {
@@ -111,22 +125,24 @@ final class UndoUITests: XCTestCase {
 
     func testEditAndDeleteOneEntryInDaySheet() {
         daySheet("Drink water")
-        XCTAssertTrue(resultShows("1/2 glasses", wait: 1))
+        XCTAssertTrue(resultShows("1 of 2 glasses", wait: 1))
         XCTAssertEqual(entries.count, 1)
         shot("undo-day-sheet")
         entries.firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["Edit Entry"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["Edit Log"].waitForExistence(timeout: 3))
+        XCTAssertFalse(app.keyboards.firstMatch.exists, "The editor opens with the keyboard closed")
         let field = app.textFields["entry-amount"]
         field.tap()
         shot("undo-entry-editor-keyboard")
         field.typeText("3") // existing number is selected by the app's native number-field behaviour
-        app.navigationBars["Edit Entry"].buttons["Save"].tap()
-        XCTAssertTrue(resultShows("3/2 glasses"))
+        app.navigationBars["Edit Log"].buttons["Save"].tap()
+        XCTAssertTrue(resultShows("3 of 2 glasses"))
         XCTAssertEqual(entries.count, 1, "Editing replaces the entry rather than adding another")
         entries.firstMatch.tap()
-        app.revealAndTap(app.buttons["Delete Entry"])
-        XCTAssertTrue(app.staticTexts["No entries yet"].waitForExistence(timeout: 3))
-        XCTAssertTrue(resultShows("0/2 glasses", wait: 1))
+        deleteThisLog()
+        XCTAssertTrue(entries.firstMatch.waitForNonExistence(timeout: 3), "The one log is gone")
+        XCTAssertTrue(resultShows("0 of 2 glasses", wait: 1))
+        XCTAssertFalse(app.staticTexts["Today's logs"].exists, "No empty logs section")
     }
 
     func testLogSheetSharesEntryEditingAndStillAdds() {
@@ -146,13 +162,13 @@ final class UndoUITests: XCTestCase {
         XCTAssertEqual(entries.count, 1)
         shot("undo-log-sheet")
         app.revealAndTap(entries.firstMatch)
-        XCTAssertTrue(app.navigationBars["Edit Entry"].waitForExistence(timeout: 3))
-        app.buttons["Delete Entry"].tap()
+        XCTAssertTrue(app.navigationBars["Edit Log"].waitForExistence(timeout: 3))
+        deleteThisLog()
         XCTAssertTrue(app.staticTexts["No entries yet"].waitForExistence(timeout: 3))
         let field = app.textFields["log-amount"]
         app.revealAndTap(field); field.typeText("2")
         app.navigationBars["Add Entry"].buttons["add-entry-save"].tap()
-        XCTAssertTrue(resultShows("2/2 glasses"))
+        XCTAssertTrue(resultShows("2 of 2 glasses"))
         XCTAssertEqual(self.entries.count, 1) // Log has dismissed; inspect the Day sheet now.
     }
 
@@ -165,7 +181,7 @@ final class UndoUITests: XCTestCase {
         XCTAssertTrue(undo.exists, "Undo has no timer")
         undo.tap()
         daySheet("Drink water")
-        XCTAssertTrue(resultShows("1/2 glasses", wait: 1), "Only the new log was removed")
+        XCTAssertTrue(resultShows("1 of 2 glasses", wait: 1), "Only the new log was removed")
         XCTAssertEqual(entries.count, 1)
     }
 
@@ -180,15 +196,24 @@ final class UndoUITests: XCTestCase {
         // The key's section sits above the calendar (3 Oct 2026): today's square can still be below the screen's edge.
         app.revealAndTap(calendarDay, clear: true)
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 3))
-        XCTAssertTrue(app.staticTexts["No entries yet"].exists, "Opening a calendar day never logs")
-        app.switches["day-done"].coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
-        XCTAssertTrue(resultShows("3/3 times"))
-        app.switches["day-done"].coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
-        XCTAssertTrue(app.staticTexts["No entries yet"].waitForExistence(timeout: 3))
+        XCTAssertTrue(resultShows("0 of 3 checks", wait: 1), "Opening a calendar day never logs")
+        XCTAssertEqual(checkUndos.count, 0, "No empty checks section")
+        // Several a day: Add a check adds one each tap, never takes one back (U14).
+        let add = app.buttons["day-add-one"]
+        XCTAssertEqual(add.label, "Add a check")
+        for _ in 0..<3 { add.tap(); usleep(400_000) }
+        XCTAssertTrue(resultShows("3 of 3 checks"))
+        XCTAssertEqual(checkUndos.count, 3, "Each check is its own row")
+        shot("undo-checks-today")
+        // Each check's own Undo takes back that one check, not the day.
+        checkUndos.firstMatch.tap()
+        XCTAssertTrue(resultShows("2 of 3 checks"))
+        XCTAssertEqual(checkUndos.count, 2)
         let skip = app.buttons.matching(NSPredicate(format: "label IN {'Skip today','Skip this day'}")).firstMatch
         app.revealAndTap(skip)
         XCTAssertTrue(app.buttons["Undo skip"].waitForExistence(timeout: 3))
+        XCTAssertEqual(checkUndos.count, 2, "Skipping keeps the saved checks (U15)")
         app.buttons["Undo skip"].tap()
-        XCTAssertTrue(resultShows("0/3 times"))
+        XCTAssertTrue(resultShows("2 of 3 checks"))
     }
 }

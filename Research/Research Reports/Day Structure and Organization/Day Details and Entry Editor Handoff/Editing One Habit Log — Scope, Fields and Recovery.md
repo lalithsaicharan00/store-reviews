@@ -68,6 +68,18 @@ The date correction is a response to the user's review of the slip mockup and th
 
 **Implementation gap:** the present `HabitStore.editEntry` rejects a slip timestamp on a different tracked day, and the repository update writes only value and `createdAt`. The Day-sheet per-day indexes likewise assume the record stays in its original bucket. Before this revised mockup can ship, add one atomic update of `createdAt` **and** `entry.day` for the same record ID, move the in-memory record between day buckets, persist/sync the new day and timestamp together, then recalculate quit runs and affected day summaries. Test travel time zones, day-start boundaries and daylight-saving changes. When Save moves a slip to another tracking day, return to the **destination Day sheet** so the edited record remains visible. The prior day's note stays on its original day; a note is attached to the day, not the slip. Until that storage path exists, keep the current date read-only in the app rather than showing an apparently working Date picker that cannot save.
 
+## Delete button style in the native build (4 October, implementation)
+
+*Added by Claude (Claude Code), 4 October 2026, at the user's request: "the delete button is with the red kind of background. I don't know whether we should keep it red background, maybe keep it like a normal button… do a little research."*
+
+**Decision: a plain destructive row with red text and no red fill, in its own section at the end of the editor form.** Reasoned from platform guidance and first principles, not from review evidence (no reviews in the corpus discuss the fill of a delete button):
+
+- Apple's Buttons guidance describes destructive actions as **red text in a plain style**. The filled red treatment belongs to the confirmation step. It also says **not to give a destructive button the primary (prominent) role**, "even if that action is the most likely choice", because people sometimes tap a prominent button without reading it ([Apple HIG — Buttons](https://developer.apple.com/design/human-interface-guidelines/buttons)). A red-filled Delete would be the loudest control on a screen whose job is correcting a value.
+- Apple's own editors end this way: Contacts' **Delete Contact** and Calendar's **Delete Event** are red-text rows in their own grouped section at the bottom of the form. People already know this shape (consistency; recognition over recall).
+- The wireframe's intent survives: Delete is a distinct action, in its own section with no divider above it, after the value and context, and separate from Save in the toolbar. Tapping it still opens a native alert naming the one record and its day, with **Cancel** and a destructive **Delete Log / Delete Slip** (U19). A grouped-form section follows the content rather than sitting at the bottom safe area, which keeps it reachable at large text sizes without floating over the keyboard.
+
+The back control is the system chevron with no title (`toolbarRole(.editor)`), as the user asked. When the draft has changes, the chevron asks **Discard Changes / Keep Editing** before throwing work away, and the sheet can't be swiped closed. The slip's **Date** is shown read-only and only its **Time** is editable. The atomic same-ID cross-day move described above doesn't exist in the store, repository or sync yet, and a date picker that couldn't save would mislead (D7).
+
 ## Edge cases the design must preserve
 
 - **Zero, negative, nonfinite and over-maximum values** cannot be saved; checks are positive whole numbers; amounts retain up to two decimal places; duration minutes and seconds remain below 60 and total time must be positive. Show the invalid reason near the field and disable Save; never silently coerce the user's input.

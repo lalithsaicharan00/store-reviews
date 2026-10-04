@@ -1,104 +1,73 @@
 import SwiftUI
 
-/// One habit (or task) on one day: the sheet a row on Today opens (the user, 3 Oct 2026), the habit page's day rows open, and every
-/// "fix a day" path uses. Opening it never changes anything; its controls do. One shape for every habit (report
-/// "Today's Rows — Tap, Swipe, the Day Sheet and Delete"): who and which day, that day's result and its own control,
-/// that day's entries, that day's actions, then the habit's. The day is shown by the same ‹ day › control as Today's
-/// bottom bar, so everything in the sheet reads as that day's without a sentence saying so.
+/// Day details: one habit (or task) on one day. The sheet a row on Today opens (the user, 3 Oct 2026), the habit page's
+/// day rows open, and every "fix a day" path uses. Opening it never changes anything; its controls do.
+///
+/// Rebuilt 4 Oct 2026 from the Day-details handoff (`Research/Research Reports/Day Structure and Organization/Day Details
+/// and Entry Editor Handoff/`, Rulebook U14–U18): the toolbar names the day (⋯ menu, Close icon); the habit's identity
+/// row opens its page; then that day's activity as one group (its status, the habit's own buttons, the logs that can be
+/// corrected one by one); the note for the day; Skip, which turns into Undo skip in the same place. No bottom ‹ day ›
+/// pager: another day opens from Today or the habit's History (U5). Native Form sections and rows throughout (U1).
 struct DaySheet: View {
     let habit: Habit
-    /// Opened from Today: the sheet offers Open Habit Page (from the habit page itself it would go nowhere new).
+    /// Opened from Today: the identity row opens the habit page (from the habit page itself it would go nowhere new).
     var pageLink = false
-    @State private var day: LocalDay
+    let day: LocalDay
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @State private var perfEntry: Entry?
     @State private var destination: Destination?
     @State private var confirmingDelete = false
     @State private var showPlus = false
+    @State private var showPage = false
+    @ScaledMetric(relativeTo: .body) private var groupGap: CGFloat = 28
+    @ScaledMetric(relativeTo: .body) private var noteToSkip: CGFloat = 24
     private enum Destination: String, Identifiable { case log, add, note, edit, pause; var id: Self { self } }
 
     init(habit: Habit, day: LocalDay, pageLink: Bool = false) {
         self.habit = habit
         self.pageLink = pageLink
-        _day = State(initialValue: day)
+        self.day = day
     }
 
     private var current: Habit { store.habits.first { $0.id == habit.id } ?? habit }
     private var ruled: Habit { store.rule(current, on: day) }
     private var editable: Bool { day <= store.today() && day >= store.startDay(of: current) }
+    private var isTask: Bool { current.kind == .task }
 
     var body: some View {
         let _ = perfTimed("Count: the Day sheet drawn") { () }
+        let today = store.today()
         NavigationStack {
             Form {
-                Section {
-                    // Who: the habit's own icon, name and plan.
-                    HStack(spacing: 12) {
-                        HabitIcon(symbol: current.symbol, color: current.color, size: 40)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(current.name).font(.headline)
-                            Text(HabitPageView.sentence(current, store: store))
-                                .font(.subheadline).foregroundStyle(.secondary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                    }
-                    .accessibilityElement(children: .combine)
-                    DayResultRow(habit: current, day: day)
-                    if !ruled.frequency.isDayBased && !ruled.frequency.isFlexible {
-                        LabeledContent("Goal", value: HabitCopy.capitalized(HabitCopy.plan(ruled, weekStart: store.settings.weekStart)))
-                    }
+                identity
+                    .listSectionSpacing(groupGap)
+                DayActivity(habit: current, day: day, editable: editable, groupGap: groupGap,
+                            logManually: { destination = .add }, resume: { store.resume(current) })
+                noteSection
+                    .listSectionSpacing(noteToSkip)
+                if isTask {
+                    taskSection
+                } else if editable && current.kind != .quit {
+                    skipSection
                 }
-                if editable {
-                    logSection
-                }
-                DayEntriesSection(habit: ruled, day: day)
-                dayActions
-                habitActions
             }
             // Its own id, so tests scroll this list and not Today's behind the sheet (Rulebook T9).
             .accessibilityIdentifier("day-form")
-            .navigationDestination(item: $perfEntry) { EntryEditView(habit: habit, entry: $0) }
+            .navigationDestination(item: $perfEntry) { EntryEditView(habit: ruled, entry: $0) }
+            .navigationDestination(isPresented: $showPage) { HabitPageView(id: current.id) }
             .analyticsScreen(.historyDay)
-            .navigationTitle(NoteSheet.dayText(day, today: store.today(), calendar: store.calendar) + " · " + current.name)
+            // The day, never the habit's name again: the identity row says whose day it is (U18; handoff).
+            .navigationTitle(NoteSheet.dayText(day, today: today, calendar: store.calendar))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
-                // Archive and Delete, the rare and lasting actions, in one menu that asks first: never a red button in
-                // view (report "Today's Rows": 79 reviews say deleting is too easy, 63 couldn't find it at all).
-                ToolbarItem(placement: .topBarLeading) {
-                    Menu {
-                        if current.archived {
-                            Button("Restore", systemImage: "arrow.uturn.backward") { if !store.restore(current) { showPlus = true } }
-                        } else {
-                            Button("Archive", systemImage: "archivebox") { store.archive([current]); dismiss() }
-                        }
-                        Button(current.kind == .task ? "Delete Task…" : "Delete Habit…", systemImage: "trash", role: .destructive) {
-                            confirmingDelete = true
-                        }
-                    } label: {
-                        Label("More", systemImage: "ellipsis.circle")
-                    }
-                    .accessibilityIdentifier("day-more")
-                }
-                // The day, as Today's bottom bar shows it: ‹ the date ›. Moving it changes the whole sheet.
-                ToolbarItemGroup(placement: .bottomBar) {
-                  if pagesDays {
-                    Button("Previous Day", systemImage: "chevron.left") { day = day.adding(days: -1, calendar: store.calendar) }
-                        .disabled(day <= store.startDay(of: current))
-                        .accessibilityIdentifier("day-previous")
-                    Spacer()
-                    DatePicker("Day", selection: Binding(get: { day.date(calendar: store.calendar) },
-                                                         set: { day = LocalDay($0, calendar: store.calendar) }),
-                               in: min(store.startDay(of: current), store.today()).date(calendar: store.calendar)...store.today().date(calendar: store.calendar),
-                               displayedComponents: .date)
-                        .labelsHidden()
-                        .accessibilityIdentifier("day-picker")
-                    Spacer()
-                    Button("Next Day", systemImage: "chevron.right") { day = day.adding(days: 1, calendar: store.calendar) }
-                        .disabled(day >= store.today())
-                        .accessibilityIdentifier("day-next")
-                  }
+                // Edit, Pause, Archive and Delete in one menu, the lasting ones last; Delete asks first and offers
+                // Archive (U14: 79 reviews say deleting is too easy, 63 couldn't find it at all).
+                ToolbarItem(placement: .topBarLeading) { managementMenu }
+                // The sheet saves as it goes (nothing to confirm): the standard Close symbol, named "Close" (U18).
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Close", systemImage: "xmark") { dismiss() }
+                        .accessibilityIdentifier("day-close")
                 }
             }
             .sheet(item: $destination) { destination in
@@ -108,7 +77,7 @@ struct DaySheet: View {
                 case .edit: EditHabitSheet(habit: current)
                 case .pause: PauseSheet(habit: current)
                 case .note:
-                    NoteSheet(title: "Note", subtitle: current.name + " · " + NoteSheet.dayText(day, today: store.today(), calendar: store.calendar),
+                    NoteSheet(title: "Note", subtitle: current.name + " · " + NoteSheet.dayText(day, today: today, calendar: store.calendar),
                               initial: store.note(of: current, on: day) ?? "") { store.setNote($0, of: current, on: day) }
                 }
             }
@@ -139,139 +108,197 @@ struct DaySheet: View {
         .presentationBackground(Color(.systemGroupedBackground))
     }
 
-    /// The habit's own control for this day: one tap for the usual, Add Entry for anything else (same screen everywhere).
-    @ViewBuilder private var logSection: some View {
-        let paused = store.isPaused(current, on: day)
-        let skipped = store.isSkipped(current, on: day)
+    // MARK: Identity
+
+    /// Who: the habit's icon, name and plan, once. From Today the whole row opens the habit page (a task has none).
+    @ViewBuilder private var identity: some View {
         Section {
-            switch ruled.kind {
-            case .task:
-                // A task is done or not, wherever it's shown (a one-time task carried forward is done once).
-                Toggle("Done", isOn: Binding(get: { store.isDone(current, on: day) },
-                                             set: { if $0 != store.isDone(current, on: day) { store.toggleCheck(current, on: day, source: .daySheet) } }))
-                    .accessibilityIdentifier("day-done")
-            case .check:
-                // The day done or not: on fills it (every tick a several-a-day habit needs), off clears it.
-                Toggle("Done", isOn: Binding(get: { store.isDayMet(ruled, on: day) }, set: { store.setDayDone($0, of: current, on: day) }))
-                    .disabled(paused || skipped)
-                    .accessibilityIdentifier("day-done")
-                if store.countsUp(current, on: day) {
-                    // Several times a day: each tap adds one, as the row's +1 does (Undo, named, takes one back).
-                    Button("Add 1", systemImage: "plus.circle") { store.addProgress(current, value: 1, on: day, source: .daySheet) }
-                        .disabled(paused || skipped)
-                        .accessibilityIdentifier("day-add-one")
-                }
-            case .checklist:
-                ForEach(ruled.steps) { step in
-                    Toggle(step.name, isOn: Binding(get: { store.isStepDone(step, of: ruled, on: day) }, set: { checked in
-                        if checked != store.isStepDone(step, of: ruled, on: day) { store.toggleStep(step, of: ruled, on: day, source: .daySheet) }
-                    }))
-                    .disabled(paused || skipped)
-                }
-            case .amount(let unit, _):
-                if let step = ruled.quickIncrement {
-                    Button("Add \(HabitCopy.amount(step, unit))", systemImage: "plus.circle") { store.increment(current, on: day, source: .daySheet) }
-                        .disabled(paused || skipped)
-                        .accessibilityIdentifier("day-add-step")
-                }
-            case .duration:
-                if day == store.today() {
-                    if store.timers[habit.id] != nil {
-                        Button("Pause timer and save time", systemImage: "pause.fill") { store.stopTimer(current, on: day) }
-                    } else {
-                        Button("Start Timer", systemImage: "play.fill") { store.toggleTimer(current) }
-                            .disabled(paused || skipped)
-                            .accessibilityIdentifier("day-start-timer")
-                    }
-                }
-            case .quit:
-                EmptyView()
+            if pageLink && !isTask {
+                NavigationLink { HabitPageView(id: current.id) } label: { DayIdentityRow(habit: current) }
+                    .accessibilityHint("Opens the habit page")
+                    .accessibilityIdentifier("day-open-page")
+            } else {
+                DayIdentityRow(habit: current)
             }
-            // One way to add any entry, the same for every habit (the user, 3 Oct 2026).
-            if ruled.kind != .checklist && ruled.kind != .task {
-                Button(ruled.kind == .quit ? "Log a Slip…" : "Add Entry", systemImage: ruled.kind == .quit ? "arrow.uturn.backward.circle" : "plus") { destination = .add }
-                    .disabled(ruled.kind == .quit && paused)
-                    .accessibilityIdentifier("day-add-entry")
-            }
-        } footer: {
-            if paused { Text("This day is paused. Its entries stay in your history and don't count toward your streak.") }
-            else if skipped { Text("Skipped days don't count toward your streak. Undo skip to include this day again.") }
         }
     }
 
-    /// What belongs to this day only: skipping it, and its note.
-    @ViewBuilder private var dayActions: some View {
-        let paused = store.isPaused(current, on: day)
-        Section(day == store.today() ? "Today" : "This Day") {
-            if editable && current.kind != .quit && current.kind != .task {
-                if store.isSkipped(current, on: day) {
-                    Button("Undo skip", systemImage: "arrow.uturn.backward") { store.setSkipped(current, on: day, false) }
-                } else if store.canSkip(ruled) && !paused {
-                    Button(day == store.today() ? "Skip today" : "Skip this day", systemImage: "forward") { store.setSkipped(current, on: day, true) }
-                }
-            }
-            if let note = store.note(of: current, on: day) { Text(note) }
-            Button(store.note(of: current, on: day) == nil ? "Add Note" : "Edit Note", systemImage: "square.and.pencil") {
-                destination = .note
+    // MARK: Note and Skip
+
+    /// The note for this day: its text, or an invitation. A tap opens the note editor; nothing is typed here, and
+    /// nothing ever asks for a note (handoff; report "Habit Notes and Day Notes").
+    private var noteSection: some View {
+        let note = store.note(of: current, on: day)
+        return Section {
+            Button { destination = .note } label: {
+                Text(note ?? "Add a note…")
+                    .foregroundStyle(note == nil ? Color.secondary : Color.primary)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(8)
+                    .frame(maxWidth: .infinity, minHeight: 32, alignment: .leading)
+                    .contentShape(Rectangle())
             }
             .disabled(!editable)
+            .accessibilityLabel(note.map { "Note for this day: " + $0 } ?? "Add a note for this day")
+            .accessibilityIdentifier(note == nil ? "day-add-note" : "day-edit-note")
+        } header: {
+            Text("Note for this day")
         }
     }
 
-    /// Moves a one-time task to another day. Only the task's date changes; its entries stay where they are.
+    /// Skip changes only this day; the same button, in the same place, takes it back (U15). Logs and the note stay.
+    @ViewBuilder private var skipSection: some View {
+        let skipped = store.isSkipped(current, on: day)
+        if skipped || (store.canSkip(ruled) && !store.isPaused(current, on: day)) {
+            Section {
+                DayButton(skipped ? "Undo skip" : (day == store.today() ? "Skip today" : "Skip this day"), id: "day-skip") {
+                    store.setSkipped(current, on: day, !skipped)
+                }
+                .dayButtonRow()
+            }
+        }
+    }
+
+    /// A one-time task's own date and the most common change to it, one tap away (the user, 3 Oct 2026). A task has no
+    /// Skip and no logs.
+    @ViewBuilder private var taskSection: some View {
+        if let due = current.dueDay {
+            Section {
+                if store.isDone(current, on: day) {
+                    LabeledContent("Planned for", value: due.date(calendar: store.calendar).formatted(date: .abbreviated, time: .omitted))
+                } else {
+                    let today = store.today()
+                    DatePicker("Date", selection: Binding(get: { due.date(calendar: store.calendar) },
+                                                          set: { moveTask(to: LocalDay($0, calendar: store.calendar)) }),
+                               in: today.date(calendar: store.calendar)..., displayedComponents: .date)
+                        .accessibilityIdentifier("day-task-date")
+                    Button("Do Tomorrow", systemImage: "arrow.turn.up.right") {
+                        moveTask(to: today.adding(days: 1, calendar: store.calendar))
+                        dismiss()
+                    }
+                    .accessibilityIdentifier("day-do-tomorrow")
+                }
+            }
+        }
+    }
+
+    /// Moves a one-time task to another day. Only the task's date changes; its entries and day notes stay where they are.
     private func moveTask(to newDay: LocalDay) {
         guard var task = store.habits.first(where: { $0.id == habit.id }), task.dueDay != newDay else { return }
         task.dueDay = newDay
         store.update(task)
     }
 
-    /// A one-time task has its own date (in the sheet), so the sheet doesn't page through days.
-    private var pagesDays: Bool { !(current.kind == .task && current.dueDay != nil) }
+    // MARK: Management
 
-    /// The habit itself: its page, its settings, a break from it.
-    @ViewBuilder private var habitActions: some View {
-        Section(current.kind == .task ? "Task" : "Habit") {
-            if current.kind == .task, let due = current.dueDay, !store.isDone(current, on: day) {
-                // A one-time task's own date, and the most common change to it, one tap away (the user, 3 Oct 2026:
-                // "any actions that can be taken for that task easily from the home screen").
-                let today = store.today()
-                DatePicker("Date", selection: Binding(get: { due.date(calendar: store.calendar) },
-                                                      set: { moveTask(to: LocalDay($0, calendar: store.calendar)) }),
-                           in: today.date(calendar: store.calendar)..., displayedComponents: .date)
-                    .accessibilityIdentifier("day-task-date")
-                Button("Do Tomorrow", systemImage: "arrow.turn.up.right") {
-                    moveTask(to: today.adding(days: 1, calendar: store.calendar))
-                    dismiss()
+    /// The habit itself, in the order people need it: view, edit, pause; then archive and delete, last and apart.
+    private var managementMenu: some View {
+        Menu {
+            Section {
+                if pageLink && !isTask {
+                    Button("View Habit", systemImage: "chart.bar.doc.horizontal") { showPage = true }
                 }
-                .accessibilityIdentifier("day-do-tomorrow")
-            }
-            if pageLink && current.kind != .task {
-                NavigationLink {
-                    HabitPageView(id: current.id)
-                } label: {
-                    Label("Open Habit Page", systemImage: "chart.bar.doc.horizontal")
+                Button(isTask ? "Edit Task" : "Edit Habit", systemImage: "pencil") { destination = .edit }
+                    .accessibilityIdentifier("day-edit-habit")
+                if !isTask {
+                    PauseMenuItems(habit: current, showPause: Binding(get: { destination == .pause },
+                                                                      set: { destination = $0 ? .pause : (destination == .pause ? nil : destination) }))
                 }
-                .accessibilityIdentifier("day-open-page")
             }
-            Button(current.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { destination = .edit }
-                .accessibilityIdentifier("day-edit-habit")
-            if current.kind != .task {
-                PauseMenuItems(habit: current, showPause: Binding(get: { destination == .pause },
-                                                                  set: { destination = $0 ? .pause : (destination == .pause ? nil : destination) }))
+            Section {
+                if current.archived {
+                    Button("Restore", systemImage: "arrow.uturn.backward") { if !store.restore(current) { showPlus = true } }
+                } else {
+                    Button("Archive", systemImage: "archivebox") { store.archive([current]); dismiss() }
+                }
+                Button(isTask ? "Delete Task…" : "Delete Habit…", systemImage: "trash", role: .destructive) {
+                    confirmingDelete = true
+                }
             }
+        } label: {
+            Label(isTask ? "Task actions" : "Habit actions", systemImage: "ellipsis")
+        }
+        .accessibilityIdentifier("day-more")
+    }
+}
+
+// MARK: - Pieces shared with the log editor
+
+/// Icon, name and plan: "8 glasses a day · Anytime", "Quitting since 19 Sep 2026", "Task · Planned for Sat, 4 Oct".
+struct DayIdentityRow: View {
+    let habit: Habit
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        HStack(spacing: 12) {
+            HabitIcon(symbol: habit.symbol, color: habit.color, size: 40)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(habit.name).font(.headline)
+                Text(Self.plan(habit, store: store))
+                    .font(.subheadline).foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(.vertical, 2)
+        .accessibilityElement(children: .combine)
+    }
+
+    static func plan(_ habit: Habit, store: HabitStore) -> String {
+        switch habit.kind {
+        case .quit:
+            return HabitPageView.sentence(habit, store: store)
+        case .task:
+            guard let due = habit.dueDay else { return "Task" }
+            return "Task · Planned for " + PauseSheet.short(due, calendar: store.calendar)
+        default:
+            let parts = habit.parts == [.anytime] ? "Anytime"
+                : HabitCopy.capitalized(HabitCopy.partsPhrase(habit.parts.map { store.section($0).name }))
+            return HabitCopy.capitalized(HabitCopy.plan(habit, weekStart: store.settings.weekStart)) + " · " + parts
         }
     }
 }
 
-/// Only this native value row observes progress. Changing an entry does not rebuild the Form's
-/// date picker, toolbar and actions along with its independently observed entries Section.
-private struct DayResultRow: View {
-    let habit: Habit
-    let day: LocalDay
-    @Environment(HabitStore.self) private var store
+/// A full-width button of native size (U16): prominent for the step a positive goal asks for (Mark done, Add 1 glass,
+/// Start timer), bordered for everything else (manual logging, a limit, a slip, Skip). Ink on the prominent one, with
+/// its own text colour, so it reads in both appearances (U2; History's unreadable Add Entry, checklist item 26).
+struct DayButton: View {
+    let title: String
+    var prominent = false
+    var id: String? = nil
+    let action: () -> Void
+
+    init(_ title: String, prominent: Bool = false, id: String? = nil, action: @escaping () -> Void) {
+        self.title = title
+        self.prominent = prominent
+        self.id = id
+        self.action = action
+    }
+
     var body: some View {
-        LabeledContent("Result", value: store.dayResult(habit, on: day))
-            .accessibilityIdentifier("day-result")
+        if prominent {
+            Button(action: action) {
+                Text(title).fontWeight(.semibold).foregroundStyle(Color.onInk).frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.ink)
+            .controlSize(.large)
+            .accessibilityIdentifier(id ?? title)
+        } else {
+            Button(action: action) {
+                Text(title).fontWeight(.semibold).frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.bordered)
+            .tint(.ink)
+            .controlSize(.large)
+            .accessibilityIdentifier(id ?? title)
+        }
+    }
+}
+
+extension View {
+    /// A section that holds full-width buttons rather than rows: no card behind them, aligned with the cards around.
+    func dayButtonRow() -> some View {
+        listRowInsets(EdgeInsets()).listRowBackground(Color.clear)
     }
 }
 

@@ -116,7 +116,8 @@ final class GoalFlowUITests: XCTestCase {
         XCTAssertTrue(row("How much, 7 ml").waitForExistence(timeout: 3))
         XCTAssertEqual(sentence, "Keys 7 ml a day, anytime")
         addHabit()
-        // Any amount other than +'s step: the row opens its Day sheet, and Add Entry there types it (3 Oct 2026).
+        // Any amount other than +'s step: the row opens its Day sheet, and Log amount manually there types it in Add
+        // Entry (3 Oct 2026; named for what it does, 4 Oct).
         app.staticTexts["Keys"].firstMatch.tap()
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 5), "The row opens its Day sheet")
         app.buttons["day-add-entry"].tap()
@@ -127,7 +128,7 @@ final class GoalFlowUITests: XCTestCase {
         XCTAssertEqual(log.value as? String, "350", "Add Entry shows what's typed")
         shot("k03-add-amount-350")
         app.navigationBars["Add Entry"].buttons["add-entry-save"].tap(); sleep(2)
-        app.navigationBars.buttons["Done"].firstMatch.tap(); sleep(1)
+        app.buttons["day-close"].tap(); sleep(1)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '350/7 ml'")).firstMatch.waitForExistence(timeout: 3), "The typed amount is on Today")
         shot("k04-today-350")
     }
@@ -169,7 +170,7 @@ final class GoalFlowUITests: XCTestCase {
         shot("l01-plus-step-button")
         plus.tap(); sleep(1)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '1/8 glasses'")).firstMatch.exists, "+ adds one glass")
-        // Any other amount: the row opens its Day sheet, and Add Entry there takes it (3 Oct 2026).
+        // Any other amount: the row opens its Day sheet, and Log amount manually there takes it (3 Oct 2026).
         app.staticTexts["Glasses"].firstMatch.tap()
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 3), "The row opens its Day sheet")
         app.buttons["day-add-entry"].tap()
@@ -178,7 +179,7 @@ final class GoalFlowUITests: XCTestCase {
         let typed = app.textFields["log-amount"]
         typed.typeText("3")
         app.navigationBars["Add Entry"].buttons["add-entry-save"].tap(); sleep(2)
-        app.navigationBars.buttons["Done"].firstMatch.tap(); sleep(1)
+        app.buttons["day-close"].tap(); sleep(1)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '4/8 glasses'")).firstMatch.exists, "The typed amount adds up")
         shot("l03-today-4-of-8")
     }
