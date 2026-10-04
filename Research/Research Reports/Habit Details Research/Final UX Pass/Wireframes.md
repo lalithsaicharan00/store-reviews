@@ -1,127 +1,137 @@
-# Habit Details — Proposed Screen Studies
+# Habit Details — Revised Screen Studies
 
-Written by Codex (OpenAI), 4 October 2026. Read the [research and interaction handoff](README.md) before implementing these screens.
+Written by Codex (OpenAI), 4 October 2026. Read the [research and interaction handoff](README.md) before implementation.
 
-These are **editable Figma mockups and portable image exports**, not final iOS visuals. Native SwiftUI controls, system typography, semantic colors, light/dark appearance, Dynamic Type and VoiceOver are required in the app (Rulebook U1/U9). All dates, values, names and note text below are illustrative.
+These **22 editable Figma screen studies and PNG exports are representative layouts, not final iOS designs**. Build the actual interface with native SwiftUI controls, SF Symbols, semantic colors, Dynamic Type, VoiceOver and the app's light/dark system (Rulebook U1/U9). The [accepted Day details and entry editor handoff](<../../Day Structure and Organization/Day Details and Entry Editor Handoff/README.md>) controls their appearance and behavior.
 
-Editable boards: [header, History and Notes](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=433-2071), [type-aware recording](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=434-2071), and [Notes/quit edge states](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=443-2071). The PNGs are exports from individual editable frames; Figma remains the source for changing them.
+Editable boards: [Habit details, History and Notes](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=433-2071), [record creation and Day-details routes](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=434-2071), and [Notes/quit edge states](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=443-2071).
 
-## Header, History and navigation
+## Shared Habit details page
 
-### 01. Daily habit: chronology first
+History, Notes and Progress are tabs **within one Habit details page**. The navigation title, centered habit identity, goal, streak/run facts and segmented tabs are shared. Their controls belong to the active tab's scroll content; neither History nor Notes owns a changing page-wide sticky bottom bar. Actions use native-size targets and keep enough width for localization.
 
-The navigation title identifies the page. The centered habit identity and two streak facts lead into the same existing month/day list. A persistent bottom action area supplies **Find a day** and **Log time manually**. The latter opens a record flow with Today selected; a date row opens Day details directly.
+### 01. Daily History
 
-![Daily habit History](Images/history-daily.png)
+Under the History tab, **Choose date** and **Log time** sit directly before month groups. The latter is fixed by duration habit type, not derived from “Read.” The dated rows still open the accepted Day-details sheet; a row with saved records exposes exact correction there.
 
-### 02. Weekly goal: two-line supporting text and week streaks
+![Daily habit History with inline actions](Images/history-daily.png)
 
-The goal/time-section text wraps without touching the streak cards. Both streak cards say **weeks**; the weekly frequency is directly above. The History action names the fact being recorded.
+### 02. Weekly History
 
-![Weekly habit History with wrapping header](Images/history-weekly.png)
+A long goal wraps above week-based streaks. The fixed repeatable-check action is **Add check**, even when the habit is named “Call family.” It must work for any user-entered habit name.
 
-### 03. Find a day: select, then open; no logging on selection
+![Weekly habit History](Images/history-weekly.png)
 
-The date picker can reach an empty old day. The helper explains that this opens **Day details** for the selected day. Today/Yesterday shortcuts are optional; month/year access and exact-date confirmation are required.
+### 03. Direct date access
 
-![Find a day](Images/find-a-day.png)
+**Choose date** opens this picker. The copy says plainly that the chosen date opens that habit's Day details; saved records appear there and an unrecorded date opens empty. Choosing a date does not log anything. The picker is constrained to the habit's recordable range; its calendar here is a Figma proxy for native date selection.
 
-### 04. Quit habit: run language and neutral slip action
+![Choose a date for Day details](Images/find-a-day.png)
 
-Quit habits use **Current run** and **Best run**, not a build-habit success streak label. A date without a recorded slip does not generate a fake History row. **Record slip** is available with neutral emphasis (U3/U16).
+### 04. Quit History
 
-![Quit habit header and History](Images/quit-header.png)
+Current/Best **run** replace build-habit streak language. The fixed **Record slip** action has neutral emphasis. Days without a recorded slip are not manufactured as History rows.
 
-## Notes: browse, search, read and edit
+![Quit habit History](Images/quit-header.png)
+
+## Notes tab and note pages
+
+The Notes tab puts a compact **Add note** action beside the section heading, then a full-width Search field above dated note previews. These controls scroll with the tab and retain their placement in empty/search states.
 
 ### 05. Notes list
-
-Search is a full-width inline field immediately above the notes it filters. **Add note** has its own bottom action. The existing month/dated preview structure remains.
 
 ![Notes list](Images/notes-list.png)
 
 ### 06. No notes yet
 
-No fabricated note rows. The empty state explains that notes are date-scoped and independent of progress; Add note stays available.
+No fabricated rows. Add note remains in the same Notes-tab header.
 
 ![Empty Notes tab](Images/notes-empty.png)
 
 ### 07. Search with no matches
 
-The query and clear control remain visible. The empty result is different from a habit with no notes. Add note remains reachable when the keyboard is dismissed; the live keyboard layout needs native validation.
+This state distinguishes a failed query from no notes at all; clear search remains available. Add note does not move to a bottom bar.
 
 ![Notes search with no matches](Images/notes-search-empty.png)
 
 ### 08. Note reader
 
-The exact note date is prominent. Note text has a content-sized reading area. **Edit** is visible. **Open day details** is a related destination with the same date and context. Delete belongs to More, not a peer navigation row.
+The exact note date leads. **Edit note** and the native More menu sit immediately after the note content. More contains scoped **Delete note**; the related-day row opens Day details for this exact date.
 
 ![Individual note reader](Images/note-reader.png)
 
-### 09. Note editor
+### 09. New-note editor
 
-The selected date is visible before the multiline text field; Save commits a note for that date. A dirty Cancel must offer discard recovery. In native iOS, use the keyboard, field focus and actual date picker rather than copying this static specimen.
+The selected date and multiline input precede native Save. A new note has no Delete action. A dirty Cancel needs discard recovery.
 
-![Add or edit note](Images/note-editor.png)
+![New-note editor](Images/note-editor.png)
 
-### 10. More menu and deletion confirmation
+### 10. Existing-note editor
 
-The More menu scopes **Delete note** to this one note. Its confirmation states that the day's progress remains. Neither tapping More nor tapping the menu item removes data before confirmation.
+Existing text loads for the selected habit/date. **Delete note** is a bottom destructive button, modeled after the accepted single-record editor. It opens the same confirmation as the reader's More menu. Do not delete a note by blanking its text without explaining that behavior.
+
+![Existing-note editor with Delete note](Images/note-editor-existing.png)
+
+### 11. Reader More menu and confirmation
+
+The More menu contains Delete note only for the current note. The native confirmation states that this note is removed while the day's progress remains. The existing-note editor's Delete note uses this same confirmation.
 
 ![Note-reader More menu](Images/note-menu.png)
 
 ![Confirm deletion of one note](Images/note-delete-confirm.png)
 
-## Recording for a selected day
+## History recording route
 
-The first four examples add one independent saved record. The tracking day defaults to Today and may be changed before Save. A past-date form preserves the selected day and describes logging time honestly. These forms share a date model; their value controls and wording follow the habit.
+History's type-based action opens a form seeded to **Today**. Its identity card, top toolbar and fields follow the accepted entry editor. The **Selected day** row can open the date picker below before the native top **Save** adds one independent record. A past-day History row passes that exact date into Day details; a subsequent log action remains scoped to it. The form must never infer a CTA from a user-entered habit name.
 
-### 11. Amount, Today
+### 12–13. Positive amount, Today and past day
 
-`Add 1 glass` adds one new amount record. Existing records are context, not a total to overwrite. The summary's chevron is a route to inspect Day details, not an editor for the total.
+The number is directly editable with its unit. Save adds one amount record; it does not replace the day's total. The past-day form preserves 2 October and must not imply that the event happened at save time.
 
 ![Record water today](Images/amount-today.png)
 
-### 12. Amount, past day
-
-The selected historical date stays visible. Saving now for 2 October must not pretend the water was consumed at the current save time.
-
 ![Record water for a past day](Images/amount-past.png)
 
-### 13. Duration
+### 14. Duration
 
-Hours/minutes are a native input, not a passive label. This adds a distinct manual session; existing timer sessions remain separate. The one-record editor later corrects exact duration, including seconds where supported (U19).
+The native duration input edits hours and minutes (and supported seconds), then Save adds one manual session. Timed sessions remain separate and are corrected in the accepted single-record editor.
 
 ![Record a duration](Images/duration.png)
 
-### 14. Repeated check / weekly frequency
+### 15. Repeatable check
 
-A count control adds to the selected day's count. The displayed weekly goal is context, not an invented same-day target. One bulk save remains one saved record.
+A count control adds to the selected day's count. The weekly goal is context, not an invented daily quota; one bulk save remains one saved record.
 
-![Record one call](Images/repeated-check.png)
+![Add a repeatable check](Images/repeated-check.png)
 
-### 15. Daily check and 16. Checklist
+### 16–17. Once-daily check and checklist
 
-These are **route diagrams** for the selected date: use the already accepted Day-details sheet and its native check/step controls. Do not build the illustrated date row or a second check editor as another Day-details design. One daily check has a named Mark done/Undo; a checklist edits named steps.
+These are **copies of the accepted Day-details layouts**. History routes to Day details for the selected date; Mark done/Undo or named checklist steps live there. No extra date row, generic “entry” editor or second check design is introduced.
 
-![Once-daily check route](Images/daily-check.png)
+![Accepted once-daily Day details](Images/daily-check.png)
 
-![Checklist route](Images/checklist.png)
+![Accepted checklist Day details](Images/checklist.png)
 
-### 17. At-most amount and 18. Quit slip
+### 18–19. At-most amount and quit slip
 
-The ability to record remains visible but neutral. An at-most goal does not encourage another cup. A slip captures its actual occurrence time; correcting its date/time later must move the same record and recompute the run (U16/U19).
+The at-most record action remains available with neutral emphasis. Save records an amount without celebrating consumption. A slip records its actual occurrence date **and time**; its accepted editor can later correct that event or remove just that slip.
 
 ![At-most amount record](Images/limit.png)
 
 ![Record a quit slip](Images/quit-slip.png)
 
-### 19. Skipped day conflict
+### 20. Skipped day
 
-The usual recording controls remain visible but disabled while the selected day is skipped. **Undo skip** stays at the skip action's position in the actual Day-details design; logs and note remain visible there. This mockup illustrates the state rule and must not replace the approved Day-details layout (U15).
+This is a **copy of the accepted skipped Day-details layout**. Logging stays visible but disabled; note editing remains available, and Undo skip stays in the place where Skip today was pressed. The History route must not bypass that state.
 
-![Skipped selected day](Images/skipped-day.png)
+![Accepted skipped Day details](Images/skipped-day.png)
 
-## Image and source inventory
+### 21. Date picker from the record form
 
-This page references **20 individual PNGs**. The editable Figma screen frames use SF Pro text and native Figma layers. The earlier [day-sheet and entry-editor handoff](<../../Day Structure and Organization/Day Details and Entry Editor Handoff/README.md>) remains the implementation reference for those two surfaces; the History and Notes flows link to them without redesigning them here.
+Tapping **Selected day** in a record form opens this native picker route. **Use date** returns to the same unsaved form with that date selected; it does not open Day details or save a record. This route is distinct from History's **Choose date**, which opens Day details.
+
+![Choose the date for a new log](Images/record-date-picker.png)
+
+## Source and implementation boundary
+
+This file embeds **22 PNG exports** from the editable Figma frames. The illustrations show information order, labels and state transitions. The app still needs native implementation, real-device layout checks and behavior verification (U1/U9/U20). The previous bottom History/Notes bars, habit-name-generated CTA copy, top-of-reader Edit and alternate Day-details forms are superseded.

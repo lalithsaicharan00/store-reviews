@@ -4,7 +4,7 @@ Written by Codex, 3 October 2026. **Start here for individual habit details info
 
 **Mockup status: schematic layout and content study only. Habit names, dates, values and note text are dummy/illustrative data. These are not final visual designs. Final visuals need substantial polish: typography, spacing, hierarchy, colors, chart labels, accessibility, native interaction and all states. No usability test or wired interaction prototype is implied.**
 
-**4 October follow-up:** Start with the [final UX pass for the header, History actions, recording and Notes](<Final UX Pass/README.md>) when working on these surfaces. It has 20 newer, individual image exports and three editable Figma boards. It supersedes the earlier top-of-History action placement, generic Add Entry wording, split Search/Add Note row and note-reader View Day/Delete rows. The original History chronology and Progress tab direction below still apply. This remains a representative interaction proposal; iOS implementation and device validation are outstanding.
+**4 October user-reviewed follow-up:** Start with the [revised UX pass for the header, History actions, recording and Notes](<Final UX Pass/README.md>) when working on these surfaces. It has 22 individual image exports and three editable Figma boards. History and Notes actions live in their own tab content, fixed type-based labels replace habit-name-generated copy, and record forms reuse the accepted entry-editor/Day-details patterns. The original History chronology and Progress tab direction below still apply. These remain representative mockups; iOS implementation and device validation are outstanding.
 
 ## Current direction and version precedence
 
@@ -26,7 +26,7 @@ Written by Codex, 3 October 2026. **Start here for individual habit details info
 | `Illustrated Reports/` | Five additional reports, each with embedded local individual screen images, screen-by-screen behavior, limitations, source links and a full board overview. These supplement the original reports. |
 | `Mockups/` | 29 permanent local PNG exports: 5 full boards + 24 individual screens or type panels, with [export provenance and hashes](<Mockups/Export Manifest.json>). Markdown embeds these files directly; no expiring Figma asset URLs are required. |
 | `Evidence/` | [Portable review source index](<Evidence/Source Index.md>), original integrity hashes, source verification and illustrative Progress fixture. Historical absolute paths remain untouched in original documents. |
-| `Final UX Pass/` | [4 Oct research and interaction handoff](<Final UX Pass/README.md>), [20 individual Markdown image exports](<Final UX Pass/Wireframes.md>) and three editable Figma boards for the header, History actions, date/record flows, Notes reader/editor and edge states. Supersedes earlier action placement and labels, not the History chronology or Progress study. |
+| `Final UX Pass/` | [4 Oct revised research and interaction handoff](<Final UX Pass/README.md>), [22 individual Markdown image exports](<Final UX Pass/Wireframes.md>) and three editable Figma boards for the header, tab-contained History/Notes actions, date/record flows, reader/editor and edge states. Supersedes the first pass's sticky actions, generated labels and alternate logging layouts, not the History chronology or Progress study. |
 
 ## Unchanged originals
 
