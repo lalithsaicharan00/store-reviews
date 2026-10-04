@@ -284,19 +284,6 @@ Their placement records scope and priority; implementation has not started.
   - Record the reasoning and design choice before implementation. The Add Entry contrast problem must be fixed
     independently (item 26), wherever the buttons end up.
 
-- [ ] **39. Publish the Day-details and Entry-editor research/wireframe handoff to `main`.** Added 4 October 2026
-  from the user's documentation request; documentation work is complete, final push verification remains open.
-  - [x] Consolidate both research reports, including every later change and its reason, in the
-    [dedicated handoff folder](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/README.md>).
-  - [x] Export all 21 Day-details and 10 Entry-editor wireframes as PNGs and embed/describe them in
-    [Day Details Wireframes](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/Day Details Wireframes.md>)
-    and [Entry Editor Wireframes](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/Entry Editor Wireframes.md>).
-  - [x] State clearly that these are representative pop-ups, not final visuals: `⋯`, `xmark`, buttons, the day-note
-    preview, pickers and keyboard must be native iOS controls. Record this in the reports, wireframe pages and
-    [native implementation contract](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/Native Implementation Contract.md>).
-  - [ ] Verify Markdown links/images and the documentation gate, then commit and push the verified handoff to `main`
-    without CI trigger tags (W3/T10). Day-details and editor **app implementation** remain items 22/36.
-
 - [ ] **28. Notes: research the Add Note button's placement.** Added 4 October 2026; separate from History actions.
   - In the habit details Notes tab, Add Note is currently near the top beside the search field, in the upper area
     the user describes as just below the progress bar. Assess whether it should stay there or move to a sticky
@@ -485,3 +472,12 @@ Completed work retains its original evidence and any outstanding user review.
     moving (it's already tinted and ticked); and whether finished times of day still fold. Then update U13, Design
     Rules and the setting together, and the tests that expect done rows below (U4's hold stays either way).
   - The sound itself is item 18 (completion feedback for every kind of habit).
+
+- [x] **39. Publish the Day-details and Entry-editor research/wireframe handoff to `main`.** Completed 4 October 2026.
+  - Both reports, every later revision and its reason, the native implementation contract, all 21 Day-details and
+    10 Entry-editor PNG wireframes are in the [dedicated handoff folder](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/README.md>).
+  - The reports and wireframe pages explicitly call these representative pop-ups, **not final visuals**. The ⋯ menu,
+    `xmark` Close, buttons, note-for-this-day preview, pickers and keyboard must be native iOS controls (U1/U18).
+  - Verified 11 local Markdown files and 31 PNGs, with all 31 images referenced; `git diff --check` and
+    `iOS/Tools/perf/check_rules.sh` passed. Documentation commits `70522494` and `1bb612e6` were pushed to `main`
+    without CI trigger tags (T10). Day-details and editor **app implementation** remain open as items 22/36.
