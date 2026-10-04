@@ -286,6 +286,19 @@ Their placement records scope and priority; implementation has not started.
   - [x] Screenshots of all 31 wireframe states as built, side by side with the wireframes (`DayDetailsScreenshotUITests`,
     `DayDetailsFixture`).
   - [ ] The real iPhone in light/dark, large text and VoiceOver; check the spacing rhythm (U9/U17).
+  - **Follow-up from the screenshot review (the user, 4 Oct 2026):**
+    - [x] Skip stays where it is, at the end of the sheet, not pinned: "users will find it". A pinned bar
+      ([mockup](https://claude.ai/artifact/YYbW4XnXabBxVPjeaH5Gys)) was proposed and set aside for now; revisit if the
+      iPhone check shows Skip lost below long sheets (state 21).
+    - [x] Task sheet: the Date row (and the done task's "Planned for" row) is gone; the line under the name says when.
+      A **Reschedule** section holds Do Tomorrow and Another Day…; the calendar shows only the days it can move to,
+      with no explanatory text.
+    - [x] Repeating tasks reschedule too, under one rule: only today's occurrence, and only to a day before its next
+      occurrence. A daily task has no Reschedule (tomorrow is its next one). Stored per task as `move.<id>` settings
+      like skips (synced and backed up; added to the core's merge-restore list). `HabitStore.moveOccurrence`,
+      `rescheduleRange`, `canReschedule`; `isDue` follows moves.
+    - [x] No Skip for tasks.
+    - [ ] Test on GitHub Actions: `DayDetailsUITests.testTasksReschedule`, `TodayRowLayoutUITests`, Core storage tests.
   - Not done, by design: a slip's **date** stays read-only until the store, repository and sync can move one record
     to another day atomically (D7; handoff). The bottom ‹ day › pager is gone (handoff; past days open from Today or
     History). A multi-check habit lost its whole-day Done switch (research matrix "Avoid"); History's Add Entry

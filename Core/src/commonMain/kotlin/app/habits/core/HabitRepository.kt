@@ -97,7 +97,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
         snapshot.reminders.filter { it.habitId in newIds && !sync.exists(SyncCodec.REMINDER, it.id) }.forEach { sync.change(SyncCodec.REMINDER, it.id, SyncCodec.reminder(it)) }
         snapshot.entries.filter { it.habitId in live }.forEach { addEntry(sync, it) }
         val globalKeys = setOf("day_end_hour", "week_start", "day_sections", "show_streaks", "haptics", "sounds", "appearance")
-        val habitPrefixes = listOf("rules.", "pause.", "skip.", "desc.", "archived.")
+        val habitPrefixes = listOf("rules.", "pause.", "skip.", "move.", "desc.", "archived.")
         val wanted = snapshot.settings.filter { setting ->
             when {
                 setting.key in globalKeys -> known.isEmpty()

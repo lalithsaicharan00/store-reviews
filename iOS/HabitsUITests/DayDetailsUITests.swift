@@ -303,6 +303,46 @@ final class DayDetailsUITests: XCTestCase {
         close()
     }
 
+    /// Reschedule (the user, 4 Oct 2026): no date row; Do Tomorrow and Another Day…, whose calendar offers only the days
+    /// the task can move to. A weekly task moves only today's occurrence, to a day before next week's; a daily task
+    /// can't move; a done task has nothing to move.
+    func testTasksReschedule() {
+        app.launchArguments = ["-uitest", "-day-details-fixture", "-appearance.theme", "dark", "-open-day", "Water the plants"]
+        app.launch()
+        XCTAssertTrue(result.waitForExistence(timeout: 30), "The weekly task's Day details")
+        XCTAssertTrue(app.staticTexts["Reschedule"].exists, "A Reschedule section")
+        XCTAssertFalse(app.descendants(matching: .any)["day-task-date"].firstMatch.exists, "No date row")
+        let another = app.buttons["day-another-day"]
+        inSheet(another)
+        XCTAssertTrue(app.buttons["day-do-tomorrow"].exists, "Tomorrow comes before next week's: Do Tomorrow")
+        shot("dd-16-weekly-task-reschedule")
+        another.tap()
+        XCTAssertTrue(app.navigationBars["Another Day"].waitForExistence(timeout: 3), "Another Day… opens a calendar")
+        shot("dd-17-reschedule-calendar")
+        let move = app.navigationBars["Another Day"].buttons["reschedule-move"]
+        XCTAssertTrue(move.isEnabled, "Tomorrow is picked to start with")
+        move.tap()
+        XCTAssertTrue(result.waitForNonExistence(timeout: 5), "Moving closes Day details")
+        app.terminate()
+
+        app.launchArguments = ["-uitest", "-day-details-fixture", "-appearance.theme", "dark", "-open-day", "Feed the cat"]
+        app.launch()
+        XCTAssertTrue(result.waitForExistence(timeout: 30), "The daily task's Day details")
+        XCTAssertFalse(app.buttons["day-do-tomorrow"].exists, "A daily task's next one is tomorrow: no Do Tomorrow")
+        XCTAssertFalse(app.buttons["day-another-day"].exists, "and no other day before it")
+        shot("dd-18-daily-task-no-reschedule")
+        app.terminate()
+
+        app.launchArguments = ["-uitest", "-day-details-fixture", "-appearance.theme", "dark", "-open-day", "Test"]
+        app.launch()
+        XCTAssertTrue(result.waitForExistence(timeout: 30), "The one-time task's Day details")
+        XCTAssertTrue(app.buttons["day-do-tomorrow"].exists && app.buttons["day-another-day"].exists)
+        app.buttons["day-done"].tap()
+        XCTAssertTrue(app.buttons["day-another-day"].waitForNonExistence(timeout: 3), "Done: nothing to reschedule")
+        XCTAssertFalse(app.staticTexts["Planned for"].exists, "No Planned for row")
+        shot("dd-19-task-done-no-reschedule")
+    }
+
     /// The same sheets in dark mode, for the design review (U1/U9).
     func testEveryKindDark() {
         launch(dark: true)

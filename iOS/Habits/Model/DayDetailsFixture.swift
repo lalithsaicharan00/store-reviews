@@ -31,7 +31,13 @@ enum DayDetailsFixture {
         let paused = habit("Meditate", "leaf.fill", .mint, .check)
         let social = habit("Social media", "iphone", .pink, .duration, goal: 30, atMost: true)
         let squats = habit("Squats", "figure.strengthtraining.traditional", .red, .check, goal: 3)
-        for h in [vitamins, call, stretch, desk, water, coffee, read, smoking, task, monthly, paused, social, squats] { store.add(h) }
+        // Repeating tasks: weekly on today's weekday (it can move to a day before next week's), and daily (it can't).
+        let weekly = habit("Water the plants", "leaf.fill", .green, .task,
+                           frequency: .weekdays([today.weekday(calendar: store.calendar)]))
+        let daily = habit("Feed the cat", "pawprint.fill", .orange, .task)
+        for h in [vitamins, call, stretch, desk, water, coffee, read, smoking, task, monthly, paused, social, squats, weekly, daily] {
+            store.add(h)
+        }
         await store.flush()
 
         let yesterday = today.adding(days: -1, calendar: store.calendar)

@@ -106,7 +106,8 @@ final class TodayRowLayoutUITests: XCTestCase {
         XCTAssertFalse(app.buttons["day-open-page"].exists, "A task has no habit page to open")
         XCTAssertFalse(app.buttons["day-skip"].exists, "A task has no Skip")
         XCTAssertTrue(app.buttons["day-add-note"].exists, "Its note for the day")
-        XCTAssertTrue(app.descendants(matching: .any)["day-task-date"].firstMatch.exists, "Its date")
+        XCTAssertFalse(app.descendants(matching: .any)["day-task-date"].firstMatch.exists, "No date row: the line under the name says it")
+        XCTAssertTrue(app.buttons["day-another-day"].exists, "Reschedule: Another Day…")
         XCTAssertFalse(app.buttons["day-previous"].exists, "A one-time task doesn't page through days")
         let tomorrow = app.buttons["day-do-tomorrow"]
         let form = app.collectionViews["day-form"]

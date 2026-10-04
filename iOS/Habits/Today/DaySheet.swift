@@ -20,6 +20,8 @@ struct DaySheet: View {
     @State private var confirmingDelete = false
     @State private var showPlus = false
     @State private var showPage = false
+    /// The days Another Day… offers, worked out when it's tapped.
+    @State private var pickingDays: ClosedRange<LocalDay>?
     @ScaledMetric(relativeTo: .body) private var groupGap: CGFloat = 28
     @ScaledMetric(relativeTo: .body) private var noteToSkip: CGFloat = 24
     private enum Destination: String, Identifiable { case log, add, note, edit, pause; var id: Self { self } }
@@ -159,34 +161,40 @@ struct DaySheet: View {
         }
     }
 
-    /// A one-time task's own date and the most common change to it, one tap away (the user, 3 Oct 2026). A task has no
-    /// Skip and no logs.
+    /// Reschedule: Do Tomorrow and Another Day… (the user, 4 Oct 2026). No date row: the line under the task's name
+    /// already says when it's planned. A repeating task moves only today's occurrence, and only to a day before its
+    /// next one; the calendar offers just those days. A done task, or a daily one, has nothing to move. No Skip.
     @ViewBuilder private var taskSection: some View {
-        if let due = current.dueDay {
-            Section {
-                if store.isDone(current, on: day) {
-                    LabeledContent("Planned for", value: due.date(calendar: store.calendar).formatted(date: .abbreviated, time: .omitted))
-                } else {
-                    let today = store.today()
-                    DatePicker("Date", selection: Binding(get: { due.date(calendar: store.calendar) },
-                                                          set: { moveTask(to: LocalDay($0, calendar: store.calendar)) }),
-                               in: today.date(calendar: store.calendar)..., displayedComponents: .date)
-                        .accessibilityIdentifier("day-task-date")
-                    Button("Do Tomorrow", systemImage: "arrow.turn.up.right") {
-                        moveTask(to: today.adding(days: 1, calendar: store.calendar))
-                        dismiss()
+        if store.canReschedule(current, shownOn: day) {
+            Section("Reschedule") {
+                Button("Do Tomorrow", systemImage: "arrow.turn.up.right") {
+                    reschedule(to: store.today().adding(days: 1, calendar: store.calendar))
+                }
+                .accessibilityIdentifier("day-do-tomorrow")
+                Button("Another Day…", systemImage: "calendar") {
+                    pickingDays = store.rescheduleRange(of: current, shownOn: day)
+                }
+                .accessibilityIdentifier("day-another-day")
+                .sheet(isPresented: Binding(get: { pickingDays != nil }, set: { if !$0 { pickingDays = nil } })) {
+                    if let range = pickingDays {
+                        RescheduleSheet(range: range, current: current.dueDay ?? day) { reschedule(to: $0) }
                     }
-                    .accessibilityIdentifier("day-do-tomorrow")
                 }
             }
         }
     }
 
-    /// Moves a one-time task to another day. Only the task's date changes; its entries and day notes stay where they are.
-    private func moveTask(to newDay: LocalDay) {
-        guard var task = store.habits.first(where: { $0.id == habit.id }), task.dueDay != newDay else { return }
-        task.dueDay = newDay
-        store.update(task)
+    /// Moves the task, then closes the sheet: it has left the day shown. A one-time task changes its date; a repeating
+    /// one moves only this occurrence. Its logs and day notes stay where they are.
+    private func reschedule(to newDay: LocalDay) {
+        if current.dueDay != nil {
+            guard var task = store.habits.first(where: { $0.id == habit.id }), task.dueDay != newDay else { return }
+            task.dueDay = newDay
+            store.update(task)
+        } else {
+            store.moveOccurrence(current, from: day, to: newDay)
+        }
+        dismiss()
     }
 
     // MARK: Management
@@ -222,6 +230,48 @@ struct DaySheet: View {
     }
 }
 
+/// Another Day…: the system calendar showing only the days the task can move to (no message about the others).
+private struct RescheduleSheet: View {
+    let range: ClosedRange<LocalDay>
+    /// The day the task is on now: Move stays off until another day is picked.
+    let current: LocalDay
+    let onMove: (LocalDay) -> Void
+    @Environment(HabitStore.self) private var store
+    @Environment(\.dismiss) private var dismiss
+    @State private var picked: Date?
+
+    var body: some View {
+        let c = store.calendar
+        let first = range.lowerBound.date(calendar: c)
+        let selection = picked ?? first
+        NavigationStack {
+            VStack(spacing: 0) {
+                DatePicker("Day", selection: Binding(get: { selection }, set: { picked = $0 }),
+                           in: first...range.upperBound.date(calendar: c), displayedComponents: .date)
+                    .datePickerStyle(.graphical)
+                    .labelsHidden()
+                    .padding(.horizontal)
+                    .accessibilityIdentifier("reschedule-calendar")
+                Spacer(minLength: 0)
+            }
+                .navigationTitle("Another Day")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                    ToolbarItem(placement: .confirmationAction) {
+                        let day = LocalDay(selection, calendar: c)
+                        // Moving closes Day details too, and this sheet with it.
+                        Button("Move") { onMove(day) }
+                            .fontWeight(.semibold)
+                            .disabled(day == current)
+                            .accessibilityIdentifier("reschedule-move")
+                    }
+                }
+        }
+        .presentationDetents([.medium, .large])
+    }
+}
+
 // MARK: - Pieces shared with the log editor
 
 /// Icon, name and plan: "8 glasses a day · Anytime", "Quitting since 19 Sep 2026", "Task · Planned for Sat, 4 Oct".
@@ -248,7 +298,10 @@ struct DayIdentityRow: View {
         case .quit:
             return HabitPageView.sentence(habit, store: store)
         case .task:
-            guard let due = habit.dueDay else { return "Task" }
+            guard let due = habit.dueDay else {
+                // A repeating task says how often: "Task · Every Monday".
+                return "Task · " + HabitCopy.capitalized(HabitCopy.plan(habit, weekStart: store.settings.weekStart))
+            }
             return "Task · Planned for " + PauseSheet.short(due, calendar: store.calendar)
         default:
             let parts = habit.parts == [.anytime] ? "Anytime"

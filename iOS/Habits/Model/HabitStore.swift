@@ -125,6 +125,9 @@ final class HabitStore {
     /// Days a habit was skipped ("Skip today"). A skipped day is simply not one of its days: hidden on Today and
     /// neutral in the streak, the ring and every percentage (Feature Ledger C016: "a skipped day is not a missed day").
     private(set) var skips: [UUID: Set<LocalDay>] = [:] { didSet { forgetAll() } }
+    /// A repeating task's occurrences moved to another day, original day → new day (Day details' Reschedule, 4 Oct
+    /// 2026). Saved like skips, one setting per task, so it syncs and is backed up with them.
+    private(set) var taskMoves: [UUID: [LocalDay: LocalDay]] = [:] { didSet { forgetAll() } }
     /// Pauses per habit, oldest first. A paused day is a skipped day, for a whole stretch (pause report, 29 Sep).
     private(set) var pauses: [UUID: [HabitPause]] = [:] { didSet { forgetAll() } }
     /// Goal history: the rules a habit had before it was edited, oldest first. Each applies up to and including
@@ -821,6 +824,55 @@ final class HabitStore {
         }
     }
 
+    // MARK: Rescheduling a repeating task
+
+    /// The repeating task's next scheduled day after `day`, by its own schedule (moves ignored). Walks at most a year,
+    /// day by day, so it's called on a tap, never while drawing (Rulebook S5).
+    func nextOccurrence(of habit: Habit, after day: LocalDay) -> LocalDay? {
+        var next = day
+        for _ in 0..<366 {
+            next = next.adding(days: 1, calendar: calendar)
+            if isDue(habit, on: next, countingSkips: false, followingMoves: false) { return next }
+        }
+        return nil
+    }
+
+    /// Whether the task shown on `day` can be rescheduled, and so whether Day details offers it (the user, 4 Oct 2026):
+    /// a one-time task that isn't done; a repeating task only for today's occurrence, and only when tomorrow isn't its
+    /// next occurrence already (a daily task never moves). One day's check, cheap enough to draw with.
+    func canReschedule(_ habit: Habit, shownOn day: LocalDay) -> Bool {
+        guard habit.kind == .task, !habit.archived, !isDone(habit, on: day) else { return false }
+        if habit.dueDay != nil { return true }
+        let today = today()
+        return day == today && !isDue(habit, on: today.adding(days: 1, calendar: calendar), countingSkips: false, followingMoves: false)
+    }
+
+    /// The days the task can move to: a one-time task, any day from today on; a repeating task's occurrence, from
+    /// tomorrow up to the day before its next occurrence, which it would otherwise run into. Worked out on a tap.
+    func rescheduleRange(of habit: Habit, shownOn day: LocalDay) -> ClosedRange<LocalDay>? {
+        guard canReschedule(habit, shownOn: day) else { return nil }
+        let today = today()
+        if habit.dueDay != nil { return today...today.adding(days: 3650, calendar: calendar) }
+        let tomorrow = today.adding(days: 1, calendar: calendar)
+        let last = nextOccurrence(of: habit, after: today).map { $0.adding(days: -1, calendar: calendar) }
+            ?? habit.endsOn ?? today.adding(days: 365, calendar: calendar)
+        return tomorrow <= last ? tomorrow...last : nil
+    }
+
+    /// Moves one occurrence of a repeating task from `day` to `target` (an occurrence already moved moves again from
+    /// where it is). Only the task's schedule for those two days changes; its logs and day notes stay where they are.
+    func moveOccurrence(_ habit: Habit, from day: LocalDay, to target: LocalDay) {
+        guard habit.kind == .task, habit.dueDay == nil, let range = rescheduleRange(of: habit, shownOn: day), range.contains(target) else { return }
+        var moves = taskMoves[habit.id] ?? [:]
+        let original = moves.first { $0.value == day }?.key ?? day
+        if original == target { moves.removeValue(forKey: original) } else { moves[original] = target }
+        withAnimation { taskMoves[habit.id] = moves.isEmpty ? nil : moves }
+        let value = moves.map { $0.key.key + ">" + $0.value.key }.sorted().joined(separator: ",")
+        perform { [self] telemetry in
+            try await repository.saveSetting(key: Keys.movePrefix + habit.id.uuidString, value: value)
+        }
+    }
+
     // MARK: Pause
 
     /// Whether the habit is paused on `day`. Paused days aren't its days: off Today, no reminders, neutral in the
@@ -944,7 +996,8 @@ final class HabitStore {
     /// Unfinished one-time tasks move forward to today. Nothing is due before the start or after the end date.
     /// `countingSkips: false` asks whether the day was planned at all, skip or not: Today keeps a skipped habit as a
     /// neutral row saying so, with Undo Skip one swipe away (3 Oct 2026), instead of making it vanish.
-    func isDue(_ habit: Habit, on day: LocalDay, now: Date = .now, countingSkips: Bool = true) -> Bool {
+    /// `followingMoves: false` asks the task's own schedule, ignoring occurrences moved to other days.
+    func isDue(_ habit: Habit, on day: LocalDay, now: Date = .now, countingSkips: Bool = true, followingMoves: Bool = true) -> Bool {
         if (countingSkips && isSkipped(habit, on: day)) || isPaused(habit, on: day) || isArchived(habit, on: day) { return false }
         let habit = rule(habit, on: day)
         let created = startDay(of: habit)
@@ -952,8 +1005,15 @@ final class HabitStore {
         switch habit.kind {
         case .quit: return false
         case .task:
-            // A task with no date repeats on its schedule, like a habit.
-            guard let due = habit.dueDay else { break }
+            // A task with no date repeats on its schedule, like a habit; one occurrence can be moved to a day before the
+            // next one (`moveOccurrence`).
+            guard let due = habit.dueDay else {
+                if followingMoves, let moves = taskMoves[habit.id] {
+                    if moves.values.contains(day) { return true }
+                    if moves[day] != nil { return false }
+                }
+                break
+            }
             if day == due { return true }
             return due < day && day == today(now: now) && !isDone(habit, on: day)
         default: break
@@ -1359,6 +1419,7 @@ final class HabitStore {
             var running: [UUID: Date] = [:]
             var runningSlots: [UUID: String] = [:]
             var loadedSkips: [UUID: Set<LocalDay>] = [:]
+            var loadedMoves: [UUID: [LocalDay: LocalDay]] = [:]
             var loadedPauses: [UUID: [HabitPause]] = [:]
             var loadedRules: [UUID: [HabitRule]] = [:]
             var loadedHabitNotes: [UUID: [LocalDay: String]] = [:]
@@ -1426,6 +1487,16 @@ final class HabitStore {
                         if !list.isEmpty { loadedPauses[id] = list }
                         continue
                     }
+                    if setting.key.hasPrefix(Keys.movePrefix),
+                       let id = UUID(uuidString: String(setting.key.dropFirst(Keys.movePrefix.count))) {
+                        var moves: [LocalDay: LocalDay] = [:]
+                        for pair in setting.value.split(separator: ",") {
+                            let days = pair.split(separator: ">").compactMap { LocalDay(key: String($0)) }
+                            if days.count == 2 { moves[days[0]] = days[1] }
+                        }
+                        if !moves.isEmpty { loadedMoves[id] = moves }
+                        continue
+                    }
                     if setting.key.hasPrefix(Keys.skipPrefix),
                        let id = UUID(uuidString: String(setting.key.dropFirst(Keys.skipPrefix.count))) {
                         let days = Set(setting.value.split(separator: ",").compactMap { LocalDay(key: String($0)) })
@@ -1447,6 +1518,7 @@ final class HabitStore {
             timers = running
             timerSlots = runningSlots
             skips = loadedSkips
+            taskMoves = loadedMoves
             pauses = loadedPauses
             rules = loadedRules
             habitNotes = loadedHabitNotes
@@ -1485,6 +1557,7 @@ final class HabitStore {
         static let weekStart = "week_start"
         static let timerPrefix = "timer."
         static let skipPrefix = "skip."
+        static let movePrefix = "move."
         static let pausePrefix = "pause."
         static let rulesPrefix = "rules."
         static let notePrefix = "note."
