@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 37).
+  still resolve; give new items the next unused number (currently 38).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item only when its required validation is complete, with the date and relevant commit, test or device
@@ -173,6 +173,27 @@ Their placement records scope and priority; implementation has not started.
   - **Then:** the user decides; update U14 and Design Rules' row section with the date and reason, then the swipe
     code, `TodayRowSheetUITests`' swipe tests (T3) and a `PerfDriver` check if the swipe changes (T4). Check on the
     iPhone (U9).
+
+- [ ] **37. Time limits ("Social media: 30 min max"): can't be edited, and should they exist? Decide, then add or
+  remove them properly.** Added 4 October 2026, from the user.
+  - **The user's words, tidied:** "My iPhone still has data from the first versions, when we ran automated tests on it.
+    There's a limit habit, Social media 30 minutes max. In Quit we have two things, stop completely and limit something,
+    and in the units there's no minutes unit now, yet that habit still works. First problem: I can't change it. Second:
+    should limits allow this? It's a genuine use case (social media 30 minutes max), but also a little confusing: it
+    could be made as a timed build habit, yet it isn't building, it's cutting down. Today a limit can be a quantity but
+    not a time. We shouldn't add something for one use case: check whether it's genuine, and if it is, add it; either
+    add it or remove it, and finalise it."
+  - **What the code has (to check against the phone):** a timed limit is still a valid habit (a Cut down whose unit is
+    time, `HabitPlan.timeUnit`; Today and the player show "30 min max"; the `-uitest` demo makes "Social media" 30 min
+    at most). The user found no time unit among the Limit's units, and couldn't change the habit. Reproduce on the
+    current build first: open Edit Habit for a timed limit and see what's missing or stuck.
+  - **Research (W2), before deciding:** do people want time limits (screen time, social media, gaming, TV) in a habit
+    tracker, and do they see them as cutting down rather than building? How do they log them (a timer, typing the
+    minutes, Screen Time)? Where would one sit: Quit → Limit with a time unit, or elsewhere? Say "users show…" with
+    counts (Research rules). Also ties to item 14 (where limits belong).
+  - **Then, either way, nothing half-done:** if kept, offer time properly when making and editing a limit (and its
+    logging, timer and wording); if removed, existing timed limits must keep working and stay editable, and their data
+    is never lost (D2, D6). The user decides from the research.
 
 - [ ] **11. Bug: the app sometimes stops responding for ~74 s right after launching signed in** (added 2 Oct, from the
   test runs). `BackupUITests.testDeletingTheAccountAndErasingThisPhone` launches with a test sign-in to the dev server;
