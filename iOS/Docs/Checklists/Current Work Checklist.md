@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 35).
+  still resolve; give new items the next unused number (currently 37).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item only when its required validation is complete, with the date and relevant commit, test or device
@@ -157,6 +157,23 @@ Their placement records scope and priority; implementation has not started.
     classes that use switches elsewhere before `main` moved. Speed: the player's ‹ › 14.8 ms/s, no freeze. **Only the
     user's look on the iPhone (U9) is left;** tick it then and move it to Completed.
 
+- [ ] **35. Today's swipe actions: an over-long swipe adds a note; reaching all three buttons takes care.** Added
+  4 October 2026, from the user: research first, then fix.
+  - **The user's words, tidied:** "If I slide too much, it directly adds a note for the habit. I have to do it very
+    carefully just to get all three options inside the slide. Maybe, instead of Undo, we should have Skip on the slide
+    left. We need research about how this will work and how it should work, and fix it."
+  - **What's built (Rulebook U14, 3 Oct 2026; `TodayRows.swift`):** swipe left reveals Note, Skip and Pause, and a full
+    swipe runs Note (`allowsFullSwipe: true`, chosen as the one harmless action); swipe right reveals a named Undo
+    with no full swipe. So a long swipe left opens the note sheet instead of showing the three buttons.
+  - **Research:** whether any action should run on a full swipe at all (and which); how many buttons a swipe should
+    hold so all of them are easy to reach; which side gets Skip, Note, Pause and Undo (the user's idea: Skip on a
+    swipe, where Undo is now; check what "instead of Undo" means with the user before deciding); what people expect
+    from the iPhone's own lists (Mail, Reminders) and what reviews show about accidental swipes. Start from report
+    "Today's Rows — Tap, Swipe, the Day Sheet and Delete" (the 3 Oct evidence: 35 accidental swipes, 14 "which way").
+  - **Then:** the user decides; update U14 and Design Rules' row section with the date and reason, then the swipe
+    code, `TodayRowSheetUITests`' swipe tests (T3) and a `PerfDriver` check if the swipe changes (T4). Check on the
+    iPhone (U9).
+
 - [ ] **11. Bug: the app sometimes stops responding for ~74 s right after launching signed in** (added 2 Oct, from the
   test runs). `BackupUITests.testDeletingTheAccountAndErasingThisPhone` launches with a test sign-in to the dev server;
   in 4 of 13 runs (1–2 Oct) the app didn't respond for about 74 s right after launch, before the test's first step
@@ -190,6 +207,16 @@ Their placement records scope and priority; implementation has not started.
   tested, on the simulator or the iPhone.
 
 ## Planned improvements — build later
+
+- [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
+  to improve it, the overall design and everything, so that it looks good."
+  - **What it is:** the screen a single entry opens to, from the Day sheet's entries and the habit page's History
+    (`EntryEditor` in `DayEntriesSection.swift`, title "Edit Entry"): the amount, time or slip time, a footer, Delete
+    Entry, Save. It's a plain form today.
+  - **To do:** look at it for every kind of habit (amount, time, check counted several times, checklist step, quit
+    slip), list what each shows, then design it so it reads well and matches Add Entry ("same mental model for adding
+    an entry", 3 Oct). Keep everything it does now (U5): editing one entry only, Delete Entry, the time zone line for
+    slips. Research first if the design question is open (W2); check on the iPhone (U9).
 
 - [ ] **24. Habit details: redesign the area above History · Notes · Progress tabs.** Added 4 October 2026.
   - The requested scope is a modest layout change to the header/content above the tabs on every habit details page.
