@@ -122,6 +122,7 @@ final class AppModel {
             if ProcessInfo.processInfo.arguments.contains("-widget-fixture") { await WidgetFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-reminder-fixture") { await ReminderFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-task-fixture") { await TaskFixture.install(in: store) }
+            if ProcessInfo.processInfo.arguments.contains("-day-details-fixture") { await DayDetailsFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-focus-fixture") {
                 await FocusPlayerFixture.install(in: store, shortTimer: ProcessInfo.processInfo.arguments.contains("-focus-short-timer"))
             }

@@ -117,6 +117,20 @@ struct TodayView: View {
     private var observedNavigation: some View {
         navigation
         #if DEBUG && targetEnvironment(simulator)
+        // Open one habit's Day details at launch (`-open-day Water`, `-open-day-offset -1` for yesterday), for the
+        // screenshots of every state beside its wireframe (DayDetailsScreenshotUITests, 4 Oct 2026).
+        .task {
+            await AppModel.shared.ensureLoaded()
+            let arguments = ProcessInfo.processInfo.arguments
+            guard store.isLoaded, let flag = arguments.firstIndex(of: "-open-day"), flag + 1 < arguments.count,
+                  let habit = store.habits.first(where: { $0.name == arguments[flag + 1] }) else { return }
+            var day = store.today()
+            if let o = arguments.firstIndex(of: "-open-day-offset"), o + 1 < arguments.count, let n = Int(arguments[o + 1]) {
+                day = day.adding(days: n, calendar: store.calendar)
+            }
+            try? await Task.sleep(for: .milliseconds(800))
+            store.dayTarget = .init(habitID: habit.id, day: day)
+        }
         // Launch the actual player directly for visual review in Simulator, using the isolated fixture.
         .task {
             await AppModel.shared.ensureLoaded()

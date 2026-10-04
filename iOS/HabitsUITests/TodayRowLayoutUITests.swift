@@ -118,9 +118,12 @@ final class TodayRowLayoutUITests: XCTestCase {
         XCTAssertEqual(app.buttons["day-edit-habit"].label, "Edit Task")
         XCTAssertTrue(app.buttons["Delete Task…"].exists, "Delete Task in ⋯")
         shot("l05b-task-menu")
-        // A tap outside a menu closes it without acting.
-        app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.08)).tap()
-        XCTAssertTrue(app.buttons["Delete Task…"].waitForNonExistence(timeout: 3), "The menu closes")
+        // Edit Task opens the task's form; Cancel comes back to the sheet unchanged.
+        app.buttons["day-edit-habit"].tap()
+        let cancel = app.navigationBars.buttons["Cancel"].firstMatch
+        XCTAssertTrue(cancel.waitForExistence(timeout: 3), "Edit Task opens the task's form")
+        cancel.tap()
+        XCTAssertTrue(done.waitForExistence(timeout: 3) && done.isHittable, "Back on the task's sheet")
         // Mark done and back: the same button, in the same place, says what it does.
         done.tap()
         XCTAssertTrue(app.buttons["Undo done"].waitForExistence(timeout: 3), "Mark done turns into Undo done")

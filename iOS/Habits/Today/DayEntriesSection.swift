@@ -75,7 +75,10 @@ struct EntryEditView: View {
     private var value: Double? { draft.value }
     private var isSlip: Bool { habit.kind == .quit }
     private var noun: String { isSlip ? "slip" : "log" }
-    private var changed: Bool { draft.isChanged || slipTime != entry.createdAt }
+    /// Something was typed or picked: Back asks first. Changes once per editor (Rulebook S11).
+    private var touched: Bool { draft.edited || slipTime != entry.createdAt }
+    /// Whether there's really something to lose or save, worked out on a tap.
+    private var changed: Bool { draft.differs || slipTime != entry.createdAt }
 
     private var validSlipTime: Bool {
         !isSlip || (store.recordingDay(at: slipTime, for: entry) == entry.day && slipTime <= .now
@@ -109,12 +112,15 @@ struct EntryEditView: View {
         .navigationBarTitleDisplayMode(.inline)
         // The back control is the chevron alone, as iOS draws it (the user, 4 Oct 2026).
         .toolbarRole(.editor)
-        .navigationBarBackButtonHidden(changed)
-        .interactiveDismissDisabled(changed)
+        .navigationBarBackButtonHidden(touched)
+        .interactiveDismissDisabled(touched)
         .toolbar {
-            if changed {
+            if touched {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Back", systemImage: "chevron.backward") { focus = nil; confirmingDiscard = true }
+                    Button("Back", systemImage: "chevron.backward") {
+                        focus = nil
+                        if changed { confirmingDiscard = true } else { dismiss() }
+                    }
                         .accessibilityIdentifier("entry-back")
                 }
             }
@@ -280,8 +286,11 @@ struct DraftTextField: View {
     /// Why the text can't be saved, said near the field (never silently clamped or rounded); nil when it can, or
     /// while a field is simply empty.
     var problem: String?
-    /// Whether any field differs from what the draft opened with (an editor asks before Back throws it away).
-    var isChanged = false
+    /// Set once, on the first keystroke that changes a field, and never cleared: an editor swaps in its asking Back
+    /// button then. A flag that followed every keystroke back and forth redrew the editor and its navigation bar each
+    /// time (Entry editor typing 26–40 ms/s against 1–11 before, CI 4 Oct 2026; Rulebook S11). `differs` says whether
+    /// there's really anything to lose.
+    var edited = false
     @ObservationIgnored private var opened: [String] = []
 
     init(kind: HabitKind, value: Double? = nil) {
@@ -298,6 +307,9 @@ struct DraftTextField: View {
     }
 
     var value: Double? { check().value }
+
+    /// Whether any field differs from what the draft opened with. Read on a tap, never while drawing.
+    var differs: Bool { [amount, hours, minutes, seconds] != opened }
 
     private func check() -> (value: Double?, problem: String?) {
         if kind == .quit { return (1, nil) }
@@ -328,8 +340,7 @@ struct DraftTextField: View {
             let valid = value != nil
             if valid != self.isValid { self.isValid = valid }
             if problem != self.problem { self.problem = problem }
-            let changed = [self.amount, self.hours, self.minutes, self.seconds] != self.opened
-            if changed != self.isChanged { self.isChanged = changed }
+            if !self.edited && self.differs { self.edited = true }
         })
     }
 }
