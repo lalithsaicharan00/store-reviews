@@ -759,7 +759,7 @@ struct RowAfterLog: View {
     var body: some View {
         let undo = store.undoOffer.flatMap { $0.habitID == habit.id && $0.day == day ? $0 : nil }
         let offered = undo != nil || store.noteOffer == .init(habit: habit.id, day: day)
-        if offered {
+        if offered && ProcessInfo.processInfo.environment["PERF_VARIANT_NEVER"] == "x" {
             let mark = undo.flatMap { entry in store.milestoneOffer.flatMap { $0.entry == entry.id ? $0 : nil } }
             let note = store.note(of: habit, on: day) != nil
             // The widest that fits: everything, then without the milestone, then the buttons as icons (the largest
