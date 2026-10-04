@@ -324,7 +324,8 @@ final class GroupsUITests: XCTestCase {
         XCTAssertTrue(handle.waitForExistence(timeout: 3), "Each group can be dragged: " +
                       app.buttons.allElementsBoundByIndex.map(\.label).joined(separator: " | "))
         let health = app.descendants(matching: .any)["groups-row-Health"].firstMatch
-        handle.press(forDuration: 0.8, thenDragTo: health.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.05)))
+        handle.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+            .press(forDuration: 0.8, thenDragTo: health.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.05)))
         app.navigationBars["Groups"].buttons["Done"].tap()
         XCTAssertTrue(app.buttons["groups-sort-az"].waitForExistence(timeout: 3), "Your order, with Sort A to Z")
         shot("g14-your-order")
