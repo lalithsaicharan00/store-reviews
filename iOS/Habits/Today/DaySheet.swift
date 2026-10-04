@@ -119,6 +119,7 @@ struct DaySheet: View {
                     store.delete([current])
                 }
                 if !current.archived { Button("Archive Instead") { store.archive([current]); dismiss() } }
+                Button("Cancel", role: .cancel) {}
             } message: {
                 Text("Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.")
             }

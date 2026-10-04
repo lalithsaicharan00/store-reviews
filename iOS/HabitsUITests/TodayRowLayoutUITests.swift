@@ -10,7 +10,11 @@ final class TodayRowLayoutUITests: XCTestCase {
     override func setUp() {
         continueAfterFailure = true
         app = XCUIApplication()
-        app.launchArguments = ["-uitest"]
+    }
+
+    /// The demo habits; with `tasks`, the task fixture instead (an old one-time task carried to today, a repeating one).
+    private func launch(tasks: Bool = false) {
+        app.launchArguments = tasks ? ["-uitest", "-free", "-task-fixture"] : ["-uitest"]
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
     }
@@ -35,10 +39,11 @@ final class TodayRowLayoutUITests: XCTestCase {
         app.staticTexts.matching(NSPredicate(format: "identifier == 'habit-line' AND label CONTAINS %@", text)).firstMatch
     }
 
-    /// Every kind of row has exactly one line under its name, on one line: an amount, a weekly count, a task, a quit
-    /// habit.
+    /// Every kind of row has exactly one line under its name, on one line: an amount, a weekly count, a quit habit (a
+    /// task's is checked with the task fixture below).
     func testOneLineUnderEveryName() {
-        for (name, start) in [("Water", "/8 glasses"), ("Call family", "this week"), ("Pay the phone bill", "Task"), ("Smoking", "Best")] {
+        launch()
+        for (name, start) in [("Water", "/8 glasses"), ("Call family", "this week"), ("Smoking", "Best")] {
             let row = app.staticTexts[name].firstMatch
             app.reveal(row, clear: true)
             XCTAssertTrue(row.exists, name)
@@ -54,6 +59,7 @@ final class TodayRowLayoutUITests: XCTestCase {
     /// After a log: the named Undo and Add Note sit side by side on one line, never wrapped. Add Note opens a sheet with
     /// Save (never a field in the row); once there's a note, the button says Edit Note.
     func testAfterLogButtonsAndNoteSheet() {
+        launch()
         let plus = app.buttons["Add 1 glass to Water"]
         app.reveal(plus, clear: true)
         plus.tap()
@@ -84,10 +90,15 @@ final class TodayRowLayoutUITests: XCTestCase {
 
     /// A task's row opens its own sheet: Done, its date and Do Tomorrow, the note, Edit Task; no day paging.
     func testTaskRowOpensItsSheet() {
-        let task = app.staticTexts["Pay the phone bill"].firstMatch
+        launch(tasks: true)
+        let task = app.staticTexts["Old task"].firstMatch
         app.reveal(task, clear: true)
+        XCTAssertTrue(task.exists, "The old task is carried to today")
+        XCTAssertTrue(line(containing: "Task · From").exists, "A task's line says it's a task, and where it came from: "
+                      + app.staticTexts.matching(identifier: "habit-line").allElementsBoundByIndex.map(\.label).joined(separator: " | "))
+        shot("l05a-task-row")
         task.tap()
-        XCTAssertTrue(app.navigationBars["Today · Pay the phone bill"].waitForExistence(timeout: 5), "The task's sheet")
+        XCTAssertTrue(app.navigationBars["Today · Old task"].waitForExistence(timeout: 5), "The task's sheet")
         XCTAssertTrue(app.switches["day-done"].exists, "Done")
         XCTAssertTrue(app.descendants(matching: .any)["day-task-date"].firstMatch.exists, "Its date")
         XCTAssertFalse(app.buttons["day-previous"].exists, "A one-time task doesn't page through days")
@@ -97,13 +108,14 @@ final class TodayRowLayoutUITests: XCTestCase {
         XCTAssertTrue(app.buttons["day-edit-habit"].exists, "Edit Task")
         shot("l05-task-sheet")
         tomorrow.tap()
-        XCTAssertTrue(app.navigationBars["Today · Pay the phone bill"].waitForNonExistence(timeout: 3), "Do Tomorrow closes it")
-        XCTAssertTrue(app.staticTexts["Pay the phone bill"].waitForNonExistence(timeout: 5), "The task moved to tomorrow")
+        XCTAssertTrue(app.navigationBars["Today · Old task"].waitForNonExistence(timeout: 3), "Do Tomorrow closes it")
+        XCTAssertTrue(app.staticTexts["Old task"].waitForNonExistence(timeout: 5), "The task moved to tomorrow")
     }
 
     /// A quit row: one line (its best run), the live count on the right, and Log Slip on the swipe where the "Slipped"
     /// button was.
     func testQuitRowSwipeLogsASlip() {
+        launch()
         let smoking = app.staticTexts["Smoking"].firstMatch
         app.reveal(smoking, clear: true)
         smoking.swipeLeft()

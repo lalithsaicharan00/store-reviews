@@ -44,6 +44,13 @@ final class TodayRowSheetUITests: XCTestCase {
         XCTAssertTrue(result.waitForExistence(timeout: 5), "\(name)'s row opens its Day sheet")
     }
 
+    /// Swipes a row a fixed 220 pt from its name: XCUITest sizes a swipe to the element, and a name is too narrow for
+    /// a real swipe (the short drag landed as a tap and opened the Day sheet, CI 4 Oct 2026).
+    private func swipe(_ element: XCUIElement, right: Bool) {
+        let start = element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+        start.press(forDuration: 0.05, thenDragTo: start.withOffset(CGVector(dx: right ? 220 : -220, dy: 0)))
+    }
+
     private func closeSheet() {
         app.navigationBars.buttons["Done"].firstMatch.tap()
         XCTAssertTrue(result.waitForNonExistence(timeout: 5))
@@ -73,6 +80,9 @@ final class TodayRowSheetUITests: XCTestCase {
         launch()
         app.buttons["Previous day"].firstMatch.tap()
         sleep(1)
+        // Yesterday's parts of the day are all done, so they're folded: open Anytime first.
+        let open = app.buttons["Open Anytime"]
+        if open.waitForExistence(timeout: 3) { open.tap(); sleep(1) }
         openSheet("Water")
         XCTAssertTrue(app.navigationBars["Yesterday · Water"].exists, "Opened from yesterday, it's yesterday")
         shot("r02-yesterday")
@@ -105,7 +115,10 @@ final class TodayRowSheetUITests: XCTestCase {
         delete.tap()
         XCTAssertTrue(app.buttons["Archive Instead"].waitForExistence(timeout: 3), "Delete asks first and offers Archive")
         shot("r06-delete-asks")
-        app.buttons["Cancel"].firstMatch.tap()
+        // iOS 26 shows the question as a popover anchored to ⋯ with no Cancel button: a tap outside it dismisses.
+        let cancel = app.buttons["Cancel"].firstMatch
+        if cancel.exists { cancel.tap() } else { app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.62)).tap() }
+        XCTAssertTrue(app.buttons["Archive Instead"].waitForNonExistence(timeout: 3), "The question closes")
         XCTAssertTrue(app.navigationBars["Today · Call family"].waitForExistence(timeout: 3), "Nothing deleted")
         closeSheet()
     }
@@ -118,7 +131,7 @@ final class TodayRowSheetUITests: XCTestCase {
         app.reveal(water, clear: true)
         let before = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '8/8 glasses'")).firstMatch
         XCTAssertTrue(before.exists, "Water starts at 8/8")
-        water.swipeRight()
+        swipe(water, right: true)
         let undo = app.buttons["row-swipe-undo"]
         XCTAssertTrue(undo.waitForExistence(timeout: 3), "Swipe right offers Undo")
         XCTAssertEqual(undo.label, "Undo +1 glass", "Undo says what it takes back")
@@ -126,14 +139,14 @@ final class TodayRowSheetUITests: XCTestCase {
         undo.tap()
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '7/8 glasses'")).firstMatch.waitForExistence(timeout: 3),
                       "Exactly one glass taken back")
-        water.swipeLeft()
+        swipe(water, right: false)
         XCTAssertTrue(app.buttons["row-swipe-skip"].waitForExistence(timeout: 3), "Swipe left: Skip")
         XCTAssertTrue(app.buttons["row-swipe-pause"].exists, "Swipe left: Pause")
         XCTAssertTrue(app.buttons["Note"].exists, "Swipe left: Note")
         shot("r08-swipe-left")
         app.buttons["row-swipe-skip"].tap()
         sleep(1)
-        water.swipeLeft()
+        swipe(water, right: false)
         let undoSkip = app.buttons["Undo Skip"]
         XCTAssertTrue(undoSkip.waitForExistence(timeout: 3), "Skipped: the same swipe offers Undo Skip")
         undoSkip.tap()

@@ -182,13 +182,13 @@ final class UndoUITests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["No entries yet"].exists, "Opening a calendar day never logs")
         app.switches["day-done"].coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
-        XCTAssertTrue(resultShows("3/3"))
+        XCTAssertTrue(resultShows("3/3 times"))
         app.switches["day-done"].coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
         XCTAssertTrue(app.staticTexts["No entries yet"].waitForExistence(timeout: 3))
         let skip = app.buttons.matching(NSPredicate(format: "label IN {'Skip today','Skip this day'}")).firstMatch
         app.revealAndTap(skip)
         XCTAssertTrue(app.buttons["Undo skip"].waitForExistence(timeout: 3))
         app.buttons["Undo skip"].tap()
-        XCTAssertTrue(resultShows("0/3"))
+        XCTAssertTrue(resultShows("0/3 times"))
     }
 }
