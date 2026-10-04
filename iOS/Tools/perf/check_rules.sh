@@ -72,5 +72,10 @@ for f in $(grep -lE 'Lazy[VH]Grid *\(' $SWIFT); do
   esac
 done
 
+# 12. Not speed, but cheap to catch here: switches are the iPhone's green (Rulebook U2). SwitchToggleStyle(tint:) and
+# .toggleStyle(.switch) lose to a nearer .tint(.ink): near-white on near-white in dark mode (the player, 4 Oct 2026).
+grep -nE 'SwitchToggleStyle\(|toggleStyle\(\.switch\)' $SWIFT | grep -v 'Habits/Components/Components.swift' &&
+  fail "A switch style without the green" "Rulebook U2: use .toggleStyle(.appSwitch) (AppSwitchStyle, Components.swift)"
+
 if [ $FAIL = 0 ]; then echo "Speed rules: all checks passed"; fi
 exit $FAIL

@@ -320,7 +320,7 @@ struct GroupForm: View {
                 Spacer(minLength: 8)
                 Image(systemName: isIn ? "checkmark.circle.fill" : "circle")
                     .font(.title3)
-                    .foregroundStyle(isIn ? Color.accentColor : Color.secondary)
+                    .foregroundStyle(isIn ? Color(.systemBlue) : Color.secondary)
             }
             .contentShape(Rectangle())
         }

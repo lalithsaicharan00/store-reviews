@@ -295,3 +295,16 @@ struct ValueRow<Value: View>: View {
         }
     }
 }
+
+/// The iPhone's green switch, whatever tint surrounds it. `SwitchToggleStyle(tint:)` lost to a nearer `.tint(.ink)`:
+/// the routine player's Show clock switch was near-white on near-white in dark mode (the user, 4 Oct 2026). The tint
+/// set on the switch itself always wins.
+struct AppSwitchStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        Toggle(configuration).toggleStyle(.switch).tint(Color(.systemGreen))
+    }
+}
+
+extension ToggleStyle where Self == AppSwitchStyle {
+    static var appSwitch: AppSwitchStyle { AppSwitchStyle() }
+}

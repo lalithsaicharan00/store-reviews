@@ -39,11 +39,13 @@ The CTA is centred horizontally. Its baseline width is 240 logical points, scale
 
 A baseline 24-point gap, scaled with Dynamic Type and capped at 36, separates the CTA from the lower navigation row. The header's progress segments use the same scaled top gap and retain 8 points below. SwiftUI uses logical points rather than physical pixels; Retina scaling is handled by the platform. These choices reduce crowding and accidental-tap opportunities; no usability study establishes a zero-misclick guarantee.
 
+**4 Oct 2026 (the user): the bottom row is a bottom navigation and nothing moves.** It sits 40 points above the screen's bottom edge (8 above the home indicator if that's more), 32 scaled points (capped at 44) below the main button, whose slot is always kept, empty for an unfinished checklist. This supersedes the 24-point gap above and the earlier "no reserved CTA row". Habit options is sized to its list so every option shows without scrolling. Design Rules has the details.
+
 Bottom navigation is previous chevron, Habit options (Task options for tasks), and next chevron. Navigating does not mark an activity done or skip it. The last chevron opens the summary.
 
 ## Habit options and manual logging
 
-The bottom button opens a medium/large native sheet titled with the current habit. It contains relevant actions: Log time/amount manually, Skip today or Undo skip, session-specific undo, and Show clock. Flexible goal details appear there too. Day skipping is offered only where the stored schedule supports it. The top routine menu remains session-wide.
+The bottom button opens a native sheet titled with the current habit, sized to its options (4 Oct 2026: every option shows without scrolling; large when the list is taller than the screen). It contains relevant actions: Log time/amount manually, Skip today or Undo skip, session-specific undo, and Show clock. Flexible goal details appear there too. Day skipping is offered only where the stored schedule supports it. The top routine menu remains session-wide.
 
 Manual time logging is first among applicable action choices. Existing review research establishes a need for alternatives to mandatory timers, including forgotten starts and time tracked in another app. It does not establish how frequently our users use manual logging. Treating it as secondary inside a running routine is a contextual design decision. Clock tapping remains a shortcut, and direct manual entry from Today remains available. Amount habits configured to type every entry keep manual logging as the primary action.
 

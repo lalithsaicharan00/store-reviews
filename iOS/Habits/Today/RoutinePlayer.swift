@@ -17,6 +17,11 @@ struct RoutinePlayer: View {
     @ScaledMetric(relativeTo: .title) private var numberSize = 36.0
     @ScaledMetric(relativeTo: .body) private var breathingRoom = 24.0
     @ScaledMetric(relativeTo: .body) private var actionWidth = 240.0
+    /// Between the main button and the bottom row: room enough that neither is tapped for the other.
+    @ScaledMetric(relativeTo: .body) private var navigationGap = 32.0
+    /// Fitted to the options sheet's own list, so every option shows without scrolling (the user, 4 Oct 2026).
+    @State private var optionsHeight: CGFloat = 0
+    @State private var optionsDetent: PresentationDetent = .medium
     @State private var analyticsFlow = Analytics.shared.ticket
     @State private var order: [Habit]
     @State private var index = 0
@@ -136,6 +141,7 @@ struct RoutinePlayer: View {
             }
         }
         .tint(.ink)
+        .toggleStyle(.appSwitch) // green switches in the player and its sheets too (Rulebook U2)
         // The player has no text field (typing happens in its own sheet), so it never makes room for a keyboard.
         // A keyboard left open in the New Habit form reserved a blank band at the bottom and pushed the controls
         // up (found by the user on the iPhone, 29 Sep).
@@ -173,6 +179,15 @@ struct RoutinePlayer: View {
             if let habit = current { habitOptions(habit).analyticsScreen(nil) }
         }
         .sheet(isPresented: $showEdit) { if let habit = current { EditHabitSheet(habit: habit) } }
+        // A note is written in its own sheet with Save, as from Today (3 Oct 2026); the bottom row stays where it is.
+        .sheet(isPresented: $showNote) {
+            if let habit = order.first(where: { $0.id == noteHabitID }) ?? current {
+                let note = store.note(of: habit, on: session.day)
+                NoteSheet(title: note == nil ? "Add Note" : "Edit Note",
+                          subtitle: habit.name + " · " + NoteSheet.dayText(session.day, today: store.today(), calendar: store.calendar),
+                          initial: note ?? "") { store.setNote($0, of: habit, on: session.day) }
+            }
+        }
         .sheet(isPresented: $showLog, onDismiss: manualLogFinished) {
             if let habit = current { LogProgressView(habit: habit, day: session.day, source: .routine) }
         }
@@ -189,25 +204,25 @@ struct RoutinePlayer: View {
 
     /// Swipe between habits, or use ‹ and Up next. The finish screen is the last page.
     private var pager: some View {
-        VStack(spacing: 0) {
-            header
-            TabView(selection: $page) {
-                ForEach(Array(order.enumerated()), id: \.element.id) { position, habit in
-                    habitPage(store.habits.first { $0.id == habit.id } ?? habit).tag(position)
+        // The bottom row is a bottom navigation (the user, 4 Oct 2026): pinned to the bottom, a fixed distance from
+        // the screen's edge, whatever the device's safe area. Nothing else ever takes its place.
+        GeometryReader { proxy in
+            VStack(spacing: 0) {
+                header
+                TabView(selection: $page) {
+                    ForEach(Array(order.enumerated()), id: \.element.id) { position, habit in
+                        habitPage(store.habits.first { $0.id == habit.id } ?? habit).tag(position)
+                    }
+                    summary.tag(order.count)
                 }
-                summary.tag(order.count)
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                // The save message floats over the bottom of the page, so nothing above it jumps when it appears.
+                .overlay(alignment: .bottom) { feedbackBanner }
+                if let habit = current {
+                    controls(habit).padding(.bottom, Self.bottomClearance(safeArea: proxy.safeAreaInsets.bottom))
+                }
             }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            // The save message floats over the bottom of the page, so nothing above it jumps when it appears.
-            .overlay(alignment: .bottom) { if !showNote { feedbackBanner } }
-            // Writing a note: the same note bar as Today, above the keyboard, in place of the controls.
-            if showNote, let habit = order.first(where: { $0.id == noteHabitID }) ?? current {
-                NoteBar(title: habit.name + " · " + NoteSheet.dayText(session.day, today: store.today(), calendar: store.calendar),
-                        initial: store.note(of: habit, on: session.day) ?? "",
-                        onSave: { store.setNote($0, of: habit, on: session.day) },
-                        onClose: { withAnimation(.snappy) { showNote = false } })
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-            } else if let habit = current { controls(habit) }
+            .ignoresSafeArea(.container, edges: .bottom)
         }
         // Not .disabled(busy): that greyed the whole player for each save and turned the Pause/Resume button
         // dark (found by hand 29 Sep). Every action already ignores taps while a save is in progress.
@@ -217,6 +232,9 @@ struct RoutinePlayer: View {
         }
         .onChange(of: index) { _, new in if page != new { page = new } }
     }
+
+    /// From the bottom row to the screen's bottom edge: 40 points, or 8 above the home indicator if that's more.
+    static func bottomClearance(safeArea: CGFloat) -> CGFloat { max(40, safeArea + 8) }
 
     /// The compact toolbar already carries position and queue access; only the progress segments live here.
     private var header: some View {
@@ -263,13 +281,17 @@ struct RoutinePlayer: View {
                         }
                         hero(habit, diameter: min(max(geometry.size.width - 72, 200), habit.kind == .checklist ? 236 : 272))
                     }
-                    if done(habit), let entry = latestEntry(habit) {
-                        Button { store.undoEntry(entry.id) } label: {
-                            Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44)
+                    // Its place is kept while there's nothing to undo, so the circle never jumps when it appears.
+                    ZStack {
+                        if done(habit), let entry = latestEntry(habit) {
+                            Button { store.undoEntry(entry.id) } label: {
+                                Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44)
+                            }
+                                .buttonStyle(.borderless).font(.callout)
+                                .accessibilityIdentifier("focus-persistent-undo")
                         }
-                            .buttonStyle(.borderless).font(.callout)
-                            .accessibilityIdentifier("focus-persistent-undo")
                     }
+                    .frame(minHeight: 44)
                     if habit.kind == .checklist { checklist(habit) }
                     Spacer(minLength: 48) // room for transient save/undo feedback
                 }
@@ -347,20 +369,28 @@ struct RoutinePlayer: View {
     }
 
     /// One primary action; everything secondary has one clearly named home between the chevrons.
+    /// The main button's slot is always there, so it and the bottom row never move (the user, 4 Oct 2026: "no layout
+    /// shift"). An unfinished checklist leaves the slot empty: its steps are the action.
     private func controls(_ habit: Habit) -> some View {
-        VStack(spacing: min(breathingRoom, 36)) {
-            if habit.kind != .checklist || done(habit) || skipped(habit) {
-                // The system's own prominent button (the user, 29 Sep: the custom style didn't feel native).
-                primary(habit)
-                    .accessibilityIdentifier("focus-primary")
+        VStack(spacing: min(navigationGap, 44)) {
+            ZStack {
+                Button {} label: { Label("Next", systemImage: "arrow.right") }
                     .modifier(FocusPrimaryButton())
-                    .frame(maxWidth: min(actionWidth, 320))
-                    .frame(maxWidth: .infinity)
-                    .transaction { $0.animation = nil }
+                    .hidden()
+                    .accessibilityHidden(true)
+                if habit.kind != .checklist || done(habit) || skipped(habit) {
+                    // The system's own prominent button (the user, 29 Sep: the custom style didn't feel native).
+                    primary(habit)
+                        .accessibilityIdentifier("focus-primary")
+                        .modifier(FocusPrimaryButton())
+                        .transaction { $0.animation = nil }
+                }
             }
+            .frame(maxWidth: min(actionWidth, 320))
+            .frame(maxWidth: .infinity)
             navigationControls
         }
-        .padding(.horizontal, 28).padding(.top, 12).padding(.bottom, 4)
+        .padding(.horizontal, 28).padding(.top, 16)
         .frame(maxWidth: 540)
         .frame(maxWidth: .infinity)
     }
@@ -406,6 +436,7 @@ struct RoutinePlayer: View {
                             }
                         }
                         Toggle("Show clock", isOn: $showClock)
+                            .toggleStyle(.appSwitch)
                     }
                 }
                 Section {
@@ -422,8 +453,17 @@ struct RoutinePlayer: View {
                     Button("Done") { showHabitOptions = false }
                 }
             }
+            // The sheet is as tall as its options (with the title bar and the home indicator), so Edit Habit is never
+            // hidden below the fold; a list taller than the screen still opens large and scrolls.
+            .onScrollGeometryChange(for: CGFloat.self) { geometry in
+                (geometry.contentSize.height + geometry.contentInsets.top + geometry.contentInsets.bottom).rounded(.up)
+            } action: { _, height in
+                guard height > 0, abs(height - optionsHeight) > 1 else { return }
+                optionsHeight = height
+                optionsDetent = .height(height)
+            }
         }
-        .presentationDetents([.medium, .large])
+        .presentationDetents(optionsHeight > 0 ? [.height(optionsHeight), .large] : [.medium, .large], selection: $optionsDetent)
         .presentationBackground(Color(.systemGroupedBackground))
         .presentationDragIndicator(.visible)
         .accessibilityIdentifier("focus-habit-options-sheet")
@@ -492,6 +532,7 @@ struct RoutinePlayer: View {
             Spacer(minLength: 0)
             Button {
                 pendingHabitAction = nil
+                optionsDetent = optionsHeight > 0 ? .height(optionsHeight) : .medium
                 showHabitOptions = true
             } label: {
                 Text(current?.kind == .task ? "Task options" : "Habit options")
@@ -834,7 +875,8 @@ private struct FocusPrimaryButton: ViewModifier {
 /// Icon and title filling the button's width, so every main button is the same size.
 private struct FocusPrimaryLabel: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
-        HStack(spacing: 8) { configuration.icon; configuration.title }
+        // One line always, so the button keeps its height from habit to habit.
+        HStack(spacing: 8) { configuration.icon; configuration.title.lineLimit(1).minimumScaleFactor(0.75) }
             .font(.body.weight(.semibold))
             .foregroundStyle(Color.onInk)
             .frame(maxWidth: .infinity)

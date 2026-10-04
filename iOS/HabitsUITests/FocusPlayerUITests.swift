@@ -255,6 +255,54 @@ final class FocusPlayerUITests: XCTestCase {
         XCTAssertFalse(clock.exists, "The clock stays hidden after manual entry")
     }
 
+    /// The bottom row is a bottom navigation (the user, 4 Oct 2026): a fixed distance from the screen's bottom edge, room
+    /// between it and the main button, and neither moves whatever the habit's state (logged with its Undo, an unfinished
+    /// checklist with no main button, a running timer). Habit options shows every option without scrolling.
+    func testBottomRowStaysPutAndOptionsShowEverything() {
+        launch()
+        let screen = app.windows.firstMatch.frame
+        let options = app.buttons["focus-habit-options"]
+        let primary = app.buttons["focus-primary"]
+        let row = options.frame
+        let button = primary.frame
+        XCTAssertGreaterThanOrEqual(screen.maxY - row.maxY, 39.5, "At least 40 points under the bottom row")
+        XCTAssertLessThanOrEqual(screen.maxY - row.maxY, 60, "The bottom row sits at the bottom, no band of space under it")
+        XCTAssertGreaterThanOrEqual(row.minY - button.maxY, 30, "Room between the main button and the bottom row")
+        shot("player-01-bottom-row")
+        func expectStill(_ when: String, file: StaticString = #filePath, line: UInt = #line) {
+            XCTAssertEqual(options.frame.midY, row.midY, accuracy: 0.5, "The bottom row moved: \(when)", file: file, line: line)
+            if primary.exists {
+                XCTAssertEqual(primary.frame.midY, button.midY, accuracy: 0.5, "The main button moved: \(when)", file: file, line: line)
+            }
+        }
+        primary.tap()
+        XCTAssertTrue(app.buttons["focus-persistent-undo"].waitForExistence(timeout: 3))
+        expectStill("after a log, with Undo under the circle")
+        jump("Clean kitchen")
+        XCTAssertFalse(primary.exists, "An unfinished checklist has no main button")
+        expectStill("an unfinished checklist")
+        app.buttons["Mark Wipe the counter done"].tap()
+        app.buttons["Mark Sweep the floor done"].tap()
+        XCTAssertTrue(primary.waitForExistence(timeout: 3))
+        expectStill("a finished checklist")
+        jump("Read a little")
+        XCTAssertTrue(app.buttons["Stop Read a little timer"].waitForExistence(timeout: 3))
+        expectStill("a running timer")
+        sleep(2)
+        primary.tap() // Pause: the time so far is an entry, so Undo joins the options
+        expectStill("a paused timer")
+        options.tap()
+        let edit = app.buttons["focus-edit-habit"]
+        XCTAssertTrue(edit.waitForExistence(timeout: 3))
+        Thread.sleep(forTimeInterval: 0.6) // the sheet settles at its fitted height
+        XCTAssertTrue(app.switches["Show clock"].firstMatch.exists)
+        XCTAssertTrue(edit.isHittable && edit.frame.maxY <= screen.maxY, "Edit Habit shows without scrolling: \(edit.frame)")
+        shot("player-02-options-fitted")
+        app.navigationBars["Read a little"].buttons["Done"].tap()
+        XCTAssertTrue(edit.waitForNonExistence(timeout: 3))
+        expectStill("after the options sheet")
+    }
+
     func testCompactProgressAcrossPeriodsAndTypes() {
         launch(["-focus-period-fixture"])
         XCTAssertEqual(app.staticTexts["focus-quantity"].label, "1 / 2 glasses")
