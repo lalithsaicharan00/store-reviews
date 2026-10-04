@@ -357,7 +357,8 @@ final class NewHabitUITests: XCTestCase {
             revealOnToday(header)
             if header.value as? String == "Folded" { header.tap(); sleep(1) }
         }
-        let tick = app.buttons["Mark Brush teeth done"].firstMatch
+        // Twice a day, shared across both parts: a +1 counter on Today (Rulebook U14: ✓ toggles, + adds).
+        let tick = app.buttons["Add 1 to Brush teeth"].firstMatch
         revealOnToday(tick)
         tick.tap(); sleep(1)
         // One shared progress: both rows now show 1/2.

@@ -28,8 +28,10 @@ struct PartSection: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     /// A habit ticked per section is done here once this section's tick is.
+    /// A skipped day counts as finished here: not "left", and it settles with the done rows.
     static func isDone(_ item: TodayView.TodayItem, on day: LocalDay, store: HabitStore) -> Bool {
-        item.placement.slot.map { store.isSlotDone(item.habit, slot: $0, on: day) } ?? store.isSatisfied(item.habit, on: day)
+        if store.isSkipped(item.habit, on: day) { return true }
+        return item.placement.slot.map { store.isSlotDone(item.habit, slot: $0, on: day) } ?? store.isSatisfied(item.habit, on: day)
     }
 
     var body: some View {

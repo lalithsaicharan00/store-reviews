@@ -60,9 +60,11 @@ struct NoteSheet: View {
         .presentationBackground(Color(.systemGroupedBackground))
     }
 
-    /// "Mon, 29 Sep" (or "Today").
+    /// "Today", "Yesterday", or "Mon, 29 Sep": the words people use for the last two days.
     static func dayText(_ day: LocalDay, today: LocalDay, calendar: Calendar) -> String {
-        day == today ? "Today" : day.date(calendar: calendar).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated))
+        if day == today { return "Today" }
+        if day == today.adding(days: -1, calendar: calendar) { return "Yesterday" }
+        return day.date(calendar: calendar).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated))
     }
 }
 

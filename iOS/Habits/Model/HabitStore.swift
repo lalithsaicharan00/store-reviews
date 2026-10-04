@@ -942,8 +942,10 @@ final class HabitStore {
 
     /// Whether the habit belongs on `day`. Days that aren't due are hidden on Today and never break a streak.
     /// Unfinished one-time tasks move forward to today. Nothing is due before the start or after the end date.
-    func isDue(_ habit: Habit, on day: LocalDay, now: Date = .now) -> Bool {
-        if isSkipped(habit, on: day) || isPaused(habit, on: day) || isArchived(habit, on: day) { return false }
+    /// `countingSkips: false` asks whether the day was planned at all, skip or not: Today keeps a skipped habit as a
+    /// neutral row saying so, with Undo Skip one swipe away (3 Oct 2026), instead of making it vanish.
+    func isDue(_ habit: Habit, on day: LocalDay, now: Date = .now, countingSkips: Bool = true) -> Bool {
+        if (countingSkips && isSkipped(habit, on: day)) || isPaused(habit, on: day) || isArchived(habit, on: day) { return false }
         let habit = rule(habit, on: day)
         let created = startDay(of: habit)
         if let end = habit.endsOn, day > end, habit.kind != .quit { return false }

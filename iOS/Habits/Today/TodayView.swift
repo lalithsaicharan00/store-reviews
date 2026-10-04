@@ -366,7 +366,8 @@ struct TodayView: View {
         let quitting = active.filter { $0.kind == .quit && !store.isPaused($0, on: today) }
         // Paused habits leave their cards for one folded card at the bottom, so they're never lost (pause report).
         let paused = active.filter { store.isPaused($0, on: shown) && ($0.kind != .quit || isToday) }
-        let tracked = active.filter { $0.kind != .quit && store.isDue($0, on: shown) }
+        // A skipped habit stays, as a neutral row that says so (it used to vanish, leaving Undo Skip nowhere to be found).
+        let tracked = active.filter { $0.kind != .quit && store.isDue($0, on: shown, countingSkips: false) }
         let nowPart = isToday ? store.nowSection(now: now)?.id : nil
 
         if !store.isLoaded {
