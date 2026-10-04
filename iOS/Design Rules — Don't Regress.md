@@ -166,6 +166,7 @@ Source: [Section Header — Start Button, Left Count and Icons](<../Research/Res
   - **The Now button is primary** (filled ink); others are grey.
   - Start is today only, never on Quitting.
 - Space order: status and Start never shrink; the name gives way first; the icons take the rest and end in "+N".
+- **Folded icons sit beside the whole name block, centred on the header** (the name and its "Starts 6 AM" line), never on the name's own line, with a clear gap of about 14 points that grows with the text size (`PartHeader.iconGap`, capped at 24). The user, 4 Oct 2026 (Current Work 38).
 
 ## Text lengths
 

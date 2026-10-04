@@ -500,9 +500,14 @@ struct PartHeader: View {
     /// line, so it never takes room from the folded icons or "N left" (the user, 3 Oct 2026).
     var subtitle: String? = nil
 
-    /// The width for the name, Now and the icons, and the name's full one-line width.
+    /// The width for the name, Now and the icons, and the width of the name block (the name with Now, or its "Starts
+    /// 6 AM" line, whichever is wider).
     @State private var room: CGFloat = 0
-    @State private var titleWidth: CGFloat = 0
+    @State private var labelWidth: CGFloat = 0
+    /// Between the name block and the folded icons: clear room that grows with the text size (the user, 4 Oct 2026:
+    /// "a good amount of spacing… a relative unit", around 12 to 16 points).
+    @ScaledMetric(relativeTo: .headline) private var iconGap = 14.0
+    private var shownIconGap: CGFloat { min(iconGap, 24) }
 
     /// At least this much space between the icons and "2 left" / ✓.
     static let statusGap: CGFloat = 12
@@ -512,8 +517,7 @@ struct PartHeader: View {
 
     private var iconCount: Int? {
         guard !isOpen, room > 0 else { return nil }
-        let now: CGFloat = isNow ? 52 : 0
-        return FoldedIcons.fitting(habits.count, in: room - now - titleWidth - 10)
+        return FoldedIcons.fitting(habits.count, in: room - labelWidth - shownIconGap)
     }
 
     /// Folded, the name shows at most 8 letters and "…", so the icons get the room.
@@ -537,22 +541,26 @@ struct PartHeader: View {
     }
 
     private var titleArea: some View {
-        VStack(alignment: .leading, spacing: 1) {
-            HStack(spacing: 8) {
-                Text(shownTitle).font(.headline).lineLimit(1)
-                    .background {
-                        Text(shownTitle).font(.headline).lineLimit(1).fixedSize().hidden()
-                            .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { titleWidth = $0 }
-                    }
-                if isNow { NowChip().fixedSize() }
-                if let count = iconCount {
-                    // Folding: the icons fade in from the name's side as the rows go back under the header (#59).
-                    FoldedIcons(habits: habits, max: count).fixedSize().padding(.leading, 2)
-                        .transition(.opacity.combined(with: .scale(scale: 0.9, anchor: .leading)))
+        // Folded, the icons sit beside the whole name block, centred on the header, not on the name's line, with clear
+        // room between (the user, 4 Oct 2026: "they should be centre aligned vertically in the card, not to the title").
+        HStack(alignment: .center, spacing: shownIconGap) {
+            VStack(alignment: .leading, spacing: 1) {
+                HStack(spacing: 8) {
+                    Text(shownTitle).font(.headline).lineLimit(1)
+                    if isNow { NowChip().fixedSize() }
+                }
+                if let subtitle {
+                    Text(subtitle).font(.footnote).foregroundStyle(.secondary).lineLimit(1)
                 }
             }
-            if let subtitle {
-                Text(subtitle).font(.footnote).foregroundStyle(.secondary).lineLimit(1)
+            // Folded, the block keeps its own width (the name is already short) so the icons know their room; open, the
+            // name takes what's left and ends in "…".
+            .fixedSize(horizontal: !isOpen, vertical: false)
+            .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { labelWidth = $0 }
+            if let count = iconCount {
+                // Folding: the icons fade in from the name's side as the rows go back under the header (#59).
+                FoldedIcons(habits: habits, max: count).fixedSize()
+                    .transition(.opacity.combined(with: .scale(scale: 0.9, anchor: .leading)))
             }
         }
             .frame(maxWidth: .infinity, alignment: .leading)
