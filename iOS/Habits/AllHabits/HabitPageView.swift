@@ -15,6 +15,9 @@ struct HabitPageView: View {
     @State private var model = HabitPageModel()
     /// This visit's "What the squares mean" (`HeatKeyVisit`): History and Progress share the habit's place.
     @State private var heatVisit = HeatKeyVisit()
+    /// False once the page is popped. All Habits pushes it from a link inside its list, and SwiftUI kept the page's
+    /// state for the next push, so the next visit reused this one's key (HabitPageUITests, 5 Oct 2026).
+    @Environment(\.isPresented) private var isPresented
     @State private var showEdit = false
     @State private var showPause = false
     @State private var showPlus = false
@@ -65,12 +68,8 @@ struct HabitPageView: View {
         }
         .background(Color(.systemGroupedBackground))
         .environment(heatVisit)
-        // All Habits pushes the page from a link inside its list, and SwiftUI keeps the page's state for the next push,
-        // so leaving the page ends this visit: the next one starts fresh (HabitPageUITests, 5 Oct 2026). Watching
-        // `isPresented` for the pop never fired on iOS 26 (main, run 37287569801). A note's reader pushed on top of the
-        // page isn't leaving it: the visit carries on.
-        .onDisappear { if HeatKeyVisit.childShown { HeatKeyVisit.childShown = false } else { heatVisit = HeatKeyVisit() } }
-        .onAppear { HeatKeyVisit.childShown = false; model.load(key, tab: tab, store: store) }
+        .onChange(of: isPresented) { if !isPresented { heatVisit = HeatKeyVisit() } }
+        .onAppear { model.load(key, tab: tab, store: store) }
         .onChange(of: key) { model.load(key, tab: tab, store: store) }
         .onChange(of: tab) { model.load(key, tab: tab, store: store) }
         .analyticsScreen(.habitDetail)
