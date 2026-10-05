@@ -2,6 +2,8 @@
 
 Written by Codex (OpenAI), 4 October 2026.
 
+**Dated follow-up, 5 October:** the header-pair placement and support-to-streak spacing below are superseded by [Streak Placement — Shared Header or Progress](<Streak Placement — Shared Header or Progress.md>). The current six shared-header exports omit the pair and put tabs after identity. Other control, date, note and spacing recommendations remain current. This dated report preserves why the earlier proposal was made.
+
 **Status:** Revised research and editable layout proposal after the user's rejection of the previous follow-up. This version has not yet been accepted by the user or implemented on an iPhone. The accepted references remain [Day details, 370:2031](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=370-2031) and [the single-record editor, 408:2071](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=408-2071).
 
 Read the [interaction handoff](README.md) and [22 illustrated screens](Wireframes.md) together. The same three Figma boards were updated in place. No competing redesign of the accepted Day sheet was added.

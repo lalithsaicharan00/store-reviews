@@ -1,6 +1,6 @@
 {
   "author": "Codex (OpenAI)",
-  "exportDate": "2026-10-04",
+  "exportDate": "2026-10-05",
   "fileKey": "Ncccsm1l2O62GJ5xLSInqk",
   "status": "Representative editable layout proposals; not final iOS designs; latest revision awaits user review",
   "screens": [
@@ -11,7 +11,8 @@
         390,
         844
       ],
-      "sha256": "464eae9eb8ad4db242dc0b1df7eb4a6efc1a649d21550c6d271be16b3f769507"
+      "sha256": "70843f492b9f38584ece145188a220a32060b4c6abde34f2a0c993bfe8f02a9d",
+      "exportDate": "2026-10-05"
     },
     {
       "path": "Images/history-weekly.png",
@@ -20,7 +21,8 @@
         390,
         844
       ],
-      "sha256": "8d0ab8d70211d570288c35125d6ff3fb6335ea9fccaa47e5cb95c4b1e08307a7"
+      "sha256": "2571063f69603d460adfa72d7c9c2b6b98cec406553952b774f29b096ab33b39",
+      "exportDate": "2026-10-05"
     },
     {
       "path": "Images/find-a-day.png",
@@ -29,7 +31,8 @@
         390,
         844
       ],
-      "sha256": "a4934e64bc56837b639539d5411f5e7002b132cd4e03ebbb56ff0b69930473c9"
+      "sha256": "a4934e64bc56837b639539d5411f5e7002b132cd4e03ebbb56ff0b69930473c9",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/quit-header.png",
@@ -38,7 +41,8 @@
         390,
         844
       ],
-      "sha256": "17897a150e64c5383324f2664da0d8a7297c3cfe34cdb97578c2695b8e11dd44"
+      "sha256": "bfb7ae7ad1001fbf0bdaa20a5b4b6626970c0af5f8661e278608be4db3f02dad",
+      "exportDate": "2026-10-05"
     },
     {
       "path": "Images/notes-list.png",
@@ -47,7 +51,8 @@
         390,
         844
       ],
-      "sha256": "620ec4d22e82edf0fc6a616ce51b2a7cf17ae4758f8197ef4b8ec0b3a1e6bbad"
+      "sha256": "a2ad89afb0c55d80a0f6cdc5ea759242086f6490d5273fdeb30e9533c9f0552f",
+      "exportDate": "2026-10-05"
     },
     {
       "path": "Images/notes-empty.png",
@@ -56,7 +61,8 @@
         390,
         844
       ],
-      "sha256": "607fddfeee585f706bbb8891bd362169b0b83fd634ae10be5c8f18bfaf1d076a"
+      "sha256": "73ccddd2437a2ab0209ce0b280d8ef3e38642210e482387da1cd96080a4789ca",
+      "exportDate": "2026-10-05"
     },
     {
       "path": "Images/notes-search-empty.png",
@@ -65,7 +71,8 @@
         390,
         844
       ],
-      "sha256": "234f7530592a5f5bb6c8ed3b45afb77acc7969b710eb4d4ba188b80f11291748"
+      "sha256": "8a810ea88a5815e79db2e06d8f626fd67d0131f077d18d8dffa83552f2cd5f04",
+      "exportDate": "2026-10-05"
     },
     {
       "path": "Images/note-reader.png",
@@ -74,7 +81,8 @@
         390,
         844
       ],
-      "sha256": "ad9aae596ee194b1a5e91319a77558fad677b6416664ef8a1122d8ab353c9056"
+      "sha256": "ad9aae596ee194b1a5e91319a77558fad677b6416664ef8a1122d8ab353c9056",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/note-editor.png",
@@ -83,7 +91,8 @@
         390,
         844
       ],
-      "sha256": "4f1a84d32b3657a3359f1187f229a6b20dd2658d216b202ee38c90ea45ffa655"
+      "sha256": "4f1a84d32b3657a3359f1187f229a6b20dd2658d216b202ee38c90ea45ffa655",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/note-menu.png",
@@ -92,7 +101,8 @@
         390,
         844
       ],
-      "sha256": "fd22bdb9dc70ed4f3227aa360f2a4ae722a69c46a7cf7b661ac1d7b715d046ba"
+      "sha256": "fd22bdb9dc70ed4f3227aa360f2a4ae722a69c46a7cf7b661ac1d7b715d046ba",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/note-delete-confirm.png",
@@ -101,7 +111,8 @@
         390,
         844
       ],
-      "sha256": "4664b68c3e6aeea7d6f6a6c9780b8960e2c8cf29ef49237a266c64ca5dc8655e"
+      "sha256": "4664b68c3e6aeea7d6f6a6c9780b8960e2c8cf29ef49237a266c64ca5dc8655e",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/note-editor-existing.png",
@@ -110,7 +121,8 @@
         390,
         844
       ],
-      "sha256": "350c08a52bc901ccf6635de5b4e343e1ceb9f5ddad6239181ee64cd3e2c39aee"
+      "sha256": "350c08a52bc901ccf6635de5b4e343e1ceb9f5ddad6239181ee64cd3e2c39aee",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/amount-today.png",
@@ -119,7 +131,8 @@
         390,
         844
       ],
-      "sha256": "430070a29d7bba1ced9ea908ad9c01544fdd4fccc5531671017dc608eef45c54"
+      "sha256": "430070a29d7bba1ced9ea908ad9c01544fdd4fccc5531671017dc608eef45c54",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/amount-past.png",
@@ -128,7 +141,8 @@
         390,
         844
       ],
-      "sha256": "11c12b28ad1b29285ef9da737239ec7988f24afe4ecdbc0ba651b7b7d8500f9f"
+      "sha256": "11c12b28ad1b29285ef9da737239ec7988f24afe4ecdbc0ba651b7b7d8500f9f",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/duration.png",
@@ -137,7 +151,8 @@
         390,
         844
       ],
-      "sha256": "b683e97ab2bd189f2a095a0eb70d181e8f5c9ec9ed71c27776cd23ca517114b8"
+      "sha256": "b683e97ab2bd189f2a095a0eb70d181e8f5c9ec9ed71c27776cd23ca517114b8",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/repeated-check.png",
@@ -146,7 +161,8 @@
         390,
         844
       ],
-      "sha256": "919d1e43023e7aa3b0078884d8f9a26055405008c125483608b7debe0c0bea19"
+      "sha256": "919d1e43023e7aa3b0078884d8f9a26055405008c125483608b7debe0c0bea19",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/daily-check.png",
@@ -155,7 +171,8 @@
         390,
         600
       ],
-      "sha256": "6e16f3627ffabc26fe778418fdb8522d1e47443387b5ab28759fc780db013f4a"
+      "sha256": "6e16f3627ffabc26fe778418fdb8522d1e47443387b5ab28759fc780db013f4a",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/checklist.png",
@@ -164,7 +181,8 @@
         390,
         746
       ],
-      "sha256": "7326d1e38d81cc1ca42a69ef86b3da3b6e4e3929ef457c11d0a0a11f88978592"
+      "sha256": "7326d1e38d81cc1ca42a69ef86b3da3b6e4e3929ef457c11d0a0a11f88978592",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/limit.png",
@@ -173,7 +191,8 @@
         390,
         844
       ],
-      "sha256": "69428888e3f1a56fe8afa7e7efcc06cc53f252b54d95fc9ef6aaa214aa998359"
+      "sha256": "69428888e3f1a56fe8afa7e7efcc06cc53f252b54d95fc9ef6aaa214aa998359",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/quit-slip.png",
@@ -182,7 +201,8 @@
         390,
         844
       ],
-      "sha256": "3e1230f7488fb70df760335d610645bdb957a96b74f5866e8aa3e69221d20777"
+      "sha256": "3e1230f7488fb70df760335d610645bdb957a96b74f5866e8aa3e69221d20777",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/skipped-day.png",
@@ -191,7 +211,8 @@
         390,
         622
       ],
-      "sha256": "a25cd8e14b22d39885f01123f4401564243b27dc95c3a334d17a7ab982b90c18"
+      "sha256": "a25cd8e14b22d39885f01123f4401564243b27dc95c3a334d17a7ab982b90c18",
+      "exportDate": "2026-10-04"
     },
     {
       "path": "Images/record-date-picker.png",
@@ -200,7 +221,9 @@
         390,
         844
       ],
-      "sha256": "7165778b8e26812c0113b0d401873fdc7bee0688b0a5b6b0363f32a98181a9f3"
+      "sha256": "7165778b8e26812c0113b0d401873fdc7bee0688b0a5b6b0363f32a98181a9f3",
+      "exportDate": "2026-10-04"
     }
-  ]
+  ],
+  "latestRevision": "Streak placement: six existing shared-header exports refreshed; no new mockups. Other screens retain their 4 Oct exports."
 }
