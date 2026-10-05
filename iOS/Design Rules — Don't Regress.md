@@ -266,7 +266,8 @@ Plan: [Groups — What to Build](<Docs/Specs/Groups — What to Build.md>), from
 
 ## Habit details: Notes in month cards (built 5 Oct 2026)
 
-- **History's Add Entry and Go to Date, and Notes' Add Note, are secondary actions** (the user, 5 Oct 2026, Current Work 26): native bordered buttons at their own width, regular size, subheadline, ink text on a light ink tint. Never the filled style on ink (white text on dark mode's off-white ink was unreadable), never full-width and large.
+- **History's Add Entry and Go to Date, and Notes' Add Note, are secondary actions** (the user, 5 Oct 2026, Current Work 26): one shared style (`pageAction()`): native bordered buttons at their own width, regular size, subheadline, ink text on a light ink tint, the same in both tabs. Never the filled style on ink (white text on dark mode's off-white ink was unreadable), never full-width and large.
+- **Notes: search across the full width, Add Note on its own row under it** (the user, 5 Oct 2026: Add Note was bigger than a cramped search beside it). An inline search above the list, not a search page: it only filters this habit's notes, and the months stay in view (the 4 Oct handoff; Apple's search-field guidance). No search field while there are no notes.
 
 - **Notes come in a card per month, shaped as History's** (the user, 5 Oct 2026, Current Work 46): the month's name and "N notes", folding from its header with History's chevron, the newest two open; a row per day's note, dated as History dates its days ("Sat 4 Today"), its first two lines, opening the note. A search opens every month it finds. `NoteMonthCard` in `HabitNotesTab.swift`; `HabitPageUITests.testNotesFoldByMonthLikeHistory`.
 

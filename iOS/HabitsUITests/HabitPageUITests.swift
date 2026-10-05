@@ -168,6 +168,9 @@ final class HabitPageUITests: XCTestCase {
     func testNotesFlows() {
         launch()
         open("Read")
+        let historyButton = app.buttons["history-add-entry"]
+        XCTAssertTrue(historyButton.waitForExistence(timeout: 3))
+        let historyHeight = historyButton.frame.height
         tab("Notes")
         app.buttons["notes-add"].tap()
         let field = app.descendants(matching: .any)["note-field"].firstMatch
@@ -178,6 +181,12 @@ final class HabitPageUITests: XCTestCase {
         sleep(1)
         let search = app.textFields["notes-search"]
         XCTAssertTrue(search.waitForExistence(timeout: 3))
+        // Search across the width, Add Note under it as History's buttons are (Current Work 26, 5 Oct 2026).
+        let add = app.buttons["notes-add"]
+        XCTAssertGreaterThan(search.frame.width, app.windows.firstMatch.frame.width * 0.7, "Search has the width: \(search.frame)")
+        XCTAssertGreaterThan(add.frame.minY, search.frame.maxY, "Add Note is under the search field")
+        XCTAssertEqual(add.frame.height, historyHeight, accuracy: 1, "The same button as History's")
+        shot("hp-notes-0-search-and-add")
         search.tap(); search.typeText("train")
         sleep(1)
         shot("hp-notes-2-search")

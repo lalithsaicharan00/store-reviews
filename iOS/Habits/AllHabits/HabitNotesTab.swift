@@ -3,7 +3,7 @@ import SwiftUI
 // The habit page's Notes tab (the user, 3 Oct 2026; research Notes: browse → read → edit). The habit's own dated notes,
 // newest first, independent of whether the day was done. Reading never changes progress; editing is explicit.
 
-/// Search and Add Note at the top, then a card per month that folds like History's, a row per day's note.
+/// Search across the top, Add Note under it, then a card per month that folds like History's, a row per day's note.
 struct HabitNotesTab: View {
     let habit: Habit
     let months: [NoteMonth]
@@ -16,16 +16,16 @@ struct HabitNotesTab: View {
 
     var body: some View {
         let today = store.today()
-        HStack(spacing: WeekSpacing.tight) {
-            NoteSearchField { query = $0 }
+        // Search first, across the whole width, above the notes it filters; then Add Note on its own row, the same button
+        // as History's (the user, 5 Oct 2026: Add Note was bigger than a cramped search field beside it; the 4 Oct
+        // handoff: an inline search, not a separate search page, since it only filters this habit's notes). No search
+        // while there's nothing to search.
+        VStack(alignment: .leading, spacing: WeekSpacing.tight) {
+            if !months.isEmpty { NoteSearchField { query = $0 } }
             Button { adding = true } label: {
-                Label("Add Note", systemImage: "square.and.pencil")
+                Label("Add Note", systemImage: "plus")
             }
-            // A secondary action like History's (Current Work 26): the filled style put white text on dark mode's
-            // off-white ink.
-            .buttonStyle(.bordered)
-            .controlSize(.regular)
-            .font(.subheadline.weight(.semibold))
+            .pageAction()
             .accessibilityIdentifier("notes-add")
         }
         .pageItem()

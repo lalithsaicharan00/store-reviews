@@ -157,7 +157,10 @@ Their placement records scope and priority; implementation has not started.
     Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>) §5): the cause was Add Entry's
     filled style, white text on dark mode's off-white ink. Add Entry and Go to Date are now native bordered buttons at
     their own width (ink text on a light ink tint, readable in both modes), regular size; Notes' Add Note the same.
-    Tests: pending (`HabitPageUITests.testHistoryFlows`, the dark pictures).
+    Then (the user, 5 Oct: "Add Note was bigger than a cramped search bar; do we need search there or a full-page
+    search?"): Notes keeps an inline search, now across the full width, with Add Note on its own row under it, one
+    shared button style with History. Tests: pending (`HabitPageUITests.testHistoryFlows`, `testNotesFlows`, the
+    dark pictures).
 
 - [ ] **18. Completion feedback for every kind of habit.** (added 3 Oct 2026) A check-off plays the sound (and haptic)
   when it's done, which is nice; timed habits, amounts, checklists and others don't. Decide when each kind counts
@@ -214,6 +217,9 @@ Their placement records scope and priority; implementation has not started.
     scrolling, safe-area spacing and keyboard behavior; a bottom action must not obscure notes or search results.
   - Record the recommended placement before implementing it. The user has asked for research rather than deciding
     that both History and Notes must use bottom controls.
+  - **Built, 5 Oct 2026, with item 26** (branch `claude/timer-swipe-limits-and-fixes`): the 4 Oct handoff's
+    recommendation (no sticky bottom bar; search across the full width, Add Note on its own row under it), at the
+    user's request that Add Note match History's buttons. Tests: pending (`HabitPageUITests.testNotesFlows`).
 
 - [ ] **29. Redesign the Overall Record card.** Added 4 October 2026.
   - The Overall Record card in the habit details Progress tab does not look good to the user; improve its visual

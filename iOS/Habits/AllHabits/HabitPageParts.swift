@@ -99,6 +99,14 @@ struct NoteMonth: Hashable, Identifiable {
 }
 
 extension View {
+    /// History's and Notes' actions (Add Entry, Go to Date, Add Note): secondary, used now and then, so one native
+    /// bordered size for all of them, the same in both tabs (the user, 5 Oct 2026, Current Work 26).
+    func pageAction() -> some View {
+        buttonStyle(.bordered)
+            .controlSize(.regular)
+            .font(.subheadline.weight(.semibold))
+    }
+
     /// A card on the habit page: 16-point padding, the app's card colour and corner (as Progress's cards).
     func pageCard(padding: CGFloat = WeekSpacing.card) -> some View {
         self.padding(padding)
@@ -166,9 +174,7 @@ struct HabitHistoryTab: View {
             .accessibilityIdentifier("history-go-to-date")
             Spacer(minLength: 0)
         }
-        .buttonStyle(.bordered)
-        .controlSize(.regular)
-        .font(.subheadline.weight(.semibold))
+        .pageAction()
         .pageItem()
         // What the squares mean, open by itself only on the first visit to this habit's page (Current Work 25).
         HeatKeySection(place: HeatKeyVisit.habit(habit.id))
