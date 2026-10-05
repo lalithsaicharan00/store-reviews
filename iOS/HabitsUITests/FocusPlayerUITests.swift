@@ -401,10 +401,13 @@ final class FocusPlayerUITests: XCTestCase {
         app.buttons["focus-up-next"].tap()
         // Polled, not waitForExistence: that waits about a second before its first look. (Limits left routines on
         // 5 Oct 2026, so the task is next.)
-        expectPage("Water the plants", timeout: 3)
+        expectPage("Water the plants", timeout: 6)
         let elapsed = Date().timeIntervalSince(start)
-        XCTAssertLessThan(elapsed, 1.8, "Navigation must not wait for the injected 2-second database write")
-        let timing = XCTAttachment(string: "Next tap to verified page: \(elapsed) seconds, with 2-second queued writes")
+        // Writes take 4 s here: a navigation that waited for one takes 4 s or more. The rest is XCUITest's own waiting,
+        // which grew by ~0.9 s when › became a native Liquid Glass bar button (its press animation; 5 Oct 2026, run
+        // 37387468173: 0.87 s waiting for the app to idle after the tap). It was 2 s writes and 1.8 s before.
+        XCTAssertLessThan(elapsed, 3.0, "Navigation must not wait for the injected 4-second database write")
+        let timing = XCTAttachment(string: "Next tap to verified page: \(elapsed) seconds, with 4-second queued writes")
         timing.name = "navigation-latency"; timing.lifetime = .keepAlways; add(timing)
         app.buttons["Previous habit"].tap()
         expectPage("Read a little")
