@@ -70,6 +70,7 @@ final class AppModel {
             UserDefaults.standard.removeObject(forKey: Preferences.doneOrder)
             UserDefaults.standard.removeObject(forKey: Preferences.timerScreen)
             UserDefaults.standard.removeObject(forKey: Preferences.timerLiveActivity)
+            HeatKeyVisit.forgetAll()
         }
         if arguments.contains("-uitest") {
             opened = Persistence.inMemory()
@@ -105,6 +106,12 @@ final class AppModel {
         }
         if opened == nil {
             store.problem = "Your habits couldn't be opened. Nothing has been changed; please restart the app."
+        }
+        // A log's tap and the completion sound, only while the app is on screen: a Siri or Lock Screen log made in the
+        // background stays silent (Current Work 18).
+        store.onLog = { completed in
+            guard UIApplication.shared.applicationState == .active else { return }
+            TickFeedback.logged(finished: completed)
         }
         #if DEBUG
         // Debug builds behave like Plus, so the design's 14 habits fit. Launch with -free to test the free limit.

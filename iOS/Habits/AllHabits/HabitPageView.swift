@@ -13,6 +13,8 @@ struct HabitPageView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var tab: HabitTab
     @State private var model = HabitPageModel()
+    /// This visit's "What the squares mean" (`HeatKeyVisit`): History and Progress share the habit's place.
+    @State private var heatVisit = HeatKeyVisit()
     @State private var showEdit = false
     @State private var showPause = false
     @State private var showPlus = false
@@ -62,6 +64,7 @@ struct HabitPageView: View {
             .padding(.bottom, WeekSpacing.section)
         }
         .background(Color(.systemGroupedBackground))
+        .environment(heatVisit)
         .onAppear { model.load(key, tab: tab, store: store) }
         .onChange(of: key) { model.load(key, tab: tab, store: store) }
         .onChange(of: tab) { model.load(key, tab: tab, store: store) }

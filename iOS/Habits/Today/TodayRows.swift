@@ -225,11 +225,12 @@ struct HabitRow: View {
         withAnimation(Motion.tick(reduceMotion)) { store.undoEntry(entry.id) }
     }
 
-    /// Every log from the row's button: hold Today's order, answer the tap (haptic, chime), then change the data inside
-    /// the tick animation so the button fills and the row's colour sweeps across (research §1).
-    private func log(finished: Bool, undo: Bool = false, _ change: () -> Void) {
+    /// Every log from the row's button: hold Today's order, then change the data inside the tick animation so the
+    /// button fills and the row's colour sweeps across (research §1). The store answers a log with its tap or the
+    /// completion sound (`HabitStore+Feedback`); an undo answers here.
+    private func log(undo: Bool = false, _ change: () -> Void) {
         layout?.hold(reduceMotion: reduceMotion)
-        if undo { TickFeedback.undone() } else { TickFeedback.logged(finished: finished) }
+        if undo { TickFeedback.undone() }
         withAnimation(Motion.tick(reduceMotion)) { change() }
     }
 
@@ -283,7 +284,7 @@ struct HabitRow: View {
                 RoundActionButton(symbol: "plus", done: done, color: habit.color,
                                   label: "Add 1 to \(habit.name)", keepSymbolWhenDone: true, text: "+1") {
                     offerNote()
-                    log(finished: progress < goal && progress + 1 >= goal) { store.addProgress(habit, value: 1, on: day) }
+                    log { store.addProgress(habit, value: 1, on: day) }
                 }
             case .check, .task:
                 // A once-a-day tick toggles that day's tick; a weekly count's day too, judged on this day only.
@@ -292,7 +293,7 @@ struct HabitRow: View {
                 RoundActionButton(symbol: "checkmark", done: ticked, color: habit.color,
                                   label: ticked ? "Undo \(habit.name)" : "Mark \(habit.name) done") {
                     if !ticked { offerNote() }
-                    log(finished: !ticked && (slot != nil || progress + 1 >= goal), undo: ticked) {
+                    log(undo: ticked) {
                         if let slot { store.toggleSlot(habit, slot: slot, on: day) } else { store.toggleCheck(habit, on: day) }
                     }
                 }
@@ -305,7 +306,7 @@ struct HabitRow: View {
                                       keepSymbolWhenDone: true,
                                       text: "+" + Format.amount(step)) {
                         offerNote()
-                        log(finished: !habit.atMost && progress < goal && progress + step >= goal) { store.increment(habit, on: day) }
+                        log { store.increment(habit, on: day) }
                     }
                 } else {
                     RoundActionButton(symbol: "plus", done: done, color: habit.color,
@@ -327,7 +328,7 @@ struct HabitRow: View {
                     } else {
                         // Stopping saves the time: a log like any other.
                         offerNote()
-                        log(finished: !done && progress >= goal) { store.toggleTimer(habit, slot: slot) }
+                        log { store.toggleTimer(habit, slot: slot) }
                     }
                 }
                 .disabled(!isToday)
@@ -355,10 +356,8 @@ struct StepRow: View {
                               label: done ? "Undo \(step.name)" : "Mark \(step.name) done") {
                 if !done { store.noteOffer = .init(habit: habit.id, day: day) }
                 layout?.hold(reduceMotion: reduceMotion)
-                if done { TickFeedback.undone() } else {
-                    // The last step makes the checklist done.
-                    TickFeedback.logged(finished: habit.steps.allSatisfy { $0.id == step.id || store.isStepDone($0, of: habit, on: day) })
-                }
+                // A tick's tap, or the completion on the last step, comes from the store (`HabitStore+Feedback`).
+                if done { TickFeedback.undone() }
                 withAnimation(Motion.tick(reduceMotion)) { store.toggleStep(step, of: habit, on: day) }
             }
         }

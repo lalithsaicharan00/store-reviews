@@ -180,6 +180,60 @@ final class HabitPageUITests: XCTestCase {
         back()
     }
 
+    /// "What the squares mean" opens by itself only on the first visit to each habit's page; later visits start it
+    /// folded, a tap opens it, and another habit's first visit is its own (Current Work 25, 5 Oct 2026).
+    func testSquaresKeyOpensOnlyOnTheFirstVisitToEachHabit() {
+        launch()
+        let key = app.descendants(matching: .any)["progress-key"]
+        let toggle = app.buttons["heat-key-toggle"]
+        open("Read")
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "First visit: open")
+        tab("Progress")
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Same visit, the Progress tab: still open")
+        tab("History")
+        back()
+        open("Read")
+        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
+        XCTAssertFalse(key.exists, "Next visit: folded")
+        shot("hp-key-2-folded")
+        toggle.tap()
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "A tap opens it")
+        back()
+        open("Water")
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Another habit's first visit: open")
+        back()
+        open("Read")
+        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
+        XCTAssertFalse(key.exists, "Opened by hand last time, folded again on the next visit")
+    }
+
+    /// Notes come in month cards that fold like History's, a row per day's note (Current Work 46, 5 Oct 2026).
+    func testNotesFoldByMonthLikeHistory() {
+        launch()
+        open("Floss")
+        tab("Notes")
+        app.buttons["notes-add"].tap()
+        let field = app.descendants(matching: .any)["note-field"].firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 3))
+        field.typeText("Flossed at the bus stop.")
+        app.buttons["note-save"].tap()
+        sleep(1)
+        let month = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'notes-month-'")).firstMatch
+        XCTAssertTrue(month.waitForExistence(timeout: 3), "A month card")
+        XCTAssertTrue(month.label.contains("note"), "The month says how many notes: \(month.label)")
+        let row = app.buttons.matching(NSPredicate(format: "label CONTAINS 'bus stop'")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 3), "Today's note is a row in it")
+        XCTAssertTrue(row.label.contains("Today"), "Dated as History dates its days: \(row.label)")
+        shot("hp-notes-4-month-open")
+        month.tap()
+        XCTAssertTrue(row.waitForNonExistence(timeout: 3), "The month folds")
+        shot("hp-notes-5-month-folded")
+        month.tap()
+        XCTAssertTrue(row.waitForExistence(timeout: 3), "And opens again")
+        row.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["note-text"].waitForExistence(timeout: 3), "The note reads in full")
+    }
+
     /// Year in Pixels: a tap shows the day under the grid, and Open Day opens it.
     func testYearInPixels() {
         launch()

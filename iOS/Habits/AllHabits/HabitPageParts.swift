@@ -52,16 +52,20 @@ enum HabitTab: String, CaseIterable, Identifiable, Hashable {
         case .notes:
             guard key != notesKey else { return }
             notesKey = key
-            notes = NoteMonth.group(store.notes(of: key.habit), calendar: store.calendar)
+            notes = NoteMonth.group(store.notes(of: key.habit), today: key.today, calendar: store.calendar)
         }
     }
 }
 
-/// One month of notes, newest first.
+/// One month of notes, newest first: a card like History's month, a row per day's note (Current Work 46, 5 Oct 2026).
 struct NoteMonth: Hashable, Identifiable {
     struct Note: Hashable, Identifiable {
         let day: LocalDay
         let text: String
+        /// "Sat 3", as History's day rows say it; made once here, never while drawing (S8).
+        var title = ""
+        /// "Today", "Yesterday", or nil.
+        var relative: String?
         var id: LocalDay { day }
     }
     let first: LocalDay
@@ -71,12 +75,19 @@ struct NoteMonth: Hashable, Identifiable {
     /// card under Notes (3 Oct 2026; lesson L11).
     var id: String { "notes-" + first.key }
 
-    static func group(_ notes: [(day: LocalDay, text: String)], calendar: Calendar) -> [NoteMonth] {
+    /// "3 notes", under the month's name as History's months show how they went.
+    var summary: String { notes.count == 1 ? "1 note" : "\(notes.count) notes" }
+
+    static func group(_ notes: [(day: LocalDay, text: String)], today: LocalDay, calendar: Calendar) -> [NoteMonth] {
         let names = calendar.standaloneMonthSymbols
+        let shortDays = calendar.shortStandaloneWeekdaySymbols
+        let yesterday = today.adding(days: -1, calendar: calendar)
         var months: [NoteMonth] = []
         for note in notes {
             let first = LocalDay(year: note.day.year, month: note.day.month, day: 1)
-            let item = Note(day: note.day, text: note.text)
+            let item = Note(day: note.day, text: note.text,
+                            title: "\(shortDays[note.day.weekday(calendar: calendar) - 1]) \(note.day.day)",
+                            relative: note.day == today ? "Today" : note.day == yesterday ? "Yesterday" : nil)
             if let last = months.last, last.first == first {
                 months[months.count - 1] = NoteMonth(first: first, title: last.title, notes: last.notes + [item])
             } else {
@@ -158,8 +169,8 @@ struct HabitHistoryTab: View {
         .controlSize(.large)
         .font(.body.weight(.semibold))
         .pageItem()
-        // What the squares mean, folded or open, shared with Progress (the user, 3 Oct 2026).
-        HeatKeySection()
+        // What the squares mean, open by itself only on the first visit to this habit's page (Current Work 25).
+        HeatKeySection(place: HeatKeyVisit.habit(habit.id))
             .pageItem()
         if months.isEmpty {
             Text("Nothing recorded yet. Days appear here once they're planned or logged.")

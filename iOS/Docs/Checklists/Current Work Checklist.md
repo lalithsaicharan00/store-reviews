@@ -18,11 +18,12 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 45).
+  still resolve; give new items the next unused number (currently 47).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
-- Tick an item only when its required validation is complete, with the date and relevant commit, test or device
-  evidence. Move its whole entry to Completed; retain decisions, partial completion and remaining checks.
+- Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
+  on GitHub; checking on the iPhone is a different thing"), with the date and the commit or run. Move its whole entry
+  to Completed; note the iPhone check (U9) on it while it's still open, and retain decisions and remaining checks.
 - An item that spans both documents has one current status here; link to it from Product Roadmap rather than
   maintaining two competing statuses. Broader capabilities not covered here remain maintained in the roadmap.
 - Follow [the Rulebook](<../../../RULEBOOK.md>) and the screen's section in `Design Rules — Don't Regress.md`.
@@ -137,6 +138,10 @@ Their placement records scope and priority; implementation has not started.
     specified by the user.
   - Verify first visit open → next visit closed → manual reopening works, independently for the relevant habits
     and Progress ranges. This task must remain separate from card padding and other visual redesigns.
+  - **The user's words, 5 Oct:** "It should be open only for the very first time; everywhere else, closed."
+  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): open by
+    itself only on the first visit to each habit's page and each Progress range; folded on later visits, a tap opens
+    it, never folds during a visit; kept across launches. Tests: pending.
 
 - [ ] **26. History: fix the unreadable Add Entry button.** Added 4 October 2026; a readability issue independent of
   the action-placement research in item 27.
@@ -147,123 +152,21 @@ Their placement records scope and priority; implementation has not started.
   - Add Entry is appropriate in History; the user explicitly distinguishes this from the Today sheet problem in
     item 22. Do not solve this by removing History's Add Entry action.
 
-- [ ] **33. Routine player: Habit options hides its last actions.** Documented on 4 October 2026 by the other
-  agent on `claude/weekly-overview-stats-ly55gk` (`e657641`); formerly item 22 on that branch.
-  - For Read, the sheet shows Log time manually, Skip today, Undo, Show clock and Add Note, but Edit Habit is only
-    reachable after scrolling. Review whether the sheet should fit the complete options list; preserve every action.
-  - The source branch reports a fix. It is not yet merged into main; verify the applicable build and required
-    checks before marking this complete. Detailed requirement: routine-player checklist P5.
-  - **Built, tested, merged (4 Oct 2026, the player's branch at `b6bd7d1`, then `main`):** FocusPlayer (13, including
-    `testBottomRowStaysPutAndOptionsShowEverything`), Schedule, RoutineCalendar and Groups passed (31 tests), plus the
-    classes that use switches elsewhere before `main` moved. Speed: the player's ‹ › 14.8 ms/s, no freeze. **Only the
-    user's look on the iPhone (U9) is left;** tick it then and move it to Completed.
-
-- [ ] **34. Routine player: Show clock switch is white/unreadable in dark mode.** Documented on 4 October 2026 by
-  the other agent on `claude/weekly-overview-stats-ly55gk` (`e657641`); formerly item 23 on that branch.
-  - Switches should use the system green style; selection checks use system blue. The branch reports a shared
-    switch style and a correction to the group's habit picker selection controls; integration and verification on
-    main remain pending. Detailed requirements: routine-player checklist P6–P7.
-  - Keep this separate from item 22's Today-sheet green-checkmark concern: these are different controls and reports.
-  - **Built, tested, merged (4 Oct 2026, the player's branch at `b6bd7d1`, then `main`):** FocusPlayer (13, including
-    `testBottomRowStaysPutAndOptionsShowEverything`), Schedule, RoutineCalendar and Groups passed (31 tests), plus the
-    classes that use switches elsewhere before `main` moved. Speed: the player's ‹ › 14.8 ms/s, no freeze. **Only the
-    user's look on the iPhone (U9) is left;** tick it then and move it to Completed.
-
-- [ ] **35. Today's swipe actions: an over-long swipe adds a note; reaching all three buttons takes care.** Added
-  4 October 2026, from the user: research first, then fix.
-  - **The user's words, tidied:** "If I slide too much, it directly adds a note for the habit. I have to do it very
-    carefully just to get all three options inside the slide. Maybe, instead of Undo, we should have Skip on the slide
-    left. We need research about how this will work and how it should work, and fix it."
-  - **What's built (Rulebook U14, 3 Oct 2026; `TodayRows.swift`):** swipe left reveals Note, Skip and Pause, and a full
-    swipe runs Note (`allowsFullSwipe: true`, chosen as the one harmless action); swipe right reveals a named Undo
-    with no full swipe. So a long swipe left opens the note sheet instead of showing the three buttons.
-  - **Research:** whether any action should run on a full swipe at all (and which); how many buttons a swipe should
-    hold so all of them are easy to reach; which side gets Skip, Note, Pause and Undo (the user's idea: Skip on a
-    swipe, where Undo is now; check what "instead of Undo" means with the user before deciding); what people expect
-    from the iPhone's own lists (Mail, Reminders) and what reviews show about accidental swipes. Start from report
-    "Today's Rows — Tap, Swipe, the Day Sheet and Delete" (the 3 Oct evidence: 35 accidental swipes, 14 "which way").
-  - **Then:** the user decides; update U14 and Design Rules' row section with the date and reason, then the swipe
-    code, `TodayRowSheetUITests`' swipe tests (T3) and a `PerfDriver` check if the swipe changes (T4). Check on the
-    iPhone (U9).
-  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
-    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): a swipe only reveals, never acts; left Skip then Note, right a named Undo; Pause in the long-press menu (U14). Report "Swipe Actions — Reveal, Never Act". Still yours: the iPhone (U9).
-
-- [ ] **37. Time limits ("Social media: 30 min max"): can't be edited, and should they exist? Decide, then add or
-  remove them properly.** Added 4 October 2026, from the user.
-  - **The user's words, tidied:** "My iPhone still has data from the first versions, when we ran automated tests on it.
-    There's a limit habit, Social media 30 minutes max. In Quit we have two things, stop completely and limit something,
-    and in the units there's no minutes unit now, yet that habit still works. First problem: I can't change it. Second:
-    should limits allow this? It's a genuine use case (social media 30 minutes max), but also a little confusing: it
-    could be made as a timed build habit, yet it isn't building, it's cutting down. Today a limit can be a quantity but
-    not a time. We shouldn't add something for one use case: check whether it's genuine, and if it is, add it; either
-    add it or remove it, and finalise it."
-  - **What the code has (to check against the phone):** a timed limit is still a valid habit (a Cut down whose unit is
-    time, `HabitPlan.timeUnit`; Today and the player show "30 min max"; the `-uitest` demo makes "Social media" 30 min
-    at most). The user found no time unit among the Limit's units, and couldn't change the habit. Reproduce on the
-    current build first: open Edit Habit for a timed limit and see what's missing or stuck.
-  - **Research (W2), before deciding:** do people want time limits (screen time, social media, gaming, TV) in a habit
-    tracker, and do they see them as cutting down rather than building? How do they log them (a timer, typing the
-    minutes, Screen Time)? Where would one sit: Quit → Limit with a time unit, or elsewhere? Say "users show…" with
-    counts (Research rules). Also ties to item 14 (where limits belong).
-  - **Then, either way, nothing half-done:** if kept, offer time properly when making and editing a limit (and its
-    logging, timer and wording); if removed, existing timed limits must keep working and stay editable, and their data
-    is never lost (D2, D6). The user decides from the research.
-  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
-    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): a Limit can be in minutes; an existing timed limit is editable and keeps minutes (D6). Report "Time Limits — Should Cut Down Allow Time"; Screen Time is item 44.
-
-- [ ] **38. Today: a folded time of day's habit icons sit on the title's line, too close to it.** Added 4 October 2026,
-  from the user.
-  - **The user's words, tidied:** "When a time of day section is closed, the icons we show are aligned with the title of
-    that section; that isn't right. There should be a good amount of space between the title and the icons (something
-    like 8, 12 or 16 points, as a relative unit, not exact pixels), and the icons should be centred vertically in the
-    card, not to the title, because that looks weird."
-  - **What's built (`TodayRows.swift`, the section header's `titleArea`):** the folded icons (`FoldedIcons`) are in the
-    same row as the name, 10 points after it, so they line up with the name and not with the name plus its "Starts
-    6 AM" line.
-  - **To do:** put the icons beside the whole title block (name and its line), centred vertically on the header; give
-    them a clear gap from the title that scales with Dynamic Type (`@ScaledMetric`, around 12 to 16 points); keep how
-    many icons fit (`FoldedIcons.fitting` counts the gap) and the fade-in when folding. Read Design Rules' "Today
-    section headers" first (U12); `SectionHeaderUITests` covers the header. Check on the iPhone (U9).
-  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
-    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): the icons sit beside the whole name block, centred, with a scaled gap (~14 pt). Still yours: the iPhone (U9).
-
-- [ ] **11. Bug: the app sometimes stops responding for ~74 s right after launching signed in** (added 2 Oct, from the
-  test runs). `BackupUITests.testDeletingTheAccountAndErasingThisPhone` launches with a test sign-in to the dev server;
-  in 4 of 13 runs (1–2 Oct) the app didn't respond for about 74 s right after launch, before the test's first step
-  (opening the ≡ menu), and the test failed; it passes on a rerun. Not caused by a test step: it happens before any.
-  Suspects to check: something blocking the main thread during the sign-in at launch (the keychain, a network call
-  waited on, the first backup or sync). Logs: run 36995529935 (`ios-logs` artifact, the test's lines at
-  t = 24.86 s → 98.74 s). Find the cause, fix it, and make the test show where the time goes if it happens again.
-  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
-    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): Keychain calls moved off the main thread (the likely cause); launch steps timed into `app.log` in CI. Backup and Sync passed; confirmed only as runs keep passing.
-
-- [ ] **17. Bug: the routine player's bottom spacing is wrong.** (added 3 Oct 2026) Fix the spacing at the bottom of
-  the routine (focus) player's screen; check on the iPhone (U9).
-  - **Details imported from `e657641`, 4 October:** treat ‹ · Habit options · › as bottom navigation, roughly
-    40 points from the bottom edge with ample space against misclicks. The main button and navigation must not
-    shift with habit state, circle/content changes, Undo, save messages or note entry. The branch reports an
-    implementation; current-main integration and iPhone validation remain pending. Requirements:
-    [Routine Player — Bottom Row, Options Sheet and Switches](<Routine Player — Bottom Row, Options Sheet and Switches.md>).
-  - **Built, tested, merged (4 Oct 2026, the player's branch at `b6bd7d1`, then `main`):** FocusPlayer (13, including
-    `testBottomRowStaysPutAndOptionsShowEverything`), Schedule, RoutineCalendar and Groups passed (31 tests), plus the
-    classes that use switches elsewhere before `main` moved. Speed: the player's ‹ › 14.8 ms/s, no freeze. **Only the
-    user's look on the iPhone (U9) is left;** tick it then and move it to Completed.
-
-- [ ] **16. Timers and the Dynamic Island / Live Activity.** (added 3 Oct 2026) Starting a timer sometimes goes
-  straight into the Dynamic Island. Keep it, but make it behave the way people expect, reliably, and add a way to
-  turn it off. Research when it should appear, then fix.
-  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
-    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): the Live Activity ends the moment the timer stops, has Pause and opens that timer; ≡ → Appearance → Timers turns it off. Report "Timers — What People Expect When They Tap ▶". Still yours: the iPhone (U9).
-
 - [ ] **18. Completion feedback for every kind of habit.** (added 3 Oct 2026) A check-off plays the sound (and haptic)
   when it's done, which is nice; timed habits, amounts, checklists and others don't. Decide when each kind counts
   as "done" for feedback (goal reached, timer reaches its goal, last step ticked) and make it consistent.
+  - **The user's words, 5 Oct, tidied:** "Overall completion only: the 4th of 4 steps; the log that crosses an amount
+    of 10, even to 11; the same for time, typed time included. Never for quit habits or Log Slip."
+  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): the store
+    decides for every log from any screen; once, on the log that makes the habit complete; a running timer at its
+    goal; never for quit habits or limits. Tests: pending (`CompletionFeedbackUITests`).
 
-- [ ] **10. Groups: test them properly.** Making a group seems to work, but groups and their statistics (group
-  chips on Progress, group numbers, the Filter's group choice, editing and ordering groups) were never really
-  tested, on the simulator or the iPhone.
-  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
-    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): four new GroupsUITests (order, deleting a full group, own choices and Start, names and Pause); 9/9 passed.
+- [ ] **46. Habit details: Notes in month cards that fold, like History.** Added 5 October 2026, from the user: "In
+  History each month is a card that folds, open by default, a row per day. Notes need the same: a month card, each
+  day's note a row in it. Right now notes are added very weirdly."
+  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): a card per
+    month with "N notes", folding like History's (newest two open), a row per day's note dated as History dates its
+    days. Tests: pending (`HabitPageUITests.testNotesFoldByMonthLikeHistory`).
 
 ## Planned improvements — build later
 
@@ -375,12 +278,6 @@ Their placement records scope and priority; implementation has not started.
     Down" card (no "N left", no Start, never in a routine); the Cut down form has no Time of Day. Report "Limit Habits on
     Today — Apart From What You Must Do". Tests: pending. Still yours: the iPhone (U9).
 
-- [ ] **15. Timed habits: what should tapping ▶ do?** (added 3 Oct 2026) Today ▶ starts an inline timer on the row.
-  Research whether that's what people expect, or whether ▶ should open a full-screen timer, or both (and which is
-  the default).
-  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
-    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): ▶ starts the timer and opens it full screen; a swipe puts it away while it keeps running; the bar opens it. Still yours: the iPhone (U9).
-
 - [ ] **19. Exportable progress reports, for the Progress page** (added 3 Oct 2026; build now if it fits, otherwise it moves to Future; the
   user decides later). A report of progress people can export and share (a PDF or image of a week, month or year),
   as the Progress research suggests. Different from Backup & Export's data file. Start from the Progress research:
@@ -393,7 +290,7 @@ Their placement records scope and priority; implementation has not started.
   went, which people can export and share as an image. This is for **one habit**; item 19 is the Progress page's
   week, month and year reports, and item 12's Year in Pixels is for mood. Use the same pixel grid for both.
 
-- [ ] **44. Screen Time: read a time limit from the iPhone instead of typing it.** Added 4 October 2026 from item 37's
+- [ ] **45. Screen Time: read a time limit from the iPhone instead of typing it.** Added 4 October 2026 from item 37's
   research ([Time Limits — Should Cut Down Allow Time](<../../../Research/Research Reports/Habit Creation/Time Limits — Should Cut Down Allow Time.md>)):
   about seven reviews want social media or screen time filled in automatically. Needs Apple's Screen Time API (Family
   Controls and Device Activity, with the person's permission), whose reports stay inside their own extension. Research
@@ -414,6 +311,136 @@ Their placement records scope and priority; implementation has not started.
 ## Completed
 
 Completed work retains its original evidence and any outstanding user review.
+
+- [x] **10. Groups: test them properly.** Making a group seems to work, but groups and their statistics (group
+  chips on Progress, group numbers, the Filter's group choice, editing and ordering groups) were never really
+  tested, on the simulator or the iPhone.
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): four new GroupsUITests (order, deleting a full group, own choices and Start, names and Pause); 9/9 passed.
+  - **Completed, 5 Oct 2026** (built and tested on GitHub; branch `claude/timer-swipe-limits-and-fixes`, not yet in `main`).
+
+- [x] **11. Bug: the app sometimes stops responding for ~74 s right after launching signed in** (added 2 Oct, from the
+  test runs). `BackupUITests.testDeletingTheAccountAndErasingThisPhone` launches with a test sign-in to the dev server;
+  in 4 of 13 runs (1–2 Oct) the app didn't respond for about 74 s right after launch, before the test's first step
+  (opening the ≡ menu), and the test failed; it passes on a rerun. Not caused by a test step: it happens before any.
+  Suspects to check: something blocking the main thread during the sign-in at launch (the keychain, a network call
+  waited on, the first backup or sync). Logs: run 36995529935 (`ios-logs` artifact, the test's lines at
+  t = 24.86 s → 98.74 s). Find the cause, fix it, and make the test show where the time goes if it happens again.
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): Keychain calls moved off the main thread (the likely cause); launch steps timed into `app.log` in CI. Backup and Sync passed; confirmed only as runs keep passing.
+  - **Completed, 5 Oct 2026** (built and tested on GitHub; branch `claude/timer-swipe-limits-and-fixes`, not yet in `main`; confirmed only as runs keep passing).
+
+- [x] **15. Timed habits: what should tapping ▶ do?** (added 3 Oct 2026) Today ▶ starts an inline timer on the row.
+  Research whether that's what people expect, or whether ▶ should open a full-screen timer, or both (and which is
+  the default).
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): ▶ starts the timer and opens it full screen; a swipe puts it away while it keeps running; the bar opens it. Still yours: the iPhone (U9).
+  - **Completed, 5 Oct 2026** (built and tested on GitHub; branch `claude/timer-swipe-limits-and-fixes`, not yet in `main`). **iPhone check (U9) still yours**, separate from completion (the user, 5 Oct 2026).
+
+- [x] **16. Timers and the Dynamic Island / Live Activity.** (added 3 Oct 2026) Starting a timer sometimes goes
+  straight into the Dynamic Island. Keep it, but make it behave the way people expect, reliably, and add a way to
+  turn it off. Research when it should appear, then fix.
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): the Live Activity ends the moment the timer stops, has Pause and opens that timer; ≡ → Appearance → Timers turns it off. Report "Timers — What People Expect When They Tap ▶". Still yours: the iPhone (U9).
+  - **Completed, 5 Oct 2026** (built and tested on GitHub; branch `claude/timer-swipe-limits-and-fixes`, not yet in `main`). **iPhone check (U9) still yours**, separate from completion (the user, 5 Oct 2026).
+
+- [x] **17. Bug: the routine player's bottom spacing is wrong.** (added 3 Oct 2026) Fix the spacing at the bottom of
+  the routine (focus) player's screen; check on the iPhone (U9).
+  - **Details imported from `e657641`, 4 October:** treat ‹ · Habit options · › as bottom navigation, roughly
+    40 points from the bottom edge with ample space against misclicks. The main button and navigation must not
+    shift with habit state, circle/content changes, Undo, save messages or note entry. The branch reports an
+    implementation; current-main integration and iPhone validation remain pending. Requirements:
+    [Routine Player — Bottom Row, Options Sheet and Switches](<Routine Player — Bottom Row, Options Sheet and Switches.md>).
+  - **Built, tested, merged (4 Oct 2026, the player's branch at `b6bd7d1`, then `main`):** FocusPlayer (13, including
+    `testBottomRowStaysPutAndOptionsShowEverything`), Schedule, RoutineCalendar and Groups passed (31 tests), plus the
+    classes that use switches elsewhere before `main` moved. Speed: the player's ‹ › 14.8 ms/s, no freeze. **Only the
+    user's look on the iPhone (U9) is left;** tick it then and move it to Completed.
+  - **Completed, 5 Oct 2026** (built and tested on GitHub; merged into `main` 4 Oct). **iPhone check (U9) still yours**, separate from completion (the user, 5 Oct 2026).
+
+- [x] **33. Routine player: Habit options hides its last actions.** Documented on 4 October 2026 by the other
+  agent on `claude/weekly-overview-stats-ly55gk` (`e657641`); formerly item 22 on that branch.
+  - For Read, the sheet shows Log time manually, Skip today, Undo, Show clock and Add Note, but Edit Habit is only
+    reachable after scrolling. Review whether the sheet should fit the complete options list; preserve every action.
+  - The source branch reports a fix. It is not yet merged into main; verify the applicable build and required
+    checks before marking this complete. Detailed requirement: routine-player checklist P5.
+  - **Built, tested, merged (4 Oct 2026, the player's branch at `b6bd7d1`, then `main`):** FocusPlayer (13, including
+    `testBottomRowStaysPutAndOptionsShowEverything`), Schedule, RoutineCalendar and Groups passed (31 tests), plus the
+    classes that use switches elsewhere before `main` moved. Speed: the player's ‹ › 14.8 ms/s, no freeze. **Only the
+    user's look on the iPhone (U9) is left;** tick it then and move it to Completed.
+  - **Completed, 5 Oct 2026** (built and tested on GitHub; merged into `main` 4 Oct). **iPhone check (U9) still yours**, separate from completion (the user, 5 Oct 2026).
+
+- [x] **34. Routine player: Show clock switch is white/unreadable in dark mode.** Documented on 4 October 2026 by
+  the other agent on `claude/weekly-overview-stats-ly55gk` (`e657641`); formerly item 23 on that branch.
+  - Switches should use the system green style; selection checks use system blue. The branch reports a shared
+    switch style and a correction to the group's habit picker selection controls; integration and verification on
+    main remain pending. Detailed requirements: routine-player checklist P6–P7.
+  - Keep this separate from item 22's Today-sheet green-checkmark concern: these are different controls and reports.
+  - **Built, tested, merged (4 Oct 2026, the player's branch at `b6bd7d1`, then `main`):** FocusPlayer (13, including
+    `testBottomRowStaysPutAndOptionsShowEverything`), Schedule, RoutineCalendar and Groups passed (31 tests), plus the
+    classes that use switches elsewhere before `main` moved. Speed: the player's ‹ › 14.8 ms/s, no freeze. **Only the
+    user's look on the iPhone (U9) is left;** tick it then and move it to Completed.
+  - **Completed, 5 Oct 2026** (built and tested on GitHub; merged into `main` 4 Oct). **iPhone check (U9) still yours**, separate from completion (the user, 5 Oct 2026).
+
+- [x] **35. Today's swipe actions: an over-long swipe adds a note; reaching all three buttons takes care.** Added
+  4 October 2026, from the user: research first, then fix.
+  - **The user's words, tidied:** "If I slide too much, it directly adds a note for the habit. I have to do it very
+    carefully just to get all three options inside the slide. Maybe, instead of Undo, we should have Skip on the slide
+    left. We need research about how this will work and how it should work, and fix it."
+  - **What's built (Rulebook U14, 3 Oct 2026; `TodayRows.swift`):** swipe left reveals Note, Skip and Pause, and a full
+    swipe runs Note (`allowsFullSwipe: true`, chosen as the one harmless action); swipe right reveals a named Undo
+    with no full swipe. So a long swipe left opens the note sheet instead of showing the three buttons.
+  - **Research:** whether any action should run on a full swipe at all (and which); how many buttons a swipe should
+    hold so all of them are easy to reach; which side gets Skip, Note, Pause and Undo (the user's idea: Skip on a
+    swipe, where Undo is now; check what "instead of Undo" means with the user before deciding); what people expect
+    from the iPhone's own lists (Mail, Reminders) and what reviews show about accidental swipes. Start from report
+    "Today's Rows — Tap, Swipe, the Day Sheet and Delete" (the 3 Oct evidence: 35 accidental swipes, 14 "which way").
+  - **Then:** the user decides; update U14 and Design Rules' row section with the date and reason, then the swipe
+    code, `TodayRowSheetUITests`' swipe tests (T3) and a `PerfDriver` check if the swipe changes (T4). Check on the
+    iPhone (U9).
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): a swipe only reveals, never acts; left Skip then Note, right a named Undo; Pause in the long-press menu (U14). Report "Swipe Actions — Reveal, Never Act". Still yours: the iPhone (U9).
+  - **Completed, 5 Oct 2026** (built and tested on GitHub; branch `claude/timer-swipe-limits-and-fixes`, not yet in `main`). **iPhone check (U9) still yours**, separate from completion (the user, 5 Oct 2026).
+
+- [x] **37. Time limits ("Social media: 30 min max"): can't be edited, and should they exist? Decide, then add or
+  remove them properly.** Added 4 October 2026, from the user.
+  - **The user's words, tidied:** "My iPhone still has data from the first versions, when we ran automated tests on it.
+    There's a limit habit, Social media 30 minutes max. In Quit we have two things, stop completely and limit something,
+    and in the units there's no minutes unit now, yet that habit still works. First problem: I can't change it. Second:
+    should limits allow this? It's a genuine use case (social media 30 minutes max), but also a little confusing: it
+    could be made as a timed build habit, yet it isn't building, it's cutting down. Today a limit can be a quantity but
+    not a time. We shouldn't add something for one use case: check whether it's genuine, and if it is, add it; either
+    add it or remove it, and finalise it."
+  - **What the code has (to check against the phone):** a timed limit is still a valid habit (a Cut down whose unit is
+    time, `HabitPlan.timeUnit`; Today and the player show "30 min max"; the `-uitest` demo makes "Social media" 30 min
+    at most). The user found no time unit among the Limit's units, and couldn't change the habit. Reproduce on the
+    current build first: open Edit Habit for a timed limit and see what's missing or stuck.
+  - **Research (W2), before deciding:** do people want time limits (screen time, social media, gaming, TV) in a habit
+    tracker, and do they see them as cutting down rather than building? How do they log them (a timer, typing the
+    minutes, Screen Time)? Where would one sit: Quit → Limit with a time unit, or elsewhere? Say "users show…" with
+    counts (Research rules). Also ties to item 14 (where limits belong).
+  - **Then, either way, nothing half-done:** if kept, offer time properly when making and editing a limit (and its
+    logging, timer and wording); if removed, existing timed limits must keep working and stay editable, and their data
+    is never lost (D2, D6). The user decides from the research.
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): a Limit can be in minutes; an existing timed limit is editable and keeps minutes (D6). Report "Time Limits — Should Cut Down Allow Time"; Screen Time is item 45.
+  - **Completed, 5 Oct 2026** (built and tested on GitHub; branch `claude/timer-swipe-limits-and-fixes`, not yet in `main`). **iPhone check (U9) still yours**, separate from completion (the user, 5 Oct 2026).
+
+- [x] **38. Today: a folded time of day's habit icons sit on the title's line, too close to it.** Added 4 October 2026,
+  from the user.
+  - **The user's words, tidied:** "When a time of day section is closed, the icons we show are aligned with the title of
+    that section; that isn't right. There should be a good amount of space between the title and the icons (something
+    like 8, 12 or 16 points, as a relative unit, not exact pixels), and the icons should be centred vertically in the
+    card, not to the title, because that looks weird."
+  - **What's built (`TodayRows.swift`, the section header's `titleArea`):** the folded icons (`FoldedIcons`) are in the
+    same row as the name, 10 points after it, so they line up with the name and not with the name plus its "Starts
+    6 AM" line.
+  - **To do:** put the icons beside the whole title block (name and its line), centred vertically on the header; give
+    them a clear gap from the title that scales with Dynamic Type (`@ScaledMetric`, around 12 to 16 points); keep how
+    many icons fit (`FoldedIcons.fitting` counts the gap) and the fade-in when folding. Read Design Rules' "Today
+    section headers" first (U12); `SectionHeaderUITests` covers the header. Check on the iPhone (U9).
+  - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
+    Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): the icons sit beside the whole name block, centred, with a scaled gap (~14 pt). Still yours: the iPhone (U9).
+  - **Completed, 5 Oct 2026** (built and tested on GitHub; branch `claude/timer-swipe-limits-and-fixes`, not yet in `main`). **iPhone check (U9) still yours**, separate from completion (the user, 5 Oct 2026).
 
 - [x] **1. Progress page: a big visual overhaul of Week, Month and Year.** Not the data (it's right and complete) but
   how it's presented: today it reads "okay, not good", too dense, rows squeezed. **Week first** (overview card →

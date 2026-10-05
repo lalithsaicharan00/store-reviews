@@ -3,7 +3,7 @@ import SwiftUI
 // The habit page's Notes tab (the user, 3 Oct 2026; research Notes: browse → read → edit). The habit's own dated notes,
 // newest first, independent of whether the day was done. Reading never changes progress; editing is explicit.
 
-/// Search and Add Note at the top, then a card per month with a short preview of each note.
+/// Search and Add Note at the top, then a card per month that folds like History's, a row per day's note.
 struct HabitNotesTab: View {
     let habit: Habit
     let months: [NoteMonth]
@@ -11,6 +11,8 @@ struct HabitNotesTab: View {
     /// The text searched for, caught up when typing pauses (Rulebook S11: typing redraws only the field).
     @State private var query = ""
     @State private var adding = false
+    /// Months folded or opened by hand while the page is open (the newest two start open, as in History).
+    @State private var toggled: Set<LocalDay> = []
 
     var body: some View {
         let today = store.today()
@@ -43,41 +45,16 @@ struct HabitNotesTab: View {
                 .pageCard()
                 .pageItem()
         }
-        ForEach(shown) { month in
-            VStack(alignment: .leading, spacing: 0) {
-                Text(month.title).font(.headline)
-                    .padding(.horizontal, WeekSpacing.card)
-                    .padding(.top, WeekSpacing.card)
-                    .padding(.bottom, WeekSpacing.tight)
-                    .accessibilityAddTraits(.isHeader)
-                ForEach(month.notes) { note in
-                    Divider().padding(.leading, WeekSpacing.card)
-                    NavigationLink {
-                        NoteReaderView(habit: habit, day: note.day)
-                    } label: {
-                        HStack(alignment: .top, spacing: WeekSpacing.tight) {
-                            VStack(alignment: .leading, spacing: WeekSpacing.pair) {
-                                Text(NoteSheet.dayText(note.day, today: today, calendar: store.calendar))
-                                    .font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
-                                Text(note.text).font(.body).foregroundStyle(.primary)
-                                    .lineLimit(3).multilineTextAlignment(.leading)
-                            }
-                            Spacer(minLength: WeekSpacing.tight)
-                            Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
-                                .padding(.top, 2)
-                        }
-                        .padding(.horizontal, WeekSpacing.card)
-                        .padding(.vertical, 12)
-                        .contentShape(Rectangle())
-                    }
-                    .buttonStyle(PageRowStyle())
-                    .accessibilityIdentifier("note-\(note.day.key)")
+        // A card per month, like History's: its name and how many notes, folding from the header, a row per day's
+        // note (the user, 5 Oct 2026). The newest two start open, as History's do; a search opens every month it finds.
+        let searching = !query.trimmingCharacters(in: .whitespaces).isEmpty
+        ForEach(Array(shown.enumerated()), id: \.element.id) { index, month in
+            let isOpen = searching || (index < 2) != toggled.contains(month.first)
+            NoteMonthCard(habit: habit, month: month, isOpen: isOpen) {
+                withAnimation(.snappy(duration: 0.25)) {
+                    if toggled.contains(month.first) { toggled.remove(month.first) } else { toggled.insert(month.first) }
                 }
             }
-            .padding(.bottom, WeekSpacing.pair)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .pageItem()
         }
     }
@@ -292,5 +269,73 @@ struct NoteEditorView: View {
         }
         .interactiveDismissDisabled(dirty)
         .presentationBackground(Color(.systemGroupedBackground))
+    }
+}
+
+/// One month of notes, shaped as History's month card: the header folds it; each row is a day, its date as History
+/// writes it, then the note's first lines, opening the note to read in full.
+private struct NoteMonthCard: View {
+    let habit: Habit
+    let month: NoteMonth
+    let isOpen: Bool
+    let toggle: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Button(action: toggle) {
+                HStack(alignment: .center, spacing: WeekSpacing.tight) {
+                    VStack(alignment: .leading, spacing: WeekSpacing.label) {
+                        Text(month.title).font(.headline).foregroundStyle(.primary)
+                        Text(month.summary).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
+                    }
+                    Spacer(minLength: WeekSpacing.tight)
+                    // An accordion's chevron: down while folded, up while open (Design Rules).
+                    Image(systemName: "chevron.down")
+                        .font(.footnote.weight(.semibold)).foregroundStyle(.secondary)
+                        .rotationEffect(.degrees(isOpen ? 180 : 0))
+                }
+                .padding(WeekSpacing.card)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityElement(children: .combine)
+            .accessibilityValue(isOpen ? "Open" : "Folded")
+            .accessibilityHint(isOpen ? "Folds the month" : "Shows the month's notes")
+            .accessibilityIdentifier("notes-month-\(month.first.key)")
+            if isOpen {
+                Divider().padding(.leading, WeekSpacing.card)
+                ForEach(month.notes) { note in
+                    NavigationLink {
+                        NoteReaderView(habit: habit, day: note.day)
+                    } label: {
+                        HStack(spacing: 12) {
+                            VStack(alignment: .leading, spacing: WeekSpacing.label) {
+                                HStack(spacing: 6) {
+                                    Text(note.title).font(.body.weight(.medium)).foregroundStyle(.primary)
+                                    if let relative = note.relative {
+                                        Text(relative).font(.subheadline).foregroundStyle(.secondary)
+                                    }
+                                }
+                                Text(note.text).font(.subheadline).foregroundStyle(.secondary)
+                                    .lineLimit(2).multilineTextAlignment(.leading)
+                            }
+                            Spacer(minLength: WeekSpacing.tight)
+                            Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
+                        }
+                        .padding(.horizontal, WeekSpacing.card)
+                        .padding(.vertical, 10)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(PageRowStyle())
+                    .accessibilityIdentifier("note-\(note.day.key)")
+                    if note.id != month.notes.last?.id {
+                        Divider().padding(.leading, WeekSpacing.card)
+                    }
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 }

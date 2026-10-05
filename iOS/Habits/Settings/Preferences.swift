@@ -91,7 +91,8 @@ enum DoneOrder: String, CaseIterable, Identifiable {
     static var hapticsOn: Bool { UserDefaults.standard.bool(forKey: Preferences.haptics) }
     static var soundOn: Bool { UserDefaults.standard.bool(forKey: Preferences.sound) }
 
-    /// One log: a light tap on the way to the goal; a success tap (and the chime, if on) when it makes the habit done.
+    /// One log: a light tap on the way to the goal; a success tap (and the chime, if on) when it makes the habit complete.
+    /// Called by the store for every log (`HabitStore.onLog`), so every place a log comes from behaves the same.
     static func logged(finished: Bool) {
         if hapticsOn {
             if finished { success.notificationOccurred(.success) } else { light.impactOccurred() }
@@ -101,6 +102,11 @@ enum DoneOrder: String, CaseIterable, Identifiable {
 
     /// A timer started: a light tap, nothing logged yet.
     static func started() {
+        if hapticsOn { light.impactOccurred() }
+    }
+
+    /// Anything else a tap changes without logging (a skip): a light tap.
+    static func tapped() {
         if hapticsOn { light.impactOccurred() }
     }
 

@@ -83,6 +83,32 @@ final class WeekCardsUITests: XCTestCase {
         walk("w-dark")
     }
 
+    /// Progress's key opens by itself only on each range's first visit: Week then Month open, Week folded on the next
+    /// visit to Progress, opened again with a tap (Current Work 25, 5 Oct 2026).
+    func testSquaresKeyOpensOnlyOnEachRangesFirstVisit() {
+        openWeek(["-year-demo"])
+        let key = app.descendants(matching: .any)["progress-key"]
+        let toggle = app.buttons["heat-key-toggle"]
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Week's first visit: open")
+        app.segmentedControls["progress-range"].buttons["Month"].tap()
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Month's first visit: open")
+        app.segmentedControls["progress-range"].buttons["Week"].tap()
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Back to Week in the same visit: as it was")
+        // Leave Progress and come back.
+        let bar = app.navigationBars["Progress"]
+        if bar.buttons["BackButton"].exists { bar.buttons["BackButton"].tap() } else { bar.buttons.element(boundBy: 0).tap() }
+        sleep(1)
+        let menu = app.buttons["menu-progress"]
+        if !menu.waitForExistence(timeout: 3) { app.buttons["menu-button"].tap() }
+        XCTAssertTrue(menu.waitForExistence(timeout: 3))
+        menu.tap()
+        XCTAssertTrue(toggle.waitForExistence(timeout: 5))
+        XCTAssertFalse(key.exists, "Week's next visit: folded")
+        shot("w-key-next-visit")
+        toggle.tap()
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "A tap opens it")
+    }
+
     /// Month (2 Oct 2026): the same cards with a month of marks, light and dark.
     func testMonthCards() {
         openWeek(["-year-demo", "-appearance.theme", "light"])

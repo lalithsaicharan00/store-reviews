@@ -42,7 +42,7 @@ real need for a timer in cut down; if yes, implement what the research says and 
 
 | # | Point | Done |
 |---|---|---|
-| L1 | Research: is a time limit ("social media 30 min max") a real need, and where it belongs | [x] Report "Time Limits — Should Cut Down Allow Time": a genuine need (≈7 explicit asks across TV, Netflix, Instagram, phone time); Screen Time integration recorded as Current Work 44 |
+| L1 | Research: is a time limit ("social media 30 min max") a real need, and where it belongs | [x] Report "Time Limits — Should Cut Down Allow Time": a genuine need (≈7 explicit asks across TV, Netflix, Instagram, phone time); Screen Time integration recorded as Current Work 45 |
 | L2 | Implement the result; an existing timed limit stays editable and its data safe either way | [x] A Limit can be in minutes; an existing limit is editable and keeps its unit side (D6). `testLimitCanBeTimeAndStaysEditable` passed |
 
 ## 4. Then, in order

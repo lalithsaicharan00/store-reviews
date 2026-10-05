@@ -388,17 +388,68 @@ struct HeatKey: View {
     static let stepCells: [HeatCell] = (1...5).map { .level($0) }
 }
 
-/// The key, folded or open (the user, 3 Oct 2026: a separate, collapsible section). Open until the person folds it;
-/// the choice is kept and shared by Progress and every habit's page. `boxed` gives it its own card (Progress); inside a
-/// list section (the habit's page) it draws plainly.
+/// Which keys a visit shows open (Current Work 25, 5 Oct 2026): "What the squares mean" opens by itself only the first
+/// time a person reaches it in each place it explains (one habit's page; Progress's Week, Month or Year), and starts
+/// folded on every later visit; it opens again with a tap. One per page, held for as long as the page is open, so
+/// switching dates or scrolling the key away and back is the same visit and never folds it on its own. Seen places are
+/// kept on this phone (`heatKey.seen`), written once per new place; test launches start with none (T8).
+@Observable final class HeatKeyVisit {
+    private var shown: [String: Bool] = [:]
+
+    /// The key's state in this visit. Before the visit has begun the place, what it will be: open if never seen.
+    func isOpen(_ place: String) -> Bool { shown[place] ?? !Self.seen.contains(place) }
+
+    /// The first time this visit shows a place: open if it was never seen, and it's seen from now on.
+    func begin(_ place: String) {
+        guard shown[place] == nil else { return }
+        shown[place] = !Self.seen.contains(place)
+        if !Self.seen.contains(place) {
+            Self.seen.insert(place)
+            UserDefaults.standard.set(Array(Self.seen), forKey: Self.key)
+        }
+    }
+
+    func toggle(_ place: String) { shown[place] = !isOpen(place) }
+
+    static let key = "heatKey.seen"
+    private static var stored: Set<String>?
+    private static var seen: Set<String> {
+        get {
+            if let stored { return stored }
+            let loaded = Set(UserDefaults.standard.stringArray(forKey: key) ?? [])
+            stored = loaded
+            return loaded
+        }
+        set { stored = newValue }
+    }
+
+    /// Test launches forget every seen place (T8).
+    static func forgetAll() {
+        UserDefaults.standard.removeObject(forKey: key)
+        stored = nil
+    }
+
+    static func habit(_ id: UUID) -> String { "habit." + id.uuidString }
+    static func progress(_ range: ProgressRange) -> String { "progress." + range.rawValue }
+}
+
+/// The key, folded or open (the user, 3 Oct 2026: a separate, collapsible section), open by itself only on the first
+/// visit to its place (`HeatKeyVisit`). `boxed` gives it its own card (Progress); inside a list section (the habit's
+/// page) it draws plainly.
 struct HeatKeySection: View {
+    /// Where it explains: `HeatKeyVisit.habit(_:)` or `.progress(_:)`.
+    let place: String
     var boxed = true
-    @AppStorage("heatKey.open") private var open = true
+    /// The page's visit; a key shown outside one keeps its own.
+    @Environment(HeatKeyVisit.self) private var pageVisit: HeatKeyVisit?
+    @State private var ownVisit = HeatKeyVisit()
 
     var body: some View {
+        let visit = pageVisit ?? ownVisit
+        let open = visit.isOpen(place)
         VStack(alignment: .leading, spacing: WeekSpacing.card) {
             Button {
-                withAnimation(.snappy(duration: 0.25)) { open.toggle() }
+                withAnimation(.snappy(duration: 0.25)) { visit.toggle(place) }
             } label: {
                 HStack {
                     Text("What the squares mean").font(.subheadline.weight(.semibold)).foregroundStyle(.primary)
@@ -424,8 +475,9 @@ struct HeatKeySection: View {
         .padding(boxed ? WeekSpacing.card : 0)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(boxed ? Color.card : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .onAppear { visit.begin(place) }
         .onPerfCommand { action in
-            if action == .toggleHeatKey { withAnimation(.snappy(duration: 0.25)) { open.toggle() } }
+            if action == .toggleHeatKey { withAnimation(.snappy(duration: 0.25)) { visit.toggle(place) } }
         }
     }
 }

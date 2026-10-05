@@ -94,11 +94,8 @@ struct TimerScreen: View {
 
     /// Pause saves the time as an entry (with Undo on Today), exactly as ⏸ on the row does; Resume adds a new session.
     private func toggle(_ habit: Habit, running: Bool) {
-        let day = store.today()
         if running {
-            let before = store.progress(of: habit, on: day)
-            let goal = store.goal(of: habit)
-            TickFeedback.logged(finished: !habit.atMost && before >= goal && !store.isComplete(habit, on: day))
+            // Its tap, or the completion if this session reaches the goal, comes from the store (`HabitStore+Feedback`).
             store.toggleTimer(habit)
         } else {
             TimerPresence.askOnNextSync = true

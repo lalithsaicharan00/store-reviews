@@ -200,7 +200,9 @@ struct RoutinePlayer: View {
         .alert("Couldn't save progress", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
             Button("OK", role: .cancel) { store.problem = nil }
         } message: { Text(store.problem ?? "") }
-        .sensoryFeedback(.success, trigger: feedbackCount) { _, _ in TickFeedback.hapticsOn } // ≡ → Appearance → Haptics
+        // No haptic of its own for a log: the store gives every log its tap, and the completion sound only when it makes
+        // the habit complete (`HabitStore+Feedback`, Current Work 18). It used to play "success" for every save, a
+        // skip and an undo alike.
         .onPerfCommand { action in
             if action == .nextHabit { advance() } else if action == .previousHabit { navigate(to: max(0, index - 1)) }
         }
@@ -293,7 +295,7 @@ struct RoutinePlayer: View {
                     // Its place is kept while there's nothing to undo, so the circle never jumps when it appears.
                     ZStack {
                         if done(habit), let entry = latestEntry(habit) {
-                            Button { store.undoEntry(entry.id) } label: {
+                            Button { TickFeedback.undone(); store.undoEntry(entry.id) } label: {
                                 Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44)
                             }
                                 .buttonStyle(.borderless).font(.callout)
@@ -718,6 +720,7 @@ struct RoutinePlayer: View {
         guard !expired, session.day == store.today() else { return }
         let habitID = current?.id
         let before = Set(habitID.map { store.entries(of: $0, on: session.day).map(\.id) } ?? [])
+        if !captureUndo { TickFeedback.undone() } // only undoing and removing pass false
         action()
         undoID = captureUndo ? habitID.flatMap { id in store.entries(of: id, on: session.day).last { !before.contains($0.id) } }?.id : nil
         withAnimation(animation) { feedback = message }
@@ -741,6 +744,7 @@ struct RoutinePlayer: View {
         navigate(to: index + 1)
         // At once, like every other change (S7); the write follows in order.
         withAnimation(animation) { feedback = "Skipped for today"; undoID = nil; undoSkipID = skippedID }
+        TickFeedback.tapped()
         feedbackCount += 1
         hideFeedbackSoon()
     }

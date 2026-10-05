@@ -30,6 +30,8 @@ struct ProgressScreen: View {
     /// The day "Show on Today" asked for, opened once the Day sheet has gone.
     @State private var showOnToday: LocalDay?
     @State private var showExplainer = false
+    /// This visit's "What the squares mean" (`HeatKeyVisit`).
+    @State private var heatVisit = HeatKeyVisit()
 
     private var range: ProgressRange { ProgressRange(rawValue: rangeRaw) ?? .week }
 
@@ -57,6 +59,7 @@ struct ProgressScreen: View {
                 Color(.systemGroupedBackground).ignoresSafeArea()
             }
         }
+        .environment(heatVisit)
         .analyticsScreen(.progress)
         .navigationTitle("Progress")
         .onPerfCommand { action in
@@ -186,8 +189,9 @@ struct ProgressScreen: View {
                         if !store.groups.isEmpty {
                             GroupChipRow(selection: snapshot.group) { groupRaw = $0?.uuidString ?? "" }
                         }
-                        // What the squares mean, at the top, folded or open (the user, 2–3 Oct 2026).
-                        HeatKeySection()
+                        // What the squares mean, at the top: open by itself only on the first visit to this range
+                        // (the user, 2–3 Oct 2026; Current Work 25).
+                        HeatKeySection(place: HeatKeyVisit.progress(snapshot.range))
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, WeekSpacing.tight)
