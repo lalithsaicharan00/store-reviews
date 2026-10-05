@@ -8,6 +8,8 @@ struct AppearanceView: View {
     @AppStorage(Preferences.doneOrder) private var doneOrder = DoneOrder.bottom.rawValue
     @AppStorage(Preferences.haptics) private var haptics = true
     @AppStorage(Preferences.sound) private var sound = false
+    @AppStorage(Preferences.timerScreen) private var timerScreen = true
+    @AppStorage(Preferences.timerLiveActivity) private var timerLiveActivity = true
 
     var body: some View {
         Form {
@@ -48,6 +50,21 @@ struct AppearanceView: View {
                 Text("When You Tick")
             } footer: {
                 Text("A light tap as you log, and a chime when a habit is done. The chime follows your iPhone's silent switch.")
+            }
+
+            Section {
+                Toggle("Open Timer Full Screen", isOn: $timerScreen)
+                    .accessibilityIdentifier("appearance-timer-screen")
+                Toggle("Show on Lock Screen", isOn: $timerLiveActivity)
+                    .accessibilityIdentifier("appearance-timer-live")
+                    .onChange(of: timerLiveActivity) { Task { await AppModel.shared.timerPresence.sync(store) } }
+            } header: {
+                Text("Timers")
+            } footer: {
+                Text((timerScreen ? "▶ starts the timer and opens it full screen; swipe down to put it away while it keeps running. "
+                      : "▶ starts the timer in its row; tap the bar at the bottom of Today to see it full screen. ")
+                     + (timerLiveActivity ? "When you leave the app, a running timer shows on the Lock Screen and in the Dynamic Island, with Pause."
+                        : "A running timer stays off the Lock Screen and the Dynamic Island."))
             }
         }
         .analyticsScreen(.appearance)

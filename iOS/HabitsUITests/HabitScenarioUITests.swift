@@ -101,11 +101,16 @@ final class HabitScenarioUITests: XCTestCase {
         element.tap()
     }
 
-    /// Certain days: today starts chosen and one day always stays chosen, so add first, then drop today.
+    /// Certain days: today starts chosen and one day always stays chosen, so one day is added first, then today is
+    /// dropped, then the rest: all seven chosen at once turns the days into "every day" and the weekday buttons go
+    /// (six days without today failed on that day of the week, found on a Monday, 5 Oct 2026).
     private func chooseDays(_ want: Set<Int>) {
         scrollToTap(app.buttons["often-weekdays"])
-        for day in want.sorted() where day != today { scrollToTap(app.buttons[full[day - 1]].firstMatch) }
+        let others = want.sorted().filter { $0 != today }
+        guard let first = others.first else { return }
+        scrollToTap(app.buttons[full[first - 1]].firstMatch)
         if !want.contains(today) { scrollToTap(app.buttons[full[today - 1]].firstMatch) }
+        for day in others.dropFirst() { scrollToTap(app.buttons[full[day - 1]].firstMatch) }
     }
 
     /// Dates of the month: today's date starts chosen, the same way.
@@ -131,8 +136,10 @@ final class HabitScenarioUITests: XCTestCase {
 
     /// Checks the sentence on the form, saves, and checks Today's line (if any).
     /// Only habits due today show on Today; `due` says whether this one is (set days, dates).
-    private func check(_ want: String, row oftenRow: String? = nil, today caption: String? = nil, due: Bool = true, shotName: String) {
-        XCTAssertEqual(sentence, want + ", anytime", "Form sentence")
+    /// A limit's sentence has no time of day: it shows under Quit or Cut Down (`anytime: false`, 5 Oct 2026).
+    private func check(_ want: String, row oftenRow: String? = nil, today caption: String? = nil, due: Bool = true,
+                       anytime: Bool = true, shotName: String) {
+        XCTAssertEqual(sentence, want + (anytime ? ", anytime" : ""), "Form sentence")
         if let oftenRow { XCTAssertTrue(row("How often, \(oftenRow)").exists, "How often row reads \"\(oftenRow)\"") }
         shot(shotName + "-form")
         add()
@@ -259,7 +266,7 @@ final class HabitScenarioUITests: XCTestCase {
         shot("s22-limit-often")
         XCTAssertFalse(app.buttons["often-weekdays"].exists, "Cut down's limit is a day, a week or a month: no set days")
         back()
-        check("Coffee: at most 3 a day", shotName: "s22-limit")
+        check("Coffee: at most 3 a day", anytime: false, shotName: "s22-limit")
     }
 
     /// The longest name (24) with the longest unit (12) and a long day list still reads as one sentence.

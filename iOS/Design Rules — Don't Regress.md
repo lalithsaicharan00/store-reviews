@@ -71,6 +71,7 @@ Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Resear
 - **The sentence is built from the same saved habit Today shows** (`HabitCopy.sentence`, plus the parts of the day).
 - **On every screen the form opens, the sentence is pinned at the top** (`stickySentence`: a bar that stays while the choices scroll; the user, 29 Sep).
 - **Layout (the Round 3 mockup's form board):** previews · name, Icon | Colour · How much (Track an amount), How long (Time it), Steps (Checklist only), Limit (Cut down) · Each + adds (amounts only) · How often · then Time of Day and Reminders · then Starts and Ends. No explanation lines under the rows.
+- **Cut down has no Time of Day** (the user, 5 Oct 2026): its sentence ends without ", anytime", and one footer line under Group and Reminders says "It shows on Today under Quit or Cut Down. Log it only when it happens." A limit saved earlier keeps its time of day, unused. Report: [Limit Habits on Today](<../Research/Research Reports/Day Structure and Organization/Limit Habits on Today — Apart From What You Must Do.md>).
 - **A weekday of the month is one phrase row: "The [first ▾] [Saturday ▾] of the month."** The first menu is which one of that weekday in the month (first to fifth, or last: a weekday comes 4 or 5 times a month); the second is the weekday, all seven. Two separate rows, "Which" (six options) and "Day", looked like a mistake (29 Sep).
 - **Reminders open their own screen**; the row says when ("9:00 AM", "Off").
 - **Starts reads "Today"** (or "Tomorrow", "Wed 1 Oct") and **Ends reads "Never"**; each opens its own screen with a calendar.
@@ -140,13 +141,13 @@ Source: [Logging a Count — One Tap or Type](<../Research/Research Reports/Habi
 
 ## Timing a habit
 
-Source: [Timing a Habit — Start, See and Stop](<../Research/Research Reports/Habit Creation/Timing a Habit — Start, See and Stop.md>).
+Source: [Timing a Habit — Start, See and Stop](<../Research/Research Reports/Habit Creation/Timing a Habit — Start, See and Stop.md>) and [Timers — What People Expect When They Tap ▶](<../Research/Research Reports/Habit Creation/Timers — What People Expect When They Tap ▶.md>) (4 Oct 2026).
 
-- **▶ starts the timer in place, for any goal length.** Never open a full-screen timer for one habit: full screen belongs only to the routine player (Start on a section). Being sent to a timer screen is a top complaint.
+- **▶ starts the timer at once, for any goal length, and opens it full screen** (`TimerScreen`; the user, 4 Oct 2026: "it just runs in the row… it isn't intuitive"; supersedes 28 Sep's "never full screen for one habit"). **Never a trap:** ⌄ or a swipe down puts it away and the timer keeps running; closing never stops it or loses time. Users show both: a big timer to focus on is asked for (≈12), a timer screen you can't leave is a complaint (5). ≡ → Appearance → Timers → Open Timer Full Screen (on by default) turns it off; ▶ then starts it in the row only.
 - **A running timer must be visible**:
   - The row's line is a live clock, redrawn every second: "7:42/20 min" (`goalLine(running:)`).
-  - When the row is off screen or folded, a timer bar sits at the bottom of Today (`TimerBar`).
-  - Outside the app, a Live Activity shows it (`TimerPresence`; the `HabitsLiveActivity` extension).
+  - When the row is off screen or folded, a timer bar sits at the bottom of Today (`TimerBar`), like the iPhone's Now Playing bar: **tapping it opens the timer** full screen; ⏸ stops it.
+  - Outside the app, a Live Activity shows it (`TimerPresence`; the `HabitsLiveActivity` extension), with **Pause** (`StopTimerIntent`: stops and saves, never starts) and a tap that opens that habit's timer (`oftenenough://timer/<id>`). ≡ → Appearance → Timers → Show on Lock Screen (on by default) turns it off, besides iOS's own switch.
   - Never show only ▶ turning into ⏸.
 - **Keep the `TimelineView` inside the timed row itself.** A `TimelineView` higher up doesn't reliably redraw child rows whose inputs didn't change. And whole minutes hide a running timer for its first minute. Together these caused the "nothing moves" report (28 Sep).
 - **One notification when the goal is reached, never repeats or per-second pings.** The timer keeps counting past the goal.
@@ -164,8 +165,9 @@ Source: [Section Header — Start Button, Left Count and Icons](<../Research/Res
   - "▶ Start" in open sections.
   - Folded, ▶ appears **only on the Now section**.
   - **The Now button is primary** (filled ink); others are grey.
-  - Start is today only, never on Quitting.
+  - Start is today only, never on Quit or Cut Down.
 - Space order: status and Start never shrink; the name gives way first; the icons take the rest and end in "+N".
+- **Folded icons sit beside the whole name block, centred on the header** (the name and its "Starts 6 AM" line), never on the name's own line, with a clear gap of about 14 points that grows with the text size (`PartHeader.iconGap`, capped at 24). The user, 4 Oct 2026 (Current Work 38).
 
 ## Text lengths
 
@@ -189,7 +191,7 @@ Source: [Full-screen Focus Player — One Thing at a Time](<../Research/Research
 - **Section Start opens full screen**, centered on one habit. Keep native controls, the routine position, a next-item preview, Back, Skip and a reachable queue.
 - **No invented routine countdown.** Untimed items stay untimed; timed items use one existing count-up habit clock. Pause saves time; reaching the goal does not automatically advance. Next, Skip and Close save before leaving.
 - **Completion stays visible until Next.** A repeated check adds one; a count adds its saved increment; a checklist keeps its existing steps. Keep manual logging and exact-entry Undo available.
-- **Cut-down items are check-ins.** Include them even when under their limit. Continue never logs consumption or marks the whole day successful. Quit streaks stay outside the player.
+- **Limits are never in a routine** (5 Oct 2026; supersedes "Cut-down items are check-ins"): they sit under Quit or Cut Down, outside every time of day (see "Limit habits on Today" below). Quit streaks stay outside the player too. The player's limit handling remains only as a safety net.
 - Queue reordering and reviewed-limit state belong to the current session. Habit progress and timers persist; do not imply persisted routine history or a saved session cursor.
 
 ## Routine (focus) player
@@ -246,7 +248,7 @@ Report: [Weekly Habit Cards — What Each Card Shows](<../Research/Research Repo
 
   A week or month total colours a day by its share of a fair day (70 km a week: 10 km fills a day). A limit kept = full colour with ✓, over = grey ✕, today = plain grey until the day is over. Quit: clean = colour ✓, slip = grey ✕. Streaks are a number in the headline, never the colour.
 - **The palette is `HeatPalette`** (grey + 5 steps for every habit colour, light and dark): each step at one OKLCH lightness for every hue, so every colour's steps look equally strong; neighbours ≥ 0.07 apart in OKLab (≥ 0.043 under colour-vision deficiencies). Regenerate with `Day Marks Evidence/scripts/make.py` (in the report's folder); never pick shades by eye. Light mode darkens toward "more"; dark mode brightens. **Sign contrast, measured on all 13 colours (WCAG 1.4.11, 3:1):** light mode's white ✓ ≥ 3.11:1 (goal) and ≥ 5.14:1 (more); dark mode's ✓ is the habit's hue at OKLCH 0.24 / chroma 0.05, ≥ 4.41:1 (goal) and ≥ 7.27:1 (more). White can't serve dark mode: on its brightest step, "more", it is 2:1. ✕, ⏩, ⏸ grey ≥ 4.4:1; dashed outline ≥ 3.2:1 on the card.
-- **The key is a collapsible section (`HeatKeySection`)** at the top of Progress and as its own section on the habit's page, above its first squares (the user, 3 Oct 2026): open until the person folds it; the choice is kept (`heatKey.open`) and shared by both. **An accordion: its chevron points down while folded and up while open, never right** (a right chevron beside the dates' ‹ › reads as a page to go to). It has three rows: **Progress** (1–33 %, 34–66 %, 67–99 %, goal met 100 %, more), shown in green with "each habit uses its own colour"; **Planned that day** (not done, skipped, paused); **Other days** (still to come, not scheduled, today). The real squares.
+- **The key is a collapsible section (`HeatKeySection`)** at the top of Progress and as its own section on the habit's page, above its first squares (the user, 3 Oct 2026). **It opens by itself only on the first visit to each place it explains** (one habit's page; Progress's Week, Month, Year) and starts folded on every later visit; a tap opens it (the user, 5 Oct 2026, Current Work 25; supersedes "open until folded, shared"). Within a visit it never folds on its own: switching dates or scrolling it away is the same visit (`HeatKeyVisit`, one per page). Seen places are kept on the phone (`heatKey.seen`); test launches start with none. **An accordion: its chevron points down while folded and up while open, never right** (a right chevron beside the dates' ‹ › reads as a page to go to). It has three rows: **Progress** (1–33 %, 34–66 %, 67–99 %, goal met 100 %, more), shown in green with "each habit uses its own colour"; **Planned that day** (not done, skipped, paused); **Other days** (still to come, not scheduled, today). The real squares.
 - **Week and Month cards are worked out in the store** (`progressSnapshot(…, weekCards: true)`), never in a body. Year's layout (`YearLayout`) is made once per snapshot and shared by every card.
 
 ## Groups (built 30 Sep 2026)
@@ -262,16 +264,33 @@ Plan: [Groups — What to Build](<Docs/Specs/Groups — What to Build.md>), from
 - **Chip numbers are habits shown on the day open**, empty groups "–" and last. Counts are worked out only while the Filter sheet is open.
 - **Group numbers take a list of habits** (`dayScore(on:habits:)`, `progressSnapshot(…group:)`); day scores are cached per group. Today and Progress remember their own choice.
 
+## Habit details: Notes in month cards (built 5 Oct 2026)
+
+- **History's Add Entry and Go to Date, and Notes' Add Note, are secondary actions** (the user, 5 Oct 2026, Current Work 26): one shared style (`pageAction()`): native bordered buttons at their own width, regular size, subheadline, ink text on a light ink tint, the same in both tabs. Never the filled style on ink (white text on dark mode's off-white ink was unreadable), never full-width and large.
+- **Notes: search across the full width, Add Note on its own row under it** (the user, 5 Oct 2026: Add Note was bigger than a cramped search beside it). An inline search above the list, not a search page: it only filters this habit's notes, and the months stay in view (the 4 Oct handoff; Apple's search-field guidance). No search field while there are no notes.
+
+- **Notes come in a card per month, shaped as History's** (the user, 5 Oct 2026, Current Work 46): the month's name and "N notes", folding from its header with History's chevron, the newest two open; a row per day's note, dated as History dates its days ("Sat 4 Today"), its first two lines, opening the note. A search opens every month it finds. `NoteMonthCard` in `HabitNotesTab.swift`; `HabitPageUITests.testNotesFoldByMonthLikeHistory`.
+
+## Limit habits on Today: Quit or Cut Down (built 5 Oct 2026)
+
+Source: [Limit Habits on Today — Apart From What You Must Do](<../Research/Research Reports/Day Structure and Organization/Limit Habits on Today — Apart From What You Must Do.md>). The user's words: "it signals like you have to log something… you log it only if you do it."
+
+- **Limits (cut-down habits) never sit in a time of day.** They share one card with quit habits, **"Quit or Cut Down"** (the + flow's own words, so a limit isn't read as something to quit), in the person's own order (`Habit.isQuitOrLimit`, `HabitStore.cardMembers`).
+- **The card has no "N left" and no Start**, folds like any card, and moves among the cards in Arrange Your Day. Folded, its whole name shows (`PartHeader.foldsTitle`), ending in "…" only at the largest text sizes.
+- **A limit keeps its ordinary row** (+, ▶ for a time limit, the Day sheet, swipes, the menu) and shows on any day it applies; quit counters stay today only.
+- **Never put a limit back in a time of day or a routine**, and never give the card a status or Start: in a list of things to do, a limit reads as one more thing to do (users show workarounds: rewording, ticking at night, snoozing reminders).
+- **Tests replaced, not dropped:** `FocusPlayerUITests.testLimitCheckInNeverLogsConsumptionOrCompletesTheDay` became `testLimitIsNotInTheRoutineAndWaitsUnderQuitOrCutDown`, and `testSectionWithOnlyALimitStillHasStart` became `testOnlyALimitShowsUnderQuitOrCutDownWithoutStart`: they checked limits inside a routine, which no longer happens. The manual-log check moved from the limit to Drink water.
+
 ## Arrange Your Day: Edit on Today (built 3 Oct 2026)
 
 Research: [27. Arranging and Filtering Today](<../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/27. Arranging and Filtering Today — What People Expect.md>). The user's points: [checklist](<Docs/Checklists/Today — Arrange Your Day (item 5 build).md>).
 
 - **Today's normal layout doesn't change beyond these points** (the user: "don't change anything drastically"). No heading on Today. The bottom keeps only "Note for the Day"; "Edit Times of Day" is gone from it.
-- **Each timed section says when it starts, under its name: "Starts 6 AM"** (start only; ":00" dropped on the hour), folded or open, on its own line so it never takes room from the folded icons or "N left". Anytime, Quitting and Paused have none.
-- **Edit turns Today into "Arrange Your Day"** (never "Edit Today"), with one plain line saying what can be done. It lists **every habit** in each card, not only today's (one-time tasks already done are left out), Anytime and Quitting included.
+- **Each timed section says when it starts, under its name: "Starts 6 AM"** (start only; ":00" dropped on the hour), folded or open, on its own line so it never takes room from the folded icons or "N left". Anytime, Quit or Cut Down and Paused have none.
+- **Edit turns Today into "Arrange Your Day"** (never "Edit Today"), with one plain line saying what can be done. It lists **every habit** in each card, not only today's (one-time tasks already done are left out), Anytime and Quit or Cut Down included.
 - **Habits' order is the person's own.** A new habit or task goes to the end of its section; reminder times never reorder Today. Habits and tasks share one order in each section, and both can be dragged (tasks research, report 27). Sorting is a one-off action (··· → By Reminder Time / A to Z); dragging carries on from it. *Supersedes "timed rows by their earliest time".*
-- **Timed sections follow their times; only Anytime and Quitting move** (··· → Move Up / Down / to Top / to Bottom). Paused stays last.
-- **Each card's ··· menu, short names:** Rename, Change Time (timed only), Sort habits, Move (Anytime and Quitting only), Delete (timed only; its habits move to Anytime, and the dialog says so).
+- **Timed sections follow their times; only Anytime and Quit or Cut Down move** (··· → Move Up / Down / to Top / to Bottom). Paused stays last.
+- **Each card's ··· menu, short names:** Rename, Change Time (timed only), Sort habits, Move (Anytime and Quit or Cut Down only), Delete (timed only; its habits move to Anytime, and the dialog says so).
 - **New or changed times split what they overlap** (`SectionPlan`): the form shows "Your day" with every section's new times, and a dialog lists them before anything is split. Covering a whole section is refused; nothing is ever deleted by a split. `ArrangeCheck` (`-arrangecheck`) covers every direction.
 - **One tip, on Edit, at the right moment** (`ArrangeTip`): only once some section has two or more habits and Today has been opened on three different days; once; gone when Edit is used; never in test launches.
 
@@ -295,7 +314,7 @@ Source: [Today's Rows — Tap, Swipe, the Day Sheet and Delete](<../Research/Res
 
 - **Tap the row → its Day sheet** for the day Today shows (`store.dayTarget`, one sheet on Today, never one per row). Tasks keep only their tick. The round button never opens anything but Add Entry (+ with no step).
 - **The round button: ✓ toggles that day's tick** (`isTicked`: a weekly count's day, not the week); **+ adds** (`countsUp`: a check counted several times a day shows +1 like an amount); ▶/⏸; ⌄ for a checklist's steps. A tap never takes back part of a count.
-- **Swipes reveal labelled buttons.** Left: Note (full swipe), Skip / Undo Skip, Pause / Resume. Right: "Undo +1 glass" (the day's last entry, named), no full swipe. Nothing destructive on a swipe.
+- **Swipes reveal labelled buttons and never act by themselves** (4 Oct 2026, report "Swipe Actions — Reveal, Never Act"; supersedes the full-swipe Note): no full swipe on either side; two buttons at most. Left: Skip / Undo Skip at the edge, then Note (a quit row: Log Slip, then Note; a task: Note). Right: "Undo +1 glass" (the day's last entry, named). Pause / Resume is in the long-press menu and the Day sheet. Nothing destructive on a swipe.
 - **Touch and hold = the sheet's actions:** Open Habit Page (pushed on Today's stack, `HabitPageRoute`), Edit Habit, Add Entry…, Note, Skip, Pause…, the named Undo, All Notes. No Delete, no "Edit Today's Progress…" (the tap does it).
 - **The Day sheet's 3 Oct implementation baseline, superseded by the 4 Oct design proposal below:** icon, name and plan → Result → the habit's own control (Done switch, Add 1, +step, Start Timer, steps, Log a Slip) and Add Entry → that day's entries → Today/This Day (Skip, Note) → Habit (Open Habit Page from Today, Edit, Pause). The implementation still has the bottom ‹ date › bar. **Archive and Delete only in the ⋯ menu**, Delete confirmed with "Archive Instead".
 - **Undo names what it takes back** (`Entry.undoLabel`): "Undo +1 glass", "Undo 20 min", "Undo +1", "Undo Done", "Undo Slip", "Undo Cleanser".
@@ -311,7 +330,8 @@ Source: [Today's Rows — Tap, Swipe, the Day Sheet and Delete](<../Research/Res
 Source: [Ticking Off, Folding and Small Settings — What People Need](<../Research/Research Reports/Home Screen and Visual Design/Ticking Off, Folding and Small Settings — What People Need.md>). Checklist: `Docs/Checklists/Animations and Settings.md`.
 
 - **Nothing on Today moves in the middle of a run of taps.** Every log (✓, +, a timer stopped, a step, a sheet closed after logging, an undo) calls `TodayLayout.hold` before changing data. Order and folds stay as shown until 1.5 s after the last log; then finished parts fold and done rows sink together (`Motion.settle`). **By default done habits move below the rest** (the user's final call, 3 Oct 2026, reversing that morning's "stay in place"; Rulebook U13); Appearance → Done Habits → Stay in Place keeps them where they are. Never sort or fold straight from a tap. The row offering "Add note" still keeps its place (Notes rule).
-- **Feedback comes from the tap, never from a redraw** (`TickFeedback`): no `sensoryFeedback(trigger: done)` on a row or button, since changing the day flips `done` and buzzed. Haptics on by default, sound off; both switchable in ≡ → Appearance. No confetti or celebration screens.
+- **Feedback comes from the log, never from a redraw** (`TickFeedback`): no `sensoryFeedback(trigger: done)` on a row or button, since changing the day flips `done` and buzzed. Haptics on by default, sound off; both switchable in ≡ → Appearance. No confetti or celebration screens.
+- **The completion (success haptic and the chime) plays once, at the moment a habit becomes complete** (the user, 5 Oct 2026, Current Work 18): the last of a checklist's steps; the log that crosses an amount's goal, even past it (9 → 11 of 10), and nothing for logs after; typed time or an amount when Log is tapped, if it crossed; an edit that crosses, on Save; a running timer the moment its clock reaches the goal, or, if the app was away then, when it's stopped; a period goal on the log that meets the week or month. Every other log is a light tap. **Never for quit habits (Log Slip) or limits**: reaching a number there isn't something to celebrate. The store decides for every log, whatever screen it came from (`HabitStore+Feedback`, `onLog`); views give only undo's and a timer start's taps. In the app only: a log from Siri, a widget or a notification is silent. Checked by `FeedbackCheck` (`CompletionFeedbackUITests`).
 - **Tick motion is a transform on the 34-pt button and the row fill** (`keyframeAnimator` scale, `ProgressFill` scaled from the leading edge). Don't animate a row's layout, and never block the next tap.
 - **Each time of day is its own view (`PartSection`) reading only its own `FoldBox`.** Folding one part must not redraw Today's other rows. Don't put fold state back into `TodayView`'s `@State`, and don't pass a fresh `Binding` into `HabitRow` (it made every row redraw on every Today redraw).
 - **Reduce Motion:** no pop, sweep or slide; folds and settles fade (`Motion`).

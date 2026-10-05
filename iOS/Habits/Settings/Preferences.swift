@@ -17,10 +17,16 @@ enum Preferences {
     /// Today's Filter: leave done habits, or done tasks, off Today (the user, 3 Oct 2026). Off by default.
     static let hideDoneHabits = "today.hideDoneHabits"
     static let hideDoneTasks = "today.hideDoneTasks"
+    /// ▶ on a timed habit also opens its full-screen timer (`TimerScreen`); off, ▶ only starts it in the row. On by default
+    /// (report "Timers — What People Expect When They Tap ▶", 4 Oct 2026).
+    static let timerScreen = "timers.openScreen"
+    /// A running timer shows on the Lock Screen and in the Dynamic Island (a Live Activity). On by default; iOS's own
+    /// Settings → Often Enough → Live Activities turns it off too.
+    static let timerLiveActivity = "timers.liveActivity"
 
     static func register() {
         UserDefaults.standard.register(defaults: [theme: Theme.automatic.rawValue, haptics: true, sound: false,
-                                                  doneOrder: DoneOrder.bottom.rawValue])
+                                                  doneOrder: DoneOrder.bottom.rawValue, timerScreen: true, timerLiveActivity: true])
     }
 }
 
@@ -85,7 +91,8 @@ enum DoneOrder: String, CaseIterable, Identifiable {
     static var hapticsOn: Bool { UserDefaults.standard.bool(forKey: Preferences.haptics) }
     static var soundOn: Bool { UserDefaults.standard.bool(forKey: Preferences.sound) }
 
-    /// One log: a light tap on the way to the goal; a success tap (and the chime, if on) when it makes the habit done.
+    /// One log: a light tap on the way to the goal; a success tap (and the chime, if on) when it makes the habit complete.
+    /// Called by the store for every log (`HabitStore.onLog`), so every place a log comes from behaves the same.
     static func logged(finished: Bool) {
         if hapticsOn {
             if finished { success.notificationOccurred(.success) } else { light.impactOccurred() }
@@ -95,6 +102,11 @@ enum DoneOrder: String, CaseIterable, Identifiable {
 
     /// A timer started: a light tap, nothing logged yet.
     static func started() {
+        if hapticsOn { light.impactOccurred() }
+    }
+
+    /// Anything else a tap changes without logging (a skip): a light tap.
+    static func tapped() {
         if hapticsOn { light.impactOccurred() }
     }
 

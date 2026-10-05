@@ -37,6 +37,13 @@ final class HabitStore {
     @ObservationIgnored private let databaseOpened: Bool
     /// Shown to the user when a write fails or the data can't be read.
     var problem: String?
+    /// A person's own log: `true` when it makes the habit complete (a success tap and the chime), `false` on the way (a
+    /// light tap). Set by `AppModel` to `TickFeedback`; nil where nothing listens. One rule for every place a log comes
+    /// from (Current Work 18, 5 Oct 2026; `HabitStore+Feedback.swift`).
+    @ObservationIgnored var onLog: (@MainActor (Bool) -> Void)? { didSet { watchTimerGoals() } }
+    /// Running timers whose goal moment already played the completion, so stopping them doesn't play it again.
+    @ObservationIgnored var timerGoalCelebrated: Set<UUID> = []
+    @ObservationIgnored var timerGoalWatch: Task<Void, Never>?
 
     @ObservationIgnored private let suppliedCalendar: Calendar?
     init(repository: HabitRepository, calendar: Calendar? = nil, databaseOpened: Bool = true, analytics: Analytics = .shared) {
@@ -178,6 +185,8 @@ final class HabitStore {
     var noteTarget: NoteTarget?
     /// History is hosted by Today, so skipping a day cannot remove the row that owns its sheet.
     var dayTarget: DayTarget?
+    /// The habit whose full-screen timer is open (`TimerScreen`), from ▶, the timer bar or the Live Activity.
+    var timerScreen: UUID?
     struct DayTarget: Identifiable {
         let habitID: UUID
         let day: LocalDay
@@ -668,7 +677,7 @@ final class HabitStore {
     func cardMembers() -> [String: [Habit]] {
         var cards: [String: [Habit]] = [:]
         for habit in habits where !habit.archived {
-            if habit.kind == .quit { cards[.quittingCard, default: []].append(habit); continue }
+            if habit.isQuitOrLimit { cards[.quittingCard, default: []].append(habit); continue }
             if habit.kind == .task, let due = habit.dueDay, isDone(habit, on: due) { continue }
             var seen = Set<String>()
             for placement in placements(of: habit) where seen.insert(placement.section).inserted {
@@ -1517,6 +1526,7 @@ final class HabitStore {
             settings.weekStart = min(max(settings.weekStart, 1), 7)
             timers = running
             timerSlots = runningSlots
+            watchTimerGoals()
             skips = loadedSkips
             taskMoves = loadedMoves
             pauses = loadedPauses
@@ -2255,6 +2265,7 @@ final class HabitStore {
         // save fails, `perform` reloads what's really stored.
         timers[habit.id] = now
         timerSlots[habit.id] = slot
+        watchTimerGoals()
         let key = Keys.timerPrefix + habit.id.uuidString
         let value = String(now.millis) + (slot.map { "|" + $0 } ?? "")
         perform { [self] telemetry in
@@ -2270,10 +2281,14 @@ final class HabitStore {
         let minutes = max(0, end.timeIntervalSince(start)) / 60
         let entry = minutes >= 1 / 60
             ? Entry(habitID: habit.id, day: day, value: minutes, slot: timerSlots[habit.id], source: source) : nil
-        // Same as starting: the time shows as saved at once; the database write follows in order.
-        if let entry { insertEntry(entry); offerUndo(entry) }
+        // Same as starting: the time shows as saved at once; the database write follows in order. The timer goes first,
+        // so "complete before" counts only what was saved before this session.
         timers.removeValue(forKey: habit.id)
         timerSlots.removeValue(forKey: habit.id)
+        let celebrated = timerGoalCelebrated.remove(habit.id) != nil
+        let wasComplete = isComplete(habit, on: day)
+        if let entry { insertEntry(entry); offerUndo(entry) }
+        logFeedback(habit, on: day, wasComplete: wasComplete, celebrated: celebrated)
         let key = Keys.timerPrefix + habit.id.uuidString
         perform { [self] telemetry in
             try await repository.finishTimer(entry: entry?.record, key: key)
@@ -2312,7 +2327,9 @@ final class HabitStore {
         let showStreaks = (UserDefaults.standard.object(forKey: ProgressOptions.showStreaks) as? Bool) ?? true
         let habit = habits.first { $0.id == entry.habitID }
         let streakBefore = showStreaks ? habit.map { streak(of: $0, asOf: today()) } : nil
+        let wasComplete = habit.map { isComplete($0, on: entry.day) } ?? false
         withAnimation { insertEntry(entry); offerUndo(entry) }
+        if let habit { logFeedback(habit, on: entry.day, wasComplete: wasComplete) }
         let score = isToday ? todayScore(on: entry.day) : nil
         if let score, !wasFull, score.isFull { dayFinishedAt = .now }
         milestoneOffer = nil
@@ -2344,6 +2361,7 @@ final class HabitStore {
         let id = entries[index].id
         let task = habits.first { $0.id == entries[index].habitID }?.kind == .task
         withAnimation { removeEntry(at: index) }
+        if !timers.isEmpty { watchTimerGoals() }
         perform { [self] telemetry in
             try await repository.removeEntry(id: id.uuidString, at: Date.now.millis)
             analytics.count(.undo, ticket: telemetry)
@@ -2368,12 +2386,14 @@ final class HabitStore {
         let kind = rule(habit, on: entry.day).kind
         guard entry.day <= today(), entry.stepID == nil, kind != .task else { return }
         if kind == .check, value.rounded() != value { return }
+        let wasComplete = isComplete(habit, on: entry.day)
         entry.value = value
         if kind == .quit, let date {
             guard recordingDay(at: date, for: entry) == entry.day, date <= .now, date >= min(habit.quitSince ?? habit.createdAt, habit.createdAt) else { return }
             entry.createdAt = date
         }
         replaceEntry(entry, at: index)
+        logFeedback(habit, on: entry.day, wasComplete: wasComplete)
         let updated = entry
         perform { [self] telemetry in
             try await repository.editEntry(id: updated.id.uuidString, value: updated.value, createdAt: updated.createdAt.millis)

@@ -52,7 +52,7 @@ struct PartSection: View {
         let ordered = layout.order(part, fresh: fresh)
         Section {
             PartHeader(title: title, habits: items.map(\.habit), left: left, isNow: isNow, isOpen: open,
-                       onStart: isToday && items.contains(where: { $0.habit.atMost || done[$0.id] != true }) ? onStart : nil,
+                       onStart: isToday && items.contains(where: { done[$0.id] != true }) ? onStart : nil,
                        onToggle: { layout.setOpen(part, !open, reduceMotion: reduceMotion) },
                        subtitle: store.section(part).start.map(DaySection.startsText))
                 .id(TodayView.headerKey(part))

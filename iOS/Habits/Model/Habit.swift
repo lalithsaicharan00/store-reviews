@@ -101,7 +101,7 @@ extension String {
     static let morning = "morning"
     static let afternoon = "afternoon"
     static let evening = "evening"
-    /// Today's Quitting card in `HabitStore.todayCards` (not a time of day).
+    /// Today's "Quit or Cut Down" card in `HabitStore.todayCards` (not a time of day): quit habits and limits.
     static let quittingCard = "quitting"
 }
 
@@ -195,6 +195,10 @@ struct Habit: Identifiable, Codable, Hashable, Sendable {
     var checkUnit: String?
     /// Amount habits: the goal is a maximum ("no more than 2 coffees"), not a minimum.
     var atMost = false
+    /// Quit habits and limits: logged only when they happen, never something to do. On Today they share the "Quit or
+    /// Cut Down" card, apart from the times of day (report "Limit Habits on Today — Apart From What You Must Do", 5 Oct
+    /// 2026).
+    var isQuitOrLimit: Bool { kind == .quit || (atMost && kind != .task) }
     /// One-time tasks: the day it is for, and an optional time (minutes after midnight).
     var dueDay: LocalDay?
     var dueMinute: Int?

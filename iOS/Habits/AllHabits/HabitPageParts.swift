@@ -52,16 +52,20 @@ enum HabitTab: String, CaseIterable, Identifiable, Hashable {
         case .notes:
             guard key != notesKey else { return }
             notesKey = key
-            notes = NoteMonth.group(store.notes(of: key.habit), calendar: store.calendar)
+            notes = NoteMonth.group(store.notes(of: key.habit), today: key.today, calendar: store.calendar)
         }
     }
 }
 
-/// One month of notes, newest first.
+/// One month of notes, newest first: a card like History's month, a row per day's note (Current Work 46, 5 Oct 2026).
 struct NoteMonth: Hashable, Identifiable {
     struct Note: Hashable, Identifiable {
         let day: LocalDay
         let text: String
+        /// "Sat 3", as History's day rows say it; made once here, never while drawing (S8).
+        var title = ""
+        /// "Today", "Yesterday", or nil.
+        var relative: String?
         var id: LocalDay { day }
     }
     let first: LocalDay
@@ -71,12 +75,19 @@ struct NoteMonth: Hashable, Identifiable {
     /// card under Notes (3 Oct 2026; lesson L11).
     var id: String { "notes-" + first.key }
 
-    static func group(_ notes: [(day: LocalDay, text: String)], calendar: Calendar) -> [NoteMonth] {
+    /// "3 notes", under the month's name as History's months show how they went.
+    var summary: String { notes.count == 1 ? "1 note" : "\(notes.count) notes" }
+
+    static func group(_ notes: [(day: LocalDay, text: String)], today: LocalDay, calendar: Calendar) -> [NoteMonth] {
         let names = calendar.standaloneMonthSymbols
+        let shortDays = calendar.shortStandaloneWeekdaySymbols
+        let yesterday = today.adding(days: -1, calendar: calendar)
         var months: [NoteMonth] = []
         for note in notes {
             let first = LocalDay(year: note.day.year, month: note.day.month, day: 1)
-            let item = Note(day: note.day, text: note.text)
+            let item = Note(day: note.day, text: note.text,
+                            title: "\(shortDays[note.day.weekday(calendar: calendar) - 1]) \(note.day.day)",
+                            relative: note.day == today ? "Today" : note.day == yesterday ? "Yesterday" : nil)
             if let last = months.last, last.first == first {
                 months[months.count - 1] = NoteMonth(first: first, title: last.title, notes: last.notes + [item])
             } else {
@@ -88,6 +99,14 @@ struct NoteMonth: Hashable, Identifiable {
 }
 
 extension View {
+    /// History's and Notes' actions (Add Entry, Go to Date, Add Note): secondary, used now and then, so one native
+    /// bordered size for all of them, the same in both tabs (the user, 5 Oct 2026, Current Work 26).
+    func pageAction() -> some View {
+        buttonStyle(.bordered)
+            .controlSize(.regular)
+            .font(.subheadline.weight(.semibold))
+    }
+
     /// A card on the habit page: 16-point padding, the app's card colour and corner (as Progress's cards).
     func pageCard(padding: CGFloat = WeekSpacing.card) -> some View {
         self.padding(padding)
@@ -141,25 +160,24 @@ struct HabitHistoryTab: View {
     @State private var toggled: Set<LocalDay> = []
 
     var body: some View {
+        // Secondary actions, used now and then, so they're sized as such: native bordered buttons at their own width,
+        // ink text on a light ink tint, readable in light and dark (the user, 5 Oct 2026, Current Work 26: Add Entry's
+        // filled style put white text on the off-white ink of dark mode, and both were large and full-width).
         HStack(spacing: WeekSpacing.tight) {
             Button(action: addEntry) {
                 Label("Add Entry", systemImage: "plus")
-                    .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.borderedProminent)
             .accessibilityIdentifier("history-add-entry")
             Button(action: goToDate) {
                 Label("Go to Date", systemImage: "calendar")
-                    .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.bordered)
             .accessibilityIdentifier("history-go-to-date")
+            Spacer(minLength: 0)
         }
-        .controlSize(.large)
-        .font(.body.weight(.semibold))
+        .pageAction()
         .pageItem()
-        // What the squares mean, folded or open, shared with Progress (the user, 3 Oct 2026).
-        HeatKeySection()
+        // What the squares mean, open by itself only on the first visit to this habit's page (Current Work 25).
+        HeatKeySection(place: HeatKeyVisit.habit(habit.id))
             .pageItem()
         if months.isEmpty {
             Text("Nothing recorded yet. Days appear here once they're planned or logged.")

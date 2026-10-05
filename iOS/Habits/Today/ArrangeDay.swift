@@ -2,9 +2,9 @@ import SwiftUI
 
 /// Edit on Today: "Arrange Your Day" (the user, 3 Oct 2026; report 27, B). Today itself turns into the arranging view:
 /// every habit in each time of day (not only today's), with handles to put them in order, and each card's ··· menu to
-/// rename, retime, sort or delete a time of day, or to move Anytime and Quitting. Done (in Today's top bar) goes back.
+/// rename, retime, sort or delete a time of day, or to move Anytime and Quit or Cut Down. Done (in Today's top bar) goes back.
 ///
-/// Timed sections follow their times; only Anytime and Quitting are moved by hand. Habits and tasks share one order in
+/// Timed sections follow their times; only Anytime and Quit or Cut Down are moved by hand. Habits and tasks share one order in
 /// each card, and both can be dragged (report 27, "Tasks in a time of day").
 struct ArrangeDayView: View {
     @Environment(HabitStore.self) private var store
@@ -24,7 +24,7 @@ struct ArrangeDayView: View {
                     Text("Arrange Your Day")
                         .font(.title2.weight(.bold))
                         .accessibilityAddTraits(.isHeader)
-                    Text("All your habits, not only today's. Drag \(Image(systemName: "line.3.horizontal")) to change their order in a time of day. Use \(Image(systemName: "ellipsis.circle")) to rename, retime, sort or delete a time of day, or to move Anytime and Quitting up or down.")
+                    Text("All your habits, not only today's. Drag \(Image(systemName: "line.3.horizontal")) to change their order in a time of day. Use \(Image(systemName: "ellipsis.circle")) to rename, retime, sort or delete a time of day, or to move Anytime and Quit or Cut Down up or down.")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -35,7 +35,7 @@ struct ArrangeDayView: View {
                 .accessibilityIdentifier("arrange-heading")
             }
             ForEach(cards, id: \.self) { card in
-                // Quitting only when there's something to quit, as on Today.
+                // Quit or Cut Down only when it holds something, as on Today.
                 if card != .quittingCard || members[card]?.isEmpty == false {
                     ArrangeCard(card: card, habits: members[card] ?? [], cards: cards,
                                 onRename: { newName = $0.name; renaming = $0 },
@@ -97,7 +97,7 @@ private struct ArrangeCard: View {
     @Environment(HabitStore.self) private var store
 
     private var section: DaySection? { card == .quittingCard ? nil : store.section(card) }
-    private var title: String { section?.name ?? "Quitting" }
+    private var title: String { section?.name ?? TodayView.quittingTitle }
     private var movable: Bool { card == .anytime || card == .quittingCard }
 
     var body: some View {

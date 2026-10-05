@@ -73,7 +73,7 @@ final class GroupsUITests: XCTestCase {
         field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: old.count + 2) + text)
     }
 
-    /// No groups yet: Filter explains them, + New Group makes one with habits, its chip filters Today (Quitting too),
+    /// No groups yet: Filter explains them, + New Group makes one with habits, its chip filters Today (Quit or Cut Down too),
     /// and the ✕ chip at the top of Today clears it.
     func testFirstGroupFromFilter() {
         launch()
@@ -111,12 +111,12 @@ final class GroupsUITests: XCTestCase {
         XCTAssertEqual(active.label, "Showing Health only")
         XCTAssertTrue(text("Read").exists)
         XCTAssertFalse(text("Water").exists, "Water has no group")
-        XCTAssertFalse(text("Smoking").exists, "Quitting shows only the group")
+        XCTAssertFalse(text("Smoking").exists, "Quit or Cut Down shows only the group")
         shot("g04-today-filtered")
 
         active.tap()
         XCTAssertTrue(active.waitForNonExistence(timeout: 3), "✕ clears the filter")
-        XCTAssertTrue(text("Smoking").waitForExistence(timeout: 3), "Quitting is back")
+        XCTAssertTrue(text("Smoking").waitForExistence(timeout: 3), "Quit or Cut Down is back")
         // Water is done, so it sits at the end of Anytime, below the fold on a small screen.
         app.reveal(text("Water"))
         shot("g04b-today-all")
@@ -278,5 +278,118 @@ final class GroupsUITests: XCTestCase {
         app.reveal(text("No Group"))
         XCTAssertTrue(text("No Group").exists, "Habits with no group get their own section")
         shot("g12-habits-by-group")
+    }
+
+    // MARK: Groups tested properly (Current Work 10, 4 Oct 2026): order, deleting a full group, own choices, Start, names
+
+    private func openGroupsEditor() {
+        openFilter()
+        app.buttons["groups-edit"].tap()
+        XCTAssertTrue(app.navigationBars["Groups"].waitForExistence(timeout: 3))
+    }
+
+    private func backToFilter() {
+        app.navigationBars["Groups"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["Filter"].waitForExistence(timeout: 3))
+    }
+
+    /// Deleting a group with habits keeps every habit, and its history, with no group (Rulebook D6).
+    func testDeletingAGroupKeepsItsHabits() {
+        launch(["-groups-demo"])
+        openGroupsEditor()
+        app.descendants(matching: .any)["groups-row-Home"].firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["Edit Group"].waitForExistence(timeout: 3))
+        tapInForm(app.buttons["group-delete"])
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'habits stay, with no group'")).firstMatch
+            .waitForExistence(timeout: 3), "It says the habits stay")
+        shot("g13-delete-full-group")
+        app.buttons["Delete Group"].firstMatch.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["groups-row-Home"].firstMatch.waitForNonExistence(timeout: 3))
+        backToFilter()
+        XCTAssertFalse(chip("Home").exists, "No Home chip")
+        closeFilter()
+        for name in ["Call family", "Smoking"] {
+            let habit = app.staticTexts[name].firstMatch
+            app.reveal(habit, clear: true)
+            XCTAssertTrue(habit.exists, "\(name) is still on Today")
+        }
+    }
+
+    /// The groups' order is the person's own: dragged, it says "Your order" and the chips follow; Sort A to Z goes back.
+    func testGroupOrderIsThePersonsOwn() {
+        launch(["-groups-demo"])
+        openGroupsEditor()
+        app.navigationBars["Groups"].buttons["Edit"].tap()
+        let handle = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'reorder' AND label CONTAINS 'Home'")).firstMatch
+        XCTAssertTrue(handle.waitForExistence(timeout: 3), "Each group can be dragged: " +
+                      app.buttons.allElementsBoundByIndex.map(\.label).joined(separator: " | "))
+        let health = app.descendants(matching: .any)["groups-row-Health"].firstMatch
+        // Slowly, and held where it lands, so the list takes the drop (a quick release was missed once, 5 Oct 2026).
+        handle.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+            .press(forDuration: 0.8, thenDragTo: health.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.05)),
+                   withVelocity: .slow, thenHoldForDuration: 0.6)
+        app.navigationBars["Groups"].buttons["Done"].tap()
+        XCTAssertTrue(app.buttons["groups-sort-az"].waitForExistence(timeout: 3), "Your order, with Sort A to Z")
+        shot("g14-your-order")
+        backToFilter()
+        XCTAssertLessThan(chip("Home").frame.minX, chip("Health").frame.minX, "The chips follow the person's order")
+        app.buttons["groups-edit"].tap()
+        app.buttons["groups-sort-az"].tap()
+        backToFilter()
+        XCTAssertLessThan(chip("Health").frame.minX, chip("Home").frame.minX, "Sort A to Z goes back")
+        closeFilter()
+    }
+
+    /// Today and Progress keep their own group; Start on a filtered Today plays only the habits shown.
+    func testTodayAndProgressKeepTheirOwnChoiceAndStartPlaysWhatsShown() {
+        launch(["-groups-demo"])
+        openFilter()
+        tapChip("Mind")
+        closeFilter()
+        XCTAssertEqual(app.buttons["group-filter-chip"].label, "Showing Mind only")
+        app.buttons["menu-button"].tap()
+        app.buttons["menu-progress"].tap()
+        XCTAssertTrue(app.navigationBars["Progress"].waitForExistence(timeout: 5))
+        XCTAssertTrue(chip("all").waitForExistence(timeout: 3))
+        XCTAssertTrue(chip("all").isSelected, "Progress keeps its own choice: All")
+        XCTAssertTrue(app.buttons["progress-row-Water"].waitForExistence(timeout: 3))
+        app.navigationBars["Progress"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.buttons["group-filter-chip"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.buttons["group-filter-chip"].label, "Showing Mind only", "Today still shows Mind")
+
+        let start = app.buttons["Start Anytime routine"]
+        app.reveal(start, clear: true)
+        start.tap()
+        XCTAssertTrue(app.buttons["routine-queue"].waitForExistence(timeout: 5))
+        app.buttons["routine-queue"].tap()
+        XCTAssertTrue(app.buttons["queue-Read"].waitForExistence(timeout: 3), "Mind's habit is in the routine")
+        XCTAssertFalse(app.buttons["queue-Water"].exists, "Health's isn't: Start plays only what's shown")
+        shot("g15-start-filtered")
+        app.navigationBars["Your routine"].buttons["Done"].tap()
+        app.buttons["Close"].tap()
+    }
+
+    /// Two groups can't share a name; Pause These Habits pauses a whole group at once.
+    func testNamesAreUniqueAndAGroupCanPause() {
+        launch(["-groups-demo"])
+        openFilter()
+        app.buttons["group-new"].tap()
+        XCTAssertTrue(app.navigationBars["New Group"].waitForExistence(timeout: 3))
+        let field = app.textFields["group-name-field"]
+        XCTAssertTrue(field.waitForExistence(timeout: 3))
+        field.tap()
+        field.typeText("Health")
+        XCTAssertTrue(app.staticTexts["You already have a group called Health."].waitForExistence(timeout: 3))
+        XCTAssertFalse(app.navigationBars["New Group"].buttons["group-save"].isEnabled, "Can't save a second Health")
+        app.navigationBars["New Group"].buttons["Cancel"].tap()
+        XCTAssertTrue(app.navigationBars["Filter"].waitForExistence(timeout: 3))
+        app.buttons["groups-edit"].tap()
+        app.descendants(matching: .any)["groups-row-Mind"].firstMatch.tap()
+        XCTAssertTrue(app.navigationBars["Edit Group"].waitForExistence(timeout: 3))
+        tapInForm(app.buttons["group-pause"])
+        let pause = app.navigationBars.matching(NSPredicate(format: "identifier BEGINSWITH 'Pause '")).firstMatch
+        XCTAssertTrue(pause.waitForExistence(timeout: 3), "Pause These Habits opens the pause sheet for the group")
+        shot("g16-pause-group")
+        pause.buttons["Cancel"].tap()
     }
 }

@@ -159,15 +159,15 @@ struct HabitRow: View {
             case .pause: PauseSheet(habit: habit)
             }
         }
-        // Swipe left: a note (the full swipe, harmless), Skip and Pause, each a labelled button the swipe reveals; never an
-        // action performed unseen (report "Today's Rows": accidental skips and "which way is which" came from swipes
-        // that act on their own).
-        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+        // Swipe left reveals Skip (at the edge) and Note; a swipe never acts by itself, however far it goes (the user,
+        // 4 Oct 2026: a long swipe opened Note; report "Swipe Actions — Reveal, Never Act"). Two buttons, so both are easy
+        // to reach; Pause lives in the long-press menu and the Day sheet.
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             if day <= store.today() && lineOverride == nil {
+                if habit.kind != .task { RowSkipButton(habit: habit, day: day) }
                 Button { startWriting() } label: { Label(store.note(of: habit, on: day) == nil ? "Note" : "Edit Note", systemImage: "note.text") }
                     .tint(.indigo)
-                if habit.kind != .task { RowSkipButton(habit: habit, day: day) }
-                if habit.kind != .task { RowPauseButton(habit: habit, showPause: showing(.pause)) }
+                    .accessibilityIdentifier("row-swipe-note")
             }
         }
         // Swipe right: Undo, saying what it takes back ("Undo +1 glass"), when this day has an entry. No full swipe.
@@ -225,11 +225,12 @@ struct HabitRow: View {
         withAnimation(Motion.tick(reduceMotion)) { store.undoEntry(entry.id) }
     }
 
-    /// Every log from the row's button: hold Today's order, answer the tap (haptic, chime), then change the data inside
-    /// the tick animation so the button fills and the row's colour sweeps across (research §1).
-    private func log(finished: Bool, undo: Bool = false, _ change: () -> Void) {
+    /// Every log from the row's button: hold Today's order, then change the data inside the tick animation so the
+    /// button fills and the row's colour sweeps across (research §1). The store answers a log with its tap or the
+    /// completion sound (`HabitStore+Feedback`); an undo answers here.
+    private func log(undo: Bool = false, _ change: () -> Void) {
         layout?.hold(reduceMotion: reduceMotion)
-        if undo { TickFeedback.undone() } else { TickFeedback.logged(finished: finished) }
+        if undo { TickFeedback.undone() }
         withAnimation(Motion.tick(reduceMotion)) { change() }
     }
 
@@ -283,7 +284,7 @@ struct HabitRow: View {
                 RoundActionButton(symbol: "plus", done: done, color: habit.color,
                                   label: "Add 1 to \(habit.name)", keepSymbolWhenDone: true, text: "+1") {
                     offerNote()
-                    log(finished: progress < goal && progress + 1 >= goal) { store.addProgress(habit, value: 1, on: day) }
+                    log { store.addProgress(habit, value: 1, on: day) }
                 }
             case .check, .task:
                 // A once-a-day tick toggles that day's tick; a weekly count's day too, judged on this day only.
@@ -292,7 +293,7 @@ struct HabitRow: View {
                 RoundActionButton(symbol: "checkmark", done: ticked, color: habit.color,
                                   label: ticked ? "Undo \(habit.name)" : "Mark \(habit.name) done") {
                     if !ticked { offerNote() }
-                    log(finished: !ticked && (slot != nil || progress + 1 >= goal), undo: ticked) {
+                    log(undo: ticked) {
                         if let slot { store.toggleSlot(habit, slot: slot, on: day) } else { store.toggleCheck(habit, on: day) }
                     }
                 }
@@ -305,7 +306,7 @@ struct HabitRow: View {
                                       keepSymbolWhenDone: true,
                                       text: "+" + Format.amount(step)) {
                         offerNote()
-                        log(finished: !habit.atMost && progress < goal && progress + step >= goal) { store.increment(habit, on: day) }
+                        log { store.increment(habit, on: day) }
                     }
                 } else {
                     RoundActionButton(symbol: "plus", done: done, color: habit.color,
@@ -322,10 +323,12 @@ struct HabitRow: View {
                         TimerPresence.askOnNextSync = true
                         TickFeedback.started()
                         withAnimation(Motion.tick(reduceMotion)) { store.toggleTimer(habit, slot: slot) }
+                        // And its timer opens full screen, which a swipe puts away while it keeps running (4 Oct 2026).
+                        if UserDefaults.standard.bool(forKey: Preferences.timerScreen) { store.timerScreen = habit.id }
                     } else {
                         // Stopping saves the time: a log like any other.
                         offerNote()
-                        log(finished: !done && progress >= goal) { store.toggleTimer(habit, slot: slot) }
+                        log { store.toggleTimer(habit, slot: slot) }
                     }
                 }
                 .disabled(!isToday)
@@ -353,10 +356,8 @@ struct StepRow: View {
                               label: done ? "Undo \(step.name)" : "Mark \(step.name) done") {
                 if !done { store.noteOffer = .init(habit: habit.id, day: day) }
                 layout?.hold(reduceMotion: reduceMotion)
-                if done { TickFeedback.undone() } else {
-                    // The last step makes the checklist done.
-                    TickFeedback.logged(finished: habit.steps.allSatisfy { $0.id == step.id || store.isStepDone($0, of: habit, on: day) })
-                }
+                // A tick's tap, or the completion on the last step, comes from the store (`HabitStore+Feedback`).
+                if done { TickFeedback.undone() }
                 withAnimation(Motion.tick(reduceMotion)) { store.toggleStep(step, of: habit, on: day) }
             }
         }
@@ -442,17 +443,18 @@ struct QuitRow: View {
         }
         .padding(.vertical, RowSpace.rowPadding)
         .listRowBackground(Color(.secondarySystemGroupedBackground).overlay(HighlightFlash(on: highlighted, color: habit.color)))
-        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-            Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
-                Label(store.note(of: habit, on: today) == nil ? "Note" : "Edit Note", systemImage: "note.text")
-            }
-            .tint(.indigo)
-            // Where the "Slipped" button was (U5): one swipe away, opening Log a Slip, never logging unseen.
+        // Swipe left reveals Log Slip (at the edge, where the "Slipped" button was: U5) and Note; it never acts by itself
+        // (4 Oct 2026). Pause is in the long-press menu.
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             Button { sheet = .slip } label: { Label("Log Slip", systemImage: "arrow.uturn.backward.circle") }
                 .tint(.gray)
                 .disabled(store.isPaused(habit, on: today))
                 .accessibilityIdentifier("row-swipe-slip")
-            RowPauseButton(habit: habit, showPause: Binding(get: { sheet == .pause }, set: { sheet = $0 ? .pause : (sheet == .pause ? nil : sheet) }))
+            Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
+                Label(store.note(of: habit, on: today) == nil ? "Note" : "Edit Note", systemImage: "note.text")
+            }
+            .tint(.indigo)
+            .accessibilityIdentifier("row-swipe-note")
         }
         .contextMenu {
             if let menu {
@@ -487,36 +489,43 @@ struct QuitRow: View {
 struct PartHeader: View {
     let title: String
     let habits: [Habit]
-    /// Habits still to do; nil for the Quitting card, which has no status.
+    /// Habits still to do; nil for the Quit or Cut Down card, which has no status.
     let left: Int?
     let isNow: Bool
     let isOpen: Bool
     let onStart: (() -> Void)?
     let onToggle: () -> Void
-    /// "Starts 6 AM" under a timed section's name, folded or open; nil for Anytime, Quitting and Paused. On its own
+    /// "Starts 6 AM" under a timed section's name, folded or open; nil for Anytime, Quit or Cut Down and Paused. On its own
     /// line, so it never takes room from the folded icons or "N left" (the user, 3 Oct 2026).
     var subtitle: String? = nil
+    /// Folded, the name is cut to 8 letters so the icons get the room. Off for "Quit or Cut Down", whose meaning
+    /// would go with its last words.
+    var foldsTitle = true
 
-    /// The width for the name, Now and the icons, and the name's full one-line width.
+    /// The width for the name, Now and the icons, and the width of the name block (the name with Now, or its "Starts
+    /// 6 AM" line, whichever is wider).
     @State private var room: CGFloat = 0
-    @State private var titleWidth: CGFloat = 0
+    @State private var labelWidth: CGFloat = 0
+    /// Between the name block and the folded icons: clear room that grows with the text size (the user, 4 Oct 2026:
+    /// "a good amount of spacing… a relative unit", around 12 to 16 points).
+    @ScaledMetric(relativeTo: .headline) private var iconGap = 14.0
+    private var shownIconGap: CGFloat { min(iconGap, 24) }
 
     /// At least this much space between the icons and "2 left" / ✓.
     static let statusGap: CGFloat = 12
 
-    /// The caller provides Start for unfinished habits or limit check-ins today; folded only in Now.
+    /// The caller provides Start for unfinished habits today; folded only in Now.
     private var showsStart: Bool { onStart != nil && (isOpen || isNow) }
 
     private var iconCount: Int? {
         guard !isOpen, room > 0 else { return nil }
-        let now: CGFloat = isNow ? 52 : 0
-        return FoldedIcons.fitting(habits.count, in: room - now - titleWidth - 10)
+        return FoldedIcons.fitting(habits.count, in: room - labelWidth - shownIconGap)
     }
 
     /// Folded, the name shows at most 8 letters and "…", so the icons get the room.
     /// (A 9-letter name, like Afternoon, is shown whole: "Afternoo…" would be no shorter.)
     private var shownTitle: String {
-        guard !isOpen, title.count > 9 else { return title }
+        guard !isOpen, foldsTitle, title.count > 9 else { return title }
         return title.prefix(8).trimmingCharacters(in: .whitespaces) + "…"
     }
 
@@ -534,22 +543,28 @@ struct PartHeader: View {
     }
 
     private var titleArea: some View {
-        VStack(alignment: .leading, spacing: 1) {
-            HStack(spacing: 8) {
-                Text(shownTitle).font(.headline).lineLimit(1)
-                    .background {
-                        Text(shownTitle).font(.headline).lineLimit(1).fixedSize().hidden()
-                            .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { titleWidth = $0 }
-                    }
-                if isNow { NowChip().fixedSize() }
-                if let count = iconCount {
-                    // Folding: the icons fade in from the name's side as the rows go back under the header (#59).
-                    FoldedIcons(habits: habits, max: count).fixedSize().padding(.leading, 2)
-                        .transition(.opacity.combined(with: .scale(scale: 0.9, anchor: .leading)))
+        // Folded, the icons sit beside the whole name block, centred on the header, not on the name's line, with clear
+        // room between (the user, 4 Oct 2026: "they should be centre aligned vertically in the card, not to the title").
+        HStack(alignment: .center, spacing: shownIconGap) {
+            VStack(alignment: .leading, spacing: 1) {
+                HStack(spacing: 8) {
+                    Text(shownTitle).font(.headline).lineLimit(1)
+                    if isNow { NowChip().fixedSize() }
+                }
+                if let subtitle {
+                    Text(subtitle).font(.footnote).foregroundStyle(.secondary).lineLimit(1)
                 }
             }
-            if let subtitle {
-                Text(subtitle).font(.footnote).foregroundStyle(.secondary).lineLimit(1)
+            // Folded, the block keeps its own width (the name is already short) so the icons know their room; open, the
+            // name takes what's left and ends in "…". A whole folded name goes first, and ends in "…" only when even the
+            // header can't hold it (the largest text sizes); the icons get what's left.
+            .fixedSize(horizontal: !isOpen && foldsTitle, vertical: false)
+            .layoutPriority(foldsTitle ? 0 : 1)
+            .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { labelWidth = $0 }
+            if let count = iconCount {
+                // Folding: the icons fade in from the name's side as the rows go back under the header (#59).
+                FoldedIcons(habits: habits, max: count).fixedSize()
+                    .transition(.opacity.combined(with: .scale(scale: 0.9, anchor: .leading)))
             }
         }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -895,21 +910,3 @@ struct RowSkipButton: View {
     }
 }
 
-/// Swipe left → Pause… or Resume.
-struct RowPauseButton: View {
-    let habit: Habit
-    @Binding var showPause: Bool
-    @Environment(HabitStore.self) private var store
-
-    var body: some View {
-        let today = store.today()
-        if let pause = store.pause(of: habit, on: today), pause.contains(today) {
-            Button { store.resume(habit) } label: { Label("Resume", systemImage: "play.circle") }
-                .tint(.teal)
-        } else if store.canPause(habit) && store.pause(of: habit, on: today) == nil {
-            Button { showPause = true } label: { Label("Pause", systemImage: "pause.circle") }
-                .tint(.teal)
-                .accessibilityIdentifier("row-swipe-pause")
-        }
-    }
-}

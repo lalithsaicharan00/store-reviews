@@ -294,41 +294,67 @@ nonisolated struct ServerError: Error, CustomStringConvertible {
 /// Small Keychain wrapper: items readable after the first unlock (so background refresh works), on this device only.
 /// Values are also kept in memory, so a Keychain write that fails (an unsigned simulator build, a full or locked
 /// Keychain) can't make a fresh sign-in look signed out; it then only lasts until the app quits.
-private final class Keychain {
-    enum Item: String { case refreshToken = "refresh-token", deviceID = "device-id" }
+///
+/// The Keychain is only touched off the main thread (Current Work 11, 4 Oct 2026): its calls go through a system
+/// service that can stall for tens of seconds on a busy phone or simulator, and a sign-in wrote the token on the main
+/// thread, so the app stopped answering for ~74 s right after a signed-in launch (BackupUITests, 4 of 13 runs). Writes
+/// queue in order behind the memory copy; both items are read ahead at launch; a read that still misses (rare) waits.
+nonisolated private final class Keychain: @unchecked Sendable {
+    enum Item: String, CaseIterable { case refreshToken = "refresh-token", deviceID = "device-id" }
 
     let service: String
+    private let lock = NSLock()
     private var memory: [Item: String?] = [:]
+    private let queue = DispatchQueue(label: "com.oftenenough.keychain", qos: .userInitiated)
 
-    init(service: String) { self.service = service }
+    init(service: String) {
+        self.service = service
+        queue.async { [self] in for item in Item.allCases { _ = read(item) } }
+    }
 
     private func query(_ item: Item) -> [String: Any] {
         [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: item.rawValue]
     }
 
+    private func cached(_ item: Item) -> String?? {
+        lock.lock(); defer { lock.unlock() }
+        return memory[item]
+    }
+
     func read(_ item: Item) -> String? {
-        if let cached = memory[item] { return cached }
+        if let cached = cached(item) { return cached }
         var q = query(item)
         q[kSecReturnData as String] = true
         q[kSecMatchLimit as String] = kSecMatchLimitOne
         var result: AnyObject?
-        let value = SecItemCopyMatching(q as CFDictionary, &result) == errSecSuccess ? (result as? Data).flatMap { String(data: $0, encoding: .utf8) } : nil
-        memory[item] = .some(value)
-        return value
+        let started = Date.now
+        let found = SecItemCopyMatching(q as CFDictionary, &result) == errSecSuccess ? (result as? Data).flatMap { String(data: $0, encoding: .utf8) } : nil
+        LaunchLog.took("Keychain read \(item.rawValue)", since: started)
+        lock.lock(); defer { lock.unlock() }
+        // A write that came first wins: it's newer than what was stored.
+        if memory[item] == nil { memory[item] = .some(found) }
+        return memory[item] ?? nil
     }
 
     func write(_ item: Item, _ value: String?) {
-        memory[item] = .some(value)
-        SecItemDelete(query(item) as CFDictionary)
-        guard let value else { return }
-        var q = query(item)
-        q[kSecValueData as String] = Data(value.utf8)
-        q[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-        SecItemAdd(q as CFDictionary, nil)
+        lock.lock(); memory[item] = .some(value); lock.unlock()
+        let match = query(item)
+        queue.async {
+            let started = Date.now
+            SecItemDelete(match as CFDictionary)
+            if let value {
+                var q = match
+                q[kSecValueData as String] = Data(value.utf8)
+                q[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+                SecItemAdd(q as CFDictionary, nil)
+            }
+            LaunchLog.took("Keychain write \(item.rawValue)", since: started)
+        }
     }
 
     func removeAll() {
-        memory.removeAll()
-        SecItemDelete([kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service] as CFDictionary)
+        lock.lock(); memory.removeAll(); lock.unlock()
+        let all = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service] as [String: Any]
+        queue.async { SecItemDelete(all as CFDictionary) }
     }
 }

@@ -41,6 +41,7 @@ struct HabitsApp: App {
                     guard url.scheme == "oftenenough" else { return }
                     if url.host == "today" { Analytics.shared.count(.widgetOpen, ticket: Analytics.shared.ticket); model.router.widgetToday = true }
                     if url.host == "item", let id = UUID(uuidString: url.lastPathComponent) { Analytics.shared.count(.widgetOpen, ticket: Analytics.shared.ticket); model.router.widgetItem = id }
+                    if url.host == "timer", let id = UUID(uuidString: url.lastPathComponent) { model.router.timerHabit = id }
                 }
         }
         .onChange(of: scenePhase) {
@@ -72,7 +73,7 @@ struct HabitsApp: App {
 
     @ViewBuilder private var root: some View {
             #if DEBUG
-            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-arrangecheck", "-widgetcheck", "-widget-system-verify"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-feedbackcheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-arrangecheck", "-widgetcheck", "-widget-system-verify"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
             } else if ProcessInfo.processInfo.arguments.contains("-widget-render") {
                 WidgetRenderCheck()
@@ -223,6 +224,11 @@ private struct PlacementCheckView: View {
             if arguments.contains("-undocheck") {
                 let failures = await UndoCheck.run()
                 result = failures.isEmpty ? "Undo: all checks passed" : "Undo failed: " + failures.joined(separator: "; ")
+                return
+            }
+            if arguments.contains("-feedbackcheck") {
+                let failures = await FeedbackCheck.run()
+                result = failures.isEmpty ? "Feedback: all checks passed" : "Feedback failed: " + failures.joined(separator: "; ")
                 return
             }
             if arguments.contains("-focuscheck") {

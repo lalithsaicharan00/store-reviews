@@ -190,8 +190,12 @@ final class HabitCreationUITests: XCTestCase {
 
         start("Check it off", name: "Walk")                                          // six days
         often("weekdays") {
-            for day in [1, 3, 4, 5, 6, 7] where day != today { tap(app.buttons[full[day - 1]].firstMatch) }
+            // One more day first, then drop Monday if it's today, then the rest: all seven chosen at once turns the
+            // days into "every day" and the weekday buttons go (failed every Monday, found 5 Oct 2026).
+            let days = [1, 3, 4, 5, 6, 7].filter { $0 != today }
+            tap(app.buttons[full[days[0] - 1]].firstMatch)
             if today == 2 { tap(app.buttons[full[1]].firstMatch) }
+            for day in days.dropFirst() { tap(app.buttons[full[day - 1]].firstMatch) }
         }
         finish("Walk every day except Monday, anytime", today: "Walk", label: "F08b-six-days")
 
@@ -262,7 +266,7 @@ final class HabitCreationUITests: XCTestCase {
 
         start("Cut down", name: "Coffee")
         amount("2", unit: "coffees", limit: true)
-        finish("At most 2 coffees a day, anytime", title: "Cut down", today: "Coffee", label: "L1-cut-down")
+        finish("At most 2 coffees a day", title: "Cut down", today: "Coffee", label: "L1-cut-down")
 
         start("Check it off", name: "Stretch")
         tap(row("Time of Day"))

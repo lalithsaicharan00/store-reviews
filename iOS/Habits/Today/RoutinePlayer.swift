@@ -200,7 +200,9 @@ struct RoutinePlayer: View {
         .alert("Couldn't save progress", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
             Button("OK", role: .cancel) { store.problem = nil }
         } message: { Text(store.problem ?? "") }
-        .sensoryFeedback(.success, trigger: feedbackCount) { _, _ in TickFeedback.hapticsOn } // ≡ → Appearance → Haptics
+        // No haptic of its own for a log: the store gives every log its tap, and the completion sound only when it makes
+        // the habit complete (`HabitStore+Feedback`, Current Work 18). It used to play "success" for every save, a
+        // skip and an undo alike.
         .onPerfCommand { action in
             if action == .nextHabit { advance() } else if action == .previousHabit { navigate(to: max(0, index - 1)) }
         }
@@ -293,7 +295,7 @@ struct RoutinePlayer: View {
                     // Its place is kept while there's nothing to undo, so the circle never jumps when it appears.
                     ZStack {
                         if done(habit), let entry = latestEntry(habit) {
-                            Button { store.undoEntry(entry.id) } label: {
+                            Button { TickFeedback.undone(); store.undoEntry(entry.id) } label: {
                                 Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44)
                             }
                                 .buttonStyle(.borderless).font(.callout)
@@ -711,21 +713,18 @@ struct RoutinePlayer: View {
         .disabled(busy || expired)
     }
 
+    /// The screen changes at once and the write follows in order (Rulebook S7). Waiting for the save first showed Undo
+    /// late and dropped a tap made while it ran, Undo included (FocusPlayerUITests on GitHub, 4 Oct 2026). A failed save
+    /// reloads what's stored and says so (the alert).
     private func change(_ message: String?, captureUndo: Bool = true, action: () -> Void) {
-        guard !busy, !expired, session.day == store.today() else { return }
-        busy = true
+        guard !expired, session.day == store.today() else { return }
         let habitID = current?.id
         let before = Set(habitID.map { store.entries(of: $0, on: session.day).map(\.id) } ?? [])
+        if !captureUndo { TickFeedback.undone() } // only undoing and removing pass false
         action()
-        Task { @MainActor in
-            await store.flush()
-            if store.problem == nil, current?.id == habitID {
-                undoID = captureUndo ? habitID.flatMap { id in store.entries(of: id, on: session.day).last { !before.contains($0.id) } }?.id : nil
-                withAnimation(animation) { feedback = message }
-                if message != nil { feedbackCount += 1; hideFeedbackSoon() }
-            }
-            busy = false
-        }
+        undoID = captureUndo ? habitID.flatMap { id in store.entries(of: id, on: session.day).last { !before.contains($0.id) } }?.id : nil
+        withAnimation(animation) { feedback = message }
+        if message != nil { feedbackCount += 1; hideFeedbackSoon() }
     }
 
     /// Pause and Resume: no message and no Undo. "Paused · time saved" under the clock says what happened, and an
@@ -743,12 +742,11 @@ struct RoutinePlayer: View {
         store.setSkipped(habit, on: session.day, true)
         let skippedID = habit.id
         navigate(to: index + 1)
-        Task { @MainActor in
-            await store.flush()
-            withAnimation(animation) { feedback = "Skipped for today"; undoID = nil; undoSkipID = skippedID }
-            feedbackCount += 1
-            hideFeedbackSoon()
-        }
+        // At once, like every other change (S7); the write follows in order.
+        withAnimation(animation) { feedback = "Skipped for today"; undoID = nil; undoSkipID = skippedID }
+        TickFeedback.tapped()
+        feedbackCount += 1
+        hideFeedbackSoon()
     }
 
     /// Undo a skip: from its page (stay) or from the message after moving on (go back to it).
@@ -879,7 +877,7 @@ struct RoutinePlayer: View {
 
 /// The player's main button: the system's prominent button, large, in ink, full width of its slot. Native press
 /// feedback and shape; the label keeps the on-ink colour so it reads in dark mode too.
-private struct FocusPrimaryButton: ViewModifier {
+struct FocusPrimaryButton: ViewModifier {
     func body(content: Content) -> some View {
         content
             .labelStyle(FocusPrimaryLabel())
@@ -891,7 +889,7 @@ private struct FocusPrimaryButton: ViewModifier {
 }
 
 /// Icon and title filling the button's width, so every main button is the same size.
-private struct FocusPrimaryLabel: LabelStyle {
+struct FocusPrimaryLabel: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         // One line always, so the button keeps its height from habit to habit.
         HStack(spacing: 8) { configuration.icon; configuration.title.lineLimit(1).minimumScaleFactor(0.75) }
@@ -903,7 +901,7 @@ private struct FocusPrimaryLabel: LabelStyle {
 
 /// The timed habit's clock, status and bar. Only this ticks, once a second, and only while its timer runs;
 /// the rest of the player stays still (a full-screen timeline made the buttons flicker, found by hand 29 Sep).
-private struct FocusClock: View {
+struct FocusClock: View {
     let habit: Habit
     let day: LocalDay
     let showClock: Bool
@@ -960,7 +958,7 @@ private struct FocusClock: View {
 }
 
 /// The goal context sits above the circle; VoiceOver also reads the current value’s period.
-private struct FocusProgressValue: View {
+struct FocusProgressValue: View {
     let value: String
     let target: String
     let period: String
@@ -994,7 +992,7 @@ private struct FocusProgressValue: View {
 }
 
 /// The ring encodes exactly the same current/target shown inside it, across every tracking type.
-private struct FocusProgressCircle<Content: View>: View {
+struct FocusProgressCircle<Content: View>: View {
     let progress: Double
     let goal: Double
     let color: Color

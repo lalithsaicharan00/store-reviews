@@ -1,4 +1,5 @@
 import ActivityKit
+import AppIntents
 import SwiftUI
 import WidgetKit
 
@@ -15,14 +16,16 @@ struct HabitsLiveActivityBundle: WidgetBundle {
 }
 
 /// A running habit timer on the Lock Screen and in the Dynamic Island: the habit, a clock counting up
-/// (today's total, not just this session) and a bar filling to the goal. It updates itself, with no
-/// notifications. Research: "Timing a Habit — Start, See and Stop" (28 Sep).
+/// (today's total, not just this session), a bar filling to the goal and Pause, like the iPhone's own Clock timer.
+/// Tapping it opens that habit's timer. It updates itself, with no notifications, and ends the moment the timer stops.
+/// Research: "Timing a Habit — Start, See and Stop" (28 Sep), "Timers — What People Expect When They Tap ▶" (4 Oct).
 struct HabitTimerLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: HabitTimerAttributes.self) { context in
             LockScreenTimer(attributes: context.attributes, state: context.state)
                 .padding(16)
                 .activityBackgroundTint(nil)
+                .widgetURL(TimerLink.url(context.attributes.habitID))
         } dynamicIsland: { context in
             let color = TimerColor.named(context.attributes.color)
             return DynamicIsland {
@@ -40,8 +43,11 @@ struct HabitTimerLiveActivity: Widget {
                     Text(context.attributes.name).font(.headline).lineLimit(1)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    GoalBar(state: context.state, color: color, label: context.attributes.goalLabel)
-                        .padding(.horizontal, 4)
+                    HStack(spacing: 12) {
+                        GoalBar(state: context.state, color: color, label: context.attributes.goalLabel)
+                        PauseButton(habitID: context.attributes.habitID, color: color)
+                    }
+                    .padding(.horizontal, 4)
                 }
             } compactLeading: {
                 Image(systemName: context.attributes.symbol)
@@ -54,6 +60,7 @@ struct HabitTimerLiveActivity: Widget {
                 Image(systemName: context.attributes.symbol)
                     .foregroundStyle(color)
             }
+            .widgetURL(TimerLink.url(context.attributes.habitID))
         }
     }
 }
@@ -73,8 +80,33 @@ private struct LockScreenTimer: View {
                     .font(.title.weight(.semibold))
                     .frame(maxWidth: 140, alignment: .trailing)
             }
-            GoalBar(state: state, color: color, label: attributes.goalLabel)
+            HStack(spacing: 12) {
+                GoalBar(state: state, color: color, label: attributes.goalLabel)
+                PauseButton(habitID: attributes.habitID, color: color)
+            }
         }
+    }
+}
+
+/// Opens the app on that habit's timer (`oftenenough://timer/<id>`, handled in `HabitsApp`).
+private enum TimerLink {
+    static func url(_ habitID: String) -> URL? { URL(string: "oftenenough://timer/" + habitID) }
+}
+
+/// Stops the timer and saves its time without opening the app (`StopTimerIntent`), as the Clock timer's Pause does.
+private struct PauseButton: View {
+    let habitID: String
+    let color: Color
+
+    var body: some View {
+        Button(intent: StopTimerIntent(habitID: habitID)) {
+            Image(systemName: "pause.fill")
+                .font(.body.weight(.semibold))
+                .frame(width: 44, height: 44)
+                .background(Circle().fill(color.opacity(0.25)))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Pause timer")
     }
 }
 

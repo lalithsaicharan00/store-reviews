@@ -59,7 +59,7 @@ final class NewHabitUITests: XCTestCase {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
         XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
         // Choice rows read "Title, detail…": match the title and its comma, so "Quit" can't match
-        // the Quitting header behind the sheet.
+        // the Quit or Cut Down header behind the sheet.
         row(first + ",").tap()
         if let second { row(second + ",").tap() }
         XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 3))
@@ -322,8 +322,52 @@ final class NewHabitUITests: XCTestCase {
         app.buttons["often-total-week"].tap()
         shot("09-limit-period")
         back()
-        XCTAssertEqual(sentence, "Cigarettes: at most 20 a week, anytime")
+        XCTAssertEqual(sentence, "Cigarettes: at most 20 a week")
+        // No time of day: a limit is logged only when it happens and shows under Quit or Cut Down (5 Oct 2026).
+        XCTAssertFalse(app.staticTexts["Time of Day"].exists, "Cut down has no Time of Day")
+        XCTAssertTrue(app.descendants(matching: .any)["limit-place-note"].exists)
         XCTAssertTrue(app.navigationBars["Cut down"].buttons["Add"].isEnabled)
+    }
+
+    /// Cut down in time (4 Oct 2026, report "Time Limits — Should Cut Down Allow Time?"): "Social media: at most 30 min
+    /// a day" is made from the Limit's units, times with ▶ on Today, and stays editable, its unit kept in minutes so its
+    /// past days keep their meaning (D6).
+    func testLimitCanBeTimeAndStaysEditable() {
+        open("Quit or cut down", "Cut down", title: "Cut down")
+        type(name: "Social media")
+        row("Limit").tap()
+        replace(app.textFields["much-number"], with: "30")
+        app.buttons["much-unit"].tap()
+        let minutes = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'minutes'")).firstMatch
+        XCTAssertTrue(minutes.waitForExistence(timeout: 3), "A limit can be in minutes")
+        shot("09c-limit-units-time")
+        minutes.tap()
+        back()
+        XCTAssertTrue(sentence.localizedCaseInsensitiveContains("at most 30 min a day"), sentence)
+        app.navigationBars["Cut down"].buttons["Add"].tap()
+        let play = app.buttons["Start Social media timer"]
+        revealOnToday(play)
+        XCTAssertTrue(play.exists, "A time limit times with ▶")
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Quit or Cut Down'")).firstMatch.exists,
+                      "A limit sits under Quit or Cut Down, not in a time of day")
+
+        // Edit it: the limit changes, the unit stays minutes.
+        let name = app.staticTexts["Social media"].firstMatch
+        name.press(forDuration: 1.0)
+        let edit = app.buttons["Edit Habit"].firstMatch
+        XCTAssertTrue(edit.waitForExistence(timeout: 3))
+        edit.tap()
+        XCTAssertTrue(app.navigationBars["Edit Habit"].waitForExistence(timeout: 3))
+        row("Limit").tap()
+        XCTAssertTrue(app.descendants(matching: .any)["much-unit"].firstMatch.label.contains("minutes"), "Its unit is minutes")
+        replace(app.textFields["much-number"], with: "45")
+        shot("09d-limit-time-edit")
+        back()
+        XCTAssertTrue(sentence.localizedCaseInsensitiveContains("at most 45 min a day"), sentence)
+        app.navigationBars["Edit Habit"].buttons["Save"].tap()
+        XCTAssertTrue(app.navigationBars["Edit Habit"].waitForNonExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS '45 min'")).firstMatch.waitForExistence(timeout: 3),
+                      "Today shows the new limit")
     }
 
     /// Two parts of the day: the same row in each, with one shared progress (spec §5).
@@ -414,7 +458,7 @@ final class NewHabitUITests: XCTestCase {
         type(name: "Sugar")
         XCTAssertTrue(app.staticTexts["Started"].exists)
         XCTAssertFalse(app.switches["Remind Me"].exists, "Quit has no reminders")
-        XCTAssertTrue(text(startingWith: "The counter runs from here. It shows at the top of Today under Quitting").exists)
+        XCTAssertTrue(text(startingWith: "The counter runs from here. It shows on Today under Quit or Cut Down").exists)
         app.navigationBars["Quit"].buttons["Cancel"].tap()
         let discard = app.buttons["Discard Changes"]
         XCTAssertTrue(discard.waitForExistence(timeout: 2))
