@@ -2,6 +2,8 @@
 
 Written by Codex (OpenAI), 4 October 2026. Read the [research and interaction handoff](README.md) before implementation.
 
+The latest [consistency revision](<Consistency Revision.md>) replaces the prior blue-button/inconsistent-field follow-up and is awaiting user review.
+
 These **22 editable Figma screen studies and PNG exports are representative layouts, not final iOS designs**. Build the actual interface with native SwiftUI controls, SF Symbols, semantic colors, Dynamic Type, VoiceOver and the app's light/dark system (Rulebook U1/U9). The [accepted Day details and entry editor handoff](<../../Day Structure and Organization/Day Details and Entry Editor Handoff/README.md>) controls their appearance and behavior.
 
 Editable boards: [Habit details, History and Notes](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=433-2071), [record creation and Day-details routes](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=434-2071), and [Notes/quit edge states](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=443-2071).
@@ -12,7 +14,7 @@ History, Notes and Progress are tabs **within one Habit details page**. The navi
 
 ### 01. Daily History
 
-Under the History tab, **Choose date** and **Log time** sit directly before month groups. The latter is fixed by duration habit type, not derived from “Read.” The dated rows still open the accepted Day-details sheet; a row with saved records exposes exact correction there.
+Under the History tab, **Open day…** and **Log time manually** sit directly before month groups. The latter is fixed by duration habit type, not derived from “Read.” The dated rows still open the accepted Day-details sheet; a row with saved records exposes exact correction there.
 
 ![Daily habit History with inline actions](Images/history-daily.png)
 
@@ -24,7 +26,7 @@ A long goal wraps above week-based streaks. The fixed repeatable-check action is
 
 ### 03. Direct date access
 
-**Choose date** opens this picker. The copy says plainly that the chosen date opens that habit's Day details; saved records appear there and an unrecorded date opens empty. Choosing a date does not log anything. The picker is constrained to the habit's recordable range; its calendar here is a Figma proxy for native date selection.
+**Open day…** opens this picker. The copy says plainly that the chosen date opens that habit's Day details; saved records appear there and an unrecorded date opens empty. Choosing a date does not log anything. The picker is constrained to the habit's recordable range; its calendar here is a Figma proxy for native date selection.
 
 ![Choose a date for Day details](Images/find-a-day.png)
 
@@ -36,7 +38,7 @@ Current/Best **run** replace build-habit streak language. The fixed **Record sli
 
 ## Notes tab and note pages
 
-The Notes tab puts a compact **Add note** action beside the section heading, then a full-width Search field above dated note previews. These controls scroll with the tab and retain their placement in empty/search states.
+The Notes tab puts full-width Search first, then a compact leading **＋ Add note** text-action row, then dated previews. The controls have separate space and no duplicated Notes heading. These controls scroll with the tab and retain their placement in empty/search states.
 
 ### 05. Notes list
 
@@ -44,7 +46,7 @@ The Notes tab puts a compact **Add note** action beside the section heading, the
 
 ### 06. No notes yet
 
-No fabricated rows. Add note remains in the same Notes-tab header.
+No fabricated rows. Add note remains in the same row below Search.
 
 ![Empty Notes tab](Images/notes-empty.png)
 
@@ -56,19 +58,19 @@ This state distinguishes a failed query from no notes at all; clear search remai
 
 ### 08. Note reader
 
-The exact note date leads. **Edit note** and the native More menu sit immediately after the note content. More contains scoped **Delete note**; the related-day row opens Day details for this exact date.
+The shared leading habit card precedes the exact date and readable note text. **Edit note** and the native More menu sit immediately after the note content. More contains scoped **Delete note**; the related-day row opens Day details for this exact date.
 
 ![Individual note reader](Images/note-reader.png)
 
 ### 09. New-note editor
 
-The selected date and multiline input precede native Save. A new note has no Delete action. A dirty Cancel needs discard recovery.
+The shared toolbar and habit card precede a compact selectable Date row and multiline input. Native Save remains in the toolbar. A new note has no Delete action. A dirty Cancel needs discard recovery.
 
 ![New-note editor](Images/note-editor.png)
 
 ### 10. Existing-note editor
 
-Existing text loads for the selected habit/date. **Delete note** is a bottom destructive button, modeled after the accepted single-record editor. It opens the same confirmation as the reader's More menu. Do not delete a note by blanking its text without explaining that behavior.
+Existing text loads for the selected habit/date; the saved date is read-only. **Delete note** is a bottom destructive button, modeled after the accepted single-record editor. It opens the same confirmation as the reader's More menu. Do not delete a note by blanking its text without explaining that behavior.
 
 ![Existing-note editor with Delete note](Images/note-editor-existing.png)
 
@@ -82,7 +84,7 @@ The More menu contains Delete note only for the current note. The native confirm
 
 ## History recording route
 
-History's type-based action opens a form seeded to **Today**. Its identity card, top toolbar and fields follow the accepted entry editor. The **Selected day** row can open the date picker below before the native top **Save** adds one independent record. A past-day History row passes that exact date into Day details; a subsequent log action remains scoped to it. The form must never infer a CTA from a user-entered habit name.
+History's type-based action opens a form seeded to **Today**. Its identity card, top toolbar and fields follow the accepted entry editor. The **Date** row can open the date picker below before the native top **Save** adds one independent record. A past-day History row passes that exact date into Day details; a subsequent log action remains scoped to it. The form must never infer a CTA from a user-entered habit name.
 
 ### 12–13. Positive amount, Today and past day
 
@@ -94,13 +96,13 @@ The number is directly editable with its unit. Save adds one amount record; it d
 
 ### 14. Duration
 
-The native duration input edits hours and minutes (and supported seconds), then Save adds one manual session. Timed sessions remain separate and are corrected in the accepted single-record editor.
+The same bounded H/M/S fields as the accepted editor support tap-to-type values (including supported fractional seconds), then Save adds one manual session. Timed sessions remain separate and are corrected in the accepted single-record editor.
 
 ![Record a duration](Images/duration.png)
 
 ### 15. Repeatable check
 
-A count control adds to the selected day's count. The weekly goal is context, not an invented daily quota; one bulk save remains one saved record.
+The same bounded integer field as the accepted editor adds to the selected day's count. The weekly goal is context, not an invented daily quota; one bulk save remains one saved record.
 
 ![Add a repeatable check](Images/repeated-check.png)
 
@@ -128,10 +130,10 @@ This is a **copy of the accepted skipped Day-details layout**. Logging stays vis
 
 ### 21. Date picker from the record form
 
-Tapping **Selected day** in a record form opens this native picker route. **Use date** returns to the same unsaved form with that date selected; it does not open Day details or save a record. This route is distinct from History's **Choose date**, which opens Day details.
+Tapping **Date** in a record form opens this native picker route. **Use date** returns to the same unsaved form with that date selected; it does not open Day details or save a record. This route is distinct from History's **Open day…**, which opens Day details.
 
 ![Choose the date for a new log](Images/record-date-picker.png)
 
 ## Source and implementation boundary
 
-This file embeds **22 PNG exports** from the editable Figma frames. The illustrations show information order, labels and state transitions. The app still needs native implementation, real-device layout checks and behavior verification (U1/U9/U20). The previous bottom History/Notes bars, habit-name-generated CTA copy, top-of-reader Edit and alternate Day-details forms are superseded.
+This file embeds **22 PNG exports** from the editable Figma frames. The illustrations show information order, labels and state transitions. The app still needs native implementation, real-device layout checks and behavior verification (U1/U9/U20). The previous bottom History/Notes bars, habit-name-generated CTA copy, top-of-reader Edit, alternate Day-details forms, blue creation buttons and passive duration displays are superseded.

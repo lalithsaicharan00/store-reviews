@@ -1,0 +1,206 @@
+{
+  "author": "Codex (OpenAI)",
+  "exportDate": "2026-10-04",
+  "fileKey": "Ncccsm1l2O62GJ5xLSInqk",
+  "status": "Representative editable layout proposals; not final iOS designs; latest revision awaits user review",
+  "screens": [
+    {
+      "path": "Images/history-daily.png",
+      "nodeId": "433:2078",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "464eae9eb8ad4db242dc0b1df7eb4a6efc1a649d21550c6d271be16b3f769507"
+    },
+    {
+      "path": "Images/history-weekly.png",
+      "nodeId": "433:2119",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "8d0ab8d70211d570288c35125d6ff3fb6335ea9fccaa47e5cb95c4b1e08307a7"
+    },
+    {
+      "path": "Images/find-a-day.png",
+      "nodeId": "433:2160",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "a4934e64bc56837b639539d5411f5e7002b132cd4e03ebbb56ff0b69930473c9"
+    },
+    {
+      "path": "Images/quit-header.png",
+      "nodeId": "443:2140",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "17897a150e64c5383324f2664da0d8a7297c3cfe34cdb97578c2695b8e11dd44"
+    },
+    {
+      "path": "Images/notes-list.png",
+      "nodeId": "433:2187",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "620ec4d22e82edf0fc6a616ce51b2a7cf17ae4758f8197ef4b8ec0b3a1e6bbad"
+    },
+    {
+      "path": "Images/notes-empty.png",
+      "nodeId": "443:2078",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "607fddfeee585f706bbb8891bd362169b0b83fd634ae10be5c8f18bfaf1d076a"
+    },
+    {
+      "path": "Images/notes-search-empty.png",
+      "nodeId": "443:2108",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "234f7530592a5f5bb6c8ed3b45afb77acc7969b710eb4d4ba188b80f11291748"
+    },
+    {
+      "path": "Images/note-reader.png",
+      "nodeId": "433:2228",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "ad9aae596ee194b1a5e91319a77558fad677b6416664ef8a1122d8ab353c9056"
+    },
+    {
+      "path": "Images/note-editor.png",
+      "nodeId": "433:2245",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "4f1a84d32b3657a3359f1187f229a6b20dd2658d216b202ee38c90ea45ffa655"
+    },
+    {
+      "path": "Images/note-menu.png",
+      "nodeId": "443:2175",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "fd22bdb9dc70ed4f3227aa360f2a4ae722a69c46a7cf7b661ac1d7b715d046ba"
+    },
+    {
+      "path": "Images/note-delete-confirm.png",
+      "nodeId": "443:2192",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "4664b68c3e6aeea7d6f6a6c9780b8960e2c8cf29ef49237a266c64ca5dc8655e"
+    },
+    {
+      "path": "Images/note-editor-existing.png",
+      "nodeId": "457:2071",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "350c08a52bc901ccf6635de5b4e343e1ceb9f5ddad6239181ee64cd3e2c39aee"
+    },
+    {
+      "path": "Images/amount-today.png",
+      "nodeId": "434:2078",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "430070a29d7bba1ced9ea908ad9c01544fdd4fccc5531671017dc608eef45c54"
+    },
+    {
+      "path": "Images/amount-past.png",
+      "nodeId": "434:2105",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "11c12b28ad1b29285ef9da737239ec7988f24afe4ecdbc0ba651b7b7d8500f9f"
+    },
+    {
+      "path": "Images/duration.png",
+      "nodeId": "434:2128",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "b683e97ab2bd189f2a095a0eb70d181e8f5c9ec9ed71c27776cd23ca517114b8"
+    },
+    {
+      "path": "Images/repeated-check.png",
+      "nodeId": "434:2153",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "919d1e43023e7aa3b0078884d8f9a26055405008c125483608b7debe0c0bea19"
+    },
+    {
+      "path": "Images/daily-check.png",
+      "nodeId": "434:2176",
+      "dimensions": [
+        390,
+        600
+      ],
+      "sha256": "6e16f3627ffabc26fe778418fdb8522d1e47443387b5ab28759fc780db013f4a"
+    },
+    {
+      "path": "Images/checklist.png",
+      "nodeId": "434:2199",
+      "dimensions": [
+        390,
+        746
+      ],
+      "sha256": "7326d1e38d81cc1ca42a69ef86b3da3b6e4e3929ef457c11d0a0a11f88978592"
+    },
+    {
+      "path": "Images/limit.png",
+      "nodeId": "434:2226",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "69428888e3f1a56fe8afa7e7efcc06cc53f252b54d95fc9ef6aaa214aa998359"
+    },
+    {
+      "path": "Images/quit-slip.png",
+      "nodeId": "434:2249",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "3e1230f7488fb70df760335d610645bdb957a96b74f5866e8aa3e69221d20777"
+    },
+    {
+      "path": "Images/skipped-day.png",
+      "nodeId": "434:2273",
+      "dimensions": [
+        390,
+        622
+      ],
+      "sha256": "a25cd8e14b22d39885f01123f4401564243b27dc95c3a334d17a7ab982b90c18"
+    },
+    {
+      "path": "Images/record-date-picker.png",
+      "nodeId": "461:2156",
+      "dimensions": [
+        390,
+        844
+      ],
+      "sha256": "7165778b8e26812c0113b0d401873fdc7bee0688b0a5b6b0363f32a98181a9f3"
+    }
+  ]
+}

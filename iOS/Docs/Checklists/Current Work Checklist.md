@@ -529,9 +529,21 @@ Completed work retains its original evidence and any outstanding user review.
   - [x] Three editable [Figma boards](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=433-2071) contain 20 native-layer screen studies. Twenty local PNG exports render in Markdown; all local links in the changed documentation resolved in the link audit. Rulebook U20, Design Rules, the research package index and the report index now point to this pass. Documentation publication follows T10 without an iOS CI tag.
 
 - [x] **43. Revise the habit-details mockups to match the accepted Day-details and entry-editor designs.** User review, 4 October 2026; design/documentation pass only (U20/U21).
+  - **Visual revision rejected and superseded by item 44:** blue chrome and inconsistent input controls were still present. Do not treat this item as user acceptance of those visuals.
   - [x] Removed History/Notes page-wide sticky bottom actions. Each tab now owns native-size actions in its scrolling content.
   - [x] Replaced name-derived History labels with fixed type labels, including Log time, Add check and Record slip. History still supports Today and exact past dates.
   - [x] Changed direct-date copy to explain that Choose date opens that habit's Day details with saved records or an empty day. A separate record-form picker returns to the unsaved form.
   - [x] Moved Edit note beside the note content. Existing-note editing has a bottom Delete note button; reader More and editor Delete lead to the same confirmation. New-note creation has no Delete.
   - [x] Reused the accepted entry-editor habit card/top Save form structure and copied the accepted daily, checklist and skipped Day-details layouts instead of inventing alternative controls.
   - [x] Updated the three existing Figma boards, exported 22 local screen PNGs, and revised the research handoff, Wireframes, Rulebook, Design Rules and indexes. Native implementation and iPhone validation remain separate work.
+
+- [x] **44. Correct the habit-details studies to use the accepted visual system throughout.** Completed as a design/research revision, 4 October 2026; the revised proposal awaits user review and native implementation. Item 43's blue chrome and inconsistent value/date/note fields were not accepted.
+  - [x] Re-read the repeated brief and current screenshots at Figma 420:2107; preserve the requested centered icon/name/wrapping goal and current/best streak header.
+  - [x] Research action scope, date access, note creation and consistency; distinguish review evidence from reasoned layout choices.
+  - [x] Match Day details 370:2031 and entry editor 408:2071: monochrome chrome, native-size controls, SF Pro, the same input boundaries, identity cards and spacing relationships (U1/U2/U17/U19).
+  - [x] Refine History date/add controls and Notes search/add controls without a tab-dependent sticky footer or a row of oversized primary buttons.
+  - [x] Make add-record forms familiar to the accepted editor, including tap-to-type duration fields and clear date selection, Today/past routes, limit/slip emphasis and existing Day-details correction.
+  - [x] Refine the individual note reader/editor, keeping Edit near the note, confirmed Delete for an existing note and a recognizable link to its exact Day details.
+  - [x] Update Figma mockups and portable Markdown exports, document why this revision supersedes prior choices, and validate structure, fonts, colors, visuals and links.
+
+  - Evidence/rationale: [Consistency Revision](<../../../Research/Research Reports/Habit Details Research/Final UX Pass/Consistency Revision.md>). Three existing Figma boards and all 22 PNG exports refreshed; shared controls, SF Pro, monochrome chrome and readable text verified. Eight Markdown files, 300 local links, 22 image embeds/PNG hashes, Git whitespace and speed-rules checks passed. Publication follows T10 without an iOS CI tag. No app code or iPhone state changed.
