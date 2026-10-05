@@ -407,6 +407,13 @@ enum PerfDriver {
                     send(.previousHabit); await pause(0.4)
                 }
             }
+            // A quick thumb (Current Work 50, 5 Oct 2026): › to the end and ‹ back, a tap every 0.1 s.
+            await measure("Routine player: fast ‹ ›") {
+                await repeatFor(window) {
+                    for _ in 0..<12 { send(.nextHabit); await pause(0.1) }
+                    for _ in 0..<12 { send(.previousHabit); await pause(0.1) }
+                }
+            }
         default:
             MainThreadMeter.mark("# NOTE unknown scenario \(scenario)")
         }

@@ -265,9 +265,11 @@ final class FocusPlayerUITests: XCTestCase {
         XCTAssertFalse(clock.exists, "The clock stays hidden after manual entry")
     }
 
-    /// The bottom row is a bottom navigation (the user, 4 Oct 2026): a fixed distance from the screen's bottom edge, room
-    /// between it and the main button, and neither moves whatever the habit's state (logged with its Undo, an unfinished
-    /// checklist with no main button, a running timer). Habit options shows every option without scrolling.
+    /// The bottom row is the native bottom bar, as on Today (the user, 5 Oct 2026, superseding 4 Oct's custom row 40
+    /// points up): it sits at the bottom with no band of space under it, the main button floats a gap above it, and
+    /// neither moves whatever the habit's state (logged with its Undo, an unfinished checklist with no main button, a
+    /// running timer). An unfinished checklist's steps all show without scrolling (Current Work 51: they were cut off
+    /// by the empty button slot). Habit options shows every option without scrolling.
     func testBottomRowStaysPutAndOptionsShowEverything() {
         launch()
         let screen = app.windows.firstMatch.frame
@@ -275,12 +277,13 @@ final class FocusPlayerUITests: XCTestCase {
         let primary = app.buttons["focus-primary"]
         let row = options.frame
         let button = primary.frame
-        XCTAssertGreaterThanOrEqual(screen.maxY - row.maxY, 39.5, "At least 40 points under the bottom row")
-        XCTAssertLessThanOrEqual(screen.maxY - row.maxY, 60, "The bottom row sits at the bottom, no band of space under it")
-        XCTAssertGreaterThanOrEqual(row.minY - button.maxY, 30, "Room between the main button and the bottom row")
+        XCTAssertLessThanOrEqual(screen.maxY - row.maxY, 60, "The bottom bar sits at the bottom, no band of space under it")
+        XCTAssertGreaterThanOrEqual(row.minY - button.maxY, 16, "Room between the main button and the bottom bar")
+        XCTAssertEqual(app.buttons["Previous habit"].frame.midY, row.midY, accuracy: 4, "‹ is in the bar")
+        XCTAssertEqual(app.buttons["focus-up-next"].frame.midY, row.midY, accuracy: 4, "› is in the bar")
         shot("player-01-bottom-row")
         func expectStill(_ when: String, file: StaticString = #filePath, line: UInt = #line) {
-            XCTAssertEqual(options.frame.midY, row.midY, accuracy: 0.5, "The bottom row moved: \(when)", file: file, line: line)
+            XCTAssertEqual(options.frame.midY, row.midY, accuracy: 0.5, "The bottom bar moved: \(when)", file: file, line: line)
             if primary.exists {
                 XCTAssertEqual(primary.frame.midY, button.midY, accuracy: 0.5, "The main button moved: \(when)", file: file, line: line)
             }
@@ -291,6 +294,10 @@ final class FocusPlayerUITests: XCTestCase {
         jump("Clean kitchen")
         XCTAssertFalse(primary.exists, "An unfinished checklist has no main button")
         expectStill("an unfinished checklist")
+        let lastStep = app.buttons["Mark Sweep the floor done"]
+        XCTAssertTrue(lastStep.isHittable && lastStep.frame.maxY <= row.minY,
+                      "Every step shows above the bottom bar without scrolling: \(lastStep.frame), bar \(row)")
+        shot("player-03-checklist-steps")
         app.buttons["Mark Wipe the counter done"].tap()
         app.buttons["Mark Sweep the floor done"].tap()
         XCTAssertTrue(primary.waitForExistence(timeout: 3))
@@ -369,6 +376,22 @@ final class FocusPlayerUITests: XCTestCase {
         evidence.name = "fast-navigation"; evidence.lifetime = .keepAlways; add(evidence)
         XCTAssertTrue(result.label.hasPrefix("Fast navigation: passed"), result.label)
         shot("focus-11-after-fast-navigation")
+    }
+
+    /// A swipe still moves one habit at a time, and the player follows it (the toolbar's position, the main button).
+    /// The pager is the player's own paging scroll view since Current Work 50 (5 Oct 2026), so a swipe is read when it
+    /// comes to rest.
+    func testSwipeMovesOneHabitAtATime() {
+        launch()
+        let names = app.staticTexts.matching(identifier: "focus-name")
+        let first = names.firstMatch.label
+        names.firstMatch.swipeLeft()
+        XCTAssertTrue(waitUntil { names.count == 1 && names.firstMatch.label != first }, "The swipe moved on")
+        XCTAssertTrue(app.buttons["routine-queue"].label.contains("habit 2 of"), app.buttons["routine-queue"].label)
+        names.firstMatch.swipeRight()
+        expectPage(first)
+        XCTAssertTrue(app.buttons["routine-queue"].label.contains("habit 1 of"), app.buttons["routine-queue"].label)
+        XCTAssertFalse(app.buttons["Previous habit"].isEnabled, "Back at the first habit")
     }
 
     func testNavigationDoesNotWaitForSlowTimerWrites() {

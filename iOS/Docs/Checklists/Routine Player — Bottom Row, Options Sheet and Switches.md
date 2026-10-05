@@ -5,6 +5,11 @@ player's bottom spacing), with two new bugs found the same day (items 33 and 34;
 list was renamed). Follows [the Rulebook](<../../../RULEBOOK.md>) and the player's
 sections in `Design Rules — Don't Regress.md`.
 
+**Superseded in part, 5 Oct 2026 (the user, Current Work 51):** P1–P3's custom row 40 points up, with the main
+button's slot reserved under the pages, still left "a huge block" and cut off a checklist's steps. The row is now the
+native bottom bar, as on Today, and the main button floats over the bottom of the page; P4 (nothing moves) still holds.
+See Design Rules' routine player section.
+
 **The user's words, tidied:** "The spacing feels uneven sometimes. Habit options and the chevrons: we should treat it
 like a bottom navigation. Sometimes it isn't behaving like one; below it a lot of space is reserved. It should be at
 the bottom, with a good amount of spacing from the bottom of the screen and ample space around it (a reference unit

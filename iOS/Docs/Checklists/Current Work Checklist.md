@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 50).
+  still resolve; give new items the next unused number (currently 52).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -171,6 +171,32 @@ Their placement records scope and priority; implementation has not started.
   - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): the store
     decides for every log from any screen; once, on the log that makes the habit complete; a running timer at its
     goal; never for quit habits or limits. Tests: pending (`CompletionFeedbackUITests`).
+
+- [ ] **50. Routine player: tapping › or ‹ fast makes the habits slide back and forth.** Added 5 October 2026 by
+  Claude (Claude Code), from the user's iPhone. Branch `claude/dreamy-pasteur-3kgdxu`.
+  - **The user's words, tidied:** "Normally it was fine. When I tapped the right chevron very quickly to the end, then
+    the left chevron very quickly back to the start, the progress bar under the header updated correctly and reached
+    the end, but the habits on screen felt like they moved back and forth instead of forward. It looked like a
+    glitch."
+  - **Expected:** however fast ‹ or › is tapped, the pages only ever slide the way they were sent and land on the
+    habit the segments show.
+  - **Reproduce first (S2):** `FocusPlayerUITests.testFastNavigationNeverSlidesBack` launches with
+    `-focus-fast-nav-check`: the player taps itself every 0.1 s (XCUITest waits for each slide, so it can't) and each
+    page reports its place on screen (`PagerProbe`, DEBUG only).
+
+- [ ] **51. Routine player: the bottom row is a block, not a bottom navigation; a checklist's steps are cut off.** Added
+  5 October 2026 by Claude (Claude Code), from the user's iPhone (Tidy desk, 3 steps). Branch
+  `claude/dreamy-pasteur-3kgdxu`.
+  - **The user's words, tidied:** "For checklist habits the screen covers everything. I've told the other agent many
+    times: this should be an actual bottom navigation, not a huge block at the bottom. Look at Today's bottom
+    navigation; I always wanted that there. See how much space below it is wasted; that's why we get problems like
+    this."
+  - **What the screenshot shows:** under the circle the checklist's card starts and is cut off; below it a black band
+    (the empty main-button slot, a 32-point gap, the ‹ Habit options › row and 40 points under it) takes about a
+    fifth of the screen.
+  - **Expected:** ‹ · Habit options · › is the same native bottom bar as Today's ‹ · Today · › (its own Liquid Glass
+    items on iOS 26), in the system's place at the bottom; the page uses the rest of the screen, so a checklist's
+    steps show; still nothing moves (4 Oct's rule) when the main button comes and goes.
 
 - [ ] **49. Speed: Today, the habit form and Progress got slower on `main`.** Found 5 October 2026 by the full test of
   `main` the user asked for (speed run `37310572002` on `d403844`), against the last full speed run before the day's
