@@ -221,13 +221,14 @@ final class DayDetailsUITests: XCTestCase {
         let field = app.textFields["entry-amount"]
         field.tap()
         field.typeText("3")
+        XCTAssertEqual(app.navigationBars["Edit Log"].buttons.matching(NSPredicate(format: "label == 'Back'")).count, 1,
+                       "One back chevron, never two (iOS 26 showed both, 5 Oct 2026)")
         app.navigationBars["Edit Log"].buttons["entry-back"].tap()
-        XCTAssertTrue(app.buttons["Discard Changes"].waitForExistence(timeout: 3), "Back with changes asks first")
+        let discard = app.alerts.buttons["Discard Changes"]
+        XCTAssertTrue(discard.waitForExistence(timeout: 3), "Back with changes asks first")
         shot("dd-11-discard-asks")
-        // iOS 26 may show the question as a popover with no Cancel button: a tap outside it keeps editing.
-        let keep = app.buttons["Keep Editing"].firstMatch
-        if keep.exists && keep.isHittable { keep.tap() } else { app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.9)).tap() }
-        XCTAssertTrue(app.buttons["Discard Changes"].waitForNonExistence(timeout: 3))
+        app.alerts.buttons["Keep Editing"].tap()
+        XCTAssertTrue(discard.waitForNonExistence(timeout: 3))
         XCTAssertEqual(field.value as? String, "3", "Keep Editing keeps the draft")
         if app.keyboards.firstMatch.exists { app.toolbars.buttons["Done"].firstMatch.tap() }
         app.buttons["entry-delete"].tap()

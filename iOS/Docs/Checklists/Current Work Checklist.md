@@ -234,6 +234,7 @@ Their placement records scope and priority; implementation has not started.
     - Noticed: a past week's day says "3 of 3 checks this week" (Call family on Tue, Sep 29); "that week" would be
       clearer for a day outside the current week. Not changed yet.
     - [x] Tested on GitHub Actions run `37220482604` (`5363659`), 4 Oct 2026: Core storage and migrations, build, Release build and 28/28 UI tests passed (DayDetails incl. `testTasksReschedule`, TodayRowLayout, TodayRowSheet, Undo, and the three task screenshot states). Screenshots: a weekly task's calendar offers only the days before next week's occurrence; a daily task and a done task show no Reschedule.
+  - **Found by the merge test (run `37281527130`, 5 Oct 2026):** after typing in Edit Log, iOS 26 showed two back chevrons (the system's, which should have hidden, and the editor's), and Back's discard dialog sometimes didn't appear. Fixed: one chevron, always the editor's own; the question is an alert. Rulebook U19 updated.
   - **Merged into `main` 5 Oct 2026** (the user's go-ahead; fast-forward after merging `main`'s habit-details research in). Numbered 42 on the branch; renumbered 47 because `main` had used 42–46 meanwhile. Open: the iPhone check.
   - Not done, by design: a slip's **date** stays read-only until the store, repository and sync can move one record
     to another day atomically (D7; handoff). The bottom ‹ day › pager is gone (handoff; past days open from Today or

@@ -110,19 +110,18 @@ struct EntryEditView: View {
         .analyticsScreen(nil)
         .navigationTitle(isSlip ? "Edit Slip" : "Edit Log")
         .navigationBarTitleDisplayMode(.inline)
-        // The back control is the chevron alone, as iOS draws it (the user, 4 Oct 2026).
-        .toolbarRole(.editor)
-        .navigationBarBackButtonHidden(touched)
+        // The back control is the chevron alone (the user, 4 Oct 2026), and always this one: switching the system's
+        // back button off once something was typed left both on screen on iOS 26 (CI, 5 Oct 2026). With nothing to
+        // lose it simply goes back; with changes it asks first.
+        .navigationBarBackButtonHidden(true)
         .interactiveDismissDisabled(touched)
         .toolbar {
-            if touched {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Back", systemImage: "chevron.backward") {
-                        focus = nil
-                        if changed { confirmingDiscard = true } else { dismiss() }
-                    }
-                        .accessibilityIdentifier("entry-back")
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Back", systemImage: "chevron.backward") {
+                    focus = nil
+                    if changed { confirmingDiscard = true } else { dismiss() }
                 }
+                .accessibilityIdentifier("entry-back")
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") { save() }
@@ -149,9 +148,10 @@ struct EntryEditView: View {
         } message: {
             Text(deleteMessage)
         }
-        .confirmationDialog("Discard your changes to this \(noun)?", isPresented: $confirmingDiscard, titleVisibility: .visible) {
-            Button("Discard Changes", role: .destructive) { dismiss() }
+        // An alert, not a dialog anchored to the toolbar: that one sometimes never appeared (CI, 5 Oct 2026).
+        .alert("Discard your changes to this \(noun)?", isPresented: $confirmingDiscard) {
             Button("Keep Editing", role: .cancel) {}
+            Button("Discard Changes", role: .destructive) { dismiss() }
         }
         #if DEBUG
         .task {
