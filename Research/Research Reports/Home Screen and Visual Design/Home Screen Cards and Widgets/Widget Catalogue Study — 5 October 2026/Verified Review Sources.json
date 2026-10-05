@@ -1,0 +1,4580 @@
+[
+  {
+    "ref": "A1#378",
+    "source": "Research/App Store Reviews/1. Habit Tracker - Goal Tracker & ADHD Planner/reviews.jsonl",
+    "source_index": 378,
+    "id": "11220373537",
+    "record": {
+      "review_id": "11220373537",
+      "app_id": "1438388363",
+      "app_name": "Habit Tracker",
+      "country": "au",
+      "country_name": "Australia",
+      "rating": 1,
+      "title": "They made the Monthly Widget paid",
+      "body": "Incredibly disappointed that the monthly tracker widget is now behind a paywall. Very poor form from the devs for removing a feature that used to be free.",
+      "author": "lestarrr",
+      "date": "2024-05-01T13:36:39Z",
+      "vote_count": 1,
+      "vote_sum": 1,
+      "is_edited": false
+    },
+    "themes": [
+      "basic_paywall_or_withdrawal"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A1#792",
+    "source": "Research/App Store Reviews/1. Habit Tracker - Goal Tracker & ADHD Planner/reviews.jsonl",
+    "source_index": 792,
+    "id": "11751917371",
+    "record": {
+      "review_id": "11751917371",
+      "app_id": "1438388363",
+      "app_name": "Habit Tracker",
+      "country": "bg",
+      "country_name": "BG",
+      "rating": 5,
+      "title": "One problem is when expanding a description of a habit when in dark mode the letters don't show",
+      "body": "Caption",
+      "author": "danyelllllllllllllllllllll",
+      "date": "2024-09-22T12:01:22Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A1#45378",
+    "source": "Research/App Store Reviews/1. Habit Tracker - Goal Tracker & ADHD Planner/reviews.jsonl",
+    "source_index": 45378,
+    "id": "11522568446",
+    "record": {
+      "review_id": "11522568446",
+      "app_id": "1438388363",
+      "app_name": "Habit Tracker",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 1,
+      "title": "Completed habits not disappearing from my widget…",
+      "body": "Completed habits not disappearing from my widget… how can we fix this! It’s super annoying",
+      "author": "NicoTjarks",
+      "date": "2024-07-22T17:16:21Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "done_list_and_correction_safety"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A1#47724",
+    "source": "Research/App Store Reviews/1. Habit Tracker - Goal Tracker & ADHD Planner/reviews.jsonl",
+    "source_index": 47724,
+    "id": "11073757522",
+    "record": {
+      "review_id": "11073757522",
+      "app_id": "1438388363",
+      "app_name": "Habit Tracker",
+      "country": "kg",
+      "country_name": "KG",
+      "rating": 5,
+      "title": "Recommend",
+      "body": "Inteterface is beautiful and easy to use, has widget for lockscreen which really helps me",
+      "author": "whitebbrr",
+      "date": "2024-03-22T20:22:59Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A1#54551",
+    "source": "Research/App Store Reviews/1. Habit Tracker - Goal Tracker & ADHD Planner/reviews.jsonl",
+    "source_index": 54551,
+    "id": "9490930528",
+    "record": {
+      "review_id": "9490930528",
+      "app_id": "1438388363",
+      "app_name": "Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "It’s amazing",
+      "body": "I love it but te efficient it shows me how long I have been keeping my streaks it’s completely free and aesthetic it makes me excited to complete a job or chore. I love how I can make each chore any color I want. Definitely recommend this!!!",
+      "author": "ritovhfkvhtoy",
+      "date": "2023-01-10T05:13:33Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A1#55032",
+    "source": "Research/App Store Reviews/1. Habit Tracker - Goal Tracker & ADHD Planner/reviews.jsonl",
+    "source_index": 55032,
+    "id": "8748814318",
+    "record": {
+      "review_id": "8748814318",
+      "app_id": "1438388363",
+      "app_name": "Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Amazing tool",
+      "body": "I’ve tried Streaks before but didn’t enjoy its circle based interface. Wanted an interface with scroll and that looked easy to read. This one has been amazing. The integration with Apple Health is superb (for habits like walking , meditation, etc) and the countdown timers and all is perfect!! And the stats are so comprehensive and a treat to track",
+      "author": "S2RINI",
+      "date": "2022-06-07T02:03:22Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A1#55119",
+    "source": "Research/App Store Reviews/1. Habit Tracker - Goal Tracker & ADHD Planner/reviews.jsonl",
+    "source_index": 55119,
+    "id": "8626356287",
+    "record": {
+      "review_id": "8626356287",
+      "app_id": "1438388363",
+      "app_name": "Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 3,
+      "title": "Wish Square Widget Had Words",
+      "body": "I’d much prefer the square widget with words instead of emojis. The app is fantastic but that would bring it straight to 5 stars for me!",
+      "author": "Blebleble74716",
+      "date": "2022-05-01T16:30:14Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "identity_density_and_multiple_items",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A3#1218",
+    "source": "Research/App Store Reviews/3. Days Since - Quit Habit Tracker - Sober Streak Day Counter/reviews.jsonl",
+    "source_index": 1218,
+    "id": "8209176286",
+    "record": {
+      "review_id": "8209176286",
+      "app_id": "1445348921",
+      "app_name": "Days Since: Quit Habit Tracker",
+      "country": "ca",
+      "country_name": "Canada",
+      "rating": 3,
+      "title": "Great App, does as advertised",
+      "body": "Missing a Lock Screen widget to get 5⭐️",
+      "author": "Scottie Wigz",
+      "date": "2022-01-06T03:19:39Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A3#1529",
+    "source": "Research/App Store Reviews/3. Days Since - Quit Habit Tracker - Sober Streak Day Counter/reviews.jsonl",
+    "source_index": 1529,
+    "id": "11782310275",
+    "record": {
+      "review_id": "11782310275",
+      "app_id": "1445348921",
+      "app_name": "Days Since: Quit Habit Tracker",
+      "country": "de",
+      "country_name": "Germany",
+      "rating": 5,
+      "title": "Great app",
+      "body": "Minimalistic, no clutter, does one thing very well, nice UI",
+      "author": "the-iphone-user",
+      "date": "2024-09-30T18:07:28Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A3#1937",
+    "source": "Research/App Store Reviews/3. Days Since - Quit Habit Tracker - Sober Streak Day Counter/reviews.jsonl",
+    "source_index": 1937,
+    "id": "11989500206",
+    "record": {
+      "review_id": "11989500206",
+      "app_id": "1445348921",
+      "app_name": "Days Since: Quit Habit Tracker",
+      "country": "fi",
+      "country_name": "Finland",
+      "rating": 4,
+      "title": "Masa_xx",
+      "body": "I think having a reset button on the small widget is too easy to accidentally press and lose progress",
+      "author": "Masa_xx",
+      "date": "2024-11-25T08:29:01Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "done_list_and_correction_safety"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A3#2110",
+    "source": "Research/App Store Reviews/3. Days Since - Quit Habit Tracker - Sober Streak Day Counter/reviews.jsonl",
+    "source_index": 2110,
+    "id": "13876121897",
+    "record": {
+      "review_id": "13876121897",
+      "app_id": "1445348921",
+      "app_name": "Days Since: Quit Habit Tracker",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 2,
+      "title": "Built for support, turned into profit",
+      "body": "I’ve used this app for years to track my self-harm recovery, and it’s been genuinely meaningful to me. Having the widget on my lock screen and watching the days increase has been a huge source of motivation.\n\nThat’s why I’m really disappointed to see widgets moved behind a paywall, especially one that isn’t particularly affordable. As a loyal user, it doesn’t feel right to have features that were previously free taken away.\n\nI understand charging for new features, but removing existing ones, especially from an app people rely on for personal and vulnerable reasons, feels unfair. I hope this change is reconsidered or that long-term users are taken into account.",
+      "author": "Dxrtyhan",
+      "date": "2026-03-22T19:12:06Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "basic_paywall_or_withdrawal",
+      "presence_and_motivation",
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A3#2439",
+    "source": "Research/App Store Reviews/3. Days Since - Quit Habit Tracker - Sober Streak Day Counter/reviews.jsonl",
+    "source_index": 2439,
+    "id": "11519003640",
+    "record": {
+      "review_id": "11519003640",
+      "app_id": "1445348921",
+      "app_name": "Days Since: Quit Habit Tracker",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "So so good",
+      "body": "Great app and the option to add a widget to your Lock Screen is brilliant",
+      "author": "xyzkiii",
+      "date": "2024-07-21T18:03:15Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A3#2623",
+    "source": "Research/App Store Reviews/3. Days Since - Quit Habit Tracker - Sober Streak Day Counter/reviews.jsonl",
+    "source_index": 2623,
+    "id": "10074496489",
+    "record": {
+      "review_id": "10074496489",
+      "app_id": "1445348921",
+      "app_name": "Days Since: Quit Habit Tracker",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "Really good!",
+      "body": "Really simple to use and you can add multiple counters on one page.",
+      "author": "hunnichow",
+      "date": "2023-06-26T13:59:23Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation",
+      "identity_density_and_multiple_items"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A3#5428",
+    "source": "Research/App Store Reviews/3. Days Since - Quit Habit Tracker - Sober Streak Day Counter/reviews.jsonl",
+    "source_index": 5428,
+    "id": "13741909116",
+    "record": {
+      "review_id": "13741909116",
+      "app_id": "1445348921",
+      "app_name": "Days Since: Quit Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Love this app!",
+      "body": "So nice to have my counter as a widget on my Home Screen! Keeps me motivated :)",
+      "author": "megperdue4u",
+      "date": "2026-02-12T18:00:29Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation",
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A3#9041",
+    "source": "Research/App Store Reviews/3. Days Since - Quit Habit Tracker - Sober Streak Day Counter/reviews.jsonl",
+    "source_index": 9041,
+    "id": "8975650809",
+    "record": {
+      "review_id": "8975650809",
+      "app_id": "1445348921",
+      "app_name": "Days Since: Quit Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Consistent and Intuitive",
+      "body": "It’s very streamlined. The calendar view looks nice",
+      "author": "Davefidjtdfhtegg",
+      "date": "2022-08-13T20:44:24Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A3#9924",
+    "source": "Research/App Store Reviews/3. Days Since - Quit Habit Tracker - Sober Streak Day Counter/reviews.jsonl",
+    "source_index": 9924,
+    "id": "8102406517",
+    "record": {
+      "review_id": "8102406517",
+      "app_id": "1445348921",
+      "app_name": "Days Since: Quit Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 2,
+      "title": "Can’t add a widget",
+      "body": "Can’t add a widget to my Home Screen as advertised.",
+      "author": "A_p_D",
+      "date": "2021-12-06T20:47:35Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "stale_broken_install_or_recovery"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A3#10015",
+    "source": "Research/App Store Reviews/3. Days Since - Quit Habit Tracker - Sober Streak Day Counter/reviews.jsonl",
+    "source_index": 10015,
+    "id": "7996027824",
+    "record": {
+      "review_id": "7996027824",
+      "app_id": "1445348921",
+      "app_name": "Days Since: Quit Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "keeps me accountable",
+      "body": "the widget is so simple and straightforward. recommend",
+      "author": "Yuhdhebnd",
+      "date": "2021-11-06T19:09:41Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A3#10509",
+    "source": "Research/App Store Reviews/3. Days Since - Quit Habit Tracker - Sober Streak Day Counter/reviews.jsonl",
+    "source_index": 10509,
+    "id": "8912368915",
+    "record": {
+      "review_id": "8912368915",
+      "app_id": "1445348921",
+      "app_name": "Days Since: Quit Habit Tracker",
+      "country": "vn",
+      "country_name": "Vietnam",
+      "rating": 5,
+      "title": "nice app",
+      "body": "nice app, wish that it could have more color options for widgets",
+      "author": "onsencat",
+      "date": "2022-07-26T04:44:27Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A4#7692",
+    "source": "Research/App Store Reviews/4. Me+ Lifestyle Routine - Daily Planner & Habit Tracker/reviews.jsonl",
+    "source_index": 7692,
+    "id": "12735743154",
+    "record": {
+      "review_id": "12735743154",
+      "app_id": "1596403446",
+      "app_name": "Me+ Lifestyle Routine",
+      "country": "in",
+      "country_name": "India",
+      "rating": 5,
+      "title": "Superb App",
+      "body": "As a student with adhd , it helped me sort all my tasks for the day with the “tasks completed %” widget which makes productivity feel like a video game . Love this app 🫡",
+      "author": "mrharry/1202",
+      "date": "2025-06-04T17:32:31Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation",
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A7#576",
+    "source": "Research/App Store Reviews/7. Habit Tracker - HabitKit - Streaks & Accountability/reviews.jsonl",
+    "source_index": 576,
+    "id": "13198372302",
+    "record": {
+      "review_id": "13198372302",
+      "app_id": "6443918070",
+      "app_name": "Habit Tracker - HabitKit",
+      "country": "pt",
+      "country_name": "Portugal",
+      "rating": 5,
+      "title": "Simple and very pleasing to the eye, love it",
+      "body": "Makes your habits so acessible and motivates you to keep filling the squares everyday. \nI don’t usually buy the “premium” version of apps, but the widgets alone are worth the money. Amazing",
+      "author": "iadr97",
+      "date": "2025-09-29T01:01:38Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "paid_value_or_additional_style",
+      "presence_and_motivation",
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A7#833",
+    "source": "Research/App Store Reviews/7. Habit Tracker - HabitKit - Streaks & Accountability/reviews.jsonl",
+    "source_index": 833,
+    "id": "11393534582",
+    "record": {
+      "review_id": "11393534582",
+      "app_id": "6443918070",
+      "app_name": "Habit Tracker - HabitKit",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Great",
+      "body": "Finally added interactivity with the widgets. Thanks, highly recommend.",
+      "author": "Don’t need a nickname1",
+      "date": "2024-06-18T02:01:37Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "interactive_logging_and_step"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A10#1904",
+    "source": "Research/App Store Reviews/10. Finch - Self-Care Pet - Daily Journal & Habit Tracker/reviews.jsonl",
+    "source_index": 1904,
+    "id": "9784351502",
+    "record": {
+      "review_id": "9784351502",
+      "app_id": "1528595748",
+      "app_name": "Finch: Self-Care Pet",
+      "country": "au",
+      "country_name": "Australia",
+      "rating": 4,
+      "title": "Great but the widget doesn’t work",
+      "body": "I love this app, it’s so cute and useful! Unfortunately the widget doesn’t work, it just comes up with a blank screen when added! Will change to 5 stars once this is fixed! Love this app though!",
+      "author": "3mma6",
+      "date": "2023-04-04T01:59:11Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "stale_broken_install_or_recovery"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A10#2775",
+    "source": "Research/App Store Reviews/10. Finch - Self-Care Pet - Daily Journal & Habit Tracker/reviews.jsonl",
+    "source_index": 2775,
+    "id": "14407038000",
+    "record": {
+      "review_id": "14407038000",
+      "app_id": "1528595748",
+      "app_name": "Finch: Self-Care Pet",
+      "country": "ca",
+      "country_name": "Canada",
+      "rating": 4,
+      "title": "LOVE IT!!",
+      "body": "I really LOVE this app! It was honestly the best one out there to keep your habits. I stopped using it because I wish there were widgets that have the tasks on there! Its easy for me to get things done when I remember that the app exists, so it would be good to bave task list widget so I know what I have left to do for the day! That&#39;s the only reason I didn&#39;t give 5 starts~ PLEASE",
+      "author": "kassidy_carlita1415",
+      "date": "2026-08-09T15:32:13Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A10#3798",
+    "source": "Research/App Store Reviews/10. Finch - Self-Care Pet - Daily Journal & Habit Tracker/reviews.jsonl",
+    "source_index": 3798,
+    "id": "13256010922",
+    "record": {
+      "review_id": "13256010922",
+      "app_id": "1528595748",
+      "app_name": "Finch: Self-Care Pet",
+      "country": "ca",
+      "country_name": "Canada",
+      "rating": 5,
+      "title": "Add dark mode widget",
+      "body": "Pleaaase allow widgets to show while screen is tinted or on dark mode 🥺🥺🥺",
+      "author": "madds0706",
+      "date": "2025-10-12T08:27:19Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A13#2237",
+    "source": "Research/App Store Reviews/13. Productive - Habit Tracker - Daily Routine & Goals Planner/reviews.jsonl",
+    "source_index": 2237,
+    "id": "3702961450",
+    "record": {
+      "review_id": "3702961450",
+      "app_id": "983826477",
+      "app_name": "Productive - Habit Tracker",
+      "country": "ca",
+      "country_name": "Canada",
+      "rating": 5,
+      "title": "Sexy smooth interface",
+      "body": "Love it! Easy to use, intuitive and colourful.",
+      "author": "0neDayRemains1213",
+      "date": "2019-01-28T02:50:33Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A13#18314",
+    "source": "Research/App Store Reviews/13. Productive - Habit Tracker - Daily Routine & Goals Planner/reviews.jsonl",
+    "source_index": 18314,
+    "id": "1372942067",
+    "record": {
+      "review_id": "1372942067",
+      "app_id": "983826477",
+      "app_name": "Productive - Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Works great for me",
+      "body": "I even upgraded to get more of the colorful icons. Crazy, but it gives me happiness 👍",
+      "author": "LindaBell009",
+      "date": "2016-05-03T16:06:33Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "paid_value_or_additional_style",
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A16#710",
+    "source": "Research/App Store Reviews/16. Atoms - from Atomic Habits - The official Atomic Habits app/reviews.jsonl",
+    "source_index": 710,
+    "id": "12440388412",
+    "record": {
+      "review_id": "12440388412",
+      "app_id": "6474421906",
+      "app_name": "Atoms - from Atomic Habits",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 3,
+      "title": "Dark mode?",
+      "body": "The app is way too bright I cant find a dark mode anywhere does it have one?",
+      "author": "subbaSs_freq",
+      "date": "2025-03-19T22:14:35Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A18#1978",
+    "source": "Research/App Store Reviews/18. MyRoutine - Organize your day - Built around your real life/reviews.jsonl",
+    "source_index": 1978,
+    "id": "12696669549",
+    "record": {
+      "review_id": "12696669549",
+      "app_id": "1518956326",
+      "app_name": "MyRoutine: Organize your day",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 3,
+      "title": "Decent free version",
+      "body": "You get 10 habits with the free version. UI feels cluttered.",
+      "author": "Gigi_tt",
+      "date": "2025-05-25T14:16:15Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A20#576",
+    "source": "Research/App Store Reviews/20. Habit — Daily Tracker - Crush your goals like a boss/reviews.jsonl",
+    "source_index": 576,
+    "id": "5698098227",
+    "record": {
+      "review_id": "5698098227",
+      "app_id": "1445651730",
+      "app_name": "Habit — Daily Tracker",
+      "country": "ca",
+      "country_name": "Canada",
+      "rating": 4,
+      "title": "Good but...",
+      "body": "The percentages are confusing please tell me how it works",
+      "author": "Jello989",
+      "date": "2020-03-22T20:15:53Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A20#1431",
+    "source": "Research/App Store Reviews/20. Habit — Daily Tracker - Crush your goals like a boss/reviews.jsonl",
+    "source_index": 1431,
+    "id": "4798452508",
+    "record": {
+      "review_id": "4798452508",
+      "app_id": "1445651730",
+      "app_name": "Habit — Daily Tracker",
+      "country": "id",
+      "country_name": "Indonesia",
+      "rating": 5,
+      "title": "Nice App",
+      "body": "Love the habit strength chart. Adding streak count will be perfect",
+      "author": "Virus Ganas",
+      "date": "2019-09-18T05:15:41Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A20#1656",
+    "source": "Research/App Store Reviews/20. Habit — Daily Tracker - Crush your goals like a boss/reviews.jsonl",
+    "source_index": 1656,
+    "id": "5536523332",
+    "record": {
+      "review_id": "5536523332",
+      "app_id": "1445651730",
+      "app_name": "Habit — Daily Tracker",
+      "country": "ng",
+      "country_name": "Nigeria",
+      "rating": 5,
+      "title": "Great App",
+      "body": "Really loving the app. Hope it gets a dark mode update soon",
+      "author": "alaodaniel",
+      "date": "2020-02-16T00:02:29Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A20#3354",
+    "source": "Research/App Store Reviews/20. Habit — Daily Tracker - Crush your goals like a boss/reviews.jsonl",
+    "source_index": 3354,
+    "id": "6956866789",
+    "record": {
+      "review_id": "6956866789",
+      "app_id": "1445651730",
+      "app_name": "Habit — Daily Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 2,
+      "title": "They lied about widgets!",
+      "body": "If you decide to pay for premium because it promises a widget, prepare to feel betrayed.  I paid to upgrade solely for the use of a widget and no widget is available.  This app would get high marks from me if not for that one detail. So far, no one has responded to my requests for help. I’m disappointed.",
+      "author": "busychickenmama",
+      "date": "2021-02-05T12:49:41Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "paid_value_or_additional_style",
+      "stale_broken_install_or_recovery"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A23#2427",
+    "source": "Research/App Store Reviews/23. Streaks - The habit-forming to-do list/reviews.jsonl",
+    "source_index": 2427,
+    "id": "1754444168",
+    "record": {
+      "review_id": "1754444168",
+      "app_id": "963034692",
+      "app_name": "Streaks",
+      "country": "gr",
+      "country_name": "Greece",
+      "rating": 4,
+      "title": "Excellent app",
+      "body": "However it would be nude to have more tasks per screen. A list view perhaps",
+      "author": "Miltiadis",
+      "date": "2017-08-27T16:32:01Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "identity_density_and_multiple_items",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A23#3669",
+    "source": "Research/App Store Reviews/23. Streaks - The habit-forming to-do list/reviews.jsonl",
+    "source_index": 3669,
+    "id": "3342943112",
+    "record": {
+      "review_id": "3342943112",
+      "app_id": "963034692",
+      "app_name": "Streaks",
+      "country": "ru",
+      "country_name": "Russia",
+      "rating": 3,
+      "title": "No sync",
+      "body": "No sync between watch and widget until you manually launch the app",
+      "author": "Alliik",
+      "date": "2018-10-25T18:00:07Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "stale_broken_install_or_recovery"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A23#4768",
+    "source": "Research/App Store Reviews/23. Streaks - The habit-forming to-do list/reviews.jsonl",
+    "source_index": 4768,
+    "id": "7824788952",
+    "record": {
+      "review_id": "7824788952",
+      "app_id": "963034692",
+      "app_name": "Streaks",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Medium size widget",
+      "body": "Please bring back the version of the medium sized widget that shows up to 12 tasks.",
+      "author": "sunshipballoons",
+      "date": "2021-09-20T03:20:24Z",
+      "vote_count": 1,
+      "vote_sum": 1,
+      "is_edited": false
+    },
+    "themes": [
+      "identity_density_and_multiple_items"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A23#5913",
+    "source": "Research/App Store Reviews/23. Streaks - The habit-forming to-do list/reviews.jsonl",
+    "source_index": 5913,
+    "id": "1535229050",
+    "record": {
+      "review_id": "1535229050",
+      "app_id": "963034692",
+      "app_name": "Streaks",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Simple & Affective",
+      "body": "This is really helping me! The satisfaction that comes with completing the circles...ahhh.",
+      "author": "ChunkaChunka",
+      "date": "2017-02-02T03:31:56Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A24#21966",
+    "source": "Research/App Store Reviews/24. Fabulous - Daily Habit Tracker - Morning Routines & ADHD Help/reviews.jsonl",
+    "source_index": 21966,
+    "id": "5427155863",
+    "record": {
+      "review_id": "5427155863",
+      "app_id": "1203637303",
+      "app_name": "Fabulous: Daily Habit Tracker",
+      "country": "ru",
+      "country_name": "Russia",
+      "rating": 4,
+      "title": "Great design",
+      "body": "Nice app, but too much chaotic information on the home screen.",
+      "author": "Devyatkin9",
+      "date": "2020-01-20T13:29:49Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "identity_density_and_multiple_items",
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A33#164",
+    "source": "Research/App Store Reviews/33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks/reviews.jsonl",
+    "source_index": 164,
+    "id": "12832854491",
+    "record": {
+      "review_id": "12832854491",
+      "app_id": "1111447047",
+      "app_name": "Habitify: Habit Tracker",
+      "country": "bo",
+      "country_name": "BO",
+      "rating": 3,
+      "title": "Widget Update Ruined the Tracking Flexibility",
+      "body": "I used to love the old iOS home screen widget, where I could increment my habit progress one step at a time. For example, if I had to complete a habit twice a day, I could mark it once in the morning and once again later. Now, with the new widget, a single tap completes the entire habit, making it impossible to track partial progress throughout the day. This removes the flexibility and satisfaction of tracking habits gradually. Please bring back the old widget behavior or at least add an option to choose how the widget marks progress.",
+      "author": "RogerArt99",
+      "date": "2025-06-29T22:03:34Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "interactive_logging_and_step"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A33#1034",
+    "source": "Research/App Store Reviews/33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks/reviews.jsonl",
+    "source_index": 1034,
+    "id": "11654766103",
+    "record": {
+      "review_id": "11654766103",
+      "app_id": "1111447047",
+      "app_name": "Habitify: Habit Tracker",
+      "country": "fr",
+      "country_name": "France",
+      "rating": 2,
+      "title": "Disappointing Lifetime Subscription Experience",
+      "body": "50 € for a lifetime subscription to an app that quickly reveals its limitations.\n\nThe worst part for me is that the widget on iOS doesn’t update, and the habits that have been marked as completed don’t reset until you open and close the app. It’s a disgrace.",
+      "author": "bpecdc",
+      "date": "2024-08-26T13:01:47Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "paid_value_or_additional_style",
+      "stale_broken_install_or_recovery"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A33#1143",
+    "source": "Research/App Store Reviews/33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks/reviews.jsonl",
+    "source_index": 1143,
+    "id": "6463354814",
+    "record": {
+      "review_id": "6463354814",
+      "app_id": "1111447047",
+      "app_name": "Habitify: Habit Tracker",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "Update your widget",
+      "body": "Update the widget so that it shows completed tasks not just displaying the same tasks as incomplete please\n\nAlso sync the habits properly to the watch there are some serious bugs there, I don’t want to keep having to say I’ve done something on both the watch and the app",
+      "author": "Miikeru",
+      "date": "2020-09-24T12:42:39Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "stale_broken_install_or_recovery"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A33#1602",
+    "source": "Research/App Store Reviews/33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks/reviews.jsonl",
+    "source_index": 1602,
+    "id": "10464675879",
+    "record": {
+      "review_id": "10464675879",
+      "app_id": "1111447047",
+      "app_name": "Habitify: Habit Tracker",
+      "country": "jp",
+      "country_name": "Japan",
+      "rating": 5,
+      "title": "Great app, but widget can use an upgrade",
+      "body": "Please consider adding a widget type to quickly view your progress of the day/week, not for just one habit but the entire collection of habits due that day/week.\n\nAlso, it would be great if the &#34;habit list&#34; widget showed two columns instead of just one. If current streak/last recorded date can be shown on each buttons, it&#39;ll be even better.",
+      "author": "アオキ",
+      "date": "2023-10-12T04:20:26Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "identity_density_and_multiple_items",
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A33#3195",
+    "source": "Research/App Store Reviews/33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks/reviews.jsonl",
+    "source_index": 3195,
+    "id": "13571560242",
+    "record": {
+      "review_id": "13571560242",
+      "app_id": "1111447047",
+      "app_name": "Habitify: Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 4,
+      "title": "Great but buggy",
+      "body": "Unfortunately I&#39;ve tried to make a bug report but I&#39;m the report flow crashes so I&#39;m left to leave a review here. This app is great when it works and being cross platform is a huge win and why I chose it over others, even paying a lifetime subscription. However I&#39;m running into an issue where widgets will no longer update which is a pretty core feature. Any widget with a heat map remains empty despite being completed in the app and web. I&#39;ve tried various things; restarting, turning off low power, logging in and out, etc to no avail",
+      "author": "BlakeJakely",
+      "date": "2025-12-30T04:44:45Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "paid_value_or_additional_style",
+      "stale_broken_install_or_recovery"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A34#14",
+    "source": "Research/App Store Reviews/34. Habit Tracker - Evoday - Daily Streaks Calendar & Goals/reviews.jsonl",
+    "source_index": 14,
+    "id": "11412519740",
+    "record": {
+      "review_id": "11412519740",
+      "app_id": "1403517519",
+      "app_name": "Habit Tracker - Evoday",
+      "country": "au",
+      "country_name": "Australia",
+      "rating": 5,
+      "title": "Great app, just missing interactive widgets",
+      "body": "Interactive widgets please!",
+      "author": "Frusen1",
+      "date": "2024-06-23T03:03:37Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "interactive_logging_and_step"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A34#48",
+    "source": "Research/App Store Reviews/34. Habit Tracker - Evoday - Daily Streaks Calendar & Goals/reviews.jsonl",
+    "source_index": 48,
+    "id": "5653840033",
+    "record": {
+      "review_id": "5653840033",
+      "app_id": "1403517519",
+      "app_name": "Habit Tracker - Evoday",
+      "country": "br",
+      "country_name": "Brazil",
+      "rating": 5,
+      "title": "Simple but effective",
+      "body": "Finally found an app I can have a year view of my habita. Very nice.",
+      "author": "marcelopts",
+      "date": "2020-03-13T08:42:08Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A36#53",
+    "source": "Research/App Store Reviews/36. (Not Boring) Habits - Science-backed habit tracker/reviews.jsonl",
+    "source_index": 53,
+    "id": "14510762767",
+    "record": {
+      "review_id": "14510762767",
+      "app_id": "1593891243",
+      "app_name": "(Not Boring) Habits",
+      "country": "cl",
+      "country_name": "Chile",
+      "rating": 5,
+      "title": "Great app",
+      "body": "It’s a great app to track the habits you will like to have, I think one great improvement will be to have the option to view all the habits in a single page to check or uncheck, and one other thing is maybe for quit a habit the idea will be that you broke the habit you check that, if not your track is that you’re ok quitting that.",
+      "author": "gcumare",
+      "date": "2026-09-04T19:26:36Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "interactive_logging_and_step",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A36#190",
+    "source": "Research/App Store Reviews/36. (Not Boring) Habits - Science-backed habit tracker/reviews.jsonl",
+    "source_index": 190,
+    "id": "13902720788",
+    "record": {
+      "review_id": "13902720788",
+      "app_id": "1593891243",
+      "app_name": "(Not Boring) Habits",
+      "country": "in",
+      "country_name": "India",
+      "rating": 1,
+      "title": "Dayrise is better at this price range",
+      "body": "No analytics, Habit widget does not have title so good luck with multiple widgets, No Apple health connectivity, only gamified 3D animations at ₹499/yr\nYou can get far more features with Dayrise at that price point",
+      "author": "Ganesh Lohar",
+      "date": "2026-03-30T08:52:10Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "identity_density_and_multiple_items",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A36#273",
+    "source": "Research/App Store Reviews/36. (Not Boring) Habits - Science-backed habit tracker/reviews.jsonl",
+    "source_index": 273,
+    "id": "8797076855",
+    "record": {
+      "review_id": "8797076855",
+      "app_id": "1593891243",
+      "app_name": "(Not Boring) Habits",
+      "country": "tr",
+      "country_name": "Turkey",
+      "rating": 1,
+      "title": "Need subscription for widget. Really?!",
+      "body": "Are you kidding me? It’s really good application to use but I’m really angry. I’m using the free version and don’t expect more. It’s enough for me. But it needs damn subscription to show you a widget after 1 week. It really looks ugly now on my Home Screen as a widget and I don’t want to see it like that. A basic widget should be free. Come on! Just bad user experience and I delete the app now until they fix that.",
+      "author": "Sauce_2k",
+      "date": "2022-06-21T21:11:03Z",
+      "vote_count": 6,
+      "vote_sum": 4,
+      "is_edited": false
+    },
+    "themes": [
+      "basic_paywall_or_withdrawal"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A43#358",
+    "source": "Research/App Store Reviews/43. Habit Hub - Routine Tracker - Daily Todo, Goals & Schedule/reviews.jsonl",
+    "source_index": 358,
+    "id": "7010047564",
+    "record": {
+      "review_id": "7010047564",
+      "app_id": "1149192857",
+      "app_name": "Habit Hub: Routine Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "This system keeps me functional!",
+      "body": "I have ASD and have some executive functioning issues which have been exacerbated during the pandemic. I tried a few other apps to keep me on task/on schedule and found it was too easy for me to ignore them. But this app? This app works! \n1) I love that it’s a widget! I can see what I need to do right from the home screen without having to open the app. That’s super helpful! Because of my EF issues, if I have to seek it out a lot of the time it’s not happening. I can miss notifications, but not if it’s on my Home Screen. \n2) Thank you for %’s and grades. This is how my brain works. Since I’ve put a daily exercise routine as one of my tasks, I’m actually completing it so I can stay at a 90% “grade”. This is the first year I’ve actually stuck out a workout routine because of it! \n3) I can keep track of tasks that are weekly, monthly, etc. Instead of wondering the last time I cleaned out the fridge, I can check the app. I feel like I’m on top of things instead of drowning in a bunch of stuff that needs to be done or hasn’t been done in months since I keep forgetting about it. \nThis app has been literally life changing for me. I feel much more in control of my own life and home in ways that I never have before. Thank you so, so much!",
+      "author": "bmweiss190",
+      "date": "2021-02-18T16:44:42Z",
+      "vote_count": 16,
+      "vote_sum": 16,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation",
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A46#183",
+    "source": "Research/App Store Reviews/46. everyday - Habit Tracker - Daily Routine Checklist/reviews.jsonl",
+    "source_index": 183,
+    "id": "12210567330",
+    "record": {
+      "review_id": "12210567330",
+      "app_id": "1394150432",
+      "app_name": "everyday - Habit Tracker",
+      "country": "ca",
+      "country_name": "Canada",
+      "rating": 5,
+      "title": "Great app for tracking many habits",
+      "body": "I love the compact and beautiful grid view that can show many habits at once! Most apps don’t handle a long list of habits very well, but this one nails it.",
+      "author": "ExtraordinaryWavelength",
+      "date": "2025-01-21T06:00:20Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "identity_density_and_multiple_items",
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A48#1970",
+    "source": "Research/App Store Reviews/48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist/reviews.jsonl",
+    "source_index": 1970,
+    "id": "12193838056",
+    "record": {
+      "review_id": "12193838056",
+      "app_id": "672401817",
+      "app_name": "Strides: Habit Tracker + Goals",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "easy to use, great widget",
+      "body": "this app is super easy to use- i like adding notes to my goals. it’s also nice to be able to view my goals on a calendar and see a list view of my notes. you do only get 3 goals with the free version but honestly 3 is the perfect amount for the widget anyways",
+      "author": "HanBan1280",
+      "date": "2025-01-17T04:46:34Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "identity_density_and_multiple_items"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A48#2992",
+    "source": "Research/App Store Reviews/48. Strides - Habit Tracker + Goals - Goal Planner & Daily Checklist/reviews.jsonl",
+    "source_index": 2992,
+    "id": "2962557181",
+    "record": {
+      "review_id": "2962557181",
+      "app_id": "672401817",
+      "app_name": "Strides: Habit Tracker + Goals",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Goals Acheived",
+      "body": "I can see my goals and my percentage of accomplishments each month. I love it!",
+      "author": "McD4444",
+      "date": "2018-07-24T18:44:25Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A52#19868",
+    "source": "Research/App Store Reviews/52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus/reviews.jsonl",
+    "source_index": 19868,
+    "id": "3254531371",
+    "record": {
+      "review_id": "3254531371",
+      "app_id": "1263789061",
+      "app_name": "ShineDay: Habit Tracker",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "Fantastic App",
+      "body": "I likely have ADHD and I really struggle with staying on task. Some people might be able to think of ‘get ready’ as one task but for me I have no idea which thing to do first. I get distracted easily and have 4 little ones so it’s always manic in the mornings. With this app I can have all the individual tasks I need to do on my widget screen, tap the one I’ve done and it disappears. It makes me feel so much more organised and on track. I love that I can name each task, choose an icon to represent it, change its colour and assign it to a specific section of the day. I have begun using Todoist for chores and general tasks that need doing but Tiny Routines is amazing for the specific steps of daily routines. Highly recommend!",
+      "author": "Juiice",
+      "date": "2018-10-02T07:36:14Z",
+      "vote_count": 2,
+      "vote_sum": 1,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation",
+      "interactive_logging_and_step",
+      "identity_density_and_multiple_items",
+      "done_list_and_correction_safety",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A52#20487",
+    "source": "Research/App Store Reviews/52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus/reviews.jsonl",
+    "source_index": 20487,
+    "id": "8239700598",
+    "record": {
+      "review_id": "8239700598",
+      "app_id": "1263789061",
+      "app_name": "ShineDay: Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 4,
+      "title": "Favorite app",
+      "body": "Thus is my favorite app! But the widgets for iPhone are worse now for some reason. I don’t like how it opens the app each time you check something off. Please bring back the old widgets! The one that just had the icons that disappear when you check them off. I really depend on this to get through the day and it changed my life, so thank you!",
+      "author": "elizabethpp34",
+      "date": "2022-01-14T15:23:16Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "interactive_logging_and_step",
+      "identity_density_and_multiple_items",
+      "done_list_and_correction_safety"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A52#20503",
+    "source": "Research/App Store Reviews/52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus/reviews.jsonl",
+    "source_index": 20503,
+    "id": "7553360995",
+    "record": {
+      "review_id": "7553360995",
+      "app_id": "1263789061",
+      "app_name": "ShineDay: Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 1,
+      "title": "Don't like the recent ios update",
+      "body": "I like the previous widget that I can mark finished just from the widget instead of needing to get into the app.",
+      "author": "zzzzzjjjjjzjzj",
+      "date": "2021-07-08T14:02:34Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "interactive_logging_and_step"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A53#702",
+    "source": "Research/App Store Reviews/53. HabitMinder • Habit Tracker - Daily Reminders & Routines/reviews.jsonl",
+    "source_index": 702,
+    "id": "5055323000",
+    "record": {
+      "review_id": "5055323000",
+      "app_id": "1253577148",
+      "app_name": "HabitMinder • Habit Tracker",
+      "country": "in",
+      "country_name": "India",
+      "rating": 3,
+      "title": "Great App but widget can be better!",
+      "body": "The app looks helpful but I’d give it a full five star if the widget was better. The task that are completed also appear in the widget which just make the list of things to do seem longer I wish there was an option to hide tasks once completed! Apart from that I think this app is good to go. It also tracking in liters, minutes and several times a day. I’d love to purchase the premium version once the widget is updated and made more user friendly.",
+      "author": "rheagoel96",
+      "date": "2019-10-31T11:47:11Z",
+      "vote_count": 1,
+      "vote_sum": 1,
+      "is_edited": false
+    },
+    "themes": [
+      "paid_value_or_additional_style",
+      "identity_density_and_multiple_items",
+      "done_list_and_correction_safety"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A53#1515",
+    "source": "Research/App Store Reviews/53. HabitMinder • Habit Tracker - Daily Reminders & Routines/reviews.jsonl",
+    "source_index": 1515,
+    "id": "4638761023",
+    "record": {
+      "review_id": "4638761023",
+      "app_id": "1253577148",
+      "app_name": "HabitMinder • Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 4,
+      "title": "Outstanding - almost there",
+      "body": "Habit apps are a crowded marketplace, and this one really stands out to me. Gorgeous design that is very simple and easy on the eyes, but still very flexible. They found the right balance. It’s engaging and fun to check things off (might as well use the addictiveness of technology to help your productivity :) Their hydration app is equally fantastic. Both have earned a permanent spot in my “Today” view...assuming a few things are in the works. \n\n1. Mac app - visibility and management of tasks/habits is really only viable if you can access them (and synced notifications) from any device. \n\n2. The notification text is a bit odd. I wish these would just contain the habit text and nothing else. They often appear as verbose sentences that you have to read. For me this affects the fluidity of use. \n\n3. The Today widget could be enhanced by only showing remaining habits at the top. \n\n4. Ability both to skip habits or mark as failed would be nice. \n\nItems 2–4 are all ways of helping you see only what you need to see. The “at a glance” nature of this app isn’t quite there yet. \n\nThe comments seem to indicate that more integration with multiple devices is forthcoming. Lack of this functionality is normally a dealbreaker for me, but I’m using this on my phone only for the moment because the app is just that good. At whatever point these become more integrated in the ecosystem, this and WaterMinder will unquestionably be 5 star software.",
+      "author": "lydian1627",
+      "date": "2019-08-19T00:01:08Z",
+      "vote_count": 3,
+      "vote_sum": 1,
+      "is_edited": false
+    },
+    "themes": [
+      "identity_density_and_multiple_items",
+      "done_list_and_correction_safety"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#0",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 0,
+    "id": "14392368857",
+    "record": {
+      "review_id": "14392368857",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "ar",
+      "country_name": "Argentina",
+      "rating": 5,
+      "title": "Muy buena",
+      "body": "Hace unas semanas estaba buscando como loco una aplicación para poder seguir mis hábitos diarios o semanales sin limitarme a hábitos predeterminados o a una cantidad en específico sin antes pagar. Es practica y fácil de usar, aunque creo que si le agregarán notificaciones para recordarte de marcar los hábitos que hayas realizado en el día o la semana estaría genial.",
+      "author": "Marquitos1505",
+      "date": "2026-08-05T20:45:38Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#1",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 1,
+    "id": "14389211332",
+    "record": {
+      "review_id": "14389211332",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "ar",
+      "country_name": "Argentina",
+      "rating": 5,
+      "title": "Excelente",
+      "body": "Muy buena app y realmente gratuita, sin promesas falsas, excelente.",
+      "author": "martin97peru",
+      "date": "2026-08-05T02:32:57Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#2",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 2,
+    "id": "14174214597",
+    "record": {
+      "review_id": "14174214597",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "ar",
+      "country_name": "Argentina",
+      "rating": 5,
+      "title": "MUY BUENA",
+      "body": "Es lo que buscaba, sencilla y sin anuncios. Estaría bueno que agreguen rachas de cumplimiento",
+      "author": "Lucia Erbin",
+      "date": "2026-06-12T15:08:23Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#3",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 3,
+    "id": "14151336984",
+    "record": {
+      "review_id": "14151336984",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "ar",
+      "country_name": "Argentina",
+      "rating": 5,
+      "title": "Buenísimo",
+      "body": "genial xq no te pide pagar nada, tenes para ooner hábitos ilimitados, no como otras app q te piden pagar\nte amo dot",
+      "author": "Sebas el ratón",
+      "date": "2026-06-06T16:35:28Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#4",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 4,
+    "id": "13914688458",
+    "record": {
+      "review_id": "13914688458",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "ar",
+      "country_name": "Argentina",
+      "rating": 5,
+      "title": "Lo necesario",
+      "body": "Una app gratis que lo tiene todo, una locura. Gracias",
+      "author": "Wasowski san",
+      "date": "2026-04-02T15:43:06Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#5",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 5,
+    "id": "14518114843",
+    "record": {
+      "review_id": "14518114843",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "au",
+      "country_name": "Australia",
+      "rating": 5,
+      "title": "Amazing app for habit tracking!!",
+      "body": "After looking around for a free app that can track my habits aesthetically whilst being easy to use and practical, i found dots! It has such a beautiful, simple and aesthetic layout. Its also easy to use and exactly what im looking for while being free + it has all the features you need and the concept is so creative! highly recommend 🫶🏻",
+      "author": "rsyllic",
+      "date": "2026-09-06T16:02:48Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#6",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 6,
+    "id": "14422180050",
+    "record": {
+      "review_id": "14422180050",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "be",
+      "country_name": "Belgium",
+      "rating": 4,
+      "title": "Wonderful!",
+      "body": "Small issue with the widget where it often opens the app instead of progress the habit, but otherwise delightful app!",
+      "author": "Diisco",
+      "date": "2026-08-13T10:39:08Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "interactive_logging_and_step",
+      "stale_broken_install_or_recovery"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#7",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 7,
+    "id": "14492055600",
+    "record": {
+      "review_id": "14492055600",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "br",
+      "country_name": "Brazil",
+      "rating": 5,
+      "title": "Avaliação",
+      "body": "Extremamente bom simples e fácil de usar ,recomendo",
+      "author": "José 19161",
+      "date": "2026-08-31T01:25:10Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#8",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 8,
+    "id": "14431933868",
+    "record": {
+      "review_id": "14431933868",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "br",
+      "country_name": "Brazil",
+      "rating": 5,
+      "title": "prático",
+      "body": "bem fácil de usar, tem uma tela “limpa” e de fácil utilização",
+      "author": "e.chardon",
+      "date": "2026-08-15T19:04:17Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#9",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 9,
+    "id": "14439891694",
+    "record": {
+      "review_id": "14439891694",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "ca",
+      "country_name": "Canada",
+      "rating": 5,
+      "title": "Great app for tracking habits.",
+      "body": "As a person who loves seeing the progress day by day, the dots are great and also aesthetically pleasing.",
+      "author": "Scebbs",
+      "date": "2026-08-17T18:57:27Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#10",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 10,
+    "id": "13897912337",
+    "record": {
+      "review_id": "13897912337",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "ca",
+      "country_name": "Canada",
+      "rating": 5,
+      "title": "Good",
+      "body": "Thank God a decent habit tracker app that is free without all the in app purchases",
+      "author": "Somrac.",
+      "date": "2026-03-28T23:15:46Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#11",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 11,
+    "id": "14376181527",
+    "record": {
+      "review_id": "14376181527",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "de",
+      "country_name": "Germany",
+      "rating": 5,
+      "title": "Great Habit Tracker",
+      "body": "Great, simple and free habit tracker! I love it!",
+      "author": "Maxi020",
+      "date": "2026-08-01T21:21:18Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#12",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 12,
+    "id": "14194139904",
+    "record": {
+      "review_id": "14194139904",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "de",
+      "country_name": "Germany",
+      "rating": 5,
+      "title": "Good app",
+      "body": "I like the app and it really helps me with keeping track of my tasks and health, especially during exam season. But today it randomly switched to chinese and I wonder if there is a way to change that back? Otherwise no complaints.",
+      "author": "Sydney93743",
+      "date": "2026-06-17T16:53:44Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#13",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 13,
+    "id": "14173024754",
+    "record": {
+      "review_id": "14173024754",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "de",
+      "country_name": "Germany",
+      "rating": 5,
+      "title": "Clean. Simple. Ad-free.",
+      "body": "This is the perfect app. It&#39;s free, ad-free and clean. I love it and use it every day. \n\nIf I could suggest one feature: Allow us to have different to-do lists. But it&#39;s amazing as is! Thank you, dev!",
+      "author": "dseroair",
+      "date": "2026-06-12T08:31:21Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#14",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 14,
+    "id": "14122888123",
+    "record": {
+      "review_id": "14122888123",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "de",
+      "country_name": "Germany",
+      "rating": 5,
+      "title": "Love the simplicity",
+      "body": "Great app that knows what it wants to do and does exactly that and nothing more. Tracking habits.\n\nOne quality of life improvement that would make me very happy would be if I could reorder my habits somehow.",
+      "author": "VordenkerKeks",
+      "date": "2026-05-30T10:47:56Z",
+      "vote_count": 1,
+      "vote_sum": 1,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#15",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 15,
+    "id": "13784066083",
+    "record": {
+      "review_id": "13784066083",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "de",
+      "country_name": "Germany",
+      "rating": 5,
+      "title": "Wonderful!",
+      "body": "Clean, easy to use, Beautiful! Dark mode would be nice 👍",
+      "author": "Max Aisenbrey",
+      "date": "2026-02-24T14:02:56Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#16",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 16,
+    "id": "14457759095",
+    "record": {
+      "review_id": "14457759095",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "es",
+      "country_name": "Spain",
+      "rating": 5,
+      "title": "La app que buscaba",
+      "body": "Perfecto app muy simple y efficaz. Exactamente lo que quería.",
+      "author": "Chatgada",
+      "date": "2026-08-22T07:28:38Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#17",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 17,
+    "id": "14294687098",
+    "record": {
+      "review_id": "14294687098",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "es",
+      "country_name": "Spain",
+      "rating": 5,
+      "title": "Privada y muy útil",
+      "body": "No recopila datos. Es perfecta para hacer seguimiento de tareas y valorar la evolución de proyectos.",
+      "author": "Dave 3025",
+      "date": "2026-07-12T16:13:26Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#18",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 18,
+    "id": "14472221855",
+    "record": {
+      "review_id": "14472221855",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "Exceptional, no nonsense app",
+      "body": "Sensational organisation app. The minimalism is absolutely perfect for people who actually want to track their habits without the faff. My ADHD makes organisation challenging and over the year I’ve tried countless apps that claim to help “neurodivergent people” or be “perfect for those who procrastinate.” They end up being made for quick cash grabs or having a wildly confusing interface that is overwhelming and challenging to navigate. \n\nWith Dots, you get exactly what you download. All your habits trackable in a range of formats (card, list, calendar form) so you can check them off in the one you prefer. You can also add the widget to your home screen so you can cross habits off during the day without having to open the app. There’s no paywall, no ads, and it’s beautifully minimalistic. Everything I needed I am so thankful that I found this.",
+      "author": "fayeflame",
+      "date": "2026-08-26T00:05:06Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "basic_paywall_or_withdrawal",
+      "presence_and_motivation",
+      "interactive_logging_and_step",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#19",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 19,
+    "id": "14405635940",
+    "record": {
+      "review_id": "14405635940",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "Near perfect",
+      "body": "Fantastic app. Visually slick, simple to use and free with no ad distractions etc..\n\nOnly missing feature would be to incorporate some sort of notes/comments section for your habits to help track progress.",
+      "author": "Mat Spence",
+      "date": "2026-08-09T07:02:59Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#20",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 20,
+    "id": "14363670791",
+    "record": {
+      "review_id": "14363670791",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "Free & functional !",
+      "body": "No obnoxious free-trial trick. Actually free, easy to use &amp; aesthetically pleasing. It didn’t have options for reminders &amp; shuffling the order of your habits, but it does now! -Even more happy with it. Truly a perfect simple little app.",
+      "author": "OJpersn",
+      "date": "2026-07-29T19:34:03Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#21",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 21,
+    "id": "14305285177",
+    "record": {
+      "review_id": "14305285177",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "Great app",
+      "body": "Absolutely the best app out there. Absolutely free to use. Love this.",
+      "author": "Pinkalstha",
+      "date": "2026-07-15T08:19:40Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#22",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 22,
+    "id": "14226473114",
+    "record": {
+      "review_id": "14226473114",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "Great and simple app but",
+      "body": "I wish there was a feature to go back one day or two to tick my task as done, because sometimes i forget to tick it, and it already gets to the next dah and no option to go back and tick it.",
+      "author": "Kakz021",
+      "date": "2026-06-25T23:39:58Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#23",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 23,
+    "id": "14201101389",
+    "record": {
+      "review_id": "14201101389",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "Great app",
+      "body": "Great app for tracking habits. Only problem is the calendar is a day out so when you complete a dot on the Monday it highlights the Sunday before, would be perfect if fixed",
+      "author": "TP2303",
+      "date": "2026-06-19T12:31:28Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "stale_broken_install_or_recovery",
+      "progress_week_month_heatmap_counter_streak",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#24",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 24,
+    "id": "13996707039",
+    "record": {
+      "review_id": "13996707039",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 3,
+      "title": "Great daily but no weekly",
+      "body": "I love the daily tracking for free with no “premium” version, but I feel like we need a weekly/monthly/select days option!",
+      "author": "Xrosa.glx",
+      "date": "2026-04-25T20:48:27Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#25",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 25,
+    "id": "13982923679",
+    "record": {
+      "review_id": "13982923679",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "Best free no strings app",
+      "body": "Does what it says in the best, lean and minimalist way possible. UX designer gets a big shout out.",
+      "author": "SabReddy",
+      "date": "2026-04-21T21:09:37Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#26",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 26,
+    "id": "14408586581",
+    "record": {
+      "review_id": "14408586581",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "hu",
+      "country_name": "Hungary",
+      "rating": 5,
+      "title": "Simple, free, privacy friendly - optional icloud sync",
+      "body": "I really like the app, thank you for making it🫶🏻",
+      "author": "DDD-/",
+      "date": "2026-08-10T00:38:32Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#27",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 27,
+    "id": "14391385102",
+    "record": {
+      "review_id": "14391385102",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "in",
+      "country_name": "India",
+      "rating": 5,
+      "title": "Best app ong",
+      "body": "I love the simplicity and aesthetic of the app lowky\nAnd its Easy too use\nFor my dumbass its perfect",
+      "author": "nairayaan",
+      "date": "2026-08-05T15:31:07Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#28",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 28,
+    "id": "14330479445",
+    "record": {
+      "review_id": "14330479445",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "in",
+      "country_name": "India",
+      "rating": 5,
+      "title": "Love the app",
+      "body": "I love the app and the functionality of it. Can you expand upon the widgets so it is not limited to 4. Also can you please give us an option to export our data for further analysis should we need to. Like a JSON/csv",
+      "author": "Vk77IN",
+      "date": "2026-07-21T14:06:59Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "identity_density_and_multiple_items",
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#29",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 29,
+    "id": "14370026168",
+    "record": {
+      "review_id": "14370026168",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "kr",
+      "country_name": "South Korea",
+      "rating": 5,
+      "title": "목표별로 위젯 띄울 수 있다는 게 최고",
+      "body": "다른 트래커 앱 사용하다가 화면 구성/위젯 디자인이 마음에 들지 않아서 오늘 앱스토어보다가 이 Dots를 다운받아봤어요. 깔끔하고 미니멀한 기본 화면에 무엇보다 위젯 디자인도 다양해서 이런 앱을 찾았다는 게 넘 기쁩니다!!",
+      "author": "개발진 화이팅",
+      "date": "2026-07-31T10:26:19Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation",
+      "identity_density_and_multiple_items",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#30",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 30,
+    "id": "14210943801",
+    "record": {
+      "review_id": "14210943801",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "kr",
+      "country_name": "South Korea",
+      "rating": 5,
+      "title": "위젯 투명하게",
+      "body": "안녕하세요 개발자님! 덕분에 앱 잘쓰고있습니다. 혹시 미리보기에 있는 것처럼 위젯 투명도를 설정하는 기능은 어디서 설정하면 될까요?",
+      "author": "로이수인",
+      "date": "2026-06-22T00:05:23Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#31",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 31,
+    "id": "13812849760",
+    "record": {
+      "review_id": "13812849760",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "kr",
+      "country_name": "South Korea",
+      "rating": 5,
+      "title": "닷츠앱 짱",
+      "body": "너무 예쁘고 편하고 좋아요! 습관을 길러보겠습니다 ㅎㅎㅎ",
+      "author": "bbulgasari",
+      "date": "2026-03-04T13:42:16Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#32",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 32,
+    "id": "13770961885",
+    "record": {
+      "review_id": "13770961885",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "kr",
+      "country_name": "South Korea",
+      "rating": 5,
+      "title": "딱 원하던 앱",
+      "body": "깔끔+무료 개굿\n다만 목표 일정을 설정할 수 있었으면 좋겠음",
+      "author": "응가박사",
+      "date": "2026-02-20T21:20:14Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#33",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 33,
+    "id": "13768486794",
+    "record": {
+      "review_id": "13768486794",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "kr",
+      "country_name": "South Korea",
+      "rating": 5,
+      "title": "It's beautiful app",
+      "body": "A simple app that i really want",
+      "author": "JQ1423",
+      "date": "2026-02-20T04:51:14Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#34",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 34,
+    "id": "14227146007",
+    "record": {
+      "review_id": "14227146007",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "kz",
+      "country_name": "KZ",
+      "rating": 5,
+      "title": "Все круто!⭐️⭐️⭐️⭐️⭐️",
+      "body": "Приложение мега крутое!⭐️Классный трекер и удобные виджеты.Реально просто чтобы поддерживать трекер ровным соблюдаю дисциплину.🩷",
+      "author": "Mike and Sasha",
+      "date": "2026-06-26T04:03:11Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#35",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 35,
+    "id": "14401566211",
+    "record": {
+      "review_id": "14401566211",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "nl",
+      "country_name": "Netherlands",
+      "rating": 5,
+      "title": "Recomendada a TODOS",
+      "body": "Es una app maravillosamente útil, su simplicidad es su mayor fuerte, es imposible que te pierdas y simplemente te ayuda a ver si realmente estás progresando como te gustaría o no, 100/10",
+      "author": "SonRokuPortgas",
+      "date": "2026-08-08T05:04:23Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#36",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 36,
+    "id": "14362641244",
+    "record": {
+      "review_id": "14362641244",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "ph",
+      "country_name": "Philippines",
+      "rating": 5,
+      "title": "This is great!",
+      "body": "Have been looking for a good habit tracker for a while now and this has been the best one I&#39;ve found so far. Thank you!",
+      "author": "bashang99",
+      "date": "2026-07-29T14:18:56Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#37",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 37,
+    "id": "14260223015",
+    "record": {
+      "review_id": "14260223015",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "ph",
+      "country_name": "Philippines",
+      "rating": 4,
+      "title": "So nice and simple!",
+      "body": "Such a simple app to use. If you could add a feature please let us arrange the order of habits. And have lightmode on. Also please add more icons. Thanks so much!\n\nupdate: I think the recent update about sync made my habits disappear, is there anyway I can get them back??",
+      "author": "dubaichocomochi",
+      "date": "2026-07-04T01:50:25Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "stale_broken_install_or_recovery",
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#38",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 38,
+    "id": "14239464502",
+    "record": {
+      "review_id": "14239464502",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "ph",
+      "country_name": "Philippines",
+      "rating": 5,
+      "title": "Great Habit Tracker",
+      "body": "Best that I have tried so far. Great Widgets Included. Very easy to use! \n\nWould however be very cool to get reminders to log your habits, ability to set habits that are once a week, once a month.",
+      "author": "Pent4gr4m",
+      "date": "2026-06-29T04:36:56Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#39",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 39,
+    "id": "14067204894",
+    "record": {
+      "review_id": "14067204894",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "ru",
+      "country_name": "Russia",
+      "rating": 5,
+      "title": "Props",
+      "body": "Was looking for a free minimalist habit tracker app with widgets and ended up with this gem of the app, it’s criminally underrated",
+      "author": "rtv132",
+      "date": "2026-05-15T13:36:54Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#40",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 40,
+    "id": "14461677979",
+    "record": {
+      "review_id": "14461677979",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "sg",
+      "country_name": "Singapore",
+      "rating": 5,
+      "title": "Best Habit Tracker app so far",
+      "body": "Tried many apps, but decided to stick with this one because of its simplicity and clean UI. No subscription, no guilt, and it’s super easy to back-log past entries.\n\nThe only thing I’m craving is more icons, the current selection feels a bit limited. I’d also love to see more analytics and charts. Users love charts!",
+      "author": "Thỏ rabbitt",
+      "date": "2026-08-23T07:51:55Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#41",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 41,
+    "id": "14414692804",
+    "record": {
+      "review_id": "14414692804",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "tw",
+      "country_name": "Taiwan",
+      "rating": 5,
+      "title": "超讚的habit tracker💕",
+      "body": "第一次下載就非常喜歡這個app😭而且還非常佛心是免費的！！這裡私心希望能新增Deadline功能～～",
+      "author": "☆77*",
+      "date": "2026-08-11T13:54:38Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#42",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 42,
+    "id": "14504042664",
+    "record": {
+      "review_id": "14504042664",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Exactly what I wanted",
+      "body": "I was looking for a habit app with a calendar view and widgets. I tried a couple of them on the App Store and hated them immediately. They usually ask 20 questions just to get started, and then I quickly realized they weren’t what I was looking for.\n\nFinally, I found this app. Huge thanks to the developer!!! It’s straightforward, easy to use, and does exactly what I wanted without all the unnecessary stuff. 🙌",
+      "author": "DecemberBloom",
+      "date": "2026-09-03T02:22:08Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#43",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 43,
+    "id": "14490538146",
+    "record": {
+      "review_id": "14490538146",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Good Review",
+      "body": "Very Good App",
+      "author": "ᏃᎬᏁᎠᎪᎽᎪ",
+      "date": "2026-08-30T16:27:01Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#44",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 44,
+    "id": "14444070845",
+    "record": {
+      "review_id": "14444070845",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Simple Pretty Flexible and Shill-free",
+      "body": "Thank you. Eager next for notification and donation options.",
+      "author": "Enfascination",
+      "date": "2026-08-18T19:51:52Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#45",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 45,
+    "id": "14440814553",
+    "record": {
+      "review_id": "14440814553",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "So far so good",
+      "body": "Just set myself up with about 8 habits.  I lose interest in things if they’re too complicated when I’m setting myself up for ease.  This was pleasantly straight forward. Will use this for a while for my morning routine and see how it goes.  Thank you for the simplicity!✨💖✨",
+      "author": "Fawnomenal",
+      "date": "2026-08-18T00:38:35Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#46",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 46,
+    "id": "14428584045",
+    "record": {
+      "review_id": "14428584045",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Simple & nice",
+      "body": "Very simple looking and easy to use, no ads or unnecessary features",
+      "author": "microwavedbagel",
+      "date": "2026-08-14T23:23:01Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#47",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 47,
+    "id": "14400919999",
+    "record": {
+      "review_id": "14400919999",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Free and has widgets",
+      "body": "Title explains why I like it. I have not found others that have both. One feature I would like to see is the calendar progress tracker, but instead of only 1 habit you could see up to 4 at once and have each habit take up 1/4 of the box. Or maybe the wider widget but make it so you have several habits stacked on top of each other (imagine a table with the date on the top and the habit on the side). What I am trying to say is I would like to be able to see the progress of multiple habits from my Home Screen without using multiple widgets. Great app.",
+      "author": "BlackWolf22.",
+      "date": "2026-08-08T00:38:47Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "basic_paywall_or_withdrawal",
+      "presence_and_motivation",
+      "identity_density_and_multiple_items",
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#48",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 48,
+    "id": "14354352389",
+    "record": {
+      "review_id": "14354352389",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Love it",
+      "body": "Great app, helps motivate me to be productive. I just wish there were more task icons. For example: News article/ Newspaper, Languages (Spanish &amp; Chinese), Broom, Custom (choose your own emoji). Thanks!",
+      "author": "madibecks",
+      "date": "2026-07-27T13:35:58Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": true
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#49",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 49,
+    "id": "14287410683",
+    "record": {
+      "review_id": "14287410683",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "The best free app for Habit tracking!",
+      "body": "By far the most simple app for tracking your habits. Very intuitive and easy to use. Highly recommended!",
+      "author": "Cubi",
+      "date": "2026-07-10T20:00:44Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#50",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 50,
+    "id": "14272015279",
+    "record": {
+      "review_id": "14272015279",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Cool OLED and Minimal Design",
+      "body": "Thanks for free unlimited habits, please add description, x times per week features to habits.",
+      "author": "The User XY",
+      "date": "2026-07-07T00:31:12Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": true
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#51",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 51,
+    "id": "14268546710",
+    "record": {
+      "review_id": "14268546710",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Love this App!",
+      "body": "I’m tracking no alcohol, no peanut butter, daily crunches… it’s fun and helpful to see success. I love the heat map and other views! Thank you!",
+      "author": "LauraMarieRutkow",
+      "date": "2026-07-06T04:03:12Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": true
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#52",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 52,
+    "id": "14262513041",
+    "record": {
+      "review_id": "14262513041",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 4,
+      "title": "Providing Noticeable Feedback",
+      "body": "The menu bar at the bottom blocks views if you have 9+ habits it’s hard to see the last habit because of the menu bar blocking the view. I’m not tracking anything crazy. Waking up without a phone, stretch, workout, skincare, journal, play game, drink water, sleep 8 hours, walk, &amp; vitamins c intake. Backlogging data manually is a little hard because every time I left the app to look at my data in screenshots the calendar of each habit would disappear (not the data). I did it albeit the fact it took a lot of time. The look and feel of the app is great. Simple seamless. I love each view option. Just some minor drawbacks.",
+      "author": "Gennai Guide",
+      "date": "2026-07-04T15:32:13Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#53",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 53,
+    "id": "14235241668",
+    "record": {
+      "review_id": "14235241668",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Good free tracker",
+      "body": "Appreciate you taking the time to make app and making it free! Two requests, 1) have the habits sync across iPad and iPhone. 2) have each habit, have it’s own notification reminder option",
+      "author": "Anonymous0~0",
+      "date": "2026-06-28T03:16:51Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#54",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 54,
+    "id": "14216963604",
+    "record": {
+      "review_id": "14216963604",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Love it",
+      "body": "Thank you for making a useful and free app! Love the usability and flow of the app",
+      "author": "PinkeyDinky",
+      "date": "2026-06-23T14:44:22Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#55",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 55,
+    "id": "14209620370",
+    "record": {
+      "review_id": "14209620370",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Best habit tracking app",
+      "body": "I mean what else can i say, its a habit tracker and its pretty dang good, best part? Its free",
+      "author": "nawtjeyjtevrhqvfwnt",
+      "date": "2026-06-21T16:09:56Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#56",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 56,
+    "id": "14201304150",
+    "record": {
+      "review_id": "14201304150",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Good app",
+      "body": "I suggest you add to Apple Watch",
+      "author": "Jaber aouam",
+      "date": "2026-06-19T13:33:47Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#57",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 57,
+    "id": "14189254547",
+    "record": {
+      "review_id": "14189254547",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "super seamless",
+      "body": "no random pop ups—just put your habits in and track them. I really enjoy this app 💜",
+      "author": "gladmuch",
+      "date": "2026-06-16T12:13:21Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#58",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 58,
+    "id": "14160827585",
+    "record": {
+      "review_id": "14160827585",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "No subscription needed",
+      "body": "Y’all don’t understand how many apps I have had to download and instantly delete bc it has ads or a subscription. Those other apps are pretty much useless unless you pay",
+      "author": "cassandra-b",
+      "date": "2026-06-09T04:02:30Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "basic_paywall_or_withdrawal",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#59",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 59,
+    "id": "14148473814",
+    "record": {
+      "review_id": "14148473814",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "minimal and gets the job done",
+      "body": "i like that dots does not try to do so much. it is a simple app to keep track of your habits and does so with an aesthetic widget that is free, which is rare to see now. free apps often have chopped widgets, or widgets just gated behind a subscription. thank you dots",
+      "author": "jlu2120",
+      "date": "2026-06-05T22:44:45Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "basic_paywall_or_withdrawal",
+      "presence_and_motivation",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#60",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 60,
+    "id": "14120171007",
+    "record": {
+      "review_id": "14120171007",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "It’s free",
+      "body": "Very simple to use app I am glad I found it",
+      "author": "excodus",
+      "date": "2026-05-29T16:58:35Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#61",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 61,
+    "id": "14040460063",
+    "record": {
+      "review_id": "14040460063",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Exactly what I was looking for",
+      "body": "Everything else similar to this app has some kind of subscription model attached, so this works really nicely for me. Would love to have an option to rearrange the order of things.",
+      "author": "baessoon",
+      "date": "2026-05-08T05:45:14Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#62",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 62,
+    "id": "13958079059",
+    "record": {
+      "review_id": "13958079059",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Very Useful",
+      "body": "It’s helped me already, and I haven’t even seen that much! It would be nice if there was an option for notifications though. (I haven’t played around much yet, so if there is and I just haven’t found it yet my apologies.) Thank you!!",
+      "author": "ProjectTestimony",
+      "date": "2026-04-14T19:35:03Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#63",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 63,
+    "id": "13853268363",
+    "record": {
+      "review_id": "13853268363",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "the one i actually kept",
+      "body": "i&#39;ve uninstalled like 5 habit trackers this year lol. Dots stuck because it doesn&#39;t try to do too much. pretty widgets, zero bloat, no sign-in wall. the empty dots on my home screen guilt trip me into being productive and honestly? it works. big recommend",
+      "author": "miiinso",
+      "date": "2026-03-16T06:04:05Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation",
+      "progress_week_month_heatmap_counter_streak",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#64",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 64,
+    "id": "13842468107",
+    "record": {
+      "review_id": "13842468107",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Good",
+      "body": "Really good app, just some feedback. I would appreciate if there were some more color options and icons available. It would help with having many habits. Thanks!",
+      "author": "Manlytaco",
+      "date": "2026-03-13T04:07:50Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#65",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 65,
+    "id": "13838078059",
+    "record": {
+      "review_id": "13838078059",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Free, simple and nice",
+      "body": "It’s free, It’s Simple and it works pretty well\nI’m embracing a new life with new habits. Habit tracking is a journey and this app made it very easy and successful for me.",
+      "author": "Ardavan.az",
+      "date": "2026-03-11T20:56:15Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#66",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 66,
+    "id": "14109432526",
+    "record": {
+      "review_id": "14109432526",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "za",
+      "country_name": "South Africa",
+      "rating": 4,
+      "title": "excellent app with great features",
+      "body": "i love everything about this app! it is extremely easy to maneuver and offers a variety of layout options. the best part is being able to add an unlimited amount of habits without being forced to pay a premium subscription fee, and there are absolutely no ads, which make the overall experience excellent. i would have a 5 star rating if a few small changes could be made like emoji/covers maybe an option to use our phone’s default emojis, more colours as well because they are currently limited and an option to add a description or short text for each habit. other than that i highly recommend it! 🤍",
+      "author": "𝓒. 🪷🥢",
+      "date": "2026-05-26T20:34:29Z",
+      "vote_count": 1,
+      "vote_sum": 1,
+      "is_edited": false
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A76#2527",
+    "source": "Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl",
+    "source_index": 2527,
+    "id": "700413906",
+    "record": {
+      "review_id": "700413906",
+      "app_id": "393159800",
+      "app_name": "Way of Life - Habit Tracker",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 4,
+      "title": "Great app!",
+      "body": "The week and month views are most useful, and give a good oversight to progress made.",
+      "author": "Sound of Dusk",
+      "date": "2012-12-01T01:41:33Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A76#2530",
+    "source": "Research/App Store Reviews/76. Way of Life - Habit Tracker - Build a better, stronger you/reviews.jsonl",
+    "source_index": 2530,
+    "id": "697510520",
+    "record": {
+      "review_id": "697510520",
+      "app_id": "393159800",
+      "app_name": "Way of Life - Habit Tracker",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "Love it",
+      "body": "Very good app. Useful in tracking daily repeating tasks. I love the month view grid, as so much information is conveyed in such little space. Only small change I would like to see is ability to set my own colours for the grid. But overall I absolutely love the app, and already am living a more balanced life since using it. So extremely practical app. Thanks to the author.",
+      "author": "5ilver",
+      "date": "2012-11-25T17:24:52Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A84#17",
+    "source": "Research/App Store Reviews/84. Habit Tracker - HabitGrid - Daily Habits & Goal Tracker/reviews.jsonl",
+    "source_index": 17,
+    "id": "13733717410",
+    "record": {
+      "review_id": "13733717410",
+      "app_id": "6746483721",
+      "app_name": "Habit Tracker - HabitGrid",
+      "country": "fr",
+      "country_name": "France",
+      "rating": 5,
+      "title": "Good app",
+      "body": "Really good app, easy to win, remind me of github, very beautiful",
+      "author": "T0oni",
+      "date": "2026-02-10T11:40:26Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "appearance_labels_dark_tint_transparency",
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A86#1048",
+    "source": "Research/App Store Reviews/86. Today Habit tracker - For to-dos, routines & goals/reviews.jsonl",
+    "source_index": 1048,
+    "id": "1480443976",
+    "record": {
+      "review_id": "1480443976",
+      "app_id": "1055295863",
+      "app_name": "Today Habit tracker",
+      "country": "mx",
+      "country_name": "Mexico",
+      "rating": 5,
+      "title": "Add widgets",
+      "body": "The app needs widgets to track your daily activities from the lock screen.",
+      "author": "raulmex12",
+      "date": "2016-11-07T17:18:57Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A86#1689",
+    "source": "Research/App Store Reviews/86. Today Habit tracker - For to-dos, routines & goals/reviews.jsonl",
+    "source_index": 1689,
+    "id": "1348932655",
+    "record": {
+      "review_id": "1348932655",
+      "app_id": "1055295863",
+      "app_name": "Today Habit tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 4,
+      "title": "Has potential",
+      "body": "Clean. Looks great. Swiping between cards is buggy and unfortunately you cannot discover that until after the purchase. Also a little pricey, but could be worth it if improved on.",
+      "author": "decca1o",
+      "date": "2016-03-17T00:41:21Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "general_app_context_not_widget_specific"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "P2#3461",
+    "source": "Research/Play Store Reviews/2. HabitNow Daily Routine Planner/reviews.jsonl",
+    "source_index": 3461,
+    "id": "c81e4a97-7c44-4069-abd2-2111b34e8246",
+    "record": {
+      "review_id": "c81e4a97-7c44-4069-abd2-2111b34e8246",
+      "package": "com.habitnow",
+      "app_name": "HabitNow Daily Routine Planner",
+      "language": "en",
+      "language_name": "English",
+      "rating": 1,
+      "text": "Doesn't have an \"increase count\" widget for easily tracking bad habits",
+      "author": "Jeremy Walker",
+      "date": "2025-01-30T17:32:34Z",
+      "thumbs_up": 2,
+      "app_version": "2.2.3d",
+      "developer_reply": "Hello Jeremy, thank you for your review. We are actively working to add the most requested features by our users. Feel free to email us at habitnow.apps@gmail.com if you have any other questions or suggestions. 🙂\n"
+    },
+    "themes": [
+      "interactive_logging_and_step"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P2#4775",
+    "source": "Research/Play Store Reviews/2. HabitNow Daily Routine Planner/reviews.jsonl",
+    "source_index": 4775,
+    "id": "b5cd0536-e856-45ad-99a5-285723df58fe",
+    "record": {
+      "review_id": "b5cd0536-e856-45ad-99a5-285723df58fe",
+      "package": "com.habitnow",
+      "app_name": "HabitNow Daily Routine Planner",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "Please let the widget go to 100% transparency. Also add streak to widget.",
+      "author": "Louis Taylor",
+      "date": "2024-06-12T23:12:38Z",
+      "thumbs_up": 0,
+      "app_version": "2.2.0",
+      "developer_reply": null
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P2#6586",
+    "source": "Research/Play Store Reviews/2. HabitNow Daily Routine Planner/reviews.jsonl",
+    "source_index": 6586,
+    "id": "b902b28d-02c6-44ff-a360-03e0a243ab7b",
+    "record": {
+      "review_id": "b902b28d-02c6-44ff-a360-03e0a243ab7b",
+      "package": "com.habitnow",
+      "app_name": "HabitNow Daily Routine Planner",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "I needed a basic habit tracker and have found this a ton more useful than the printouts and spreadsheets I've used before. Perfect for simple uses, habits, and tasks. It's not a project or whole life management system, and that's okay. The free plan gives everything you need, but the Premium plan gives some additional customization and added features to the widgets. Overall, I've been super happy with this app, and it has helped me actually stay on top of tracking habits. I highly recommend it.",
+      "author": "Noah Carrico",
+      "date": "2023-11-11T18:18:48Z",
+      "thumbs_up": 96,
+      "app_version": "2.1.8",
+      "developer_reply": null
+    },
+    "themes": [
+      "paid_value_or_additional_style"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P2#7613",
+    "source": "Research/Play Store Reviews/2. HabitNow Daily Routine Planner/reviews.jsonl",
+    "source_index": 7613,
+    "id": "b3b7ca03-bbd1-4f0f-8845-e33eee8b896e",
+    "record": {
+      "review_id": "b3b7ca03-bbd1-4f0f-8845-e33eee8b896e",
+      "package": "com.habitnow",
+      "app_name": "HabitNow Daily Routine Planner",
+      "language": "en",
+      "language_name": "English",
+      "rating": 3,
+      "text": "The tasks or habits get checked/unchecked even by accidental touch. Some functionality like long press should be there to prevent this, I would say it's a must for an app of this nature. The long click functionality doesn't work for the widgets, which causes accidental touches. It should work for widgets also.",
+      "author": "nikhil barapatre",
+      "date": "2023-05-25T02:23:08Z",
+      "thumbs_up": 0,
+      "app_version": "2.0.6a",
+      "developer_reply": "Hello Nikhil: There's a setting for that purpose. You can find it in 'Menu > Settings > Todo and habit lists > Swap click and long click'. I hope that helps 😃"
+    },
+    "themes": [
+      "done_list_and_correction_safety"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P2#8373",
+    "source": "Research/Play Store Reviews/2. HabitNow Daily Routine Planner/reviews.jsonl",
+    "source_index": 8373,
+    "id": "0a72e13d-94d9-4836-911a-0f16ec4873c0",
+    "record": {
+      "review_id": "0a72e13d-94d9-4836-911a-0f16ec4873c0",
+      "package": "com.habitnow",
+      "app_name": "HabitNow Daily Routine Planner",
+      "language": "en",
+      "language_name": "English",
+      "rating": 4,
+      "text": "I love the app but I desperately wish the widget had a \"Follow System Default\" setting for light and dark mode like the app does. It's the only widget on my home screen that stays glaringly white after my sleep mode turns on. :(",
+      "author": "Erin",
+      "date": "2023-01-26T04:01:06Z",
+      "thumbs_up": 0,
+      "app_version": "2.0.6a",
+      "developer_reply": null
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P2#10978",
+    "source": "Research/Play Store Reviews/2. HabitNow Daily Routine Planner/reviews.jsonl",
+    "source_index": 10978,
+    "id": "36231d43-8c32-4c5e-a9c1-8d8b7bb1de8d",
+    "record": {
+      "review_id": "36231d43-8c32-4c5e-a9c1-8d8b7bb1de8d",
+      "package": "com.habitnow",
+      "app_name": "HabitNow Daily Routine Planner",
+      "language": "en",
+      "language_name": "English",
+      "rating": 1,
+      "text": "Basic functionality like checking tasks from the widget requires premium.",
+      "author": "Jenna Rz",
+      "date": "2021-10-20T17:23:13Z",
+      "thumbs_up": 0,
+      "app_version": null,
+      "developer_reply": "Dear User, really appreciate your suggestion. We will consider it and improve our app in the new version. If you have questions or suggestions please contact us at habitnow.apps@gmail.com."
+    },
+    "themes": [
+      "basic_paywall_or_withdrawal",
+      "interactive_logging_and_step"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P2#12909",
+    "source": "Research/Play Store Reviews/2. HabitNow Daily Routine Planner/reviews.jsonl",
+    "source_index": 12909,
+    "id": "a0b0db36-7d8d-4c36-961e-9ab433e1736f",
+    "record": {
+      "review_id": "a0b0db36-7d8d-4c36-961e-9ab433e1736f",
+      "package": "com.habitnow",
+      "app_name": "HabitNow Daily Routine Planner",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "I really love this app so far. It would be nice though if a habit/task would disappear from the widget list when completed for the day. It would make a better sense of accomplishment.",
+      "author": "A Google user",
+      "date": "2020-02-01T15:29:56Z",
+      "thumbs_up": 1,
+      "app_version": "1.2.3",
+      "developer_reply": null
+    },
+    "themes": [
+      "done_list_and_correction_safety"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P2#21989",
+    "source": "Research/Play Store Reviews/2. HabitNow Daily Routine Planner/reviews.jsonl",
+    "source_index": 21989,
+    "id": "db7bbcba-2fdd-4f4b-999a-60e8d981ae2a",
+    "record": {
+      "review_id": "db7bbcba-2fdd-4f4b-999a-60e8d981ae2a",
+      "package": "com.habitnow",
+      "app_name": "HabitNow Daily Routine Planner",
+      "language": "it",
+      "language_name": "Italian",
+      "rating": 3,
+      "text": "Davvero per spuntare una casella da widget devo essere premium? È solo un tap sullo schermo. Per il resto, l'app fa il suo dovere.",
+      "author": "Muffin [C-Side]",
+      "date": "2023-12-28T03:00:36Z",
+      "thumbs_up": 0,
+      "app_version": null,
+      "developer_reply": "Hello, we're actively working to add more free features in every app update! Feel free to email us at habitnow.apps@gmail.com if you have any questions or suggestions 🙂"
+    },
+    "themes": [
+      "basic_paywall_or_withdrawal",
+      "interactive_logging_and_step"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P3#2515",
+    "source": "Research/Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl",
+    "source_index": 2515,
+    "id": "f6ac4758-c477-489f-b972-0d844623d5ee",
+    "record": {
+      "review_id": "f6ac4758-c477-489f-b972-0d844623d5ee",
+      "package": "org.isoron.uhabits",
+      "app_name": "Loop Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 1,
+      "text": "I'M BEGGING YOU- PLEASE ADD THIS FEATURE. It would be so much better to have an option to invert the function of the Checkmark widget- have the widget lit up and colorful when the habit is still \"to do\", and dull the widget once it's been marked. It's too easy to overlook an array of grey, transparent buttons.",
+      "author": "Jack",
+      "date": "2025-10-25T18:55:53Z",
+      "thumbs_up": 36,
+      "app_version": "2.2.1",
+      "developer_reply": null
+    },
+    "themes": [
+      "identity_density_and_multiple_items",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P3#2935",
+    "source": "Research/Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl",
+    "source_index": 2935,
+    "id": "9f22701c-c1ab-457b-870c-87074abbb8af",
+    "record": {
+      "review_id": "9f22701c-c1ab-457b-870c-87074abbb8af",
+      "package": "org.isoron.uhabits",
+      "app_name": "Loop Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 2,
+      "text": "does the job okay ish. HATE the widget selection needs one for a \"to do today\" list",
+      "author": "Wonder Wolf Hennessy",
+      "date": "2025-05-27T22:25:54Z",
+      "thumbs_up": 0,
+      "app_version": "2.2.1",
+      "developer_reply": null
+    },
+    "themes": [
+      "identity_density_and_multiple_items"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P3#3038",
+    "source": "Research/Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl",
+    "source_index": 3038,
+    "id": "775d83a8-3f61-4b03-b099-7230fdbf991f",
+    "record": {
+      "review_id": "775d83a8-3f61-4b03-b099-7230fdbf991f",
+      "package": "org.isoron.uhabits",
+      "app_name": "Loop Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "perfeito, mas poderia haver mais widgets como um de streak 2 x 1 parecido com o do duolingo.",
+      "author": "nathan izumi",
+      "date": "2025-04-24T03:06:52Z",
+      "thumbs_up": 0,
+      "app_version": null,
+      "developer_reply": null
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P3#3999",
+    "source": "Research/Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl",
+    "source_index": 3999,
+    "id": "8267c0e1-6150-4e92-b0c9-23cfef3ad80c",
+    "record": {
+      "review_id": "8267c0e1-6150-4e92-b0c9-23cfef3ad80c",
+      "package": "org.isoron.uhabits",
+      "app_name": "Loop Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "Love the 1 tap counter widget and open source-ness. Using it to mindfulness count number of my drinks. Nice work dev!",
+      "author": "David Regal",
+      "date": "2024-06-09T18:31:16Z",
+      "thumbs_up": 0,
+      "app_version": null,
+      "developer_reply": null
+    },
+    "themes": [
+      "interactive_logging_and_step",
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P3#4943",
+    "source": "Research/Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl",
+    "source_index": 4943,
+    "id": "091295d0-d20e-486b-ac9a-ef2ed238828d",
+    "record": {
+      "review_id": "091295d0-d20e-486b-ac9a-ef2ed238828d",
+      "package": "org.isoron.uhabits",
+      "app_name": "Loop Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 3,
+      "text": "After the most recent update I cant stack my tasks/habits (using widget)",
+      "author": "Nauman Iftikhar",
+      "date": "2023-09-12T15:27:06Z",
+      "thumbs_up": 0,
+      "app_version": "2.1.3",
+      "developer_reply": null
+    },
+    "themes": [
+      "identity_density_and_multiple_items"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P3#7376",
+    "source": "Research/Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl",
+    "source_index": 7376,
+    "id": "b7f1ad50-57a6-4d3e-a5cf-4276530eaba1",
+    "record": {
+      "review_id": "b7f1ad50-57a6-4d3e-a5cf-4276530eaba1",
+      "package": "org.isoron.uhabits",
+      "app_name": "Loop Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 4,
+      "text": "Great app, the only thing missing for me is being able to adjust widget font size.",
+      "author": "m g",
+      "date": "2021-10-13T07:46:06Z",
+      "thumbs_up": 0,
+      "app_version": null,
+      "developer_reply": null
+    },
+    "themes": [
+      "identity_density_and_multiple_items",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P3#9578",
+    "source": "Research/Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl",
+    "source_index": 9578,
+    "id": "ed17b26e-1c3b-407d-848d-b6eb2c023725",
+    "record": {
+      "review_id": "ed17b26e-1c3b-407d-848d-b6eb2c023725",
+      "package": "org.isoron.uhabits",
+      "app_name": "Loop Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 4,
+      "text": "Good app but needs a widget for to check multiple habits not just one.",
+      "author": "S Wakefield",
+      "date": "2020-06-08T22:38:34Z",
+      "thumbs_up": 0,
+      "app_version": "1.7.11",
+      "developer_reply": null
+    },
+    "themes": [
+      "identity_density_and_multiple_items"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P3#11092",
+    "source": "Research/Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl",
+    "source_index": 11092,
+    "id": "13043a31-0e38-4cde-b5db-c270f971fa7c",
+    "record": {
+      "review_id": "13043a31-0e38-4cde-b5db-c270f971fa7c",
+      "package": "org.isoron.uhabits",
+      "app_name": "Loop Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "The widget check box tiles are amazing. So easy to click them and it updates your chart.",
+      "author": "A Google user",
+      "date": "2019-08-06T14:45:06Z",
+      "thumbs_up": 0,
+      "app_version": "1.7.10",
+      "developer_reply": null
+    },
+    "themes": [
+      "interactive_logging_and_step"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P3#11777",
+    "source": "Research/Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl",
+    "source_index": 11777,
+    "id": "66b4960f-cd5a-40c9-a5fe-172aab94c2c3",
+    "record": {
+      "review_id": "66b4960f-cd5a-40c9-a5fe-172aab94c2c3",
+      "package": "org.isoron.uhabits",
+      "app_name": "Loop Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "Love the app. Short, simple and more importantly it works. My only qualm is the transparent widget buttons. If I have several lined up it's difficult to read which is which.",
+      "author": "A Google user",
+      "date": "2019-03-10T00:34:11Z",
+      "thumbs_up": 0,
+      "app_version": "1.7.9",
+      "developer_reply": null
+    },
+    "themes": [
+      "identity_density_and_multiple_items",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P3#12523",
+    "source": "Research/Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl",
+    "source_index": 12523,
+    "id": "3000dbe3-ccec-4183-841c-21af86e8dbc5",
+    "record": {
+      "review_id": "3000dbe3-ccec-4183-841c-21af86e8dbc5",
+      "package": "org.isoron.uhabits",
+      "app_name": "Loop Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "Love this app a lot! Placing the widgets on my home screen keeps me motivated!",
+      "author": "A Google user",
+      "date": "2018-09-22T13:16:03Z",
+      "thumbs_up": 0,
+      "app_version": "1.7.9",
+      "developer_reply": null
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P3#13159",
+    "source": "Research/Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl",
+    "source_index": 13159,
+    "id": "5c1183ca-ed66-4b8a-bb67-ce063b63b6f6",
+    "record": {
+      "review_id": "5c1183ca-ed66-4b8a-bb67-ce063b63b6f6",
+      "package": "org.isoron.uhabits",
+      "app_name": "Loop Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 1,
+      "text": "After installing this app my calendar and task widgets stopped working.",
+      "author": "A Google user",
+      "date": "2018-04-09T18:42:01Z",
+      "thumbs_up": 1,
+      "app_version": "1.7.8",
+      "developer_reply": null
+    },
+    "themes": [
+      "stale_broken_install_or_recovery"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P3#16323",
+    "source": "Research/Play Store Reviews/3. Loop Habit Tracker/reviews.jsonl",
+    "source_index": 16323,
+    "id": "b813100e-fbae-44bd-809a-8ab1fe34c0ef",
+    "record": {
+      "review_id": "b813100e-fbae-44bd-809a-8ab1fe34c0ef",
+      "package": "org.isoron.uhabits",
+      "app_name": "Loop Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "Dev: is it possible to apply the check mark from the home screen widget?",
+      "author": "A Google user",
+      "date": "2016-05-07T08:38:03Z",
+      "thumbs_up": 0,
+      "app_version": "1.4.1",
+      "developer_reply": null
+    },
+    "themes": [
+      "interactive_logging_and_step"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P4#3474",
+    "source": "Research/Play Store Reviews/4. Me+ Lifestyle Routine/reviews.jsonl",
+    "source_index": 3474,
+    "id": "b24ca3cd-9e70-47b5-9c40-5114511de2e7",
+    "record": {
+      "review_id": "b24ca3cd-9e70-47b5-9c40-5114511de2e7",
+      "package": "daily.planner.routine.habits",
+      "app_name": "Me+ Lifestyle Routine",
+      "language": "en",
+      "language_name": "English",
+      "rating": 3,
+      "text": "why you removed widget for the streak. that pet was lovely and it motivate me for the next days developers. 🥺🥺",
+      "author": "Aditya Rajput",
+      "date": "2026-07-13T20:16:36Z",
+      "thumbs_up": 4,
+      "app_version": "2.0.8",
+      "developer_reply": "Dear Aditya Rajput, thanks for your kind words about the streak pet. We value your feedback. The widget is currently unavailable, and we’re working to improve Me+ with users’ interests in mind. Please share more details via Feedback or contact us at meplus_android@support.enerjoy.life."
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P7#333",
+    "source": "Research/Play Store Reviews/7. Habit Tracker - Habit Streak/reviews.jsonl",
+    "source_index": 333,
+    "id": "15c1e149-5be6-4af5-a017-97d9c50217c0",
+    "record": {
+      "review_id": "15c1e149-5be6-4af5-a017-97d9c50217c0",
+      "package": "com.adrienblc.habitstracker",
+      "app_name": "Habit Tracker - Habit Streak",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "Great app. please add widgets to the app so it will stay always on homescreen",
+      "author": "Jaydeep Padwal",
+      "date": "2024-08-07T07:37:40Z",
+      "thumbs_up": 0,
+      "app_version": "1.3.0",
+      "developer_reply": "Thanks a lot for your feedback. Widgets are on the roadmap and will arrive soon! Adrien"
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P8#4507",
+    "source": "Research/Play Store Reviews/8. Habitica - Gamify Your Tasks/reviews.jsonl",
+    "source_index": 4507,
+    "id": "e79cdbe4-22bf-4f2b-b2c8-995490748059",
+    "record": {
+      "review_id": "e79cdbe4-22bf-4f2b-b2c8-995490748059",
+      "package": "com.habitrpg.android.habitica",
+      "app_name": "Habitica: Gamify Your Tasks",
+      "language": "en",
+      "language_name": "English",
+      "rating": 3,
+      "text": "Missing a Habits Widget! It has a homescreen widget on your phone for everything EXCEPT habits!",
+      "author": "Ben Paholke",
+      "date": "2023-05-15T20:02:56Z",
+      "thumbs_up": 0,
+      "app_version": "4.1.9",
+      "developer_reply": "Ben, thanks for the review! If you have comments on Habitica's widgets or any you'd like to see in future updates, please feel free to reach out to our devs directly via Menu - About - Support - Send Feedback."
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P9#515",
+    "source": "Research/Play Store Reviews/9. Habit Tracker - HabitKit/reviews.jsonl",
+    "source_index": 515,
+    "id": "9fe14b11-1e2c-4efe-9857-3992d039bc3d",
+    "record": {
+      "review_id": "9fe14b11-1e2c-4efe-9857-3992d039bc3d",
+      "package": "com.roehl.habitkit",
+      "app_name": "Habit Tracker - HabitKit",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "just needs cross device syncing and this app will be PERFECT. this is the best heatmap habit tracking widget available period, no questions asked.",
+      "author": "Fabian Torres",
+      "date": "2025-06-17T15:41:25Z",
+      "thumbs_up": 0,
+      "app_version": "1.12.1",
+      "developer_reply": null
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P9#636",
+    "source": "Research/Play Store Reviews/9. Habit Tracker - HabitKit/reviews.jsonl",
+    "source_index": 636,
+    "id": "f7e5b9ba-33c3-41a8-b585-7bec4644bb89",
+    "record": {
+      "review_id": "f7e5b9ba-33c3-41a8-b585-7bec4644bb89",
+      "package": "com.roehl.habitkit",
+      "app_name": "Habit Tracker - HabitKit",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "Awesome. Could there be an option to control transparency of widget backgrounds in future updates?",
+      "author": "Lia",
+      "date": "2025-02-08T22:27:40Z",
+      "thumbs_up": 0,
+      "app_version": null,
+      "developer_reply": null
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P9#885",
+    "source": "Research/Play Store Reviews/9. Habit Tracker - HabitKit/reviews.jsonl",
+    "source_index": 885,
+    "id": "7d23214f-31c7-4eda-922d-41268d48b69c",
+    "record": {
+      "review_id": "7d23214f-31c7-4eda-922d-41268d48b69c",
+      "package": "com.roehl.habitkit",
+      "app_name": "Habit Tracker - HabitKit",
+      "language": "en",
+      "language_name": "English",
+      "rating": 3,
+      "text": "Help! this was the perfect homescreen widget until it lost its style this morning! no more dark background?? 😭",
+      "author": "Betule Sairafi",
+      "date": "2024-06-21T17:17:17Z",
+      "thumbs_up": 0,
+      "app_version": "1.7.2",
+      "developer_reply": "Hey Betule, thanks for your feedback! I didn't expect someone to actually override the widget color. It always adapts to your system theme now. I will think about a way to override it again! Sorry for the inconvenience!"
+    },
+    "themes": [
+      "stale_broken_install_or_recovery",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P9#956",
+    "source": "Research/Play Store Reviews/9. Habit Tracker - HabitKit/reviews.jsonl",
+    "source_index": 956,
+    "id": "a63da69d-3dbc-4314-9a72-64f49d9b9eca",
+    "record": {
+      "review_id": "a63da69d-3dbc-4314-9a72-64f49d9b9eca",
+      "package": "com.roehl.habitkit",
+      "app_name": "Habit Tracker - HabitKit",
+      "language": "en",
+      "language_name": "English",
+      "rating": 3,
+      "text": "rlly cute ui but free version has no widget & u can only have 4 widgets",
+      "author": "abbi",
+      "date": "2024-04-12T07:51:09Z",
+      "thumbs_up": 0,
+      "app_version": "1.6.8",
+      "developer_reply": "Thank you for taking the time to share your feedback. As a solo developer, I'm trying to find the right balance between providing value in the free version of the app, and sustaining the development and maintenance costs that allow me to continuously improve the app and provide a good user experience. Hope you like the app anyway!\n"
+    },
+    "themes": [
+      "basic_paywall_or_withdrawal"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P9#1116",
+    "source": "Research/Play Store Reviews/9. Habit Tracker - HabitKit/reviews.jsonl",
+    "source_index": 1116,
+    "id": "711833e8-ab5f-455b-8e03-c47a1bf2cc72",
+    "record": {
+      "review_id": "711833e8-ab5f-455b-8e03-c47a1bf2cc72",
+      "package": "com.roehl.habitkit",
+      "app_name": "Habit Tracker - HabitKit",
+      "language": "en",
+      "language_name": "English",
+      "rating": 4,
+      "text": "I really love it but the widget really needs to allow for multiple habits not just one :(",
+      "author": "Lucile J",
+      "date": "2024-01-18T20:16:12Z",
+      "thumbs_up": 0,
+      "app_version": "1.6.8",
+      "developer_reply": "Thank you very much for the nice review, Lucile! I'm already working of something like that and hope to release it soon!"
+    },
+    "themes": [
+      "identity_density_and_multiple_items"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P10#5199",
+    "source": "Research/Play Store Reviews/10. Habit Tracker - Habit Diary/reviews.jsonl",
+    "source_index": 5199,
+    "id": "7b83929b-2eee-4606-be7a-d95be58e295c",
+    "record": {
+      "review_id": "7b83929b-2eee-4606-be7a-d95be58e295c",
+      "package": "habittracker.todolist.tickit.daily.planner",
+      "app_name": "Habit Tracker - Habit Diary",
+      "language": "en",
+      "language_name": "English",
+      "rating": 1,
+      "text": "Pause & archived habits are counted in previous days too when we activate it again, (edit:1) widgets are also not available in the app i think must have for such apps where we must continuously notice our regular habits which will help us stick to it. *I will keep sharing my issues I'll face...",
+      "author": "AKASH SINGH",
+      "date": "2026-05-04T04:05:35Z",
+      "thumbs_up": 0,
+      "app_version": "1.3.9",
+      "developer_reply": "Hello Akash! Thanks for your comment. User feedback is crucial in helping us improve our service. Our team will discuss and consider optimizing the related features to serve you better. If you have any other suggestions or problems, please don't hesitate to share them with us via \"ME -> Feedback\". Best wishes.🥰"
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P11#4988",
+    "source": "Research/Play Store Reviews/11. Dear Me - Daily Routine Tracker/reviews.jsonl",
+    "source_index": 4988,
+    "id": "4da6142c-5cf4-42ca-9660-6065e5431b9a",
+    "record": {
+      "review_id": "4da6142c-5cf4-42ca-9660-6065e5431b9a",
+      "package": "com.kompanion.habit.android",
+      "app_name": "Dear Me: Daily Routine Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 2,
+      "text": "Widget takes time to load and you can't check off from the list directly from widget. regret subscribing",
+      "author": "JP Mañacap",
+      "date": "2025-04-28T02:58:40Z",
+      "thumbs_up": 0,
+      "app_version": "1.1.8",
+      "developer_reply": "Hello. We are sorry for your negative experience. Providing all our users with a good experience is our priority. We would appreciate it if you could contact us at hi@appdearme.com and share the screen recording of the issue 😊"
+    },
+    "themes": [
+      "paid_value_or_additional_style",
+      "interactive_logging_and_step",
+      "stale_broken_install_or_recovery"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P11#5469",
+    "source": "Research/Play Store Reviews/11. Dear Me - Daily Routine Tracker/reviews.jsonl",
+    "source_index": 5469,
+    "id": "b535705d-6747-4822-80f6-3ed5a69b3c0d",
+    "record": {
+      "review_id": "b535705d-6747-4822-80f6-3ed5a69b3c0d",
+      "package": "com.kompanion.habit.android",
+      "app_name": "Dear Me: Daily Routine Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "Can u make a widget to keep in the phone 's lockscreen to see our progress",
+      "author": "Joshua Biju",
+      "date": "2025-02-13T03:41:58Z",
+      "thumbs_up": 0,
+      "app_version": "1.0.23",
+      "developer_reply": "Hello. Thank you for your feedback. Your ideas are invaluable to us in moving our app forward and our team continues to work on this. We have forwarded your feedback to our team and they will try to incorporate it into our new developments 🌟"
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P12#62538",
+    "source": "Research/Play Store Reviews/12. Fabulous Daily Routine Planner/reviews.jsonl",
+    "source_index": 62538,
+    "id": "9250a0df-ffcc-4180-b2fe-03f0db50fae6",
+    "record": {
+      "review_id": "9250a0df-ffcc-4180-b2fe-03f0db50fae6",
+      "package": "co.thefabulous.app",
+      "app_name": "Fabulous Daily Routine Planner",
+      "language": "en",
+      "language_name": "English",
+      "rating": 4,
+      "text": "can you add a widget so we can check what habits we have to do today? thank you",
+      "author": "A Google user",
+      "date": "2019-07-23T04:44:37Z",
+      "thumbs_up": 0,
+      "app_version": "3.57",
+      "developer_reply": null
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P14#146",
+    "source": "Research/Play Store Reviews/14. Habit Pixel - Streak Tracker/reviews.jsonl",
+    "source_index": 146,
+    "id": "0dcece0f-10a0-4186-b8af-830db345790f",
+    "record": {
+      "review_id": "0dcece0f-10a0-4186-b8af-830db345790f",
+      "package": "com.habitpixel.app",
+      "app_name": "Habit Pixel: Streak Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 4,
+      "text": "Awesome app, just wish the widget had transparent option also, like other apps.",
+      "author": "rohit sinha",
+      "date": "2025-12-04T15:16:44Z",
+      "thumbs_up": 0,
+      "app_version": "14.0.0",
+      "developer_reply": "Hello Rohit! Thank you for the review!\n\nThe app now has transparent widgets - do take a look 😉"
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P18#588",
+    "source": "Research/Play Store Reviews/18. Habit Tracker - Habit Radar/reviews.jsonl",
+    "source_index": 588,
+    "id": "6d7af31a-f784-4123-8b23-7d414d9653a5",
+    "record": {
+      "review_id": "6d7af31a-f784-4123-8b23-7d414d9653a5",
+      "package": "com.gohary.habitradar",
+      "app_name": "Habit Tracker - Habit Radar",
+      "language": "en",
+      "language_name": "English",
+      "rating": 1,
+      "text": "i wish i could check habits directly from the widget without opening the app",
+      "author": "Vaira Forzati",
+      "date": "2026-07-06T06:07:20Z",
+      "thumbs_up": 0,
+      "app_version": null,
+      "developer_reply": null
+    },
+    "themes": [
+      "interactive_logging_and_step"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P19#272",
+    "source": "Research/Play Store Reviews/19. TheFor - Habit Tracker/reviews.jsonl",
+    "source_index": 272,
+    "id": "99e90719-2bfb-4770-a398-05eb24581ac2",
+    "record": {
+      "review_id": "99e90719-2bfb-4770-a398-05eb24581ac2",
+      "package": "xyz.thefor.habits.habits",
+      "app_name": "TheFor: Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "This app is so good . Especially I like the widget. I wish they add streak widget too .",
+      "author": "Subhakar M",
+      "date": "2024-06-27T17:10:38Z",
+      "thumbs_up": 0,
+      "app_version": "1.4.0",
+      "developer_reply": null
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P24#12838",
+    "source": "Research/Play Store Reviews/24. Habit Tracker/reviews.jsonl",
+    "source_index": 12838,
+    "id": "832d42d3-bae4-4cf8-978f-583f23ecbe8a",
+    "record": {
+      "review_id": "832d42d3-bae4-4cf8-978f-583f23ecbe8a",
+      "package": "com.oristats.habitbull",
+      "app_name": "Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 4,
+      "text": "The daily widget is helpful for me to glance what I need todo today and now...",
+      "author": "A Google user",
+      "date": "2016-04-10T07:28:10Z",
+      "thumbs_up": 0,
+      "app_version": "1.3.7",
+      "developer_reply": null
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P24#15545",
+    "source": "Research/Play Store Reviews/24. Habit Tracker/reviews.jsonl",
+    "source_index": 15545,
+    "id": "2572dd59-2f5b-4a40-aaa4-def75a6b3203",
+    "record": {
+      "review_id": "2572dd59-2f5b-4a40-aaa4-def75a6b3203",
+      "package": "com.oristats.habitbull",
+      "app_name": "Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "I really like the widget.  Seeing the week at a glance is so helpful with establishing need habits.  The reminders are perfect too.",
+      "author": "A Google user",
+      "date": "2015-03-29T15:49:53Z",
+      "thumbs_up": 0,
+      "app_version": "1.2.9",
+      "developer_reply": null
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P24#15751",
+    "source": "Research/Play Store Reviews/24. Habit Tracker/reviews.jsonl",
+    "source_index": 15751,
+    "id": "8eabdb14-1c61-4ff4-b713-fe70d6f63dc9",
+    "record": {
+      "review_id": "8eabdb14-1c61-4ff4-b713-fe70d6f63dc9",
+      "package": "com.oristats.habitbull",
+      "app_name": "Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "Could you implement a \"Continuous Week View\" function for the widget as it is in ReWire? It is more motivational to see the last 7 (successful) days instead of seeing an empty weeklist on Monday. Thank you for considering this update!",
+      "author": "A Google user",
+      "date": "2015-03-09T12:59:31Z",
+      "thumbs_up": 0,
+      "app_version": "1.2.9",
+      "developer_reply": null
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P31#235",
+    "source": "Research/Play Store Reviews/31. HelloHabit - Habit Tracker/reviews.jsonl",
+    "source_index": 235,
+    "id": "34cc0a83-2e7d-4f86-9a6c-6e718f10a90d",
+    "record": {
+      "review_id": "34cc0a83-2e7d-4f86-9a6c-6e718f10a90d",
+      "package": "com.studio.hellohabit",
+      "app_name": "HelloHabit - Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "So far, this is exactly what I was looking for - simple, interactive widget, free!",
+      "author": "Jami Hamblin",
+      "date": "2025-08-19T13:37:34Z",
+      "thumbs_up": 0,
+      "app_version": "2.8.1",
+      "developer_reply": null
+    },
+    "themes": [
+      "presence_and_motivation",
+      "interactive_logging_and_step"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P33#1432",
+    "source": "Research/Play Store Reviews/33. Productive - Habit tracker/reviews.jsonl",
+    "source_index": 1432,
+    "id": "ec6a9b46-13ec-4051-ad19-db2ca6142475",
+    "record": {
+      "review_id": "ec6a9b46-13ec-4051-ad19-db2ca6142475",
+      "package": "com.apalon.to.do.list",
+      "app_name": "Productive - Habit tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 4,
+      "text": "This app is the best one and the favorite for me but it needs only one thing to become perfect , simply if you'll add a \"FREE\" widget it would be perfect !",
+      "author": "MineCreation - كل ما تريد معرفته عن ماينكرافت",
+      "date": "2021-02-13T05:56:17Z",
+      "thumbs_up": 1,
+      "app_version": null,
+      "developer_reply": null
+    },
+    "themes": [
+      "basic_paywall_or_withdrawal"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P37#439",
+    "source": "Research/Play Store Reviews/37. Habitify - Habit Tracker/reviews.jsonl",
+    "source_index": 439,
+    "id": "b00fcafc-764e-4a3c-9331-e74ace3f4ad1",
+    "record": {
+      "review_id": "b00fcafc-764e-4a3c-9331-e74ace3f4ad1",
+      "package": "co.unstatic.habitify",
+      "app_name": "Habitify: Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 4,
+      "text": "I like it, I wish that we can customize the widgets because I don't like plain white or black.",
+      "author": "Diana Gutierrez",
+      "date": "2024-01-29T14:34:02Z",
+      "thumbs_up": 0,
+      "app_version": "12.3.10",
+      "developer_reply": "Dear User, really appreciate your suggestion. We will consider it and improve our app in the new version. If you have questions or suggestions please contact us at contact@habitify.me."
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P37#566",
+    "source": "Research/Play Store Reviews/37. Habitify - Habit Tracker/reviews.jsonl",
+    "source_index": 566,
+    "id": "ab3be43b-f5e6-4ef9-82e1-ed891aa3ace7",
+    "record": {
+      "review_id": "ab3be43b-f5e6-4ef9-82e1-ed891aa3ace7",
+      "package": "co.unstatic.habitify",
+      "app_name": "Habitify: Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 3,
+      "text": "Widget buttons are not working. I have to open the app to update any progress items. Please fix!",
+      "author": "Divya Manglam",
+      "date": "2023-04-06T08:26:38Z",
+      "thumbs_up": 0,
+      "app_version": "12.3.3",
+      "developer_reply": "Can you please describe what is happening? Please reach out to us at contact@habitify.me. We would like to understand the case and support you with our best."
+    },
+    "themes": [
+      "interactive_logging_and_step",
+      "stale_broken_install_or_recovery"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P41#439",
+    "source": "Research/Play Store Reviews/41. Routineday Daily Habit Tracker/reviews.jsonl",
+    "source_index": 439,
+    "id": "6a2ec6c1-e1fe-471f-9df5-72e84df88c78",
+    "record": {
+      "review_id": "6a2ec6c1-e1fe-471f-9df5-72e84df88c78",
+      "package": "cc.underthehood.lutin.app",
+      "app_name": "Routineday Daily Habit Tracker",
+      "language": "tr",
+      "language_name": "Turkish",
+      "rating": 5,
+      "text": "Harika. En güzel yanlarından birisi de yeni alışkanlık eklemek istediğimde Premium'a zorlamadı, reklam izleyerek yeni alışkanlık ekleyebiliyorum. Reklam da çok sık çıkmıyor. Widget'lardan bazıları Premium ama geriye kalanlar fazlasıyla iş görüyor zaten. Harika. Lütfen hep en güzel şekilde kal RoutineDay 👐🏻🤗🥰💕",
+      "author": "Menekşe Tül",
+      "date": "2026-08-24T07:12:05Z",
+      "thumbs_up": 3,
+      "app_version": "2.9.0",
+      "developer_reply": "Bu güzel yorum bizi gerçekten çok mutlu etti!🥹 Premium olmadan da Routineday'i rahatça kullanabilmenizi ve reklamların deneyiminizi mümkün olduğunca az bölmesini özellikle önemsiyoruz. Bunu fark edip sevmenize ayrıca mutlu olduk. Routineday'i hep güzel tutmak ve daha da geliştirmek için çalışmaya devam edeceğiz! 🙌"
+    },
+    "themes": [
+      "paid_value_or_additional_style"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P54#64",
+    "source": "Research/Play Store Reviews/54. Habit Tracker Kit - HabitDone/reviews.jsonl",
+    "source_index": 64,
+    "id": "6c65e0ab-1403-48a2-8dcd-f1d422dce28d",
+    "record": {
+      "review_id": "6c65e0ab-1403-48a2-8dcd-f1d422dce28d",
+      "package": "com.dison.HabitDone",
+      "app_name": "Habit Tracker Kit - HabitDone",
+      "language": "en",
+      "language_name": "English",
+      "rating": 4,
+      "text": "make a widget. recommend where you can can check off habit from the widget. make a widget of group of habit I can scroll down and check off",
+      "author": "aLEKS",
+      "date": "2024-04-13T11:01:33Z",
+      "thumbs_up": 0,
+      "app_version": "1.9.0",
+      "developer_reply": "The widget is still under planning and will go online in the future."
+    },
+    "themes": [
+      "interactive_logging_and_step",
+      "identity_density_and_multiple_items"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P65#1793",
+    "source": "Research/Play Store Reviews/65. Goal & Habit Tracker Calendar/reviews.jsonl",
+    "source_index": 1793,
+    "id": "4b01b54c-7cc6-4c21-be6f-748610b68930",
+    "record": {
+      "review_id": "4b01b54c-7cc6-4c21-be6f-748610b68930",
+      "package": "info.intrasoft.habitgoaltracker",
+      "app_name": "Goal & Habit Tracker Calendar",
+      "language": "de",
+      "language_name": "German",
+      "rating": 4,
+      "text": "Hello   Is it possible to see the whole month in the widget?  Now i can only see the week.   Thank you for your answer.   Regards",
+      "author": "Ein Google-Nutzer",
+      "date": "2016-01-08T07:53:07Z",
+      "thumbs_up": 0,
+      "app_version": "GT 1.0.27",
+      "developer_reply": "Thank you for you feedback.  it is not possible to see the whole month in the widget at the moment. It is considered for future implementation."
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P65#4338",
+    "source": "Research/Play Store Reviews/65. Goal & Habit Tracker Calendar/reviews.jsonl",
+    "source_index": 4338,
+    "id": "2e22cbea-54e1-403b-a57a-ef3609e500a9",
+    "record": {
+      "review_id": "2e22cbea-54e1-403b-a57a-ef3609e500a9",
+      "package": "info.intrasoft.habitgoaltracker",
+      "app_name": "Goal & Habit Tracker Calendar",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "My favorite habit track I have used. Has a widget option to put the habit calendar on my background.",
+      "author": "Ashley Mages",
+      "date": "2021-05-30T22:26:27Z",
+      "thumbs_up": 0,
+      "app_version": "3.4.0",
+      "developer_reply": null
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P65#4560",
+    "source": "Research/Play Store Reviews/65. Goal & Habit Tracker Calendar/reviews.jsonl",
+    "source_index": 4560,
+    "id": "36254989-3d73-4a5c-8ff5-a0b968d3dd27",
+    "record": {
+      "review_id": "36254989-3d73-4a5c-8ff5-a0b968d3dd27",
+      "package": "info.intrasoft.habitgoaltracker",
+      "app_name": "Goal & Habit Tracker Calendar",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "Please add month view to the widget",
+      "author": "Gazni",
+      "date": "2021-02-17T10:56:15Z",
+      "thumbs_up": 0,
+      "app_version": "3.3.1",
+      "developer_reply": null
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P65#4619",
+    "source": "Research/Play Store Reviews/65. Goal & Habit Tracker Calendar/reviews.jsonl",
+    "source_index": 4619,
+    "id": "703db485-a02b-4b76-8c35-76bcba12785f",
+    "record": {
+      "review_id": "703db485-a02b-4b76-8c35-76bcba12785f",
+      "package": "info.intrasoft.habitgoaltracker",
+      "app_name": "Goal & Habit Tracker Calendar",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "Does what it says. The widget feature is one of my favourite feature, it lets you put a big check or cross board on your screen.",
+      "author": "empty",
+      "date": "2021-01-28T04:48:14Z",
+      "thumbs_up": 0,
+      "app_version": "3.3.1",
+      "developer_reply": null
+    },
+    "themes": [
+      "progress_week_month_heatmap_counter_streak"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P65#5707",
+    "source": "Research/Play Store Reviews/65. Goal & Habit Tracker Calendar/reviews.jsonl",
+    "source_index": 5707,
+    "id": "0f2c9cb2-e89a-4b04-a229-b4a17f9ac500",
+    "record": {
+      "review_id": "0f2c9cb2-e89a-4b04-a229-b4a17f9ac500",
+      "package": "info.intrasoft.habitgoaltracker",
+      "app_name": "Goal & Habit Tracker Calendar",
+      "language": "en",
+      "language_name": "English",
+      "rating": 2,
+      "text": "everything is great...just add a dark theme for app and widget please. i'll give 5 star",
+      "author": "A Google user",
+      "date": "2020-02-19T19:32:47Z",
+      "thumbs_up": 0,
+      "app_version": "3.0.5",
+      "developer_reply": null
+    },
+    "themes": [
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P65#8223",
+    "source": "Research/Play Store Reviews/65. Goal & Habit Tracker Calendar/reviews.jsonl",
+    "source_index": 8223,
+    "id": "c9eff9d8-cfc6-4257-b78a-be5371dcea24",
+    "record": {
+      "review_id": "c9eff9d8-cfc6-4257-b78a-be5371dcea24",
+      "package": "info.intrasoft.habitgoaltracker",
+      "app_name": "Goal & Habit Tracker Calendar",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "Please make the widget fonts smaller so that more items can be seen on the screen",
+      "author": "A Google user",
+      "date": "2017-11-13T09:30:45Z",
+      "thumbs_up": 0,
+      "app_version": null,
+      "developer_reply": null
+    },
+    "themes": [
+      "identity_density_and_multiple_items",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P70#378",
+    "source": "Research/Play Store Reviews/70. everyday Habit Tracker/reviews.jsonl",
+    "source_index": 378,
+    "id": "ef33150a-1edf-434e-820e-0f4930d6fe31",
+    "record": {
+      "review_id": "ef33150a-1edf-434e-820e-0f4930d6fe31",
+      "package": "com.everydaycheckmobile",
+      "app_name": "everyday Habit Tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 5,
+      "text": "This so is incredibly helpful. It's is simple to set up and use. It allows just enough customization to be practical without being burdensome. The visualization is clear and pretty so it's is motivating. I love the option to set reminders (or not). The widget is the icing on the cake - visually attractive and very useful. The free version includes 3 habits to track and includes the widget. I could have done with just that, but the annual subscription is very reasonable for such a great app.",
+      "author": "Angela Austin",
+      "date": "2022-08-25T23:17:18Z",
+      "thumbs_up": 10,
+      "app_version": "2.4.10",
+      "developer_reply": "Super happy to read the app is helping Angela! Feel free to shoot me feedback any time at joan@everyday.app on how to improve the app! Every day, a little bit :)"
+    },
+    "themes": [
+      "paid_value_or_additional_style",
+      "presence_and_motivation",
+      "appearance_labels_dark_tint_transparency"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P92#20",
+    "source": "Research/Play Store Reviews/92. Qhabit - Daily habit tracker/reviews.jsonl",
+    "source_index": 20,
+    "id": "77fdc60b-bfb8-4ae1-8caf-e9f162157d2a",
+    "record": {
+      "review_id": "77fdc60b-bfb8-4ae1-8caf-e9f162157d2a",
+      "package": "com.skillfoxapps.qhabit",
+      "app_name": "Qhabit: Daily habit tracker",
+      "language": "en",
+      "language_name": "English",
+      "rating": 1,
+      "text": "I have to first subscribe to even check out the widget format... no thanks.",
+      "author": "Kerbie Accime",
+      "date": "2024-05-18T16:07:16Z",
+      "thumbs_up": 0,
+      "app_version": "1.6.3",
+      "developer_reply": null
+    },
+    "themes": [
+      "basic_paywall_or_withdrawal"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  },
+  {
+    "ref": "P123#253",
+    "source": "Research/Play Store Reviews/123. Rise - Habit List/reviews.jsonl",
+    "source_index": 253,
+    "id": "fef0e56e-9ea0-46ba-9706-8bb7f57d14c7",
+    "record": {
+      "review_id": "fef0e56e-9ea0-46ba-9706-8bb7f57d14c7",
+      "package": "com.habittracker.routine.habits.dailyplanner",
+      "app_name": "Rise: Habit List",
+      "language": "en",
+      "language_name": "English",
+      "rating": 4,
+      "text": "When the task is completed,it is shown very slowly on the widget home screen.Fix it please",
+      "author": "Jeffin",
+      "date": "2025-04-08T13:59:28Z",
+      "thumbs_up": 0,
+      "app_version": "5.7",
+      "developer_reply": "Hi,\nThank you for your review.\nWe are sorry to hear that you are unable to use the App at this time. Please, reach out to our support team with the details of the issue at support.habitlist@onemusicplayer.com for further assistance.\nThank you!"
+    },
+    "themes": [
+      "stale_broken_install_or_recovery"
+    ],
+    "scope": "Android store review; transfer cautiously"
+  }
+]

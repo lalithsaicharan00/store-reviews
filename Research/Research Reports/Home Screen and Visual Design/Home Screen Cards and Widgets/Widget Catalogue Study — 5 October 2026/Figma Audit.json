@@ -1,0 +1,150 @@
+{
+  "fileKey": "Ncccsm1l2O62GJ5xLSInqk",
+  "pageId": "234:2",
+  "sections": [
+    {
+      "id": "509:3114",
+      "name": "Free widgets · research proposal · 5 October 2026",
+      "width": 1840,
+      "height": 2093,
+      "x": 43590,
+      "y": 711
+    },
+    {
+      "id": "509:3116",
+      "name": "Paid widgets · research proposal · 5 October 2026",
+      "width": 1840,
+      "height": 2552,
+      "x": 45630,
+      "y": 711
+    }
+  ],
+  "assetFrameId": "509:2867",
+  "components": [
+    {
+      "id": "509:2895",
+      "name": "Widget study / Water",
+      "w": 158,
+      "h": 158
+    },
+    {
+      "id": "509:2909",
+      "name": "Widget study / Stretch",
+      "w": 158,
+      "h": 158
+    },
+    {
+      "id": "509:2921",
+      "name": "Widget study / Stretch",
+      "w": 158,
+      "h": 158
+    },
+    {
+      "id": "509:2933",
+      "name": "Widget study / Less scrolling",
+      "w": 158,
+      "h": 158
+    },
+    {
+      "id": "509:2945",
+      "name": "Widget study / Coffee",
+      "w": 158,
+      "h": 158
+    },
+    {
+      "id": "509:2957",
+      "name": "Widget study / Choose habit",
+      "w": 158,
+      "h": 158
+    },
+    {
+      "id": "509:2964",
+      "name": "Widget study / Habit unavailable",
+      "w": 158,
+      "h": 158
+    },
+    {
+      "id": "509:2971",
+      "name": "Widget study / Content hidden",
+      "w": 158,
+      "h": 158
+    },
+    {
+      "id": "509:2978",
+      "name": "Widget study / Update needed",
+      "w": 158,
+      "h": 158
+    },
+    {
+      "id": "509:2985",
+      "name": "Widget study / Today / Medium",
+      "w": 338,
+      "h": 158
+    },
+    {
+      "id": "509:3012",
+      "name": "Widget study / Today / Large",
+      "w": 338,
+      "h": 354
+    },
+    {
+      "id": "509:3057",
+      "name": "Widget study / Tasks / Large",
+      "w": 338,
+      "h": 354
+    },
+    {
+      "id": "509:3102",
+      "name": "Widget study / Today",
+      "w": 158,
+      "h": 158
+    },
+    {
+      "id": "509:3472",
+      "name": "Widget study / Last 7 days / Medium",
+      "w": 338,
+      "h": 158
+    },
+    {
+      "id": "509:3503",
+      "name": "Widget study / Month / Large",
+      "w": 338,
+      "h": 354
+    },
+    {
+      "id": "509:3592",
+      "name": "Widget study / Compact favourites / Medium",
+      "w": 338,
+      "h": 158
+    },
+    {
+      "id": "509:3619",
+      "name": "Widget study / Practice",
+      "w": 158,
+      "h": 158
+    },
+    {
+      "id": "509:3631",
+      "name": "Widget study / Goal focus / Medium",
+      "w": 338,
+      "h": 158
+    },
+    {
+      "id": "509:3641",
+      "name": "Widget study / Year summary / Large",
+      "w": 338,
+      "h": 354
+    },
+    {
+      "id": "516:2927",
+      "name": "Widget study / Last 7 days / Small",
+      "w": 158,
+      "h": 158
+    }
+  ],
+  "instances": 74,
+  "textNodes": 652,
+  "images": [],
+  "foreignFonts": [],
+  "clippedOverflows": []
+}
