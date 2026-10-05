@@ -6,6 +6,8 @@ Written by Codex, 3 October 2026. **Start here for individual habit details info
 
 **4 October follow-up revised after rejection:** Start with the [revised UX pass for the header, History actions, recording and Notes](<Final UX Pass/README.md>) when working on these surfaces. Its [Consistency Revision](<Final UX Pass/Consistency Revision.md>) records why blue chrome and inconsistent inputs were rejected and how the latest mockups reuse accepted controls. The latest proposal awaits user review. It has 22 individual image exports and three editable Figma boards. History and Notes actions live in their own tab content, fixed type-based labels replace habit-name-generated copy, and record forms reuse the accepted entry-editor/Day-details patterns. The original History chronology and Progress tab direction below still apply. These remain representative mockups; iOS implementation and device validation are outstanding.
 
+**5 October streak-placement follow-up:** [Streak Placement — Shared Header or Progress](<Final UX Pass/Streak Placement — Shared Header or Progress.md>) recommends moving Current/Best into the early individual Progress summary. Six existing History/Notes studies now have identity → tabs without the duplicate statistic row; their PNG exports are refreshed. The 4 Oct header-pair placement is superseded; Today access, the open Progress structure and other accepted controls remain. No new mockups or app changes were created.
+
 ## Current direction and version precedence
 
 | Area | Current direction | Earlier version retained | Read next |
@@ -48,7 +50,7 @@ Written by Codex, 3 October 2026. **Start here for individual habit details info
 | Revised Progress | [357:1531](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=357-1531) | Current Progress layout direction |
 | 4 Oct header, History and Notes | [433:2071](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=433-2071) | Current action-placement and naming proposal |
 | 4 Oct type-aware recording | [434:2071](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=434-2071) | Today/past record forms and Day-details routes |
-| 4 Oct Notes/quit edge states | [443:2071](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=443-2071) | Empty/search Notes, quit runs, note menu and delete confirmation |
+| 4 Oct Notes/quit edge states | [443:2071](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=443-2071) | Empty/search Notes, quit History, note menu and delete confirmation; shared-header streak pair removed 5 Oct |
 
 The five original boards and three 4 October follow-up boards are on inspiration page `234:2`. Their images capture the dated versions in their respective handoffs; later Figma edits require new exports. The live editable source is authoritative for a node’s latest appearance, while this package preserves the documented research versions.
 

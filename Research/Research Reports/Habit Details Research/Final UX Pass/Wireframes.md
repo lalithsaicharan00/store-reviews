@@ -4,13 +4,15 @@ Written by Codex (OpenAI), 4 October 2026. Read the [research and interaction ha
 
 The latest [consistency revision](<Consistency Revision.md>) replaces the prior blue-button/inconsistent-field follow-up and is awaiting user review.
 
+**5 October update:** [Streak-placement research](<Streak Placement — Shared Header or Progress.md>) removes the duplicate Current/Best pair from six existing shared-header studies. Tabs and tab content move up 106 pt in these fixed-size examples; the 24 pt identity-to-tabs gap and existing controls stay intact. The pair remains visible in the early individual Progress summary. No new mockups were created.
+
 These **22 editable Figma screen studies and PNG exports are representative layouts, not final iOS designs**. Build the actual interface with native SwiftUI controls, SF Symbols, semantic colors, Dynamic Type, VoiceOver and the app's light/dark system (Rulebook U1/U9). The [accepted Day details and entry editor handoff](<../../Day Structure and Organization/Day Details and Entry Editor Handoff/README.md>) controls their appearance and behavior.
 
 Editable boards: [Habit details, History and Notes](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=433-2071), [record creation and Day-details routes](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=434-2071), and [Notes/quit edge states](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=443-2071).
 
 ## Shared Habit details page
 
-History, Notes and Progress are tabs **within one Habit details page**. The navigation title, centered habit identity, goal, streak/run facts and segmented tabs are shared. Their controls belong to the active tab's scroll content; neither History nor Notes owns a changing page-wide sticky bottom bar. Actions use native-size targets and keep enough width for localization.
+History, Notes and Progress are tabs **within one Habit details page**. The navigation title, centered habit identity, goal and segmented tabs are shared. Current/Best streak or quit-run facts belong to the early Progress summary, not the shared header. Their controls belong to the active tab's scroll content; neither History nor Notes owns a changing page-wide sticky bottom bar. Actions use native-size targets and keep enough width for localization.
 
 ### 01. Daily History
 
@@ -20,7 +22,7 @@ Under the History tab, **Open day…** and **Log time manually** sit directly be
 
 ### 02. Weekly History
 
-A long goal wraps above week-based streaks. The fixed repeatable-check action is **Add check**, even when the habit is named “Call family.” It must work for any user-entered habit name.
+A long goal wraps above the tabs; week-based streaks are in Progress with explicit goal context. The fixed repeatable-check action is **Add check**, even when the habit is named “Call family.” It must work for any user-entered habit name.
 
 ![Weekly habit History](Images/history-weekly.png)
 
@@ -32,7 +34,7 @@ A long goal wraps above week-based streaks. The fixed repeatable-check action is
 
 ### 04. Quit History
 
-Current/Best **run** replace build-habit streak language. The fixed **Record slip** action has neutral emphasis. Days without a recorded slip are not manufactured as History rows.
+The shared header keeps factual Quitting since context. Current/Best **run** belong in Progress's Overall record instead of above History; they use quit-run rather than build-habit streak language. The fixed **Record slip** action has neutral emphasis. Days without a recorded slip are not manufactured as History rows.
 
 ![Quit habit History](Images/quit-header.png)
 
