@@ -379,9 +379,8 @@ final class FocusPlayerUITests: XCTestCase {
         shot("focus-11-after-fast-navigation")
     }
 
-    /// A swipe still moves one habit at a time, and the player follows it (the toolbar's position, the main button).
-    /// The pager is the player's own paging scroll view since Current Work 50 (5 Oct 2026), so a swipe is read when it
-    /// comes to rest.
+    /// A swipe moves one habit at a time, and the player follows it (the toolbar's position, ‹ at the first habit).
+    /// Added 5 Oct 2026 (Current Work 50): no player test swiped before.
     func testSwipeMovesOneHabitAtATime() {
         launch()
         let names = app.staticTexts.matching(identifier: "focus-name")

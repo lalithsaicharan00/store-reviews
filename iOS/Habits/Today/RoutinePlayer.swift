@@ -53,14 +53,11 @@ struct RoutinePlayer: View {
     @State private var feedbackCount = 0
     @State private var expired = false
     @State private var showClock = true
-    /// Where the pager is scrolled. Only the player moves it (‹ ›, the queue, Skip); a swipe is read once it comes to
-    /// rest (`swipeEnded`) and goes through `navigate`, so the timer of the habit left behind is saved and the next
-    /// one's starts, exactly as with the buttons. Never two-way: the native page TabView reported each page it slid
-    /// past as the one chosen, so › tapped fast sent the player back to it and the pages slid back and forth
-    /// (Current Work 50, the user, 5 Oct 2026).
-    @State private var pagerPosition = ScrollPosition(idType: PlayerPage.self)
-    @State private var motion = PagerMotion()
-    private nonisolated enum PlayerPage: Hashable, Sendable { case habit(UUID), summary }
+    /// The page on screen. It follows `index`; a swipe changes it first and goes through `navigate`, so the
+    /// timer of the habit left behind is saved and the next one's starts, exactly as with the buttons. (5 Oct 2026: a
+    /// paging scroll view moved only by the player was tried for Current Work 50 and measured slower, fast ‹ › 15.7
+    /// ms/s against this pager's 5.7, and this pager never slid back in the fast ‹ › check; so it stays.)
+    @State private var page = 0
     #if DEBUG
     /// The fast ‹ › check's result (`PagerProbe`), shown only during that check.
     @State private var pagerCheck: String?
@@ -234,33 +231,13 @@ struct RoutinePlayer: View {
         // checklist) uses that space for its steps, and nothing moves when it comes and goes.
         VStack(spacing: 0) {
             header
-            ScrollView(.horizontal) {
-                LazyHStack(spacing: 0) {
-                    ForEach(Array(order.enumerated()), id: \.element.id) { position, habit in
-                        habitPage(store.habits.first { $0.id == habit.id } ?? habit)
-                            .containerRelativeFrame([.horizontal, .vertical])
-                            // Only the habit on screen is read out (and found by the UI tests): the lazy stack keeps
-                            // its neighbours built, ready to slide in.
-                            .accessibilityHidden(position != index)
-                            .id(PlayerPage.habit(habit.id))
-                    }
-                    summary
-                        .containerRelativeFrame([.horizontal, .vertical])
-                        .accessibilityHidden(index != order.count)
-                        .id(PlayerPage.summary)
+            TabView(selection: $page) {
+                ForEach(Array(order.enumerated()), id: \.element.id) { position, habit in
+                    habitPage(store.habits.first { $0.id == habit.id } ?? habit).tag(position)
                 }
-                .scrollTargetLayout()
+                summary.tag(order.count)
             }
-            .scrollTargetBehavior(.paging)
-            .scrollIndicators(.hidden)
-            .scrollPosition($pagerPosition)
-            .onScrollPhaseChange { old, new, context in
-                if new == .interacting { motion.endSlide() } // the person took over the pages
-                guard new == .idle else { return }
-                // A swipe of the person's own is read; a slide the player started (.animating) is never read back.
-                if old == .interacting || old == .decelerating { swipeEnded(context.geometry) }
-                else if old == .animating { slideEnded() }
-            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
             .overlay(alignment: .bottom) {
                 VStack(spacing: 8) {
                     // The save message floats above the main button, so nothing under it jumps when it appears.
@@ -272,45 +249,11 @@ struct RoutinePlayer: View {
         }
         // Not .disabled(busy): that greyed the whole player for each save and turned the Pause/Resume button
         // dark (found by hand 29 Sep). Every action already ignores taps while a save is in progress.
-    }
-
-    private func pageID(_ position: Int) -> PlayerPage {
-        order.indices.contains(position) ? .habit(order[position].id) : .summary
-    }
-
-    /// Slides the pager to `index`. One slide at a time: taps made during a slide move the player at once (segments,
-    /// position, main button) and the pages follow in one slide when it ends, so they only ever move the way they were
-    /// sent. A slide started over a running one slid back by up to half a page with taps 0.05 s apart (CI, 5 Oct 2026).
-    private func showIndex(animated: Bool) {
-        if animated, let animation = pagerAnimation {
-            guard !motion.sliding, motion.shownPage != index else { return }
-            motion.startSlide(to: index) { [self] in slideEnded() }
-            withAnimation(animation) { pagerPosition.scrollTo(id: pageID(index), anchor: .leading) }
-        } else {
-            motion.endSlide()
-            motion.shownPage = index
-            var instant = Transaction(); instant.disablesAnimations = true
-            withTransaction(instant) { pagerPosition.scrollTo(id: pageID(index), anchor: .leading) }
+        .onChange(of: page) { _, new in
+            guard new != index else { return }
+            navigate(to: new, reviewing: new > index && current?.atMost == true ? current?.id : nil)
         }
-    }
-    /// No bounce: a spring that overshot would read as sliding back.
-    private var pagerAnimation: Animation? { reduceMotion ? nil : .smooth(duration: 0.3) }
-
-    /// The slide ended: catch up with taps made during it.
-    private func slideEnded() {
-        motion.endSlide()
-        showIndex(animated: true)
-    }
-
-    /// A swipe came to rest: the page it rests on is the habit chosen.
-    private func swipeEnded(_ geometry: ScrollGeometry) {
-        let width = geometry.containerSize.width
-        guard width > 0 else { return }
-        let landed = Int(((geometry.contentOffset.x + geometry.contentInsets.leading) / width).rounded())
-        let destination = min(max(landed, 0), order.count)
-        motion.shownPage = destination
-        if destination == index { return }
-        navigate(to: destination, reviewing: destination > index && current?.atMost == true ? current?.id : nil, swiped: true)
+        .onChange(of: index) { _, new in if page != new { page = new } }
     }
 
     /// The compact toolbar already carries position and queue access; only the progress segments live here.
@@ -768,7 +711,6 @@ struct RoutinePlayer: View {
                         let id = current?.id
                         order.move(fromOffsets: source, toOffset: destination)
                         if let id, let position = order.firstIndex(where: { $0.id == id }) { index = position }
-                        showIndex(animated: false) // the same habit stays on screen at its new place
                     }
                 } footer: {
                     Text("Jump to any habit, or change the order for this routine. Moving on never marks a habit done.")
@@ -833,9 +775,8 @@ struct RoutinePlayer: View {
         store.toggleTimer(habit)
     }
 
-    /// `swiped`: the person's swipe already put the page on screen; anything else slides it there.
-    private func navigate(to position: Int, reviewing id: UUID? = nil, swiped: Bool = false) {
-        guard !expired, session.day == store.today() else { if swiped { showIndex(animated: true) }; return }
+    private func navigate(to position: Int, reviewing id: UUID? = nil) {
+        guard !expired, session.day == store.today() else { page = index; return }
         let destination = min(max(position, 0), order.count)
         guard destination != index else { return }
         // Timer mutations are immediate in memory and persisted in order by HabitStore. Navigation must
@@ -849,7 +790,7 @@ struct RoutinePlayer: View {
         PagerProbe.shared.moved(from: index, to: destination)
         #endif
         index = destination
-        if !swiped { showIndex(animated: true) }
+        if page != destination { withAnimation(animation) { page = destination } }
         startCurrentTimer()
         updateScreenAwake()
     }
@@ -983,31 +924,6 @@ struct RoutinePlayer: View {
     private func amountUnit(_ habit: Habit) -> String { if case .amount(let unit, _) = habit.kind { unit } else { "" } }
 
 
-}
-
-/// The pager's own slide (`RoutinePlayer.showIndex`). Not observed: nothing redraws when it changes (Rulebook S6).
-final class PagerMotion {
-    /// The page the pages are on, or sliding to.
-    var shownPage = 0
-    private(set) var sliding = false
-    private var watchdog: Task<Void, Never>?
-
-    /// `ended` runs if the scroll view never reports the slide's end (a slide to where the pages already are).
-    func startSlide(to page: Int, ended: @escaping () -> Void) {
-        sliding = true
-        shownPage = page
-        watchdog?.cancel()
-        watchdog = Task { @MainActor [weak self] in
-            try? await Task.sleep(for: .seconds(0.8))
-            guard !Task.isCancelled, self?.sliding == true else { return }
-            ended()
-        }
-    }
-
-    func endSlide() {
-        sliding = false
-        watchdog?.cancel(); watchdog = nil
-    }
 }
 
 /// The player's main button: the system's prominent button, large, in ink, full width of its slot. Native press
