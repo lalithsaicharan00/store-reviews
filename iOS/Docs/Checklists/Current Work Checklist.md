@@ -183,6 +183,19 @@ Their placement records scope and priority; implementation has not started.
   - **Reproduce first (S2):** `FocusPlayerUITests.testFastNavigationNeverSlidesBack` launches with
     `-focus-fast-nav-check`: the player taps itself every 0.1 s (XCUITest waits for each slide, so it can't) and each
     page reports its place on screen (`PagerProbe`, DEBUG only).
+  - **Found, 5 Oct 2026 (GitHub's simulator, 13-habit routine, a tap every 0.15/0.1/0.05 s):** the page `TabView`'s
+    scroll position never goes back (0.00 pages at every speed, read from the pager's presentation layer every frame,
+    runs `37359127449` and `37367189762`), so a position probe passes it. **Its screen recording shows the glitch:**
+    going back from Stretch to Drink water, frames split down the middle with Stretch on the left and Drink water on the
+    right, the wrong side, while Drink water is also drawn on the left: the UIKit pager briefly draws a neighbouring
+    slot with the wrong habit. That reads as the habit moving back and forth. The check therefore needs the recording
+    (or a content check), not only the position.
+  - **Tried, 5 Oct:** a paging `ScrollView` moved by `ScrollPosition` (each page keyed to its habit, so it can't draw
+    the wrong one). A slide started over a running one slid back 0.47 pages at 0.05 s; one slide at a time fixed that
+    (0.00), but in one run fast ‹ › cost 15.7 ms/s of hitches against the `TabView`'s 5.7 and opening the player
+    500/198 ms against 352/98 (single hosted runs; they vary 2–3×). Three pagers side by side in one run (the
+    `TabView`, the `TabView` one slide at a time, the scroll view) were queued when GitHub Actions had an outage
+    (5 Oct, 20:47 UTC).
 
 - [ ] **51. Routine player: the bottom row is a block, not a bottom navigation; a checklist's steps are cut off.** Added
   5 October 2026 by Claude (Claude Code), from the user's iPhone (Tidy desk, 3 steps). Branch
