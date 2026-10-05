@@ -411,6 +411,10 @@ struct HeatKey: View {
 
     func toggle(_ place: String) { shown[place] = !isOpen(place) }
 
+    /// Set while something the habit page pushed (a note's reader) covers it, so the page's disappearing isn't the end
+    /// of its visit.
+    static var childShown = false
+
     static let key = "heatKey.seen"
     private static var stored: Set<String>?
     private static var seen: Set<String> {

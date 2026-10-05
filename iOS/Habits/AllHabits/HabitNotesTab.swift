@@ -165,6 +165,8 @@ struct NoteReaderView: View {
             .padding(WeekSpacing.card)
         }
         .background(Color(.systemGroupedBackground))
+        // Covering the habit page doesn't end its visit (its squares key stays as it was).
+        .onAppear { HeatKeyVisit.childShown = true }
         .navigationTitle("Note")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
