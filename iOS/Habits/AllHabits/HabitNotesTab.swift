@@ -259,6 +259,11 @@ struct NoteEditorView: View {
                 let existing = store.note(of: habit, on: day) ?? ""
                 text = existing
                 initial = existing
+            }
+            // The keyboard comes up once the sheet has arrived: focus asked for in onAppear, while the sheet still
+            // slides in, was sometimes dropped, so the field showed with no keyboard (HabitPageUITests, 5 Oct 2026).
+            .task {
+                try? await Task.sleep(for: .milliseconds(350))
                 focused = true
             }
             .onChange(of: day) {

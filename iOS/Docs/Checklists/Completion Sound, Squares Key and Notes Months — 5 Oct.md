@@ -21,7 +21,7 @@ steps, only the 4th gives the sound. For an amount of 10, nothing at 8 or 9; as 
 | C5 | Typed numbers (a goal of 10, 12 typed): plays when Log/Save is tapped, if it crossed; an edit that crosses plays on Save | [x] |
 | C6 | Never for quit habits (Log Slip) or limits | [x] A light tap only |
 | C7 | Where it plays: in the app only; a log from Siri, a widget or a notification stays silent | [x] |
-| C8 | Tested | [ ] `CompletionFeedbackUITests` (the rule on an in-memory store, every kind) |
+| C8 | Tested | [x] `CompletionFeedbackUITests` passed (run `37268101680`), with FocusPlayer, Today and NewHabit. The speed run (`37276908176`) is being repeated: one 546 ms stall in Day-sheet scrolling, against 122 ms before |
 
 ## 2. "What the squares mean" (item 25)
 
@@ -33,7 +33,7 @@ that, closed."
 | K1 | Open by itself only on the first visit to each place: each habit's page, Progress's Week, Month and Year | [x] `HeatKeyVisit` |
 | K2 | Folded on every later visit; a tap opens it; never folds by itself during a visit (switching dates, scrolling it away) | [x] |
 | K3 | Kept across launches; test launches start fresh (T8) | [x] |
-| K4 | Tested | [ ] `HabitPageUITests.testSquaresKeyOpensOnlyOnTheFirstVisitToEachHabit`, `WeekCardsUITests.testSquaresKeyOpensOnlyOnEachRangesFirstVisit` |
+| K4 | Tested | [ ] Progress passed (`WeekCardsUITests.testSquaresKeyOpensOnlyOnEachRangesFirstVisit`, run `37276908176`). The habit page failed: All Habits' link kept the page's state for the next push, so the second visit reused the first one's open key. Fixed (a new visit when the page is popped); rerun next |
 
 ## 3. Notes in month cards (new item 46)
 
@@ -46,7 +46,7 @@ Right now notes are added very weirdly."
 | N1 | A card per month like History's: its name and "N notes", folding from its header, the newest two open | [x] `NoteMonthCard` |
 | N2 | A row per day's note, dated as History's days are ("Sat 4 Today"), the note's first lines, opening the note | [x] |
 | N3 | Search still works and opens every month it finds | [x] |
-| N4 | Tested | [ ] `HabitPageUITests.testNotesFoldByMonthLikeHistory` |
+| N4 | Tested | [x] `HabitPageUITests.testNotesFoldByMonthLikeHistory` passed (run `37276908176`) |
 
 ## 4. The checklist pass
 

@@ -174,6 +174,7 @@ final class HabitPageUITests: XCTestCase {
         app.buttons["notes-add"].tap()
         let field = app.descendants(matching: .any)["note-field"].firstMatch
         XCTAssertTrue(field.waitForExistence(timeout: 3))
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3), "The keyboard comes up by itself")
         field.typeText("Read on the train; the long chapter went quickly.")
         shot("hp-notes-1-editor")
         app.buttons["note-save"].tap()
