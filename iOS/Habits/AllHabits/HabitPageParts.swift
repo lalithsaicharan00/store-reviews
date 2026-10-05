@@ -152,22 +152,23 @@ struct HabitHistoryTab: View {
     @State private var toggled: Set<LocalDay> = []
 
     var body: some View {
+        // Secondary actions, used now and then, so they're sized as such: native bordered buttons at their own width,
+        // ink text on a light ink tint, readable in light and dark (the user, 5 Oct 2026, Current Work 26: Add Entry's
+        // filled style put white text on the off-white ink of dark mode, and both were large and full-width).
         HStack(spacing: WeekSpacing.tight) {
             Button(action: addEntry) {
                 Label("Add Entry", systemImage: "plus")
-                    .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.borderedProminent)
             .accessibilityIdentifier("history-add-entry")
             Button(action: goToDate) {
                 Label("Go to Date", systemImage: "calendar")
-                    .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.bordered)
             .accessibilityIdentifier("history-go-to-date")
+            Spacer(minLength: 0)
         }
-        .controlSize(.large)
-        .font(.body.weight(.semibold))
+        .buttonStyle(.bordered)
+        .controlSize(.regular)
+        .font(.subheadline.weight(.semibold))
         .pageItem()
         // What the squares mean, open by itself only on the first visit to this habit's page (Current Work 25).
         HeatKeySection(place: HeatKeyVisit.habit(habit.id))

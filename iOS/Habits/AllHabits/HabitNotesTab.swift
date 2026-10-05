@@ -21,9 +21,11 @@ struct HabitNotesTab: View {
             Button { adding = true } label: {
                 Label("Add Note", systemImage: "square.and.pencil")
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
-            .font(.body.weight(.semibold))
+            // A secondary action like History's (Current Work 26): the filled style put white text on dark mode's
+            // off-white ink.
+            .buttonStyle(.bordered)
+            .controlSize(.regular)
+            .font(.subheadline.weight(.semibold))
             .accessibilityIdentifier("notes-add")
         }
         .pageItem()

@@ -56,3 +56,15 @@ Checking on the iPhone is a different thing; otherwise things get confused."
 | # | Point | Done |
 |---|---|---|
 | A1 | Every item built and GitHub-tested is ticked and moved to Completed, with its iPhone check noted separately | [ ] |
+
+## 5. History's buttons (item 26, added 5 Oct)
+
+**The user's words, tidied:** "Work on item 26. Apart from the buttons being unreadable, they look a little big:
+they aren't primary actions, they're secondary. People use them rarely, but for those who do, they should be good."
+
+| # | Point | Done |
+|---|---|---|
+| B1 | Add Entry readable in light and dark (it was white text on the off-white ink fill in dark mode) | [x] |
+| B2 | Add Entry and Go to Date sized as secondary actions: native size, not full-width and large | [x] Bordered, regular size, subheadline, side by side at their own width; Notes' Add Note the same (it had the same fill) |
+| B3 | Tested; dark-mode picture | [ ] `HabitPageUITests.testHistoryFlows` (native width), `testPicturesDark` |
+

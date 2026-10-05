@@ -121,6 +121,15 @@ final class HabitPageUITests: XCTestCase {
     func testHistoryFlows() {
         launch()
         open("Water")
+        // Secondary actions at their own size, never full-width and large (Current Work 26, 5 Oct 2026).
+        let add = app.buttons["history-add-entry"], go = app.buttons["history-go-to-date"]
+        let width = app.windows.firstMatch.frame.width
+        XCTAssertTrue(add.waitForExistence(timeout: 3) && go.exists)
+        XCTAssertLessThan(add.frame.width, width * 0.45, "Add Entry is its own width: \(add.frame)")
+        XCTAssertLessThan(go.frame.width, width * 0.45, "Go to Date is its own width: \(go.frame)")
+        XCTAssertGreaterThanOrEqual(add.frame.height, 28, "Still a comfortable button: \(add.frame)")
+        XCTAssertLessThan(add.frame.height, 50, "Not a large button: \(add.frame)")
+        shot("hp-flow-0-history-buttons")
         app.buttons["history-add-entry"].tap()
         XCTAssertTrue(app.navigationBars["Add Entry"].waitForExistence(timeout: 3), "Add Entry")
         let amount = app.textFields["log-amount"]

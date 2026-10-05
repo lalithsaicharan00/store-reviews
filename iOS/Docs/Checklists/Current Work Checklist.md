@@ -151,6 +151,13 @@ Their placement records scope and priority; implementation has not started.
     Moving the button to another location alone does not fix its text/background contrast.
   - Add Entry is appropriate in History; the user explicitly distinguishes this from the Today sheet problem in
     item 22. Do not solve this by removing History's Add Entry action.
+  - **The user's words, 5 Oct:** "Apart from being unreadable, they look a little big: they aren't primary actions,
+    they're secondary. People use them rarely, but for those who do, they should be good."
+  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and
+    Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>) §5): the cause was Add Entry's
+    filled style, white text on dark mode's off-white ink. Add Entry and Go to Date are now native bordered buttons at
+    their own width (ink text on a light ink tint, readable in both modes), regular size; Notes' Add Note the same.
+    Tests: pending (`HabitPageUITests.testHistoryFlows`, the dark pictures).
 
 - [ ] **18. Completion feedback for every kind of habit.** (added 3 Oct 2026) A check-off plays the sound (and haptic)
   when it's done, which is nice; timed habits, amounts, checklists and others don't. Decide when each kind counts
