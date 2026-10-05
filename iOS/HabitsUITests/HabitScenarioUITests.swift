@@ -101,11 +101,16 @@ final class HabitScenarioUITests: XCTestCase {
         element.tap()
     }
 
-    /// Certain days: today starts chosen and one day always stays chosen, so add first, then drop today.
+    /// Certain days: today starts chosen and one day always stays chosen, so one day is added first, then today is
+    /// dropped, then the rest: all seven chosen at once turns the days into "every day" and the weekday buttons go
+    /// (six days without today failed on that day of the week, found on a Monday, 5 Oct 2026).
     private func chooseDays(_ want: Set<Int>) {
         scrollToTap(app.buttons["often-weekdays"])
-        for day in want.sorted() where day != today { scrollToTap(app.buttons[full[day - 1]].firstMatch) }
+        let others = want.sorted().filter { $0 != today }
+        guard let first = others.first else { return }
+        scrollToTap(app.buttons[full[first - 1]].firstMatch)
         if !want.contains(today) { scrollToTap(app.buttons[full[today - 1]].firstMatch) }
+        for day in others.dropFirst() { scrollToTap(app.buttons[full[day - 1]].firstMatch) }
     }
 
     /// Dates of the month: today's date starts chosen, the same way.

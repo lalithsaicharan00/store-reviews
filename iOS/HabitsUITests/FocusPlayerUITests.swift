@@ -361,8 +361,9 @@ final class FocusPlayerUITests: XCTestCase {
         jump("Read a little")
         let start = Date()
         app.buttons["focus-up-next"].tap()
-        // Polled, not waitForExistence: that waits about a second before its first look.
-        expectPage("Less coffee", timeout: 3)
+        // Polled, not waitForExistence: that waits about a second before its first look. (Limits left routines on
+        // 5 Oct 2026, so the task is next.)
+        expectPage("Water the plants", timeout: 3)
         let elapsed = Date().timeIntervalSince(start)
         XCTAssertLessThan(elapsed, 1.8, "Navigation must not wait for the injected 2-second database write")
         let timing = XCTAttachment(string: "Next tap to verified page: \(elapsed) seconds, with 2-second queued writes")
@@ -370,7 +371,6 @@ final class FocusPlayerUITests: XCTestCase {
         app.buttons["Previous habit"].tap()
         expectPage("Read a little")
         XCTAssertTrue(app.buttons["Stop Read a little timer"].exists)
-        app.buttons["focus-up-next"].tap()
         app.buttons["focus-up-next"].tap()
         expectPage("Water the plants")
         shot("compact-08-fast-navigation")
