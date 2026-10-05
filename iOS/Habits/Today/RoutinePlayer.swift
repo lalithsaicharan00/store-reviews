@@ -55,6 +55,10 @@ struct RoutinePlayer: View {
     /// The page on screen. It follows `index`; a swipe changes it first and goes through `navigate`, so the
     /// timer of the habit left behind is saved and the next one's starts, exactly as with the buttons.
     @State private var page = 0
+    #if DEBUG
+    /// The fast ‹ › check's result (`PagerProbe`), shown only during that check.
+    @State private var pagerCheck: String?
+    #endif
 
     init(session: RoutineSession) {
         self.session = session
@@ -206,6 +210,12 @@ struct RoutinePlayer: View {
         .onPerfCommand { action in
             if action == .nextHabit { advance() } else if action == .previousHabit { navigate(to: max(0, index - 1)) }
         }
+        #if DEBUG
+        .task { await runFastNavigationCheck() }
+        .overlay(alignment: .top) {
+            if let pagerCheck { Text(pagerCheck).font(.caption2).accessibilityIdentifier("focus-pager-check") }
+        }
+        #endif
     }
 
     // MARK: The player: a playlist of habits (round 2, "Focus Player — How It Should Behave" P18–P23)
@@ -220,9 +230,9 @@ struct RoutinePlayer: View {
             header
             TabView(selection: $page) {
                 ForEach(Array(order.enumerated()), id: \.element.id) { position, habit in
-                    habitPage(store.habits.first { $0.id == habit.id } ?? habit).tag(position)
+                    habitPage(store.habits.first { $0.id == habit.id } ?? habit).pagerProbe(position).tag(position)
                 }
-                summary.tag(order.count)
+                summary.pagerProbe(order.count).tag(order.count)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             // The save message floats over the bottom of the page, so nothing above it jumps when it appears.
@@ -773,6 +783,9 @@ struct RoutinePlayer: View {
         }
         if let id { reviewed.insert(id) }
         feedback = nil; undoID = nil; undoSkipID = nil
+        #if DEBUG
+        PagerProbe.shared.moved(from: index, to: destination)
+        #endif
         index = destination
         if page != destination { withAnimation(animation) { page = destination } }
         startCurrentTimer()
@@ -869,6 +882,30 @@ struct RoutinePlayer: View {
     private func updateScreenAwake() {
         UIApplication.shared.isIdleTimerDisabled = current.map { store.timers[$0.id] != nil } ?? false
     }
+    #if DEBUG
+    /// The fast ‹ › check (Current Work 50): › through the routine and ‹ back to the start, a tap every 0.1 s, the
+    /// way a quick thumb does (XCUITest waits for each slide to end, so it can't tap this fast).
+    private func runFastNavigationCheck() async {
+        guard PagerProbe.enabled else { return }
+        let probe = PagerProbe.shared
+        try? await Task.sleep(for: .seconds(1.5))
+        let last = order.count - 1
+        var taps = 0
+        probe.begin(1)
+        while index < last && taps < order.count * 4 { advance(); taps += 1; try? await Task.sleep(for: .milliseconds(100)) }
+        try? await Task.sleep(for: .seconds(1.5))
+        let forward = probe.verdict(target: last)
+        probe.begin(-1)
+        taps = 0
+        while index > 0 && taps < order.count * 4 { navigate(to: max(0, index - 1)); taps += 1; try? await Task.sleep(for: .milliseconds(100)) }
+        try? await Task.sleep(for: .seconds(1.5))
+        let backward = probe.verdict(target: 0)
+        probe.begin(0)
+        pagerCheck = "Fast navigation: " + (forward.passed && backward.passed ? "passed" : "failed")
+            + " · forward " + forward.text + " · back " + backward.text
+    }
+    #endif
+
     private func isAmount(_ habit: Habit) -> Bool { if case .amount = habit.kind { true } else { false } }
     private func amountUnit(_ habit: Habit) -> String { if case .amount(let unit, _) = habit.kind { unit } else { "" } }
 
@@ -1035,5 +1072,55 @@ private struct FocusPeriodQuota: View {
                 .font(.caption).foregroundStyle(.secondary)
                 .accessibilityIdentifier("focus-period-progress")
         }
+    }
+}
+
+#if DEBUG
+/// Where the player's pages are while it moves (Current Work 50, 5 Oct 2026: tapping › fast made the pages slide back
+/// and forth while the segments above were right). Only with `-focus-fast-nav-check`: each page reports its place on
+/// screen, so a slide back the way it came is measured, not judged by eye (Rulebook S2).
+final class PagerProbe {
+    static let enabled = ProcessInfo.processInfo.arguments.contains("-focus-fast-nav-check")
+    static let shared = PagerProbe()
+    private var direction: CGFloat = 0
+    private var furthest: CGFloat?
+    private var worstBack: CGFloat = 0
+    private var reversals = 0
+    private var position: CGFloat = 0
+
+    func begin(_ direction: CGFloat) { self.direction = direction; furthest = nil; worstBack = 0; reversals = 0 }
+
+    /// The page on screen, in pages: 2.5 is halfway between the third and fourth.
+    func report(page: Int, frame: CGRect) {
+        guard frame.width > 1 else { return }
+        position = CGFloat(page) - frame.minX / frame.width
+        guard direction != 0 else { return }
+        let along = position * direction
+        furthest = max(furthest ?? along, along)
+        worstBack = max(worstBack, (furthest ?? along) - along)
+    }
+
+    /// The player itself went the other way (a page it was passing reported as the one chosen).
+    func moved(from old: Int, to new: Int) { if CGFloat(new - old) * direction < 0 { reversals += 1 } }
+
+    func verdict(target: Int) -> (passed: Bool, text: String) {
+        let passed = worstBack < 0.05 && reversals == 0 && abs(position - CGFloat(target)) < 0.02
+        return (passed, String(format: "slid back %.2f pages, %d reversals, settled on %.2f of %d", worstBack, reversals, position, target))
+    }
+}
+#endif
+
+extension View {
+    /// Reports a page's place to `PagerProbe` during the fast ‹ › check; nothing at all otherwise.
+    @ViewBuilder func pagerProbe(_ page: Int) -> some View {
+        #if DEBUG
+        if PagerProbe.enabled {
+            onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { PagerProbe.shared.report(page: page, frame: $0) }
+        } else {
+            self
+        }
+        #else
+        self
+        #endif
     }
 }
