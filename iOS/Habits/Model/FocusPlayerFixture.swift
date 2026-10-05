@@ -20,6 +20,10 @@ enum FocusPlayerFixture {
             store.add(limit); await store.flush(); return
         }
         for habit in [water, check, checklist, timed, limit, task] { store.add(habit) }
+        // A routine as long as the user's Anytime (13 habits) for the fast ‹ › check (Current Work 50).
+        if ProcessInfo.processInfo.arguments.contains("-focus-many") {
+            for n in 1...8 { store.add(Habit(name: "Extra \(n)", symbol: "star", color: .orange, kind: .check, goal: 1)) }
+        }
         if ProcessInfo.processInfo.arguments.contains("-focus-period-fixture") {
             let weekly = Habit(name: "Call family", symbol: "phone", color: .green, kind: .check, frequency: .perWeek(3))
             let monthly = Habit(name: "Monthly reading", symbol: "book", color: .purple, kind: .duration, goal: 60, frequency: .perMonth(1))

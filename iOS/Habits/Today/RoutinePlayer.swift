@@ -241,13 +241,11 @@ struct RoutinePlayer: View {
                             // Only the habit on screen is read out (and found by the UI tests): the lazy stack keeps
                             // its neighbours built, ready to slide in.
                             .accessibilityHidden(position != index)
-                            .pagerProbe(position)
                             .id(PlayerPage.habit(habit.id))
                     }
                     summary
                         .containerRelativeFrame([.horizontal, .vertical])
                         .accessibilityHidden(index != order.count)
-                        .pagerProbe(order.count)
                         .id(PlayerPage.summary)
                 }
                 .scrollTargetLayout()
@@ -933,26 +931,37 @@ struct RoutinePlayer: View {
         UIApplication.shared.isIdleTimerDisabled = current.map { store.timers[$0.id] != nil } ?? false
     }
     #if DEBUG
-    /// The fast ‹ › check (Current Work 50): › through the routine and ‹ back to the start, a tap every 0.1 s, the
-    /// way a quick thumb does (XCUITest waits for each slide to end, so it can't tap this fast).
+    /// The fast ‹ › check (Current Work 50): › to the end and ‹ back to the start, at a tap every 0.15, 0.1 and 0.05 s,
+    /// the way a quick thumb does (XCUITest waits for each slide to end, so it can't tap this fast). `PagerProbe`
+    /// samples where the pages are on screen every frame meanwhile.
     private func runFastNavigationCheck() async {
         guard PagerProbe.enabled else { return }
         let probe = PagerProbe.shared
         try? await Task.sleep(for: .seconds(1.5))
-        let last = order.count - 1
-        var taps = 0
-        probe.begin(1)
-        while index < last && taps < order.count * 4 { advance(); taps += 1; try? await Task.sleep(for: .milliseconds(100)) }
-        try? await Task.sleep(for: .seconds(1.5))
-        let forward = probe.verdict(target: last)
-        probe.begin(-1)
-        taps = 0
-        while index > 0 && taps < order.count * 4 { navigate(to: max(0, index - 1)); taps += 1; try? await Task.sleep(for: .milliseconds(100)) }
-        try? await Task.sleep(for: .seconds(1.5))
-        let backward = probe.verdict(target: 0)
+        let sampler = Task { @MainActor in
+            while !Task.isCancelled { probe.sample(); try? await Task.sleep(for: .milliseconds(8)) }
+        }
+        var verdicts: [(passed: Bool, text: String)] = []
+        for interval in [150, 100, 50] {
+            probe.begin(1)
+            var taps = 0
+            while index < order.count - 1 && taps < order.count * 4 {
+                advance(); taps += 1; try? await Task.sleep(for: .milliseconds(interval))
+            }
+            try? await Task.sleep(for: .seconds(1.2))
+            verdicts.append(probe.verdict(target: order.count - 1, label: "› \(interval) ms"))
+            probe.begin(-1)
+            taps = 0
+            while index > 0 && taps < order.count * 4 {
+                navigate(to: max(0, index - 1)); taps += 1; try? await Task.sleep(for: .milliseconds(interval))
+            }
+            try? await Task.sleep(for: .seconds(1.2))
+            verdicts.append(probe.verdict(target: 0, label: "‹ \(interval) ms"))
+        }
+        sampler.cancel()
         probe.begin(0)
-        pagerCheck = "Fast navigation: " + (forward.passed && backward.passed ? "passed" : "failed")
-            + " · forward " + forward.text + " · back " + backward.text
+        pagerCheck = "Fast navigation: " + (verdicts.allSatisfy { $0.passed } ? "passed" : "failed")
+            + " · \(order.count) habits · " + verdicts.map { $0.text }.joined(separator: " · ")
     }
     #endif
 
@@ -1127,24 +1136,32 @@ private struct FocusPeriodQuota: View {
 
 #if DEBUG
 /// Where the player's pages are while it moves (Current Work 50, 5 Oct 2026: tapping › fast made the pages slide back
-/// and forth while the segments above were right). Only with `-focus-fast-nav-check`: each page reports its place on
-/// screen, so a slide back the way it came is measured, not judged by eye (Rulebook S2).
+/// and forth while the segments above were right). Only with `-focus-fast-nav-check`. Every frame it reads the pager's
+/// scroll view as drawn on screen (its presentation layer), so a slide is seen mid-way whether UIKit or SwiftUI animates
+/// it, and a slide back the way it came is measured, not judged by eye (Rulebook S2).
 final class PagerProbe {
     static let enabled = ProcessInfo.processInfo.arguments.contains("-focus-fast-nav-check")
     static let shared = PagerProbe()
+    private weak var pager: UIScrollView?
     private var direction: CGFloat = 0
     private var furthest: CGFloat?
     private var worstBack: CGFloat = 0
     private var reversals = 0
+    private var midSlide = 0
     private var position: CGFloat = 0
 
-    func begin(_ direction: CGFloat) { self.direction = direction; furthest = nil; worstBack = 0; reversals = 0 }
+    func begin(_ direction: CGFloat) {
+        self.direction = direction; furthest = nil; worstBack = 0; reversals = 0; midSlide = 0
+    }
 
     /// The page on screen, in pages: 2.5 is halfway between the third and fourth.
-    func report(page: Int, frame: CGRect) {
-        guard frame.width > 1 else { return }
-        position = CGFloat(page) - frame.minX / frame.width
+    func sample() {
+        guard let pager = pager ?? Self.findPager(), pager.bounds.width > 1 else { return }
+        self.pager = pager
+        let x = pager.layer.presentation()?.bounds.origin.x ?? pager.contentOffset.x
+        position = (x + pager.adjustedContentInset.left) / pager.bounds.width
         guard direction != 0 else { return }
+        if abs(position - position.rounded()) > 0.02 { midSlide += 1 }
         let along = position * direction
         furthest = max(furthest ?? along, along)
         worstBack = max(worstBack, (furthest ?? along) - along)
@@ -1153,24 +1170,25 @@ final class PagerProbe {
     /// The player itself went the other way (a page it was passing reported as the one chosen).
     func moved(from old: Int, to new: Int) { if CGFloat(new - old) * direction < 0 { reversals += 1 } }
 
-    func verdict(target: Int) -> (passed: Bool, text: String) {
-        let passed = worstBack < 0.05 && reversals == 0 && abs(position - CGFloat(target)) < 0.02
-        return (passed, String(format: "slid back %.2f pages, %d reversals, settled on %.2f of %d", worstBack, reversals, position, target))
+    /// A run passes when the pages never slid back more than a twentieth of a page, the player never went back, the
+    /// pages settled where the player is, and the probe saw them mid-slide (so it wasn't blind).
+    func verdict(target: Int, label: String) -> (passed: Bool, text: String) {
+        let passed = worstBack < 0.05 && reversals == 0 && abs(position - CGFloat(target)) < 0.02 && midSlide > 0
+        return (passed, label + String(format: ": slid back %.2f, %d reversals, settled %.2f/%d, %d mid-slide samples",
+                                       worstBack, reversals, position, target, midSlide))
+    }
+
+    /// The pager: the window's one scroll view as wide as the screen whose content is several screens wide.
+    private static func findPager() -> UIScrollView? {
+        guard let window = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first
+        else { return nil }
+        func find(in view: UIView) -> UIScrollView? {
+            if let scroll = view as? UIScrollView, scroll.bounds.width >= window.bounds.width * 0.9,
+               scroll.contentSize.width > scroll.bounds.width * 1.5 { return scroll }
+            for subview in view.subviews { if let found = find(in: subview) { return found } }
+            return nil
+        }
+        return find(in: window)
     }
 }
 #endif
-
-extension View {
-    /// Reports a page's place to `PagerProbe` during the fast ‹ › check; nothing at all otherwise.
-    @ViewBuilder func pagerProbe(_ page: Int) -> some View {
-        #if DEBUG
-        if PagerProbe.enabled {
-            onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { PagerProbe.shared.report(page: page, frame: $0) }
-        } else {
-            self
-        }
-        #else
-        self
-        #endif
-    }
-}

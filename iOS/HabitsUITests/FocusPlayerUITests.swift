@@ -366,12 +366,13 @@ final class FocusPlayerUITests: XCTestCase {
     }
 
     /// Current Work 50 (the user, 5 Oct 2026): › tapped fast through the routine, then ‹ fast back to the start, made the
-    /// pages slide back and forth while the segments above were right. The app taps itself every 0.1 s (XCUITest waits
-    /// for each slide to end, so it can't tap that fast) and each page reports where it is on screen (`PagerProbe`).
+    /// pages slide back and forth while the segments above were right. In a 13-habit routine like the user's, the app
+    /// taps itself every 0.15, 0.1 and 0.05 s (XCUITest waits for each slide to end, so it can't tap that fast) and
+    /// `PagerProbe` reads where the pages are on screen every frame.
     func testFastNavigationNeverSlidesBack() {
-        launch(["-focus-fast-nav-check"])
+        launch(["-focus-fast-nav-check", "-focus-many"])
         let result = app.staticTexts["focus-pager-check"]
-        XCTAssertTrue(result.waitForExistence(timeout: 40), "The check didn't finish")
+        XCTAssertTrue(result.waitForExistence(timeout: 90), "The check didn't finish")
         let evidence = XCTAttachment(string: result.label)
         evidence.name = "fast-navigation"; evidence.lifetime = .keepAlways; add(evidence)
         XCTAssertTrue(result.label.hasPrefix("Fast navigation: passed"), result.label)
