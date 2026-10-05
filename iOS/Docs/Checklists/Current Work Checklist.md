@@ -119,6 +119,7 @@ Their placement records scope and priority; implementation has not started.
     success as a daily streak. Record what was restored and verify its values against the existing streak logic.
   - This remains open even if another design item touches the same screen. Documentation does not confirm the
     regression has been reproduced or fixed.
+  - **5 Oct placement research (item 48):** Current/Best belong visibly in the early individual habit Progress summary, not the common header above History/Notes; retain Today's quick streak access, correct units and Show Streaks. The six existing design studies now reflect that recommendation. This does not close the native implementation/correctness check in item 23.
 
 - [ ] **25. “What the squares mean”: expand automatically only on the first visit to each explanation context.**
   Added 4 October 2026; a standalone behavior task covering both the habit details page and the main Progress page.
@@ -454,6 +455,11 @@ Completed work retains its original evidence and any outstanding user review.
   - **Built and tested, 4 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time
     Limits and Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>)): the icons sit beside the whole name block, centred, with a scaled gap (~14 pt). Still yours: the iPhone (U9).
   - **Completed, 5 Oct 2026** (built and tested on GitHub; branch `claude/timer-swipe-limits-and-fixes`, not yet in `main`). **iPhone check (U9) still yours**, separate from completion (the user, 5 Oct 2026).
+- [x] **48. Research streak placement in Habit details.** Completed as a research/design-documentation follow-up, 5 October 2026; native implementation/device validation remain separate. Number 48 follows a live main/active-branch check: 45–47 are already used by other work.
+  - [x] [Placement report](<../../../Research/Research Reports/Habit Details Research/Final UX Pass/Streak Placement — Shared Header or Progress.md>) verifies 18 complete originals, includes opposing preferences, and separates main-list visibility evidence from the placement reasoning. Recommend Current/Best visibly in the early individual habit Progress summary; keep the shared header for identity and applicable state, and retain Today's quick access. No measured preference or usage-rate claim.
+  - [x] Remove duplicate pairs from six existing History/Notes/quit studies and close their 106 pt space while retaining the 24 pt identity-to-tabs outside gap. No new mockups; existing Progress already contains visible Current/Best. Preserve units, preferences, quit context, task exclusions and accepted controls (U1/U3/U5/U17/U20).
+  - [x] Refresh the six own-design PNGs and export dates/hashes; update the active handoff, package/research indexes, dated supersession notices, Rulebook U20 and Design Rules. Items 42/44's common-header streak-pair placement is superseded by this follow-up.
+  - Validation: Figma read-back reports zero remaining streak/run header facts in all six studies, zero new nodes, SF Pro and editable layers with no image-filled UI nodes. Both affected composition boards visually checked; nine Markdown files / 350 local links / all 22 PNG dimensions and hashes passed after integration with concurrent main changes; Git whitespace and speed-rules checks passed. No app code or personal data changed; no iOS test dispatch is needed for this research/export update.
 
 - [x] **1. Progress page: a big visual overhaul of Week, Month and Year.** Not the data (it's right and complete) but
   how it's presented: today it reads "okay, not good", too dense, rows squeezed. **Week first** (overview card →
