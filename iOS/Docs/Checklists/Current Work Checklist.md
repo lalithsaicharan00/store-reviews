@@ -183,13 +183,13 @@ Their placement records scope and priority; implementation has not started.
   - **Reproduce first (S2):** `FocusPlayerUITests.testFastNavigationNeverSlidesBack` launches with
     `-focus-fast-nav-check`: the player taps itself every 0.1 s (XCUITest waits for each slide, so it can't) and each
     page reports its place on screen (`PagerProbe`, DEBUG only).
-  - **Found, 5 Oct 2026 (GitHub's simulator, 13-habit routine, a tap every 0.15/0.1/0.05 s):** the page `TabView`'s
-    scroll position never goes back (0.00 pages at every speed, read from the pager's presentation layer every frame,
-    runs `37359127449` and `37367189762`), so a position probe passes it. **Its screen recording shows the glitch:**
-    going back from Stretch to Drink water, frames split down the middle with Stretch on the left and Drink water on the
-    right, the wrong side, while Drink water is also drawn on the left: the UIKit pager briefly draws a neighbouring
-    slot with the wrong habit. That reads as the habit moving back and forth. The check therefore needs the recording
-    (or a content check), not only the position.
+  - **Measured, 5 Oct 2026 (GitHub's simulator, 13-habit routine, a tap every 0.15/0.1/0.05 s):** the page
+    `TabView`'s scroll position never goes back (0.00 pages at every speed, read from the pager's presentation layer
+    every frame, runs `37359127449`, `37367189762`, `37379485559`). **Not reproduced on the simulator so far.**
+    *Correction:* frames that seemed to show a habit drawn on the wrong side came from seeking into the screen
+    recording with ffmpeg (half-decoded frames); decoded straight through, the same moments are clean. Recordings are
+    now checked frame by frame, decoded straight through, by a script that flags two habits' circles in the same
+    columns or habits out of the routine's order (it catches both on synthetic frames).
   - **Tried, 5 Oct:** a paging `ScrollView` moved by `ScrollPosition` (each page keyed to its habit, so it can't draw
     the wrong one). A slide started over a running one slid back 0.47 pages at 0.05 s; one slide at a time fixed that
     (0.00), but in one run fast ‹ › cost 15.7 ms/s of hitches against the `TabView`'s 5.7 and opening the player
