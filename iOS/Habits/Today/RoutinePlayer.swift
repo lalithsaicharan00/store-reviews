@@ -54,10 +54,10 @@ struct RoutinePlayer: View {
     @State private var expired = false
     @State private var showClock = true
     /// The page on screen. It follows `index`; a swipe changes it first and goes through `navigate`, so the
-    /// timer of the habit left behind is saved and the next one's starts, exactly as with the buttons. (5 Oct 2026: a
-    /// paging scroll view moved only by the player was tried for Current Work 50 and measured slower, fast ‹ › 15.7
-    /// ms/s against this pager's 5.7, and this pager never slid back in the fast ‹ › check; so it stays.)
+    /// timer of the habit left behind is saved and the next one's starts, exactly as with the buttons.
     @State private var page = 0
+    /// The slide the player started (‹ ›, the queue, Skip), until it ends. Not observed: nothing redraws for it.
+    @State private var slide = PagerSlide()
     #if DEBUG
     /// The fast ‹ › check's result (`PagerProbe`), shown only during that check.
     @State private var pagerCheck: String?
@@ -251,6 +251,10 @@ struct RoutinePlayer: View {
         // dark (found by hand 29 Sep). Every action already ignores taps while a save is in progress.
         .onChange(of: page) { _, new in
             guard new != index else { return }
+            // While the player's own slide runs, the pager reports pages it slides past as if chosen; obeying sent the
+            // player back to them, so › tapped fast slid the habits back and forth (Current Work 50, CI 5 Oct 2026:
+            // 6 steps back in one run). Only a swipe of the person's own, outside that slide, chooses a habit.
+            if slide.running { showPage(); return }
             navigate(to: new, reviewing: new > index && current?.atMost == true ? current?.id : nil)
         }
         .onChange(of: index) { _, new in if page != new { page = new } }
@@ -788,11 +792,26 @@ struct RoutinePlayer: View {
         feedback = nil; undoID = nil; undoSkipID = nil
         #if DEBUG
         PagerProbe.shared.moved(from: index, to: destination)
+        PagerProbe.shared.index = destination
         #endif
         index = destination
-        if page != destination { withAnimation(animation) { page = destination } }
+        showPage()
         startCurrentTimer()
         updateScreenAwake()
+    }
+
+    /// Puts the pager on `index`. A tap slides it; a tap that comes while a slide is still running jumps straight to its
+    /// habit, so the pages never trail the header and never have to turn round to come back (the user tapped › to the
+    /// end and ‹ straight back: the trailing pages were still sliding forward, Current Work 50).
+    private func showPage() {
+        guard page != index else { return }
+        if slide.running || animation == nil {
+            var instant = Transaction(); instant.disablesAnimations = true
+            withTransaction(instant) { page = index }
+        } else {
+            slide.until = .now.addingTimeInterval(0.35)
+            withAnimation(animation) { page = index }
+        }
     }
 
     private func close() {
@@ -913,6 +932,22 @@ struct RoutinePlayer: View {
             try? await Task.sleep(for: .seconds(1.2))
             verdicts.append(probe.verdict(target: 0, label: "‹ \(interval) ms"))
         }
+        // The user's own pattern: › fast to the end, then ‹ straight away, with no pause between.
+        for interval in [100, 50] {
+            probe.begin(1)
+            var taps = 0
+            while index < order.count - 1 && taps < order.count * 4 {
+                advance(); taps += 1; try? await Task.sleep(for: .milliseconds(interval))
+            }
+            verdicts.append(probe.verdict(target: order.count - 1, label: "turn › \(interval) ms", settled: false))
+            probe.begin(-1)
+            taps = 0
+            while index > 0 && taps < order.count * 4 {
+                navigate(to: max(0, index - 1)); taps += 1; try? await Task.sleep(for: .milliseconds(interval))
+            }
+            try? await Task.sleep(for: .seconds(1.2))
+            verdicts.append(probe.verdict(target: 0, label: "turn ‹ \(interval) ms"))
+        }
         sampler.cancel()
         probe.begin(0)
         pagerCheck = "Fast navigation: " + (verdicts.allSatisfy { $0.passed } ? "passed" : "failed")
@@ -924,6 +959,12 @@ struct RoutinePlayer: View {
     private func amountUnit(_ habit: Habit) -> String { if case .amount(let unit, _) = habit.kind { unit } else { "" } }
 
 
+}
+
+/// Until when the player's own pager slide runs (`RoutinePlayer.showPage`).
+final class PagerSlide {
+    var until = Date.distantPast
+    var running: Bool { Date.now < until }
 }
 
 /// The player's main button: the system's prominent button, large, in ink, full width of its slot. Native press
@@ -1106,7 +1147,7 @@ final class PagerProbe {
     private var position: CGFloat = 0
 
     func begin(_ direction: CGFloat) {
-        self.direction = direction; furthest = nil; worstBack = 0; reversals = 0; midSlide = 0
+        self.direction = direction; furthest = nil; worstBack = 0; reversals = 0; midSlide = 0; worstBehind = 0
     }
 
     /// The page on screen, in pages: 2.5 is halfway between the third and fourth.
@@ -1120,6 +1161,7 @@ final class PagerProbe {
         let along = position * direction
         furthest = max(furthest ?? along, along)
         worstBack = max(worstBack, (furthest ?? along) - along)
+        worstBehind = max(worstBehind, abs(CGFloat(index) - position))
     }
 
     /// The player itself went the other way (a page it was passing reported as the one chosen).
@@ -1127,11 +1169,15 @@ final class PagerProbe {
 
     /// A run passes when the pages never slid back more than a twentieth of a page, the player never went back, the
     /// pages settled where the player is, and the probe saw them mid-slide (so it wasn't blind).
-    func verdict(target: Int, label: String) -> (passed: Bool, text: String) {
-        let passed = worstBack < 0.05 && reversals == 0 && abs(position - CGFloat(target)) < 0.02 && midSlide > 0
-        return (passed, label + String(format: ": slid back %.2f, %d reversals, settled %.2f/%d, %d mid-slide samples",
-                                       worstBack, reversals, position, target, midSlide))
+    func verdict(target: Int, label: String, settled: Bool = true) -> (passed: Bool, text: String) {
+        let passed = worstBack < 0.05 && reversals == 0 && (!settled || abs(position - CGFloat(target)) < 0.02)
+            && midSlide > 0
+        return (passed, label + String(format: ": slid back %.2f, %d reversals, at %.2f/%d, %d mid-slide, behind up to %.2f",
+                                       worstBack, reversals, position, target, midSlide, worstBehind))
     }
+    /// How far the pages trailed the player (its index) while it moved: they show an older habit than the header.
+    private var worstBehind: CGFloat = 0
+    var index = 0
 
     /// The pager: the window's one scroll view as wide as the screen whose content is several screens wide.
     private static func findPager() -> UIScrollView? {

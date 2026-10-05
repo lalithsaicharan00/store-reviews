@@ -372,7 +372,7 @@ final class FocusPlayerUITests: XCTestCase {
     func testFastNavigationNeverSlidesBack() {
         launch(["-focus-fast-nav-check", "-focus-many"])
         let result = app.staticTexts["focus-pager-check"]
-        XCTAssertTrue(result.waitForExistence(timeout: 90), "The check didn't finish")
+        XCTAssertTrue(result.waitForExistence(timeout: 150), "The check didn't finish")
         let evidence = XCTAttachment(string: result.label)
         evidence.name = "fast-navigation"; evidence.lifetime = .keepAlways; add(evidence)
         XCTAssertTrue(result.label.hasPrefix("Fast navigation: passed"), result.label)
