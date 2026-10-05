@@ -298,6 +298,12 @@ Their placement records scope and priority; implementation has not started.
       like skips (synced and backed up; added to the core's merge-restore list). `HabitStore.moveOccurrence`,
       `rescheduleRange`, `canReschedule`; `isDue` follows moves.
     - [x] No Skip for tasks.
+  - **Habit page (the user, 5 Oct 2026): "within the habit details, History, click on any day: the same thing for that day."**
+    - [x] Already the same sheet: History, the Progress tab's days and Notes all open `DaySheet` for that day (no link
+      back to the page; a past day's wording; no timer; Reschedule only for today's task occurrence).
+    - [x] Logs with no recorded source show only their time ("Source not recorded" on every old log was noise).
+    - [ ] `DayDetailsUITests.testHistoryDaysOpenDayDetails`: an earlier day from History for an amount, time, check,
+      checklist and weekly habit, with screenshots.
     - [x] Tested on GitHub Actions run `37220482604` (`5363659`), 4 Oct 2026: Core storage and migrations, build, Release build and 28/28 UI tests passed (DayDetails incl. `testTasksReschedule`, TodayRowLayout, TodayRowSheet, Undo, and the three task screenshot states). Screenshots: a weekly task's calendar offers only the days before next week's occurrence; a daily task and a done task show no Reschedule.
   - Not done, by design: a slip's **date** stays read-only until the store, repository and sync can move one record
     to another day atomically (D7; handoff). The bottom ‹ day › pager is gone (handoff; past days open from Today or

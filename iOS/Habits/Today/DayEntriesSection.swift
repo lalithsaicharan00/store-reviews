@@ -33,7 +33,7 @@ struct DayEntriesSection: View {
     private func label(_ entry: Entry) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(entry.description(for: habit)).foregroundStyle(.primary)
-            Text(store.clockText(of: entry) + " · " + (entry.source?.label ?? "Source not recorded"))
+            Text(store.clockText(of: entry) + (entry.source.map { " · " + $0.label } ?? ""))
                 .font(.caption).foregroundStyle(.secondary)
         }
         .accessibilityElement(children: .combine)
@@ -242,7 +242,8 @@ struct EntryEditView: View {
     /// "Sat, 4 Oct 2026 · Manual log": which record this is, never a control.
     private var contextLine: String {
         let day = entry.day.date(calendar: store.calendar).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated).year())
-        return day + " · " + (entry.source?.label ?? "Source not recorded")
+        // Logs from before sources were recorded show only their day: "Source not recorded" on every old row was noise.
+        return day + (entry.source.map { " · " + $0.label } ?? "")
     }
 
     /// Names the one record and its day, and says what stays (U19).

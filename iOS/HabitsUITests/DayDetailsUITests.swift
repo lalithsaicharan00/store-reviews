@@ -343,6 +343,31 @@ final class DayDetailsUITests: XCTestCase {
         shot("dd-19-task-done-no-reschedule")
     }
 
+    /// A day opened from a habit's History is the same Day details, for that day (the user, 5 Oct 2026): titled with the
+    /// day, no link back to the page it came from, a past day's own words ("Skip this day", no timer), and Close.
+    func testHistoryDaysOpenDayDetails() {
+        for (name, key) in [("Water", "amount"), ("Read", "time"), ("Meds", "check"), ("Skincare", "checklist"), ("Call family", "weekly")] {
+            launch(fixture: false, dark: true)
+            app.buttons["menu-button"].tap()
+            XCTAssertTrue(app.buttons["menu-habits"].waitForExistence(timeout: 3))
+            app.buttons["menu-habits"].tap()
+            app.revealAndTap(app.staticTexts[name])
+            let days = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-' AND enabled == YES"))
+            XCTAssertTrue(days.firstMatch.waitForExistence(timeout: 5), "\(name): History's days")
+            // Newest first: the second row is an earlier day.
+            let past = days.count > 1 ? days.element(boundBy: 1) : days.firstMatch
+            app.revealAndTap(past, clear: true)
+            XCTAssertTrue(result.waitForExistence(timeout: 5), "\(name): the History day opens Day details")
+            XCTAssertFalse(app.buttons["day-open-page"].exists, "\(name): no link to the page it was opened from")
+            XCTAssertTrue(app.buttons["day-more"].exists && app.buttons["day-close"].exists, "\(name): ⋯ and Close")
+            XCTAssertFalse(app.buttons["day-start-timer"].exists, "\(name): no timer on an earlier day")
+            XCTAssertFalse(app.buttons["Skip today"].exists, "\(name): an earlier day never says today")
+            shot("dd-history-\(key)")
+            close()
+            app.terminate()
+        }
+    }
+
     /// The same sheets in dark mode, for the design review (U1/U9).
     func testEveryKindDark() {
         launch(dark: true)

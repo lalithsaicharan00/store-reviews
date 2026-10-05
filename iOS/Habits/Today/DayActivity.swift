@@ -374,7 +374,7 @@ struct DayLogLabel: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(entry.description(for: habit)).foregroundStyle(.primary)
-            Text(store.clockText(of: entry) + " · " + (entry.source?.label ?? "Source not recorded"))
+            Text(store.clockText(of: entry) + (entry.source.map { " · " + $0.label } ?? ""))
                 .font(.caption).foregroundStyle(.secondary)
         }
         .accessibilityElement(children: .combine)
