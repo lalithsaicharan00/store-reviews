@@ -172,13 +172,6 @@ Their placement records scope and priority; implementation has not started.
     decides for every log from any screen; once, on the log that makes the habit complete; a running timer at its
     goal; never for quit habits or limits. Tests: pending (`CompletionFeedbackUITests`).
 
-- [ ] **46. Habit details: Notes in month cards that fold, like History.** Added 5 October 2026, from the user: "In
-  History each month is a card that folds, open by default, a row per day. Notes need the same: a month card, each
-  day's note a row in it. Right now notes are added very weirdly."
-  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): a card per
-    month with "N notes", folding like History's (newest two open), a row per day's note dated as History dates its
-    days. Tests: pending (`HabitPageUITests.testNotesFoldByMonthLikeHistory`).
-
 ## Planned improvements — build later
 
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
@@ -282,16 +275,6 @@ Their placement records scope and priority; implementation has not started.
     apps that have them), what a day's entry holds (a mood scale, a few words, tags?), where it lives (on Today, its
     own place in ≡, Progress?), how it's reminded, and its stats. Then a design for the user to decide, then build.
 
-- [ ] **14. Cut-down habits (limits): where do they belong?** (added 3 Oct 2026) Keeping them inside the times of day
-  feels weird. The user's thought: show them in the Quitting section instead. Research how people think of a limit
-  ("cut down on coffee") next to quitting and next to build habits, then decide.
-  - **The user's words, 5 Oct, tidied:** "In the other sections a cut-down habit signals you have to log something. You
-    log it only if you do it. If they go only in the Quitting section, remove the time of day from the cut-down habit."
-  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time Limits and
-    Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>) §5): limits join quit habits in one "Quit or Cut
-    Down" card (no "N left", no Start, never in a routine); the Cut down form has no Time of Day. Report "Limit Habits on
-    Today — Apart From What You Must Do". Tests: pending. Still yours: the iPhone (U9).
-
 - [ ] **19. Exportable progress reports, for the Progress page** (added 3 Oct 2026; build now if it fits, otherwise it moves to Future; the
   user decides later). A report of progress people can export and share (a PDF or image of a week, month or year),
   as the Progress research suggests. Different from Backup & Export's data file. Start from the Progress research:
@@ -325,6 +308,25 @@ Their placement records scope and priority; implementation has not started.
 ## Completed
 
 Completed work retains its original evidence and any outstanding user review.
+
+- [x] **14. Cut-down habits (limits): where do they belong?** (added 3 Oct 2026) Keeping them inside the times of day
+  feels weird. The user's thought: show them in the Quitting section instead. Research how people think of a limit
+  ("cut down on coffee") next to quitting and next to build habits, then decide.
+  - **The user's words, 5 Oct, tidied:** "In the other sections a cut-down habit signals you have to log something. You
+    log it only if you do it. If they go only in the Quitting section, remove the time of day from the cut-down habit."
+  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time Limits and
+    Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>) §5): limits join quit habits in one "Quit or Cut
+    Down" card (no "N left", no Start, never in a routine); the Cut down form has no Time of Day. Report "Limit Habits on
+    Today — Apart From What You Must Do". Tests: pending. Still yours: the iPhone (U9).
+  - **Completed, 5 Oct 2026** (built and tested on GitHub: runs `37268101680` (NewHabit 20, FocusPlayer 13 incl. both limit tests, Today 8), `37272372742` (HabitScenario incl. testCutDown, HabitCreation's cut-down, LongText, RoutineCalendar) and `37276908176` (Today's speed: +1 and day ‹ › 77.7 ms/s, as before); merged into `main` 5 Oct). **iPhone check (U9) still yours**, separate from completion.
+
+- [x] **46. Habit details: Notes in month cards that fold, like History.** Added 5 October 2026, from the user: "In
+  History each month is a card that folds, open by default, a row per day. Notes need the same: a month card, each
+  day's note a row in it. Right now notes are added very weirdly."
+  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): a card per
+    month with "N notes", folding like History's (newest two open), a row per day's note dated as History dates its
+    days. Tests passed (below).
+  - **Completed, 5 Oct 2026** (built and tested on GitHub: run `37276908176`, `HabitPageUITests.testNotesFoldByMonthLikeHistory`; merged into `main` 5 Oct). **iPhone check (U9) still yours**, separate from completion.
 
 - [x] **10. Groups: test them properly.** Making a group seems to work, but groups and their statistics (group
   chips on Progress, group numbers, the Filter's group choice, editing and ordering groups) were never really
