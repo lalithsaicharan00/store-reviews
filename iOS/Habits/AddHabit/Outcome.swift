@@ -55,8 +55,9 @@ enum Outcome {
             sentence += " If it isn't done, it reminds you again every \(every == 60 ? "hour" : "\(every) min"), up to \(ReminderScheduler.maxFollowUps) times."
         }
         // A reminder in another part of the day is allowed, but say so, so it isn't a surprise.
+        // A limit has no time of day: it shows under Quit or Cut Down.
         let shown = Set(store.placements(of: habit).map(\.section))
-        if !shown.contains(.anytime) {
+        if !habit.isQuitOrLimit && !shown.contains(.anytime) {
             let outside = times.filter { !shown.contains(store.section(forMinute: $0.minuteOfDay).id) }
             if let first = outside.first {
                 let part = store.section(forMinute: first.minuteOfDay).name

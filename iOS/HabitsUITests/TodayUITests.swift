@@ -28,7 +28,7 @@ final class TodayUITests: XCTestCase {
     }
 
     func testTodayScreen() {
-        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Quitting'")).firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Quit or Cut Down'")).firstMatch.waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["Anytime"].exists)
         shot("01-today")
 

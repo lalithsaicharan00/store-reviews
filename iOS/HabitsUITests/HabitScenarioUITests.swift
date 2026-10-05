@@ -131,8 +131,10 @@ final class HabitScenarioUITests: XCTestCase {
 
     /// Checks the sentence on the form, saves, and checks Today's line (if any).
     /// Only habits due today show on Today; `due` says whether this one is (set days, dates).
-    private func check(_ want: String, row oftenRow: String? = nil, today caption: String? = nil, due: Bool = true, shotName: String) {
-        XCTAssertEqual(sentence, want + ", anytime", "Form sentence")
+    /// A limit's sentence has no time of day: it shows under Quit or Cut Down (`anytime: false`, 5 Oct 2026).
+    private func check(_ want: String, row oftenRow: String? = nil, today caption: String? = nil, due: Bool = true,
+                       anytime: Bool = true, shotName: String) {
+        XCTAssertEqual(sentence, want + (anytime ? ", anytime" : ""), "Form sentence")
         if let oftenRow { XCTAssertTrue(row("How often, \(oftenRow)").exists, "How often row reads \"\(oftenRow)\"") }
         shot(shotName + "-form")
         add()
@@ -259,7 +261,7 @@ final class HabitScenarioUITests: XCTestCase {
         shot("s22-limit-often")
         XCTAssertFalse(app.buttons["often-weekdays"].exists, "Cut down's limit is a day, a week or a month: no set days")
         back()
-        check("Coffee: at most 3 a day", shotName: "s22-limit")
+        check("Coffee: at most 3 a day", anytime: false, shotName: "s22-limit")
     }
 
     /// The longest name (24) with the longest unit (12) and a long day list still reads as one sentence.

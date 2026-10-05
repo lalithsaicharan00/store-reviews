@@ -73,7 +73,7 @@ final class GroupsUITests: XCTestCase {
         field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: old.count + 2) + text)
     }
 
-    /// No groups yet: Filter explains them, + New Group makes one with habits, its chip filters Today (Quitting too),
+    /// No groups yet: Filter explains them, + New Group makes one with habits, its chip filters Today (Quit or Cut Down too),
     /// and the ✕ chip at the top of Today clears it.
     func testFirstGroupFromFilter() {
         launch()
@@ -111,12 +111,12 @@ final class GroupsUITests: XCTestCase {
         XCTAssertEqual(active.label, "Showing Health only")
         XCTAssertTrue(text("Read").exists)
         XCTAssertFalse(text("Water").exists, "Water has no group")
-        XCTAssertFalse(text("Smoking").exists, "Quitting shows only the group")
+        XCTAssertFalse(text("Smoking").exists, "Quit or Cut Down shows only the group")
         shot("g04-today-filtered")
 
         active.tap()
         XCTAssertTrue(active.waitForNonExistence(timeout: 3), "✕ clears the filter")
-        XCTAssertTrue(text("Smoking").waitForExistence(timeout: 3), "Quitting is back")
+        XCTAssertTrue(text("Smoking").waitForExistence(timeout: 3), "Quit or Cut Down is back")
         // Water is done, so it sits at the end of Anytime, below the fold on a small screen.
         app.reveal(text("Water"))
         shot("g04b-today-all")

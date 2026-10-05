@@ -482,10 +482,22 @@ struct HabitForm: View {
             default:
                 planSection
                 if type == .amount { tapSection }
-                Section {
-                    timeOfDayRow
-                    groupRow
-                    remindersRow
+                if type == .cutBack {
+                    // A limit has no time of day: it's logged only when it happens, so on Today it sits under Quit or
+                    // Cut Down, never in a time of day where it reads as something to do (the user, 5 Oct 2026).
+                    Section {
+                        groupRow
+                        remindersRow
+                    } footer: {
+                        Text("It shows on Today under \(TodayView.quittingTitle). Log it only when it happens.").formNote()
+                            .accessibilityIdentifier("limit-place-note")
+                    }
+                } else {
+                    Section {
+                        timeOfDayRow
+                        groupRow
+                        remindersRow
+                    }
                 }
                 startEndSection
             }
@@ -647,6 +659,7 @@ struct HabitForm: View {
         // Before an amount is set it's simply left out ("Drink water every day, anytime"), the same as Check it
         // off: no dash anywhere (the user, 29 Sep).
         let text = HabitCopy.sentence(amountValue == nil && hasAmount ? withoutAmount(previewHabit) : previewHabit, weekStart: weekStart)
+        if type == .cutBack { return text }
         let parts = timesOfDay == [.anytime] ? "anytime" : HabitCopy.partsPhrase(timesOfDay.map { store.section($0).name })
         return text + ", " + parts
     }
@@ -879,7 +892,7 @@ struct HabitForm: View {
         Section {
             DatePicker("Started", selection: $quitSince, in: ...Date.now)
         } footer: {
-            Text("The counter runs from here. It shows at the top of Today under Quitting, counting up.").formNote()
+            Text("The counter runs from here. It shows on Today under Quit or Cut Down, counting up.").formNote()
         }
     }
 
@@ -1099,7 +1112,7 @@ struct HabitForm: View {
     /// Until the user changes a reminder, there's one per chosen time of day, at a time inside it.
     private func syncReminders(force: Bool = false) {
         guard force || (remind && !remindersEdited) else { return }
-        let ids = timesOfDay
+        let ids = reminderParts
         times = ids.enumerated().map { i, id in
             DraftTime(id: times.indices.contains(i) ? times[i].id : UUID(), time: Self.date(minute: defaultMinute(for: id)),
                       part: id == .anytime ? nil : id)
@@ -1110,7 +1123,7 @@ struct HabitForm: View {
     private func addReminder() {
         if times.isEmpty { syncReminders(force: true); return }
         remindersEdited = true
-        let parts: [String?] = timesOfDay == [.anytime] ? [nil] : timesOfDay.map { Optional($0) }
+        let parts: [String?] = reminderParts == [.anytime] ? [nil] : reminderParts.map { Optional($0) }
         let part = parts.min { a, b in times.filter { $0.part == a }.count < times.filter { $0.part == b }.count } ?? nil
         let range = range(for: part)
         let last = times.last { $0.part == part }?.time
@@ -1127,8 +1140,12 @@ struct HabitForm: View {
     private func partFor(_ time: Date) -> String? {
         let c = Calendar.current.dateComponents([.hour, .minute], from: time)
         let id = store.section(forMinute: (c.hour ?? 0) * 60 + (c.minute ?? 0)).id
-        return timesOfDay.contains(id) && id != .anytime ? id : nil
+        return reminderParts.contains(id) && id != .anytime ? id : nil
     }
+
+    /// The times of day reminders follow: none for a limit, which has no time of day on the form (a limit made before
+    /// 5 Oct keeps its saved one, unused by Today).
+    private var reminderParts: [String] { type == .cutBack ? [.anytime] : timesOfDay }
 
     /// What saving will do, in one line, before Save (spec §8.4).
     @ViewBuilder private var editOutcomeSection: some View {

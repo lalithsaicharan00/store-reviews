@@ -128,7 +128,7 @@ struct TodayView: View {
             let arguments = ProcessInfo.processInfo.arguments
             guard store.isLoaded, arguments.contains("-focus-preview"),
                   arguments.contains("-focus-fixture"), routine == nil else { return }
-            var habits = store.habits.filter { $0.kind != .quit && !$0.archived }
+            var habits = store.habits.filter { !$0.isQuitOrLimit && !$0.archived }
             if let flag = arguments.firstIndex(of: "-focus-preview-habit"), flag + 1 < arguments.count,
                let position = habits.firstIndex(where: { $0.name == arguments[flag + 1] }) {
                 habits = Array(habits[position...]) + Array(habits[..<position])
@@ -257,7 +257,7 @@ struct TodayView: View {
         case .openHabitForm: perfForm = true
         case .startRoutine(let part):
             let today = store.today()
-            let tracked = store.habits.filter { !$0.archived && $0.kind != .quit && store.startDay(of: $0) <= today && store.isDue($0, on: today) }
+            let tracked = store.habits.filter { !$0.archived && !$0.isQuitOrLimit && store.startDay(of: $0) <= today && store.isDue($0, on: today) }
             if let items = rowsBySection(tracked)[part] { start(part: part, items: items, day: today) }
         case .openArrange: arrange(true)
         case .close:
@@ -309,7 +309,7 @@ struct TodayView: View {
             return left > 0 ? Date(timeIntervalSinceReferenceDate: now.addingTimeInterval(left * 60).timeIntervalSinceReferenceDate.rounded(.up)) : nil
         }.sorted()
     }
-    /// The fold key for the Quitting card; section IDs are UUIDs or fixed words, so this can't clash.
+    /// The fold key for the Quit or Cut Down card; section IDs are UUIDs or fixed words, so this can't clash.
     private static let quitting = "quitting-card"
     private static let pausedCard = "paused-card"
 
@@ -353,7 +353,8 @@ struct TodayView: View {
                 try? await Task.sleep(for: .milliseconds(50)) // lets the day change reset the folds first
             }
             let key: String
-            if habit.kind == .quit {
+            if habit.isQuitOrLimit {
+                if habit.atMost && !store.isDue(habit, on: today) { return }
                 layout.open(Self.quitting)
                 key = Self.rowKey(Self.quitting, id)
             } else {
@@ -378,11 +379,17 @@ struct TodayView: View {
         // A group filter shows only that group's habits, in every card (groups spec §2); All shows everything.
         let group = filterGroup
         let active = store.habits.filter { !$0.archived && store.startDay(of: $0) <= shown && store.isInGroup($0, group) }
-        let quitting = active.filter { $0.kind == .quit && !store.isPaused($0, on: today) }
+        // Quit habits (today only: their counter is live) and limits (any day: a coffee can be logged afterwards) share
+        // one card, apart from the times of day: they're logged only when they happen, never something to do (report
+        // "Limit Habits on Today — Apart From What You Must Do", 5 Oct 2026). One list, in the person's own order (U13).
+        let restraint = active.filter { habit in
+            habit.kind == .quit ? isToday && !store.isPaused(habit, on: today)
+                : habit.isQuitOrLimit && store.isDue(habit, on: shown, countingSkips: false)
+        }
         // Paused habits leave their cards for one folded card at the bottom, so they're never lost (pause report).
         let paused = active.filter { store.isPaused($0, on: shown) && ($0.kind != .quit || isToday) }
         // A skipped habit stays, as a neutral row that says so (it used to vanish, leaving Undo Skip nowhere to be found).
-        let tracked = active.filter { $0.kind != .quit && store.isDue($0, on: shown, countingSkips: false) }
+        let tracked = active.filter { !$0.isQuitOrLimit && store.isDue($0, on: shown, countingSkips: false) }
         let nowPart = isToday ? store.nowSection(now: now)?.id : nil
 
         if !store.isLoaded {
@@ -414,7 +421,7 @@ struct TodayView: View {
                 if isToday && AppModel.shared.backup != nil { BackupIssueSection() }
                 // Filtered to a group with nothing on this day: say so, with the way back (report 18).
                 if let group, let shownGroup = store.groups.first(where: { $0.id == group }),
-                   tracked.isEmpty && quitting.isEmpty && paused.isEmpty {
+                   tracked.isEmpty && restraint.isEmpty && paused.isEmpty {
                     Section {
                         VStack(spacing: 10) {
                             Text("Nothing from \(shownGroup.name) on this day.")
@@ -439,10 +446,10 @@ struct TodayView: View {
                         .accessibilityIdentifier("day-note")
                     }
                 }
-                // Anytime and Quitting sit where the person put them; the times of day follow their times.
+                // Anytime and Quit or Cut Down sit where the person put them; the times of day follow their times.
                 ForEach(store.todayCards, id: \.self) { card in
                     if card == .quittingCard {
-                        if isToday && !quitting.isEmpty { quittingSection(quitting) }
+                        if !restraint.isEmpty { quittingSection(restraint, day: shown, isToday: isToday) }
                     } else if let items = rows[card], !items.isEmpty {
                         // Times decide the section; a habit ticked per section shows in each of its sections.
                         partSection(card, items: items, day: shown, isToday: isToday, isNow: card == nowPart)
@@ -543,24 +550,37 @@ struct TodayView: View {
                     visibleRows: visibleRows)
     }
 
-    /// Quitting folds like the other cards, and starts open.
+    /// Quit or Cut Down folds like the other cards, and starts open. No "N left" and no Start: nothing in it is to do.
+    /// Quit habits keep their counter row; a limit keeps its ordinary row, logged with + when it happens.
     @ViewBuilder
-    private func quittingSection(_ quitting: [Habit]) -> some View {
+    private func quittingSection(_ habits: [Habit], day: LocalDay, isToday: Bool) -> some View {
         let open = layout.box(Self.quitting).open ?? true
         Section {
-            PartHeader(title: "Quitting", habits: quitting, left: nil, isNow: false, isOpen: open, onStart: nil,
-                       onToggle: { layout.setOpen(Self.quitting, !open, reduceMotion: reduceMotion) })
+            PartHeader(title: Self.quittingTitle, habits: habits, left: nil, isNow: false, isOpen: open, onStart: nil,
+                       onToggle: { layout.setOpen(Self.quitting, !open, reduceMotion: reduceMotion) }, foldsTitle: false)
                 .contextMenu {
                     Button("Arrange Your Day", systemImage: "arrow.up.arrow.down") { arrange(true) }
                 }
             if open {
-                ForEach(quitting) { habit in
-                    QuitRow(habit: habit, highlighted: highlighted == Self.rowKey(Self.quitting, habit.id))
-                        .id(Self.rowKey(Self.quitting, habit.id))
+                ForEach(habits) { habit in
+                    let key = Self.rowKey(Self.quitting, habit.id)
+                    if habit.kind == .quit {
+                        QuitRow(habit: habit, highlighted: highlighted == key)
+                            .id(key)
+                    } else {
+                        HabitRow(habit: habit, day: day, isToday: isToday, highlighted: highlighted == key)
+                            .id(key)
+                            .onAppear { visibleRows.show(key) }
+                            .onDisappear { visibleRows.hide(key) }
+                    }
                 }
             }
         }
     }
+
+    /// The card's name: what the person chose when adding the habit ("Quit or cut down"), so a limit isn't read as
+    /// something to quit.
+    static let quittingTitle = "Quit or Cut Down"
 
     /// Edit and Done. Edit is used: the tip has done its job (`ArrangeTip`).
     private func arrange(_ on: Bool) {
@@ -575,8 +595,7 @@ struct TodayView: View {
 
     private func start(part: String, items: [TodayItem], day: LocalDay) {
         guard day == store.today() else { return }
-        // Limits are check-ins, not completed goals. Include them even with nothing logged.
-        let pending = items.filter { $0.habit.atMost || !PartSection.isDone($0, on: day, store: store) }.map(\.habit)
+        let pending = items.filter { !PartSection.isDone($0, on: day, store: store) }.map(\.habit)
         guard !pending.isEmpty else { return }
         returnToPart = part
         // Close any keyboard still open from a form, so the player doesn't open with its space reserved.

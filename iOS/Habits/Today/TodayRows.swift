@@ -490,15 +490,18 @@ struct QuitRow: View {
 struct PartHeader: View {
     let title: String
     let habits: [Habit]
-    /// Habits still to do; nil for the Quitting card, which has no status.
+    /// Habits still to do; nil for the Quit or Cut Down card, which has no status.
     let left: Int?
     let isNow: Bool
     let isOpen: Bool
     let onStart: (() -> Void)?
     let onToggle: () -> Void
-    /// "Starts 6 AM" under a timed section's name, folded or open; nil for Anytime, Quitting and Paused. On its own
+    /// "Starts 6 AM" under a timed section's name, folded or open; nil for Anytime, Quit or Cut Down and Paused. On its own
     /// line, so it never takes room from the folded icons or "N left" (the user, 3 Oct 2026).
     var subtitle: String? = nil
+    /// Folded, the name is cut to 8 letters so the icons get the room. Off for "Quit or Cut Down", whose meaning
+    /// would go with its last words.
+    var foldsTitle = true
 
     /// The width for the name, Now and the icons, and the width of the name block (the name with Now, or its "Starts
     /// 6 AM" line, whichever is wider).
@@ -512,7 +515,7 @@ struct PartHeader: View {
     /// At least this much space between the icons and "2 left" / ✓.
     static let statusGap: CGFloat = 12
 
-    /// The caller provides Start for unfinished habits or limit check-ins today; folded only in Now.
+    /// The caller provides Start for unfinished habits today; folded only in Now.
     private var showsStart: Bool { onStart != nil && (isOpen || isNow) }
 
     private var iconCount: Int? {
@@ -523,7 +526,7 @@ struct PartHeader: View {
     /// Folded, the name shows at most 8 letters and "…", so the icons get the room.
     /// (A 9-letter name, like Afternoon, is shown whole: "Afternoo…" would be no shorter.)
     private var shownTitle: String {
-        guard !isOpen, title.count > 9 else { return title }
+        guard !isOpen, foldsTitle, title.count > 9 else { return title }
         return title.prefix(8).trimmingCharacters(in: .whitespaces) + "…"
     }
 
@@ -554,8 +557,10 @@ struct PartHeader: View {
                 }
             }
             // Folded, the block keeps its own width (the name is already short) so the icons know their room; open, the
-            // name takes what's left and ends in "…".
-            .fixedSize(horizontal: !isOpen, vertical: false)
+            // name takes what's left and ends in "…". A whole folded name goes first, and ends in "…" only when even the
+            // header can't hold it (the largest text sizes); the icons get what's left.
+            .fixedSize(horizontal: !isOpen && foldsTitle, vertical: false)
+            .layoutPriority(foldsTitle ? 0 : 1)
             .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { labelWidth = $0 }
             if let count = iconCount {
                 // Folding: the icons fade in from the name's side as the rows go back under the header (#59).

@@ -71,6 +71,7 @@ Source: [Creating a Habit — Round 3, The User's Own Words](<../Research/Resear
 - **The sentence is built from the same saved habit Today shows** (`HabitCopy.sentence`, plus the parts of the day).
 - **On every screen the form opens, the sentence is pinned at the top** (`stickySentence`: a bar that stays while the choices scroll; the user, 29 Sep).
 - **Layout (the Round 3 mockup's form board):** previews · name, Icon | Colour · How much (Track an amount), How long (Time it), Steps (Checklist only), Limit (Cut down) · Each + adds (amounts only) · How often · then Time of Day and Reminders · then Starts and Ends. No explanation lines under the rows.
+- **Cut down has no Time of Day** (the user, 5 Oct 2026): its sentence ends without ", anytime", and one footer line under Group and Reminders says "It shows on Today under Quit or Cut Down. Log it only when it happens." A limit saved earlier keeps its time of day, unused. Report: [Limit Habits on Today](<../Research/Research Reports/Day Structure and Organization/Limit Habits on Today — Apart From What You Must Do.md>).
 - **A weekday of the month is one phrase row: "The [first ▾] [Saturday ▾] of the month."** The first menu is which one of that weekday in the month (first to fifth, or last: a weekday comes 4 or 5 times a month); the second is the weekday, all seven. Two separate rows, "Which" (six options) and "Day", looked like a mistake (29 Sep).
 - **Reminders open their own screen**; the row says when ("9:00 AM", "Off").
 - **Starts reads "Today"** (or "Tomorrow", "Wed 1 Oct") and **Ends reads "Never"**; each opens its own screen with a calendar.
@@ -164,7 +165,7 @@ Source: [Section Header — Start Button, Left Count and Icons](<../Research/Res
   - "▶ Start" in open sections.
   - Folded, ▶ appears **only on the Now section**.
   - **The Now button is primary** (filled ink); others are grey.
-  - Start is today only, never on Quitting.
+  - Start is today only, never on Quit or Cut Down.
 - Space order: status and Start never shrink; the name gives way first; the icons take the rest and end in "+N".
 - **Folded icons sit beside the whole name block, centred on the header** (the name and its "Starts 6 AM" line), never on the name's own line, with a clear gap of about 14 points that grows with the text size (`PartHeader.iconGap`, capped at 24). The user, 4 Oct 2026 (Current Work 38).
 
@@ -190,7 +191,7 @@ Source: [Full-screen Focus Player — One Thing at a Time](<../Research/Research
 - **Section Start opens full screen**, centered on one habit. Keep native controls, the routine position, a next-item preview, Back, Skip and a reachable queue.
 - **No invented routine countdown.** Untimed items stay untimed; timed items use one existing count-up habit clock. Pause saves time; reaching the goal does not automatically advance. Next, Skip and Close save before leaving.
 - **Completion stays visible until Next.** A repeated check adds one; a count adds its saved increment; a checklist keeps its existing steps. Keep manual logging and exact-entry Undo available.
-- **Cut-down items are check-ins.** Include them even when under their limit. Continue never logs consumption or marks the whole day successful. Quit streaks stay outside the player.
+- **Limits are never in a routine** (5 Oct 2026; supersedes "Cut-down items are check-ins"): they sit under Quit or Cut Down, outside every time of day (see "Limit habits on Today" below). Quit streaks stay outside the player too. The player's limit handling remains only as a safety net.
 - Queue reordering and reviewed-limit state belong to the current session. Habit progress and timers persist; do not imply persisted routine history or a saved session cursor.
 
 ## Routine (focus) player
@@ -263,16 +264,26 @@ Plan: [Groups — What to Build](<Docs/Specs/Groups — What to Build.md>), from
 - **Chip numbers are habits shown on the day open**, empty groups "–" and last. Counts are worked out only while the Filter sheet is open.
 - **Group numbers take a list of habits** (`dayScore(on:habits:)`, `progressSnapshot(…group:)`); day scores are cached per group. Today and Progress remember their own choice.
 
+## Limit habits on Today: Quit or Cut Down (built 5 Oct 2026)
+
+Source: [Limit Habits on Today — Apart From What You Must Do](<../Research/Research Reports/Day Structure and Organization/Limit Habits on Today — Apart From What You Must Do.md>). The user's words: "it signals like you have to log something… you log it only if you do it."
+
+- **Limits (cut-down habits) never sit in a time of day.** They share one card with quit habits, **"Quit or Cut Down"** (the + flow's own words, so a limit isn't read as something to quit), in the person's own order (`Habit.isQuitOrLimit`, `HabitStore.cardMembers`).
+- **The card has no "N left" and no Start**, folds like any card, and moves among the cards in Arrange Your Day. Folded, its whole name shows (`PartHeader.foldsTitle`), ending in "…" only at the largest text sizes.
+- **A limit keeps its ordinary row** (+, ▶ for a time limit, the Day sheet, swipes, the menu) and shows on any day it applies; quit counters stay today only.
+- **Never put a limit back in a time of day or a routine**, and never give the card a status or Start: in a list of things to do, a limit reads as one more thing to do (users show workarounds: rewording, ticking at night, snoozing reminders).
+- **Tests replaced, not dropped:** `FocusPlayerUITests.testLimitCheckInNeverLogsConsumptionOrCompletesTheDay` became `testLimitIsNotInTheRoutineAndWaitsUnderQuitOrCutDown`, and `testSectionWithOnlyALimitStillHasStart` became `testOnlyALimitShowsUnderQuitOrCutDownWithoutStart`: they checked limits inside a routine, which no longer happens. The manual-log check moved from the limit to Drink water.
+
 ## Arrange Your Day: Edit on Today (built 3 Oct 2026)
 
 Research: [27. Arranging and Filtering Today](<../Research/Research Reports/Home Screen and Visual Design/Today Screen Top Area/27. Arranging and Filtering Today — What People Expect.md>). The user's points: [checklist](<Docs/Checklists/Today — Arrange Your Day (item 5 build).md>).
 
 - **Today's normal layout doesn't change beyond these points** (the user: "don't change anything drastically"). No heading on Today. The bottom keeps only "Note for the Day"; "Edit Times of Day" is gone from it.
-- **Each timed section says when it starts, under its name: "Starts 6 AM"** (start only; ":00" dropped on the hour), folded or open, on its own line so it never takes room from the folded icons or "N left". Anytime, Quitting and Paused have none.
-- **Edit turns Today into "Arrange Your Day"** (never "Edit Today"), with one plain line saying what can be done. It lists **every habit** in each card, not only today's (one-time tasks already done are left out), Anytime and Quitting included.
+- **Each timed section says when it starts, under its name: "Starts 6 AM"** (start only; ":00" dropped on the hour), folded or open, on its own line so it never takes room from the folded icons or "N left". Anytime, Quit or Cut Down and Paused have none.
+- **Edit turns Today into "Arrange Your Day"** (never "Edit Today"), with one plain line saying what can be done. It lists **every habit** in each card, not only today's (one-time tasks already done are left out), Anytime and Quit or Cut Down included.
 - **Habits' order is the person's own.** A new habit or task goes to the end of its section; reminder times never reorder Today. Habits and tasks share one order in each section, and both can be dragged (tasks research, report 27). Sorting is a one-off action (··· → By Reminder Time / A to Z); dragging carries on from it. *Supersedes "timed rows by their earliest time".*
-- **Timed sections follow their times; only Anytime and Quitting move** (··· → Move Up / Down / to Top / to Bottom). Paused stays last.
-- **Each card's ··· menu, short names:** Rename, Change Time (timed only), Sort habits, Move (Anytime and Quitting only), Delete (timed only; its habits move to Anytime, and the dialog says so).
+- **Timed sections follow their times; only Anytime and Quit or Cut Down move** (··· → Move Up / Down / to Top / to Bottom). Paused stays last.
+- **Each card's ··· menu, short names:** Rename, Change Time (timed only), Sort habits, Move (Anytime and Quit or Cut Down only), Delete (timed only; its habits move to Anytime, and the dialog says so).
 - **New or changed times split what they overlap** (`SectionPlan`): the form shows "Your day" with every section's new times, and a dialog lists them before anything is split. Covering a whole section is refused; nothing is ever deleted by a split. `ArrangeCheck` (`-arrangecheck`) covers every direction.
 - **One tip, on Edit, at the right moment** (`ArrangeTip`): only once some section has two or more habits and Today has been opened on three different days; once; gone when Edit is used; never in test launches.
 

@@ -109,25 +109,30 @@ final class FocusPlayerUITests: XCTestCase {
         XCTAssertEqual(app.staticTexts["focus-checklist-progress"].label, "3 / 3 steps")
     }
 
-    func testLimitCheckInNeverLogsConsumptionOrCompletesTheDay() {
+    /// A limit is logged only when it happens, so it's never in a routine of things to do: it waits on Today under
+    /// Quit or Cut Down (report "Limit Habits on Today — Apart From What You Must Do", 5 Oct 2026). Replaces the limit
+    /// check-in test of 2 Oct.
+    func testLimitIsNotInTheRoutineAndWaitsUnderQuitOrCutDown() {
         launch()
-        jump("Less coffee")
-        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "0 / 2 cups max")
-        XCTAssertTrue(app.buttons["focus-up-next"].exists)
-        shot("focus-04-limit")
-        app.buttons["focus-up-next"].tap()
+        app.buttons["routine-queue"].tap()
+        XCTAssertTrue(app.buttons["queue-Water the plants"].waitForExistence(timeout: 3))
+        XCTAssertFalse(app.buttons["queue-Less coffee"].exists, "No limit in the routine")
+        app.buttons["queue-Water the plants"].tap()
         expectPage("Water the plants")
         app.buttons["focus-primary"].tap()
         app.buttons["focus-primary"].tap()
         XCTAssertTrue(app.staticTexts["4 left for later. Your progress is saved."].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.staticTexts["1 limit check-in. Your limits keep tracking through the day."].exists)
+        XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'check-in'")).firstMatch.exists)
         shot("focus-05-summary")
-        app.buttons["Review routine"].tap()
-        let row = app.buttons["queue-Less coffee"]
-        XCTAssertTrue(row.waitForExistence(timeout: 3))
-        row.tap()
-        expectPage("Less coffee")
-        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "0 / 2 cups max")
+        app.buttons["Done"].tap()
+        let card = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Quit or Cut Down'")).firstMatch
+        app.reveal(card, clear: true)
+        XCTAssertTrue(card.waitForExistence(timeout: 5))
+        let coffee = app.descendants(matching: .any).matching(NSPredicate(format: "label BEGINSWITH 'Less coffee'")).firstMatch
+        XCTAssertTrue(coffee.waitForExistence(timeout: 3), "The limit is on Today")
+        shot("focus-04-limit-on-today")
+        card.tap()
+        XCTAssertFalse(coffee.waitForExistence(timeout: 1), "Folding Quit or Cut Down hides the limit: it's in that card")
     }
 
     func testTimerPauseBackgroundAndSkipPreserveTime() {
@@ -147,7 +152,7 @@ final class FocusPlayerUITests: XCTestCase {
         shot("focus-06-timer-paused")
         app.buttons["focus-primary"].tap()
         app.buttons["focus-up-next"].tap()
-        expectPage("Less coffee")
+        expectPage("Water the plants")
         app.buttons["Previous habit"].tap()
         expectPage("Read a little")
         XCTAssertTrue(app.buttons["Stop Read a little timer"].waitForExistence(timeout: 3))
@@ -167,7 +172,9 @@ final class FocusPlayerUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Pause timer"].waitForExistence(timeout: 3), "Goal reached keeps timing until the user leaves or pauses")
         app.buttons["Pause timer"].tap()
         app.buttons["focus-up-next"].tap()
-        expectPage("Less coffee")
+        expectPage("Water the plants")
+        // An amount's manual log (the limit used to be the amount here; limits left routines on 5 Oct 2026).
+        jump("Drink water")
         app.buttons["focus-habit-options"].tap()
         app.buttons["focus-log-manually"].tap()
         let amount = app.textFields["log-amount"]
@@ -176,10 +183,10 @@ final class FocusPlayerUITests: XCTestCase {
         shot("focus-08-keyboard")
         app.navigationBars["Log Amount"].buttons["Log"].tap()
         let quantity = app.staticTexts["focus-quantity"]
-        XCTAssertTrue(waitUntil { quantity.label == "1 / 2 cups max" }, quantity.label)
+        XCTAssertTrue(waitUntil { quantity.label == "2 / 2 glasses" }, quantity.label)
         XCTAssertTrue(app.buttons["focus-undo"].waitForExistence(timeout: 3))
         app.buttons["focus-undo"].tap()
-        XCTAssertTrue(waitUntil { quantity.label == "0 / 2 cups max" }, quantity.label)
+        XCTAssertTrue(waitUntil { quantity.label == "1 / 2 glasses" }, quantity.label)
     }
 
     func testSavedFocusProgressSurvivesTermination() {
@@ -210,19 +217,22 @@ final class FocusPlayerUITests: XCTestCase {
         XCTAssertTrue(app.buttons["focus-up-next"].isHittable)
     }
 
-    func testSectionWithOnlyALimitStillHasStart() {
+    /// Only a limit: no time of day, no Start and no "left", only Quit or Cut Down with the limit's own + (replaces
+    /// "a section with only a limit still has Start", 2 Oct; limits left the times of day on 5 Oct 2026).
+    func testOnlyALimitShowsUnderQuitOrCutDownWithoutStart() {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments = ["-uitest", "-empty", "-focus-fixture", "-focus-limit-only"]
         app.launch()
-        XCTAssertTrue(app.buttons["Open Anytime"].waitForExistence(timeout: 5))
-        app.buttons["Open Anytime"].tap()
-        XCTAssertTrue(app.buttons["Start Anytime routine"].exists)
-        app.buttons["Start Anytime routine"].tap()
-        XCTAssertEqual(app.staticTexts["focus-name"].label, "Less coffee")
-        app.buttons["focus-up-next"].tap()
-        XCTAssertTrue(app.staticTexts["1 limit check-in. Your limits keep tracking through the day."].waitForExistence(timeout: 3))
-        XCTAssertFalse(app.staticTexts["All habits in this routine are done."].exists)
+        let card = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Quit or Cut Down'")).firstMatch
+        XCTAssertTrue(card.waitForExistence(timeout: 10))
+        XCTAssertFalse(card.label.contains("left"), "Nothing in it is to do: \(card.label)")
+        XCTAssertFalse(app.buttons["Open Anytime"].exists, "No time of day holds the limit")
+        XCTAssertFalse(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Start'")).firstMatch.exists, "No routine")
+        let add = app.buttons["Add 1 cup to Less coffee"]
+        XCTAssertTrue(add.waitForExistence(timeout: 3), "Logged with + when it happens")
+        add.tap()
+        XCTAssertTrue(app.descendants(matching: .any).matching(NSPredicate(format: "label BEGINSWITH 'Less coffee'")).firstMatch.waitForExistence(timeout: 3))
     }
 
     func testTimerDayBoundaryAndExactUndoPersistence() {

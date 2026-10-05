@@ -83,14 +83,14 @@ final class LongTextUITests: XCTestCase {
         if start.frame.midY > middle + 40 { app.windows.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8)).press(forDuration: 0.05, thenDragTo: app.windows.firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8 - (start.frame.midY - middle) / app.windows.firstMatch.frame.height))) }
         sleep(1)
         shot("03-today-now-open")
-        // Quitting starts open and folds like the other cards.
-        let quitting = button(startingWith: "Quitting")
+        // Quit or Cut Down starts open and folds like the other cards.
+        let quitting = button(startingWith: "Quit or Cut Down")
         app.reveal(quitting, clear: true)
         XCTAssertTrue(quitting.waitForExistence(timeout: 2))
         let smoking = app.descendants(matching: .any).matching(NSPredicate(format: "label BEGINSWITH 'Smoking'")).firstMatch
-        XCTAssertTrue(smoking.exists, "Quitting starts open")
+        XCTAssertTrue(smoking.exists, "Quit or Cut Down starts open")
         quitting.tap()
-        XCTAssertFalse(smoking.waitForExistence(timeout: 1), "Folding Quitting hides its rows")
+        XCTAssertFalse(smoking.waitForExistence(timeout: 1), "Folding Quit or Cut Down hides its rows")
         // Fold every section to see the header icons and "+N".
         for name in ["Anytime", "Before breakfast", "Lunch break walk", "Once kids sleep"] {
             let header = button(startingWith: name)

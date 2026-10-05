@@ -368,6 +368,12 @@ Their placement records scope and priority; implementation has not started.
 - [ ] **14. Cut-down habits (limits): where do they belong?** (added 3 Oct 2026) Keeping them inside the times of day
   feels weird. The user's thought: show them in the Quitting section instead. Research how people think of a limit
   ("cut down on coffee") next to quitting and next to build habits, then decide.
+  - **The user's words, 5 Oct, tidied:** "In the other sections a cut-down habit signals you have to log something. You
+    log it only if you do it. If they go only in the Quitting section, remove the time of day from the cut-down habit."
+  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Timers, Swipes, Time Limits and
+    Fixes — 4 Oct](<Timers, Swipes, Time Limits and Fixes — 4 Oct.md>) §5): limits join quit habits in one "Quit or Cut
+    Down" card (no "N left", no Start, never in a routine); the Cut down form has no Time of Day. Report "Limit Habits on
+    Today — Apart From What You Must Do". Tests: pending. Still yours: the iPhone (U9).
 
 - [ ] **15. Timed habits: what should tapping ▶ do?** (added 3 Oct 2026) Today ▶ starts an inline timer on the row.
   Research whether that's what people expect, or whether ▶ should open a full-screen timer, or both (and which is

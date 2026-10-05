@@ -65,7 +65,7 @@ final class RoutineCalendarUITests: XCTestCase {
     }
 
     /// Start follows the section-header rules (28 Sep): "▶ Start" in open sections; folded, only the Now
-    /// section keeps ▶; never on Quitting or a finished section. Play never changes disclosure.
+    /// section keeps ▶; never on Quit or Cut Down or a finished section. Play never changes disclosure.
     func testPlayFollowsHeaderRules() {
         let play = app.buttons["Start Anytime routine"]
         XCTAssertTrue(play.isHittable, "An open section has Start")
@@ -82,7 +82,7 @@ final class RoutineCalendarUITests: XCTestCase {
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Anytime' AND label CONTAINS 'left'")).firstMatch.exists, "Folded, it still says how many are left")
         app.buttons["Open Anytime"].tap()
         XCTAssertTrue(play.waitForExistence(timeout: 2), "Opening shows Start again")
-        XCTAssertFalse(app.buttons["Start Quitting routine"].exists)
+        XCTAssertFalse(app.buttons["Start Quit or Cut Down routine"].exists)
         XCTAssertFalse(app.buttons["Start Morning routine"].exists, "Completed sections have no play")
         shot("routine-headers")
     }
@@ -129,7 +129,7 @@ final class RoutineCalendarUITests: XCTestCase {
     }
 
     func testChecklistRoutineUsesExistingEntries() {
-        app.buttons["Fold Quitting"].tap()
+        app.buttons["Fold Quit or Cut Down"].tap()
         app.buttons["Fold Anytime"].tap()
         let morning = app.buttons["Open Morning"]
         reveal(morning)

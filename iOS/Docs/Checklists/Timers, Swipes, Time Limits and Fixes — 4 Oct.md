@@ -56,3 +56,18 @@ real need for a timer in cut down; if yes, implement what the research says and 
 **Tests (4 Oct 2026, GitHub):** `95310e2` Today 8/8; `6918c8d` FocusPlayer, Timer, RoutineCalendar, Undo (33),
 TodayRowLayout, SectionHeader, Groups (9), Backup; `4b603dc` NewHabit (20), TodayRowSheet, Sync. Everything these
 items touch passed. One lesson recorded in Rulebook T1 (a cancelled run still counts until it shows completed).
+
+## 5. Limit habits on Today (item 14, added 5 Oct)
+
+**The user's words, tidied:** "Where do limit habits belong on Today? We have the Quitting section. Right now cut-down
+habits are included in the other sections (the times of day), and that signals you have to log something. It isn't the
+case: when you set a limit, you log only if you do it; it isn't compulsory like building a habit. Do your own research
+from reviews if you want, then implement it. If they go only in the Quitting section, remove the time of day selection
+from the cut-down habit."
+
+| # | Point | Done |
+|---|---|---|
+| Q1 | Research: do people expect limit habits apart from the habits they must do, and logged only when they happen | [x] Report "Limit Habits on Today — Apart From What You Must Do": 309 reviews read; ≈13 want them apart, 3 log when it happens, 5 work around limits in a to-do list |
+| Q2 | Limit habits leave the times of day and sit with quitting on Today | [x] One card, "Quit or Cut Down", in the person's order; no "N left", no Start, never in a routine; Arrange Your Day the same |
+| Q3 | The Cut down form has no Time of Day | [x] No row, no ", anytime"; a footer says where it shows and that it's logged only when it happens |
+| Q4 | Nothing lost: existing limits keep their data; tests and docs follow | [ ] Existing limits keep every saved field (D6); Design Rules updated; four FocusPlayer tests rewritten for the new place (reasons in Design Rules); tests pending |

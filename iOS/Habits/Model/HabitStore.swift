@@ -667,7 +667,7 @@ final class HabitStore {
     func cardMembers() -> [String: [Habit]] {
         var cards: [String: [Habit]] = [:]
         for habit in habits where !habit.archived {
-            if habit.kind == .quit { cards[.quittingCard, default: []].append(habit); continue }
+            if habit.isQuitOrLimit { cards[.quittingCard, default: []].append(habit); continue }
             if habit.kind == .task, let due = habit.dueDay, isDone(habit, on: due) { continue }
             var seen = Set<String>()
             for placement in placements(of: habit) where seen.insert(placement.section).inserted {

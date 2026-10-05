@@ -262,7 +262,7 @@ final class HabitCreationUITests: XCTestCase {
 
         start("Cut down", name: "Coffee")
         amount("2", unit: "coffees", limit: true)
-        finish("At most 2 coffees a day, anytime", title: "Cut down", today: "Coffee", label: "L1-cut-down")
+        finish("At most 2 coffees a day", title: "Cut down", today: "Coffee", label: "L1-cut-down")
 
         start("Check it off", name: "Stretch")
         tap(row("Time of Day"))
