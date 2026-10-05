@@ -285,7 +285,10 @@ final class HabitCreationUITests: XCTestCase {
         finish("Stretch every day, morning and evening", today: "Stretch", label: "P1-two-parts-reminders")
 
         start("Task", name: "Book dentist")
-        XCTAssertEqual(sentence, "Book dentist today")
+        // The preview catches up with the name a moment after typing stops (Rulebook S11); read straight away, it said
+        // "Book denti today" (5 Oct 2026).
+        let caughtUp = app.descendants(matching: .any).matching(NSPredicate(format: "identifier == 'habit-sentence' AND label == 'Book dentist today'")).firstMatch
+        XCTAssertTrue(caughtUp.waitForExistence(timeout: 3), "Preview: \(sentence)")
         let add = app.navigationBars["Task"].buttons["Add"]
         add.tap(); taps += 1
         print("TAPS X1-one-time-task: \(taps)")
