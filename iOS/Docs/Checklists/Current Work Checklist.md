@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 48).
+  still resolve; give new items the next unused number (currently 50).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -171,6 +171,18 @@ Their placement records scope and priority; implementation has not started.
   - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): the store
     decides for every log from any screen; once, on the log that makes the habit complete; a running timer at its
     goal; never for quit habits or limits. Tests: pending (`CompletionFeedbackUITests`).
+
+- [ ] **49. Speed: Today, the habit form and Progress got slower on `main`.** Found 5 October 2026 by the full test of
+  `main` the user asked for (speed run `37310572002` on `d403844`), against the last full speed run before the day's
+  merges (`claude/habit-details-perf`, 4 Oct; hitch ms/s, targets under 5): Today scrolling 0 → 28; +1 alone 1–3 → 25;
+  day ‹ › alone 30–63 → 116; habit form typing 8–9 → 45 (a 496 ms freeze); Progress period ‹ › 50–125 → 164; menu
+  47–114 → 54. Hosted runs vary 2–3×, so repeated before blaming anything (S2).
+  - **Not from the Day-details merge:** three runs each of `main` just before it (`3530e98`, the timer/swipe/limits
+    branch) and after (`c09cdb9`): Today scrolling 18/64/44 vs 41/23/23, day ‹ › alone 119/99/92 vs 162/51/59, +1 alone
+    4.4/1.6/1.8 vs 15.5/5.5/3.4, Day sheet scrolling 36/20/44 vs 14/7/8; habit form 32 vs 30, Progress 163 vs 165 (runs
+    `37324688193`, `37330377255`, `37330449077` vs `37324703983`, `37330393173`, `37330464579`).
+  - **So the change came with the timer/swipe/limits/completion-sound merge.** To do: bisect its commits with the
+    scenarios above (Today `scroll-today`, `tap-today`; `new-habit`; `progress`), fix, and measure on the iPhone.
 
 - [ ] **47. Build Day details and the one-log editor from the 4 October handoff.** Added 4 October 2026, from the
   user; branch **`details-page-update`** (the user asked for a meaningfully named branch to test from). Implements
