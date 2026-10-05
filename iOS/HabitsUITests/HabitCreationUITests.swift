@@ -197,7 +197,8 @@ final class HabitCreationUITests: XCTestCase {
             if today == 2 { tap(app.buttons[full[1]].firstMatch) }
             for day in days.dropFirst() { tap(app.buttons[full[day - 1]].firstMatch) }
         }
-        finish("Walk every day except Monday, anytime", today: "Walk", label: "F08b-six-days")
+        // Not due on Mondays, so Today shows it every other day (failed on a Monday, 5 Oct 2026).
+        finish("Walk every day except Monday, anytime", today: today == 2 ? nil : "Walk", label: "F08b-six-days")
 
         start("Check it off", name: "Water plants")                                 // F09 days
         often("everyDays") { increment("often-every-count", 1) }
