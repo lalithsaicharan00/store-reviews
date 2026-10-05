@@ -305,7 +305,9 @@ final class FocusPlayerUITests: XCTestCase {
         let edit = app.buttons["focus-edit-habit"]
         XCTAssertTrue(edit.waitForExistence(timeout: 3))
         Thread.sleep(forTimeInterval: 0.6) // the sheet settles at its fitted height
-        XCTAssertTrue(app.switches["Show clock"].firstMatch.exists)
+        // Waits like Edit Habit above: on main (run 37298794001) the switch was on screen a moment after a bare
+        // `exists` checked for it, while the sheet was still settling.
+        XCTAssertTrue(app.switches["Show clock"].firstMatch.waitForExistence(timeout: 3))
         XCTAssertTrue(edit.isHittable && edit.frame.maxY <= screen.maxY, "Edit Habit shows without scrolling: \(edit.frame)")
         shot("player-02-options-fitted")
         app.navigationBars["Read a little"].buttons["Done"].tap()
