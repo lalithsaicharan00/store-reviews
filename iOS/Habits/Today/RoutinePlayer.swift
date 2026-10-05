@@ -59,6 +59,7 @@ struct RoutinePlayer: View {
     /// past as the one chosen, so › tapped fast sent the player back to it and the pages slid back and forth
     /// (Current Work 50, the user, 5 Oct 2026).
     @State private var pagerPosition = ScrollPosition(idType: PlayerPage.self)
+    @State private var motion = PagerMotion()
     private nonisolated enum PlayerPage: Hashable, Sendable { case habit(UUID), summary }
     #if DEBUG
     /// The fast ‹ › check's result (`PagerProbe`), shown only during that check.
@@ -254,9 +255,11 @@ struct RoutinePlayer: View {
             .scrollIndicators(.hidden)
             .scrollPosition($pagerPosition)
             .onScrollPhaseChange { old, new, context in
-                // Only a swipe of the person's own: a slide the player started (old phase .animating) is never read.
-                guard new == .idle, old == .interacting || old == .decelerating else { return }
-                swipeEnded(context.geometry)
+                if new == .interacting { motion.endSlide() } // the person took over the pages
+                guard new == .idle else { return }
+                // A swipe of the person's own is read; a slide the player started (.animating) is never read back.
+                if old == .interacting || old == .decelerating { swipeEnded(context.geometry) }
+                else if old == .animating { slideEnded() }
             }
             .overlay(alignment: .bottom) {
                 VStack(spacing: 8) {
@@ -275,19 +278,29 @@ struct RoutinePlayer: View {
         order.indices.contains(position) ? .habit(order[position].id) : .summary
     }
 
-    /// Slides the pager to `index`. Called again before a slide ends, the new slide starts from where the pages are,
-    /// so they only ever move the way they were sent.
+    /// Slides the pager to `index`. One slide at a time: taps made during a slide move the player at once (segments,
+    /// position, main button) and the pages follow in one slide when it ends, so they only ever move the way they were
+    /// sent. A slide started over a running one slid back by up to half a page with taps 0.05 s apart (CI, 5 Oct 2026).
     private func showIndex(animated: Bool) {
-        let target = pageID(index)
         if animated, let animation = pagerAnimation {
-            withAnimation(animation) { pagerPosition.scrollTo(id: target, anchor: .leading) }
+            guard !motion.sliding, motion.shownPage != index else { return }
+            motion.startSlide(to: index) { [self] in slideEnded() }
+            withAnimation(animation) { pagerPosition.scrollTo(id: pageID(index), anchor: .leading) }
         } else {
+            motion.endSlide()
+            motion.shownPage = index
             var instant = Transaction(); instant.disablesAnimations = true
-            withTransaction(instant) { pagerPosition.scrollTo(id: target, anchor: .leading) }
+            withTransaction(instant) { pagerPosition.scrollTo(id: pageID(index), anchor: .leading) }
         }
     }
     /// No bounce: a spring that overshot would read as sliding back.
     private var pagerAnimation: Animation? { reduceMotion ? nil : .smooth(duration: 0.3) }
+
+    /// The slide ended: catch up with taps made during it.
+    private func slideEnded() {
+        motion.endSlide()
+        showIndex(animated: true)
+    }
 
     /// A swipe came to rest: the page it rests on is the habit chosen.
     private func swipeEnded(_ geometry: ScrollGeometry) {
@@ -295,6 +308,7 @@ struct RoutinePlayer: View {
         guard width > 0 else { return }
         let landed = Int(((geometry.contentOffset.x + geometry.contentInsets.leading) / width).rounded())
         let destination = min(max(landed, 0), order.count)
+        motion.shownPage = destination
         if destination == index { return }
         navigate(to: destination, reviewing: destination > index && current?.atMost == true ? current?.id : nil, swiped: true)
     }
@@ -969,6 +983,31 @@ struct RoutinePlayer: View {
     private func amountUnit(_ habit: Habit) -> String { if case .amount(let unit, _) = habit.kind { unit } else { "" } }
 
 
+}
+
+/// The pager's own slide (`RoutinePlayer.showIndex`). Not observed: nothing redraws when it changes (Rulebook S6).
+final class PagerMotion {
+    /// The page the pages are on, or sliding to.
+    var shownPage = 0
+    private(set) var sliding = false
+    private var watchdog: Task<Void, Never>?
+
+    /// `ended` runs if the scroll view never reports the slide's end (a slide to where the pages already are).
+    func startSlide(to page: Int, ended: @escaping () -> Void) {
+        sliding = true
+        shownPage = page
+        watchdog?.cancel()
+        watchdog = Task { @MainActor [weak self] in
+            try? await Task.sleep(for: .seconds(0.8))
+            guard !Task.isCancelled, self?.sliding == true else { return }
+            ended()
+        }
+    }
+
+    func endSlide() {
+        sliding = false
+        watchdog?.cancel(); watchdog = nil
+    }
 }
 
 /// The player's main button: the system's prominent button, large, in ink, full width of its slot. Native press
