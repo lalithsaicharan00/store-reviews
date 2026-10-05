@@ -2,6 +2,8 @@
 
 Written by Codex, 1 October 2026. Research, review IDs, the free/Plus decision and acceptance matrix are in [the widget report](<../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/iPhone Widgets — Research and Implementation.md>).
 
+**5 October research/design follow-up:** [Start here — widget catalogue package](<../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widget Catalogue Study — 5 October 2026/README.md>) includes the detailed report, implementation handoff, two editable Figma sections, both complete boards and 26 individual renders. The newer catalogue and plan boundary are **proposals awaiting review**. This guide records the existing integration and historical checks; it does not claim the reported installed-phone picker issue or new designs are validated. Current Work item 9 remains open (W1/U9).
+
 ## Targets and shared data
 
 The existing `HabitsLiveActivity` extension contains the timer Live Activity and five stable widget kinds. Both it and `Habits` compile `Shared/WidgetSnapshot.swift`, `WidgetIntents.swift` and `PhoneWidgets.swift`. Only the app compiles the Kotlin repository and `HabitStore+Widgets.swift`. `HABITS_APP` selects the app-process implementation of the shared `LiveActivityIntent`.
@@ -32,7 +34,7 @@ Privacy hides names and progress and disables logging. App Lock also publishes a
 
 ## macOS verification
 
-Use a commit containing `[ios-ci] [ios-widgets] [ios-perf]` (add `[ios-widgets-recheck]` for only widget tests and widget timing scenarios after unchanged timer/Undo regressions have passed; `[ios-widgets-validation]` targets storage, the full Home gallery/cold action and timer UI while retaining Today and widget performance scenarios) to run the targeted workflow. It builds the app and extension, checks immutable review evidence and core storage, then runs:
+**Read Rulebook T10 and the current workflow before every push or test dispatch.** Ordinary documentation commits stay untagged. Before deliberately starting tagged validation, inspect repository-wide live Actions runs/jobs, wait for another agent's queued or running tests to complete and check again; never cancel their tests. The widget cancellation tag is not a routine trigger: it requires explicit user authorization and confirmation that it cannot cancel another agent's work. The workflow's current recheck/validation options determine the scope; select them only when intentionally testing. The historical targeted workflow built the app and extension, checked immutable review evidence and core storage, then ran:
 
 - `WidgetUITests`: real-repository logic checks, every supported family/layout through the shared-view harness, free and simulated Plus layouts, month history, dark appearance, larger text, long names/units and privacy controls. Plus/month/dark switches assert their actual selected state before screenshots.
 - `WidgetSystemUITests`: checks all nine Home gallery previews, then installs medium Today and verifies a cold app-process quick action on disk and extension-side next/previous paging while the app stays closed; attempts the actual Lock Screen picker. Unsupported system accessibility is an explicit skip and remains unverified.
