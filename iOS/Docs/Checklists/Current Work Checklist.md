@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 43).
+  still resolve; give new items the next unused number (currently 46).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item only when its required validation is complete, with the date and relevant commit, test or device
@@ -43,7 +43,7 @@ Their placement records scope and priority; implementation has not started.
   and tasks.** Added 4 October 2026; **issue 1 of the user's current feedback round**. Status: documented from the
   user's observation; current-code and screenshot audit plus research proposal recorded on 4 October in
   [The Habit Day Sheet — Wording, Hierarchy and Actions](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/The Habit Day Sheet — Wording, Hierarchy and Actions.md>).
-  Implementation and device validation remain pending. **Built 4 October on branch `details-page-update`; see item 42.**
+  Implementation and device validation remain pending. **Built 4 October on branch `details-page-update`; see item 45.**
   - **Research and Figma mockups revised, 4 October:** [21 editable variants](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=370-2031) cover the main tracking types, past day, monthly goal, skipped binary and amount days (including saved logs/note), paused state, limit over threshold, running timer, slip correction and light mode. The user's latest placement and Skip feedback is represented; implementation and device validation remain pending.
   - **Latest user review incorporated, 4 October:** use native regular-size logging controls. Where quick and manual logging coexist, keep equal height and width, but use style for priority: prominent quick actions for positive goals (Mark done, Add 1 glass, Start timer), bordered logging on limits and for slips (U16). The day note is a full-width labelled text-area-like preview after activity, opens the separate note editor, and remains usable while skipped. Skip is a full-width bordered button below it, not a navigation row. **The same button changes to Undo skip in the same position**; primary/manual new-log controls remain visible but disabled, and saved logs and notes remain visible (U15). Remove the bottom date pager from this proposal because the earlier report supplied a consistency inference, not evidence of intra-sheet paging; selected date remains in the toolbar, and Today/habit calendar still open past-day sheets (U5). Figma and the research report now reflect this; code and device validation remain pending. Current `DaySheet.swift` still allows its generic Add Entry path while skipped, so implementation must disable that path too.
   - **Spacing review incorporated, 4 October:** all 21 Figma states now group the selected-day status, its logging control(s) and any saved logs with smaller internal gaps, then give that whole activity larger top and bottom margins. The note field and Skip/Undo skip have a larger gap because they perform different jobs. The [research report](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/The Habit Day Sheet — Wording, Hierarchy and Actions.md#spacing-and-grouping-4-october>) records the Figma spacing rhythm and the proximity/layout guidance behind it. These are gaps between elements, not extra card padding; adapt them to native SwiftUI and Dynamic Type when implementing (U1/U9/U17).
@@ -253,7 +253,7 @@ Their placement records scope and priority; implementation has not started.
   chips on Progress, group numbers, the Filter's group choice, editing and ordering groups) were never really
   tested, on the simulator or the iPhone.
 
-- [ ] **42. Build Day details and the one-log editor from the 4 October handoff.** Added 4 October 2026, from the
+- [ ] **45. Build Day details and the one-log editor from the 4 October handoff.** Added 4 October 2026, from the
   user; branch **`details-page-update`** (the user asked for a meaningfully named branch to test from). Implements
   items 22 and 36. Each point the user made:
   - [x] Follow the mockups for every habit type: once-a-day, weekly/monthly, several-a-day checks, checklist, amount
@@ -308,6 +308,7 @@ Their placement records scope and priority; implementation has not started.
     - Noticed: a past week's day says "3 of 3 checks this week" (Call family on Tue, Sep 29); "that week" would be
       clearer for a day outside the current week. Not changed yet.
     - [x] Tested on GitHub Actions run `37220482604` (`5363659`), 4 Oct 2026: Core storage and migrations, build, Release build and 28/28 UI tests passed (DayDetails incl. `testTasksReschedule`, TodayRowLayout, TodayRowSheet, Undo, and the three task screenshot states). Screenshots: a weekly task's calendar offers only the days before next week's occurrence; a daily task and a done task show no Reschedule.
+  - **Merged into `main` 5 Oct 2026** (the user's go-ahead; fast-forward after merging `main`'s habit-details research in). Numbered 42 on the branch; renumbered 45 because `main` had used 42–44 meanwhile. Open: the iPhone check.
   - Not done, by design: a slip's **date** stays read-only until the store, repository and sync can move one record
     to another day atomically (D7; handoff). The bottom ‹ day › pager is gone (handoff; past days open from Today or
     History). A multi-check habit lost its whole-day Done switch (research matrix "Avoid"); History's Add Entry
@@ -327,7 +328,7 @@ Their placement records scope and priority; implementation has not started.
   - **Research and wireframe handoff, 4 October:** the [report and ten Markdown-renderable states](<../../../Research/Research Reports/Day Structure and Organization/Day Details and Entry Editor Handoff/README.md>) document why a separate editor is useful for amount, duration, multi-check and quit-slip records, while a single check, checklist step or task is corrected in Day details. This preserves the one-record mental model without forcing the same field on unrelated types. The user's later review led to direct tap-to-type Hours/Minutes/decimal Seconds and native Date **and** Time pickers for a slip. The mockups represent hierarchy and behavior, **not final iOS visuals**; all controls must be native (U1/U19).
   - **Implementation gap:** a slip date change must atomically move the same record ID to its new tracked day, update `entry.day` and `createdAt`, day indexes, persisted/synced values, quit run and affected day summaries, then show the destination Day sheet. The current app rejects a cross-day slip edit, so keep its date read-only until that path works (D7/U19). Preserve other logs, note, skip flag, source and saved time zone; retain Delete-this-one-record with confirmation until durable Undo exists.
   - **Status:** research and Figma proposal completed; native app implementation, tests, speed checks and real-iPhone validation remain open (U9/S2/T3/T4).
-  - **Native implementation, 4 October:** built on branch `details-page-update` with item 22; tracked point by point in item 42.
+  - **Native implementation, 4 October:** built on branch `details-page-update` with item 22; tracked point by point in item 45.
 
 - [ ] **24. Habit details: redesign the area above History · Notes · Progress tabs.** Added 4 October 2026.
   - The requested scope is a modest layout change to the header/content above the tabs on every habit details page.
@@ -553,3 +554,32 @@ Completed work retains its original evidence and any outstanding user review.
   - [x] Removed the unnecessary divider above Delete in every editor state; the alert's own native-style action separator remains.
   - [x] State 07 shows the confirmation pop-up reached on Delete: one selected log/day, Cancel, and a destructive Delete log action. The handoff specifies the corresponding slip alert and that initial tap changes no data (D6/U19).
   - [x] Re-exported all 10 Entry-editor PNGs and updated the handoff, research report, Design Rules and Rulebook U19. Figma read-back confirmed 10 bottom buttons, zero form dividers, one confirmation state, SF Pro text and editable layers. All 31 Markdown image references resolve, `git diff --check` and `iOS/Tools/perf/check_rules.sh` pass. Documentation publication to `main` follows Rulebook T10 without an iOS test tag.
+
+- [x] **42. Habit details, History actions, Add Entry, Notes and note reader — research and Figma pass.** Completed as a design/research handoff 4 October 2026; native implementation and real-iPhone validation remain items 23, 24, 26, 27 and 28 (U1/U9/U20).
+  - **Superseded in part by item 43 on 4 October:** the first bottom action placement, name-derived History labels and record forms were revised after user review. Read item 43 and the refreshed handoff for the current proposal.
+  - [x] [Header research and mockups](<../../../Research/Research Reports/Habit Details Research/Final UX Pass/README.md>) name the page, center icon/name/wrapping goal and time section, and show current/best streak facts with correct units or quit-run language. Tasks and Show Streaks are handled explicitly.
+  - [x] History keeps its chronological month rows. **Find a day** now explains its exact-date Day-details destination; the separate record action names the habit-specific fact and uses a safe-area bottom position. The handoff labels this placement as a reasoned design choice needing later user/device validation.
+  - [x] The [20 screen studies](<../../../Research/Research Reports/Habit Details Research/Final UX Pass/Wireframes.md>) cover Today/past amount, duration, repeated check, daily check and checklist routes, at-most amount, quit slip and skipped conflict. A focused form adds one record; binary/checklist/task correction reuses the accepted Day-details controls; the single-record editor stays separate (U15/U16/U19).
+  - [x] Notes mockups give search full width, separate Add note, and cover empty/search-no-result states, note editor, note reader, More-menu deletion and confirmation. **Open day details** names the note's exact date and day activity.
+  - [x] “Day details” is the shared destination label and accessible route; the sheet keeps its existing selected-day visible title (Today/date) and Close control. The earlier Day-details wireframes did not need a layout change; the reasoning is in the handoff.
+  - [x] Three editable [Figma boards](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=433-2071) contain 20 native-layer screen studies. Twenty local PNG exports render in Markdown; all local links in the changed documentation resolved in the link audit. Rulebook U20, Design Rules, the research package index and the report index now point to this pass. Documentation publication follows T10 without an iOS CI tag.
+
+- [x] **43. Revise the habit-details mockups to match the accepted Day-details and entry-editor designs.** User review, 4 October 2026; design/documentation pass only (U20/U21).
+  - **Visual revision rejected and superseded by item 44:** blue chrome and inconsistent input controls were still present. Do not treat this item as user acceptance of those visuals.
+  - [x] Removed History/Notes page-wide sticky bottom actions. Each tab now owns native-size actions in its scrolling content.
+  - [x] Replaced name-derived History labels with fixed type labels, including Log time, Add check and Record slip. History still supports Today and exact past dates.
+  - [x] Changed direct-date copy to explain that Choose date opens that habit's Day details with saved records or an empty day. A separate record-form picker returns to the unsaved form.
+  - [x] Moved Edit note beside the note content. Existing-note editing has a bottom Delete note button; reader More and editor Delete lead to the same confirmation. New-note creation has no Delete.
+  - [x] Reused the accepted entry-editor habit card/top Save form structure and copied the accepted daily, checklist and skipped Day-details layouts instead of inventing alternative controls.
+  - [x] Updated the three existing Figma boards, exported 22 local screen PNGs, and revised the research handoff, Wireframes, Rulebook, Design Rules and indexes. Native implementation and iPhone validation remain separate work.
+
+- [x] **44. Correct the habit-details studies to use the accepted visual system throughout.** Completed as a design/research revision, 4 October 2026; the revised proposal awaits user review and native implementation. Item 43's blue chrome and inconsistent value/date/note fields were not accepted.
+  - [x] Re-read the repeated brief and current screenshots at Figma 420:2107; preserve the requested centered icon/name/wrapping goal and current/best streak header.
+  - [x] Research action scope, date access, note creation and consistency; distinguish review evidence from reasoned layout choices.
+  - [x] Match Day details 370:2031 and entry editor 408:2071: monochrome chrome, native-size controls, SF Pro, the same input boundaries, identity cards and spacing relationships (U1/U2/U17/U19).
+  - [x] Refine History date/add controls and Notes search/add controls without a tab-dependent sticky footer or a row of oversized primary buttons.
+  - [x] Make add-record forms familiar to the accepted editor, including tap-to-type duration fields and clear date selection, Today/past routes, limit/slip emphasis and existing Day-details correction.
+  - [x] Refine the individual note reader/editor, keeping Edit near the note, confirmed Delete for an existing note and a recognizable link to its exact Day details.
+  - [x] Update Figma mockups and portable Markdown exports, document why this revision supersedes prior choices, and validate structure, fonts, colors, visuals and links.
+
+  - Evidence/rationale: [Consistency Revision](<../../../Research/Research Reports/Habit Details Research/Final UX Pass/Consistency Revision.md>). Three existing Figma boards and all 22 PNG exports refreshed; shared controls, SF Pro, monochrome chrome and readable text verified. Eight Markdown files, 300 local links, 22 image embeds/PNG hashes, Git whitespace and speed-rules checks passed. Publication follows T10 without an iOS CI tag. No app code or iPhone state changed.
