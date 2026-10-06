@@ -22,3 +22,7 @@ Run `iOS/Tools/perf/check_rules.sh` and `git diff --check` before publication. [
 Repository rules were reconciled with newer main rules before publication: widget goal/layout guidance is **U25**, preserving the existing main U23/U24 routine-player rules. Main's newer data-day and test/CI policies are retained. The final user checklist records documentation/design delivery separately from native completion; Current Work item 9 remains open.
 
 No native source is modified by this package. No iOS test workflow is dispatched; documentation publication is untagged under T10. Native build, performance, actual picker/routes/logging, purchase integration, Dynamic Type/VoiceOver and physical-iPhone acceptance remain pending (U9/W1). Historical run links remain historical; they do not prove the new layouts are implemented.
+
+## Main publication record
+
+The complete package was committed as `0c3434be`, integrated above main `321562c0` in `4906c43c`, and successfully pushed to `main` on 6 October 2026. All four artifact verifiers passed after integration; the Rulebook gate and whitespace checks passed, and the diff against that main baseline contains no Swift/Kotlin/workflow changes. Newer main Rulebook/checklist work is preserved. The small publication-record follow-up changes only this record and its checklist; artifact manifests and native acceptance status stay the same.
