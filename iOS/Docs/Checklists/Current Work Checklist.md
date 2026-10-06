@@ -172,66 +172,15 @@ Their placement records scope and priority; implementation has not started.
     decides for every log from any screen; once, on the log that makes the habit complete; a running timer at its
     goal; never for quit habits or limits. Tests: pending (`CompletionFeedbackUITests`).
 
-- [ ] **50. Routine player: tapping › or ‹ fast makes the habits slide back and forth.** Added 5 October 2026 by
-  Claude (Claude Code), from the user's iPhone. Branch `claude/dreamy-pasteur-3kgdxu`.
-  - **The user's words, tidied:** "Normally it was fine. When I tapped the right chevron very quickly to the end, then
-    the left chevron very quickly back to the start, the progress bar under the header updated correctly and reached
-    the end, but the habits on screen felt like they moved back and forth instead of forward. It looked like a
-    glitch."
-  - **Expected:** however fast ‹ or › is tapped, the pages only ever slide the way they were sent and land on the
-    habit the segments show.
-  - **Reproduce first (S2):** `FocusPlayerUITests.testFastNavigationNeverSlidesBack` launches with
-    `-focus-fast-nav-check`: the player taps itself every 0.1 s (XCUITest waits for each slide, so it can't) and each
-    page reports its place on screen (`PagerProbe`, DEBUG only).
-  - **Measured, 5 Oct 2026 (GitHub's simulator, 13-habit routine, a tap every 0.15/0.1/0.05 s):** the page
-    `TabView`'s scroll position never goes back (0.00 pages at every speed, read from the pager's presentation layer
-    every frame, runs `37359127449`, `37367189762`, `37379485559`). **Not reproduced on the simulator so far.**
-    *Correction:* frames that seemed to show a habit drawn on the wrong side came from seeking into the screen
-    recording with ffmpeg (half-decoded frames); decoded straight through, the same moments are clean. Recordings are
-    now checked frame by frame, decoded straight through, by a script that flags two habits' circles in the same
-    columns or habits out of the routine's order (it catches both on synthetic frames).
-  - **Tried, 5 Oct:** a paging `ScrollView` moved by `ScrollPosition` (each page keyed to its habit, so it can't draw
-    the wrong one). A slide started over a running one slid back 0.47 pages at 0.05 s; one slide at a time fixed that
-    (0.00), but in one run fast ‹ › cost 15.7 ms/s of hitches against the `TabView`'s 5.7 and opening the player
-    500/198 ms against 352/98 (single hosted runs; they vary 2–3×). Three pagers side by side in one run (the
-    `TabView`, the `TabView` one slide at a time, the scroll view) were queued when GitHub Actions had an outage
-    (5 Oct, 20:47 UTC).
-
-- [ ] **51. Routine player: the bottom row is a block, not a bottom navigation; a checklist's steps are cut off.** Added
-  5 October 2026 by Claude (Claude Code), from the user's iPhone (Tidy desk, 3 steps). Branch
-  `claude/dreamy-pasteur-3kgdxu`.
-  - **The user's words, tidied:** "For checklist habits the screen covers everything. I've told the other agent many
-    times: this should be an actual bottom navigation, not a huge block at the bottom. Look at Today's bottom
-    navigation; I always wanted that there. See how much space below it is wasted; that's why we get problems like
-    this."
-  - **What the screenshot shows:** under the circle the checklist's card starts and is cut off; below it a black band
-    (the empty main-button slot, a 32-point gap, the ‹ Habit options › row and 40 points under it) takes about a
-    fifth of the screen.
-  - **Expected:** ‹ · Habit options · › is the same native bottom bar as Today's ‹ · Today · › (its own Liquid Glass
-    items on iOS 26), in the system's place at the bottom; the page uses the rest of the screen, so a checklist's
-    steps show; still nothing moves (4 Oct's rule) when the main button comes and goes.
-
-- [ ] **52. A habit or task added between midnight and the day start didn't show on Today until the day start.**
-  Added 6 October 2026 by Claude (Claude Code); found by the full test for items 50–51, not by the user. Branch
-  `claude/dreamy-pasteur-3kgdxu`.
-  - **What happened:** `OnboardingUITests.testWelcomeToFirstHabit` sets a 3 AM day start, adds Exercise and expects it
-    on Today. It failed twice in a row, at 00:13 and 01:2x UTC (runs `37390754817`, `37395447112`), with Today empty
-    (0/0); it passes on `main` in the daytime. The habit form took its start date (and a task's date) from the
-    calendar, while Today shows the app's day, which before the day start is still yesterday: the habit started
-    "tomorrow". Rulebook D7: day start applies everywhere or nowhere.
-  - **Fix:** the form's start, end and task dates, the task picker's earliest day, "Start Today" and the
-    Today/Tomorrow/Yesterday words come from the store's today (`trackingToday`, `NewHabitView`).
-  - **Test, every run:** `OnboardingUITests.testFirstHabitAfterMidnightBeforeTheDayStartShowsOnToday` launches with
-    `-clock-hour 1` (test launches only: the store's clock runs from 1:30 AM) and a 3 AM day start.
-
-- [ ] **53. `GroupsUITests.testGroupOrderIsThePersonsOwn` fails on `main` at night: the dragged group doesn't move.**
+- [ ] **53. `GroupsUITests.testGroupOrderIsThePersonsOwn` fails on `main` now and then (three nights in a row): the dragged group doesn't move.**
   Added 6 October 2026 by Claude (Claude Code); found by the full test for items 50–52, not by the user. Not caused by
   that branch: `main` itself (`f0e52f4`) fails it the same way (run `37400560919`).
   - **Evidence:** the same test code (with 5 Oct's held drag, `6c749f8`) passed on `main` at 12:31 UTC (run
     `37298794001`) and failed at 00:40, 01:24 and 02:03 UTC (runs `37390751325`, `37395447112`, `37400560919`); before
     the held drag it also failed once at 05:07 UTC. The screenshot after the drag shows Groups still A to Z ("A to Z.
     Drag a group…"), so the list never took the drop, or `moveGroups` didn't save it.
-  - **To do:** find whether it depends on the time of day (like item 52) or on the machine; don't loosen the test (T2).
+  - **Then passed** at ~04:00 UTC on the same branch (run `37410173465`), so it's intermittent, not only at night.
+  - **To do:** find what makes the drop miss (machine speed, the drag's timing); don't loosen the test (T2).
 
 - [ ] **49. Speed: Today, the habit form and Progress got slower on `main`.** Found 5 October 2026 by the full test of
   `main` the user asked for (speed run `37310572002` on `d403844`), against the last full speed run before the day's
@@ -443,6 +392,75 @@ Their placement records scope and priority; implementation has not started.
   after release.
 
 ## Completed
+
+- [x] **50. Routine player: tapping › or ‹ fast makes the habits slide back and forth.** Added 5 October 2026 by
+  Claude (Claude Code), from the user's iPhone. Branch `claude/dreamy-pasteur-3kgdxu`.
+  - **The user's words, tidied:** "Normally it was fine. When I tapped the right chevron very quickly to the end, then
+    the left chevron very quickly back to the start, the progress bar under the header updated correctly and reached
+    the end, but the habits on screen felt like they moved back and forth instead of forward. It looked like a
+    glitch."
+  - **Expected:** however fast ‹ or › is tapped, the pages only ever slide the way they were sent and land on the
+    habit the segments show.
+  - **Reproduce first (S2):** `FocusPlayerUITests.testFastNavigationNeverSlidesBack` launches with
+    `-focus-fast-nav-check`: the player taps itself every 0.1 s (XCUITest waits for each slide, so it can't) and each
+    page reports its place on screen (`PagerProbe`, DEBUG only).
+  - **Measured, 5 Oct 2026 (GitHub's simulator, 13-habit routine, a tap every 0.15/0.1/0.05 s):** the page
+    `TabView`'s scroll position never goes back (0.00 pages at every speed, read from the pager's presentation layer
+    every frame, runs `37359127449`, `37367189762`, `37379485559`). **Not reproduced on the simulator so far.**
+    *Correction:* frames that seemed to show a habit drawn on the wrong side came from seeking into the screen
+    recording with ffmpeg (half-decoded frames); decoded straight through, the same moments are clean. Recordings are
+    now checked frame by frame, decoded straight through, by a script that flags two habits' circles in the same
+    columns or habits out of the routine's order (it catches both on synthetic frames).
+  - **Found, 5–6 Oct (run `37384134763`, a slower hosted machine):** the `TabView` failed the check: "› 150 ms: 6
+    reversals, slid back 0.21" and "turn ‹ 50 ms: slid back 0.70". While its own slide runs, the page `TabView` reports
+    pages it slides past as if chosen, and the player obeyed (it went back); and pages trailing fast taps had to turn
+    round when ‹ followed ›. Timing-dependent: faster machines showed none. The check now includes the user's pattern,
+    › to the end then ‹ with no pause.
+  - **Fixed (`4ad0e18`):** during the player's own slide (`PagerSlide`, 0.35 s) page reports are not choices; a tap
+    during a slide jumps straight to its habit; one tap still slides; swipes outside a slide choose as before. Fix run
+    `37387468173`: 0.00 slid back and 0 reversals at every speed and in both turn-arounds.
+  - **Tried and rejected:** a paging `ScrollView` (`ScrollPosition`): its recording showed non-neighbouring habits
+    drawn over each other mid-slide; one-slide-at-a-time made the pages trail further. Recordings were checked frame by
+    frame, decoded straight through (`Research/Temp/wrong_side.py`, not committed).
+  - **Tests passed on GitHub (6 Oct, `b2d562e`/`64b6afe`):** FocusPlayer 15/15 (fast check, swipe, bottom bar),
+    RoutineCalendar 7/7, Timer, Today, Undo; speed run `37410175611`: player ‹ › 11.9 ms/s, fast ‹ › 23.8, opening
+    390/104 ms. **Still yours:** the iPhone (U9), above all fast ‹ › to the end and straight back.
+
+- [x] **51. Routine player: the bottom row is a block, not a bottom navigation; a checklist's steps are cut off.** Added
+  5 October 2026 by Claude (Claude Code), from the user's iPhone (Tidy desk, 3 steps). Branch
+  `claude/dreamy-pasteur-3kgdxu`.
+  - **The user's words, tidied:** "For checklist habits the screen covers everything. I've told the other agent many
+    times: this should be an actual bottom navigation, not a huge block at the bottom. Look at Today's bottom
+    navigation; I always wanted that there. See how much space below it is wasted; that's why we get problems like
+    this."
+  - **What the screenshot shows:** under the circle the checklist's card starts and is cut off; below it a black band
+    (the empty main-button slot, a 32-point gap, the ‹ Habit options › row and 40 points under it) takes about a
+    fifth of the screen.
+  - **Expected:** ‹ · Habit options · › is the same native bottom bar as Today's ‹ · Today · › (its own Liquid Glass
+    items on iOS 26), in the system's place at the bottom; the page uses the rest of the screen, so a checklist's
+    steps show; still nothing moves (4 Oct's rule) when the main button comes and goes.
+  - **Built (`72d8fe1`, kept through `4ad0e18`):** ‹ · Habit options · › are `ToolbarItem(placement: .bottomBar)`
+    items like Today's (Habit options in `.status` before iOS 26); the main button floats over the page's bottom, a
+    scaled 24-point gap above the bar, and each page keeps that room at its end. Screenshot on GitHub's iPhone 17 Pro:
+    Clean kitchen's three steps all show. `testBottomRowStaysPutAndOptionsShowEverything` checks the bar is at the
+    bottom, nothing moves, and an unfinished checklist's last step shows above the bar. `testNavigationDoesNotWait…`
+    now injects 4 s writes and allows 3 s: the Liquid Glass ›'s press animation adds ~0.9 s of XCUITest waiting.
+    **Still yours:** the iPhone (U9).
+
+- [x] **52. A habit or task added between midnight and the day start didn't show on Today until the day start.**
+  Added 6 October 2026 by Claude (Claude Code); found by the full test for items 50–51, not by the user. Branch
+  `claude/dreamy-pasteur-3kgdxu`.
+  - **What happened:** `OnboardingUITests.testWelcomeToFirstHabit` sets a 3 AM day start, adds Exercise and expects it
+    on Today. It failed twice in a row, at 00:13 and 01:2x UTC (runs `37390754817`, `37395447112`), with Today empty
+    (0/0); it passes on `main` in the daytime. The habit form took its start date (and a task's date) from the
+    calendar, while Today shows the app's day, which before the day start is still yesterday: the habit started
+    "tomorrow". Rulebook D7: day start applies everywhere or nowhere.
+  - **Fix:** the form's start, end and task dates, the task picker's earliest day, "Start Today" and the
+    Today/Tomorrow/Yesterday words come from the store's today (`trackingToday`, `NewHabitView`).
+  - **Test, every run:** `OnboardingUITests.testFirstHabitAfterMidnightBeforeTheDayStartShowsOnToday` launches with
+    `-clock-hour 1` (test launches only: the store's clock runs from 1:30 AM) and a 3 AM day start. Passed on GitHub
+    (6 Oct, `64b6afe`, run `37405772056`) with Onboarding, NewHabit, Tasks; HabitCreation, HabitScenario, Placement,
+    CompletionFeedback and FormWalkthrough passed on the same commit (run `37405769915`).
 
 Completed work retains its original evidence and any outstanding user review.
 
