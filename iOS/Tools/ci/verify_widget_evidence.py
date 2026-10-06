@@ -5,7 +5,7 @@ from pathlib import Path
 from collections import defaultdict
 
 root = Path(__file__).resolve().parents[3]
-evidence = root / 'Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/iPhone Widget Evidence/primary_reviews.json'
+evidence = root / 'Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets/Historical Research/iPhone Widget Evidence/primary_reviews.json'
 by_app = defaultdict(list)
 for item in json.loads(evidence.read_text()):
     by_app[item['app']].append(item)

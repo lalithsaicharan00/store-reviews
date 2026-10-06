@@ -40,38 +40,6 @@ work. Preserve those distinctions when recording findings. New feedback items 23
 below as independent tasks: functional/readability issues here, layout and research work under Planned improvements.
 Their placement records scope and priority; implementation has not started.
 
-- [ ] **54. A week or month goal's round button fills after one tap, though the goal isn't met.** Added 6 October 2026,
-  from the user (Call family, 3 times a week: "the check mark should only fill when the habit is complete… they might
-  call two times this day"; check monthly and the rest too).
-  - **Cause:** a "N times a week/month/year" check's ✓ was that day's tick (`isTicked`), drawn filled once today had
-    one and toggled by a second tap, though the New Habit form says every ✓ counts, even two on one day.
-  - **Built, 6 Oct 2026** (branch `week-goal-button-squares-key`): a week, month or year count is now a +1 counter like a
-    habit ticked several times a day (`countsUp`): each tap adds one, never takes one back (its named Undo does), and
-    the button fills only when the period's goal is met. The Day sheet says "1 check today · 1 of 3 checks this week"
-    with Add a check and each check's own Undo; Shortcuts and the player add one too (a second Shortcut call took the
-    first back). Checked the rest: week/month/year amounts and times already filled only when the period was met; "N
-    days a week" stays a ✓ (a day counts once); widgets already added one per tap. Still done *for the day* once
-    logged (sinks, leaves "N left", stops reminders: #60a, the user's 30 Sep request). Rulebook U14 updated.
-  - Tests: pending (`ProgressCheck`/`ScheduleCheck` tap rules; `TodayRowSheetUITests.testTickTogglesAndPlusAdds`,
-    `DayDetailsUITests.testEveryKindShowsItsOwnDay`, `TodayUITests`, `ArrangeUITests`, `RoutineCalendarUITests`,
-    `OnboardingUITests`). iPhone check (U9): open.
-
-- [ ] **55. Today: Undo and Add Note under a logged row are too close; easy to tap the wrong one.** Added 6 October
-  2026, from the user ("increase the gap").
-  - **Built, 6 Oct 2026** (branch `week-goal-button-squares-key`): the after-log buttons (`RowAfterLog`, `QuitAfterSlip`)
-    are 16 pt apart instead of 8. Tests: pending (`TodayRowLayoutUITests`). iPhone check (U9): open.
-
-- [ ] **57. "What the squares mean": once folded anywhere, folded everywhere.** Added 6 October 2026, from the user;
-  supersedes item 25's per-place rule ("once they close it… it shouldn't be opened ever again by default unless they
-  open it"; "it's the same content, why do I need to close it multiple times?" — Week, Month, Year and every habit's
-  page each asked to be folded again).
-  - **Built, 6 Oct 2026** (branch `week-goal-button-squares-key`): one app-wide state (`HeatKeyMemory`,
-    `heatKey.folded`): open everywhere until the person folds it once, anywhere; then folded on every range, habit
-    page and later visit; a tap opens it for that page's visit. Never folds on its own within a visit; Week, Month and
-    Year share the visit. Kept across launches; test launches start never folded (T8). 5 Oct's `heatKey.seen` is
-    removed. Tests: pending (`WeekCardsUITests.testSquaresKeyFoldedOnceIsFoldedEverywhere`,
-    `HabitPageUITests.testSquaresKeyFoldedOnceIsFoldedEverywhere`). iPhone check (U9): open.
-
 - [ ] **22. Today row sheet: make logging and wording natural for each habit type, especially check-based habits
   and tasks.** Added 4 October 2026; **issue 1 of the user's current feedback round**. Status: documented from the
   user's observation; current-code and screenshot audit plus research proposal recorded on 4 October in
@@ -435,6 +403,35 @@ Their placement records scope and priority; implementation has not started.
   after release.
 
 ## Completed
+
+- [x] **54. A week or month goal's round button fills after one tap, though the goal isn't met.** Added 6 October 2026,
+  from the user (Call family, 3 times a week: "the check mark should only fill when the habit is complete… they might
+  call two times this day"; check monthly and the rest too).
+  - **Cause:** a "N times a week/month/year" check's ✓ was that day's tick (`isTicked`), drawn filled once today had
+    one and toggled by a second tap, though the New Habit form says every ✓ counts, even two on one day.
+  - **Built, 6 Oct 2026** (branch `week-goal-button-squares-key`): a week, month or year count is now a +1 counter like a
+    habit ticked several times a day (`countsUp`): each tap adds one, never takes one back (its named Undo does), and
+    the button fills only when the period's goal is met. The Day sheet says "1 check today · 1 of 3 checks this week"
+    with Add a check and each check's own Undo; Shortcuts and the player add one too (a second Shortcut call took the
+    first back). Checked the rest: week/month/year amounts and times already filled only when the period was met; "N
+    days a week" stays a ✓ (a day counts once); widgets already added one per tap. Still done *for the day* once
+    logged (sinks, leaves "N left", stops reminders: #60a, the user's 30 Sep request). Rulebook U14 updated.
+  - Tested on GitHub, 6 Oct 2026: runs `37432849062` (44/45; the one failure was a test still expecting the old Mark done, fixed in `a3d33bf`), `37438879527` (55/55 before the 60-minute limit), `37446300004` (28/28, the rest plus persistence, undo, backup, widgets); speed `37450877606` and re-measure `37456070731` (Today scrolling 0.0 ms/s, +1 alone 0.9; the first run's 79.7 was the machine: Menu, the timer clock and the control field slowed alike). iPhone check (U9): open.
+
+- [x] **55. Today: Undo and Add Note under a logged row are too close; easy to tap the wrong one.** Added 6 October
+  2026, from the user ("increase the gap").
+  - **Built, 6 Oct 2026** (branch `week-goal-button-squares-key`): the after-log buttons (`RowAfterLog`, `QuitAfterSlip`)
+    are 16 pt apart instead of 8. Tested on GitHub, 6 Oct 2026: runs `37432849062` (44/45; the one failure was a test still expecting the old Mark done, fixed in `a3d33bf`), `37438879527` (55/55 before the 60-minute limit), `37446300004` (28/28, the rest plus persistence, undo, backup, widgets); speed `37450877606` and re-measure `37456070731` (Today scrolling 0.0 ms/s, +1 alone 0.9; the first run's 79.7 was the machine: Menu, the timer clock and the control field slowed alike). iPhone check (U9): open.
+
+- [x] **57. "What the squares mean": once folded anywhere, folded everywhere.** Added 6 October 2026, from the user;
+  supersedes item 25's per-place rule ("once they close it… it shouldn't be opened ever again by default unless they
+  open it"; "it's the same content, why do I need to close it multiple times?" — Week, Month, Year and every habit's
+  page each asked to be folded again).
+  - **Built, 6 Oct 2026** (branch `week-goal-button-squares-key`): one app-wide state (`HeatKeyMemory`,
+    `heatKey.folded`): open everywhere until the person folds it once, anywhere; then folded on every range, habit
+    page and later visit; a tap opens it for that page's visit. Never folds on its own within a visit; Week, Month and
+    Year share the visit. Kept across launches; test launches start never folded (T8). 5 Oct's `heatKey.seen` is
+    removed. Tested on GitHub, 6 Oct 2026: runs `37432849062` (44/45; the one failure was a test still expecting the old Mark done, fixed in `a3d33bf`), `37438879527` (55/55 before the 60-minute limit), `37446300004` (28/28, the rest plus persistence, undo, backup, widgets); speed `37450877606` and re-measure `37456070731` (Today scrolling 0.0 ms/s, +1 alone 0.9; the first run's 79.7 was the machine: Menu, the timer clock and the control field slowed alike). iPhone check (U9): open.
 
 - [x] **56. Research: should a week goal be hideable from one day ("not today", not a skip)?** Added 6 October 2026, from
   the user ("only if it's a medium or strong signal; one to ten reviews is weak"). **Done, 6 Oct 2026: weak signal,
