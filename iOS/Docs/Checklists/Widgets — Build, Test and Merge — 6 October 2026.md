@@ -44,6 +44,11 @@ The existing widgets are mostly dummy content; reuse what fits, replace the rest
   done state equal to Progress and Today; 20 overlapping publications (newest on disk, never half written); a
   half-written file, travel and midnight (the new day by itself, yesterday's button refused); a year of history for 12
   habits (size, time, streaks).
+- [ ] **Then the app itself, the same way** (the user: "once widgets are completed check app as well"): time zones and
+  time-zone travel, bursts of taps, retried and out-of-order callbacks (notification and alarm actions, the Live
+  Activity's ⏸), ✓ on/off storms, timer start/pause storms, storms of saves and publications (widgets, reminders,
+  backup), a year of history, and midnight / day-start rollover. An app reliability suite on CI, after the widgets
+  pass.
 
 ## Build notes
 
