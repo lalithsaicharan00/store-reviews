@@ -149,10 +149,13 @@ final class WidgetSystemUITests: XCTestCase {
         editor.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.32)).tap()
         save(editor, "lock-widget-picker")
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let hosts = [settings, springboard]
+        // Ask only hosts still running, the editor first: Settings, left in the background when the editor is
+        // SpringBoard's own, can be ended by the system, and querying an ended app throws "Lost connection" (6 Oct 2026).
+        let hosts = [editor, springboard, settings].filter { $0.state == .runningForeground || $0.state == .runningBackground }
+        let ended = [("Settings", settings), ("SpringBoard", springboard)].filter { $0.1.state == .notRunning }.map(\.0)
         guard let host = hosts.first(where: { $0.staticTexts["Often Enough"].firstMatch.exists }) else {
             save(springboard, "lock-gallery-accessibility")
-            throw XCTSkip("Lock widget gallery does not expose the app; physical-device installation remains required")
+            throw XCTSkip("Lock widget gallery does not expose the app (ended hosts: \(ended)); physical-device installation remains required")
         }
         host.staticTexts["Often Enough"].firstMatch.tap()
         save(host, "lock-app-widgets")
