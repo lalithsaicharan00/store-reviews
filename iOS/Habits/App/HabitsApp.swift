@@ -102,7 +102,7 @@ struct HabitsApp: App {
 
     @ViewBuilder private var root: some View {
             #if DEBUG
-            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-feedbackcheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-arrangecheck", "-widgetcheck", "-widgetreliability", "-widget-system-verify"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
+            if ["-analyticscheck", "-placementcheck", "-schedulecheck", "-copycheck", "-focuscheck", "-feedbackcheck", "-progresscheck", "-settingscheck", "-backupcheck", "-taskcheck", "-remindercheck", "-undocheck", "-arrangecheck", "-widgetcheck", "-widgetreliability", "-appreliability", "-widget-system-verify"].contains(where: { ProcessInfo.processInfo.arguments.contains($0) }) {
                 PlacementCheckView()
             } else if ProcessInfo.processInfo.arguments.contains("-widget-render") {
                 WidgetRenderCheck()
@@ -222,6 +222,11 @@ private struct PlacementCheckView: View {
                    store.entries(of: habit.id).filter({ $0.source == .widget }).count == 1 {
                     result = "Widget system: persisted log"
                 } else { result = "Widget system: no durable widget log · " + WidgetDisk.diagnostic }
+                return
+            }
+            if arguments.contains("-appreliability") {
+                let failures = await AppReliabilityCheck.run()
+                result = failures.isEmpty ? "App reliability: all checks passed" : "App reliability failed: " + failures.joined(separator: "; ")
                 return
             }
             if arguments.contains("-widgetreliability") {
