@@ -810,7 +810,7 @@ struct WeekWidget: View {
                 } else {
                     Capsule().fill(Color(.tertiarySystemFill)).frame(height: 8)
                 }
-                WeekStrip(item: item, weekdays: entry.weekdays, dayNameSize: dayNameSize)
+                WidgetWeekStrip(item: item, weekdays: entry.weekdays, dayNameSize: dayNameSize)
                     .frame(maxHeight: .infinity)
                     .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(WidgetPalette.container))
             }
@@ -897,7 +897,7 @@ struct WeekWidget: View {
 }
 
 /// The week's seven squares, drawn in one pass (S12): the Progress Week's language at 20 pt (the user, 6 Oct 2026).
-struct WeekStrip: View {
+struct WidgetWeekStrip: View {
     let item: WidgetItem
     let weekdays: [String]
     let dayNameSize: CGFloat
