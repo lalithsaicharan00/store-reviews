@@ -1,0 +1,434 @@
+[
+  {
+    "file": "Daily Cards Overview.png",
+    "node_id": "537:2981",
+    "kind": "board",
+    "width": 1700,
+    "height": 5360,
+    "bytes": 678249,
+    "sha256": "3753a007098ea914a8679414c9afa0ed0b5c8cd773ba7db6ccb702318ccb5d4e"
+  },
+  {
+    "file": "Shared Layout.png",
+    "node_id": "545:3359",
+    "kind": "layout",
+    "width": 1524,
+    "height": 390,
+    "bytes": 64774,
+    "sha256": "4a52f1d41f42f036ac96c2654cb7659f7c6f580ee49cde315d1903b5d9c2fa04"
+  },
+  {
+    "file": "Dark Appearance.png",
+    "node_id": "545:3994",
+    "kind": "dark",
+    "width": 1524,
+    "height": 320,
+    "bytes": 30648,
+    "sha256": "f8be568afa27747fb2475d642a868e3aaf44d51da1dc36aa8ac6127da2dc3391"
+  },
+  {
+    "file": "01 Single check.png",
+    "node_id": "545:3403",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4415,
+    "sha256": "03cc80165f7d60989f32bd72e1d4fad4128a6e2fbab951e93e76d9954b0282b6"
+  },
+  {
+    "file": "02 Single checked.png",
+    "node_id": "545:3422",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4278,
+    "sha256": "a2c1e4c6f8839baf16658508d7f645b5e25a84bf087ef81e4de7c355ea2d78ea"
+  },
+  {
+    "file": "03 Repeated check.png",
+    "node_id": "545:3442",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4983,
+    "sha256": "51ddb7c02be29e75840530a8d23c5ccdd5bc81c70915e86fa724be048b029925"
+  },
+  {
+    "file": "04 Named check slots.png",
+    "node_id": "545:3463",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5195,
+    "sha256": "03da80df344d3c85242b8d2d76cce23b7a72ca4b04b229d7b1b44b5e366d59a1"
+  },
+  {
+    "file": "05 Saved quantity.png",
+    "node_id": "545:3483",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4733,
+    "sha256": "4d8aa0c6bdf5118206d2e67dd6264288093ffe3e71f805f86334d630db814ebc"
+  },
+  {
+    "file": "06 Above quantity goal.png",
+    "node_id": "545:3503",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4513,
+    "sha256": "03736755283bd1c3a08d8bc98eddf8394ed190cb934cb609da4931bffe4f12f3"
+  },
+  {
+    "file": "07 Custom quantity.png",
+    "node_id": "545:3524",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4819,
+    "sha256": "857811e1dd0dc4389900a27c9d9ce120f4ee4ffd6dec6c5b8fff3ca983440484"
+  },
+  {
+    "file": "08 Walking steps manual.png",
+    "node_id": "545:3544",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4974,
+    "sha256": "cbcdf198a1ddd98f0e2655d60b6d910fef6daf725782488aaf12c4bf8392eb31"
+  },
+  {
+    "file": "09 Walking steps saved.png",
+    "node_id": "545:3564",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5647,
+    "sha256": "ac7526636a30ee92eb7e4b02e03d280bdc35a162452e5e297472486d1d4431cc"
+  },
+  {
+    "file": "10 Timer ready.png",
+    "node_id": "545:3585",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4757,
+    "sha256": "709918aa4cfac2226a594bc88ddfae96a24576fc33a89217aa0c1b41bbdfb174"
+  },
+  {
+    "file": "11 Timer running.png",
+    "node_id": "545:3605",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4927,
+    "sha256": "4f629fff3cae4c8a052e91a356b8a60187e57a364e4ee504fa13b162decc6b35"
+  },
+  {
+    "file": "12 Timer paused.png",
+    "node_id": "545:3625",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4804,
+    "sha256": "8b2e2f32a80552c46f6223477c0be6ea94e2ac4d3a6b192bb0cf925a52c17a06"
+  },
+  {
+    "file": "13 Checklist.png",
+    "node_id": "545:3645",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5020,
+    "sha256": "24f34609005428f78b81a7b975ddc5e909ad80acb83d540e52684d15432dcbd5"
+  },
+  {
+    "file": "14 Many checklist steps.png",
+    "node_id": "545:3665",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4616,
+    "sha256": "8730ec16d16cba4c5295533edb8e2ad263b6c9b95e3d2c8157ad6312e984fdb7"
+  },
+  {
+    "file": "15 Checklist complete.png",
+    "node_id": "545:3685",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4851,
+    "sha256": "f1c0a13fa23fc177ee901da78e9703e13f31e8f9ff3a0882cf61cdcab159a182"
+  },
+  {
+    "file": "16 Quit no slips.png",
+    "node_id": "545:3705",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 6194,
+    "sha256": "f3bc152382a4a026c26a4119ebbb974598b146f9ba4e233e0ab0cf9819d78d18"
+  },
+  {
+    "file": "17 Quit slip recorded.png",
+    "node_id": "545:3725",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 6085,
+    "sha256": "a718b00fe4d7e7da723f34cc4d1265b8068af735f6a1faf1b1f9fc50a39ca281"
+  },
+  {
+    "file": "18 Daily limit below.png",
+    "node_id": "545:3745",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5746,
+    "sha256": "0757588ba0292624da646155db62c9efd637f2adf7e5071fb508d845d360237d"
+  },
+  {
+    "file": "19 Daily limit reached.png",
+    "node_id": "545:3767",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5847,
+    "sha256": "75f0ef6494e6c4e208798191fa5d0d7017e6861f87e7a3ecaeb4946dc9347673"
+  },
+  {
+    "file": "20 Daily limit exceeded.png",
+    "node_id": "545:3789",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5990,
+    "sha256": "d8f14e368c1718dddcde8c97f0c8b0bca1cea82d6661ebd019e15bf0b6e1ce0e"
+  },
+  {
+    "file": "21 Weekly total goal.png",
+    "node_id": "545:3811",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5567,
+    "sha256": "f00cf13eee29b76c4d44f70d29f4a59aae69d75851a153512e73c98cfd9ac3ee"
+  },
+  {
+    "file": "22 Monthly total goal.png",
+    "node_id": "545:3831",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 6006,
+    "sha256": "618399515c59288c1d6396c9fc7eae2686d3a158a6c30e282d6233339dcd0b3b"
+  },
+  {
+    "file": "23 Flexible daily target.png",
+    "node_id": "545:3852",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4757,
+    "sha256": "709918aa4cfac2226a594bc88ddfae96a24576fc33a89217aa0c1b41bbdfb174"
+  },
+  {
+    "file": "24 Skipped day.png",
+    "node_id": "545:3872",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5830,
+    "sha256": "00d6052ad8d27d67d3bbbd11b93a5cd5fc88a48b379d581ed2f18d4205596e07"
+  },
+  {
+    "file": "25 Paused habit.png",
+    "node_id": "545:3892",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5236,
+    "sha256": "daaca161b7ad599de07306141f6860d7c6e13932590b172a59977f31ebe8f834"
+  },
+  {
+    "file": "26 Private or locked.png",
+    "node_id": "545:3912",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 4871,
+    "sha256": "022df8b5873d0e5e2b0b26812362dd1c54ab277877df14e4724fc6649a65f387"
+  },
+  {
+    "file": "27 Not planned today.png",
+    "node_id": "545:3932",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5608,
+    "sha256": "d5d07b65559cb64aa337d7c6c5ccaa2fc5aa33576d257a0b39ca499734124605"
+  },
+  {
+    "file": "28 Removed or stale.png",
+    "node_id": "545:3952",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 6194,
+    "sha256": "9af643c625377df3fc6eb34fe4334464c3b05fc905ff4273c0fb4c9c605c4f1f"
+  },
+  {
+    "file": "29 Long habit name.png",
+    "node_id": "545:3972",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5229,
+    "sha256": "9c9014e755205846bd4cf47b6692e89ad2ecd824aa8b389fee45bbc993e106b3"
+  },
+  {
+    "file": "30 Weekly total limit.png",
+    "node_id": "549:4061",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5694,
+    "sha256": "ba2fca9ba785ff74b9f17981f5c0f31dee019fbd4248968ce6f38e95d1b31cf4"
+  },
+  {
+    "file": "31 Monthly total limit.png",
+    "node_id": "549:4084",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 6304,
+    "sha256": "c873e9658491ab7c1ccf7fa90f2720ac5bfea9fc1ab2f36a40f24e9c2e9affaf"
+  },
+  {
+    "file": "32 Duration daily limit.png",
+    "node_id": "553:4097",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 6006,
+    "sha256": "6faacef66a03dc00d452b82ed2b0f5da8e53ed4af128ec58415bdf971629faa4"
+  },
+  {
+    "file": "33 Timed limit running.png",
+    "node_id": "560:4389",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 6134,
+    "sha256": "7814775b173467e899e3aa2136366c52649decafd1c1f9793e9837a1d86c532b"
+  },
+  {
+    "file": "34 Timed limit reached.png",
+    "node_id": "560:4413",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 6010,
+    "sha256": "85adef9a4612cfd0699e3da3986fc2981e002137e01fa38a52d0eee678dfe6da"
+  },
+  {
+    "file": "35 Timed limit exceeded.png",
+    "node_id": "560:4437",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 6153,
+    "sha256": "80c677de602430e47652d0270acee8d987bb3d2324d9d209077fdde15197836e"
+  },
+  {
+    "file": "36 Quit paused.png",
+    "node_id": "560:4508",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5588,
+    "sha256": "5803090792b4e3da73d2f9353e01b8ceaa5e545211cef312c9bf32e713749e45"
+  },
+  {
+    "file": "Quit Limits and Period Goals.png",
+    "node_id": "560:4241",
+    "kind": "revision",
+    "width": 1524,
+    "height": 650,
+    "bytes": 101076,
+    "sha256": "4596f712ee92fffa042a00f74a376b7cc8fa122192584af5e14b636215f2c7b9"
+  },
+  {
+    "file": "37 Choose a habit.png",
+    "node_id": "636:7245",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5903,
+    "sha256": "6bd34c085365cd7ae06f549d5a3f1980ad473ba39d55005493afae680bc4d988"
+  },
+  {
+    "file": "38 No habits yet.png",
+    "node_id": "636:7287",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 6026,
+    "sha256": "06fdc3b0b837db72b36a3f3053df4fbf88da069b9877014308b9966c1802de9d"
+  },
+  {
+    "file": "39 Selection unavailable.png",
+    "node_id": "636:7329",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 6053,
+    "sha256": "99e3ebc0474f4efaaf2262d9d5a3b12dab559b41650f8919bd83278c15574375"
+  },
+  {
+    "file": "40 Content hidden.png",
+    "node_id": "636:7371",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 5591,
+    "sha256": "ef8ae1ddb5be748018320154f8e8921edd719ec53e647e641dec0f6e1aaeedb2"
+  },
+  {
+    "file": "41 Open to update.png",
+    "node_id": "636:7413",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 6177,
+    "sha256": "1683874926e7b8d667fd537ccf1e018053bc02b135da4473a42ef7cb082bde12"
+  },
+  {
+    "file": "42 Save recovery.png",
+    "node_id": "636:7455",
+    "kind": "card",
+    "width": 158,
+    "height": 158,
+    "bytes": 6027,
+    "sha256": "c93956671a4a8a231724fc5af8b6ab514c4bd2229f78669ef29111dc0ea24822"
+  },
+  {
+    "file": "Recovery States.png",
+    "node_id": "637:7418",
+    "kind": "layout",
+    "width": 1524,
+    "height": 980,
+    "bytes": 92954,
+    "sha256": "96768bb784a7c02ed77f8507eb4a1f15ed8bc0daab577648731e3e95d8d18ec3"
+  },
+  {
+    "file": "Dark Recovery.png",
+    "node_id": "636:7495",
+    "kind": "dark",
+    "width": 1524,
+    "height": 320,
+    "bytes": 27182,
+    "sha256": "8ac89494e31aa5023916b083b05d2614d22ca16f75bcf3990b5ee1b5dc09dfc6"
+  }
+]

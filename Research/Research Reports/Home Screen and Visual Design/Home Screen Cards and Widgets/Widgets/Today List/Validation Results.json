@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-05",
+  "source_originals_verified": 9,
+  "platform": "iOS only",
+  "scope": "Selected re-read audit; not an exhaustive scan or popularity estimate",
+  "unknown_cited_review_refs": 0,
+  "local_links_checked": 233,
+  "broken_local_links": 0,
+  "runtime_source_hashes": {
+    "iOS/Shared/PhoneWidgets.swift": "08d8111a5b711dab6b5f485c16318c9b1df546e8b2f2b1755a1c12928f10b34a",
+    "iOS/Shared/WidgetIntents.swift": "aef1d4cda01551b6eb48dbefe194871564ea3aa62b9136ee47699a911a6ed1c1",
+    "iOS/Shared/WidgetSnapshot.swift": "6676e5a06705cc0ed468af7001482025911ceff008a51e97d55ccae1901d0670",
+    "iOS/Habits/Model/HabitStore+Widgets.swift": "6956e8f9aad314dfd131de8830aa3a6b5631659067497cff8453179caf9b6966",
+    "iOS/Habits/Today/TodayView.swift": "9826190c9dcde3ca07643fbc3adca9d1a6adcd57380bd420ea191e3c4350b5ef",
+    "iOS/Habits/Model/HabitStore.swift": "43ed09ecd9439de1ef046081978fa28b517970ddc1d72eab2c230281479409fb"
+  },
+  "native_implementation": "Not changed",
+  "figma": "Not changed in this phase",
+  "device_acceptance": "Pending",
+  "ci_dispatch": "Not performed; documentation/research only",
+  "repository_checks": "Passed: git diff --check and iOS/Tools/perf/check_rules.sh; documentation only, no native test dispatch",
+  "additional_main_source_comparison": "TodayView.swift and WidgetIntents.swift match cached origin/main f0e52f46 and local HEAD d4038444"
+}

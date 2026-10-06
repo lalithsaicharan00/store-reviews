@@ -17,6 +17,6 @@ Written by Codex, 1 October 2026.
 - [x] Distinguish actual WidgetKit/SpringBoard tests from app-hosted view tests.
 - [x] Document results, workflow links, remaining device/provisioning limitations in the research report and integration/release matrix.
 
-Report: [research, implementation and measured results](<../../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/iPhone Widgets — Research and Implementation.md>).
+Report: [research, implementation and measured results](<../../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets/Historical Research/iPhone Widgets — Research and Implementation.md>).
 
-Release checks: [integration contracts and physical iPhone matrix](<../iPhone Widgets.md>).
+Release checks: [integration contracts and physical iPhone matrix](<../../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets/Native Integration and Release.md>).

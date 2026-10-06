@@ -1,0 +1,42 @@
+{
+  "written_by": "Codex",
+  "date": "2026-10-05",
+  "branch": "codex/daily-widget-layout-oct5",
+  "baseline": "d4038444b86c4480ab0f9e82576326bb088d3982",
+  "refreshed_main": "f0e52f46d8ef4641b247aa8b243d1728777b3440",
+  "daily_cards": {
+    "source_originals_verified": 37,
+    "unassigned_records": 0,
+    "unknown_cited_refs": 0,
+    "cited_review_refs": 20,
+    "pngs_verified": 40,
+    "individual_cards": 36,
+    "semantic_variants": 29,
+    "scope_examples": 3,
+    "supplemental_cards": 4,
+    "recent_main_commits_audited": 15,
+    "value_overflows": 0,
+    "unequal_insets": 0,
+    "small_action_targets": 0,
+    "local_links_checked": 104,
+    "broken_local_links": 0,
+    "native_validation": "Pending; not performed by this script"
+  },
+  "original_catalogue": {
+    "documents_checked": 13,
+    "local_links_checked": 193,
+    "broken_local_links": 0,
+    "pngs_verified": 28,
+    "cited_review_refs": 54,
+    "unknown_cited_refs": 0,
+    "review_records": 181,
+    "figma_audit_loaded": true
+  },
+  "git_diff_check": "Passed",
+  "speed_rules": "Passed with Git Bash --login",
+  "figma_visual_review": "Passed at study size; final revised panel and exported dark appearance inspected",
+  "user_revision": "Quit title restored to separate line; one emphasized elapsed line. Quantity/time limit states and configured weekly/monthly goal subtitles revised.",
+  "app_ci": "Not dispatched; research/design documentation only",
+  "iphone_acceptance": "Pending",
+  "publication": "Saved locally on the research branch; not committed or pushed in this follow-up"
+}

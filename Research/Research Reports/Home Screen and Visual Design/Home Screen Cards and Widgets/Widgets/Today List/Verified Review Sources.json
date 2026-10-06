@@ -1,0 +1,229 @@
+[
+  {
+    "ref": "A1#55119",
+    "source": "Research/App Store Reviews/1. Habit Tracker - Goal Tracker & ADHD Planner/reviews.jsonl",
+    "source_index": 55119,
+    "id": "8626356287",
+    "record": {
+      "review_id": "8626356287",
+      "app_id": "1438388363",
+      "app_name": "Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 3,
+      "title": "Wish Square Widget Had Words",
+      "body": "I’d much prefer the square widget with words instead of emojis. The app is fantastic but that would bring it straight to 5 stars for me!",
+      "author": "Blebleble74716",
+      "date": "2022-05-01T16:30:14Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "visible_identity"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A10#2775",
+    "source": "Research/App Store Reviews/10. Finch - Self-Care Pet - Daily Journal & Habit Tracker/reviews.jsonl",
+    "source_index": 2775,
+    "id": "14407038000",
+    "record": {
+      "review_id": "14407038000",
+      "app_id": "1528595748",
+      "app_name": "Finch: Self-Care Pet",
+      "country": "ca",
+      "country_name": "Canada",
+      "rating": 4,
+      "title": "LOVE IT!!",
+      "body": "I really LOVE this app! It was honestly the best one out there to keep your habits. I stopped using it because I wish there were widgets that have the tasks on there! Its easy for me to get things done when I remember that the app exists, so it would be good to bave task list widget so I know what I have left to do for the day! That&#39;s the only reason I didn&#39;t give 5 starts~ PLEASE",
+      "author": "kassidy_carlita1415",
+      "date": "2026-08-09T15:32:13Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "presence_and_motivation"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A23#4768",
+    "source": "Research/App Store Reviews/23. Streaks - The habit-forming to-do list/reviews.jsonl",
+    "source_index": 4768,
+    "id": "7824788952",
+    "record": {
+      "review_id": "7824788952",
+      "app_id": "963034692",
+      "app_name": "Streaks",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 5,
+      "title": "Medium size widget",
+      "body": "Please bring back the version of the medium sized widget that shows up to 12 tasks.",
+      "author": "sunshipballoons",
+      "date": "2021-09-20T03:20:24Z",
+      "vote_count": 1,
+      "vote_sum": 1,
+      "is_edited": false
+    },
+    "themes": [
+      "density_context"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A33#1602",
+    "source": "Research/App Store Reviews/33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks/reviews.jsonl",
+    "source_index": 1602,
+    "id": "10464675879",
+    "record": {
+      "review_id": "10464675879",
+      "app_id": "1111447047",
+      "app_name": "Habitify: Habit Tracker",
+      "country": "jp",
+      "country_name": "Japan",
+      "rating": 5,
+      "title": "Great app, but widget can use an upgrade",
+      "body": "Please consider adding a widget type to quickly view your progress of the day/week, not for just one habit but the entire collection of habits due that day/week.\n\nAlso, it would be great if the &#34;habit list&#34; widget showed two columns instead of just one. If current streak/last recorded date can be shown on each buttons, it&#39;ll be even better.",
+      "author": "アオキ",
+      "date": "2023-10-12T04:20:26Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "density_context"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A33#164",
+    "source": "Research/App Store Reviews/33. Habitify - Habit Tracker - Daily Goals, Routine & Streaks/reviews.jsonl",
+    "source_index": 164,
+    "id": "12832854491",
+    "record": {
+      "review_id": "12832854491",
+      "app_id": "1111447047",
+      "app_name": "Habitify: Habit Tracker",
+      "country": "bo",
+      "country_name": "BO",
+      "rating": 3,
+      "title": "Widget Update Ruined the Tracking Flexibility",
+      "body": "I used to love the old iOS home screen widget, where I could increment my habit progress one step at a time. For example, if I had to complete a habit twice a day, I could mark it once in the morning and once again later. Now, with the new widget, a single tap completes the entire habit, making it impossible to track partial progress throughout the day. This removes the flexibility and satisfaction of tracking habits gradually. Please bring back the old widget behavior or at least add an option to choose how the widget marks progress.",
+      "author": "RogerArt99",
+      "date": "2025-06-29T22:03:34Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "increment_not_whole_goal"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A52#19868",
+    "source": "Research/App Store Reviews/52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus/reviews.jsonl",
+    "source_index": 19868,
+    "id": "3254531371",
+    "record": {
+      "review_id": "3254531371",
+      "app_id": "1263789061",
+      "app_name": "ShineDay: Habit Tracker",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "Fantastic App",
+      "body": "I likely have ADHD and I really struggle with staying on task. Some people might be able to think of ‘get ready’ as one task but for me I have no idea which thing to do first. I get distracted easily and have 4 little ones so it’s always manic in the mornings. With this app I can have all the individual tasks I need to do on my widget screen, tap the one I’ve done and it disappears. It makes me feel so much more organised and on track. I love that I can name each task, choose an icon to represent it, change its colour and assign it to a specific section of the day. I have begun using Todoist for chores and general tasks that need doing but Tiny Routines is amazing for the specific steps of daily routines. Highly recommend!",
+      "author": "Juiice",
+      "date": "2018-10-02T07:36:14Z",
+      "vote_count": 2,
+      "vote_sum": 1,
+      "is_edited": false
+    },
+    "themes": [
+      "direct_interaction",
+      "steps_explicit_choice"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A53#1515",
+    "source": "Research/App Store Reviews/53. HabitMinder • Habit Tracker - Daily Reminders & Routines/reviews.jsonl",
+    "source_index": 1515,
+    "id": "4638761023",
+    "record": {
+      "review_id": "4638761023",
+      "app_id": "1253577148",
+      "app_name": "HabitMinder • Habit Tracker",
+      "country": "us",
+      "country_name": "United States",
+      "rating": 4,
+      "title": "Outstanding - almost there",
+      "body": "Habit apps are a crowded marketplace, and this one really stands out to me. Gorgeous design that is very simple and easy on the eyes, but still very flexible. They found the right balance. It’s engaging and fun to check things off (might as well use the addictiveness of technology to help your productivity :) Their hydration app is equally fantastic. Both have earned a permanent spot in my “Today” view...assuming a few things are in the works. \n\n1. Mac app - visibility and management of tasks/habits is really only viable if you can access them (and synced notifications) from any device. \n\n2. The notification text is a bit odd. I wish these would just contain the habit text and nothing else. They often appear as verbose sentences that you have to read. For me this affects the fluidity of use. \n\n3. The Today widget could be enhanced by only showing remaining habits at the top. \n\n4. Ability both to skip habits or mark as failed would be nice. \n\nItems 2–4 are all ways of helping you see only what you need to see. The “at a glance” nature of this app isn’t quite there yet. \n\nThe comments seem to indicate that more integration with multiple devices is forthcoming. Lack of this functionality is normally a dealbreaker for me, but I’m using this on my phone only for the moment because the app is just that good. At whatever point these become more integrated in the ecosystem, this and WaterMinder will unquestionably be 5 star software.",
+      "author": "lydian1627",
+      "date": "2019-08-19T00:01:08Z",
+      "vote_count": 3,
+      "vote_sum": 1,
+      "is_edited": false
+    },
+    "themes": [
+      "minimal_content"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A53#702",
+    "source": "Research/App Store Reviews/53. HabitMinder • Habit Tracker - Daily Reminders & Routines/reviews.jsonl",
+    "source_index": 702,
+    "id": "5055323000",
+    "record": {
+      "review_id": "5055323000",
+      "app_id": "1253577148",
+      "app_name": "HabitMinder • Habit Tracker",
+      "country": "in",
+      "country_name": "India",
+      "rating": 3,
+      "title": "Great App but widget can be better!",
+      "body": "The app looks helpful but I’d give it a full five star if the widget was better. The task that are completed also appear in the widget which just make the list of things to do seem longer I wish there was an option to hide tasks once completed! Apart from that I think this app is good to go. It also tracking in liters, minutes and several times a day. I’d love to purchase the premium version once the widget is updated and made more user friendly.",
+      "author": "rheagoel96",
+      "date": "2019-10-31T11:47:11Z",
+      "vote_count": 1,
+      "vote_sum": 1,
+      "is_edited": false
+    },
+    "themes": [
+      "density_context"
+    ],
+    "scope": "iOS store review"
+  },
+  {
+    "ref": "A56#18",
+    "source": "Research/App Store Reviews/56. Dots - Habit Tracker Widget - Daily Routine, Goal & Planner/reviews.jsonl",
+    "source_index": 18,
+    "id": "14472221855",
+    "record": {
+      "review_id": "14472221855",
+      "app_id": "6758730376",
+      "app_name": "Dots: Habit Tracker Widget",
+      "country": "gb",
+      "country_name": "United Kingdom",
+      "rating": 5,
+      "title": "Exceptional, no nonsense app",
+      "body": "Sensational organisation app. The minimalism is absolutely perfect for people who actually want to track their habits without the faff. My ADHD makes organisation challenging and over the year I’ve tried countless apps that claim to help “neurodivergent people” or be “perfect for those who procrastinate.” They end up being made for quick cash grabs or having a wildly confusing interface that is overwhelming and challenging to navigate. \n\nWith Dots, you get exactly what you download. All your habits trackable in a range of formats (card, list, calendar form) so you can check them off in the one you prefer. You can also add the widget to your home screen so you can cross habits off during the day without having to open the app. There’s no paywall, no ads, and it’s beautifully minimalistic. Everything I needed I am so thankful that I found this.",
+      "author": "fayeflame",
+      "date": "2026-08-26T00:05:06Z",
+      "vote_count": 0,
+      "vote_sum": 0,
+      "is_edited": false
+    },
+    "themes": [
+      "direct_interaction",
+      "minimal_content"
+    ],
+    "scope": "iOS store review"
+  }
+]

@@ -1,0 +1,126 @@
+{
+  "written_by": "Codex",
+  "date": "2026-10-05",
+  "audited_remote_main": "f0e52f46d8ef4641b247aa8b243d1728777b3440",
+  "prior_baseline": "d4038444b86c4480ab0f9e82576326bb088d3982",
+  "latest_commits": [
+    {
+      "commit": "f0e52f46d8ef4641b247aa8b243d1728777b3440",
+      "subject": "Merging the Branches: claude/perf-before-day-details is safe to delete"
+    },
+    {
+      "commit": "c1756351234bc18246e94c02cd1dfa84777bea58",
+      "subject": "Checklist 49: Today, habit form and Progress slower on main since the timer/swipe merge (measured, not from Day details)"
+    },
+    {
+      "commit": "c00c0bc14e7ec9656c434b140ebcef42bd0a0220",
+      "subject": "Full test of main recorded; Rulebook T1: queue the next run by hand, only when nothing waits"
+    },
+    {
+      "commit": "c09cdb9bfe3faea36b17b653a3974ac356a7f0c0",
+      "subject": "HabitCreationUITests.testOtherTypes: wait for the task's preview to catch up"
+    },
+    {
+      "commit": "f4f429250d2f1d26540360e1c8425d5811b878dc",
+      "subject": "Revert the squares-key visit change (65de49d): it didn't fix the test"
+    },
+    {
+      "commit": "f14ec5e616857c6860012446d820062297773959",
+      "subject": "Merge main (widget research docs) into details-page-update"
+    },
+    {
+      "commit": "c5b2d8711ab6fd0717ee154e2391def2dfce30ad",
+      "subject": "FocusPlayerUITests: wait for the options sheet's Show clock switch"
+    },
+    {
+      "commit": "3711e4b21fb34e589be1aeb54f2e70c407d15e6c",
+      "subject": "HabitCreationUITests.testOtherTypes: wait for the third step row before typing it"
+    },
+    {
+      "commit": "d4038444b86c4480ab0f9e82576326bb088d3982",
+      "subject": "docs: publish widget research, design images and implementation handoff"
+    },
+    {
+      "commit": "65de49d37e9ff7b52ba9ede396d65d2f7f325118",
+      "subject": "Habit page: a new squares-key visit after the page is left (not watching isPresented)"
+    },
+    {
+      "commit": "fd80f253bd1d3ef7214cfeaa3a156caecd8861a7",
+      "subject": "Merging the Branches: details-page-update into main by the user's decision; a full run on main follows"
+    },
+    {
+      "commit": "3b9377127c5800cd05112045c7fa9412fca8db24",
+      "subject": "Merge main (habit details squares key, note editor keyboard) into details-page-update"
+    },
+    {
+      "commit": "6a8454f1025010f56cbab01aa2e9e96ef6780645",
+      "subject": "Edit Log: one back chevron; Discard asks in an alert"
+    },
+    {
+      "commit": "3530e9807a90735efb582482db1e1a4abe60af22",
+      "subject": "Checklists: limits under Quit or Cut Down (14) and Notes month cards (46) tested and completed; 18, 25, 26, 28 await round 4"
+    },
+    {
+      "commit": "1040e095e7ff58656eb39a7f1c965251b9840a0d",
+      "subject": "Habit details: a new squares-key visit each time the page is popped; the note editor's keyboard after the sheet arrives"
+    }
+  ],
+  "runtime_sources": [
+    {
+      "path": "iOS/Habits/Model/Habit.swift",
+      "sha256": "88c23f5e011d63cdc4561479dc23ee292d9abd0f68654738e247805d64722fc3",
+      "identical_to_prior_baseline": true
+    },
+    {
+      "path": "iOS/Habits/Model/HabitStore.swift",
+      "sha256": "46539841cb8fc7adf58d12dbdd53e15b8b6eb3fb79174843893d716bc1b41e5d",
+      "identical_to_prior_baseline": true
+    },
+    {
+      "path": "iOS/Habits/Model/HabitCopy.swift",
+      "sha256": "d63c3fa31f39a43ddad60034cc50d164f4df90c03a972fa6556bd6c55cd0cd04",
+      "identical_to_prior_baseline": true
+    },
+    {
+      "path": "iOS/Habits/Components/Components.swift",
+      "sha256": "ee66285b92e1fabb67fffa4ba9866f7f52cf96b45b88e141eec1f2ba0d38fc14",
+      "identical_to_prior_baseline": true
+    },
+    {
+      "path": "iOS/Habits/Model/HabitStore+Widgets.swift",
+      "sha256": "848382f13d97a783e4f1e85db88f3fbd5e2feaae6b7e588c8220e9b9e3420312",
+      "identical_to_prior_baseline": true
+    },
+    {
+      "path": "iOS/Habits/Today/TodayRows.swift",
+      "sha256": "6edc81ac9636cec2383c74255b9292db0b553433f14c156fd74d4873511f7a91",
+      "identical_to_prior_baseline": true
+    },
+    {
+      "path": "iOS/Shared/WidgetSnapshot.swift",
+      "sha256": "e6cdf76c2d0ee9190368aa41bff281ecd6c9e7041f86ffd9a836a72d4a1f0d84",
+      "identical_to_prior_baseline": true
+    },
+    {
+      "path": "iOS/Shared/PhoneWidgets.swift",
+      "sha256": "c0915eb0a33c58df6ef0960e8f09af69048b930ecdce2b9fb2da29c62b02f729",
+      "identical_to_prior_baseline": true
+    },
+    {
+      "path": "iOS/Habits/AddHabit/NewHabitView.swift",
+      "sha256": "1517ecbe243710b864bd54ad7d1241a34ded0571ba0b15782d94465140896218",
+      "identical_to_prior_baseline": true
+    }
+  ],
+  "related_feature_commits": {
+    "time_limits": "f041d83169b48680149d1614a9383e835db7683e",
+    "limits_on_today": "c9909e633ecab3c0c1c2be3e33d0aff16aae5f48",
+    "limits_validation_record": "3530e9807a90735efb582482db1e1a4abe60af22"
+  },
+  "primary_api_availability": {
+    "api": "SystemFormatStyle.DateOffset",
+    "iOS_introduced": "18.0",
+    "source": "https://developer.apple.com/tutorials/data/documentation/swiftui/systemformatstyle/dateoffset.json"
+  },
+  "native_validation": "Pending"
+}

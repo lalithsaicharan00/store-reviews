@@ -1,0 +1,50 @@
+[
+  {
+    "key": "Timed daily limit running",
+    "name": "Social media",
+    "value": "12:36 of 20 min",
+    "capsule": "Daily limit",
+    "component_id": "560:4132",
+    "card_id": "560:4389",
+    "action": "pause.fill",
+    "value_scope": "today_duration_limit",
+    "outlined": false,
+    "cta_state": "neutral"
+  },
+  {
+    "key": "Timed daily limit reached",
+    "name": "Social media",
+    "value": "20 of 20 min",
+    "capsule": "Limit reached",
+    "component_id": "560:4155",
+    "card_id": "560:4413",
+    "action": "play.fill",
+    "value_scope": "today_duration_limit",
+    "outlined": false,
+    "cta_state": "neutral"
+  },
+  {
+    "key": "Timed daily limit exceeded",
+    "name": "Social media",
+    "value": "25 of 20 min",
+    "capsule": "Over the limit",
+    "component_id": "560:4178",
+    "card_id": "560:4437",
+    "action": "play.fill",
+    "value_scope": "today_duration_limit",
+    "outlined": false,
+    "cta_state": "neutral"
+  },
+  {
+    "key": "Quit paused",
+    "name": "Smoking",
+    "value": "Paused",
+    "capsule": "Best 45 days",
+    "component_id": "560:4202",
+    "card_id": "560:4508",
+    "action": "arrow.up.right",
+    "value_scope": "paused_quit",
+    "outlined": false,
+    "cta_state": "neutral"
+  }
+]

@@ -1,0 +1,1519 @@
+{
+  "date": "2026-10-06",
+  "cards": [
+    {
+      "file": "01 Single check.png",
+      "node_id": "545:3403",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Read",
+      "value": "Not checked",
+      "value_fits": true,
+      "value_natural_width": 90,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3403;543:3146;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48673,
+            "y": 1411,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "02 Single checked.png",
+      "node_id": "545:3422",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Read",
+      "value": "Checked",
+      "value_fits": true,
+      "value_natural_width": 63,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3422;543:3159;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48977,
+            "y": 1411,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "03 Repeated check.png",
+      "node_id": "545:3442",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Stretch",
+      "value": "1 of 3 checks",
+      "value_fits": true,
+      "value_natural_width": 94,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3442;543:3172;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49281,
+            "y": 1411,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "04 Named check slots.png",
+      "node_id": "545:3463",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Brush teeth",
+      "value": "1 of 2 checks",
+      "value_fits": true,
+      "value_natural_width": 93,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3463;543:3185;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49585,
+            "y": 1411,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "05 Saved quantity.png",
+      "node_id": "545:3483",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Water",
+      "value": "3 of 8 glasses",
+      "value_fits": true,
+      "value_natural_width": 100,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3483;543:3198;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49889,
+            "y": 1411,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "06 Above quantity goal.png",
+      "node_id": "545:3503",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Water",
+      "value": "9 of 8 glasses",
+      "value_fits": true,
+      "value_natural_width": 100,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3503;543:3211;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48673,
+            "y": 1713,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "07 Custom quantity.png",
+      "node_id": "545:3524",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Distance",
+      "value": "2 of 5 km",
+      "value_fits": true,
+      "value_natural_width": 67,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3524;543:3224;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48977,
+            "y": 1713,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "08 Walking steps manual.png",
+      "node_id": "545:3544",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Walk",
+      "value": "4.2k of 8k steps",
+      "value_fits": true,
+      "value_natural_width": 114,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3544;543:3237;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49281,
+            "y": 1713,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "09 Walking steps saved.png",
+      "node_id": "545:3564",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Walk",
+      "value": "4.2k of 8k steps",
+      "value_fits": true,
+      "value_natural_width": 114,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3564;543:3250;547:3869",
+          "width": 76,
+          "height": 44,
+          "bounds": {
+            "x": 49553,
+            "y": 1713,
+            "width": 76,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "10 Timer ready.png",
+      "node_id": "545:3585",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Focus",
+      "value": "12 of 30 min",
+      "value_fits": true,
+      "value_natural_width": 88,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3585;543:3263;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49889,
+            "y": 1713,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "11 Timer running.png",
+      "node_id": "545:3605",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Focus",
+      "value": "18:24 of 30 min",
+      "value_fits": true,
+      "value_natural_width": 111,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3605;543:3276;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48673,
+            "y": 2015,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "12 Timer paused.png",
+      "node_id": "545:3625",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Focus",
+      "value": "18 of 30 min",
+      "value_fits": true,
+      "value_natural_width": 88,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3625;543:3289;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48977,
+            "y": 2015,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "13 Checklist.png",
+      "node_id": "545:3645",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Morning routine",
+      "value": "2 of 5 steps",
+      "value_fits": true,
+      "value_natural_width": 84,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3645;543:3302;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49281,
+            "y": 2015,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "14 Many checklist steps.png",
+      "node_id": "545:3665",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Training",
+      "value": "5 of 100 steps",
+      "value_fits": true,
+      "value_natural_width": 101,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3665;543:3315;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49585,
+            "y": 2015,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "15 Checklist complete.png",
+      "node_id": "545:3685",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Morning routine",
+      "value": "5 of 5 steps",
+      "value_fits": true,
+      "value_natural_width": 85,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3685;543:3328;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49889,
+            "y": 2015,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "16 Quit no slips.png",
+      "node_id": "545:3705",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I545:3705;540:3222",
+          "text": "Best 45 days",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Smoking",
+      "value": "15d 22:36:35",
+      "value_fits": true,
+      "value_natural_width": 112,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3705;566:4407;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48673,
+            "y": 2317,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "17 Quit slip recorded.png",
+      "node_id": "545:3725",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I545:3725;540:3236",
+          "text": "Best 45 days",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Smoking",
+      "value": "0d 00:04:12",
+      "value_fits": true,
+      "value_natural_width": 103,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3725;566:4424;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48977,
+            "y": 2317,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "18 Daily limit below.png",
+      "node_id": "545:3745",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I545:3745;540:3250",
+          "text": "Daily limit",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Coffee",
+      "value": "1 of 2 cups",
+      "value_fits": true,
+      "value_natural_width": 78,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3745;543:3367;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49281,
+            "y": 2317,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "19 Daily limit reached.png",
+      "node_id": "545:3767",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I545:3767;540:3264",
+          "text": "Limit reached",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Coffee",
+      "value": "2 of 2 cups",
+      "value_fits": true,
+      "value_natural_width": 80,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3767;543:3380;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49585,
+            "y": 2317,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "20 Daily limit exceeded.png",
+      "node_id": "545:3789",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I545:3789;540:3278",
+          "text": "Over the limit",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Coffee",
+      "value": "3 of 2 cups",
+      "value_fits": true,
+      "value_natural_width": 80,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3789;543:3393;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49889,
+            "y": 2317,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "21 Weekly total goal.png",
+      "node_id": "545:3811",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I545:3811;540:3292",
+          "text": "12 min today",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Read",
+      "value": "3 h a week",
+      "value_fits": true,
+      "value_natural_width": 76,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3811;543:3406;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48673,
+            "y": 2619,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "22 Monthly total goal.png",
+      "node_id": "545:3831",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I545:3831;540:3305",
+          "text": "2 checks today",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Practice",
+      "value": "10 times a month",
+      "value_fits": true,
+      "value_natural_width": 121,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3831;543:3419;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48977,
+            "y": 2619,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "23 Flexible daily target.png",
+      "node_id": "545:3852",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Focus",
+      "value": "12 of 30 min",
+      "value_fits": true,
+      "value_natural_width": 88,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3852;543:3432;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49281,
+            "y": 2619,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "24 Skipped day.png",
+      "node_id": "545:3872",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I545:3872;540:3333",
+          "text": "Skipped today",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Water",
+      "value": "3 glasses today",
+      "value_fits": true,
+      "value_natural_width": 111,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3872;543:3445;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49585,
+            "y": 2619,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "25 Paused habit.png",
+      "node_id": "545:3892",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I545:3892;540:3347",
+          "text": "Tracking paused",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Read",
+      "value": "Paused",
+      "value_fits": true,
+      "value_natural_width": 52,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3892;543:3458;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49889,
+            "y": 2619,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "26 Private or locked.png",
+      "node_id": "545:3912",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I545:3912;540:3361",
+          "text": "Private",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Habit",
+      "value": "Unlock to view",
+      "value_fits": true,
+      "value_natural_width": 104,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3912;543:3471;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48673,
+            "y": 2921,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "27 Not planned today.png",
+      "node_id": "545:3932",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I545:3932;540:3375",
+          "text": "Not planned",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Stretch",
+      "value": "Not planned",
+      "value_fits": true,
+      "value_natural_width": 87,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3932;543:3484;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48977,
+            "y": 2921,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "28 Removed or stale.png",
+      "node_id": "545:3952",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I545:3952;540:3389",
+          "text": "Choose a habit",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Habit unavailable",
+      "value": "Open to choose",
+      "value_fits": true,
+      "value_natural_width": 113,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3952;543:3497;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49281,
+            "y": 2921,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "29 Long habit name.png",
+      "node_id": "545:3972",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [],
+      "name": "Physiotherapy stretches",
+      "value": "2 of 5 steps",
+      "value_fits": true,
+      "value_natural_width": 84,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I545:3972;543:3510;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49585,
+            "y": 2921,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "30 Weekly total limit.png",
+      "node_id": "549:4061",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I549:4061;540:3250",
+          "text": "Weekly limit",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Coffee",
+      "value": "1 cup today",
+      "value_fits": true,
+      "value_natural_width": 82,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I549:4061;543:3367;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49889,
+            "y": 2921,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "31 Monthly total limit.png",
+      "node_id": "549:4084",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I549:4084;540:3250",
+          "text": "Monthly limit",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Coffee",
+      "value": "1 cup today",
+      "value_fits": true,
+      "value_natural_width": 82,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I549:4084;543:3367;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49889,
+            "y": 3639,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "32 Duration daily limit.png",
+      "node_id": "553:4097",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I553:4097;560:4114",
+          "text": "Daily limit",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Social media",
+      "value": "10 of 20 min",
+      "value_fits": true,
+      "value_natural_width": 88,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I553:4097;560:4111;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 50013,
+            "y": 893,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "33 Timed limit running.png",
+      "node_id": "560:4389",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I560:4389;560:4137",
+          "text": "Daily limit",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Social media",
+      "value": "12:36 of 20 min",
+      "value_fits": true,
+      "value_natural_width": 111,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I560:4389;560:4134;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48731,
+            "y": 4557,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "34 Timed limit reached.png",
+      "node_id": "560:4413",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I560:4413;560:4160",
+          "text": "Limit reached",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Social media",
+      "value": "20 of 20 min",
+      "value_fits": true,
+      "value_natural_width": 90,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I560:4413;560:4157;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48981,
+            "y": 4557,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "35 Timed limit exceeded.png",
+      "node_id": "560:4437",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I560:4437;560:4183",
+          "text": "Over the limit",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Social media",
+      "value": "25 of 20 min",
+      "value_fits": true,
+      "value_natural_width": 90,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I560:4437;560:4180;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49231,
+            "y": 4557,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "36 Quit paused.png",
+      "node_id": "560:4508",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I560:4508;560:4206",
+          "text": "Best 45 days",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Smoking",
+      "value": "Paused",
+      "value_fits": true,
+      "value_natural_width": 62,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I560:4508;566:4440;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49981,
+            "y": 4557,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "37 Choose a habit.png",
+      "node_id": "636:7245",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I636:7245;636:7118",
+          "text": "Edit Widget",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Choose a habit",
+      "value": "Not selected",
+      "value_fits": true,
+      "value_natural_width": 91,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I636:7245;636:7116;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48673,
+            "y": 4997,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "38 No habits yet.png",
+      "node_id": "636:7287",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I636:7287;636:7139",
+          "text": "Create a habit",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "No habits yet",
+      "value": "Start in the app",
+      "value_fits": true,
+      "value_natural_width": 110,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I636:7287;636:7137;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48977,
+            "y": 4997,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "39 Selection unavailable.png",
+      "node_id": "636:7329",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I636:7329;636:7160",
+          "text": "Edit Widget",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Choose habit",
+      "value": "Habit unavailable",
+      "value_fits": true,
+      "value_natural_width": 121,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I636:7329;636:7158;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49281,
+            "y": 4997,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "40 Content hidden.png",
+      "node_id": "636:7371",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I636:7371;636:7181",
+          "text": "Open app",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Content hidden",
+      "value": "Private",
+      "value_fits": true,
+      "value_natural_width": 49,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I636:7371;636:7179;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49585,
+            "y": 4997,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "41 Open to update.png",
+      "node_id": "636:7413",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I636:7413;636:7203",
+          "text": "Open app",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Open to update",
+      "value": "Data unavailable",
+      "value_fits": true,
+      "value_natural_width": 117,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I636:7413;636:7201;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49889,
+            "y": 4997,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "42 Save recovery.png",
+      "node_id": "636:7455",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I636:7455;636:7224",
+          "text": "Open app",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Couldn’t save",
+      "value": "Check in the app",
+      "value_fits": true,
+      "value_natural_width": 120,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I636:7455;636:7222;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48673,
+            "y": 5299,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    }
+  ],
+  "createdAndRemovedNodeIds": [
+    "643:5130"
+  ],
+  "dark": [
+    {
+      "id": "636:7497",
+      "texts": [
+        {
+          "text": "􀋲",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "􀄯",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "Choose a habit",
+          "size": 17,
+          "font": "Semibold"
+        },
+        {
+          "text": "Not selected",
+          "size": 15,
+          "font": "Regular"
+        },
+        {
+          "text": "Edit Widget",
+          "size": 12,
+          "font": "Medium"
+        }
+      ]
+    },
+    {
+      "id": "636:7499",
+      "texts": [
+        {
+          "text": "􀋲",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "􀄯",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "Choose habit",
+          "size": 17,
+          "font": "Semibold"
+        },
+        {
+          "text": "Habit unavailable",
+          "size": 15,
+          "font": "Regular"
+        },
+        {
+          "text": "Edit Widget",
+          "size": 12,
+          "font": "Medium"
+        }
+      ]
+    },
+    {
+      "id": "636:7501",
+      "texts": [
+        {
+          "text": "􀎡",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "􀎡",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "Content hidden",
+          "size": 17,
+          "font": "Semibold"
+        },
+        {
+          "text": "Private",
+          "size": 15,
+          "font": "Regular"
+        },
+        {
+          "text": "Open app",
+          "size": 12,
+          "font": "Medium"
+        }
+      ]
+    },
+    {
+      "id": "636:7503",
+      "texts": [
+        {
+          "text": "􀋲",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "􀄯",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "Open to update",
+          "size": 17,
+          "font": "Semibold"
+        },
+        {
+          "text": "Data unavailable",
+          "size": 15,
+          "font": "Regular"
+        },
+        {
+          "text": "Open app",
+          "size": 12,
+          "font": "Medium"
+        }
+      ]
+    },
+    {
+      "id": "636:7505",
+      "texts": [
+        {
+          "text": "􀋲",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "􀄯",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "Couldn’t save",
+          "size": 17,
+          "font": "Semibold"
+        },
+        {
+          "text": "Check in the app",
+          "size": 15,
+          "font": "Regular"
+        },
+        {
+          "text": "Open app",
+          "size": 12,
+          "font": "Medium"
+        }
+      ]
+    }
+  ]
+}

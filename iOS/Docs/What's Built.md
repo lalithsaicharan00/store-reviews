@@ -222,6 +222,6 @@ Design: [Backup, Sync and Accounts — One Seamless Experience](<../../Research/
 ## Not built yet (Build Plan order)
 
 - [ ] Settings still to build: restore purchase, Erase All Data in Privacy (help, About, theme, day start, week start, free export, backup and restore, Reminders and the app lock are built)
-- [x] iPhone Home-screen and Lock-screen widget (merged into `main` 1 Oct, from `codex/iphone-widgets`): free Today, One Item and Lock summaries; Plus Icons and History; shared App Group, durable additive actions and privacy. [Validation and release checks](<iPhone Widgets.md>) retain unverified system/device checks separately.
+- [x] iPhone Home-screen and Lock-screen widget (merged into `main` 1 Oct, from `codex/iphone-widgets`): free Today, One Item and Lock summaries; Plus Icons and History; shared App Group, durable additive actions and privacy. [Validation and release checks](<../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets/Native Integration and Release.md>) retain unverified system/device checks separately.
 - [ ] Plus: purchase, account, sync and server backup
 - [ ] Apple Watch, iPad, Apple Health

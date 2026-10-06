@@ -1,0 +1,2170 @@
+{
+  "cards": [
+    {
+      "key": "Today five",
+      "id": "608:8039",
+      "componentId": "606:7397",
+      "sceneKey": "Today five",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Water",
+          "role": "Water",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2983",
+          "action": "+1"
+        },
+        {
+          "name": "Read",
+          "role": "Read",
+          "position": [
+            0,
+            56
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2891",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2985",
+          "action": "537:3001"
+        },
+        {
+          "name": "Stretch",
+          "role": "Stretch",
+          "position": [
+            0,
+            112
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2879",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2987",
+          "action": "537:3001"
+        },
+        {
+          "name": "Meditate",
+          "role": "Meditate",
+          "position": [
+            0,
+            168
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2991",
+          "action": "537:3003"
+        },
+        {
+          "name": "Wind down",
+          "role": "Steps",
+          "position": [
+            0,
+            224
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2999",
+          "action": "537:3007"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "2 of 5 done"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Today four",
+      "id": "608:8110",
+      "componentId": "606:7474",
+      "sceneKey": "Today four",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Water",
+          "role": "Water",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            58
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2983",
+          "action": "+1"
+        },
+        {
+          "name": "Read",
+          "role": "Read",
+          "position": [
+            0,
+            70
+          ],
+          "size": [
+            306,
+            58
+          ],
+          "done": true,
+          "fill": "509:2891",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2985",
+          "action": "537:3001"
+        },
+        {
+          "name": "Meditate",
+          "role": "Meditate",
+          "position": [
+            0,
+            140
+          ],
+          "size": [
+            306,
+            58
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2991",
+          "action": "537:3003"
+        },
+        {
+          "name": "Wind down",
+          "role": "Steps",
+          "position": [
+            0,
+            210
+          ],
+          "size": [
+            306,
+            58
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2999",
+          "action": "537:3007"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "1 of 4 done"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Dark today five",
+      "id": "608:8169",
+      "componentId": "606:7397",
+      "sceneKey": "Today five",
+      "dark": true,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Water",
+          "role": "Water",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2983",
+          "action": "+1"
+        },
+        {
+          "name": "Read",
+          "role": "Read",
+          "position": [
+            0,
+            56
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2891",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2985",
+          "action": "537:3001"
+        },
+        {
+          "name": "Stretch",
+          "role": "Stretch",
+          "position": [
+            0,
+            112
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2879",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2987",
+          "action": "537:3001"
+        },
+        {
+          "name": "Meditate",
+          "role": "Meditate",
+          "position": [
+            0,
+            168
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2991",
+          "action": "537:3003"
+        },
+        {
+          "name": "Wind down",
+          "role": "Steps",
+          "position": [
+            0,
+            224
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2999",
+          "action": "537:3007"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "2 of 5 done"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Six first page",
+      "id": "608:8241",
+      "componentId": "606:7537",
+      "sceneKey": "Six first page",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Water",
+          "role": "Water",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2983",
+          "action": "+1"
+        },
+        {
+          "name": "Read",
+          "role": "Read",
+          "position": [
+            0,
+            56
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2891",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2985",
+          "action": "537:3001"
+        },
+        {
+          "name": "Stretch",
+          "role": "Stretch",
+          "position": [
+            0,
+            112
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2879",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2987",
+          "action": "537:3001"
+        },
+        {
+          "name": "Meditate",
+          "role": "Meditate",
+          "position": [
+            0,
+            168
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2991",
+          "action": "537:3003"
+        },
+        {
+          "name": "Walk",
+          "role": "Walk",
+          "position": [
+            0,
+            224
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2989",
+          "action": "+500"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "2 of 6 done",
+        "1/2"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Six final page",
+      "id": "608:8318",
+      "componentId": "606:7619",
+      "sceneKey": "Six final page",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Wind down",
+          "role": "Steps",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2999",
+          "action": "537:3007"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "2 of 6 done",
+        "2/2"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Five checklist habits",
+      "id": "608:8349",
+      "componentId": "607:7955",
+      "sceneKey": "Five checklist habits",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Read a chapter",
+          "role": "Read",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2891",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2985",
+          "action": "537:3001"
+        },
+        {
+          "name": "Tidy the desk",
+          "role": "Task",
+          "position": [
+            0,
+            56
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2993",
+          "action": "537:3001"
+        },
+        {
+          "name": "Stretch",
+          "role": "Stretch",
+          "position": [
+            0,
+            112
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2879",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2987",
+          "action": "537:3001"
+        },
+        {
+          "name": "Take vitamins",
+          "role": "Check",
+          "position": [
+            0,
+            168
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2993",
+          "action": "537:3001"
+        },
+        {
+          "name": "Journal",
+          "role": "Check",
+          "position": [
+            0,
+            224
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2993",
+          "action": "537:3001"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "2 of 5 done"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Twelve first page",
+      "id": "608:8419",
+      "componentId": "606:7649",
+      "sceneKey": "Twelve first page",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Water",
+          "role": "Water",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2983",
+          "action": "+1"
+        },
+        {
+          "name": "Read",
+          "role": "Read",
+          "position": [
+            0,
+            56
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2891",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2985",
+          "action": "537:3001"
+        },
+        {
+          "name": "Stretch",
+          "role": "Stretch",
+          "position": [
+            0,
+            112
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2879",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2987",
+          "action": "537:3001"
+        },
+        {
+          "name": "Meditate",
+          "role": "Meditate",
+          "position": [
+            0,
+            168
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2991",
+          "action": "537:3003"
+        },
+        {
+          "name": "Walk",
+          "role": "Walk",
+          "position": [
+            0,
+            224
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2989",
+          "action": "+500"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "2 of 12 done",
+        "1/3"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Twelve middle page",
+      "id": "608:8496",
+      "componentId": "606:7731",
+      "sceneKey": "Twelve middle page",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Wind down",
+          "role": "Steps",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2999",
+          "action": "537:3007"
+        },
+        {
+          "name": "Journal",
+          "role": "Check",
+          "position": [
+            0,
+            56
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2993",
+          "action": "537:3001"
+        },
+        {
+          "name": "Take vitamins",
+          "role": "Task",
+          "position": [
+            0,
+            112
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2993",
+          "action": "537:3001"
+        },
+        {
+          "name": "Pack tomorrow’s bag",
+          "role": "Check",
+          "position": [
+            0,
+            168
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2993",
+          "action": "537:3001"
+        },
+        {
+          "name": "Tidy the kitchen",
+          "role": "Task",
+          "position": [
+            0,
+            224
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2993",
+          "action": "537:3001"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "2 of 12 done",
+        "2/3"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Twelve final page",
+      "id": "608:8571",
+      "componentId": "606:7813",
+      "sceneKey": "Twelve final page",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "No phone at dinner",
+          "role": "Check",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2993",
+          "action": "537:3001"
+        },
+        {
+          "name": "Set clothes out",
+          "role": "Task",
+          "position": [
+            0,
+            56
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2993",
+          "action": "537:3001"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "2 of 12 done",
+        "3/3"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Sixteen first page",
+      "id": "608:8613",
+      "componentId": "606:7855",
+      "sceneKey": "Sixteen first page",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Water",
+          "role": "Water",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2983",
+          "action": "+1"
+        },
+        {
+          "name": "Read",
+          "role": "Read",
+          "position": [
+            0,
+            56
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2891",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2985",
+          "action": "537:3001"
+        },
+        {
+          "name": "Stretch",
+          "role": "Stretch",
+          "position": [
+            0,
+            112
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2879",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2987",
+          "action": "537:3001"
+        },
+        {
+          "name": "Meditate",
+          "role": "Meditate",
+          "position": [
+            0,
+            168
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2991",
+          "action": "537:3003"
+        },
+        {
+          "name": "Walk",
+          "role": "Walk",
+          "position": [
+            0,
+            224
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2989",
+          "action": "+500"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "2 of 16 done",
+        "1/4"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Sixteen final page",
+      "id": "608:8690",
+      "componentId": "607:7751",
+      "sceneKey": "Sixteen final page",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Charge headphones",
+          "role": "Task",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2993",
+          "action": "537:3001"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "2 of 16 done",
+        "4/4"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Completed day",
+      "id": "608:8720",
+      "componentId": "607:8031",
+      "sceneKey": "Completed day",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Read a chapter",
+          "role": "Read",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2891",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2985",
+          "action": "537:3001"
+        },
+        {
+          "name": "Tidy the desk",
+          "role": "Stretch",
+          "position": [
+            0,
+            56
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2879",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2987",
+          "action": "537:3001"
+        },
+        {
+          "name": "Stretch",
+          "role": "Stretch",
+          "position": [
+            0,
+            112
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2879",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2987",
+          "action": "537:3001"
+        },
+        {
+          "name": "Take vitamins",
+          "role": "Read",
+          "position": [
+            0,
+            168
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2891",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2985",
+          "action": "537:3001"
+        },
+        {
+          "name": "Journal",
+          "role": "Stretch",
+          "position": [
+            0,
+            224
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2879",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2987",
+          "action": "537:3001"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "5 of 5 done"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Morning selection",
+      "id": "608:8793",
+      "componentId": "607:7780",
+      "sceneKey": "Morning selection",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Plan the day",
+          "role": "Check",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            58
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2993",
+          "action": "537:3001"
+        },
+        {
+          "name": "Stretch",
+          "role": "Stretch",
+          "position": [
+            0,
+            70
+          ],
+          "size": [
+            306,
+            58
+          ],
+          "done": true,
+          "fill": "509:2879",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2987",
+          "action": "537:3001"
+        },
+        {
+          "name": "Meditate",
+          "role": "Meditate",
+          "position": [
+            0,
+            140
+          ],
+          "size": [
+            306,
+            58
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2991",
+          "action": "537:3003"
+        },
+        {
+          "name": "Water",
+          "role": "Water",
+          "position": [
+            0,
+            210
+          ],
+          "size": [
+            306,
+            58
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2983",
+          "action": "+1"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Morning",
+        "1 of 4 done"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Ongoing first page",
+      "id": "608:8851",
+      "componentId": "607:7842",
+      "sceneKey": "Ongoing first page",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "No smoking",
+          "role": "Quit",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2997",
+          "action": "537:3007"
+        },
+        {
+          "name": "Coffee",
+          "role": "Limit",
+          "position": [
+            0,
+            56
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2995",
+          "action": "+1"
+        },
+        {
+          "name": "Social media",
+          "role": "TimedLimit",
+          "position": [
+            0,
+            112
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2991",
+          "action": "537:3003"
+        },
+        {
+          "name": "Read",
+          "role": "Read",
+          "position": [
+            0,
+            168
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2891",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2985",
+          "action": "537:3001"
+        },
+        {
+          "name": "Daily steps",
+          "role": "HealthSteps",
+          "position": [
+            0,
+            224
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2989",
+          "action": "537:3007"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "1 of 3 done",
+        "1/2"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Ongoing final page",
+      "id": "608:8928",
+      "componentId": "607:7925",
+      "sceneKey": "Ongoing final page",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Wind down",
+          "role": "Steps",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2999",
+          "action": "537:3007"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "1 of 3 done",
+        "2/2"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Long names and goals",
+      "id": "608:8960",
+      "componentId": "607:8121",
+      "sceneKey": "Long names and goals",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Practice a second language",
+          "role": "Check",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            58
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2993",
+          "action": "537:3001"
+        },
+        {
+          "name": "Read a chapter before breakfast",
+          "role": "Read",
+          "position": [
+            0,
+            70
+          ],
+          "size": [
+            306,
+            58
+          ],
+          "done": true,
+          "fill": "509:2891",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2985",
+          "action": "537:3001"
+        },
+        {
+          "name": "Mindful breathing practice",
+          "role": "Meditate",
+          "position": [
+            0,
+            140
+          ],
+          "size": [
+            306,
+            58
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2991",
+          "action": "537:3003"
+        },
+        {
+          "name": "Drink water throughout the day",
+          "role": "Water",
+          "position": [
+            0,
+            210
+          ],
+          "size": [
+            306,
+            58
+          ],
+          "done": false,
+          "fill": "597:7399",
+          "content": [
+            "369:6"
+          ],
+          "icon": "537:2983",
+          "action": "+1"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "1 of 4 done"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Empty day",
+      "id": "608:9018",
+      "componentId": "607:8110",
+      "sceneKey": "Empty day",
+      "dark": false,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [],
+      "targets": [],
+      "header": [
+        "Today",
+        ""
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Dark completed day",
+      "id": "608:9032",
+      "componentId": "607:8031",
+      "sceneKey": "Completed day",
+      "dark": true,
+      "size": [
+        338,
+        354
+      ],
+      "insets": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rowGap": 12,
+      "headerGap": 10,
+      "rows": [
+        {
+          "name": "Read a chapter",
+          "role": "Read",
+          "position": [
+            0,
+            0
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2891",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2985",
+          "action": "537:3001"
+        },
+        {
+          "name": "Tidy the desk",
+          "role": "Stretch",
+          "position": [
+            0,
+            56
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2879",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2987",
+          "action": "537:3001"
+        },
+        {
+          "name": "Stretch",
+          "role": "Stretch",
+          "position": [
+            0,
+            112
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2879",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2987",
+          "action": "537:3001"
+        },
+        {
+          "name": "Take vitamins",
+          "role": "Read",
+          "position": [
+            0,
+            168
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2891",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2985",
+          "action": "537:3001"
+        },
+        {
+          "name": "Journal",
+          "role": "Stretch",
+          "position": [
+            0,
+            224
+          ],
+          "size": [
+            306,
+            44
+          ],
+          "done": true,
+          "fill": "509:2879",
+          "content": [
+            "597:7400"
+          ],
+          "icon": "537:2987",
+          "action": "537:3001"
+        }
+      ],
+      "targets": [
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ],
+        [
+          44,
+          44
+        ]
+      ],
+      "header": [
+        "Today",
+        "5 of 5 done"
+      ],
+      "fonts": [
+        "SF Pro"
+      ]
+    }
+  ],
+  "accepted": {
+    "maximumItemsPerPage": 5,
+    "rowGap": 12,
+    "headerGap": 10
+  },
+  "oldDraftRootsRemoved": true
+}

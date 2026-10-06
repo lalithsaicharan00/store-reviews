@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-06",
+  "baseline": "321562c0518f988ef8bc1be008c0a7b258bd60cb",
+  "latest_commits": [
+    "321562c0518f988ef8bc1be008c0a7b258bd60cb Rulebook: lessons from the routine player fixes (U23 native bottom bar, U24 pager never follows pages it slides past, T12 a check proves itself, T13 UI-test limits count XCUITest's waiting; T1 run size, outages and lost summaries; T2 run the failing test on main; S2 compare implementations in one run; W3 branches the session can't delete); evidence L22",
+    "09d6b6b57a80f78557f97d38a057a88da65e60e4 Merging the Branches: claude/repro-fast-nav-50 is safe to delete (the session can't delete branches)",
+    "85d55db73765aad2f4c778db26b8bc974d4e2c0b Checklist 50-52 tested on GitHub and completed (iPhone check still the user's), 53 intermittent; Rulebook D7 (today is store.today()) and T11 (time-of-day tests use -clock-hour; recordings decoded straight through); branch notes",
+    "f2e70c6dbe1ce137d4c7a169c73f0408405fcb46 Checklist 53: the group drag test fails on main at night (found by the full test; not from this branch)",
+    "64b6afe7dcaae2a8711810a376abb83a15072daa Habit form: a new habit's or task's dates are the app's today, not the calendar's (one added after midnight, before a 3 AM day start, stayed off Today until 3 AM; Current Work 52); -clock-hour for test launches and a test that runs it every time",
+    "b2d562ef659d21c7daad96cf3b7dd7ca12dee61e FocusPlayerUITests: the slow-write navigation test injects 4 s writes and allows 3 s (a wait still fails); › is now a Liquid Glass bar button whose press animation XCUITest waits out (~0.9 s, run 37387468173)",
+    "4ad0e1889005540d4398903dda25f2ff5d657f69 Routine player: fast ‹ › never goes back; pages the pager slides past during the player's own slide are not choices, and a tap during a slide jumps to its habit (Current Work 50); the fast check adds › then ‹ with no pause",
+    "38d1d11ad84155ef71e8029fb355f7e740adee41 Checklist 50: correction, the wrong-side frames were half-decoded frames from seeking into the recording; not reproduced on the simulator so far",
+    "4fe77490b9aa78baec6a641d9f7c043a1fe79b79 Checklist 50: the TabView's recording shows the fast ‹ › glitch (a habit drawn on the wrong side); what was measured and tried",
+    "ad393ba2fdaf208e8ca4a94f6d5cc5a0bfb8f436 Routine player: keep the page TabView (the paging scroll view measured slower: fast ‹ › 15.7 against 5.7 ms/s, and the TabView never slid back in the fast check); keep the native bottom bar and the floating main button",
+    "f60d0092069fa3bce34c6567938003ffb9f6b0a2 Routine player: one pager slide at a time; taps during a slide move the player at once and the pages follow in one slide when it ends (a slide over a running one slid back half a page at 0.05 s taps)",
+    "d5656e82f272f5ca51d4b8de9259e725d30f2bf2 Routine player: the fast ‹ › check samples the pager on screen every frame (the page frames it read didn't move during UIKit slides), in a 13-habit routine at three tap speeds",
+    "72d8fe1e5120841b327e4014a757fc336aa8d9f0 Routine player: a one-way pager (fast ‹ › never slides back) and the native bottom bar, as on Today (Current Work 50, 51)",
+    "94ea994d7cb210a99e30f502856561d678a54501 Routine player: a fast ‹ › check (PagerProbe, DEBUG only) and its UI test, to reproduce Current Work 50 before fixing it",
+    "f0e52f46d8ef4641b247aa8b243d1728777b3440 Merging the Branches: claude/perf-before-day-details is safe to delete"
+  ],
+  "widget_entry_points_checked": [
+    "iOS/Shared/PhoneWidgets.swift",
+    "iOS/Shared/WidgetSnapshot.swift",
+    "iOS/Shared/WidgetIntents.swift",
+    "iOS/Habits/Model/HabitStore+Widgets.swift",
+    "iOS/Habits/Today/TodayRows.swift",
+    "iOS/Habits/Components/Components.swift"
+  ],
+  "changed_widget_entry_points_since_original_catalogue": [],
+  "native_changes_in_this_delivery": false
+}
