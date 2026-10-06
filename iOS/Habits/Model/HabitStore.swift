@@ -2551,6 +2551,17 @@ final class HabitStore {
         await flush()
     }
 
+    /// A fixture's database stays exactly as built: a later launch with no arguments (a widget's or a notification's
+    /// cold background launch) must not add the set of every type above (found by the Home Screen widget test, 6 Oct 2026).
+    func skipEveryTypeToAnytime() async {
+        let key = "test_types_anytime_v1"
+        perform { [self] _ in
+            try await repository.saveSetting(key: key, value: "1")
+            settingKeys.insert(key)
+        }
+        await flush()
+    }
+
     private func buildDemo(now: Date) {
         let today = today(now: now)
         let cal = calendar

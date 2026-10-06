@@ -33,6 +33,7 @@ enum WidgetFixture {
                             dueDay: store.today(), startsOn: start))
         }
         await store.flush()
+        await store.skipEveryTypeToAnytime()
     }
 }
 
