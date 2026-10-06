@@ -73,7 +73,7 @@ final class TodayRowSheetUITests: XCTestCase {
         let expected: [(String, String, [String])] = [
             ("Water", "amount", ["day-add-step", "day-add-entry"]),
             ("Read", "time", ["day-start-timer", "day-add-entry"]),
-            ("Call family", "weekly", ["day-done"]),
+            ("Call family", "weekly", ["day-add-one"]),  // a week count adds a check (Current Work 54)
             ("Smoking", "quit", ["day-add-entry"]),
         ]
         for (name, key, actions) in expected {
