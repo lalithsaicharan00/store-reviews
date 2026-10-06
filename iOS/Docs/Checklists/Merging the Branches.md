@@ -93,6 +93,7 @@ should be merged from them.
 | `claude/gracious-newton-exo5ow` | The rename, now in `main`; also inside `claude/server-and-sync` |
 | `claude/integration-check-b` | Temporary: a copy of `integration` so two halves of the tests could run at once |
 | `claude/perf-bisect-habit-page` | Scratch: the habit page with one part left out per speed scenario (`PerfBisect`). Never merge it |
+| `week-goal-button-squares-key` | **Merged into `main`** 6 Oct 2026 (`97d580b`, a fast-forward) after every touched test class passed on GitHub (runs `37432849062`, `37438879527`, `37446300004`; speed `37450877606`, `37456070731`): Current Work 54, 55, 57 and research 56. Level with `main`: **safe to delete** (the session can't delete branches). `claude/clever-pascal-cql4mo` (the session's assigned branch, never used: the user asked for a meaningful name) is level with an older `main`: **safe to delete** |
 | `claude/server-and-sync` | **Level with `main`, checked 3 Oct** (0 commits ahead). Every commit is in `main` (third round, T3, 1 Oct). The hardening session still pushes there first and moves `main` after each tested step: **safe to delete whenever it's level with `main`** (`git log main..claude/server-and-sync` prints nothing) |
 | `claude/serene-wright-mcvmrx` | Nothing beyond `main` (a session's starting branch); already deleted |
 | `analytics` | Fully in `main` (third round, T4, 2 Oct); already deleted (gone from GitHub by 2 Oct 12:00) |
