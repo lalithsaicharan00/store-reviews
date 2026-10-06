@@ -9,34 +9,34 @@ test it thoroughly and merge it into `main`. Current Work item 9 owns the status
 
 The existing widgets are mostly dummy content; reuse what fits, replace the rest.
 
-- [ ] Build the widgets the way the documentation shows them: spacing, type, colours, states.
-- [ ] **Lock Screen:** circular one habit; rectangular Today; inline.
-- [ ] **Tasks:** a Medium and a Large list.
-- [ ] **Weekly Medium:** one habit, this week.
-- [ ] **Today lists for habits:** Medium and Large. Two lists exist in the mental model, one for habits and one for
+- [x] Build the widgets the way the documentation shows them: spacing, type, colours, states.
+- [x] **Lock Screen:** circular one habit; rectangular Today; inline.
+- [x] **Tasks:** a Medium and a Large list.
+- [x] **Weekly Medium:** one habit, this week.
+- [x] **Today lists for habits:** Medium and Large. Two lists exist in the mental model, one for habits and one for
   tasks; they work the same, one shows habits, the other tasks.
-- [ ] **Choose what a list shows:** Today by default; touch and hold → Edit Widget → choose a specific section
+- [x] **Choose what a list shows:** Today by default; touch and hold → Edit Widget → choose a specific section
   instead. For habits (Large and Medium). For tasks it's our call: built the same way (Today by default, or a section),
   because the spec titles a section view "Morning tasks".
-- [ ] **Pages:** Large lists page above five items, Medium lists above two, whether Today or a section, habits or
+- [x] **Pages:** Large lists page above five items, Medium lists above two, whether Today or a section, habits or
   tasks.
-- [ ] **Small single widget,** one per habit, with a way to choose the habit.
-- [ ] **Same order as the app:** sections in the order Today shows them (Quit or Cut Down first if the person put it
+- [x] **Small single widget,** one per habit, with a way to choose the habit.
+- [x] **Same order as the app:** sections in the order Today shows them (Quit or Cut Down first if the person put it
   first), and inside each section the person's own order. A chosen section keeps that section's order.
-- [ ] **Interactive:** what can log in place logs in place (✓, saved +N).
-- [ ] **A quantity with no saved number:** if possible, tapping should bring up the log screen straight away instead
+- [x] **Interactive:** what can log in place logs in place (✓, saved +N).
+- [x] **A quantity with no saved number:** if possible, tapping should bring up the log screen straight away instead
   of opening the app and finding the screen. (iOS can't show an input over the Home Screen; the closest possible is to
   open the app directly on that habit's amount entry, one tap, no navigation. Do that.)
-- [ ] The same for **steps** (an amount habit counted in steps) and for **quit habits: Record a slip** opens directly.
-- [ ] **Timed habits:** ▶ starts the timer (the in-app timer and the Live Activity / Dynamic Island too); ⏸ stops it
+- [x] The same for **steps** (an amount habit counted in steps) and for **quit habits: Record a slip** opens directly.
+- [x] **Timed habits:** ▶ starts the timer (the in-app timer and the Live Activity / Dynamic Island too); ⏸ stops it
   and saves the time.
-- [ ] **Look:** clean, easy to understand, minimal but useful, the same aesthetic across Small, Medium, Large and the
+- [x] **Look:** clean, easy to understand, minimal but useful, the same aesthetic across Small, Medium, Large and the
   weekly Medium.
-- [ ] **Test every widget type thoroughly:** every widget problem users raised in the reviews and Feature Ledger
+- [x] **Test every widget type thoroughly:** every widget problem users raised in the reviews and Feature Ledger
   cards; performance (S rules); data updating and robustness (D rules).
-- [ ] Note everything; when the build is done, cross-check that every point here was implemented.
-- [ ] When every test passes, **merge into `main`**.
-- [ ] **Test the widgets for reliability** (the user, later the same day): a dedicated stress suite,
+- [x] Note everything; when the build is done, cross-check that every point here was implemented.
+- [x] When every test passes, **merge into `main`**.
+- [x] **Test the widgets for reliability** (the user, later the same day): a dedicated stress suite,
   `WidgetReliabilityCheck` (`-widgetreliability`, `WidgetUITests.testReliabilityUnderBurstsRetriesAndRollover`):
   40 widget + 10 app taps in one burst and 120 retried callbacks out of order (exactly 50, all there after a cold
   start); 21 quick ✓ on/off (one tick); 10 quick ▶/⏸ and repeated ⏸ (one session saved); a button drawn before an edit
@@ -44,11 +44,15 @@ The existing widgets are mostly dummy content; reuse what fits, replace the rest
   done state equal to Progress and Today; 20 overlapping publications (newest on disk, never half written); a
   half-written file, travel and midnight (the new day by itself, yesterday's button refused); a year of history for 12
   habits (size, time, streaks).
-- [ ] **Then the app itself, the same way** (the user: "once widgets are completed check app as well"): time zones and
+- [x] **Then the app itself, the same way** (the user: "once widgets are completed check app as well"): time zones and
   time-zone travel, bursts of taps, retried and out-of-order callbacks (notification and alarm actions, the Live
   Activity's ⏸), ✓ on/off storms, timer start/pause storms, storms of saves and publications (widgets, reminders,
   backup), a year of history, and midnight / day-start rollover. An app reliability suite on CI, after the widgets
   pass.
+
+Tested on GitHub, 6 Oct 2026: run `37525264513` (36/36 UI tests: Widget, AppReliability, Today, Timer, Undo,
+Persistence, Analytics), `37530191993` (real Home Screen install, a cold +1 with the app closed, paging; speed: every
+widget scenario 0.0 ms/s, no freezes). iPhone check (U9): open.
 
 ## Build notes
 

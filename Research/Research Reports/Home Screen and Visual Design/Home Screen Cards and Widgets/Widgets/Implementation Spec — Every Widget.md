@@ -6,6 +6,12 @@ accepted designs (Small, Large and Medium Today lists by Codex, 5–6 Oct) and t
 Medium, Tasks, Lock Screen, and the Small revisions). For each family, the detail lives in its own handoff and in
 Figma; this spec gives the rules, sizes and decisions.
 
+**Built, 6 October 2026 (Claude):** every family below is implemented and tested on GitHub
+(`Shared/WidgetSnapshot.swift`, `Shared/PhoneWidgets.swift`, `Shared/WidgetIntents.swift`,
+`Habits/Model/HabitStore+Widgets.swift`; checks in `WidgetCheck`, `WidgetReliabilityCheck`, `WidgetUITests`,
+`WidgetSystemUITests`). Build notes, the review cross-check and what stays for the iPhone (U9) are in the
+[build checklist](<../../../../../iOS/Docs/Checklists/Widgets — Build, Test and Merge — 6 October 2026.md>).
+
 **Read first:** the [Rulebook](<../../../../../RULEBOOK.md>), especially S5/S16 (speed), D7/D8/D10 (data), U1–U4, U9,
 U13/U14 (design) and T1–T10 (testing), then [Accepted Widget Contract](<Accepted Widget Contract.md>) (per-type
 actions, routes, recovery) and [History and Current Implementation](<History and Current Implementation.md>) plus
