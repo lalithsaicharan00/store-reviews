@@ -77,7 +77,18 @@ final class WidgetSystemUITests: XCTestCase {
         XCTAssertTrue(add.waitForExistence(timeout: 15), springboard.debugDescription)
         add.tap()
         let logged = springboard.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "1 of 3 cups")).firstMatch
-        XCTAssertTrue(logged.waitForExistence(timeout: 30), "The widget shows the committed log\n" + springboard.debugDescription)
+        if !logged.waitForExistence(timeout: 30) {
+            // One line (CI keeps a failure's first line): what the widget shows, and how far the intent got in the app.
+            let shown = springboard.descendants(matching: .any).allElementsBoundByIndex.prefix(300).map(\.label)
+                .filter { $0.contains("Widget") || $0.contains("cups") || $0.contains("page") }.joined(separator: " | ")
+            save(springboard, "home-widget-log-missing")
+            app.launchArguments = ["-empty", "-free", "-dbname", "habits", "-widget-system-verify"]
+            app.launch()
+            let result = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Widget system")).firstMatch
+            _ = result.waitForExistence(timeout: 15)
+            XCTFail("The widget didn't show the committed log. Widget: \(shown). App: \(result.exists ? result.label : "no result")")
+            return
+        }
         save(springboard, "home-widget-after-cold-log")
         // Paging is an extension-side intent and must work while the app remains closed.
         let water = springboard.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "Widget water")).firstMatch

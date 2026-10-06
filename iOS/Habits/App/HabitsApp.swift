@@ -221,7 +221,7 @@ private struct PlacementCheckView: View {
                 if let habit = store.habits.first(where: { $0.name == "Widget cut down" }),
                    store.entries(of: habit.id).filter({ $0.source == .widget }).count == 1 {
                     result = "Widget system: persisted log"
-                } else { result = "Widget system: no durable widget check · " + WidgetDisk.diagnostic }
+                } else { result = "Widget system: no durable widget log · " + WidgetDisk.diagnostic }
                 return
             }
             if arguments.contains("-widgetcheck") {
