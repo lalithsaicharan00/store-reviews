@@ -39,8 +39,45 @@ The existing widgets are mostly dummy content; reuse what fits, replace the rest
 
 ## Build notes
 
-(Filled in as the work goes.)
+- **Kinds** (stable IDs kept where they still fit): `OftenEnough.Item.v1` One habit (Small, Lock Screen circle and
+  line); `OftenEnough.Today.v1` Today list (Medium, Large); `OftenEnough.History.v1` now This week (Medium);
+  `OftenEnough.Tasks.v1` Tasks (Medium, Large, new); `OftenEnough.LockToday.v1` Today on the Lock Screen (rectangle,
+  line). The Icons and History-month widgets are gone (spec §1: icon-only and monthly not built).
+- **Data:** `WidgetSnapshot` v2 (`Shared/WidgetSnapshot.swift`), worked out in `HabitStore+Widgets.swift` from the
+  store's own functions, so a widget says exactly what Today and Progress say. Each habit's seven days are remembered
+  until its data changes (S5); publication still waits 2 s after the last change (S16).
+- **Order:** lists follow `todayCards` (Quit or Cut Down wherever the person put it) and, in each card, the person's
+  order; done rows sink after the pause when Done Habits is Move to Bottom, and stay with Stay in Place. After a widget
+  tap the rows hold still for 1.5 s (`held` / `settle`), then settle (U4, U13).
+- **Choosing:** Edit Widget → Habit (one-habit widgets) or Show → Today or a section (lists), by stable ID. A removed
+  section says Section unavailable; an archived or deleted habit says Habit unavailable; neither is ever replaced.
+- **Buttons:** ✓ toggles the day (a done ✓ unchecks it), +N adds one saved step, ▶/⏸ run the same timer as Today
+  (Live Activity and Dynamic Island included). With Appearance → Open Timer Full Screen on (the default), ▶ opens the
+  app on the running full-screen timer, as Today's ▶ does; off, it starts in place.
+- **Opens directly** (iOS can't show an input over the Home Screen): an amount with no saved step and steps →
+  `oftenenough://log/<id>` (Add Entry sheet); a quit habit → `oftenenough://slip/<id>` (Record a slip); a checklist →
+  its Day details with the named steps; Choose a habit → the Widgets guide.
+- **Not decided here:** paging is per list and size (`kind.family.section`); two identical widgets share a page
+  (WidgetKit gives no per-instance ID). The Lock Screen rectangle under App Lock shows Content hidden, not counts:
+  item 58 decides.
 
 ## Cross-check against the reviews and the Feature Ledger
 
-(Filled in when the tests are written: each widget problem users reported, and the check that covers it.)
+Each widget problem users reported, and the check that covers it (`WidgetCheck`, `WidgetUITests`, `WidgetSystemUITests`):
+
+| Users reported | Ledger | Covered by |
+|---|---|---|
+| Blank or grey widget, "0% all the time", stuck on day 1 | C040 | Corrupt/oversized/unknown-version files → Open to update, never blank; seven day frames, tomorrow starts at 0; after seven days, Open to update |
+| Widget disagrees with the app; false "all done" | C040 | Values come from the store's own functions; the habit list's count equals the day bar's; quit and limits never "left" |
+| Widget ignored the week start | C040 | Weekly squares and day names follow the week-start setting |
+| Deleted habit/task still shown; configuration lost | C040 | Deleted and archived habits leave every widget and can't be logged; choices by stable ID; removed section → Section unavailable |
+| Wrong content (routine widget showed to-dos) | C040 | Habit lists never show tasks, task lists never show habits |
+| Blank on tinted / clear Home Screens | C040 | Accentable icons, fills and buttons; non-colour states (✓, ✕, text); render check in dark; iPhone check (U9) |
+| Colour blocks scrambled | C040 | Week squares by position in the week, Progress's own cells |
+| Check-off opens the app instead of logging | C023 | ✓ and + log in the app's process from a closed app (system test: cold +1, then read from disk) |
+| +1 / incremental widgets removed elsewhere | C023 | +N adds one saved step, stays +N above the goal |
+| Streak on the widget | C023 | "🔥 12" on the weekly widget; hidden when streaks are hidden |
+| Accidental taps record a day | C040 (report 46), C090 | A done ✓ unchecks that day; retried callbacks never log twice; Record a slip only opens its sheet |
+| Destructive reset on a widget | C090 | No reset or delete on any widget; a slip is never logged by a tap |
+| Widgets paywalled | C009 | No Plus checks on any widget (the user, 6 Oct 2026) |
+| Widget lag | C040 | `widget-publish` and `widget-log` speed scenarios (S2) |
