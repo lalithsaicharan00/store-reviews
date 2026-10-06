@@ -1,0 +1,52 @@
+# Final Small widget exports
+
+Written by Codex, 6 October 2026. All 48 PNGs are our own Figma renders after the final typography/recovery revision: 42 cards and six overview/layout/appearance images. Source/user/competitor reference screenshots are not republished. Native/device acceptance remains pending.
+
+- [Daily Cards Overview.png](<Daily Cards Overview.png>) — 1700 × 5360, Figma 537:2981.
+- [Shared Layout.png](<Shared Layout.png>) — 1524 × 390, Figma 545:3359.
+- [Dark Appearance.png](<Dark Appearance.png>) — 1524 × 320, Figma 545:3994.
+- [01 Single check.png](<01 Single check.png>) — 158 × 158, Figma 545:3403.
+- [02 Single checked.png](<02 Single checked.png>) — 158 × 158, Figma 545:3422.
+- [03 Repeated check.png](<03 Repeated check.png>) — 158 × 158, Figma 545:3442.
+- [04 Named check slots.png](<04 Named check slots.png>) — 158 × 158, Figma 545:3463.
+- [05 Saved quantity.png](<05 Saved quantity.png>) — 158 × 158, Figma 545:3483.
+- [06 Above quantity goal.png](<06 Above quantity goal.png>) — 158 × 158, Figma 545:3503.
+- [07 Custom quantity.png](<07 Custom quantity.png>) — 158 × 158, Figma 545:3524.
+- [08 Walking steps manual.png](<08 Walking steps manual.png>) — 158 × 158, Figma 545:3544.
+- [09 Walking steps saved.png](<09 Walking steps saved.png>) — 158 × 158, Figma 545:3564.
+- [10 Timer ready.png](<10 Timer ready.png>) — 158 × 158, Figma 545:3585.
+- [11 Timer running.png](<11 Timer running.png>) — 158 × 158, Figma 545:3605.
+- [12 Timer paused.png](<12 Timer paused.png>) — 158 × 158, Figma 545:3625.
+- [13 Checklist.png](<13 Checklist.png>) — 158 × 158, Figma 545:3645.
+- [14 Many checklist steps.png](<14 Many checklist steps.png>) — 158 × 158, Figma 545:3665.
+- [15 Checklist complete.png](<15 Checklist complete.png>) — 158 × 158, Figma 545:3685.
+- [16 Quit no slips.png](<16 Quit no slips.png>) — 158 × 158, Figma 545:3705.
+- [17 Quit slip recorded.png](<17 Quit slip recorded.png>) — 158 × 158, Figma 545:3725.
+- [18 Daily limit below.png](<18 Daily limit below.png>) — 158 × 158, Figma 545:3745.
+- [19 Daily limit reached.png](<19 Daily limit reached.png>) — 158 × 158, Figma 545:3767.
+- [20 Daily limit exceeded.png](<20 Daily limit exceeded.png>) — 158 × 158, Figma 545:3789.
+- [21 Weekly total goal.png](<21 Weekly total goal.png>) — 158 × 158, Figma 545:3811.
+- [22 Monthly total goal.png](<22 Monthly total goal.png>) — 158 × 158, Figma 545:3831.
+- [23 Flexible daily target.png](<23 Flexible daily target.png>) — 158 × 158, Figma 545:3852.
+- [24 Skipped day.png](<24 Skipped day.png>) — 158 × 158, Figma 545:3872.
+- [25 Paused habit.png](<25 Paused habit.png>) — 158 × 158, Figma 545:3892.
+- [26 Private or locked.png](<26 Private or locked.png>) — 158 × 158, Figma 545:3912.
+- [27 Not planned today.png](<27 Not planned today.png>) — 158 × 158, Figma 545:3932.
+- [28 Removed or stale.png](<28 Removed or stale.png>) — 158 × 158, Figma 545:3952.
+- [29 Long habit name.png](<29 Long habit name.png>) — 158 × 158, Figma 545:3972.
+- [30 Weekly total limit.png](<30 Weekly total limit.png>) — 158 × 158, Figma 549:4061.
+- [31 Monthly total limit.png](<31 Monthly total limit.png>) — 158 × 158, Figma 549:4084.
+- [32 Duration daily limit.png](<32 Duration daily limit.png>) — 158 × 158, Figma 553:4097.
+- [33 Timed limit running.png](<33 Timed limit running.png>) — 158 × 158, Figma 560:4389.
+- [34 Timed limit reached.png](<34 Timed limit reached.png>) — 158 × 158, Figma 560:4413.
+- [35 Timed limit exceeded.png](<35 Timed limit exceeded.png>) — 158 × 158, Figma 560:4437.
+- [36 Quit paused.png](<36 Quit paused.png>) — 158 × 158, Figma 560:4508.
+- [Quit Limits and Period Goals.png](<Quit Limits and Period Goals.png>) — 1524 × 650, Figma 560:4241.
+- [37 Choose a habit.png](<37 Choose a habit.png>) — 158 × 158, Figma 636:7245.
+- [38 No habits yet.png](<38 No habits yet.png>) — 158 × 158, Figma 636:7287.
+- [39 Selection unavailable.png](<39 Selection unavailable.png>) — 158 × 158, Figma 636:7329.
+- [40 Content hidden.png](<40 Content hidden.png>) — 158 × 158, Figma 636:7371.
+- [41 Open to update.png](<41 Open to update.png>) — 158 × 158, Figma 636:7413.
+- [42 Save recovery.png](<42 Save recovery.png>) — 158 × 158, Figma 636:7455.
+- [Recovery States.png](<Recovery States.png>) — 1524 × 980, Figma 637:7418.
+- [Dark Recovery.png](<Dark Recovery.png>) — 1524 × 320, Figma 636:7495.

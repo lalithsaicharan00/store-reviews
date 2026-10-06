@@ -1,0 +1,631 @@
+{
+  "sectionId": "585:4698",
+  "boardId": "608:8033",
+  "focusId": "608:8036",
+  "widgetSetId": "608:8032",
+  "rowSetId": "585:4697",
+  "cards": [
+    {
+      "key": "Today five",
+      "id": "606:7397"
+    },
+    {
+      "key": "Today four",
+      "id": "606:7474"
+    },
+    {
+      "key": "Six first page",
+      "id": "606:7537"
+    },
+    {
+      "key": "Six final page",
+      "id": "606:7619"
+    },
+    {
+      "key": "Twelve first page",
+      "id": "606:7649"
+    },
+    {
+      "key": "Twelve middle page",
+      "id": "606:7731"
+    },
+    {
+      "key": "Twelve final page",
+      "id": "606:7813"
+    },
+    {
+      "key": "Sixteen first page",
+      "id": "606:7855"
+    },
+    {
+      "key": "Sixteen final page",
+      "id": "607:7751"
+    },
+    {
+      "key": "Morning selection",
+      "id": "607:7780"
+    },
+    {
+      "key": "Ongoing first page",
+      "id": "607:7842"
+    },
+    {
+      "key": "Ongoing final page",
+      "id": "607:7925"
+    },
+    {
+      "key": "Five checklist habits",
+      "id": "607:7955"
+    },
+    {
+      "key": "Completed day",
+      "id": "607:8031"
+    },
+    {
+      "key": "Empty day",
+      "id": "607:8110"
+    },
+    {
+      "key": "Long names and goals",
+      "id": "607:8121"
+    }
+  ],
+  "reviews": [
+    {
+      "key": "Today five",
+      "id": "608:8039",
+      "componentId": "606:7397",
+      "sceneKey": "Today five",
+      "dark": false
+    },
+    {
+      "key": "Today four",
+      "id": "608:8110",
+      "componentId": "606:7474",
+      "sceneKey": "Today four",
+      "dark": false
+    },
+    {
+      "key": "Dark today five",
+      "id": "608:8169",
+      "componentId": "606:7397",
+      "sceneKey": "Today five",
+      "dark": true
+    },
+    {
+      "key": "Six first page",
+      "id": "608:8241",
+      "componentId": "606:7537",
+      "sceneKey": "Six first page",
+      "dark": false
+    },
+    {
+      "key": "Six final page",
+      "id": "608:8318",
+      "componentId": "606:7619",
+      "sceneKey": "Six final page",
+      "dark": false
+    },
+    {
+      "key": "Five checklist habits",
+      "id": "608:8349",
+      "componentId": "607:7955",
+      "sceneKey": "Five checklist habits",
+      "dark": false
+    },
+    {
+      "key": "Twelve first page",
+      "id": "608:8419",
+      "componentId": "606:7649",
+      "sceneKey": "Twelve first page",
+      "dark": false
+    },
+    {
+      "key": "Twelve middle page",
+      "id": "608:8496",
+      "componentId": "606:7731",
+      "sceneKey": "Twelve middle page",
+      "dark": false
+    },
+    {
+      "key": "Twelve final page",
+      "id": "608:8571",
+      "componentId": "606:7813",
+      "sceneKey": "Twelve final page",
+      "dark": false
+    },
+    {
+      "key": "Sixteen first page",
+      "id": "608:8613",
+      "componentId": "606:7855",
+      "sceneKey": "Sixteen first page",
+      "dark": false
+    },
+    {
+      "key": "Sixteen final page",
+      "id": "608:8690",
+      "componentId": "607:7751",
+      "sceneKey": "Sixteen final page",
+      "dark": false
+    },
+    {
+      "key": "Completed day",
+      "id": "608:8720",
+      "componentId": "607:8031",
+      "sceneKey": "Completed day",
+      "dark": false
+    },
+    {
+      "key": "Morning selection",
+      "id": "608:8793",
+      "componentId": "607:7780",
+      "sceneKey": "Morning selection",
+      "dark": false
+    },
+    {
+      "key": "Ongoing first page",
+      "id": "608:8851",
+      "componentId": "607:7842",
+      "sceneKey": "Ongoing first page",
+      "dark": false
+    },
+    {
+      "key": "Ongoing final page",
+      "id": "608:8928",
+      "componentId": "607:7925",
+      "sceneKey": "Ongoing final page",
+      "dark": false
+    },
+    {
+      "key": "Long names and goals",
+      "id": "608:8960",
+      "componentId": "607:8121",
+      "sceneKey": "Long names and goals",
+      "dark": false
+    },
+    {
+      "key": "Empty day",
+      "id": "608:9018",
+      "componentId": "607:8110",
+      "sceneKey": "Empty day",
+      "dark": false
+    },
+    {
+      "key": "Dark completed day",
+      "id": "608:9032",
+      "componentId": "607:8031",
+      "sceneKey": "Completed day",
+      "dark": true
+    }
+  ],
+  "scenes": [
+    {
+      "key": "Today five",
+      "title": "Today",
+      "summary": "2 of 5 done",
+      "rows": [
+        "Water",
+        "Read",
+        "Stretch",
+        "Meditate",
+        "Steps"
+      ],
+      "note": "Five items, separated by 12 pt. One clear action per row."
+    },
+    {
+      "key": "Today four",
+      "title": "Today",
+      "summary": "1 of 4 done",
+      "rows": [
+        "Water",
+        "Read",
+        "Meditate",
+        "Steps"
+      ],
+      "note": "Four items get taller rows with the same 12 pt separation."
+    },
+    {
+      "key": "Six first page",
+      "title": "Today",
+      "summary": "2 of 6 done",
+      "page": 1,
+      "pages": 2,
+      "total": 6,
+      "rows": [
+        "Water",
+        "Read",
+        "Stretch",
+        "Meditate",
+        "Walk"
+      ],
+      "note": "More than five shows header paging. Six items use 5 + 1."
+    },
+    {
+      "key": "Six final page",
+      "title": "Today",
+      "summary": "2 of 6 done",
+      "page": 2,
+      "pages": 2,
+      "total": 6,
+      "rows": [
+        "Steps"
+      ],
+      "note": "The final item keeps its first-slot position; page count stays visible."
+    },
+    {
+      "key": "Twelve first page",
+      "title": "Today",
+      "summary": "2 of 12 done",
+      "page": 1,
+      "pages": 3,
+      "total": 12,
+      "rows": [
+        "Water",
+        "Read",
+        "Stretch",
+        "Meditate",
+        "Walk"
+      ],
+      "note": "Twelve items use three pages: 5 + 5 + 2."
+    },
+    {
+      "key": "Twelve middle page",
+      "title": "Today",
+      "summary": "2 of 12 done",
+      "page": 2,
+      "pages": 3,
+      "total": 12,
+      "rows": [
+        "Steps",
+        {
+          "role": "Check",
+          "name": "Journal",
+          "status": "Evening · Not yet"
+        },
+        {
+          "role": "Task",
+          "name": "Take vitamins",
+          "status": "Evening · Not yet"
+        },
+        {
+          "role": "Check",
+          "name": "Pack tomorrow’s bag",
+          "status": "Evening · Not yet"
+        },
+        {
+          "role": "Task",
+          "name": "Tidy the kitchen",
+          "status": "Evening · Not yet"
+        }
+      ],
+      "note": "Both arrows are available. Summary counts the whole view, not this page."
+    },
+    {
+      "key": "Twelve final page",
+      "title": "Today",
+      "summary": "2 of 12 done",
+      "page": 3,
+      "pages": 3,
+      "total": 12,
+      "rows": [
+        {
+          "role": "Check",
+          "name": "No phone at dinner",
+          "status": "Evening · Not yet"
+        },
+        {
+          "role": "Task",
+          "name": "Set clothes out",
+          "status": "Evening · Not yet"
+        }
+      ],
+      "note": "Previous is available; Next is disabled. No silent overflow."
+    },
+    {
+      "key": "Sixteen first page",
+      "title": "Today",
+      "summary": "2 of 16 done",
+      "page": 1,
+      "pages": 4,
+      "total": 16,
+      "rows": [
+        "Water",
+        "Read",
+        "Stretch",
+        "Meditate",
+        "Walk"
+      ],
+      "note": "Sixteen items use four pages: 5 + 5 + 5 + 1."
+    },
+    {
+      "key": "Sixteen final page",
+      "title": "Today",
+      "summary": "2 of 16 done",
+      "page": 4,
+      "pages": 4,
+      "total": 16,
+      "rows": [
+        {
+          "role": "Task",
+          "name": "Charge headphones",
+          "status": "Evening · Not yet"
+        }
+      ],
+      "note": "One final item remains reachable in the same compact grid."
+    },
+    {
+      "key": "Morning selection",
+      "title": "Morning",
+      "summary": "1 of 4 done",
+      "section": true,
+      "rows": [
+        {
+          "role": "Check",
+          "name": "Plan the day",
+          "status": "Not yet"
+        },
+        {
+          "role": "Stretch",
+          "name": "Stretch",
+          "status": "Done"
+        },
+        {
+          "role": "Meditate",
+          "name": "Meditate",
+          "status": "12 of 20 min"
+        },
+        {
+          "role": "Water",
+          "name": "Water",
+          "status": "3 of 8 glasses"
+        }
+      ],
+      "note": "Optional section selection; omit repeated Morning labels and empty sections."
+    },
+    {
+      "key": "Ongoing first page",
+      "title": "Today",
+      "summary": "1 of 3 done",
+      "page": 1,
+      "pages": 2,
+      "total": 6,
+      "rows": [
+        "Quit",
+        "Limit",
+        "TimedLimit",
+        "Read",
+        "HealthSteps"
+      ],
+      "note": "Six visible items overall, only three completable. Quit and limits stay neutral."
+    },
+    {
+      "key": "Ongoing final page",
+      "title": "Today",
+      "summary": "1 of 3 done",
+      "page": 2,
+      "pages": 2,
+      "total": 6,
+      "rows": [
+        "Steps"
+      ],
+      "note": "Named checklist opens its exact steps; never guess the next step."
+    },
+    {
+      "key": "Five checklist habits",
+      "title": "Today",
+      "summary": "2 of 5 done",
+      "rows": [
+        {
+          "role": "Read",
+          "name": "Read a chapter",
+          "status": "Anytime · Done"
+        },
+        {
+          "role": "Task",
+          "name": "Tidy the desk",
+          "status": "Anytime · Not yet"
+        },
+        {
+          "role": "Stretch",
+          "name": "Stretch",
+          "status": "Morning · Done"
+        },
+        {
+          "role": "Check",
+          "name": "Take vitamins",
+          "status": "Morning · Not yet"
+        },
+        {
+          "role": "Check",
+          "name": "Journal",
+          "status": "Evening · Not yet"
+        }
+      ],
+      "note": "One-tap checks. Neutral until done, then habit-color CTA with a white check."
+    },
+    {
+      "key": "Completed day",
+      "title": "Today",
+      "summary": "5 of 5 done",
+      "rows": [
+        {
+          "role": "Read",
+          "name": "Read a chapter",
+          "status": "Anytime · Done"
+        },
+        {
+          "role": "Stretch",
+          "name": "Tidy the desk",
+          "status": "Anytime · Done"
+        },
+        {
+          "role": "Stretch",
+          "name": "Stretch",
+          "status": "Morning · Done"
+        },
+        {
+          "role": "Read",
+          "name": "Take vitamins",
+          "status": "Morning · Done"
+        },
+        {
+          "role": "Stretch",
+          "name": "Journal",
+          "status": "Evening · Done"
+        }
+      ],
+      "note": "Completion stays in place during tapping; later apply the app’s order preference."
+    },
+    {
+      "key": "Empty day",
+      "title": "Today",
+      "summary": "",
+      "rows": [],
+      "note": "An honest empty view with a route to Today; no fake habits or controls."
+    },
+    {
+      "key": "Long names and goals",
+      "title": "Today",
+      "summary": "1 of 4 done",
+      "rows": [
+        {
+          "role": "Check",
+          "name": "Practice a second language",
+          "status": "Morning · Not yet"
+        },
+        {
+          "role": "Read",
+          "name": "Read a chapter before breakfast",
+          "status": "Morning · Done"
+        },
+        {
+          "role": "Meditate",
+          "name": "Mindful breathing practice",
+          "status": "12 min today · 60 min / week"
+        },
+        {
+          "role": "Water",
+          "name": "Drink water throughout the day",
+          "status": "3 today · 90 glasses / month"
+        }
+      ],
+      "periodOnlyRows": [
+        2,
+        3
+      ],
+      "note": "Today contribution and period goal stay distinct; no invented daily fill."
+    }
+  ],
+  "accepted": {
+    "treatment": "Filled only",
+    "maximumItemsPerPage": 5,
+    "rowGap": 12,
+    "headerGap": 10,
+    "logicalSize": [
+      338,
+      354
+    ],
+    "contentInsets": 16
+  },
+  "createdNodeIds": [
+    "608:8032",
+    "608:8033",
+    "608:8034",
+    "608:8035",
+    "608:8036",
+    "608:8037",
+    "608:8038",
+    "608:8039",
+    "608:8107",
+    "608:8108",
+    "608:8109",
+    "608:8110",
+    "608:8166",
+    "608:8167",
+    "608:8168",
+    "608:8169",
+    "608:8237",
+    "608:8238",
+    "608:8239",
+    "608:8240",
+    "608:8241",
+    "608:8315",
+    "608:8316",
+    "608:8317",
+    "608:8318",
+    "608:8346",
+    "608:8347",
+    "608:8348",
+    "608:8349",
+    "608:8415",
+    "608:8416",
+    "608:8417",
+    "608:8418",
+    "608:8419",
+    "608:8493",
+    "608:8494",
+    "608:8495",
+    "608:8496",
+    "608:8568",
+    "608:8569",
+    "608:8570",
+    "608:8571",
+    "608:8609",
+    "608:8610",
+    "608:8611",
+    "608:8612",
+    "608:8613",
+    "608:8687",
+    "608:8688",
+    "608:8689",
+    "608:8690",
+    "608:8717",
+    "608:8718",
+    "608:8719",
+    "608:8720",
+    "608:8789",
+    "608:8790",
+    "608:8791",
+    "608:8792",
+    "608:8793",
+    "608:8848",
+    "608:8849",
+    "608:8850",
+    "608:8851",
+    "608:8925",
+    "608:8926",
+    "608:8927",
+    "608:8928",
+    "608:8956",
+    "608:8957",
+    "608:8958",
+    "608:8959",
+    "608:8960",
+    "608:9015",
+    "608:9016",
+    "608:9017",
+    "608:9018",
+    "608:9029",
+    "608:9030",
+    "608:9031",
+    "608:9032",
+    "608:9101"
+  ],
+  "mutatedNodeIds": [
+    "585:4698",
+    "I608:8169;606:7406;585:4562",
+    "I608:8169;606:7418;585:4573",
+    "I608:8169;606:7432;585:4585",
+    "I608:8169;606:7446;585:4597",
+    "I608:8169;606:7460;585:4620",
+    "I608:9032;607:8040;585:4573",
+    "I608:9032;607:8054;585:4585",
+    "I608:9032;607:8068;585:4585",
+    "I608:9032;607:8082;585:4573",
+    "I608:9032;607:8096;585:4585"
+  ],
+  "removedRootIds": [
+    "587:6133",
+    "587:6132"
+  ]
+}

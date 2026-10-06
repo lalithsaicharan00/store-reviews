@@ -7,7 +7,7 @@ import struct
 import zlib
 
 ROOT = next(parent for parent in Path(__file__).resolve().parents if (parent / "RULEBOOK.md").exists())
-BASE = ROOT / "Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widget Catalogue Study — 5 October 2026"
+BASE = ROOT / "Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets"
 
 
 def check_png(path, metadata):
@@ -42,7 +42,10 @@ def main():
             assert path not in named, path
             named.add(path)
             check_png(path, row)
-    assert named == set(BASE.rglob("*.png")), "Unlisted or missing PNG export"
+    # The original catalogue manifest covers its own boards and Images folder.
+    # Dated follow-up studies have independent manifests and validators.
+    catalogue_pngs = set(BASE.glob("*.png")) | set((BASE / "Images").glob("*.png"))
+    assert named == catalogue_pngs, "Unlisted or missing catalogue PNG export"
 
     documents = list(BASE.rglob("*.md")) + [
         ROOT / "Research/Tools/widget_catalogue/README.md",

@@ -1,0 +1,2801 @@
+{
+  "date": "2026-10-06",
+  "cards": [
+    {
+      "key": "Today two",
+      "id": "622:6443",
+      "componentId": "621:6382",
+      "sceneKey": "Today two",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Today"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "1 of 2 done"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Water",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2983",
+          "action": "+1",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "Anytime · 3 of 8 glasses",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 117.75,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2873"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Read",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2985",
+          "action": "537:3001",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "509:2891"
+          ],
+          "ctaContent": [
+            [
+              "597:7400"
+            ]
+          ],
+          "status": {
+            "text": "Anytime · Done",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 314,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2891"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Morning two",
+      "id": "622:6479",
+      "componentId": "621:6534",
+      "sceneKey": "Morning two",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Morning"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "1 of 2 done"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Stretch",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2987",
+          "action": "537:3001",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "509:2879"
+          ],
+          "ctaContent": [
+            [
+              "597:7400"
+            ]
+          ],
+          "status": {
+            "text": "Done",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 314,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2879"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Water",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2983",
+          "action": "+1",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "3 of 8 glasses",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 117.75,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2873"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Dark Today",
+      "id": "622:6515",
+      "componentId": "621:6382",
+      "sceneKey": "Today two",
+      "dark": true,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Today"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "1 of 2 done"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Water",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2983",
+          "action": "+1",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "Anytime · 3 of 8 glasses",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 117.75,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.25999999046325684,
+              "color": [
+                "509:2873"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Read",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2985",
+          "action": "537:3001",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "509:2891"
+          ],
+          "ctaContent": [
+            [
+              "597:7400"
+            ]
+          ],
+          "status": {
+            "text": "Anytime · Done",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 314,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.25999999046325684,
+              "color": [
+                "509:2891"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Today five first",
+      "id": "622:6552",
+      "componentId": "621:6418",
+      "sceneKey": "Today five first",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Today"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "2 of 5 done"
+        },
+        {
+          "name": "Page indicator",
+          "text": "1/3"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            182,
+            44
+          ],
+          "opacity": 1
+        },
+        {
+          "name": "44 pt previous page",
+          "bounds": [
+            202,
+            1,
+            44,
+            44
+          ],
+          "opacity": 0.2199999988079071
+        },
+        {
+          "name": "44 pt next page",
+          "bounds": [
+            282,
+            1,
+            44,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Water",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2983",
+          "action": "+1",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "Anytime · 3 of 8 glasses",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 117.75,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2873"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Read",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2985",
+          "action": "537:3001",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "509:2891"
+          ],
+          "ctaContent": [
+            [
+              "597:7400"
+            ]
+          ],
+          "status": {
+            "text": "Anytime · Done",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 314,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2891"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Today five middle",
+      "id": "622:6594",
+      "componentId": "621:6460",
+      "sceneKey": "Today five middle",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Today"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "2 of 5 done"
+        },
+        {
+          "name": "Page indicator",
+          "text": "2/3"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            182,
+            44
+          ],
+          "opacity": 1
+        },
+        {
+          "name": "44 pt previous page",
+          "bounds": [
+            202,
+            1,
+            44,
+            44
+          ],
+          "opacity": 1
+        },
+        {
+          "name": "44 pt next page",
+          "bounds": [
+            282,
+            1,
+            44,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Stretch",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2987",
+          "action": "537:3001",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "509:2879"
+          ],
+          "ctaContent": [
+            [
+              "597:7400"
+            ]
+          ],
+          "status": {
+            "text": "Morning · Done",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 314,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2879"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Meditate",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2991",
+          "action": "537:3003",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "Morning · 12 of 20 min",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 188.40000915527344,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2885"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Today five final",
+      "id": "622:6637",
+      "componentId": "621:6504",
+      "sceneKey": "Today five final",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Today"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "2 of 5 done"
+        },
+        {
+          "name": "Page indicator",
+          "text": "3/3"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            182,
+            44
+          ],
+          "opacity": 1
+        },
+        {
+          "name": "44 pt previous page",
+          "bounds": [
+            202,
+            1,
+            44,
+            44
+          ],
+          "opacity": 1
+        },
+        {
+          "name": "44 pt next page",
+          "bounds": [
+            282,
+            1,
+            44,
+            44
+          ],
+          "opacity": 0.2199999988079071
+        }
+      ],
+      "rows": [
+        {
+          "name": "Wind down",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2999",
+          "action": "537:3007",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "Evening · 2 of 5 steps",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 125.5999984741211,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2885"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Morning three first",
+      "id": "622:6669",
+      "componentId": "621:6570",
+      "sceneKey": "Morning three first",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Morning"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "1 of 3 done"
+        },
+        {
+          "name": "Page indicator",
+          "text": "1/2"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            182,
+            44
+          ],
+          "opacity": 1
+        },
+        {
+          "name": "44 pt previous page",
+          "bounds": [
+            202,
+            1,
+            44,
+            44
+          ],
+          "opacity": 0.2199999988079071
+        },
+        {
+          "name": "44 pt next page",
+          "bounds": [
+            282,
+            1,
+            44,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Plan the day",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2993",
+          "action": "537:3001",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "Not yet",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": []
+        },
+        {
+          "name": "Stretch",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2987",
+          "action": "537:3001",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "509:2879"
+          ],
+          "ctaContent": [
+            [
+              "597:7400"
+            ]
+          ],
+          "status": {
+            "text": "Done",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 314,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2879"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Morning three final",
+      "id": "622:6711",
+      "componentId": "621:6613",
+      "sceneKey": "Morning three final",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Morning"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "1 of 3 done"
+        },
+        {
+          "name": "Page indicator",
+          "text": "2/2"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            182,
+            44
+          ],
+          "opacity": 1
+        },
+        {
+          "name": "44 pt previous page",
+          "bounds": [
+            202,
+            1,
+            44,
+            44
+          ],
+          "opacity": 1
+        },
+        {
+          "name": "44 pt next page",
+          "bounds": [
+            282,
+            1,
+            44,
+            44
+          ],
+          "opacity": 0.2199999988079071
+        }
+      ],
+      "rows": [
+        {
+          "name": "Meditate",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2991",
+          "action": "537:3003",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "12 of 20 min",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 188.40000915527344,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2885"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Anytime",
+      "id": "622:6742",
+      "componentId": "621:6643",
+      "sceneKey": "Anytime",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Anytime"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "0 of 2 done"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Water",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2983",
+          "action": "+1",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "3 of 8 glasses",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 117.75,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2873"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Daily steps",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2989",
+          "action": "537:3007",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "3.2k of 8k steps",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 125.5999984741211,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2873"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Evening",
+      "id": "622:6779",
+      "componentId": "621:6679",
+      "sceneKey": "Evening",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Evening"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "0 of 2 done"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Wind down",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2999",
+          "action": "537:3007",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "2 of 5 steps",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 125.5999984741211,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2885"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Journal",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2993",
+          "action": "537:3001",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "Not yet",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": []
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Custom section and goals",
+      "id": "622:6815",
+      "componentId": "621:6716",
+      "sceneKey": "Custom section and goals",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Late afternoon"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "0 of 2 done"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Mindful breathing",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2991",
+          "action": "537:3003",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "12 today · 60 min / week",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 188.40000915527344,
+              "height": 44,
+              "visible": false,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2885"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Drink enough water",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2983",
+          "action": "+1",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "3 today · 90 glasses / month",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 117.75,
+              "height": 44,
+              "visible": false,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2873"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Quit and cut down",
+      "id": "622:6851",
+      "componentId": "621:6752",
+      "sceneKey": "Quit and cut down",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Quit or Cut Down"
+        },
+        {
+          "name": "Page indicator",
+          "text": "1/2"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            182,
+            44
+          ],
+          "opacity": 1
+        },
+        {
+          "name": "44 pt previous page",
+          "bounds": [
+            202,
+            1,
+            44,
+            44
+          ],
+          "opacity": 0.2199999988079071
+        },
+        {
+          "name": "44 pt next page",
+          "bounds": [
+            282,
+            1,
+            44,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "No smoking",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2997",
+          "action": "537:3007",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "15d 22:36:35",
+            "font": "Semibold",
+            "size": 17,
+            "height": 20,
+            "line": 20,
+            "styleId": "S:8a65e4f5d8f936b8d8d187b36f10894d5df52447,"
+          },
+          "progress": []
+        },
+        {
+          "name": "Coffee",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2995",
+          "action": "+1",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "1 of 2 cups · Daily limit",
+            "font": "Semibold",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:fc53e3b52ade5f04cbcc22a44ccd36d507332766,"
+          },
+          "progress": []
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Timed limit final",
+      "id": "622:6893",
+      "componentId": "621:6793",
+      "sceneKey": "Timed limit final",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Quit or Cut Down"
+        },
+        {
+          "name": "Page indicator",
+          "text": "2/2"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            182,
+            44
+          ],
+          "opacity": 1
+        },
+        {
+          "name": "44 pt previous page",
+          "bounds": [
+            202,
+            1,
+            44,
+            44
+          ],
+          "opacity": 1
+        },
+        {
+          "name": "44 pt next page",
+          "bounds": [
+            282,
+            1,
+            44,
+            44
+          ],
+          "opacity": 0.2199999988079071
+        }
+      ],
+      "rows": [
+        {
+          "name": "Social media",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2991",
+          "action": "537:3003",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "20 of 20 min · Limit reached",
+            "font": "Semibold",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:fc53e3b52ade5f04cbcc22a44ccd36d507332766,"
+          },
+          "progress": []
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Running timer and manual steps",
+      "id": "622:6922",
+      "componentId": "621:6821",
+      "sceneKey": "Running timer and manual steps",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Today"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "0 of 2 done"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Focus",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2991",
+          "action": "537:3005",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "Morning · 18:24 of 30 min",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 192.57620239257812,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2885"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Walk",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2989",
+          "action": "+500",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "Afternoon · 3.2k of 8k steps",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 125.5999984741211,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2873"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Completed inputs",
+      "id": "622:6958",
+      "componentId": "621:6857",
+      "sceneKey": "Completed inputs",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Today"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "2 of 2 done"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Water",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2983",
+          "action": "+1",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "509:2873"
+          ],
+          "ctaContent": [
+            [
+              "597:7400"
+            ]
+          ],
+          "status": {
+            "text": "Anytime · 9 of 8 glasses",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 314,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2873"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Wind down",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2999",
+          "action": "537:3007",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "509:2885"
+          ],
+          "ctaContent": [
+            [
+              "597:7400"
+            ]
+          ],
+          "status": {
+            "text": "Evening · 5 of 5 steps",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 314,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2885"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "One habit",
+      "id": "622:6995",
+      "componentId": "621:6893",
+      "sceneKey": "One habit",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Today"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "0 of 1 done"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Water",
+          "bounds": [
+            12,
+            46,
+            314,
+            100
+          ],
+          "icon": "537:2983",
+          "action": "+1",
+          "actionBounds": [
+            274,
+            74,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "Anytime · 3 of 8 glasses",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 117.75,
+              "height": 100,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2873"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Long supported names",
+      "id": "622:7019",
+      "componentId": "621:6915",
+      "sceneKey": "Long supported names",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Early morning"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "1 of 2 done"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Read before breakfast",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2985",
+          "action": "537:3001",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "509:2891"
+          ],
+          "ctaContent": [
+            [
+              "597:7400"
+            ]
+          ],
+          "status": {
+            "text": "Done",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 314,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2891"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Practice a new language",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2993",
+          "action": "537:3001",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "Not yet",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": []
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Dark Completed",
+      "id": "622:7055",
+      "componentId": "621:6857",
+      "sceneKey": "Completed inputs",
+      "dark": true,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Today"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "2 of 2 done"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Water",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2983",
+          "action": "+1",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "509:2873"
+          ],
+          "ctaContent": [
+            [
+              "597:7400"
+            ]
+          ],
+          "status": {
+            "text": "Anytime · 9 of 8 glasses",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 314,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.25999999046325684,
+              "color": [
+                "509:2873"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Wind down",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2999",
+          "action": "537:3007",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "509:2885"
+          ],
+          "ctaContent": [
+            [
+              "597:7400"
+            ]
+          ],
+          "status": {
+            "text": "Evening · 5 of 5 steps",
+            "font": "Regular",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:102fa402d3f167e17cf340a86daf87e089764a24,"
+          },
+          "progress": [
+            {
+              "width": 314,
+              "height": 44,
+              "visible": true,
+              "opacity": 0.25999999046325684,
+              "color": [
+                "509:2885"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Empty Today",
+      "id": "622:7092",
+      "componentId": "621:6952",
+      "sceneKey": "Empty Today",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 4,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Today"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Empty Morning",
+      "id": "622:7106",
+      "componentId": "621:6963",
+      "sceneKey": "Empty Morning",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 4,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Morning"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Section unavailable",
+      "id": "622:7120",
+      "componentId": "621:6974",
+      "sceneKey": "Section unavailable",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 4,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Morning"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Private",
+      "id": "622:7135",
+      "componentId": "621:6985",
+      "sceneKey": "Private",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 4,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Today"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            314,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Larger text",
+      "id": "622:7149",
+      "componentId": "621:6996",
+      "sceneKey": "Larger text",
+      "dark": false,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Morning"
+        },
+        {
+          "name": "Whole-view day progress",
+          "text": "1 of 3 done"
+        },
+        {
+          "name": "Page indicator",
+          "text": "1/3"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            182,
+            44
+          ],
+          "opacity": 1
+        },
+        {
+          "name": "44 pt previous page",
+          "bounds": [
+            202,
+            1,
+            44,
+            44
+          ],
+          "opacity": 0.2199999988079071
+        },
+        {
+          "name": "44 pt next page",
+          "bounds": [
+            282,
+            1,
+            44,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "Drink enough water",
+          "bounds": [
+            12,
+            46,
+            314,
+            100
+          ],
+          "icon": "537:2983",
+          "action": "+1",
+          "actionBounds": [
+            274,
+            74,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "3 of 8 glasses",
+            "font": "Regular",
+            "size": 17,
+            "height": 22,
+            "line": 22,
+            "styleId": ""
+          },
+          "progress": [
+            {
+              "width": 117.75,
+              "height": 100,
+              "visible": true,
+              "opacity": 0.15000000596046448,
+              "color": [
+                "509:2873"
+              ]
+            }
+          ]
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    },
+    {
+      "key": "Dark Quit",
+      "id": "622:7179",
+      "componentId": "621:6752",
+      "sceneKey": "Quit and cut down",
+      "dark": true,
+      "size": [
+        338,
+        158
+      ],
+      "insets": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "headerHeight": 22,
+      "headerGap": 12,
+      "rowGap": 12,
+      "header": [
+        {
+          "name": "View title",
+          "text": "Quit or Cut Down"
+        },
+        {
+          "name": "Page indicator",
+          "text": "1/2"
+        }
+      ],
+      "headerTargets": [
+        {
+          "name": "44 pt Open selected view",
+          "bounds": [
+            12,
+            1,
+            182,
+            44
+          ],
+          "opacity": 1
+        },
+        {
+          "name": "44 pt previous page",
+          "bounds": [
+            202,
+            1,
+            44,
+            44
+          ],
+          "opacity": 0.2199999988079071
+        },
+        {
+          "name": "44 pt next page",
+          "bounds": [
+            282,
+            1,
+            44,
+            44
+          ],
+          "opacity": 1
+        }
+      ],
+      "rows": [
+        {
+          "name": "No smoking",
+          "bounds": [
+            12,
+            46,
+            314,
+            44
+          ],
+          "icon": "537:2997",
+          "action": "537:3007",
+          "actionBounds": [
+            274,
+            46,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "15d 22:36:35",
+            "font": "Semibold",
+            "size": 17,
+            "height": 20,
+            "line": 20,
+            "styleId": "S:8a65e4f5d8f936b8d8d187b36f10894d5df52447,"
+          },
+          "progress": []
+        },
+        {
+          "name": "Coffee",
+          "bounds": [
+            12,
+            102,
+            314,
+            44
+          ],
+          "icon": "537:2995",
+          "action": "+1",
+          "actionBounds": [
+            274,
+            102,
+            44,
+            44
+          ],
+          "ctaFill": [
+            "597:7399"
+          ],
+          "ctaContent": [
+            [
+              "369:6"
+            ]
+          ],
+          "status": {
+            "text": "1 of 2 cups · Daily limit",
+            "font": "Semibold",
+            "size": 13,
+            "height": 16,
+            "line": 16,
+            "styleId": "S:fc53e3b52ade5f04cbcc22a44ccd36d507332766,"
+          },
+          "progress": []
+        }
+      ],
+      "clipping": [],
+      "fonts": [
+        "SF Pro"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "file": "Free Widgets.png",
+    "node_id": "509:3114",
+    "width": 1920,
+    "height": 2173,
+    "bytes": 303177,
+    "sha256": "ed1b7ea48417a757952271818de7d8049d53dcb9c46f5f8176682df1db4df823",
+    "scope": "Final composition export; conceptual rendering and system UI proxies; native/device checks pending"
+  },
+  {
+    "file": "Paid Widgets.png",
+    "node_id": "509:3116",
+    "width": 1920,
+    "height": 2632,
+    "bytes": 350862,
+    "sha256": "f61ac2e2ebeb6096e5b0f5edd28881d95c435ab5345f3b849f275fede1dee622",
+    "scope": "Final composition export; conceptual rendering and system UI proxies; native/device checks pending"
+  }
+]

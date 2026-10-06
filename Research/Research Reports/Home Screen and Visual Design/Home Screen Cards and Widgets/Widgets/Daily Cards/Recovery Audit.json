@@ -1,0 +1,374 @@
+{
+  "date": "2026-10-06",
+  "cards": [
+    {
+      "file": "37 Choose a habit.png",
+      "node_id": "636:7245",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I636:7245;636:7118",
+          "text": "Edit Widget",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Choose a habit",
+      "value": "Not selected",
+      "value_fits": true,
+      "value_natural_width": 91,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I636:7245;636:7116;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48673,
+            "y": 4997,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "38 No habits yet.png",
+      "node_id": "636:7287",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I636:7287;636:7139",
+          "text": "Create a habit",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "No habits yet",
+      "value": "Start in the app",
+      "value_fits": true,
+      "value_natural_width": 110,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I636:7287;636:7137;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48977,
+            "y": 4997,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "39 Selection unavailable.png",
+      "node_id": "636:7329",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I636:7329;636:7160",
+          "text": "Edit Widget",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Choose habit",
+      "value": "Habit unavailable",
+      "value_fits": true,
+      "value_natural_width": 121,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I636:7329;636:7158;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49281,
+            "y": 4997,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "40 Content hidden.png",
+      "node_id": "636:7371",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I636:7371;636:7181",
+          "text": "Open app",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Content hidden",
+      "value": "Private",
+      "value_fits": true,
+      "value_natural_width": 49,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I636:7371;636:7179;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49585,
+            "y": 4997,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "41 Open to update.png",
+      "node_id": "636:7413",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I636:7413;636:7203",
+          "text": "Open app",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Open to update",
+      "value": "Data unavailable",
+      "value_fits": true,
+      "value_natural_width": 117,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I636:7413;636:7201;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 49889,
+            "y": 4997,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    },
+    {
+      "file": "42 Save recovery.png",
+      "node_id": "636:7455",
+      "size": [
+        158,
+        158
+      ],
+      "captions": [
+        {
+          "id": "I636:7455;636:7224",
+          "text": "Open app",
+          "size": 12,
+          "font": "Medium",
+          "style": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+          "inside": true
+        }
+      ],
+      "name": "Couldn’t save",
+      "value": "Check in the app",
+      "value_fits": true,
+      "value_natural_width": 120,
+      "value_available_width": 126,
+      "action_targets": [
+        {
+          "id": "I636:7455;636:7222;547:3868",
+          "width": 44,
+          "height": 44,
+          "bounds": {
+            "x": 48673,
+            "y": 5299,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
+    }
+  ],
+  "dark": [
+    {
+      "id": "636:7497",
+      "texts": [
+        {
+          "text": "􀋲",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "􀄯",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "Choose a habit",
+          "size": 17,
+          "font": "Semibold"
+        },
+        {
+          "text": "Not selected",
+          "size": 15,
+          "font": "Regular"
+        },
+        {
+          "text": "Edit Widget",
+          "size": 12,
+          "font": "Medium"
+        }
+      ]
+    },
+    {
+      "id": "636:7499",
+      "texts": [
+        {
+          "text": "􀋲",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "􀄯",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "Choose habit",
+          "size": 17,
+          "font": "Semibold"
+        },
+        {
+          "text": "Habit unavailable",
+          "size": 15,
+          "font": "Regular"
+        },
+        {
+          "text": "Edit Widget",
+          "size": 12,
+          "font": "Medium"
+        }
+      ]
+    },
+    {
+      "id": "636:7501",
+      "texts": [
+        {
+          "text": "􀎡",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "􀎡",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "Content hidden",
+          "size": 17,
+          "font": "Semibold"
+        },
+        {
+          "text": "Private",
+          "size": 15,
+          "font": "Regular"
+        },
+        {
+          "text": "Open app",
+          "size": 12,
+          "font": "Medium"
+        }
+      ]
+    },
+    {
+      "id": "636:7503",
+      "texts": [
+        {
+          "text": "􀋲",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "􀄯",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "Open to update",
+          "size": 17,
+          "font": "Semibold"
+        },
+        {
+          "text": "Data unavailable",
+          "size": 15,
+          "font": "Regular"
+        },
+        {
+          "text": "Open app",
+          "size": 12,
+          "font": "Medium"
+        }
+      ]
+    },
+    {
+      "id": "636:7505",
+      "texts": [
+        {
+          "text": "􀋲",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "􀄯",
+          "size": 24,
+          "font": "Regular"
+        },
+        {
+          "text": "Couldn’t save",
+          "size": 17,
+          "font": "Semibold"
+        },
+        {
+          "text": "Check in the app",
+          "size": 15,
+          "font": "Regular"
+        },
+        {
+          "text": "Open app",
+          "size": 12,
+          "font": "Medium"
+        }
+      ]
+    }
+  ],
+  "native_validation": "Pending"
+}

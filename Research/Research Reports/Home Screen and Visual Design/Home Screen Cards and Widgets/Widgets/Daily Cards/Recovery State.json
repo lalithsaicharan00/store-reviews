@@ -1,0 +1,253 @@
+{
+  "createdNodeIds": [
+    "636:7114",
+    "636:7115",
+    "636:7116",
+    "636:7117",
+    "636:7118",
+    "636:7135",
+    "636:7136",
+    "636:7137",
+    "636:7138",
+    "636:7139",
+    "636:7156",
+    "636:7157",
+    "636:7158",
+    "636:7159",
+    "636:7160",
+    "636:7177",
+    "636:7178",
+    "636:7179",
+    "636:7180",
+    "636:7181",
+    "636:7199",
+    "636:7200",
+    "636:7201",
+    "636:7202",
+    "636:7203",
+    "636:7220",
+    "636:7221",
+    "636:7222",
+    "636:7223",
+    "636:7224",
+    "636:7241",
+    "636:7242",
+    "636:7243",
+    "636:7244",
+    "636:7245",
+    "636:7246",
+    "636:7285",
+    "636:7286",
+    "636:7287",
+    "636:7288",
+    "636:7327",
+    "636:7328",
+    "636:7329",
+    "636:7330",
+    "636:7369",
+    "636:7370",
+    "636:7371",
+    "636:7372",
+    "636:7411",
+    "636:7412",
+    "636:7413",
+    "636:7414",
+    "636:7453",
+    "636:7454",
+    "636:7455",
+    "636:7456",
+    "636:7495",
+    "636:7496",
+    "636:7497",
+    "636:7498",
+    "636:7499",
+    "636:7500",
+    "636:7501",
+    "636:7502",
+    "636:7503",
+    "636:7504",
+    "636:7505",
+    "636:7506"
+  ],
+  "mutatedNodeIds": [
+    "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+    "540:3222",
+    "540:3236",
+    "540:3250",
+    "540:3264",
+    "540:3278",
+    "540:3292",
+    "540:3305",
+    "540:3333",
+    "540:3347",
+    "540:3361",
+    "540:3375",
+    "540:3389",
+    "560:4114",
+    "560:4137",
+    "560:4160",
+    "560:4183",
+    "560:4206",
+    "509:2963",
+    "509:2970",
+    "509:2977",
+    "509:2984",
+    "537:2982",
+    "537:2981",
+    "I549:4061;540:3250",
+    "I549:4084;540:3250",
+    "545:3993"
+  ],
+  "style": {
+    "id": "S:48ab282aa77e651b1c49cc3c8f47c838052df7c0,",
+    "size": 12,
+    "font": {
+      "family": "SF Pro",
+      "style": "Medium",
+      "variationSettings": {
+        "wght": 510,
+        "wdth": 100
+      }
+    }
+  },
+  "setId": "636:7241",
+  "reviews": [
+    {
+      "key": "Choose a habit",
+      "name": "Choose a habit",
+      "value": "Not selected",
+      "caption": "Edit Widget",
+      "route": "System Edit Widget: select a stable habit UUID.",
+      "node_id": "636:7245",
+      "component_id": "636:7114",
+      "file": "37 Choose a habit.png",
+      "kind": "card"
+    },
+    {
+      "key": "No habits yet",
+      "name": "No habits yet",
+      "value": "Start in the app",
+      "caption": "Create a habit",
+      "route": "Open the app to create a habit; then configure this widget.",
+      "node_id": "636:7287",
+      "component_id": "636:7135",
+      "file": "38 No habits yet.png",
+      "kind": "card"
+    },
+    {
+      "key": "Selection unavailable",
+      "name": "Choose habit",
+      "value": "Habit unavailable",
+      "caption": "Edit Widget",
+      "route": "System Edit Widget; never substitute another habit.",
+      "node_id": "636:7329",
+      "component_id": "636:7156",
+      "file": "39 Selection unavailable.png",
+      "kind": "card"
+    },
+    {
+      "key": "Content hidden",
+      "name": "Content hidden",
+      "value": "Private",
+      "caption": "Open app",
+      "route": "Authenticate in the app. Reveal no name, icon, value or notes.",
+      "node_id": "636:7371",
+      "component_id": "636:7177",
+      "file": "40 Content hidden.png",
+      "kind": "card"
+    },
+    {
+      "key": "Open to update",
+      "name": "Open to update",
+      "value": "Data unavailable",
+      "caption": "Open app",
+      "route": "Open app to refresh shared data; no speculative success.",
+      "node_id": "636:7413",
+      "component_id": "636:7199",
+      "file": "41 Open to update.png",
+      "kind": "card"
+    },
+    {
+      "key": "Save recovery",
+      "name": "Couldn’t save",
+      "value": "Check in the app",
+      "caption": "Open app",
+      "route": "Reload committed data; no automatic retry and no false completed state.",
+      "node_id": "636:7455",
+      "component_id": "636:7220",
+      "file": "42 Save recovery.png",
+      "kind": "card"
+    }
+  ],
+  "darkId": "636:7495",
+  "sectionId": "537:2981",
+  "focus": {
+    "createdNodeIds": [
+      "637:7418",
+      "637:7419",
+      "637:7424"
+    ],
+    "mutatedNodeIds": [
+      "636:7116",
+      "636:7137",
+      "636:7158",
+      "636:7179",
+      "636:7201",
+      "636:7222",
+      "636:7242",
+      "636:7243",
+      "636:7285",
+      "636:7327",
+      "636:7369",
+      "636:7411",
+      "636:7453",
+      "636:7495"
+    ],
+    "focusId": "637:7418",
+    "bounds": {
+      "x": 48575,
+      "y": 4891,
+      "width": 1524,
+      "height": 980
+    }
+  },
+  "fix": {
+    "mutatedNodeIds": [
+      "636:7158",
+      "I636:7497;636:7116",
+      "I636:7499;636:7158",
+      "I636:7501;636:7179",
+      "I636:7503;636:7201",
+      "I636:7505;636:7222",
+      "636:7496",
+      "636:7498",
+      "636:7500",
+      "636:7502",
+      "636:7504",
+      "636:7506"
+    ],
+    "createdNodeIds": [],
+    "darkRoots": [
+      {
+        "id": "636:7497",
+        "key": "Choose a habit"
+      },
+      {
+        "id": "636:7499",
+        "key": "Selection unavailable"
+      },
+      {
+        "id": "636:7501",
+        "key": "Content hidden"
+      },
+      {
+        "id": "636:7503",
+        "key": "Open to update"
+      },
+      {
+        "id": "636:7505",
+        "key": "Save recovery"
+      }
+    ]
+  }
+}

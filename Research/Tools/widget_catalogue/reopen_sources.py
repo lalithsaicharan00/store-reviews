@@ -4,14 +4,14 @@ sys.stdout.reconfigure(encoding='utf-8')
 root = next(p for p in pathlib.Path(__file__).resolve().parents if (p/'RULEBOOK.md').exists())
 research = root / 'Research'
 base = research / 'Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets'
-out = base / 'Widget Catalogue Study — 5 October 2026'
+out = base / 'Widgets'
 out.mkdir(exist_ok=True)
 report = (base / 'Home Screen Cards and Widgets.md').read_text(encoding='utf-8')
 sections = report[report.index('## 6. Widgets'):report.index('## 7.')]
 index = report[report.index('**Widgets**', report.index('## 9.')):]
 free = (research / 'Research Reports/Business Model and Monetization/Free Plan Design — Habit Cap, Widgets and an Honest Listing.md').read_text(encoding='utf-8')
 free = free[free.index('## 6. Widgets'):free.index('## 7. Apple Watch')]
-previous = json.loads((base / 'iPhone Widget Evidence/primary_reviews.json').read_text(encoding='utf-8'))
+previous = json.loads((base / 'Widgets/Historical Research/iPhone Widget Evidence/primary_reviews.json').read_text(encoding='utf-8'))
 refs = set(re.findall(r'[AP]\d+#\d+', sections + index + free)) | {r['ref'] for r in previous}
 files = {}
 for prefix, folder in [('A','App Store Reviews'),('P','Play Store Reviews')]:

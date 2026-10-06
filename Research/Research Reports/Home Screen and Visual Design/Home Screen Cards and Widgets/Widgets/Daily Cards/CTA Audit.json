@@ -1,0 +1,833 @@
+{
+  "date": "2026-10-06",
+  "cards": [
+    {
+      "file": "01 Single check.png",
+      "id": "545:3403",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀆅",
+              "text": "􀆅",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "02 Single checked.png",
+      "id": "545:3422",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:509:2885"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀆅",
+              "text": "􀆅",
+              "fill": [
+                "VariableID:597:7400"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "03 Repeated check.png",
+      "id": "545:3442",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "+1",
+              "text": "+1",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "04 Named check slots.png",
+      "id": "545:3463",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "05 Saved quantity.png",
+      "id": "545:3483",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "+1",
+              "text": "+1",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "06 Above quantity goal.png",
+      "id": "545:3503",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:509:2873"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "+1",
+              "text": "+1",
+              "fill": [
+                "VariableID:597:7400"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "07 Custom quantity.png",
+      "id": "545:3524",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "08 Walking steps manual.png",
+      "id": "545:3544",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "09 Walking steps saved.png",
+      "id": "545:3564",
+      "controls": [
+        {
+          "name": "76 pt exact-increment action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "+1",
+              "text": "+500",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "10 Timer ready.png",
+      "id": "545:3585",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀊄",
+              "text": "􀊄",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "11 Timer running.png",
+      "id": "545:3605",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀊆",
+              "text": "􀊆",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "12 Timer paused.png",
+      "id": "545:3625",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀊄",
+              "text": "􀊄",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "13 Checklist.png",
+      "id": "545:3645",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "14 Many checklist steps.png",
+      "id": "545:3665",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "15 Checklist complete.png",
+      "id": "545:3685",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:509:2873"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:597:7400"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "16 Quit no slips.png",
+      "id": "545:3705",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "17 Quit slip recorded.png",
+      "id": "545:3725",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "18 Daily limit below.png",
+      "id": "545:3745",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "+1",
+              "text": "+1",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "19 Daily limit reached.png",
+      "id": "545:3767",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "+1",
+              "text": "+1",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "20 Daily limit exceeded.png",
+      "id": "545:3789",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "+1",
+              "text": "+1",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "21 Weekly total goal.png",
+      "id": "545:3811",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀊄",
+              "text": "􀊄",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "22 Monthly total goal.png",
+      "id": "545:3831",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "+1",
+              "text": "+1",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "23 Flexible daily target.png",
+      "id": "545:3852",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀊄",
+              "text": "􀊄",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "24 Skipped day.png",
+      "id": "545:3872",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "25 Paused habit.png",
+      "id": "545:3892",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "26 Private or locked.png",
+      "id": "545:3912",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "27 Not planned today.png",
+      "id": "545:3932",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "28 Removed or stale.png",
+      "id": "545:3952",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "29 Long habit name.png",
+      "id": "545:3972",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "30 Weekly total limit.png",
+      "id": "549:4061",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "+1",
+              "text": "+1",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "31 Monthly total limit.png",
+      "id": "549:4084",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "+1",
+              "text": "+1",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "32 Duration daily limit.png",
+      "id": "553:4097",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀊄",
+              "text": "􀊄",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "33 Timed limit running.png",
+      "id": "560:4389",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀊆",
+              "text": "􀊆",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "34 Timed limit reached.png",
+      "id": "560:4413",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀊄",
+              "text": "􀊄",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "35 Timed limit exceeded.png",
+      "id": "560:4437",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀊄",
+              "text": "􀊄",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file": "36 Quit paused.png",
+      "id": "560:4508",
+      "controls": [
+        {
+          "name": "44 pt action",
+          "visible": true,
+          "fill": [
+            "VariableID:597:7399"
+          ],
+          "strokes": 0,
+          "content": [
+            {
+              "name": "􀄯",
+              "text": "􀄯",
+              "fill": [
+                "VariableID:369:6"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

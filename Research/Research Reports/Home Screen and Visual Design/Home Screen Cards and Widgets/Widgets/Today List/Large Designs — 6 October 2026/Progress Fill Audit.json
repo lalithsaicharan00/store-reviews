@@ -1,0 +1,407 @@
+[
+  {
+    "key": "Today five",
+    "id": "608:8039",
+    "fills": [
+      {
+        "name": "Today progress / 0.375",
+        "visible": true,
+        "width": 114.75,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 0.6",
+        "visible": true,
+        "width": 183.60000610351562,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 0.4",
+        "visible": true,
+        "width": 122.4000015258789,
+        "opacity": 0.15000000596046448
+      }
+    ]
+  },
+  {
+    "key": "Today four",
+    "id": "608:8110",
+    "fills": [
+      {
+        "name": "Today progress / 0.375",
+        "visible": true,
+        "width": 114.75,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 0.6",
+        "visible": true,
+        "width": 183.60000610351562,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 0.4",
+        "visible": true,
+        "width": 122.4000015258789,
+        "opacity": 0.15000000596046448
+      }
+    ]
+  },
+  {
+    "key": "Dark today five",
+    "id": "608:8169",
+    "fills": [
+      {
+        "name": "Today progress / 0.375",
+        "visible": true,
+        "width": 114.75,
+        "opacity": 0.25999999046325684
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.25999999046325684
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.25999999046325684
+      },
+      {
+        "name": "Today progress / 0.6",
+        "visible": true,
+        "width": 183.60000610351562,
+        "opacity": 0.25999999046325684
+      },
+      {
+        "name": "Today progress / 0.4",
+        "visible": true,
+        "width": 122.4000015258789,
+        "opacity": 0.25999999046325684
+      }
+    ]
+  },
+  {
+    "key": "Six first page",
+    "id": "608:8241",
+    "fills": [
+      {
+        "name": "Today progress / 0.375",
+        "visible": true,
+        "width": 114.75,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 0.6",
+        "visible": true,
+        "width": 183.60000610351562,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 0.4",
+        "visible": true,
+        "width": 122.4000015258789,
+        "opacity": 0.15000000596046448
+      }
+    ]
+  },
+  {
+    "key": "Six final page",
+    "id": "608:8318",
+    "fills": [
+      {
+        "name": "Today progress / 0.4",
+        "visible": true,
+        "width": 122.4000015258789,
+        "opacity": 0.15000000596046448
+      }
+    ]
+  },
+  {
+    "key": "Five checklist habits",
+    "id": "608:8349",
+    "fills": [
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      }
+    ]
+  },
+  {
+    "key": "Twelve first page",
+    "id": "608:8419",
+    "fills": [
+      {
+        "name": "Today progress / 0.375",
+        "visible": true,
+        "width": 114.75,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 0.6",
+        "visible": true,
+        "width": 183.60000610351562,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 0.4",
+        "visible": true,
+        "width": 122.4000015258789,
+        "opacity": 0.15000000596046448
+      }
+    ]
+  },
+  {
+    "key": "Twelve middle page",
+    "id": "608:8496",
+    "fills": [
+      {
+        "name": "Today progress / 0.4",
+        "visible": true,
+        "width": 122.4000015258789,
+        "opacity": 0.15000000596046448
+      }
+    ]
+  },
+  {
+    "key": "Twelve final page",
+    "id": "608:8571",
+    "fills": []
+  },
+  {
+    "key": "Sixteen first page",
+    "id": "608:8613",
+    "fills": [
+      {
+        "name": "Today progress / 0.375",
+        "visible": true,
+        "width": 114.75,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 0.6",
+        "visible": true,
+        "width": 183.60000610351562,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 0.4",
+        "visible": true,
+        "width": 122.4000015258789,
+        "opacity": 0.15000000596046448
+      }
+    ]
+  },
+  {
+    "key": "Sixteen final page",
+    "id": "608:8690",
+    "fills": []
+  },
+  {
+    "key": "Completed day",
+    "id": "608:8720",
+    "fills": [
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      }
+    ]
+  },
+  {
+    "key": "Morning selection",
+    "id": "608:8793",
+    "fills": [
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 0.6",
+        "visible": true,
+        "width": 183.60000610351562,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 0.375",
+        "visible": true,
+        "width": 114.75,
+        "opacity": 0.15000000596046448
+      }
+    ]
+  },
+  {
+    "key": "Ongoing first page",
+    "id": "608:8851",
+    "fills": [
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      },
+      {
+        "name": "Today progress / 0.4",
+        "visible": true,
+        "width": 122.4000015258789,
+        "opacity": 0.15000000596046448
+      }
+    ]
+  },
+  {
+    "key": "Ongoing final page",
+    "id": "608:8928",
+    "fills": [
+      {
+        "name": "Today progress / 0.4",
+        "visible": true,
+        "width": 122.4000015258789,
+        "opacity": 0.15000000596046448
+      }
+    ]
+  },
+  {
+    "key": "Long names and goals",
+    "id": "608:8960",
+    "fills": [
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.15000000596046448
+      }
+    ]
+  },
+  {
+    "key": "Empty day",
+    "id": "608:9018",
+    "fills": []
+  },
+  {
+    "key": "Dark completed day",
+    "id": "608:9032",
+    "fills": [
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.25999999046325684
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.25999999046325684
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.25999999046325684
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.25999999046325684
+      },
+      {
+        "name": "Today progress / 1",
+        "visible": true,
+        "width": 306,
+        "opacity": 0.25999999046325684
+      }
+    ]
+  }
+]

@@ -1,0 +1,2112 @@
+{
+  "file_key": "Ncccsm1l2O62GJ5xLSInqk",
+  "page_id": "234:2",
+  "section_id": "537:2981",
+  "component_set": "540:3003",
+  "content_component": "543:3135",
+  "native_source_shell": "507:2287",
+  "cards": [
+    {
+      "key": "Single check",
+      "component_id": "540:2974",
+      "card_id": "545:3403",
+      "name": "Read",
+      "value": "Not checked",
+      "value_natural_width": 88,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Single checked",
+      "component_id": "540:2975",
+      "card_id": "545:3422",
+      "name": "Read",
+      "value": "Checked",
+      "value_natural_width": 61,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Repeated check",
+      "component_id": "540:2976",
+      "card_id": "545:3442",
+      "name": "Stretch",
+      "value": "1 of 3 checks",
+      "value_natural_width": 91,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Named check slots",
+      "component_id": "540:2977",
+      "card_id": "545:3463",
+      "name": "Brush teeth",
+      "value": "1 of 2 checks",
+      "value_natural_width": 91,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Saved quantity",
+      "component_id": "540:2978",
+      "card_id": "545:3483",
+      "name": "Water",
+      "value": "3 of 8 glasses",
+      "value_natural_width": 97,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Above quantity goal",
+      "component_id": "540:2979",
+      "card_id": "545:3503",
+      "name": "Water",
+      "value": "9 of 8 glasses",
+      "value_natural_width": 97,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Custom quantity",
+      "component_id": "540:2980",
+      "card_id": "545:3524",
+      "name": "Distance",
+      "value": "2 of 5 km",
+      "value_natural_width": 65,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Walking steps manual",
+      "component_id": "540:2981",
+      "card_id": "545:3544",
+      "name": "Walk",
+      "value": "4.2k of 8k steps",
+      "value_natural_width": 111,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Walking steps saved",
+      "component_id": "540:2982",
+      "card_id": "545:3564",
+      "name": "Walk",
+      "value": "4.2k of 8k steps",
+      "value_natural_width": 111,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 76,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Timer ready",
+      "component_id": "540:2983",
+      "card_id": "545:3585",
+      "name": "Focus",
+      "value": "12 of 30 min",
+      "value_natural_width": 85,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Timer running",
+      "component_id": "540:2984",
+      "card_id": "545:3605",
+      "name": "Focus",
+      "value": "18:24 of 30 min",
+      "value_natural_width": 108,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Timer paused",
+      "component_id": "540:2985",
+      "card_id": "545:3625",
+      "name": "Focus",
+      "value": "18 of 30 min",
+      "value_natural_width": 86,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Checklist",
+      "component_id": "540:2986",
+      "card_id": "545:3645",
+      "name": "Morning routine",
+      "value": "2 of 5 steps",
+      "value_natural_width": 82,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Many checklist steps",
+      "component_id": "540:2987",
+      "card_id": "545:3665",
+      "name": "Training",
+      "value": "5 of 100 steps",
+      "value_natural_width": 98,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Checklist complete",
+      "component_id": "540:2988",
+      "card_id": "545:3685",
+      "name": "Morning routine",
+      "value": "5 of 5 steps",
+      "value_natural_width": 82,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Quit no slips",
+      "component_id": "540:2989",
+      "card_id": "545:3705",
+      "name": "Smoking",
+      "value": "15d 22:36:35",
+      "value_natural_width": 108,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Best 45 days",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Quit slip recorded",
+      "component_id": "540:2990",
+      "card_id": "545:3725",
+      "name": "Smoking",
+      "value": "0d 00:04:12",
+      "value_natural_width": 98,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Best 45 days",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Daily limit below",
+      "component_id": "540:2991",
+      "card_id": "545:3745",
+      "name": "Coffee",
+      "value": "1 of 2 cups",
+      "value_natural_width": 75,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Daily limit",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Daily limit reached",
+      "component_id": "540:2992",
+      "card_id": "545:3767",
+      "name": "Coffee",
+      "value": "2 of 2 cups",
+      "value_natural_width": 77,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Limit reached",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Daily limit exceeded",
+      "component_id": "540:2993",
+      "card_id": "545:3789",
+      "name": "Coffee",
+      "value": "3 of 2 cups",
+      "value_natural_width": 78,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Over the limit",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Weekly total goal",
+      "component_id": "540:2994",
+      "card_id": "545:3811",
+      "name": "Read",
+      "value": "3 h a week",
+      "value_natural_width": 74,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "12 min today",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Monthly total goal",
+      "component_id": "540:2995",
+      "card_id": "545:3831",
+      "name": "Practice",
+      "value": "10 times a month",
+      "value_natural_width": 118,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "2 checks today",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Flexible daily target",
+      "component_id": "540:2996",
+      "card_id": "545:3852",
+      "name": "Focus",
+      "value": "12 of 30 min",
+      "value_natural_width": 85,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    },
+    {
+      "key": "Skipped day",
+      "component_id": "540:2997",
+      "card_id": "545:3872",
+      "name": "Water",
+      "value": "3 glasses today",
+      "value_natural_width": 108,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Skipped today",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Paused habit",
+      "component_id": "540:2998",
+      "card_id": "545:3892",
+      "name": "Read",
+      "value": "Paused",
+      "value_natural_width": 51,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Tracking paused",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Private or locked",
+      "component_id": "540:2999",
+      "card_id": "545:3912",
+      "name": "Habit",
+      "value": "Unlock to view",
+      "value_natural_width": 101,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Private",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Not planned today",
+      "component_id": "540:3000",
+      "card_id": "545:3932",
+      "name": "Stretch",
+      "value": "Not planned",
+      "value_natural_width": 84,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Not planned",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Removed or stale",
+      "component_id": "540:3001",
+      "card_id": "545:3952",
+      "name": "Habit unavailable",
+      "value": "Open to choose",
+      "value_natural_width": 110,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Choose a habit",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Long habit name",
+      "component_id": "540:3002",
+      "card_id": "545:3972",
+      "name": "Physiotherapy stretches",
+      "value": "2 of 5 steps",
+      "value_natural_width": 82,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": null,
+      "capsule_typography": null
+    }
+  ],
+  "geometry": [
+    {
+      "id": "VariableID:537:2975",
+      "name": "primitive/group-gap",
+      "values": {
+        "537:0": 11
+      },
+      "scopes": [],
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:537:2976",
+      "name": "daily-widget/group-gap",
+      "values": {
+        "537:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:537:2975"
+        }
+      },
+      "scopes": [
+        "GAP"
+      ],
+      "codeSyntax": {
+        "WEB": "var(--daily-widget-group-gap)"
+      }
+    },
+    {
+      "id": "VariableID:537:2977",
+      "name": "primitive/widget-radius",
+      "values": {
+        "537:0": 28
+      },
+      "scopes": [],
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:537:2978",
+      "name": "daily-widget/widget-radius",
+      "values": {
+        "537:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:537:2977"
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "codeSyntax": {
+        "WEB": "var(--daily-widget-widget-radius)"
+      }
+    },
+    {
+      "id": "VariableID:537:2979",
+      "name": "primitive/progress-radius",
+      "values": {
+        "537:0": 9
+      },
+      "scopes": [],
+      "codeSyntax": {}
+    },
+    {
+      "id": "VariableID:537:2980",
+      "name": "daily-widget/progress-radius",
+      "values": {
+        "537:0": {
+          "type": "VARIABLE_ALIAS",
+          "id": "VariableID:537:2979"
+        }
+      },
+      "scopes": [
+        "CORNER_RADIUS"
+      ],
+      "codeSyntax": {
+        "WEB": "var(--daily-widget-progress-radius)"
+      }
+    }
+  ],
+  "existing_sections": [
+    {
+      "id": "509:3114",
+      "name": "Free widgets · research proposal · 5 October 2026",
+      "x": 43590,
+      "y": 711,
+      "w": 1840,
+      "h": 2093
+    },
+    {
+      "id": "509:3116",
+      "name": "Paid widgets · research proposal · 5 October 2026",
+      "x": 45630,
+      "y": 711,
+      "w": 1840,
+      "h": 2552
+    }
+  ],
+  "counts": {
+    "semantic_variants": 29,
+    "numeric_value_overflows": 0,
+    "unequal_insets": 0,
+    "small_action_targets": 0,
+    "additional_scope_examples": 3,
+    "supplemental_cards": 4
+  },
+  "native_validation": "Not performed; design proposal only",
+  "board": {
+    "section_id": "537:2981",
+    "hero_id": "545:3359",
+    "dark_id": "545:3994",
+    "cards": [
+      {
+        "key": "Single check",
+        "node_id": "545:3403",
+        "cell_id": "545:3401",
+        "component_id": "540:2974"
+      },
+      {
+        "key": "Single checked",
+        "node_id": "545:3422",
+        "cell_id": "545:3420",
+        "component_id": "540:2975"
+      },
+      {
+        "key": "Repeated check",
+        "node_id": "545:3442",
+        "cell_id": "545:3440",
+        "component_id": "540:2976"
+      },
+      {
+        "key": "Named check slots",
+        "node_id": "545:3463",
+        "cell_id": "545:3461",
+        "component_id": "540:2977"
+      },
+      {
+        "key": "Saved quantity",
+        "node_id": "545:3483",
+        "cell_id": "545:3481",
+        "component_id": "540:2978"
+      },
+      {
+        "key": "Above quantity goal",
+        "node_id": "545:3503",
+        "cell_id": "545:3501",
+        "component_id": "540:2979"
+      },
+      {
+        "key": "Custom quantity",
+        "node_id": "545:3524",
+        "cell_id": "545:3522",
+        "component_id": "540:2980"
+      },
+      {
+        "key": "Walking steps manual",
+        "node_id": "545:3544",
+        "cell_id": "545:3542",
+        "component_id": "540:2981"
+      },
+      {
+        "key": "Walking steps saved",
+        "node_id": "545:3564",
+        "cell_id": "545:3562",
+        "component_id": "540:2982"
+      },
+      {
+        "key": "Timer ready",
+        "node_id": "545:3585",
+        "cell_id": "545:3583",
+        "component_id": "540:2983"
+      },
+      {
+        "key": "Timer running",
+        "node_id": "545:3605",
+        "cell_id": "545:3603",
+        "component_id": "540:2984"
+      },
+      {
+        "key": "Timer paused",
+        "node_id": "545:3625",
+        "cell_id": "545:3623",
+        "component_id": "540:2985"
+      },
+      {
+        "key": "Checklist",
+        "node_id": "545:3645",
+        "cell_id": "545:3643",
+        "component_id": "540:2986"
+      },
+      {
+        "key": "Many checklist steps",
+        "node_id": "545:3665",
+        "cell_id": "545:3663",
+        "component_id": "540:2987"
+      },
+      {
+        "key": "Checklist complete",
+        "node_id": "545:3685",
+        "cell_id": "545:3683",
+        "component_id": "540:2988"
+      },
+      {
+        "key": "Quit no slips",
+        "node_id": "545:3705",
+        "cell_id": "545:3703",
+        "component_id": "540:2989"
+      },
+      {
+        "key": "Quit slip recorded",
+        "node_id": "545:3725",
+        "cell_id": "545:3723",
+        "component_id": "540:2990"
+      },
+      {
+        "key": "Daily limit below",
+        "node_id": "545:3745",
+        "cell_id": "545:3743",
+        "component_id": "540:2991"
+      },
+      {
+        "key": "Daily limit reached",
+        "node_id": "545:3767",
+        "cell_id": "545:3765",
+        "component_id": "540:2992"
+      },
+      {
+        "key": "Daily limit exceeded",
+        "node_id": "545:3789",
+        "cell_id": "545:3787",
+        "component_id": "540:2993"
+      },
+      {
+        "key": "Weekly total goal",
+        "node_id": "545:3811",
+        "cell_id": "545:3809",
+        "component_id": "540:2994"
+      },
+      {
+        "key": "Monthly total goal",
+        "node_id": "545:3831",
+        "cell_id": "545:3829",
+        "component_id": "540:2995"
+      },
+      {
+        "key": "Flexible daily target",
+        "node_id": "545:3852",
+        "cell_id": "545:3850",
+        "component_id": "540:2996"
+      },
+      {
+        "key": "Skipped day",
+        "node_id": "545:3872",
+        "cell_id": "545:3870",
+        "component_id": "540:2997"
+      },
+      {
+        "key": "Paused habit",
+        "node_id": "545:3892",
+        "cell_id": "545:3890",
+        "component_id": "540:2998"
+      },
+      {
+        "key": "Private or locked",
+        "node_id": "545:3912",
+        "cell_id": "545:3910",
+        "component_id": "540:2999"
+      },
+      {
+        "key": "Not planned today",
+        "node_id": "545:3932",
+        "cell_id": "545:3930",
+        "component_id": "540:3000"
+      },
+      {
+        "key": "Removed or stale",
+        "node_id": "545:3952",
+        "cell_id": "545:3950",
+        "component_id": "540:3001"
+      },
+      {
+        "key": "Long habit name",
+        "node_id": "545:3972",
+        "cell_id": "545:3970",
+        "component_id": "540:3002"
+      }
+    ],
+    "dark_samples": [
+      {
+        "key": "Timer running",
+        "node_id": "545:3996"
+      },
+      {
+        "key": "Many checklist steps",
+        "node_id": "545:4014"
+      },
+      {
+        "key": "Daily limit below",
+        "node_id": "545:4032"
+      },
+      {
+        "key": "Quit no slips",
+        "node_id": "545:4051"
+      }
+    ],
+    "dimensions": {
+      "width": 1620,
+      "height": 4180
+    },
+    "existing_sections_preserved": [
+      "509:3114",
+      "509:3116"
+    ],
+    "revision_panel": "560:4241"
+  },
+  "scope_examples": [
+    {
+      "key": "Weekly total limit",
+      "node_id": "549:4061",
+      "reuses_component": "540:2991",
+      "appearance": "Light",
+      "value": "1 cup today",
+      "capsule": "Weekly limit",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Monthly total limit",
+      "node_id": "549:4084",
+      "reuses_component": "540:2991",
+      "appearance": "Dark",
+      "value": "1 cup today",
+      "capsule": "Monthly limit",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Duration daily limit",
+      "node_id": "553:4097",
+      "reuses_component": "560:4109",
+      "appearance": "Light",
+      "value": "10 of 20 min",
+      "capsule": "Daily limit",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    }
+  ],
+  "content_properties": {
+    "name": "Habit name#543:14",
+    "value": "Today value#543:15",
+    "habit": "Habit icon#543:16",
+    "action": "Action icon#543:17",
+    "label": "Action label#543:18",
+    "numberVisible": "Number visible#543:19",
+    "glyphVisible": "Glyph visible#543:20",
+    "wideNumber": "Wide number visible#547:0",
+    "circle": "Circle visible#547:1",
+    "wide": "Wide control visible#547:2"
+  },
+  "supplemental_cards": [
+    {
+      "key": "Timed daily limit running",
+      "component_id": "560:4132",
+      "card_id": "560:4389",
+      "name": "Social media",
+      "value": "12:36 of 20 min",
+      "value_natural_width": 108,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Daily limit",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Timed daily limit reached",
+      "component_id": "560:4155",
+      "card_id": "560:4413",
+      "name": "Social media",
+      "value": "20 of 20 min",
+      "value_natural_width": 87,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Limit reached",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Timed daily limit exceeded",
+      "component_id": "560:4178",
+      "card_id": "560:4437",
+      "name": "Social media",
+      "value": "25 of 20 min",
+      "value_natural_width": 87,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 15
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Over the limit",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    },
+    {
+      "key": "Quit paused",
+      "component_id": "560:4202",
+      "card_id": "560:4508",
+      "name": "Smoking",
+      "value": "Paused",
+      "value_natural_width": 60,
+      "value_available_width": 126,
+      "value_fits": true,
+      "insets": {
+        "left": 16,
+        "top": 16,
+        "right": 16,
+        "bottom": 16
+      },
+      "group_positions": {
+        "header_y": 16,
+        "name_y": 71,
+        "value_y": 93,
+        "capsule_y": 124
+      },
+      "action_targets": [
+        {
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "fonts": [
+        {
+          "family": "SF Pro",
+          "style": "Regular",
+          "size": 24
+        },
+        {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "size": 17
+        },
+        {
+          "family": "SF Pro",
+          "style": "Medium",
+          "size": 12
+        }
+      ],
+      "shell_is_instance": true,
+      "bound_inset": true,
+      "capsule": "Best 45 days",
+      "capsule_typography": {
+        "size": 12,
+        "style": "Medium"
+      }
+    }
+  ],
+  "revision": {
+    "elapsed_format": "15d 22:36:35",
+    "time_limit_component_set": "560:4201",
+    "paused_quit_component": "560:4202",
+    "audited_main": "f0e52f46d8ef4641b247aa8b243d1728777b3440"
+  },
+  "latest_typography_audit": "Typography Audit.json",
+  "latest_recovery_audit": "Recovery Audit.json"
+}

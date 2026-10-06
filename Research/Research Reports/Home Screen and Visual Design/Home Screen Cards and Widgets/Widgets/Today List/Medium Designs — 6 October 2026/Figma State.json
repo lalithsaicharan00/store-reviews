@@ -1,0 +1,2093 @@
+{
+  "sectionId": "622:6436",
+  "boardId": "622:6437",
+  "focusId": "622:6440",
+  "widgetSetId": "622:6435",
+  "rowSetId": "585:4697",
+  "cards": [
+    {
+      "key": "Today two",
+      "id": "621:6382",
+      "rows": 2,
+      "capacity": 2,
+      "paged": false,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Today five first",
+      "id": "621:6418",
+      "rows": 2,
+      "capacity": 2,
+      "paged": true,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Today five middle",
+      "id": "621:6460",
+      "rows": 2,
+      "capacity": 2,
+      "paged": true,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Today five final",
+      "id": "621:6504",
+      "rows": 1,
+      "capacity": 2,
+      "paged": true,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Morning two",
+      "id": "621:6534",
+      "rows": 2,
+      "capacity": 2,
+      "paged": false,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Morning three first",
+      "id": "621:6570",
+      "rows": 2,
+      "capacity": 2,
+      "paged": true,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Morning three final",
+      "id": "621:6613",
+      "rows": 1,
+      "capacity": 2,
+      "paged": true,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Anytime",
+      "id": "621:6643",
+      "rows": 2,
+      "capacity": 2,
+      "paged": false,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Evening",
+      "id": "621:6679",
+      "rows": 2,
+      "capacity": 2,
+      "paged": false,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Custom section and goals",
+      "id": "621:6716",
+      "rows": 2,
+      "capacity": 2,
+      "paged": false,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Quit and cut down",
+      "id": "621:6752",
+      "rows": 2,
+      "capacity": 2,
+      "paged": true,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Timed limit final",
+      "id": "621:6793",
+      "rows": 1,
+      "capacity": 2,
+      "paged": true,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Running timer and manual steps",
+      "id": "621:6821",
+      "rows": 2,
+      "capacity": 2,
+      "paged": false,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Completed inputs",
+      "id": "621:6857",
+      "rows": 2,
+      "capacity": 2,
+      "paged": false,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "One habit",
+      "id": "621:6893",
+      "rows": 1,
+      "capacity": 2,
+      "paged": false,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Long supported names",
+      "id": "621:6915",
+      "rows": 2,
+      "capacity": 2,
+      "paged": false,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Empty Today",
+      "id": "621:6952",
+      "rows": 0,
+      "capacity": 2,
+      "paged": false,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Empty Morning",
+      "id": "621:6963",
+      "rows": 0,
+      "capacity": 2,
+      "paged": false,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Section unavailable",
+      "id": "621:6974",
+      "rows": 0,
+      "capacity": 2,
+      "paged": false,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Private",
+      "id": "621:6985",
+      "rows": 0,
+      "capacity": 2,
+      "paged": false,
+      "size": [
+        338,
+        158
+      ]
+    },
+    {
+      "key": "Larger text",
+      "id": "621:6996",
+      "rows": 1,
+      "capacity": 1,
+      "paged": true,
+      "size": [
+        338,
+        158
+      ]
+    }
+  ],
+  "reviews": [
+    {
+      "key": "Today two",
+      "id": "622:6443",
+      "componentId": "621:6382",
+      "sceneKey": "Today two",
+      "dark": false
+    },
+    {
+      "key": "Morning two",
+      "id": "622:6479",
+      "componentId": "621:6534",
+      "sceneKey": "Morning two",
+      "dark": false
+    },
+    {
+      "key": "Dark Today",
+      "id": "622:6515",
+      "componentId": "621:6382",
+      "sceneKey": "Today two",
+      "dark": true
+    },
+    {
+      "key": "Today five first",
+      "id": "622:6552",
+      "componentId": "621:6418",
+      "sceneKey": "Today five first",
+      "dark": false
+    },
+    {
+      "key": "Today five middle",
+      "id": "622:6594",
+      "componentId": "621:6460",
+      "sceneKey": "Today five middle",
+      "dark": false
+    },
+    {
+      "key": "Today five final",
+      "id": "622:6637",
+      "componentId": "621:6504",
+      "sceneKey": "Today five final",
+      "dark": false
+    },
+    {
+      "key": "Morning three first",
+      "id": "622:6669",
+      "componentId": "621:6570",
+      "sceneKey": "Morning three first",
+      "dark": false
+    },
+    {
+      "key": "Morning three final",
+      "id": "622:6711",
+      "componentId": "621:6613",
+      "sceneKey": "Morning three final",
+      "dark": false
+    },
+    {
+      "key": "Anytime",
+      "id": "622:6742",
+      "componentId": "621:6643",
+      "sceneKey": "Anytime",
+      "dark": false
+    },
+    {
+      "key": "Evening",
+      "id": "622:6779",
+      "componentId": "621:6679",
+      "sceneKey": "Evening",
+      "dark": false
+    },
+    {
+      "key": "Custom section and goals",
+      "id": "622:6815",
+      "componentId": "621:6716",
+      "sceneKey": "Custom section and goals",
+      "dark": false
+    },
+    {
+      "key": "Quit and cut down",
+      "id": "622:6851",
+      "componentId": "621:6752",
+      "sceneKey": "Quit and cut down",
+      "dark": false
+    },
+    {
+      "key": "Timed limit final",
+      "id": "622:6893",
+      "componentId": "621:6793",
+      "sceneKey": "Timed limit final",
+      "dark": false
+    },
+    {
+      "key": "Running timer and manual steps",
+      "id": "622:6922",
+      "componentId": "621:6821",
+      "sceneKey": "Running timer and manual steps",
+      "dark": false
+    },
+    {
+      "key": "Completed inputs",
+      "id": "622:6958",
+      "componentId": "621:6857",
+      "sceneKey": "Completed inputs",
+      "dark": false
+    },
+    {
+      "key": "One habit",
+      "id": "622:6995",
+      "componentId": "621:6893",
+      "sceneKey": "One habit",
+      "dark": false
+    },
+    {
+      "key": "Long supported names",
+      "id": "622:7019",
+      "componentId": "621:6915",
+      "sceneKey": "Long supported names",
+      "dark": false
+    },
+    {
+      "key": "Dark Completed",
+      "id": "622:7055",
+      "componentId": "621:6857",
+      "sceneKey": "Completed inputs",
+      "dark": true
+    },
+    {
+      "key": "Empty Today",
+      "id": "622:7092",
+      "componentId": "621:6952",
+      "sceneKey": "Empty Today",
+      "dark": false
+    },
+    {
+      "key": "Empty Morning",
+      "id": "622:7106",
+      "componentId": "621:6963",
+      "sceneKey": "Empty Morning",
+      "dark": false
+    },
+    {
+      "key": "Section unavailable",
+      "id": "622:7120",
+      "componentId": "621:6974",
+      "sceneKey": "Section unavailable",
+      "dark": false
+    },
+    {
+      "key": "Private",
+      "id": "622:7135",
+      "componentId": "621:6985",
+      "sceneKey": "Private",
+      "dark": false
+    },
+    {
+      "key": "Larger text",
+      "id": "622:7149",
+      "componentId": "621:6996",
+      "sceneKey": "Larger text",
+      "dark": false
+    },
+    {
+      "key": "Dark Quit",
+      "id": "622:7179",
+      "componentId": "621:6752",
+      "sceneKey": "Quit and cut down",
+      "dark": true
+    }
+  ],
+  "scenes": [
+    {
+      "key": "Today two",
+      "title": "Today",
+      "summary": "1 of 2 done",
+      "rows": [
+        "Water",
+        "Read"
+      ],
+      "note": "Two separated rows. Whole-view summary; one action per item."
+    },
+    {
+      "key": "Today five first",
+      "title": "Today",
+      "summary": "2 of 5 done",
+      "page": 1,
+      "pages": 3,
+      "total": 5,
+      "rows": [
+        "Water",
+        "Read"
+      ],
+      "note": "Five items use 2 + 2 + 1. All remain reachable."
+    },
+    {
+      "key": "Today five middle",
+      "title": "Today",
+      "summary": "2 of 5 done",
+      "page": 2,
+      "pages": 3,
+      "total": 5,
+      "rows": [
+        "Stretch",
+        "Meditate"
+      ],
+      "note": "Both arrows available; no automatic page jump after logging."
+    },
+    {
+      "key": "Today five final",
+      "title": "Today",
+      "summary": "2 of 5 done",
+      "page": 3,
+      "pages": 3,
+      "total": 5,
+      "rows": [
+        "Steps"
+      ],
+      "note": "Final page keeps its first-row slot and blank second slot."
+    },
+    {
+      "key": "Morning two",
+      "title": "Morning",
+      "summary": "1 of 2 done",
+      "section": true,
+      "rows": [
+        {
+          "role": "Stretch",
+          "status": "Done"
+        },
+        {
+          "role": "Water",
+          "status": "3 of 8 glasses"
+        }
+      ],
+      "note": "Selected section: no repeated Morning in every row."
+    },
+    {
+      "key": "Morning three first",
+      "title": "Morning",
+      "summary": "1 of 3 done",
+      "section": true,
+      "page": 1,
+      "pages": 2,
+      "total": 3,
+      "rows": [
+        {
+          "role": "Check",
+          "name": "Plan the day",
+          "status": "Not yet"
+        },
+        {
+          "role": "Stretch",
+          "status": "Done"
+        }
+      ],
+      "note": "Section overflow uses the same explicit header paging."
+    },
+    {
+      "key": "Morning three final",
+      "title": "Morning",
+      "summary": "1 of 3 done",
+      "section": true,
+      "page": 2,
+      "pages": 2,
+      "total": 3,
+      "rows": [
+        {
+          "role": "Meditate",
+          "status": "12 of 20 min"
+        }
+      ],
+      "note": "Open this habit's timer; summary stays section-wide."
+    },
+    {
+      "key": "Anytime",
+      "title": "Anytime",
+      "summary": "0 of 2 done",
+      "section": true,
+      "rows": [
+        {
+          "role": "Water",
+          "status": "3 of 8 glasses"
+        },
+        {
+          "role": "HealthSteps",
+          "status": "3.2k of 8k steps"
+        }
+      ],
+      "note": "Health steps open exact detail; never invent a sensor increment."
+    },
+    {
+      "key": "Evening",
+      "title": "Evening",
+      "summary": "0 of 2 done",
+      "section": true,
+      "rows": [
+        {
+          "role": "Steps",
+          "status": "2 of 5 steps"
+        },
+        {
+          "role": "Check",
+          "name": "Journal",
+          "status": "Not yet"
+        }
+      ],
+      "note": "Checklist opens named steps; binary action checks the exact day."
+    },
+    {
+      "key": "Custom section and goals",
+      "title": "Late afternoon",
+      "summary": "0 of 2 done",
+      "section": true,
+      "rows": [
+        {
+          "role": "Meditate",
+          "name": "Mindful breathing",
+          "status": "12 today · 60 min / week",
+          "periodOnly": true,
+          "fraction": 0
+        },
+        {
+          "role": "Water",
+          "name": "Drink enough water",
+          "status": "3 today · 90 glasses / month",
+          "periodOnly": true,
+          "fraction": 0
+        }
+      ],
+      "note": "Today contribution and configured period goal; no invented daily fills."
+    },
+    {
+      "key": "Quit and cut down",
+      "title": "Quit or Cut Down",
+      "summary": "",
+      "section": true,
+      "page": 1,
+      "pages": 2,
+      "total": 3,
+      "rows": [
+        {
+          "role": "Quit",
+          "status": "15d 22:36:35"
+        },
+        {
+          "role": "Limit",
+          "status": "1 of 2 cups · Daily limit"
+        }
+      ],
+      "note": "No completion count. Quit keeps elapsed and Best; consumption stays neutral."
+    },
+    {
+      "key": "Timed limit final",
+      "title": "Quit or Cut Down",
+      "summary": "",
+      "section": true,
+      "page": 2,
+      "pages": 2,
+      "total": 3,
+      "rows": [
+        {
+          "role": "TimedLimit",
+          "status": "20 of 20 min · Limit reached"
+        }
+      ],
+      "note": "Time limit is usage, never positive-goal completion; open its real timer/logging flow."
+    },
+    {
+      "key": "Running timer and manual steps",
+      "title": "Today",
+      "summary": "0 of 2 done",
+      "rows": [
+        {
+          "role": "Meditate",
+          "name": "Focus",
+          "status": "Morning · 18:24 of 30 min",
+          "glyph": "537:3005",
+          "fraction": 0.6133
+        },
+        {
+          "role": "Walk",
+          "status": "Afternoon · 3.2k of 8k steps"
+        }
+      ],
+      "note": "Pause saves only this session; +500 adds the saved manual contribution."
+    },
+    {
+      "key": "Completed inputs",
+      "title": "Today",
+      "summary": "2 of 2 done",
+      "rows": [
+        {
+          "role": "Water",
+          "status": "Anytime · 9 of 8 glasses",
+          "fraction": 1,
+          "done": true
+        },
+        {
+          "role": "Steps",
+          "status": "Evening · 5 of 5 steps",
+          "fraction": 1,
+          "done": true
+        }
+      ],
+      "note": "Positive completion uses habit-color CTA/white; +1 stays +1, checklist still opens."
+    },
+    {
+      "key": "One habit",
+      "title": "Today",
+      "summary": "0 of 1 done",
+      "rows": [
+        "Water"
+      ],
+      "note": "A sole unpaged item has a taller row; same action and progress meaning."
+    },
+    {
+      "key": "Long supported names",
+      "title": "Early morning",
+      "summary": "1 of 2 done",
+      "section": true,
+      "rows": [
+        {
+          "role": "Read",
+          "name": "Read before breakfast",
+          "status": "Done"
+        },
+        {
+          "role": "Check",
+          "name": "Practice a new language",
+          "status": "Not yet"
+        }
+      ],
+      "note": "Supported 24-character names and 16-character section names; truncate only if needed."
+    },
+    {
+      "key": "Empty Today",
+      "title": "Today",
+      "summary": "",
+      "rows": [],
+      "empty": "Nothing planned for today",
+      "hint": "Open Today",
+      "note": "Honest empty view, no sample habits or fake actions."
+    },
+    {
+      "key": "Empty Morning",
+      "title": "Morning",
+      "summary": "",
+      "section": true,
+      "rows": [],
+      "empty": "Nothing planned in Morning",
+      "hint": "Open Morning",
+      "note": "Empty saved section remains selected; never silently substitute Today."
+    },
+    {
+      "key": "Section unavailable",
+      "title": "Morning",
+      "summary": "",
+      "section": true,
+      "rows": [],
+      "empty": "Section unavailable",
+      "hint": "Touch and hold · Edit Widget",
+      "note": "Removed section: preserve honest selection state; choose another in native Edit Widget."
+    },
+    {
+      "key": "Private",
+      "title": "Today",
+      "summary": "",
+      "rows": [],
+      "empty": "Progress hidden",
+      "hint": "Open app to unlock",
+      "note": "No names, progress, logging or paging controls while private/locked."
+    },
+    {
+      "key": "Larger text",
+      "title": "Morning",
+      "summary": "1 of 3 done",
+      "section": true,
+      "page": 1,
+      "pages": 3,
+      "total": 3,
+      "capacity": 1,
+      "largerText": true,
+      "rows": [
+        {
+          "role": "Water",
+          "name": "Drink enough water",
+          "status": "3 of 8 glasses"
+        }
+      ],
+      "note": "Larger-text study: reduce capacity to one, preserve 44 pt controls; native Dynamic Type validation pending."
+    }
+  ],
+  "accepted": {
+    "treatment": "Filled",
+    "maximumItemsPerPage": 2,
+    "rowGap": 12,
+    "headerGap": 12,
+    "headerHeight": 22,
+    "contentInsets": 12,
+    "logicalSize": [
+      338,
+      158
+    ],
+    "actionRegion": 44,
+    "largerTextCapacity": 1
+  },
+  "createdNodeIds": [
+    "622:6435",
+    "622:6436",
+    "622:6437",
+    "622:6438",
+    "622:6439",
+    "622:6440",
+    "622:6441",
+    "622:6442",
+    "622:6443",
+    "622:6476",
+    "622:6477",
+    "622:6478",
+    "622:6479",
+    "622:6512",
+    "622:6513",
+    "622:6514",
+    "622:6515",
+    "622:6548",
+    "622:6549",
+    "622:6550",
+    "622:6551",
+    "622:6552",
+    "622:6591",
+    "622:6592",
+    "622:6593",
+    "622:6594",
+    "622:6634",
+    "622:6635",
+    "622:6636",
+    "622:6637",
+    "622:6665",
+    "622:6666",
+    "622:6667",
+    "622:6668",
+    "622:6669",
+    "622:6708",
+    "622:6709",
+    "622:6710",
+    "622:6711",
+    "622:6739",
+    "622:6740",
+    "622:6741",
+    "622:6742",
+    "622:6775",
+    "622:6776",
+    "622:6777",
+    "622:6778",
+    "622:6779",
+    "622:6812",
+    "622:6813",
+    "622:6814",
+    "622:6815",
+    "622:6848",
+    "622:6849",
+    "622:6850",
+    "622:6851",
+    "622:6889",
+    "622:6890",
+    "622:6891",
+    "622:6892",
+    "622:6893",
+    "622:6919",
+    "622:6920",
+    "622:6921",
+    "622:6922",
+    "622:6955",
+    "622:6956",
+    "622:6957",
+    "622:6958",
+    "622:6991",
+    "622:6992",
+    "622:6993",
+    "622:6994",
+    "622:6995",
+    "622:7016",
+    "622:7017",
+    "622:7018",
+    "622:7019",
+    "622:7052",
+    "622:7053",
+    "622:7054",
+    "622:7055",
+    "622:7088",
+    "622:7089",
+    "622:7090",
+    "622:7091",
+    "622:7092",
+    "622:7103",
+    "622:7104",
+    "622:7105",
+    "622:7106",
+    "622:7117",
+    "622:7118",
+    "622:7119",
+    "622:7120",
+    "622:7131",
+    "622:7132",
+    "622:7133",
+    "622:7134",
+    "622:7135",
+    "622:7146",
+    "622:7147",
+    "622:7148",
+    "622:7149",
+    "622:7176",
+    "622:7177",
+    "622:7178",
+    "622:7179",
+    "622:7217",
+    "622:7218"
+  ],
+  "mutatedNodeIds": [
+    "621:6382",
+    "621:6418",
+    "621:6460",
+    "621:6504",
+    "621:6534",
+    "621:6570",
+    "621:6613",
+    "621:6643",
+    "621:6679",
+    "621:6716",
+    "621:6752",
+    "621:6793",
+    "621:6821",
+    "621:6857",
+    "621:6893",
+    "621:6915",
+    "621:6952",
+    "621:6963",
+    "621:6974",
+    "621:6985",
+    "621:6996",
+    "I622:6515;621:6392;585:4562",
+    "I622:6515;621:6404;585:4573",
+    "I622:7055;621:6867;585:4562",
+    "I622:7055;621:6879;585:4620"
+  ],
+  "foundation": {
+    "collectionId": "VariableCollectionId:620:6088",
+    "mode": "620:0",
+    "variables": {
+      "medium-today/inset": "VariableID:620:6089",
+      "medium-today/header-gap": "VariableID:620:6090",
+      "primitive/header-height": "VariableID:620:6091",
+      "medium-today/header-height": "VariableID:620:6092"
+    },
+    "styleIds": {
+      "Header": "S:55bce058eb8e2a1157c6969d1e114f5eec74fb85,",
+      "Row name": "S:8a65e4f5d8f936b8d8d187b36f10894d5df52447,",
+      "Row status": "S:102fa402d3f167e17cf340a86daf87e089764a24,",
+      "Summary": "S:47e80cd353702ee7db808aefb8a6e59b8a8d1731,",
+      "Strong status": "S:fc53e3b52ade5f04cbcc22a44ccd36d507332766,"
+    },
+    "createdNodeIds": [
+      "VariableCollectionId:620:6088",
+      "VariableID:620:6089",
+      "VariableID:620:6090",
+      "VariableID:620:6091",
+      "VariableID:620:6092",
+      "S:55bce058eb8e2a1157c6969d1e114f5eec74fb85,",
+      "S:8a65e4f5d8f936b8d8d187b36f10894d5df52447,",
+      "S:102fa402d3f167e17cf340a86daf87e089764a24,",
+      "S:47e80cd353702ee7db808aefb8a6e59b8a8d1731,"
+    ],
+    "mutatedNodeIds": []
+  },
+  "progressStateRows": {
+    "setId": "627:7144",
+    "variants": [
+      {
+        "name": "State=Quantity complete",
+        "id": "627:7109",
+        "fill": 314
+      },
+      {
+        "name": "State=Checklist complete",
+        "id": "627:7120",
+        "fill": 314
+      },
+      {
+        "name": "State=Running timer",
+        "id": "627:7132",
+        "fill": 192.57620239257812
+      }
+    ],
+    "definitions": {
+      "Habit name#628:0": {
+        "type": "TEXT",
+        "defaultValue": "Water"
+      },
+      "Today value and section#628:4": {
+        "type": "TEXT",
+        "defaultValue": "3 of 8 glasses"
+      },
+      "Habit icon#628:8": {
+        "type": "INSTANCE_SWAP",
+        "defaultValue": "537:2983",
+        "preferredValues": []
+      },
+      "Saved increment#628:12": {
+        "type": "TEXT",
+        "defaultValue": "+1"
+      },
+      "Action glyph#628:16": {
+        "type": "INSTANCE_SWAP",
+        "defaultValue": "537:3007",
+        "preferredValues": []
+      },
+      "State": {
+        "type": "VARIANT",
+        "defaultValue": "Quantity complete",
+        "variantOptions": [
+          "Quantity complete",
+          "Checklist complete",
+          "Running timer"
+        ]
+      }
+    },
+    "createdNodeIds": [
+      "627:7109",
+      "627:7110",
+      "627:7111",
+      "627:7112",
+      "627:7113",
+      "627:7114",
+      "627:7115",
+      "627:7116",
+      "627:7117",
+      "627:7118",
+      "627:7120",
+      "627:7121",
+      "627:7122",
+      "627:7123",
+      "627:7124",
+      "627:7125",
+      "627:7126",
+      "627:7127",
+      "627:7128",
+      "627:7129",
+      "627:7132",
+      "627:7133",
+      "627:7134",
+      "627:7135",
+      "627:7136",
+      "627:7137",
+      "627:7138",
+      "627:7139",
+      "627:7140",
+      "627:7141",
+      "627:7144"
+    ],
+    "mutatedNodeIds": []
+  },
+  "progressGeometryBindings": {
+    "createdNodeIds": [
+      "VariableID:626:7109",
+      "VariableID:626:7110",
+      "VariableID:626:7111",
+      "VariableID:626:7112"
+    ],
+    "mutatedNodeIds": [
+      "I621:6867;585:4562",
+      "I621:6879;585:4620",
+      "I621:6831;585:4597"
+    ],
+    "rows": [
+      {
+        "id": "I621:6867;585:4562",
+        "width": 117.75
+      },
+      {
+        "id": "I621:6879;585:4620",
+        "width": 125.5999984741211
+      },
+      {
+        "id": "I621:6831;585:4597",
+        "width": 188.40000915527344
+      }
+    ]
+  },
+  "revisionIds": [
+    "I621:7012;585:4563",
+    "I621:7012;585:4566",
+    "I621:7012;585:4567",
+    "I621:7012;585:4568",
+    "622:6437",
+    "622:6436",
+    "627:7144",
+    "627:7109",
+    "627:7110",
+    "627:7111",
+    "627:7112",
+    "I627:7112;537:2984",
+    "627:7113",
+    "627:7114",
+    "627:7115",
+    "627:7116",
+    "627:7117",
+    "627:7118",
+    "627:7120",
+    "627:7121",
+    "627:7122",
+    "627:7123",
+    "I627:7123;537:2984",
+    "627:7124",
+    "627:7125",
+    "627:7126",
+    "627:7127",
+    "627:7128",
+    "627:7129",
+    "I627:7129;537:3008",
+    "627:7132",
+    "627:7133",
+    "627:7134",
+    "627:7135",
+    "I627:7135;537:2984",
+    "627:7136",
+    "627:7137",
+    "627:7138",
+    "627:7139",
+    "627:7140",
+    "627:7141",
+    "I627:7141;537:3008",
+    "I621:6867;627:7112;537:2984",
+    "I621:6867;627:7118",
+    "621:6867",
+    "I621:6867;627:7117",
+    "I621:6879;627:7123;537:3000",
+    "I621:6879;627:7129;537:3008",
+    "621:6879",
+    "I621:6879;627:7128",
+    "I621:6831;627:7135;537:2992",
+    "I621:6831;627:7141;537:3006",
+    "621:6831",
+    "I621:6831;627:7140",
+    "I622:7055;621:6867;627:7110",
+    "I622:7055;621:6879;627:7121"
+  ],
+  "buildLedgers": [
+    {
+      "cards": [
+        {
+          "key": "Today two",
+          "id": "621:6382",
+          "rows": 2,
+          "capacity": 2,
+          "paged": false,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Today five first",
+          "id": "621:6418",
+          "rows": 2,
+          "capacity": 2,
+          "paged": true,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Today five middle",
+          "id": "621:6460",
+          "rows": 2,
+          "capacity": 2,
+          "paged": true,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Today five final",
+          "id": "621:6504",
+          "rows": 1,
+          "capacity": 2,
+          "paged": true,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Morning two",
+          "id": "621:6534",
+          "rows": 2,
+          "capacity": 2,
+          "paged": false,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Morning three first",
+          "id": "621:6570",
+          "rows": 2,
+          "capacity": 2,
+          "paged": true,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Morning three final",
+          "id": "621:6613",
+          "rows": 1,
+          "capacity": 2,
+          "paged": true,
+          "size": [
+            338,
+            158
+          ]
+        }
+      ],
+      "createdNodeIds": [
+        "621:6382",
+        "621:6383",
+        "621:6386",
+        "621:6387",
+        "621:6388",
+        "621:6389",
+        "621:6390",
+        "621:6391",
+        "621:6392",
+        "621:6404",
+        "621:6418",
+        "621:6419",
+        "621:6422",
+        "621:6423",
+        "621:6424",
+        "621:6425",
+        "621:6426",
+        "621:6427",
+        "621:6428",
+        "621:6429",
+        "621:6430",
+        "621:6431",
+        "621:6432",
+        "621:6433",
+        "621:6434",
+        "621:6446",
+        "621:6460",
+        "621:6461",
+        "621:6464",
+        "621:6465",
+        "621:6466",
+        "621:6467",
+        "621:6468",
+        "621:6469",
+        "621:6470",
+        "621:6471",
+        "621:6472",
+        "621:6473",
+        "621:6474",
+        "621:6475",
+        "621:6476",
+        "621:6490",
+        "621:6504",
+        "621:6505",
+        "621:6508",
+        "621:6509",
+        "621:6510",
+        "621:6511",
+        "621:6512",
+        "621:6513",
+        "621:6514",
+        "621:6515",
+        "621:6516",
+        "621:6517",
+        "621:6518",
+        "621:6519",
+        "621:6520",
+        "621:6534",
+        "621:6535",
+        "621:6538",
+        "621:6539",
+        "621:6540",
+        "621:6541",
+        "621:6542",
+        "621:6543",
+        "621:6544",
+        "621:6558",
+        "621:6570",
+        "621:6571",
+        "621:6574",
+        "621:6575",
+        "621:6576",
+        "621:6577",
+        "621:6578",
+        "621:6579",
+        "621:6580",
+        "621:6581",
+        "621:6582",
+        "621:6583",
+        "621:6584",
+        "621:6585",
+        "621:6586",
+        "621:6599",
+        "621:6613",
+        "621:6614",
+        "621:6617",
+        "621:6618",
+        "621:6619",
+        "621:6620",
+        "621:6621",
+        "621:6622",
+        "621:6623",
+        "621:6624",
+        "621:6625",
+        "621:6626",
+        "621:6627",
+        "621:6628",
+        "621:6629"
+      ],
+      "mutatedNodeIds": [
+        "I621:6383;0:8934",
+        "I621:6383;144:62577",
+        "I621:6392;585:4564;537:2984",
+        "I621:6392;585:4567",
+        "I621:6392;585:4568",
+        "I621:6392;585:4570",
+        "I621:6392;585:4571",
+        "I621:6392;585:4562",
+        "I621:6404;585:4575;537:2986",
+        "I621:6404;585:4578",
+        "I621:6404;585:4579",
+        "I621:6404;585:4581",
+        "I621:6404;585:4582;537:3002",
+        "I621:6404;585:4573",
+        "I621:6419;0:8934",
+        "I621:6419;144:62577",
+        "I621:6434;585:4564;537:2984",
+        "I621:6434;585:4567",
+        "I621:6434;585:4568",
+        "I621:6434;585:4570",
+        "I621:6434;585:4571",
+        "I621:6434;585:4562",
+        "I621:6446;585:4575;537:2986",
+        "I621:6446;585:4578",
+        "I621:6446;585:4579",
+        "I621:6446;585:4581",
+        "I621:6446;585:4582;537:3002",
+        "I621:6446;585:4573",
+        "I621:6461;0:8934",
+        "I621:6461;144:62577",
+        "I621:6476;585:4587;537:2988",
+        "I621:6476;585:4590",
+        "I621:6476;585:4591",
+        "I621:6476;585:4593",
+        "I621:6476;585:4594;537:3002",
+        "I621:6476;585:4585",
+        "I621:6490;585:4599;537:2992",
+        "I621:6490;585:4602",
+        "I621:6490;585:4603",
+        "I621:6490;585:4605",
+        "I621:6490;585:4606;537:3004",
+        "I621:6490;585:4597",
+        "I621:6505;0:8934",
+        "I621:6505;144:62577",
+        "I621:6520;585:4622;537:3000",
+        "I621:6520;585:4625",
+        "I621:6520;585:4626",
+        "I621:6520;585:4628",
+        "I621:6520;585:4629;537:3008",
+        "I621:6520;585:4620",
+        "I621:6535;0:8934",
+        "I621:6535;144:62577",
+        "I621:6544;585:4587;537:2988",
+        "I621:6544;585:4590",
+        "I621:6544;585:4591",
+        "I621:6544;585:4593",
+        "I621:6544;585:4594;537:3002",
+        "I621:6544;585:4585",
+        "I621:6558;585:4564;537:2984",
+        "I621:6558;585:4567",
+        "I621:6558;585:4568",
+        "I621:6558;585:4570",
+        "I621:6558;585:4571",
+        "I621:6558;585:4562",
+        "I621:6571;0:8934",
+        "I621:6571;144:62577",
+        "I621:6586;585:4633;537:2994",
+        "I621:6586;585:4636",
+        "I621:6586;585:4637",
+        "I621:6586;585:4639",
+        "I621:6586;585:4640;537:3002",
+        "I621:6599;585:4587;537:2988",
+        "I621:6599;585:4590",
+        "I621:6599;585:4591",
+        "I621:6599;585:4593",
+        "I621:6599;585:4594;537:3002",
+        "I621:6599;585:4585",
+        "I621:6614;0:8934",
+        "I621:6614;144:62577",
+        "I621:6629;585:4599;537:2992",
+        "I621:6629;585:4602",
+        "I621:6629;585:4603",
+        "I621:6629;585:4605",
+        "I621:6629;585:4606;537:3004",
+        "I621:6629;585:4597"
+      ]
+    },
+    {
+      "cards": [
+        {
+          "key": "Anytime",
+          "id": "621:6643",
+          "rows": 2,
+          "capacity": 2,
+          "paged": false,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Evening",
+          "id": "621:6679",
+          "rows": 2,
+          "capacity": 2,
+          "paged": false,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Custom section and goals",
+          "id": "621:6716",
+          "rows": 2,
+          "capacity": 2,
+          "paged": false,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Quit and cut down",
+          "id": "621:6752",
+          "rows": 2,
+          "capacity": 2,
+          "paged": true,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Timed limit final",
+          "id": "621:6793",
+          "rows": 1,
+          "capacity": 2,
+          "paged": true,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Running timer and manual steps",
+          "id": "621:6821",
+          "rows": 2,
+          "capacity": 2,
+          "paged": false,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Completed inputs",
+          "id": "621:6857",
+          "rows": 2,
+          "capacity": 2,
+          "paged": false,
+          "size": [
+            338,
+            158
+          ]
+        }
+      ],
+      "createdNodeIds": [
+        "621:6643",
+        "621:6644",
+        "621:6647",
+        "621:6648",
+        "621:6649",
+        "621:6650",
+        "621:6651",
+        "621:6652",
+        "621:6653",
+        "621:6665",
+        "621:6679",
+        "621:6680",
+        "621:6683",
+        "621:6684",
+        "621:6685",
+        "621:6686",
+        "621:6687",
+        "621:6688",
+        "621:6689",
+        "621:6703",
+        "621:6716",
+        "621:6717",
+        "621:6720",
+        "621:6721",
+        "621:6722",
+        "621:6723",
+        "621:6724",
+        "621:6725",
+        "621:6726",
+        "621:6740",
+        "621:6752",
+        "621:6753",
+        "621:6756",
+        "621:6757",
+        "621:6758",
+        "621:6759",
+        "621:6760",
+        "621:6761",
+        "621:6762",
+        "621:6763",
+        "621:6764",
+        "621:6765",
+        "621:6766",
+        "621:6767",
+        "621:6782",
+        "621:6793",
+        "621:6794",
+        "621:6797",
+        "621:6798",
+        "621:6799",
+        "621:6800",
+        "621:6801",
+        "621:6802",
+        "621:6803",
+        "621:6804",
+        "621:6805",
+        "621:6806",
+        "621:6807",
+        "621:6808",
+        "621:6821",
+        "621:6822",
+        "621:6825",
+        "621:6826",
+        "621:6827",
+        "621:6828",
+        "621:6829",
+        "621:6830",
+        "621:6831",
+        "621:6845",
+        "621:6857",
+        "621:6858",
+        "621:6861",
+        "621:6862",
+        "621:6863",
+        "621:6864",
+        "621:6865",
+        "621:6866",
+        "621:6867",
+        "621:6879"
+      ],
+      "mutatedNodeIds": [
+        "I621:6644;0:8934",
+        "I621:6644;144:62577",
+        "I621:6653;585:4564;537:2984",
+        "I621:6653;585:4567",
+        "I621:6653;585:4568",
+        "I621:6653;585:4570",
+        "I621:6653;585:4571",
+        "I621:6653;585:4562",
+        "I621:6665;585:4677;537:2990",
+        "I621:6665;585:4680",
+        "I621:6665;585:4681",
+        "I621:6665;585:4683",
+        "I621:6665;585:4684;537:3008",
+        "I621:6665;585:4675",
+        "I621:6680;0:8934",
+        "I621:6680;144:62577",
+        "I621:6689;585:4622;537:3000",
+        "I621:6689;585:4625",
+        "I621:6689;585:4626",
+        "I621:6689;585:4628",
+        "I621:6689;585:4629;537:3008",
+        "I621:6689;585:4620",
+        "I621:6703;585:4633;537:2994",
+        "I621:6703;585:4636",
+        "I621:6703;585:4637",
+        "I621:6703;585:4639",
+        "I621:6703;585:4640;537:3002",
+        "I621:6717;0:8934",
+        "I621:6717;144:62577",
+        "I621:6726;585:4599;537:2992",
+        "I621:6726;585:4602",
+        "I621:6726;585:4603",
+        "I621:6726;585:4605",
+        "I621:6726;585:4606;537:3004",
+        "I621:6726;585:4597",
+        "I621:6740;585:4564;537:2984",
+        "I621:6740;585:4567",
+        "I621:6740;585:4568",
+        "I621:6740;585:4570",
+        "I621:6740;585:4571",
+        "I621:6740;585:4562",
+        "I621:6753;0:8934",
+        "I621:6753;144:62577",
+        "I621:6767;585:4644;537:2998",
+        "I621:6767;585:4647",
+        "I621:6767;585:4648",
+        "I621:6767;585:4650",
+        "I621:6767;585:4651;537:3008",
+        "I621:6782;585:4655;537:2996",
+        "I621:6782;585:4658",
+        "I621:6782;585:4659",
+        "I621:6782;585:4661",
+        "I621:6782;585:4662",
+        "I621:6794;0:8934",
+        "I621:6794;144:62577",
+        "I621:6808;585:4665;537:2992",
+        "I621:6808;585:4668",
+        "I621:6808;585:4669",
+        "I621:6808;585:4671",
+        "I621:6808;585:4672;537:3004",
+        "I621:6822;0:8934",
+        "I621:6822;144:62577",
+        "I621:6831;585:4599;537:2992",
+        "I621:6831;585:4602",
+        "I621:6831;585:4603",
+        "I621:6831;585:4605",
+        "I621:6831;585:4606;537:3006",
+        "I621:6831;585:4597",
+        "I621:6845;585:4611;537:2990",
+        "I621:6845;585:4614",
+        "I621:6845;585:4615",
+        "I621:6845;585:4617",
+        "I621:6845;585:4618",
+        "I621:6845;585:4609",
+        "I621:6858;0:8934",
+        "I621:6858;144:62577",
+        "I621:6867;585:4564;537:2984",
+        "I621:6867;585:4567",
+        "I621:6867;585:4568",
+        "I621:6867;585:4570",
+        "I621:6867;585:4571",
+        "I621:6867;585:4562",
+        "I621:6879;585:4622;537:3000",
+        "I621:6879;585:4625",
+        "I621:6879;585:4626",
+        "I621:6879;585:4628",
+        "I621:6879;585:4629;537:3008",
+        "I621:6879;585:4620"
+      ]
+    },
+    {
+      "cards": [
+        {
+          "key": "One habit",
+          "id": "621:6893",
+          "rows": 1,
+          "capacity": 2,
+          "paged": false,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Long supported names",
+          "id": "621:6915",
+          "rows": 2,
+          "capacity": 2,
+          "paged": false,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Empty Today",
+          "id": "621:6952",
+          "rows": 0,
+          "capacity": 2,
+          "paged": false,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Empty Morning",
+          "id": "621:6963",
+          "rows": 0,
+          "capacity": 2,
+          "paged": false,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Section unavailable",
+          "id": "621:6974",
+          "rows": 0,
+          "capacity": 2,
+          "paged": false,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Private",
+          "id": "621:6985",
+          "rows": 0,
+          "capacity": 2,
+          "paged": false,
+          "size": [
+            338,
+            158
+          ]
+        },
+        {
+          "key": "Larger text",
+          "id": "621:6996",
+          "rows": 1,
+          "capacity": 1,
+          "paged": true,
+          "size": [
+            338,
+            158
+          ]
+        }
+      ],
+      "createdNodeIds": [
+        "621:6893",
+        "621:6894",
+        "621:6897",
+        "621:6898",
+        "621:6899",
+        "621:6900",
+        "621:6901",
+        "621:6902",
+        "621:6903",
+        "621:6915",
+        "621:6916",
+        "621:6919",
+        "621:6920",
+        "621:6921",
+        "621:6922",
+        "621:6923",
+        "621:6924",
+        "621:6925",
+        "621:6939",
+        "621:6952",
+        "621:6953",
+        "621:6956",
+        "621:6957",
+        "621:6958",
+        "621:6959",
+        "621:6960",
+        "621:6961",
+        "621:6962",
+        "621:6963",
+        "621:6964",
+        "621:6967",
+        "621:6968",
+        "621:6969",
+        "621:6970",
+        "621:6971",
+        "621:6972",
+        "621:6973",
+        "621:6974",
+        "621:6975",
+        "621:6978",
+        "621:6979",
+        "621:6980",
+        "621:6981",
+        "621:6982",
+        "621:6983",
+        "621:6984",
+        "621:6985",
+        "621:6986",
+        "621:6989",
+        "621:6990",
+        "621:6991",
+        "621:6992",
+        "621:6993",
+        "621:6994",
+        "621:6995",
+        "621:6996",
+        "621:6997",
+        "621:7000",
+        "621:7001",
+        "621:7002",
+        "621:7003",
+        "621:7004",
+        "621:7005",
+        "621:7006",
+        "621:7007",
+        "621:7008",
+        "621:7009",
+        "621:7010",
+        "621:7011",
+        "621:7012"
+      ],
+      "mutatedNodeIds": [
+        "I621:6894;0:8934",
+        "I621:6894;144:62577",
+        "I621:6903;585:4564;537:2984",
+        "I621:6903;585:4567",
+        "I621:6903;585:4568",
+        "I621:6903;585:4570",
+        "I621:6903;585:4571",
+        "I621:6903;585:4562",
+        "I621:6916;0:8934",
+        "I621:6916;144:62577",
+        "I621:6925;585:4575;537:2986",
+        "I621:6925;585:4578",
+        "I621:6925;585:4579",
+        "I621:6925;585:4581",
+        "I621:6925;585:4582;537:3002",
+        "I621:6925;585:4573",
+        "I621:6939;585:4633;537:2994",
+        "I621:6939;585:4636",
+        "I621:6939;585:4637",
+        "I621:6939;585:4639",
+        "I621:6939;585:4640;537:3002",
+        "I621:6953;0:8934",
+        "I621:6953;144:62577",
+        "I621:6964;0:8934",
+        "I621:6964;144:62577",
+        "I621:6975;0:8934",
+        "I621:6975;144:62577",
+        "I621:6986;0:8934",
+        "I621:6986;144:62577",
+        "I621:6997;0:8934",
+        "I621:6997;144:62577",
+        "I621:7012;585:4564;537:2984",
+        "I621:7012;585:4567",
+        "I621:7012;585:4568",
+        "I621:7012;585:4570",
+        "I621:7012;585:4571",
+        "I621:7012;585:4562",
+        "I621:7012;585:4567",
+        "I621:7012;585:4568",
+        "I621:7012;585:4566"
+      ]
+    }
+  ],
+  "finalStyleAudit": {
+    "strongStyleId": "S:fc53e3b52ade5f04cbcc22a44ccd36d507332766,",
+    "createdNodeIds": [
+      "S:fc53e3b52ade5f04cbcc22a44ccd36d507332766,"
+    ],
+    "mutatedNodeIds": [
+      "I621:6767;585:4648",
+      "I621:6782;585:4659",
+      "I621:6808;585:4669"
+    ],
+    "preserved": {
+      "largeRows": 24,
+      "largeScenarios": 16,
+      "largeBoardId": "608:8033"
+    },
+    "tokens": [
+      {
+        "id": "VariableID:620:6089",
+        "name": "medium-today/inset",
+        "scopes": [
+          "GAP"
+        ],
+        "values": {
+          "620:0": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:585:4426"
+          }
+        },
+        "syntax": {
+          "WEB": "var(--medium-today-inset)",
+          "iOS": "mediumWidgetInset"
+        }
+      },
+      {
+        "id": "VariableID:620:6090",
+        "name": "medium-today/header-gap",
+        "scopes": [
+          "GAP"
+        ],
+        "values": {
+          "620:0": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:585:4426"
+          }
+        },
+        "syntax": {
+          "WEB": "var(--medium-today-header-gap)",
+          "iOS": "mediumWidgetHeaderGap"
+        }
+      },
+      {
+        "id": "VariableID:620:6091",
+        "name": "primitive/header-height",
+        "scopes": [],
+        "values": {
+          "620:0": 22
+        },
+        "syntax": {
+          "WEB": "var(--primitive-header-height)",
+          "iOS": "22"
+        }
+      },
+      {
+        "id": "VariableID:620:6092",
+        "name": "medium-today/header-height",
+        "scopes": [
+          "WIDTH_HEIGHT"
+        ],
+        "values": {
+          "620:0": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:620:6091"
+          }
+        },
+        "syntax": {
+          "WEB": "var(--medium-today-header-height)",
+          "iOS": "mediumWidgetHeaderHeight"
+        }
+      },
+      {
+        "id": "VariableID:626:7109",
+        "name": "primitive/full-progress-width",
+        "scopes": [],
+        "values": {
+          "620:0": 314
+        },
+        "syntax": {
+          "WEB": "var(--primitive-full-progress-width)",
+          "iOS": "314"
+        }
+      },
+      {
+        "id": "VariableID:626:7110",
+        "name": "medium-today/full-progress-width",
+        "scopes": [
+          "WIDTH_HEIGHT"
+        ],
+        "values": {
+          "620:0": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:626:7109"
+          }
+        },
+        "syntax": {
+          "WEB": "var(--medium-today-full-progress-width)",
+          "iOS": "availableWidth"
+        }
+      },
+      {
+        "id": "VariableID:626:7111",
+        "name": "primitive/running-progress-width",
+        "scopes": [],
+        "values": {
+          "620:0": 192.57620239257812
+        },
+        "syntax": {
+          "WEB": "var(--primitive-running-progress-width)",
+          "iOS": "192.5762"
+        }
+      },
+      {
+        "id": "VariableID:626:7112",
+        "name": "medium-today/running-progress-width",
+        "scopes": [
+          "WIDTH_HEIGHT"
+        ],
+        "values": {
+          "620:0": {
+            "type": "VARIABLE_ALIAS",
+            "id": "VariableID:626:7111"
+          }
+        },
+        "syntax": {
+          "WEB": "var(--medium-today-running-progress-width)",
+          "iOS": "availableWidth * elapsedFraction"
+        }
+      }
+    ]
+  },
+  "finalReferences": {
+    "progressStateProperties": {
+      "Habit name#628:0": {
+        "type": "TEXT",
+        "defaultValue": "Water"
+      },
+      "Today value and section#628:4": {
+        "type": "TEXT",
+        "defaultValue": "3 of 8 glasses"
+      },
+      "Habit icon#628:8": {
+        "type": "INSTANCE_SWAP",
+        "defaultValue": "537:2983",
+        "preferredValues": []
+      },
+      "Saved increment#628:12": {
+        "type": "TEXT",
+        "defaultValue": "+1"
+      },
+      "Action glyph#628:16": {
+        "type": "INSTANCE_SWAP",
+        "defaultValue": "537:3007",
+        "preferredValues": []
+      },
+      "State": {
+        "type": "VARIANT",
+        "defaultValue": "Quantity complete",
+        "variantOptions": [
+          "Quantity complete",
+          "Checklist complete",
+          "Running timer"
+        ]
+      }
+    },
+    "familyProperties": {
+      "Scenario": {
+        "type": "VARIANT",
+        "defaultValue": "Today two",
+        "variantOptions": [
+          "Today two",
+          "Today five first",
+          "Today five middle",
+          "Today five final",
+          "Morning two",
+          "Morning three first",
+          "Morning three final",
+          "Anytime",
+          "Evening",
+          "Custom section and goals",
+          "Quit and cut down",
+          "Timed limit final",
+          "Running timer and manual steps",
+          "Completed inputs",
+          "One habit",
+          "Long supported names",
+          "Empty Today",
+          "Empty Morning",
+          "Section unavailable",
+          "Private",
+          "Larger text"
+        ]
+      }
+    },
+    "styleDefinitions": [
+      {
+        "id": "S:55bce058eb8e2a1157c6969d1e114f5eec74fb85,",
+        "name": "Medium Today / Header",
+        "font": {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "variationSettings": {
+            "wght": 590,
+            "wdth": 100
+          }
+        },
+        "size": 17,
+        "line": {
+          "unit": "PIXELS",
+          "value": 22
+        }
+      },
+      {
+        "id": "S:8a65e4f5d8f936b8d8d187b36f10894d5df52447,",
+        "name": "Medium Today / Row name",
+        "font": {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "variationSettings": {
+            "wght": 590,
+            "wdth": 100
+          }
+        },
+        "size": 17,
+        "line": {
+          "unit": "PIXELS",
+          "value": 20
+        }
+      },
+      {
+        "id": "S:102fa402d3f167e17cf340a86daf87e089764a24,",
+        "name": "Medium Today / Row status",
+        "font": {
+          "family": "SF Pro",
+          "style": "Regular",
+          "variationSettings": {
+            "wght": 400,
+            "wdth": 100
+          }
+        },
+        "size": 13,
+        "line": {
+          "unit": "PIXELS",
+          "value": 16
+        }
+      },
+      {
+        "id": "S:47e80cd353702ee7db808aefb8a6e59b8a8d1731,",
+        "name": "Medium Today / Summary",
+        "font": {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "variationSettings": {
+            "wght": 590,
+            "wdth": 100
+          }
+        },
+        "size": 13,
+        "line": {
+          "unit": "PIXELS",
+          "value": 18
+        }
+      },
+      {
+        "id": "S:fc53e3b52ade5f04cbcc22a44ccd36d507332766,",
+        "name": "Medium Today / Strong status",
+        "font": {
+          "family": "SF Pro",
+          "style": "Semibold",
+          "variationSettings": {
+            "wght": 590,
+            "wdth": 100
+          }
+        },
+        "size": 13,
+        "line": {
+          "unit": "PIXELS",
+          "value": 16
+        }
+      }
+    ]
+  }
+}

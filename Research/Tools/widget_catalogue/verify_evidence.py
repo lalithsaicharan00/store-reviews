@@ -1,7 +1,7 @@
 import json, pathlib, collections, hashlib, re
 
 root = next(p for p in pathlib.Path(__file__).resolve().parents if (p/'RULEBOOK.md').exists())
-out = root/'Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widget Catalogue Study — 5 October 2026'
+out = root/'Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets'
 rows = json.loads((out/'Verified Review Sources.json').read_text(encoding='utf-8'))
 # Hand assignments after reading the complete records; multiple themes may overlap.
 # These are an audit set, not a new prevalence or representative preference study.
@@ -18,7 +18,7 @@ groups = {
  'general_app_context_not_widget_specific': 'A3#1529 A1#55032 A3#9041 A13#2237 A13#18314 A16#710 A18#1978 A20#576 A20#1431 A20#1656 A23#2427 A23#5913 A24#21966 A34#48 A36#53 A46#183 A48#2992 A56#0 A56#1 A56#2 A56#3 A56#4 A56#5 A56#7 A56#8 A56#9 A56#10 A56#11 A56#12 A56#13 A56#14 A56#15 A56#16 A56#17 A56#19 A56#20 A56#21 A56#22 A56#23 A56#24 A56#25 A56#26 A56#27 A56#31 A56#32 A56#33 A56#35 A56#36 A56#37 A56#40 A56#41 A56#43 A56#44 A56#45 A56#46 A56#48 A56#49 A56#50 A56#51 A56#52 A56#53 A56#54 A56#55 A56#56 A56#57 A56#58 A56#60 A56#61 A56#62 A56#64 A56#65 A56#66 A76#2527 A76#2530 A84#17 A86#1689',
 }
 known = {r['ref']: r for r in rows}
-previous=json.loads((out.parent/'iPhone Widget Evidence/primary_reviews.json').read_text(encoding='utf-8'))
+previous=json.loads((out/'Historical Research/iPhone Widget Evidence/primary_reviews.json').read_text(encoding='utf-8'))
 for old in previous:
     assert old['ref'] in known and old['id']==known[old['ref']]['id'], ('prior id mismatch',old['ref'])
 themes = collections.defaultdict(list)

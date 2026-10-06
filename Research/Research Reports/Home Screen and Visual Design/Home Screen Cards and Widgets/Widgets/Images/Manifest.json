@@ -1,0 +1,267 @@
+{
+  "author": "Codex",
+  "date": "2026-10-05",
+  "file_key": "Ncccsm1l2O62GJ5xLSInqk",
+  "exports": [
+    {
+      "file": "HabitWaterSmall.png",
+      "node_id": "509:2895",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 5756,
+      "sha256": "5bb2b193b5fc1d46a85d8fdca286bedfc106fe6f1698a5881bb7a1a01d980b2f",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "HabitNotYetSmall.png",
+      "node_id": "509:2909",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 4914,
+      "sha256": "25044be2ecd1ca7f8847e47223704d6d77ffd78608a53518df6c61c565fb297d",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "HabitDoneSmall.png",
+      "node_id": "509:2921",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 4594,
+      "sha256": "a985cbdd071d73712371bca2a15243865381a11523895cd4122803c29a8eb371",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "QuitHabitSmall.png",
+      "node_id": "509:2933",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 4979,
+      "sha256": "c32ab43fc2d01d1638c93796cf8e8479a2847fee56be96ce95a07aa8ba13d930",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "LimitHabitSmall.png",
+      "node_id": "509:2945",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 5129,
+      "sha256": "d68ebf38e9da7c58c17d78be6141d435425a29b4ae294a0a6a46a58eb19c8357",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "ChooseHabitSmall.png",
+      "node_id": "509:2957",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 4961,
+      "sha256": "51e08a37147d2bbdd91ed6c5aebb3a56efb7668f52e414ce811140da0d6585ee",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "HabitUnavailableSmall.png",
+      "node_id": "509:2964",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 5049,
+      "sha256": "5cd3558b4a7ed701177460efe0fe14cdb5b08f00f09d4614babc996d73f187f0",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "ContentHiddenSmall.png",
+      "node_id": "509:2971",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 4421,
+      "sha256": "e6a75c350c2062b7bce721ea043679cec21975543e94cc931f9e5a8d056a1474",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "UpdateNeededSmall.png",
+      "node_id": "509:2978",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 5191,
+      "sha256": "0e882e7f4a0553044ec5fa6067944570cbd7e4c66c9bf6caabe7217a4f74e9ca",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "TodayMedium.png",
+      "node_id": "509:2985",
+      "conceptual": false,
+      "width": 338,
+      "height": 158,
+      "bytes": 9678,
+      "sha256": "dd3cf7ce9c8fe5bfff8b3e0bcbc6856f3f00528cd0f108b7f214615d71e9142b",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "TodayLarge.png",
+      "node_id": "509:3012",
+      "conceptual": false,
+      "width": 338,
+      "height": 354,
+      "bytes": 16903,
+      "sha256": "ddd298118e2a77a4b25dd2ef4a265f5ffbb3edeacfe6d68d9406cd1170358604",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "TasksLarge.png",
+      "node_id": "509:3057",
+      "conceptual": false,
+      "width": 338,
+      "height": 354,
+      "bytes": 19312,
+      "sha256": "0b6c2afca9a2c40533e7addb4015ded891157360f5acf6334b576bfe0be318ad",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "TodaySmall.png",
+      "node_id": "509:3102",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 4612,
+      "sha256": "8239dbda204cdf2cc5614eba6396158018b148b59834563b5d8da152f47a3251",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "LastSevenDaysMedium.png",
+      "node_id": "509:3472",
+      "conceptual": false,
+      "width": 338,
+      "height": 158,
+      "bytes": 9056,
+      "sha256": "a3ccc81a2a36788beb218246f63455b24bb8d7a331a07f02aecd0385b3931015",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "MonthLarge.png",
+      "node_id": "509:3503",
+      "conceptual": false,
+      "width": 338,
+      "height": 354,
+      "bytes": 16077,
+      "sha256": "69a6881f04a30a05042f16e9044b89eed65ec14c5de88181009001380a67c74b",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "CompactFavoritesMedium.png",
+      "node_id": "509:3592",
+      "conceptual": false,
+      "width": 338,
+      "height": 158,
+      "bytes": 10420,
+      "sha256": "029d19a15da56e38aa5948672602b6f6f9494c87ff83bc42150f4e9636272301",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "PracticeStreakSmall.png",
+      "node_id": "509:3619",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 5078,
+      "sha256": "93f449b673d802a77255597d401522cbe30acc63f97d1534f372cd0bb7873424",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "GoalFocusMedium.png",
+      "node_id": "509:3631",
+      "conceptual": false,
+      "width": 338,
+      "height": 158,
+      "bytes": 9003,
+      "sha256": "a21ac9e81087a47b68c98871cdb15b88814c674dfba20862788d75b1e6120333",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "YearSummaryLarge.png",
+      "node_id": "509:3641",
+      "conceptual": false,
+      "width": 338,
+      "height": 354,
+      "bytes": 15688,
+      "sha256": "698e711fe854b68b57c7063f3a33b2c6456eb845c99d4f0f7257a9ffa549ec15",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "LastSevenDaysSmall.png",
+      "node_id": "516:2927",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 5315,
+      "sha256": "7dcd69b6ce8707e2602dfc23331646127d58af94a6477ae00f7a1beb1be4b781",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "DarkWaterSmall.png",
+      "node_id": "509:3457",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 6472,
+      "sha256": "d04b0477c0d5c54ba3f5b3c794956a51f37ec75bcefb028481bb87ac531390d2",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "TintedWaterConceptSmall.png",
+      "node_id": "511:2917",
+      "conceptual": true,
+      "width": 158,
+      "height": 158,
+      "bytes": 6295,
+      "sha256": "755515f3cc523f48d6efdcc5c6b9355e67a406096d299142fadda5d3958af2ab",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "ClearWaterConceptSmall.png",
+      "node_id": "511:2933",
+      "conceptual": true,
+      "width": 158,
+      "height": 158,
+      "bytes": 8577,
+      "sha256": "369a69bdc103ea9a30647f1ea34548854bb4b5fefeeb79874ab6dc859bf39bc0",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "CompactIconOnlyMedium.png",
+      "node_id": "511:2885",
+      "conceptual": false,
+      "width": 338,
+      "height": 158,
+      "bytes": 8247,
+      "sha256": "d90672728ab9fcd3785f66b726aa6daf159c102a6aa124600447877d22fd64bc",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "SoftBlueWaterSmall.png",
+      "node_id": "509:3952",
+      "conceptual": false,
+      "width": 158,
+      "height": 158,
+      "bytes": 6614,
+      "sha256": "0735bc0ee5ef6f2ec266822de435437fe9c69bb62238a7c6c21a4e52dbad1e42",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    },
+    {
+      "file": "DarkMonthLarge.png",
+      "node_id": "509:3971",
+      "conceptual": false,
+      "width": 338,
+      "height": 354,
+      "bytes": 16286,
+      "sha256": "13c5e19ad78b3115ace98110a41968e7f13c7e351e3ab9508511cd39c4366797",
+      "scope": "Our Figma proposal render; native implementation and device validation pending"
+    }
+  ]
+}
