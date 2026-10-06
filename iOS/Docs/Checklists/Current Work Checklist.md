@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 58).
+  still resolve; give new items the next unused number (currently 59).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -358,6 +358,20 @@ Their placement records scope and priority; implementation has not started.
   - **6 Oct Medium Today designs:** [Medium Today / selected-section package](<../../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets/Today List/Medium Designs — 6 October 2026/README.md>) and [request checklist](<Medium Today Widget — Today and Selected Section — 6 October 2026.md>). New [Figma section](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=622-6436): progress-filled rows, two items/page, 12-point row separation and compact header paging; Today, Morning/Anytime/Evening/custom/quit-section and recovery/large-text examples. Twenty-one scenario components, 24 reviews and 26 PNGs. Saved audit checks 35 rows and 77 header/action regions: no clipping or target overlap; completed fills and exact +500/pause/checklist actions verified. Larger text reduces capacity to one. Large/small designs preserved; native section configuration/routes, paging isolation, WidgetKit sizing/accessibility and iPhone acceptance remain open. No runtime changes, CI dispatch, commit or push in this phase (U9/U25/W1). **Item 9 remains open.**
 
   - **6 Oct final Small / consolidated publication:** [Widgets — start here](<../../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets/README.md>) now owns all widget reports, original evidence, current family handoffs and images. [Final Small correction](<../../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets/Daily Cards/Final Typography and Recovery — 6 October 2026.md>) applies SF Pro **12 pt Medium** supporting labels throughout and adds six explicit setup/recovery cards to the current list; 42 Small cards/48 PNGs, Large 20 PNGs, Medium 26 PNGs, original catalogue 28 PNGs. Final audits distinguish Figma/artifact delivery from native implementation. [Final request checklist](<Small Widgets — Final Typography and Consolidated Handoff — 6 October 2026.md>). The complete documentation/images package is authorized for main publication; native build/tests and iPhone acceptance remain pending. **Item 9 remains open** (W1/U9/U25).
+  - **6 Oct, Claude: designs finished and documented.** Build from [Implementation Spec — Every Widget](<../../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets/Implementation Spec — Every Widget.md>): Small (one habit, today; weekly/monthly now fill toward the period; limits a plain grey bar with "max"), Large and Medium Today lists (Today or any section; 5 and 2 a page), the new Medium one habit this week, Tasks Large and Medium (5 and 2 a page), and the Lock Screen (one-habit circle, today rectangle, inline). The user, 6 Oct: build everything with **no Plus restrictions for now**, and test it thoroughly. Parked: monthly and icon-only widgets. Native build, tests and the iPhone check remain.
+
+- [ ] **58. App Lock and widget privacy: decide how they should work, then build** (added 6 October 2026, from the
+  user; **next after the widgets**). Today the app's Face ID lock (`AppLock.swift`) or the switch Menu → Widgets →
+  Hide widget content makes every widget show "Content hidden" until it is turned off; widgets can't ask for Face ID,
+  and unlocking the app doesn't reveal them. The user's questions: how should it work for the widgets, and is it
+  needed? Feature Ledger: C017 Passcode lock (Strong, 15 apps; "minor", noticed when missing, removed or paywalled) and
+  C096 Privacy and discretion stack (a must-have; "category-critical for recovery users on family phones").
+  - **Proposed (not decided):** keep App Lock free and off by default; mark the widgets `privacySensitive` so iOS hides
+    them on the Lock Screen while the phone is locked; keep "Content hidden" (everything hidden) for people who turn on
+    App Lock or Hide widget content. Settle "hide everything" against "counts only" (the 30 Sep App Lock report and the
+    Lock Screen designs show counts only; the code hides everything).
+  - Evidence and the widget side: [Implementation Spec §9](<../../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets/Implementation Spec — Every Widget.md#9-privacy-app-lock-and-whats-next>),
+    [App Lock — Private Without Lock-outs](<../../../Research/Research Reports/Settings and Help/App Lock — Private Without Lock-outs.md>).
 
 - [ ] **12. Daily Reflection: research first, then build** (added 3 Oct 2026; maybe the next build, not decided). The
   first **dedicated tracker** (see "Future" below): a mood tracker combined with journaling, a separate thing from
