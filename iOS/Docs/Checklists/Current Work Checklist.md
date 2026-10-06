@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 52).
+  still resolve; give new items the next unused number (currently 53).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -210,6 +210,19 @@ Their placement records scope and priority; implementation has not started.
   - **Expected:** ‹ · Habit options · › is the same native bottom bar as Today's ‹ · Today · › (its own Liquid Glass
     items on iOS 26), in the system's place at the bottom; the page uses the rest of the screen, so a checklist's
     steps show; still nothing moves (4 Oct's rule) when the main button comes and goes.
+
+- [ ] **52. A habit or task added between midnight and the day start didn't show on Today until the day start.**
+  Added 6 October 2026 by Claude (Claude Code); found by the full test for items 50–51, not by the user. Branch
+  `claude/dreamy-pasteur-3kgdxu`.
+  - **What happened:** `OnboardingUITests.testWelcomeToFirstHabit` sets a 3 AM day start, adds Exercise and expects it
+    on Today. It failed twice in a row, at 00:13 and 01:2x UTC (runs `37390754817`, `37395447112`), with Today empty
+    (0/0); it passes on `main` in the daytime. The habit form took its start date (and a task's date) from the
+    calendar, while Today shows the app's day, which before the day start is still yesterday: the habit started
+    "tomorrow". Rulebook D7: day start applies everywhere or nowhere.
+  - **Fix:** the form's start, end and task dates, the task picker's earliest day, "Start Today" and the
+    Today/Tomorrow/Yesterday words come from the store's today (`trackingToday`, `NewHabitView`).
+  - **Test, every run:** `OnboardingUITests.testFirstHabitAfterMidnightBeforeTheDayStartShowsOnToday` launches with
+    `-clock-hour 1` (test launches only: the store's clock runs from 1:30 AM) and a 3 AM day start.
 
 - [ ] **49. Speed: Today, the habit form and Progress got slower on `main`.** Found 5 October 2026 by the full test of
   `main` the user asked for (speed run `37310572002` on `d403844`), against the last full speed run before the day's

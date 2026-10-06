@@ -116,6 +116,14 @@ final class AppModel {
         #if DEBUG
         // Debug builds behave like Plus, so the design's 14 habits fit. Launch with -free to test the free limit.
         store.isPlus = !arguments.contains("-free")
+        // `-clock-hour N`: the store's clock runs as if it were N:30 today, so a test can be "after midnight, before a
+        // 3 AM day start" whenever CI runs (Current Work 52). Test launches only; the time keeps moving from there.
+        if testLaunch, let flag = arguments.firstIndex(of: "-clock-hour"), flag + 1 < arguments.count,
+           let hour = Int(arguments[flag + 1]),
+           let target = Calendar.current.date(bySettingHour: hour, minute: 30, second: 0, of: .now) {
+            let offset = target.timeIntervalSinceNow
+            store.clock = { Date.now.addingTimeInterval(offset) }
+        }
         #endif
     }
 
