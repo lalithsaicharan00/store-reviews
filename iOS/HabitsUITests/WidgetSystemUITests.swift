@@ -9,6 +9,17 @@ final class WidgetSystemUITests: XCTestCase {
         let tree = XCTAttachment(string: app.debugDescription); tree.name = name + "-accessibility"; tree.lifetime = .keepAlways; add(tree)
         print("Widget system \(name):\n" + app.debugDescription)
     }
+    /// The widget's labels from one snapshot of the accessibility tree (walking elements one by one fails while
+    /// SpringBoard redraws), on one line.
+    static func labels(in app: XCUIApplication) -> String {
+        let tree = app.debugDescription
+        let pattern = try! NSRegularExpression(pattern: "label: '([^']*)'")
+        let range = NSRange(tree.startIndex..., in: tree)
+        return pattern.matches(in: tree, range: range).compactMap { Range($0.range(at: 1), in: tree).map { String(tree[$0]) } }
+            .filter { label in ["Widget", "Page", "page", "cups", "Today"].contains { label.contains($0) } }
+            .joined(separator: " | ")
+    }
+
     func testHomeScreenInstallTapAndColdPersistence() throws {
         #if !targetEnvironment(simulator)
         throw XCTSkip("Cold widget fixture uses the erased CI simulator's default database; never reset a device user's database")
@@ -79,8 +90,7 @@ final class WidgetSystemUITests: XCTestCase {
         let logged = springboard.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "1 of 3 cups")).firstMatch
         if !logged.waitForExistence(timeout: 30) {
             // One line (CI keeps a failure's first line): what the widget shows, and how far the intent got in the app.
-            let shown = springboard.descendants(matching: .any).allElementsBoundByIndex.prefix(300).map(\.label)
-                .filter { $0.contains("Widget") || $0.contains("cups") || $0.contains("page") }.joined(separator: " | ")
+            let shown = Self.labels(in: springboard)
             save(springboard, "home-widget-log-missing")
             app.launchArguments = ["-empty", "-free", "-dbname", "habits", "-widget-system-verify"]
             app.launch()
@@ -91,11 +101,7 @@ final class WidgetSystemUITests: XCTestCase {
         }
         save(springboard, "home-widget-after-cold-log")
         // What the widget shows, on one line (CI keeps a failure's first line).
-        func widgetLabels() -> String {
-            springboard.descendants(matching: .any).allElementsBoundByIndex.prefix(300).map(\.label)
-                .filter { $0.contains("Widget") || $0.contains("Page") || $0.contains("page") || $0.contains("Today") }
-                .joined(separator: " | ")
-        }
+        func widgetLabels() -> String { Self.labels(in: springboard) }
         // The rows settle 1.5 s after a widget tap (U4); page once they have.
         _ = XCTWaiter.wait(for: [XCTestExpectation(description: "rows settle")], timeout: 2.5)
         // Paging is an extension-side intent and must work while the app remains closed.
