@@ -90,14 +90,23 @@ final class WidgetSystemUITests: XCTestCase {
             return
         }
         save(springboard, "home-widget-after-cold-log")
+        // What the widget shows, on one line (CI keeps a failure's first line).
+        func widgetLabels() -> String {
+            springboard.descendants(matching: .any).allElementsBoundByIndex.prefix(300).map(\.label)
+                .filter { $0.contains("Widget") || $0.contains("Page") || $0.contains("page") || $0.contains("Today") }
+                .joined(separator: " | ")
+        }
+        // The rows settle 1.5 s after a widget tap (U4); page once they have.
+        _ = XCTWaiter.wait(for: [XCTestExpectation(description: "rows settle")], timeout: 2.5)
         // Paging is an extension-side intent and must work while the app remains closed.
         let water = springboard.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "Widget water")).firstMatch
-        XCTAssertFalse(water.exists, "Page 1 holds only Quit or Cut Down")
+        XCTAssertFalse(water.exists, "Page 1 holds only Quit or Cut Down: \(widgetLabels())")
         springboard.buttons["Next page"].tap()
-        XCTAssertTrue(water.waitForExistence(timeout: 20), springboard.debugDescription)
+        XCTAssertTrue(water.waitForExistence(timeout: 20), "Page 2 after ›: \(widgetLabels())")
         save(springboard, "home-widget-next-page")
         springboard.buttons["Previous page"].tap()
-        XCTAssertEqual(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: water)], timeout: 20), .completed)
+        XCTAssertEqual(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: water)], timeout: 20),
+                       .completed, "Page 1 after ‹: \(widgetLabels())")
         save(springboard, "home-widget-previous-page")
         app.launchArguments = ["-empty", "-free", "-dbname", "habits"]
         app.launch()
