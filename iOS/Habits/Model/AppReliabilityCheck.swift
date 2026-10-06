@@ -82,11 +82,10 @@ enum AppReliabilityCheck {
         await store.flush()
         cold = await reloaded()
         expect(cold.habits.first { $0.id == water.id }?.name == "Water 29", "Thirty quick edits store the last")
+        // Five backups started together; they overlap at every await on the main actor.
+        let backups = (0..<5).map { _ in Task { try? await store.backupFile() } }
         var files: [URL] = []
-        await withTaskGroup(of: URL?.self) { group in
-            for _ in 0..<5 { group.addTask { @MainActor in try? await store.backupFile() } }
-            for await file in group { if let file { files.append(file) } }
-        }
+        for backup in backups { if let file = await backup.value { files.append(file) } }
         expect(files.count == 5, "Five backups at once all finish: \(files.count)")
         if let last = files.last {
             let restored = HabitStore(repository: Persistence.inMemory().repository)
