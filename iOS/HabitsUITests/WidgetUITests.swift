@@ -15,6 +15,18 @@ final class WidgetUITests: XCTestCase {
         }
     }
 
+    /// Bursts of taps, retried and out-of-order callbacks, ✓ and ▶/⏸ storms, stale buttons, privacy mid-run, deletion
+    /// with taps queued, overlapping publications, a damaged file, travel, midnight and a year of history.
+    func testReliabilityUnderBurstsRetriesAndRollover() {
+        let app = XCUIApplication(); app.launchArguments = ["-uitest", "-widgetreliability"]
+        app.launch()
+        let passed = app.staticTexts["Widget reliability: all checks passed"]
+        if !passed.waitForExistence(timeout: 240) {
+            let failed = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Widget reliability failed")).firstMatch
+            XCTFail(failed.exists ? failed.label : "Widget reliability did not finish")
+        }
+    }
+
     // MARK: Every family, drawn
 
     private func launchRender(_ extra: [String] = []) -> XCUIApplication {

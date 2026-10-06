@@ -36,6 +36,14 @@ The existing widgets are mostly dummy content; reuse what fits, replace the rest
   cards; performance (S rules); data updating and robustness (D rules).
 - [ ] Note everything; when the build is done, cross-check that every point here was implemented.
 - [ ] When every test passes, **merge into `main`**.
+- [ ] **Test the widgets for reliability** (the user, later the same day): a dedicated stress suite,
+  `WidgetReliabilityCheck` (`-widgetreliability`, `WidgetUITests.testReliabilityUnderBurstsRetriesAndRollover`):
+  40 widget + 10 app taps in one burst and 120 retried callbacks out of order (exactly 50, all there after a cold
+  start); 21 quick ✓ on/off (one tick); 10 quick ▶/⏸ and repeated ⏸ (one session saved); a button drawn before an edit
+  (refused); privacy switched on mid-run; an undone tap retried; a habit deleted with taps queued; every row's week and
+  done state equal to Progress and Today; 20 overlapping publications (newest on disk, never half written); a
+  half-written file, travel and midnight (the new day by itself, yesterday's button refused); a year of history for 12
+  habits (size, time, streaks).
 
 ## Build notes
 
