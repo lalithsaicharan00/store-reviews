@@ -41,6 +41,34 @@ final class OnboardingUITests: XCTestCase {
         button.tap()
     }
 
+    /// Current Work 52 (6 Oct 2026): at 1:30 AM with a 3 AM day start, the app's today is still yesterday; a habit
+    /// added then took the calendar's date, so it started "tomorrow" and Today stayed empty until 3 AM. Found by
+    /// `testWelcomeToFirstHabit`, which failed only when CI ran between midnight and 3 AM. `-clock-hour 1` makes it
+    /// every run.
+    func testFirstHabitAfterMidnightBeforeTheDayStartShowsOnToday() {
+        launch(extra: ["-clock-hour", "1"])
+        XCTAssertTrue(app.staticTexts["onboarding-page-name"].waitForExistence(timeout: 10))
+        next()
+        XCTAssertTrue(app.staticTexts["onboarding-page-free"].waitForExistence(timeout: 3))
+        next()
+        let dayStart = app.buttons["onboarding-day-start"]
+        XCTAssertTrue(dayStart.waitForExistence(timeout: 3))
+        dayStart.tap()
+        let three = app.buttons.matching(NSPredicate(format: "label BEGINSWITH '3:00' OR label BEGINSWITH '03:00'")).firstMatch
+        XCTAssertTrue(three.waitForExistence(timeout: 3))
+        three.tap()
+        XCTAssertTrue(app.buttons["onboarding-day-start"].label.contains("3:00"))
+        next()
+        let exercise = app.buttons["idea-Exercise"]
+        XCTAssertTrue(exercise.waitForExistence(timeout: 3))
+        exercise.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["name-field"].waitForExistence(timeout: 5))
+        app.buttons["add-habit"].tap()
+        XCTAssertTrue(app.buttons["Mark Exercise done"].waitForExistence(timeout: 5),
+                      "A habit added at 1:30 AM, before a 3 AM day start, shows on Today")
+        shot("52-after-midnight")
+    }
+
     /// The whole welcome: the name, what's free, the day and week, then an idea that fills in the form and is added.
     func testWelcomeToFirstHabit() {
         launch()

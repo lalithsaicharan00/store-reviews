@@ -17,13 +17,14 @@ struct RoutinePlayer: View {
     @ScaledMetric(relativeTo: .title) private var numberSize = 36.0
     @ScaledMetric(relativeTo: .body) private var breathingRoom = 24.0
     @ScaledMetric(relativeTo: .body) private var actionWidth = 240.0
-    /// Between the main button and the bottom row: room enough that neither is tapped for the other.
-    @ScaledMetric(relativeTo: .body) private var navigationGap = 32.0
+    /// Between the main button and the bottom bar: room enough that neither is tapped for the other.
+    @ScaledMetric(relativeTo: .body) private var navigationGap = 24.0
+    /// The main button's slot, measured: each page keeps this much room at its end (with the gap) so its last step
+    /// scrolls clear of the button floating over it.
+    @State private var actionHeight: CGFloat = 52
     /// Fitted to the options sheet's own list, so every option shows without scrolling (the user, 4 Oct 2026).
     @State private var optionsHeight: CGFloat = 0
     @State private var optionsDetent: PresentationDetent = .medium
-    /// The window's bottom safe area (the home indicator), read once when the player opens.
-    @State private var homeIndicator: CGFloat = Self.windowBottomInset()
     /// The habit the manual-entry sheet is for, fixed when it opens: the sheet never changes habit under the person.
     @State private var logHabitID: UUID?
     @State private var analyticsFlow = Analytics.shared.ticket
@@ -55,6 +56,12 @@ struct RoutinePlayer: View {
     /// The page on screen. It follows `index`; a swipe changes it first and goes through `navigate`, so the
     /// timer of the habit left behind is saved and the next one's starts, exactly as with the buttons.
     @State private var page = 0
+    /// The slide the player started (‹ ›, the queue, Skip), until it ends. Not observed: nothing redraws for it.
+    @State private var slide = PagerSlide()
+    #if DEBUG
+    /// The fast ‹ › check's result (`PagerProbe`), shown only during that check.
+    @State private var pagerCheck: String?
+    #endif
 
     init(session: RoutineSession) {
         self.session = session
@@ -142,6 +149,7 @@ struct RoutinePlayer: View {
                     }
                     .disabled(expired)
                 }
+                if !expired { bottomBar }
             }
         }
         .tint(.ink)
@@ -206,16 +214,21 @@ struct RoutinePlayer: View {
         .onPerfCommand { action in
             if action == .nextHabit { advance() } else if action == .previousHabit { navigate(to: max(0, index - 1)) }
         }
+        #if DEBUG
+        .task { await runFastNavigationCheck() }
+        .overlay(alignment: .top) {
+            if let pagerCheck { Text(pagerCheck).font(.caption2).accessibilityIdentifier("focus-pager-check") }
+        }
+        #endif
     }
 
     // MARK: The player: a playlist of habits (round 2, "Focus Player — How It Should Behave" P18–P23)
 
-    /// Swipe between habits, or use ‹ and Up next. The finish screen is the last page.
+    /// Swipe between habits, or use ‹ and ›. The finish screen is the last page.
     private var pager: some View {
-        // The bottom row is a bottom navigation (the user, 4 Oct 2026): pinned to the bottom, a fixed distance from
-        // the screen's edge. Nothing else ever takes its place. The distance comes from the window's home indicator,
-        // read once: a GeometryReader's safe area grew with a sheet's keyboard, squeezed the pager, and the pager
-        // jumped back to the first habit (FocusPlayerUITests, 4 Oct 2026).
+        // The bottom row is the native bottom bar, as on Today (the user, 5 Oct 2026: "an actual bottom navigation, not
+        // a huge block"). The main button floats over the bottom of the page, so a page that has none (an unfinished
+        // checklist) uses that space for its steps, and nothing moves when it comes and goes.
         VStack(spacing: 0) {
             header
             TabView(selection: $page) {
@@ -225,26 +238,26 @@ struct RoutinePlayer: View {
                 summary.tag(order.count)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
-            // The save message floats over the bottom of the page, so nothing above it jumps when it appears.
-            .overlay(alignment: .bottom) { feedbackBanner }
-            if let habit = current {
-                controls(habit).padding(.bottom, Self.bottomClearance(safeArea: homeIndicator) - homeIndicator)
+            .overlay(alignment: .bottom) {
+                VStack(spacing: 8) {
+                    // The save message floats above the main button, so nothing under it jumps when it appears.
+                    feedbackBanner
+                    if let habit = current { action(habit) }
+                }
+                .padding(.bottom, min(navigationGap, 32))
             }
         }
         // Not .disabled(busy): that greyed the whole player for each save and turned the Pause/Resume button
         // dark (found by hand 29 Sep). Every action already ignores taps while a save is in progress.
         .onChange(of: page) { _, new in
             guard new != index else { return }
+            // While the player's own slide runs, the pager reports pages it slides past as if chosen; obeying sent the
+            // player back to them, so › tapped fast slid the habits back and forth (Current Work 50, CI 5 Oct 2026:
+            // 6 steps back in one run). Only a swipe of the person's own, outside that slide, chooses a habit.
+            if slide.running { showPage(); return }
             navigate(to: new, reviewing: new > index && current?.atMost == true ? current?.id : nil)
         }
         .onChange(of: index) { _, new in if page != new { page = new } }
-    }
-
-    /// From the bottom row to the screen's bottom edge: 40 points, or 8 above the home indicator if that's more.
-    static func bottomClearance(safeArea: CGFloat) -> CGFloat { max(40, safeArea + 8) }
-
-    private static func windowBottomInset() -> CGFloat {
-        UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow }.first?.safeAreaInsets.bottom ?? 0
     }
 
     /// The compact toolbar already carries position and queue access; only the progress segments live here.
@@ -304,7 +317,9 @@ struct RoutinePlayer: View {
                     }
                     .frame(minHeight: 44)
                     if habit.kind == .checklist { checklist(habit) }
-                    Spacer(minLength: 48) // room for transient save/undo feedback
+                    // Room at the end for the main button floating over the page (and the save message above it): the
+                    // last step scrolls clear of them.
+                    Spacer(minLength: actionHeight + min(navigationGap, 32) + 24)
                 }
                 .padding(.horizontal, 24)
                 .frame(maxWidth: 540)
@@ -379,31 +394,28 @@ struct RoutinePlayer: View {
         .background(Color.card, in: RoundedRectangle(cornerRadius: 20))
     }
 
-    /// One primary action; everything secondary has one clearly named home between the chevrons.
-    /// The main button's slot is always there, so it and the bottom row never move (the user, 4 Oct 2026: "no layout
-    /// shift"). An unfinished checklist leaves the slot empty: its steps are the action.
-    private func controls(_ habit: Habit) -> some View {
-        VStack(spacing: min(navigationGap, 44)) {
-            ZStack {
-                Button {} label: { Label("Next", systemImage: "arrow.right") }
+    /// One primary action, floating over the bottom of the page; everything secondary has one clearly named home in the
+    /// bottom bar. Its slot is always there, so the save message above it never moves (the user, 4 Oct 2026: "no
+    /// layout shift"). An unfinished checklist leaves the slot empty: its steps are the action.
+    private func action(_ habit: Habit) -> some View {
+        ZStack {
+            Button {} label: { Label("Next", systemImage: "arrow.right") }
+                .modifier(FocusPrimaryButton())
+                .hidden()
+                .accessibilityHidden(true)
+            if habit.kind != .checklist || done(habit) || skipped(habit) {
+                // The system's own prominent button (the user, 29 Sep: the custom style didn't feel native).
+                primary(habit)
+                    .accessibilityIdentifier("focus-primary")
                     .modifier(FocusPrimaryButton())
-                    .hidden()
-                    .accessibilityHidden(true)
-                if habit.kind != .checklist || done(habit) || skipped(habit) {
-                    // The system's own prominent button (the user, 29 Sep: the custom style didn't feel native).
-                    primary(habit)
-                        .accessibilityIdentifier("focus-primary")
-                        .modifier(FocusPrimaryButton())
-                        .transaction { $0.animation = nil }
-                }
+                    .transaction { $0.animation = nil }
             }
-            .frame(maxWidth: min(actionWidth, 320))
-            .frame(maxWidth: .infinity)
-            navigationControls
         }
-        .padding(.horizontal, 28).padding(.top, 16)
-        .frame(maxWidth: 540)
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: min(actionWidth, 320))
+        .onGeometryChange(for: CGFloat.self) { $0.size.height.rounded(.up) } action: { height in
+            if abs(height - actionHeight) > 0.5 { actionHeight = height } // only when Dynamic Type changes it
+        }
+        .padding(.horizontal, 28)
     }
 
     private func habitOptions(_ habit: Habit) -> some View {
@@ -531,36 +543,41 @@ struct RoutinePlayer: View {
         }
     }
 
-    /// Navigation is visually secondary. Skip is a separate explicit action, never a chevron side effect.
-    private var navigationControls: some View {
-        HStack(spacing: 16) {
-            Button { navigate(to: max(0, index - 1)) } label: {
-                Image(systemName: "chevron.left").font(.title3.weight(.medium))
-                    .frame(width: 48, height: 48).contentShape(Rectangle())
-            }
-            .disabled(index == 0)
-            .accessibilityLabel("Previous habit")
-            Spacer(minLength: 0)
-            Button {
-                pendingHabitAction = nil
-                optionsDetent = optionsHeight > 0 ? .height(optionsHeight) : .medium
-                showHabitOptions = true
-            } label: {
-                Text(current?.kind == .task ? "Task options" : "Habit options")
-                    .frame(minHeight: 48)
-            }
-            .accessibilityIdentifier("focus-habit-options")
-            Spacer(minLength: 0)
-            Button { advance() } label: {
-                Image(systemName: "chevron.right").font(.title3.weight(.medium))
-                    .frame(width: 48, height: 48).contentShape(Rectangle())
-            }
-            .accessibilityLabel(next.map { "Next habit: \($0.name)" } ?? "Finish routine")
-            .accessibilityIdentifier("focus-up-next")
+    /// ‹ · Habit options · ›: the standard bottom bar, the same as Today's ‹ · Today · › (the user, 5 Oct 2026). On
+    /// iOS 26 each part is its own Liquid Glass item; before iOS 26 it is a plain bottom bar. It stays on the finish
+    /// page too, so ‹ still goes back and the pages never change height. Skip is a separate explicit action, never a
+    /// chevron side effect.
+    @ToolbarContentBuilder
+    private var bottomBar: some ToolbarContent {
+        ToolbarItem(placement: .bottomBar) {
+            Button("Previous habit", systemImage: "chevron.left") { navigate(to: max(0, index - 1)) }
+                .disabled(index == 0)
         }
-        .font(.subheadline.weight(.medium))
-        .buttonStyle(.borderless) // the system's highlight on press, like any toolbar button
-        .foregroundStyle(.secondary)
+        if #available(iOS 26, *) {
+            ToolbarSpacer(.flexible, placement: .bottomBar)
+            ToolbarItem(placement: .bottomBar) { optionsButton }
+            ToolbarSpacer(.flexible, placement: .bottomBar)
+        } else {
+            ToolbarItem(placement: .status) { optionsButton }
+        }
+        ToolbarItem(placement: .bottomBar) {
+            Button("Next habit", systemImage: "chevron.right") { advance() }
+                .disabled(index >= order.count)
+                .accessibilityLabel(next.map { "Next habit: \($0.name)" } ?? "Finish routine")
+                .accessibilityIdentifier("focus-up-next")
+        }
+    }
+
+    private var optionsButton: some View {
+        Button {
+            pendingHabitAction = nil
+            optionsDetent = optionsHeight > 0 ? .height(optionsHeight) : .medium
+            showHabitOptions = true
+        } label: {
+            Text(current?.kind == .task ? "Task options" : "Habit options").lineLimit(1)
+        }
+        .disabled(current == nil)
+        .accessibilityIdentifier("focus-habit-options")
     }
 
     /// Next habit (or the finish screen). Leaving a limit counts as having checked in on it.
@@ -773,10 +790,28 @@ struct RoutinePlayer: View {
         }
         if let id { reviewed.insert(id) }
         feedback = nil; undoID = nil; undoSkipID = nil
+        #if DEBUG
+        PagerProbe.shared.moved(from: index, to: destination)
+        PagerProbe.shared.index = destination
+        #endif
         index = destination
-        if page != destination { withAnimation(animation) { page = destination } }
+        showPage()
         startCurrentTimer()
         updateScreenAwake()
+    }
+
+    /// Puts the pager on `index`. A tap slides it; a tap that comes while a slide is still running jumps straight to its
+    /// habit, so the pages never trail the header and never have to turn round to come back (the user tapped › to the
+    /// end and ‹ straight back: the trailing pages were still sliding forward, Current Work 50).
+    private func showPage() {
+        guard page != index else { return }
+        if slide.running || animation == nil {
+            var instant = Transaction(); instant.disablesAnimations = true
+            withTransaction(instant) { page = index }
+        } else {
+            slide.until = .now.addingTimeInterval(0.35)
+            withAnimation(animation) { page = index }
+        }
     }
 
     private func close() {
@@ -869,10 +904,67 @@ struct RoutinePlayer: View {
     private func updateScreenAwake() {
         UIApplication.shared.isIdleTimerDisabled = current.map { store.timers[$0.id] != nil } ?? false
     }
+    #if DEBUG
+    /// The fast ‹ › check (Current Work 50): › to the end and ‹ back to the start, at a tap every 0.15, 0.1 and 0.05 s,
+    /// the way a quick thumb does (XCUITest waits for each slide to end, so it can't tap this fast). `PagerProbe`
+    /// samples where the pages are on screen every frame meanwhile.
+    private func runFastNavigationCheck() async {
+        guard PagerProbe.enabled else { return }
+        let probe = PagerProbe.shared
+        try? await Task.sleep(for: .seconds(1.5))
+        let sampler = Task { @MainActor in
+            while !Task.isCancelled { probe.sample(); try? await Task.sleep(for: .milliseconds(8)) }
+        }
+        var verdicts: [(passed: Bool, text: String)] = []
+        for interval in [150, 100, 50] {
+            probe.begin(1)
+            var taps = 0
+            while index < order.count - 1 && taps < order.count * 4 {
+                advance(); taps += 1; try? await Task.sleep(for: .milliseconds(interval))
+            }
+            try? await Task.sleep(for: .seconds(1.2))
+            verdicts.append(probe.verdict(target: order.count - 1, label: "› \(interval) ms"))
+            probe.begin(-1)
+            taps = 0
+            while index > 0 && taps < order.count * 4 {
+                navigate(to: max(0, index - 1)); taps += 1; try? await Task.sleep(for: .milliseconds(interval))
+            }
+            try? await Task.sleep(for: .seconds(1.2))
+            verdicts.append(probe.verdict(target: 0, label: "‹ \(interval) ms"))
+        }
+        // The user's own pattern: › fast to the end, then ‹ straight away, with no pause between.
+        for interval in [100, 50] {
+            probe.begin(1)
+            var taps = 0
+            while index < order.count - 1 && taps < order.count * 4 {
+                advance(); taps += 1; try? await Task.sleep(for: .milliseconds(interval))
+            }
+            verdicts.append(probe.verdict(target: order.count - 1, label: "turn › \(interval) ms", settled: false))
+            probe.begin(-1)
+            taps = 0
+            while index > 0 && taps < order.count * 4 {
+                navigate(to: max(0, index - 1)); taps += 1; try? await Task.sleep(for: .milliseconds(interval))
+            }
+            try? await Task.sleep(for: .seconds(1.2))
+            verdicts.append(probe.verdict(target: 0, label: "turn ‹ \(interval) ms"))
+        }
+        sampler.cancel()
+        probe.begin(0)
+        pagerCheck = "Fast navigation: " + (verdicts.allSatisfy { $0.passed } ? "passed" : "failed")
+            + " · \(order.count) habits · " + verdicts.map { $0.text }.joined(separator: " · ")
+    }
+    #endif
+
     private func isAmount(_ habit: Habit) -> Bool { if case .amount = habit.kind { true } else { false } }
     private func amountUnit(_ habit: Habit) -> String { if case .amount(let unit, _) = habit.kind { unit } else { "" } }
 
 
+}
+
+/// Until when the player's own pager slide runs (`RoutinePlayer.showPage`).
+final class PagerSlide {
+    var until = Date.distantPast
+    var running: Bool { Date.now < until }
 }
 
 /// The player's main button: the system's prominent button, large, in ink, full width of its slot. Native press
@@ -1037,3 +1129,67 @@ private struct FocusPeriodQuota: View {
         }
     }
 }
+
+#if DEBUG
+/// Where the player's pages are while it moves (Current Work 50, 5 Oct 2026: tapping › fast made the pages slide back
+/// and forth while the segments above were right). Only with `-focus-fast-nav-check`. Every frame it reads the pager's
+/// scroll view as drawn on screen (its presentation layer), so a slide is seen mid-way whether UIKit or SwiftUI animates
+/// it, and a slide back the way it came is measured, not judged by eye (Rulebook S2).
+final class PagerProbe {
+    static let enabled = ProcessInfo.processInfo.arguments.contains("-focus-fast-nav-check")
+    static let shared = PagerProbe()
+    private weak var pager: UIScrollView?
+    private var direction: CGFloat = 0
+    private var furthest: CGFloat?
+    private var worstBack: CGFloat = 0
+    private var reversals = 0
+    private var midSlide = 0
+    private var position: CGFloat = 0
+
+    func begin(_ direction: CGFloat) {
+        self.direction = direction; furthest = nil; worstBack = 0; reversals = 0; midSlide = 0; worstBehind = 0
+    }
+
+    /// The page on screen, in pages: 2.5 is halfway between the third and fourth.
+    func sample() {
+        guard let pager = pager ?? Self.findPager(), pager.bounds.width > 1 else { return }
+        self.pager = pager
+        let x = pager.layer.presentation()?.bounds.origin.x ?? pager.contentOffset.x
+        position = (x + pager.adjustedContentInset.left) / pager.bounds.width
+        guard direction != 0 else { return }
+        if abs(position - position.rounded()) > 0.02 { midSlide += 1 }
+        let along = position * direction
+        furthest = max(furthest ?? along, along)
+        worstBack = max(worstBack, (furthest ?? along) - along)
+        worstBehind = max(worstBehind, abs(CGFloat(index) - position))
+    }
+
+    /// The player itself went the other way (a page it was passing reported as the one chosen).
+    func moved(from old: Int, to new: Int) { if CGFloat(new - old) * direction < 0 { reversals += 1 } }
+
+    /// A run passes when the pages never slid back more than a twentieth of a page, the player never went back, the
+    /// pages settled where the player is, and the probe saw them mid-slide (so it wasn't blind).
+    func verdict(target: Int, label: String, settled: Bool = true) -> (passed: Bool, text: String) {
+        let passed = worstBack < 0.05 && reversals == 0 && (!settled || abs(position - CGFloat(target)) < 0.02)
+            && midSlide > 0
+        return (passed, label + String(format: ": slid back %.2f, %d reversals, at %.2f/%d, %d mid-slide, behind up to %.2f",
+                                       worstBack, reversals, position, target, midSlide, worstBehind))
+    }
+    /// How far the pages trailed the player (its index) while it moved: they show an older habit than the header.
+    private var worstBehind: CGFloat = 0
+    var index = 0
+
+    /// The pager: the window's one scroll view as wide as the screen whose content is several screens wide.
+    private static func findPager() -> UIScrollView? {
+        guard let window = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.keyWindow }).first
+        else { return nil }
+        func find(in view: UIView) -> UIScrollView? {
+            if let scroll = view as? UIScrollView, scroll.bounds.width >= window.bounds.width * 0.9,
+               scroll.contentSize.width > scroll.bounds.width * 1.5 { return scroll }
+            for subview in view.subviews { if let found = find(in: subview) { return found } }
+            return nil
+        }
+        return find(in: window)
+    }
+}
+#endif

@@ -561,6 +561,9 @@ struct HabitForm: View {
                 // Each saved reminder belongs to the time of day it falls in, so it stays inside it.
                 times = times.map { var t = $0; t.part = partFor(t.time); return t }
             } else {
+                // The app's today, as on Today: between midnight and a 3 AM day start the calendar already says
+                // tomorrow, and a habit started then stayed off Today until 3 AM (Current Work 52, 6 Oct 2026).
+                startDate = trackingToday; endDate = trackingToday; taskDate = trackingToday
                 color = store.suggestedColor()
                 // An idea arrives named: show the whole form first instead of the keyboard.
                 if name.isEmpty && PerfSwitches.focusFormName { focus = .name }
@@ -820,12 +823,16 @@ struct HabitForm: View {
         }
     }
 
-    /// "Today", "Tomorrow", "Yesterday", or "Wed 1 Oct": the start as a person says it.
+    /// The day Today shows, as a date: the calendar day, or the one before it until the day start (Rulebook D7).
+    private var trackingToday: Date { store.today().date(calendar: store.calendar) }
+
+    /// "Today", "Tomorrow", "Yesterday", or "Wed 1 Oct": the start as a person says it, counted from the app's today.
     private func dayWords(_ date: Date) -> String {
         let cal = Calendar.current
-        if cal.isDateInToday(date) { return "Today" }
-        if cal.isDateInTomorrow(date) { return "Tomorrow" }
-        if cal.isDateInYesterday(date) { return "Yesterday" }
+        let today = trackingToday
+        if cal.isDate(date, inSameDayAs: today) { return "Today" }
+        if let next = cal.date(byAdding: .day, value: 1, to: today), cal.isDate(date, inSameDayAs: next) { return "Tomorrow" }
+        if let last = cal.date(byAdding: .day, value: -1, to: today), cal.isDate(date, inSameDayAs: last) { return "Yesterday" }
         let sameYear = cal.component(.year, from: date) == cal.component(.year, from: .now)
         return sameYear ? date.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated))
             : date.formatted(.dateTime.day().month(.abbreviated).year())
@@ -835,7 +842,7 @@ struct HabitForm: View {
     private var startEndSection: some View {
         Section {
             // "Started" for a day in the past, as a person would say it.
-            screenRow(startDate < Calendar.current.startOfDay(for: .now) ? "Started" : "Starts", value: dayWords(startDate)) {
+            screenRow(startDate < trackingToday ? "Started" : "Starts", value: dayWords(startDate)) {
                 Form {
                     Section {
                         DatePicker("Starts", selection: $startDate, displayedComponents: .date)
@@ -844,9 +851,9 @@ struct HabitForm: View {
                     } footer: {
                         Text("A start date in the past lets you tick the days since then.").formNote()
                     }
-                    if !Calendar.current.isDateInToday(startDate) {
+                    if !Calendar.current.isDate(startDate, inSameDayAs: trackingToday) {
                         Section {
-                            Button("Start Today") { startDate = Calendar.current.startOfDay(for: .now) }
+                            Button("Start Today") { startDate = trackingToday }
                         }
                     }
                 }
@@ -904,7 +911,7 @@ struct HabitForm: View {
 
     /// Editing an old task must keep its saved date, even when only its name changes.
     private var earliestTaskDate: Date {
-        let today = Calendar.current.startOfDay(for: .now)
+        let today = trackingToday
         return original?.dueDay.map { min(today, Calendar.current.startOfDay(for: $0.date())) } ?? today
     }
 

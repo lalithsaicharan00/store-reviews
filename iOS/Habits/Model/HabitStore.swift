@@ -1735,7 +1735,7 @@ final class HabitStore {
             // Exercise navigation against deliberately slow storage without touching the user's database.
             if ProcessInfo.processInfo.arguments.contains("-uitest"),
                ProcessInfo.processInfo.arguments.contains("-focus-slow-writes"), TimerPresence.playerOpen {
-                try? await Task.sleep(for: .seconds(2))
+                try? await Task.sleep(for: .seconds(4))
             }
             #endif
             guard self.isStorageReady else {

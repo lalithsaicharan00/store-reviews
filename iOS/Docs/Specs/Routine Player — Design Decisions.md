@@ -41,6 +41,8 @@ A baseline 24-point gap, scaled with Dynamic Type and capped at 36, separates th
 
 **4 Oct 2026 (the user): the bottom row is a bottom navigation and nothing moves.** It sits 40 points above the screen's bottom edge (8 above the home indicator if that's more), 32 scaled points (capped at 44) below the main button, whose slot is always kept, empty for an unfinished checklist. This supersedes the 24-point gap above and the earlier "no reserved CTA row". Habit options is sized to its list so every option shows without scrolling. Design Rules has the details.
 
+**5 Oct 2026 (the user): the bottom row is the native bottom bar, as on Today.** ‹ · Habit options · › are the system's bottom-bar items (Liquid Glass on iOS 26), not a custom row 40 points up; the main button floats over the bottom of the page above it, so an unfinished checklist's steps use the space the empty button slot took. This supersedes the 4 Oct placement above; "nothing moves" still holds. Fast ‹ ›: a tap during a slide jumps straight to its habit, and pages the pager slides past are never taken as choices (Current Work 50 and 51; Design Rules has the details and the measurements).
+
 Bottom navigation is previous chevron, Habit options (Task options for tasks), and next chevron. Navigating does not mark an activity done or skip it. The last chevron opens the summary.
 
 ## Habit options and manual logging
