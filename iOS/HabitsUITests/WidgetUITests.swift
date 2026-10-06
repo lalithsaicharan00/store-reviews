@@ -1,68 +1,145 @@
 import XCTest
 
+/// The widgets' data checks (`WidgetCheck`) and every family drawn with the extension's own views at iPhone sizes
+/// (`WidgetRenderCheck`). WidgetKit's own host is `WidgetSystemUITests`.
 final class WidgetUITests: XCTestCase {
     override func setUp() { continueAfterFailure = false }
+
     func testStorageActionsDayBoundariesPrivacyAndUnlimitedTasks() {
         let app = XCUIApplication(); app.launchArguments = ["-uitest", "-widgetcheck"]
         app.launch()
-        XCTAssertTrue(app.staticTexts["Widgets: all checks passed"].waitForExistence(timeout: 90), app.debugDescription)
+        let passed = app.staticTexts["Widgets: all checks passed"]
+        if !passed.waitForExistence(timeout: 120) {
+            let failed = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Widgets failed")).firstMatch
+            XCTFail(failed.exists ? failed.label : app.debugDescription)
+        }
     }
-    func testEveryFamilyAndLayoutAtIPhoneSizes() {
-        let app = XCUIApplication(); app.launchArguments = ["-uitest", "-empty", "-widget-fixture", "-widget-render", "-free"]
+
+    // MARK: Every family, drawn
+
+    private func launchRender(_ extra: [String] = []) -> XCUIApplication {
+        let app = XCUIApplication()
+        app.launchArguments = ["-uitest", "-empty", "-widget-fixture", "-widget-render"] + extra
         app.launch()
-        XCTAssertTrue(app.descendants(matching: .any)["widget-render"].waitForExistence(timeout: 15), app.debugDescription)
-        func choose(_ family: String) {
-            let button = app.buttons["family-\(family)"]
-            app.scrollViews.firstMatch.swipeRight(); app.scrollViews.firstMatch.swipeRight()
-            for _ in 0..<3 where !button.isHittable { app.scrollViews.firstMatch.swipeLeft() }
-            XCTAssertTrue(button.exists && button.isHittable, "Missing widget family \(family)")
-            button.tap()
-        }
-        let pairs: [(String, [String])] = [
-            ("agenda", ["systemSmall", "systemMedium", "systemLarge", "accessoryInline", "accessoryCircular", "accessoryRectangular"]),
-            ("item", ["systemSmall", "accessoryInline", "accessoryCircular", "accessoryRectangular"]),
-            ("icons", ["systemMedium", "systemLarge"]),
-            ("history", ["systemSmall", "systemMedium", "systemLarge"])
-        ]
-        for (layout, families) in pairs {
-            app.buttons[layout].tap()
-            for family in families {
-                choose(family)
-                let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-free-\(layout)-\(family)"; shot.lifetime = .keepAlways; add(shot)
-            }
-        }
-        func enable(_ id: String) {
-            let toggle = app.switches[id]
-            if toggle.value as? String != "1" {
-                toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
-            }
-            expectation(for: NSPredicate(format: "value == '1'"), evaluatedWith: toggle)
-            waitForExpectations(timeout: 5)
-        }
-        enable("widget-plus")
-        for (layout, families) in pairs.filter({ ["icons", "history"].contains($0.0) }) {
-            app.buttons[layout].tap()
-            if layout == "history" { app.buttons["select-Widget water"].tap() }
-            for family in families {
-                choose(family)
-                let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-plus-\(layout)-\(family)"; shot.lifetime = .keepAlways; add(shot)
-            }
-        }
-        enable("widget-month")
-        for family in ["systemSmall", "systemMedium", "systemLarge"] {
-            choose(family)
-            let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-plus-month-\(family)"; shot.lifetime = .keepAlways; add(shot)
-        }
-        enable("widget-dark")
-        let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-dark-history"; shot.lifetime = .keepAlways; add(shot)
+        XCTAssertTrue(app.descendants(matching: .any)["widget-render"].waitForExistence(timeout: 20), app.debugDescription)
+        return app
     }
+    private func choose(_ app: XCUIApplication, family: String) {
+        let button = app.buttons["family-\(family)"]
+        let strip = app.scrollViews.firstMatch
+        strip.swipeRight(); strip.swipeRight()
+        for _ in 0..<3 where !button.isHittable { strip.swipeLeft() }
+        XCTAssertTrue(button.isHittable, "Missing widget family \(family)")
+        button.tap()
+    }
+    private func select(_ app: XCUIApplication, _ name: String) {
+        let button = app.buttons["select-\(name)"]
+        let strip = app.scrollViews.element(boundBy: 1)
+        strip.swipeRight(); strip.swipeRight()
+        for _ in 0..<4 where !button.isHittable { strip.swipeLeft() }
+        XCTAssertTrue(button.isHittable, "Missing habit \(name)")
+        button.tap()
+    }
+    /// Something in the drawn widget whose label contains `text` (a row's link reads its name and line together).
+    private func shows(_ app: XCUIApplication, _ text: String, timeout: TimeInterval = 3) -> Bool {
+        app.descendants(matching: .any)["widget-render"].descendants(matching: .any)
+            .matching(NSPredicate(format: "label CONTAINS %@", text)).firstMatch.waitForExistence(timeout: timeout)
+    }
+    private func shot(_ app: XCUIApplication, _ name: String) {
+        let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = name; shot.lifetime = .keepAlways; add(shot)
+    }
+
+    func testEveryFamilyAndLayoutAtIPhoneSizes() {
+        let app = launchRender()
+        // Small · one habit: its name, today's value and its one button.
+        app.buttons["layout-item"].tap(); choose(app, family: "systemSmall"); select(app, "Widget water")
+        XCTAssertTrue(shows(app, "0 of 8 glasses"), app.debugDescription)
+        XCTAssertTrue(app.buttons["Add 1 to Widget water"].exists, "Small: +1 adds one glass")
+        shot(app, "widget-small-water")
+        for (name, expected, button) in [("Widget check", "Not checked", "Mark Widget check done"),
+                                         ("Widget steps", "0 of 8k steps", "Log an amount for Widget steps"),
+                                         ("Widget timer", "0 of 10 min", "Start Widget timer timer"),
+                                         ("Widget routine", "0 of 3 steps", "Open Widget routine steps"),
+                                         ("Widget cut down", "0 of 3 cups max", "Add 1 to Widget cut down"),
+                                         ("Widget quit", "Quitting", "Record a slip for Widget quit")] {
+            select(app, name)
+            XCTAssertTrue(shows(app, expected), "\(name): \(expected)\n\(app.debugDescription)")
+            XCTAssertTrue(app.buttons[button].exists || app.links[button].exists, "\(name): \(button)\n\(app.debugDescription)")
+            shot(app, "widget-small-\(name)")
+        }
+
+        // Large Today: the cards in Today's order, five a page with ‹ 1/2 ›.
+        app.buttons["layout-habits"].tap(); app.buttons["view-today"].tap(); choose(app, family: "systemLarge")
+        XCTAssertTrue(shows(app, "Today") && shows(app, "1/2") && shows(app, "0 of 5 done"), app.debugDescription)
+        XCTAssertTrue(shows(app, "Widget cut down") && shows(app, "Widget routine") == false, "Page 1 holds the first five")
+        shot(app, "widget-large-today-page-1")
+        app.buttons["render-next-page"].tap()
+        XCTAssertTrue(shows(app, "2/2") && shows(app, "Widget routine"), "Page 2 holds the rest at the top")
+        shot(app, "widget-large-today-page-2")
+
+        // Medium Today: two a page.
+        app.buttons["view-today"].tap(); choose(app, family: "systemMedium")
+        XCTAssertTrue(shows(app, "1/4") && shows(app, "Widget cut down") && shows(app, "Widget quit"), app.debugDescription)
+        shot(app, "widget-medium-today")
+
+        // A section: Morning only, without repeating "Morning" in each row.
+        app.buttons["view-morning"].tap()
+        XCTAssertTrue(shows(app, "Morning") && shows(app, "Widget check") && shows(app, "Widget timer"), app.debugDescription)
+        XCTAssertFalse(shows(app, "Widget water", timeout: 1), "A section shows only its own habits")
+        shot(app, "widget-medium-morning")
+
+        // Tasks: Large five a page, Medium two.
+        app.buttons["layout-tasks"].tap(); app.buttons["view-today"].tap(); choose(app, family: "systemLarge")
+        XCTAssertTrue(shows(app, "Tasks") && shows(app, "1/2") && shows(app, "Widget task 1") && shows(app, "0 of 7 done"), app.debugDescription)
+        XCTAssertFalse(shows(app, "Widget water", timeout: 1), "The task list never shows habits")
+        shot(app, "widget-large-tasks")
+        choose(app, family: "systemMedium")
+        XCTAssertTrue(shows(app, "1/4"), app.debugDescription)
+        shot(app, "widget-medium-tasks")
+
+        // This week: one habit, its week.
+        app.buttons["layout-week"].tap(); choose(app, family: "systemMedium"); select(app, "Widget water")
+        XCTAssertTrue(shows(app, "This week:") && shows(app, "/ 8 glasses"), app.debugDescription)
+        shot(app, "widget-week-water")
+        select(app, "Widget quit")
+        XCTAssertTrue(shows(app, "Since ") && shows(app, "Quitting"), app.debugDescription)
+        shot(app, "widget-week-quit")
+
+        // Lock Screen: the circle, the line, the rectangle.
+        app.buttons["layout-item"].tap(); select(app, "Widget water"); choose(app, family: "accessoryCircular")
+        XCTAssertTrue(shows(app, "Widget water"), app.debugDescription)
+        shot(app, "widget-lock-circle")
+        choose(app, family: "accessoryInline")
+        XCTAssertTrue(shows(app, "Widget water · 0/8"), app.debugDescription)
+        app.buttons["layout-habits"].tap(); app.buttons["view-today"].tap(); choose(app, family: "accessoryRectangular")
+        XCTAssertTrue(shows(app, "0 of 5 done") && shows(app, "5 left · Widget water"), app.debugDescription)
+        shot(app, "widget-lock-rectangle")
+        choose(app, family: "accessoryInline")
+        XCTAssertTrue(shows(app, "0 of 5 habits done"), app.debugDescription)
+
+        // Private: no names anywhere.
+        app.buttons["render-hidden"].tap(); choose(app, family: "systemLarge")
+        XCTAssertTrue(shows(app, "Content hidden") && !shows(app, "Widget", timeout: 1), app.debugDescription)
+        shot(app, "widget-hidden")
+        app.buttons["render-hidden"].tap()
+
+        // Dark.
+        let dark = app.switches["widget-dark"]
+        dark.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
+        expectation(for: NSPredicate(format: "value == '1'"), evaluatedWith: dark); waitForExpectations(timeout: 5)
+        shot(app, "widget-dark-large-today")
+        app.buttons["layout-week"].tap(); choose(app, family: "systemMedium")
+        shot(app, "widget-dark-week")
+    }
+
     func testGuideAndPrivacyAreFree() {
         let app = XCUIApplication(); app.launchArguments = ["-uitest", "-empty", "-free"]
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
         app.buttons["menu-button"].tap(); app.buttons["menu-widgets"].tap()
         XCTAssertTrue(app.navigationBars["Widgets"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Today agenda · small, medium and large"].exists)
+        XCTAssertTrue(app.staticTexts["One habit · small"].exists, app.debugDescription)
+        XCTAssertFalse(app.staticTexts["See Plus"].exists, "No Plus restrictions on widgets for now (the user, 6 Oct 2026)")
         let privacy = app.switches["widgets-hide"]
         for _ in 0..<6 where !privacy.isHittable || privacy.frame.maxY > app.frame.maxY - 100 { app.swipeUp() }
         XCTAssertTrue(privacy.isHittable, app.debugDescription)
@@ -75,37 +152,27 @@ final class WidgetUITests: XCTestCase {
     }
 
     func testLargerTextCountersAndCutDownAreReadable() {
-        let app = XCUIApplication()
-        app.launchArguments = ["-uitest", "-empty", "-widget-fixture", "-widget-render", "-free",
-                               "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryXXXL"]
-        app.launch()
-        XCTAssertTrue(app.buttons["select-Widget quit"].waitForExistence(timeout: 15))
+        let app = launchRender(["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryXXXL"])
+        app.buttons["layout-item"].tap(); choose(app, family: "systemSmall")
         for name in ["Widget quit", "Widget cut down", "Widget water"] {
-            let select = app.buttons["select-\(name)"]
-            app.scrollViews.element(boundBy: 1).swipeRight(); app.scrollViews.element(boundBy: 1).swipeRight()
-            for _ in 0..<3 where !select.isHittable { app.scrollViews.element(boundBy: 1).swipeLeft() }
-            XCTAssertTrue(select.isHittable, app.debugDescription); select.tap()
-            let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-larger-text-\(name)"; shot.lifetime = .keepAlways; add(shot)
+            select(app, name)
+            shot(app, "widget-larger-text-\(name)")
         }
-        app.buttons["agenda"].tap()
-        let medium = app.buttons["family-systemMedium"]
-        app.scrollViews.firstMatch.swipeRight()
-        XCTAssertTrue(medium.isHittable); medium.tap()
-        let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-larger-text-agenda"; shot.lifetime = .keepAlways; add(shot)
+        XCTAssertTrue(app.buttons["Add 1 to Widget water"].isHittable, "The button stays whole at larger text")
+        // Medium lists show one row a page at the largest sizes rather than squeeze two (spec §5).
+        app.buttons["layout-habits"].tap(); app.buttons["view-today"].tap(); choose(app, family: "systemMedium")
+        XCTAssertTrue(shows(app, "1/7"), app.debugDescription)
+        shot(app, "widget-larger-text-medium")
     }
 
     func testLongNamesAndUnitsKeepQuickActionVisible() {
-        let app = XCUIApplication()
-        app.launchArguments = ["-uitest", "-empty", "-widget-fixture", "-widget-render", "-widget-long-labels", "-free",
-                               "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryXXXL"]
-        app.launch()
-        let water = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "select-Widget water")).firstMatch
-        XCTAssertTrue(water.waitForExistence(timeout: 15))
-        water.coordinate(withNormalizedOffset: CGVector(dx: 0.05, dy: 0.5)).tap()
-        let action = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Add 1 large glasses of water to")).firstMatch
-        XCTAssertTrue(action.exists && action.isHittable, app.debugDescription)
-        XCTAssertFalse(action.frame.isEmpty)
-        let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "widget-long-name-unit-larger-text"; shot.lifetime = .keepAlways; add(shot)
+        let app = launchRender(["-widget-long-labels", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryXXXL"])
+        app.buttons["layout-item"].tap(); choose(app, family: "systemSmall"); select(app, "Widget water")
+        let action = app.buttons["Add 1 to Widget water"]
+        XCTAssertTrue(action.exists && action.isHittable && !action.frame.isEmpty, app.debugDescription)
+        shot(app, "widget-long-unit-larger-text")
+        app.buttons["layout-habits"].tap(); choose(app, family: "systemLarge")
+        XCTAssertTrue(app.buttons["Mark Read before breakfast done"].isHittable, "A long name never pushes the button out")
+        shot(app, "widget-long-name-large")
     }
-
 }

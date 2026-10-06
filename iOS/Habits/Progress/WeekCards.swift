@@ -190,16 +190,7 @@ extension HabitColor {
     /// 0.64 is the lightest level at which a white check still reaches 3:1 (WCAG 1.4.11) on every colour; light and
     /// dark mode land on nearly the same values, so one table serves both. Worked out once (Research/Temp, 2 Oct 2026),
     /// never while drawing. Yellow at this lightness is a mustard: that's yellow at the same strength as the rest.
-    var mark: Color { Self.marks[self] ?? color }
+    /// The table is shared with the widgets (`WidgetPalette.markHex`), so a widget's icon is exactly the app's.
+    var mark: Color { WidgetPalette.mark(rawValue) }
 
-    private static let marks: [HabitColor: Color] = [
-        .red: hex(0xFA352B), .orange: hex(0xC97505), .yellow: hex(0xAA8809), .green: hex(0x07A941),
-        .mint: hex(0x09A19A), .teal: hex(0x079DB4), .cyan: hex(0x0698D0), .blue: hex(0x3289FF),
-        .indigo: hex(0x7679FC), .purple: hex(0xB75AE7), .pink: hex(0xFB2852), .brown: hex(0xA48660),
-        .gray: hex(0x8B8B90),
-    ]
-
-    private static func hex(_ v: Int) -> Color {
-        Color(.sRGB, red: Double(v >> 16 & 0xFF) / 255, green: Double(v >> 8 & 0xFF) / 255, blue: Double(v & 0xFF) / 255)
-    }
 }

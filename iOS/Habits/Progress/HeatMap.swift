@@ -78,6 +78,13 @@ enum HeatPalette {
     private static let dashLight = hex(0x8E8E93), dashDark = hex(0x7C7C80)
     private static let todayLight = hex(0x8E8E93), todayDark = hex(0x8E8E93)
 
+    /// The habit's five steps (light, then dark) and dark mode's ✓, as 0xRRGGBB: the widgets draw the same squares as
+    /// Progress (Implementation Spec §2, "Day squares") without the app's colour tables.
+    static func widgetSteps(_ habit: HabitColor) -> [Int] {
+        let steps = table[habit] ?? table[.green]!
+        return steps.light + steps.dark + [darkChecks[habit] ?? darkChecks[.green]!]
+    }
+
     static func hex(_ v: Int) -> Color {
         Color(.sRGB, red: Double(v >> 16 & 0xFF) / 255, green: Double(v >> 8 & 0xFF) / 255, blue: Double(v & 0xFF) / 255)
     }

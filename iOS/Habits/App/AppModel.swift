@@ -16,6 +16,21 @@ final class AppRouter {
     var widgetToday = false
     /// A running timer's Live Activity was tapped: open that habit's timer screen.
     var timerHabit: UUID?
+    /// A widget's ▶ with Open Timer Full Screen on: start that habit's timer, then open its screen.
+    var startTimer = false
+    /// A widget's button for something that needs a screen (an amount with no saved step, Record a slip): that sheet,
+    /// straight away, with no navigating (the user, 6 Oct 2026). iOS can't show it over the Home Screen.
+    var widgetSheet: WidgetSheet?
+    /// A widget's "Choose a habit": the Widgets guide, which says how to pick one (Edit Widget).
+    var widgetSetup = false
+}
+
+/// The sheet a widget opens in the app.
+struct WidgetSheet: Identifiable, Equatable {
+    enum Kind: String { case log, slip }
+    let kind: Kind
+    let habit: UUID
+    var id: String { kind.rawValue + habit.uuidString }
 }
 
 /// The app's one store, scheduler and database. Shared, because a notification action, an alarm's
@@ -238,17 +253,34 @@ final class AppModel {
         router.focusSection = section ?? target?.section
     }
 
-    func logFromWidget(item: String, day: String, event: String, signature: String) async throws {
+    /// A widget's ✓ or + (`WidgetLogIntent`), run in the app's process: written first, then the widgets show it, with
+    /// today's lists held in place for the next tap in a run (U4).
+    func logFromWidget(item: String, day: String, event: String, signature: String, mode: String = "add") async throws {
         await ensureLoaded()
         guard store.isLoaded, store.isStorageReady, store.problem == nil,
               let id = UUID(uuidString: item), let day = LocalDay(key: day), let event = UUID(uuidString: event) else {
             throw WidgetActionError.openApp
         }
-        store.logFromWidget(id: id, day: day, event: event, signature: signature)
+        store.logFromWidget(id: id, day: day, event: event, signature: signature, mode: mode)
         await store.flush()
         guard store.problem == nil else { throw WidgetActionError.save }
-        await widgets.publish(store)
+        await widgets.publish(store, hold: true)
         guard widgets.problem == nil else { throw WidgetActionError.save }
+        await scheduler.reconcile(store)
+    }
+
+    /// A widget's ▶ or ⏸ (`WidgetTimerIntent`): the same timer as Today's row, so the Live Activity and the Dynamic
+    /// Island show it at once, and ⏸ saves the session once.
+    func timerFromWidget(item: String, day: String, start: Bool, signature: String) async throws {
+        await ensureLoaded()
+        guard store.isLoaded, store.isStorageReady, store.problem == nil,
+              let id = UUID(uuidString: item), let day = LocalDay(key: day) else { throw WidgetActionError.openApp }
+        let accepted = store.timerFromWidget(id: id, day: day, start: start, signature: signature)
+        await store.flush()
+        await timerPresence.sync(store)
+        guard store.problem == nil else { throw WidgetActionError.save }
+        await widgets.publish(store, hold: true)
+        guard accepted else { throw WidgetActionError.stale }
         await scheduler.reconcile(store)
     }
 

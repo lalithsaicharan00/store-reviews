@@ -2208,8 +2208,12 @@ final class HabitStore {
         }
     }
 
-    /// Widget callbacks are additive events, committed before they are reflected in shared snapshots.
-    func logFromWidget(id: UUID, day: LocalDay, event: UUID, signature: String, now: Date = .now) {
+    /// A widget's button (Accepted Widget Contract): one deliberate tap is one change, committed before any widget shows
+    /// it. `mode` is what the drawn button said: "check" ticks, "uncheck" takes that day's tick back (U14), "add" adds
+    /// one saved step (+1 stays +1 above the goal). The event is the tap's identity: a retried callback never logs twice,
+    /// and an uncheck only removes a tick that is still there. A tap from an old day, an edited habit, a paused, skipped
+    /// or archived one, or with widget privacy on, changes nothing (D7).
+    func logFromWidget(id: UUID, day: LocalDay, event: UUID, signature: String, mode: String = "add", now: Date = .now) {
         perform { [self] telemetry in
             guard problem == nil, !AppLock.isEnabled, !UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey),
                   day == today(now: now), let habit = habits.first(where: { $0.id == id }),
@@ -2218,7 +2222,22 @@ final class HabitStore {
                   signature == Self.widgetSignature(habit) else { throw WidgetActionError.stale }
             guard !(try await repository.hasEntry(id: event.uuidString)).boolValue else { return }
             let rule = rule(habit, on: day)
-            if !rule.atMost && isDone(habit, on: day) { return }
+            let single = (rule.kind == .check && slots(of: habit).isEmpty && !countsUp(habit, on: day)) || rule.kind == .task
+            switch mode {
+            case "uncheck":
+                guard single, rule.kind == .task ? isDone(habit, on: day) : isTicked(habit, on: day) else { return }
+                guard let entry = entries.last(where: { $0.habitID == id && $0.stepID == nil
+                    && (rule.kind == .task && habit.dueDay != nil ? true : $0.day == day) }) else { return }
+                try await repository.removeEntry(id: entry.id.uuidString, at: now.millis)
+                analytics.count(.undo, ticket: telemetry)
+                if let index = entries.firstIndex(where: { $0.id == entry.id }) { removeEntry(at: index) }
+                return
+            case "check":
+                // Already ticked (a second tap that raced the first): nothing to add.
+                guard single, !(rule.kind == .task ? isDone(habit, on: day) : isTicked(habit, on: day)) else { return }
+            default:
+                guard !single else { throw WidgetActionError.stale }
+            }
             let value: Double
             switch rule.kind {
             case .check, .task: value = 1
@@ -2235,6 +2254,22 @@ final class HabitStore {
             analyticsTracked(entry, ticket: telemetry)
             insertEntry(entry)
         }
+    }
+
+    /// A widget's ▶ or ⏸ for a timed habit (the same timer as Today's row and the Live Activity). ▶ only starts and ⏸
+    /// only stops, so a retried callback never undoes itself. Returns false when the tap is stale.
+    @discardableResult
+    func timerFromWidget(id: UUID, day: LocalDay, start: Bool, signature: String, now: Date = .now) -> Bool {
+        guard problem == nil, isStorageReady, !AppLock.isEnabled, !UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey),
+              day == today(now: now), let habit = habits.first(where: { $0.id == id }), !habit.archived,
+              rule(habit, on: day).kind == .duration, !isPaused(habit, on: day), !isSkipped(habit, on: day),
+              isDue(habit, on: day, now: now), signature == Self.widgetSignature(habit) else {
+            // A ⏸ always saves a running timer, even after an edit: stopping never loses time.
+            if !start, let habit = habits.first(where: { $0.id == id }), timers[id] != nil { toggleTimer(habit); return true }
+            return false
+        }
+        if start == (timers[id] == nil) { toggleTimer(habit) }
+        return true
     }
 
     /// A habit in several sections: tick or untick only this section's row.

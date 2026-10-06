@@ -65,11 +65,11 @@ enum AnalyticsCheck {
         expect(telemetry.inspect()?.counters["note_saved_count"] == 2, "second durable note adoption without text")
         let widgetEvent = UUID()
         let widgetSignature = HabitStore.widgetSignature(preconsent)
-        store.logFromWidget(id: preconsent.id, day: store.today(), event: widgetEvent, signature: widgetSignature)
+        store.logFromWidget(id: preconsent.id, day: store.today(), event: widgetEvent, signature: widgetSignature, mode: "check")
         await store.flush(); telemetry.drain()
         expect(telemetry.inspect()?.counters["tracking_write_count"] == 9, "widget counts only a committed database log")
         expect(telemetry.inspect()?.counters["widget_action_accepted_count"] == 1, "durable widget accepted action")
-        store.logFromWidget(id: preconsent.id, day: store.today(), event: widgetEvent, signature: widgetSignature)
+        store.logFromWidget(id: preconsent.id, day: store.today(), event: widgetEvent, signature: widgetSignature, mode: "check")
         await store.flush(); telemetry.drain()
         expect(telemetry.inspect()?.counters["widget_action_accepted_count"] == 1, "retried widget callback not counted twice")
         let before = telemetry.inspect()!.counters["tracking_write_count"]

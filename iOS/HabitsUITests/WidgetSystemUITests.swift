@@ -51,9 +51,8 @@ final class WidgetSystemUITests: XCTestCase {
         // Remote gallery labels can report an unavailable hit point while their visible row is tappable.
         appRow.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
         // Check the real system gallery's complete Home catalogue, not just app-rendered views.
-        let previews = [("Today", "Small"), ("Today", "Medium"), ("Today", "Large"),
-                        ("One item", "Small"), ("Icons · Plus", "Medium"), ("Icons · Plus", "Large"),
-                        ("History · Plus", "Small"), ("History · Plus", "Medium"), ("History · Plus", "Large")]
+        let previews = [("One habit", "Small"), ("Today", "Medium"), ("Today", "Large"), ("This week", "Medium"),
+                        ("Tasks", "Medium"), ("Tasks", "Large")]
         for (index, expected) in previews.enumerated() {
             if index > 0 { springboard.swipeLeft() }
             let preview = springboard.buttons["Often Enough, " + expected.0].firstMatch
@@ -61,8 +60,8 @@ final class WidgetSystemUITests: XCTestCase {
             XCTAssertTrue((preview.value as? String)?.contains(expected.1) == true, springboard.debugDescription)
             save(springboard, "home-gallery-\(index)-\(expected.1)")
         }
-        // Return from page nine to the medium Today page and install it.
-        for _ in 0..<7 { springboard.swipeRight() }
+        // Back from the sixth page to the medium Today page, and install it.
+        for _ in 0..<4 { springboard.swipeRight() }
         XCTAssertTrue((springboard.buttons["Often Enough, Today"].firstMatch.value as? String)?.contains("Medium") == true)
         let confirm = springboard.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Add Widget")).firstMatch
         guard confirm.waitForExistence(timeout: 5) else {
@@ -73,22 +72,21 @@ final class WidgetSystemUITests: XCTestCase {
         save(springboard, "home-widget-installed")
         // Kill the app before tapping: LiveActivityIntent must start the app process in the background.
         app.terminate()
-        let check = springboard.buttons["Check off Widget check"]
-        XCTAssertTrue(check.waitForExistence(timeout: 15), springboard.debugDescription)
-        check.tap()
-        // Intent execution and WidgetKit reload are asynchronous. Wait for the completed row
-        // to leave the default unfinished-only agenda before launching another app process.
-        let completed = NSPredicate(format: "exists == false")
-        _ = XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: completed, object: check)], timeout: 30)
-        save(springboard, "home-widget-after-cold-check")
+        // Today's first card is Quit or Cut Down: the limit's +1 logs where it is (a cold intent, written first).
+        let add = springboard.buttons["Add 1 to Widget cut down"]
+        XCTAssertTrue(add.waitForExistence(timeout: 15), springboard.debugDescription)
+        add.tap()
+        let logged = springboard.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "1 of 3 cups")).firstMatch
+        XCTAssertTrue(logged.waitForExistence(timeout: 30), "The widget shows the committed log\n" + springboard.debugDescription)
+        save(springboard, "home-widget-after-cold-log")
         // Paging is an extension-side intent and must work while the app remains closed.
-        let water = springboard.staticTexts["Widget water"].firstMatch
-        XCTAssertTrue(water.waitForExistence(timeout: 10))
+        let water = springboard.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "Widget water")).firstMatch
+        XCTAssertFalse(water.exists, "Page 1 holds only Quit or Cut Down")
         springboard.buttons["Next page"].tap()
-        XCTAssertEqual(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: water)], timeout: 20), .completed)
+        XCTAssertTrue(water.waitForExistence(timeout: 20), springboard.debugDescription)
         save(springboard, "home-widget-next-page")
         springboard.buttons["Previous page"].tap()
-        XCTAssertTrue(water.waitForExistence(timeout: 20), springboard.debugDescription)
+        XCTAssertEqual(XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: water)], timeout: 20), .completed)
         save(springboard, "home-widget-previous-page")
         app.launchArguments = ["-empty", "-free", "-dbname", "habits"]
         app.launch()
@@ -96,7 +94,7 @@ final class WidgetSystemUITests: XCTestCase {
         app.buttons["menu-button"].tap(); app.buttons["menu-widgets"].tap()
         // A separate diagnostic view validates disk state, without re-seeding or reusing memory.
         app.terminate(); app.launchArguments += ["-widget-system-verify"]; app.launch()
-        XCTAssertTrue(app.staticTexts["Widget system: persisted check"].waitForExistence(timeout: 15), app.debugDescription)
+        XCTAssertTrue(app.staticTexts["Widget system: persisted log"].waitForExistence(timeout: 15), app.debugDescription)
     }
     func testLockScreenWidgetPickerAvailability() throws {
         let settings = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
@@ -132,7 +130,7 @@ final class WidgetSystemUITests: XCTestCase {
         }
         host.staticTexts["Often Enough"].firstMatch.tap()
         save(host, "lock-app-widgets")
-        let today = host.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Today on Lock Screen")).firstMatch
+        let today = host.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Today")).firstMatch
         guard today.waitForExistence(timeout: 5) else {
             save(host, "lock-widget-previews-unavailable")
             throw XCTSkip("Simulator gallery previews are not accessible; actual Lock Screen widget interaction remains unverified")
@@ -141,7 +139,7 @@ final class WidgetSystemUITests: XCTestCase {
         if host.buttons["Close"].exists { host.buttons["Close"].tap() }
         if host.buttons["Done"].exists { host.buttons["Done"].tap() }
         save(host, "lock-summary-installed")
-        XCTAssertTrue(host.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "left today")).firstMatch.waitForExistence(timeout: 10), host.debugDescription)
+        XCTAssertTrue(host.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "habits done")).firstMatch.waitForExistence(timeout: 10), host.debugDescription)
         // This validates summary installation. A locked-state quick action and every accessory family
         // cannot be claimed from it; the report retains those separate device checks.
     }

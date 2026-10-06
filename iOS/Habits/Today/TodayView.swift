@@ -194,7 +194,25 @@ struct TodayView: View {
         .onChange(of: router.widgetToday) { routeWidget() }
         .onChange(of: router.widgetItem, initial: true) { routeWidget() }
         .onChange(of: router.timerHabit, initial: true) { routeTimer() }
-        .onChange(of: store.isLoaded) { routeWidget(); routeTimer() }
+        .onChange(of: router.widgetSetup, initial: true) { routeWidgetSetup() }
+        // Only one sheet at a time: a widget's sheet replaces whatever was open.
+        .onChange(of: router.widgetSheet) {
+            guard router.widgetSheet != nil else { return }
+            store.dayTarget = nil; store.timerScreen = nil; store.noteTarget = nil; menu.reset(); day = nil
+        }
+        .onChange(of: store.isLoaded) { routeWidget(); routeTimer(); routeWidgetSetup() }
+        // A widget's amount entry or Record a slip, opened straight away (Implementation Spec §3).
+        .sheet(item: Binding(get: { store.isLoaded && routine == nil ? router.widgetSheet : nil }, set: { router.widgetSheet = $0 })) { target in
+            if let habit = store.habits.first(where: { $0.id == target.habit && !$0.archived }) {
+                switch target.kind {
+                case .log: AddEntryView(habit: habit, day: store.today())
+                case .slip: LogSlipSheet(habit: habit) { _ in }
+                }
+            } else {
+                ContentUnavailableView("Habit unavailable", systemImage: "questionmark.circle",
+                                       description: Text("It may have been archived or deleted."))
+            }
+        }
         .onChange(of: router.openHabit, initial: true) { routeShortcut() }
         .onChange(of: router.focusSection) { focusReminderSection() }
         .alert("Something went wrong", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
@@ -225,6 +243,8 @@ struct TodayView: View {
                 day = nil
                 try? await Task.sleep(for: .milliseconds(50))
             }
+            // Quit or Cut Down folds under its own key and has no header to scroll to (a widget's section link).
+            if section == .quittingCard { layout.open(Self.quitting); return }
             layout.open(section)
             scrollTarget = Self.headerKey(section)
         }
@@ -234,9 +254,25 @@ struct TodayView: View {
     private func routeTimer() {
         guard store.isLoaded, routine == nil, let id = router.timerHabit else { return }
         router.timerHabit = nil
-        guard store.habits.contains(where: { $0.id == id && !$0.archived }) else { return }
+        let start = router.startTimer
+        router.startTimer = false
+        guard let habit = store.habits.first(where: { $0.id == id && !$0.archived }) else { return }
         menu.reset(); day = nil
+        // A widget's ▶ (Open Timer Full Screen on): start it here, as the row's ▶ does, then show it full screen.
+        let today = store.today()
+        if start, store.timers[id] == nil, store.rule(habit, on: today).kind == .duration, store.isDue(habit, on: today) {
+            TimerPresence.askOnNextSync = true
+            store.toggleTimer(habit)
+        }
         store.timerScreen = id
+    }
+
+    /// A widget's "Choose a habit": the Widgets guide, which explains Edit Widget.
+    private func routeWidgetSetup() {
+        guard store.isLoaded, routine == nil, router.widgetSetup else { return }
+        router.widgetSetup = false
+        menu.reset()
+        menu.path.append(MenuPlace.widgets)
     }
 
     /// Speed runs (`PerfDriver`): the same state changes the buttons make.

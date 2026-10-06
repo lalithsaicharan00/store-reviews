@@ -7,18 +7,13 @@ struct WidgetsView: View {
     var body: some View {
         ScrollView {
           LazyVStack(alignment: .leading, spacing: 20) {
-            guideSection("Included") {
-                Label("Today agenda · small, medium and large", systemImage: "list.bullet")
-                Label("One habit or task · Home and Lock Screen", systemImage: "square")
-                Label("Today summary · all Lock Screen sizes", systemImage: "lock")
-                Text("Your five free habits, including quit and cut down, and unlimited tasks. Checks and saved amount increments log in place. Timers, checklists and slips open their existing controls.")
-                    .font(.footnote).foregroundStyle(.secondary)
-            }
-            guideSection("Extra layouts with Plus") {
-                Label("Named icon grid", systemImage: "square.grid.3x3")
-                Label("Recent week and month history", systemImage: "calendar")
-                if !store.isPlus { NavigationLink("See Plus", value: MenuPlace.plus) }
-                Text("If Plus ends, these widgets keep showing a free agenda or item status. Basic tracking stays available.")
+            guideSection("Widgets") {
+                Label("One habit · small", systemImage: "square")
+                Label("Today · medium and large, or one section", systemImage: "list.bullet")
+                Label("This week · one habit, medium", systemImage: "calendar")
+                Label("Tasks · medium and large, or one section", systemImage: "checklist")
+                Label("Lock Screen · one habit, Today, and a line above the clock", systemImage: "lock")
+                Text("✓ and + log right on the widget, ▶ and ⏸ run the timer. An amount you type, a slip, or a checklist's steps open their own screen in the app, straight away. Lists keep your order and show five (large) or two (medium) at a time, with ‹ › for more.")
                     .font(.footnote).foregroundStyle(.secondary)
             }
             if let problem = AppModel.shared.widgets.problem {
@@ -30,7 +25,7 @@ struct WidgetsView: View {
             guideSection("Add a widget") {
                 Text("Home Screen: touch and hold an empty area, tap Edit, then Add Widget. Search for this app, choose a size, and tap Add Widget.")
                 Text("Lock Screen: touch and hold your Lock Screen, tap Customize, choose Lock Screen, then tap the widget area. Choose this app and a widget.")
-                Text("Touch and hold an installed widget and choose Edit Widget to select an item, show completed items, or show tasks only. Lists use pages because iPhone widgets cannot scroll.")
+                Text("To choose a habit, or a section for a list: touch and hold the widget, tap Edit Widget, then choose. Each widget keeps its own choice.")
                 Text("Open the app after changing your time zone or when a widget asks to update. iOS decides when timelines refresh.")
             }
             guideSection("Privacy") {

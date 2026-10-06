@@ -115,7 +115,7 @@ nonisolated enum AnalyticsContract {
         if event == .screens { allowed.formUnion(screenKeys) }
         if [.features, .screens, .configuration].contains(event) { allowed.formUnion(daily) }
         if event == .widgetInventory {
-            allowed.formUnion(["today", "item", "lock_today", "icons", "history"].map { "kind_" + $0 + "_count" })
+            allowed.formUnion(["today", "item", "lock_today", "icons", "history", "tasks"].map { "kind_" + $0 + "_count" })
             allowed.formUnion(["small", "medium", "large", "accessory_inline", "accessory_circular", "accessory_rectangular"].map { "family_" + $0 + "_count" })
         }
         for (key, value) in properties {

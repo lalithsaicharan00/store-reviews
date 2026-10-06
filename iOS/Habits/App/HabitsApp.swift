@@ -39,9 +39,7 @@ struct HabitsApp: App {
                     // A backup file opened from AirDrop, Files or Mail (Backup, Sync and Accounts §4.8).
                     if url.isFileURL, let backup = model.backup { Task { await backup.open(url) }; return }
                     guard url.scheme == "oftenenough" else { return }
-                    if url.host == "today" { Analytics.shared.count(.widgetOpen, ticket: Analytics.shared.ticket); model.router.widgetToday = true }
-                    if url.host == "item", let id = UUID(uuidString: url.lastPathComponent) { Analytics.shared.count(.widgetOpen, ticket: Analytics.shared.ticket); model.router.widgetItem = id }
-                    if url.host == "timer", let id = UUID(uuidString: url.lastPathComponent) { model.router.timerHabit = id }
+                    Self.route(url, model: model)
                 }
         }
         .onChange(of: scenePhase) {
@@ -68,6 +66,37 @@ struct HabitsApp: App {
             // Leaving locks the app (when the lock is on); coming back asks once.
             if scenePhase == .background { model.lock.lock() }
             if scenePhase == .active { Task { await model.lock.appeared() } }
+        }
+    }
+
+    /// The app's links, from widgets and the Live Activity (Implementation Spec §3): each opens exactly the screen its
+    /// button names, so logging takes one tap after the app opens.
+    ///   today · section/<id> · item/<id> (Day details) · log/<id> (amount entry) · slip/<id> (Record a slip)
+    ///   timer/<id> (its screen; ?start=1 starts it first) · widgets (the Widgets guide: how to choose a habit)
+    static func route(_ url: URL, model: AppModel) {
+        let id = UUID(uuidString: url.lastPathComponent)
+        let router = model.router
+        switch url.host {
+        case "today":
+            Analytics.shared.count(.widgetOpen, ticket: Analytics.shared.ticket); router.widgetToday = true
+        case "section":
+            Analytics.shared.count(.widgetOpen, ticket: Analytics.shared.ticket)
+            router.widgetToday = true
+            router.focusSection = url.lastPathComponent
+        case "item":
+            guard let id else { return }
+            Analytics.shared.count(.widgetOpen, ticket: Analytics.shared.ticket); router.widgetItem = id
+        case "log", "slip":
+            guard let id else { return }
+            Analytics.shared.count(.widgetOpen, ticket: Analytics.shared.ticket)
+            router.widgetSheet = WidgetSheet(kind: url.host == "log" ? .log : .slip, habit: id)
+        case "timer":
+            guard let id else { return }
+            router.startTimer = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.contains { $0.name == "start" } == true
+            router.timerHabit = id
+        case "widgets":
+            router.widgetSetup = true
+        default: break
         }
     }
 
@@ -189,9 +218,9 @@ private struct PlacementCheckView: View {
             if arguments.contains("-widget-system-verify") {
                 await AppModel.shared.ensureLoaded()
                 let store = AppModel.shared.store
-                if let habit = store.habits.first(where: { $0.name == "Widget check" }),
-                   store.entries(of: habit.id).contains(where: { $0.source == .widget }) {
-                    result = "Widget system: persisted check"
+                if let habit = store.habits.first(where: { $0.name == "Widget cut down" }),
+                   store.entries(of: habit.id).filter({ $0.source == .widget }).count == 1 {
+                    result = "Widget system: persisted log"
                 } else { result = "Widget system: no durable widget check · " + WidgetDisk.diagnostic }
                 return
             }

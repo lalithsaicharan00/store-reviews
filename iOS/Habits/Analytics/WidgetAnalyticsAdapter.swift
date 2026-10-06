@@ -28,7 +28,7 @@ enum WidgetAnalyticsAdapter {
             case .failure: properties["query_result"] = .text("failed")
             case .success(let widgets):
                 properties["query_result"] = .text("success")
-                let kinds = [PhoneWidgetKind.agenda: "today", PhoneWidgetKind.item: "item", PhoneWidgetKind.lock: "lock_today", PhoneWidgetKind.icons: "icons", PhoneWidgetKind.history: "history"]
+                let kinds = [PhoneWidgetKind.agenda: "today", PhoneWidgetKind.item: "item", PhoneWidgetKind.lock: "lock_today", PhoneWidgetKind.tasks: "tasks", PhoneWidgetKind.history: "history"]
                 let families: [WidgetFamily: String] = [.systemSmall: "small", .systemMedium: "medium", .systemLarge: "large", .accessoryInline: "accessory_inline", .accessoryCircular: "accessory_circular", .accessoryRectangular: "accessory_rectangular"]
                 for kind in kinds.values { properties["kind_" + kind + "_count"] = .number(0) }
                 for family in families.values { properties["family_" + family + "_count"] = .number(0) }

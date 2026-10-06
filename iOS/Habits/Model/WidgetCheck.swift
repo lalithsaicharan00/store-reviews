@@ -4,229 +4,489 @@ import Foundation
 import SwiftUI
 import WidgetKit
 
-/// Runs inside the actual iPhone app against the Kotlin repository, not a mock log implementation.
+/// Every kind of habit on Today, in its own section, and seven tasks: runs inside the actual iPhone app against the
+/// Kotlin repository, not a mock (`-widget-fixture`). Today's cards by default: Quit or Cut Down, Anytime, Morning,
+/// Afternoon, Evening.
 enum WidgetFixture {
     static func install(in store: HabitStore) async {
         guard store.habits.isEmpty else { return }
         let start = store.today().adding(days: -40, calendar: store.calendar)
         let longLabels = ProcessInfo.processInfo.arguments.contains("-widget-long-labels")
         let items = [
-            Habit(name: "Widget check", symbol: "checkmark", color: .blue, kind: .check, startsOn: start),
-            Habit(name: longLabels ? "Widget water with a longer personal habit name" : "Widget water", symbol: "drop", color: .blue,
-                  kind: .amount(unit: longLabels ? "large glasses of water" : "glasses", increment: 1), goal: 8, startsOn: start),
-            Habit(name: "Widget cut down", symbol: "cup.and.saucer", color: .orange, kind: .amount(unit: "cups", increment: 1), goal: 3, atMost: true, startsOn: start),
-            Habit(name: "Widget quit", symbol: "leaf", color: .green, kind: .quit, startsOn: start, quitSince: start.date(calendar: store.calendar)),
-            Habit(name: "Widget timer", symbol: "timer", color: .blue, kind: .duration, goal: 10, startsOn: start)
+            Habit(name: "Widget water", symbol: "drop.fill", color: .blue,
+                  kind: .amount(unit: longLabels ? "large glasses" : "glasses", increment: 1), parts: [.anytime], goal: 8, startsOn: start),
+            Habit(name: longLabels ? "Read before breakfast" : "Widget check", symbol: "book.fill", color: .orange, kind: .check,
+                  parts: [.morning], startsOn: start),
+            Habit(name: "Widget timer", symbol: "timer", color: .purple, kind: .duration, parts: [.morning], goal: 10, startsOn: start),
+            Habit(name: "Widget steps", symbol: "figure.walk", color: .green, kind: .amount(unit: "steps", increment: 0),
+                  parts: [.afternoon], goal: 8000, startsOn: start),
+            Habit(name: "Widget routine", symbol: "list.bullet", color: .indigo, kind: .checklist, parts: [.evening],
+                  steps: [Step(name: "Teeth"), Step(name: "Read"), Step(name: "Lights out")], startsOn: start),
+            Habit(name: "Widget cut down", symbol: "cup.and.saucer.fill", color: .brown, kind: .amount(unit: "cups", increment: 1),
+                  goal: 3, atMost: true, startsOn: start),
+            Habit(name: "Widget quit", symbol: "hand.raised.fill", color: .green, kind: .quit, startsOn: start,
+                  quitSince: start.date(calendar: store.calendar)),
         ]
         for item in items { store.add(item) }
-        for i in 1...24 { store.add(Habit(name: "Widget task \(i)", symbol: "checkmark", color: .blue, kind: .task, dueDay: store.today(), startsOn: start)) }
+        for i in 1...7 {
+            store.add(Habit(name: "Widget task \(i)", symbol: "checkmark", color: .blue, kind: .task, parts: [.anytime],
+                            dueDay: store.today(), startsOn: start))
+        }
         await store.flush()
     }
 }
+
+/// The widgets' checks (Implementation Spec §12, and every widget problem users reported: Feature Ledger C040 blank,
+/// stale or wrong widgets; C023 logging without opening the app; C090 no destructive taps). Data, words, order,
+/// actions, day boundaries, privacy and the snapshot on disk. Rendering is `WidgetRenderCheck`; WidgetKit itself is
+/// `WidgetSystemUITests`.
 enum WidgetCheck {
     static func run() async -> [String] {
         var failures: [String] = []
         func expect(_ value: Bool, _ name: String) { if !value { failures.append(name) } }
+        UserDefaults.standard.removeObject(forKey: WidgetDisk.privacyKey)
+        UserDefaults.standard.set(DoneOrder.bottom.rawValue, forKey: Preferences.doneOrder)
+        UserDefaults.standard.set(true, forKey: Preferences.timerScreen)
+        UserDefaults.standard.set(true, forKey: ProgressOptions.showStreaks)
         let persistence = Persistence.inMemory()
         let store = HabitStore(repository: persistence.repository)
         await store.load(); await WidgetFixture.install(in: store)
         let now = Date.now, day = store.today(now: now)
-        func item(_ name: String) -> Habit { store.habits.first { $0.name == name }! }
-        func row(_ name: String) -> WidgetItem { store.widgetSnapshot(now: now).frames.first!.items.first { $0.name == name }! }
-        var tiny = row("Widget water")
-        tiny.value = 0.01; tiny.goal = 0.05
-        expect(tiny.displayedValue == 0.01.formatted(.number.precision(.fractionLength(0...2)))
-               && tiny.compactProgress.hasPrefix(tiny.displayedValue + "/"), "Compact widgets preserve hundredths instead of showing zero")
-        let snapshot = store.widgetSnapshot(now: now)
-        expect(snapshot.frames.count == 7, "Seven logical days precomputed")
-        expect(snapshot.frames.first?.items.filter(\.isTask).count == 24, "All unlimited tasks survive snapshot")
-        expect(snapshot.frames.first?.agenda(completed: false).prefix(5).allSatisfy { !$0.isTask } == true,
-               "All free habits stay together ahead of a long task list")
-        expect(store.activeHabitCount == 5 && !store.canAddHabit, "Quit and cut down share five habit cap; tasks excluded")
-        expect(row("Widget quit").action == nil && row("Widget quit").counterStart != nil, "Quit has a counter and no destructive action")
-        expect(row("Widget timer").action == nil, "Duration opens existing controls")
-        expect(row("Widget cut down").ongoing && row("Widget cut down").status.contains("so far"), "Limit remains ongoing, no premature success")
-        expect(row("Widget task 1").history.isEmpty, "Tasks have no habit history")
-        expect(row("Widget water").history.count == 31, "Habit history bounded to 31 days")
-        expect(snapshot.frames.allSatisfy { frame in
-            let history = frame.items.first { $0.name == "Widget water" }!.history
-            return history.count == 31 && history.last?.id == frame.day && history.last?.state == "open"
-        }, "Every future timeline day retains a full recent-history window")
-        expect(snapshot.frames[1].items.first { $0.name == "Widget water" }?.history.first { $0.id == day.key }?.state == "missed",
-               "Unlogged days change from open to past when the timeline advances")
-        let timer = item("Widget timer"), unchanged = row("Widget water").token
-        store.toggleTimer(timer); await store.flush()
-        let timerStart = store.timers[timer.id]!
-        expect(row("Widget water").token == unchanged, "Starting a timer preserves unrelated widget projections")
-        store.stopTimer(timer, on: day, through: timerStart.addingTimeInterval(60)); await store.flush()
-        expect(row("Widget timer").value == 1 && row("Widget water").token == unchanged,
-               "Stopping a timer publishes saved minutes without invalidating unrelated widgets")
-        let water = item("Widget water"), event = UUID(), signature = HabitStore.widgetSignature(water)
-        for _ in 0..<3 { store.logFromWidget(id: water.id, day: day, event: event, signature: signature, now: now) }
+        func habit(_ name: String) -> Habit { store.habits.first { $0.name == name }! }
+        func snap() -> WidgetSnapshot { store.widgetSnapshot(now: now) }
+        func row(_ name: String, _ frame: Int = 0) -> WidgetItem { snap().frames[frame].items.first { $0.name == name }! }
+        func names(_ key: String, _ s: WidgetSnapshot? = nil) -> [String] { (s ?? snap()).frames[0].list(key, at: now).map(\.name) }
+
+        // MARK: The snapshot
+
+        var snapshot = snap()
+        expect(snapshot.version == 2 && snapshot.frames.count == 7, "Seven logical days precomputed")
+        expect(zip(snapshot.frames, snapshot.frames.dropFirst()).allSatisfy { $0.end == $1.start }, "Days follow each other with no gap")
+        expect(snapshot.sections.map(\.id) == store.todayCards, "Sections in Today's card order: \(snapshot.sections.map(\.id))")
+        expect(snapshot.sections.first { $0.id == .quittingCard }?.name == "Quit or Cut Down", "Quit or Cut Down is a section")
+        expect(!snapshot.taskSections.contains { $0.id == .quittingCard }, "Tasks have no Quit or Cut Down section")
+        expect(snapshot.choices.count == 7 && !snapshot.choices.contains { $0.name.hasPrefix("Widget task") },
+               "Edit Widget offers habits only, in the person's order")
+        expect(snapshot.choices.map(\.name) == store.habits.filter { $0.kind != .task }.map(\.name), "Habit choices keep the person's order")
+        expect(snapshot.weekdays.count == 7, "Seven day names")
+        expect(snapshot.frames[0].items.filter(\.isTask).count == 7, "Every task survives the snapshot")
+
+        // MARK: Lists: habits and tasks apart, Today's order (U13)
+
+        expect(!names("habits").contains { $0.hasPrefix("Widget task") }, "The habit list never shows tasks (C040: wrong content)")
+        expect(names("tasks").allSatisfy { $0.hasPrefix("Widget task") } && names("tasks").count == 7, "The task list shows only tasks")
+        expect(names("habits") == ["Widget cut down", "Widget quit", "Widget water", "Widget check", "Widget timer", "Widget steps", "Widget routine"],
+               "Today follows the cards and the person's order: \(names("habits"))")
+        expect(names("habits:morning") == ["Widget check", "Widget timer"], "A section lists only its own habits")
+        expect(names("habits:quitting") == ["Widget cut down", "Widget quit"], "Quit or Cut Down holds quit habits and limits")
+        expect(names("tasks:anytime").count == 7 && snapshot.frames[0].lists["tasks:quitting"] == nil, "Tasks by section")
+        store.moveCard(.anytime, .bottom); await store.flush()
+        expect(names("habits").first == "Widget cut down" && names("habits").last == "Widget water",
+               "Moving Anytime to the bottom moves it on the widget: \(names("habits"))")
+        expect(snap().sections.map(\.id) == store.todayCards, "The sections follow a card move")
+        store.moveCard(.anytime, .top); store.moveCard(.quittingCard, .top); await store.flush()
+        store.reorder([habit("Widget timer").id, habit("Widget check").id]); await store.flush()
+        expect(names("habits:morning") == ["Widget timer", "Widget check"], "Reordering in the app reorders the widget: \(names("habits:morning"))")
+        store.reorder([habit("Widget check").id, habit("Widget timer").id]); await store.flush()
+        let both = Habit(name: "Widget both", symbol: "sun.max.fill", color: .yellow, kind: .check, parts: [.morning, .evening],
+                         startsOn: day.adding(days: -3, calendar: store.calendar))
+        store.add(both); await store.flush()
+        expect(names("habits:morning").contains("Widget both") && names("habits:evening").contains("Widget both")
+               && names("habits").filter { $0 == "Widget both" }.count == 1, "A habit in two sections shows in each, and once in Today")
+        store.delete([both]); await store.flush()
+
+        // MARK: Words, numbers and the button for every type (Implementation Spec §3)
+
+        let water = habit("Widget water")
+        store.addProgress(water, value: 3, on: day); await store.flush()
+        var w = row("Widget water")
+        expect(w.value == "3 of 8 glasses" && w.line == "3 of 8 glasses" && w.todayLine == "Anytime · 3 of 8 glasses",
+               "Amount reads \"3 of 8 glasses\": \(w.value) / \(w.todayLine)")
+        expect(w.action == .add && w.actionText == "+1" && !w.done && w.fraction == 3.0 / 8, "Saved +1 adds; the row fills 3/8")
+        expect(w.big == "3" && w.goal == "/ 8 glasses" && w.lock == "3/8" && w.ring == 3.0 / 8, "Weekly card and Lock Screen values")
+        store.addProgress(water, value: 6, on: day); await store.flush()
+        w = row("Widget water")
+        expect(w.value == "9 of 8 glasses" && w.done && w.action == .add && w.actionText == "+1",
+               "Above the goal: the true value, the habit's colour, and +1 still adds")
+        expect(w.countsDone && w.counts, "A met goal counts as done")
+
+        let check = habit("Widget check")
+        var c = row("Widget check")
+        expect(c.action == .check && c.line == "Not yet" && c.value == "Not checked" && c.lock == nil && !c.done, "A single check: ✓, Not yet")
+        let checkEvent = UUID(), checkSignature = HabitStore.widgetSignature(check)
+        store.logFromWidget(id: check.id, day: day, event: checkEvent, signature: checkSignature, mode: "check", now: now)
+        store.logFromWidget(id: check.id, day: day, event: checkEvent, signature: checkSignature, mode: "check", now: now)
+        store.logFromWidget(id: check.id, day: day, event: UUID(), signature: checkSignature, mode: "check", now: now)
         await store.flush()
-        expect(store.dayProgress(of: water, on: day) == 1, "Replayed rendered event logs only once")
-        let freshRows = store.widgetSnapshot(now: now).frames.first!.items
-        expect(freshRows.first { $0.id == water.id.uuidString }?.value == 1 && freshRows.first { $0.id == water.id.uuidString }?.token != snapshot.frames.first?.items.first { $0.id == water.id.uuidString }?.token,
-               "Changed habit invalidates projection and receives a fresh action token")
-        expect(freshRows.first { $0.name == "Widget check" }?.token == snapshot.frames.first?.items.first { $0.name == "Widget check" }?.token,
-               "An unrelated entry preserves cached item projections")
-        let loaded = HabitStore(repository: persistence.repository); await loaded.load()
-        let persistedWater = loaded.habits.first { $0.id == water.id }!
-        expect(HabitStore.widgetSignature(persistedWater) == signature, "Database timestamp precision preserves action signature")
-        var unordered = water; unordered.frequency = .weekdays([2, 4, 6])
-        unordered.reminders = [ReminderTime(hour: 18, minute: 0), ReminderTime(hour: 8, minute: 0)]
-        var reordered = unordered; reordered.frequency = .weekdays(Set([6, 4, 2]))
-        reordered.reminders.reverse()
-        expect(HabitStore.widgetSignature(unordered) == HabitStore.widgetSignature(reordered), "Weekday sets and reminder order preserve action signature")
-        expect(loaded.dayProgress(of: water, on: day) == 1 && loaded.entries(of: water.id).first?.source == .widget, "Widget entry persists with source")
-        loaded.logFromWidget(id: water.id, day: day, event: event, signature: signature, now: now); await loaded.flush()
-        expect(loaded.dayProgress(of: water, on: day) == 1, "Cold repository reopen deduplicates callback")
-        let coldEvent = UUID()
-        loaded.logFromWidget(id: water.id, day: day, event: coldEvent, signature: signature, now: now); await loaded.flush()
-        expect(loaded.problem == nil && loaded.dayProgress(of: water, on: day) == 2, "Fresh rendered action survives cold launch")
-        loaded.undoEntry(coldEvent); await loaded.flush()
-        store.undoEntry(event); await store.flush()
-        store.logFromWidget(id: water.id, day: day, event: event, signature: signature, now: now); await store.flush()
-        expect(store.dayProgress(of: water, on: day) == 0, "Tombstone prevents replay after undo")
-        for _ in 0..<3 { store.logFromWidget(id: water.id, day: day, event: UUID(), signature: signature, now: now) }
-        store.addProgress(water, value: 1, on: day, source: .today)
+        expect(store.dayProgress(of: check, on: day) == 1 && store.entries(of: check.id).first?.source == .widget,
+               "✓ logs once however often the callback repeats, recorded as a widget log")
+        c = row("Widget check")
+        expect(c.done && c.line == "Done" && c.action == .check, "Done check: the habit's colour, ✓ can take it back")
+        expect(WidgetLogIntent(item: c, day: day.key).mode == "uncheck", "A done ✓'s button unchecks that day (U14)")
+        let uncheck = UUID()
+        store.logFromWidget(id: check.id, day: day, event: uncheck, signature: checkSignature, mode: "uncheck", now: now)
+        store.logFromWidget(id: check.id, day: day, event: uncheck, signature: checkSignature, mode: "uncheck", now: now)
         await store.flush()
-        expect(store.dayProgress(of: water, on: day) == 4, "Concurrent queued app/widget additions retain all entries")
-        let check = item("Widget check")
-        for _ in 0..<3 { store.logFromWidget(id: check.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(check), now: now) }
-        await store.flush()
-        expect(store.dayProgress(of: check, on: day) == 1, "Completed check does not toggle or duplicate")
-        expect(!store.widgetSnapshot(now: now).frames.first!.agenda(completed: false).contains { $0.id == check.id.uuidString }, "Remaining agenda hides completed")
-        expect(store.widgetSnapshot(now: now).frames.first!.agenda(completed: true).contains { $0.id == check.id.uuidString }, "Configured agenda keeps completed")
-        let cut = item("Widget cut down")
-        for _ in 0..<4 { store.logFromWidget(id: cut.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(cut), now: now) }
-        await store.flush()
-        expect(store.dayProgress(of: cut, on: day) == 4 && row("Widget cut down").action != nil, "Limit keeps recording above threshold")
-        let before = store.dayProgress(of: water, on: day)
-        store.logFromWidget(id: water.id, day: day.adding(days: -1), event: UUID(), signature: signature, now: now); await store.flush()
-        expect(store.dayProgress(of: water, on: day) == before && store.problem != nil, "Old-day action rejected without writing")
+        expect(store.dayProgress(of: check, on: day) == 0, "Uncheck takes back that day's tick, and a retried uncheck does nothing more")
+        store.logFromWidget(id: check.id, day: day, event: checkEvent, signature: checkSignature, mode: "check", now: now); await store.flush()
+        expect(store.dayProgress(of: check, on: day) == 0, "A replayed old ✓ after Undo never comes back (tombstone)")
         store.problem = nil
-        var edited = water; edited.name = "Renamed water"; store.update(edited); await store.flush()
-        store.logFromWidget(id: water.id, day: day, event: UUID(), signature: signature, now: now); await store.flush()
-        expect(store.dayProgress(of: edited, on: day) == before && store.problem != nil, "Edited item rejects stale configuration")
+
+        let steps = row("Widget steps")
+        expect(steps.action == .open && steps.route == "oftenenough://log/\(habit("Widget steps").id.uuidString)",
+               "An amount with no saved step opens its amount entry directly")
+        expect(steps.value == "0 of 8k steps", "Steps read \"0 of 8k steps\": \(steps.value)")
+        store.logFromWidget(id: habit("Widget steps").id, day: day, event: UUID(), signature: HabitStore.widgetSignature(habit("Widget steps")),
+                            mode: "add", now: now)
+        await store.flush()
+        expect(store.dayProgress(of: habit("Widget steps"), on: day) == 0, "Steps are never made up by a widget tap")
         store.problem = nil
-        store.setSkipped(edited, on: day, true); await store.flush()
-        store.logFromWidget(id: edited.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(edited), now: now); await store.flush()
-        expect(store.dayProgress(of: edited, on: day) == before, "Skipped item cannot be revived")
+
+        let timer = habit("Widget timer")
+        var t = row("Widget timer")
+        expect(t.action == .open && t.route == "oftenenough://timer/\(timer.id.uuidString)?start=1",
+               "▶ opens the full-screen timer when Open Timer Full Screen is on")
+        UserDefaults.standard.set(false, forKey: Preferences.timerScreen)
+        t = row("Widget timer")
+        expect(t.action == .timerStart, "▶ starts the timer in place when Open Timer Full Screen is off")
+        expect(store.timerFromWidget(id: timer.id, day: day, start: true, signature: HabitStore.widgetSignature(timer), now: now)
+               && store.timers[timer.id] != nil, "▶ from a widget starts the timer (and its Live Activity)")
+        store.timerFromWidget(id: timer.id, day: day, start: true, signature: HabitStore.widgetSignature(timer), now: now)
+        expect(store.timers[timer.id] != nil, "A repeated ▶ never stops it")
+        t = row("Widget timer")
+        expect(t.action == .timerPause && t.timerClock != nil && t.timerGoalAt != nil && !t.done, "Running: ⏸, a live clock, neutral")
+        expect(WidgetTimerIntent(item: t, day: day.key).start == false, "The running timer's button pauses")
+        // A session of a second or more is saved (shorter ones aren't a log).
+        try? await Task.sleep(for: .seconds(1.2))
+        store.timerFromWidget(id: timer.id, day: day, start: false, signature: HabitStore.widgetSignature(timer), now: now)
+        store.timerFromWidget(id: timer.id, day: day, start: false, signature: HabitStore.widgetSignature(timer), now: now)
+        await store.flush()
+        expect(store.timers[timer.id] == nil && store.entries(of: timer.id).count == 1, "⏸ saves the session once, a repeat saves nothing")
+        UserDefaults.standard.set(true, forKey: Preferences.timerScreen)
+        expect(row("Widget timer").value.hasSuffix("of 10 min"), "Minutes read \"2 of 10 min\": \(row("Widget timer").value)")
+
+        let routine = row("Widget routine")
+        expect(routine.action == .open && routine.route == routine.url.absoluteString && routine.value == "0 of 3 steps",
+               "A checklist opens its named steps; never a guessed step")
+
+        let quit = row("Widget quit")
+        expect(quit.action == .open && quit.route == "oftenenough://slip/\(habit("Widget quit").id.uuidString)",
+               "Quit: the button opens Record a slip (never logged by a tap, C090)")
+        expect(quit.quitStart != nil && quit.since?.hasPrefix("Since ") == true && !quit.counts && !quit.done, "Quit: live run, Since, not counted")
+        expect(["39d", "40d"].contains(quit.lock ?? ""), "Lock Screen quit shows days: \(quit.lock ?? "nil")")
+        expect(quit.quitBest == nil && WidgetLive.quitLine(quit, at: now) == "Quitting", "No earlier run: \"Quitting\", never a zero")
+
+        let cut = habit("Widget cut down")
+        var limit = row("Widget cut down")
+        expect(limit.limit && limit.limitFill && limit.caption == "Daily limit" && limit.value == "0 of 3 cups max" && limit.ring == nil,
+               "Cut down: neutral, \"max\", Daily limit, no ring")
+        for _ in 0..<3 { store.logFromWidget(id: cut.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(cut), now: now) }
+        await store.flush()
+        limit = row("Widget cut down")
+        expect(limit.caption == "Limit reached" && !limit.done && limit.action == .add, "At the limit: Limit reached, never celebrated")
+        store.logFromWidget(id: cut.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(cut), now: now); await store.flush()
+        limit = row("Widget cut down")
+        expect(limit.caption == "Over the limit" && limit.value == "4 of 3 cups max" && limit.line.hasSuffix("· Over the limit")
+               && store.dayProgress(of: cut, on: day) == 4, "Over: the true amount, still logged, no red or shame words")
+        expect(!limit.counts, "A limit is never \"left\" to do")
+
+        let weekly = Habit(name: "Widget weekly", symbol: "star.fill", color: .pink, kind: .check, frequency: .perWeek(3),
+                           startsOn: day.adding(days: -10, calendar: store.calendar))
+        store.add(weekly); await store.flush()
+        store.logFromWidget(id: weekly.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(weekly), mode: "add", now: now)
+        await store.flush()
+        let wk = row("Widget weekly")
+        expect(wk.action == .add && wk.actionText == "+1" && wk.fraction == nil && wk.cardFraction == 1.0 / 3,
+               "A week goal: +1, no row fill, the card fills toward the week")
+        expect(wk.line == "1 today · 3 a week" && wk.value == "1 of 3 times", "Week goal words: \(wk.line) / \(wk.value)")
+        expect(!wk.done && wk.countsDone, "One tick doesn't finish a week goal's button, but counts today as done (U14)")
+
+        // MARK: Done rows sink after the pause; a run of taps moves nothing (U4, U13)
+
+        store.logFromWidget(id: check.id, day: day, event: UUID(), signature: checkSignature, mode: "check", now: now); await store.flush()
+        expect(names("habits:morning") == ["Widget timer", "Widget check"], "A done habit sinks below the rest of its section")
+        UserDefaults.standard.set(DoneOrder.inPlace.rawValue, forKey: Preferences.doneOrder)
+        expect(names("habits:morning") == ["Widget check", "Widget timer"], "Stay in Place keeps done habits where they are")
+        UserDefaults.standard.set(DoneOrder.bottom.rawValue, forKey: Preferences.doneOrder)
+        store.logFromWidget(id: check.id, day: day, event: UUID(), signature: checkSignature, mode: "uncheck", now: now); await store.flush()
+        let before = store.widgetSnapshot(now: now)
+        store.logFromWidget(id: check.id, day: day, event: UUID(), signature: checkSignature, mode: "check", now: now); await store.flush()
+        let held = store.widgetSnapshot(now: now, previous: before, hold: now.addingTimeInterval(1.5))
+        expect(held.frames[0].list("habits:morning", at: now).map(\.name) == ["Widget check", "Widget timer"],
+               "Right after a widget tap the rows stay where they were")
+        expect(held.frames[0].list("habits:morning", at: now.addingTimeInterval(2)).map(\.name) == ["Widget timer", "Widget check"],
+               "After the pause the done row sinks")
+        let entries = PhoneWidgetTimeline.entries(snapshot: held, now: now, listKey: "habits:morning") { _ in }
+        expect(entries.contains { abs($0.date.timeIntervalSince(now.addingTimeInterval(1.5))) < 0.01 }, "The timeline redraws when the rows settle")
+
+        // MARK: Counts ("2 of 5 done") match Today's day bar (U10)
+
+        let today = snap().frames[0].list("habits", at: now)
+        let counted = today.filter(\.counts)
+        let summary = store.daySummary(on: day)
+        let tasksDone = store.habits.filter { $0.kind == .task && store.isDone($0, on: day) }.count
+        let tasksAll = store.habits.filter { $0.kind == .task && store.isDue($0, on: day) }.count
+        expect(counted.count == summary.total - tasksAll && counted.filter(\.countsDone).count == summary.done - tasksDone,
+               "The habit list's count is the day bar's (habits only): \(counted.count) vs \(summary.total - tasksAll)")
+        expect(!counted.contains { $0.type == "quit" || $0.limit }, "Quit and cut down are never counted as left (C040: false \"all done\")")
+
+        // MARK: Tasks
+
+        let task = habit("Widget task 1")
+        var taskRow = row("Widget task 1")
+        expect(taskRow.action == .check && taskRow.todayLine == "Anytime" && taskRow.line.isEmpty && taskRow.streak == nil && taskRow.week.isEmpty,
+               "A task: ✓, its section, no statistics")
+        store.logFromWidget(id: task.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(task), mode: "check", now: now)
+        await store.flush()
+        taskRow = row("Widget task 1")
+        expect(taskRow.done && store.isDone(task, on: day) && names("tasks").last == "Widget task 1", "A done task: tinted, sinks to the end")
+        store.logFromWidget(id: task.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(task), mode: "uncheck", now: now)
+        await store.flush()
+        expect(!store.isDone(task, on: day), "A task's ✓ can be taken back")
+        var timed = Habit(name: "Widget timed task", symbol: "phone.fill", color: .green, kind: .task, parts: [.afternoon], dueDay: day,
+                          dueMinute: 17 * 60, startsOn: day)
+        store.add(timed); await store.flush()
+        expect(row("Widget timed task").todayLine == "Afternoon · " + DaySection.clock(17 * 60), "A task's time follows its section")
+        timed.dueDay = day.adding(days: -2, calendar: store.calendar)
+        timed.startsOn = timed.dueDay
+        store.update(timed); await store.flush()
+        expect(row("Widget timed task").todayLine.hasPrefix("From "), "A carried-over task says where it came from")
+        store.delete([timed]); await store.flush()
+
+        // MARK: Neutral days, the week and the streak
+
+        let skipped = habit("Widget routine")
+        store.setSkipped(skipped, on: day, true); await store.flush()
+        let sr = row("Widget routine")
+        expect(sr.state == "skipped" && sr.action == .open && sr.route == sr.url.absoluteString && !sr.counts && sr.sinks
+               && names("habits:evening") == ["Widget routine"], "Skipped: stays, neutral, opens Day details, not counted")
+        store.setSkipped(skipped, on: day, false); await store.flush()
+        store.pause(water, from: day, through: nil, now: now); await store.flush()
+        let pr = row("Widget water")
+        expect(pr.state == "paused" && pr.value == "Paused" && pr.action == .open && !names("habits").contains("Widget water"),
+               "Paused: off the lists, Paused on its own widget, opens Day details")
+        store.logFromWidget(id: water.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(water), now: now); await store.flush()
+        expect(store.dayProgress(of: water, on: day) == 9, "A paused habit rejects an old widget tap")
         store.problem = nil
+        store.resume(water, now: now); await store.flush()
+
+        let streaky = Habit(name: "Widget streak", symbol: "flame", color: .red, kind: .check, startsOn: day.adding(days: -5, calendar: store.calendar))
+        store.add(streaky); await store.flush()
+        for back in 1...3 { store.toggleCheck(streaky, on: day.adding(days: -back, calendar: store.calendar)) }
+        await store.flush()
+        expect(row("Widget streak").streak == "3", "Streak: \(row("Widget streak").streak ?? "nil")")
+        store.toggleCheck(streaky, on: day); await store.flush()
+        let sw = row("Widget streak")
+        expect(sw.streak == "4" && sw.week.count == 7 && sw.weekToday >= 0 && sw.weekToday < 7 && sw.week[sw.weekToday] == 4,
+               "The week's squares: today ✓ in its place")
+        expect(sw.heat.count == 11, "The habit's heat colours travel with it")
+        UserDefaults.standard.set(false, forKey: ProgressOptions.showStreaks)
+        expect(row("Widget streak").streak == nil, "Hidden streaks stay hidden on widgets")
+        UserDefaults.standard.set(true, forKey: ProgressOptions.showStreaks)
+        let oldStart = store.settings.weekStart
+        store.setWeekStart(2); await store.flush()
+        expect(snap().weekdays.first == store.weekColumns(store.period(.week, containing: day), today: day).first?.short
+               && store.period(.week, containing: day).lowerBound.weekday(calendar: store.calendar) == 2,
+               "The week follows the person's week start (C040: widget ignored the week start)")
+        store.setWeekStart(oldStart); await store.flush()
+
+        // MARK: Days: a tap from yesterday, tomorrow's frame, the day start (D7)
+
+        let stale = store.dayProgress(of: water, on: day)
+        store.logFromWidget(id: water.id, day: day.adding(days: -1, calendar: store.calendar), event: UUID(),
+                            signature: HabitStore.widgetSignature(water), now: now)
+        await store.flush()
+        expect(store.dayProgress(of: water, on: day) == stale && store.problem != nil, "Yesterday's button never logs into today")
+        store.problem = nil
+        expect(row("Widget water", 1).value == "0 of 8 glasses" && row("Widget water", 1).fraction == 0,
+               "Tomorrow starts at zero (C040: stuck on yesterday's numbers)")
+        var edited = water; edited.goal = 10; store.update(edited); await store.flush()
+        store.logFromWidget(id: water.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(water), now: now); await store.flush()
+        expect(store.dayProgress(of: edited, on: day) == stale && store.problem != nil, "A button drawn before an edit is refused")
+        store.problem = nil
+        expect(row("Widget water").value == "9 of 10 glasses", "The edit shows at once: \(row("Widget water").value)")
+        do {
+            var calendar = Calendar(identifier: .gregorian); calendar.timeZone = TimeZone(identifier: "America/New_York")!
+            let late = HabitStore(repository: Persistence.inMemory().repository, calendar: calendar)
+            await late.load()
+            late.setDayEnd(3); await late.flush()
+            let lateDay = LocalDay(year: 2026, month: 10, day: 6)
+            let oneThirty = calendar.date(from: DateComponents(year: 2026, month: 10, day: 7, hour: 1, minute: 30))!
+            late.add(Habit(name: "Late", symbol: "moon", color: .blue, kind: .check, startsOn: lateDay)); await late.flush()
+            let s = late.widgetSnapshot(now: oneThirty)
+            expect(s.frames[0].day == lateDay.key && s.frames[0].items.contains { $0.name == "Late" },
+                   "At 1:30 AM before a 3 AM day start, the widget still shows the evening's day")
+            let lateHabit = late.habits.first { $0.name == "Late" }!
+            late.logFromWidget(id: lateHabit.id, day: lateDay, event: UUID(), signature: HabitStore.widgetSignature(lateHabit),
+                               mode: "check", now: oneThirty)
+            await late.flush()
+            expect(late.isDone(lateHabit, on: lateDay), "A tap after midnight, before the day start, logs the evening's day")
+            for (month, date) in [(3, 8), (11, 1)] {
+                let dst = LocalDay(year: 2026, month: month, day: date)
+                let bounds = late.dayBounds(dst)
+                expect(calendar.component(.hour, from: bounds.lowerBound) == 3, "Day boundaries stay at 03:00 across DST \(month)")
+            }
+        }
+
+        // MARK: Configuration: a removed section, an archived or deleted habit (C040: widgets losing their choice)
+
+        store.saveSections(store.sections.filter { $0.id != .evening }); await store.flush()
+        snapshot = snap()
+        expect(!snapshot.sections.contains { $0.id == .evening } && snapshot.frames[0].lists["habits:evening"] == nil,
+               "A removed section is gone (the widget says Section unavailable, never another section)")
+        expect(names("habits:anytime").contains("Widget routine"), "Its habits move to Anytime, as on Today")
+        let archived = habit("Widget streak")
+        store.archive([archived]); await store.flush()
+        expect(snap().frames[0].item(archived.id.uuidString) == nil && !snap().choices.contains { $0.id == archived.id.uuidString },
+               "An archived habit leaves the widgets (its widget says Habit unavailable)")
+        let archivedCount = store.entries(of: archived.id).count
+        store.logFromWidget(id: archived.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(archived), mode: "uncheck", now: now)
+        await store.flush()
+        expect(store.entries(of: archived.id).count == archivedCount && store.problem != nil, "An archived habit can't be changed from an old widget")
+        store.problem = nil
+        let gone = habit("Widget weekly")
+        store.delete([gone]); await store.flush()
+        store.logFromWidget(id: gone.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(gone), now: now); await store.flush()
+        expect(!store.habits.contains { $0.id == gone.id } && snap().frames[0].item(gone.id.uuidString) == nil,
+               "A deleted habit is never revived or shown (C040: deleted task still shown)")
+        store.problem = nil
+
+        // MARK: Privacy
+
         UserDefaults.standard.set(true, forKey: WidgetDisk.privacyKey)
         store.logFromWidget(id: cut.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(cut), now: now); await store.flush()
-        expect(store.dayProgress(of: cut, on: day) == 4, "Privacy disables widget logging")
+        expect(store.dayProgress(of: cut, on: day) == 4, "Hide widget content turns widget logging off")
         UserDefaults.standard.removeObject(forKey: WidgetDisk.privacyKey); store.problem = nil
-        expect(store.widgetSnapshot(now: now, hidden: true).frames.allSatisfy { $0.items.isEmpty }, "Private snapshot contains no names or progress")
+        let hidden = store.widgetSnapshot(now: now, hidden: true)
+        expect(hidden.hidden && hidden.frames.allSatisfy { $0.items.isEmpty && $0.lists.isEmpty } && hidden.sections.isEmpty && hidden.choices.isEmpty,
+               "A private snapshot holds no names, sections or progress")
+        let hiddenEntries = PhoneWidgetTimeline.entries(snapshot: hidden, now: now, listKey: "habits") { _ in }
+        expect(hiddenEntries.count == 1 && hiddenEntries[0].status == .hidden, "Every widget shows Content hidden")
+
+        // MARK: Pages (Implementation Spec §5)
+
+        expect(WidgetPaging.pages(5, capacity: 5) == 1 && WidgetPaging.pages(6, capacity: 5) == 2 && WidgetPaging.pages(12, capacity: 5) == 3
+               && WidgetPaging.pages(16, capacity: 5) == 4 && WidgetPaging.pages(5, capacity: 2) == 3 && WidgetPaging.pages(0, capacity: 2) == 1,
+               "Large five a page, Medium two")
+        expect(WidgetPaging.slice(Array(1...12), page: 2, capacity: 5) == [11, 12], "12 = 5 + 5 + 2")
+        expect(WidgetPaging.slice(Array(1...6), page: 9, capacity: 5) == [6], "A page past the end shows the last page, never an empty one")
+        expect(WidgetPaging.clamp(-3, count: 6, capacity: 5) == 0, "No page before the first")
+        let pagingKey = "widget-check." + UUID().uuidString
+        expect(WidgetDisk.page(key: pagingKey, set: 100_001) == 100_000 && WidgetDisk.page(key: pagingKey, set: -1) == 0,
+               "Stored pages are clamped")
+        let other = "widget-check." + UUID().uuidString
+        _ = WidgetDisk.page(key: pagingKey, set: 2); _ = WidgetDisk.page(key: other, set: 1)
+        expect(WidgetDisk.page(key: pagingKey) == 2 && WidgetDisk.page(key: other) == 1, "Two lists keep their own pages")
+
+        // MARK: Links open exactly what the button names
+
+        let router = AppModel.shared.router
+        let id = UUID()
+        HabitsApp.route(URL(string: "oftenenough://log/" + id.uuidString)!, model: .shared)
+        expect(router.widgetSheet == WidgetSheet(kind: .log, habit: id), "log/<id> opens the amount entry")
+        HabitsApp.route(URL(string: "oftenenough://slip/" + id.uuidString)!, model: .shared)
+        expect(router.widgetSheet == WidgetSheet(kind: .slip, habit: id), "slip/<id> opens Record a slip")
+        router.widgetSheet = nil
+        HabitsApp.route(URL(string: "oftenenough://timer/\(id.uuidString)?start=1")!, model: .shared)
+        expect(router.timerHabit == id && router.startTimer, "timer/<id>?start=1 starts the timer and opens it")
+        router.timerHabit = nil; router.startTimer = false
+        HabitsApp.route(URL(string: "oftenenough://section/morning")!, model: .shared)
+        expect(router.focusSection == "morning", "section/<id> opens that section")
+        router.focusSection = nil; router.widgetToday = false
+        HabitsApp.route(URL(string: "oftenenough://widgets")!, model: .shared)
+        expect(router.widgetSetup, "Choose a habit opens the Widgets guide")
+        router.widgetSetup = false
+
+        // MARK: The file on disk and the timeline (C040: blank, stale or broken widgets)
+
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent("WidgetCheck-" + UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: directory) }
         let file = directory.appendingPathComponent("snapshot.json")
+        snapshot = snap()
         do {
             try WidgetDisk.write(snapshot, to: file)
-            expect(WidgetDisk.read(from: file)?.frames.first?.items.count == snapshot.frames.first?.items.count, "Atomic disk round trip")
+            let read = WidgetDisk.read(from: file)
+            expect(read?.frames.first?.items.count == snapshot.frames.first?.items.count
+                   && read?.frames.first?.lists == snapshot.frames.first?.lists, "Atomic disk round trip keeps every list")
             try Data("{".utf8).write(to: file, options: .atomic)
-            expect(WidgetDisk.read(from: file) == nil, "Corrupt snapshot gives unavailable")
+            expect(WidgetDisk.read(from: file) == nil, "A corrupt file asks the app to update, never draws a blank")
             var future = snapshot; future.version = 999
-            expect(WidgetDisk.decode(try JSONEncoder().encode(future)) == nil, "Unknown schema rejected")
+            expect(WidgetDisk.decode(try JSONEncoder().encode(future)) == nil, "An unknown version is refused")
             var invalid = snapshot; invalid.frames[0].items[0].id = "invalid\nitem"
-            expect(WidgetDisk.decode(try JSONEncoder().encode(invalid)) == nil, "Malformed item identities cannot crash URL rendering")
+            expect(WidgetDisk.decode(try JSONEncoder().encode(invalid)) == nil, "A malformed ID is refused")
             var duplicate = snapshot; duplicate.frames[0].items.append(duplicate.frames[0].items[0])
-            expect(WidgetDisk.decode(try JSONEncoder().encode(duplicate)) == nil, "Duplicate snapshot rows are rejected")
-            var badAction = snapshot; badAction.frames[0].items[0].token = "invalid-event"
-            expect(WidgetDisk.decode(try JSONEncoder().encode(badAction)) == nil, "Malformed action event is rejected before display")
+            expect(WidgetDisk.decode(try JSONEncoder().encode(duplicate)) == nil, "Duplicate rows are refused")
+            var badAction = snapshot
+            if let i = badAction.frames[0].items.firstIndex(where: { $0.action == .add }) { badAction.frames[0].items[i].token = "x" }
+            expect(WidgetDisk.decode(try JSONEncoder().encode(badAction)) == nil, "A malformed tap event is refused")
+            var dangling = snapshot; dangling.frames[0].lists["habits"]?.append(UUID().uuidString)
+            expect(WidgetDisk.decode(try JSONEncoder().encode(dangling)) == nil, "A list naming a missing row is refused")
         } catch { failures.append("Disk round trip: \(error)") }
-        expect(WidgetDisk.decode(Data(repeating: 0, count: WidgetDisk.maximumBytes + 1)) == nil, "Oversized snapshot rejected")
-        expect(snapshot.frame(at: now, timeZone: "invalid") == nil, "Travel invalidates old timezone snapshot")
-        expect(snapshot.frame(at: now, locale: "invalid") == nil, "Locale change invalidates old formatted values")
-        let pagingKey = "widget-check." + UUID().uuidString
-        expect(WidgetDisk.page(key: pagingKey, set: 100_001) == 100_000 && WidgetDisk.page(key: pagingKey, set: -1) == 0,
-               "Shared pagination clamps invalid values")
-        expect(snapshot.frame(at: snapshot.frames.last!.end) == nil, "Expired outlook never carries old data")
-        let quitID = item("Widget quit").id.uuidString
-        let late = now.addingTimeInterval(30 * 86400)
-        expect(PhoneWidgetTimeline.itemEntries(snapshot: snapshot, selection: quitID, now: late).first?.selected?.counterStart != nil,
-               "Stable quit clock keeps running after agenda outlook expires")
+        expect(WidgetDisk.decode(Data(repeating: 0, count: WidgetDisk.maximumBytes + 1)) == nil, "An oversized file is refused")
+        expect(snapshot.frame(at: now, timeZone: "invalid") == nil, "Travel to another time zone asks the app to update")
+        expect(snapshot.frame(at: now, locale: "invalid") == nil, "A new language asks the app to update")
+        expect(snapshot.frame(at: snapshot.frames.last!.end) == nil, "After the seven days, old numbers are never shown")
+        let timeline = PhoneWidgetTimeline.entries(snapshot: snapshot, now: now, listKey: "habits") { _ in }
+        expect(zip(timeline, timeline.dropFirst()).allSatisfy { $0.date < $1.date }, "Timeline dates strictly increase")
+        expect(timeline.last?.status == .stale && timeline.filter { $0.frame != nil }.count >= 7, "Each day has an entry, then Open to update")
+        let quitID = habit("Widget quit").id.uuidString
+        let later = now.addingTimeInterval(30 * 86_400)
+        let counter = PhoneWidgetTimeline.entries(snapshot: snapshot, now: later, selection: quitID) { _ in }
+        expect(counter.first?.selected?.quitStart != nil, "A quit counter keeps counting after the seven days")
         var bounded = snapshot
         for i in bounded.frames.indices {
             if let j = bounded.frames[i].items.firstIndex(where: { $0.id == quitID }) {
-                bounded.frames[i].items[j].counterValidUntil = now.addingTimeInterval(10 * 86400)
+                bounded.frames[i].items[j].quitUntil = now.addingTimeInterval(10 * 86_400)
             }
         }
-        expect(PhoneWidgetTimeline.itemEntries(snapshot: bounded, selection: quitID, now: late).first?.selected == nil,
-               "Known quit pause or end stops the extended counter")
-        let quit = item("Widget quit")
-        var endingQuit = quit; endingQuit.endsOn = day.adding(days: 1)
-        store.update(endingQuit); await store.flush()
-        let endedSnapshot = store.widgetSnapshot(now: now)
-        expect(endedSnapshot.frames[2].items.first { $0.id == quitID }?.planned == false,
-               "Quit end date removes the counter from future agendas")
-        expect(endedSnapshot.frames.first?.items.first { $0.id == quitID }?.counterValidUntil == store.dayBounds(day.adding(days: 1)).upperBound.addingTimeInterval(1),
-               "Quit counter ends at the saved wall-clock boundary")
-        store.update(quit); await store.flush()
-        let timeline = PhoneWidgetTimeline.entries(snapshot: snapshot, now: now)
-        expect(timeline.count == 8 && timeline.last?.frame == nil, "Timeline includes explicit expired state")
-        expect(zip(timeline, timeline.dropFirst()).allSatisfy { $0.date < $1.date }, "Timeline dates strictly increase")
-        for (month, date) in [(3, 8), (11, 1)] {
-            var calendar = Calendar(identifier: .gregorian); calendar.timeZone = TimeZone(identifier: "America/New_York")!
-            let dstStore = HabitStore(repository: Persistence.inMemory().repository, calendar: calendar)
-            await dstStore.load(); dstStore.settings.dayEndHour = 4
-            let dst = LocalDay(year: 2026, month: month, day: date)
-            let bounds = dstStore.dayBounds(dst)
-            expect(calendar.component(.hour, from: bounds.lowerBound) == 4 && calendar.component(.hour, from: bounds.upperBound.addingTimeInterval(1)) == 4,
-                   "04:00 wall-clock boundaries across DST \(month)")
-            expect(dstStore.today(now: bounds.lowerBound) == dst && dstStore.today(now: bounds.lowerBound.addingTimeInterval(-1)) == dst.adding(days: -1), "Custom day starts exactly at boundary \(month)")
-        }
-        let repeating = Habit(name: "Repeating widget task", symbol: "checkmark", color: .blue, kind: .task,
-                              frequency: .afterCompletion(2, .day), startsOn: day.adding(days: -5))
-        store.add(repeating); await store.flush()
-        store.logFromWidget(id: repeating.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(repeating), now: now); await store.flush()
-        expect(!store.isDue(repeating, on: day.adding(days: 1)) && store.isDue(repeating, on: day.adding(days: 2)), "Task repeats from actual widget completion")
-        let triple = Habit(name: "Three checks", symbol: "star", color: .blue, kind: .check, goal: 3, startsOn: day)
-        store.add(triple); await store.flush()
-        store.logFromWidget(id: triple.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(triple), now: now); await store.flush()
-        expect(store.dayProgress(of: triple, on: day) == 1 && !store.isDone(triple, on: day), "One repeated-goal tap adds one, never completes whole goal")
-        let weekly = Habit(name: "Weekly checks", symbol: "star", color: .blue, kind: .check, frequency: .perWeek(3), startsOn: day)
-        store.add(weekly); await store.flush()
-        for _ in 0..<2 { store.logFromWidget(id: weekly.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(weekly), now: now) }
+        expect(PhoneWidgetTimeline.entries(snapshot: bounded, now: later, selection: quitID) { _ in }.first?.selected == nil,
+               "A known pause or end stops the extended counter")
+        UserDefaults.standard.set(false, forKey: Preferences.timerScreen)
+        store.timerFromWidget(id: timer.id, day: day, start: true, signature: HabitStore.widgetSignature(timer), now: now)
+        let runningSnapshot = store.widgetSnapshot(now: now)
+        let running = PhoneWidgetTimeline.entries(snapshot: runningSnapshot, now: now, selection: timer.id.uuidString) { _ in }
+        // Each minute for half an hour, or up to the day's end if that comes first (T11: any time of day).
+        let minutesLeft = min(30, Int(runningSnapshot.frames[0].end.timeIntervalSince(now) / 60))
+        expect(running.filter { $0.date > now && $0.date < now.addingTimeInterval(31 * 60) }.count >= minutesLeft,
+               "A running timer's fill moves each minute")
+        store.timerFromWidget(id: timer.id, day: day, start: false, signature: HabitStore.widgetSignature(timer), now: now)
         await store.flush()
-        expect(store.dayProgress(of: weekly, on: day) == 2 && store.isSatisfied(weekly, on: day), "Weekly extra ticks remain additive after daily satisfaction")
-        let weeklyRow = store.widgetSnapshot(now: now).frames.first!.items.first { $0.id == weekly.id.uuidString }!
-        expect(weeklyRow.goal == 3 && weeklyRow.status.contains("this week"), "Weekly widget uses the period goal and names its period")
-        let list = Habit(name: "Checklist", symbol: "checklist", color: .blue, kind: .checklist, steps: [Step(name: "One"), Step(name: "Two")], startsOn: day)
-        store.add(list); await store.flush()
-        expect(store.widgetSnapshot(now: now).frames.first!.items.first { $0.id == list.id.uuidString }?.action == nil, "Checklist has no complete-all shortcut")
-        store.pause(triple, from: day, through: nil, now: now); await store.flush()
-        store.logFromWidget(id: triple.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(triple), now: now); await store.flush()
-        expect(store.dayProgress(of: triple, on: day) == 1, "Paused habit rejects a cached action")
-        store.problem = nil
-        store.archive([weekly]); await store.flush()
-        store.logFromWidget(id: weekly.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(weekly), now: now); await store.flush()
-        expect(store.dayProgress(of: weekly, on: day) == 2, "Archived habit rejects old action")
-        store.problem = nil
-        store.delete([list]); await store.flush()
-        store.logFromWidget(id: list.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(list), now: now); await store.flush()
-        expect(!store.habits.contains { $0.id == list.id }, "Deleted item cannot be revived by widget")
-        store.problem = nil
-        store.isPlus = true
-        expect(store.widgetSnapshot(now: now).plus, "Verified entitlement input enables extra layouts")
-        store.isPlus = false
-        expect(!store.widgetSnapshot(now: now).plus, "Entitlement loss restores free fallback")
+        UserDefaults.standard.set(true, forKey: Preferences.timerScreen)
+
+        // MARK: Durable writes, publication and failure (D rules)
+
+        let cold = HabitStore(repository: persistence.repository); await cold.load()
+        let persistedWater = cold.habits.first { $0.id == water.id }!
+        expect(HabitStore.widgetSignature(persistedWater) == HabitStore.widgetSignature(habit("Widget water")),
+               "Database precision preserves the button's signature")
+        let coldEvent = UUID()
+        cold.logFromWidget(id: water.id, day: day, event: coldEvent, signature: HabitStore.widgetSignature(persistedWater), now: now)
+        cold.logFromWidget(id: water.id, day: day, event: coldEvent, signature: HabitStore.widgetSignature(persistedWater), now: now)
+        await cold.flush()
+        expect(cold.problem == nil && cold.entries(of: water.id).filter { $0.id == coldEvent }.count == 1,
+               "A tap after a cold start logs exactly once")
+        for _ in 0..<3 { cold.logFromWidget(id: water.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(persistedWater), now: now) }
+        cold.addProgress(persistedWater, value: 1, on: day, source: .today)
+        await cold.flush()
+        expect(cold.entries(of: water.id).filter { $0.day == day }.count == store.entries(of: water.id).filter { $0.day == day }.count + 5,
+               "Widget and app taps together keep every entry")
         let missing = HabitStore(repository: Persistence.inMemory().repository, databaseOpened: false)
         await missing.load()
         missing.logFromWidget(id: cut.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(cut), now: now); await missing.flush()
-        expect(missing.entries.isEmpty && !missing.isStorageReady, "Failed database open cannot log")
+        expect(missing.entries.isEmpty && !missing.isStorageReady, "A database that didn't open can't log")
         do {
             try WidgetDisk.write(snapshot, to: file)
             let publisher = WidgetPublisher(file: file)
             await publisher.publish(missing)
-            expect(WidgetDisk.read(from: file)?.generated == snapshot.generated, "Unread database preserves last good widget snapshot")
+            expect(WidgetDisk.read(from: file)?.generated == snapshot.generated, "An unread database keeps the last good widgets")
             let failed = WidgetPublisher(file: directory)
             await failed.publish(store)
-            expect(failed.problem != nil, "Snapshot publication failure is visible and recoverable")
-        } catch { failures.append("Publication failure fixture: \(error)") }
-        // An earlier successful publication can still be awaiting host invalidation when
-        // the newest write fails. Its completion must not clear that newer visible error.
+            expect(failed.problem != nil, "A failed publication is shown and can be retried")
+            let holding = WidgetPublisher(file: file)
+            await holding.publish(store)
+            await holding.publish(store, hold: true)
+            expect(WidgetDisk.read(from: file)?.frames.first?.settle != nil, "A widget tap's publication holds the rows")
+        } catch { failures.append("Publication fixture: \(error)") }
         do {
             let errorFile = directory.appendingPathComponent("ordered-publication-error.json")
             let publisher = WidgetPublisher(file: errorFile)
@@ -239,98 +499,119 @@ enum WidgetCheck {
             try FileManager.default.createDirectory(at: errorFile, withIntermediateDirectories: true)
             await publisher.publish(store)
             await earlier.value
-            expect(publisher.problem != nil, "Older publication completion preserves a newer write error")
+            expect(publisher.problem != nil, "An older publication never clears a newer error")
         } catch { failures.append("Publication ordering fixture: \(error)") }
-        let sharedPublisher = WidgetPublisher()
-        await sharedPublisher.publish(store)
-        expect(sharedPublisher.problem == nil && WidgetDisk.read()?.frames.first?.items.count == store.habits.filter { !$0.archived }.count,
-               "Actual app App Group publishes a readable shared snapshot")
-        // Privacy can change while preparation yields to the UI. Both publications must finish
-        // without an older visible projection replacing the newer redacted projection.
+        let shared = WidgetPublisher()
+        await shared.publish(store)
+        expect(shared.problem == nil && WidgetDisk.read()?.frames.first?.items.count == store.habits.filter { !$0.archived }.count,
+               "The app's App Group holds a readable snapshot")
         do {
-            let racingStore = HabitStore(repository: Persistence.inMemory().repository)
-            await racingStore.load(); await WidgetFixture.install(in: racingStore)
-            let visiblePublisher = WidgetPublisher(file: file)
-            let older = Task { await visiblePublisher.publish(racingStore) }
+            let racing = HabitStore(repository: Persistence.inMemory().repository)
+            await racing.load(); await WidgetFixture.install(in: racing)
+            let visible = WidgetPublisher(file: file)
+            let older = Task { await visible.publish(racing) }
             await Task.yield()
             UserDefaults.standard.set(true, forKey: WidgetDisk.privacyKey)
-            await WidgetPublisher(file: file).publish(racingStore)
+            await WidgetPublisher(file: file).publish(racing)
             await older.value
             let privateSnapshot = WidgetDisk.read(from: file)
             expect(privateSnapshot?.hidden == true && privateSnapshot?.frames.allSatisfy { $0.items.isEmpty } == true,
-                   "Privacy during asynchronous preparation never republishes names")
+                   "Turning privacy on mid-publication never republishes names")
             UserDefaults.standard.removeObject(forKey: WidgetDisk.privacyKey)
             let preserved = privateSnapshot?.generated
-            let cancelled = Task { await visiblePublisher.publish(racingStore) }
+            let cancelled = Task { await visible.publish(racing) }
             cancelled.cancel(); await cancelled.value
-            expect(WidgetDisk.read(from: file)?.generated == preserved, "Cancelled publication preserves the last durable snapshot")
+            expect(WidgetDisk.read(from: file)?.generated == preserved, "A cancelled publication keeps the last snapshot")
         }
-        // A real closed repository exercises the failed commit path, rather than a mock callback.
         let failingPersistence = Persistence.inMemory()
-        let failingStore = HabitStore(repository: failingPersistence.repository)
-        await failingStore.load(); await WidgetFixture.install(in: failingStore)
-        let failedHabit = failingStore.habits.first { $0.name == "Widget water" }!
+        let failing = HabitStore(repository: failingPersistence.repository)
+        await failing.load(); await WidgetFixture.install(in: failing)
+        let failedHabit = failing.habits.first { $0.name == "Widget water" }!
         do {
-            let prior = failingStore.widgetSnapshot(now: now)
+            let prior = failing.widgetSnapshot(now: now)
             try WidgetDisk.write(prior, to: file)
             try failingPersistence.repository.close()
-            failingStore.logFromWidget(id: failedHabit.id, day: failingStore.today(now: now), event: UUID(),
-                                       signature: HabitStore.widgetSignature(failedHabit), now: now)
-            await failingStore.flush()
-            expect(failingStore.problem != nil && failingStore.entries.isEmpty, "Failed database write never displays a successful widget check")
-            await WidgetPublisher(file: file).publish(failingStore)
-            expect(WidgetDisk.read(from: file)?.generated == prior.generated, "Failed commit preserves last durable snapshot")
+            failing.logFromWidget(id: failedHabit.id, day: failing.today(now: now), event: UUID(),
+                                  signature: HabitStore.widgetSignature(failedHabit), now: now)
+            await failing.flush()
+            expect(failing.problem != nil && failing.entries.isEmpty, "A failed write never shows a widget log as saved")
+            await WidgetPublisher(file: file).publish(failing)
+            expect(WidgetDisk.read(from: file)?.generated == prior.generated, "A failed write keeps the last durable widgets")
         } catch { failures.append("Failed-write fixture: \(error)") }
         return failures
     }
 }
 
-/// Uses exactly the views shipped in the extension; this is a rendering test, not WidgetKit host validation.
+/// Uses exactly the views shipped in the extension, at iPhone widget sizes: a rendering test, not WidgetKit's host.
 struct WidgetRenderCheck: View {
     @State private var frame: WidgetFrame?
+    @State private var weekdays: [String] = []
     @State private var selected: String?
     @State private var family = WidgetFamily.systemSmall
     @State private var layout = PhoneWidgetLayout.item
-    @State private var plus = false
+    @State private var view = WidgetListSection.today
+    @State private var viewName = "Today"
+    @State private var page = 0
+    @State private var status = PhoneWidgetEntry.Status.ready
     @State private var dark = false
-    @State private var month = false
     private let families: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge, .accessoryInline, .accessoryCircular, .accessoryRectangular]
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 6) {
             ScrollView(.horizontal) {
                 HStack { ForEach(families, id: \.rawValue) { value in
                     Button(String(describing: value)) { family = value }.accessibilityIdentifier("family-\(String(describing: value))")
                 } }
             }
-            HStack { ForEach(PhoneWidgetLayout.allCases, id: \.rawValue) { value in Button(value.rawValue) { layout = value } } }
-            Toggle("Plus preview", isOn: $plus).accessibilityIdentifier("widget-plus")
-            Toggle("Month preview", isOn: $month).accessibilityIdentifier("widget-month")
+            HStack {
+                ForEach(PhoneWidgetLayout.allCases, id: \.rawValue) { value in
+                    Button(value.rawValue) { layout = value; page = 0 }.accessibilityIdentifier("layout-\(value.rawValue)")
+                }
+            }
+            HStack {
+                Button("Today") { view = WidgetListSection.today; viewName = layout == .tasks ? "Tasks" : "Today"; page = 0 }
+                    .accessibilityIdentifier("view-today")
+                Button("Morning") { view = .morning; viewName = layout == .tasks ? "Morning tasks" : "Morning"; page = 0 }
+                    .accessibilityIdentifier("view-morning")
+                Button("Next page") { page += 1 }.accessibilityIdentifier("render-next-page")
+                Button("Hidden") { status = status == .hidden ? .ready : .hidden }.accessibilityIdentifier("render-hidden")
+            }
             Toggle("Dark preview", isOn: $dark).accessibilityIdentifier("widget-dark")
             if let frame {
-                ScrollView(.horizontal) { HStack { ForEach(Array(frame.items.filter { !$0.isTask }.prefix(5))) { item in
+                ScrollView(.horizontal) { HStack { ForEach(frame.items.filter { !$0.isTask }) { item in
                     Button(item.name) { selected = item.id }.accessibilityIdentifier("select-\(item.name)")
                 } } }
-                PhoneWidgetView(entry: .init(date: .now, frame: frame, plus: plus, selection: selected, month: month), layout: layout, familyOverride: family)
+                PhoneWidgetView(entry: entry(frame), layout: layout, familyOverride: family)
                     .frame(width: size.width, height: size.height)
+                    .background(Color(.systemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: [.accessoryInline, .accessoryCircular, .accessoryRectangular].contains(family) ? 8 : 22,
+                                                style: .continuous))
                     .background(Color(.secondarySystemBackground))
-                    .preferredColorScheme(dark ? .dark : .light)
+                    .environment(\.colorScheme, dark ? .dark : .light)
+                    .accessibilityElement(children: .contain)
                     .accessibilityIdentifier("widget-render")
             }
             Spacer()
         }.padding().task {
             await AppModel.shared.ensureLoaded()
             let snapshot = AppModel.shared.store.widgetSnapshot()
-            frame = snapshot.frames.first; selected = frame?.items.first?.id
+            frame = snapshot.frames.first; weekdays = snapshot.weekdays
+            selected = frame?.items.first { !$0.isTask }?.id
         }
+    }
+    private func entry(_ frame: WidgetFrame) -> PhoneWidgetEntry {
+        var entry = PhoneWidgetEntry(date: .now, frame: frame, status: status, selection: selected)
+        entry.view = view; entry.viewName = viewName; entry.page = page; entry.weekdays = weekdays
+        entry.pageKey = "render-check"
+        return entry
     }
     private var size: CGSize {
         switch family {
-        case .systemSmall: .init(width: 155, height: 155)
-        case .systemMedium: .init(width: 329, height: 155)
-        case .systemLarge: .init(width: 329, height: 345)
-        case .accessoryInline: .init(width: 230, height: 26)
-        case .accessoryCircular: .init(width: 62, height: 62)
-        default: .init(width: 160, height: 62)
+        case .systemSmall: .init(width: 158, height: 158)
+        case .systemMedium: .init(width: 338, height: 158)
+        case .systemLarge: .init(width: 338, height: 354)
+        case .accessoryInline: .init(width: 234, height: 26)
+        case .accessoryCircular: .init(width: 72, height: 72)
+        default: .init(width: 160, height: 72)
         }
     }
 }

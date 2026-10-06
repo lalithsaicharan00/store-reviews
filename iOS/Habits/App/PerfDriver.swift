@@ -217,6 +217,16 @@ enum PerfDriver {
                     await pause(0.35)
                 }
             }
+        case "widget-publish":
+            // Every habit's seven days worked out again, as after a new day or a setting every widget shows (week start,
+            // streaks), then published: the widgets' heaviest moment (Implementation Spec §11, S16).
+            await measure("Widget: full publication, every habit's week") {
+                await repeatFor(window) {
+                    store.widgetProjectionCache = [:]
+                    await AppModel.shared.widgets.publish(store)
+                    await pause(0.35)
+                }
+            }
         case "progress":
             await openTwice("Progress") { send(.openPlace(.progress)) }
             await measure("Progress: scrolling") { await scroll() }

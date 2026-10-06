@@ -7,11 +7,11 @@ import WidgetKit
 struct HabitsLiveActivityBundle: WidgetBundle {
     var body: some Widget {
         HabitTimerLiveActivity()
-        TodayPhoneWidget()
         ItemPhoneWidget()
+        TodayPhoneWidget()
+        WeekPhoneWidget()
+        TasksPhoneWidget()
         LockTodayPhoneWidget()
-        IconsPhoneWidget()
-        HistoryPhoneWidget()
     }
 }
 
