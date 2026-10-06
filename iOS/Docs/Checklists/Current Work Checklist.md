@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 53).
+  still resolve; give new items the next unused number (currently 54).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -223,6 +223,15 @@ Their placement records scope and priority; implementation has not started.
     Today/Tomorrow/Yesterday words come from the store's today (`trackingToday`, `NewHabitView`).
   - **Test, every run:** `OnboardingUITests.testFirstHabitAfterMidnightBeforeTheDayStartShowsOnToday` launches with
     `-clock-hour 1` (test launches only: the store's clock runs from 1:30 AM) and a 3 AM day start.
+
+- [ ] **53. `GroupsUITests.testGroupOrderIsThePersonsOwn` fails on `main` at night: the dragged group doesn't move.**
+  Added 6 October 2026 by Claude (Claude Code); found by the full test for items 50–52, not by the user. Not caused by
+  that branch: `main` itself (`f0e52f4`) fails it the same way (run `37400560919`).
+  - **Evidence:** the same test code (with 5 Oct's held drag, `6c749f8`) passed on `main` at 12:31 UTC (run
+    `37298794001`) and failed at 00:40, 01:24 and 02:03 UTC (runs `37390751325`, `37395447112`, `37400560919`); before
+    the held drag it also failed once at 05:07 UTC. The screenshot after the drag shows Groups still A to Z ("A to Z.
+    Drag a group…"), so the list never took the drop, or `moveGroups` didn't save it.
+  - **To do:** find whether it depends on the time of day (like item 52) or on the machine; don't loosen the test (T2).
 
 - [ ] **49. Speed: Today, the habit form and Progress got slower on `main`.** Found 5 October 2026 by the full test of
   `main` the user asked for (speed run `37310572002` on `d403844`), against the last full speed run before the day's
