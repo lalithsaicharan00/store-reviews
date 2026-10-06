@@ -279,15 +279,17 @@ struct HabitRow: View {
         } else {
             switch habit.kind {
             case .check where slot == nil && store.countsUp(habit, on: day):
-                // Ticked several times a day: + adds one each tap, like an amount, and never takes one back; the named
-                // Undo does that (the user, 3 Oct 2026: one mental model, "✓ toggles, + adds"; report "Today's Rows").
+                // Ticked several times a day, or N times a week, month or year: + adds one each tap, like an amount, and
+                // never takes one back; the named Undo does that (the user, 3 Oct 2026: one mental model, "✓ toggles,
+                // + adds"; report "Today's Rows"). It fills only once the goal is met: a week goal ticked today isn't
+                // finished (the user, 6 Oct 2026, Current Work 54).
                 RoundActionButton(symbol: "plus", done: done, color: habit.color,
                                   label: "Add 1 to \(habit.name)", keepSymbolWhenDone: true, text: "+1") {
                     offerNote()
                     log { store.addProgress(habit, value: 1, on: day) }
                 }
             case .check, .task:
-                // A once-a-day tick toggles that day's tick; a weekly count's day too, judged on this day only.
+                // A once-a-day tick toggles that day's tick ("N days a week" too: a day counts once).
                 let ticked = slot.map { store.isSlotDone(habit, slot: $0, on: day) }
                     ?? (habit.kind == .task ? done : store.isTicked(habit, on: day))
                 RoundActionButton(symbol: "checkmark", done: ticked, color: habit.color,
@@ -754,8 +756,9 @@ enum RowSpace {
     static let textToTrailing: CGFloat = 8
     /// From the 44-pt band to the after-log buttons.
     static let afterBand: CGFloat = 6
-    /// Between the after-log buttons.
-    static let betweenButtons: CGFloat = 8
+    /// Between the after-log buttons: wide enough that Undo and Add Note aren't tapped by mistake (the user, 6 Oct
+    /// 2026: "very close… there is a chance of misclick"; Current Work 55).
+    static let betweenButtons: CGFloat = 16
     /// Above and below each row, inside the list's own row spacing.
     static let rowPadding: CGFloat = 2
     /// Where text starts: the icon's width plus its gap, so the after-log buttons and step rows line up with names.

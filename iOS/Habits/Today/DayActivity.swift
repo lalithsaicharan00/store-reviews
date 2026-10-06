@@ -5,7 +5,7 @@ import SwiftUI
 /// redraws this group and never the identity, note or menu around it (S6).
 ///
 ///   once a day, task     Done / Not done             Mark done · Undo done
-///   week / month count   Checked today · 2 of 3      Mark done · Undo today's check
+///   week / month count   1 check today · 2 of 3      Add a check · each check with its own Undo (Current Work 54)
 ///   several a day        2 of 3 checks               Add a check · each check with its own Undo
 ///   checklist            2 of 3 steps done           the steps themselves
 ///   amount, time         2 of 8 glasses              Add 1 glass · Log amount manually · each log opens Edit Log
@@ -131,18 +131,19 @@ struct DayActivity: View {
     private func checkStatus(_ ruled: Habit, entries: [Entry]) -> Status {
         let unit = ruled.checkUnit ?? "checks"
         let progress = store.dayProgress(of: ruled, on: day)
+        if !ruled.frequency.isDayBased {
+            // The selected day's own checks, then the period as context: never the week's total called today's. Every
+            // check counts, even two on one day (Current Work 54).
+            let period = store.progress(of: habit, on: day), goal = store.goal(of: habit)
+            return Status(title: progress > 0 ? HabitCopy.amount(progress, unit) + " " + dayWord : "Not checked " + dayWord,
+                          detail: "\(HabitCopy.number(period)) of \(HabitCopy.amount(goal, unit))" + Self.periodWord(ruled.frequency))
+        }
         if store.countsUp(habit, on: day) {
             let goal = store.dayGoal(of: ruled), left = goal - progress
             let detail = left <= 0 ? "Goal reached"
                 : isToday ? (left == 1 ? "One more reaches today's goal" : "\(HabitCopy.number(left)) more reach today's goal")
                 : "For " + shortDay
             return Status(title: "\(HabitCopy.number(progress)) of \(HabitCopy.amount(goal, unit))", detail: detail)
-        }
-        if !ruled.frequency.isDayBased {
-            // The selected day's own check, then the period as context: never the week's total called today's.
-            let period = store.progress(of: habit, on: day), goal = store.goal(of: habit)
-            return Status(title: (progress > 0 ? "Checked " : "Not checked ") + dayWord,
-                          detail: "\(HabitCopy.number(period)) of \(HabitCopy.amount(goal, unit))" + Self.periodWord(ruled.frequency))
         }
         let done = store.isDayMet(ruled, on: day)
         if case .flexible(_, let needed) = ruled.frequency, let count = store.flexibleProgress(habit, on: day) {
@@ -242,17 +243,11 @@ struct DayActivity: View {
             }]
         case .check:
             if store.countsUp(habit, on: day) {
+                // Several a day, or N a week, month or year: each tap adds one; a log's own Undo takes one back. A limit
+                // stays plainly available, never a prominent invitation (U16).
                 let title = ruled.checkUnit.map { "Add " + HabitCopy.amount(1, $0) } ?? "Add a check"
-                return [Action(title: title, prominent: true, enabled: !skipped, id: "day-add-one") {
+                return [Action(title: title, prominent: !ruled.atMost, enabled: !skipped, id: "day-add-one") {
                     store.addProgress(habit, value: 1, on: day, source: source)
-                }]
-            }
-            if !ruled.frequency.isDayBased {
-                // This day's check only: a check on another day of the week is never this day's to take back.
-                let ticked = store.dayProgress(of: ruled, on: day) > 0
-                return [Action(title: ticked ? "Undo \(isToday ? "today's" : "this day's") check" : "Mark done",
-                               prominent: !ticked, enabled: !skipped, id: "day-done") {
-                    if ticked { store.setDayDone(false, of: habit, on: day) } else { store.addProgress(habit, value: 1, on: day, source: source) }
                 }]
             }
             let done = store.isDayMet(ruled, on: day)

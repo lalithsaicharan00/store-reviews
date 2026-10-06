@@ -176,8 +176,8 @@ struct HabitHistoryTab: View {
         }
         .pageAction()
         .pageItem()
-        // What the squares mean, open by itself only on the first visit to this habit's page (Current Work 25).
-        HeatKeySection(place: HeatKeyVisit.habit(habit.id))
+        // What the squares mean, open until the person folds it once anywhere in the app (Current Work 57).
+        HeatKeySection()
             .pageItem()
         if months.isEmpty {
             Text("Nothing recorded yet. Days appear here once they're planned or logged.")

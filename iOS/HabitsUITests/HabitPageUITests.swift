@@ -198,31 +198,37 @@ final class HabitPageUITests: XCTestCase {
         back()
     }
 
-    /// "What the squares mean" opens by itself only on the first visit to each habit's page; later visits start it
-    /// folded, a tap opens it, and another habit's first visit is its own (Current Work 25, 5 Oct 2026).
-    func testSquaresKeyOpensOnlyOnTheFirstVisitToEachHabit() {
+    /// "What the squares mean" is one key for the whole app (Current Work 57, 6 Oct 2026): open on every habit's page
+    /// until the person folds it once; then folded on every habit's page, and a tap opens it.
+    func testSquaresKeyFoldedOnceIsFoldedEverywhere() {
         launch()
         let key = app.descendants(matching: .any)["progress-key"]
         let toggle = app.buttons["heat-key-toggle"]
         open("Read")
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "First visit: open")
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Never folded: open")
         tab("Progress")
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "Same visit, the Progress tab: still open")
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "The Progress tab: still open")
         tab("History")
         back()
         open("Read")
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Seen but never folded: still open on the next visit")
+        toggle.tap()
+        XCTAssertTrue(key.waitForNonExistence(timeout: 3), "Folded")
+        tab("Progress")
         XCTAssertTrue(toggle.waitForExistence(timeout: 3))
-        XCTAssertFalse(key.exists, "Next visit: folded")
+        XCTAssertFalse(key.exists, "The Progress tab: folded too")
+        tab("History")
+        back()
+        open("Water")
+        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
+        XCTAssertFalse(key.exists, "Another habit: folded, the same key")
         shot("hp-key-2-folded")
         toggle.tap()
         XCTAssertTrue(key.waitForExistence(timeout: 3), "A tap opens it")
         back()
-        open("Water")
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "Another habit's first visit: open")
-        back()
         open("Read")
         XCTAssertTrue(toggle.waitForExistence(timeout: 3))
-        XCTAssertFalse(key.exists, "Opened by hand last time, folded again on the next visit")
+        XCTAssertFalse(key.exists, "Opened by hand once, folded again on the next visit")
     }
 
     /// Notes come in month cards that fold like History's, a row per day's note (Current Work 46, 5 Oct 2026).

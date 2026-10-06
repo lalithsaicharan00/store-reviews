@@ -231,7 +231,8 @@ enum PerfDriver {
             await measure("Progress: key fold and open") {
                 await repeatFor(window) { send(.toggleHeatKey); await pause(0.6) }
             }
-            UserDefaults.standard.set(true, forKey: "heatKey.open")
+            // Folding is remembered app-wide now (Current Work 57): the runs after start from a key never folded.
+            HeatKeyVisit.forgetAll()
         case "progress-year":
             // Year (2 Oct 2026): a heat map per habit, a year of squares each. Opened on Year (set before opening, so
             // the scenario never depends on the range a run before left), then its cards scrolled; Week afterwards.

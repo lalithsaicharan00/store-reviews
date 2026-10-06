@@ -146,17 +146,16 @@ final class ArrangeUITests: XCTestCase {
         app.navigationBars["Filter"].buttons["Done"].tap()
         XCTAssertTrue(app.buttons["hide-done-chip"].waitForExistence(timeout: 3), "Today says completed ones are hidden")
 
-        let call = app.buttons["Mark Call family done"]
+        // Three times a week: its + adds one; once something is logged today it's done for the day, so it hides.
+        let call = app.buttons["Add 1 to Call family"]
         XCTAssertTrue(call.waitForExistence(timeout: 3))
         call.tap()
         // Logging Water moves "Add note" off Call family, which would otherwise keep it in place.
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Add ' AND label ENDSWITH ' to Water'")).firstMatch.tap()
-        let done = app.buttons["Undo Call family"]
-        XCTAssertTrue(done.waitForNonExistence(timeout: 16), "Gone once Today settles")
+        XCTAssertTrue(call.waitForNonExistence(timeout: 16), "Gone once Today settles")
         shot("a10-hidden")
         app.buttons["hide-done-chip"].tap()
-        XCTAssertTrue(app.buttons["Undo Call family"].waitForExistence(timeout: 3), "Back with one tap")
-        app.buttons["Undo Call family"].tap()
+        XCTAssertTrue(call.waitForExistence(timeout: 3), "Back with one tap")
     }
 
     /// The habit form shows Group before any group exists, with New Group in it.

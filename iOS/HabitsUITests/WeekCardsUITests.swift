@@ -83,17 +83,25 @@ final class WeekCardsUITests: XCTestCase {
         walk("w-dark")
     }
 
-    /// Progress's key opens by itself only on each range's first visit: Week then Month open, Week folded on the next
-    /// visit to Progress, opened again with a tap (Current Work 25, 5 Oct 2026).
-    func testSquaresKeyOpensOnlyOnEachRangesFirstVisit() {
+    /// Progress's key is one key for the whole app (Current Work 57, 6 Oct 2026): open until the person folds it; folded in
+    /// Week, it's folded in Month and Year too and on the next visit, and a tap opens it again.
+    func testSquaresKeyFoldedOnceIsFoldedEverywhere() {
         openWeek(["-year-demo"])
         let key = app.descendants(matching: .any)["progress-key"]
         let toggle = app.buttons["heat-key-toggle"]
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "Week's first visit: open")
-        app.segmentedControls["progress-range"].buttons["Month"].tap()
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "Month's first visit: open")
-        app.segmentedControls["progress-range"].buttons["Week"].tap()
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "Back to Week in the same visit: as it was")
+        let ranges = app.segmentedControls["progress-range"]
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Never folded: open")
+        ranges.buttons["Month"].tap()
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Month: still open")
+        ranges.buttons["Week"].tap()
+        toggle.tap()
+        XCTAssertTrue(key.waitForNonExistence(timeout: 3), "Folded in Week")
+        ranges.buttons["Month"].tap()
+        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
+        XCTAssertFalse(key.exists, "Month: folded too, the same key")
+        ranges.buttons["Year"].tap()
+        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
+        XCTAssertFalse(key.exists, "Year: folded too")
         // Leave Progress and come back.
         let bar = app.navigationBars["Progress"]
         if bar.buttons["BackButton"].exists { bar.buttons["BackButton"].tap() } else { bar.buttons.element(boundBy: 0).tap() }
@@ -103,10 +111,12 @@ final class WeekCardsUITests: XCTestCase {
         XCTAssertTrue(menu.waitForExistence(timeout: 3))
         menu.tap()
         XCTAssertTrue(toggle.waitForExistence(timeout: 5))
-        XCTAssertFalse(key.exists, "Week's next visit: folded")
+        XCTAssertFalse(key.exists, "The next visit: folded")
         shot("w-key-next-visit")
         toggle.tap()
         XCTAssertTrue(key.waitForExistence(timeout: 3), "A tap opens it")
+        ranges.buttons["Month"].tap()
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Opened by hand: open on the other ranges in this visit")
     }
 
     /// Month (2 Oct 2026): the same cards with a month of marks, light and dark.

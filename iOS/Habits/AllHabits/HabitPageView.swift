@@ -13,7 +13,7 @@ struct HabitPageView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var tab: HabitTab
     @State private var model = HabitPageModel()
-    /// This visit's "What the squares mean" (`HeatKeyVisit`): History and Progress share the habit's place.
+    /// This visit's "What the squares mean" (`HeatKeyVisit`): History and Progress share it.
     @State private var heatVisit = HeatKeyVisit()
     /// False once the page is popped. All Habits pushes it from a link inside its list, and SwiftUI kept the page's
     /// state for the next push, so the next visit reused this one's key (HabitPageUITests, 5 Oct 2026).

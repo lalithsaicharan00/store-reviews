@@ -64,7 +64,7 @@ final class OnboardingUITests: XCTestCase {
         exercise.tap()
         XCTAssertTrue(app.descendants(matching: .any)["name-field"].waitForExistence(timeout: 5))
         app.buttons["add-habit"].tap()
-        XCTAssertTrue(app.buttons["Mark Exercise done"].waitForExistence(timeout: 5),
+        XCTAssertTrue(app.buttons["Add 1 to Exercise"].waitForExistence(timeout: 5),
                       "A habit added at 1:30 AM, before a 3 AM day start, shows on Today")
         shot("52-after-midnight")
     }
@@ -133,7 +133,7 @@ final class OnboardingUITests: XCTestCase {
         app.buttons["add-habit"].tap()
 
         // The welcome has gone and the habit is on Today.
-        XCTAssertTrue(app.buttons["Mark Exercise done"].waitForExistence(timeout: 5), "The new habit shows on Today")
+        XCTAssertTrue(app.buttons["Add 1 to Exercise"].waitForExistence(timeout: 5), "The new habit shows on Today")
         XCTAssertFalse(app.staticTexts["onboarding-page-name"].exists)
         shot("06-today")
 

@@ -388,57 +388,63 @@ struct HeatKey: View {
     static let stepCells: [HeatCell] = (1...5).map { .level($0) }
 }
 
-/// Which keys a visit shows open (Current Work 25, 5 Oct 2026): "What the squares mean" opens by itself only the first
-/// time a person reaches it in each place it explains (one habit's page; Progress's Week, Month or Year), and starts
-/// folded on every later visit; it opens again with a tap. One per page, held for as long as the page is open, so
-/// switching dates or scrolling the key away and back is the same visit and never folds it on its own. Seen places are
-/// kept on this phone (`heatKey.seen`), written once per new place; test launches start with none (T8).
-@Observable final class HeatKeyVisit {
-    private var shown: [String: Bool] = [:]
+/// Whether "What the squares mean" starts open: one answer for the whole app (the user, 6 Oct 2026, Current Work 57:
+/// "once they close it… it shouldn't be opened ever again by default unless they open it"; "it's the same content,
+/// why do I need to close it multiple times?"). Open everywhere until the person folds it once, anywhere (Progress's
+/// Week, Month or Year, any habit's page); from then on it starts folded everywhere, and a tap opens it. Replaces
+/// 5 Oct's first visit per place (Current Work 25), which made people fold the same key on every range and habit.
+@Observable final class HeatKeyMemory {
+    static let shared = HeatKeyMemory()
+    static let key = "heatKey.folded"
+    /// 5 Oct's places seen, no longer read.
+    private static let oldKey = "heatKey.seen"
 
-    /// The key's state in this visit. Before the visit has begun the place, what it will be: open if never seen.
-    func isOpen(_ place: String) -> Bool { shown[place] ?? !Self.seen.contains(place) }
+    /// The person has folded the key somewhere. Written once, the first time (S15).
+    private(set) var folded: Bool
 
-    /// The first time this visit shows a place: open if it was never seen, and it's seen from now on.
-    func begin(_ place: String) {
-        guard shown[place] == nil else { return }
-        shown[place] = !Self.seen.contains(place)
-        if !Self.seen.contains(place) {
-            Self.seen.insert(place)
-            UserDefaults.standard.set(Array(Self.seen), forKey: Self.key)
-        }
+    private init() {
+        let defaults = UserDefaults.standard
+        folded = defaults.bool(forKey: Self.key)
+        if defaults.object(forKey: Self.oldKey) != nil { defaults.removeObject(forKey: Self.oldKey) }
     }
 
-    func toggle(_ place: String) { shown[place] = !isOpen(place) }
-
-    static let key = "heatKey.seen"
-    private static var stored: Set<String>?
-    private static var seen: Set<String> {
-        get {
-            if let stored { return stored }
-            let loaded = Set(UserDefaults.standard.stringArray(forKey: key) ?? [])
-            stored = loaded
-            return loaded
-        }
-        set { stored = newValue }
+    func fold() {
+        guard !folded else { return }
+        folded = true
+        UserDefaults.standard.set(true, forKey: Self.key)
     }
 
-    /// Test launches forget every seen place (T8).
-    static func forgetAll() {
-        UserDefaults.standard.removeObject(forKey: key)
-        stored = nil
+    /// Test launches start with the key never folded (T8).
+    func forget() {
+        UserDefaults.standard.removeObject(forKey: Self.key)
+        UserDefaults.standard.removeObject(forKey: Self.oldKey)
+        folded = false
     }
-
-    static func habit(_ id: UUID) -> String { "habit." + id.uuidString }
-    static func progress(_ range: ProgressRange) -> String { "progress." + range.rawValue }
 }
 
-/// The key, folded or open (the user, 3 Oct 2026: a separate, collapsible section), open by itself only on the first
-/// visit to its place (`HeatKeyVisit`). `boxed` gives it its own card (Progress); inside a list section (the habit's
-/// page) it draws plainly.
+/// One page's key (Progress, or one habit's page): the app-wide default until the person taps it here, then what they
+/// chose, for as long as the page is open. Switching ranges, dates or tabs, or scrolling the key away and back, is the
+/// same visit and never changes it on its own; Week, Month and Year share it because the key is the same.
+@Observable final class HeatKeyVisit {
+    private var shown: Bool?
+
+    var isOpen: Bool { shown ?? !HeatKeyMemory.shared.folded }
+
+    /// A tap: folding it anywhere folds it everywhere from now on; opening it opens it here.
+    func toggle() {
+        let open = !isOpen
+        shown = open
+        if !open { HeatKeyMemory.shared.fold() }
+    }
+
+    /// Test launches forget a fold (T8).
+    static func forgetAll() { HeatKeyMemory.shared.forget() }
+}
+
+/// The key, folded or open (the user, 3 Oct 2026: a separate, collapsible section), open by itself until the person
+/// folds it once anywhere (`HeatKeyMemory`). `boxed` gives it its own card (Progress); inside a list section (the
+/// habit's page) it draws plainly.
 struct HeatKeySection: View {
-    /// Where it explains: `HeatKeyVisit.habit(_:)` or `.progress(_:)`.
-    let place: String
     var boxed = true
     /// The page's visit; a key shown outside one keeps its own.
     @Environment(HeatKeyVisit.self) private var pageVisit: HeatKeyVisit?
@@ -446,10 +452,10 @@ struct HeatKeySection: View {
 
     var body: some View {
         let visit = pageVisit ?? ownVisit
-        let open = visit.isOpen(place)
+        let open = visit.isOpen
         VStack(alignment: .leading, spacing: WeekSpacing.card) {
             Button {
-                withAnimation(.snappy(duration: 0.25)) { visit.toggle(place) }
+                withAnimation(.snappy(duration: 0.25)) { visit.toggle() }
             } label: {
                 HStack {
                     Text("What the squares mean").font(.subheadline.weight(.semibold)).foregroundStyle(.primary)
@@ -475,9 +481,8 @@ struct HeatKeySection: View {
         .padding(boxed ? WeekSpacing.card : 0)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(boxed ? Color.card : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .onAppear { visit.begin(place) }
         .onPerfCommand { action in
-            if action == .toggleHeatKey { withAnimation(.snappy(duration: 0.25)) { visit.toggle(place) } }
+            if action == .toggleHeatKey { withAnimation(.snappy(duration: 0.25)) { visit.toggle() } }
         }
     }
 }

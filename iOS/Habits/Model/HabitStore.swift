@@ -2115,26 +2115,28 @@ final class HabitStore {
         }
     }
 
-    /// Yes/no habits: log once, or undo the last log for this period.
+    /// Yes/no habits: log once, or undo the last log for this day. A week, month or year count only ever adds one:
+    /// every ✓ counts, even two on one day (Current Work 54).
     func toggleCheck(_ habit: Habit, on day: LocalDay, source: EntrySource = .today) {
         if habit.kind == .task { return toggleTask(habit, on: day, source: source) }
+        if !rule(habit, on: day).frequency.isDayBased { return addProgress(habit, value: 1, on: day, source: source) }
         if isTicked(habit, on: day) { undoLast(habit, on: day) } else { log(habit, value: 1, on: day, source: source) }
     }
 
-    /// A check habit's ✓ for one day (the user, 3 Oct 2026: one mental model on every row). A habit ticked once a day is
-    /// ticked when that day is done; one with a weekly or monthly count is ticked when that day has its tick, not
-    /// when the week is met (a week's tick on another day isn't this day's to take back). Report "Today's Rows".
+    /// A once-a-day check's ✓ for one day (the user, 3 Oct 2026: one mental model on every row): ticked when that day
+    /// is done. Report "Today's Rows".
     func isTicked(_ habit: Habit, on day: LocalDay) -> Bool {
-        let rule = rule(habit, on: day)
-        if rule.frequency.isDayBased || rule.frequency.isFlexible { return isDone(habit, on: day) }
-        return dayProgress(of: rule, on: day) > 0
+        isDone(habit, on: day)
     }
 
-    /// A check habit ticked several times a day counts up, like an amount: its button adds one each tap and never
-    /// takes one back (Undo, named, does that). Report "Today's Rows — Tap, Swipe, the Day Sheet and Delete".
+    /// A check habit that counts up, like an amount: its button adds one each tap and never takes one back (Undo,
+    /// named, does that). Report "Today's Rows — Tap, Swipe, the Day Sheet and Delete". Ticked several times a day, or
+    /// N times a week, month or year (the user, 6 Oct 2026: "they might call two times this day"; the form already
+    /// says every ✓ counts, even two on one day), so its button fills only when the goal is met (Current Work 54).
     func countsUp(_ habit: Habit, on day: LocalDay) -> Bool {
         let rule = rule(habit, on: day)
-        return rule.kind == .check && rule.frequency.isDayBased && dayGoal(of: rule) > 1
+        guard rule.kind == .check else { return false }
+        return !rule.frequency.isDayBased || dayGoal(of: rule) > 1
     }
 
     /// Tasks: done or not. A one-time task wherever it's shown; a repeating one on that day.

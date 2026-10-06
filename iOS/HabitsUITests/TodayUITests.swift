@@ -32,12 +32,12 @@ final class TodayUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Anytime"].exists)
         shot("01-today")
 
-        // Tick a yes/no habit, then undo it.
-        let call = app.buttons["Mark Call family done"]
+        // Add one to a week count (Current Work 54: + adds), then take it back with the row's Undo.
+        let call = app.buttons["Add 1 to Call family"]
         XCTAssertTrue(call.waitForExistence(timeout: 2))
         call.tap()
         shot("02-call-ticked")
-        let undo = app.buttons["Undo Call family"]
+        let undo = app.buttons["habit-inline-undo"]
         if undo.waitForExistence(timeout: 2) { undo.tap() }
 
         // Fold and open the Anytime part.
@@ -194,14 +194,15 @@ final class TodayUITests: XCTestCase {
         app.terminate()
         app.launchArguments = ["-uitest", "-today.settlePause", "8"]
         app.launch()
-        let call = app.buttons["Mark Call family done"]
+        // A week count is done for the day once logged that day (Build Plan #60a), so it sinks; its button stays +.
+        let call = app.buttons["Add 1 to Call family"]
         XCTAssertTrue(call.waitForExistence(timeout: 5))
         let water = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Add ' AND label ENDSWITH ' to Water'")).firstMatch
         XCTAssertTrue(water.exists)
         XCTAssertLessThan(call.frame.minY, water.frame.minY, "Call family starts above Water")
         call.tap()
         water.tap()
-        let done = app.buttons["Undo Call family"]
+        let done = call
         XCTAssertTrue(done.waitForExistence(timeout: 2))
         XCTAssertLessThan(done.frame.minY, water.frame.minY, "Still in place right after the taps")
         shot("t01-held")
@@ -210,7 +211,6 @@ final class TodayUITests: XCTestCase {
         expectation(for: sunk, evaluatedWith: nil)
         waitForExpectations(timeout: 15)
         shot("t02-settled")
-        done.tap()
     }
 
     /// ≡ → Appearance → Done Habits → Stay in Place: a done row keeps its place after the pause too.
@@ -218,12 +218,12 @@ final class TodayUITests: XCTestCase {
         app.terminate()
         app.launchArguments = ["-uitest", "-today.doneOrder", "inPlace"]
         app.launch()
-        let call = app.buttons["Mark Call family done"]
+        let call = app.buttons["Add 1 to Call family"]
         XCTAssertTrue(call.waitForExistence(timeout: 5))
         let water = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Add ' AND label ENDSWITH ' to Water'")).firstMatch
         call.tap()
         water.tap()
-        let done = app.buttons["Undo Call family"]
+        let done = call
         XCTAssertTrue(done.waitForExistence(timeout: 2))
         Thread.sleep(forTimeInterval: 3)
         XCTAssertLessThan(done.frame.minY, water.frame.minY, "Stays above Water")

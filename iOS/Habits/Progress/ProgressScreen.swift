@@ -189,9 +189,9 @@ struct ProgressScreen: View {
                         if !store.groups.isEmpty {
                             GroupChipRow(selection: snapshot.group) { groupRaw = $0?.uuidString ?? "" }
                         }
-                        // What the squares mean, at the top: open by itself only on the first visit to this range
-                        // (the user, 2–3 Oct 2026; Current Work 25).
-                        HeatKeySection(place: HeatKeyVisit.progress(snapshot.range))
+                        // What the squares mean, at the top (the user, 2–3 Oct 2026): open until the person folds it once
+                        // anywhere; Week, Month and Year share this visit's state (Current Work 57).
+                        HeatKeySection()
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, WeekSpacing.tight)

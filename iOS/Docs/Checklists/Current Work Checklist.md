@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 54).
+  still resolve; give new items the next unused number (currently 58).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -39,6 +39,38 @@ bugs. Item 16 combines reliability work with a product decision; item 18 is a co
 work. Preserve those distinctions when recording findings. New feedback items 23–32 (4 October) are recorded
 below as independent tasks: functional/readability issues here, layout and research work under Planned improvements.
 Their placement records scope and priority; implementation has not started.
+
+- [ ] **54. A week or month goal's round button fills after one tap, though the goal isn't met.** Added 6 October 2026,
+  from the user (Call family, 3 times a week: "the check mark should only fill when the habit is complete… they might
+  call two times this day"; check monthly and the rest too).
+  - **Cause:** a "N times a week/month/year" check's ✓ was that day's tick (`isTicked`), drawn filled once today had
+    one and toggled by a second tap, though the New Habit form says every ✓ counts, even two on one day.
+  - **Built, 6 Oct 2026** (branch `week-goal-button-squares-key`): a week, month or year count is now a +1 counter like a
+    habit ticked several times a day (`countsUp`): each tap adds one, never takes one back (its named Undo does), and
+    the button fills only when the period's goal is met. The Day sheet says "1 check today · 1 of 3 checks this week"
+    with Add a check and each check's own Undo; Shortcuts and the player add one too (a second Shortcut call took the
+    first back). Checked the rest: week/month/year amounts and times already filled only when the period was met; "N
+    days a week" stays a ✓ (a day counts once); widgets already added one per tap. Still done *for the day* once
+    logged (sinks, leaves "N left", stops reminders: #60a, the user's 30 Sep request). Rulebook U14 updated.
+  - Tests: pending (`ProgressCheck`/`ScheduleCheck` tap rules; `TodayRowSheetUITests.testTickTogglesAndPlusAdds`,
+    `DayDetailsUITests.testEveryKindShowsItsOwnDay`, `TodayUITests`, `ArrangeUITests`, `RoutineCalendarUITests`,
+    `OnboardingUITests`). iPhone check (U9): open.
+
+- [ ] **55. Today: Undo and Add Note under a logged row are too close; easy to tap the wrong one.** Added 6 October
+  2026, from the user ("increase the gap").
+  - **Built, 6 Oct 2026** (branch `week-goal-button-squares-key`): the after-log buttons (`RowAfterLog`, `QuitAfterSlip`)
+    are 16 pt apart instead of 8. Tests: pending (`TodayRowLayoutUITests`). iPhone check (U9): open.
+
+- [ ] **57. "What the squares mean": once folded anywhere, folded everywhere.** Added 6 October 2026, from the user;
+  supersedes item 25's per-place rule ("once they close it… it shouldn't be opened ever again by default unless they
+  open it"; "it's the same content, why do I need to close it multiple times?" — Week, Month, Year and every habit's
+  page each asked to be folded again).
+  - **Built, 6 Oct 2026** (branch `week-goal-button-squares-key`): one app-wide state (`HeatKeyMemory`,
+    `heatKey.folded`): open everywhere until the person folds it once, anywhere; then folded on every range, habit
+    page and later visit; a tap opens it for that page's visit. Never folds on its own within a visit; Week, Month and
+    Year share the visit. Kept across launches; test launches start never folded (T8). 5 Oct's `heatKey.seen` is
+    removed. Tests: pending (`WeekCardsUITests.testSquaresKeyFoldedOnceIsFoldedEverywhere`,
+    `HabitPageUITests.testSquaresKeyFoldedOnceIsFoldedEverywhere`). iPhone check (U9): open.
 
 - [ ] **22. Today row sheet: make logging and wording natural for each habit type, especially check-based habits
   and tasks.** Added 4 October 2026; **issue 1 of the user's current feedback round**. Status: documented from the
@@ -122,6 +154,7 @@ Their placement records scope and priority; implementation has not started.
   - **5 Oct placement research (item 48):** Current/Best belong visibly in the early individual habit Progress summary, not the common header above History/Notes; retain Today's quick streak access, correct units and Show Streaks. The six existing design studies now reflect that recommendation. This does not close the native implementation/correctness check in item 23.
 
 - [ ] **25. “What the squares mean”: expand automatically only on the first visit to each explanation context.**
+  **Superseded by item 57 (the user, 6 Oct 2026): one app-wide state, folded everywhere once folded anywhere.**
   Added 4 October 2026; a standalone behavior task covering both the habit details page and the main Progress page.
   - **First visit:** the accordion must already be open when the person first opens the particular habit's details
     page and reaches its explanation, so the meaning of the squares is visible without discovering an extra tap.
@@ -392,6 +425,12 @@ Their placement records scope and priority; implementation has not started.
   after release.
 
 ## Completed
+
+- [x] **56. Research: should a week goal be hideable from one day ("not today", not a skip)?** Added 6 October 2026, from
+  the user ("only if it's a medium or strong signal; one to ten reviews is weak"). **Done, 6 Oct 2026: weak signal,
+  not built.** Whole corpus screened (1,487,223), 545 read, 132 on topic: 2 reviews ask for exactly this, 16 for the
+  opposite (show it every day until met). Putting a habit off to another day is a separate, medium signal (81), left
+  for its own item if wanted. [Report](<../../../Research/Research Reports/Day Structure and Organization/Hiding a Weekly Goal From Today — Is It Needed.md>).
 
 - [x] **50. Routine player: tapping › or ‹ fast makes the habits slide back and forth.** Added 5 October 2026 by
   Claude (Claude Code), from the user's iPhone. Branch `claude/dreamy-pasteur-3kgdxu`.

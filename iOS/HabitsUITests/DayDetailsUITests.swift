@@ -148,16 +148,20 @@ final class DayDetailsUITests: XCTestCase {
         close()
 
         open("Call family")
-        XCTAssertTrue(status("Not checked today"), "A weekly goal: this day's check first")
+        XCTAssertTrue(status("Not checked today"), "A weekly goal: this day's checks first")
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label ENDSWITH ' this week'")).firstMatch.exists,
                       "The week as context")
-        button("day-done", "Mark done")
-        app.buttons["day-done"].tap()
-        XCTAssertTrue(status("Checked today"))
-        button("day-done", "Undo today's check")
+        // Every check counts, even two on one day (Current Work 54): Add a check, never a day's done toggle.
+        button("day-add-one", "Add a check")
+        XCTAssertFalse(app.buttons["day-done"].exists, "No Mark done for a week count")
+        app.buttons["day-add-one"].tap()
+        XCTAssertTrue(status("1 check today"))
+        app.buttons["day-add-one"].tap()
+        XCTAssertTrue(status("2 checks today"), "A second check the same day counts too")
+        XCTAssertTrue(app.staticTexts["Checks today"].waitForExistence(timeout: 3), "Each check in its own row")
         shot("dd-07-weekly")
-        app.buttons["day-done"].tap()
-        XCTAssertTrue(status("Not checked today"), "Undo takes back only today's check")
+        app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'undo-entry-'")).firstMatch.tap()
+        XCTAssertTrue(status("1 check today"), "A check's Undo takes back that one only")
         close()
 
         open("Yearly distance")

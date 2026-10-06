@@ -177,17 +177,22 @@ final class TodayRowSheetUITests: XCTestCase {
         undoSkip.tap()
     }
 
-    /// ✓ toggles that day's tick (a weekly count too); + always adds, past the goal, and never takes one back.
+    /// + always adds, past the goal, and never takes one back; a week count is a + too (Current Work 54: every tap counts,
+    /// even two on one day, and its button fills only once the week is met). ✓ toggles a once-a-day tick.
     func testTickTogglesAndPlusAdds() {
         launch()
-        let mark = app.buttons["Mark Call family done"]
-        app.reveal(mark, clear: true)
-        XCTAssertTrue(mark.exists)
-        mark.tap()
-        let undo = app.buttons["Undo Call family"]
-        XCTAssertTrue(undo.waitForExistence(timeout: 3), "✓ ticks today")
-        undo.tap()
-        XCTAssertTrue(app.buttons["Mark Call family done"].waitForExistence(timeout: 3), "The same ✓ takes today's tick back")
+        let call = app.buttons["Add 1 to Call family"]
+        app.reveal(call, clear: true)
+        XCTAssertTrue(call.exists, "A week count's button adds one")
+        let week = app.staticTexts.matching(NSPredicate(format: "label ENDSWITH '/3 this week'")).firstMatch
+        XCTAssertTrue(week.exists)
+        let before = Int(week.label.prefix { $0.isNumber }) ?? -1
+        call.tap(); sleep(1)
+        call.tap(); sleep(1)
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "\(before + 2)/3 this week")).firstMatch
+            .waitForExistence(timeout: 3), "Two taps on one day add two calls")
+        XCTAssertFalse(app.buttons["Undo Call family"].exists, "Its button never takes one back")
+        shot("r09-week-count-adds")
         let plus = app.buttons["Add 1 glass to Water"]
         app.reveal(plus, clear: true)
         plus.tap(); sleep(1)
@@ -197,6 +202,18 @@ final class TodayRowSheetUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '10/8 glasses'")).firstMatch.waitForExistence(timeout: 3),
                       "+ adds again, never takes one back")
         shot("r09-plus-adds")
+
+        // A once-a-day ✓ toggles its tick.
+        app.terminate()
+        launch(["-day-details-fixture"])
+        let mark = app.buttons["Mark Take vitamins done"]
+        app.reveal(mark, clear: true)
+        XCTAssertTrue(mark.exists)
+        mark.tap()
+        let undo = app.buttons["Undo Take vitamins"]
+        XCTAssertTrue(undo.waitForExistence(timeout: 3), "✓ ticks today")
+        undo.tap()
+        XCTAssertTrue(app.buttons["Mark Take vitamins done"].waitForExistence(timeout: 3), "The same ✓ takes today's tick back")
     }
 
     /// Touch and hold: the sheet's actions (Open Habit Page, Add Entry, Skip, Pause, a named Undo), no Delete, and no

@@ -15,7 +15,7 @@ struct HabitProgressTab: View {
     @AppStorage(ProgressOptions.showPercentages) private var showPercentages = true
 
     var body: some View {
-        HeatKeySection(place: HeatKeyVisit.habit(habit.id))
+        HeatKeySection()
             .pageItem()
         if habit.kind == .quit {
             VStack(alignment: .leading, spacing: WeekSpacing.card) {

@@ -177,7 +177,7 @@ final class RoutineCalendarUITests: XCTestCase {
         XCTAssertTrue((future.value as? String ?? "").contains("Preview"))
         future.tap()
         XCTAssertFalse(app.buttons.matching(NSPredicate(format: "label ENDSWITH ' routine'")).firstMatch.exists)
-        let check = app.buttons["Mark Call family done"]
+        let check = app.buttons["Add 1 to Call family"]
         XCTAssertTrue(check.exists)
         XCTAssertFalse(check.isEnabled, "Future days are previews")
         openCalendar()
@@ -201,9 +201,10 @@ final class RoutineCalendarUITests: XCTestCase {
         let today = app.buttons[dayID(Date())]
         XCTAssertEqual(today.value as? String, "Today")
         today.tap()
-        app.buttons["Mark Call family done"].tap()
-        XCTAssertTrue(app.buttons["Undo Call family"].waitForExistence(timeout: 3))
+        app.buttons["Add 1 to Call family"].tap()
+        XCTAssertTrue(app.buttons["habit-inline-undo"].waitForExistence(timeout: 3))
         XCTAssertNotEqual(bar.label, before, "The day bar counts the new tick")
+        let after = bar.label
         openCalendar()
         let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
         if Calendar.current.component(.month, from: yesterday) != Calendar.current.component(.month, from: Date()) { app.buttons["Previous month"].tap() }
@@ -215,7 +216,8 @@ final class RoutineCalendarUITests: XCTestCase {
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Yesterday,'")).firstMatch.waitForExistence(timeout: 3))
         XCTAssertFalse(app.buttons["Start Anytime routine"].exists)
         app.buttons["Next day"].tap()
-        XCTAssertTrue(app.buttons["Undo Call family"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label == %@", after)).firstMatch.waitForExistence(timeout: 3),
+                      "Back on today, the tick is still counted")
     }
     func testSingleHabitFullCompletionAndUndo() {
         app.terminate()
