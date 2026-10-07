@@ -71,7 +71,8 @@ struct DayActivity: View {
             if !steps.isEmpty { stepRows(ruled, steps: steps) }
             noteRow
         }
-        .listSectionSpacing(logs.isEmpty ? spacing.gap(28, 36) : spacing.gap(20, 28))
+        // Before the logs, the gap less the ~12 pt the logs' heading adds above itself, so the heading sits 20–28 below.
+        .listSectionSpacing(logs.isEmpty ? spacing.gap(28, 36) : spacing.gap(8, 16))
 
         if !logs.isEmpty {
             logsSection(ruled, logs: logs)
@@ -253,6 +254,7 @@ struct DayActivity: View {
                         Spacer(minLength: 8)
                         Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
                     }
+                    .padding(.vertical, -4) // 44 pt, as the log rows (DayLogRow)
                     .contentShape(Rectangle())
                 }
                 .accessibilityIdentifier("day-all-logs")

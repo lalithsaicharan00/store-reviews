@@ -60,7 +60,8 @@ struct DaySheet: View {
                     skipSection
                 }
             }
-            .contentMargins(.top, spacing.gap(14, 18), for: .scrollContent)
+            // The Form adds its own ~17 pt above the first card; this brings the gap to the design's 14–18.
+            .contentMargins(.top, spacing.gap(0, 4), for: .scrollContent)
             // Rows and the gap above the first card as designed (44 pt rows; 14–18 above the habit): the Form's own
             // defaults (52-pt rows, a 35-pt first gap) pushed Skip today off the iPhone SE (7 Oct 2026).
             .environment(\.defaultMinListRowHeight, 44)
@@ -323,6 +324,11 @@ struct DayButton: View {
     var id: String? = nil
     let action: () -> Void
 
+    /// The label's height inside the regular button: the button is 44 pt as designed (design decisions §3: "rows and
+    /// buttons 44 pt"); the large size was 50 on iOS 26 and pushed Skip today off the iPhone SE (7 Oct 2026). It grows
+    /// with larger text.
+    static let labelHeight: CGFloat = 30
+
     init(_ title: String, prominent: Bool = false, id: String? = nil, action: @escaping () -> Void) {
         self.title = title
         self.prominent = prominent
@@ -333,19 +339,19 @@ struct DayButton: View {
     var body: some View {
         if prominent {
             Button(action: action) {
-                Text(title).fontWeight(.semibold).foregroundStyle(Color.onInk).frame(maxWidth: .infinity)
+                Text(title).fontWeight(.semibold).foregroundStyle(Color.onInk).frame(maxWidth: .infinity, minHeight: Self.labelHeight)
             }
             .buttonStyle(.borderedProminent)
             .tint(.ink)
-            .controlSize(.large)
+            .controlSize(.regular)
             .accessibilityIdentifier(id ?? title)
         } else {
             Button(action: action) {
-                Text(title).fontWeight(.semibold).frame(maxWidth: .infinity)
+                Text(title).fontWeight(.semibold).frame(maxWidth: .infinity, minHeight: Self.labelHeight)
             }
             .buttonStyle(.bordered)
             .tint(.ink)
-            .controlSize(.large)
+            .controlSize(.regular)
             .accessibilityIdentifier(id ?? title)
         }
     }

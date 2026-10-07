@@ -321,11 +321,11 @@ struct RecordDeleteButton: View {
 
     var body: some View {
         Button(role: .destructive, action: action) {
-            Text(title).fontWeight(.semibold).foregroundStyle(.red).frame(maxWidth: .infinity)
+            Text(title).fontWeight(.semibold).foregroundStyle(.red).frame(maxWidth: .infinity, minHeight: DayButton.labelHeight)
         }
         .buttonStyle(.bordered)
         .tint(.ink)
-        .controlSize(.large)
+        .controlSize(.regular)
         .accessibilityIdentifier(id)
     }
 }
