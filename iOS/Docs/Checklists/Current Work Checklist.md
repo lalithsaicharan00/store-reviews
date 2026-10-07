@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 63).
+  still resolve; give new items the next unused number (currently 64).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -200,6 +200,10 @@ Their placement records scope and priority; implementation has not started.
     to change), says to build with native components (the designs show layout, not pixels), and embeds the key images.
     74 PNGs (58 every-kind screens at 6.1-inch, 16 Water screens at SE and mini) and the design decisions document
     live beside it. Build, tests and the iPhone check are still to do.
+  - [x] **Rulebook updated (the user, 7 Oct: "yes, update the rulebook and push it"):** U16 (+N quick buttons), U17
+    (Day details on the SE, at most three log rows), U18 (✕, the bottom button, one-line titles), U19 (view first,
+    then edit; times within the day; one check per add), U21 (per-kind add labels; History's day titled by its date),
+    U22 (one Add / view / Edit shape everywhere), U23 (the player's Day details; Show clock removed).
   - [ ] The user's decision
   - [ ] Build, tests on GitHub (T7), speed run (S2); the iPhone check (U9) noted separately
 
@@ -268,6 +272,14 @@ Their placement records scope and priority; implementation has not started.
       document's new section 0 lists all 35 points in order with reasons and pointers; section 10 spells out each
       Rulebook change (U17, U18, U19, U22). Design Rules' pointer updated.
   - [ ] The user's decision
+  - [ ] Build, tests on GitHub (T7), speed run (S2); the iPhone check (U9) noted separately
+
+- [ ] **63. Routine player: "Habit options" opens Day details.** Added 7 October 2026, from the user.
+  - **Asked for:** the player's "Habit options" opens a separate pop-up; rewire it to the same Day details sheet a
+    habit row opens on Today, full height, for today; rename the button to something fitting; remove "Show clock"
+    ("a meaningless option: if you are tracking time you should see the clock").
+  - Decided: the button is **Day details** (habits and tasks); the options sheet goes; everything it held is in Day
+    details except Show clock, which is removed. Rulebook U23; redesign README page 8.
   - [ ] Build, tests on GitHub (T7), speed run (S2); the iPhone check (U9) noted separately
 
 - [ ] **22. Today row sheet: make logging and wording natural for each habit type, especially check-based habits

@@ -4,10 +4,10 @@ Written by Claude (Claude Code), 7 October 2026, from a full-day design session 
 folder holds everything for the redesign of Day details, the log screens (add, view, edit, delete), the note screens,
 and every kind of habit and task: this page (what to change in the app, and how), the
 [design decisions](<Design Decisions — Day Details, Logs and Notes (7 October).md>) (every decision, its reasons and
-numbers, the user's 43 points in order) and [Images](Images/) of every screen.
+numbers, the user's 44 points in order) and [Images](Images/) of every screen.
 
-Status: **designed and accepted for building by the user; not yet built.** The Rulebook changes it needs (U17, U18,
-U19, U22; design decisions section 10) still need the user's explicit OK before the Rulebook itself is edited.
+Status: **designed and accepted for building by the user; not yet built.** The Rulebook already carries it (U16–U19,
+U21–U23 rewritten on 7 Oct 2026 with the user's go-ahead).
 Checklist: [Current Work items 59–62](<../../../../iOS/Docs/Checklists/Current Work Checklist.md>).
 
 Figma (editable; the images below are exports of these):
@@ -132,7 +132,18 @@ Each item: where the person is, the code that draws it today, what changes, and 
 
 ![Note, view](<Images/Every kind/17 Notes — 2 Note (view).png>)
 
-### 8. Words to change everywhere
+### 8. Routine player → "Habit options" becomes "Day details"
+
+- **Code today:** `Today/RoutinePlayer.swift`: the bottom bar's middle item "Habit options" / "Task options"
+  (around line 577) opens `habitOptions(_:)` (line 421), a separate sheet with the goal, Log manually, Skip / Undo
+  skip, Undo of the latest log, Pause / Resume timer, a "Show clock" switch, Add / Edit note and Edit habit.
+- **Changes:** the middle item is named **Day details** (for habits and tasks) and opens **the same Day details sheet a
+  Today row opens**, full height, for the routine's day (`session.day`). The separate options sheet goes. Everything it
+  held is already in Day details (status and goal, the logging buttons, Skip / Undo skip, each log's Undo, the note,
+  Edit in the ⋯ menu), except **"Show clock", which is removed** (the user: a time habit always shows its clock). The
+  player's "Log time manually" / "Log amount manually" buttons (lines 432, 601) open the new Add log (page 5).
+
+### 9. Words to change everywhere
 
 | Today | Becomes |
 |---|---|
@@ -144,6 +155,7 @@ Each item: where the person is, the code that draws it today, what changes, and 
 | Pause timer and save time | **Stop and save** |
 | Edit Log (the screen a log row opens) | **Log**, then **Edit log** after Edit |
 | Cancel (text) on an Add screen | ✕ (accessible name Cancel) |
+| Habit options / Task options (routine player) | **Day details** |
 
 Update every UI test that taps a renamed label in the same change (T3).
 

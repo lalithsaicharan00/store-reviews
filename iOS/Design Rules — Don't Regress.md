@@ -339,7 +339,8 @@ top, for one); build native and **adapt to the screen's height**, designed for t
 there; with three logs or fewer show them all and no "All logs" row; gaps between a minimum and a maximum). A record
 opens as a **view** (Log, Slip, Note) with **Delete | Edit** at the bottom; **Edit** opens edit mode with **Save**;
 Add screens have ✕, a Time row and one filled button at the bottom above the keyboard. Its section 0 lists every point
-the user made. It changes U17, U18, U19 and U22 (its section 10), only once the user approves. Checklist: Current
+the user made. The Rulebook carries it (U16–U19, U21–U23, rewritten 7 Oct 2026); the routine player's Habit options becomes Day
+details (U23). Checklist: Current
 Work 59, 60, 61, 62.
 
 ## Ticking off, folding and settings (1 Oct 2026)

@@ -4,7 +4,7 @@ Written by Claude (Claude Code), 7 October 2026, from a design session with the 
 Logs, Add and Edit — Small Screens First"). **Start with this folder's [README](<README.md>)**: the pages to update,
 the images, and how to build them. It records what was decided
 and why, and the intended spacing, so the Figma file can hold designs only. Status: **accepted for building by the user
-(7 Oct), not yet built**; the Rulebook changes in section 10 still need the user's explicit OK. Checklist: [Current Work items 59, 60, 61 and 62](<../../../../iOS/Docs/Checklists/Current Work Checklist.md>).
+(7 Oct), not yet built**; the Rulebook carries it (U16–U19, U21–U23, rewritten 7 Oct with the user's go-ahead). Checklist: [Current Work items 59, 60, 61 and 62](<../../../../iOS/Docs/Checklists/Current Work Checklist.md>).
 
 Figma:
 
@@ -124,6 +124,13 @@ and where the design or rule lives. "Superseded" marks a point a later one repla
     multi-check editor (section 8, "Checks are recorded one at a time").
 32. No Discard changes pop-up in the design: the app already asks when leaving with changes. → removed; confirmations
     are for deleting only.
+
+**The routine player** (end of the day)
+
+44. In the routine player, "Habit options" opens a separate pop-up: rewire it to the same Day details sheet a habit
+    row opens, full height, for today; rename the button to something fitting. → **"Day details"**, the same sheet;
+    the options sheet goes. **"Show clock" is removed** (the user: "a meaningless option; if you are tracking time
+    you should see the clock"). Rulebook U23; README page 8.
 
 **How to work and document**
 
@@ -654,8 +661,7 @@ pickers side by side ("7 Oct 2026" "2:15 PM"), and the footer hides while typing
 
 ## 10. Still open
 
-**Rulebook changes, each needing the user's OK before anything is built** (a product rule changes only with the
-user's say-so):
+**Rulebook changes: applied 7 Oct 2026 with the user's go-ahead** (U16–U19, U21–U23 rewritten in `RULEBOOK.md`):
 
 - **U17** (Day-sheet spacing): the note moves into the This day card, above the logs.
 - **U18** (Close icon; text Cancel / Save in editors with a draft): Add screens get ✕ instead of Cancel; Add / Save /
