@@ -274,6 +274,23 @@ Their placement records scope and priority; implementation has not started.
   - [ ] The user's decision
   - [ ] Build, tests on GitHub (T7), speed run (S2); the iPhone check (U9) noted separately
 
+- **Build progress for 59–63 (7 Oct 2026, branch `day-details-logs-notes-redesign`, not on `main`).** Built natively:
+  the store stamps a log with its chosen time inside its own day, never later than now, and a past day's quick log at
+  the same clock time on that day; every log's time can change within its day (`editEntry`); one check per add. One
+  Add screen for every kind (`AddLogView`: Add log, Add a check, Mark a day done, Tick steps, Add slip) replaces Add
+  Entry, Log Amount / Log Time and Log a Slip everywhere they opened. A log row opens Log / Slip (view) with
+  Delete | Edit, then Edit log / Edit slip (`LogRecordView`); All logs (`AllLogsView`); Day details' This day card
+  with the note inside, at most three log rows, spacing between the SE minimum and the maximum (`DaySpacing`); Add
+  note / Note / Edit note (`NoteSheet.swift`); the routine player's Day details. First GitHub build passed (run
+  37607280545, Debug and Release). Tests and the speed run: below, item by item, when they pass.
+  - **U5, what the retired screens showed (the user's decisions, 7 Oct):** dropped, with the user's OK: Log Amount /
+    Log Time's "Log 1 glass again" (Day details' quick button covers it); Log a Slip's optional "What happened" note
+    (notes are written from Day details); the timer screen's "Edit This Day's Progress…" link (Day details is one tap
+    from the row, and in the player's bar); Add Entry's list of the day's entries under the form, and the Next / Done
+    bar above the number pad. Kept: Add Entry's paused / skipped day explanations (now in the Add footer); the note
+    reader's View Day (the Note view's date line); the routine player's options (all in Day details; the flexible goal's
+    "0 of 3 days this week" now in Day details' status line); Show clock removed by the user's decision.
+
 - [ ] **63. Routine player: "Habit options" opens Day details.** Added 7 October 2026, from the user.
   - **Asked for:** the player's "Habit options" opens a separate pop-up; rewire it to the same Day details sheet a
     habit row opens on Today, full height, for today; rename the button to something fitting; remove "Show clock"

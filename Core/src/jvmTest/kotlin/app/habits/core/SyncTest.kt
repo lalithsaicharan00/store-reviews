@@ -110,6 +110,22 @@ class SyncTest {
         listOf(phone, ipad).forEach { it.close() }
     }
 
+    /** A log's time corrected within its day (7 Oct 2026, Rulebook U19) reaches the other device: the same record, its
+     *  day, value, zone and source kept, only the time changed. */
+    @Test fun anEditedLogTimeSyncsAndKeepsItsRecord() = runBlocking {
+        val (phone, ipad) = devices("phone", "ipad")
+        phone.repo.saveHabit(habit("h1"), emptyList(), emptyList(), 1)
+        phone.repo.addEntry(entry("e1", "h1").copy(source = "manual"))
+        phone.sync(); ipad.sync()
+        phone.wall += 1_000
+        phone.repo.editEntry("e1", 2.0, 1_500)
+        phone.sync(); ipad.sync()
+        val synced = ipad.state().entries.single { it.id == "e1" }
+        assertEquals(entry("e1", "h1").copy(source = "manual", value = 2.0, createdAt = 1_500), synced)
+        assertEquals(phone.state(), ipad.state())
+        listOf(phone, ipad).forEach { it.close() }
+    }
+
     @Test fun ticksFromTwoDevicesBothCount() = runBlocking {
         val (phone, watch) = devices("phone", "watch")
         phone.repo.saveHabit(habit("h1"), emptyList(), emptyList(), 1)

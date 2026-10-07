@@ -480,7 +480,7 @@ final class DayDetailsUITests: XCTestCase {
             if app.keyboards.firstMatch.waitForExistence(timeout: 2) {
                 XCTAssertLessThan(app.buttons["record-add"].frame.maxY, app.keyboards.firstMatch.frame.minY + 1,
                                   "\(kind.name): the button rides above the keyboard")
-                app.keyboards.firstMatch.typeText("2")
+                app.typeText("2")
             }
             footer(contains: kind.footer)
             shot("add-\(kind.name)")
