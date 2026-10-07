@@ -11,6 +11,8 @@
 #     older XCTest speed tests (measure_perf.sh), kept only for screens with no PerfDriver scenario yet (Progress,
 #     Groups, Backup, Tasks, Reminders); XCTest's own screen reading inflates those numbers.
 #     Other pushes skip the job and use no minutes.
+#   Run workflow's "device" picks the simulator by device type ("iPhone SE (3rd generation)" for the small-screen checks,
+#   SmallScreenUITests, Rulebook T15); empty uses the newest iPhone.
 #
 # Results for Claude (and anyone): a short summary is pushed to the `ci-results` branch after every run —
 #   git fetch origin ci-results && git show origin/ci-results:latest.md
