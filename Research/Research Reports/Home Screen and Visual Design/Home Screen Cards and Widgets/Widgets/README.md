@@ -1,5 +1,8 @@
 # Widgets — start here
 
+> **Locked, 8 Oct 2026 (Rulebook U28):** how the built widgets respond to taps, save and update is fixed in [Widgets — Taps and Updates (Locked)](<../../../../../iOS/Docs/Widgets — Taps and Updates (Locked).md>). It takes precedence over older handoffs here on those points.
+
+
 Written by Codex, 6 October 2026. Consolidated research, design and implementation handoff for **Current Work item 9**.
 
 **Build from [Implementation Spec — Every Widget](<Implementation Spec — Every Widget.md>)** (Claude, 6 October 2026): every family to build now, with shared sizes, type, icons, buttons, bars, paging, per-type actions, privacy, the user's decisions, code gaps and the test plan. Families: Small (one habit, today), Large and Medium Today lists (Today or any home section; 5 and 2 a page), Medium one habit this week, Tasks Large and Medium (5 and 2 a page), Lock Screen (one-habit circle, today rectangle, inline). No Plus restrictions for now. Parked: monthly and icon-only widgets. Next after the widgets: App Lock and widget privacy (Current Work item 58).

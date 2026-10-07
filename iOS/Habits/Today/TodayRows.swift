@@ -281,12 +281,13 @@ struct HabitRow: View {
         } else {
             switch habit.kind {
             case .check where slot == nil && store.countsUp(habit, on: day):
-                // Ticked several times a day, or N times a week, month or year: + adds one each tap, like an amount, and
-                // never takes one back; the named Undo does that (the user, 3 Oct 2026: one mental model, "✓ toggles,
-                // + adds"; report "Today's Rows"). It fills only once the goal is met: a week goal ticked today isn't
-                // finished (the user, 6 Oct 2026, Current Work 54).
-                RoundActionButton(symbol: "plus", done: done, color: habit.color,
-                                  label: "Add 1 to \(habit.name)", keepSymbolWhenDone: true, text: "+1") {
+                // Ticked several times a day, or N times a week, month or year: still a ✓, because the person chose a
+                // habit they check off, never a +1 counter like an amount (the user, 7 Oct 2026, Current Work 64). Each
+                // tap adds one check and never takes one back; the named Undo and History do that. It fills, and the
+                // completion sound plays, only when the goal is met: today's for several a day, the period's for a week
+                // or month goal, which has no daily goal (Current Work 54).
+                RoundActionButton(symbol: "checkmark", done: done, color: habit.color,
+                                  label: "Add 1 to \(habit.name)", keepSymbolWhenDone: true) {
                     offerNote()
                     log { store.addProgress(habit, value: 1, on: day) }
                 }

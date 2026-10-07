@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 64).
+  still resolve; give new items the next unused number (currently 67).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -256,6 +256,96 @@ Their placement records scope and priority; implementation has not started.
     to another day atomically (D7; handoff). The bottom ‹ day › pager is gone (handoff; past days open from Today or
     History). A multi-check habit lost its whole-day Done switch (research matrix "Avoid"); History's Add Entry
     still adds several checks at once (U5).
+
+- [ ] **64. Check habits with a week or month goal (and several a day) show +1 instead of ✓.** Added 7 October 2026, from
+  the user: "the user has chosen a check-based habit specifically… you are turning it into an amount or quantity-based
+  habit." Item 54 (6 Oct) had turned them into +1 counters to stop the sound and the fill after one tap.
+  - **The user's rule:** a check habit's button is ✓ wherever it shows. Each tap adds one check and never takes one back;
+    the Undo under the row and History take one back. A week or month goal has no daily goal: the button fills and the
+    completion sound plays only when the period's goal is met; several a day, when today's goal is met.
+  - [x] Built 7 Oct 2026 (Claude, `main` working tree, not yet committed): Today's round button draws ✓ for `countsUp`
+    check habits (`TodayRows.swift`); widgets draw ✓ for a check habit's add button (`WidgetActionButton`). The sound
+    already played only on the log that completes the goal (`HabitStore+Feedback.swift`); VoiceOver still says
+    "Add 1 to …" (what a tap does), so no UI test labels changed. Rulebook U14 and Design Rules updated.
+  - [x] On the iPhone, 7 Oct 2026: the user: "the check is working perfectly." `TodayUITests` on the iPhone: 7 of 8
+    passed; `testDayWeekAndAppearance` failed only because this phone has the sound switched on (test launches share
+    the person's settings on a real iPhone; not this change).
+  - [ ] Tests on GitHub (T1/T7/T10): `TodayUITests`, `TodayRowLayoutUITests`, `WidgetUITests`, `RoutineCalendarUITests`.
+
+- [ ] **65. Widgets respond very slowly; a tap sometimes opens the app; Medium rows flicker.** Added 7 October 2026, from
+  the user: "majority of the widgets… when I click on the main action buttons they were not even responding… even when
+  it does respond, after a very long time." Then: "all items are flickering in the medium widget… in the small widget
+  the interactivity is gone, it is directly opening." Asked for Apple's guidance first, and for testing on the iPhone.
+  - **Research (Apple docs):** a widget button's intent runs in the widget extension by default; `LiveActivityIntent`
+    runs it in the app's process; after `perform()` returns the system reloads the timeline (not counted against the
+    budget); WidgetKit budgets 40–70 reloads a day; entries at least ~5 minutes apart; ~30 MB extension memory;
+    `invalidatableContent` marks views awaiting new data. Apple forum: taps can skip a widget button's intent and open
+    the app (no Apple answer). `IntentExecutionTargets` (choosing the process) is iOS 27 only.
+  - **Measured on the iPhone** (opt-in `-widget-timing on` log; L23): the app side was quick (cold 0.8 s, warm 0.3 s),
+    but each reload drew a week of timeline entries (8–22 per widget, ~0.75 s per Medium reload, twice per tap).
+    Stand-in intents (debug `-widget-probe live|extension`, no data change) ran in the right process and never opened
+    the app in 12 taps each, so the intent kind isn't the cause; a tap during a long redraw is the likely one.
+  - [x] Built 7 Oct 2026 (Claude, not yet committed): timelines hold the next 3 hours and the next day's start (2–4
+    entries); a running timer's fill every 5 minutes; a widget tap reloads at once; `invalidatableContent` (added and
+    then removed the same day: it dimmed every row on any tap) is gone. `WidgetCheck` updated for the shorter timeline.
+    Rulebook S17.
+  - [x] On the iPhone, 7 Oct 2026: `WidgetUITests` 6/6 passed. Same-run page flips: week-long 0.9 / 1.4 s, short
+    0.7–0.8 s. Real taps: app closed → Small redrawn +0.52 s, Medium +0.76 s; app in the background +0.11 s / +0.20 s.
+  - [x] The user's check on the iPhone (U9): superseded and approved through item 66 (8 Oct 2026).
+  - [ ] Tests on GitHub (T1/T7/T10): `WidgetUITests`, `WidgetSystemUITests`.
+  - Found, not fixed (separate task): a `-uitest` launch on a real iPhone publishes its demo habits into the widgets'
+    shared file, and resets some of the person's own settings (Hide Completed, done order); D8.
+
+- [ ] **66. Widgets: the tap shows at once; the app saves, syncs and backs up behind it; nothing is lost.** Added 7 October
+  2026, from the user, after item 65's measurements (a ✓/+1 tap took 3.9–4.5 s to show on the iPhone: iOS waits ~3 s
+  after an app-process intent before showing the reload; widget-process intents showed in ~0.2 s).
+  - [x] **Visual first, at once:** the widget changes the moment it's tapped. Built as iOS switches (`Toggle`, which iOS
+    flips before any code runs: Apple, WWDC23 "Bring widgets to life"), drawn exactly like the app's round button.
+    Built 8 Oct 2026: on the iPhone the button changed 0.67–0.69 s after the test's tap began (its own tap is ~0.54 s);
+    a ✓ fills with the habit's colour, a + shows the habit's light tint, or its colour when that tap meets the goal.
+  - [x] **Data second, reliably, in the background:** each tap is saved by the app (it runs in the background), then
+    synced and backed up, even if the app is never opened. Never "saved on the phone until the app next opens" (the
+    user: "a deal-breaking thing… then it's just a showcase"). Kept: the intent runs in the app (`LiveActivityIntent`);
+    the numbers follow ~4 s later (iOS's wait after an app-process intent, L24).
+  - [x] **Repeated taps:** every tap counts; none is dropped (today a second tap before the widget refreshes carries the
+    same ID and is discarded as a duplicate). The display may catch up later; the data may not be lost. Built: a + gets
+    a new ID per tap; a ✓ flips what's saved, taps saved strictly in order (iOS resent the first tap's value on a quick
+    second tap). On the iPhone: Meds ✓ twice fast → Not checked; Water + three times fast → 3 of 8 glasses.
+  - [x] **Moving on:** a tap on another habit while the first is still saving is registered too (taps are queued in
+    `AppModel.logFromWidget`; the phone's log showed all five of a mixed run saved in order).
+  - [x] **What opens the app, straight on the right screen:** steps (checklist) → that day's Day details; timer → the
+    timer; a number to type (an amount with no saved step) → the log sheet. Check habits, tasks and amounts with a saved
+    step log from the widget. A timer always opens its timer now (started if it wasn't running).
+  - [x] **Bug:** with a timer open in the app, tapping a checklist on the widget left the timer showing. Whatever was
+    open is replaced by the screen the widget asked for (`TodayView.replacingPresented`: everything closes without
+    animation, then the new screen opens). On the iPhone: timer → Skincare's Day details → Read pages' Add log → timer.
+  - **The user's review, 8 Oct:** the button changed first and the card a few seconds later ("everything on the card
+    should be updated immediately, like Reminders"); a second quick + or several-a-day ✓ looked like an undo; timers
+    must start on the widget and the Dynamic Island, not open the app. Rebuilt the same day:
+    - [x] The whole card is one switch (Small, list rows with the header's "N of M done", the weekly card, the Lock
+      Screen circle); its "after" is the app's own next state. On the iPhone, 0.3 s after a tap: Meds "Checked" with its
+      bar; Water 6 → 7 of 8 with its bar; a list row "Done" with the header 1 → 2 of 23.
+    - [x] The tap runs in the widget's process and hands over to the app in the background (`WidgetTapIntent` →
+      `WidgetSaveIntent`; waiting taps in `WidgetTaps`). Water + three quick taps: 24 → 25 → 26 → 27 on screen; the
+      phone's log: widget part ~30 ms, the app's save started ~40 ms later and finished ~90 ms after; app never opened.
+      A ✓ tapped twice fast: Done, then Not yet, saved as Not yet.
+    - [x] Timers: ▶ becomes ⏸ at once and the timer runs (Live Activity) without opening the app; ⏸ stops it.
+  - **More of the user's checks, 8 Oct:** Call family's week-goal row didn't fill (now fills toward the week, as Today;
+    the earlier "no fill" rule was a misreading, corrected everywhere); a number to type showed ↗ (now a plain +); an
+    older widget's log sheet came back after a newer screen closed (`replacingPresented` now clears it); logging in the
+    app then going straight home left the widget stale (publish 0.5 s after a change, and at once on leaving). All fixed
+    and checked on the Home Screen.
+  - [x] The user's check on the iPhone (U9), 8 Oct 2026: "everything is perfect … lock it down." Locked in
+    [Widgets — Taps and Updates (Locked)](<../Widgets — Taps and Updates (Locked).md>) (Rulebook U28), with README,
+    Design Rules and `LOCKED` comments in the code.
+  - [ ] Tests on GitHub (T1/T7/T10): `WidgetUITests`, `WidgetSystemUITests`, `TodayUITests`, `TimerUITests`; the in-app
+    widget checks. Expect label changes for T3: a card is one button named for its action, with the state as its value.
+  - Research for the user's question "do people expect widgets to respond instantly?": our widget study (7,818 coded
+    reviews) has ticking from the widget among the most valued themes (695 reviews, 97 apps in the 30 Sep scan) and
+    broken or not-updating widgets at 15.7% of widget reviews (3.27★). Speed scan (8 Oct): 431 keyword candidates
+    (widget + a speed word), 343 with the words close together, all 343 read by hand: 19 complain of the delay between
+    tapping a widget and seeing it change, 18 more call widgets slow or delayed, 42 say taps stopped responding, 6 that a
+    tap opened the app instead; 8 praise instant ticking (`Research/Temp/widget-speed/classification.py`).
 
 ## Planned improvements — build later
 

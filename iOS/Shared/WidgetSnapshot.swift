@@ -49,7 +49,7 @@ nonisolated struct WidgetItem: Codable, Identifiable, Sendable {
     /// Small supporting text: the Small card's caption capsule and the weekly card's line under the name
     /// ("Daily limit", "Limit reached", "Best 45 days", "Skipped today").
     var caption: String?
-    /// How full a list row is, 0…1, toward today's own goal only (a week or month goal has no row fill, U25); and the
+    /// How full a list row is, 0…1, toward its goal, as Today's row: today's, or a week or month goal's (U25); and the
     /// Small and weekly cards' bar, toward the goal's own period. Capped when drawn; the text keeps the true value.
     var fraction: Double?
     var cardFraction: Double?
@@ -57,6 +57,16 @@ nonisolated struct WidgetItem: Codable, Identifiable, Sendable {
     var limitFill = false
     /// Positive completion: the button turns the habit's colour with white content.
     var done = false
+    /// A + whose next tap meets the goal: the switch shows the habit's colour the moment it's touched (Current Work 66).
+    /// Optional, so a snapshot written before it existed still reads.
+    var completesNext: Bool?
+    // LOCKED (widget taps, 8 Oct 2026): the widget draws the app's own next state, never its own (W3). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+    /// Today's ✓ or +: this card as it will be after one tap (one element, or nil), worked out by the app. The widget
+    /// draws it the moment the button is touched, so the whole card changes at once (Current Work 66).
+    var after: [WidgetItem]?
+    /// What today adds up to, and today's week square, as the app counted them (for `after`).
+    var todayAmount: Double?
+    var todayLevel: Int?
     /// Counted in a list's "2 of 5 done", and whether it's done for the day there (the day bar's own rule: positive
     /// items once; quit, cut down and skipped days are not counted, U10).
     var counts = false
@@ -68,7 +78,8 @@ nonisolated struct WidgetItem: Codable, Identifiable, Sendable {
     var actionText: String?
     /// Where the button (`action == .open`) goes.
     var route: String?
-    /// One rendered tap: a retried callback with the same event never logs twice.
+    /// The drawn rendition's ID (the snapshot's checks require one per tappable item). A tap's log gets its own new ID
+    /// (Current Work 66): two quick taps on the same drawing are two logs.
     var token: String
     var signature: String
     /// The Lock Screen circle's value on one line ("3/8", "12/20m", "4.2k/8k") and its ring (nil: no ring).
@@ -201,16 +212,36 @@ nonisolated enum WidgetDisk {
         return snapshot
     }
     static func read(from file: URL? = url) -> WidgetSnapshot? {
+        #if DEBUG
+        let started = Date.now
+        #endif
         guard let file, let size = try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize,
-              size <= maximumBytes, let data = try? Data(contentsOf: file) else { return nil }
-        return decode(data)
+              size <= maximumBytes, let data = try? Data(contentsOf: file) else {
+            #if DEBUG
+            WidgetTiming.mark("read: no snapshot file")
+            #endif
+            return nil
+        }
+        let snapshot = decode(data)
+        #if DEBUG
+        WidgetTiming.mark(String(format: "read: %d bytes decoded in %.0f ms%@", size, Date.now.timeIntervalSince(started) * 1000,
+                                 snapshot == nil ? " (rejected)" : ""))
+        #endif
+        return snapshot
     }
     static func write(_ snapshot: WidgetSnapshot, to file: URL? = url) throws {
         guard let file else { throw CocoaError(.fileNoSuchFile) }
         let data = try JSONEncoder().encode(snapshot)
         guard data.count <= maximumBytes else { throw CocoaError(.fileWriteOutOfSpace) }
         try FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
-        try data.write(to: file, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+        // LOCKED (widget taps, 8 Oct 2026): coordinated writes (W17). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+        // Coordinated with a widget tap's own change to the same file (`applyTap`), so neither half-overwrites the other.
+        var failure: Error?
+        var coordination: NSError?
+        NSFileCoordinator().coordinate(writingItemAt: file, options: .forReplacing, error: &coordination) { file in
+            do { try data.write(to: file, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication]) } catch { failure = error }
+        }
+        if let error = failure ?? coordination { throw error }
     }
     /// Coordinated read-modify-write: paging is display state, never a log or database lock.
     static func page(key: String, delta: Int = 0, set: Int? = nil, onCommitted: (() -> Void)? = nil) -> Int {

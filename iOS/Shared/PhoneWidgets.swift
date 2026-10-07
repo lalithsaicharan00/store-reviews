@@ -55,10 +55,19 @@ nonisolated struct PhoneWidgetEntry: TimelineEntry {
 // MARK: - Timelines
 
 nonisolated enum PhoneWidgetTimeline {
-    /// One entry for now, one at each later day's start, and one at each moment a drawn value changes: a running
-    /// timer's fill (each minute for half an hour), a quit counter's day count, "New best", and the moment held rows
-    /// settle (U4). After the snapshot's seven days the widget asks the app to update, except a quit counter, which
-    /// is a stable fact and keeps counting up to a known pause or end.
+    /// How far ahead one timeline reaches. WidgetKit draws every entry of a timeline as soon as it gets one, before
+    /// the widget shows anything new: a week of entries (21 for a Medium list, ~35 ms each on the iPhone 16) cost
+    /// ~0.75 s per reload, twice per tap, and a run of taps queued seconds of drawing (Current Work 65, 7 Oct 2026).
+    /// So a timeline holds only the next few hours and the next day's start; WidgetKit asks again after that (well
+    /// within its 40–70 reloads a day), and the snapshot's seven days still carry the widget through days without the
+    /// app. Apple: entries at least about 5 minutes apart.
+    // LOCKED (widget taps, 8 Oct 2026): 3 hours and the next day's start; entries at least 5 minutes apart (W10). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+    static let horizon: TimeInterval = 3 * 3600
+
+    /// One entry for now, then each moment a drawn value changes before `horizon`: the moment held rows settle (U4), a
+    /// running timer's fill (every 5 minutes for half an hour), a quit counter's hour or day count, "New best"; and the
+    /// next day's start. After the snapshot's seven days the widget asks the app to update, except a quit counter,
+    /// which is a stable fact and keeps counting up to a known pause or end.
     static func entries(snapshot: WidgetSnapshot?, now: Date = .now, listKey: String? = nil, selection: String? = nil,
                         setup: @escaping (inout PhoneWidgetEntry) -> Void) -> [PhoneWidgetEntry] {
         func make(_ date: Date, _ frame: WidgetFrame?, _ status: PhoneWidgetEntry.Status) -> PhoneWidgetEntry {
@@ -71,23 +80,35 @@ nonisolated enum PhoneWidgetTimeline {
         guard let snapshot, snapshot.version == WidgetSnapshot.version, snapshot.timeZone == TimeZone.current.identifier,
               snapshot.locale == Locale.current.identifier else { return [make(now, nil, .stale)] }
         if snapshot.hidden { return [make(now, nil, .hidden)] }
-        guard snapshot.frame(at: now) != nil else {
+        guard let current = snapshot.frame(at: now) else {
             if let counter = counterEntries(snapshot, now: now, selection: selection, make: make) { return counter }
             return [make(now, nil, .stale)]
         }
+        #if DEBUG
+        // The old week-long timeline, only for measuring the two side by side on the iPhone (S2; WidgetLatencyDeviceTests).
+        if UserDefaults(suiteName: WidgetDisk.group)?.bool(forKey: "debug.weekTimeline") == true {
+            var dates: Set<Date> = [now]
+            for frame in snapshot.frames {
+                if frame.start > now { dates.insert(frame.start) }
+                if let settle = frame.settle, settle > now { dates.insert(settle) }
+                let items = listKey.map { frame.list($0, at: now) } ?? frame.item(selection).map { [$0] } ?? []
+                for moment in moments(items, now: now, within: frame.start..<frame.end) { dates.insert(moment) }
+            }
+            return dates.sorted().prefix(160).map { date in make(date, snapshot.frames.first { $0.start <= date && date < $0.end }, .ready) }
+        }
+        #endif
+        let reach = min(current.end, now.addingTimeInterval(horizon))
         var dates: Set<Date> = [now]
-        for frame in snapshot.frames {
-            if frame.start > now { dates.insert(frame.start) }
-            if let settle = frame.settle, settle > now { dates.insert(settle) }
-            let items = listKey.map { frame.list($0, at: now) } ?? frame.item(selection).map { [$0] } ?? []
-            for moment in moments(items, now: now, within: frame.start..<frame.end) { dates.insert(moment) }
-        }
-        var result = dates.sorted().prefix(160).map { date in
-            make(date, snapshot.frames.first { $0.start <= date && date < $0.end }, .ready)
-        }
-        if let last = snapshot.frames.last {
-            if let counter = counterEntries(snapshot, now: last.end, selection: selection, make: make) { result += counter }
-            else { result.append(make(last.end, nil, .stale)) }
+        if let settle = current.settle, settle > now, settle < reach { dates.insert(settle) }
+        let items = listKey.map { current.list($0, at: now) } ?? current.item(selection).map { [$0] } ?? []
+        for moment in moments(items, now: now, within: now..<reach) { dates.insert(moment) }
+        var result = dates.sorted().prefix(12).map { make($0, current, .ready) }
+        if let next = snapshot.frames.first(where: { $0.start == current.end }) {
+            result.append(make(next.start, next, .ready))
+        } else if let counter = counterEntries(snapshot, now: current.end, selection: selection, make: make) {
+            result += counter.prefix(4)
+        } else {
+            result.append(make(current.end, nil, .stale))
         }
         return result
     }
@@ -96,7 +117,7 @@ nonisolated enum PhoneWidgetTimeline {
         var moments: [Date] = []
         for item in items {
             if item.timerClock != nil {
-                moments += (1...30).map { now.addingTimeInterval(Double($0) * 60) }
+                moments += (1...6).map { now.addingTimeInterval(Double($0) * 300) }
             }
             if let start = item.quitStart {
                 let first = max(range.lowerBound, now)
@@ -138,10 +159,15 @@ nonisolated enum PhoneWidgetTimeline {
     }
 
     static func timeline(_ entries: [PhoneWidgetEntry]) -> Timeline<PhoneWidgetEntry> {
+        #if DEBUG
+        WidgetTiming.mark("timeline: \(entries.count) entries, status \(entries.first.map { "\($0.status)" } ?? "none")")
+        #endif
+        let now = Date.now
         let running = entries.first?.frame?.items.contains { $0.timerClock != nil } ?? false
-        let last = entries.last?.date ?? .now
-        // A running timer's fill is drawn per minute for half an hour; after that, ask again.
-        let next = running ? min(last, Date.now.addingTimeInterval(30 * 60)) : max(last, Date.now.addingTimeInterval(3600))
+        // Ask again when the entries run out or the horizon is reached, whichever is first; a running timer's fill is
+        // drawn for half an hour, then asked for again. Never sooner than 5 minutes (Apple's minimum spacing).
+        let last = entries.last.map { max($0.date, now.addingTimeInterval(300)) } ?? now.addingTimeInterval(3600)
+        let next = min(last, now.addingTimeInterval(running ? 30 * 60 : horizon))
         return Timeline(entries: entries, policy: .after(next))
     }
 }
@@ -290,6 +316,9 @@ struct PhoneWidgetView: View {
     private var accessory: Bool { [.accessoryInline, .accessoryCircular, .accessoryRectangular].contains(family) }
 
     var body: some View {
+        #if DEBUG
+        let _ = WidgetTiming.enabled ? WidgetTiming.mark("render: \(layout) \(family) entry at \(Int(entry.date.timeIntervalSinceNow)) s") : ()
+        #endif
         content
             // Names and progress stay hidden on a locked phone where the person's settings ask for it (spec §9).
             .privacySensitive()
@@ -353,10 +382,29 @@ struct WidgetActionButton: View {
                 face
             } else {
                 switch item.action {
+                #if DEBUG
+                case .check where WidgetProbe.mode == "live", .add where WidgetProbe.mode == "live":
+                    Button(intent: WidgetProbeLiveIntent()) { face }.buttonStyle(.plain)
+                case .check where WidgetProbe.mode == "extension", .add where WidgetProbe.mode == "extension":
+                    Button(intent: WidgetProbeExtensionIntent()) { face }.buttonStyle(.plain)
+                case .check where WidgetProbe.mode == "chain", .add where WidgetProbe.mode == "chain":
+                    Button(intent: WidgetProbeChainIntent()) { face }.buttonStyle(.plain)
+                #endif
                 case .check, .add:
-                    Button(intent: WidgetLogIntent(item: item, day: day)) { face }.buttonStyle(.plain)
+                    // A switch, so iOS shows the tap at once, before the app has saved it (Current Work 66). A ✓ is on
+                    // when the day is ticked; a + is always off, and "on" draws the moment after one more.
+                    Toggle(isOn: item.action == .check && item.done, intent: WidgetTapIntent(item: item, day: day)) { EmptyView() }
+                        .toggleStyle(WidgetRoundToggleStyle(item: item, size: size))
+                        // VoiceOver hears the button it is ("Add 1 to Water", "Mark Read done"), not "switch, off".
+                        .accessibilityRemoveTraits(.isToggle)
+                        .accessibilityAddTraits(.isButton)
                 case .timerStart, .timerPause:
-                    Button(intent: WidgetTimerIntent(item: item, day: day)) { face }.buttonStyle(.plain)
+                    // A switch too: ▶ becomes ⏸ the moment it's touched; the app starts or stops the timer behind it
+                    // and the Live Activity shows it (Current Work 66).
+                    Toggle(isOn: item.action == .timerPause, intent: WidgetTimerIntent(item: item, day: day)) { EmptyView() }
+                        .toggleStyle(WidgetTimerToggleStyle(item: item, size: size))
+                        .accessibilityRemoveTraits(.isToggle)
+                        .accessibilityAddTraits(.isButton)
                 case .open:
                     if small {
                         Button(intent: OpenURLIntent(item.routeURL)) { face }.buttonStyle(.plain)
@@ -369,9 +417,75 @@ struct WidgetActionButton: View {
         .accessibilityLabel(label)
     }
 
-    private var face: some View {
+    private var face: some View { WidgetRoundFace(item: item, size: size, touched: false) }
+
+    private var label: String { Self.label(for: item) }
+
+    static func label(for item: WidgetItem) -> String {
+        switch item.action {
+        case .check: item.done ? "Undo \(item.name)" : "Mark \(item.name) done"
+        case .add: "Add \(String((item.actionText ?? "+1").dropFirst())) to \(item.name)"
+        case .timerStart: "Start \(item.name) timer"
+        case .timerPause: "Pause \(item.name) timer"
+        case .open:
+            switch item.route?.split(separator: "/").dropFirst().first.map({ String($0) }) ?? "" {
+            case "log": "Log an amount for \(item.name)"
+            case "slip": "Record a slip for \(item.name)"
+            case "timer": item.timerClock == nil ? "Start \(item.name) timer" : "Open \(item.name) timer"
+            default: item.type == "checklist" && item.state == nil ? "Open \(item.name) steps" : "Open \(item.name)"
+            }
+        }
+    }
+}
+
+/// The widget's ✓ and + as a switch: iOS draws both states ahead of time and shows the other one the moment it's
+/// touched (Apple, WWDC23 "Bring widgets to life"), so a tap shows at once while the app saves it behind.
+struct WidgetRoundToggleStyle: ToggleStyle {
+    let item: WidgetItem
+    let size: CGFloat
+    func makeBody(configuration: Configuration) -> some View {
+        // A ✓: on is ticked. A +: on is "just tapped".
+        WidgetRoundFace(item: item, size: size, touched: item.action == .add && configuration.isOn,
+                        ticked: item.action == .check ? configuration.isOn : nil)
+    }
+}
+
+/// ▶ and ⏸ as a switch: on is running.
+// LOCKED (widget taps, 8 Oct 2026): ▶/⏸ is a switch; the timer runs on the widget (W7). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+struct WidgetTimerToggleStyle: ToggleStyle {
+    let item: WidgetItem
+    let size: CGFloat
+    func makeBody(configuration: Configuration) -> some View {
+        var shown = item
+        shown.action = configuration.isOn ? .timerPause : .timerStart
+        return WidgetRoundFace(item: shown, size: size)
+    }
+}
+
+/// The round button, exactly as the app's `RoundActionButton` draws it: neutral fill and ink until positive completion,
+/// then the habit's colour with white (U2). A 44 × 44 target around a 32 or 44 pt circle.
+struct WidgetRoundFace: View {
+    let item: WidgetItem
+    var size: CGFloat = 32
+    /// A + the moment it's touched: the habit's colour when this tap meets the goal, else the row's light tint of it
+    /// (a limit's neutral grey), until the widget redraws with the saved numbers.
+    var touched = false
+    /// A ✓'s state as the switch shows it (nil: as saved).
+    var ticked: Bool? = nil
+    @Environment(\.colorScheme) private var scheme
+
+    private var colored: Bool {
+        if let ticked { return ticked && item.state == nil }
+        if touched { return !item.limit && (item.done || item.completesNext == true) }
+        return item.done && item.state == nil && item.timerClock == nil && !item.limit
+    }
+    private var tinted: Bool { touched && !colored }
+
+    var body: some View {
         ZStack {
-            Circle().fill(colored ? AnyShapeStyle(WidgetPalette.main(item.color)) : AnyShapeStyle(Color(.tertiarySystemFill)))
+            Circle().fill(colored ? AnyShapeStyle(WidgetPalette.main(item.color))
+                          : tinted ? AnyShapeStyle(item.limit ? Color.primary.opacity(0.18) : WidgetPalette.main(item.color).opacity(scheme == .dark ? 0.34 : 0.22))
+                          : AnyShapeStyle(Color(.tertiarySystemFill)))
                 .widgetAccentable(colored)
             glyph.foregroundStyle(colored ? Color.white : WidgetPalette.ink)
         }
@@ -383,6 +497,10 @@ struct WidgetActionButton: View {
     @ViewBuilder private var glyph: some View {
         let glyphSize: CGFloat = size >= 44 ? 20 : 17
         switch item.action {
+        case .add where item.type == "check":
+            // A check habit counted several times, or toward a week or month goal: a ✓ that adds one check, never a
+            // +1 (the user, 7 Oct 2026, Current Work 64). It fills only when the goal is met.
+            Image(systemName: "checkmark").font(.system(size: glyphSize, weight: .semibold))
         case .add:
             Text(item.actionText ?? "+1").font(.system(size: size >= 44 ? 17 : 15, weight: .semibold).monospacedDigit())
                 .lineLimit(1).minimumScaleFactor(0.55).padding(.horizontal, 3)
@@ -394,28 +512,126 @@ struct WidgetActionButton: View {
             Image(systemName: "pause.fill").font(.system(size: glyphSize - 2, weight: .semibold))
         case .open:
             if item.state == nil, item.route?.hasPrefix("oftenenough://timer/") == true {
-                Image(systemName: "play.fill").font(.system(size: glyphSize - 2, weight: .semibold))
+                Image(systemName: item.timerClock == nil ? "play.fill" : "pause.fill").font(.system(size: glyphSize - 2, weight: .semibold))
+            // LOCKED (widget taps, 8 Oct 2026): a number to type shows a plain +; ↗ only for steps and quit (W8). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+            } else if item.state == nil, item.route?.hasPrefix("oftenenough://log/") == true {
+                // A number typed in the app: a plain +, as on Today's row (the user, 8 Oct 2026). The arrow stays for
+                // what opens a screen of its own (a checklist's steps, a quit habit's slip).
+                Image(systemName: "plus").font(.system(size: glyphSize, weight: .semibold))
             } else {
                 Image(systemName: "arrow.up.right").font(.system(size: glyphSize - 2, weight: .semibold))
             }
         }
     }
 
-    private var label: String {
-        switch item.action {
-        case .check: item.done ? "Undo \(item.name)" : "Mark \(item.name) done"
-        case .add: "Add \(String((item.actionText ?? "+1").dropFirst())) to \(item.name)"
-        case .timerStart: "Start \(item.name) timer"
-        case .timerPause: "Pause \(item.name) timer"
-        case .open:
-            switch item.route?.split(separator: "/").dropFirst().first.map({ String($0) }) ?? "" {
-            case "log": "Log an amount for \(item.name)"
-            case "slip": "Record a slip for \(item.name)"
-            case "timer": "Start \(item.name) timer"
-            default: item.type == "checklist" && item.state == nil ? "Open \(item.name) steps" : "Open \(item.name)"
-            }
+}
+
+// MARK: - The whole card at once (Current Work 66)
+
+// LOCKED (widget taps, 8 Oct 2026): the card switch, its touch area, the header count and VoiceOver (W2, W6, W12, W13, W16). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+
+/// Where a card's switch takes the touch: only its round button. The rest of the card keeps its own link.
+nonisolated enum WidgetButtonRegion: Sendable {
+    /// A 44-pt square at the top right (Small and the weekly card).
+    case topTrailing
+    /// A 44-pt square at the right, centred (a list row).
+    case trailing
+    /// The whole thing (the Lock Screen circle).
+    case whole
+    /// Nothing: the touch goes to what's inside (a + that has handed on to its next tap's switch).
+    case none
+}
+
+struct WidgetButtonShape: Shape {
+    let region: WidgetButtonRegion
+    func path(in rect: CGRect) -> Path {
+        switch region {
+        case .whole: Path(rect)
+        case .none: Path()
+        case .topTrailing: Path(CGRect(x: rect.maxX - 44, y: rect.minY, width: 44, height: 44))
+        case .trailing: Path(CGRect(x: rect.maxX - 44, y: rect.midY - 22, width: 44, height: 44))
         }
     }
+}
+
+/// The list header redrawn with one more (or one fewer) done, laid over the real one while a row shows its tap.
+struct WidgetHeaderPatch {
+    /// Where the header starts, in the list's coordinate space ("widgetList"), and how tall it is.
+    let top: CGFloat
+    let height: CGFloat
+    let header: (Int) -> ListHeader
+    let done: Int
+}
+
+/// A card or row as one switch (the user, 8 Oct 2026: "when I check it, immediately everything on the card should be
+/// updated", as Reminders does). iOS draws a switch in both states ahead of time and shows the other the moment it's
+/// touched, so the card shows its state after the tap at once: the button, the number, the bar, the row's fill, and a
+/// list's "N of M done". Both states are the app's own (`WidgetItem.after`), never worked out here. The app saves the
+/// tap behind it (`WidgetLogIntent`); the widget redraws with the saved data a few seconds later (L24).
+struct WidgetTapCard<Content: View>: View {
+    let item: WidgetItem
+    let day: String
+    var sample = false
+    let region: WidgetButtonRegion
+    var headerPatch: WidgetHeaderPatch? = nil
+    /// The card showing `item`; `live`: its button is a real control (when this card isn't a switch).
+    @ViewBuilder let content: (_ item: WidgetItem, _ live: Bool) -> Content
+
+    private var probing: Bool {
+        #if DEBUG
+        WidgetProbe.mode != nil
+        #else
+        false
+        #endif
+    }
+
+    var body: some View {
+        if !sample, !probing, item.state == nil, item.action == .check || item.action == .add, let after = item.after?.first {
+            let resting = item.action == .check && item.done
+            Toggle(isOn: resting, intent: WidgetTapIntent(item: item, day: day)) { EmptyView() }
+                .toggleStyle(WidgetCardToggleStyle(day: day, resting: resting, now: item, after: after, region: region,
+                                                   headerPatch: headerPatch, content: content))
+                // VoiceOver: one button named for what it does, with the card's state ("Add 1 to Water, 6 of 8
+                // glasses"). The rest of the card still opens the app.
+                .accessibilityElement(children: .ignore)
+                .accessibilityRemoveTraits(.isToggle)
+                .accessibilityAddTraits(.isButton)
+                .accessibilityLabel(WidgetActionButton.label(for: item))
+                .accessibilityValue(item.value.isEmpty ? item.line : item.value)
+        } else {
+            content(item, true)
+        }
+    }
+}
+
+struct WidgetCardToggleStyle<Content: View>: ToggleStyle {
+    let day: String
+    let resting: Bool
+    let now: WidgetItem
+    let after: WidgetItem
+    let region: WidgetButtonRegion
+    let headerPatch: WidgetHeaderPatch?
+    let content: (WidgetItem, Bool) -> Content
+
+    func makeBody(configuration: Configuration) -> some View {
+        let tapped = configuration.isOn != resting
+        content(tapped ? after : now, false)
+            .contentShape(WidgetButtonShape(region: region))
+            .overlay(alignment: .topLeading) {
+                if tapped, let headerPatch, after.counts, after.countsDone != now.countsDone {
+                    GeometryReader { geometry in
+                        let frame = geometry.frame(in: .named("widgetList"))
+                        // Only the count is drawn, on the same pill as the real one, so nothing else shows twice.
+                        headerPatch.header(headerPatch.done + (after.countsDone ? 1 : -1))
+                            .frame(width: frame.width, height: headerPatch.height)
+                            .offset(y: headerPatch.top - frame.minY)
+                    }
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
+                }
+            }
+    }
+
 }
 
 // MARK: - Pieces
@@ -533,8 +749,14 @@ struct ListWidget: View {
         // Slots: a full page keeps every page's buttons in the same places; with no pages a Large list of four or
         // fewer uses taller rows, and a single Medium row fills the widget.
         let slots = pages > 1 ? capacity : large ? (items.count >= capacity ? capacity : max(1, min(capacity - 1, 4))) : max(1, items.count)
+        let counted = items.filter(\.counts)
+        let done = counted.filter(\.countsDone).count
+        // A row's tap redraws this header with the new "N of M done" at once (Current Work 66).
+        let patch = WidgetHeaderPatch(top: large ? 16 : 12, height: large ? 44 : 22,
+                                      header: { header(counted: counted.count, done: $0, page: page, pages: pages, live: false, covering: done) },
+                                      done: done)
         VStack(alignment: .leading, spacing: large ? 10 : 12) {
-            header(items: items, page: page, pages: pages)
+            header(counted: counted.count, done: done, page: page, pages: pages)
             if entry.status != .ready || entry.frame == nil || entry.viewMissing || items.isEmpty {
                 message
             } else {
@@ -542,7 +764,8 @@ struct ListWidget: View {
                     ForEach(0..<slots, id: \.self) { slot in
                         if slot < shown.count {
                             WidgetListRow(item: shown[slot], day: entry.frame?.day ?? "", date: entry.date,
-                                          showSection: entry.view == WidgetListSection.today, sample: entry.sample)
+                                          showSection: entry.view == WidgetListSection.today, sample: entry.sample,
+                                          headerPatch: patch)
                         } else {
                             Color.clear.frame(maxHeight: .infinity)
                         }
@@ -552,58 +775,14 @@ struct ListWidget: View {
             }
         }
         .padding(large ? 16 : 12)
+        .coordinateSpace(.named("widgetList"))
     }
 
     private var title: String { entry.status == .ready ? entry.viewName : tasks ? "Tasks" : "Today" }
 
-    @ViewBuilder private func header(items: [WidgetItem], page: Int, pages: Int) -> some View {
-        let counted = items.filter(\.counts)
-        let count = counted.isEmpty || entry.status != .ready || entry.viewMissing ? nil
-            : "\(counted.filter(\.countsDone).count) of \(counted.count) done"
-        HStack(alignment: .center, spacing: 8) {
-            Link(destination: WidgetLinks.view(entry.view)) {
-                if large && pages > 1 {
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text(title).font(.title2.weight(.semibold)).lineLimit(1)
-                        if let count { Text(count).font(.footnote.weight(.semibold)).foregroundStyle(.secondary) }
-                    }
-                } else {
-                    HStack(alignment: .firstTextBaseline, spacing: 8) {
-                        Text(title).font(large ? .title2.weight(.semibold) : .headline).lineLimit(1)
-                        if pages > 1, let count { Text(count).font(.footnote.weight(.semibold)).foregroundStyle(.secondary).lineLimit(1) }
-                    }
-                }
-            }
-            Spacer(minLength: 4)
-            if pages > 1 && entry.status == .ready {
-                pager(page: page, pages: pages)
-            } else if let count {
-                Text(count).font(.footnote.weight(.semibold)).foregroundStyle(.secondary).lineLimit(1)
-            }
-        }
-        .frame(height: large ? 44 : 22)
-        .accessibilityElement(children: .contain)
-    }
-
-    private func pager(page: Int, pages: Int) -> some View {
-        HStack(spacing: 0) {
-            pageButton("chevron.left", to: page - 1, enabled: page > 0, label: "Previous page")
-            Text("\(page + 1)/\(pages)").font(.footnote.weight(.semibold)).monospacedDigit().frame(minWidth: 28)
-                .accessibilityLabel("Page \(page + 1) of \(pages)")
-            pageButton("chevron.right", to: page + 1, enabled: page + 1 < pages, label: "Next page")
-        }
-    }
-
-    @ViewBuilder private func pageButton(_ symbol: String, to page: Int, enabled: Bool, label: String) -> some View {
-        let face = Image(systemName: symbol).font(.system(size: 17, weight: .semibold))
-            .foregroundStyle(enabled ? AnyShapeStyle(.primary) : AnyShapeStyle(.tertiary))
-            .frame(width: 44, height: 44).contentShape(Rectangle())
-        if enabled && !entry.sample {
-            Button(intent: WidgetPageIntent(key: entry.pageKey, page: page, kind: entry.kind)) { face }
-                .buttonStyle(.plain).accessibilityLabel(label)
-        } else {
-            face.accessibilityLabel(label).accessibilityHidden(!enabled)
-        }
+    private func header(counted: Int, done: Int, page: Int, pages: Int, live: Bool = true, covering: Int? = nil) -> ListHeader {
+        ListHeader(entry: entry, title: title, large: large, counted: counted, done: done, page: page, pages: pages, live: live,
+                   covering: covering)
     }
 
     @ViewBuilder private var message: some View {
@@ -627,7 +806,98 @@ struct ListWidget: View {
     }
 }
 
-/// One row: icon, name, one line, the button; the row fills toward today's goal (U25).
+/// A list's header: its name (a link to that view), "N of M done", and ‹ › when it has pages.
+struct ListHeader: View {
+    let entry: PhoneWidgetEntry
+    let title: String
+    let large: Bool
+    let counted: Int
+    let done: Int
+    let page: Int
+    let pages: Int
+    /// false: drawn over the real header while a row shows its tap: only the count shows (on its pill, covering the
+    /// real one); the title and arrows keep their places but aren't drawn.
+    var live = true
+    /// The count the real header shows, while this one is drawn over it: the pill is at least as wide as it.
+    var covering: Int? = nil
+
+    var body: some View {
+        let count = counted == 0 || entry.status != .ready || entry.viewMissing ? nil : "\(done) of \(counted) done"
+        HStack(alignment: .center, spacing: 8) {
+            titleLink(count)
+            Spacer(minLength: 4)
+            if pages > 1 && entry.status == .ready {
+                pager.opacity(live ? 1 : 0)
+            } else if let count {
+                countText(count)
+            }
+        }
+        .frame(height: large ? 44 : 22)
+        .accessibilityElement(children: .contain)
+    }
+
+    /// "2 of 5 done" on a pill of the colour nearest the widget's own background: a row's tap draws the new count on
+    /// the same pill exactly over it (Current Work 66), since a widget can't paint the system's background itself.
+    private func countText(_ count: String) -> some View {
+        ZStack(alignment: .trailing) {
+            if let covering, counted > 0 { Text("\(covering) of \(counted) done").hidden() }
+            Text(count)
+        }
+        .font(.footnote.weight(.semibold)).foregroundStyle(.secondary).lineLimit(1)
+        .padding(.horizontal, 4)
+        .background(Capsule().fill(Color(.tertiarySystemBackground)))
+    }
+
+    @ViewBuilder private func titleLink(_ count: String?) -> some View {
+        let label = Group {
+            if large && pages > 1 {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(title).font(.title2.weight(.semibold)).lineLimit(1).opacity(live ? 1 : 0)
+                    if let count { countText(count) }
+                }
+            } else {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(title).font(large ? .title2.weight(.semibold) : .headline).lineLimit(1).opacity(live ? 1 : 0)
+                    if pages > 1, let count { countText(count) }
+                }
+            }
+        }
+        if live { Link(destination: WidgetLinks.view(entry.view)) { label } } else { label }
+    }
+
+    private var pager: some View {
+        HStack(spacing: 0) {
+            pageButton("chevron.left", to: page - 1, enabled: page > 0, label: "Previous page")
+            Text("\(page + 1)/\(pages)").font(.footnote.weight(.semibold)).monospacedDigit().frame(minWidth: 28)
+                .accessibilityLabel("Page \(page + 1) of \(pages)")
+            pageButton("chevron.right", to: page + 1, enabled: page + 1 < pages, label: "Next page")
+        }
+    }
+
+    @ViewBuilder private func pageButton(_ symbol: String, to page: Int, enabled: Bool, label: String) -> some View {
+        let face = Image(systemName: symbol).font(.system(size: 17, weight: .semibold))
+            .foregroundStyle(enabled ? AnyShapeStyle(.primary) : AnyShapeStyle(.tertiary))
+            .frame(width: 44, height: 44).contentShape(Rectangle())
+        if live && enabled && !entry.sample {
+            #if DEBUG
+            if WidgetProbe.pageMode == "live" {
+                Button(intent: WidgetPageLiveProbeIntent(key: entry.pageKey, page: page, kind: entry.kind)) { face }
+                    .buttonStyle(.plain).accessibilityLabel(label)
+            } else {
+                Button(intent: WidgetPageIntent(key: entry.pageKey, page: page, kind: entry.kind)) { face }
+                    .buttonStyle(.plain).accessibilityLabel(label)
+            }
+            #else
+            Button(intent: WidgetPageIntent(key: entry.pageKey, page: page, kind: entry.kind)) { face }
+                .buttonStyle(.plain).accessibilityLabel(label)
+            #endif
+        } else {
+            face.accessibilityLabel(label).accessibilityHidden(!enabled)
+        }
+    }
+}
+
+/// One row: icon, name, one line, the button; the row fills toward its goal: today's, or a week or month goal's (U25).
 struct WidgetListRow: View {
     let item: WidgetItem
     let day: String
@@ -635,35 +905,72 @@ struct WidgetListRow: View {
     /// In a Today list the line starts with the section ("Anytime · 3 of 8 glasses"); a section's own list drops it.
     let showSection: Bool
     var sample = false
+    var headerPatch: WidgetHeaderPatch? = nil
+
+    var body: some View {
+        if item.after?.isEmpty == false, !sample {
+            // The row as one switch (its round button takes the touch), with the rest of the row still opening Day
+            // details through a link laid over it.
+            ZStack {
+                WidgetTapCard(item: item, day: day, sample: sample, region: .trailing, headerPatch: headerPatch) { shown, live in
+                    WidgetRowContent(item: shown, day: day, date: date, showSection: showSection, sample: sample, live: live)
+                }
+                HStack(spacing: 0) {
+                    Link(destination: item.url) { Color.white.opacity(0.001).contentShape(Rectangle()) }
+                        .accessibilityHidden(true)
+                    Color.clear.frame(width: 52).allowsHitTesting(false)
+                }
+            }
+        } else {
+            WidgetRowContent(item: item, day: day, date: date, showSection: showSection, sample: sample, live: true)
+        }
+    }
+}
+
+/// What a list row draws: icon, name, one line and the round button, over the row's fill.
+struct WidgetRowContent: View {
+    let item: WidgetItem
+    let day: String
+    let date: Date
+    let showSection: Bool
+    var sample = false
+    /// true: the name opens Day details and the button is a real control; false: drawn inside the row's switch.
+    var live = true
     @Environment(\.colorScheme) private var scheme
 
     var body: some View {
         HStack(spacing: 8) {
-            Link(destination: item.url) {
-                HStack(spacing: 10) {
-                    Image(systemName: item.symbol).font(.system(size: 20, weight: .medium))
-                        .foregroundStyle(WidgetPalette.mark(item.color)).widgetAccentable()
-                        .frame(width: 28, height: 28)
-                    VStack(alignment: .leading, spacing: 1) {
-                        HStack(alignment: .firstTextBaseline, spacing: 6) {
-                            Text(item.name).font(.headline).lineLimit(1)
-                            if item.type == "quit", item.state == nil, item.quitStart != nil {
-                                Spacer(minLength: 4)
-                                Text(WidgetLive.quitLine(item, at: date)).font(.caption.weight(.medium)).foregroundStyle(.secondary).lineLimit(1)
-                            }
-                        }
-                        lineView.lineLimit(1)
-                    }
-                    Spacer(minLength: 0)
-                }
-                .contentShape(Rectangle())
+            if live {
+                Link(destination: item.url) { identity.contentShape(Rectangle()) }
+                WidgetActionButton(item: item, day: day, size: 32, sample: sample)
+            } else {
+                identity
+                WidgetRoundFace(item: item, size: 32)
             }
-            WidgetActionButton(item: item, day: day, size: 32, sample: sample)
         }
         .padding(.leading, 8)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background { fill }
         .accessibilityElement(children: .contain)
+    }
+
+    private var identity: some View {
+        HStack(spacing: 10) {
+            Image(systemName: item.symbol).font(.system(size: 20, weight: .medium))
+                .foregroundStyle(WidgetPalette.mark(item.color)).widgetAccentable()
+                .frame(width: 28, height: 28)
+            VStack(alignment: .leading, spacing: 1) {
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    Text(item.name).font(.headline).lineLimit(1)
+                    if item.type == "quit", item.state == nil, item.quitStart != nil {
+                        Spacer(minLength: 4)
+                        Text(WidgetLive.quitLine(item, at: date)).font(.caption.weight(.medium)).foregroundStyle(.secondary).lineLimit(1)
+                    }
+                }
+                lineView.lineLimit(1)
+            }
+            Spacer(minLength: 0)
+        }
     }
 
     @ViewBuilder private var lineView: some View {
@@ -677,7 +984,8 @@ struct WidgetListRow: View {
     }
 
     /// Positive goals only: the habit's colour at 0.15 (light) / 0.26 (dark), left to right; done is fully tinted.
-    /// No fill for quit, limits or week and month goals (U25).
+    /// Toward the same goal as Today's row: a week or month goal fills toward its period (8 Oct 2026). No fill for quit
+    /// or limits (U25).
     @ViewBuilder private var fill: some View {
         if !item.limitFill, item.state == nil, item.type != "quit", let fraction = WidgetLive.fraction(item, at: date, card: false),
            fraction > 0 {
@@ -713,13 +1021,24 @@ struct SmallWidget: View {
         .padding(16)
     }
 
+    /// The card as one switch (Current Work 66): its round button takes the touch and the whole card shows the tap.
     private func card(_ item: WidgetItem) -> some View {
+        WidgetTapCard(item: item, day: entry.frame?.day ?? "", sample: entry.sample, region: .topTrailing) { shown, live in
+            cardContent(shown, live: live)
+        }
+    }
+
+    private func cardContent(_ item: WidgetItem, live: Bool) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center) {
                 Image(systemName: item.symbol).font(.system(size: 24, weight: .medium))
                     .foregroundStyle(WidgetPalette.mark(item.color)).widgetAccentable()
                 Spacer(minLength: 0)
-                WidgetActionButton(item: item, day: entry.frame?.day ?? "", size: 44, sample: entry.sample, small: true)
+                if live {
+                    WidgetActionButton(item: item, day: entry.frame?.day ?? "", size: 44, sample: entry.sample, small: true)
+                } else {
+                    WidgetRoundFace(item: item, size: 44)
+                }
             }
             Spacer(minLength: 4)
             Text(item.name).font(.headline).lineLimit(1)
@@ -796,14 +1115,25 @@ struct WeekWidget: View {
         .padding(12)
     }
 
+    /// The card as one switch (Current Work 66): its round button takes the touch and the whole card shows the tap.
     private func card(_ item: WidgetItem) -> some View {
+        WidgetTapCard(item: item, day: entry.frame?.day ?? "", sample: entry.sample, region: .topTrailing) { shown, live in
+            cardContent(shown, live: live)
+        }
+    }
+
+    private func cardContent(_ item: WidgetItem, live: Bool) -> some View {
         HStack(spacing: 12) {
             habitCard(item)
             VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .center, spacing: 8) {
                     today(item)
                     Spacer(minLength: 0)
-                    WidgetActionButton(item: item, day: entry.frame?.day ?? "", size: 44, sample: entry.sample)
+                    if live {
+                        WidgetActionButton(item: item, day: entry.frame?.day ?? "", size: 44, sample: entry.sample)
+                    } else {
+                        WidgetRoundFace(item: item, size: 44)
+                    }
                 }
                 if item.state == nil, let fraction = WidgetLive.fraction(item, at: entry.date, card: true) {
                     WidgetBar(fraction: fraction, color: item.limitFill ? WidgetPalette.limitFill : WidgetPalette.main(item.color), height: 8)
@@ -1040,8 +1370,17 @@ struct LockCircle: View {
         }
     }
 
+    /// The whole circle is the switch: its ring and number show the tap at once (Current Work 66).
     @ViewBuilder private func content(_ item: WidgetItem) -> some View {
-        let face = ZStack {
+        if let day = entry.frame?.day {
+            WidgetTapCard(item: item, day: day, sample: entry.sample, region: .whole) { shown, _ in face(shown) }
+        } else {
+            face(item)
+        }
+    }
+
+    private func face(_ item: WidgetItem) -> some View {
+        ZStack {
             if let ring = item.ring, item.state == nil, item.type != "quit" {
                 Circle().stroke(Color.primary.opacity(0.3), lineWidth: 6).padding(3)
                 Circle().trim(from: 0, to: min(1, ring)).stroke(Color.primary, style: StrokeStyle(lineWidth: 6, lineCap: .round))
@@ -1051,11 +1390,6 @@ struct LockCircle: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(spoken(item))
-        if !entry.sample, item.state == nil, item.action == .check || item.action == .add, let day = entry.frame?.day {
-            Button(intent: WidgetLogIntent(item: item, day: day)) { face }.buttonStyle(.plain)
-        } else {
-            face
-        }
     }
 
     @ViewBuilder private func label(_ item: WidgetItem) -> some View {

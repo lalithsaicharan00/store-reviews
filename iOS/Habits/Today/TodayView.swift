@@ -222,14 +222,15 @@ struct TodayView: View {
         .onChange(of: router.widgetItem, initial: true) { routeWidget() }
         .onChange(of: router.timerHabit, initial: true) { routeTimer() }
         .onChange(of: router.widgetSetup, initial: true) { routeWidgetSetup() }
-        // Only one sheet at a time: a widget's sheet replaces whatever was open.
+        // Only one sheet at a time: a widget's sheet replaces whatever was open (Current Work 66).
         .onChange(of: router.widgetSheet) {
-            guard router.widgetSheet != nil else { return }
-            store.dayTarget = nil; store.timerScreen = nil; store.noteTarget = nil; menu.reset(); day = nil
+            guard let sheet = router.widgetSheet, somethingPresented else { return }
+            router.widgetSheet = nil
+            replacingPresented { router.widgetSheet = sheet }
         }
         .onChange(of: store.isLoaded) { routeWidget(); routeTimer(); routeWidgetSetup() }
         // A widget's amount entry or Record a slip, opened straight away (Implementation Spec §3).
-        .sheet(item: Binding(get: { store.isLoaded && routine == nil ? router.widgetSheet : nil }, set: { router.widgetSheet = $0 })) { target in
+        .sheet(item: Binding(get: { store.isLoaded && routine == nil && !presentingElse ? router.widgetSheet : nil }, set: { router.widgetSheet = $0 })) { target in
             if let habit = store.habits.first(where: { $0.id == target.habit && !$0.archived }) {
                 switch target.kind {
                 case .log, .slip: AddLogView(habit: habit, day: store.today(), source: .manual)
@@ -278,38 +279,76 @@ struct TodayView: View {
 
     /// A tapped Live Activity: back on today, with that habit's timer open (only if it's still a habit).
     private func routeTimer() {
-        guard store.isLoaded, routine == nil, let id = router.timerHabit else { return }
+        guard store.isLoaded, let id = router.timerHabit else { return }
         router.timerHabit = nil
         let start = router.startTimer
         router.startTimer = false
         guard let habit = store.habits.first(where: { $0.id == id && !$0.archived }) else { return }
-        menu.reset(); day = nil
-        // A widget's ▶ (Open Timer Full Screen on): start it here, as the row's ▶ does, then show it full screen.
+        // A widget's ▶: start it here, as the row's ▶ does, then show it full screen (if it's running, just show it).
         let today = store.today()
         if start, store.timers[id] == nil, store.rule(habit, on: today).kind == .duration, store.isDue(habit, on: today) {
             TimerPresence.askOnNextSync = true
             store.toggleTimer(habit)
         }
-        store.timerScreen = id
+        if store.timerScreen == id { return }
+        replacingPresented { store.timerScreen = id }
     }
 
     /// A widget's "Choose a habit": the Widgets guide, which explains Edit Widget.
     private func routeWidgetSetup() {
-        guard store.isLoaded, routine == nil, router.widgetSetup else { return }
+        guard store.isLoaded, router.widgetSetup else { return }
         router.widgetSetup = false
-        menu.reset()
-        menu.path.append(MenuPlace.widgets)
+        replacingPresented { menu.path.append(MenuPlace.widgets) }
     }
 
     /// Speed runs (`PerfDriver`): the same state changes the buttons make.
     private func routeWidget() {
-        guard store.isLoaded, routine == nil, !showNewHabit else { return }
-        if router.widgetToday { router.widgetToday = false; menu.reset(); day = nil; groupRaw = "" }
+        guard store.isLoaded else { return }
+        if router.widgetToday {
+            router.widgetToday = false; groupRaw = ""
+            if somethingPresented || day != nil { replacingPresented {} }
+        }
         guard let id = router.widgetItem else { return }
         router.widgetItem = nil
         guard let habit = store.habits.first(where: { $0.id == id && !$0.archived }) else { menu.reset(); return }
-        menu.reset()
-        store.dayTarget = .init(habitID: habit.id, day: store.today())
+        let target = HabitStore.DayTarget(habitID: habit.id, day: store.today())
+        if store.dayTarget?.habitID == target.habitID && store.dayTarget?.day == target.day { return }
+        replacingPresented { store.dayTarget = target }
+    }
+
+    /// Anything open over Today (a sheet, the routine player, a menu page).
+    private var somethingPresented: Bool {
+        store.timerScreen != nil || store.dayTarget != nil || store.noteTarget != nil || showCalendar || showFilter
+            || showNewHabit || showIdeas || perfForm || routine != nil || !menu.path.isEmpty || menu.isOpen
+    }
+    /// While a widget link is closing what was open, the widget's own sheet waits for it.
+    private var presentingElse: Bool {
+        store.timerScreen != nil || store.dayTarget != nil || store.noteTarget != nil || showCalendar || showFilter
+            || showNewHabit || showIdeas || perfForm
+    }
+
+    // LOCKED (widget taps, 8 Oct 2026): a widget link replaces everything that was open, old log sheets included (W9). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+    /// A widget link replaces whatever was open with the screen it asked for (the user, 7 Oct 2026, Current Work 66:
+    /// with a timer open, a checklist's link left the timer showing, because iOS shows one sheet at a time and the
+    /// second was never presented). Everything closes without animation, then the new screen opens once it's gone.
+    private func replacingPresented(_ present: @escaping () -> Void) {
+        let wasOpen = presentingElse || routine != nil || router.widgetSheet != nil
+        var quiet = Transaction()
+        quiet.disablesAnimations = true
+        withTransaction(quiet) {
+            // An earlier widget's log sheet too: kept, it came back when the newer screen closed (the user, 8 Oct 2026).
+            router.widgetSheet = nil
+            store.timerScreen = nil; store.dayTarget = nil; store.noteTarget = nil
+            showCalendar = false; showFilter = false; showNewHabit = false; showIdeas = false; perfForm = false
+            routine = nil
+            menu.reset(); day = nil
+        }
+        guard wasOpen else { present(); return }
+        Task {
+            // iOS presents a new sheet only once the old one has gone.
+            try? await Task.sleep(for: .milliseconds(150))
+            present()
+        }
     }
 
     private func perform(_ action: PerfAction) {

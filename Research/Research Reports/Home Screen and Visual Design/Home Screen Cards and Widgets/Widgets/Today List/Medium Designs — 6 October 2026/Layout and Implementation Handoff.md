@@ -35,7 +35,7 @@ Quit and at-most limits are ongoing context, not positive items to finish; an on
 
 The row body opens that item's Day-details route; the action has its own exact intent/route (U14/U16). These drawings contain no wired logging prototype. Native actions need cold/background persistence/retry and exact-day checks. Body/title taps are distinct from logging and from native Edit Widget.
 
-Before genuine positive completion, controls use **dynamic UIKit tertiarySystemFill with semantic ink**. After completion, use the habit's main color with white content. Running timers, quit and consumption limits remain neutral. Figma preview grays are proxies; reuse the native dynamic color, not their hex values. Positive row-fill opacity is .15 in the light examples and .26 in dark, clamped to one. No fill for quit/limits or period-only goals. Names and actual units remain visible; color alone never conveys the state (U2/U25).
+Before genuine positive completion, controls use **dynamic UIKit tertiarySystemFill with semantic ink**. After completion, use the habit's main color with white content. Running timers, quit and consumption limits remain neutral. Figma preview grays are proxies; reuse the native dynamic color, not their hex values. Positive row-fill opacity is .15 in the light examples and .26 in dark, clamped to one. No fill for quit/limits; a period-only goal fills toward its week or month goal. *(Corrected 8 Oct 2026: the user never asked for week or month goals to stay unfilled; their point was that such goals have no daily goal. They fill toward the week's or month's goal, as Today's row does.)* Names and actual units remain visible; color alone never conveys the state (U2/U25).
 
 ## Empty, private and unavailable
 

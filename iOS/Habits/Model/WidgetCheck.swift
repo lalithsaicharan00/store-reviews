@@ -110,6 +110,16 @@ enum WidgetCheck {
         expect(w.value == "9 of 8 glasses" && w.done && w.action == .add && w.actionText == "+1",
                "Above the goal: the true value, the habit's colour, and +1 still adds")
         expect(w.countsDone && w.counts, "A met goal counts as done")
+        // Every tap counts (Current Work 66): two quick taps on the same drawing are two logs, each with its own ID.
+        let waterSignature = HabitStore.widgetSignature(water)
+        let beforeTaps = store.dayProgress(of: water, on: day)
+        let firstTap = UUID(), secondTap = UUID()
+        store.logFromWidget(id: water.id, day: day, event: firstTap, signature: waterSignature, mode: "add", now: now)
+        store.logFromWidget(id: water.id, day: day, event: secondTap, signature: waterSignature, mode: "add", now: now)
+        await store.flush()
+        expect(store.dayProgress(of: water, on: day) == beforeTaps + 2, "Two quick + taps add two")
+        store.undoEntry(firstTap); store.undoEntry(secondTap); await store.flush()
+        expect(WidgetLogIntent(item: w, day: day.key).mode == "add", "A + is an add, whatever the switch shows")
 
         let check = habit("Widget check")
         var c = row("Widget check")
@@ -123,7 +133,8 @@ enum WidgetCheck {
                "✓ logs once however often the callback repeats, recorded as a widget log")
         c = row("Widget check")
         expect(c.done && c.line == "Done" && c.action == .check, "Done check: the habit's colour, ✓ can take it back")
-        expect(WidgetLogIntent(item: c, day: day.key).mode == "uncheck", "A done ✓'s button unchecks that day (U14)")
+        let switchIntent = WidgetLogIntent(item: c, day: day.key)
+        expect(switchIntent.mode == "toggle" && switchIntent.value == false, "A done ✓'s switch unchecks that day (U14)")
         let uncheck = UUID()
         store.logFromWidget(id: check.id, day: day, event: uncheck, signature: checkSignature, mode: "uncheck", now: now)
         store.logFromWidget(id: check.id, day: day, event: uncheck, signature: checkSignature, mode: "uncheck", now: now)
@@ -132,6 +143,15 @@ enum WidgetCheck {
         store.logFromWidget(id: check.id, day: day, event: checkEvent, signature: checkSignature, mode: "check", now: now); await store.flush()
         expect(store.dayProgress(of: check, on: day) == 0, "A replayed old ✓ after Undo never comes back (tombstone)")
         store.problem = nil
+        // A ✓ switch tapped quickly (Current Work 66): each tap flips what's saved, in order.
+        for _ in 0..<2 { store.logFromWidget(id: check.id, day: day, event: UUID(), signature: checkSignature, mode: "flip", now: now) }
+        await store.flush()
+        expect(store.dayProgress(of: check, on: day) == 0 && store.problem == nil, "Two quick ✓ taps end unticked, as the switch shows")
+        for _ in 0..<3 { store.logFromWidget(id: check.id, day: day, event: UUID(), signature: checkSignature, mode: "flip", now: now) }
+        await store.flush()
+        expect(store.dayProgress(of: check, on: day) == 1, "Three end ticked")
+        store.logFromWidget(id: check.id, day: day, event: UUID(), signature: checkSignature, mode: "flip", now: now); await store.flush()
+        expect(store.dayProgress(of: check, on: day) == 0, "And a fourth unticks")
 
         let steps = row("Widget steps")
         expect(steps.action == .open && steps.route == "oftenenough://log/\(habit("Widget steps").id.uuidString)",
@@ -145,18 +165,16 @@ enum WidgetCheck {
 
         let timer = habit("Widget timer")
         var t = row("Widget timer")
-        expect(t.action == .open && t.route == "oftenenough://timer/\(timer.id.uuidString)?start=1",
-               "▶ opens the full-screen timer when Open Timer Full Screen is on")
+        expect(t.action == .timerStart, "▶ starts the timer on the widget, without opening the app (Current Work 66)")
         UserDefaults.standard.set(false, forKey: Preferences.timerScreen)
         t = row("Widget timer")
-        expect(t.action == .timerStart, "▶ starts the timer in place when Open Timer Full Screen is off")
+        expect(t.action == .timerStart, "▶ starts it in place whatever Open Timer Full Screen says")
         expect(store.timerFromWidget(id: timer.id, day: day, start: true, signature: HabitStore.widgetSignature(timer), now: now)
                && store.timers[timer.id] != nil, "▶ from a widget starts the timer (and its Live Activity)")
         store.timerFromWidget(id: timer.id, day: day, start: true, signature: HabitStore.widgetSignature(timer), now: now)
         expect(store.timers[timer.id] != nil, "A repeated ▶ never stops it")
         t = row("Widget timer")
         expect(t.action == .timerPause && t.timerClock != nil && t.timerGoalAt != nil && !t.done, "Running: ⏸, a live clock, neutral")
-        expect(WidgetTimerIntent(item: t, day: day.key).start == false, "The running timer's button pauses")
         // A session of a second or more is saved (shorter ones aren't a log).
         try? await Task.sleep(for: .seconds(1.2))
         store.timerFromWidget(id: timer.id, day: day, start: false, signature: HabitStore.widgetSignature(timer), now: now)
@@ -197,8 +215,8 @@ enum WidgetCheck {
         store.logFromWidget(id: weekly.id, day: day, event: UUID(), signature: HabitStore.widgetSignature(weekly), mode: "add", now: now)
         await store.flush()
         let wk = row("Widget weekly")
-        expect(wk.action == .add && wk.actionText == "+1" && wk.fraction == nil && wk.cardFraction == 1.0 / 3,
-               "A week goal: +1, no row fill, the card fills toward the week")
+        expect(wk.action == .add && wk.actionText == "+1" && wk.fraction == 1.0 / 3 && wk.cardFraction == 1.0 / 3,
+               "A week goal: +1, and the row and the card fill toward the week, as Today's row does")
         expect(wk.line == "1 today · 3 a week" && wk.value == "1 of 3 times", "Week goal words: \(wk.line) / \(wk.value)")
         expect(!wk.done && wk.countsDone, "One tick doesn't finish a week goal's button, but counts today as done (U14)")
 
@@ -429,7 +447,11 @@ enum WidgetCheck {
         expect(snapshot.frame(at: snapshot.frames.last!.end) == nil, "After the seven days, old numbers are never shown")
         let timeline = PhoneWidgetTimeline.entries(snapshot: snapshot, now: now, listKey: "habits") { _ in }
         expect(zip(timeline, timeline.dropFirst()).allSatisfy { $0.date < $1.date }, "Timeline dates strictly increase")
-        expect(timeline.last?.status == .stale && timeline.filter { $0.frame != nil }.count >= 7, "Each day has an entry, then Open to update")
+        // A few hours and the next day's start, never the whole week: WidgetKit draws every entry on each reload (Current Work 65).
+        expect(timeline.count <= 14 && timeline.contains { $0.date == snapshot.frames[1].start && $0.frame?.day == snapshot.frames[1].day },
+               "A timeline holds the next hours and the next day's start, not a week")
+        let lastDay = PhoneWidgetTimeline.entries(snapshot: snapshot, now: snapshot.frames.last!.start.addingTimeInterval(60), listKey: "habits") { _ in }
+        expect(lastDay.last?.status == .stale, "After the seventh day, Open to update")
         let quitID = habit("Widget quit").id.uuidString
         let later = now.addingTimeInterval(30 * 86_400)
         let counter = PhoneWidgetTimeline.entries(snapshot: snapshot, now: later, selection: quitID) { _ in }
@@ -446,10 +468,10 @@ enum WidgetCheck {
         store.timerFromWidget(id: timer.id, day: day, start: true, signature: HabitStore.widgetSignature(timer), now: now)
         let runningSnapshot = store.widgetSnapshot(now: now)
         let running = PhoneWidgetTimeline.entries(snapshot: runningSnapshot, now: now, selection: timer.id.uuidString) { _ in }
-        // Each minute for half an hour, or up to the day's end if that comes first (T11: any time of day).
-        let minutesLeft = min(30, Int(runningSnapshot.frames[0].end.timeIntervalSince(now) / 60))
-        expect(running.filter { $0.date > now && $0.date < now.addingTimeInterval(31 * 60) }.count >= minutesLeft,
-               "A running timer's fill moves each minute")
+        // Every 5 minutes for half an hour (Apple's minimum spacing), or up to the day's end if that comes first (T11).
+        let stepsLeft = min(6, Int(runningSnapshot.frames[0].end.timeIntervalSince(now) / 300))
+        expect(running.filter { $0.date > now && $0.date < now.addingTimeInterval(31 * 60) }.count >= stepsLeft,
+               "A running timer's fill moves every 5 minutes")
         store.timerFromWidget(id: timer.id, day: day, start: false, signature: HabitStore.widgetSignature(timer), now: now)
         await store.flush()
         UserDefaults.standard.set(true, forKey: Preferences.timerScreen)

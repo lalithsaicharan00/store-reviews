@@ -20,11 +20,28 @@
 		AA0000000000000000000004 /* Habits.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habits.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		DD0000000000000000000010 /* Exceptions for "Shared" folder in "Habits" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				README.md,
+			);
+			target = AA0000000000000000000005 /* Habits */;
+		};
+		DD0000000000000000000011 /* Exceptions for "Shared" folder in "HabitsLiveActivity" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				README.md,
+			);
+			target = CC0000000000000000000005 /* HabitsLiveActivity */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BB0000000000000000000002 /* HabitsUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; path = HabitsUITests; sourceTree = "<group>"; };
 		AA0000000000000000000002 /* Habits */ = {isa = PBXFileSystemSynchronizedRootGroup; path = Habits; sourceTree = "<group>"; };
 		CC0000000000000000000002 /* HabitsLiveActivity */ = {isa = PBXFileSystemSynchronizedRootGroup; path = HabitsLiveActivity; sourceTree = "<group>"; };
-		DD0000000000000000000002 /* Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; path = Shared; sourceTree = "<group>"; };
+		DD0000000000000000000002 /* Shared */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (DD0000000000000000000010 /* Exceptions for "Shared" folder in "Habits" target */, DD0000000000000000000011 /* Exceptions for "Shared" folder in "HabitsLiveActivity" target */, ); path = Shared; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */

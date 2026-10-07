@@ -2250,6 +2250,12 @@ final class HabitStore {
             guard !(try await repository.hasEntry(id: event.uuidString)).boolValue else { return }
             let rule = rule(habit, on: day)
             let single = (rule.kind == .check && slots(of: habit).isEmpty && !countsUp(habit, on: day)) || rule.kind == .task
+            // LOCKED (widget taps, 8 Oct 2026): taps are saved as "add" (own ID) or "check"/"uncheck" (absolute), never re-flipped twice (W4). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+            // "flip": a widget ✓ switch (Current Work 66). Each tap changes the day from what's saved now, in the order
+            // the taps came (they're saved one after another), so two quick taps end unticked, as the switch shows.
+            // iOS doesn't reliably hand a switch's new state to the intent on a second quick tap.
+            var mode = mode
+            if mode == "flip" { mode = (rule.kind == .task ? isDone(habit, on: day) : isTicked(habit, on: day)) ? "uncheck" : "check" }
             switch mode {
             case "uncheck":
                 guard single, rule.kind == .task ? isDone(habit, on: day) : isTicked(habit, on: day) else { return }

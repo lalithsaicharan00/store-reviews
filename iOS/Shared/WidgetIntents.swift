@@ -102,33 +102,47 @@ struct HistoryWidgetConfiguration: WidgetConfigurationIntent {
     @Parameter(title: "Habit") var item: WidgetSelection?
 }
 
-/// ✓ or + on a widget. Implemented in BOTH app and extension: a LiveActivityIntent runs in the app's process, where the
-/// data is; the extension has no database and never reports a write it didn't make. Works from the Lock Screen
-/// without unlocking (Implementation Spec §8).
-struct WidgetLogIntent: LiveActivityIntent {
+/// ✓ or + on a widget, drawn as a switch (`WidgetRoundToggleStyle`) so iOS changes it the moment it's touched, before
+/// any of this runs (Apple: a Toggle "will optimistically update its presentation… without having to wait for a
+/// roundtrip"). Implemented in BOTH app and extension: a LiveActivityIntent runs in the app's process, where the data
+/// is, so every tap is saved in the database, synced and backed up even when the app is never opened (Current Work 66).
+/// The extension has no database and never reports a write it didn't make. Works from the Lock Screen without
+/// unlocking (Implementation Spec §8).
+///
+/// Every tap counts (Current Work 66): a ✓ flips the day's saved tick, taps saved strictly in order, so a quick run of
+/// taps ends where the switch shows; a + adds one with its own new ID, so a second tap before the widget redraws is a
+/// second log, never a duplicate of the first.
+struct WidgetLogIntent: LiveActivityIntent, SetValueIntent {
     static let title: LocalizedStringResource = "Log a habit"
     static var isDiscoverable: Bool { false }
     static var authenticationPolicy: IntentAuthenticationPolicy { .alwaysAllowed }
     @Parameter(title: "Item") var item: String
     @Parameter(title: "Day") var day: String
-    @Parameter(title: "Event") var event: String
     @Parameter(title: "Configuration") var signature: String
-    /// "check", "uncheck" or "add": what the drawn button did, so a retried callback can't do the opposite.
+    /// "toggle" (a ✓ that ticks and unticks the day) or "add" (a + that adds one).
     @Parameter(title: "Mode") var mode: String
+    /// The switch's new state as iOS sets it (`SetValueIntent`); kept for the switch, not relied on (see `perform`).
+    @Parameter(title: "Value") var value: Bool
     init() {}
     init(item: WidgetItem, day: String) {
-        self.item = item.id; self.day = day; event = item.token; signature = item.signature
-        mode = item.action == .check ? (item.done ? "uncheck" : "check") : "add"
+        self.item = item.id; self.day = day; signature = item.signature
+        mode = item.action == .check ? "toggle" : "add"
+        value = !item.done
     }
     @MainActor func perform() async throws -> some IntentResult {
         #if HABITS_APP
         #if DEBUG
         WidgetDisk.diagnose("app intent started")
+        WidgetTiming.mark("tap: log intent started")
         #endif
+        // A ✓ flips what's saved (see `HabitStore.logFromWidget`); `value` isn't relied on: on a second quick tap iOS
+        // sent the first tap's value again (measured on the iPhone, 8 Oct 2026).
+        let change = mode == "toggle" ? "flip" : "add"
         do {
-            try await AppModel.shared.logFromWidget(item: item, day: day, event: event, signature: signature, mode: mode)
+            try await AppModel.shared.logFromWidget(item: item, day: day, event: UUID().uuidString, signature: signature, mode: change)
             #if DEBUG
             WidgetDisk.diagnose("app intent committed")
+            WidgetTiming.mark("tap: log intent returns")
             #endif
         } catch {
             #if DEBUG
@@ -139,6 +153,7 @@ struct WidgetLogIntent: LiveActivityIntent {
         #else
         #if DEBUG
         WidgetDisk.diagnose("extension intent invoked")
+        WidgetTiming.mark("tap: log intent ran in the WIDGET process (throws openApp)")
         #endif
         throw WidgetActionError.openApp
         #endif
@@ -146,6 +161,60 @@ struct WidgetLogIntent: LiveActivityIntent {
     }
 }
 
+// LOCKED (widget taps, 8 Oct 2026): a tap runs here in the widget's process and hands over to the app (W1); never make it an app-process intent. Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+/// ✓ or + on a widget (Current Work 66): runs in the widget's own process, so the widget redraws about 0.2 s later;
+/// shows the card after the tap (`WidgetDisk.applyTap`), keeps the tap safe in the shared file (`WidgetTaps`), then
+/// hands over to the app in the background (`WidgetSaveIntent`), which saves it in the database, syncs and backs up.
+struct WidgetTapIntent: AppIntent {
+    static let title: LocalizedStringResource = "Log a habit"
+    static var isDiscoverable: Bool { false }
+    static var authenticationPolicy: IntentAuthenticationPolicy { .alwaysAllowed }
+    @Parameter(title: "Item") var item: String
+    @Parameter(title: "Day") var day: String
+    @Parameter(title: "Configuration") var signature: String
+    init() {}
+    init(item: WidgetItem, day: String) {
+        self.item = item.id; self.day = day; signature = item.signature
+    }
+    func perform() async throws -> some IntentResult & OpensIntent {
+        #if DEBUG
+        WidgetTiming.mark("tap: widget intent started")
+        #endif
+        let now = Date.now
+        if let mode = WidgetDisk.applyTap(itemID: item, day: day, signature: signature, now: now) {
+            WidgetTaps.append(WidgetTap(event: UUID().uuidString, item: item, day: day, mode: mode, signature: signature, at: now))
+        }
+        // The other widgets showing this habit redraw too (the tapped one always does when this returns).
+        WidgetCenter.shared.reloadAllTimelines()
+        #if DEBUG
+        WidgetTiming.mark("tap: widget intent returns")
+        #endif
+        return .result(opensIntent: WidgetSaveIntent())
+    }
+}
+
+/// Saves every waiting widget tap in the app's process, in the background (iOS runs it when `WidgetTapIntent`
+/// returns it): the database, then sync, backup, reminders and the widgets' redraw from the saved data.
+struct WidgetSaveIntent: LiveActivityIntent {
+    static let title: LocalizedStringResource = "Save widget taps"
+    static var isDiscoverable: Bool { false }
+    static var authenticationPolicy: IntentAuthenticationPolicy { .alwaysAllowed }
+    init() {}
+    @MainActor func perform() async throws -> some IntentResult {
+        #if HABITS_APP
+        #if DEBUG
+        WidgetTiming.mark("tap: save intent started")
+        #endif
+        await AppModel.shared.saveWidgetTaps()
+        #if DEBUG
+        WidgetTiming.mark("tap: save intent returns")
+        #endif
+        #endif
+        return .result()
+    }
+}
+
+// LOCKED (widget taps, 8 Oct 2026): timers start and stop on the widget, never opening the app (W7). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
 /// ▶ or ⏸ on a widget: the same timer as Today's row, with its Live Activity and Dynamic Island. ▶ only starts and ⏸
 /// only stops and saves, so a retried callback never undoes itself.
 struct WidgetTimerIntent: LiveActivityIntent {
@@ -162,8 +231,17 @@ struct WidgetTimerIntent: LiveActivityIntent {
     }
     @MainActor func perform() async throws -> some IntentResult {
         #if HABITS_APP
+        #if DEBUG
+        WidgetTiming.mark("tap: timer intent started")
+        #endif
         try await AppModel.shared.timerFromWidget(item: item, day: day, start: start, signature: signature)
+        #if DEBUG
+        WidgetTiming.mark("tap: timer intent returns")
+        #endif
         #else
+        #if DEBUG
+        WidgetTiming.mark("tap: timer intent ran in the WIDGET process (throws openApp)")
+        #endif
         throw WidgetActionError.openApp
         #endif
         return .result()
@@ -203,3 +281,63 @@ nonisolated enum WidgetActionError: Error, CustomLocalizedStringResourceConverti
         }
     }
 }
+
+#if DEBUG
+/// Debug only (Current Work 65): stand-ins for the log button that change no data, to find out on the iPhone whether a
+/// widget tap opens the app because the intent must run in the app's process. Chosen with `debug.probeIntent` in the
+/// shared group ("live" or "extension"); `WidgetLatencyDeviceTests` sets it through a launch argument.
+struct WidgetProbeLiveIntent: LiveActivityIntent {
+    static let title: LocalizedStringResource = "Probe (app process)"
+    static var isDiscoverable: Bool { false }
+    static var authenticationPolicy: IntentAuthenticationPolicy { .alwaysAllowed }
+    init() {}
+    func perform() async throws -> some IntentResult {
+        WidgetTiming.mark("probe: live intent ran in the \(Bundle.main.bundleURL.pathExtension == "appex" ? "WIDGET" : "app") process")
+        return .result()
+    }
+}
+struct WidgetProbeExtensionIntent: AppIntent {
+    static let title: LocalizedStringResource = "Probe (widget process)"
+    static var isDiscoverable: Bool { false }
+    static var authenticationPolicy: IntentAuthenticationPolicy { .alwaysAllowed }
+    init() {}
+    func perform() async throws -> some IntentResult {
+        WidgetTiming.mark("probe: plain intent ran in the \(Bundle.main.bundleURL.pathExtension == "appex" ? "widget" : "APP") process")
+        return .result()
+    }
+}
+/// Debug comparison: runs in the widget's process, then asks iOS to run an app-process intent. Does that one run in the
+/// background, without opening the app?
+struct WidgetProbeChainIntent: AppIntent {
+    static let title: LocalizedStringResource = "Probe (widget, then app)"
+    static var isDiscoverable: Bool { false }
+    static var authenticationPolicy: IntentAuthenticationPolicy { .alwaysAllowed }
+    init() {}
+    func perform() async throws -> some IntentResult & OpensIntent {
+        WidgetTiming.mark("probe: chain intent ran in the \(Bundle.main.bundleURL.pathExtension == "appex" ? "widget" : "APP") process")
+        return .result(opensIntent: WidgetProbeLiveIntent())
+    }
+}
+nonisolated enum WidgetProbe {
+    static var mode: String? { UserDefaults(suiteName: WidgetDisk.group)?.string(forKey: "debug.probeIntent") }
+    /// "live": ‹ › run in the app's process, to compare when the screen shows a change against the widget's own.
+    static var pageMode: String? { UserDefaults(suiteName: WidgetDisk.group)?.string(forKey: "debug.pageProbe") }
+}
+/// ‹ and › exactly as `WidgetPageIntent`, but run in the app's process (debug comparison only).
+struct WidgetPageLiveProbeIntent: LiveActivityIntent {
+    static let title: LocalizedStringResource = "Change widget page (app process)"
+    static var isDiscoverable: Bool { false }
+    static var authenticationPolicy: IntentAuthenticationPolicy { .alwaysAllowed }
+    @Parameter(title: "View") var key: String
+    @Parameter(title: "Page") var page: Int
+    @Parameter(title: "Kind") var kind: String
+    init() {}
+    init(key: String, page: Int, kind: String) { self.key = key; self.page = page; self.kind = kind }
+    func perform() async throws -> some IntentResult {
+        WidgetTiming.mark("probe: page intent in the \(Bundle.main.bundleURL.pathExtension == "appex" ? "WIDGET" : "app") process")
+        _ = WidgetDisk.page(key: key, set: page)
+        if kind.isEmpty { WidgetCenter.shared.reloadAllTimelines() } else { WidgetCenter.shared.reloadTimelines(ofKind: kind) }
+        return .result()
+    }
+}
+#endif

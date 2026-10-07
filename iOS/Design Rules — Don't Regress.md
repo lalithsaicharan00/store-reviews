@@ -317,7 +317,7 @@ Source: [Today's Rows — The Line Under the Name, Notes and Spacing](<../Resear
 Source: [Today's Rows — Tap, Swipe, the Day Sheet and Delete](<../Research/Research Reports/Day Structure and Organization/Today's Rows — Tap, Swipe, the Day Sheet and Delete.md>). Checklist: `Docs/Checklists/Today — Row Sheet, Swipe Actions, Order and Tap Again.md`. Rulebook U14.
 
 - **Tap the row → its Day sheet** for the day Today shows (`store.dayTarget`, one sheet on Today, never one per row). Tasks keep only their tick. The round button never opens anything but Add Entry (+ with no step).
-- **The round button: ✓ toggles that day's tick** (`isTicked`: a once-a-day check, or a day of "N days a week"); **+ adds** (`countsUp`: a check counted several times a day, **or N times a week, month or year**, shows +1 like an amount); ▶/⏸; ⌄ for a checklist's steps. A tap never takes back part of a count. **The button fills only when the habit's goal is met: for a week, month or year count, when the period is met, never after one tap today** (the user, 6 Oct 2026, Current Work 54: "how are you going to decide it's complete for today? They might call two times this day"). It still counts as done for the day once logged (it sinks, leaves "N left", stops reminders: Build Plan #60a).
+- **The round button: ✓ toggles that day's tick** (`isTicked`: a once-a-day check, or a day of "N days a week"); **every check habit keeps its ✓**: a check counted several times a day, **or N times a week, month or year** (`countsUp`) shows ✓ too, and each tap adds one check and never takes one back (the user, 7 Oct 2026, Current Work 64: "the user has chosen a check-based habit… you are turning it into an amount habit"; the +1 of 3–6 Oct is superseded, on Today and in widgets); **+ adds** for amounts; ▶/⏸; ⌄ for a checklist's steps. A tap never takes back part of a count. **The button fills only when the habit's goal is met: for a week, month or year count, when the period is met, never after one tap today** (the user, 6 Oct 2026, Current Work 54: "how are you going to decide it's complete for today? They might call two times this day"). It still counts as done for the day once logged (it sinks, leaves "N left", stops reminders: Build Plan #60a).
 - **Swipes reveal labelled buttons and never act by themselves** (4 Oct 2026, report "Swipe Actions — Reveal, Never Act"; supersedes the full-swipe Note): no full swipe on either side; two buttons at most. Left: Skip / Undo Skip at the edge, then Note (a quit row: Log Slip, then Note; a task: Note). Right: "Undo +1 glass" (the day's last entry, named). Pause / Resume is in the long-press menu and the Day sheet. Nothing destructive on a swipe.
 - **Touch and hold = the sheet's actions:** Open Habit Page (pushed on Today's stack, `HabitPageRoute`), Edit Habit, Add Entry…, Note, Skip, Pause…, the named Undo, All Notes. No Delete, no "Edit Today's Progress…" (the tap does it).
 - **The Day sheet's 3 Oct implementation baseline, superseded by the 4 Oct design proposal below:** icon, name and plan → Result → the habit's own control (Done switch, Add 1, +step, Start Timer, steps, Log a Slip) and Add Entry → that day's entries → Today/This Day (Skip, Note) → Habit (Open Habit Page from Today, Edit, Pause). The implementation still has the bottom ‹ date › bar. **Archive and Delete only in the ⋯ menu**, Delete confirmed with "Archive Instead".
@@ -381,6 +381,27 @@ every visual or layout change on the real iPhone before calling it done.**
   the files that host one in a `ScrollView` (`PERFORMANCE-LESSONS.md` L19).
 - **A test launch never touches the person's data** (`-uitest`: its own signed-out store, backup state and folder, no
   iCloud). Rule 16 in the Data Safety report; keep it for anything new that stores or sends data.
+
+## Widgets: taps and updates — LOCKED (8 Oct 2026)
+
+The user checked every part on the iPhone and asked for it to be locked. The full record, decision by decision, is
+[Widgets — Taps and Updates (Locked)](<Docs/Widgets — Taps and Updates (Locked).md>) (Rulebook U28). Don't regress:
+
+- **A tap changes the whole card at once** (button, number, bar, row fill, the list's "N of M done"), like Reminders: the
+  ✓/+ is a switch over the card whose "after" is the app's own next state. Only the round button takes the touch.
+- **The tap runs in the widget's process, then hands over to the app in the background**, which saves, syncs and backs
+  up. Never an app-process intent for a tap that should show at once (iOS waits ~3 s). Never a tap kept only on the
+  phone until the app opens.
+- **Every tap counts:** quick + taps move on (24 → 25 → 26 → 27); a ✓ tapped twice ends unticked; taps on different
+  habits are all saved, in order.
+- **Timers start and stop on the widget** and in the Dynamic Island; the app doesn't open.
+- **Steps (checklist) → Day details, ↗; quit → Record a slip, ↗; a number to type → the log sheet, a plain +.** A widget
+  link replaces whatever the app had open; an older one never comes back.
+- **Logging in the app then going straight home shows on the widget within ~1 s** (publish 0.5 s after a change, and
+  at once when the app starts to leave).
+- **Check habits keep ✓; week and month goals fill toward their period**, as on Today.
+- **Never:** `invalidatableContent` on buttons, nested switches, numbers worked out in the widget, a week of timeline
+  entries.
 
 ## Words the app never uses
 

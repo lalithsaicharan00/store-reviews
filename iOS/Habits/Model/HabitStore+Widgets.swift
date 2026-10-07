@@ -132,12 +132,43 @@ extension HabitStore {
             let moment = max(now, dayBounds(day).lowerBound)
             var item = widgetItem(habit, on: day, now: moment, isToday: offset == 0, signature: signature, showStreaks: showStreaks)
             item.heat = heat
+            // LOCKED (widget taps, 8 Oct 2026): the "after" cards, a ✓ flipped and a + five taps ahead (W3). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+            // Today's ✓ or +: the card as it will be after one tap, drawn by the widget the moment it's touched, so the
+            // whole card changes at once while the app saves behind (the user, 8 Oct 2026, Current Work 66).
+            if offset == 0, item.state == nil, item.action == .check || item.action == .add {
+                if item.action == .check {
+                    var after = widgetItem(habit, on: day, now: moment, isToday: true, signature: signature, showStreaks: showStreaks,
+                                           adjust: WidgetAdjust(add: 0, flip: true), week: item.week)
+                    after.heat = heat; after.token = item.token
+                    item.after = [after]
+                } else {
+                    // A + tapped again before the widget redraws moves on again (the user, 8 Oct 2026: a second tap
+                    // looked like an undo): the card after 1, 2 … `widgetTapsAhead` taps, each holding the next.
+                    let step = item.type == "amount" ? (habit.quickIncrement ?? 0) : 1
+                    var next: WidgetItem?
+                    for taps in stride(from: Self.widgetTapsAhead, through: 1, by: -1) {
+                        var after = widgetItem(habit, on: day, now: moment, isToday: true, signature: signature, showStreaks: showStreaks,
+                                               adjust: WidgetAdjust(add: step * Double(taps), flip: false), week: item.week)
+                        after.heat = heat; after.token = item.token
+                        after.after = next.map { [$0] }
+                        next = after
+                    }
+                    item.after = next.map { [$0] }
+                }
+            }
             return item
         }
     }
 
     /// One habit or task on one day, as every widget shows it.
-    func widgetItem(_ habit: Habit, on day: LocalDay, now: Date, isToday: Bool, signature: String, showStreaks: Bool) -> WidgetItem {
+    /// How many quick + taps in a row a widget shows at once before it redraws with the saved numbers.
+    static let widgetTapsAhead = 5
+
+    /// One tap's effect, for the card as it will be after it: a + adds `add`; a ✓ flips the day's tick.
+    struct WidgetAdjust { var add: Double; var flip: Bool }
+
+    func widgetItem(_ habit: Habit, on day: LocalDay, now: Date, isToday: Bool, signature: String, showStreaks: Bool,
+                    adjust: WidgetAdjust? = nil, week: [Int]? = nil) -> WidgetItem {
         let id = habit.id.uuidString
         let rule = rule(habit, on: day)
         let paused = isPaused(habit, on: day)
@@ -178,8 +209,8 @@ extension HabitStore {
             item.line = item.value; item.big = "Not planned"; item.caption = "Not planned"
         }
         if quit { fillQuit(&item, habit, on: day, now: now, planned: due && !paused) }
-        else if habit.kind == .task { fillTask(&item, habit, on: day, now: now, planned: due) }
-        else { fillHabit(&item, habit, rule: rule, on: day, now: now, planned: due && !paused && !skipped, showStreaks: showStreaks) }
+        else if habit.kind == .task { fillTask(&item, habit, on: day, now: now, planned: due, adjust: adjust) }
+        else { fillHabit(&item, habit, rule: rule, on: day, now: now, planned: due && !paused && !skipped, showStreaks: showStreaks, adjust: adjust) }
         // A neutral row opens Day details for that day: quick logging is off (Implementation Spec §3).
         if item.state != nil {
             item.action = .open
@@ -194,6 +225,10 @@ extension HabitStore {
             case .part, .notDone, .open: item.counts = true
             case .neutral: break
             }
+            // After one tap: done for the day as Today counts it (complete, or for a week or month goal anything today).
+            if adjust != nil, item.counts {
+                item.countsDone = item.done || (!rule.frequency.isDayBased && !rule.atMost && (item.todayAmount ?? 0) > 0)
+            }
         }
         if !item.cards.isEmpty {
             // A carried-over task says where it came from instead of its section (`taskLine`).
@@ -201,7 +236,16 @@ extension HabitStore {
             item.place = item.cards[0] == .quittingCard || carried ? "" : widgetCardName(item.cards[0])
             item.todayLine = [item.place, item.line].filter { !$0.isEmpty }.joined(separator: " · ")
         }
-        if habit.kind != .task {
+        if let week, adjust != nil {
+            // The week's squares after one tap: today's square follows the day's new state.
+            item.week = week
+            do {
+                let span = period(.week, containing: day)
+                let index = span.lowerBound.days(to: day, calendar: calendar)
+                item.weekToday = index
+                if week.indices.contains(index), let level = item.todayLevel { item.week[index] = level }
+            }
+        } else if habit.kind != .task {
             let span = period(.week, containing: day)
             let cells = heatCells(habit, in: span, range: .week, today: day)
             item.week = cells.map(Self.widgetCell)
@@ -234,8 +278,8 @@ extension HabitStore {
 
     // MARK: Words and numbers
 
-    private func fillTask(_ item: inout WidgetItem, _ habit: Habit, on day: LocalDay, now: Date, planned: Bool) {
-        let done = isDone(habit, on: day)
+    private func fillTask(_ item: inout WidgetItem, _ habit: Habit, on day: LocalDay, now: Date, planned: Bool, adjust: WidgetAdjust? = nil) {
+        let done = adjust?.flip == true ? !isDone(habit, on: day) : isDone(habit, on: day)
         if item.state == nil {
             var parts: [String] = []
             if let due = habit.dueDay, due < day {
@@ -281,21 +325,40 @@ extension HabitStore {
     }
 
     private func fillHabit(_ item: inout WidgetItem, _ habit: Habit, rule: Habit, on day: LocalDay, now: Date, planned: Bool,
-                           showStreaks: Bool) {
-        let progress = progress(of: habit, on: day, now: now)
+                           showStreaks: Bool, adjust: WidgetAdjust? = nil) {
+        var progress = progress(of: habit, on: day, now: now)
         let goal = goal(of: rule)
         let period = !rule.frequency.isDayBased ? periodKind(rule) : .day
         let running = timers[habit.id] != nil && day == today(now: now)
         let dayGoal = dayGoal(of: rule)
-        let todayAmount = dayProgress(of: habit, on: day, now: now)
-        let complete = isComplete(habit, on: day)
+        var todayAmount = dayProgress(of: habit, on: day, now: now)
+        var complete = isComplete(habit, on: day)
+        // After one tap (`WidgetAdjust`): a ✓ flips the day's tick, a + adds its step; the rest follows from these.
+        var tickedOverride: Bool?
+        if let adjust {
+            if adjust.flip {
+                let ticked = !isTicked(habit, on: day)
+                tickedOverride = ticked
+                let delta: Double = ticked ? 1 : -min(1, todayAmount)
+                progress += delta; todayAmount += delta
+                complete = ticked
+            } else {
+                progress += adjust.add; todayAmount += adjust.add
+                complete = !rule.atMost && progress >= goal
+            }
+        }
+        item.todayAmount = todayAmount
+        if !rule.atMost {
+            item.todayLevel = complete ? (todayAmount > dayGoal && dayGoal > 0 && rule.frequency.isDayBased ? 5 : 4)
+                : todayAmount <= 0 ? 0 : (dayGoal > 0 && rule.frequency.isDayBased ? (todayAmount / dayGoal <= 1.0 / 3 ? 1 : todayAmount / dayGoal <= 2.0 / 3 ? 2 : 3) : 4)
+        }
         let slotted = !slots(of: habit).isEmpty
         if showStreaks {
             let n = streak(of: habit, asOf: day)
             item.streak = n > 0 ? rule.frequency.streakUnit.short(n) : nil
         }
-        // The bar toward the goal's own period (Small and weekly cards), and today's row fill only toward a real daily
-        // goal (U25). Limits fill neutral grey.
+        // The bar toward the goal's own period (Small and weekly cards), and the row fill toward the same goal Today's
+        // row fills toward: today's for a daily goal, the period's for a week or month goal. Limits fill neutral grey.
         let periodFraction = goal > 0 ? max(0, progress / goal) : 0
         item.cardFraction = periodFraction
         item.ring = rule.atMost ? nil : min(1, periodFraction)
@@ -304,11 +367,15 @@ extension HabitStore {
             item.fraction = periodFraction
         } else if period == .day {
             item.fraction = dayGoal > 0 ? max(0, todayAmount / dayGoal) : 0
+        } else {
+            // A week or month goal has no daily goal: it fills toward its week or month, as Today's row does (the user,
+            // 8 Oct 2026: Call family's row didn't fill on the widget).
+            item.fraction = periodFraction
         }
         // Positive completion only: a limit never turns the habit's colour (U2, U25).
         item.done = !rule.atMost && complete
         // Quit or Cut Down never sinks: nothing in it is "done" (Today's card keeps the person's order as it is).
-        item.sinks = !rule.atMost && PartSectionDone.isDone(self, habit, on: day)
+        item.sinks = adjust != nil ? item.done : !rule.atMost && PartSectionDone.isDone(self, habit, on: day)
         guard item.state == nil else {
             item.fraction = nil
             item.cardFraction = nil
@@ -320,7 +387,7 @@ extension HabitStore {
         case .check:
             let unit = rule.checkUnit ?? "times"
             if !slotted && !countsUp(habit, on: day) {
-                let ticked = isTicked(habit, on: day)
+                let ticked = tickedOverride ?? isTicked(habit, on: day)
                 item.line = ticked ? "Done" : "Not yet"
                 item.value = ticked ? "Checked" : "Not checked"
                 item.big = item.value
@@ -389,31 +456,35 @@ extension HabitStore {
 
         // The one button (U14): ✓ toggles today, + adds one saved step, ▶/⏸ the timer; anything that needs a screen
         // opens it directly (the amount entry, the named steps, the full-screen timer).
+        // What the app opens (the user, 7 Oct 2026, Current Work 66): a timer opens its timer, steps their Day details, a
+        // number to type its log sheet; checks, tasks and saved steps log from the widget.
         guard planned else { return }
+        // A + whose next tap meets the goal: the switch shows the habit's colour the moment it's touched.
+        let meetsWith: (Double) -> Bool = { step in !rule.atMost && !complete && progress + step >= goal }
         switch rule.kind {
         case .check:
             if slotted {
-                if slots(of: habit).allSatisfy({ isSlotDone(habit, slot: $0, on: day) }) {
+                let open = slots(of: habit).filter { !isSlotDone(habit, slot: $0, on: day) }
+                if open.isEmpty {
                     item.action = .open; item.route = item.url.absoluteString
                 } else {
-                    item.action = .add; item.actionText = "+1"
+                    item.action = .add; item.actionText = "+1"; item.completesNext = open.count == 1
                 }
             } else if countsUp(habit, on: day) {
-                item.action = .add; item.actionText = "+1"
+                item.action = .add; item.actionText = "+1"; item.completesNext = meetsWith(1)
             } else {
                 item.action = .check
             }
         case .amount:
             if let step = habit.quickIncrement, step.isFinite, step > 0, step <= GoalNumber.maximum {
-                item.action = .add; item.actionText = "+" + Format.amount(step)
+                item.action = .add; item.actionText = "+" + Format.amount(step); item.completesNext = meetsWith(step)
             } else {
                 item.action = .open; item.route = "oftenenough://log/" + item.id
             }
         case .duration:
-            if running { item.action = .timerPause }
-            else if UserDefaults.standard.bool(forKey: Preferences.timerScreen) {
-                item.action = .open; item.route = "oftenenough://timer/\(item.id)?start=1"
-            } else { item.action = .timerStart }
+            // ▶ starts the timer right there, ⏸ stops it; the Live Activity and Dynamic Island show it. The app isn't
+            // opened (the user, 8 Oct 2026, Current Work 66).
+            item.action = running ? .timerPause : .timerStart
         case .checklist:
             item.action = .open; item.route = item.url.absoluteString
         case .quit, .task:
@@ -469,23 +540,27 @@ enum PartSectionDone {
     func schedule(_ store: HabitStore) {
         scheduled?.cancel()
         scheduled = Task {
-            // Two seconds after the last change, not 180 ms (2 Oct 2026): widgets can't be seen while the app is in
-            // front, and going to the background publishes at once (`HabitsApp.finishWrites`). Each publication
-            // projects the changed habit's week on the main thread, so a run of taps pays for one, after the taps.
-            try? await Task.sleep(for: .seconds(2))
+            // LOCKED (widget taps, 8 Oct 2026): 0.5 s after the last change; at once on leaving the app (W11). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+            // Half a second after the last change, so a run of taps pays for one publication, after the taps. Not
+            // the 2 s of 2 Oct: a person who logged and went straight back to the Home Screen saw the old widget,
+            // because the update came after the app had left the screen and iOS held it back (the user, 8 Oct 2026).
+            // Each habit's week is remembered (S5), so a publication is a few ms. Leaving the app publishes at once.
+            try? await Task.sleep(for: .milliseconds(500))
             guard !Task.isCancelled else { return }
             await publishNow(store, hold: false)
         }
     }
     /// - Parameter hold: a tap on a widget: today's lists keep the order on screen for 1.5 s, so the next tap in a run
     ///   lands where the finger is (U4); then done rows sink (U13).
-    func publish(_ store: HabitStore, hold: Bool = false) async {
+    /// - Parameter immediate: ask iOS to redraw at once, without the short wait that merges close publications (a
+    ///   widget tap, or leaving the app).
+    func publish(_ store: HabitStore, hold: Bool = false, immediate: Bool = false) async {
         // Explicit flushes supersede the delayed update queued by the same committed change.
         scheduled?.cancel()
         scheduled = nil
-        await publishNow(store, hold: hold)
+        await publishNow(store, hold: hold, immediate: immediate || hold)
     }
-    private func publishNow(_ store: HabitStore, hold: Bool) async {
+    private func publishNow(_ store: HabitStore, hold: Bool, immediate: Bool = false) async {
         await store.flush()
         guard store.isLoaded, store.isStorageReady, store.problem == nil, !Task.isCancelled else { return }
         let telemetry = store.analytics.ticket
@@ -495,14 +570,21 @@ enum PartSectionDone {
         let destination = testDestination ?? WidgetDisk.url
         let now = Date.now
         let previous = hold ? WidgetDisk.read(from: destination) : nil
+        #if DEBUG
+        WidgetTiming.mark("publish: started")
+        #endif
         var snapshot = await store.preparedWidgetSnapshot(now: now, hidden: hidden, previous: previous,
                                                           hold: hold ? now.addingTimeInterval(1.5) : nil)
+        #if DEBUG
+        WidgetTiming.mark("publish: snapshot prepared, \(snapshot.frames.first?.items.count ?? 0) items")
+        #endif
         guard !Task.isCancelled else { return }
         let currentHidden = UserDefaults.standard.bool(forKey: WidgetDisk.privacyKey) || AppLock.isEnabled
         if currentHidden != hidden { snapshot = store.widgetSnapshot(hidden: currentHidden) }
         do {
             // Detached I/O avoids encoding and file coordination on the UI thread.
-            try await WidgetSnapshotWriter.shared.write(snapshot, to: destination, ticket: ticket)
+            // A widget tap (`hold`) or leaving the app reloads at once: the person is about to look at the widget.
+            try await WidgetSnapshotWriter.shared.write(snapshot, to: destination, ticket: ticket, immediate: immediate)
             store.analytics.reliability("widget", succeeded: true, ticket: telemetry)
             if ticket == latestTicket { problem = nil }
         } catch {
@@ -522,7 +604,7 @@ private actor WidgetSnapshotWriter {
     private var latest: [URL: UInt64] = [:]
     private var reloadTask: Task<Void, Never>?
     private var reloadGeneration: UInt64 = 0
-    func write(_ original: WidgetSnapshot, to file: URL?, ticket: UInt64) async throws {
+    func write(_ original: WidgetSnapshot, to file: URL?, ticket: UInt64, immediate: Bool = false) async throws {
         guard let file else { throw CocoaError(.fileNoSuchFile) }
         guard ticket >= (latest[file] ?? 0) else { return }
         var snapshot = original
@@ -536,6 +618,9 @@ private actor WidgetSnapshotWriter {
             }
         }
         try WidgetDisk.write(snapshot, to: file)
+        #if DEBUG
+        WidgetTiming.mark("publish: snapshot written, \((try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? -1) bytes")
+        #endif
         latest[file] = ticket
         // Commit every snapshot immediately; coalesce closely spaced native host invalidations.
         // Await the surviving reload so a background intent cannot finish before it is requested.
@@ -543,7 +628,7 @@ private actor WidgetSnapshotWriter {
         reloadGeneration &+= 1
         var waitingFor = reloadGeneration
         var task = Task {
-            try? await Task.sleep(for: .milliseconds(250))
+            if !immediate { try? await Task.sleep(for: .milliseconds(250)) }
             guard !Task.isCancelled else { return }
             await self.reloadInstalledWidgets()
         }
@@ -567,5 +652,8 @@ private actor WidgetSnapshotWriter {
             }
         }
         if reload && !Task.isCancelled { WidgetCenter.shared.reloadAllTimelines() }
+        #if DEBUG
+        WidgetTiming.mark("publish: reload requested (widgets installed: \(reload))")
+        #endif
     }
 }

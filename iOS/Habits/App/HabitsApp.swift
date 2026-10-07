@@ -43,6 +43,10 @@ struct HabitsApp: App {
                 }
         }
         .onChange(of: scenePhase) {
+            // LOCKED (widget taps, 8 Oct 2026): publish at once when the app starts to leave (W11). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+            // Leaving: the widgets get the latest at once, while the app still counts as in front, so iOS redraws them
+            // straight away rather than when it next gets round to it (the user, 8 Oct 2026, Current Work 66).
+            if scenePhase == .inactive && model.store.isLoaded { Task { await model.widgets.publish(model.store, immediate: true) } }
             Analytics.shared.lifecycle(active: scenePhase == .active, locked: model.lock.isLocked)
             if scenePhase == .active {
                 model.store.analyticsConfiguration()
@@ -51,6 +55,8 @@ struct HabitsApp: App {
             }
             // Re-plan on every return to the app: a new day, a changed time zone, or a changed permission.
             if scenePhase == .active && model.store.isLoaded {
+                // Any widget tap still waiting in the shared file (Current Work 66).
+                Task { await model.saveWidgetTaps() }
                 model.scheduler.scheduleReconcile(model.store)
                 model.widgets.schedule(model.store)
                 // Pull on every return to the app (another device may have changed something).
@@ -119,7 +125,7 @@ struct HabitsApp: App {
         save.id = UIApplication.shared.beginBackgroundTask(withName: "Save changes") { save.end() }
         Task {
             await model.store.flush()
-            await model.widgets.publish(model.store)
+            await model.widgets.publish(model.store, immediate: true)
             save.end()
         }
     }

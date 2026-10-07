@@ -14,6 +14,8 @@ its rule numbers, and add to it the same day you learn something.
   follow them for any research, report or design-evidence task. Paths in that file are relative to `Research/`.
 - `iOS/` — the iPhone app (SwiftUI, native components only). **Before changing any screen, read
   [`iOS/Design Rules — Don't Regress.md`](<iOS/Design Rules — Don't Regress.md>)**: decided rules that past agents broke.
+  **Widgets are LOCKED (Rulebook U28):** before touching anything a widget does (taps, saving, updating, routing),
+  read [`iOS/Docs/Widgets — Taps and Updates (Locked).md`](<iOS/Docs/Widgets — Taps and Updates (Locked).md>).
   The app's specs and the user's checklists are in `iOS/Docs/` ([index](<iOS/Docs/README.md>)): open only the spec for
   the screen you're changing.
 - Builds, tests, speed runs and CI: Rulebook T1–T10. **Before every push/test dispatch, follow T10:** ordinary

@@ -66,6 +66,28 @@ final class AppModel {
     static let refreshTaskID = "com.oftenenough.app.refresh"
 
     private init() {
+        #if DEBUG
+        if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-widget-timing"), flag + 1 < ProcessInfo.processInfo.arguments.count {
+            UserDefaults(suiteName: WidgetDisk.group)?.set(ProcessInfo.processInfo.arguments[flag + 1] == "on", forKey: "debug.widgetTiming")
+        }
+        WidgetTiming.mark("app: model init")
+        // WidgetLatencyDeviceTests: the old week-long widget timelines or the new short ones, side by side (S2).
+        if ProcessInfo.processInfo.arguments.contains("-widget-week-timeline") {
+            UserDefaults(suiteName: WidgetDisk.group)?.set(true, forKey: "debug.weekTimeline")
+        } else if ProcessInfo.processInfo.arguments.contains("-widget-short-timeline") {
+            UserDefaults(suiteName: WidgetDisk.group)?.removeObject(forKey: "debug.weekTimeline")
+        }
+        // WidgetLatencyDeviceTests: the log buttons run a stand-in that changes no data ("live", "extension", "off").
+        let launchArguments = ProcessInfo.processInfo.arguments
+        if let flag = launchArguments.firstIndex(of: "-widget-probe"), flag + 1 < launchArguments.count {
+            let mode = launchArguments[flag + 1]
+            UserDefaults(suiteName: WidgetDisk.group)?.set(mode == "off" ? nil : mode, forKey: "debug.probeIntent")
+        }
+        if let flag = launchArguments.firstIndex(of: "-widget-page-probe"), flag + 1 < launchArguments.count {
+            let mode = launchArguments[flag + 1]
+            UserDefaults(suiteName: WidgetDisk.group)?.set(mode == "off" ? nil : mode, forKey: "debug.pageProbe")
+        }
+        #endif
         let arguments = ProcessInfo.processInfo.arguments
         #if DEBUG
         if arguments.contains("-reminder-fake") || arguments.contains("-reminder-denied") {
@@ -163,10 +185,24 @@ final class AppModel {
                 await FocusPlayerFixture.install(in: store, shortTimer: ProcessInfo.processInfo.arguments.contains("-focus-short-timer"))
             }
             if !ProcessInfo.processInfo.arguments.contains("-empty") { await store.seedDemo() }
+            // WidgetLatencyDeviceTests: take back exactly the widget logs its real taps made (source widget, made
+            // after the test began), so measuring on the person's iPhone leaves their day as it was.
+            if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-undo-widget-logs-since"),
+               flag + 1 < ProcessInfo.processInfo.arguments.count,
+               let since = Double(ProcessInfo.processInfo.arguments[flag + 1]) {
+                let start = Date(timeIntervalSince1970: since)
+                let anySource = ProcessInfo.processInfo.arguments.contains("-undo-any-source")
+                for entry in store.entries where (anySource || entry.source == .widget || entry.source == .timer) && entry.createdAt >= start {
+                    store.undoEntry(entry.id)
+                }
+                await store.flush()
+            }
             if !ProcessInfo.processInfo.arguments.contains("-uitest") && !ProcessInfo.processInfo.arguments.contains("-empty") {
                 await store.addEveryTypeToAnytime()
             }
             #endif
+            // Widget taps made while the app wasn't running, saved before anything is shown (Current Work 66).
+            Task { await self.saveWidgetTaps() }
             store.onChange = { [store, scheduler, timerPresence, widgets, sync, backup] in
                 scheduler.scheduleReconcile(store)
                 widgets.schedule(store)
@@ -255,26 +291,94 @@ final class AppModel {
 
     /// A widget's ✓ or + (`WidgetLogIntent`), run in the app's process: written first, then the widgets show it, with
     /// today's lists held in place for the next tap in a run (U4).
+    // LOCKED (widget taps, 8 Oct 2026): saved in order, removed only after saving, run on hand-over, launch and return (W4, W5). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; changes need the user's say-so.
+    /// Every widget tap waiting in the shared file (`WidgetTaps`), saved in the order it was made, then removed from the
+    /// file only once it's in the database (Current Work 66). Run when a widget hands over (`WidgetSaveIntent`), and
+    /// whenever the app starts or comes back, so no tap stays only in the file. One run at a time, after any earlier.
+    func saveWidgetTaps() async {
+        let previous = widgetTaps
+        let run = Task { @MainActor [self] in
+            _ = await previous?.result
+            await ensureLoaded()
+            guard store.isLoaded, store.isStorageReady, store.problem == nil else { return }
+            let taps = WidgetTaps.read()
+            guard !taps.isEmpty else { return }
+            for tap in taps {
+                guard let id = UUID(uuidString: tap.item), let day = LocalDay(key: tap.day), let event = UUID(uuidString: tap.event) else { continue }
+                store.logFromWidget(id: id, day: day, event: event, signature: tap.signature, mode: tap.mode, now: tap.at)
+            }
+            await store.flush()
+            // A tap the store refused (another day, a changed or paused habit) is dropped with the rest: it can never
+            // be saved, and the widget redraws from the database below. A storage failure keeps them all for later.
+            if store.problem != nil, !store.isStorageReady { return }
+            store.problem = nil
+            WidgetTaps.remove(Set(taps.map(\.event)))
+            await widgets.publish(store, hold: true)
+            await scheduler.reconcile(store)
+        }
+        widgetTaps = Task { try await run.value }
+        await run.value
+    }
+
+    /// Widget taps, one after another (Current Work 66): a quick run of taps, on one habit or several, is saved in the
+    /// order it was made, each completely, so none can overtake or overwrite another.
+    private var widgetTaps: Task<Void, Error>?
+
     func logFromWidget(item: String, day: String, event: String, signature: String, mode: String = "add") async throws {
+        let previous = widgetTaps
+        let tap = Task { @MainActor [self] in
+            _ = await previous?.result
+            try await saveWidgetTap(item: item, day: day, event: event, signature: signature, mode: mode)
+        }
+        widgetTaps = tap
+        try await tap.value
+    }
+
+    private func saveWidgetTap(item: String, day: String, event: String, signature: String, mode: String) async throws {
         await ensureLoaded()
+        #if DEBUG
+        WidgetTiming.mark("tap: store loaded")
+        #endif
         guard store.isLoaded, store.isStorageReady, store.problem == nil,
               let id = UUID(uuidString: item), let day = LocalDay(key: day), let event = UUID(uuidString: event) else {
             throw WidgetActionError.openApp
         }
         store.logFromWidget(id: id, day: day, event: event, signature: signature, mode: mode)
         await store.flush()
+        #if DEBUG
+        WidgetTiming.mark("tap: log saved")
+        #endif
         guard store.problem == nil else { throw WidgetActionError.save }
         await widgets.publish(store, hold: true)
+        #if DEBUG
+        WidgetTiming.mark("tap: widgets published")
+        #endif
         guard widgets.problem == nil else { throw WidgetActionError.save }
         await scheduler.reconcile(store)
+        #if DEBUG
+        WidgetTiming.mark("tap: reminders planned")
+        #endif
     }
 
     /// A widget's ▶ or ⏸ (`WidgetTimerIntent`): the same timer as Today's row, so the Live Activity and the Dynamic
     /// Island show it at once, and ⏸ saves the session once.
     func timerFromWidget(item: String, day: String, start: Bool, signature: String) async throws {
+        let previous = widgetTaps
+        let tap = Task { @MainActor [self] in
+            _ = await previous?.result
+            try await saveTimerTap(item: item, day: day, signature: signature)
+        }
+        widgetTaps = tap
+        try await tap.value
+    }
+
+    /// A widget's timer switch: each tap starts it if it isn't running and stops it if it is, in the order the taps
+    /// came (Current Work 66), so a quick second tap stops what the first started, as the switch shows.
+    private func saveTimerTap(item: String, day: String, signature: String) async throws {
         await ensureLoaded()
         guard store.isLoaded, store.isStorageReady, store.problem == nil,
               let id = UUID(uuidString: item), let day = LocalDay(key: day) else { throw WidgetActionError.openApp }
+        let start = store.timers[id] == nil
         let accepted = store.timerFromWidget(id: id, day: day, start: start, signature: signature)
         await store.flush()
         await timerPresence.sync(store)

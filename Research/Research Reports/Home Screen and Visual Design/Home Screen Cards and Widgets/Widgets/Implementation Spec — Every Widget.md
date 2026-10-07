@@ -149,8 +149,8 @@ Handoffs: [Large](<Today List/Large Designs — 6 October 2026/Layout and Implem
   own page. Fewer than capacity and no pages: taller 58-pt rows (Large lists; a single task on Medium).
 - **Rows:** icon, name, a line (section and value, e.g. "Anytime · 3 of 8 glasses"; a selected section drops the
   repeated section name), the action; the row fills toward today's goal (0.15 / 0.26). Period goals show today's
-  contribution beside the configured period goal, with no row fill (the accepted list rule; the user may ask to
-  change it to match the Small card's progress toward the period).
+  contribution beside the configured period goal, and the row fills toward that period's goal, as Today's row and the
+  Small card do. *(Corrected 8 Oct 2026: the user never asked for week or month goals to stay unfilled; their point was that such goals have no daily goal. They fill toward the week's or month's goal, as Today's row does.)*
 - **Summary count** counts positive day items once; quit and cut-down are not "left" (U10).
 
 ## 6. Medium · one habit, this week

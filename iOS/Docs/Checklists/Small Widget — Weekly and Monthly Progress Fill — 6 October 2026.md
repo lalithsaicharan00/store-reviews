@@ -15,10 +15,12 @@ Done in Figma (component set `Daily widget / Today` `540:3003`):
 - [x] New variants: start of week (`702:11301`) and start of month (`702:11313`), both empty; goal met (`702:11307`,
   `702:11319`), with a full capsule and the action in the habit colour.
 - [x] Board: a new group "Weekly and monthly goals · progress fill" in the Small section; stale notes updated.
-- [x] The Accepted Widget Contract row for week/month totals is updated: the user superseded "no fill" on 6 Oct.
+- [x] The Accepted Widget Contract row for week/month totals is updated: the card fills toward the period (6 Oct).
+  *(Corrected 8 Oct 2026: there was no earlier "no fill" request from the user to supersede. "No fill" was an agent's
+  misreading of "a week or month goal has no daily goal".)*
 
-Still open: the Large and Medium Today lists still show period-only goals without a row fill (their handoffs say
-so). Ask the user whether those rows should fill toward the week or month too.
+- [x] The Large and Medium Today lists' rows fill toward the week or month too, as Today's row does (built 8 Oct 2026,
+  Current Work 66: Call family's row was empty on the iPhone).
 
 ## Round 2 — 6 October
 
