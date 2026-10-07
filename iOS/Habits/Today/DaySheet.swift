@@ -17,6 +17,7 @@ struct DaySheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var typeSize
     @State private var perfEntry: Entry?
+    /// All logs, pushed from "All N logs" (and by the speed runs).
     @State private var perfAllLogs = false
     @State private var perfNote = false
     @State private var destination: Destination?
@@ -50,7 +51,7 @@ struct DaySheet: View {
                     .listSectionSpacing(spacing.gap(24, 32))
                 DayActivity(habit: current, day: day, editable: editable, spacing: spacing,
                             logManually: { destination = .add }, resume: { store.resume(current) },
-                            addNote: { destination = .note })
+                            addNote: { destination = .note }, openAllLogs: { perfAllLogs = true })
                 if isTask {
                     taskSection
                 } else if editable && current.kind != .quit {

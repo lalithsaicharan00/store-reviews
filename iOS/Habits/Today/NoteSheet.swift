@@ -312,8 +312,9 @@ struct NoteView: View {
         .alert("Delete this note?", isPresented: $confirmingDelete) {
             Button("Cancel", role: .cancel) {}
             Button("Delete Note", role: .destructive) {
-                write("")
-                dismiss()
+                // Back first, then the note goes (as Delete log): removing it first took away the row that opened this
+                // screen, and a second dismiss closed the sheet under it (CI, 7 Oct 2026).
+                leave(writing: "")
             }
         } message: {
             Text("Only the note for \(DayWords.short(day, calendar: c).replacingOccurrences(of: ",", with: "")) is removed. That day's progress stays.")
@@ -336,10 +337,7 @@ struct NoteView: View {
             default: break
             }
         }
-        .onChange(of: note == nil) { _, gone in
-            // Deleted here or elsewhere, and not being written: nothing left to show.
-            if gone && !editing { dismiss() }
-        }
+
     }
 
     private func startEditing() {
@@ -360,10 +358,20 @@ struct NoteView: View {
     private func save() {
         focused = false
         let text = draft.text
-        write(text)
         onSaved?()
-        // An emptied note is removed: nothing left to view.
-        if startsEditing || TextLimit.clean(text, TextLimit.noteText).isEmpty { dismiss() } else { editing = false }
+        // An emptied note is removed: nothing left to view, so back first and then the write (as Delete note).
+        if TextLimit.clean(text, TextLimit.noteText).isEmpty { leave(writing: text); return }
+        write(text)
+        if startsEditing { dismiss() } else { editing = false }
+    }
+
+    /// Leaves the screen, then writes once it has gone.
+    private func leave(writing text: String) {
+        dismiss()
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(450))
+            write(text)
+        }
     }
 
     private func write(_ text: String) {

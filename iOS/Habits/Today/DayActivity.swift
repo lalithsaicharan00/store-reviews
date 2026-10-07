@@ -26,6 +26,9 @@ struct DayActivity: View {
     let logManually: () -> Void
     let resume: () -> Void
     let addNote: () -> Void
+    /// Pushes All logs. Day details holds the destination, so the page stays when a delete leaves three logs and the
+    /// "All N logs" row goes (a link's own destination left with it, CI 7 Oct 2026).
+    let openAllLogs: () -> Void
     @Environment(HabitStore.self) private var store
     @Environment(\.dynamicTypeSize) private var typeSize
 
@@ -244,10 +247,13 @@ struct DayActivity: View {
                 DayLogRow(entry: entry, habit: ruled)
             }
             if logs.count > 3 {
-                NavigationLink {
-                    AllLogsView(habit: habit, day: day)
-                } label: {
-                    Text("All " + DayLogRow.count(logs.count, habit: ruled))
+                Button(action: openAllLogs) {
+                    HStack {
+                        Text("All " + DayLogRow.count(logs.count, habit: ruled)).foregroundStyle(.primary)
+                        Spacer(minLength: 8)
+                        Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
+                    }
+                    .contentShape(Rectangle())
                 }
                 .accessibilityIdentifier("day-all-logs")
             }

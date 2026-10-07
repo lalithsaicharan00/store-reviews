@@ -547,7 +547,9 @@ final class DayDetailsUITests: XCTestCase {
     func testPastDayLogKeepsItsDayAndChosenTime() {
         launchAdd("Water", offset: -1, extra: ["-clock-hour", "14", "-then-open-day"])
         XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 30))
-        XCTAssertTrue(app.staticTexts["Yesterday"].exists, "The day it was opened from is chosen")
+        // The Date row reads as one element with its "Yesterday" word.
+        XCTAssertTrue(app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS 'Yesterday'")).firstMatch.exists,
+                      "The day it was opened from is chosen: \(shown)")
         let field = app.textFields["record-amount"]
         XCTAssertTrue(field.waitForExistence(timeout: 3))
         field.typeText("2")

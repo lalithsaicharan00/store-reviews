@@ -40,8 +40,9 @@ struct LogRecordView: View {
         if let entry = store.entries(of: habit.id, on: day).first(where: { $0.id == entryID }) {
             content(entry)
         } else {
-            // Deleted (here or elsewhere): nothing to show.
-            Color(.systemGroupedBackground).onAppear { dismiss() }
+            // Deleted: nothing to show. Never dismissed from here: the row that opened it has gone too, and SwiftUI
+            // takes the screen away with it; a second dismiss closed Day details itself (CI, 7 Oct 2026).
+            Color(.systemGroupedBackground)
         }
     }
 
@@ -106,8 +107,15 @@ struct LogRecordView: View {
         .alert("Delete this \(noun)?", isPresented: $confirmingDelete) {
             Button("Cancel", role: .cancel) {}
             Button(isSlip ? "Delete Slip" : "Delete Log", role: .destructive) {
-                store.undoEntry(entry.id)
+                // Back first, then the log goes, once the screen has left: removing it first also removed the row this
+                // screen was opened from, SwiftUI took the screen away for that, and this dismiss then closed Day
+                // details as well (CI, 7 Oct 2026). The write follows as for any change (S7).
                 dismiss()
+                let id = entry.id
+                Task { @MainActor in
+                    try? await Task.sleep(for: .milliseconds(450))
+                    store.undoEntry(id)
+                }
             }
         } message: {
             Text(deleteMessage(entry, ruled: ruled))
