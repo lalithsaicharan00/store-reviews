@@ -35,6 +35,10 @@ on:
         description: "Speed runs: only these PerfDriver scenarios, timed and profiled (e.g. habit-page); empty for all"
         type: string
         default: ""
+      device:
+        description: "Simulator to test on, by device type name (e.g. 'iPhone SE (3rd generation)'); empty for the newest iPhone"
+        type: string
+        default: ""
   push:
     branches-ignore: [ci-results]
 
@@ -67,6 +71,7 @@ jobs:
             echo "TESTS=${{ github.event.inputs.tests }}" >> "$GITHUB_ENV"
             echo "PERF=${{ github.event.inputs.perf }}" >> "$GITHUB_ENV"
             echo "PERF_XCTEST=${{ github.event.inputs.xctest }}" >> "$GITHUB_ENV"
+            echo "DEVICE=${{ github.event.inputs.device }}" >> "$GITHUB_ENV"
             if [ -n "${{ github.event.inputs.scenarios }}" ]; then
               echo "PERF_SCENARIOS=${{ github.event.inputs.scenarios }}" >> "$GITHUB_ENV"
               echo "PERF_PROFILE_SCENARIOS=${{ github.event.inputs.scenarios }}" >> "$GITHUB_ENV"
@@ -187,6 +192,13 @@ jobs:
             # Use one clean headless device to avoid parallel migration and stale image data.
             xcrun simctl shutdown all || true
             ID=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone')))")
+            # A chosen device type (the iPhone SE checks, 7 Oct 2026): made fresh on the newest iOS runtime.
+            if [ -n "${DEVICE:-}" ]; then
+              RUNTIME=$(xcrun simctl list runtimes available -j | python3 -c "import json,sys; r=[x for x in json.load(sys.stdin)['runtimes'] if x.get('platform')=='iOS']; print(r[-1]['identifier'])")
+              TYPE=$(xcrun simctl list devicetypes -j | DEVICE="$DEVICE" python3 -c "import json,sys,os; print(next(t['identifier'] for t in json.load(sys.stdin)['devicetypes'] if t['name']==os.environ['DEVICE']))")
+              ID=$(xcrun simctl create "Test device" "$TYPE" "$RUNTIME")
+              echo "Created $DEVICE ($TYPE) on $RUNTIME: $ID"
+            fi
             echo "SIM=$ID" >> "$GITHUB_ENV"
             xcrun simctl erase "$ID"
             xcrun simctl boot "$ID" || true
