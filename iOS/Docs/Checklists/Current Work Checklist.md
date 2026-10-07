@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 59).
+  still resolve; give new items the next unused number (currently 63).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -39,6 +39,236 @@ bugs. Item 16 combines reliability work with a product decision; item 18 is a co
 work. Preserve those distinctions when recording findings. New feedback items 23–32 (4 October) are recorded
 below as independent tasks: functional/readability issues here, layout and research work under Planned improvements.
 Their placement records scope and priority; implementation has not started.
+
+- [ ] **59. Day details: logs push the note and Skip today off the screen.** Added 7 October 2026, from the user.
+  - **Symptom:** tap any habit or task row on Today → Day details. With two or three logs under "Today's logs", the
+    note and Skip today are pushed below the bottom of the sheet and can't be seen without scrolling.
+  - **Not the answer:** a sticky Skip at the bottom. Skipping isn't an action to encourage (the user); U15 keeps Skip
+    and Undo skip in one place.
+  - **Asked for:** a layout and placement fix, proposed in Figma first: copy one page into a new section and show a
+    layout that looks good and solves this. The 4 Oct mockups were only a guide; the app built them natively.
+  - [x] Proposal in Figma (one page, for the user's review), 7 Oct:
+    [Day details · note and Skip always on screen](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=715-2286).
+    The logs get a ceiling of 3 rows (up to 3 logs as they are; 4 or more: the 2 newest, then "All N logs ›" to the
+    full list); one line per log (amount, time on the right; the source moves into the log's editor). Nothing pinned;
+    status, buttons, note and Skip keep their order and spacing (U15, U17).
+    **v1 doesn't fit:** Skip ends at 763 pt; the app runs on iOS 18, so the smallest screen is the iPhone SE (4.7-inch,
+    a large sheet ≈ 637 pt tall).
+  - [x] **v2, the user's points (7 Oct):** the two logging buttons in one row (or three together); the note merged
+    into "This day", shown in one or two lines; Skip today kept at the very bottom; native to iPhone users; research
+    it; design for the SE's height. Built in the same Figma section, at 375 × 637 pt: one This day card with status,
+    Add 1 glass | Log manually in one row (same size, style shows priority, U16) and the note (two lines, tap opens
+    the editor); logs at most 3 rows; Skip last, bordered, not pinned. Worst case (4 logs, two-line note): Skip ends at
+    591 of 637 pt. Three buttons with Skip rejected: it makes Skip an equal choice beside logging, and three labels
+    don't fit 343 pt. Moving the note above the logs changes U17 and the Day-sheet study's "note after day activity":
+    update both if the user approves.
+  - [x] **Spacing pass (the user, 7 Oct: "everything fits but it's squished"; the note may be one line):** toolbar →
+    habit 14, habit → This day 24, This day → its logs 20, logs → Skip 28; 14 padding inside cards, 14 from the status
+    to its buttons; the note one line. Worst case: Skip ends at 611 of 637 pt (26 pt to spare on the SE).
+  - [x] **Adaptive spacing (the user, 7 Oct: "set a minimum and maximum spacing so it adapts to any screen"; one size
+    above the SE):** the SE frame is the minimum; an iPhone 12/13 mini frame (375 × 752 pt sheet, 34 pt home
+    indicator) shows the maximum. Min → max: toolbar → habit 14 → 18, habit → This day 24 → 32, This day → logs
+    20 → 28, logs → Skip 28 → 36, habit row padding 12 → 14, This day padding 14 → 16, status → buttons 14 → 18, note
+    padding 12 → 14, note lines 1 → 2. Fixed: 8 between buttons, 8 heading → rows, rows and buttons 44, 16 margins.
+    Spare height grows every gap by the same share of its range, never past the maximum, then gives the note its
+    second line; anything left stays below Skip (top-aligned, nothing stretched). Larger text uses the spare height
+    first. Mini worst case: Skip ends at 675 of 752 pt (43 pt above the home indicator's strip).
+  - [x] **The All logs page (the user, 7 Oct):** pushed inside the sheet from "All N logs ›"; back chevron only, as
+    on Edit Log. Every log of the day, newest first, one line each (amount, time); header "WATER · 4 LOGS", footer
+    with the total and what a tap does. A tap opens Edit Log; a several-times-a-day check keeps its own Undo. Title
+    follows the Day details heading ("Today's logs", "Checks today", "Slips today", "Logs for Sat 4 Oct"). No swipe to
+    delete (U14), no add button, no Close.
+  - [x] **Documented and arranged (the user, 7 Oct):** every point from this session (items 59 and 60) is in
+    [Day Details, Logs and Notes — 7 October Redesign](<../../../Research/Research Reports/Day Structure and Organization/Day Details, Logs and Notes — 7 October Redesign/README.md>);
+    the note frames are gone from Figma. A new section,
+    [Water · one habit, every screen, three sizes](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=727-2288),
+    has a row per screen (Day details, All logs, Add log, Edit log) and a column per size (SE minimum spacing; mini and
+    6.1-inch maximum). Other habits wait until Water is settled.
+  - [x] **For whoever builds it (the user, 7 Oct):** the document opens with "Read this first": one habit only (Water);
+    the Figma frames are the overall layout, not exact spacing (their toolbar almost touches the top); build native
+    and adapt to the screen's height (one line of note on the SE; with three logs or fewer show them all, no "All logs"
+    row); the spacing numbers are relative guidance. Pointers added to Design Rules' Day sheet section, the iOS docs
+    index and the handoff README.
+  - [ ] The user's decision
+  - [ ] Build, tests on GitHub (T7), speed run (S2)
+  - [ ] The iPhone check (U9), noted separately
+
+- [ ] **60. Add a log and Edit a log: one screen, the number first, the same everywhere.** Added 7 October 2026,
+  from the user. Starts with an amount habit (Water).
+  - **Symptom:** the user doesn't like the current Edit Entry screen (Figma "Entry", node 638-14677) or the 4 Oct
+    proposal (638-14683). Things aren't shown in order of importance. The History "Add entry" screens (638-15299)
+    differ again.
+  - **Asked for:** two screens, Add and Edit, with the same mental model (some controls differ). The amount is the
+    main highlight. Delete is red text only, never a red button background. "Log manually" on Day details and
+    History's Add entry open the same Add screen: adding is the same everywhere in the app, and matches Day details.
+    The date matters: from Today it is today by default (Today, 7 Oct, selected); from History the day must be clear
+    and choosable.
+  - [x] Proposal in Figma: Add log and Edit log for an amount habit, 7 Oct, at the SE sheet size:
+    [Add log and Edit log](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=722-2288). Same order on
+    both: the habit with its date row (Add: "Today" beside a native compact date picker; Edit: the log's own day and
+    time, read-only), then the amount as the main thing (60 pt between − and +, one quick amount per step, tap to
+    type), then the day before → after ("4 → 5 of 8 glasses"). Edit adds "Delete this log" in red text on an ordinary
+    row, last, asking first. Add replaces both of today's adding screens (Add Entry; Log Amount / Log Time) from
+    Today's rows, Day details, History, the timer screen and the routine player. For the user to decide: the
+    keyboard starts closed (Add Entry opens it at once today). If approved, U22's "accepted controls" change.
+  - [x] **Typing first (the user, 7 Oct):** Add opens only from "Log amount manually" and History's Add entry,
+    where people come to type an exact amount, so typing is the main experience, not − / +. The steppers are gone:
+    the big number is the text field itself (56 pt, unit beside it, "2 glasses"); Add opens focused with the decimal
+    pad up, as Add Entry does today. On the SE the amount card ends at 380 pt, above the keyboard at 421. Edit has
+    the same field, keyboard down until the number is tapped (then selected, so typing replaces it).
+  - [x] **Less squished (the user, 7 Oct):** the amount card is the field itself (no field inside a card), with
+    "AMOUNT" as a header above it; the number 48 pt (was 56); the unit under the number, where it never moves as
+    digits are typed (beside a centred number it slid sideways); the "4 → 6 of 8 glasses" line removed (it confused
+    more than it helped). Gaps: toolbar → habit 16, habit card → AMOUNT 28, card padding 24/22. On the SE with the
+    keyboard up, the footer ends at 377 and the keyboard starts at 421.
+  - [x] Documented with item 59 (same document) and placed in the same Figma section: Add log and Edit log at SE,
+    mini and 6.1-inch. With the keyboard up, Add's footer ends at 377 / 391 / 391 against keyboard tops of
+    421 / 461 / 492.
+  - [ ] The user's decision; then the other habit types one at a time
+  - [ ] Build, tests on GitHub (T7), speed run (S2); the iPhone check (U9) noted separately
+
+- [ ] **61. Notes: adding, reading, changing and deleting a note, the same way everywhere.** Added 7 October 2026,
+  from the user.
+  - **Symptom:** the current note screens (Figma 638-15116 reader; the 4 Oct proposals 638-15247, 638-15265,
+    638-15280) have the same problems as the log screens: typing isn't the main thing, and the habit page's Add note
+    needs a date that would look odd on its own.
+  - **Asked for:** Add note (from the habit page it needs a date: which day the note is for), typing first; viewing
+    the note; deleting it. The same mental model as Add log / Edit log. Decide whether the reader's "View Day" (open
+    that day's Day details) is really needed: keep it if so, otherwise remove it. One size first.
+  - [x] Proposal in Figma at the SE size, 7 Oct (Water section, rows 5 and 6): **Add note** in Add log's shape (habit
+    and date card, NOTE text card focused with the keyboard up; footer ends at 372, keyboard starts at 377) and
+    **Note**, one screen for reading and changing in Edit log's shape (tap the text to edit, Save turns on with a
+    change, Delete note in red text, asking first). "View Day" kept, folded into the day row ("Sun, 4 Oct · 4 of 8
+    glasses ›"), only when opened from the Notes tab. Replaces `NoteSheet`, `NoteEditorView` and `NoteReaderView`.
+    Documented in section 7 of the 7 October Redesign's design decisions (item 59).
+  - [x] The mini and 6.1-inch sizes (the user, 7 Oct), at maximum spacing, with the 336 pt text keyboard: the note
+    box grows into the room (120 / 150 / 181 pt); Add note's footer ends 8 pt above the keyboard at every size; Note's
+    Delete ends at 442 / 460 / 438.
+  - [x] **No habit card on note screens (the user, 7 Oct):** a note is reached only from that habit's Day details or
+    page, so the habit card is redundant; note is a note in every state; keep the date, inline; research it first.
+    Research agreed (the editor's top complaint is room to write, 5 reviews; notes need their dates; Apple's Notes
+    shows one small date line). Done on all 12 note frames in both sections: one date line (a picker from the Notes
+    tab, plain text otherwise, "Sun, 4 Oct · 6 of 8 glasses ›" on the view), no NOTE heading, no footer. The box with
+    the keyboard up grew from 91 / 96 / 127 to 203 / 242 / 273 pt (SE / mini / 6.1-inch). Delete note pop-up redrawn.
+    Section 7 of the design document; points 36–37 in its section 0.
+  - [x] **The same question for the log screens (the user, 7 Oct):** does Add log need the habit's icon, name and
+    plan? Checked the entry points: Add log also opens straight from a Home Screen widget and from a Today row, and
+    notes from Today and the routine player, where the habit isn't on screen (this corrected the note change's "only
+    from Day details or the habit page"). So the card goes everywhere and the **name stays as a small subtitle under
+    the title** ("Add log / Water"). Done on 39 frames in both sections (Add / view / Edit log, slips, Choose a day,
+    notes, delete pop-ups). Day details keeps its habit row (the link to the habit page). Section 6; point 38.
+  - [ ] **Header study (the user, 7 Oct):** put the habit's icon with its name in the header, and the screen's name
+    with it, for easier recognition; cut a long name with "…" (names are 24 characters at most). One screen first:
+    Water section, beside row 3, "Header study": [icon] Water on the first line, "Add log" under it. If approved,
+    apply it to every record screen.
+    - The user, 7 Oct: **two lines in the header are not good.** Redone as one line: **[icon] Water · Add log** (the
+      name semibold, "· Add log" lighter; a long name ends in "…" and the job stays whole; a 24-character example sits
+      under the study). This also means the two-line "Add log / Water" title now on 39 frames goes: replace it with
+      the one-line header everywhere once the user approves the study.
+    - The user, 7 Oct (after the current app's Add Entry, which opens with a "Read pages · 0/20 pages" row above Date):
+      keep the header plain and put the habit **as a row beside Date and Time**, icon and name. Study redone: header
+      just **Add log**; the card's first row **Habit · [icon] Water**, then Date, then Time. Fits at 6.1-inch (content
+      ends 406, Add at 434). If approved: the same on every record screen (Add / view / Edit, slips, Choose a day,
+      notes), replacing the two-line titles.
+    - [x] **Approved, "update it everywhere" (7 Oct):** all 39 record screens in both sections now have a one-line
+      title and the habit beside the date and time: the first row of the card on Add / view / Edit log and slips, a
+      one-row Habit card above Choose a day's calendar, and "[icon] Water … date" as one line on every note screen.
+      Every screen re-measured: nothing reaches its bottom button. Section 6 of the design document; point 41.
+  - **The user, 7 Oct, on completeness and checks:**
+    - [x] Create the missing screens for every kind (no unit, month goal, limit, time week goal, checks, checklist…),
+      so each can be checked: Add, Log (view), Edit where the kind has them. Added 14: Push-ups Edit; Savings Log and
+      Edit; Coffee Log and Edit; Exercise Add, Log and Edit; Add a check (stretch breaks, week goal, month goal); Mark
+      a day done (once a day, N days a week); Tick steps (checklist). Checks and the checklist have no Log or Edit
+      (each check has its own Undo; steps tick on Day details).
+    - [x] Checks break the mental model: only they open on a calendar; every other Add (even Add slip) has the date
+      behind a compact picker. Make checks consistent with the rest; clarity through copy (title, footer, button), not
+      a different layout. Improve Add slip too if useful. The calendar screens are gone: **Add a check**, **Mark a day
+      done** and **Tick steps** have the same card (Habit, Date, Time) as every Add, a footer that says exactly what
+      will happen ("Marks Tue 6 Oct as done at 9:40 PM"), and the button at the bottom. Add slip already had that shape;
+      no change needed. Design document section 8, points 42–43.
+    - [x] **Document why the header and the habit changed each time (the user, 7 Oct).** Checked: the notes section
+      still said "a subtitle under the title" (stale) and points 38–40 read as current. Fixed, and section 6 now has a
+      dated **decision log** of the eight steps (today's app → the habit card → ✕ and the bottom button → no card on
+      notes → the name as a subtitle → icon and name on two lines → one line → the plain header with a Habit row),
+      each with what the screen had, why it changed, who decided, and what replaced it. "Read this first" points to it.
+  - [x] **Everything in one folder, with images, committed to `main` (the user, 7 Oct):**
+    [Day Details, Logs and Notes — 7 October Redesign](<../../../Research/Research Reports/Day Structure and Organization/Day Details, Logs and Notes — 7 October Redesign/README.md>).
+    Its README lists every app page to update and the code behind it (Today → Day details, tasks included; History →
+    Day details titled by its date, "Today" only for today; All logs; Log → Edit log; one Add screen per kind replacing
+    "Add Entry" and Log Amount / Log Time, including Log manually from Day details and the timer screen and routine
+    player; slips; notes from Day details, Today, the routine player and the Notes tab; delete confirmations; the words
+    to change), says to build with native components (the designs show layout, not pixels), and embeds the key images.
+    74 PNGs (58 every-kind screens at 6.1-inch, 16 Water screens at SE and mini) and the design decisions document
+    live beside it. Build, tests and the iPhone check are still to do.
+  - [ ] The user's decision
+  - [ ] Build, tests on GitHub (T7), speed run (S2); the iPhone check (U9) noted separately
+
+- [ ] **62. The same screens for every kind of habit and task, one size, plus the delete confirmations.** Added
+  7 October 2026, from the user, after Water (items 59–61).
+  - **Asked for:** a new Figma section at one size only, the largest (6.1-inch). One row per kind: time, quantity,
+    checklist, check, each with its variations (a week goal, a month goal, a limit, no unit…), tasks too; the 4 Oct
+    board (638-13963) shows the kinds. Add the missing confirmation pop-ups for Delete log and Delete note (as
+    638-15626; just a pop-up, nothing more).
+  - **Button words must scale:** never written for one habit. A unit may or may not exist; a check habit counted
+    several times a day is a check whatever else it says; a once-a-day check is different again. One rule per kind;
+    if Water's "Add 1 glass" turns out wrong under that rule, change it.
+  - [x] Proposal in Figma (6.1-inch), with the label rules written down, 7 Oct:
+    [Every habit and task, one size](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=733-2288),
+    18 rows, 40 frames: amount (daily; no unit + week goal; no quick step + month goal + currency; a limit), time
+    (daily; timer running and an earlier day; week goal), check (once a day; several a day; week goal; month goal;
+    N days a week), checklist, quit (with Add / Edit slip), task, day states (skipped, paused, yesterday), notes, and
+    the confirmations (Delete log, Delete slip, Delete note, Discard changes). The rules, taken from `DayActivity` and
+    `HabitStore`, are in section 8 of the 7 October Redesign's design decisions. Changes for the user to confirm: check habits
+    always "Add a check" (today a unit gives "Add 1 glass"); "Log manually" beside a quick button, "Log amount" /
+    "Log time" alone; "Stop and save" for "Pause timer and save time". Water's "Add 1 glass" fits the rule.
+  - **The user's review, 7 Oct:**
+    - [x] Amount quick button: "+20", not "Add 20 glasses" (a long unit makes it long; Today's button already shows
+      "+1", "+250"). Everything else about amounts, limits and time stays. Done in both sections (8 buttons, Water
+      included); VoiceOver keeps "Add 1 glass".
+    - [x] Currency before the number: check the app and record the rule; don't break how amounts are written
+      elsewhere for one screen. (Checked: `HabitCopy.amount` puts $ € £ ₹ first, every other unit after.) Recorded
+      as "Amounts are written one way everywhere" in section 8 of the design document.
+    - [x] Once-a-day check, Add from History: "THIS DAY · Done" is confusing; improve it. Now **Choose a day**: the
+      habit, a month calendar (today and earlier), toolbar **Mark done**.
+    - [x] Several-a-day check: each check is recorded on its own, one at a time; adding or editing several at once
+      (typed) is wrong. Improve Add; drop the multi-check editor. (Checked: Today, Day details and widgets add one
+      per tap; History's Add Entry has a 1–99 Times stepper that saves several as one log.) Now the same **Choose a
+      day** screen with **Add a check** (one); the multi-check Edit log is gone; old multi-check logs keep working.
+      Changes U19's multi-check line if approved.
+    - [x] Remove the Discard changes pop-up from the design: the app already asks when leaving with changes (U19);
+      keep that. Confirmations are for deleting only. Removed; the section now has 38 frames.
+    - Also fixed: 6 Oct 2026 is a Tuesday; three frames and the document said "Mon 6 Oct".
+  - **The user's next review, 7 Oct:**
+    - [x] Time: a log's time matters, above all for a past day from History (today's app saves every log except a
+      slip with the moment it was entered, so a past day's log shows today's clock time). Check reviews; add it if
+      needed, for every kind. Reviews: 120 hand-read of 337,331 scanned; 11 (9 apps) want a log's time kept or set
+      ("gym at 6 PM, check it off at 9 PM"), 5 want a past slip time. Added: Date and **Time** on every Add, the time
+      changeable within the same day on every Edit, a Time row under Choose a day's calendar. Section 8, "The time of
+      a log", of the design document.
+    - [x] Don't confuse a time habit's duration with the log's time: the duration is **HOW LONG**, the clock row
+      **Finished at**.
+    - [x] "Cancel" is too big: now an icon-only **✕** (accessible name Cancel; still asks first with changes).
+    - [x] The main button at the bottom, above the keyboard (easier to reach, read top to bottom): **Add**, **Save**,
+      **Mark done**, **Add a check**, one filled button. Every Add / Edit / Choose a day / slip / note frame in the
+      every-kind section; the delete pop-ups redrawn over them. Changes U18 if approved.
+    - [x] The Water section's three-size Add / Edit / note frames showed the old toolbar: rebuilt 7 Oct (the user
+      couldn't find the new note screens, which sat at the bottom of the every-kind section). The Water section now
+      has eight rows at SE, mini and 6.1-inch: Day details, All logs, Add log, Log, Edit log, Add note, Note, Edit note.
+      While typing, the footer hides where it would reach the button (SE, mini), the SE puts Date and Time in one row,
+      and a note's box fills the room above Save.
+  - **The user, 7 Oct, on editing:**
+    - [x] No greyed-out Save on an edit screen: once a log is added, the jobs are view, edit or delete.
+    - [x] An explicit **Edit** button (tapping the value to edit isn't obvious enough), beside **Delete**, in the bottom
+      place where Add sits when adding. Tapping Edit opens the keyboard and shows Save.
+    - [x] The screen opened from a row is for viewing first: name it "Log" (not "Edit log"); "Edit log" only in edit
+      mode. The same view-then-edit step wherever one record opens: a log, a time session, a slip, a note.
+      Done in Figma: Log (amount, time), Slip and Note views with Delete | Edit; edit modes Edit log (amount, time),
+      Edit slip, Edit note with ✕ and Save above the keyboard; the delete pop-ups drawn over the views.
+    - [x] Document every important point with its reasoning, so whoever builds it forgets nothing: the design
+      document's new section 0 lists all 35 points in order with reasons and pointers; section 10 spells out each
+      Rulebook change (U17, U18, U19, U22). Design Rules' pointer updated.
+  - [ ] The user's decision
+  - [ ] Build, tests on GitHub (T7), speed run (S2); the iPhone check (U9) noted separately
 
 - [ ] **22. Today row sheet: make logging and wording natural for each habit type, especially check-based habits
   and tasks.** Added 4 October 2026; **issue 1 of the user's current feedback round**. Status: documented from the

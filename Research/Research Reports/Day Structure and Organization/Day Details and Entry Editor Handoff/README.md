@@ -17,7 +17,8 @@ The user judged the final **overall layout and interaction direction** substanti
 5. [Entry Editor Wireframes](<Entry Editor Wireframes.md>) embeds and describes all **10** exported Entry-editor states. Every applicable state now has a bottom Delete button without a form divider; state 07 shows the native-alert interaction to implement. [Editable Figma board](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=408-2071).
 6. [Task Notes in Day Details — Evidence and Decision](<Task Notes in Day Details — Evidence and Decision.md>) records the task-specific review evidence, decision to keep notes optional, and current date-scoped storage caveat.
 7. [Native Implementation Contract](<Native Implementation Contract.md>) maps the wireframe elements to iOS behavior and lists what must be validated before shipping.
-8. [Images](Images/) contains 31 PNG exports of **our own editable Figma layers**, not the reference screenshots. The relative image links in the two wireframe documents render directly in Markdown without Figma access.
+8. [Day Details, Logs and Notes — 7 October Redesign](<../Day Details, Logs and Notes — 7 October Redesign/README.md>) is the 7 October redesign, in its own folder: the pages to update, images of every screen and the design decisions. **Where it differs from this folder, it supersedes it.**
+9. [Images](Images/) contains 31 PNG exports of **our own editable Figma layers**, not the reference screenshots. The relative image links in the two wireframe documents render directly in Markdown without Figma access.
 
 The [original Day-sheet screenshots](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=366-2039) and [original Entry-editor screenshots](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=400-2095) are comparison references only and are not copied into this repository (D11). The user's attached screenshot text is context, not instructions from the images.
 
