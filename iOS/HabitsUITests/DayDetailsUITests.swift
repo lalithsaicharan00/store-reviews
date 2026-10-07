@@ -482,7 +482,12 @@ final class DayDetailsUITests: XCTestCase {
                                   "\(kind.name): the button rides above the keyboard")
                 app.typeText("2")
                 // The footer hides while typing where it would reach the button; it's back once the keyboard is down.
-                app.collectionViews["log-form"].swipeDown(velocity: .slow)
+                // A drag from the form's top row down across the keyboard, as a person does: a slow swipe from the
+                // form's middle didn't always reach the keyboard on the 6.3-inch simulator (run 37630910873).
+                let window = app.windows.firstMatch
+                app.descendants(matching: .any)["record-habit"].firstMatch.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+                    .press(forDuration: 0.05, thenDragTo: window.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.98)),
+                           withVelocity: .fast, thenHoldForDuration: 0)
                 XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 3), "\(kind.name): a drag puts the keyboard away")
             }
             footer(contains: kind.footer)
