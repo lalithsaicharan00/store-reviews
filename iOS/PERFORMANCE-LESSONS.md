@@ -84,6 +84,13 @@ and undo 53 ms/s, Today's +1 and day switch 40 ms/s. The items below are the sim
   ~150 ms once per launch. Still to measure against the control: Progress, All Habits, the habit page, the habit form
   and the Day sheet.
 - Today's first scroll has one 180–440 ms freeze (1 Oct).
+- **Day details, logs and notes redesign (7 Oct, simulator, `aa6ee1e`, run `37624454758`, against `a3d33bf`):** typing in
+  Edit log 0.0 / 0.3 ms/s (the old entry editor 4.5 / 8.6), in Add log 1.7 (the Log sheet 10.7, a 126 ms freeze);
+  Day details' add, edit and undo 90.8 / 126.2 ms/s (148.7 / 185.5); scrolling Day details 0 (16.9), All logs 0.0;
+  opening the log editor 118 / 185 ms (930 / 486), a note 1169 ms (3347). **Open:** opening Add log 1027 ms (the Log
+  sheet's 429) and Edit log's first keyboard 864 ms (303 ms the second time), the launch's first keyboard on the hosted
+  simulator (L18): measure on the iPhone before changing anything. Day details' add, edit and undo is still above the
+  target on the simulator, as it was on the phone (53 ms/s, 2 Oct).
 - Saving an entry stalls 0.6–0.8 s; opening the entry editor, the launch's first keyboard, 3–7 s on the hosted simulator (L18, 1 Oct).
 - **Arrange Your Day (3 Oct, simulator, `365242d`, `arrange` scenario):** scrolling it 0.0 ms/s; moving Anytime and
   sorting a card 2.0 ms/s (29 ms longest); opening it 138 ms the first time and 121 ms after (it replaces Today in
