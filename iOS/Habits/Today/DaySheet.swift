@@ -59,12 +59,16 @@ struct DaySheet: View {
                 }
             }
             .contentMargins(.top, spacing.gap(14, 18), for: .scrollContent)
+            // Rows and the gap above the first card as designed (44 pt rows; 14–18 above the habit): the Form's own
+            // defaults (52-pt rows, a 35-pt first gap) pushed Skip today off the iPhone SE (7 Oct 2026).
+            .environment(\.defaultMinListRowHeight, 44)
+            .environment(\.defaultMinListHeaderHeight, spacing.gap(14, 18))
             // Its own id, so tests scroll this list and not Today's behind the sheet (Rulebook T9).
             .accessibilityIdentifier("day-form")
-            .onGeometryChange(for: CGFloat.self) { proxy in
-                (proxy.size.height + proxy.safeAreaInsets.top + proxy.safeAreaInsets.bottom).rounded()
-            } action: { full in
-                if abs(full - height) >= 1 { height = full }
+            .onGeometryChange(for: CGFloat.self) { proxy in proxy.size.height.rounded() } action: { _ in
+                // Read the window's height when the sheet's size changes (a rotation, a new sheet), never per row.
+                let window = ScreenRoom.windowHeight()
+                if abs(window - height) >= 1 { height = window }
             }
             .navigationDestination(item: $perfEntry) { LogRecordView(habit: ruled, entry: $0) }
             .navigationDestination(isPresented: $perfAllLogs) { AllLogsView(habit: current, day: day) }

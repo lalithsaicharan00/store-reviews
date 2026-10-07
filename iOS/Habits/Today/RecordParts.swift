@@ -347,6 +347,12 @@ struct ScreenRoom: Equatable {
     var height: CGFloat = 800
     /// An iPhone SE-sized sheet (4.7-inch).
     var isSmall: Bool { height < 700 }
+    /// The key window's height: 667 pt on the iPhone SE, 812 on a mini, 852 on a 6.1-inch iPhone.
+    static func windowHeight() -> CGFloat {
+        let windows = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows)
+        return (windows.first(where: \.isKeyWindow) ?? windows.first)?.bounds.height ?? 852
+    }
+
     /// Room for the footer above the keyboard (the 6.1-inch and larger).
     var keepsFooterWhileTyping: Bool { height >= 770 }
 

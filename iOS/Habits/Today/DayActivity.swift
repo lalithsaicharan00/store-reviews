@@ -281,9 +281,11 @@ struct DaySpacing: Equatable {
 
     func gap(_ minimum: CGFloat, _ maximum: CGFloat) -> CGFloat { minimum + (maximum - minimum) * share }
 
-    /// From the full sheet's height (637 pt on the SE, 752 on a mini) and the text size.
+    /// From the window's height (667 pt on the iPhone SE, 812 on a mini, taller on every other iPhone) and the text
+    /// size. The window, not the sheet's own geometry: that one counts the navigation bar in its safe area, and read the
+    /// SE as roomy enough for two note lines (measured on the SE simulator, 7 Oct 2026).
     static func make(height: CGFloat, typeSize: DynamicTypeSize) -> DaySpacing {
-        var share = Double(min(max((height - 637) / (752 - 637), 0), 1))
+        var share = Double(min(max((height - 667) / (812 - 667), 0), 1))
         let steps: [DynamicTypeSize] = [.xLarge, .xxLarge, .xxxLarge]
         for size in steps where typeSize >= size { share -= 0.35 }
         if typeSize.isAccessibilitySize { share = 0 }
