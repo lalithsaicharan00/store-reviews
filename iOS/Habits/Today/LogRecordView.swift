@@ -325,6 +325,9 @@ struct DayLogRow: View {
             Spacer(minLength: 8)
             Text(store.clockText(of: entry)).foregroundStyle(.secondary).monospacedDigit().lineLimit(1)
         }
+        // 44-pt rows, as designed: the list's own insets made them 51 on iOS 26 (measured on the SE, 7 Oct 2026). The
+        // same trim as Today's step rows.
+        .padding(.vertical, -4)
         .accessibilityElement(children: .combine)
     }
 

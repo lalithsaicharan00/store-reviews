@@ -67,7 +67,7 @@ struct DayActivity: View {
                 }
             }
             // The card's own padding (design: 14 on the SE to 16), less the row's standard 11-pt inset.
-            .padding(.vertical, spacing.gap(14, 16) - 11)
+            .padding(.vertical, spacing.gap(14, 16) - 11 - spacing.trim)
             if !steps.isEmpty { stepRows(ruled, steps: steps) }
             noteRow
         }
@@ -217,7 +217,7 @@ struct DayActivity: View {
                     Text("Note").font(.footnote).textCase(.uppercase).foregroundStyle(.secondary)
                     Text(note).foregroundStyle(.primary).lineLimit(spacing.noteLines).multilineTextAlignment(.leading)
                 }
-                .padding(.vertical, spacing.gap(12, 14) - 11)
+                .padding(.vertical, spacing.gap(12, 14) - 11 - spacing.trim)
             }
             .accessibilityElement(children: .combine)
             .accessibilityLabel("Note for this day: " + note)
@@ -229,7 +229,7 @@ struct DayActivity: View {
                     Spacer(minLength: 8)
                     Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
                 }
-                .padding(.vertical, spacing.gap(12, 14) - 11)
+                .padding(.vertical, spacing.gap(12, 14) - 11 - spacing.trim)
                 .contentShape(Rectangle())
             }
             .disabled(!editable)
@@ -278,6 +278,9 @@ struct DayActivity: View {
 struct DaySpacing: Equatable {
     var share: Double = 1
     var noteLines = 2
+    /// On the iPhone SE (share 0), the list's own row insets (larger on iOS 26 than the design's) are trimmed by this
+    /// much above and below each card row, so four logs and a note leave Skip today on screen (measured, 7 Oct 2026).
+    var trim: CGFloat { share < 0.01 ? 4 : 0 }
 
     func gap(_ minimum: CGFloat, _ maximum: CGFloat) -> CGFloat { minimum + (maximum - minimum) * share }
 

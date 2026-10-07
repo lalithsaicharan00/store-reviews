@@ -40,6 +40,8 @@ struct DaySheet: View {
     private var ruled: Habit { store.rule(current, on: day) }
     private var editable: Bool { day <= store.today() && day >= store.startDay(of: current) }
     private var isTask: Bool { current.kind == .task }
+    /// The identity row's trim on the iPhone SE (`DaySpacing.trim`).
+    private var identityTrim: CGFloat { height > 0 && DaySpacing.make(height: height, typeSize: typeSize).trim > 0 ? 4 : 0 }
 
     var body: some View {
         let _ = perfTimed("Count: the Day sheet drawn") { () }
@@ -63,6 +65,8 @@ struct DaySheet: View {
             // defaults (52-pt rows, a 35-pt first gap) pushed Skip today off the iPhone SE (7 Oct 2026).
             .environment(\.defaultMinListRowHeight, 44)
             .environment(\.defaultMinListHeaderHeight, spacing.gap(14, 18))
+            // The gap above the first card follows the container's section spacing; each section sets its own after.
+            .listSectionSpacing(.compact)
             // Its own id, so tests scroll this list and not Today's behind the sheet (Rulebook T9).
             .accessibilityIdentifier("day-form")
             .onGeometryChange(for: CGFloat.self) { proxy in proxy.size.height.rounded() } action: { _ in
@@ -133,11 +137,11 @@ struct DaySheet: View {
     @ViewBuilder private var identity: some View {
         Section {
             if pageLink && !isTask {
-                NavigationLink { HabitPageView(id: current.id) } label: { DayIdentityRow(habit: current) }
+                NavigationLink { HabitPageView(id: current.id) } label: { DayIdentityRow(habit: current, trim: identityTrim) }
                     .accessibilityHint("Opens the habit page")
                     .accessibilityIdentifier("day-open-page")
             } else {
-                DayIdentityRow(habit: current)
+                DayIdentityRow(habit: current, trim: identityTrim)
             }
         }
     }
@@ -273,6 +277,8 @@ private struct RescheduleSheet: View {
 /// Icon, name and plan: "8 glasses a day · Anytime", "Quitting since 19 Sep 2026", "Task · Planned for Sat, 4 Oct".
 struct DayIdentityRow: View {
     let habit: Habit
+    /// Points taken off the row's own insets above and below (the iPhone SE, `DaySpacing.trim`).
+    var trim: CGFloat = 0
     @Environment(HabitStore.self) private var store
 
     var body: some View {
@@ -285,7 +291,7 @@ struct DayIdentityRow: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .padding(.vertical, 2)
+        .padding(.vertical, 2 - trim)
         .accessibilityElement(children: .combine)
         .accessibilityIdentifier("day-identity")
     }
