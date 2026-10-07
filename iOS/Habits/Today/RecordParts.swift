@@ -202,10 +202,11 @@ struct AmountNumberField: View {
 struct AmountUnitLine: View {
     let draft: ProgressValueDraft
     let unit: String
+    var compact = false
 
     var body: some View {
         Text(HabitCopy.unitWord(draft.isOne ? 1 : 2, unit))
-            .font(.title3)
+            .font(compact ? .body : .title3)
             .foregroundStyle(.secondary)
             .accessibilityHidden(true)
     }
@@ -348,6 +349,16 @@ struct ScreenRoom: Equatable {
     var isSmall: Bool { height < 700 }
     /// Room for the footer above the keyboard (the 6.1-inch and larger).
     var keepsFooterWhileTyping: Bool { height >= 770 }
+
+    /// The gaps a record screen uses (design decisions §3): the minimum on the SE with the keyboard up, where the card,
+    /// the amount and the button must all fit above the keyboard (measured on the SE simulator, 7 Oct 2026: with the
+    /// standard Form gaps the button covered the amount by 22 pt).
+    struct Gaps { let top: CGFloat; let section: CGFloat; let cardPadding: CGFloat; let numberSize: CGFloat }
+    func gaps(typing: Bool) -> Gaps {
+        isSmall && typing ? Gaps(top: 8, section: 8, cardPadding: 0, numberSize: 40)
+            : isSmall ? Gaps(top: 16, section: 20, cardPadding: 8, numberSize: 48)
+            : Gaps(top: 18, section: 28, cardPadding: 12, numberSize: 64)
+    }
 }
 
 extension View {

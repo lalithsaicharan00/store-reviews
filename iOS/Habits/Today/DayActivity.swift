@@ -63,7 +63,8 @@ struct DayActivity: View {
                         .padding(.top, spacing.gap(14, 18))
                 }
             }
-            .padding(.vertical, spacing.gap(14, 16) - 8)
+            // The card's own padding (design: 14 on the SE to 16), less the row's standard 11-pt inset.
+            .padding(.vertical, spacing.gap(14, 16) - 11)
             if !steps.isEmpty { stepRows(ruled, steps: steps) }
             noteRow
         }
@@ -213,7 +214,7 @@ struct DayActivity: View {
                     Text("Note").font(.footnote).textCase(.uppercase).foregroundStyle(.secondary)
                     Text(note).foregroundStyle(.primary).lineLimit(spacing.noteLines).multilineTextAlignment(.leading)
                 }
-                .padding(.vertical, spacing.gap(12, 14) - 8)
+                .padding(.vertical, spacing.gap(12, 14) - 11)
             }
             .accessibilityElement(children: .combine)
             .accessibilityLabel("Note for this day: " + note)
@@ -225,7 +226,7 @@ struct DayActivity: View {
                     Spacer(minLength: 8)
                     Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
                 }
-                .padding(.vertical, spacing.gap(12, 14) - 8)
+                .padding(.vertical, spacing.gap(12, 14) - 11)
                 .contentShape(Rectangle())
             }
             .disabled(!editable)

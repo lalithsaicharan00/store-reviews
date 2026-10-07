@@ -34,6 +34,14 @@ final class SmallScreenUITests: XCTestCase {
     private var isSmall: Bool { window.height < 700 }
     private var keyboard: XCUIElement { app.keyboards.firstMatch }
 
+    /// Where each named element is, on one line, for a failure message (Rulebook T14).
+    private func frames(_ ids: [String]) -> String {
+        ids.map { id in
+            let e = app.descendants(matching: .any)[id].firstMatch
+            return e.exists ? "\(id) \(Int(e.frame.minY))–\(Int(e.frame.maxY))" : "\(id) none"
+        }.joined(separator: ", ") + ", window \(Int(window.height))" + (keyboard.exists ? ", keyboard \(Int(keyboard.frame.minY))" : "")
+    }
+
     private func launch(_ arguments: [String]) {
         app.launchArguments = ["-uitest", "-day-details-fixture", "-appearance.theme", "dark"] + arguments
         app.launch()
@@ -55,7 +63,8 @@ final class SmallScreenUITests: XCTestCase {
         let amount = app.textFields["record-amount"]
         aboveKeyboard(amount, "The amount")
         aboveKeyboard(app.buttons["record-add"], "Add")
-        XCTAssertGreaterThan(app.buttons["record-add"].frame.minY, amount.frame.maxY, "Add is under the amount")
+        XCTAssertGreaterThan(app.buttons["record-add"].frame.minY, amount.frame.maxY,
+                             "Add is under the amount: " + frames(["record-habit", "record-date", "record-time", "record-amount", "record-add"]))
         if isSmall {
             let date = app.descendants(matching: .any)["record-date"].firstMatch
             let time = app.descendants(matching: .any)["record-time"].firstMatch
@@ -121,9 +130,12 @@ final class SmallScreenUITests: XCTestCase {
         XCTAssertTrue(app.buttons["day-edit-note"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["day-all-logs"].exists, "Four logs: All 4 logs")
         let skip = app.buttons["day-skip"]
-        XCTAssertTrue(skip.exists)
-        XCTAssertTrue(skip.isHittable, "Skip today is on screen without scrolling: \(skip.frame), window \(window)")
-        XCTAssertLessThanOrEqual(skip.frame.maxY, window.maxY, "Skip today ends on screen")
+        let layout = frames(["day-identity", "day-result", "day-add-step", "day-edit-note", "day-all-logs", "day-skip"])
+        XCTAssertTrue(skip.exists, "Skip today is drawn without scrolling: " + layout)
+        if skip.exists {
+            XCTAssertTrue(skip.isHittable, "Skip today is on screen: " + layout)
+            XCTAssertLessThanOrEqual(skip.frame.maxY, window.maxY, "Skip today ends on screen: " + layout)
+        }
         shot("se-day-details-four-logs-note")
     }
 }

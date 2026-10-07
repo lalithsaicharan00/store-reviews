@@ -282,6 +282,7 @@ struct DayIdentityRow: View {
         }
         .padding(.vertical, 2)
         .accessibilityElement(children: .combine)
+        .accessibilityIdentifier("day-identity")
     }
 
     static func plan(_ habit: Habit, store: HabitStore) -> String {

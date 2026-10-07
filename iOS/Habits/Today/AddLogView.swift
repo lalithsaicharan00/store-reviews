@@ -56,6 +56,7 @@ struct AddLogView: View {
         let kind = RecordKind(current, on: day, store: store)
         let range = min(first, today)...today
         let bounds = timeBounds(kind)
+        let gaps = room.gaps(typing: keyboardUp)
         NavigationStack {
             Form {
                 Section {
@@ -66,8 +67,10 @@ struct AddLogView: View {
                 } footer: {
                     if kind != .amount && kind != .time && kind != .steps { footer(kind, ruled: ruled) }
                 }
-                mainSection(kind, ruled: ruled)
+                mainSection(kind, ruled: ruled, gaps: gaps)
             }
+            .contentMargins(.top, gaps.top, for: .scrollContent)
+            .listSectionSpacing(gaps.section)
             .accessibilityIdentifier("log-form")
             .selectsNumbersOnFocus()
             .scrollDismissesKeyboard(.interactively)
@@ -122,18 +125,18 @@ struct AddLogView: View {
 
     // MARK: The main thing
 
-    @ViewBuilder private func mainSection(_ kind: RecordKind, ruled: Habit) -> some View {
+    @ViewBuilder private func mainSection(_ kind: RecordKind, ruled: Habit, gaps: ScreenRoom.Gaps) -> some View {
         switch kind {
         case .amount:
             let unit = HabitCopy.unit(of: ruled).trimmingCharacters(in: .whitespaces)
             let currency = HabitCopy.currencies.contains(unit) ? unit : nil
             Section {
                 VStack(spacing: 2) {
-                    AmountNumberField(draft: draft, currency: currency, size: min(numberSize, 64), focus: $focus,
+                    AmountNumberField(draft: draft, currency: currency, size: min(numberSize, gaps.numberSize), focus: $focus,
                                       label: unit.isEmpty || currency != nil ? "Amount" : "Amount, in \(unit)")
-                    if currency == nil && !unit.isEmpty { AmountUnitLine(draft: draft, unit: unit) }
+                    if currency == nil && !unit.isEmpty { AmountUnitLine(draft: draft, unit: unit, compact: gaps.cardPadding == 0) }
                 }
-                .padding(.vertical, 12)
+                .padding(.vertical, gaps.cardPadding)
                 .contentShape(Rectangle())
                 .onTapGesture { focus = .amount }
             } header: {
@@ -143,8 +146,8 @@ struct AddLogView: View {
             }
         case .time:
             Section {
-                DurationFields(draft: draft, size: min(durationSize, 44), focus: $focus)
-                    .padding(.vertical, 6)
+                DurationFields(draft: draft, size: min(durationSize, gaps.cardPadding == 0 ? 32 : 44), focus: $focus)
+                    .padding(.vertical, gaps.cardPadding / 2)
             } header: {
                 Text("How long")
             } footer: {

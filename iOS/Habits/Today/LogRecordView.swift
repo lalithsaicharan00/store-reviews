@@ -49,6 +49,7 @@ struct LogRecordView: View {
         let c = store.recordingCalendar(for: entry)
         let ruled = store.rule(habit, on: entry.day)
         let timed = ruled.kind == .duration
+        let gaps = room.gaps(typing: editing && focus != nil)
         return Form {
             Section {
                 RecordHabitRow(habit: habit)
@@ -68,8 +69,10 @@ struct LogRecordView: View {
             } footer: {
                 if isSlip { footer(entry) }
             }
-            valueSection(entry, ruled: ruled)
+            valueSection(entry, ruled: ruled, gaps: gaps)
         }
+        .contentMargins(.top, gaps.top, for: .scrollContent)
+        .listSectionSpacing(gaps.section)
         .selectsNumbersOnFocus()
         .scrollDismissesKeyboard(.interactively)
         .measuresRoom($room)
@@ -126,7 +129,7 @@ struct LogRecordView: View {
 
     // MARK: The value
 
-    @ViewBuilder private func valueSection(_ entry: Entry, ruled: Habit) -> some View {
+    @ViewBuilder private func valueSection(_ entry: Entry, ruled: Habit, gaps: ScreenRoom.Gaps) -> some View {
         switch ruled.kind {
         case .quit:
             EmptyView()
@@ -149,13 +152,13 @@ struct LogRecordView: View {
             Section {
                 VStack(spacing: 2) {
                     if editing {
-                        AmountNumberField(draft: draft, currency: currency, size: min(numberSize, 64),
+                        AmountNumberField(draft: draft, currency: currency, size: min(numberSize, gaps.numberSize),
                                           keyboard: check ? .numberPad : .decimalPad, focus: $focus,
                                           label: raw.isEmpty || currency != nil ? "Amount" : "Amount, in \(raw)")
-                        if currency == nil && !raw.isEmpty { AmountUnitLine(draft: draft, unit: raw) }
+                        if currency == nil && !raw.isEmpty { AmountUnitLine(draft: draft, unit: raw, compact: gaps.cardPadding == 0) }
                     } else {
                         Text((currency ?? "") + HabitCopy.number(entry.value))
-                            .font(.system(size: min(numberSize, 64), weight: .bold).monospacedDigit())
+                            .font(.system(size: min(numberSize, gaps.numberSize), weight: .bold).monospacedDigit())
                             .lineLimit(1).minimumScaleFactor(0.5)
                             .accessibilityLabel(check ? HabitCopy.amount(entry.value, raw) : entry.description(for: ruled))
                             .accessibilityIdentifier("record-value")
@@ -166,7 +169,7 @@ struct LogRecordView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
+                .padding(.vertical, gaps.cardPadding)
             } header: {
                 Text(check ? "Checks" : "Amount")
             } footer: {
