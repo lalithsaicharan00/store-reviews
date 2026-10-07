@@ -480,7 +480,7 @@ Their placement records scope and priority; implementation has not started.
     row); the spacing numbers are relative guidance. Pointers added to Design Rules' Day sheet section, the iOS docs
     index and the handoff README.
   - [x] The user's decision (7 Oct): build it, the brief for items 59–63
-  - **Built and tested on GitHub, 7 Oct 2026, Claude** (branch `day-details-logs-notes-redesign`, commits `4314265`…`3ed6dc1`;
+  - **Built and tested on GitHub, 7 Oct 2026, Claude** (branch `day-details-logs-notes-redesign`, commits `4314265`…`c9fd46b`;
     `main` moved to it by fast-forward at the user's request, "once everything passes merge it into main"). Store
     checks (`UndoCheck.logTimes`) and Debug and Release builds: run `37607280545`. Every UI class it touches, on
     `aa6ee1e`: DayDetails, Undo, TodayRowLayout `37624437284`; DayDetailsScreenshot, HabitPage, TodayRowSheet
@@ -488,7 +488,9 @@ Their placement records scope and priority; implementation has not started.
     SmallScreen `37624448992`; HabitScenario, Today, CompletionFeedback, Schedule `37624451923`. The iPhone SE simulator
     (SmallScreen through the workflow's new `device` input): `37621197950`, `37630915783`. On `3ed6dc1` (Add log and Edit
     log above the keyboard on every iPhone): SmallScreen on the default iPhone, DayDetails, Undo and the reruns below:
-    `37630910873`. Core's sync test of an edited log time passed. **Five timing-sensitive failures, none in code this
+    `37630910873`, all passed but `testEveryKindsAddScreen`, whose slow swipe left the keyboard up on the 6.3-inch
+    simulator (a test gesture: the footer hides while typing by design); a drag across the keyboard, `c9fd46b`, passed
+    in `37639195688` (its summary push to `ci-results` hit a GitHub server error; the result is from the job's log). Core's sync test of an edited log time passed. **Five timing-sensitive failures, none in code this
     branch changed, each passed on `main` and on its one rerun here (T2):** FocusPlayer `testFastNavigationNeverSlidesBack`
     (`main` `37615468119`, rerun `37615472311`), HabitCreation `testBigNumbers` and `testOtherTypes` (cut off at 60
     minutes; `37616765534`), HabitCreation `testDailyShapes` and `testMonthAndYearShapes` and FocusPlayer
