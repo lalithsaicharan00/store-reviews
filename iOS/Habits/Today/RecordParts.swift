@@ -353,8 +353,10 @@ struct ScreenRoom: Equatable {
         return (windows.first(where: \.isKeyWindow) ?? windows.first)?.bounds.height ?? 852
     }
 
-    /// Room for the footer above the keyboard (the 6.1-inch and larger).
-    var keepsFooterWhileTyping: Bool { height >= 770 }
+    /// Room for the footer above the keyboard: only the largest iPhones (Plus and Pro Max). The design kept it on the
+    /// 6.1-inch, but iOS 26's 52-pt rows leave no room there: on a 6.3-inch the footer and the amount reached under
+    /// Add (SmallScreenUITests on the default simulator, run 37624448992, 7 Oct 2026).
+    var keepsFooterWhileTyping: Bool { Self.windowHeight() >= 920 }
 
     /// The gaps a record screen uses (design decisions §3): the minimum on the SE with the keyboard up, where the card,
     /// the amount and the button must all fit above the keyboard (measured on the SE simulator, 7 Oct 2026: with the
@@ -363,6 +365,7 @@ struct ScreenRoom: Equatable {
     func gaps(typing: Bool) -> Gaps {
         isSmall && typing ? Gaps(top: 8, section: 8, cardPadding: 0, numberSize: 40)
             : isSmall ? Gaps(top: 16, section: 20, cardPadding: 8, numberSize: 48)
+            : typing ? Gaps(top: 8, section: 16, cardPadding: 4, numberSize: 56)
             : Gaps(top: 18, section: 28, cardPadding: 12, numberSize: 64)
     }
 }

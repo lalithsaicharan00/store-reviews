@@ -481,6 +481,9 @@ final class DayDetailsUITests: XCTestCase {
                 XCTAssertLessThan(app.buttons["record-add"].frame.maxY, app.keyboards.firstMatch.frame.minY + 1,
                                   "\(kind.name): the button rides above the keyboard")
                 app.typeText("2")
+                // The footer hides while typing where it would reach the button; it's back once the keyboard is down.
+                app.collectionViews["log-form"].swipeDown(velocity: .slow)
+                XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 3), "\(kind.name): a drag puts the keyboard away")
             }
             footer(contains: kind.footer)
             shot("add-\(kind.name)")
