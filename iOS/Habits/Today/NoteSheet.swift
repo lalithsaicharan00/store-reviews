@@ -329,6 +329,13 @@ struct NoteView: View {
             started = true
             if startsEditing { startEditing() }
         }
+        .onPerfCommand { action in
+            switch action {
+            case .editEntry: if !editing { startEditing() }
+            case .closeLog: if startsEditing { dismiss() }
+            default: break
+            }
+        }
         .onChange(of: note == nil) { _, gone in
             // Deleted here or elsewhere, and not being written: nothing left to show.
             if gone && !editing { dismiss() }

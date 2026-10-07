@@ -216,7 +216,7 @@ final class TodayRowSheetUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Mark Take vitamins done"].waitForExistence(timeout: 3), "The same ✓ takes today's tick back")
     }
 
-    /// Touch and hold: the sheet's actions (Open Habit Page, Add Entry, Skip, Pause, a named Undo), no Delete, and no
+    /// Touch and hold: the sheet's actions (Open Habit Page, Add log, Skip, Pause, a named Undo), no Delete, and no
     /// "Edit Today's Progress…" (a tap does that now).
     func testLongPressMenu() {
         launch()
@@ -225,7 +225,8 @@ final class TodayRowSheetUITests: XCTestCase {
         water.press(forDuration: 1.2)
         let open = app.buttons["Open Habit Page"]
         XCTAssertTrue(open.waitForExistence(timeout: 3))
-        XCTAssertTrue(app.buttons["Add Entry…"].exists)
+        XCTAssertTrue(app.buttons["Add log…"].exists, "Named for what it adds (U21)")
+        XCTAssertFalse(app.buttons["Add Entry…"].exists, "Never Add Entry")
         XCTAssertTrue(app.buttons["Skip Today"].exists)
         XCTAssertTrue(app.buttons["Pause…"].exists)
         XCTAssertTrue(app.buttons["Undo +1 glass"].exists, "Undo names what it takes back")

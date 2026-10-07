@@ -168,25 +168,33 @@ final class FocusPlayerUITests: XCTestCase {
         // The goal is 3 seconds: wait until the clock has passed it, then the page must still be this habit.
         XCTAssertTrue(waitUntil(10) { self.clockSeconds() >= 4 }, "The clock passes the 3-second goal: \(clock.label)")
         expectPage("Read a little")
-        app.buttons["focus-habit-options"].tap()
-        XCTAssertTrue(app.buttons["Pause timer"].waitForExistence(timeout: 3), "Goal reached keeps timing until the user leaves or pauses")
-        app.buttons["Pause timer"].tap()
+        // Day details (it was Habit options, U23): the timer keeps running there until Stop and save.
+        app.buttons["focus-day-details"].tap()
+        let stop = app.buttons["day-stop-timer"]
+        XCTAssertTrue(stop.waitForExistence(timeout: 3), "Goal reached keeps timing until the user leaves or stops")
+        XCTAssertEqual(stop.label, "Stop and save")
+        stop.tap()
+        app.buttons["day-close"].tap()
+        XCTAssertTrue(app.buttons["day-close"].waitForNonExistence(timeout: 3))
         app.buttons["focus-up-next"].tap()
         expectPage("Water the plants")
-        // An amount's manual log (the limit used to be the amount here; limits left routines on 5 Oct 2026).
+        // An amount's manual log, in Day details as from Today (limits left routines on 5 Oct 2026).
         jump("Drink water")
-        app.buttons["focus-habit-options"].tap()
-        app.buttons["focus-log-manually"].tap()
-        let amount = app.textFields["log-amount"]
+        app.buttons["focus-day-details"].tap()
+        let manual = app.buttons["day-add-entry"]
+        XCTAssertTrue(manual.waitForExistence(timeout: 3))
+        XCTAssertEqual(manual.label, "Log manually")
+        manual.tap()
+        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 3), "The same Add log as everywhere")
+        let amount = app.textFields["record-amount"]
         XCTAssertTrue(amount.waitForExistence(timeout: 3))
-        amount.tap(); amount.typeText("1")
+        amount.typeText("1")
         shot("focus-08-keyboard")
-        app.navigationBars["Log Amount"].buttons["Log"].tap()
+        app.buttons["record-add"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 3))
+        app.buttons["day-close"].tap()
         let quantity = app.staticTexts["focus-quantity"]
         XCTAssertTrue(waitUntil { quantity.label == "2 / 2 glasses" }, quantity.label)
-        XCTAssertTrue(app.buttons["focus-undo"].waitForExistence(timeout: 3))
-        app.buttons["focus-undo"].tap()
-        XCTAssertTrue(waitUntil { quantity.label == "1 / 2 glasses" }, quantity.label)
     }
 
     func testSavedFocusProgressSurvivesTermination() {
@@ -242,38 +250,46 @@ final class FocusPlayerUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Focus: all checks passed"].waitForExistence(timeout: 10))
     }
 
-    func testManualTimePausesAndClockCanBeHidden() {
+    /// A time habit always shows its clock (the user, 7 Oct 2026: "Show clock" is gone); a tap on the clock types time
+    /// in the same Add log, pausing the timer, and Cancel runs it again; its Undo comes from the player's message.
+    func testManualTimePausesAndTheClockAlwaysShows() {
         launch()
         jump("Read a little")
         XCTAssertTrue(clock.exists)
-        app.buttons["focus-habit-options"].tap()
-        let showClock = app.switches["Show clock"].firstMatch
-        XCTAssertTrue(showClock.waitForExistence(timeout: 3))
-        showClock.switches.firstMatch.tap() // the switch itself, not the row's label
-        XCTAssertEqual(showClock.value as? String, "0")
-        app.navigationBars["Read a little"].buttons["Done"].tap()
-        XCTAssertTrue(clock.waitForNonExistence(timeout: 3), "The clock can be hidden")
-        app.buttons["focus-habit-options"].tap()
-        app.buttons["focus-log-manually"].tap()
-        XCTAssertTrue(app.navigationBars["Log Time"].waitForExistence(timeout: 3))
-        app.navigationBars["Log Time"].buttons["Cancel"].tap()
+        app.buttons["focus-day-details"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 3))
+        XCTAssertFalse(app.switches["Show clock"].exists, "No Show clock anywhere")
+        app.buttons["day-close"].tap()
+        XCTAssertTrue(app.buttons["day-close"].waitForNonExistence(timeout: 3))
+        app.buttons["focus-clock"].tap()
+        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 3), "The clock opens Add log")
+        app.buttons["record-cancel"].tap()
         // Cancel runs the timer again. ("Paused" under the clock can't be checked here: it is always laid out,
         // invisible and hidden from VoiceOver while the timer runs, and XCUITest on iOS 26 still lists
         // VoiceOver-hidden text; the main button is what the timer's state drives.)
         XCTAssertTrue(waitUntil { self.app.buttons["focus-primary"].label == "Stop Read a little timer" },
                       app.buttons["focus-primary"].label)
-        XCTAssertFalse(clock.exists, "The clock stays hidden after manual entry")
+        XCTAssertTrue(clock.exists, "The clock always shows")
+        app.buttons["focus-clock"].tap()
+        let minutes = app.textFields["record-minutes"]
+        XCTAssertTrue(minutes.waitForExistence(timeout: 3))
+        minutes.typeText("1")
+        app.buttons["record-add"].tap()
+        let undo = app.buttons["focus-undo"]
+        XCTAssertTrue(undo.waitForExistence(timeout: 3), "Time saved, with Undo")
+        undo.tap()
+        XCTAssertTrue(undo.waitForNonExistence(timeout: 3))
     }
 
     /// The bottom row is the native bottom bar, as on Today (the user, 5 Oct 2026, superseding 4 Oct's custom row 40
     /// points up): it sits at the bottom with no band of space under it, the main button floats a gap above it, and
     /// neither moves whatever the habit's state (logged with its Undo, an unfinished checklist with no main button, a
     /// running timer). An unfinished checklist's steps all show without scrolling (Current Work 51: they were cut off
-    /// by the empty button slot). Habit options shows every option without scrolling.
+    /// by the empty button slot). The middle item is Day details (U23): the same sheet a row on Today opens, full height.
     func testBottomRowStaysPutAndOptionsShowEverything() {
         launch()
         let screen = app.windows.firstMatch.frame
-        let options = app.buttons["focus-habit-options"]
+        let options = app.buttons["focus-day-details"]
         let primary = app.buttons["focus-primary"]
         let row = options.frame
         let button = primary.frame
@@ -306,20 +322,21 @@ final class FocusPlayerUITests: XCTestCase {
         XCTAssertTrue(app.buttons["Stop Read a little timer"].waitForExistence(timeout: 3))
         expectStill("a running timer")
         sleep(2)
-        primary.tap() // Pause: the time so far is an entry, so Undo joins the options
+        primary.tap() // Pause: the time so far is a log
         expectStill("a paused timer")
+        XCTAssertEqual(options.label, "Day details", "Habit options became Day details")
         options.tap()
-        let edit = app.buttons["focus-edit-habit"]
-        XCTAssertTrue(edit.waitForExistence(timeout: 3))
-        Thread.sleep(forTimeInterval: 0.6) // the sheet settles at its fitted height
-        // Waits like Edit Habit above: on main (run 37298794001) the switch was on screen a moment after a bare
-        // `exists` checked for it, while the sheet was still settling.
-        XCTAssertTrue(app.switches["Show clock"].firstMatch.waitForExistence(timeout: 3))
-        XCTAssertTrue(edit.isHittable && edit.frame.maxY <= screen.maxY, "Edit Habit shows without scrolling: \(edit.frame)")
-        shot("player-02-options-fitted")
-        app.navigationBars["Read a little"].buttons["Done"].tap()
-        XCTAssertTrue(edit.waitForNonExistence(timeout: 3))
-        expectStill("after the options sheet")
+        let close = app.buttons["day-close"]
+        XCTAssertTrue(close.waitForExistence(timeout: 3), "The same Day details a row opens")
+        XCTAssertTrue(app.navigationBars["Today"].exists, "Titled by the routine's day")
+        XCTAssertLessThan(close.frame.minY, screen.height * 0.25, "Full height")
+        XCTAssertTrue(app.buttons["day-more"].exists, "Edit and the rest in its ⋯ menu")
+        XCTAssertTrue(app.buttons["day-add-entry"].exists, "Log manually")
+        XCTAssertFalse(app.switches["Show clock"].exists, "Show clock is gone")
+        shot("player-02-day-details")
+        close.tap()
+        XCTAssertTrue(close.waitForNonExistence(timeout: 3))
+        expectStill("after Day details")
     }
 
     func testCompactProgressAcrossPeriodsAndTypes() {
@@ -355,11 +372,12 @@ final class FocusPlayerUITests: XCTestCase {
         XCTAssertEqual(app.staticTexts["focus-progress-period"].label, "20 min on 3 days a week")
         XCTAssertFalse(app.staticTexts["focus-period-progress"].exists)
         shot("compact-06-flexible")
-        app.buttons["focus-habit-options"].tap()
-        let quota = app.staticTexts["focus-period-progress"]
-        XCTAssertTrue(quota.waitForExistence(timeout: 3))
-        XCTAssertEqual(quota.label, "0/3 days · This week")
-        app.navigationBars["Flexible reading"].buttons["Done"].tap()
+        app.buttons["focus-day-details"].tap()
+        let detail = app.staticTexts["day-detail"]
+        XCTAssertTrue(detail.waitForExistence(timeout: 3))
+        XCTAssertTrue(detail.label.contains("0 of 3 days this week"), "The days count in Day details: \(detail.label)")
+        app.buttons["day-close"].tap()
+        XCTAssertTrue(app.buttons["day-close"].waitForNonExistence(timeout: 3))
         jump("Water the plants")
         XCTAssertEqual(app.staticTexts["focus-quantity"].label, "0 / 1")
         shot("compact-07-task")

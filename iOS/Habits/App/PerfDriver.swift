@@ -347,14 +347,20 @@ enum PerfDriver {
                 }
             }
         case "day-sheet", "log-sheet":
+            // Day details, the Log view and Edit log, All logs (7 Oct 2026 redesign; Rulebook T4).
+            guard let water = store.habits.first(where: { $0.name == "Water" }) else { return MainThreadMeter.mark("# NOTE no Water") }
+            let today = store.today()
+            // Four logs or more: the two newest and "All N logs" (U17).
+            while store.dayLogs(of: water, on: today).count < 4 { store.addProgress(water, value: 1, on: today, source: .manual) }
+            await store.flush()
             await open("All Habits") { send(.openAllHabits) }
             await open("Habit page") { send(.openHabit("Water")) }
-            let today = store.today()
             await open("Day sheet (first)") { send(.openDay(today)) }
             send(.closeDay)
             await pause(1.2)
             await open("Day sheet (again)") { send(.openDay(today)) }
             if scenario == "log-sheet" {
+                // Log manually: the one Add screen, the number pad up as it opens.
                 await open("Log sheet") { send(.openLog) }
                 await measure("Log sheet: typing") {
                     await repeatFor(window) {
@@ -362,11 +368,18 @@ enum PerfDriver {
                     }
                 }
                 await open("Log keyboard dismissal") { send(.hideLogKeyboard) }
-                await measure("Log sheet: entry list scrolling") { await scroll() }
+                send(.closeLog)
+                await pause(1.0)
             } else {
                 await measure("Day sheet: entry list scrolling") { await scroll() }
             }
+            await open("All logs") { send(.openAllLogs) }
+            await measure("All logs: scrolling") { await scroll() }
+            send(.closeDay)
+            await pause(1.2)
+            await open("Day sheet (for a log)") { send(.openDay(today)) }
             await open("Entry editor") { send(.openEntry) }
+            await open("Edit log (keyboard)") { send(.editEntry) }
             await measure("Entry editor: typing") {
                 await repeatFor(window) {
                     for text in ["1", "12", "123", "12", "1"] { type(text); await pause(0.1) }
@@ -374,18 +387,73 @@ enum PerfDriver {
             }
             await open("Save entry") { send(.saveEntry) }
             await pause(0.5)
-            if scenario == "log-sheet" { send(.closeLog); await pause(0.5) }
             await measure("Day sheet: add, edit and exact undo") {
-                guard let water = store.habits.first(where: { $0.name == "Water" }) else { return }
                 await repeatFor(window) {
                     store.addProgress(water, value: 1, on: today, source: .daySheet)
                     if let entry = store.entries(of: water.id, on: today).last {
-                        store.editEntry(entry.id, value: 2)
+                        store.editEntry(entry.id, value: 2, at: entry.createdAt.addingTimeInterval(-60))
                         store.undoEntry(entry.id)
                     }
                     await pause(0.3)
                 }
             }
+        case "add-screens":
+            // The one Add screen for every kind (7 Oct 2026; T4): Add log (an amount, a time) with typing, Add a check,
+            // Mark a day done, Tick steps and Add slip, each opened from its Day details.
+            let today = store.today()
+            for (name, typing) in [("Water", true), ("Read", true), ("Call family", false), ("Meds", false),
+                                   ("Skincare", false), ("Smoking", false)] {
+                guard store.habits.contains(where: { $0.name == name }) else { MainThreadMeter.mark("# NOTE no \(name)"); continue }
+                await open("All Habits") { send(.openAllHabits) }
+                await open("Habit page (\(name))") { send(.openHabit(name)) }
+                await open("Day sheet (\(name))") { send(.openDay(today)) }
+                await open("Add screen (\(name))") { send(.openLog) }
+                if typing {
+                    await measure("Add screen (\(name)): typing") {
+                        await repeatFor(window) {
+                            for text in ["1", "12", "123", "12", "1"] { type(text); await pause(0.1) }
+                        }
+                    }
+                }
+                send(.closeLog)
+                await pause(1.0)
+                send(.closeDay)
+                await pause(1.0)
+                send(.close)
+                await pause(1.2)
+            }
+        case "notes":
+            // Add note and Edit note, typing (7 Oct 2026; T4): from Water's Day details, the note box and Save above
+            // the keyboard.
+            guard let water = store.habits.first(where: { $0.name == "Water" }) else { return MainThreadMeter.mark("# NOTE no Water") }
+            let today = store.today()
+            store.setNote("", of: water, on: today)
+            await open("All Habits") { send(.openAllHabits) }
+            await open("Habit page") { send(.openHabit("Water")) }
+            await open("Day sheet") { send(.openDay(today)) }
+            await open("Add note") { send(.openNote) }
+            let sentence = "Big glass after the run"
+            await measure("Add note: typing") {
+                await repeatFor(window) {
+                    for n in 1...sentence.count { type(String(sentence.prefix(n))); await pause(0.08) }
+                    for n in stride(from: sentence.count - 1, through: 0, by: -1) { type(String(sentence.prefix(n))); await pause(0.05) }
+                }
+            }
+            send(.closeLog)
+            await pause(1.0)
+            store.setNote("A note to change.", of: water, on: today)
+            await pause(0.5)
+            await open("Note view") { send(.openNote) }
+            await open("Edit note (keyboard)") { send(.editEntry) }
+            await measure("Edit note: typing") {
+                await repeatFor(window) {
+                    for n in 1...sentence.count { type(String(sentence.prefix(n))); await pause(0.08) }
+                    for n in stride(from: sentence.count - 1, through: 0, by: -1) { type(String(sentence.prefix(n))); await pause(0.05) }
+                }
+            }
+            send(.closeDay)
+            await pause(1.0)
+            store.setNote("", of: water, on: today)
         case "new-habit":
             await openTwice("New Habit") { send(.openNewHabit) }
             send(.close)
@@ -420,6 +488,10 @@ enum PerfDriver {
                     send(.previousHabit); await pause(0.4)
                 }
             }
+            // The player's Day details (U23, 7 Oct 2026): the same sheet a row opens, over the player.
+            await open("Routine player: Day details") { send(.openDay(store.today())) }
+            send(.closeDay)
+            await pause(1.2)
             // A quick thumb (Current Work 50, 5 Oct 2026): › to the end and ‹ back, a tap every 0.1 s.
             await measure("Routine player: fast ‹ ›") {
                 await repeatFor(window) {

@@ -110,16 +110,18 @@ final class RoutineCalendarUITests: XCTestCase {
         play.tap()
         XCTAssertTrue(playerShows("Afternoon"))
         XCTAssertTrue(app.buttons["routine-queue"].label.hasSuffix("habit 1 of 1"), "Resume includes only unfinished habits")
-        // + adds its step (1,000 steps); any other amount is typed from Habit options, inside the routine too.
+        // + adds its step (1,000 steps); any other amount is typed from Day details, inside the routine too (U23).
         XCTAssertTrue(app.buttons["Add 1,000 steps to Walk"].waitForExistence(timeout: 3))
-        app.buttons["focus-habit-options"].tap()
-        let manual = app.buttons["focus-log-manually"]
+        app.buttons["focus-day-details"].tap()
+        let manual = app.buttons["day-add-entry"]
         XCTAssertTrue(manual.waitForExistence(timeout: 3))
         manual.tap()
-        let amount = app.textFields["log-amount"]
-        XCTAssertTrue(amount.waitForExistence(timeout: 3), "Habit options open Log Amount")
+        let amount = app.textFields["record-amount"]
+        XCTAssertTrue(amount.waitForExistence(timeout: 3), "Log manually opens Add log")
         sleep(1); amount.typeText("3000")
-        app.navigationBars["Log Amount"].buttons["Log"].tap()
+        app.buttons["record-add"].tap()
+        XCTAssertTrue(app.buttons["day-close"].waitForExistence(timeout: 3))
+        app.buttons["day-close"].tap()
         sleep(2)
         shot("routine-walk-added")
         tapFinish() // 5,200 + 3,000 of 8,000 steps: done

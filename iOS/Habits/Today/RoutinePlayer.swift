@@ -210,7 +210,12 @@ struct RoutinePlayer: View {
         // the habit complete (`HabitStore+Feedback`, Current Work 18). It used to play "success" for every save, a
         // skip and an undo alike.
         .onPerfCommand { action in
-            if action == .nextHabit { advance() } else if action == .previousHabit { navigate(to: max(0, index - 1)) }
+            switch action {
+            case .nextHabit: advance()
+            case .previousHabit: navigate(to: max(0, index - 1))
+            case .openDay: if !showDayDetails { showDayDetails = true }
+            default: break
+            }
         }
         #if DEBUG
         .task { await runFastNavigationCheck() }

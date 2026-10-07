@@ -93,7 +93,7 @@ jobs:
             case "$MESSAGE" in *"[ios-perf]"*) echo "PERF=true" >> "$GITHUB_ENV";; *) echo "PERF=false" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets]"*) echo "PERF_SCENARIOS=scroll-today tap-today widget-log widget-guide" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=scroll-today tap-today widget-log widget-guide" >> "$GITHUB_ENV";; esac
             case "$MESSAGE" in *"[ios-widgets-recheck]"*) echo "PERF_SCENARIOS=widget-log widget-guide" >> "$GITHUB_ENV"; echo "PERF_PROFILE_SCENARIOS=widget-log widget-guide" >> "$GITHUB_ENV";; esac
-            case "$MESSAGE" in *"[ios-perf-input]"*) echo "PERF_SCENARIOS=new-habit day-sheet log-sheet" >> "$GITHUB_ENV";; esac
+            case "$MESSAGE" in *"[ios-perf-input]"*) echo "PERF_SCENARIOS=new-habit day-sheet log-sheet add-screens notes" >> "$GITHUB_ENV";; esac
           fi
 
       - name: Native analytics contract and outgoing payload checks

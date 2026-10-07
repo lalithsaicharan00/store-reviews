@@ -5,6 +5,12 @@ import TipKit
 /// The home screen: today's habits, one card per part of the day.
 struct TodayView: View {
     @Environment(HabitStore.self) private var store
+    #if DEBUG && targetEnvironment(simulator)
+    /// `-open-add`: the Add screen the UI tests open at launch.
+    private struct DebugAdd: Identifiable { let habit: Habit; let day: LocalDay; var id: UUID { habit.id } }
+    @State private var debugAdd: DebugAdd?
+    @State private var debugAddShown: DebugAdd?
+    #endif
     @State private var day: LocalDay?
     /// Parts and checklists the person opened or folded, and done rows held in place until a pause (#58, #59).
     /// One box per part, so folding one part redraws only that part.
@@ -136,6 +142,27 @@ struct TodayView: View {
             try? await Task.sleep(for: .milliseconds(800))
             store.dayTarget = .init(habitID: habit.id, day: day)
         }
+        // Open one habit's Add screen at launch (`-open-add Water`, `-open-day-offset -1` for yesterday), so the UI
+        // tests reach every kind's Add log / Add a check / Mark a day done / Tick steps / Add slip (7 Oct 2026).
+        .task {
+            await AppModel.shared.ensureLoaded()
+            let arguments = ProcessInfo.processInfo.arguments
+            guard store.isLoaded, let flag = arguments.firstIndex(of: "-open-add"), flag + 1 < arguments.count,
+                  let habit = store.habits.first(where: { $0.name == arguments[flag + 1] }) else { return }
+            var day = store.today()
+            if let o = arguments.firstIndex(of: "-open-day-offset"), o + 1 < arguments.count, let n = Int(arguments[o + 1]) {
+                day = day.adding(days: n, calendar: store.calendar)
+            }
+            try? await Task.sleep(for: .milliseconds(800))
+            debugAdd = DebugAdd(habit: habit, day: day)
+            debugAddShown = debugAdd
+        }
+        // `-then-open-day`: once the Add screen closes, that day's Day details, so a test sees what was saved (a test
+        // launch's database lives only as long as the launch, D8).
+        .sheet(item: $debugAdd, onDismiss: {
+            guard ProcessInfo.processInfo.arguments.contains("-then-open-day"), let shown = debugAddShown else { return }
+            store.dayTarget = .init(habitID: shown.habit.id, day: shown.day)
+        }) { AddLogView(habit: $0.habit, day: $0.day, source: .manual) }
         // Launch the actual player directly for visual review in Simulator, using the isolated fixture.
         .task {
             await AppModel.shared.ensureLoaded()

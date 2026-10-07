@@ -72,20 +72,23 @@ final class TodayRowLayoutUITests: XCTestCase {
         XCTAssertLessThan(undo.frame.maxX, add.frame.minX, "Side by side, Undo first")
         shot("l02-after-log")
         add.tap()
-        XCTAssertTrue(app.navigationBars["Add Note"].waitForExistence(timeout: 3), "Add Note opens its own sheet")
-        let field = app.descendants(matching: .any)["note-field"].firstMatch
+        XCTAssertTrue(app.navigationBars["Add note"].waitForExistence(timeout: 3), "Add Note opens Add note")
+        let field = app.textViews["note-field"]
         XCTAssertTrue(field.waitForExistence(timeout: 3))
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3))
         for key in ["F", "e", "l", "t", " ", "g", "o", "o", "d"] { field.typeText(key) }
         shot("l03-note-sheet")
-        app.navigationBars["Add Note"].buttons["Save"].tap()
-        XCTAssertTrue(app.navigationBars["Add Note"].waitForNonExistence(timeout: 3), "Save closes it")
+        app.buttons["note-save"].tap()
+        XCTAssertTrue(app.navigationBars["Add note"].waitForNonExistence(timeout: 3), "Save closes it")
         XCTAssertTrue(app.buttons["habit-edit-note"].waitForExistence(timeout: 3), "Once there's a note: Edit Note")
         XCTAssertFalse(app.staticTexts["Felt good"].exists, "The note's text isn't in the row")
         shot("l04-edit-note")
         app.buttons["habit-edit-note"].tap()
-        XCTAssertTrue(app.navigationBars["Edit Note"].waitForExistence(timeout: 3), "Edit Note opens the same sheet")
-        XCTAssertTrue(app.buttons["Delete Note"].exists, "A note can be deleted from it")
-        app.navigationBars["Edit Note"].buttons["Cancel"].tap()
+        XCTAssertTrue(app.navigationBars["Edit note"].waitForExistence(timeout: 3), "Edit Note opens Edit note")
+        XCTAssertEqual(app.textViews["note-field"].value as? String, "Felt good", "with the note in it")
+        XCTAssertTrue(app.buttons["note-save"].isEnabled, "Save is always on in edit mode")
+        app.buttons["record-cancel"].tap()
+        XCTAssertTrue(app.navigationBars["Edit note"].waitForNonExistence(timeout: 3), "✕ with no change closes it")
     }
 
     /// A task's row opens its own sheet: Done, its date and Do Tomorrow, the note, Edit Task; no day paging.
@@ -150,8 +153,8 @@ final class TodayRowLayoutUITests: XCTestCase {
         XCTAssertTrue(app.buttons["row-swipe-note"].exists, "…and Note beside it (4 Oct 2026: two buttons, no full swipe)")
         shot("l06-quit-swipe")
         slip.tap()
-        XCTAssertTrue(app.navigationBars["Log a Slip"].waitForExistence(timeout: 3), "Log Slip opens Log a Slip")
-        app.buttons["slip-save"].tap()
+        XCTAssertTrue(app.navigationBars["Add slip"].waitForExistence(timeout: 3), "Log Slip opens Add slip")
+        app.buttons["record-add"].tap()
         let undo = app.buttons["habit-inline-undo"]
         XCTAssertTrue(undo.waitForExistence(timeout: 3), "After a slip: Undo Slip, as after any log")
         XCTAssertEqual(undo.label, "Undo Slip")

@@ -1,9 +1,10 @@
 import XCTest
 
-/// The 31 Day-details and Entry-editor wireframes (handoff "Day Details and Entry Editor", 4 Oct 2026), each shown as
-/// built: the same habit, the same state, the same appearance. Each screenshot is named after its wireframe's image
-/// (`day-06-amount-goal`, `entry-07-delete-confirmation`) so the two can be laid side by side for the user's review
-/// (Rulebook U9). The habits come from `DayDetailsFixture`; `-open-day` opens a habit's Day details at launch.
+/// Every screen of the 7 October 2026 redesign (Day Details, Logs and Notes — 7 October Redesign/Images/Every kind),
+/// shown as built, in dark mode as the images are: each screenshot is named after its image (`01-1-day-details` for
+/// "01 Amount, daily goal — 1 Day details") so the two can be laid side by side for the user's review (Rulebook U9).
+/// The habits come from `DayDetailsFixture`; `-open-day` opens a habit's Day details at launch, `-open-add` its Add
+/// screen.
 final class DayDetailsScreenshotUITests: XCTestCase {
     private var app: XCUIApplication!
 
@@ -30,9 +31,7 @@ final class DayDetailsScreenshotUITests: XCTestCase {
     }
 
     private var result: XCUIElement { app.descendants(matching: .any)["day-result"].firstMatch }
-    private var links: XCUIElementQuery {
-        app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'entry-' AND NOT identifier IN {'entry-delete','entry-save','entry-back'}"))
-    }
+    private var links: XCUIElementQuery { app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'entry-'")) }
 
     /// Launches on the fixture with `name`'s Day details open.
     private func open(_ name: String, yesterday: Bool = false, light: Bool = false) {
@@ -45,6 +44,16 @@ final class DayDetailsScreenshotUITests: XCTestCase {
         XCTAssertTrue(result.waitForExistence(timeout: 30), "\(name)'s Day details open")
     }
 
+    /// Launches on the fixture with `name`'s Add screen open.
+    private func openAdd(_ name: String, yesterday: Bool = false, title: String, thenDay: Bool = false) {
+        var arguments = ["-uitest", "-day-details-fixture", "-appearance.theme", "dark", "-open-add", name]
+        if yesterday { arguments += ["-open-day-offset", "-1"] }
+        if thenDay { arguments += ["-then-open-day"] }
+        app.launchArguments = arguments
+        app.launch()
+        XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 30), "\(name)'s \(title) opens")
+    }
+
     private func tap(_ id: String, times: Int = 1) {
         let button = app.buttons[id]
         XCTAssertTrue(button.waitForExistence(timeout: 5), id)
@@ -53,102 +62,224 @@ final class DayDetailsScreenshotUITests: XCTestCase {
 
     private func writeNote(_ text: String) {
         tap("day-add-note")
-        let field = app.textFields["note-field"]
+        let field = app.textViews["note-field"]
         XCTAssertTrue(field.waitForExistence(timeout: 5))
+        field.tap()
         field.typeText(text)
-        app.navigationBars["Note"].buttons["Save"].tap()
+        app.buttons["note-save"].tap()
         XCTAssertTrue(app.buttons["day-edit-note"].waitForExistence(timeout: 5))
     }
 
     private func recordSlip() {
         tap("day-add-entry")
-        XCTAssertTrue(app.navigationBars["Add Entry"].waitForExistence(timeout: 5))
-        app.navigationBars["Add Entry"].buttons["add-entry-save"].tap()
+        XCTAssertTrue(app.navigationBars["Add slip"].waitForExistence(timeout: 5))
+        app.buttons["record-add"].tap()
         XCTAssertTrue(links.firstMatch.waitForExistence(timeout: 5), "The slip shows")
     }
 
-    private func openLog(containing text: String? = nil) {
+    private func openLog(containing text: String? = nil, title: String = "Log") {
         let link = text.map { t in links.matching(NSPredicate(format: "label CONTAINS %@", t)).firstMatch } ?? links.firstMatch
         XCTAssertTrue(link.waitForExistence(timeout: 5))
         link.tap()
-        XCTAssertTrue(app.buttons["entry-delete"].waitForExistence(timeout: 5), "The log editor opens")
+        XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5), "The log's view opens")
     }
 
-    // MARK: Day details: checks and checklist
-
-    func test01_dailyCheckUndone() { open("Take vitamins"); shot("day-01-daily-check-undone") }
-    func test02_dailyCheckDone() { open("Take vitamins"); tap("day-done"); shot("day-02-daily-check-done") }
-    func test03_weeklyCheck() { open("Call family"); shot("day-03-weekly-check") }
-    func test04_repeatedChecks() { open("Stretch breaks"); shot("day-04-repeated-checks") }
-    func test05_checklist() { open("Tidy desk"); shot("day-05-checklist") }
-    func test06_monthlyCheck() { open("Deep clean"); shot("day-13-monthly-check") }
-
-    // MARK: Day details: amounts, time and quit
-
-    func test07_amountGoal() { open("Water"); shot("day-06-amount-goal") }
-    func test08_amountLimit() { open("Coffee"); shot("day-07-amount-limit") }
-    func test09_timeGoal() { open("Read"); shot("day-08-time-goal") }
-    func test10_quitNoSlip() { open("Smoking"); shot("day-09-quit-no-slip") }
-    func test11_quitWithSlip() { open("Smoking"); recordSlip(); shot("day-17-quit-with-slip") }
-    func test12_limitExceeded() { open("Coffee"); tap("day-add-step", times: 3); shot("day-18-limit-exceeded") }
-    func test13_timerRunning() { open("Read"); tap("day-start-timer"); sleep(3); shot("day-19-timer-running") }
-
-    // MARK: Day details: tasks, dates and management
-
-    func test14_oneTimeTask() { open("Test"); shot("day-10-one-time-task") }
-    func test15_pastDay() { open("Water", yesterday: true); shot("day-11-past-day") }
-    func test16_managementMenuLight() {
-        open("Coffee", light: true)
-        tap("day-add-step")
-        tap("day-more")
-        XCTAssertTrue(app.buttons["Delete Habit…"].waitForExistence(timeout: 3))
-        shot("day-12-management-menu-light")
+    private func edit(_ title: String = "Edit log") {
+        tap("record-edit")
+        XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5))
     }
-    func test17_taskWithNote() { open("Test"); writeNote("Bring the receipt from the drawer."); shot("day-16-task-with-note") }
-    func test18_taskDone() { open("Test"); tap("day-done"); shot("day-20-task-done") }
 
-    // MARK: Day details: skipped and paused
+    // MARK: 01 Amount, daily goal (Water: 2 logs today)
 
-    func test19_skippedDay() { open("Take vitamins"); tap("day-skip"); shot("day-14-skipped-day") }
-    func test20_pausedDay() { open("Meditate"); shot("day-15-paused-day") }
-    func test21_skippedAmountKeepsLogsAndNote() {
+    func test01_amount() {
+        open("Water")
+        tap("day-add-step", times: 2)
+        writeNote("Big glass after the run. The office bottle was only half full.")
+        shot("01-1-day-details")
+        tap("day-all-logs")
+        XCTAssertTrue(app.navigationBars["Today's logs"].waitForExistence(timeout: 5))
+        shot("01-2-all-logs")
+        app.navigationBars["Today's logs"].buttons.element(boundBy: 0).tap()
+        tap("day-add-entry")
+        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 5))
+        app.textFields["record-amount"].typeText("2")
+        shot("01-3-add-log")
+        tap("record-cancel")
+        app.alerts.buttons["Discard Changes"].tap()
+        openLog()
+        shot("01-4-log-view")
+        edit()
+        shot("01-5-edit-log")
+    }
+
+    // MARK: 02–04 Amounts: no unit and a week goal; a currency, no quick step, a month goal; a limit
+
+    func test02_noUnitWeek() {
+        open("Push-ups"); tap("day-add-step", times: 2); shot("02-1-day-details")
+        tap("day-add-entry"); XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 5)); shot("02-2-add-log")
+        tap("record-cancel"); openLog(); shot("02-3-log-view"); edit(); shot("02-4-edit-log")
+    }
+
+    func test03_currencyMonth() {
+        openAdd("Savings", title: "Add log", thenDay: true)
+        app.textFields["record-amount"].typeText("15")
+        shot("03-2-add-log")
+        tap("record-add")
+        XCTAssertTrue(result.waitForExistence(timeout: 5))
+        shot("03-1-day-details")
+        openLog(); shot("03-3-log-view"); edit(); shot("03-4-edit-log")
+    }
+
+    func test04_limit() {
+        open("Coffee"); tap("day-add-step"); shot("04-1-day-details")
+        tap("day-add-entry"); XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 5)); shot("04-2-add-log")
+        tap("record-cancel"); openLog(); shot("04-3-log-view"); edit(); shot("04-4-edit-log")
+    }
+
+    // MARK: 05–07 Time: a daily goal; a running timer and an earlier day; a week goal
+
+    func test05_time() {
+        open("Read"); shot("05-1-day-details")
+        tap("day-add-entry")
+        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 5))
+        app.textFields["record-minutes"].typeText("15")
+        shot("05-3-add-log")
+        tap("record-cancel")
+        app.alerts.buttons["Discard Changes"].tap()
+        openLog(); shot("05-4-log-view"); edit(); shot("05-5-edit-log")
+    }
+
+    func test06_timerRunningAndEarlierDay() {
+        open("Read"); tap("day-start-timer"); sleep(3); shot("06-1-day-details-timer-running")
+        app.terminate()
+        open("Read", yesterday: true); shot("06-2-day-details-yesterday")
+    }
+
+    func test07_fractionalTimer() { open("Social media"); openLog(); shot("07-3-log-view-fractional-seconds") }
+
+    // MARK: 08–12 Checks
+
+    func test08_onceADay() {
+        open("Take vitamins"); shot("08-1-day-details-not-done")
+        tap("day-done"); shot("08-2-day-details-done")
+        app.terminate()
+        openAdd("Take vitamins", title: "Mark a day done"); shot("08-3-mark-a-day-done")
+    }
+
+    func test09_severalADay() {
+        open("Stretch breaks"); tap("day-add-one", times: 2); shot("09-1-day-details")
+        tap("day-all-logs")
+        XCTAssertTrue(app.navigationBars["Checks today"].waitForExistence(timeout: 5))
+        shot("09-2-all-logs")
+        app.terminate()
+        openAdd("Stretch breaks", yesterday: true, title: "Add a check"); shot("09-3-add-a-check")
+    }
+
+    func test10_weekGoal() {
+        open("Call family"); shot("10-1-day-details")
+        app.terminate()
+        openAdd("Call family", title: "Add a check"); shot("10-2-add-a-check")
+    }
+
+    func test11_monthGoal() {
+        open("Deep clean"); shot("11-1-day-details")
+        app.terminate()
+        openAdd("Deep clean", title: "Add a check"); shot("11-2-add-a-check")
+    }
+
+    func test12_daysAWeek() {
+        open("Gym"); shot("12-1-day-details")
+        app.terminate()
+        openAdd("Gym", title: "Mark a day done"); shot("12-2-mark-a-day-done")
+    }
+
+    func test12b_olderMultiCheckLog() { open("Squats"); openLog(); shot("12b-log-view-older-multi-check") }
+
+    // MARK: 13 Checklist, 14 Quit, 15 Task
+
+    func test13_checklist() {
+        open("Tidy desk"); shot("13-1-day-details")
+        app.terminate()
+        openAdd("Tidy desk", yesterday: true, title: "Tick steps"); shot("13-2-tick-steps")
+    }
+
+    func test14_quit() {
+        open("Smoking"); shot("14-1-day-details-no-slips")
+        recordSlip(); shot("14-2-day-details-one-slip")
+        openLog(title: "Slip"); shot("14-4-slip-view")
+        edit("Edit slip"); shot("14-5-edit-slip")
+        app.terminate()
+        openAdd("Smoking", title: "Add slip"); shot("14-3-add-slip")
+    }
+
+    func test15_task() {
+        open("Test"); shot("15-1-day-details-not-done")
+        tap("day-done"); shot("15-2-day-details-done")
+    }
+
+    // MARK: 16 Day states
+
+    func test16_dayStates() {
         open("Water")
         writeNote("Had water before breakfast.")
         tap("day-skip")
-        shot("day-21-skipped-amount-logs-kept")
+        shot("16-1-skipped")
+        app.terminate()
+        open("Meditate"); shot("16-2-paused")
+        app.terminate()
+        open("Water", yesterday: true); shot("16-3-an-earlier-day-yesterday")
     }
 
-    // MARK: Entry editor
+    // MARK: 17 Notes, 18 Delete confirmations
 
-    func test22_waterAmount() { open("Water"); openLog(); shot("entry-01-water-amount") }
-    func test23_coffeeLimitAmount() { open("Coffee"); tap("day-add-step"); openLog(); shot("entry-02-coffee-limit-amount") }
-    func test24_readDuration() { open("Read"); openLog(containing: "Manual log"); shot("entry-03-read-duration") }
-    func test25_fractionalTimer() { open("Social media"); openLog(); shot("entry-04-fractional-timer") }
-    func test26_multiCheckLog() { open("Squats"); openLog(); shot("entry-05-multi-check-log") }
-    func test27_quitSlipDateTime() { open("Smoking"); recordSlip(); openLog(); shot("entry-06-quit-slip-date-time") }
-    func test28_deleteConfirmation() {
+    func test17_notes() {
+        open("Read")
+        tap("day-add-note")
+        XCTAssertTrue(app.navigationBars["Add note"].waitForExistence(timeout: 5))
+        sleep(1)
+        shot("17-1-add-note")
+        let field = app.textViews["note-field"]
+        field.tap()
+        field.typeText("Finished chapter six. The short morning session was easier than I expected.")
+        tap("note-save")
+        tap("day-edit-note")
+        XCTAssertTrue(app.navigationBars["Note"].waitForExistence(timeout: 5))
+        shot("17-2-note-view")
+        tap("note-edit")
+        XCTAssertTrue(app.navigationBars["Edit note"].waitForExistence(timeout: 5))
+        shot("17-3-edit-note")
+        tap("record-cancel")
+        tap("note-delete")
+        XCTAssertTrue(app.alerts.firstMatch.waitForExistence(timeout: 3))
+        shot("18-3-delete-note")
+    }
+
+    func test18_deleteConfirmations() {
         open("Water")
         openLog()
-        app.buttons["entry-delete"].tap()
+        tap("record-delete")
         XCTAssertTrue(app.alerts.firstMatch.waitForExistence(timeout: 3))
-        shot("entry-07-delete-confirmation")
-    }
-    func test29_waterLightMode() { open("Water", light: true); openLog(); shot("entry-08-water-light-mode") }
-    func test30_minutesFocused() {
-        open("Read")
-        openLog(containing: "Manual log")
-        app.textFields["entry-minutes"].tap()
-        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3))
-        shot("entry-09-duration-minutes-focused")
-    }
-    /// The slip's time, being changed: its date stays as recorded until a slip can move days in storage (D7).
-    func test31_slipTimeDraft() {
+        shot("18-1-delete-log")
+        app.terminate()
         open("Smoking")
         recordSlip()
-        openLog()
-        let time = app.descendants(matching: .any)["entry-slip-time"].firstMatch
-        XCTAssertTrue(time.waitForExistence(timeout: 3))
-        if time.buttons.firstMatch.exists { time.buttons.firstMatch.tap() } else { time.tap() }
-        shot("entry-10-slip-date-time-draft")
+        openLog(title: "Slip")
+        tap("record-delete")
+        XCTAssertTrue(app.alerts.firstMatch.waitForExistence(timeout: 3))
+        shot("18-2-delete-slip")
+    }
+
+    // MARK: Light mode and the management menu
+
+    func test19_lightMode() {
+        open("Water", light: true); shot("light-day-details")
+        openLog(); shot("light-log-view")
+    }
+
+    func test20_managementMenu() {
+        open("Coffee", light: true)
+        tap("day-more")
+        XCTAssertTrue(app.buttons["Delete Habit…"].waitForExistence(timeout: 3))
+        shot("light-management-menu")
     }
 }

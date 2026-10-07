@@ -89,7 +89,7 @@ final class GoalFlowUITests: XCTestCase {
     private var sentence: String { app.descendants(matching: .any)["habit-sentence"].label }
 
     /// Typing the way a person does: one key at a time on the number pad, checking the field after each key
-    /// (the user reported typed amounts not showing). Then Log Amount on Today, key by key too.
+    /// (the user reported typed amounts not showing). Then Add log from Today's Day details, key by key too.
     func testTypingKeyByKey() {
         newHabit(name: "Keys")
         openHowMuch()
@@ -116,18 +116,18 @@ final class GoalFlowUITests: XCTestCase {
         XCTAssertTrue(row("How much, 7 ml").waitForExistence(timeout: 3))
         XCTAssertEqual(sentence, "Keys 7 ml a day, anytime")
         addHabit()
-        // Any amount other than +'s step: the row opens its Day sheet, and Log amount manually there types it in Add
-        // Entry (3 Oct 2026; named for what it does, 4 Oct).
+        // Any amount other than +'s step: the row opens its Day sheet, and Log manually there types it in Add log
+        // (3 Oct 2026; the one Add screen, 7 Oct).
         app.staticTexts["Keys"].firstMatch.tap()
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 5), "The row opens its Day sheet")
         app.buttons["day-add-entry"].tap()
-        let log = app.textFields["log-amount"]
+        let log = app.textFields["record-amount"]
         XCTAssertTrue(log.waitForExistence(timeout: 3))
         sleep(1)
         for key in ["3", "5", "0"] { app.keys[key].tap(); usleep(400_000) }
-        XCTAssertEqual(log.value as? String, "350", "Add Entry shows what's typed")
+        XCTAssertEqual(log.value as? String, "350", "Add log shows what's typed")
         shot("k03-add-amount-350")
-        app.navigationBars["Add Entry"].buttons["add-entry-save"].tap(); sleep(2)
+        app.buttons["record-add"].tap(); sleep(2)
         app.buttons["day-close"].tap(); sleep(1)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '350/7 ml'")).firstMatch.waitForExistence(timeout: 3), "The typed amount is on Today")
         shot("k04-today-350")
@@ -153,7 +153,7 @@ final class GoalFlowUITests: XCTestCase {
     }
 
     /// One rule for logging an amount: + adds the step written on it, the same for every amount; the row
-    /// opens Log Amount for anything else. A step the person types is kept.
+    /// opens Day details, whose Log manually opens Add log for anything else. A step the person types is kept.
     func testButtonAddsItsStepAndRowOpensAddAmount() {
         newHabit(name: "Glasses")
         openHowMuch()
@@ -174,11 +174,11 @@ final class GoalFlowUITests: XCTestCase {
         app.staticTexts["Glasses"].firstMatch.tap()
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 3), "The row opens its Day sheet")
         app.buttons["day-add-entry"].tap()
-        XCTAssertTrue(app.navigationBars["Add Entry"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 3))
         sleep(1)
-        let typed = app.textFields["log-amount"]
+        let typed = app.textFields["record-amount"]
         typed.typeText("3")
-        app.navigationBars["Add Entry"].buttons["add-entry-save"].tap(); sleep(2)
+        app.buttons["record-add"].tap(); sleep(2)
         app.buttons["day-close"].tap(); sleep(1)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '4/8 glasses'")).firstMatch.exists, "The typed amount adds up")
         shot("l03-today-4-of-8")

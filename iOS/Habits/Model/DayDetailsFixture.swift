@@ -35,7 +35,14 @@ enum DayDetailsFixture {
         let weekly = habit("Water the plants", "leaf.fill", .green, .task,
                            frequency: .weekdays([today.weekday(calendar: store.calendar)]))
         let daily = habit("Feed the cat", "pawprint.fill", .orange, .task)
-        for h in [vitamins, call, stretch, desk, water, coffee, read, smoking, task, monthly, paused, social, squats, weekly, daily] {
+        // The 7 Oct 2026 redesign's other kinds: an amount with no unit and a week goal, a currency with no quick step
+        // and a month goal, a check on N days a week.
+        let pushups = habit("Push-ups", "figure.strengthtraining.functional", .orange, .amount(unit: "", increment: 20),
+                            goal: 300, frequency: .perWeek(1))
+        let savings = habit("Savings", "sterlingsign", .green, .amount(unit: "£", increment: 0), goal: 200, frequency: .perMonth(1))
+        let gym = habit("Gym", "dumbbell.fill", .red, .check, frequency: .flexible(.week, 3))
+        for h in [vitamins, call, stretch, desk, water, coffee, read, smoking, task, monthly, paused, social, squats, weekly, daily,
+                  pushups, savings, gym] {
             store.add(h)
         }
         await store.flush()
@@ -56,6 +63,8 @@ enum DayDetailsFixture {
         store.addProgress(social, value: 1.23 / 60, on: today, source: .timer)
         store.addProgress(squats, value: 2, on: today, source: .manual)
         store.pause(paused, from: today, through: nil)
+        // Yesterday's vitamins were taken: Mark a day done for yesterday is off and says so (7 Oct 2026 redesign).
+        store.setDayDone(true, of: vitamins, on: yesterday)
         await store.flush()
         store.clearLogOffer()
     }

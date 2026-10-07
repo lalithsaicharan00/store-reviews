@@ -206,9 +206,9 @@ final class ProgressUITests: XCTestCase {
         XCTAssertTrue(log.waitForExistence(timeout: 5) && app.reveal(log), "Log a Slip… on the habit page")
         let before = app.staticTexts["quit-total-line"].label
         log.tap()
-        XCTAssertTrue(app.navigationBars["Log a Slip"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["Add slip"].waitForExistence(timeout: 3), "The one Add screen, for a slip")
         shot("p07-log-slip")
-        app.buttons["slip-save"].tap()
+        app.buttons["record-add"].tap()
         let undo = app.buttons["slip-undo"]
         XCTAssertTrue(undo.waitForExistence(timeout: 3), "Undo right after")
         XCTAssertNotEqual(app.staticTexts["quit-total-line"].label, before, "The slip is counted")
