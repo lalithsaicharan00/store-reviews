@@ -153,7 +153,7 @@ struct HabitRow: View {
             if logged { logged = false; layout?.hold(reduceMotion: reduceMotion) }
         }) { shown in
             switch shown {
-            case .log: AddEntryView(habit: habit, day: day).onAppear { logged = true }
+            case .log: AddLogView(habit: habit, day: day, source: .manual).onAppear { logged = true }
             case .edit: EditHabitSheet(habit: habit)
             case .notes: HabitNotesView(habit: habit)
             case .pause: PauseSheet(habit: habit)
@@ -187,7 +187,9 @@ struct HabitRow: View {
                 }
                 Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { sheet = .edit }
                 if habit.kind != .task && habit.kind != .checklist {
-                    Button("Add Entry…", systemImage: "plus") { sheet = .log }.disabled(day > store.today())
+                    // The same Add screen as everywhere, named for what it adds (U21, U22): "Add log…", "Add a check…".
+                    Button(RecordKind(habit, on: day, store: store).addTitle + "…", systemImage: "plus") { sheet = .log }
+                        .disabled(day > store.today())
                 }
                 // Any day, done or not, past or today; a note never changes progress (notes report, 29 Sep).
                 Button(store.note(of: habit, on: day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") { startWriting() }
@@ -475,7 +477,7 @@ struct QuitRow: View {
             switch shown {
             case .edit: EditHabitSheet(habit: habit)
             case .pause: PauseSheet(habit: habit)
-            case .slip: LogSlipSheet(habit: habit) { id in withAnimation { lastSlip = id } }
+            case .slip: AddLogView(habit: habit, day: today, source: .manual) { id in withAnimation { lastSlip = id } }
             }
         }
     }

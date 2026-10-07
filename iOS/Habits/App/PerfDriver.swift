@@ -8,6 +8,8 @@ enum PerfAction: Equatable {
     case previousMonth, nextMonth
     case previousHabit, nextHabit
     case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, saveEntry, logAgain, hideLogKeyboard
+    /// Day details' All logs page, the Log view's Edit, and the day's note (the 7 Oct 2026 redesign).
+    case openAllLogs, editEntry, openNote
     /// A page from the ≡ menu; the menu itself; Today's group filter; Progress's range; the habit page's Edit.
     case openPlace(MenuPlace), toggleMenu, nextGroup, nextRange, openEdit
     /// Progress's "What the squares mean": fold or open it (`HeatKeySection`, 3 Oct 2026).

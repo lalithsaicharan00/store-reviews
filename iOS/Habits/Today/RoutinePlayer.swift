@@ -22,9 +22,6 @@ struct RoutinePlayer: View {
     /// The main button's slot, measured: each page keeps this much room at its end (with the gap) so its last step
     /// scrolls clear of the button floating over it.
     @State private var actionHeight: CGFloat = 52
-    /// Fitted to the options sheet's own list, so every option shows without scrolling (the user, 4 Oct 2026).
-    @State private var optionsHeight: CGFloat = 0
-    @State private var optionsDetent: PresentationDetent = .medium
     /// The habit the manual-entry sheet is for, fixed when it opens: the sheet never changes habit under the person.
     @State private var logHabitID: UUID?
     @State private var analyticsFlow = Analytics.shared.ticket
@@ -34,13 +31,11 @@ struct RoutinePlayer: View {
     @State private var reviewed: Set<UUID> = []
     @State private var showQueue = false
     @State private var showLog = false
-    @State private var showHabitOptions = false
-    @State private var pendingHabitAction: HabitAction?
-    private enum HabitAction { case log, skip, unskip, undo(UUID), timer, edit, note }
+    /// The current habit's Day details, the same sheet a row opens on Today (U23).
+    @State private var showDayDetails = false
     @State private var showNote = false
     /// The habit the note is for: the current one, or the one just skipped (the banner's Add Note).
     @State private var noteHabitID: UUID?
-    @State private var showEdit = false
     @State private var manualEntryIDs: Set<UUID> = []
     /// The timer was running when Add Time opened; it runs again when the sheet closes (Cancel included).
     @State private var resumeAfterLog = false
@@ -52,7 +47,6 @@ struct RoutinePlayer: View {
     @State private var feedback: String?
     @State private var feedbackCount = 0
     @State private var expired = false
-    @State private var showClock = true
     /// The page on screen. It follows `index`; a swipe changes it first and goes through `navigate`, so the
     /// timer of the habit left behind is saved and the next one's starts, exactly as with the buttons.
     @State private var page = 0
@@ -167,7 +161,7 @@ struct RoutinePlayer: View {
             #if DEBUG && targetEnvironment(simulator)
             if ProcessInfo.processInfo.arguments.contains("-focus-preview"),
                ProcessInfo.processInfo.arguments.contains("-focus-preview-options") {
-                showHabitOptions = true
+                showDayDetails = true
             }
             #endif
         }
@@ -187,22 +181,26 @@ struct RoutinePlayer: View {
         .onDisappear { TimerPresence.playerOpen = false; UIApplication.shared.isIdleTimerDisabled = false }
         .onChange(of: store.timers.count) { updateScreenAwake() }
         .sheet(isPresented: $showQueue) { queue.analyticsScreen(nil) }
-        .sheet(isPresented: $showHabitOptions, onDismiss: habitOptionsDismissed) {
-            if let habit = current { habitOptions(habit).analyticsScreen(nil) }
+        // Day details for the routine's day, full height, exactly as a row on Today opens it: status and goal, the
+        // logging buttons, Skip / Undo skip, each log, the note, and Edit in its ⋯ menu (the user, 7 Oct 2026; U23).
+        .sheet(isPresented: $showDayDetails) {
+            if let habit = current { DaySheet(habit: habit, day: session.day) }
         }
-        .sheet(isPresented: $showEdit) { if let habit = current { EditHabitSheet(habit: habit) } }
         // A note is written in its own sheet with Save, as from Today (3 Oct 2026); the bottom row stays where it is.
         .sheet(isPresented: $showNote) {
             if let habit = order.first(where: { $0.id == noteHabitID }) ?? current {
-                let note = store.note(of: habit, on: session.day)
-                NoteSheet(title: note == nil ? "Add Note" : "Edit Note",
-                          subtitle: habit.name + " · " + NoteSheet.dayText(session.day, today: store.today(), calendar: store.calendar),
-                          initial: note ?? "") { store.setNote($0, of: habit, on: session.day) }
+                if store.note(of: habit, on: session.day) == nil {
+                    AddNoteView(habit: habit, day: session.day)
+                } else {
+                    NavigationStack { NoteView(habit: habit, day: session.day, startsEditing: true) }
+                        .presentationDetents([.large])
+                        .presentationBackground(Color(.systemGroupedBackground))
+                }
             }
         }
         .sheet(isPresented: $showLog, onDismiss: manualLogFinished) {
             if let habit = store.habits.first(where: { $0.id == logHabitID }) ?? current {
-                LogProgressView(habit: habit, day: session.day, source: .routine)
+                AddLogView(habit: habit, day: session.day, source: .routine)
             }
         }
         .alert("Couldn't save progress", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
@@ -336,7 +334,7 @@ struct RoutinePlayer: View {
         let goal = store.goal(of: habit)
         let big = Font.system(size: min(numberSize, 52), weight: .medium, design: .rounded).monospacedDigit()
         if habit.kind == .duration && !skipped(habit) {
-            FocusClock(habit: habit, day: session.day, showClock: showClock, font: big,
+            FocusClock(habit: habit, day: session.day, font: big,
                        diameter: diameter) { openLog() }
         } else {
             FocusProgressCircle(progress: progress, goal: goal, color: habit.color.color,
@@ -418,101 +416,6 @@ struct RoutinePlayer: View {
         .padding(.horizontal, 28)
     }
 
-    private func habitOptions(_ habit: Habit) -> some View {
-        NavigationStack {
-            List {
-                if habit.frequency.isFlexible {
-                    Section("Goal") {
-                        Text(HabitCopy.capitalized(HabitCopy.plan(habit, weekStart: store.settings.weekStart)))
-                        FocusPeriodQuota(habit: habit, day: session.day)
-                    }
-                }
-                if !skipped(habit) && (habit.kind == .duration || isAmount(habit)) {
-                    Section {
-                        Button(habit.kind == .duration ? "Log time manually" : "Log amount manually",
-                               systemImage: "square.and.pencil") { selectHabitAction(.log) }
-                            .accessibilityIdentifier("focus-log-manually")
-                    }
-                }
-                if skipped(habit) || store.canSkip(habit) && !done(habit) || latestEntry(habit) != nil {
-                    Section {
-                        if skipped(habit) {
-                            Button("Undo skip", systemImage: "arrow.uturn.backward") { selectHabitAction(.unskip) }
-                                .accessibilityIdentifier("focus-unskip")
-                        } else if store.canSkip(habit) && !done(habit) {
-                            Button("Skip today", systemImage: "forward") { selectHabitAction(.skip) }
-                                .accessibilityIdentifier("focus-skip")
-                        }
-                        if !skipped(habit), let entry = latestEntry(habit) {
-                            Button("Undo \(entryText(entry, of: habit))", systemImage: "arrow.uturn.backward") {
-                                selectHabitAction(.undo(entry.id))
-                            }
-                        }
-                    }
-                }
-                if habit.kind == .duration {
-                    Section {
-                        if done(habit) {
-                            Button(store.timers[habit.id] == nil ? "Resume timer" : "Pause timer",
-                                   systemImage: store.timers[habit.id] == nil ? "play.fill" : "pause.fill") {
-                                selectHabitAction(.timer)
-                            }
-                        }
-                        Toggle("Show clock", isOn: $showClock)
-                            .toggleStyle(.appSwitch)
-                    }
-                }
-                Section {
-                    Button(store.note(of: habit, on: session.day) == nil ? "Add Note" : "Edit Note", systemImage: "note.text") { selectHabitAction(.note) }
-                        .accessibilityIdentifier("focus-note")
-                    Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { selectHabitAction(.edit) }
-                        .accessibilityIdentifier("focus-edit-habit")
-                }
-            }
-            .navigationTitle(habit.name)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { showHabitOptions = false }
-                }
-            }
-            // The sheet is as tall as its options (with the title bar and the home indicator), so Edit Habit is never
-            // hidden below the fold; a list taller than the screen still opens large and scrolls.
-            .onScrollGeometryChange(for: CGFloat.self) { geometry in
-                (geometry.contentSize.height + geometry.contentInsets.top + geometry.contentInsets.bottom).rounded(.up)
-            } action: { _, height in
-                guard height > 0, abs(height - optionsHeight) > 1 else { return }
-                optionsHeight = height
-                optionsDetent = .height(height)
-            }
-        }
-        .presentationDetents(optionsHeight > 0 ? [.height(optionsHeight), .large] : [.medium, .large], selection: $optionsDetent)
-        .presentationBackground(Color(.systemGroupedBackground))
-        .presentationDragIndicator(.visible)
-        .accessibilityIdentifier("focus-habit-options-sheet")
-    }
-
-    private func selectHabitAction(_ action: HabitAction) {
-        pendingHabitAction = action
-        showHabitOptions = false
-    }
-
-    /// Wait for the options sheet to dismiss before presenting manual entry or navigating after a skip.
-    private func habitOptionsDismissed() {
-        let action = pendingHabitAction
-        pendingHabitAction = nil
-        guard let action, !expired, session.day == store.today(), let habit = current else { return }
-        switch action {
-        case .log: openLog()
-        case .skip: skip(habit)
-        case .unskip: unskip(habit, stay: true)
-        case .undo(let id): change("Entry removed", captureUndo: false) { store.undoEntry(id) }
-        case .timer: toggleTimer(habit)
-        case .edit: showEdit = true
-        case .note: noteHabitID = habit.id; showNote = true
-        }
-    }
-
     /// "Amount saved · Undo", floating above the controls.
     @ViewBuilder private var feedbackBanner: some View {
         if let feedback {
@@ -543,7 +446,7 @@ struct RoutinePlayer: View {
         }
     }
 
-    /// ‹ · Habit options · ›: the standard bottom bar, the same as Today's ‹ · Today · › (the user, 5 Oct 2026). On
+    /// ‹ · Day details · ›: the standard bottom bar, the same as Today's ‹ · Today · › (the user, 5 Oct 2026). On
     /// iOS 26 each part is its own Liquid Glass item; before iOS 26 it is a plain bottom bar. It stays on the finish
     /// page too, so ‹ still goes back and the pages never change height. Skip is a separate explicit action, never a
     /// chevron side effect.
@@ -568,16 +471,16 @@ struct RoutinePlayer: View {
         }
     }
 
+    /// The current habit's (or task's) Day details: the same sheet a row opens on Today (U23, 7 Oct 2026; it was
+    /// "Habit options" / "Task options", a separate sheet).
     private var optionsButton: some View {
         Button {
-            pendingHabitAction = nil
-            optionsDetent = optionsHeight > 0 ? .height(optionsHeight) : .medium
-            showHabitOptions = true
+            showDayDetails = true
         } label: {
-            Text(current?.kind == .task ? "Task options" : "Habit options").lineLimit(1)
+            Text("Day details").lineLimit(1)
         }
         .disabled(current == nil)
-        .accessibilityIdentifier("focus-habit-options")
+        .accessibilityIdentifier("focus-day-details")
     }
 
     /// Next habit (or the finish screen). Leaving a limit counts as having checked in on it.
@@ -598,7 +501,7 @@ struct RoutinePlayer: View {
             Button {
                 if habit.quickIncrement != nil { change("Logged") { store.increment(habit, on: session.day, source: .routine) } } else { openLog() }
             } label: {
-                Label(habit.quickIncrement.map { "Log " + HabitCopy.amount($0, amountUnit(habit)) } ?? "Log amount manually", systemImage: "plus")
+                Label(habit.quickIncrement.map { "Log " + HabitCopy.amount($0, amountUnit(habit)) } ?? "Log amount", systemImage: "plus")
             }
         } else if done(habit) {
             Button { advance() } label: {
@@ -626,7 +529,7 @@ struct RoutinePlayer: View {
                     if habit.quickIncrement != nil { change("Saved") { store.increment(habit, on: session.day, source: .routine) } }
                     else { openLog() }
                 } label: {
-                    Label(habit.quickIncrement.map { "Log " + HabitCopy.amount($0, amountUnit(habit)) } ?? "Log manually", systemImage: "plus")
+                    Label(habit.quickIncrement.map { "Log " + HabitCopy.amount($0, amountUnit(habit)) } ?? "Log amount", systemImage: "plus")
                 }.accessibilityLabel(habit.quickIncrement.map { "Add \(HabitCopy.amount($0, amountUnit(habit))) to \(habit.name)" } ?? "Log an amount for \(habit.name)")
             case .duration:
                 let running = store.timers[habit.id] != nil
@@ -832,7 +735,7 @@ struct RoutinePlayer: View {
 
     private func expire() {
         expired = true
-        showQueue = false; showLog = false; showHabitOptions = false; pendingHabitAction = nil
+        showQueue = false; showLog = false; showDayDetails = false
         if let habit = current, store.timers[habit.id] != nil {
             // A routine stays on its tracking day. Do not count background time after its day ends.
             let nextDay = session.day.adding(days: 1, calendar: store.calendar).date(calendar: store.calendar)
@@ -879,15 +782,6 @@ struct RoutinePlayer: View {
         // Only what was logged in this routine: an entry from earlier in the day (or another day) is never
         // removed from here by accident (found by hand 29 Sep: it offered to delete the morning's 5,200 steps).
         store.entries(of: habit.id, on: session.day).last { !entriesBefore.contains($0.id) && $0.source == .routine }
-    }
-
-    /// "+1,000 steps", "12 min", "check": what Undo removes, in words.
-    private func entryText(_ entry: Entry, of habit: Habit) -> String {
-        switch habit.kind {
-        case .duration: return Format.minutes(entry.value)
-        case .amount(let unit, _): return "+" + HabitCopy.amount(entry.value, unit)
-        default: return "check"
-        }
     }
 
     /// The save message goes after a few seconds, like iOS's own undo toasts, so it never sits over the page
@@ -955,7 +849,6 @@ struct RoutinePlayer: View {
     }
     #endif
 
-    private func isAmount(_ habit: Habit) -> Bool { if case .amount = habit.kind { true } else { false } }
     private func amountUnit(_ habit: Habit) -> String { if case .amount(let unit, _) = habit.kind { unit } else { "" } }
 
 
@@ -996,7 +889,6 @@ struct FocusPrimaryLabel: LabelStyle {
 struct FocusClock: View {
     let habit: Habit
     let day: LocalDay
-    let showClock: Bool
     let font: Font
     let diameter: CGFloat
     let onTapClock: () -> Void
@@ -1021,21 +913,15 @@ struct FocusClock: View {
                                    overLimit: habit.atMost && progress > goal, diameter: diameter) {
             HabitIcon(symbol: habit.symbol, color: habit.color, size: 44)
                 .accessibilityHidden(true)
-            if showClock {
-                Button(action: onTapClock) {
-                    FocusProgressValue(value: Format.clock(progress),
-                                       target: Format.minutes(goal) + (habit.atMost ? " max" : ""),
-                                       period: FocusProgressValue.period(habit), font: font, identifier: "focus-clock-value")
-                }
-                .buttonStyle(.plain)
-                .accessibilityHint("Logs time manually")
-                .accessibilityIdentifier("focus-clock")
-            } else {
-                VStack(spacing: 8) {
-                    Text(Format.minutes(goal) + (habit.atMost ? " max" : ""))
-                        .font(.title3)
-                }
+            // A time habit always shows its clock (the user, 7 Oct 2026: "Show clock" was removed). A tap types time.
+            Button(action: onTapClock) {
+                FocusProgressValue(value: Format.clock(progress),
+                                   target: Format.minutes(goal) + (habit.atMost ? " max" : ""),
+                                   period: FocusProgressValue.period(habit), font: font, identifier: "focus-clock-value")
             }
+            .buttonStyle(.plain)
+            .accessibilityHint("Logs time manually")
+            .accessibilityIdentifier("focus-clock")
             // Always there, invisible while running, so Pause doesn't push the icon and clock up.
             Text(running ? "Paused" : progress > 0 ? "Paused" : "Not started")
                 .font(.caption).foregroundStyle(.secondary)
@@ -1111,22 +997,6 @@ struct FocusProgressCircle<Content: View>: View {
         // ("focus-quantity", "focus-checklist-progress"), so VoiceOver tools and UI tests couldn't find them.
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("focus-progress-circle")
-    }
-}
-
-/// A flexible schedule has a daily target and a distinct quota of days for the period.
-private struct FocusPeriodQuota: View {
-    let habit: Habit
-    let day: LocalDay
-    @Environment(HabitStore.self) private var store
-
-    var body: some View {
-        if let count = store.flexibleProgress(habit, on: day),
-           case .flexible(let period, let target) = habit.frequency {
-            Text("\(count)/\(target) days · This \(period.noun)")
-                .font(.caption).foregroundStyle(.secondary)
-                .accessibilityIdentifier("focus-period-progress")
-        }
     }
 }
 

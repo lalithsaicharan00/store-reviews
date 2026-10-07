@@ -14,7 +14,7 @@ struct TimerScreen: View {
     @ScaledMetric(relativeTo: .body) private var actionWidth = 240.0
     @ScaledMetric(relativeTo: .body) private var buttonGap = 16.0
     @State private var showLog = false
-    /// The timer ran when Log Time Manually opened; it runs again when that sheet closes (as in the routine player).
+    /// The timer ran when Log manually opened; it runs again when that sheet closes (as in the routine player).
     @State private var resumeAfterLog = false
     /// The part of the day the timer was started for, kept so Resume counts toward the same one.
     @State private var slot: String?
@@ -44,7 +44,7 @@ struct TimerScreen: View {
         .accessibilityIdentifier("timer-screen")
         .onAppear { slot = store.timerSlots[habitID] }
         .sheet(isPresented: $showLog, onDismiss: logFinished) {
-            if let habit { LogProgressView(habit: habit, day: store.today(), source: .manual) }
+            if let habit { AddLogView(habit: habit, day: store.today(), source: .manual) }
         }
     }
 
@@ -66,7 +66,7 @@ struct TimerScreen: View {
                 }
                 .padding(.horizontal, 24)
                 Spacer(minLength: 24)
-                FocusClock(habit: habit, day: day, showClock: true,
+                FocusClock(habit: habit, day: day,
                            font: .system(size: min(numberSize, 52), weight: .medium, design: .rounded).monospacedDigit(),
                            diameter: min(max(geometry.size.width - 72, 200), 300)) { openLog(habit) }
                 Spacer(minLength: 24)
@@ -80,7 +80,8 @@ struct TimerScreen: View {
                     .transaction { $0.animation = nil }
                     .accessibilityLabel(running ? "Stop \(habit.name) timer" : "Start \(habit.name) timer")
                     .accessibilityIdentifier("timer-screen-primary")
-                    Button("Log Time Manually") { openLog(habit) }
+                    // Beside the timer's own button, as on Day details: "Log manually" (7 Oct 2026 words).
+                    Button("Log manually") { openLog(habit) }
                         .font(.subheadline.weight(.medium))
                         .frame(minHeight: 44)
                         .accessibilityIdentifier("timer-screen-log")

@@ -168,7 +168,7 @@ struct QuitNumbers: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .sheet(isPresented: $showSlip) { LogSlipSheet(habit: habit) { id in withAnimation { lastSlip = id } } }
+        .sheet(isPresented: $showSlip) { AddLogView(habit: habit, day: store.today(), source: .manual) { id in withAnimation { lastSlip = id } } }
         .sheet(isPresented: $showCost) { QuitCostSheet(habit: habit).analyticsScreen(nil)
             .onAppear { store.analytics.count(.moneyView, ticket: store.analytics.ticket) } }
     }

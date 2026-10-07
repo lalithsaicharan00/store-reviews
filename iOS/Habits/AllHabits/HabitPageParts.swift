@@ -148,7 +148,7 @@ struct PageRowStyle: ButtonStyle {
 
 // MARK: - History
 
-/// History (research History, revised): Add Entry and Go to Date always in view, then one card per month, newest
+/// History (research History, revised): Add (named per kind) and Go to Date always in view, then one card per month, newest
 /// first, each folding (the user, 3 Oct 2026). This month and last month start open; older months start folded.
 struct HabitHistoryTab: View {
     let habit: Habit
@@ -156,6 +156,7 @@ struct HabitHistoryTab: View {
     let open: (LocalDay) -> Void
     let addEntry: () -> Void
     let goToDate: () -> Void
+    @Environment(HabitStore.self) private var store
     /// Months folded or opened by hand while the page is open (a month's default is open for the newest two).
     @State private var toggled: Set<LocalDay> = []
 
@@ -164,8 +165,10 @@ struct HabitHistoryTab: View {
         // ink text on a light ink tint, readable in light and dark (the user, 5 Oct 2026, Current Work 26: Add Entry's
         // filled style put white text on the off-white ink of dark mode, and both were large and full-width).
         HStack(spacing: WeekSpacing.tight) {
+            // Named for what this habit adds, never from its name (U21): Add log, Add a check, Mark a day done,
+            // Tick steps, Add slip. The same Add screen as everywhere (U22).
             Button(action: addEntry) {
-                Label("Add Entry", systemImage: "plus")
+                Label(RecordKind(habit, on: store.today(), store: store).addTitle, systemImage: "plus")
             }
             .accessibilityIdentifier("history-add-entry")
             Button(action: goToDate) {

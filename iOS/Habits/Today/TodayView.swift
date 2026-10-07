@@ -205,8 +205,7 @@ struct TodayView: View {
         .sheet(item: Binding(get: { store.isLoaded && routine == nil ? router.widgetSheet : nil }, set: { router.widgetSheet = $0 })) { target in
             if let habit = store.habits.first(where: { $0.id == target.habit && !$0.archived }) {
                 switch target.kind {
-                case .log: AddEntryView(habit: habit, day: store.today())
-                case .slip: LogSlipSheet(habit: habit) { _ in }
+                case .log, .slip: AddLogView(habit: habit, day: store.today(), source: .manual)
                 }
             } else {
                 ContentUnavailableView("Habit unavailable", systemImage: "questionmark.circle",
@@ -317,19 +316,23 @@ struct TodayView: View {
         }
     }
 
-    /// The note sheet for a habit's note or the day's note: names what it's for, Cancel and Save, Delete Note when one
-    /// exists. Closing it ends the row's "Add Note" offer, which has done its job.
+    /// The note sheet for a habit's note or the day's note: Add note when the day has none, Edit note when it has one
+    /// (U19). Saving ends the row's "Add Note" offer, which has done its job.
     @ViewBuilder private func noteSheet(_ target: HabitStore.NoteTarget) -> some View {
-        let dayText = NoteSheet.dayText(target.day, today: store.today(), calendar: store.calendar)
-        if let id = target.habit, let habit = store.habits.first(where: { $0.id == id }) {
-            NoteSheet(title: store.note(of: habit, on: target.day) == nil ? "Add Note" : "Edit Note",
-                      subtitle: habit.name + " · " + dayText, initial: store.note(of: habit, on: target.day) ?? "") {
-                store.setNote($0, of: habit, on: target.day)
-                if store.noteOffer == .init(habit: id, day: target.day) { store.noteOffer = nil }
-            }
+        let habit = target.habit.flatMap { id in store.habits.first { $0.id == id } }
+        if target.habit != nil && habit == nil {
+            EmptyView()
         } else {
-            NoteSheet(title: "Note for the Day", subtitle: dayText, initial: store.dayNote(on: target.day) ?? "") {
-                store.setDayNote($0, on: target.day)
+            let saved = habit.map { store.note(of: $0, on: target.day) } ?? store.dayNote(on: target.day)
+            let done = {
+                if let id = target.habit, store.noteOffer == .init(habit: id, day: target.day) { store.noteOffer = nil }
+            }
+            if saved == nil {
+                AddNoteView(habit: habit, day: target.day, onSaved: done)
+            } else {
+                NavigationStack { NoteView(habit: habit, day: target.day, startsEditing: true, onSaved: done) }
+                    .presentationDetents([.large])
+                    .presentationBackground(Color(.systemGroupedBackground))
             }
         }
     }

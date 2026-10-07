@@ -2154,9 +2154,36 @@ final class HabitStore {
         addProgress(habit, value: value, on: day, source: source)
     }
 
-    func addProgress(_ habit: Habit, value: Double, on day: LocalDay, source: EntrySource = .today) {
+    /// `time` is when it happened, for a log added by hand (Add log, Add a check): kept inside `day` as the app counts
+    /// it and never later than now (`logTime`). Without one, the log is stamped now, or at the same clock time on an
+    /// earlier day (7 Oct 2026: a past day's log carried today's clock time). The day is always `day` (D7).
+    func addProgress(_ habit: Habit, value: Double, on day: LocalDay, at time: Date? = nil, source: EntrySource = .today) {
         guard value.isFinite, value > 0, value <= GoalNumber.maximum, day <= today() else { return }
-        log(habit, value: value, on: day, source: source)
+        log(habit, value: value, on: day, at: time, source: source)
+    }
+
+    /// The moment a log of `day` is stamped with: `time` kept inside that day's bounds as the app counts them
+    /// (`dayBounds`, so a 3 AM day start allows 1:30 AM the next morning) and never later than now. The day itself
+    /// never changes; a time outside it is pulled to its nearest edge, never moved to another day (D7, U19).
+    func logTime(_ time: Date, on day: LocalDay, calendar recordingCalendar: Calendar? = nil) -> Date {
+        let bounds = dayBounds(day, calendar: recordingCalendar)
+        let upper = max(bounds.lowerBound, min(bounds.upperBound, clock()))
+        return min(max(time, bounds.lowerBound), upper)
+    }
+
+    /// `time`'s clock time (hours, minutes, seconds) on `day`, inside that day: what a picker shows when another day is
+    /// chosen ("choosing another day keeps the same clock time"). Worked out on the wall clock, never by adding hours
+    /// (D7): a time before the day's start belongs to the next calendar date of the same tracking day.
+    func sameClockTime(as time: Date, on day: LocalDay) -> Date {
+        let c = calendar
+        let parts = c.dateComponents([.hour, .minute, .second], from: time)
+        let date = day.date(calendar: c)
+        var moment = c.date(bySettingHour: parts.hour ?? 0, minute: parts.minute ?? 0, second: parts.second ?? 0, of: date) ?? date
+        if moment < dayBounds(day).lowerBound, let next = c.date(byAdding: .day, value: 1, to: date),
+           let later = c.date(bySettingHour: parts.hour ?? 0, minute: parts.minute ?? 0, second: parts.second ?? 0, of: next) {
+            moment = later
+        }
+        return logTime(moment, on: day)
     }
 
     func undoProgress(_ habit: Habit, on day: LocalDay) {
@@ -2281,11 +2308,11 @@ final class HabitStore {
         }
     }
 
-    func toggleStep(_ step: Step, of habit: Habit, on day: LocalDay, source: EntrySource = .today) {
+    func toggleStep(_ step: Step, of habit: Habit, on day: LocalDay, at time: Date? = nil, source: EntrySource = .today) {
         if let i = entries.lastIndex(where: { $0.habitID == habit.id && $0.stepID == step.id && $0.day == day }) {
             removeLogged(at: i)
         } else {
-            addLogged(Entry(habitID: habit.id, stepID: step.id, day: day, value: 1, source: source))
+            addLogged(Entry(habitID: habit.id, stepID: step.id, day: day, value: 1, createdAt: stamp(time, on: day), source: source))
         }
     }
 
@@ -2343,8 +2370,15 @@ final class HabitStore {
         withAnimation { insertEntry(entry) }
     }
 
-    private func log(_ habit: Habit, value: Double, on day: LocalDay, source: EntrySource) {
-        addLogged(Entry(habitID: habit.id, day: day, value: value, source: source))
+    private func log(_ habit: Habit, value: Double, on day: LocalDay, at time: Date? = nil, source: EntrySource) {
+        addLogged(Entry(habitID: habit.id, day: day, value: value, createdAt: stamp(time, on: day), source: source))
+    }
+
+    /// When a new log of `day` happened: the chosen time inside that day; with none, now for today, and the same clock
+    /// time on an earlier day.
+    private func stamp(_ time: Date?, on day: LocalDay) -> Date {
+        if let time { return logTime(time, on: day) }
+        return day == today() ? .now : sameClockTime(as: clock(), on: day)
     }
 
     private func undoLast(_ habit: Habit, on day: LocalDay) {
@@ -2415,6 +2449,9 @@ final class HabitStore {
 
     /// Editing preserves identity, the tracking day, step, slot, time zone and source.
     /// The UI changes now; the guarded database update follows in the same write queue as add/delete.
+    /// A log's time may change within its own tracking day (U19, 7 Oct 2026): every kind, not only slips. Never to
+    /// another day (that needs the same record moved between days atomically, which doesn't exist yet), never later than
+    /// now; a slip never before its quit run began. A time that breaks a rule changes nothing.
     func editEntry(_ id: UUID, value: Double, at date: Date? = nil) {
         guard value.isFinite, value > 0, value <= GoalNumber.maximum,
               let index = entries.firstIndex(where: { $0.id == id }),
@@ -2425,8 +2462,9 @@ final class HabitStore {
         if kind == .check, value.rounded() != value { return }
         let wasComplete = isComplete(habit, on: entry.day)
         entry.value = value
-        if kind == .quit, let date {
-            guard recordingDay(at: date, for: entry) == entry.day, date <= .now, date >= min(habit.quitSince ?? habit.createdAt, habit.createdAt) else { return }
+        if let date, date != entry.createdAt {
+            guard dayBounds(entry.day, calendar: recordingCalendar(for: entry)).contains(date), date <= max(clock(), entry.createdAt) else { return }
+            if kind == .quit, date < min(habit.quitSince ?? habit.createdAt, habit.createdAt) { return }
             entry.createdAt = date
         }
         replaceEntry(entry, at: index)
@@ -2439,7 +2477,7 @@ final class HabitStore {
     }
 
     /// Explicit Done / Not done for a day's checks. Never touches another day's entries.
-    func setDayDone(_ done: Bool, of habit: Habit, on day: LocalDay) {
+    func setDayDone(_ done: Bool, of habit: Habit, on day: LocalDay, at time: Date? = nil, source: EntrySource = .daySheet) {
         guard day <= today() else { return }
         let rule = rule(habit, on: day)
         if !done {
@@ -2447,15 +2485,15 @@ final class HabitStore {
             for id in ids { undoEntry(id) }
         } else if rule.kind == .check {
             let missing = max(0, dayGoal(of: rule) - dayProgress(of: rule, on: day))
-            if missing > 0 { log(habit, value: missing, on: day, source: .daySheet) }
+            if missing > 0 { log(habit, value: missing, on: day, at: time, source: source) }
         } else if rule.kind == .task, !isDone(rule, on: day) {
-            log(habit, value: 1, on: day, source: .daySheet)
+            log(habit, value: 1, on: day, at: time, source: source)
         }
     }
 
     func slip(_ habit: Habit, on day: LocalDay, at date: Date, source: EntrySource = .today) {
-        guard habit.kind == .quit, day <= today(), today(now: date) == day,
-              date <= .now, date >= min(habit.quitSince ?? habit.createdAt, habit.createdAt) else { return }
+        guard habit.kind == .quit, day <= today(), dayBounds(day).contains(date),
+              date <= clock(), date >= min(habit.quitSince ?? habit.createdAt, habit.createdAt) else { return }
         addLogged(Entry(habitID: habit.id, day: day, value: 1, createdAt: date, source: source))
     }
 

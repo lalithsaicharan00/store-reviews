@@ -15,16 +15,19 @@ struct DaySheet: View {
     let day: LocalDay
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var typeSize
     @State private var perfEntry: Entry?
+    @State private var perfAllLogs = false
+    @State private var perfNote = false
     @State private var destination: Destination?
     @State private var confirmingDelete = false
     @State private var showPlus = false
     @State private var showPage = false
-    /// The days Another Day… offers, worked out when it's tapped.
+    /// The days Another day… offers, worked out when it's tapped.
     @State private var pickingDays: ClosedRange<LocalDay>?
-    @ScaledMetric(relativeTo: .body) private var groupGap: CGFloat = 28
-    @ScaledMetric(relativeTo: .body) private var noteToSkip: CGFloat = 24
-    private enum Destination: String, Identifiable { case log, add, note, edit, pause; var id: Self { self } }
+    /// The sheet's full height, read when it changes: the gaps and the note's lines follow it (design decisions §3).
+    @State private var height: CGFloat = 0
+    private enum Destination: String, Identifiable { case add, note, edit, pause; var id: Self { self } }
 
     init(habit: Habit, day: LocalDay, pageLink: Bool = false) {
         self.habit = habit
@@ -40,27 +43,36 @@ struct DaySheet: View {
     var body: some View {
         let _ = perfTimed("Count: the Day sheet drawn") { () }
         let today = store.today()
+        let spacing = height > 0 ? DaySpacing.make(height: height, typeSize: typeSize) : DaySpacing()
         NavigationStack {
             Form {
                 identity
-                    .listSectionSpacing(groupGap)
-                DayActivity(habit: current, day: day, editable: editable, groupGap: groupGap,
-                            logManually: { destination = .add }, resume: { store.resume(current) })
-                noteSection
-                    .listSectionSpacing(noteToSkip)
+                    .listSectionSpacing(spacing.gap(24, 32))
+                DayActivity(habit: current, day: day, editable: editable, spacing: spacing,
+                            logManually: { destination = .add }, resume: { store.resume(current) },
+                            addNote: { destination = .note })
                 if isTask {
                     taskSection
                 } else if editable && current.kind != .quit {
                     skipSection
                 }
             }
+            .contentMargins(.top, spacing.gap(14, 18), for: .scrollContent)
             // Its own id, so tests scroll this list and not Today's behind the sheet (Rulebook T9).
             .accessibilityIdentifier("day-form")
-            .navigationDestination(item: $perfEntry) { EntryEditView(habit: ruled, entry: $0) }
+            .onGeometryChange(for: CGFloat.self) { proxy in
+                (proxy.size.height + proxy.safeAreaInsets.top + proxy.safeAreaInsets.bottom).rounded()
+            } action: { full in
+                if abs(full - height) >= 1 { height = full }
+            }
+            .navigationDestination(item: $perfEntry) { LogRecordView(habit: ruled, entry: $0) }
+            .navigationDestination(isPresented: $perfAllLogs) { AllLogsView(habit: current, day: day) }
+            .navigationDestination(isPresented: $perfNote) { NoteView(habit: current, day: day) }
             .navigationDestination(isPresented: $showPage) { HabitPageView(id: current.id) }
             .analyticsScreen(.historyDay)
-            // The day, never the habit's name again: the identity row says whose day it is (U18; handoff).
-            .navigationTitle(NoteSheet.dayText(day, today: today, calendar: store.calendar))
+            // The day, never the habit's name again: the identity row says whose day it is. "Today" only when it is
+            // today (U21): a date opened from History is titled by that date.
+            .navigationTitle(DayWords.day(day, today: today, calendar: store.calendar))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 // Edit, Pause, Archive and Delete in one menu, the lasting ones last; Delete asks first and offers
@@ -74,13 +86,10 @@ struct DaySheet: View {
             }
             .sheet(item: $destination) { destination in
                 switch destination {
-                case .log: LogProgressView(habit: ruled, day: day, source: .daySheet)
-                case .add: AddEntryView(habit: current, day: day)
+                case .add: AddLogView(habit: current, day: day, source: .manual)
                 case .edit: EditHabitSheet(habit: current)
                 case .pause: PauseSheet(habit: current)
-                case .note:
-                    NoteSheet(title: "Note", subtitle: current.name + " · " + NoteSheet.dayText(day, today: today, calendar: store.calendar),
-                              initial: store.note(of: current, on: day) ?? "") { store.setNote($0, of: current, on: day) }
+                case .note: AddNoteView(habit: current, day: day, picksDay: false)
                 }
             }
             .sheet(isPresented: $showPlus) { PlusView() }
@@ -100,8 +109,11 @@ struct DaySheet: View {
             .onPerfCommand { action in
                 switch action {
                 case .closeDay: dismiss()
-                case .openEntry: if destination == nil { perfEntry = store.entries(of: habit.id, on: day).last }
-                case .openLog: destination = .log
+                case .openEntry: if destination == nil { perfEntry = store.dayLogs(of: habit, on: day).first { $0.opensRecord(for: ruled) } }
+                case .openLog: destination = .add
+                case .openAllLogs: perfAllLogs = true
+                case .openNote:
+                    if store.note(of: current, on: day) == nil { destination = .note } else { perfNote = true }
                 default: break
                 }
             }
@@ -125,28 +137,7 @@ struct DaySheet: View {
         }
     }
 
-    // MARK: Note and Skip
-
-    /// The note for this day: its text, or an invitation. A tap opens the note editor; nothing is typed here, and
-    /// nothing ever asks for a note (handoff; report "Habit Notes and Day Notes").
-    private var noteSection: some View {
-        let note = store.note(of: current, on: day)
-        return Section {
-            Button { destination = .note } label: {
-                Text(note ?? "Add a note…")
-                    .foregroundStyle(note == nil ? Color.secondary : Color.primary)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(8)
-                    .frame(maxWidth: .infinity, minHeight: 32, alignment: .leading)
-                    .contentShape(Rectangle())
-            }
-            .disabled(!editable)
-            .accessibilityLabel(note.map { "Note for this day: " + $0 } ?? "Add a note for this day")
-            .accessibilityIdentifier(note == nil ? "day-add-note" : "day-edit-note")
-        } header: {
-            Text("Note for this day")
-        }
-    }
+    // MARK: Skip
 
     /// Skip changes only this day; the same button, in the same place, takes it back (U15). Logs and the note stay.
     @ViewBuilder private var skipSection: some View {
@@ -167,11 +158,11 @@ struct DaySheet: View {
     @ViewBuilder private var taskSection: some View {
         if store.canReschedule(current, shownOn: day) {
             Section("Reschedule") {
-                Button("Do Tomorrow", systemImage: "arrow.turn.up.right") {
+                Button("Do tomorrow", systemImage: "arrow.turn.up.right") {
                     reschedule(to: store.today().adding(days: 1, calendar: store.calendar))
                 }
                 .accessibilityIdentifier("day-do-tomorrow")
-                Button("Another Day…", systemImage: "calendar") {
+                Button("Another day…", systemImage: "calendar") {
                     pickingDays = store.rescheduleRange(of: current, shownOn: day)
                 }
                 .accessibilityIdentifier("day-another-day")
@@ -352,34 +343,6 @@ extension View {
     /// A section that holds full-width buttons rather than rows: no card behind them, aligned with the cards around.
     func dayButtonRow() -> some View {
         listRowInsets(EdgeInsets()).listRowBackground(Color.clear)
-    }
-}
-
-/// A quit slip uses its actual time, including on a past tracking day.
-struct SlipEntryView: View {
-    let habit: Habit
-    let day: LocalDay
-    var source: EntrySource = .daySheet
-    @Environment(HabitStore.self) private var store
-    @Environment(\.dismiss) private var dismiss
-    @State private var time: Date?
-    var body: some View {
-        let bounds = store.dayBounds(day)
-        let lower = max(bounds.lowerBound, min(habit.quitSince ?? habit.createdAt, habit.createdAt))
-        let upper = min(bounds.upperBound, .now)
-        Form {
-            if lower <= upper {
-                Section {
-                    Text(habit.name)
-                    DatePicker("Slipped at", selection: Binding(get: { time ?? upper }, set: { time = $0 }), in: lower...upper)
-                }
-                Section {
-                    Button("Record slip") { store.slip(habit, on: day, at: time ?? upper, source: source); dismiss() }
-                } footer: { Text("You can change or remove this entry later.") }
-            } else { Text("This day is before this run started.").foregroundStyle(.secondary) }
-        }
-        .navigationTitle("Record a Slip")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

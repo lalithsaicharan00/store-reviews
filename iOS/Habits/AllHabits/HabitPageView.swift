@@ -79,7 +79,7 @@ struct HabitPageView: View {
             ToolbarItem(placement: .topBarTrailing) { menu(habit, today: today) }
         }
         .sheet(item: $openDay) { DaySheet(habit: habit, day: $0) }
-        .sheet(item: $addEntryDay) { AddEntryView(habit: habit, day: $0) }
+        .sheet(item: $addEntryDay) { AddLogView(habit: habit, day: $0, source: .manual) }
         .sheet(isPresented: $showGoTo) {
             GoToDateSheet(habit: habit) { day in
                 showGoTo = false

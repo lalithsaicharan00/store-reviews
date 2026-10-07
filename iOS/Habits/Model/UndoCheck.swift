@@ -111,6 +111,7 @@ enum UndoCheck {
                    && abs((edited?.createdAt ?? .distantPast).timeIntervalSince(recordedAt.addingTimeInterval(60))) < 0.001,
                    "Slip time can be corrected after travelling without moving its day or zone")
         } catch { failures.append("Travel fixture could not be saved") }
+        failures += await logTimes()
         let savedEnd = store.settings.dayEndHour
         store.settings.dayEndHour = 3
         var newYork = store.calendar
@@ -121,6 +122,113 @@ enum UndoCheck {
                && LocalDay(bounds.upperBound.addingTimeInterval(1 - 3 * 3600), calendar: newYork) == springDay.adding(days: 1),
                "Past slip picker ends at the tracking-day boundary across daylight saving")
         store.settings.dayEndHour = savedEnd
+        return failures
+    }
+
+    /// The time of a log (7 Oct 2026 redesign; U19, D7): Add passes the chosen time, which stays inside the chosen
+    /// day and never later than now; an edit changes the time only within the log's own day; one check per add; old
+    /// multi-check logs keep working; the edited time survives a reload and a backup restored on another phone.
+    static func logTimes() async -> [String] {
+        var failures: [String] = []
+        func expect(_ condition: Bool, _ name: String) { if !condition { failures.append(name) } }
+        func near(_ a: Date?, _ b: Date) -> Bool { a.map { abs($0.timeIntervalSince(b)) < 0.001 } ?? false }
+        let persistence = Persistence.inMemory()
+        let store = HabitStore(repository: persistence.repository)
+        await store.load()
+        let c = store.calendar
+        let now = Date.now
+        store.clock = { now }
+        let today = store.today()
+        let yesterday = today.adding(days: -1, calendar: c)
+        let before = today.adding(days: -3, calendar: c)
+        let water = Habit(name: "Water", symbol: "drop", color: .blue, kind: .amount(unit: "glasses", increment: 1), goal: 8,
+                          startsOn: before)
+        store.add(water); await store.flush()
+        let bounds = store.dayBounds(yesterday)
+        let evening = c.date(bySettingHour: 21, minute: 40, second: 0, of: yesterday.date(calendar: c))!
+        store.addProgress(water, value: 2, on: yesterday, at: evening, source: .manual)
+        let past = store.entries(of: water.id, on: yesterday).last
+        expect(past?.day == yesterday && near(past?.createdAt, evening), "A past day's log keeps the chosen day and time")
+        store.addProgress(water, value: 1, on: yesterday, source: .daySheet)
+        let quick = store.entries(of: water.id, on: yesterday).last
+        expect(quick.map { bounds.contains($0.createdAt) } == true, "A past day's quick log is stamped inside that day, not today")
+        store.addProgress(water, value: 1, on: today, at: now.addingTimeInterval(3600), source: .manual)
+        let future = store.entries(of: water.id, on: today).last
+        expect(future.map { $0.createdAt <= now && $0.day == today } == true, "A log is never stamped later than now")
+        store.addProgress(water, value: 1, on: yesterday, at: bounds.lowerBound.addingTimeInterval(-7200), source: .manual)
+        let early = store.entries(of: water.id, on: yesterday).last
+        expect(early?.day == yesterday && near(early?.createdAt, bounds.lowerBound), "A time before the day is pulled to its start, never another day")
+        store.addProgress(water, value: 1, on: today.adding(days: 1, calendar: c), at: now, source: .manual)
+        expect(store.entries(of: water.id, on: today.adding(days: 1, calendar: c)).isEmpty, "No log on a future day")
+
+        // Same-day time edits for every log, keeping its record.
+        guard let first = past else { return failures + ["No past log to edit"] }
+        let morning = c.date(bySettingHour: 8, minute: 5, second: 0, of: yesterday.date(calendar: c))!
+        store.editEntry(first.id, value: 3, at: morning)
+        let edited = store.entries(of: water.id, on: yesterday).first { $0.id == first.id }
+        expect(edited?.value == 3 && near(edited?.createdAt, morning) && edited?.day == yesterday && edited?.source == .manual
+               && edited?.timeZone == first.timeZone, "An amount log's time changes within its day, keeping ID, day, source and zone")
+        store.editEntry(first.id, value: 3, at: c.date(byAdding: .day, value: -1, to: morning)!)
+        expect(near(store.entries(of: water.id, on: yesterday).first { $0.id == first.id }?.createdAt, morning),
+               "A time on another day is refused, never moving the log")
+        store.editEntry(first.id, value: 4, at: now.addingTimeInterval(600))
+        expect(store.entries(of: water.id, on: yesterday).first { $0.id == first.id }?.value == 3, "A future time is refused")
+        expect(store.entries(of: water.id, on: today).allSatisfy { $0.id != first.id }, "An edit never moves a log into today")
+
+        let read = Habit(name: "Read", symbol: "book", color: .orange, kind: .duration, goal: 20, startsOn: before)
+        store.add(read); await store.flush()
+        let finished = c.date(bySettingHour: 13, minute: 30, second: 0, of: yesterday.date(calendar: c))!
+        store.addProgress(read, value: 15.5, on: yesterday, at: finished, source: .manual)
+        if let session = store.entries(of: read.id, on: yesterday).last {
+            store.editEntry(session.id, value: 3, at: finished.addingTimeInterval(-1800))
+            let changed = store.entries(of: read.id, on: yesterday).last
+            expect(changed?.value == 3 && near(changed?.createdAt, finished.addingTimeInterval(-1800)), "A session's time and length change together")
+        } else { failures.append("Time log not added") }
+
+        // One check per add; an old log of several checks still corrects.
+        let stretch = Habit(name: "Stretch", symbol: "figure.flexibility", color: .purple, kind: .check, goal: 3, startsOn: before)
+        store.add(stretch); await store.flush()
+        store.addProgress(stretch, value: 1, on: yesterday, at: evening, source: .manual)
+        expect(store.entries(of: stretch.id, on: yesterday).map(\.value) == [1], "Add a check adds one check")
+        store.addProgress(stretch, value: 2, on: yesterday, at: morning, source: .manual)
+        if let old = store.entries(of: stretch.id, on: yesterday).last {
+            store.editEntry(old.id, value: 3, at: morning.addingTimeInterval(60))
+            expect(store.entries(of: stretch.id, on: yesterday).last?.value == 3, "An older multi-check log still corrects")
+        }
+        let vitamins = Habit(name: "Vitamins", symbol: "pills", color: .green, kind: .check, goal: 1, startsOn: before)
+        store.add(vitamins); await store.flush()
+        store.setDayDone(true, of: vitamins, on: yesterday, at: evening, source: .manual)
+        expect(near(store.entries(of: vitamins.id, on: yesterday).last?.createdAt, evening), "Mark a day done records the chosen time")
+        let desk = Habit(name: "Desk", symbol: "lamp.desk", color: .teal, kind: .checklist,
+                         steps: [Step(name: "Papers"), Step(name: "Pens")], startsOn: before)
+        store.add(desk); await store.flush()
+        store.toggleStep(desk.steps[0], of: desk, on: yesterday, at: evening, source: .manual)
+        expect(near(store.entries(of: desk.id, on: yesterday).last?.createdAt, evening), "Tick steps records the chosen time")
+
+        // The same clock time on another day, with a 3 AM day start (1:30 AM belongs to the next calendar date).
+        let savedEnd = store.settings.dayEndHour
+        store.settings.dayEndHour = 3
+        let night = c.date(bySettingHour: 1, minute: 30, second: 0, of: now)!
+        let moved = store.sameClockTime(as: night, on: before)
+        expect(store.dayBounds(before).contains(moved) && c.component(.hour, from: moved) == 1, "1:30 AM on another day stays in that tracking day")
+        store.settings.dayEndHour = savedEnd
+
+        // Reload and a backup restored on an empty phone carry the edited time (D4, D5).
+        await store.flush()
+        let reloaded = HabitStore(repository: persistence.repository)
+        await reloaded.load()
+        expect(near(reloaded.entries(of: water.id, on: yesterday).first { $0.id == first.id }?.createdAt, morning), "An edited time survives a reload")
+        do {
+            let file = try await store.backupFile()
+            defer { try? FileManager.default.removeItem(at: file.deletingLastPathComponent()) }
+            let target = HabitStore(repository: Persistence.inMemory().repository)
+            await target.load()
+            _ = try await target.restore(from: file)
+            let restored = target.entries(of: water.id, on: yesterday).first { $0.id == first.id }
+            expect(restored?.day == yesterday && near(restored?.createdAt, morning) && restored?.value == 3,
+                   "An edited time survives a backup restored on another phone")
+        } catch { failures.append("Backup of edited times failed: \(error)") }
+        expect(store.problem == nil, "Log times reached storage")
         return failures
     }
 }
