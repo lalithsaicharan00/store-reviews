@@ -324,4 +324,23 @@ final class HabitPageUITests: XCTestCase {
         sleep(1)
         shot("hp-year-1-selected")
     }
+
+    /// Every day number, 1 to 31, beside its row (Current Work 32, 8 Oct 2026): light, dark and a large accessibility
+    /// text size (the labels stop growing where "31" still fits). Pictures only: the grid is one Canvas.
+    func testYearInPixelsDayNumbers() {
+        for (name, theme, size) in [("light", "light", ""), ("dark", "dark", ""), ("large-text", "light", "UICTContentSizeCategoryAccessibilityL")] {
+            app.terminate()
+            app.launchArguments = ["-uitest", "-year-demo", "-appearance.theme", theme]
+                + (size.isEmpty ? [] : ["-UIPreferredContentSizeCategoryName", size])
+            app.launch()
+            XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
+            open("Swim")
+            tab("Progress")
+            let grid = app.descendants(matching: .any)["habit-year-grid"]
+            XCTAssertTrue(scrollTo(grid, swipes: 16), "Year in Pixels (\(name))")
+            shot("hp-year-days-\(name)-1-top")
+            app.swipeUp(velocity: .slow); sleep(1)
+            shot("hp-year-days-\(name)-2-bottom")
+        }
+    }
 }

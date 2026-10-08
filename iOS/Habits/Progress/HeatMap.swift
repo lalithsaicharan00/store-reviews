@@ -618,9 +618,12 @@ struct HeatYearPixels: View, Equatable {
                 context.draw(Text(monthNames[m]).font(.caption2.weight(.semibold)).foregroundColor(label),
                              at: CGPoint(x: Self.gutter + CGFloat(m) * pitchX + HeatSize.year / 2, y: Self.header / 2), anchor: .center)
             }
-            for d in [1, 5, 10, 15, 20, 25, 30] {
+            // Every day's number, 1 to 31, beside its row (Current Work 32, the user, 4 Oct 2026: not only 1, 5, 10 …):
+            // right-aligned 4 pt before the squares, one per 27-pt row, so each sits on its own row with room between.
+            for d in 1...31 {
                 context.draw(Text("\(d)").font(.caption2.monospacedDigit()).foregroundColor(label),
-                             at: CGPoint(x: Self.gutter / 2 - 2, y: Self.header + CGFloat(d - 1) * pitchY + HeatSize.year / 2), anchor: .center)
+                             at: CGPoint(x: Self.gutter - 4, y: Self.header + CGFloat(d - 1) * pitchY + HeatSize.year / 2),
+                             anchor: .trailing)
             }
             var draw = HeatDraw(size: HeatSize.year)
             var picked: CGRect?
@@ -642,6 +645,9 @@ struct HeatYearPixels: View, Equatable {
             }
         }
         .frame(height: Self.height)
+        // The squares keep their size at every text size, so the labels stop growing where "31" still fits the gutter
+        // and a month name its column.
+        .dynamicTypeSize(...DynamicTypeSize.xLarge)
         .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width = $0 }
         .contentShape(Rectangle())
         .onTapGesture(coordinateSpace: .local) { location in
