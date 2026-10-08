@@ -28,6 +28,15 @@ enum PerfSwitches {
     /// False opens the habit form without putting the cursor in its name field, to tell the form's own opening from
     /// the keyboard's (2 Oct 2026).
     static var focusFormName = true
+    /// False (`-perf-no-widget-publish`, a launch argument) leaves out the widgets' publication after each change, to
+    /// measure what it costs the screen the person is using (8 Oct 2026, Current Work 49). Always true outside speed runs.
+    static let widgetPublication: Bool = {
+        #if DEBUG
+        return !ProcessInfo.processInfo.arguments.contains("-perf-no-widget-publish")
+        #else
+        return true
+        #endif
+    }()
 }
 
 /// The control for "opening a screen" (2 Oct 2026): a page with nothing on it, pushed on Today's stack exactly like a

@@ -205,7 +205,8 @@ final class AppModel {
             Task { await self.saveWidgetTaps() }
             store.onChange = { [store, scheduler, timerPresence, widgets, sync, backup] in
                 scheduler.scheduleReconcile(store)
-                widgets.schedule(store)
+                // Speed runs only (Current Work 49): `-perf-no-widget-publish` leaves the publication out, to see its cost.
+                if PerfSwitches.widgetPublication { widgets.schedule(store) }
                 // Siri's phrases name each habit: refreshed when one is added, renamed or archived (cheap otherwise).
                 perfTimed("Change: Siri's habit names") { HabitShortcuts.habitsChanged(store) }
                 Task { await timerPresence.sync(store) }
