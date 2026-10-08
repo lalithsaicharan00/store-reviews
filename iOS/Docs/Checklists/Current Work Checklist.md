@@ -225,6 +225,14 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
     `37324688193`, `37330377255`, `37330449077` vs `37324703983`, `37330393173`, `37330464579`).
   - **So the change came with the timer/swipe/limits/completion-sound merge.** To do: bisect its commits with the
     scenarios above (Today `scroll-today`, `tap-today`; `new-habit`; `progress`), fix, and measure on the iPhone.
+  - **8 Oct 2026 (cloud session): side by side in one job** (new `ios-perf-bisect.yml`, `Tools/perf/bisect_perf.sh`: each
+    commit built in the same job, every scenario run on each in turn, two rounds, rotated order; run `37774018835`).
+    Median hitch ms/s, base `396c40e` (4 Oct) / end of timer-swipe-limits `c9909e6` / `main` `e3afd6c`: Today scrolling
+    12.6 / 27.6 / 11.3 (each variant's first round carries the first-scroll freeze; second rounds 5.2 / 7.7 / 4.9);
+    habit form typing 14.2 / 18.8 / 15.8; Progress period ‹ › and range 107.5 / 128.5 / 93.1; day ‹ › alone 59.8 /
+    87.8 / 73.5. **So scrolling, typing and Progress are not slower on `main` than on 4 Oct**: the 5 Oct numbers were
+    separate runs on different machines (L22). **What is slower: the +1 tap** (+1 alone 1.5 / 3.4 / 15.5; +1 and day
+    ‹ › 62.3 / 83.7 / 123.8), and it came after `c9909e6`. Next: bisect `c9909e6..e3afd6c` with `tap-today`.
 
 - [ ] **47. Build Day details and the one-log editor from the 4 October handoff.** Added 4 October 2026, from the
   user; branch **`details-page-update`** (the user asked for a meaningfully named branch to test from). Implements
