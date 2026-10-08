@@ -38,7 +38,9 @@ enum SyncCheck {
             }
             return rows
         }
-        let serverEntries = live("entry")
+        // A deleted habit's logs stay stored on both sides (D6) but aren't shown, so only live habits' logs are compared.
+        let serverHabitIDs = Set(live("habit").keys)
+        let serverEntries = live("entry").filter { ($0.value["habit_id"] as? String).map { serverHabitIDs.contains($0.lowercased()) } ?? false }
         let phoneEntries = Dictionary(store.entries.map { ($0.id.uuidString.lowercased(), $0) }, uniquingKeysWith: { a, _ in a })
         let missing = phoneEntries.keys.filter { serverEntries[$0] == nil }
         let extra = serverEntries.keys.filter { phoneEntries[$0] == nil }
@@ -47,12 +49,18 @@ enum SyncCheck {
             let value = (fields["value"] as? NSNumber)?.doubleValue ?? .nan
             return abs(value - entry.value) > 0.000_001 || fields["day"] as? String != entry.day.key
         }.map(\.key)
-        let serverHabits = Set(live("habit").keys)
+        let serverHabits = serverHabitIDs
         let phoneHabits = Set(store.habits.map { $0.id.uuidString.lowercased() })
         lines.append("logs: phone \(phoneEntries.count), server \(serverEntries.count); missing on server \(missing.count), "
             + "only on server \(extra.count), different \(differ.count)")
         lines.append("habits: phone \(phoneHabits.count), server \(serverHabits.count); missing on server "
             + "\(phoneHabits.subtracting(serverHabits).count), only on server \(serverHabits.subtracting(phoneHabits).count)")
+        let recent = store.entries.filter { $0.createdAt > Date.now.addingTimeInterval(-3600) }
+        let bySource = Dictionary(grouping: recent, by: { $0.source?.rawValue ?? "unknown" }).mapValues(\.count)
+        lines.append("logs made in the last hour: \(recent.count) \(bySource.sorted { $0.key < $1.key })")
+        for entry in recent.sorted(by: { $0.createdAt < $1.createdAt }).suffix(12) {
+            lines.append("  \(iso.string(from: entry.createdAt)) \(entry.source?.rawValue ?? "?") day \(entry.day.key)")
+        }
         for id in missing.prefix(10) { lines.append("  missing on server: \(id)") }
         for id in extra.prefix(10) { lines.append("  only on server: \(id)") }
         for id in differ.prefix(10) { lines.append("  different: \(id)") }

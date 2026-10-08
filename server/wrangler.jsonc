@@ -91,7 +91,7 @@
         "CI_REPOSITORY": "",
         "ACCOUNT_ID": "fd5d7e4921bb3f41c85bedb2fd2fb0eb",
         "WEB_ORIGINS": "https://oftenenough.com,https://www.oftenenough.com",
-        // Never "true" here: the switch only works on dev (`plusFor`), and real users get Plus only by buying it.
+        // Never "true" here: the switch only works on dev (`everyonePlus`), and real users get Plus only by buying it.
         "EVERYONE_PLUS": "false"
       },
       "secrets": { "required": ["TOKEN_KEY"] },

@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 69).
+  still resolve; give new items the next unused number (currently 71).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -414,6 +414,48 @@ Their placement records scope and priority; implementation has not started.
     back to their real purchases at their next sign-in or token refresh (access tokens last minutes). Then remove
     `everyonePlus` and its test once buying Plus works. **Revert before buying Plus (Roadmap 64) is tested**, or
     a broken purchase would look like it works.
+
+- [ ] **69. Lock Screen timers: pause without unlocking.** Added 8 October 2026, from the user's Lock Screen checks for
+  item 67 ("if users expect it to work, then it should be that way").
+  - Users show they want to pause a timer from the Lock Screen and the Dynamic Island (5 reviews; ≈41 want the timer
+    there; report "Timers — What People Expect When They Tap ▶"); the iPhone's Clock timer pauses there without
+    unlocking.
+  - [x] **The Live Activity's Pause didn't work locked:** `StopTimerIntent` had no `authenticationPolicy`, so iOS asked
+    for Face ID, then opened the app on the timer. Now `.alwaysAllowed`. The user, 8 Oct 13:01: Pause stopped the timer
+    without unlocking; the session reached the server 2 s later.
+  - [x] **The Lock Screen widget's ▶/⏸ asks for Face ID** (then works and syncs). Tried 8 Oct: running the tap in the
+    widget's process and handing over (as ✓ does) made iOS refuse to start the Live Activity ("couldn't start
+    (visibility)": only an intent run directly in the app may start one) and the button flicked back to ▶ at 0.3 s.
+    Reverted the same day; the widget timer is exactly as approved (W7; checked: ⏸ at 0.3 s, Live Activity started).
+    The no-unlock way to pause on the Lock Screen is the Live Activity's Pause. Leave the widget as it is unless iOS
+    changes.
+  - [ ] Tests on GitHub (with item 70's run).
+
+- [ ] **70. Reminders, alarms and "Remind again" work reliably, on the iPhone.** Added 8 October 2026, from the user:
+  "reminders are also important … alarms … for reliability, alarms should be full screen … if not done, remind me
+  again … they all should work reliably. Test it thoroughly on the iPhone." Also: is logging from a long-press on the
+  notification what people expect? Yes: users want to complete from the notification without opening the app (Feature
+  Ledger C252, Strong, 7 apps); iOS shows a notification's buttons only on a long-press (or swipe → View).
+  - Debug kit: `-reminder-live <name> <check|amount> <notification|alarm> <minutes ahead> <remind-again min>`,
+    `-reminder-live-status`, `-reminder-live-cleanup` (`ReminderLiveTest`); `ReminderDeviceTests` waits on the Home
+    Screen for the real banners and alarms and taps their buttons (`REMINDER_PLAN`).
+  - [x] **Bug found and fixed: every reminder Done/+1 crashed the app** a moment after saving (since 28 Sep):
+    `NotificationHandler`'s `nonisolated` async methods told iOS "finished" from a background thread and UIKit stopped
+    the app (crash reports 14:54, 14:58, 14:59, 15:06; `NSInternalInconsistencyException` in
+    `_performBlockAfterCATransactionCommitSynchronizes`). The log was saved but the sync was cut off, so the change
+    waited until the app was opened. Now on the main actor; no crash since, and each tap reached the server ~2.5 s later.
+  - [x] **Alarm Done on a locked phone:** `MarkHabitDoneIntent` had no `authenticationPolicy` (the same gap as the
+    Live Activity's Pause); now `.alwaysAllowed`.
+  - [x] On the iPhone, 8 Oct (Claude's tests, unlocked): reminders arrive on the minute (14:57:00, 14:58:00…); "Not done
+    yet" repeats every interval while not done (an amount at 1 of 3 kept repeating); Done on a repeat stops the rest;
+    +1 glass adds one; done habits' notifications are cleared from Notification Center. Alarm (unlocked): rang at
+    15:13:00 in the Dynamic Island with ✓ and ✕; ✓ logged and synced 2 s later; the 15:15 repeat didn't ring.
+  - [x] The user, phone locked, 8 Oct 15:32–15:35: the alarm rang full screen; Done logged without Face ID and synced;
+    the notification's Done logged and synced 2 s later; the user's own task alarm Done synced too.
+  - **Full screen:** iOS shows an alarm full screen on a locked phone and in the Dynamic Island while the phone is in use,
+    as the Clock app's alarms do; apps can't change it.
+  - [ ] Tests on GitHub: `[ios-ci] [ios-sync]` now adds RemindersUITests and PlacementUITests (which runs the
+    reminder planning checks).
 
 ## Planned improvements — build later
 

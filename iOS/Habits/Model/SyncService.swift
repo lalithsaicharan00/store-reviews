@@ -254,6 +254,11 @@ final class SyncService {
 
     private func holdAwake() {
         guard awake == .invalid else { return }
+        defer {
+            #if DEBUG
+            WidgetTiming.mark("sync: scheduled; background time \(awake == .invalid ? "REFUSED" : "held"), \(Int(UIApplication.shared.backgroundTimeRemaining.rounded(.down) > 1e6 ? -1 : UIApplication.shared.backgroundTimeRemaining)) s left")
+            #endif
+        }
         awake = UIApplication.shared.beginBackgroundTask(withName: "Sync changes") { [weak self] in
             MainActor.assumeIsolated {
                 #if DEBUG

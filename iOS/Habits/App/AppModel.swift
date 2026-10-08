@@ -270,6 +270,7 @@ final class AppModel {
             LaunchLog.took("Widgets: publish", since: started)
             #if DEBUG
             SyncCheck.runIfAsked(store: store, sync: sync)
+            ReminderLiveTest.runIfAsked(store: store, scheduler: scheduler)
             #endif
         }
         loading = task
@@ -285,6 +286,9 @@ final class AppModel {
     /// A notification's Done or +1, or an alarm's Done: the same store method a tap on Today uses,
     /// but only ever adding. Then reminders are re-planned, which clears the row's follow-ups.
     func logFromReminder(_ target: ReminderTarget, event: String? = nil) async {
+        #if DEBUG
+        WidgetTiming.mark("reminder action: logging, app \(UIApplication.shared.applicationState == .active ? "in front" : "in the background")")
+        #endif
         await ensureLoaded()
         guard let habit = store.habits.first(where: { $0.id == target.habit }) else { return }
         let token = event ?? target.event ?? "reminder.\(target.habit).\(target.time?.uuidString ?? "legacy").\(target.day.key)"
@@ -513,8 +517,13 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 /// Handles taps and actions on the app's notifications.
-final class NotificationHandler: NSObject, UNUserNotificationCenterDelegate {
-    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+///
+/// On the main actor (8 Oct 2026, Current Work 70): with `nonisolated` async methods, iOS was told "finished" from a
+/// background thread and UIKit stopped the app (`NSInternalInconsistencyException` in
+/// `_performBlockAfterCATransactionCommitSynchronizes`) a moment after every reminder Done or +1, after the log was
+/// saved but before it was synced. Crash report `Habits-2026-10-08-150605.ips`.
+final class NotificationHandler: NSObject, @preconcurrency UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
         let action = response.actionIdentifier
         let info = response.notification.request.content.userInfo
         let target = ReminderTarget(userInfo: info)
@@ -535,7 +544,7 @@ final class NotificationHandler: NSObject, UNUserNotificationCenterDelegate {
     }
 
     /// While the app is open, reminders still show as banners.
-    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
         let request = notification.request
         guard request.identifier.hasPrefix("reminder.") else { return [.banner, .list, .sound] }
         let model = await AppModel.shared
