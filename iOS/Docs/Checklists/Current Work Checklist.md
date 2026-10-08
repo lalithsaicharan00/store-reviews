@@ -61,8 +61,8 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   *Done 8 Oct: all 11 passed first time, run `37826155392`; iPhone checks for 18, 26, 28 still to do.*
 - [x] 4. **Item 74** (new): a `-uitest` launch on a real iPhone must not write the widgets' shared file or the
   person's settings (D8). Prove it with a test. *Done 8 Oct: run `37831649390` (24/24); iPhone check still to do.*
-- [ ] 5. **Item 32**: Year in Pixels shows every day number 1–31, in Progress and on the habit page; simulator
-  screenshots in the run; the iPhone look stays to do (U9).
+- [x] 5. **Item 32**: Year in Pixels shows every day number 1–31, in Progress and on the habit page; simulator
+  screenshots in the run; the iPhone look stays to do (U9). *Done 8 Oct: run `37847053285`; iPhone look still to do.*
 - [ ] 6. **Item 31**: Week, Month and Year card padding and spacing (Progress and the habit page's Progress tab);
   screenshots; the iPhone look stays to do.
 - [ ] 7. **Item 23**: streaks back on the habit page, in its Progress tab; screenshots; the iPhone look stays to do.
@@ -359,15 +359,6 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
     meanings. Verify on the iPhone, including larger text and light/dark mode.
   - Keep the accordion behavior (item 25), all-date labels (item 32), Overall Record and Milestones separately tracked.
 
-- [ ] **32. Year in Pixels: show every day-number label from 1 through 31.** Added 4 October 2026.
-  - Currently only selected numbers such as 1, 5, 10, 15, 20, 25 and 30 are shown. The user wants all day numbers
-    visible: 1, 2, 3 … 31, including the currently omitted dates and 31 itself.
-  - Keep the labels aligned with the correct day rows/squares and readable. Coordinate the layout with the spacing
-    work in item 31; do not satisfy it by crowding or overlapping labels.
-  - Preserve the correct treatment of shorter months and leap years; showing row labels 1–31 does not make an
-    invalid date a recorded day. Review every relevant Year in Pixels instance in Progress and habit details.
-  - Verify all 31 labels are present and that existing values, square meanings and accessibility remain correct.
-
 - [ ] **3. Account out of Backup & Export.** Backup & Export holds only backup and export (the backup account it
   uses can stay there). Making an account, signing in and deleting the account are not backup things.
   - Account up front: the ≡ sidebar shows the account state, at the bottom or wherever fits, e.g. "No account"
@@ -430,6 +421,27 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   after release.
 
 ## Completed
+
+- [x] **32. Year in Pixels: show every day-number label from 1 through 31.** Added 4 October 2026.
+  - Currently only selected numbers such as 1, 5, 10, 15, 20, 25 and 30 are shown. The user wants all day numbers
+    visible: 1, 2, 3 … 31, including the currently omitted dates and 31 itself.
+  - Keep the labels aligned with the correct day rows/squares and readable. Coordinate the layout with the spacing
+    work in item 31; do not satisfy it by crowding or overlapping labels.
+  - Preserve the correct treatment of shorter months and leap years; showing row labels 1–31 does not make an
+    invalid date a recorded day. Review every relevant Year in Pixels instance in Progress and habit details.
+  - Verify all 31 labels are present and that existing values, square meanings and accessibility remain correct.
+  - **Where it is (8 Oct):** Year in Pixels (month columns by day rows) is on the habit page's Progress tab
+    (`HeatYearPixels`); Progress's own Year view is a different map (weeks by weekdays, one per habit) with no day rows.
+  - **Built, 8 Oct 2026** (cloud session): every number 1–31, one per 27-pt row, right-aligned 4 pt before the squares
+    (caption 2, monospaced digits); the labels stop growing at the xLarge text size, where "31" still fits the gutter
+    and each month name its column (the squares never grow). Days a month doesn't have stay empty.
+  - [x] **Tested on GitHub, 8 Oct 2026:** run `37847053285`, `HabitPageUITests` 10/10 with the new
+    `testYearInPixelsDayNumbers` (pictures `hp-year-days-light|dark|large-text-1-top|2-middle|3-end` in the run's
+    `ios-screenshots`: every number beside its row, readable, none overlapping). Speed run of the habit page in the same
+    run (Progress scrolling 23.2 ms/s; 7.9 in run `37836789385` with the same change: machines vary, L25). Found and
+    fixed on the way: a tab tap lost on a busy simulator (the test now checks the tab switched) and Add note's
+    keyboard that never came when the sheet's slide outlasted 350 ms (it asks again until the field has it; Add note
+    typing 8.6 ms/s). **iPhone look (U9): still to do.**
 
 - [x] **74. A test launch on a real iPhone writes its demo habits into the widgets and resets the person's settings.**
   Added 8 October 2026 by Claude (Claude Code), from item 65's finding (the user listed it, 8 Oct). A `-uitest`
