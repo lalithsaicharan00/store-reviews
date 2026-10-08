@@ -186,7 +186,9 @@ jobs:
 
       - name: Pick a simulator
         if: steps.build.outcome == 'success' && !contains(env.MESSAGE, '[ios-contract-only]')
-        timeout-minutes: 8
+        # A fresh simulator's first boot runs Apple's data migration: 2–5 minutes on 7 Oct 2026, 5–8 on 8 Oct, and a run
+        # timed out at 8 in "Waiting on Data Migration" before any test (37767538992). 15 still catches a hang.
+        timeout-minutes: 15
         run: |
           set -o pipefail
           {
