@@ -344,6 +344,47 @@ final class GroupsUITests: XCTestCase {
         closeFilter()
     }
 
+    /// The same drag again and again (Current Work 53, 8 Oct 2026; Rulebook T12): each must move Home above Health.
+    /// Measured side by side for the Filter sheet's gesture settings on a group screen (`-groups-sheet-mode`); the
+    /// app's own setting must take every drop.
+    func testGroupDragDropsReliably() {
+        var results: [String] = []
+        var missesWithAppSetting = 0
+        for mode in ["resizes", "nodismiss", "app"] {
+            app.terminate()
+            launch(["-groups-demo"] + (mode == "app" ? [] : ["-groups-sheet-mode", mode]))
+            openGroupsEditor()
+            var misses = 0
+            let attempts = 6
+            for _ in 0..<attempts {
+                app.navigationBars["Groups"].buttons["Edit"].tap()
+                let handle = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'reorder' AND label CONTAINS 'Home'")).firstMatch
+                XCTAssertTrue(handle.waitForExistence(timeout: 3), "Edit mode shows the reorder handles")
+                let health = app.descendants(matching: .any)["groups-row-Health"].firstMatch
+                handle.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+                    .press(forDuration: 0.8, thenDragTo: health.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.3)),
+                           withVelocity: .slow, thenHoldForDuration: 0.6)
+                app.navigationBars["Groups"].buttons["Done"].tap()
+                let sort = app.buttons["groups-sort-az"]
+                if sort.waitForExistence(timeout: 3) {
+                    sort.tap()
+                    XCTAssertTrue(sort.waitForNonExistence(timeout: 3), "Sort A to Z puts the order back")
+                } else {
+                    misses += 1
+                }
+            }
+            results.append("\(mode): \(misses) of \(attempts) missed")
+            if mode == "app" { missesWithAppSetting = misses }
+        }
+        let line = results.joined(separator: "; ")
+        let note = XCTAttachment(string: line)
+        note.name = "group-drag-misses"
+        note.lifetime = .keepAlways
+        add(note)
+        print("GROUP DRAG: " + line)
+        XCTAssertEqual(missesWithAppSetting, 0, "Every drag takes: " + line)
+    }
+
     /// Today and Progress keep their own group; Start on a filtered Today plays only the habits shown.
     func testTodayAndProgressKeepTheirOwnChoiceAndStartPlaysWhatsShown() {
         launch(["-groups-demo"])
