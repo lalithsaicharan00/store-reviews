@@ -62,8 +62,13 @@ final class HabitPageUITests: XCTestCase {
         sleep(1)
     }
 
+    /// Switches tab and checks it switched: on a busy hosted simulator a tap during the page's first seconds was lost
+    /// and the test went on scrolling History (run 37836789385, 8 Oct 2026).
     private func tab(_ title: String) {
-        app.segmentedControls["habit-tabs"].buttons[title].tap()
+        let button = app.segmentedControls["habit-tabs"].buttons[title]
+        button.tap()
+        if !button.wait(for: \.isSelected, toEqual: true, timeout: 5) { button.tap() }
+        XCTAssertTrue(button.wait(for: \.isSelected, toEqual: true, timeout: 5), "\(title) is the tab shown")
         sleep(1)
     }
 
@@ -340,7 +345,9 @@ final class HabitPageUITests: XCTestCase {
             XCTAssertTrue(scrollTo(grid, swipes: 16), "Year in Pixels (\(name))")
             shot("hp-year-days-\(name)-1-top")
             app.swipeUp(velocity: .slow); sleep(1)
-            shot("hp-year-days-\(name)-2-bottom")
+            shot("hp-year-days-\(name)-2-middle")
+            app.swipeUp(velocity: .slow); sleep(1)
+            shot("hp-year-days-\(name)-3-end") // 27 to 31
         }
     }
 }
