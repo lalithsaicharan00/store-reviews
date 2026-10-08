@@ -360,6 +360,19 @@ Their placement records scope and priority; implementation has not started.
   nightly server snapshot, due 9 Oct 02:00 UTC in R2 `often-enough-backups-dev` under `snapshots/<account>/` (needs
   Cloudflare access); (5) merge into `main` only after the tests pass and the user says so (W3). iPhone checks can't
   run in the cloud.
+  - **Cloud session, 8 Oct 2026 (Claude):** (2) is a real race, not a flake (T2). The failing build (`3e7f758`) had no
+    Keychain read at launch (that came in `1575150`), so that suspect is cleared. The failure screenshot shows Read
+    still on ▶ after the tap: `seedDemo` showed the demo rows before saving them, then reloaded; a ▶ in that window
+    started the timer on screen and the reload took it away before its own save. Fixed (`3c24675`): nothing shows until
+    it's saved. The same gap in the app proper, fixed too: a tap made while a sync reload runs is reloaded again after
+    its own write (`reloadAfterSync`, Rulebook S7). (3) was the test: the card's switch covers the row but only the
+    round button takes the touch (locked W2), and `tap()` hit the row's middle, which opened Day details (the failure
+    screenshot: the app on "Widget cut down", 0 cups). The test now taps the +1 by position (locked doc §6); no widget
+    behaviour changed. `-widget-system-verify` now says how many taps wait in the shared file instead of the retired
+    `WidgetLogIntent` diagnostic. CI: run 37767538992 died before any test in "Pick a simulator" (Apple's first-boot
+    data migration, 8.2 min against the step's 8; it took 2–5 min on 7 Oct and up to 7.8 this morning); the step now
+    has 15. (4) This session can read R2 (`often-enough-backups-dev`: the 7 Oct snapshot of another account is there);
+    a check is set for 9 Oct 02:20 UTC. Test run: 37769869356 (`8ea0d9d`).
 
 - [ ] **67. A change made outside the app reaches the server as soon as possible, without opening the app.** Added 8
   October 2026, from the user: "once someone completes a widget, it should store that data on this device, and later
