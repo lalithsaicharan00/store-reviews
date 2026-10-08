@@ -63,8 +63,8 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   person's settings (D8). Prove it with a test. *Done 8 Oct: run `37831649390` (24/24); iPhone check still to do.*
 - [x] 5. **Item 32**: Year in Pixels shows every day number 1–31, in Progress and on the habit page; simulator
   screenshots in the run; the iPhone look stays to do (U9). *Done 8 Oct: run `37847053285`; iPhone look still to do.*
-- [ ] 6. **Item 31**: Week, Month and Year card padding and spacing (Progress and the habit page's Progress tab);
-  screenshots; the iPhone look stays to do.
+- [x] 6. **Item 31**: Week, Month and Year card padding and spacing (Progress and the habit page's Progress tab);
+  screenshots; the iPhone look stays to do. *Done 8 Oct: runs `37853078424`, `37858625841`; iPhone look still to do.*
 - [ ] 7. **Item 23**: streaks back on the habit page, in its Progress tab; screenshots; the iPhone look stays to do.
 
 - [ ] **22. Today row sheet: make logging and wording natural for each habit type, especially check-based habits
@@ -348,17 +348,6 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
     the habit details Progress tab.
   - Keep this a separate open task. Do not mark it done because Overall Record or Week/Month/Year spacing was fixed.
 
-- [ ] **31. Improve Week, Month and Year card padding and spacing.** Added 4 October 2026; review the main Progress
-  page and the habit details Progress tab wherever these period cards appear.
-  - **Week:** the “Week” heading is almost against the card's top edge; the top padding is too small and looks poor.
-    Increase the breathing room above the heading and improve spacing between the card's internal elements.
-  - **Month:** the same top-edge/padding concern applies. Review both heading inset and the spacing of the content.
-  - **Year / Year in Pixels:** improve spacing and hierarchy here too, so the card/grid and its labels feel balanced.
-  - Apply consistent spacing rules across the period cards, adapted to their content. Check card boundaries,
-    heading-to-content gaps and internal alignment, not only one top padding value. Preserve statistics and square
-    meanings. Verify on the iPhone, including larger text and light/dark mode.
-  - Keep the accordion behavior (item 25), all-date labels (item 32), Overall Record and Milestones separately tracked.
-
 - [ ] **3. Account out of Backup & Export.** Backup & Export holds only backup and export (the backup account it
   uses can stay there). Making an account, signing in and deleting the account are not backup things.
   - Account up front: the ≡ sidebar shows the account state, at the bottom or wherever fits, e.g. "No account"
@@ -421,6 +410,30 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   after release.
 
 ## Completed
+
+- [x] **31. Improve Week, Month and Year card padding and spacing.** Added 4 October 2026; review the main Progress
+  page and the habit details Progress tab wherever these period cards appear.
+  - **Week:** the “Week” heading is almost against the card's top edge; the top padding is too small and looks poor.
+    Increase the breathing room above the heading and improve spacing between the card's internal elements.
+  - **Month:** the same top-edge/padding concern applies. Review both heading inset and the spacing of the content.
+  - **Year / Year in Pixels:** improve spacing and hierarchy here too, so the card/grid and its labels feel balanced.
+  - Apply consistent spacing rules across the period cards, adapted to their content. Check card boundaries,
+    heading-to-content gaps and internal alignment, not only one top padding value. Preserve statistics and square
+    meanings. Verify on the iPhone, including larger text and light/dark mode.
+  - Keep the accordion behavior (item 25), all-date labels (item 32), Overall Record and Milestones separately tracked.
+  - **What it was (8 Oct):** on the habit page's Progress tab, the period cards' header (`PeriodHeader`) had a `-8`
+    vertical padding so its 44-pt ‹ › fitted: it pulled "Week", "Month" and "Year in Pixels" up against the card's top
+    edge. Progress's own cards were already 16 all round (checked in the run's pictures), so they're unchanged.
+  - **Built, 8 Oct 2026** (cloud session): the header keeps the card's whole 16-pt top padding (the ‹ › still reach the
+    edge); every gap between a card's parts stays 16, smaller only inside a part (headline and detail 4, a chart's title
+    and chart 8); Year in Pixels 12 at the sides (twelve columns on the SE), now 16 above and below. Design Rules,
+    "Habit details: Progress tab cards".
+  - [x] **Tested on GitHub, 8 Oct 2026:** run `37853078424`, `HabitPageUITests` 10/11 with the new
+    `testPeriodCardSpacing` (pictures `hp-cards-light|dark|large-text-habit-progress-week|month|habit-year-grid`: each
+    title about as far from the card's top as from its side, in all three); the 11th, `testNotesFlows`, never started
+    (XCUITest couldn't terminate the previous test's app), and passed on the rerun, run `37858625841` (2/2). Speed in
+    the same run: habit page Progress scrolling 0.1 ms/s, switching tabs 8.4. **iPhone look (U9), larger text and dark:
+    still to do.**
 
 - [x] **32. Year in Pixels: show every day-number label from 1 through 31.** Added 4 October 2026.
   - Currently only selected numbers such as 1, 5, 10, 15, 20, 25 and 30 are shown. The user wants all day numbers

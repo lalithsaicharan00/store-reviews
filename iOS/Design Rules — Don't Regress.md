@@ -275,6 +275,16 @@ Plan: [Groups — What to Build](<Docs/Specs/Groups — What to Build.md>), from
 
 - **Notes come in a card per month, shaped as History's** (the user, 5 Oct 2026, Current Work 46): the month's name and "N notes", folding from its header with History's chevron, the newest two open; a row per day's note, dated as History dates its days ("Sat 4 Today"), its first two lines, opening the note. A search opens every month it finds. `NoteMonthCard` in `HabitNotesTab.swift`; `HabitPageUITests.testNotesFoldByMonthLikeHistory`.
 
+## Habit details: Progress tab cards (8 Oct 2026)
+
+- **A period card's title keeps the card's whole top padding** (Current Work 31): Week, Month and Year in Pixels put their
+  ‹ › (44-pt targets) beside the title without pulling the header up (a `-8` vertical padding put "Week" against the
+  card's top edge). 16 pt all round, 16 between the card's parts, smaller only inside a part (the headline and its
+  detail 4; a chart's title and chart 8). Year in Pixels keeps 12 at the sides so twelve month columns fit the iPhone
+  SE, and 16 above and below. Pictures: `HabitPageUITests.testPeriodCardSpacing`.
+- **Year in Pixels shows every day number, 1 to 31** (Current Work 32), right-aligned 4 pt before its row; the labels
+  stop growing at the xLarge text size, where "31" still fits. Pictures: `testYearInPixelsDayNumbers`.
+
 ## Limit habits on Today: Quit or Cut Down (built 5 Oct 2026)
 
 Source: [Limit Habits on Today — Apart From What You Must Do](<../Research/Research Reports/Day Structure and Organization/Limit Habits on Today — Apart From What You Must Do.md>). The user's words: "it signals like you have to log something… you log it only if you do it."
