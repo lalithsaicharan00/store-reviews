@@ -98,6 +98,11 @@ export interface AccountSummary {
   devices: { id: string; platform: string; name: string; appVersion: string; lastSeen: number; signedIn: boolean }[];
 }
 
+/** Dev only, while `EVERYONE_PLUS` is "true" (TEMPORARY, Current Work item 68). Never on production. */
+export function everyonePlus(env: Pick<Env, "ENVIRONMENT" | "EVERYONE_PLUS">): boolean {
+  return env.ENVIRONMENT === "dev" && env.EVERYONE_PLUS === "true";
+}
+
 export class Account extends DurableObject<Env> {
   private readonly sql: SqlStorage;
 
@@ -188,7 +193,10 @@ export class Account extends DurableObject<Env> {
   }
 
   private hasPlus(): boolean {
-    return this.sql.exec("SELECT 1 FROM purchase WHERE revoked_at IS NULL LIMIT 1").toArray().length > 0;
+    if (this.sql.exec("SELECT 1 FROM purchase WHERE revoked_at IS NULL LIMIT 1").toArray().length > 0) return true;
+    // TEMPORARY (the user, 8 Oct 2026; Current Work item 68): on dev, every person's account (an Apple or Google
+    // sign-in) is Plus. Test and CI accounts keep the Plus they asked for, so free-account tests stay free.
+    return everyonePlus(this.env) && this.sql.exec("SELECT 1 FROM sign_in_key WHERE provider IN ('apple', 'google') LIMIT 1").toArray().length > 0;
   }
 
   async entitlements(): Promise<Entitlements | null> {

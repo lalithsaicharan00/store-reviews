@@ -397,13 +397,13 @@ Their placement records scope and priority; implementation has not started.
 - [ ] **68. REVERT LATER: every account on the dev server is Plus.** Added 8 October 2026, from the user: "make every
   account Plus, as of now … note it down somewhere safe that we need to revert it back later … first, syncing is
   important." Done by Claude the same day and deployed to dev (version `49c6052a`).
-  - **What:** `EVERYONE_PLUS: "true"` in `server/wrangler.jsonc` (dev vars only); `plusFor` in `server/src/worker.ts`
-    makes every sign-in, token refresh and purchase reply say Plus on dev. Production has `"false"` and the code
+  - **What:** `EVERYONE_PLUS: "true"` in `server/wrangler.jsonc` (dev vars only); `everyonePlus` in `server/src/account.ts`
+    makes every account with an Apple or Google sign-in Plus on dev (test and CI sign-ins keep the Plus they ask for, so free-account tests stay free: `BackupUITests.testAFreeAccountBacksUpToTheServer` failed in run 37742196989 until this was narrowed, 8 Oct). Production has `"false"` and the code
     ignores it there anyway. No purchase is written into any account, so nothing has to be cleaned up.
   - **Why:** buying Plus isn't built yet (Product Roadmap 64), and sync must be tested end to end now (item 67).
   - **To revert:** set `EVERYONE_PLUS` to `"false"` in `server/wrangler.jsonc`, `npm run deploy:dev`; accounts go
     back to their real purchases at their next sign-in or token refresh (access tokens last minutes). Then remove
-    `plusFor`'s switch and its test once buying Plus works. **Revert before buying Plus (Roadmap 64) is tested**, or
+    `everyonePlus` and its test once buying Plus works. **Revert before buying Plus (Roadmap 64) is tested**, or
     a broken purchase would look like it works.
 
 ## Planned improvements — build later
