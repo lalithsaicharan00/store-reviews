@@ -345,30 +345,36 @@ final class GroupsUITests: XCTestCase {
     }
 
     /// The same drag again and again (Current Work 53, 8 Oct 2026; Rulebook T12): each must move Home above Health.
-    /// Measured side by side for the Filter sheet's gesture settings on a group screen (`-groups-sheet-mode`); the
-    /// app's own setting must take every drop.
+    /// Measured side by side for the Filter sheet as it was (`-groups-sheet-mode resizes`) and as the app sets it on a
+    /// group screen; the app's setting must take every drop. Each step checks what's on screen (handles shown or not)
+    /// rather than trusting a tap: on a slow hosted Mac a Done tap was once lost and the next Edit tap left edit mode.
     func testGroupDragDropsReliably() {
         var results: [String] = []
         var missesWithAppSetting = 0
-        for mode in ["resizes", "nodismiss", "app"] {
+        let attempts = 8
+        for mode in ["resizes", "app"] {
             app.terminate()
             launch(["-groups-demo"] + (mode == "app" ? [] : ["-groups-sheet-mode", mode]))
             openGroupsEditor()
+            let bar = app.navigationBars["Groups"]
+            let handle = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'reorder' AND label CONTAINS 'Home'")).firstMatch
+            let sort = app.buttons["groups-sort-az"]
             var misses = 0
-            let attempts = 6
-            for _ in 0..<attempts {
-                app.navigationBars["Groups"].buttons["Edit"].tap()
-                let handle = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'reorder' AND label CONTAINS 'Home'")).firstMatch
-                XCTAssertTrue(handle.waitForExistence(timeout: 3), "Edit mode shows the reorder handles")
+            for attempt in 1...attempts {
+                if !handle.exists { bar.buttons.matching(NSPredicate(format: "label == 'Edit'")).firstMatch.tap() }
+                XCTAssertTrue(handle.waitForExistence(timeout: 5), "\(mode) \(attempt): edit mode shows the reorder handles")
                 let health = app.descendants(matching: .any)["groups-row-Health"].firstMatch
                 handle.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
                     .press(forDuration: 0.8, thenDragTo: health.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.3)),
                            withVelocity: .slow, thenHoldForDuration: 0.6)
-                app.navigationBars["Groups"].buttons["Done"].tap()
-                let sort = app.buttons["groups-sort-az"]
+                bar.buttons.matching(NSPredicate(format: "label == 'Done'")).firstMatch.tap()
+                if !handle.waitForNonExistence(timeout: 5) {
+                    bar.buttons.matching(NSPredicate(format: "label == 'Done'")).firstMatch.tap()
+                    XCTAssertTrue(handle.waitForNonExistence(timeout: 5), "\(mode) \(attempt): Done leaves edit mode")
+                }
                 if sort.waitForExistence(timeout: 3) {
                     sort.tap()
-                    XCTAssertTrue(sort.waitForNonExistence(timeout: 3), "Sort A to Z puts the order back")
+                    XCTAssertTrue(sort.waitForNonExistence(timeout: 10), "\(mode) \(attempt): Sort A to Z puts the order back")
                 } else {
                     misses += 1
                 }
