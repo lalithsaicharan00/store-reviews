@@ -185,10 +185,14 @@ struct AddNoteView: View {
                 draft.reset(saved(on: day) ?? "")
             }
             // The keyboard comes up once the sheet has arrived: focus asked for while the sheet still slides in was
-            // sometimes dropped (HabitPageUITests, 5 Oct 2026).
+            // sometimes dropped (HabitPageUITests, 5 Oct 2026). On a slow phone the slide can outlast 350 ms, and then
+            // the keyboard never came at all (run 37841204161, 8 Oct 2026): ask again until the field has it, briefly.
             .task {
-                try? await Task.sleep(for: .milliseconds(350))
-                focused = true
+                for wait in [350, 400, 600, 900] {
+                    try? await Task.sleep(for: .milliseconds(wait))
+                    if Task.isCancelled || focused { return }
+                    focused = true
+                }
             }
             .onChange(of: day) {
                 // Another day: its own note, if it has one, unless something new has been written already.
