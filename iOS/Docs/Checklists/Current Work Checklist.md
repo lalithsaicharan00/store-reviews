@@ -340,6 +340,10 @@ Their placement records scope and priority; implementation has not started.
     Design Rules and `LOCKED` comments in the code.
   - [ ] Tests on GitHub (T1/T7/T10): `WidgetUITests`, `WidgetSystemUITests`, `TodayUITests`, `TimerUITests`; the in-app
     widget checks. Expect label changes for T3: a card is one button named for its action, with the state as its value.
+    **Found 8 Oct by item 67's runs:** `WidgetSystemUITests.testHomeScreenInstallTapAndColdPersistence` fails on `main`
+    (run 37746030895): "The widget didn't show the committed log. Widget: . App: … intent not dispatched". The test
+    still reads the older `WidgetLogIntent` diagnostics and the shown labels came back empty; `WidgetUITests` (6/6)
+    and the other widget tests passed.
   - Research for the user's question "do people expect widgets to respond instantly?": our widget study (7,818 coded
     reviews) has ticking from the widget among the most valued themes (695 reviews, 97 apps in the 30 Sep scan) and
     broken or not-updating widgets at 15.7% of widget reviews (3.27★). Speed scan (8 Oct): 431 keyword candidates
@@ -391,8 +395,13 @@ Their placement records scope and priority; implementation has not started.
     seen on the phone.
   - [ ] Nightly backup: the user's account changed today, so its first snapshot is due 9 Oct 02:00 UTC (07:30 IST) in
     `often-enough-backups-dev` under `snapshots/<account>/`. The mechanism wrote one on 7 Oct 02:00 UTC.
-  - [ ] Tests on GitHub (T7/T10): `[ios-ci] [ios-sync]` (SyncUITests, BackupUITests, WidgetUITests,
-    WidgetSystemUITests, TimerUITests), run 37742196989.
+  - [x] Tests on GitHub (T7/T10), `[ios-ci] [ios-sync]` (SyncUITests, BackupUITests, WidgetUITests,
+    WidgetSystemUITests, TimerUITests). Run 37742196989 (`4b98582`): 39 passed, 3 failed; one was ours
+    (`BackupUITests.testAFreeAccountBacksUpToTheServer`: dev's every-account-Plus switch made the test's free account
+    Plus; narrowed to Apple/Google sign-ins, item 68). Final run 37746011302 (`893c622`): 20 passed, 1 skipped, 1 failed:
+    `WidgetSystemUITests.testHomeScreenInstallTapAndColdPersistence` ("intent not dispatched"), which **fails the same
+    way on `main`** (run 37746030895 on `98fa746` = `main` + an empty commit; T2). Not from this item: it belongs to
+    item 66's GitHub tests.
 
 - [ ] **68. REVERT LATER: every account on the dev server is Plus.** Added 8 October 2026, from the user: "make every
   account Plus, as of now … note it down somewhere safe that we need to revert it back later … first, syncing is
