@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 72).
+  still resolve; give new items the next unused number (currently 74).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -473,8 +473,40 @@ Their placement records scope and priority; implementation has not started.
     - [ ] Done on one device clears that habit's reminders and alarms on the other ("done means gone everywhere").
     - [ ] Delete and archive on one → the same on the other; undo works.
     - [ ] `-sync-verify` on both devices: each matches the server.
-  - **Also pending, one device:** reinstall and sign in → every habit and log comes back (restore, D5); the nightly
-    server snapshot of the user's account (due 9 Oct 02:00 UTC, `snapshots/<account>/` in `often-enough-backups-dev`).
+  - **Also pending, one device:** the nightly server snapshot of the user's account (due 9 Oct 02:00 UTC,
+    `snapshots/<account>/` in `often-enough-backups-dev`). Reinstall-and-restore: done, item 72.
+  - **Later (the user, 8 Oct):** the app is iPhone-only for now; Android, Mac and desktop come after the iPhone app is
+    complete, and sync is tested across all of them then.
+
+- [ ] **72. A reinstalled iPhone got none of its data back from the account. Fixed.** Added 8 October 2026, from the
+  user's test: "let's uninstall the app … on a fresh install, does the data survive?" … "I used Apple sign in itself,
+  but I didn't get any of the habits back. So I think that is a bug."
+  - **Cause:** the device ID lives in the Keychain, which survives deleting the app, so the reinstalled phone was "the
+    same device"; the server never sends a device its own changes, and every change in the account had been made on
+    this phone. The sync said OK and brought nothing.
+  - [x] **Fix (8 Oct, Claude):** signing in to an account on a database marks a **full download** (`sync.fullPull`,
+    set in `SyncWriter.bind`); `syncRequest` sends `"full": true` until the last page has arrived; the server then
+    sends the device's own ops too (`SyncRequest.full`). Tests: Core `SyncTest.theSamePhoneReinstalledGetsEverythingBack`
+    (1,500 logs over two pages, then own ops skipped again); server `a reinstalled phone … gets its own ops back on a
+    full download, over every page`. Server deployed to dev (version `5a3066a4`).
+  - [x] **On the iPhone, 8 Oct:** a safety copy of the app's data was taken first (`Research/Temp/pre-uninstall-backup`,
+    with a row-by-row dump); uninstall → install → sign out and sign in with Apple → "they did come back" (the user).
+    Every row compared: habits 38/38, logs 929/929, steps 7/7, reminder times 12/12, settings 13/13; **0 missing, 0
+    changed**. `-sync-verify`: 720/720 logs, 31/31 habits, 0 waiting.
+  - **A slip during the test (Claude):** a debug launch without `-empty` on the still-empty reinstalled app let the Debug
+    build's demo data (`seedDemo`, `addEveryTypeToAnytime`) in, and 28 demo habits and 405 logs synced into the account.
+    The user's own data was checked untouched (every habit, log and setting), and the demo items were removed by ID
+    (`-delete-listed-habits`). Now the Debug build never adds demo data while signed in. The App Store build never adds it.
+  - [ ] Tests on GitHub: the core and server tests run with `[ios-ci] [ios-sync]` (Core storage and migrations,
+    SyncUITests).
+
+- [ ] **73. Getting your data back after a reinstall: two gaps found 8 Oct (decide, then build).**
+  - **The welcome screen has no "sign in to get my habits back"**, only "Restore from a Backup File"; a returning user
+    must skip the welcome and find ≡ → Backup & Sync → Account. Relates to item 3 (account up front).
+  - **A reinstalled app looks signed in but doesn't sync** until the person signs out and in: the Keychain keeps the
+    session, while the "has Plus" and account settings are gone with the app. Options: restore automatically on launch
+    (refresh the session at once, which runs the full download), or forget the old session on a fresh install. Needs
+    the user's decision; research what people expect (W2).
 
 ## Planned improvements — build later
 

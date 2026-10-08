@@ -29,10 +29,10 @@ class SyncTest {
     @AfterTest fun cleanUp() { dir.deleteRecursively() }
 
     /** One device: its own database, its own clock (set by the test, so devices can disagree), and a link to a server. */
-    inner class Phone(val name: String, private val server: FakeServer) {
+    /** `deviceId`: the Keychain's device ID, which outlives a reinstall (a new database file under the same ID). */
+    inner class Phone(val name: String, private val server: FakeServer, private val deviceId: String = name) {
         var wall = 1_000_000L
         val repo = HabitRepository.open(File(dir, "$name.db").path) { wall }
-        private val deviceId = name
 
         /** One full sync, as the app runs it. `loseReplyOnce` simulates the app being killed before the reply lands. */
         fun sync(loseReplyOnce: Boolean = false) = runBlocking {
@@ -79,6 +79,30 @@ class SyncTest {
     private fun devices(vararg names: String): List<Phone> {
         val server = FakeServer()
         return names.map { Phone(it, server).also { p -> runBlocking { p.repo.bindAccount("acct") } } }
+    }
+
+    /** Current Work 72 (8 Oct 2026): a reinstalled iPhone keeps its device ID, so its own ops must come back too, over
+     *  every page of the first download; afterwards its own ops are skipped again. */
+    @Test fun theSamePhoneReinstalledGetsEverythingBack() = runBlocking {
+        val server = FakeServer()
+        val phone = Phone("phone", server).also { it.repo.bindAccount("acct") }
+        phone.repo.saveHabit(habit("h1"), emptyList(), emptyList(), 1)
+        repeat(1_500) { phone.repo.addEntry(entry("e$it", "h1")) }
+        phone.repo.saveSetting("note.h1|2026-10-01", "Felt great")
+        phone.sync()
+        val before = phone.state()
+        phone.close()
+        val reinstalled = Phone("phone-reinstalled", server, deviceId = "phone").also { it.repo.bindAccount("acct") }
+        reinstalled.sync()
+        assertEquals(before, reinstalled.state())
+        assertEquals(1_500, reinstalled.state().entries.size)
+        // The full download is over: its own new change isn't sent back to it.
+        reinstalled.repo.addEntry(entry("new", "h1"))
+        val request = reinstalled.repo.syncRequest()
+        assertTrue("\"full\"" !in request)
+        val reply = Json.parseToJsonElement(server.handle("phone", request)).jsonObject
+        assertEquals(0, reply.getValue("ops").jsonArray.size)
+        reinstalled.close()
     }
 
     @Test fun everythingMadeOnThePhoneArrivesOnTheIpad() = runBlocking {
@@ -302,12 +326,13 @@ class FakeServer {
             log += Triple(log.size + 1L, deviceId, element.jsonObject)
         }
         val cursor = body.getValue("cursor").jsonPrimitive.long
+        val full = body["full"]?.jsonPrimitive?.content == "true"
         val page = log.filter { it.first > cursor }.take(1000)
         return JsonObject(
             mapOf(
                 "applied" to JsonArray(applied),
                 "rejected" to JsonArray(emptyList()),
-                "ops" to JsonArray(page.filter { it.second != deviceId }.map { it.third }),
+                "ops" to JsonArray(page.filter { full || it.second != deviceId }.map { it.third }),
                 "cursor" to JsonPrimitive(page.lastOrNull()?.first ?: cursor),
                 "more" to JsonPrimitive(page.size == 1000),
             ),

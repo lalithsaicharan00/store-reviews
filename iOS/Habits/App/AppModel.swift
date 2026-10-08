@@ -192,7 +192,11 @@ final class AppModel {
             if ProcessInfo.processInfo.arguments.contains("-focus-fixture") {
                 await FocusPlayerFixture.install(in: store, shortTimer: ProcessInfo.processInfo.arguments.contains("-focus-short-timer"))
             }
-            if !ProcessInfo.processInfo.arguments.contains("-empty") { await store.seedDemo() }
+            // Demo data never goes into an account: a reinstalled Debug build is still signed in (the Keychain survives
+            // deleting the app), and demo habits added before the account's data arrives would merge into it (8 Oct
+            // 2026, Current Work 72: 28 demo habits reached the user's account and had to be removed by ID).
+            let signedIn = sync?.isSignedIn ?? false
+            if !ProcessInfo.processInfo.arguments.contains("-empty") && !signedIn { await store.seedDemo() }
             // WidgetLatencyDeviceTests: take back exactly the widget logs its real taps made (source widget, made
             // after the test began), so measuring on the person's iPhone leaves their day as it was.
             if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-undo-widget-logs-since"),
@@ -205,7 +209,7 @@ final class AppModel {
                 }
                 await store.flush()
             }
-            if !ProcessInfo.processInfo.arguments.contains("-uitest") && !ProcessInfo.processInfo.arguments.contains("-empty") {
+            if !ProcessInfo.processInfo.arguments.contains("-uitest") && !ProcessInfo.processInfo.arguments.contains("-empty") && !signedIn {
                 await store.addEveryTypeToAnytime()
             }
             #endif
@@ -269,6 +273,7 @@ final class AppModel {
             await widgets.publish(store)
             LaunchLog.took("Widgets: publish", since: started)
             #if DEBUG
+            await SyncCheck.deleteListedIfAsked(store: store)
             SyncCheck.runIfAsked(store: store, sync: sync)
             ReminderLiveTest.runIfAsked(store: store, scheduler: scheduler)
             #endif

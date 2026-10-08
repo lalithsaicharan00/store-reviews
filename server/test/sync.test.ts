@@ -186,6 +186,24 @@ describe("sync", () => {
     expect(reply.json.cursor).toBe(1);
   });
 
+  it("a reinstalled phone (the same device ID) gets its own ops back on a full download, over every page", async () => {
+    // Current Work 72: the iPhone's device ID lives in the Keychain and survives deleting the app.
+    const phone = await Device.signIn(crypto.randomUUID(), "phone");
+    for (let i = 0; i < 1234; i++) phone.change("entry", `e${i}`, { habit_id: "h1", day: "2026-10-01", value: 1 }, 1000 + i);
+    await phone.sync();
+    let cursor = 0;
+    const pulled: unknown[] = [];
+    for (let more = true; more; ) {
+      const reply = await call("POST", "/v1/sync", { cursor, ops: [], full: true }, phone.accessToken);
+      pulled.push(...(reply.json.ops as unknown[]));
+      cursor = reply.json.cursor;
+      more = reply.json.more;
+    }
+    expect(pulled).toHaveLength(1234);
+    // Without `full`, its own ops are still skipped.
+    expect((await call("POST", "/v1/sync", { cursor: 0, ops: [] }, phone.accessToken)).json.ops).toEqual([]);
+  });
+
   it("bad ops are reported, and the good ones in the same batch still apply", async () => {
     const phone = await Device.signIn(crypto.randomUUID(), "phone");
     const good = phone.change("habit", "h1", { name: "A" }, 1);

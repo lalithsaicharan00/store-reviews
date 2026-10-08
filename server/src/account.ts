@@ -47,6 +47,11 @@ export interface SyncRequest {
   ops: unknown[];
   /** Where this account's data lives (from the access token): which bucket its nightly snapshots go to. */
   jurisdiction?: Jurisdiction;
+  /**
+   * The device's first full download after signing in: its own ops come back too. A reinstalled iPhone keeps its
+   * device ID (the Keychain survives), so without this it got nothing of what it had made (Current Work 72).
+   */
+  full?: boolean;
 }
 
 /** What restoring a snapshot into an account found, per table, and whether it was applied. */
@@ -259,13 +264,13 @@ export class Account extends DurableObject<Env> {
     });
     if (changed) await this.scheduleSnapshot(now, request.jurisdiction);
 
-    // Pull: scan forward from the cursor, skipping this device's own ops (it has them), and move the cursor past
-    // everything scanned so its own ops are never scanned again.
+    // Pull: scan forward from the cursor, skipping this device's own ops (it has them) unless it asks for a full
+    // download, and move the cursor past everything scanned so its own ops are never scanned again.
     const cursor = Number.isSafeInteger(request.cursor) && request.cursor > 0 ? request.cursor : 0;
     const rows = this.sql
       .exec<{ seq: number; device_id: string; op: string }>("SELECT seq, device_id, op FROM op_log WHERE seq > ? ORDER BY seq LIMIT ?", cursor, MAX_PULL)
       .toArray();
-    const ops = rows.filter((r) => r.device_id !== deviceId).map((r) => JSON.parse(r.op) as unknown);
+    const ops = rows.filter((r) => request.full === true || r.device_id !== deviceId).map((r) => JSON.parse(r.op) as unknown);
     const last = rows.at(-1);
     return { ok: true, applied, rejected, ops, cursor: last ? last.seq : cursor, more: rows.length === MAX_PULL };
   }

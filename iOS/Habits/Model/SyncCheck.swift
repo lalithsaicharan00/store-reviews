@@ -9,6 +9,23 @@ import Foundation
 enum SyncCheck {
     private static let iso = ISO8601DateFormatter()
 
+    /// `-delete-listed-habits`: deletes exactly the habits whose IDs are listed in `Documents/delete-habits.txt` (one per
+    /// line, put there with `devicectl … copy to`), taking back their logs first, so both go from the account through
+    /// sync. For cleaning up test or demo habits by ID only, never by name (8 Oct 2026: demo habits share real names).
+    static func deleteListedIfAsked(store: HabitStore) async {
+        guard ProcessInfo.processInfo.arguments.contains("-delete-listed-habits"),
+              let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("delete-habits.txt"),
+              let text = try? String(contentsOf: url, encoding: .utf8) else { return }
+        let ids = Set(text.split(whereSeparator: \.isNewline).compactMap { UUID(uuidString: String($0).trimmingCharacters(in: .whitespaces)) })
+        let habits = store.habits.filter { ids.contains($0.id) }
+        let logs = store.entries.filter { ids.contains($0.habitID) }
+        for entry in logs { store.undoEntry(entry.id) }
+        store.delete(habits)
+        await store.flush()
+        try? FileManager.default.removeItem(at: url)
+        write(["deleted \(habits.count) listed habit(s) and \(logs.count) log(s); \(ids.count) IDs listed"])
+    }
+
     static func runIfAsked(store: HabitStore, sync: SyncService?) {
         guard ProcessInfo.processInfo.arguments.contains("-sync-verify") else { return }
         Task { @MainActor in await run(store: store, sync: sync) }
@@ -29,6 +46,12 @@ enum SyncCheck {
               let json = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any],
               let records = json["records"] as? [[String: Any]] else {
             lines.append("result: EXPORT FAILED"); return
+        }
+        // `-sync-export`: the account's whole export, saved as it came, for a field-by-field comparison on the Mac.
+        if ProcessInfo.processInfo.arguments.contains("-sync-export"),
+           let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("account-export.json") {
+            try? data.write(to: url, options: .atomic)
+            lines.append("export saved: \(data.count) bytes, \(records.count) records")
         }
         func live(_ table: String) -> [String: [String: Any]] {
             var rows: [String: [String: Any]] = [:]
