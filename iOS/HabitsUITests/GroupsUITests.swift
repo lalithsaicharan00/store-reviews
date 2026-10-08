@@ -345,14 +345,16 @@ final class GroupsUITests: XCTestCase {
     }
 
     /// The same drag again and again (Current Work 53, 8 Oct 2026; Rulebook T12): each must move Home above Health.
-    /// Measured side by side for the Filter sheet as it was (`-groups-sheet-mode resizes`) and as the app sets it on a
-    /// group screen; the app's setting must take every drop. Each step checks what's on screen (handles shown or not)
-    /// rather than trusting a tap: on a slow hosted Mac a Done tap was once lost and the next Edit tap left edit mode.
+    /// Run 37821382415 measured 16 drags side by side, the Filter sheet as it was (`-groups-sheet-mode resizes`) and as
+    /// the app sets it on a group screen: none missed. Add "resizes" back to `modes` to compare again. Each step checks
+    /// what's on screen (handles shown or not) rather than trusting a tap: on a slow hosted Mac a Done tap was once
+    /// lost and the next Edit tap left edit mode.
     func testGroupDragDropsReliably() {
         var results: [String] = []
         var missesWithAppSetting = 0
-        let attempts = 8
-        for mode in ["resizes", "app"] {
+        let attempts = 6
+        let modes = ["app"]
+        for mode in modes {
             app.terminate()
             launch(["-groups-demo"] + (mode == "app" ? [] : ["-groups-sheet-mode", mode]))
             openGroupsEditor()

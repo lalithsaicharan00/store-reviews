@@ -53,8 +53,9 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   `37788595991`, `37797217908`, `37804587883`); iPhone speed check still to do.* Bisect the timer/swipe/limits/completion-sound merge with speed runs
   (`scroll-today`, `tap-today`, `new-habit`, `progress`), variants side by side in one run (S2); fix it; numbers
   back under the targets; numbers in `iOS/PERFORMANCE-LESSONS.md`. The iPhone speed check stays to do.
-- [ ] 2. **Item 53**: `GroupsUITests.testGroupOrderIsThePersonsOwn`: why the drop sometimes misses; fix the cause,
-  never loosen the test (T2).
+- [x] 2. **Item 53**: `GroupsUITests.testGroupOrderIsThePersonsOwn`: why the drop sometimes misses; fix the cause,
+  never loosen the test (T2). *Done 8 Oct: the drop was cancelled on release (two recordings); runs `37812076363`,
+  `37817858014`, `37821382415` (GroupsUITests 10/10, 16 repeated drags, none missed).*
 - [ ] 3. **Items 18, 25, 26, 28**: run their pending tests (`CompletionFeedbackUITests`, `HabitPageUITests`
   `testHistoryFlows` and `testNotesFlows`, the squares-key tests; 25 is superseded by 57), fix failures, tick each.
 - [ ] 4. **Item 74** (new): a `-uitest` launch on a real iPhone must not write the widgets' shared file or the
@@ -204,16 +205,6 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): the store
     decides for every log from any screen; once, on the log that makes the habit complete; a running timer at its
     goal; never for quit habits or limits. Tests: pending (`CompletionFeedbackUITests`).
-
-- [ ] **53. `GroupsUITests.testGroupOrderIsThePersonsOwn` fails on `main` now and then (three nights in a row): the dragged group doesn't move.**
-  Added 6 October 2026 by Claude (Claude Code); found by the full test for items 50–52, not by the user. Not caused by
-  that branch: `main` itself (`f0e52f4`) fails it the same way (run `37400560919`).
-  - **Evidence:** the same test code (with 5 Oct's held drag, `6c749f8`) passed on `main` at 12:31 UTC (run
-    `37298794001`) and failed at 00:40, 01:24 and 02:03 UTC (runs `37390751325`, `37395447112`, `37400560919`); before
-    the held drag it also failed once at 05:07 UTC. The screenshot after the drag shows Groups still A to Z ("A to Z.
-    Drag a group…"), so the list never took the drop, or `moveGroups` didn't save it.
-  - **Then passed** at ~04:00 UTC on the same branch (run `37410173465`), so it's intermittent, not only at night.
-  - **To do:** find what makes the drop miss (machine speed, the drag's timing); don't loosen the test (T2).
 
 - [ ] **47. Build Day details and the one-log editor from the 4 October handoff.** Added 4 October 2026, from the
   user; branch **`details-page-update`** (the user asked for a meaningfully named branch to test from). Implements
@@ -509,6 +500,35 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   after release.
 
 ## Completed
+
+- [x] **53. `GroupsUITests.testGroupOrderIsThePersonsOwn` fails on `main` now and then (three nights in a row): the dragged group doesn't move.**
+  Added 6 October 2026 by Claude (Claude Code); found by the full test for items 50–52, not by the user. Not caused by
+  that branch: `main` itself (`f0e52f4`) fails it the same way (run `37400560919`).
+  - **Evidence:** the same test code (with 5 Oct's held drag, `6c749f8`) passed on `main` at 12:31 UTC (run
+    `37298794001`) and failed at 00:40, 01:24 and 02:03 UTC (runs `37390751325`, `37395447112`, `37400560919`); before
+    the held drag it also failed once at 05:07 UTC. The screenshot after the drag shows Groups still A to Z ("A to Z.
+    Drag a group…"), so the list never took the drop, or `moveGroups` didn't save it.
+  - **Then passed** at ~04:00 UTC on the same branch (run `37410173465`), so it's intermittent, not only at night.
+  - **To do:** find what makes the drop miss (machine speed, the drag's timing); don't loosen the test (T2).
+  - **8 Oct 2026 (cloud session): what the recordings show.** The failing run's screen recording (`37400560919`, 6 Oct,
+    02:01 UTC) shows Home lifted and dragged up, Health making room, then, as the drag reached the test's target (5 % down
+    the Health row, 3.5 pt under the section's top), the lifted row riding over the section header, the gap closing,
+    and Home going back on release: the list never called `onMove` (the hierarchy after: A to Z, footer "A to Z"). With
+    the target moved inside the rows (Health's upper third), one more run failed (`37812076363`, 17:22 UTC): its
+    recording shows Health making room and the drop held there for the 0.6 s, and still undone on release. The
+    machines were slow (XCUITest needed 8–16 s to synthesise the drag; 30 s per accessibility query in one run).
+  - **Fixed, three parts:** (1) the test drops inside the rows, never at a section's edge; (2) `moveGroups` changes the
+    list before `onMove` returns and writes after, as every tap does (S7; before, the row snapped back under the finger
+    and jumped when the write landed); (3) on a group screen the Filter sheet leaves drags to its content
+    (`presentationContentInteraction(.scrolls)`), so the sheet's own resize and dismiss pan can't compete with a drag
+    on release. A new `testGroupDragDropsReliably` repeats the drag and checks every step on screen.
+  - **Tested on GitHub, 8 Oct 2026:** `GroupsUITests` 10/10 (run `37821382415`), with 16 repeated drags side by side,
+    the sheet as before and as now: **0 of 8 and 0 of 8 missed**, so the miss didn't reproduce on that machine and
+    part (3) is a likely cause, not a proven one; `testGroupOrderIsThePersonsOwn` also passed alone in
+    `37817858014`. Speed run with the change: `37812076363` (Today's group filter 33.4 ms/s, as before). If it fails
+    again, compare with `-groups-sheet-mode resizes` (the test's `modes`) on the same machine.
+  - [x] **Done 8 Oct 2026** (cloud session), runs `37812076363`, `37817858014`, `37821382415`. iPhone check: none needed
+    beyond a drag in Groups feeling the same (the row now stays where it's dropped at once).
 
 - [x] **49. Speed: Today, the habit form and Progress got slower on `main`.** Found 5 October 2026 by the full test of
   `main` the user asked for (speed run `37310572002` on `d403844`), against the last full speed run before the day's
