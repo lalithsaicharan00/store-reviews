@@ -351,6 +351,16 @@ Their placement records scope and priority; implementation has not started.
     tapping a widget and seeing it change, 18 more call widgets slow or delayed, 42 say taps stopped responding, 6 that a
     tap opened the app instead; 8 praise instant ticking (`Research/Temp/widget-speed/classification.py`).
 
+- **Hand-over, 8 Oct 2026 evening (the user: "create a new branch and push everything … we will run it in the
+  cloud"):** items 67–72 are on branch `sync-reliability-cloud` (same commits as `sync-outside-app`). Still to do,
+  from the cloud: (1) the final `[ios-ci] [ios-sync]` run on this branch (the evening runs were cancelled by the user);
+  (2) `TimerUITests.testScreenCanBeTurnedOff` failed once in run 37763470033 ("Stop Read timer" didn't appear within
+  3 s) after passing twice: rerun once (T2), and if it fails again find the cause; (3)
+  `WidgetSystemUITests.testHomeScreenInstallTapAndColdPersistence` fails on `main` too (item 66); (4) the user's first
+  nightly server snapshot, due 9 Oct 02:00 UTC in R2 `often-enough-backups-dev` under `snapshots/<account>/` (needs
+  Cloudflare access); (5) merge into `main` only after the tests pass and the user says so (W3). iPhone checks can't
+  run in the cloud.
+
 - [ ] **67. A change made outside the app reaches the server as soon as possible, without opening the app.** Added 8
   October 2026, from the user: "once someone completes a widget, it should store that data on this device, and later
   sync it to the server … as soon as possible." The user approved changing the widgets' sync timing (U28).
