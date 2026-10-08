@@ -344,6 +344,11 @@ Their placement records scope and priority; implementation has not started.
     (run 37746030895): "The widget didn't show the committed log. Widget: . App: … intent not dispatched". The test
     still reads the older `WidgetLogIntent` diagnostics and the shown labels came back empty; `WidgetUITests` (6/6)
     and the other widget tests passed.
+    **Fixed 8 Oct (cloud session, test only; no widget behaviour changed):** it tapped the row's middle, which opens Day
+    details (locked W2), now the +1 by position; its fixture could be left without its "sample set added" mark, so the
+    cold save added the Debug samples; a gallery swipe the hosted simulator didn't take is made again once confirmed
+    not taken; a first touch the simulator didn't deliver is tapped once more (exactly one log is still required).
+    `WidgetSystemUITests` and `WidgetUITests` passed in run 37784250768 (`27ce48c`); `TodayUITests` wasn't in that run.
   - Research for the user's question "do people expect widgets to respond instantly?": our widget study (7,818 coded
     reviews) has ticking from the widget among the most valued themes (695 reviews, 97 apps in the 30 Sep scan) and
     broken or not-updating widgets at 15.7% of widget reviews (3.27★). Speed scan (8 Oct): 431 keyword candidates
@@ -374,7 +379,7 @@ Their placement records scope and priority; implementation has not started.
     has 15. (4) This session can read R2 (`often-enough-backups-dev`: the 7 Oct snapshot of another account is there);
     a check is set for 9 Oct 02:20 UTC. Test run: 37769869356 (`8ea0d9d`).
 
-- [ ] **67. A change made outside the app reaches the server as soon as possible, without opening the app.** Added 8
+- [x] **67. A change made outside the app reaches the server as soon as possible, without opening the app.** Added 8
   October 2026, from the user: "once someone completes a widget, it should store that data on this device, and later
   sync it to the server … as soon as possible." The user approved changing the widgets' sync timing (U28).
   - **Found (Claude, 8 Oct, from the code):** a widget tap is saved on the phone reliably (`WidgetTapIntent` →
@@ -414,10 +419,12 @@ Their placement records scope and priority; implementation has not started.
   - **Found, not changed (locked, W7):** on the Lock Screen *widget*, ⏸ asks for Face ID before pausing (then pauses
     and syncs). Ticking on the Lock Screen widget needs no unlock (it runs in the widget's process); timer intents run
     in the app's process. Ask the user before touching it.
-  - [ ] A notification's Done/+1 on the iPhone: same path (`logFromReminder` → store change → `scheduleSoon`), not yet
-    seen on the phone.
+  - [x] A notification's Done/+1 on the iPhone: same path (`logFromReminder` → store change → `scheduleSoon`). Seen
+    with item 70: each tap reached the server ~2.5 s later once the crash was fixed; the user's locked-phone check
+    (15:32–15:35) synced 2 s later.
   - [ ] Nightly backup: the user's account changed today, so its first snapshot is due 9 Oct 02:00 UTC (07:30 IST) in
-    `often-enough-backups-dev` under `snapshots/<account>/`. The mechanism wrote one on 7 Oct 02:00 UTC.
+    `often-enough-backups-dev` under `snapshots/<account>/`. The mechanism wrote one on 7 Oct 02:00 UTC. The cloud
+    session can read the bucket (8 Oct) and checks it at 9 Oct 02:20 UTC; recorded under item 71.
   - [x] Tests on GitHub (T7/T10), `[ios-ci] [ios-sync]` (SyncUITests, BackupUITests, WidgetUITests,
     WidgetSystemUITests, TimerUITests). Run 37742196989 (`4b98582`): 39 passed, 3 failed; one was ours
     (`BackupUITests.testAFreeAccountBacksUpToTheServer`: dev's every-account-Plus switch made the test's free account
@@ -425,6 +432,11 @@ Their placement records scope and priority; implementation has not started.
     `WidgetSystemUITests.testHomeScreenInstallTapAndColdPersistence` ("intent not dispatched"), which **fails the same
     way on `main`** (run 37746030895 on `98fa746` = `main` + an empty commit; T2). Not from this item: it belongs to
     item 66's GitHub tests.
+  - [x] **Final, from the cloud (8 Oct):** run 37784250768 (`27ce48c`): Core storage and migrations, build, and every UI test
+    passed (26 passed, 0 failed, 1 skipped: `testLockScreenWidgetPickerAvailability`, the hosted simulator's Lock
+    Screen gallery, skipped in every run): SyncUITests, BackupUITests (8), WidgetUITests (6), WidgetSystemUITests,
+    TimerUITests (5, `testScreenCanBeTurnedOff` included), RemindersUITests (4), PlacementUITests. Server: `npm test`
+    139/139, typecheck clean. Speed run for the `HabitStore` change (S2): run 37788586127 (`91a6260`) passed; no change from this branch: a signed-out tap does the same work as on `main` (`scheduleSoon` returns when not Plus), and its numbers sit inside `main`'s own spread measured the same day (+1 alone 18.1 ms/s here, 5.8 and 25.2 on `main` in run 37774018835; day ‹ › 128 here, 68–79 there; +1 and day ‹ › 72 here, 124 there). The slower +1 since 4 Oct is `main`'s, under item 49's bisect.
 
 - [ ] **68. REVERT LATER: every account on the dev server is Plus.** Added 8 October 2026, from the user: "make every
   account Plus, as of now … note it down somewhere safe that we need to revert it back later … first, syncing is
@@ -438,7 +450,7 @@ Their placement records scope and priority; implementation has not started.
     `everyonePlus` and its test once buying Plus works. **Revert before buying Plus (Roadmap 64) is tested**, or
     a broken purchase would look like it works.
 
-- [ ] **69. Lock Screen timers: pause without unlocking.** Added 8 October 2026, from the user's Lock Screen checks for
+- [x] **69. Lock Screen timers: pause without unlocking.** Added 8 October 2026, from the user's Lock Screen checks for
   item 67 ("if users expect it to work, then it should be that way").
   - Users show they want to pause a timer from the Lock Screen and the Dynamic Island (5 reviews; ≈41 want the timer
     there; report "Timers — What People Expect When They Tap ▶"); the iPhone's Clock timer pauses there without
@@ -452,9 +464,9 @@ Their placement records scope and priority; implementation has not started.
     Reverted the same day; the widget timer is exactly as approved (W7; checked: ⏸ at 0.3 s, Live Activity started).
     The no-unlock way to pause on the Lock Screen is the Live Activity's Pause. Leave the widget as it is unless iOS
     changes.
-  - [ ] Tests on GitHub (with item 70's run).
+  - [x] Tests on GitHub (with item 70's run): TimerUITests 5/5 in run 37784250768 (`27ce48c`).
 
-- [ ] **70. Reminders, alarms and "Remind again" work reliably, on the iPhone.** Added 8 October 2026, from the user:
+- [x] **70. Reminders, alarms and "Remind again" work reliably, on the iPhone.** Added 8 October 2026, from the user:
   "reminders are also important … alarms … for reliability, alarms should be full screen … if not done, remind me
   again … they all should work reliably. Test it thoroughly on the iPhone." Also: is logging from a long-press on the
   notification what people expect? Yes: users want to complete from the notification without opening the app (Feature
@@ -477,12 +489,14 @@ Their placement records scope and priority; implementation has not started.
     the notification's Done logged and synced 2 s later; the user's own task alarm Done synced too.
   - **Full screen:** iOS shows an alarm full screen on a locked phone and in the Dynamic Island while the phone is in use,
     as the Clock app's alarms do; apps can't change it.
-  - [ ] Tests on GitHub: `[ios-ci] [ios-sync]` now adds RemindersUITests and PlacementUITests (which runs the
-    reminder planning checks).
+  - [x] Tests on GitHub: `[ios-ci] [ios-sync]` now adds RemindersUITests and PlacementUITests (which runs the
+    reminder planning checks): 4/4 and 1/1 in run 37784250768 (`27ce48c`).
 
 - [ ] **71. VERY IMPORTANT, PENDING: test sync end to end on a second real device.** Added 8 October 2026, from the user:
   "in the main, as in very important thing, syncing … on one iPhone, you have tested it. In the other iPhone, like in
   other devices, we have to test it. So it is pending." Waiting for a second device (none available on 8 Oct).
+  - GitHub (8 Oct): SyncUITests (two simulated phones, the real dev server) passed in run 37784250768 (`27ce48c`). Still open:
+    the second real device below.
   - **Proven so far (8 Oct, items 67–70):** on the user's iPhone 16, every way of logging (app, Home Screen and Lock
     Screen widgets, timers, the Live Activity's Pause, reminder and alarm buttons) reaches the dev server within seconds
     without opening the app; failed syncs wait and go later; the account's export matched the phone exactly (720/720
@@ -501,7 +515,7 @@ Their placement records scope and priority; implementation has not started.
   - **Later (the user, 8 Oct):** the app is iPhone-only for now; Android, Mac and desktop come after the iPhone app is
     complete, and sync is tested across all of them then.
 
-- [ ] **72. A reinstalled iPhone got none of its data back from the account. Fixed.** Added 8 October 2026, from the
+- [x] **72. A reinstalled iPhone got none of its data back from the account. Fixed.** Added 8 October 2026, from the
   user's test: "let's uninstall the app … on a fresh install, does the data survive?" … "I used Apple sign in itself,
   but I didn't get any of the habits back. So I think that is a bug."
   - **Cause:** the device ID lives in the Keychain, which survives deleting the app, so the reinstalled phone was "the
@@ -520,8 +534,8 @@ Their placement records scope and priority; implementation has not started.
     build's demo data (`seedDemo`, `addEveryTypeToAnytime`) in, and 28 demo habits and 405 logs synced into the account.
     The user's own data was checked untouched (every habit, log and setting), and the demo items were removed by ID
     (`-delete-listed-habits`). Now the Debug build never adds demo data while signed in. The App Store build never adds it.
-  - [ ] Tests on GitHub: the core and server tests run with `[ios-ci] [ios-sync]` (Core storage and migrations,
-    SyncUITests).
+  - [x] Tests on GitHub: the core and server tests run with `[ios-ci] [ios-sync]` (Core storage and migrations,
+    SyncUITests): both passed in run 37784250768 (`27ce48c`); server tests 139/139 locally.
 
 ## Planned improvements — build later
 
