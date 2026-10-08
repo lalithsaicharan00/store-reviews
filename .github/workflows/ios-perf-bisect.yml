@@ -5,7 +5,7 @@
 # Runs only on a push whose commit message contains [ios-perf-bisect], with lines naming what to measure:
 #   perf-variants: base=396c40e head=HEAD nosound=HEAD+-perf-switch+no-sound
 #   perf-scenarios: scroll-today tap-today new-habit progress
-#   perf-rounds: 2
+#   perf-rounds: 4   (four or more to call a difference: two rounds on one machine have varied 2.5x, L25)
 # A variant is name=ref, optionally with extra launch arguments after "+" (PerfSwitches). Keep the builds to three or
 # four: each takes ~4-5 minutes and the job stops at 60. Results: the summary goes to ci-results like ios-tests.yml.
 # Before a tagged push, check the repository's live runs (Rulebook T10).

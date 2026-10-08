@@ -49,7 +49,8 @@ when it's built, its tests have passed on GitHub and it's ticked here with the d
 merge `main` in, run every touched test class plus a speed run once more, then merge into `main` (the user approved
 that merge). The other agent works on its own branches (`sync-*`); never touch those or their runs (W3, T10).
 
-- [ ] 1. **Item 49**: the speed regression. Bisect the timer/swipe/limits/completion-sound merge with speed runs
+- [x] 1. **Item 49**: the speed regression. *Done 8 Oct: nothing had got slower side by side (runs `37774018835`,
+  `37788595991`, `37797217908`, `37804587883`); iPhone speed check still to do.* Bisect the timer/swipe/limits/completion-sound merge with speed runs
   (`scroll-today`, `tap-today`, `new-habit`, `progress`), variants side by side in one run (S2); fix it; numbers
   back under the targets; numbers in `iOS/PERFORMANCE-LESSONS.md`. The iPhone speed check stays to do.
 - [ ] 2. **Item 53**: `GroupsUITests.testGroupOrderIsThePersonsOwn`: why the drop sometimes misses; fix the cause,
@@ -213,37 +214,6 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
     Drag a group…"), so the list never took the drop, or `moveGroups` didn't save it.
   - **Then passed** at ~04:00 UTC on the same branch (run `37410173465`), so it's intermittent, not only at night.
   - **To do:** find what makes the drop miss (machine speed, the drag's timing); don't loosen the test (T2).
-
-- [ ] **49. Speed: Today, the habit form and Progress got slower on `main`.** Found 5 October 2026 by the full test of
-  `main` the user asked for (speed run `37310572002` on `d403844`), against the last full speed run before the day's
-  merges (`claude/habit-details-perf`, 4 Oct; hitch ms/s, targets under 5): Today scrolling 0 → 28; +1 alone 1–3 → 25;
-  day ‹ › alone 30–63 → 116; habit form typing 8–9 → 45 (a 496 ms freeze); Progress period ‹ › 50–125 → 164; menu
-  47–114 → 54. Hosted runs vary 2–3×, so repeated before blaming anything (S2).
-  - **Not from the Day-details merge:** three runs each of `main` just before it (`3530e98`, the timer/swipe/limits
-    branch) and after (`c09cdb9`): Today scrolling 18/64/44 vs 41/23/23, day ‹ › alone 119/99/92 vs 162/51/59, +1 alone
-    4.4/1.6/1.8 vs 15.5/5.5/3.4, Day sheet scrolling 36/20/44 vs 14/7/8; habit form 32 vs 30, Progress 163 vs 165 (runs
-    `37324688193`, `37330377255`, `37330449077` vs `37324703983`, `37330393173`, `37330464579`).
-  - **So the change came with the timer/swipe/limits/completion-sound merge.** To do: bisect its commits with the
-    scenarios above (Today `scroll-today`, `tap-today`; `new-habit`; `progress`), fix, and measure on the iPhone.
-  - **8 Oct 2026 (cloud session): side by side in one job** (new `ios-perf-bisect.yml`, `Tools/perf/bisect_perf.sh`: each
-    commit built in the same job, every scenario run on each in turn, two rounds, rotated order; run `37774018835`).
-    Median hitch ms/s, base `396c40e` (4 Oct) / end of timer-swipe-limits `c9909e6` / `main` `e3afd6c`: Today scrolling
-    12.6 / 27.6 / 11.3 (each variant's first round carries the first-scroll freeze; second rounds 5.2 / 7.7 / 4.9);
-    habit form typing 14.2 / 18.8 / 15.8; Progress period ‹ › and range 107.5 / 128.5 / 93.1; day ‹ › alone 59.8 /
-    87.8 / 73.5. **So scrolling, typing and Progress are not slower on `main` than on 4 Oct**: the 5 Oct numbers were
-    separate runs on different machines (L22). **What is slower: the +1 tap** (+1 alone 1.5 / 3.4 / 15.5; +1 and day
-    ‹ › 62.3 / 83.7 / 123.8), and it came after `c9909e6`. Next: bisect `c9909e6..e3afd6c` with `tap-today`.
-  - **Second bisect** (run `37788595991`, `tap-today`, three rounds): base `396c40e` / `3530e98` (completion sound) /
-    `a3d33bf` (6 Oct week goals) / `84d42ef` (7 Oct redesign) / `main`: +1 alone 3.6 / 2.6 / 1.1 / 1.2 / 1.1 (so the first
-    run's 15.5 was one bad round); +1 and day ‹ › 54.5 / 53.1 / 55.4 / 57.0 / **115.6**; day ‹ › alone 59.4 / 65.5 / 62.9 /
-    61.5 / 90.7. Only the last commit, `e3afd6c` (widget taps, 8 Oct), differs. Its timed work showed 14 widget
-    publications inside the window (0 before): the locked delay went from 2 s to 0.5 s (W11), and a cycle of +1, ‹, ›
-    takes 1.05 s.
-  - **Third** (run `37797217908`, a speed-run switch `-perf-no-widget-publish` beside `main`): +1 and day ‹ › `84d42ef`
-    52.0 / `main` 95.2 / `main` without publication 103.8. **So the publication isn't the cost.** The same binary with
-    and without the switch also measured habit-form typing 57.5 against 22.6 and Progress paging 148 against 111 in
-    scenarios where no publication happened at all: on that machine, identical work varied 2.5×. Two rounds aren't
-    enough to judge a 2× difference; the next run takes four.
 
 - [ ] **47. Build Day details and the one-log editor from the 4 October handoff.** Added 4 October 2026, from the
   user; branch **`details-page-update`** (the user asked for a meaningfully named branch to test from). Implements
@@ -539,6 +509,49 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   after release.
 
 ## Completed
+
+- [x] **49. Speed: Today, the habit form and Progress got slower on `main`.** Found 5 October 2026 by the full test of
+  `main` the user asked for (speed run `37310572002` on `d403844`), against the last full speed run before the day's
+  merges (`claude/habit-details-perf`, 4 Oct; hitch ms/s, targets under 5): Today scrolling 0 → 28; +1 alone 1–3 → 25;
+  day ‹ › alone 30–63 → 116; habit form typing 8–9 → 45 (a 496 ms freeze); Progress period ‹ › 50–125 → 164; menu
+  47–114 → 54. Hosted runs vary 2–3×, so repeated before blaming anything (S2).
+  - **Not from the Day-details merge:** three runs each of `main` just before it (`3530e98`, the timer/swipe/limits
+    branch) and after (`c09cdb9`): Today scrolling 18/64/44 vs 41/23/23, day ‹ › alone 119/99/92 vs 162/51/59, +1 alone
+    4.4/1.6/1.8 vs 15.5/5.5/3.4, Day sheet scrolling 36/20/44 vs 14/7/8; habit form 32 vs 30, Progress 163 vs 165 (runs
+    `37324688193`, `37330377255`, `37330449077` vs `37324703983`, `37330393173`, `37330464579`).
+  - **So the change came with the timer/swipe/limits/completion-sound merge.** To do: bisect its commits with the
+    scenarios above (Today `scroll-today`, `tap-today`; `new-habit`; `progress`), fix, and measure on the iPhone.
+  - **8 Oct 2026 (cloud session): side by side in one job** (new `ios-perf-bisect.yml`, `Tools/perf/bisect_perf.sh`: each
+    commit built in the same job, every scenario run on each in turn, two rounds, rotated order; run `37774018835`).
+    Median hitch ms/s, base `396c40e` (4 Oct) / end of timer-swipe-limits `c9909e6` / `main` `e3afd6c`: Today scrolling
+    12.6 / 27.6 / 11.3 (each variant's first round carries the first-scroll freeze; second rounds 5.2 / 7.7 / 4.9);
+    habit form typing 14.2 / 18.8 / 15.8; Progress period ‹ › and range 107.5 / 128.5 / 93.1; day ‹ › alone 59.8 /
+    87.8 / 73.5. **So scrolling, typing and Progress are not slower on `main` than on 4 Oct**: the 5 Oct numbers were
+    separate runs on different machines (L22). **What is slower: the +1 tap** (+1 alone 1.5 / 3.4 / 15.5; +1 and day
+    ‹ › 62.3 / 83.7 / 123.8), and it came after `c9909e6`. Next: bisect `c9909e6..e3afd6c` with `tap-today`.
+  - **Second bisect** (run `37788595991`, `tap-today`, three rounds): base `396c40e` / `3530e98` (completion sound) /
+    `a3d33bf` (6 Oct week goals) / `84d42ef` (7 Oct redesign) / `main`: +1 alone 3.6 / 2.6 / 1.1 / 1.2 / 1.1 (so the first
+    run's 15.5 was one bad round); +1 and day ‹ › 54.5 / 53.1 / 55.4 / 57.0 / **115.6**; day ‹ › alone 59.4 / 65.5 / 62.9 /
+    61.5 / 90.7. Only the last commit, `e3afd6c` (widget taps, 8 Oct), differs. Its timed work showed 14 widget
+    publications inside the window (0 before): the locked delay went from 2 s to 0.5 s (W11), and a cycle of +1, ‹, ›
+    takes 1.05 s.
+  - **Third** (run `37797217908`, a speed-run switch `-perf-no-widget-publish` beside `main`): +1 and day ‹ › `84d42ef`
+    52.0 / `main` 95.2 / `main` without publication 103.8. **So the publication isn't the cost.** The same binary with
+    and without the switch also measured habit-form typing 57.5 against 22.6 and Progress paging 148 against 111 in
+    scenarios where no publication happened at all: on that machine, identical work varied 2.5×. Two rounds aren't
+    enough to judge a 2× difference; the next run takes four.
+  - **Fourth, four rounds** (run `37804587883`, `tap-today`; a slower machine, every number ~2.5× the earlier runs):
+    +1 and day ‹ › base 159.1 / `84d42ef` 159.2 / `main` 181.6 (`main`'s rounds 138–191, base's 139–174); day ‹ › alone
+    141.0 / 145.8 / 128.8; +1 alone 6.8 / 11.3 / 8.7. **Nothing has got slower since 4 Oct.** The 5 Oct numbers compared
+    runs on different hosted machines (lesson L25; Rulebook S2 now says a regression is called only from builds measured
+    in turns in one job, four rounds or more).
+  - [x] **Done 8 Oct 2026** (cloud session): no app code to undo; the bisect tool (`ios-perf-bisect.yml`,
+    `Tools/perf/bisect_perf.sh`) and the speed-run switch `-perf-no-widget-publish` stay for the next time. Runs
+    `37774018835`, `37788595991`, `37797217908`, `37804587883`. **Still above the targets on every build, 4 Oct's included**
+    (not a regression; listed under "Open" in `PERFORMANCE-LESSONS.md`): Today's day ‹ ›, habit-form typing at a letter
+    every 50–80 ms, Progress's period and range switch, Today's first scroll. **iPhone speed check: still to do**
+    (`measure_perf_device.sh`; the phone has the final word, and on 2 Oct it measured the day switch with +1 at 40 ms/s and
+    Progress's switch at 110).
 
 - [x] **9. Widgets: choose the habit, one widget per habit, and a visual overhaul.** Widgets work (free and Plus
   kinds), but adding a widget always shows one particular habit: there's no way to pick which habit, switch to
