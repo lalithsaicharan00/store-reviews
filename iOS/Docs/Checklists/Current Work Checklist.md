@@ -18,7 +18,8 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 67).
+  still resolve; give new items the next unused number (currently 75; 67–73 are on the other agent's
+  `sync-outside-app` / `sync-reliability-cloud` branches, 8 Oct 2026).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -39,6 +40,36 @@ bugs. Item 16 combines reliability work with a product decision; item 18 is a co
 work. Preserve those distinctions when recording findings. New feedback items 23–32 (4 October) are recorded
 below as independent tasks: functional/readability issues here, layout and research work under Planned improvements.
 Their placement records scope and priority; implementation has not started.
+
+### The cloud session's list (the user, 8 Oct 2026)
+
+Written by Claude (Claude Code), 8 October 2026, from the user's request. Branch `claude/exciting-mccarthy-g6vlu5`
+(the session's branch; made from `main` at `e3afd6c`). **One item at a time, in this order;** an item is finished
+when it's built, its tests have passed on GitHub and it's ticked here with the date and the run ID. When all are done:
+merge `main` in, run every touched test class plus a speed run once more, then merge into `main` (the user approved
+that merge). The other agent works on its own branches (`sync-*`); never touch those or their runs (W3, T10).
+
+- [ ] 1. **Item 49**: the speed regression. Bisect the timer/swipe/limits/completion-sound merge with speed runs
+  (`scroll-today`, `tap-today`, `new-habit`, `progress`), variants side by side in one run (S2); fix it; numbers
+  back under the targets; numbers in `iOS/PERFORMANCE-LESSONS.md`. The iPhone speed check stays to do.
+- [ ] 2. **Item 53**: `GroupsUITests.testGroupOrderIsThePersonsOwn`: why the drop sometimes misses; fix the cause,
+  never loosen the test (T2).
+- [ ] 3. **Items 18, 25, 26, 28**: run their pending tests (`CompletionFeedbackUITests`, `HabitPageUITests`
+  `testHistoryFlows` and `testNotesFlows`, the squares-key tests; 25 is superseded by 57), fix failures, tick each.
+- [ ] 4. **Item 74** (new): a `-uitest` launch on a real iPhone must not write the widgets' shared file or the
+  person's settings (D8). Prove it with a test.
+- [ ] 5. **Item 32**: Year in Pixels shows every day number 1–31, in Progress and on the habit page; simulator
+  screenshots in the run; the iPhone look stays to do (U9).
+- [ ] 6. **Item 31**: Week, Month and Year card padding and spacing (Progress and the habit page's Progress tab);
+  screenshots; the iPhone look stays to do.
+- [ ] 7. **Item 23**: streaks back on the habit page, in its Progress tab; screenshots; the iPhone look stays to do.
+
+- [ ] **74. A test launch on a real iPhone writes its demo habits into the widgets and resets the person's settings.**
+  Added 8 October 2026 by Claude (Claude Code), from item 65's finding (the user listed it, 8 Oct). A `-uitest`
+  launch on the iPhone publishes its demo habits into the widgets' shared file (the person's Home Screen widgets then
+  show the demo habits) and resets some of the person's own settings (Hide Completed, done order), because test
+  launches share `UserDefaults` and the App Group with the person's app. D8: a test launch never touches the person's
+  data. Keep a test launch's widget snapshot and settings separate from the person's, and prove it with a test.
 
 - [ ] **22. Today row sheet: make logging and wording natural for each habit type, especially check-based habits
   and tasks.** Added 4 October 2026; **issue 1 of the user's current feedback round**. Status: documented from the
