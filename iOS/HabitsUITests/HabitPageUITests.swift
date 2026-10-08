@@ -345,6 +345,35 @@ final class HabitPageUITests: XCTestCase {
         shot("hp-year-1-selected")
     }
 
+    /// Streaks on the habit's Progress tab (Current Work 23, 8 Oct 2026): Current and Best, early, in the goal's own unit
+    /// (days for a daily habit, weeks for a weekly total); gone when Show Streaks is off, while the total stays.
+    func testStreaksOnTheProgressTab() {
+        launch()
+        for (name, unit) in [("Water", "day"), ("Running", "week")] {
+            open(name)
+            tab("Progress")
+            let current = app.descendants(matching: .any)["habit-streak-current"]
+            let best = app.descendants(matching: .any)["habit-streak-best"]
+            XCTAssertTrue(bringTopIntoView(current), "\(name): the current streak, early in Progress")
+            XCTAssertTrue(current.label.hasPrefix("Current streak") && current.label.contains(unit), "\(name): \(current.label)")
+            XCTAssertTrue(best.label.hasPrefix("Best streak") && best.label.contains(unit), "\(name): \(best.label)")
+            func number(_ label: String) -> Int { Int(label.split(separator: " ").first { Int($0) != nil } ?? "") ?? -1 }
+            XCTAssertLessThanOrEqual(number(current.label), number(best.label), "\(name): the best is never below the current")
+            shot("hp-streaks-\(name.lowercased())")
+            back()
+        }
+        app.terminate()
+        app.launchArguments = ["-uitest", "-year-demo", "-progress.showStreaks", "NO"]
+        app.launch()
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
+        open("Water")
+        tab("Progress")
+        let milestones = app.descendants(matching: .any)["habit-milestones"]
+        XCTAssertTrue(bringTopIntoView(milestones), "Milestones stay: a total isn't a streak")
+        XCTAssertFalse(app.descendants(matching: .any)["habit-streak-current"].exists, "Show Streaks off: no streak")
+        shot("hp-streaks-off")
+    }
+
     /// The Week, Month and Year cards' spacing (Current Work 31, 8 Oct 2026): each card's title with the card's full top
     /// padding, in light, dark and a large accessibility text size. Pictures of each card's top.
     func testPeriodCardSpacing() {

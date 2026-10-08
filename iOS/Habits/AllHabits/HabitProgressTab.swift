@@ -84,6 +84,22 @@ private struct HabitRecordCard: View {
 
 // MARK: - Milestones
 
+/// One streak number with its name over it ("Current streak" / "23 days"), read as one element.
+private struct StreakFact: View {
+    let title: String
+    let value: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: WeekSpacing.label) {
+            Text(title).font(.subheadline).foregroundStyle(.secondary)
+            Text(value).font(.title2.weight(.semibold)).monospacedDigit()
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .combine)
+    }
+}
+
 /// Milestones (report "Milestones on the Habit Page", 3 Oct 2026): for each track, what's next and how far, then the
 /// milestones themselves as squares: reached ones filled in the habit's colour with their date, the next one outlined
 /// and filling, later ones grey. No badges, levels or celebration.
@@ -113,10 +129,23 @@ private struct MilestoneTrackView: View {
     var body: some View {
         let next = track.next
         VStack(alignment: .leading, spacing: WeekSpacing.tight) {
-            HStack(alignment: .firstTextBaseline, spacing: WeekSpacing.tight) {
-                Text(track.title).font(.subheadline.weight(.semibold))
-                Spacer(minLength: WeekSpacing.tight)
-                Text(status).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
+            if track.kind == .inARow {
+                // The streak, current and best, where the person looks at progress (Current Work 23, 8 Oct 2026; the 5
+                // Oct placement research: early in this habit's Progress, not in the header over History and Notes).
+                // In the goal's own unit: days, weeks or months in a row, as Today's row counts them (`runs`, `streak`).
+                HStack(alignment: .top, spacing: WeekSpacing.card) {
+                    StreakFact(title: "Current streak", value: amount(track.current))
+                        .accessibilityIdentifier("habit-streak-current")
+                    StreakFact(title: "Best streak", value: amount(track.best ?? track.current))
+                        .accessibilityIdentifier("habit-streak-best")
+                }
+                .padding(.bottom, WeekSpacing.pair)
+            } else {
+                HStack(alignment: .firstTextBaseline, spacing: WeekSpacing.tight) {
+                    Text(track.title).font(.subheadline.weight(.semibold))
+                    Spacer(minLength: WeekSpacing.tight)
+                    Text(status).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
+                }
             }
             if let next {
                 let previous = track.steps.last { $0.reached != nil }?.value ?? 0
@@ -160,6 +189,9 @@ private struct MilestoneTrackView: View {
         case .sinceSlip: "Now \(days(track.current)) · best \(days(track.best ?? track.current))"
         }
     }
+
+    /// "23 days", "1 week": a streak's length in the goal's unit.
+    private func amount(_ n: Int) -> String { "\(n) \(unit(n))" }
 
     /// "30 days in a row", "250 times in total", "14 days".
     private func phrase(_ n: Int) -> String {
