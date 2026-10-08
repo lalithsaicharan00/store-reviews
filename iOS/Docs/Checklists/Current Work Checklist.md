@@ -360,18 +360,39 @@ Their placement records scope and priority; implementation has not started.
     hold a `beginBackgroundTask` from scheduling until the sync finishes (or fails; the outbox keeps it). No intent
     waits for the network; the widget stays exactly as fast (W1–W17 unchanged). Locked doc gets a W18.
   - **The user's points, 8 Oct (branch `sync-outside-app`; "test it thoroughly, for a production system"):**
-    - [ ] In the app: a tick reaches the server's database.
-    - [ ] Widgets, the most important: a tick on a Home Screen or Lock Screen widget reaches the app and then the
+    - [x] In the app: a tick reaches the server's database.
+    - [x] Widgets, the most important: a tick on a Home Screen or Lock Screen widget reaches the app and then the
       server, without the app being opened.
-    - [ ] Nothing is ever lost for a Plus user: every change reaches the server.
-    - [ ] Not a request per tap: a run of taps is sent together, production-style, so nobody can run into (or abuse)
+    - [x] Nothing is ever lost for a Plus user: every change reaches the server.
+    - [x] Not a request per tap: a run of taps is sent together, production-style, so nobody can run into (or abuse)
       the server's limits (`SYNC_LIMIT`, 60 a minute per account).
     - [ ] Nightly backups work (Plus: the server's 02:00 UTC snapshot of a changed account; Architecture 06 §9).
-    - [ ] The widgets look and respond exactly as before: their visual feedback (the switches) isn't changed or
+    - [x] The widgets look and respond exactly as before: their visual feedback (the switches) isn't changed or
       slowed ("people don't care how it works in the background, but it should be reliable").
-  - [ ] Built. [ ] On the iPhone: with the app closed, a widget ✓/+, a notification's Done and the Live Activity's
-    Pause each show a `POST /v1/sync` on the dev server (`npx wrangler tail often-enough-api-dev`) within seconds.
-    [ ] Widget speed unchanged (`WidgetLatencyDeviceTests`). [ ] Tests on GitHub (T7/T10).
+  - [x] Built 8 Oct 2026 (Claude, branch `sync-outside-app`): `SyncService` holds `beginBackgroundTask` until the
+    server has a change; 2 s of quiet in the background, 3 s in front, at most 10 s; no empty requests; one sync at a
+    time; no launch pull for a background launch; a failed sync asks for a background refresh (~15 min), which syncs.
+    Debug: sync marks in the timing log, `-sync-verify`, `-sync-old-timing`, `-sync-fail`, `SyncDeviceTests`.
+  - [x] On the iPhone, 8 Oct (dev server logs + the phone's log; PERFORMANCE-LESSONS L25). Old timing: five widget
+    taps saved, never sent. New: a widget tap → one request ~3 s later; five quick taps → one request with 5; ten quick
+    in-app taps → one with 10; tap then Home → sent within ~1 s; widget timer ▶/⏸ → sent ~2 s later; Lock Screen widget
+    taps (phone locked) → one request with both, 3 s later; with sync failing, six taps waited and all went once it
+    worked; `-sync-verify` MATCH every time (final: 711/711 logs, 30/30 habits, 0 waiting, 0 kept aside).
+  - [x] Widget visuals unchanged: `testQuickPlusAndTimer` Water 58 → 59 → 60 → 61 at 0.3 s, ▶ → ⏸ at 0.3 s.
+    (`testWholeCardChangesAtOnce` couldn't start: Meds was already ticked today.)
+  - [x] **Bug found and fixed: the Live Activity's Pause didn't work on the Lock Screen.** `StopTimerIntent` had no
+    `authenticationPolicy`, so iOS asked for Face ID and then opened the app on the timer instead of pausing. Now
+    `.alwaysAllowed`, like every widget button. The user's check, 8 Oct 13:01: Pause stopped the timer without
+    unlocking, and the session reached the server 2 s later.
+  - **Found, not changed (locked, W7):** on the Lock Screen *widget*, ⏸ asks for Face ID before pausing (then pauses
+    and syncs). Ticking on the Lock Screen widget needs no unlock (it runs in the widget's process); timer intents run
+    in the app's process. Ask the user before touching it.
+  - [ ] A notification's Done/+1 on the iPhone: same path (`logFromReminder` → store change → `scheduleSoon`), not yet
+    seen on the phone.
+  - [ ] Nightly backup: the user's account changed today, so its first snapshot is due 9 Oct 02:00 UTC (07:30 IST) in
+    `often-enough-backups-dev` under `snapshots/<account>/`. The mechanism wrote one on 7 Oct 02:00 UTC.
+  - [ ] Tests on GitHub (T7/T10): `[ios-ci] [ios-sync]` (SyncUITests, BackupUITests, WidgetUITests,
+    WidgetSystemUITests, TimerUITests), run 37742196989.
 
 - [ ] **68. REVERT LATER: every account on the dev server is Plus.** Added 8 October 2026, from the user: "make every
   account Plus, as of now … note it down somewhere safe that we need to revert it back later … first, syncing is

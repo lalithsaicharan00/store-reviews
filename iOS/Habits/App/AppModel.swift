@@ -298,9 +298,15 @@ final class AppModel {
     func stopTimerFromLiveActivity(_ habitID: UUID) async {
         await ensureLoaded()
         guard let habit = store.habits.first(where: { $0.id == habitID }), store.timers[habitID] != nil else {
+            #if DEBUG
+            WidgetTiming.mark("live activity pause: no running timer for that habit (\(store.habits.contains { $0.id == habitID } ? "habit found" : "no habit"), \(store.timers.count) running)")
+            #endif
             await timerPresence.sync(store)
             return
         }
+        #if DEBUG
+        WidgetTiming.mark("live activity pause: stopping the timer")
+        #endif
         store.toggleTimer(habit)
         await store.flush()
         await timerPresence.sync(store)
