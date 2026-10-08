@@ -34,7 +34,11 @@
     // For the daily report's request numbers (Analytics Engine SQL API). Not a secret.
     "ACCOUNT_ID": "fd5d7e4921bb3f41c85bedb2fd2fb0eb",
     // The website may call sign-in, sign-out and delete from these origins (account deletion without the app).
-    "WEB_ORIGINS": "https://oftenenough.com,https://www.oftenenough.com,https://site-dev.oftenenough.com,https://oftenenough.pages.dev,https://*.oftenenough.pages.dev"
+    "WEB_ORIGINS": "https://oftenenough.com,https://www.oftenenough.com,https://site-dev.oftenenough.com,https://oftenenough.pages.dev,https://*.oftenenough.pages.dev",
+    // TEMPORARY (the user, 8 Oct 2026): every dev account is Plus, so sync can be tested end to end before buying
+    // Plus is built (Product Roadmap 64). No purchase is written: set "false" and deploy, and accounts are back to
+    // their real purchases at their next sign-in or token refresh. Revert: Current Work Checklist item 68.
+    "EVERYONE_PLUS": "true"
   },
   "secrets": { "required": ["TOKEN_KEY", "TEST_LOGIN_SECRET"] },
   "durable_objects": { "bindings": [{ "name": "ACCOUNT", "class_name": "Account" }] },
@@ -86,7 +90,9 @@
         "APPLE_SIGNIN_KEY_ID": "S2D594VDJH",
         "CI_REPOSITORY": "",
         "ACCOUNT_ID": "fd5d7e4921bb3f41c85bedb2fd2fb0eb",
-        "WEB_ORIGINS": "https://oftenenough.com,https://www.oftenenough.com"
+        "WEB_ORIGINS": "https://oftenenough.com,https://www.oftenenough.com",
+        // Never "true" here: the switch only works on dev (`plusFor`), and real users get Plus only by buying it.
+        "EVERYONE_PLUS": "false"
       },
       "secrets": { "required": ["TOKEN_KEY"] },
       "triggers": { "crons": ["0 6 * * *"] },

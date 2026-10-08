@@ -70,6 +70,14 @@ final class AppModel {
         if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-widget-timing"), flag + 1 < ProcessInfo.processInfo.arguments.count {
             UserDefaults(suiteName: WidgetDisk.group)?.set(ProcessInfo.processInfo.arguments[flag + 1] == "on", forKey: "debug.widgetTiming")
         }
+        // SyncDeviceTests (Current Work 67): `-sync-old-timing on` brings back the sync timing from before item 67 (3 s,
+        // no background time), so the same build shows the old problem and the fix side by side (T12).
+        if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-sync-old-timing"), flag + 1 < ProcessInfo.processInfo.arguments.count {
+            UserDefaults.standard.set(ProcessInfo.processInfo.arguments[flag + 1] == "on", forKey: "debug.syncOldTiming")
+        }
+        if let flag = ProcessInfo.processInfo.arguments.firstIndex(of: "-sync-fail"), flag + 1 < ProcessInfo.processInfo.arguments.count {
+            UserDefaults.standard.set(ProcessInfo.processInfo.arguments[flag + 1] == "on", forKey: "debug.syncFail")
+        }
         WidgetTiming.mark("app: model init")
         // WidgetLatencyDeviceTests: the old week-long widget timelines or the new short ones, side by side (S2).
         if ProcessInfo.processInfo.arguments.contains("-widget-week-timeline") {
@@ -213,6 +221,14 @@ final class AppModel {
                 backup?.dataChanged()
             }
             sync?.onRemoteChanges = { [store] in store.reloadAfterSync() }
+            // A sync that failed with changes waiting (offline, the server busy): iOS retries it in the background in
+            // about 15 minutes, as well as the next time the app opens (Current Work 67).
+            sync?.onWaitingAfterFailure = { [weak self] in
+                #if DEBUG
+                WidgetTiming.mark("sync: background retry asked for in 15 min")
+                #endif
+                self?.scheduleRefresh(after: 15 * 60)
+            }
             sync?.onAccountChange = { [backup] in backup?.refresh() }
             #if DEBUG
             // End-to-end tests on GitHub Actions sign in with the run's identity token (server: POST /v1/auth/ci).
@@ -231,7 +247,10 @@ final class AppModel {
             #endif
             // Each step's time goes to the system log (`LaunchLog`), which CI saves as app.log (Current Work 11).
             var started = Date.now
-            sync?.appBecameActive()
+            // Not when iOS started the app in the background for a widget, a notification or the Live Activity: that
+            // change is sent by itself (`scheduleSoon`), and fetching other devices' changes waits for the app to open
+            // (one request per tap, not two; Current Work 67).
+            if UIApplication.shared.applicationState != .background { sync?.appBecameActive() }
             LaunchLog.took("Sync: app became active", since: started)
             Task { [backup] in
                 let started = Date.now
@@ -249,6 +268,9 @@ final class AppModel {
             started = .now
             await widgets.publish(store)
             LaunchLog.took("Widgets: publish", since: started)
+            #if DEBUG
+            SyncCheck.runIfAsked(store: store, sync: sync)
+            #endif
         }
         loading = task
         await task.value
@@ -390,10 +412,11 @@ final class AppModel {
 
     // MARK: Background refresh
 
-    /// Keeps the next days' reminders planned even when the app isn't opened for a while.
-    func scheduleRefresh() {
+    /// Keeps the next days' reminders planned even when the app isn't opened for a while. `after` is sooner when a
+    /// sync failed with changes still waiting (Current Work 67): iOS decides the actual time.
+    func scheduleRefresh(after: TimeInterval = 12 * 3600) {
         let request = BGAppRefreshTaskRequest(identifier: Self.refreshTaskID)
-        request.earliestBeginDate = .now.addingTimeInterval(12 * 3600)
+        request.earliestBeginDate = .now.addingTimeInterval(after)
         try? BGTaskScheduler.shared.submit(request)
     }
 
@@ -401,6 +424,8 @@ final class AppModel {
         scheduleRefresh()
         let work = Task { [self] in
             await ensureLoaded()
+            // Anything still waiting to reach the server (a sync that failed offline) goes now (Current Work 67).
+            await sync?.syncNow()
             await scheduler.reconcile(store)
             // The nightly backup, when the app wasn't opened (Backup, Sync and Accounts §4.2).
             await backup?.runIfDue()

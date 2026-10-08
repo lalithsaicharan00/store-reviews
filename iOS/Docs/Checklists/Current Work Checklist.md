@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 67).
+  still resolve; give new items the next unused number (currently 69).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -346,6 +346,44 @@ Their placement records scope and priority; implementation has not started.
     (widget + a speed word), 343 with the words close together, all 343 read by hand: 19 complain of the delay between
     tapping a widget and seeing it change, 18 more call widgets slow or delayed, 42 say taps stopped responding, 6 that a
     tap opened the app instead; 8 praise instant ticking (`Research/Temp/widget-speed/classification.py`).
+
+- [ ] **67. A change made outside the app reaches the server as soon as possible, without opening the app.** Added 8
+  October 2026, from the user: "once someone completes a widget, it should store that data on this device, and later
+  sync it to the server … as soon as possible." The user approved changing the widgets' sync timing (U28).
+  - **Found (Claude, 8 Oct, from the code):** a widget tap is saved on the phone reliably (`WidgetTapIntent` →
+    `widget-taps.json` → `WidgetSaveIntent` → `AppModel.saveWidgetTaps` → database). Sync is only *scheduled*:
+    `SyncService.scheduleSoon()` waits 3 s, and nothing asks iOS for background time, so iOS can suspend the app
+    before it sends; the change then waits in the outbox until the app is next opened. The same gap: a notification's
+    Done/+1, the Live Activity's Pause, the widget timer, and an in-app log made just before leaving the app. The
+    12-hourly background refresh doesn't sync. Only Plus syncs.
+  - **Agreed approach:** in `SyncService`, send at once when the app isn't in front (3 s quiet only while it is), and
+    hold a `beginBackgroundTask` from scheduling until the sync finishes (or fails; the outbox keeps it). No intent
+    waits for the network; the widget stays exactly as fast (W1–W17 unchanged). Locked doc gets a W18.
+  - **The user's points, 8 Oct (branch `sync-outside-app`; "test it thoroughly, for a production system"):**
+    - [ ] In the app: a tick reaches the server's database.
+    - [ ] Widgets, the most important: a tick on a Home Screen or Lock Screen widget reaches the app and then the
+      server, without the app being opened.
+    - [ ] Nothing is ever lost for a Plus user: every change reaches the server.
+    - [ ] Not a request per tap: a run of taps is sent together, production-style, so nobody can run into (or abuse)
+      the server's limits (`SYNC_LIMIT`, 60 a minute per account).
+    - [ ] Nightly backups work (Plus: the server's 02:00 UTC snapshot of a changed account; Architecture 06 §9).
+    - [ ] The widgets look and respond exactly as before: their visual feedback (the switches) isn't changed or
+      slowed ("people don't care how it works in the background, but it should be reliable").
+  - [ ] Built. [ ] On the iPhone: with the app closed, a widget ✓/+, a notification's Done and the Live Activity's
+    Pause each show a `POST /v1/sync` on the dev server (`npx wrangler tail often-enough-api-dev`) within seconds.
+    [ ] Widget speed unchanged (`WidgetLatencyDeviceTests`). [ ] Tests on GitHub (T7/T10).
+
+- [ ] **68. REVERT LATER: every account on the dev server is Plus.** Added 8 October 2026, from the user: "make every
+  account Plus, as of now … note it down somewhere safe that we need to revert it back later … first, syncing is
+  important." Done by Claude the same day and deployed to dev (version `49c6052a`).
+  - **What:** `EVERYONE_PLUS: "true"` in `server/wrangler.jsonc` (dev vars only); `plusFor` in `server/src/worker.ts`
+    makes every sign-in, token refresh and purchase reply say Plus on dev. Production has `"false"` and the code
+    ignores it there anyway. No purchase is written into any account, so nothing has to be cleaned up.
+  - **Why:** buying Plus isn't built yet (Product Roadmap 64), and sync must be tested end to end now (item 67).
+  - **To revert:** set `EVERYONE_PLUS` to `"false"` in `server/wrangler.jsonc`, `npm run deploy:dev`; accounts go
+    back to their real purchases at their next sign-in or token refresh (access tokens last minutes). Then remove
+    `plusFor`'s switch and its test once buying Plus works. **Revert before buying Plus (Roadmap 64) is tested**, or
+    a broken purchase would look like it works.
 
 ## Planned improvements — build later
 

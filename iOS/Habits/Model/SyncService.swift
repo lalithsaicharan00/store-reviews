@@ -140,16 +140,59 @@ final class SyncService {
 
     // MARK: When sync runs (05 §11.1)
 
-    /// After a change: wait for 3 seconds of quiet, then send.
+    /// After a change, the change is sent soon, as one request for a run of changes (Current Work 67, 8 Oct 2026).
+    /// - In front: 3 s of quiet, so a run of taps is one request; never more than 10 s after the first change waiting.
+    /// - In the background (a widget, a notification or the Live Activity changed something, or the person has just
+    ///   left the app): 2 s.
+    /// So a steady stream of taps makes at most one request every 2 s, and a quick run of taps one request, far inside
+    /// the server's 60 a minute per account (`SYNC_LIMIT`).
+    /// Either way iOS is asked to keep the app running until the server has it (`beginBackgroundTask`): without that,
+    /// iOS suspended the app first and the change waited on the phone until the app was next opened. A failed sync
+    /// keeps everything in the outbox and asks for a background retry (`onWaitingAfterFailure`).
     func scheduleSoon() {
         guard isPlus else { return }
+        #if DEBUG
+        if UserDefaults.standard.bool(forKey: "debug.syncOldTiming") {
+            // The timing before item 67, for SyncDeviceTests only: 3 s of quiet, no background time.
+            debounce?.cancel()
+            debounce = Task { [weak self] in
+                try? await Task.sleep(for: .seconds(3))
+                guard !Task.isCancelled else { return }
+                self?.debounce = nil
+                await self?.syncNow()
+            }
+            return
+        }
+        #endif
+        holdAwake()
+        generation += 1
+        let mine = generation
+        let now = Date.now
+        let first = firstWaiting ?? now
+        firstWaiting = first
+        let quiet = UIApplication.shared.applicationState == .active ? Self.quietInFront : Self.quietInBackground
+        let wait = max(0, min(quiet, first.addingTimeInterval(Self.longestWait).timeIntervalSince(now)))
         debounce?.cancel()
         debounce = Task { [weak self] in
-            try? await Task.sleep(for: .seconds(3))
-            guard !Task.isCancelled else { return }
-            await self?.syncNow()
+            try? await Task.sleep(for: .seconds(wait))
+            guard !Task.isCancelled, let self else { return }
+            self.firstWaiting = nil
+            self.debounce = nil
+            // Already sent by a sync that was running when the change was made: no empty request.
+            if (await self.status())?.waiting ?? 1 > 0 {
+                await self.syncNow()
+            } else {
+                #if DEBUG
+                WidgetTiming.mark("sync: nothing waiting, no request")
+                #endif
+            }
+            if self.generation == mine { self.releaseAwake() }
         }
     }
+
+    static let quietInFront: TimeInterval = 3
+    static let quietInBackground: TimeInterval = 2
+    static let longestWait: TimeInterval = 10
 
     /// The app is open: sync now, then pull every 60 seconds as a fallback to push.
     func appBecameActive() {
@@ -165,28 +208,88 @@ final class SyncService {
         }
     }
 
+    /// Leaving the app: a change still waiting for its quiet period goes now, while iOS keeps the app running for it.
     func appWentToBackground() {
         poll?.cancel()
         poll = nil
+        #if DEBUG
+        if UserDefaults.standard.bool(forKey: "debug.syncOldTiming") { return }
+        #endif
+        if debounce != nil { scheduleSoon() }
     }
 
-    /// One full sync. Calls that arrive while one is running wait for it, then run once more, so nothing is missed.
+    /// One full sync. A call that arrives while one is running waits for it, and that run goes round once more, so
+    /// every change made before the call is sent, by one request after another, never several at once.
     func syncNow() async {
         guard isPlus else { return }
-        while let running { await running.value }
-        let task = Task { await run() }
+        if let running {
+            again = true
+            await running.value
+            return
+        }
+        let task = Task { [weak self] in
+            guard let self else { return }
+            repeat {
+                self.again = false
+                await self.run()
+            } while self.again && self.isPlus
+            // In the same turn as the last check of `again`, so a call can't slip in between and be missed.
+            self.running = nil
+        }
         running = task
         await task.value
-        if running == task { running = nil }
+    }
+
+    /// Where sync stands: changes waiting, kept aside, last confirmed by the server.
+    func status() async -> SyncStatus? { try? await repository.syncStatus() }
+
+    // MARK: Staying awake until it's sent (Current Work 67)
+
+    private var awake = UIBackgroundTaskIdentifier.invalid
+    private var generation = 0
+    private var firstWaiting: Date?
+    private var again = false
+    /// Called when a sync failed with changes still waiting, so the app can ask iOS for a background retry.
+    var onWaitingAfterFailure: (() -> Void)?
+
+    private func holdAwake() {
+        guard awake == .invalid else { return }
+        awake = UIApplication.shared.beginBackgroundTask(withName: "Sync changes") { [weak self] in
+            MainActor.assumeIsolated {
+                #if DEBUG
+                WidgetTiming.mark("sync: iOS's background time ran out")
+                #endif
+                self?.releaseAwake()
+            }
+        }
+    }
+
+    private func releaseAwake() {
+        guard awake != .invalid else { return }
+        UIApplication.shared.endBackgroundTask(awake)
+        awake = .invalid
     }
 
     private func run() async {
+        #if DEBUG
+        let state = UIApplication.shared.applicationState == .active ? "in front" : "in the background"
+        WidgetTiming.mark("sync: started, app \(state)")
+        var sent = 0
+        #endif
         do {
+            #if DEBUG
+            // SyncDeviceTests (Current Work 67): `-sync-fail on` makes every sync fail as if offline, to prove changes
+            // wait safely in the outbox and go once sync works again.
+            if UserDefaults.standard.bool(forKey: "debug.syncFail") { throw URLError(.notConnectedToInternet) }
+            #endif
             var more = true
             var rounds = 0
             while more && rounds < 50 {
                 rounds += 1
                 let request = try await repository.syncRequest(maxOps: 500)
+                #if DEBUG
+                sent += Self.count("ops", in: Data(request.utf8))
+                #endif
                 var (status, data) = try await send("POST", "/v1/sync", body: Data(request.utf8), authorized: true)
                 if status == 403 && Self.errorCode(data) == "plus_required" {
                     // The token may be older than a purchase: refresh once, which also re-reads Plus.
@@ -202,9 +305,17 @@ final class SyncService {
                 if Self.hasOps(data) { onRemoteChanges?() }
             }
             lastError = nil
+            #if DEBUG
+            let waiting = (try? await repository.syncStatus())?.waiting ?? -1
+            WidgetTiming.mark("sync: finished ok, \(sent) changes sent in \(rounds) request(s), \(waiting) waiting")
+            #endif
         } catch {
             // Kept in the outbox; the next trigger tries again. Never shown as "synced" (05 §11.2).
             lastError = "\(error)"
+            #if DEBUG
+            WidgetTiming.mark("sync: failed (\(error)), \(sent) changes tried")
+            #endif
+            if ((try? await repository.syncStatus())?.waiting ?? 1) > 0 { onWaitingAfterFailure?() }
         }
     }
 
@@ -276,6 +387,11 @@ final class SyncService {
 
     private static func errorCode(_ data: Data) -> String {
         ((try? JSONSerialization.jsonObject(with: data)) as? [String: Any])?["error"] as? String ?? "unexpected"
+    }
+
+    /// How many items the reply's (or request's) list `key` holds.
+    private static func count(_ key: String, in data: Data) -> Int {
+        (((try? JSONSerialization.jsonObject(with: data)) as? [String: Any])?[key] as? [Any])?.count ?? 0
     }
 
     private static func hasOps(_ data: Data) -> Bool {

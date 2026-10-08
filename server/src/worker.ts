@@ -166,7 +166,7 @@ async function signIn(request: Request, env: Env, verify: (body: SignInBody) => 
   const session = await accountStub(env, claims).openSession(account.accountId, key, device, testPlus);
   if (!session.ok) throw new HttpError(409, "account_unavailable", "This account can't be opened right now. Please try again.");
   if (ctx) keepAppleToken(env, ctx, account, key, body.authorizationCode);
-  return json({ accountId: account.accountId, created, ...(await tokens(env, { ...claims, plus: session.plus }, session.secret)) }, created ? 201 : 200);
+  return json({ accountId: account.accountId, created, ...(await tokens(env, { ...claims, plus: plusFor(env, session.plus) }, session.secret)) }, created ? 201 : 200);
 }
 
 /**
@@ -216,6 +216,14 @@ function parseDevice(value: unknown): DeviceInfo {
   };
 }
 
+/**
+ * Whether an account counts as Plus: its own purchases, or, on dev only while `EVERYONE_PLUS` is "true", every account
+ * (TEMPORARY, the user, 8 Oct 2026: sync is tested end to end before buying Plus is built; Current Work item 68).
+ */
+export function plusFor(env: Pick<Env, "ENVIRONMENT" | "EVERYONE_PLUS">, purchased: boolean): boolean {
+  return purchased || (env.ENVIRONMENT === "dev" && env.EVERYONE_PLUS === "true");
+}
+
 /** `plus` tells the app whether this account syncs; it's also inside the access token, where the server checks it. */
 async function tokens(env: Env, claims: AccessClaims, secret: string) {
   const access = await issueAccessToken(claims, env.TOKEN_KEY);
@@ -234,7 +242,7 @@ async function refresh(request: Request, env: Env): Promise<Response> {
     throw new HttpError(401, "account_deleted", "This account was deleted. Everything on this device is kept.");
   }
   if (!result.ok) throw signedOut();
-  return json(await tokens(env, { ...parsed, plus: result.plus }, result.secret));
+  return json(await tokens(env, { ...parsed, plus: plusFor(env, result.plus) }, result.secret));
 }
 
 /** The app keeps all its data and shows "Sign in again to keep syncing" (01 §3.5). */
@@ -490,7 +498,7 @@ async function verifyPurchase(request: Request, env: Env, ctx: ExecutionContext)
     ctx.waitUntil(processConfirmation(env, record.store, record.originalId).catch((error) => console.error(JSON.stringify({ event: "purchase_email_error", error: String(error) }))));
   }
   // A new access token that says Plus, so sync can start at once without waiting for the next refresh.
-  const access = await issueAccessToken({ ...claims, plus: entitlements.plus }, env.TOKEN_KEY);
+  const access = await issueAccessToken({ ...claims, plus: plusFor(env, entitlements.plus) }, env.TOKEN_KEY);
   return json({ ...entitlements, accessToken: access.token, accessTokenExpiresAt: access.expiresAt });
 }
 
