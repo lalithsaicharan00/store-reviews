@@ -86,17 +86,22 @@ final class WidgetSystemUITests: XCTestCase {
         // Today's first card is Quit or Cut Down: the limit's +1 logs where it is (a cold intent, written first).
         let add = springboard.buttons["Add 1 to Widget cut down"]
         XCTAssertTrue(add.waitForExistence(timeout: 15), springboard.debugDescription)
-        add.tap()
+        // The card's switch covers the whole row, but only its round button takes the touch; the row's middle opens Day
+        // details (locked W2). So tap the +1 where it is, at the row's right edge (locked doc §6, as
+        // WidgetLatencyDeviceTests does). A plain tap() hit the middle and opened the app (run 37763470033, 8 Oct 2026).
+        springboard.coordinate(withNormalizedOffset: .zero)
+            .withOffset(CGVector(dx: add.frame.maxX - 22, dy: add.frame.midY)).tap()
         let logged = springboard.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "1 of 3 cups")).firstMatch
         if !logged.waitForExistence(timeout: 30) {
             // One line (CI keeps a failure's first line): what the widget shows, and how far the intent got in the app.
             let shown = Self.labels(in: springboard)
+            let opened = app.state == .runningForeground ? " The tap opened the app." : ""
             save(springboard, "home-widget-log-missing")
             app.launchArguments = ["-empty", "-free", "-dbname", "habits", "-widget-system-verify"]
             app.launch()
             let result = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Widget system")).firstMatch
             _ = result.waitForExistence(timeout: 15)
-            XCTFail("The widget didn't show the committed log. Widget: \(shown). App: \(result.exists ? result.label : "no result")")
+            XCTFail("The widget didn't show the committed log.\(opened) Widget: \(shown). App: \(result.exists ? result.label : "no result")")
             return
         }
         save(springboard, "home-widget-after-cold-log")
