@@ -325,8 +325,12 @@ final class GroupsUITests: XCTestCase {
                       app.buttons.allElementsBoundByIndex.map(\.label).joined(separator: " | "))
         let health = app.descendants(matching: .any)["groups-row-Health"].firstMatch
         // Slowly, and held where it lands, so the list takes the drop (a quick release was missed once, 5 Oct 2026).
+        // Dropped in Health's upper third, inside the rows: the old target, 5 % down Health (3.5 pt under the section's
+        // top), carried the lifted row over the section header, where the list has no place for it, and the drop was
+        // cancelled. The failing run's recording (37400560919, 6 Oct) shows Health make room, then the gap close as
+        // the row reached that edge, and Home go back on release (Current Work 53, 8 Oct 2026).
         handle.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
-            .press(forDuration: 0.8, thenDragTo: health.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.05)),
+            .press(forDuration: 0.8, thenDragTo: health.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.3)),
                    withVelocity: .slow, thenHoldForDuration: 0.6)
         app.navigationBars["Groups"].buttons["Done"].tap()
         XCTAssertTrue(app.buttons["groups-sort-az"].waitForExistence(timeout: 3), "Your order, with Sort A to Z")

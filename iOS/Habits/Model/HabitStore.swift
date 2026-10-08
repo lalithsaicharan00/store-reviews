@@ -1369,10 +1369,16 @@ final class HabitStore {
     }
 
     /// Dragging a group sets the person's own order ("Your order"), used everywhere groups are listed (report 24).
+    /// A drag in the groups editor shows at once and the write follows (S7): a `List`'s `onMove` must change its data
+    /// before it returns, or the row snaps back under the finger and jumps again when the write lands (Current Work 53,
+    /// 8 Oct 2026). A failed write reloads what's stored (`perform`).
     func moveGroups(from: IndexSet, to: Int) {
         var list = groups
         list.move(fromOffsets: from, toOffset: to)
-        perform { [self] telemetry in try await storeGroups(list, manual: true) }
+        let cleaned = Self.cleanedGroups(list, manual: true)
+        // Before the data has loaded nothing is shown changed: `perform` says it wasn't saved.
+        if isLoaded { applyGroups(cleaned, manual: true) }
+        perform { [self] telemetry in try await writeGroups(cleaned, manual: true) }
     }
 
     /// Back to A to Z.
@@ -1382,13 +1388,23 @@ final class HabitStore {
 
     /// Writes the groups and shows them: A to Z unless the order is the person's own, each habit in one group only.
     private func storeGroups(_ list: [HabitGroup], manual: Bool) async throws {
+        let cleaned = Self.cleanedGroups(list, manual: manual)
+        try await writeGroups(cleaned, manual: manual)
+        withAnimation { applyGroups(cleaned, manual: manual) }
+    }
+
+    /// Each habit in one group only; A to Z unless the order is the person's own.
+    private static func cleanedGroups(_ list: [HabitGroup], manual: Bool) -> [HabitGroup] {
         var seen = Set<UUID>()
-        var cleaned = list.map { group -> HabitGroup in
+        let cleaned = list.map { group -> HabitGroup in
             var group = group
             group.habits = group.habits.filter { seen.insert($0).inserted }
             return group
         }
-        if !manual { cleaned = HabitGroup.sortedAZ(cleaned) }
+        return manual ? cleaned : HabitGroup.sortedAZ(cleaned)
+    }
+
+    private func writeGroups(_ cleaned: [HabitGroup], manual: Bool) async throws {
         if cleaned.isEmpty {
             try await repository.removeSetting(key: Keys.groups)
         } else {
@@ -1397,7 +1413,6 @@ final class HabitStore {
         }
         if manual { try await repository.saveSetting(key: Keys.groupsOrder, value: "manual") }
         else { try await repository.removeSetting(key: Keys.groupsOrder) }
-        withAnimation { applyGroups(cleaned, manual: manual) }
     }
 
     private func applyGroups(_ list: [HabitGroup], manual: Bool) {
