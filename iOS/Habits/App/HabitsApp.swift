@@ -112,6 +112,9 @@ struct HabitsApp: App {
                 PlacementCheckView()
             } else if ProcessInfo.processInfo.arguments.contains("-widget-render") {
                 WidgetRenderCheck()
+            } else if ProcessInfo.processInfo.arguments.contains("-testlaunch-report") {
+                // TestLaunchIsolationUITests: what this ordinary launch found before it published anything.
+                Text(TestLaunchIsolation.report).accessibilityIdentifier("testlaunch-report")
             } else {
                 today
             }
