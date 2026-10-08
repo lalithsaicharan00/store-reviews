@@ -103,9 +103,19 @@ final class WidgetSystemUITests: XCTestCase {
         // The card's switch covers the whole row, but only its round button takes the touch; the row's middle opens Day
         // details (locked W2). So tap the +1 where it is, at the row's right edge (locked doc §6, as
         // WidgetLatencyDeviceTests does). A plain tap() hit the middle and opened the app (run 37763470033, 8 Oct 2026).
-        springboard.coordinate(withNormalizedOffset: .zero)
-            .withOffset(CGVector(dx: add.frame.maxX - 22, dy: add.frame.midY)).tap()
+        let plus = springboard.coordinate(withNormalizedOffset: .zero)
+            .withOffset(CGVector(dx: add.frame.maxX - 22, dy: add.frame.midY))
+        plus.tap()
         let logged = springboard.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", "1 of 3 cups")).firstMatch
+        // iOS flips the card the moment a touch reaches its switch (locked W2). On the hosted simulator, the first touch on
+        // the just-installed widget was once not taken at all: no flip, no intent, no tap waiting, no app launch (run
+        // 37778952272; the same tap logged in 37769869356). Only when nothing changed, tap once more. A second log would
+        // still fail the check at the end, which wants exactly one widget log in the database.
+        if !logged.waitForExistence(timeout: 8), springboard.staticTexts["0 of 3 cups · Daily limit"].exists {
+            save(springboard, "home-widget-touch-not-taken")
+            print("Widget system: the first touch wasn't taken (no flip in 8 s); tapping once more")
+            plus.tap()
+        }
         if !logged.waitForExistence(timeout: 30) {
             // One line (CI keeps a failure's first line): what the widget shows, and how far the intent got in the app.
             let shown = Self.labels(in: springboard)
