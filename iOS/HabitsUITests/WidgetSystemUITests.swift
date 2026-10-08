@@ -66,15 +66,27 @@ final class WidgetSystemUITests: XCTestCase {
         // Check the real system gallery's complete Home catalogue, not just app-rendered views.
         let previews = [("One habit", "Small"), ("Today", "Medium"), ("Today", "Large"), ("This week", "Medium"),
                         ("Tasks", "Medium"), ("Tasks", "Large")]
+        // The gallery's own page indicator ("page 2 of 6"). A swipe it didn't take (still on page 2 of 6 in run
+        // 37774276922, on a slow hosted Mac) is made again, only while it's confirmed still on the page before: never
+        // a page skipped. Without the indicator, one swipe a page, as before.
+        func galleryPage(_ number: Int) -> XCUIElement {
+            springboard.pageIndicators.matching(NSPredicate(format: "value == %@", "page \(number) of \(previews.count)")).firstMatch
+        }
+        func swipe(to number: Int, from current: Int) {
+            for _ in 0..<3 {
+                if number > current { springboard.swipeLeft() } else { springboard.swipeRight() }
+                if galleryPage(number).waitForExistence(timeout: 3) || !galleryPage(current).exists { return }
+            }
+        }
         for (index, expected) in previews.enumerated() {
-            if index > 0 { springboard.swipeLeft() }
+            if index > 0 { swipe(to: index + 1, from: index) }
             let preview = springboard.buttons["Often Enough, " + expected.0].firstMatch
             XCTAssertTrue(preview.waitForExistence(timeout: 8), springboard.debugDescription)
             XCTAssertTrue((preview.value as? String)?.contains(expected.1) == true, springboard.debugDescription)
             save(springboard, "home-gallery-\(index)-\(expected.1)")
         }
         // Back from the sixth page to the medium Today page, and install it.
-        for _ in 0..<4 { springboard.swipeRight() }
+        for page in stride(from: previews.count, to: 2, by: -1) { swipe(to: page - 1, from: page) }
         XCTAssertTrue((springboard.buttons["Often Enough, Today"].firstMatch.value as? String)?.contains("Medium") == true)
         let confirm = springboard.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Add Widget")).firstMatch
         guard confirm.waitForExistence(timeout: 5) else {
