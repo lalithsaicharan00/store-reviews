@@ -195,7 +195,8 @@ final class AppModel {
             // Demo data never goes into an account: a reinstalled Debug build is still signed in (the Keychain survives
             // deleting the app), and demo habits added before the account's data arrives would merge into it (8 Oct
             // 2026, Current Work 72: 28 demo habits reached the user's account and had to be removed by ID).
-            let signedIn = sync?.isSignedIn ?? false
+            // Test launches have their own in-memory database (D8): no account to protect, and no Keychain read at launch.
+            let signedIn = !ProcessInfo.processInfo.arguments.contains("-uitest") && (sync?.isSignedIn ?? false)
             if !ProcessInfo.processInfo.arguments.contains("-empty") && !signedIn { await store.seedDemo() }
             // WidgetLatencyDeviceTests: take back exactly the widget logs its real taps made (source widget, made
             // after the test began), so measuring on the person's iPhone leaves their day as it was.
