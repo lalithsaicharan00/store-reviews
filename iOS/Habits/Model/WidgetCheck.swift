@@ -8,8 +8,11 @@ import WidgetKit
 /// Kotlin repository, not a mock (`-widget-fixture`). Today's cards by default: Quit or Cut Down, Anytime, Morning,
 /// Afternoon, Evening.
 enum WidgetFixture {
+    /// Safe to run again: it adds only what's missing, by name. The mark that keeps the Debug sample set out goes first,
+    /// so a launch ended partway (WidgetSystemUITests ends its first launch as soon as Today shows) never leaves a
+    /// database that a plain launch (a widget's cold save) fills with samples (run 37769869356, 8 Oct 2026).
     static func install(in store: HabitStore) async {
-        guard store.habits.isEmpty else { return }
+        await store.skipEveryTypeToAnytime()
         let start = store.today().adding(days: -40, calendar: store.calendar)
         let longLabels = ProcessInfo.processInfo.arguments.contains("-widget-long-labels")
         let items = [
@@ -27,13 +30,13 @@ enum WidgetFixture {
             Habit(name: "Widget quit", symbol: "hand.raised.fill", color: .green, kind: .quit, startsOn: start,
                   quitSince: start.date(calendar: store.calendar)),
         ]
-        for item in items { store.add(item) }
-        for i in 1...7 {
-            store.add(Habit(name: "Widget task \(i)", symbol: "checkmark", color: .blue, kind: .task, parts: [.anytime],
-                            dueDay: store.today(), startsOn: start))
+        let tasks = (1...7).map { i in
+            Habit(name: "Widget task \(i)", symbol: "checkmark", color: .blue, kind: .task, parts: [.anytime],
+                  dueDay: store.today(), startsOn: start)
         }
+        let present = Set(store.habits.map(\.name))
+        for item in items + tasks where !present.contains(item.name) { store.add(item) }
         await store.flush()
-        await store.skipEveryTypeToAnytime()
     }
 }
 

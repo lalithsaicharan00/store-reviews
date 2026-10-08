@@ -33,7 +33,9 @@ final class WidgetSystemUITests: XCTestCase {
         // Disarm the destructive setup arguments before any system-triggered restart.
         // A hosted intent may reuse a previously recorded launch configuration.
         app.terminate()
-        app.launchArguments = ["-empty", "-free", "-dbname", "habits"]
+        // -widget-fixture again: the first launch can be ended before its fixture is complete; this one finishes it (it
+        // adds only what's missing, never resets).
+        app.launchArguments = ["-empty", "-widget-fixture", "-free", "-dbname", "habits"]
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 15))
         // The app's background handler waits for durable writes and the shared snapshot.
