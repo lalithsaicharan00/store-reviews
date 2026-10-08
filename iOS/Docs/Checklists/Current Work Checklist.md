@@ -59,20 +59,13 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
 - [x] 3. **Items 18, 25, 26, 28**: run their pending tests (`CompletionFeedbackUITests`, `HabitPageUITests`
   `testHistoryFlows` and `testNotesFlows`, the squares-key tests; 25 is superseded by 57), fix failures, tick each.
   *Done 8 Oct: all 11 passed first time, run `37826155392`; iPhone checks for 18, 26, 28 still to do.*
-- [ ] 4. **Item 74** (new): a `-uitest` launch on a real iPhone must not write the widgets' shared file or the
-  person's settings (D8). Prove it with a test.
+- [x] 4. **Item 74** (new): a `-uitest` launch on a real iPhone must not write the widgets' shared file or the
+  person's settings (D8). Prove it with a test. *Done 8 Oct: run `37831649390` (24/24); iPhone check still to do.*
 - [ ] 5. **Item 32**: Year in Pixels shows every day number 1–31, in Progress and on the habit page; simulator
   screenshots in the run; the iPhone look stays to do (U9).
 - [ ] 6. **Item 31**: Week, Month and Year card padding and spacing (Progress and the habit page's Progress tab);
   screenshots; the iPhone look stays to do.
 - [ ] 7. **Item 23**: streaks back on the habit page, in its Progress tab; screenshots; the iPhone look stays to do.
-
-- [ ] **74. A test launch on a real iPhone writes its demo habits into the widgets and resets the person's settings.**
-  Added 8 October 2026 by Claude (Claude Code), from item 65's finding (the user listed it, 8 Oct). A `-uitest`
-  launch on the iPhone publishes its demo habits into the widgets' shared file (the person's Home Screen widgets then
-  show the demo habits) and resets some of the person's own settings (Hide Completed, done order), because test
-  launches share `UserDefaults` and the App Group with the person's app. D8: a test launch never touches the person's
-  data. Keep a test launch's widget snapshot and settings separate from the person's, and prove it with a test.
 
 - [ ] **22. Today row sheet: make logging and wording natural for each habit type, especially check-based habits
   and tasks.** Added 4 October 2026; **issue 1 of the user's current feedback round**. Status: documented from the
@@ -437,6 +430,29 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   after release.
 
 ## Completed
+
+- [x] **74. A test launch on a real iPhone writes its demo habits into the widgets and resets the person's settings.**
+  Added 8 October 2026 by Claude (Claude Code), from item 65's finding (the user listed it, 8 Oct). A `-uitest`
+  launch on the iPhone publishes its demo habits into the widgets' shared file (the person's Home Screen widgets then
+  show the demo habits) and resets some of the person's own settings (Hide Completed, done order), because test
+  launches share `UserDefaults` and the App Group with the person's app. D8: a test launch never touches the person's
+  data. Keep a test launch's widget snapshot and settings separate from the person's, and prove it with a test.
+  - **Also found (8 Oct):** a test launch saves widget taps waiting in the shared file at start-up (`saveWidgetTaps`): on
+    the iPhone it would have saved the person's waiting taps into its throwaway in-memory database, then removed them
+    from the file. And `-dbname habits -reset-db` (WidgetSystemUITests) names the person's own database.
+  - **Built, 8 Oct 2026** (cloud session): `WidgetDisk.directory` gives a `-uitest` launch an App Group folder of its own
+    (`uitest/`), so its snapshot, waiting taps, timing log, paging and analytics files never touch the person's; the
+    widget extension and ordinary launches are unchanged (no W1–W17 decision changed; noted in the locked widget doc).
+    `TestLaunchIsolation` holds the person's `UserDefaults` aside on the first test launch in a row and puts them back,
+    exactly, on the next ordinary launch, before anything reads them; test launches still reset their own (T8).
+    `-reset-db` never deletes "habits" on a real iPhone. Rulebook D8.
+  - [x] **Tested on GitHub, 8 Oct 2026:** run `37831649390`, 24/24: the new
+    `TestLaunchIsolationUITests.testATestLaunchLeavesThePersonsWidgetsAndSettings` (an ordinary launch turns Hide
+    Completed on; a `-uitest` launch starts with it off and logs; the next ordinary launch finds the same widget habits,
+    by ID, and Hide Completed still on), with `WidgetUITests`, `ArrangeUITests`, `TodayUITests` and `PersistenceUITests`.
+    The test wasn't run against the old build (it would publish over the person's file and reset the switch, by the
+    code it replaced). **iPhone check:** run any UI test on the phone, then open the app: the Home Screen widgets show
+    your own habits and your Today settings are as you left them.
 
 - [x] **28. Notes: research the Add Note button's placement.** Added 4 October 2026; separate from History actions.
   - In the habit details Notes tab, Add Note is currently near the top beside the search field, in the upper area

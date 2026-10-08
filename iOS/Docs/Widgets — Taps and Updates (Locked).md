@@ -160,3 +160,7 @@ launches write their demo habits into the widgets' file (a known D8 gap, tracked
 - Never: an app-process intent for a widget tap that should show at once; `Button` instead of the card switch for ✓/+;
   `invalidatableContent` on buttons; numbers worked out in the widget; a tap saved only in the file; a week of
   timeline entries; nested switches.
+- **Changed with the user's say-so, 8 Oct 2026 (Current Work 74; none of W1–W17):** a test launch (`-uitest`) keeps its
+  widget files in an App Group folder of its own (`WidgetDisk.directory` → `uitest/`), so a UI test on the iPhone never
+  shows its demo habits on the person's Home Screen or saves and removes the person's waiting taps. The widget extension
+  and every ordinary launch use the person's folder as before; `-dbname` system tests (WidgetSystemUITests) too.
