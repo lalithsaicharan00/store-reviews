@@ -56,8 +56,9 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
 - [x] 2. **Item 53**: `GroupsUITests.testGroupOrderIsThePersonsOwn`: why the drop sometimes misses; fix the cause,
   never loosen the test (T2). *Done 8 Oct: the drop was cancelled on release (two recordings); runs `37812076363`,
   `37817858014`, `37821382415` (GroupsUITests 10/10, 16 repeated drags, none missed).*
-- [ ] 3. **Items 18, 25, 26, 28**: run their pending tests (`CompletionFeedbackUITests`, `HabitPageUITests`
+- [x] 3. **Items 18, 25, 26, 28**: run their pending tests (`CompletionFeedbackUITests`, `HabitPageUITests`
   `testHistoryFlows` and `testNotesFlows`, the squares-key tests; 25 is superseded by 57), fix failures, tick each.
+  *Done 8 Oct: all 11 passed first time, run `37826155392`; iPhone checks for 18, 26, 28 still to do.*
 - [ ] 4. **Item 74** (new): a `-uitest` launch on a real iPhone must not write the widgets' shared file or the
   person's settings (D8). Prove it with a test.
 - [ ] 5. **Item 32**: Year in Pixels shows every day number 1–31, in Progress and on the habit page; simulator
@@ -153,58 +154,6 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   - This remains open even if another design item touches the same screen. Documentation does not confirm the
     regression has been reproduced or fixed.
   - **5 Oct placement research (item 48):** Current/Best belong visibly in the early individual habit Progress summary, not the common header above History/Notes; retain Today's quick streak access, correct units and Show Streaks. The six existing design studies now reflect that recommendation. This does not close the native implementation/correctness check in item 23.
-
-- [ ] **25. “What the squares mean”: expand automatically only on the first visit to each explanation context.**
-  **Superseded by item 57 (the user, 6 Oct 2026): one app-wide state, folded everywhere once folded anywhere.**
-  Added 4 October 2026; a standalone behavior task covering both the habit details page and the main Progress page.
-  - **First visit:** the accordion must already be open when the person first opens the particular habit's details
-    page and reaches its explanation, so the meaning of the squares is visible without discovering an extra tap.
-  - **Main Progress:** apply the same behavior to the first visit to Week, Month, Year, and any other relevant view
-    with this explanation. Seeing Week's explanation must not incorrectly suppress a first-time explanation in
-    Month or Year; seeing one habit's explanation must not consume another habit's first visit.
-  - **Later visits:** once the person has seen that explanation, start it collapsed on subsequent visits. They can
-    manually expand it whenever they want. Leaving it open once must not make it default to open forever.
-  - Record first-view state across normal navigation and app relaunches. Switching dates/periods or rebuilding a
-    view is not a new first visit. Do not automatically collapse it immediately during the first visit; the request
-    is to change the default on the next visit.
-  - Use the exact context of the explanation when implementing this: the applicable habit page or Progress view.
-    Cover every instance of this accordion, and document the state scope so it does not repeat unexpectedly or
-    stay closed for a context the person has never seen. Reset/reinstall and cross-device state policy was not
-    specified by the user.
-  - Verify first visit open → next visit closed → manual reopening works, independently for the relevant habits
-    and Progress ranges. This task must remain separate from card padding and other visual redesigns.
-  - **The user's words, 5 Oct:** "It should be open only for the very first time; everywhere else, closed."
-  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): open by
-    itself only on the first visit to each habit's page and each Progress range; folded on later visits, a tap opens
-    it, never folds during a visit; kept across launches. Tests: pending.
-
-- [ ] **26. History: fix the unreadable Add Entry button.** Added 4 October 2026; a readability issue independent of
-  the action-placement research in item 27.
-  - The user observes a white/light-gray button background with white text, making Add Entry illegible. Verify the
-    current rendered appearance and fix the contrast in the actual button states.
-  - Check light and dark mode and the real iPhone; the label must stay readable. Preserve the action's function.
-    Moving the button to another location alone does not fix its text/background contrast.
-  - Add Entry is appropriate in History; the user explicitly distinguishes this from the Today sheet problem in
-    item 22. Do not solve this by removing History's Add Entry action.
-  - **The user's words, 5 Oct:** "Apart from being unreadable, they look a little big: they aren't primary actions,
-    they're secondary. People use them rarely, but for those who do, they should be good."
-  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and
-    Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>) §5): the cause was Add Entry's
-    filled style, white text on dark mode's off-white ink. Add Entry and Go to Date are now native bordered buttons at
-    their own width (ink text on a light ink tint, readable in both modes), regular size; Notes' Add Note the same.
-    Then (the user, 5 Oct: "Add Note was bigger than a cramped search bar; do we need search there or a full-page
-    search?"): Notes keeps an inline search, now across the full width, with Add Note on its own row under it, one
-    shared button style with History. Tests: pending (`HabitPageUITests.testHistoryFlows`, `testNotesFlows`, the
-    dark pictures).
-
-- [ ] **18. Completion feedback for every kind of habit.** (added 3 Oct 2026) A check-off plays the sound (and haptic)
-  when it's done, which is nice; timed habits, amounts, checklists and others don't. Decide when each kind counts
-  as "done" for feedback (goal reached, timer reaches its goal, last step ticked) and make it consistent.
-  - **The user's words, 5 Oct, tidied:** "Overall completion only: the 4th of 4 steps; the log that crosses an amount
-    of 10, even to 11; the same for time, typed time included. Never for quit habits or Log Slip."
-  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): the store
-    decides for every log from any screen; once, on the log that makes the habit complete; a running timer at its
-    goal; never for quit habits or limits. Tests: pending (`CompletionFeedbackUITests`).
 
 - [ ] **47. Build Day details and the one-log editor from the 4 October handoff.** Added 4 October 2026, from the
   user; branch **`details-page-update`** (the user asked for a meaningfully named branch to test from). Implements
@@ -390,18 +339,6 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   - Record the reasoning and design choice before implementation. The Add Entry contrast problem must be fixed
     independently (item 26), wherever the buttons end up.
 
-- [ ] **28. Notes: research the Add Note button's placement.** Added 4 October 2026; separate from History actions.
-  - In the habit details Notes tab, Add Note is currently near the top beside the search field, in the upper area
-    the user describes as just below the progress bar. Assess whether it should stay there or move to a sticky
-    bottom action instead.
-  - Research a native, discoverable and easy-to-reach arrangement that preserves search and note browsing. Check
-    scrolling, safe-area spacing and keyboard behavior; a bottom action must not obscure notes or search results.
-  - Record the recommended placement before implementing it. The user has asked for research rather than deciding
-    that both History and Notes must use bottom controls.
-  - **Built, 5 Oct 2026, with item 26** (branch `claude/timer-swipe-limits-and-fixes`): the 4 Oct handoff's
-    recommendation (no sticky bottom bar; search across the full width, Add Note on its own row under it), at the
-    user's request that Add Note match History's buttons. Tests: pending (`HabitPageUITests.testNotesFlows`).
-
 - [ ] **29. Redesign the Overall Record card.** Added 4 October 2026.
   - The Overall Record card in the habit details Progress tab does not look good to the user; improve its visual
     hierarchy and presentation. Record any applicable equivalent in the main Progress page when assessing scope.
@@ -500,6 +437,79 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
   after release.
 
 ## Completed
+
+- [x] **28. Notes: research the Add Note button's placement.** Added 4 October 2026; separate from History actions.
+  - In the habit details Notes tab, Add Note is currently near the top beside the search field, in the upper area
+    the user describes as just below the progress bar. Assess whether it should stay there or move to a sticky
+    bottom action instead.
+  - Research a native, discoverable and easy-to-reach arrangement that preserves search and note browsing. Check
+    scrolling, safe-area spacing and keyboard behavior; a bottom action must not obscure notes or search results.
+  - Record the recommended placement before implementing it. The user has asked for research rather than deciding
+    that both History and Notes must use bottom controls.
+  - **Built, 5 Oct 2026, with item 26** (branch `claude/timer-swipe-limits-and-fixes`): the 4 Oct handoff's
+    recommendation (no sticky bottom bar; search across the full width, Add Note on its own row under it), at the
+    user's request that Add Note match History's buttons. Tests: pending (`HabitPageUITests.testNotesFlows`).
+  - [x] **Tested on GitHub** (run `37826155392`, 8 Oct 2026): `testNotesFlows`, `testNotesFoldByMonthLikeHistory` and `testNoteViewEditAndDelete`
+    passed. iPhone check (U9): still to do.
+
+- [x] **26. History: fix the unreadable Add Entry button.** Added 4 October 2026; a readability issue independent of
+  the action-placement research in item 27.
+  - The user observes a white/light-gray button background with white text, making Add Entry illegible. Verify the
+    current rendered appearance and fix the contrast in the actual button states.
+  - Check light and dark mode and the real iPhone; the label must stay readable. Preserve the action's function.
+    Moving the button to another location alone does not fix its text/background contrast.
+  - Add Entry is appropriate in History; the user explicitly distinguishes this from the Today sheet problem in
+    item 22. Do not solve this by removing History's Add Entry action.
+  - **The user's words, 5 Oct:** "Apart from being unreadable, they look a little big: they aren't primary actions,
+    they're secondary. People use them rarely, but for those who do, they should be good."
+  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and
+    Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>) §5): the cause was Add Entry's
+    filled style, white text on dark mode's off-white ink. Add Entry and Go to Date are now native bordered buttons at
+    their own width (ink text on a light ink tint, readable in both modes), regular size; Notes' Add Note the same.
+    Then (the user, 5 Oct: "Add Note was bigger than a cramped search bar; do we need search there or a full-page
+    search?"): Notes keeps an inline search, now across the full width, with Add Note on its own row under it, one
+    shared button style with History. Tests: pending (`HabitPageUITests.testHistoryFlows`, `testNotesFlows`, the
+    dark pictures).
+  - [x] **Tested on GitHub** (run `37826155392`, 8 Oct 2026): `HabitPageUITests` 10/10, `testHistoryFlows`, `testNotesFlows` and
+    `testPicturesDark` included. The dark and light pictures show Add log and Go to Date (the 7 Oct names, U21) as
+    readable bordered buttons at their own width, and Add note on its own row. iPhone check (U9): still to do.
+
+- [x] **25. “What the squares mean”: expand automatically only on the first visit to each explanation context.**
+  **Superseded by item 57 (the user, 6 Oct 2026): one app-wide state, folded everywhere once folded anywhere.**
+  Added 4 October 2026; a standalone behavior task covering both the habit details page and the main Progress page.
+  - **First visit:** the accordion must already be open when the person first opens the particular habit's details
+    page and reaches its explanation, so the meaning of the squares is visible without discovering an extra tap.
+  - **Main Progress:** apply the same behavior to the first visit to Week, Month, Year, and any other relevant view
+    with this explanation. Seeing Week's explanation must not incorrectly suppress a first-time explanation in
+    Month or Year; seeing one habit's explanation must not consume another habit's first visit.
+  - **Later visits:** once the person has seen that explanation, start it collapsed on subsequent visits. They can
+    manually expand it whenever they want. Leaving it open once must not make it default to open forever.
+  - Record first-view state across normal navigation and app relaunches. Switching dates/periods or rebuilding a
+    view is not a new first visit. Do not automatically collapse it immediately during the first visit; the request
+    is to change the default on the next visit.
+  - Use the exact context of the explanation when implementing this: the applicable habit page or Progress view.
+    Cover every instance of this accordion, and document the state scope so it does not repeat unexpectedly or
+    stay closed for a context the person has never seen. Reset/reinstall and cross-device state policy was not
+    specified by the user.
+  - Verify first visit open → next visit closed → manual reopening works, independently for the relevant habits
+    and Progress ranges. This task must remain separate from card padding and other visual redesigns.
+  - **The user's words, 5 Oct:** "It should be open only for the very first time; everywhere else, closed."
+  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): open by
+    itself only on the first visit to each habit's page and each Progress range; folded on later visits, a tap opens
+    it, never folds during a visit; kept across launches. Tests: pending.
+  - [x] **Closed by item 57** (one app-wide state replaced the per-place rule); its tests passed on GitHub (run `37826155392`, 8 Oct 2026):
+    `HabitPageUITests.testSquaresKeyFoldedOnceIsFoldedEverywhere` and `WeekCardsUITests.testSquaresKeyFoldedOnceIsFoldedEverywhere`.
+
+- [x] **18. Completion feedback for every kind of habit.** (added 3 Oct 2026) A check-off plays the sound (and haptic)
+  when it's done, which is nice; timed habits, amounts, checklists and others don't. Decide when each kind counts
+  as "done" for feedback (goal reached, timer reaches its goal, last step ticked) and make it consistent.
+  - **The user's words, 5 Oct, tidied:** "Overall completion only: the 4th of 4 steps; the log that crosses an amount
+    of 10, even to 11; the same for time, typed time included. Never for quit habits or Log Slip."
+  - **Built, 5 Oct 2026** (branch `claude/timer-swipe-limits-and-fixes`; checklist [Completion Sound, Squares Key and Notes Months — 5 Oct](<Completion Sound, Squares Key and Notes Months — 5 Oct.md>)): the store
+    decides for every log from any screen; once, on the log that makes the habit complete; a running timer at its
+    goal; never for quit habits or limits. Tests: pending (`CompletionFeedbackUITests`).
+  - [x] **Tested on GitHub** (run `37826155392`, 8 Oct 2026, cloud session): `CompletionFeedbackUITests` passed on the current branch (`main` plus
+    items 49 and 53). iPhone check (U9): hear and feel each kind complete once.
 
 - [x] **53. `GroupsUITests.testGroupOrderIsThePersonsOwn` fails on `main` now and then (three nights in a row): the dragged group doesn't move.**
   Added 6 October 2026 by Claude (Claude Code); found by the full test for items 50–52, not by the user. Not caused by
