@@ -233,6 +233,17 @@ that merge). The other agent works on its own branches (`sync-*`); never touch t
     87.8 / 73.5. **So scrolling, typing and Progress are not slower on `main` than on 4 Oct**: the 5 Oct numbers were
     separate runs on different machines (L22). **What is slower: the +1 tap** (+1 alone 1.5 / 3.4 / 15.5; +1 and day
     ‹ › 62.3 / 83.7 / 123.8), and it came after `c9909e6`. Next: bisect `c9909e6..e3afd6c` with `tap-today`.
+  - **Second bisect** (run `37788595991`, `tap-today`, three rounds): base `396c40e` / `3530e98` (completion sound) /
+    `a3d33bf` (6 Oct week goals) / `84d42ef` (7 Oct redesign) / `main`: +1 alone 3.6 / 2.6 / 1.1 / 1.2 / 1.1 (so the first
+    run's 15.5 was one bad round); +1 and day ‹ › 54.5 / 53.1 / 55.4 / 57.0 / **115.6**; day ‹ › alone 59.4 / 65.5 / 62.9 /
+    61.5 / 90.7. Only the last commit, `e3afd6c` (widget taps, 8 Oct), differs. Its timed work showed 14 widget
+    publications inside the window (0 before): the locked delay went from 2 s to 0.5 s (W11), and a cycle of +1, ‹, ›
+    takes 1.05 s.
+  - **Third** (run `37797217908`, a speed-run switch `-perf-no-widget-publish` beside `main`): +1 and day ‹ › `84d42ef`
+    52.0 / `main` 95.2 / `main` without publication 103.8. **So the publication isn't the cost.** The same binary with
+    and without the switch also measured habit-form typing 57.5 against 22.6 and Progress paging 148 against 111 in
+    scenarios where no publication happened at all: on that machine, identical work varied 2.5×. Two rounds aren't
+    enough to judge a 2× difference; the next run takes four.
 
 - [ ] **47. Build Day details and the one-log editor from the 4 October handoff.** Added 4 October 2026, from the
   user; branch **`details-page-update`** (the user asked for a meaningfully named branch to test from). Implements
