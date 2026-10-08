@@ -651,6 +651,35 @@ Their placement records scope and priority; implementation has not started.
     Lock Screen designs show counts only; the code hides everything).
   - Evidence and the widget side: [Implementation Spec §9](<../../../Research/Research Reports/Home Screen and Visual Design/Home Screen Cards and Widgets/Widgets/Implementation Spec — Every Widget.md#9-privacy-app-lock-and-whats-next>),
     [App Lock — Private Without Lock-outs](<../../../Research/Research Reports/Settings and Help/App Lock — Private Without Lock-outs.md>).
+  - [x] **Research: what people expect (the user, 8 Oct 2026: "first, let's do research on what people expect and how
+    it should work … on the iPhone").** Done 8 Oct 2026 by Claude:
+    [App Lock and Widget Privacy — What People Expect](<../../../Research/Research Reports/Settings and Help/App Lock and Widget Privacy — What People Expect.md>).
+    3,861 reviews read (2,205 on topic) plus Apple's documentation. Found gaps besides the widgets: reminders, Siri
+    ("What's left" reads names, also on a locked phone) and the Live Activity name habits while App Lock is on; no UI
+    test covers the lock.
+  - [ ] **The user's decisions** (report §6): widgets while locked (discreet / hidden / a choice); separate code or the
+    iPhone's own; when it locks; notifications, Siri and Live Activity while locked; locking some habits only.
+    - [x] **1. Widgets while App Lock is on: Discreet** (the user, 9 Oct 2026). Hide habit names, task titles and
+      section names (also in VoiceOver); keep icons, colours, fills, counts, "N of M done" and the ✓ / + / ▶ buttons, which
+      keep logging; task widgets show "N tasks left"; anything that opens the app meets the lock first. Replaces today's
+      "Content hidden". Definition per widget: report §6a. Widgets are locked (U28): this is the user's say-so for this change.
+      **The user, 9 Oct 2026:** agents may change the widget code for this, but must preserve the near-instant logging
+      (the card changes at once, work happens behind), data reliability (every tap saved once, in order) and syncing
+      without opening the app (W1–W18, D12). Report §6b lists exactly what to keep and how to check it.
+      **Also decided 9 Oct:** ≡ → Widgets' "Hide widget content" becomes "Hide names on widgets" (same discreet look,
+      works without App Lock); App Lock turns it on and holds it on (greyed, "On while App Lock is on").
+    - [x] **2. Separate code: offered as an option** (the user, 9 Oct 2026). Default stays the iPhone's Face ID and passcode;
+      Privacy offers "Face ID and an Often Enough code": the phone's passcode never opens it; the code lives in this
+      iPhone's Keychain only (survives reinstall, never syncs); Face ID resets a forgotten code; a changed Face ID / Touch ID
+      set (someone added their face) stops Face ID until the code is typed; otherwise a **24-hour** delayed reset with the
+      iPhone passcode, shown on the lock screen and cancellable; no hints or questions; nothing deleted. Report §6c.
+      After a Face ID / Touch ID change, typing the code must not silently re-trust the new set (it may include someone
+      else's face): ask "Use Face ID again" / "Keep Face ID off" and point to Settings → Face ID & Passcode (§6c, point 4).
+    - [x] 3. When it locks (decided 9 Oct 2026): every time by default; Privacy offers Ask again: Immediately / After 1 minute / After 15 minutes; locking the iPhone always locks the app at once; nothing past 15 minutes; never asks while in front or after the iPhone's own interruptions; keeps the place and typed text; every way in waits for the unlock (report §6d).
+    - [x] 4. Names outside the app (decided 9 Oct 2026): "Hide names on widgets" becomes **Hide names outside the app** (widgets, reminders, alarms, the timer's Live Activity, Siri); App Lock turns it on and holds it on; icons, numbers and Done / + stay (+ without a unit); reminders and alarms use a new optional per-habit **"Reminder says…"** field, else "Reminder · 8:00"; Siri answers without names and per-habit phrases/suggestions are withdrawn; `hiddenPreviewsBodyPlaceholder` "Reminder" (report §6e).
+    - 5. Some habits only: **moved to Future** (the user, 9 Oct 2026); see "Lock only some habits" there.
+  - [x] **How it's shown in the app: spec written** (the user, 9 Oct 2026: "it should be communicated in UI properly, like app asks separate code when Face ID is changed and about cooling period … everything should be in privacy and security tab and remove widgets tab"). [Privacy & Security — What to Build](<../Specs/Privacy & Security — What to Build.md>): ≡ → Privacy becomes **Privacy & Security**; the **Widgets** page is removed, its switch moves to Privacy & Security and its guide (kinds, adding, choosing a habit, the update problem with Try again) moves to Help → Widgets, where a widget's Choose a habit link now goes (U5); every message for the code, Face ID changed, the 24-hour reset, wrong codes, Ask Again, hidden names and Reminder Says.
+  - [ ] Build, then check on the iPhone (U9): every door through the lock, drafts kept, Stolen Device Protection.
 
 - [ ] **12. Daily Reflection: research first, then build** (added 3 Oct 2026; maybe the next build, not decided). The
   first **dedicated tracker** (see "Future" below): a mood tracker combined with journaling, a separate thing from
@@ -694,6 +723,12 @@ Their placement records scope and priority; implementation has not started.
   after.
 - [ ] **A Library** to add dedicated trackers and guided habits from (or wherever research says they belong). Only
   after release.
+
+- [ ] **Lock only some habits** (from item 58, decision 5; moved here by the user, 9 Oct 2026). Lock single habits
+  or a section instead of the whole app. Users show it strongly in notes apps (315 reviews want single notes locked) and
+  weakly in habit apps (24, mostly diary sections):
+  [App Lock and Widget Privacy — What People Expect](<../../../Research/Research Reports/Settings and Help/App Lock and Widget Privacy — What People Expect.md>) §6, point 5.
+  Revisit if diaries or the Daily Reflection (item 12) arrive.
 
 ## Completed
 

@@ -1,0 +1,154 @@
+{
+ "codes": {
+  "113": {
+   "code": "W_CHOOSE",
+   "id": "11818664634",
+   "app": "23. Streaks - The habit-forming to-do list",
+   "rating": 4,
+   "store": "A"
+  },
+  "134": {
+   "code": "ACCIDENT",
+   "id": "12815659732",
+   "app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+   "rating": 4,
+   "store": "A"
+  },
+  "139": {
+   "code": "PRIV_WORRY",
+   "id": "13490487714",
+   "app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+   "rating": 5,
+   "store": "A"
+  },
+  "146": {
+   "code": "W_VISIBLE_SENS",
+   "id": "14221259732",
+   "app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+   "rating": 5,
+   "store": "A"
+  },
+  "147": {
+   "code": "W_VISIBLE_SENS",
+   "id": "13668732705",
+   "app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+   "rating": 5,
+   "store": "A"
+  },
+  "149": {
+   "code": "W_VISIBLE_SENS",
+   "id": "13586082674",
+   "app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+   "rating": 5,
+   "store": "A"
+  },
+  "154": {
+   "code": "W_VISIBLE_SENS",
+   "id": "12083646427",
+   "app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+   "rating": 5,
+   "store": "A"
+  },
+  "157": {
+   "code": "W_VISIBLE_SENS",
+   "id": "11046052840",
+   "app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+   "rating": 5,
+   "store": "A"
+  },
+  "159": {
+   "code": "W_VISIBLE_SENS",
+   "id": "7820513357",
+   "app": "3. Days Since - Quit Habit Tracker - Sober Streak Day Counter",
+   "rating": 5,
+   "store": "A"
+  },
+  "197": {
+   "code": "W_LEAK",
+   "id": "6749919770",
+   "app": "52. ShineDay - Habit Tracker - Micro Habits, ADHD & Focus",
+   "rating": 5,
+   "store": "A"
+  },
+  "259": {
+   "code": "W_LEAK",
+   "id": "12192022296",
+   "app": "7. Habit Tracker - HabitKit - Streaks & Accountability",
+   "rating": 4,
+   "store": "A"
+  },
+  "352": {
+   "code": "W_NAMELESS",
+   "id": "fe889ac7-0013-4acd-bfde-8e31356fac74",
+   "app": "126. To Do List",
+   "rating": 5,
+   "store": "P"
+  },
+  "354": {
+   "code": "W_CHOOSE",
+   "id": "b825fad9-d658-4d67-8a7c-4bb690fe9520",
+   "app": "126. To Do List",
+   "rating": 5,
+   "store": "P"
+  },
+  "367": {
+   "code": "W_CHOOSE",
+   "id": "8ee28621-fceb-4656-b059-5d4ae94e23ac",
+   "app": "126. To Do List",
+   "rating": 4,
+   "store": "P"
+  },
+  "419": {
+   "code": "W_CHOOSE",
+   "id": "9f0008a3-238b-4291-9538-fa61e7556b14",
+   "app": "126. To Do List",
+   "rating": 4,
+   "store": "P"
+  },
+  "498": {
+   "code": "W_NAMELESS",
+   "id": "ae0516c4-7df4-4564-ba29-f8cc89bd5724",
+   "app": "3. Loop Habit Tracker",
+   "rating": 4,
+   "store": "P"
+  },
+  "717": {
+   "code": "W_CHOOSE",
+   "id": "13384692547",
+   "app": "1. Reminders - Don\u2019t forget. Use Reminders",
+   "rating": 4,
+   "store": "N"
+  },
+  "728": {
+   "code": "ACCIDENT",
+   "id": "11189518410",
+   "app": "1. Reminders - Don\u2019t forget. Use Reminders",
+   "rating": 2,
+   "store": "N"
+  },
+  "732": {
+   "code": "ACCIDENT",
+   "id": "10404306156",
+   "app": "1. Reminders - Don\u2019t forget. Use Reminders",
+   "rating": 2,
+   "store": "N"
+  },
+  "818": {
+   "code": "W_NAMELESS",
+   "id": "10247684235",
+   "app": "4. Apple Health",
+   "rating": 3,
+   "store": "N"
+  },
+  "809": {
+   "code": "WANTS_VISIBLE",
+   "id": "8143204056",
+   "app": "2. Calendar",
+   "rating": 1,
+   "store": "N"
+  }
+ },
+ "screened": 917,
+ "read_closely": 342,
+ "note": "0-199 read in full; 200+ read only if strict_w.py kept them"
+}

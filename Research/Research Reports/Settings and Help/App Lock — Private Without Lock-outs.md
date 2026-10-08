@@ -1,5 +1,7 @@
 # App Lock — Private Without Lock-outs
 
+> **Superseded as evidence (8 Oct 2026)** by [App Lock and Widget Privacy — What People Expect](<App Lock and Widget Privacy — What People Expect.md>): every candidate review read (3,861; 2,205 on topic) instead of a keyword sample. The design points below still hold except the widget: the app shipped "Content hidden" rather than the discreet widget this report recommended, and that choice is reopened there.
+
 Written by Claude (Claude Code), 30 September 2026. A lock for the iOS app. Ledger cards [C017](<../Feature Ledger.md#c017>) (passcode lock: 15 apps, Strong, "decide whether needed at all") and [C096](<../Feature Ledger.md#c096>) (privacy and discretion stack: Face ID lock, no account, discretion; "category-critical for recovery users on family phones"). The app already keeps everything on the phone with no account; this adds the lock.
 
 ## Answer
