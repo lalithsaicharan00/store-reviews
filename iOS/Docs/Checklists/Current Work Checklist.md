@@ -500,15 +500,24 @@ Their placement records scope and priority; implementation has not started.
   - [ ] Tests on GitHub: the core and server tests run with `[ios-ci] [ios-sync]` (Core storage and migrations,
     SyncUITests).
 
-- [ ] **73. Getting your data back after a reinstall: two gaps found 8 Oct (decide, then build).**
-  - **The welcome screen has no "sign in to get my habits back"**, only "Restore from a Backup File"; a returning user
-    must skip the welcome and find ≡ → Backup & Sync → Account. Relates to item 3 (account up front).
-  - **A reinstalled app looks signed in but doesn't sync** until the person signs out and in: the Keychain keeps the
-    session, while the "has Plus" and account settings are gone with the app. Options: restore automatically on launch
-    (refresh the session at once, which runs the full download), or forget the old session on a fresh install. Needs
-    the user's decision; research what people expect (W2).
-
 ## Planned improvements — build later
+
+
+- [ ] **73. Onboarding, and getting everything back for someone returning (build later).** Added 8 October 2026, from
+  the user: "we need to improve the onboarding experience. As well as in the onboarding, who has already the account,
+  … once you log in, everything should get back again. You don't have to … go to backup and sign out and sign in …
+  Even if they are using just iCloud … we will work on it later." Found during item 72's reinstall test.
+  - **The onboarding experience overall** needs improving (separate from the restore flow below; see
+    [Onboarding and Help](<Onboarding and Help.md>)).
+  - **Someone who already has an account:** the welcome screen offers only "Restore from a Backup File". Add a clear
+    way to sign in there; once signed in, everything comes back by itself (the full download from item 72), with no
+    trip to ≡ → Backup & Sync → Account.
+  - **A reinstalled app that still looks signed in** (the Keychain keeps the session) must not need Sign Out and Sign In
+    to restore: either restore automatically on launch or ask once, clearly. Today it stays empty until the person
+    signs out and back in.
+  - **Someone using only iCloud (no account):** on a new install, offer to bring back their habits from the iCloud
+    backup just as simply (iCloud backup is waiting for the Apple Developer account, `BackupFeatures.iCloudBackup`).
+  - Research what people expect before building (W2); relates to item 3 (account up front) and Rulebook D4/D5/D14.
 
 - [ ] **36. The Edit Entry screen: improve its overall design.** Added 4 October 2026, from the user: "We need to try
   to improve it, the overall design and everything, so that it looks good."
