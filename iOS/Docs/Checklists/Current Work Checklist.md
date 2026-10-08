@@ -18,7 +18,7 @@ existing tests run. Recording an issue does not authorize implementing it or sta
 ## How to maintain this checklist
 
 - Add recent feedback and newly found issues here. Keep original item numbers stable so linked specs and evidence
-  still resolve; give new items the next unused number (currently 71).
+  still resolve; give new items the next unused number (currently 72).
 - Record the symptom, expected behavior and evidence for an issue; reproduce it on the current code before fixing.
   Record implementation progress separately from testing and the user's device review.
 - Tick an item when it's built and its tests have passed on GitHub (the user, 5 Oct 2026: "implementation and testing
@@ -456,6 +456,25 @@ Their placement records scope and priority; implementation has not started.
     as the Clock app's alarms do; apps can't change it.
   - [ ] Tests on GitHub: `[ios-ci] [ios-sync]` now adds RemindersUITests and PlacementUITests (which runs the
     reminder planning checks).
+
+- [ ] **71. VERY IMPORTANT, PENDING: test sync end to end on a second real device.** Added 8 October 2026, from the user:
+  "in the main, as in very important thing, syncing … on one iPhone, you have tested it. In the other iPhone, like in
+  other devices, we have to test it. So it is pending." Waiting for a second device (none available on 8 Oct).
+  - **Proven so far (8 Oct, items 67–70):** on the user's iPhone 16, every way of logging (app, Home Screen and Lock
+    Screen widgets, timers, the Live Activity's Pause, reminder and alarm buttons) reaches the dev server within seconds
+    without opening the app; failed syncs wait and go later; the account's export matched the phone exactly (720/720
+    logs, 31/31 habits). Server → another device is proven only on GitHub's simulators (`SyncUITests.
+    testChangesTravelBetweenThisPhoneAndAnotherDevice`, two simulated phones, one test account, the real dev server).
+  - **To do on a second iPhone or iPad** (Debug build, the same Apple ID, Plus on dev, item 68):
+    - [ ] Sign in on the second device: everything from the first appears (habits, logs, notes, order, settings).
+    - [ ] Log on the first (app, widget, reminder) → it appears on the second, with the app open and from closed.
+    - [ ] Log on the second → it appears on the first, and the first's widgets update.
+    - [ ] The same habit changed on both while one is offline → both end the same, nothing lost (merge rules, D3).
+    - [ ] Done on one device clears that habit's reminders and alarms on the other ("done means gone everywhere").
+    - [ ] Delete and archive on one → the same on the other; undo works.
+    - [ ] `-sync-verify` on both devices: each matches the server.
+  - **Also pending, one device:** reinstall and sign in → every habit and log comes back (restore, D5); the nightly
+    server snapshot of the user's account (due 9 Oct 02:00 UTC, `snapshots/<account>/` in `often-enough-backups-dev`).
 
 ## Planned improvements — build later
 
