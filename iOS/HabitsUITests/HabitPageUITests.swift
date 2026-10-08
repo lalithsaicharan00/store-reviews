@@ -79,6 +79,21 @@ final class HabitPageUITests: XCTestCase {
         return element.exists && element.isHittable
     }
 
+    /// Drags the page 250 pt at a time until the element's top edge is in the screen's upper part (below the tabs), so a
+    /// card taller than the screen shows its top, not its middle.
+    @discardableResult
+    private func bringTopIntoView(_ element: XCUIElement) -> Bool {
+        let middle = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.6))
+        for _ in 0..<30 {
+            let top = element.exists ? element.frame.minY : .infinity
+            if top > 180 && top < 420 { return true }
+            let up = top >= 420
+            middle.press(forDuration: 0.05, thenDragTo: middle.withOffset(CGVector(dx: 0, dy: up ? -250 : 120)))
+            sleep(1)
+        }
+        return false
+    }
+
     private func topOfPage() {
         for _ in 0..<12 { app.swipeDown(velocity: .fast) }
         sleep(1)
@@ -328,6 +343,25 @@ final class HabitPageUITests: XCTestCase {
         app.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: frame.minX + 12 + 20 + 12, dy: frame.minY + 120)).tap()
         sleep(1)
         shot("hp-year-1-selected")
+    }
+
+    /// The Week, Month and Year cards' spacing (Current Work 31, 8 Oct 2026): each card's title with the card's full top
+    /// padding, in light, dark and a large accessibility text size. Pictures of each card's top.
+    func testPeriodCardSpacing() {
+        for (name, theme, size) in [("light", "light", ""), ("dark", "dark", ""), ("large-text", "light", "UICTContentSizeCategoryAccessibilityL")] {
+            app.terminate()
+            app.launchArguments = ["-uitest", "-year-demo", "-appearance.theme", theme]
+                + (size.isEmpty ? [] : ["-UIPreferredContentSizeCategoryName", size])
+            app.launch()
+            XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
+            open("Water")
+            tab("Progress")
+            for card in ["habit-progress-week", "habit-progress-month", "habit-year-grid"] {
+                let element = app.descendants(matching: .any)[card]
+                XCTAssertTrue(bringTopIntoView(element), "\(card)'s top on screen (\(name))")
+                shot("hp-cards-\(name)-\(card)")
+            }
+        }
     }
 
     /// Every day number, 1 to 31, beside its row (Current Work 32, 8 Oct 2026): light, dark and a large accessibility

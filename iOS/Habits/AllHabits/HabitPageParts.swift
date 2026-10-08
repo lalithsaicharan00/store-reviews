@@ -107,9 +107,11 @@ extension View {
             .font(.subheadline.weight(.semibold))
     }
 
-    /// A card on the habit page: 16-point padding, the app's card colour and corner (as Progress's cards).
-    func pageCard(padding: CGFloat = WeekSpacing.card) -> some View {
-        self.padding(padding)
+    /// A card on the habit page: 16-point padding, the app's card colour and corner (as Progress's cards). `vertical`
+    /// sets the top and bottom apart from the sides (Year in Pixels: narrower sides, the same top and bottom).
+    func pageCard(padding: CGFloat = WeekSpacing.card, vertical: CGFloat? = nil) -> some View {
+        self.padding(.horizontal, padding)
+            .padding(.vertical, vertical ?? padding)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
     }

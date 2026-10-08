@@ -437,8 +437,9 @@ private struct PeriodHeader: View {
         }
         .buttonStyle(.borderless)
         .font(.body.weight(.semibold))
+        // The ‹ › keep 44-pt targets and reach the card's edge; the title keeps the card's whole top padding. A -8 here
+        // pulled "Week", "Month" and "Year in Pixels" up against the card's top edge (Current Work 31, 8 Oct 2026).
         .padding(.trailing, -12)
-        .padding(.vertical, -8)
     }
 }
 
@@ -548,7 +549,8 @@ private struct HabitYearCard: View {
                 selection(data, today: today)
             }
         }
-        .pageCard(padding: 12)
+        // 12 at the sides so twelve month columns fit the iPhone SE; 16 above and below, as the Week and Month cards.
+        .pageCard(padding: 12, vertical: WeekSpacing.card)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("habit-year-grid")
         .onAppear { load(key) }
