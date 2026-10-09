@@ -1,0 +1,90 @@
+360 NR
+361 PURCHASE_LOST RESTORE_FAIL
+362 NR
+363 ACCOUNT_FIND FIRST_RUN_BAD | there was no way to manage my account or log in anywhere
+364 WRONG_DOOR ACCOUNT_FIND | I logged in with wrong email and couldn&#39;t log out to get logged onto correct account
+365 ONBOARD_AGAIN NO_LOGIN_ENTRY | I couldn’t bypass this part and simply login agai
+366 NR
+367 NR
+368 PURCHASE_LOST
+369 PURCHASE_LOST
+370 ONBOARD_AGAIN LOGIN_FRICTION | All it does is take me to the quiz again.
+371 RESTORE_FAIL MANUAL_TRAP | the most recent back up was over a month ago
+372 RESTORE_FAIL
+373 MOVE_UNCLEAR NEW_START | it was ridiculously complicated and ended up in me making a whole new account
+374 ONBOARD_AGAIN | it treats me like I’ve never seen the app before
+375 LOGIN_FRICTION
+376 NO_LOGIN_ENTRY PURCHASE_LOST | Biggest UX issue is there is no login page!
+377 NR
+378 NO_LOGIN_ENTRY | there’s no option to login... only an option to create an account
+379 NR
+380 MOVE_UNCLEAR PURCHASE_LOST
+381 SIGNIN_EMPTY NEVER_KNEW | it said that no data could be found
+382 LOGIN_FRICTION
+383 NR
+384 ASKED_RESTORE RESTORE_FAIL | when I recently tried to open the app it asked me to restore my progress. I wanted to start my progress over
+385 NR
+386 LOGIN_FRICTION PURCHASE_LOST
+387 NR
+388 NR
+389 NR
+390 NR
+391 SIGNIN_EMPTY PURCHASE_LOST | I downloaded the app again and it didn’t recognize my info
+392 PURCHASE_LOST SUPPORT
+393 RESTORE_FAIL PURCHASE_LOST
+394 ASKED_RESTORE RESTORE_FAIL | Upon opening it gives the option to “restore” but every time I press the restore button...nothing happens.
+395 RESTORE_FAIL SUPPORT
+396 ACCOUNT_FIND WRONG_DOOR | the app tells me that I’m starting a new account. So, I stop signing in bc I don’t want to delete everything. Am I signed in or not?
+397 LOGIN_FRICTION NEW_START
+398 SIGNIN_EMPTY | Fabulous app isn’t recognizing my existing email or account.
+399 NR
+400 LOGIN_FRICTION SUPPORT
+401 LOGIN_FRICTION PURCHASE_LOST
+402 NR
+403 FIRST_RUN_BAD
+404 NR
+405 NO_LOGIN_ENTRY PURCHASE_LOST SUPPORT | I found that there is no option to login on the app
+406 FIRST_RUN_BAD WRONG_DOOR | Then it said I didn’t have an account. I created an account, did another survey
+407 NO_LOGIN_ENTRY PURCHASE_LOST | there’s no sign in option
+408 PURCHASE_LOST SUPPORT
+409 NOACC_PRAISE | No subscription no adds no logins.
+410 PURCHASE_LOST
+411 FIRST_RUN_GOOD | you do it once and you won’t have to again!
+412 SIGNIN_EMPTY | I logged in, nothing, no levels
+413 NOACC_PRAISE | It&#39;s simple, no sign in, no ads.
+414 NR
+415 LOST_NOWAY
+416 LOST_NOWAY EXPECT_SIGNIN | I can&#39;t log into my account
+417 MANUAL_TRAP
+418 NR
+419 NOACC_PRAISE | No login or signup required either.
+420 PURCHASE_LOST | that feature is very hidden, most apps have a button right on the settings page
+421 PURCHASE_LOST
+422 MANUAL_TRAP ICLOUD_FAIL | Every other app I use allows its data to be backed up automatically via iCloud.
+423 PURCHASE_LOST
+424 NR
+425 PURCHASE_LOST
+426 PURCHASE_LOST
+427 PURCHASE_LOST
+428 NR
+429 FIRST_RUN_BAD
+430 FIRST_RUN_BAD
+431 PURCHASE_LOST SUPPORT
+432 PURCHASE_LOST
+433 PURCHASE_LOST
+434 NR
+435 ICLOUD_FAIL RESTORE_FAIL
+436 NR
+437 PURCHASE_LOST SUPPORT
+438 PURCHASE_LOST SUPPORT
+439 PURCHASE_LOST
+440 PURCHASE_LOST ICLOUD_FAIL
+441 PURCHASE_LOST
+442 PURCHASE_LOST
+443 PURCHASE_LOST
+444 PURCHASE_LOST
+445 PURCHASE_LOST
+446 PURCHASE_LOST
+447 NO_LOGIN_ENTRY PURCHASE_LOST | there is no login option when I downloaded the app to my new phone
+448 NR
+449 NR

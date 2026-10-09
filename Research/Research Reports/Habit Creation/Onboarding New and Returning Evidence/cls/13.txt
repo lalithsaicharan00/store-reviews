@@ -1,0 +1,90 @@
+1170 NR
+1171 LOGIN_FRICTION SUPPORT
+1172 FIRST_RUN_BAD | asked me for a review LITERALLY while I was setting up my account
+1173 LOGIN_FRICTION
+1174 LOGIN_FRICTION
+1175 NR
+1176 FORCED_ACCOUNT | Uninstalled instantly when it wanted me to make an account.
+1177 LOGIN_FRICTION
+1178 WRONG_DOOR LOGIN_FRICTION SUPPORT | I signed up with Facebook eons ago, but that isn't an option on the current login page.
+1179 NR
+1180 NR
+1181 LOGIN_FRICTION SUPPORT
+1182 NR
+1183 ACCOUNT_FIND | You cannot log out from the app
+1184 WRONG_DOOR | I choose log in with Google and it just creates an account without warning
+1185 SIGNIN_EMPTY | I logged into it with my email as I did before then it flashed "HELLO NEW PLAYER"
+1186 NR
+1187 FIRST_RUN_BAD
+1188 LOGIN_FRICTION
+1189 FIRST_RUN_BAD
+1190 NR
+1191 NR
+1192 FIRST_RUN_BAD
+1193 NR
+1194 LOGIN_FRICTION
+1195 FIRST_RUN_BAD
+1196 NR
+1197 FIRST_RUN_BAD
+1198 LOGIN_FRICTION
+1199 LOGIN_FRICTION
+1200 LOGIN_FRICTION | when I changed my phone I couldn't have my account back
+1201 NR
+1202 NR
+1203 LOGIN_FRICTION
+1204 RESTORE_OK | I got everything back once I logged into my Premium account on the new phone. Such a relief!
+1205 RESTORE_OK | all I have to do is login on the new device and it'll transfer
+1206 LOST_NOWAY MANUAL_TRAP
+1207 MANUAL_TRAP | I cannot restore a back up to my new phone without buying a subscription
+1208 RESTORE_FAIL SUPPORT
+1209 MANUAL_TRAP
+1210 RESTORE_OK SUPPORT
+1211 RESTORE_OK | all I have to do is make sure it's backing up to google and then sign in on the new phone
+1212 MANUAL_TRAP
+1213 MANUAL_TRAP
+1214 MANUAL_TRAP | Paying to get MY OWN data back is a big red no no flag for me.
+1215 RESTORE_OK
+1216 LOST_NOWAY | I assumed the data would back up when I transferred phones, but all my lists were lost!
+1217 MANUAL_TRAP
+1218 MANUAL_TRAP
+1219 RESTORE_OK SUPPORT
+1220 RESTORE_OK | moving my hundreds of entries was child's play
+1221 LOST_NOWAY | The app transferred over to the new phone, but none of the information that I stored on the app transferred.
+1222 NO_LOGIN_ENTRY LOST_NOWAY | It doesn't look as though there is a way to login
+1223 LOST_NOWAY
+1224 NOACC_PRAISE | no login prompts or spam
+1225 RESTORE_FAIL
+1226 RESTORE_FAIL
+1227 NOACC_PRAISE FORCED_ACCOUNT | some because I was asked to create an account to go with them
+1228 RESTORE_FAIL SUPPORT
+1229 MANUAL_TRAP
+1230 RESTORE_OK
+1231 LOST_NOWAY | this was the ONLY app I couldn't restore
+1232 RESTORE_OK
+1233 LOST_NOWAY
+1234 MANUAL_TRAP
+1235 RESTORE_OK
+1236 MANUAL_TRAP
+1237 MANUAL_TRAP
+1238 RESTORE_OK
+1239 RESTORE_OK SUPPORT
+1240 RESTORE_OK
+1241 RESTORE_OK
+1242 MANUAL_TRAP
+1243 RESTORE_OK | the backup/restore feature is so simple, just as how things should be
+1244 LOST_NOWAY
+1245 NOACC_PRAISE
+1246 NR
+1247 MANUAL_TRAP
+1248 NOACC_PRAISE
+1249 RESTORE_OK
+1250 RESTORE_OK SUPPORT
+1251 MANUAL_TRAP
+1252 NR
+1253 LOST_NOWAY
+1254 NR
+1255 NR
+1256 RESTORE_FAIL MANUAL_TRAP
+1257 NO_LOGIN_ENTRY RESTORE_FAIL | Has no sign in option only export and the file won't open
+1258 MOVE_UNCLEAR SUPPORT
+1259 RESTORE_FAIL

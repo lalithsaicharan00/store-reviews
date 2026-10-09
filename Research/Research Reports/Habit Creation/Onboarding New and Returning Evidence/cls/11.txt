@@ -1,0 +1,90 @@
+990 LOGIN_FRICTION PURCHASE_LOST
+991 LOGIN_FRICTION SUPPORT
+992 SIGNIN_EMPTY PURCHASE_LOST | it claims my account doesn't exist
+993 SIGNIN_EMPTY NEW_START
+994 SIGNIN_EMPTY MANUAL_TRAP | I got a new phone and signed back in. I then realized that it doesn't back up unless you have the premium version.
+995 SIGNIN_EMPTY
+996 PURCHASE_LOST SUPPORT
+997 SIGNIN_EMPTY | my email address "was not found in our database"
+998 PURCHASE_LOST SUPPORT
+999 SIGNIN_EMPTY PURCHASE_LOST | Changed phones and it tells me that I no longer have an account!
+1000 SIGNIN_EMPTY SUPPORT
+1001 LOGIN_FRICTION SIGNIN_EMPTY
+1002 LOGIN_FRICTION SUPPORT
+1003 LOGIN_FRICTION
+1004 LOGIN_FRICTION WRONG_DOOR | they have removed Google login
+1005 SIGNIN_EMPTY PURCHASE_LOST
+1006 SIGNIN_EMPTY PURCHASE_LOST
+1007 LOGIN_FRICTION
+1008 LOGIN_FRICTION
+1009 LOGIN_FRICTION PURCHASE_LOST
+1010 FIRST_RUN_BAD FORCED_ACCOUNT
+1011 LOGIN_FRICTION
+1012 PURCHASE_LOST
+1013 PURCHASE_LOST SUPPORT
+1014 FIRST_RUN_BAD
+1015 LOGIN_FRICTION
+1016 LOGIN_FRICTION SUPPORT
+1017 FIRST_RUN_BAD | it is still "setting up my account"
+1018 LOGIN_FRICTION
+1019 LOGIN_FRICTION PURCHASE_LOST
+1020 FIRST_RUN_BAD
+1021 LOGIN_FRICTION WRONG_DOOR | it never hints at realising that maybe it was taken by me
+1022 FIRST_RUN_BAD
+1023 FIRST_RUN_BAD
+1024 FIRST_RUN_BAD
+1025 PURCHASE_LOST SUPPORT
+1026 PURCHASE_LOST SUPPORT
+1027 NO_LOGIN_ENTRY | to get to the login screen I had to completely uninstall the app
+1028 PURCHASE_OK SUPPORT
+1029 PURCHASE_LOST SUPPORT
+1030 LOGIN_FRICTION SUPPORT
+1031 LOGIN_FRICTION
+1032 NR
+1033 PURCHASE_LOST SUPPORT
+1034 PURCHASE_LOST
+1035 NR
+1036 SIGNIN_EMPTY SUPPORT
+1037 SIGNIN_EMPTY | upon logging back in all habits and historical data are missing
+1038 RESTORE_OK | it almost immediately synced data from both versions in the background.  Effortless.
+1039 NO_LOGIN_ENTRY PURCHASE_LOST | No way to sign up with the account I created previously--can only create a new account.
+1040 RESTORE_FAIL PURCHASE_LOST
+1041 PURCHASE_LOST
+1042 LOST_NOWAY SUPPORT
+1043 LOGIN_FRICTION
+1044 NR
+1045 LOGIN_FRICTION SUPPORT
+1046 PURCHASE_LOST SUPPORT
+1047 LOGIN_FRICTION
+1048 LOGIN_FRICTION
+1049 SIGNIN_EMPTY PURCHASE_LOST
+1050 LOGIN_FRICTION PURCHASE_LOST
+1051 ACCOUNT_FIND
+1052 NO_LOGIN_ENTRY | no option to login and save data to account.
+1053 LOST_NOWAY | No Cloud Backup — Entire Year of Data Gone
+1054 RESTORE_FAIL EXPECT_SIGNIN | add account system in it by that we can loging in any phone and anytime
+1055 NO_LOGIN_ENTRY EXPECT_SIGNIN | There is no option to login with a account.
+1056 NOACC_PRAISE | No login info required.
+1057 MANUAL_TRAP EXPECT_SIGNIN
+1058 NOACC_PRAISE | No ads, no logins .
+1059 MANUAL_TRAP | a backup of your habits will absolutely not make it to your new phone and you have to download it
+1060 NOACC_PRAISE | no login necessary, no ads
+1061 NOACC_PRAISE | No sign in required.
+1062 RESTORE_OK MANUAL_TRAP | Seamless export and import of data when switching devices. Suggestion: auto back up feature.
+1063 MANUAL_TRAP EXPECT_SIGNIN | for data backup facility, who will do import export thing?
+1064 EXPECT_SIGNIN | in case of changing of device user can instantly get same set of data as he had in old device by login in to new device
+1065 NR
+1066 RESTORE_OK
+1067 NO_LOGIN_ENTRY
+1068 NO_LOGIN_ENTRY EXPECT_SIGNIN | there is no sign in option. So if you had to change your device your progress will be lost.
+1069 NR
+1070 NR
+1071 RESTORE_OK NOACC_PRAISE | without the need to log in (I have a bad habit of forgetting passwords)
+1072 RESTORE_FAIL EXPECT_SIGNIN
+1073 RESTORE_OK
+1074 RESTORE_FAIL SUPPORT
+1075 RESTORE_FAIL
+1076 NO_LOGIN_ENTRY | l cannot see a button to sign in .  l need to continue where l left off.
+1077 MANUAL_TRAP EXPECT_SIGNIN | Why is there no Google account sign in and backup automatically.
+1078 NR
+1079 MANUAL_TRAP | would be awesome if there was an option to have a weekly/daily backup

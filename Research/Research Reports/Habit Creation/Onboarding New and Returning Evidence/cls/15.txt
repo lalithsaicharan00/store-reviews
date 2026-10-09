@@ -1,0 +1,90 @@
+1350 LOGIN_FRICTION WRONG_DOOR | When I try to log in using existing Microsoft account, it says my info has no existing account.
+1351 LOGIN_FRICTION
+1352 LOGIN_FRICTION
+1353 LOGIN_FRICTION
+1354 LOGIN_FRICTION
+1355 NR
+1356 NR
+1357 LOGIN_FRICTION
+1358 LOGIN_FRICTION WRONG_DOOR
+1359 FORCED_ACCOUNT
+1360 NR
+1361 NR
+1362 NR
+1363 LOST_NOWAY SUPPORT
+1364 RESTORE_FAIL
+1365 NR
+1366 LOGIN_FRICTION
+1367 NR
+1368 SIGNIN_EMPTY | logging back in hasn’t restored it
+1369 LOGIN_FRICTION
+1370 NR
+1371 NR
+1372 NR
+1373 NR
+1374 NR
+1375 NR
+1376 SIGNIN_EMPTY
+1377 SIGNIN_EMPTY | when I got a new phone and logged back in, all my weight data for the last two years was gone!
+1378 SIGNIN_EMPTY
+1379 NR
+1380 NR
+1381 SIGNIN_EMPTY | Even though I logged in with my existing ID and password, all of my challenge steps were lost
+1382 NR
+1383 NR
+1384 NR
+1385 NR
+1386 NR
+1387 NR
+1388 NR
+1389 SIGNIN_EMPTY NEVER_KNEW | I was under the impression that all the health data is stored on Samsung cloud since the app was connected to my Samsung account.
+1390 NR
+1391 NR
+1392 NR
+1393 LOST_NOWAY
+1394 NR
+1395 NR
+1396 NR
+1397 NR
+1398 NR
+1399 NR
+1400 NR
+1401 NR
+1402 ICLOUD_FAIL
+1403 ICLOUD_FAIL
+1404 NR
+1405 NR
+1406 NR
+1407 NR
+1408 NR
+1409 NR
+1410 NR
+1411 ICLOUD_FAIL
+1412 ICLOUD_OK
+1413 NR
+1414 NR
+1415 NR
+1416 ICLOUD_FAIL
+1417 ICLOUD_OK
+1418 ICLOUD_FAIL
+1419 ICLOUD_FAIL
+1420 SIGNIN_EMPTY
+1421 ICLOUD_OK
+1422 NR
+1423 NR
+1424 ICLOUD_FAIL
+1425 LOST_NOWAY
+1426 ICLOUD_FAIL
+1427 ICLOUD_FAIL
+1428 ICLOUD_OK
+1429 ICLOUD_OK | Reinstall the app and synchronize with iCloud. All of your notes will back.
+1430 NR
+1431 NR
+1432 NR
+1433 NR
+1434 ICLOUD_FAIL
+1435 ICLOUD_OK AUTO_FOUND | Perfect for making notes due to it’s ability to use instantly even on a new device as long as you have your account signed in
+1436 NR
+1437 NR
+1438 NR
+1439 ICLOUD_FAIL

@@ -1,15 +1,17 @@
 import SwiftUI
 
-/// The first launch (Build Plan #62): four short screens, each skippable, then Today. Research: "Onboarding — The Name,
-/// What's Free, and a First Habit" (1 Oct 2026). Nothing here touches the network, asks for a permission or an
-/// account, or saves anything the person didn't choose.
+/// The first launch, rebuilt from the user's wireframes (Current Work 73.1, 9 Oct 2026; Figma "Onboarding — Current
+/// wireframes", one row per path). One question first, **Have you used Often Enough before?**, then either the new
+/// person's pages (what's included, what the app does, days and weeks, a first habit) or every way back (sign in,
+/// restore a backup, move from another device). Research: "Onboarding for New and Returning People — Research and
+/// Proposed Flow" (9 Oct 2026). Nothing here asks for a permission or a purchase; an account is only for someone
+/// coming back to one.
 enum Onboarding {
     /// Set once the welcome is finished, skipped or left for a restore. Kept in UserDefaults: it's about this phone.
     static let doneKey = "onboarding.done"
     static let outcomeKey = "onboarding.outcome"
 
-    /// The app's name as people see it in the welcome and help. The home-screen name changes with the bundle ID on
-    /// `claude/server-and-sync` (Architecture "App Identity"); these words already use it.
+    /// The app's name as people see it in the welcome and help.
     static let appName = "Often Enough"
 
     /// Shown on a fresh install only: never over a storage problem (the error stays visible, C235), never to someone
@@ -33,8 +35,8 @@ enum Onboarding {
     }
 }
 
-/// One idea on the last welcome screen and in Start From an Idea. It only fills in the New Habit form: the name, how
-/// it's tracked and how often. Nothing is saved until Add (C292), and amounts stay empty (Design Rules).
+/// One idea on "Your first habit" and in Start From an Idea. It only fills in the New Habit form: the name, how it's
+/// tracked and how often. Nothing is saved until Add (C292), and amounts stay empty (Design Rules).
 struct HabitIdea: Identifiable, Hashable {
     let name: String
     let type: ItemType
@@ -54,277 +56,45 @@ struct HabitIdea: Identifiable, Hashable {
         HabitIdea(name: "Less coffee", type: .cutBack, often: .everyDay, symbol: "cup.and.saucer.fill"),
     ]
 
-    /// "Check it off · 3 times a week": how it's tracked, then how often, in the form's own words.
+    /// "Check it off · 3 times a week": how it's tracked, then how often, in the form's own words (the wireframe's
+    /// shorter lines for quitting and cutting down, 9 Oct 2026).
     var line: String {
         switch type {
-        case .quit: return "Quit · counts the time since you stopped"
-        case .cutBack: return "Cut down · a limit each day"
+        case .quit: return "Quit · time since you stopped"
+        case .cutBack: return "Cut down · a daily limit"
         default: return type.title + " · " + often.phrase(hasAmount: type == .amount || type == .time, weekStart: 2)
         }
     }
 }
 
-/// The welcome. `replay` (Help → Show the Welcome Again) shows only the name and what's free, then Done.
-struct OnboardingView: View {
-    var replay = false
-    /// Called once, however it ends: finished, skipped, a habit added, or Restore chosen (`restore` true).
-    var onFinish: (_ restore: Bool) -> Void
-
-    @Environment(HabitStore.self) private var store
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var page = 0
-    @State private var forward = true
-    @State private var showNew = false
-    @State private var addedFromNew = false
-    @State private var analyticsStepTicket: AnalyticsTicket?
-    @State private var analyticsFinished = false
-    @State private var observedPages: Set<Int> = []
-
-    private var pageCount: Int { replay ? 2 : 4 }
-    private var isLast: Bool { page == pageCount - 1 }
-
-    var body: some View {
-        NavigationStack {
-            ZStack {
-                switch page {
-                case 0: NamePage().transition(slide).onAppear { observeStep(0) }
-                case 1: FreePage().transition(slide).onAppear { observeStep(1) }
-                case 2: DaysPage().transition(slide).onAppear { observeStep(2) }
-                default: IdeasPage(ownRow: false, onSomethingElse: { showNew = true }).transition(slide).onAppear { observeStep(3) }
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.systemGroupedBackground))
-            .safeAreaInset(edge: .bottom, spacing: 0) { bottomBar }
-            .toolbar {
-                if page > 0 {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Back") { move(to: page - 1) }
-                            .accessibilityIdentifier("onboarding-back")
-                    }
-                }
-                if !replay && !isLast {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Skip") { finish(skipped: true) }
-                            .accessibilityIdentifier("onboarding-skip")
-                    }
-                }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationDestination(for: HabitIdea.self) { idea in
-                IdeaForm(idea: idea) { _ in finishAfterSave() }
-            }
-        }
-        // New closes itself after Add; the welcome ends once it has gone, never while it's still closing.
-        .sheet(isPresented: $showNew, onDismiss: { if addedFromNew { finishAfterSave() } }) {
-            NewItemView { _ in addedFromNew = true }
-        }
-        .analyticsScreen(.onboarding)
-        .interactiveDismissDisabled()
-    }
-
-    /// Continue (or Done), the one secondary action for the page, and where the person is: "1 of 4".
-    private var bottomBar: some View {
-        VStack(spacing: 12) {
-            if !isLast || replay {
-                Button {
-                    if isLast { finish() } else { move(to: page + 1) }
-                } label: {
-                    Text(isLast ? "Done" : "Continue")
-                        .font(.headline)
-                        .foregroundStyle(Color.onInk)
-                        .frame(maxWidth: .infinity, minHeight: 50)
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.ink)
-                .accessibilityIdentifier("onboarding-continue")
-            }
-            if page == 0 && !replay {
-                // For someone coming back: their history first, nothing to set up (First Run report).
-                Button("Restore from a Backup File") { finish(restore: true) }
-                    .font(.subheadline)
-                    .frame(minHeight: 44)
-                    .accessibilityIdentifier("onboarding-restore")
-            }
-            if isLast && !replay {
-                Button { showNew = true } label: {
-                    Text("Make Your Own")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, minHeight: 50)
-                }
-                .buttonStyle(.bordered)
-                .tint(.ink)
-                .accessibilityIdentifier("onboarding-make-own")
-                Button("Not Now") { finish() }
-                    .font(.body.weight(.semibold))
-                    .frame(maxWidth: .infinity, minHeight: 44)
-                    .accessibilityIdentifier("onboarding-not-now")
-            }
-            if page == 0 && !replay {
-                NavigationLink("Privacy & Optional Usage Sharing") { PrivacyView() }
-                    .font(.footnote)
-                    .accessibilityIdentifier("onboarding-privacy")
-            }
-            PageDots(count: pageCount, current: page)
-        }
-        .padding(.horizontal, 24)
-        .padding(.top, 12)
-        .padding(.bottom, 8)
-        .background(Color(.systemGroupedBackground))
-    }
-
-    private var slide: AnyTransition {
-        guard !reduceMotion else { return .opacity }
-        return .asymmetric(insertion: .move(edge: forward ? .trailing : .leading),
-                           removal: .move(edge: forward ? .leading : .trailing)).combined(with: .opacity)
-    }
-
-    private func move(to next: Int) {
-        forward = next > page
-        withAnimation(reduceMotion ? .easeInOut(duration: 0.2) : .snappy(duration: 0.35)) { page = next }
-    }
-
-    private func observeStep(_ page: Int) {
-        guard let ticket = Analytics.shared.ticket, observedPages.insert(page).inserted else { return }
-        analyticsStepTicket = ticket
-        if !replay { Analytics.shared.cohort("fresh_first_run", ticket: analyticsStepTicket) }
-        Analytics.shared.event(.onboardingStep, ["flow_mode": .text(replay ? "replay" : "first_run"),
-            "step": .text(["welcome", "free_plan", "day_week", "first_item"][page])], ticket: analyticsStepTicket)
-    }
-
-    private func finishAfterSave() {
-        Task { @MainActor in
-            await store.flush()
-            guard store.problem == nil else { return }
-            finish()
-        }
-    }
-
-    private func finish(restore: Bool = false, skipped: Bool = false) {
-        guard !analyticsFinished else { return }
-        analyticsFinished = true
-        if !replay {
-            Onboarding.markDone()
-            UserDefaults.standard.set(skipped ? "skipped" : "completed", forKey: Onboarding.outcomeKey)
-        }
-        Analytics.shared.event(.onboardingFinished, ["flow_mode": .text(replay ? "replay" : "first_run"),
-            "outcome": .text(restore ? "restore_handoff" : skipped ? "skipped" : "completed")], ticket: analyticsStepTicket)
-        onFinish(restore)
-    }
-}
-
-// MARK: - Pages
-
-/// Screen 1: the name, said once and backed by what the app does (research §1).
-private struct NamePage: View {
-    var body: some View {
-        WelcomePage(title: Onboarding.appName, lead: "A habit doesn't need a perfect record. It needs to happen often enough.",
-                    id: "onboarding-page-name") {
-            WeekPicture()
-            PointRow(symbol: "calendar", title: "You choose how often",
-                     text: "Every day, 3 times a week, or 20 km a month.")
-            PointRow(symbol: "flame", title: "Streaks count your goal",
-                     text: "3 times a week, every week, is a streak. Days you didn't plan never break it.")
-            PointRow(symbol: "leaf", title: "Life gets in the way",
-                     text: "Skip a day or pause a habit. Skipped and paused days never count against you.")
-            Text("Missing a day now and then doesn't stop a habit forming. Doing it often enough does.")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-    }
-}
-
-/// Screen 2: what's free, no account, where the habits live, and Plus named once with no button (research §2).
-private struct FreePage: View {
-    var body: some View {
-        WelcomePage(title: "Free, with no account", lead: "Here's what you get, so nothing comes as a surprise later.",
-                    id: "onboarding-page-free") {
-            // Widgets join the first line when they're merged (Build Plan #63); never list what isn't here (C218).
-            PointRow(symbol: "checkmark.circle", title: "Free forever: up to \(HabitStore.freeHabitLimit) habits",
-                     text: "With reminders, streaks, progress and all your history. Tasks are unlimited.")
-            PointRow(symbol: "person.crop.circle.badge.xmark", title: "No account, no ads",
-                     text: "Nothing to sign up for. Just start.")
-            PointRow(symbol: "iphone", title: "Your habits stay on this iPhone",
-                     text: "They're included in your iPhone's backup, and you can save a backup file any time in ≡ › Backup & Export.")
-            PointRow(symbol: "plus.circle", title: "Plus, if you want more",
-                     text: "One payment, not a subscription: unlimited habits, iPad, Apple Watch and sync.")
-        }
-    }
-}
-
-/// Screen 3: when a day starts and which day a week starts on, already set to the usual answer (Backlog, 28 Sep).
-private struct DaysPage: View {
-    @Environment(HabitStore.self) private var store
-
-    var body: some View {
-        Form {
-            Section {
-                PageHeading(title: "Your days and weeks", lead: "Both are set to the usual answer. Change them only if they don't fit.")
-            }
-            Section {
-                Picker("A New Day Starts At", selection: Binding(get: { store.settings.dayEndHour },
-                                                                  set: { store.setDayEnd($0) })) {
-                    ForEach(0...12, id: \.self) { hour in
-                        Text(DayAndWeekView.hourName(hour)).tag(hour)
-                    }
-                }
-                .accessibilityIdentifier("onboarding-day-start")
-            } footer: {
-                Text("Up late or working nights? Pick a later hour: what you log before then counts for the day before.")
-            }
-
-            Section {
-                Picker("Weeks Start On", selection: Binding(get: { store.settings.weekStartChosen ? store.settings.weekStart : 0 },
-                                                             set: { store.setWeekStart($0 == 0 ? nil : $0) })) {
-                    Text("Automatic (\(DayAndWeekView.weekdayName(Calendar.autoupdatingCurrent.firstWeekday)))").tag(0)
-                    ForEach(DayAndWeekView.weekOrder, id: \.self) { day in
-                        Text(DayAndWeekView.weekdayName(day)).tag(day)
-                    }
-                }
-                .accessibilityIdentifier("onboarding-week-start")
-            } footer: {
-                Text("Weekly goals and week streaks count in these weeks. You can change both later in ≡ › Day and Week.")
-            }
-        }
-        .scrollContentBackground(.hidden)
-    }
-}
-
-/// Screen 4 and Start From an Idea: a few ideas that fill in the form, or anything else (research §4). An idea is
-/// pushed onto the stack the page is in, whose `navigationDestination` opens `IdeaForm`.
-struct IdeasPage: View {
-    /// The welcome has its own Make Your Own button in the bar below; the sheet shows it as the last row.
+/// The list of ideas: onboarding's "Your first habit" and Start From an Idea on an empty Today. An idea is pushed onto
+/// the stack the list is in, whose `navigationDestination(for: HabitIdea.self)` opens `IdeaForm` straight away: the
+/// idea already says how it's tracked, so "What do you want to do?" is never asked first (the user, 9 Oct 2026).
+struct IdeasList: View {
+    /// Start From an Idea shows "Something Else…" as the last row; onboarding has its own button at the bottom.
     var ownRow = true
-    var onSomethingElse: () -> Void
+    var onSomethingElse: () -> Void = {}
 
     var body: some View {
-        List {
-            Section {
-                PageHeading(title: "What's one habit to start with?",
-                            lead: "Pick an idea or make your own. You can change everything before adding it.")
-            }
-            Section {
-                ForEach(HabitIdea.all) { idea in
-                    NavigationLink(value: idea) {
-                        ChoiceLabel(icon: idea.symbol, title: idea.name, detail: idea.line)
-                    }
-                    .accessibilityIdentifier("idea-" + idea.name)
+        Section {
+            ForEach(HabitIdea.all) { idea in
+                NavigationLink(value: idea) {
+                    ChoiceLabel(icon: idea.symbol, title: idea.name, detail: idea.line)
                 }
-            } footer: {
-                Text("An idea only fills in the form. Nothing is added until you tap Add.").formNote()
+                .accessibilityIdentifier("idea-" + idea.name)
             }
-            if ownRow {
-                Section {
-                    Button(action: onSomethingElse) {
-                        ChoiceLabel(icon: "plus", title: "Something Else…", detail: "A habit of your own, something to quit, or a task.")
-                    }
-                    .foregroundStyle(Color.primary)
-                    .accessibilityIdentifier("idea-something-else")
+        } footer: {
+            Text("An idea only fills in the form. Nothing is added until you tap Add.").formNote()
+        }
+        if ownRow {
+            Section {
+                Button(action: onSomethingElse) {
+                    ChoiceLabel(icon: "plus", title: "Something Else…", detail: "A habit of your own, something to quit, or a task.")
                 }
+                .foregroundStyle(Color.primary)
+                .accessibilityIdentifier("idea-something-else")
             }
         }
-        .scrollContentBackground(.hidden)
     }
 }
 
@@ -352,14 +122,21 @@ struct IdeasSheet: View {
 
     var body: some View {
         NavigationStack {
-            IdeasPage(onSomethingElse: { showNew = true })
-                .background(Color(.systemGroupedBackground))
-                .navigationTitle("Ideas")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
-                .navigationDestination(for: HabitIdea.self) { idea in
-                    IdeaForm(idea: idea) { added($0) }
+            List {
+                Section {
+                    OnboardingHeading(title: "What's one habit to start with?",
+                                      lead: "Pick an idea or make your own. You can change everything before adding it.")
                 }
+                IdeasList(onSomethingElse: { showNew = true })
+            }
+            .scrollContentBackground(.hidden)
+            .background(Color(.systemGroupedBackground))
+            .navigationTitle("Ideas")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
+            .navigationDestination(for: HabitIdea.self) { idea in
+                IdeaForm(idea: idea) { added($0) }
+            }
         }
         .sheet(isPresented: $showNew, onDismiss: { if let addedFromNew { added(addedFromNew) } }) {
             NewItemView { addedFromNew = $0 }
@@ -372,142 +149,201 @@ struct IdeasSheet: View {
     }
 }
 
-// MARK: - Parts
+// MARK: - The flow
 
-/// A welcome page: a large title, one plain sentence, then its points. Scrolls when the text is large, so Continue
-/// is never pushed off a small screen (C145).
-private struct WelcomePage<Content: View>: View {
-    let title: String
-    let lead: String
-    let id: String
-    @ViewBuilder var content: Content
+/// Every page of the welcome after the first, pushed on one stack so Back and the edge swipe always go back a page.
+enum OnboardingRoute: Hashable {
+    // I'm new here (row 2)
+    case included, build, quit, tasks, days, firstHabit, createOwn
+    // I've used it before (rows 5–9)
+    case welcomeBack, signIn, restore, transferCode, review
+    case working(OnboardingWork)
+    case privacy
+}
 
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 26) {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text(title)
-                        .font(.largeTitle.weight(.bold))
-                        .accessibilityAddTraits(.isHeader)
-                        .accessibilityIdentifier(id)
-                    Text(lead)
-                        .font(.title3)
-                        .foregroundStyle(.secondary)
-                }
-                .fixedSize(horizontal: false, vertical: true)
-                content
-            }
-            .frame(maxWidth: 560, alignment: .leading)
-            .padding(.horizontal, 24)
-            .padding(.top, 8)
-            .padding(.bottom, 24)
-            .frame(maxWidth: .infinity)
+/// How the welcome ended, for the outcome it records and what comes after.
+enum OnboardingOutcome {
+    /// A first habit or task was added.
+    case completed
+    /// Skip setup, or Done in the replay.
+    case skipped
+    /// "Start without restoring" on Welcome back.
+    case startedFresh
+    /// Signed in and the account's data came back (or there was none to bring).
+    case signedIn
+    /// A backup (iCloud or a file) was restored.
+    case restored
+    /// The data came from the other device.
+    case transferred
+    /// The data already on this iPhone was kept.
+    case keptOnDevice
+
+    var analytics: String {
+        switch self {
+        case .completed: "completed"
+        case .skipped: "skipped"
+        case .startedFresh: "started_fresh"
+        case .signedIn: "signed_in"
+        case .restored: "restored"
+        case .transferred: "transferred"
+        case .keptOnDevice: "kept_on_device"
         }
-        .scrollBounceBehavior(.basedOnSize)
     }
 }
 
-/// The heading of a page that is a list: the same title and sentence as the other pages, as a row with no card (a
-/// section header fades its text).
-private struct PageHeading: View {
-    let title: String
-    let lead: String
+/// What the pages share: the stack's path, the backup waiting for the person's choice, and how to end the welcome.
+/// Pages read only what they need (`review` is read by the review page alone), so a push never redraws the others.
+@Observable
+final class OnboardingFlow {
+    var path = NavigationPath()
+    /// A checked backup on its way back, waiting on "Restore" (the review page), and where it came from.
+    var review: ReturningBackup?
+    /// Ends the welcome; set by `OnboardingView`.
+    @ObservationIgnored var finish: (OnboardingOutcome) -> Void = { _ in }
+    /// A page has appeared: its analytics step, once per welcome; set by `OnboardingView`.
+    @ObservationIgnored var reached: (String) -> Void = { _ in }
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text(title)
-                .font(.largeTitle.weight(.bold))
-                .foregroundStyle(Color.primary)
-                .accessibilityAddTraits(.isHeader)
-            Text(lead)
-                .font(.title3)
-                .foregroundStyle(.secondary)
-        }
-        .fixedSize(horizontal: false, vertical: true)
-        .padding(.top, 8)
-        .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4))
-        .listRowBackground(Color.clear)
+    func go(_ route: OnboardingRoute) { path.append(route) }
+
+    /// Replaces the page on top (a "Getting your data" page that has done its job) with `route`, so Back never
+    /// returns to a finished loading page.
+    func replaceTop(with route: OnboardingRoute) {
+        if !path.isEmpty { path.removeLast() }
+        path.append(route)
     }
 }
 
-/// One point: an icon in a fixed column, a bold line and a plain one, read as one by VoiceOver.
-private struct PointRow: View {
-    let symbol: String
-    let title: String
-    let text: String
+/// The welcome. `replay` (Help → Show the Welcome Again) shows only what's included and what the app does, then Done.
+struct OnboardingView: View {
+    var replay = false
+    /// Called once, however it ends.
+    var onFinish: () -> Void
+
+    @Environment(HabitStore.self) private var store
+    @State private var flow = OnboardingFlow()
+    @State private var analyticsStepTicket: AnalyticsTicket?
+    @State private var analyticsFinished = false
+    @State private var observedSteps: Set<String> = []
 
     var body: some View {
-        HStack(alignment: .top, spacing: 16) {
-            Image(systemName: symbol)
-                .font(.title2)
-                .foregroundStyle(Color.ink)
-                .frame(width: 34)
-                .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 3) {
-                Text(title).font(.headline)
-                Text(text).font(.subheadline).foregroundStyle(.secondary)
-            }
-            .fixedSize(horizontal: false, vertical: true)
-        }
-        .accessibilityElement(children: .combine)
-    }
-}
-
-/// The name in one picture: a 3-times-a-week habit, done on three days this week, on a 4-week streak.
-private struct WeekPicture: View {
-    private let done: Set<Int> = [0, 2, 4]
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "figure.run").foregroundStyle(Color.ink)
-                Text("Exercise").font(.headline)
-                Text("3 times a week").font(.subheadline).foregroundStyle(.secondary)
-                Spacer(minLength: 8)
-                Label("4 wk", systemImage: "flame.fill")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.orange)
-            }
-            HStack(spacing: 0) {
-                ForEach(0..<7, id: \.self) { day in
-                    VStack(spacing: 6) {
-                        Text(Self.letters[day]).font(.caption2).foregroundStyle(.secondary)
-                        Image(systemName: done.contains(day) ? "checkmark.circle.fill" : "circle")
-                            .font(.title3)
-                            .foregroundStyle(done.contains(day) ? Color.ink : Color.secondary.opacity(0.5))
-                    }
-                    .frame(maxWidth: .infinity)
+        @Bindable var flow = flow
+        NavigationStack(path: $flow.path) {
+            Group {
+                if replay {
+                    IncludedPage(replay: true)
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button { end(.skipped) } label: { Image(systemName: "xmark") }
+                                    .accessibilityLabel("Close")
+                                    .accessibilityIdentifier("onboarding-close")
+                            }
+                        }
+                } else {
+                    WelcomePage()
                 }
             }
-        }
-        .padding(16)
-        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Example: Exercise, 3 times a week. Done on 3 days this week. A 4 week streak.")
-    }
-
-    /// The week from Monday, in the phone's language.
-    private static let letters: [String] = {
-        let symbols = Calendar.autoupdatingCurrent.veryShortStandaloneWeekdaySymbols
-        return (0..<7).map { symbols[($0 + 1) % 7] }
-    }()
-}
-
-/// Where the person is: one dot per page, read as "Page 2 of 4".
-private struct PageDots: View {
-    let count: Int
-    let current: Int
-
-    var body: some View {
-        HStack(spacing: 8) {
-            ForEach(0..<count, id: \.self) { index in
-                Circle()
-                    .fill(index == current ? Color.primary : Color.secondary.opacity(0.35))
-                    .frame(width: 7, height: 7)
+            .navigationDestination(for: OnboardingRoute.self) { route in
+                page(route)
+            }
+            .navigationDestination(for: HabitIdea.self) { idea in
+                IdeaForm(idea: idea) { _ in finishAfterSave() }
             }
         }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Page \(current + 1) of \(count)")
-        .accessibilityIdentifier("onboarding-dots")
+        .environment(flow)
+        .onAppear {
+            flow.finish = { end($0) }
+            flow.reached = { observe($0) }
+            #if DEBUG
+            // Screenshots and UI tests: `-onboarding-page build,quit` opens the welcome on those pages, in order.
+            let arguments = ProcessInfo.processInfo.arguments
+            if let at = arguments.firstIndex(of: "-onboarding-page"), at + 1 < arguments.count {
+                for name in arguments[at + 1].split(separator: ",") {
+                    if let route = OnboardingRoute.perf(String(name)) { flow.go(route) }
+                }
+            }
+            #endif
+        }
+        .analyticsScreen(.onboarding)
+        .interactiveDismissDisabled()
+        .onPerfCommand { action in
+            switch action {
+            case .onboardingPage(let name): if let route = OnboardingRoute.perf(name) { flow.go(route) }
+            case .onboardingBack: if !flow.path.isEmpty { flow.path.removeLast() }
+            case .close: onFinish()
+            default: break
+            }
+        }
+    }
+
+    @ViewBuilder private func page(_ route: OnboardingRoute) -> some View {
+        switch route {
+        case .included: IncludedPage(replay: replay)
+        case .build: BuildPage(replay: replay)
+        case .quit: QuitPage(replay: replay)
+        case .tasks: TasksPage(replay: replay)
+        case .days: DaysPage()
+        case .firstHabit: FirstHabitPage()
+        case .createOwn: NewItemChoices(onAdded: { _ in finishAfterSave() })
+        case .welcomeBack: WelcomeBackPage()
+        case .signIn: SignBackInPage()
+        case .restore: RestoreSourcePage()
+        case .transferCode: TransferCodePage()
+        case .review: ReviewBackupPage()
+        case .working(let work): WorkingPage(work: work)
+        case .privacy: PrivacyView()
+        }
+    }
+
+    /// A first habit or task was added: the welcome ends once it's saved, so Today shows it.
+    private func finishAfterSave() {
+        Task { @MainActor in
+            await store.flush()
+            guard store.problem == nil else { return }
+            end(.completed)
+        }
+    }
+
+    /// Each page once per welcome, in the words the analytics contract allows (`AnalyticsContract.enums["step"]`).
+    private func observe(_ step: String) {
+        guard let ticket = Analytics.shared.ticket, observedSteps.insert(step).inserted else { return }
+        analyticsStepTicket = ticket
+        if !replay && step == "welcome" { Analytics.shared.cohort("fresh_first_run", ticket: analyticsStepTicket) }
+        let returning = ["returning", "sign_in", "restore_source", "transfer_code"].contains(step)
+        Analytics.shared.event(.onboardingStep, ["flow_mode": .text(replay ? "replay" : returning ? "restore" : "first_run"),
+            "step": .text(step)], ticket: analyticsStepTicket)
+    }
+
+    private func end(_ outcome: OnboardingOutcome) {
+        guard !analyticsFinished else { return }
+        analyticsFinished = true
+        if !replay {
+            Onboarding.markDone()
+            UserDefaults.standard.set(outcome == .skipped ? "skipped" : "completed", forKey: Onboarding.outcomeKey)
+        }
+        Analytics.shared.event(.onboardingFinished, ["flow_mode": .text(replay ? "replay" : "first_run"),
+            "outcome": .text(replay ? "completed" : outcome.analytics)], ticket: analyticsStepTicket)
+        onFinish()
+    }
+}
+
+extension OnboardingRoute {
+    /// Speed runs only (`PerfDriver` "onboarding"): a page by name.
+    static func perf(_ name: String) -> OnboardingRoute? {
+        switch name {
+        case "included": .included
+        case "build": .build
+        case "quit": .quit
+        case "tasks": .tasks
+        case "days": .days
+        case "firstHabit": .firstHabit
+        case "createOwn": .createOwn
+        case "welcomeBack": .welcomeBack
+        case "signIn": .signIn
+        case "restore": .restore
+        case "transferCode": .transferCode
+        // Screenshots only: the loading page as it looks while looking for the other device.
+        case "gettingData": .working(.transfer(TransferCode.debugCode ?? "00000000"))
+        default: nil
+        }
     }
 }

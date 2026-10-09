@@ -1,0 +1,90 @@
+720 MANUAL_TRAP EXPECT_SIGNIN | I won't pay for a feature that most apps do when you sign in
+721 LOGIN_FRICTION LOST_NOWAY
+722 NR
+723 NO_LOGIN_ENTRY ONBOARD_AGAIN PURCHASE_LOST | it also takes about 5 min to reach the abilty to click several menus to get to a login option
+724 ONBOARD_AGAIN RESTORE_FAIL | After reinstalling app, you cant just login, you need to do few steps to tell about yourself.
+725 SIGNIN_EMPTY RESTORE_FAIL | none of my progress was transferred despite having done the back up
+726 SIGNIN_EMPTY | none of my progress was saved, even when I logged in
+727 WRONG_DOOR SIGNIN_EMPTY | Allowed me to create two accounts with the same email via normal and social accounts.
+728 ASKED_RESTORE RESTORE_FAIL | I said no to restoring my progress, it wouldn't let me do anything, unless I restored it.
+729 PURCHASE_OK SUPPORT
+730 SIGNIN_EMPTY | if I uninstall it I loose all my progress even if I've linked my account
+731 PURCHASE_LOST SUPPORT
+732 SIGNIN_EMPTY
+733 NO_LOGIN_ENTRY | there's no way to login to the app and easily retrieve your account and data
+734 SIGNIN_EMPTY | when I logged in with my email all my progress was gone
+735 SIGNIN_EMPTY RESTORE_FAIL | It said there was no back up to restore, even tho I manually backed up the progress
+736 ONBOARD_AGAIN FIRST_RUN_BAD | it takes me all the way through the set up again
+737 FIRST_RUN_BAD
+738 FIRST_RUN_BAD
+739 NO_LOGIN_ENTRY ONBOARD_AGAIN | the app has no login feature on the home screen
+740 FIRST_RUN_BAD
+741 WRONG_DOOR
+742 LOGIN_FRICTION
+743 LOGIN_FRICTION
+744 ONBOARD_AGAIN | what's the point of having an account if you have to go through the same questionnaire again and again?!
+745 ONBOARD_AGAIN NO_LOGIN_ENTRY | Can't log in in a new device. I have to do all the initial setup etc. Give us an option to log in.
+746 NR
+747 FIRST_RUN_BAD
+748 WRONG_DOOR | Took a year subscription using my different email address.
+749 NR
+750 FIRST_RUN_BAD
+751 MOVE_UNCLEAR
+752 NO_LOGIN_ENTRY NEW_START | there isn't a log in option?
+753 NR
+754 FIRST_RUN_BAD
+755 NR
+756 NR
+757 RESTORE_FAIL SUPPORT
+758 NR
+759 NR
+760 NR
+761 SIGNIN_EMPTY PURCHASE_LOST | I thought journey progress was saved in the account?
+762 ONBOARD_AGAIN RESTORE_FAIL | i had to go through the intro questions again before then signing in
+763 ONBOARD_AGAIN NO_LOGIN_ENTRY | PLEASE make a sign In page so those who have an account don't have to be forced to go through the whole introduction process.
+764 NR
+765 RESTORE_FAIL
+766 ONBOARD_AGAIN PURCHASE_LOST | when I went to sign in on my new phone it made me do the tutorial from hell
+767 FIRST_RUN_BAD
+768 PURCHASE_LOST SUPPORT
+769 WRONG_DOOR
+770 PURCHASE_LOST MOVE_UNCLEAR
+771 ONBOARD_AGAIN | when installing the app on a new device it would be great if it gave you the option of restoring a backup file rather than being forced to go through the initial wizard again
+772 NR
+773 PURCHASE_LOST SUPPORT
+774 RESTORE_FAIL PURCHASE_LOST
+775 ONBOARD_AGAIN
+776 WRONG_DOOR PURCHASE_LOST | it was through the wrong play store profile
+777 NR
+778 NR
+779 ONBOARD_AGAIN | You have to click through all the survey questions and start the first journey and read the first letter etc before you can sign into your account.
+780 ACCOUNT_FIND | I seem no way to sign out
+781 LOGIN_FRICTION PURCHASE_LOST
+782 PURCHASE_LOST
+783 RESTORE_FAIL
+784 RESTORE_FAIL | App says it has backed up my data.
+785 NR
+786 PURCHASE_LOST
+787 LOGIN_FRICTION PURCHASE_LOST
+788 LOGIN_FRICTION
+789 LOGIN_FRICTION NEW_START SUPPORT
+790 LOST_NOWAY NEW_START
+791 FIRST_RUN_BAD
+792 FIRST_RUN_BAD
+793 LOGIN_FRICTION
+794 WRONG_DOOR PURCHASE_LOST
+795 NR
+796 FIRST_RUN_BAD
+797 NR
+798 LOGIN_FRICTION | The app recognizes who I am yet tells me my email already exists and then just says "login failed".
+799 PURCHASE_LOST ASKED_RESTORE
+800 PURCHASE_LOST SUPPORT
+801 PURCHASE_LOST NEW_START | It just automatically wants to restart a new profile when I had all my habits that were working for me.
+802 NEVER_KNEW
+803 PURCHASE_LOST SUPPORT
+804 PURCHASE_LOST
+805 FIRST_RUN_BAD
+806 NR
+807 MANUAL_TRAP LOST_NOWAY | you can't backup if you're not Premium
+808 ONBOARD_AGAIN PURCHASE_LOST | found the app forced me to start all over from the first journey
+809 NR

@@ -1,0 +1,90 @@
+1440 ICLOUD_FAIL
+1441 NR
+1442 LOST_NOWAY
+1443 LOST_NOWAY
+1444 ICLOUD_FAIL
+1445 LOST_NOWAY
+1446 NR
+1447 ICLOUD_FAIL
+1448 LOST_NOWAY NEVER_KNEW
+1449 ICLOUD_FAIL | I am signed in to my iCloud account and i have the notes app synced, so i thought that i could easily get my notes back.
+1450 WRONG_DOOR | My iPad and phone had different apple ids so it didn’t sync to my phone.
+1451 NR
+1452 NR
+1453 ICLOUD_FAIL
+1454 NR
+1455 ICLOUD_FAIL
+1456 NR
+1457 ICLOUD_OK | Then go to icloud in settings and sync your notes app again. It will all come back!
+1458 NR
+1459 RESTORE_FAIL
+1460 ICLOUD_FAIL
+1461 NR
+1462 LOST_NOWAY NEVER_KNEW | I thought iTunes backup would have it, but nope.
+1463 NR
+1464 NR
+1465 NR
+1466 NR
+1467 NR
+1468 NR
+1469 NR
+1470 NR
+1471 NR
+1472 ICLOUD_FAIL
+1473 NR
+1474 NR
+1475 RESTORE_FAIL
+1476 ICLOUD_FAIL
+1477 NR
+1478 EXPECT_SIGNIN | all it takes is a button in which you can input your Google account (or other accounts), and boom, their info is back.
+1479 NR
+1480 NR
+1481 ICLOUD_FAIL
+1482 NR
+1483 NR
+1484 NR
+1485 NR
+1486 NR
+1487 NR
+1488 NR
+1489 NR
+1490 RESTORE_FAIL
+1491 NR
+1492 NR
+1493 RESTORE_FAIL
+1494 RESTORE_FAIL
+1495 NR
+1496 NR
+1497 NR
+1498 NR
+1499 LOGIN_FRICTION
+1500 NR
+1501 NR
+1502 RESTORE_FAIL ICLOUD_FAIL | Every single app works perfectly fine and everything is there. Except for this app.
+1503 RESTORE_FAIL
+1504 NR
+1505 NR
+1506 NR
+1507 NR
+1508 NR
+1509 LOGIN_FRICTION
+1510 NR
+1511 NR
+1512 NR
+1513 NR
+1514 LOGIN_FRICTION
+1515 LOGIN_FRICTION
+1516 NR
+1517 NR
+1518 SIGNIN_EMPTY
+1519 LOGIN_FRICTION
+1520 RESTORE_OK
+1521 SIGNIN_EMPTY
+1522 NR
+1523 NR
+1524 NR
+1525 SIGNIN_EMPTY | I was able to sign in but none of my notes showed up.
+1526 NR
+1527 NR
+1528 RESTORE_FAIL
+1529 RESTORE_OK AUTO_FOUND | With the new phone and my google account, all of the history is still here.

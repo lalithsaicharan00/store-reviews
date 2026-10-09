@@ -22,6 +22,8 @@ enum PerfAction: Equatable {
     case openArrange
     /// The lock's keypad (Current Work 58): a digit, or Delete.
     case codeKey(Int), codeDelete
+    /// The welcome (Current Work 73.1): shown over Today, a page pushed by name (`OnboardingRoute.perf`), and Back.
+    case openOnboarding, onboardingPage(String), onboardingBack
 }
 
 /// Speed runs only: switches a scenario flips to take one part out of a screen and see what it cost (the bisect
@@ -533,6 +535,35 @@ enum PerfDriver {
                     for _ in 0..<12 { send(.previousHabit); await pause(0.1) }
                 }
             }
+        case "onboarding":
+            // The welcome (Current Work 73.1, T4): shown over Today, each page's opening, Back and forward, the ideas
+            // scrolled, every way back, and typing a transfer code. It runs on the speed runs' own data, so Welcome back
+            // shows "We found data on this device".
+            await open("Welcome") { send(.openOnboarding) }
+            for page in ["included", "build", "quit", "tasks", "days", "firstHabit"] {
+                await open("Welcome: \(page)") { send(.onboardingPage(page)) }
+            }
+            await measure("Welcome: ideas scrolling") { await scroll() }
+            await measure("Welcome: Back and forward") {
+                await repeatFor(window) {
+                    send(.onboardingBack); await pause(0.5)
+                    send(.onboardingPage("firstHabit")); await pause(0.5)
+                }
+            }
+            await open("Welcome: New (Create my own habit)") { send(.onboardingPage("createOwn")) }
+            for _ in 0..<7 { send(.onboardingBack) }
+            await pause(1.2)
+            for page in ["welcomeBack", "signIn", "restore", "transferCode"] {
+                await open("Welcome: \(page)") { send(.onboardingPage(page)) }
+            }
+            let code = "K7PQ49XM"
+            await measure("Transfer code: typing") {
+                await repeatFor(window) {
+                    for n in 1...code.count { type(String(code.prefix(n))); await pause(0.12) }
+                    for n in stride(from: code.count - 1, through: 0, by: -1) { type(String(code.prefix(n))); await pause(0.08) }
+                }
+            }
+            send(.close)
         default:
             MainThreadMeter.mark("# NOTE unknown scenario \(scenario)")
         }

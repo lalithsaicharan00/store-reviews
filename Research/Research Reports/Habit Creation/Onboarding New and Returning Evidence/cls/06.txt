@@ -1,0 +1,90 @@
+540 NR
+541 FIRST_RUN_BAD | Didn’t even make it through the intro
+542 NR
+543 NR
+544 NR
+545 NR
+546 NR
+547 NR
+548 RESTORE_OK | Backup and restore option is handy!
+549 NR
+550 NR
+551 EXPECT_SIGNIN | I wish this had an online account as well that automatically synced.
+552 NR
+553 NR
+554 RESTORE_FAIL | the app doesn&#39;t know what to do with it&#39;s own backup data file
+555 PURCHASE_OK | I like how easy it was to reactivate after uninstalling my premium account.
+556 ICLOUD_FAIL | I lost all my habits when I got a new phone even though I paid for the app and had it on my icloud
+557 NR
+558 NR
+559 LOST_NOWAY
+560 NO_LOGIN_ENTRY LOST_NOWAY | Now after installing the app, there is no login option.
+561 NR
+562 NR
+563 NR
+564 LOGIN_FRICTION
+565 WRONG_DOOR LOGIN_FRICTION | i created my account (on my laptop) which is linked to my facebook but i cant seem to log in using facebook on my phone
+566 NR
+567 LOGIN_FRICTION
+568 LOGIN_FRICTION
+569 LOGIN_FRICTION | logging in with Apple ID doesn’t work
+570 NR
+571 LOGIN_FRICTION
+572 NR
+573 LOGIN_FRICTION
+574 NR
+575 LOGIN_FRICTION
+576 NR
+577 LOGIN_FRICTION
+578 LOGIN_FRICTION
+579 LOGIN_FRICTION
+580 NR
+581 WRONG_DOOR LOGIN_FRICTION | this just resulted in creating a completely separate account
+582 ONBOARD_AGAIN | I have to skip the &#34;Intro to Habitica&#34; aga
+583 ICLOUD_FAIL LOST_NOWAY | I thought it was being backed up on my iCloud apparently not
+584 ICLOUD_FAIL RESTORE_OK
+585 LOST_NOWAY EXPECT_SIGNIN | maybe consider making users create an account or have the option of the app being uploadable to iCloud?
+586 NR
+587 LOGIN_FRICTION
+588 NR
+589 FIRST_RUN_BAD | I tried answering them for 5 minutes and couldn’t reach the sign in page
+590 LOGIN_FRICTION PURCHASE_LOST
+591 FIRST_RUN_BAD | couldn't even get to the sign in screen
+592 MANUAL_TRAP
+593 NO_LOGIN_ENTRY | Why there is no login feature?
+594 LOST_NOWAY
+595 PURCHASE_LOST SUPPORT
+596 LOST_NOWAY NO_LOGIN_ENTRY | there is no option to login and connect my Gmail
+597 MANUAL_TRAP
+598 NOACC_PRAISE | no login, daily goals
+599 LOGIN_FRICTION
+600 LOGIN_FRICTION
+601 LOGIN_FRICTION PURCHASE_LOST
+602 FIRST_RUN_BAD | It takes forever to reach the app and start using it.
+603 MANUAL_TRAP | An option to automatically backup on say my Google or Microsoft drive would have saved it all.
+604 RESTORE_FAIL
+605 NR
+606 LOGIN_FRICTION
+607 NR
+608 NR
+609 LOGIN_FRICTION
+610 WRONG_DOOR | this app redirects me to a new account using one of my email accounts that I didn't use to sign up
+611 LOGIN_FRICTION
+612 WRONG_DOOR LOGIN_FRICTION | it tells me I have an existing account through Facebook
+613 LOGIN_FRICTION
+614 LOGIN_FRICTION | Facebook Login is currently unavailable for this app.
+615 LOGIN_FRICTION
+616 NR
+617 RESTORE_OK
+618 LOGIN_FRICTION
+619 LOGIN_FRICTION
+620 LOGIN_FRICTION
+621 NO_LOGIN_ENTRY
+622 LOGIN_FRICTION
+623 LOGIN_FRICTION
+624 LOGIN_FRICTION
+625 LOGIN_FRICTION
+626 NR
+627 NO_LOGIN_ENTRY
+628 WRONG_DOOR | i accidentally signed in with the wrong google email
+629 RESTORE_OK | The fact you can access your account from any device, and everything is there is an Amazing feature.

@@ -298,11 +298,17 @@ struct MoveToNewIPhoneView: View {
                 // The free plan's honest limit (the user, 9 Oct 2026): one device at a time; syncing devices is Plus.
                 if !backup.isPlus { Text("Without Plus, the two don't stay in sync: this copies everything once.") }
             }
+            // Like moving chats in a messaging app (the user, 9 Oct 2026): a code shown here, typed on the new iPhone's
+            // welcome (I've used it before → Move from another device), and everything comes straight across.
             Section {
+                NavigationLink { TransferSendView() } label: {
+                    TitleAndLine(title: "Show a Transfer Code", line: "Type it on the new iPhone, with both close")
+                }
+                .accessibilityIdentifier("backup-move-code")
                 Button("Send a Backup File") { Task { await send() } }
                     .accessibilityIdentifier("backup-move-send")
             } footer: {
-                Text(backup.place == .phone ? "With AirDrop, Messages or Files." : "If the new iPhone uses a different account or Apple Account.")
+                Text(backup.place == .phone ? "A backup file goes with AirDrop, Messages or Files." : "A backup file is for a new iPhone with a different account or Apple Account.")
             }
         }
         .navigationTitle("Move to a New iPhone")
@@ -317,9 +323,9 @@ struct MoveToNewIPhoneView: View {
 
     private var steps: [String] {
         switch backup.place {
-        case .account: ["Install Often Enough on the new iPhone", "Sign in with the same account"]
-        case .iCloud: ["Install Often Enough on the new iPhone", "Choose Restore Habits From a Backup"]
-        case .phone: ["Send a backup file to the new iPhone", "Open it there with Often Enough"]
+        case .account: ["Install Often Enough on the new iPhone", "Choose I've used it before, then sign in with the same account"]
+        case .iCloud: ["Install Often Enough on the new iPhone", "Choose I've used it before, then Restore a backup"]
+        case .phone: ["Install Often Enough on the new iPhone", "Choose I've used it before, then Move from another device"]
         }
     }
 

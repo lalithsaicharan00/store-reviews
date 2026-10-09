@@ -1,0 +1,90 @@
+630 SIGNIN_EMPTY LOGIN_FRICTION | didn't recognize it when I tried signing back in
+631 FIRST_RUN_GOOD
+632 LOGIN_FRICTION
+633 NR
+634 LOGIN_FRICTION
+635 RESTORE_FAIL
+636 MOVE_UNCLEAR | I just got a new phone and I downloaded the app again, how can I recover my process ?
+637 NR
+638 NR
+639 ONBOARD_AGAIN | I just keep getting asked to complete a quiz!!!
+640 NR
+641 NR
+642 LOGIN_FRICTION
+643 NR
+644 FIRST_RUN_BAD
+645 LOGIN_FRICTION ONBOARD_AGAIN
+646 NR
+647 NR
+648 NR
+649 NR
+650 FIRST_RUN_GOOD | I usually get half way through the set up process and never touch the app again
+651 NR
+652 NR
+653 NR
+654 NR
+655 NR
+656 ONBOARD_AGAIN | on the first time start it needs to ask all the questions before allowing me to restore my progress
+657 NR
+658 ONBOARD_AGAIN LOGIN_FRICTION | it just keeps asking me to complete the same survey
+659 LOGIN_FRICTION | it is near impossible to log into my account on a new phone
+660 ACCOUNT_FIND | Can't find my account that I'm paying for.
+661 ASKED_RESTORE PURCHASE_LOST | the app asked if I wanted to restore my backups from my last phone
+662 NR
+663 PURCHASE_LOST
+664 NR
+665 NR
+666 NR
+667 NR
+668 ONBOARD_AGAIN NO_LOGIN_ENTRY | Returning users shouldn't have to go through the startup intro each time they move devices or reset the app!
+669 PURCHASE_LOST RESTORE_FAIL
+670 ONBOARD_AGAIN
+671 FIRST_RUN_BAD
+672 PURCHASE_OK | I managed to restore the premium features on my new phone. At first I thought it's all lost.
+673 NO_LOGIN_ENTRY PURCHASE_LOST | there's no way to login
+674 FIRST_RUN_BAD RESTORE_FAIL | it takes about 30 minutes to sign up
+675 NR
+676 LOGIN_FRICTION PURCHASE_LOST
+677 NR
+678 PURCHASE_LOST SUPPORT
+679 SIGNIN_EMPTY NEVER_KNEW | it should inform new users about the lack of it
+680 NR
+681 ACCOUNT_FIND
+682 RESTORE_FAIL SUPPORT
+683 NO_LOGIN_ENTRY ONBOARD_AGAIN | No way to sign in. Keeps asking me to do the free trial.
+684 MOVE_UNCLEAR | can't transfer account even though new phone has same Google Account
+685 NR
+686 RESTORE_FAIL PURCHASE_LOST
+687 RESTORE_FAIL PURCHASE_LOST ONBOARD_AGAIN | you're forced to answer the same quiz and see the mini tutorial every time
+688 NR
+689 FIRST_RUN_BAD
+690 NR
+691 ONBOARD_AGAIN | And I already have an account. Why didn't it ask me that before this quiz so I can just jump back in?
+692 ONBOARD_AGAIN | Reinstalling the app to cancel only put me through prompts to create a new account/behavior plan
+693 FIRST_RUN_BAD | it seems like I'd need to set aside a half hour just to get set up
+694 SIGNIN_EMPTY | I also recently got a new phone and logged into my account, and all of my progress was gone
+695 LOGIN_FRICTION PURCHASE_LOST
+696 ONBOARD_AGAIN | If you already have an account and you install the app, it makes you go through the initial questionnaire.
+697 NR
+698 NR
+699 NR
+700 ONBOARD_AGAIN | it forces you to go through the entire test without checking if you have an account first
+701 NR
+702 ONBOARD_AGAIN MANUAL_TRAP | I had to sit through the entire drawn out intro and tutorial
+703 NR
+704 NO_LOGIN_ENTRY | App has no login screen, forces you to restart your progress.
+705 NR
+706 NR
+707 NR
+708 NR
+709 ONBOARD_AGAIN | you are FORCED to go through the process of answering question that you have already answered before you are given the option to open and restore
+710 ONBOARD_AGAIN | I reinstalled and was FORCED through new account setup and all the long unskippable animations just to log in
+711 FIRST_RUN_BAD | as soon as I give up my email address I am asked to subscribe
+712 NR
+713 NR
+714 NR
+715 WRONG_DOOR | accidentally clicking on signing on with Google instead of e-mail even though they're based on the same account
+716 NR
+717 RESTORE_FAIL SUPPORT
+718 NR
+719 LOGIN_FRICTION

@@ -409,7 +409,9 @@ final class BackupCenter {
 
     /// Signs in with a provider's token. Without `create`, an unknown sign-in throws `ServerError` `unknown_key`, so
     /// someone who used Apple before isn't silently given a second account through Google (01 §3.3).
-    func signIn(with token: ProviderToken, create: Bool) async throws {
+    /// `backUp` false: onboarding's "Sign back in" (Current Work 73.1) brings the account's habits back first, so an
+    /// empty iPhone is never backed up over them; it backs up once they're here.
+    func signIn(with token: ProviderToken, create: Bool, backUp: Bool = true) async throws {
         var body: [String: Any] = ["idToken": token.idToken, "nonce": token.nonce]
         if let code = token.authorizationCode { body["authorizationCode"] = code }
         if create {
@@ -419,7 +421,52 @@ final class BackupCenter {
         try await sync.signIn(path: token.path, body: body)
         dataChanged()
         refresh()
-        await backUpNow()
+        if backUp { await backUpNow() }
+    }
+
+    // MARK: Coming back (onboarding, Current Work 73.1)
+
+    /// What onboarding's "Getting your data" found in the account, once signed in.
+    enum AccountReturn {
+        /// Plus: the first full sync after signing in brought everything (D14).
+        case synced
+        /// A free account: its newest backup with something in it, ready to restore.
+        case backup(Pending)
+        /// The account has no backup with habits in it.
+        case empty
+    }
+
+    /// Brings the account's data to this iPhone after signing in. Plus waits for a full sync (one runs as signing in
+    /// ends, so this is usually immediate); a free account downloads and checks its newest backup that holds anything,
+    /// from any of its devices. Throws when the account can't be reached.
+    func accountReturn() async throws -> AccountReturn {
+        refresh()
+        if isPlus {
+            await sync.syncNow()
+            if let problem = sync.lastError { throw ServerError(status: 0, code: problem) }
+            await readSyncStatus()
+            return .synced
+        }
+        let copies = try await serverCopies().filter { $0.habits > 0 || $0.entries > 0 }
+        guard let newest = copies.max(by: { $0.createdAt < $1.createdAt }) else { return .empty }
+        guard let pending = try await download(newest) else { throw ServerError(status: 0, code: "damaged") }
+        return .backup(pending)
+    }
+
+    /// The checked backup file for Move from another device (`TransferSender`): made fresh from this iPhone's data and
+    /// read back, never written to disk.
+    func transferFile() async throws -> Data {
+        let ticket = store.analytics.ticket
+        await store.flush()
+        do {
+            let file = try await repository.backupFile(info: Self.info)
+            guard let data = Data(base64Encoded: file.base64), Self.sha256(data) == file.sha256 else { throw CocoaError(.fileWriteUnknown) }
+            recordBackup("manual_backup", format: "checked_backup", succeeded: true, ticket: ticket)
+            return data
+        } catch {
+            recordBackup("manual_backup", format: "checked_backup", succeeded: false, ticket: ticket)
+            throw error
+        }
     }
 
     /// Everything stays on this iPhone; only the session ends.

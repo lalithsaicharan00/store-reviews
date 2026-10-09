@@ -1,0 +1,90 @@
+0 LOST_NOWAY SUPPORT | I had to reinstall the app and lost about 3 years of data
+1 PURCHASE_LOST LOGIN_FRICTION
+2 NR
+3 NO_LOGIN_ENTRY ACCOUNT_FIND | Where is Log In or Register option? Cant find anywhere.
+4 ICLOUD_FAIL RESTORE_FAIL | only the mood track was restored
+5 NR
+6 PURCHASE_LOST LOGIN_FRICTION
+7 NR
+8 ICLOUD_FAIL | found out the hard way that habits don’t save despite icloud sync being on
+9 PURCHASE_LOST | couldn’t find the restore purchase button
+10 LOST_NOWAY
+11 ICLOUD_FAIL
+12 NR
+13 PURCHASE_LOST
+14 NR
+15 NR
+16 NR
+17 ICLOUD_FAIL
+18 ICLOUD_FAIL | I just switched to a new phone and none of my habits are there
+19 LOST_NOWAY SUPPORT | I just reinstalled and all my data is gone, and I don&#39;t see any way to restore
+20 NO_LOGIN_ENTRY NEVER_KNEW | I just realized I never made a login and I can’t log in on my phone
+21 PURCHASE_LOST LOST_NOWAY
+22 PURCHASE_LOST LOGIN_FRICTION
+23 NO_LOGIN_ENTRY | There’s no way to log into your account.
+24 PURCHASE_LOST SUPPORT
+25 NOACC_PRAISE ICLOUD_OK | It uses iCloud, no login account needed.
+26 FIRST_RUN_BAD | every time I pick a new habit you ask for a review
+27 NR
+28 NR
+29 NR
+30 MOVE_UNCLEAR | can’t figure out how to get my finch onto my new phone
+31 NR
+32 NR
+33 NR
+34 SIGNIN_EMPTY | signed back in but there’s nothing
+35 NR
+36 RESTORE_FAIL
+37 NO_LOGIN_ENTRY NEW_START | No way to log in but account still exists
+38 NR
+39 SIGNIN_EMPTY NEW_START PURCHASE_LOST | it told me my account never existed
+40 NR
+41 NR
+42 NO_LOGIN_ENTRY | USUALLY, you can click log in, but I don’t see it anywhere
+43 LOGIN_FRICTION PURCHASE_LOST
+44 NEW_START | I had to make a new account
+45 LOGIN_FRICTION
+46 MOVE_UNCLEAR NEW_START | I recently got a new phone and hoped to save my process
+47 LOST_NOWAY MOVE_UNCLEAR
+48 LOGIN_FRICTION PURCHASE_LOST
+49 MANUAL_TRAP NEVER_KNEW | I dont know there&#39;s no backup file until you make it
+50 RESTORE_FAIL
+51 NR
+52 RESTORE_FAIL SUPPORT
+53 RESTORE_FAIL | used the back up to restore my progress, all the furniture and outfits I had built up over months disappeared
+54 NEW_START
+55 NEVER_KNEW NEW_START | Didn’t realise when I had a new phone I didn’t have a log in.
+56 LOST_NOWAY
+57 SIGNIN_EMPTY | it said that no account existed with that one email address
+58 SIGNIN_EMPTY | it seems there&#39;s no account for my email
+59 NR
+60 LOGIN_FRICTION
+61 NR
+62 RESTORE_FAIL | it says it is updating from the cloud. Yesterday’s work is gone
+63 LOST_NOWAY
+64 RESTORE_FAIL
+65 SIGNIN_EMPTY MANUAL_TRAP SUPPORT | I’m unable to simply log back in because my data was apparently stored locally
+66 LOGIN_FRICTION | it asks for an encryption key which I don’t have
+67 LOGIN_FRICTION RESTORE_FAIL | the backup files always say they’re empty
+68 LOGIN_FRICTION
+69 SIGNIN_EMPTY | Now it says my account doesn’t exist
+70 NR
+71 NR
+72 NR
+73 RESTORE_FAIL | i’d have to upload the backup I had saved of my data
+74 RESTORE_FAIL
+75 LOGIN_FRICTION
+76 NR
+77 SIGNIN_EMPTY | it says there is no login under my phone number or email
+78 LOST_NOWAY
+79 MOVE_UNCLEAR LOGIN_FRICTION | it doesn’t transfer accounts when you switch phone numbers
+80 LOST_NOWAY NEW_START
+81 RESTORE_FAIL NEW_START | it wouldn’t let me restore my progress at all so I had to get a new account
+82 SIGNIN_EMPTY EXPECT_SIGNIN | I assumed I could log back in and pick up where I left off
+83 MANUAL_TRAP | SAVE THE BACKUP FILE!!!
+84 NR
+85 LOST_NOWAY | dont uninstall or you’re deleted
+86 SIGNIN_EMPTY | it says that my account did not exist
+87 SIGNIN_EMPTY | YOU LOSE ALL progress of current pets, pet progression… EVERYTHING upon logging into a new phone
+88 MANUAL_TRAP | automatic account backup is the most basic feature
+89 MANUAL_TRAP EXPECT_SIGNIN NO_LOGIN_ENTRY | I figured I’d be able to sign in and out like a normal functioning app

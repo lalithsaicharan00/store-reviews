@@ -1,0 +1,90 @@
+450 NR
+451 NR
+452 RESTORE_FAIL
+453 ICLOUD_FAIL RESTORE_FAIL
+454 ICLOUD_FAIL RESTORE_FAIL | When I tried to back up my data from iCloud it tells me “Oops, something went wrong”
+455 NR
+456 NR
+457 NR
+458 LOST_NOWAY EXPECT_SIGNIN | I wished that it restored all my records and tracking when i redownload the app or change into a new phone
+459 PURCHASE_LOST
+460 NO_LOGIN_ENTRY PURCHASE_OK SUPPORT | when I got a new phone it wouldn’t give me an option to log-in to my account
+461 LOGIN_FRICTION
+462 PURCHASE_LOST
+463 RESTORE_OK
+464 NR
+465 NR
+466 MANUAL_TRAP ICLOUD_FAIL | lost all data as this app needs backup file
+467 FIRST_RUN_BAD
+468 FIRST_RUN_BAD
+469 LOST_NOWAY | I reinstalled it again but my account was gone
+470 NR
+471 NR
+472 NO_LOGIN_ENTRY | You cannot log in with any way, nor google, iCloud or at least an email
+473 NO_LOGIN_ENTRY LOST_NOWAY | there’s no way for me to log back in and get all my old data
+474 NO_LOGIN_ENTRY NEW_START | Got a new phone and when I open the app it forces me to make a new profile with subscription. Why can’t I just log in ?
+475 ACCOUNT_FIND
+476 ACCOUNT_FIND | I cannot find my account settings ANYWHERE!
+477 NR
+478 NR
+479 LOGIN_FRICTION PURCHASE_LOST
+480 NO_LOGIN_ENTRY | that’s no way to log into this app on other devices, you have to set it up all over
+481 FIRST_RUN_BAD
+482 ONBOARD_AGAIN NO_LOGIN_ENTRY | I can’t even log into my previous account. I don’t want a personalized quiz
+483 NO_LOGIN_ENTRY | Becuase there is no login or actual personalized profile i have to redo the whole app AGAIN
+484 FIRST_RUN_BAD
+485 NR
+486 LOST_NOWAY
+487 LOST_NOWAY EXPECT_SIGNIN | You should have your own account on here so that you have everything saved
+488 LOST_NOWAY PURCHASE_LOST
+489 NR
+490 NO_LOGIN_ENTRY
+491 ICLOUD_FAIL | I had the app back up on iCloud, so when I purchased a new iPhone I expected a transfer to the new device
+492 ICLOUD_FAIL | lost everything even though it was backed up to iCloud
+493 NR
+494 SIGNIN_EMPTY PURCHASE_LOST
+495 RESTORE_FAIL
+496 FORCED_ACCOUNT | Really hate apps that ask me to create an account before I even have a chance to try out
+497 FORCED_ACCOUNT | was asked to create an account — which I had never been asked to do befor
+498 NR
+499 LOGIN_FRICTION
+500 NR
+501 ONBOARD_AGAIN NO_LOGIN_ENTRY | Why do I have to go through the questionnaire again on my iPad
+502 NO_LOGIN_ENTRY | There is no login option just the sign up one
+503 LOST_NOWAY NEW_START
+504 LOGIN_FRICTION
+505 NR
+506 NR
+507 ASKED_RESTORE PURCHASE_LOST | it asked me to log in if I already had an account
+508 NOACC_PRAISE | There is no sign in required to!
+509 FIRST_RUN_BAD
+510 RESTORE_FAIL | Data is restored but not settings.
+511 NR
+512 WRONG_DOOR ACCOUNT_FIND | I now have two accounts, but there is no way to log out
+513 PURCHASE_LOST SUPPORT
+514 NR
+515 RESTORE_FAIL | Upon reinstall it asked me to add habits, so I assumed the sync failed.
+516 PURCHASE_LOST LOST_NOWAY
+517 NR
+518 NR
+519 NEVER_KNEW PURCHASE_LOST | I chose not to register an account at the time. Since I switched phones, apparently this means I lose my premium status.
+520 SIGNIN_EMPTY | you will loose all your data if you sign out or delete and reinstall the app
+521 LOGIN_FRICTION SUPPORT
+522 RESTORE_FAIL LOGIN_FRICTION
+523 LOGIN_FRICTION PURCHASE_LOST SUPPORT
+524 NEVER_KNEW | I can’t remember if or how I logged in
+525 LOGIN_FRICTION
+526 LOGIN_FRICTION SUPPORT
+527 LOGIN_FRICTION SUPPORT
+528 LOGIN_FRICTION
+529 NR
+530 NR
+531 NO_LOGIN_ENTRY PURCHASE_LOST | There&#39;s just no way to login and have access to all my premium benefits.
+532 NO_LOGIN_ENTRY | i couldnt find the sign in button anywhere!
+533 ACCOUNT_FIND
+534 NR
+535 FIRST_RUN_BAD
+536 NR
+537 LOGIN_FRICTION
+538 NR
+539 ONBOARD_AGAIN | Once the app was downloaded, I was forced to take the quiz again

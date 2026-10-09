@@ -1,0 +1,90 @@
+1080 LOST_NOWAY | I couldn't see a way to back up and restore my data
+1081 MOVE_UNCLEAR | My phone crashed. Can I restore my lists to my new phone?
+1082 SIGNIN_EMPTY ONBOARD_AGAIN | even though I'm signed into account, does not recognize anything saved and forces a new setup every time
+1083 SIGNIN_EMPTY | signing in is useless
+1084 NR
+1085 FORCED_ACCOUNT | I shouldn't need to open any kind of account at all in order to use this app
+1086 NO_LOGIN_ENTRY PURCHASE_LOST | There is no option to log in.
+1087 SIGNIN_EMPTY | it doesn't save your data to the cloud, even when you make an account
+1088 LOST_NOWAY PURCHASE_LOST
+1089 SIGNIN_EMPTY | when I tried to log in in my other phone, my previously created habits wasn't sync
+1090 LOST_NOWAY
+1091 LOST_NOWAY
+1092 ACCOUNT_FIND
+1093 NO_LOGIN_ENTRY PURCHASE_LOST | There is no way to login and retrieve your streaks etc from the old device.
+1094 ACCOUNT_FIND
+1095 MANUAL_TRAP
+1096 NR
+1097 MANUAL_TRAP
+1098 NO_LOGIN_ENTRY PURCHASE_LOST
+1099 PURCHASE_LOST | everything but this app transferred
+1100 PURCHASE_LOST
+1101 LOGIN_FRICTION
+1102 LOGIN_FRICTION
+1103 RESTORE_OK
+1104 NR
+1105 NR
+1106 WRONG_DOOR SIGNIN_EMPTY | the first time I had tried to sign in with google
+1107 WRONG_DOOR | Can't create an account because one already exists through google account login.
+1108 NR
+1109 SIGNIN_EMPTY | Reinstalled the app, signed in & everything is gone
+1110 WRONG_DOOR | it has wrong email for me
+1111 LOGIN_FRICTION
+1112 FIRST_RUN_BAD
+1113 FIRST_RUN_BAD
+1114 NR
+1115 LOGIN_FRICTION PURCHASE_LOST
+1116 RESTORE_OK | since I had logged in I just reinstalled and it worked just as good
+1117 NR
+1118 ONBOARD_AGAIN | it made me go through all the questions again instead of just letting me log in
+1119 LOST_NOWAY SUPPORT
+1120 PURCHASE_LOST
+1121 LOST_NOWAY PURCHASE_LOST
+1122 MOVE_UNCLEAR
+1123 LOST_NOWAY EXPECT_SIGNIN | I was hoping my account will be transferred too for a seamless transition
+1124 PURCHASE_LOST
+1125 NO_LOGIN_ENTRY | how can I log in, to my profile, on a new phone? I don't see an option
+1126 RESTORE_FAIL PURCHASE_LOST
+1127 MOVE_UNCLEAR PURCHASE_LOST
+1128 NO_LOGIN_ENTRY NEW_START | No where to sign in.
+1129 NO_LOGIN_ENTRY | There is absolutely no place to "log in." "Join" is the only option.
+1130 NO_LOGIN_ENTRY PURCHASE_LOST
+1131 LOST_NOWAY EXPECT_SIGNIN
+1132 ONBOARD_AGAIN PURCHASE_LOST | it's making me go through the questionnaire at the start and then when I do there's no option to sync from my old phone
+1133 PURCHASE_LOST
+1134 FIRST_RUN_BAD
+1135 NR
+1136 NO_LOGIN_ENTRY LOST_NOWAY | There's no log in or anything either so you have to completely start over
+1137 NR
+1138 PURCHASE_LOST SUPPORT
+1139 NR
+1140 ONBOARD_AGAIN | it makes you go through the entire setup questionnaire before letting you log in
+1141 SIGNIN_EMPTY PURCHASE_LOST
+1142 MANUAL_TRAP
+1143 NR
+1144 FIRST_RUN_BAD
+1145 ONBOARD_AGAIN
+1146 ACCOUNT_FIND | I dont know what account Im supposed to send my password recovery
+1147 LOGIN_FRICTION
+1148 ACCOUNT_FIND NO_LOGIN_ENTRY | Where is the log in and out button?
+1149 NR
+1150 NR
+1151 PURCHASE_LOST
+1152 LOGIN_FRICTION
+1153 RESTORE_OK
+1154 SIGNIN_EMPTY
+1155 NR
+1156 SIGNIN_EMPTY | when I installed it again all my data was gone, even though I had an account
+1157 SIGNIN_EMPTY | i thought that by log in in with google, my data had a backup
+1158 NOACC_PRAISE
+1159 RESTORE_FAIL
+1160 NR
+1161 NOACC_PRAISE | No signing up.
+1162 NOACC_PRAISE
+1163 RESTORE_OK | the backup and restore feature ensures that all of my data can be transferred to a new phone
+1164 NR
+1165 NR
+1166 NR
+1167 LOGIN_FRICTION
+1168 ONBOARD_AGAIN
+1169 SIGNIN_EMPTY

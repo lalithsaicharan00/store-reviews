@@ -34,7 +34,7 @@ struct HelpView: View {
                     }
                     .accessibilityIdentifier("help-contact")
                     Button { Analytics.shared.count(.welcomeReplay, ticket: Analytics.shared.ticket); showWelcome = true } label: {
-                        HelpRowLabel(title: "Show the Welcome Again", detail: "What \(Onboarding.appName) means, and what's free", symbol: "hand.wave")
+                        HelpRowLabel(title: "Show the Welcome Again", detail: "What's free, and what \(Onboarding.appName) can do", symbol: "hand.wave")
                     }
                     .accessibilityIdentifier("help-welcome")
                 } footer: {
@@ -67,7 +67,7 @@ struct HelpView: View {
         .navigationTitle("Help & Feedback")
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $showWelcome) {
-            OnboardingView(replay: true) { _ in showWelcome = false }
+            OnboardingView(replay: true) { showWelcome = false }
         }
         .alert("Write to Us", isPresented: $showAddress) {
             Button("Copy Address") { UIPasteboard.general.string = Support.email }
@@ -302,9 +302,9 @@ enum HelpTopics {
             HelpTopic(question: "Where my habits are",
                       answer: "On this iPhone, and in its iCloud or computer backup if you have one turned on. An account is optional and free: signed in, a copy is also kept in your account so you never lose them. Without one, nothing is sent anywhere unless you share it."),
             HelpTopic(question: "Back up or move to a new phone",
-                      answer: "Signed in (free, in ≡ › Account), your habits are backed up for you: on the new phone, sign in. Without an account, ≡ › Backup & Export › Move to a New iPhone sends a backup file; on the new phone, open it, or choose Restore Habits From a Backup and pick it. You see what it holds before anything changes."),
+                      answer: "On the new phone, open Often Enough and choose I've used it before. Signed in (free, in ≡ › Account), choose Sign in to your account. Without an account, on this iPhone go to ≡ › Backup & Export › Move to a New iPhone › Show a Transfer Code, and on the new phone choose Move from another device and type the code, with both phones close. Or send a backup file from the same page, and on the new phone choose Restore a backup › Backup file. On a phone that already has habits, you see what's coming before anything changes."),
             HelpTopic(question: "Before deleting the app",
-                      answer: "With iCloud on or an account, your backup stays: after reinstalling, choose Restore Habits From a Backup (or sign in). With neither, save a backup file outside the app first. Offload App in iPhone Settings keeps everything."),
+                      answer: "With iCloud on or an account, your backup stays: after reinstalling, choose I've used it before, then Restore a backup (or Sign in to your account). With neither, save a backup file outside the app first. Offload App in iPhone Settings keeps everything."),
             HelpTopic(question: "Open my history in a spreadsheet",
                       answer: "In ≡ › Backup & Export, choose Export a Spreadsheet (CSV). Each row is a day's entry or note, with its date."),
             HelpTopic(question: "What's free, and what Plus adds",

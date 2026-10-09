@@ -1,0 +1,90 @@
+270 RESTORE_FAIL
+271 NR
+272 PURCHASE_LOST LOST_NOWAY
+273 LOGIN_FRICTION WRONG_DOOR | there&#39;s not even an option to relogin using my apple id
+274 NR
+275 ONBOARD_AGAIN | to access the app I had to go through the whole setup again
+276 ONBOARD_AGAIN | It also makes you go through a weeks-long tutorial every time
+277 SIGNIN_EMPTY PURCHASE_LOST NEW_START | The app is not recognizing my email id and setting up a new account altogether.
+278 NR
+279 ONBOARD_AGAIN RESTORE_FAIL | Endless onboarding nightmare before it lets me touch the settings
+280 NR
+281 LOST_NOWAY NEW_START
+282 NR
+283 PURCHASE_LOST
+284 NR
+285 NR
+286 PURCHASE_LOST SUPPORT
+287 NR
+288 FIRST_RUN_BAD | Had to get through countless offers before I even got to my account
+289 NR
+290 NR
+291 ONBOARD_AGAIN | You will be put through onbardings again and again.
+292 PURCHASE_LOST LOST_NOWAY
+293 NR
+294 NR
+295 FIRST_RUN_BAD
+296 NR
+297 NR
+298 ASKED_RESTORE RESTORE_FAIL | Asked to restore my progress when I opened the app on a different device which takes up to TEN MINUTES
+299 LOGIN_FRICTION
+300 NR
+301 NR
+302 NR
+303 FIRST_RUN_BAD
+304 NR
+305 NR
+306 NR
+307 NR
+308 NR
+309 FIRST_RUN_BAD
+310 ONBOARD_AGAIN | You will be bombarded with quizzes that will forget your response every time you open the application
+311 ACCOUNT_FIND | I could not see my account page in any of the apps
+312 LOGIN_FRICTION
+313 NR
+314 NR
+315 NR
+316 NR
+317 LOGIN_FRICTION | I already have an account but it won’t let me log in. It’s stuck at the email verification.
+318 NR
+319 FIRST_RUN_BAD | It was really irritating to encounter that delay when I was trying to just set up the app.
+320 ACCOUNT_FIND
+321 NR
+322 NR
+323 RESTORE_FAIL
+324 ONBOARD_AGAIN | Every time I try to fix this I have to go through the entire quiz again
+325 SIGNIN_EMPTY | I tried every email I had and it said there was no account.
+326 NR
+327 LOGIN_FRICTION | the hiccups getting the app to recognize me as a user
+328 LOGIN_FRICTION
+329 RESTORE_FAIL | can login but won’t restore with my backup! It says it’s an error!
+330 NR
+331 FIRST_RUN_BAD | The introduction to the interface was long and disengaging.
+332 NR
+333 NR
+334 NR
+335 NR
+336 NR
+337 NR
+338 LOGIN_FRICTION
+339 ONBOARD_AGAIN | They allow you to log into your account but FORCE you to follow all the steps like setting up a new account.
+340 SIGNIN_EMPTY | when I switched phones I lost all of my progress despite having an account
+341 LOGIN_FRICTION | greeted with a blank screen after entering my email address to login in
+342 SIGNIN_EMPTY WRONG_DOOR | it said I didn’t have an account. So I made one
+343 NR
+344 NR
+345 RESTORE_FAIL PURCHASE_LOST
+346 SIGNIN_EMPTY PURCHASE_LOST | When I signed in to my account, it started over and tried to charge me again.
+347 NR
+348 FIRST_RUN_BAD
+349 RESTORE_FAIL SUPPORT
+350 NR
+351 NR
+352 RESTORE_FAIL
+353 FIRST_RUN_BAD | Couldn’t even get past the welcome screen
+354 WRONG_DOOR | it opened a new account through an alternative gmail login triggering a second and new subscription plan
+355 RESTORE_FAIL
+356 PURCHASE_LOST RESTORE_FAIL SUPPORT
+357 NR
+358 NR
+359 NO_LOGIN_ENTRY LOST_NOWAY | now I lost all my progress because there’s no way to login

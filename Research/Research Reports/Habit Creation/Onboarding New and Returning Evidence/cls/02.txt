@@ -1,0 +1,90 @@
+180 PURCHASE_LOST
+181 FIRST_RUN_BAD | I opened the app, and was immediately prompted to subscribe
+182 LOST_NOWAY
+183 NR
+184 LOGIN_FRICTION | the “register with email sign in link“ fails to redirect to the app
+185 NR
+186 FORCED_ACCOUNT | I saw that I had to sign in with my accounts
+187 NR
+188 NR
+189 PURCHASE_LOST
+190 PURCHASE_LOST SUPPORT
+191 RESTORE_FAIL ICLOUD_FAIL | where does my data even backup to? iCloud? Doesn’t really say within the app
+192 PURCHASE_LOST
+193 ICLOUD_FAIL
+194 ICLOUD_FAIL RESTORE_FAIL | I backed up to iCloud but nothing happened when I tried to restore it
+195 PURCHASE_LOST
+196 PURCHASE_LOST
+197 EXPECT_SIGNIN | It need to create user account to save and restore progress when the user buy new device
+198 PURCHASE_LOST
+199 RESTORE_FAIL MANUAL_TRAP | Shouldn’t the app be auto backing up every day?
+200 PURCHASE_LOST
+201 PURCHASE_LOST SUPPORT
+202 PURCHASE_LOST SUPPORT
+203 PURCHASE_LOST
+204 RESTORE_FAIL
+205 PURCHASE_LOST LOST_NOWAY
+206 RESTORE_FAIL
+207 ICLOUD_OK | Bonus points it syncs using iCloud, I got a new device and I did not backup anything
+208 RESTORE_OK SUPPORT | there is a Settings &gt; Manage Data &gt; Backups page feature, so I just restored a backup
+209 NR
+210 NR
+211 FIRST_RUN_BAD
+212 FIRST_RUN_GOOD
+213 NR
+214 NR
+215 RESTORE_OK
+216 NR
+217 FIRST_RUN_BAD
+218 LOGIN_FRICTION
+219 PURCHASE_LOST MOVE_UNCLEAR
+220 PURCHASE_LOST SUPPORT
+221 ONBOARD_AGAIN | log in using the account I had created, and the first thing that happened was the questionnaire started again
+222 LOGIN_FRICTION
+223 LOST_NOWAY
+224 NR
+225 PURCHASE_LOST SUPPORT
+226 SIGNIN_EMPTY | since I have an account but yet they still deleted all my progress telling me to start everything again
+227 PURCHASE_LOST NEW_START | when I tried to redownload and log back in I was treated as a new user
+228 FIRST_RUN_BAD
+229 NR
+230 NR
+231 ONBOARD_AGAIN | it makes you go through the entire account set up process AGAIN
+232 ONBOARD_AGAIN NO_LOGIN_ENTRY | I just want to log in people, not answer everything all over again
+233 PURCHASE_LOST
+234 NR
+235 FIRST_RUN_BAD | If you don’t complete the setup you have to start all over again.
+236 ONBOARD_AGAIN | I am unable to log on to their website without answering all the questions again
+237 PURCHASE_LOST
+238 PURCHASE_LOST
+239 LOGIN_FRICTION | I can’t sign into an existing account I created on my computer.
+240 RESTORE_FAIL SUPPORT
+241 FIRST_RUN_BAD | the app asked me trice within the process of creating an account
+242 NR
+243 NR
+244 NR
+245 LOST_NOWAY PURCHASE_LOST NEW_START | I couldn’t recover my account I only had the possibility to start a new trial and pay again
+246 LOGIN_FRICTION PURCHASE_LOST
+247 NR
+248 FIRST_RUN_BAD
+249 NR
+250 FIRST_RUN_BAD
+251 NR
+252 NR
+253 NR
+254 WRONG_DOOR | I’ve redownloaded it and signed up for a different account
+255 NR
+256 NR
+257 NR
+258 ONBOARD_AGAIN | Went back to the app where it asked me to do the same questionnaire again
+259 FIRST_RUN_BAD
+260 NR
+261 ONBOARD_AGAIN FIRST_RUN_BAD | killing and restarting just makes you repeat all the onboarding steps again
+262 NR
+263 NR
+264 MOVE_UNCLEAR SUPPORT | I’ve changed phones and would like to log into my existing account... is it possible?
+265 PURCHASE_LOST SUPPORT
+266 NO_LOGIN_ENTRY | There is no login button within the app
+267 ONBOARD_AGAIN NO_LOGIN_ENTRY | it wanted me to complete the whole questionnaire I’d just completed again with no option to skip and log in
+268 ONBOARD_AGAIN NO_LOGIN_ENTRY RESTORE_FAIL PURCHASE_LOST | No direct entry. Have to go through name, email etc and back to square 1.
+269 RESTORE_FAIL | the app says “ restore progress” as a weird joke button that doesn’t do anything

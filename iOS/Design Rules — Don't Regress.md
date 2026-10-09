@@ -506,14 +506,65 @@ Report: [Backup & Export and Your Account — What People Look For](<../Research
 - The latest queued alert date is not a guarantee for every item. Explain nearest-first capacity and iOS background limits. Physical-device delivery remains a separate check. Reliability details supersede §6 of Pending to Implement.md in its sidebar addendum.
 - ~~Keep Help & Feedback and About blank, as requested by the user.~~ *Superseded 1 Oct 2026: the user asked for the help content; see "Onboarding, empty Today and Help" below.*
 
-## Onboarding, empty Today and Help (built 1 Oct 2026)
+## Onboarding, empty Today and Help (rebuilt 9 Oct 2026 from the user's wireframes; first built 1 Oct 2026)
 
-Research: [Onboarding — The Name, What's Free, and a First Habit](<../Research/Research Reports/Habit Creation/Onboarding — The Name, What's Free, and a First Habit.md>). Checklist: `Docs/Checklists/Onboarding and Help.md`.
+Wireframes: Figma [Onboarding — Current wireframes](https://www.figma.com/design/Ncccsm1l2O62GJ5xLSInqk/Design?node-id=835-503)
+(one row per path). Research: [Onboarding for New and Returning People](<../Research/Research Reports/Habit Creation/Onboarding for New and Returning People — Research and Proposed Flow.md>)
+and [Onboarding — The Name, What's Free, and a First Habit](<../Research/Research Reports/Habit Creation/Onboarding — The Name, What's Free, and a First Habit.md>).
+Checklist: Current Work 73.1. Code: `Habits/Onboarding/` (`OnboardingPages.swift` new person, `OnboardingReturning.swift`
+every way back), `Backup/DeviceTransfer.swift` and `TransferSendView.swift` (the transfer code).
 
-- **Four screens, once, on a fresh install, every one skippable:** Often Enough (the name) · Free, with no account · Your days and weeks · What's one habit to start with? Skip (screens 1–3), Not Now (screen 4) and Restore from a Backup File (screen 1) each end it in one tap. **Never add a question the app can't act on**, a goals survey, a score, a pledge, a sign-up, a permission request or a paywall to it (C111, C283, C160, C209).
-- **The name screen says only what the app does:** you choose how often; streaks count your goal (3 times a week, every week, is a streak; unplanned days never break it); skipped and paused days never count against you. **Never claim a missed day doesn't matter**: a daily habit's streak does end on a missed, unskipped day.
-- **What's free is said before any effort** (C236): up to 5 habits free forever, no account, no ads, data on this iPhone with how to back it up, and Plus as "one payment, not a subscription" (C305), with no buy button. **List only what this build has** (C218): add widgets to the free line when they're merged.
-- **An idea only fills in the form** (name, type, how often); nothing is saved until Add, and amounts stay empty (C292, C203). Never preselect or auto-add a habit.
-- **Not shown** in UI or speed tests (`-uitest`, `-dbname`) unless `-onboarding`, nor to anyone who already has habits, nor over a storage problem.
+- **The wireframes set the screens, their order and their words; every control is the app's own** (lists, the filled
+  ink capsule at the bottom, the system back chevron, the + flow itself). Never copy a mockup's Cancel/Add bar or its
+  drawing of a form: "you should sync everything with our app" (the user, 9 Oct 2026).
+- **The first screen asks one thing, and its words are the user's, final:** Often Enough · "Habits grow through
+  repetition. You choose how often is enough." · "Have you used Often Enough before?" · **I'm new here** / **I've used it
+  before**. One tap moves on: no Continue, no Skip, no Back. The icon's place is a grey 84-pt rounded square until the
+  app icon exists. Privacy & Optional Usage Sharing stays as a small link under the cards (kept from 1 Oct, U5).
+- **I'm new here:** What's included (free plan: up to 5 habits, unlimited tasks, widgets; no account needed; iCloud
+  backup; "More habits with optional Plus.", no buy button) → Your habit. Your goal. → Quit or cut down. → Tasks, once
+  or on repeat. → Your days and weeks. → Your first habit. **Skip setup** (top right) on every one of them ends on Today.
+  The example cards are drawn from Today's own parts (`HabitIcon`, `StreakLabel`, `RoundActionButton`, `ProgressFill`),
+  can't be tapped, and are saved nowhere. Days and weeks: "You can change these later in ≡ › Day and Week." (the
+  wireframe's "Settings" is ≡ › Day and Week in this app).
+- **What the 9 Oct wireframes replaced (U5):** the name page (its week picture and "streaks count your goal", "skipped
+  and paused days never count against you"), "No ads", "one payment, not a subscription" and "Restore from a Backup
+  File" on the first page. The user's own screens took their place; the ways back now live behind I've used it before.
+- **An idea opens its form straight away, filled in** (name, icon, how it's tracked, how often; amounts empty, nothing
+  saved until Add): never "What do you want to do?" first. **Create my own habit** (not "Create on my own") pushes the
+  same `NewItemChoices` that + shows, as the next page of the welcome, full screen: one stack, one Back.
+- **I've used it before → Welcome back:** Sign in to your account · Restore a backup · Move from another device ·
+  Start without restoring. **When something is already here, it comes first with its own Continue:** habits or tasks on
+  this iPhone ("We found data on this device. 17 habits. Continue with this data?") or an account still signed in after
+  a reinstall ("You're still signed in."). Then "Other ways to get your data".
+- **One loading page, its words fitted to the job:** Getting your data (from your account / from your other device),
+  Processing your data (from your backup file), Restoring your backup / your data (after the review), **Setting things
+  up** for data already on the iPhone (never "getting" what's already here). A turning symbol (still with Reduce Motion),
+  what it's doing now, Cancel at the bottom; no Cancel or Back once a restore is writing; at least a second on screen.
+  A problem is said in place with two ways on (Try again / Back, Open Settings, Restore a backup instead, Start without
+  restoring). Leaving the page stops its work from ending the welcome later.
+- **Signing in here never backs the empty iPhone up first** (`signIn(… backUp: false)`); it backs up once the data is
+  back. Plus: the first full sync brings everything (D14). Free: the account's newest backup with something in it.
+  An unknown sign-in says so (Try Another Sign-In / Restore a Backup Instead / Create a New Account), never quietly
+  makes an account (D3).
+- **On an empty iPhone an account or a transfer restores straight away** (nothing to lose, and the undo file is kept,
+  D5); a backup from iCloud or a file is shown first (**Your backup.**: what's in it, made on, when) with Restore. With
+  something already on the iPhone, always **Replace What's on This iPhone** or **Merge**, each saying what it would do.
+  **A backup with nothing in it is never "restored"**: the page says so.
+- **Move from another device, like moving chats:** the old iPhone's ≡ › Backup & Export › Move to a New iPhone › **Show
+  a Transfer Code** makes a fresh backup and shows eight characters (two groups of four, Crockford letters); the new
+  iPhone types them. The code is the TLS key (PBKDF2-stretched), local network or peer-to-peer only, nothing through the
+  server, no account, used once, gone when the screen closes. The screen stays awake. A wrong code says "That code
+  doesn't match" within seconds (a mismatched handshake can hang rather than fail: checked in the simulator 9 Oct, so
+  each phone gets 5 s). The code field cleans as typed (capitals, no dash, eight at most) on the next turn (U6).
+- **Google Drive** is in the wireframes but nothing backs up there yet, so it isn't offered; add it to Restore a backup
+  when Google Drive backup exists.
+- **Help → Show the Welcome Again** shows What's included and the three pages on what the app does, ✕ to close, Done
+  on the last; no Skip setup.
+- **Never add a question the app can't act on**, a goals survey, a score, a pledge, a permission request or a paywall
+  (C111, C283, C160, C209). An account appears only for someone coming back to one.
+- **Not shown** in UI or speed tests (`-uitest`, `-dbname`) unless `-onboarding`, nor to anyone who already has habits,
+  nor over a storage problem. Debug only: `-onboarding-page a,b` opens it on those pages; `-transfer-code` and
+  `-transfer-send` check a transfer between two simulators.
 - **The empty Today is never a dead end and never says "every day":** New Habit, Start From an Idea, Restore from a Backup File, How It Works.
 - **Help & Feedback:** Contact Us and Show the Welcome Again first, then How It Works, searchable. **Every answer names the exact button**; when a way in or a label changes, change its answer in `HelpTopics` in the same change. Contact Us sends no habit data. About lists the open-source libraries with their licences; no links to pages that don't exist yet.

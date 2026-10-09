@@ -1,0 +1,90 @@
+900 NO_LOGIN_ENTRY PURCHASE_LOST | there is no login option either
+901 PURCHASE_LOST
+902 NO_LOGIN_ENTRY | Why it have no login option
+903 PURCHASE_LOST LOST_NOWAY | No option to account recovery.
+904 NO_LOGIN_ENTRY | there is no option to create our own personal account
+905 NO_LOGIN_ENTRY LOST_NOWAY PURCHASE_LOST | there is no login so all my journals and traxking is lost
+906 NO_LOGIN_ENTRY PURCHASE_LOST | you should provide a button for us to sign in
+907 RESTORE_FAIL PURCHASE_LOST | despite "cloud saving" I lost everything when I got a new phone
+908 SIGNIN_EMPTY | logged in my account but my activities and history don't restore
+909 PURCHASE_LOST
+910 PURCHASE_LOST SUPPORT
+911 LOGIN_FRICTION
+912 RESTORE_FAIL
+913 SIGNIN_EMPTY PURCHASE_LOST | lost my lifetime pro subscription and all my tracked habbits eventho I logged in with the same account
+914 PURCHASE_LOST
+915 PURCHASE_LOST
+916 SIGNIN_EMPTY PURCHASE_LOST | even though I am logged in
+917 NO_LOGIN_ENTRY MANUAL_TRAP | there is no log in auto back up option
+918 PURCHASE_LOST
+919 PURCHASE_LOST RESTORE_FAIL
+920 MANUAL_TRAP | find manually backing up and importing saved data when switching devices is tiring
+921 LOST_NOWAY EXPECT_SIGNIN | the app should consider using an account to login and store this data
+922 NO_LOGIN_ENTRY | There are no login credentials if I uninstall the app will my habits list be same
+923 PURCHASE_LOST MOVE_UNCLEAR
+924 NOACC_PRAISE | No sign in required and no ads either
+925 NO_LOGIN_ENTRY MOVE_UNCLEAR
+926 RESTORE_FAIL | I discovered none of my backups had actually occurred
+927 ACCOUNT_FIND NO_LOGIN_ENTRY | I realized there's no "Account" section
+928 NR
+929 RESTORE_OK SUPPORT
+930 NR
+931 RESTORE_FAIL SUPPORT
+932 PURCHASE_OK SUPPORT
+933 NO_LOGIN_ENTRY MOVE_UNCLEAR
+934 PURCHASE_OK SUPPORT
+935 NO_LOGIN_ENTRY | No login option
+936 NO_LOGIN_ENTRY PURCHASE_LOST | there is no option of login/signup using any account
+937 NO_LOGIN_ENTRY PURCHASE_LOST | I can't find where to sign in
+938 RESTORE_FAIL NEW_START
+939 ONBOARD_AGAIN | you have to redo the same pointless survey and tutorial
+940 LOGIN_FRICTION
+941 LOST_NOWAY SUPPORT
+942 RESTORE_FAIL
+943 SIGNIN_EMPTY | logged into my account just to see the stats of last 4 years are completely gone
+944 NR
+945 LOST_NOWAY
+946 PURCHASE_LOST
+947 NR
+948 NR
+949 LOGIN_FRICTION
+950 LOGIN_FRICTION PURCHASE_LOST SUPPORT
+951 NO_LOGIN_ENTRY WRONG_DOOR | Literally no login option, kept asking me to Register
+952 LOGIN_FRICTION
+953 SIGNIN_EMPTY SUPPORT
+954 LOGIN_FRICTION PURCHASE_LOST SUPPORT
+955 LOGIN_FRICTION | This the worst app I've ever seen regarding logging into a new device
+956 LOGIN_FRICTION
+957 ACCOUNT_FIND | Impossible to log out of.
+958 LOST_NOWAY
+959 LOGIN_FRICTION
+960 SIGNIN_EMPTY | it says it does not recognise my e-mail and all my data is lost
+961 NO_LOGIN_ENTRY | Had to uninstall to find where to sign in
+962 LOGIN_FRICTION
+963 PURCHASE_LOST SUPPORT
+964 ACCOUNT_FIND
+965 SIGNIN_EMPTY SUPPORT
+966 RESTORE_FAIL
+967 RESTORE_FAIL
+968 RESTORE_FAIL SUPPORT
+969 RESTORE_FAIL SUPPORT
+970 NR
+971 MOVE_UNCLEAR
+972 LOST_NOWAY PURCHASE_LOST
+973 SIGNIN_EMPTY SUPPORT | signed in, and tried to sync ... there was nothing
+974 RESTORE_FAIL ACCOUNT_FIND
+975 RESTORE_FAIL SUPPORT
+976 SIGNIN_EMPTY PURCHASE_LOST SUPPORT
+977 SIGNIN_EMPTY | Doesn't save habit data when you switch to a new phone, even using the same login information.
+978 SIGNIN_EMPTY SUPPORT
+979 WRONG_DOOR LOGIN_FRICTION
+980 LOGIN_FRICTION PURCHASE_LOST
+981 SIGNIN_EMPTY
+982 SIGNIN_EMPTY SUPPORT
+983 LOGIN_FRICTION
+984 LOGIN_FRICTION
+985 LOGIN_FRICTION PURCHASE_LOST
+986 NO_LOGIN_ENTRY WRONG_DOOR | it only shows Sign Up or connect to Facebook
+987 SIGNIN_EMPTY NEW_START SUPPORT
+988 PURCHASE_LOST
+989 LOGIN_FRICTION

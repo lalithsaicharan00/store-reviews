@@ -137,6 +137,13 @@ struct HabitsApp: App {
             todayView
                 .environment(backup)
                 .modifier(IncomingBackupSheet(backup: backup))
+                #if DEBUG
+                // Two simulators checked against each other: `-transfer-send` opens the old iPhone's code screen.
+                // Only once the demo habits are saved (S7), so the file isn't made from an empty database.
+                .sheet(isPresented: .constant(ProcessInfo.processInfo.arguments.contains("-transfer-send") && !model.store.habits.isEmpty)) {
+                    NavigationStack { TransferSendView() }.environment(backup)
+                }
+                #endif
         } else {
             todayView
         }
@@ -153,17 +160,20 @@ struct HabitsApp: App {
                 if model.store.problem == nil && model.store.isStorageReady { model.scheduler.scheduleReconcile(model.store) }
             }
             .fullScreenCover(isPresented: $showOnboarding) {
-                OnboardingView { restore in
-                    showOnboarding = false
-                    // Coming back from another phone: straight to the restore, on Today's stack so Back is Today.
-                    if restore { model.menu.path.append(MenuPlace.backup) }
-                }
+                // Every way back (sign in, restore, move from another device) finishes inside the welcome, so it
+                // always ends on Today (Current Work 73.1).
+                OnboardingView { showOnboarding = false }
                 .environment(model.store)
                 .environment(model.scheduler)
                 .environment(model.menu)
                 .environment(model.router)
+                .modifier(OptionalBackup(backup: model.backup))
                 .tint(.ink)
             }
+            #if DEBUG
+            // Speed runs (`PerfDriver` "onboarding", Rulebook T4): the welcome over Today, as on a fresh install.
+            .onPerfCommand { action in if action == .openOnboarding { showOnboarding = true } }
+            #endif
             .task {
                 // The theme is set on the window itself, so it reaches sheets and alerts too (≡ → Appearance).
                 Theme.apply(UserDefaults.standard.string(forKey: Preferences.theme) ?? Theme.automatic.rawValue)
@@ -194,6 +204,14 @@ private struct IncomingBackupSheet: ViewModifier {
             NavigationStack { RestorePreviewView(pending: pending) }
                 .environment(backup)
         }
+    }
+}
+
+/// The backup centre for a screen shown over Today in its own presentation, when there is one (none without a database).
+private struct OptionalBackup: ViewModifier {
+    let backup: BackupCenter?
+    func body(content: Content) -> some View {
+        if let backup { content.environment(backup) } else { content }
     }
 }
 

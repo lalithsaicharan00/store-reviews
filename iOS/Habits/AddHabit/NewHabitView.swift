@@ -87,48 +87,62 @@ struct NewItemView: View {
     var group: UUID? = nil
     /// Called with the new habit's ID, so Today can show where it went.
     var onAdded: (UUID) -> Void = { _ in }
-    @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            NewItemChoices(group: group, onAdded: { onAdded($0); dismiss() })
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                }
+        }
+    }
+}
+
+/// "What do you want to do?" and every screen after it, in whichever stack shows it: New's own sheet, or onboarding's
+/// "Create my own habit" (Current Work 73.1), which pushes it as its next page, so a new person makes their first habit
+/// exactly as they will every other time. The stack needs a `NavigationPath` (or none), as its pages push their own
+/// values.
+struct NewItemChoices: View {
+    var group: UUID? = nil
+    /// Called with the new item's ID once it's saved. The caller closes whatever the flow is in.
+    let onAdded: (UUID) -> Void
+    @Environment(HabitStore.self) private var store
 
     private enum Kind: Hashable { case good, bad }
 
     var body: some View {
-        NavigationStack {
-            List {
-                Section {
-                    NavigationLink(value: Kind.good) {
-                        ChoiceLabel(icon: "chart.line.uptrend.xyaxis", title: "Build or maintain", detail: "A habit you want to start or keep doing.")
-                    }
-                    NavigationLink(value: Kind.bad) {
-                        ChoiceLabel(icon: "chart.line.downtrend.xyaxis", title: "Quit or cut down", detail: "A habit you want to stop or do less.")
-                    }
-                    NavigationLink {
-                        BuiltWhenShown { form(.task) }
-                    } label: {
-                        ChoiceLabel(icon: ItemType.task.icon, title: "Add a task", detail: "Something to get done, once or on repeat. No habit progress, streaks or stats.")
-                    }
-                } header: {
-                    // No examples on this screen: the labels name what the user wants to do (copy report).
-                    QuestionHeader("What do you want to do?")
-                } footer: {
-                    if !store.isPlus {
-                        Text("\(store.activeHabitCount) of \(HabitStore.freeHabitLimit) free habits used. Tasks are always free.").formNote()
-                    }
+        List {
+            Section {
+                NavigationLink(value: Kind.good) {
+                    ChoiceLabel(icon: "chart.line.uptrend.xyaxis", title: "Build or maintain", detail: "A habit you want to start or keep doing.")
                 }
-            }
-            .navigationDestination(for: Kind.self) { kind in
-                switch kind {
-                case .good: question("How do you want to track it?", [.doIt, .amount, .time, .checklist])
-                case .bad: question("What do you want to do?", [.quit, .cutBack])
+                NavigationLink(value: Kind.bad) {
+                    ChoiceLabel(icon: "chart.line.downtrend.xyaxis", title: "Quit or cut down", detail: "A habit you want to stop or do less.")
                 }
-            }
-            .analyticsScreen(.newHabit)
-            .navigationTitle("New")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                NavigationLink {
+                    BuiltWhenShown { form(.task) }
+                } label: {
+                    ChoiceLabel(icon: ItemType.task.icon, title: "Add a task", detail: "Something to get done, once or on repeat. No habit progress, streaks or stats.")
+                }
+            } header: {
+                // No examples on this screen: the labels name what the user wants to do (copy report).
+                QuestionHeader("What do you want to do?")
+            } footer: {
+                if !store.isPlus {
+                    Text("\(store.activeHabitCount) of \(HabitStore.freeHabitLimit) free habits used. Tasks are always free.").formNote()
+                }
             }
         }
+        .navigationDestination(for: Kind.self) { kind in
+            switch kind {
+            case .good: question("How do you want to track it?", [.doIt, .amount, .time, .checklist])
+            case .bad: question("What do you want to do?", [.quit, .cutBack])
+            }
+        }
+        .analyticsScreen(.newHabit)
+        .navigationTitle("New")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     /// The second question: the same list style as the first.
@@ -155,7 +169,7 @@ struct NewItemView: View {
         if type.isHabit && !store.canAddHabit {
             PlusView()
         } else {
-            HabitForm(type: type, group: group, onSaved: { onAdded($0); dismiss() })
+            HabitForm(type: type, group: group, onSaved: onAdded)
         }
     }
 }

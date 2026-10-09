@@ -239,7 +239,16 @@ final class BackupUITests: XCTestCase {
         openBackup(app)
         app.buttons["backup-move"].tap()
         XCTAssertTrue(app.navigationBars["Move to a New iPhone"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Send a backup file to the new iPhone"].exists, "The two steps for a phone with no account")
+        XCTAssertTrue(app.staticTexts["Choose I've used it before, then Move from another device"].exists, "The two steps for a phone with no account")
+        // Show a Transfer Code (Current Work 73.1): a code of eight characters, shown in two groups of four.
+        app.buttons["backup-move-code"].tap()
+        XCTAssertTrue(app.navigationBars["Transfer Code"].waitForExistence(timeout: 5))
+        let code = app.staticTexts["transfer-code"]
+        XCTAssertTrue(code.waitForExistence(timeout: 5))
+        XCTAssertEqual(code.label.count, "Transfer code: ".count + 15, "Eight characters, read one by one: \(code.label)")
+        let codeShot = XCTAttachment(screenshot: app.screenshot()); codeShot.name = "transfer-code"; codeShot.lifetime = .keepAlways; add(codeShot)
+        app.navigationBars["Transfer Code"].buttons.firstMatch.tap()
+        XCTAssertTrue(app.buttons["backup-move-send"].waitForExistence(timeout: 5))
         app.buttons["backup-move-send"].tap()
         let shared = app.otherElements["ActivityListView"].waitForExistence(timeout: 10) || app.buttons["Save to Files"].waitForExistence(timeout: 2)
         XCTAssertTrue(shared, "Send a Backup File opens the share sheet")

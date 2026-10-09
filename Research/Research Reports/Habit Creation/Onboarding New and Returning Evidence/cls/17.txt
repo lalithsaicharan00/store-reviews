@@ -1,0 +1,83 @@
+1530 NR
+1531 NR
+1532 NR
+1533 NR
+1534 NR
+1535 NR
+1536 NR
+1537 NR
+1538 NR
+1539 NR
+1540 NR
+1541 NR
+1542 NR
+1543 NR
+1544 NR
+1545 NR
+1546 NR
+1547 RESTORE_FAIL
+1548 NR
+1549 NR
+1550 NR
+1551 NR
+1552 NR
+1553 NR
+1554 NR
+1555 SIGNIN_EMPTY
+1556 SIGNIN_EMPTY | when I logged in to the Gmail that’s linked to the app, none of my appointments were showing up
+1557 NR
+1558 NR
+1559 NR
+1560 NR
+1561 NR
+1562 NR
+1563 NR
+1564 NR
+1565 SIGNIN_EMPTY | after switching phones and signing into my email nothing was saved!
+1566 NR
+1567 NR
+1568 NR
+1569 NR
+1570 FORCED_ACCOUNT | when I bought a new phone it forced me to create an account to be able to use it
+1571 NR
+1572 NR
+1573 NR
+1574 NR
+1575 NR
+1576 NR
+1577 NR
+1578 NR
+1579 NR
+1580 NR
+1581 NR
+1582 RESTORE_OK AUTO_FOUND | I was able to simply add my accounts and everything showed up.
+1583 NR
+1584 NR
+1585 NR
+1586 NR
+1587 NR
+1588 NR
+1589 NR
+1590 NR
+1591 NR
+1592 NR
+1593 FIRST_RUN_GOOD AUTO_FOUND | syncs really well to existing accounts already on your phone so it&#39;s not a pain to setup
+1594 NR
+1595 ACCOUNT_FIND | No logout option
+1596 NR
+1597 NR
+1598 NR
+1599 LOGIN_FRICTION
+1600 LOGIN_FRICTION
+1601 NR
+1602 LOGIN_FRICTION
+1603 NR
+1604 NR
+1605 NR
+1606 NR
+1607 NR
+1608 NR
+1609 RESTORE_OK | You will not lose any data because it is all stored online in your Google account.
+1610 NR
+1611 NR
+1612 NR

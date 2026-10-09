@@ -1,0 +1,90 @@
+810 WRONG_DOOR | Somehow this app was associated with a different google account than the one I actively use.
+811 PURCHASE_LOST SUPPORT
+812 NR
+813 MOVE_UNCLEAR | Now i can't backup the app's data. Is there any option for backup?
+814 FIRST_RUN_BAD
+815 LOST_NOWAY NEW_START | when it is reinstalled the previous data is not restored so he has to start as a new user
+816 LOST_NOWAY
+817 NR
+818 SIGNIN_EMPTY NEW_START | though I signed in with my goodle account
+819 NR
+820 LOGIN_FRICTION PURCHASE_LOST
+821 NR
+822 NR
+823 MANUAL_TRAP | a subscription is required to back up your save
+824 WRONG_DOOR PURCHASE_LOST
+825 NR
+826 MANUAL_TRAP
+827 PURCHASE_LOST
+828 NR
+829 PURCHASE_LOST SUPPORT
+830 NR
+831 NR
+832 NR
+833 NO_LOGIN_ENTRY PURCHASE_LOST | AND THERE'S NO WAY TO LOG IN TO YOUR EXISTING ACCOUNT on a new phone!
+834 NR
+835 NO_LOGIN_ENTRY ONBOARD_AGAIN | The app isn't giving me the option to sign in, just this insanely overdramatic step by step process
+836 NR
+837 LOGIN_FRICTION PURCHASE_LOST
+838 RESTORE_FAIL
+839 PURCHASE_LOST SUPPORT
+840 MANUAL_TRAP | you can't take the data on a new device if you don't pay for the premium account
+841 LOGIN_FRICTION
+842 ONBOARD_AGAIN SIGNIN_EMPTY | When start the app should ask the account before start the tutorial or the sync will erase the previous data
+843 SIGNIN_EMPTY MANUAL_TRAP | all data i had before has disappeared though i entered my email account
+844 LOGIN_FRICTION
+845 NR
+846 RESTORE_FAIL
+847 NR
+848 NR
+849 PURCHASE_LOST
+850 NR
+851 PURCHASE_LOST SUPPORT
+852 FIRST_RUN_GOOD
+853 LOGIN_FRICTION
+854 LOGIN_FRICTION
+855 SIGNIN_EMPTY
+856 LOGIN_FRICTION
+857 FORCED_ACCOUNT | Uninstalled straight away because I had to create an account before I could use.
+858 LOGIN_FRICTION
+859 SUPPORT
+860 LOGIN_FRICTION
+861 NO_LOGIN_ENTRY LOST_NOWAY | There is no option to log in, all data gets deleted if you uninstall the app
+862 NO_LOGIN_ENTRY | there is no login process so if a purchase premium of this app and after sometime i reset my phone so how i get my old id ??
+863 NO_LOGIN_ENTRY | where's log in account, so i could use it on multiple device?
+864 NR
+865 LOST_NOWAY | I can't find any backup option on the app.
+866 ACCOUNT_FIND | How do you log out of the person?
+867 NR
+868 NOACC_PRAISE | No sign in process
+869 RESTORE_FAIL
+870 NOACC_PRAISE | No login no useless hassles.
+871 EXPECT_SIGNIN | there needs to be a way to create an account and log in so that if you get a new phone, your tasks will sync
+872 RESTORE_FAIL SUPPORT
+873 MOVE_UNCLEAR
+874 RESTORE_FAIL
+875 RESTORE_FAIL | if you install the app on a new phone it doesn't import your reminders back in from Google
+876 RESTORE_FAIL
+877 SIGNIN_EMPTY
+878 SIGNIN_EMPTY | Doesnt sync to new phone even afer logging in. Everything lost.
+879 RESTORE_FAIL
+880 NR
+881 NOACC_PRAISE
+882 MOVE_UNCLEAR
+883 NOACC_PRAISE | No sign in needed
+884 NOACC_PRAISE
+885 NOACC_PRAISE FIRST_RUN_GOOD | As soon as you install it, you can instantly create new tasks. No login required.
+886 LOST_NOWAY
+887 RESTORE_FAIL
+888 PURCHASE_LOST
+889 NR
+890 RESTORE_FAIL | all my tasks were erased on both phones
+891 MOVE_UNCLEAR
+892 RESTORE_FAIL
+893 NR
+894 SIGNIN_EMPTY RESTORE_FAIL
+895 NOACC_PRAISE FIRST_RUN_GOOD | You can use it just after open the app. No log in requirements. No need for tutorial.
+896 RESTORE_OK | log in with google account,and the tasks will be back
+897 LOST_NOWAY
+898 RESTORE_FAIL PURCHASE_LOST
+899 PURCHASE_LOST

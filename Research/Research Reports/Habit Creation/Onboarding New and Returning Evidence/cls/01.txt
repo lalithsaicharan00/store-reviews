@@ -1,0 +1,90 @@
+90 SIGNIN_EMPTY SUPPORT | it’s telling me that they don’t have an account with my email
+91 LOST_NOWAY
+92 NO_LOGIN_ENTRY NEW_START | I did not see a place for credentials and my new phone could not get the file
+93 LOGIN_FRICTION LOST_NOWAY
+94 RESTORE_FAIL NEW_START
+95 RESTORE_FAIL | I am struggling to find the restore option
+96 NR
+97 LOGIN_FRICTION | now I can’t log back in even though I had an email attached
+98 MANUAL_TRAP EXPECT_SIGNIN | You cannot just log back into your account and have all of your stuff there.
+99 RESTORE_FAIL
+100 RESTORE_FAIL | clicked the only backup that was showing and it acted like I was starting mostly over
+101 NEW_START
+102 NEVER_KNEW MANUAL_TRAP | there needs to be more information and attention brought to the fact that you have to back up your data
+103 LOST_NOWAY SUPPORT
+104 SIGNIN_EMPTY | it claims the email I used for my original pet
+105 NR
+106 RESTORE_FAIL
+107 SIGNIN_EMPTY | It just says it doesn’t exist and no way to fix it.
+108 SIGNIN_EMPTY | my account doesn’t exist
+109 LOGIN_FRICTION PURCHASE_LOST SUPPORT
+110 NR
+111 EXPECT_SIGNIN LOST_NOWAY | I thought I would have some sort of data stored into an account, but I came back to nothing
+112 NR
+113 NR
+114 NR
+115 RESTORE_FAIL PURCHASE_LOST
+116 MOVE_UNCLEAR | I don’t know how to get my account back
+117 SIGNIN_EMPTY | I redownloaded it and synced my account back up. BUT NOW ALL MY STUFF IS GONE.
+118 LOGIN_FRICTION PURCHASE_LOST NEW_START
+119 LOGIN_FRICTION
+120 LOGIN_FRICTION SUPPORT
+121 LOGIN_FRICTION | i struggled to log into my new phone but i did it
+122 LOGIN_FRICTION SUPPORT
+123 RESTORE_FAIL PURCHASE_LOST
+124 LOGIN_FRICTION PURCHASE_LOST | How was this account linked to me in the first place?
+125 LOST_NOWAY
+126 LOST_NOWAY EXPECT_SIGNIN | i also don’t get why we can’t make accounts so we can log in again when we need to
+127 LOGIN_FRICTION
+128 RESTORE_FAIL
+129 NEVER_KNEW LOST_NOWAY | At least there should be a pop up warning or something that notifies people about this data deletion
+130 NR
+131 LOST_NOWAY MOVE_UNCLEAR | Is there any way I can log back into my old one ?
+132 MANUAL_TRAP LOST_NOWAY | I hadn’t manually backed up my data before transferring phones
+133 NO_LOGIN_ENTRY | When you download it again it doesn’t give you the option to get back the one that you started with
+134 RESTORE_FAIL
+135 MANUAL_TRAP NEW_START
+136 NR
+137 LOST_NOWAY
+138 NEVER_KNEW LOST_NOWAY | I never got to make a saved file because I didn’t know I needed to
+139 NO_LOGIN_ENTRY | now It doesn’t show a option to log into my old account
+140 NR
+141 NR
+142 NR
+143 MOVE_UNCLEAR | I don’t see any way to transfer my birdie over
+144 MANUAL_TRAP | i think there should be a way to make an actual account
+145 NO_LOGIN_ENTRY | I can’t seem to figure out how to sign into an existing account
+146 MOVE_UNCLEAR PURCHASE_LOST
+147 NO_LOGIN_ENTRY | I was met with the starting screen and I couldn’t get my old account with all of my progress back
+148 MOVE_UNCLEAR
+149 FIRST_RUN_BAD | no skips to the very long introduction
+150 ONBOARD_AGAIN FORCED_ACCOUNT | App starts from introduction and profile creation each time I close and open it again
+151 PURCHASE_LOST
+152 ICLOUD_FAIL
+153 NR
+154 LOST_NOWAY | it doesn&#39;t come with restore if I reinstalled the app
+155 ACCOUNT_FIND | the app doesn’t have an “account”
+156 EXPECT_SIGNIN | so that I could log back in and get all my stuff back on a new device
+157 NR
+158 FIRST_RUN_BAD
+159 ICLOUD_FAIL
+160 PURCHASE_LOST
+161 EXPECT_SIGNIN | The next time you reinstall and sign in, your habit saved should automatically appear.
+162 PURCHASE_LOST MANUAL_TRAP
+163 NR
+164 NR
+165 LOGIN_FRICTION PURCHASE_LOST
+166 ICLOUD_FAIL
+167 NR
+168 ICLOUD_FAIL
+169 RESTORE_OK | once I deleted and re-downloaded the app all my habits came back
+170 NR
+171 NR
+172 ICLOUD_FAIL SUPPORT
+173 NR
+174 ICLOUD_FAIL
+175 NR
+176 PURCHASE_OK | I clicked on &#34;restore&#34; and didn&#39;t have to pay subscription
+177 ICLOUD_FAIL
+178 NR
+179 NR
