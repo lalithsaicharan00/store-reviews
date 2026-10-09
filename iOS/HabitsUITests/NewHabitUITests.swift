@@ -21,6 +21,10 @@ final class NewHabitUITests: XCTestCase {
         app = XCUIApplication()
         app.launchArguments = ["-uitest"]
         app.launch()
+        // Today has its habits (Edit is enabled once they're loaded) before anything is tapped: a tap read while the
+        // toolbar was still settling landed on ≡ seconds later and opened the menu (runs 37875404027, 37896905498).
+        let loaded = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == true"), object: app.buttons["arrange-button"])
+        XCTAssertEqual(XCTWaiter.wait(for: [loaded], timeout: 20), .completed, "Today's habits are there")
     }
 
     private func shot(_ name: String) {

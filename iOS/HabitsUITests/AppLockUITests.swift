@@ -34,6 +34,14 @@ final class AppLockUITests: XCTestCase {
         }
     }
 
+    /// A new code, twice: the second only once the keypad asks for it again (typed while "Enter it again" was still
+    /// arriving, digits were lost: run 37896905498).
+    private func chooseCode(_ app: XCUIApplication, _ code: String, file: StaticString = #filePath, line: UInt = #line) {
+        enterCode(app, code)
+        XCTAssertTrue(app.staticTexts["Enter it again"].waitForExistence(timeout: 5), "Asks for the code again: \(labels(app))", file: file, line: line)
+        enterCode(app, code)
+    }
+
     /// The code keys: a code sheet's own (`code-setup`) when one is up over the cover's keypad.
     private func enterCode(_ app: XCUIApplication, _ code: String) {
         let setup = app.descendants(matching: .any)["code-setup"]
@@ -161,7 +169,7 @@ final class AppLockUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Enter it again"].waitForExistence(timeout: 5))
         enterCode(app, "135791")
         XCTAssertTrue(app.staticTexts["The two codes are different. Try again."].waitForExistence(timeout: 5), labels(app))
-        enterCode(app, "135790"); enterCode(app, "135790")
+        chooseCode(app, "135790")
         XCTAssertTrue(gone(app.navigationBars["Your Own Code"]), labels(app))
         app.navigationBars.buttons.element(boundBy: 0).tap()
         XCTAssertTrue(app.buttons["privacy-unlock-with"].waitForExistence(timeout: 5))
@@ -271,7 +279,7 @@ final class AppLockUITests: XCTestCase {
         app.buttons["lock-forgot-face-id"].tap()
         answer(app, true)
         XCTAssertTrue(app.staticTexts["Enter a code"].waitForExistence(timeout: 5), labels(app))
-        enterCode(app, "102938"); enterCode(app, "102938")
+        chooseCode(app, "102938")
         XCTAssertTrue(gone(cover(app)), labels(app))
         leaveAndReturn(app)
         answer(app, false)
@@ -311,7 +319,7 @@ final class AppLockUITests: XCTestCase {
         app.buttons["lock-choose-new-code"].tap()
         answer(app, true)
         XCTAssertTrue(app.staticTexts["Enter a code"].waitForExistence(timeout: 5), labels(app))
-        enterCode(app, "908070"); enterCode(app, "908070")
+        chooseCode(app, "908070")
         XCTAssertTrue(gone(cover(app)), labels(app))
     }
 
@@ -431,7 +439,9 @@ final class AppLockUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["New Habit"].waitForNonExistence(timeout: 5), labels(app))
         let row = app.staticTexts["Private habit"].firstMatch
         XCTAssertTrue(row.waitForExistence(timeout: 5)); row.press(forDuration: 1.0)
-        app.buttons["Edit Habit"].firstMatch.tap()
+        let edit = app.buttons["Edit Habit"].firstMatch
+        XCTAssertTrue(edit.waitForExistence(timeout: 5), "The touch-and-hold menu: \(labels(app))")
+        edit.tap()
         XCTAssertTrue(app.navigationBars["Edit Habit"].waitForExistence(timeout: 5))
         for _ in 0..<6 where !reminders.isHittable { app.swipeUp() }
         reminders.tap()

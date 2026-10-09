@@ -41,6 +41,9 @@ struct LockCover: View {
             }
             window.makeKeyAndVisible()
         } else if let window, !window.isHidden {
+            // Anything still open on the cover (Forgot Your Code, a code sheet) goes with it, so it never comes back
+            // over the next lock.
+            window.rootViewController?.presentedViewController?.dismiss(animated: false)
             window.isHidden = true
             window.windowScene?.windows.first { $0 !== window && $0.windowLevel == .normal }?.makeKey()
         }
