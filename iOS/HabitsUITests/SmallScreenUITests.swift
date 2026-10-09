@@ -223,10 +223,10 @@ final class SmallScreenUITests: XCTestCase {
     /// the screen). A step's Undo is "Undo Last Step"; an amount's names it ("Undo +1 tablespoon"); at the largest text
     /// that still shows words, both stay on one line inside the row, with Add Note whole.
     func testAfterLogLineStaysInsideTheRow() {
-        app.launchArguments = ["-uitest", "-longtext", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryXXXL"]
+        app.launchArguments = ["-uitest", "-longtext", "-clock-hour", "9", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryXXXL"]
         app.launch()
-        XCTAssertTrue(app.staticTexts["Floss"].firstMatch.waitForExistence(timeout: 20), "The sample habits are there")
         func button(_ prefix: String) -> XCUIElement { app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix)).firstMatch }
+        XCTAssertTrue(button("Add 1 tablespoon").waitForExistence(timeout: 20), "The sample habits are there")
         func checkLine(_ what: String, label expected: String) {
             let undo = app.buttons["habit-inline-undo"], add = app.buttons["habit-add-note"]
             XCTAssertTrue(undo.waitForExistence(timeout: 3) && add.exists, "\(what): Undo and Add Note after a log")
@@ -241,6 +241,9 @@ final class SmallScreenUITests: XCTestCase {
         // A checklist step at its 24-character limit.
         let step = button("Mark Double cleanse")
         if !step.exists {
+            // The morning routine's card folds its habits (named Morning, or Before breakfast with long names).
+            let section = app.buttons.matching(NSPredicate(format: "label == 'Open Morning' OR label == 'Open Before breakfast'")).firstMatch
+            if app.reveal(section, clear: true) { section.tap() }
             let show = button("Show Morning skincare")
             XCTAssertTrue(app.reveal(show, clear: true), "The checklist row is on Today")
             show.tap()
